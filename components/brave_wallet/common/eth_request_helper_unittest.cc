@@ -10,6 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -325,6 +326,21 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
           "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
         ]
       })");
+  const std::string json_empty_message(
+      R"({
+        "params": [
+          "",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+        ]
+      })");
+  const std::string json_0x_message(
+      R"({
+        "params": [
+          "0x",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+        ]
+      })");
+
   std::string address;
   std::string message;
   EXPECT_TRUE(ParsePersonalSignParams(json, &address, &message));
@@ -344,6 +360,16 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
       ParsePersonalSignParams(json_with_message_string, &address, &message));
   EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
   EXPECT_EQ(message, "0x4861766520796f752074726965642042726176653f");
+
+  EXPECT_TRUE(ParsePersonalSignParams(json_empty_message, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_EQ(message, "0x");
+
+  EXPECT_TRUE(ParsePersonalSignParams(json_0x_message, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  // To be consistent with MM :S
+  EXPECT_EQ(ToHex("0x"), "0x3078");
+  EXPECT_EQ(message, "0x3078");
 
   EXPECT_FALSE(ParsePersonalSignParams(json, &address, nullptr));
   EXPECT_FALSE(ParsePersonalSignParams(json, nullptr, &message));

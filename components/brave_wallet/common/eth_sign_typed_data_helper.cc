@@ -195,10 +195,11 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
                   encoded_value_bytes.end());
   } else if (type == "bytes") {
     const std::string* value_str = value.GetIfString();
-    if (!value_str || !IsValidHexString(*value_str))
+    if (!value_str || (!value_str->empty() && !IsValidHexString(*value_str)))
       return absl::nullopt;
     std::vector<uint8_t> bytes;
-    CHECK(PrefixedHexStringToBytes(*value_str, &bytes));
+    if (!value_str->empty())
+      CHECK(PrefixedHexStringToBytes(*value_str, &bytes));
     const std::vector<uint8_t> encoded_value = KeccakHash(bytes);
     result.insert(result.end(), encoded_value.begin(), encoded_value.end());
   } else if (type == "bool") {
@@ -219,7 +220,6 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     for (size_t i = 0; i < 256 - 160; i += 8)
       result.push_back(0);
     result.insert(result.end(), address.begin(), address.end());
-
   } else if (base::StartsWith(type, "bytes", base::CompareCase::SENSITIVE)) {
     unsigned type_check;
     if (!base::StringToUint(type.data() + 5, &type_check) || type_check > 32)
@@ -244,13 +244,14 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
 
     absl::optional<double> value_double = value.GetIfDouble();
     const std::string* value_str = value.GetIfString();
-    uint256_t encoded_value;
+    uint256_t encoded_value = 0;
     if (value_double) {
       encoded_value = (uint256_t)(uint64_t)*value_double;
       if (encoded_value > kMaxSafeInteger)
         return absl::nullopt;
     } else if (value_str) {
-      if (!HexValueToUint256(*value_str, &encoded_value) &&
+      if (!value_str->empty() &&
+          !HexValueToUint256(*value_str, &encoded_value) &&
           !Base10ValueToUint256(*value_str, &encoded_value))
         return absl::nullopt;
     } else {
@@ -303,7 +304,8 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       if (encoded_value > kMaxSafeInteger)
         return absl::nullopt;
     } else if (value_str) {
-      if (!HexValueToInt256(*value_str, &encoded_value) &&
+      if (!value_str->empty() &&
+          !HexValueToInt256(*value_str, &encoded_value) &&
           !Base10ValueToInt256(*value_str, &encoded_value))
         return absl::nullopt;
     } else {

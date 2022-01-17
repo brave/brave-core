@@ -88,7 +88,8 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
   if (data) {
     // If data is specified it's best to make sure it's valid
     std::vector<uint8_t> bytes;
-    if (!brave_wallet::PrefixedHexStringToBytes(*data, &bytes))
+    if (!data->empty() &&
+        !brave_wallet::PrefixedHexStringToBytes(*data, &bytes))
       return nullptr;
     tx_data->data = bytes;
   }
@@ -288,7 +289,8 @@ bool ParsePersonalSignParams(const std::string& json,
     return false;
 
   *address = *address_str;
-  if (IsValidHexString(*message_str)) {
+  // MM encodes 0x as a string and not an empty value
+  if (IsValidHexString(*message_str) && *message_str != "0x") {
     *message = *message_str;
   } else if (IsValidHexString("0x" + *message_str)) {
     *message = "0x" + *message_str;
