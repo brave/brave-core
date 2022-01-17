@@ -93,6 +93,7 @@ Polymer({
     window.addEventListener('load', this.onLoad_.bind(this));
   },
   onLoad_: function() {
+    this.browserProxy_.notifyIpfsNodeStatus();
     this.updateKeys();
   },
   notifyKeylist: function() {
@@ -115,6 +116,7 @@ Polymer({
 
   onServiceLaunched: function(success) {
     this.toggleUILayout(success)
+    this.localNodeMethod = success
     if (success) {
       this.updateKeys();
     }
@@ -126,12 +128,6 @@ Polymer({
       this.localNodeLaunchError_ = !success;
       this.onServiceLaunched(success)
     });
-  },
-
-  /*++++++
-  * @override */
-  ready: function() {
-    this.browserProxy_.notifyIpfsNodeStatus();
   },
 
   isDefaultKey_: function(name) {
