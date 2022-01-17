@@ -304,6 +304,16 @@ Config.prototype.buildArgs = function () {
 
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
+
+    if (process.platform === 'darwin' && this.targetOS != 'ios' && args.is_official_build) {
+      // Currently we're using is_official_build mode in PR builds on CI. This enables dSYMs
+      // by default, which slows down link phase, but also disables relocatable compilation
+      // on MacOS (aka 'zero goma cachehits' style).
+      //
+      // Don't create dSYMs in non-public Release builds.
+      // See //build/config/apple/symbols.gni for additional details.
+      args.enable_dsyms = false
+    }
   }
 
   if (this.shouldSign()) {
