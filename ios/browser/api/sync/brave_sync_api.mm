@@ -203,8 +203,8 @@
 }
 
 - (BraveSyncInternalsController*)createSyncInternalsController {
-  return
-      [[BraveSyncInternalsController alloc] initWithBrowserState:_chromeBrowserState];
+  return [[BraveSyncInternalsController alloc]
+      initWithBrowserState:_chromeBrowserState];
 }
 
 - (id)createSyncDeviceObserver:(void (^)())onDeviceInfoChanged {
