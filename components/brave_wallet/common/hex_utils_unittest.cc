@@ -81,6 +81,8 @@ TEST(HexUtilsUnitTest, ConcatHexStrings) {
 
 TEST(HexUtilsUnitTest, HexValueToUint256) {
   uint256_t out;
+  ASSERT_TRUE(HexValueToUint256("0x0", &out));
+  ASSERT_EQ(out, (uint256_t)0);
   ASSERT_TRUE(HexValueToUint256("0x1", &out));
   ASSERT_EQ(out, (uint256_t)1);
   ASSERT_TRUE(HexValueToUint256("0x1234", &out));
@@ -107,6 +109,8 @@ TEST(HexUtilsUnitTest, HexValueToUint256) {
 
 TEST(HexUtilsUnitTest, HexValueToInt256) {
   int256_t out;
+  ASSERT_TRUE(HexValueToInt256("0x0", &out));
+  ASSERT_EQ(out, (int256_t)0);
   ASSERT_TRUE(HexValueToInt256("0x1", &out));
   ASSERT_EQ(out, (int256_t)1);
   ASSERT_TRUE(HexValueToInt256("0x1234", &out));
@@ -121,9 +125,24 @@ TEST(HexUtilsUnitTest, HexValueToInt256) {
       &out));
   ASSERT_TRUE(out == (int256_t)expected_val);
 
+  // Min int256 value can be represented
+  // expected_val = (int256_t)-1;
+  expected_val = std::numeric_limits<int256_t>::min();
+  ASSERT_TRUE(HexValueToInt256(
+      "0x8000000000000000000000000000000000000000000000000000000000000000",
+      &out));
+  ASSERT_TRUE(out == (int256_t)expected_val);
+
+  // Biggest int256 negative value can be represented
+  expected_val = (int256_t)-1;
+  ASSERT_TRUE(HexValueToInt256(
+      "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+      &out));
+  ASSERT_TRUE(out == (int256_t)expected_val);
+
   // Should return false when out of bounds
   ASSERT_FALSE(HexValueToInt256(
-      "0x8000000000000000000000000000000000000000000000000000000000000000",
+      "0x10000000000000000000000000000000000000000000000000000000000000000",
       &out));
 
   // Check padded values too

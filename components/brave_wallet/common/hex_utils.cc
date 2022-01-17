@@ -127,8 +127,9 @@ bool HexValueToInt256(const std::string& hex_input, int256_t* out) {
   uint256_t val;
   if (!HexValueToUint256(hex_input, &val))
     return false;
-  if (val > std::numeric_limits<int256_t>::max())
-    return false;
+  // This is the same as ~val + 1
+  // To convert a positive number into a negative number, using the two’s
+  // complement representation, invert all of the bits of the number + 1
   *out = static_cast<int256_t>(val);
   return true;
 }
