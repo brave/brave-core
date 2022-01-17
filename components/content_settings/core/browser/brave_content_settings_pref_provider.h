@@ -38,7 +38,7 @@ class BravePrefProvider : public PrefProvider,
   bool SetWebsiteSetting(const ContentSettingsPattern& primary_pattern,
                          const ContentSettingsPattern& secondary_pattern,
                          ContentSettingsType content_type,
-                         std::unique_ptr<base::Value>&& value,
+                         base::Value&& value,
                          const ContentSettingConstraints& constraints) override;
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
@@ -71,7 +71,7 @@ class BravePrefProvider : public PrefProvider,
       const ContentSettingsPattern& primary_pattern,
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsType content_type,
-      std::unique_ptr<base::Value>&& in_value,
+      base::Value&& value,
       const ContentSettingConstraints& constraints);
 
   // content_settings::Observer overrides:

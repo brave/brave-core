@@ -368,7 +368,7 @@ bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    std::unique_ptr<base::Value>&& in_value,
+    base::Value&& in_value,
     const ContentSettingConstraints& constraints) {
   // TODO(bridiver) - this is currently broken in ways that can cause real
   // problems if people try to use it so disable completely until we migrate
@@ -377,11 +377,11 @@ bool BravePrefProvider::SetWebsiteSetting(
   //
   // handle changes to brave cookie settings from chromium cookie settings UI
   // if (content_type == ContentSettingsType::COOKIES) {
-  //   auto* value = in_value.get();
+  //   base::Value value = in_value.Clone();
   //   auto match = std::find_if(
   //       brave_cookie_rules_[off_the_record_].begin(),
   //       brave_cookie_rules_[off_the_record_].end(),
-  //       [primary_pattern, secondary_pattern, value](const auto& rule) {
+  //       [primary_pattern, secondary_pattern, &value](const auto& rule) {
   //         return rule.primary_pattern == primary_pattern &&
   //                rule.secondary_pattern == secondary_pattern &&
   //                ValueToContentSetting(&rule.value) !=
@@ -414,7 +414,7 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    std::unique_ptr<base::Value>&& in_value,
+    base::Value&& in_value,
     const ContentSettingConstraints& constraints) {
   // PrefProvider ignores default settings so handle them here for shields
   if (content_settings::IsShieldsContentSettingsType(content_type) &&
@@ -423,9 +423,10 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
     base::Time modified_time =
         store_last_modified_ ? base::Time::Now() : base::Time();
 
-    return GetPref(content_type)
+    GetPref(content_type)
         ->SetWebsiteSetting(primary_pattern, secondary_pattern, modified_time,
                             std::move(in_value), constraints);
+    return true;
   }
 
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
