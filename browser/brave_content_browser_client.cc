@@ -382,34 +382,31 @@ void BraveContentBrowserClient::RenderProcessWillLaunch(
   ChromeContentBrowserClient::RenderProcessWillLaunch(host);
 }
 
-bool BraveContentBrowserClient::BindAssociatedReceiverFromFrame(
-    content::RenderFrameHost* render_frame_host,
-    const std::string& interface_name,
-    mojo::ScopedInterfaceEndpointHandle* handle) {
-  if (ChromeContentBrowserClient::BindAssociatedReceiverFromFrame(
-          render_frame_host, interface_name, handle)) {
-    return true;
-  }
-
+void BraveContentBrowserClient::
+    RegisterAssociatedInterfaceBindersForRenderFrameHost(
+        content::RenderFrameHost& render_frame_host,                // NOLINT
+        blink::AssociatedInterfaceRegistry& associated_registry) {  // NOLINT
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  if (interface_name == brave_drm::mojom::BraveDRM::Name_) {
-    BraveDrmTabHelper::BindBraveDRM(
-        mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM>(
-            std::move(*handle)),
-        render_frame_host);
-    return true;
-  }
+  associated_registry.AddInterface(base::BindRepeating(
+      [](content::RenderFrameHost* render_frame_host,
+         mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM> receiver) {
+        BraveDrmTabHelper::BindBraveDRM(std::move(receiver), render_frame_host);
+      },
+      &render_frame_host));
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
-  if (interface_name == brave_shields::mojom::BraveShieldsHost::Name_) {
-    brave_shields::BraveShieldsWebContentsObserver::BindBraveShieldsHost(
-        mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>(
-            std::move(*handle)),
-        render_frame_host);
-    return true;
-  }
+  associated_registry.AddInterface(base::BindRepeating(
+      [](content::RenderFrameHost* render_frame_host,
+         mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>
+             receiver) {
+        brave_shields::BraveShieldsWebContentsObserver::BindBraveShieldsHost(
+            std::move(receiver), render_frame_host);
+      },
+      &render_frame_host));
 
-  return false;
+  ChromeContentBrowserClient::
+      RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
+                                                           associated_registry);
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
