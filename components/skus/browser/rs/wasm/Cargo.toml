@@ -19,11 +19,11 @@ wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
 wasm-bindgen-futures = { version = "0.3", features = ["futures_0_3"] }
 web-sys = { version = "0.3", features = ["console", "Headers", "Window", "Request", "RequestInit", "RequestMode", "Response", "Storage", "HtmlDocument", "Location", "Document", "Element", "HtmlIFrameElement", "CssStyleDeclaration", "MessageEvent", "Url", "DomTokenList"] }
 console_error_panic_hook = "0.1.6"
-tracing-wasm = "0.1.0"
+tracing-wasm = "0.2.1"
 wasm-cookies = "0.1.0"
 futures = "0.3"
 gloo-timers = { version = "0.2.1", features = ["futures"] }
-tracing-subscriber = "0.2"
+tracing-subscriber = "0.3.6"
 
 [features]
 wasm = ["skus/wasm"]
