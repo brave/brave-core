@@ -2881,6 +2881,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">
       New tab
     </message>
+    <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_WALLET" desc="Content description for the button that allows an access to Brave Wallet.">
+      Access Brave Wallet
+    </message>
     </messages>
   </release>
 </grit>
