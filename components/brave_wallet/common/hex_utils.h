@@ -35,6 +35,8 @@ bool ConcatHexStrings(const std::vector<std::string>& hex_inputs,
 
 // Takes a hex string as input and converts it to a uint256_t
 bool HexValueToUint256(const std::string& hex_input, uint256_t* out);
+// Takes a hex string as input and converts it to a int256_t
+bool HexValueToInt256(const std::string& hex_input, int256_t* out);
 // Takes a uint256_t and converts it to a hex string
 std::string Uint256ValueToHex(uint256_t input);
 

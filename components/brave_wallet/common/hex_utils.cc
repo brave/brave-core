@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
+#include <limits>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -111,6 +113,18 @@ bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
     (*out) <<= 4;
     (*out) += static_cast<uint256_t>(base::HexDigitToInt(c));
   }
+  return true;
+}
+
+bool HexValueToInt256(const std::string& hex_input, int256_t* out) {
+  if (!out)
+    return false;
+  uint256_t val;
+  if (!HexValueToUint256(hex_input, &val))
+    return false;
+  if (val > std::numeric_limits<int256_t>::max())
+    return false;
+  *out = static_cast<int256_t>(val);
   return true;
 }
 

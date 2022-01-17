@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
+#include <limits>
 #include <vector>
 
+#include "base/logging.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -93,6 +95,32 @@ TEST(HexUtilsUnitTest, HexValueToUint256) {
   // Check padded values too
   ASSERT_TRUE(HexValueToUint256("0x00000000000000000000000F0", &out));
   ASSERT_EQ(out, (uint256_t)240);
+}
+
+TEST(HexUtilsUnitTest, HexValueToInt256) {
+  int256_t out;
+  ASSERT_TRUE(HexValueToInt256("0x1", &out));
+  ASSERT_EQ(out, (int256_t)1);
+  ASSERT_TRUE(HexValueToInt256("0x1234", &out));
+  ASSERT_EQ(out, (int256_t)4660);
+  ASSERT_TRUE(HexValueToInt256("0xB", &out));
+  ASSERT_EQ(out, (int256_t)11);
+
+  // Max int256 value can be represented
+  int256_t expected_val = std::numeric_limits<int256_t>::max();
+  ASSERT_TRUE(HexValueToInt256(
+      "0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+      &out));
+  ASSERT_TRUE(out == (int256_t)expected_val);
+
+  // Should return false when out of bounds
+  ASSERT_FALSE(HexValueToInt256(
+      "0x8000000000000000000000000000000000000000000000000000000000000000",
+      &out));
+
+  // Check padded values too
+  ASSERT_TRUE(HexValueToInt256("0x00000000000000000000000F0", &out));
+  ASSERT_EQ(out, (int256_t)240);
 }
 
 TEST(HexUtilsUnitTest, Uint256ValueToHex) {
