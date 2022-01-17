@@ -15,7 +15,10 @@ namespace brave_wallet {
 bool IsValidBase10String(const std::string& input) {
   if (input.empty())
     return false;
-  for (const auto& c : input) {
+  std::string check_input = input;
+  if (input.size() > 0 && input[0] == '-')
+    check_input = input.substr(1);
+  for (const auto& c : check_input) {
     if (!base::IsAsciiDigit(c))
       return false;
   }
@@ -44,12 +47,32 @@ bool Base10ValueToUint256(const std::string& input, uint256_t* out) {
 bool Base10ValueToInt256(const std::string& input, int256_t* out) {
   if (!out)
     return false;
-  uint256_t val;
-  if (!Base10ValueToUint256(input, &val))
+  if (!IsValidBase10String(input))
     return false;
-  if (val > std::numeric_limits<int256_t>::max())
-    return false;
-  *out = static_cast<int256_t>(val);
+  *out = 0;
+  int256_t last_val = 0;  // Used to check overflows
+  std::string check_input = input;
+  bool negative = false;
+  if (input.size() > 0 && input[0] == '-') {
+    check_input = input.substr(1);
+    negative = true;
+  }
+
+  for (char c : check_input) {
+    (*out) *= 10;
+    // We can use this because we know the input string is 0-9 digits only
+    if (negative) {
+      (*out) -= static_cast<int256_t>(base::HexDigitToInt(c));
+    } else {
+      (*out) += static_cast<int256_t>(base::HexDigitToInt(c));
+    }
+    if (!negative && last_val > *out) {
+      return false;
+    } else if (negative && last_val < *out) {
+      return false;
+    }
+    last_val = *out;
+  }
   return true;
 }
 
