@@ -261,11 +261,11 @@ BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env) {
   base::DictionaryValue json_root;
   json_root.SetDoubleKey("total", balance_.total);
 
-  auto json_wallets = std::make_unique<base::DictionaryValue>();
+  base::Value json_wallets = base::Value(base::Value::Type::DICTIONARY);
   for (const auto & item : balance_.wallets) {
-    json_wallets->SetDoubleKey(item.first, item.second);
+    json_wallets.SetDoubleKey(item.first, item.second);
   }
-  json_root.SetDictionary("wallets", std::move(json_wallets));
+  json_root.SetPath("wallets", std::move(json_wallets));
   base::JSONWriter::Write(json_root, &json_balance);
 
   return base::android::ConvertUTF8ToJavaString(env, json_balance);

@@ -877,11 +877,11 @@ void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
     }
     result.SetList("amounts", std::move(amounts));
 
-    auto links = std::make_unique<base::DictionaryValue>();
+    base::Value links = base::Value(base::Value::Type::DICTIONARY);
     for (auto const& item : banner->links) {
-      links->SetString(item.first, item.second);
+      links.SetStringKey(item.first, item.second);
     }
-    result.SetDictionary("links", std::move(links));
+    result.SetPath("links", std::move(links));
   }
 
   Respond(OneArgument(std::move(result)));
