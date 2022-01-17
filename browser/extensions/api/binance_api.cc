@@ -111,11 +111,12 @@ void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
   base::DictionaryValue result;
 
   for (const auto& balance : balances) {
-    auto info = std::make_unique<base::DictionaryValue>();
-    info->SetString("balance", balance.second[0]);
-    info->SetString("btcValue", balance.second[1]);
-    info->SetString("fiatValue", balance.second[2]);
-    result.SetDictionary(balance.first, std::move(info));
+    base::Value info(base::Value::Type::DICTIONARY);
+    info.SetKey("balance", base::Value(balance.second[0]));
+    info.SetKey("btcValue", base::Value(balance.second[1]));
+    info.SetKey("fiatValue", base::Value(balance.second[2]));
+
+    result.SetPath(balance.first, std::move(info));
   }
 
   Respond(TwoArguments(std::move(result), base::Value(success)));
