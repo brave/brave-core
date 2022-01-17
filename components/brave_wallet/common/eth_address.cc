@@ -52,8 +52,8 @@ EthAddress EthAddress::FromHex(const std::string& input) {
     return EthAddress();
 
   std::vector<uint8_t> bytes;
-  if (!base::HexStringToBytes(input.data() + 2, &bytes)) {
-    VLOG(1) << __func__ << ": base::HexStringToBytes failed";
+  if (!PrefixedHexStringToBytes(input, &bytes)) {
+    VLOG(1) << __func__ << ": PrefixedHexStringToBytes failed";
     return EthAddress();
   }
 

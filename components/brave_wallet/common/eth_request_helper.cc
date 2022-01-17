@@ -87,14 +87,8 @@ brave_wallet::mojom::TxDataPtr ValueToTxData(const base::Value& tx_value,
   const std::string* data = params_dict->FindStringKey("data");
   if (data) {
     // If data is specified it's best to make sure it's valid
-    if (data->length() <= 2 || data->substr(0, 2) != "0x")
-      return nullptr;
-    std::string hex_substr = data->substr(2);
     std::vector<uint8_t> bytes;
-    // HexStringToBytes needs an even number of bytes
-    if (hex_substr.length() % 2 == 1)
-      hex_substr = "0" + hex_substr;
-    if (!base::HexStringToBytes(hex_substr, &bytes))
+    if (!brave_wallet::PrefixedHexStringToBytes(*data, &bytes))
       return nullptr;
     tx_data->data = bytes;
   }

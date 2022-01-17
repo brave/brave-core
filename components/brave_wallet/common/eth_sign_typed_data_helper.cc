@@ -198,7 +198,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     if (!value_str || !IsValidHexString(*value_str))
       return absl::nullopt;
     std::vector<uint8_t> bytes;
-    CHECK(base::HexStringToBytes(value_str->data() + 2, &bytes));
+    CHECK(PrefixedHexStringToBytes(*value_str, &bytes));
     const std::vector<uint8_t> encoded_value = KeccakHash(bytes);
     result.insert(result.end(), encoded_value.begin(), encoded_value.end());
   } else if (type == "bool") {
@@ -214,7 +214,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     if (!value_str || !IsValidHexString(*value_str))
       return absl::nullopt;
     std::vector<uint8_t> address;
-    CHECK(base::HexStringToBytes(value_str->data() + 2, &address));
+    CHECK(PrefixedHexStringToBytes(*value_str, &address));
     DCHECK_EQ(address.size(), 20u);
     for (size_t i = 0; i < 256 - 160; i += 8)
       result.push_back(0);
@@ -228,7 +228,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     if (!value_str || !IsValidHexString(*value_str))
       return absl::nullopt;
     std::vector<uint8_t> bytes;
-    CHECK(base::HexStringToBytes(value_str->data() + 2, &bytes));
+    CHECK(PrefixedHexStringToBytes(*value_str, &bytes));
     if (bytes.size() > 32)
       return absl::nullopt;
     result.insert(result.end(), bytes.begin(), bytes.end());

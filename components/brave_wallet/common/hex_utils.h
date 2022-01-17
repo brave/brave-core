@@ -40,6 +40,16 @@ bool HexValueToInt256(const std::string& hex_input, int256_t* out);
 // Takes a uint256_t and converts it to a hex string
 std::string Uint256ValueToHex(uint256_t input);
 
+// Same as base::HexStringToBytes but with a 0x prefix
+// base::HexStringToBytes crashes if used improperly like with
+// base::HexStringToBytes(data.data() + 2... for "0x" input
+// 0x is treated as success and returns an empty vector.
+// It also handles values with uneven number of digits unlike
+// base::HexStringToBytes.
+// It also clears the output buffer unlike base::HexStringToBytes
+bool PrefixedHexStringToBytes(const std::string& input,
+                              std::vector<uint8_t>* bytes);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_HEX_UTILS_H_

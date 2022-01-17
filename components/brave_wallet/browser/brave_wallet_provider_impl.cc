@@ -351,7 +351,7 @@ void BraveWalletProviderImpl::SignMessage(const std::string& address,
   }
 
   std::vector<uint8_t> message_bytes;
-  if (!base::HexStringToBytes(message.substr(2), &message_bytes)) {
+  if (!PrefixedHexStringToBytes(message, &message_bytes)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -384,7 +384,7 @@ void BraveWalletProviderImpl::RecoverAddress(const std::string& message,
   }
 
   std::vector<uint8_t> message_bytes;
-  if (!base::HexStringToBytes(message.substr(2), &message_bytes)) {
+  if (!PrefixedHexStringToBytes(message, &message_bytes)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -392,7 +392,7 @@ void BraveWalletProviderImpl::RecoverAddress(const std::string& message,
   }
 
   std::vector<uint8_t> signature_bytes;
-  if (!base::HexStringToBytes(signature.substr(2), &signature_bytes)) {
+  if (!PrefixedHexStringToBytes(signature, &signature_bytes)) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));

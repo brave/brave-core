@@ -24,9 +24,9 @@ TEST(HexUtilsUnitTest, ToHex) {
 }
 
 TEST(HexUtilsUnitTest, IsValidHexString) {
+  ASSERT_TRUE(IsValidHexString("0x"));
   ASSERT_TRUE(IsValidHexString("0x0"));
   ASSERT_TRUE(IsValidHexString("0x4e02f254184E904300e0775E4b8eeCB14a1b29f0"));
-  ASSERT_FALSE(IsValidHexString("0x"));
   ASSERT_FALSE(IsValidHexString("0xZ"));
   ASSERT_FALSE(IsValidHexString("123"));
   ASSERT_FALSE(IsValidHexString("0"));
@@ -56,8 +56,11 @@ TEST(HexUtilsUnitTest, PadHexEncodedParameter) {
   ASSERT_EQ(
       out,
       "0x0000000000000000000000000000000000000000000000000000000000000000");
+  ASSERT_TRUE(PadHexEncodedParameter("0x", &out));
+  ASSERT_EQ(
+      out,
+      "0x0000000000000000000000000000000000000000000000000000000000000000");
   // Invalid input
-  ASSERT_FALSE(PadHexEncodedParameter("0x", &out));
   ASSERT_FALSE(PadHexEncodedParameter("0", &out));
   ASSERT_FALSE(PadHexEncodedParameter("", &out));
 }
@@ -74,13 +77,22 @@ TEST(HexUtilsUnitTest, ConcatHexStrings) {
             "4a1b29f0");
   ASSERT_TRUE(ConcatHexStrings("0x0", "0x0", &out));
   ASSERT_EQ(out, "0x00");
+  ASSERT_TRUE(ConcatHexStrings("0x00", "0x00", &out));
+  ASSERT_EQ(out, "0x0000");
+  ASSERT_TRUE(ConcatHexStrings("0x", "0x", &out));
+  ASSERT_EQ(out, "0x");
+  ASSERT_TRUE(ConcatHexStrings("0x0", "0x", &out));
+  ASSERT_EQ(out, "0x0");
+  ASSERT_TRUE(ConcatHexStrings("0x", "0x0", &out));
+  ASSERT_EQ(out, "0x0");
   // Invalid input
-  ASSERT_FALSE(ConcatHexStrings("0x", "0x0", &out));
   ASSERT_FALSE(ConcatHexStrings("0x0", "0", &out));
 }
 
 TEST(HexUtilsUnitTest, HexValueToUint256) {
   uint256_t out;
+  ASSERT_TRUE(HexValueToUint256("0x", &out));
+  ASSERT_EQ(out, (uint256_t)0);
   ASSERT_TRUE(HexValueToUint256("0x0", &out));
   ASSERT_EQ(out, (uint256_t)0);
   ASSERT_TRUE(HexValueToUint256("0x1", &out));
@@ -109,6 +121,8 @@ TEST(HexUtilsUnitTest, HexValueToUint256) {
 
 TEST(HexUtilsUnitTest, HexValueToInt256) {
   int256_t out;
+  ASSERT_TRUE(HexValueToInt256("0x", &out));
+  ASSERT_EQ(out, (int256_t)0);
   ASSERT_TRUE(HexValueToInt256("0x0", &out));
   ASSERT_EQ(out, (int256_t)0);
   ASSERT_TRUE(HexValueToInt256("0x1", &out));
@@ -159,6 +173,24 @@ TEST(HexUtilsUnitTest, Uint256ValueToHex) {
   input_val *= static_cast<uint256_t>(100000000000);
   ASSERT_EQ(Uint256ValueToHex(input_val), "0x878678326eac900000000");
   ASSERT_EQ(Uint256ValueToHex(3735928559), "0xdeadbeef");
+}
+
+TEST(HexUtilsUnitTest, PrefixedHexStringToBytes) {
+  std::vector<uint8_t> bytes;
+  EXPECT_TRUE(PrefixedHexStringToBytes("0x", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>()));
+  EXPECT_TRUE(PrefixedHexStringToBytes("0x0", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>{0}));
+  EXPECT_TRUE(PrefixedHexStringToBytes("0x00", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>{0}));
+  EXPECT_TRUE(PrefixedHexStringToBytes("0x1", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>{1}));
+  EXPECT_TRUE(PrefixedHexStringToBytes("0xdeadbeef", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>{222, 173, 190, 239}));
+  EXPECT_FALSE(PrefixedHexStringToBytes("0x0g", &bytes));
+  EXPECT_FALSE(PrefixedHexStringToBytes("hello", &bytes));
+  EXPECT_FALSE(PrefixedHexStringToBytes("01", &bytes));
+  EXPECT_FALSE(PrefixedHexStringToBytes("", &bytes));
 }
 
 }  // namespace brave_wallet

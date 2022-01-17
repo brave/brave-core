@@ -28,7 +28,7 @@ std::string ToHex(const std::vector<uint8_t>& data) {
 
 // Determines if the passed in hex string is valid
 bool IsValidHexString(const std::string& hex_input) {
-  if (hex_input.length() < 3) {
+  if (hex_input.length() < 2) {
     return false;
   }
   if (!base::StartsWith(hex_input, "0x")) {
@@ -148,6 +148,25 @@ std::string Uint256ValueToHex(uint256_t input) {
     return "0x0";
   }
   return "0x" + result;
+}
+
+bool PrefixedHexStringToBytes(const std::string& input,
+                              std::vector<uint8_t>* bytes) {
+  CHECK(bytes);
+  bytes->clear();
+  if (!IsValidHexString(input))
+    return false;
+  if (input.size() == 2) {
+    // Valid hex string of size 2 must be "0x"
+    DCHECK_EQ(input, "0x");
+    return true;
+  }
+  std::string hex_substr = input.substr(2);
+  if (hex_substr.length() % 2 == 1)
+    hex_substr = "0" + hex_substr;
+  if (!base::HexStringToBytes(hex_substr, bytes))
+    return false;
+  return true;
 }
 
 }  // namespace brave_wallet
