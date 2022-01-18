@@ -16,8 +16,8 @@ extension BraveWalletEthJsonRpcController {
     in account: BraveWallet.AccountInfo,
     completion: @escaping (Double?) -> Void
   ) {
-    let convert: (Bool, String) -> Void = { success, wei in
-      guard success && !wei.isEmpty else {
+    let convert: (String, BraveWallet.ProviderError, String) -> Void = { wei, status, _ in
+      guard status == .success && !wei.isEmpty else {
         completion(nil)
         return
       }

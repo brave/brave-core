@@ -451,8 +451,8 @@ public class SwapTokenStore: ObservableObject {
     // Get ETH balance for this account because gas can only be paid in ETH
     rpcController.network { [weak self] network in
       guard let self = self else { return }
-      self.rpcController.balance(accountInfo.address) { success, balance in
-        if success {
+      self.rpcController.balance(accountInfo.address) { balance, status, _ in
+        if status == BraveWallet.ProviderError.success {
           let fee = gasLimit * gasPrice
           let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
           let currentBalance = BDouble(balanceFormatter.decimalString(for: balance.removingHexPrefix, radix: .hex, decimals: 18) ?? "") ?? 0
@@ -496,10 +496,10 @@ public class SwapTokenStore: ObservableObject {
         fromToken.contractAddress(in: network),
         ownerAddress: ownerAddress,
         spenderAddress: spenderAddress
-      ) { success, allowance in
+      ) { allowance, status, _ in
         let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
         let allowanceValue = BDouble(weiFormatter.decimalString(for: allowance.removingHexPrefix, radix: .hex, decimals: Int(fromToken.decimals)) ?? "") ?? 0
-        guard success, amountToSend > allowanceValue else { return } // no problem with its allowance
+        guard status == .success, amountToSend > allowanceValue else { return } // no problem with its allowance
         self?.state = .lowAllowance(spenderAddress)
       }
     }

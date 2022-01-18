@@ -153,9 +153,9 @@ extension BraveLedger {
         }
     }
     
-    public func claimPromotion(_ promotion: Ledger.Promotion, completion: @escaping (_ success: Bool, _ shouldReconcileAds: Bool) -> Void) {
+    public func claimPromotion(_ promotion: Ledger.Promotion, completion: @escaping (_ success: Bool) -> Void) {
         guard let paymentId = self.paymentId else {
-            completion(false, false)
+            completion(false)
             return
         }
         let deviceCheck = DeviceCheckClient(environment: BraveLedger.environment)
@@ -165,7 +165,7 @@ extension BraveLedger {
             setupDeviceCheckEnrollment(deviceCheck) {
                 if !DeviceCheckClient.isDeviceEnrolled() {
                     DispatchQueue.main.async {
-                        completion(false, false)
+                        completion(false)
                     }
                     return
                 }
@@ -175,18 +175,18 @@ extension BraveLedger {
         group.notify(queue: .main) {
             deviceCheck.generateAttestation(paymentId: paymentId) { (attestation, error) in
                 guard let attestation = attestation else {
-                    completion(false, false)
+                    completion(false)
                     return
                 }
                 self.claimPromotion(promotion.id, publicKey: attestation.publicKeyHash) { result, nonce in
                     if result != .ledgerOk {
-                        completion(false, false)
+                        completion(false)
                         return
                     }
                     
                     deviceCheck.generateAttestationVerification(nonce: nonce) { verification, error in
                         guard let verification = verification else {
-                            completion(false, false)
+                            completion(false)
                             return
                         }
                         
@@ -201,11 +201,11 @@ extension BraveLedger {
                         
                         self.attestPromotion(promotion.id, solution: solution) { result, promotion in
                             if result == .ledgerOk {
-                                self.updatePendingAndFinishedPromotions { shouldReconcileAds in
-                                    completion(true, shouldReconcileAds)
+                                self.updatePendingAndFinishedPromotions {
+                                    completion(true)
                                 }
                             } else {
-                                completion(false, false)
+                                completion(false)
                             }
                         }
                     }

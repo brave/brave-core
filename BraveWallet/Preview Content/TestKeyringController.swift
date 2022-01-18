@@ -84,6 +84,10 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     completion(keyring)
   }
   
+  func keyringInfo(_ keyringId: String, completion: @escaping (BraveWallet.KeyringInfo) -> Void) {
+    completion(keyring)
+  }
+  
   func isLocked(_ completion: @escaping (Bool) -> Void) {
     completion(keyring.isLocked)
   }
@@ -187,6 +191,14 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
       $0.accountsChanged()
     }
     completion(true, info.address)
+  }
+  
+  func importFilecoinSecp256k1Account(_ accountName: String, privateKey: String, network: String, completion: @escaping (Bool, String) -> Void) {
+    completion(false, "")
+  }
+  
+  func importFilecoinBlsAccount(_ accountName: String, privateKey: String, publicKey: String, network: String, completion: @escaping (Bool, String) -> Void) {
+    completion(false, "")
   }
   
   func importAccount(fromJson accountName: String, password: String, json: String, completion: @escaping (Bool, String) -> Void) {
@@ -311,5 +323,13 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     } catch {
       completion(false)
     }
+  }
+  
+  func checksumEthAddress(_ address: String, completion: @escaping (String) -> Void) {
+    completion("")
+  }
+  
+  func hasPendingUnlockRequest(_ completion: @escaping (Bool) -> Void) {
+    completion(false)
   }
 }

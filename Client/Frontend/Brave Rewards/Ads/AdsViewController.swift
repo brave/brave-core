@@ -9,11 +9,11 @@ import Shared
 import pop
 
 public class AdsViewController: UIViewController {
-  public typealias ActionHandler = (AdsNotification, AdsNotificationHandler.Action) -> Void
+  public typealias ActionHandler = (AdNotification, AdsNotificationHandler.Action) -> Void
   private var widthAnchor: NSLayoutConstraint?
   
   private struct DisplayedAd {
-    let ad: AdsNotification
+    let ad: AdNotification
     let handler: ActionHandler
     let animatedOut: () -> Void
   }
@@ -31,7 +31,7 @@ public class AdsViewController: UIViewController {
   private let dismissGestureName = "dismiss"
   private let swipeGestureName = "swipe"
   
-  public func display(ad: AdsNotification, handler: @escaping ActionHandler, animatedOut: @escaping () -> Void) {
+  public func display(ad: AdNotification, handler: @escaping ActionHandler, animatedOut: @escaping () -> Void) {
     let adView = AdView()
     adView.adContentButton.titleLabel.text = ad.title
     adView.adContentButton.bodyLabel.text = ad.body
@@ -331,7 +331,7 @@ extension AdsViewController {
       $0.edges.equalTo(window.safeAreaLayoutGuide.snp.edges)
     }
     
-    let notification = AdsNotification.customAd(
+    let notification = AdNotification.customAd(
         title: Strings.Ads.myFirstAdTitle,
         body: Strings.Ads.myFirstAdBody,
       url: "https://brave.com/my-first-ad"

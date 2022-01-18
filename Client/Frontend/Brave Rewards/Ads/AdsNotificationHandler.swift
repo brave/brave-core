@@ -22,7 +22,7 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
     case disliked
   }
   /// An ad was tapped and a URL should be opened
-  public var actionOccured: ((AdsNotification, Action) -> Void)?
+  public var actionOccured: ((AdNotification, Action) -> Void)?
   /// The ads object
   public let ads: BraveAds
   /// Whether or not we should currently show ads currently based on exteranl
@@ -41,11 +41,11 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
     self.presentingController = presentingController
   }
   
-  private var adsQueue: [AdsNotification] = []
+  private var adsQueue: [AdNotification] = []
   
   private lazy var adsViewController = AdsViewController()
   
-  private func displayAd(notification: AdsNotification) {
+  private func displayAd(notification: AdNotification) {
     guard let presentingController = presentingController else { return }
     
     guard let window = presentingController.view.window else {
@@ -72,7 +72,7 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
         self.ads.reportAdNotificationEvent(notification.uuid, eventType: .timedOut)
       case .disliked:
         self.ads.reportAdNotificationEvent(notification.uuid, eventType: .dismissed)
-        self.ads.toggleThumbsDown(forAd: notification.uuid, creativeSetID: notification.creativeSetID)
+        self.ads.toggleThumbsDown(forAd: notification.uuid)
       }
       self.actionOccured?(notification, action)
       
@@ -89,7 +89,7 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
     })
   }
   
-  public func showNotification(_ notification: AdsNotification) {
+  public func showNotification(_ notification: AdNotification) {
     adsQueue.insert(notification, at: 0)
     if adsViewController.visibleAdView == nil {
       // Nothing currently waiting
