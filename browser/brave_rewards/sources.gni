@@ -8,10 +8,14 @@ import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 brave_browser_brave_rewards_sources = [
+  "//brave/browser/brave_rewards/rewards_chrome_sync_client.cc",
+  "//brave/browser/brave_rewards/rewards_chrome_sync_client.h",
   "//brave/browser/brave_rewards/rewards_prefs_util.cc",
   "//brave/browser/brave_rewards/rewards_prefs_util.h",
   "//brave/browser/brave_rewards/rewards_service_factory.cc",
   "//brave/browser/brave_rewards/rewards_service_factory.h",
+  "//brave/browser/brave_rewards/rewards_sync_service_factory.cc",
+  "//brave/browser/brave_rewards/rewards_sync_service_factory.h",
   "//brave/browser/brave_rewards/rewards_tab_helper.cc",
   "//brave/browser/brave_rewards/rewards_tab_helper.h",
   "//brave/browser/brave_rewards/vg_body_sync_bridge.cc",
