@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sync/chrome_sync_client.cc b/chrome/browser/sync/chrome_sync_client.cc
-index 3afe319f02552eeba6e83e578f28525b11f1dacf..bf16e8eabeed42f1d51e26a73810b708d9840b73 100644
+index 3afe319f02552eeba6e83e578f28525b11f1dacf..c875fdc83f7a93dfbc53d26400ae0fbf1377c095 100644
 --- a/chrome/browser/sync/chrome_sync_client.cc
 +++ b/chrome/browser/sync/chrome_sync_client.cc
 @@ -11,6 +11,8 @@
@@ -11,7 +11,16 @@ index 3afe319f02552eeba6e83e578f28525b11f1dacf..bf16e8eabeed42f1d51e26a73810b708
  #include "build/build_config.h"
  #include "build/chromeos_buildflags.h"
  #include "chrome/browser/bookmarks/bookmark_model_factory.h"
-@@ -623,6 +625,12 @@ ChromeSyncClient::GetControllerDelegateForModelType(syncer::ModelType type) {
+@@ -80,6 +82,8 @@
+ #include "components/sync/driver/model_type_controller.h"
+ #include "components/sync/driver/sync_api_component_factory.h"
+ #include "components/sync/driver/sync_driver_switches.h"
++#include "components/sync/driver/sync_service.h"
++#include "components/sync/driver/sync_user_settings.h"
+ #include "components/sync/driver/syncable_service_based_model_type_controller.h"
+ #include "components/sync/model/forwarding_model_type_controller_delegate.h"
+ #include "components/sync/model/model_type_store.h"
+@@ -623,6 +627,12 @@ ChromeSyncClient::GetControllerDelegateForModelType(syncer::ModelType type) {
      case syncer::USER_EVENTS:
        return browser_sync::UserEventServiceFactory::GetForProfile(profile_)
            ->GetControllerDelegate();
@@ -24,3 +33,20 @@ index 3afe319f02552eeba6e83e578f28525b11f1dacf..bf16e8eabeed42f1d51e26a73810b708
  #if BUILDFLAG(ENABLE_EXTENSIONS)
      case syncer::WEB_APPS: {
        auto* provider = web_app::WebAppProvider::GetForWebApps(profile_);
+@@ -674,6 +684,16 @@ void ChromeSyncClient::OnLocalSyncTransportDataCleared() {
+   metrics::ClearDemographicsPrefs(profile_->GetPrefs());
+ }
+ 
++void ChromeSyncClient::SetDefaultEnabledTypes(
++    syncer::SyncService* sync_service) {
++  DCHECK(sync_service);
++
++  // Default enabled types: Bookmarks
++  syncer::UserSelectableTypeSet selected_types;
++  selected_types.Put(syncer::UserSelectableType::kBookmarks);
++  sync_service->GetUserSettings()->SetSelectedTypes(false, selected_types);
++}
++
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+ std::unique_ptr<syncer::ModelTypeController>
+ ChromeSyncClient::CreateAppsModelTypeController(
