@@ -22,6 +22,7 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_sync_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -34,6 +35,7 @@
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -542,6 +544,11 @@ void RewardsDOMHandler::Init() {
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   rewards_service_->StartProcess(base::DoNothing());
+
+  auto* sync_service = static_cast<syncer::BraveSyncServiceImpl*>(
+      RewardsSyncServiceFactory::GetForProfile(profile));
+  auto sync_code = sync_service->GetOrCreateSyncCode();
+  sync_service->SetSyncCode(sync_code);
 
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
 
