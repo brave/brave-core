@@ -47,8 +47,9 @@ void DatabasePromotion::InsertOrUpdate(
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(promotion_id, version, type, public_keys, suggestions, "
-      "approximate_value, status, created_at, expires_at, claimed_at, legacy) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "approximate_value, status, created_at, claimable_until, expires_at, "
+      "claimed_at, legacy) "
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       kTableName);
 
   auto command = type::DBCommand::New();
@@ -63,9 +64,10 @@ void DatabasePromotion::InsertOrUpdate(
   BindDouble(command.get(), 5, info->approximate_value);
   BindInt(command.get(), 6, static_cast<int>(info->status));
   BindInt64(command.get(), 7, info->created_at);
-  BindInt64(command.get(), 8, info->expires_at);
-  BindInt64(command.get(), 9, info->claimed_at);
-  BindBool(command.get(), 10, info->legacy_claimed);
+  BindInt64(command.get(), 8, info->claimable_until);
+  BindInt64(command.get(), 9, info->expires_at);
+  BindInt64(command.get(), 10, info->claimed_at);
+  BindBool(command.get(), 11, info->legacy_claimed);
 
   transaction->commands.push_back(std::move(command));
 
@@ -90,8 +92,8 @@ void DatabasePromotion::GetRecord(
 
   const std::string query = base::StringPrintf(
       "SELECT promotion_id, version, type, public_keys, suggestions, "
-      "approximate_value, status, created_at, expires_at, claimed_at, "
-      "claim_id, legacy "
+      "approximate_value, status, created_at, claimable_until, expires_at, "
+      "claimed_at, claim_id, legacy "
       "FROM %s WHERE promotion_id=?",
       kTableName);
 
@@ -108,6 +110,7 @@ void DatabasePromotion::GetRecord(
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::DOUBLE_TYPE,
                               type::DBCommand::RecordBindingType::INT_TYPE,
+                              type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
@@ -154,10 +157,11 @@ void DatabasePromotion::OnGetRecord(
   info->approximate_value = GetDoubleColumn(record, 5);
   info->status = static_cast<type::PromotionStatus>(GetIntColumn(record, 6));
   info->created_at = GetInt64Column(record, 7);
-  info->expires_at = GetInt64Column(record, 8);
-  info->claimed_at = GetInt64Column(record, 9);
-  info->claim_id = GetStringColumn(record, 10);
-  info->legacy_claimed = GetBoolColumn(record, 11);
+  info->claimable_until = GetInt64Column(record, 8);
+  info->expires_at = GetInt64Column(record, 9);
+  info->claimed_at = GetInt64Column(record, 10);
+  info->claim_id = GetStringColumn(record, 11);
+  info->legacy_claimed = GetBoolColumn(record, 12);
 
   callback(std::move(info));
 }
@@ -169,8 +173,8 @@ void DatabasePromotion::GetAllRecords(
   const std::string query = base::StringPrintf(
       "SELECT "
       "promotion_id, version, type, public_keys, suggestions, "
-      "approximate_value, status, created_at, expires_at, claimed_at, "
-      "claim_id, legacy "
+      "approximate_value, status, created_at, claimable_until, expires_at, "
+      "claimed_at, claim_id, legacy "
       "FROM %s",
       kTableName);
 
@@ -185,6 +189,7 @@ void DatabasePromotion::GetAllRecords(
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::DOUBLE_TYPE,
                               type::DBCommand::RecordBindingType::INT_TYPE,
+                              type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
@@ -229,10 +234,11 @@ void DatabasePromotion::OnGetAllRecords(
     info->status =
         static_cast<type::PromotionStatus>(GetIntColumn(record_pointer, 6));
     info->created_at = GetInt64Column(record_pointer, 7);
-    info->expires_at = GetInt64Column(record_pointer, 8);
-    info->claimed_at = GetInt64Column(record_pointer, 9);
-    info->claim_id = GetStringColumn(record_pointer, 10);
-    info->legacy_claimed = GetBoolColumn(record_pointer, 11);
+    info->claimable_until = GetInt64Column(record_pointer, 8);
+    info->expires_at = GetInt64Column(record_pointer, 9);
+    info->claimed_at = GetInt64Column(record_pointer, 10);
+    info->claim_id = GetStringColumn(record_pointer, 11);
+    info->legacy_claimed = GetBoolColumn(record_pointer, 12);
 
     map.insert(std::make_pair(info->id, std::move(info)));
   }
@@ -389,8 +395,8 @@ void DatabasePromotion::GetRecords(
   const std::string query = base::StringPrintf(
       "SELECT "
       "promotion_id, version, type, public_keys, suggestions, "
-      "approximate_value, status, created_at, expires_at, claimed_at, "
-      "claim_id, legacy "
+      "approximate_value, status, created_at, claimable_until, expires_at, "
+      "claimed_at, claim_id, legacy "
       "FROM %s WHERE promotion_id IN (%s)",
       kTableName, GenerateStringInCase(ids).c_str());
 
@@ -405,6 +411,7 @@ void DatabasePromotion::GetRecords(
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::DOUBLE_TYPE,
                               type::DBCommand::RecordBindingType::INT_TYPE,
+                              type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
@@ -450,10 +457,11 @@ void DatabasePromotion::OnGetRecords(
     info->status =
         static_cast<type::PromotionStatus>(GetIntColumn(record_pointer, 6));
     info->created_at = GetInt64Column(record_pointer, 7);
-    info->expires_at = GetInt64Column(record_pointer, 8);
-    info->claimed_at = GetInt64Column(record_pointer, 9);
-    info->claim_id = GetStringColumn(record_pointer, 10);
-    info->legacy_claimed = GetBoolColumn(record_pointer, 11);
+    info->claimable_until = GetInt64Column(record_pointer, 8);
+    info->expires_at = GetInt64Column(record_pointer, 9);
+    info->claimed_at = GetInt64Column(record_pointer, 10);
+    info->claim_id = GetStringColumn(record_pointer, 11);
+    info->legacy_claimed = GetBoolColumn(record_pointer, 12);
 
     list.push_back(std::move(info));
   }
@@ -479,8 +487,8 @@ void DatabasePromotion::GetRecordsByType(
 
   const std::string query = base::StringPrintf(
       "SELECT promotion_id, version, type, public_keys, suggestions, "
-      "approximate_value, status, created_at, expires_at, claimed_at, "
-      "claim_id, legacy "
+      "approximate_value, status, created_at, claimable_until, expires_at, "
+      "claimed_at, claim_id, legacy "
       "FROM %s WHERE type IN (%s)",
       kTableName, base::JoinString(in_case, ",").c_str());
 
@@ -495,6 +503,7 @@ void DatabasePromotion::GetRecordsByType(
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::DOUBLE_TYPE,
                               type::DBCommand::RecordBindingType::INT_TYPE,
+                              type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,
                               type::DBCommand::RecordBindingType::INT64_TYPE,

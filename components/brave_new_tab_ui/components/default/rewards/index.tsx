@@ -59,7 +59,8 @@ function getVisibleGrant (promotions: NewTab.Promotion[]): GrantInfo | null {
     amount: promo.amount,
     type: promo.type === 1 ? 'ads' : 'ugp',
     createdAt: promo.createdAt * 1000,
-    expiresAt: null
+    claimableUntil: promo.claimableUntil ? promo.claimableUntil * 1000 : null,
+    expiresAt: promo.expiresAt ? promo.expiresAt * 1000 : null
   }
 }
 
@@ -79,14 +80,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   const adsInfo = props.adsAccountStatement || null
   const grantInfo = getVisibleGrant(props.promotions || [])
 
-  const onDismissGrant = () => {
-    if (grantInfo) {
-      props.onDismissNotification(grantInfo.id)
-    }
-  }
-
   const onClaimGrant = () => {
-    onDismissGrant()
     if (grantInfo) {
       chrome.braveRewards.openBrowserActionUI(
         `brave_rewards_panel.html#grant_${grantInfo.id}`)
@@ -109,7 +103,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       contributionsThisMonth={props.totalContribution}
       onEnableRewards={props.onStartRewards}
       onEnableAds={props.onStartRewards}
-      onDismissGrant={onDismissGrant}
       onClaimGrant={onClaimGrant}
     />
   )

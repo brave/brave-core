@@ -16,7 +16,9 @@ export function PendingPublisherVerified (props: NotificationViewProps) {
 
   return (
     <div>
-      <Title text={getString('notificationPublisherVerifiedTitle')} />
+      <Title>
+        {getString('notificationPublisherVerifiedTitle')}
+      </Title>
       <Body>
         {
           formatMessage(getString('notificationPublisherVerifiedText'), [

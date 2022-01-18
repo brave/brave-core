@@ -13,7 +13,9 @@ export function AddFunds (props: NotificationViewProps) {
 
   return (
     <div>
-      <Title style='funding' text={getString('notificationAddFundsTitle')} />
+      <Title style='funding'>
+        {getString('notificationAddFundsTitle')}
+      </Title>
       <Body>{getString('notificationAddFundsText')}</Body>
       <Action
         notification={props.notification}

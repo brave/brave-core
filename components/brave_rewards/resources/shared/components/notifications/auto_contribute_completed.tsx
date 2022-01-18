@@ -17,10 +17,9 @@ export function AutoContributeCompleted (props: NotificationViewProps) {
 
   return (
     <div>
-      <Title
-        style='funding'
-        text={getString('notificationAutoContributeCompletedTitle')}
-      />
+      <Title style='funding'>
+        {getString('notificationAutoContributeCompletedTitle')}
+      </Title>
       <Body>
         {
           formatMessage(getString('notificationAutoContributeCompletedText'), [

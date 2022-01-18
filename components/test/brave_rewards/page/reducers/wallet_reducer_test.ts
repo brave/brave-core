@@ -34,7 +34,7 @@ describe('wallet reducer', () => {
     })
 
     it('failed to recover', () => {
-      const assertion = reducers({ ...defaultState }, {
+      const assertion = reducers({ rewardsData: { ...defaultState } }, {
         type: types.ON_RECOVER_WALLET_DATA,
         payload: {
           result: 2
@@ -51,7 +51,7 @@ describe('wallet reducer', () => {
     })
 
     it('recovered successfully', () => {
-      const assertion = reducers({ ...defaultState }, {
+      const assertion = reducers({ rewardsData: { ...defaultState } }, {
         type: types.ON_RECOVER_WALLET_DATA,
         payload: {
           result: 0

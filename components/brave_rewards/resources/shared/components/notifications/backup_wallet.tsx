@@ -14,7 +14,9 @@ export function BackupWallet (props: NotificationViewProps) {
 
   return (
     <div>
-      <Title text={getString('notificationBackupWalletTitle')} />
+      <Title>
+        {getString('notificationBackupWalletTitle')}
+      </Title>
       <Body>{getString('notificationBackupWalletText')}</Body>
       <Action
         notification={props.notification}

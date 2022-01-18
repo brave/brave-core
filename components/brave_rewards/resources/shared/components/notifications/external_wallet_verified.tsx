@@ -17,10 +17,9 @@ export function ExternalWalletVerified (props: NotificationViewProps) {
 
   return (
     <div>
-      <Title
-        style='information'
-        text={getString('notificationWalletVerifiedTitle')}
-      />
+      <Title style='information'>
+        {getString('notificationWalletVerifiedTitle')}
+      </Title>
       <Body>
         {
           formatMessage(getString('notificationWalletVerifiedText'), [

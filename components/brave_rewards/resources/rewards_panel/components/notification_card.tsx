@@ -32,13 +32,14 @@ function Title (props: NotificationTitleProps) {
     switch (props.style) {
       case 'funding': return <MoneyBagIcon />
       case 'error': return <NotificationErrorIcon />
+      case 'custom': return null
       default: return <NotificationInfoIcon />
     }
   }
 
   return (
     <style.title className={props.style || 'information'}>
-      {renderIcon()}{props.text}
+      {renderIcon()}{props.children}
     </style.title>
   )
 }
