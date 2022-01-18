@@ -50,16 +50,20 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
 
   // Append a single transaction with an accumulated value for unreconciled
   // transactions for previous months
-  const TransactionInfo& unreconciled_transaction =
+  const absl::optional<TransactionInfo>& unreconciled_transaction =
       BuildTransactionForUnreconciledTransactionsForPreviousMonths(
           transaction_history, unblinded_payment_tokens);
-  transactions.push_back(unreconciled_transaction);
+  if (unreconciled_transaction) {
+    transactions.push_back(unreconciled_transaction);
+  }
 
   // Append a single transaction with an accumulated value for reconciled
   // transactions last month for calculating the next payment date
-  const TransactionInfo& reconciled_transaction =
+  const absl::optional<TransactionInfo>& reconciled_transaction =
       BuildTransactionForReconciledTransactionsLastMonth(payments);
-  transactions.push_back(reconciled_transaction);
+  if (reconciled_transaction) {
+    transactions.push_back(reconciled_transaction);
+  }
 
   return transactions;
 }

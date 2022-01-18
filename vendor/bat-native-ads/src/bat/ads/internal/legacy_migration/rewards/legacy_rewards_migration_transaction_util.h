@@ -10,17 +10,24 @@
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 #include "bat/ads/transaction_info_aliases.h"
 
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
+
 namespace ads {
 namespace rewards {
 
 TransactionList GetTransactionsForThisMonth(
     const TransactionList& transactions);
 
-TransactionInfo BuildTransactionForUnreconciledTransactionsForPreviousMonths(
+absl::optional<TransactionInfo>
+BuildTransactionForUnreconciledTransactionsForPreviousMonths(
     const TransactionList& transaction_history,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
 
-TransactionInfo BuildTransactionForReconciledTransactionsLastMonth(
+absl::optional<TransactionInfo>
+BuildTransactionForReconciledTransactionsLastMonth(
     const PaymentList& payments);
 
 }  // namespace rewards
