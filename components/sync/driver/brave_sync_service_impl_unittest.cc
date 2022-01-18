@@ -9,6 +9,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync/driver/sync_service_impl_delegate.h"
+#include "build/build_config.h"
 #include "components/os_crypt/os_crypt_mocker.h"
 #include "components/sync/driver/data_type_manager_impl.h"
 #include "components/sync/driver/fake_data_type_controller.h"
@@ -109,7 +110,9 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphrase) {
   bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   EXPECT_TRUE(set_code_result);
 
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(), kValidSyncCode);
+  bool failed_to_decrypt = false;
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), kValidSyncCode);
+  EXPECT_FALSE(failed_to_decrypt);
 
   OSCryptMocker::TearDown();
 }
@@ -126,7 +129,9 @@ TEST_F(BraveSyncServiceImplTest, InvalidPassphrase) {
       brave_sync_service_impl()->SetSyncCode("word one and then two");
   EXPECT_FALSE(set_code_result);
 
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(), "");
+  bool failed_to_decrypt = false;
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
+  EXPECT_FALSE(failed_to_decrypt);
 
   OSCryptMocker::TearDown();
 }
@@ -145,9 +150,34 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
       brave_sync_service_impl()->SetSyncCode(sync_code_extra_whitespace);
   EXPECT_TRUE(set_code_result);
 
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(), kValidSyncCode);
+  bool failed_to_decrypt = false;
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), kValidSyncCode);
+  EXPECT_FALSE(failed_to_decrypt);
 
   OSCryptMocker::TearDown();
 }
+
+#if defined(OS_APPLE)
+
+TEST_F(BraveSyncServiceImplTest, ValidPassphraseKeyringLocked) {
+  OSCryptMocker::SetUp();
+
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  EXPECT_TRUE(set_code_result);
+
+  bool failed_to_decrypt = false;
+  OSCryptMocker::SetBackendLocked(true);
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
+  EXPECT_TRUE(failed_to_decrypt);
+
+  OSCryptMocker::TearDown();
+}
+
+#endif  // defined(OS_APPLE)
 
 }  // namespace syncer
