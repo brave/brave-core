@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -19,6 +19,7 @@ class Profile;
 namespace syncer {
 
 class BraveSyncAuthManager;
+class DeviceInfoSyncService;
 class SyncServiceImplDelegate;
 class SyncServiceCrypto;
 
@@ -39,6 +40,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
       bool success,
       bool is_first_time_sync_configure) override;
 
+  std::pair<bool, std::string> GetSyncCode();
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
 
@@ -53,6 +55,8 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void ResumeDeviceObserver();
 
   void Initialize() override;
+
+  syncer::DeviceInfoSyncService* GetDeviceInfoSyncService();
 
  private:
   friend class BraveSyncServiceImplTest;
