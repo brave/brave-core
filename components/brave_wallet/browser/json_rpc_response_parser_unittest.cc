@@ -7,14 +7,14 @@
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/rpc_response_parser.h"
+#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
-TEST(RpcResponseParserUnitTest, ParseSingleStringResult) {
+TEST(JsonRpcResponseParserUnitTest, ParseSingleStringResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"abc\"}";
@@ -29,7 +29,7 @@ TEST(RpcResponseParserUnitTest, ParseSingleStringResult) {
   EXPECT_TRUE(value.empty());
 }
 
-TEST(RpcResponseParserUnitTest, ParseBoolResult) {
+TEST(JsonRpcResponseParserUnitTest, ParseBoolResult) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x0000000000000000000000000000000000000000000000000000000000000001\"}";
@@ -52,7 +52,7 @@ TEST(RpcResponseParserUnitTest, ParseBoolResult) {
   EXPECT_FALSE(brave_wallet::ParseBoolResult(json, &value));
 }
 
-TEST(RpcResponseParserUnitTest, ParseErrorResult) {
+TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
   mojom::ProviderError error;
   std::string error_message;
   std::string json =

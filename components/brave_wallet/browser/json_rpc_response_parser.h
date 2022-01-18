@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_RPC_RESPONSE_PARSER_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_RPC_RESPONSE_PARSER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_RESPONSE_PARSER_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_RESPONSE_PARSER_H_
 
 #include <string>
 #include <vector>
@@ -13,7 +13,9 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
+// Common JSON RPC response parsing functions across different blockchains.
 namespace brave_wallet {
+
 bool ParseSingleStringResult(const std::string& json, std::string* result);
 void ParseErrorResult(const std::string& json,
                       mojom::ProviderError* error,
@@ -23,4 +25,4 @@ bool ParseBoolResult(const std::string& json, bool* value);
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_RPC_RESPONSE_PARSER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_JSON_RPC_RESPONSE_PARSER_H_
