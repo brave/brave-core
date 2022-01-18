@@ -8,12 +8,14 @@
 import argparse
 import os.path
 import sys
+
 from lxml import etree  # pylint: disable=import-error
-from lib.grd_string_replacements import (write_xml_file_from_tree,
-                                         write_braveified_grd_override,
-                                         update_braveified_grd_tree_override,
-                                         get_override_file_path)
-from lib.transifex import textify
+from lib.l10n.grd_utils import (get_override_file_path,
+                                textify,
+                                update_braveified_grd_tree_override,
+                                write_xml_file_from_tree,
+                                write_braveified_grd_override)
+
 
 SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -36,6 +38,7 @@ def generate_overrides_and_replace_strings(source_string_path):
         '//message')
     modified_messages = modified_xml_tree.xpath('//message')
     assert len(original_messages) == len(modified_messages)
+    # pylint: disable=consider-using-enumerate
     for i in range(0, len(original_messages)):
         if textify(original_messages[i]) == textify(modified_messages[i]):
             modified_messages[i].getparent().remove(modified_messages[i])
@@ -58,7 +61,8 @@ def generate_overrides_and_replace_strings(source_string_path):
                 and override_file == 'settings_chromium_strings_override.grdp'):
             override_file = 'settings_brave_strings_override.grdp'
 
-        if os.path.exists(os.path.join(os.path.dirname(source_string_path), override_file)):
+        if os.path.exists(os.path.join(os.path.dirname(source_string_path),
+                                       override_file)):
             part.attrib['file'] = override_file
         else:
             # No grdp override here, carry on
@@ -67,8 +71,8 @@ def generate_overrides_and_replace_strings(source_string_path):
     for f in files:
         f.attrib['path'] = get_override_file_path(f.attrib['path'])
 
-    # Write out an override file that is a duplicate of the original file but with strings that
-    # are shared with Chrome stripped out.
+    # Write out an override file that is a duplicate of the original file but
+    # with strings that are shared with Chrome stripped out.
     override_string_path = get_override_file_path(source_string_path)
     modified_messages = modified_xml_tree.xpath('//message')
     modified_parts = modified_xml_tree.xpath('//part')
@@ -84,17 +88,17 @@ def main():
     source_string_path = os.path.join(SOURCE_ROOT, args.source_string_path[0])
     filename = os.path.basename(source_string_path)
     extension = os.path.splitext(source_string_path)[1]
-    if extension != '.grd' and extension != '.grdp':
-        print 'returning early'
+    if extension not in ('.grd', '.grdp'):
+        print(f'returning early: unexpected file extension {extension}')
         return
 
-    print 'Rebasing source string file:', source_string_path
-    print 'filename:', filename
+    print(f'Rebasing source string file: {source_string_path}')
+    print(f'filename: {filename}')
 
     generate_overrides_and_replace_strings(source_string_path)
 
     # If you modify the translateable attribute then also update
-    # is_translateable_string function in brave/script/lib/transifex.py.
+    # is_translateable_string function in brave/script/lib/transifex_common.py.
     xml_tree = etree.parse(source_string_path)
     (basename, _) = filename.split('.')
     if basename == 'brave_strings':
@@ -170,11 +174,11 @@ def main():
                                          xml_declaration=True,
                                          encoding='UTF-8')
     # Fix some minor formatting differences from what Chromium outputs
-    transformed_content = (transformed_content.replace('/>', ' />'))
-    print 'writing file ', source_string_path
-    with open(source_string_path, mode='w') as f:
+    transformed_content = (transformed_content.replace(b'/>', b' />'))
+    print(f'writing file {source_string_path}')
+    with open(source_string_path, mode='wb') as f:
         f.write(transformed_content)
-    print '-----------'
+    print('-----------')
 
 
 if __name__ == '__main__':
