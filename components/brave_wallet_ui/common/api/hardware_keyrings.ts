@@ -8,6 +8,8 @@ import { BraveWallet } from '../../constants/types'
 import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
 import * as HWInterfaces from '../hardware/interfaces'
+import FilecoinLedgerKeyring from '../hardware/ledgerjs/filecoin_ledger_keyring'
+
 export type HardwareKeyring = LedgerBridgeKeyring | TrezorBridgeKeyring
 
 export function getCoinName (coin: BraveWallet.CoinType) {
@@ -28,6 +30,7 @@ export type HardwareVendor = typeof VendorTypes[number]
 
 // Lazy instances for keyrings
 let ethereumHardwareKeyring: LedgerBridgeKeyring
+let filecoinHardwareKeyring: FilecoinLedgerKeyring
 let trezorHardwareKeyring: TrezorBridgeKeyring
 let keyringService: BraveWallet.KeyringServiceRemote
 
@@ -39,7 +42,7 @@ export function getBraveKeyring (): BraveWallet.KeyringServiceRemote {
   return keyringService
 }
 
-export function getHardwareKeyring (type: HardwareVendor, coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH): HWInterfaces.LedgerEthereumKeyring | HWInterfaces.TrezorKeyring {
+export function getHardwareKeyring (type: HardwareVendor, coin: BraveWallet.CoinType = BraveWallet.CoinType.ETH): HWInterfaces.LedgerEthereumKeyring | HWInterfaces.TrezorKeyring | HWInterfaces.LedgerFilecoinKeyring {
   if (type === BraveWallet.LEDGER_HARDWARE_VENDOR) {
     const ledgerKeyring = getLedgerHardwareKeyring(coin)
     assert(type === ledgerKeyring.type())
@@ -51,12 +54,18 @@ export function getHardwareKeyring (type: HardwareVendor, coin: BraveWallet.Coin
   return trezorKeyring
 }
 
-export function getLedgerHardwareKeyring (coin: BraveWallet.CoinType): HWInterfaces.LedgerEthereumKeyring {
-  assert(coin === BraveWallet.CoinType.ETH)
-  if (!ethereumHardwareKeyring) {
-    ethereumHardwareKeyring = new LedgerBridgeKeyring()
+export function getLedgerHardwareKeyring (coin: BraveWallet.CoinType): HWInterfaces.LedgerEthereumKeyring | HWInterfaces.LedgerFilecoinKeyring {
+  if (coin === BraveWallet.CoinType.ETH) {
+    if (!ethereumHardwareKeyring) {
+      ethereumHardwareKeyring = new LedgerBridgeKeyring()
+    }
+    return ethereumHardwareKeyring
   }
-  return ethereumHardwareKeyring
+  assert(coin === BraveWallet.CoinType.FIL)
+  if (!filecoinHardwareKeyring) {
+    filecoinHardwareKeyring = new FilecoinLedgerKeyring()
+  }
+  return filecoinHardwareKeyring
 }
 
 export function getTrezorHardwareKeyring (): TrezorBridgeKeyring {
