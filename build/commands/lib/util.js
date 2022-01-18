@@ -82,6 +82,44 @@ const util = {
     return prog
   },
 
+  /**
+   * Runs the given command line and pipes to stdout/stderr, except lines that match the given `header` and `body`
+   * regular expressions. This can be used to suppress warnings of the form:
+   *   In file X:
+   *     Superfluous warning 1
+   *     Superfluous warning 2
+   *     ...
+   * Here, "In file X" is the header and "Superfluous warning" are body lines. Body lines must immediately follow the
+   * header and headers that are not followed by a body line are not silenced.
+   */
+  runFiltered: (cmd, args=[], options = {}, header=/.^/, body=/.^/) => {
+    Log.command(options.cwd, cmd, args)
+    return new Promise((resolve, reject) => {
+      const prog = spawn(cmd, args);
+      const out = new util.FilteredStream(
+        header, body, data => process.stdout.write(data)
+      )
+      const err = new util.FilteredStream(
+        header, body, data => process.stderr.write(data)
+      )
+      prog.stdout.on('data', data => out.onData(data));
+      prog.stderr.on('data', data => err.onData(data));
+      prog.on('close', (code, signal) => {
+        out.onClose()
+        err.onClose()
+        if (code === 0)
+          resolve(code)
+        else {
+          const err = new Error(`${cmd} ${args} failed with code ${code}.`)
+          reject(err)
+        }
+      });
+      prog.on('error', (err) => {
+        reject(err)
+      });
+    })
+  },
+
   runGit: (repoPath, gitArgs, continueOnFail = false) => {
     let prog = util.run('git', gitArgs, { cwd: repoPath, continueOnFail })
 
@@ -116,7 +154,7 @@ const util = {
           }
         }
         if (hasFailed) {
-          const err = new Error(`Program ${cmd} exited with error code ${statusCode}.`)
+          const err = new Error(`${cmd} ${args} failed with code ${statusCode}.`)
           err.stderr = stderr
           err.stdout = stdout
           reject(err)
@@ -133,6 +171,59 @@ const util = {
     })
   },
 
+  /**
+   * This class filters lines of the form
+   *   header
+   *     body1
+   *     body2
+   *     ...
+   * from a stream. It cannot be implemented as one single regex because the stream can arrive in pieces that split the
+   * lines in a way that would make the (multi-line) regex fail.
+   */
+  FilteredStream: class {
+    constructor (headerRegex, bodyRegex, writeFn, delimiter='\n') {
+      this.headerRegex = headerRegex
+      this.bodyRegex = bodyRegex
+      this.write = writeFn
+      this.delimiter = delimiter
+      this.buffer = ''
+      this.matchLength = 0
+      this.header = ''
+    }
+    onData(data) {
+      const text = this.buffer + data.toString()
+      const lines = text.split(this.delimiter)
+      for (let i = 0; i < lines.length - 1; i++)
+        this.processLine(lines[i])
+      this.buffer = lines[lines.length - 1]
+    }
+    processLine(line) {
+      if (this.headerRegex.test(line)) {
+        if (this.matchLength == 1)
+          this.write(this.header + this.delimiter)
+        this.matchLength = 1
+        this.header = line
+      } else {
+        if (this.matchLength) {
+          if (this.bodyRegex.test(line))
+            this.matchLength ++
+          else
+            this.matchLength = 0
+        }
+        if (!this.matchLength)
+          this.write(line + this.delimiter)
+      }
+    }
+    onClose() {
+      if (this.matchLength) {
+        if (this.bodyRegex.test(this.buffer))
+          return
+        if (this.matchLength == 1)
+          this.write(this.header + this.delimiter)
+      }
+      this.write(this.buffer)
+    }
+  },
 
   runGitAsync: function (repoPath, gitArgs, verbose = false, logError = false) {
     return util.runAsync('git', gitArgs, { cwd: repoPath, verbose, continueOnFail: true })
@@ -587,7 +678,16 @@ const util = {
       ninjaOpts.push('-j', config.gomaJValue)
     }
 
-    util.run('autoninja', ninjaOpts, options)
+    if (options.verbose) {
+      const headerRegex = /.^/
+      const bodyRegex = /.^/
+    } else {
+      // The warnings below account for many tens of thousands of lines of build output.
+      const headerRegex = /in compilation unit/
+      const bodyRegex = /the DIE at offset 0x[0-9a-f]+ has a DW_AT_specification attribute referring to the DIE at offset 0x[0-9a-f]+, which was not marked as a declaration/
+    }
+
+    return util.runFiltered('autoninja', ninjaOpts, options, headerRegex, bodyRegex)
   },
 
   generateXcodeWorkspace: (options = config.defaultOptions) => {

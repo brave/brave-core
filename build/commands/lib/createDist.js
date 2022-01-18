@@ -26,7 +26,11 @@ const createDist = (buildConfig = config.defaultBuildConfig, options) => {
     }
   }
   config.buildTarget = 'create_dist'
-  util.buildTarget()
+  util.buildTarget().catch(err => {
+    console.error(err)
+    if (!options.continueOnFail)
+      process.exit(1)
+  })
 }
 
 module.exports = createDist

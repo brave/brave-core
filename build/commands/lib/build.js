@@ -132,7 +132,11 @@ const build = (buildConfig = config.defaultBuildConfig, options) => {
   if (config.xcode_gen_target) {
     util.generateXcodeWorkspace()
   } else {
-    util.buildTarget()
+    util.buildTarget().catch(err => {
+      console.error(err)
+      if (!options.continueOnFail)
+        process.exit(1)
+    })
   }
 }
 
