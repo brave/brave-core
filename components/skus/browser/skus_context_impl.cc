@@ -73,18 +73,19 @@ void shim_logMessage(rust::cxxbridge1::Str file,
   }
 }
 
-void shim_purge(skus::SkusContext& ctx) {
+void shim_purge(skus::SkusContext& ctx) {  // NOLINT
   ctx.PurgeStore();
 }
 
-void shim_set(skus::SkusContext& ctx,
+void shim_set(skus::SkusContext& ctx,  // NOLINT
               rust::cxxbridge1::Str key,
               rust::cxxbridge1::Str value) {
   ctx.UpdateStoreValue(static_cast<std::string>(key),
                        static_cast<std::string>(value));
 }
 
-::rust::String shim_get(skus::SkusContext& ctx, rust::cxxbridge1::Str key) {
+::rust::String shim_get(skus::SkusContext& ctx,  // NOLINT
+                        rust::cxxbridge1::Str key) {
   return ::rust::String(ctx.GetValueFromStore(static_cast<std::string>(key)));
 }
 
