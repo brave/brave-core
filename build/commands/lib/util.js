@@ -95,7 +95,7 @@ const util = {
   runFiltered: (cmd, args=[], options = {}, header=/.^/, body=/.^/) => {
     Log.command(options.cwd, cmd, args)
     return new Promise((resolve, reject) => {
-      const prog = spawn(cmd, args);
+      const prog = spawn(cmd, args, options.cmdOptions);
       const out = new util.FilteredStream(
         header, body, data => process.stdout.write(data)
       )
