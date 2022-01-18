@@ -9,7 +9,7 @@
 #define PagedArray PagedArray_ChromiumImpl
 #define kPagedArrayDefaultPageLogSize kPagedArrayDefaultPageLogSize_ChromiumImpl
 
-#include "src/courgette/third_party/bsdiff/paged_array.h"
+#include "../../../../../../courgette/third_party/bsdiff/paged_array.h"
 
 #undef kPagedArrayDefaultPageLogSize
 #undef PagedArray
