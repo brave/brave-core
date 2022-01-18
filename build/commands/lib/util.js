@@ -112,7 +112,7 @@ const util = {
         if (code === 0)
           resolve(code)
         else {
-          const err = new Error(`${cmd} ${args} failed with code ${code}.`)
+          const err = new Error(`${cmd} ${args.join(' ')} failed with code ${code}.`)
           reject(err)
         }
       });
@@ -156,7 +156,7 @@ const util = {
           }
         }
         if (hasFailed) {
-          const err = new Error(`${cmd} ${args} failed with code ${statusCode}.`)
+          const err = new Error(`${cmd} ${args.join(' ')} failed with code ${statusCode}.`)
           err.stderr = stderr
           err.stdout = stdout
           reject(err)
