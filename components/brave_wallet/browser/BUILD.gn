@@ -61,6 +61,8 @@ static_library("browser") {
     "hd_key.h",
     "hd_keyring.cc",
     "hd_keyring.h",
+    "json_rpc_requests_helper.cc",
+    "json_rpc_requests_helper.h",
     "json_rpc_response_parser.cc",
     "json_rpc_response_parser.h",
     "json_rpc_service.cc",
