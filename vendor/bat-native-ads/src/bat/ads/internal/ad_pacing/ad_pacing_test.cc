@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ads/internal/ad_pacing/ad_pacing_random_util.h"
 #include "bat/ads/internal/ad_serving/ad_notifications/ad_notification_serving.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
@@ -18,7 +19,6 @@
 
 using ::testing::_;
 using ::testing::AllOf;
-using ::testing::Between;
 using ::testing::Field;
 using ::testing::Matcher;
 
@@ -31,6 +31,10 @@ Matcher<const AdNotificationInfo&> DoesMatchCreativeInstanceId(
   return AllOf(Field("creative_instance_id",
                      &AdNotificationInfo::creative_instance_id,
                      creative_instance_id));
+}
+
+std::vector<double> GetAdPacingRandomNumberList() {
+  return std::vector<double>{0.0, 0.5, 0.99};
 }
 
 }  // namespace
@@ -149,17 +153,15 @@ class BatAdsAdPacingTest : public UnitTestBase {
     return creative_ad;
   }
 
-  void ServeAdForIterations(const int iterations) {
-    for (int i = 0; i < iterations; i++) {
-      ResetFrequencyCaps(AdType::kAdNotification);
+  void ServeAd() {
+    ResetFrequencyCaps(AdType::kAdNotification);
 
-      ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
-      resource::AntiTargeting anti_targeting_resource;
-      ad_notifications::AdServing ad_serving(&subdivision_targeting,
-                                             &anti_targeting_resource);
+    ad_targeting::geographic::SubdivisionTargeting subdivision_targeting;
+    resource::AntiTargeting anti_targeting_resource;
+    ad_notifications::AdServing ad_serving(&subdivision_targeting,
+                                           &anti_targeting_resource);
 
-      ad_serving.MaybeServeAd();
-    }
+    ad_serving.MaybeServeAd();
   }
 
   void Save(const CreativeAdNotificationList& creative_ads) {
@@ -181,10 +183,12 @@ TEST_F(BatAdsAdPacingTest, PacingDisableDelivery) {
   Save(creative_ads);
 
   // Act
-  int iterations = 1000;
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
 
-  ServeAdForIterations(iterations);
+  for (const double number : GetAdPacingRandomNumberList()) {
+    ScopedAdPacingRandomNumberSetter scoped_setter(number);
+    ServeAd();
+  }
 
   // Assert
 }
@@ -200,10 +204,13 @@ TEST_F(BatAdsAdPacingTest, NoPacing) {
   Save(creative_ads);
 
   // Act
-  int iterations = 1000;
-  EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(iterations);
+  EXPECT_CALL(*ads_client_mock_, ShowNotification(_))
+      .Times(GetAdPacingRandomNumberList().size());
 
-  ServeAdForIterations(iterations);
+  for (const double number : GetAdPacingRandomNumberList()) {
+    ScopedAdPacingRandomNumberSetter scoped_setter(number);
+    ServeAd();
+  }
 
   // Assert
 }
@@ -213,18 +220,25 @@ TEST_F(BatAdsAdPacingTest, SimplePacing) {
   CreativeAdNotificationList creative_ads;
 
   CreativeAdNotificationInfo creative_ad = BuildCreativeAdNotification1();
-  creative_ad.ptr = 0.2;
+  creative_ad.ptr = 0.5;
   creative_ads.push_back(creative_ad);
 
   Save(creative_ads);
 
   // Act
-  int iterations = 1000;
-  EXPECT_CALL(*ads_client_mock_, ShowNotification(_))
-      .Times(Between(iterations * creative_ad.ptr * 0.8,
-                     iterations * creative_ad.ptr * 1.2));
+  {
+    ScopedAdPacingRandomNumberSetter scoped_setter(0.7);
+    EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
+    ServeAd();
+    ::testing::Mock::VerifyAndClearExpectations(ads_client_mock_.get());
+  }
 
-  ServeAdForIterations(iterations);
+  {
+    ScopedAdPacingRandomNumberSetter scoped_setter(0.3);
+    EXPECT_CALL(*ads_client_mock_, ShowNotification(_));
+    ServeAd();
+    ::testing::Mock::VerifyAndClearExpectations(ads_client_mock_.get());
+  }
 
   // Assert
 }
@@ -244,11 +258,13 @@ TEST_F(BatAdsAdPacingTest, NoPacingPrioritized) {
   Save(creative_ads);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
-                                     creative_ad_1.creative_instance_id)))
-      .Times(1);
-
-  ServeAdForIterations(1);
+  for (const double number : GetAdPacingRandomNumberList()) {
+    ScopedAdPacingRandomNumberSetter scoped_setter(number);
+    EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
+                                       creative_ad_1.creative_instance_id)));
+    ServeAd();
+    ::testing::Mock::VerifyAndClearExpectations(ads_client_mock_.get());
+  }
 
   // Assert
 }
@@ -268,11 +284,13 @@ TEST_F(BatAdsAdPacingTest, PacingDisableDeliveryPrioritized) {
   Save(creative_ads);
 
   // Act
-  EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
-                                     creative_ad_2.creative_instance_id)))
-      .Times(1);
-
-  ServeAdForIterations(1);
+  for (const double number : GetAdPacingRandomNumberList()) {
+    ScopedAdPacingRandomNumberSetter scoped_setter(number);
+    EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
+                                       creative_ad_2.creative_instance_id)));
+    ServeAd();
+    ::testing::Mock::VerifyAndClearExpectations(ads_client_mock_.get());
+  }
 
   // Assert
 }
@@ -282,30 +300,38 @@ TEST_F(BatAdsAdPacingTest, PacingAndPrioritization) {
   CreativeAdNotificationList creative_ads;
 
   CreativeAdNotificationInfo creative_ad_1 = BuildCreativeAdNotification1();
-  creative_ad_1.ptr = 0.5;
+  creative_ad_1.ptr = 0.4;
   creative_ads.push_back(creative_ad_1);
 
   CreativeAdNotificationInfo creative_ad_2 = BuildCreativeAdNotification2();
-  creative_ad_2.ptr = 0.5;
+  creative_ad_2.ptr = 0.6;
   creative_ads.push_back(creative_ad_2);
 
   Save(creative_ads);
 
   // Act
-  int iterations = 1000;
-  EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
-                                     creative_ad_1.creative_instance_id)))
-      .Times(Between(iterations * creative_ad_1.ptr * 0.8,
-                     iterations * creative_ad_1.ptr * 1.2));
+  {
+    ScopedAdPacingRandomNumberSetter scoped_setter(0.1);
+    EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
+                                       creative_ad_1.creative_instance_id)));
+    ServeAd();
+    ::testing::Mock::VerifyAndClearExpectations(ads_client_mock_.get());
+  }
 
-  // creative_ad_2 ad would be shown probabilistically when
-  // creative_ad_1 gets dropped due to pacing
-  EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
-                                     creative_ad_2.creative_instance_id)))
-      .Times(Between(iterations * creative_ad_1.ptr * 0.8 * creative_ad_2.ptr,
-                     iterations * creative_ad_1.ptr * 1.2 * creative_ad_2.ptr));
+  {
+    ScopedAdPacingRandomNumberSetter scoped_setter(0.5);
+    EXPECT_CALL(*ads_client_mock_, ShowNotification(DoesMatchCreativeInstanceId(
+                                       creative_ad_2.creative_instance_id)));
+    ServeAd();
+    ::testing::Mock::VerifyAndClearExpectations(ads_client_mock_.get());
+  }
 
-  ServeAdForIterations(iterations);
+  {
+    ScopedAdPacingRandomNumberSetter scoped_setter(0.8);
+    EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
+    ServeAd();
+    ::testing::Mock::VerifyAndClearExpectations(ads_client_mock_.get());
+  }
 
   // Assert
 }

@@ -593,7 +593,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   bool callback_is_called = false;
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
@@ -651,7 +651,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainRejected) {
   bool callback_is_called = false;
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
@@ -677,7 +677,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   bool callback_is_called = false;
   bool expected = true;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&callback_is_called, &expected](
                                      const std::string& chain_id, bool added) {
@@ -695,7 +695,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
 
   bool second_callback_is_called = false;
   bool second_expected = false;
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain2.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&second_callback_is_called, &second_expected](
                                      const std::string& chain_id, bool added) {
@@ -710,7 +710,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   // same chain, other origin
   bool third_callback_is_called = false;
   bool third_expected = false;
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://others.com"),
       base::BindLambdaForTesting([&third_callback_is_called, &third_expected](
                                      const std::string& chain_id, bool added) {
@@ -774,7 +774,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   SetInterceptor("eth_getBalance", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}");
   json_rpc_service_->GetBalance(
-      "0x4e02f254184E904300e0775E4b8eeCB1",
+      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0xb539d5"));
   base::RunLoop().RunUntilIdle();
@@ -783,7 +783,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->GetBalance(
-      "0x4e02f254184E904300e0775E4b8eeCB1",
+      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
@@ -793,7 +793,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   callback_called = false;
   SetInvalidJsonInterceptor();
   json_rpc_service_->GetBalance(
-      "0x4e02f254184E904300e0775E4b8eeCB1",
+      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
@@ -803,7 +803,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   callback_called = false;
   SetLimitExceededJsonErrorResponse();
   json_rpc_service_->GetBalance(
-      "0x4e02f254184E904300e0775E4b8eeCB1",
+      "0x4e02f254184E904300e0775E4b8eeCB1", mojom::CoinType::ETH,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));

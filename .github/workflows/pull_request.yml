@@ -2,6 +2,13 @@ on:
   pull_request:
     types: [opened, reopened]
 name: Pull Request
+
+# Setting permissions for GITHUB_TOKEN for dependabot as default is readonly
+# https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/automating-dependabot-with-github-actions?learn=dependency_version_updates&learnProduct=code-security
+
+permissions:
+  pull-requests: write
+
 jobs:
   assignAuthor:
     name: Assign author to PR

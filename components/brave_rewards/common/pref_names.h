@@ -9,7 +9,8 @@
 namespace brave_rewards {
 namespace prefs {
 
-extern const char kHideButton[];
+extern const char kHideButton[];  // DEPRECATED
+extern const char kShowButton[];
 extern const char kEnabled[];  // DEPRECATED
 extern const char kEnabledTimestamp[];
 extern const char kNotifications[];

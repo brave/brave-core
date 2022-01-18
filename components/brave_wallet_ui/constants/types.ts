@@ -13,14 +13,19 @@ export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
 export { TimeDelta }
 
+interface TokenBalanceRegistry {
+  [contractAddress: string]: string
+}
+const BraveKeyringsTypes = [BraveWallet.DEFAULT_KEYRING_ID, BraveWallet.FILECOIN_KEYRING_ID] as const
+export type BraveKeyrings = typeof BraveKeyringsTypes[number]
+
 export interface WalletAccountType {
   id: string
   name: string
   address: string
+  tokenBalanceRegistry: TokenBalanceRegistry
   balance: string
-  asset: string
   accountType: 'Primary' | 'Secondary' | 'Ledger' | 'Trezor'
-  tokens: AccountAssetOptionType[]
   deviceId?: string
 }
 
@@ -37,12 +42,7 @@ export interface AssetOptionType {
   logo: string
 }
 
-export interface UserAssetOptionType {
-  asset: AssetOptionType
-  assetBalance: number
-}
-
-export interface AccountAssetOptionType {
+export interface UserAssetInfoType {
   asset: BraveWallet.BlockchainToken
   assetBalance: string
 }
@@ -332,7 +332,8 @@ export interface GetFlattenedAccountBalancesReturnInfo {
 
 export interface PortfolioTokenHistoryAndInfo {
   history: GetPriceHistoryReturnObjectInfo
-  token: AccountAssetOptionType
+  token: BraveWallet.BlockchainToken
+  balance: string
 }
 
 interface BaseTransactionParams {
@@ -520,6 +521,7 @@ export type BlockExplorerUrlTypes =
   | 'tx'
   | 'address'
   | 'token'
+  | 'contract'
 
 export type CreateAccountType =
   | 'ethereum'
@@ -531,4 +533,26 @@ export interface CreateAccountOptionsType {
   description: string
   network: CreateAccountType
   icon: string
+}
+
+// This is mostly speculative
+// will likely change once we have an api for getting
+// nft metadata
+export interface NFTMetadataReturnType {
+  chain: string
+  chainName: string
+  tokenType: string
+  tokenID: string
+  imageURL: string
+  floorFiatPrice: string
+  floorCryptoPrice: string
+  contractInformation: {
+    address: string
+    name: string
+    description: string
+    website: string
+    twitter: string
+    facebook: string
+    logo: string
+  }
 }

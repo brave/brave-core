@@ -112,7 +112,8 @@ const EditVisibleAssetsModal = (props: Props) => {
     name: selectedNetwork.symbolName,
     symbol: selectedNetwork.symbol,
     visible: true,
-    tokenId: ''
+    tokenId: '',
+    coingeckoId: ''
   }
 
   const tokenList = React.useMemo(() => {
@@ -180,7 +181,8 @@ const EditVisibleAssetsModal = (props: Props) => {
         symbol: tokenSymbol,
         tokenId: tokenID ? toHex(tokenID) : '',
         logo: '',
-        visible: true
+        visible: true,
+        coingeckoId: ''
       }
       onAddUserAsset(newToken)
     }

@@ -13,6 +13,7 @@
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
 #include "bat/ads/internal/ads_client_helper.h"
@@ -46,6 +47,24 @@ bool HasObservationWindowForAdEventExpired(const int observation_window,
   const base::Time time = base::Time::Now() - base::Days(observation_window);
 
   if (time < ad_event.created_at) {
+    return false;
+  }
+
+  return true;
+}
+
+bool ShouldConvertAdEvent(const AdEventInfo& ad_event) {
+  if (ad_event.type == AdType::kInlineContentAd) {
+    if (ad_event.confirmation_type == ConfirmationType::kViewed) {
+      // Do not convert views for inline content ads
+      return false;
+    }
+
+    return true;
+  }
+
+  if (!ShouldRewardUser()) {
+    // Do not convert if the user has not joined rewards for all other ad types
     return false;
   }
 
@@ -92,8 +111,7 @@ std::string ExtractConversionIdFromText(
     const std::string& conversion_url_pattern,
     const ConversionIdPatternMap& conversion_id_patterns) {
   std::string conversion_id;
-  std::string conversion_id_pattern =
-      features::GetGetDefaultConversionIdPattern();
+  std::string conversion_id_pattern = features::GetDefaultConversionIdPattern();
   std::string text = html;
 
   const auto iter = conversion_id_patterns.find(conversion_url_pattern);
@@ -143,28 +161,32 @@ std::set<std::string> GetConvertedCreativeSets(const AdEventList& ad_events) {
 
 AdEventList FilterAdEventsForConversion(const AdEventList& ad_events,
                                         const ConversionInfo& conversion) {
-  AdEventList filtered_ad_events = ad_events;
+  AdEventList filtered_ad_events;
 
-  const auto iter = std::remove_if(
-      filtered_ad_events.begin(), filtered_ad_events.end(),
+  std::copy_if(
+      ad_events.cbegin(), ad_events.cend(),
+      std::back_inserter(filtered_ad_events),
       [&conversion](const AdEventInfo& ad_event) {
         if (ad_event.creative_set_id != conversion.creative_set_id) {
-          return true;
+          return false;
+        }
+
+        if (!ShouldConvertAdEvent(ad_event)) {
+          return false;
         }
 
         if (!DoesConfirmationTypeMatchConversionType(ad_event.confirmation_type,
                                                      conversion.type)) {
-          return true;
+          return false;
         }
 
         if (HasObservationWindowForAdEventExpired(conversion.observation_window,
                                                   ad_event)) {
-          return true;
+          return false;
         }
 
-        return false;
+        return true;
       });
-  filtered_ad_events.erase(iter, filtered_ad_events.end());
 
   return filtered_ad_events;
 }
@@ -194,7 +216,7 @@ void Conversions::MaybeConvert(
     return;
   }
 
-  const std::string url = redirect_chain.back();
+  const std::string& url = redirect_chain.back();
   if (!DoesUrlHaveSchemeHTTPOrHTTPS(url)) {
     BLOG(1, "URL is not supported for conversions");
     return;
@@ -274,7 +296,7 @@ void Conversions::CheckRedirectChain(
 
       // Check for conversions
       for (const auto& conversion : filtered_conversions) {
-        const AdEventList filtered_ad_events =
+        const AdEventList& filtered_ad_events =
             FilterAdEventsForConversion(ad_events, conversion);
 
         for (const auto& ad_event : filtered_ad_events) {
@@ -308,13 +330,13 @@ void Conversions::CheckRedirectChain(
 void Conversions::Convert(
     const AdEventInfo& ad_event,
     const VerifiableConversionInfo& verifiable_conversion) {
-  const std::string campaign_id = ad_event.campaign_id;
-  const std::string creative_set_id = ad_event.creative_set_id;
-  const std::string creative_instance_id = ad_event.creative_instance_id;
-  const std::string advertiser_id = ad_event.advertiser_id;
+  const std::string& campaign_id = ad_event.campaign_id;
+  const std::string& creative_set_id = ad_event.creative_set_id;
+  const std::string& creative_instance_id = ad_event.creative_instance_id;
+  const std::string& advertiser_id = ad_event.advertiser_id;
 
-  const base::Time time = base::Time::Now();
-  const std::string friendly_date_and_time = LongFriendlyDateAndTime(time);
+  const base::Time& time = base::Time::Now();
+  const std::string& friendly_date_and_time = LongFriendlyDateAndTime(time);
 
   BLOG(1, "Conversion for campaign id "
               << campaign_id << ", creative set id " << creative_set_id
@@ -328,10 +350,11 @@ void Conversions::Convert(
 ConversionList Conversions::FilterConversions(
     const std::vector<std::string>& redirect_chain,
     const ConversionList& conversions) {
-  ConversionList filtered_conversions = conversions;
+  ConversionList filtered_conversions;
 
-  const auto iter = std::remove_if(
-      filtered_conversions.begin(), filtered_conversions.end(),
+  std::copy_if(
+      conversions.cbegin(), conversions.cend(),
+      std::back_inserter(filtered_conversions),
       [&redirect_chain](const ConversionInfo& conversion) {
         const auto iter = std::find_if(
             redirect_chain.begin(), redirect_chain.end(),
@@ -339,14 +362,12 @@ ConversionList Conversions::FilterConversions(
               return DoesUrlMatchPattern(url, conversion.url_pattern);
             });
 
-        if (iter != redirect_chain.end()) {
+        if (iter == redirect_chain.end()) {
           return false;
         }
 
         return true;
       });
-
-  filtered_conversions.erase(iter, filtered_conversions.end());
 
   return filtered_conversions;
 }
@@ -421,12 +442,12 @@ bool Conversions::RemoveItemFromQueue(
 
 void Conversions::ProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  const std::string campaign_id = conversion_queue_item.campaign_id;
-  const std::string creative_set_id = conversion_queue_item.creative_set_id;
-  const std::string creative_instance_id =
+  const std::string& campaign_id = conversion_queue_item.campaign_id;
+  const std::string& creative_set_id = conversion_queue_item.creative_set_id;
+  const std::string& creative_instance_id =
       conversion_queue_item.creative_instance_id;
-  const std::string advertiser_id = conversion_queue_item.advertiser_id;
-  const std::string friendly_date_and_time =
+  const std::string& advertiser_id = conversion_queue_item.advertiser_id;
+  const std::string& friendly_date_and_time =
       LongFriendlyDateAndTime(conversion_queue_item.confirm_at);
 
   if (!conversion_queue_item.IsValid()) {
@@ -490,12 +511,12 @@ void Conversions::StartTimer(
       delay,
       base::BindOnce(&Conversions::ProcessQueue, base::Unretained(this)));
 
-  const std::string campaign_id = conversion_queue_item.campaign_id;
-  const std::string creative_set_id = conversion_queue_item.creative_set_id;
-  const std::string creative_instance_id =
+  const std::string& campaign_id = conversion_queue_item.campaign_id;
+  const std::string& creative_set_id = conversion_queue_item.creative_set_id;
+  const std::string& creative_instance_id =
       conversion_queue_item.creative_instance_id;
-  const std::string advertiser_id = conversion_queue_item.advertiser_id;
-  const std::string friendly_date_and_time = FriendlyDateAndTime(time);
+  const std::string& advertiser_id = conversion_queue_item.advertiser_id;
+  const std::string& friendly_date_and_time = FriendlyDateAndTime(time);
 
   BLOG(1, "Convert campaign id "
               << campaign_id << ", creative set id " << creative_set_id

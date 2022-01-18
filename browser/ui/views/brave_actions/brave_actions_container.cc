@@ -109,8 +109,8 @@ void BraveActionsContainer::Init() {
   actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
 
   // React to Brave Rewards preferences changes.
-  hide_brave_rewards_button_.Init(
-      brave_rewards::prefs::kHideButton, browser_->profile()->GetPrefs(),
+  show_brave_rewards_button_.Init(
+      brave_rewards::prefs::kShowButton, browser_->profile()->GetPrefs(),
       base::BindRepeating(
           &BraveActionsContainer::OnBraveRewardsPreferencesChanged,
           base::Unretained(this)));
@@ -142,7 +142,7 @@ bool BraveActionsContainer::ShouldShowBraveRewardsAction() const {
   }
 
   const PrefService* prefs = browser_->profile()->GetPrefs();
-  return !prefs->GetBoolean(brave_rewards::prefs::kHideButton);
+  return prefs->GetBoolean(brave_rewards::prefs::kShowButton);
 }
 
 void BraveActionsContainer::AddAction(const extensions::Extension* extension) {

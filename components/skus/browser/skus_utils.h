@@ -8,14 +8,20 @@
 
 #include <string>
 
-namespace brave_rewards {
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
+namespace skus {
 
 constexpr char kEnvProduction[] = "production";
 constexpr char kEnvStaging[] = "staging";
 constexpr char kEnvDevelopment[] = "development";
 
 std::string GetEnvironment();
+std::string GetDomain(std::string prefix);
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
-}  // namespace brave_rewards
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SKUS_UTILS_H_

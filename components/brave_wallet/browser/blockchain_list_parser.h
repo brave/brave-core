@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_LIST_PARSER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BLOCKCHAIN_LIST_PARSER_H_
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -13,8 +14,9 @@
 
 namespace brave_wallet {
 
-bool ParseTokenList(const std::string& json,
-                    std::vector<mojom::BlockchainTokenPtr>* token_list);
+using TokenListMap =
+    std::map<std::string, std::vector<mojom::BlockchainTokenPtr>>;
+bool ParseTokenList(const std::string& json, TokenListMap* token_list);
 
 }  // namespace brave_wallet
 

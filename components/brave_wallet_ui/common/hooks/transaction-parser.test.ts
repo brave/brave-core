@@ -230,10 +230,9 @@ describe('useTransactionParser hook', () => {
           mockNetwork,
           [{
             ...mockAccount,
-            tokens: [{
-              asset: mockERC20Token,
-              assetBalance: '0' // 0 DOG
-            }],
+            tokenBalanceRegistry: {
+              [mockERC20Token.contractAddress.toLowerCase()]: '0'
+            },
             address: '0xdeadbeef',
             balance: '1000000000000000' // 0.001 ETH
           }],
@@ -413,10 +412,9 @@ describe('useTransactionParser hook', () => {
           mockNetwork,
           [{
             ...mockAccount,
-            tokens: [{
-              asset: mockERC20Token,
-              assetBalance: '1000000000000000' // 0.001 DOG
-            }],
+            tokenBalanceRegistry: {
+              [mockERC20Token.contractAddress.toLowerCase()]: '1000000000000000' // 0.001 DOG
+            },
             address: '0xdeadbeef',
             balance: '3150000000000000' // 0.00315 ETH
           }],
@@ -464,10 +462,9 @@ describe('useTransactionParser hook', () => {
           mockNetwork,
           [{
             ...mockAccount,
-            tokens: [{
-              asset: mockERC20Token,
-              assetBalance: '1000000000000000000' // 1 DOG
-            }],
+            tokenBalanceRegistry: {
+              [mockERC20Token.contractAddress.toLowerCase()]: '1000000000000000000' // 1 DOG
+            },
             address: '0xdeadbeef',
             balance: '3150000000000000' // 0.00315 ETH
           }],

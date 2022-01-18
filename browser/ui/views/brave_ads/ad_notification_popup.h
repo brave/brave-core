@@ -15,6 +15,7 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/display/display_observer.h"
 #include "ui/gfx/animation/animation_delegate.h"
+#include "ui/gfx/native_widget_types.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
 
@@ -47,7 +48,9 @@ class AdNotificationPopup : public views::WidgetDelegateView,
  public:
   METADATA_HEADER(AdNotificationPopup);
 
-  AdNotificationPopup(Profile* profile, const AdNotification& ad_notification);
+  AdNotificationPopup(Profile* profile,
+                      const AdNotification& ad_notification,
+                      gfx::NativeWindow browser_native_window);
   ~AdNotificationPopup() override;
 
   // Disables fade in animation for snapshot tests.
@@ -93,7 +96,7 @@ class AdNotificationPopup : public views::WidgetDelegateView,
 
   Profile* profile_;  // NOT OWNED
 
-  void CreatePopup();
+  void CreatePopup(gfx::NativeWindow browser_native_window);
 
   AdNotification ad_notification_;
 
@@ -109,7 +112,7 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   const gfx::ShadowDetails& GetShadowDetails() const;
   gfx::Insets GetShadowMargin() const;
 
-  void CreateWidgetView();
+  void CreateWidgetView(gfx::NativeWindow browser_native_window);
   void CloseWidgetView();
 
   AdNotificationView* ad_notification_view_ = nullptr;  // NOT OWNED

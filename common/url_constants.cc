@@ -11,7 +11,6 @@ const char kMagnetScheme[] = "magnet";
 const char kBinanceScheme[] = "com.brave.binance";
 const char kGeminiScheme[] = "com.brave.gemini";
 const char kFTXScheme[] = "com.brave.ftx";
-const char kWidevineMoreInfoURL[] = "https://www.eff.org/issues/drm";
 const char kWidevineTOS[] = "https://policies.google.com/terms";
 const char kRewardsUpholdSupport[] = "https://uphold.com/en/brave/support";
 const char kP3ALearnMoreURL[] = "https://brave.com/P3A";
@@ -28,3 +27,6 @@ const char kSpeedreaderLearnMoreUrl[] =
 const char kWebDiscoveryLearnMoreUrl[] =
     "https://brave.com/browser/privacy/#web-discovery-project";
 const char kBraveSearchUrl[] = "https://search.brave.com/";
+const char kWidevineLearnMoreUrl[] =
+    "https://support.brave.com/hc/en-us/articles/"
+    "360023851591-How-do-I-view-DRM-protected-content-";

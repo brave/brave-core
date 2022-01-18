@@ -7,9 +7,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
       android:key="hide_brave_rewards_icon"
-      android:title="@string/hide_brave_rewards_icon_title"
-      android:summaryOn="@string/hide_brave_rewards_icon_description"
-      android:summaryOff="@string/hide_brave_rewards_icon_description" />
+      android:title="@string/show_brave_rewards_icon_title"
+      android:summaryOn="@string/text_on"
+      android:summaryOff="@string/text_off" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_bottom_toolbar_enabled_key"

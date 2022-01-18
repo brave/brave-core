@@ -16,7 +16,10 @@
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_requests.h"
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
+#include "brave/components/brave_wallet/browser/fil_requests.h"
+#include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -168,8 +171,16 @@ void JsonRpcService::GetPendingChainRequests(
 }
 
 void JsonRpcService::AddEthereumChain(mojom::EthereumChainPtr chain,
-                                      const GURL& origin,
                                       AddEthereumChainCallback callback) {
+  auto chain_id = chain->chain_id;
+  AddCustomNetwork(prefs_, std::move(chain));
+  std::move(callback).Run(chain_id, true);
+}
+
+void JsonRpcService::AddEthereumChainForOrigin(
+    mojom::EthereumChainPtr chain,
+    const GURL& origin,
+    AddEthereumChainCallback callback) {
   DCHECK_EQ(origin, url::Origin::Create(origin).GetURL());
   if (!origin.is_valid() ||
       add_chain_pending_requests_.contains(chain->chain_id) ||
@@ -197,6 +208,12 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
                : l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST);
   FirePendingRequestCompleted(chain_id, error);
   add_chain_pending_requests_.erase(chain_id);
+}
+
+void JsonRpcService::RemoveEthereumChain(const std::string& chain_id,
+                                         RemoveEthereumChainCallback callback) {
+  RemoveCustomNetwork(prefs_, chain_id);
+  std::move(callback).Run(true);
 }
 
 bool JsonRpcService::SetNetwork(const std::string& chain_id) {
@@ -347,15 +364,23 @@ void JsonRpcService::OnGetBlockNumber(
 }
 
 void JsonRpcService::GetBalance(const std::string& address,
+                                mojom::CoinType coin,
                                 JsonRpcService::GetBalanceCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&JsonRpcService::OnGetBalance,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  return Request(eth_getBalance(address, "latest"), true,
-                 std::move(internal_callback));
+  if (coin == mojom::CoinType::ETH) {
+    auto internal_callback =
+        base::BindOnce(&JsonRpcService::OnEthGetBalance,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+    return Request(eth_getBalance(address, "latest"), true,
+                   std::move(internal_callback));
+  } else if (coin == mojom::CoinType::FIL) {
+    auto internal_callback =
+        base::BindOnce(&JsonRpcService::OnFilGetBalance,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+    return Request(fil_getBalance(address), true, std::move(internal_callback));
+  }
 }
 
-void JsonRpcService::OnGetBalance(
+void JsonRpcService::OnEthGetBalance(
     GetBalanceCallback callback,
     const int status,
     const std::string& body,
@@ -368,6 +393,30 @@ void JsonRpcService::OnGetBalance(
   }
   std::string balance;
   if (!ParseEthGetBalance(body, &balance)) {
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(balance, mojom::ProviderError::kSuccess, "");
+}
+
+void JsonRpcService::OnFilGetBalance(
+    GetBalanceCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  DLOG(ERROR) << "status:" << status << " body:" << body;
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+  std::string balance;
+  if (!ParseFilGetBalance(body, &balance)) {
     mojom::ProviderError error;
     std::string error_message;
     ParseErrorResult(body, &error, &error_message);
@@ -605,7 +654,7 @@ void JsonRpcService::OnEnsRegistryGetResolver(
   }
 
   std::string resolver_address;
-  if (!ParseAddressResult(body, &resolver_address) ||
+  if (!brave_wallet::ParseAddressResult(body, &resolver_address) ||
       resolver_address.empty()) {
     mojom::ProviderError error;
     std::string error_message;

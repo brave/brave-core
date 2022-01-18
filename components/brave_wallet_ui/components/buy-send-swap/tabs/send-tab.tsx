@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {
   UserAccountType,
-  AccountAssetOptionType,
   BuySendSwapViewTypes,
   ToOrFromType,
   BraveWallet
@@ -14,12 +13,12 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  selectedAsset: AccountAssetOptionType
+  selectedAsset: BraveWallet.BlockchainToken
   selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   selectedAssetAmount: string
   selectedAssetBalance: string
-  assetOptions: AccountAssetOptionType[]
+  assetOptions: BraveWallet.BlockchainToken[]
   toAddressOrUrl: string
   toAddress: string
   showHeader?: boolean
@@ -28,7 +27,7 @@ export interface Props {
   onSubmit: () => void
   onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
-  onSelectAsset: (asset: AccountAssetOptionType, toOrFrom: ToOrFromType) => void
+  onSelectAsset: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void
   onSetSendAmount: (value: string) => void
   onSetToAddressOrUrl: (value: string) => void
   onSelectPresetAmount: (percent: number) => void
@@ -81,7 +80,7 @@ function SendTab (props: Props) {
     setSendView('send')
   }
 
-  const onSelectedAsset = (asset: AccountAssetOptionType) => () => {
+  const onSelectedAsset = (asset: BraveWallet.BlockchainToken) => () => {
     onSelectAsset(asset, 'from')
     setSendView('send')
   }

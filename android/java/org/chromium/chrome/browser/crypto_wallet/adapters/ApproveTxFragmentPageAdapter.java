@@ -26,13 +26,20 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     private List<String> mTitles;
     private TransactionInfo mTxInfo;
     private String mAsset;
+    private int mDecimals;
+    private String mChainSymbol;
+    private int mChainDecimals;
     private double mTotalPrice;
 
     public ApproveTxFragmentPageAdapter(FragmentManager fm, TransactionInfo txInfo, String asset,
-            double totalPrice, Activity activity) {
+            int decimals, String chainSymbol, int chainDecimals, double totalPrice,
+            Activity activity) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         mTxInfo = txInfo;
         mAsset = asset;
+        mDecimals = decimals;
+        mChainSymbol = chainSymbol;
+        mChainDecimals = chainDecimals;
         mTotalPrice = totalPrice;
         mTitles = new ArrayList<>(Arrays.asList(activity.getText(R.string.transaction).toString(),
                 activity.getText(R.string.transaction_details).toString()));
@@ -42,7 +49,8 @@ public class ApproveTxFragmentPageAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return TxFragment.newInstance(mTxInfo, mAsset, mTotalPrice);
+            return TxFragment.newInstance(
+                    mTxInfo, mAsset, mDecimals, mChainSymbol, mChainDecimals, mTotalPrice);
         } else {
             return TxDetailsFragment.newInstance(mTxInfo);
         }

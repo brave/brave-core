@@ -923,10 +923,6 @@ void AdsImpl::OnFailedToTransferAd(const AdInfo& ad) {
 
 void AdsImpl::OnConversion(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  if (!ShouldRewardUser()) {
-    return;
-  }
-
   account_->DepositFunds(conversion_queue_item.creative_instance_id,
                          conversion_queue_item.ad_type,
                          ConfirmationType::kConversion);

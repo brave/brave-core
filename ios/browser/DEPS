@@ -1,8 +1,12 @@
 include_rules = [
   "+brave/ios/browser",
   "+components",
-  "+ios/chrome/browser",
-  "+ios/web/public",
   "+mojo/public/cpp/bindings",
+  "+ios/chrome/browser",
+  "+ios/components",
+  "+ios/web/public",
+  "+ios/web/js_messaging",
+  "+ios/web/web_state",
+  "+ios/web/webui",
   "+services/network/public/cpp",
 ]

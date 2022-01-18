@@ -225,6 +225,9 @@ const string kTrezorHardwareVendor = "Trezor";
 const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
+const string kFilecoinKeyringId = "filecoin";
+const string kDefaultKeyringId = "default";
+
 enum FilecoinAddressProtocol {
   SECP256K1 = 1, // Represents the address SECP256K1 protocol
   BLS = 3 // Represents the address BLS protocol
@@ -236,6 +239,7 @@ struct HardwareWalletAccount {
   string name;
   string hardware_vendor;
   string device_id;
+  CoinType coin;
 };
 
 struct HardwareInfo {
@@ -249,9 +253,11 @@ struct AccountInfo {
   string name;
   bool is_imported;
   HardwareInfo? hardware;
+  CoinType coin;
 };
 
 struct KeyringInfo {
+  string id;
   bool is_default_keyring_created;
   bool is_locked;
   bool is_backed_up;
@@ -283,6 +289,7 @@ struct BlockchainToken {
   int32 decimals;
   bool visible = true;
   string token_id = "";  // Non-empty for ERC721 tokens.
+  string coingecko_id = "";
 };
 
 // WebUI-side handler for requests from the browser.
@@ -321,19 +328,19 @@ interface KeyringServiceObserver {
 // List of tokens and coins that are supported.
 interface BlockchainRegistry {
   // Obtains token information by a contract lookup
-  GetTokenByContract(string contract) => (BlockchainToken? token);
+  GetTokenByContract(string chain_id, string contract) => (BlockchainToken? token);
 
   // Obtains token information by a symbol lookup
-  GetTokenBySymbol(string symbol) => (BlockchainToken? token);
+  GetTokenBySymbol(string chain_id, string symbol) => (BlockchainToken? token);
 
   // Obtains all tokens Send/Swap UI
-  GetAllTokens() => (array<BlockchainToken> tokens);
+  GetAllTokens(string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains all tokens for the Buy UI
-  GetBuyTokens() => (array<BlockchainToken> tokens);
+  GetBuyTokens(string chain_id) => (array<BlockchainToken> tokens);
 
   // Obtains the URL used for buying assets
-  GetBuyUrl(string address, string symbol, string amount) => (string url);
+  GetBuyUrl(string chain_id, string address, string symbol, string amount) => (string url);
 };
 
 // Implements the HD wallet, Ledger & Trezor integration, account management,
@@ -395,8 +402,7 @@ interface KeyringService {
   NotifyWalletBackupComplete();
 
   // Obtains the keyring information
-  GetDefaultKeyringInfo() => (KeyringInfo keyring);
-
+  GetKeyringsInfo(array<string> keyrings) => (array<KeyringInfo> keyrings);
   // Obtains the keyring information
   GetKeyringInfo(string keyringId) => (KeyringInfo keyring);
 
@@ -404,10 +410,10 @@ interface KeyringService {
   AddObserver(pending_remote<KeyringServiceObserver> observer);
 
   // Sets the account name for a derived account
-  SetDefaultKeyringDerivedAccountName(string address, string name) => (bool success);
+  SetKeyringDerivedAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for an imported account
-  SetDefaultKeyringImportedAccountName(string address, string name) => (bool success);
+  SetKeyringImportedAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for a hardware account
   SetDefaultKeyringHardwareAccountName(string address, string name) => (bool success);
@@ -528,6 +534,14 @@ const string kRopstenChainId = "0x3";
 const string kGoerliChainId = "0x5";
 const string kKovanChainId = "0x2a";
 const string kLocalhostChainId = "0x539";
+const string kSolanaMainnet = "solana:0x65";
+const string kSolanaTestnet = "solana:0x66";
+const string kSolanaDevnet = "solana:0x67";
+
+enum CoinType {
+  ETH = 60,
+  FIL = 461
+};
 
 struct EthereumChain {
   string chain_id;
@@ -550,8 +564,10 @@ struct SwitchChainRequest {
 // network.
 interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
-  AddEthereumChain(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
+  AddEthereumChain(EthereumChain chain) => (string chain_id, bool accepted);
+  AddEthereumChainForOrigin(EthereumChain chain, url.mojom.Url origin) => (string chain_id, bool accepted);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
+  RemoveEthereumChain(string chain_id) => (bool success);
   GetPendingChainRequests() => (array<EthereumChain> networks);
 
   // This is used for UI notifying native when the user approves or
@@ -573,7 +589,7 @@ interface JsonRpcService {
   GetNetworkUrl() => (string network_url);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
-  GetBalance(string address) => (string balance, ProviderError error, string error_message);
+  GetBalance(string address, CoinType coin) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,

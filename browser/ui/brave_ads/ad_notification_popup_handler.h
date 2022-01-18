@@ -8,6 +8,8 @@
 
 #include <string>
 
+#include "ui/gfx/native_widget_types.h"
+
 class Profile;
 
 namespace gfx {
@@ -28,7 +30,9 @@ class AdNotificationPopupHandler final {
 
   // Show the notification popup view for the given |profile| and
   // |ad_notification|.
-  static void Show(Profile* profile, const AdNotification& ad_notification);
+  static void Show(Profile* profile,
+                   const AdNotification& ad_notification,
+                   gfx::NativeWindow browser_native_window);
 
   // Close the notification popup view for the given |notification_id|.
   // |by_user| is true if the notification popup was closed by the user,

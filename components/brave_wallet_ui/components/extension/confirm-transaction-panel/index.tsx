@@ -8,6 +8,7 @@ import {
 } from '../../../constants/types'
 import {
   UpdateUnapprovedTransactionGasFieldsType,
+  UpdateUnapprovedTransactionNonceType,
   UpdateUnapprovedTransactionSpendAllowanceType
 } from '../../../common/constants/action_types'
 
@@ -77,6 +78,8 @@ import {
   AddressAndOrb,
   AddressText
 } from '../shared-panel-styles'
+import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/button'
+import AdvancedTransactionSettings from '../advanced-transaction-settings'
 
 export type confirmPanelTabs = 'transaction' | 'details'
 
@@ -100,6 +103,7 @@ export interface Props {
   getERC20Allowance: (recipient: string, sender: string, approvalTarget: string) => Promise<string>
   updateUnapprovedTransactionGasFields: (payload: UpdateUnapprovedTransactionGasFieldsType) => void
   updateUnapprovedTransactionSpendAllowance: (payload: UpdateUnapprovedTransactionSpendAllowanceType) => void
+  updateUnapprovedTransactionNonce: (payload: UpdateUnapprovedTransactionNonceType) => void
 }
 
 function ConfirmTransactionPanel (props: Props) {
@@ -122,7 +126,8 @@ function ConfirmTransactionPanel (props: Props) {
     refreshGasEstimates,
     getERC20Allowance,
     updateUnapprovedTransactionGasFields,
-    updateUnapprovedTransactionSpendAllowance
+    updateUnapprovedTransactionSpendAllowance,
+    updateUnapprovedTransactionNonce
   } = props
 
   const { txData: { gasEstimation: transactionGasEstimates } } = transactionInfo
@@ -139,6 +144,7 @@ function ConfirmTransactionPanel (props: Props) {
   const [isEditing, setIsEditing] = React.useState<boolean>(false)
   const [currentTokenAllowance, setCurrentTokenAllowance] = React.useState<string>('')
   const [isEditingAllowance, setIsEditingAllowance] = React.useState<boolean>(false)
+  const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] = React.useState<boolean>(false)
 
   const { findAssetPrice } = usePricing(transactionSpotPrices)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, visibleTokens, fullTokenList)
@@ -228,6 +234,10 @@ function ConfirmTransactionPanel (props: Props) {
     })
   }
 
+  const onToggleAdvancedTransactionSettings = () => {
+    setShowAdvancedTransactionSettings(!showAdvancedTransactionSettings)
+  }
+
   const AssetIconWithPlaceholder = React.useMemo(() => {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 0 })
   }, [])
@@ -273,6 +283,17 @@ function ConfirmTransactionPanel (props: Props) {
         proposedAllowance={transactionDetails.value}
         symbol={transactionDetails.symbol}
         approvalTarget={transactionDetails.approvalTargetLabel || ''}
+      />
+    )
+  }
+
+  if (showAdvancedTransactionSettings) {
+    return (
+      <AdvancedTransactionSettings
+        onCancel={onToggleAdvancedTransactionSettings}
+        nonce={transactionDetails.nonce}
+        txMetaId={transactionInfo.id}
+        updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
       />
     )
   }
@@ -348,6 +369,10 @@ function ConfirmTransactionPanel (props: Props) {
           isSelected={selectedTab === 'details'}
           onSubmit={onSelectTab('details')}
           text='Details'
+        />
+
+        <AdvancedTransactionSettingsButton
+          onSubmit={ onToggleAdvancedTransactionSettings }
         />
       </TabRow>
       <MessageBox isDetails={selectedTab === 'details'} isApprove={transactionInfo.txType === BraveWallet.TransactionType.ERC20Approve}>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. */ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/brave_wallet_add_network_chain_id"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/chain_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:inputType="numberDecimal"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="14sp"
+        android:hint="@string/brave_wallet_add_network_chain_id_hint"
+        tools:ignore="LabelFor, Autofill" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/brave_wallet_add_network_chain_name"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/chain_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:inputType="text"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="14sp"
+        android:hint="@string/brave_wallet_add_network_chain_name_hint"
+        tools:ignore="LabelFor, Autofill" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/brave_wallet_add_network_chain_currency_name"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/chain_currency_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:inputType="text"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="14sp"
+        android:hint="@string/brave_wallet_add_network_chain_currency_name_hint"
+        tools:ignore="LabelFor, Autofill" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/brave_wallet_add_network_chain_currency_symbol"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/chain_currency_symbol"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:inputType="text"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="14sp"
+        android:hint="@string/brave_wallet_add_network_chain_currency_symbol_hint"
+        tools:ignore="LabelFor, Autofill" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/brave_wallet_add_network_chain_currency_decimals"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/chain_currency_decimals"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:inputType="numberDecimal"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="14sp"
+        android:hint="@string/brave_wallet_add_network_chain_currency_decimals_hint"
+        tools:ignore="LabelFor, Autofill" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/brave_wallet_add_network_rpc_urls"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/rpc_urls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:inputType="text"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="14sp"
+        android:hint="@string/brave_wallet_add_network_urls_hint"
+        tools:ignore="LabelFor, Autofill" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/brave_wallet_add_network_icon_urls"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/icon_urls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:inputType="text"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="14sp"
+        android:hint="@string/brave_wallet_add_network_urls_hint"
+        tools:ignore="LabelFor, Autofill" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:textColor="@color/wallet_text_color"
+        android:text="@string/brave_wallet_add_network_block_explorer_urls"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/block_explorer_urls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:inputType="text"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="14sp"
+        android:hint="@string/brave_wallet_add_network_urls_hint"
+        tools:ignore="LabelFor, Autofill" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/add"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="start"
+        android:gravity="center"
+        android:layout_weight = "1"
+        android:background="@drawable/crypto_wallet_blue_button"
+        android:text="@string/brave_wallet_add_network_add"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
+
+</LinearLayout>

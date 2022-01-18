@@ -156,6 +156,10 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value) {
   if (token_id)
     tokenPtr->token_id = *token_id;
 
+  const std::string* coingecko_id = value.FindStringKey("coingecko_id");
+  if (coingecko_id)
+    tokenPtr->coingecko_id = *coingecko_id;
+
   return tokenPtr;
 }
 

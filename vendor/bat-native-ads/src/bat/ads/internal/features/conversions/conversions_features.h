@@ -19,7 +19,7 @@ bool IsConversionsEnabled();
 
 int GetConversionsResourceVersion();
 
-std::string GetGetDefaultConversionIdPattern();
+std::string GetDefaultConversionIdPattern();
 
 }  // namespace features
 }  // namespace ads

@@ -18,7 +18,8 @@ import {
   UnlockWalletPayloadType,
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionSpendAllowanceType,
-  TransactionStatusChanged
+  TransactionStatusChanged,
+  UpdateUnapprovedTransactionNonceType
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -237,7 +238,7 @@ handler.on(WalletActions.getAllNetworks.getType(), async (store) => {
 
 handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
   const blockchainRegistry = getAPIProxy().blockchainRegistry
-  const fullList = await blockchainRegistry.getAllTokens()
+  const fullList = await blockchainRegistry.getAllTokens(BraveWallet.MAINNET_CHAIN_ID)
   store.dispatch(WalletActions.setAllTokensList(fullList))
 })
 
@@ -453,8 +454,8 @@ export const fetchSwapQuoteFactory = (
     takerAddress: accountAddress,
     sellAmount: fromAssetAmount || '',
     buyAmount: toAssetAmount || '',
-    buyToken: toAsset.asset.contractAddress || toAsset.asset.symbol,
-    sellToken: fromAsset.asset.contractAddress || fromAsset.asset.symbol,
+    buyToken: toAsset.contractAddress || toAsset.symbol,
+    sellToken: fromAsset.contractAddress || fromAsset.symbol,
     slippagePercentage: slippageTolerance.slippage / 100,
     gasPrice: ''
   }
@@ -587,6 +588,19 @@ handler.on(WalletActions.updateUnapprovedTransactionSpendAllowance.getType(), as
       'Failed to update unapproved transaction: ' +
       `id=${payload.txMetaId} ` +
       `allowance=${payload.allowance}`
+    )
+  }
+})
+
+handler.on(WalletActions.updateUnapprovedTransactionNonce.getType(), async (store: Store, payload: UpdateUnapprovedTransactionNonceType) => {
+  const { ethTxService } = getAPIProxy()
+
+  const result = await ethTxService.setNonceForUnapprovedTransaction(payload.txMetaId, payload.nonce)
+  if (!result.success) {
+    console.error(
+      'Failed to update unapproved transaction: ' +
+      `id=${payload.txMetaId} ` +
+      `nonce=${payload.nonce}`
     )
   }
 })

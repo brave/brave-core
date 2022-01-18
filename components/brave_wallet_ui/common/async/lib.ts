@@ -2,7 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
-
+import { assert } from 'chrome://resources/js/assert.m.js'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -11,6 +11,7 @@ import {
   BraveWallet,
   WalletAccountType,
   AccountInfo,
+  BraveKeyrings,
   GetBlockchainTokenInfoReturnInfo
 } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
@@ -67,7 +68,7 @@ export const onConnectHardwareWallet = (opts: HardwareWalletConnectOpts): Promis
 export const getBalance = (address: string): Promise<string> => {
   return new Promise(async (resolve, reject) => {
     const { jsonRpcService } = getAPIProxy()
-    const result = await jsonRpcService.getBalance(address)
+    const result = await jsonRpcService.getBalance(address, BraveWallet.CoinType.ETH)
     if (result.error === BraveWallet.ProviderError.kSuccess) {
       resolve(normalizeNumericValue(result.balance))
     } else {
@@ -117,12 +118,31 @@ export async function findHardwareAccountInfo (address: string): Promise<Account
 
 export async function getBuyAssetUrl (address: string, symbol: string, amount: string) {
   const { blockchainRegistry } = getAPIProxy()
-  return (await blockchainRegistry.getBuyUrl(address, symbol, amount)).url
+  return (await blockchainRegistry.getBuyUrl(BraveWallet.MAINNET_CHAIN_ID, address, symbol, amount)).url
 }
 
 export async function getBuyAssets () {
   const { blockchainRegistry } = getAPIProxy()
-  return (await blockchainRegistry.getBuyTokens()).tokens
+  return (await blockchainRegistry.getBuyTokens(BraveWallet.MAINNET_CHAIN_ID)).tokens
+}
+
+export function getKeyringIdFromCoin (coin: BraveWallet.CoinType): BraveKeyrings {
+  if (coin === BraveWallet.CoinType.FIL) {
+    return BraveWallet.FILECOIN_KEYRING_ID
+  }
+  assert(coin === BraveWallet.CoinType.ETH)
+  return BraveWallet.DEFAULT_KEYRING_ID
+}
+
+export async function getKeyringIdFromAddress (address: string): Promise<string> {
+  const apiProxy = getAPIProxy()
+  const result = await apiProxy.walletHandler.getWalletInfo()
+  for (const account of result.accountInfos) {
+    if (account.address === address) {
+      return getKeyringIdFromCoin(account.coin)
+    }
+  }
+  return getKeyringIdFromCoin(BraveWallet.CoinType.ETH)
 }
 
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
@@ -142,14 +162,15 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
       name: currentNetwork.symbolName,
       symbol: currentNetwork.symbol,
       visible: false,
-      tokenId: ''
+      tokenId: '',
+      coingeckoId: ''
     }
 
     const visibleTokens: BraveWallet.BlockchainToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
     await dispatch(WalletActions.setVisibleTokensInfo(visibleTokens))
 
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
-      const balanceInfo = await jsonRpcService.getBalance(account.address)
+      const balanceInfo = await jsonRpcService.getBalance(account.address, BraveWallet.CoinType.ETH)
       return balanceInfo
     }))
     await dispatch(WalletActions.nativeAssetBalancesUpdated({
@@ -186,7 +207,7 @@ export function refreshPrices () {
       return
     }
 
-    const getTokenPrices = await Promise.all(GetFlattenedAccountBalances(accounts).map(async (token) => {
+    const getTokenPrices = await Promise.all(GetFlattenedAccountBalances(accounts, userVisibleTokensInfo).map(async (token) => {
       const emptyPrice = {
         fromAsset: token.token.symbol,
         toAsset: defaultFiatCurrency,
@@ -226,25 +247,32 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
     const apiProxy = getAPIProxy()
     const { assetRatioService } = apiProxy
 
-    const { wallet: { accounts, defaultCurrencies, selectedNetwork } } = getState()
+    const { wallet: { accounts, defaultCurrencies, selectedNetwork, userVisibleTokensInfo } } = getState()
 
     // If a tokens balance is 0 we do not make an unnecessary api call for price history of that token
-    const priceHistory = await Promise.all(GetFlattenedAccountBalances(accounts).filter((t) => !t.token.isErc721 && t.balance > 0).map(async (token) => {
-      return {
-        contractAddress: token.token.contractAddress,
+    const priceHistory = await Promise.all(GetFlattenedAccountBalances(accounts, userVisibleTokensInfo)
+      .filter(({ token, balance }) => !token.isErc721 && balance > 0)
+      .map(async ({ token }) => ({
+        contractAddress: token.contractAddress,
         history: await assetRatioService.getPriceHistory(
-          GetTokenParam(selectedNetwork, token.token), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
+          GetTokenParam(selectedNetwork, token), defaultCurrencies.fiat.toLowerCase(), selectedPortfolioTimeline
         )
-      }
-    }))
+      }))
+    )
 
     const priceHistoryWithBalances = accounts.map((account) => {
-      return (account.tokens.filter((t) => !t.asset.isErc721).map((token) => {
+      return userVisibleTokensInfo
+        .filter((token) => !token.isErc721)
+        .map((token) => {
+          const balance = token.contractAddress
+            ? account.tokenBalanceRegistry[token.contractAddress.toLowerCase()]
+            : account.balance
         return {
-          token: token,
-          history: priceHistory.find((t) => token.asset.contractAddress === t.contractAddress)?.history ?? { success: true, values: [] }
+          token,
+          balance: balance || '0',
+          history: priceHistory.find((t) => token.contractAddress === t.contractAddress)?.history ?? { success: true, values: [] }
         }
-      }))
+      })
     })
 
     dispatch(WalletActions.portfolioPriceHistoryUpdated(priceHistoryWithBalances))

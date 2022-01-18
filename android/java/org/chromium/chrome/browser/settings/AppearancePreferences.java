@@ -77,7 +77,7 @@ public class AppearancePreferences extends BravePreferenceFragment
         if (hideBraveRewardsIconPref != null) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             hideBraveRewardsIconPref.setChecked(
-                    sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false));
+                    !sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false));
             hideBraveRewardsIconPref.setOnPreferenceChangeListener(this);
         }
 

@@ -22,7 +22,8 @@ import {
   SitePermissionsPayloadType,
   RemoveSitePermissionPayloadType,
   AddSitePermissionPayloadType,
-  UpdateUnapprovedTransactionSpendAllowanceType
+  UpdateUnapprovedTransactionSpendAllowanceType,
+  UpdateUnapprovedTransactionNonceType
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -96,6 +97,7 @@ export const refreshGasEstimates = createAction('refreshGasEstimates')
 export const setGasEstimates = createAction<BraveWallet.GasEstimation1559>('setGasEstimates')
 export const updateUnapprovedTransactionGasFields = createAction<UpdateUnapprovedTransactionGasFieldsType>('updateUnapprovedTransactionGasFields')
 export const updateUnapprovedTransactionSpendAllowance = createAction<UpdateUnapprovedTransactionSpendAllowanceType>('updateUnapprovedTransactionSpendAllowance')
+export const updateUnapprovedTransactionNonce = createAction<UpdateUnapprovedTransactionNonceType>('updateUnapprovedTransactionNonce')
 export const defaultWalletChanged = createAction<DefaultWalletChanged>('defaultWalletChanged')
 export const defaultBaseCurrencyChanged = createAction<DefaultBaseCurrencyChanged>('defaultBaseCurrencyChanged')
 export const defaultBaseCryptocurrencyChanged = createAction<DefaultBaseCryptocurrencyChanged>('defaultBaseCryptocurrencyChanged')

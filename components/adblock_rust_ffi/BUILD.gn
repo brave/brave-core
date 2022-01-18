@@ -5,13 +5,10 @@
 import("//brave/build/cargo.gni")
 
 rust_ffi("adblock_rust_ffi") {
-  shared_library_define = "ADBLOCK_SHARED_LIBRARY"
-  implementation_define = "ADBLOCK_IMPLEMENTATION"
-
   sources = [
     "src/lib.h",
     "src/wrapper.cc",
-    "src/wrapper.h"
+    "src/wrapper.h",
   ]
 }
 

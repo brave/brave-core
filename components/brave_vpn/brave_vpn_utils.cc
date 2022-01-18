@@ -9,20 +9,22 @@
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/skus/browser/skus_utils.h"
+#include "brave/components/skus/common/features.h"
 
 namespace brave_vpn {
 
 bool IsBraveVPNEnabled() {
-  return base::FeatureList::IsEnabled(brave_vpn::features::kBraveVPN);
+  return base::FeatureList::IsEnabled(brave_vpn::features::kBraveVPN) &&
+         base::FeatureList::IsEnabled(skus::features::kSkusFeature);
 }
 
 std::string GetManageUrl() {
-  const std::string env = brave_rewards::GetEnvironment();
-  if (env == brave_rewards::kEnvProduction)
+  const std::string env = skus::GetEnvironment();
+  if (env == skus::kEnvProduction)
     return brave_vpn::kManageUrlProd;
-  if (env == brave_rewards::kEnvStaging)
+  if (env == skus::kEnvStaging)
     return brave_vpn::kManageUrlStaging;
-  if (env == brave_rewards::kEnvDevelopment)
+  if (env == skus::kEnvDevelopment)
     return brave_vpn::kManageUrlDev;
 
   NOTREACHED();

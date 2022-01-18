@@ -40,14 +40,18 @@ import java.util.Locale;
 public class TxFragment extends Fragment {
     private TransactionInfo mTxInfo;
     private String mAsset;
+    private int mDecimals;
+    private String mChainSymbol;
+    private int mChainDecimals;
     private double mTotalPrice;
     private boolean mIsEIP1559;
     private int mCheckedPriorityId;
     private int mPreviousCheckedPriorityId;
     private double mEthRate;
 
-    public static TxFragment newInstance(TransactionInfo txInfo, String asset, double totalPrice) {
-        return new TxFragment(txInfo, asset, totalPrice);
+    public static TxFragment newInstance(TransactionInfo txInfo, String asset, int decimals,
+            String chainSymbol, int chainDecimals, double totalPrice) {
+        return new TxFragment(txInfo, asset, decimals, chainSymbol, chainDecimals, totalPrice);
     }
 
     private AssetRatioService getAssetRatioService() {
@@ -72,9 +76,13 @@ public class TxFragment extends Fragment {
         return null;
     }
 
-    private TxFragment(TransactionInfo txInfo, String asset, double totalPrice) {
+    private TxFragment(TransactionInfo txInfo, String asset, int decimals, String chainSymbol,
+            int chainDecimals, double totalPrice) {
         mTxInfo = txInfo;
         mAsset = asset;
+        mDecimals = decimals;
+        mChainSymbol = chainSymbol;
+        mChainDecimals = chainDecimals;
         mTotalPrice = totalPrice;
         mEthRate = 0;
         mCheckedPriorityId = -1;
@@ -340,7 +348,8 @@ public class TxFragment extends Fragment {
     };
 
     private void fillMaxFee(TextView textView, String gasLimit, String maxFeePerGas) {
-        double totalGas = Utils.fromHexWei(Utils.multiplyHexBN(gasLimit, maxFeePerGas), 18);
+        double totalGas =
+                Utils.fromHexWei(Utils.multiplyHexBN(gasLimit, maxFeePerGas), mChainDecimals);
         double price = totalGas * mEthRate;
         textView.setText(String.format(getResources().getString(R.string.wallet_maximum_fee),
                 String.format(Locale.getDefault(), "%.2f", price),
@@ -352,13 +361,13 @@ public class TxFragment extends Fragment {
         final double totalGas = mIsEIP1559
                 ? Utils.fromHexWei(Utils.multiplyHexBN(mTxInfo.txData.baseData.gasLimit,
                                            mTxInfo.txData.maxFeePerGas),
-                        18)
+                        mChainDecimals)
                 : Utils.fromHexWei(Utils.multiplyHexBN(mTxInfo.txData.baseData.gasLimit,
                                            mTxInfo.txData.baseData.gasPrice),
-                        18);
+                        mChainDecimals);
         gasFeeAmount.setText(
                 String.format(getResources().getString(R.string.crypto_wallet_gas_fee_amount),
-                        String.format(Locale.getDefault(), "%.8f", totalGas)));
+                        String.format(Locale.getDefault(), "%.8f", totalGas), mChainSymbol));
         String valueAsset = mTxInfo.txData.baseData.value;
         if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
             valueAsset = mTxInfo.txArgs[1];
@@ -366,11 +375,11 @@ public class TxFragment extends Fragment {
         TextView totalAmount = view.findViewById(R.id.total_amount);
         totalAmount.setText(String.format(
                 getResources().getString(R.string.crypto_wallet_total_amount),
-                String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset, 18)),
-                mAsset, String.format(Locale.getDefault(), "%.8f", totalGas)));
+                String.format(Locale.getDefault(), "%.8f", Utils.fromHexWei(valueAsset, mDecimals)),
+                mAsset, String.format(Locale.getDefault(), "%.8f", totalGas), mChainSymbol));
         AssetRatioService assetRatioService = getAssetRatioService();
         if (assetRatioService != null) {
-            String[] assets = {"eth"};
+            String[] assets = {mChainSymbol.toLowerCase(Locale.getDefault())};
             String[] toCurr = {"usd"};
             assetRatioService.getPrice(
                     assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {

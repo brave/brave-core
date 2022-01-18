@@ -10,6 +10,7 @@
     android:fillViewport="true">
 
     <LinearLayout
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -81,15 +82,39 @@
                 android:id="@+id/restore_wallet_copy_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="20dp"
+                android:padding="12dp"
                 app:srcCompat="@drawable/ic_copy"
-                android:contentDescription="@null"
+                android:contentDescription="@string/accessibility_restore_wallet_copy_image"
                 android:background="?android:attr/selectableItemBackground"
                 android:layout_gravity="center_horizontal"
                 android:clickable="true"
                 android:focusable="true"/>
 
         </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/restore_legacy_wallet_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:layout_gravity="center_horizontal"
+            android:buttonTint="@color/brave_action_color"
+            android:visibility="gone"
+            android:textColor="@color/wallet_secondary_text_color"
+            android:text="@string/restore_legacy_wallet_recovery_phrase"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/restore_wallet_new_password_phrase"
+            android:textColor="@color/wallet_text_color"
+            android:textSize="18sp"/>
 
         <EditText
             android:id="@+id/restore_wallet_password"

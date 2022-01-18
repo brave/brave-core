@@ -11,5 +11,8 @@ source_set("brave_ads") {
     "ad_notification_popup_handler.h",
   ]
 
-  deps = [ "//base" ]
+  deps = [
+    "//base",
+    "//ui/gfx:native_widget_types",
+  ]
 }

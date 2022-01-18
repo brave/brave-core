@@ -23,7 +23,6 @@ export { SponsoredImageTooltip }
 const locale = { getString: (key: string) => getLocale(key) }
 
 export function RewardsContextAdapter (props: { children: React.ReactNode }) {
-  console.log('Rerendering RewardsContextAdapter')
   return (
     <LocaleContext.Provider value={locale}>
       <WithThemeVariables>
@@ -40,7 +39,7 @@ export interface RewardsProps {
   report?: NewTab.RewardsBalanceReport
   adsAccountStatement: NewTab.AdsAccountStatement
   parameters: NewTab.RewardsParameters
-  promotions: NewTab.Promotion[]
+  promotions?: NewTab.Promotion[]
   totalContribution: number
   adsSupported?: boolean
   showContent: boolean
@@ -78,7 +77,7 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
 
   const earningsReceived = Number(props.report && props.report.ads || 0) > 0
   const adsInfo = props.adsAccountStatement || null
-  const grantInfo = getVisibleGrant(props.promotions)
+  const grantInfo = getVisibleGrant(props.promotions || [])
 
   const onDismissGrant = () => {
     if (grantInfo) {

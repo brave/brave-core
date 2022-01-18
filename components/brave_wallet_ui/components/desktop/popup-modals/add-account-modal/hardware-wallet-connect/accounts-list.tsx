@@ -24,10 +24,12 @@ import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
 import { SearchBar } from '../../../../shared'
 import { DisclaimerText } from '../style'
+import { formatBalance } from '../../../../../utils/format-balances'
 
 interface Props {
   hardwareWallet: string
   accounts: BraveWallet.HardwareWalletAccount[]
+  selectedNetwork: BraveWallet.EthereumChain
   preAddedHardwareWalletAccounts: WalletAccountType[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
@@ -41,6 +43,7 @@ interface Props {
 export default function (props: Props) {
   const {
     accounts,
+    selectedNetwork,
     preAddedHardwareWalletAccounts,
     hardwareWallet,
     selectedDerivationScheme,
@@ -137,6 +140,7 @@ export default function (props: Props) {
                 return (
                   <AccountListItem
                     key={account.derivationPath}
+                    selectedNetwork={selectedNetwork}
                     account={account}
                     selected={
                       selectedDerivationPaths.includes(account.derivationPath) ||
@@ -174,6 +178,7 @@ export default function (props: Props) {
 
 interface AccountListItemProps {
   account: BraveWallet.HardwareWalletAccount
+  selectedNetwork: BraveWallet.EthereumChain
   onSelect: () => void
   selected: boolean
   disabled: boolean
@@ -181,7 +186,7 @@ interface AccountListItemProps {
 }
 
 function AccountListItem (props: AccountListItemProps) {
-  const { account, onSelect, selected, disabled, getBalance } = props
+  const { account, onSelect, selected, disabled, getBalance, selectedNetwork } = props
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
   }, [account.address])
@@ -189,7 +194,8 @@ function AccountListItem (props: AccountListItemProps) {
 
   React.useMemo(() => {
     getBalance(account.address).then((result) => {
-      setBalance(result)
+      const formattedBalance = formatBalance(result, selectedNetwork.decimals)
+      setBalance(formattedBalance)
     }).catch()
   }, [account])
 

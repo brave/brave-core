@@ -30,12 +30,13 @@ export interface Props {
   getBalance: (address: string) => Promise<string>
   preAddedHardwareWalletAccounts: WalletAccountType[]
   selectedAccountType: CreateAccountOptionsType
+  selectedNetwork: BraveWallet.EthereumChain
 }
 
 const derivationBatch = 4
 
 export default function (props: Props) {
-  const { selectedAccountType } = props
+  const { selectedAccountType, selectedNetwork } = props
   const [selectedHardwareWallet, setSelectedHardwareWallet] = React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<BraveWallet.HardwareWalletAccount[]>([])
@@ -162,6 +163,7 @@ export default function (props: Props) {
         setSelectedDerivationScheme={onChangeDerivationScheme}
         onAddAccounts={onAddAccounts}
         getBalance={getBalance}
+        selectedNetwork={selectedNetwork}
       />
     )
   }

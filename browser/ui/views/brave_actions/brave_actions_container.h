@@ -206,7 +206,7 @@ class BraveActionsContainer : public views::View,
 
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember brave_rewards_enabled_;
-  BooleanPrefMember hide_brave_rewards_button_;
+  BooleanPrefMember show_brave_rewards_button_;
 
   brave_rewards::RewardsService* rewards_service_;
 

@@ -70,6 +70,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                RequestCallback callback) override;
 
   void GetBalance(const std::string& address,
+                  mojom::CoinType coin,
                   GetBalanceCallback callback) override;
 
   using GetTxCountCallback =
@@ -127,10 +128,14 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                   SetNetworkCallback callback) override;
   void GetNetwork(GetNetworkCallback callback) override;
   void AddEthereumChain(mojom::EthereumChainPtr chain,
-                        const GURL& origin,
                         AddEthereumChainCallback callback) override;
+  void AddEthereumChainForOrigin(mojom::EthereumChainPtr chain,
+                                 const GURL& origin,
+                                 AddEthereumChainCallback callback) override;
   void AddEthereumChainRequestCompleted(const std::string& chain_id,
                                         bool approved) override;
+  void RemoveEthereumChain(const std::string& chain_id,
+                           RemoveEthereumChainCallback callback) override;
 
   std::string GetChainId() const;
   void GetChainId(mojom::JsonRpcService::GetChainIdCallback callback) override;
@@ -222,10 +227,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
-  void OnGetBalance(GetBalanceCallback callback,
-                    const int status,
-                    const std::string& body,
-                    const base::flat_map<std::string, std::string>& headers);
+  void OnEthGetBalance(GetBalanceCallback callback,
+                       const int status,
+                       const std::string& body,
+                       const base::flat_map<std::string, std::string>& headers);
+  void OnFilGetBalance(GetBalanceCallback callback,
+                       const int status,
+                       const std::string& body,
+                       const base::flat_map<std::string, std::string>& headers);
+
   void OnGetTransactionCount(
       GetTxCountCallback callback,
       const int status,

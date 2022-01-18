@@ -258,7 +258,10 @@ class AdsBox extends React.Component<Props, {}> {
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>
           <StyledTotalContent>
             <Tokens
-              value={earningsThisMonth.toFixed(3)}
+              value={new Intl.NumberFormat(undefined, {
+                minimumFractionDigits: 3,
+                maximumFractionDigits: 3
+              }).format(earningsThisMonth)}
               converted={utils.convertBalance(earningsThisMonth, parameters.rate)}
             />
           </StyledTotalContent>

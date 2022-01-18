@@ -695,9 +695,9 @@ IN_PROC_BROWSER_TEST_F(
       contents(), "[data-test-id=rewards-summary-ac]", "-5.00 BAT");
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    SplitProcessorAutoContribution) {
+// TODO(zenparsing): Reimplement this as a unit test (#20473)
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       DISABLED_SplitProcessorAutoContribution) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);
@@ -828,9 +828,9 @@ IN_PROC_BROWSER_TEST_F(
   run_loop_second.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(
-    RewardsContributionBrowserTest,
-    SplitProcessOneTimeTip) {
+// TODO(zenparsing): Reimplement this as a unit test (#20473)
+IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
+                       DISABLED_SplitProcessOneTimeTip) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::StartProcess(rewards_service_);
   rewards_browsertest_util::CreateWallet(rewards_service_);

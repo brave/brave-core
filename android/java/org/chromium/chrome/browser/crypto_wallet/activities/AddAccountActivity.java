@@ -22,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -93,8 +94,9 @@ public class AddAccountActivity extends AsyncInitializationActivity
                 if (mKeyringService != null) {
                     if (mIsUpdate) {
                         if (mIsImported) {
-                            mKeyringService.setDefaultKeyringImportedAccountName(
-                                    mAddress, mAddAccountText.getText().toString(), result -> {
+                            mKeyringService.setKeyringImportedAccountName(
+                                    BraveWalletConstants.DEFAULT_KEYRING_ID, mAddress,
+                                    mAddAccountText.getText().toString(), result -> {
                                         if (result) {
                                             Intent returnIntent = new Intent();
                                             returnIntent.putExtra(Utils.NAME,
@@ -107,8 +109,9 @@ public class AddAccountActivity extends AsyncInitializationActivity
                                         }
                                     });
                         } else {
-                            mKeyringService.setDefaultKeyringDerivedAccountName(
-                                    mAddress, mAddAccountText.getText().toString(), result -> {
+                            mKeyringService.setKeyringDerivedAccountName(
+                                    BraveWalletConstants.DEFAULT_KEYRING_ID, mAddress,
+                                    mAddAccountText.getText().toString(), result -> {
                                         if (result) {
                                             Intent returnIntent = new Intent();
                                             returnIntent.putExtra(Utils.NAME,
@@ -254,7 +257,7 @@ public class AddAccountActivity extends AsyncInitializationActivity
         getWindow().setFlags(
                 WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         assert mKeyringService != null;
-        mKeyringService.getDefaultKeyringInfo(keyringInfo -> {
+        mKeyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
             if (keyringInfo != null) {
                 mAddAccountText.setText(getUniqueNextAccountName(keyringInfo.accountInfos, 1));
             }

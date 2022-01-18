@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import LightningBolt from '../../../assets/svg-icons/lightning-bolt-icon.svg'
+import HistoryIcon from '../../../assets/svg-icons/history-icon.svg'
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
@@ -72,10 +72,10 @@ export const TransactionsButton = styled(WalletButton) <StyleProps>`
   background: none;
 `
 
-export const LightningBoltIcon = styled.div`
+export const TransactionsIcon = styled.div`
   width: 18px;
   height: 18px;
   background-color: ${(p) => p.theme.palette.white};
-  -webkit-mask-image: url(${LightningBolt});
-  mask-image: url(${LightningBolt});
+  -webkit-mask-image: url(${HistoryIcon});
+  mask-image: url(${HistoryIcon});
 `

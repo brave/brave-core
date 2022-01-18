@@ -30,9 +30,14 @@ public class SwapBottomSheetDialogFragment
     LinearLayout mBuyLayout;
     LinearLayout mSendLayout;
     LinearLayout mSwapLayout;
+    private String mChainId;
 
     public static SwapBottomSheetDialogFragment newInstance() {
         return new SwapBottomSheetDialogFragment();
+    }
+
+    public void setChainId(String chainId) {
+        mChainId = chainId;
     }
 
     @Override
@@ -66,6 +71,14 @@ public class SwapBottomSheetDialogFragment
         mSendLayout.setOnClickListener(this);
         mSwapLayout = view.findViewById(R.id.swap_layout);
         mSwapLayout.setOnClickListener(this);
+        assert mChainId != null;
+        if (!Utils.isCustomNetwork(mChainId)) {
+            mBuyLayout.setVisibility(View.VISIBLE);
+            mSwapLayout.setVisibility(View.VISIBLE);
+        } else {
+            mBuyLayout.setVisibility(View.GONE);
+            mSwapLayout.setVisibility(View.GONE);
+        }
 
         dialog.setContentView(view);
         ViewParent parent = view.getParent();

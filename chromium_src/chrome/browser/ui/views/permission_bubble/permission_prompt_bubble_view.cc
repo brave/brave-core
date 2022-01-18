@@ -8,8 +8,10 @@
 #include "base/feature_list.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/common/webui_url_constants.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/features.h"
 #include "components/permissions/permission_prompt.h"
@@ -25,7 +27,7 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_permission_request.h"
-#include "brave/grit/brave_generated_resources.h"
+#include "brave/common/webui_url_constants.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "components/permissions/request_type.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -36,6 +38,48 @@
 #endif
 
 namespace {
+
+std::unique_ptr<views::StyledLabel> CreateStyledLabelForFootnote(
+    Browser* browser,
+    const std::u16string& footnote,
+    const std::vector<std::u16string>& replacements,
+    const std::vector<GURL>& urls) {
+  // For now, only two links are added to permission bubble footnote.
+  DCHECK_EQ(2UL, replacements.size());
+  DCHECK_EQ(replacements.size(), urls.size());
+
+  std::vector<size_t> offsets;
+  std::u16string footnote_text =
+      base::ReplaceStringPlaceholders(footnote, replacements, &offsets);
+
+  auto label = std::make_unique<views::StyledLabel>();
+  label->SetText(footnote_text);
+  label->SetDefaultTextStyle(views::style::STYLE_SECONDARY);
+
+  auto add_link = [&](size_t idx, GURL url) {
+    DCHECK(idx < offsets.size());
+    DCHECK(idx < replacements.size());
+
+    gfx::Range link_range(offsets[idx],
+                          offsets[idx] + replacements[idx].length());
+
+    views::StyledLabel::RangeStyleInfo link_style =
+        views::StyledLabel::RangeStyleInfo::CreateForLink(base::BindRepeating(
+            [](Browser* browser, const GURL& url) {
+              chrome::AddSelectedTabWithURL(browser, url,
+                                            ui::PAGE_TRANSITION_LINK);
+            },
+            base::Unretained(browser), std::move(url)));
+
+    label->AddStyleRange(link_range, link_style);
+  };
+
+  for (size_t i = 0; i < urls.size(); ++i) {
+    add_link(i, urls[i]);
+  }
+
+  return label;
+}
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 class DontAskAgainCheckbox : public views::Checkbox {
@@ -94,6 +138,22 @@ void AddAdditionalWidevineViewControlsIfNeeded(
   dialog_delegate_view->AddChildView(text);
   dialog_delegate_view->AddChildView(
       new DontAskAgainCheckbox(widevine_request));
+}
+
+void AddWidevineFootnoteView(
+    views::BubbleDialogDelegateView* dialog_delegate_view,
+    Browser* browser) {
+  const std::u16string footnote =
+      l10n_util::GetStringUTF16(IDS_WIDEVINE_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT);
+  const std::vector<std::u16string> replacements{
+      l10n_util::GetStringUTF16(IDS_WIDEVINE_PERMISSIONS_BUBBLE_LEARN_MORE),
+      l10n_util::GetStringUTF16(
+          IDS_PERMISSIONS_BUBBLE_SETTINGS_EXTENSIONS_LINK)};
+  const std::vector<GURL> urls{GURL(kWidevineLearnMoreUrl),
+                               GURL(kExtensionSettingsURL)};
+
+  dialog_delegate_view->SetFootnoteView(
+      CreateStyledLabelForFootnote(browser, footnote, replacements, urls));
 }
 #else
 void AddAdditionalWidevineViewControlsIfNeeded(
@@ -173,46 +233,31 @@ views::View* AddPermissionLifetimeComboboxIfNeeded(
 
 void AddFootnoteViewIfNeeded(
     views::BubbleDialogDelegateView* dialog_delegate_view,
+    const std::vector<permissions::PermissionRequest*>& requests,
     Browser* browser) {
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  // Widevine permission bubble has custom footnote.
+  if (HasWidevinePermissionRequest(requests)) {
+    AddWidevineFootnoteView(dialog_delegate_view, browser);
+    return;
+  }
+#endif
+
   if (!base::FeatureList::IsEnabled(
           permissions::features::kPermissionLifetime)) {
     return;
   }
 
-  std::vector<std::u16string> replacements{
+  const std::u16string footnote =
+      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT);
+  const std::vector<std::u16string> replacements{
       l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_SITE_PERMISSION_LINK),
       l10n_util::GetStringUTF16(IDS_LEARN_MORE)};
-  std::vector<size_t> offsets;
-  std::u16string footnote_text = base::ReplaceStringPlaceholders(
-      l10n_util::GetStringUTF16(IDS_PERMISSIONS_BUBBLE_FOOTNOTE_TEXT),
-      replacements, &offsets);
+  const std::vector<GURL> urls{GURL(chrome::kChromeUIContentSettingsURL),
+                               GURL(kPermissionPromptLearnMoreUrl)};
 
-  auto label = std::make_unique<views::StyledLabel>();
-  label->SetText(footnote_text);
-  label->SetDefaultTextStyle(views::style::STYLE_SECONDARY);
-
-  auto add_link = [&](size_t idx, GURL url) {
-    DCHECK(idx < offsets.size());
-    DCHECK(idx < replacements.size());
-
-    gfx::Range link_range(offsets[idx],
-                          offsets[idx] + replacements[idx].length());
-
-    views::StyledLabel::RangeStyleInfo link_style =
-        views::StyledLabel::RangeStyleInfo::CreateForLink(base::BindRepeating(
-            [](Browser* browser, const GURL& url) {
-              chrome::AddSelectedTabWithURL(browser, url,
-                                            ui::PAGE_TRANSITION_LINK);
-            },
-            base::Unretained(browser), std::move(url)));
-
-    label->AddStyleRange(link_range, link_style);
-  };
-
-  add_link(0, GURL(chrome::kChromeUIContentSettingsURL));
-  add_link(1, GURL(kPermissionPromptLearnMoreUrl));
-
-  dialog_delegate_view->SetFootnoteView(std::move(label));
+  dialog_delegate_view->SetFootnoteView(
+      CreateStyledLabelForFootnote(browser, footnote, replacements, urls));
 }
 
 }  // namespace
@@ -221,7 +266,7 @@ void AddFootnoteViewIfNeeded(
   AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
   auto* permission_lifetime_view =                                        \
       AddPermissionLifetimeComboboxIfNeeded(this, delegate_);             \
-  AddFootnoteViewIfNeeded(this, browser_);                                \
+  AddFootnoteViewIfNeeded(this, delegate_->Requests(), browser_);         \
   if (permission_lifetime_view) {                                         \
     set_fixed_width(                                                      \
         std::max(GetPreferredSize().width(),                              \
@@ -230,5 +275,9 @@ void AddFootnoteViewIfNeeded(
     set_should_ignore_snapping(true);                                     \
   }
 
+// undef upstream one first then define it with our one.
+#undef IDS_PERMISSIONS_BUBBLE_PROMPT
+#define IDS_PERMISSIONS_BUBBLE_PROMPT IDS_BRAVE_PERMISSIONS_BUBBLE_PROMPT
 #include "src/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
 #undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW
+#undef IDS_PERMISSIONS_BUBBLE_PROMPT

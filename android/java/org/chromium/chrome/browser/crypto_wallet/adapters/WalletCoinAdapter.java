@@ -102,6 +102,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             holder.feeText.setText(String.format(
                     context.getResources().getString(R.string.wallet_tx_fee),
                     String.format(Locale.getDefault(), "%.6f", walletListItemModel.getTotalGas()),
+                    walletListItemModel.getChainSymbol(),
                     String.format(
                             Locale.getDefault(), "%.2f", walletListItemModel.getTotalGasFiat())));
             Utils.overlayBitmaps(mExecutor, mHandler, walletListItemModel.getAddressesForBitmap(),

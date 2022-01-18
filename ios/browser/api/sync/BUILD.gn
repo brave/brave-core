@@ -12,6 +12,8 @@ source_set("sync") {
   sources = [
     "brave_sync_api.h",
     "brave_sync_api.mm",
+    "brave_sync_internals.h",
+    "brave_sync_internals.mm",
     "brave_sync_worker.cc",
     "brave_sync_worker.h",
   ]
@@ -28,11 +30,18 @@ source_set("sync") {
     "//ios/chrome/browser",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/sync",
+    "//ios/components/webui:url_constants",
+    "//ios/web/js_messaging:js_messaging",
     "//ios/web/public/thread",
+    "//ios/web/public/webui",
+    "//ios/web/web_state",
+    "//ios/web/webui",
+    "//ui/base",
   ]
 
   frameworks = [
     "Foundation.framework",
     "UIKit.framework",
+    "WebKit.framework",
   ]
 }

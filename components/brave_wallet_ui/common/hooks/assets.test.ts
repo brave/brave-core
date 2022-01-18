@@ -1,29 +1,37 @@
 import { renderHook, act } from '@testing-library/react-hooks'
 import {
   mockAccount,
-  mockAssetPrices
+  mockAssetPrices,
+  mockNetwork
 } from '../constants/mocks'
 import { AccountAssetOptions } from '../../options/asset-options'
 import useAssets from './assets'
-import { AccountAssetOptionType } from '../../constants/types'
+import { WalletAccountType } from '../../constants/types'
 
 const mockAccounts = [
   {
     ...mockAccount,
-    tokens: [{ ...AccountAssetOptions[0], assetBalance: '238699740940532500' }, AccountAssetOptions[1]]
-  },
+    tokenBalanceRegistry: {
+      [AccountAssetOptions[0].contractAddress.toLowerCase()]: '238699740940532500',
+      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '0'
+    }
+  } as WalletAccountType,
   {
     ...mockAccount,
-    tokens: [{ ...AccountAssetOptions[0], assetBalance: '0' }, AccountAssetOptions[1]]
-  }
+    balance: '',
+    tokenBalanceRegistry: {
+      [AccountAssetOptions[0].contractAddress.toLowerCase()]: '0',
+      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '0'
+    }
+  } as WalletAccountType
 ]
 
 const mockVisibleList = [
-  AccountAssetOptions[0].asset,
-  AccountAssetOptions[1].asset
+  AccountAssetOptions[0],
+  AccountAssetOptions[1]
 ]
 
-const expectedResult = [{ asset: AccountAssetOptions[0].asset, assetBalance: '238699740940532500' }] as AccountAssetOptionType[]
+const expectedResult = [AccountAssetOptions[0]]
 
 const getBuyAssets = async () => {
   return await mockVisibleList
@@ -31,21 +39,23 @@ const getBuyAssets = async () => {
 
 describe('useAssets hook', () => {
   it('Selected account has balances, should return expectedResult', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccounts[0], mockVisibleList, mockVisibleList, mockAssetPrices, getBuyAssets))
+    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccounts[0], mockNetwork, mockVisibleList, mockVisibleList, mockAssetPrices, getBuyAssets))
     await act(async () => {
       await waitForNextUpdate()
     })
     expect(result.current.panelUserAssetList).toEqual(expectedResult)
   })
+
   it('Selected account has 0 balances, should return an empty array', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccounts[1], mockVisibleList, mockVisibleList, mockAssetPrices, getBuyAssets))
+    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccounts[1], mockNetwork, mockVisibleList, mockVisibleList, mockAssetPrices, getBuyAssets))
     await act(async () => {
       await waitForNextUpdate()
     })
     expect(result.current.panelUserAssetList).toEqual([])
   })
-  it('Selected account tokens is undefined, should return an empty array', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccount, mockVisibleList, mockVisibleList, mockAssetPrices, getBuyAssets))
+
+  it('should return empty array for panelUserAssetList if visible assets is empty', async () => {
+    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccount, mockNetwork, mockVisibleList, [], mockAssetPrices, getBuyAssets))
     await act(async () => {
       await waitForNextUpdate()
     })

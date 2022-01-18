@@ -351,17 +351,19 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
         walletCoinAdapter = new WalletCoinAdapter(mType);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         String tokensPath = BlockchainRegistryFactory.getInstance().getTokensIconsLocation();
-        // Add ETH as a first item always
-        BlockchainToken eth = Utils.createEthereumBlockchainToken();
-        WalletListItemModel itemModelEth =
-                new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
-        itemModelEth.setIsUserSelected(
-                selectedTokensSymbols.contains(eth.symbol.toUpperCase(Locale.getDefault())));
-        itemModelEth.setIconPath("file://" + tokensPath + "/" + eth.logo);
-        itemModelEth.setBlockchainToken(eth);
-        walletListItemModelList.add(itemModelEth);
+        if (!Utils.isCustomNetwork(mChainId)) {
+            // Add ETH as a first item always
+            BlockchainToken eth = Utils.createEthereumBlockchainToken();
+            WalletListItemModel itemModelEth =
+                    new WalletListItemModel(R.drawable.ic_eth, eth.name, eth.symbol, "", "");
+            itemModelEth.setIsUserSelected(
+                    selectedTokensSymbols.contains(eth.symbol.toUpperCase(Locale.getDefault())));
+            itemModelEth.setIconPath("file://" + tokensPath + "/" + eth.logo);
+            itemModelEth.setBlockchainToken(eth);
+            walletListItemModelList.add(itemModelEth);
+        }
         for (int i = 0; i < tokens.length; i++) {
-            if (tokens[i].symbol.equals("ETH")) {
+            if (tokens[i].symbol.equals("ETH") && !Utils.isCustomNetwork(mChainId)) {
                 // We have added ETH already
                 continue;
             }

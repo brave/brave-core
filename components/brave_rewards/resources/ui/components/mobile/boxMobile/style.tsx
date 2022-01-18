@@ -190,6 +190,7 @@ export const ToggleRow = styled('div')<StyleProps>`
 `
 
 export const ToggleHeader = styled('div')<StyleProps>`
+  padding: ${p => p.detailView ? '16px' : '0'} 0;
   width: 100%;
   display: flex;
   align-items: center;

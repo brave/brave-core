@@ -61,6 +61,7 @@ provideStrings({
   // Portfolio SubView
   braveWalletAccounts: 'Accounts',
   braveWalletAccount: 'Account',
+  braveWalletOwner: 'Owner',
   braveWalletTransactions: 'Transactions',
   braveWalletPrice: 'Price',
   braveWalletBack: 'Back',
@@ -170,7 +171,7 @@ provideStrings({
   braveWalletCreateAccountButton: 'Create account',
   braveWalletCreateAccountImportAccount: 'Import $1 account',
   braveWalletCreateAccountTitle: 'Select one of the following account types',
-  braveWalletCreateAccountEthereumDescription: 'Supports ERC compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)',
+  braveWalletCreateAccountEthereumDescription: 'Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)',
   braveWalletCreateAccountSolanaDescription: 'Supports SLP compatible assets on the Solana blockchain',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
 
@@ -391,6 +392,11 @@ provideStrings({
   braveWalletEditGasSetSuggested: 'Set suggested',
   braveWalletEditGasZeroGasPriceWarning: 'Transaction may not be propagated in the network.',
 
+  // Advanced transaction settings
+  braveWalletAdvancedTransactionSettings: 'Advanced settings',
+  braveWalletEditNonce: 'Nonce',
+  braveWalletEditNonceInfo: 'The nonce value will be auto-determined if this field is not specified.',
+
   // Edit permissions
   braveWalletEditPermissionsTitle: 'Edit permissions',
   braveWalletEditPermissionsDescription: 'Spend limit permission allows $1 to withdraw and spend up to the following amount:',
@@ -432,5 +438,10 @@ provideStrings({
   braveWalletTransactionStatusRejected: 'Rejected',
   braveWalletTransactionStatusSubmitted: 'Submitted',
   braveWalletTransactionStatusConfirmed: 'Confirmed',
-  braveWalletTransactionStatusError: 'Error'
+  braveWalletTransactionStatusError: 'Error',
+
+  // NFT Details Page
+  braveWalletNFTDetailBlockchain: 'Blockchain',
+  braveWalletNFTDetailTokenStandard: 'Token standard',
+  braveWalletNFTDetailTokenID: 'Token ID'
 })

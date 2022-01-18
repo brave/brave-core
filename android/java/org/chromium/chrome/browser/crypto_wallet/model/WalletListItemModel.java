@@ -26,6 +26,8 @@ public class WalletListItemModel {
     private double mTotalGasFiat;
     private String[] mAddressesForBitmap;
     private TransactionInfo mTxInfo;
+    private String mChainSymbol;
+    private int mChainDecimals;
 
     public WalletListItemModel(int icon, String title, String subTitle, String text1, String text2,
             boolean isImportedAccount) {
@@ -86,6 +88,22 @@ public class WalletListItemModel {
 
     public double getTotalGasFiat() {
         return mTotalGasFiat;
+    }
+
+    public void setChainSymbol(String chainSymbol) {
+        mChainSymbol = chainSymbol;
+    }
+
+    public String getChainSymbol() {
+        return mChainSymbol;
+    }
+
+    public void setChainDecimals(int chainDecimals) {
+        mChainDecimals = chainDecimals;
+    }
+
+    public int getChainDecimals() {
+        return mChainDecimals;
     }
 
     public void setTxStatus(String txStatus) {

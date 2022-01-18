@@ -1,6 +1,7 @@
 build/commands/ @bridiver
 patches/ @brave/patch-reviewers
 chromium_src/ @brave/chromium-src-reviewers
+script/audit_deps.py @brave/sec-team
 script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
 /README.md @bsclifton

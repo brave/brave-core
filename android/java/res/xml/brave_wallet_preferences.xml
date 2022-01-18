@@ -7,15 +7,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <PreferenceCategory
-        android:key="brave_wallet_privacy_section"
-        android:title="@string/brave_wallet_settings_privacy_section"/>
-
     <org.chromium.chrome.browser.settings.BraveWalletAutoLockPreferences
         android:key="pref_brave_wallet_autolock"
         android:title="@string/brave_wallet_settings_autolock_option"
         android:positiveButtonText="@string/brave_wallet_confirm_text"
         android:negativeButtonText="@string/cancel"  />
+
+    <Preference
+        android:fragment="org.chromium.chrome.browser.settings.BraveWalletNetworksPreferenceFragment"
+        android:key="pref_brave_wallet_networks"
+        android:order="1"
+        android:title="@string/brave_wallet_networks_title"
+        android:summary="@string/brave_wallet_networks_summary" />
 
     <org.chromium.chrome.browser.settings.BraveWalletResetPreference
         android:key="pref_brave_wallet_reset"

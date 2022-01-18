@@ -212,6 +212,8 @@ source_set("ads") {
     "src/bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_viewed.cc",
     "src/bat/ads/internal/ad_events/promoted_content_ads/promoted_content_ad_event_viewed.h",
     "src/bat/ads/internal/ad_pacing/ad_pacing.h",
+    "src/bat/ads/internal/ad_pacing/ad_pacing_random_util.cc",
+    "src/bat/ads/internal/ad_pacing/ad_pacing_random_util.h",
     "src/bat/ads/internal/ad_pacing/ad_pacing_util.h",
     "src/bat/ads/internal/ad_priority/ad_priority.h",
     "src/bat/ads/internal/ad_priority/ad_priority_util.h",

@@ -27,6 +27,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
@@ -155,6 +156,13 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                         BuySendSwapActivity.ActivityType.SWAP, mAssetSymbol);
             }
         });
+        if (!Utils.isCustomNetwork(mChainId)) {
+            btnBuy.setVisibility(View.VISIBLE);
+            btnSwap.setVisibility(View.VISIBLE);
+        } else {
+            btnBuy.setVisibility(View.GONE);
+            btnSwap.setVisibility(View.GONE);
+        }
 
         RadioGroup radioGroup = findViewById(R.id.asset_duration_radio_group);
         checkedTimeframeType = radioGroup.getCheckedRadioButtonId();
@@ -223,12 +231,13 @@ public class AssetDetailActivity extends AsyncInitializationActivity
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
         KeyringService keyringService = getKeyringService();
         if (keyringService != null) {
-            keyringService.getDefaultKeyringInfo(keyringInfo -> {
+            keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
                 if (keyringInfo != null) {
                     AccountInfo[] accountInfos = keyringInfo.accountInfos;
                     Utils.setUpTransactionList(accountInfos, mAssetRatioService, mEthTxService,
                             null, null, mAssetSymbol, mContractAddress, mAssetDecimals,
-                            findViewById(R.id.rv_transactions), this, this, null);
+                            findViewById(R.id.rv_transactions), this, this, mChainId,
+                            mJsonRpcService);
 
                     SingleTokenBalanceHelper singleTokenBalanceHelper =
                             new SingleTokenBalanceHelper(

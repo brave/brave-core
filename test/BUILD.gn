@@ -764,6 +764,7 @@ if (!is_android) {
       "//brave/components/debounce/browser",
       "//brave/components/debounce/common",
       "//brave/components/resources:strings_grit",
+      "//brave/components/skus/common",
       "//brave/components/tor",
       "//brave/renderer/test:browser_tests",
       "//brave/vendor/bat-native-ads",

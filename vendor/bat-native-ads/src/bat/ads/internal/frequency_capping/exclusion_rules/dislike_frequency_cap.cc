@@ -37,7 +37,7 @@ std::string DislikeFrequencyCap::GetLastMessage() const {
 }
 
 bool DislikeFrequencyCap::DoesRespectCap(const CreativeAdInfo& creative_ad) {
-  const FilteredAdvertiserList filtered_advertisers =
+  const FilteredAdvertiserList& filtered_advertisers =
       Client::Get()->GetFilteredAdvertisers();
   if (filtered_advertisers.empty()) {
     return true;

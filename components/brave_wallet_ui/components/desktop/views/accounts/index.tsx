@@ -53,6 +53,9 @@ import {
   PortfolioTransactionItem
 } from '../../'
 
+// Hooks
+import { useBalance } from '../../../../common/hooks'
+
 export interface Props {
   accounts: WalletAccountType[]
   transactions: AccountTransactions
@@ -99,6 +102,8 @@ function Accounts (props: Props) {
     onSpeedupTransaction,
     onCancelTransaction
   } = props
+
+  const getBalance = useBalance(selectedNetwork)
 
   const groupById = (accounts: WalletAccountType[], key: string) => {
     return accounts.reduce((result, obj) => {
@@ -175,7 +180,10 @@ function Accounts (props: Props) {
     }
   }, [selectedAccount, transactions])
 
-  const erc271Tokens = React.useMemo(() => selectedAccount?.tokens.filter((token) => token.asset.isErc721), [selectedAccount])
+  const erc271Tokens = React.useMemo(() =>
+    userVisibleTokensInfo.filter((token) => token.isErc721),
+    [userVisibleTokensInfo]
+  )
 
   return (
     <StyledWrapper>
@@ -275,13 +283,13 @@ function Accounts (props: Props) {
           </WalletInfoRow>
           <SubviewSectionTitle>{getLocale('braveWalletAccountsAssets')}</SubviewSectionTitle>
           <SubDivider />
-          {selectedAccount.tokens.filter((token) => !token.asset.isErc721).map((item) =>
+          {userVisibleTokensInfo.filter((token) => !token.isErc721).map((item) =>
             <PortfolioAssetItem
               spotPrices={transactionSpotPrices}
               defaultCurrencies={defaultCurrencies}
-              key={item.asset.contractAddress}
-              assetBalance={item.assetBalance}
-              token={item.asset}
+              key={item.contractAddress}
+              assetBalance={getBalance(selectedAccount, item)}
+              token={item}
             />
           )}
           {erc271Tokens?.length !== 0 &&
@@ -293,9 +301,9 @@ function Accounts (props: Props) {
                 <PortfolioAssetItem
                   spotPrices={transactionSpotPrices}
                   defaultCurrencies={defaultCurrencies}
-                  key={item.asset.contractAddress}
-                  assetBalance={item.assetBalance}
-                  token={item.asset}
+                  key={item.contractAddress}
+                  assetBalance={getBalance(selectedAccount, item)}
+                  token={item}
                 />
               )}
               <Spacer />

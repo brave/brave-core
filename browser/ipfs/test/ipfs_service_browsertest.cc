@@ -30,6 +30,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
@@ -950,11 +951,22 @@ IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOn) {
   browser()->profile()->GetPrefs()->SetBoolean(kIPFSAutoRedirectGateway, true);
   GURL gateway = GetURL("b.com", "/");
   SetIPFSDefaultGatewayForTest(gateway);
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GetURL("a.com", "/simple.html")));
+  auto tab_url = GetURL("a.com", "/simple.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(contents->GetURL().host(), gateway.host());
+  EXPECT_EQ(contents->GetURL().host(), tab_url.host());
+
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+  tab_url = GURL("ipfs://Qmc2JTQo4iXf24g98otZmGFQq176eQ2Cdbb88qA5ToMEvC/2");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+  auto domain = GetDomainAndRegistry(
+      contents->GetURL(),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+
+  EXPECT_EQ(domain, gateway.host());
 }
 
 IN_PROC_BROWSER_TEST_F(IpfsServiceBrowserTest, TopLevelAutoRedirectsOff) {

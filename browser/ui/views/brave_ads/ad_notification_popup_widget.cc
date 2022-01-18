@@ -19,8 +19,10 @@ namespace brave_ads {
 
 AdNotificationPopupWidget::AdNotificationPopupWidget() = default;
 
-void AdNotificationPopupWidget::InitWidget(views::WidgetDelegate* delegate,
-                                           const gfx::Rect& bounds) {
+void AdNotificationPopupWidget::InitWidget(
+    views::WidgetDelegate* delegate,
+    const gfx::Rect& bounds,
+    gfx::NativeWindow browser_native_window) {
   DCHECK(delegate);
 
   views::Widget::InitParams params;
@@ -37,6 +39,7 @@ void AdNotificationPopupWidget::InitWidget(views::WidgetDelegate* delegate,
   params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
 #endif  // defined(OS_LINUX)
   params.bounds = bounds;
+  params.context = browser_native_window;
 
 #if defined(OS_WIN)
   // We want to ensure that this toast always goes to the native desktop,
@@ -49,15 +52,6 @@ void AdNotificationPopupWidget::InitWidget(views::WidgetDelegate* delegate,
 #endif  // defined(OS_WIN)
 
   Init(std::move(params));
-}
-
-const ui::NativeTheme* AdNotificationPopupWidget::GetNativeTheme() const {
-  // Ad notification popup widget is created without parent and context
-  // specified. In this case default implementation for Linux uses
-  // system theme which is not suitable for us. Therefore we return browser
-  // native theme instance directly. This is a workaround until we pass a proper
-  // parent or context on widget creation.
-  return ui::NativeTheme::GetInstanceForNativeUi();
 }
 
 }  // namespace brave_ads

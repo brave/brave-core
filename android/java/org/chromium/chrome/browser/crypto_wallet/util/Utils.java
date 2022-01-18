@@ -220,7 +220,37 @@ public class Utils {
         activity.startActivity(assetDetailIntent);
     }
 
-    public static String[] getNetworksList(Activity activity) {
+    public static EthereumChain[] getCustomNetworks(EthereumChain[] chains) {
+        List<EthereumChain> al = new ArrayList<EthereumChain>();
+        for (EthereumChain chain : chains) {
+            if (isCustomNetwork(chain.chainId)) {
+                al.add(chain);
+            }
+        }
+
+        EthereumChain[] arr = new EthereumChain[al.size()];
+        arr = al.toArray(arr);
+
+        return arr;
+    }
+
+    public static boolean isCustomNetwork(String chainId) {
+        switch (chainId) {
+            case BraveWalletConstants.RINKEBY_CHAIN_ID:
+            case BraveWalletConstants.ROPSTEN_CHAIN_ID:
+            case BraveWalletConstants.GOERLI_CHAIN_ID:
+            case BraveWalletConstants.KOVAN_CHAIN_ID:
+            case BraveWalletConstants.LOCALHOST_CHAIN_ID:
+            case BraveWalletConstants.MAINNET_CHAIN_ID:
+                return false;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+    public static String[] getNetworksList(Activity activity, EthereumChain[] customNetworks) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet).toString());
         categories.add(activity.getText(R.string.rinkeby).toString());
@@ -231,11 +261,15 @@ public class Utils {
         if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
             categories.add(activity.getText(R.string.localhost).toString());
         }
+        for (EthereumChain chain : customNetworks) {
+            categories.add(chain.chainName);
+        }
 
         return categories.toArray(new String[0]);
     }
 
-    public static String[] getNetworksAbbrevList(Activity activity) {
+    public static String[] getNetworksAbbrevList(
+            Activity activity, EthereumChain[] customNetworks) {
         List<String> categories = new ArrayList<String>();
         categories.add(activity.getText(R.string.mainnet_short).toString());
         categories.add(activity.getText(R.string.rinkeby_short).toString());
@@ -246,11 +280,15 @@ public class Utils {
         if (0 != (activity.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE)) {
             categories.add(activity.getText(R.string.localhost).toString());
         }
+        for (EthereumChain chain : customNetworks) {
+            categories.add(chain.chainName);
+        }
 
         return categories.toArray(new String[0]);
     }
 
-    public static CharSequence getNetworkText(Activity activity, String chain_id) {
+    public static CharSequence getNetworkText(
+            Activity activity, String chain_id, EthereumChain[] customNetworks) {
         CharSequence strNetwork = activity.getText(R.string.mainnet);
         switch (chain_id) {
             case BraveWalletConstants.RINKEBY_CHAIN_ID:
@@ -269,8 +307,15 @@ public class Utils {
                 strNetwork = activity.getText(R.string.localhost);
                 break;
             case BraveWalletConstants.MAINNET_CHAIN_ID:
-            default:
                 strNetwork = activity.getText(R.string.mainnet);
+                break;
+            default:
+                for (EthereumChain chain : customNetworks) {
+                    if (chain_id.equals(chain.chainId)) {
+                        strNetwork = chain.chainName;
+                        break;
+                    }
+                }
         }
 
         return strNetwork;
@@ -318,18 +363,25 @@ public class Utils {
         }
     }
 
-    public static String getNetworkConst(Activity activity, String network) {
+    public static String getNetworkConst(
+            Activity activity, String network, EthereumChain[] customNetworks) {
         String networkConst = BraveWalletConstants.MAINNET_CHAIN_ID;
         if (network.equals(activity.getText(R.string.rinkeby).toString())) {
-            networkConst = BraveWalletConstants.RINKEBY_CHAIN_ID;
+            return BraveWalletConstants.RINKEBY_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.ropsten).toString())) {
-            networkConst = BraveWalletConstants.ROPSTEN_CHAIN_ID;
+            return BraveWalletConstants.ROPSTEN_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.goerli).toString())) {
-            networkConst = BraveWalletConstants.GOERLI_CHAIN_ID;
+            return BraveWalletConstants.GOERLI_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.kovan).toString())) {
-            networkConst = BraveWalletConstants.KOVAN_CHAIN_ID;
+            return BraveWalletConstants.KOVAN_CHAIN_ID;
         } else if (network.equals(activity.getText(R.string.localhost).toString())) {
-            networkConst = BraveWalletConstants.LOCALHOST_CHAIN_ID;
+            return BraveWalletConstants.LOCALHOST_CHAIN_ID;
+        }
+
+        for (EthereumChain chain : customNetworks) {
+            if (network.equals(chain.chainName)) {
+                return chain.chainId;
+            }
         }
 
         return networkConst;
@@ -921,74 +973,98 @@ public class Utils {
             BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
             String assetSymbol, String contractAddress, int assetDecimals,
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
-            String chainId) {
-        assert assetRatioService != null;
-        String[] assets = {"eth"};
-        String[] toCurr = {"usd"};
-        assetRatioService.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
-            String tempPrice = "0";
-            if (values.length != 0) {
-                tempPrice = values[0].price;
-            }
-            if ((assetSymbol == null && assetDecimals == 0)
-                    || assetSymbol.toLowerCase(Locale.getDefault()).equals("eth")) {
-                try {
-                    fetchTransactions(accountInfos, Double.valueOf(tempPrice),
-                            Double.valueOf(tempPrice), ethTxService, blockchainRegistry,
-                            contractAddress, rvTransactions, callback, context, assetSymbol,
-                            assetDecimals, chainId, assetRatioService, braveWalletService);
-                } catch (NumberFormatException exc) {
+            String chainId, JsonRpcService jsonRpcService) {
+        assert jsonRpcService != null;
+        jsonRpcService.getAllNetworks(networks -> {
+            String chainSymbol = "ETH";
+            int chainDecimals = 18;
+            for (EthereumChain network : networks) {
+                if (chainId.equals(network.chainId)) {
+                    chainSymbol = network.symbol;
+                    chainDecimals = network.decimals;
+                    break;
                 }
-
-                return;
             }
-            final String ethPrice = tempPrice;
-            assets[0] = assetSymbol.toLowerCase(Locale.getDefault());
-            toCurr[0] = "usd";
+
+            final String finalChainSymbol = chainSymbol;
+            final int finalChainDecimals = chainDecimals;
+            assert assetRatioService != null;
+            String[] assets = {chainSymbol.toLowerCase(Locale.getDefault())};
+            String[] toCurr = {"usd"};
             assetRatioService.getPrice(
-                    assets, toCurr, AssetPriceTimeframe.LIVE, (successAsset, valuesAsset) -> {
-                        String tempPriceAsset = "0";
-                        if (valuesAsset.length != 0) {
-                            tempPriceAsset = valuesAsset[0].price;
+                    assets, toCurr, AssetPriceTimeframe.LIVE, (success, values) -> {
+                        String tempPrice = "0";
+                        if (values.length != 0) {
+                            tempPrice = values[0].price;
                         }
-                        try {
-                            fetchTransactions(accountInfos, Double.valueOf(ethPrice),
-                                    Double.valueOf(tempPriceAsset), ethTxService,
-                                    blockchainRegistry, contractAddress, rvTransactions, callback,
-                                    context, assetSymbol, assetDecimals, chainId, assetRatioService,
-                                    braveWalletService);
-                        } catch (NumberFormatException exc) {
+                        if ((assetSymbol == null && assetDecimals == 0)
+                                || assetSymbol.toLowerCase(Locale.getDefault())
+                                           .equals(finalChainSymbol.toLowerCase(
+                                                   Locale.getDefault()))) {
+                            try {
+                                fetchTransactions(accountInfos, Double.valueOf(tempPrice),
+                                        Double.valueOf(tempPrice), ethTxService, blockchainRegistry,
+                                        contractAddress, rvTransactions, callback, context,
+                                        assetSymbol, assetDecimals, chainId, assetRatioService,
+                                        braveWalletService, finalChainSymbol, finalChainDecimals);
+                            } catch (NumberFormatException exc) {
+                            }
+
+                            return;
                         }
+                        final String chainSymbolPrice = tempPrice;
+                        assets[0] = assetSymbol.toLowerCase(Locale.getDefault());
+                        toCurr[0] = "usd";
+                        assetRatioService.getPrice(assets, toCurr, AssetPriceTimeframe.LIVE,
+                                (successAsset, valuesAsset) -> {
+                                    String tempPriceAsset = "0";
+                                    if (valuesAsset.length != 0) {
+                                        tempPriceAsset = valuesAsset[0].price;
+                                    }
+                                    try {
+                                        fetchTransactions(accountInfos,
+                                                Double.valueOf(chainSymbolPrice),
+                                                Double.valueOf(tempPriceAsset), ethTxService,
+                                                blockchainRegistry, contractAddress, rvTransactions,
+                                                callback, context, assetSymbol, assetDecimals,
+                                                chainId, assetRatioService, braveWalletService,
+                                                finalChainSymbol, finalChainDecimals);
+                                    } catch (NumberFormatException exc) {
+                                    }
+                                });
                     });
         });
     }
 
-    private static void fetchTransactions(AccountInfo[] accountInfos, double ethPrice,
+    private static void fetchTransactions(AccountInfo[] accountInfos, double chainSymbolPrice,
             double assetPrice, EthTxService ethTxService, BlockchainRegistry blockchainRegistry,
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
-            AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
+            AssetRatioService assetRatioService, BraveWalletService braveWalletService,
+            String chainSymbol, int chainDecimals) {
         assert ethTxService != null;
         PendingTxHelper pendingTxHelper =
                 new PendingTxHelper(ethTxService, accountInfos, true, contractAddress);
         pendingTxHelper.fetchTransactions(() -> {
             HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
             if (assetSymbol != null && assetDecimals != 0) {
-                workWithTransactions(accountInfos, ethPrice, assetPrice, rvTransactions, callback,
-                        context, assetSymbol, assetDecimals, pendingTxInfos, null, null, null);
+                workWithTransactions(accountInfos, chainSymbolPrice, assetPrice, rvTransactions,
+                        callback, context, assetSymbol, assetDecimals, pendingTxInfos, null, null,
+                        null, chainSymbol, chainDecimals);
             } else {
-                fetchAssetsPricesDecimals(accountInfos, ethPrice, assetPrice, blockchainRegistry,
-                        rvTransactions, callback, context, pendingTxInfos, chainId,
-                        assetRatioService, braveWalletService);
+                fetchAssetsPricesDecimals(accountInfos, chainSymbolPrice, assetPrice,
+                        blockchainRegistry, rvTransactions, callback, context, pendingTxInfos,
+                        chainId, assetRatioService, braveWalletService, chainSymbol, chainDecimals);
             }
         });
     }
 
-    private static void fetchAssetsPricesDecimals(AccountInfo[] accountInfos, double ethPrice,
-            double assetPrice, BlockchainRegistry blockchainRegistry, RecyclerView rvTransactions,
-            OnWalletListItemClick callback, Context context,
+    private static void fetchAssetsPricesDecimals(AccountInfo[] accountInfos,
+            double chainSymbolPrice, double assetPrice, BlockchainRegistry blockchainRegistry,
+            RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
             HashMap<String, TransactionInfo[]> pendingTxInfos, String chainId,
-            AssetRatioService assetRatioService, BraveWalletService braveWalletService) {
+            AssetRatioService assetRatioService, BraveWalletService braveWalletService,
+            String chainSymbol, int chainDecimals) {
         assert chainId != null;
         assert blockchainRegistry != null;
         TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry, chainId, tokens -> {
@@ -1006,8 +1082,8 @@ public class Utils {
                             String symbol = token.symbol;
                             int decimals = token.decimals;
                             if (txInfo.txType == TransactionType.ERC20_APPROVE) {
-                                symbol = "ETH";
-                                decimals = 18;
+                                symbol = chainSymbol;
+                                decimals = chainDecimals;
                             }
                             if (token.contractAddress.toLowerCase(Locale.getDefault())
                                             .equals(txInfo.txData.baseData.to.toLowerCase(
@@ -1018,35 +1094,37 @@ public class Utils {
                             }
                         }
                     } else {
-                        assets.put(txInfo.id, "ETH");
-                        assetsDecimals.put("ETH", 18);
+                        assets.put(txInfo.id, chainSymbol);
+                        assetsDecimals.put(chainSymbol, chainDecimals);
                     }
                 }
             }
-            fetchAssetsPrices(accountInfos, ethPrice, assetPrice, rvTransactions, callback, context,
-                    pendingTxInfos, assets, assetsDecimals, assetRatioService);
+            fetchAssetsPrices(accountInfos, chainSymbolPrice, assetPrice, rvTransactions, callback,
+                    context, pendingTxInfos, assets, assetsDecimals, assetRatioService, chainSymbol,
+                    chainDecimals);
         });
     }
 
-    private static void fetchAssetsPrices(AccountInfo[] accountInfos, double ethPrice,
+    private static void fetchAssetsPrices(AccountInfo[] accountInfos, double chainSymbolPrice,
             double assetPrice, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, HashMap<String, TransactionInfo[]> pendingTxInfos,
             HashMap<String, String> assets, HashMap<String, Integer> assetsDecimals,
-            AssetRatioService assetRatioService) {
+            AssetRatioService assetRatioService, String chainSymbol, int chainDecimals) {
         AssetsPricesHelper assetsPricesHelper =
                 new AssetsPricesHelper(assetRatioService, new HashSet<String>(assets.values()));
         assetsPricesHelper.fetchPrices(() -> {
-            workWithTransactions(accountInfos, ethPrice, assetPrice, rvTransactions, callback,
-                    context, "", 0, pendingTxInfos, assets, assetsDecimals,
-                    assetsPricesHelper.getAssetsPrices());
+            workWithTransactions(accountInfos, chainSymbolPrice, assetPrice, rvTransactions,
+                    callback, context, "", 0, pendingTxInfos, assets, assetsDecimals,
+                    assetsPricesHelper.getAssetsPrices(), chainSymbol, chainDecimals);
         });
     }
 
-    private static void workWithTransactions(AccountInfo[] accountInfos, double ethPrice,
+    private static void workWithTransactions(AccountInfo[] accountInfos, double chainSymbolPrice,
             double assetPrice, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals,
             HashMap<String, TransactionInfo[]> pendingTxInfos, HashMap<String, String> assets,
-            HashMap<String, Integer> assetsDecimals, HashMap<String, Double> assetsPrices) {
+            HashMap<String, Integer> assetsDecimals, HashMap<String, Double> assetsPrices,
+            String chainSymbol, int chainDecimals) {
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
@@ -1174,7 +1252,9 @@ public class Utils {
                         : Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
                                                    txInfo.txData.baseData.gasPrice),
                                 18);
-                double totalGasFiat = totalGas * ethPrice;
+                double totalGasFiat = totalGas * chainSymbolPrice;
+                itemModel.setChainSymbol(chainSymbol);
+                itemModel.setChainDecimals(chainDecimals);
                 itemModel.setTotalGas(totalGas);
                 itemModel.setTotalGasFiat(totalGasFiat);
                 itemModel.setAddressesForBitmap(txInfo.fromAddress, to);

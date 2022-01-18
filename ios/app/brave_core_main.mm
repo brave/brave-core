@@ -33,6 +33,7 @@
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 #include "ios/chrome/browser/sync/sync_service_factory.h"
+#include "ios/chrome/browser/ui/webui/chrome_web_ui_ios_controller_factory.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/web/public/init/web_main.h"
@@ -92,6 +93,9 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
     ios::GetChromeBrowserProvider().Initialize();
+
+    web::WebUIIOSControllerFactory::RegisterFactory(
+        ChromeWebUIIOSControllerFactory::GetInstance());
 
     [self registerComponentsForUpdate];
 

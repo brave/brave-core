@@ -6,7 +6,6 @@
 import * as React from 'react'
 import { SimpleActionCreator } from 'redux-act'
 import {
-  AccountAssetOptionType,
   BraveWallet,
   GetEthAddrReturnInfo,
   WalletAccountType,
@@ -23,14 +22,14 @@ export default function useSend (
   findENSAddress: (address: string) => Promise<GetEthAddrReturnInfo>,
   findUnstoppableDomainAddress: (address: string) => Promise<GetEthAddrReturnInfo>,
   getChecksumEthAddress: (address: string) => Promise<GetChecksumEthAddressReturnInfo>,
-  sendAssetOptions: AccountAssetOptionType[],
+  sendAssetOptions: BraveWallet.BlockchainToken[],
   selectedAccount: WalletAccountType,
   sendERC20Transfer: SimpleActionCreator<ER20TransferParams>,
   sendTransaction: SimpleActionCreator<SendTransactionParams>,
   sendERC721TransferFrom: SimpleActionCreator<ERC721TransferFromParams>,
   fullTokenList: BraveWallet.BlockchainToken[]
 ) {
-  const [selectedSendAsset, setSelectedSendAsset] = React.useState<AccountAssetOptionType>(sendAssetOptions[0])
+  const [selectedSendAsset, setSelectedSendAsset] = React.useState<BraveWallet.BlockchainToken>(sendAssetOptions[0])
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState('')
   const [toAddress, setToAddress] = React.useState('')
   const [addressError, setAddressError] = React.useState('')
@@ -41,8 +40,8 @@ export default function useSend (
     setSelectedSendAsset(sendAssetOptions[0])
   }, [sendAssetOptions])
 
-  const onSelectSendAsset = (asset: AccountAssetOptionType) => {
-    if (asset.asset.isErc721) {
+  const onSelectSendAsset = (asset: BraveWallet.BlockchainToken) => {
+    if (asset.isErc721) {
       setSendAmount('1')
     } else {
       setSendAmount('')
@@ -164,25 +163,25 @@ export default function useSend (
   }, [toAddressOrUrl, selectedAccount])
 
   const onSubmitSend = () => {
-    selectedSendAsset.asset.isErc20 && sendERC20Transfer({
+    selectedSendAsset.isErc20 && sendERC20Transfer({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, selectedSendAsset.asset.decimals),
-      contractAddress: selectedSendAsset.asset.contractAddress
+      value: toWeiHex(sendAmount, selectedSendAsset.decimals),
+      contractAddress: selectedSendAsset.contractAddress
     })
 
-    selectedSendAsset.asset.isErc721 && sendERC721TransferFrom({
+    selectedSendAsset.isErc721 && sendERC721TransferFrom({
       from: selectedAccount.address,
       to: toAddress,
       value: '',
-      contractAddress: selectedSendAsset.asset.contractAddress,
-      tokenId: selectedSendAsset.asset.tokenId ?? ''
+      contractAddress: selectedSendAsset.contractAddress,
+      tokenId: selectedSendAsset.tokenId ?? ''
     })
 
-    !selectedSendAsset.asset.isErc721 && !selectedSendAsset.asset.isErc20 && sendTransaction({
+    !selectedSendAsset.isErc721 && !selectedSendAsset.isErc20 && sendTransaction({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, selectedSendAsset.asset.decimals)
+      value: toWeiHex(sendAmount, selectedSendAsset.decimals)
     })
 
     setToAddressOrUrl('')

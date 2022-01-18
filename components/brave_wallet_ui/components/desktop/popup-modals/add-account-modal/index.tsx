@@ -45,11 +45,13 @@ export interface Props {
   hasImportError: boolean
   accounts: WalletAccountType[]
   tab: AddAccountNavTypes
+  selectedNetwork: BraveWallet.EthereumChain
 }
 
 const AddAccountModal = (props: Props) => {
   const {
     accounts,
+    selectedNetwork,
     hasImportError,
     tab,
     onClose,
@@ -69,7 +71,7 @@ const AddAccountModal = (props: Props) => {
   const [accountName, setAccountName] = React.useState<string>(suggestedAccountName)
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [password, setPassword] = React.useState<string>('')
-  const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(undefined)
+  const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(CreateAccountOptions()[0])
   const passwordInputRef = React.useRef<HTMLInputElement>(null)
 
   const importError = React.useMemo(() => {
@@ -303,6 +305,7 @@ const AddAccountModal = (props: Props) => {
               preAddedHardwareWalletAccounts={
                 accounts.filter(account => ['Ledger', 'Trezor'].includes(account.accountType))
               }
+              selectedNetwork={selectedNetwork}
             />
           }
         </StyledWrapper>

@@ -177,6 +177,7 @@ std::vector<uint8_t> HDKeyring::SignMessage(const std::string& address,
   return signature;
 }
 
+// static
 bool HDKeyring::RecoverAddress(const std::vector<uint8_t>& message,
                                const std::vector<uint8_t>& signature,
                                std::string* address) {

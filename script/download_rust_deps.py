@@ -148,6 +148,11 @@ def cargo_install(tool):
     cargo_args.append(cargo_bin)
     cargo_args.append("install")
     cargo_args.append(tool["name"])
+    if "path" in tool:
+        cargo_args.append("--path")
+        cargo_args.append(tool["path"])
+        cargo_args.append("--target-dir")
+        cargo_args.append(os.path.join(RUSTUP_HOME, ".build"))
     if "version" in tool:
         cargo_args.append("--version")
         cargo_args.append(tool["version"])
@@ -174,10 +179,23 @@ def main():
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
 
+    cxx_path = os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1')
+
+    with open(os.path.join(cxx_path, "README.chromium")) as readme_file:
+        _VERSION_PREFIX = "Version: "
+        for line in readme_file:
+            if not line.startswith(_VERSION_PREFIX):
+                continue
+            cxx_version = line[len(_VERSION_PREFIX):].strip()
+
     tools = [
         {
             "name": "cbindgen",
             "version": "0.14.2",
+        },
+        {
+            "name": "cxxbridge-cmd",
+            "version": cxx_version,
         },
         {
             "name": "cargo-audit",

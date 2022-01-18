@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index b137978b640cd18c6a8566b4c53991e9581ecece..2835115e1a4a02217a9cef65a986a6c1d17dfa3e 100644
+index 77bcd0dd7ddddfea030d71c31956f873d4ac778a..8acd9798468ea1aeb8b5818d0435f09289688d87 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -170,6 +170,7 @@ if (!is_android && !is_mac) {
@@ -69,14 +69,14 @@ index b137978b640cd18c6a8566b4c53991e9581ecece..2835115e1a4a02217a9cef65a986a6c1
        }
  
        extra_substitutions = [
-@@ -1163,6 +1170,7 @@ if (is_win) {
-     if (is_chrome_branded) {
-       bundle_deps += [ ":preinstalled_apps" ]
-     }
-+    bundle_deps += [ "//brave:framework_bundle_data" ] if (defined(chrome_framework_version)) { framework_contents += [ "Frameworks", ] }
+@@ -1171,6 +1178,7 @@ if (is_win) {
+       chrome_dylib_version,
+       "-Wl,-order_file," + rebase_path("app/framework.order", root_build_dir),
+     ]
++    import("//brave/browser/sources.gni") public_deps += brave_chrome_framework_public_deps bundle_deps += brave_chrome_framework_bundle_deps framework_contents += brave_chrome_framework_contents ldflags += brave_chrome_framework_ldflags
  
-     ldflags = [
-       "-compatibility_version",
+     if (!is_component_build) {
+       # Specify a sensible install_name for static builds. The library is
 @@ -1342,6 +1350,7 @@ if (is_win) {
  
  group("browser_dependencies") {

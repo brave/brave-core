@@ -7,14 +7,15 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PACING_AD_PACING_UTIL_H_
 
 #include "base/rand_util.h"
+#include "bat/ads/internal/ad_pacing/ad_pacing_random_util.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
 
 template <typename T>
 bool ShouldPaceAd(const T& ad) {
-  const double rand = base::RandDouble();
-  if (rand <= ad.ptr) {
+  const double rand = GenerateAdPacingRandomNumber();
+  if (rand < ad.ptr) {
     return false;
   }
 
