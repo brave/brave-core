@@ -303,7 +303,7 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   }
 
   brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
-  std::string sync_code = brave_sync_prefs.GetSeed();
+  std::string sync_code = brave_sync_prefs.GetSeed(nullptr);
   DCHECK_NE(sync_code.size(), 0u);
 
   if (service->GetUserSettings()->IsPassphraseRequired()) {

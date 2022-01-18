@@ -102,7 +102,9 @@ std::string Prefs::GetSeedPath() {
   return kSyncV2Seed;
 }
 
-std::string Prefs::GetSeed() const {
+std::string Prefs::GetSeed(bool* failed_to_decrypt) const {
+  if (failed_to_decrypt)
+    *failed_to_decrypt = false;
   const std::string encoded_seed = pref_service_->GetString(kSyncV2Seed);
   std::string encrypted_seed;
   if (!base::Base64Decode(encoded_seed, &encrypted_seed)) {
@@ -112,6 +114,8 @@ std::string Prefs::GetSeed() const {
   std::string seed;
   if (!OSCrypt::DecryptString(encrypted_seed, &seed)) {
     LOG(ERROR) << "Decrypt sync seed failure";
+    if (failed_to_decrypt)
+      *failed_to_decrypt = true;
     return std::string();
   }
   return seed;
