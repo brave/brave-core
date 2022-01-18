@@ -23,7 +23,7 @@ def main():
         if args.verbose:
             enable_verbose_mode()
         if args.install:
-            execute_stdout([NPM, 'install'], env=env)
+            execute_stdout([NPM, 'install', '--no-save'], env=env)
         if args.build:
             execute_stdout([NPM, 'run', 'build-module'], env=env)
 
