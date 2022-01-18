@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.h b/chrome/browser/sync/chrome_sync_client.h
+index 7b5e1b73b3c84ec537560d83033f2bb8157e7f7f..5e00b4cfd3431069efcf8bd81fee3a52e54c0a1e 100644
+--- a/chrome/browser/sync/chrome_sync_client.h
++++ b/chrome/browser/sync/chrome_sync_client.h
+@@ -69,6 +69,7 @@ class ChromeSyncClient : public browser_sync::BrowserSyncClient {
+   syncer::SyncApiComponentFactory* GetSyncApiComponentFactory() override;
+   syncer::SyncTypePreferenceProvider* GetPreferenceProvider() override;
+   void OnLocalSyncTransportDataCleared() override;
++  void SetDefaultEnabledTypes(syncer::SyncService* sync_service) override;
+ 
+ #if BUILDFLAG(IS_CHROMEOS_LACROS)
+   // Allow app sync on profiles other than the main profile.
