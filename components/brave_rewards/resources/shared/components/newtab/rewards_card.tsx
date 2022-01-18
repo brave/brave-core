@@ -8,14 +8,13 @@ import { LocaleContext, formatMessage } from '../../lib/locale_context'
 import { GrantInfo } from '../../lib/grant_info'
 import { BatIcon } from '../icons/bat_icon'
 import { SettingsIcon } from '../icons/settings_icon'
-import { CloseIcon } from '../icons/close_icon'
-import { MoneyBagIcon } from '../icons/money_bag_icon'
 import { InfoIcon } from './icons/info_icon'
 import { TermsOfService } from '../terms_of_service'
 import { AsyncButton } from './async_button'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { NewTabLink } from '../new_tab_link'
+import { GrantOverlay } from './grant_overlay'
 import { PaymentStatusView, shouldRenderPendingRewards } from '../payment_status_view'
 
 import * as urls from '../../lib/rewards_urls'
@@ -47,22 +46,6 @@ function renderDateRange () {
   )
 }
 
-function getGrantMessages (grantInfo: GrantInfo) {
-  if (grantInfo.type === 'ads') {
-    return {
-      title: 'rewardsAdGrantTitle',
-      text: 'rewardsAdGrantText',
-      button: 'rewardsClaimEarnings'
-    }
-  }
-
-  return {
-    title: 'rewardsTokenGrantTitle',
-    text: 'rewardsTokenGrantText',
-    button: 'rewardsClaimTokens'
-  }
-}
-
 export function RewardsCardHeader () {
   const { getString } = React.useContext(LocaleContext)
   return (
@@ -90,64 +73,20 @@ interface Props {
   grantInfo: GrantInfo | null
   onEnableRewards: () => void
   onEnableAds: () => void
-  onDismissGrant: () => void
   onClaimGrant: () => void
 }
 
 export function RewardsCard (props: Props) {
   const { getString } = React.useContext(LocaleContext)
 
-  function renderGrantOverlay () {
-    const { grantInfo } = props
-    if (!grantInfo) {
-      return null
-    }
-
-    const createdAt = grantInfo.createdAt || 0
-    const grantDate = createdAt > 0
-      ? monthDayFormatter.format(createdAt).toLocaleUpperCase()
-      : ''
-
-    const messages = getGrantMessages(grantInfo)
-
-    return (
-      <style.grant>
-        <style.grantHeader>
-          <div>
-            <MoneyBagIcon />{getString(messages.title)}
-          </div>
-          <div>
-            <button onClick={props.onDismissGrant}>
-              <CloseIcon />
-            </button>
-          </div>
-        </style.grantHeader>
-        <style.grantText>
-          <div>
-            {
-              formatMessage(getString(messages.text), [
-                <TokenAmount
-                  key='amount'
-                  amount={grantInfo.amount}
-                  minimumFractionDigits={1}
-                />
-              ])
-            }
-          </div>
-          {grantDate && <style.grantDate>{grantDate}</style.grantDate>}
-        </style.grantText>
-        <style.primaryAction>
-          <button onClick={props.onClaimGrant}>
-            {getString(messages.button)}
-          </button>
-        </style.primaryAction>
-      </style.grant>
-    )
-  }
-
   function renderBalance () {
     if (props.grantInfo && props.grantInfo.amount > 0) {
-      return renderGrantOverlay()
+      return (
+        <GrantOverlay
+          grantInfo={props.grantInfo}
+          onClaim={props.onClaimGrant}
+        />
+      )
     }
 
     const showPending = shouldRenderPendingRewards(

@@ -7,17 +7,14 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import {
-  GrantClaim,
-  GrantComplete,
-  GrantWrapper
-} from '../../ui/components'
-import { Type as PromotionType } from '../../ui/components/grantClaim'
+import { GrantComplete, GrantWrapper } from '../../ui/components'
+import { ClaimGrantView } from '../../page/components/claim_grant_view'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 
+type PromotionType = 'ads' | 'ugp'
 type Step = '' | 'complete'
 
 interface State {
@@ -150,12 +147,17 @@ class Promotion extends React.Component<Props, State> {
       <React.Fragment>
         {
           (this.state.promotionShow && type)
-          ? <GrantClaim
-            type={type}
-            isMobile={true}
-            onClaim={this.onClaim.bind(this, promoId)}
-            loading={this.state.loading}
-          />
+          ? <ClaimGrantView
+              grantInfo={{
+                id: promotion.promotionId,
+                type,
+                amount: promotion.amount,
+                createdAt: promotion.createdAt,
+                claimableUntil: promotion.claimableUntil,
+                expiresAt: promotion.expiresAt
+              }}
+              onClaim={this.onClaim.bind(this, promotion.promotionId)}
+            />
           : null
         }
         {

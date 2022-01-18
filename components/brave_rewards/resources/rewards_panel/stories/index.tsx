@@ -47,6 +47,7 @@ function createHost (): Host {
       grantInfo: {
         id: 'grant123',
         createdAt: Date.now(),
+        claimableUntil: Date.now() + 120_000,
         expiresAt: Date.now() + 120_000,
         amount: 10,
         type: 'ads'
@@ -235,6 +236,31 @@ export function Notification () {
               id: '123',
               timeStamp: Date.now()
             }}
+          />
+        </div>
+      </WithThemeVariables>
+    </LocaleContext.Provider>
+  )
+}
+
+export function GrantNotification () {
+  return (
+    <LocaleContext.Provider value={locale}>
+      <WithThemeVariables>
+        <div style={{ width: '375px' }}>
+          <NotificationCard
+            notification={{
+              type: 'grant-available',
+              id: '123',
+              grantInfo: {
+                id: '123',
+                type: 'ads',
+                amount: 1.25,
+                createdAt: Date.now(),
+                expiresAt: Date.now() + 1000 * 60 * 60 * 24 * 5
+              },
+              timeStamp: Date.now()
+            } as any}
           />
         </div>
       </WithThemeVariables>

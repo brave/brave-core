@@ -17,10 +17,9 @@ export function PendingTipFailed (props: NotificationViewProps) {
     case 'insufficient-funds':
       return (
         <div>
-          <Title
-            style='error'
-            text={getString('notificationPendingTipFailedTitle')}
-          />
+          <Title style='error'>
+            {getString('notificationPendingTipFailedTitle')}
+          </Title>
           <Body>
             {getString('notificationPendingTipFailedText')}
           </Body>

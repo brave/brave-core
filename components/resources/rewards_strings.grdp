@@ -77,20 +77,20 @@
     Your Balance
   </message>
 
-  <message name="IDS_REWARDS_WIDGET_AD_GRANT_TEXT" desc="">
-    You earned <ph name="AMOUNT">$1<ex>1.25 BAT</ex></ph> from viewing Brave Private Ads!
+  <message name="IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT" desc="">
+    <ph name="MONTH">$1<ex>January</ex></ph> Rewards: <ph name="AMOUNT">$2<ex>1.25 BAT</ex></ph>
   </message>
   <message name="IDS_REWARDS_WIDGET_AD_GRANT_TITLE" desc="">
-    Ad earnings received
+    Your <ph name="MONTH">$1<ex>January</ex></ph> Ad Rewards are here!
   </message>
   <message name="IDS_REWARDS_WIDGET_BRAVE_REWARDS" desc="">
     Brave Rewards
   </message>
-  <message name="IDS_REWARDS_WIDGET_CLAIM_EARNINGS" desc="">
-    Claim earnings
+  <message name="IDS_REWARDS_WIDGET_CLAIM_REWARDS" desc="">
+    Claim Rewards
   </message>
   <message name="IDS_REWARDS_WIDGET_CLAIM_TOKENS" desc="">
-    Claim tokens
+    Claim Tokens
   </message>
   <message name="IDS_REWARDS_WIDGET_EARNING" desc="">
     Earning
@@ -103,6 +103,9 @@
   </message>
   <message name="IDS_REWARDS_WIDGET_GIVING" desc="">
     Giving
+  </message>
+  <message name="IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING" desc="">
+    You have <ph name="DAYS">$1<ex>80 days</ex></ph> left to claim
   </message>
   <message name="IDS_REWARDS_WIDGET_LEARN_MORE" desc="">
     Learn more
@@ -131,10 +134,7 @@
   <message name="IDS_REWARDS_WIDGET_TOKEN_BALANCE" desc="">
     Token Balance
   </message>
-  <message name="IDS_REWARDS_WIDGET_TOKEN_GRANT_TEXT" desc="">
-    Use your promotional tokens to contribute to creators before they expire!
-  </message>
   <message name="IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE" desc="">
-    Tokens available
+    A token grant is available!
   </message>
 </grit-part>

@@ -750,6 +750,8 @@ void RewardsDOMHandler::OnFetchPromotions(
     dict->SetString("promotionId", item->id);
     dict->SetInteger("type", static_cast<int>(item->type));
     dict->SetInteger("status", static_cast<int>(item->status));
+    dict->SetInteger("createdAt", item->created_at);
+    dict->SetInteger("claimableUntil", item->claimable_until);
     dict->SetInteger("expiresAt", item->expires_at);
     dict->SetDouble("amount", item->approximate_value);
     promotions.Append(std::move(dict));

@@ -13,10 +13,9 @@ export function MonthlyTipCompleted (props: NotificationViewProps) {
 
   return (
     <div>
-      <Title
-        style='funding'
-        text={getString('notificationMonthlyTipCompletedTitle')}
-      />
+      <Title style='funding'>
+        {getString('notificationMonthlyTipCompletedTitle')}
+      </Title>
       <Body>
         {getString('notificationMonthlyTipCompletedText')}
       </Body>
