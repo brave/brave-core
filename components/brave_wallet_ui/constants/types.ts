@@ -101,6 +101,7 @@ export type PanelTypes =
   | 'addSuggestedToken'
   | 'transactions'
   | 'transactionDetails'
+  | 'assets'
 
 export type NavTypes =
   | 'crypto'

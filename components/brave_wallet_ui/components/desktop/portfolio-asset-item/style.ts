@@ -3,7 +3,6 @@ import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/sty
 
 interface StyleProps {
   disabled: boolean
-  isPanel: boolean
 }
 
 export const StyledWrapper = styled(WalletButton) <Partial<StyleProps>>`
@@ -26,12 +25,12 @@ export const NameAndIcon = styled.div`
   flex-direction: row;
 `
 
-export const AssetName = styled.span<Partial<StyleProps>>`
+export const AssetName = styled.span`
   font-family: Poppins;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.isPanel ? p.theme.palette.white : p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
 export const BalanceColumn = styled.div`
@@ -41,20 +40,20 @@ export const BalanceColumn = styled.div`
   flex-direction: column;
 `
 
-export const FiatBalanceText = styled.span<Partial<StyleProps>>`
+export const FiatBalanceText = styled.span`
   font-family: Poppins;
   font-size: 13px;
   line-height: 20px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.isPanel ? p.theme.palette.white : p.theme.color.text01};
+  color: ${(p) => p.theme.color.text01};
 `
 
-export const AssetBalanceText = styled.span<Partial<StyleProps>>`
+export const AssetBalanceText = styled.span`
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.isPanel ? p.theme.palette.white : p.theme.color.text03};
+  color: ${(p) => p.theme.color.text03};
 `
 
 // Construct styled-component using JS object instead of string, for editor

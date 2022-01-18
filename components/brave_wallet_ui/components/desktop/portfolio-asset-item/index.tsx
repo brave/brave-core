@@ -31,7 +31,6 @@ interface Props {
   assetBalance: string
   token: BraveWallet.BlockchainToken
   defaultCurrencies: DefaultCurrencies
-  isPanel?: boolean
 }
 
 const PortfolioAssetItem = (props: Props) => {
@@ -40,8 +39,7 @@ const PortfolioAssetItem = (props: Props) => {
     assetBalance,
     action,
     token,
-    defaultCurrencies,
-    isPanel
+    defaultCurrencies
   } = props
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
@@ -64,13 +62,13 @@ const PortfolioAssetItem = (props: Props) => {
         <StyledWrapper disabled={token.isErc721} onClick={action}>
           <NameAndIcon>
             <AssetIconWithPlaceholder selectedAsset={token} />
-            <AssetName isPanel={isPanel}>{token.name} {token.isErc721 ? hexToNumber(token.tokenId ?? '') : ''}</AssetName>
+            <AssetName>{token.name} {token.isErc721 ? hexToNumber(token.tokenId ?? '') : ''}</AssetName>
           </NameAndIcon>
           <BalanceColumn>
             {!token.isErc721 &&
-              <FiatBalanceText isPanel={isPanel}>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
+              <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
             }
-            <AssetBalanceText isPanel={isPanel}>{formattedAssetBalance}</AssetBalanceText>
+            <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
           </BalanceColumn>
         </StyledWrapper>
       }

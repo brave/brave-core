@@ -7,7 +7,6 @@ import { WalletButton } from '../../shared/style'
 interface StyleProps {
   panelBackground: string
   orb: string
-  isScrolled: boolean
 }
 
 export const StyledWrapper = styled.div<Partial<StyleProps>>`
@@ -16,48 +15,19 @@ export const StyledWrapper = styled.div<Partial<StyleProps>>`
   width: 100%;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   background: ${(p) => p.panelBackground};
-  position: relative;
-`
-
-export const ScrollContainer = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  height: 292px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  position: relative;
-  box-sizing: border-box;
 `
 
 export const CenterColumn = styled.div`
   display: flex;
   width: 100%;
-  min-height: 230px;
+  flex: 1;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   padding: 12px 0px 20px;
   max-width: 300px;
-`
-
-export const AssetContainer = styled.div<Partial<StyleProps>>`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  max-width: 300px;
-  padding-top: 30px;
-  color: ${(p) => p.theme.palette.white};
-  opacity: ${(p) => p.isScrolled ? 1 : 0};
-  transition-duration: 0.4s;
-  transition-timing-function: ease-out;
-  transition-delay: 0s;
 `
 
 export const AccountCircle = styled(WalletButton) <Partial<StyleProps>>`
@@ -192,16 +162,14 @@ export const SwitchIcon = styled.div`
   z-index: 10;
 `
 
-export const MoreAssetsText = styled.span<Partial<StyleProps>>`
+export const MoreAssetsButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
   font-family: Poppins;
   font-size: 12px;
   line-height: 18px;
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.palette.white};
-  opacity: ${(p) => p.isScrolled ? 0 : 0.8};
-  transition-duration: 0.4s;
-  transition-timing-function: ease-out;
-  transition-delay: 0s;
-  position: absolute;
-  bottom: 60px;
 `
