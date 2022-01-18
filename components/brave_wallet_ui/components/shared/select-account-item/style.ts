@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import { WalletButton } from '../style'
+import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
+
 interface StyleProps {
   orb: string
 }
@@ -9,7 +11,7 @@ export const StyledWrapper = styled(WalletButton)`
   width: 100%;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   cursor: pointer;
   outline: none;
   background: none;
@@ -49,4 +51,21 @@ export const AccountCircle = styled.div<StyleProps>`
   background-image: url(${(p) => p.orb});
   background-size: cover;
   margin-right: 8px;
+`
+
+export const BigCheckMark = styled.div`
+  width: 14px;
+  height: 14px;
+  background-color: ${(p) => p.theme.color.text01};
+  -webkit-mask-image: url(${CheckMark});
+  mask-image: url(${CheckMark});
+  margin-right: 8px;
+`
+
+export const LeftSide = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin-right: 6px;
 `
