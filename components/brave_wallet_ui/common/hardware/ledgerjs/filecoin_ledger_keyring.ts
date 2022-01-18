@@ -2,7 +2,6 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-import * as bls from '@noble/bls12-381'
 import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
   LedgerProvider, TransportWrapper
@@ -17,23 +16,6 @@ import {
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
 } from '../types'
-
-function switchEndianness (hexString: string): string | false {
-  const regex = hexString.match(/.{2}/g)
-  if (!regex) {
-    return false
-  }
-  return regex.reverse().join('')
-}
-
-export function extractPublicKeyForBLS (privateKey: string): string {
-  // https://github.com/brave/brave-browser/issues/20024
-  const reversedKey = switchEndianness(privateKey)
-  if (!reversedKey) {
-    return ''
-  }
-  return Buffer.from(bls.getPublicKey(reversedKey)).toString('hex')
-}
 
 export function encodeKeyToHex (key: string): string {
   return Buffer.from(key, 'base64').toString('hex')

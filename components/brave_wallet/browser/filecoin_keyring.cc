@@ -10,9 +10,13 @@
 #include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/bls/buildflags.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/third_party/argon2/src/src/blake2/blake2.h"
 #include "components/base32/base32.h"
+#if BUILDFLAG(ENABLE_RUST_BLS)
+#include "brave/components/bls/rs/src/lib.rs.h"
+#endif
 
 namespace {
 
@@ -35,7 +39,6 @@ std::vector<uint8_t> BlakeHash(const std::vector<uint8_t>& payload,
   }
   return result;
 }
-
 }  // namespace
 
 namespace brave_wallet {
@@ -49,22 +52,33 @@ FilecoinKeyring::Type FilecoinKeyring::type() const {
 
 std::string FilecoinKeyring::ImportFilecoinBLSAccount(
     const std::vector<uint8_t>& private_key,
-    const std::vector<uint8_t>& public_key,
     const std::string& network) {
-  if (private_key.empty() || public_key.empty()) {
+#if BUILDFLAG(ENABLE_RUST_BLS)
+  if (private_key.empty()) {
     return std::string();
   }
 
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
   if (!hd_key)
     return std::string();
+
   int protocol = static_cast<int>(mojom::FilecoinAddressProtocol::BLS);
+  std::array<uint8_t, 32> payload;
+  std::copy_n(private_key.begin(), 32, payload.begin());
+  auto result = fil_private_key_public_key(payload);
+  std::vector<uint8_t> public_key(result.begin(), result.end());
+  if (std::all_of(public_key.begin(), public_key.end(),
+                  [](int i) { return i == 0; }))
+    return std::string();
   std::string address = network + std::to_string(protocol) +
                         CreateAddressWithProtocol(public_key, protocol);
   if (!AddImportedAddress(address, std::move(hd_key))) {
     return std::string();
   }
   return address;
+#else
+  return std::string();
+#endif
 }
 
 std::string FilecoinKeyring::ImportFilecoinSECP256K1Account(

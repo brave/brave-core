@@ -31,7 +31,6 @@ class FilecoinKeyring : public HDKeyring {
       const std::vector<uint8_t>& input_key,
       const std::string& network);
   std::string ImportFilecoinBLSAccount(const std::vector<uint8_t>& private_key,
-                                       const std::vector<uint8_t>& public_key,
                                        const std::string& network);
   void ImportFilecoinAccount(const std::vector<uint8_t>& input_key,
                              const std::string& address);

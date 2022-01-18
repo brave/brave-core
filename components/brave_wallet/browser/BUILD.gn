@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//brave/components/bls/buildflags.gni")
 import("//brave/components/brave_wallet/browser/config.gni")
 import("//build/config/features.gni")
 
@@ -89,6 +90,8 @@ static_library("browser") {
     ":transaction",
     "//base",
     "//brave/components/api_request_helper",
+    "//brave/components/bls:buildflags",
+    "//brave/components/bls/rs:cxx",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
