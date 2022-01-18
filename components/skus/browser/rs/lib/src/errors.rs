@@ -62,7 +62,7 @@ impl Display for InternalError {
             }
             InternalError::RetryLater(after) => write!(
                 f,
-                "Retry later{}",
+                "Retry later {}",
                 after
                     .map(|a| format!("after {} ms", a.as_millis()))
                     .unwrap_or_else(|| "".to_string())
