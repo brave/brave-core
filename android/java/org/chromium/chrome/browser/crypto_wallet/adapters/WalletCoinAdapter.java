@@ -23,6 +23,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
@@ -201,6 +202,10 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
         return walletListItemModelList.size();
     }
 
+    public void setWalletCoinAdapterType(AdapterType type) {
+        mType = type;
+    }
+
     public void setWalletListItemModelList(List<WalletListItemModel> walletListItemModelList) {
         this.walletListItemModelList = walletListItemModelList;
         if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST || mType == AdapterType.BUY_ASSETS_LIST
@@ -230,6 +235,19 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
 
     public void setWalletListItemType(int walletListItemType) {
         this.walletListItemType = walletListItemType;
+    }
+
+    public void onTransactionUpdate(TransactionInfo txInfo) {
+        for (int i = 0; i < walletListItemModelList.size(); i++) {
+            WalletListItemModel item = walletListItemModelList.get(i);
+            TransactionInfo transactionInfo = item.getTransactionInfo();
+            if (transactionInfo != null && txInfo.id.equals(transactionInfo.id)) {
+                Utils.updateWalletCoinTransactionItem(item, txInfo, context);
+                walletListItemModelList.set(i, item);
+                notifyItemChanged(i);
+                break;
+            }
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

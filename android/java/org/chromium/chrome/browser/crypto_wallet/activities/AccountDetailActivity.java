@@ -40,6 +40,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.PortfolioHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -54,13 +55,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AccountDetailActivity
-        extends BraveWalletBaseActivity implements OnWalletListItemClick {
+        extends BraveWalletBaseActivity implements OnWalletListItemClick, ApprovedTxObserver {
     private String mAddress;
     private String mName;
     private boolean mIsImported;
     private TextView mAccountText;
     private ExecutorService mExecutor;
     private Handler mHandler;
+    private WalletCoinAdapter mWalletTxCoinAdapter;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -176,7 +178,7 @@ public class AccountDetailActivity
                     Utils.setUpTransactionList(accountInfos, mAssetRatioService, mEthTxService,
                             mBlockchainRegistry, mBraveWalletService, null, null, 0,
                             findViewById(R.id.rv_transactions), this, this, chainId,
-                            mJsonRpcService);
+                            mJsonRpcService, mWalletTxCoinAdapter);
                     break;
                 }
             }
@@ -199,6 +201,7 @@ public class AccountDetailActivity
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
+        initState();
         assert mJsonRpcService != null;
         mJsonRpcService.getChainId(chainId -> {
             setUpAssetList(chainId);
@@ -217,8 +220,11 @@ public class AccountDetailActivity
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(txInfo, mJsonRpcService, this);
+        Utils.openTransaction(txInfo, mJsonRpcService, this, mName);
     }
+
+    @Override
+    public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {}
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -247,5 +253,15 @@ public class AccountDetailActivity
         accountInfo.name = mName;
         accountInfo.isImported = mIsImported;
         return accountInfo;
+    }
+
+    @Override
+    public void onTransactionStatusChanged(TransactionInfo txInfo) {
+        mWalletTxCoinAdapter.onTransactionUpdate(txInfo);
+    }
+
+    private void initState() {
+        mWalletTxCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
     }
 }
