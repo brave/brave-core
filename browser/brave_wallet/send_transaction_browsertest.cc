@@ -310,6 +310,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
   }
 
   void TestUserApproved(const std::string& test_method,
+                        const std::string& data = "",
                         bool skip_restore = false) {
     if (!skip_restore)
       RestoreWallet();
@@ -320,14 +321,14 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
 
     CallEthereumEnable();
     UserGrantPermission(true);
-    ASSERT_TRUE(
-        ExecJs(web_contents(),
-               base::StringPrintf(
-                   "sendTransaction(%s, '%s', "
-                   "'0x084DCb94038af1715963F149079cE011C4B22961', "
-                   "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11');",
-                   observer()->expect_eip1559_tx() ? "true" : "false",
-                   test_method.c_str())));
+    ASSERT_TRUE(ExecJs(
+        web_contents(),
+        base::StringPrintf(
+            "sendTransaction(%s, '%s', "
+            "'0x084DCb94038af1715963F149079cE011C4B22961', "
+            "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11', '%s');",
+            observer()->expect_eip1559_tx() ? "true" : "false",
+            test_method.c_str(), data.c_str())));
     observer()->WaitForNewUnapprovedTx();
     base::RunLoop().RunUntilIdle();
     ASSERT_TRUE(
@@ -418,6 +419,31 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     return transaction_infos;
   }
 
+  void TestSendTransactionError(const std::string& test_method) {
+    RestoreWallet();
+    GURL url =
+        https_server_for_files()->GetURL("a.com", "/send_transaction.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+    EXPECT_TRUE(WaitForLoadStop(web_contents()));
+
+    CallEthereumEnable();
+    UserGrantPermission(true);
+    ASSERT_TRUE(
+        ExecJs(web_contents(),
+               base::StringPrintf(
+                   "sendTransaction(false, '%s', "
+                   "'0x084DCb94038af1715963F149079cE011C4B22961', "
+                   "'0x084DCb94038af1715963F149079cE011C4B22962', '0x11', "
+                   "'invalid');",
+                   test_method.c_str())));
+
+    WaitForSendTransactionResultReady();
+    EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionError()",
+                     content::EXECUTE_SCRIPT_USE_MANUAL_REPLY)
+                  .ExtractString(),
+              "Internal JSON-RPC error");
+  }
+
   void SetNetworkForTesting(const std::string& chain_id) {
     json_rpc_service_->SetCustomNetworkForTesting(
         chain_id, https_server_for_rpc()->base_url());
@@ -458,6 +484,23 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedSendAsync) {
   TestUserApproved("sendAsync");
 }
 
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedRequestData0x) {
+  TestUserApproved("request", "0x");
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedSend1Data0x) {
+  TestUserApproved("send1", "0x1");
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserApprovedSend2Data0x) {
+  TestUserApproved("send2", "0x11");
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+                       UserApprovedSendAsyncData0x) {
+  TestUserApproved("sendAsync", "0x");
+}
+
 IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserRejectedRequest) {
   TestUserRejected("request");
 }
@@ -472,6 +515,24 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserRejectedSend2) {
 
 IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, UserRejectedSendAsync) {
   TestUserRejected("sendAsync");
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+                       SendTransactionErrorRequest) {
+  TestSendTransactionError("request");
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SendTransactionErrorSend1) {
+  TestSendTransactionError("send1");
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SendTransactionErrorSend2) {
+  TestSendTransactionError("send2");
+}
+
+IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
+                       SendTransactionErrorSendAsync) {
+  TestSendTransactionError("sendAsync");
 }
 
 IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, InvalidAddress) {
@@ -662,7 +723,7 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
       {"https://url1.com"}, "TC", "Test Coin", 11, false);
   AddCustomNetwork(browser()->profile()->GetPrefs(), chain.Clone());
 
-  TestUserApproved("request", true /* skip_restore */);
+  TestUserApproved("request", "", true /* skip_restore */);
 }
 
 IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest, SecondEnableCallFails) {

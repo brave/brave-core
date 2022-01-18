@@ -140,7 +140,6 @@ TEST(HexUtilsUnitTest, HexValueToInt256) {
   ASSERT_TRUE(out == (int256_t)expected_val);
 
   // Min int256 value can be represented
-  // expected_val = (int256_t)-1;
   expected_val = std::numeric_limits<int256_t>::min();
   ASSERT_TRUE(HexValueToInt256(
       "0x8000000000000000000000000000000000000000000000000000000000000000",
