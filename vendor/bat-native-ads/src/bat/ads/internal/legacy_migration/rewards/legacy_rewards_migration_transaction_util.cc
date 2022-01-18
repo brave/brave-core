@@ -14,6 +14,7 @@
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/transaction_info.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace rewards {
@@ -26,31 +27,43 @@ TransactionList GetTransactionsForThisMonth(
   return GetTransactionsForDateRange(transactions, from_time, to_time);
 }
 
-TransactionInfo BuildTransactionForUnreconciledTransactionsForPreviousMonths(
+absl::optional<TransactionInfo>
+BuildTransactionForUnreconciledTransactionsForPreviousMonths(
     const TransactionList& transaction_history,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
   const base::Time& from_time = base::Time();
   const base::Time& to_time = GetTimeAtEndOfLastMonth();
 
+  const double value = GetUnreconciledEarningsForDateRange(
+      transaction_history, unblinded_payment_tokens, from_time, to_time);
+  if (value == 0.0) {
+    return absl::nullopt;
+  }
+
   TransactionInfo transaction;
   transaction.id = rewards::kMigrationUnreconciledTransactionId;
   transaction.created_at = base::Time::Now().ToDoubleT();
-  transaction.value = GetUnreconciledEarningsForDateRange(
-      transaction_history, unblinded_payment_tokens, from_time, to_time);
+  transaction.value = value;
   transaction.confirmation_type = ConfirmationType::kViewed;
 
   return transaction;
 }
 
-TransactionInfo BuildTransactionForReconciledTransactionsLastMonth(
+absl::optional<TransactionInfo>
+BuildTransactionForReconciledTransactionsLastMonth(
     const PaymentList& payments) {
   const base::Time& time = GetTimeAtBeginningOfLastMonth();
   const double timestamp = time.ToDoubleT();
 
+  const double value = GetPaymentBalanceForMonth(payments, time);
+  if (value == 0.0) {
+    return absl::nullopt;
+  }
+
   TransactionInfo transaction;
   transaction.id = base::GenerateGUID();
   transaction.created_at = timestamp;
-  transaction.value = GetPaymentBalanceForMonth(payments, time);
+  transaction.value = value;
   transaction.confirmation_type = ConfirmationType::kViewed;
   transaction.reconciled_at = timestamp;
 
