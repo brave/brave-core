@@ -54,7 +54,8 @@ std::string CreateJSONRequestBody(const base::Value& dict) {
 std::string GetSubscriberCredentialFromJson(const std::string& json) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     VLOG(1) << __func__

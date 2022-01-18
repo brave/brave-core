@@ -76,7 +76,8 @@ bool IPFSJSONParser::GetPeersFromJSON(const std::string& json,
                                       std::vector<std::string>* peers) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
@@ -126,7 +127,8 @@ bool IPFSJSONParser::GetAddressesConfigFromJSON(const std::string& json,
                                                 ipfs::AddressesConfig* config) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
@@ -178,7 +180,8 @@ bool IPFSJSONParser::GetRepoStatsFromJSON(const std::string& json,
                                           ipfs::RepoStats* stats) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
@@ -226,7 +229,8 @@ bool IPFSJSONParser::GetNodeInfoFromJSON(const std::string& json,
                                          ipfs::NodeInfo* info) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
   if (!records_v) {
@@ -264,7 +268,8 @@ bool IPFSJSONParser::GetGarbageCollectionFromJSON(const std::string& json,
                                                   std::string* error) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
@@ -294,7 +299,8 @@ bool IPFSJSONParser::GetImportResponseFromJSON(const std::string& json,
                                                ipfs::ImportedData* data) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
@@ -332,7 +338,8 @@ bool IPFSJSONParser::GetParseKeysFromJSON(
   DCHECK(data);
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
@@ -368,7 +375,8 @@ bool IPFSJSONParser::GetParseSingleKeyFromJSON(const std::string& json,
                                                std::string* value) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json
@@ -402,7 +410,8 @@ std::string IPFSJSONParser::PutNewPeerToConfigJSON(const std::string& json,
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     VLOG(1) << "Could not parse JSON, JSON is: " << json;
@@ -454,7 +463,8 @@ bool IPFSJSONParser::GetPeersFromConfigJSON(const std::string& json,
                                             std::vector<std::string>* peers) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     VLOG(1) << "Could not parse JSON, JSON is: " << json;
@@ -501,7 +511,8 @@ std::string IPFSJSONParser::RemovePeerFromConfigJSON(
     const std::string& peer_address) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     VLOG(1) << "Could not parse JSON, JSON is: " << json;
