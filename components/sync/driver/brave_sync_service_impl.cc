@@ -66,11 +66,17 @@ void BraveSyncServiceImpl::StopAndClear() {
   brave_sync_prefs_.Clear();
 }
 
-std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
+std::pair<bool, std::string> BraveSyncServiceImpl::GetSyncCode() {
   bool failed_to_decrypt = false;
   std::string sync_code = brave_sync_prefs_.GetSeed(&failed_to_decrypt);
 
-  if (failed_to_decrypt) {
+  return {!failed_to_decrypt, std::move(sync_code)};
+}
+
+std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
+  auto [decrypt_successful, sync_code] = GetSyncCode();
+
+  if (!decrypt_successful) {
     // Do not try to re-create seed when OSCrypt fails, for example on macOS
     // when the keyring is locked.
     DCHECK(sync_code.empty());
@@ -119,10 +125,7 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
 
     if (!seed.empty()) {
       GetBraveSyncAuthManager()->DeriveSigningKeys(seed);
-      // Default enabled types: Bookmarks
-      syncer::UserSelectableTypeSet selected_types;
-      selected_types.Put(UserSelectableType::kBookmarks);
-      GetUserSettings()->SetSelectedTypes(false, selected_types);
+      sync_client_->SetDefaultEnabledTypes(this);
     } else {
       VLOG(1) << "Brave sync seed cleared";
       GetBraveSyncAuthManager()->ResetKeys();
