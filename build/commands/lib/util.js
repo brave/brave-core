@@ -649,7 +649,7 @@ const util = {
     }
   },
 
-  buildTarget: (options = config.defaultOptions) => {
+  buildTarget: async (options = config.defaultOptions) => {
     console.log('building ' + config.buildTarget + '...')
 
     if (process.platform === 'win32') {
@@ -678,11 +678,17 @@ const util = {
       ninjaOpts.push('-j', config.gomaJValue)
     }
 
-    // The warnings silenced by the regular expressions below occupy many tens of thousands of lines.
-    const headerRegex = options.verbose ? /.^/ : /in compilation unit/
-    const bodyRegex = options.verbose ? /.^/ : /the DIE at offset 0x[0-9a-f]+ has a DW_AT_specification attribute referring to the DIE at offset 0x[0-9a-f]+, which was not marked as a declaration/
+    if (process.stdout.isTTY || options.verbose)
+      util.run('autoninja', ninjaOpts, options)
+    else {
+      // Silence tens of thousands of unnecessary warnings.
+      const headerRegex = options.verbose ? /.^/ : /in compilation unit/
+      const bodyRegex = options.verbose ? /.^/ : /the DIE at offset 0x[0-9a-f]+ has a DW_AT_specification attribute referring to the DIE at offset 0x[0-9a-f]+, which was not marked as a declaration/
 
-    return util.runFiltered('autoninja', ninjaOpts, options, headerRegex, bodyRegex)
+      return util.runFiltered('autoninja', ninjaOpts, options, headerRegex, bodyRegex)
+    }
+
+
   },
 
   generateXcodeWorkspace: (options = config.defaultOptions) => {
