@@ -250,6 +250,38 @@ class DictionaryMojoTypemap(MojoTypemap):
             return d;
         }()""" % args
 
+class BaseDictionaryValueMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsStructKind(kind) and
+                kind.qualified_name == 'mojo_base.mojom.DictionaryValue')
+    def ObjCWrappedType(self):
+        return "NSDictionary<NSString*,NSObject*>*"
+    def ExpectedCppType(self):
+        return "base::Value"
+    def DefaultObjCValue(self, default):
+        return "@{}"
+    def ObjCToCpp(self, accessor):
+        return "brave::BaseValueFromNSDictionary(%s)" % accessor
+    def CppToObjC(self, accessor):
+        return "brave::NSDictionaryFromBaseValue(%s)" % accessor
+
+class BaseListValueMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsStructKind(kind) and
+                kind.qualified_name == 'mojo_base.mojom.ListValue')
+    def ObjCWrappedType(self):
+        return "NSArray*"
+    def ExpectedCppType(self):
+        return "base::Value"
+    def DefaultObjCValue(self, default):
+        return "@[]"
+    def ObjCToCpp(self, accessor):
+        return "brave::BaseValueFromNSArray(%s)" % accessor
+    def CppToObjC(self, accessor):
+        return "brave::NSArrayFromBaseValue(%s)" % accessor
+
 class PendingRemoteMojoTypemap(MojoTypemap):
     @staticmethod
     def IsMojoType(kind):
@@ -283,7 +315,9 @@ _mojo_typemaps = [
     NumberMojoTypemap,
     EnumMojoTypemap,
     ArrayMojoTypemap,
+    BaseListValueMojoTypemap,
     DictionaryMojoTypemap,
+    BaseDictionaryValueMojoTypemap,
     StructMojoTypemap,
     PendingRemoteMojoTypemap,
 ]

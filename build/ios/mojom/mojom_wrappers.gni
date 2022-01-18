@@ -95,6 +95,7 @@ template("mojom_wrappers") {
     public_deps += [
       ":$_generate_wrappers_target",
       "//base",
+      "//brave/build/ios/mojom/util",
       "//net",
       _mojom_target,
     ]

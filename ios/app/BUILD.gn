@@ -52,6 +52,7 @@ source_set("app") {
     "//ios/chrome/browser",
     "//ios/chrome/browser/bookmarks",
     "//ios/chrome/browser/browser_state",
+    "//ios/chrome/browser/content_settings",
     "//ios/chrome/browser/history",
     "//ios/chrome/browser/sync",
     "//ios/chrome/browser/ui/webui:webui_internal",

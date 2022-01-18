@@ -13,13 +13,20 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
+#include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
+#include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/sync/brave_sync_api+private.h"
 #include "brave/ios/browser/api/sync/driver/brave_sync_profile_service+private.h"
+#include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
+#include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
 #include "components/history/core/browser/history_service.h"
@@ -30,6 +37,7 @@
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
+#include "ios/chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/history/history_service_factory.h"
 #include "ios/chrome/browser/history/web_history_service_factory.h"
 #include "ios/chrome/browser/sync/sync_service_factory.h"
@@ -221,6 +229,49 @@ static bool CustomLogHandler(int severity,
   auto* registry = brave_wallet::BlockchainRegistry::GetInstance();
   return [[BraveWalletBlockchainRegistryImpl alloc]
       initWithBlockchainRegistry:registry];
+}
+
+- (nullable id<BraveWalletBraveWalletProvider>)
+    walletProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
+             isPrivateBrowsing:(bool)isPrivateBrowsing {
+  auto* browserState = _mainBrowserState;
+  if (isPrivateBrowsing) {
+    browserState = browserState->GetOffTheRecordChromeBrowserState();
+  }
+
+  auto* json_rpc_service =
+      brave_wallet::JsonRpcServiceFactory::GetServiceForState(browserState);
+  if (!json_rpc_service) {
+    return nil;
+  }
+
+  auto tx_service =
+      brave_wallet::EthTxServiceFactory::GetForBrowserState(browserState);
+  if (!tx_service) {
+    return nil;
+  }
+
+  auto* keyring_service =
+      brave_wallet::KeyringServiceFactory::GetServiceForState(browserState);
+  if (!keyring_service) {
+    return nil;
+  }
+
+  auto* brave_wallet_service =
+      brave_wallet::BraveWalletServiceFactory::GetServiceForState(browserState);
+  if (!brave_wallet_service) {
+    return nil;
+  }
+
+  auto* provider = new brave_wallet::BraveWalletProviderImpl(
+      ios::HostContentSettingsMapFactory::GetForBrowserState(browserState),
+      json_rpc_service, std::move(tx_service), keyring_service,
+      brave_wallet_service,
+      std::make_unique<brave_wallet::BraveWalletProviderDelegateBridge>(
+          delegate),
+      browserState->GetPrefs());
+  return [[BraveWalletBraveWalletProviderImpl alloc]
+      initWithBraveWalletProvider:provider];
 }
 
 @end
