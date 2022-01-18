@@ -51,7 +51,7 @@ TEST_F(BatAdsStatementUtilTest, GetNextPaymentDate) {
 
   // Assert
   const base::Time& expected_next_payment_date =
-      TimeFromString("7 March 2020", /* is_local */ false);
+      TimeFromString("7 March 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 

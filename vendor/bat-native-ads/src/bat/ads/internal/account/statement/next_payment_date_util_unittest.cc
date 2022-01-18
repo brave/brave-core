@@ -53,7 +53,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 
   // Assert
   const base::Time& expected_next_payment_date =
-      TimeFromString("5 February 2020", /* is_local */ false);
+      TimeFromString("5 February 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -80,7 +80,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 
   // Assert
   const base::Time& expected_next_payment_date =
-      TimeFromString("5 March 2020", /* is_local */ false);
+      TimeFromString("5 March 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -110,7 +110,7 @@ TEST_F(BatAdsNextPaymentDateUtilTest,
 
   // Assert
   const base::Time& expected_next_payment_date =
-      TimeFromString("5 February 2020", /* is_local */ false);
+      TimeFromString("5 February 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -138,7 +138,7 @@ TEST_F(
 
   // Assert
   const base::Time& expected_next_payment_date =
-      TimeFromString("5 February 2020", /* is_local */ false);
+      TimeFromString("5 February 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -166,7 +166,7 @@ TEST_F(
 
   // Assert
   const base::Time& expected_next_payment_date =
-      TimeFromString("5 March 2020", /* is_local */ false);
+      TimeFromString("5 March 2020 23:59:59.999", /* is_local */ false);
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
