@@ -1,8 +1,7 @@
 use std::collections::HashMap;
 use std::iter;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
-use chrono::{DateTime, Utc};
 use http::Response;
 
 use crate::errors::*;
@@ -10,13 +9,13 @@ use crate::http::{clone_resp, delay_from_response};
 use crate::sdk::SDK;
 
 struct ExpiringValue<T> {
-    expires_at: DateTime<Utc>,
+    expires_at: Instant,
     value: T,
 }
 
 impl<T> ExpiringValue<T> {
     fn is_expired(&self) -> bool {
-        self.expires_at < Utc::now()
+        self.expires_at < Instant::now()
     }
 }
 
@@ -50,7 +49,7 @@ impl<T> CacheNode<T> {
                 .expect("we already checked and created an entry if it was needed");
         }
         node.data = Some(ExpiringValue {
-            expires_at: Utc::now() + chrono::Duration::seconds(ttl.as_millis() as i64),
+            expires_at: Instant::now() + ttl,
             value,
         });
     }
