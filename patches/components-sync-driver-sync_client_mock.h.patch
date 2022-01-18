@@ -1,0 +1,15 @@
+diff --git a/components/sync/driver/sync_client_mock.h b/components/sync/driver/sync_client_mock.h
+index 95005b21493c578f349422f68eb2112a439d8ca4..e3291e0798322d1262c4963dee561a6c6c60a9f3 100644
+--- a/components/sync/driver/sync_client_mock.h
++++ b/components/sync/driver/sync_client_mock.h
+@@ -49,6 +49,10 @@ class SyncClientMock : public SyncClient {
+               (),
+               (override));
+   MOCK_METHOD(void, OnLocalSyncTransportDataCleared, (), (override));
++  MOCK_METHOD(void,
++              SetDefaultEnabledTypes,
++              (SyncService * sync_service),
++              (override));
+ };
+ 
+ }  // namespace syncer
