@@ -426,6 +426,7 @@ export interface ExpirationPresetObjectType {
 }
 
 export type AmountPresetTypes =
+  | 0
   | 0.25
   | 0.50
   | 0.75

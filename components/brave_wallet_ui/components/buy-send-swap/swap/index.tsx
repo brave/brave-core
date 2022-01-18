@@ -8,7 +8,8 @@ import {
   SlippagePresetObjectType,
   ExpirationPresetObjectType,
   ToOrFromType,
-  SwapValidationErrorType
+  SwapValidationErrorType,
+  AmountPresetTypes
 } from '../../../constants/types'
 import SwapInputComponent from '../swap-input-component'
 import { SwapTooltip } from '../../desktop'
@@ -88,6 +89,7 @@ function Swap (props: Props) {
     onFilterAssetList,
     onQuoteRefresh
   } = props
+  const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>()
 
   const onShowAssetTo = () => {
     onChangeSwapView('assets', 'to')
@@ -138,13 +140,19 @@ function Swap (props: Props) {
   const onReset = () => {
     onInputChange('', 'from')
     onInputChange('', 'to')
+    setPresetAmountValue(0)
+  }
+
+  const setPresetAmountValue = (percent: number) => {
+    setSelectedPreset(percent as AmountPresetTypes)
+    onSelectPresetAmount(percent)
   }
 
   return (
     <StyledWrapper>
       <SwapInputComponent
         componentType='fromAmount'
-        onSelectPresetAmount={onSelectPresetAmount}
+        onSelectPresetAmount={setPresetAmountValue}
         onInputChange={onInputChange}
         selectedAssetInputAmount={fromAmount}
         inputName='from'
@@ -153,6 +161,7 @@ function Swap (props: Props) {
         onShowSelection={onShowAssetFrom}
         validationError={validationError}
         autoFocus={true}
+        selectedPreset={selectedPreset}
       />
       <ArrowButton onClick={onFlipAssets}>
         <ArrowDownIcon />

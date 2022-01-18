@@ -112,5 +112,4 @@ export const ResetRow = styled.div`
   align-items: center;
   width: 100%;
   margin-bottom: 12px;
-
 `

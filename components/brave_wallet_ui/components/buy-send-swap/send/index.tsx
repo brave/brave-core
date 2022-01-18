@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {
+  AmountPresetTypes,
   BraveWallet,
   BuySendSwapViewTypes,
   ToOrFromType
@@ -41,6 +42,7 @@ function Send (props: Props) {
     onSubmit,
     onChangeSendView
   } = props
+  const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>()
 
   const onShowAssets = () => {
     onChangeSendView('assets', 'from')
@@ -54,6 +56,12 @@ function Send (props: Props) {
   const onReset = () => {
     onInputChange('', 'from')
     onInputChange('', 'address')
+    setSelectedPreset(0)
+  }
+
+  const setPresetAmountValue = (percent: number) => {
+    setSelectedPreset(percent as AmountPresetTypes)
+    onSelectPresetAmount(percent)
   }
 
   const insuficientFundsError = React.useMemo((): boolean => {
@@ -67,7 +75,7 @@ function Send (props: Props) {
     <StyledWrapper>
       <SwapInputComponent
         componentType='fromAmount'
-        onSelectPresetAmount={onSelectPresetAmount}
+        onSelectPresetAmount={setPresetAmountValue}
         onInputChange={onInputChange}
         selectedAssetInputAmount={selectedAssetAmount}
         inputName='from'
@@ -75,6 +83,7 @@ function Send (props: Props) {
         selectedAsset={selectedAsset}
         onShowSelection={onShowAssets}
         autoFocus={true}
+        selectedPreset={selectedPreset}
       />
       <SwapInputComponent
         componentType='toAddress'
