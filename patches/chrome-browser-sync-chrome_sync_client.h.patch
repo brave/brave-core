@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.h b/chrome/browser/sync/chrome_sync_client.h
+index c1d0f2108724b8296f79b34263c53a5aa630b4f1..e870824ead28aac024462790ff546d219fd48d39 100644
+--- a/chrome/browser/sync/chrome_sync_client.h
++++ b/chrome/browser/sync/chrome_sync_client.h
+@@ -70,6 +70,7 @@ class ChromeSyncClient : public browser_sync::BrowserSyncClient {
+   syncer::SyncApiComponentFactory* GetSyncApiComponentFactory() override;
+   syncer::SyncTypePreferenceProvider* GetPreferenceProvider() override;
+   void OnLocalSyncTransportDataCleared() override;
++  void SetDefaultEnabledTypes(syncer::SyncService* sync_service) override;
+ 
+  private:
+   // Convenience function used during controller creation.
