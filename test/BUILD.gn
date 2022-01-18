@@ -323,6 +323,7 @@ test("brave_unit_tests") {
       "//components/gcm_driver/gcm_driver_unittest.cc",
 
       # TODO(samartnik): this should work on Android, we will review it once unit tests are set up on CI
+      "//brave/browser/ui/brave_shields_data_controller_unittest.cc",
       "//brave/chromium_src/chrome/browser/external_protocol/external_protocol_handler_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
@@ -333,7 +334,10 @@ test("brave_unit_tests") {
       "//brave/components/omnibox/browser/suggested_sites_provider_unittest.cc",
       "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
     ]
-    deps += [ "//brave/app:brave_generated_resources_grit" ]
+    deps += [
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/components/brave_shields/common:mojom"
+    ]
   }
 
   if (!is_android && !is_ios) {
