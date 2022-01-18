@@ -183,15 +183,18 @@ def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
                 argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                 encoding='utf-8', universal_newlines=True)
         stdout, stderr = process.communicate()
-        if is_verbose_mode():
-            print(stdout)
-        elif process.returncode != 0:
+        if is_verbose_mode() or process.returncode != 0:
+            # Fix any unsupported characters in stdout encoder.
+            printable_stdout = stdout.encode(sys.stdout.encoding,
+                                             'backslashreplace').decode(
+                                                 sys.stdout.encoding)
             # Print the output instead of raising it, so that we get pretty output.
             # Most useful erroroutput from typescript / webpack is in stdout
             # and not stderr.
-            print(stdout)
-            raise RuntimeError('Command \'%s\' failed' %
-                               (' '.join(argv)), stderr)
+            print(printable_stdout)
+            if process.returncode != 0:
+                raise RuntimeError('Command \'%s\' failed' % (' '.join(argv)),
+                                   stderr)
         return stdout
     except subprocess.CalledProcessError as e:
         print('Error in subprocess:')
