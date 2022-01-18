@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.app;
 
 import static com.android.billingclient.api.BillingClient.SkuType.SUBS;
 
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -138,6 +140,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnCalloutDialogFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
@@ -681,11 +684,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
             FrameLayout.LayoutParams newContentButtonLayoutParams = new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-
+            int compensation = ConfigurationUtils.isTablet(this)
+                    ? (getToolbarShadowHeight() > 3) ? 28 : (dpToPx(this, 12))
+                    : getToolbarShadowHeight();
             // position bellow the control_container element (nevigation bar) with
-            // getToolbarShadowHeight compensation
-            inflatedLayoutParams.setMargins(
-                    0, controlContainer.getBottom() - getToolbarShadowHeight(), 0, 0);
+            // compensation
+            inflatedLayoutParams.setMargins(0, controlContainer.getBottom() - compensation, 0, 0);
             newContentButtonLayoutParams.setMargins(0, 600, 0, 0);
             newContentButtonLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
             inflatedSettingsBarLayout.setLayoutParams(inflatedLayoutParams);
