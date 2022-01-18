@@ -30,6 +30,10 @@ class TestAssetRatioController: BraveWalletAssetRatioController {
   func gasOracle(_ completion: @escaping (BraveWallet.GasEstimation1559?) -> Void) {
     completion(nil)
   }
+  
+  func tokenInfo(_ contractAddress: String, completion: @escaping (BraveWallet.ERCToken?) -> Void) {
+    completion(nil)
+  }
 }
 
 #endif

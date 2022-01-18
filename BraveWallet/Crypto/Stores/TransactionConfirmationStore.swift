@@ -68,8 +68,8 @@ public class TransactionConfirmationStore: ObservableObject {
          decimals: Int(selectedChain.decimals)
     ) ?? ""
     if !self.state.gasValue.isEmpty {
-      rpcController.balance(transaction.fromAddress) { [weak self] success, weiBalance in
-        guard let self = self, success else { return }
+      rpcController.balance(transaction.fromAddress) { [weak self] weiBalance, status, _ in
+        guard let self = self, status == .success else { return }
         let formatter = WeiFormatter(decimalFormatStyle: .balance)
         guard let decimalString = formatter.decimalString(
                 for: weiBalance.removingHexPrefix, radix: .hex, decimals: Int(self.selectedChain.decimals)

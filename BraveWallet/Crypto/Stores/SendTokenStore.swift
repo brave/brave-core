@@ -131,8 +131,8 @@ public class SendTokenStore: ObservableObject {
       }
       
       let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
-      func updateBalance(_ success: Bool, _ balance: String) {
-        guard success, let decimalString = balanceFormatter.decimalString(
+      func updateBalance(_ status: BraveWallet.ProviderError, _ balance: String) {
+        guard status == .success, let decimalString = balanceFormatter.decimalString(
           for: balance.removingHexPrefix,
              radix: .hex,
              decimals: Int(token.decimals)
@@ -145,35 +145,35 @@ public class SendTokenStore: ObservableObject {
       self.rpcController.network { network in
         // Get balance for ETH token
         if token.symbol == network.symbol {
-          self.rpcController.balance(accountAddress) { success, balance in
-            guard success else {
+          self.rpcController.balance(accountAddress) { balance, status, _ in
+            guard status == .success else {
               self.selectedSendTokenBalance = nil
               return
             }
-            updateBalance(success, balance)
+            updateBalance(status, balance)
           }
         }
         // Get balance for erc20 token
         else if token.isErc20 {
           self.rpcController.erc20TokenBalance(token.contractAddress,
-                                          address: accountAddress) { success, balance in
-            guard success else {
+                                          address: accountAddress) { balance, status, _ in
+            guard status == .success else {
               self.selectedSendTokenBalance = nil
               return
             }
-            updateBalance(success, balance)
+            updateBalance(status, balance)
           }
         }
         // Get balance for erc721 token
         else if token.isErc721 {
           self.rpcController.erc721TokenBalance(token.contractAddress,
                                                 tokenId: token.id,
-                                                accountAddress: accountAddress) { success, balance in
-            guard success else {
+                                                accountAddress: accountAddress) { balance, status, _ in
+            guard status == .success else {
               self.selectedSendTokenBalance = nil
               return
             }
-            updateBalance(success, balance)
+            updateBalance(status, balance)
           }
         }
       }

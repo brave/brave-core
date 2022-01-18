@@ -52,6 +52,10 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
     completion(false, nil)
   }
   
+  func `import`(from type: BraveWallet.ExternalWalletType, password: String, newPassword: String, completion: @escaping (Bool, String?) -> Void) {
+    completion(false, nil)
+  }
+  
   func defaultWallet(_ completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
     completion(.braveWallet)
   }
@@ -83,11 +87,18 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
     completion([])
   }
   
+  func pendingAddSuggestTokenRequests(_ completion: @escaping ([BraveWallet.AddSuggestTokenRequest]) -> Void) {
+    completion([])
+  }
+  
   func notifySignMessageRequestProcessed(_ approved: Bool, id: Int32) {
   }
   
   func notifySignMessageHardwareRequestProcessed(_ approved: Bool, id: Int32, signature: String, error: String) {
     // Hardware wallets not supported on iOS
+  }
+  
+  func notifyAddSuggestTokenRequestsProcessed(_ approved: Bool, contractAddresses: [String]) {
   }
   
   func defaultBaseCurrency(_ completion: @escaping (String) -> Void) {
@@ -104,5 +115,17 @@ class TestBraveWalletService: BraveWalletBraveWalletService {
   
   func setDefaultBaseCryptocurrency(_ cryptocurrency: String) {
     defaultCryptocurrency = cryptocurrency
+  }
+  
+  func isExternalWalletInstalled(_ type: BraveWallet.ExternalWalletType, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
+  func isExternalWalletInitialized(_ type: BraveWallet.ExternalWalletType, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
+  func addEthereumPermission(_ origin: String, account: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
   }
 }

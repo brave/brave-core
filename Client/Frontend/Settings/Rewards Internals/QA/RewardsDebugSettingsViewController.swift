@@ -285,11 +285,8 @@ class RewardsDebugSettingsViewController: TableViewController {
     
     private func fetchAndClaimPromotions() {
         guard let ledger = rewards.ledger else { return }
-        ledger.fetchPromotions { [weak self] promotions, shouldReconcileAds in
+        ledger.fetchPromotions { [weak self] promotions in
             guard let self = self else { return }
-            if shouldReconcileAds {
-                self.rewards.ads.reconcileAdRewards()
-            }
             let activePromotions = promotions.filter { $0.status == .active }
             if activePromotions.isEmpty {
                 let alert = UIAlertController(title: "Promotions", message: "No Active Promotions Found", preferredStyle: .alert)
@@ -303,7 +300,7 @@ class RewardsDebugSettingsViewController: TableViewController {
             var failuresCount: Int = 0
             for promo in activePromotions {
                 group.enter()
-                ledger.claimPromotion(promo) { success, _ in
+                ledger.claimPromotion(promo) { success in
                     if success {
                         successCount += 1
                         claimedAmount += promo.approximateValue

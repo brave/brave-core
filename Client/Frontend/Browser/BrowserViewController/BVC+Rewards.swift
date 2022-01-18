@@ -136,10 +136,7 @@ extension BrowserViewController {
         guard let ledger = rewards.ledger else { return }
         ledger.pendingPromotions.forEach { promo in
             if promo.status == .active {
-                ledger.claimPromotion(promo) { [weak self] success, shouldReconcileAds in
-                    if shouldReconcileAds {
-                        self?.rewards.ads.reconcileAdRewards()
-                    }
+                ledger.claimPromotion(promo) { success in
                     log.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
                 }
             }

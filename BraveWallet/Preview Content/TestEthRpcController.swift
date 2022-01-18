@@ -32,13 +32,13 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
     completion(networks.first(where: { $0.chainId == self.chainId }) ?? .init())
   }
   
-  func balance(_ address: String, completion: @escaping (Bool, String) -> Void) {
+  func balance(_ address: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     // return fake sufficient ETH balance `0x13e25e19dc20ba7` is about 0.0896 ETH
-    completion(true, "0x13e25e19dc20ba7")
+    completion("0x13e25e19dc20ba7", .success, "")
   }
   
-  func erc20TokenBalance(_ contract: String, address: String, completion: @escaping (Bool, String) -> Void) {
-    completion(true, "10")
+  func erc20TokenBalance(_ contract: String, address: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("10", .success, "")
   }
   
   func unstoppableDomainsProxyReaderGetMany(_ contractAddress: String, domain: String, keys: [String], completion: @escaping (Bool, String) -> Void) {
@@ -82,24 +82,28 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
     completion(true)
   }
   
-  func erc20TokenAllowance(_ contract: String, ownerAddress: String, spenderAddress: String, completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
+  func erc20TokenAllowance(_ contract: String, ownerAddress: String, spenderAddress: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .disconnected, "Error Message")
   }
   
-  func ensGetEthAddr(_ domain: String, completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
+  func ensGetEthAddr(_ domain: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .unknownChain, "Error Message")
   }
   
   func unstoppableDomainsGetEthAddr(_ domain: String, completion: @escaping (Bool, String) -> Void) {
     completion(false, "")
   }
   
-  func erc721Owner(of contract: String, tokenId: String, completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
+  func unstoppableDomainsGetEthAddr(_ domain: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .unknownChain, "Error Message")
   }
   
-  func erc721TokenBalance(_ contractAddress: String, tokenId: String, accountAddress: String, completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
+  func erc721Owner(of contract: String, tokenId: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .unknownChain, "Error Message")
+  }
+  
+  func erc721TokenBalance(_ contractAddress: String, tokenId: String, accountAddress: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .disconnected, "Error Message")
   }
   
   func pendingSwitchChainRequests(_ completion: @escaping ([BraveWallet.SwitchChainRequest]) -> Void) {
