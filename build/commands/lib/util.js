@@ -93,9 +93,11 @@ const util = {
    * header and headers that are not followed by a body line are not silenced.
    */
   runFiltered: (cmd, args=[], options = {}, header=/.^/, body=/.^/) => {
-    Log.command(options.cwd, cmd, args)
+    const cmdOptions = Object.assign({}, options)
+    cmdOptions.stdio = 'pipe'
+    Log.command(cmdOptions.cwd, cmd, args)
     return new Promise((resolve, reject) => {
-      const prog = spawn(cmd, args, options.cmdOptions);
+      const prog = spawn(cmd, args, cmdOptions);
       const out = new util.FilteredStream(
         header, body, data => process.stdout.write(data)
       )
