@@ -180,7 +180,32 @@ const util = {
    *     body2
    *     ...
    * from a stream. It cannot be implemented as one single regex because the stream can arrive in pieces that split the
-   * lines in a way that would make the (multi-line) regex fail.
+   * lines in a way that would make a (multi-line) regex fail.
+   *
+   * The class was tested with the function and inputs below:
+   *
+   * function check(header, body, text, expected, chunkSize=2) {
+   *   let result = ''
+   *   let filter = new FilteredStream(header, body, t => result += t, ' ')
+   *   for (let i = 0; i < text.length; i += chunkSize)
+   *     filter.onData(text.substr(i, chunkSize))
+   *   filter.onClose()
+   *   console.assert(result === expected)
+   * }
+   *
+   *  header  |  body  |  text                            |  expected
+   * =========|========|==================================|====================
+   * /.^/     | /.^/   | 'hello world!'                   | 'hello world!'
+   * /header/ | /body/ | 'start header body body end'     | 'start end'
+   * /header/ | /body/ | 'start header1 header2 body end' | 'start header1 end'
+   * /header/ | /body/ | 'start header body body'         | 'start '
+   * /header/ | /body/ | 'header'                         | 'header'
+   * /header/ | /body/ | 'header1 header2'                | 'header1 header2'
+   * /.^/     | /.^/   | 'hello world! '                  | 'hello world! '
+   * /header/ | /body/ | 'start header body body end '    | 'start end '
+   * /header/ | /body/ | 'start header header body end '  | 'start header end '
+   * /header/ | /body/ | 'header '                        | 'header '
+   * /header/ | /body/ | 'header1 header2 '               | 'header1 header2 '
    */
   FilteredStream: class {
     constructor (headerRegex, bodyRegex, writeFn, delimiter='\n') {
