@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.cc b/chrome/browser/sync/chrome_sync_client.cc
+index b949c22d19dc7ac956ee283645c0a34f78b392be..21d1a8886e9f09cd4f0ce6ea6295af3ca6a1315d 100644
+--- a/chrome/browser/sync/chrome_sync_client.cc
++++ b/chrome/browser/sync/chrome_sync_client.cc
+@@ -78,6 +78,8 @@
+ #include "components/sync/base/sync_util.h"
+ #include "components/sync/driver/model_type_controller.h"
+ #include "components/sync/driver/sync_api_component_factory.h"
++#include "components/sync/driver/sync_service.h"
++#include "components/sync/driver/sync_user_settings.h"
+ #include "components/sync/driver/syncable_service_based_model_type_controller.h"
+ #include "components/sync/model/forwarding_model_type_controller_delegate.h"
+ #include "components/sync/model/model_type_store.h"
+@@ -672,6 +674,16 @@ void ChromeSyncClient::OnLocalSyncTransportDataCleared() {
+   metrics::ClearDemographicsPrefs(profile_->GetPrefs());
+ }
+ 
++void ChromeSyncClient::SetDefaultEnabledTypes(
++    syncer::SyncService* sync_service) {
++  DCHECK(sync_service);
++
++  // Default enabled types: Bookmarks
++  syncer::UserSelectableTypeSet selected_types;
++  selected_types.Put(syncer::UserSelectableType::kBookmarks);
++  sync_service->GetUserSettings()->SetSelectedTypes(false, selected_types);
++}
++
+ #if BUILDFLAG(IS_CHROMEOS_LACROS)
+ // static
+ void ChromeSyncClient::SkipMainProfileCheckForTesting() {
