@@ -20,6 +20,16 @@ interface EventsListener {
   AccountsChangedEvent(array<string> accounts);
 };
 
+// Pre-defined error codes specified in
+// https://www.jsonrpc.org/specification#error_object
+enum JsonRpcError {
+  kParsingError = -32700,    // Parse error - Invalid JSON
+  kInvalidRequest = -32600,  // JSON is not a valid request object
+  kMethodNotFound = -32601,  // Method does not exist
+  kInvalidParams = -32602,   // Invalid method parameters
+  kInternalError = -32603,   // Internal JSON RPC error
+};
+
 // https://eips.ethereum.org/EIPS/eip-1193#provider-errors
 // https://eips.ethereum.org/EIPS/eip-1474#error-codes
 enum ProviderError {
@@ -37,11 +47,11 @@ enum ProviderError {
 
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
-  kParsingError = -32700,    // Parse error - Invalid JSON
-  kInvalidRequest = -32600,  // JSON is not a valid request object
-  kMethodNotFound = -32601,  // Method does not exist
-  kInvalidParams = -32602,   // Invalid method parameters
-  kInternalError = -32603,   // Internal JSON RPC error
+  kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
+  kInvalidRequest = JsonRpcError.kInvalidRequest,  // JSON is not a valid request object
+  kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
+  kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
+  kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
 
   // Implementation-defined server-errors
   kInvalidInput = -32000,        // Missing or invalid parameters
@@ -60,11 +70,11 @@ enum SolanaProviderError {
 
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
-  kParsingError = -32700,    // Parse error - Invalid JSON
-  kInvalidRequest = -32600,  // JSON is not a valid request object
-  kMethodNotFound = -32601,  // Method does not exist
-  kInvalidParams = -32602,   // Invalid method parameters
-  kInternalError = -32603    // Internal JSON RPC error
+  kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
+  kInvalidRequest = JsonRpcError.kInvalidRequest,  // JSON is not a valid request object
+  kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
+  kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
+  kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
 };
 
 // There is one BraveWalletProvider per renderer, the renderer communicates
