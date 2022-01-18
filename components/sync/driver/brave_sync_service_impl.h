@@ -39,6 +39,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
       bool success,
       bool is_first_time_sync_configure) override;
 
+  std::pair<bool, std::string> GetSyncCode();
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
 
