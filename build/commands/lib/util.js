@@ -678,14 +678,9 @@ const util = {
       ninjaOpts.push('-j', config.gomaJValue)
     }
 
-    if (options.verbose) {
-      const headerRegex = /.^/
-      const bodyRegex = /.^/
-    } else {
-      // The warnings below account for many tens of thousands of lines of build output.
-      const headerRegex = /in compilation unit/
-      const bodyRegex = /the DIE at offset 0x[0-9a-f]+ has a DW_AT_specification attribute referring to the DIE at offset 0x[0-9a-f]+, which was not marked as a declaration/
-    }
+    // The warnings silenced by the regular expressions below occupy many tens of thousands of lines.
+    const headerRegex = options.verbose ? /.^/ : /in compilation unit/
+    const bodyRegex = options.verbose ? /.^/ : /the DIE at offset 0x[0-9a-f]+ has a DW_AT_specification attribute referring to the DIE at offset 0x[0-9a-f]+, which was not marked as a declaration/
 
     return util.runFiltered('autoninja', ninjaOpts, options, headerRegex, bodyRegex)
   },
