@@ -27,7 +27,7 @@ export default function useAssets (
   const { computeFiatAmount } = usePricing(spotPrices)
   const getBalance = useBalance(selectedNetwork)
 
-  const assetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
+  const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     return [
       ETH,
 
@@ -79,7 +79,7 @@ export default function useAssets (
   }, [selectedAccount, userVisibleTokensInfo, getBalance, computeFiatAmount])
 
   return {
-    assetOptions,
+    swapAssetOptions,
     sendAssetOptions: userVisibleTokensInfo,
     buyAssetOptions,
     panelUserAssetList

@@ -117,14 +117,19 @@ const EditVisibleAssetsModal = (props: Props) => {
   }
 
   const tokenList = React.useMemo(() => {
-    const visibleContracts = userVisibleTokensInfo.map((token) => token.contractAddress)
-    const fullList = visibleContracts.includes('') ? fullAssetList : [nativeAsset, ...fullAssetList]
-    const notVisibleList = fullList.filter((token) => !visibleContracts.includes(token.contractAddress))
-    return selectedNetwork.chainId !== BraveWallet.MAINNET_CHAIN_ID
-      ? visibleContracts.includes('')
-        ? userVisibleTokensInfo
-        : [...userVisibleTokensInfo, nativeAsset]
-      : [...userVisibleTokensInfo, ...notVisibleList]
+    const userVisibleContracts = userVisibleTokensInfo
+      .map((token) => token.contractAddress.toLowerCase())
+    const fullAssetsListPlusNativeToken = fullAssetList.some(token => token.contractAddress === '')
+      ? fullAssetList
+      : [nativeAsset, ...fullAssetList]
+    const rest = fullAssetsListPlusNativeToken
+      .filter((token) =>
+        !userVisibleContracts.includes(token.contractAddress.toLowerCase()))
+
+    return [
+      ...userVisibleTokensInfo,
+      ...rest
+    ]
   }, [fullAssetList, userVisibleTokensInfo, selectedNetwork])
 
   React.useEffect(() => {
@@ -190,7 +195,8 @@ const EditVisibleAssetsModal = (props: Props) => {
   }
 
   const isUserToken = (token: BraveWallet.BlockchainToken) => {
-    return userVisibleTokensInfo.map(e => e.contractAddress.toLowerCase()).includes(token.contractAddress.toLowerCase())
+    return userVisibleTokensInfo
+      .some(e => e.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
   }
 
   const isAssetSelected = (token: BraveWallet.BlockchainToken): boolean => {
@@ -198,12 +204,12 @@ const EditVisibleAssetsModal = (props: Props) => {
   }
 
   const isCustomToken = React.useCallback((token: BraveWallet.BlockchainToken): boolean => {
-    const assetListContracts = fullAssetList.map((token) => token.contractAddress)
-    if (token.isErc20 || token.isErc721) {
-      return !assetListContracts.includes(token.contractAddress)
-    } else {
+    if (token.contractAddress === '') {
       return false
     }
+
+    return !fullAssetList
+      .some(each => each.contractAddress.toLowerCase() === token.contractAddress.toLowerCase())
   }, [fullAssetList])
 
   const onCheckWatchlistItem = (key: string, selected: boolean, token: BraveWallet.BlockchainToken, isCustom: boolean) => {

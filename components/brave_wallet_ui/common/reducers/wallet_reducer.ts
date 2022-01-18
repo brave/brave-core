@@ -155,7 +155,7 @@ reducer.on(WalletActions.setAllNetworks, (state: any, payload: GetAllNetworksLis
   }
 })
 
-reducer.on(WalletActions.setAllTokensList, (state: any, payload: GetAllTokensReturnInfo) => {
+reducer.on(WalletActions.setAllTokensList, (state: WalletState, payload: GetAllTokensReturnInfo) => {
   return {
     ...state,
     fullTokenList: payload.tokens.map(token => ({
