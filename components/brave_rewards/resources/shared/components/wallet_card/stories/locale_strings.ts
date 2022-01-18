@@ -9,7 +9,7 @@ export const localeStrings = {
   walletCompleteVerificationLink: 'Go to $1 to complete verification',
   walletCompleteVerificationText: 'Please complete identity verification in order to start receiving rewards.',
   walletDisconnected: 'Logged out',
-  walletDisconnectLink: 'Log out from $1',
+  walletDisconnectLink: 'Disconnect from $1',
   walletEstimatedEarnings: 'Estimated Earnings',
   walletLogIntoYourAccount: 'Log into your $1 account',
   walletMonthlyTips: 'Monthly Tips',
