@@ -244,19 +244,20 @@ handler.on(WalletActions.addUserAsset.getType(), async (store: Store, payload: A
   const braveWalletService = getAPIProxy().braveWalletService
   const result = await braveWalletService.addUserAsset(payload.token, payload.chainId)
   store.dispatch(WalletActions.addUserAssetError(!result.success))
-  await refreshBalancesPricesAndHistory(store)
 })
 
 handler.on(WalletActions.removeUserAsset.getType(), async (store: Store, payload: RemoveUserAssetPayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
   await braveWalletService.removeUserAsset(payload.token, payload.chainId)
-  await refreshBalancesPricesAndHistory(store)
 })
 
 handler.on(WalletActions.setUserAssetVisible.getType(), async (store: Store, payload: SetUserAssetVisiblePayloadType) => {
   const braveWalletService = getAPIProxy().braveWalletService
   await braveWalletService.setUserAssetVisible(payload.token, payload.chainId, payload.isVisible)
-  await refreshBalancesPricesAndHistory(store)
+})
+
+handler.on(WalletActions.refreshBalancesAndPriceHistory.getType(), async (store: Store) => {
+  refreshBalancesPricesAndHistory(store)
 })
 
 handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store: Store, payload: BraveWallet.AssetPriceTimeframe) => {

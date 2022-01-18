@@ -13,6 +13,7 @@ import usePricing from './pricing'
 import usePreset from './select-preset'
 import useTokenInfo from './token'
 import useExplorer from './explorer'
+import useAssetManagement from './assets-management'
 
 export {
   useAssets,
@@ -25,5 +26,6 @@ export {
   useSend,
   usePreset,
   useTokenInfo,
-  useExplorer
+  useExplorer,
+  useAssetManagement
 }

@@ -114,3 +114,4 @@ export const cancelTransaction = createAction<BraveWallet.TransactionInfo>('canc
 export const speedupTransaction = createAction<BraveWallet.TransactionInfo>('speedupTransaction')
 export const defaultCurrenciesUpdated = createAction<DefaultCurrencies>('defaultCurrenciesUpdated')
 export const expandWalletNetworks = createAction('expandWalletNetworks')
+export const refreshBalancesAndPriceHistory = createAction('refreshBalancesAndPriceHistory')

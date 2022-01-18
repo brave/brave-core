@@ -53,9 +53,8 @@ export interface Props {
   privateKey: string
   transactionSpotPrices: BraveWallet.AssetPrice[]
   hasImportError: boolean
-  onAddUserAsset: (token: BraveWallet.BlockchainToken) => void
-  onSetUserAssetVisible: (token: BraveWallet.BlockchainToken, isVisible: boolean) => void
-  onRemoveUserAsset: (token: BraveWallet.BlockchainToken) => void
+  onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
+  onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onLockWallet: () => void
   onSetImportError: (hasError: boolean) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
@@ -107,9 +106,6 @@ const CryptoStoryView = (props: Props) => {
     isFetchingPortfolioPriceHistory,
     showVisibleAssetsModal,
     onShowVisibleAssetsModal,
-    onAddUserAsset,
-    onSetUserAssetVisible,
-    onRemoveUserAsset,
     onLockWallet,
     onShowBackup,
     onChangeTimeline,
@@ -129,6 +125,8 @@ const CryptoStoryView = (props: Props) => {
     onImportAccountFromJson,
     onSetImportError,
     onFindTokenInfoByContractAddress,
+    onUpdateVisibleAssets,
+    onAddCustomAsset,
     foundTokenInfoByContractAddress
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
@@ -297,9 +295,6 @@ const CryptoStoryView = (props: Props) => {
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
           addUserAssetError={false}
-          onAddUserAsset={onAddUserAsset}
-          onRemoveUserAsset={onRemoveUserAsset}
-          onSetUserAssetVisible={onSetUserAssetVisible}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
@@ -320,6 +315,8 @@ const CryptoStoryView = (props: Props) => {
           showVisibleAssetsModal={showVisibleAssetsModal}
           onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
           foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
+          onUpdateVisibleAssets={onUpdateVisibleAssets}
+          onAddCustomAsset={onAddCustomAsset}
         />
       }
       {selectedTab === 'accounts' &&
