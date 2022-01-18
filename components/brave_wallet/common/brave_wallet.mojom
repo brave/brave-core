@@ -23,7 +23,8 @@ interface EventsListener {
 // https://eips.ethereum.org/EIPS/eip-1193#provider-errors
 // https://eips.ethereum.org/EIPS/eip-1474#error-codes
 enum ProviderError {
-  kSuccess = 0,                  // No error
+  kSuccess = 0,  // No error
+
   kUserRejectedRequest = 4001,   // User rejected the request
   kUnauthorized = 4100,          // The requested account and/or method has not
                                  // been authorized by the user
@@ -34,11 +35,15 @@ enum ProviderError {
                                  // specified chain
   kUnknownChain = 4902,          // The provider doesn't know this chain
 
-  kParsingError = -32700,        //Parse error - Invalid JSON
-  kInvalidRequest = -32600,      // JSON is not a valid request object
-  kMethodNotFound = -32601,      // Method does not exist
-  kInvalidParams = -32602,       // Invalid method parameters
-  kInternalError = -32603,       // Internal JSON RPC error
+  // Pre-defined error codes specified in
+  // https://www.jsonrpc.org/specification#error_object
+  kParsingError = -32700,    // Parse error - Invalid JSON
+  kInvalidRequest = -32600,  // JSON is not a valid request object
+  kMethodNotFound = -32601,  // Method does not exist
+  kInvalidParams = -32602,   // Invalid method parameters
+  kInternalError = -32603,   // Internal JSON RPC error
+
+  // Implementation-defined server-errors
   kInvalidInput = -32000,        // Missing or invalid parameters
   kResourceNotFound = -32001,    // Requested resource not found
   kResourceUnavailable = -32002, // Requested resource not available
@@ -48,6 +53,18 @@ enum ProviderError {
   kVersionNotSupported = -32006, // Version of JSON-RPC protocol is not supported
 
   kUnknown = -1                 // Unknown error
+};
+
+enum SolanaProviderError {
+  kSuccess = 0,  // No error
+
+  // Pre-defined error codes specified in
+  // https://www.jsonrpc.org/specification#error_object
+  kParsingError = -32700,    // Parse error - Invalid JSON
+  kInvalidRequest = -32600,  // JSON is not a valid request object
+  kMethodNotFound = -32601,  // Method does not exist
+  kInvalidParams = -32602,   // Invalid method parameters
+  kInternalError = -32603    // Internal JSON RPC error
 };
 
 // There is one BraveWalletProvider per renderer, the renderer communicates

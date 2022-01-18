@@ -53,22 +53,29 @@ TEST(JsonRpcResponseParserUnitTest, ParseBoolResult) {
 }
 
 TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
-  mojom::ProviderError error;
-  std::string error_message;
+  mojom::ProviderError eth_error;
+  mojom::SolanaProviderError solana_error;
+  std::string eth_error_message;
+  std::string solana_error_message;
   std::string json =
       R"({
          "jsonrpc": "2.0",
          "id": 1,
          "error": {
-           "code": -32000,
-           "message": "transaction underpriced"
+           "code": -32601,
+           "message": "method does not exist"
          }
        })";
 
-  // kInvalidInput = -32000
-  ParseErrorResult(json, &error, &error_message);
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidInput);
-  EXPECT_EQ(error_message, "transaction underpriced");
+  // kMethodNotFound = -32601
+  ParseErrorResult<mojom::ProviderError>(json, &eth_error, &eth_error_message);
+  EXPECT_EQ(eth_error, mojom::ProviderError::kMethodNotFound);
+  EXPECT_EQ(eth_error_message, "method does not exist");
+
+  ParseErrorResult<mojom::SolanaProviderError>(json, &solana_error,
+                                               &solana_error_message);
+  EXPECT_EQ(solana_error, mojom::SolanaProviderError::kMethodNotFound);
+  EXPECT_EQ(solana_error_message, "method does not exist");
 
   // No message should still work
   json =
@@ -76,19 +83,24 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
        "jsonrpc": "2.0",
        "id": 1,
        "error": {
-         "code": -32000
+         "code": -32601
        }
      })";
-  ParseErrorResult(json, &error, &error_message);
-  EXPECT_EQ(error, mojom::ProviderError::kInvalidInput);
-  EXPECT_TRUE(error_message.empty());
+  ParseErrorResult<mojom::ProviderError>(json, &eth_error, &eth_error_message);
+  EXPECT_EQ(eth_error, mojom::ProviderError::kMethodNotFound);
+  EXPECT_TRUE(eth_error_message.empty());
+
+  ParseErrorResult<mojom::SolanaProviderError>(json, &solana_error,
+                                               &solana_error_message);
+  EXPECT_EQ(solana_error, mojom::SolanaProviderError::kMethodNotFound);
+  EXPECT_TRUE(solana_error_message.empty());
 
   std::vector<std::string> errors{
       R"({
          "jsonrpc": "2.0",
          "id": 1,
          "error": {
-           "message": "transaction underpriced"
+           "message": "method does not exist"
          }
        })",
       R"({"jsonrpc": "2.0", "id": 1, "result": "0"})",
@@ -99,9 +111,16 @@ TEST(JsonRpcResponseParserUnitTest, ParseErrorResult) {
   };
 
   for (const std::string& json : errors) {
-    ParseErrorResult(json, &error, &error_message);
-    EXPECT_EQ(error, mojom::ProviderError::kParsingError);
-    EXPECT_EQ(error_message,
+    ParseErrorResult<mojom::ProviderError>(json, &eth_error,
+                                           &eth_error_message);
+    EXPECT_EQ(eth_error, mojom::ProviderError::kParsingError);
+    EXPECT_EQ(eth_error_message,
+              l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+    ParseErrorResult<mojom::SolanaProviderError>(json, &solana_error,
+                                                 &solana_error_message);
+    EXPECT_EQ(solana_error, mojom::SolanaProviderError::kParsingError);
+    EXPECT_EQ(solana_error_message,
               l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
   }
 }
