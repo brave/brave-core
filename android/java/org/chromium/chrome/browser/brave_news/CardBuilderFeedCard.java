@@ -360,6 +360,30 @@ public class CardBuilderFeedCard {
                                         openUrlInSameTabAndSavePosition(adData.targetUrl.url);
                                     }
                                 });
+                                adImage.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mBraveNewsController.onDisplayAdVisit(
+                                                adData.uuid, adData.creativeInstanceId);
+                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
+                                    }
+                                });
+                                adTitle.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mBraveNewsController.onDisplayAdVisit(
+                                                adData.uuid, adData.creativeInstanceId);
+                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
+                                    }
+                                });
+                                adDesc.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mBraveNewsController.onDisplayAdVisit(
+                                                adData.uuid, adData.creativeInstanceId);
+                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
+                                    }
+                                });
                             }
                         });
 

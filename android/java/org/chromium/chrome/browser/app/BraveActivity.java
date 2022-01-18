@@ -720,12 +720,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
         ScrollView scrollView = (ScrollView) root.getChildAt(0);
-        scrollView.setId(View.generateViewId());
 
         Glide.with(this)
                 .asBitmap()
                 .load(bgWallpaper)
-                .fitCenter()
+                .centerCrop()
                 .priority(Priority.IMMEDIATE)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(new CustomTarget<Bitmap>() {
