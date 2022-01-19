@@ -58,7 +58,7 @@ AdsHistoryInfo Get(const AdsHistoryFilterType filter_type,
 
 void AddAdNotification(const AdNotificationInfo& ad,
                        const ConfirmationType& confirmation_type) {
-  const AdHistoryInfo ad_history =
+  const AdHistoryInfo& ad_history =
       BuildAdHistory(ad, confirmation_type, ad.title, ad.body);
 
   Client::Get()->AppendAdHistory(ad_history);
@@ -66,7 +66,7 @@ void AddAdNotification(const AdNotificationInfo& ad,
 
 void AddNewTabPageAd(const NewTabPageAdInfo& ad,
                      const ConfirmationType& confirmation_type) {
-  const AdHistoryInfo ad_history =
+  const AdHistoryInfo& ad_history =
       BuildAdHistory(ad, confirmation_type, ad.company_name, ad.alt);
 
   Client::Get()->AppendAdHistory(ad_history);
@@ -74,7 +74,7 @@ void AddNewTabPageAd(const NewTabPageAdInfo& ad,
 
 void AddPromotedContentAd(const PromotedContentAdInfo& ad,
                           const ConfirmationType& confirmation_type) {
-  const AdHistoryInfo ad_history =
+  const AdHistoryInfo& ad_history =
       BuildAdHistory(ad, confirmation_type, ad.title, ad.description);
 
   Client::Get()->AppendAdHistory(ad_history);
@@ -82,7 +82,7 @@ void AddPromotedContentAd(const PromotedContentAdInfo& ad,
 
 void AddInlineContentAd(const InlineContentAdInfo& ad,
                         const ConfirmationType& confirmation_type) {
-  const AdHistoryInfo ad_history =
+  const AdHistoryInfo& ad_history =
       BuildAdHistory(ad, confirmation_type, ad.title, ad.description);
 
   Client::Get()->AppendAdHistory(ad_history);
