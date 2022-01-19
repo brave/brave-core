@@ -646,7 +646,7 @@ const util = {
     // base args
     const initialArgs = ['sync', '--reset', '--nohooks']
     const chromiumArgs = ['--revision', 'src@' + config.getProjectRef('chrome')]
-    const resetArgs = ['--upstream']
+    const resetArgs = ['--with_tags', '--upstream']
 
     let args = [...initialArgs]
     let didUpdateChromium = false
