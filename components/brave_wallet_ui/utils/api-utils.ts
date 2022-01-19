@@ -2,6 +2,10 @@ import { BraveWallet, WalletAccountType, GetFlattenedAccountBalancesReturnInfo }
 import { ETH } from '../options/asset-options'
 
 export const GetTokenParam = (selectedNetwork: BraveWallet.EthereumChain, token: BraveWallet.BlockchainToken): string => {
+  if (token.coingeckoId) {
+    return token.coingeckoId
+  }
+
   const isEthereumNetwork = selectedNetwork.chainId === BraveWallet.MAINNET_CHAIN_ID
 
   if (!isEthereumNetwork) {
