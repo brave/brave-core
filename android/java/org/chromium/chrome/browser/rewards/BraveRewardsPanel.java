@@ -37,6 +37,7 @@ import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -1371,17 +1373,48 @@ public class BraveRewardsPanel
     public void onGetAutoContributionAmount(double amount) {
         TextView monthlyContributionText =
                 mPopupView.findViewById(R.id.monthly_contribution_set_text);
-        monthlyContributionText.setText(String.format(
-                mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
-                (int) amount));
-        monthlyContributionText.setOnClickListener(view -> {
-            Intent intent = new Intent(
-                    ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
-            intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
-            intent.putExtra(BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION, true);
-            dismiss();
-            mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
+        if (BraveRewardsHelper.hasRewardsMonthlyContribution()) {
+            monthlyContributionText.setText(String.format(
+                    mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
+                    (int) amount));
+        }
+        monthlyContributionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!BraveRewardsHelper.hasRewardsMonthlyContribution()) {
+                    openBannerActivity();
+                } else {
+                    Context wrapper =
+                            new ContextThemeWrapper(mActivity, R.style.BraveRewardsPanelPopupMenu);
+                    PopupMenu popup = new PopupMenu(wrapper, v);
+                    popup.getMenuInflater().inflate(
+                            R.menu.monthly_contribution_popup_menu, popup.getMenu());
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getItemId() == R.id.change_amount_menu_id) {
+                                openBannerActivity();
+                            } else {
+                                BraveRewardsHelper.setRewardsMonthlyContribution(false);
+                                monthlyContributionText.setText(
+                                        mPopupView.getResources().getString(R.string.set));
+                            }
+                            return true;
+                        }
+                    });
+
+                    popup.show();
+                }
+            }
         });
+    }
+
+    private void openBannerActivity() {
+        Intent intent = new Intent(
+                ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
+        intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
+        intent.putExtra(BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION, true);
+        dismiss();
+        mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
     }
 
     private void updatePublisherStatus(int pubStatus) {
