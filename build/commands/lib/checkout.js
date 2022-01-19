@@ -17,8 +17,6 @@ const checkout = (braveCoreRef, options) => {
       braveCoreRef = revParse.stdout.toString()
     }
 
-    let args = ['sync', '--nohooks', '--force', '--reset', '--upstream', '--revision', 'src/brave@' + braveCoreRef]
-
     util.gclientSync(false, options)
 
     await util.applyPatches()
