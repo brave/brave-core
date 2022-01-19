@@ -52,6 +52,11 @@ class SearchQuickEnginesViewController: UITableViewController {
             $0.isEditing = true
             $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
             $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier)
+            #if swift(>=5.5)
+            if #available(iOS 15.0, *) {
+                $0.sectionHeaderTopPadding = 5
+            }
+            #endif
         }
 
         let footer = SettingsTableSectionHeaderFooterView(frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight))

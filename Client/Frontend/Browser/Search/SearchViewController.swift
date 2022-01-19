@@ -34,8 +34,6 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         static let engineButtonWidth = engineButtonHeight * 1.4
         static let engineButtonBackgroundColor = UIColor.clear.cgColor
 
-        static let searchEngineTopBorderWidth = 0.5
-        static let searchImageHeight: Float = 44
         static let searchImageWidth: Float = 24
         static let searchButtonMargin: CGFloat = 8
 
@@ -58,7 +56,6 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     
     private let tabType: TabType
     private var suggestClient: SearchSuggestClient?
-    private var keyboardHeightForOrientation: (portrait: CGFloat, landscape: CGFloat) = (0, 0)
 
     // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
     // scrollable container; searchEngineScrollViewContent contains the actual set of search engine buttons.
@@ -189,12 +186,19 @@ class SearchViewController: SiteTableViewController, LoaderListener {
             make.edges.equalTo(view)
         }
         
-        tableView.keyboardDismissMode = .interactive
-        tableView.separatorStyle = .none
-        tableView.addGestureRecognizer(suggestionLongPressGesture)
-        tableView.register(SearchSuggestionPromptCell.self, forCellReuseIdentifier: SearchSuggestionPromptCell.identifier)
-        tableView.register(SuggestionCell.self, forCellReuseIdentifier: SuggestionCell.identifier)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "default")
+        tableView.do {
+            $0.keyboardDismissMode = .interactive
+            $0.separatorStyle = .none
+            #if swift(>=5.5)
+            if #available(iOS 15.0, *) {
+                $0.sectionHeaderTopPadding = 5
+            }
+            #endif
+            $0.addGestureRecognizer(suggestionLongPressGesture)
+            $0.register(SearchSuggestionPromptCell.self, forCellReuseIdentifier: SearchSuggestionPromptCell.identifier)
+            $0.register(SuggestionCell.self, forCellReuseIdentifier: SuggestionCell.identifier)
+            $0.register(UITableViewCell.self, forCellReuseIdentifier: "default")
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .dynamicFontChanged, object: nil)
     }
     
@@ -235,8 +239,8 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         view.addSubview(searchEngineScrollView)
         searchEngineScrollView.addSubview(searchEngineScrollViewContent)
 
-        layoutTable()
         layoutSearchEngineScrollView()
+        layoutTable()
 
         searchEngineScrollViewContent.snp.makeConstraints { make in
             make.center.equalTo(searchEngineScrollView).priority(.low)
@@ -254,26 +258,10 @@ class SearchViewController: SiteTableViewController, LoaderListener {
         if !hasQuickSearchEngines { return }
         
         let keyboardHeight = KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(view) ?? 0
-
-        if UIDevice.current.orientation.isLandscape, keyboardHeightForOrientation.landscape == 0 {
-            keyboardHeightForOrientation.landscape = keyboardHeight
-        } else if UIDevice.current.orientation.isPortrait, keyboardHeightForOrientation.portrait == 0 {
-            keyboardHeightForOrientation.portrait = keyboardHeight
-        }
             
         searchEngineScrollView.snp.remakeConstraints { make in
             make.leading.trailing.equalTo(view)
-            
-            if keyboardHeight == 0 {
-                make.bottom.equalTo(view.safeArea.bottom)
-            } else {
-                let keyboardOrientationHeight = UIDevice.current.orientation.isPortrait
-                    ? keyboardHeightForOrientation.portrait
-                    : keyboardHeightForOrientation.landscape
-                let keyboardOffset = UIDevice.isIpad ? keyboardHeight : keyboardOrientationHeight
-                
-                make.bottom.equalTo(view).offset(-(keyboardOffset))
-            }
+            make.bottom.equalTo(view).offset(-keyboardHeight)
         }
     }
     
@@ -541,16 +529,18 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         guard let searchSection = availableSections[safe: section] else { return 0 }
+        let footerHeight: CGFloat = 10.0
+        
         switch searchSection {
         case .quickBar:
-            return 0.0
+            return CGFloat.leastNormalMagnitude
         case .searchSuggestionsOptIn:
-            return 15.0
+            return footerHeight
         case .searchSuggestions:
-            return suggestions.isEmpty ? 0.0 : 15.0
-        case .bookmarksAndHistory: return 15.0
+            return suggestions.isEmpty ? CGFloat.leastNormalMagnitude : footerHeight
+        case .bookmarksAndHistory: return footerHeight
         case .findInPage:
-            return 0.0
+            return CGFloat.leastNormalMagnitude
         }
     }
 

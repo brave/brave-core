@@ -69,16 +69,23 @@ class SiteTableViewController: LoadingViewController, UITableViewDelegate, UITab
             return
         }
 
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(SiteTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
-        tableView.register(SiteTableViewHeader.self, forHeaderFooterViewReuseIdentifier: HeaderIdentifier)
-        tableView.layoutMargins = .zero
-        tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = .secondaryBraveBackground
-        tableView.separatorColor = .braveSeparator
-        tableView.accessibilityIdentifier = "SiteTable"
-        tableView.cellLayoutMarginsFollowReadableWidth = false
+        tableView.do {
+            $0.delegate = self
+            $0.dataSource = self
+            $0.register(SiteTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
+            $0.register(SiteTableViewHeader.self, forHeaderFooterViewReuseIdentifier: HeaderIdentifier)
+            $0.layoutMargins = .zero
+            $0.keyboardDismissMode = .onDrag
+            $0.backgroundColor = .secondaryBraveBackground
+            $0.separatorColor = .braveSeparator
+            $0.accessibilityIdentifier = "SiteTable"
+            $0.cellLayoutMarginsFollowReadableWidth = false
+            #if swift(>=5.5)
+            if #available(iOS 15.0, *) {
+                $0.sectionHeaderTopPadding = 5
+            }
+            #endif
+        }
 
         // Set an empty footer to prevent empty cells from appearing in the list.
         tableView.tableFooterView = UIView()
