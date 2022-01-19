@@ -11,6 +11,7 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
+  selectedAccount: UserAccountType
   onSelectAccount: (account: UserAccountType) => () => void
   onAddAccount?: () => void
   hasAddButton?: boolean
@@ -18,7 +19,7 @@ export interface Props {
 }
 
 function SelectAccountWithHeader (props: Props) {
-  const { accounts, onSelectAccount, onBack, onAddAccount, hasAddButton } = props
+  const { accounts, selectedAccount, onSelectAccount, onBack, onAddAccount, hasAddButton } = props
   const [filteredAccountList, setFilteredAccountList] = React.useState<UserAccountType[]>(accounts)
 
   const filterAccountList = (event: any) => {
@@ -48,6 +49,7 @@ function SelectAccountWithHeader (props: Props) {
       <SelectScrollSearchContainer>
         <SelectAccount
           accounts={filteredAccountList}
+          selectedAccount={selectedAccount}
           onSelectAccount={onSelectAccount}
         />
       </SelectScrollSearchContainer>

@@ -22,6 +22,7 @@ export interface Props {
   networkList: BraveWallet.EthereumChain[]
   assetOptions: BraveWallet.BlockchainToken[]
   selectedNetwork: BraveWallet.EthereumChain
+  selectedAccount: UserAccountType
   onAddAsset: () => void
   onClickSelectAccount: (account: UserAccountType) => () => void
   onClickSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
@@ -37,6 +38,7 @@ function SelectHeader (props: Props) {
     networkList,
     assetOptions,
     selectedNetwork,
+    selectedAccount,
     onAddAsset,
     onClickSelectAccount,
     goBack,
@@ -49,6 +51,7 @@ function SelectHeader (props: Props) {
     <StyledWrapper>
       {selectedView === 'acounts' &&
         <SelectAccount
+          selectedAccount={selectedAccount}
           accounts={accounts}
           onSelectAccount={onClickSelectAccount}
           onBack={goBack}

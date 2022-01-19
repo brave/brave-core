@@ -126,6 +126,7 @@ function SendTab (props: Props) {
       }
       {sendView !== 'send' &&
         <AccountsAssetsNetworks
+          selectedAccount={selectedAccount}
           selectedNetwork={selectedNetwork}
           accounts={accounts}
           networkList={networkList}

@@ -743,6 +743,7 @@ function Container (props: Props) {
             onBack={onReturnToMain}
             onSelectAccount={onSelectAccount}
             onAddAccount={onAddAccount}
+            selectedAccount={selectedAccount}
             hasAddButton={true}
           />
         </SelectContainer>

@@ -562,6 +562,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                     onSelectAccount={onSelectAccount}
                     onAddAccount={onAddAccount}
                     hasAddButton={true}
+                    selectedAccount={selectedAccount}
                   />
                 </SelectContainer>
               }
