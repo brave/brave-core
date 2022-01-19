@@ -32,7 +32,7 @@ bool AdPreferencesInfo::FromJson(const std::string& json) {
   }
 
   for (const auto& advertiser : document["filtered_advertisers"].GetArray()) {
-    if (!advertiser.HasMember("id") || advertiser["id"].IsString()) {
+    if (!advertiser.HasMember("id") || !advertiser["id"].IsString()) {
       continue;
     }
 
@@ -42,7 +42,7 @@ bool AdPreferencesInfo::FromJson(const std::string& json) {
   }
 
   for (const auto& category : document["filtered_categories"].GetArray()) {
-    if (!category.HasMember("name") || category["name"].IsString()) {
+    if (!category.HasMember("name") || !category["name"].IsString()) {
       continue;
     }
 
