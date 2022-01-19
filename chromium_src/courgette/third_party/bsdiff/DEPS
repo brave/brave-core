@@ -1,0 +1,4 @@
+include_rules = [
+  "+../../../../../../courgette/third_party/bsdiff",
+  "+courgette/third_party/bsdiff",
+]
