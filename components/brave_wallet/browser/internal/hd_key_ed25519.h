@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/internal/hd_key_base.h"
 #include "brave/components/brave_wallet/rust/lib.rs.h"
 
 namespace brave_wallet {
@@ -17,10 +18,10 @@ namespace brave_wallet {
 // This class implement basic functionality of bip32-ed25519 spec
 // with 32 bytes private key and only allows private key derivation with
 // hardened index
-class HDKeyEd25519 {
+class HDKeyEd25519 : public HDKeyBase {
  public:
   explicit HDKeyEd25519(rust::Box<Ed25519DalekExtendedSecretKey>);
-  ~HDKeyEd25519();
+  ~HDKeyEd25519() override;
   HDKeyEd25519(const HDKeyEd25519&) = delete;
   HDKeyEd25519& operator=(const HDKeyEd25519&) = delete;
 
@@ -30,12 +31,17 @@ class HDKeyEd25519 {
   // Always performs harden derivation
   // index will automatically transformed to hardened index
   // if index >= 2^31, nullptr will be returned
-  std::unique_ptr<HDKeyEd25519> DeriveChild(uint32_t index);
-  // path format: m/[n|n']*/[n|n']*...
-  // n: 0 to 2^31-1 (normal derivation)
-  // n': n + 2^31 (harden derivation)
+  std::unique_ptr<HDKeyBase> DeriveChild(uint32_t index) override;
   // If path contains normal index, nullptr will be returned
-  std::unique_ptr<HDKeyEd25519> DeriveChildFromPath(const std::string& path);
+  std::unique_ptr<HDKeyBase> DeriveChildFromPath(
+      const std::string& path) override;
+  std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg,
+                            int* recid = nullptr) override;
+  bool Verify(const std::vector<uint8_t>& msg,
+              const std::vector<uint8_t>& sig) override;
+
+  std::string GetHexEncodedPrivateKey() const override;
+
   std::string GetBase58EncodedPublicKey() const;
   std::string GetBase58EncodedKeypair() const;
 

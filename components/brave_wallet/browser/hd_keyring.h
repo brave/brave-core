@@ -69,16 +69,16 @@ class HDKeyring {
                              std::string* address);
 
  protected:
-  virtual std::string GetAddressInternal(const HDKey* hd_key) const;
+  virtual std::string GetAddressInternal(HDKeyBase* hd_key) const;
   bool AddImportedAddress(const std::string& address,
                           std::unique_ptr<HDKey> hd_key);
-  HDKey* GetHDKeyFromAddress(const std::string& address);
+  HDKeyBase* GetHDKeyFromAddress(const std::string& address);
 
-  std::unique_ptr<HDKey> root_;
-  std::unique_ptr<HDKey> master_key_;
-  std::vector<std::unique_ptr<HDKey>> accounts_;
+  std::unique_ptr<HDKeyBase> root_;
+  std::unique_ptr<HDKeyBase> master_key_;
+  std::vector<std::unique_ptr<HDKeyBase>> accounts_;
   // (address, key)
-  base::flat_map<std::string, std::unique_ptr<HDKey>> imported_accounts_;
+  base::flat_map<std::string, std::unique_ptr<HDKeyBase>> imported_accounts_;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(HDKeyringUnitTest, ConstructRootHDKey);
