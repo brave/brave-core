@@ -56,6 +56,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static final String PREF_NEXT_REWARDS_ONBOARDING_MODAL_DATE =
             "next_rewards_onboarding_modal_date";
     private static final String PREF_REWARDS_ENV_CHANGE = "rewards_env_change";
+    private static final String PREF_REWARDS_MONTHLY_CONTRIBUTION = "rewards_monthly_contribution";
     private static final String PREF_REWARDS_ONBOARDING_MODAL = "rewards_onboarding_modal";
     private static final int FAVICON_CIRCLE_MEASUREMENTS = 70; // dp
     private static final int FAVICON_TEXT_SIZE = 50; // dp
@@ -80,6 +81,18 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private static final float DP_PER_INCH_MDPI = 160f;
     private Tab mTab;
     private Profile mProfile;
+
+    public static void setRewardsMonthlyContribution(boolean isEnabled) {
+        SharedPreferences.Editor sharedPreferencesEditor =
+                ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_REWARDS_MONTHLY_CONTRIBUTION, isEnabled);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static boolean hasRewardsMonthlyContribution() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(
+                PREF_REWARDS_MONTHLY_CONTRIBUTION, false);
+    }
 
     public static void setRewardsEnvChange(boolean isEnabled) {
         SharedPreferences.Editor sharedPreferencesEditor =

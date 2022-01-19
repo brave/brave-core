@@ -165,13 +165,16 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         ((TextView)findViewById(R.id.five_bat_rate)).setText(fiveBatRate);
         ((TextView)findViewById(R.id.ten_bat_rate)).setText(tenBatRate);
 
-        //set tip button onClick
+        // set checkbox callback
         CheckBox monthly = (CheckBox) findViewById(R.id.make_monthly_checkbox);
-        if (mIsMonthlyContribution) {
-            monthly.setChecked(true);
-            TextView send_btn = (TextView) findViewById(R.id.send_donation_text);
-            send_btn.setText(getResources().getString(R.string.brave_ui_do_monthly));
-        }
+        monthly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onMonthlyCheckboxClicked(v);
+            }
+        });
+
+        // set tip button onClick
         View.OnClickListener send_tip_clicker = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -200,6 +203,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
 
                 if (mIsMonthlyContribution) {
                     mBraveRewardsNativeWorker.SetAutoContributionAmount(amount);
+                    BraveRewardsHelper.setRewardsMonthlyContribution(true);
                     finish();
                 }
 
@@ -233,13 +237,12 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
             }
         };
 
-        // set checkbox callback
-        monthly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onMonthlyCheckboxClicked(v);
-            }
-        });
+        if (mIsMonthlyContribution) {
+            // monthly.setChecked(true);
+            // TextView send_btn = (TextView) findViewById(R.id.send_donation_text);
+            // send_btn.setText(getResources().getString(R.string.brave_ui_do_monthly));
+            monthly.performClick();
+        }
 
         sendDonationLayout.setOnClickListener(send_tip_clicker);
 
