@@ -572,14 +572,8 @@ void EthTxController::MakeERC20TransferData(
     return;
   }
 
-  if (!base::StartsWith(data, "0x")) {
-    LOG(ERROR) << "Invalid format returned from Transfer";
-    std::move(callback).Run(false, std::vector<uint8_t>());
-    return;
-  }
-
   std::vector<uint8_t> data_decoded;
-  if (!base::HexStringToBytes(data.data() + 2, &data_decoded)) {
+  if (!PrefixedHexStringToBytes(data, &data_decoded)) {
     LOG(ERROR) << "Could not decode data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
@@ -606,14 +600,8 @@ void EthTxController::MakeERC20ApproveData(
     return;
   }
 
-  if (!base::StartsWith(data, "0x")) {
-    LOG(ERROR) << "Invalid format returned from Transfer";
-    std::move(callback).Run(false, std::vector<uint8_t>());
-    return;
-  }
-
   std::vector<uint8_t> data_decoded;
-  if (!base::HexStringToBytes(data.data() + 2, &data_decoded)) {
+  if (!PrefixedHexStringToBytes(data.data(), &data_decoded)) {
     LOG(ERROR) << "Could not decode data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;
@@ -660,15 +648,8 @@ void EthTxController::ContinueMakeERC721TransferFromData(
     return;
   }
 
-  if (!base::StartsWith(data, "0x")) {
-    VLOG(1) << __FUNCTION__
-            << ": Invalid format returned from TransferFromOrSafeTransferFrom";
-    std::move(callback).Run(false, std::vector<uint8_t>());
-    return;
-  }
-
   std::vector<uint8_t> data_decoded;
-  if (!base::HexStringToBytes(data.data() + 2, &data_decoded)) {
+  if (!PrefixedHexStringToBytes(data, &data_decoded)) {
     VLOG(1) << __FUNCTION__ << ": Could not decode data";
     std::move(callback).Run(false, std::vector<uint8_t>());
     return;

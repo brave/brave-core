@@ -303,6 +303,30 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "30ca65d5da355227c97ff836c9c6719af9d3835fc6bc72bddc50eeecc1bb2b25");
+
+    // 0x00, 0x0 are handled the same
+    encoded_field = helper->EncodeField("bytes", base::Value("0x00"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "bc36789e7a1e281436464229828f817d6612f7b477d66591ff96a9e064bcc98a");
+    encoded_field = helper->EncodeField("bytes", base::Value("0x0"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "bc36789e7a1e281436464229828f817d6612f7b477d66591ff96a9e064bcc98a");
+
+    // Empty return
+    encoded_field = helper->EncodeField("bytes", base::Value("0x"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470");
+    encoded_field = helper->EncodeField("bytes", base::Value(""));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "c5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470");
   }
 
   // bool
@@ -357,6 +381,14 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "deadbeef00000000000000000000000000000000000000000000000000000000");
+
+    // "0x" is treated as empty, for some reason MM doesn't allow empty here
+    // but does for "bytes"
+    encoded_field = helper->EncodeField("bytes18", base::Value("0x"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000000000");
   }
 
   // uint8 - uint256
@@ -404,6 +436,44 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "0000000000000000000000000000000000000000000000000000000000010000");
+    // max uint256 in decimal format
+    encoded_field = helper->EncodeField(
+        "uint256", base::Value("11579208923731619542357098500868790785326998466"
+                               "5640564039457584007913129639935"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    // max uint256 in hex format
+    encoded_field = helper->EncodeField(
+        "uint256", base::Value("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                               "FFFFFFFFFFFFFFFFFFF"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+
+    // Can parse "0x", "0", "", and 0 as 0
+    encoded_field = helper->EncodeField("uint32", base::Value("0x"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    encoded_field = helper->EncodeField("uint32", base::Value("0"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    encoded_field = helper->EncodeField("uint32", base::Value(0));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    encoded_field = helper->EncodeField("uint32", base::Value(""));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000000000");
   }
 
   // uint8 - uint256
@@ -432,6 +502,61 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "0000000000000000000000000000000000000000000000000000000000010000");
+
+    // max int256 in decimal format
+    encoded_field = helper->EncodeField(
+        "int256", base::Value("578960446186580977117854925043439539266349923328"
+                              "20282019728792003956564819967"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    // max int256 in hex format
+    encoded_field = helper->EncodeField(
+        "int256", base::Value("0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                              "FFFFFFFFFFFFFFFFFF"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    // min int256 in decimal format
+    encoded_field = helper->EncodeField(
+        "int256", base::Value("-57896044618658097711785492504343953926634992332"
+                              "820282019728792003956564819968"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "8000000000000000000000000000000000000000000000000000000000000000");
+    // min int256 in hex format
+    encoded_field = helper->EncodeField(
+        "int256", base::Value("0x8000000000000000000000000000000000000000000000"
+                              "000000000000000000"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "8000000000000000000000000000000000000000000000000000000000000000");
+
+    // Can parse "0x", "0", "", and 0 as 0
+    encoded_field = helper->EncodeField("int32", base::Value("0x"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    encoded_field = helper->EncodeField("int32", base::Value("0"));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    encoded_field = helper->EncodeField("int32", base::Value(0));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000000000");
+    encoded_field = helper->EncodeField("int32", base::Value(""));
+    ASSERT_TRUE(encoded_field);
+    EXPECT_EQ(
+        base::ToLowerASCII(base::HexEncode(*encoded_field)),
+        "0000000000000000000000000000000000000000000000000000000000000000");
   }
 
   {

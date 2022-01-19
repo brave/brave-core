@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
+#include <limits>
 #include <vector>
 
+#include "base/logging.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -22,9 +24,9 @@ TEST(HexUtilsUnitTest, ToHex) {
 }
 
 TEST(HexUtilsUnitTest, IsValidHexString) {
+  ASSERT_TRUE(IsValidHexString("0x"));
   ASSERT_TRUE(IsValidHexString("0x0"));
   ASSERT_TRUE(IsValidHexString("0x4e02f254184E904300e0775E4b8eeCB14a1b29f0"));
-  ASSERT_FALSE(IsValidHexString("0x"));
   ASSERT_FALSE(IsValidHexString("0xZ"));
   ASSERT_FALSE(IsValidHexString("123"));
   ASSERT_FALSE(IsValidHexString("0"));
@@ -54,8 +56,11 @@ TEST(HexUtilsUnitTest, PadHexEncodedParameter) {
   ASSERT_EQ(
       out,
       "0x0000000000000000000000000000000000000000000000000000000000000000");
+  ASSERT_TRUE(PadHexEncodedParameter("0x", &out));
+  ASSERT_EQ(
+      out,
+      "0x0000000000000000000000000000000000000000000000000000000000000000");
   // Invalid input
-  ASSERT_FALSE(PadHexEncodedParameter("0x", &out));
   ASSERT_FALSE(PadHexEncodedParameter("0", &out));
   ASSERT_FALSE(PadHexEncodedParameter("", &out));
 }
@@ -72,27 +77,90 @@ TEST(HexUtilsUnitTest, ConcatHexStrings) {
             "4a1b29f0");
   ASSERT_TRUE(ConcatHexStrings("0x0", "0x0", &out));
   ASSERT_EQ(out, "0x00");
+  ASSERT_TRUE(ConcatHexStrings("0x00", "0x00", &out));
+  ASSERT_EQ(out, "0x0000");
+  ASSERT_TRUE(ConcatHexStrings("0x", "0x", &out));
+  ASSERT_EQ(out, "0x");
+  ASSERT_TRUE(ConcatHexStrings("0x0", "0x", &out));
+  ASSERT_EQ(out, "0x0");
+  ASSERT_TRUE(ConcatHexStrings("0x", "0x0", &out));
+  ASSERT_EQ(out, "0x0");
   // Invalid input
-  ASSERT_FALSE(ConcatHexStrings("0x", "0x0", &out));
   ASSERT_FALSE(ConcatHexStrings("0x0", "0", &out));
 }
 
 TEST(HexUtilsUnitTest, HexValueToUint256) {
   uint256_t out;
+  ASSERT_TRUE(HexValueToUint256("0x", &out));
+  ASSERT_EQ(out, (uint256_t)0);
+  ASSERT_TRUE(HexValueToUint256("0x0", &out));
+  ASSERT_EQ(out, (uint256_t)0);
   ASSERT_TRUE(HexValueToUint256("0x1", &out));
   ASSERT_EQ(out, (uint256_t)1);
   ASSERT_TRUE(HexValueToUint256("0x1234", &out));
   ASSERT_EQ(out, (uint256_t)4660);
   ASSERT_TRUE(HexValueToUint256("0xB", &out));
   ASSERT_EQ(out, (uint256_t)11);
-  uint256_t expected_val = 102400000000000;
-  // "10240000000000000000000000"
-  expected_val *= static_cast<uint256_t>(100000000000);
-  ASSERT_TRUE(HexValueToUint256("0x878678326eac900000000", &out));
+
+  // Max uint256 value can be represented
+  uint256_t expected_val = std::numeric_limits<uint256_t>::max();
+  ASSERT_TRUE(HexValueToUint256(
+      "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+      &out));
   ASSERT_TRUE(out == (uint256_t)expected_val);
+
+  // Should return false when out of bounds
+  ASSERT_FALSE(HexValueToUint256(
+      "0x10000000000000000000000000000000000000000000000000000000000000000",
+      &out));
+
   // Check padded values too
   ASSERT_TRUE(HexValueToUint256("0x00000000000000000000000F0", &out));
   ASSERT_EQ(out, (uint256_t)240);
+}
+
+TEST(HexUtilsUnitTest, HexValueToInt256) {
+  int256_t out;
+  ASSERT_TRUE(HexValueToInt256("0x", &out));
+  ASSERT_EQ(out, (int256_t)0);
+  ASSERT_TRUE(HexValueToInt256("0x0", &out));
+  ASSERT_EQ(out, (int256_t)0);
+  ASSERT_TRUE(HexValueToInt256("0x1", &out));
+  ASSERT_EQ(out, (int256_t)1);
+  ASSERT_TRUE(HexValueToInt256("0x1234", &out));
+  ASSERT_EQ(out, (int256_t)4660);
+  ASSERT_TRUE(HexValueToInt256("0xB", &out));
+  ASSERT_EQ(out, (int256_t)11);
+
+  // Max int256 value can be represented
+  int256_t expected_val = std::numeric_limits<int256_t>::max();
+  ASSERT_TRUE(HexValueToInt256(
+      "0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+      &out));
+  ASSERT_TRUE(out == (int256_t)expected_val);
+
+  // Min int256 value can be represented
+  expected_val = std::numeric_limits<int256_t>::min();
+  ASSERT_TRUE(HexValueToInt256(
+      "0x8000000000000000000000000000000000000000000000000000000000000000",
+      &out));
+  ASSERT_TRUE(out == (int256_t)expected_val);
+
+  // Biggest int256 negative value can be represented
+  expected_val = (int256_t)-1;
+  ASSERT_TRUE(HexValueToInt256(
+      "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
+      &out));
+  ASSERT_TRUE(out == (int256_t)expected_val);
+
+  // Should return false when out of bounds
+  ASSERT_FALSE(HexValueToInt256(
+      "0x10000000000000000000000000000000000000000000000000000000000000000",
+      &out));
+
+  // Check padded values too
+  ASSERT_TRUE(HexValueToInt256("0x00000000000000000000000F0", &out));
+  ASSERT_EQ(out, (int256_t)240);
 }
 
 TEST(HexUtilsUnitTest, Uint256ValueToHex) {
@@ -104,6 +172,24 @@ TEST(HexUtilsUnitTest, Uint256ValueToHex) {
   input_val *= static_cast<uint256_t>(100000000000);
   ASSERT_EQ(Uint256ValueToHex(input_val), "0x878678326eac900000000");
   ASSERT_EQ(Uint256ValueToHex(3735928559), "0xdeadbeef");
+}
+
+TEST(HexUtilsUnitTest, PrefixedHexStringToBytes) {
+  std::vector<uint8_t> bytes;
+  EXPECT_TRUE(PrefixedHexStringToBytes("0x", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>()));
+  EXPECT_TRUE(PrefixedHexStringToBytes("0x0", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>{0}));
+  EXPECT_TRUE(PrefixedHexStringToBytes("0x00", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>{0}));
+  EXPECT_TRUE(PrefixedHexStringToBytes("0x1", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>{1}));
+  EXPECT_TRUE(PrefixedHexStringToBytes("0xdeadbeef", &bytes));
+  EXPECT_EQ(bytes, (std::vector<uint8_t>{222, 173, 190, 239}));
+  EXPECT_FALSE(PrefixedHexStringToBytes("0x0g", &bytes));
+  EXPECT_FALSE(PrefixedHexStringToBytes("hello", &bytes));
+  EXPECT_FALSE(PrefixedHexStringToBytes("01", &bytes));
+  EXPECT_FALSE(PrefixedHexStringToBytes("", &bytes));
 }
 
 }  // namespace brave_wallet
