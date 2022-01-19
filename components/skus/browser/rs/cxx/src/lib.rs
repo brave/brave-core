@@ -192,8 +192,10 @@ pub struct CppSDK {
 }
 
 fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> {
+    let buf = log::BufWriter::new();
     tracing_subscriber::fmt()
-        .event_format(log::CppFormatter::new())
+        .with_writer(buf.clone())
+        .event_format(log::CppFormatter::new(buf))
         .with_max_level(tracing::Level::TRACE)
         .init();
 
