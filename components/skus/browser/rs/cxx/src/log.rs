@@ -76,6 +76,9 @@ where
         let file = event.metadata().file().unwrap_or("lib.rs");
         let line = event.metadata().line().unwrap_or(0);
 
+        // This silently drops the log message under lock contention.
+        // We expect to be called on a special single-threaded async
+        // runtime, so this should not be an issue in practice.
         if let Ok(mut inner) = self.buf.inner.try_lock() {
             ffi::shim_logMessage(
                 file,
