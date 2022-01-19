@@ -705,10 +705,10 @@ const util = {
       ninjaOpts.push('-j', config.gomaJValue)
     }
 
-    if (process.stdout.isTTY || options.verbose)
+    if (process.platform !== 'darwin' || process.stdout.isTTY || options.verbose)
       util.run('autoninja', ninjaOpts, options)
     else {
-      // Silence tens of thousands of unnecessary warnings.
+      // Silence tens of thousands of unnecessary warnings on macOS.
       const headerRegex = options.verbose ? /.^/ : /in compilation unit/
       const bodyRegex = options.verbose ? /.^/ : /the DIE at offset 0x[0-9a-f]+ has a DW_AT_specification attribute referring to the DIE at offset 0x[0-9a-f]+, which was not marked as a declaration/
 
