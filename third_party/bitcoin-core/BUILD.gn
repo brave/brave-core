@@ -27,7 +27,7 @@ static_library("bitcoin-core") {
 
   public_configs = [ ":external_config" ]
 
-  visibility = [ "//brave/components/brave_wallet/browser" ]
+  visibility = [ "//brave/components/brave_wallet/browser/internal:hd_key" ]
 
   # Do NOT add any files here without security review
   sources = [
@@ -73,7 +73,7 @@ static_library("secp256k1") {
     "ENABLE_MODULE_RECOVERY",
   ]
 
-  visibility = [ "//brave/components/brave_wallet/browser" ]
+  visibility = [ "//brave/components/brave_wallet/browser/internal:hd_key" ]
 
   # Do NOT add any files here without security review
   sources = [

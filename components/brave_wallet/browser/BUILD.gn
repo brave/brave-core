@@ -27,10 +27,6 @@ static_library("browser") {
     "brave_wallet_service_delegate.h",
     "brave_wallet_utils.cc",
     "brave_wallet_utils.h",
-    "eip1559_transaction.cc",
-    "eip1559_transaction.h",
-    "eip2930_transaction.cc",
-    "eip2930_transaction.h",
     "eth_block_tracker.cc",
     "eth_block_tracker.h",
     "eth_data_builder.cc",
@@ -45,8 +41,6 @@ static_library("browser") {
     "eth_requests.h",
     "eth_response_parser.cc",
     "eth_response_parser.h",
-    "eth_transaction.cc",
-    "eth_transaction.h",
     "eth_tx_service.cc",
     "eth_tx_service.h",
     "eth_tx_state_manager.cc",
@@ -55,14 +49,6 @@ static_library("browser") {
     "fil_requests.h",
     "fil_response_parser.cc",
     "fil_response_parser.h",
-    "filecoin_keyring.cc",
-    "filecoin_keyring.h",
-    "hd_key.cc",
-    "hd_key.h",
-    "hd_key_ed25519.cc",
-    "hd_key_ed25519.h",
-    "hd_keyring.cc",
-    "hd_keyring.h",
     "json_rpc_requests_helper.cc",
     "json_rpc_requests_helper.h",
     "json_rpc_response_parser.cc",
@@ -75,10 +61,6 @@ static_library("browser") {
     "password_encryptor.h",
     "pref_names.cc",
     "pref_names.h",
-    "rlp_decode.cc",
-    "rlp_decode.h",
-    "rlp_encode.cc",
-    "rlp_encode.h",
     "solana_requests.cc",
     "solana_requests.h",
     "solana_response_parser.cc",
@@ -91,6 +73,8 @@ static_library("browser") {
     "wallet_data_files_installer.h",
   ]
   deps = [
+    ":hd_keyring",
+    ":transaction",
     "//base",
     "//brave/components/api_request_helper",
     "//brave/components/brave_component_updater/browser",
@@ -100,11 +84,7 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
-    "//brave/third_party/argon2",
-    "//brave/third_party/bitcoin-core",
-    "//brave/third_party/bitcoin-core:secp256k1",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
-    "//components/base32",
     "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
@@ -118,8 +98,6 @@ static_library("browser") {
     "//ui/base:base",
     "//url",
   ]
-
-  public_deps = [ "//brave/components/brave_wallet/rust:rust-rs" ]
 }
 
 config("infura_config") {
@@ -136,5 +114,45 @@ static_library("ethereum_permission_utils") {
     "//base",
     "//third_party/re2",
     "//url",
+  ]
+}
+
+source_set("hd_keyring") {
+  sources = [
+    "filecoin_keyring.cc",
+    "filecoin_keyring.h",
+    "hd_keyring.cc",
+    "hd_keyring.h",
+  ]
+
+  deps = [
+    ":transaction",
+    "internal:hd_key",
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/third_party/argon2",
+    "//components/base32",
+  ]
+}
+
+source_set("transaction") {
+  sources = [
+    "eip1559_transaction.cc",
+    "eip1559_transaction.h",
+    "eip2930_transaction.cc",
+    "eip2930_transaction.h",
+    "eth_transaction.cc",
+    "eth_transaction.h",
+    "rlp_decode.cc",
+    "rlp_decode.h",
+    "rlp_encode.cc",
+    "rlp_encode.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
   ]
 }

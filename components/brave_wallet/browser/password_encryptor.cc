@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/mem_utils.h"
 #include "crypto/aead.h"
 #include "crypto/openssl_util.h"
 #include "third_party/boringssl/src/include/openssl/evp.h"

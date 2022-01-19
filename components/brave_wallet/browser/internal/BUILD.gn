@@ -1,0 +1,24 @@
+source_set("hd_key") {
+  sources = [
+    "hd_key.cc",
+    "hd_key.h",
+    "hd_key_ed25519.cc",
+    "hd_key_ed25519.h",
+  ]
+
+  visibility = [
+    "//brave/components/brave_wallet/browser:hd_keyring",
+    "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//brave/third_party/bitcoin-core",
+    "//brave/third_party/bitcoin-core:secp256k1",
+    "//crypto",
+    "//third_party/boringssl",
+  ]
+
+  public_deps = [ "//brave/components/brave_wallet/rust:rust-rs" ]
+}
