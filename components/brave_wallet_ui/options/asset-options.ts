@@ -40,34 +40,6 @@ export const BAT = {
   coingeckoId: ''
 } as BraveWallet.BlockchainToken
 
-export const RopstenSwapAssetOptions: BraveWallet.BlockchainToken[] = [
-  ETH,
-  {
-    contractAddress: '0xad6d458402f60fd3bd25163575031acdce07538d',
-    name: 'DAI Stablecoin',
-    symbol: 'DAI',
-    logo: 'chrome://erc-token-images/dai.png',
-    isErc20: true,
-    isErc721: false,
-    decimals: 18,
-    visible: true,
-    tokenId: '',
-    coingeckoId: ''
-  },
-  {
-    contractAddress: '0x07865c6e87b9f70255377e024ace6630c1eaa37f',
-    name: 'USD Coin',
-    symbol: 'USDC',
-    logo: 'chrome://erc-token-images/usdc.png',
-    isErc20: true,
-    isErc721: false,
-    decimals: 6,
-    visible: true,
-    tokenId: '',
-    coingeckoId: ''
-  }
-]
-
 // Use only with storybook as dummy data.
 export const NewAssetOptions: BraveWallet.BlockchainToken[] = [
   {

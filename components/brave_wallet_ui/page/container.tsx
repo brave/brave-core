@@ -117,7 +117,7 @@ function Container (props: Props) {
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
 
   const {
-    assetOptions,
+    swapAssetOptions,
     sendAssetOptions,
     buyAssetOptions
   } = useAssets(
@@ -147,7 +147,6 @@ function Container (props: Props) {
     swapValidationError,
     toAmount,
     toAsset,
-    swapAssetOptions,
     customSlippageTolerance,
     onToggleOrderType,
     onSwapQuoteRefresh,
@@ -163,7 +162,7 @@ function Container (props: Props) {
   } = useSwap(
     selectedAccount,
     selectedNetwork,
-    assetOptions,
+    swapAssetOptions,
     props.walletPageActions.fetchPageSwapQuote,
     getERC20Allowance,
     props.walletActions.approveERC20Allowance,

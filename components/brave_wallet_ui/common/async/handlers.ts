@@ -64,15 +64,12 @@ async function refreshBalancesPricesAndHistory (store: Store) {
 
 async function refreshWalletInfo (store: Store) {
   const apiProxy = getAPIProxy()
-  const state = getWalletState(store)
 
   await store.dispatch(refreshKeyringInfo())
   await store.dispatch(refreshNetworkInfo())
 
-  // Populate tokens from ERC-20 token registry.
-  if (state.fullTokenList.length === 0) {
-    store.dispatch(WalletActions.getAllTokensList())
-  }
+  // Populate tokens from blockchain registry.
+  store.dispatch(WalletActions.getAllTokensList())
 
   const braveWalletService = apiProxy.braveWalletService
   const defaultWallet = await braveWalletService.getDefaultWallet()
@@ -237,8 +234,9 @@ handler.on(WalletActions.getAllNetworks.getType(), async (store) => {
 })
 
 handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
-  const blockchainRegistry = getAPIProxy().blockchainRegistry
-  const fullList = await blockchainRegistry.getAllTokens(BraveWallet.MAINNET_CHAIN_ID)
+  const { blockchainRegistry, jsonRpcService } = getAPIProxy()
+  const { chainId } = await jsonRpcService.getChainId()
+  const fullList = await blockchainRegistry.getAllTokens(chainId)
   store.dispatch(WalletActions.setAllTokensList(fullList))
 })
 
