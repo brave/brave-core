@@ -22,6 +22,7 @@ import AddSuggestedTokenPanel from './add-suggested-token-panel'
 import TransactionsPanel from './transactions-panel'
 import TransactionsListItem from './transaction-list-item'
 import TransactionDetailPanel from './transaction-detail-panel'
+import AssetsPanel from './assets-panel'
 import { NavButton } from './buttons'
 
 export {
@@ -49,5 +50,6 @@ export {
   AddSuggestedTokenPanel,
   TransactionsPanel,
   TransactionsListItem,
-  TransactionDetailPanel
+  TransactionDetailPanel,
+  AssetsPanel
 }

@@ -129,9 +129,6 @@ void BraveWalletJSHandler::OnRequestPermissionsAccountsRequested(
     const std::vector<std::string>& accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
-  v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   first_allowed_account_.clear();
   if (accounts.size() > 0)
     first_allowed_account_ = accounts[0];
@@ -170,9 +167,6 @@ void BraveWalletJSHandler::OnEthereumPermissionRequested(
     const std::vector<std::string>& accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
-  v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   first_allowed_account_.clear();
   if (accounts.size() > 0)
     first_allowed_account_ = accounts[0];
@@ -227,10 +221,6 @@ void BraveWalletJSHandler::OnGetAllowedAccounts(
     const std::vector<std::string>& accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
-  v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-
   std::unique_ptr<base::Value> formed_response;
   if (error != mojom::ProviderError::kSuccess) {
     formed_response = GetProviderErrorDictionary(error, error_message);
@@ -257,9 +247,6 @@ void BraveWalletJSHandler::OnGetGetPermissionsAccountsRequested(
     const std::vector<std::string>& accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
-  v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   first_allowed_account_.clear();
   if (accounts.size() > 0)
     first_allowed_account_ = accounts[0];
@@ -292,10 +279,6 @@ void BraveWalletJSHandler::OnAddOrSwitchEthereumChain(
     bool force_json_response,
     mojom::ProviderError error,
     const std::string& error_message) {
-  v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-
   std::unique_ptr<base::Value> formed_response;
   if (error == mojom::ProviderError::kSuccess) {
     formed_response = base::Value::ToUniquePtrValue(base::Value());
@@ -318,10 +301,6 @@ void BraveWalletJSHandler::OnAddAndApproveTransaction(
     const std::string& tx_hash,
     mojom::ProviderError error,
     const std::string& error_message) {
-  v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-
   std::unique_ptr<base::Value> formed_response;
   if (error == mojom::ProviderError::kSuccess) {
     formed_response = base::Value::ToUniquePtrValue(base::Value(tx_hash));
@@ -346,10 +325,6 @@ void BraveWalletJSHandler::OnSignRecoverMessage(
     const std::string& signature,
     mojom::ProviderError error,
     const std::string& error_message) {
-  v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-
   std::unique_ptr<base::Value> formed_response;
   if (error == mojom::ProviderError::kSuccess) {
     formed_response = base::Value::ToUniquePtrValue(base::Value(signature));
@@ -373,10 +348,6 @@ void BraveWalletJSHandler::OnAddSuggestToken(
     bool accepted,
     mojom::ProviderError error,
     const std::string& error_message) {
-  v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-
   std::unique_ptr<base::Value> formed_response;
   if (error == mojom::ProviderError::kSuccess) {
     formed_response = base::Value::ToUniquePtrValue(base::Value(accepted));
@@ -399,6 +370,9 @@ void BraveWalletJSHandler::SendResponse(
     bool force_json_response,
     std::unique_ptr<base::Value> formed_response,
     bool success) {
+  v8::HandleScope handle_scope(isolate);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   v8::Local<v8::Context> context = global_context.Get(isolate);
   v8::Context::Scope context_scope(context);
 
@@ -412,13 +386,13 @@ void BraveWalletJSHandler::SendResponse(
   v8::Local<v8::Value> result = content::V8ValueConverter::Create()->ToV8Value(
       formed_response.get(), context);
   if (global_callback) {
-    v8::Local<v8::Function> local_callback =
-        v8::Local<v8::Function>::New(isolate, *global_callback);
     v8::Local<v8::Value> result_null = v8::Null(isolate);
     v8::Local<v8::Value> argv[] = {success ? result_null : result,
                                    success ? result : result_null};
+    v8::Local<v8::Function> callback_local =
+        v8::Local<v8::Function>::New(isolate, *global_callback);
     render_frame_->GetWebFrame()->CallFunctionEvenIfScriptDisabled(
-        local_callback, v8::Object::New(isolate), 2, argv);
+        callback_local, v8::Object::New(isolate), 2, argv);
     return;
   }
 
@@ -624,15 +598,27 @@ void BraveWalletJSHandler::ContinueEthSendTransaction(
     std::unique_ptr<base::Value> formed_response =
         GetProviderErrorDictionary(code, message);
     SendResponse(std::move(id), std::move(global_context),
-                 std::move(global_callback),
-                 v8::Global<v8::Promise::Resolver>(), isolate, true,
-                 std::move(formed_response), false);
+                 std::move(global_callback), std::move(promise_resolver),
+                 isolate, force_json_response, std::move(formed_response),
+                 false);
     return;
   }
 
   std::string from;
   mojom::TxData1559Ptr tx_data_1559 =
       ParseEthSendTransaction1559Params(normalized_json_request, &from);
+  if (!tx_data_1559) {
+    mojom::ProviderError code = mojom::ProviderError::kInternalError;
+    std::string message = "Internal JSON-RPC error";
+    std::unique_ptr<base::Value> formed_response =
+        GetProviderErrorDictionary(code, message);
+    SendResponse(std::move(id), std::move(global_context),
+                 std::move(global_callback), std::move(promise_resolver),
+                 isolate, force_json_response, std::move(formed_response),
+                 false);
+    return;
+  }
+
   if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559,
                          keyring_info->account_infos, from)) {
     // Set chain_id to current chain_id.
@@ -1021,9 +1007,6 @@ void BraveWalletJSHandler::OnCommonRequestOrSendAsync(
     const int http_code,
     const std::string& response,
     const base::flat_map<std::string, std::string>& headers) {
-  v8::HandleScope handle_scope(isolate);
-  v8::MicrotasksScope microtasks(isolate,
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
   bool reject;
   std::unique_ptr<base::Value> formed_response =
       GetProviderRequestReturnFromEthJsonResponse(http_code, response, &reject);

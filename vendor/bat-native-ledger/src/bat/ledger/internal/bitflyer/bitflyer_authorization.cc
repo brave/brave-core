@@ -66,7 +66,7 @@ void BitflyerAuthorization::Authorize(
   if (it != args.end()) {
     const std::string message = args.at("error_description");
     BLOG(1, message);
-    if (message == "User does not meet minimum requirements") {
+    if (message == "User does not meet minimum requirements.") {
       ledger_->database()->SaveEventLog(log::kKYCRequired,
                                         constant::kWalletBitflyer);
       callback(type::Result::NOT_FOUND, {});

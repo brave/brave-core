@@ -315,7 +315,8 @@ provideStrings({
   braveWalletPanelTitle: 'Brave Wallet',
   braveWalletPanelConnected: 'Connected',
   braveWalletPanelNotConnected: 'Connect',
-  braveWalletPanelScrollForMoreAssets: 'Scroll for more assets',
+  braveWalletPanelViewAccountAssets: 'View account assets',
+  braveWalletAssetsPanelTitle: 'Account assets',
 
   // Site Permissions Panel
   braveWalletSitePermissionsTitle: 'Site permissions',

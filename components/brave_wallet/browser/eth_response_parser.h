@@ -15,6 +15,8 @@
 
 namespace brave_wallet {
 
+namespace eth {
+
 bool ParseAddressResult(const std::string& json, std::string* address);
 bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num);
 // Returns the balance of the account of given address.
@@ -35,6 +37,8 @@ bool ParseUnstoppableDomainsProxyReaderGetMany(
 
 bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
                                            std::string* value);
+
+}  // namespace eth
 
 }  // namespace brave_wallet
 

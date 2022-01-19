@@ -9,16 +9,19 @@ import {
   AccountAddress,
   AccountAndAddress,
   AccountCircle,
-  AccountName
+  AccountName,
+  LeftSide,
+  BigCheckMark
 } from './style'
 
 export interface Props {
   account: UserAccountType
+  selectedAccount: UserAccountType
   onSelectAccount: () => void
 }
 
 function SelectAccountItem (props: Props) {
-  const { account, onSelectAccount } = props
+  const { account, selectedAccount, onSelectAccount } = props
 
   const orb = React.useMemo(() => {
     return create({ seed: account.address.toLowerCase(), size: 8, scale: 16 }).toDataURL()
@@ -26,11 +29,16 @@ function SelectAccountItem (props: Props) {
 
   return (
     <StyledWrapper onClick={onSelectAccount}>
-      <AccountCircle orb={orb} />
-      <AccountAndAddress>
-        <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
-        <AccountAddress>{reduceAddress(account.address)}</AccountAddress>
-      </AccountAndAddress>
+      <LeftSide>
+        <AccountCircle orb={orb} />
+        <AccountAndAddress>
+          <AccountName>{reduceAccountDisplayName(account.name, 22)}</AccountName>
+          <AccountAddress>{reduceAddress(account.address)}</AccountAddress>
+        </AccountAndAddress>
+      </LeftSide>
+      {account.address.toLowerCase() === selectedAccount.address.toLowerCase() &&
+        <BigCheckMark />
+      }
     </StyledWrapper>
   )
 }

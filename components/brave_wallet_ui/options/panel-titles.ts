@@ -29,5 +29,9 @@ export const PanelTitles = (): PanelTitleObjectType[] => [
   {
     id: 'transactionDetails',
     title: getLocale('braveWalletTransactionDetails')
+  },
+  {
+    id: 'assets',
+    title: getLocale('braveWalletAssetsPanelTitle')
   }
 ]

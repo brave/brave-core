@@ -20,7 +20,6 @@ import {
 } from '../../constants/types'
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../options/expiration-preset-options'
-import { RopstenSwapAssetOptions } from '../../options/asset-options'
 import { formatInputValue, toHex, toWei, toWeiHex } from '../../utils/format-balances'
 import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
@@ -31,21 +30,13 @@ const SWAP_VALIDATION_ERROR_CODE = 100
 export default function useSwap (
   selectedAccount: WalletAccountType,
   selectedNetwork: BraveWallet.EthereumChain,
-  assetOptions: BraveWallet.BlockchainToken[],
+  swapAssetOptions: BraveWallet.BlockchainToken[],
   fetchSwapQuote: SimpleActionCreator<SwapParamsPayloadType>,
   getERC20Allowance: (contractAddress: string, ownerAddress: string, spenderAddress: string) => Promise<string>,
   approveERC20Allowance: SimpleActionCreator<ApproveERC20Params>,
   quote?: BraveWallet.SwapResponse,
   rawError?: SwapErrorResponse
 ) {
-  const swapAssetOptions = React.useMemo(() => {
-    if (selectedNetwork.chainId === BraveWallet.ROPSTEN_CHAIN_ID) {
-      return RopstenSwapAssetOptions
-    }
-
-    return assetOptions
-  }, [assetOptions, selectedNetwork])
-
   const [exchangeRate, setExchangeRate] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
   const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(swapAssetOptions[0])
@@ -484,7 +475,6 @@ export default function useSwap (
     swapValidationError,
     toAmount,
     toAsset,
-    swapAssetOptions,
     customSlippageTolerance,
     onCustomSlippageToleranceChange,
     setFromAsset,

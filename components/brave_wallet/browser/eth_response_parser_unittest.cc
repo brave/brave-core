@@ -15,6 +15,8 @@
 
 namespace brave_wallet {
 
+namespace eth {
+
 TEST(EthResponseParserUnitTest, ParseEthGetBalance) {
   std::string json(
       R"({
@@ -260,4 +262,7 @@ TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGet) {
   EXPECT_FALSE(ParseUnstoppableDomainsProxyReaderGet(json, &value));
   EXPECT_TRUE(value.empty());
 }
+
+}  // namespace eth
+
 }  // namespace brave_wallet

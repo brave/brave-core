@@ -478,10 +478,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setSelectedNetwork(network)
   }
 
-  const onSetUserAssetVisible = () => {
-    alert('Will make a custom asset visible')
-  }
-
   const onSelectTransactAsset = (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {
       setFromAsset(asset)
@@ -636,12 +632,12 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setImportWalletError({ hasError })
   }
 
-  const onAddUserAsset = () => {
-    alert('Will Add a Token')
+  const onAddCustomAsset = () => {
+    alert('Will Add a Custom Token')
   }
 
-  const onRemoveUserAsset = () => {
-    alert('Will Remove a Token')
+  const onUpdateVisibleAssets = () => {
+    alert('Will Update Visible Assets List')
   }
 
   const onSetCustomTolerance = (value: string) => {
@@ -764,9 +760,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onImportAccountFromJson={onImportAccountFromJson}
                               hasImportError={importAccountError}
                               onSetImportError={onSetImportAccountError}
-                              onAddUserAsset={onAddUserAsset}
-                              onSetUserAssetVisible={onSetUserAssetVisible}
-                              onRemoveUserAsset={onRemoveUserAsset}
+                              onAddCustomAsset={onAddCustomAsset}
+                              onUpdateVisibleAssets={onUpdateVisibleAssets}
                               transactionSpotPrices={[]}
                               userVisibleTokensInfo={[]}
                               onShowVisibleAssetsModal={onShowVisibleAssetsModal}

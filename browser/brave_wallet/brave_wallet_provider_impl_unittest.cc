@@ -36,6 +36,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
 #include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -1308,9 +1309,9 @@ TEST_F(BraveWalletProviderImplUnitTest, SignMessageRequestQueue) {
   std::vector<uint8_t> message_bytes1;
   std::vector<uint8_t> message_bytes2;
   std::vector<uint8_t> message_bytes3;
-  ASSERT_TRUE(base::HexStringToBytes(message1.substr(2), &message_bytes1));
-  ASSERT_TRUE(base::HexStringToBytes(message2.substr(2), &message_bytes2));
-  ASSERT_TRUE(base::HexStringToBytes(message3.substr(2), &message_bytes3));
+  ASSERT_TRUE(PrefixedHexStringToBytes(message1, &message_bytes1));
+  ASSERT_TRUE(PrefixedHexStringToBytes(message2, &message_bytes2));
+  ASSERT_TRUE(PrefixedHexStringToBytes(message3, &message_bytes3));
   const std::string message1_in_queue = "hello world";
   const std::string message2_in_queue = "A unicode Ǝ string ñ";
   const std::string message3_in_queue = "0xbeef03";

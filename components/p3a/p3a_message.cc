@@ -67,7 +67,7 @@ void GenerateP3AMessage(uint64_t metric_hash,
   p3a_message->set_p3a_info(data, kDataLength);
 }
 
-base::Value GenerateP3AMessageDict(uint64_t metric_hash,
+base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
                                    uint64_t metric_value,
                                    const MessageMetainfo& meta) {
   base::Value result(base::Value::Type::DICTIONARY);
@@ -92,7 +92,7 @@ base::Value GenerateP3AMessageDict(uint64_t metric_hash,
   result.SetStringKey("refcode", meta.refcode);
 
   // Set the metric
-  result.SetStringKey("metric_hash", base::NumberToString(metric_hash));
+  result.SetStringKey("metric_name", metric_name);
   result.SetIntKey("metric_value", metric_value);
 
   return result;

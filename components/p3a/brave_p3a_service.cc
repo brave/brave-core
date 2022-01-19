@@ -318,7 +318,7 @@ BraveP3ALogStore::LogForJsonMigration BraveP3AService::Serialize(
   GenerateP3AMessage(histogram_name_hash, value, message_meta_, &message);
 
   base::Value p3a_json_value =
-      GenerateP3AMessageDict(histogram_name_hash, value, message_meta_);
+      GenerateP3AMessageDict(histogram_name, value, message_meta_);
   std::string p3a_json_message;
   const bool ok = base::JSONWriter::Write(p3a_json_value, &p3a_json_message);
   DCHECK(ok);

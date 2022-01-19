@@ -378,6 +378,47 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetSolanaBalance(uint64_t expected_balance,
+                            mojom::SolanaProviderError expected_error,
+                            const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSolanaBalance(
+        "test_public_key",
+        base::BindLambdaForTesting([&](uint64_t balance,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(balance, expected_balance);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  void TestGetSPLTokenAccountBalance(
+      const std::string& expected_amount,
+      uint8_t expected_decimals,
+      const std::string& expected_ui_amount_string,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSPLTokenAccountBalance(
+        "test_public_key",
+        base::BindLambdaForTesting([&](const std::string& amount,
+                                       uint8_t decimals,
+                                       const std::string& ui_amount_string,
+                                       mojom::SolanaProviderError error,
+                                       const std::string& error_message) {
+          EXPECT_EQ(amount, expected_amount);
+          EXPECT_EQ(decimals, expected_decimals);
+          EXPECT_EQ(ui_amount_string, expected_ui_amount_string);
+          EXPECT_EQ(error, expected_error);
+          EXPECT_EQ(error_message, expected_error_message);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
  protected:
   std::unique_ptr<JsonRpcService> json_rpc_service_;
 
@@ -1557,6 +1598,63 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
   EXPECT_TRUE(json_rpc_service_->add_chain_pending_requests_.empty());
   EXPECT_TRUE(json_rpc_service_->switch_chain_requests_.empty());
   EXPECT_TRUE(json_rpc_service_->switch_chain_callbacks_.empty());
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSolanaBalance) {
+  SetInterceptor("getBalance", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                 "{\"context\":{\"slot\":106921266},\"value\":513234116063}}");
+  TestGetSolanaBalance(513234116063ULL, mojom::SolanaProviderError::kSuccess,
+                       "");
+
+  // Response parsing error
+  SetInterceptor("getBalance", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
+  TestGetSolanaBalance(0u, mojom::SolanaProviderError::kParsingError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC error
+  SetInterceptor("getBalance", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
+                 "{\"code\":-32601, \"message\": \"method does not exist\"}}");
+  TestGetSolanaBalance(0u, mojom::SolanaProviderError::kMethodNotFound,
+                       "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSolanaBalance(0u, mojom::SolanaProviderError::kInternalError,
+                       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSPLTokenAccountBalance) {
+  SetInterceptor(
+      "getTokenAccountBalance", "",
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "{\"context\":{\"slot\":1069},\"value\":{\"amount\":\"9864\","
+      "\"decimals\":2,\"uiAmount\":98.64,\"uiAmountString\":\"98.64\"}}}");
+  TestGetSPLTokenAccountBalance("9864", 2u, "98.64",
+                                mojom::SolanaProviderError::kSuccess, "");
+
+  // Response parsing error
+  SetInterceptor("getTokenAccountBalance", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
+  TestGetSPLTokenAccountBalance(
+      "", 0u, "", mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC error
+  SetInterceptor("getTokenAccountBalance", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
+                 "{\"code\":-32601, \"message\": \"method does not exist\"}}");
+  TestGetSPLTokenAccountBalance("", 0u, "",
+                                mojom::SolanaProviderError::kMethodNotFound,
+                                "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSPLTokenAccountBalance(
+      "", 0u, "", mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

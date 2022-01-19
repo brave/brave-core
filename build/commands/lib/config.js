@@ -152,6 +152,7 @@ const Config = function () {
   this.gomaServerHost = getNPMConfig(['goma_server_host'])
   // os.cpus().length is number of threads not physical cores
   this.gomaJValue = Math.min(40, os.cpus().length * 2)
+  this.isCI = process.env.BUILD_ID !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
   this.ignore_compile_failure = false
@@ -303,6 +304,16 @@ Config.prototype.buildArgs = function () {
 
   if (!this.isBraveReleaseBuild()) {
     args.chrome_pgo_phase = 0
+
+    if (process.platform === 'darwin' && this.targetOS != 'ios' && args.is_official_build) {
+      // Currently we're using is_official_build mode in PR builds on CI. This enables dSYMs
+      // by default, which slows down link phase, but also disables relocatable compilation
+      // on MacOS (aka 'zero goma cachehits' style).
+      //
+      // Don't create dSYMs in non-public Release builds.
+      // See //build/config/apple/symbols.gni for additional details.
+      args.enable_dsyms = false
+    }
   }
 
   if (this.shouldSign()) {
@@ -631,6 +642,16 @@ Config.prototype.update = function (options) {
 
   if (options.use_goma) {
     this.use_goma = true
+    if (process.env.GOMA_DIR !== undefined) {
+      this.gomaDir = process.env.GOMA_DIR
+    } else {
+      const build_goma_dir = path.join(this.srcDir, 'build', 'goma')
+      if (fs.existsSync(build_goma_dir)) {
+        this.gomaDir = build_goma_dir
+      } else {
+        this.gomaDir = path.join(this.depotToolsDir, '.cipd_bin')
+      }
+    }
   } else {
     this.use_goma = false
   }
@@ -891,7 +912,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     }
 
     if (this.use_goma && this.gomaServerHost) {
-      env.CC_WRAPPER = path.join(this.depotToolsDir, '.cipd_bin', 'gomacc')
+      env.CC_WRAPPER = path.join(this.gomaDir, 'gomacc')
       env.GOMA_SERVER_HOST = this.gomaServerHost
       // env.NINJA_REMOTE_NUM_JOBS = this.gomaJValue
       // console.log('ninja remote jobs number is ' + env.NINJA_REMOTE_NUM_JOBS)

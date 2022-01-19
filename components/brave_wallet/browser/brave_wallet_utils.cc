@@ -434,7 +434,8 @@ bool DecodeStringArray(const std::string& input,
                        std::vector<std::string>* output) {
   // Get count of array.
   uint256_t count = 0;
-  if (!HexValueToUint256("0x" + input.substr(0, 64), &count)) {
+  if (!HexValueToUint256("0x" + input.substr(0, 64), &count) ||
+      input.size() == 0) {
     return false;
   }
 
