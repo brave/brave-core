@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
+#include <limits>
+
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
@@ -26,7 +28,7 @@ std::string ToHex(const std::vector<uint8_t>& data) {
 
 // Determines if the passed in hex string is valid
 bool IsValidHexString(const std::string& hex_input) {
-  if (hex_input.length() < 3) {
+  if (hex_input.length() < 2) {
     return false;
   }
   if (!base::StartsWith(hex_input, "0x")) {
@@ -107,10 +109,28 @@ bool HexValueToUint256(const std::string& hex_input, uint256_t* out) {
     return false;
   }
   *out = 0;
+  uint256_t last_val = 0;  // Used to check overflows
   for (char c : hex_input.substr(2)) {
     (*out) <<= 4;
     (*out) += static_cast<uint256_t>(base::HexDigitToInt(c));
+    if (last_val > *out) {
+      return false;
+    }
+    last_val = *out;
   }
+  return true;
+}
+
+bool HexValueToInt256(const std::string& hex_input, int256_t* out) {
+  if (!out)
+    return false;
+  uint256_t val;
+  if (!HexValueToUint256(hex_input, &val))
+    return false;
+  // This is the same as ~val + 1
+  // To convert a positive number into a negative number, using the two’s
+  // complement representation, invert all of the bits of the number + 1
+  *out = static_cast<int256_t>(val);
   return true;
 }
 
@@ -128,6 +148,25 @@ std::string Uint256ValueToHex(uint256_t input) {
     return "0x0";
   }
   return "0x" + result;
+}
+
+bool PrefixedHexStringToBytes(const std::string& input,
+                              std::vector<uint8_t>* bytes) {
+  CHECK(bytes);
+  bytes->clear();
+  if (!IsValidHexString(input))
+    return false;
+  if (input.size() == 2) {
+    // Valid hex string of size 2 must be "0x"
+    DCHECK_EQ(input, "0x");
+    return true;
+  }
+  std::string hex_substr = input.substr(2);
+  if (hex_substr.length() % 2 == 1)
+    hex_substr = "0" + hex_substr;
+  if (!base::HexStringToBytes(hex_substr, bytes))
+    return false;
+  return true;
 }
 
 }  // namespace brave_wallet

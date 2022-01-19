@@ -452,7 +452,7 @@ TEST_F(EthTxServiceUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
   for (const auto& kv : data_to_default_gas) {
     std::vector<uint8_t> data_decoded;
     if (kv.first.length() >= 2) {
-      EXPECT_TRUE(base::HexStringToBytes(kv.first.substr(2), &data_decoded));
+      EXPECT_TRUE(PrefixedHexStringToBytes(kv.first, &data_decoded));
     }
 
     tx_data = mojom::TxData::New("0x06", gas_price, "" /* gas_limit */,

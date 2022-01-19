@@ -16,7 +16,7 @@
   }
 
   var sendTransactionResult, sendTransactionError
-  function sendTransaction(is1559, method, from, to, value) {
+  function sendTransaction(is1559, method, from, to, value, data) {
     const params = [{
       from,
       to,
@@ -30,6 +30,10 @@
       params[0].maxFeePerGas = '0x25F38E9E00'
     } else if (is1559 === false) {
       params[0].gasPrice = '0x25F38E9E00'
+    }
+
+    if (data) {
+      params[0].data = data
     }
 
     if (method == 'request') {
