@@ -40,7 +40,8 @@ HDKeyring::Type HDKeyring::type() const {
 void HDKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                    const std::string& hd_path) {
   if (!seed.empty()) {
-    master_key_ = HDKey::GenerateFromSeed(seed);
+    std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromSeed(seed);
+    master_key_ = std::unique_ptr<HDKeyBase>{hd_key.release()};
     if (master_key_) {
       root_ = master_key_->DeriveChildFromPath(hd_path);
     }
@@ -125,16 +126,17 @@ std::string HDKeyring::GetAddress(size_t index) const {
 }
 
 std::string HDKeyring::GetHexEncodedPrivateKey(const std::string& address) {
-  HDKey* hd_key = GetHDKeyFromAddress(address);
+  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key)
     return std::string();
 
   return hd_key->GetHexEncodedPrivateKey();
 }
 
-std::string HDKeyring::GetAddressInternal(const HDKey* hd_key) const {
-  if (!hd_key)
+std::string HDKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
+  if (!hd_key_base)
     return std::string();
+  HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
   const std::vector<uint8_t> public_key = hd_key->GetUncompressedPublicKey();
   // trim the header byte 0x04
   const std::vector<uint8_t> pubkey_no_header(public_key.begin() + 1,
@@ -148,7 +150,7 @@ std::string HDKeyring::GetAddressInternal(const HDKey* hd_key) const {
 void HDKeyring::SignTransaction(const std::string& address,
                                 EthTransaction* tx,
                                 uint256_t chain_id) {
-  HDKey* hd_key = GetHDKeyFromAddress(address);
+  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key || !tx)
     return;
 
@@ -162,7 +164,7 @@ std::vector<uint8_t> HDKeyring::SignMessage(const std::string& address,
                                             const std::vector<uint8_t>& message,
                                             uint256_t chain_id,
                                             bool is_eip712) {
-  HDKey* hd_key = GetHDKeyFromAddress(address);
+  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
   if (!hd_key)
     return std::vector<uint8_t>();
 
@@ -231,7 +233,7 @@ bool HDKeyring::RecoverAddress(const std::vector<uint8_t>& message,
   return true;
 }
 
-HDKey* HDKeyring::GetHDKeyFromAddress(const std::string& address) {
+HDKeyBase* HDKeyring::GetHDKeyFromAddress(const std::string& address) {
   const auto imported_accounts_iter = imported_accounts_.find(address);
   if (imported_accounts_iter != imported_accounts_.end())
     return imported_accounts_iter->second.get();

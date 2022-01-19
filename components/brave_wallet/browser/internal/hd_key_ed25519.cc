@@ -22,19 +22,35 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeed(
   return std::make_unique<HDKeyEd25519>(std::move(master_private_key));
 }
 
-std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveChild(uint32_t index) {
+std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChild(uint32_t index) {
   auto child_private_key = private_key_->derive_child(index);
   if (!child_private_key->is_valid())
     return nullptr;
-  return std::make_unique<HDKeyEd25519>(std::move(child_private_key));
+  auto child_key = std::make_unique<HDKeyEd25519>(std::move(child_private_key));
+  return std::unique_ptr<HDKeyBase>{child_key.release()};
 }
 
-std::unique_ptr<HDKeyEd25519> HDKeyEd25519::DeriveChildFromPath(
+std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChildFromPath(
     const std::string& path) {
   auto child_private_key = private_key_->derive(path);
   if (!child_private_key->is_valid())
     return nullptr;
-  return std::make_unique<HDKeyEd25519>(std::move(child_private_key));
+  auto child_key = std::make_unique<HDKeyEd25519>(std::move(child_private_key));
+  return std::unique_ptr<HDKeyBase>{child_key.release()};
+}
+
+std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg,
+                                        int* recid) {
+  return std::vector<uint8_t>();
+}
+
+bool HDKeyEd25519::Verify(const std::vector<uint8_t>& msg,
+                          const std::vector<uint8_t>& sig) {
+  return false;
+}
+
+std::string HDKeyEd25519::GetHexEncodedPrivateKey() const {
+  return std::string();
 }
 
 std::string HDKeyEd25519::GetBase58EncodedPublicKey() const {

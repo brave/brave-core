@@ -99,7 +99,10 @@ void FilecoinKeyring::ImportFilecoinAccount(
   }
 }
 
-std::string FilecoinKeyring::GetAddressInternal(const HDKey* hd_key) const {
+std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
+  if (!hd_key_base)
+    return std::string();
+  HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
   auto uncompressed_public_key = hd_key->GetUncompressedPublicKey();
   auto payload = BlakeHash(uncompressed_public_key, 20);
   int protocol = static_cast<int>(mojom::FilecoinAddressProtocol::SECP256K1);
