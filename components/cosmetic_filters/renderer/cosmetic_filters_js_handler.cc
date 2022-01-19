@@ -396,11 +396,6 @@ void CosmeticFiltersJSHandler::ApplyRules() {
 
 void CosmeticFiltersJSHandler::CSSRulesRoutine(
     base::DictionaryValue* resources_dict) {
-  // Otherwise, if its a vetted engine AND we're not in aggressive
-  // mode, also don't do cosmetic filtering.
-  if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_))
-    return;
-
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   base::ListValue* cf_exceptions_list;
   if (resources_dict->GetList("exceptions", &cf_exceptions_list)) {
@@ -408,8 +403,11 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
       exceptions_.push_back(cf_exceptions_list->GetList()[i].GetString());
     }
   }
+  // If its a vetted engine AND we're not in aggressive mode, don't apply
+  // cosmetic filtering from the default engine.
   base::ListValue* hide_selectors_list;
-  if (!resources_dict->GetList("hide_selectors", &hide_selectors_list)) {
+  if (!resources_dict->GetList("hide_selectors", &hide_selectors_list) ||
+      (IsVettedSearchEngine(url_) && !enabled_1st_party_cf_)) {
     hide_selectors_list = nullptr;
   }
   base::ListValue* force_hide_selectors_list;
@@ -471,7 +469,7 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
 
 void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
   // If its a vetted engine AND we're not in aggressive
-  // mode, don't do cosmetic filtering.
+  // mode, don't check these elements.
   if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_))
     return;
 
