@@ -24,6 +24,8 @@ static_library("common") {
     "hash_utils.h",
     "hex_utils.cc",
     "hex_utils.h",
+    "mem_utils.cc",
+    "mem_utils.h",
     "string_utils.cc",
     "string_utils.h",
     "value_conversion_utils.cc",
@@ -71,6 +73,7 @@ source_set("unit_tests") {
     "eth_sign_typed_data_helper_unittest.cc",
     "hash_utils_unittest.cc",
     "hex_utils_unittest.cc",
+    "mem_utils_unittest.cc",
     "string_utils_unittest.cc",
     "value_conversion_utils_unittest.cc",
   ]

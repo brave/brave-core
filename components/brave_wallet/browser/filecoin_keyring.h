@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"

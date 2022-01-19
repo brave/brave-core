@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/hd_key.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
 #include "base/check.h"
 #include "base/json/json_reader.h"
@@ -11,8 +11,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/mem_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"

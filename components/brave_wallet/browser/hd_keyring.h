@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_HD_KEYRING_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_HD_KEYRING_H_
 
-#include "brave/components/brave_wallet/browser/hd_key.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
 #include <memory>
 #include <string>
@@ -47,6 +47,8 @@ class HDKeyring {
 
   // Bitcoin keyring can override this for different address calculation
   virtual std::string GetAddress(size_t index) const;
+  // Find hex private key by address
+  std::string GetHexEncodedPrivateKey(const std::string& address);
 
   // TODO(darkdh): Abstract Transacation class
   // eth_signTransaction
@@ -66,12 +68,11 @@ class HDKeyring {
                              const std::vector<uint8_t>& signature,
                              std::string* address);
 
-  HDKey* GetHDKeyFromAddress(const std::string& address);
-
  protected:
   virtual std::string GetAddressInternal(const HDKey* hd_key) const;
   bool AddImportedAddress(const std::string& address,
                           std::unique_ptr<HDKey> hd_key);
+  HDKey* GetHDKeyFromAddress(const std::string& address);
 
   std::unique_ptr<HDKey> root_;
   std::unique_ptr<HDKey> master_key_;

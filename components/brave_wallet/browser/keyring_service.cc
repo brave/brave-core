@@ -20,7 +20,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
-#include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -771,13 +770,7 @@ void KeyringService::GetPrivateKeyForDefaultKeyringAccount(
     return;
   }
 
-  auto* hd_key = keyring->GetHDKeyFromAddress(address);
-  if (!hd_key) {
-    std::move(callback).Run(false, "");
-    return;
-  }
-
-  std::string private_key = hd_key->GetHexEncodedPrivateKey();
+  std::string private_key = keyring->GetHexEncodedPrivateKey(address);
   std::move(callback).Run(!private_key.empty(), private_key);
 }
 

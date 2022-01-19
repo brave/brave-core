@@ -622,20 +622,6 @@ TEST(BraveWalletUtilsUnitTest, DecodeStringArray) {
       &output));
 }
 
-TEST(BraveWalletUtilsUnitTest, SecureZeroData) {
-  int a = 123;
-  SecureZeroData(&a, sizeof(a));
-  EXPECT_EQ(a, 0);
-  std::string b = "brave";
-  SecureZeroData(&b, sizeof(b));
-  EXPECT_TRUE(b.empty());
-  std::vector<uint8_t> c = {0xde, 0xad, 0xbe, 0xef};
-  SecureZeroData(&c, sizeof(c));
-  for (const auto& byte : c) {
-    EXPECT_EQ(byte, 0);
-  }
-}
-
 TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
   TransactionReceipt tx_receipt;
   tx_receipt.transaction_hash =

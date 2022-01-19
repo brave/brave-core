@@ -124,6 +124,14 @@ std::string HDKeyring::GetAddress(size_t index) const {
   return GetAddressInternal(accounts_[index].get());
 }
 
+std::string HDKeyring::GetHexEncodedPrivateKey(const std::string& address) {
+  HDKey* hd_key = GetHDKeyFromAddress(address);
+  if (!hd_key)
+    return std::string();
+
+  return hd_key->GetHexEncodedPrivateKey();
+}
+
 std::string HDKeyring::GetAddressInternal(const HDKey* hd_key) const {
   if (!hd_key)
     return std::string();

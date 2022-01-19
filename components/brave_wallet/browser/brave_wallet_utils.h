@@ -52,11 +52,6 @@ bool DecodeString(size_t offset, const std::string& input, std::string* output);
 bool DecodeStringArray(const std::string& input,
                        std::vector<std::string>* output);
 
-// When we call memset in end of function to clean local variables
-// for security reason, compiler optimizer can remove such call.
-// So we use our own function for this purpose.
-void SecureZeroData(void* data, size_t size);
-
 // Updates preferences for when the wallet is unlocked.
 // This is done in a utils function instead of in the KeyringService
 // because we call it both from the old extension and the new wallet when
