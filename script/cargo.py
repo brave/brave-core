@@ -4,8 +4,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import optparse
 import json
+import optparse
 import os
 import sys
 import subprocess
@@ -28,7 +28,7 @@ def build(args):
     build_args_cache_file = os.path.join(build_path, ".cargo_args")
     previous_args = {}
     if os.path.exists(build_args_cache_file):
-        with open(build_args_cache_file, 'r') as f:
+        with open(build_args_cache_file, "r", encoding="utf8") as f:
             previous_args = json.load(f)
 
     if previous_args != args.__dict__:
@@ -81,7 +81,7 @@ def build(args):
     try:
         subprocess.check_call(cargo_args, env=env)
         # write the new args back out to the file if the build was successful
-        with open(build_args_cache_file, "w") as f:
+        with open(build_args_cache_file, "w", encoding="utf8") as f:
             json.dump(args.__dict__, f)
 
     except subprocess.CalledProcessError as e:
@@ -101,11 +101,13 @@ def parse_args():
     parser.add_option('--is_debug')
     parser.add_option('--mac_deployment_target')
     parser.add_option('--ios_deployment_target')
-    parser.add_option("--rust_flag", action="append", dest="rust_flags", default=[])
+    parser.add_option("--rust_flag", action="append",
+                                     dest="rust_flags",
+                                     default=[])
 
-    options, args = parser.parse_args()
+    options, _ = parser.parse_args()
 
-    if (options.is_debug != "false" and options.is_debug != "true"):
+    if options.is_debug not in ('false', 'true'):
         raise Exception("is_debug argument was not specified correctly")
 
     return options
