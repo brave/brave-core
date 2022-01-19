@@ -1,4 +1,4 @@
-# Resource ids starting at 31000 are reserved for projects built on Chromium.
+# Resource ids starting at 38000 are reserved for projects built on Chromium.
 {
   "SRCDIR": "../../..",
   "brave/common/extensions/api/brave_api_resources.grd": {
@@ -126,5 +126,8 @@
   },
   "<(ROOT_GEN_DIR)/brave/web-ui-trezor_bridge/trezor_bridge.grd": {
     "includes": [51250]
+  },
+  "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/sidebar/sidebar_resources.grd": {
+    "includes": [51500]
   },
 }

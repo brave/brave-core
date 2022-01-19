@@ -22,6 +22,14 @@ class EventMonitor;
 class WebView;
 }  // namespace views
 
+namespace ui {
+class MenuModel;
+}  // namespace ui
+
+namespace views {
+class MenuRunner;
+}  // namespace views
+
 class BraveBrowser;
 class SidebarControlView;
 
@@ -46,6 +54,10 @@ class SidebarContainerView
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;
   void UpdateSidebar() override;
+  void ShowCustomContextMenu(
+      const gfx::Point& point,
+      std::unique_ptr<ui::MenuModel> menu_model) override;
+  void HideCustomContextMenu() override;
 
   // views::View overrides:
   void Layout() override;
@@ -100,6 +112,8 @@ class SidebarContainerView
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       observed_{this};
+  std::unique_ptr<views::MenuRunner> context_menu_runner_;
+  std::unique_ptr<ui::MenuModel> context_menu_model_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_

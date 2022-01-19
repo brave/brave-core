@@ -14,6 +14,11 @@ constexpr char kSidebarItemBuiltInItemTypeKey[] = "built_in_item_type";
 constexpr char kSidebarItemTitleKey[] = "title";
 constexpr char kSidebarItemOpenInPanelKey[] = "open_in_panel";
 
+// TODO(simonhong): Move this to //brave/common/webui_url_constants.h when
+// default builtin items list is provided from chrome layer.
+constexpr char kSidebarBookmarksURL[] =
+    "chrome://sidebar-bookmarks.top-chrome/";
+
 }  // namespace sidebar
 
 #endif  // BRAVE_COMPONENTS_SIDEBAR_CONSTANTS_H_

@@ -26,6 +26,19 @@
       "chrome://newtab/*"
     ]
   }],
+  "bookmarkManagerPrivate": [{
+    "dependencies": ["permission:bookmarkManagerPrivate"],
+    "contexts": ["blessed_extension"],
+    "default_parent": true
+  }, {
+    "channel": "stable",
+    "contexts": ["webui"],
+    "matches": [
+      "chrome://bookmarks/*",
+      "chrome://read-later.top-chrome/*",
+      "chrome://sidebar-bookmarks.top-chrome/*"
+    ]
+  }],
   "bookmarks": [{
     "dependencies": ["permission:bookmarks"],
     "contexts": ["blessed_extension"],
@@ -35,7 +48,8 @@
     "contexts": ["webui"],
     "matches": [
       "chrome://bookmarks/*",
-      "chrome://read-later.top-chrome/*"
+      "chrome://read-later.top-chrome/*",
+      "chrome://sidebar-bookmarks.top-chrome/*"
     ],
     "default_parent": true
   }, {
