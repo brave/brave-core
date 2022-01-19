@@ -12,6 +12,8 @@
 
 namespace brave_wallet {
 
+namespace eth {
+
 TEST(EthRequestUnitTest, web3_clientVersion) {
   ASSERT_EQ(
       web3_clientVersion(),
@@ -327,5 +329,7 @@ TEST(EthRequestUnitTest, eth_getLogs) {
           "0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238"),
       R"({"id":1,"jsonrpc":"2.0","method":"eth_getLogs","params":[{"address":"0x8888f1f195afa192cfee860698584c030f4c9db1","blockhash":"0xb903239f8543d04b5dc1ba6579132b143087c68db1b2168786408fcbce568238","fromBlock":"0x1","toBlock":"0x2","topics":["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b",["0x000000000000000000000000a94f5374fce5edbc8e2a8697c15331677e6ebf0b","0x0000000000000000000000000aff3454fce5edbc8cca8697c15331677e6ebccc"]]}]})");  // NOLINT
 }
+
+}  // namespace eth
 
 }  // namespace brave_wallet

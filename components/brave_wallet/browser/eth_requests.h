@@ -11,6 +11,8 @@
 
 namespace brave_wallet {
 
+namespace eth {
+
 // Returns the current client version.
 std::string web3_clientVersion();
 // Returns Keccak-256 (not the standardized SHA3-256) of the given data.
@@ -183,6 +185,8 @@ std::string eth_getLogs(const std::string& from_block_quantity_tag,
 // Returns the hash of the current block, the seedHash, and the boundary
 // condition to be met (“target”).
 std::string eth_getWork();
+
+}  // namespace eth
 
 }  // namespace brave_wallet
 

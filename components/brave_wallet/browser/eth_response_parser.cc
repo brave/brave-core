@@ -7,17 +7,15 @@
 
 #include <utility>
 
-#include "base/json/json_reader.h"
-#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/rpc_response_parser.h"
+#include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "components/grit/brave_components_strings.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
+
+namespace eth {
 
 bool ParseAddressResult(const std::string& json, std::string* address) {
   DCHECK(address);
@@ -190,5 +188,7 @@ bool ParseUnstoppableDomainsProxyReaderGet(const std::string& json,
   size_t offset = 2 /* len of "0x" */ + 64 /* len of offset to array */;
   return brave_wallet::DecodeString(offset, result, value);
 }
+
+}  // namespace eth
 
 }  // namespace brave_wallet
