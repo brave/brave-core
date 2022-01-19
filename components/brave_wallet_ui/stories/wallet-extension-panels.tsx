@@ -13,7 +13,8 @@ import {
   SitePermissions,
   AddSuggestedTokenPanel,
   TransactionsPanel,
-  TransactionDetailPanel
+  TransactionDetailPanel,
+  AssetsPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -540,7 +541,6 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
               onLockWallet={onLockWallet}
               onOpenSettings={onOpenSettings}
               activeOrigin=''
-              userAssetList={AccountAssetOptions}
             />
           ) : (
             <>
@@ -661,6 +661,15 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         transactionSpotPrices={[]}
                         transactions={transactionList}
 
+                      />
+                    }
+                    {selectedPanel === 'assets' &&
+                      <AssetsPanel
+                        defaultCurrencies={mockDefaultCurrencies}
+                        selectedNetwork={selectedNetwork}
+                        selectedAccount={selectedAccount}
+                        spotPrices={[]}
+                        userAssetList={AccountAssetOptions}
                       />
                     }
                   </ScrollContainer>

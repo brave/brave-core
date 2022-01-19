@@ -18,7 +18,8 @@ import {
   SitePermissions,
   AddSuggestedTokenPanel,
   TransactionsPanel,
-  TransactionDetailPanel
+  TransactionDetailPanel,
+  AssetsPanel
 } from '../components/extension'
 import {
   Send,
@@ -947,6 +948,30 @@ function Container (props: Props) {
     )
   }
 
+  if (selectedPanel === 'assets') {
+    return (
+      <PanelWrapper isLonger={false}>
+        <StyledExtensionWrapper>
+          <Panel
+            navAction={navigateTo}
+            title={panelTitle}
+            useSearch={false}
+          >
+            <ScrollContainer>
+              <AssetsPanel
+                defaultCurrencies={defaultCurrencies}
+                selectedNetwork={selectedNetwork}
+                selectedAccount={selectedAccount}
+                userAssetList={panelUserAssetList}
+                spotPrices={transactionSpotPrices}
+              />
+            </ScrollContainer>
+          </Panel>
+        </StyledExtensionWrapper>
+      </PanelWrapper>
+    )
+  }
+
   if (selectedPanel === 'sitePermissions') {
     return (
       <PanelWrapper isLonger={false}>
@@ -984,7 +1009,6 @@ function Container (props: Props) {
         onLockWallet={onLockWallet}
         onOpenSettings={onOpenSettings}
         activeOrigin={activeOrigin}
-        userAssetList={panelUserAssetList}
       />
     </PanelWrapper>
   )

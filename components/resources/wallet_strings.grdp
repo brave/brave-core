@@ -268,7 +268,8 @@
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_SWITCH" desc="Site Permissions panel switch account for connected site">Switch</message>
   <message name="IDS_BRAVE_WALLET_SITE_PERMISSIONS_NEW_ACCOUNT" desc="Site Permissions panel add a new account">New account</message>
   <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Connect</message>
-  <message name="IDS_BRAVE_WALLET_PANEL_SCROLL_FOR_MORE_ASSETS" desc="Brave Wallet panel scroll to view more assets">Scroll for more assets</message>
+  <message name="IDS_BRAVE_WALLET_PANEL_VIEW_ACCOUNT_ASSETS" desc="Brave Wallet panel view account assets button">View account assets</message>
+  <message name="IDS_BRAVE_WALLET_ASSETS_PANEL_TITLE" desc="Brave Wallet assets panel title">Account assets</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION" desc="Transaction detail box function label">FUNCTION TYPE</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_HEX" desc="Transaction detail box hex data label">HEX DATA</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_BYTES" desc="Transaction detail box bytes label">BYTES</message>

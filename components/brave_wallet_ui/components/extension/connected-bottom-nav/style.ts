@@ -13,8 +13,6 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0px 12px;
-  position: absolute;
-  bottom: 0px;
 `
 
 export const NavOutline = styled.div`
