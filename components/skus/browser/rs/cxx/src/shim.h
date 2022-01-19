@@ -94,11 +94,12 @@ void shim_logMessage(rust::cxxbridge1::Str file,
                      TracingLevel level,
                      rust::cxxbridge1::Str message);
 
-void shim_purge(skus::SkusContext& ctx);
-void shim_set(skus::SkusContext& ctx,
+void shim_purge(skus::SkusContext& ctx);  // NOLINT
+void shim_set(skus::SkusContext& ctx,     // NOLINT
               rust::cxxbridge1::Str key,
               rust::cxxbridge1::Str value);
-::rust::String shim_get(skus::SkusContext& ctx, rust::cxxbridge1::Str key);
+::rust::String shim_get(skus::SkusContext& ctx,  // NOLINT
+                        rust::cxxbridge1::Str key);
 
 void shim_scheduleWakeup(
     ::std::uint64_t delay_ms,

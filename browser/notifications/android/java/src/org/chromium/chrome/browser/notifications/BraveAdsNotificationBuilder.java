@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Process;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -61,6 +62,11 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      * down towards 0.
      */
     private static final int MAX_SCALABLE_PADDING_DP = 3;
+
+    /**
+     * The notification body height in compact view mode for Android S.
+     */
+    private static final int COMPACT_BODY_CONTAINER_HEIGHT_S = 40;
 
     /**
      * The amount of padding at the start of the button, either before an icon or before the text.
@@ -138,6 +144,18 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
             } else {
                 view.setImageViewResource(smallIconId, mSmallIconId);
             }
+        }
+
+        // Support following custom notification changes on Android 12:
+        // - custom notification already contains icon
+        // - the dimensions become less than before.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            compactView.setViewPadding(R.id.title, 0, 0, 0, 0);
+            compactView.setViewPadding(R.id.body_container, 0, 0, 0, 0);
+            compactView.setViewLayoutHeight(R.id.body_container, COMPACT_BODY_CONTAINER_HEIGHT_S,
+                    TypedValue.COMPLEX_UNIT_DIP);
+            compactView.setViewVisibility(R.id.icon_frame, View.GONE);
+            bigView.setViewVisibility(R.id.icon_frame, View.GONE);
         }
 
         // Note: under the hood this is not a NotificationCompat builder so be mindful of the

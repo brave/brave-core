@@ -62,13 +62,30 @@ static inline bool operator<(const std::reference_wrapper<const Feature>& lhs,
   return &lhs.get() < &rhs.get();
 }
 
+bool FeatureList::IsFeatureOverridden(const std::string& feature_name) const {
+  if (FeatureList::IsFeatureOverridden_ChromiumImpl(feature_name)) {
+    return true;
+  }
+
+  const auto& default_state_overrides = internal::GetDefaultStateOverrides();
+  for (const auto& default_state_override : default_state_overrides) {
+    const Feature& feature = default_state_override.first.get();
+    if (feature.name == feature_name) {
+      return feature.default_state != default_state_override.second;
+    }
+  }
+  return false;
+}
+
 }  // namespace base
 
 // This replaces |default_state| compare blocks with a modified one that
 // includes the state override check.
 #define default_state \
   name&& internal::GetDefaultOrOverriddenFeatureState(feature)
+#define IsFeatureOverridden IsFeatureOverridden_ChromiumImpl
 
 #include "src/base/feature_list.cc"
 
+#undef IsFeatureOverridden
 #undef default_state
