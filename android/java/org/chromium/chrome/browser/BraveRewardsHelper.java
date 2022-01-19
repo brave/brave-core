@@ -72,7 +72,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     private LargeIconReadyCallback mCallback;
     private final Handler mHandler = new Handler();
     private int mFetchCount;
-    private final int MAX_FAVICON_FETCH_COUNT = 30;
+    private final int MAX_FAVICON_FETCH_COUNT = 8;
     public static final int CROSS_FADE_DURATION = 1000; //ms
     public static final int THANKYOU_FADE_OUT_DURATION = 1500; //ms
     public static final int THANKYOU_FADE_IN_DURATION = 1500; //ms
@@ -253,15 +253,15 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
             return;
         }
 
-        if (  mFetchCount == MAX_FAVICON_FETCH_COUNT  || (icon == null && false == isFallbackColorDefault) ) {
+        if (mFetchCount == MAX_FAVICON_FETCH_COUNT
+                || (icon == null && false == isFallbackColorDefault)) {
             RoundedIconGenerator mIconGenerator = new RoundedIconGenerator(Resources.getSystem(),
                     FAVICON_CIRCLE_MEASUREMENTS, FAVICON_CIRCLE_MEASUREMENTS,
                     FAVICON_CIRCLE_MEASUREMENTS, fallbackColor, FAVICON_TEXT_SIZE);
 
             mIconGenerator.setBackgroundColor(fallbackColor);
             icon = mIconGenerator.generateIconForUrl(mFaviconUrl);
-        }
-        else if (icon == null && true == isFallbackColorDefault) {
+        } else if (icon == null && true == isFallbackColorDefault) {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
