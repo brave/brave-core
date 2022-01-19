@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"

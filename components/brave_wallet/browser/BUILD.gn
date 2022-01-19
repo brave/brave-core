@@ -16,6 +16,8 @@ static_library("browser") {
     "blockchain_registry.h",
     "brave_wallet_constants.cc",
     "brave_wallet_constants.h",
+    "brave_wallet_p3a.cc",
+    "brave_wallet_p3a.h",
     "brave_wallet_prefs.cc",
     "brave_wallet_prefs.h",
     "brave_wallet_provider_delegate.h",

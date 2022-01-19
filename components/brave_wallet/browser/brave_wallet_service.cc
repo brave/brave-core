@@ -13,6 +13,7 @@
 #include "base/values.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"  // TODO remove?
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
@@ -120,6 +121,7 @@ BraveWalletService::BraveWalletService(
       json_rpc_service_(json_rpc_service),
       eth_tx_service_(eth_tx_service),
       prefs_(prefs),
+      brave_wallet_p3a_(this, keyring_service, prefs),
       weak_ptr_factory_(this) {
   if (delegate_)
     delegate_->AddObserver(this);

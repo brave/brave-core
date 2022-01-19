@@ -14,6 +14,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_p3a.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -190,6 +191,7 @@ class BraveWalletService : public KeyedService,
   JsonRpcService* json_rpc_service_;
   EthTxService* eth_tx_service_;
   PrefService* prefs_;
+  BraveWalletP3A brave_wallet_p3a_;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;
   base::RepeatingTimer p3a_periodic_timer_;
