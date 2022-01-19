@@ -46,10 +46,9 @@ export interface Props {
   onDoneViewingPrivateKey: () => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onSetImportError: (error: boolean) => void
-  onAddUserAsset: (token: BraveWallet.BlockchainToken) => void
-  onSetUserAssetVisible: (token: BraveWallet.BlockchainToken, isVisible: boolean) => void
-  onRemoveUserAsset: (token: BraveWallet.BlockchainToken) => void
+  onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onOpenWalletSettings: () => void
+  onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
   defaultCurrencies: DefaultCurrencies
   addUserAssetError: boolean
   hasImportError: boolean
@@ -105,13 +104,12 @@ const CryptoView = (props: Props) => {
     onDoneViewingPrivateKey,
     onImportAccountFromJson,
     onSetImportError,
-    onAddUserAsset,
-    onSetUserAssetVisible,
-    onRemoveUserAsset,
+    onAddCustomAsset,
     onOpenWalletSettings,
     onShowAddModal,
     onHideAddModal,
     onShowVisibleAssetsModal,
+    onUpdateVisibleAssets,
     showVisibleAssetsModal,
     defaultCurrencies,
     defaultWallet,
@@ -311,9 +309,7 @@ const CryptoView = (props: Props) => {
           onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
-          onAddUserAsset={onAddUserAsset}
-          onSetUserAssetVisible={onSetUserAssetVisible}
-          onRemoveUserAsset={onRemoveUserAsset}
+          onAddCustomAsset={onAddCustomAsset}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
           portfolioPriceHistory={portfolioPriceHistory}
@@ -335,6 +331,7 @@ const CryptoView = (props: Props) => {
           onCancelTransaction={onCancelTransaction}
           onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
           foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
+          onUpdateVisibleAssets={onUpdateVisibleAssets}
         />
       </Route>
       <Route path={WalletRoutes.AccountsSub} exact={true}>

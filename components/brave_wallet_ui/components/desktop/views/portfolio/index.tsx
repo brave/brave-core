@@ -66,10 +66,9 @@ export interface Props {
   onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
   onSelectNetwork: (network: BraveWallet.EthereumChain) => void
-  onAddUserAsset: (token: BraveWallet.BlockchainToken) => void
-  onSetUserAssetVisible: (token: BraveWallet.BlockchainToken, isVisible: boolean) => void
+  onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onShowVisibleAssetsModal: (showModal: boolean) => void
-  onRemoveUserAsset: (token: BraveWallet.BlockchainToken) => void
+  onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
   showVisibleAssetsModal: boolean
   defaultCurrencies: DefaultCurrencies
   addUserAssetError: boolean
@@ -106,10 +105,9 @@ const Portfolio = (props: Props) => {
     onSelectAccount,
     onClickAddAccount,
     onSelectNetwork,
-    onAddUserAsset,
-    onSetUserAssetVisible,
-    onRemoveUserAsset,
+    onAddCustomAsset,
     onShowVisibleAssetsModal,
+    onUpdateVisibleAssets,
     showVisibleAssetsModal,
     defaultCurrencies,
     addUserAssetError,
@@ -357,12 +355,11 @@ const Portfolio = (props: Props) => {
           userVisibleTokensInfo={userVisibleTokensInfo}
           addUserAssetError={addUserAssetError}
           onClose={toggleShowVisibleAssetModal}
-          onAddUserAsset={onAddUserAsset}
-          onSetUserAssetVisible={onSetUserAssetVisible}
-          onRemoveUserAsset={onRemoveUserAsset}
+          onAddCustomAsset={onAddCustomAsset}
           selectedNetwork={selectedNetwork}
           onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
           foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
+          onUpdateVisibleAssets={onUpdateVisibleAssets}
         />
       }
     </StyledWrapper>

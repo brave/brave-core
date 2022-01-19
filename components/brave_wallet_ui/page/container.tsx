@@ -38,7 +38,6 @@ import BackupWallet from '../stories/screens/backup-wallet'
 import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { mojoTimeDeltaToJSDate } from '../utils/datetime-utils'
-import { stripERC20TokenImageURL } from '../utils/string-utils'
 import { addNumericValues } from '../utils/bn-utils'
 
 import {
@@ -54,7 +53,16 @@ import {
 } from '../common/async/lib'
 
 // Hooks
-import { useAssets, useBalance, usePreset, usePricing, useSend, useSwap, useTokenInfo } from '../common/hooks'
+import {
+  useAssets,
+  useBalance,
+  usePreset,
+  usePricing,
+  useSend,
+  useSwap,
+  useTokenInfo,
+  useAssetManagement
+} from '../common/hooks'
 
 type Props = {
   wallet: WalletState
@@ -191,6 +199,19 @@ function Container (props: Props) {
     props.walletActions.sendTransaction,
     props.walletActions.sendERC721TransferFrom,
     props.wallet.fullTokenList
+  )
+
+  const {
+    onAddCustomAsset,
+    onUpdateVisibleAssets
+  } = useAssetManagement(
+    props.walletActions.addUserAsset,
+    props.walletActions.setUserAssetVisible,
+    props.walletActions.removeUserAsset,
+    props.walletActions.refreshBalancesAndPriceHistory,
+    selectedNetwork,
+    fullTokenList,
+    userVisibleTokensInfo
   )
 
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
@@ -424,24 +445,6 @@ function Container (props: Props) {
     props.walletPageActions.checkWalletsToImport()
   }
 
-  const onSetUserAssetVisible = (token: BraveWallet.BlockchainToken, isVisible: boolean) => {
-    props.walletActions.setUserAssetVisible({ token, chainId: selectedNetwork.chainId, isVisible })
-  }
-
-  const onAddUserAsset = (token: BraveWallet.BlockchainToken) => {
-    props.walletActions.addUserAsset({
-      token: {
-        ...token,
-        logo: stripERC20TokenImageURL(token.logo) || ''
-      },
-      chainId: selectedNetwork.chainId
-    })
-  }
-
-  const onRemoveUserAsset = (token: BraveWallet.BlockchainToken) => {
-    props.walletActions.removeUserAsset({ token, chainId: selectedNetwork.chainId })
-  }
-
   const onOpenWalletSettings = () => {
     props.walletPageActions.openWalletSettings()
   }
@@ -625,9 +628,7 @@ function Container (props: Props) {
                 transactionSpotPrices={transactionSpotPrices}
                 userVisibleTokensInfo={userVisibleTokensInfo}
                 getBalance={getBalance}
-                onAddUserAsset={onAddUserAsset}
-                onSetUserAssetVisible={onSetUserAssetVisible}
-                onRemoveUserAsset={onRemoveUserAsset}
+                onAddCustomAsset={onAddCustomAsset}
                 addUserAssetError={addUserAssetError}
                 defaultWallet={defaultWallet}
                 onOpenWalletSettings={onOpenWalletSettings}
@@ -640,6 +641,7 @@ function Container (props: Props) {
                 showVisibleAssetsModal={showVisibleAssetsModal}
                 onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
                 foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
+                onUpdateVisibleAssets={onUpdateVisibleAssets}
               />
             }
           </Route>

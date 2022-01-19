@@ -57,7 +57,8 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   isErc721: false,
   decimals: 18,
   visible: true,
-  tokenId: ''
+  tokenId: '',
+  coingeckoId: ''
 }
 
 export const mockAccount: WalletAccountType = {
