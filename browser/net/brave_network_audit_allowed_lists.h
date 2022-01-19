@@ -19,7 +19,6 @@ constexpr const char* kAllowedUrlProtocols[] = {
 constexpr const char* kAllowedUrlPrefixes[] = {
     // allowed because it 307's to https://componentupdater.brave.com
     "https://componentupdater.brave.com/service/update2",
-    "https://redirector.bravesoftware.com/",
     "https://crxdownload.brave.com/crx/blobs/",
 
     // Omaha/Sparkle
