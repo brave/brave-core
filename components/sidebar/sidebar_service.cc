@@ -42,7 +42,7 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
       break;
     case SidebarItem::BuiltInItemType::kBookmarks:
       return SidebarItem::Create(
-          GURL("chrome://bookmarks/"),
+          GURL(kSidebarBookmarksURL),
           l10n_util::GetStringUTF16(IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
           SidebarItem::BuiltInItemType::kBookmarks, true);
@@ -67,7 +67,7 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForURL(const std::string& url) {
   if (url == "chrome://wallet/")
     return SidebarItem::BuiltInItemType::kWallet;
 
-  if (url == "chrome://bookmarks/")
+  if (url == kSidebarBookmarksURL || url == "chrome://bookmarks/")
     return SidebarItem::BuiltInItemType::kBookmarks;
 
   if (url == "chrome://history/")

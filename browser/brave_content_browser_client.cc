@@ -61,6 +61,7 @@
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/speedreader/speedreader_util.h"
@@ -174,6 +175,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_constants.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service.h"
 #include "brave/browser/ethereum_remote_client/ethereum_remote_client_service_factory.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+#include "brave/browser/ui/webui/sidebar/sidebar.mojom.h"
+#include "brave/browser/ui/webui/sidebar/sidebar_bookmarks_ui.h"
+#include "brave/components/sidebar/features.h"
 #endif
 
 #if !defined(OS_ANDROID)
@@ -490,6 +497,13 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   if (brave_vpn::IsBraveVPNEnabled()) {
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_vpn::mojom::PanelHandlerFactory, VPNPanelUI>(map);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  if (base::FeatureList::IsEnabled(sidebar::kSidebarFeature)) {
+    chrome::internal::RegisterWebUIControllerInterfaceBinder<
+        sidebar::mojom::BookmarksPageHandlerFactory, SidebarBookmarksUI>(map);
   }
 #endif
 

@@ -39,5 +39,6 @@ extern const char kUntrustedTrezorHost[];
 extern const char kUntrustedTrezorURL[];
 extern const char kShieldsPanelURL[];
 extern const char kShieldsPanelHost[];
+extern const char kSidebarBookmarksHost[];
 
 #endif  // BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_
