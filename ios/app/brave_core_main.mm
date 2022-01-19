@@ -262,7 +262,7 @@ static bool CustomLogHandler(int severity,
 
 - (BravePasswordAPI*)passwordAPI {
   if (!_passwordAPI) {
-    scoped_refptr<password_manager::PasswordStore> password_store_ =
+    scoped_refptr<password_manager::PasswordStoreInterface> password_store_ =
         IOSChromePasswordStoreFactory::GetForBrowserState(
             _mainBrowserState, ServiceAccessType::EXPLICIT_ACCESS)
             .get();

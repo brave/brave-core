@@ -14,12 +14,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 namespace password_manager {
-class PasswordStore;
+class PasswordStoreInterface;
 }
 
 @interface BravePasswordAPI (Private)
 - (instancetype)initWithPasswordStore:
-    (scoped_refptr<password_manager::PasswordStore>)passwordStore;
+    (scoped_refptr<password_manager::PasswordStoreInterface>)passwordStore;
 @end
 
 NS_ASSUME_NONNULL_END

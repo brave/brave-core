@@ -15,6 +15,7 @@
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_form_digest.h"
 #include "components/password_manager/core/browser/password_store.h"
+#include "components/password_manager/core/browser/password_store_interface.h"
 #include "components/password_manager/core/browser/password_store_consumer.h"
 
 #include "ios/web/public/thread/web_thread.h"
@@ -198,14 +199,14 @@ class PasswordStoreConsumerHelper
 #pragma mark - BravePasswordAPI
 
 @interface BravePasswordAPI () {
-  scoped_refptr<password_manager::PasswordStore> password_store_;
+  scoped_refptr<password_manager::PasswordStoreInterface> password_store_;
 }
 @end
 
 @implementation BravePasswordAPI
 
 - (instancetype)initWithPasswordStore:
-    (scoped_refptr<password_manager::PasswordStore>)passwordStore {
+    (scoped_refptr<password_manager::PasswordStoreInterface>)passwordStore {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
 
@@ -251,7 +252,7 @@ class PasswordStoreConsumerHelper
         base::SysNSStringToUTF16(passwordForm.passwordValue);
   }
 
-  passwordCredentialForm.url = net::GURLWithNSURL(passwordForm.url).GetOrigin();
+  passwordCredentialForm.url = net::GURLWithNSURL(passwordForm.url).DeprecatedGetOriginAsURL();
 
   if (passwordForm.signOnRealm) {
     passwordCredentialForm.signon_realm =
