@@ -249,6 +249,20 @@ class JsonRpcServiceUnitTest : public testing::Test {
           }
         }));
   }
+  void SetEthChainIdInterceptorWithBrokenResponse(
+      const std::string& network_url) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, network_url](const network::ResourceRequest& request) {
+          base::StringPiece request_string(request.request_body->elements()
+                                               ->at(0)
+                                               .As<network::DataElementBytes>()
+                                               .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find("eth_chainId") != std::string::npos) {
+            url_loader_factory_.AddResponse(network_url, "{\"jsonrpc\":\"");
+          }
+        }));
+  }
   void SetUDENSInterceptor(const std::string& chain_id) {
     GURL network_url = brave_wallet::GetNetworkURL(prefs(), chain_id);
     ASSERT_TRUE(network_url.is_valid());
@@ -822,6 +836,30 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
       }));
   base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(fourth_callback_is_called);
+
+  // new chain, broken validation response
+  brave_wallet::mojom::EthereumChain chain5(
+      "0x444", "chain_name5", {"https://url5.com"}, {"https://url5.com"},
+      {"https://url5.com"}, "symbol_name", "symbol", 11, false);
+  bool fifth_callback_is_called = false;
+  bool fifth_expected = false;
+  network_url = chain5.rpc_urls.front();
+  SetEthChainIdInterceptorWithBrokenResponse(chain5.rpc_urls.front());
+  json_rpc_service_->AddEthereumChainForOrigin(
+      chain5.Clone(), GURL("https://others5.com"),
+      base::BindLambdaForTesting([&fifth_callback_is_called, &fifth_expected,
+                                  &network_url](const std::string& chain_id,
+                                                bool added,
+                                                const std::string& error) {
+        ASSERT_FALSE(chain_id.empty());
+        EXPECT_EQ(added, fifth_expected);
+        EXPECT_EQ(error, l10n_util::GetStringFUTF8(
+                             IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                             base::ASCIIToUTF16(network_url)));
+        fifth_callback_is_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(fifth_callback_is_called);
 }
 
 TEST_F(JsonRpcServiceUnitTest, StartWithNetwork) {

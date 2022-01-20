@@ -206,7 +206,13 @@ void JsonRpcService::OnEthChainIdValidated(
     const std::string& response,
     const base::flat_map<std::string, std::string>& headers) {
   std::string result;
-  ParseSingleStringResult(response, &result);
+  if (!ParseSingleStringResult(response, &result)) {
+    std::move(callback).Run(
+        chain->chain_id, false,
+        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                                  base::ASCIIToUTF16(chain->rpc_urls.front())));
+    return;
+  }
   if (result != chain->chain_id) {
     std::move(callback).Run(
         chain->chain_id, false,
