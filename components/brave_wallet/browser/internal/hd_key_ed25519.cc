@@ -49,8 +49,8 @@ bool HDKeyEd25519::Verify(const std::vector<uint8_t>& msg,
   return false;
 }
 
-std::string HDKeyEd25519::GetHexEncodedPrivateKey() const {
-  return std::string();
+std::string HDKeyEd25519::GetEncodedPrivateKey() const {
+  return GetBase58EncodedKeypair();
 }
 
 std::string HDKeyEd25519::GetBase58EncodedPublicKey() const {

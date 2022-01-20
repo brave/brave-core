@@ -123,6 +123,8 @@ source_set("hd_keyring") {
     "filecoin_keyring.h",
     "hd_keyring.cc",
     "hd_keyring.h",
+    "solana_keyring.cc",
+    "solana_keyring.h",
   ]
 
   deps = [

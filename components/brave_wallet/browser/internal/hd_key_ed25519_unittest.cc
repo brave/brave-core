@@ -7,44 +7,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-
 namespace brave_wallet {
-TEST(HDKeyEd25519UnitTest, Test) {
-  const char mnemonic[] =
-      "scare piece awesome elite long drift control cabbage glass dash coral "
-      "angry";
-  std::unique_ptr<std::vector<uint8_t>> seed =
-      MnemonicToSeed(std::string(mnemonic), "");
-  auto master_key = HDKeyEd25519::GenerateFromSeed(*seed);
-  auto child0_base = master_key->DeriveChildFromPath("m/44'/501'/0'/0'");
-  HDKeyEd25519* child0 = static_cast<HDKeyEd25519*>(child0_base.get());
-  EXPECT_EQ(child0->GetBase58EncodedPublicKey(),
-            "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu");
-  EXPECT_EQ(child0->GetBase58EncodedKeypair(),
-            "3WoEqkmeTX4BRTS3KNJCsqy7LktvEwbFSoqwMhC7xNgCG3zhwUptkT6KkJcbTpVJGX"
-            "Rw9pd8CYVxZ8wLt8cUoVZb");
-  auto child1_base = master_key->DeriveChildFromPath("m/44'/501'/1'/0'");
-  HDKeyEd25519* child1 = static_cast<HDKeyEd25519*>(child1_base.get());
-  EXPECT_EQ(child1->GetBase58EncodedPublicKey(),
-            "D37CnANGLynWiWmkdAETRNe3nLS7f59SbmK9kK8xSjcu");
-  EXPECT_EQ(child1->GetBase58EncodedKeypair(),
-            "4pNHX6ATNXad3KZTb2PXTosW5ceaxqx45M9NH9pjcZCH9qoQKx6RMzUjuzm6J9Y2uw"
-            "jCxJc5JsjL1TrGr1X3nPFP");
-  auto child2_base = master_key->DeriveChildFromPath("m/44'/501'/2'/0'");
-  HDKeyEd25519* child2 = static_cast<HDKeyEd25519*>(child2_base.get());
-  EXPECT_EQ(child2->GetBase58EncodedPublicKey(),
-            "HEuGsnLvkzHxmmCrFAPJpfSsGvW1zK6bSQykmPRhLxmY");
-  EXPECT_EQ(child2->GetBase58EncodedKeypair(),
-            "47rewUeufUCmtmes3uAGAo7AyM3bBYTvJdD1jQs9MGwB4eYn8SAyQUMNc9b5wFRhQy"
-            "CP9WwmP7JMPAA9U9Q5E8xr");
-  auto child3 = master_key->DeriveChildFromPath("m/44'/501'/0'/0");
-  EXPECT_FALSE(child3);
-  auto child4 = master_key->DeriveChildFromPath("12345");
-  EXPECT_FALSE(child4);
-  auto child5 = master_key->DeriveChild(0x80000000);
-  EXPECT_FALSE(child5);
-}
 
 TEST(HDKeyEd25519UnitTest, TestVector1) {
   std::vector<uint8_t> bytes;
@@ -191,6 +154,16 @@ TEST(HDKeyEd25519UnitTest, Errors) {
   // index is too big for hardened index
   auto child3 = master_key->DeriveChild(0x80000000);
   EXPECT_FALSE(child3);
+}
+
+TEST(HDKeyEd25519UnitTest, GetEncodedPrivateKey) {
+  std::vector<uint8_t> bytes;
+  EXPECT_TRUE(
+      base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &bytes));
+  auto master_key = HDKeyEd25519::GenerateFromSeed(bytes);
+  EXPECT_EQ(master_key->GetEncodedPrivateKey(),
+            "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
+            "YbQtaJQKLXET9jVjepWXe");
 }
 
 }  // namespace brave_wallet

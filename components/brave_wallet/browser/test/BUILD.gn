@@ -35,6 +35,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/password_encryptor_unittest.cc",
     "//brave/components/brave_wallet/browser/rlp_decode_unittest.cc",
     "//brave/components/brave_wallet/browser/rlp_encode_unittest.cc",
+    "//brave/components/brave_wallet/browser/solana_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_requests_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_response_parser_unittest.cc",
     "//brave/components/brave_wallet/browser/swap_response_parser_unittest.cc",

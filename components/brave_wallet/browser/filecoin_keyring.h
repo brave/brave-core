@@ -22,6 +22,8 @@ class FilecoinKeyring : public HDKeyring {
  public:
   FilecoinKeyring();
   ~FilecoinKeyring() override;
+  FilecoinKeyring(const FilecoinKeyring&) = delete;
+  FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
 
   Type type() const override;
 
@@ -38,8 +40,6 @@ class FilecoinKeyring : public HDKeyring {
  private:
   std::string CreateAddressWithProtocol(const std::vector<uint8_t>& payload,
                                         int protocol) const;
-  FilecoinKeyring(const FilecoinKeyring&) = delete;
-  FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
 };
 
 }  // namespace brave_wallet

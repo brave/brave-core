@@ -373,7 +373,7 @@ std::string HDKey::GetPrivateExtendedKey() const {
   return Serialize(MAINNET_PRIVATE, key);
 }
 
-std::string HDKey::GetHexEncodedPrivateKey() const {
+std::string HDKey::GetEncodedPrivateKey() const {
   return base::ToLowerASCII(base::HexEncode(private_key_));
 }
 
