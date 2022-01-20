@@ -131,7 +131,8 @@ function BackupWallet (props: Props) {
       {backupStep === 2 &&
         <OnboardingVerify
           onSubmit={checkPhrase}
-          recoveryPhrase={shuffledPhrase}
+          shuffledPhrase={shuffledPhrase}
+          recoveryPhrase={recoveryPhrase}
           sortedPhrase={sortedPhrase}
           selectWord={selectWord}
           unSelectWord={unSelectWord}
