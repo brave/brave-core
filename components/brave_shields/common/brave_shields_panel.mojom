@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-module brave_shields_panel.mojom;
+module brave_shields.mojom;
 
 import "url/mojom/url.mojom";
 
@@ -33,9 +33,17 @@ interface UIHandler {
 interface DataHandler {
   RegisterUIHandler(pending_remote<UIHandler> ui_handler);
   GetSiteBlockInfo() => (SiteBlockInfo site_block_info);
+  GetAdBlockMode() => (AdBlockMode mode);
+  SetAdBlockMode(AdBlockMode mode);
 };
 
 struct SiteBlockInfo {
   string host;
   int32 total_blocked_resources;
+};
+
+enum AdBlockMode {
+  AGGRESSIVE,
+  STANDARD,
+  ALLOW
 };

@@ -4,6 +4,7 @@ import * as S from './style'
 import Toggle from '../../../../../web-components/toggle'
 import { getLocale } from '../../../../../common/locale'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
+import { useTrackerOptions } from './hooks'
 
 function GlobalSettings () {
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -34,11 +35,7 @@ function GlobalSettings () {
 }
 
 function AdvancedControlsContent () {
-  const trackersOptions = [
-    { text: getLocale('braveShieldsTrackersAndAdsBlockedStd') },
-    { text: getLocale('braveShieldsTrackersAndAdsBlockedAgg') },
-    { text: getLocale('braveShieldsTrackersAndAdsAllowAll') }
-  ]
+  const { adControlType, adControlTypeOptions, handleAdControlTypeChange } = useTrackerOptions()
 
   const cookiesOptions = [
     { text: getLocale('braveShieldsCrossCookiesBlocked') },
@@ -68,14 +65,18 @@ function AdvancedControlsContent () {
             <S.CaratDown />
             <span>10</span>
           </S.ControlCount>
-          <select aria-label={getLocale('braveShieldsTrackersAndAds')}>
-              {trackersOptions.map((entry, i) => {
-                return (
-                  <option key={i}>
-                    {entry.text}
-                  </option>
-                )
-              })}
+          <select
+            value={adControlType}
+            aria-label={getLocale('braveShieldsTrackersAndAds')}
+            onChange={handleAdControlTypeChange}
+          >
+            {adControlTypeOptions.map((entry, i) => {
+              return (
+                <option value={entry.value} key={i}>
+                  {entry.text}
+                </option>
+              )
+            })}
           </select>
         </S.ControlGroup>
         <S.ControlGroup>

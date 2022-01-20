@@ -12,7 +12,7 @@
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 ShieldsPanelHandler::ShieldsPanelHandler(
-    mojo::PendingReceiver<brave_shields_panel::mojom::PanelHandler> receiver,
+    mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
     ui::MojoBubbleWebUIController* webui_controller)
     : receiver_(this, std::move(receiver)),
       webui_controller_(webui_controller) {}

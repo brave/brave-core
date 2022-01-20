@@ -39,16 +39,14 @@ ShieldsPanelUI::~ShieldsPanelUI() = default;
 WEB_UI_CONTROLLER_TYPE_IMPL(ShieldsPanelUI)
 
 void ShieldsPanelUI::BindInterface(
-    mojo::PendingReceiver<brave_shields_panel::mojom::PanelHandlerFactory>
-        receiver) {
+    mojo::PendingReceiver<brave_shields::mojom::PanelHandlerFactory> receiver) {
   panel_factory_receiver_.reset();
   panel_factory_receiver_.Bind(std::move(receiver));
 }
 
 void ShieldsPanelUI::CreatePanelHandler(
-    mojo::PendingReceiver<brave_shields_panel::mojom::PanelHandler>
-        panel_receiver,
-    mojo::PendingReceiver<brave_shields_panel::mojom::DataHandler>
+    mojo::PendingReceiver<brave_shields::mojom::PanelHandler> panel_receiver,
+    mojo::PendingReceiver<brave_shields::mojom::DataHandler>
         data_handler_receiver) {
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);

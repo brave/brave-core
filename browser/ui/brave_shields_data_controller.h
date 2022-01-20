@@ -10,10 +10,12 @@
 #include <string>
 
 #include "base/observer_list.h"
+#include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
+using brave_shields::mojom::AdBlockMode;
 using content::NavigationEntry;
 
 namespace brave_shields {
@@ -37,8 +39,10 @@ class BraveShieldsDataController
                          const std::string& subresource);
   void ClearAllResourcesList();
   int GetTotalBlockedCount();
-  bool GetIsBraveShieldsEnabled();
+  bool GetBraveShieldsEnabled();
   GURL GetCurrentSiteURL();
+  AdBlockMode GetAdBlockMode();
+  void SetAdBlockMode(AdBlockMode mode);
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);
@@ -48,6 +52,9 @@ class BraveShieldsDataController
   friend class content::WebContentsUserData<BraveShieldsDataController>;
 
   explicit BraveShieldsDataController(content::WebContents* web_contents);
+
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   base::ObserverList<Observer> observer_list_;
   std::set<GURL> resource_list_blocked_ads_;

@@ -12,7 +12,7 @@
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 ShieldsDataHandler::ShieldsDataHandler(
-    mojo::PendingReceiver<brave_shields_panel::mojom::DataHandler>
+    mojo::PendingReceiver<brave_shields::mojom::DataHandler>
         data_handler_receiver,
     ui::MojoBubbleWebUIController* webui_controller)
     : data_handler_receiver_(this, std::move(data_handler_receiver)),
@@ -39,14 +39,27 @@ ShieldsDataHandler::~ShieldsDataHandler() {
 }
 
 void ShieldsDataHandler::RegisterUIHandler(
-    mojo::PendingRemote<brave_shields_panel::mojom::UIHandler>
-        ui_handler_receiver) {
+    mojo::PendingRemote<brave_shields::mojom::UIHandler> ui_handler_receiver) {
   ui_handler_remote_.Bind(std::move(ui_handler_receiver));
   UpdateSiteBlockInfo();
 }
 
 void ShieldsDataHandler::GetSiteBlockInfo(GetSiteBlockInfoCallback callback) {
   std::move(callback).Run(site_block_info_.Clone());
+}
+
+void ShieldsDataHandler::GetAdBlockMode(GetAdBlockModeCallback callback) {
+  auto* shields_data_ctrlr = GetActiveShieldsDataController();
+  DCHECK(shields_data_ctrlr);
+
+  std::move(callback).Run(shields_data_ctrlr->GetAdBlockMode());
+}
+
+void ShieldsDataHandler::SetAdBlockMode(AdBlockMode mode) {
+  auto* shields_data_ctrlr = GetActiveShieldsDataController();
+  DCHECK(shields_data_ctrlr);
+
+  shields_data_ctrlr->SetAdBlockMode(mode);
 }
 
 BraveShieldsDataController*

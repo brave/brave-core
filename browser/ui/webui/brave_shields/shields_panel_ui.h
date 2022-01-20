@@ -16,7 +16,7 @@
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 class ShieldsPanelUI : public ui::MojoBubbleWebUIController,
-                       public brave_shields_panel::mojom::PanelHandlerFactory {
+                       public brave_shields::mojom::PanelHandlerFactory {
  public:
   explicit ShieldsPanelUI(content::WebUI* web_ui);
   ShieldsPanelUI(const ShieldsPanelUI&) = delete;
@@ -26,20 +26,19 @@ class ShieldsPanelUI : public ui::MojoBubbleWebUIController,
   // Instantiates the implementor of the mojom::PanelHandlerFactory mojo
   // interface passing the pending receiver that will be internally bound.
   void BindInterface(
-      mojo::PendingReceiver<brave_shields_panel::mojom::PanelHandlerFactory>
+      mojo::PendingReceiver<brave_shields::mojom::PanelHandlerFactory>
           receiver);
 
  private:
   void CreatePanelHandler(
-      mojo::PendingReceiver<brave_shields_panel::mojom::PanelHandler>
-          panel_receiver,
-      mojo::PendingReceiver<brave_shields_panel::mojom::DataHandler>
+      mojo::PendingReceiver<brave_shields::mojom::PanelHandler> panel_receiver,
+      mojo::PendingReceiver<brave_shields::mojom::DataHandler>
           data_handler_receiver) override;
 
   std::unique_ptr<ShieldsPanelHandler> panel_handler_;
   std::unique_ptr<ShieldsDataHandler> data_handler_;
 
-  mojo::Receiver<brave_shields_panel::mojom::PanelHandlerFactory>
+  mojo::Receiver<brave_shields::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();

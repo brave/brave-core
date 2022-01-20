@@ -267,14 +267,6 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
       // we only reset the counter for blocked URLs, not the one for scripts.
       blocked_url_paths_.clear();
     }
-    if (base::FeatureList::IsEnabled(
-            brave_shields::features::kBraveShieldsPanelV2)) {
-#if !defined(OS_ANDROID)
-      brave_shields::BraveShieldsDataController::FromWebContents(
-          navigation_handle->GetWebContents())
-          ->ClearAllResourcesList();
-#endif
-    }
   }
 
   navigation_handle->GetWebContents()->ForEachRenderFrameHost(
