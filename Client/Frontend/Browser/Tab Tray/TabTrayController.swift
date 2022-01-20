@@ -461,6 +461,6 @@ class TabTraySearchBar: UIView {
     override func sizeThatFits(_ size: CGSize) -> CGSize {
         // This is done to adjust the frame of a UISearchBar inside of UISearchController
         // Adjusting the bar frame directly doesnt work so had to create a custom view with UISearchBar
-        .init(width: size.width - 20, height: size.height)
+        .init(width: size.width + 16, height: size.height)
     }
 }
