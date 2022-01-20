@@ -347,7 +347,7 @@
     "@types/webtorrent": "^0.109.0",
     "@noble/bls12-381": "1.0.1",
     "array-move": "^2.2.1",
-    "bignumber.js": "^7.2.1",
+    "bignumber.js": "^9.0.2",
     "bluebird": "^3.5.1",
     "core-js": "^3.9.1",
     "date-fns": "^2.15.0",

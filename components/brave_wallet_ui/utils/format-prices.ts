@@ -1,40 +1,43 @@
-import { CurrencySymbols } from './currency-symbols'
-const addCommas = (value: string) => {
-  const parts = value.split('.')
-  return (
-    parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
-    (parts[1] ? '.' + parts[1] : '')
-  )
-}
+import BigNumber from 'bignumber.js'
 
-export const formatWithCommasAndDecimals = (value: string) => {
+import { CurrencySymbols } from './currency-symbols'
+
+export const formatWithCommasAndDecimals = (value: string, decimals?: number) => {
   // empty string indicates unknown balance
   if (value === '') {
     return ''
   }
 
-  // We some times return Unlimited as a value
-  if (isNaN(Number(value))) {
+  const valueBN = new BigNumber(value)
+
+  // We sometimes return Unlimited as a value
+  if (valueBN.isNaN()) {
     return value
   }
 
-  const valueToNumber = Number(value)
-
-  if (valueToNumber === 0) {
+  if (valueBN.isZero()) {
     return '0.00'
   }
 
-  if (valueToNumber >= 10) {
-    return addCommas(valueToNumber.toFixed(2))
+  const fmt = {
+    decimalSeparator: '.',
+    groupSeparator: ',',
+    groupSize: 3
+  } as BigNumber.Format
+
+  if (decimals && valueBN.isGreaterThan(10 ** -decimals)) {
+    return valueBN.toFormat(decimals, BigNumber.ROUND_UP, fmt)
   }
 
-  if (valueToNumber >= 1) {
-    return addCommas(valueToNumber.toFixed(3))
+  if (valueBN.isGreaterThanOrEqualTo(10)) {
+    return valueBN.toFormat(2, BigNumber.ROUND_UP, fmt)
   }
 
-  const calculatedDecimalPlace = -Math.floor(Math.log(valueToNumber) / Math.log(10) + 1)
-  const added = Number(calculatedDecimalPlace) + 3
-  return addCommas(valueToNumber.toFixed(added))
+  if (valueBN.isGreaterThanOrEqualTo(1)) {
+    return valueBN.toFormat(3, BigNumber.ROUND_UP, fmt)
+  }
+
+  return valueBN.toFormat(fmt)
 }
 
 export const formatFiatAmountWithCommasAndDecimals = (value: string, defaultCurrency: string): string => {
@@ -44,11 +47,11 @@ export const formatFiatAmountWithCommasAndDecimals = (value: string, defaultCurr
 
   const currencySymbol = CurrencySymbols[defaultCurrency]
 
-  // Check to make sure a formated value is returned before showing the fiat symbol
-  if (!formatWithCommasAndDecimals(value)) {
+  // Check to make sure a formatted value is returned before showing the fiat symbol
+  if (!formatWithCommasAndDecimals(value, 2)) {
     return ''
   }
-  return currencySymbol + formatWithCommasAndDecimals(value)
+  return currencySymbol + formatWithCommasAndDecimals(value, 2)
 }
 
 export const formatTokenAmountWithCommasAndDecimals = (value: string, symbol: string): string => {
@@ -56,7 +59,7 @@ export const formatTokenAmountWithCommasAndDecimals = (value: string, symbol: st
   if (!value && !symbol) {
     return ''
   }
-  // Check to make sure a formated value is returned before showing the symbol
+  // Check to make sure a formatted value is returned before showing the symbol
   if (!formatWithCommasAndDecimals(value)) {
     return ''
   }

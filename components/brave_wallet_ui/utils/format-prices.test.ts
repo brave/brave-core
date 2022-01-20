@@ -4,50 +4,47 @@ import {
   formatTokenAmountWithCommasAndDecimals
 } from './format-prices'
 
-describe('Check Formating with Commas and Decimals', () => {
-  test('Value was empty, should return an empty string', () => {
+describe('Check Formatting with Commas and Decimals', () => {
+  it('should return an empty string if value is empty', () => {
     const value = ''
     expect(formatWithCommasAndDecimals(value)).toEqual('')
   })
 
-  test('Value is 0 should return 0.00', () => {
-    const value = '0'
-    expect(formatWithCommasAndDecimals(value)).toEqual('0.00')
-  })
-
-  test('Value is Unlimited should return Unlimited', () => {
-    const value = 'Unlimited'
-    expect(formatWithCommasAndDecimals(value)).toEqual('Unlimited')
+  it.each([
+    ['0.00', '0'],
+    ['Unlimited', 'Unlimited']
+  ])('should return %s if value is %s', (expected, value) => {
+    expect(formatWithCommasAndDecimals(value)).toEqual(expected)
   })
 })
 
-describe('Check Formating with Commas and Decimals for Fiat', () => {
-  test('Value was empty, should return an empty string', () => {
+describe('Check Formatting with Commas and Decimals for Fiat', () => {
+  it('should return an empty string if value is empty', () => {
     const value = ''
     expect(formatFiatAmountWithCommasAndDecimals(value, 'USD')).toEqual('')
   })
 
-  test('USD Value is 0 should return $0.00', () => {
-    const value = '0'
-    expect(formatFiatAmountWithCommasAndDecimals(value, 'USD')).toEqual('$0.00')
-  })
-
-  test('RUB Value is 0 should return $0.00', () => {
-    const value = '0'
-    expect(formatFiatAmountWithCommasAndDecimals(value, 'RUB')).toEqual('₽0.00')
+  it.each([
+    ['$0.00', '0', 'USD'],
+    ['₽0.00', '0', 'RUB'],
+    ['₽0.10', '0.1', 'RUB'],
+    ['₽0.001', '0.001', 'RUB']
+  ])('should return %s if value is %s %s', (expected, value, currency) => {
+    expect(formatFiatAmountWithCommasAndDecimals(value, currency)).toEqual(expected)
   })
 })
 
-describe('Check Formating with Commas and Decimals for Tokens', () => {
-  test('Value was empty, should return an empty string', () => {
+describe('Check Formatting with Commas and Decimals for Tokens', () => {
+  it('should return an empty string if value is empty', () => {
     const value = ''
     const symbol = ''
     expect(formatTokenAmountWithCommasAndDecimals(value, symbol)).toEqual('')
   })
 
-  test('Value is 0 should return 0.00 ETH', () => {
-    const value = '0'
-    const symbol = 'ETH'
-    expect(formatTokenAmountWithCommasAndDecimals(value, symbol)).toEqual('0.00 ETH')
+  it.each([
+    ['0.00 ETH', '0', 'ETH'],
+    ['0.000000000000000001 ETH', '0.000000000000000001', 'ETH']
+  ])('should return %s if value is %s %s', (expected, value, symbol) => {
+    expect(formatTokenAmountWithCommasAndDecimals(value, symbol)).toEqual(expected)
   })
 })
