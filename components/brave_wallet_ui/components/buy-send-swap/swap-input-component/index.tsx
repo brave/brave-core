@@ -68,6 +68,7 @@ export interface Props {
   validationError?: SwapValidationErrorType
   customSlippageTolerance?: string
   defaultCurrencies?: DefaultCurrencies
+  selectedPreset?: AmountPresetTypes
   onCustomSlippageToleranceChange?: (value: string) => void
   onInputChange?: (value: string, name: string) => void
   onSelectPresetAmount?: (percent: number) => void
@@ -97,6 +98,7 @@ function SwapInputComponent (props: Props) {
     validationError,
     customSlippageTolerance,
     defaultCurrencies,
+    selectedPreset,
     onCustomSlippageToleranceChange,
     onInputChange,
     onPaste,
@@ -109,7 +111,6 @@ function SwapInputComponent (props: Props) {
   const [spin, setSpin] = React.useState<number>(0)
   const [expandSelector, setExpandSelector] = React.useState<boolean>(false)
   const [showSlippageWarning, setShowSlippageWarning] = React.useState<boolean>(false)
-  const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>()
 
   const toggleExpandSelector = () => {
     setExpandSelector(!expandSelector)
@@ -138,7 +139,6 @@ function SwapInputComponent (props: Props) {
 
   const setPresetAmountValue = (percent: AmountPresetTypes) => () => {
     if (onSelectPresetAmount) {
-      setSelectedPreset(percent)
       onSelectPresetAmount(percent)
     }
   }

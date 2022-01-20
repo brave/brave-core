@@ -72,6 +72,7 @@ provideStrings({
   braveWalletBuy: 'Buy',
   braveWalletSend: 'Send',
   braveWalletSwap: 'Swap',
+  braveWalletReset: 'Reset',
   braveWalletBuyNotSupportedTooltip: 'Buy not supported',
   braveWalletSwapNotSupportedTooltip: 'Swap not supported',
   braveWalletSlippageToleranceWarning: 'Transaction may be frontrun',

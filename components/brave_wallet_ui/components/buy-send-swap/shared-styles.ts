@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { WalletButton } from '../shared/style'
 
 export const BubbleContainer = styled.div`
   display: flex;
@@ -76,4 +77,36 @@ export const DividerText = styled.span`
   letter-spacing: 0.01em;
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
+`
+
+export const ButtonRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  margin-bottom: 14px;
+`
+
+export const ResetButton = styled(WalletButton)`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  font-weight: 600;
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  padding: 2px 0px;
+  width: 48px;
+  background-color: ${(p) => p.theme.palette.white};
+  color: ${(p) => p.theme.color.interactive05};
+  @media (prefers-color-scheme: dark) {
+    background-color: transparent;
+    color: ${(p) => p.theme.palette.blurple300};
+  }
 `

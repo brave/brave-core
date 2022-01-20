@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {
+  AmountPresetTypes,
   BraveWallet,
   BuySendSwapViewTypes,
   ToOrFromType
@@ -7,7 +8,7 @@ import {
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
 import { getLocale } from '../../../../common/locale'
-import { ErrorText } from '../shared-styles'
+import { ButtonRow, ErrorText, ResetButton } from '../shared-styles'
 // Styled Components
 import {
   StyledWrapper
@@ -41,6 +42,7 @@ function Send (props: Props) {
     onSubmit,
     onChangeSendView
   } = props
+  const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>()
 
   const onShowAssets = () => {
     onChangeSendView('assets', 'from')
@@ -49,6 +51,17 @@ function Send (props: Props) {
   const onPasteFromClipboard = async () => {
     const address = await navigator.clipboard.readText()
     onInputChange(address, 'address')
+  }
+
+  const onReset = () => {
+    onInputChange('', 'from')
+    onInputChange('', 'address')
+    setSelectedPreset(0)
+  }
+
+  const setPresetAmountValue = (percent: number) => {
+    setSelectedPreset(percent as AmountPresetTypes)
+    onSelectPresetAmount(percent)
   }
 
   const insuficientFundsError = React.useMemo((): boolean => {
@@ -62,7 +75,7 @@ function Send (props: Props) {
     <StyledWrapper>
       <SwapInputComponent
         componentType='fromAmount'
-        onSelectPresetAmount={onSelectPresetAmount}
+        onSelectPresetAmount={setPresetAmountValue}
         onInputChange={onInputChange}
         selectedAssetInputAmount={selectedAssetAmount}
         inputName='from'
@@ -70,6 +83,7 @@ function Send (props: Props) {
         selectedAsset={selectedAsset}
         onShowSelection={onShowAssets}
         autoFocus={true}
+        selectedPreset={selectedPreset}
       />
       <SwapInputComponent
         componentType='toAddress'
@@ -84,17 +98,25 @@ function Send (props: Props) {
       {insuficientFundsError &&
         <ErrorText>{getLocale('braveWalletSwapInsufficientBalance')}</ErrorText>
       }
-      <NavButton
-        disabled={addressError !== '' ||
-          toAddressOrUrl === '' ||
-          parseFloat(selectedAssetAmount) === 0 ||
-          selectedAssetAmount === '' ||
-          insuficientFundsError
-        }
-        buttonType='primary'
-        text={getLocale('braveWalletSend')}
-        onSubmit={onSubmit}
-      />
+      <ButtonRow>
+        <NavButton
+          disabled={addressError !== '' ||
+            toAddressOrUrl === '' ||
+            parseFloat(selectedAssetAmount) === 0 ||
+            selectedAssetAmount === '' ||
+            insuficientFundsError
+          }
+          buttonType='primary'
+          text={getLocale('braveWalletSend')}
+          onSubmit={onSubmit}
+        />
+
+        <ResetButton
+          onClick={onReset}
+        >
+          {getLocale('braveWalletReset')}
+        </ResetButton>
+      </ButtonRow>
     </StyledWrapper>
   )
 }
