@@ -13,7 +13,7 @@ std::string BuildModelInfo() {
   std::string model;
   return model;
 }
-}
+}  // namespace content
 
 #define BuildModelInfo BuildModelInfo_ChromiumImpl
 
