@@ -30,6 +30,15 @@ function comparePublishersByName (a: Publisher, b: Publisher) {
   return 0
 }
 
+function isValidFeedUrl (feedInput: string): boolean {
+  // is valid url?
+  try {
+    const url = new URL(feedInput)
+    return ['http:', 'https:'].includes(url.protocol)
+  } catch { }
+  return false
+}
+
 export default function useManageDirectFeeds (publishers?: Publishers) {
   const dispatch = useDispatch()
   // Memoize user feeds
@@ -52,9 +61,15 @@ export default function useManageDirectFeeds (publishers?: Publishers) {
     setFeedInputIsValid(FeedInputValidity.Valid)
   }
   const onAddSource = React.useCallback(async () => {
+    // Validate
     if (!feedInputText) {
       return
     }
+    if (!isValidFeedUrl(feedInputText)) {
+      setFeedInputIsValid(FeedInputValidity.NotValid)
+      return
+    }
+    // Ask the backend
     setFeedInputIsValid(FeedInputValidity.Pending)
     const api = getBraveNewsAPI()
     const result = await api.subscribeToNewDirectFeed({ url: feedInputText })
@@ -66,6 +81,7 @@ export default function useManageDirectFeeds (publishers?: Publishers) {
       setFeedInputIsValid(FeedInputValidity.NotValid)
       return
     }
+    // Valid
     setFeedInputIsValid(FeedInputValidity.Valid)
     setFeedInputText('')
     dispatch(todayActions.dataReceived({ publishers: result.publishers }))

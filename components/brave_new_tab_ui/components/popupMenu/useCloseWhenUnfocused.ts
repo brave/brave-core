@@ -35,12 +35,10 @@ export default function useCloseWhenUnfocused (ref: React.RefObject<HTMLUListEle
         onClose()
       }
     }
-    // window.addEventListener('blur', handleFocusChange, true)
     window.addEventListener('focus', handleFocusChange, true)
     window.addEventListener('keydown', handleKeyDown)
     window.addEventListener('click', handleClick)
     return () => {
-      // window.removeEventListener('blur', handleFocusChange)
       window.removeEventListener('focus', handleFocusChange)
       window.removeEventListener('keydown', handleKeyDown)
       window.removeEventListener('click', handleClick)

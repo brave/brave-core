@@ -34,6 +34,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 
@@ -123,6 +124,10 @@ void BraveNewsController::SubscribeToNewDirectFeed(
     SubscribeToNewDirectFeedCallback callback) {
   // Verify the url points at a valid feed
   VLOG(1) << "SubscribeToNewDirectFeed: " << feed_url.spec();
+  if (!feed_url.is_valid()) {
+    std::move(callback).Run(false, false, absl::nullopt);
+    return;
+  }
   direct_feed_controller_.VerifyFeedUrl(
       feed_url,
       base::BindOnce(
