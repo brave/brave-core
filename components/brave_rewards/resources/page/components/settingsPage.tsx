@@ -291,6 +291,18 @@ class SettingsPage extends React.Component<Props, State> {
             onClick={this.actions.hideRedirectModal}
           />
         )
+      case 'upholdCustomerDueDiligenceRequiredModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-uphold-customer-due-diligence-required'}
+            errorText={getLocale('redirectModalUpholdCustomerDueDiligenceRequiredText')}
+            titleText={getLocale('redirectModalUpholdCustomerDueDiligenceRequiredTitle')}
+            learnMore={'https://wallet.uphold.com/customer-due-diligence'}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
       case 'upholdPendingUserModal':
         return (
           <ModalRedirect

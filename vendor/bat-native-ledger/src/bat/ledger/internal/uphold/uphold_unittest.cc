@@ -495,8 +495,22 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::CONTINUE,
       type::WalletStatus::PENDING
     },
+    // NOLINTNEXTLINE
+    GetUserParamType{  // Customer due diligence is required for the user! (PENDING)
+      "02_PENDING_customer_due_diligence_is_required_for_the_user",
+      R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "verifications": { "customerDueDiligence": { "status": "required" } } })",
+        {}
+      },
+      type::Result::UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED,
+      type::WalletStatus::NOT_CONNECTED
+    },
     GetUserParamType{  // BAT is not allowed for the user! (PENDING)
-      "02_PENDING_bat_is_not_allowed_for_the_user",
+      "03_PENDING_bat_is_not_allowed_for_the_user",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -509,7 +523,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Account is blocked at Uphold. (PENDING)
-      "03_PENDING_account_is_blocked_at_uphold",
+      "04_PENDING_account_is_blocked_at_uphold",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -522,7 +536,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Account is pending at Uphold. (PENDING)
-      "04_PENDING_account_is_pending_at_uphold",
+      "05_PENDING_account_is_pending_at_uphold",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -535,7 +549,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Account is restricted at Uphold. (PENDING)
-      "05_PENDING_account_is_restricted_at_uphold",
+      "06_PENDING_account_is_restricted_at_uphold",
       R"({ "status": 5, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150" })",
       type::UrlResponse{
         {},
@@ -548,7 +562,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::NOT_CONNECTED
     },
     GetUserParamType{  // Access token expired! (VERIFIED)
-      "06_VERIFIED_access_token_expired",
+      "07_VERIFIED_access_token_expired",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -561,7 +575,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Couldn't get the user object from Uphold! (VERIFIED)
-      "07_VERIFIED_couldn_t_get_the_user_object_from_uphold",
+      "08_VERIFIED_couldn_t_get_the_user_object_from_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -573,8 +587,22 @@ INSTANTIATE_TEST_SUITE_P(
       type::Result::CONTINUE,
       type::WalletStatus::VERIFIED
     },
+    // NOLINTNEXTLINE
+    GetUserParamType{  // Customer due diligence is required for the user! (VERIFIED)
+      "09_VERIFIED_customer_due_diligence_is_required_for_the_user",
+      R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
+      type::UrlResponse{
+        {},
+        {},
+        net::HttpStatusCode::HTTP_OK,
+        R"({ "verifications": { "customerDueDiligence": { "status": "required" } } })",
+        {}
+      },
+      type::Result::UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED,
+      type::WalletStatus::DISCONNECTED_VERIFIED
+    },
     GetUserParamType{  // BAT is not allowed for the user! (VERIFIED)
-      "08_VERIFIED_bat_is_not_allowed_for_the_user",
+      "10_VERIFIED_bat_is_not_allowed_for_the_user",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -587,7 +615,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Account is blocked at Uphold. (VERIFIED)
-      "09_VERIFIED_account_is_blocked_at_uphold",
+      "11_VERIFIED_account_is_blocked_at_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -600,7 +628,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Account is pending at Uphold. (VERIFIED)
-      "10_VERIFIED_account_is_pending_at_uphold",
+      "12_VERIFIED_account_is_pending_at_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -613,7 +641,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Account is restricted at Uphold. (VERIFIED)
-      "11_VERIFIED_account_is_restricted_at_uphold",
+      "13_VERIFIED_account_is_restricted_at_uphold",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
@@ -626,7 +654,7 @@ INSTANTIATE_TEST_SUITE_P(
       type::WalletStatus::DISCONNECTED_VERIFIED
     },
     GetUserParamType{  // Happy path. (VERIFIED)
-      "12_VERIFIED_happy_path",
+      "14_VERIFIED_happy_path",
       R"({ "status": 2, "token": "0047c2fd8f023e067354dbdb5639ee67acf77150", "address": "962ef3b8-bc12-4619-a349-c8083931b795" })",
       type::UrlResponse{
         {},
