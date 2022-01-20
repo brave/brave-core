@@ -23,44 +23,44 @@ namespace content_settings {
 
 namespace {
 
-constexpr char kWp[] = "https://[*.]wp.com/*";
-constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
-constexpr char kPlaystation[] = "https://[*.]playstation.com/*";
-constexpr char kSonyentertainmentnetwork[] =
-    "https://[*.]sonyentertainmentnetwork.com/*";
-constexpr char kSony[] = "https://[*.]sony.com/*";
-constexpr char kGoogle[] = "https://[*.]google.com/*";
-constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
-constexpr char kFacebook[] = "https://[*.]facebook.com/*";
-constexpr char kInstagram[] = "https://[*.]instagram.com/*";
+//constexpr char kWp[] = "https://[*.]wp.com/*";
+//constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
+//constexpr char kPlaystation[] = "https://[*.]playstation.com/*";
+//constexpr char kSonyentertainmentnetwork[] =
+//    "https://[*.]sonyentertainmentnetwork.com/*";
+//constexpr char kSony[] = "https://[*.]sony.com/*";
+//constexpr char kGoogle[] = "https://[*.]google.com/*";
+//constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
+//constexpr char kFacebook[] = "https://[*.]facebook.com/*";
+//constexpr char kInstagram[] = "https://[*.]instagram.com/*";
 
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
                               const CookieSettingsBase* const cookie_settings) {
-  static const base::NoDestructor<
+  //static const base::NoDestructor<
       // url -> first_party_url allow map
-      std::vector<std::pair<ContentSettingsPattern, ContentSettingsPattern>>>
-      entity_list(
-          {{ContentSettingsPattern::FromString(kWp),
-            ContentSettingsPattern::FromString(kWordpress)},
-           {ContentSettingsPattern::FromString(kWordpress),
-            ContentSettingsPattern::FromString(kWp)},
-           {ContentSettingsPattern::FromString(kGoogle),
-            ContentSettingsPattern::FromString(kGoogleusercontent)},
-           {ContentSettingsPattern::FromString(kGoogleusercontent),
-            ContentSettingsPattern::FromString(kGoogle)},
-           {ContentSettingsPattern::FromString(kInstagram),
-            ContentSettingsPattern::FromString(kFacebook)},
-           {ContentSettingsPattern::FromString(kFacebook),
-            ContentSettingsPattern::FromString(kInstagram)},
-           {ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSonyentertainmentnetwork)},
-           {ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
-            ContentSettingsPattern::FromString(kPlaystation)},
-           {ContentSettingsPattern::FromString(kSony),
-            ContentSettingsPattern::FromString(kPlaystation)},
-           {ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSony)}});
+      //std::vector<std::pair<ContentSettingsPattern, ContentSettingsPattern>>>
+      //entity_list(
+      //    {{ContentSettingsPattern::FromString(kWp),
+      //      ContentSettingsPattern::FromString(kWordpress)},
+      //     {ContentSettingsPattern::FromString(kWordpress),
+      //      ContentSettingsPattern::FromString(kWp)},
+      //     {ContentSettingsPattern::FromString(kGoogle),
+      //      ContentSettingsPattern::FromString(kGoogleusercontent)},
+      //     {ContentSettingsPattern::FromString(kGoogleusercontent),
+      //      ContentSettingsPattern::FromString(kGoogle)},
+      //     {ContentSettingsPattern::FromString(kInstagram),
+      //      ContentSettingsPattern::FromString(kFacebook)},
+      //     {ContentSettingsPattern::FromString(kFacebook),
+      //      ContentSettingsPattern::FromString(kInstagram)},
+      //     {ContentSettingsPattern::FromString(kPlaystation),
+      //      ContentSettingsPattern::FromString(kSonyentertainmentnetwork)},
+      //     {ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
+      //      ContentSettingsPattern::FromString(kPlaystation)},
+      //     {ContentSettingsPattern::FromString(kSony),
+      //      ContentSettingsPattern::FromString(kPlaystation)},
+      //     {ContentSettingsPattern::FromString(kPlaystation),
+      //      ContentSettingsPattern::FromString(kSony)}});
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
