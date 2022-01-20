@@ -119,24 +119,27 @@ function OnboardingImportMetaMaskOrLegacy (props: Props) {
         </CheckboxRow>
       }
       {!useSamePasswordVerified &&
-        <InputColumn>
-          <PasswordInput
-            placeholder={getLocale('braveWalletCreatePasswordInput')}
-            value={password}
-            onChange={onPasswordChanged}
-            onKeyDown={handleKeyDown}
-            error={getLocale('braveWalletCreatePasswordError')}
-            hasError={hasPasswordError}
-          />
-          <PasswordInput
-            placeholder={getLocale('braveWalletConfirmPasswordInput')}
-            value={confirmedPassword}
-            onChange={onConfirmPasswordChanged}
-            onKeyDown={handleKeyDown}
-            error={getLocale('braveWalletConfirmPasswordError')}
-            hasError={hasConfirmPasswordError}
-          />
-        </InputColumn>
+        <>
+          <Description>{getLocale('braveWalletCreatePasswordDescription')}</Description>
+          <InputColumn>
+            <PasswordInput
+              placeholder={getLocale('braveWalletCreatePasswordInput')}
+              value={password}
+              onChange={onPasswordChanged}
+              onKeyDown={handleKeyDown}
+              error={getLocale('braveWalletCreatePasswordError')}
+              hasError={hasPasswordError}
+            />
+            <PasswordInput
+              placeholder={getLocale('braveWalletConfirmPasswordInput')}
+              value={confirmedPassword}
+              onChange={onConfirmPasswordChanged}
+              onKeyDown={handleKeyDown}
+              error={getLocale('braveWalletConfirmPasswordError')}
+              hasError={hasConfirmPasswordError}
+            />
+          </InputColumn>
+        </>
       }
       <NavButton buttonType='primary' text={getLocale('braveWalletAddAccountImport')} onSubmit={onSubmit} disabled={disabled} />
       {!isMetaMask &&
