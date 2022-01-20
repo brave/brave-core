@@ -72,10 +72,12 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2) {
 
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3) {
   const GURL url(
-      "https://www.google.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "https://www.google.com/dl/release2/chrome_component/"
+      "LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
   const GURL expected_url(
-      "https://redirector.brave.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "https://redirector.brave.com/dl/release2/chrome_component/"
+      "LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);

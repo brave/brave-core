@@ -67,6 +67,7 @@ constexpr const char* kAllowedUrlPrefixes[] = {
 
     // Other
     "https://brave-core-ext.s3.brave.com/",
+    "https://dict.brave.com/",
     "https://go-updater.brave.com/",
     "https://p3a.brave.com/",
     "https://p3a-json.brave.com/",
