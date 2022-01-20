@@ -230,7 +230,7 @@ public class BraveNewTabPageLayout
     private boolean mSettingsBarIsClickable;
     private BraveNewsController mBraveNewsController;
 
-    private CompositorViewHolder mCompositorView;
+    private ViewGroup mCompositorView;
 
     private long mStartCardViewTime;
     private long mEndCardViewTime;
@@ -589,7 +589,6 @@ public class BraveNewTabPageLayout
                 mSettingsBar.setAlpha(0f);
             }
             InitBraveNewsController();
-            initNews();
             if (BraveActivity.getBraveActivity() != null && mIsNewsOn) {
                 Tab tab = BraveActivity.getBraveActivity().getActivityTab();
                 if (tab != null && tab.getUrl().getSpec() != null
@@ -599,6 +598,7 @@ public class BraveNewTabPageLayout
                     BraveActivity.getBraveActivity().removeSettingsBar();
                 }
             }
+            initNews();
             mPreferenceObserver = (key) -> {
                 if (TextUtils.equals(key, BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE)) {
                     if (mNewContentButton != null) {
@@ -702,7 +702,6 @@ public class BraveNewTabPageLayout
             mImageCreditLayout = findViewById(R.id.image_credit_layout);
             mFeedSpinner = findViewById(R.id.feed_spinner);
         }
-
         if (mImageCreditLayout != null) {
             LinearLayout.LayoutParams linearLayoutParams =
                     (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
@@ -729,6 +728,9 @@ public class BraveNewTabPageLayout
 
     private void getFeed() {
         ExecutorService executors = Executors.newFixedThreadPool(1);
+
+        InitBraveNewsController();
+
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -805,6 +807,8 @@ public class BraveNewTabPageLayout
                             }
                         } // end page loop
                         processFeed();
+                        mRecyclerView.scrollToPosition(0);
+
                         BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
                         BraveActivity.getBraveActivity().setLoadedFeed(true);
                     } catch (Exception e) {
@@ -830,7 +834,6 @@ public class BraveNewTabPageLayout
             return;
         }
         getFeed();
-        mRecyclerView.scrollToPosition(0);
     }
 
     private void initNews() {
@@ -873,6 +876,13 @@ public class BraveNewTabPageLayout
         mAdapterFeedCard =
                 new BraveNewsAdapterFeedCard(mActivity, mNewsItemsFeedCard, mBraveNewsController);
         mRecyclerView.setAdapter(mAdapterFeedCard);
+        ViewGroup.LayoutParams recyclerviewParams = mRecyclerView.getLayoutParams();
+        recyclerviewParams.height = (ConfigurationUtils.isTablet(mActivity)
+                                            && !ConfigurationUtils.isLandscape(mActivity))
+                ? (int) dpToPx(mActivity, 1500)
+                : (int) dpToPx(mActivity, 800);
+
+        mRecyclerView.setLayoutParams(recyclerviewParams);
 
         if (mOptinLayout != null) {
             mLoadingView.setVisibility(View.GONE);
@@ -881,7 +891,7 @@ public class BraveNewTabPageLayout
 
         mParentScrollView = (ScrollView) mNtpContent.getParent();
         ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
-        mCompositorView = (CompositorViewHolder) rootView.getParent();
+        mCompositorView = (ViewGroup) rootView.getParent();
 
         mImageCreditLayout = findViewById(R.id.image_credit_layout);
 
@@ -942,20 +952,12 @@ public class BraveNewTabPageLayout
                             if (mParentScrollView != null) {
                                 mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
                                 mRecyclerView.scrollToPosition(scrollPositionFinal);
-                                mImageCreditLayout.scrollTo(0, 0);
+                            }
+                            if (mRecyclerView.getLayoutManager().findViewByPosition(0) != null) {
+                                correctPosition(false);
                             }
                         }
                     });
-                    try {
-                        mParentScrollView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
-                            }
-                        });
-                    } catch (Exception e) {
-                        Log.e("bn", "Exception processfeed e:" + e);
-                    }
                 }
             }
         } else {
@@ -971,7 +973,7 @@ public class BraveNewTabPageLayout
                     public void onScrollChanged() {
                         try {
                             int scrollY = mParentScrollView.getScrollY();
-
+                            isScrolled = false;
                             float value = (float) scrollY / mParentScrollView.getMaxScrollAmount();
                             if (value >= 1) {
                                 value = 1;
@@ -979,23 +981,40 @@ public class BraveNewTabPageLayout
                             float alpha = (float) (1 - value);
                             if (alpha < 1f) {
                                 mImageCreditLayout.setAlpha(alpha);
+                                mImageCreditLayout.requestLayout();
                             }
-
-                            if (mSettingsBar != null
-                                    && mSettingsBar.getVisibility() == View.VISIBLE) {
-                                if (value > 0.4 && mSettingsBar.getAlpha() <= 1f) {
-                                    mSettingsBar.setAlpha((float) (value + 0.5));
-                                } else if (value < 0.4 && mSettingsBar.getAlpha() > 0f) {
-                                    mSettingsBar.setAlpha((float) (value - 0.2));
-                                }
-                                if (mSettingsBar.getAlpha() >= 1) {
-                                    mSettingsBarIsClickable = true;
-                                } else {
-                                    mSettingsBarIsClickable = false;
+                            if (BraveActivity.getBraveActivity() != null
+                                    && BraveActivity.getBraveActivity().getActivityTab() != null) {
+                                if (UrlUtilities.isNTPUrl(BraveActivity.getBraveActivity()
+                                                                  .getActivityTab()
+                                                                  .getUrl()
+                                                                  .getSpec())) {
+                                    if (mSettingsBar != null) {
+                                        if (mSettingsBar.getVisibility() == View.VISIBLE) {
+                                            if (value > 0.4 && mSettingsBar.getAlpha() < 1f) {
+                                                mSettingsBar.setAlpha((float) (value + 0.5));
+                                            } else if (value < 0.4
+                                                    && mSettingsBar.getAlpha() > 0f) {
+                                                mSettingsBar.setAlpha((float) (value - 0.2));
+                                            } else if (value == 1
+                                                    && mSettingsBar.getAlpha() >= 1f) {
+                                                mSettingsBar.setAlpha(1);
+                                                mSettingsBar.requestLayout();
+                                            }
+                                            if (mSettingsBar.getAlpha() >= 1) {
+                                                isScrolled = true;
+                                                mSettingsBarIsClickable = true;
+                                            } else {
+                                                mSettingsBarIsClickable = false;
+                                            }
+                                        } else {
+                                            mSettingsBar.setVisibility(View.VISIBLE);
+                                        }
+                                    }
                                 }
                             }
                         } catch (Exception e) {
-                            Log.e("bn", "Exception parentScrollViewObserver e:" + e);
+                            e.printStackTrace();
                         }
                     }
                 });
@@ -1006,19 +1025,15 @@ public class BraveNewTabPageLayout
                     public void onGlobalLayout() {
                         try {
                             if (mSettingsBar != null) {
-                                if (!isScrolled) {
-                                    mSettingsBar.setAlpha(0f);
-                                }
-
                                 ImageView newsSettingsButton =
                                         (ImageView) mSettingsBar.findViewById(
                                                 R.id.news_settings_button);
                                 ViewTreeObserver.OnGlobalLayoutListener listener = this;
-
                                 newsSettingsButton.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        if (mSettingsBarIsClickable) {
+                                        if (mSettingsBarIsClickable
+                                                || mSettingsBar.getAlpha() >= 1) {
                                             SettingsLauncher settingsLauncher =
                                                     new SettingsLauncherImpl();
                                             settingsLauncher.launchSettingsActivity(
@@ -1052,7 +1067,6 @@ public class BraveNewTabPageLayout
                                         //@TODO alex check why visibility change doesn't work
                                         newContentButtonText.setVisibility(View.INVISIBLE);
                                         loadingSpinner.setVisibility(View.VISIBLE);
-
                                         mNewContentButton.setClickable(false);
                                         SharedPreferencesManager.getInstance().writeBoolean(
                                                 BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE,
@@ -1060,14 +1074,20 @@ public class BraveNewTabPageLayout
                                         if (!mIsShowNewsOn) {
                                             mIsShowNewsOn = true;
                                         }
+                                        isScrolled = false;
                                         refreshFeed();
-                                        if (mParentScrollView != null) {
-                                            mParentScrollView.scrollTo(0, 0);
-                                        }
+                                        mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                                        mRecyclerView.scrollToPosition(0);
+
                                         newContentButtonText.setVisibility(View.VISIBLE);
                                         loadingSpinner.setVisibility(View.GONE);
                                         mNewContentButton.setClickable(true);
                                         mNewContentButton.setVisibility(View.INVISIBLE);
+                                        if (mImageCreditLayout != null) {
+                                            mImageCreditLayout.setVisibility(View.VISIBLE);
+                                            mImageCreditLayout.setAlpha(1);
+                                            mImageCreditLayout.requestLayout();
+                                        }
                                     }
                                 });
                             }
@@ -1204,18 +1224,7 @@ public class BraveNewTabPageLayout
                     try {
                         int offset = recyclerView.computeVerticalScrollOffset();
                         mFirstVisibleCard = linearLayoutManager.findFirstVisibleItemPosition();
-
-                        mParentScrollView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    mParentScrollView.scrollBy(0, offset + 20);
-                                } catch (Exception e) {
-                                    Log.e("bn", "Exception crashinvestigation e:" + e);
-                                }
-                            }
-                        });
-
+                        mParentScrollView.scrollBy(0, offset + 20);
                     } catch (Exception e) {
                         Log.e("bn", "Exception onScrolled:" + e);
                     }
@@ -1231,7 +1240,7 @@ public class BraveNewTabPageLayout
                     sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
                     sharedPreferencesEditor.apply();
                     correctPosition(false);
-                    mParentScrollView.scrollTo(0, 0);
+                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
                     mImageCreditLayout.setAlpha(1.0f);
                     mOptinLayout.setVisibility(View.GONE);
                 }
@@ -1263,11 +1272,14 @@ public class BraveNewTabPageLayout
                         BraveActivity.getBraveActivity().inflateNewsSettingsBar();
                         mSettingsBar =
                                 (LinearLayout) mCompositorView.findViewById(R.id.news_settings_bar);
+                        mSettingsBar.setVisibility(View.INVISIBLE);
                         mNewContentButton = (RelativeLayout) mCompositorView.findViewById(
                                 R.id.new_content_layout_id);
                     }
 
                     getFeed();
+                    mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
+                    mRecyclerView.scrollToPosition(0);
                 }
             });
         }
@@ -1302,10 +1314,7 @@ public class BraveNewTabPageLayout
             mAdapterFeedCard.notifyItemRangeInserted(0, mNewsItemsFeedCard.size());
         }
 
-        isScrolled = false;
-        if (mParentScrollView != null) {
-            mParentScrollView.scrollTo(0, 0);
-        }
+        isScrolled = true;
     }
 
     @Override
@@ -1513,9 +1522,8 @@ public class BraveNewTabPageLayout
 
                 mParentScrollView = (ScrollView) mNtpContent.getParent();
                 ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
-                ViewGroup coordinator = (ViewGroup) rootView.getParent();
 
-                CompositorViewHolder compositorView = (CompositorViewHolder) rootView.getParent();
+                ViewGroup compositorView = (ViewGroup) rootView.getParent();
 
                 try {
                     if (BraveActivity.getBraveActivity() != null
@@ -1524,15 +1532,19 @@ public class BraveNewTabPageLayout
                                                           .getActivityTab()
                                                           .getUrl()
                                                           .getSpec())) {
+                            mPrevScrollPosition = SharedPreferencesManager.getInstance().readInt(
+                                    Integer.toString(BraveActivity.getBraveActivity()
+                                                             .getActivityTab()
+                                                             .getId()));
+                            if (compositorView.getChildAt(3).getId()
+                                    == R.id.new_content_layout_id) {
+                                mNewContentButton = (RelativeLayout) compositorView.getChildAt(3);
+                                mNewContentButton.setVisibility(View.INVISIBLE);
+                            }
                             if (compositorView.getChildAt(2).getId() == R.id.news_settings_bar) {
                                 mSettingsBar = (LinearLayout) compositorView.getChildAt(2);
                                 mSettingsBar.setVisibility(View.VISIBLE);
                                 mSettingsBar.setAlpha(0f);
-                            }
-
-                            if (compositorView.getChildAt(3).getId()
-                                    == R.id.new_content_layout_id) {
-                                mNewContentButton = (RelativeLayout) compositorView.getChildAt(3);
                             }
                         }
                     }

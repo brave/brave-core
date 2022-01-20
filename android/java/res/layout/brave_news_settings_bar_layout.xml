@@ -22,12 +22,13 @@
 
     <ImageView
         android:id="@+id/news_settings_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_gravity="center"
         android:scaleType="fitCenter"
+        android:padding="8dp"
         android:gravity="center"
         tools:ignore="ContentDescription"
-        android:background="@drawable/ic_news_settings"/>
+        android:src="@drawable/ic_news_settings"/>
 
 </LinearLayout>

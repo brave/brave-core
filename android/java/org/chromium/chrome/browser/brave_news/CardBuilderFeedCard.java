@@ -360,6 +360,30 @@ public class CardBuilderFeedCard {
                                         openUrlInSameTabAndSavePosition(adData.targetUrl.url);
                                     }
                                 });
+                                adImage.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mBraveNewsController.onDisplayAdVisit(
+                                                adData.uuid, adData.creativeInstanceId);
+                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
+                                    }
+                                });
+                                adTitle.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mBraveNewsController.onDisplayAdVisit(
+                                                adData.uuid, adData.creativeInstanceId);
+                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
+                                    }
+                                });
+                                adDesc.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mBraveNewsController.onDisplayAdVisit(
+                                                adData.uuid, adData.creativeInstanceId);
+                                        openUrlInSameTabAndSavePosition(adData.targetUrl.url);
+                                    }
+                                });
                             }
                         });
 
@@ -419,7 +443,7 @@ public class CardBuilderFeedCard {
                     moreOffersTextParams.gravity = Gravity.CENTER_VERTICAL;
                     moreOffersText.setText(mActivity.getResources().getString(
                             R.string.brave_news_more_offers_title));
-                    moreOffersText.setTextSize(13);
+                    moreOffersText.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 13);
                     moreOffersText.setTypeface(null, Typeface.BOLD);
                     moreOffersText.setTextColor(
                             mActivity.getResources().getColor(R.color.news_text_color));
@@ -711,7 +735,9 @@ public class CardBuilderFeedCard {
                     layoutDeals.setLayoutParams(linearLayoutRowParams1);
 
                     setImage(image, "paired", index);
-                    imageParams.height = 230;
+                    imageParams.height = ConfigurationUtils.isTablet(mActivity)
+                            ? (int) (mDeviceWidth * 0.20)
+                            : 230;
 
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     image.setLayoutParams(imageParams);
@@ -719,7 +745,7 @@ public class CardBuilderFeedCard {
 
                     titleParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
-                    title.setTextSize(14);
+                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 18 : 14);
                     title.setTypeface(null, Typeface.BOLD);
                     title.setPadding(0, 10, 0, 0);
                     title.setLayoutParams(titleParams);
@@ -730,7 +756,7 @@ public class CardBuilderFeedCard {
                     descParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     setTextFromFeed(desc, DESC, index);
-                    desc.setTextSize(12);
+                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
                     desc.setMaxLines(3);
                     desc.setEllipsize(TextUtils.TruncateAt.END);
 
@@ -745,7 +771,7 @@ public class CardBuilderFeedCard {
                     layout.setOrientation(LinearLayout.VERTICAL);
                     int topPosition = 0;
                     if (mPosition == 0) {
-                        topPosition = 200;
+                        topPosition = ConfigurationUtils.isTablet(mActivity) ? 120 : 200;
                     }
                     linearLayoutParams =
                             new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -762,14 +788,16 @@ public class CardBuilderFeedCard {
                     layout.addView(publisher);
 
                     imageParams.bottomMargin = 2 * MARGIN_VERTICAL;
-                    imageParams.height = (int) (mDeviceWidth * 0.6);
+                    imageParams.height = ConfigurationUtils.isTablet(mActivity)
+                            ? (int) (mDeviceWidth * 0.45)
+                            : (int) (mDeviceWidth * 0.6);
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     image.setLayoutParams(imageParams);
 
                     setImage(image, "image", index);
 
                     titleParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    title.setTextSize(17);
+                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 21 : 17);
                     title.setTypeface(null, Typeface.BOLD);
                     title.setMaxLines(5);
                     title.setEllipsize(TextUtils.TruncateAt.END);
@@ -781,7 +809,7 @@ public class CardBuilderFeedCard {
                     descParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     setTextFromFeed(desc, TIME, index);
-                    desc.setTextSize(11);
+                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 15 : 11);
                     desc.setLayoutParams(descParams);
                     desc.setPadding(50, 0, 50, 30);
 
@@ -789,7 +817,7 @@ public class CardBuilderFeedCard {
 
                     publisher.setTextColor(
                             mActivity.getResources().getColor(R.color.news_text_color));
-                    publisher.setTextSize(12);
+                    publisher.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
                     publisherParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     publisherParams.bottomMargin = 10;
@@ -926,18 +954,20 @@ public class CardBuilderFeedCard {
                             new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                    int height = (int) (mDeviceWidth * 0.3);
+                    int height = ConfigurationUtils.isTablet(mActivity)
+                            ? (int) (mDeviceWidth * 0.25)
+                            : (int) (mDeviceWidth * 0.3);
 
                     imageParams.height = height;
                     image.setLayoutParams(imageParams);
                     setImage(image, "image", index);
 
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    imageParams.bottomMargin = MARGIN_VERTICAL;
+                    imageParams.bottomMargin = 2 * MARGIN_VERTICAL;
                     layout.addView(image);
 
                     title.setLayoutParams(titleParams);
-                    title.setTextSize(13);
+                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 13);
                     title.setTypeface(null, Typeface.BOLD);
                     title.setMaxLines(5);
                     titleParams.bottomMargin = MARGIN_VERTICAL;
@@ -947,7 +977,7 @@ public class CardBuilderFeedCard {
 
                     descParams.weight = 1;
                     descParams.height = 0;
-                    desc.setTextSize(11);
+                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 15 : 11);
                     setTextFromFeed(desc, TIME, index);
                     desc.setLayoutParams(descParams);
                     desc.setPadding(50, 0, 50, 0);
@@ -957,7 +987,7 @@ public class CardBuilderFeedCard {
                     setTextFromFeed(publisher, PUBLISHER, index);
                     publisher.setTextColor(
                             mActivity.getResources().getColor(R.color.news_text_color));
-                    publisher.setTextSize(12);
+                    publisher.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
 
                     publisherParams.gravity = Gravity.BOTTOM;
                     publisher.setGravity(Gravity.BOTTOM);
@@ -1003,13 +1033,13 @@ public class CardBuilderFeedCard {
 
                     layoutSingleCard.setOrientation(LinearLayout.VERTICAL);
                     layoutSingleCardParams.width = 0;
-                    layoutSingleCardParams.weight = 7;
+                    layoutSingleCardParams.weight = 8;
 
                     layoutSingleCard.setLayoutParams(layoutSingleCardParams);
 
                     titleRowParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
-                    title.setTextSize(15);
+                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 15);
                     titleRowParams.bottomMargin = MARGIN_VERTICAL;
                     title.setTypeface(null, Typeface.BOLD);
                     title.setLayoutParams(titleRowParams);
@@ -1021,7 +1051,7 @@ public class CardBuilderFeedCard {
 
                     setTextFromFeed(desc, TIME, index);
                     descRowParams.bottomMargin = 20;
-                    desc.setTextSize(12);
+                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 14 : 12);
                     desc.setLayoutParams(descRowParams);
                     layoutSingleCard.addView(desc);
 
@@ -1030,7 +1060,7 @@ public class CardBuilderFeedCard {
                 case CardType.CATEGORY_GROUP: // TOP_NEWS
                     TableRow layoutRowPhotos = (TableRow) view;
 
-                    tableParamsTopNews.setMargins(0, 0, 0, 5 * MARGIN_VERTICAL);
+                    tableParamsTopNews.setMargins(0, 0, 0, 3 * MARGIN_VERTICAL);
                     tableParamsTopNews.weight = 1;
                     tableParamsTopNews.height = 0;
                     layoutRowPhotos.setPadding(30, 0, 30, 0);
@@ -1038,8 +1068,10 @@ public class CardBuilderFeedCard {
 
                     layoutSingleCard.setOrientation(LinearLayout.VERTICAL);
                     linearLayoutRowParams.width = 0;
-                    linearLayoutRowParams.weight = 2;
+                    linearLayoutRowParams.weight =
+                            ConfigurationUtils.isTablet(mActivity) ? 3.5f : 3f;
                     linearLayoutRowParams.gravity = Gravity.CENTER_VERTICAL;
+                    linearLayoutRowParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                     layoutSingleCard.setGravity(Gravity.CENTER_VERTICAL);
                     layoutSingleCard.setLayoutParams(linearLayoutRowParams);
 
@@ -1049,7 +1081,7 @@ public class CardBuilderFeedCard {
                     sourceRowParams.height = TableRow.LayoutParams.WRAP_CONTENT;
                     sourceRowParams.setMargins(0, 0, 0, MARGIN_VERTICAL);
                     source.setLayoutParams(sourceRowParams);
-                    source.setTextSize(12);
+                    source.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 16 : 12);
                     source.setTypeface(null, Typeface.BOLD);
                     setTextFromFeed(source, PUBLISHER, index);
                     source.setTextColor(mActivity.getResources().getColor(R.color.news_time_color));
@@ -1057,8 +1089,8 @@ public class CardBuilderFeedCard {
 
                     titleRowParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
-                    titleRowParams.rightMargin = 20;
-                    title.setTextSize(13);
+                    titleRowParams.rightMargin = ConfigurationUtils.isTablet(mActivity) ? 8 : 13;
+                    title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 17 : 13);
                     title.setTypeface(null, Typeface.BOLD);
                     titleRowParams.bottomMargin = MARGIN_VERTICAL;
                     title.setLayoutParams(titleRowParams);
@@ -1070,8 +1102,8 @@ public class CardBuilderFeedCard {
                     descRowParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
                     desc.setPadding(0, 0, 0, 0);
-                    desc.setTextSize(11);
-                    descRowParams.bottomMargin = 0;
+                    desc.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 15 : 11);
+                    descRowParams.bottomMargin = MARGIN_VERTICAL;
                     setTextFromFeed(desc, TIME, index);
                     desc.setLayoutParams(descRowParams);
                     layoutSingleCard.addView(desc);
@@ -1079,14 +1111,16 @@ public class CardBuilderFeedCard {
                     layoutRowPhotos.addView(layoutSingleCard);
 
                     imageRowParams.width = 0;
-                    imageRowParams.height = 300;
-
+                    imageRowParams.height = ConfigurationUtils.isTablet(mActivity)
+                            ? 250
+                            : (int) (mDeviceWidth * 0.2);
                     imageRowParams.weight = 1;
-                    imageRowParams.setMargins(0, 20, 0, 40);
+                    imageRowParams.setMargins(0, 20, 0, 0);
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                     setImage(image, "paired", index);
 
+                    imageRowParams.gravity = Gravity.CENTER_VERTICAL;
                     image.setLayoutParams(imageRowParams);
                     layoutRowPhotos.addView(image);
 

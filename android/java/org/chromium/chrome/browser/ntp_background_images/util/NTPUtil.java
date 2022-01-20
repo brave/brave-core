@@ -107,7 +107,7 @@ public class NTPUtil {
             boolean isLandscape = ConfigurationUtils.isLandscape(activity);
 
             // Correction defaults to tablet BackgroundImage
-            imageCreditCorrection = isLandscape ? (int) (pxHeight * (isCompensate ? 0.46 : 0.54))
+            imageCreditCorrection = isLandscape ? (int) (pxHeight * (isCompensate ? 0.52 : 0.54))
                                                 : (int) (pxHeight * (isCompensate ? 0.70 : 0.30));
 
             if (ntpImage instanceof BackgroundImage) {
@@ -126,7 +126,7 @@ public class NTPUtil {
                             : (int) (pxHeight * (isCompensate ? 0.36 : 0.50));
                 } else {
                     imageCreditCorrection = isLandscape
-                            ? (int) (pxHeight * (isCompensate ? 0.28 : 0.72))
+                            ? (int) (pxHeight * (isCompensate ? 0.32 : 0.72))
                             : (int) (pxHeight * (isCompensate ? 0.56 : 0.44));
                 }
                 if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
@@ -189,7 +189,7 @@ public class NTPUtil {
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             int topMargin = correctImageCreditLayoutTopPosition(ntpImage);
-            imageCreditLayoutParams.setMargins(0, topMargin, 0, 50);
+            imageCreditLayoutParams.setMargins(0, topMargin, 0, 30);
 
             View feedSpinner = (View) view.findViewById(R.id.feed_spinner);
             FrameLayout.LayoutParams feedSpinnerParams =
