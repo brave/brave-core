@@ -26,6 +26,24 @@ public class BraveScrollingBottomViewResourceFrameLayout
     View mBottomToolbar;
     View mBottomContainerSlot;
 
+    private class SwipeGestureListenerImpl extends SwipeGestureListener {
+        public SwipeGestureListenerImpl(Context context, SwipeHandler handler) {
+            super(context, handler);
+        }
+
+        @Override
+        public boolean shouldRecognizeSwipe(MotionEvent e1, MotionEvent e2) {
+            int x = Math.round(e1.getX());
+            int y = Math.round(e1.getY());
+            if (x > mBottomToolbar.getLeft() && x < mBottomToolbar.getRight()
+                    && y > mBottomToolbar.getTop() && y < mBottomToolbar.getBottom()) {
+                // Only handle swipe on bottom toolbar itself.
+                return true;
+            }
+            return false;
+        }
+    }
+
     public BraveScrollingBottomViewResourceFrameLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         mCallbackController = new CallbackController();
@@ -51,7 +69,7 @@ public class BraveScrollingBottomViewResourceFrameLayout
      * @param handler A handler for swipe events on this view.
      */
     public void setSwipeDetector(SwipeHandler handler) {
-        mSwipeGestureListener = new SwipeGestureListener(getContext(), handler);
+        mSwipeGestureListener = new SwipeGestureListenerImpl(getContext(), handler);
 
         // TODO(mdjones): This line of code makes it impossible to scroll through the bottom
         // toolbar. If the user accidentally swipes up on this view, the scroll no longer goes
