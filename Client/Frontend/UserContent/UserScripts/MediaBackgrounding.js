@@ -1,3 +1,8 @@
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 // The below is needed because the script may not be web-packed into a bundle so it may be missing the run-once code
 
 window.__firefox__.includeOnce("MediaBackgrounding", function() {

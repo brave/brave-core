@@ -293,14 +293,14 @@ extension Tab {
         let group = DispatchGroup()
         group.enter()
         
-        webView.evaluateSafeJavaScript(functionName: "document.documentElement.outerHTML.toString") { html, _ in
+        webView.evaluateSafeJavaScript(functionName: "document.documentElement.outerHTML.toString", contentWorld: .defaultClient) { html, _ in
             htmlBlob = html as? String
             group.leave()
         }
         
         if shouldClassifyLoadsForAds {
             group.enter()
-            webView.evaluateSafeJavaScript(functionName: "document.body.innerText", asFunction: false) { text, _ in
+            webView.evaluateSafeJavaScript(functionName: "document.body.innerText", contentWorld: .defaultClient, asFunction: false) { text, _ in
                 // Get the list of words in the page and join them together with a space
                 // to send to the classifier
                 classifierText = (text as? String)?.words.joined(separator: " ")

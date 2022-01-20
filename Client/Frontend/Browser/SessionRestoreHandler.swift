@@ -13,9 +13,7 @@ extension WKWebView {
     // Use JS to redirect the page without adding a history entry
     func replaceLocation(with url: URL) {
         let safeUrl = url.absoluteString.replacingOccurrences(of: "'", with: apostropheEncoded)
-        evaluateSafeJavaScript(functionName: "location.replace", args: [safeUrl], sandboxed: true, escapeArgs: false, asFunction: true, completion: nil)
-        
-        evaluateJavaScript("location.replace('\(safeUrl)')", in: nil, in: .defaultClient, completionHandler: nil) //swiftlint:disable:this safe_javascript
+        evaluateSafeJavaScript(functionName: "location.replace", args: [safeUrl], contentWorld: .defaultClient, escapeArgs: false, asFunction: true, completion: nil)
     }
 }
 
