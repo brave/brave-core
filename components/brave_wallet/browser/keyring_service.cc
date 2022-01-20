@@ -770,7 +770,7 @@ void KeyringService::GetPrivateKeyForDefaultKeyringAccount(
     return;
   }
 
-  std::string private_key = keyring->GetHexEncodedPrivateKey(address);
+  std::string private_key = keyring->GetEncodedPrivateKey(address);
   std::move(callback).Run(!private_key.empty(), private_key);
 }
 

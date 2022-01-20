@@ -23,16 +23,18 @@ class EthTransaction;
 
 class HDKeyring {
  public:
-  enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin, kFilecoin };
+  enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin, kFilecoin, kSolana };
 
   HDKeyring();
   virtual ~HDKeyring();
+  HDKeyring(const HDKeyring&) = delete;
+  HDKeyring& operator=(const HDKeyring&) = delete;
 
   virtual Type type() const;
   virtual void ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                   const std::string& hd_path);
 
-  void AddAccounts(size_t number = 1);
+  virtual void AddAccounts(size_t number = 1);
   // This will return vector of address of all accounts
   std::vector<std::string> GetAccounts() const;
   absl::optional<size_t> GetAccountIndex(const std::string& address) const;
@@ -45,10 +47,10 @@ class HDKeyring {
   size_t GetImportedAccountsNumber() const;
   bool RemoveImportedAccount(const std::string& address);
 
-  // Bitcoin keyring can override this for different address calculation
-  virtual std::string GetAddress(size_t index) const;
-  // Find hex private key by address
-  std::string GetHexEncodedPrivateKey(const std::string& address);
+  std::string GetAddress(size_t index) const;
+  // Find private key by address (it would be hex or base58 depends on
+  // underlying hd key
+  std::string GetEncodedPrivateKey(const std::string& address);
 
   // TODO(darkdh): Abstract Transacation class
   // eth_signTransaction
@@ -69,6 +71,7 @@ class HDKeyring {
                              std::string* address);
 
  protected:
+  // Bitcoin keyring can override this for different address calculation
   virtual std::string GetAddressInternal(HDKeyBase* hd_key) const;
   bool AddImportedAddress(const std::string& address,
                           std::unique_ptr<HDKey> hd_key);
@@ -83,9 +86,7 @@ class HDKeyring {
  private:
   FRIEND_TEST_ALL_PREFIXES(HDKeyringUnitTest, ConstructRootHDKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyringUnitTest, SignMessage);
-
-  HDKeyring(const HDKeyring&) = delete;
-  HDKeyring& operator=(const HDKeyring&) = delete;
+  FRIEND_TEST_ALL_PREFIXES(SolanaKeyringUnitTest, ConstructRootHDKey);
 };
 
 }  // namespace brave_wallet

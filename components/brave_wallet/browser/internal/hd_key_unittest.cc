@@ -387,15 +387,15 @@ TEST(HDKeyUnitTest, DeriveChildFromPath) {
   }
 }
 
-TEST(HDKeyUnitTest, GetHexEncodedPrivateKey) {
+TEST(HDKeyUnitTest, GetEncodedPrivateKey) {
   HDKey key;
   ASSERT_TRUE(key.private_key().empty());
-  EXPECT_EQ("", key.GetHexEncodedPrivateKey());
+  EXPECT_EQ("", key.GetEncodedPrivateKey());
 
   std::unique_ptr<HDKey> key2 = HDKey::GenerateFromExtendedKey(
       "xprv9s21ZrQH143K3ckY9DgU79uMTJkQRLdbCCVDh81SnxTgPzLLGax6uHeBULTtaEtcAv"
       "KjXfT7ZWtHzKjTpujMkUd9dDb8msDeAfnJxrgAYhr");
-  EXPECT_EQ(key2->GetHexEncodedPrivateKey(),
+  EXPECT_EQ(key2->GetEncodedPrivateKey(),
             "00000055378cf5fafb56c711c674143f9b0ee82ab0ba2924f19b64f5ae7cdbfd");
 }
 
