@@ -349,9 +349,10 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         List<NavigationItem> navigationItems = new ArrayList<>();
         addBackupWalletSequence(navigationItems);
 
-        if (cryptoWalletOnboardingPagerAdapter != null) {
+        if (cryptoWalletOnboardingPagerAdapter != null && cryptoWalletOnboardingViewPager != null) {
             cryptoWalletOnboardingPagerAdapter.setNavigationItems(navigationItems);
             cryptoWalletOnboardingPagerAdapter.notifyDataSetChanged();
+            cryptoWalletOnboardingViewPager.setCurrentItem(0);
         }
     }
 
