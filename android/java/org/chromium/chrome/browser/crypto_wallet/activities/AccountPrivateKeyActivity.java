@@ -30,9 +30,7 @@ import org.chromium.mojo.system.MojoException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountPrivateKeyActivity extends AsyncInitializationActivity
-        implements ConnectionErrorHandler, KeyringServiceObserver {
-    private KeyringService mKeyringService;
+public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
     private String mAddress;
     private boolean mIsPrivateKeyShown;
 
@@ -92,50 +90,9 @@ public class AccountPrivateKeyActivity extends AsyncInitializationActivity
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mKeyringService.close();
-    }
-
-    @Override
-    public void onUserInteraction() {
-        if (mKeyringService == null) {
-            return;
-        }
-        mKeyringService.notifyUserInteraction();
-    }
-
-    @Override
-    public void onConnectionError(MojoException e) {
-        mKeyringService.close();
-        mKeyringService = null;
-        InitKeyringService();
-    }
-
-    private void InitKeyringService() {
-        if (mKeyringService != null) {
-            return;
-        }
-
-        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
-        mKeyringService.addObserver(this);
-    }
-
-    @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-        InitKeyringService();
         assert mKeyringService != null;
         mKeyringService.getPrivateKeyForDefaultKeyringAccount(mAddress, (result, privateKey) -> {
             if (result) {
@@ -143,15 +100,5 @@ public class AccountPrivateKeyActivity extends AsyncInitializationActivity
                 privateKeyText.setText(privateKey);
             }
         });
-    }
-
-    @Override
-    public boolean shouldStartGpuProcess() {
-        return true;
-    }
-
-    @Override
-    public void locked() {
-        finish();
     }
 }
