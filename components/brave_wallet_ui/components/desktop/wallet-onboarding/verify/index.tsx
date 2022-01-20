@@ -19,7 +19,8 @@ import { getLocale } from '../../../../../common/locale'
 
 export interface Props {
   onSubmit: () => void
-  recoveryPhrase: RecoveryObject[]
+  shuffledPhrase: RecoveryObject[]
+  recoveryPhrase: string[]
   sortedPhrase: RecoveryObject[]
   selectWord: (word: RecoveryObject) => void
   unSelectWord: (word: RecoveryObject) => void
@@ -27,8 +28,8 @@ export interface Props {
 }
 
 function OnboardingVerify (props: Props) {
-  const { onSubmit, recoveryPhrase, selectWord, unSelectWord, sortedPhrase, hasVerifyError } = props
-
+  const { onSubmit, shuffledPhrase, selectWord, unSelectWord, sortedPhrase, hasVerifyError, recoveryPhrase } = props
+  console.log(shuffledPhrase, recoveryPhrase)
   const addWord = (word: RecoveryObject) => () => {
     selectWord(word)
   }
@@ -38,13 +39,13 @@ function OnboardingVerify (props: Props) {
   }
 
   const isDisabled = React.useMemo((): boolean => {
-    return sortedPhrase.length !== recoveryPhrase.length
-  }, [sortedPhrase, recoveryPhrase])
+    return sortedPhrase.length !== shuffledPhrase.length
+  }, [sortedPhrase, shuffledPhrase])
 
   const numberOfWordRows = React.useMemo((): number => {
     const numberOfWordColumns = 4
-    return Math.ceil(recoveryPhrase.length / numberOfWordColumns)
-  }, [recoveryPhrase])
+    return Math.ceil(shuffledPhrase.length / numberOfWordColumns)
+  }, [shuffledPhrase])
 
   return (
     <StyledWrapper>
@@ -56,7 +57,11 @@ function OnboardingVerify (props: Props) {
             key={word.id}
             onClick={removeWord(word)}
           >
-            <SelectedBubbleText>{index + 1}. {word.value}</SelectedBubbleText>
+            <SelectedBubbleText
+              isInCorrectPosition={recoveryPhrase[index] === word.value}
+            >
+              {index + 1}. {word.value}
+            </SelectedBubbleText>
           </SelectedBubble>
         )}
         {hasVerifyError &&
@@ -66,7 +71,7 @@ function OnboardingVerify (props: Props) {
         }
       </SelectedPhraseContainer>
       <RecoveryPhraseContainer>
-        {recoveryPhrase.map((word) =>
+        {shuffledPhrase.map((word) =>
           <RecoveryBubble
             key={word.id}
             onClick={addWord(word)}

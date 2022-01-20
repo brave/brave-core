@@ -5,6 +5,7 @@ interface StyleProps {
   isSelected: boolean
   error: boolean
   numberOfRows: number
+  isInCorrectPosition: boolean
 }
 
 const selectedBubbleHeight = 34
@@ -111,12 +112,12 @@ export const SelectedBubble = styled(WalletButton)`
   border-radius: 4px;
 `
 
-export const SelectedBubbleText = styled.span`
+export const SelectedBubbleText = styled.span<Partial<StyleProps>>`
   font-family: Poppins;
   font-size: 14px;
   line-height: 22px;
   font-weight: 600;
-  color: ${(p) => p.theme.color.text01};
+  color: ${(p) => p.isInCorrectPosition ? p.theme.color.text01 : p.theme.color.errorText};
 `
 
 export const ErrorContainer = styled.div`
