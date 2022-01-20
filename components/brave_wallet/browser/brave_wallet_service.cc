@@ -120,6 +120,7 @@ BraveWalletService::BraveWalletService(
       json_rpc_service_(json_rpc_service),
       eth_tx_service_(eth_tx_service),
       prefs_(prefs),
+      brave_wallet_p3a_(this, keyring_service, prefs),
       weak_ptr_factory_(this) {
   if (delegate_)
     delegate_->AddObserver(this);

@@ -100,6 +100,8 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Sync.Status.2",
     "Brave.Sync.ProgressTokenEverReset",
     "Brave.Uptime.BrowserOpenMinutes",
+    "Brave.Wallet.DefaultWalletSetting",
+    "Brave.Wallet.KeyringCreated",
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageWeekly",
     "Brave.Wallet.UsageMonthly",
