@@ -24,7 +24,12 @@ import {
   Divider,
   ButtonRow,
   ErrorText,
-  TopRow
+  TopRow,
+  DividerText,
+  SubDivider,
+  DividerRow,
+  AdvancedButton,
+  AdvancedIcon
 } from './style'
 
 export interface Props {
@@ -58,6 +63,7 @@ const EditVisibleAssetsModal = (props: Props) => {
 
   // Modal UI States
   const [showAddCustomToken, setShowAddCustomToken] = React.useState<boolean>(false)
+  const [showAdvancedFields, setShowAdvancedFields] = React.useState<boolean>(false)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [hasError, setHasError] = React.useState<boolean>(false)
   const [showTokenIDRequired, setShowTokenIDRequired] = React.useState<boolean>(false)
@@ -69,6 +75,7 @@ const EditVisibleAssetsModal = (props: Props) => {
   const [tokenSymbol, setTokenSymbol] = React.useState<string>('')
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
   const [tokenDecimals, setTokenDecimals] = React.useState<string>('')
+  const [coingeckoID, setCoingeckoID] = React.useState<string>('')
 
   // If a user removes all of their assets from the userVisibleTokenInfo list,
   // there is a check in the async/lib.ts folder that will still return the networks
@@ -126,6 +133,13 @@ const EditVisibleAssetsModal = (props: Props) => {
       setHasError(false)
     }
     setTokenDecimals(event.target.value)
+  }
+
+  const handleCoingeckoIDChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasError) {
+      setHasError(false)
+    }
+    setCoingeckoID(event.target.value)
   }
 
   const nativeAsset = {
@@ -200,7 +214,9 @@ const EditVisibleAssetsModal = (props: Props) => {
         onAddCustomAsset(token)
         return
       }
-      onAddCustomAsset(foundTokenInfoByContractAddress)
+      let foundToken = foundTokenInfoByContractAddress
+      foundToken.coingeckoId = coingeckoID !== '' ? coingeckoID : foundTokenInfoByContractAddress.coingeckoId
+      onAddCustomAsset(foundToken)
     } else {
       const newToken: BraveWallet.BlockchainToken = {
         contractAddress: tokenContractAddress,
@@ -212,7 +228,7 @@ const EditVisibleAssetsModal = (props: Props) => {
         tokenId: tokenID ? toHex(tokenID) : '',
         logo: '',
         visible: true,
-        coingeckoId: ''
+        coingeckoId: coingeckoID
       }
       onAddCustomAsset(newToken)
     }
@@ -302,6 +318,7 @@ const EditVisibleAssetsModal = (props: Props) => {
       setTokenSymbol('')
       setTokenDecimals('')
       setTokenID('')
+      setCoingeckoID('')
       return
     }
     onFindTokenInfoByContractAddress(tokenContractAddress)
@@ -313,6 +330,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     if (foundTokenInfoByContractAddress?.isErc721) {
       if (tokenID === '') {
         setShowTokenIDRequired(true)
+        setShowAdvancedFields(true)
       }
     } else {
       setShowTokenIDRequired(false)
@@ -331,6 +349,10 @@ const EditVisibleAssetsModal = (props: Props) => {
   const onClickDone = () => {
     onUpdateVisibleAssets(updatedTokensList)
     onClose()
+  }
+
+  const onToggleShowAdvancedFields = () => {
+    setShowAdvancedFields(!showAdvancedFields)
   }
 
   return (
@@ -369,15 +391,33 @@ const EditVisibleAssetsModal = (props: Props) => {
                   disabled={isDecimalDisabled}
                   type='number'
                 />
-                <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
-                <Input
-                  value={tokenID}
-                  onChange={handleTokenIDChanged}
-                  type='number'
-                  disabled={Number(tokenDecimals) > 0}
-                />
-                {showTokenIDRequired &&
-                  <ErrorText>{getLocale('braveWalletWatchListTokenIdError')}</ErrorText>
+                <DividerRow>
+                  <AdvancedButton onClick={onToggleShowAdvancedFields}>
+                    <DividerText>{getLocale('braveWalletWatchListAdvanced')}</DividerText>
+                  </AdvancedButton>
+                  <AdvancedButton onClick={onToggleShowAdvancedFields}>
+                    <AdvancedIcon rotated={showAdvancedFields} />
+                  </AdvancedButton>
+                </DividerRow>
+                <SubDivider />
+                {showAdvancedFields &&
+                  <>
+                    <InputLabel>{getLocale('braveWalletWatchListCoingeckoId')}</InputLabel>
+                    <Input
+                      value={coingeckoID}
+                      onChange={handleCoingeckoIDChanged}
+                    />
+                    <InputLabel>{getLocale('braveWalletWatchListTokenId')}</InputLabel>
+                    <Input
+                      value={tokenID}
+                      onChange={handleTokenIDChanged}
+                      type='number'
+                      disabled={Number(tokenDecimals) > 0}
+                    />
+                    {showTokenIDRequired &&
+                      <ErrorText>{getLocale('braveWalletWatchListTokenIdError')}</ErrorText>
+                    }
+                  </>
                 }
                 {hasError &&
                   <ErrorText>{getLocale('braveWalletWatchListError')}</ErrorText>
