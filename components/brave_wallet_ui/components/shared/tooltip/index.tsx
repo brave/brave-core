@@ -10,10 +10,11 @@ export interface Props {
   children?: React.ReactNode
   positionRight?: boolean
   text: string
+  isVisible: boolean
 }
 
 function Tooltip (props: Props) {
-  const { children, text, positionRight } = props
+  const { children, text, positionRight, isVisible } = props
   const [active, setActive] = React.useState(false)
 
   const showTip = () => {
@@ -30,7 +31,7 @@ function Tooltip (props: Props) {
       onMouseLeave={hideTip}
     >
       {children}
-      {active && (
+      {active && isVisible && (
         <>
           <Pointer positionRight={positionRight ?? false} />
           <Tip positionRight={positionRight ?? false}>
@@ -40,6 +41,10 @@ function Tooltip (props: Props) {
       )}
     </StyledWrapper>
   )
+}
+
+Tooltip.defaultProps = {
+  isVisible: true
 }
 
 export default Tooltip
