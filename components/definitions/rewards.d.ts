@@ -81,6 +81,7 @@ declare namespace Rewards {
         | 'show'
         | 'upholdBATNotAllowedModal'
         | 'upholdBlockedUserModal'
+        | 'upholdCustomerDueDiligenceRequiredModal'
         | 'upholdPendingUserModal'
         | 'upholdRestrictedUserModal'
         | 'walletOwnershipVerificationFailureModal'
