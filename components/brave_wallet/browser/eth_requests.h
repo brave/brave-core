@@ -23,6 +23,8 @@ std::string net_version();
 std::string net_listening();
 // Returns number of peers currently connected to the client.
 std::string net_peerCount();
+// Request chainId for a network.
+std::string eth_chainId();
 // Returns the current ethereum protocol version.
 std::string eth_protocolVersion();
 // Returns an object with data about the sync status or false.

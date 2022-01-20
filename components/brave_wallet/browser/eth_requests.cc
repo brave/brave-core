@@ -34,6 +34,10 @@ std::string net_peerCount() {
   return GetJsonRpcNoParams("net_peerCount");
 }
 
+std::string eth_chainId() {
+  return GetJsonRpcNoParams("eth_chainId");
+}
+
 std::string eth_protocolVersion() {
   return GetJsonRpcNoParams("eth_protocolVersion");
 }

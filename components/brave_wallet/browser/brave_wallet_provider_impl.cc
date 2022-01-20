@@ -147,15 +147,20 @@ void BraveWalletProviderImpl::AddEthereumChain(
                      weak_factory_.GetWeakPtr()));
 }
 
-void BraveWalletProviderImpl::OnAddEthereumChain(const std::string& chain_id,
-                                                 bool accepted) {
+void BraveWalletProviderImpl::OnAddEthereumChain(
+    const std::string& chain_id,
+    bool accepted,
+    const std::string& error_message) {
   DCHECK(delegate_);
   if (!chain_callbacks_.contains(chain_id))
     return;
   if (!accepted) {
+    auto message =
+        error_message.empty()
+            ? l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR)
+            : error_message;
     std::move(chain_callbacks_[chain_id])
-        .Run(mojom::ProviderError::kUserRejectedRequest,
-             l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
+        .Run(mojom::ProviderError::kUserRejectedRequest, message);
 
     chain_callbacks_.erase(chain_id);
     return;

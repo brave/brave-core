@@ -665,8 +665,22 @@ TEST_F(BraveWalletProviderImplUnitTest, OnAddEthereumChain) {
         ASSERT_FALSE(error_message.empty());
         run_loop.Quit();
       }));
-  provider()->OnAddEthereumChain("0x111", false);
+  provider()->OnAddEthereumChain("0x111", false, std::string());
   run_loop.Run();
+
+  provider()->AddEthereumChain(
+      R"({"params": [{
+        "chainId": "0x111",
+        "chainName": "Binance1 Smart Chain",
+        "rpcUrls": ["https://bsc-dataseed.binance.org/"],
+      },]})",
+      base::BindLambdaForTesting([&run_loop](mojom::ProviderError error,
+                                             const std::string& error_message) {
+        EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+        EXPECT_EQ(error_message, "response");
+        run_loop.Quit();
+      }));
+  provider()->OnAddEthereumChain("0x111", false, "response");
 }
 
 TEST_F(BraveWalletProviderImplUnitTest,

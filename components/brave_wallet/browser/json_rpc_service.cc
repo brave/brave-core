@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/environment.h"
+#include "base/json/json_writer.h"
 #include "base/no_destructor.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -182,18 +183,41 @@ void JsonRpcService::AddEthereumChain(mojom::EthereumChainPtr chain,
 void JsonRpcService::AddEthereumChainForOrigin(
     mojom::EthereumChainPtr chain,
     const GURL& origin,
-    AddEthereumChainCallback callback) {
+    AddEthereumChainForOriginCallback callback) {
   DCHECK_EQ(origin, url::Origin::Create(origin).GetURL());
   if (!origin.is_valid() ||
       add_chain_pending_requests_.contains(chain->chain_id) ||
       HasRequestFromOrigin(origin)) {
-    std::move(callback).Run(chain->chain_id, false);
+    std::move(callback).Run(chain->chain_id, false, std::string());
+    return;
+  }
+  RequestInternal(
+      eth::eth_chainId(), true, GURL(chain->rpc_urls.front()),
+      base::BindOnce(&JsonRpcService::OnEthChainIdValidated,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(chain), origin,
+                     std::move(callback)));
+}
+
+void JsonRpcService::OnEthChainIdValidated(
+    mojom::EthereumChainPtr chain,
+    const GURL& origin,
+    AddEthereumChainForOriginCallback callback,
+    const int http_code,
+    const std::string& response,
+    const base::flat_map<std::string, std::string>& headers) {
+  std::string result;
+  ParseSingleStringResult(response, &result);
+  if (result != chain->chain_id) {
+    std::move(callback).Run(
+        chain->chain_id, false,
+        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                                  base::ASCIIToUTF16(chain->rpc_urls.front())));
     return;
   }
   auto chain_id = chain->chain_id;
   add_chain_pending_requests_[chain_id] =
       EthereumChainRequest(origin, std::move(*chain));
-  std::move(callback).Run(chain_id, true);
+  std::move(callback).Run(chain_id, true, std::string());
 }
 
 void JsonRpcService::AddEthereumChainRequestCompleted(
@@ -205,6 +229,7 @@ void JsonRpcService::AddEthereumChainRequestCompleted(
     AddCustomNetwork(prefs_,
                      add_chain_pending_requests_.at(chain_id).request.Clone());
   }
+
   std::string error =
       approved ? std::string()
                : l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST);
@@ -410,7 +435,6 @@ void JsonRpcService::OnFilGetBalance(
     const int status,
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
-  DLOG(ERROR) << "status:" << status << " body:" << body;
   if (status < 200 || status > 299) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInternalError,
