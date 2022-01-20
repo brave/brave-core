@@ -174,6 +174,10 @@ GURL SwapController::GetPriceQuoteURL(mojom::SwapParamsPtr swap_params,
                              : base_url_for_test_.spec().c_str());
   GURL url(spec);
   url = AppendSwapParams(url, *swap_params, chain_id);
+  // That flag prevents an allowance validation on a swap exchange proxy side.
+  // We do in clients allowance validation.
+  url = net::AppendQueryParameter(url, "skipValidation", "true");
+
   return url;
 }
 
