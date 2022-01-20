@@ -63,7 +63,7 @@ function SelectAsset (props: Props) {
         hasAddButton={true}
         onClickAdd={onAddAsset}
       />
-      <SearchBar placeholder={getLocale('braveWalletSearchAsset')} action={filterAssetList} />
+      <SearchBar placeholder={getLocale('braveWalletSearchAsset')} action={filterAssetList} autoFocus={true} />
       <SelectScrollSearchContainer>
         {
           // Temp filtering out erc721 tokens, sending will be handled in a different PR
