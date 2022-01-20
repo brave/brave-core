@@ -108,6 +108,10 @@ function AllowAddChangeNetworkPanel (props: Props) {
                 <NetworkDetail>{networkPayload.symbol}</NetworkDetail>
               </MessageBoxColumn>
               <MessageBoxColumn>
+                <NetworkTitle>{getLocale('braveWalletWatchListTokenDecimals')}</NetworkTitle>
+                <NetworkDetail>{networkPayload.decimals}</NetworkDetail>
+              </MessageBoxColumn>
+              <MessageBoxColumn>
                 <NetworkTitle>{getLocale('braveWalletAllowAddNetworkExplorer')}</NetworkTitle>
                 <NetworkDetail>{blockUrl}</NetworkDetail>
               </MessageBoxColumn>
