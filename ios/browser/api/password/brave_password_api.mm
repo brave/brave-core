@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -15,8 +15,8 @@
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_form_digest.h"
 #include "components/password_manager/core/browser/password_store.h"
-#include "components/password_manager/core/browser/password_store_interface.h"
 #include "components/password_manager/core/browser/password_store_consumer.h"
+#include "components/password_manager/core/browser/password_store_interface.h"
 
 #include "ios/web/public/thread/web_thread.h"
 #include "net/base/mac/url_conversions.h"
@@ -76,7 +76,9 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
   GURL gurl_;
   std::string signon_realm_;
   base::Time date_created_;
+  std::u16string username_element_;
   std::u16string username_value_;
+  std::u16string password_element_;
   std::u16string password_value_;
   password_manager::PasswordForm::Scheme password_form_scheme_;
 }
@@ -87,7 +89,9 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 - (instancetype)initWithURL:(NSURL*)url
                 signOnRealm:(NSString*)signOnRealm
                 dateCreated:(NSDate*)dateCreated
+            usernameElement:(NSString*)usernameElement
               usernameValue:(NSString*)usernameValue
+            passwordElement:(NSString*)passwordElement
               passwordValue:(NSString*)passwordValue
             isBlockedByUser:(bool)isBlockedByUser
                      scheme:(PasswordFormScheme)scheme {
@@ -102,8 +106,16 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
       [self setDateCreated:dateCreated];
     }
 
+    if (usernameElement) {
+      [self setUsernameElement:usernameElement];
+    }
+
     if (usernameValue) {
       [self setUsernameValue:usernameValue];
+    }
+
+    if (passwordElement) {
+      [self setPasswordElement:passwordElement];
     }
 
     if (passwordValue) {
@@ -143,21 +155,38 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
   return date_created_.ToNSDate();
 }
 
+- (void)setUsernameElement:(NSString*)usernameElement {
+  username_element_ = base::SysNSStringToUTF16(usernameElement);
+}
+
 - (void)setUsernameValue:(NSString*)usernameValue {
   username_value_ = base::SysNSStringToUTF16(usernameValue);
+}
+
+- (NSString*)usernameElement {
+  return base::SysUTF16ToNSString(username_element_);
 }
 
 - (NSString*)usernameValue {
   return base::SysUTF16ToNSString(username_value_);
 }
 
+- (void)setPasswordElement:(NSString*)passwordElement {
+  password_element_ = base::SysNSStringToUTF16(passwordElement);
+}
+
 - (void)setPasswordValue:(NSString*)passwordValue {
   password_value_ = base::SysNSStringToUTF16(passwordValue);
+}
+
+- (NSString*)passwordElement {
+  return base::SysUTF16ToNSString(password_element_);
 }
 
 - (NSString*)passwordValue {
   return base::SysUTF16ToNSString(password_value_);
 }
+
 - (void)setPasswordFormScheme:(PasswordFormScheme)passwordFormScheme {
   password_form_scheme_ =
       brave::ios::PasswordFormSchemeForPasswordFormDigest(passwordFormScheme);
@@ -242,9 +271,19 @@ class PasswordStoreConsumerHelper
   // Store a PasswordForm representing a PasswordCredential.
   password_manager::PasswordForm passwordCredentialForm;
 
+  if (passwordForm.usernameElement) {
+    passwordCredentialForm.username_element =
+        base::SysNSStringToUTF16(passwordForm.usernameElement);
+  }
+
   if (passwordForm.usernameValue) {
     passwordCredentialForm.username_value =
         base::SysNSStringToUTF16(passwordForm.usernameValue);
+  }
+
+  if (passwordForm.passwordElement) {
+    passwordCredentialForm.password_element =
+        base::SysNSStringToUTF16(passwordForm.passwordElement);
   }
 
   if (passwordForm.passwordValue) {
@@ -252,7 +291,8 @@ class PasswordStoreConsumerHelper
         base::SysNSStringToUTF16(passwordForm.passwordValue);
   }
 
-  passwordCredentialForm.url = net::GURLWithNSURL(passwordForm.url).DeprecatedGetOriginAsURL();
+  passwordCredentialForm.url =
+      net::GURLWithNSURL(passwordForm.url).DeprecatedGetOriginAsURL();
 
   if (passwordForm.signOnRealm) {
     passwordCredentialForm.signon_realm =
@@ -329,7 +369,9 @@ class PasswordStoreConsumerHelper
             initWithURL:net::NSURLWithGURL(result->url)
             signOnRealm:base::SysUTF8ToNSString(result->signon_realm)
             dateCreated:result->date_created.ToNSDate()
+        usernameElement:base::SysUTF16ToNSString(result->username_element)
           usernameValue:base::SysUTF16ToNSString(result->username_value)
+        passwordElement:base::SysUTF16ToNSString(result->password_element)
           passwordValue:base::SysUTF16ToNSString(result->password_value)
         isBlockedByUser:result->blocked_by_user
                  scheme:brave::ios::PasswordFormSchemeFromPasswordManagerScheme(

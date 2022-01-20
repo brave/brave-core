@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -31,7 +31,9 @@ OBJC_EXPORT
 @property(nonatomic, strong) NSURL* url;
 @property(nonatomic, nullable, copy) NSString* signOnRealm;
 @property(nonatomic, nullable, copy) NSDate* dateCreated;
+@property(nonatomic, nullable, copy) NSString* usernameElement;
 @property(nonatomic, nullable, copy) NSString* usernameValue;
+@property(nonatomic, nullable, copy) NSString* passwordElement;
 @property(nonatomic, nullable, copy) NSString* passwordValue;
 @property(nonatomic) bool isBlockedByUser;
 @property(nonatomic) PasswordFormScheme scheme;
@@ -45,12 +47,18 @@ OBJC_EXPORT
 ///        port for SCHEME_HTML
 ///        The signon_realm is effectively the primary key used for retrieving
 ///        data from the database, so it must not be empty
+/// @param usernameElement - The string represantation of the name of the
+/// username input element
 /// @param usernameValue - The string represantation of the username
+/// @param passwordElement - The string represantation of the name of the
+/// password input element
 /// @param passwordValue - The string represantation of the password
 - (instancetype)initWithURL:(NSURL*)url
                 signOnRealm:(nullable NSString*)signOnRealm
                 dateCreated:(nullable NSDate*)dateCreated
+            usernameElement:(nullable NSString*)usernameElement
               usernameValue:(nullable NSString*)usernameValue
+            passwordElement:(nullable NSString*)passwordElement
               passwordValue:(nullable NSString*)passwordValue
             isBlockedByUser:(bool)isBlockedByUser
                      scheme:(PasswordFormScheme)scheme;
