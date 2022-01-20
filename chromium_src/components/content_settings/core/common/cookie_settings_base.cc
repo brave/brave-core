@@ -37,10 +37,10 @@ namespace {
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
                               const CookieSettingsBase* const cookie_settings) {
-  //static const base::NoDestructor<
+  static const base::NoDestructor<
       // url -> first_party_url allow map
-      //std::vector<std::pair<ContentSettingsPattern, ContentSettingsPattern>>>
-      //entity_list(
+      std::vector<std::pair<ContentSettingsPattern, ContentSettingsPattern>>>
+      entity_list(
       //    {{ContentSettingsPattern::FromString(kWp),
       //      ContentSettingsPattern::FromString(kWordpress)},
       //     {ContentSettingsPattern::FromString(kWordpress),
@@ -61,6 +61,7 @@ bool BraveIsAllowedThirdParty(const GURL& url,
       //      ContentSettingsPattern::FromString(kPlaystation)},
       //     {ContentSettingsPattern::FromString(kPlaystation),
       //      ContentSettingsPattern::FromString(kSony)}});
+      );
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
