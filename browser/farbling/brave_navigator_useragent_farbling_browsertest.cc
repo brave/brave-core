@@ -35,7 +35,9 @@
 using brave_shields::ControlType;
 using content::TitleWatcher;
 
+namespace {
 const char kUserAgentScript[] = "navigator.userAgent";
+}
 
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  public:
@@ -230,4 +232,16 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   EXPECT_EQ(last_requested_http_user_agent(), unfarbled_ua);
   auto off_ua_b2 = EvalJs(contents(), kUserAgentScript);
   EXPECT_EQ(off_ua_b.ExtractString(), off_ua_b2);
+}
+
+// Tests results of farbling user agent metadata
+IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
+                       FarbleNavigatorUserAgentModel) {
+  std::string domain_b = "b.com";
+  GURL url_b =
+      https_server()->GetURL(domain_b, "/navigator/useragentdata.html");
+  NavigateToURLUntilLoadStop(url_b);
+  std::u16string expected_title(u"pass");
+  TitleWatcher watcher(contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
