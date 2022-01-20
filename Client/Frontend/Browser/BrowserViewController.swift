@@ -1201,7 +1201,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             // IE: The user must explicitly tap a bookmark they have saved.
             // Block all other contexts such as redirects, downloads, embed, linked, etc..
             if visitType == .bookmark, let webView = tab.webView, let code = url.bookmarkletCodeComponent {
-                webView.evaluateSafeJavaScript(functionName: code, sandboxed: false, asFunction: false) { _, error in
+                webView.evaluateSafeJavaScript(functionName: code,
+                                               contentWorld: .bookmarkletSandbox,
+                                               asFunction: false) { _, error in
                     if let error = error {
                         log.error(error)
                     }
@@ -1424,7 +1426,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             return
         }
         if NoImageModeHelper.isActivated {
-            webView.evaluateSafeJavaScript(functionName: "__firefox__.NoImageMode.setEnabled", args: ["true"])
+            webView.evaluateSafeJavaScript(functionName: "__firefox__.NoImageMode.setEnabled", args: ["true"], contentWorld: .defaultClient)
         }
     }
 
@@ -1768,7 +1770,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
             findInPageBar.endEditing(true)
             let tab = tab ?? tabManager.selectedTab
             guard let webView = tab?.webView else { return }
-            webView.evaluateSafeJavaScript(functionName: "__firefox__.findDone")
+            webView.evaluateSafeJavaScript(functionName: "__firefox__.findDone", contentWorld: .defaultClient)
             findInPageBar.removeFromSuperview()
             self.findInPageBar = nil
             updateViewConstraints()
@@ -1792,7 +1794,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                 // because that event wil not always fire due to unreliable page caching. This will either let us know that
                 // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
                 // ignore the result because we are being called back asynchronous when the readermode status changes.
-                webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).checkReadability", sandboxed: false)
+                webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).checkReadability", contentWorld: .defaultClient)
 
                 // Re-run additional scripts in webView to extract updated favicons and metadata.
                 runScriptsOnWebView(webView)
@@ -1946,71 +1948,71 @@ extension BrowserViewController: TabDelegate {
         webView.uiDelegate = self
 
         let formPostHelper = FormPostHelper(tab: tab)
-        tab.addContentScript(formPostHelper, name: FormPostHelper.name())
+        tab.addContentScript(formPostHelper, name: FormPostHelper.name(), contentWorld: .page)
 
         let readerMode = ReaderMode(tab: tab)
         readerMode.delegate = self
-        tab.addContentScript(readerMode, name: ReaderMode.name(), sandboxed: false)
+        tab.addContentScript(readerMode, name: ReaderMode.name(), contentWorld: .defaultClient)
 
         // only add the logins helper if the tab is not a private browsing tab
         if !tab.isPrivate {
             let logins = LoginsHelper(tab: tab, profile: profile)
-            tab.addContentScript(logins, name: LoginsHelper.name(), sandboxed: false)
+            tab.addContentScript(logins, name: LoginsHelper.name(), contentWorld: .defaultClient)
         }
 
         let errorHelper = ErrorPageHelper(certStore: profile.certStore)
-        tab.addContentScript(errorHelper, name: ErrorPageHelper.name(), sandboxed: false)
+        tab.addContentScript(errorHelper, name: ErrorPageHelper.name(), contentWorld: .defaultClient)
 
         let sessionRestoreHelper = SessionRestoreHelper(tab: tab)
         sessionRestoreHelper.delegate = self
-        tab.addContentScript(sessionRestoreHelper, name: SessionRestoreHelper.name())
+        tab.addContentScript(sessionRestoreHelper, name: SessionRestoreHelper.name(), contentWorld: .defaultClient)
 
         let findInPageHelper = FindInPageHelper(tab: tab)
         findInPageHelper.delegate = self
-        tab.addContentScript(findInPageHelper, name: FindInPageHelper.name(), sandboxed: false)
+        tab.addContentScript(findInPageHelper, name: FindInPageHelper.name(), contentWorld: .defaultClient)
 
         let noImageModeHelper = NoImageModeHelper(tab: tab)
-        tab.addContentScript(noImageModeHelper, name: NoImageModeHelper.name())
+        tab.addContentScript(noImageModeHelper, name: NoImageModeHelper.name(), contentWorld: .defaultClient)
         
         let printHelper = PrintHelper(browserController: self, tab: tab)
-        tab.addContentScript(printHelper, name: PrintHelper.name(), sandboxed: false)
+        tab.addContentScript(printHelper, name: PrintHelper.name(), contentWorld: .page)
 
         let customSearchHelper = CustomSearchHelper(tab: tab)
-        tab.addContentScript(customSearchHelper, name: CustomSearchHelper.name())
+        tab.addContentScript(customSearchHelper, name: CustomSearchHelper.name(), contentWorld: .page)
 
         // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily
         // let spotlightHelper = SpotlightHelper(tab: tab)
         // tab.addHelper(spotlightHelper, name: SpotlightHelper.name())
 
-        tab.addContentScript(LocalRequestHelper(), name: LocalRequestHelper.name(), sandboxed: false)
+        tab.addContentScript(LocalRequestHelper(), name: LocalRequestHelper.name(), contentWorld: .defaultClient)
 
         tab.contentBlocker.setupTabTrackingProtection()
-        tab.addContentScript(tab.contentBlocker, name: ContentBlockerHelper.name(), sandboxed: false)
+        tab.addContentScript(tab.contentBlocker, name: ContentBlockerHelper.name(), contentWorld: .page)
 
-        tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name())
+        tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name(), contentWorld: .defaultClient)
         
-        tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name(), sandboxed: false)
+        tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name(), contentWorld: .page)
         
-        tab.addContentScript(BraveGetUA(tab: tab), name: BraveGetUA.name(), sandboxed: false)
+        tab.addContentScript(BraveGetUA(tab: tab), name: BraveGetUA.name(), contentWorld: .page)
         tab.addContentScript(BraveSearchScriptHandler(tab: tab,
                                                         profile: profile,
                                                         rewards: rewards),
-                             name: BraveSearchScriptHandler.name(), sandboxed: false)
+                             name: BraveSearchScriptHandler.name(), contentWorld: .page)
         
         tab.addContentScript(BraveTalkScriptHandler(tab: tab,
                                                         rewards: rewards),
-                             name: BraveTalkScriptHandler.name(), sandboxed: false)
+                             name: BraveTalkScriptHandler.name(), contentWorld: .page)
         
-        tab.addContentScript(ResourceDownloadManager(tab: tab), name: ResourceDownloadManager.name(), sandboxed: false)
+        tab.addContentScript(ResourceDownloadManager(tab: tab), name: ResourceDownloadManager.name(), contentWorld: .defaultClient)
         
-        tab.addContentScript(WindowRenderHelperScript(tab: tab), name: WindowRenderHelperScript.name(), sandboxed: false)
+        tab.addContentScript(WindowRenderHelperScript(tab: tab), name: WindowRenderHelperScript.name(), contentWorld: .defaultClient)
         
         let playlistHelper = PlaylistHelper(tab: tab)
         playlistHelper.delegate = self
-        tab.addContentScript(playlistHelper, name: PlaylistHelper.name(), sandboxed: false)
+        tab.addContentScript(playlistHelper, name: PlaylistHelper.name(), contentWorld: .page)
 
-        tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name(), sandboxed: false)
-        tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
+        tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name(), contentWorld: .page)
+        tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name(), contentWorld: .defaultClient)
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -2483,7 +2485,7 @@ extension BrowserViewController: WKUIDelegate {
                     window.alert=window.confirm=window.prompt=function(n){},
                     [].slice.apply(document.querySelectorAll('iframe')).forEach(function(n){if(n.contentWindow != window){n.contentWindow.alert=n.contentWindow.confirm=n.contentWindow.prompt=function(n){}}})
                     """
-        webView.evaluateSafeJavaScript(functionName: script, sandboxed: false, asFunction: false)
+        webView.evaluateSafeJavaScript(functionName: script, contentWorld: .defaultClient, asFunction: false)
     }
     
     func handleAlert<T: JSAlertInfo>(webView: WKWebView, alert: inout T, completionHandler: @escaping () -> Void) {
@@ -2744,7 +2746,7 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageHelperDelegate
                 self.findInPageBar?.currentResult = index
             }
         } else {
-            webView.evaluateSafeJavaScript(functionName: "__firefox__.\(function)", args: [text], sandboxed: false)
+            webView.evaluateSafeJavaScript(functionName: "__firefox__.\(function)", args: [text], contentWorld: .defaultClient)
         }
     }
 

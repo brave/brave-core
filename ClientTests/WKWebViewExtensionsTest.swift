@@ -12,25 +12,25 @@ import WebKit
 class WKWebViewExtensionsTest: XCTestCase {
     func testGenerateJavascriptFunctionString() {
         let webView = BraveWebView(frame: .zero, isPrivate: false)
-        var js = webView.generateJavascriptFunctionString(functionName: "demo_function", args: [])
+        var js = webView.generateJSFunctionString(functionName: "demo_function", args: [])
         XCTAssertNil(js.error)
         XCTAssertEqual(js.javascript, "demo_function()")
         
-        js = webView.generateJavascriptFunctionString(functionName: "demo_function", args: ["a", "b", "c"])
+        js = webView.generateJSFunctionString(functionName: "demo_function", args: ["a", "b", "c"])
         XCTAssertNil(js.error)
         XCTAssertEqual(js.javascript, "demo_function('a', 'b', 'c')")
         
-        js = webView.generateJavascriptFunctionString(functionName: "demo_function", args: ["\"); (fn () {userPassword = 7})("])
-        XCTAssertNotNil(js.error)
+        js = webView.generateJSFunctionString(functionName: "demo_function", args: ["\"); (fn () {userPassword = 7})("])
+        XCTAssertNil(js.error)
         
-        js = webView.generateJavascriptFunctionString(functionName: "demo_function", args: ["&", "'", "<", ">", "`"])
-        XCTAssertNotNil(js.error)
+        js = webView.generateJSFunctionString(functionName: "demo_function", args: ["&", "'", "<", ">", "`"])
+        XCTAssertNil(js.error)
 
-        js = webView.generateJavascriptFunctionString(functionName: "demo_function", args: ["<script>alert(1);</script>"])
+        js = webView.generateJSFunctionString(functionName: "demo_function", args: ["<script>alert(1);</script>"])
         XCTAssertNil(js.error)
         XCTAssertEqual(js.javascript, "demo_function('&lt;script&gt;alert(1);&lt;/script&gt;')")
         
-        js = webView.generateJavascriptFunctionString(functionName: "demo_function", args: ["<script>alert(1);</script>"], escapeArgs: false)
+        js = webView.generateJSFunctionString(functionName: "demo_function", args: ["<script>alert(1);</script>"], escapeArgs: false)
         XCTAssertNil(js.error)
         XCTAssertEqual(js.javascript, "demo_function(<script>alert(1);</script>)")
     }

@@ -293,7 +293,7 @@ class ReaderMode: TabContentScript {
     var style: ReaderModeStyle = DefaultReaderModeStyle {
         didSet {
             if state == ReaderModeState.active {
-                tab?.webView?.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).setStyle", args: [style.encode()], sandboxed: false, escapeArgs: false) { (object, error) -> Void in
+                tab?.webView?.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).setStyle", args: [style.encode()], contentWorld: .defaultClient, escapeArgs: false) { (object, error) -> Void in
                     return
                 }
             }

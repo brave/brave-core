@@ -35,15 +35,15 @@ Object.defineProperty(window.__firefox__, '$<brave-search-helper>', {
 });
 
 Object.defineProperty(window, 'brave', {
-enumerable: false,
-configurable: true,
-writable: false,
-    value: {
-    getCanSetDefaultSearchProvider() {
-        return window.__firefox__.$<brave-search-helper>.sendMessage(1);
-    },
-    setIsDefaultSearchProvider() {
-        return window.__firefox__.$<brave-search-helper>.sendMessage(2);
+    enumerable: false,
+    configurable: true,
+    writable: false,
+        value: {
+        getCanSetDefaultSearchProvider() {
+            return window.__firefox__.$<brave-search-helper>.sendMessage(1);
+        },
+        setIsDefaultSearchProvider() {
+            return window.__firefox__.$<brave-search-helper>.sendMessage(2);
+        }
     }
-}
 });

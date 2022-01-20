@@ -28,6 +28,6 @@ class WindowRenderHelperScript: TabContentScript {
     
     static func executeScript(for tab: Tab) {
         let token = UserScriptManager.securityTokenString
-        tab.webView?.evaluateSafeJavaScript(functionName: "W\(token).resizeWindow", sandboxed: false)
+        tab.webView?.evaluateSafeJavaScript(functionName: "W\(token).resizeWindow", contentWorld: .defaultClient)
     }
 }

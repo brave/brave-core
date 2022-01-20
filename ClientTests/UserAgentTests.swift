@@ -38,7 +38,7 @@ class UserAgentTests: XCTestCase {
         
         let webView = BraveWebView(frame: .zero, isPrivate: false)
         
-        webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", sandboxed: false, asFunction: false) { result, error in
+        webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", contentWorld: .page, asFunction: false) { result, error in
             let userAgent = result as! String
             if !self.mobileUARegex(userAgent) || self.desktopUARegex(userAgent) {
                 XCTFail("User agent did not match expected pattern! \(userAgent)")
@@ -57,14 +57,14 @@ class UserAgentTests: XCTestCase {
         let webView = BraveWebView(frame: .zero, isPrivate: false)
         let wkWebView = WKWebView()
         
-        webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", args:[], sandboxed: false, asFunction: false) { result, error in
+        webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", args:[], contentWorld: .page, asFunction: false) { result, error in
             
             guard let braveFirstPartOfUA = (result as? String)?.components(separatedBy: "Gecko") else {
                 XCTFail("Could not unwrap BraveWebView UA")
                 return
             }
             
-            wkWebView.evaluateSafeJavaScript(functionName: "navigator.userAgent", sandboxed: false, asFunction: false) { wkResult, wkError in
+            wkWebView.evaluateSafeJavaScript(functionName: "navigator.userAgent", contentWorld: .page, asFunction: false) { wkResult, wkError in
                 guard let wkWebViewFirstPartOfUA = (result as? String)?
                     .components(separatedBy: "Gecko") else {
                     XCTFail("Could not unwrap WKWebView UA")
@@ -94,7 +94,7 @@ class UserAgentTests: XCTestCase {
         let expectation = self.expectation(description: "Found Firefox user agent")
         let webView = BraveWebView(frame: .zero, isPrivate: false)
         
-        webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", sandboxed: false, asFunction: false) { result, error in
+        webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", contentWorld: .page, asFunction: false) { result, error in
            let userAgent = result as! String
             if self.mobileUARegex(userAgent) || !self.desktopUARegex(userAgent) {
                 XCTFail("User agent did not match expected pattern! \(userAgent)")
@@ -117,7 +117,7 @@ class UserAgentTests: XCTestCase {
         let expectation = self.expectation(description: "Found Firefox user agent")
         let webView = BraveWebView(frame: .zero, isPrivate: false)
         
-        webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", sandboxed: false, asFunction: false) { result, error in
+        webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", contentWorld: .page, asFunction: false) { result, error in
            let userAgent = result as! String
             if !self.mobileUARegex(userAgent) || self.desktopUARegex(userAgent) {
                 XCTFail("User agent did not match expected pattern! \(userAgent)")

@@ -1039,6 +1039,11 @@
 		CA2202B027194D26002D3582 /* InterstitialPageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2202AF27194D26002D3582 /* InterstitialPageHandler.swift */; };
 		CA2202B227199123002D3582 /* DarkWarning.svg in Resources */ = {isa = PBXBuildFile; fileRef = CA2202B127199123002D3582 /* DarkWarning.svg */; };
 		CA2202B4271993BD002D3582 /* CertificateError.css in Resources */ = {isa = PBXBuildFile; fileRef = CA2202B3271993BD002D3582 /* CertificateError.css */; };
+		CA225DF22795CECE0024C104 /* MainFrame.js in Resources */ = {isa = PBXBuildFile; fileRef = CA225DF12795CECE0024C104 /* MainFrame.js */; };
+		CA225DF32795D0600024C104 /* __firefox__.js in Resources */ = {isa = PBXBuildFile; fileRef = F9E0F3BE25787E2C003A6A30 /* __firefox__.js */; };
+		CA225DF62795D1A80024C104 /* MainFrameAtDocumentStartSandboxed.js in Resources */ = {isa = PBXBuildFile; fileRef = CA225DF42795D1A70024C104 /* MainFrameAtDocumentStartSandboxed.js */; };
+		CA225DF72795D1A80024C104 /* MainFrameAtDocumentEndSandboxed.js in Resources */ = {isa = PBXBuildFile; fileRef = CA225DF52795D1A80024C104 /* MainFrameAtDocumentEndSandboxed.js */; };
+		CA225DF92795D7690024C104 /* WKContentWorld+Sandbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA225DF82795D7690024C104 /* WKContentWorld+Sandbox.swift */; };
 		CA29F2F3273DAEA100C391C3 /* PlaylistOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA29F2F2273DAEA100C391C3 /* PlaylistOnboardingView.swift */; };
 		CA2EE0A527349E970089C75F /* disconnect-entitylist.json in Resources */ = {isa = PBXBuildFile; fileRef = CA2EE09927349E970089C75F /* disconnect-entitylist.json */; };
 		CA2EE0A727349F760089C75F /* OnboardingAdblockDisconnect.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2EE0A627349F760089C75F /* OnboardingAdblockDisconnect.swift */; };
@@ -1243,7 +1248,6 @@
 		F9E0F38B25772E57003A6A30 /* ReaderMode.js in Resources */ = {isa = PBXBuildFile; fileRef = F9E0F38A25772E57003A6A30 /* ReaderMode.js */; };
 		F9E0F3A8257739B1003A6A30 /* TrackingProtectionStats.js in Resources */ = {isa = PBXBuildFile; fileRef = F9E0F3A7257739B1003A6A30 /* TrackingProtectionStats.js */; };
 		F9E0F3B4257878C1003A6A30 /* PrintHandler.js in Resources */ = {isa = PBXBuildFile; fileRef = F9E0F3B3257878C1003A6A30 /* PrintHandler.js */; };
-		F9E0F3BF25787E2C003A6A30 /* __firefox__.js in Resources */ = {isa = PBXBuildFile; fileRef = F9E0F3BE25787E2C003A6A30 /* __firefox__.js */; };
 		F9F859702533CE52000CEB24 /* LoginsHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = D0C95DF5200EADD500E4E51C /* LoginsHelper.js */; };
 		F9F8597C2533CEBC000CEB24 /* DownloadHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = F9F8597B2533CEBC000CEB24 /* DownloadHelper.js */; };
 		FA6B2AC21D41F02D00429414 /* Punycode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B2AC11D41F02D00429414 /* Punycode.swift */; };
@@ -2970,6 +2974,11 @@
 		CA2202AF27194D26002D3582 /* InterstitialPageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialPageHandler.swift; sourceTree = "<group>"; };
 		CA2202B127199123002D3582 /* DarkWarning.svg */ = {isa = PBXFileReference; lastKnownFileType = text; path = DarkWarning.svg; sourceTree = "<group>"; };
 		CA2202B3271993BD002D3582 /* CertificateError.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = CertificateError.css; sourceTree = "<group>"; };
+		CA225DEF2795CDFD0024C104 /* __firefox__.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = __firefox__.js; sourceTree = "<group>"; };
+		CA225DF12795CECE0024C104 /* MainFrame.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = MainFrame.js; sourceTree = "<group>"; };
+		CA225DF42795D1A70024C104 /* MainFrameAtDocumentStartSandboxed.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = MainFrameAtDocumentStartSandboxed.js; sourceTree = "<group>"; };
+		CA225DF52795D1A80024C104 /* MainFrameAtDocumentEndSandboxed.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = MainFrameAtDocumentEndSandboxed.js; sourceTree = "<group>"; };
+		CA225DF82795D7690024C104 /* WKContentWorld+Sandbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WKContentWorld+Sandbox.swift"; sourceTree = "<group>"; };
 		CA29F2F2273DAEA100C391C3 /* PlaylistOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistOnboardingView.swift; sourceTree = "<group>"; };
 		CA2EE09927349E970089C75F /* disconnect-entitylist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "disconnect-entitylist.json"; sourceTree = "<group>"; };
 		CA2EE0A627349F760089C75F /* OnboardingAdblockDisconnect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdblockDisconnect.swift; sourceTree = "<group>"; };
@@ -5655,6 +5664,7 @@
 				278C6FFE24F6EA3700A246C8 /* ReportBrokenSiteView.swift */,
 				278C700124F6F33D00A246C8 /* SiteReportedView.swift */,
 				2FA01E5C25F2C93800103D67 /* ShieldsActivityItemSourceProvider.swift */,
+				CA225DF82795D7690024C104 /* WKContentWorld+Sandbox.swift */,
 			);
 			path = Shields;
 			sourceTree = "<group>";
@@ -5830,6 +5840,34 @@
 			path = "Interstitial Pages";
 			sourceTree = "<group>";
 		};
+		CA225DE22790E5140024C104 /* MainFrame */ = {
+			isa = PBXGroup;
+			children = (
+				CA225DEE2790E52B0024C104 /* AtDocumentStart */,
+				CA225DED2790E5240024C104 /* AtDocumentEnd */,
+			);
+			path = MainFrame;
+			sourceTree = "<group>";
+		};
+		CA225DED2790E5240024C104 /* AtDocumentEnd */ = {
+			isa = PBXGroup;
+			children = (
+				D0C95DF1200EAD3000E4E51C /* FindInPage.js */,
+				D0C95E33200FDB3200E4E51C /* MetadataHelper.js */,
+				D0FCF8091FE47B49004A7995 /* CustomSearchHandler.js */,
+			);
+			path = AtDocumentEnd;
+			sourceTree = "<group>";
+		};
+		CA225DEE2790E52B0024C104 /* AtDocumentStart */ = {
+			isa = PBXGroup;
+			children = (
+				D0C95DF9200EAE5E00E4E51C /* NoImageModeHelper.js */,
+				F9E0F38A25772E57003A6A30 /* ReaderMode.js */,
+			);
+			path = AtDocumentStart;
+			sourceTree = "<group>";
+		};
 		CA8D5C0A26D7CD46009BF13D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -5898,9 +5936,8 @@
 		D03F8F11200EAB8C003C2224 /* AtDocumentStart */ = {
 			isa = PBXGroup;
 			children = (
-				276E7A2E22F21A7700939424 /* RewardsReporting.js */,
-				D0C95DF5200EADD500E4E51C /* LoginsHelper.js */,
 				D03F8F20200EABB0003C2224 /* __firefox__.js */,
+				276E7A2E22F21A7700939424 /* RewardsReporting.js */,
 				F9F8597B2533CEBC000CEB24 /* DownloadHelper.js */,
 				F926074A25B230EC000E659A /* gpc.js */,
 			);
@@ -5911,14 +5948,12 @@
 			isa = PBXGroup;
 			children = (
 				F9838EF325797C530051FA21 /* Sandboxed */,
-				279C75C021A5B37D001CD1CB /* FingerprintingProtection.js */,
 				D0FCF7E81FE44D8F004A7995 /* AllFrames */,
 				D0FCF7E91FE44DA2004A7995 /* MainFrame */,
 				595E0EDA21CAD97C00813D49 /* CookieControl.js */,
 				0AE50853261C63D70099C6A3 /* BraveSearchHelper.js */,
 				449AC16E26D9008D00A53F33 /* BraveTalkHelper.js */,
-				5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */,
-				5E4845BF22DE381200372022 /* WindowRenderHelper.js */,
+				279C75C021A5B37D001CD1CB /* FingerprintingProtection.js */,
 				5EB57D0122FDC0CB00A07325 /* FullscreenHelper.js */,
 				F9B23EE123F61173000EB3D8 /* PaymentRequest.js */,
 				5E4E078224A0E4D700B01720 /* YoutubeAdblock.js */,
@@ -5952,8 +5987,8 @@
 		D0FCF7EB1FE44DB6004A7995 /* AtDocumentEnd */ = {
 			isa = PBXGroup;
 			children = (
-				F9E0F3B3257878C1003A6A30 /* PrintHandler.js */,
 				D000661320472890009BA6F6 /* __firefox__.js */,
+				F9E0F3B3257878C1003A6A30 /* PrintHandler.js */,
 			);
 			path = AtDocumentEnd;
 			sourceTree = "<group>";
@@ -5962,8 +5997,6 @@
 			isa = PBXGroup;
 			children = (
 				F91EAD56256C90720056C8CC /* BraveGetUA.js */,
-				D0C95DF9200EAE5E00E4E51C /* NoImageModeHelper.js */,
-				F9E0F38A25772E57003A6A30 /* ReaderMode.js */,
 				F9E0F3A7257739B1003A6A30 /* TrackingProtectionStats.js */,
 			);
 			path = AtDocumentStart;
@@ -5972,9 +6005,7 @@
 		D0FCF7ED1FE44DC3004A7995 /* AtDocumentEnd */ = {
 			isa = PBXGroup;
 			children = (
-				D0FCF8091FE47B49004A7995 /* CustomSearchHandler.js */,
-				D0C95DF1200EAD3000E4E51C /* FindInPage.js */,
-				D0C95E33200FDB3200E4E51C /* MetadataHelper.js */,
+				CA225DF12795CECE0024C104 /* MainFrame.js */,
 			);
 			path = AtDocumentEnd;
 			sourceTree = "<group>";
@@ -6466,7 +6497,9 @@
 			children = (
 				CA2202802719282A002D3582 /* Interstitial Pages */,
 				5E824A88260BCE0D00127F36 /* MainFrameAtDocumentEnd.js */,
+				CA225DF52795D1A80024C104 /* MainFrameAtDocumentEndSandboxed.js */,
 				5E824A94260BCE0D00127F36 /* MainFrameAtDocumentStart.js */,
+				CA225DF42795D1A70024C104 /* MainFrameAtDocumentStartSandboxed.js */,
 				F979BE2C25BCC54D009B6ACF /* AllFramesAtDocumentEnd.js */,
 				F979BE2E25BCC54E009B6ACF /* AllFramesAtDocumentEndSandboxed.js */,
 				F979BE2B25BCC54D009B6ACF /* AllFramesAtDocumentStart.js */,
@@ -6549,7 +6582,9 @@
 		F9488E9E2589895500A72C84 /* AtDocumentStart */ = {
 			isa = PBXGroup;
 			children = (
+				CA225DEF2795CDFD0024C104 /* __firefox__.js */,
 				2755AB7C23107BC600F0721F /* AdsReporting.js */,
+				D0C95DF5200EADD500E4E51C /* LoginsHelper.js */,
 			);
 			path = AtDocumentStart;
 			sourceTree = "<group>";
@@ -6557,7 +6592,10 @@
 		F9838EF325797C530051FA21 /* Sandboxed */ = {
 			isa = PBXGroup;
 			children = (
+				CA225DE22790E5140024C104 /* MainFrame */,
 				F9838EF525797E1A0051FA21 /* AllFrames */,
+				5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */,
+				5E4845BF22DE381200372022 /* WindowRenderHelper.js */,
 			);
 			path = Sandboxed;
 			sourceTree = "<group>";
@@ -7563,6 +7601,8 @@
 				445CA12627997F770040F5C4 /* joshn_larson_desert.jpg in Resources */,
 				0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */,
 				CA2202B4271993BD002D3582 /* CertificateError.css in Resources */,
+				CA225DF62795D1A80024C104 /* MainFrameAtDocumentStartSandboxed.js in Resources */,
+				0AB22A8F257EADA900126ADC /* su-san-lee.jpg in Resources */,
 				0AE50854261C63D70099C6A3 /* BraveSearchHelper.js in Resources */,
 				445ABC972731DDFF0089710D /* NewYorkMedium-RegularItalic.otf in Resources */,
 				5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */,
@@ -7586,6 +7626,7 @@
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
 				E69922171B94E3EF007C480D /* Licenses.html in Resources */,
 				E4CD9F5B1A71506C00318571 /* Reader.css in Resources */,
+				CA225DF32795D0600024C104 /* __firefox__.js in Resources */,
 				5EC2C0E525C0B321005EA984 /* PlaylistDetector.js in Resources */,
 				CA2EE0A527349E970089C75F /* disconnect-entitylist.json in Resources */,
 				445ABC982731DDFF0089710D /* NewYorkMedium-BoldItalic.otf in Resources */,
@@ -7598,12 +7639,14 @@
 				CA2202B227199123002D3582 /* DarkWarning.svg in Resources */,
 				F9488EB32589899800A72C84 /* RewardsReporting.js in Resources */,
 				39F4C0FA2045D87400746155 /* FocusHelper.js in Resources */,
+				CA225DF72795D1A80024C104 /* MainFrameAtDocumentEndSandboxed.js in Resources */,
 				445CA12B27997F770040F5C4 /* david_malenfant_mountains.jpg in Resources */,
 				E4B7B7861A793CF20022C5E0 /* FiraSans-UltraLight.ttf in Resources */,
 				4481F23F26CBD3DC00658EAC /* ISRGRootCA_X1.cer in Resources */,
 				4481F22D26CBD1C600658EAC /* AmazonRootCA3.cer in Resources */,
 				E4B7B77D1A793CF20022C5E0 /* FiraSans-Regular.ttf in Resources */,
 				4481F23A26CBD30900658EAC /* AmazonRootCA1.cer in Resources */,
+				CA225DF22795CECE0024C104 /* MainFrame.js in Resources */,
 				4481F23626CBD27B00658EAC /* GlobalSignRootCA_E46.cer in Resources */,
 				4422D55221BFFB7E00BF1855 /* make_unicode_casefold.py in Resources */,
 				5E4E078324A0E4D700B01720 /* YoutubeAdblock.js in Resources */,
@@ -7656,7 +7699,6 @@
 				2F44FB2D1A9D5D8500FD20CC /* FiraSans-BoldItalic.ttf in Resources */,
 				5EE4CF5B2540868E00BC4509 /* Bookmarks.html in Resources */,
 				F9BD7D9926C6E77600344FE7 /* upgrade-http.json in Resources */,
-				F9E0F3BF25787E2C003A6A30 /* __firefox__.js in Resources */,
 				279C75C821A5B37D001CD1CB /* FingerprintingProtection.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8215,6 +8257,7 @@
 				CAA10597266FE94700A0372D /* RecentSearchQRCodeScannerController.swift in Sources */,
 				27036F9825684F9F004EF6B6 /* AdsViewController.swift in Sources */,
 				27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */,
+				CA225DF92795D7690024C104 /* WKContentWorld+Sandbox.swift in Sources */,
 				5E096174252B63A300F3AFBB /* BraveCoreMigrator.swift in Sources */,
 				C690C208212FF35100E6EEE9 /* WebImageCacheWithNoPrivacyProtectionManager.swift in Sources */,
 				27C647772550AE16006D72FC /* WalletTransferCompleteViewController.swift in Sources */,

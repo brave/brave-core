@@ -128,18 +128,20 @@ class UserScriptManager {
          (WKUserScriptInjectionTime.atDocumentStart, mainFrameOnly: false, sandboxed: true),
          (WKUserScriptInjectionTime.atDocumentEnd, mainFrameOnly: false, sandboxed: true),
          (WKUserScriptInjectionTime.atDocumentStart, mainFrameOnly: true, sandboxed: false),
-         (WKUserScriptInjectionTime.atDocumentEnd, mainFrameOnly: true, sandboxed: false)].compactMap { arg in
+         (WKUserScriptInjectionTime.atDocumentEnd, mainFrameOnly: true, sandboxed: false),
+         (WKUserScriptInjectionTime.atDocumentStart, mainFrameOnly: true, sandboxed: true),
+         (WKUserScriptInjectionTime.atDocumentEnd, mainFrameOnly: true, sandboxed: true)
+        ].compactMap { arg in
             let (injectionTime, mainFrameOnly, sandboxed) = arg
             let name = (mainFrameOnly ? "MainFrame" : "AllFrames") + "AtDocument" + (injectionTime == .atDocumentStart ? "Start" : "End") + (sandboxed ? "Sandboxed" : "")
             if let path = Bundle.main.path(forResource: name, ofType: "js"),
                 let source = try? NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as String {
                 let wrappedSource = "(function() { const SECURITY_TOKEN = '\(UserScriptManager.messageHandlerTokenString)'; \(source) })()"
-
-                if sandboxed {
-                    return WKUserScript.createInDefaultContentWorld(source: wrappedSource, injectionTime: injectionTime, forMainFrameOnly: mainFrameOnly)
-                } else {
-                    return WKUserScript(source: wrappedSource, injectionTime: injectionTime, forMainFrameOnly: mainFrameOnly)
-                }
+                
+                return WKUserScript(source: wrappedSource,
+                                    injectionTime: injectionTime,
+                                    forMainFrameOnly: mainFrameOnly,
+                                    in: sandboxed ? .defaultClient : .page)
             }
             return nil
         }
@@ -152,7 +154,10 @@ class UserScriptManager {
         }
         var alteredSource = source
         alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "FingerprintingProtection\(messageHandlerTokenString)", options: .literal)
-        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        return WKUserScript(source: alteredSource,
+                            injectionTime: .atDocumentStart,
+                            forMainFrameOnly: false,
+                            in: .page)
     }()
     
     private let cookieControlUserScript: WKUserScript? = {
@@ -161,7 +166,10 @@ class UserScriptManager {
             return nil
         }
         
-        return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        return WKUserScript(source: source,
+                            injectionTime: .atDocumentStart,
+                            forMainFrameOnly: false,
+                            in: .page)
     }()
     
     // PaymentRequestUserScript is injected at document start to handle
@@ -180,7 +188,10 @@ class UserScriptManager {
         alteredSource = alteredSource.replacingOccurrences(of: "$<paymentreqcallback>", with: "PaymentRequestCallback\(securityTokenString)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "PaymentRequest\(messageHandlerTokenString)", options: .literal)
         
-        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        return WKUserScript(source: alteredSource,
+                            injectionTime: .atDocumentStart,
+                            forMainFrameOnly: false,
+                            in: .page)
     }()
     
     private let resourceDownloadManagerUserScript: WKUserScript? = {
@@ -193,7 +204,10 @@ class UserScriptManager {
         alteredSource = alteredSource.replacingOccurrences(of: "$<downloadManager>", with: "D\(securityTokenString)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "ResourceDownloadManager\(messageHandlerTokenString)", options: .literal)
         
-        return WKUserScript(source: alteredSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+        return WKUserScript(source: alteredSource,
+                            injectionTime: .atDocumentEnd,
+                            forMainFrameOnly: false,
+                            in: .defaultClient)
     }()
     
     private let WindowRenderHelperScript: WKUserScript? = {
@@ -210,7 +224,10 @@ class UserScriptManager {
         alteredSource = alteredSource.replacingOccurrences(of: "$<windowRenderer>", with: "W\(securityTokenString)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "WindowRenderHelper\(messageHandlerTokenString)", options: .literal)
         
-        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        return WKUserScript(source: alteredSource,
+                            injectionTime: .atDocumentStart,
+                            forMainFrameOnly: false,
+                            in: .defaultClient)
     }()
     
     private let FullscreenHelperScript: WKUserScript? = {
@@ -218,7 +235,11 @@ class UserScriptManager {
             log.error("Failed to load FullscreenHelper.js")
             return nil
         }
-        return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        
+        return WKUserScript(source: source,
+                            injectionTime: .atDocumentStart,
+                            forMainFrameOnly: false,
+                            in: .page)
     }()
     
     private let PlaylistSwizzlerScript: WKUserScript? = {
@@ -227,7 +248,11 @@ class UserScriptManager {
             log.error("Failed to load PlaylistSwizzler.js")
             return nil
         }
-        return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        
+        return WKUserScript(source: source,
+                            injectionTime: .atDocumentStart,
+                            forMainFrameOnly: false,
+                            in: .defaultClient)
     }()
     
     private let PlaylistHelperScript: WKUserScript? = {
@@ -269,7 +294,10 @@ class UserScriptManager {
             alteredSource = alteredSource.replacingOccurrences(of: $0.key, with: $0.value, options: .literal)
         })
         
-        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        return WKUserScript(source: alteredSource,
+                            injectionTime: .atDocumentStart,
+                            forMainFrameOnly: false,
+                            in: .page)
     }()
     
     private let MediaBackgroundingScript: WKUserScript? = {
@@ -290,7 +318,10 @@ class UserScriptManager {
             alteredSource = alteredSource.replacingOccurrences(of: $0.key, with: $0.value, options: .literal)
         })
         
-        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        return WKUserScript(source: alteredSource,
+                            injectionTime: .atDocumentStart,
+                            forMainFrameOnly: false,
+                            in: .page)
     }()
 
     private func reloadUserScripts() {

@@ -98,9 +98,9 @@ enum DomainUserScript: CaseIterable {
             alteredSource = alteredSource.replacingOccurrences(of: "$<setJS>", with: "ABSSJ\(token)",
                                                                options: .literal)
             
-            return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+            return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
         case .archive:
-            return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+            return WKUserScript(source: source, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
         case .braveSearch:
             var alteredSource = source
             
@@ -111,7 +111,7 @@ enum DomainUserScript: CaseIterable {
                                       options: .literal)
                 .replacingOccurrences(of: "$<security_token>", with: securityToken)
                 
-            return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+            return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
         case .braveTalk:
             var alteredSource = source
             
@@ -122,7 +122,7 @@ enum DomainUserScript: CaseIterable {
                                       options: .literal)
                 .replacingOccurrences(of: "$<security_token>", with: securityToken)
                 
-            return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+            return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
         }
     }
     

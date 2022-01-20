@@ -205,8 +205,13 @@ extension PlaylistHelper: UIGestureRecognizerDelegate {
             let touchPoint = gestureRecognizer.location(in: webView)
             
             let token = UserScriptManager.securityTokenString
-            let javascript = String(format: "window.__firefox__.onLongPressActivated_%@(%f, %f)", token, touchPoint.x, touchPoint.y)
-            webView.evaluateJavaScript(javascript) // swiftlint:disable:this safe_javascript
+
+            webView.evaluateSafeJavaScript(functionName: "window.__firefox__.onLongPressActivated_\(token)", args: [touchPoint.x, touchPoint.y], contentWorld: .page, asFunction: true) { _, error in
+                
+                if let error = error {
+                    log.error("Error executing onLongPressActivated: \(error)")
+                }
+            }
         }
     }
     
@@ -230,10 +235,9 @@ extension PlaylistHelper {
         }
         
         let token = UserScriptManager.securityTokenString
-        let javascript = String(format: "window.__firefox__.mediaCurrentTimeFromTag_%@('%@')", token, nodeTag)
-
-        // swiftlint:disable:next safe_javascript
-        webView.evaluateJavaScript(javascript, completionHandler: { value, error in
+        
+        webView.evaluateSafeJavaScript(functionName: "window.__firefox__.mediaCurrentTimeFromTag_\(token)", args: [nodeTag], contentWorld: .page, asFunction: true) { value, error in
+            
             if let error = error {
                 log.error("Error Retrieving Playlist Page Media Current Time: \(error)")
             }
@@ -245,7 +249,7 @@ extension PlaylistHelper {
                     completion(0.0)
                 }
             }
-        })
+        }
     }
     
     static func stopPlayback(tab: Tab?) {
@@ -254,8 +258,7 @@ extension PlaylistHelper {
         let token = UserScriptManager.securityTokenString
         let javascript = String(format: "window.__firefox__.stopMediaPlayback_%@()", token)
 
-        // swiftlint:disable:next safe_javascript
-        tab.webView?.evaluateJavaScript(javascript, completionHandler: { value, error in
+        tab.webView?.evaluateSafeJavaScript(functionName: javascript, args: [], contentWorld: .page, completion: { value, error in
             if let error = error {
                 log.error("Error Retrieving Stopping Media Playback: \(error)")
             }

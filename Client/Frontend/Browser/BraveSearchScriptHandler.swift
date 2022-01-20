@@ -116,6 +116,6 @@ class BraveSearchScriptHandler: TabContentScript {
         self.tab?.webView?.evaluateSafeJavaScript(
             functionName: functionName,
             args: args,
-            sandboxed: false)
+            contentWorld: .page)
     }
 }

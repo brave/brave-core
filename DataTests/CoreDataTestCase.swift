@@ -5,6 +5,7 @@
 import XCTest
 import CoreData
 @testable import Data
+@testable import BraveShared
 
 class CoreDataTestCase: XCTestCase {
     
@@ -15,6 +16,7 @@ class CoreDataTestCase: XCTestCase {
                                                name: NSNotification.Name.NSManagedObjectContextDidSave,
                                                object: nil)
         
+        Preferences.Database.DocumentToSupportDirectoryMigration.completed.value = true
         DataController.shared = InMemoryDataController()
     }
     

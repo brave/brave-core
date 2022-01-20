@@ -217,7 +217,7 @@ class LoginsHelper: TabContentScript {
                 return
             }
             
-            self.tab?.webView?.evaluateSafeJavaScript(functionName: "window.__firefox__.logins.inject", args: [jsonString], sandboxed: false, escapeArgs: false) { (obj, err) -> Void in
+            self.tab?.webView?.evaluateSafeJavaScript(functionName: "window.__firefox__.logins.inject", args: [jsonString], contentWorld: .defaultClient, escapeArgs: false) { (obj, err) -> Void in
                 if err != nil {
                     log.debug(err)
                 }
