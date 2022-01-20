@@ -140,14 +140,11 @@
     "description": ""
   },
   "rewardsPaymentCompleted": {
-    "message": "Congrats! Your $amount$ $month$ rewards have arrived!",
+    "message": "Congrats! Your $month$ rewards have arrived!",
     "description": "",
     "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
       "month": {
-        "content": "$2"
+        "content": "$1"
       }
     }
   },
