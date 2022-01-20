@@ -1,49 +1,66 @@
-use std::fmt::{self};
+use std::cell::RefCell;
 use tracing::{Event, Subscriber};
-use tracing_subscriber::fmt::format::{Format, Pretty};
-use tracing_subscriber::fmt::{FmtContext, FormatEvent, FormatFields};
-use tracing_subscriber::registry::LookupSpan;
+use tracing_subscriber::fmt::MakeWriter;
+use tracing_subscriber::layer::Context;
+use tracing_subscriber::prelude::*;
+use tracing_subscriber::Layer;
 
 use crate::ffi;
 
-pub struct CppFormatter(Format<Pretty, ()>);
+pub struct CxxWriter();
 
-impl CppFormatter {
-    pub fn new() -> Self {
-        CppFormatter(
+impl<S: Subscriber> Layer<S> for CxxWriter {
+    fn on_event(&self, event: &Event<'_>, _ctx: Context<'_, S>) {
+        let level = *event.metadata().level();
+        let file = event.metadata().file().unwrap_or("lib.rs");
+        let line = event.metadata().line().unwrap_or(0);
+
+        CxxWriter::BUFFER.with(|inner| {
+            ffi::shim_logMessage(
+                file,
+                line,
+                level.into(),
+                String::from_utf8_lossy(&inner.borrow()).trim_end(),
+            );
+            inner.borrow_mut().clear();
+        })
+    }
+}
+
+impl CxxWriter {
+    thread_local! {
+        static BUFFER: RefCell<Vec<u8>> = RefCell::new(Vec::new());
+    }
+}
+
+fn cxx_writer() -> CxxWriter {
+    CxxWriter()
+}
+
+impl std::io::Write for CxxWriter {
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        CxxWriter::BUFFER.with(|inner| inner.borrow_mut().write(buf))
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        Ok(())
+    }
+}
+
+pub fn init() {
+    let subscriber = tracing_subscriber::fmt()
+        .with_writer(cxx_writer)
+        .event_format(
             tracing_subscriber::fmt::format()
                 .without_time()
                 .with_ansi(false)
                 .with_level(false)
                 .pretty(),
         )
-    }
-}
+        .with_max_level(tracing::Level::TRACE)
+        .finish();
 
-impl<S, N> FormatEvent<S, N> for CppFormatter
-where
-    S: Subscriber + for<'a> LookupSpan<'a>,
-    N: for<'a> FormatFields<'a> + 'static,
-{
-    fn format_event(
-        &self,
-        ctx: &FmtContext<'_, S, N>,
-        _writer: &mut dyn fmt::Write,
-        event: &Event<'_>,
-    ) -> fmt::Result {
-        let mut buf = String::new();
-        let writer = &mut buf;
-
-        let res = self.0.format_event(ctx, writer, event);
-
-        let level = *event.metadata().level();
-        let file = event.metadata().file().unwrap_or("lib.rs");
-        let line = event.metadata().line().unwrap_or(0);
-
-        ffi::shim_logMessage(file, line, level.into(), buf.trim_end());
-
-        res
-    }
+    cxx_writer().with_subscriber(subscriber).init()
 }
 
 impl From<tracing::Level> for ffi::TracingLevel {
