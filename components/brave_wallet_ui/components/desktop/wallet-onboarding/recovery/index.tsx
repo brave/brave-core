@@ -51,7 +51,10 @@ function OnboardingBackup (props: Props) {
           </RecoveryBubble>
         )}
       </RecoveryPhraseContainer>
-      <Tooltip text={getLocale('braveWalletToolTipCopyToClipboard')}>
+      <Tooltip
+        text={getLocale('braveWalletToolTipCopyToClipboard')}
+        isVisible={!isRecoverPhraseCopied}
+      >
         <CopyButton onClick={onCopy}>
           {isRecoverPhraseCopied && <BigCheckMark />}
           {isRecoverPhraseCopied ? getLocale('braveWalletButtonCopied') : getLocale('braveWalletButtonCopy')}
