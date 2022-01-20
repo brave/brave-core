@@ -3,11 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { OpenNewIcon } from 'brave-ui/components/icons'
 import {
   Grid,
   HeaderGrid,
-  ButtonGroup,
   Box,
   Content,
   HeaderBox,
@@ -15,7 +13,6 @@ import {
   SubTitle,
   Text,
   PrivateImage,
-  DuckDuckGoImage,
   TorLockImage,
   Separator,
   FakeButton
@@ -27,7 +24,6 @@ const privateWindowImg = require('../../../img/newtab/private-window-tor.svg')
 
 interface State {
   learnMoreAboutPrivateWindowsWithTor: boolean
-  learnMoreAboutDuckDuckGo: boolean
   learnMoreAboutTorInBrave: boolean
 }
 
@@ -51,27 +47,6 @@ export default class TorTab extends React.PureComponent<{}, State> {
             </div>
           </HeaderGrid>
         </HeaderBox>
-        <Box style={{ minHeight: '471px' }}>
-          <Content>
-            <DuckDuckGoImage />
-            <SubTitle>{locale.boxDdgLabel}</SubTitle>
-            <Title>{locale.boxDdgTitle}</Title>
-            <Text>{locale.boxDdgText2}</Text>
-          </Content>
-          <Separator />
-          <ButtonGroup>
-            <FakeButton settings={true} href='https://support.brave.com/hc/en-us/articles/360018266171' target='_blank'>
-              <span>{locale.learnMore}</span>
-              <OpenNewIcon />
-            </FakeButton>
-            {/* <Link
-              href='https://support.brave.com/hc/en-us/articles/360018266171'
-              target='_blank'
-            >
-              {locale.learnMore}
-            </Link> */}
-          </ButtonGroup>
-        </Box>
         <Box>
           <Content>
             <TorLockImage />

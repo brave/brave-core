@@ -8,7 +8,6 @@ import * as React from 'react'
 import {
   Grid,
   HeaderGrid,
-  ButtonGroup,
   Box,
   Content,
   HeaderBox,
@@ -16,7 +15,6 @@ import {
   SubTitle,
   Text,
   PrivateImage,
-  DuckDuckGoImage,
   TorLockImage,
   Separator,
   FakeButton,
@@ -80,23 +78,6 @@ export default class TorTab extends React.PureComponent<Props, {}> {
             </div>
           </HeaderGrid>
         </HeaderBox>
-        <Box style={{ minHeight: '471px' }}>
-          <Content>
-            <DuckDuckGoImage />
-            <SubTitle>{getLocale('boxDdgLabel')}</SubTitle>
-            <Title>{getLocale('boxDdgTitle')}</Title>
-            <Text>{getLocale('boxDdgText2')}</Text>
-          </Content>
-          <Separator />
-          <ButtonGroup>
-            <Link
-              href='https://support.brave.com/hc/en-us/articles/360018266171'
-              target='_blank'
-            >
-              {getLocale('learnMore')}
-            </Link>
-          </ButtonGroup>
-        </Box>
         <Box>
           <Content>
             <TorLockImage />

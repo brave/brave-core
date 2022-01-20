@@ -18,9 +18,9 @@ TorWindowSearchEngineProviderService(Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
   DCHECK(otr_profile->IsTor());
 
-  auto provider_data = GetInitialSearchEngineProvider(otr_profile->GetPrefs());
-  alternative_search_engine_url_for_tor_ =
-      std::make_unique<TemplateURL>(*provider_data);
+  auto provider_data = TemplateURLDataFromPrepopulatedEngine(
+      TemplateURLPrepopulateData::brave_search);
+  default_template_url_for_tor_ = std::make_unique<TemplateURL>(*provider_data);
 
   ConfigureSearchEngineProvider();
 
@@ -44,25 +44,10 @@ void TorWindowSearchEngineProviderService::ConfigureSearchEngineProvider() {
     UseExtensionSearchProvider();
   } else {
     otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
-        alternative_search_engine_url_for_tor_.get());
+        default_template_url_for_tor_.get());
   }
 }
 
 void TorWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   ConfigureSearchEngineProvider();
-}
-
-std::unique_ptr<TemplateURLData>
-TorWindowSearchEngineProviderService::GetInitialSearchEngineProvider(
-    PrefService* prefs) const {
-  std::unique_ptr<TemplateURLData> provider_data =
-      TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-          otr_profile_->GetPrefs());
-  if (provider_data->prepopulate_id ==
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT) {
-    return provider_data;
-  }
-
-  return TemplateURLDataFromPrepopulatedEngine(
-      TemplateURLPrepopulateData::duckduckgo);
 }
