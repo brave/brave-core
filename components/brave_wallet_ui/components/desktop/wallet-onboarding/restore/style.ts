@@ -1,5 +1,9 @@
 import styled from 'styled-components'
 
+interface StyleProps {
+  textAlign?: 'left' | 'right' | 'center' | 'justify'
+}
+
 export const StyledWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -18,7 +22,7 @@ export const Title = styled.span`
   margin-bottom: 8px;
 `
 
-export const Description = styled.span`
+export const Description = styled.span<StyleProps>`
   display: flex;
   align-items: center;
   font-family: Poppins;
@@ -26,7 +30,7 @@ export const Description = styled.span`
   font-weight: 300;
   color: ${(p) => p.theme.color.text02};
   max-width: 520px;
-  text-align: center;
+  text-align: ${(p) => p.textAlign ? p.textAlign : 'center'};
   margin-bottom: 25px;
 `
 

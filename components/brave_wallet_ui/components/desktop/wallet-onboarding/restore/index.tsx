@@ -150,6 +150,7 @@ function OnboardingRestore (props: Props) {
             </Checkbox>
           </CheckboxRow>
           <FormText>{getLocale('braveWalletRestoreFormText')}</FormText>
+          <Description textAlign='left'>{getLocale('braveWalletCreatePasswordDescription')}</Description>
           <InputColumn>
             <PasswordInput
               placeholder={getLocale('braveWalletCreatePasswordInput')}

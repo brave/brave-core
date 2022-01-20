@@ -118,7 +118,7 @@ provideStrings({
   braveWalletCreatePasswordDescription: 'Passwords must be at least 7 characters, and contain at least one number and one special character.',
   braveWalletCreatePasswordInput: 'Password',
   braveWalletConfirmPasswordInput: 'Confirm password',
-  braveWalletCreatePasswordError: 'Passwords must be at least 7 characters, and contain at least one number and one special character.',
+  braveWalletCreatePasswordError: 'Password criteria doesn\'t match.',
   braveWalletConfirmPasswordError: 'Passwords do not match',
 
   // Lock Screen
