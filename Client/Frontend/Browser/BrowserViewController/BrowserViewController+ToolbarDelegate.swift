@@ -33,8 +33,12 @@ extension BrowserViewController: TopToolbarDelegate {
         let tabTrayController = TabTrayController(tabManager: tabManager).then {
             $0.delegate = self
         }
-        
-        present(SettingsNavigationController(rootViewController: tabTrayController), animated: true)
+        let container = SettingsNavigationController(rootViewController: tabTrayController)
+        if !UIAccessibility.isReduceMotionEnabled {
+            container.transitioningDelegate = tabTrayController
+            container.modalPresentationStyle = .fullScreen
+        }
+        present(container, animated: true)
     }
     
     func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {

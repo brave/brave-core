@@ -29,7 +29,8 @@ extension TabTrayController: UIViewControllerTransitioningDelegate {
 extension TabTrayController: BasicAnimationControllerDelegate {
     func animatePresentation(context: UIViewControllerContextTransitioning) {
         guard let containerController = context.viewController(forKey: .from) as? UINavigationController,
-              let bvc = containerController.topViewController as? BrowserViewController
+              let bvc = containerController.topViewController as? BrowserViewController,
+              let destinationController = context.viewController(forKey: .to)
         else {
             log.error("""
                 Attempted to present the tab tray on something that is not a BrowserViewController which is
@@ -45,7 +46,7 @@ extension TabTrayController: BasicAnimationControllerDelegate {
             return
         }
         
-        let finalFrame = context.finalFrame(for: self)
+        let finalFrame = context.finalFrame(for: destinationController)
         
         // Tab snapshot animates from web view container on BVC to the cell frame
         let tabSnapshot = UIImageView(image: selectedTab.screenshot ?? .init())
@@ -64,14 +65,14 @@ extension TabTrayController: BasicAnimationControllerDelegate {
         backgroundView.backgroundColor = .init(white: 0.0, alpha: 0.3)
         backgroundView.frame = finalFrame
         
-        context.containerView.addSubview(view)
+        context.containerView.addSubview(destinationController.view)
         context.containerView.addSubview(backgroundView)
         context.containerView.addSubview(bvcSnapshot)
         context.containerView.addSubview(tabSnapshot)
         
-        view.frame = finalFrame
-        view.setNeedsLayout()
-        view.layoutIfNeeded()
+        destinationController.view.frame = finalFrame
+        destinationController.view.setNeedsLayout()
+        destinationController.view.layoutIfNeeded()
         
         let cv = tabTrayView.collectionView
         cv.reloadData()
