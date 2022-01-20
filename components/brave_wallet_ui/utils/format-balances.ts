@@ -25,7 +25,7 @@ export const formatInputValue = (value: string, decimals: number, round = true) 
   return formattedValue.replace(/\.0*$|(\.\d*[1-9])0+$/, '$1')
 }
 
-export const formatBalance = (balance: string, decimals: number) => {
+export const formatBalance = (balance: string, decimals: number, round: boolean = true) => {
   if (!balance) {
     return ''
   }
@@ -36,7 +36,13 @@ export const formatBalance = (balance: string, decimals: number) => {
   }
 
   const result = new BigNumber(balance).dividedBy(10 ** decimals)
-  return (result.isNaN()) ? '0.0000' : result.toFixed(4, BigNumber.ROUND_UP)
+  if (result.isNaN()) {
+    return '0.0000'
+  }
+
+  return round
+    ? result.toFixed(4, BigNumber.ROUND_UP)
+    : result.toFormat()
 }
 
 export const formatGasFee = (gasPrice: string, gasLimit: string, decimals: number) => {

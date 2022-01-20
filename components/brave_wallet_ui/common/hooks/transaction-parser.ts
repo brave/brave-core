@@ -56,6 +56,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   fiatTotal: string
   nativeCurrencyTotal: string
   value: string
+  valueExact: string
   symbol: string
   decimals: number
   insufficientFundsError: boolean
@@ -193,6 +194,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           nativeCurrencyTotal: sendAmountFiat && formatGasFeeFromFiat(sendAmountFiat, networkSpotPrice),
           value: formatBalance(amount, token?.decimals ?? 18),
+          valueExact: formatBalance(amount, token?.decimals ?? 18, false),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           insufficientFundsError: insufficientNativeFunds || insufficientTokenFunds,
@@ -230,6 +232,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           nativeCurrencyTotal: totalAmountFiat && formatGasFeeFromFiat(totalAmountFiat, networkSpotPrice),
           value: '1', // Can only send 1 erc721 at a time
+          valueExact: '1',
           symbol: token?.symbol ?? '',
           decimals: 0,
           insufficientFundsError: insufficientNativeFunds,
@@ -252,6 +255,10 @@ export function useTransactionParser (
           ? getLocale('braveWalletTransactionApproveUnlimited')
           : formatBalance(amount, token?.decimals ?? 18)
 
+        const formattedAllowanceValueExact = isNumericValueGreaterThan(amount, accountTokenBalance)
+          ? getLocale('braveWalletTransactionApproveUnlimited')
+          : formatBalance(amount, token?.decimals ?? 18, false)
+
         return {
           hash: transactionInfo.txHash,
           nonce,
@@ -265,6 +272,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           nativeCurrencyTotal: (0).toFixed(2),
           value: formattedAllowanceValue,
+          valueExact: formattedAllowanceValueExact,
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           approvalTarget: address,
@@ -299,6 +307,7 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           nativeCurrencyTotal: sendAmountFiat && formatGasFeeFromFiat(sendAmountFiat, networkSpotPrice),
           value: formatBalance(value, selectedNetwork.decimals),
+          valueExact: formatBalance(value, selectedNetwork.decimals, false),
           symbol: selectedNetwork.symbol,
           decimals: selectedNetwork?.decimals ?? 18,
           insufficientFundsError: isNumericValueGreaterThan(addNumericValues(gasFee, value), accountNativeBalance),
