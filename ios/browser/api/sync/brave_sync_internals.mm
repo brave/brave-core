@@ -102,7 +102,7 @@ WKWebView* EnsureWebViewCreatedWithConfiguration(
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  [self loadURL:[NSString stringWithFormat:@"%s/%s", kChromeUIScheme,
+  [self loadURL:[NSString stringWithFormat:@"%s://%s", kChromeUIScheme,
                                            kChromeUISyncInternalsHost]];
 }
 
