@@ -269,7 +269,7 @@
     "@storybook/addon-knobs": "6.4.0",
     "@storybook/addons": "6.4.13",
     "@storybook/react": "6.4.13",
-    "@testing-library/react-hooks": "^7.0.2",
+    "@testing-library/react-hooks": "7.0.2",
     "@types/array-move": "2.0.0",
     "@types/bluebird": "3.5.36",
     "@types/chrome": "0.0.147",
