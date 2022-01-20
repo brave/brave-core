@@ -109,20 +109,12 @@
 		0AADC4D220D2A6A200FDE368 /* FavoritesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4CE20D2A6A200FDE368 /* FavoritesHelper.swift */; };
 		0AADC4D520D2A6A200FDE368 /* PreloadedFavorites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */; };
 		0AB22A88257EADA900126ADC /* dylan-malval_sea.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A79257EAD9100126ADC /* dylan-malval_sea.jpg */; };
-		0AB22A89257EADA900126ADC /* dylan-malval_alps.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7A257EAD9300126ADC /* dylan-malval_alps.jpg */; };
-		0AB22A8A257EADA900126ADC /* corwin-prescott_olympic.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7B257EAD9500126ADC /* corwin-prescott_olympic.jpg */; };
-		0AB22A8B257EADA900126ADC /* zane-lee.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7C257EAD9700126ADC /* zane-lee.jpg */; };
-		0AB22A8C257EADA900126ADC /* andre-benz.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7D257EAD9800126ADC /* andre-benz.jpg */; };
-		0AB22A8D257EADA900126ADC /* alex-plesovskich.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7E257EAD9A00126ADC /* alex-plesovskich.jpg */; };
-		0AB22A8E257EADA900126ADC /* spencer-moore_lake.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A7F257EAD9C00126ADC /* spencer-moore_lake.jpg */; };
-		0AB22A8F257EADA900126ADC /* su-san-lee.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A80257EAD9E00126ADC /* su-san-lee.jpg */; };
 		0AB22A90257EADA900126ADC /* corwin-prescott_crestone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A81257EAD9F00126ADC /* corwin-prescott_crestone.jpg */; };
 		0AB22A91257EADA900126ADC /* spencer-moore_fern.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A82257EADA100126ADC /* spencer-moore_fern.jpg */; };
 		0AB22A92257EADA900126ADC /* spencer-moore_desert.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A83257EADA200126ADC /* spencer-moore_desert.jpg */; };
 		0AB22A93257EADA900126ADC /* corwin-prescott_canyon.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A84257EADA400126ADC /* corwin-prescott_canyon.jpg */; };
 		0AB22A94257EADA900126ADC /* spencer-moore_ocean.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A85257EADA500126ADC /* spencer-moore_ocean.jpg */; };
 		0AB22A95257EADA900126ADC /* corwin-prescott_beach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A86257EADA600126ADC /* corwin-prescott_beach.jpg */; };
-		0AB22A96257EADA900126ADC /* sora-sagano.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0AB22A87257EADA900126ADC /* sora-sagano.jpg */; };
 		0AB2442C22AA789B00B4D9DD /* ReaderModeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB2442B22AA789B00B4D9DD /* ReaderModeButton.swift */; };
 		0AB6E25724C5EE290060B052 /* NSLogDisabler.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AB6E25624C5EE290060B052 /* NSLogDisabler.h */; };
 		0AB7FCDC235DED0B00F1D9F5 /* NumberExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB7FCDB235DED0B00F1D9F5 /* NumberExtensions.swift */; };
@@ -774,6 +766,14 @@
 		445ABC962731DDFF0089710D /* NewYorkMedium-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 445ABC922731DDFF0089710D /* NewYorkMedium-Bold.otf */; };
 		445ABC972731DDFF0089710D /* NewYorkMedium-RegularItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 445ABC932731DDFF0089710D /* NewYorkMedium-RegularItalic.otf */; };
 		445ABC982731DDFF0089710D /* NewYorkMedium-BoldItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 445ABC942731DDFF0089710D /* NewYorkMedium-BoldItalic.otf */; };
+		445CA12527997F770040F5C4 /* caline_beulin.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 445CA11327997F760040F5C4 /* caline_beulin.jpg */; };
+		445CA12627997F770040F5C4 /* joshn_larson_desert.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 445CA11E27997F760040F5C4 /* joshn_larson_desert.jpg */; };
+		445CA12727997F770040F5C4 /* geran_de_klerk_forest.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 445CA11F27997F760040F5C4 /* geran_de_klerk_forest.jpg */; };
+		445CA12827997F770040F5C4 /* curt_stump_nature.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 445CA12027997F760040F5C4 /* curt_stump_nature.jpg */; };
+		445CA12A27997F770040F5C4 /* boris_baldinger.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 445CA12227997F760040F5C4 /* boris_baldinger.jpg */; };
+		445CA12B27997F770040F5C4 /* david_malenfant_mountains.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 445CA12327997F770040F5C4 /* david_malenfant_mountains.jpg */; };
+		445CA12C27997F770040F5C4 /* alain_franchette_ocean.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 445CA12427997F770040F5C4 /* alain_franchette_ocean.jpg */; };
+		445CA12E279986900040F5C4 /* priyanuch_konkaew.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 445CA12D279986900040F5C4 /* priyanuch_konkaew.jpg */; };
 		4481F22D26CBD1C600658EAC /* AmazonRootCA3.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */; };
 		4481F22E26CBD1C600658EAC /* AmazonRootCA4.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */; };
 		4481F22F26CBD1C600658EAC /* AmazonRootCA2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22B26CBD1C600658EAC /* AmazonRootCA2.cer */; };
@@ -1754,20 +1754,12 @@
 		0AADC4CE20D2A6A200FDE368 /* FavoritesHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesHelper.swift; sourceTree = "<group>"; };
 		0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreloadedFavorites.swift; sourceTree = "<group>"; };
 		0AB22A79257EAD9100126ADC /* dylan-malval_sea.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "dylan-malval_sea.jpg"; sourceTree = "<group>"; };
-		0AB22A7A257EAD9300126ADC /* dylan-malval_alps.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "dylan-malval_alps.jpg"; sourceTree = "<group>"; };
-		0AB22A7B257EAD9500126ADC /* corwin-prescott_olympic.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "corwin-prescott_olympic.jpg"; sourceTree = "<group>"; };
-		0AB22A7C257EAD9700126ADC /* zane-lee.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "zane-lee.jpg"; sourceTree = "<group>"; };
-		0AB22A7D257EAD9800126ADC /* andre-benz.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "andre-benz.jpg"; sourceTree = "<group>"; };
-		0AB22A7E257EAD9A00126ADC /* alex-plesovskich.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "alex-plesovskich.jpg"; sourceTree = "<group>"; };
-		0AB22A7F257EAD9C00126ADC /* spencer-moore_lake.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "spencer-moore_lake.jpg"; sourceTree = "<group>"; };
-		0AB22A80257EAD9E00126ADC /* su-san-lee.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "su-san-lee.jpg"; sourceTree = "<group>"; };
 		0AB22A81257EAD9F00126ADC /* corwin-prescott_crestone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "corwin-prescott_crestone.jpg"; sourceTree = "<group>"; };
 		0AB22A82257EADA100126ADC /* spencer-moore_fern.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "spencer-moore_fern.jpg"; sourceTree = "<group>"; };
 		0AB22A83257EADA200126ADC /* spencer-moore_desert.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "spencer-moore_desert.jpg"; sourceTree = "<group>"; };
 		0AB22A84257EADA400126ADC /* corwin-prescott_canyon.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "corwin-prescott_canyon.jpg"; sourceTree = "<group>"; };
 		0AB22A85257EADA500126ADC /* spencer-moore_ocean.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "spencer-moore_ocean.jpg"; sourceTree = "<group>"; };
 		0AB22A86257EADA600126ADC /* corwin-prescott_beach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "corwin-prescott_beach.jpg"; sourceTree = "<group>"; };
-		0AB22A87257EADA900126ADC /* sora-sagano.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "sora-sagano.jpg"; sourceTree = "<group>"; };
 		0AB2442B22AA789B00B4D9DD /* ReaderModeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderModeButton.swift; sourceTree = "<group>"; };
 		0AB6E25624C5EE290060B052 /* NSLogDisabler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSLogDisabler.h; sourceTree = "<group>"; };
 		0AB7FCDB235DED0B00F1D9F5 /* NumberExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberExtensions.swift; sourceTree = "<group>"; };
@@ -2532,6 +2524,14 @@
 		445ABC922731DDFF0089710D /* NewYorkMedium-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-Bold.otf"; sourceTree = "<group>"; };
 		445ABC932731DDFF0089710D /* NewYorkMedium-RegularItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-RegularItalic.otf"; sourceTree = "<group>"; };
 		445ABC942731DDFF0089710D /* NewYorkMedium-BoldItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NewYorkMedium-BoldItalic.otf"; sourceTree = "<group>"; };
+		445CA11327997F760040F5C4 /* caline_beulin.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = caline_beulin.jpg; sourceTree = "<group>"; };
+		445CA11E27997F760040F5C4 /* joshn_larson_desert.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = joshn_larson_desert.jpg; sourceTree = "<group>"; };
+		445CA11F27997F760040F5C4 /* geran_de_klerk_forest.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = geran_de_klerk_forest.jpg; sourceTree = "<group>"; };
+		445CA12027997F760040F5C4 /* curt_stump_nature.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = curt_stump_nature.jpg; sourceTree = "<group>"; };
+		445CA12227997F760040F5C4 /* boris_baldinger.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = boris_baldinger.jpg; sourceTree = "<group>"; };
+		445CA12327997F770040F5C4 /* david_malenfant_mountains.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = david_malenfant_mountains.jpg; sourceTree = "<group>"; };
+		445CA12427997F770040F5C4 /* alain_franchette_ocean.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = alain_franchette_ocean.jpg; sourceTree = "<group>"; };
+		445CA12D279986900040F5C4 /* priyanuch_konkaew.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = priyanuch_konkaew.jpg; sourceTree = "<group>"; };
 		4481F22926CBD1C400658EAC /* AmazonRootCA3.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA3.cer; sourceTree = "<group>"; };
 		4481F22A26CBD1C500658EAC /* AmazonRootCA4.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA4.cer; sourceTree = "<group>"; };
 		4481F22B26CBD1C600658EAC /* AmazonRootCA2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = AmazonRootCA2.cer; sourceTree = "<group>"; };
@@ -5438,21 +5438,21 @@
 		5DB474CE237F4BE9007B7652 /* NTP_Images */ = {
 			isa = PBXGroup;
 			children = (
-				0AB22A7E257EAD9A00126ADC /* alex-plesovskich.jpg */,
-				0AB22A7D257EAD9800126ADC /* andre-benz.jpg */,
+				445CA12427997F770040F5C4 /* alain_franchette_ocean.jpg */,
+				445CA12227997F760040F5C4 /* boris_baldinger.jpg */,
+				445CA11327997F760040F5C4 /* caline_beulin.jpg */,
+				445CA12027997F760040F5C4 /* curt_stump_nature.jpg */,
+				445CA12327997F770040F5C4 /* david_malenfant_mountains.jpg */,
+				445CA11F27997F760040F5C4 /* geran_de_klerk_forest.jpg */,
+				445CA12D279986900040F5C4 /* priyanuch_konkaew.jpg */,
+				445CA11E27997F760040F5C4 /* joshn_larson_desert.jpg */,
 				0AB22A86257EADA600126ADC /* corwin-prescott_beach.jpg */,
 				0AB22A84257EADA400126ADC /* corwin-prescott_canyon.jpg */,
 				0AB22A81257EAD9F00126ADC /* corwin-prescott_crestone.jpg */,
-				0AB22A7B257EAD9500126ADC /* corwin-prescott_olympic.jpg */,
-				0AB22A7A257EAD9300126ADC /* dylan-malval_alps.jpg */,
 				0AB22A79257EAD9100126ADC /* dylan-malval_sea.jpg */,
-				0AB22A87257EADA900126ADC /* sora-sagano.jpg */,
 				0AB22A83257EADA200126ADC /* spencer-moore_desert.jpg */,
 				0AB22A82257EADA100126ADC /* spencer-moore_fern.jpg */,
-				0AB22A7F257EAD9C00126ADC /* spencer-moore_lake.jpg */,
 				0AB22A85257EADA500126ADC /* spencer-moore_ocean.jpg */,
-				0AB22A80257EAD9E00126ADC /* su-san-lee.jpg */,
-				0AB22A7C257EAD9700126ADC /* zane-lee.jpg */,
 			);
 			path = NTP_Images;
 			sourceTree = "<group>";
@@ -7536,6 +7536,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F979BE2F25BCC54E009B6ACF /* AllFramesAtDocumentStart.js in Resources */,
+				445CA12C27997F770040F5C4 /* alain_franchette_ocean.jpg in Resources */,
+				445CA12E279986900040F5C4 /* priyanuch_konkaew.jpg in Resources */,
 				CA2202A227192A9B002D3582 /* NetworkError.css in Resources */,
 				4481F22F26CBD1C600658EAC /* AmazonRootCA2.cer in Resources */,
 				F979BE3025BCC54E009B6ACF /* AllFramesAtDocumentEnd.js in Resources */,
@@ -7545,6 +7547,7 @@
 				4481F24026CBD3DC00658EAC /* ISRGRootCA_X2.cer in Resources */,
 				CA2202A427192CB2002D3582 /* CertificateError.html in Resources */,
 				CA550490269DED8F00C19917 /* MediaBackgrounding.js in Resources */,
+				445CA12827997F770040F5C4 /* curt_stump_nature.jpg in Resources */,
 				CA220297271928F3002D3582 /* Globe.svg in Resources */,
 				59871C1921E4D83900316590 /* block-cookies.json in Resources */,
 				0AB22A90257EADA900126ADC /* corwin-prescott_crestone.jpg in Resources */,
@@ -7557,10 +7560,9 @@
 				F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */,
 				2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */,
 				0AB22A94257EADA900126ADC /* spencer-moore_ocean.jpg in Resources */,
+				445CA12627997F770040F5C4 /* joshn_larson_desert.jpg in Resources */,
 				0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */,
-				0AB22A8A257EADA900126ADC /* corwin-prescott_olympic.jpg in Resources */,
 				CA2202B4271993BD002D3582 /* CertificateError.css in Resources */,
-				0AB22A8F257EADA900126ADC /* su-san-lee.jpg in Resources */,
 				0AE50854261C63D70099C6A3 /* BraveSearchHelper.js in Resources */,
 				445ABC972731DDFF0089710D /* NewYorkMedium-RegularItalic.otf in Resources */,
 				5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */,
@@ -7579,14 +7581,13 @@
 				4481F24326CBD42C00658EAC /* GlobalSignRootCA_R3.cer in Resources */,
 				449AC16F26D9008D00A53F33 /* BraveTalkHelper.js in Resources */,
 				4422D55921BFFB7F00BF1855 /* unicode.py in Resources */,
+				445CA12727997F770040F5C4 /* geran_de_klerk_forest.jpg in Resources */,
 				CA9C9AEC27455D5400D018EF /* Carret.png in Resources */,
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
 				E69922171B94E3EF007C480D /* Licenses.html in Resources */,
 				E4CD9F5B1A71506C00318571 /* Reader.css in Resources */,
 				5EC2C0E525C0B321005EA984 /* PlaylistDetector.js in Resources */,
 				CA2EE0A527349E970089C75F /* disconnect-entitylist.json in Resources */,
-				0AB22A96257EADA900126ADC /* sora-sagano.jpg in Resources */,
-				0AB22A89257EADA900126ADC /* dylan-malval_alps.jpg in Resources */,
 				445ABC982731DDFF0089710D /* NewYorkMedium-BoldItalic.otf in Resources */,
 				CA22029E27192964002D3582 /* InterstitialStyles.css in Resources */,
 				0AB22A92257EADA900126ADC /* spencer-moore_desert.jpg in Resources */,
@@ -7597,10 +7598,10 @@
 				CA2202B227199123002D3582 /* DarkWarning.svg in Resources */,
 				F9488EB32589899800A72C84 /* RewardsReporting.js in Resources */,
 				39F4C0FA2045D87400746155 /* FocusHelper.js in Resources */,
+				445CA12B27997F770040F5C4 /* david_malenfant_mountains.jpg in Resources */,
 				E4B7B7861A793CF20022C5E0 /* FiraSans-UltraLight.ttf in Resources */,
 				4481F23F26CBD3DC00658EAC /* ISRGRootCA_X1.cer in Resources */,
 				4481F22D26CBD1C600658EAC /* AmazonRootCA3.cer in Resources */,
-				0AB22A8D257EADA900126ADC /* alex-plesovskich.jpg in Resources */,
 				E4B7B77D1A793CF20022C5E0 /* FiraSans-Regular.ttf in Resources */,
 				4481F23A26CBD30900658EAC /* AmazonRootCA1.cer in Resources */,
 				4481F23626CBD27B00658EAC /* GlobalSignRootCA_E46.cer in Resources */,
@@ -7608,7 +7609,6 @@
 				5E4E078324A0E4D700B01720 /* YoutubeAdblock.js in Resources */,
 				445ABC962731DDFF0089710D /* NewYorkMedium-Bold.otf in Resources */,
 				E4B7B7791A793CF20022C5E0 /* FiraSans-Light.ttf in Resources */,
-				0AB22A8B257EADA900126ADC /* zane-lee.jpg in Resources */,
 				5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */,
 				4481F23826CBD27B00658EAC /* GlobalSignRootCA_R6.cer in Resources */,
 				59D4161B232681080087A6E1 /* Localizable.strings in Resources */,
@@ -7633,20 +7633,20 @@
 				CA220291271928A2002D3582 /* NetworkError.html in Resources */,
 				E4B7B7781A793CF20022C5E0 /* FiraSans-Italic.ttf in Resources */,
 				0AB22A91257EADA900126ADC /* spencer-moore_fern.jpg in Resources */,
+				445CA12A27997F770040F5C4 /* boris_baldinger.jpg in Resources */,
 				5EC1DDBD2356888000CA4028 /* onboarding-rewards.json in Resources */,
 				5DE5250E218CE92C000DFAA6 /* block-images.json in Resources */,
 				CA22028D2719283F002D3582 /* GenericError.html in Resources */,
 				E4A961381AC06FA50069AD6F /* ReaderViewLoading.html in Resources */,
 				4481F23026CBD1C600658EAC /* SFSRootCAG2.cer in Resources */,
 				4481F22E26CBD1C600658EAC /* AmazonRootCA4.cer in Resources */,
-				0AB22A8E257EADA900126ADC /* spencer-moore_lake.jpg in Resources */,
+				445CA12527997F770040F5C4 /* caline_beulin.jpg in Resources */,
 				59C8119922D754D4005D5BBC /* BraveShared.strings in Resources */,
 				F9E0F3B4257878C1003A6A30 /* PrintHandler.js in Resources */,
 				5E824A96260BCE0D00127F36 /* MainFrameAtDocumentStart.js in Resources */,
 				4481F23526CBD27B00658EAC /* GlobalSignRootCA_R5.cer in Resources */,
 				F9E0F38B25772E57003A6A30 /* ReaderMode.js in Resources */,
 				E4ECCDAE1AB131770005E717 /* FiraSans-Medium.ttf in Resources */,
-				0AB22A8C257EADA900126ADC /* andre-benz.jpg in Resources */,
 				F9B23EE223F61173000EB3D8 /* PaymentRequest.js in Resources */,
 				E4424B3C1AC71FB400F44C38 /* FiraSans-Book.ttf in Resources */,
 				2F676FAD260BA4860048A1DB /* blocking-summary.json in Resources */,
