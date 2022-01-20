@@ -35,6 +35,18 @@ function BuySendSwapLayout (props: Props) {
     selectedNetwork
   } = props
 
+  const getTooltipLocaleKey = (optionId: string): string => {
+    if (optionId === 'buy') {
+      return 'braveWalletBuyNotSupportedTooltip'
+    }
+
+    if (optionId === 'swap') {
+      return 'braveWalletSwapNotSupportedTooltip'
+    }
+
+    return ''
+  }
+
   return (
     <StyledWrapper>
       <ButtonRow>
@@ -42,7 +54,7 @@ function BuySendSwapLayout (props: Props) {
           <Tooltip
             isDisabled={isBuyDisabled && option.id === 'buy' || isSwapDisabled && option.id === 'swap'}
             key={option.id}
-            text={getLocale('braveWalletBssToolTip').replace('$1', reduceNetworkDisplayName(selectedNetwork.chainName))}
+            text={getLocale(getTooltipLocaleKey(option.id)).replace('$1', reduceNetworkDisplayName(selectedNetwork.chainName))}
           >
             <TabButton
               isSelected={selectedTab === option.id}
