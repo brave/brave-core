@@ -25,7 +25,6 @@
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
     "lint": "node ./build/commands/scripts/commands.js lint",
     "format": "node ./build/commands/scripts/commands.js format",
-    "preinstall": "npx --yes -- npm-force-resolutions@0.0.10",
     "test": "node ./build/commands/scripts/commands.js test",
     "test:scripts": "jest build/commands/lib build/commands/scripts",
     "test-security": "npm run check_security && npm run audit_deps && npm run network-audit",
@@ -263,17 +262,13 @@
       }
     }
   },
-  "resolutions": {
-    "immer": "9.0.6",
-    "set-value": "4.1.0"
-  },
   "devDependencies": {
     "@babel/core": "7.16.0",
     "@dump247/storybook-state": "1.6.1",
-    "@storybook/addon-essentials": "6.3.12",
-    "@storybook/addon-knobs": "6.3.1",
-    "@storybook/addons": "6.3.12",
-    "@storybook/react": "6.3.12",
+    "@storybook/addon-essentials": "6.4.13",
+    "@storybook/addon-knobs": "6.4.0",
+    "@storybook/addons": "6.4.13",
+    "@storybook/react": "6.4.13",
     "@testing-library/react-hooks": "^7.0.2",
     "@types/array-move": "2.0.0",
     "@types/bluebird": "3.5.36",
