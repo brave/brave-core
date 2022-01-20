@@ -257,7 +257,7 @@
         "dir": "src",
         "tag": "98.0.4758.55",
         "repository": {
-          "url": "https://chromium.googlesource.com/chromium/src.git"
+          "url": "https://github.com/chromium/chromium"
         }
       }
     }
