@@ -29,7 +29,7 @@ export interface Props {
 
 function OnboardingVerify (props: Props) {
   const { onSubmit, shuffledPhrase, selectWord, unSelectWord, sortedPhrase, hasVerifyError, recoveryPhrase } = props
-  console.log(shuffledPhrase, recoveryPhrase)
+
   const addWord = (word: RecoveryObject) => () => {
     selectWord(word)
   }
