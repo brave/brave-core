@@ -1,19 +1,19 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/de_amp/browser/de_amp_service.h"
 
+#include <string>
+
 #include "base/feature_list.h"
-#include "brave/components/de_amp/browser/de_amp_pref_names.h"
 #include "base/no_destructor.h"
-#include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/browser/de_amp_pref_names.h"
+#include "brave/components/de_amp/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/re2/src/re2/re2.h"
-
 
 namespace de_amp {
 
@@ -24,7 +24,7 @@ static const char kDetectAmpPattern[] = "(?:<.*html\\s.*(amp|⚡)\\s.*>)";
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
 static const char kFindCanonicalLinkPattern[] =
     "<.*link\\s.*rel=\"canonical\"\\s.*href=\"(.*?)\"";
-    
+
 DeAmpService::DeAmpService(PrefService* prefs) : prefs_(prefs) {}
 
 DeAmpService::~DeAmpService() {}
@@ -57,7 +57,8 @@ bool DeAmpService::CheckCanonicalLink(GURL canonical_link) {
 }
 
 // If AMP page, find canonical link
-bool DeAmpService::FindCanonicalLinkIfAMP(std::string body, std::string* canonical_link) {
+bool DeAmpService::FindCanonicalLinkIfAMP(std::string body,
+                                          std::string* canonical_link) {
   RE2::Options opt;
   opt.set_case_sensitive(false);
   static const base::NoDestructor<re2::RE2> kDetectAmpRegex(kDetectAmpPattern,

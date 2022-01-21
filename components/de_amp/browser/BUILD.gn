@@ -17,6 +17,7 @@ source_set("browser") {
     "//brave/components/de_amp/common",
     "//brave/extensions:common",
     "//components/content_settings/core/browser",
+    "//components/prefs:prefs",
     "//content/public/browser",
     "//content/public/common",
     "//services/network/public/cpp",

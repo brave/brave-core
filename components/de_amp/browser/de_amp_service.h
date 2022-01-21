@@ -1,12 +1,13 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_DE_AMP_DE_AMP_SERVICE_H_
-#define BRAVE_COMPONENTS_DE_AMP_DE_AMP_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_DE_AMP_BROWSER_DE_AMP_SERVICE_H_
+#define BRAVE_COMPONENTS_DE_AMP_BROWSER_DE_AMP_SERVICE_H_
 
 #include <memory>
+#include <string>
 
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
@@ -38,4 +39,4 @@ class DeAmpService : public KeyedService {
 
 }  // namespace de_amp
 
-#endif  // BRAVE_COMPONENTS_DE_AMP_DE_AMP_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_DE_AMP_BROWSER_DE_AMP_SERVICE_H_
