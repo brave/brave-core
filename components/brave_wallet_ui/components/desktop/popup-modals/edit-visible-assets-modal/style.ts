@@ -1,6 +1,10 @@
 import styled from 'styled-components'
-import { LoaderIcon } from 'brave-ui/components/icons'
+import { LoaderIcon, CaratStrongDownIcon } from 'brave-ui/components/icons'
 import { WalletButton } from '../../../shared/style'
+
+interface StyleProps {
+  rotated: boolean
+}
 
 export const StyledWrapper = styled.div`
   display: flex;
@@ -162,4 +166,50 @@ export const ErrorText = styled.span`
   line-height: 18px;
   color: ${(p) => p.theme.color.errorText};
   margin-bottom: 10px;
+`
+
+export const DividerRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+`
+
+export const SubDivider = styled.div`
+  width: 100%;
+  height: 2px;
+  background-color: ${(p) => p.theme.color.divider01};
+  margin-bottom: 12px;
+`
+
+export const DividerText = styled.span`
+  font-family: Poppins;
+  font-size: 15px;
+  line-height: 20px;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: ${(p) => p.theme.color.text03};
+`
+
+export const AdvancedButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 0px;
+`
+
+export const AdvancedIcon = styled(CaratStrongDownIcon) <Partial<StyleProps>>`
+  width: 18px;
+  height: 18px;
+  color: ${(p) => p.theme.color.interactive07};
+  transform: ${(p) => p.rotated ? 'rotate(180deg)' : 'rotate(0deg)'};
+  margin-right: 10px;
 `

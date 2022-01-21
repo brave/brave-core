@@ -226,6 +226,8 @@ provideStrings({
   braveWalletAccountSettingsUpdateError: 'Failed to update account name, please try again.',
   braveWalletWatchListTokenId: 'Token ID (only for ERC721)',
   braveWalletWatchListTokenIdError: 'Token ID is required',
+  braveWalletWatchListAdvanced: 'Advanced',
+  braveWalletWatchListCoingeckoId: 'Coingecko ID',
 
   // AmountPresets
   braveWalletPreset25: '25%',
