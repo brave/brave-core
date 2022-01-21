@@ -14,9 +14,19 @@ import shieldsLightTheme from './theme/shields-light'
 import { PanelWrapper } from './style'
 import getPanelBrowserAPI from './api/panel_browser_api'
 import Container from './container'
+import { useSiteBlockInfoData, useSiteSettingsData } from './state/hooks'
+import DataContext from './state/context'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
+  const { siteBlockInfo } = useSiteBlockInfoData()
+  const { siteSettings, getSiteSettings } = useSiteSettingsData()
+
+  const store = {
+    siteBlockInfo,
+    siteSettings,
+    getSiteSettings
+  }
 
   React.useEffect(() => {
     chrome.braveTheme.getBraveThemeType(setInitialThemeType)
@@ -37,15 +47,19 @@ function App () {
   return (
     <>
       {initialThemeType &&
-        <BraveCoreThemeProvider
-          initialThemeType={initialThemeType}
-          dark={shieldsDarkTheme}
-          light={shieldsLightTheme}
+        <DataContext.Provider
+          value={store}
         >
-          <PanelWrapper>
-            <Container />
-          </PanelWrapper>
-        </BraveCoreThemeProvider>
+          <BraveCoreThemeProvider
+            initialThemeType={initialThemeType}
+            dark={shieldsDarkTheme}
+            light={shieldsLightTheme}
+          >
+            <PanelWrapper>
+              <Container />
+            </PanelWrapper>
+          </BraveCoreThemeProvider>
+        </DataContext.Provider>
       }
     </>
   )
