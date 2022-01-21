@@ -37,7 +37,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
@@ -117,7 +118,6 @@ public class CardBuilderFeedCard {
         mType = type;
         mNewsItem = newsItem;
         mBraveNewsController = braveNewsController;
-
         mDeviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
 
         mIsPromo = false;
@@ -184,10 +184,8 @@ public class CardBuilderFeedCard {
         LinearLayout layout1 = new LinearLayout(mActivity);
         LinearLayout layout2 = new LinearLayout(mActivity);
         LinearLayout layout3 = new LinearLayout(mActivity);
-
-        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        linearLayoutParams.setMargins(mHorizontalMargin, 0, mHorizontalMargin, 7 * MARGIN_VERTICAL);
+        RecyclerView.LayoutParams linearLayoutParams =
+                (RecyclerView.LayoutParams) mLinearLayout.getLayoutParams();
 
         try {
             switch (type) {
@@ -224,13 +222,12 @@ public class CardBuilderFeedCard {
                                     LinearLayout.LayoutParams.WRAP_CONTENT));
                     mLinearLayout.addView(tableLayoutTopNews);
 
-                    linearLayoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
                     linearLayoutParams.setMargins(
                             mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
                     mLinearLayout.setLayoutParams(linearLayoutParams);
 
                     mLinearLayout.setBackground(roundedBackground());
-
                     try {
                         mBraveNewsController.getDisplayAd(adData -> {
                             if (adData != null) {
@@ -396,7 +393,6 @@ public class CardBuilderFeedCard {
 
                     break;
                 case CardType.DEALS:
-
                     View lineSeparator = new View(mActivity);
                     LinearLayout moreOffersLayout = new LinearLayout(mActivity);
                     TextView moreOffersText = new TextView(mActivity);
@@ -415,7 +411,7 @@ public class CardBuilderFeedCard {
 
                     mLinearLayout.setOrientation(LinearLayout.VERTICAL);
 
-                    linearLayoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
                     linearLayoutParams.setMargins(
                             mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
                     mLinearLayout.setLayoutParams(linearLayoutParams);
@@ -494,16 +490,14 @@ public class CardBuilderFeedCard {
 
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
-
                     break;
                 case CardType.PUBLISHER_GROUP: // THREE_ROWS_HEADLINES:
-
                     mLinearLayout.setOrientation(LinearLayout.VERTICAL);
                     tableLayoutTopNews.setLayoutParams(
                             new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.MATCH_PARENT));
                     tableParamsTopNews.setMargins(30, 40, 30, 40);
-                    linearLayoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
                     linearLayoutParams.setMargins(
                             mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
                     mLinearLayout.setLayoutParams(linearLayoutParams);
@@ -565,17 +559,12 @@ public class CardBuilderFeedCard {
                                     */
 
                     mLinearLayout.setOrientation(LinearLayout.VERTICAL);
-                    linearLayoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                    float dpHeight =
-                            ConfigurationUtils.getDpDisplayMetrics(mActivity).get("height");
+                    linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
 
-                    LinearLayout.LayoutParams params =
-                            new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT,
-                                    TableLayout.LayoutParams.WRAP_CONTENT);
-
-                    params.setMargins(mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
+                    linearLayoutParams.setMargins(
+                            mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
                     int height = mActivity.getResources().getDisplayMetrics().heightPixels;
-                    mLinearLayout.setLayoutParams(params);
+                    mLinearLayout.setLayoutParams(linearLayoutParams);
 
                     mLinearLayout.addView(tableLayoutTopNews);
                     tableLayoutTopNews.addView(rowTop);
@@ -607,7 +596,6 @@ public class CardBuilderFeedCard {
                     addElementsToSingleLayout(row3, 2, type);
                     mLinearLayout.setBackground(
                             makeRound(CARD_LAYOUT, R.color.card_background, 30));
-
                     break;
                 case CardType.HEADLINE_PAIRED: // HEADLINEPAIR:
                     /*headlinepair
@@ -621,10 +609,9 @@ public class CardBuilderFeedCard {
                               Description    Description
 
                             */
-
                     mLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-                    linearLayoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                    linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
                     linearLayoutParams.setMargins(
                             mHorizontalMargin - 20, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
                     mLinearLayout.setLayoutParams(linearLayoutParams);
@@ -665,7 +652,6 @@ public class CardBuilderFeedCard {
                         cellParams.height = maxHeight;
                         layoutRight.setLayoutParams(cellParams);
                     }
-
                     break;
             }
         } catch (Exception e) {
@@ -692,6 +678,7 @@ public class CardBuilderFeedCard {
 
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
         LinearLayout.LayoutParams publisherParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
         LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(
@@ -772,18 +759,17 @@ public class CardBuilderFeedCard {
                     break;
                 case CardType.HEADLINE:
                     layout.setOrientation(LinearLayout.VERTICAL);
-                    int topPosition = 0;
-                    if (mPosition == 0) {
-                        topPosition = ConfigurationUtils.isTablet(mActivity) ? 120 : 200;
-                    }
-                    linearLayoutParams =
+
+                    RecyclerView.LayoutParams marginLayoutParams =
+                            (RecyclerView.LayoutParams) layout.getLayoutParams();
+                    marginLayoutParams.setMargins(
+                            mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
+                    marginLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
+                    titleParams =
                             new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT);
-                    linearLayoutParams.setMargins(
-                            mHorizontalMargin, topPosition, mHorizontalMargin, 5 * MARGIN_VERTICAL);
-
                     layout.setBackground(makeRound(CARD_LAYOUT, R.color.card_background, 30));
-                    layout.setLayoutParams(linearLayoutParams);
+                    layout.setLayoutParams(marginLayoutParams);
 
                     layout.addView(image);
                     layout.addView(title);
@@ -833,12 +819,12 @@ public class CardBuilderFeedCard {
                     break;
                 case CardType.PROMOTED_ARTICLE:
                     layout.setOrientation(LinearLayout.VERTICAL);
-                    linearLayoutParams =
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT);
-                    linearLayoutParams.setMargins(
+                    RecyclerView.LayoutParams recylcePromotedLayoutParams =
+                            (RecyclerView.LayoutParams) layout.getLayoutParams();
+
+                    recylcePromotedLayoutParams.setMargins(
                             mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
-                    layout.setLayoutParams(linearLayoutParams);
+                    layout.setLayoutParams(recylcePromotedLayoutParams);
 
                     TextView promoted = new TextView(mActivity);
                     LinearLayout promotedLogoLayout = new LinearLayout(mActivity);

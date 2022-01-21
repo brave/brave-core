@@ -34,6 +34,7 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -251,6 +252,9 @@ public class BraveNewTabPageLayout
     private static int mFirstVisibleCard;
     private String mFeedHash;
     private SharedPreferencesManager.Observer mPreferenceObserver;
+    private int mTouchX;
+    private int mTouchY;
+    private boolean mTouchWidget;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -581,7 +585,6 @@ public class BraveNewTabPageLayout
             NTPWidgetManager.getInstance().setWidget(NTPWidgetManager.PREF_BINANCE, -1);
             NTPWidgetManager.getInstance().setUpdatedUserPrefForBinance();
         }
-        showWidgets();
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             if (mSettingsBar != null) {
@@ -610,6 +613,7 @@ public class BraveNewTabPageLayout
             };
             SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
         }
+        showWidgets();
         if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
             if (binanceWidgetLayout != null) {
                 binanceWidgetLayout.setVisibility(View.GONE);
@@ -715,6 +719,7 @@ public class BraveNewTabPageLayout
             if (mImageCreditLayout != null) {
                 mImageCreditLayout.setLayoutParams(linearLayoutParams);
             }
+            mImageCreditLayout.requestLayout();
         }
 
         if (mFeedSpinner != null) {
@@ -807,6 +812,7 @@ public class BraveNewTabPageLayout
                             }
                         } // end page loop
                         processFeed();
+                        mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
                         mRecyclerView.scrollToPosition(0);
 
                         BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
@@ -836,6 +842,7 @@ public class BraveNewTabPageLayout
         getFeed();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initNews() {
         mSettingsBarIsClickable = false;
         mRecyclerView = findViewById(R.id.newsRecycler);
@@ -863,19 +870,6 @@ public class BraveNewTabPageLayout
         mItemPosition = 0;
         mVisibleCard = null;
 
-        mRecyclerView.setItemViewCacheSize(250);
-        mRecyclerView.setDrawingCacheEnabled(true);
-        mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        mRecyclerView.setItemAnimator(null);
-
-        mRecyclerView.setVisibility(View.GONE);
-
-        // Used to prevent a recyclerView layout bug
-        mRecyclerView.setLayoutManager(
-                new LinearLayoutManagerWrapper(mActivity, LinearLayoutManager.VERTICAL, false));
-        mAdapterFeedCard =
-                new BraveNewsAdapterFeedCard(mActivity, mNewsItemsFeedCard, mBraveNewsController);
-        mRecyclerView.setAdapter(mAdapterFeedCard);
         ViewGroup.LayoutParams recyclerviewParams = mRecyclerView.getLayoutParams();
         recyclerviewParams.height = (ConfigurationUtils.isTablet(mActivity)
                                             && !ConfigurationUtils.isLandscape(mActivity))
@@ -889,7 +883,22 @@ public class BraveNewTabPageLayout
             mOptinLayout.setVisibility(View.GONE);
         }
 
+        mRecyclerView.setItemViewCacheSize(25);
+        mRecyclerView.setDrawingCacheEnabled(true);
+        mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        mRecyclerView.setItemAnimator(null);
+
+        mRecyclerView.setVisibility(View.GONE);
+
+        mAdapterFeedCard =
+                new BraveNewsAdapterFeedCard(mActivity, mNewsItemsFeedCard, mBraveNewsController);
+        mRecyclerView.setAdapter(mAdapterFeedCard);
+        // Used to prevent a recyclerView layout bug
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManagerWrapper(mActivity, LinearLayoutManager.VERTICAL, false));
+
         mParentScrollView = (ScrollView) mNtpContent.getParent();
+
         ViewGroup rootView = (ViewGroup) mParentScrollView.getParent();
         mCompositorView = (ViewGroup) rootView.getParent();
 
@@ -972,6 +981,24 @@ public class BraveNewTabPageLayout
                     @Override
                     public void onScrollChanged() {
                         try {
+                            int[] location = new int[2];
+                            ntpWidgetLayout.getLocationOnScreen(location);
+                            int widgetTopLeftX = location[0];
+                            int widgetTopLeftY = location[1];
+
+                            // Attempt to prevent scroll while touching in the Widget area to help
+                            // with the ViewPager vertical scroll
+                            if (mTouchX > widgetTopLeftX
+                                    && mTouchX < widgetTopLeftX + ntpWidgetLayout.getWidth()
+                                    && (mTouchY > widgetTopLeftY
+                                            && mTouchY < widgetTopLeftY
+                                                            + ntpWidgetLayout.getHeight() + 200)) {
+                                mParentScrollView.smoothScrollBy(0, 0);
+                                mTouchWidget = true;
+                            } else {
+                                mTouchWidget = false;
+                            }
+
                             int scrollY = mParentScrollView.getScrollY();
                             isScrolled = false;
                             float value = (float) scrollY / mParentScrollView.getMaxScrollAmount();
@@ -1019,6 +1046,30 @@ public class BraveNewTabPageLayout
                     }
                 });
 
+        mParentScrollView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mTouchX = (int) event.getX();
+                mTouchY = (int) event.getY();
+
+                int[] location = new int[2];
+                ntpWidgetLayout.getLocationOnScreen(location);
+                int widgetTopLeftX = location[0];
+                int widgetTopLeftY = location[1];
+
+                if (mTouchX > widgetTopLeftX
+                        && mTouchX < widgetTopLeftX + ntpWidgetLayout.getWidth()
+                        && (mTouchY > widgetTopLeftY
+                                && mTouchY < widgetTopLeftY + ntpWidgetLayout.getHeight() + 200)) {
+                    mParentScrollView.smoothScrollBy(0, 0);
+                    mTouchWidget = true;
+                    return true;
+                }
+                mTouchWidget = false;
+                return false;
+            }
+        });
+
         parentScrollViewObserver.addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -1043,7 +1094,6 @@ public class BraveNewTabPageLayout
                                         }
                                     }
                                 });
-
                                 // to make sure that tap on the settings bar doesn't go through and
                                 // trigger the article view
                                 mSettingsBar.setOnClickListener(new View.OnClickListener() {
@@ -1078,6 +1128,8 @@ public class BraveNewTabPageLayout
                                         refreshFeed();
                                         mParentScrollView.fullScroll(ScrollView.FOCUS_UP);
                                         mRecyclerView.scrollToPosition(0);
+                                        mImageCreditLayout.setAlpha(1);
+                                        mImageCreditLayout.requestLayout();
 
                                         newContentButtonText.setVisibility(View.VISIBLE);
                                         loadingSpinner.setVisibility(View.GONE);
@@ -1091,7 +1143,6 @@ public class BraveNewTabPageLayout
                                     }
                                 });
                             }
-
                         } catch (Exception e) {
                             Log.e("bn", "Exception  addOnGlobalLayoutListener e: " + e);
                         }
@@ -1102,17 +1153,14 @@ public class BraveNewTabPageLayout
         if (manager instanceof LinearLayoutManager) {
             LinearLayoutManager linearLayoutManager = (LinearLayoutManager) manager;
             mFirstVisibleCard = linearLayoutManager.findFirstVisibleItemPosition();
-
             mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 private int lastFirstVisibleItem;
 
                 @Override
                 public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                     super.onScrollStateChanged(recyclerView, newState);
-
                     int firstCompletelyVisibleItemPosition =
                             linearLayoutManager.findFirstCompletelyVisibleItemPosition();
-
                     if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                         mEndCardViewTime = System.currentTimeMillis();
                         long timeDiff = mEndCardViewTime - mStartCardViewTime;
@@ -1125,7 +1173,6 @@ public class BraveNewTabPageLayout
                                                                  .getId()),
                                         firstCompletelyVisibleItemPosition);
                             }
-
                             if (mVisibleCard != null) {
                                 if (!mVisibleCard.isViewStatSent()) {
                                     // send viewed cards events
@@ -1166,13 +1213,11 @@ public class BraveNewTabPageLayout
                         mStartCardViewTime = System.currentTimeMillis();
                         int firstVisibleItemPosition =
                                 linearLayoutManager.findFirstVisibleItemPosition();
-
                         int lastVisibleItemPosition =
                                 linearLayoutManager.findLastVisibleItemPosition();
 
                         mFeedHash = SharedPreferencesManager.getInstance().readString(
                                 BravePreferenceKeys.BRAVE_NEWS_FEED_HASH, "");
-
                         //@TODO alex optimize feed availability check
                         mBraveNewsController.isFeedUpdateAvailable(
                                 mFeedHash, isNewsFeedAvailable -> {
@@ -1224,7 +1269,9 @@ public class BraveNewTabPageLayout
                     try {
                         int offset = recyclerView.computeVerticalScrollOffset();
                         mFirstVisibleCard = linearLayoutManager.findFirstVisibleItemPosition();
-                        mParentScrollView.scrollBy(0, offset + 20);
+                        if (!mTouchWidget) {
+                            mParentScrollView.scrollBy(0, offset + 2);
+                        }
                     } catch (Exception e) {
                         Log.e("bn", "Exception onScrolled:" + e);
                     }
