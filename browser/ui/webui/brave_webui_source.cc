@@ -199,7 +199,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         // Private Tab - General
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
         { "done", IDS_BRAVE_PRIVATE_NEW_TAB_DONE },
-        { "searchSettings", IDS_BRAVE_PRIVATE_NEW_TAB_SEARCH_SETTINGS },
         { "headerLabel", IDS_BRAVE_PRIVATE_NEW_TAB_THIS_IS_A },
 
         // Private Tab - Header Private Window
@@ -212,13 +211,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         // Private Tab - Header Private Window with Tor
         { "headerTorTitle", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR },
         { "headerTorText", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_DESC },
-        { "headerTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WIONDOW_TOR_BUTTON },             // NOLINT
+        { "headerTorText1", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_TEXT_1 },        // NOLINT
+        { "headerTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_PRIVATE_WINDOW_TOR_TEXT_2 },        // NOLINT
 
         // Private Tab - Box for DDG
-        { "boxDdgLabel", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_LABEL },
-        { "boxDdgTitle", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TITLE },
-        { "boxDdgText", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_1 },
-        { "boxDdgText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_TEXT_2 },
         { "boxDdgButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_DDG_BUTTON },
 
         // Private Tab - Box for Tor
@@ -238,7 +234,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "torStatusConnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_CONNECTED },         // NOLINT
         { "torStatusDisconnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_DISCONNECTED },   // NOLINT
         { "torStatusInitializing", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_STATUS_INITIALIZING },   // NOLINT
-        { "torTip", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_TIP},
+        { "torHelpConnecting", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONNECTING},
+        { "torHelpDisconnected", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_DISCONNECTED},        // NOLINT
+        { "torHelpContactSupport", IDS_BRAVE_PRIVATE_NEW_TAB_TOR_HELP_CONTACT_SUPPORT},   // NOLINT
 
         // Brave Talk prompt
         { "braveTalkPromptTitle", IDS_BRAVE_TALK_PROMPT_TITLE },

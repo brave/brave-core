@@ -6,19 +6,19 @@ import * as React from 'react'
 
 // Feature-specific components
 import {
-  Grid,
+  Grid3Columns,
   HeaderGrid,
-  Box,
-  Content,
   HeaderBox,
-  Title,
-  SubTitle,
-  Text,
+  Link,
+  PrivacyEyeImage,
   PrivateImage,
-  TorLockImage,
-  Separator,
-  FakeButton,
-  Link
+  Text,
+  Title,
+  TorHelpText,
+  TorStatusContainer,
+  TorStatusGrid,
+  TorStatusIndicator,
+  TorStatusText
 } from '../../components/private'
 
 // Helpers
@@ -26,6 +26,9 @@ import { getLocale, getLocaleWithTag } from '../../../common/locale'
 
 // Assets
 const privateWindowImg = require('../../../img/newtab/private-window-tor.svg')
+const privacyEyeImg = require('../../../img/newtab/privacy-eye.svg')
+const torConnectedImg = require('../../../img/newtab/tor-connected.svg')
+const torDisconnectedImg = require('../../../img/newtab/tor-disconnected.svg')
 
 interface Props {
   actions: any
@@ -33,6 +36,11 @@ interface Props {
 }
 
 export default class TorTab extends React.PureComponent<Props, {}> {
+  get torCircuitEstablishedOrInitializing () {
+    const { newTabData } = this.props
+    return newTabData && (newTabData.torCircuitEstablished || !!newTabData.torInitProgress)
+  }
+
   get torStatus () {
     if (this.props.newTabData &&
         this.props.newTabData.torCircuitEstablished) {
@@ -46,8 +54,8 @@ export default class TorTab extends React.PureComponent<Props, {}> {
     return getLocale('torStatusDisconnected')
   }
 
-  renderTorTip () {
-    const { beforeTag, duringTag, afterTag } = getLocaleWithTag('torTip')
+  renderHelpText (isConnecting: boolean) {
+    const { beforeTag, duringTag, afterTag } = getLocaleWithTag(isConnecting ? 'torHelpConnecting' : 'torHelpDisconnected')
     if (this.props.newTabData && !this.props.newTabData.torCircuitEstablished) {
       return (
         <Text>
@@ -59,6 +67,7 @@ export default class TorTab extends React.PureComponent<Props, {}> {
             {duringTag}
             </Link>
           {afterTag}
+          {!isConnecting && <Link href='https://support.brave.com/' target='_blank' style={{ margin: '0 0 0 5px' }}>{getLocale('torHelpContactSupport')}</Link>}
         </Text>
       )
     }
@@ -66,39 +75,36 @@ export default class TorTab extends React.PureComponent<Props, {}> {
   }
 
   render () {
+    const { newTabData } = this.props
     return (
-      <Grid>
-        <HeaderBox>
-          <HeaderGrid>
-            <PrivateImage src={privateWindowImg} />
-            <div>
-              <SubTitle>{getLocale('headerLabel')}</SubTitle>
-              <Title>{getLocale('headerTorTitle')}</Title>
-              <Text>{getLocale('headerTorText')}</Text>
-            </div>
-          </HeaderGrid>
-        </HeaderBox>
-        <Box>
-          <Content>
-            <TorLockImage />
-            <SubTitle>{getLocale('boxTorLabel2')}</SubTitle>
-            <Title>{getLocale('boxTorTitle')}</Title>
-            <Text>{getLocale('boxTorText')}</Text>
-          </Content>
-          <Separator />
-          <FakeButton
-            href='https://support.brave.com/hc/en-us/articles/360018121491'
-            target='_blank'
-          >
-            {getLocale('boxTorButton')}
-          </FakeButton>
-        </Box>
-        <Box>
-          <Title>{getLocale('torStatus')}</Title>
-          <Text>{this.torStatus}</Text>
-          {this.renderTorTip()}
-        </Box>
-      </Grid>
+      <>
+        <Grid3Columns>
+          <HeaderBox>
+            <HeaderGrid isStandalonePrivatePage={true}>
+              <PrivateImage src={privateWindowImg} isStandalonePrivatePage={true} />
+              <Title isStandalonePrivatePage={true}>{getLocale('headerTorTitle')}</Title>
+            </HeaderGrid>
+          </HeaderBox>
+          <PrivacyEyeImage src={privacyEyeImg} />
+          <Text isStandalonePrivatePage={true}>{getLocale('headerTorText1')}</Text>
+          <Text isStandalonePrivatePage={true}>{getLocale('headerTorText2')}</Text>
+        </Grid3Columns>
+        <TorStatusGrid>
+          <TorStatusContainer isTorCircuitEstablishedOrInitializing={this.torCircuitEstablishedOrInitializing}>
+            <TorStatusIndicator
+              src={this.torCircuitEstablishedOrInitializing ? torConnectedImg : torDisconnectedImg}
+              isTorCircuitInitializing={newTabData && !!newTabData.torInitProgress}
+            />
+            <TorStatusText>{this.torStatus}</TorStatusText>
+          </TorStatusContainer>
+        </TorStatusGrid>
+        {
+          newTabData && !newTabData.torCircuitEstablished &&
+          <TorHelpText>
+            {this.renderHelpText(!!newTabData.torInitProgress)}
+          </TorHelpText>
+        }
+      </>
     )
   }
 }
