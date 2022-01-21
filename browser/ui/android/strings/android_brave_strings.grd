@@ -2856,6 +2856,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ADD_NETWORK_SUBMIT" desc="Brave wallet networks pref add network submit button">
       Submit
     </message>
+    <message name="IDS_CHANGE_AMOUNT" desc="Brave rewards monthly contribution text">
+      Change amount
+    </message>
     </messages>
   </release>
 </grit>

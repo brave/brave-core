@@ -37,6 +37,7 @@ import android.util.DisplayMetrics;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -1156,8 +1158,6 @@ public class BraveRewardsPanel
     private void showRewardsFromAdsSummary(int walletStatus) {
         if (mBraveRewardsNativeWorker != null) {
             String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
-            Log.e("NTP", "walletType : " + walletType);
-            Log.e("NTP", "walletStatus : " + walletStatus);
             if (walletStatus == BraveRewardsExternalWallet.VERIFIED
                     && (walletType.equals(BraveWalletProvider.UPHOLD)
                             || walletType.equals(BraveWalletProvider.BITFLYER)
@@ -1363,25 +1363,64 @@ public class BraveRewardsPanel
             mPopupView.findViewById(R.id.attention_layout).setVisibility(View.VISIBLE);
             mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(View.VISIBLE);
         }
-        mBraveRewardsNativeWorker.GetRecurringDonations();
-        mBraveRewardsNativeWorker.getAutoContributionAmount();
     }
 
     @Override
-    public void onGetAutoContributionAmount(double amount) {
+    public void OnRecurringDonationUpdated() {
+        updateMonthlyContributionUI();
+    }
+
+    private void updateMonthlyContributionUI() {
+        String pubId = mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId);
         TextView monthlyContributionText =
                 mPopupView.findViewById(R.id.monthly_contribution_set_text);
-        monthlyContributionText.setText(String.format(
-                mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
-                (int) amount));
-        monthlyContributionText.setOnClickListener(view -> {
-            Intent intent = new Intent(
-                    ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
-            intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
-            intent.putExtra(BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION, true);
-            dismiss();
-            mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
+        double recurrentAmount =
+                mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(pubId);
+        if (mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId)) {
+            monthlyContributionText.setText(String.format(
+                    mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
+                    (int) recurrentAmount));
+            monthlyContributionText.setCompoundDrawablesWithIntrinsicBounds(
+                    0, 0, R.drawable.ic_carat_down, 0);
+        }
+        monthlyContributionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId)) {
+                    openBannerActivity();
+                } else {
+                    Context wrapper =
+                            new ContextThemeWrapper(mActivity, R.style.BraveRewardsPanelPopupMenu);
+                    PopupMenu popup = new PopupMenu(wrapper, v);
+                    popup.getMenuInflater().inflate(
+                            R.menu.monthly_contribution_popup_menu, popup.getMenu());
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getItemId() == R.id.change_amount_menu_id) {
+                                openBannerActivity();
+                            } else {
+                                monthlyContributionText.setText(
+                                        mPopupView.getResources().getString(R.string.set));
+                                monthlyContributionText.setCompoundDrawablesWithIntrinsicBounds(
+                                        0, 0, 0, 0);
+                                mBraveRewardsNativeWorker.RemoveRecurring(pubId);
+                            }
+                            return true;
+                        }
+                    });
+
+                    popup.show();
+                }
+            }
         });
+    }
+
+    private void openBannerActivity() {
+        Intent intent = new Intent(
+                ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
+        intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
+        intent.putExtra(BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION, true);
+        mActivity.startActivityForResult(intent, BraveActivity.MONTHLY_CONTRIBUTION_REQUEST_CODE);
     }
 
     private void updatePublisherStatus(int pubStatus) {
