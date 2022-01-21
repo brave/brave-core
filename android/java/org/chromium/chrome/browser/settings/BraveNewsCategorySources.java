@@ -72,7 +72,9 @@ public class BraveNewsCategorySources
                 Publisher publisher = entry.getValue();
                 if (publisher.categoryName.toLowerCase(Locale.ROOT)
                                 .equals(mCategoryArg.toLowerCase(Locale.ROOT))) {
-                    categoryPublishers.add(publisher);
+                    if (!publisher.categoryName.equals("")) {
+                        categoryPublishers.add(publisher);
+                    }
                 }
 
                 mCategsPublishers.put(publisher.categoryName, categoryPublishers);

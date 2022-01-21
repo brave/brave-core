@@ -35,6 +35,10 @@ public class LinearLayoutManagerWrapper extends LinearLayoutManager {
         try {
             super.onLayoutChildren(recycler, state);
         } catch (IndexOutOfBoundsException e) {
+            Log.e("bn", "LinearLayoutManagerWrapper IndexOutOfBoundsException e:"+e.getMessage());
+            e.printStackTrace();
+        } catch (ClassCastException e) {
+            Log.e("bn", "LinearLayoutManagerWrapper ClassCastException e:"+e.getMessage());
             e.printStackTrace();
         }
     }
