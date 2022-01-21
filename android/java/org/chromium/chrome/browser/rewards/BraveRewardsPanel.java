@@ -1158,8 +1158,6 @@ public class BraveRewardsPanel
     private void showRewardsFromAdsSummary(int walletStatus) {
         if (mBraveRewardsNativeWorker != null) {
             String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
-            Log.e("NTP", "walletType : " + walletType);
-            Log.e("NTP", "walletStatus : " + walletStatus);
             if (walletStatus == BraveRewardsExternalWallet.VERIFIED
                     && (walletType.equals(BraveWalletProvider.UPHOLD)
                             || walletType.equals(BraveWalletProvider.BITFLYER)
@@ -1365,23 +1363,27 @@ public class BraveRewardsPanel
             mPopupView.findViewById(R.id.attention_layout).setVisibility(View.VISIBLE);
             mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(View.VISIBLE);
         }
-        mBraveRewardsNativeWorker.GetRecurringDonations();
-        mBraveRewardsNativeWorker.getAutoContributionAmount();
     }
 
     @Override
-    public void onGetAutoContributionAmount(double amount) {
+    public void OnRecurringDonationUpdated() {
+        updateMonthlyContributionUI();
+    }
+
+    private void updateMonthlyContributionUI() {
+        String pubId = mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId);
         TextView monthlyContributionText =
                 mPopupView.findViewById(R.id.monthly_contribution_set_text);
-        if (BraveRewardsHelper.hasRewardsMonthlyContribution()) {
+        double recurrentAmount = mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(pubId);
+        if (mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId)) {
             monthlyContributionText.setText(String.format(
                     mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
-                    (int) amount));
+                    (int) recurrentAmount));
         }
         monthlyContributionText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!BraveRewardsHelper.hasRewardsMonthlyContribution()) {
+                if (!mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId)) {
                     openBannerActivity();
                 } else {
                     Context wrapper =
@@ -1394,9 +1396,9 @@ public class BraveRewardsPanel
                             if (item.getItemId() == R.id.change_amount_menu_id) {
                                 openBannerActivity();
                             } else {
-                                BraveRewardsHelper.setRewardsMonthlyContribution(false);
                                 monthlyContributionText.setText(
                                         mPopupView.getResources().getString(R.string.set));
+                                mBraveRewardsNativeWorker.RemoveRecurring(pubId);
                             }
                             return true;
                         }
@@ -1413,8 +1415,7 @@ public class BraveRewardsPanel
                 ContextUtils.getApplicationContext(), BraveRewardsSiteBannerActivity.class);
         intent.putExtra(BraveRewardsSiteBannerActivity.TAB_ID_EXTRA, mCurrentTabId);
         intent.putExtra(BraveRewardsSiteBannerActivity.IS_MONTHLY_CONTRIBUTION, true);
-        dismiss();
-        mActivity.startActivityForResult(intent, BraveActivity.SITE_BANNER_REQUEST_CODE);
+        mActivity.startActivityForResult(intent, BraveActivity.MONTHLY_CONTRIBUTION_REQUEST_CODE);
     }
 
     private void updatePublisherStatus(int pubStatus) {
