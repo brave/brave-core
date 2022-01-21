@@ -151,7 +151,7 @@ const Config = function () {
   this.sccache = getNPMConfig(['sccache'])
   this.gomaServerHost = getNPMConfig(['goma_server_host'])
   // os.cpus().length is number of threads not physical cores
-  this.gomaJValue = Math.min(40, os.cpus().length * 2)
+  this.defaultGomaJValue = Math.min(40, os.cpus().length * 2)
   this.isCI = process.env.BUILD_ID !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
@@ -882,8 +882,8 @@ Config.prototype.update = function (options) {
 
   if (this.use_goma && this.gomaServerHost) {
     if (!this.extraNinjaOpts.find(val => typeof val === 'string' && val.startsWith('-j'))) {
-      this.extraNinjaOpts.push('-j', this.gomaJValue)
-      console.log('using goma with j value of ' + this.gomaJValue + ' at ' + this.gomaServerHost)
+      this.extraNinjaOpts.push('-j', this.defaultGomaJValue)
+      console.log('using goma with j value of ' + this.defaultGomaJValue + ' at ' + this.gomaServerHost)
     } else {
       console.log('using goma with manual j value at ' + this.gomaServerHost)
     }
