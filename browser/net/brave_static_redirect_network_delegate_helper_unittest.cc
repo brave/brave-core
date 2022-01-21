@@ -44,7 +44,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1) {
       "https://dl.google.com/release2/chrome_component/AJ4r388iQSJq_4819/"
       "4819_all_crl-set-5934829738003798040.data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/release2/chrome_component/"
+      "https://redirector.brave.com/release2/chrome_component/"
       "AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -60,7 +60,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2) {
       "chrome_component/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040"
       ".data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/edgedl/release2/chrome_compone"
+      "https://redirector.brave.com/edgedl/release2/chrome_compone"
       "nt/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -72,10 +72,12 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2) {
 
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3) {
   const GURL url(
-      "https://www.google.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "https://www.google.com/dl/release2/chrome_component/"
+      "LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "https://redirector.brave.com/dl/release2/chrome_component/"
+      "LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -113,7 +115,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet1_http) {
       "http://dl.google.com/release2/chrome_component/AJ4r388iQSJq_4819/"
       "4819_all_crl-set-5934829738003798040.data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/release2/chrome_component/"
+      "https://redirector.brave.com/release2/chrome_component/"
       "AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -129,7 +131,7 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet2_http) {
       "chrome_component/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040"
       ".data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/edgedl/release2/chrome_compone"
+      "https://redirector.brave.com/edgedl/release2/chrome_compone"
       "nt/AJ4r388iQSJq_4819/4819_all_crl-set-5934829738003798040.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -144,7 +146,8 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyCRLSet3_http) {
       "http://www.google.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
   const GURL expected_url(
-      "https://crlsets.brave.com/dl/release2/chrome_component/LLjIBPPmveI_4988/"
+      "https://redirector.brave.com/dl/release2/chrome_component/"
+      "LLjIBPPmveI_4988/"
       "4988_all_crl-set-6296993568184466307.data.crx3");
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
