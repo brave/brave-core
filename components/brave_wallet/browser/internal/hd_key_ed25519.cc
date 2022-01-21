@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/logging.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 
 namespace brave_wallet {
@@ -24,8 +25,10 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeed(
 
 std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChild(uint32_t index) {
   auto child_private_key = private_key_->derive_child(index);
-  if (!child_private_key->is_valid())
+  if (!child_private_key->is_valid()) {
+    VLOG(0) << std::string(child_private_key->error_message());
     return nullptr;
+  }
   auto child_key = std::make_unique<HDKeyEd25519>(std::move(child_private_key));
   return std::unique_ptr<HDKeyBase>{child_key.release()};
 }
@@ -33,8 +36,10 @@ std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChild(uint32_t index) {
 std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChildFromPath(
     const std::string& path) {
   auto child_private_key = private_key_->derive(path);
-  if (!child_private_key->is_valid())
+  if (!child_private_key->is_valid()) {
+    VLOG(0) << std::string(child_private_key->error_message());
     return nullptr;
+  }
   auto child_key = std::make_unique<HDKeyEd25519>(std::move(child_private_key));
   return std::unique_ptr<HDKeyBase>{child_key.release()};
 }
