@@ -121,5 +121,5 @@ export const getBlockScriptText = (haveUserInteracted: boolean, isBlocked: boole
 export const getAllowedScriptsOrigins = (modifiedNoScriptInfo: NoScriptInfo): string[] => {
   const getAllowedOrigins = Object.entries(modifiedNoScriptInfo)
     .filter(url => !url[1].actuallyBlocked)
-  return getAllowedOrigins.map(url => isHttpOrHttps(url[0]) ? getOrigin(url[0]) + '/' : url[0])
+  return getAllowedOrigins.map(url => isHttpOrHttps(url[0]) ? getOrigin(url[0]) : url[0])
 }
