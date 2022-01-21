@@ -535,9 +535,9 @@ double BraveRewardsNativeWorker::GetPublisherRecurrentDonationAmount(
   double amount(0.0);
   auto it = map_recurrent_publishers_.find(
     base::android::ConvertJavaStringToUTF8(env, publisher));
+
   if (it != map_recurrent_publishers_.end()) {
-    // for Recurrent Donations, the amount is stored in ContentSite::percentage
-    amount = it->second->percent;
+    amount = it->second->weight;
   }
   return  amount;
 }
@@ -547,6 +547,12 @@ void BraveRewardsNativeWorker::RemoveRecurring(JNIEnv* env,
   if (brave_rewards_service_) {
       brave_rewards_service_->RemoveRecurringTip(
         base::android::ConvertJavaStringToUTF8(env, publisher));
+      auto it = map_recurrent_publishers_.find(
+    base::android::ConvertJavaStringToUTF8(env, publisher));
+
+    if (it != map_recurrent_publishers_.end()) {
+      map_recurrent_publishers_.erase(it);
+    }
   }
 }
 

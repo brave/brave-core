@@ -72,6 +72,13 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.brave_rewards_site_banner);
 
+        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+        mBraveRewardsNativeWorker.AddObserver(this);
+
+        currentTabId_ = IntentUtils.safeGetIntExtra(getIntent(), TAB_ID_EXTRA, -1);
+        mIsMonthlyContribution =
+                IntentUtils.safeGetBooleanExtra(getIntent(), IS_MONTHLY_CONTRIBUTION, false);
+
         sendDonationLayout = findViewById(R.id.send_donation_button);
 
         //change weight of the footer in landscape mode
@@ -85,6 +92,8 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
             findViewById(R.id.site_banner_header).setLayoutParams(param);
         }
 
+        int recurrentAmount = (int) mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
+
         //bind tip amount custom radio buttons
         radio_tip_amount[0] = findViewById(R.id.one_bat_option);
         radio_tip_amount[0].setTextOff(BraveRewardsHelper.ONE_BAT_TEXT);
@@ -94,12 +103,27 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         radio_tip_amount[1] = findViewById(R.id.five_bat_option);
         radio_tip_amount[1].setTextOff(BraveRewardsHelper.FIVE_BAT_TEXT);
         radio_tip_amount[1].setTextOn(BraveRewardsHelper.FIVE_BAT_TEXT);
-        radio_tip_amount[1].setChecked(true);
+        radio_tip_amount[1].setChecked(false);
 
         radio_tip_amount[2] = findViewById(R.id.ten_bat_option);
         radio_tip_amount[2].setTextOff(BraveRewardsHelper.TEN_BAT_TEXT);
         radio_tip_amount[2].setTextOn(BraveRewardsHelper.TEN_BAT_TEXT);
         radio_tip_amount[2].setChecked(false);
+
+        switch(recurrentAmount) {
+            case 1:
+            radio_tip_amount[0].setChecked(true);
+            break;
+            case 5:
+            radio_tip_amount[1].setChecked(true);
+            break;
+            case 10:
+            radio_tip_amount[2].setChecked(true);
+            break;
+            default:
+            radio_tip_amount[0].setChecked(true);
+            break;
+        }
 
         //radio buttons behaviour
         View.OnClickListener radio_clicker = new View.OnClickListener() {
@@ -124,12 +148,6 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         for (ToggleButton tb : radio_tip_amount){
             tb.setOnClickListener(radio_clicker);
         }
-
-        currentTabId_ = IntentUtils.safeGetIntExtra(getIntent(), TAB_ID_EXTRA, -1);
-        mIsMonthlyContribution =
-                IntentUtils.safeGetBooleanExtra(getIntent(), IS_MONTHLY_CONTRIBUTION, false);
-        mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        mBraveRewardsNativeWorker.AddObserver(this);
 
         String publisherName = mBraveRewardsNativeWorker.GetPublisherName(currentTabId_);
         TextView publisher = (TextView)findViewById(R.id.publisher_name);
@@ -173,6 +191,9 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 onMonthlyCheckboxClicked(v);
             }
         });
+        if (mIsMonthlyContribution) {
+            monthly.performClick();
+        }
 
         // set tip button onClick
         View.OnClickListener send_tip_clicker = new View.OnClickListener() {
@@ -200,12 +221,6 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                     }
                 }
                 boolean enough_funds = ((balance - amount) >= 0);
-
-                if (mIsMonthlyContribution) {
-                    mBraveRewardsNativeWorker.SetAutoContributionAmount(amount);
-                    BraveRewardsHelper.setRewardsMonthlyContribution(true);
-                    finish();
-                }
 
                 //proceed to tipping
                 if (true == enough_funds) {
@@ -236,13 +251,6 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
                 }
             }
         };
-
-        if (mIsMonthlyContribution) {
-            // monthly.setChecked(true);
-            // TextView send_btn = (TextView) findViewById(R.id.send_donation_text);
-            // send_btn.setText(getResources().getString(R.string.brave_ui_do_monthly));
-            monthly.performClick();
-        }
 
         sendDonationLayout.setOnClickListener(send_tip_clicker);
 
@@ -438,6 +446,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         {
             //disable the activity while fading it out
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            setResult(RESULT_OK);
             finish();
             overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
             mTippingInProgress = false;
