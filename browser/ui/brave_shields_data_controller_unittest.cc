@@ -20,6 +20,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -42,19 +43,19 @@ class BraveShieldsDataControllerTest : public testing::Test {
     ASSERT_TRUE(profile_manager_->SetUp());
     profile_ = profile_manager_->CreateTestingProfile(kTestProfileName);
 
-    web_contents_ =
+    test_web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
-    BraveShieldsDataController::CreateForWebContents(web_contents_.get());
+    BraveShieldsDataController::CreateForWebContents(test_web_contents_.get());
   }
 
   void TearDown() override {
-    web_contents_.reset();
+    test_web_contents_.reset();
     profile_ = nullptr;
     profile_manager_->DeleteTestingProfile(kTestProfileName);
   }
 
   Profile* profile() { return profile_; }
-  content::WebContents* web_contents() { return web_contents_.get(); }
+  content::WebContents* web_contents() { return test_web_contents_.get(); }
 
   void SetLastCommittedUrl(const GURL& url) {
     content::WebContentsTester::For(web_contents())->SetLastCommittedURL(url);
@@ -93,7 +94,8 @@ class BraveShieldsDataControllerTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<content::WebContents> web_contents_;
+  std::unique_ptr<content::WebContents> test_web_contents_;
+  content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   Profile* profile_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
 
