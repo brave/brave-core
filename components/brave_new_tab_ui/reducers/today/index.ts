@@ -149,6 +149,21 @@ reducer.on(Actions.setPublisherPref, (state, payload) => {
   }
 })
 
+reducer.on(Actions.removeDirectFeed, (state, { directFeed }) => {
+  const hasMatch = !!state.publishers?.[directFeed.publisherId]
+  if (!hasMatch) {
+    console.warn('Brave News: asked to remove direct feed which did not exist', directFeed)
+    return state
+  }
+  // Predict what backend will return when date is refreshed
+  const publishers = { ...state.publishers }
+  delete publishers[directFeed.publisherId]
+  return {
+    ...state,
+    publishers
+  }
+})
+
 reducer.on(Actions.isUpdateAvailable, (state, payload) => {
   return {
     ...state,

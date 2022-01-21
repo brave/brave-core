@@ -6,13 +6,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_FEED_PARSING_H_
 #define BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_FEED_PARSING_H_
 
+#include <string>
+#include <vector>
+
 #include "base/values.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 
 namespace brave_news {
 
-bool ParseFeedItem(const base::Value& feed_item_raw,
-                   mojom::FeedItemPtr* feed_item);
+bool ParseFeedItems(const std::string& json,
+                    std::vector<mojom::FeedItemPtr>* feed_items);
 
 }  // namespace brave_news
 

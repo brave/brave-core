@@ -1,9 +1,10 @@
 import { select, boolean, number } from '@storybook/addon-knobs'
 import { images } from '../../../data/backgrounds'
 import { defaultTopSitesData } from '../../../data/defaultTopSites'
-import dummyBrandedWallpaper from './brandedWallpaper'
 import { defaultState } from '../../../storage/new_tab_storage'
 import { initialGridSitesState } from '../../../storage/grid_sites_storage'
+import { TabType as SettingsTabType } from '../../../containers/newTab/settings'
+import dummyBrandedWallpaper from './brandedWallpaper'
 
 function generateStaticImages (images: NewTab.BackgroundWallpaper[]) {
   const staticImages = { SpaceX: undefined }
@@ -62,6 +63,7 @@ export const getNewTabData = (state: NewTab.State = defaultState): NewTab.State 
   ),
   customLinksEnabled: boolean('CustomLinks Enabled?', false),
   featureFlagBraveNewsEnabled: true,
+  forceSettingsTab: select('Open settings tab?', [undefined, ...Object.keys(SettingsTabType)], undefined),
   showBackgroundImage: boolean('Show background image?', true),
   showStats: boolean('Show stats?', true),
   showToday: boolean('Show Brave News?', true),
