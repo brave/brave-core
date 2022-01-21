@@ -587,6 +587,8 @@ const util = {
       assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
       options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
 
+      // This skips the auth check and make this call instant if compiler_proxy is already running.
+      // If compiler_proxy is not running, it will fail to start if no valid credentials are found.
       options.env.GOMACTL_SKIP_AUTH = 1
       const gomaStartInfo = util.runProcess('goma_ctl', ['ensure_start'], options)
       delete options.env.GOMACTL_SKIP_AUTH
