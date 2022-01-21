@@ -151,7 +151,7 @@ const Config = function () {
   this.sccache = getNPMConfig(['sccache'])
   this.gomaServerHost = getNPMConfig(['goma_server_host'])
   // os.cpus().length is number of threads not physical cores
-  this.gomaJValue = Math.min(40, os.cpus().length * 2)
+  this.defaultGomaJValue = Math.min(40, os.cpus().length * 2)
   this.isCI = process.env.BUILD_ID !== undefined
   this.braveStatsApiKey = getNPMConfig(['brave_stats_api_key']) || ''
   this.braveStatsUpdaterUrl = getNPMConfig(['brave_stats_updater_url']) || ''
@@ -879,6 +879,15 @@ Config.prototype.update = function (options) {
   if (options.target) {
     this.buildTarget = options.target
   }
+
+  if (this.use_goma && this.gomaServerHost) {
+    if (!this.extraNinjaOpts.find(val => typeof val === 'string' && val.startsWith('-j'))) {
+      this.extraNinjaOpts.push('-j', this.defaultGomaJValue)
+      console.log('using goma with j value of ' + this.defaultGomaJValue + ' at ' + this.gomaServerHost)
+    } else {
+      console.log('using goma with manual j value at ' + this.gomaServerHost)
+    }
+  }
 }
 
 Config.prototype.getCachePath = function () {
@@ -914,9 +923,6 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
     if (this.use_goma && this.gomaServerHost) {
       env.CC_WRAPPER = path.join(this.gomaDir, 'gomacc')
       env.GOMA_SERVER_HOST = this.gomaServerHost
-      // env.NINJA_REMOTE_NUM_JOBS = this.gomaJValue
-      // console.log('ninja remote jobs number is ' + env.NINJA_REMOTE_NUM_JOBS)
-      console.log('using goma with j value of ' + this.gomaJValue + ' at ' + this.gomaServerHost)
     } else if (this.sccache) {
       env.CC_WRAPPER = this.sccache
       console.log('using cc wrapper ' + path.basename(this.sccache))
@@ -926,6 +932,10 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
         env.CCACHE_BASEDIR = this.srcDir
         env = this.addPathToEnv(env, path.join(this.srcDir, 'third_party', 'llvm-build', 'Release+Asserts', 'bin'))
       }
+    }
+
+    if (this.isCI) {
+      env.NINJA_SUMMARIZE_BUILD = 1
     }
 
     if (process.platform === 'linux') {
