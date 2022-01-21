@@ -18,14 +18,11 @@ class BraveMainDelegate : public IOSChromeMainDelegate {
   BraveMainDelegate();
   ~BraveMainDelegate() override;
 
-  void SetSyncServiceURL(const std::string& url);
-
  protected:
   // web::WebMainDelegate implementation:
   void BasicStartupComplete() override;
 
  private:
-  std::string brave_sync_service_url_;
   DISALLOW_COPY_AND_ASSIGN(BraveMainDelegate);
 };
 
