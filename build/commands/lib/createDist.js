@@ -26,6 +26,7 @@ const createDist = (buildConfig = config.defaultBuildConfig, options) => {
     }
   }
   config.buildTarget = 'create_dist'
+  util.generateNinjaFiles()
   util.buildTarget()
 }
 
