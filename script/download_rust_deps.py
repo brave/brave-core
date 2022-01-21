@@ -38,8 +38,8 @@ def get_url(platform):
     elif platform.startswith('linux'):
         filename = "rust_deps_linux_" + RUST_DEPS_PACKAGE_VERSION + ".gz"
     else:
-        print 'Invalid platform for Rust deps: %s' % platform
-        print 'Exiting.'
+        print('Invalid platform for Rust deps: %s' % platform)
+        print('Exiting.')
         sys.exit(1)
 
     return RUST_DEPS_PACKAGES_URL + "/" + filename
@@ -61,8 +61,8 @@ def download_and_unpack_rust_deps(platform):
     try:
         deps.DownloadAndUnpack(url, RUSTUP_PATH)
     except URLError:
-        print 'Failed to download Rust deps: %s' % url
-        print 'Exiting.'
+        print('Failed to download Rust deps: %s' % url)
+        print('Exiting.')
         sys.exit(1)
 
 
@@ -114,7 +114,7 @@ def make_standalone_toolchain_for_android():
         try:
             subprocess.check_call(toolchain_args, env=None)
         except subprocess.CalledProcessError as e:
-            print e.output
+            print(e.output)
             raise e
 
         # Add target to rustup config
