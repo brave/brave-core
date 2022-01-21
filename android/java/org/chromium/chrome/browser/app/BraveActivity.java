@@ -1097,8 +1097,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
             BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
-        } else if(resultCode == RESULT_OK &&
-                requestCode == MONTHLY_CONTRIBUTION_REQUEST_CODE) {
+        } else if (resultCode == RESULT_OK && requestCode == MONTHLY_CONTRIBUTION_REQUEST_CODE) {
             dismissRewardsPanel();
         }
         super.onActivityResult(requestCode, resultCode, data);

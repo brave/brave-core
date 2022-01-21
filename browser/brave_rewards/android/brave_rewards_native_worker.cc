@@ -548,11 +548,11 @@ void BraveRewardsNativeWorker::RemoveRecurring(JNIEnv* env,
       brave_rewards_service_->RemoveRecurringTip(
         base::android::ConvertJavaStringToUTF8(env, publisher));
       auto it = map_recurrent_publishers_.find(
-    base::android::ConvertJavaStringToUTF8(env, publisher));
+          base::android::ConvertJavaStringToUTF8(env, publisher));
 
-    if (it != map_recurrent_publishers_.end()) {
-      map_recurrent_publishers_.erase(it);
-    }
+      if (it != map_recurrent_publishers_.end()) {
+        map_recurrent_publishers_.erase(it);
+      }
   }
 }
 
