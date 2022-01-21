@@ -106,6 +106,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="@string/set"
+                android:drawablePadding="4dp"
                 android:fontFamily="@font/poppins_regular"
                 android:textColor="@color/rewards_panel_action_color"
                 android:textSize="16sp" />

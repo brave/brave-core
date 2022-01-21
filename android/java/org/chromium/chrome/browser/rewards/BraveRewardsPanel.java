@@ -1379,6 +1379,8 @@ public class BraveRewardsPanel
             monthlyContributionText.setText(String.format(
                     mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
                     (int) recurrentAmount));
+            monthlyContributionText.setCompoundDrawablesWithIntrinsicBounds(
+                    0, 0, R.drawable.ic_carat_down, 0);
         }
         monthlyContributionText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1398,6 +1400,8 @@ public class BraveRewardsPanel
                             } else {
                                 monthlyContributionText.setText(
                                         mPopupView.getResources().getString(R.string.set));
+                                monthlyContributionText.setCompoundDrawablesWithIntrinsicBounds(
+                                        0, 0, 0, 0);
                                 mBraveRewardsNativeWorker.RemoveRecurring(pubId);
                             }
                             return true;
