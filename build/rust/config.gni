@@ -8,6 +8,19 @@ import("//build/config/ios/config.gni")
 import("//build/config/rust.gni")
 import("//build/config/sysroot.gni")
 
+declare_args() {
+  rustup_path = rebase_path("//brave/build/rustup")
+  cargo_profile = ""
+}
+
+if (cargo_profile == "") {
+  if (is_official_build) {
+    cargo_profile = "release"
+  } else {
+    cargo_profile = "dev"
+  }
+}
+
 unexport_list_path = "$root_build_dir/brave_rust/rust_lib.unexports"
 
 rustc_target = ""
@@ -122,10 +135,11 @@ if (rustc_target != "") {
   cargo_lib_prefix += rustc_target
 }
 
-if (is_debug) {
+if (cargo_profile == "dev") {
+  # for some strange reason dev profile output goes in a directory called debug
   cargo_lib_prefix += "/debug"
 } else {
-  cargo_lib_prefix += "/release"
+  cargo_lib_prefix += "/$cargo_profile"
 }
 
 cargo_lib_suffix = ""
