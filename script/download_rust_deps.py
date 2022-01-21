@@ -13,7 +13,7 @@ import sys
 try:
     from urllib2 import URLError
 except ImportError:  # For Py3 compatibility
-    from urllib.error import URLError # pylint: disable=import-error
+    from urllib.error import URLError # pylint: disable=no-name-in-module
 
 import deps
 from rust_deps_config import RUST_DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
