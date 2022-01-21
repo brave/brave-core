@@ -5,7 +5,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import json
-import optparse
+import optparse # pylint: disable=deprecated-module
 import os
 import sys
 import subprocess
@@ -15,7 +15,6 @@ from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
 
 def run_cargo(command, args):
     rustup_path = args.rustup_path
-    build_path = args.build_path
 
     # Set environment variables for rustup
     env = os.environ.copy()
@@ -67,11 +66,10 @@ def run_cargo(command, args):
 
 
 def build(args):
-    build_path = args.build_path
     # Check the previous args against the current args because cargo doesn't
     # rebuild when env vars change and rerun-if-env-changed doesn't force the
     # dependencies to rebuild
-    build_args_cache_file = os.path.join(build_path, ".cargo_args")
+    build_args_cache_file = os.path.join(args.build_path, ".cargo_args")
     previous_args = {}
     if os.path.exists(build_args_cache_file):
         with open(build_args_cache_file, "r", encoding="utf8") as f:
