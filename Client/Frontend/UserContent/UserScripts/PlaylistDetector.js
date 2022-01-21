@@ -204,6 +204,10 @@ window.__firefox__.includeOnce("PlaylistDetector", function() {
                 }
                 return original.call(node, tag);
             };
+            
+            node.createElement.toString = function() {
+                return "function () { [native code] }";
+            };
         }
 
         function $<getAllVideoElements>() {

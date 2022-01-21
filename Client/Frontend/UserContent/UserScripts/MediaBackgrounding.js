@@ -6,11 +6,12 @@
 // The below is needed because the script may not be web-packed into a bundle so it may be missing the run-once code
 
 window.__firefox__.includeOnce("MediaBackgrounding", function() {
-    var visibilityState_Get = Object.getOwnPropertyDescriptor(Document.prototype, "visibilityState").get;
-    var visibilityState_Set = Object.getOwnPropertyDescriptor(Document.prototype, "visibilityState").set;
+    var descriptor = Object.getOwnPropertyDescriptor(Document.prototype, "visibilityState");
+    var visibilityState_Get = descriptor.get;
+    var visibilityState_Set = descriptor.set;
     Object.defineProperty(Document.prototype, 'visibilityState', {
-        enumerable: true,
-        configurable: true,
+        enumerable: descriptor.enumerable,
+        configurable: descriptor.configurable,
         get: function() {
             var result = visibilityState_Get.call(this);
             if (result != "visible") {

@@ -323,9 +323,10 @@ window.__firefox__.includeOnce("Playlist", function() {
                 value: null
             });
             
+            var descriptor = Object.getOwnPropertyDescriptor(HTMLMediaElement.prototype, 'src');
             Object.defineProperty(HTMLMediaElement.prototype, 'src', {
-                enumerable: true,
-                configurable: false,
+                enumerable: descriptor.enumerable,
+                configurable: descriptor.configurable,
                 get: function(){
                     return this.getAttribute('src')
                 },
@@ -334,20 +335,6 @@ window.__firefox__.includeOnce("Playlist", function() {
                     // But since the property represents an attribute, this is okay.
                     this.setAttribute('src', value);
                     //$<notifyNode>(this); // Handled by `setVideoAttribute`
-                }
-            });
-            
-            Object.defineProperty(HTMLAudioElement.prototype, 'src', {
-                enumerable: true,
-                configurable: false,
-                get: function(){
-                    return this.getAttribute('src')
-                },
-                set: function(value) {
-                    // Typically we'd call the original setter.
-                    // But since the property represents an attribute, this is okay.
-                    this.setAttribute('src', value);
-                    //$<notifyNode>(this); // Handled by `setAudioAttribute`
                 }
             });
             
