@@ -350,7 +350,7 @@ function ConfirmTransactionPanel (props: Props) {
             {transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
               transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
               ? transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
-              : formatTokenAmountWithCommasAndDecimals(transactionDetails.value, transactionDetails.symbol)
+              : formatTokenAmountWithCommasAndDecimals(transactionDetails.valueExact, transactionDetails.symbol)
             }
           </TransactionAmountBig>
           {transactionInfo.txType !== BraveWallet.TransactionType.ERC721TransferFrom &&
@@ -405,7 +405,7 @@ function ConfirmTransactionPanel (props: Props) {
                 <SectionRow>
                   <TransactionTitle>{getLocale('braveWalletAllowSpendProposedAllowance')}</TransactionTitle>
                   <SectionRightColumn>
-                    <TransactionTypeText>{formatTokenAmountWithCommasAndDecimals(transactionDetails.value, transactionDetails.symbol)}</TransactionTypeText>
+                    <TransactionTypeText>{formatTokenAmountWithCommasAndDecimals(transactionDetails.valueExact, transactionDetails.symbol)}</TransactionTypeText>
                     <TransactionText />
                   </SectionRightColumn>
                 </SectionRow>
@@ -429,8 +429,8 @@ function ConfirmTransactionPanel (props: Props) {
                     <GrandTotalText>
                       {(transactionInfo.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
                         transactionInfo.txType !== BraveWallet.TransactionType.ERC721TransferFrom)
-                        ? formatWithCommasAndDecimals(transactionDetails.value)
-                        : transactionDetails.value
+                        ? formatWithCommasAndDecimals(transactionDetails.valueExact)
+                        : transactionDetails.valueExact
                       } {transactionDetails.symbol} + {formatBalance(transactionDetails.gasFee, selectedNetwork.decimals)} {selectedNetwork.symbol}</GrandTotalText>
                   </SingleRow>
                   <TransactionText

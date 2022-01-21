@@ -187,6 +187,7 @@ export const SingleRow = styled.div`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
+  gap: 5px;
 `
 
 export const SectionRightColumn = styled.div`
