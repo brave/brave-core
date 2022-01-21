@@ -10,7 +10,7 @@ import { Page, PageWrapper } from '../../components/private'
 // Components group
 import PrivateTab from './privateTab'
 import QwantTab from './qwantTab'
-import QwantTorTab from './qwantTorTab'
+import QwantTorTab from './torTab'
 import TorTab from './torTab'
 
 interface Props {

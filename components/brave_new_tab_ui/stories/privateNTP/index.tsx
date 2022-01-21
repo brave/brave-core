@@ -11,7 +11,7 @@ import { Page, PageWrapper } from '../../components/private'
 import PrivateWindow from './privateWindow'
 import QwantWindow from './qwantWindow'
 import TorWindow from './torWindow'
-import QwantTor from './qwantWindowWithTor'
+import QwantTor from './torWindow'
 
 interface Props {
   isTor: boolean
