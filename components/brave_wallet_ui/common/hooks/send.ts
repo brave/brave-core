@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 import { SimpleActionCreator } from 'redux-act'
+import BigNumber from 'bignumber.js'
+
 import {
   BraveWallet,
   GetEthAddrReturnInfo,
@@ -12,7 +14,8 @@ import {
   ER20TransferParams,
   SendTransactionParams,
   ERC721TransferFromParams,
-  GetChecksumEthAddressReturnInfo
+  GetChecksumEthAddressReturnInfo,
+  AmountValidationErrorType
 } from '../../constants/types'
 import { isValidAddress } from '../../utils/address-utils'
 import { getLocale } from '../../../common/locale'
@@ -69,6 +72,16 @@ export default function useSend (
   const setNotRegisteredError = (url: string) => {
     setAddressError(getLocale('braveWalletNotDomain').replace('$1', url))
   }
+
+  const sendAmountValidationError: AmountValidationErrorType | undefined = React.useMemo(() => {
+    if (!sendAmount) {
+      return
+    }
+
+    return new BigNumber(sendAmount).times(10 ** selectedSendAsset.decimals).decimalPlaces() > 0
+      ? 'fromAmountDecimalsOverflow'
+      : undefined
+  }, [sendAmount, selectedSendAsset])
 
   React.useEffect(() => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
@@ -198,6 +211,7 @@ export default function useSend (
     sendAmount,
     addressError,
     addressWarning,
-    selectedSendAsset
+    selectedSendAsset,
+    sendAmountValidationError
   }
 }

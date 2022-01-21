@@ -209,10 +209,15 @@ function SwapInputComponent (props: Props) {
     setSpin(0)
   }
 
-  const fromAmountHasErrors = validationError && (
-    validationError === 'insufficientBalance' ||
-    validationError === 'insufficientEthBalance'
-  )
+  const fromAmountHasErrors = validationError && [
+    'insufficientBalance',
+    'insufficientEthBalance',
+    'fromAmountDecimalsOverflow'
+  ].includes(validationError)
+
+  const toAmountHasErrors = validationError && [
+    'toAmountDecimalsOverflow'
+  ].includes(validationError)
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
     return withPlaceholderIcon(AssetIcon, { size: 'small', marginLeft: 4, marginRight: 8 })
@@ -260,7 +265,10 @@ function SwapInputComponent (props: Props) {
                 name={inputName}
                 onChange={onInputChanged}
                 spellCheck={false}
-                hasError={componentType === 'fromAmount' && fromAmountHasErrors}
+                hasError={
+                  (componentType === 'fromAmount' && !!fromAmountHasErrors) ||
+                  (componentType === 'toAmount' && !!toAmountHasErrors)
+                }
                 disabled={orderType === 'market' && componentType === 'exchange' || orderType === 'limit' && componentType === 'toAmount'}
                 autoFocus={autoFocus}
               />
@@ -345,6 +353,13 @@ function SwapInputComponent (props: Props) {
             </PresetRow>
           }
         </>
+      }
+
+      {componentType === 'fromAmount' && validationError === 'fromAmountDecimalsOverflow' &&
+        <WarningText>{getLocale('braveWalletDecimalPlacesError')}</WarningText>
+      }
+      {componentType === 'toAmount' && validationError === 'toAmountDecimalsOverflow' &&
+        <WarningText>{getLocale('braveWalletDecimalPlacesError')}</WarningText>
       }
       {showSlippageWarning &&
         <WarningText>{getLocale('braveWalletSlippageToleranceWarning')}</WarningText>

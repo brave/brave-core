@@ -1,8 +1,10 @@
 import * as React from 'react'
 import {
   AmountPresetTypes,
+  AmountValidationErrorType,
   BraveWallet,
   BuySendSwapViewTypes,
+  SwapValidationErrorType,
   ToOrFromType
 } from '../../../constants/types'
 import { NavButton } from '../../extension'
@@ -22,6 +24,7 @@ export interface Props {
   toAddress: string
   addressError: string
   addressWarning: string
+  amountValidationError?: AmountValidationErrorType
   onSubmit: () => void
   onInputChange: (value: string, name: string) => void
   onChangeSendView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
@@ -37,6 +40,7 @@ function Send (props: Props) {
     toAddress,
     addressError,
     addressWarning,
+    amountValidationError,
     onInputChange,
     onSelectPresetAmount,
     onSubmit,
@@ -84,6 +88,7 @@ function Send (props: Props) {
         onShowSelection={onShowAssets}
         autoFocus={true}
         selectedPreset={selectedPreset}
+        validationError={amountValidationError as SwapValidationErrorType}
       />
       <SwapInputComponent
         componentType='toAddress'
@@ -104,7 +109,8 @@ function Send (props: Props) {
             toAddressOrUrl === '' ||
             parseFloat(selectedAssetAmount) === 0 ||
             selectedAssetAmount === '' ||
-            insuficientFundsError
+            insuficientFundsError ||
+            amountValidationError !== undefined
           }
           buttonType='primary'
           text={getLocale('braveWalletSend')}

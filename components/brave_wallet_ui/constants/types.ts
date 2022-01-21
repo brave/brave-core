@@ -292,7 +292,12 @@ export interface SwapErrorResponse {
   validationErrors: Array<{ field: string, code: number, reason: string }>
 }
 
+export type AmountValidationErrorType =
+  | 'fromAmountDecimalsOverflow'
+  | 'toAmountDecimalsOverflow'
+
 export type SwapValidationErrorType =
+  | AmountValidationErrorType
   | 'insufficientBalance'
   | 'insufficientEthBalance'
   | 'insufficientAllowance'

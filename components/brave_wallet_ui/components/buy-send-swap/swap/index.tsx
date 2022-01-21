@@ -175,6 +175,7 @@ function Swap (props: Props) {
         selectedAssetBalance={toAssetBalance}
         selectedAsset={toAsset}
         onShowSelection={onShowAssetTo}
+        validationError={validationError}
       />
       <SwapInputComponent
         componentType='exchange'
