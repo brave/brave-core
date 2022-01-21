@@ -20,6 +20,7 @@
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/de_amp/common/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
@@ -104,6 +105,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       "isNativeBraveWalletFeatureEnabled",
       base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature));
+  html_source->AddBoolean(
+      "isDeAmpingEnabled",
+      base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP));
 #if defined(OS_WIN)
   html_source->AddBoolean(
       "canSetDefaultMSEdgeProtocolHandler",

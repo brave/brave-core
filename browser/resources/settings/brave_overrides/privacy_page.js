@@ -3,66 +3,102 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import {RegisterPolymerTemplateModifications} from 'chrome://brave-resources/polymer_overriding.js'
-import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
-import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
+import { RegisterPolymerTemplateModifications } from "chrome://brave-resources/polymer_overriding.js";
+import { I18nBehavior } from "chrome://resources/js/i18n_behavior.m.js";
+import { loadTimeData } from "chrome://resources/js/load_time_data.m.js";
 
 RegisterPolymerTemplateModifications({
-  'settings-privacy-page': (templateContent) => {
-    const pages = templateContent.getElementById('pages')
+  "settings-privacy-page": (templateContent) => {
+    const pages = templateContent.getElementById("pages");
     if (!pages) {
-      console.error(`[Brave Settings Overrides] Couldn't find privacy_page #pages`)
+      console.error(
+        `[Brave Settings Overrides] Couldn't find privacy_page #pages`
+      );
     } else {
-      if (!loadTimeData.getBoolean('isIdleDetectionFeatureEnabled')) {
-        const idleDetection = templateContent.querySelector('[route-path="/content/idleDetection"]')
+      if (!loadTimeData.getBoolean("isIdleDetectionFeatureEnabled")) {
+        const idleDetection = templateContent.querySelector(
+          '[route-path="/content/idleDetection"]'
+        );
         if (!idleDetection) {
-          console.error(`[Brave Settings Overrides] Couldn't find idle detection template`)
+          console.error(
+            `[Brave Settings Overrides] Couldn't find idle detection template`
+          );
         } else {
-          idleDetection.content.firstElementChild.hidden = true
+          idleDetection.content.firstElementChild.hidden = true;
         }
       }
-      pages.insertAdjacentHTML('beforeend', `
+      pages.insertAdjacentHTML(
+        "beforeend",
+        `
         <template is="dom-if" route-path="/content/autoplay" no-search>
-          <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsCategoryAutoplay')}">
+          <settings-subpage page-title="${I18nBehavior.i18n(
+            "siteSettingsCategoryAutoplay"
+          )}">
             <category-default-setting
-                toggle-off-label="${I18nBehavior.i18n('siteSettingsBlocked')}"
-                toggle-on-label="${I18nBehavior.i18n('siteSettingsAllowed')}"
+                toggle-off-label="${I18nBehavior.i18n("siteSettingsBlocked")}"
+                toggle-on-label="${I18nBehavior.i18n("siteSettingsAllowed")}"
                 category="[[contentSettingsTypesEnum_.AUTOPLAY}}">
             </category-default-setting>
             <category-setting-exceptions
                 category="[[contentSettingsTypesEnum_.AUTOPLAY]]"
-                block-header="${I18nBehavior.i18n('siteSettingsBlock')}">
+                block-header="${I18nBehavior.i18n("siteSettingsBlock")}">
             </category-setting-exceptions>
           </settings-subpage>
         </template>
-      `)
-      const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
+      `
+      );
+      const isDeAmpingEnabled = loadTimeData.getBoolean("isDeAmpingEnabled");
+      if (isDeAmpingEnabled) {
+        pages.insertAdjacentHTML(
+          "afterend",
+          `
+          <settings-toggle-button
+            class="hr"
+            pref="{{prefs.brave.de_amp.enabled}}"
+            label="${I18nBehavior.i18n("deAmpSettingLabel")}"
+            sub-label="${I18nBehavior.i18n("deAmpSettingSubLabel")}">
+          </settings-toggle-button>
+      `
+        );
+      }
+      const isNativeBraveWalletEnabled = loadTimeData.getBoolean(
+        "isNativeBraveWalletFeatureEnabled"
+      );
       if (isNativeBraveWalletEnabled) {
-        pages.insertAdjacentHTML('beforeend', `
+        pages.insertAdjacentHTML(
+          "beforeend",
+          `
           <template is="dom-if" route-path="/content/ethereum" no-search>
-          <settings-subpage page-title="${I18nBehavior.i18n('siteSettingsCategoryEthereum')}">
+          <settings-subpage page-title="${I18nBehavior.i18n(
+            "siteSettingsCategoryEthereum"
+          )}">
           <category-default-setting
           category="[[contentSettingsTypesEnum_.ETHEREUM]]"
-          toggle-off-label="${I18nBehavior.i18n('siteSettingsEthereumBlock')}"
-          toggle-on-label="${I18nBehavior.i18n('siteSettingsEthereumAsk')}">
+          toggle-off-label="${I18nBehavior.i18n("siteSettingsEthereumBlock")}"
+          toggle-on-label="${I18nBehavior.i18n("siteSettingsEthereumAsk")}">
           </category-default-setting>
           <category-setting-exceptions
           category="[[contentSettingsTypesEnum_.ETHEREUM]]"
           read-only-list
-          block-header="${I18nBehavior.i18n('siteSettingsBlock')}"
-          allow-header="${I18nBehavior.i18n('siteSettingsAllow')}">
+          block-header="${I18nBehavior.i18n("siteSettingsBlock")}"
+          allow-header="${I18nBehavior.i18n("siteSettingsAllow")}">
           </category-setting-exceptions>
           </settings-subpage>
           </template>
-        `)
+        `
+        );
       }
     }
 
-    const privacySandboxLinkRow = templateContent.getElementById('privacySandboxLinkRow')
+    const privacySandboxLinkRow = templateContent.getElementById(
+      "privacySandboxLinkRow"
+    );
     if (!privacySandboxLinkRow) {
-      console.error('[Brave Settings Overrides] Could not find privacySandboxLinkRow id on privacy page.')
+      console.error(
+        "[Brave Settings Overrides] Could not find privacySandboxLinkRow id on privacy page."
+      );
     } else {
-      privacySandboxLinkRow.setAttribute('hidden', 'true')
+      privacySandboxLinkRow.setAttribute("hidden", "true");
     }
   },
-})
+});

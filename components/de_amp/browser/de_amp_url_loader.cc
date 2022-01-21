@@ -14,26 +14,19 @@
 #include "base/no_destructor.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/de_amp/browser/de_amp_service.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/early_hints.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-#include "third_party/re2/src/re2/re2.h"
 
 namespace de_amp {
 
 namespace {
 
 constexpr uint32_t kReadBufferSize = 65536;
-// Check for "amp" or "⚡" in <html> tag
-// https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#ampd
-static const char kDetectAmpPattern[] = "(?:<.*html\\s.*(amp|⚡)\\s.*>)";
-// Look for canonical link
-// https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
-static const char kFindCanonicalLinkPattern[] =
-    "<.*link\\s.*rel=\"canonical\"\\s.*href=\"(.*?)\"";
 
 }  // namespace
 
@@ -45,6 +38,7 @@ DeAmpURLLoader::CreateLoader(
     base::WeakPtr<DeAmpThrottle> throttle,
     const GURL& response_url,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+    DeAmpService* service,
     content::WebContents* contents) {
   mojo::PendingRemote<network::mojom::URLLoader> url_loader;
   mojo::PendingRemote<network::mojom::URLLoaderClient> url_loader_client;
@@ -53,8 +47,8 @@ DeAmpURLLoader::CreateLoader(
           url_loader_client.InitWithNewPipeAndPassReceiver();
 
   auto loader = base::WrapUnique(new DeAmpURLLoader(
-      std::move(throttle), response_url,
-      std::move(url_loader_client), std::move(task_runner), contents));
+      std::move(throttle), response_url, std::move(url_loader_client),
+      std::move(task_runner), service, contents));
   DeAmpURLLoader* loader_rawptr = loader.get();
   mojo::MakeSelfOwnedReceiver(std::move(loader),
                               url_loader.InitWithNewPipeAndPassReceiver());
@@ -68,11 +62,13 @@ DeAmpURLLoader::DeAmpURLLoader(
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+    DeAmpService* service,
     content::WebContents* contents)
     : throttle_(throttle),
       destination_url_loader_client_(std::move(destination_url_loader_client)),
       response_url_(response_url),
       contents_(contents),
+      de_amp_service(service),
       task_runner_(task_runner),
       body_consumer_watcher_(FROM_HERE,
                              mojo::SimpleWatcher::ArmingPolicy::MANUAL,
@@ -199,23 +195,6 @@ void DeAmpURLLoader::ResumeReadingBodyFromNet() {
   source_url_loader_->ResumeReadingBodyFromNet();
 }
 
-bool CheckCanonicalLink(GURL canonical_link) {
-  return canonical_link.SchemeIsHTTPOrHTTPS();
-}
-
-// If AMP page, find canonical link
-bool FindCanonicalLinkIfAMP(std::string body, std::string* canonical_link) {
-  RE2::Options opt;
-  opt.set_case_sensitive(false);
-  static const base::NoDestructor<re2::RE2> kDetectAmpRegex(kDetectAmpPattern,
-                                                            opt);
-  static const base::NoDestructor<re2::RE2> kFindCanonicalLinkRegex(
-      kFindCanonicalLinkPattern, opt);
-
-  return RE2::PartialMatch(body, *kDetectAmpRegex) &&
-         RE2::PartialMatch(body, *kFindCanonicalLinkRegex, canonical_link);
-}
-
 void DeAmpURLLoader::OnBodyReadable(MojoResult) {
   if (state_ == State::kSending) {
     // The pipe becoming readable when kSending means all buffered body has
@@ -249,9 +228,9 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
   // Check for AMP-ness and find canonical link
   std::string canonical_link;
 
-  if (FindCanonicalLinkIfAMP(buffered_body_, &canonical_link)) {
+  if (de_amp_service->FindCanonicalLinkIfAMP(buffered_body_, &canonical_link)) {
     const GURL canonical_url(canonical_link);
-    if (!CheckCanonicalLink(canonical_url)) {
+    if (!de_amp_service->CheckCanonicalLink(canonical_url)) {
       VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
       CompleteLoading(std::move(buffered_body_));
       return;

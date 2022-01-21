@@ -10,6 +10,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/de_amp/browser/de_amp_service.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
@@ -24,11 +25,13 @@ class DeAmpThrottle : public blink::URLLoaderThrottle {
  public:
   explicit DeAmpThrottle(
       scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+      DeAmpService* service,
       content::WebContents* contents);
   ~DeAmpThrottle() override;
 
   static std::unique_ptr<DeAmpThrottle> MaybeCreateThrottleFor(
       scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+      DeAmpService* service,
       content::WebContents* contents);
 
   // Implements blink::URLLoaderThrottle.
@@ -40,6 +43,7 @@ class DeAmpThrottle : public blink::URLLoaderThrottle {
 
  private:
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
+  DeAmpService* service_;
   content::WebContents* contents_;  // not owned
   base::WeakPtrFactory<DeAmpThrottle> weak_factory_{this};
 };

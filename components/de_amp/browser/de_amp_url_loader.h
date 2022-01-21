@@ -13,6 +13,7 @@
 #include "base/callback.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/de_amp/browser/de_amp_service.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -51,15 +52,17 @@ class DeAmpURLLoader : public network::mojom::URLLoaderClient,
   CreateLoader(base::WeakPtr<DeAmpThrottle> throttle,
                const GURL& response_url,
                scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+               DeAmpService* service,
                content::WebContents* contents);
 
  private:
   DeAmpURLLoader(base::WeakPtr<DeAmpThrottle> throttle,
-                       const GURL& response_url,
-                       mojo::PendingRemote<network::mojom::URLLoaderClient>
-                           destination_url_loader_client,
-                       scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-                       content::WebContents* contents);
+                 const GURL& response_url,
+                 mojo::PendingRemote<network::mojom::URLLoaderClient>
+                     destination_url_loader_client,
+                 scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+                 DeAmpService* service,
+                 content::WebContents* contents);
 
   // network::mojom::URLLoaderClient implementation (called from the source of
   // the response):
@@ -109,6 +112,7 @@ class DeAmpURLLoader : public network::mojom::URLLoaderClient,
 
   GURL response_url_;
   content::WebContents* contents_;
+  DeAmpService* de_amp_service;
 
   scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
 

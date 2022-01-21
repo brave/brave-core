@@ -4,5 +4,5 @@ include_rules = [
   "+services/network/public/cpp",
   "+services/network/public/mojom",
   "+third_party/blink/public/common/loader",
-  "+third_party/re2"
+  "+third_party/re2",
 ]

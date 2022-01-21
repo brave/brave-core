@@ -16,6 +16,7 @@ import("//brave/browser/brave_wallet/android/sources.gni")
 import("//brave/browser/browsing_data/sources.gni")
 import("//brave/browser/component_updater/sources.gni")
 import("//brave/browser/crypto_dot_com/sources.gni")
+import("//brave/browser/de_amp/sources.gni")
 import("//brave/browser/debounce/sources.gni")
 import("//brave/browser/decentralized_dns/sources.gni")
 import("//brave/browser/download/sources.gni")
@@ -141,6 +142,8 @@ brave_chrome_browser_deps = [
   "//brave/components/cosmetic_filters/browser",
   "//brave/components/cosmetic_filters/common:mojom",
   "//brave/components/crypto_dot_com/browser/buildflags",
+  "//brave/components/de_amp/browser",
+  "//brave/components/de_amp/common",
   "//brave/components/decentralized_dns/buildflags",
   "//brave/components/gemini/browser/buildflags",
   "//brave/components/greaselion/browser/buildflags",
@@ -155,8 +158,6 @@ brave_chrome_browser_deps = [
   "//brave/components/sidebar/buildflags",
   "//brave/components/skus/browser",
   "//brave/components/speedreader:buildflags",
-  "//brave/components/de_amp/browser",
-  "//brave/components/de_amp/common",
   "//brave/components/tor/buildflags",
   "//brave/components/translate/core/common:buildflags",
   "//brave/components/version_info",
@@ -366,6 +367,7 @@ brave_chrome_browser_sources += brave_browser_browsing_data_sources
 brave_chrome_browser_sources += brave_browser_component_updater_sources
 brave_chrome_browser_sources += brave_browser_crypto_dot_com_sources
 brave_chrome_browser_sources += brave_browser_debounce_sources
+brave_chrome_browser_sources += brave_browser_de_amp_sources
 brave_chrome_browser_sources += brave_browser_decentralized_dns_sources
 brave_chrome_browser_sources += brave_browser_download_sources
 brave_chrome_browser_sources += brave_browser_ephemeral_storage_sources
@@ -394,6 +396,7 @@ brave_chrome_browser_deps += brave_browser_browsing_data_deps
 brave_chrome_browser_deps += brave_browser_component_updater_deps
 brave_chrome_browser_deps += brave_browser_crypto_dot_com_deps
 brave_chrome_browser_deps += brave_browser_debounce_deps
+brave_chrome_browser_deps += brave_browser_de_amp_deps
 brave_chrome_browser_deps += brave_browser_decentralized_dns_deps
 brave_chrome_browser_deps += brave_browser_download_deps
 brave_chrome_browser_deps += brave_browser_ephemeral_storage_deps

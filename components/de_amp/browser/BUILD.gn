@@ -2,6 +2,8 @@ import("//brave/build/config.gni")
 
 source_set("browser") {
   sources = [
+    "de_amp_service.cc",
+    "de_amp_service.h",
     "de_amp_throttle.cc",
     "de_amp_throttle.h",
     "de_amp_url_loader.cc",
