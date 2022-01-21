@@ -54,6 +54,6 @@ void ShieldsPanelUI::CreatePanelHandler(
   panel_handler_ =
       std::make_unique<ShieldsPanelHandler>(std::move(panel_receiver), this);
 
-  data_handler_ = std::make_unique<ShieldsDataHandler>(
+  data_handler_ = std::make_unique<ShieldsPanelDataHandler>(
       std::move(data_handler_receiver), this);
 }

@@ -19,6 +19,10 @@ interface FabulouslyLargeToggleProps extends Omit<ToggleProps, 'size'> {
 function useToggleProps (props: ToggleProps) {
   const [isOn, setIsOn] = React.useState(props.isOn ?? false)
 
+  React.useEffect(() => {
+    setIsOn(props.isOn ?? false)
+  }, [props.isOn])
+
   const onToggleClick = () => {
     const activated = !isOn
     setIsOn(activated)

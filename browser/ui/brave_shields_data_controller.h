@@ -8,6 +8,7 @@
 
 #include <set>
 #include <string>
+#include <vector>
 
 #include "base/observer_list.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
@@ -16,6 +17,8 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 using brave_shields::mojom::AdBlockMode;
+using brave_shields::mojom::CookieBlockMode;
+using brave_shields::mojom::FingerprintMode;
 using content::NavigationEntry;
 
 namespace brave_shields {
@@ -39,10 +42,23 @@ class BraveShieldsDataController
                          const std::string& subresource);
   void ClearAllResourcesList();
   int GetTotalBlockedCount();
+  std::vector<GURL> GetBlockedAdsList();
+  std::vector<GURL> GetHttpRedirectsList();
+  std::vector<GURL> GetJsList();
+  std::vector<GURL> GetFingerprintsList();
   bool GetBraveShieldsEnabled();
   GURL GetCurrentSiteURL();
+
   AdBlockMode GetAdBlockMode();
+  FingerprintMode GetFingerprintMode();
+  CookieBlockMode GetCookieBlockMode();
+  bool GetHTTPSEverywhereEnabled();
+  bool GetNoScriptEnabled();
   void SetAdBlockMode(AdBlockMode mode);
+  void SetFingerprintMode(FingerprintMode mode);
+  void SetCookieBlockMode(CookieBlockMode mode);
+  void SetIsNoScriptEnabled(bool is_enabled);
+  void SetIsHTTPSEverywhereEnabled(bool is_enabled);
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);
@@ -55,6 +71,8 @@ class BraveShieldsDataController
 
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
+
+  void ReloadWebContents();
 
   base::ObserverList<Observer> observer_list_;
   std::set<GURL> resource_list_blocked_ads_;
