@@ -92,7 +92,8 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
             findViewById(R.id.site_banner_header).setLayoutParams(param);
         }
 
-        int recurrentAmount = (int) mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
+        int recurrentAmount = (int) mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(
+                mBraveRewardsNativeWorker.GetPublisherId(currentTabId_));
 
         //bind tip amount custom radio buttons
         radio_tip_amount[0] = findViewById(R.id.one_bat_option);
@@ -110,19 +111,19 @@ public class BraveRewardsSiteBannerActivity extends Activity implements
         radio_tip_amount[2].setTextOn(BraveRewardsHelper.TEN_BAT_TEXT);
         radio_tip_amount[2].setChecked(false);
 
-        switch(recurrentAmount) {
+        switch (recurrentAmount) {
             case 1:
-            radio_tip_amount[0].setChecked(true);
-            break;
+                radio_tip_amount[0].setChecked(true);
+                break;
             case 5:
-            radio_tip_amount[1].setChecked(true);
-            break;
+                radio_tip_amount[1].setChecked(true);
+                break;
             case 10:
-            radio_tip_amount[2].setChecked(true);
-            break;
+                radio_tip_amount[2].setChecked(true);
+                break;
             default:
-            radio_tip_amount[0].setChecked(true);
-            break;
+                radio_tip_amount[0].setChecked(true);
+                break;
         }
 
         //radio buttons behaviour

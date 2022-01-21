@@ -1374,7 +1374,8 @@ public class BraveRewardsPanel
         String pubId = mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId);
         TextView monthlyContributionText =
                 mPopupView.findViewById(R.id.monthly_contribution_set_text);
-        double recurrentAmount = mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(pubId);
+        double recurrentAmount =
+                mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(pubId);
         if (mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId)) {
             monthlyContributionText.setText(String.format(
                     mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
