@@ -24,6 +24,7 @@
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
+#include "brave/browser/de_amp/de_amp_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -56,6 +57,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
+#include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/debounce/browser/debounce_throttle.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
@@ -105,7 +107,6 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
-#include "brave/components/de_amp/browser/de_amp_throttle.h"
 
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
@@ -633,6 +634,8 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id);
   content::WebContents* contents = wc_getter.Run();
+  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
+      Profile::FromBrowserContext(browser_context));
 
   if (contents) {
     // Speedreader
@@ -651,10 +654,8 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
             speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
                 g_brave_browser_process->speedreader_rewriter_service(),
-                HostContentSettingsMapFactory::GetForProfile(
-                    Profile::FromBrowserContext(browser_context)),
-                tab_helper->GetWeakPtr(), request.url, check_disabled_sites,
-                base::ThreadTaskRunnerHandle::Get());
+                settings_map, tab_helper->GetWeakPtr(), request.url,
+                check_disabled_sites, base::ThreadTaskRunnerHandle::Get());
         if (throttle)
           result.push_back(std::move(throttle));
       }
@@ -664,13 +665,14 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     // De-AMP
     if (std::unique_ptr<blink::URLLoaderThrottle> de_amp_throttle =
             de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
-                base::ThreadTaskRunnerHandle::Get(), contents))
+                base::ThreadTaskRunnerHandle::Get(),
+                de_amp::DeAmpServiceFactory::GetForBrowserContext(
+                    browser_context),
+                contents))
       result.push_back(std::move(de_amp_throttle));
   }
 
   // Debounce
-  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
-      Profile::FromBrowserContext(browser_context));
   if (std::unique_ptr<blink::URLLoaderThrottle> debounce_throttle =
           debounce::DebounceThrottle::MaybeCreateThrottleFor(
               debounce::DebounceServiceFactory::GetForBrowserContext(

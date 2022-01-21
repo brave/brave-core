@@ -14,6 +14,8 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
+#include "brave/components/de_amp/browser/de_amp_pref_names.h"
+#include "brave/components/de_amp/common/features.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -177,6 +179,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[speedreader::kSpeedreaderPrefEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
+  // De-AMP feature
+  (*s_brave_allowlist)[de_amp::kDeAmpPrefEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // new tab prefs
   (*s_brave_allowlist)[kNewTabPageShowSponsoredImagesBackgroundImage] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

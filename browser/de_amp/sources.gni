@@ -1,0 +1,13 @@
+brave_browser_de_amp_sources = [
+  "//brave/browser/de_amp/de_amp_service_factory.cc",
+  "//brave/browser/de_amp/de_amp_service_factory.h",
+]
+
+brave_browser_de_amp_deps = [
+  "//base",
+  "//brave/components/de_amp/browser",
+  "//brave/components/de_amp/common",
+  "//chrome/common",
+  "//components/keyed_service/content",
+
+]
