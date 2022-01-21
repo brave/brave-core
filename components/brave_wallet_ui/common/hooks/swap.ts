@@ -91,9 +91,26 @@ export default function useSwap (
     return gasPriceBN.multipliedBy(gasBN)
   }, [quote])
 
-  const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
-    const fromAmountWei = toWei(fromAmount, fromAsset.decimals)
+  const hasDecimalsOverflow = React.useCallback(
+    (amount: string, asset?: BraveWallet.BlockchainToken) => {
+      if (!asset) {
+        return false
+      }
 
+      return new BigNumber(amount).times(10 ** asset.decimals).decimalPlaces() > 0
+    }, []
+  )
+
+  const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
+    if (hasDecimalsOverflow(fromAmount, fromAsset)) {
+      return 'fromAmountDecimalsOverflow'
+    }
+
+    if (hasDecimalsOverflow(toAmount, toAsset)) {
+      return 'toAmountDecimalsOverflow'
+    }
+
+    const fromAmountWei = toWei(fromAmount, fromAsset.decimals)
     const amountBN = new BigNumber(fromAmountWei)
     const balanceBN = new BigNumber(fromAssetBalance)
     const ethBalanceBN = new BigNumber(ethBalance)
@@ -131,7 +148,17 @@ export default function useSwap (
     }
 
     return undefined
-  }, [fromAsset, fromAmount, fromAssetBalance, ethBalance, feesBN, rawError, allowance])
+  }, [
+    fromAsset,
+    fromAmount,
+    toAsset,
+    toAmount,
+    fromAssetBalance,
+    ethBalance,
+    feesBN,
+    rawError,
+    allowance
+  ])
 
   /**
    * React effect to extract fields from the swap quote and write the relevant
@@ -231,6 +258,13 @@ export default function useSwap (
      *     the From field, the amount is considered `undefined`.
      */
     if (overrides.toOrFrom === 'from') {
+      if (hasDecimalsOverflow(
+        overrides.amount ?? state.fromAmount,
+        fromAssetNext
+      )) {
+        return
+      }
+
       fromAmountWei = toWei(
         overrides.amount ?? state.fromAmount,
         fromAssetNext.decimals
@@ -253,6 +287,13 @@ export default function useSwap (
      *     considered `undefined` in this case.
      */
     if (overrides.toOrFrom === 'to') {
+      if (hasDecimalsOverflow(
+        overrides.amount ?? state.toAmount,
+        toAssetNext
+      )) {
+        return
+      }
+
       if (overrides.toAsset === undefined) {
         toAmountWei = toWei(
           overrides.amount ?? state.toAmount,
@@ -340,6 +381,7 @@ export default function useSwap (
 
   const onSetFromAmount = (value: string) => {
     setFromAmount(value)
+
     onSwapParamsChangeDebounced(
       { toOrFrom: 'from', amount: value },
       { fromAmount, toAmount }

@@ -188,7 +188,8 @@ function Container (props: Props) {
     toAddress,
     addressError,
     addressWarning,
-    selectedSendAsset
+    selectedSendAsset,
+    sendAmountValidationError
   } = useSend(
     findENSAddress,
     findUnstoppableDomainAddress,
@@ -670,6 +671,7 @@ function Container (props: Props) {
             orderExpiration={orderExpiration}
             slippageTolerance={slippageTolerance}
             swapValidationError={swapValidationError}
+            sendAmountValidationError={sendAmountValidationError}
             toAddressOrUrl={toAddressOrUrl}
             toAddress={toAddress}
             buyAssetOptions={buyAssetOptions}

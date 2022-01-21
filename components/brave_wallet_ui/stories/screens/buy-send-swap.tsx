@@ -10,7 +10,8 @@ import {
   BuySupportedChains,
   SwapSupportedChains,
   SwapValidationErrorType,
-  DefaultCurrencies
+  DefaultCurrencies,
+  AmountValidationErrorType
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -33,6 +34,7 @@ export interface Props {
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
   swapValidationError?: SwapValidationErrorType
+  sendAmountValidationError?: AmountValidationErrorType
   orderExpiration: ExpirationPresetObjectType
   buyAmount: string
   sendAmount: string
@@ -106,6 +108,7 @@ function BuySendSwap (props: Props) {
     sendAssetOptions,
     swapAssetOptions,
     swapValidationError,
+    sendAmountValidationError,
     isFetchingSwapQuote,
     isSwapSubmitDisabled,
     customSlippageTolerance,
@@ -213,6 +216,7 @@ function BuySendSwap (props: Props) {
       }
       {selectedTab === 'send' &&
         <Send
+          amountValidationError={sendAmountValidationError}
           addressError={addressError}
           addressWarning={addressWarning}
           accounts={accounts}

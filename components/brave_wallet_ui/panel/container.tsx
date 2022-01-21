@@ -198,7 +198,8 @@ function Container (props: Props) {
     toAddress,
     addressError,
     addressWarning,
-    selectedSendAsset
+    selectedSendAsset,
+    sendAmountValidationError
   } = useSend(
     findENSAddress,
     findUnstoppableDomainAddress,
@@ -821,6 +822,7 @@ function Container (props: Props) {
                 addressWarning={addressWarning}
                 toAddressOrUrl={toAddressOrUrl}
                 toAddress={toAddress}
+                amountValidationError={sendAmountValidationError}
               />
             </SendWrapper>
           </Panel>

@@ -3,7 +3,8 @@ import {
   UserAccountType,
   BuySendSwapViewTypes,
   ToOrFromType,
-  BraveWallet
+  BraveWallet,
+  AmountValidationErrorType
 } from '../../../constants/types'
 import {
   AccountsAssetsNetworks,
@@ -24,6 +25,7 @@ export interface Props {
   showHeader?: boolean
   addressError: string
   addressWarning: string
+  amountValidationError?: AmountValidationErrorType
   onSubmit: () => void
   onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onSelectAccount: (account: UserAccountType) => void
@@ -51,6 +53,7 @@ function SendTab (props: Props) {
     assetOptions,
     addressError,
     addressWarning,
+    amountValidationError,
     onSubmit,
     onSelectNetwork,
     onSelectAccount,
@@ -117,6 +120,7 @@ function SendTab (props: Props) {
             toAddress={toAddress}
             addressError={addressError}
             addressWarning={addressWarning}
+            amountValidationError={amountValidationError}
             onChangeSendView={onChangeSendView}
             onInputChange={onInputChange}
             onSelectPresetAmount={onSelectPresetAmount}
