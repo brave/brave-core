@@ -662,10 +662,11 @@ TEST_F(BraveWalletProviderImplUnitTest, OnAddEthereumChain) {
       base::BindLambdaForTesting([&run_loop](mojom::ProviderError error,
                                              const std::string& error_message) {
         EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
-        ASSERT_FALSE(error_message.empty());
+        EXPECT_EQ(error_message, "test");
         run_loop.Quit();
       }));
-  provider()->OnAddEthereumChain("0x111", false, std::string());
+  provider()->OnAddEthereumChain(
+      "0x111", mojom::ProviderError::kUserRejectedRequest, "test");
   run_loop.Run();
 
   provider()->AddEthereumChain(
@@ -680,7 +681,8 @@ TEST_F(BraveWalletProviderImplUnitTest, OnAddEthereumChain) {
         EXPECT_EQ(error_message, "response");
         run_loop.Quit();
       }));
-  provider()->OnAddEthereumChain("0x111", false, "response");
+  provider()->OnAddEthereumChain(
+      "0x111", mojom::ProviderError::kUserRejectedRequest, "response");
 }
 
 TEST_F(BraveWalletProviderImplUnitTest,

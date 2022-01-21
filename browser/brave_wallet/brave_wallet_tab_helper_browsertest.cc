@@ -108,6 +108,9 @@ class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
     https_server_->ServeFilesFromDirectory(test_data_dir);
+    https_server_->RegisterRequestHandler(base::BindRepeating(
+        &BraveWalletTabHelperBrowserTest::HandleChainRequest,
+        base::Unretained(this)));
 
     ASSERT_TRUE(https_server_->Start());
   }
@@ -116,6 +119,27 @@ class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
     // HTTPS server only serves a valid cert for localhost, so this is needed
     // to load pages from other hosts without an error.
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
+  }
+  std::unique_ptr<net::test_server::HttpResponse> HandleChainRequest(
+      const net::test_server::HttpRequest& request) {
+    GURL absolute_url = https_server_->GetURL(request.relative_url);
+    if (absolute_url.path() != "/rpc")
+      return nullptr;
+    auto http_response =
+        std::make_unique<net::test_server::BasicHttpResponse>();
+    http_response->set_code(net::HTTP_OK);
+    http_response->set_content(
+        "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x38\"}");
+    return http_response;
+  }
+  GURL GetWalletEthereumChainPageURL() {
+    GURL rpc = https_server()->GetURL("c.com", "/rpc");
+    std::string rpc_query("rpc=" + rpc.spec());
+    GURL::Replacements replacements;
+    replacements.SetQueryStr(rpc_query);
+    auto url =
+        https_server()->GetURL("a.com", "/brave_wallet_ethereum_chain.html");
+    return url.ReplaceComponents(replacements);
   }
 
   net::EmbeddedTestServer* https_server() { return https_server_.get(); }
@@ -127,15 +151,17 @@ class BraveWalletTabHelperBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
                        DoNotHidePanelIfRequestedHIDPermissions) {
-  GURL url =
-      https_server()->GetURL("a.com", "/brave_wallet_ethereum_chain.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  GURL url = GetWalletEthereumChainPageURL();
+  base::RunLoop loop;
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  WaitForLoadStop(contents);
-
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(contents);
+  tab_helper->SetShowBubbleCallbackForTesting(loop.QuitClosure());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  WaitForLoadStop(contents);
+  loop.Run();
+
   ASSERT_TRUE(tab_helper->IsShowingBubble());
   auto* panel_contents = tab_helper->GetBubbleWebContentsForTesting();
   auto close_dialog_callback = ShowChooserBubble(
@@ -153,15 +179,17 @@ IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletTabHelperBrowserTest,
                        HidePanelWhenOthersRequestedHIDPermissions) {
-  GURL url =
-      https_server()->GetURL("a.com", "/brave_wallet_ethereum_chain.html");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  GURL url = GetWalletEthereumChainPageURL();
+  base::RunLoop loop;
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  WaitForLoadStop(contents);
-
   auto* tab_helper =
       brave_wallet::BraveWalletTabHelper::FromWebContents(contents);
+  tab_helper->SetShowBubbleCallbackForTesting(loop.QuitClosure());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  WaitForLoadStop(contents);
+  loop.Run();
+
   ASSERT_TRUE(tab_helper->IsShowingBubble());
   auto close_dialog_callback = ShowChooserBubble(
       contents, std::make_unique<FakeUsbChooserController>(1));

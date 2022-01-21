@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -282,8 +283,8 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
 
     private void addEthereumChain(EthereumChain chain) {
         assert mJsonRpcService != null;
-        mJsonRpcService.addEthereumChain(chain, (chainId, accepted) -> {
-            if (!accepted) {
+        mJsonRpcService.addEthereumChain(chain, (chainId, error, errorMessage) -> {
+            if (error != ProviderError.SUCCESS) {
                 return;
             }
             Intent intent = new Intent();

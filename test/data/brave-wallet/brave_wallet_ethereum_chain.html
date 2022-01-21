@@ -6,7 +6,7 @@
   var chain_added_result = false;
   const url = new URL(window.location.href)
   const id = url.searchParams.get('id');
-
+  const rpc = url.searchParams.get('rpc');
   const data = [{
                      chainId: id ? id : '0x38',
                      chainName: 'Binance1 Smart Chain',
@@ -15,17 +15,19 @@
                          symbol: 'BNB',
                          decimals: 18
                      },
-                     rpcUrls: ['https://bsc-dataseed.binance.org/'],
+                     rpcUrls: [rpc ? decodeURIComponent(rpc) : 'https://bsc-dataseed.binance.org/'],
                      iconUrls: [],
                      blockExplorerUrls: ['https://bscscan.com/'],
                  }]
   window.ethereum.request(
       { method: 'wallet_addEthereumChain', params:data }).then(result => {
+        console.log(result)
         request_finished = true;
         chain_added_result = result === null
       }).catch(error => {
+        console.log(error)
         request_finished = true;
-        chain_added_result = result.code != 4001
+        chain_added_result = error.code != 4001
       })
 </script></head>
 <body></body>

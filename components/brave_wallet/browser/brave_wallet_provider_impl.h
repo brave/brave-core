@@ -122,7 +122,7 @@ class BraveWalletProviderImpl final
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
 
   void OnAddEthereumChain(const std::string& chain_id,
-                          bool accepted,
+                          mojom::ProviderError error,
                           const std::string& error_message);
 
   void OnChainApprovalResult(const std::string& chain_id,
