@@ -179,7 +179,8 @@ def main():
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
 
-    cxx_path = os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1')
+    cxx_path = os.path.abspath(
+        os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1'))
 
     with open(os.path.join(cxx_path, "README.chromium")) as readme_file:
         _VERSION_PREFIX = "Version: "
