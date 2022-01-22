@@ -551,14 +551,18 @@ const util = {
     }
   },
 
-  buildTarget: (options = config.defaultOptions) => {
-    console.log('building ' + config.buildTarget + '...')
+  generateNinjaFiles: (options = config.defaultOptions) => {
+    console.log('generating ninja files...')
 
     if (process.platform === 'win32') {
       util.updateOmahaMidlFiles()
       util.buildRedirectCCTool()
     }
     util.runGnGen(options)
+  },
+
+  buildTarget: (options = config.defaultOptions) => {
+    console.log('building ' + config.buildTarget + '...')
 
     let num_compile_failure = 1
     if (config.ignore_compile_failure)
@@ -574,14 +578,27 @@ const util = {
       const compiler_proxy_binary = path.join(config.gomaDir, util.appendExeIfWin32('compiler_proxy'))
       assert(fs.existsSync(compiler_proxy_binary), 'compiler_proxy not found at ' + config.gomaDir)
       options.env.GOMA_COMPILER_PROXY_BINARY = compiler_proxy_binary
-      const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
-      if (gomaLoginInfo.status !== 0) {
-        console.log('Login required for using Goma. This is only needed once')
-        util.run('goma_auth', ['login'], options)
+
+      // This skips the auth check and make this call instant if compiler_proxy is already running.
+      // If compiler_proxy is not running, it will fail to start if no valid credentials are found.
+      options.env.GOMACTL_SKIP_AUTH = 1
+      const gomaStartInfo = util.runProcess('goma_ctl', ['ensure_start'], options)
+      delete options.env.GOMACTL_SKIP_AUTH
+
+      if (gomaStartInfo.status !== 0) {
+        const gomaLoginInfo = util.runProcess('goma_auth', ['info'], options)
+        if (gomaLoginInfo.status !== 0) {
+          console.log('Login required for using Goma. This is only needed once')
+          util.run('goma_auth', ['login'], options)
+        }
+        util.run('goma_ctl', ['ensure_start'], options)
       }
-      util.run('goma_ctl', ['ensure_start'], options)
       util.run('goma_ctl', ['update_hook'], options)
-      ninjaOpts.push('-j', config.gomaJValue)
+    }
+
+    if (config.isCI && config.use_goma) {
+      util.run('goma_ctl', ['showflags'], options)
+      util.run('goma_ctl', ['stat'], options)
     }
 
     util.run('autoninja', ninjaOpts, options)
