@@ -27,7 +27,9 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
@@ -36,6 +38,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
+import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -44,6 +47,7 @@ import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.SingleTokenBalanceHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.SmoothLineChartEquallySpaced;
@@ -58,7 +62,8 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class AssetDetailActivity extends BraveWalletBaseActivity implements OnWalletListItemClick {
+public class AssetDetailActivity
+        extends BraveWalletBaseActivity implements OnWalletListItemClick, ApprovedTxObserver {
     private SmoothLineChartEquallySpaced chartES;
     private int checkedTimeframeType;
     private String mAssetSymbol;
@@ -69,6 +74,8 @@ public class AssetDetailActivity extends BraveWalletBaseActivity implements OnWa
     private String mChainId;
     private ExecutorService mExecutor;
     private Handler mHandler;
+    private AccountInfo[] accountInfos;
+    private WalletCoinAdapter mWalletTxCoinAdapter;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -207,15 +214,17 @@ public class AssetDetailActivity extends BraveWalletBaseActivity implements OnWa
         RecyclerView rvAccounts = findViewById(R.id.rv_accounts);
         WalletCoinAdapter walletCoinAdapter =
                 new WalletCoinAdapter(WalletCoinAdapter.AdapterType.ACCOUNTS_LIST);
+        mWalletTxCoinAdapter =
+                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         KeyringService keyringService = getKeyringService();
         if (keyringService != null) {
             keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
                 if (keyringInfo != null) {
-                    AccountInfo[] accountInfos = keyringInfo.accountInfos;
+                    accountInfos = keyringInfo.accountInfos;
                     Utils.setUpTransactionList(accountInfos, mAssetRatioService, mEthTxService,
                             null, null, mAssetSymbol, mContractAddress, mAssetDecimals,
                             findViewById(R.id.rv_transactions), this, this, mChainId,
-                            mJsonRpcService);
+                            mJsonRpcService, mWalletTxCoinAdapter);
 
                     SingleTokenBalanceHelper singleTokenBalanceHelper =
                             new SingleTokenBalanceHelper(
@@ -263,7 +272,6 @@ public class AssetDetailActivity extends BraveWalletBaseActivity implements OnWa
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-
         getPriceHistory(mAssetSymbol, "usd", AssetPriceTimeframe.ONE_DAY);
         getPrice(mAssetSymbol, "btc", AssetPriceTimeframe.LIVE);
         setUpAccountList();
@@ -282,7 +290,15 @@ public class AssetDetailActivity extends BraveWalletBaseActivity implements OnWa
 
     @Override
     public void onTransactionClick(TransactionInfo txInfo) {
-        Utils.openTransaction(txInfo, mJsonRpcService, this);
+        Utils.openTransaction(txInfo, mJsonRpcService, this, accountInfos);
+    }
+
+    @Override
+    public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {}
+
+    @Override
+    public void onTransactionStatusChanged(TransactionInfo txInfo) {
+        mWalletTxCoinAdapter.onTransactionUpdate(txInfo);
     }
 
     @Override

@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,8 +63,10 @@ import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
+import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
+import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
 import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
@@ -941,31 +944,49 @@ public class Utils {
         return stripAccountAddress(address);
     }
 
-    public static void openTransaction(
-            TransactionInfo txInfo, JsonRpcService jsonRpcService, Activity activity) {
-        if (txInfo == null || txInfo.txHash == null || txInfo.txHash.isEmpty()) {
-            return;
-        }
-        assert jsonRpcService != null;
-        jsonRpcService.getChainId(chainId -> {
-            jsonRpcService.getAllNetworks(networks -> {
-                for (EthereumChain network : networks) {
-                    if (!chainId.equals(network.chainId)) {
-                        continue;
+    public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
+            AppCompatActivity activity, String accountName) {
+        assert txInfo != null;
+        if (txInfo.txStatus == TransactionStatus.UNAPPROVED) {
+            if (activity instanceof ApprovedTxObserver) {
+                showApproveDialog(txInfo, accountName, activity, ((ApprovedTxObserver) activity));
+                return;
+            }
+            throw new RuntimeException("Activity must implement ApprovedTxObserver");
+        } else {
+            if (txInfo.txHash == null) {
+                return;
+            }
+            assert jsonRpcService != null;
+            jsonRpcService.getChainId(chainId -> {
+                jsonRpcService.getAllNetworks(networks -> {
+                    for (EthereumChain network : networks) {
+                        if (!chainId.equals(network.chainId)) {
+                            continue;
+                        }
+                        String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
+                        if (blockExplorerUrl.length() > 2) {
+                            blockExplorerUrl =
+                                    blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1)
+                                    + "/tx/" + txInfo.txHash;
+                            TabUtils.openUrlInNewTab(false, blockExplorerUrl);
+                            TabUtils.bringChromeTabbedActivityToTheTop(activity);
+                            break;
+                        }
                     }
-                    String blockExplorerUrl = Arrays.toString(network.blockExplorerUrls);
-                    if (blockExplorerUrl.length() > 2) {
-                        blockExplorerUrl =
-                                blockExplorerUrl.substring(1, blockExplorerUrl.length() - 1)
-                                + "/tx/" + txInfo.txHash;
-
-                        TabUtils.openUrlInNewTab(false, blockExplorerUrl);
-                        TabUtils.bringChromeTabbedActivityToTheTop(activity);
-                        break;
-                    }
-                }
+                });
             });
-        });
+        }
+    }
+
+    public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
+            AppCompatActivity activity, AccountInfo[] accountInfos) {
+        assert txInfo != null;
+        String to = txInfo.txData.baseData.to;
+        if (txInfo.txType == TransactionType.ERC20_TRANSFER && txInfo.txArgs.length > 1) {
+            to = txInfo.txArgs[0];
+        }
+        openTransaction(txInfo, jsonRpcService, activity, getAccountName(accountInfos, to));
     }
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,
@@ -973,7 +994,7 @@ public class Utils {
             BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
             String assetSymbol, String contractAddress, int assetDecimals,
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
-            String chainId, JsonRpcService jsonRpcService) {
+            String chainId, JsonRpcService jsonRpcService, WalletCoinAdapter walletTxCoinAdapter) {
         assert jsonRpcService != null;
         jsonRpcService.getAllNetworks(networks -> {
             String chainSymbol = "ETH";
@@ -1006,7 +1027,8 @@ public class Utils {
                                         Double.valueOf(tempPrice), ethTxService, blockchainRegistry,
                                         contractAddress, rvTransactions, callback, context,
                                         assetSymbol, assetDecimals, chainId, assetRatioService,
-                                        braveWalletService, finalChainSymbol, finalChainDecimals);
+                                        braveWalletService, finalChainSymbol, finalChainDecimals,
+                                        walletTxCoinAdapter);
                             } catch (NumberFormatException exc) {
                             }
 
@@ -1028,7 +1050,8 @@ public class Utils {
                                                 blockchainRegistry, contractAddress, rvTransactions,
                                                 callback, context, assetSymbol, assetDecimals,
                                                 chainId, assetRatioService, braveWalletService,
-                                                finalChainSymbol, finalChainDecimals);
+                                                finalChainSymbol, finalChainDecimals,
+                                                walletTxCoinAdapter);
                                     } catch (NumberFormatException exc) {
                                     }
                                 });
@@ -1041,7 +1064,7 @@ public class Utils {
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
             AssetRatioService assetRatioService, BraveWalletService braveWalletService,
-            String chainSymbol, int chainDecimals) {
+            String chainSymbol, int chainDecimals, WalletCoinAdapter walletTxCoinAdapter) {
         assert ethTxService != null;
         PendingTxHelper pendingTxHelper =
                 new PendingTxHelper(ethTxService, accountInfos, true, contractAddress);
@@ -1050,11 +1073,12 @@ public class Utils {
             if (assetSymbol != null && assetDecimals != 0) {
                 workWithTransactions(accountInfos, chainSymbolPrice, assetPrice, rvTransactions,
                         callback, context, assetSymbol, assetDecimals, pendingTxInfos, null, null,
-                        null, chainSymbol, chainDecimals);
+                        null, chainSymbol, chainDecimals, walletTxCoinAdapter);
             } else {
                 fetchAssetsPricesDecimals(accountInfos, chainSymbolPrice, assetPrice,
                         blockchainRegistry, rvTransactions, callback, context, pendingTxInfos,
-                        chainId, assetRatioService, braveWalletService, chainSymbol, chainDecimals);
+                        chainId, assetRatioService, braveWalletService, chainSymbol, chainDecimals,
+                        walletTxCoinAdapter);
             }
         });
     }
@@ -1064,7 +1088,7 @@ public class Utils {
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
             HashMap<String, TransactionInfo[]> pendingTxInfos, String chainId,
             AssetRatioService assetRatioService, BraveWalletService braveWalletService,
-            String chainSymbol, int chainDecimals) {
+            String chainSymbol, int chainDecimals, WalletCoinAdapter walletTxCoinAdapter) {
         assert chainId != null;
         assert blockchainRegistry != null;
         TokenUtils.getAllTokensFiltered(braveWalletService, blockchainRegistry, chainId, tokens -> {
@@ -1101,7 +1125,7 @@ public class Utils {
             }
             fetchAssetsPrices(accountInfos, chainSymbolPrice, assetPrice, rvTransactions, callback,
                     context, pendingTxInfos, assets, assetsDecimals, assetRatioService, chainSymbol,
-                    chainDecimals);
+                    chainDecimals, walletTxCoinAdapter);
         });
     }
 
@@ -1109,13 +1133,15 @@ public class Utils {
             double assetPrice, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, HashMap<String, TransactionInfo[]> pendingTxInfos,
             HashMap<String, String> assets, HashMap<String, Integer> assetsDecimals,
-            AssetRatioService assetRatioService, String chainSymbol, int chainDecimals) {
+            AssetRatioService assetRatioService, String chainSymbol, int chainDecimals,
+            WalletCoinAdapter walletTxCoinAdapter) {
         AssetsPricesHelper assetsPricesHelper =
                 new AssetsPricesHelper(assetRatioService, new HashSet<String>(assets.values()));
         assetsPricesHelper.fetchPrices(() -> {
             workWithTransactions(accountInfos, chainSymbolPrice, assetPrice, rvTransactions,
                     callback, context, "", 0, pendingTxInfos, assets, assetsDecimals,
-                    assetsPricesHelper.getAssetsPrices(), chainSymbol, chainDecimals);
+                    assetsPricesHelper.getAssetsPrices(), chainSymbol, chainDecimals,
+                    walletTxCoinAdapter);
         });
     }
 
@@ -1124,149 +1150,169 @@ public class Utils {
             Context context, String assetSymbol, int assetDecimals,
             HashMap<String, TransactionInfo[]> pendingTxInfos, HashMap<String, String> assets,
             HashMap<String, Integer> assetsDecimals, HashMap<String, Double> assetsPrices,
-            String chainSymbol, int chainDecimals) {
-        WalletCoinAdapter walletCoinAdapter =
-                new WalletCoinAdapter(WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
+            String chainSymbol, int chainDecimals, WalletCoinAdapter walletTxCoinAdapter) {
+        walletTxCoinAdapter.setWalletCoinAdapterType(
+                WalletCoinAdapter.AdapterType.VISIBLE_ASSETS_LIST);
         List<WalletListItemModel> walletListItemModelList = new ArrayList<>();
         for (String accountName : pendingTxInfos.keySet()) {
             TransactionInfo[] txInfos = pendingTxInfos.get(accountName);
             for (TransactionInfo txInfo : txInfos) {
-                if (assets != null) {
-                    assert assetsDecimals != null;
-                    assert assetsPrices != null;
-                    String assetTemp = assets.get(txInfo.id);
-                    if (assetTemp != null) {
-                        assetSymbol = assetTemp;
-                    }
-                    Integer assetDecimalsTemp = assetsDecimals.get(assetSymbol);
-                    if (assetDecimalsTemp != null) {
-                        assetDecimals = assetDecimalsTemp;
-                    }
-                    Double assetPriceTemp =
-                            assetsPrices.get(assetSymbol.toLowerCase(Locale.getDefault()));
-                    if (assetPriceTemp != null) {
-                        assetPrice = assetPriceTemp;
-                    }
-                }
-                String valueAsset = txInfo.txData.baseData.value;
-                String to = txInfo.txData.baseData.to;
-                Date date = new Date(txInfo.createdTime.microseconds / 1000);
-                DateFormat dateFormat =
-                        new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
-                String strDate = dateFormat.format(date);
-                String valueToDisplay = String.format(
-                        Locale.getDefault(), "%.4f", Utils.fromHexWei(valueAsset, assetDecimals));
-                String actionFiatValue = "0.00";
-                try {
-                    actionFiatValue = String.format(Locale.getDefault(), "%.2f",
-                            Double.valueOf(valueToDisplay) * assetPrice);
-                } catch (NumberFormatException exc) {
-                }
-                String action = String.format(
-                        context.getResources().getString(R.string.wallet_tx_info_sent), accountName,
-                        valueToDisplay, assetSymbol, actionFiatValue, strDate);
-                String detailInfo = accountName + " -> " + Utils.getAccountName(accountInfos, to);
-                if (txInfo.txType == TransactionType.ERC20_TRANSFER && txInfo.txArgs.length > 1) {
-                    valueAsset = txInfo.txArgs[1];
-                    to = txInfo.txArgs[0];
-                    valueToDisplay = String.format(Locale.getDefault(), "%.4f",
-                            Utils.fromHexWei(valueAsset, assetDecimals));
-                    try {
-                        actionFiatValue = String.format(Locale.getDefault(), "%.2f",
-                                Double.valueOf(valueToDisplay) * assetPrice);
-                    } catch (NumberFormatException exc) {
-                    }
-                    action = String.format(
-                            context.getResources().getString(R.string.wallet_tx_info_sent),
-                            accountName, valueToDisplay, assetSymbol, actionFiatValue, strDate);
-                    detailInfo = accountName + " -> " + Utils.getAccountName(accountInfos, to);
-                } else if (txInfo.txType == TransactionType.ERC20_APPROVE) {
-                    action = String.format(
-                            context.getResources().getString(R.string.wallet_tx_info_approved),
-                            accountName, assetSymbol, strDate);
-                    detailInfo = String.format(context.getResources().getString(
-                                                       R.string.wallet_tx_info_approved_unlimited),
-                            assetSymbol, "0x Exchange Proxy");
-                    valueToDisplay = "0.0000 " + assetSymbol;
-                }
-                if (txInfo.txData.baseData.to.toLowerCase(Locale.getDefault())
-                                .equals(Utils.SWAP_EXCHANGE_PROXY.toLowerCase(
-                                        Locale.getDefault()))) {
-                    action = String.format(
-                            context.getResources().getString(R.string.wallet_tx_info_swap),
-                            accountName, strDate);
-                    detailInfo = String.format(Locale.getDefault(), "%.4f",
-                                         Utils.fromHexWei(valueAsset, 18))
-                            + " ETH -> "
-                            + "0x Exchange Proxy";
-                    valueToDisplay = "0.0000 ETH";
-                }
-                WalletListItemModel itemModel =
-                        new WalletListItemModel(R.drawable.ic_eth, action, detailInfo, null, null);
-                String txStatus =
-                        context.getResources().getString(R.string.wallet_tx_status_unapproved);
-                Bitmap txStatusBitmap = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
-                Canvas c = new Canvas(txStatusBitmap);
-                Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
-                switch (txInfo.txStatus) {
-                    case TransactionStatus.UNAPPROVED:
-                        p.setColor(0xFF5E6175);
-                        txStatus = context.getResources().getString(
-                                R.string.wallet_tx_status_unapproved);
-                        break;
-                    case TransactionStatus.APPROVED:
-                        p.setColor(0xFF2AC194);
-                        txStatus = context.getResources().getString(
-                                R.string.wallet_tx_status_approved);
-                        break;
-                    case TransactionStatus.REJECTED:
-                        p.setColor(0xFFEE6374);
-                        txStatus = context.getResources().getString(
-                                R.string.wallet_tx_status_rejected);
-                        break;
-                    case TransactionStatus.SUBMITTED:
-                        p.setColor(0xFFFFD43B);
-                        txStatus = context.getResources().getString(
-                                R.string.wallet_tx_status_submitted);
-                        break;
-                    case TransactionStatus.CONFIRMED:
-                        p.setColor(0xFF2AC194);
-                        txStatus = context.getResources().getString(
-                                R.string.wallet_tx_status_confirmed);
-                        break;
-                    case TransactionStatus.ERROR:
-                    default:
-                        p.setColor(0xFFEE6374);
-                        txStatus =
-                                context.getResources().getString(R.string.wallet_tx_status_error);
-                }
-                itemModel.setTxStatus(txStatus);
-                c.drawCircle(15, 15, 15, p);
-                itemModel.setTxStatusBitmap(txStatusBitmap);
-                boolean isEIP1559 = !txInfo.txData.maxPriorityFeePerGas.isEmpty()
-                        && !txInfo.txData.maxFeePerGas.isEmpty();
-                double totalGas = isEIP1559
-                        ? Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
-                                                   txInfo.txData.maxFeePerGas),
-                                18)
-                        : Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
-                                                   txInfo.txData.baseData.gasPrice),
-                                18);
-                double totalGasFiat = totalGas * chainSymbolPrice;
-                itemModel.setChainSymbol(chainSymbol);
-                itemModel.setChainDecimals(chainDecimals);
-                itemModel.setTotalGas(totalGas);
-                itemModel.setTotalGasFiat(totalGasFiat);
-                itemModel.setAddressesForBitmap(txInfo.fromAddress, to);
-                itemModel.setTransactionInfo(txInfo);
+                WalletListItemModel itemModel = makeWalletItem(accountInfos, chainSymbolPrice,
+                        assetPrice, context, assetSymbol, assetDecimals, assets, assetsDecimals,
+                        assetsPrices, chainSymbol, chainDecimals, txInfo, accountName);
                 walletListItemModelList.add(itemModel);
             }
         }
-        walletCoinAdapter.setWalletListItemModelList(walletListItemModelList);
-        walletCoinAdapter.setOnWalletListItemClick(callback);
-        walletCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
-        rvTransactions.setAdapter(walletCoinAdapter);
+        walletTxCoinAdapter.setWalletListItemModelList(walletListItemModelList);
+        walletTxCoinAdapter.setOnWalletListItemClick(callback);
+        walletTxCoinAdapter.setWalletListItemType(Utils.TRANSACTION_ITEM);
+        rvTransactions.setAdapter(walletTxCoinAdapter);
         rvTransactions.setLayoutManager(new LinearLayoutManager(context));
+    }
+
+    private static WalletListItemModel makeWalletItem(AccountInfo[] accountInfos,
+            double chainSymbolPrice, double assetPrice, Context context, String assetSymbol,
+            int assetDecimals, HashMap<String, String> assets,
+            HashMap<String, Integer> assetsDecimals, HashMap<String, Double> assetsPrices,
+            String chainSymbol, int chainDecimals, TransactionInfo txInfo, String accountName) {
+        if (assets != null) {
+            assert assetsDecimals != null;
+            assert assetsPrices != null;
+            String assetTemp = assets.get(txInfo.id);
+            if (assetTemp != null) {
+                assetSymbol = assetTemp;
+            }
+            Integer assetDecimalsTemp = assetsDecimals.get(assetSymbol);
+            if (assetDecimalsTemp != null) {
+                assetDecimals = assetDecimalsTemp;
+            }
+            Double assetPriceTemp = assetsPrices.get(assetSymbol.toLowerCase(Locale.getDefault()));
+            if (assetPriceTemp != null) {
+                assetPrice = assetPriceTemp;
+            }
+        }
+        String valueAsset = txInfo.txData.baseData.value;
+        String to = txInfo.txData.baseData.to;
+        Date date = new Date(txInfo.createdTime.microseconds / 1000);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
+        String strDate = dateFormat.format(date);
+        String valueToDisplay = String.format(
+                Locale.getDefault(), "%.4f", Utils.fromHexWei(valueAsset, assetDecimals));
+        String actionFiatValue = "0.00";
+        try {
+            actionFiatValue = String.format(
+                    Locale.getDefault(), "%.2f", Double.valueOf(valueToDisplay) * assetPrice);
+        } catch (NumberFormatException exc) {
+        }
+        String action =
+                String.format(context.getResources().getString(R.string.wallet_tx_info_sent),
+                        accountName, valueToDisplay, assetSymbol, actionFiatValue, strDate);
+        String detailInfo = accountName + " -> " + Utils.getAccountName(accountInfos, to);
+        if (txInfo.txType == TransactionType.ERC20_TRANSFER && txInfo.txArgs.length > 1) {
+            valueAsset = txInfo.txArgs[1];
+            to = txInfo.txArgs[0];
+            valueToDisplay = String.format(
+                    Locale.getDefault(), "%.4f", Utils.fromHexWei(valueAsset, assetDecimals));
+            try {
+                actionFiatValue = String.format(
+                        Locale.getDefault(), "%.2f", Double.valueOf(valueToDisplay) * assetPrice);
+            } catch (NumberFormatException exc) {
+            }
+            action = String.format(context.getResources().getString(R.string.wallet_tx_info_sent),
+                    accountName, valueToDisplay, assetSymbol, actionFiatValue, strDate);
+            detailInfo = accountName + " -> " + Utils.getAccountName(accountInfos, to);
+        } else if (txInfo.txType == TransactionType.ERC20_APPROVE) {
+            action = String.format(
+                    context.getResources().getString(R.string.wallet_tx_info_approved), accountName,
+                    assetSymbol, strDate);
+            detailInfo = String.format(
+                    context.getResources().getString(R.string.wallet_tx_info_approved_unlimited),
+                    assetSymbol, "0x Exchange Proxy");
+            valueToDisplay = "0.0000 " + assetSymbol;
+        }
+        if (txInfo.txData.baseData.to.toLowerCase(Locale.getDefault())
+                        .equals(Utils.SWAP_EXCHANGE_PROXY.toLowerCase(Locale.getDefault()))) {
+            action = String.format(context.getResources().getString(R.string.wallet_tx_info_swap),
+                    accountName, strDate);
+            detailInfo =
+                    String.format(Locale.getDefault(), "%.4f", Utils.fromHexWei(valueAsset, 18))
+                    + " ETH -> "
+                    + "0x Exchange Proxy";
+            valueToDisplay = "0.0000 ETH";
+        }
+        WalletListItemModel itemModel =
+                new WalletListItemModel(R.drawable.ic_eth, action, detailInfo, null, null);
+        updateWalletCoinTransactionStatus(itemModel, context, txInfo);
+        boolean isEIP1559 = !txInfo.txData.maxPriorityFeePerGas.isEmpty()
+                && !txInfo.txData.maxFeePerGas.isEmpty();
+        double totalGas = isEIP1559
+                ? Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
+                                           txInfo.txData.maxFeePerGas),
+                        18)
+                : Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
+                                           txInfo.txData.baseData.gasPrice),
+                        18);
+        double totalGasFiat = totalGas * chainSymbolPrice;
+        itemModel.setChainSymbol(chainSymbol);
+        itemModel.setChainDecimals(chainDecimals);
+        itemModel.setTotalGas(totalGas);
+        itemModel.setTotalGasFiat(totalGasFiat);
+        itemModel.setAddressesForBitmap(txInfo.fromAddress, to);
+        itemModel.setTransactionInfo(txInfo);
+
+        return itemModel;
+    }
+
+    public static void updateWalletCoinTransactionItem(
+            WalletListItemModel item, TransactionInfo txInfo, Context context) {
+        item.setTransactionInfo(txInfo);
+        updateWalletCoinTransactionStatus(item, context, txInfo);
+    }
+
+    private static void showApproveDialog(TransactionInfo txInfo, String accountName,
+            AppCompatActivity activity, ApprovedTxObserver approvedTxObserver) {
+        ApproveTxBottomSheetDialogFragment approveTxBottomSheetDialogFragment =
+                ApproveTxBottomSheetDialogFragment.newInstance(txInfo, accountName);
+        approveTxBottomSheetDialogFragment.setApprovedTxObserver(approvedTxObserver);
+        approveTxBottomSheetDialogFragment.show(activity.getSupportFragmentManager(),
+                ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT);
+    }
+
+    private static void updateWalletCoinTransactionStatus(
+            WalletListItemModel itemModel, Context context, TransactionInfo txInfo) {
+        String txStatus = context.getResources().getString(R.string.wallet_tx_status_unapproved);
+        Bitmap txStatusBitmap = Bitmap.createBitmap(30, 30, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(txStatusBitmap);
+        Paint p = new Paint(Paint.ANTI_ALIAS_FLAG);
+        switch (txInfo.txStatus) {
+            case TransactionStatus.UNAPPROVED:
+                p.setColor(0xFF5E6175);
+                txStatus = context.getResources().getString(R.string.wallet_tx_status_unapproved);
+                break;
+            case TransactionStatus.APPROVED:
+                p.setColor(0xFF2AC194);
+                txStatus = context.getResources().getString(R.string.wallet_tx_status_approved);
+                break;
+            case TransactionStatus.REJECTED:
+                p.setColor(0xFFEE6374);
+                txStatus = context.getResources().getString(R.string.wallet_tx_status_rejected);
+                break;
+            case TransactionStatus.SUBMITTED:
+                p.setColor(0xFFFFD43B);
+                txStatus = context.getResources().getString(R.string.wallet_tx_status_submitted);
+                break;
+            case TransactionStatus.CONFIRMED:
+                p.setColor(0xFF2AC194);
+                txStatus = context.getResources().getString(R.string.wallet_tx_status_confirmed);
+                break;
+            case TransactionStatus.ERROR:
+            default:
+                p.setColor(0xFFEE6374);
+                txStatus = context.getResources().getString(R.string.wallet_tx_status_error);
+        }
+        itemModel.setTxStatus(txStatus);
+        c.drawCircle(15, 15, 15, p);
+        itemModel.setTxStatusBitmap(txStatusBitmap);
     }
 
     public static void warnWhenError(

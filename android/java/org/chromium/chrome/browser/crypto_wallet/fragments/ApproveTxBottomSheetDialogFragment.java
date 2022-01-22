@@ -42,6 +42,8 @@ import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
@@ -88,11 +90,16 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     private AssetRatioService getAssetRatioService() {
+        // TODO: Refactor to interface
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
             return ((BuySendSwapActivity) activity).getAssetRatioService();
         } else if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getAssetRatioService();
+        } else if (activity instanceof AccountDetailActivity) {
+            return ((AccountDetailActivity) activity).getAssetRatioService();
+        } else if (activity instanceof AssetDetailActivity) {
+            return ((AssetDetailActivity) activity).getAssetRatioService();
         }
 
         return null;
@@ -104,6 +111,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             return ((BuySendSwapActivity) activity).getEthTxService();
         } else if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getEthTxService();
+        } else if (activity instanceof AccountDetailActivity) {
+            return ((AccountDetailActivity) activity).getEthTxService();
+        } else if (activity instanceof AssetDetailActivity) {
+            return ((AssetDetailActivity) activity).getEthTxService();
         }
 
         return null;
@@ -115,6 +126,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             return ((BuySendSwapActivity) activity).getJsonRpcService();
         } else if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getJsonRpcService();
+        } else if (activity instanceof AccountDetailActivity) {
+            return ((AccountDetailActivity) activity).getJsonRpcService();
+        } else if (activity instanceof AssetDetailActivity) {
+            return ((AssetDetailActivity) activity).getJsonRpcService();
         }
 
         return null;
@@ -126,6 +141,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             return ((BuySendSwapActivity) activity).getBlockchainRegistry();
         } else if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getBlockchainRegistry();
+        } else if (activity instanceof AccountDetailActivity) {
+            return ((AccountDetailActivity) activity).getBlockchainRegistry();
+        } else if (activity instanceof AssetDetailActivity) {
+            return ((AssetDetailActivity) activity).getBlockchainRegistry();
         }
 
         return null;
@@ -137,8 +156,11 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
             return ((BuySendSwapActivity) activity).getBraveWalletService();
         } else if (activity instanceof BraveWalletActivity) {
             return ((BraveWalletActivity) activity).getBraveWalletService();
+        } else if (activity instanceof AccountDetailActivity) {
+            return ((AccountDetailActivity) activity).getBraveWalletService();
+        } else if (activity instanceof AssetDetailActivity) {
+            return ((AssetDetailActivity) activity).getBraveWalletService();
         }
-
         return null;
     }
 
