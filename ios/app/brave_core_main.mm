@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+#include "base/base_switches.h"
 #include "base/compiler_specific.h"
 #include "base/logging.h"
 #include "base/strings/sys_string_conversions.h"
@@ -15,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/skus/browser/switches.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
@@ -29,8 +31,10 @@
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_web_client.h"
 #include "brave/ios/browser/component_updater/component_updater_utils.h"
+#include "components/component_updater/component_updater_switches.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/keyed_service/core/service_access_type.h"
+#include "components/sync/base/sync_base_switches.h"
 #include "ios/chrome/app/startup/provider_registration.h"
 #include "ios/chrome/app/startup_tasks.h"
 #include "ios/chrome/browser/application_context.h"
@@ -50,6 +54,15 @@
 // question
 static BraveCoreLogHandler _Nullable _logHandler = nil;
 
+const BraveCoreSwitch BraveCoreSwitchComponentUpdater =
+    base::SysUTF8ToNSString(switches::kComponentUpdater);
+const BraveCoreSwitch BraveCoreSwitchVModule =
+    base::SysUTF8ToNSString(switches::kVModule);
+const BraveCoreSwitch BraveCoreSwitchSyncURL =
+    base::SysUTF8ToNSString(switches::kSyncServiceURL);
+const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
+    base::SysUTF8ToNSString(skus::switches::kSkusEnv);
+
 @interface BraveCoreMain () {
   std::unique_ptr<BraveWebClient> _webClient;
   std::unique_ptr<BraveMainDelegate> _delegate;
@@ -65,11 +78,12 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
 @implementation BraveCoreMain
 
 - (instancetype)initWithUserAgent:(NSString*)userAgent {
-  return [self initWithUserAgent:userAgent syncServiceURL:@""];
+  return [self initWithUserAgent:userAgent additionalSwitches:@{}];
 }
 
 - (instancetype)initWithUserAgent:(NSString*)userAgent
-                   syncServiceURL:(NSString*)syncServiceURL {
+               additionalSwitches:(NSDictionary<BraveCoreSwitch, NSString*>*)
+                                      additionalSwitches {
   if ((self = [super init])) {
     [[NSNotificationCenter defaultCenter]
         addObserver:self
@@ -95,9 +109,30 @@ static BraveCoreLogHandler _Nullable _logHandler = nil;
     web::SetWebClient(_webClient.get());
 
     _delegate.reset(new BraveMainDelegate());
-    _delegate->SetSyncServiceURL(base::SysNSStringToUTF8(syncServiceURL));
 
     web::WebMainParams params(_delegate.get());
+    NSMutableArray* arguments =
+        [[[NSProcessInfo processInfo] arguments] mutableCopy];
+    NSMutableArray* switches = [[NSMutableArray alloc] init];
+    for (NSString* key in additionalSwitches) {
+      if (![additionalSwitches[key] isKindOfClass:NSString.class]) {
+        continue;
+      }
+      [switches
+          addObject:[NSString stringWithFormat:@"--%@=%@", key,
+                                               static_cast<NSString*>(
+                                                   additionalSwitches[key])]];
+    }
+    [arguments addObjectsFromArray:switches];
+    params.argc = [arguments count];
+    const char* argv[params.argc];
+    std::vector<std::string> argv_store;
+    argv_store.resize([arguments count]);
+    for (NSUInteger i = 0; i < [arguments count]; i++) {
+      argv_store[i] = base::SysNSStringToUTF8([arguments objectAtIndex:i]);
+      argv[i] = argv_store[i].c_str();
+    }
+    params.argv = argv;
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
     ios::GetChromeBrowserProvider().Initialize();

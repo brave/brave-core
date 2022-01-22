@@ -18,6 +18,25 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef NSString* BraveCoreSwitch NS_STRING_ENUM;
+/// Overrides the component updater source. Defaults to the CI provided value
+///
+/// Expected value: url-source={url}
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchComponentUpdater;
+/// Overrides Chromium VLOG verbosity. Defaults to only printing from folders
+/// existing within a `brave` subfolder up to level 5.
+///
+/// Expected value: {folder-expression}={level}
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchVModule;
+/// Overrides the sync service base URL. Defaults to the CI provided value
+///
+/// Expected value: A URL string
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchSyncURL;
+/// Overrides the SKUs environment. Defaults to production (when not provided)
+///
+/// Expected value: `production`, `development`, or `staging`
+OBJC_EXPORT const BraveCoreSwitch BraveCoreSwitchSkusEnvironment;
+
 typedef bool (^BraveCoreLogHandler)(int severity,
                                     NSString* file,
                                     int line,
@@ -42,7 +61,8 @@ OBJC_EXPORT
 - (instancetype)initWithUserAgent:(NSString*)userAgent;
 
 - (instancetype)initWithUserAgent:(NSString*)userAgent
-                   syncServiceURL:(NSString*)syncServiceURL;
+               additionalSwitches:(NSDictionary<BraveCoreSwitch, NSString*>*)
+                                      additionalSwitches;
 
 - (void)scheduleLowPriorityStartupTasks;
 

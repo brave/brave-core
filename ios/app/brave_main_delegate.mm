@@ -41,7 +41,7 @@ std::string GetUpdateURLHost() {
 
 }  // namespace
 
-BraveMainDelegate::BraveMainDelegate() : brave_sync_service_url_(kBraveSyncServiceURL) {
+BraveMainDelegate::BraveMainDelegate() {
   base::FilePath path;
   base::PathService::Get(base::DIR_MODULE, &path);
   base::mac::SetOverrideFrameworkBundlePath(path);
@@ -49,10 +49,6 @@ BraveMainDelegate::BraveMainDelegate() : brave_sync_service_url_(kBraveSyncServi
 }
 
 BraveMainDelegate::~BraveMainDelegate() {}
-
-void BraveMainDelegate::SetSyncServiceURL(const std::string& url) {
-  brave_sync_service_url_ = url.empty() ? std::string(kBraveSyncServiceURL) : url;
-}
 
 void BraveMainDelegate::BasicStartupComplete() {
   auto* command_line(base::CommandLine::ForCurrentProcess());
@@ -67,13 +63,21 @@ void BraveMainDelegate::BasicStartupComplete() {
   command_line->AppendSwitchASCII(switches::kDisableSyncTypes, syncer::ModelTypeSetToString(disabledTypes));
   command_line->AppendSwitch(switches::kDisableEnterprisePolicy);
 
-  std::string source = "url-source=" + ::GetUpdateURLHost();
-  command_line->AppendSwitchASCII(switches::kComponentUpdater, source.c_str());
+  if (!command_line->HasSwitch(switches::kComponentUpdater)) {
+    std::string source = "url-source=" + ::GetUpdateURLHost();
+    command_line->AppendSwitchASCII(switches::kComponentUpdater,
+                                    source.c_str());
+  }
 
   // Brave's sync protocol does not use the sync service url
-  command_line->AppendSwitchASCII(switches::kSyncServiceURL,
-                                 brave_sync_service_url_.c_str());
-  command_line->AppendSwitchASCII(switches::kVModule, "*/brave/*=5");
+  if (!command_line->HasSwitch(switches::kSyncServiceURL)) {
+    command_line->AppendSwitchASCII(switches::kSyncServiceURL,
+                                    kBraveSyncServiceURL);
+  }
+
+  if (!command_line->HasSwitch(switches::kVModule)) {
+    command_line->AppendSwitchASCII(switches::kVModule, "*/brave/*=5");
+  }
 
   IOSChromeMainDelegate::BasicStartupComplete();
 }
