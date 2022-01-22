@@ -3,8 +3,14 @@ import * as React from 'react'
 import * as S from './style'
 import Toggle from '../../../../../web-components/toggle'
 import { getLocale } from '../../../../../common/locale'
-import getPanelBrowserAPI from '../../api/panel_browser_api'
-import { useTrackerOptions } from './hooks'
+import getPanelBrowserAPI, { AdBlockMode } from '../../api/panel_browser_api'
+import DataContext from '../../state/context'
+
+const adBlockOptions = [
+  { value: AdBlockMode.AGGRESSIVE, text: getLocale('braveShieldsTrackersAndAdsBlockedAgg') },
+  { value: AdBlockMode.STANDARD, text: getLocale('braveShieldsTrackersAndAdsBlockedStd') },
+  { value: AdBlockMode.ALLOW, text: getLocale('braveShieldsTrackersAndAdsAllowAll') }
+]
 
 function GlobalSettings () {
   const handleAnchorClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -35,7 +41,7 @@ function GlobalSettings () {
 }
 
 function AdvancedControlsContent () {
-  const { adControlType, adControlTypeOptions, handleAdControlTypeChange } = useTrackerOptions()
+  const { adBlock } = React.useContext(DataContext)
 
   const cookiesOptions = [
     { text: getLocale('braveShieldsCrossCookiesBlocked') },
@@ -66,11 +72,11 @@ function AdvancedControlsContent () {
             <span>10</span>
           </S.ControlCount>
           <select
-            value={adControlType}
+            value={adBlock?.mode}
             aria-label={getLocale('braveShieldsTrackersAndAds')}
-            onChange={handleAdControlTypeChange}
+            onChange={adBlock?.handleModeChange}
           >
-            {adControlTypeOptions.map((entry, i) => {
+            {adBlockOptions.map((entry, i) => {
               return (
                 <option value={entry.value} key={i}>
                   {entry.text}

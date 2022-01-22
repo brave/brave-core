@@ -4,13 +4,13 @@ import * as S from './style'
 import { FabulouslyLargeToggle } from '../../../../../web-components/toggle'
 import AdvancedControlsContent from '../advanced-controls-content'
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
-import { useGetShieldsData } from './hooks'
+import DataContext from '../../state/context'
 
 function MainPanel () {
   const [isExpanded, setIsExpanded] = React.useState(false)
   const braveShieldsUp = splitStringForTag(getLocale('braveShieldsUp'))
   const braveShieldsBlockedNote = splitStringForTag(getLocale('braveShieldsBlockedNote'))
-  const { siteBlockInfo } = useGetShieldsData()
+  const { siteBlockInfo } = React.useContext(DataContext)
 
   return (
     <S.Box>

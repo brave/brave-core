@@ -7,6 +7,8 @@ import MainPanel from '../components/main-panel'
 import shieldsDarkTheme from '../theme/shields-dark'
 import shieldsLightTheme from '../theme/shields-light'
 import ThemeProvider from '../../../../common/StorybookThemeProvider'
+import DataContext from '../state/context'
+import { AdBlockMode } from '../api/panel_browser_api'
 
 export default {
   title: 'ShieldsV2/Panels',
@@ -17,8 +19,31 @@ export default {
     locked: { control: { type: 'boolean', lock: false } }
   },
   decorators: [
-    (Story: any) => <ThemeProvider darkTheme={shieldsDarkTheme}
-    lightTheme={shieldsLightTheme}><Story /></ThemeProvider>,
+    (Story: any) => {
+      // mock data
+      const store = {
+        adBlock: {
+          mode: AdBlockMode.STANDARD,
+          handleModeChange: undefined
+        },
+        siteBlockInfo: {
+          host: 'brave.com',
+          totalBlockedResources: 2,
+          isShieldsEnabled: true
+        }
+      }
+
+      return (
+        <DataContext.Provider value={store}>
+          <ThemeProvider
+            darkTheme={shieldsDarkTheme}
+            lightTheme={shieldsLightTheme}
+          >
+            <Story />
+          </ThemeProvider>
+        </DataContext.Provider>
+      )
+    },
     withKnobs
   ]
 }
