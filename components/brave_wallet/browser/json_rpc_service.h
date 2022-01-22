@@ -129,9 +129,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetNetwork(GetNetworkCallback callback) override;
   void AddEthereumChain(mojom::EthereumChainPtr chain,
                         AddEthereumChainCallback callback) override;
-  void AddEthereumChainForOrigin(mojom::EthereumChainPtr chain,
-                                 const GURL& origin,
-                                 AddEthereumChainCallback callback) override;
+  void AddEthereumChainForOrigin(
+      mojom::EthereumChainPtr chain,
+      const GURL& origin,
+      AddEthereumChainForOriginCallback callback) override;
   void AddEthereumChainRequestCompleted(const std::string& chain_id,
                                         bool approved) override;
   void RemoveEthereumChain(const std::string& chain_id,
@@ -341,6 +342,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        bool auto_retry_on_network_change,
                        const GURL& network_url,
                        RequestCallback callback);
+  void OnEthChainIdValidated(
+      mojom::EthereumChainPtr chain,
+      const GURL& origin,
+      AddEthereumChainForOriginCallback callback,
+      const int http_code,
+      const std::string& response,
+      const base::flat_map<std::string, std::string>& headers);
 
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidDomain);
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, Reset);

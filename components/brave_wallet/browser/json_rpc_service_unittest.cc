@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/values.h"
@@ -232,7 +233,36 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
     return false;
   }
-
+  void SetEthChainIdInterceptor(const std::string& network_url,
+                                const std::string& chain_id) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, network_url, chain_id](const network::ResourceRequest& request) {
+          base::StringPiece request_string(request.request_body->elements()
+                                               ->at(0)
+                                               .As<network::DataElementBytes>()
+                                               .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find("eth_chainId") != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url, "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" +
+                                 chain_id + "\"}");
+          }
+        }));
+  }
+  void SetEthChainIdInterceptorWithBrokenResponse(
+      const std::string& network_url) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, network_url](const network::ResourceRequest& request) {
+          base::StringPiece request_string(request.request_body->elements()
+                                               ->at(0)
+                                               .As<network::DataElementBytes>()
+                                               .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find("eth_chainId") != std::string::npos) {
+            url_loader_factory_.AddResponse(network_url, "{\"jsonrpc\":\"");
+          }
+        }));
+  }
   void SetUDENSInterceptor(const std::string& chain_id) {
     GURL network_url = brave_wallet::GetNetworkURL(prefs(), chain_id);
     ASSERT_TRUE(network_url.is_valid());
@@ -632,18 +662,24 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
                               receiver.InitWithNewPipeAndPassReceiver());
 
   bool callback_is_called = false;
-  bool expected = true;
+  mojom::ProviderError expected = mojom::ProviderError::kSuccess;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+  SetEthChainIdInterceptor(chain.rpc_urls.front(), "0x111");
   json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://brave.com"),
-      base::BindLambdaForTesting([&callback_is_called, &expected](
-                                     const std::string& chain_id, bool added) {
-        ASSERT_FALSE(chain_id.empty());
-        EXPECT_EQ(added, expected);
-        callback_is_called = true;
-      }));
+      base::BindLambdaForTesting(
+          [&callback_is_called, &expected](const std::string& chain_id,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message) {
+            ASSERT_FALSE(chain_id.empty());
+            EXPECT_EQ(error, expected);
+            ASSERT_TRUE(error_message.empty());
+            callback_is_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
   loop.Run();
+
   ASSERT_TRUE(callback_is_called);
   ASSERT_TRUE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
 
@@ -690,16 +726,21 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainRejected) {
                               receiver.InitWithNewPipeAndPassReceiver());
 
   bool callback_is_called = false;
-  bool expected = true;
+  mojom::ProviderError expected = mojom::ProviderError::kSuccess;
   ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+  SetEthChainIdInterceptor(chain.rpc_urls.front(), "0x111");
   json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://brave.com"),
-      base::BindLambdaForTesting([&callback_is_called, &expected](
-                                     const std::string& chain_id, bool added) {
-        ASSERT_FALSE(chain_id.empty());
-        EXPECT_EQ(added, expected);
-        callback_is_called = true;
-      }));
+      base::BindLambdaForTesting(
+          [&callback_is_called, &expected](const std::string& chain_id,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message) {
+            ASSERT_FALSE(chain_id.empty());
+            EXPECT_EQ(error, expected);
+            ASSERT_TRUE(error_message.empty());
+            callback_is_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", false);
   loop.Run();
   ASSERT_TRUE(callback_is_called);
@@ -716,16 +757,21 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
       {"https://url1.com"}, "symbol_name", "symbol", 11, false);
 
   bool callback_is_called = false;
-  bool expected = true;
-  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+  mojom::ProviderError expected = mojom::ProviderError::kSuccess;
+  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), chain.chain_id).is_valid());
+  SetEthChainIdInterceptor(chain.rpc_urls.front(), chain.chain_id);
   json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://brave.com"),
-      base::BindLambdaForTesting([&callback_is_called, &expected](
-                                     const std::string& chain_id, bool added) {
-        ASSERT_FALSE(chain_id.empty());
-        EXPECT_EQ(added, expected);
-        callback_is_called = true;
-      }));
+      base::BindLambdaForTesting(
+          [&callback_is_called, &expected](const std::string& chain_id,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message) {
+            ASSERT_FALSE(chain_id.empty());
+            EXPECT_EQ(error, expected);
+            ASSERT_TRUE(error_message.empty());
+            callback_is_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
   ASSERT_TRUE(callback_is_called);
   callback_is_called = false;
 
@@ -735,33 +781,96 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
       {"https://url1.com"}, "symbol_name", "symbol", 11, false);
 
   bool second_callback_is_called = false;
-  bool second_expected = false;
+  mojom::ProviderError second_expected =
+      mojom::ProviderError::kUserRejectedRequest;
+  SetEthChainIdInterceptor(chain2.rpc_urls.front(), chain2.chain_id);
   json_rpc_service_->AddEthereumChainForOrigin(
       chain2.Clone(), GURL("https://brave.com"),
       base::BindLambdaForTesting([&second_callback_is_called, &second_expected](
-                                     const std::string& chain_id, bool added) {
+                                     const std::string& chain_id,
+                                     mojom::ProviderError error,
+                                     const std::string& error_message) {
         ASSERT_FALSE(chain_id.empty());
-        EXPECT_EQ(added, second_expected);
+        EXPECT_EQ(error, second_expected);
+        EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
+                                     IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
         second_callback_is_called = true;
       }));
+  base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(callback_is_called);
   ASSERT_TRUE(second_callback_is_called);
   second_callback_is_called = false;
 
   // same chain, other origin
   bool third_callback_is_called = false;
-  bool third_expected = false;
+  mojom::ProviderError third_expected =
+      mojom::ProviderError::kUserRejectedRequest;
   json_rpc_service_->AddEthereumChainForOrigin(
       chain.Clone(), GURL("https://others.com"),
       base::BindLambdaForTesting([&third_callback_is_called, &third_expected](
-                                     const std::string& chain_id, bool added) {
+                                     const std::string& chain_id,
+                                     mojom::ProviderError error,
+                                     const std::string& error_message) {
         ASSERT_FALSE(chain_id.empty());
-        EXPECT_EQ(added, third_expected);
+        EXPECT_EQ(error, third_expected);
+        EXPECT_EQ(error_message, l10n_util::GetStringUTF8(
+                                     IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
         third_callback_is_called = true;
       }));
+  base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(callback_is_called);
   ASSERT_FALSE(second_callback_is_called);
   ASSERT_TRUE(third_callback_is_called);
+
+  // new chain, not valid rpc url
+  brave_wallet::mojom::EthereumChain chain4(
+      "0x444", "chain_name4", {"https://url4.com"}, {"https://url4.com"},
+      {"https://url4.com"}, "symbol_name", "symbol", 11, false);
+  bool fourth_callback_is_called = false;
+  mojom::ProviderError fourth_expected =
+      mojom::ProviderError::kUserRejectedRequest;
+  auto network_url = chain4.rpc_urls.front();
+  SetEthChainIdInterceptor(chain4.rpc_urls.front(), "0x555");
+  json_rpc_service_->AddEthereumChainForOrigin(
+      chain4.Clone(), GURL("https://others4.com"),
+      base::BindLambdaForTesting(
+          [&fourth_callback_is_called, &fourth_expected, &network_url](
+              const std::string& chain_id, mojom::ProviderError error,
+              const std::string& error_message) {
+            ASSERT_FALSE(chain_id.empty());
+            EXPECT_EQ(error, fourth_expected);
+            EXPECT_EQ(error_message, l10n_util::GetStringFUTF8(
+                                         IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                                         base::ASCIIToUTF16(network_url)));
+            fourth_callback_is_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(fourth_callback_is_called);
+
+  // new chain, broken validation response
+  brave_wallet::mojom::EthereumChain chain5(
+      "0x444", "chain_name5", {"https://url5.com"}, {"https://url5.com"},
+      {"https://url5.com"}, "symbol_name", "symbol", 11, false);
+  bool fifth_callback_is_called = false;
+  mojom::ProviderError fifth_expected =
+      mojom::ProviderError::kUserRejectedRequest;
+  network_url = chain5.rpc_urls.front();
+  SetEthChainIdInterceptorWithBrokenResponse(chain5.rpc_urls.front());
+  json_rpc_service_->AddEthereumChainForOrigin(
+      chain5.Clone(), GURL("https://others5.com"),
+      base::BindLambdaForTesting(
+          [&fifth_callback_is_called, &fifth_expected, &network_url](
+              const std::string& chain_id, mojom::ProviderError error,
+              const std::string& error_message) {
+            ASSERT_FALSE(chain_id.empty());
+            EXPECT_EQ(error, fifth_expected);
+            EXPECT_EQ(error_message, l10n_util::GetStringFUTF8(
+                                         IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                                         base::ASCIIToUTF16(network_url)));
+            fifth_callback_is_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(fifth_callback_is_called);
 }
 
 TEST_F(JsonRpcServiceUnitTest, StartWithNetwork) {
