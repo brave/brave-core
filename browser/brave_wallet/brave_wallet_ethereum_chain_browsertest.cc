@@ -295,13 +295,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   ASSERT_TRUE(result.empty());
 
   GURL urlA = GetWalletEthereumChainPageURL();
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), urlA));
   content::WebContents* contentsA =
       browser()->tab_strip_model()->GetActiveWebContents();
   base::RunLoop loop;
   auto* tab_helperA =
       brave_wallet::BraveWalletTabHelper::FromWebContents(contentsA);
   tab_helperA->SetShowBubbleCallbackForTesting(loop.QuitClosure());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), urlA));
   WaitForLoadStop(contentsA);
   loop.Run();
   ASSERT_TRUE(tab_helperA->IsShowingBubble());
