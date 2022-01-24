@@ -11,6 +11,7 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kDirectSockets, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
     {kIdleDetection, base::FEATURE_DISABLED_BY_DEFAULT},
     {kNotificationTriggers, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSignedExchangeSubresourcePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
