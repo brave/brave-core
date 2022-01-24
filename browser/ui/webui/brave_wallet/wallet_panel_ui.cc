@@ -30,6 +30,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -57,6 +58,8 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
       std::string("frame-src ") + kUntrustedTrezorURL + ";");
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   auto* profile = Profile::FromWebUI(web_ui);
+  content::URLDataSource::Add(profile,
+                              std::make_unique<SanitizedImageSource>(profile));
   content::WebUIDataSource::Add(profile, source);
   brave_wallet::AddBlockchainTokenImageSource(profile);
 }

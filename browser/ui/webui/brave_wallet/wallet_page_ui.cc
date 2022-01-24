@@ -28,6 +28,7 @@
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/sanitized_image_source.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
@@ -56,6 +57,8 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource::Add(profile, source);
+  content::URLDataSource::Add(profile,
+                              std::make_unique<SanitizedImageSource>(profile));
   brave_wallet::AddBlockchainTokenImageSource(profile);
 }
 
