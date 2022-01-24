@@ -64,11 +64,6 @@ export type SetPublisherPrefPayload = {
 }
 export const setPublisherPref = createAction<SetPublisherPrefPayload>('setPublisherPref', (publisherId: string, enabled: boolean | null) => ({ publisherId, enabled }))
 
-export type RemoveDirectFeedPayload = {
-  directFeed: BraveNews.Publisher
-}
-export const removeDirectFeed = createAction<RemoveDirectFeedPayload>('removeDirectFeed')
-
 export const checkForUpdate = createAction('checkForUpdate')
 
 export type IsUpdateAvailablePayload = {

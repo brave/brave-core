@@ -5,8 +5,6 @@ static_library("browser") {
   sources = [
     "brave_news_controller.cc",
     "brave_news_controller.h",
-    "direct_feed_controller.cc",
-    "direct_feed_controller.h",
     "feed_building.cc",
     "feed_building.h",
     "feed_controller.cc",
@@ -36,13 +34,10 @@ static_library("browser") {
     "//components/history/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",
-    "//net",
     "//net/traffic_annotation",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//url",
   ]
-
-  public_deps = [ "../rust:rust-rs" ]
 }

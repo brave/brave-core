@@ -39,7 +39,7 @@ TEST(BraveNewsPublisherParsing, ParsePublisherList) {
     ]
   )");
   base::flat_map<std::string, mojom::PublisherPtr> publisher_list;
-  ASSERT_TRUE(ParseCombinedPublisherList(json, &publisher_list));
+  ASSERT_TRUE(ParsePublisherList(json, &publisher_list));
   ASSERT_EQ(publisher_list.size(), 3UL);
 
   ASSERT_TRUE(publisher_list.contains("111"));

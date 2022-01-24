@@ -11,7 +11,6 @@ namespace prefs {
 
 constexpr char kNewTabPageShowToday[] = "brave.new_tab_page.show_brave_today";
 constexpr char kBraveTodaySources[] = "brave.today.sources";
-constexpr char kBraveTodayDirectFeeds[] = "brave.today.userfeeds";
 constexpr char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
 constexpr char kBraveTodayOptedIn[] = "brave.today.opted_in";
 constexpr char kBraveTodayWeeklySessionCount[] =
@@ -22,10 +21,6 @@ constexpr char kBraveTodayWeeklyCardVisitsCount[] =
     "brave.today.p3a_weekly_card_visits_count";
 constexpr char kBraveTodayWeeklyDisplayAdViewedCount[] =
     "brave.today.p3a_weekly_display_ad_viewed_count";
-
-// Dictionary value keys
-constexpr char kBraveTodayDirectFeedsKeyTitle[] = "title";
-constexpr char kBraveTodayDirectFeedsKeySource[] = "source";
 
 }  // namespace prefs
 

@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "base/guid.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -20,7 +19,6 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
-#include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/network.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
@@ -34,7 +32,6 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_news {
 
@@ -53,7 +50,6 @@ void BraveNewsController::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                 brave_news_enabled_default);
   registry->RegisterBooleanPref(prefs::kBraveTodayOptedIn, false);
   registry->RegisterDictionaryPref(prefs::kBraveTodaySources);
-  registry->RegisterDictionaryPref(prefs::kBraveTodayDirectFeeds);
   // P3A
   registry->RegisterListPref(prefs::kBraveTodayWeeklySessionCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyCardViewsCount);
@@ -70,9 +66,7 @@ BraveNewsController::BraveNewsController(
       ads_service_(ads_service),
       api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
       publishers_controller_(prefs, &api_request_helper_),
-      direct_feed_controller_(url_loader_factory),
       feed_controller_(&publishers_controller_,
-                       &direct_feed_controller_,
                        history_service,
                        &api_request_helper_),
       weak_ptr_factory_(this) {
@@ -119,124 +113,30 @@ void BraveNewsController::GetPublishers(GetPublishersCallback callback) {
   publishers_controller_.GetOrFetchPublishers(std::move(callback));
 }
 
-void BraveNewsController::SubscribeToNewDirectFeed(
-    const GURL& feed_url,
-    SubscribeToNewDirectFeedCallback callback) {
-  // Verify the url points at a valid feed
-  VLOG(1) << "SubscribeToNewDirectFeed: " << feed_url.spec();
-  if (!feed_url.is_valid()) {
-    std::move(callback).Run(false, false, absl::nullopt);
-    return;
-  }
-  direct_feed_controller_.VerifyFeedUrl(
-      feed_url,
-      base::BindOnce(
-          [](const GURL& feed_url, SubscribeToNewDirectFeedCallback callback,
-             BraveNewsController* controller, const bool is_valid,
-             const std::string& feed_title) {
-            VLOG(1) << "Is new feed valid? " << is_valid
-                    << " Title: " << feed_title;
-            if (!is_valid) {
-              std::move(callback).Run(false, false, absl::nullopt);
-              return;
-            }
-            // Check if feed url already exists
-            auto* existing_items = controller->prefs_->GetDictionary(
-                prefs::kBraveTodayDirectFeeds);
-            for (const auto kv : existing_items->DictItems()) {
-              if (!kv.second.is_dict()) {
-                // This will be flagged as an issue in the error log elsewhere.
-                continue;
-              }
-              auto existing_url = *kv.second.FindStringKey(
-                  prefs::kBraveTodayDirectFeedsKeySource);
-              if (GURL(existing_url) == feed_url.spec()) {
-                // Handle is duplicate
-                std::move(callback).Run(true, true, absl::nullopt);
-                return;
-              }
-            }
-            // Feed is valid, we can add the url now
-            // UUID for each entry as feed url might change via redirects etc
-            auto id = base::GUID::GenerateRandomV4().AsLowercaseString();
-            std::string entry_feed_title =
-                feed_title.empty() ? feed_url.spec() : feed_title;
-            // We use a dictionary pref, but that's to reserve space for more
-            // future customization on a feed. For now we just store a bool, and
-            // remove the entire entry if a user unsubscribes from a user feed.
-            DictionaryPrefUpdate update(controller->prefs_,
-                                        prefs::kBraveTodayDirectFeeds);
-            // Get is valid and name
-            auto value = std::make_unique<base::DictionaryValue>();
-            value->SetStringKey(prefs::kBraveTodayDirectFeedsKeySource,
-                                feed_url.spec());
-            value->SetStringKey(prefs::kBraveTodayDirectFeedsKeyTitle,
-                                entry_feed_title);
-            update->SetDictionary(id, std::move(value));
-            // Mark feed as requiring update
-            // TODO(petemill): expose function to mark direct feeds as dirty
-            // and not require re-download of sources.json
-            controller->publishers_controller_.EnsurePublishersIsUpdating();
-            // Pass publishers to callback, waiting for updated publishers list
-            controller->publishers_controller_.GetOrFetchPublishers(
-                base::BindOnce(
-                    [](SubscribeToNewDirectFeedCallback callback,
-                       Publishers publishers) {
-                      std::move(callback).Run(
-                          true, false,
-                          absl::optional<Publishers>(std::move(publishers)));
-                    },
-                    std::move(callback)),
-                true);
-          },
-          feed_url, std::move(callback), base::Unretained(this)));
-}
-
-void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
-  DictionaryPrefUpdate update(prefs_, prefs::kBraveTodayDirectFeeds);
-  update->RemoveKey(publisher_id);
-  // Mark feed as requiring update
-  publishers_controller_.EnsurePublishersIsUpdating();
-}
-
 void BraveNewsController::GetImageData(const GURL& padded_image_url,
                                        GetImageDataCallback callback) {
-  // Validate
-  VLOG(2) << "getimagedata " << padded_image_url.spec();
-  if (!padded_image_url.is_valid()) {
-    absl::optional<std::vector<uint8_t>> args;
-    std::move(callback).Run(std::move(args));
-    return;
-  }
   // Handler url download response
-  const auto file_name = padded_image_url.path();
-  const std::string ending = ".pad";
-  const bool is_padded =
-      (file_name.compare(file_name.length() - ending.length(), ending.length(),
-                         ending) == 0);
-  VLOG(3) << "is padded: " << is_padded;
   auto onPaddedImageResponse = base::BindOnce(
-      [](GetImageDataCallback callback, const bool is_padded, const int status,
+      [](GetImageDataCallback callback, const int status,
          const std::string& body,
          const base::flat_map<std::string, std::string>& headers) {
-        // Attempt to remove byte padding if applicable
+        // Attempt to remove byte padding
         base::StringPiece body_payload(body.data(), body.size());
         if (status < 200 || status >= 300 ||
-            (is_padded &&
-             !brave::PrivateCdnHelper::GetInstance()->RemovePadding(
-                 &body_payload))) {
+            !brave::PrivateCdnHelper::GetInstance()->RemovePadding(
+                &body_payload)) {
           // Byte padding removal failed
           absl::optional<std::vector<uint8_t>> args;
           std::move(callback).Run(std::move(args));
           return;
         }
-        // Download (and optional unpadding) was successful,
-        // uint8Array will be easier to move over mojom.
+        // Unpadding was successful, uint8Array will be easier to move over
+        // mojom
         std::vector<uint8_t> image_bytes(body_payload.begin(),
                                          body_payload.end());
         std::move(callback).Run(image_bytes);
       },
-      std::move(callback), is_padded);
+      std::move(callback));
   api_request_helper_.Request("GET", padded_image_url, "", "", true,
                               std::move(onPaddedImageResponse),
                               brave::private_cdn_headers);
@@ -244,41 +144,20 @@ void BraveNewsController::GetImageData(const GURL& padded_image_url,
 
 void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
                                            mojom::UserEnabled new_status) {
+  DictionaryPrefUpdate update(prefs_, prefs::kBraveTodaySources);
+  if (new_status == mojom::UserEnabled::NOT_MODIFIED) {
+    update->RemoveKey(publisher_id);
+  } else {
+    update->SetBoolean(publisher_id,
+                       (new_status == mojom::UserEnabled::ENABLED));
+  }
   VLOG(1) << "set publisher pref: " << new_status;
-  GetPublishers(base::BindOnce(
-      [](const std::string& publisher_id, mojom::UserEnabled new_status,
-         BraveNewsController* controller, Publishers publishers) {
-        if (!publishers.contains(publisher_id)) {
-          LOG(ERROR) << "Attempted to set publisher pref which didn't exist: "
-                     << publisher_id;
-          return;
-        }
-        const auto& publisher = publishers[publisher_id];
-        if (publisher->type == mojom::PublisherType::DIRECT_SOURCE) {
-          // TODO(petemill): possible allow disable or enable, but for now
-          // the only thing to do with this type is to remove the direct feed
-          // if requested.
-          if (new_status == mojom::UserEnabled::DISABLED) {
-            controller->RemoveDirectFeed(publisher_id);
-          }
-        } else {
-          DictionaryPrefUpdate update(controller->prefs_,
-                                      prefs::kBraveTodaySources);
-          if (new_status == mojom::UserEnabled::NOT_MODIFIED) {
-            update->RemoveKey(publisher_id);
-          } else {
-            update->SetBoolean(publisher_id,
-                               (new_status == mojom::UserEnabled::ENABLED));
-          }
-          // Force an update of publishers and feed to include or ignore
-          // content from the affected publisher.
-          // And if in the middle of update, that's ok because
-          // consideration of source preferences is done after the remote fetch
-          // is completed.
-          controller->publishers_controller_.EnsurePublishersIsUpdating();
-        }
-      },
-      publisher_id, new_status, base::Unretained(this)));
+  // Force an update of publishers and feed to include or ignore
+  // content from the affected publisher.
+  // And if in the middle of update, that's ok because
+  // consideration of source preferences is done after the remote fetch is
+  // completed.
+  publishers_controller_.EnsurePublishersIsUpdating();
 }
 
 void BraveNewsController::ClearPrefs() {

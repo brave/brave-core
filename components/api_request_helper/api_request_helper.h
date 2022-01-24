@@ -40,8 +40,7 @@ class APIRequestHelper {
                const std::string& payload_content_type,
                bool auto_retry_on_network_change,
                ResultCallback callback,
-               const base::flat_map<std::string, std::string>& headers = {},
-               size_t max_body_size = -1u);
+               const base::flat_map<std::string, std::string>& headers = {});
 
  private:
   APIRequestHelper(const APIRequestHelper&) = delete;

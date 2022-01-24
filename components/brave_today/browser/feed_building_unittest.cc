@@ -11,14 +11,11 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
-#include "base/time/time.h"
 #include "brave/components/brave_today/browser/feed_building.h"
-#include "brave/components/brave_today/browser/feed_parsing.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_today/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "url/mojom/url.mojom.h"
 
 namespace brave_news {
 
@@ -92,18 +89,15 @@ std::string GetFeedJson() {
 }
 
 void PopulatePublishers(Publishers* publisher_list) {
-  auto publisher1 = mojom::Publisher::New(
-      "111", mojom::PublisherType::COMBINED_SOURCE, "First Publisher",
-      "Top News", true, GURL("https://www.example.com"),
-      mojom::UserEnabled::NOT_MODIFIED);
-  auto publisher2 = mojom::Publisher::New(
-      "222", mojom::PublisherType::COMBINED_SOURCE, "Second Publisher",
-      "Top News", true, GURL("https://www.example.com"),
-      mojom::UserEnabled::NOT_MODIFIED);
-  auto publisher3 = mojom::Publisher::New(
-      "333", mojom::PublisherType::COMBINED_SOURCE, "Third Publisher",
-      "Top News", true, GURL("https://www.example.com"),
-      mojom::UserEnabled::NOT_MODIFIED);
+  auto publisher1 =
+      mojom::Publisher::New("111", "First Publisher", "Top News", true,
+                            mojom::UserEnabled::NOT_MODIFIED);
+  auto publisher2 =
+      mojom::Publisher::New("222", "Second Publisher", "Top News", true,
+                            mojom::UserEnabled::NOT_MODIFIED);
+  auto publisher3 =
+      mojom::Publisher::New("333", "Third Publisher", "Top News", true,
+                            mojom::UserEnabled::NOT_MODIFIED);
   publisher_list->insert_or_assign(publisher1->publisher_id,
                                    std::move(publisher1));
   publisher_list->insert_or_assign(publisher2->publisher_id,
@@ -120,12 +114,8 @@ TEST(BraveNewsFeedBuilding, BuildFeed) {
 
   std::unordered_set<std::string> history_hosts = {"www.espn.com"};
 
-  std::vector<mojom::FeedItemPtr> feed_items;
-  ParseFeedItems(GetFeedJson(), &feed_items);
-
   mojom::Feed feed;
-
-  ASSERT_TRUE(BuildFeed(feed_items, history_hosts, &publisher_list, &feed));
+  ASSERT_TRUE(BuildFeed(GetFeedJson(), history_hosts, &publisher_list, &feed));
   ASSERT_EQ(feed.pages.size(), 1u);
   // Validate featured article is top news
   ASSERT_TRUE(feed.featured_item->is_article());
@@ -153,38 +143,26 @@ TEST(BraveNewsFeedBuilding, BuildFeed) {
 TEST(BraveNewsFeedBuilding, RemovesDefaultOffItems) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
-  std::unordered_set<std::string> history_hosts = {};
 
   // Set a publisher to default-off, it's items should not appear in feed
   std::string publisher_id_to_hide = "333";
   publisher_list.at(publisher_id_to_hide)->is_enabled = false;
 
-  auto feed_item = mojom::FeedItem::NewArticle(
-      mojom::Article::New(mojom::FeedItemMetadata::New(
-          "Technology", base::Time::Now(),
-          "Expecting First Transfer Talk: How a busy Deadline Day unfolded",
-          "The transfer window is closed and Saul Niguez is on his way to "
-          "Chelsea, while Antoine Griezmann is set to go back to Atletico "
-          "Madrid on loan from Barcelona. Check out all the deals from a busy "
-          "day.",
-          GURL("https://www.espn.com/soccer/blog-transfer-talk/story/4465789/"
-               "live-transfer-deadline-day-will-real-madrid-land-psg-star-"
-               "mbappe"),
-          "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
-          mojom::Image::NewPaddedImageUrl(
-              GURL("https://pcdn.brave.com/brave-today/cache/"
-                   "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
-                   "0a815.jpg.pad")),
-          publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
-          "a minute ago")));
-
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list));
+  std::vector<mojom::FeedItemPtr> feed_items;
+  ASSERT_TRUE(
+      ParseFeedItemsToDisplay(GetFeedJson(), &publisher_list, &feed_items));
+  auto match = std::find_if(
+      feed_items.begin(), feed_items.end(),
+      [publisher_id_to_hide](mojom::FeedItemPtr const& item) {
+        return item->get_article()->data->publisher_id == publisher_id_to_hide;
+      });
+  auto found = (match != feed_items.end());
+  ASSERT_EQ(found, false);
 }
 
 TEST(BraveNewsFeedBuilding, RemovesUserDisabledItems) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
-  std::unordered_set<std::string> history_hosts = {};
 
   // Set a publisher to default-on, but user-off
   std::string publisher_id_to_hide = "333";
@@ -192,32 +170,21 @@ TEST(BraveNewsFeedBuilding, RemovesUserDisabledItems) {
   publisher_list.at(publisher_id_to_hide)->user_enabled_status =
       mojom::UserEnabled::DISABLED;
 
-  auto feed_item = mojom::FeedItem::NewArticle(
-      mojom::Article::New(mojom::FeedItemMetadata::New(
-          "Technology", base::Time::Now(),
-          "Expecting First Transfer Talk: How a busy Deadline Day unfolded",
-          "The transfer window is closed and Saul Niguez is on his way to "
-          "Chelsea, while Antoine Griezmann is set to go back to Atletico "
-          "Madrid on loan from Barcelona. Check out all the deals from a busy "
-          "day.",
-          GURL("https://www.espn.com/soccer/blog-transfer-talk/story/4465789/"
-               "live-transfer-deadline-day-will-real-madrid-land-psg-star-"
-               "mbappe"),
-          "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
-          mojom::Image::NewPaddedImageUrl(
-              GURL("https://pcdn.brave.com/brave-today/cache/"
-                   "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
-                   "0a815.jpg.pad")),
-          publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
-          "a minute ago")));
-
-  ASSERT_FALSE(ShouldDisplayFeedItem(feed_item, &publisher_list));
+  std::vector<mojom::FeedItemPtr> feed_items;
+  ASSERT_TRUE(
+      ParseFeedItemsToDisplay(GetFeedJson(), &publisher_list, &feed_items));
+  auto match = std::find_if(
+      feed_items.begin(), feed_items.end(),
+      [publisher_id_to_hide](mojom::FeedItemPtr const& item) {
+        return item->get_article()->data->publisher_id == publisher_id_to_hide;
+      });
+  auto found = (match != feed_items.end());
+  ASSERT_EQ(found, false);
 }
 
 TEST(BraveNewsFeedBuilding, IncludesUserEnabledItems) {
   Publishers publisher_list;
   PopulatePublishers(&publisher_list);
-  std::unordered_set<std::string> history_hosts = {};
 
   // Set a publisher to default-off, but user-on
   std::string publisher_id_to_hide = "333";
@@ -225,26 +192,16 @@ TEST(BraveNewsFeedBuilding, IncludesUserEnabledItems) {
   publisher_list.at(publisher_id_to_hide)->user_enabled_status =
       mojom::UserEnabled::ENABLED;
 
-  auto feed_item = mojom::FeedItem::NewArticle(
-      mojom::Article::New(mojom::FeedItemMetadata::New(
-          "Technology", base::Time::Now(),
-          "Expecting First Transfer Talk: How a busy Deadline Day unfolded",
-          "The transfer window is closed and Saul Niguez is on his way to "
-          "Chelsea, while Antoine Griezmann is set to go back to Atletico "
-          "Madrid on loan from Barcelona. Check out all the deals from a busy "
-          "day.",
-          GURL("https://www.espn.com/soccer/blog-transfer-talk/story/4465789/"
-               "live-transfer-deadline-day-will-real-madrid-land-psg-star-"
-               "mbappe"),
-          "7bb5d8b3e2eee9d317f0568dcb094850fdf2862b2ed6d583c62b2245ea507ab8",
-          mojom::Image::NewPaddedImageUrl(
-              GURL("https://pcdn.brave.com/brave-today/cache/"
-                   "85fb134433369025b46b861a00408e61223678f55620612d980533fa6ce"
-                   "0a815.jpg.pad")),
-          publisher_id_to_hide, "ESPN - Football", 14.525910905005045,
-          "a minute ago")));
-
-  ASSERT_TRUE(ShouldDisplayFeedItem(feed_item, &publisher_list));
+  std::vector<mojom::FeedItemPtr> feed_items;
+  ASSERT_TRUE(
+      ParseFeedItemsToDisplay(GetFeedJson(), &publisher_list, &feed_items));
+  auto match = std::find_if(
+      feed_items.begin(), feed_items.end(),
+      [publisher_id_to_hide](mojom::FeedItemPtr const& item) {
+        return item->get_article()->data->publisher_id == publisher_id_to_hide;
+      });
+  auto found = (match != feed_items.end());
+  ASSERT_EQ(found, true);
 }
 
 }  // namespace brave_news
