@@ -5,7 +5,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import json
-import optparse
+import optparse # pylint: disable=deprecated-module
 import os
 import sys
 import subprocess
