@@ -689,9 +689,6 @@ are declared in tools/grit/grit_rule.gni.
           </if>
       </if> <if expr="chromeos">
         </if> <if expr="not is_android">
-        <if expr="not chromeos">
-          </if>
-
         <message name="IDS_EXTENSIONS_INSTALL_LOCATION_UNKNOWN" desc="The text explaining the the installation location is unknown.">
           Not from Web Store.
         </message>
