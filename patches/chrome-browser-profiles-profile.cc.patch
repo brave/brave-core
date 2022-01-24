@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index a13f2fda30aacced895832db8e13ebeb0e4a7124..269d03c52d7e7b95c81f9acc2ec5559a77eb5a13 100644
+index a3fadab7e4e6b6dfa7672a5aaeb5a16b7240ca2d..651342290798c1ca996a338acb1d723a2b7e248c 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
 @@ -98,6 +98,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {
@@ -17,5 +17,5 @@ index a13f2fda30aacced895832db8e13ebeb0e4a7124..269d03c52d7e7b95c81f9acc2ec5559a
 -      true,
 +      false,
        user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
- #if defined(OS_ANDROID)
+ #if BUILDFLAG(IS_ANDROID)
    registry->RegisterStringPref(

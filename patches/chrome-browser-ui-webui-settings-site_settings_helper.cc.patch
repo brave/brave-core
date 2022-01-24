@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 5daeaf80cd51f1ff7b5628c2d07c559fa430699e..234f2e911740eb740e7126630d672aeab2ce667c 100644
+index 3f151dfaa0aa2b5e8d50f0ec483d8fe1d98564bd..96e55d267cf8f5a1ec402e9bd65a91a795a52617 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -166,6 +166,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
+@@ -167,6 +167,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::FEDERATED_IDENTITY_ACTIVE_SESSION, nullptr},
      {ContentSettingsType::AUTO_DARK_WEB_CONTENT, nullptr},
      {ContentSettingsType::REQUEST_DESKTOP_SITE, nullptr},
@@ -10,7 +10,7 @@ index 5daeaf80cd51f1ff7b5628c2d07c559fa430699e..234f2e911740eb740e7126630d672aea
  };
  
  static_assert(base::size(kContentSettingsTypeGroupNames) ==
-@@ -390,6 +391,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -391,6 +392,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

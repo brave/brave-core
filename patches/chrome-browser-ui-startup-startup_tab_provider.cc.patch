@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/startup/startup_tab_provider.cc b/chrome/browser/ui/startup/startup_tab_provider.cc
-index bce5a6e8337c37a9acda5f21620538117be28b15..0b679d96a273ec58400ae2fb6f70f8f6233eaa48 100644
+index 571fb8a29b270461e413a69a0f550b8a83d1bff5..0abe326db9fd3d646a798af709ecb15e05bf6139 100644
 --- a/chrome/browser/ui/startup/startup_tab_provider.cc
 +++ b/chrome/browser/ui/startup/startup_tab_provider.cc
-@@ -268,6 +268,7 @@ StartupTabs StartupTabProviderImpl::GetNewFeaturesTabs(
+@@ -269,6 +269,7 @@ StartupTabs StartupTabProviderImpl::GetNewFeaturesTabs(
  bool StartupTabProviderImpl::CanShowWelcome(bool is_signin_allowed,
                                              bool is_child_account,
                                              bool is_force_signin_enabled) {

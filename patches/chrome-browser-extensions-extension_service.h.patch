@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_service.h b/chrome/browser/extensions/extension_service.h
-index f8a8cf7e3c74ebbf73d2e12a9c78bfe164d496ec..15ffed295dcb4558e6ab61e100b4a507f16267d9 100644
+index 24e650da2f9fe4399f630e6107bc0512ea7cd0c4..42076e0a24e92edb3c157d774238252f96926dbe 100644
 --- a/chrome/browser/extensions/extension_service.h
 +++ b/chrome/browser/extensions/extension_service.h
-@@ -482,6 +482,7 @@ class ExtensionService : public ExtensionServiceInterface,
+@@ -490,6 +490,7 @@ class ExtensionService : public ExtensionServiceInterface,
    static base::AutoReset<bool> DisableExternalUpdatesForTesting();
  
   private:

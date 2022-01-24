@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-index c51494e3f8b929415a92a61c2c06a2b1de2054f8..cb1786e5d77eedeb9fb92bba2518f146ecc59e1a 100644
+index 6135cd9f697f8189ec30c46d29a0273ea6fdeec4..3d01941eb0a8c88d121d8f5241c17b8c06eb049a 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 @@ -5240,6 +5240,7 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
