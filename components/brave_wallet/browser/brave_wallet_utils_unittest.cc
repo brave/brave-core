@@ -31,7 +31,7 @@ namespace {
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value>* values) {
   ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::ListValue* list = update.Get();
+  base::Value* list = update.Get();
   list->ClearList();
   for (auto& it : *values) {
     list->Append(std::move(it));

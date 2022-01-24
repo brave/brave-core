@@ -244,7 +244,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   }
 
   DictionaryPrefUpdate update(prefs_, kBraveWalletUserAssets);
-  base::DictionaryValue* user_assets_pref = update.Get();
+  base::Value* user_assets_pref = update.Get();
 
   base::Value* user_assets_list = user_assets_pref->FindKey(network_id);
   if (!user_assets_list) {
@@ -298,7 +298,7 @@ bool BraveWalletService::RemoveUserAsset(mojom::BlockchainTokenPtr token,
     return false;
 
   DictionaryPrefUpdate update(prefs_, kBraveWalletUserAssets);
-  base::DictionaryValue* user_assets_pref = update.Get();
+  base::Value* user_assets_pref = update.Get();
 
   base::Value* user_assets_list = user_assets_pref->FindKey(network_id);
   if (!user_assets_list)
@@ -335,7 +335,7 @@ bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
     return false;
 
   DictionaryPrefUpdate update(prefs_, kBraveWalletUserAssets);
-  base::DictionaryValue* user_assets_pref = update.Get();
+  base::Value* user_assets_pref = update.Get();
 
   base::Value* user_assets_list = user_assets_pref->FindKey(network_id);
   if (!user_assets_list)
@@ -517,7 +517,7 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
     return;
 
   DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
-  base::DictionaryValue* user_assets_pref = update.Get();
+  base::Value* user_assets_pref = update.Get();
 
   for (auto user_asset_list : user_assets_pref->DictItems()) {
     auto it = FindAsset(&user_asset_list.second, "eth", "", false);

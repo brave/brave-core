@@ -224,7 +224,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
 
 void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
-  base::DictionaryValue* dict = update.Get();
+  base::Value* dict = update.Get();
   const std::string path = GetNetworkId(prefs_, chain_id_) + "." + meta.id;
   bool is_add = dict->FindPath(path) == nullptr;
   dict->SetPath(path, TxMetaToValue(meta));
@@ -257,7 +257,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
 
 void EthTxStateManager::DeleteTx(const std::string& id) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
-  base::DictionaryValue* dict = update.Get();
+  base::Value* dict = update.Get();
   dict->RemovePath(GetNetworkId(prefs_, chain_id_) + "." + id);
 }
 
