@@ -12,13 +12,14 @@ import { getLocale } from '../../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
 import {
   GetAccountsHardwareOperationResult,
+  HardwareOperationResult,
+  LedgerDerivationPaths,
   SignatureVRS,
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
-} from '../../hardware_operations'
+} from '../types'
 import { LedgerKeyring } from '../hardwareKeyring'
 import { HardwareVendor } from '../../api/hardware_keyrings'
-import { HardwareOperationResult, LedgerDerivationPaths } from '../types'
 
 export enum LedgerErrorsCodes {
   TransportLocked = 'TransportLocked'

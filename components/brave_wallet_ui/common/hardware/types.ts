@@ -54,3 +54,7 @@ export enum TrezorDerivationPaths {
 
 const DerivationSchemeTypes = [LedgerDerivationPaths.LedgerLive, LedgerDerivationPaths.Legacy, TrezorDerivationPaths.Default] as const
 export type HardwareDerivationScheme = typeof DerivationSchemeTypes[number]
+
+export type GetAccountsHardwareOperationResult = HardwareOperationResult & {
+  payload?: BraveWallet.HardwareWalletAccount[]
+}
