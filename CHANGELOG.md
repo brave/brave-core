@@ -1,5 +1,10 @@
 # Changelog
 
+
+## [1.34.1](https://github.com/brave/brave-ios/releases/tag/v1.34.1)
+
+- Implemented ERC20 Token Swap hardening against future 0x API changes. ([#4886](https://github.com/brave/brave-ios/issues/4886))
+
 ## [1.34](https://github.com/brave/brave-ios/releases/tag/v1.34)
 
 - Added support for initial set of Brave Widgets. ([#4329](https://github.com/brave/brave-ios/issues/4329))
