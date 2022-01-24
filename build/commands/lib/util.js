@@ -731,6 +731,20 @@ const util = {
       args = [...args, ...resetArgs]
     }
 
+    // We will call `gclient sync --reset` below. This executes `git reset --hard` in the various
+    // sub-repositories. Git has an unexpected behavior that this re-creates files in the repo
+    // that are the target of hard links. The re-created files get a new modification time, which
+    // leads to unnecessary rebuilds. Part of Git's unexpected behavior is that `git status`
+    // after the creation of the hard link and before the call to `reset` fixes the problem.
+    // So this is what we do below. At the time of this writing, this in particular avoids
+    // unnecessary rebuilds caused by varying modification times of
+    // src/third_party/devtools-frontend/src/inspector_overlay/common.css and other files in this
+    // directory. These files become the target of hard links by a `copy` action in BUILD.gn in
+    // their directory. For further information, see github.com/brave/brave-browser/issues/20316.
+    const recurseOptions = Object.assign({}, options)
+    recurseOptions.stdio = 'ignore'
+    runGClient(['recurse', 'git', 'status'], recurseOptions)
+
     runGClient(args, options)
     // When git cache is enabled, gclient sync will use a local directory as a
     // git remote url. This will break non gclient-triggered git operations, so
