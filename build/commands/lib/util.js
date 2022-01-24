@@ -731,17 +731,21 @@ const util = {
       args = [...args, ...resetArgs]
     }
 
-    // We will call `gclient sync --reset` below. This executes `git reset --hard` in the various
-    // sub-repositories. Git has an unexpected behavior that this re-creates files in the repo
-    // that are the target of hard links. The re-created files get a new modification time, which
-    // leads to unnecessary rebuilds. Part of Git's unexpected behavior is that `git status`
+    // We will call `gclient sync --reset` further below. This executes `git reset --hard` in the
+    // various sub-repositories. Git has an unexpected behavior that this re-creates files in the
+    // repo that are the target of hard links. The re-created files get a new modification time,
+    // which leads to unnecessary rebuilds. Part of Git's unexpected behavior is that `git status`
     // after the creation of the hard link and before the call to `reset` fixes the problem.
     // So this is what we do below. At the time of this writing, this in particular avoids
     // unnecessary rebuilds caused by varying modification times of
     // src/third_party/devtools-frontend/src/inspector_overlay/common.css and other files in this
     // directory. These files become the target of hard links by a `copy` action in BUILD.gn in
     // their directory. For further information, see github.com/brave/brave-browser/issues/20316.
-    if (!fs.existsSync(path.join(config.rootDir, '.gclient_entries'))) {
+
+    // `gclient recurse ...` can only be called after `gclient sync` was called at least once.
+    // The latter creates .gclient_entries. So we use the existence of this file as a proxy to
+    // determine whether `sync` has already been called.
+    if (fs.existsSync(path.join(config.rootDir, '.gclient_entries'))) {
       const recurseOptions = Object.assign({}, options)
       recurseOptions.stdio = 'ignore'
       runGClient(['recurse', 'git', 'status'], recurseOptions)
