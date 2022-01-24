@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/frame/dom_window.h b/third_party/blink/renderer/core/frame/dom_window.h
-index 886f87082fd6aa0e9a5518300f5aa58abe7172d4..74e78b6fc4f35b849e83ed1feaf56202a8a26d62 100644
+index 92111e0eae3dfcd67b554314b3e3421725e9b1c6..504ade77440931538203f67a75a2d47f1b2bbdda 100644
 --- a/third_party/blink/renderer/core/frame/dom_window.h
 +++ b/third_party/blink/renderer/core/frame/dom_window.h
-@@ -152,6 +152,7 @@ class CORE_EXPORT DOMWindow : public EventTargetWithInlineData {
-   // marked as "CrossOrigin" in the window.idl.
-   void ReportCoopAccess(const char* property_name);
+@@ -153,6 +153,7 @@ class CORE_EXPORT DOMWindow : public EventTargetWithInlineData {
+ 
+   bool anonymous() const { return anonymous_; }
  
 +  BRAVE_DOM_WINDOW_H
   protected:

@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/extensions/updater/chrome_update_client_config.h b/chrome/browser/extensions/updater/chrome_update_client_config.h
-index 38c717092551008d4bd72456e3060f568761673a..73b0fc851257be17815a54663e837082becc1680 100644
+index 52ac975fcff18df926f3a6042409a25103144d69..f4e42ca5efee816b0d3534f387160cb23cfd91d6 100644
 --- a/chrome/browser/extensions/updater/chrome_update_client_config.h
 +++ b/chrome/browser/extensions/updater/chrome_update_client_config.h
-@@ -77,6 +77,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
-   bool IsPerUserInstall() const override;
+@@ -78,6 +78,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
    std::unique_ptr<update_client::ProtocolHandlerFactory>
    GetProtocolHandlerFactory() const override;
+   absl::optional<bool> IsMachineExternallyManaged() const override;
 +  BRAVE_CHROME_UPDATE_CLIENT_CONFIG_H_
  
   protected:

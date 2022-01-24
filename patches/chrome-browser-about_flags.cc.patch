@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 0d8812d7b15ab6b9e2fa4f804495c47eb1ed13f5..95b21cfe0207325526f30c91112722fcf58c4a31 100644
+index a84ad51d1f3a66c0f9fc9365ff0069d89fe54ea3..65f3d867fe4ebab3f650b3eb69ddd2567c3a922d 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -7780,6 +7780,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7706,6 +7706,7 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(chrome::android::kDragAndDropAndroid)},
  #endif  // defined(OS_ANDROID)
  
 +     BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
- #if defined(OS_ANDROID)
-     {"use-ulp-languages-in-chrome",
-      flag_descriptions::kUseULPLanguagesInChromeName,
+     {"autofill-enable-update-virtual-card-enrollment",
+      flag_descriptions::kAutofillEnableUpdateVirtualCardEnrollmentName,
+      flag_descriptions::kAutofillEnableUpdateVirtualCardEnrollmentDescription,
