@@ -9,6 +9,7 @@ const config = require('../lib/config')
 const util = require('../lib/util')
 const Log = require('../lib/sync/logging')
 const os = require('os')
+const path = require('path')
 
 program
   .version(process.env.npm_package_version)
@@ -45,6 +46,22 @@ async function RunCommand () {
 
   maybeInstallDepotTools()
 
+  if (config.isCI && config.getCachePath()) {
+    util.runGClient([])
+    if (process.platform === 'win32' || process.platform === 'linux') {
+      util.runGit(
+          config.rootDir, ['config', '--global', 'checkout.workers', 16], false)
+    }
+    console.log(
+        'gitcache size before sync',
+        util.runPython3([
+              path.join(config.braveCoreDir, 'script/dir_size.py'),
+              config.getCachePath()
+            ])
+            .stdout.toString()
+            .trim())
+  }
+
   if (program.init) {
     util.buildGClientConfig()
   }
@@ -68,6 +85,17 @@ async function RunCommand () {
     Log.status(`Chromium is now at ${postSyncChromiumRef || '[unknown]'}`)
   }
   Log.progress('...gclient sync done')
+
+  if (config.isCI && config.getCachePath()) {
+    console.log(
+        'gitcache size after sync',
+        util.runPython3([
+              path.join(config.braveCoreDir, 'script/dir_size.py'),
+              config.getCachePath()
+            ])
+            .stdout.toString()
+            .trim())
+  }
 
   await util.applyPatches()
 

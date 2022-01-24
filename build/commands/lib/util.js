@@ -83,6 +83,16 @@ const util = {
     return prog
   },
 
+  runPython3: (args = [], options = {}) => {
+    const python3_bin = path.join(
+        config.depotToolsDir,
+        fs.readFileSync(
+              path.join(config.depotToolsDir, 'python3_bin_reldir.txt'))
+            .toString(),
+        'python3')
+    return util.runProcess(python3_bin, args, options)
+  },
+
   runGit: (repoPath, gitArgs, continueOnFail = false) => {
     let prog = util.run('git', gitArgs, { cwd: repoPath, continueOnFail })
 
