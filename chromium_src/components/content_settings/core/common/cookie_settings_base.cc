@@ -25,14 +25,6 @@ namespace {
 
 constexpr char kWp[] = "https://[*.]wp.com/*";
 constexpr char kWordpress[] = "https://[*.]wordpress.com/*";
-constexpr char kPlaystation[] = "https://[*.]playstation.com/*";
-constexpr char kSonyentertainmentnetwork[] =
-    "https://[*.]sonyentertainmentnetwork.com/*";
-constexpr char kSony[] = "https://[*.]sony.com/*";
-constexpr char kGoogle[] = "https://[*.]google.com/*";
-constexpr char kGoogleusercontent[] = "https://[*.]googleusercontent.com/*";
-constexpr char kFacebook[] = "https://[*.]facebook.com/*";
-constexpr char kInstagram[] = "https://[*.]instagram.com/*";
 
 bool BraveIsAllowedThirdParty(const GURL& url,
                               const GURL& first_party_url,
@@ -44,23 +36,7 @@ bool BraveIsAllowedThirdParty(const GURL& url,
           {{ContentSettingsPattern::FromString(kWp),
             ContentSettingsPattern::FromString(kWordpress)},
            {ContentSettingsPattern::FromString(kWordpress),
-            ContentSettingsPattern::FromString(kWp)},
-           {ContentSettingsPattern::FromString(kGoogle),
-            ContentSettingsPattern::FromString(kGoogleusercontent)},
-           {ContentSettingsPattern::FromString(kGoogleusercontent),
-            ContentSettingsPattern::FromString(kGoogle)},
-           {ContentSettingsPattern::FromString(kInstagram),
-            ContentSettingsPattern::FromString(kFacebook)},
-           {ContentSettingsPattern::FromString(kFacebook),
-            ContentSettingsPattern::FromString(kInstagram)},
-           {ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSonyentertainmentnetwork)},
-           {ContentSettingsPattern::FromString(kSonyentertainmentnetwork),
-            ContentSettingsPattern::FromString(kPlaystation)},
-           {ContentSettingsPattern::FromString(kSony),
-            ContentSettingsPattern::FromString(kPlaystation)},
-           {ContentSettingsPattern::FromString(kPlaystation),
-            ContentSettingsPattern::FromString(kSony)}});
+            ContentSettingsPattern::FromString(kWp)}});,
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
