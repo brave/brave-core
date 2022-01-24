@@ -172,7 +172,7 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case BraveThemeProperties::COLOR_SIDEBAR_ARROW_DISABLED:
       return SkColorSetARGB(0x8A, 0xAE, 0xB1, 0xC2);
     case BraveThemeProperties::COLOR_SIDEBAR_ARROW_NORMAL:
-      FALLTHROUGH;
+      [[fallthrough]];
     case BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE:
       return SkColorSetRGB(0xC2, 0xC4, 0xCF);
     case BraveThemeProperties::COLOR_SIDEBAR_ADD_BUTTON_DISABLED:
