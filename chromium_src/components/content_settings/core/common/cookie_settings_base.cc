@@ -36,7 +36,7 @@ bool BraveIsAllowedThirdParty(const GURL& url,
           {{ContentSettingsPattern::FromString(kWp),
             ContentSettingsPattern::FromString(kWordpress)},
            {ContentSettingsPattern::FromString(kWordpress),
-            ContentSettingsPattern::FromString(kWp)}});,
+            ContentSettingsPattern::FromString(kWp)}});
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
