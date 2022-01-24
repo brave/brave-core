@@ -850,6 +850,7 @@ brave_java_resources = [
   "java/res/layout/bre_bottom_banner.xml",
   "java/res/layout/crypto_widget_layout.xml",
   "java/res/layout/custom_layout_preference.xml",
+  "java/res/layout/dapps_bottom_sheet.xml",
   "java/res/layout/edit_visible_assets_bottom_sheet.xml",
   "java/res/layout/fragment_accounts.xml",
   "java/res/layout/fragment_backup_wallet.xml",

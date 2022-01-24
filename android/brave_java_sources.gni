@@ -86,6 +86,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/adapters/WalletCoinAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/AccountsFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/ApproveTxBottomSheetDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/DappsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/EditVisibleAssetsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/PortfolioFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/fragments/SwapBottomSheetDialogFragment.java",

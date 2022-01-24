@@ -65,6 +65,8 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.crypto_wallet.fragments.DappsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltipUtils;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
@@ -146,6 +148,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
+    private ImageButton mBraveWalletButton;
     private ImageButton mBraveShieldsButton;
     private ImageButton mBraveRewardsButton;
     private HomeButton mHomeButton;
@@ -211,6 +214,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
         mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
         mBraveRewardsOnboardingIcon = findViewById(R.id.br_rewards_onboarding_icon);
+        mBraveWalletButton = (ImageButton) findViewById(R.id.brave_wallet_button);
         mBraveShieldsButton = (ImageButton) findViewById(R.id.brave_shields_button);
         mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
         mHomeButton = (HomeButton) findViewById(R.id.home_button);
@@ -229,6 +233,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mBraveRewardsButton.setClickable(true);
             mBraveRewardsButton.setOnClickListener(this);
             mBraveRewardsButton.setOnLongClickListener(this);
+        }
+
+        if (mBraveWalletButton != null) {
+            mBraveWalletButton.setClickable(true);
+            mBraveWalletButton.setOnClickListener(this);
+            mBraveWalletButton.setOnLongClickListener(this);
         }
 
         mBraveShieldsHandler = new BraveShieldsHandler(getContext());
@@ -919,7 +929,22 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
                 mIsInitialNotificationPosted = false;
             }
+        } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
+            showWalletPanel();
         }
+    }
+
+    public void showWalletPanel() {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        assert activity != null;
+        if (activity == null) {
+            return;
+        }
+        DappsBottomSheetDialogFragment dappsBottomSheetDialogFragment =
+                DappsBottomSheetDialogFragment.newInstance();
+        dappsBottomSheetDialogFragment.showOnboarding(Utils.shouldShowCryptoOnboarding());
+        dappsBottomSheetDialogFragment.show(
+                activity.getSupportFragmentManager(), DappsBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     @Override
@@ -968,6 +993,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             description = resources.getString(R.string.accessibility_toolbar_btn_brave_rewards);
         } else if (v == mHomeButton) {
             description = resources.getString(R.string.accessibility_toolbar_btn_home);
+        } else if (v == mBraveWalletButton) {
+            description = resources.getString(R.string.accessibility_toolbar_btn_brave_wallet);
         }
 
         return Toast.showAnchoredToast(context, v, description);
