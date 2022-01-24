@@ -17,15 +17,14 @@
 
 namespace brave_news {
 
-bool BuildFeed(const std::string& json,
+bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                const std::unordered_set<std::string>& history_hosts,
                Publishers* publishers,
                mojom::Feed* feed);
 
-// Exposed for testing:
-bool ParseFeedItemsToDisplay(const std::string& json,
-                             Publishers* publishers,
-                             std::vector<mojom::FeedItemPtr>* feed_items);
+// Exposed for testing
+bool ShouldDisplayFeedItem(const mojom::FeedItemPtr& feed_item,
+                           const Publishers* publishers);
 
 }  // namespace brave_news
 
