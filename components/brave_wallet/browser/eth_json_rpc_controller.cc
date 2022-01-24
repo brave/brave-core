@@ -236,6 +236,19 @@ void EthJsonRpcController::UpdateIsEip1559(const std::string& chain_id,
   if (!success)
     return;
 
+  // Disable EIP-1559 on selected networks, by overwriting is_eip1559 to
+  // false.
+  //
+  // This list needs to be updated until we have a generic EIP-1559 gas
+  // oracle. See: https://github.com/brave/brave-browser/issues/20469.
+  if (chain_id == "0x13881" ||  // Polygon Mumbai Testnet
+      chain_id == "0x89" ||     // Polygon Mainnet
+      chain_id == "0xa86a" ||   // Avalanche Mainnet
+      chain_id == "0xa869"      // Avalanche Fuji Testnet
+  ) {
+    is_eip1559 = false;
+  }
+
   bool changed = false;
   if (chain_id == brave_wallet::mojom::kLocalhostChainId) {
     changed = prefs_->GetBoolean(kSupportEip1559OnLocalhostChain) != is_eip1559;
