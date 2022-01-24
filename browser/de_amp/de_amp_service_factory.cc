@@ -10,11 +10,11 @@
 
 #include "base/feature_list.h"
 #include "base/memory/singleton.h"
-#include "chrome/browser/profiles/profile.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/de_amp/browser/de_amp_service.h"
 #include "brave/components/de_amp/common/features.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
 

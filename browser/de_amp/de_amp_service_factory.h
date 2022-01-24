@@ -15,8 +15,7 @@ class DeAmpService;
 
 class DeAmpServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static DeAmpService* GetForBrowserContext(
-      content::BrowserContext* context);
+  static DeAmpService* GetForBrowserContext(content::BrowserContext* context);
   static DeAmpServiceFactory* GetInstance();
 
  private:

@@ -19,13 +19,13 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
-#include "brave/components/de_amp/common/features.h"
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "brave/components/translate/core/common/buildflags.h"
 #include "net/base/features.h"
@@ -64,8 +64,8 @@ using brave_shields::features::kBraveDomainBlock1PES;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
 using brave_shields::features::kCosmeticFilteringSyncLoad;
 
-using debounce::features::kBraveDebounce;
 using de_amp::features::kBraveDeAMP;
+using debounce::features::kBraveDebounce;
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
@@ -147,8 +147,7 @@ constexpr char kBraveDebounceDescription[] =
     "Enable support for skipping top-level redirect tracking URLs";
 
 constexpr char kBraveDeAMPName[] = "Enable De-AMP";
-constexpr char kBraveDeAMPDescription[] =
-    "Enable De-AMPing feature";
+constexpr char kBraveDeAMPDescription[] = "Enable De-AMPing feature";
 
 constexpr char kBraveExtensionNetworkBlockingName[] =
     "Enable extension network blocking";

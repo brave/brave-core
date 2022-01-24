@@ -31,7 +31,7 @@ namespace de_amp {
 class DeAmpThrottle;
 
 class DeAmpURLLoader : public network::mojom::URLLoaderClient,
-                             public network::mojom::URLLoader {
+                       public network::mojom::URLLoader {
  public:
   ~DeAmpURLLoader() override;
 
@@ -128,7 +128,6 @@ class DeAmpURLLoader : public network::mojom::URLLoaderClient,
   mojo::ScopedDataPipeProducerHandle body_producer_handle_;
   mojo::SimpleWatcher body_consumer_watcher_;
   mojo::SimpleWatcher body_producer_watcher_;
-
 
   base::WeakPtrFactory<DeAmpURLLoader> weak_factory_{this};
 };

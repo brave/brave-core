@@ -38,7 +38,7 @@ class DeAmpThrottle : public blink::URLLoaderThrottle {
   void WillProcessResponse(const GURL& response_url,
                            network::mojom::URLResponseHead* response_head,
                            bool* defer) override;
-    // Called from DeAmpURLLoader.
+  // Called from DeAmpURLLoader.
   void Resume();
 
  private:

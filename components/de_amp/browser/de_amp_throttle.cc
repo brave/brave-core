@@ -22,7 +22,7 @@
 
 namespace de_amp {
 
-  // static
+// static
 std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
     DeAmpService* service,
@@ -61,7 +61,7 @@ void DeAmpThrottle::WillProcessResponse(
   delegate_->InterceptResponse(std::move(new_remote), std::move(new_receiver),
                                &source_loader, &source_client_receiver);
   de_amp_loader->Start(std::move(source_loader),
-                            std::move(source_client_receiver));
+                       std::move(source_client_receiver));
 }
 
 void DeAmpThrottle::Resume() {

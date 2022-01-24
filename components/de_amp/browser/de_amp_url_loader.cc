@@ -108,10 +108,9 @@ void DeAmpURLLoader::OnReceiveRedirect(
   NOTREACHED();
 }
 
-void DeAmpURLLoader::OnUploadProgress(
-    int64_t current_position,
-    int64_t total_size,
-    OnUploadProgressCallback ack_callback) {
+void DeAmpURLLoader::OnUploadProgress(int64_t current_position,
+                                      int64_t total_size,
+                                      OnUploadProgressCallback ack_callback) {
   destination_url_loader_client_->OnUploadProgress(current_position, total_size,
                                                    std::move(ack_callback));
 }
@@ -177,7 +176,7 @@ void DeAmpURLLoader::FollowRedirect(
 }
 
 void DeAmpURLLoader::SetPriority(net::RequestPriority priority,
-                                       int32_t intra_priority_value) {
+                                 int32_t intra_priority_value) {
   if (state_ == State::kAborted)
     return;
   source_url_loader_->SetPriority(priority, intra_priority_value);
