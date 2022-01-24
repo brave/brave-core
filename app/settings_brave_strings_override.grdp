@@ -17,9 +17,6 @@
   <if expr="not chromeos and not lacros">
     </if>
 
-  <message name="IDS_SETTINGS_PRIVACY_REVIEW_WELCOME_CARD_SUB_HEADER" desc="A subheader shown at on the welcome card in the privacy review, explaining to users that Brave has default settings but they can customize them if they like.">
-    The default settings work for most profiles, but you can customize them to fit how you like to use Brave
-  </message>
   <if expr="not chromeos">
   </if>
   <if expr="chromeos">

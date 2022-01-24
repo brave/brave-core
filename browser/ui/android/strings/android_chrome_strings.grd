@@ -587,10 +587,10 @@ CHAR_LIMIT guidelines:
         On-device encryption
       </message>
       <message name="IDS_ANDROID_TRUSTED_VAULT_BANNER_SUB_LABEL_OFFER_OPT_IN" desc="Sub-label for the on-device encryption banner when the user is offered to opt in.">
-        Encrypt passwords on your device before they‘re saved to Brave Password Manager
+        For added safety, encrypt passwords on your device before they‘re saved to Brave Password Manager
       </message>
       <message name="IDS_ANDROID_TRUSTED_VAULT_BANNER_SUB_LABEL_OPTED_IN" desc="Sub-label for the on-device encryption banner when the user is already opted in.">
-        Your password are encrypted on your device before they’re saved to Brave Password Manager
+        Your passwords are encrypted on your device before they’re saved to Brave Password Manager
       </message>
       <message name="IDS_SECTION_SAVED_PASSWORDS_EXCEPTIONS" desc="Header for the list of websites for which user selected to never save passwords. [CHAR_LIMIT=32]">
         Never saved
@@ -1121,6 +1121,27 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_PRIVACY_REVIEW_SAFE_BROWSING_STANDARD_DESCRIPTION" desc="Description for the radio button for the standard Safe Browsing.">
         Standard protection against websites, downloads, and extensions that are known to be dangerous
       </message>
+      <message name="IDS_PRIVACY_REVIEW_FINISH_BUTTON" desc="Text on the button to finish the privacy review">
+        Finish
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_DONE_TITLE" desc="Title on the final page of the privacy review">
+        Review complete!
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_DONE_DESCRIPTION" desc="Subtitle on the final page of the privacy review">
+        Explore more settings below or finish now
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_PRIVACY_SANDBOX_HEADING" desc="Title for the Privacy Sandbox item on the final page of the privacy review">
+        Privacy Sandbox trial
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_PRIVACY_SANDBOX_DESCRIPTION" desc="Description for the Privacy Sandbox item on the final page of the privacy review">
+        See how Brave plans to safeguard you from cross-site tracking while preserving the open web
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_WEB_APP_ACTIVITY_HEADING" desc="Title for the Web and App Activity item on the final page of the privacy review">
+        Web &amp; App Activity
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_WEB_APP_ACTIVITY_DESCRIPTION" desc="Description for the Web and App Activity item on the final page of the privacy review">
+        Choose whether to include Brave history for more personalized experiences in Brave services
+      </message>
 
       <!-- Safety check -->
       <message name="IDS_PREFS_SAFETY_CHECK" desc="Title of the Safety check element in settings, allowing the user to check multiple areas of browser safety. [CHAR_LIMIT=32]">
@@ -1429,12 +1450,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_DATA_REDUCTION_INITIAL_TITLE" desc="This title states that the below chart will contain the user's data savings after they have started browsing.">
         Your data savings will appear here
-      </message>
-      <message name="IDS_DATA_REDUCTION_SAVED_LABEL" desc="Summary text for the menu item that states the amount of mobile data that was saved by Lite mode (i.e. XX MB saved). Lite mode allows users to to reduce their mobile data usage by compressing network traffic.">
-        <ph name="data">%1$s<ex>1.0 GB</ex></ph> saved
-      </message>
-      <message name="IDS_DATA_REDUCTION_DATE_LABEL" desc="Summary text for the menu item that states the beginning date when the displayed mobile data was saved (i.e. XX MB saved 'since Feb 28')">
-        since <ph name="date">%1$s<ex>Feb 28</ex></ph>
       </message>
       <message name="IDS_DATA_REDUCTION_BENEFITS_DESCRIPTION_LITE_MODE" desc="Description text about the benefits of the Lite mode feature. Seen only before the user has enabled the feature.">
          In Lite mode, Brave loads pages faster and uses up to 60 percent less data.
@@ -2760,6 +2775,15 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_FRE_FOOTER_SUPERVISED_USER" desc="The text is displayed in a footer on the very first screen of Brave. The link 'Terms of Service' opens the Brave Terms of Service. The link 'Privacy Policy' opens the Brave Privacy Policy. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy). Separate the first and the second sentence through a line break.">
         By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph> and <ph name="BEGIN_PRIVACY_LINK">&lt;PRIVACY_LINK&gt;</ph>Privacy\u00A0Policy<ph name="END_PRIVACY_LINK">&lt;/PRIVACY_LINK&gt;</ph>.\nTo help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
       </message>
+      <message name="IDS_SIGNIN_FRE_FOOTER_TOS" desc="The text is displayed in a footer on the very first screen of Brave. The link ‘Terms of Service’ opens the Brave Terms of Service.">
+        By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph>.
+      </message>
+      <message name="IDS_SIGNIN_FRE_FOOTER_TOS_WITH_SUPERVISED_USER" desc="The text is displayed in a footer on the very first screen of Brave. The link 'Terms of Service' opens the Brave Terms of Service. The link 'Privacy Policy' opens the Brave Privacy Policy.">
+        By continuing, you agree to the <ph name="BEGIN_TOS_LINK">&lt;TOS_LINK&gt;</ph>Terms of Service<ph name="END_TOS_LINK">&lt;/TOS_LINK&gt;</ph> and <ph name="BEGIN_PRIVACY_LINK">&lt;PRIVACY_LINK&gt;</ph>Privacy\u00A0Policy<ph name="END_PRIVACY_LINK">&lt;/PRIVACY_LINK&gt;</ph>.
+      </message>
+      <message name="IDS_SIGNIN_FRE_FOOTER_METRICS_REPORTING" desc="The text is displayed in a footer on the very first screen of Brave. Preferably, ensure consistency with the “Usage statistics and crash reports” section of the Brave Privacy Policy (google.com/chrome/privacy).">
+        To help improve the app, Brave sends usage and crash data to Brave. <ph name="BEGIN_UMA_LINK">&lt;UMA_LINK&gt;</ph>Manage<ph name="END_UMA_LINK">&lt;/UMA_LINK&gt;</ph>
+      </message>
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_TITLE" desc="Title of the dialog where users can change their Brave metric sharing settings, like usage data. This appears when they open the Brave app for the first time on their phone.">
         Make Brave better
       </message>
@@ -2994,6 +3018,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_FOLLOW_MANAGE_WAITING_FOR_CONTENT" desc="Label this web feed source as waiting for content so the user will know to check  back later.">
         Waiting for content
+      </message>
+      <message name="IDS_FEED_FOLLOW_UNKNOWN_ERROR" desc="Toast displayed when a failure occurs attempting to follow or unfollow a web feed.">
+        Something went wrong. Try again later.
+      </message>
+      <message name="IDS_FEED_FOLLOW_NO_CONNECTION_ERROR" desc="Toast displayed when there is no network connection when the user tries to follow or unfollow a web feed.">
+        No connection. Try again later.
       </message>
       <message name="IDS_NTP_TURN_OFF_FEED" desc="Content description to turn off the feed from the feed header overflow menu.">
         Turn off
@@ -3697,9 +3727,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCESSIBILITY_BTN_LENS_CAMERA" desc="Content description for the Lens button. When the user taps the button, they can perform a 'search with your camera or photos', which opens the Brave Lens app.">
         Search with your camera using Brave Lens
-      </message>
-      <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">
-        New tab
       </message>
       <message name="IDS_ACCESSIBILITY_NEW_INCOGNITO_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new Private tab view.">
         New Private tab
@@ -5186,14 +5213,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PAINT_PREVIEW_STARTUP_AUTO_UPGRADE_TOAST" desc="Text displayed as a toast message when paint preview         is automatically removed and live tab is shown.">
         Viewing live page
-      </message>
-
-      <!-- HTTPS image compression InfoBar -->
-      <message name="IDS_LITE_MODE_HTTPS_IMAGE_COMPRESSION_MESSAGE" desc="The text of the infobar notifying the user that Brave's Lite mode will now also compresses HTTPS images.">
-        Lite mode now saves you more data by optimizing images on HTTPS pages.
-      </message>
-      <message name="IDS_LITE_MODE_HTTPS_IMAGE_COMPRESSION_SETTINGS_LINK" desc="This link opens the Lite Mode settings page to explain the feature and configure the settings.">
-        Manage
       </message>
 
       <!-- Browser Promo Notification Strings -->
