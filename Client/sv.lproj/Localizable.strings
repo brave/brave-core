@@ -1,27 +1,3 @@
-/* Button text to confirm PIN */
-"confirmPin" = "Verifiera";
-
-/* Message for touch key modal. */
-"insertKeyMessage" = "För in din säkerhetsnyckel för";
-
 /* No comment provided by engineer. */
 "No server found" = "Ingen server hittades";
-
-/* Placeholder text for PIN */
-"pinPlaceholder" = "Ange din PIN";
-
-/* Title for the alert modal when a security key with PIN is inserted. */
-"pinTitle" = "PIN verifiering krävs";
-
-/* Message for selecting security key. */
-"selectKey" = "Skanna eller för in din säkerhetsnyckel för";
-
-/* Text for touch key modal button. */
-"touchKeyCancel" = "Avbryt";
-
-/* Message for touch key modal. */
-"touchKeyMessage" = "Tryck på din knapp för att avsluta begäran om";
-
-/* Title when PIN code is being verified. */
-"verificationPending" = "Verifiera din PIN för";
 

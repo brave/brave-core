@@ -7602,7 +7602,6 @@
 				0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */,
 				CA2202B4271993BD002D3582 /* CertificateError.css in Resources */,
 				CA225DF62795D1A80024C104 /* MainFrameAtDocumentStartSandboxed.js in Resources */,
-				0AB22A8F257EADA900126ADC /* su-san-lee.jpg in Resources */,
 				0AE50854261C63D70099C6A3 /* BraveSearchHelper.js in Resources */,
 				445ABC972731DDFF0089710D /* NewYorkMedium-RegularItalic.otf in Resources */,
 				5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */,

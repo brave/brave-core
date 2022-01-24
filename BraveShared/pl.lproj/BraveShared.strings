@@ -817,6 +817,9 @@
 /* Button title for opening the Brave Rewards panel to settings */
 "OpenBraveRewardsSettings" = "Otwórz ustawienia Brave Rewards";
 
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "Podczas otwierania folderu Pobrane w aplikacji Pliki wystąpił nieznany błąd.";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Otwórz obraz w nowej karcie";
 
@@ -1470,6 +1473,9 @@
 
 /* Accessibility label for the New Tab button in the tab toolbar. */
 "TabTrayNewTabButtonAccessibilityLabel" = "Nowa karta";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "Wyszukaj karty";
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "Karta %1$@ z %2$@";

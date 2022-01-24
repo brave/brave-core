@@ -817,6 +817,9 @@
 /* Button title for opening the Brave Rewards panel to settings */
 "OpenBraveRewardsSettings" = "Brave Rewards 설정 열기";
 
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "파일 앱에서 다운로드 폴더를 여는 중 알 수 없는 오류가 발생했습니다.";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "새 탭에서 이미지 열기";
 
@@ -1470,6 +1473,9 @@
 
 /* Accessibility label for the New Tab button in the tab toolbar. */
 "TabTrayNewTabButtonAccessibilityLabel" = "새 탭";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "검색 탭";
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "탭 %1$@ / %2$@";

@@ -1,27 +1,3 @@
-/* Button text to confirm PIN */
-"confirmPin" = "Verificar";
-
-/* Message for touch key modal. */
-"insertKeyMessage" = "Insira sua chave de segurança de";
-
 /* No comment provided by engineer. */
 "No server found" = "Nenhum servidor encontrado";
-
-/* Placeholder text for PIN */
-"pinPlaceholder" = "Insira seu PIN";
-
-/* Title for the alert modal when a security key with PIN is inserted. */
-"pinTitle" = "Verificação do PIN necessária";
-
-/* Message for selecting security key. */
-"selectKey" = "Leia ou insira sua chave de segurança de";
-
-/* Text for touch key modal button. */
-"touchKeyCancel" = "Cancelar";
-
-/* Message for touch key modal. */
-"touchKeyMessage" = "Toque na sua chave para finalizar a solicitação de";
-
-/* Title when PIN code is being verified. */
-"verificationPending" = "Verificando seu PIN de";
 

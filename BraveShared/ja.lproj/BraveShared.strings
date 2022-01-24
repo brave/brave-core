@@ -817,6 +817,9 @@
 /* Button title for opening the Brave Rewards panel to settings */
 "OpenBraveRewardsSettings" = "Brave Rewardsの設定を開く";
 
+/* Error description when there is an error while navigating to Files App */
+"OpenDownloadsFolderErrorDescription" = "「ファイル」アプリの「ダウンロード」フォルダを開く際に不明なエラーが発生しました。";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "画像を新しいタブで開く";
 
@@ -1470,6 +1473,9 @@
 
 /* Accessibility label for the New Tab button in the tab toolbar. */
 "TabTrayNewTabButtonAccessibilityLabel" = "新しいタブ";
+
+/* Title displayed for placeholder inside Search Bar in Tab Tray */
+"TabTraySearchBarTitle" = "検索タブ";
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "%2$@ 個のタブのうち %1$@ 番目";
