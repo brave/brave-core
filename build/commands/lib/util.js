@@ -742,7 +742,6 @@ const util = {
     // directory. These files become the target of hard links by a `copy` action in BUILD.gn in
     // their directory. For further information, see github.com/brave/brave-browser/issues/20316.
     const recurseOptions = Object.assign({}, options)
-    recurseOptions.stdio = 'ignore'
     runGClient(['recurse', 'git', 'status'], recurseOptions)
 
     runGClient(args, options)
