@@ -2769,6 +2769,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_REWARDS_BAT_VALUE_TEXT" desc="BAT value text">
       <ph name="VALUE">%1$s<ex>0</ex></ph> BAT
     </message>
+    <message name="IDS_CHANGE_AMOUNT" desc="Brave rewards monthly contribution text">
+      Change amount
+    </message>
     </messages>
   </release>
 </grit>
