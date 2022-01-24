@@ -3,24 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "third_party/blink/renderer/core/origin_trials/origin_trials.h"
+#include "third_party/blink/public/common/origin_trials/origin_trials.h"
 
 #include "base/containers/contains.h"
 
 namespace blink {
 namespace origin_trials {
-bool IsTrialValid_ChromiumImpl(const StringView& trial_name);
+bool IsTrialValid_ChromiumImpl(base::StringPiece trial_name);
 }  // namespace origin_trials
 }  // namespace blink
 
 #define IsTrialValid IsTrialValid_ChromiumImpl
-#include "../gen/third_party/blink/renderer/core/origin_trials/origin_trials.cc"
+#include "../gen/third_party/blink/common/origin_trials/origin_trials.cc"
 #undef IsTrialValid
 
 namespace blink {
 namespace origin_trials {
 
-bool IsTrialDisabledInBrave(const StringView& trial_name) {
+bool IsTrialDisabledInBrave(base::StringPiece trial_name) {
   // When updating also update the array in the overload below.
   // clang-format off
   static const char* const kBraveDisabledTrialNames[] = {
@@ -63,7 +63,7 @@ bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   return base::Contains(kBraveDisabledTrialFeatures, feature);
 }
 
-bool IsTrialValid(const StringView& trial_name) {
+bool IsTrialValid(base::StringPiece trial_name) {
   if (IsTrialDisabledInBrave(trial_name))
     return false;
 
