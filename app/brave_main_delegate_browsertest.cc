@@ -109,6 +109,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kCopyLinkToText,
 #endif
     &features::kDirectSockets,
+    &features::kFirstPartySets,
     &features::kIdleDetection,
     &features::kNotificationTriggers,
     &features::kOmniboxTriggerForNoStatePrefetch,
@@ -118,7 +119,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &federated_learning::kFederatedLearningOfCohorts,
     &federated_learning::kFlocIdComputedEventLogging,
     &media::kLiveCaption,
-    &net::features::kFirstPartySets,
     &network::features::kTrustTokens,
     &network_time::kNetworkTimeServiceQuerying,
     &optimization_guide::features::kOptimizationHints,

@@ -21,8 +21,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPartitionSSLSessionsByNetworkIsolationKey,
      base::FEATURE_ENABLED_BY_DEFAULT},
     {kSplitHostCacheByNetworkIsolationKey, base::FEATURE_ENABLED_BY_DEFAULT},
-
-    {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
