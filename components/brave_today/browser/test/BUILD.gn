@@ -9,7 +9,6 @@ import("//testing/test.gni")
 source_set("brave_news_unit_tests") {
   testonly = true
   sources = [
-    "//brave/components/brave_today/browser/direct_feed_controller_unittest.cc",
     "//brave/components/brave_today/browser/feed_building_unittest.cc",
     "//brave/components/brave_today/browser/publishers_parsing_unittest.cc",
   ]
@@ -25,6 +24,4 @@ source_set("brave_news_unit_tests") {
     "//testing/gtest",
     "//url",
   ]
-
-  public_deps = [ "//brave/components/brave_today/rust:rust-rs" ]
 }

@@ -101,13 +101,6 @@ handler.on<number>(Actions.feedItemViewedCountChanged.getType(), async (store, p
   getBraveNewsController().onSessionCardViewsCountChanged(state.today.cardsViewed)
 })
 
-handler.on<Actions.RemoveDirectFeedPayload>(Actions.removeDirectFeed.getType(), async (store, payload) => {
-  getBraveNewsController().removeDirectFeed(payload.directFeed.publisherId)
-  window.setTimeout(() => {
-    store.dispatch(Actions.checkForUpdate())
-  }, 3000)
-})
-
 handler.on<Actions.SetPublisherPrefPayload>(Actions.setPublisherPref.getType(), async (store, payload) => {
   const { publisherId, enabled } = payload
   let userStatus = (enabled === null)

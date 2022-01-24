@@ -76,29 +76,14 @@ enum UserEnabled {
   DISABLED,
 };
 
-enum PublisherType {
-  // Remote single feed of feed items combinging all default-provided feeds.
-  COMBINED_SOURCE,
-
-  // User-chosen additional feed which is fetched directly by the browser
-  // individually.
-  DIRECT_SOURCE,
-};
-
 struct Publisher {
+  // Identifies whether the user has manually set the publisher on and off,
+  // so that we may know if the source should follow the remote-provided value
+  // (which may change), or not.
   string publisher_id;
-  PublisherType type;
   string publisher_name;
   string category_name;
   bool is_enabled;
-  // Only really used for direct feeds, though this information would
-  // be useful for combined-source feeds so that the user doesn't add
-  // a direct feed for a data source already contained in the combined-source
-  // feed.
-  url.mojom.Url feed_source;
-  // Identifies whether the user has manually set the publisher on and off,
-  // so that we may know if the source should follow the `is_enabled`
-  // remote-provided value (which may change), or not.
   UserEnabled user_enabled_status = UserEnabled.NOT_MODIFIED;
 };
 
@@ -117,13 +102,6 @@ struct DisplayAd {
 interface BraveNewsController {
   GetFeed() => (Feed feed);
   GetPublishers() => (map<string, Publisher> publishers);
-  // When feed_url is a valid parsable feed, it will be added to the user's
-  // preferences and this function will return the new list of Publisher items.
-  // When it is not valid, or it is a duplicate, then the list of Publisher
-  // items will not be provided.
-  SubscribeToNewDirectFeed(url.mojom.Url feed_url)
-    => (bool is_valid_feed, bool is_duplicate, map<string, Publisher>? publishers);
-  RemoveDirectFeed(string publisher_id);
   GetImageData(url.mojom.Url padded_image_url) => (array<uint8>? image_data);
   SetPublisherPref(string publisher_id, UserEnabled new_status);
   ClearPrefs();

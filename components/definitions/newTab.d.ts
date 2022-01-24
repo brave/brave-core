@@ -282,10 +282,6 @@ declare namespace NewTab {
     favicon: string
   }
 
-  interface StorybookStateExtras {
-    forceSettingsTab?: string // SettingsTabType
-  }
-
   // In-memory state is a superset of PersistentState
-  export type State = PersistentState & EphemeralState & StorybookStateExtras
+  export type State = PersistentState & EphemeralState
 }

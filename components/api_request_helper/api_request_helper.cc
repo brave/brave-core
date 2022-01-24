@@ -32,8 +32,7 @@ void APIRequestHelper::Request(
     const std::string& payload_content_type,
     bool auto_retry_on_network_change,
     ResultCallback callback,
-    const base::flat_map<std::string, std::string>& headers /* ={} */,
-    size_t max_body_size /* =-1 */) {
+    const base::flat_map<std::string, std::string>& headers) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->load_flags = net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -58,18 +57,10 @@ void APIRequestHelper::Request(
           : network::SimpleURLLoader::RetryMode::RETRY_NEVER);
   url_loader->SetAllowHttpErrorResults(true);
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
-  if (max_body_size == -1u) {
-    iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
-        url_loader_factory_.get(),
-        base::BindOnce(&APIRequestHelper::OnResponse, base::Unretained(this),
-                       iter, std::move(callback)));
-  } else {
-    iter->get()->DownloadToString(
-        url_loader_factory_.get(),
-        base::BindOnce(&APIRequestHelper::OnResponse, base::Unretained(this),
-                       iter, std::move(callback)),
-        max_body_size);
-  }
+  iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&APIRequestHelper::OnResponse, base::Unretained(this),
+                     iter, std::move(callback)));
 }
 
 void APIRequestHelper::OnResponse(

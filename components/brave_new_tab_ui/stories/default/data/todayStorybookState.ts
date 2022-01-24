@@ -37,30 +37,10 @@ export default function getTodayState (): BraveTodayState {
     cardsViewed: 0,
     cardsVisited: 0,
     publishers: hasDataError ? undefined : {
-      'direct:https://example.com/feed': {
-        publisherId: 'direct:https://example.com/feed1',
-        publisherName: 'My Custom Feed 1',
-        categoryName: 'User feeds',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.DIRECT_SOURCE,
-        isEnabled: true,
-        userEnabledStatus: BraveNews.UserEnabled.ENABLED
-      },
-      'direct:https://example2.com/feed': {
-        publisherId: 'direct:https://example.com/feed2',
-        publisherName: 'My Custom Feed 2',
-        categoryName: 'User feeds',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.DIRECT_SOURCE,
-        isEnabled: true,
-        userEnabledStatus: BraveNews.UserEnabled.ENABLED
-      },
       '5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5': {
         publisherId: '5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
         publisherName: 'Test Publisher 1',
         categoryName: 'Tech',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
       },
@@ -68,8 +48,6 @@ export default function getTodayState (): BraveTodayState {
         publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
         publisherName: 'Test Publisher 2',
         categoryName: 'Top News',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       },
@@ -77,8 +55,6 @@ export default function getTodayState (): BraveTodayState {
         publisherId: '5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
         publisherName: 'Test Publisher 3',
         categoryName: 'Tech 2',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
       },
@@ -86,8 +62,6 @@ export default function getTodayState (): BraveTodayState {
         publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
         publisherName: 'Test Publisher 4',
         categoryName: 'Top News 1',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       },
@@ -95,8 +69,6 @@ export default function getTodayState (): BraveTodayState {
         publisherId: '5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
         publisherName: 'Test Publisher 5 has A very very very very very very very very very very very very very very very very very very very very long publisher name',
         categoryName: 'Tech 2',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
       },
@@ -104,8 +76,6 @@ export default function getTodayState (): BraveTodayState {
         publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
         publisherName: 'Test Publisher 6',
         categoryName: 'Top News 2',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       },
@@ -113,8 +83,6 @@ export default function getTodayState (): BraveTodayState {
         publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
         publisherName: 'Test Publisher 7',
         categoryName: 'Top News 3',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       },
@@ -122,8 +90,6 @@ export default function getTodayState (): BraveTodayState {
         publisherId: '5eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
         publisherName: 'Test Publisher 8',
         categoryName: 'Tech 3',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.ENABLED
       },
@@ -131,8 +97,6 @@ export default function getTodayState (): BraveTodayState {
         publisherId: '4eece347713f329f156cd0204cf9b12629f1dc8f4ea3c1b67984cfbfd66cdca5',
         publisherName: 'Test Publisher 9',
         categoryName: 'Top News 4',
-        feedSource: { url: 'http://www.example.com/feed' },
-        type: BraveNews.PublisherType.COMBINED_SOURCE,
         isEnabled: false,
         userEnabledStatus: BraveNews.UserEnabled.NOT_MODIFIED
       }

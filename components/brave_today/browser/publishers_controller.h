@@ -37,14 +37,12 @@ class PublishersController {
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
-  void GetOrFetchPublishers(GetPublishersCallback callback,
-                            bool wait_for_current_update = false);
+  void GetOrFetchPublishers(GetPublishersCallback callback);
   void EnsurePublishersIsUpdating();
   void ClearCache();
 
  private:
-  void GetOrFetchPublishers(base::OnceClosure callback,
-                            bool wait_for_current_update);
+  void GetOrFetchPublishers(base::OnceClosure callback);
 
   PrefService* prefs_;
   api_request_helper::APIRequestHelper* api_request_helper_;

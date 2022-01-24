@@ -185,18 +185,10 @@ class NewTabPage extends React.Component<Props, State> {
   checkShouldOpenSettings () {
     const params = window.location.search
     const urlParams = new URLSearchParams(params)
-    const openSettings = urlParams.get('openSettings') || this.props.newTabData.forceSettingsTab
+    const openSettings = urlParams.get('openSettings')
 
     if (openSettings) {
-      let activeSettingsTab: SettingsTabType | null = null
-      const activeSettingsTabRaw = this.props.newTabData.forceSettingsTab || null
-      if (activeSettingsTabRaw) {
-        const allSettingsTabTypes = [...Object.keys(SettingsTabType)]
-        if (allSettingsTabTypes.includes(activeSettingsTabRaw)) {
-          activeSettingsTab = SettingsTabType[activeSettingsTabRaw]
-        }
-      }
-      this.setState({ showSettingsMenu: true, activeSettingsTab })
+      this.setState({ showSettingsMenu: true })
       // Remove settings param so menu doesn't persist on reload
       window.history.pushState(null, '', '/')
     }

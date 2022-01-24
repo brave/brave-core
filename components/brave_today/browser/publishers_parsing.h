@@ -7,20 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_TODAY_BROWSER_PUBLISHERS_PARSING_H_
 
 #include <string>
-#include <vector>
 
-#include "base/values.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
-#include "brave/components/brave_today/common/brave_news.mojom-forward.h"
 
 namespace brave_news {
 
-bool ParseCombinedPublisherList(const std::string& json,
-                                Publishers* publishers);
-
-void ParseDirectPublisherList(
-    const base::DictionaryValue* direct_feeds_pref_value,
-    std::vector<mojom::PublisherPtr>* publishers);
+bool ParsePublisherList(const std::string& json, Publishers* publishers);
 
 }  // namespace brave_news
 

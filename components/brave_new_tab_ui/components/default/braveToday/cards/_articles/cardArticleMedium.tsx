@@ -40,7 +40,7 @@ function MediumArticle (props: ArticleProps) {
     return null
   }
   return (
-    <Card.Small data-score={data.score}>
+    <Card.Small>
       <a onClick={onClick} href={data.url.url} ref={cardRef}>
         <CardImageFromFeedItem
           data={data}
