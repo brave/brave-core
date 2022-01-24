@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. */ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="RtlSymmetry"
+    android:background="@color/wallet_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:text="@string/brave_ui_brave_wallet"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="16sp" />
+
+     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/wallet_edittext_outline_color" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/unlock"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight = "1"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/crypto_wallet_blue_button"
+        android:text="@string/unlock"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="@android:color/white"
+        style="?android:attr/borderlessButtonStyle"/>
+
+
+</LinearLayout>

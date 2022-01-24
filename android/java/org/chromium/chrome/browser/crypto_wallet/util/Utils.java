@@ -128,6 +128,7 @@ public class Utils {
     public static final String ASSET_LOGO = "assetLogo";
     public static final String ASSET_DECIMALS = "assetDecimals";
     public static final String CHAIN_ID = "chainId";
+    public static final String IS_FROM_DAPPS = "isFromDapps";
     private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
     private static final String ETHEREUM_CONTRACT_FOR_SWAP =
             "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
@@ -422,8 +423,12 @@ public class Utils {
         BigInteger bigNumber = new BigInteger(number, 16);
         BigInteger divider = new BigInteger(getDecimalsDepNumber(decimals));
         BigDecimal bDecimal = new BigDecimal(bigNumber);
-        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
+        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider));
         String resStr = bDecimalRes.toPlainString();
+        int integerPlaces = resStr.indexOf('.');
+        if (integerPlaces != -1 && (integerPlaces + 9) <= resStr.length()) {
+            resStr = resStr.substring(0, integerPlaces + 9);
+        }
 
         return Double.valueOf(resStr);
     }
@@ -485,8 +490,12 @@ public class Utils {
         BigInteger bigNumber = new BigInteger(number);
         BigInteger divider = new BigInteger(getDecimalsDepNumber(decimals));
         BigDecimal bDecimal = new BigDecimal(bigNumber);
-        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider), MathContext.DECIMAL32);
+        BigDecimal bDecimalRes = bDecimal.divide(new BigDecimal(divider));
         String resStr = bDecimalRes.toPlainString();
+        int integerPlaces = resStr.indexOf('.');
+        if (integerPlaces != -1 && (integerPlaces + 9) <= resStr.length()) {
+            resStr = resStr.substring(0, integerPlaces + 9);
+        }
 
         return Double.valueOf(resStr);
     }
