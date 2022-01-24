@@ -110,8 +110,7 @@ bool IsActive(const Rule& cookie_rule,
     if (primary_compare == ContentSettingsPattern::IDENTITY ||
         primary_compare == ContentSettingsPattern::SUCCESSOR) {
       // TODO(bridiver) - move this logic into shields_util for allow/block
-      return
-          ValueToContentSetting(&shield_rule.value) != CONTENT_SETTING_BLOCK;
+      return ValueToContentSetting(shield_rule.value) != CONTENT_SETTING_BLOCK;
     }
   }
 
@@ -359,7 +358,7 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
     SetWebsiteSettingInternal(
         new_rules[i].primary_pattern, new_rules[i].secondary_pattern,
         content_type,
-        ContentSettingToValue(ValueToContentSetting(&(new_rules[i].value))),
+        ContentSettingToValue(ValueToContentSetting(new_rules[i].value)),
         {new_rules[i].expiration, new_rules[i].session_model});
   }
 }
@@ -384,8 +383,8 @@ bool BravePrefProvider::SetWebsiteSetting(
   //       [primary_pattern, secondary_pattern, &value](const auto& rule) {
   //         return rule.primary_pattern == primary_pattern &&
   //                rule.secondary_pattern == secondary_pattern &&
-  //                ValueToContentSetting(&rule.value) !=
-  //                   ValueToContentSetting(value); });
+  //                ValueToContentSetting(rule.value) !=
+  //                    ValueToContentSetting(value); });
   //   if (match != brave_cookie_rules_[off_the_record_].end()) {
   //     // swap primary/secondary pattern - see CloneRule
   //     auto plugin_primary_pattern = secondary_pattern;
@@ -532,7 +531,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       NOTREACHED();
 
     // Shields down.
-    if (ValueToContentSetting(&shield_rule.value) == CONTENT_SETTING_BLOCK) {
+    if (ValueToContentSetting(shield_rule.value) == CONTENT_SETTING_BLOCK) {
       rules.emplace_back(Rule(ContentSettingsPattern::Wildcard(),
                               shield_rule.primary_pattern,
                               ContentSettingToValue(CONTENT_SETTING_ALLOW),
@@ -555,8 +554,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
           // is an update
           return new_rule.primary_pattern == old_rule.primary_pattern &&
                  new_rule.secondary_pattern == old_rule.secondary_pattern &&
-                 ValueToContentSetting(&new_rule.value) ==
-                    ValueToContentSetting(&old_rule.value);
+                 ValueToContentSetting(new_rule.value) ==
+                     ValueToContentSetting(old_rule.value);
         });
     if (match == old_rules.end()) {
       brave_cookie_updates.emplace_back(CloneRule(new_rule));
