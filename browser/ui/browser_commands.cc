@@ -68,8 +68,7 @@ void NewOffTheRecordWindowTor(Browser* browser) {
     return;
   }
 
-  TorProfileManager::SwitchToTorProfile(browser->profile(),
-                                        ProfileManager::CreateCallback());
+  TorProfileManager::SwitchToTorProfile(browser->profile(), base::DoNothing());
 }
 
 void NewTorConnectionForSite(Browser* browser) {
@@ -95,7 +94,7 @@ void OpenGuestProfile() {
   PrefService* service = g_browser_process->local_state();
   DCHECK(service);
   DCHECK(service->GetBoolean(prefs::kBrowserGuestModeEnabled));
-  profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
+  profiles::SwitchToGuestProfile(base::DoNothing());
 }
 
 void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
