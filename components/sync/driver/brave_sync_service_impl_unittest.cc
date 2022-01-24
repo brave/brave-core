@@ -204,4 +204,22 @@ TEST_F(BraveSyncServiceImplTest, DISABLED_EmulateGetOrCreateSyncCodeCHECK) {
   OSCryptMocker::TearDown();
 }
 
+TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
+  OSCryptMocker::SetUp();
+
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  EXPECT_TRUE(set_code_result);
+
+  brave_sync_service_impl()->StopAndClear();
+
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(nullptr), "");
+
+  OSCryptMocker::TearDown();
+}
+
 }  // namespace syncer
