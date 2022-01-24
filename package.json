@@ -341,6 +341,7 @@
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@ledgerhq/hw-app-eth": "6.22.3",
     "@ledgerhq/hw-transport-webhid": "6.20.0",
+    "@glif/filecoin-wallet-provider": "2.0.0-alpha.14",
     "@types/jszip": "^3.1.6",
     "@types/parse-torrent": "^5.8.3",
     "@types/react-router-dom": "^5.1.9",
