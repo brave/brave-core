@@ -128,20 +128,20 @@ void BraveBrowserMainParts::PostBrowserStart() {
     active_web_contents = browser->tab_strip_model()->GetActiveWebContents();
 
     if (active_web_contents) {
+      Profile* profile = ProfileManager::GetLastUsedProfileIfLoaded();
       infobars::ContentInfoBarManager* infobar_manager =
           infobars::ContentInfoBarManager::FromWebContents(active_web_contents);
-
-      if (infobar_manager) {
+      if (profile && infobar_manager) {
         BraveConfirmP3AInfoBarDelegate::Create(
             infobar_manager, g_browser_process->local_state());
-        auto* sync_service = SyncServiceFactory::IsSyncAllowed(profile())
-                                 ? SyncServiceFactory::GetForProfile(profile())
+        auto* sync_service = SyncServiceFactory::IsSyncAllowed(profile)
+                                 ? SyncServiceFactory::GetForProfile(profile)
                                  : nullptr;
         const bool is_v2_user =
             sync_service &&
             sync_service->GetUserSettings()->IsFirstSetupComplete();
         SyncV2MigrateInfoBarDelegate::Create(infobar_manager, is_v2_user,
-                                             profile(), browser);
+                                             profile, browser);
       }
     }
   }
@@ -171,11 +171,12 @@ void BraveBrowserMainParts::PreProfileInit() {
     translate::TranslateLanguageList::DisableUpdate();
 }
 
-void BraveBrowserMainParts::PostProfileInit() {
-  ChromeBrowserMainParts::PostProfileInit();
+void BraveBrowserMainParts::PostProfileInit(Profile* profile,
+                                            bool is_initial_profile) {
+  ChromeBrowserMainParts::PostProfileInit(profile, is_initial_profile);
 
 #if defined(OS_ANDROID)
-  if (profile()->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
+  if (profile->GetPrefs()->GetBoolean(kBackgroundVideoPlaybackEnabled)) {
     content::RenderFrameHost::AllowInjectingJavaScript();
     auto* command_line = base::CommandLine::ForCurrentProcess();
     command_line->AppendSwitch(switches::kDisableBackgroundMediaSuspend);
@@ -184,7 +185,7 @@ void BraveBrowserMainParts::PostProfileInit() {
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED) && BUILDFLAG(ENABLE_EXTENSIONS)
   extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(profile())->extension_service();
+      extensions::ExtensionSystem::Get(profile)->extension_service();
   if (service) {
     extensions::ComponentLoader* loader = service->component_loader();
     static_cast<extensions::BraveComponentLoader*>(loader)
