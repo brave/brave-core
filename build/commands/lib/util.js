@@ -741,8 +741,11 @@ const util = {
     // src/third_party/devtools-frontend/src/inspector_overlay/common.css and other files in this
     // directory. These files become the target of hard links by a `copy` action in BUILD.gn in
     // their directory. For further information, see github.com/brave/brave-browser/issues/20316.
-    const recurseOptions = Object.assign({}, options)
-    runGClient(['recurse', 'git', 'status'], recurseOptions)
+    if (!fs.existsSync(path.join(config.rootDir, '.gclient_entries'))) {
+      const recurseOptions = Object.assign({}, options)
+      recurseOptions.stdio = 'ignore'
+      runGClient(['recurse', 'git', 'status'], recurseOptions)
+    }
 
     runGClient(args, options)
     // When git cache is enabled, gclient sync will use a local directory as a
