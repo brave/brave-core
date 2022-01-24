@@ -29,7 +29,7 @@ unsigned FarbleNumberOfProcessors(blink::ExecutionContext* context) {
       true_value = kFakeMaxProcessors;
       // "Maximum" behavior is "balanced" behavior but with a fake maximum,
       // so fall through here.
-      FALLTHROUGH;
+      [[fallthrough]];
     }
     case BraveFarblingLevel::BALANCED: {
       std::mt19937_64 prng =
