@@ -67,7 +67,7 @@
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
 
-            <CheckBox
+            <android.widget.CheckBox
                 android:id="@+id/restore_wallet_checkbox"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -92,7 +92,7 @@
 
         </LinearLayout>
 
-        <CheckBox
+        <android.widget.CheckBox
             android:id="@+id/restore_legacy_wallet_checkbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
