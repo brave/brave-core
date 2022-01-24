@@ -91,7 +91,7 @@ void WeeklyEventStorage::Load() {
 
 void WeeklyEventStorage::Save() {
   ListPrefUpdate update(prefs_, pref_name_);
-  base::ListValue* list = update.Get();
+  base::Value* list = update.Get();
   list->ClearList();
   for (const auto& u : events_) {
     base::Value value(base::Value::Type::DICTIONARY);

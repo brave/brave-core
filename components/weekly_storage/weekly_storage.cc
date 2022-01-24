@@ -139,7 +139,7 @@ void WeeklyStorage::Save() {
   DCHECK_LE(daily_values_.size(), kDaysInWeek);
 
   ListPrefUpdate update(prefs_, pref_name_);
-  base::ListValue* list = update.Get();
+  base::Value* list = update.Get();
   // TODO(iefremov): Optimize if needed.
   list->ClearList();
   for (const auto& u : daily_values_) {

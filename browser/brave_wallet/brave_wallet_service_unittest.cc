@@ -1037,7 +1037,7 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
   observer_->Reset();
   {
     ListPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
-    base::ListValue* list = update.Get();
+    base::Value* list = update.Get();
     list->EraseListValueIf([&](const base::Value& v) {
       auto* chain_id_value = v.FindStringKey("chainId");
       if (!chain_id_value)
@@ -1172,7 +1172,7 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
       GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
 
   DictionaryPrefUpdate update(GetPrefs(), kBraveWalletUserAssets);
-  base::DictionaryValue* user_assets_pref = update.Get();
+  base::Value* user_assets_pref = update.Get();
   base::Value* user_assets_list =
       user_assets_pref->SetKey("rinkeby", base::Value(base::Value::Type::LIST));
 
