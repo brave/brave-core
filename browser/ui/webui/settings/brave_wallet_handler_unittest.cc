@@ -10,11 +10,15 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/test/bind.h"
 #include "base/values.h"
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -28,6 +32,8 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_web_ui.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -48,7 +54,10 @@ void UpdateCustomNetworks(PrefService* prefs,
 
 class TestBraveWalletHandler : public BraveWalletHandler {
  public:
-  TestBraveWalletHandler() {
+  TestBraveWalletHandler()
+      : shared_url_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &url_loader_factory_)) {
     TestingProfile::Builder builder;
 
     profile_ = builder.Build();
@@ -57,12 +66,35 @@ class TestBraveWalletHandler : public BraveWalletHandler {
 
     test_web_ui_.set_web_contents(web_contents_.get());
     set_web_ui(&test_web_ui_);
+    json_rpc_service_.reset(new brave_wallet::JsonRpcService(
+        shared_url_loader_factory_, profile_->GetPrefs()));
+    SetJsonRpcServiceForTesting(json_rpc_service_.get());
   }
 
   ~TestBraveWalletHandler() override {
     // The test handler unusually owns its own TestWebUI, so we make sure to
     // unbind it from the base class before the derived class is destroyed.
     set_web_ui(nullptr);
+  }
+  void SetEthChainIdInterceptor(const std::string& network_url,
+                                const std::string& chain_id) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, network_url, chain_id](const network::ResourceRequest& request) {
+          base::StringPiece request_string(request.request_body->elements()
+                                               ->at(0)
+                                               .As<network::DataElementBytes>()
+                                               .AsStringPiece());
+          url_loader_factory_.ClearResponses();
+          if (request_string.find("eth_chainId") != std::string::npos) {
+            url_loader_factory_.AddResponse(
+                network_url, "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" +
+                                 chain_id + "\"}");
+          }
+        }));
+  }
+
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
+    return shared_url_loader_factory_;
   }
 
   void RegisterMessages() override {}
@@ -82,10 +114,15 @@ class TestBraveWalletHandler : public BraveWalletHandler {
   content::TestWebUI* web_ui() { return &test_web_ui_; }
   PrefService* prefs() { return profile_->GetPrefs(); }
 
+ protected:
+  std::unique_ptr<brave_wallet::JsonRpcService> json_rpc_service_;
+
  private:
   content::BrowserTaskEnvironment browser_task_environment;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<content::WebContents> web_contents_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   content::TestWebUI test_web_ui_;
 };
 
@@ -130,7 +167,7 @@ TEST(TestBraveWalletHandler, RemoveEthereumChain) {
 TEST(TestBraveWalletHandler, AddEthereumChain) {
   TestBraveWalletHandler handler;
   brave_wallet::mojom::EthereumChain chain1(
-      "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      "0x999", "chain_name", {"https://url1.com"}, {"https://url1.com"},
       {"https://url1.com"}, "symbol", "symbol_name", 11, false);
   auto chain_ptr1 = chain1.Clone();
 
@@ -146,7 +183,11 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   std::string json_string;
   base::JSONWriter::Write(value, &json_string);
   args.Append(base::Value(json_string));
+  handler.SetEthChainIdInterceptor(chain1.rpc_urls.front(), "0x999");
+  base::RunLoop loop;
+  handler.SetChainCallbackForTesting(loop.QuitClosure());
   handler.AddEthereumChain(args.GetList());
+  loop.Run();
   {
     std::vector<brave_wallet::mojom::EthereumChainPtr> result;
     brave_wallet::GetAllCustomChains(handler.prefs(), &result);
@@ -156,7 +197,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
 
   const base::DictionaryValue* assets_pref =
       handler.prefs()->GetDictionary(kBraveWalletUserAssets);
-  const base::Value* list = assets_pref->FindKey("chain_id");
+  const base::Value* list = assets_pref->FindKey("0x999");
   ASSERT_TRUE(list->is_list());
   base::Value::ConstListView asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
@@ -173,7 +214,6 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   auto args2 = base::ListValue();
   args2.Append(base::Value("id"));
   args2.Append(base::Value(json_string));
-  LOG(ERROR) << json_string;
   handler.AddEthereumChain(args2.GetList());
   const auto& data = *handler.web_ui()->call_data()[1];
   ASSERT_TRUE(data.arg1()->is_string());
@@ -193,6 +233,42 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   }
 }
 
+TEST(TestBraveWalletHandler, AddEthereumChainWrongNetwork) {
+  TestBraveWalletHandler handler;
+  brave_wallet::mojom::EthereumChain chain1(
+      "0x999", "chain_name", {"https://url1.com"}, {"https://url2.com"},
+      {"https://url3.com"}, "symbol", "symbol_name", 11, false);
+  auto chain_ptr1 = chain1.Clone();
+
+  {
+    std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+    brave_wallet::GetAllCustomChains(handler.prefs(), &result);
+    EXPECT_EQ(result.size(), 0u);
+  }
+
+  auto args = base::ListValue();
+  args.Append(base::Value("id"));
+  auto value = brave_wallet::EthereumChainToValue(chain_ptr1);
+  std::string json_string;
+  base::JSONWriter::Write(value, &json_string);
+  args.Append(base::Value(json_string));
+  handler.SetEthChainIdInterceptor(chain1.rpc_urls.front(), "0x11");
+  base::RunLoop loop;
+  handler.SetChainCallbackForTesting(loop.QuitClosure());
+  handler.AddEthereumChain(args.GetList());
+  loop.Run();
+  const auto& data = *handler.web_ui()->call_data()[0];
+  ASSERT_TRUE(data.arg1()->is_string());
+  EXPECT_EQ(data.arg1()->GetString(), "id");
+
+  auto arg3_list = data.arg3()->GetList();
+  ASSERT_EQ(arg3_list.size(), 2UL);
+  EXPECT_EQ(arg3_list[0].GetBool(), false);
+  std::string error_message =
+      l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                                base::ASCIIToUTF16(chain1.rpc_urls.front()));
+  EXPECT_EQ(arg3_list[1].GetString(), error_message);
+}
 TEST(TestBraveWalletHandler, AddEthereumChainFail) {
   TestBraveWalletHandler handler;
 

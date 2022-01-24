@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
@@ -31,9 +32,8 @@ void RemoveEthereumChain(PrefService* prefs,
   brave_wallet::RemoveCustomNetwork(prefs, chain_id_to_remove);
 }
 
-bool AddEthereumChain(PrefService* prefs,
-                      const std::string& payload,
-                      std::string* error_message) {
+absl::optional<base::Value> GetEthereumChain(const std::string& payload,
+                                             std::string* error_message) {
   CHECK(error_message);
   error_message->clear();
   base::JSONReader::ValueWithError value_with_error =
@@ -43,42 +43,27 @@ bool AddEthereumChain(PrefService* prefs,
   if (!records_v) {
     *error_message = l10n_util::GetStringUTF8(
         IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
-    return false;
+    return absl::nullopt;
   }
 
-  const base::DictionaryValue* params_dict = nullptr;
-  if (!records_v->GetAsDictionary(&params_dict) || !params_dict) {
-    *error_message = l10n_util::GetStringUTF8(
-        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
-    return false;
-  }
+  return records_v->Clone();
+}
 
-  const auto& value_to_add = records_v.value();
-
-  // Saving converted value to initialize missing field with default values.
-  absl::optional<brave_wallet::mojom::EthereumChain> chain =
-      brave_wallet::ValueToEthereumChain(value_to_add);
-  if (!chain) {
-    *error_message = l10n_util::GetStringUTF8(
-        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
-    return false;
-  }
-
+bool IsChainExist(PrefService* prefs, const std::string& chain_id) {
   std::vector<::brave_wallet::mojom::EthereumChainPtr> custom_chains;
   brave_wallet::GetAllChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
-    if (it->chain_id == chain->chain_id) {
-      *error_message =
-          l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS);
-      return false;
+    if (it->chain_id == chain_id) {
+      return true;
     }
   }
-
-  brave_wallet::AddCustomNetwork(prefs, chain.value().Clone());
-  return true;
+  return false;
 }
 
 }  // namespace
+
+BraveWalletHandler::BraveWalletHandler() {}
+BraveWalletHandler::~BraveWalletHandler() {}
 
 void BraveWalletHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
@@ -135,12 +120,72 @@ void BraveWalletHandler::GetCustomNetworksList(
   ResolveJavascriptCallback(args[0], base::Value(json_string));
 }
 
+bool BraveWalletHandler::AddEthereumChainToRPCService(
+    base::Value javascript_callback,
+    const std::string& payload,
+    std::string* error_message) {
+  auto value_to_add = GetEthereumChain(payload, error_message);
+  if (!value_to_add) {
+    *error_message = l10n_util::GetStringUTF8(
+        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
+    return false;
+  }
+  absl::optional<brave_wallet::mojom::EthereumChain> chain =
+      brave_wallet::ValueToEthereumChain(value_to_add.value());
+  if (!chain) {
+    *error_message = l10n_util::GetStringUTF8(
+        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
+    return false;
+  }
+  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+  if (IsChainExist(prefs, chain->chain_id)) {
+    *error_message =
+        l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS);
+    return false;
+  }
+  auto* json_rpc_service = GetJsonRpcService();
+  if (!json_rpc_service) {
+    *error_message = l10n_util::GetStringUTF8(
+        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
+    return false;
+  }
+  json_rpc_service->AddEthereumChain(
+      chain->Clone(), base::BindOnce(&BraveWalletHandler::OnAddEthereumChain,
+                                     weak_ptr_factory_.GetWeakPtr(),
+                                     std::move(javascript_callback)));
+  return true;
+}
+
+void BraveWalletHandler::OnAddEthereumChain(
+    base::Value javascript_callback,
+    const std::string& chain_id,
+    brave_wallet::mojom::ProviderError error,
+    const std::string& error_message) {
+  base::ListValue result;
+  result.Append(
+      base::Value(error == brave_wallet::mojom::ProviderError::kSuccess));
+  result.Append(base::Value(error_message));
+  ResolveJavascriptCallback(javascript_callback, std::move(result));
+  if (chain_callback_for_testing_)
+    std::move(chain_callback_for_testing_).Run();
+}
+
+brave_wallet::JsonRpcService* BraveWalletHandler::GetJsonRpcService() {
+  if (test_json_rpc_service_)
+    return test_json_rpc_service_;
+  return brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
+      Profile::FromWebUI(web_ui()));
+}
+
 void BraveWalletHandler::AddEthereumChain(base::Value::ConstListView args) {
   CHECK_EQ(args.size(), 2U);
-  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   AllowJavascript();
   std::string error_message;
-  bool success = ::AddEthereumChain(prefs, args[1].GetString(), &error_message);
+  bool success = AddEthereumChainToRPCService(
+      args[0].Clone(), args[1].GetString(), &error_message);
+  if (success) {
+    return;
+  }
   base::ListValue result;
   result.Append(base::Value(success));
   result.Append(base::Value(error_message));

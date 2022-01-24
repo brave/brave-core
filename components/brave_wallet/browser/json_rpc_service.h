@@ -342,13 +342,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        bool auto_retry_on_network_change,
                        const GURL& network_url,
                        RequestCallback callback);
-  void OnEthChainIdValidated(
+  void OnEthChainIdValidatedForOrigin(
       mojom::EthereumChainPtr chain,
       const GURL& origin,
       AddEthereumChainForOriginCallback callback,
-      const int http_code,
-      const std::string& response,
-      const base::flat_map<std::string, std::string>& headers);
+      bool success);
+
+  void OnEthChainIdValidated(mojom::EthereumChainPtr chain,
+                             AddEthereumChainCallback callback,
+                             bool success);
 
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidDomain);
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, Reset);
