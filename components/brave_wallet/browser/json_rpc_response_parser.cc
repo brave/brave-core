@@ -23,6 +23,42 @@ bool ParseSingleStringResult(const std::string& json, std::string* result) {
   return true;
 }
 
+void ParseErrorResult(const std::string& json,
+                      mojom::ProviderError* error,
+                      std::string* error_message) {
+  DCHECK(error);
+  DCHECK(error_message);
+  *error = mojom::ProviderError::kParsingError;
+  *error_message = l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR);
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return;
+  }
+
+  absl::optional<int> code_int = response_dict->FindIntPath("error.code");
+  const std::string* message_string =
+      response_dict->FindStringPath("error.message");
+  if (!code_int)
+    return;
+
+  *error = static_cast<mojom::ProviderError>(*code_int);
+  if (message_string) {
+    *error_message = *message_string;
+  } else {
+    error_message->clear();
+  }
+}
+
 bool ParseResult(const std::string& json, base::Value* result) {
   DCHECK(result);
   base::JSONReader::ValueWithError value_with_error =

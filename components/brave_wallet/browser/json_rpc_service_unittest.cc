@@ -961,6 +961,96 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
   EXPECT_TRUE(callback_called);
 }
 
+TEST_F(JsonRpcServiceUnitTest, GetFeeHistory) {
+  std::string json =
+      R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [
+            "0x215d00b8c8",
+            "0x24beaded75"
+          ],
+          "gasUsedRatio": [
+            0.020687709938714324
+          ],
+          "oldestBlock": "0xd6b1b0",
+          "reward": [
+            [
+              "0x77359400",
+              "0x77359400",
+              "0x2816a6cfb"
+            ]
+          ]
+        }
+      })";
+
+  SetInterceptor("eth_feeHistory", "", json);
+  base::RunLoop run_loop;
+  json_rpc_service_->GetFeeHistory(base::BindLambdaForTesting(
+      [&](const std::vector<std::string>& base_fee_per_gas,
+          const std::vector<double>& gas_used_ratio,
+          const std::string& oldest_block,
+          const std::vector<std::vector<std::string>>& reward,
+          mojom::ProviderError error, const std::string& error_message) {
+        EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+        EXPECT_TRUE(error_message.empty());
+        EXPECT_EQ(base_fee_per_gas,
+                  (std::vector<std::string>{"0x215d00b8c8", "0x24beaded75"}));
+        EXPECT_EQ(gas_used_ratio, (std::vector<double>{0.020687709938714324}));
+        EXPECT_EQ(oldest_block, "0xd6b1b0");
+        EXPECT_EQ(reward, (std::vector<std::vector<std::string>>{
+                              {"0x77359400", "0x77359400", "0x2816a6cfb"}}));
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+
+  SetHTTPRequestTimeoutInterceptor();
+  base::RunLoop run_loop2;
+  json_rpc_service_->GetFeeHistory(base::BindLambdaForTesting(
+      [&](const std::vector<std::string>& base_fee_per_gas,
+          const std::vector<double>& gas_used_ratio,
+          const std::string& oldest_block,
+          const std::vector<std::vector<std::string>>& reward,
+          mojom::ProviderError error, const std::string& error_message) {
+        EXPECT_EQ(error, mojom::ProviderError::kInternalError);
+        EXPECT_EQ(error_message,
+                  l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+        run_loop2.Quit();
+      }));
+  run_loop2.Run();
+
+  SetInvalidJsonInterceptor();
+  base::RunLoop run_loop3;
+  json_rpc_service_->GetFeeHistory(base::BindLambdaForTesting(
+      [&](const std::vector<std::string>& base_fee_per_gas,
+          const std::vector<double>& gas_used_ratio,
+          const std::string& oldest_block,
+          const std::vector<std::vector<std::string>>& reward,
+          mojom::ProviderError error, const std::string& error_message) {
+        EXPECT_EQ(error, mojom::ProviderError::kParsingError);
+        EXPECT_EQ(error_message,
+                  l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+        run_loop3.Quit();
+      }));
+  run_loop3.Run();
+
+  SetLimitExceededJsonErrorResponse();
+  base::RunLoop run_loop4;
+  json_rpc_service_->GetFeeHistory(base::BindLambdaForTesting(
+      [&](const std::vector<std::string>& base_fee_per_gas,
+          const std::vector<double>& gas_used_ratio,
+          const std::string& oldest_block,
+          const std::vector<std::vector<std::string>>& reward,
+          mojom::ProviderError error, const std::string& error_message) {
+        EXPECT_EQ(error, mojom::ProviderError::kLimitExceeded);
+        EXPECT_EQ(error_message, "Request exceeds defined limit");
+        run_loop4.Quit();
+      }));
+  run_loop4.Run();
+}
+
 TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
   bool callback_called = false;
   SetInterceptor(

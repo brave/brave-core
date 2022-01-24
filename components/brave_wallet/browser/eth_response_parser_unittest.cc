@@ -263,6 +263,198 @@ TEST(EthResponseParserUnitTest, ParseUnstoppableDomainsProxyReaderGet) {
   EXPECT_TRUE(value.empty());
 }
 
+TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
+  std::string json =
+      R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [
+            "0x257093e880",
+            "0x20f4138789",
+            "0x20b04643ea",
+            "0x1da8692acc",
+            "0x215d00b8c8",
+            "0x24beaded75"
+          ],
+          "gasUsedRatio": [
+            0.020687709938714324,
+            0.4678514936136911,
+            0.12914042746424212,
+            0.999758,
+            0.9054214892490816
+          ],
+          "oldestBlock": "0xd6b1b0",
+          "reward": [
+            [
+              "0x77359400",
+              "0x77359400",
+              "0x3a3eb2ac0"
+            ],
+            [
+              "0x59682f00",
+              "0x77359400",
+              "0x48ae2f980"
+            ],
+            [
+              "0x59682f00",
+              "0x9502f900",
+              "0x17d1ffc7d6"
+            ],
+            [
+              "0xee6b2800",
+              "0x32bd81734",
+              "0xda2b71b34"
+            ],
+            [
+              "0x77359400",
+              "0x77359400",
+              "0x2816a6cfb"
+            ]
+          ]
+        }
+      })";
+
+  std::vector<std::string> base_fee_per_gas;
+  std::vector<double> gas_used_ratio;
+  std::string oldest_block;
+  std::vector<std::vector<std::string>> reward;
+  EXPECT_TRUE(ParseEthGetFeeHistory(json, &base_fee_per_gas, &gas_used_ratio,
+                                    &oldest_block, &reward));
+  EXPECT_EQ(base_fee_per_gas,
+            (std::vector<std::string>{"0x257093e880", "0x20f4138789",
+                                      "0x20b04643ea", "0x1da8692acc",
+                                      "0x215d00b8c8", "0x24beaded75"}));
+  EXPECT_EQ(
+      gas_used_ratio,
+      (std::vector<double>{0.020687709938714324, 0.4678514936136911,
+                           0.12914042746424212, 0.999758, 0.9054214892490816}));
+  EXPECT_EQ(oldest_block, "0xd6b1b0");
+  EXPECT_EQ(reward, (std::vector<std::vector<std::string>>{
+                        {"0x77359400", "0x77359400", "0x3a3eb2ac0"},
+                        {"0x59682f00", "0x77359400", "0x48ae2f980"},
+                        {"0x59682f00", "0x9502f900", "0x17d1ffc7d6"},
+                        {"0xee6b2800", "0x32bd81734", "0xda2b71b34"},
+                        {"0x77359400", "0x77359400", "0x2816a6cfb"}}));
+
+  // Empty result for the correct schema parses OK
+  json = R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [],
+          "gasUsedRatio": [],
+          "oldestBlock": "0xd6b1b0",
+          "reward": []
+        }
+      })";
+  base_fee_per_gas.clear();
+  gas_used_ratio.clear();
+  oldest_block.clear();
+  reward.clear();
+  EXPECT_TRUE(ParseEthGetFeeHistory(json, &base_fee_per_gas, &gas_used_ratio,
+                                    &oldest_block, &reward));
+  EXPECT_EQ(base_fee_per_gas, std::vector<std::string>());
+  EXPECT_EQ(gas_used_ratio, std::vector<double>());
+  EXPECT_EQ(oldest_block, "0xd6b1b0");
+  EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
+
+  // Missing reward is OK because it isn't specified when percentiles param
+  // isn't
+  json = R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [],
+          "gasUsedRatio": [],
+          "oldestBlock": "0xd6b1b0"
+        }
+      })";
+  base_fee_per_gas.clear();
+  gas_used_ratio.clear();
+  oldest_block.clear();
+  reward.clear();
+  EXPECT_TRUE(ParseEthGetFeeHistory(json, &base_fee_per_gas, &gas_used_ratio,
+                                    &oldest_block, &reward));
+  EXPECT_EQ(base_fee_per_gas, std::vector<std::string>());
+  EXPECT_EQ(gas_used_ratio, std::vector<double>());
+  EXPECT_EQ(oldest_block, "0xd6b1b0");
+  EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
+
+  // Unexpected input
+  EXPECT_FALSE(ParseEthGetFeeHistory("", &base_fee_per_gas, &gas_used_ratio,
+                                     &oldest_block, &reward));
+  EXPECT_FALSE(ParseEthGetFeeHistory("3", &base_fee_per_gas, &gas_used_ratio,
+                                     &oldest_block, &reward));
+  EXPECT_FALSE(ParseEthGetFeeHistory("{", &base_fee_per_gas, &gas_used_ratio,
+                                     &oldest_block, &reward));
+  EXPECT_FALSE(ParseEthGetFeeHistory("{}", &base_fee_per_gas, &gas_used_ratio,
+                                     &oldest_block, &reward));
+
+  // Invalid reward input
+  json = R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [],
+          "gasUsedRatio": [],
+          "oldestBlock": "0xd6b1b0",
+          "reward": [[3]]
+        }
+      })";
+  EXPECT_FALSE(ParseEthGetFeeHistory(json, &base_fee_per_gas, &gas_used_ratio,
+                                     &oldest_block, &reward));
+
+  // Invalid oldest block type
+  json = R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [],
+          "gasUsedRatio": [],
+          "oldestBlock": 3,
+          "reward": [[]]
+        }
+      })";
+  EXPECT_FALSE(ParseEthGetFeeHistory(json, &base_fee_per_gas, &gas_used_ratio,
+                                     &oldest_block, &reward));
+
+  // Invalid used ratio value
+  json = R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [],
+          "gasUsedRatio": ["3"],
+          "oldestBlock": "0xd6b1b0",
+          "reward": [[]]
+        }
+      })";
+  EXPECT_FALSE(ParseEthGetFeeHistory(json, &base_fee_per_gas, &gas_used_ratio,
+                                     &oldest_block, &reward));
+
+  // Invalid base fee type
+  json = R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [3],
+          "gasUsedRatio": [],
+          "oldestBlock": "0xd6b1b0",
+          "reward": [[]]
+        }
+      })";
+  EXPECT_FALSE(ParseEthGetFeeHistory(json, &base_fee_per_gas, &gas_used_ratio,
+                                     &oldest_block, &reward));
+}
+
 }  // namespace eth
 
 }  // namespace brave_wallet

@@ -70,6 +70,10 @@ std::string eth_blockNumber() {
   return GetJsonRpcNoParams("eth_blockNumber");
 }
 
+std::string eth_feeHistory() {
+  return GetJsonRpcNoParams("eth_feeHistory");
+}
+
 std::string eth_getBalance(const std::string& address,
                            const std::string& quantity_tag) {
   return GetJsonRpc2Params("eth_getBalance", address, quantity_tag);

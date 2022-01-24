@@ -42,6 +42,8 @@ std::string eth_gasPrice();
 std::string eth_accounts();
 // Returns the number of most recent block.
 std::string eth_blockNumber();
+// Returns the fee history.
+std::string eth_feeHistory();
 // Returns the balance of the account of given address.
 std::string eth_getBalance(const std::string& address,
                            const std::string& quantity_tag);
