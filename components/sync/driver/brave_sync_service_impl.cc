@@ -59,6 +59,11 @@ bool BraveSyncServiceImpl::IsSetupInProgress() const {
          !user_settings_->IsFirstSetupComplete();
 }
 
+void BraveSyncServiceImpl::StopAndClear() {
+  SyncServiceImpl::StopAndClear();
+  brave_sync_prefs_.Clear();
+}
+
 std::string BraveSyncServiceImpl::GetOrCreateSyncCode() {
   bool failed_to_decrypt = false;
   std::string sync_code = brave_sync_prefs_.GetSeed(&failed_to_decrypt);
@@ -97,8 +102,6 @@ void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
   // This function will follow normal reset process and set SyncRequested to
   // false
   StopAndClear();
-  brave_sync_prefs_.Clear();
-  // Sync prefs will be clear in SyncServiceImpl::StopImpl
   std::move(cb).Run();
 }
 
