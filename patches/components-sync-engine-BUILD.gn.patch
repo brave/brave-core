@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine/BUILD.gn b/components/sync/engine/BUILD.gn
-index 3c468be72864c757ff3d01ad0e5511e54ba86233..57444338656fb9601b92fff898566f08ea6adaa1 100644
+index ecc5c48c565c08647fbbd3173b20f985c1219b88..d11056aa157183bf6d9b9651f1e85d719a82418b 100644
 --- a/components/sync/engine/BUILD.gn
 +++ b/components/sync/engine/BUILD.gn
 @@ -160,6 +160,7 @@ static_library("engine") {

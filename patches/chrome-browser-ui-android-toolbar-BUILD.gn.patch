@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index 0231a777ef90b10fe9a02887fa22d03d2e009c00..6bb83555e81e09c60a5dd762a71c82ef44e9a482 100644
+index 8f4a4fad898af53b0652cc6a21710901517da6fb..534496afdf68c507b336084b78ed548555595383 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
 @@ -95,6 +95,7 @@ android_library("java") {

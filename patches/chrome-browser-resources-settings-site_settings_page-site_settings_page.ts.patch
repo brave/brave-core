@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.ts b/chrome/browser/resources/settings/site_settings_page/site_settings_page.ts
-index f06ea2b6ead92871ccb850f26ee5c8568aa3c1e1..117cf13e6b07aa4264d8164052715c401dffdcb3 100644
+index 5bbe6ec4ac574fb807d944ce2b8029465c8ec215..3a4658244557a2d0b9f87d407751f3a97a5d3646 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.ts
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.ts
 @@ -8,6 +8,7 @@

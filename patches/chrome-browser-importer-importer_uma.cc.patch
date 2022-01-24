@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/importer_uma.cc b/chrome/browser/importer/importer_uma.cc
-index e2feb7272fd6941f7149bc47e8db50ae34f61161..8a658ca897d696b60c7d9e0792872a834f413954 100644
+index d858676745103908f16a41392c0da42c3683c555..73730551989fdd3e41ebb2a0a6f173cfa9245468 100644
 --- a/chrome/browser/importer/importer_uma.cc
 +++ b/chrome/browser/importer/importer_uma.cc
 @@ -59,6 +59,9 @@ void LogImporterUseToMetrics(const std::string& metric_postfix,

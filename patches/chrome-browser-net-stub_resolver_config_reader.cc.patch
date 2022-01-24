@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/net/stub_resolver_config_reader.cc b/chrome/browser/net/stub_resolver_config_reader.cc
-index d6651d95817d4882c8f9f9532d9f72fa9532e475..992ad38afea12c2623c0215b45b9b0d307d8c8e6 100644
+index c36f9f7508c1f7402708e96fe021eca392091838..7aa65deb079b14a5f475183069d2f9206cdeac04 100644
 --- a/chrome/browser/net/stub_resolver_config_reader.cc
 +++ b/chrome/browser/net/stub_resolver_config_reader.cc
 @@ -367,6 +367,7 @@ SecureDnsConfig StubResolverConfigReader::GetAndUpdateConfiguration(

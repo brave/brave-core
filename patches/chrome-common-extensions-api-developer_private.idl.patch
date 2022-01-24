@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/api/developer_private.idl b/chrome/common/extensions/api/developer_private.idl
-index d3cc055d5780a31dac9c0bfa17937fc1548884d9..fcdaeee9e4c4ea442d6c0df66415c74383c4b043 100644
+index 452deaed1276eb6d63d5911fa0534d56ee318bf1..54788768845f79b2af802ed5fac7e8310d608049 100644
 --- a/chrome/common/extensions/api/developer_private.idl
 +++ b/chrome/common/extensions/api/developer_private.idl
 @@ -231,6 +231,7 @@ namespace developerPrivate {
