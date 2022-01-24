@@ -4,15 +4,6 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Ugyldige detaljer i betalingsforespørsel";
 
-/* Suffix for error strings */
-"tryAgain" = ", prøv igjen.";
-
-/* Error handling U2F authentication. */
-"U2FAuthenticationError" = "Sikkerhetsnøkkelen din kunne ikke godkjennes";
-
-/* Error handling U2F registration. */
-"U2FRegistrationError" = "Sikkerhetsnøkkelen din kunne ikke registreres";
-
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "Ikke-støttede betalingsverktøy";
 

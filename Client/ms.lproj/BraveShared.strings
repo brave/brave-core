@@ -4,15 +4,6 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Butiran tidak sah dalam permintaan pembayaran";
 
-/* Suffix for error strings */
-"tryAgain" = ", sila cuba lagi.";
-
-/* Error handling U2F authentication. */
-"U2FAuthenticationError" = "Ralat mengesahkan kunci keselamatan anda";
-
-/* Error handling U2F registration. */
-"U2FRegistrationError" = "Ralat mendaftarkan kunci keselamatan anda";
-
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "Alat pembayaran tidak disokong";
 

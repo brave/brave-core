@@ -4,15 +4,6 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Detail dalam permintaan pembayaran tidak valid";
 
-/* Suffix for error strings */
-"tryAgain" = ", mohon coba kembali";
-
-/* Error handling U2F authentication. */
-"U2FAuthenticationError" = "Galat dalam mengotentikasi kunci keamanan";
-
-/* Error handling U2F registration. */
-"U2FRegistrationError" = "Galat dalam meregistrasi kunci keamanan Anda";
-
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "Instrumen pembayaran tidak didukung";
 

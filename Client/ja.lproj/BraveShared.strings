@@ -4,15 +4,6 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "不正な支払いリクエスト";
 
-/* Suffix for error strings */
-"tryAgain" = "もう一度試してください。";
-
-/* Error handling U2F authentication. */
-"U2FAuthenticationError" = "セキュリティキーの認証エラー";
-
-/* Error handling U2F registration. */
-"U2FRegistrationError" = "セキュリティキーの登録エラー";
-
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "サポートされていない決済手段";
 

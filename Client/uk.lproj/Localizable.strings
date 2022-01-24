@@ -1,27 +1,3 @@
-/* Button text to confirm PIN */
-"confirmPin" = "Підтвердити";
-
-/* Message for touch key modal. */
-"insertKeyMessage" = "Вставте ваш ключ безпеки для";
-
 /* No comment provided by engineer. */
 "No server found" = "Сервер не знайдено";
-
-/* Placeholder text for PIN */
-"pinPlaceholder" = "Уведіть PIN-код";
-
-/* Title for the alert modal when a security key with PIN is inserted. */
-"pinTitle" = "Потрібне підтвердження PIN-коду";
-
-/* Message for selecting security key. */
-"selectKey" = "Відскануйте або вставте ваш ключ безпеки для";
-
-/* Text for touch key modal button. */
-"touchKeyCancel" = "Скасувати";
-
-/* Message for touch key modal. */
-"touchKeyMessage" = "Торкніться вашого ключа, щоб завершити запит на";
-
-/* Title when PIN code is being verified. */
-"verificationPending" = "Перевірка PIN-коду для";
 

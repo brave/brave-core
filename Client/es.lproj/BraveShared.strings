@@ -4,15 +4,6 @@
 /* Error message if details don't have the right type or values */
 "invalidDetailsMessage" = "Datos no válidos en la solicitud de pago";
 
-/* Suffix for error strings */
-"tryAgain" = ", vuelve a intentarlo.";
-
-/* Error handling U2F authentication. */
-"U2FAuthenticationError" = "Error al autenticar tu clave de seguridad";
-
-/* Error handling U2F registration. */
-"U2FRegistrationError" = "Error al registrar tu clave de seguridad";
-
 /* Error message if list of Payment Instruments doesn't include BAT */
 "unsupportedInstrumentMessage" = "Instrumentos de pago no compatibles";
 

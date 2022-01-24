@@ -1,27 +1,3 @@
-/* Button text to confirm PIN */
-"confirmPin" = "認証する";
-
-/* Message for touch key modal. */
-"insertKeyMessage" = "セキュリティーキーを入力する";
-
 /* No comment provided by engineer. */
 "No server found" = "サーバーが見つかりません";
-
-/* Placeholder text for PIN */
-"pinPlaceholder" = "PINを入力";
-
-/* Title for the alert modal when a security key with PIN is inserted. */
-"pinTitle" = "PIN認証が必要です";
-
-/* Message for selecting security key. */
-"selectKey" = "セキュリティキーをスキャンまたは挿入する";
-
-/* Text for touch key modal button. */
-"touchKeyCancel" = "キャンセル";
-
-/* Message for touch key modal. */
-"touchKeyMessage" = "キーをタップするとリクエストを完了できます";
-
-/* Title when PIN code is being verified. */
-"verificationPending" = "PINを検証しています";
 
