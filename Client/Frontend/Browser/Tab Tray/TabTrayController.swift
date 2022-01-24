@@ -150,8 +150,8 @@ class TabTrayController: LoadingViewController {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(tabManager.tabsForCurrentMode(for: query))
-        dataSource.apply(snapshot, animatingDifferences: true) { [unowned self] in
-            self.updateEmptyPanelState()
+        dataSource.apply(snapshot, animatingDifferences: true) { [weak self] in
+            self?.updateEmptyPanelState()
         }
     }
     
