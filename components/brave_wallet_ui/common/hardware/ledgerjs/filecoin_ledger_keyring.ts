@@ -16,7 +16,7 @@ import {
   HardwareOperationResult,
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
-} from '../../hardware_operations'
+} from '../types'
 
 function switchEndianness (hexString: string): string | false {
   const regex = hexString.match(/.{2}/g)

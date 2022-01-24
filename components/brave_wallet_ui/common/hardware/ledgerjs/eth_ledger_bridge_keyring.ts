@@ -15,10 +15,10 @@ import {
   SignatureVRS,
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
-} from '../../hardware_operations'
+, HardwareOperationResult, LedgerDerivationPaths
+} from '../types'
 import { LedgerEthereumKeyring } from '../interfaces'
 import { HardwareVendor } from '../../api/hardware_keyrings'
-import { HardwareOperationResult, LedgerDerivationPaths } from '../types'
 
 export enum LedgerErrorsCodes {
   TransportLocked = 'TransportLocked'

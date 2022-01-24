@@ -24,7 +24,7 @@ import { normalizeNumericValue } from '../../utils/bn-utils'
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
-import { GetAccountsHardwareOperationResult } from '../hardware_operations'
+import { GetAccountsHardwareOperationResult } from '../hardware/types'
 import LedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
 

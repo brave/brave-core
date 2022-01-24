@@ -10,7 +10,7 @@ import {
   HardwareOperationResult,
   SignHardwareMessageOperationResult,
   SignHardwareTransactionOperationResult
-} from '../hardware_operations'
+} from './types'
 
 export abstract class HardwareKeyring {
   abstract coin (): BraveWallet.CoinType
