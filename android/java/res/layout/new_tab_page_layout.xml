@@ -79,7 +79,7 @@
                     <org.chromium.chrome.browser.custom_layout.VerticalViewPager
                         android:id="@+id/ntp_widget_view_pager"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="wrap_content"/>
 
                 </androidx.cardview.widget.CardView>
 
@@ -157,7 +157,6 @@
             android:layout_width="match_parent"
             android:layout_height="750dp"
             android:visibility="gone"
-            android:layout_marginTop="-70dp"
          />
 
         <include
@@ -173,6 +172,7 @@
         <FrameLayout
             android:id="@+id/image_credit_layout"
             android:layout_width="match_parent"
+            android:layout_marginBottom="30dp"
             android:layout_height="wrap_content">
 
             <TextView

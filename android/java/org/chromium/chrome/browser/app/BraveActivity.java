@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -723,10 +724,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
         ScrollView scrollView = (ScrollView) root.getChildAt(0);
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int mDeviceHeight = displayMetrics.heightPixels;
+        int mDeviceWidth = displayMetrics.widthPixels;
+
         Glide.with(this)
                 .asBitmap()
                 .load(bgWallpaper)
                 .centerCrop()
+                .override(mDeviceWidth, mDeviceHeight)
                 .priority(Priority.IMMEDIATE)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(new CustomTarget<Bitmap>() {

@@ -49,7 +49,8 @@ public class BraveNewsAdapterFeedCard
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mView = mInflater.inflate(R.layout.brave_news_row, parent, false);
+        mView = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.brave_news_row, parent, false);
         mHolder = new ViewHolder(mView);
 
         return mHolder;
@@ -64,8 +65,7 @@ public class BraveNewsAdapterFeedCard
             try {
                 if (mBraveNewsController != null) {
                     new CardBuilderFeedCard(mBraveNewsController, mHolder.linearLayout, mActivity,
-                            position, mNewsItems.get(position),
-                            mNewsItems.get(position).getCardType());
+                            position, mNewsItem, mNewsItem.getCardType());
                 }
 
             } catch (Exception e) {
@@ -79,24 +79,23 @@ public class BraveNewsAdapterFeedCard
         return mNewsItems.size();
     }
 
-    public class ViewHolderWidget extends RecyclerView.ViewHolder {
-        ViewHolderWidget(View itemView) {
-            super(itemView);
-        }
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
-
-            linearLayout = itemView.findViewById(R.id.card_layout);
-            itemView.setOnClickListener(this);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.card_layout);
         }
-
-        @Override
-        public void onClick(View view) {}
     }
 
     public FeedItemsCard getItem(int id) {
