@@ -113,13 +113,13 @@ const AddAccountModal = (props: Props) => {
 
   const onClickCreateAccount = () => {
     if (tab === 'create') {
-      if (selectedAccountType?.network === 'ethereum') {
+      if (selectedAccountType?.coin === BraveWallet.CoinType.ETH) {
         onCreateAccount(accountName)
       }
-      if (selectedAccountType?.network === 'solana') {
+      if (selectedAccountType?.coin === BraveWallet.CoinType.SOL) {
         // logic here to create a solana account
       }
-      if (selectedAccountType?.network === 'filecoin') {
+      if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
         // logic here to create a filecoin account
       }
       onRouteBackToAccounts()
@@ -314,7 +314,7 @@ const AddAccountModal = (props: Props) => {
           <SelectAccountTitle>{getLocale('braveWalletCreateAccountTitle')}</SelectAccountTitle>
           <DividerLine />
           {CreateAccountOptions().map((network) =>
-            <SelectAccountItemWrapper key={network.network}>
+            <SelectAccountItemWrapper key={network.coin}>
               <AccountTypeItem
                 onClickCreate={onSelectAccountType(network)}
                 icon={network.icon}
@@ -322,7 +322,7 @@ const AddAccountModal = (props: Props) => {
                 title={network.name}
                 buttonText={buttonText}
               />
-              {network.network !== 'filecoin' &&
+              {network.coin !== BraveWallet.CoinType.FIL &&
                 <DividerLine />
               }
             </SelectAccountItemWrapper>

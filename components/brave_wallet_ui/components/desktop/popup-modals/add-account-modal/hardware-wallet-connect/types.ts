@@ -27,6 +27,7 @@ export interface HardwareWalletConnectOpts {
   startIndex: number
   stopIndex: number
   scheme: HardwareDerivationScheme
+  coin: BraveWallet.CoinType
 }
 
 export interface ErrorMessage {

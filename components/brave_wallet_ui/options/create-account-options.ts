@@ -1,4 +1,4 @@
-import { CreateAccountOptionsType } from '../constants/types'
+import { BraveWallet, CreateAccountOptionsType } from '../constants/types'
 import {
   ETHIconUrl
   // SOLIconUrl,
@@ -10,7 +10,7 @@ export const CreateAccountOptions = (): CreateAccountOptionsType[] => [
   {
     description: getLocale('braveWalletCreateAccountEthereumDescription'),
     name: 'Ethereum',
-    network: 'ethereum',
+    coin: BraveWallet.CoinType.ETH,
     icon: ETHIconUrl
   }
   // Commented out until we have support for these networks
@@ -23,7 +23,7 @@ export const CreateAccountOptions = (): CreateAccountOptionsType[] => [
   // {
   //   description: getLocale('braveWalletCreateAccountFilecoinDescription'),
   //   name: 'Filecoin',
-  //   network: 'filecoin',
+  //   coin: BraveWallet.CoinType.FIL,
   //   icon: FILECOINIconUrl
   // }
 ]
