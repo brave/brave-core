@@ -7,6 +7,7 @@
 
 #include "base/base64.h"
 #include "base/logging.h"
+#include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync/driver/sync_service_impl_delegate.h"
@@ -186,8 +187,18 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseKeyringLocked) {
 
 #endif  // defined(OS_APPLE)
 
-TEST_F(BraveSyncServiceImplTest, DISABLED_EmulateGetOrCreateSyncCodeCHECK) {
+// Google test doc strongly recommends to use ``*DeathTest` naming
+// for test suite
+using BraveSyncServiceImplDeathTest = BraveSyncServiceImplTest;
+
+TEST_F(BraveSyncServiceImplDeathTest, EmulateGetOrCreateSyncCodeCHECK) {
   OSCryptMocker::SetUp();
+
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
   std::string wrong_seed = "123";
   std::string encrypted_wrong_seed;
   EXPECT_TRUE(OSCrypt::EncryptString(wrong_seed, &encrypted_wrong_seed));
@@ -197,9 +208,7 @@ TEST_F(BraveSyncServiceImplTest, DISABLED_EmulateGetOrCreateSyncCodeCHECK) {
   pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
                             encoded_wrong_seed);
 
-  CreateSyncService(SyncServiceImpl::MANUAL_START);
-
-  std::string seed = brave_sync_service_impl()->GetOrCreateSyncCode();
+  EXPECT_CHECK_DEATH(brave_sync_service_impl()->GetOrCreateSyncCode());
 
   OSCryptMocker::TearDown();
 }
