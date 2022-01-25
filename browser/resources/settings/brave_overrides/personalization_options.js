@@ -9,11 +9,11 @@ import '../brave_privacy_page/brave_personalization_options.m.js'
 
 RegisterPolymerTemplateModifications({
   'settings-personalization-options': (templateContent) => {
-    const searchSuggestToggle = templateContent.getElementById('searchSuggestToggle')
-    if (!searchSuggestToggle) {
-      console.error(`[Brave Settings Overrides] Couldn't find search suggest toggle`)
+    const metricsReportingControl = templateContent.getElementById('metricsReportingControl')
+    if (!metricsReportingControl) {
+      console.error(`[Brave Settings Overrides] Couldn't find metricsReportingControl`)
     } else {
-      searchSuggestToggle.insertAdjacentHTML('afterend', `
+      metricsReportingControl.insertAdjacentHTML('beforebegin', `
         <settings-brave-personalization-options prefs="{{prefs}}"></settings-brave-personalization-options>
       `)
     }
