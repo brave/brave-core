@@ -19,6 +19,7 @@
 // Thus we exclude desktop related code from it for Android builds.
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 // Exclude extension headers to avoid build errors
+#define BRAVE_CHROMIUM_SRC_EXTENSIONS_COMMON_CONSTANTS_H_
 #define EXTENSIONS_BROWSER_EXTENSION_REGISTRY_H_
 #define EXTENSIONS_COMMON_CONSTANTS_H_
 #define EXTENSIONS_COMMON_MANIFEST_H_
