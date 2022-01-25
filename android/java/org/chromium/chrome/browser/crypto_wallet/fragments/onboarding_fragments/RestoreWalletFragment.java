@@ -68,6 +68,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                 v -> recoveryPhraseText.setText(Utils.getTextFromClipboard(getActivity())));
 
         showRecoveryPhraseCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            int cursorPos = recoveryPhraseText.getSelectionStart();
             if (isChecked) {
                 recoveryPhraseText.setTransformationMethod(
                         HideReturnsTransformationMethod.getInstance());
@@ -75,6 +76,7 @@ public class RestoreWalletFragment extends CryptoOnboardingFragment {
                 recoveryPhraseText.setTransformationMethod(
                         PasswordTransformationMethod.getInstance());
             }
+            recoveryPhraseText.setSelection(cursorPos);
         });
 
         recoveryPhraseText.addTextChangedListener(new TextWatcher() {
