@@ -263,18 +263,6 @@ public class StackAnimation {
                 }
                 break;
             case OverviewAnimationType.FULL_ROLL:
-                // Responsible for generating the animations that make all the tabs do a full roll.
-                for (int i = 0; i < tabs.length; ++i) {
-                    LayoutTab layoutTab = tabs[i].getLayoutTab();
-                    // Set the pivot
-                    layoutTab.setTiltX(
-                            layoutTab.getTiltX(), layoutTab.getScaledContentHeight() / 2.0f);
-                    layoutTab.setTiltY(
-                            layoutTab.getTiltY(), layoutTab.getScaledContentWidth() / 2.0f);
-                    // Create the angle animation
-                    addLandscapePortraitTiltScrollAnimation(
-                            stackAnimatorSet, layoutTab, -360.0f, FULL_ROLL_ANIMATION_DURATION_MS);
-                }
                 break;
             case OverviewAnimationType.NEW_TAB_OPENED:
                 // Responsible for generating the animations that shows a new tab being opened.
@@ -304,11 +292,6 @@ public class StackAnimation {
                 }
                 break;
             case OverviewAnimationType.START_PINCH:
-                // Responsible for generating the animations that flattens tabs when a pinch begins.
-                for (int i = 0; i < tabs.length; ++i) {
-                    addLandscapePortraitTiltScrollAnimation(stackAnimatorSet,
-                            tabs[i].getLayoutTab(), 0, START_PINCH_ANIMATION_DURATION_MS);
-                }
                 break;
             case OverviewAnimationType.TAB_FOCUSED:
                 createLandscapePortraitTabFocusedAnimatorSet(
@@ -341,17 +324,6 @@ public class StackAnimation {
     private float getLandscapePortraitScreenPositionInScrollDirection(StackTab tab) {
         return mOrientation == Orientation.LANDSCAPE ? tab.getLayoutTab().getX()
                                                      : tab.getLayoutTab().getY();
-    }
-
-    private void addLandscapePortraitTiltScrollAnimation(
-            StackAnimatorSet stackAnimatorSet, LayoutTab tab, float end, int durationMs) {
-        if (mOrientation == Orientation.LANDSCAPE) {
-            stackAnimatorSet.addToAnimation(
-                    tab, LayoutTab.TILT_Y_IN_DEGREES, tab.getTiltY(), end, durationMs);
-        } else {
-            stackAnimatorSet.addToAnimation(
-                    tab, LayoutTab.TILT_X_IN_DEGREES, tab.getTiltX(), end, durationMs);
-        }
     }
 
     private void createPortraitEnterStackAnimatorSet(
@@ -475,8 +447,6 @@ public class StackAnimation {
             StackTab tab = tabs[i];
             LayoutTab layoutTab = tab.getLayoutTab();
 
-            addLandscapePortraitTiltScrollAnimation(
-                    stackAnimatorSet, layoutTab, 0.0f, TAB_FOCUSED_ANIMATION_DURATION_MS);
             stackAnimatorSet.addToAnimation(tab, StackTab.DISCARD_AMOUNT, tab.getDiscardAmount(),
                     0.0f, TAB_FOCUSED_ANIMATION_DURATION_MS, null);
 
@@ -582,9 +552,6 @@ public class StackAnimation {
         int firstDyingTabIndex = -1;
         float firstDyingTabOffset = 0;
         for (int i = 0; i < tabs.length; ++i) {
-            addLandscapePortraitTiltScrollAnimation(stackAnimatorSet, tabs[i].getLayoutTab(), 0.0f,
-                    UNDISCARD_ANIMATION_DURATION_MS);
-
             if (tabs[i].isDying()) {
                 dyingTabsCount++;
                 if (dyingTabsCount == 1) {

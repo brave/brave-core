@@ -574,10 +574,6 @@ public abstract class Stack {
                 mLayout.uiDoneEnteringStack();
                 break;
             case OverviewAnimationType.FULL_ROLL:
-                for (int i = 0; i < mStackTabs.length; i++) {
-                    mStackTabs[i].getLayoutTab().setTiltX(0, 0);
-                    mStackTabs[i].getLayoutTab().setTiltY(0, 0);
-                }
                 springBack(time);
                 break;
             case OverviewAnimationType.TAB_FOCUSED:
@@ -1156,11 +1152,8 @@ public abstract class Stack {
     @VisibleForTesting
     public RectF getCloseBoundsOnLayoutTab(LayoutTab layoutTab) {
         if (!layoutTab.get(LayoutTab.IS_TITLE_NEEDED) || !layoutTab.get(LayoutTab.IS_VISIBLE)
-                || layoutTab.get(LayoutTab.BORDER_CLOSE_BUTTON_ALPHA) < 0.5f
                 || layoutTab.get(LayoutTab.BORDER_ALPHA) < 0.5f
-                || layoutTab.get(LayoutTab.BORDER_ALPHA) != 1.0f
-                || Math.abs(layoutTab.get(LayoutTab.TILT_X_IN_DEGREES)) > 1.0f
-                || Math.abs(layoutTab.get(LayoutTab.TILT_Y_IN_DEGREES)) > 1.0f) {
+                || layoutTab.get(LayoutTab.BORDER_ALPHA) != 1.0f) {
             return null;
         }
         RectF closePlacement = layoutTab.get(LayoutTab.CLOSE_PLACEMENT);
@@ -1429,15 +1422,6 @@ public abstract class Stack {
             if (shouldStackTabsAtTop()) {
                 // Resolve top stacking
                 screenScrollOffset = Math.max(minStackedPosition, screenScrollOffset);
-                if (stackedCount < MAX_NUMBER_OF_STACKED_TABS_TOP) {
-                    // This make sure all the tab get stacked up as one when all the tabs do a
-                    // full roll animation.
-                    final float tiltXcos = (float) Math.cos(Math.toRadians(layoutTab.getTiltX()));
-                    final float tiltYcos = (float) Math.cos(Math.toRadians(layoutTab.getTiltY()));
-                    float collapse = Math.min(Math.abs(tiltXcos), Math.abs(tiltYcos));
-                    collapse *= layoutTab.getAlpha();
-                    minStackedPosition += StackTab.sStackedTabVisibleSize * collapse;
-                }
                 stackedCount += stackTab.isDying() ? 0 : 1;
                 if (overscrollPercent < 0) {
                     // Oversroll at the top of the screen. For the first
@@ -1672,9 +1656,6 @@ public abstract class Stack {
     public void setStackFocusInfo(float stackFocus, int orderIndex) {
         if (mStackTabs == null) return;
         mReferenceOrderIndex = orderIndex;
-        for (int i = 0; i < mStackTabs.length; i++) {
-            mStackTabs[i].getLayoutTab().setBorderCloseButtonAlpha(stackFocus);
-        }
     }
 
     /**
@@ -1721,7 +1702,6 @@ public abstract class Stack {
             mStackTabs = new StackTab[count];
 
             final boolean isIncognito = mTabList.isIncognito();
-            final boolean needTitle = !mLayout.isStartingToHide();
             for (int i = 0; i < count; ++i) {
                 Tab tab = mTabList.getTabAt(i);
                 int tabId = tab != null ? tab.getId() : Tab.INVALID_TAB_ID;
@@ -1735,8 +1715,8 @@ public abstract class Stack {
                     maxContentHeight = mStackTabs[i].getLayoutTab().getMaxContentHeight();
                 }
 
-                LayoutTab layoutTab = mLayout.createLayoutTab(tabId, isIncognito,
-                        Layout.SHOW_CLOSE_BUTTON, needTitle, maxContentWidth, maxContentHeight);
+                LayoutTab layoutTab = mLayout.createLayoutTab(
+                        tabId, isIncognito, maxContentWidth, maxContentHeight);
                 layoutTab.setInsetBorderVertical(true);
                 layoutTab.setShowToolbar(true);
                 layoutTab.setToolbarAlpha(0.f);
