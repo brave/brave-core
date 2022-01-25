@@ -19,6 +19,7 @@
 
 #include <list>
 
+#include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/weekly_storage/weekly_storage.h"
 #include "chrome/browser/resource_coordinator/usage_clock.h"
@@ -32,6 +33,8 @@ namespace brave {
 class BraveUptimeTracker {
  public:
   explicit BraveUptimeTracker(PrefService* local_state);
+  BraveUptimeTracker(const BraveUptimeTracker&) = delete;
+  BraveUptimeTracker& operator=(const BraveUptimeTracker&) = delete;
   ~BraveUptimeTracker();
 
   static void CreateInstance(PrefService* local_state);
@@ -46,8 +49,6 @@ class BraveUptimeTracker {
   base::RepeatingTimer timer_;
   base::TimeDelta current_total_usage_;
   WeeklyStorage state_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveUptimeTracker);
 };
 
 // BraveWindowTracker is under !OS_ANDROID guard because
@@ -61,6 +62,8 @@ class BraveUptimeTracker {
 class BraveWindowTracker : public BrowserListObserver {
  public:
   explicit BraveWindowTracker(PrefService* local_state);
+  BraveWindowTracker(const BraveWindowTracker&) = delete;
+  BraveWindowTracker& operator=(const BraveWindowTracker&) = delete;
   ~BraveWindowTracker() override;
 
   static void CreateInstance(PrefService* local_state);
@@ -75,8 +78,7 @@ class BraveWindowTracker : public BrowserListObserver {
   void UpdateP3AValues() const;
 
   base::RepeatingTimer timer_;
-  PrefService* local_state_;
-  DISALLOW_COPY_AND_ASSIGN(BraveWindowTracker);
+  raw_ptr<PrefService> local_state_ = nullptr;
 };
 #endif  // !defined(OS_ANDROID)
 

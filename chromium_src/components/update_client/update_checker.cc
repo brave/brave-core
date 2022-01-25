@@ -25,7 +25,6 @@ void SequentialUpdateChecker::CheckForUpdates(
     const std::vector<std::string>& ids_checked,
     const IdToComponentPtrMap& components,
     const base::flat_map<std::string, std::string>& additional_attributes,
-    bool enabled_component_updates,
     UpdateCheckCallback update_check_callback) {
   VLOG(3) << "> CheckForUpdates";
 
@@ -40,7 +39,6 @@ void SequentialUpdateChecker::CheckForUpdates(
   session_id_ = session_id;
   components_ = &components;
   additional_attributes_ = additional_attributes;
-  enabled_component_updates_ = enabled_component_updates;
   update_check_callback_ = std::move(update_check_callback);
 
   CheckNext();
@@ -58,7 +56,6 @@ void SequentialUpdateChecker::CheckNext() {
   update_checker_ = UpdateChecker::Create(config_, metadata_);
   update_checker_->CheckForUpdates(
       session_id_, id_vector, *components_, additional_attributes_,
-      enabled_component_updates_,
       base::BindOnce(&SequentialUpdateChecker::UpdateResultAvailable,
                      base::Unretained(this)));
   VLOG(3) << "< CheckNext()";

@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
@@ -193,7 +194,7 @@ class LedgerClientMojoBridge :
       CallbackHolder<DeleteLogCallback>* holder,
       const ledger::type::Result result);
 
-  ledger::LedgerClient* ledger_client_;
+  raw_ptr<ledger::LedgerClient> ledger_client_ = nullptr;
 };
 
 }  // namespace bat_ledger

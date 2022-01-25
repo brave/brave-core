@@ -18,6 +18,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
+import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.privacy_sandbox.PrivacySandboxBridge;
 import org.chromium.chrome.browser.privacy_sandbox.PrivacySandboxSettingsFragment;
@@ -93,7 +95,7 @@ public class BravePrivacySettingsTest {
     @SmallTest
     public void testDisabledOptions() {
         TestThreadUtils.runOnUiThreadBlocking(() -> {
-            assertFalse(PrivacyPreferencesManagerImpl.getInstance().getNetworkPredictionEnabled());
+            assertFalse(PreloadPagesSettingsBridge.getState() != PreloadPagesState.NO_PRELOADING);
         });
     }
 }

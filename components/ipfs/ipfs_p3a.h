@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPFS_P3A_H_
 #define BRAVE_COMPONENTS_IPFS_IPFS_P3A_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
 
@@ -39,7 +40,7 @@ class IpfsP3A : public IpfsServiceObserver {
   void RecordInitialIPFSP3AState();
   void FlushTimeDelta();
   base::RepeatingTimer timer_;
-  IpfsService* service_;
+  raw_ptr<IpfsService> service_ = nullptr;
   base::TimeTicks daemon_start_time_;
   base::TimeDelta elapsed_time_;
   PrefService* pref_service_ = nullptr;

@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/keys/ipns_keys_manager.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
@@ -101,7 +102,7 @@ class IpnsManagerBrowserTest : public InProcessBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<base::RunLoop> wait_for_request_;
   std::unique_ptr<net::EmbeddedTestServer> test_server_;
-  IpfsService* ipfs_service_;
+  raw_ptr<IpfsService> ipfs_service_ = nullptr;
   base::test::ScopedFeatureList feature_list_;
 };
 

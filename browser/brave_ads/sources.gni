@@ -108,6 +108,7 @@ if (is_linux) {
   brave_browser_brave_ads_deps += [
     "//chrome/common",
     "//ui/aura",
+    "//ui/base/x",
     "//ui/gfx/x",
   ]
 }

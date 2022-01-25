@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
@@ -319,7 +320,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::flat_map<std::string, std::unique_ptr<HDKeyring>> keyrings_;
 
-  PrefService* prefs_;
+  raw_ptr<PrefService> prefs_ = nullptr;
   bool request_unlock_pending_ = false;
 
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;

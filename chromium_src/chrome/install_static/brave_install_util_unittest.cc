@@ -7,7 +7,6 @@
 #include <tuple>
 
 #include "base/cxx17_backports.h"
-#include "base/macros.h"
 #include "base/stl_util.h"
 #include "base/test/test_reg_util_win.h"
 #include "chrome/chrome_elf/nt_registry/nt_registry.h"
@@ -257,6 +256,10 @@ TEST(InstallStaticTest, BrowserProcessTest) {
 class InstallStaticUtilTest
     : public ::testing::TestWithParam<
           std::tuple<InstallConstantIndex, const char*>> {
+ public:
+  InstallStaticUtilTest(const InstallStaticUtilTest&) = delete;
+  InstallStaticUtilTest& operator=(const InstallStaticUtilTest&) = delete;
+
  protected:
   InstallStaticUtilTest()
       : system_level_(std::string(std::get<1>(GetParam())) != "user"),
@@ -328,8 +331,6 @@ class InstallStaticUtilTest
   const HKEY root_key_;
   const nt::ROOT_KEY nt_root_key_;
   registry_util::RegistryOverrideManager override_manager_;
-
-  DISALLOW_COPY_AND_ASSIGN(InstallStaticUtilTest);
 };
 
 TEST_P(InstallStaticUtilTest, GetChromeInstallSubDirectory) {

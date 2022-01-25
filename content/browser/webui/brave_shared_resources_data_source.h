@@ -9,7 +9,6 @@
 #include <string>
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
 #include "base/task/single_thread_task_runner.h"
 #include "content/public/browser/url_data_source.h"
 
@@ -19,6 +18,10 @@ namespace brave_content {
 class BraveSharedResourcesDataSource : public content::URLDataSource {
  public:
   BraveSharedResourcesDataSource();
+  BraveSharedResourcesDataSource(const BraveSharedResourcesDataSource&) =
+      delete;
+  BraveSharedResourcesDataSource& operator=(
+      const BraveSharedResourcesDataSource&) = delete;
   ~BraveSharedResourcesDataSource() override;
 
   // URLDataSource implementation.
@@ -32,9 +35,6 @@ class BraveSharedResourcesDataSource : public content::URLDataSource {
   bool ShouldServeMimeTypeAsContentTypeHeader() override;
   std::string GetAccessControlAllowOriginForOrigin(
       const std::string& origin) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveSharedResourcesDataSource);
 };
 
 }  // namespace brave_content

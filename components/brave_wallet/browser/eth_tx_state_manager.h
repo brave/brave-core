@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
@@ -90,8 +91,8 @@ class EthTxStateManager : public mojom::JsonRpcServiceObserver {
   void RetireTxByStatus(mojom::TransactionStatus status, size_t max_num);
 
   base::ObserverList<Observer> observers_;
-  PrefService* prefs_;
-  JsonRpcService* json_rpc_service_;
+  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
   mojo::Receiver<mojom::JsonRpcServiceObserver> observer_receiver_{this};
   std::string chain_id_;
   std::string network_url_;

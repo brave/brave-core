@@ -16,6 +16,10 @@ class RefCountedMemory;
 
 class BraveWebUIControllerFactory : public ChromeWebUIControllerFactory {
  public:
+  BraveWebUIControllerFactory(const BraveWebUIControllerFactory&) = delete;
+  BraveWebUIControllerFactory& operator=(const BraveWebUIControllerFactory&) =
+      delete;
+
   content::WebUI::TypeID GetWebUIType(content::BrowserContext* browser_context,
                                       const GURL& url) override;
   std::unique_ptr<content::WebUIController> CreateWebUIControllerForURL(
@@ -29,9 +33,6 @@ class BraveWebUIControllerFactory : public ChromeWebUIControllerFactory {
 
   BraveWebUIControllerFactory();
   ~BraveWebUIControllerFactory() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveWebUIControllerFactory);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WEB_UI_CONTROLLER_FACTORY_H_

@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 
@@ -29,7 +30,8 @@ class LocalDataFilesObserver {
   LocalDataFilesService* local_data_files_service();
 
  protected:
-  LocalDataFilesService* local_data_files_service_;  // NOT OWNED
+  raw_ptr<LocalDataFilesService> local_data_files_service_ =
+      nullptr;  // NOT OWNED
   base::ScopedObservation<LocalDataFilesService, LocalDataFilesObserver>
       local_data_files_observer_{this};
 };

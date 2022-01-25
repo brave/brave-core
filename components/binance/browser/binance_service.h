@@ -15,7 +15,7 @@
 #include "base/callback_forward.h"
 #include "base/containers/queue.h"
 #include "base/files/file_path.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -57,6 +57,8 @@ typedef std::map<std::string, std::vector<std::map<std::string, std::string>>>
 class BinanceService : public KeyedService {
  public:
   explicit BinanceService(content::BrowserContext* context);
+  BinanceService(const BinanceService&) = delete;
+  BinanceService& operator=(const BinanceService&) = delete;
   ~BinanceService() override;
 
   using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
@@ -158,7 +160,7 @@ class BinanceService : public KeyedService {
   std::string oauth_host_;
   std::string gateway_host_;
 
-  content::BrowserContext* context_;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
   base::WeakPtrFactory<BinanceService> weak_factory_;
@@ -167,8 +169,6 @@ class BinanceService : public KeyedService {
   FRIEND_TEST_ALL_PREFIXES(BinanceAPIBrowserTest,
       SetAndGetAuthTokenRevokesPref);
   friend class BinanceAPIBrowserTest;
-
-  DISALLOW_COPY_AND_ASSIGN(BinanceService);
 };
 
 #endif  // BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_SERVICE_H_

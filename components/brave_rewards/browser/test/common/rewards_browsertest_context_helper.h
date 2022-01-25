@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "build/build_config.h"
@@ -44,7 +45,7 @@ class RewardsBrowserTestContextHelper {
 
   void OpenPopupFirstTime();
 
-  Browser* browser_;  // NOT OWNED
+  raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
   bool loaded_ = false;
 };
 

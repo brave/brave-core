@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
@@ -153,8 +154,9 @@ class RewardsBrowserTestContribution
   ledger::type::Result ac_reconcile_status_ =
       ledger::type::Result::LEDGER_ERROR;
 
-  Browser* browser_;  // NOT OWNED
-  brave_rewards::RewardsServiceImpl* rewards_service_;  // NOT OWNED
+  raw_ptr<Browser> browser_ = nullptr;  // NOT OWNED
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ =
+      nullptr;  // NOT OWNED
   std::unique_ptr<RewardsBrowserTestContextHelper> context_helper_;
 };
 

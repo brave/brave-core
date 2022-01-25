@@ -5,7 +5,8 @@
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/macros.h"
+#include "base/ignore_result.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/task/post_task.h"
@@ -57,6 +58,9 @@ class BrowserChangeObserver : public BrowserListObserver {
     BrowserList::AddObserver(this);
   }
 
+  BrowserChangeObserver(const BrowserChangeObserver&) = delete;
+  BrowserChangeObserver& operator=(const BrowserChangeObserver&) = delete;
+
   ~BrowserChangeObserver() override { BrowserList::RemoveObserver(this); }
 
   Browser* Wait() {
@@ -83,11 +87,9 @@ class BrowserChangeObserver : public BrowserListObserver {
   }
 
  private:
-  Browser* browser_;
+  raw_ptr<Browser> browser_ = nullptr;
   ChangeType type_;
   base::RunLoop run_loop_;
-
-  DISALLOW_COPY_AND_ASSIGN(BrowserChangeObserver);
 };
 
 }  // namespace
@@ -97,6 +99,9 @@ class BraveClearDataOnExitTest
       public BraveClearBrowsingData::OnExitTestingCallback {
  public:
   BraveClearDataOnExitTest() = default;
+  BraveClearDataOnExitTest(const BraveClearDataOnExitTest&) = delete;
+  BraveClearDataOnExitTest& operator=(const BraveClearDataOnExitTest&) = delete;
+
   void SetUpOnMainThread() override {
     BraveClearBrowsingData::SetOnExitTestingCallback(this);
   }
@@ -187,8 +192,6 @@ class BraveClearDataOnExitTest
   int expected_remove_data_call_count_ = 0;
   int expected_remove_mask_ = -1;
   int expected_origin_mask_ = -1;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveClearDataOnExitTest);
 };
 
 IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTest, NoPrefsSet) {
@@ -218,6 +221,11 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
   BraveClearDataOnExitTwoBrowsersTest() : BraveClearDataOnExitTest() {
     browsers_count_ = 2u;
   }
+
+  BraveClearDataOnExitTwoBrowsersTest(
+      const BraveClearDataOnExitTwoBrowsersTest&) = delete;
+  BraveClearDataOnExitTwoBrowsersTest& operator=(
+      const BraveClearDataOnExitTwoBrowsersTest&) = delete;
 
  protected:
   // Open a new browser window with the provided |profile|.
@@ -294,8 +302,6 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
  private:
   base::ScopedTempDir profile2_dir_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveClearDataOnExitTwoBrowsersTest);
 };
 
 IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, SameProfile) {

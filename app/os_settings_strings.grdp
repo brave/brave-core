@@ -83,10 +83,10 @@
     Device name
   </message>
   <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back BraveOS or Chrome OS.">
-    Your administrator is rolling back this device (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
+    <ph name="MANAGER">$1<ex>google.com</ex></ph> is putting this device on a previous version (<ph name="PROGRESS_PERCENT">$2<ex>90%</ex></ph>)
   </message>
   <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_SUCCESS" desc="Status label: Successfully rolled back Chrome OS. All data on the device will be deleted during the next reboot.">
-    Your administrator rolled back this device. Please save important files, then restart. All data on the device will be deleted.
+    <ph name="MANAGER">$1<ex>google.com</ex></ph> has put this device on a previous version. Please save important files, then restart. All data on the device will be deleted.
   </message>
   <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_CHANNEL_SWITCH" desc="Status label: Channel was successfully switched on BraveOS/BraveOS">
     Channel changed. Restart your device to apply changes.
@@ -223,11 +223,11 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_DIAGNOSTICS" desc="Text of the button which allows the user to diagnose their device.">
     Diagnostics
   </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_FIRMWARE_UPDATES" desc="Text of the button for the surface which allows users to update all their peripheral firmwares in one place.">
+    Firmware updates
+  </message>
 
   <!-- Profiles (OS settings) -->
-  <message name="IDS_OS_SETTINGS_PEOPLE_V2" desc="Name of a section in the OS settings page." meaning="People and their accounts.">
-    Accounts
-  </message>
   <message name="IDS_OS_SETTINGS_PROFILE_NAME" desc="Label with device account first name, showing which user is currently signed in.">
     Currently signed in as <ph name="NAME">$1<ex>John</ex></ph>
   </message>
@@ -235,9 +235,6 @@
     {COUNT, plural,
      =1 {1 Brave sync chain}
      other {<ph name="EXTRA_ACCOUNTS">$2<ex>2</ex></ph> Brave sync chains}}
-  </message>
-  <message name="IDS_OS_SETTINGS_SYNC_PAGE_TITLE" desc="Settings sub-page title for sync.">
-    Sync your settings
   </message>
   <message name="IDS_OS_SETTINGS_SYNC_TURN_ON" desc="Button label for turning on synchronization of settings across Chrome OS devices.">
     Turn on
@@ -700,6 +697,12 @@
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_DISABLED" desc="Sub label for the ambient mode row in settings page when it is disabled.">
     Disabled
+  </message>
+  <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB" desc="Title for the link to open personalization hub.">
+    Personalize your device
+  </message>
+  <message name="IDS_OS_SETTINGS_OPEN_PERSONALIZATION_HUB_SUBTITLE" desc="Description for the link to open personalization hub.">
+    Customize wallpaper, avatar, screensaver and more
   </message>
 
   <!-- Ambient Mode Page -->
@@ -1641,6 +1644,18 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_UNMANAGED_ACCOUNT" desc="Management status label for unmanaged accounts.">
     Primary account
   </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_LACROS_ACCOUNT_DIALOG_TITLE" desc="When a user attempts to remove a secondary account, a dialog pops up asking them for confirmation. This is the title of that dialog.">
+    Remove this account?
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_LACROS_ACCOUNT_DIALOG_BODY" desc="When a user attempts to remove a secondary account, a dialog pops up asking them for confirmation. This is the main message of that dialog.">
+    Removing this account will also delete any Brave profiles signed in with this account
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_LACROS_ACCOUNT_DIALOG_REMOVE" desc="When a user attempts to remove a secondary account, a dialog pops up asking them for confirmation. This is the title of the button that will remove the account.">
+    Remove
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_LACROS_ACCOUNT_DIALOG_CANCEL" desc="When a user attempts to remove a secondary account, a dialog pops up asking them for confirmation. This is the title of the button that will cancel the dialog.">
+    Cancel
+  </message>
 
   <!-- Used by both Crostini and Plugin VM -->
   <message name="IDS_SETTINGS_GUEST_OS_SHARED_PATHS" desc="Label for managing shared folders for Parallels.">
@@ -1813,6 +1828,42 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_SHOW_MORE_ACTIONS_ARIA_LABEL" desc="The aria label for the button that displays more actions to the user for an individual port i.e. the text that screen readers will read out for the button.">
     Show more actions for this port
   </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_LABEL" desc="Label for managing extra Linux containers in Chrome OS.">
+    Manage extra containers
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_DESCRIPTION" desc="Description for managing extra Linux containers.">
+    Create and delete extra containers.
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE" desc="Label for the button the user clicks to create a new container.">
+    Create
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_TABLE_TITLE" desc="Heading for the table of all containers and their associated virtual machines">
+    All containers
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_DELETE" desc="Menu item the user selects to delete Linux container.">
+    Delete this container
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_STOP" desc="Menu item the user selects to stop a running Linux container.">
+    Stop this container
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_VM_NAME_LABEL" desc="Column heading for virtual machine name.">
+    VM name
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CONTAINER_NAME_LABEL" desc="Column heading for container name.">
+    Container name
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CONTAINER_IP_LABEL" desc="Column heading for container IP address.">
+    IP
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_TITLE" desc="Title of the dialog for entering details to create a new Linux container.">
+    Create a new container
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_IMAGE_SERVER" desc="Heading for the input field for entering the image server URL when creating a new Linux container.">
+    Image Server
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_EXTRA_CONTAINERS_CREATE_DIALOG_IMAGE_ALIAS" desc="Heading for the input field for entering the image alias string e.g. debian/buster when creating a new Linux container.">
+    Image Alias
+  </message>
   <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_SHOW_BUTTON" desc="The label of the button/link the user clicks to open the disk resizing dialogue." meaning="The label of the button/link the user clicks to open the disk resizing dialogue.">
     Change
   </message>
@@ -1929,6 +1980,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_ANDROID_APPS_MANAGE_APP_LINKS" desc="Label for accessing app preferrences on ARC side.">
     Manage Play app links
   </message>
+  <message name="IDS_SETTINGS_APPS_ARC_VM_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices. Do not translate 'ARCVM'.">
+    Let Android apps access USB devices on this Bravebook. Permission will be requested each time you plug in a USB device. Individual Android apps will ask for additional permissions.
+  </message>
 
   <!-- Device Stylus (OS settings) -->
   <message name="IDS_SETTINGS_STYLUS_TITLE" desc="Title of the stylus settings page.">
@@ -2011,6 +2065,15 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_BATTERY_PERCENTAGE_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current battery percentage.">
     Battery level <ph name="PERCENTAGE">$1<ex>90</ex></ph>%
   </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_LEFT_BUD_BATTERY_PERCENTAGE_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current battery percentage of the left true wireless bud.">
+    Left battery level <ph name="PERCENTAGE">$1<ex>90</ex></ph>%.
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CASE_BATTERY_PERCENTAGE_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current battery percentage of the true wireless case.">
+    Case battery level <ph name="PERCENTAGE">$1<ex>90</ex></ph>%.
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_RIGHT_BUD_BATTERY_PERCENTAGE_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current battery percentage of the right true wireless bud.">
+    Right battery level <ph name="PERCENTAGE">$1<ex>90</ex></ph>%.
+  </message>
   <message name="IDS_SETTINGS_BLUETOOTH_DEVICE_DETAIL_CONNECTED_A11Y_LABEL" desc="Bluetooth device details page: A11y label informing the current device is connected.">
     Connected to <ph name="DEVICE">$1<ex>Beats</ex></ph>
   </message>
@@ -2090,55 +2153,64 @@ Press an assigned switch or key to remove assignment.
     On
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_UNKNOWN" desc="Accessibility label for paired Bluetooth device list item with a device type of unknown.">
-    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Unknown device type
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Unknown device type.
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_LEFT_BUD_BATTERY" desc="Accessibility label for paired Bluetooth device left bud battery description">
+    Left bud battery level <ph name="BATTERY_PERCENTAGE">$1<ex>50</ex></ph>%.
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_RIGHT_BUD_BATTERY" desc="Accessibility label for paired Bluetooth device right bud battery description">
+    Right bud battery level <ph name="BATTERY_PERCENTAGE">$1<ex>50</ex></ph>%.
+  </message>
+  <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_CASE_BATTERY" desc="Accessibility label for paired Bluetooth device case battery description">
+    Case battery level <ph name="BATTERY_PERCENTAGE">$1<ex>50</ex></ph>%.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_UNKNOWN_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of unknown and available battery info.">
     Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Unknown device type, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_COMPUTER" desc="Accessibility label for paired Bluetooth device list item with a device type of computer.">
-    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Computer
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Computer.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_COMPUTER_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of computer and available battery info.">
     Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Computer, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_PHONE" desc="Accessibility label for paired Bluetooth device list item with a device type of phone.">
-    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Phone
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Phone.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_PHONE_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of phone and available battery info.">
     Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Phone, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_HEADSET" desc="Accessibility label for paired Bluetooth device list item with a device type of audio device.">
-    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Audio device
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Audio device.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_HEADSET_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of audio device and available battery info.">
     Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Audio device, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_VIDEO_CAMERA" desc="Accessibility label for paired Bluetooth device list item with a device type of video camera.">
-    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Video camera
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Video camera.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_VIDEO_CAMERA_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of video camera and available battery info.">
     Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Video camera, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_GAME_CONTROLLER" desc="Accessibility label for paired Bluetooth device list item with a device type of game controller.">
-    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Game controller
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Game controller.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_GAME_CONTROLLER_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of game controller and available battery info.">
     Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Game controller, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_KEYBOARD" desc="Accessibility label for paired Bluetooth device list item with a device type of keyboard.">
-    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Keyboard
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Keyboard.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_KEYBOARD_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of keyboard and available battery info.">
     Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Keyboard, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_MOUSE" desc="Accessibility label for paired Bluetooth device list item with a device type of mouse.">
-    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Mouse
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Mouse.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_MOUSE_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of mouse and available battery info.">
     Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Mouse, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_TABLET" desc="Accessibility label for paired Bluetooth device list item with a device type of tablet.">
-    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Tablet
+    Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Tablet.
   </message>
   <message name="IDS_SETTINGS_BLUETOOTH_PAIRED_DEVICE_ITEM_A11Y_LABEL_TYPE_TABLET_WITH_BATTERY_INFO" desc="Accessibility label for paired Bluetooth device list item with a device type of tablet and available battery info.">
     Device <ph name="DEVICE_INDEX">$1<ex>1</ex></ph> of <ph name="DEVICE_COUNT">$2<ex>15</ex></ph>, <ph name="DEVICE_NAME">$3<ex>Beats</ex></ph>, Tablet, Battery level <ph name="BATTERY_PERCENTAGE">$4<ex>50</ex></ph>%
@@ -2650,6 +2722,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING" desc="Settings &gt; Internet &gt; Network details: Toggle label to allow mobile data roaming.">
     Allow mobile data roaming
   </message>
+  <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING_REQUIRED" desc="Settings &gt; Internet &gt; Network details: Toggle sublabel when mobile data roaming is required by provider.">
+    Roaming required by provider
+  </message>
   <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING_ENABLED_HOME" desc="Settings &gt; Internet &gt; Network details: Toggle sublabel when roaming is allowed and it's connected to the home network.">
     Not currently roaming
   </message>
@@ -3087,13 +3162,13 @@ Press an assigned switch or key to remove assignment.
     Connecting to your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_TITLE" desc="The title of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Bravebook.">
-    Set a PIN or password to continue
+    Set a PIN or password
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_SUBTITLE" desc="The subtitle of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Bravebook.">
-    Protect your phone's data when this Bravebook wakes from sleep.
+    This PIN or password protects your data on this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>, including any content you stream from your phone.
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_INSTRUCTION" desc="The instruction message of the screen lock dialog containing the smart lock will log in when the phone is nearby.">
-    Smart lock will automatically log you in when your phone is nearby.
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_INSTRUCTION" desc="The instruction message of the screen lock dialog.">
+    Choose either one each time you sign in
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_INSTRUCTIONS" desc="The second paragraph of text shown in the dialog containing the Phone Hub notification opt-in flow. Alerts the user that to enable notifications, they need to have their phone unlocked, nearby, and with Bluetooth/Wi-Fi on to complete setup.">
     Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on.
@@ -3928,6 +4003,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_SUBLABEL_TEXT" desc="The sublabel for the settings row button in the App section of OS Settings which links to the App Notifications page indicating the number of Chrome OS apps installed.">
     <ph name="APP_COUNT">$1<ex>3</ex></ph> apps
   </message>
+  <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DND_ENABLED_SUBLABEL_TEXT" desc="The sublabel for the settings row button in the App section of OS Settings which links to the App Notifications page indicating that Do Not Disturb is on.">
+    Do not disturb enabled
+  </message>
   <message name="IDS_SETTINGS_APP_NOTIFICATIONS_DO_NOT_DISTURB_TOGGLE_TITLE" desc="The label for the notfications DoNotDisturb toggle that lets the user silence all app notifications.">
     Do not disturb
   </message>
@@ -4099,32 +4177,38 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_OS_SETTINGS_DATA_ACCESS_PROTECTION_CONFIRM_DIALOG_DISABLE_BUTTON_LABEL" desc="The label of the confirmation button to disable data access protection">
     Disable
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_TITLE" desc="Do not translate (string not final). Text on the privacy page that opens up the smart privacy section.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_TITLE" desc="Text on the privacy page that opens up the smart privacy section." translateable="false">
     Smart privacy protections
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SUBTEXT" desc="Do not translate (string not final). The sub-label describing the purpose of the smart privacy section.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SUBTEXT" desc="The sub-label describing the purpose of the smart privacy section." translateable="false">
     Smart display lock and detect if others peeking from behind
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_DESC" desc="Do not translate (string not final). The text explaining to the user the manner in which their presence is sensed and data usage policy.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_DESC" desc="The text explaining to the user the manner in which their presence is sensed and data usage policy." translateable="false">
     This feature uses the front camera for detection. The data is securely processed and discarded afterwards. Brave doesn't use your data for any other purposes.
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SCREEN_LOCK_TITLE" desc="Do not translate (string not final). The name of the smart screen lock feature shown as the label of a toggle in the smart privacy subpage.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_QUICK_DIM_TITLE" desc="The name of the smart screen lock feature shown as the label of a toggle in the smart privacy subpage." translateable="false">
     Smart screen lock
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SCREEN_LOCK_SUBTEXT" desc="Do not translate (string not final). Sub-label elaborating on the meaning of smart screen locking.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_QUICK_DIM_SUBTEXT" desc="Sub-label elaborating on the meaning of smart screen locking." translateable="false">
     Screen locks automatically if you walk off, and won't turn off if you're in front of it
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_TITLE" desc="Do not translate (string not final). Text in the smart privacy section which is the subheader for snooping protection options.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_TITLE" desc="Text in the smart privacy section which is the subheader for snooping protection options." translateable="false">
     Snooping protection
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_SUBTEXT" desc="Do not translate (string not final). Sub-label elaborating on the meaning of snooping protection.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_SUBTEXT" desc="Sub-label elaborating on the meaning of snooping protection." translateable="false">
     Notify you or temporary dim your screen when someone is snooping from behind
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_ICON" desc="Do not translate (string not final). The radio button option in the smart privacy section requesting an eye icon when a snooper is detected.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_ICON" desc="The radio button option in the smart privacy section requesting an eye icon when a snooper is detected." translateable="false">
     Show me an eye icon in the status area
   </message>
-  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_DIM" desc="Do not translate (string not final). The radio button option in the smart privacy section requesting screen dim when a snooper is detected.">
+  <message name="IDS_OS_SETTINGS_SMART_PRIVACY_SNOOPING_DIM" desc="The radio button option in the smart privacy section requesting screen dim when a snooper is detected." translateable="false">
     Temporary dim screen
+  </message>
+  <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable device hardware data collection and usage in CloudReady 2.0.">
+    <ph name="DEVICE_OS">$1<ex>CloudReady 2.0</ex></ph> hardware support and stability
+  </message>
+  <message name="IDS_OS_SETTINGS_HW_DATA_USAGE_TOGGLE_DESC" desc="The description of the checkbox to enable/disable device hardware data collection and usage in CloudReady 2.0.">
+    Let Brave use your hardware data to help improve <ph name="DEVICE_OS">$1<ex>CloudReady 2.0</ex></ph>. If you decline, this data is still sent to Brave to determine proper updates, but is not stored or used otherwise.
   </message>
 
 

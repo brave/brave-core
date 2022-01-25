@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_PERMISSIONS_MOCK_PERMISSION_LIFETIME_PROMPT_H_
 #define BRAVE_BROWSER_PERMISSIONS_MOCK_PERMISSION_LIFETIME_PROMPT_H_
 
+#include "base/memory/raw_ptr.h"
 #include "components/permissions/permission_prompt.h"
 
 namespace permissions {
@@ -26,8 +27,8 @@ class MockPermissionLifetimePrompt : public PermissionPrompt {
   void ResetFactory();
 
  private:
-  MockPermissionLifetimePromptFactory* factory_;
-  Delegate* delegate_;
+  raw_ptr<MockPermissionLifetimePromptFactory> factory_ = nullptr;
+  raw_ptr<Delegate> delegate_ = nullptr;
 };
 
 }  // namespace permissions

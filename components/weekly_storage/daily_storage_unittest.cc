@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/test/simple_test_clock.h"
 #include "base/time/time.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -26,7 +27,7 @@ class DailyStorageTest : public ::testing::Test {
   }
 
  protected:
-  base::SimpleTestClock* clock_;
+  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<DailyStorage> state_;
 };

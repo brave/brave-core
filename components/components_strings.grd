@@ -296,6 +296,7 @@
       <part file="crash_strings.grdp" />
       <part file="dialog_strings.grdp" />
       <part file="dom_distiller_strings.grdp" />
+      <part file="enterprise_strings.grdp" />
       <part file="error_page_strings.grdp" />
       <part file="find_in_page_strings.grdp" />
       <part file="flags_strings.grdp" />
@@ -320,7 +321,6 @@
       <part file="printing_component_strings.grdp" />
       <part file="privacy_sandbox_strings.grdp" />
       <part file="reset_password_strings.grdp" />
-      <part file="safe_browsing_strings.grdp" />
       <part file="security_interstitials_strings.grdp" />
       <part file="send_tab_to_self_strings.grdp" />
       <part file="site_settings_strings.grdp" />

@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/environment.h"
 #include "brave/browser/ui/views/brave_views_delegate_linux.h"
 #include "chrome/grit/chrome_unscaled_resources.h"
 #include "chrome/test/base/in_process_browser_test.h"

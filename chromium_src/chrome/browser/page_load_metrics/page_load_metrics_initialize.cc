@@ -17,15 +17,15 @@ namespace {
 class BravePageLoadMetricsEmbedder : public chrome::PageLoadMetricsEmbedder {
  public:
   explicit BravePageLoadMetricsEmbedder(content::WebContents* web_contents);
+  BravePageLoadMetricsEmbedder(const BravePageLoadMetricsEmbedder&) = delete;
+  BravePageLoadMetricsEmbedder& operator=(const BravePageLoadMetricsEmbedder&) =
+      delete;
   ~BravePageLoadMetricsEmbedder() override;
 
  protected:
   // page_load_metrics::PageLoadMetricsEmbedderBase:
   void RegisterEmbedderObservers(
       ::page_load_metrics::PageLoadTracker* tracker) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BravePageLoadMetricsEmbedder);
 };
 
 BravePageLoadMetricsEmbedder::BravePageLoadMetricsEmbedder(

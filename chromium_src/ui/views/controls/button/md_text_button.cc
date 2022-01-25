@@ -25,12 +25,13 @@ class BraveTextButtonHighlightPathGenerator
     : public views::HighlightPathGenerator {
  public:
   BraveTextButtonHighlightPathGenerator() = default;
+  BraveTextButtonHighlightPathGenerator(
+      const BraveTextButtonHighlightPathGenerator&) = delete;
+  BraveTextButtonHighlightPathGenerator& operator=(
+      const BraveTextButtonHighlightPathGenerator&) = delete;
 
   // HighlightPathGenerator
   SkPath GetHighlightPath(const views::View* view) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveTextButtonHighlightPathGenerator);
 };
 
 }  // namespace

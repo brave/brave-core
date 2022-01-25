@@ -114,7 +114,7 @@
             android:visibility="gone"
             android:orientation="vertical">
 
-        <CheckBox
+        <android.widget.CheckBox
             android:id="@+id/other_issue_checkbox_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"/>
 
-        <CheckBox
+        <android.widget.CheckBox
             android:id="@+id/other_issue_checkbox_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"/>
 
-        <CheckBox
+        <android.widget.CheckBox
             android:id="@+id/other_issue_checkbox_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"/>
 
-        <CheckBox
+        <android.widget.CheckBox
             android:id="@+id/other_issue_checkbox_4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"/>
 
-        <CheckBox
+        <android.widget.CheckBox
             android:id="@+id/other_issue_checkbox_5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

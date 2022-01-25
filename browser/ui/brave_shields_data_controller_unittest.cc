@@ -5,7 +5,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -36,6 +35,11 @@ class BraveShieldsDataControllerTest : public testing::Test {
  public:
   BraveShieldsDataControllerTest() = default;
   ~BraveShieldsDataControllerTest() override = default;
+
+  BraveShieldsDataControllerTest(const BraveShieldsDataControllerTest&) =
+      delete;
+  BraveShieldsDataControllerTest& operator=(
+      const BraveShieldsDataControllerTest&) = delete;
 
   void SetUp() override {
     TestingBrowserProcess* browser_process = TestingBrowserProcess::GetGlobal();
@@ -98,8 +102,6 @@ class BraveShieldsDataControllerTest : public testing::Test {
   content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   Profile* profile_;
   std::unique_ptr<TestingProfileManager> profile_manager_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveShieldsDataControllerTest);
 };
 
 TEST_F(BraveShieldsDataControllerTest, SetAdBlockMode_ForOrigin_1) {

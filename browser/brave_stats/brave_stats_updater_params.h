@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "base/time/time.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 
@@ -36,6 +36,8 @@ class BraveStatsUpdaterParams {
                           const std::string& ymd,
                           int woy,
                           int month);
+  BraveStatsUpdaterParams(const BraveStatsUpdaterParams&) = delete;
+  BraveStatsUpdaterParams& operator=(const BraveStatsUpdaterParams&) = delete;
   ~BraveStatsUpdaterParams();
 
   std::string GetDailyParam() const;
@@ -62,8 +64,8 @@ class BraveStatsUpdaterParams {
   FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringMonthly);
   FRIEND_TEST_ALL_PREFIXES(::BraveStatsUpdaterTest, UsageBitstringInactive);
 
-  PrefService* stats_pref_service_;
-  PrefService* profile_pref_service_;
+  raw_ptr<PrefService> stats_pref_service_ = nullptr;
+  raw_ptr<PrefService> profile_pref_service_ = nullptr;
   ProcessArch arch_;
   std::string ymd_;
   int woy_;
@@ -101,8 +103,6 @@ class BraveStatsUpdaterParams {
   static void SetFirstRunForTest(bool first_run);
   // Returns the timestamp of the browsers first run
   static base::Time GetFirstRunTime(PrefService* pref_service);
-
-  DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdaterParams);
 };
 
 }  // namespace brave_stats

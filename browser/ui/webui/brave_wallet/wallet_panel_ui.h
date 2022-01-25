@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "brave/browser/ui/webui/brave_wallet/common_handler/wallet_handler.h"
 #include "brave/browser/ui/webui/brave_wallet/panel_handler/wallet_panel_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"

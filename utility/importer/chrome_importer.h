@@ -14,7 +14,6 @@
 
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
-#include "base/macros.h"
 #include "base/nix/xdg_util.h"
 #include "build/build_config.h"
 #include "chrome/utility/importer/importer.h"
@@ -33,6 +32,8 @@ class Database;
 class ChromeImporter : public Importer {
  public:
   ChromeImporter();
+  ChromeImporter(const ChromeImporter&) = delete;
+  ChromeImporter& operator=(const ChromeImporter&) = delete;
 
   // Importer:
   void StartImport(const importer::SourceProfile& source_profile,
@@ -70,8 +71,6 @@ class ChromeImporter : public Importer {
       const std::vector<std::u16string>& parent_path,
       bool is_in_toolbar,
       std::vector<ImportedBookmarkEntry>* bookmarks);
-
-  DISALLOW_COPY_AND_ASSIGN(ChromeImporter);
 };
 
 #endif  // BRAVE_UTILITY_IMPORTER_CHROME_IMPORTER_H_

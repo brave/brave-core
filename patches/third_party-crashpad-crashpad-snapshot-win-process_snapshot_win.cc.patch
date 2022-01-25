@@ -1,5 +1,5 @@
 diff --git a/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc b/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc
-index 21df191a5d5a82e3ad815f6d67030f5acf10c87f..437c49baa3434da0d6415865c470b8739bb1e1d9 100644
+index b60ea38ea160ab80683c791b4e9b4e8fa7bd9e70..bb0a1bf79ffc3aac43122be61ac5afbdf9a727f5 100644
 --- a/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc
 +++ b/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc
 @@ -523,6 +523,7 @@ void ProcessSnapshotWin::AddMemorySnapshotForLdrLIST_ENTRY(

@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_THEME_EVENT_ROUTER_H_
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_THEME_EVENT_ROUTER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
@@ -17,6 +18,8 @@ namespace extensions {
 class BraveThemeEventRouter : public ui::NativeThemeObserver {
  public:
   explicit BraveThemeEventRouter(Profile* profile);
+  BraveThemeEventRouter(const BraveThemeEventRouter&) = delete;
+  BraveThemeEventRouter& operator=(const BraveThemeEventRouter&) = delete;
   ~BraveThemeEventRouter() override;
 
  private:
@@ -29,11 +32,9 @@ class BraveThemeEventRouter : public ui::NativeThemeObserver {
   virtual void Notify();
 
   ui::NativeTheme* current_native_theme_for_testing_ = nullptr;
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   base::ScopedObservation<ui::NativeTheme, ui::NativeThemeObserver> observer_{
       this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveThemeEventRouter);
 };
 
 }  // namespace extensions

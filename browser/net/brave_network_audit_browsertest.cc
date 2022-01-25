@@ -7,6 +7,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_file_value_serializer.h"
 #include "base/json/json_reader.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
@@ -174,6 +175,8 @@ void WriteNetworkAuditResultsToDisk(const base::DictionaryValue& results_dic,
 class BraveNetworkAuditTest : public InProcessBrowserTest {
  public:
   BraveNetworkAuditTest() = default;
+  BraveNetworkAuditTest(const BraveNetworkAuditTest&) = delete;
+  BraveNetworkAuditTest& operator=(const BraveNetworkAuditTest&) = delete;
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -259,11 +262,9 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
     ASSERT_TRUE(base::PathExists(audit_results_path_));
   }
 
-  brave_rewards::RewardsServiceImpl* rewards_service_;
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
   base::FilePath net_log_path_;
   base::FilePath audit_results_path_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveNetworkAuditTest);
 };
 
 // Loads brave://welcome first to simulate a first run and then loads another

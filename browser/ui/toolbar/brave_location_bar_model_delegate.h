@@ -7,7 +7,6 @@
 #define BRAVE_BROWSER_UI_TOOLBAR_BRAVE_LOCATION_BAR_MODEL_DELEGATE_H_
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
 #include "chrome/browser/ui/browser_location_bar_model_delegate.h"
 
 class Browser;
@@ -15,6 +14,9 @@ class Browser;
 class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
  public:
   explicit BraveLocationBarModelDelegate(Browser* browser);
+  BraveLocationBarModelDelegate(const BraveLocationBarModelDelegate&) = delete;
+  BraveLocationBarModelDelegate& operator=(
+      const BraveLocationBarModelDelegate&) = delete;
   ~BraveLocationBarModelDelegate() override;
   static void FormattedStringFromURL(const GURL& url,
                                      std::u16string* new_formatted_url);
@@ -23,8 +25,6 @@ class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
   std::u16string FormattedStringWithEquivalentMeaning(
       const GURL& url,
       const std::u16string& formatted_url) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveLocationBarModelDelegate);
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_LOCATION_BAR_MODEL_DELEGATE_H_

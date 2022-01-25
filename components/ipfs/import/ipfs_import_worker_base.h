@@ -15,6 +15,7 @@
 #include "base/callback.h"
 #include "base/containers/queue.h"
 #include "base/files/file_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/ipfs/blob_context_getter_factory.h"
 #include "brave/components/ipfs/import/imported_data.h"
@@ -84,7 +85,7 @@ class IpfsImportWorkerBase {
   std::unique_ptr<ipfs::ImportedData> data_;
 
   BlobContextGetterFactory* blob_context_getter_factory_ = nullptr;
-  network::mojom::URLLoaderFactory* url_loader_factory_;
+  raw_ptr<network::mojom::URLLoaderFactory> url_loader_factory_ = nullptr;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   GURL server_endpoint_;
   std::string key_to_publish_;

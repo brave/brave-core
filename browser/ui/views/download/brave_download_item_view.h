@@ -16,6 +16,8 @@ class BraveDownloadItemView : public DownloadItemView {
  public:
   BraveDownloadItemView(DownloadUIModel::DownloadUIModelPtr download,
       DownloadShelfView* parent, views::View* accessible_alert);
+  BraveDownloadItemView(const BraveDownloadItemView&) = delete;
+  BraveDownloadItemView& operator=(const BraveDownloadItemView&) = delete;
   ~BraveDownloadItemView() override;
 
   // views::View:
@@ -68,8 +70,6 @@ class BraveDownloadItemView : public DownloadItemView {
   std::u16string origin_url_text_;
   bool is_origin_url_secure_;
   bool is_origin_url_visible_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveDownloadItemView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_VIEW_H_

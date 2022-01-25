@@ -45,8 +45,8 @@ public class BraveWalletNetworksPreference extends Preference
 
         mbtAddNetwork = (TextView) holder.findViewById(R.id.add_network);
         mbtAddNetwork.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                TintedDrawable.constructTintedDrawable(
-                        getContext(), R.drawable.plus, R.color.default_control_color_active),
+                TintedDrawable.constructTintedDrawable(getContext(), R.drawable.plus,
+                        R.color.default_control_color_active_baseline),
                 null, null, null);
         mbtAddNetwork.setOnClickListener(view -> { mLauncher.launchAddNetwork(""); });
         mLauncher.setRefresher(this);

@@ -44,7 +44,7 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
   void GetCookieListWithOptionsAsync(
       const GURL& url,
       const CookieOptions& options,
-      const CookiePartitionKeychain& cookie_partition_keychain,
+      const CookiePartitionKeyCollection& cookie_partition_key_collection,
       GetCookieListCallback callback) override;
 
  private:

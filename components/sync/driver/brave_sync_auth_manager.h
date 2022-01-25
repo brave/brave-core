@@ -19,6 +19,8 @@ class BraveSyncAuthManager : public SyncAuthManager {
   BraveSyncAuthManager(signin::IdentityManager* identity_manager,
                        const AccountStateChangedCallback& account_state_changed,
                        const CredentialsChangedCallback& credentials_changed);
+  BraveSyncAuthManager(const BraveSyncAuthManager&) = delete;
+  BraveSyncAuthManager& operator=(const BraveSyncAuthManager&) = delete;
   ~BraveSyncAuthManager() override;
 
   void DeriveSigningKeys(const std::string& seed);
@@ -42,8 +44,6 @@ class BraveSyncAuthManager : public SyncAuthManager {
   std::vector<uint8_t> private_key_;
 
   base::WeakPtrFactory<BraveSyncAuthManager> weak_ptr_factory_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSyncAuthManager);
 };
 
 }  // namespace syncer

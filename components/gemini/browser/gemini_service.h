@@ -15,7 +15,7 @@
 #include "base/callback_forward.h"
 #include "base/containers/queue.h"
 #include "base/files/file_path.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -50,6 +50,8 @@ typedef std::map<std::string, std::string> GeminiAccountBalances;
 class GeminiService : public KeyedService {
  public:
   explicit GeminiService(content::BrowserContext* context);
+  GeminiService(const GeminiService&) = delete;
+  GeminiService& operator=(const GeminiService&) = delete;
   ~GeminiService() override;
 
   // Callbacks
@@ -152,7 +154,7 @@ class GeminiService : public KeyedService {
   std::string oauth_host_;
   std::string api_host_;
 
-  content::BrowserContext* context_;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
   base::WeakPtrFactory<GeminiService> weak_factory_;
@@ -161,8 +163,6 @@ class GeminiService : public KeyedService {
   FRIEND_TEST_ALL_PREFIXES(GeminiAPIBrowserTest,
       SetAndGetAuthTokenRevokesPref);
   friend class GeminiAPIBrowserTest;
-
-  DISALLOW_COPY_AND_ASSIGN(GeminiService);
 };
 
 #endif  // BRAVE_COMPONENTS_GEMINI_BROWSER_GEMINI_SERVICE_H_

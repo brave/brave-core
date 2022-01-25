@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -48,7 +49,8 @@ class CosmeticFiltersResources final
                             UrlCosmeticResourcesCallback callback) override;
 
  private:
-  brave_shields::AdBlockService* ad_block_service_;  // Not owned
+  raw_ptr<brave_shields::AdBlockService> ad_block_service_ =
+      nullptr;  // Not owned
 };
 
 }  // namespace cosmetic_filters

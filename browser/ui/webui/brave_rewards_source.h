@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/url_data_source.h"
@@ -45,7 +46,7 @@ class BraveRewardsSource : public content::URLDataSource {
       const GURL& url,
       const SkBitmap& bitmap);
 
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   std::vector<GURL> resource_fetchers_;
 
   base::WeakPtrFactory<BraveRewardsSource> weak_factory_{this};

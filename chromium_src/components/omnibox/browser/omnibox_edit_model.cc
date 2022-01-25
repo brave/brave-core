@@ -18,6 +18,8 @@ class BraveOmniboxController : public OmniboxController {
                          OmniboxClient* client)
       : OmniboxController(omnibox_edit_model, client),
         client_(static_cast<BraveOmniboxClient*>(client)) {}
+  BraveOmniboxController(const BraveOmniboxController&) = delete;
+  BraveOmniboxController& operator=(const BraveOmniboxController&) = delete;
   ~BraveOmniboxController() override = default;
 
   // OmniboxController overrides:
@@ -30,8 +32,6 @@ class BraveOmniboxController : public OmniboxController {
 
  private:
   BraveOmniboxClient* client_ = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveOmniboxController);
 };
 
 namespace {

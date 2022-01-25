@@ -15,6 +15,9 @@ class IpfsService;
 
 class IpfsServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  IpfsServiceFactory(const IpfsServiceFactory&) = delete;
+  IpfsServiceFactory& operator=(const IpfsServiceFactory&) = delete;
+
   static IpfsService* GetForContext(content::BrowserContext* context);
   static IpfsServiceFactory* GetInstance();
   static bool IsIpfsEnabled(content::BrowserContext* context);
@@ -28,8 +31,6 @@ class IpfsServiceFactory : public BrowserContextKeyedServiceFactory {
   // BrowserContextKeyedServiceFactory overrides:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(IpfsServiceFactory);
 };
 
 }  // namespace ipfs

@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 
 namespace content {
@@ -18,10 +17,9 @@ class WebUI;
 class WebcompatReporterUI : public ConstrainedWebDialogUI {
  public:
   WebcompatReporterUI(content::WebUI* web_ui, const std::string& host);
+  WebcompatReporterUI(const WebcompatReporterUI&) = delete;
+  WebcompatReporterUI& operator=(const WebcompatReporterUI&) = delete;
   ~WebcompatReporterUI() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(WebcompatReporterUI);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_WEBCOMPAT_REPORTER_UI_H_

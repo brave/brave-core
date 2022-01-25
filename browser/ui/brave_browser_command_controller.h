@@ -33,6 +33,9 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
 {
  public:
   explicit BraveBrowserCommandController(Browser* browser);
+  BraveBrowserCommandController(const BraveBrowserCommandController&) = delete;
+  BraveBrowserCommandController& operator=(
+      const BraveBrowserCommandController&) = delete;
   ~BraveBrowserCommandController() override;
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -75,8 +78,6 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
   Browser* const browser_;
 
   CommandUpdaterImpl brave_command_updater_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserCommandController);
 };
 
 }   // namespace chrome
