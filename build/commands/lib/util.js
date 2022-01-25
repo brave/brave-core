@@ -670,9 +670,9 @@ const util = {
     let reset = forceReset
 
     // base args
-    const initialArgs = ['sync', '--reset', '--nohooks']
+    const initialArgs = ['sync', '--nohooks']
     const chromiumArgs = ['--revision', 'src@' + config.getProjectRef('chrome')]
-    const resetArgs = ['--with_tags', '--with_branch_heads', '--upstream']
+    const resetArgs = ['--reset', '--with_tags', '--with_branch_heads', '--upstream']
 
     let args = [...initialArgs]
     let didUpdateChromium = false
