@@ -12,8 +12,6 @@ cargo_build("rust_lib") {
     "lib.rs",
   ]
 
-  build_path = rust_lib_build_path
-  output = rust_lib_output_path
   manifest_path = "Cargo.toml"
 
   # ensure that we rebuild when the dependent crates change

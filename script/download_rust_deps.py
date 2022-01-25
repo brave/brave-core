@@ -13,7 +13,7 @@ import sys
 try:
     from urllib2 import URLError
 except ImportError:  # For Py3 compatibility
-    from urllib.error import URLError
+    from urllib.error import URLError # pylint: disable=no-name-in-module,import-error
 
 import deps
 from rust_deps_config import RUST_DEPS_PACKAGES_URL, RUST_DEPS_PACKAGE_VERSION
@@ -179,7 +179,8 @@ def main():
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
 
-    cxx_path = os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1')
+    cxx_path = os.path.abspath(
+        os.path.join(BRAVE_CORE_ROOT, '..', 'third_party', 'rust', 'cxx', 'v1'))
 
     with open(os.path.join(cxx_path, "README.chromium")) as readme_file:
         _VERSION_PREFIX = "Version: "

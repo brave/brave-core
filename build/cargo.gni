@@ -13,10 +13,6 @@ if (is_ios) {
   import("//build/config/ios/ios_sdk_overrides.gni")
 }
 
-declare_args() {
-  rustup_path = rebase_path("//brave/build/rustup")
-}
-
 rust_lib_build_path = "$root_build_dir/brave_rust/out/$current_cpu"
 rust_lib_output_path =
     "$rust_lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
@@ -114,7 +110,7 @@ template("cargo_build") {
                              "inputs",
                            ])
 
-    outputs = [ output ]
+    outputs = [ rust_lib_output_path ]
 
     if (!defined(target)) {
       target = rustc_target  # defined by //brave/build/rust/config.gni,
@@ -122,13 +118,13 @@ template("cargo_build") {
 
     args = [
       "--rustup_path=" + rustup_path,
-      "--cargo_path=" + rustup_path,
       "--manifest_path=" + rebase_path(manifest_path, root_build_dir),
-      "--build_path=" + rebase_path(build_path, root_build_dir),
+      "--build_path=" + rebase_path(rust_lib_build_path, root_build_dir),
       "--target=" + target,
       "--toolchain=" +
           rustc_toolchain,  # defined by //brave/build/rust/config.gni,
       "--is_debug=$is_debug",
+      "--profile=$cargo_profile",
     ]
 
     if (is_mac) {

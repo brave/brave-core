@@ -9,44 +9,25 @@ import optparse # pylint: disable=deprecated-module
 import os
 import sys
 import subprocess
-import shutil
 
 from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
 
 
-def build(args):
+def run_cargo(command, args):
     rustup_path = args.rustup_path
-    cargo_path = args.cargo_path
-    manifest_path = args.manifest_path
-    build_path = args.build_path
-    target = args.target
-    is_debug = args.is_debug
-
-    # Check the previous args against the current args because cargo doesn't
-    # rebuild when env vars change and rerun-if-env-changed doesn't force the
-    # dependencies to rebuild
-    build_args_cache_file = os.path.join(build_path, ".cargo_args")
-    previous_args = {}
-    if os.path.exists(build_args_cache_file):
-        with open(build_args_cache_file, "r", encoding="utf8") as f:
-            previous_args = json.load(f)
-
-    if previous_args != args.__dict__:
-        # CARGO_INCREMENTAL doesn't seem to work correctly here so just delete
-        # the entire build path
-        shutil.rmtree(build_path)
 
     # Set environment variables for rustup
     env = os.environ.copy()
 
     rustup_home = os.path.join(rustup_path, RUST_DEPS_PACKAGE_VERSION)
     env['RUSTUP_HOME'] = rustup_home
-
-    cargo_home = os.path.join(cargo_path, RUST_DEPS_PACKAGE_VERSION)
-    env['CARGO_HOME'] = cargo_home
+    env['CARGO_HOME'] = rustup_home
 
     rustup_bin = os.path.abspath(os.path.join(rustup_home, 'bin'))
-    rustup_bin_exe = os.path.join(rustup_bin, 'cargo.exe')
+    cargo_exe = os.path.join(rustup_bin, 'cargo')
+    if sys.platform == "win32":
+        cargo_exe += ".exe"
+
     env['PATH'] = rustup_bin + os.pathsep + env['PATH']
 
     if args.toolchain:
@@ -60,7 +41,7 @@ def build(args):
     if args.ios_deployment_target is not None:
         env['IPHONEOS_DEPLOYMENT_TARGET'] = args.ios_deployment_target
 
-    if is_debug == "false":
+    if args.is_debug == "false":
         env['NDEBUG'] = "1"
 
     if args.rust_flags is not None:
@@ -68,19 +49,39 @@ def build(args):
 
     env["RUST_BACKTRACE"] = "1"
 
-    # Build target
-    cargo_args = []
-    cargo_args.append("cargo" if sys.platform != "win32" else rustup_bin_exe)
-    cargo_args.append("build")
-    if is_debug == "false":
-        cargo_args.append("--release")
-    cargo_args.append("--manifest-path=" + manifest_path)
-    cargo_args.append("--target-dir=" + build_path)
-    cargo_args.append("--target=" + target)
+    try:
+        cargo_args = []
+        cargo_args.append(cargo_exe)
+        cargo_args.append(command)
+        if args.profile == "release":
+            cargo_args.append("--release")
+        cargo_args.append("--manifest-path=" + args.manifest_path)
+        cargo_args.append("--target-dir=" + args.build_path)
+        cargo_args.append("--target=" + args.target)
+        subprocess.check_call(cargo_args, env=env)
+
+    except subprocess.CalledProcessError as e:
+        print(e.output)
+        raise e
+
+
+def build(args):
+    # Check the previous args against the current args because cargo doesn't
+    # rebuild when env vars change and rerun-if-env-changed doesn't force the
+    # dependencies to rebuild
+    build_args_cache_file = os.path.join(args.build_path, ".cargo_args")
+    previous_args = {}
+    if os.path.exists(build_args_cache_file):
+        with open(build_args_cache_file, "r", encoding="utf8") as f:
+            previous_args = json.load(f)
+
+    if (previous_args != args.__dict__ or
+            os.path.getmtime(build_args_cache_file) <
+            os.path.getmtime(__file__)):
+        run_cargo('clean', args)
 
     try:
-        subprocess.check_call(cargo_args, env=env)
-        # write the new args back out to the file if the build was successful
+        run_cargo('build', args)
         with open(build_args_cache_file, "w", encoding="utf8") as f:
             json.dump(args.__dict__, f)
 
@@ -93,12 +94,12 @@ def parse_args():
     parser = optparse.OptionParser(description='Cargo')
 
     parser.add_option('--rustup_path')
-    parser.add_option('--cargo_path')
     parser.add_option('--manifest_path')
     parser.add_option('--build_path')
     parser.add_option('--target')
     parser.add_option('--toolchain')
     parser.add_option('--is_debug')
+    parser.add_option('--profile')
     parser.add_option('--mac_deployment_target')
     parser.add_option('--ios_deployment_target')
     parser.add_option("--rust_flag", action="append",
@@ -109,6 +110,9 @@ def parse_args():
 
     if options.is_debug not in ('false', 'true'):
         raise Exception("is_debug argument was not specified correctly")
+
+    if options.profile not in ('release', 'dev'):
+        raise Exception("profile argument was not specified correctly")
 
     return options
 
