@@ -31,7 +31,7 @@ public class BraveSigninManager implements SigninManager {
     }
 
     @Override
-    public boolean isSignInAllowed() {
+    public boolean isSigninAllowed() {
         return false;
     }
 
@@ -107,5 +107,13 @@ public class BraveSigninManager implements SigninManager {
     @CalledByNative
     void destroy() {
         AccountInfoServiceProvider.get().destroy();
+    }
+
+    @Override
+    public void wipeSyncUserData(Runnable wipeDataCallback) {}
+
+    @Override
+    public boolean isSyncOptInAllowed() {
+        return false;
     }
 }
