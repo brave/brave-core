@@ -14,6 +14,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom-forward.h"
@@ -65,6 +66,10 @@ class BraveNewsController : public KeyedService,
   // mojom::BraveNewsController
   void GetFeed(GetFeedCallback callback) override;
   void GetPublishers(GetPublishersCallback callback) override;
+  void SubscribeToNewDirectFeed(
+      const GURL& feed_url,
+      SubscribeToNewDirectFeedCallback callback) override;
+  void RemoveDirectFeed(const std::string& publisher_id) override;
   void GetImageData(const GURL& padded_image_url,
                     GetImageDataCallback callback) override;
   void SetPublisherPref(const std::string& publisher_id,
@@ -97,6 +102,7 @@ class BraveNewsController : public KeyedService,
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   api_request_helper::APIRequestHelper api_request_helper_;
   PublishersController publishers_controller_;
+  DirectFeedController direct_feed_controller_;
   FeedController feed_controller_;
 
   PrefChangeRegistrar pref_change_registrar_;

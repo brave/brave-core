@@ -31,6 +31,8 @@ template("rust_ffi") {
       if (defined(invoker.frameworks)) {
         frameworks += invoker.frameworks
       }
+    } else if (is_win) {
+      libs += [ "bcrypt.lib" ]
     }
 
     deps = [ "//brave/build/rust:rust_lib" ]

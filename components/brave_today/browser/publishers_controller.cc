@@ -5,16 +5,20 @@
 
 #include "brave/components/brave_today/browser/publishers_controller.h"
 
+#include <iterator>
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/callback_forward.h"
 #include "base/one_shot_event.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_private_cdn/headers.h"
+#include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_parsing.h"
 #include "brave/components/brave_today/browser/urls.h"
+#include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/pref_names.h"
 
 namespace brave_news {
@@ -38,28 +42,35 @@ void PublishersController::RemoveObserver(Observer* observer) {
 
 // To be consumed outside of the class - provides a clone
 void PublishersController::GetOrFetchPublishers(
-    GetPublishersCallback callback) {
-  GetOrFetchPublishers(base::BindOnce(
-      [](PublishersController* controller, GetPublishersCallback callback) {
-        // Either there was already data, or the fetch was complete
-        // (with success or error, so we would still check for valid data again,
-        // but it's fine to just send the empty array).
-        // Provide data clone for ownership outside of this class.
-        Publishers clone;
-        for (auto const& kv : controller->publishers_) {
-          clone.insert_or_assign(kv.first, kv.second->Clone());
-        }
-        std::move(callback).Run(std::move(clone));
-      },
-      base::Unretained(this), std::move(callback)));
+    GetPublishersCallback callback,
+    bool wait_for_current_update /* = false */) {
+  GetOrFetchPublishers(
+      base::BindOnce(
+          [](PublishersController* controller, GetPublishersCallback callback) {
+            // Either there was already data, or the fetch was complete
+            // (with success or error, so we would still check for valid data
+            // again, but it's fine to just send the empty array). Provide data
+            // clone for ownership outside of this class.
+            Publishers clone;
+            for (auto const& kv : controller->publishers_) {
+              clone.insert_or_assign(kv.first, kv.second->Clone());
+            }
+            std::move(callback).Run(std::move(clone));
+          },
+          base::Unretained(this), std::move(callback)),
+      wait_for_current_update);
 }
 
 // To be consumed internally - provides no data so that we don't need to clone,
 // as data can be accessed via class property
-void PublishersController::GetOrFetchPublishers(base::OnceClosure callback) {
+void PublishersController::GetOrFetchPublishers(base::OnceClosure callback,
+                                                bool wait_for_current_update) {
   // If in-memory data is already present, no need to wait,
   // otherwise wait for fetch to be complete.
-  if (!publishers_.empty()) {
+  // Also don't wait if there's an update in progress and this caller
+  // wishes to wait.
+  if (!publishers_.empty() &&
+      (!wait_for_current_update || !is_update_in_progress_)) {
     std::move(callback).Run();
     return;
   }
@@ -75,6 +86,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
   if (is_update_in_progress_) {
     return;
   }
+  is_update_in_progress_ = true;
   GURL sources_url("https://" + brave_today::GetHostname() + "/sources." +
                    brave_today::GetRegionUrlPart() + "json");
   auto onRequest = base::BindOnce(
@@ -84,7 +96,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
         VLOG(1) << "Downloaded sources, status: " << status;
         // TODO(petemill): handle bad status or response
         Publishers publisher_list;
-        ParsePublisherList(body, &publisher_list);
+        ParseCombinedPublisherList(body, &publisher_list);
         // Add user enabled statuses
         const base::DictionaryValue* publisher_prefs =
             controller->prefs_->GetDictionary(prefs::kBraveTodaySources);
@@ -103,6 +115,19 @@ void PublishersController::EnsurePublishersIsUpdating() {
                     << publisher_id;
           }
         }
+        // Add direct feeds
+        std::vector<mojom::PublisherPtr> direct_publishers;
+        ParseDirectPublisherList(
+            controller->prefs_->GetDictionary(prefs::kBraveTodayDirectFeeds),
+            &direct_publishers);
+        for (auto it = direct_publishers.begin(); it != direct_publishers.end();
+             it++) {
+          auto move_it = std::make_move_iterator(it);
+          auto publisher = *move_it;
+          publisher_list.insert_or_assign(publisher->publisher_id,
+                                          std::move(publisher));
+        }
+
         // Set memory cache
         controller->publishers_ = std::move(publisher_list);
         // Let any callback know that the data is ready.

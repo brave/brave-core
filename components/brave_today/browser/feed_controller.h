@@ -8,11 +8,13 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/scoped_observation.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_today/browser/direct_feed_controller.h"
 #include "brave/components/brave_today/browser/publishers_controller.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "components/history/core/browser/history_service.h"
@@ -24,10 +26,13 @@ class HistoryService;
 namespace brave_news {
 
 using GetFeedCallback = mojom::BraveNewsController::GetFeedCallback;
+using FeedItems = std::vector<mojom::FeedItemPtr>;
+using GetFeedItemsCallback = base::OnceCallback<void(FeedItems)>;
 
 class FeedController : public PublishersController::Observer {
  public:
   FeedController(PublishersController* publishers_controller,
+                 DirectFeedController* direct_feed_controller,
                  history::HistoryService* history_service,
                  api_request_helper::APIRequestHelper* api_request_helper);
   ~FeedController() override;
@@ -59,11 +64,13 @@ class FeedController : public PublishersController::Observer {
   void OnPublishersUpdated(PublishersController* publishers) override;
 
  private:
+  void FetchCombinedFeed(GetFeedItemsCallback callback);
   void GetOrFetchFeed(base::OnceClosure callback);
   void ResetFeed();
   void NotifyUpdateDone();
 
   raw_ptr<PublishersController> publishers_controller_ = nullptr;
+  raw_ptr<DirectFeedController> direct_feed_controller_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;
   raw_ptr<api_request_helper::APIRequestHelper> api_request_helper_ = nullptr;
 
