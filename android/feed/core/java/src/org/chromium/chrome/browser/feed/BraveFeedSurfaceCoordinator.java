@@ -63,34 +63,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 actionDelegate, helpAndFeedbackLauncher);
     }
 
-    @Override
-    void createScrollViewForPolicy() {
-        super.createScrollViewForPolicy();
-
-        // Remove previous view to recreate it a way we need for our NTP.
-        UiUtils.removeViewFromParent(mScrollViewForPolicy);
-        // Here we need to get rid of resizer and call setFillViewport.
-        mScrollViewForPolicy = new ScrollView(mActivity);
-        mScrollViewForPolicy.setBackgroundColor(
-                ApiCompatibilityUtils.getColor(mActivity.getResources(), R.color.default_bg_color));
-        mScrollViewForPolicy.setVerticalScrollBarEnabled(false);
-
-        // Make scroll view focusable so that it is the next focusable view when the url bar clears
-        // focus.
-        mScrollViewForPolicy.setFocusable(true);
-        mScrollViewForPolicy.setFocusableInTouchMode(true);
-        mScrollViewForPolicy.setContentDescription(
-                mScrollViewForPolicy.getResources().getString(R.string.accessibility_new_tab_page));
-
-        if (mNtpHeader != null) {
-            UiUtils.removeViewFromParent(mNtpHeader);
-            mScrollViewForPolicy.addView(mNtpHeader);
-        }
-        mRootView.addView(mScrollViewForPolicy);
-        mScrollViewForPolicy.setFillViewport(true);
-        mScrollViewForPolicy.requestFocus();
-    }
-
     public boolean isEnhancedProtectionPromoEnabled() {
         return false;
     }
