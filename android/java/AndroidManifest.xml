@@ -46,7 +46,7 @@
     tools:ignore="LockedOrientationActivity"/>
 
 <activity
-    android:name="org.chromium.chrome.browser.SetDefaultBrowserActivity"
+    android:name="org.chromium.chrome.browser.set_default_browser.SetDefaultBrowserActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>

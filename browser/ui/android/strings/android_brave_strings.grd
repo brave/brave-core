@@ -524,6 +524,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="A button to make monthly tipping">
         Make this monthly
       </message>
+      <message name="IDS_BRAVE_CANCEL" desc="Set default browser modal button text">
+        Cancel
+      </message>
+      <message name="IDS_BRAVE_NEXT" desc="Set default browser modal button text">
+        Next
+      </message>
+      <message name="IDS_BRAVE_PRIVACY_SET_DEFAULT_BROWSER" desc="Set default browser modal title">
+        To improve your privacy, set Brave as your default Browser
+      </message>
+      <message name="IDS_BRAVE_CHOOSE" desc="Set default browser modal text">
+        Choose Brave on the next screen.
+      </message>
+      <message name="IDS_BRAVE_DONT_ASK_AGAIN" desc="Set default browser modal text">
+        Don't ask again
+      </message>
       <message name="IDS_BRAVE_UI_MONTH_JAN" desc="Name of a month">JANUARY</message>
       <message name="IDS_BRAVE_UI_MONTH_FEB" desc="Name of a month">FEBRUARY</message>
       <message name="IDS_BRAVE_UI_MONTH_MAR" desc="Name of a month">MARCH</message>
@@ -1744,13 +1759,13 @@ Are you sure you want to do this?
         Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
       </message>
       <message name="IDS_SET_DEFAULT_BROWSER_TITLE" desc="Set default browser modal title">
-        Open all links with Brave to protect your privacy
+        Make Brave your default browser
       </message>
       <message name="IDS_SET_DEFAULT_BROWSER_TEXT" desc="Set default browser modal text">
-        Brave Shields blocks trackers &amp; ads, saves data, and saves you time on every site you visit.
+        With Brave as default, every link you click opens with Brave’s privacy protections.
       </message>
       <message name="IDS_SET_BRAVE_DEFAULT_BROWSER" desc="Set default browser modal button text">
-        Set Brave as default
+        Set as default
       </message>
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now

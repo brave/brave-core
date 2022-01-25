@@ -17,6 +17,7 @@ import android.net.Uri;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.dialogs.BraveAdsNotificationDialog;
 import org.chromium.chrome.browser.notifications.BraveAdsNotificationBuilder;
@@ -90,6 +91,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.e("tapan","onReceive Onboarding");
         String action = intent.getAction();
         BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (action != null && action.equals(DEEP_LINK)) {
