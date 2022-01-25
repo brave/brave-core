@@ -58,8 +58,8 @@ class TestKeyringServiceObserver
   }
 
   // TODO(bbondy): We should be testing all of these observer events
-  void KeyringCreated() override {}
-  void KeyringRestored() override {}
+  void KeyringCreated(const std::string& keyring_id) override {}
+  void KeyringRestored(const std::string& keyring_id) override {}
   void KeyringReset() override { keyringResetFired_ = true; }
   void Locked() override {}
   void Unlocked() override {}
@@ -307,7 +307,7 @@ class KeyringServiceUnitTest : public testing::Test {
 
   static bool Lock(KeyringService* service) {
     service->Lock();
-    return service->IsLocked();
+    return service->IsLocked(mojom::kDefaultKeyringId);
   }
 
   bool bool_value() { return bool_value_; }
@@ -477,9 +477,9 @@ TEST_F(KeyringServiceUnitTest, CreateEncryptorForKeyring) {
   {
     KeyringService service(GetPrefs());
     EXPECT_TRUE(service.CreateEncryptorForKeyring("123", "default"));
-    EXPECT_NE(service.encryptor_, nullptr);
+    EXPECT_NE(service.encryptors_.at("default"), nullptr);
     EXPECT_TRUE(service.CreateEncryptorForKeyring("456", "keyring2"));
-    EXPECT_NE(service.encryptor_, nullptr);
+    EXPECT_NE(service.encryptors_.at("keyring2"), nullptr);
     encoded_salt = GetStringPrefForKeyring(kPasswordEncryptorSalt, "default");
     EXPECT_FALSE(encoded_salt.empty());
     encoded_salt2 = GetStringPrefForKeyring(kPasswordEncryptorSalt, "keyring2");
@@ -497,9 +497,9 @@ TEST_F(KeyringServiceUnitTest, CreateEncryptorForKeyring) {
   {
     KeyringService service(GetPrefs());
     EXPECT_FALSE(service.CreateEncryptorForKeyring("", "default"));
-    EXPECT_EQ(service.encryptor_, nullptr);
+    ASSERT_TRUE(service.encryptors_.empty());
     EXPECT_FALSE(service.CreateEncryptorForKeyring("", "keyring2"));
-    EXPECT_EQ(service.encryptor_, nullptr);
+    ASSERT_TRUE(service.encryptors_.empty());
   }
 }
 
@@ -694,7 +694,7 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
                                   base::Unretained(this)));
     base::RunLoop().RunUntilIdle();
     ASSERT_EQ(true, bool_value());
-    ASSERT_FALSE(service.IsLocked());
+    ASSERT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 
     EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
     EXPECT_EQ(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"),
@@ -736,7 +736,7 @@ TEST_F(KeyringServiceUnitTest, GetMnemonicForDefaultKeyring) {
 
   // Lock service
   service.Lock();
-  EXPECT_TRUE(service.IsLocked());
+  EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
   service.GetMnemonicForDefaultKeyring(base::BindOnce(
       &KeyringServiceUnitTest::GetStringCallback, base::Unretained(this)));
   base::RunLoop().RunUntilIdle();
@@ -897,7 +897,7 @@ TEST_F(KeyringServiceUnitTest, Reset) {
   auto* default_keyring =
       service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId);
   EXPECT_EQ(default_keyring, nullptr);
-  EXPECT_EQ(service.encryptor_, nullptr);
+  ASSERT_TRUE(service.encryptors_.empty());
   EXPECT_FALSE(
       service.IsKeyringCreated(brave_wallet::mojom::kDefaultKeyringId));
   // Keyring observer fire
@@ -2285,6 +2285,10 @@ TEST_F(KeyringServiceUnitTest, GetChecksumEthAddress) {
 }
 
 TEST_F(KeyringServiceUnitTest, UnknownKeyring) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(
+      brave_wallet::features::kBraveWalletFilecoinFeature);
+
   KeyringService service(GetPrefs());
 
   TestKeyringServiceObserver observer;
@@ -2336,7 +2340,7 @@ TEST_F(KeyringServiceUnitTest, UnknownKeyring) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kFilecoinKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_FALSE(keyring_info->is_default_keyring_created);
+        EXPECT_TRUE(keyring_info->is_default_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         ASSERT_TRUE(keyring_info->account_infos.empty());
@@ -2351,7 +2355,7 @@ TEST_F(KeyringServiceUnitTest, UnknownKeyring) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kFilecoinKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_FALSE(keyring_info->is_default_keyring_created);
+        EXPECT_TRUE(keyring_info->is_default_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         ASSERT_TRUE(keyring_info->account_infos.empty());

@@ -35,6 +35,7 @@ export interface Props {
   onClose: () => void
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
+  isFilecoinEnabled: boolean
   onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
@@ -52,6 +53,7 @@ const AddAccountModal = (props: Props) => {
   const {
     accounts,
     selectedNetwork,
+    isFilecoinEnabled,
     hasImportError,
     tab,
     onClose,
@@ -71,7 +73,7 @@ const AddAccountModal = (props: Props) => {
   const [accountName, setAccountName] = React.useState<string>(suggestedAccountName)
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [password, setPassword] = React.useState<string>('')
-  const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(CreateAccountOptions()[0])
+  const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(undefined)
   const passwordInputRef = React.useRef<HTMLInputElement>(null)
 
   const importError = React.useMemo(() => {
@@ -101,16 +103,6 @@ const AddAccountModal = (props: Props) => {
     onSetImportError(false)
   }
 
-  /* eslint-disable @typescript-eslint/no-unused-vars */
-  // TODO(spylogsster): Uncomment for importing filecoin accounts
-  // should be enabled in //brave/components/brave_wallet/common/buildflags/buildflags.gni as well
-  // example: onImportFilecoinKey(accountName, privateKey, FILECOIN_TESTNET, FilecoinAddressProtocol.BLS)
-  // @ts-expect-error
-  const onImportFilecoinKey = (accountName: string, privateKey: string, network: FilecoinNetwork, protocol: BraveWallet.FilecoinAddressProtocol) => {
-    onImportFilecoinAccount(accountName, privateKey, network, protocol)
-  }
-  /* eslint-enable @typescript-eslint/no-unused-vars */
-
   const onClickCreateAccount = () => {
     if (tab === 'create') {
       if (selectedAccountType?.coin === BraveWallet.CoinType.ETH) {
@@ -127,7 +119,11 @@ const AddAccountModal = (props: Props) => {
     }
     if (tab === 'import') {
       if (importOption === 'key') {
-        onImportAccount(accountName, privateKey)
+        if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
+          onImportFilecoinAccount(accountName, privateKey, BraveWallet.FILECOIN_TESTNET, BraveWallet.FilecoinAddressProtocol.BLS)
+        } else {
+          onImportAccount(accountName, privateKey)
+        }
       } else {
         if (file) {
           const index = file[0]
@@ -313,7 +309,7 @@ const AddAccountModal = (props: Props) => {
         <SelectAccountTypeWrapper>
           <SelectAccountTitle>{getLocale('braveWalletCreateAccountTitle')}</SelectAccountTitle>
           <DividerLine />
-          {CreateAccountOptions().map((network) =>
+          {CreateAccountOptions(isFilecoinEnabled).map((network) =>
             <SelectAccountItemWrapper key={network.coin}>
               <AccountTypeItem
                 onClickCreate={onSelectAccountType(network)}

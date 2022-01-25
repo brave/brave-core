@@ -297,7 +297,8 @@ interface WalletHandler {
   GetWalletInfo() => (bool isWalletCreated, bool isWalletLocked,
                       array<AppItem> favoriteApps,
                       bool isWalletBackedUp,
-                      array<AccountInfo> accountInfos);
+                      array<AccountInfo> accountInfos,
+                      bool IsFilecoinEnabled);
 
   // Adds a favorite app to the apps list
   AddFavoriteApp(AppItem appItem);
@@ -325,10 +326,10 @@ interface Page {
 
 interface KeyringServiceObserver {
   // Fired when a keyring is created
-  KeyringCreated();
+  KeyringCreated(string keyring_id);
 
   // Fired when a keyring is restored
-  KeyringRestored();
+  KeyringRestored(string keyring_id);
 
   // Fired when a keyring is reset
   KeyringReset();

@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -197,7 +198,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void AddAccountsWithDefaultName(size_t number);
 
-  bool IsLocked() const;
+  bool IsLocked(const std::string& keyring_id = mojom::kDefaultKeyringId) const;
   bool HasPendingUnlockRequest() const;
   void RequestUnlock();
   absl::optional<std::string> GetSelectedAccount() const;
@@ -275,6 +276,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::vector<uint8_t>& public_key,
       const std::string& network);
   bool IsFilecoinAccount(const std::string& account) const;
+  bool UnlockFilecoinKeyring(const std::string& password);
   size_t GetAccountMetasNumberForKeyring(const std::string& id);
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
@@ -315,10 +317,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void OnAutoLockPreferenceChanged();
   void OnSelectedAccountPreferenceChanged();
 
-  std::unique_ptr<PasswordEncryptor> encryptor_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::flat_map<std::string, std::unique_ptr<HDKeyring>> keyrings_;
+  base::flat_map<std::string, std::unique_ptr<PasswordEncryptor>> encryptors_;
 
   raw_ptr<PrefService> prefs_ = nullptr;
   bool request_unlock_pending_ = false;

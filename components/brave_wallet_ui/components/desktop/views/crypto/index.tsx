@@ -70,6 +70,7 @@ export interface Props {
   transactions: AccountTransactions
   userAssetList: UserAssetInfoType[]
   isLoading: boolean
+  isFilecoinEnabled: boolean
   showAddModal: boolean
   selectedNetwork: BraveWallet.EthereumChain
   isFetchingPortfolioPriceHistory: boolean
@@ -133,6 +134,7 @@ const CryptoView = (props: Props) => {
     transactions,
     selectedAssetFiatPrice,
     selectedAssetCryptoPrice,
+    isFilecoinEnabled,
     isLoading,
     showAddModal,
     isFetchingPortfolioPriceHistory,
@@ -367,6 +369,7 @@ const CryptoView = (props: Props) => {
           onRouteBackToAccounts={onRouteBack}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
+          isFilecoinEnabled={isFilecoinEnabled}
           onImportFilecoinAccount={onImportFilecoinAccount}
           onConnectHardwareWallet={onConnectHardwareWallet}
           onAddHardwareAccounts={onAddHardwareAccounts}

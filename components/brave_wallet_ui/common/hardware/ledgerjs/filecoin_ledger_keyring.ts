@@ -84,7 +84,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     try {
       const transportWrapper = new TransportWrapper()
       await transportWrapper.connect()
-      this.provider = new LedgerProvider({
+      let provider = new LedgerProvider({
         transport: transportWrapper.transport,
         minLedgerVersion: {
           major: 0,
@@ -92,15 +92,13 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
           patch: 1
         }
       })
-      await this.provider.ready()
-      if (!this.provider) {
-        return { success: false }
-      }
+      await provider.ready()
 
-      const app: LedgerProvider = this.provider
+      const app: LedgerProvider = provider
       const address = await app.getAccounts(0, 1, CoinType.TEST)
       this.deviceId = address[0]
       transportWrapper.transport.on('disconnect', this.onDisconnected)
+      this.provider = provider
       return { success: this.isUnlocked() }
     } catch (e) {
       return { success: false, error: e.message, code: e.statusCode || e.id || e.name }

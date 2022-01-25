@@ -97,7 +97,6 @@ void FilecoinKeyring::ImportFilecoinAccount(
   if (!AddImportedAddress(address, std::move(hd_key))) {
     return;
   }
-  return;
 }
 
 std::string FilecoinKeyring::GetAddressInternal(
