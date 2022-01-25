@@ -16,7 +16,7 @@ import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButton;
 import org.chromium.components.browser_ui.styles.ChromeColors;
 
-public class BraveTabSwitcherModeTTPhone extends TabSwitcherModeTTPhone {
+public class BraveTabSwitcherModeTopToolbar extends TabSwitcherModeTopToolbar {
     // To delete in bytecode, members from parent class will be used instead.
     private View mNewTabViewButton;
     private NewTabButton mNewTabImageButton;
@@ -27,7 +27,7 @@ public class BraveTabSwitcherModeTTPhone extends TabSwitcherModeTTPhone {
     // Own members.
     private boolean mShouldShowNewTabButton;
 
-    public BraveTabSwitcherModeTTPhone(Context context, AttributeSet attrs) {
+    public BraveTabSwitcherModeTopToolbar(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

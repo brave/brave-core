@@ -144,7 +144,7 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
-    *** mTabSwitcherModeCoordinatorPhone;
+    *** mTabSwitcherModeCoordinator;
     *** mOptionalButtonController;
     public <init>(...);
 }
@@ -153,11 +153,11 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinatorPhone {
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinator {
     *** mTabSwitcherModeToolbar;
 }
 
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTPhone {
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTopToolbar {
     *** mNewTabViewButton;
     *** mNewTabImageButton;
     *** mToggleTabStackButton;
