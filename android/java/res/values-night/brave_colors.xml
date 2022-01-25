@@ -28,6 +28,10 @@
     <!-- Text colors -->
     <color name="brave_theme_hint_text">#84889C</color>
 
+    <!-- Set Default Browser colors -->
+    <color name="set_default_bottom_sheet_bg_color">#1E2029</color>
+    <color name="set_default_text_color">#F0F2FF</color>
+
     <!-- Brave news colors -->
     <color name="card_background">#F23B3E4F</color>
     <color name="card_background_solid">#353535</color>

@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
@@ -83,6 +84,13 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                                         notificationType));
                     }
                     break;
+                case RetentionNotificationUtil.DEFAULT_BROWSER_1:
+                case RetentionNotificationUtil.DEFAULT_BROWSER_2:
+                case RetentionNotificationUtil.DEFAULT_BROWSER_3:
+                    if(!BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(braveActivity) && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
+                        BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(braveActivity);
+                    }
+                    break;
                 }
             } else {
                 backgroundNotificationAction(context, intent);
@@ -100,7 +108,7 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             case RetentionNotificationUtil.DEFAULT_BROWSER_1:
             case RetentionNotificationUtil.DEFAULT_BROWSER_2:
             case RetentionNotificationUtil.DEFAULT_BROWSER_3:
-                if (!BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(context)) {
+                if (!BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(context) && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
                     createNotification(context, intent);
                 }
                 break;

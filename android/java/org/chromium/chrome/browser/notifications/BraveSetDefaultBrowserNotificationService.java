@@ -28,6 +28,7 @@ import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.components.embedder_support.util.UrlConstants;
+import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 
 import java.util.Calendar;
 
@@ -95,8 +96,8 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
         ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(
                 browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
         return !(resolveInfo.activityInfo.packageName.equals(
-                         BraveActivity.ANDROID_SETUPWIZARD_PACKAGE_NAME)
-                || resolveInfo.activityInfo.packageName.equals(BraveActivity.ANDROID_PACKAGE_NAME));
+                         BraveSetDefaultBrowserUtils.ANDROID_SETUPWIZARD_PACKAGE_NAME)
+                || resolveInfo.activityInfo.packageName.equals(BraveSetDefaultBrowserUtils.ANDROID_PACKAGE_NAME));
     }
 
     private void showNotification() {
@@ -194,13 +195,13 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
                                         .SHOW_DEFAULT_APP_SETTINGS)) {
             Intent settingsIntent = hasAlternateDefaultBrowser()
                     ? new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
-                    : new Intent(Intent.ACTION_VIEW, Uri.parse(BraveActivity.BRAVE_BLOG_URL));
+                    : new Intent(Intent.ACTION_VIEW, Uri.parse(BraveSetDefaultBrowserUtils.BRAVE_BLOG_URL));
             settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(settingsIntent);
         }
     }
 
-    private class OnReceiveRunnable implements Runnable {
+    /*private class OnReceiveRunnable implements Runnable {
         @Override
         public void run() {
           boolean deepLinkIsHandled = false;
@@ -225,7 +226,7 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
               setAlarmFor1122();
           }
         }
-    }
+    }*/
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -233,6 +234,6 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
         mIntent = intent;
         // Work is done in IO thread because
         // ApplicationPackageManager.resolveActivity may cause file IO operation
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, new OnReceiveRunnable());
+        //PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, new OnReceiveRunnable());
     }
 }
