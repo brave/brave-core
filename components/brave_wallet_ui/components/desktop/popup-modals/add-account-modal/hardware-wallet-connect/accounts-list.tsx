@@ -6,8 +6,9 @@ import {
   DisclaimerWrapper,
   HardwareWalletAccountCircle,
   HardwareWalletAccountListItem,
-  HardwareWalletAccountListItemColumn,
+  HardwareWalletAccountListItemRow,
   HardwareWalletAccountsList,
+  SelectRow,
   SelectWrapper,
   LoadingWrapper,
   LoadIcon,
@@ -99,19 +100,21 @@ export default function (props: Props) {
 
   return (
     <>
-      <SelectWrapper>
-        <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
-          {Object.keys(derivationPathsEnum).map((path, index) => {
-            const pathValue = derivationPathsEnum[path]
-            const pathLocale = HardwareWalletDerivationPathLocaleMapping[pathValue]
-            return (
-              <div data-value={pathValue} key={index}>
-                {pathLocale}
-              </div>
-            )
-          })}
-        </Select>
-      </SelectWrapper>
+      <SelectRow>
+        <SelectWrapper>
+          <Select value={selectedDerivationScheme} onChange={setSelectedDerivationScheme}>
+            {Object.keys(derivationPathsEnum).map((path, index) => {
+              const pathValue = derivationPathsEnum[path]
+              const pathLocale = HardwareWalletDerivationPathLocaleMapping[pathValue]
+              return (
+                <div data-value={pathValue} key={index}>
+                  {pathLocale}
+                </div>
+              )
+            })}
+          </Select>
+        </SelectWrapper>
+      </SelectRow>
       <DisclaimerWrapper>
         <DisclaimerText>{getLocale('braveWalletSwitchHDPathTextHardwareWallet')}</DisclaimerText>
       </DisclaimerWrapper>
@@ -120,7 +123,7 @@ export default function (props: Props) {
         {
           accounts.length === 0 && (
             <LoadingWrapper>
-              <LoadIcon size='big'/>
+              <LoadIcon size='big' />
             </LoadingWrapper>
           )
         }
@@ -202,7 +205,7 @@ function AccountListItem (props: AccountListItemProps) {
   return (
     <HardwareWalletAccountListItem>
       <HardwareWalletAccountCircle orb={orb} />
-      <HardwareWalletAccountListItemColumn>
+      <HardwareWalletAccountListItemRow>
         <AddressBalanceWrapper>
           <div>{reduceAddress(account.address)}</div>
         </AddressBalanceWrapper>
@@ -214,7 +217,7 @@ function AccountListItem (props: AccountListItemProps) {
         >
           <div data-key='selected' />
         </Checkbox>
-      </HardwareWalletAccountListItemColumn>
+      </HardwareWalletAccountListItemRow>
     </HardwareWalletAccountListItem>
   )
 }

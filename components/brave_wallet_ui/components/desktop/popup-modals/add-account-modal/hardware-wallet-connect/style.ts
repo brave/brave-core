@@ -136,12 +136,13 @@ export const HardwareWalletAccountsList = styled.div`
 export const HardwareWalletAccountListItem = styled.div`
   display: flex;
   flex-direction: row;
-  flex-grow: 0;
   margin: 16px 0px;
   width: 100%;
 `
 
-export const HardwareWalletAccountListItemColumn = styled.div`
+export const HardwareWalletAccountListItemRow = styled.div`
+  flex: 1;
+  flex-direction: row;
   /* Body Light Theme/14pt Poppins Regular 400 */
   font-family: Poppins;
   font-style: normal;
@@ -156,8 +157,8 @@ export const HardwareWalletAccountListItemColumn = styled.div`
   color: ${(p) => p.theme.color.text01};
 
   justify-content: space-between;
-  width: 100%;
   padding-left: 10px;
+  padding-right: 10px;
 `
 
 export const AddressBalanceWrapper = styled.div`
@@ -181,9 +182,17 @@ export const DisclaimerWrapper = styled(DisclaimerWrapperBase)`
   margin-bottom: 10px;
 `
 
-export const SelectWrapper = styled.div`
+export const SelectRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  margin-top: 10px;
   margin-bottom: 10px;
-  margin-left: -300px;
+`
+
+export const SelectWrapper = styled.div`
   width: 250px;
 `
 
