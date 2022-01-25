@@ -42,7 +42,6 @@ class SwapControllerFactory : public BrowserStateKeyedServiceFactory {
   bool ServiceIsNULLWhileTesting() const override;
   web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
-
   SwapControllerFactory(const SwapControllerFactory&) = delete;
   SwapControllerFactory& operator=(const SwapControllerFactory&) = delete;
 };

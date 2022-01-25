@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
@@ -33,6 +33,8 @@ class RewardsTabHelper : public RewardsServiceObserver,
                          public content::WebContentsUserData<RewardsTabHelper> {
  public:
   explicit RewardsTabHelper(content::WebContents*);
+  RewardsTabHelper(const RewardsTabHelper&) = delete;
+  RewardsTabHelper& operator=(const RewardsTabHelper&) = delete;
   ~RewardsTabHelper() override;
 
  private:
@@ -57,10 +59,9 @@ class RewardsTabHelper : public RewardsServiceObserver,
 #endif
 
   SessionID tab_id_;
-  RewardsService* rewards_service_;  // NOT OWNED
+  raw_ptr<RewardsService> rewards_service_ = nullptr;  // NOT OWNED
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-  DISALLOW_COPY_AND_ASSIGN(RewardsTabHelper);
 };
 
 }  // namespace brave_rewards

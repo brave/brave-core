@@ -341,9 +341,9 @@ BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
 std::unique_ptr<content::BrowserMainParts>
 BraveContentBrowserClient::CreateBrowserMainParts(
-    const content::MainFunctionParams& parameters) {
+    content::MainFunctionParams parameters) {
   std::unique_ptr<content::BrowserMainParts> main_parts =
-      ChromeContentBrowserClient::CreateBrowserMainParts(parameters);
+      ChromeContentBrowserClient::CreateBrowserMainParts(std::move(parameters));
   ChromeBrowserMainParts* chrome_main_parts =
       static_cast<ChromeBrowserMainParts*>(main_parts.get());
   chrome_main_parts->AddParts(std::make_unique<BraveBrowserMainExtraParts>());
@@ -892,4 +892,12 @@ bool BraveContentBrowserClient::OverrideWebPreferencesAfterNavigation(
     changed = true;
   }
   return changed;
+}
+
+void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
+                                                    WebPreferences* web_prefs) {
+  ChromeContentBrowserClient::OverrideWebkitPrefs(web_contents, web_prefs);
+  // This will stop NavigatorPlugins from returning fixed plugins data and will
+  // allow us to return our farbled data
+  web_prefs->allow_non_empty_navigator_plugins = true;
 }

@@ -418,7 +418,7 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.56"
+version = "1.0.57"
 dependencies = [
  "cxxbridge-macro",
  "link-cplusplus",
@@ -426,9 +426,9 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.56"
+version = "1.0.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "04f5cb3b337856fe25282ca3c8ae58ae688adb956ab96c39af159b04b190ea52"
+checksum = "8907c4ff452ac2efc5edfe3fd2c5dfcf63ea3a9b402bb6d357a29ed5f9bbb07d"
 dependencies = [
  "proc-macro2",
  "quote",

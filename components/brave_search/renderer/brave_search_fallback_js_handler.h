@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/callback.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "v8/include/v8.h"
@@ -55,10 +56,11 @@ class BraveSearchFallbackJSHandler {
       std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
       const std::string& response);
 
-  blink::ThreadSafeBrowserInterfaceBrokerProxy* broker_;  // not owned
+  raw_ptr<blink::ThreadSafeBrowserInterfaceBrokerProxy> broker_ =
+      nullptr;  // not owned
   mojo::Remote<brave_search::mojom::BraveSearchFallback> brave_search_fallback_;
   v8::Global<v8::Context> context_;
-  v8::Isolate* isolate_;
+  raw_ptr<v8::Isolate> isolate_ = nullptr;
 };
 
 }  // namespace brave_search

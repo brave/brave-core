@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_DELEGATE_H_
 #define BRAVE_COMPONENTS_SYNC_DRIVER_SYNC_SERVICE_IMPL_DELEGATE_H_
 
+#include "base/memory/raw_ptr.h"
+
 namespace syncer {
 
 class BraveSyncServiceImpl;
@@ -21,7 +23,7 @@ class SyncServiceImplDelegate {
   }
 
  protected:
-  BraveSyncServiceImpl* sync_service_impl_;
+  raw_ptr<BraveSyncServiceImpl> sync_service_impl_ = nullptr;
 };
 
 }  // namespace syncer

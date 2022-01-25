@@ -25,6 +25,9 @@ class KeyringController;
 
 class KeyringControllerFactory : public BrowserStateKeyedServiceFactory {
  public:
+  KeyringControllerFactory(const KeyringControllerFactory&) = delete;
+  KeyringControllerFactory& operator=(const KeyringControllerFactory&) = delete;
+
   // Creates the service if it doesn't exist already for |browser_state|.
   static mojom::KeyringController* GetForBrowserState(
       ChromeBrowserState* browser_state);
@@ -46,8 +49,6 @@ class KeyringControllerFactory : public BrowserStateKeyedServiceFactory {
   bool ServiceIsNULLWhileTesting() const override;
   web::BrowserState* GetBrowserStateToUse(
       web::BrowserState* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(KeyringControllerFactory);
 };
 
 }  // namespace brave_wallet

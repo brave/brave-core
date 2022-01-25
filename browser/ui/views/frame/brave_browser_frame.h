@@ -6,19 +6,20 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_
 
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/views/frame/browser_frame.h"
 
 class BraveBrowserFrame : public BrowserFrame {
  public:
   explicit BraveBrowserFrame(BrowserView* browser_view);
+  BraveBrowserFrame(const BraveBrowserFrame&) = delete;
+  BraveBrowserFrame& operator=(const BraveBrowserFrame&) = delete;
 
   // BrowserFrame overrides:
   const ui::NativeTheme* GetNativeTheme() const override;
 
  private:
-  BrowserView* view_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserFrame);
+  raw_ptr<BrowserView> view_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_FRAME_H_

@@ -109,8 +109,9 @@ import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
+import org.chromium.chrome.browser.prefetch.settings.PreloadPagesSettingsBridge;
+import org.chromium.chrome.browser.prefetch.settings.PreloadPagesState;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
-import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
@@ -439,8 +440,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         // Make sure this option is disabled
-        if (PrivacyPreferencesManagerImpl.getInstance().getNetworkPredictionEnabled()) {
-            PrivacyPreferencesManagerImpl.getInstance().setNetworkPredictionEnabled(false);
+        if (PreloadPagesSettingsBridge.getState() != PreloadPagesState.NO_PRELOADING) {
+            PreloadPagesSettingsBridge.setState(PreloadPagesState.NO_PRELOADING);
         }
 
         if (BraveRewardsHelper.hasRewardsEnvChange()) {
@@ -1020,7 +1021,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (tabIndex != TabModel.INVALID_TAB_INDEX) {
             tab = tabModel.getTabAt(tabIndex);
             // Set active tab
-            tabModel.setIndex(tabIndex, TabSelectionType.FROM_USER);
+            tabModel.setIndex(tabIndex, TabSelectionType.FROM_USER, false);
             return tab;
         } else {
             return null;

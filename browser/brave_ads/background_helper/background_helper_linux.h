@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_BACKGROUND_HELPER_BACKGROUND_HELPER_LINUX_H_
 #define BRAVE_BROWSER_BRAVE_ADS_BACKGROUND_HELPER_BACKGROUND_HELPER_LINUX_H_
 
-#include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"

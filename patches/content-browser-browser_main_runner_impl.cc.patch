@@ -1,5 +1,5 @@
 diff --git a/content/browser/browser_main_runner_impl.cc b/content/browser/browser_main_runner_impl.cc
-index 4edb50243ad1cda95e15fd13be0f47ea182a364f..a5e224ff74420d1b71415ea1248237f38cf0ca91 100644
+index b3b79030d8931ad00df794e98e14b72e655b773f..53933684f1b40f95b4a8eb8cebd792c63cc588cf 100644
 --- a/content/browser/browser_main_runner_impl.cc
 +++ b/content/browser/browser_main_runner_impl.cc
 @@ -18,6 +18,7 @@
@@ -10,12 +10,12 @@ index 4edb50243ad1cda95e15fd13be0f47ea182a364f..a5e224ff74420d1b71415ea1248237f3
  #include "build/build_config.h"
  #include "components/tracing/common/trace_startup_config.h"
  #include "components/tracing/common/tracing_switches.h"
-@@ -96,7 +97,7 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
- 
-     gfx::InitializeFonts();
+@@ -99,7 +100,7 @@ int BrowserMainRunnerImpl::Initialize(MainFunctionParams parameters) {
+     auto created_main_parts_closure =
+         std::move(parameters.created_main_parts_closure);
  
 -    main_loop_ = std::make_unique<BrowserMainLoop>(
 +    main_loop_ = std::make_unique<brave::BraveBrowserMainLoop>(
-         parameters, std::move(scoped_execution_fence_));
+         std::move(parameters), std::move(scoped_execution_fence_));
  
      main_loop_->Init();

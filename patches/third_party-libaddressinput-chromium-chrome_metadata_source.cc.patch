@@ -1,8 +1,8 @@
 diff --git a/third_party/libaddressinput/chromium/chrome_metadata_source.cc b/third_party/libaddressinput/chromium/chrome_metadata_source.cc
-index e7b92981da6fe97f179f467a466e31f47e0171e4..bef05cc1a6c4fd5779d77c5140ce148535ea4669 100644
+index b23fd9109f3fb73bfa0ea5bd4f32b588dd9d9136..92c9ee96f9184ecbf0772baeb85d084003caccb5 100644
 --- a/third_party/libaddressinput/chromium/chrome_metadata_source.cc
 +++ b/third_party/libaddressinput/chromium/chrome_metadata_source.cc
-@@ -58,7 +58,7 @@ ChromeMetadataSource::Request::Request(
+@@ -57,7 +57,7 @@ ChromeMetadataSource::Request::Request(
  void ChromeMetadataSource::Download(const std::string& key,
                                      const Callback& downloaded) {
    GURL resource(validation_data_url_ + key);

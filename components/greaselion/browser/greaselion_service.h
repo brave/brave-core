@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "base/macros.h"
 #include "base/observer_list.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/browser/extension_registry_observer.h"
@@ -43,6 +42,8 @@ class GreaselionService : public KeyedService,
                           public extensions::ExtensionRegistryObserver {
  public:
   GreaselionService() = default;
+  GreaselionService(const GreaselionService&) = delete;
+  GreaselionService& operator=(const GreaselionService&) = delete;
 
   virtual void SetFeatureEnabled(GreaselionFeature feature, bool enabled) = 0;
   virtual void UpdateInstalledExtensions() = 0;
@@ -63,7 +64,6 @@ class GreaselionService : public KeyedService,
  private:
   friend class ::GreaselionServiceTest;
   virtual void SetBrowserVersionForTesting(const base::Version& version) = 0;
-  DISALLOW_COPY_AND_ASSIGN(GreaselionService);
 };
 
 }  // namespace greaselion

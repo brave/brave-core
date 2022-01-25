@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<!--This file is created by l10nUtil.js. Do not edit manually.-->
-<grit-part>
-  <message name="IDS_SB_UNDER_CONSTRUCTION" desc="A message that the Safe Browsing page is under construction.">
-    The Safe Browsing page is under construction.
-  </message>
-</grit-part>

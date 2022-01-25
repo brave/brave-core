@@ -18,6 +18,8 @@ class BraveExtensionManagement : public ExtensionManagement,
                                  public ExtensionRegistryObserver {
  public:
   explicit BraveExtensionManagement(Profile* profile);
+  BraveExtensionManagement(const BraveExtensionManagement&) = delete;
+  BraveExtensionManagement& operator=(const BraveExtensionManagement&) = delete;
   ~BraveExtensionManagement() override;
 
  private:
@@ -37,8 +39,6 @@ class BraveExtensionManagement : public ExtensionManagement,
 
   base::ScopedObservation<ExtensionRegistry, ExtensionRegistryObserver>
       extension_registry_observer_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(BraveExtensionManagement);
 };
 
 }  // namespace extensions

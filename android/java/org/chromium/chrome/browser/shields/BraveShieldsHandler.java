@@ -451,7 +451,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         ImageView mPrivacyReportIcon = mPrivacyReportLayout.findViewById(R.id.toggle_favicon);
         mPrivacyReportIcon.setImageResource(R.drawable.ic_arrow_forward);
         mPrivacyReportIcon.setColorFilter(
-                mContext.getResources().getColor(R.color.default_icon_color));
+                mContext.getResources().getColor(R.color.default_icon_color_tint_list));
         TextView mViewPrivacyReportText = mPrivacyReportLayout.findViewById(R.id.toggle_text);
         mViewPrivacyReportText.setText(R.string.view_full_privacy_report);
         mPrivacyReportLayout.setOnClickListener(new View.OnClickListener() {
@@ -579,7 +579,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             ImageView mBlockShieldsIcon = mShieldsLayout.findViewById(R.id.toggle_favicon);
             mBlockShieldsIcon.setImageResource(R.drawable.ic_chevron_right);
             mBlockShieldsIcon.setColorFilter(
-                    mContext.getResources().getColor(R.color.default_icon_color));
+                    mContext.getResources().getColor(R.color.default_icon_color_tint_list));
             TextView mBlockShieldsText = mShieldsLayout.findViewById(R.id.toggle_text);
             mBlockShieldsText.setText(titleStringId);
 

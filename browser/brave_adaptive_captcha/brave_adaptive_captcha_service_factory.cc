@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/brave_rewards/rewards_panel_helper.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -33,7 +34,7 @@ class CaptchaDelegate
   }
 
  private:
-  content::BrowserContext* context_;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
 };
 
 }  // namespace

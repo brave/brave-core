@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/android/scoped_java_ref.h"
+#include "base/memory/raw_ptr.h"
 #include "net/base/completion_once_callback.h"
 
 namespace safetynet_check {
@@ -23,7 +24,10 @@ using ClientAttestationCallback =
 class SafetyNetCheck {
  public:
     explicit SafetyNetCheck(SafetyNetCheckRunner* runner);
+    SafetyNetCheck(const SafetyNetCheck&) = delete;
+    SafetyNetCheck& operator=(const SafetyNetCheck&) = delete;
     ~SafetyNetCheck();
+
     // Performs client attestation, called from C++
     bool clientAttestation(const std::string& nonce,
       ClientAttestationCallback attest_callback,
@@ -38,23 +42,22 @@ class SafetyNetCheck {
  private:
     base::android::ScopedJavaGlobalRef<jobject> java_obj_;
     ClientAttestationCallback attest_callback_;
-    SafetyNetCheckRunner* runner_;
-
-    DISALLOW_COPY_AND_ASSIGN(SafetyNetCheck);
+    raw_ptr<SafetyNetCheckRunner> runner_ = nullptr;
 };
 
 class SafetyNetCheckRunner {
  public:
     SafetyNetCheckRunner();
+    SafetyNetCheckRunner(const SafetyNetCheckRunner&) = delete;
+    SafetyNetCheckRunner& operator=(const SafetyNetCheckRunner&) = delete;
     ~SafetyNetCheckRunner();
+
     void performSafetynetCheck(const std::string& nonce,
       ClientAttestationCallback attest_callback,
       const bool perform_attestation_on_client = false);
     void jobFinished(SafetyNetCheck* finished_job);
  private:
-    std::vector<std::unique_ptr<SafetyNetCheck>> jobs_;
-
-    DISALLOW_COPY_AND_ASSIGN(SafetyNetCheckRunner);
+  std::vector<std::unique_ptr<SafetyNetCheck>> jobs_;
 };
 
 }  // namespace safetynet_check

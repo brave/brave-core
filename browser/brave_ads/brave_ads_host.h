@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_ads/common/brave_ads_host.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -40,7 +41,7 @@ class BraveAdsHost : public brave_ads::mojom::BraveAdsHost,
   bool ShowRewardsPopup(brave_rewards::RewardsService* rewards_service);
   void RunCallbacksAndReset(bool result);
 
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   std::vector<RequestAdsEnabledCallback> callbacks_;
   base::ScopedObservation<brave_rewards::RewardsService,
                           brave_rewards::RewardsServiceObserver>

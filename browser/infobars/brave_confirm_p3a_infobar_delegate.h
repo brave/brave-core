@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_INFOBARS_BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE_H_
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "url/gurl.h"
 
@@ -20,6 +20,11 @@ class ContentInfoBarManager;
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class BraveConfirmP3AInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
+  BraveConfirmP3AInfoBarDelegate(const BraveConfirmP3AInfoBarDelegate&) =
+      delete;
+  BraveConfirmP3AInfoBarDelegate& operator=(
+      const BraveConfirmP3AInfoBarDelegate&) = delete;
+
   static void Create(infobars::ContentInfoBarManager* infobar_manager,
                      PrefService* local_state);
 
@@ -39,9 +44,7 @@ class BraveConfirmP3AInfoBarDelegate : public ConfirmInfoBarDelegate {
   bool Accept() override;
   bool Cancel() override;
 
-  PrefService* local_state_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveConfirmP3AInfoBarDelegate);
+  raw_ptr<PrefService> local_state_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE_H_

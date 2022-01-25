@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/tabs/tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
@@ -30,16 +31,16 @@ class BraveTabMenuModel : public TabMenuModel {
                     TabMenuModelDelegate* tab_menu_model_delegate,
                     TabStripModel* tab_strip_model,
                     int index);
+  BraveTabMenuModel(const BraveTabMenuModel&) = delete;
+  BraveTabMenuModel& operator=(const BraveTabMenuModel&) = delete;
   ~BraveTabMenuModel() override;
 
  private:
   void Build();
   int GetRestoreTabCommandStringId() const;
 
-  content::WebContents* web_contents_;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
   sessions::TabRestoreService* restore_service_ = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveTabMenuModel);
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_

@@ -21,6 +21,8 @@ class TorTabHelper : public content::WebContentsObserver,
                      public content::WebContentsUserData<TorTabHelper>,
                      public base::SupportsWeakPtr<TorTabHelper> {
  public:
+  TorTabHelper(const TorTabHelper&) = delete;
+  TorTabHelper& operator=(const TorTabHelper&) = delete;
   ~TorTabHelper() override;
 
   static void MaybeCreateForWebContents(content::WebContents* web_contents,
@@ -37,8 +39,6 @@ class TorTabHelper : public content::WebContentsObserver,
   void ReloadTab(content::WebContents* web_contents);
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-
-  DISALLOW_COPY_AND_ASSIGN(TorTabHelper);
 };
 
 }  // namespace tor

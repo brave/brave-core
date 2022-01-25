@@ -15,7 +15,6 @@
 #include "base/bind.h"
 #include "base/callback.h"
 #include "base/files/file_path.h"
-#include "base/macros.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "components/component_updater/component_installer.h"
 #include "components/update_client/update_client.h"
@@ -31,6 +30,10 @@ class BraveComponentInstallerPolicy
       const std::string& name,
       const std::string& base64_public_key,
       BraveComponent::ReadyCallback ready_callback);
+
+  BraveComponentInstallerPolicy(const BraveComponentInstallerPolicy&) = delete;
+  BraveComponentInstallerPolicy& operator=(
+      const BraveComponentInstallerPolicy&) = delete;
 
   ~BraveComponentInstallerPolicy() override;
 
@@ -56,8 +59,6 @@ class BraveComponentInstallerPolicy
   std::string base64_public_key_;
   std::string public_key_;
   BraveComponent::ReadyCallback ready_callback_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveComponentInstallerPolicy);
 };
 
 void RegisterComponent(component_updater::ComponentUpdateService* cus,

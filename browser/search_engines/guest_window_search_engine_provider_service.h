@@ -19,6 +19,10 @@ class GuestWindowSearchEngineProviderService
       public TemplateURLServiceObserver {
  public:
   explicit GuestWindowSearchEngineProviderService(Profile* otr_profile);
+  GuestWindowSearchEngineProviderService(
+      const GuestWindowSearchEngineProviderService&) = delete;
+  GuestWindowSearchEngineProviderService& operator=(
+      const GuestWindowSearchEngineProviderService&) = delete;
   ~GuestWindowSearchEngineProviderService() override;
 
  private:
@@ -31,8 +35,6 @@ class GuestWindowSearchEngineProviderService
   void OnUseAlternativeSearchEngineProviderChanged() override;
 
   bool ignore_template_url_service_changing_ = false;
-
-  DISALLOW_COPY_AND_ASSIGN(GuestWindowSearchEngineProviderService);
 };
 
 

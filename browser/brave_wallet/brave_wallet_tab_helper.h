@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
 
@@ -61,7 +62,7 @@ class BraveWalletTabHelper
   GURL GetApproveBubbleURL();
   std::unique_ptr<WalletBubbleManagerDelegate> wallet_bubble_manager_delegate_;
 #endif
-  content::WebContents* web_contents_;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

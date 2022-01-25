@@ -125,7 +125,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_USAGE_AND_CRASH_REPORTS_SUMMARY" desc="Description for 'Help improve Brave's features and performance' preference.">
         Automatically sends crash reports to Brave
       </message>
-
+      <message name="IDS_PRIVACY_REVIEW_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
+        Block while using private
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_COOKIES_BLOCK_INCOGNITO_DESCRIPTION" desc="Description for the radio button for blocking third-party cookies in private.">
+        While in private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+      </message>
       <message name="IDS_DATA_REDUCTION_DESCRIPTION_LITE_MODE" desc="Text describing how the Lite mode feature works. Seen only before the user has enabled the feature.">
         When Lite mode is on, Brave uses Brave servers to make pages load faster. Lite mode rewrites very slow pages to load only essential content. Lite mode does not apply to Private tabs.
       </message>
@@ -166,6 +171,12 @@ CHAR_LIMIT guidelines:
      </message>
      <message name="IDS_NEW_INCOGNITO_TAB_TITLE" desc="Title in tab strip when opening a new Private tab.">
         New Private tab
+      </message>
+      <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_INCOGNITO_TAB" desc="Notification body text educating user about private tab in chrome.">
+        To browse without saving activity to your device, try out Private
+      </message>
+      <message name="IDS_FEATURE_NOTIFICATION_GUIDE_TOOLTIP_MESSAGE_INCOGNITO_TAB" desc="Tooltip text educating user about using private tab in chrome.">
+        To open a new Private tab, open the menu
       </message>
       <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new Private browser tab.">
         New Private tab

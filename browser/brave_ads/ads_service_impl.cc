@@ -123,6 +123,8 @@ const unsigned int kRetriesCountOnNetworkChange = 1;
 
 constexpr char kAdNotificationUrlPrefix[] = "https://www.brave.com/ads/?";
 
+const base::Feature kAdServing{"AdServing", base::FEATURE_ENABLED_BY_DEFAULT};
+
 int GetSchemaResourceId(const std::string& name) {
   if (name == ads::g_catalog_schema_resource_id) {
     return IDR_ADS_CATALOG_SCHEMA;
@@ -517,9 +519,6 @@ bool AdsServiceImpl::ShouldStart() const {
 int64_t AdsServiceImpl::GetAdsPerHour() const {
   int64_t ads_per_hour = GetInt64Pref(ads::prefs::kAdsPerHour);
   if (ads_per_hour == -1) {
-    const base::Feature kAdServing{"AdServing",
-                                   base::FEATURE_ENABLED_BY_DEFAULT};
-
     ads_per_hour = base::GetFieldTrialParamByFeatureAsInt(
         kAdServing, "default_ad_notifications_per_hour",
         ads::kDefaultAdNotificationsPerHour);

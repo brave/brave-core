@@ -12,6 +12,7 @@
 
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/timer/timer.h"
@@ -149,8 +150,9 @@ class NTPBackgroundImagesService {
   base::RepeatingTimer si_update_check_timer_;
   base::RepeatingClosure si_update_check_callback_;
   bool test_data_used_ = false;
-  component_updater::ComponentUpdateService* component_update_service_;
-  PrefService* local_pref_;
+  raw_ptr<component_updater::ComponentUpdateService> component_update_service_ =
+      nullptr;
+  raw_ptr<PrefService> local_pref_ = nullptr;
   base::FilePath bi_installed_dir_;
   std::unique_ptr<NTPBackgroundImagesData> bi_images_data_;
   base::FilePath si_installed_dir_;

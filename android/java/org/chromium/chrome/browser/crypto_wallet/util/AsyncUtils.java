@@ -92,7 +92,7 @@ public class AsyncUtils {
     }
 
     public static class GetErc20TokenBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetErc20TokenBalanceResponse {
+            implements EthJsonRpcController.GetErc20TokenBalance_Response {
         public GetErc20TokenBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
@@ -105,7 +105,7 @@ public class AsyncUtils {
     }
 
     public static class GetBalanceResponseContext extends GetBalanceResponseBaseContext
-            implements EthJsonRpcController.GetBalanceResponse {
+            implements EthJsonRpcController.GetBalance_Response {
         public GetBalanceResponseContext(Runnable responseCompleteCallback) {
             super(responseCompleteCallback);
         }
@@ -118,7 +118,7 @@ public class AsyncUtils {
     }
 
     public static class GetPriceResponseContext
-            extends SingleResponseBaseContext implements AssetRatioController.GetPriceResponse {
+            extends SingleResponseBaseContext implements AssetRatioController.GetPrice_Response {
         public Boolean success;
         public AssetPrice[] prices;
 
@@ -135,7 +135,7 @@ public class AsyncUtils {
     }
 
     public static class GetAllTransactionInfoResponseContext extends SingleResponseBaseContext
-            implements EthTxController.GetAllTransactionInfoResponse {
+            implements EthTxController.GetAllTransactionInfo_Response {
         public TransactionInfo[] txInfos;
         public String name;
 
@@ -153,7 +153,7 @@ public class AsyncUtils {
     }
 
     public static class GetPriceHistoryResponseContext extends SingleResponseBaseContext
-            implements AssetRatioController.GetPriceHistoryResponse {
+            implements AssetRatioController.GetPriceHistory_Response {
         public Boolean success;
         public AssetTimePrice[] timePrices;
         public ErcToken userAsset;

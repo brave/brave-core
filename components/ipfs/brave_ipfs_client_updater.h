@@ -93,6 +93,8 @@ class BraveIpfsClientUpdater : public BraveComponent,
 
   explicit BraveIpfsClientUpdater(BraveComponent::Delegate* delegate,
                                   const base::FilePath& user_data_dir);
+  BraveIpfsClientUpdater(const BraveIpfsClientUpdater&) = delete;
+  BraveIpfsClientUpdater& operator=(const BraveIpfsClientUpdater&) = delete;
   ~BraveIpfsClientUpdater() override;
 
   void Register();
@@ -134,8 +136,6 @@ class BraveIpfsClientUpdater : public BraveComponent,
       updater_observer_{this};
 
   base::WeakPtrFactory<BraveIpfsClientUpdater> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveIpfsClientUpdater);
 };
 
 // Creates the BraveIpfsClientUpdater

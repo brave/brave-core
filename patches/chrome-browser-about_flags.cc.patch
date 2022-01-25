@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 1ace853084cdc7a8bda046ff1f40b6a5197277ee..b00f6960c3b708b4ac9e492b69cedad34118aa67 100644
+index d1b66475ef7443bf98a82d54fa35c3fe2ca2aba2..dccf7a4bbe44be7494db95ae37e4491d2fda667d 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -7747,6 +7747,7 @@ const FeatureEntry kFeatureEntries[] = {
-     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
-     // Histograms" in tools/metrics/histograms/README.md (run the
-     // AboutFlagsHistogramTest unit test to verify this process).
-+    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
- };
+@@ -7660,6 +7660,7 @@ const FeatureEntry kFeatureEntries[] = {
+      SINGLE_VALUE_TYPE(switches::kPervasiveSystemAccentColor)},
+ #endif
  
- class FlagsStateSingleton : public flags_ui::FlagsState::Delegate {
++    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
+ #if defined(OS_ANDROID)
+     {"use-ulp-languages-in-chrome",
+      flag_descriptions::kUseULPLanguagesInChromeName,

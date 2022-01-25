@@ -36,7 +36,7 @@ public class TokenUtils {
     }
 
     public static void getUserAssetsFiltered(BraveWalletService braveWalletService, String chainId,
-            BraveWalletService.GetUserAssetsResponse callback) {
+            BraveWalletService.GetUserAssets_Response callback) {
         braveWalletService.getUserAssets(chainId, (ErcToken[] tokens) -> {
             ErcToken[] filteredTokens = filterOut(tokens, false);
             callback.call(filteredTokens);
@@ -45,7 +45,7 @@ public class TokenUtils {
 
     public static void getAllTokensFiltered(BraveWalletService braveWalletService,
             ErcTokenRegistry ercTokenRegistry, String chainId,
-            ErcTokenRegistry.GetAllTokensResponse callback) {
+            ErcTokenRegistry.GetAllTokens_Response callback) {
         ercTokenRegistry.getAllTokens((ErcToken[] tokens) -> {
             braveWalletService.getUserAssets(chainId, (ErcToken[] userTokens) -> {
                 ErcToken[] filteredTokens =
@@ -56,7 +56,7 @@ public class TokenUtils {
     }
 
     public static void getBuyTokensFiltered(
-            ErcTokenRegistry ercTokenRegistry, ErcTokenRegistry.GetAllTokensResponse callback) {
+            ErcTokenRegistry ercTokenRegistry, ErcTokenRegistry.GetAllTokens_Response callback) {
         ercTokenRegistry.getBuyTokens((ErcToken[] tokens) -> {
             ErcToken[] filteredTokens = filterOut(tokens, true);
             callback.call(filteredTokens);

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -25,19 +25,22 @@ class CookiePrefService : public KeyedService,
   explicit CookiePrefService(HostContentSettingsMap* host_content_settings_map,
                              PrefService* prefs,
                              PrefService* local_state);
+  CookiePrefService(const CookiePrefService&) = delete;
+  CookiePrefService& operator=(const CookiePrefService&) = delete;
   ~CookiePrefService() override;
 
  private:
   class Lock {
    public:
     Lock();
+    Lock(const Lock&) = delete;
+    Lock& operator=(const Lock&) = delete;
     ~Lock();
     bool Try();
     void Release();
 
    private:
     bool locked_;
-    DISALLOW_COPY_AND_ASSIGN(Lock);
   };
 
   void OnPreferenceChanged();
@@ -48,12 +51,10 @@ class CookiePrefService : public KeyedService,
                                ContentSettingsType content_type) override;
 
   Lock lock_;
-  HostContentSettingsMap* host_content_settings_map_;
-  PrefService* prefs_;
-  PrefService* local_state_;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
+  raw_ptr<PrefService> local_state_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
-
-  DISALLOW_COPY_AND_ASSIGN(CookiePrefService);
 };
 
 }  // namespace brave_shields

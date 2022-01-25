@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_IPFS_IMPORT_SAVE_PACKAGE_OBSERVER_H_
 #define BRAVE_BROWSER_IPFS_IMPORT_SAVE_PACKAGE_OBSERVER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "components/download/public/common/download_item.h"
 #include "content/public/browser/download_manager.h"
 
@@ -37,8 +38,8 @@ class SavePackageFinishedObserver : public download::DownloadItem::Observer,
   void ManagerGoingDown(content::DownloadManager* manager) override;
 
  private:
-  content::DownloadManager* download_manager_;
-  download::DownloadItem* download_;
+  raw_ptr<content::DownloadManager> download_manager_ = nullptr;
+  raw_ptr<download::DownloadItem> download_ = nullptr;
   base::FilePath main_file_path_;
   SavePackageCompleted callback_;
 };

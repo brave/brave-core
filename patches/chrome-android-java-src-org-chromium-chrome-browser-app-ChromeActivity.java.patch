@@ -1,9 +1,9 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-index d0909b5ef03d03c15ec148bf34c6038837716d98..b8aaf9d57b330dabf9c727d3f57a04721c00d03e 100644
+index ad9c1556872b8fbc6cbc9ffdc7dd1bbff709e0a0..4e0b5660bb5b5ded9179d54e565ba2c3fea0bf1d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/app/ChromeActivity.java
-@@ -392,7 +392,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
-     private boolean mLastPictureInPictureModeForTesting;
+@@ -395,7 +395,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
+     private SubscriptionsManager mSubscriptionsManager;
  
      protected ChromeActivity() {
 -        mIntentHandler = new IntentHandler(this, createIntentHandlerDelegate());

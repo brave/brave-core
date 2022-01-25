@@ -13,6 +13,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -44,6 +45,8 @@ class TipDialogDelegate : public ui::WebDialogDelegate {
  public:
   explicit TipDialogDelegate(WebContents* initiator,
       std::unique_ptr<base::DictionaryValue> params);
+  TipDialogDelegate(const TipDialogDelegate&) = delete;
+  TipDialogDelegate& operator=(const TipDialogDelegate&) = delete;
   ~TipDialogDelegate() override;
 
   ui::ModalType GetDialogModalType() const override;
@@ -58,10 +61,8 @@ class TipDialogDelegate : public ui::WebDialogDelegate {
   bool ShouldShowDialogTitle() const override;
 
  private:
-  WebContents* initiator_;
+  raw_ptr<WebContents> initiator_ = nullptr;
   std::unique_ptr<base::DictionaryValue> params_;
-
-  DISALLOW_COPY_AND_ASSIGN(TipDialogDelegate);
 };
 
 TipDialogDelegate::TipDialogDelegate(WebContents* initiator,

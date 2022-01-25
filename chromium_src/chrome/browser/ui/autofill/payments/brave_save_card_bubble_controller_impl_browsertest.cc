@@ -6,7 +6,6 @@
 
 #include <memory>
 
-#include "base/macros.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -16,6 +15,11 @@
 class BraveSaveCardBubbleControllerImplTest : public InProcessBrowserTest {
  public:
   BraveSaveCardBubbleControllerImplTest() {}
+
+  BraveSaveCardBubbleControllerImplTest(
+      const BraveSaveCardBubbleControllerImplTest&) = delete;
+  BraveSaveCardBubbleControllerImplTest& operator=(
+      const BraveSaveCardBubbleControllerImplTest&) = delete;
 
   void ShowUi() {
     content::WebContents* web_contents =
@@ -33,8 +37,6 @@ class BraveSaveCardBubbleControllerImplTest : public InProcessBrowserTest {
 
  private:
   autofill::SaveCardBubbleControllerImpl* controller_ = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSaveCardBubbleControllerImplTest);
 };
 
 // Tests that requesting to open signin promo bubble doesn't result in the

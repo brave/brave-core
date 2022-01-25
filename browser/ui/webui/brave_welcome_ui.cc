@@ -60,6 +60,8 @@ void RecordP3AHistogram(int screen_number, bool finished) {
 class WelcomeDOMHandler : public WebUIMessageHandler {
  public:
   WelcomeDOMHandler() {}
+  WelcomeDOMHandler(const WelcomeDOMHandler&) = delete;
+  WelcomeDOMHandler& operator=(const WelcomeDOMHandler&) = delete;
   ~WelcomeDOMHandler() override;
 
   // WebUIMessageHandler implementation.
@@ -73,8 +75,6 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
   int screen_number_ = 0;
   bool finished_ = false;
   bool skipped_ = false;
-
-  DISALLOW_COPY_AND_ASSIGN(WelcomeDOMHandler);
 };
 
 WelcomeDOMHandler::~WelcomeDOMHandler() {

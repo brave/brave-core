@@ -21,6 +21,8 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocketAuth : public SOCKS5ClientSocket {
                          const HostPortPair& destination,
                          const NetworkTrafficAnnotationTag& traffic_annotation,
                          const TransportSocketParams::Endpoint& proxy_endpoint);
+  SOCKS5ClientSocketAuth(const SOCKS5ClientSocketAuth&) = delete;
+  SOCKS5ClientSocketAuth& operator=(const SOCKS5ClientSocketAuth&) = delete;
   ~SOCKS5ClientSocketAuth() override;
 
  private:
@@ -45,7 +47,6 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocketAuth : public SOCKS5ClientSocket {
   scoped_refptr<IOBuffer> iobuf_;
   std::string buffer_;
   size_t buffer_left_;
-  DISALLOW_COPY_AND_ASSIGN(SOCKS5ClientSocketAuth);
 };
 
 }  // namespace net

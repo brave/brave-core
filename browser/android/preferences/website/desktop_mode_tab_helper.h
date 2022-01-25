@@ -15,6 +15,8 @@ class DesktopModeTabHelper
       public content::WebContentsUserData<DesktopModeTabHelper> {
  public:
   explicit DesktopModeTabHelper(content::WebContents* contents);
+  DesktopModeTabHelper(const DesktopModeTabHelper&) = delete;
+  DesktopModeTabHelper& operator=(const DesktopModeTabHelper&) = delete;
   ~DesktopModeTabHelper() override;
 
   // content::WebContentsObserver overrides:
@@ -27,8 +29,6 @@ class DesktopModeTabHelper
 
  private:
   bool need_override_ua_ = false;
-
-  DISALLOW_COPY_AND_ASSIGN(DesktopModeTabHelper);
 };
 
 #endif  // BRAVE_BROWSER_ANDROID_PREFERENCES_WEBSITE_DESKTOP_MODE_TAB_HELPER_H_

@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -28,6 +29,8 @@ class BraveComponentLoader : public ComponentLoader {
  public:
   BraveComponentLoader(ExtensionSystem* extension_system,
                        Profile* browser_context);
+  BraveComponentLoader(const BraveComponentLoader&) = delete;
+  BraveComponentLoader& operator=(const BraveComponentLoader&) = delete;
   ~BraveComponentLoader() override;
 
   // Adds the default component extensions. If |skip_session_components|
@@ -63,13 +66,11 @@ class BraveComponentLoader : public ComponentLoader {
 
   void ReinstallAsNonComponent(std::string extension_id);
 
-  Profile* profile_;
-  PrefService* profile_prefs_;
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
   std::string ethereum_remote_client_manifest_;
   base::FilePath ethereum_remote_client_install_dir_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveComponentLoader);
 };
 
 }  // namespace extensions

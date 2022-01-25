@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -48,6 +49,10 @@ class TestNetworkChangeNotifier {
   TestNetworkChangeNotifier()
       : mock_notifier_(net::test::MockNetworkChangeNotifier::Create()) {}
 
+  TestNetworkChangeNotifier(const TestNetworkChangeNotifier&) = delete;
+  TestNetworkChangeNotifier& operator=(const TestNetworkChangeNotifier&) =
+      delete;
+
   // Simulates a change of the connection type to |type|. This will notify any
   // objects that are NetworkChangeNotifiers.
   void SimulateNetworkConnectionChange(
@@ -70,8 +75,6 @@ class TestNetworkChangeNotifier {
 
  private:
   std::unique_ptr<net::test::MockNetworkChangeNotifier> mock_notifier_;
-
-  DISALLOW_COPY_AND_ASSIGN(TestNetworkChangeNotifier);
 };
 
 // A language model that just returns its instance variable.
@@ -153,7 +156,7 @@ class TranslateManagerTest : public ::testing::Test {
   ProfilePrefRegistration registration_;
   // TODO(groby): request TranslatePrefs from |mock_translate_client_| instead.
   TranslatePrefs translate_prefs_;
-  TranslateDownloadManager* manager_;
+  raw_ptr<TranslateDownloadManager> manager_ = nullptr;
 
   TestNetworkChangeNotifier network_notifier_;
   translate::testing::MockTranslateDriver driver_;

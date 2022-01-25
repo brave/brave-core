@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/i18n/time_formatting.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/strings/string_number_conversions.h"
@@ -61,6 +62,8 @@ class RewardsDOMHandler
       public brave_rewards::RewardsServiceObserver {
  public:
   RewardsDOMHandler();
+  RewardsDOMHandler(const RewardsDOMHandler&) = delete;
+  RewardsDOMHandler& operator=(const RewardsDOMHandler&) = delete;
   ~RewardsDOMHandler() override;
 
   void Init();
@@ -287,8 +290,9 @@ class RewardsDOMHandler
   void InitPrefChangeRegistrar();
   void OnPrefChanged(const std::string& key);
 
-  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
-  brave_ads::AdsService* ads_service_;              // NOT OWNED
+  raw_ptr<brave_rewards::RewardsService> rewards_service_ =
+      nullptr;                                            // NOT OWNED
+  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;  // NOT OWNED
 
   base::ScopedObservation<brave_rewards::RewardsService,
                           brave_rewards::RewardsServiceObserver>
@@ -299,8 +303,6 @@ class RewardsDOMHandler
   PrefChangeRegistrar pref_change_registrar_;
 
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
 };
 
 namespace {

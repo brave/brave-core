@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/ref_counted.h"
 #include "components/component_updater/configurator_impl.h"
 #include "components/update_client/configurator.h"
@@ -42,7 +43,6 @@ class BraveConfigurator : public update_client::Configurator {
   std::string GetProdId() const override;
   base::Version GetBrowserVersion() const override;
   std::string GetChannel() const override;
-  std::string GetBrand() const override;
   std::string GetLang() const override;
   std::string GetOSLongName() const override;
   base::flat_map<std::string, std::string> ExtraRequestParams() const override;
@@ -54,7 +54,6 @@ class BraveConfigurator : public update_client::Configurator {
   scoped_refptr<update_client::UnzipperFactory> GetUnzipperFactory() override;
   scoped_refptr<update_client::PatcherFactory> GetPatcherFactory() override;
   bool EnabledDeltas() const override;
-  bool EnabledComponentUpdates() const override;
   bool EnabledBackgroundDownloader() const override;
   bool EnabledCupSigning() const override;
   PrefService* GetPrefService() const override;
@@ -67,7 +66,8 @@ class BraveConfigurator : public update_client::Configurator {
   friend class base::RefCountedThreadSafe<BraveConfigurator>;
 
   ConfiguratorImpl configurator_impl_;
-  PrefService* pref_service_;  // This member is not owned by this class.
+  raw_ptr<PrefService> pref_service_ =
+      nullptr;  // This member is not owned by this class.
   scoped_refptr<update_client::NetworkFetcherFactory> network_fetcher_factory_;
   scoped_refptr<update_client::CrxDownloaderFactory> crx_downloader_factory_;
   scoped_refptr<update_client::UnzipperFactory> unzip_factory_;

@@ -17,6 +17,7 @@
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -81,6 +82,7 @@ class WebDiscoveryDialogTest : public testing::Test {
   content::WebContents* web_contents() { return web_contents_.get(); }
 
   content::BrowserTaskEnvironment task_environment_;
+  content::RenderViewHostTestEnabler render_view_host_test_enabler_;
   std::unique_ptr<TemplateURLServiceTestUtil> test_util_;
   std::unique_ptr<content::WebContents> web_contents_;
 };

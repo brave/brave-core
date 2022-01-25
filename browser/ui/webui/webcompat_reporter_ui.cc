@@ -24,6 +24,9 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
  public:
   explicit WebcompatReporterDOMHandler(
       scoped_refptr<network::SharedURLLoaderFactory> loader_factory);
+  WebcompatReporterDOMHandler(const WebcompatReporterDOMHandler&) = delete;
+  WebcompatReporterDOMHandler& operator=(const WebcompatReporterDOMHandler&) =
+      delete;
   ~WebcompatReporterDOMHandler() override;
 
   // WebUIMessageHandler implementation.
@@ -32,8 +35,6 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
  private:
   void HandleSubmitReport(base::Value::ConstListView args);
   std::unique_ptr<brave::WebcompatReportUploader> uploader_;
-
-  DISALLOW_COPY_AND_ASSIGN(WebcompatReporterDOMHandler);
 };
 
 WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(

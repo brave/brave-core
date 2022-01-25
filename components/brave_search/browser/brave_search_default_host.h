@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/brave_search/common/brave_search_default.mojom.h"
 
 class TemplateURLService;
@@ -42,8 +43,8 @@ class BraveSearchDefaultHost final
 
   bool can_set_default_ = false;
   const std::string host_;
-  TemplateURLService* template_url_service_;
-  PrefService* prefs_;
+  raw_ptr<TemplateURLService> template_url_service_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
 };
 
 }  // namespace brave_search
