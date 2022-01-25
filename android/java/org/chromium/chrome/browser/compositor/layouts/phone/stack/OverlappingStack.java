@@ -445,15 +445,6 @@ public class OverlappingStack extends Stack {
                 // Note, this calculation is only an estimate that seems to
                 // work.
                 float clipScale = 1.0f;
-                if (layoutTab.getTiltX() > 0
-                        || ((!portrait && LocalizationUtils.isLayoutRtl())
-                                        ? layoutTab.getTiltY() < 0
-                                        : layoutTab.getTiltY() > 0)) {
-                    final float tilt =
-                            Math.max(layoutTab.getTiltX(), Math.abs(layoutTab.getTiltY()));
-                    clipScale += (tilt / mMaxOverScrollAngle) * 0.60f;
-                }
-
                 float scaledTabClippedSize = Math.min(tabClippedSize * clipScale, tabSize);
                 // Set the clip
                 layoutTab.setClipOffset((!portrait && LocalizationUtils.isLayoutRtl())
