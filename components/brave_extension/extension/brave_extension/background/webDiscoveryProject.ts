@@ -3,7 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { App } from '../../../../../vendor/web-discovery-project/build'
+// TODO(petemill): Put WDP in an extension which only loads
+// after user has opted in to WDP. This will be especially relevant
+// when all shields functionality is removed from this extension.
+import { App } from 'gen/brave/web-discovery-project'
 
 declare let window: any
 

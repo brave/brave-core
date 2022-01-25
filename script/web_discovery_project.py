@@ -25,6 +25,7 @@ def main():
         if args.install:
             execute_stdout([NPM, 'install', '--no-save'], env=env)
         if args.build:
+            env["OUTPUT_PATH"] = args.output_path
             execute_stdout([NPM, 'run', 'build-module'], env=env)
 
 
@@ -35,6 +36,7 @@ def parse_args():
     parser.add_argument('-i', '--install',
                         action='store_true',
                         help='Install Web Discovery Project dependencies')
+    parser.add_argument('--output_path')
     parser.add_argument('-b', '--build',
                         action='store_true',
                         help='Build Web Discovery Project')

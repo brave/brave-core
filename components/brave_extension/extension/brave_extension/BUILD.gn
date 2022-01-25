@@ -30,7 +30,17 @@ transpile_web_ui("brave_extension") {
   # plus any other relative path we want these files to live in the extension
   extra_relative_path = "/brave_extension/out"
 
+  # WDP node_modules is not an ancestor of its generated code, which still
+  # contains module imports.
+  # TODO(petemill): Use already-packed output from WDP, or use webpack for all
+  # of it, not just some of it.
+  extra_modules =
+      [ rebase_path("//brave/vendor/web-discovery-project/node_modules") ]
+
   public_asset_path = "/out/"
+
+  deps =
+      [ "//brave/components/brave_extension:web_discovery_project_resources" ]
 }
 
 if (is_mac) {

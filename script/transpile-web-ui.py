@@ -35,6 +35,7 @@ def main():
         depfile_path=depfile_path,
         depfile_sourcename=grd_path,
         webpack_aliases=args.webpack_alias,
+        extra_modules=args.extra_modules,
         public_asset_path=args.public_asset_path
     )
     transpile_web_uis(transpile_options)
@@ -60,6 +61,11 @@ def parse_args():
     parser.add_argument('--webpack_alias',
                         action='append',
                         help='Webpack alias',
+                        required=False,
+                        default=[])
+    parser.add_argument('--extra_modules',
+                        action='append',
+                        help='Extra paths to find modules',
                         required=False,
                         default=[])
 
@@ -95,6 +101,10 @@ def transpile_web_uis(options):
     # web pack aliases
     for alias in options['webpack_aliases']:
         args.append("--webpack_alias=" + alias)
+
+    # extra module locations
+    for module_path in options['extra_modules']:
+        args.append("--extra_modules=" + module_path)
 
     # entrypoints
     for entry in options['entry_points']:

@@ -15,7 +15,19 @@ module.exports = async function (env, argv) {
   // Webpack config object
   const resolve = {
     extensions: ['.js', '.tsx', '.ts', '.json'],
-    alias: pathMap
+    alias: pathMap,
+    modules: [ 'node_modules' ]
+  }
+
+  if (argv.extra_modules) {
+    resolve.modules = [
+      ...(
+        Array.isArray(argv.extra_modules)
+        ? argv.extra_modules
+        : [argv.extra_modules]
+      ),
+      ...resolve.modules
+    ]
   }
 
   if (argv.webpack_alias) {
@@ -28,7 +40,7 @@ module.exports = async function (env, argv) {
       filename: '[name].bundle.js',
       chunkFilename: '[id].chunk.js'
     },
-    resolve: resolve,
+    resolve,
     optimization: {
       // Define NO_CONCATENATE for analyzing module size.
       concatenateModules: !process.env.NO_CONCATENATE

@@ -155,6 +155,13 @@ template("transpile_web_ui") {
       inputs += [ entry_point[1] ]
     }
 
+    if (defined(invoker.extra_modules)) {
+      # support multiple web pack aliases
+      foreach(alias, invoker.extra_modules) {
+        args += [ "--extra_modules=" + alias ]
+      }
+    }
+
     if (defined(invoker.extra_relative_path)) {
       args += [ "--extra_relative_path=" + invoker.extra_relative_path ]
     }
