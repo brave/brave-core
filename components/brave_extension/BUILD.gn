@@ -33,7 +33,6 @@ action("web_discovery_project_resources") {
     # the WDP build.
     "//brave/vendor/web-discovery-project/.git/HEAD",
     "//brave/vendor/web-discovery-project/package.json",
-    "//brave/vendor/web-discovery-project/package-lock.json",
   ]
 
   outputs = [
