@@ -1,8 +1,8 @@
 import { BraveWallet, CreateAccountOptionsType } from '../constants/types'
 import {
-  ETHIconUrl
+  ETHIconUrl,
   // SOLIconUrl,
-  // FILECOINIconUrl
+  FILECOINIconUrl
 } from '../assets/asset-icons'
 import { getLocale } from '../../common/locale'
 
@@ -12,7 +12,7 @@ export const CreateAccountOptions = (): CreateAccountOptionsType[] => [
     name: 'Ethereum',
     coin: BraveWallet.CoinType.ETH,
     icon: ETHIconUrl
-  }
+  },
   // Commented out until we have support for these networks
   // {
   //   description: getLocale('braveWalletCreateAccountSolanaDescription'),
@@ -20,10 +20,10 @@ export const CreateAccountOptions = (): CreateAccountOptionsType[] => [
   //   network: 'solana',
   //   icon: SOLIconUrl
   // },
-  // {
-  //   description: getLocale('braveWalletCreateAccountFilecoinDescription'),
-  //   name: 'Filecoin',
-  //   coin: BraveWallet.CoinType.FIL,
-  //   icon: FILECOINIconUrl
-  // }
+   {
+     description: getLocale('braveWalletCreateAccountFilecoinDescription'),
+     name: 'Filecoin',
+     coin: BraveWallet.CoinType.FIL,
+     icon: FILECOINIconUrl
+   }
 ]
