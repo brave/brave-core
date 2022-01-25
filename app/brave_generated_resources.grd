@@ -1693,9 +1693,6 @@ Are you sure you want to do this?
       <message name="IDS_SETTINGS_WALLET_NETWORKS_CHAID_ID_ERROR" desc="The error text of the wallet network dialog for invalid chain id fields">
         Invalid format, the chain id is a positive number
       </message>
-      <message name="IDS_SETTINGS_WALLET_NETWORKS_EXISTS" desc="The error text of the wallet network dialog for existing network">
-        This network is already added.
-      </message>
       <message name="IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED" desc="The error text of the wallet network dialog for failed submission">
         Internal Error, unable to add network.
       </message>
