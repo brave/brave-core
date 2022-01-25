@@ -2,6 +2,7 @@
 
 set -e
 
+current_arch=$(uname -m)
 current_dir="`pwd`/`dirname $0`"
 framework_drop_point="$current_dir"
 node_modules_path="$current_dir/../node_modules/brave-core-ios"
@@ -12,7 +13,7 @@ build_device=0
 release_flag="Release"
 brave_browser_dir="${@: -1}"
 
-sim_dir="out/ios_Release"
+sim_dir="out/ios_Release_"$current_arch"_simulator"
 device_dir="out/ios_Release_arm64"
 
 function usage() {
@@ -32,7 +33,7 @@ case $i in
     ;;
     --debug)
     release_flag="Debug"
-    sim_dir="out/ios_Debug"
+    sim_dir="out/ios_Debug_"$current_arch"_simulator"
     device_dir="out/ios_Debug_arm64"
     shift
     ;;
@@ -88,7 +89,7 @@ bc_framework_args=""
 mc_framework_args=""
 
 if [ "$build_simulator" = 1 ]; then
-  npm run build -- $release_flag --target_os=ios
+  npm run build -- $release_flag --target_os=ios --target_arch=$current_arch --target_environment=simulator
   bc_framework_args="-framework $sim_dir/BraveCore.framework -debug-symbols $(pwd)/$sim_dir/BraveCore.dSYM"
   mc_framework_args="-framework $sim_dir/MaterialComponents.framework"
 fi
