@@ -7,12 +7,16 @@
 
 #include <utility>
 
+#include "base/check.h"
 #include "base/logging.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 
 namespace brave_wallet {
-HDKeyEd25519::HDKeyEd25519(rust::Box<Ed25519DalekExtendedSecretKey> private_key)
-    : private_key_(std::move(private_key)) {}
+HDKeyEd25519::HDKeyEd25519(
+    rust::Box<Ed25519DalekExtendedSecretKeyResult> private_key)
+    : private_key_(std::move(private_key)) {
+  CHECK(private_key_->is_ok());
+}
 HDKeyEd25519::~HDKeyEd25519() {}
 
 // static
@@ -20,12 +24,16 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeed(
     const std::vector<uint8_t>& seed) {
   auto master_private_key = generate_ed25519_extended_secrect_key_from_seed(
       rust::Slice<const uint8_t>{seed.data(), seed.size()});
+  if (!master_private_key->is_ok()) {
+    VLOG(0) << std::string(master_private_key->error_message());
+    return nullptr;
+  }
   return std::make_unique<HDKeyEd25519>(std::move(master_private_key));
 }
 
 std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChild(uint32_t index) {
-  auto child_private_key = private_key_->derive_child(index);
-  if (!child_private_key->is_valid()) {
+  auto child_private_key = private_key_->unwrap().derive_child(index);
+  if (!child_private_key->is_ok()) {
     VLOG(0) << std::string(child_private_key->error_message());
     return nullptr;
   }
@@ -35,8 +43,8 @@ std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChild(uint32_t index) {
 
 std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChildFromPath(
     const std::string& path) {
-  auto child_private_key = private_key_->derive(path);
-  if (!child_private_key->is_valid()) {
+  auto child_private_key = private_key_->unwrap().derive(path);
+  if (!child_private_key->is_ok()) {
     VLOG(0) << std::string(child_private_key->error_message());
     return nullptr;
   }
@@ -59,12 +67,12 @@ std::string HDKeyEd25519::GetEncodedPrivateKey() const {
 }
 
 std::string HDKeyEd25519::GetBase58EncodedPublicKey() const {
-  auto public_key = private_key_->public_key_raw();
+  auto public_key = private_key_->unwrap().public_key_raw();
   return EncodeBase58(public_key);
 }
 
 std::string HDKeyEd25519::GetBase58EncodedKeypair() const {
-  auto keypair = private_key_->keypair_raw();
+  auto keypair = private_key_->unwrap().keypair_raw();
   return EncodeBase58(keypair);
 }
 

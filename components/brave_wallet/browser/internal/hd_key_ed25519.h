@@ -20,7 +20,7 @@ namespace brave_wallet {
 // hardened index
 class HDKeyEd25519 : public HDKeyBase {
  public:
-  explicit HDKeyEd25519(rust::Box<Ed25519DalekExtendedSecretKey>);
+  explicit HDKeyEd25519(rust::Box<Ed25519DalekExtendedSecretKeyResult>);
   ~HDKeyEd25519() override;
   HDKeyEd25519(const HDKeyEd25519&) = delete;
   HDKeyEd25519& operator=(const HDKeyEd25519&) = delete;
@@ -46,7 +46,7 @@ class HDKeyEd25519 : public HDKeyBase {
   std::string GetBase58EncodedKeypair() const;
 
  private:
-  rust::Box<Ed25519DalekExtendedSecretKey> private_key_;
+  rust::Box<Ed25519DalekExtendedSecretKeyResult> private_key_;
 };
 
 }  // namespace brave_wallet
