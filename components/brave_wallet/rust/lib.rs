@@ -8,25 +8,58 @@ use ed25519_dalek_bip32::ed25519_dalek::SECRET_KEY_LENGTH;
 use ed25519_dalek_bip32::ChildIndex;
 use ed25519_dalek_bip32::ExtendedSecretKey;
 
-#[cxx::bridge]
+macro_rules! impl_result {
+    ($t:ident, $r:ident) => {
+        impl $r {
+            fn error_message(self: &$r) -> String {
+                match &self.0 {
+                    Err(e) => e.to_string(),
+                    Ok(_) => "".to_string(),
+                }
+            }
+
+            fn is_ok(self: &$r) -> bool {
+                match &self.0 {
+                    Err(_) => false,
+                    Ok(_) => true,
+                }
+            }
+
+            fn unwrap(self: &$r) -> &$t {
+                self.0.as_ref().expect("Unhandled error before unwrap call")
+            }
+        }
+    };
+}
+
+#[cxx::bridge(namespace =  brave_wallet)]
 mod ffi {
     extern "Rust" {
         type Ed25519DalekExtendedSecretKey;
+        type Ed25519DalekExtendedSecretKeyResult;
+
         fn generate_ed25519_extended_secrect_key_from_seed(
             bytes: &[u8],
-        ) -> Box<Ed25519DalekExtendedSecretKey>;
-        fn derive(&self, path: String) -> Box<Ed25519DalekExtendedSecretKey>;
-        fn derive_child(&self, index: u32) -> Box<Ed25519DalekExtendedSecretKey>;
-        fn keypair_raw(&self) -> [u8; 64];
-        fn public_key_raw(&self) -> [u8; 32];
-        fn is_valid(&self) -> bool;
-        fn error_message(&self) -> String;
+        ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
+        fn derive(
+            self: &Ed25519DalekExtendedSecretKey,
+            path: String,
+        ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
+        fn derive_child(
+            self: &Ed25519DalekExtendedSecretKey,
+            index: u32,
+        ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
+        fn keypair_raw(self: &Ed25519DalekExtendedSecretKey) -> [u8; 64];
+        fn public_key_raw(self: &Ed25519DalekExtendedSecretKey) -> [u8; 32];
+
+        fn is_ok(self: &Ed25519DalekExtendedSecretKeyResult) -> bool;
+        fn error_message(self: &Ed25519DalekExtendedSecretKeyResult) -> String;
+        fn unwrap(self: &Ed25519DalekExtendedSecretKeyResult) -> &Ed25519DalekExtendedSecretKey;
     }
 }
 
 #[derive(Debug)]
 pub enum Error {
-    InvalidKey,
     Ed25519Bip32(ed25519_dalek_bip32::Error),
     DerivationPathParse(DerivationPathParseError),
     ChildIndex(ChildIndexError),
@@ -53,7 +86,6 @@ impl From<ChildIndexError> for Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match &self {
-            Error::InvalidKey => write!(f, "Ed25519DalekExtendedSecretKey is invalid"),
             Error::Ed25519Bip32(e) => write!(f, "Error: {}", e.to_string()),
             Error::DerivationPathParse(e) => write!(f, "Error: {}", e.to_string()),
             Error::ChildIndex(e) => write!(f, "Error: {}", e.to_string()),
@@ -61,71 +93,51 @@ impl fmt::Display for Error {
     }
 }
 
-pub struct Ed25519DalekExtendedSecretKey {
-    key: Option<ExtendedSecretKey>,
-    error: Option<Error>,
+pub struct Ed25519DalekExtendedSecretKey(ExtendedSecretKey);
+
+struct Ed25519DalekExtendedSecretKeyResult(Result<Ed25519DalekExtendedSecretKey, Error>);
+
+impl_result!(Ed25519DalekExtendedSecretKey, Ed25519DalekExtendedSecretKeyResult);
+
+impl From<Result<ExtendedSecretKey, Error>> for Ed25519DalekExtendedSecretKeyResult {
+    fn from(key: Result<ExtendedSecretKey, Error>) -> Self {
+        match key {
+            Ok(v) => Self(Ok(Ed25519DalekExtendedSecretKey(v))),
+            Err(e) => Self(Err(e)),
+        }
+    }
 }
 
 fn generate_ed25519_extended_secrect_key_from_seed(
     bytes: &[u8],
-) -> Box<Ed25519DalekExtendedSecretKey> {
-    Box::new(Ed25519DalekExtendedSecretKey::from(
+) -> Box<Ed25519DalekExtendedSecretKeyResult> {
+    Box::new(Ed25519DalekExtendedSecretKeyResult::from(
         ExtendedSecretKey::from_seed(bytes).map_err(|err| Error::from(err)),
     ))
 }
 
 impl Ed25519DalekExtendedSecretKey {
-    fn derive(&self, path: String) -> Box<Ed25519DalekExtendedSecretKey> {
-        Box::new(Ed25519DalekExtendedSecretKey::from(
-            self.key.as_ref().ok_or_else(|| Error::InvalidKey).and_then(|key| {
-                let d_path = path.parse::<DerivationPath>()?;
-                Ok(key.derive(&d_path)?)
-            }),
+    fn derive(&self, path: String) -> Box<Ed25519DalekExtendedSecretKeyResult> {
+        Box::new(Ed25519DalekExtendedSecretKeyResult::from(
+            path.parse::<DerivationPath>()
+                .map_err(|err| Error::from(err))
+                .and_then(|d_path| Ok(self.0.derive(&d_path)?)),
         ))
     }
-    fn derive_child(&self, index: u32) -> Box<Ed25519DalekExtendedSecretKey> {
-        Box::new(Ed25519DalekExtendedSecretKey::from(
-            self.key.as_ref().ok_or_else(|| Error::InvalidKey).and_then(|key| {
-                let child_index = ChildIndex::hardened(index)?;
-                Ok(key.derive_child(child_index)?)
-            }),
+    fn derive_child(&self, index: u32) -> Box<Ed25519DalekExtendedSecretKeyResult> {
+        Box::new(Ed25519DalekExtendedSecretKeyResult::from(
+            ChildIndex::hardened(index)
+                .map_err(|err| Error::from(err))
+                .and_then(|child_index| Ok(self.0.derive_child(child_index)?)),
         ))
     }
     fn keypair_raw(&self) -> [u8; KEYPAIR_LENGTH] {
-        self.key.as_ref().map_or_else(
-            || [0u8; KEYPAIR_LENGTH],
-            |key| {
-                let mut bytes: [u8; KEYPAIR_LENGTH] = [0u8; KEYPAIR_LENGTH];
-                bytes[..SECRET_KEY_LENGTH].copy_from_slice(&key.secret_key.to_bytes());
-                bytes[SECRET_KEY_LENGTH..].copy_from_slice(&key.public_key().to_bytes());
-                bytes
-            },
-        )
+        let mut bytes: [u8; KEYPAIR_LENGTH] = [0u8; KEYPAIR_LENGTH];
+        bytes[..SECRET_KEY_LENGTH].copy_from_slice(&self.0.secret_key.to_bytes());
+        bytes[SECRET_KEY_LENGTH..].copy_from_slice(&self.0.public_key().to_bytes());
+        bytes
     }
     fn public_key_raw(&self) -> [u8; PUBLIC_KEY_LENGTH] {
-        self.key
-            .as_ref()
-            .map_or_else(|| [0u8; PUBLIC_KEY_LENGTH], |key| key.public_key().to_bytes())
-    }
-    fn is_valid(&self) -> bool {
-        match self.key {
-            Some(_) => true,
-            None => false,
-        }
-    }
-    fn error_message(&self) -> String {
-        match &self.error {
-            Some(v) => v.to_string(),
-            None => "".to_string(),
-        }
-    }
-}
-
-impl From<Result<ExtendedSecretKey, Error>> for Ed25519DalekExtendedSecretKey {
-    fn from(result: Result<ExtendedSecretKey, Error>) -> Self {
-        match result {
-            Ok(v) => Self { key: Some(v), error: None },
-            Err(e) => Self { key: None, error: Some(e) },
-        }
+        self.0.public_key().to_bytes()
     }
 }
