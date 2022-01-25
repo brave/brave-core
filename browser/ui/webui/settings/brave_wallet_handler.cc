@@ -147,10 +147,14 @@ void BraveWalletHandler::AddEthereumChain(base::Value::ConstListView args) {
                        weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
     return;
   }
+  auto message = error_message.empty()
+                     ? l10n_util::GetStringUTF8(
+                           IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED)
+                     : error_message;
 
   base::ListValue result;
   result.Append(base::Value(false));
-  result.Append(base::Value(error_message));
+  result.Append(base::Value(message));
   ResolveJavascriptCallback(args[0], std::move(result));
 }
 

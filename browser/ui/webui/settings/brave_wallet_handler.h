@@ -46,7 +46,6 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
                           const std::string& chain_id,
                           brave_wallet::mojom::ProviderError error,
                           const std::string& error_message);
-  brave_wallet::JsonRpcService* GetJsonRpcService();
   base::OnceClosure chain_callback_for_testing_;
   base::WeakPtrFactory<BraveWalletHandler> weak_ptr_factory_{this};
 };
