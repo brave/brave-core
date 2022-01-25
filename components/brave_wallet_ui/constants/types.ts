@@ -530,15 +530,10 @@ export type BlockExplorerUrlTypes =
   | 'token'
   | 'contract'
 
-export type CreateAccountType =
-  | 'ethereum'
-  | 'filecoin'
-  | 'solana'
-
 export interface CreateAccountOptionsType {
   name: string
   description: string
-  network: CreateAccountType
+  coin: BraveWallet.CoinType
   icon: string
 }
 

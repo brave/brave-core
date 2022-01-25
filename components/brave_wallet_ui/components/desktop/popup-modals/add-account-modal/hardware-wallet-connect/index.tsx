@@ -46,7 +46,6 @@ export default function (props: Props) {
     LedgerDerivationPaths.LedgerLive
   )
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
-
   const getErrorMessage = (error: any) => {
     if (error.statusCode && error.statusCode === 27404) { // Unknown Error
       return { error: getLocale('braveWalletConnectHardwareInfo2'), userHint: '' }
@@ -70,7 +69,8 @@ export default function (props: Props) {
       hardware: selectedHardwareWallet,
       startIndex: 0,
       stopIndex: derivationBatch,
-      scheme: scheme
+      scheme: scheme,
+      coin: selectedAccountType.coin
     }).then((result) => {
       setAccounts(result)
     }).catch((error) => {
@@ -83,7 +83,6 @@ export default function (props: Props) {
 
   const getDefaultAccountName = (account: BraveWallet.HardwareWalletAccount) => {
     const index = accounts.findIndex(e => e.address === account.address)
-
     let schemeString
     switch (selectedDerivationScheme) {
       case LedgerDerivationPaths.Legacy:
@@ -138,7 +137,8 @@ export default function (props: Props) {
       hardware: selectedHardwareWallet,
       startIndex: accounts.length,
       stopIndex: accounts.length + derivationBatch,
-      scheme: selectedDerivationScheme
+      scheme: selectedDerivationScheme,
+      coin: selectedAccountType.coin
     }).then((result) => {
       setAccounts([...accounts, ...result])
       setShowAccountsList(true)
@@ -179,6 +179,7 @@ export default function (props: Props) {
         >
           <LedgerIcon />
         </HardwareButton>
+        {(selectedAccountType.coin !== BraveWallet.CoinType.FIL) &&
         <HardwareButton
           onClick={onSelectTrezor}
           isSelected={selectedHardwareWallet === BraveWallet.TREZOR_HARDWARE_VENDOR}
@@ -186,6 +187,7 @@ export default function (props: Props) {
         >
           <TrezorIcon />
         </HardwareButton>
+        }
       </HardwareButtonRow>
       <HardwareInfoRow>
         <InfoIcon />
