@@ -55,10 +55,10 @@ hooks = [
   },
   {
     # Install Web Discovery Project dependencies for Windows, Linux, and macOS
-    'name': 'build_web_discovery_project',
+    'name': 'web_discovery_project_npm_deps',
     'pattern': '.',
     'condition': 'not checkout_android and not checkout_ios',
-    'action': ['vpython3', 'script/web_discovery_project.py', '--install', '--build'],
+    'action': ['vpython3', 'script/web_discovery_project.py', '--install'],
   },
   {
     'name': 'hermetic_xcode',
