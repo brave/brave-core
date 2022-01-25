@@ -19,7 +19,7 @@
     <color name="modern_blue_300">#FF7654</color>
     <color name="modern_blue_600">#EA3A0D</color>
     <color name="modern_blue_700">#C22700</color>
-    <color name="dialog_bg_color_dark">@color/toolbar_background_primary_dark</color>
+    <color name="dialog_bg_color_dark_baseline">@color/toolbar_background_primary_dark</color>
 
     <!-- Text colors -->
     <color name="brave_theme_hint_text">#868E96</color>
@@ -73,10 +73,7 @@
     <!-- Incognito background and branding colors -->
     <color name="incognito_modern_primary_color">#210950</color>
 
-    <color name="toolbar_background_primary_incognito">#1B0C32</color>
     <color name="toolbar_text_box_background_incognito">#3D2742</color>
-
-    <color name="tab_back_incognito">@color/toolbar_background_primary_incognito</color>
 
     <color name="compositor_tab_title_bar_text_incognito">@android:color/white</color>
 

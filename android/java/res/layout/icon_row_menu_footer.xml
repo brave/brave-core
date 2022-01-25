@@ -10,7 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/menu_action_bar_bg_color" >
+    android:background="@color/menu_action_bar_bg_color_baseline" >
 
     <View style="@style/HorizontalDivider" />
 
