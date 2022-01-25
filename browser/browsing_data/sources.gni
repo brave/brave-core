@@ -15,7 +15,6 @@ brave_browser_browsing_data_sources = [
 
 brave_browser_browsing_data_deps = [
   "//base",
-  "//brave/components/content_settings/core/browser",
   "//brave/components/ipfs/buildflags",
   "//chrome/browser:browser_process",
   "//chrome/browser/browsing_data:constants",

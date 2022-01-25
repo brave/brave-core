@@ -3,6 +3,7 @@ group("android") {
     "//brave/common",
     "//components/prefs",
     "//components/user_prefs",
+    "//net",
     "//url",
   ]
 }

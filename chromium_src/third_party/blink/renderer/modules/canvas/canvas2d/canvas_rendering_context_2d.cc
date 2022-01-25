@@ -5,10 +5,10 @@
 
 #include "third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.h"
 
-#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl_helper.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 
-#define BRAVE_CANVAS_RENDERING_CONTEXT_2D_MEASURE_TEXT          \
-  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame())) \
+#define BRAVE_CANVAS_RENDERING_CONTEXT_2D_MEASURE_TEXT    \
+  if (!brave::AllowFingerprinting(GetExecutionContext())) \
     return MakeGarbageCollected<TextMetrics>();
 
 #define getImageDataInternal getImageDataInternal_Unused

@@ -4,6 +4,7 @@ include_rules = [
   # from brave/components/external_intents/android/BUILD.gn
   "+components/prefs",
   "+components/user_prefs",
+  "+net",
 ]
 
 # Existing exceptions

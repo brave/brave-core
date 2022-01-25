@@ -13,8 +13,8 @@ brave_chrome_renderer_sources = [
 brave_chrome_renderer_public_deps = [
   "//brave/components/brave_ads/renderer",
   "//brave/components/brave_search/renderer",
+  "//brave/components/brave_shields/common",
   "//brave/components/brave_wallet/renderer",
-  "//brave/components/content_settings/renderer",
   "//brave/components/cosmetic_filters/renderer",
   "//brave/components/skus/renderer",
   "//brave/renderer/brave_wallet",

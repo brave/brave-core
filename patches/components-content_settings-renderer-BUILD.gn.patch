@@ -1,0 +1,10 @@
+diff --git a/components/content_settings/renderer/BUILD.gn b/components/content_settings/renderer/BUILD.gn
+index e24308c70587fcf8468a11ecd28ddc9e657b2448..13610116bb1c2b4bf9afd1e9bf8891abd34da751 100644
+--- a/components/content_settings/renderer/BUILD.gn
++++ b/components/content_settings/renderer/BUILD.gn
+@@ -20,4 +20,5 @@ source_set("renderer") {
+     "//third_party/blink/public:blink_headers",
+     "//url",
+   ]
++  import("//brave/components/content_settings/renderer/sources.gni") sources += brave_components_content_settings_renderer_sources deps += brave_components_content_settings_renderer_deps
+ }

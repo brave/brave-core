@@ -1,0 +1,18 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+brave_components_translate_core_common_sources = [
+  "//brave/components/translate/core/common/brave_translate_constants.cc",
+  "//brave/components/translate/core/common/brave_translate_constants.h",
+  "//brave/components/translate/core/common/brave_translate_features.cc",
+  "//brave/components/translate/core/common/brave_translate_features.h",
+  "//brave/components/translate/core/common/brave_translate_language_filter.cc",
+  "//brave/components/translate/core/common/brave_translate_language_filter.h",
+  "//brave/components/translate/core/common/brave_translate_switches.cc",
+  "//brave/components/translate/core/common/brave_translate_switches.h",
+]
+
+brave_components_translate_core_common_public_deps =
+    [ "//brave/components/translate/core/common:buildflags" ]

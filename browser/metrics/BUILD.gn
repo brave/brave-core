@@ -9,7 +9,10 @@ import("//testing/test.gni")
 source_set("brave_metrics_unit_tests") {
   testonly = true
 
-  sources = [ "metrics_reporting_util_unittest.cc" ]
+  sources = [
+    "enabled_state_provider_unittest.cc",
+    "metrics_reporting_util_unittest.cc",
+  ]
   deps = [
     "//base/test:test_support",
     "//brave/browser",

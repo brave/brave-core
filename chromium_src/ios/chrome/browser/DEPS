@@ -20,3 +20,8 @@ include_rules = [
   "+services/network/network_change_manager.h",
 ]
 
+specific_include_rules = {
+  "application_context_impl\.mm": [
+    "+brave/ios/browser/metrics/ios_brave_metrics_services_manager_client.h",
+  ]
+}
