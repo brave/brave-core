@@ -10,13 +10,13 @@ import android.view.ViewStub;
 import org.chromium.base.supplier.BooleanSupplier;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 
-class BraveTabSwitcherModeTTCoordinatorPhone extends TabSwitcherModeTTCoordinatorPhone {
-    private TabSwitcherModeTTPhone mTabSwitcherModeToolbar;
+class BraveTabSwitcherModeTTCoordinator extends TabSwitcherModeTTCoordinator {
+    private TabSwitcherModeTopToolbar mTabSwitcherModeToolbar;
 
     private boolean mIsBottomToolbarVisible;
     private MenuButtonCoordinator mBraveMenuButtonCoordinator;
 
-    BraveTabSwitcherModeTTCoordinatorPhone(ViewStub tabSwitcherToolbarStub,
+    BraveTabSwitcherModeTTCoordinator(ViewStub tabSwitcherToolbarStub,
             MenuButtonCoordinator menuButtonCoordinator, boolean isGridTabSwitcherEnabled,
             boolean isTabToGtsAnimationEnabled, BooleanSupplier isIncognitoModeEnabledSupplier) {
         super(tabSwitcherToolbarStub, menuButtonCoordinator, isGridTabSwitcherEnabled,
@@ -27,8 +27,9 @@ class BraveTabSwitcherModeTTCoordinatorPhone extends TabSwitcherModeTTCoordinato
     @Override
     public void setTabSwitcherMode(boolean inTabSwitcherMode) {
         super.setTabSwitcherMode(inTabSwitcherMode);
-        if (inTabSwitcherMode && (mTabSwitcherModeToolbar instanceof BraveTabSwitcherModeTTPhone)) {
-            ((BraveTabSwitcherModeTTPhone) mTabSwitcherModeToolbar)
+        if (inTabSwitcherMode
+                && (mTabSwitcherModeToolbar instanceof BraveTabSwitcherModeTopToolbar)) {
+            ((BraveTabSwitcherModeTopToolbar) mTabSwitcherModeToolbar)
                     .onBottomToolbarVisibilityChanged(mIsBottomToolbarVisible);
         }
         if (mBraveMenuButtonCoordinator != null && mIsBottomToolbarVisible) {
@@ -41,8 +42,8 @@ class BraveTabSwitcherModeTTCoordinatorPhone extends TabSwitcherModeTTCoordinato
             return;
         }
         mIsBottomToolbarVisible = isVisible;
-        if (mTabSwitcherModeToolbar instanceof BraveTabSwitcherModeTTPhone) {
-            ((BraveTabSwitcherModeTTPhone) mTabSwitcherModeToolbar)
+        if (mTabSwitcherModeToolbar instanceof BraveTabSwitcherModeTopToolbar) {
+            ((BraveTabSwitcherModeTopToolbar) mTabSwitcherModeToolbar)
                     .onBottomToolbarVisibilityChanged(isVisible);
         }
     }

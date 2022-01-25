@@ -50,8 +50,8 @@ public class BraveClassAdapter {
         chain = new BraveSiteSettingsPreferencesBaseClassAdapter(chain);
         chain = new BraveStatusMediatorClassAdapter(chain);
         chain = new BraveTabGroupUiCoordinatorClassAdapter(chain);
-        chain = new BraveTabSwitcherModeTTCoordinatorPhoneClassAdapter(chain);
-        chain = new BraveTabSwitcherModeTTPhoneClassAdapter(chain);
+        chain = new BraveTabSwitcherModeTTCoordinatorClassAdapter(chain);
+        chain = new BraveTabSwitcherModeTopToolbarClassAdapter(chain);
         chain = new BraveTabUiFeatureUtilitiesClassAdapter(chain);
         chain = new BraveTabUiThemeProviderClassAdapter(chain);
         chain = new BraveTabbedActivityClassAdapter(chain);
