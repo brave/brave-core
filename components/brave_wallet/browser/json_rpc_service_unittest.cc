@@ -667,6 +667,24 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
             callback_is_called = true;
           }));
   base::RunLoop().RunUntilIdle();
+
+  bool failed_callback_is_called = false;
+  mojom::ProviderError expected_error =
+      mojom::ProviderError::kUserRejectedRequest;
+  json_rpc_service_->AddEthereumChain(
+      chain.Clone(),
+      base::BindLambdaForTesting([&failed_callback_is_called, &expected_error](
+                                     const std::string& chain_id,
+                                     mojom::ProviderError error,
+                                     const std::string& error_message) {
+        ASSERT_FALSE(chain_id.empty());
+        EXPECT_EQ(error, expected_error);
+        ASSERT_FALSE(error_message.empty());
+        failed_callback_is_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(failed_callback_is_called);
+
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
 
   ASSERT_TRUE(callback_is_called);

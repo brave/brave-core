@@ -39,9 +39,6 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void AddEthereumChain(base::Value::ConstListView args);
   void SetActiveNetwork(base::Value::ConstListView args);
 
-  bool AddEthereumChainToRPCService(base::Value javascript_callback,
-                                    const std::string& payload,
-                                    std::string* error_message);
   BraveWalletHandler(const BraveWalletHandler&) = delete;
   BraveWalletHandler& operator=(const BraveWalletHandler&) = delete;
 
@@ -50,12 +47,7 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
                           brave_wallet::mojom::ProviderError error,
                           const std::string& error_message);
   brave_wallet::JsonRpcService* GetJsonRpcService();
-  void SetJsonRpcServiceForTesting(
-      brave_wallet::JsonRpcService* test_json_rpc_service) {
-    test_json_rpc_service_ = test_json_rpc_service;
-  }
   base::OnceClosure chain_callback_for_testing_;
-  brave_wallet::JsonRpcService* test_json_rpc_service_ = nullptr;
   base::WeakPtrFactory<BraveWalletHandler> weak_ptr_factory_{this};
 };
 

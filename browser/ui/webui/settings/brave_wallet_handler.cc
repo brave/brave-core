@@ -32,8 +32,9 @@ void RemoveEthereumChain(PrefService* prefs,
   brave_wallet::RemoveCustomNetwork(prefs, chain_id_to_remove);
 }
 
-absl::optional<base::Value> GetEthereumChain(const std::string& payload,
-                                             std::string* error_message) {
+absl::optional<brave_wallet::mojom::EthereumChain> GetEthereumChain(
+    const std::string& payload,
+    std::string* error_message) {
   CHECK(error_message);
   error_message->clear();
   base::JSONReader::ValueWithError value_with_error =
@@ -46,18 +47,14 @@ absl::optional<base::Value> GetEthereumChain(const std::string& payload,
     return absl::nullopt;
   }
 
-  return records_v->Clone();
-}
-
-bool IsChainExist(PrefService* prefs, const std::string& chain_id) {
-  std::vector<::brave_wallet::mojom::EthereumChainPtr> custom_chains;
-  brave_wallet::GetAllChains(prefs, &custom_chains);
-  for (const auto& it : custom_chains) {
-    if (it->chain_id == chain_id) {
-      return true;
-    }
+  absl::optional<brave_wallet::mojom::EthereumChain> chain =
+      brave_wallet::ValueToEthereumChain(records_v.value());
+  if (!chain) {
+    *error_message = l10n_util::GetStringUTF8(
+        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
+    return absl::nullopt;
   }
-  return false;
+  return chain;
 }
 
 }  // namespace
@@ -120,42 +117,6 @@ void BraveWalletHandler::GetCustomNetworksList(
   ResolveJavascriptCallback(args[0], base::Value(json_string));
 }
 
-bool BraveWalletHandler::AddEthereumChainToRPCService(
-    base::Value javascript_callback,
-    const std::string& payload,
-    std::string* error_message) {
-  auto value_to_add = GetEthereumChain(payload, error_message);
-  if (!value_to_add) {
-    *error_message = l10n_util::GetStringUTF8(
-        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
-    return false;
-  }
-  absl::optional<brave_wallet::mojom::EthereumChain> chain =
-      brave_wallet::ValueToEthereumChain(value_to_add.value());
-  if (!chain) {
-    *error_message = l10n_util::GetStringUTF8(
-        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
-    return false;
-  }
-  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
-  if (IsChainExist(prefs, chain->chain_id)) {
-    *error_message =
-        l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS);
-    return false;
-  }
-  auto* json_rpc_service = GetJsonRpcService();
-  if (!json_rpc_service) {
-    *error_message = l10n_util::GetStringUTF8(
-        IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
-    return false;
-  }
-  json_rpc_service->AddEthereumChain(
-      chain->Clone(), base::BindOnce(&BraveWalletHandler::OnAddEthereumChain,
-                                     weak_ptr_factory_.GetWeakPtr(),
-                                     std::move(javascript_callback)));
-  return true;
-}
-
 void BraveWalletHandler::OnAddEthereumChain(
     base::Value javascript_callback,
     const std::string& chain_id,
@@ -170,24 +131,25 @@ void BraveWalletHandler::OnAddEthereumChain(
     std::move(chain_callback_for_testing_).Run();
 }
 
-brave_wallet::JsonRpcService* BraveWalletHandler::GetJsonRpcService() {
-  if (test_json_rpc_service_)
-    return test_json_rpc_service_;
-  return brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
-      Profile::FromWebUI(web_ui()));
-}
-
 void BraveWalletHandler::AddEthereumChain(base::Value::ConstListView args) {
   CHECK_EQ(args.size(), 2U);
   AllowJavascript();
   std::string error_message;
-  bool success = AddEthereumChainToRPCService(
-      args[0].Clone(), args[1].GetString(), &error_message);
-  if (success) {
+  auto* json_rpc_service =
+      brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
+          Profile::FromWebUI(web_ui()));
+
+  auto chain = GetEthereumChain(args[1].GetString(), &error_message);
+  if (chain && json_rpc_service) {
+    json_rpc_service->AddEthereumChain(
+        chain->Clone(),
+        base::BindOnce(&BraveWalletHandler::OnAddEthereumChain,
+                       weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
     return;
   }
+
   base::ListValue result;
-  result.Append(base::Value(success));
+  result.Append(base::Value(false));
   result.Append(base::Value(error_message));
   ResolveJavascriptCallback(args[0], std::move(result));
 }

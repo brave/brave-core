@@ -16,6 +16,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/values.h"
+#include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -66,9 +67,11 @@ class TestBraveWalletHandler : public BraveWalletHandler {
 
     test_web_ui_.set_web_contents(web_contents_.get());
     set_web_ui(&test_web_ui_);
-    json_rpc_service_.reset(new brave_wallet::JsonRpcService(
-        shared_url_loader_factory_, profile_->GetPrefs()));
-    SetJsonRpcServiceForTesting(json_rpc_service_.get());
+    auto* json_rpc_service =
+        brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
+            profile_.get());
+
+    json_rpc_service->SetAPIRequestHelperForTesting(shared_url_loader_factory_);
   }
 
   ~TestBraveWalletHandler() override {
@@ -91,10 +94,6 @@ class TestBraveWalletHandler : public BraveWalletHandler {
                                  chain_id + "\"}");
           }
         }));
-  }
-
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
-    return shared_url_loader_factory_;
   }
 
   void RegisterMessages() override {}

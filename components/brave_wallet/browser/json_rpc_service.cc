@@ -28,6 +28,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -78,6 +79,17 @@ void ChainIdValidationResponse(
   bool success = (brave_wallet::ParseSingleStringResult(response, &result) &&
                   (result == chain_id));
   std::move(callback).Run(success);
+}
+
+bool IsChainExist(PrefService* prefs, const std::string& chain_id) {
+  std::vector<::brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  brave_wallet::GetAllChains(prefs, &custom_chains);
+  for (const auto& it : custom_chains) {
+    if (it->chain_id == chain_id) {
+      return true;
+    }
+  }
+  return false;
 }
 
 }  // namespace
@@ -191,11 +203,19 @@ void JsonRpcService::AddEthereumChain(mojom::EthereumChainPtr chain,
   auto url = chain->rpc_urls.size() ? GURL(chain->rpc_urls.front()) : GURL();
   if (!url.is_valid()) {
     std::move(callback).Run(
-        chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
+        chain_id, mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-                                  base::ASCIIToUTF16(chain->rpc_urls.front())));
+                                  base::ASCIIToUTF16(url.spec())));
     return;
   }
+
+  if (IsChainExist(prefs_, chain_id)) {
+    std::move(callback).Run(
+        chain_id, mojom::ProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
+    return;
+  }
+
   auto result = base::BindOnce(&JsonRpcService::OnEthChainIdValidated,
                                weak_ptr_factory_.GetWeakPtr(), std::move(chain),
                                std::move(callback));
@@ -226,6 +246,12 @@ void JsonRpcService::AddEthereumChainForOrigin(
     AddEthereumChainForOriginCallback callback) {
   DCHECK_EQ(origin, url::Origin::Create(origin).GetURL());
   auto chain_id = chain->chain_id;
+  if (IsChainExist(prefs_, chain_id)) {
+    std::move(callback).Run(
+        chain_id, mojom::ProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
+    return;
+  }
   if (!origin.is_valid() || add_chain_pending_requests_.contains(chain_id) ||
       HasRequestFromOrigin(origin)) {
     std::move(callback).Run(
@@ -241,6 +267,7 @@ void JsonRpcService::AddEthereumChainForOrigin(
                                   base::ASCIIToUTF16(chain->rpc_urls.front())));
     return;
   }
+
   auto result = base::BindOnce(&JsonRpcService::OnEthChainIdValidatedForOrigin,
                                weak_ptr_factory_.GetWeakPtr(), std::move(chain),
                                origin, std::move(callback));
