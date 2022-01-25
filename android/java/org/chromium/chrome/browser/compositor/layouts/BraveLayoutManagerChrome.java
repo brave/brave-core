@@ -39,12 +39,10 @@ public class BraveLayoutManagerChrome extends LayoutManagerChrome
     public BraveLayoutManagerChrome(LayoutManagerHost host, ViewGroup contentContainer,
             boolean createOverviewLayout, @Nullable StartSurface startSurface,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
-            Supplier<LayerTitleCache> layerTitleCacheSupplier,
             OneshotSupplierImpl<OverviewModeBehavior> overviewModeBehaviorSupplier,
             Supplier<TopUiThemeColorProvider> topUiThemeColorProvider, JankTracker jankTracker) {
         super(host, contentContainer, createOverviewLayout, startSurface, tabContentManagerSupplier,
-                layerTitleCacheSupplier, overviewModeBehaviorSupplier, topUiThemeColorProvider,
-                jankTracker);
+                overviewModeBehaviorSupplier, topUiThemeColorProvider, jankTracker);
 
         mCreateOverviewLayout = createOverviewLayout && startSurface == null;
     }
