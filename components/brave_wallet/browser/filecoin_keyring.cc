@@ -94,10 +94,10 @@ void FilecoinKeyring::ImportFilecoinAccount(
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(input_key);
   if (!hd_key)
     return;
+  DLOG(INFO) << "address:" << address;
   if (!AddImportedAddress(address, std::move(hd_key))) {
     return;
   }
-  return;
 }
 
 std::string FilecoinKeyring::GetAddressInternal(
