@@ -295,7 +295,7 @@ const Portfolio = (props: Props) => {
                   <PercentText>{selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange).toFixed(2) : 0.00}%</PercentText>
                 </PercentBubble>
               </PriceRow>
-              <DetailText>{selectedAssetCryptoPrice ? selectedAssetCryptoPrice.price : ''} {defaultCurrencies.crypto}</DetailText>
+              <DetailText>{selectedAssetCryptoPrice ? formatWithCommasAndDecimals(selectedAssetCryptoPrice.price) : ''} {defaultCurrencies.crypto}</DetailText>
             </InfoColumn>
           }
         </>
