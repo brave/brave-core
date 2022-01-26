@@ -1,15 +1,16 @@
 use core::fmt;
-use ed25519_dalek_bip32::derivation_path::ChildIndexError;
-use ed25519_dalek_bip32::derivation_path::DerivationPath;
-use ed25519_dalek_bip32::derivation_path::DerivationPathParseError;
-use ed25519_dalek_bip32::ed25519_dalek::KEYPAIR_LENGTH;
-use ed25519_dalek_bip32::ed25519_dalek::PUBLIC_KEY_LENGTH;
-use ed25519_dalek_bip32::ed25519_dalek::SECRET_KEY_LENGTH;
-use ed25519_dalek_bip32::ChildIndex;
-use ed25519_dalek_bip32::ExtendedSecretKey;
+use ed25519_dalek_bip32::derivation_path::{
+    ChildIndexError, DerivationPath, DerivationPathParseError,
+};
+use ed25519_dalek_bip32::ed25519_dalek::{
+    Keypair, Signature, SignatureError, Signer, KEYPAIR_LENGTH, PUBLIC_KEY_LENGTH,
+    SECRET_KEY_LENGTH, SIGNATURE_LENGTH,
+};
+use ed25519_dalek_bip32::Error as Ed25519Bip32Error;
+use ed25519_dalek_bip32::{ChildIndex, ExtendedSecretKey};
 
 macro_rules! impl_result {
-    ($t:ident, $r:ident) => {
+    ($t:ident, $r:ident, $f:ident) => {
         impl $r {
             fn error_message(self: &$r) -> String {
                 match &self.0 {
@@ -29,6 +30,25 @@ macro_rules! impl_result {
                 self.0.as_ref().expect("Unhandled error before unwrap call")
             }
         }
+
+        impl From<Result<$f, Error>> for $r {
+            fn from(result: Result<$f, Error>) -> Self {
+                match result {
+                    Ok(v) => Self(Ok($t(v))),
+                    Err(e) => Self(Err(e)),
+                }
+            }
+        }
+    };
+}
+
+macro_rules! impl_error {
+    ($t:ident, $n:ident) => {
+        impl From<$t> for Error {
+            fn from(err: $t) -> Self {
+                Self::$n(err)
+            }
+        }
     };
 }
 
@@ -36,7 +56,10 @@ macro_rules! impl_result {
 mod ffi {
     extern "Rust" {
         type Ed25519DalekExtendedSecretKey;
+        type Ed25519DalekSignature;
+
         type Ed25519DalekExtendedSecretKeyResult;
+        type Ed25519DalekSignatureResult;
 
         fn generate_ed25519_extended_secrect_key_from_seed(
             bytes: &[u8],
@@ -51,37 +74,35 @@ mod ffi {
         ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
         fn keypair_raw(self: &Ed25519DalekExtendedSecretKey) -> [u8; 64];
         fn public_key_raw(self: &Ed25519DalekExtendedSecretKey) -> [u8; 32];
+        fn sign(
+            self: &Ed25519DalekExtendedSecretKey,
+            msg: &[u8],
+        ) -> Box<Ed25519DalekSignatureResult>;
+
+        fn to_bytes(self: &Ed25519DalekSignature) -> [u8; 64];
 
         fn is_ok(self: &Ed25519DalekExtendedSecretKeyResult) -> bool;
         fn error_message(self: &Ed25519DalekExtendedSecretKeyResult) -> String;
         fn unwrap(self: &Ed25519DalekExtendedSecretKeyResult) -> &Ed25519DalekExtendedSecretKey;
+
+        fn is_ok(self: &Ed25519DalekSignatureResult) -> bool;
+        fn error_message(self: &Ed25519DalekSignatureResult) -> String;
+        fn unwrap(self: &Ed25519DalekSignatureResult) -> &Ed25519DalekSignature;
     }
 }
 
 #[derive(Debug)]
 pub enum Error {
-    Ed25519Bip32(ed25519_dalek_bip32::Error),
+    Ed25519Bip32(Ed25519Bip32Error),
     DerivationPathParse(DerivationPathParseError),
     ChildIndex(ChildIndexError),
+    Signature(SignatureError),
 }
 
-impl From<ed25519_dalek_bip32::Error> for Error {
-    fn from(err: ed25519_dalek_bip32::Error) -> Self {
-        Self::Ed25519Bip32(err)
-    }
-}
-
-impl From<DerivationPathParseError> for Error {
-    fn from(err: DerivationPathParseError) -> Self {
-        Self::DerivationPathParse(err)
-    }
-}
-
-impl From<ChildIndexError> for Error {
-    fn from(err: ChildIndexError) -> Self {
-        Self::ChildIndex(err)
-    }
-}
+impl_error!(Ed25519Bip32Error, Ed25519Bip32);
+impl_error!(DerivationPathParseError, DerivationPathParse);
+impl_error!(ChildIndexError, ChildIndex);
+impl_error!(SignatureError, Signature);
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -89,24 +110,19 @@ impl fmt::Display for Error {
             Error::Ed25519Bip32(e) => write!(f, "Error: {}", e.to_string()),
             Error::DerivationPathParse(e) => write!(f, "Error: {}", e.to_string()),
             Error::ChildIndex(e) => write!(f, "Error: {}", e.to_string()),
+            Error::Signature(e) => write!(f, "Error: {}", e.to_string()),
         }
     }
 }
 
 pub struct Ed25519DalekExtendedSecretKey(ExtendedSecretKey);
+pub struct Ed25519DalekSignature(Signature);
 
 struct Ed25519DalekExtendedSecretKeyResult(Result<Ed25519DalekExtendedSecretKey, Error>);
+struct Ed25519DalekSignatureResult(Result<Ed25519DalekSignature, Error>);
 
-impl_result!(Ed25519DalekExtendedSecretKey, Ed25519DalekExtendedSecretKeyResult);
-
-impl From<Result<ExtendedSecretKey, Error>> for Ed25519DalekExtendedSecretKeyResult {
-    fn from(key: Result<ExtendedSecretKey, Error>) -> Self {
-        match key {
-            Ok(v) => Self(Ok(Ed25519DalekExtendedSecretKey(v))),
-            Err(e) => Self(Err(e)),
-        }
-    }
-}
+impl_result!(Ed25519DalekExtendedSecretKey, Ed25519DalekExtendedSecretKeyResult, ExtendedSecretKey);
+impl_result!(Ed25519DalekSignature, Ed25519DalekSignatureResult, Signature);
 
 fn generate_ed25519_extended_secrect_key_from_seed(
     bytes: &[u8],
@@ -139,5 +155,18 @@ impl Ed25519DalekExtendedSecretKey {
     }
     fn public_key_raw(&self) -> [u8; PUBLIC_KEY_LENGTH] {
         self.0.public_key().to_bytes()
+    }
+    fn sign(self: &Ed25519DalekExtendedSecretKey, msg: &[u8]) -> Box<Ed25519DalekSignatureResult> {
+        Box::new(Ed25519DalekSignatureResult::from(
+            Keypair::from_bytes(&self.keypair_raw())
+                .map_err(|err| Error::from(err))
+                .and_then(|keypair| Ok(keypair.try_sign(msg)?)),
+        ))
+    }
+}
+
+impl Ed25519DalekSignature {
+    fn to_bytes(self: &Ed25519DalekSignature) -> [u8; SIGNATURE_LENGTH] {
+        self.0.to_bytes()
     }
 }
