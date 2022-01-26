@@ -363,7 +363,6 @@ Config.prototype.buildArgs = function () {
     if (process.platform === 'darwin') {
       args.enable_stripping = false
     }
-    args.symbol_level = 2
     args.enable_profiling = true
   }
 
