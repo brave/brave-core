@@ -4,9 +4,9 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.4.1"
+version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b465bfb39febca1dd99b8f6546c784e8b52b42c1b873c8066c96404efc99d69b"
+checksum = "52bdd00675903fd86d5d3109bb7899387c85cab52f990d14481546cb9a7102bf"
 dependencies = [
  "base64 0.13.0",
  "bitflags",
@@ -418,7 +418,7 @@ dependencies = [
 
 [[package]]
 name = "cxx"
-version = "1.0.56"
+version = "1.0.57"
 dependencies = [
  "cxxbridge-macro",
  "link-cplusplus",
@@ -426,9 +426,9 @@ dependencies = [
 
 [[package]]
 name = "cxxbridge-macro"
-version = "1.0.56"
+version = "1.0.57"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "04f5cb3b337856fe25282ca3c8ae58ae688adb956ab96c39af159b04b190ea52"
+checksum = "8907c4ff452ac2efc5edfe3fd2c5dfcf63ea3a9b402bb6d357a29ed5f9bbb07d"
 dependencies = [
  "proc-macro2",
  "quote",
