@@ -24,6 +24,7 @@ program
   .option('--all', 'This flag is deprecated and no longer has any effect')
   .option('--force', 'force reset all projects to origin/ref')
   .option('--ignore_chromium', 'do not update chromium version even if it is stale')
+  .option('--nohooks', 'Do not run hooks after updating')
 
 const installDepotTools = (options = config.defaultOptions) => {
   options.cwd = config.braveCoreDir
@@ -98,7 +99,9 @@ async function RunCommand () {
 
   await util.applyPatches()
 
-  util.gclientRunhooks()
+  if (!program.nohooks) {
+    util.gclientRunhooks()
+  }
 }
 
 Log.progress('Brave Browser Sync starting')
