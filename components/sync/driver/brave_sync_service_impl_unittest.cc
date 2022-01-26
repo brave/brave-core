@@ -164,29 +164,6 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
   OSCryptMocker::TearDown();
 }
 
-#if defined(OS_APPLE)
-
-TEST_F(BraveSyncServiceImplTest, ValidPassphraseKeyringLocked) {
-  OSCryptMocker::SetUp();
-
-  CreateSyncService(SyncServiceImpl::MANUAL_START);
-
-  brave_sync_service_impl()->Initialize();
-  EXPECT_FALSE(engine());
-
-  bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
-  EXPECT_TRUE(set_code_result);
-
-  bool failed_to_decrypt = false;
-  OSCryptMocker::SetBackendLocked(true);
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
-  EXPECT_TRUE(failed_to_decrypt);
-
-  OSCryptMocker::TearDown();
-}
-
-#endif  // defined(OS_APPLE)
-
 // Google test doc strongly recommends to use ``*DeathTest` naming
 // for test suite
 using BraveSyncServiceImplDeathTest = BraveSyncServiceImplTest;
@@ -226,7 +203,9 @@ TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
 
   brave_sync_service_impl()->StopAndClear();
 
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(nullptr), "");
+  bool failed_to_decrypt = false;
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
+  EXPECT_FALSE(failed_to_decrypt);
 
   OSCryptMocker::TearDown();
 }
