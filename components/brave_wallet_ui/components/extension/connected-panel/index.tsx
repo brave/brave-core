@@ -45,7 +45,6 @@ import {
   PanelTypes,
   BraveWallet,
   BuySupportedChains,
-  SwapSupportedChains,
   WalletOrigin,
   DefaultCurrencies
 } from '../../../constants/types'
@@ -58,6 +57,7 @@ export interface Props {
   selectedNetwork: BraveWallet.EthereumChain
   isConnected: boolean
   activeOrigin: string
+  isSwapSupported: boolean
   defaultCurrencies: DefaultCurrencies
   navAction: (path: PanelTypes) => void
   onLockWallet: () => void
@@ -70,6 +70,7 @@ const ConnectedPanel = (props: Props) => {
     onLockWallet,
     onOpenSettings,
     isConnected,
+    isSwapSupported,
     navAction,
     selectedAccount,
     selectedNetwork,
@@ -115,10 +116,6 @@ const ConnectedPanel = (props: Props) => {
   const isBuyDisabled = React.useMemo(() => {
     return !BuySupportedChains.includes(selectedNetwork.chainId)
   }, [BuySupportedChains, selectedNetwork])
-
-  const isSwapDisabled = React.useMemo(() => {
-    return !SwapSupportedChains.includes(selectedNetwork.chainId)
-  }, [SwapSupportedChains, selectedNetwork])
 
   const formattedAssetBalance = formatBalance(selectedAccount.balance, selectedNetwork.decimals)
 
@@ -182,7 +179,7 @@ const ConnectedPanel = (props: Props) => {
       <ConnectedBottomNav
         selectedNetwork={selectedNetwork}
         isBuyDisabled={isBuyDisabled}
-        isSwapDisabled={isSwapDisabled}
+        isSwapDisabled={!isSwapSupported}
         onNavigate={navAction}
       />
     </StyledWrapper>

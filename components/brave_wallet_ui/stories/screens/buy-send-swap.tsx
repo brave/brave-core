@@ -8,7 +8,6 @@ import {
   ToOrFromType,
   BraveWallet,
   BuySupportedChains,
-  SwapSupportedChains,
   SwapValidationErrorType,
   DefaultCurrencies,
   AmountValidationErrorType
@@ -51,6 +50,7 @@ export interface Props {
   swapAssetOptions: BraveWallet.BlockchainToken[]
   isFetchingSwapQuote: boolean
   isSwapSubmitDisabled: boolean
+  isSwapSupported: boolean
   customSlippageTolerance: string
   defaultCurrencies: DefaultCurrencies
   onCustomSlippageToleranceChange: (value: string) => void
@@ -111,6 +111,7 @@ function BuySendSwap (props: Props) {
     sendAmountValidationError,
     isFetchingSwapQuote,
     isSwapSubmitDisabled,
+    isSwapSupported,
     customSlippageTolerance,
     defaultCurrencies,
     onCustomSlippageToleranceChange,
@@ -146,18 +147,14 @@ function BuySendSwap (props: Props) {
     if (selectedTab === 'buy' && !BuySupportedChains.includes(selectedNetwork.chainId)) {
       onSelectTab('send')
     }
-    if (selectedTab === 'swap' && !SwapSupportedChains.includes(selectedNetwork.chainId)) {
+    if (selectedTab === 'swap' && !isSwapSupported) {
       onSelectTab('send')
     }
-  }, [selectedNetwork, selectedTab, BuySupportedChains])
+  }, [selectedNetwork, selectedTab, BuySupportedChains, isSwapSupported])
 
   const isBuyDisabled = React.useMemo(() => {
     return !BuySupportedChains.includes(selectedNetwork.chainId)
   }, [BuySupportedChains, selectedNetwork])
-
-  const isSwapDisabled = React.useMemo(() => {
-    return !SwapSupportedChains.includes(selectedNetwork.chainId)
-  }, [SwapSupportedChains, selectedNetwork])
 
   const changeTab = (tab: BuySendSwapTypes) => () => {
     onSelectTab(tab)
@@ -171,7 +168,7 @@ function BuySendSwap (props: Props) {
     <Layout
       selectedNetwork={selectedNetwork}
       isBuyDisabled={isBuyDisabled}
-      isSwapDisabled={isSwapDisabled}
+      isSwapDisabled={!isSwapSupported}
       selectedTab={selectedTab}
       onChangeTab={changeTab}
     >

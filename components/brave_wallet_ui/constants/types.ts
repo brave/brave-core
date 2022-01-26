@@ -472,11 +472,6 @@ export const BuySupportedChains = [
   BraveWallet.LOCALHOST_CHAIN_ID
 ]
 
-export const SwapSupportedChains = [
-  BraveWallet.MAINNET_CHAIN_ID,
-  BraveWallet.ROPSTEN_CHAIN_ID
-]
-
 export interface GetAllNetworksList {
   networks: BraveWallet.EthereumChain[]
 }

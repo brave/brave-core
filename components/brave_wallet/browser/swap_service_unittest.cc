@@ -86,6 +86,18 @@ class SwapServiceUnitTest : public testing::Test {
         }));
   }
 
+  bool IsSwapSupported(const std::string& chain_id) {
+    bool result;
+    base::RunLoop run_loop;
+    swap_service_->IsSwapSupported(chain_id,
+                                   base::BindLambdaForTesting([&](bool v) {
+                                     result = v;
+                                     run_loop.Quit();
+                                   }));
+    run_loop.Run();
+    return result;
+  }
+
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
@@ -305,6 +317,14 @@ TEST_F(SwapServiceUnitTest, GetSwapConfigurationOtherNet) {
             SwapService::GetFeeRecipient(mojom::kRinkebyChainId));
   EXPECT_EQ(affiliate_address,
             SwapService::GetAffiliateAddress(mojom::kRinkebyChainId));
+}
+
+TEST_F(SwapServiceUnitTest, IsSwapSupported) {
+  EXPECT_TRUE(IsSwapSupported(mojom::kMainnetChainId));
+  EXPECT_TRUE(IsSwapSupported(mojom::kRopstenChainId));
+  EXPECT_FALSE(IsSwapSupported(mojom::kRinkebyChainId));
+  EXPECT_FALSE(IsSwapSupported(""));
+  EXPECT_FALSE(IsSwapSupported("invalid chain_id"));
 }
 
 }  // namespace brave_wallet

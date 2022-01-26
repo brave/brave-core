@@ -67,7 +67,8 @@ import {
   findUnstoppableDomainAddress,
   getBuyAssets,
   getChecksumEthAddress,
-  getERC20Allowance
+  getERC20Allowance,
+  getIsSwapSupported
 } from '../common/async/lib'
 import { isHardwareAccount } from '../utils/address-utils'
 import { useAssets, useBalance, useSwap, useSend, usePreset } from '../common/hooks'
@@ -169,6 +170,7 @@ function Container (props: Props) {
     toAmount,
     toAsset,
     customSlippageTolerance,
+    isSwapSupported,
     onSetFromAmount,
     setSwapToOrFrom,
     onToggleOrderType,
@@ -188,6 +190,7 @@ function Container (props: Props) {
     props.walletPanelActions.fetchPanelSwapQuote,
     getERC20Allowance,
     props.walletActions.approveERC20Allowance,
+    getIsSwapSupported,
     swapQuote,
     swapError
   )
@@ -1015,6 +1018,7 @@ function Container (props: Props) {
         onLockWallet={onLockWallet}
         onOpenSettings={onOpenSettings}
         activeOrigin={activeOrigin}
+        isSwapSupported={isSwapSupported}
       />
     </PanelWrapper>
   )
