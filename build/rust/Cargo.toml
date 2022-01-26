@@ -10,9 +10,6 @@ speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
 skus-cxx = { path = "../../components/skus/browser/rs/cxx" }
 brave-news-cxx = { path = "../../components/brave_today/rust" }
 
-[patch.crates-io]
-cssparser = { git = 'https://github.com/AndriusA/rust-cssparser', branch = "glibc" }
-
 [lib]
 crate-type = [ "staticlib" ]
 name = "brave_rust"
