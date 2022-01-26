@@ -1,0 +1,12 @@
+diff --git a/components/permissions/android/permission_prompt_android.cc b/components/permissions/android/permission_prompt_android.cc
+index 4befe27d27bc9801c7f172a5d868712f467f5a75..6e8fa7d2fbf30a7c85a365b7bc204bfe473ae1af 100644
+--- a/components/permissions/android/permission_prompt_android.cc
++++ b/components/permissions/android/permission_prompt_android.cc
+@@ -134,6 +134,7 @@ static bool IsValidARCameraAccessRequestGroup(
+ // AR + Camera, or Camera + AR.
+ static void CheckValidRequestGroup(
+     const std::vector<permissions::PermissionRequest*>& requests) {
++  if (requests.size() > 0 && requests[0]->request_type() == permissions::RequestType::kBraveEthereum) return;
+   DCHECK_EQ(static_cast<size_t>(2u), requests.size());
+   DCHECK((IsValidMediaRequestGroup(requests)) ||
+          (IsValidARCameraAccessRequestGroup(requests)));
