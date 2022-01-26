@@ -351,18 +351,22 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
       [self createCredentialForm:oldPasswordForm]);
 }
 
-- (NSArray<IOSPasswordForm*>*)getSavedLogins {
+- (void)getSavedLogins:(void (^)(NSArray<IOSPasswordForm*>* results))
+                            completion {
   password_store_->GetAllLogins(new BravePasswordStoreConsumer(^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
 
     int testNumber = logins.size();
 
     NSLog(@"Test number %d", testNumber);
 
+//      let loginsList = [self onLoginsResult:std::move(credentials)];
+
+      // NSMutableArray<IOSPasswordForm*>* loginForms = [[NSMutableArray alloc] init];
+
+      // completion([loginForms copy]);
+
+      // completion(@[]);
   }));
-
-  return @[];
-
-  //return [self onLoginsResult:std::move(credentials)];
 }
 
 - (NSArray<IOSPasswordForm*>*)getSavedLoginsForURL:(NSURL*)url

@@ -94,7 +94,7 @@ OBJC_EXPORT
 
 /// Fetch Function that will return list of Password Forms
 /// from saved password presenter
-- (NSArray<IOSPasswordForm*>*)getSavedLogins;
+- (void)getSavedLogins:(void (^)(NSArray<IOSPasswordForm*>*)) completion;
 
 - (NSArray<IOSPasswordForm*>*)getSavedLoginsForURL:(NSURL*)url
                                         formScheme:
