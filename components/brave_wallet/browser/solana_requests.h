@@ -14,6 +14,8 @@ namespace solana {
 
 std::string getBalance(const std::string& pubkey);
 std::string getTokenAccountBalance(const std::string& pubkey);
+std::string sendTransaction(const std::string& signed_tx);
+std::string getLatestBlockhash();
 
 }  // namespace solana
 

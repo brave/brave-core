@@ -17,6 +17,8 @@ bool ParseGetTokenAccountBalance(const std::string& json,
                                  std::string* amount,
                                  uint8_t* decimals,
                                  std::string* ui_amount_string);
+bool ParseSendTransaction(const std::string& json, std::string* tx_id);
+bool ParseGetLatestBlockhash(const std::string& json, std::string* hash);
 
 }  // namespace solana
 
