@@ -427,8 +427,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_TWITTER_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on Twitter">
         Twitter
       </message>
-      <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_GITHUB_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on Github">
-        Github
+      <message name="IDS_SETTINGS_BRAVE_REWARDS_INLINE_TIP_GITHUB_LABEL" desc="The text label for the setting switch controlling showing inline tip buttons on GitHub">
+        GitHub
       </message>
       <!-- New Tab Page -->
       <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
