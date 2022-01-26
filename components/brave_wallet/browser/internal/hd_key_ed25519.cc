@@ -54,12 +54,29 @@ std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChildFromPath(
 
 std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg,
                                         int* recid) {
-  return std::vector<uint8_t>();
+  auto signature_result = private_key_->unwrap().sign(
+      rust::Slice<const uint8_t>{msg.data(), msg.size()});
+  if (!signature_result->is_ok()) {
+    VLOG(0) << std::string(signature_result->error_message());
+    return std::vector<uint8_t>();
+  }
+  auto signature_bytes = signature_result->unwrap().to_bytes();
+  return std::vector<uint8_t>(signature_bytes.begin(), signature_bytes.end());
 }
 
 bool HDKeyEd25519::Verify(const std::vector<uint8_t>& msg,
                           const std::vector<uint8_t>& sig) {
-  return false;
+  if (sig.size() != 64)
+    return false;
+  std::array<uint8_t, 64> signature;
+  std::copy_n(sig.begin(), 64, signature.begin());
+  auto verification_result = private_key_->unwrap().verify(
+      rust::Slice<const uint8_t>{msg.data(), msg.size()}, std::move(signature));
+  if (!verification_result->is_ok()) {
+    VLOG(0) << std::string(verification_result->error_message());
+    return false;
+  }
+  return true;
 }
 
 std::string HDKeyEd25519::GetEncodedPrivateKey() const {
