@@ -18,6 +18,7 @@ public class CryptoStore: ObservableObject {
       }
     }
   }
+  @Published var isPresentingAssetSearch: Bool = false
   @Published var isPresentingTransactionConfirmations: Bool = false {
     didSet {
       if !isPresentingTransactionConfirmations {

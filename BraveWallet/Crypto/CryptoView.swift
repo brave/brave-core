@@ -146,6 +146,17 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
           }
         }
     )
-    .environment(\.buySendSwapDestination, $cryptoStore.buySendSwapDestination)
+    .environment(\.buySendSwapDestination, Binding(
+      get: { cryptoStore.buySendSwapDestination },
+      set: { destination in
+        if cryptoStore.isPresentingAssetSearch {
+          cryptoStore.isPresentingAssetSearch = false
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            self.cryptoStore.buySendSwapDestination = destination
+          }
+        } else {
+          cryptoStore.buySendSwapDestination = destination
+        }
+      }))
   }
 }
