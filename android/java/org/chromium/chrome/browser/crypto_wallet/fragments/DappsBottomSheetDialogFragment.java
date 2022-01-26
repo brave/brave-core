@@ -83,7 +83,13 @@ public class DappsBottomSheetDialogFragment
             @Override
             public void onClick(View v) {
                 if (!mShowOnboarding) {
-                    // TODO show unlock
+                    // TODO make a check what view has to be shown
+                    BraveActivity activity = BraveActivity.getBraveActivity();
+                    assert activity != null;
+                    if (activity == null) {
+                        return;
+                    }
+                    activity.openBraveWallet();
                 } else {
                     BraveActivity activity = BraveActivity.getBraveActivity();
                     assert activity != null;
