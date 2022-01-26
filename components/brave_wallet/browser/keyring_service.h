@@ -169,7 +169,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& name,
       SetKeyringImportedAccountNameCallback callback) override;
 
-  void Reset(bool notify_observer = true);
+  void Reset(const std::string& keyring_id, bool notify_observer = true);
   bool IsKeyringCreated(const std::string& keyring_id);
   bool IsHardwareAccount(const std::string& account) const;
   void SignTransactionByDefaultKeyring(const std::string& address,

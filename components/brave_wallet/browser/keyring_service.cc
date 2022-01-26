@@ -511,7 +511,7 @@ HDKeyring* KeyringService::CreateKeyring(const std::string& keyring_id,
   }
 
   for (const auto& observer : observers_) {
-    observer->KeyringCreated();
+    observer->KeyringCreated(keyring_id);
   }
   ResetAutoLockTimer();
 
@@ -529,7 +529,7 @@ HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
     return nullptr;
   }
 
-  const std::string mnemonic = GetMnemonicForKeyringImpl(keyring_id);
+  const std::string mnemonic = GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId);
   bool is_legacy_brave_wallet = false;
   const base::Value* value =
       GetPrefForKeyring(prefs_, kLegacyBraveWallet, keyring_id);
@@ -588,7 +588,7 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
 
   // Try getting existing mnemonic first
   if (encryptor_ || CreateEncryptorForKeyring(password, keyring_id)) {
-    const std::string current_mnemonic = GetMnemonicForKeyringImpl(keyring_id);
+    const std::string current_mnemonic = GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId);
     // Restore with same mnmonic and same password, resume current keyring
     // Also need to make sure is_legacy_brave_wallet are the same, users might
     // choose the option wrongly and then want to start over with same mnemonic
@@ -601,11 +601,11 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
     } else {
       // We have no way to check if new mnemonic is same as current mnemonic so
       // we need to clear all prefs for fresh start
-      Reset(false);
+      Reset(keyring_id, false);
     }
   }
 
-  if (!CreateEncryptorForKeyring(password, keyring_id)) {
+  if (!encryptor_ && !CreateEncryptorForKeyring(password, keyring_id)) {
     return nullptr;
   }
 
@@ -614,7 +614,7 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
   }
 
   for (const auto& observer : observers_) {
-    observer->KeyringRestored();
+    observer->KeyringRestored(keyring_id);
   }
   ResetAutoLockTimer();
   return GetHDKeyringById(keyring_id);
@@ -1332,16 +1332,19 @@ void KeyringService::IsLocked(IsLockedCallback callback) {
   std::move(callback).Run(IsLocked());
 }
 
-void KeyringService::Reset(bool notify_observer) {
+void KeyringService::Reset(const std::string& keyring_id,
+                           bool notify_observer) {
   StopAutoLockTimer();
-  encryptor_.reset();
-  keyrings_.clear();
+  if (keyring_id == mojom::kDefaultKeyringId) {
+    encryptor_.reset();
+    ClearKeyringServiceProfilePrefs(prefs_);
+  }
 
-  ClearKeyringServiceProfilePrefs(prefs_);
+  keyrings_.erase(keyring_id);
 
   if (notify_observer) {
     for (const auto& observer : observers_) {
-      observer->KeyringReset();
+      observer->KeyringReset(keyring_id);
     }
   }
 }
@@ -1454,7 +1457,8 @@ bool KeyringService::CreateKeyringInternal(const std::string& keyring_id,
 
   if (keyring_id == mojom::kDefaultKeyringId) {
     keyrings_[mojom::kDefaultKeyringId] = std::make_unique<HDKeyring>();
-  } else if (IsFilecoinEnabled() && keyring_id == mojom::kFilecoinKeyringId) {
+  } else if (keyring_id == mojom::kFilecoinKeyringId) {
+    DCHECK(::brave_wallet::IsFilecoinEnabled());
     keyrings_[mojom::kFilecoinKeyringId] = std::make_unique<FilecoinKeyring>();
   }
   auto* keyring = GetHDKeyringById(keyring_id);

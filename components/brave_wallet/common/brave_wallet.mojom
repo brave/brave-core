@@ -325,13 +325,13 @@ interface Page {
 
 interface KeyringServiceObserver {
   // Fired when a keyring is created
-  KeyringCreated();
+  KeyringCreated(string keyring_id);
 
   // Fired when a keyring is restored
-  KeyringRestored();
+  KeyringRestored(string keyring_id);
 
   // Fired when a keyring is reset
-  KeyringReset();
+  KeyringReset(string keyring_id);
 
   // Fired when a keyring is locked
   Locked();

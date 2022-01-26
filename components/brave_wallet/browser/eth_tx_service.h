@@ -212,9 +212,9 @@ class EthTxService : public KeyedService,
       const std::string& error_message);
 
   // KeyringServiceObserver:
-  void KeyringCreated() override;
-  void KeyringRestored() override;
-  void KeyringReset() override;
+  void KeyringCreated(const std::string& keyring_id) override;
+  void KeyringRestored(const std::string& keyring_id) override;
+  void KeyringReset(const std::string& keyring_id) override;
   void Locked() override;
   void Unlocked() override;
   void BackedUp() override {}
