@@ -6,7 +6,7 @@ pipeline {
     }
     parameters {
         choice(name: 'CHANNEL', choices: ['nightly', 'dev', 'beta', 'release', 'development'])
-        choice(name: 'BUILD_TYPE', choices: ['Release', 'Debug', 'Static', 'Component'])
+        choice(name: 'BUILD_TYPE', choices: ['Static', 'Release', 'Component', 'Debug'])
         choice(name: 'BUILD_STATUS', choices: ['', 'SUCCESS', 'FAILURE', 'UNSTABLE', 'ABORTED'])
         booleanParam(name: 'TERMINATE_NODE', defaultValue: false)
         booleanParam(name: 'WIPE_WORKSPACE', defaultValue: false)
@@ -14,7 +14,7 @@ pipeline {
         booleanParam(name: 'USE_GOMA', defaultValue: true)
         booleanParam(name: 'SKIP_SIGNING', defaultValue: true)
         booleanParam(name: 'DCHECK_ALWAYS_ON', defaultValue: true)
-        string(name: 'DEVOPS_BRANCH', defaultValue: 'master')
+        string(name: 'DEVOPS_BRANCH', defaultValue: 'mplesa-jenkins-new-build-types')
         string(name: 'NODE_LABEL', defaultValue: '')
         string(name: 'SLACK_NOTIFY', defaultValue: '')
     }
@@ -82,7 +82,7 @@ pipeline {
                             // this list has to match the parameters in the Jenkinsfile from devops repo
                             parameters {
                                 choiceParam('CHANNEL', ['nightly', 'dev', 'beta', 'release', 'development'])
-                                choiceParam('BUILD_TYPE', ['Release', 'Debug', 'Static', 'Component'])
+                                choiceParam('BUILD_TYPE', ['Static', 'Release', 'Component', 'Debug'])
                                 booleanParam('TERMINATE_NODE', false)
                                 booleanParam('WIPE_WORKSPACE', false)
                                 booleanParam('SKIP_INIT', false)
@@ -105,7 +105,8 @@ pipeline {
                                                 credentials('brave-builds-github-token-for-pr-builder')
                                                 github('brave/devops', 'https')
                                             }
-                                            branch('${params.DEVOPS_BRANCH}')
+                                            // branch('${params.DEVOPS_BRANCH}')
+                                            branch('mplesa-jenkins-new-build-types')
                                         }
                                     }
                                     scriptPath("jenkins/jobs/browser/pr-brave-browser-${PLATFORM}.Jenkinsfile")
