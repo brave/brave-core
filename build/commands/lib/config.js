@@ -419,10 +419,6 @@ Config.prototype.buildArgs = function () {
     if (this.buildConfig !== 'Release') {
       // treat non-release builds like Debug builds
       args.treat_warnings_as_errors = false
-    } else {
-      // otherwise there is build error
-      // ld.lld: error: output file too large: 5861255936 bytes
-      args.symbol_level = 1
     }
 
     // Feed is not used in Brave
