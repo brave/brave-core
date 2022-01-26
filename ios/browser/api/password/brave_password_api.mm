@@ -204,6 +204,12 @@ class PasswordStoreConsumerHelper
     : public password_manager::PasswordStoreConsumer {
  public:
   PasswordStoreConsumerHelper() {}
+  PasswordStoreConsumerHelper(const PasswordStoreConsumerHelper&) = delete;
+  PasswordStoreConsumerHelper& operator=(const PasswordStoreConsumerHelper&) = delete;
+      
+  base::WeakPtr<PasswordStoreConsumerHelper> GetWeakPtr() {
+    return weak_factory_.GetWeakPtr();
+  }
 
   void OnGetPasswordStoreResults(
       std::vector<std::unique_ptr<password_manager::PasswordForm>> results)
@@ -221,8 +227,7 @@ class PasswordStoreConsumerHelper
  private:
   base::RunLoop run_loop_;
   std::vector<std::unique_ptr<password_manager::PasswordForm>> result_;
-
-  DISALLOW_COPY_AND_ASSIGN(PasswordStoreConsumerHelper);
+  base::WeakPtrFactory<PasswordStoreConsumerHelper> weak_factory_{this};
 };
 
 
@@ -230,19 +235,27 @@ class BravePasswordStoreConsumer
   : public password_manager::PasswordStoreConsumer {
  public:
   BravePasswordStoreConsumer(
-    std::function<void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)>&& callback) : callback(std::move(callback)) {}
+    base::OnceCallback<void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)> callback) : callback(std::move(callback)) {}
+
+    base::WeakPtr<BravePasswordStoreConsumer> GetWeakPtr();
 
  private:
-    std::function<void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)> callback;
+    base::OnceCallback<void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)> callback;
 
     void OnGetPasswordStoreResults(
       std::vector<std::unique_ptr<password_manager::PasswordForm>> results) override;
+
+    base::WeakPtrFactory<BravePasswordStoreConsumer> weak_factory_{this};
 };
+
+base::WeakPtr<BravePasswordStoreConsumer> BravePasswordStoreConsumer::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
 
 void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
   std::vector<std::unique_ptr<password_manager::PasswordForm>> results) {
 
-    callback(std::move(results));
+    std::move(callback).Run(std::move(results));
     delete this;
 }
 
@@ -351,22 +364,23 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
       [self createCredentialForm:oldPasswordForm]);
 }
 
-- (void)getSavedLogins:(void (^)(NSArray<IOSPasswordForm*>* results))
-                            completion {
-  password_store_->GetAllLogins(new BravePasswordStoreConsumer(^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
-
+- (void)getSavedLogins:(void (^)(NSArray<IOSPasswordForm*>* results))completion {
+  auto callback = ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
+    
     int testNumber = logins.size();
 
     NSLog(@"Test number %d", testNumber);
-
-//      let loginsList = [self onLoginsResult:std::move(credentials)];
-
-      // NSMutableArray<IOSPasswordForm*>* loginForms = [[NSMutableArray alloc] init];
-
-      // completion([loginForms copy]);
-
-      // completion(@[]);
-  }));
+    
+    //      let loginsList = [self onLoginsResult:std::move(credentials)];
+    
+    // NSMutableArray<IOSPasswordForm*>* loginForms = [[NSMutableArray alloc] init];
+    
+    // completion([loginForms copy]);
+    
+    completion(@[]);
+  };
+  auto* consumer = new BravePasswordStoreConsumer(base::BindOnce(callback));
+  password_store_->GetAllLogins(consumer->GetWeakPtr());
 }
 
 - (NSArray<IOSPasswordForm*>*)getSavedLoginsForURL:(NSURL*)url
@@ -381,7 +395,7 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
           /*signon_realm*/ net::GURLWithNSURL(url).spec(),
           /*url*/ net::GURLWithNSURL(url));
 
-  password_store_->GetLogins(form_digest_args, &password_consumer);
+  password_store_->GetLogins(form_digest_args, password_consumer.GetWeakPtr());
 
   std::vector<std::unique_ptr<password_manager::PasswordForm>> credentials =
       password_consumer.WaitForResult();
