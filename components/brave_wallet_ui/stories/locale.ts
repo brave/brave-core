@@ -230,6 +230,7 @@ provideStrings({
   braveWalletWatchListTokenIdError: 'Token ID is required',
   braveWalletWatchListAdvanced: 'Advanced',
   braveWalletWatchListCoingeckoId: 'Coingecko ID',
+  braveWalletIconURL: 'Icon URL',
 
   // AmountPresets
   braveWalletPreset25: '25%',
