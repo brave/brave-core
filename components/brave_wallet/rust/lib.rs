@@ -60,10 +60,12 @@ mod ffi {
 
         type Ed25519DalekExtendedSecretKeyResult;
         type Ed25519DalekSignatureResult;
+        type Ed25519DalekVerificationResult;
 
         fn generate_ed25519_extended_secrect_key_from_seed(
             bytes: &[u8],
         ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
+
         fn derive(
             self: &Ed25519DalekExtendedSecretKey,
             path: String,
@@ -78,6 +80,11 @@ mod ffi {
             self: &Ed25519DalekExtendedSecretKey,
             msg: &[u8],
         ) -> Box<Ed25519DalekSignatureResult>;
+        fn verify(
+            self: &Ed25519DalekExtendedSecretKey,
+            msg: &[u8],
+            sig: [u8; 64],
+        ) -> Box<Ed25519DalekVerificationResult>;
 
         fn to_bytes(self: &Ed25519DalekSignature) -> [u8; 64];
 
@@ -88,6 +95,9 @@ mod ffi {
         fn is_ok(self: &Ed25519DalekSignatureResult) -> bool;
         fn error_message(self: &Ed25519DalekSignatureResult) -> String;
         fn unwrap(self: &Ed25519DalekSignatureResult) -> &Ed25519DalekSignature;
+
+        fn is_ok(self: &Ed25519DalekVerificationResult) -> bool;
+        fn error_message(self: &Ed25519DalekVerificationResult) -> String;
     }
 }
 
@@ -120,9 +130,34 @@ pub struct Ed25519DalekSignature(Signature);
 
 struct Ed25519DalekExtendedSecretKeyResult(Result<Ed25519DalekExtendedSecretKey, Error>);
 struct Ed25519DalekSignatureResult(Result<Ed25519DalekSignature, Error>);
+struct Ed25519DalekVerificationResult(Result<(), Error>);
 
 impl_result!(Ed25519DalekExtendedSecretKey, Ed25519DalekExtendedSecretKeyResult, ExtendedSecretKey);
 impl_result!(Ed25519DalekSignature, Ed25519DalekSignatureResult, Signature);
+impl Ed25519DalekVerificationResult {
+    fn error_message(&self) -> String {
+        match &self.0 {
+            Err(e) => e.to_string(),
+            Ok(_) => "".to_string(),
+        }
+    }
+
+    fn is_ok(&self) -> bool {
+        match &self.0 {
+            Err(_) => false,
+            Ok(_) => true,
+        }
+    }
+}
+
+impl From<Result<(), Error>> for Ed25519DalekVerificationResult {
+    fn from(result: Result<(), Error>) -> Self {
+        match result {
+            Ok(v) => Self(Ok(v)),
+            Err(e) => Self(Err(e)),
+        }
+    }
+}
 
 fn generate_ed25519_extended_secrect_key_from_seed(
     bytes: &[u8],
@@ -161,6 +196,17 @@ impl Ed25519DalekExtendedSecretKey {
             Keypair::from_bytes(&self.keypair_raw())
                 .map_err(|err| Error::from(err))
                 .and_then(|keypair| Ok(keypair.try_sign(msg)?)),
+        ))
+    }
+    fn verify(
+        self: &Ed25519DalekExtendedSecretKey,
+        msg: &[u8],
+        sig: [u8; 64],
+    ) -> Box<Ed25519DalekVerificationResult> {
+        Box::new(Ed25519DalekVerificationResult::from(
+            Keypair::from_bytes(&self.keypair_raw())
+                .map_err(|err| Error::from(err))
+                .and_then(|keypair| Ok(keypair.verify(msg, &Signature::new(sig))?)),
         ))
     }
 }
