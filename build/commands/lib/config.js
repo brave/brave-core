@@ -226,6 +226,8 @@ Config.prototype.buildArgs = function () {
   const chrome_version_parts = this.chromeVersion.split('.')
 
   let args = {
+    blink_symbol_level: 0,
+    v8_symbol_level: 0,
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
@@ -353,8 +355,11 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.isDebug() &&
-    this.targetOS !== 'ios' &&
-    this.targetOS !== 'android') {
+      this.targetOS !== 'ios' &&
+      this.targetOS !== 'android') {
+    delete args.blink_symbol_level
+    delete args.v8_symbol_level
+
     if (process.platform === 'darwin') {
       args.enable_stripping = false
     }
