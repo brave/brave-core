@@ -28,7 +28,8 @@ struct ConversionQueueItemInfo final {
   std::string conversion_id;
   std::string advertiser_public_key;
   AdType ad_type = AdType::kUndefined;
-  base::Time confirm_at;
+  base::Time process_at;
+  bool was_processed = false;
 
   bool IsValid() const;
 };
