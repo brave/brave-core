@@ -225,7 +225,17 @@ function Container (props: Props) {
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {
-      history.goBack()
+      // If a user has not yet created a wallet and clicks Restore
+      // from the panel, we need to route to onboarding if they click back.
+      if (!isWalletCreated) {
+        history.push(WalletRoutes.Onboarding)
+        return
+      }
+      // If a user has created a wallet and clicks Restore from the panel
+      // while the wallet is locked, we need to route to unlock if they click back.
+      if (isWalletCreated && isWalletLocked) {
+        history.push(WalletRoutes.Unlock)
+      }
     } else {
       history.push(WalletRoutes.Restore)
     }

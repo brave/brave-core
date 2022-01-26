@@ -24,6 +24,15 @@ export const StyledExtensionWrapperLonger = styled.div`
   height: 500px;
 `
 
+export const StyledWelcomPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 320px;
+  height: 250px;
+`
+
 export const ChildComponentWrapper = styled.div`
   flex: 1;
   display: flex;
