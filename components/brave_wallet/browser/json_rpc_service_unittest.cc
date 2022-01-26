@@ -494,13 +494,13 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
   std::vector<base::Value> values;
   brave_wallet::mojom::EthereumChain chain1(
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
+      {"https://url1.com"}, "symbol_name", "symbol", 0, false);
   auto chain_ptr1 = chain1.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
 
   brave_wallet::mojom::EthereumChain chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22, true);
+      {"https://url2.com"}, "symbol_name2", "symbol2", 60, true);
   auto chain_ptr2 = chain2.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
@@ -530,13 +530,13 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   std::vector<base::Value> values;
   brave_wallet::mojom::EthereumChain chain1(
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
+      {"https://url1.com"}, "symbol_name", "symbol", 0, false);
   auto chain_ptr1 = chain1.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
 
   brave_wallet::mojom::EthereumChain chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22, true);
+      {"https://url2.com"}, "symbol_name2", "symbol2", 60, true);
   auto chain_ptr2 = chain2.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
@@ -646,16 +646,15 @@ TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
   EXPECT_TRUE(callback_called);
 }
 
-TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
+TEST_F(JsonRpcServiceUnitTest, AddFilecoinChainApproved) {
   brave_wallet::mojom::EthereumChain chain(
-      "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol", "symbol_name", 11, false);
+      "0x461", "Ganache", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "FIL", "Filecoin", 461, false);
 
   bool callback_is_called = false;
   mojom::ProviderError expected = mojom::ProviderError::kSuccess;
-  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
-  SetEthChainIdInterceptor(chain.rpc_urls.front(), "0x111");
-  json_rpc_service_->AddEthereumChain(
+  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x461").is_valid());
+  json_rpc_service_->AddCustomChain(
       chain.Clone(),
       base::BindLambdaForTesting(
           [&callback_is_called, &expected](const std::string& chain_id,
@@ -671,7 +670,72 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   bool failed_callback_is_called = false;
   mojom::ProviderError expected_error =
       mojom::ProviderError::kUserRejectedRequest;
-  json_rpc_service_->AddEthereumChain(
+  json_rpc_service_->AddCustomChain(
+      chain.Clone(),
+      base::BindLambdaForTesting([&failed_callback_is_called, &expected_error](
+                                     const std::string& chain_id,
+                                     mojom::ProviderError error,
+                                     const std::string& error_message) {
+        ASSERT_FALSE(chain_id.empty());
+        EXPECT_EQ(error, expected_error);
+        ASSERT_FALSE(error_message.empty());
+        failed_callback_is_called = true;
+      }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(failed_callback_is_called);
+
+  ASSERT_TRUE(callback_is_called);
+  ASSERT_TRUE(brave_wallet::GetNetworkURL(prefs(), "0x461").is_valid());
+
+  // Prefs should be updated.
+  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  GetAllCustomChains(prefs(), &custom_chains);
+  ASSERT_EQ(custom_chains.size(), 1u);
+  EXPECT_EQ(custom_chains[0], chain.Clone());
+
+  const base::DictionaryValue* assets_pref =
+      prefs()->GetDictionary(kBraveWalletUserAssets);
+  const base::Value* list = assets_pref->FindKey("0x461");
+  ASSERT_TRUE(list->is_list());
+  base::Value::ConstListView asset_list = list->GetList();
+  ASSERT_EQ(asset_list.size(), 1u);
+
+  EXPECT_EQ(*asset_list[0].FindStringKey("contract_address"), "");
+  EXPECT_EQ(*asset_list[0].FindStringKey("name"), "Filecoin");
+  EXPECT_EQ(*asset_list[0].FindStringKey("symbol"), "FIL");
+  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc20"), false);
+  EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc721"), false);
+  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 461);
+  EXPECT_EQ(*asset_list[0].FindStringKey("logo"), "https://url1.com");
+  EXPECT_EQ(*asset_list[0].FindBoolKey("visible"), true);
+}
+
+TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
+  brave_wallet::mojom::EthereumChain chain(
+      "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
+      {"https://url1.com"}, "symbol", "symbol_name", 0, false);
+
+  bool callback_is_called = false;
+  mojom::ProviderError expected = mojom::ProviderError::kSuccess;
+  ASSERT_FALSE(brave_wallet::GetNetworkURL(prefs(), "0x111").is_valid());
+  SetEthChainIdInterceptor(chain.rpc_urls.front(), "0x111");
+  json_rpc_service_->AddCustomChain(
+      chain.Clone(),
+      base::BindLambdaForTesting(
+          [&callback_is_called, &expected](const std::string& chain_id,
+                                           mojom::ProviderError error,
+                                           const std::string& error_message) {
+            ASSERT_FALSE(chain_id.empty());
+            EXPECT_EQ(error, expected);
+            ASSERT_TRUE(error_message.empty());
+            callback_is_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
+
+  bool failed_callback_is_called = false;
+  mojom::ProviderError expected_error =
+      mojom::ProviderError::kUserRejectedRequest;
+  json_rpc_service_->AddCustomChain(
       chain.Clone(),
       base::BindLambdaForTesting([&failed_callback_is_called, &expected_error](
                                      const std::string& chain_id,
@@ -708,7 +772,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   EXPECT_EQ(*asset_list[0].FindStringKey("symbol"), "symbol");
   EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc20"), false);
   EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc721"), false);
-  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 11);
+  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 0);
   EXPECT_EQ(*asset_list[0].FindStringKey("logo"), "https://url1.com");
   EXPECT_EQ(*asset_list[0].FindBoolKey("visible"), true);
 
@@ -720,7 +784,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
 TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   brave_wallet::mojom::EthereumChain chain(
       "0x111", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol", "symbol_name", 11, false);
+      {"https://url1.com"}, "symbol", "symbol_name", 60, false);
 
   base::RunLoop loop;
   std::unique_ptr<TestJsonRpcServiceObserver> observer(
@@ -772,7 +836,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   EXPECT_EQ(*asset_list[0].FindStringKey("symbol"), "symbol");
   EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc20"), false);
   EXPECT_EQ(*asset_list[0].FindBoolKey("is_erc721"), false);
-  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 11);
+  EXPECT_EQ(*asset_list[0].FindIntKey("decimals"), 60);
   EXPECT_EQ(*asset_list[0].FindStringKey("logo"), "https://url1.com");
   EXPECT_EQ(*asset_list[0].FindBoolKey("visible"), true);
 
@@ -896,7 +960,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   // new chain, not valid rpc url
   brave_wallet::mojom::EthereumChain chain4(
       "0x444", "chain_name4", {"https://url4.com"}, {"https://url4.com"},
-      {"https://url4.com"}, "symbol_name", "symbol", 11, false);
+      {"https://url4.com"}, "symbol_name", "symbol", 0, false);
   bool fourth_callback_is_called = false;
   mojom::ProviderError fourth_expected =
       mojom::ProviderError::kUserRejectedRequest;
@@ -921,7 +985,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
   // new chain, broken validation response
   brave_wallet::mojom::EthereumChain chain5(
       "0x444", "chain_name5", {"https://url5.com"}, {"https://url5.com"},
-      {"https://url5.com"}, "symbol_name", "symbol", 11, false);
+      {"https://url5.com"}, "symbol_name", "symbol", 0, false);
   bool fifth_callback_is_called = false;
   mojom::ProviderError fifth_expected =
       mojom::ProviderError::kUserRejectedRequest;
@@ -1405,13 +1469,13 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
   std::vector<base::Value> values;
   brave_wallet::mojom::EthereumChain chain1(
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11, false);
+      {"https://url1.com"}, "symbol_name", "symbol", 0, false);
   auto chain_ptr1 = chain1.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
 
   brave_wallet::mojom::EthereumChain chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
-      {"https://url2.com"}, "symbol_name2", "symbol2", 22, true);
+      {"https://url2.com"}, "symbol_name2", "symbol2", 60, true);
   auto chain_ptr2 = chain2.Clone();
   values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
