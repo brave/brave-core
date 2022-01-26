@@ -49,6 +49,7 @@ import {
   getChecksumEthAddress,
   getERC20Allowance,
   isStrongPassword,
+  getIsSwapSupported,
   onConnectHardwareWallet
 } from '../common/async/lib'
 
@@ -156,6 +157,7 @@ function Container (props: Props) {
     toAmount,
     toAsset,
     customSlippageTolerance,
+    isSwapSupported,
     onToggleOrderType,
     onSwapQuoteRefresh,
     onSetToAmount,
@@ -174,6 +176,7 @@ function Container (props: Props) {
     props.walletPageActions.fetchPageSwapQuote,
     getERC20Allowance,
     props.walletActions.approveERC20Allowance,
+    getIsSwapSupported,
     swapQuote,
     swapError
   )
@@ -681,6 +684,7 @@ function Container (props: Props) {
             swapAssetOptions={swapAssetOptions}
             isFetchingSwapQuote={isFetchingSwapQuote}
             isSwapSubmitDisabled={isSwapButtonDisabled}
+            isSwapSupported={isSwapSupported}
             customSlippageTolerance={customSlippageTolerance}
             defaultCurrencies={defaultCurrencies}
             onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}

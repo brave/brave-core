@@ -145,6 +145,11 @@ export async function getKeyringIdFromAddress (address: string): Promise<string>
   return getKeyringIdFromCoin(BraveWallet.CoinType.ETH)
 }
 
+export async function getIsSwapSupported (network: BraveWallet.EthereumChain): Promise<boolean> {
+  const { swapService } = getAPIProxy()
+  return (await swapService.isSwapSupported(network.chainId)).result
+}
+
 export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const { braveWalletService, jsonRpcService } = getAPIProxy()

@@ -34,6 +34,7 @@ export default function useSwap (
   fetchSwapQuote: SimpleActionCreator<SwapParamsPayloadType>,
   getERC20Allowance: (contractAddress: string, ownerAddress: string, spenderAddress: string) => Promise<string>,
   approveERC20Allowance: SimpleActionCreator<ApproveERC20Params>,
+  isSwapSupported: (network: BraveWallet.EthereumChain) => Promise<boolean>,
   quote?: BraveWallet.SwapResponse,
   rawError?: SwapErrorResponse
 ) {
@@ -50,11 +51,18 @@ export default function useSwap (
   const [swapToOrFrom, setSwapToOrFrom] = React.useState<ToOrFromType>('from')
   const [allowance, setAllowance] = React.useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isSupported, setIsSupported] = React.useState<boolean>(false)
 
   React.useEffect(() => {
     setFromAsset(swapAssetOptions[0])
     setToAsset(swapAssetOptions[1])
   }, [swapAssetOptions])
+
+  React.useEffect(() => {
+    isSwapSupported(selectedNetwork).then(
+      (supported) => setIsSupported(supported)
+    )
+  }, [selectedNetwork])
 
   React.useEffect(() => {
     if (!fromAsset.isErc20) {
@@ -518,6 +526,7 @@ export default function useSwap (
     toAmount,
     toAsset,
     customSlippageTolerance,
+    isSwapSupported: isSupported,
     onCustomSlippageToleranceChange,
     setFromAsset,
     setSwapToOrFrom,

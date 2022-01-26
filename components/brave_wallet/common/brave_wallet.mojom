@@ -515,6 +515,9 @@ interface SwapService {
   // Obtains transaction payload data for a swap
   GetTransactionPayload(SwapParams params) =>
       (bool success, SwapResponse? response, string? error_response);
+
+  // Obtains whether the given chain id supports swap
+  IsSwapSupported(string chain_id) => (bool result);
 };
 
 interface JsonRpcServiceObserver {
