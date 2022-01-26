@@ -526,6 +526,11 @@ Config.prototype.buildArgs = function () {
     delete args.brave_variations_server_url
   }
 
+  if (this.use_goma) {
+    // Limit action pool (non-compile actions) to amount of CPU cores.
+    args.action_pool_depth = os.cpus().length
+  }
+
   if (this.nativeRedirectCC) {
     if (false && this.use_goma) {
       args.use_goma = true
@@ -671,6 +676,7 @@ Config.prototype.update = function (options) {
   if (options.native_redirect_cc || true) {
     this.nativeRedirectCC = true
     this.nativeRedirectCCDir = path.join(this.srcDir, 'out', 'redirect_cc')
+    this.defaultGomaJValue = os.cpus().length * 4
   } else {
     this.nativeRedirectCC = false
   }
