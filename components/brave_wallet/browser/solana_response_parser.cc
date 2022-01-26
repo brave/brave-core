@@ -70,6 +70,29 @@ bool ParseGetTokenAccountBalance(const std::string& json,
   return true;
 }
 
+bool ParseSendTransaction(const std::string& json, std::string* tx_id) {
+  return ParseSingleStringResult(json, tx_id);
+}
+
+bool ParseGetLatestBlockhash(const std::string& json, std::string* hash) {
+  DCHECK(hash);
+
+  base::Value result;
+  if (!ParseResult(json, &result) || !result.is_dict())
+    return false;
+
+  base::Value* value = result.FindDictKey("value");
+  if (!value)
+    return false;
+
+  auto* hash_ptr = value->FindStringKey("blockhash");
+  if (!hash_ptr)
+    return false;
+  *hash = *hash_ptr;
+
+  return true;
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

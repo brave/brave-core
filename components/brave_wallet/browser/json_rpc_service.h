@@ -231,6 +231,17 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetSPLTokenAccountBalance(
       const std::string& pubkey,
       GetSPLTokenAccountBalanceCallback callback) override;
+  using SendSolanaTransactionCallback =
+      base::OnceCallback<void(const std::string& tx_hash,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void SendSolanaTransaction(const std::string& signed_tx,
+                             SendSolanaTransactionCallback callback);
+  using GetSolanaLatestBlockhashCallback =
+      base::OnceCallback<void(const std::string& latest_blockhash,
+                              mojom::SolanaProviderError error,
+                              const std::string& error_message)>;
+  void GetSolanaLatestBlockhash(GetSolanaLatestBlockhashCallback callback);
 
  private:
   void FireNetworkChanged();
@@ -394,6 +405,17 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void OnGetSPLTokenAccountBalance(
       GetSPLTokenAccountBalanceCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void OnSendSolanaTransaction(
+      SendSolanaTransactionCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSolanaLatestBlockhash(
+      GetSolanaLatestBlockhashCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

@@ -12,7 +12,7 @@ namespace brave_wallet {
 
 namespace solana {
 
-TEST(JsonRpcResponseParserUnitTest, ParseSolanaGetBalance) {
+TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
   std::string json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "{\"context\":{\"slot\":106921266},\"value\":513234116063}}";
@@ -72,6 +72,29 @@ TEST(JsonRpcResponseParserUnitTest, ParseGetTokenAccountBalance) {
       "\"decimals\":-1, \"uiAmount\":98.64, \"uiAmountString\":\"98.64\"}}}";
   EXPECT_FALSE(
       ParseGetTokenAccountBalance(json, &amount, &decimals, &ui_amount_string));
+}
+
+TEST(SolanaResponseParserUnitTest, ParseSendTransaction) {
+  std::string json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "\"2id3YC2jK9G5Wo2phDx4gJVAew8DcY5NAojnVuao8rkxwPYPe8cSwE5GzhEgJA2y8fVjDE"
+      "o6iR6ykBvDxrTQrtpb\"}";
+  std::string tx_id;
+  EXPECT_TRUE(ParseSendTransaction(json, &tx_id));
+  EXPECT_EQ(tx_id,
+            "2id3YC2jK9G5Wo2phDx4gJVAew8DcY5NAojnVuao8rkxwPYPe8cSwE5GzhEgJA2y8f"
+            "VjDEo6iR6ykBvDxrTQrtpb");
+}
+
+TEST(SolanaResponseParserUnitTest, ParseGetLatestBlockhash) {
+  std::string json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "{\"context\":{\"slot\":1069},\"value\":{\"blockhash\":"
+      "\"EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N\", "
+      "\"lastValidBlockHeight\":3090}}}";
+  std::string hash;
+  EXPECT_TRUE(ParseGetLatestBlockhash(json, &hash));
+  EXPECT_EQ(hash, "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N");
 }
 
 }  // namespace solana
