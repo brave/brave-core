@@ -64,8 +64,10 @@ extension Deletable {
                     // Batch delete writes directly to the persistent store.
                     // Therefore contexts and in-memory objects must be updated manually.
                     
-                    guard let objectIDArray = try context.persistentStoreCoordinator?
-                        .execute(deleteRequest, with: context) as? [NSManagedObjectID] else { return }
+                    guard let batchDeleteResult = try context.persistentStoreCoordinator?.execute(deleteRequest, with: context) as? NSBatchDeleteResult else { return }
+                    
+                    guard batchDeleteResult.resultType == .resultTypeObjectIDs,
+                          let objectIDArray = batchDeleteResult.result as? [NSManagedObjectID] else { return }
                     
                     let changes = [NSDeletedObjectsKey: objectIDArray]
 
