@@ -23,33 +23,15 @@ program
   .option('--ignore_chromium', 'do not update chromium version even if it is stale')
   .option('--nohooks', 'Do not run hooks after updating')
 
-const installDepotTools = (options = config.defaultOptions) => {
+const maybeInstallDepotTools = (options = config.defaultOptions) => {
   options.cwd = config.braveCoreDir
 
   if (!fs.existsSync(config.depotToolsDir)) {
     Log.progress('Install Depot Tools...')
     fs.mkdirSync(config.depotToolsDir)
     util.run('git', ['-C', config.depotToolsDir, 'clone', 'https://chromium.googlesource.com/chromium/tools/depot_tools.git', '.'], options)
+    Log.progress('Done Depot Tools...')
   }
-
-  Log.progress('Fixup Depot Tools...')
-  // fixup depot tools after update
-  if (process.platform !== 'win32') {
-    util.run('git', ['-C', config.depotToolsDir, 'clean', '-fxd'], options)
-    util.run('git', ['-C', config.depotToolsDir, 'reset', '--hard', 'HEAD'], options)
-  } else {
-    // On Windows:
-    // When depot_tools are already installed they redirect git to their own
-    // version which resides in a bootstrap-*_bin directory. So when we try to
-    // do git clean -fxd we fail because the git executable is in use in that
-    // directory. Get around that by using regular git.
-    let git_exes = util.run('where', ['git'], {shell: true})
-    let git_exe = '"' + git_exes.stdout.toString().split(os.EOL)[0] + '"'
-    if (git_exe === '""') git_exe = 'git'
-    util.run(git_exe, ['-C', config.depotToolsDir, 'clean', '-fxd'], options)
-    util.run(git_exe, ['-C', config.depotToolsDir, 'reset', '--hard', 'HEAD'], options)
-  }
-  Log.progress('Done Depot Tools...')
 }
 
 async function RunCommand () {
@@ -62,9 +44,7 @@ async function RunCommand () {
     process.exit(1)
   }
 
-  if (program.init || !fs.existsSync(config.depotToolsDir)) {
-    installDepotTools()
-  }
+  maybeInstallDepotTools()
 
   if (program.init) {
     util.buildGClientConfig()
