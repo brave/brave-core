@@ -26,9 +26,7 @@ struct BlinkMemoryCachePartitionTestCase {
 class EphemeralStorageBlinkMemoryCacheBrowserTestBase
     : public EphemeralStorageBrowserTest {
  public:
-  EphemeralStorageBlinkMemoryCacheBrowserTestBase() {
-    features_.InitAndEnableFeature(blink::features::kPartitionBlinkMemoryCache);
-  }
+  EphemeralStorageBlinkMemoryCacheBrowserTestBase() {}
 
   void NavigateAndWaitForImgLoad(Browser* browser,
                                  const GURL& url,
@@ -63,9 +61,6 @@ class EphemeralStorageBlinkMemoryCacheBrowserTestBase
                          run_loop.QuitClosure());
     run_loop.Run();
   }
-
- private:
-  base::test::ScopedFeatureList features_;
 };
 
 class EphemeralStorageBlinkMemoryCacheSplitBrowserTest

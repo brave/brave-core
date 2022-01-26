@@ -42,7 +42,7 @@ const base::Feature kNavigatorConnectionAttribute{
 
 // Enable blink::MemoryCache partitioning for non SameSite requests.
 const base::Feature kPartitionBlinkMemoryCache{
-    "PartitionBlinkMemoryCache", base::FEATURE_DISABLED_BY_DEFAULT};
+    "PartitionBlinkMemoryCache", base::FEATURE_ENABLED_BY_DEFAULT};
 
 // Enable WebSockets connection pool limit per eTLD+1 for each renderer.
 const base::Feature kRestrictWebSocketsPool{"RestrictWebSocketsPool",
