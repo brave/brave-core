@@ -366,10 +366,12 @@ Config.prototype.buildArgs = function () {
     args.enable_profiling = true
   }
 
-  if (this.sccache && process.platform === 'win32') {
-    args.clang_use_chrome_plugins = false
+  if (this.sccache) {
+    if (process.platform === 'win32') {
+      args.clang_use_chrome_plugins = false
+      args.use_thin_lto = true
+    }
     args.enable_precompiled_headers = false
-    args.use_thin_lto = true
   }
 
   if (this.targetArch === 'x86' && process.platform === 'linux') {
