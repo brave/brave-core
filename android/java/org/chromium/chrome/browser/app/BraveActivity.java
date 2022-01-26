@@ -1122,9 +1122,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                  requestCode == USER_WALLET_ACTIVITY_REQUEST_CODE ||
                  requestCode == SITE_BANNER_REQUEST_CODE) ) {
             dismissRewardsPanel();
-            String open_url = data.getStringExtra(BraveActivity.OPEN_URL);
-            if (!TextUtils.isEmpty(open_url)) {
-                openNewOrSelectExistingTab(open_url);
+            if (data != null) {
+                String open_url = data.getStringExtra(BraveActivity.OPEN_URL);
+                if (!TextUtils.isEmpty(open_url)) {
+                    openNewOrSelectExistingTab(open_url);
+                }
             }
         } else if (resultCode == RESULT_OK
                 && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
