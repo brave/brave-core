@@ -27,6 +27,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.SpannableString;
 import android.text.style.ClickableSpan;
+import android.util.Pair;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
@@ -119,6 +120,8 @@ public class Utils {
     public static final String ASSET_DECIMALS = "assetDecimals";
     public static final String CHAIN_ID = "chainId";
     private static final int CLEAR_CLIPBOARD_INTERVAL = 60000; // In milliseconds
+    private static final String ETHEREUM_CONTRACT_FOR_SWAP =
+            "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
     public static List<String> getRecoveryPhraseAsList(String recoveryPhrase) {
         String[] recoveryPhraseArray = recoveryPhrase.split(" ");
@@ -438,12 +441,13 @@ public class Utils {
         return 0;
     }
 
-    public static String toWei(String number, int decimals) {
-        if (number.isEmpty()) {
-            return "0";
+    public static String toWei(String number, int decimals, boolean calculateOtherAsset) {
+        if (number.isEmpty() || calculateOtherAsset) {
+            return "";
         }
+
         int dotPosition = number.indexOf(".");
-        String multiplier = getDecimalsDepNumber(decimals);
+        String multiplier = Utils.getDecimalsDepNumber(decimals);
         if (dotPosition != -1) {
             int zeroToRemove = number.length() - dotPosition - 1;
             multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
@@ -453,11 +457,11 @@ public class Utils {
             BigInteger bigNumber = new BigInteger(number, 10);
             BigInteger res = bigNumber.multiply(new BigInteger(multiplier));
 
-            return res.toString();
+            return res.equals(BigInteger.ZERO) ? "" : res.toString();
         } catch (NumberFormatException ex) {
         }
 
-        return "0";
+        return "";
     }
 
     public static double fromWei(String number, int decimals) {
@@ -1350,5 +1354,17 @@ public class Utils {
         if (error != ProviderError.SUCCESS) {
             Log.d(tag, apiName + ": " + error + " - " + errorMessage);
         }
+    }
+
+    public static Pair<Integer, String> getBuySendSwapContractAddress(BlockchainToken token) {
+        int decimals = 18;
+        String address = ETHEREUM_CONTRACT_FOR_SWAP;
+        if (token != null) {
+            decimals = token.decimals;
+            address = token.contractAddress;
+            if (address.isEmpty()) address = ETHEREUM_CONTRACT_FOR_SWAP;
+        }
+
+        return new Pair<Integer, String>(decimals, address);
     }
 }

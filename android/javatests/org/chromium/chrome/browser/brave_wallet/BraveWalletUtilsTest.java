@@ -89,11 +89,12 @@ public class BraveWalletUtilsTest {
     @Test
     @SmallTest
     public void toWei() {
-        assertEquals(Utils.toWei("50", 18), "50000000000000000000");
-        assertEquals(Utils.toWei("5", 18), "5000000000000000000");
-        assertEquals(Utils.toWei("0.5", 18), "500000000000000000");
-        assertEquals(Utils.toWei("0.05", 18), "50000000000000000");
-        assertEquals(Utils.toWei("", 18), "0");
+        assertEquals(Utils.toWei("50", 18, false), "50000000000000000000");
+        assertEquals(Utils.toWei("5", 18, false), "5000000000000000000");
+        assertEquals(Utils.toWei("0.5", 18, false), "500000000000000000");
+        assertEquals(Utils.toWei("0.05", 18, false), "50000000000000000");
+        assertEquals(Utils.toWei("", 18, false), "");
+        assertEquals(Utils.toWei("", 18, true), "");
     }
 
     @Test
