@@ -33,7 +33,12 @@ class ConversionQueue final : public Table {
   void Delete(const ConversionQueueItemInfo& conversion_queue_item,
               ResultCallback callback);
 
+  void Update(const ConversionQueueItemInfo& conversion_queue_item,
+              ResultCallback callback);
+
   void GetAll(GetConversionQueueCallback callback);
+
+  void GetUnprocessed(GetConversionQueueCallback callback);
 
   void GetForCreativeInstanceId(
       const std::string& creative_instance_id,
@@ -69,6 +74,7 @@ class ConversionQueue final : public Table {
   void MigrateToV10(mojom::DBTransaction* transaction);
   void MigrateToV11(mojom::DBTransaction* transaction);
   void MigrateToV17(mojom::DBTransaction* transaction);
+  void MigrateToV21(mojom::DBTransaction* transaction);
 
   int batch_size_;
 };
