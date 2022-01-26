@@ -12,7 +12,6 @@ const os = require('os')
 
 program
   .version(process.env.npm_package_version)
-  .arguments('[ref]')
   .option('--gclient_file <file>', 'gclient config file location')
   .option('--gclient_verbose', 'verbose output for gclient')
   .option('--target_os <target_os>', 'target OS')
@@ -50,11 +49,9 @@ async function RunCommand () {
     util.buildGClientConfig()
   }
 
-  if (!braveCoreRef) {
-    braveCoreRef = program.init ? config.getProjectVersion('brave-core') : null
-  }
+  braveCoreRef = program.init ? config.getProjectVersion('brave-core') : null
 
-  if (braveCoreRef || program.init || program.force) {
+  if (program.init || program.force) {
     // we're doing a reset of brave-core so try to stash any changes
     Log.progress('Stashing any local changes')
     util.runGit(config.braveCoreDir, ['stash'], true)
@@ -63,7 +60,9 @@ async function RunCommand () {
   Log.progress('Running gclient sync...')
   const result = util.gclientSync(program.init || program.force, program.init, braveCoreRef, !program.ignore_chromium)
   const postSyncBraveCoreRef = util.getGitReadableLocalRef(config.braveCoreDir)
-  Log.status(`Brave Core is now at ${postSyncBraveCoreRef || '[unknown]'}`)
+  if (braveCoreRef) {
+    Log.status(`Brave Core is now at ${postSyncBraveCoreRef || '[unknown]'}`)
+  }
   if (result.didUpdateChromium) {
     const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
     Log.status(`Chromium is now at ${postSyncChromiumRef || '[unknown]'}`)
