@@ -1,4 +1,4 @@
-# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -6,20 +6,25 @@
 import("//build/config/ios/rules.gni")
 import("//ios/build/config.gni")
 
-source_set("common") {
+source_set("certificate") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
-    "common_operations.h",
-    "common_operations.mm",
-    "conversions.h",
+    "brave_certificate.h",
+    "brave_certificate.mm",
   ]
 
   deps = [
     "//base",
+    "//brave/ios/browser/api/certificate/models",
+    "//brave/ios/browser/api/certificate/utils",
     "//net",
-    "//url",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/boringssl",
   ]
 
-  frameworks = [ "Foundation.framework" ]
+  frameworks = [
+    "Foundation.framework",
+    "Security.framework",
+  ]
 }
