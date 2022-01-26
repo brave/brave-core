@@ -38,7 +38,11 @@ import {
   LongWrapper,
   ConnectWithSiteWrapper
 } from '../stories/style'
-import { SendWrapper, PanelWrapper } from './style'
+import {
+  SendWrapper,
+  PanelWrapper,
+  WelcomePanelWrapper
+} from './style'
 import store from './store'
 import * as WalletPanelActions from './actions/wallet_panel_actions'
 import * as WalletActions from '../common/actions/wallet_actions'
@@ -555,11 +559,11 @@ function Container (props: Props) {
 
   if (!isWalletCreated) {
     return (
-      <PanelWrapper isLonger={true}>
+      <WelcomePanelWrapper>
         <LongWrapper>
-          <WelcomePanel onRestore={onRestore} onSetup={onSetup} />
+          <WelcomePanel onSetup={onSetup} />
         </LongWrapper>
-      </PanelWrapper>
+      </WelcomePanelWrapper>
     )
   }
 

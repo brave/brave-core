@@ -275,6 +275,8 @@
   <message name="IDS_BRAVE_WALLET_PANEL_NOT_CONNECTED" desc="Brave Wallet panel disconnected status">Connect</message>
   <message name="IDS_BRAVE_WALLET_PANEL_VIEW_ACCOUNT_ASSETS" desc="Brave Wallet panel view account assets button">View account assets</message>
   <message name="IDS_BRAVE_WALLET_ASSETS_PANEL_TITLE" desc="Brave Wallet assets panel title">Account assets</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_PANEL_DESCRIPTION" desc="Brave Wallet welcome panel description">Use this panel to securely access web3 and all your crypto assets.</message>
+  <message name="IDS_BRAVE_WALLET_WELCOME_PANEL_BUTTON" desc="Brave Wallet welcome panel call to action button">Learn more</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_FUNCTION" desc="Transaction detail box function label">FUNCTION TYPE</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_HEX" desc="Transaction detail box hex data label">HEX DATA</message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_DETAIL_BOX_BYTES" desc="Transaction detail box bytes label">BYTES</message>
