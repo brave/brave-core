@@ -104,6 +104,7 @@ extern const PrepopulatedEngine qwant;
 extern const PrepopulatedEngine startpage;
 extern const PrepopulatedEngine brave_yandex;
 extern const PrepopulatedEngine brave_search;
+extern const PrepopulatedEngine brave_bing;
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap();
