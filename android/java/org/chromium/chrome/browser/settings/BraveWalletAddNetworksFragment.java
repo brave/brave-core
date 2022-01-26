@@ -283,7 +283,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
 
     private void addEthereumChain(EthereumChain chain) {
         assert mJsonRpcService != null;
-        mJsonRpcService.addEthereumChain(chain, (chainId, error, errorMessage) -> {
+        mJsonRpcService.addCustomChain(chain, (chainId, error, errorMessage) -> {
             if (error != ProviderError.SUCCESS) {
                 return;
             }

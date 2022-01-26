@@ -42,10 +42,10 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   BraveWalletHandler(const BraveWalletHandler&) = delete;
   BraveWalletHandler& operator=(const BraveWalletHandler&) = delete;
 
-  void OnAddEthereumChain(base::Value javascript_callback,
-                          const std::string& chain_id,
-                          brave_wallet::mojom::ProviderError error,
-                          const std::string& error_message);
+  void OnAddCustomChain(base::Value javascript_callback,
+                        const std::string& chain_id,
+                        brave_wallet::mojom::ProviderError error,
+                        const std::string& error_message);
   base::OnceClosure chain_callback_for_testing_;
   base::WeakPtrFactory<BraveWalletHandler> weak_ptr_factory_{this};
 };

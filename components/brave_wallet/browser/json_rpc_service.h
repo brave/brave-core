@@ -127,8 +127,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void SetNetwork(const std::string& chain_id,
                   SetNetworkCallback callback) override;
   void GetNetwork(GetNetworkCallback callback) override;
-  void AddEthereumChain(mojom::EthereumChainPtr chain,
-                        AddEthereumChainCallback callback) override;
+  void AddCustomChain(mojom::EthereumChainPtr chain,
+                      AddCustomChainCallback callback) override;
   void AddEthereumChainForOrigin(
       mojom::EthereumChainPtr chain,
       const GURL& origin,
@@ -348,9 +348,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       AddEthereumChainForOriginCallback callback,
       bool success);
 
-  void OnEthChainIdValidated(mojom::EthereumChainPtr chain,
-                             AddEthereumChainCallback callback,
-                             bool success);
+  void OnCustomChainIdValidated(mojom::EthereumChainPtr chain,
+                                AddCustomChainCallback callback,
+                                bool success);
 
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, IsValidDomain);
   FRIEND_TEST_ALL_PREFIXES(JsonRpcServiceUnitTest, Reset);

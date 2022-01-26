@@ -117,7 +117,7 @@ void BraveWalletHandler::GetCustomNetworksList(
   ResolveJavascriptCallback(args[0], base::Value(json_string));
 }
 
-void BraveWalletHandler::OnAddEthereumChain(
+void BraveWalletHandler::OnAddCustomChain(
     base::Value javascript_callback,
     const std::string& chain_id,
     brave_wallet::mojom::ProviderError error,
@@ -141,9 +141,9 @@ void BraveWalletHandler::AddEthereumChain(base::Value::ConstListView args) {
 
   auto chain = GetEthereumChain(args[1].GetString(), &error_message);
   if (chain && json_rpc_service) {
-    json_rpc_service->AddEthereumChain(
+    json_rpc_service->AddCustomChain(
         chain->Clone(),
-        base::BindOnce(&BraveWalletHandler::OnAddEthereumChain,
+        base::BindOnce(&BraveWalletHandler::OnAddCustomChain,
                        weak_ptr_factory_.GetWeakPtr(), args[0].Clone()));
     return;
   }
