@@ -920,14 +920,17 @@ public class BraveNewTabPageLayout
             mFeedSpinner.setVisibility(View.VISIBLE);
 
             boolean isFeedLoaded = BraveActivity.getBraveActivity().isLoadedFeed();
+
             CopyOnWriteArrayList<FeedItemsCard> existingNewsFeedObject =
                     BraveActivity.getBraveActivity().getNewsItemsFeedCards();
-            int prevScrollPosition = SharedPreferencesManager.getInstance().readInt(
-                    Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()));
+            Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+            int prevScrollPosition = (tab != null)
+                    ? SharedPreferencesManager.getInstance().readInt(Integer.toString(tab.getId()))
+                    : 0;
 
-            mmViewedNewsCardsCount =
-                    SharedPreferencesManager.getInstance().readInt("mViewedNewsCardsCount_"
-                            + BraveActivity.getBraveActivity().getActivityTab().getId());
+            mmViewedNewsCardsCount = (tab != null) ? SharedPreferencesManager.getInstance().readInt(
+                                             "mViewedNewsCardsCount_" + tab.getId())
+                                                   : 0;
             if (prevScrollPosition == 0) {
                 isFeedLoaded = false;
                 existingNewsFeedObject = null;
@@ -936,9 +939,10 @@ public class BraveNewTabPageLayout
 
             if (!isFeedLoaded) {
                 getFeed();
-                SharedPreferencesManager.getInstance().writeInt(
-                        Integer.toString(BraveActivity.getBraveActivity().getActivityTab().getId()),
-                        1);
+                if (tab != null) {
+                    SharedPreferencesManager.getInstance().writeInt(
+                            Integer.toString(tab.getId()), 1);
+                }
                 // Brave News interaction started
                 if (mBraveNewsController != null) {
                     mBraveNewsController.onInteractionSessionStarted();

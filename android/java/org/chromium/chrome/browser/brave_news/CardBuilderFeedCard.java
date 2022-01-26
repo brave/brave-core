@@ -1356,6 +1356,7 @@ public class CardBuilderFeedCard {
                             requestOptions.centerInside().transform(new CenterCrop(), radius);
                     Glide.with(mActivity)
                             .asBitmap()
+                            .thumbnail(ConfigurationUtils.isTablet(mActivity) ? 0.5f : 0.1f)
                             .load(decodedByte)
                             .centerCrop()
                             .apply(requestOptions)
