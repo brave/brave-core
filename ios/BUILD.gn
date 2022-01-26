@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/ios/browser/api/certificate/headers.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/rules.gni")
 
@@ -54,6 +55,8 @@ brave_core_public_headers = [
   "$root_gen_dir/brave/ios/browser/api/skus/skus_sdk.mojom.objc.h",
   "//brave/ios/browser/api/version_info/version_info_ios.h",
 ]
+
+brave_core_public_headers += browser_api_certificate_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"
