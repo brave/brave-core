@@ -487,9 +487,9 @@ class SearchViewController: SiteTableViewController, LoaderListener {
             if let defaultSearchEngine = searchEngines?.defaultEngine() {
                 if defaultSearchEngine.shortName.contains(Strings.searchSuggestionSectionTitleNoSearchFormat) ||
                     defaultSearchEngine.shortName.lowercased().contains("search") {
-                    return defaultSearchEngine.shortName
+                    return defaultSearchEngine.displayName
                 }
-                return String(format: Strings.searchSuggestionSectionTitleFormat, defaultSearchEngine.shortName)
+                return String(format: Strings.searchSuggestionSectionTitleFormat, defaultSearchEngine.displayName)
             }
             return Strings.searchSuggestionsSectionHeader
         case .bookmarksAndHistory: return Strings.searchHistorySectionHeader
