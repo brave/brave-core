@@ -35,6 +35,7 @@ export interface Props {
   onClose: () => void
   onCreateAccount: (name: string) => void
   onImportAccount: (accountName: string, privateKey: string) => void
+  isFilecoinEnabled: boolean
   onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
@@ -52,6 +53,7 @@ const AddAccountModal = (props: Props) => {
   const {
     accounts,
     selectedNetwork,
+    isFilecoinEnabled,
     hasImportError,
     tab,
     onClose,
@@ -307,7 +309,7 @@ const AddAccountModal = (props: Props) => {
         <SelectAccountTypeWrapper>
           <SelectAccountTitle>{getLocale('braveWalletCreateAccountTitle')}</SelectAccountTitle>
           <DividerLine />
-          {CreateAccountOptions().map((network) =>
+          {CreateAccountOptions(isFilecoinEnabled).map((network) =>
             <SelectAccountItemWrapper key={network.coin}>
               <AccountTypeItem
                 onClickCreate={onSelectAccountType(network)}

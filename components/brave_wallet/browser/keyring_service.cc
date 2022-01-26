@@ -754,10 +754,7 @@ void KeyringService::ImportFilecoinSECP256K1Account(
     const std::string& private_key_hex,
     const std::string& network,
     ImportFilecoinSECP256K1AccountCallback callback) {
-  if (!IsFilecoinEnabled()) {
-    VLOG(1) << "Filecoin feature is not enabled";
-    return;
-  }
+  DCHECK(IsFilecoinEnabled());
   if (account_name.empty() || private_key_hex.empty() || !encryptor_) {
     std::move(callback).Run(false, "");
     return;
@@ -783,11 +780,7 @@ void KeyringService::ImportFilecoinBLSAccount(
     const std::string& public_key_hex,
     const std::string& network,
     ImportFilecoinBLSAccountCallback callback) {
-  if (!IsFilecoinEnabled()) {
-    VLOG(1) << "Filecoin feature is not enabled";
-    std::move(callback).Run(false, "");
-    return;
-  }
+  DCHECK(IsFilecoinEnabled());
 
   if (account_name.empty() || private_key_hex.empty() ||
       public_key_hex.empty() || !encryptor_) {
@@ -822,7 +815,7 @@ KeyringService::ImportSECP256K1AccountForFilecoinKeyring(
     const std::string& network) {
   auto* keyring = static_cast<FilecoinKeyring*>(
       GetHDKeyringById(mojom::kFilecoinKeyringId));
-  if (!keyring || !IsFilecoinEnabled()) {
+  if (!keyring) {
     return absl::nullopt;
   }
 
@@ -854,7 +847,7 @@ absl::optional<std::string> KeyringService::ImportBLSAccountForFilecoinKeyring(
     const std::string& network) {
   auto* keyring = static_cast<FilecoinKeyring*>(
       GetHDKeyringById(mojom::kFilecoinKeyringId));
-  if (!keyring || !IsFilecoinEnabled()) {
+  if (!keyring) {
     return absl::nullopt;
   }
 

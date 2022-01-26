@@ -37,6 +37,7 @@ import { normalizeNumericValue } from '../../utils/bn-utils'
 
 const defaultState: WalletState = {
   hasInitialized: false,
+  isFilecoinEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
   favoriteApps: [],
@@ -106,6 +107,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
     ...state,
     hasInitialized: true,
     isWalletCreated: payload.isWalletCreated,
+    isFilecoinEnabled: payload.isFilecoinEnabled,
     isWalletLocked: payload.isWalletLocked,
     favoriteApps: payload.favoriteApps,
     accounts,
