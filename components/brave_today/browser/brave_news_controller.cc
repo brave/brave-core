@@ -267,7 +267,7 @@ void BraveNewsController::SetPublisherPref(const std::string& publisher_id,
           if (new_status == mojom::UserEnabled::NOT_MODIFIED) {
             update->RemoveKey(publisher_id);
           } else {
-            update->SetBoolean(publisher_id,
+            update->SetBoolKey(publisher_id,
                                (new_status == mojom::UserEnabled::ENABLED));
           }
           // Force an update of publishers and feed to include or ignore
