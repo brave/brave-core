@@ -32,11 +32,10 @@ bool BraveIsAllowedThirdParty(const GURL& url,
   static const base::NoDestructor<
       // url -> first_party_url allow map
       std::vector<std::pair<ContentSettingsPattern, ContentSettingsPattern>>>
-      entity_list(
-          {{ContentSettingsPattern::FromString(kWp),
-            ContentSettingsPattern::FromString(kWordpress)},
-           {ContentSettingsPattern::FromString(kWordpress),
-            ContentSettingsPattern::FromString(kWp)}});
+      entity_list({{ContentSettingsPattern::FromString(kWp),
+                    ContentSettingsPattern::FromString(kWordpress)},
+                   {ContentSettingsPattern::FromString(kWordpress),
+                    ContentSettingsPattern::FromString(kWp)}});
 
   if (net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ==
