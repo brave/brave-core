@@ -15,13 +15,10 @@ program
   .arguments('[ref]')
   .option('--gclient_file <file>', 'gclient config file location')
   .option('--gclient_verbose', 'verbose output for gclient')
-  .option('--run_hooks', 'This flag is deprecated and no longer has any effect')
-  .option('--run_sync', 'This flag is deprecated and no longer has any effect')
   .option('--target_os <target_os>', 'target OS')
   .option('--target_arch <target_arch>', 'target architecture')
   .option('--target_android_base <target_android_base>', 'target Android OS level for apk or aab (classic, modern, mono)')
   .option('--init', 'initialize all dependencies')
-  .option('--all', 'This flag is deprecated and no longer has any effect')
   .option('--force', 'force reset all projects to origin/ref')
   .option('--ignore_chromium', 'do not update chromium version even if it is stale')
   .option('--nohooks', 'Do not run hooks after updating')
@@ -58,10 +55,6 @@ const installDepotTools = (options = config.defaultOptions) => {
 async function RunCommand () {
   program.parse(process.argv)
   config.update(program)
-
-  if (program.all || program.run_hooks || program.run_sync) {
-    Log.warn('--all, --run_hooks and --run_sync are deprecated. Will behave as if flag was not passed. Please update your command to `npm run sync` in the future.')
-  }
 
   let braveCoreRef = program.args[0]
   if (braveCoreRef && !program.init) {
