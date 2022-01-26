@@ -1,0 +1,12 @@
+diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
+index 7c2d6ad6d3f3e10d3c9c15278ccd3ad9b5247c5a..bb31e6eac2f078cbfb4ec42801068d9fe569b8ff 100644
+--- a/components/permissions/permission_request_manager.cc
++++ b/components/permissions/permission_request_manager.cc
+@@ -450,6 +450,7 @@ const std::vector<PermissionRequest*>& PermissionRequestManager::Requests() {
+ }
+ 
+ GURL PermissionRequestManager::GetRequestingOrigin() const {
++  if (requests_.size() > 0 && requests_[0]->request_type() == permissions::RequestType::kBraveEthereum) return requests_.front()->requesting_origin();
+   CHECK(!requests_.empty());
+   GURL origin = requests_.front()->requesting_origin();
+   if (DCHECK_IS_ON()) {
