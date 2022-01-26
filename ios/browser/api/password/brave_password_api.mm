@@ -225,6 +225,27 @@ class PasswordStoreConsumerHelper
   DISALLOW_COPY_AND_ASSIGN(PasswordStoreConsumerHelper);
 };
 
+
+class BravePasswordStoreConsumer
+  : public password_manager::PasswordStoreConsumer {
+ public:
+  BravePasswordStoreConsumer(
+    std::function<void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)>&& callback) : callback(std::move(callback)) {}
+
+ private:
+    std::function<void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)> callback;
+
+    void OnGetPasswordStoreResults(
+      std::vector<std::unique_ptr<password_manager::PasswordForm>> results) override;
+};
+
+void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
+  std::vector<std::unique_ptr<password_manager::PasswordForm>> results) {
+
+    callback(std::move(results));
+    delete this;
+}
+
 #pragma mark - BravePasswordAPI
 
 @interface BravePasswordAPI () {
@@ -331,13 +352,17 @@ class PasswordStoreConsumerHelper
 }
 
 - (NSArray<IOSPasswordForm*>*)getSavedLogins {
-  PasswordStoreConsumerHelper password_consumer;
-  password_store_->GetAllLogins(&password_consumer);
+  password_store_->GetAllLogins(new BravePasswordStoreConsumer(^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
 
-  std::vector<std::unique_ptr<password_manager::PasswordForm>> credentials =
-      password_consumer.WaitForResult();
+    int testNumber = logins.size();
 
-  return [self onLoginsResult:std::move(credentials)];
+    NSLog(@"Test number %d", testNumber);
+
+  }));
+
+  return @[];
+
+  //return [self onLoginsResult:std::move(credentials)];
 }
 
 - (NSArray<IOSPasswordForm*>*)getSavedLoginsForURL:(NSURL*)url
