@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 
+#include <vector>
+
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -25,6 +27,19 @@ namespace {
 
 SidebarService* GetSidebarService(Browser* browser) {
   return SidebarServiceFactory::GetForProfile(browser->profile());
+}
+
+std::vector<int> GetAllExistingTabIndexForHost(Browser* browser,
+                                               const std::string& host) {
+  const int tab_count = browser->tab_strip_model()->count();
+  std::vector<int> all_index;
+  for (int i = 0; i < tab_count; ++i) {
+    content::WebContents* tab = browser->tab_strip_model()->GetWebContentsAt(i);
+    if (tab->GetVisibleURL().host() == host)
+      all_index.push_back(i);
+  }
+
+  return all_index;
 }
 
 }  // namespace
@@ -55,7 +70,36 @@ void SidebarController::ActivateItemAt(int index) {
     return;
   }
 
+  // Iterate whenever builtin panel icon clicks.
+  if (IsBuiltInType(item)) {
+    IterateOrLoadAtActiveTab(item.url);
+    return;
+  }
+
   LoadAtTab(item.url);
+}
+
+void SidebarController::IterateOrLoadAtActiveTab(const GURL& url) {
+  // Get target tab index
+  const auto all_index = GetAllExistingTabIndexForHost(browser_, url.host());
+  // Load at current active tab if there is no tab that loaded |url|.
+  if (all_index.empty()) {
+    auto params = GetSingletonTabNavigateParams(browser_, url);
+    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+    Navigate(&params);
+    return;
+  }
+
+  auto* tab_strip_model = browser_->tab_strip_model();
+  const int active_index = tab_strip_model->active_index();
+  for (const auto i : all_index) {
+    if (i > active_index) {
+      tab_strip_model->ActivateTabAt(i);
+      return;
+    }
+  }
+
+  tab_strip_model->ActivateTabAt(all_index[0]);
 }
 
 void SidebarController::LoadAtTab(const GURL& url) {
