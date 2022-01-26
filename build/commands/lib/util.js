@@ -22,7 +22,7 @@ const mergeWithDefault = (options) => {
 
 async function applyPatches() {
   const GitPatcher = require('./gitPatcher')
-  Log.progress('Applying patches...')
+  Log.progressStart('Applying patches...')
   // Always detect if we need to apply patches, since user may have modified
   // either chromium source files, or .patch files manually
   const coreRepoPath = config.braveCoreDir
@@ -43,7 +43,7 @@ async function applyPatches() {
   Log.allPatchStatus(allPatchStatus, 'Chromium')
 
   const hasPatchError = allPatchStatus.some(p => p.error)
-  Log.progress('Done applying patches.')
+  Log.progressStop('Done applying patches.')
   // Exit on error in any patch
   if (hasPatchError) {
     Log.error('Exiting as not all patches were successful!')
@@ -754,9 +754,9 @@ const util = {
   },
 
   gclientRunhooks: (options = {}) => {
-    Log.progress('Running gclient hooks...')
+    Log.progressStart('Running gclient hooks...')
     runGClient(['runhooks'], options)
-    Log.progress('Done running gclient hooks.')
+    Log.progressStop('Done running gclient hooks.')
   },
 
   runGClient: (args, options) => {

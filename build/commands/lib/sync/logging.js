@@ -22,8 +22,20 @@ const cmdDirStyle = chalk.blue
 const cmdCmdStyle = chalk.green
 const cmdArrowStyle = chalk.magenta
 
-function progress (message) {
+let progressTimes = [];
+
+function progress(message) {
   console.log(progressStyle(message))
+}
+
+function progressStart(message) {
+  progress(message)
+  progressTimes.push(Date.now())
+}
+
+function progressStop(message) {
+  const timeSpent = `(${(Date.now() - progressTimes.pop())/1000} seconds)`
+  progress(`${message} ${timeSpent}`)
 }
 
 function status(message) {
@@ -102,6 +114,8 @@ function logPatchStatus ({ reason, path, patchPath, error, warning }) {
 
 module.exports = {
   progress,
+  progressStart,
+  progressStop,
   status,
   error,
   warn,

@@ -74,7 +74,7 @@ async function RunCommand () {
     util.runGit(config.braveCoreDir, ['stash'], true)
   }
 
-  Log.progress('Running gclient sync...')
+  Log.progressStart('Running gclient sync...')
   const result = util.gclientSync(program.init || program.force, program.init, braveCoreRef, !program.ignore_chromium)
   const postSyncBraveCoreRef = util.getGitReadableLocalRef(config.braveCoreDir)
   if (braveCoreRef) {
@@ -84,7 +84,7 @@ async function RunCommand () {
     const postSyncChromiumRef = util.getGitReadableLocalRef(config.srcDir)
     Log.status(`Chromium is now at ${postSyncChromiumRef || '[unknown]'}`)
   }
-  Log.progress('...gclient sync done')
+  Log.progressStop(`...gclient sync done`)
 
   if (config.isCI && config.getCachePath()) {
     console.log(
