@@ -452,7 +452,6 @@ Config.prototype.buildArgs = function () {
     }
     args.enable_dsyms = true
     args.enable_stripping = !this.isDebug()
-    args.use_xcode_clang = false
     args.use_clang_coverage = false
     args.use_lld = false
     // Component builds are not supported for iOS:
