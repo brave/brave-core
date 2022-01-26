@@ -62,6 +62,7 @@ public class BraveNewsAdapterFeedCard
         LinearLayout.LayoutParams params1;
         if (mNewsItems != null) {
             mNewsItem = mNewsItems.get(position);
+            mHolder.linearLayout.removeAllViews();
             try {
                 if (mBraveNewsController != null) {
                     new CardBuilderFeedCard(mBraveNewsController, mHolder.linearLayout, mActivity,
@@ -86,7 +87,7 @@ public class BraveNewsAdapterFeedCard
 
     @Override
     public int getItemViewType(int position) {
-        return position;
+        return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
