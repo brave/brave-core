@@ -67,7 +67,7 @@ struct CryptoPagesView: View {
       )
       .background(
         Color.clear
-          .sheet(isPresented: $isShowingSearch) {
+          .sheet(isPresented: $cryptoStore.isPresentingAssetSearch) {
             AssetSearchView(
               keyringStore: keyringStore,
               cryptoStore: cryptoStore
@@ -77,7 +77,7 @@ struct CryptoPagesView: View {
       .toolbar {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
           Button(action: {
-            isShowingSearch = true
+            cryptoStore.isPresentingAssetSearch = true
           }) {
             Label(Strings.Wallet.searchTitle, systemImage: "magnifyingglass")
               .labelStyle(.iconOnly)
