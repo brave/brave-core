@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
 import { IconWrapper, PlaceholderText } from './style'
-import { stripERC20TokenImageURL, isRemoteImageURL } from '../../../utils/string-utils'
+import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension } from '../../../utils/string-utils'
 import { background } from 'ethereum-blockies'
 import { ETH } from '../../../options/asset-options'
 
@@ -29,15 +29,38 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       return null
     }
     const tokenImageURL = stripERC20TokenImageURL(selectedAsset?.logo)
-    const checkIconURL = selectedAsset?.symbol !== 'ETH' && (tokenImageURL === '' || isRemoteImageURL(tokenImageURL))
+    const isRemoteURL = isRemoteImageURL(tokenImageURL)
+    const isDataURL = selectedAsset?.logo.startsWith('chrome://erc-token-images/')
+    const isStorybook = selectedAsset?.logo.startsWith('static/media/components/brave_wallet_ui/')
+
+    const isValidIcon = React.useMemo(() => {
+      console.log(selectedAsset?.logo)
+      if (isRemoteURL || isDataURL) {
+        const url = new URL(selectedAsset?.logo)
+        return isValidIconExtension(url.pathname)
+      }
+      if (isStorybook) {
+        return true
+      }
+      return false
+    }, [isRemoteURL, isDataURL, tokenImageURL])
+
+    const needsPlaceholder = selectedAsset?.symbol !== 'ETH' && (tokenImageURL === '' || !isValidIcon)
 
     const bg = React.useMemo(() => {
-      if (checkIconURL) {
+      if (needsPlaceholder) {
         return background({ seed: selectedAsset.contractAddress ? selectedAsset?.contractAddress.toLowerCase() : selectedAsset.name })
       }
     }, [selectedAsset])
 
-    if (checkIconURL) {
+    const remoteImage = React.useMemo(() => {
+      if (isRemoteURL) {
+        return `chrome://image?${tokenImageURL}`
+      }
+      return ''
+    }, [tokenImageURL])
+
+    if (needsPlaceholder) {
       return (
         <IconWrapper
           panelBackground={bg}
@@ -57,7 +80,7 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
         marginLeft={marginLeft ?? 0}
         marginRight={marginRight ?? 0}
       >
-        <WrappedComponent icon={selectedAsset?.symbol === 'ETH' ? ETH.logo : selectedAsset?.logo} />
+        <WrappedComponent icon={selectedAsset?.symbol === 'ETH' ? ETH.logo : isRemoteURL ? remoteImage : selectedAsset?.logo} />
       </IconWrapper>
     )
   }

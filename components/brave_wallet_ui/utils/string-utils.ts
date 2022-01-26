@@ -7,3 +7,6 @@ export const toProperCase = (value: string) =>
 
 export const isRemoteImageURL = (url?: string) =>
   url?.startsWith('http://') || url?.startsWith('https://') || url?.startsWith('data:image/')
+
+export const isValidIconExtension = (url?: string) =>
+  url?.endsWith('.jpg') || url?.endsWith('.jpeg') || url?.endsWith('.png') || url?.endsWith('.svg')

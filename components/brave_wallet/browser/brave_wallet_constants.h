@@ -293,6 +293,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletWatchListAdvanced", IDS_BRAVE_WALLET_WATCH_LIST_ADVANCED},
     {"braveWalletWatchListCoingeckoId",
      IDS_BRAVE_WALLET_WATCH_LIST_COINGECKO_ID},
+    {"braveWalletIconURL", IDS_BRAVE_WALLET_ICON_URL},
     {"braveWalletAccountSettingsDisclaimer",
      IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DISCLAIMER},
     {"braveWalletAccountSettingsShowKey",
