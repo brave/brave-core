@@ -21,7 +21,7 @@ namespace ads {
 
 namespace {
 
-constexpr int kMaximumIssuerPublicKeys = 2;
+constexpr int kMaximumIssuerPublicKeys = 3;
 
 bool PublicKeyExists(const IssuerInfo& issuer, const std::string& public_key) {
   const auto iter = issuer.public_keys.find(public_key);
