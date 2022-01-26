@@ -1,5 +1,5 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index 8472cd21a14cf7ea67a19abf0f0a569d0a4f18cb..1c3d2da86782a5154dbfcfcd764f22a87e7b93de 100644
+index 8472cd21a14cf7ea67a19abf0f0a569d0a4f18cb..70519f5865ca9258d82e7da100da9912b83dc1d8 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
 @@ -261,6 +261,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
@@ -27,3 +27,11 @@ index 8472cd21a14cf7ea67a19abf0f0a569d0a4f18cb..1c3d2da86782a5154dbfcfcd764f22a8
      }
  
      if (change->type() == EntityChange::ACTION_DELETE) {
+@@ -893,6 +895,7 @@ DeviceInfoSyncBridge::CountActiveDevicesByType() const {
+ }
+ 
+ void DeviceInfoSyncBridge::ExpireOldEntries() {
++  BRAVE_SKIP_EXPIRE_OLD_ENTRIES
+   const base::Time expiration_threshold =
+       base::Time::Now() - kExpirationThreshold;
+   std::unordered_set<std::string> cache_guids_to_expire;
