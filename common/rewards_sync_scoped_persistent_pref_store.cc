@@ -49,7 +49,8 @@ void RewardsSyncScopedPersistentPrefStore::ReportValueChanged(
     uint32_t flags) {
   // if |key| starts with "brave.rewards.sync", we remove the "brave.rewards."
   // part
-  if (!key.rfind(scope_ + ".sync", 0)) {
+  if (!key.rfind(scope_ + ".sync", 0) ||
+      !key.rfind(scope_ + ".brave_sync_v2", 0)) {
     for (auto& observer : observers_) {
       observer.OnPrefValueChanged(key.substr(scope_.size() + 1));
     }
@@ -77,6 +78,8 @@ RewardsSyncScopedPersistentPrefStore::~RewardsSyncScopedPersistentPrefStore() =
 // if |key| starts with "sync", we prepend "brave.rewards."
 std::string RewardsSyncScopedPersistentPrefStore::MapSync(
     const std::string& key) const {
-  return (!key.rfind("sync", 0) ? scope_ + '.' : "") + key;
+  return (!key.rfind("sync", 0) || !key.rfind("brave_sync_v2", 0) ? scope_ + '.'
+                                                                  : "") +
+         key;
 }
 }  // namespace brave
