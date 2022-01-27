@@ -187,7 +187,7 @@ bool BraveTranslateBubbleView::ShouldShowWindowTitle() const {
 
 void BraveTranslateBubbleView::Init() {
   TranslateBubbleView::Init();
-  removed_translate_view_ = RemoveChildViewT(translate_view_);
+  removed_translate_view_ = RemoveChildViewT(translate_view_.get());
   translate_view_ = AddChildView(BraveCreateViewBeforeTranslate());
 }
 

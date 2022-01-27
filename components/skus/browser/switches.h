@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_SKUS_BROWSER_SWITCHES_H_
 #define BRAVE_COMPONENTS_SKUS_BROWSER_SWITCHES_H_
 
-namespace brave_rewards {
+namespace skus {
 
 namespace switches {
 
@@ -15,6 +15,6 @@ constexpr char kSkusEnv[] = "skus-env";
 
 }  // namespace switches
 
-}  // namespace brave_rewards
+}  // namespace skus
 
 #endif  // BRAVE_COMPONENTS_SKUS_BROWSER_SWITCHES_H_

@@ -17,7 +17,7 @@ export const localeStrings = {
   rewardsOptInTerms: 'By proceeding, you agree to the $1Terms of Service$2 and $3Privacy Policy$4.',
   rewardsOptInText: 'Earn tokens by viewing Brave Private Ads and support content creators automatically.',
   rewardsPaymentCheckStatus: 'Check status',
-  rewardsPaymentCompleted: 'Congrats! Your $1 $2 rewards have arrived!',
+  rewardsPaymentCompleted: 'Congrats! Your $1 rewards have arrived!',
   rewardsPaymentPending: 'Your $1 $2 rewards will arrive in $3',
   rewardsPaymentProcessing: 'Your $1 $2 rewards are on the way. Keep an eye out!',
   rewardsProgress: 'Progress',

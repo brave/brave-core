@@ -22,7 +22,7 @@ import { Dispatch, State } from './types'
 import LedgerBridgeKeyring from '../../common/hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
-import { GetAccountsHardwareOperationResult } from '../hardware_operations'
+import { GetAccountsHardwareOperationResult } from '../hardware/types'
 
 export const getERC20Allowance = (
   contractAddress: string,

@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/scoped_observation.h"
@@ -45,6 +46,10 @@ class GreaselionDownloadServiceWaiter
       : download_service_(download_service) {
     scoped_observer_.Observe(download_service_);
   }
+  GreaselionDownloadServiceWaiter(const GreaselionDownloadServiceWaiter&) =
+      delete;
+  GreaselionDownloadServiceWaiter& operator=(
+      const GreaselionDownloadServiceWaiter&) = delete;
   ~GreaselionDownloadServiceWaiter() override = default;
 
   void Wait() { run_loop_.Run(); }
@@ -60,8 +65,6 @@ class GreaselionDownloadServiceWaiter
   base::ScopedObservation<GreaselionDownloadService,
                           GreaselionDownloadService::Observer>
       scoped_observer_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(GreaselionDownloadServiceWaiter);
 };
 
 class GreaselionServiceWaiter : public GreaselionService::Observer {
@@ -70,6 +73,8 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
       : greaselion_service_(greaselion_service) {
     scoped_observer_.Observe(greaselion_service_);
   }
+  GreaselionServiceWaiter(const GreaselionServiceWaiter&) = delete;
+  GreaselionServiceWaiter& operator=(const GreaselionServiceWaiter&) = delete;
   ~GreaselionServiceWaiter() override = default;
 
   void Wait() {
@@ -89,8 +94,6 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
   base::RunLoop run_loop_;
   base::ScopedObservation<GreaselionService, GreaselionService::Observer>
       scoped_observer_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(GreaselionServiceWaiter);
 };
 
 class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
@@ -180,7 +183,7 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
 
   std::unique_ptr<rewards_browsertest::RewardsBrowserTestResponse> response_;
   net::test_server::EmbeddedTestServer https_server_;
-  brave_rewards::RewardsServiceImpl* rewards_service_;
+  raw_ptr<brave_rewards::RewardsServiceImpl> rewards_service_ = nullptr;
 };
 
 #if !defined(OS_MAC)

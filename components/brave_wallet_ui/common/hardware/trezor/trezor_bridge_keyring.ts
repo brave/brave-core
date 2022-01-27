@@ -27,12 +27,12 @@ import {
   GetAccountsHardwareOperationResult,
   HardwareOperationResult,
   SignHardwareMessageOperationResult,
-  SignHardwareTransactionOperationResult
-} from '../../hardware_operations'
+  SignHardwareTransactionOperationResult,
+  TrezorDerivationPaths
+} from '../types'
 import { Unsuccessful } from 'trezor-connect'
 import { TrezorKeyring } from '../hardwareKeyring'
 import { HardwareVendor } from '../../api/hardware_keyrings'
-import { TrezorDerivationPaths } from '../types'
 
 export default class TrezorBridgeKeyring extends TrezorKeyring {
   private unlocked: boolean = false
@@ -136,7 +136,7 @@ export default class TrezorBridgeKeyring extends TrezorKeyring {
       const unsuccess = response.payload
       return { success: false, error: unsuccess.error, code: unsuccess.code }
     }
-    return { success: true, payload: response.payload.signature }
+    return { success: true, payload: '0x' + response.payload.signature }
   }
 
   private async sendTrezorCommand<T> (command: TrezorFrameCommand): Promise<T | TrezorErrorsCodes> {

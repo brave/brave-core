@@ -46,12 +46,13 @@ class SequentialUpdateChecker : public UpdateChecker {
       const std::vector<std::string>& ids_checked,
       const IdToComponentPtrMap& components,
       const base::flat_map<std::string, std::string>& additional_attributes,
-      bool enabled_component_updates,
       UpdateCheckCallback update_check_callback) override;
 
   // Needs to be public so std::make_unique(...) works in Create(...).
   SequentialUpdateChecker(scoped_refptr<Configurator> config,
                           PersistedData* metadata);
+  SequentialUpdateChecker(const SequentialUpdateChecker&) = delete;
+  SequentialUpdateChecker& operator=(const SequentialUpdateChecker&) = delete;
   ~SequentialUpdateChecker() override;
 
  private:
@@ -76,7 +77,6 @@ class SequentialUpdateChecker : public UpdateChecker {
   // outlives this class.
   const IdToComponentPtrMap* components_;
   base::flat_map<std::string, std::string> additional_attributes_;
-  bool enabled_component_updates_;
   UpdateCheckCallback update_check_callback_;
 
   std::deque<std::string> remaining_ids_;
@@ -86,8 +86,6 @@ class SequentialUpdateChecker : public UpdateChecker {
   std::unique_ptr<UpdateChecker> update_checker_;
   // Aggregates results from all sequential update requests.
   ProtocolParser::Results results_;
-
-  DISALLOW_COPY_AND_ASSIGN(SequentialUpdateChecker);
 };
 
 }  // namespace update_client

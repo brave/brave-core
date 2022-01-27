@@ -1,8 +1,8 @@
 diff --git a/extensions/renderer/native_extension_bindings_system.h b/extensions/renderer/native_extension_bindings_system.h
-index 0b4503b0991dfbf15cb908c86ec0601eddfd98f0..741f8cb758a9d4f593105c62271965d50d3042e5 100644
+index c7b68b44c18753a5d3fb280168c535526594c1b0..3fa4784213ab1fe39fe45cd91f9a8f4f2ad726d5 100644
 --- a/extensions/renderer/native_extension_bindings_system.h
 +++ b/extensions/renderer/native_extension_bindings_system.h
-@@ -40,6 +40,7 @@ class NativeExtensionBindingsSystem {
+@@ -41,6 +41,7 @@ class NativeExtensionBindingsSystem {
    NativeExtensionBindingsSystem& operator=(
        const NativeExtensionBindingsSystem&) = delete;
  

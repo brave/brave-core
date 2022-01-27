@@ -1,11 +1,11 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index 41f1743b6719eafd3d34ce35a97af470314e6d16..4054b89e9647e24c3a3b8f699f9adb4c0fd98d4e 100644
+index 6f541710825e8229a8d8afdb28ed057e7bee12ae..976f1f21169ddf97b9d1d55e9b0008c1e100d811 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
-@@ -289,6 +289,7 @@ AutocompleteController::AutocompleteController(
+@@ -283,6 +283,7 @@ AutocompleteController::AutocompleteController(
    if (provider_types & AutocompleteProvider::TYPE_SEARCH) {
      search_provider_ = new SearchProvider(provider_client_.get(), this);
-     providers_.push_back(search_provider_);
+     providers_.push_back(search_provider_.get());
 +    BRAVE_AUTOCOMPLETE_CONTROLLER_AUTOCOMPLETE_CONTROLLER
    }
    // It's important that the HistoryURLProvider gets added after SearchProvider:

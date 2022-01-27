@@ -48,15 +48,16 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
     : public views::HighlightPathGenerator {
  public:
   BraveLocationBarViewFocusRingHighlightPathGenerator() = default;
+  BraveLocationBarViewFocusRingHighlightPathGenerator(
+      const BraveLocationBarViewFocusRingHighlightPathGenerator&) = delete;
+  BraveLocationBarViewFocusRingHighlightPathGenerator& operator=(
+      const BraveLocationBarViewFocusRingHighlightPathGenerator&) = delete;
 
   // HighlightPathGenerator
   SkPath GetHighlightPath(const views::View* view) override {
     return static_cast<const BraveLocationBarView*>(view)
         ->GetFocusRingHighlightPath();
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveLocationBarViewFocusRingHighlightPathGenerator);
 };
 
 absl::optional<SkColor> GetFocusRingColor(Profile* profile) {

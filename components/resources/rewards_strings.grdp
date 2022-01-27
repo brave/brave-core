@@ -4,7 +4,7 @@
     Check status
   </message>
   <message name="IDS_REWARDS_PAYMENT_COMPLETED" desc="">
-    Congrats! Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards have arrived!
+    Congrats! Your <ph name="MONTH">$1<ex>October</ex></ph> rewards have arrived!
   </message>
   <message name="IDS_REWARDS_PAYMENT_PENDING" desc="">
     Your <ph name="AMOUNT">$1<ex>+1.5 BAT</ex></ph> <ph name="MONTH">$2<ex>October</ex></ph> rewards will arrive in <ph name="DAYS">$3<ex>4 days</ex></ph>

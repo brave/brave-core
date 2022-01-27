@@ -541,6 +541,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "redirectModalUpholdBATNotAllowedTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BAT_NOT_ALLOWED_TITLE},     // NOLINT
         { "redirectModalUpholdBlockedUserText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BLOCKED_USER_TEXT},     // NOLINT
         { "redirectModalUpholdBlockedUserTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_BLOCKED_USER_TITLE},     // NOLINT
+        { "redirectModalUpholdCustomerDueDiligenceRequiredText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED_TEXT},     // NOLINT
+        { "redirectModalUpholdCustomerDueDiligenceRequiredTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_CUSTOMER_DUE_DILIGENCE_REQUIRED_TITLE},     // NOLINT
         { "redirectModalUpholdPendingUserText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_PENDING_USER_TEXT},     // NOLINT
         { "redirectModalUpholdPendingUserTitle", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_PENDING_USER_TITLE},     // NOLINT
         { "redirectModalUpholdRestrictedUserText", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_UPHOLD_RESTRICTED_USER_TEXT},     // NOLINT

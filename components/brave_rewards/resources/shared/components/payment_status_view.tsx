@@ -133,7 +133,6 @@ export function PaymentStatusView (props: Props) {
         <div>
           {
             formatMessage(getString('rewardsPaymentCompleted'), [
-              <RewardAmount key='amount' amount={props.earningsLastMonth} />,
               getPaymentMonth()
             ])
           }

@@ -5,7 +5,12 @@
 
 import { BraveWallet } from '../../constants/types'
 import { HardwareVendor } from '../api/hardware_keyrings'
-import { GetAccountsHardwareOperationResult, HardwareOperationResult, SignHardwareMessageOperationResult, SignHardwareTransactionOperationResult } from '../hardware_operations'
+import {
+  GetAccountsHardwareOperationResult,
+  HardwareOperationResult,
+  SignHardwareMessageOperationResult,
+  SignHardwareTransactionOperationResult
+} from './types'
 
 export abstract class HardwareKeyring {
   abstract getAccounts (from: number, to: number, scheme: string): Promise<GetAccountsHardwareOperationResult>

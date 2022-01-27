@@ -1,0 +1,20 @@
+[package]
+name = "skus-cxx"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cxx = { path = "../../../../../../third_party/rust/cxx/v1/crate"}
+async-trait = { version = "0.1", git = "https://github.com/dtolnay/async-trait" }
+futures-preview = { version = "0.3.0-alpha.17" }
+libc = { version = "0.2" }
+skus = { path = "../lib" }
+serde_json = "1.0"
+tracing-subscriber = "0.2"
+tracing = "0.1"
+
+[lib]
+name = "skus_cxx"
+crate-type = ["rlib"]

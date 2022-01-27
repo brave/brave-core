@@ -8,6 +8,7 @@
 
 #include "brave/components/sync/driver/sync_service_impl_delegate.h"
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -41,13 +42,14 @@ class BraveSyncServiceImplDelegate
 
   void RecordP3ASyncStatus();
 
-  syncer::DeviceInfoTracker* device_info_tracker_;
-  syncer::LocalDeviceInfoProvider* local_device_info_provider_;
+  raw_ptr<syncer::DeviceInfoTracker> device_info_tracker_ = nullptr;
+  raw_ptr<syncer::LocalDeviceInfoProvider> local_device_info_provider_ =
+      nullptr;
   base::ScopedObservation<syncer::DeviceInfoTracker,
                           syncer::DeviceInfoTracker::Observer>
       device_info_observer_{this};
 
-  DeviceInfoSyncService* device_info_sync_service_;
+  raw_ptr<DeviceInfoSyncService> device_info_sync_service_ = nullptr;
 
   base::WeakPtrFactory<BraveSyncServiceImplDelegate> weak_ptr_factory_;
 

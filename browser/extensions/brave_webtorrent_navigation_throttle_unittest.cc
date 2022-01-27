@@ -11,6 +11,7 @@
 
 #include "base/command_line.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/load_error_reporter.h"
@@ -77,6 +78,12 @@ class BraveWebTorrentNavigationThrottleUnitTest
       : local_state_(TestingBrowserProcess::GetGlobal()) {
   }
 
+  BraveWebTorrentNavigationThrottleUnitTest(
+      const BraveWebTorrentNavigationThrottleUnitTest&) = delete;
+
+  BraveWebTorrentNavigationThrottleUnitTest& operator=(
+      const BraveWebTorrentNavigationThrottleUnitTest&) = delete;
+
   void SetUp() override {
     original_client_ = content::SetBrowserClientForTesting(&client_);
     content::RenderViewHostTestHarness::SetUp();
@@ -139,13 +146,12 @@ class BraveWebTorrentNavigationThrottleUnitTest
  private:
   scoped_refptr<const Extension> extension_;
   MockBrowserClient client_;
-  content::ContentBrowserClient* original_client_;
+  raw_ptr<content::ContentBrowserClient> original_client_ = nullptr;
   ScopedTestingLocalState local_state_;
   base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   // The ExtensionService associated with the primary profile.
   extensions::ExtensionService* extension_service_ = nullptr;
-  DISALLOW_COPY_AND_ASSIGN(BraveWebTorrentNavigationThrottleUnitTest);
 };
 
 // Tests the basic case of loading a URL, it should proceed.

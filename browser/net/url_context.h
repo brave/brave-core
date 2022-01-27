@@ -58,6 +58,8 @@ enum class AdblockRedirectType { kNoRedirect, kRemote, kLocal };
 
 struct BraveRequestInfo {
   BraveRequestInfo();
+  BraveRequestInfo(const BraveRequestInfo&) = delete;
+  BraveRequestInfo& operator=(const BraveRequestInfo&) = delete;
 
   // For tests, should not be used directly.
   explicit BraveRequestInfo(const GURL& url);
@@ -155,8 +157,6 @@ struct BraveRequestInfo {
   friend class ::BraveRequestHandler;
 
   GURL* new_url = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveRequestInfo);
 };
 
 // ResponseListener

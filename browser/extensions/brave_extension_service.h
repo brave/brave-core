@@ -22,11 +22,11 @@ class BraveExtensionService : public ExtensionService {
                         bool autoupdate_enabled,
                         bool extensions_enabled,
                         base::OneShotEvent* ready);
+  BraveExtensionService(const BraveExtensionService&) = delete;
+  BraveExtensionService& operator=(const BraveExtensionService&) = delete;
   ~BraveExtensionService() override;
 
   void AddComponentExtension(const Extension* extension) override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveExtensionService);
 };
 
 }  // namespace extensions

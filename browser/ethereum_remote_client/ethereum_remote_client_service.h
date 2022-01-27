@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/callback.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
@@ -38,6 +38,9 @@ class EthereumRemoteClientService
       content::BrowserContext* context,
       std::unique_ptr<EthereumRemoteClientDelegate>
           ethereum_remote_client_delegate);
+  EthereumRemoteClientService(const EthereumRemoteClientService&) = delete;
+  EthereumRemoteClientService& operator=(const EthereumRemoteClientService&) =
+      delete;
   ~EthereumRemoteClientService() override;
   using LoadUICallback = base::OnceCallback<void()>;
 
@@ -73,12 +76,11 @@ class EthereumRemoteClientService
  private:
   bool LoadRootSeedInfo(std::vector<uint8_t> key, std::string* seed);
 
-  content::BrowserContext* context_;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
   std::unique_ptr<EthereumRemoteClientDelegate>
       ethereum_remote_client_delegate_;
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   LoadUICallback load_ui_callback_;
-  DISALLOW_COPY_AND_ASSIGN(EthereumRemoteClientService);
 };
 
 #endif  // BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_ETHEREUM_REMOTE_CLIENT_SERVICE_H_

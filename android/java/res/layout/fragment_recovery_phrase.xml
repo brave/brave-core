@@ -96,7 +96,7 @@
             android:text="@string/wallet_copy"
             android:textColor="@color/wallet_text_color"/>
 
-        <CheckBox
+        <android.widget.CheckBox
             android:id="@+id/recovery_phrase_checkbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

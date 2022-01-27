@@ -38,6 +38,9 @@ class BraveContentSettingsAgentImpl
   BraveContentSettingsAgentImpl(content::RenderFrame* render_frame,
                                 bool should_whitelist,
                                 std::unique_ptr<Delegate> delegate);
+  BraveContentSettingsAgentImpl(const BraveContentSettingsAgentImpl&) = delete;
+  BraveContentSettingsAgentImpl& operator=(
+      const BraveContentSettingsAgentImpl&) = delete;
   ~BraveContentSettingsAgentImpl() override;
 
   bool IsCosmeticFilteringEnabled(const GURL& url) override;
@@ -107,8 +110,6 @@ class BraveContentSettingsAgentImpl
 
   mojo::AssociatedReceiverSet<brave_shields::mojom::BraveShields>
       brave_shields_receivers_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsAgentImpl);
 };
 
 }  // namespace content_settings

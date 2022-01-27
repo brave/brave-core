@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "base/feature_list.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/common/url_constants.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -47,7 +48,7 @@ class DontAskAgainCheckbox : public views::Checkbox {
  private:
   void ButtonPressed();
 
-  WidevinePermissionRequest* request_;
+  raw_ptr<WidevinePermissionRequest> request_ = nullptr;
 };
 
 DontAskAgainCheckbox::DontAskAgainCheckbox(WidevinePermissionRequest* request)

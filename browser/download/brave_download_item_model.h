@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 
 // The purpose of this class is to extend DonwloadItemModel's class
 // functionality by adding a method for the origin URL text and
@@ -23,6 +23,8 @@ class BraveDownloadItemModel {
  public:
   // Constructs a BraveDownloadItemModel that encapsulates DownloadItemModel.
   explicit BraveDownloadItemModel(DownloadUIModel* model);
+  BraveDownloadItemModel(const BraveDownloadItemModel&) = delete;
+  BraveDownloadItemModel& operator=(const BraveDownloadItemModel&) = delete;
   ~BraveDownloadItemModel();
 
   // Method that returns a string suitable for use as a tooltip. For
@@ -36,9 +38,7 @@ class BraveDownloadItemModel {
   std::u16string GetOriginURLText(bool* is_secure);
 
   // Encapsulated model.
-  DownloadUIModel* model_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveDownloadItemModel);
+  raw_ptr<DownloadUIModel> model_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_MODEL_H_

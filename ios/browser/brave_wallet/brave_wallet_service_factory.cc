@@ -20,10 +20,12 @@
 namespace brave_wallet {
 
 // static
-mojom::BraveWalletService* BraveWalletServiceFactory::GetForBrowserState(
+mojo::PendingRemote<mojom::BraveWalletService>
+BraveWalletServiceFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
   return static_cast<BraveWalletService*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+             GetInstance()->GetServiceForBrowserState(browser_state, true))
+      ->MakeRemote();
 }
 
 // static

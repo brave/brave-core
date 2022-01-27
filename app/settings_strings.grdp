@@ -230,7 +230,7 @@
     Edit
   </message>
   <message name="IDS_SETTINGS_END_TIME" desc="The label of the end time bubble of settings-scheduler-slider">
-    End time
+    End time <ph name="TIME">$1<ex>5:00 AM</ex></ph>
   </message>
   <message name="IDS_SETTINGS_NOT_VALID" desc="Text indicating that an input is not valid.">
     Not valid
@@ -248,7 +248,7 @@
     Slider: <ph name="MIN_LABEL">$1<ex>Slowest</ex></ph> to <ph name="MAX_LABEL">$2<ex>Fastest</ex></ph>
   </message>
   <message name="IDS_SETTINGS_START_TIME" desc="The label of the start time bubble of settings-scheduler-slider">
-    Start time
+    Start time <ph name="TIME">$1<ex>9:06 PM</ex></ph>
   </message>
 
   <!-- Autofill Page -->
@@ -526,7 +526,16 @@
     Make sure the password you are saving matches your password for <ph name="WEBSITE">$1<ex>airbnb.com</ex></ph>
   </message>
   <message name="IDS_SETTINGS_PASSWORD_USERNAME_ALREADY_USED" desc="An error message when user tried editing the username to a value which is already used for the same site.">
-    You already saved this username for this site
+    You already saved a password with this username for <ph name="WEBSITE">$1<ex>website.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_VIEW_EXISTING_PASSWORD" desc="A link text shown together with an error message when user tried editing the username to a value which is already used for the same site. On click shows existing password editor.">
+    View password
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_VIEW_EXISTING_PASSWORD_ARIA_DESCRIPTION" desc="An accessibility description for a link text shown together with an error message when user tried editing the username to a value which is already used for the same site. On click shows existing password editor.">
+    View password with username <ph name="USERNAME">$1<ex>username</ex></ph> for <ph name="WEBSITE">$2<ex>website.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_MISSING_TLD" desc="An error message when user entered a URL without a top-level domain as a site for a new password. It suggests to use the same value but with common top level domain." meaning="Suggesting user to add the top-level domain in the website text.">
+    Did you mean <ph name="WEBSITE">$1<ex>twitter.com</ex></ph>?
   </message>
   <message name="IDS_SETTINGS_PASSWORD_ADD_TITLE" desc="The title for a dialog, which allows a user to add a new password. This dialog includes other details, such as username and website.">
     Add password
@@ -709,7 +718,12 @@
   <message translateable="false" name="IDS_SETTINGS_TRUSTED_VAULT_OPT_IN_SUB_LABEL" desc="Sub-label for the link to the page to opt in to trusted vault encryption">
     Opt in to trusted vault
   </message>
-
+  <message name="IDS_SETTINGS_PASSWORD_SHOW_PASSWORD_A11Y" desc="The ARIA (accessibility) message for the 'Show Password' button, which sits in every row of the password list. For this row does not include a password, only information of the account. Reveals password when clicked.">
+    Show password for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_PASSWORD_HIDE_PASSWORD_A11Y" desc="The ARIA (accessibility) message for the 'Hide Password' button, which sits in every row of the password list. For this row does not include a password, only information of the account. Hides password when clicked.">
+    Hide password for <ph name="USERNAME">$1<ex>example@gmail.com</ex></ph> on <ph name="DOMAIN">$2<ex>www.google.com</ex></ph>
+  </message>
 
   <!-- Default Browser Page -->
   <if expr="not chromeos and not lacros">
@@ -1371,8 +1385,14 @@
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_SUB_HEADER" desc="A subheader shown at the top of the completion card in the privacy review that informs users that they can explore more settings or complete the privacy review.">
     Explore more settings below or finish now
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_LEAVE_BUTTON" desc="Text of a button in the completion car in the privacy review that leads the user back to Brave settings.">
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_LEAVE_BUTTON" desc="Text of a button in the completion card in the privacy review that leads the user back to Brave settings.">
     Done
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_PRIVACY_SANDBOX_LABEL" desc="Text of the Privacy Sandbox label in the completion card of the privacy review.">
+    Privacy Sandbox trial
+  </message>
+  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COMPLETION_CARD_WAA_LABEL" desc="Text of the Web and App Activity label in the completion card of the privacy review.">
+    Web &amp; App Activity
   </message>
   <message name="IDS_SETTINGS_PRIVACY_REVIEW_MSBB_CARD_HEADER" desc="Header of the 'make searches and browsing better' card in the privacy review.">
     Review settings for search and browsing optimization
@@ -1909,16 +1929,16 @@
     Search engines
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SEARCH_ENGINES_EXPLANATION" desc="Explanation for 'Search Engines' section">
-    To use a search engine other than the default, type its shortcut followed by your preferred keyboard shortcut. You can also change your default search engine here.
+    To use a search engine other than the default, type its shortcut in the address bar followed by your preferred keyboard shortcut. You can also change your default search engine here.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH" desc="Label for 'Site Search' section">
     Site search
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION" desc="Explanation for 'Site Search' section. Used interchangeably with IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK">
-    To search a specific site or part of Brave, you can type the shortcuts here into the address bar, then press Tab or Space.
+    To search a specific site or part of Brave, type its shortcut in the address bar, followed by your preferred keyboard shortcut.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_SITE_SEARCH_EXPLANATION_STARTER_PACK" desc="Explanation for 'Site Search' section">
-    To search a specific site or part of Brave, you can use the shortcuts here. For example, to search only Gmail, type "@gmail", then press Tab or Space.
+    To search a specific site or part of Brave, type its shortcut in the address bar, followed by your preferred keyboard shortcut. For example, to search only Bookmarks, type "@bookmarks", then press Tab or Space.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_NO_SITES_ADDED" desc="Text shown when the 'Site Search' section is empty">
     No sites added
@@ -1981,10 +2001,10 @@
     Keyboard shortcut
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_DESCRIPTION" desc="Text explaining how to use keyword mode">
-    In the address bar, enter the keyword for the website you want to search. Then, use a keyboard shortcut to continue.
+    In the address bar, use this keyboard shortcut with shortcuts for search engines and site search
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_DESCRIPTION_STARTER_PACK" desc="Text explaining how to use keyboard mode, if scoped search starter pack is enabled">
-    In the address bar, enter the shortcut for the site you want to search, such as "@gmail". Then, press your preferred keyboard shortcut, and enter your search term.
+    In the address bar, enter the shortcut for the site you want to search, such as "@bookmarks". Then, press your preferred keyboard shortcut, and enter your search term.
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_KEYBOARD_SHORTCUTS_SPACE_OR_TAB" desc="Label for setting that toggles whether scoped search mode can be triggered by space">
     Space or Tab
@@ -1993,13 +2013,13 @@
     Tab
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_SITES" desc="Label for button that expands the Site Search list of search engines to show all entries">
-    Additional Sites
+    Additional sites
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_INACTIVE_SITES" desc="Label for button that expands the Inactive Sites list of search engines to show all entries">
-    Additional Inactive Sites
+    Additional inactive sites
   </message>
   <message name="IDS_SETTINGS_SEARCH_ENGINES_ADDITIONAL_EXTENSIONS" desc="Label for button that expands the list of extensions to show all entries">
-    Additional Extensions
+    Additional extensions
   </message>
 
   <!-- Site Settings Page -->
@@ -2170,21 +2190,6 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_DEVICE_USE_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the device use content setting.">
     Not allowed to know when you're actively using your device
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_DESCRIPTION" desc="Description of the file handling content setting.">
-    Web apps typically ask to open certain types of files so you can work on those files where you want, like opening documents in your preferred word processor
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_ALLOWED" desc="Label for the enabled option of the file handling content setting.">
-    Web apps can ask to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_BLOCKED" desc="Label for the disabled option of the file handling content setting.">
-    Don't allow web apps to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_ALLOWED_EXCEPTIONS" desc="Label for the allowed exceptions site list of the file handling content setting.">
-    Allowed to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_BLOCKED_EXCEPTIONS" desc="Label for the blocked exceptions site list of the file handling content setting.">
-    Not allowed to open types of files
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_SYSTEM_WRITE_DESCRIPTION" desc="Description of the file system write content setting.">
     Sites usually access files and folders on your device for features like automatically saving your work
@@ -2818,12 +2823,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_IDLE_DETECTION_BLOCK" desc="The block label for the idle detection site settings.">
     Block sites from knowing when you're actively using this device
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_ASK" desc="The ask label for the file handling site settings.">
-    Ask when a web app wants to open types of files
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FILE_HANDLING_BLOCK" desc="The block label for the file handling site settings.">
-    Block web apps from opening types of files
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOWED" desc="A generic Allowed label to show in Site Settings when Allow is NOT the recommended option.">
     Allowed
   </message>
@@ -3181,16 +3180,9 @@
   <message name="IDS_SETTINGS_COOKIES_COOKIE_EXPIRES_LABEL" desc="The Cookie Expires label">
     Expires
   </message>
-  <message name="IDS_SETTINGS_COOKIES_APPLICATION_CACHE" desc="The text shown when there is an Application Cache (name of an HTML standard) in the Cookies table">
-    Application cache
-  </message>
   <message name="IDS_SETTINGS_COOKIES_FLASH_LSO" desc="The text shown when Flash has Local Shared Objects (informally known as 'Flash cookies') stored">
     Flash data
   </message>
-  <message name="IDS_SETTINGS_COOKIES_APPLICATION_CACHE_MANIFEST_LABEL" desc="The Manifest label (manifest is a URL specified by the application cache)">
-    Manifest
-  </message>
-
   <message name="IDS_SETTINGS_SITE_SETTINGS_NUM_COOKIES" desc="A label showing the number of cookies set on a site.">
     {NUM_COOKIES, plural,
         =1 {1 cookie}
@@ -3718,17 +3710,32 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_LABEL" desc="The label for a menu item that when clicked lets the user view and erase credentials on their security key (an authentication hardware device).">
     Sign-in data
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DESC" desc="The description for a menu item that when clicked lets the user view and erase credentials on their security key (an authentication hardware device).">
-    View and delete sign-in data stored on your security key
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_USERNAME_LABEL" desc="A column heading of a table that lists sign-in data stored on a security key (an authentication hardware device). This column contains the user name (e.g. exampleuser@google.com) for each credential.">
+    Username
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DIALOG_TITLE" desc="The title of a dialog that lets users view and erase credentials on their security key (an authentication hardware device).">
-    Security key sign-in data
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_DISPLAYNAME_LABEL" desc="A column heading of a table that lists sign-in data stored on a security key (an authentication hardware device). This column contains the display name (e.g. John Smith) for each credential.">
+    Name
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_WEBSITE" desc="A column heading of a table that lists credentials stored on a security key (an authentication hardware device). This column contains the domain name (e.g. google.com) for each credential.">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_WEBSITE_LABEL" desc="A column heading of a table that lists sign-in data stored on a security key (an authentication hardware device). This column contains the domain name (e.g. google.com) for each credential.">
     Website
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_USERNAME" desc="A column heading of a table that lists credentials stored on a security key (an authentication hardware device). This column contains the user name (e.g. exampleuser@google.com) for each credential.">
-    Username
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DESC" desc="The description for a menu item that when clicked lets the user view, edit, and erase credentials on their security key (an authentication hardware device).">
+    Manage sign-in data stored on your security key
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DIALOG_TITLE" desc="The title of a dialog that lets users manage sign-in data on their security key (an authentication hardware device).">
+    Security key sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_UPDATE_CREDENTIAL_DIALOG_TITLE" desc="The title of a dialog that lets users update sign-in data on their security key (an authentication hardware device).">
+    Edit sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_CONFIRM_DELETE_TITLE" desc="The title of a prompt that asks users to confirm whether they want to delete the selected sign-in data on their security key (an authentication hardware device).">
+    Delete sign-in data
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_CONFIRM_DELETE_CREDENTIAL" desc="A confirmation message shown to confirm the user wants to delete the selected sign-in data. Security keys are external devices used to authenticate people.">
+    Are you sure you want to delete the selected sign-in data?
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_INPUT_ERROR_TOO_LONG" desc="A validation error shown beneath a text box where the user is expected to enter a username or displayname for a security key. Security keys are external devices used to authenticate people.">
+    Input must be at most 62 characters
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_NO_CREDENTIALS" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device) but no such credentials exist.">
     This security key does not have any sign-in data
@@ -3745,11 +3752,17 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_ERROR" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device), but an error with the device was encountered.">
     Your security key couldn't be read
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_SUCCESS" desc="A confirmation message shown when a user deletes an individual credential on their security key (an authentication hardware device).">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DELETE_SUCCESS" desc="A confirmation message shown when a user deletes an individual credential on their security key (an authentication hardware device) and succeeds.">
     Your sign-in data was deleted
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_FAILED" desc="An error message shown when a user attempts to delete an individual credential on their security key (an authentication hardware device).">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DELETE_FAILED" desc="An error message shown when a user attempts to delete an individual credential on their security key (an authentication hardware device) and fails.">
     Your sign-in data couldn't be deleted
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_UPDATE_SUCCESS" desc="A confirmation message shown when a user updates an individual credential on their security key (an authentication hardware device) and succeeds.">
+    Your sign-in data was updated
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_UPDATE_FAILED" desc="An error message shown when a user attempts to update an individual credential on their security key (an authentication hardware device) and fails.">
+    Your sign-in data couldn't be updated
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_SUBPAGE_LABEL" desc="The label for a menu item that when clicked lets the user view, add, rename, and delete fingerprints on their security key (an authentication hardware device).">
     Fingerprints

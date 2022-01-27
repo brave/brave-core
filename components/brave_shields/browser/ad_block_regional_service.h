@@ -32,6 +32,8 @@ class AdBlockRegionalService : public AdBlockBaseService {
       const adblock::FilterList& catalog_entry,
       brave_component_updater::BraveComponent::Delegate* delegate,
       ResourcesFileReadyCallback resoures_file_ready_callback);
+  AdBlockRegionalService(const AdBlockRegionalService&) = delete;
+  AdBlockRegionalService& operator=(const AdBlockRegionalService&) = delete;
   ~AdBlockRegionalService() override;
 
   void SetCatalogEntry(const adblock::FilterList& entry);
@@ -63,7 +65,6 @@ class AdBlockRegionalService : public AdBlockBaseService {
   std::string base64_public_key_;
 
   base::WeakPtrFactory<AdBlockRegionalService> weak_factory_{this};
-  DISALLOW_COPY_AND_ASSIGN(AdBlockRegionalService);
 };
 
 // Creates the AdBlockRegionalService

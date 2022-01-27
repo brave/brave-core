@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -89,7 +90,7 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
   const net::EmbeddedTestServer* https_server() const { return &https_server_; }
 
  private:
-  BraveWalletService* wallet_service_;
+  raw_ptr<BraveWalletService> wallet_service_ = nullptr;
   net::EmbeddedTestServer https_server_;
   base::test::ScopedFeatureList feature_list_;
 };

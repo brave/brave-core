@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/speedreader/rust/ffi/speedreader_ffi.h"
 
 #if defined(SPEEDREADER_SHARED_LIBRARY)
@@ -73,7 +74,7 @@ class SPEEDREADER_EXPORT Rewriter {
   std::string output_;
   bool ended_;
   bool poisoned_;
-  C_CRewriter* raw_;
+  raw_ptr<C_CRewriter> raw_ = nullptr;
 };
 
 class SPEEDREADER_EXPORT SpeedReader {
@@ -105,7 +106,7 @@ class SPEEDREADER_EXPORT SpeedReader {
                                          void* output_sink_user_data);
 
  private:
-  C_SpeedReader* raw_;
+  raw_ptr<C_SpeedReader> raw_ = nullptr;
 };
 
 }  // namespace speedreader

@@ -1067,7 +1067,8 @@ void BraveWalletJSHandler::ExecuteScript(const std::string script) {
   if (web_frame->IsProvisional())
     return;
 
-  web_frame->ExecuteScript(blink::WebString::FromUTF8(script));
+  web_frame->ExecuteScript(
+      blink::WebScriptSource(blink::WebString::FromUTF8(script)));
 }
 
 void BraveWalletJSHandler::InjectInitScript() {

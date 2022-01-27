@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/callback.h"
-#include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/net/resource_context_data.h"
@@ -56,6 +55,8 @@ class BraveProxyingWebSocket
       scoped_refptr<RequestIDGenerator> request_id_generator,
       BraveRequestHandler* handler,
       DisconnectCallback on_disconnect);
+  BraveProxyingWebSocket(const BraveProxyingWebSocket&) = delete;
+  BraveProxyingWebSocket& operator=(const BraveProxyingWebSocket&) = delete;
   ~BraveProxyingWebSocket() override;
 
   static BraveProxyingWebSocket* ProxyWebSocket(
@@ -169,7 +170,6 @@ class BraveProxyingWebSocket
   DisconnectCallback on_disconnect_;
 
   base::WeakPtrFactory<BraveProxyingWebSocket> weak_factory_{this};
-  DISALLOW_COPY_AND_ASSIGN(BraveProxyingWebSocket);
 };
 
 #endif  // BRAVE_BROWSER_NET_BRAVE_PROXYING_WEB_SOCKET_H_

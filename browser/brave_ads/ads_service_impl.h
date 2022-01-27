@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
@@ -451,9 +452,9 @@ class AdsServiceImpl : public AdsService,
   void OnBackground() override;
   void OnForeground() override;
 
-  Profile* profile_;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 
-  history::HistoryService* history_service_;  // NOT OWNED
+  raw_ptr<history::HistoryService> history_service_ = nullptr;  // NOT OWNED
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   brave_adaptive_captcha::BraveAdaptiveCaptchaService*
@@ -493,8 +494,9 @@ class AdsServiceImpl : public AdsService,
 
   SimpleURLLoaderList url_loaders_;
 
-  NotificationDisplayService* display_service_;     // NOT OWNED
-  brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+  raw_ptr<NotificationDisplayService> display_service_ = nullptr;  // NOT OWNED
+  raw_ptr<brave_rewards::RewardsService> rewards_service_{
+      nullptr};  // NOT OWNED
 
   mojo::AssociatedReceiver<bat_ads::mojom::BatAdsClient>
       bat_ads_client_receiver_;

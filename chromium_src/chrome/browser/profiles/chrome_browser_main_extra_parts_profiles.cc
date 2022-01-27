@@ -17,13 +17,15 @@ class BraveBrowserMainExtraPartsProfiles
   BraveBrowserMainExtraPartsProfiles()
       : ChromeBrowserMainExtraPartsProfiles() {}
 
+  BraveBrowserMainExtraPartsProfiles(
+      const BraveBrowserMainExtraPartsProfiles&) = delete;
+  BraveBrowserMainExtraPartsProfiles& operator=(
+      const BraveBrowserMainExtraPartsProfiles&) = delete;
+
   void PreProfileInit() override {
     ChromeBrowserMainExtraPartsProfiles::PreProfileInit();
     brave::EnsureBrowserContextKeyedServiceFactoriesBuilt();
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainExtraPartsProfiles);
 };
 
 }  // namespace

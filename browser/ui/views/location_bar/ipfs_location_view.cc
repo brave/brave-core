@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
@@ -48,6 +49,8 @@ constexpr int kIconSize = 12;
 class HighlightPathGenerator : public views::HighlightPathGenerator {
  public:
   HighlightPathGenerator() = default;
+  HighlightPathGenerator(const HighlightPathGenerator&) = delete;
+  HighlightPathGenerator& operator=(const HighlightPathGenerator&) = delete;
 
   // views::HighlightPathGenerator:
   SkPath GetHighlightPath(const views::View* view) override {
@@ -56,9 +59,6 @@ class HighlightPathGenerator : public views::HighlightPathGenerator {
     const int corner_radius = view->height() / 2;
     return SkPath().addRoundRect(rect, corner_radius, corner_radius);
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(HighlightPathGenerator);
 };
 
 class IPFSLocationButtonView : public views::LabelButton {
@@ -90,6 +90,9 @@ class IPFSLocationButtonView : public views::LabelButton {
         this, std::make_unique<HighlightPathGenerator>());
   }
 
+  IPFSLocationButtonView(const IPFSLocationButtonView&) = delete;
+  IPFSLocationButtonView& operator=(const IPFSLocationButtonView&) = delete;
+
   ~IPFSLocationButtonView() override {}
 
   void SetIPFSLocation(GURL location) { ipfs_location_ = location; }
@@ -117,10 +120,7 @@ class IPFSLocationButtonView : public views::LabelButton {
   }
 
   GURL ipfs_location_;
-  Profile* profile_;
-
-  IPFSLocationButtonView(const IPFSLocationButtonView&) = delete;
-  IPFSLocationButtonView& operator=(const IPFSLocationButtonView&) = delete;
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace

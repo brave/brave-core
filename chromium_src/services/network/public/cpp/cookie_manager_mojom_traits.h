@@ -10,7 +10,7 @@
 #include "net/cookies/cookie_access_result.h"
 #include "net/cookies/cookie_change_dispatcher.h"
 #include "net/cookies/cookie_options.h"
-#include "net/cookies/cookie_partition_keychain.h"
+#include "net/cookies/cookie_partition_key_collection.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
 
 #define CookieOptions CookieOptions_ChromiumImpl

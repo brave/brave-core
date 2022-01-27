@@ -17,7 +17,8 @@ import {
   GetAccountsResponsePayload,
   TrezorGetAccountsResponse,
   SignTransactionResponse,
-  TrezorErrorsCodes
+  TrezorErrorsCodes,
+  SignMessageResponse
 } from './trezor-messages'
 import TrezorBridgeKeyring from './trezor_bridge_keyring'
 import { TrezorBridgeTransport } from './trezor-bridge-transport'
@@ -25,7 +26,7 @@ import { TrezorCommandHandler } from './trezor-command-handler'
 import { getMockedTransactionInfo } from '../../constants/mocks'
 import { HardwareOperationResult, SignHardwareTransactionOperationResult } from '../../hardware_operations'
 import { Unsuccessful } from 'trezor-connect'
-import { TrezorDerivationPaths } from '../types'
+import { SignHardwareMessageOperationResult, TrezorDerivationPaths } from '../types'
 
 let uuid = 0
 window.crypto = {
@@ -73,7 +74,8 @@ const createTransport = (url: string, hardwareTransport: TrezorBridgeTransport |
 
 const createTrezorTransport = (unlock: HardwareOperationResult,
                                accounts?: GetAccountsResponsePayload,
-                               signedPayload?: SignHardwareTransactionOperationResult) => {
+                               signedPayload?: SignHardwareTransactionOperationResult,
+                               signedMessagePayload?: SignHardwareMessageOperationResult) => {
   let hardwareTransport = createTransport(kTrezorBridgeUrl, new TrezorBridgeTransport(kTrezorBridgeUrl))
   hardwareTransport.contentWindow = {
     postMessage: (message: any, command: any) => {
@@ -97,6 +99,13 @@ const createTrezorTransport = (unlock: HardwareOperationResult,
           id: message.id,
           command: TrezorCommand.SignTransaction,
           payload: signedPayload
+        })
+      }
+      if (message.command === TrezorCommand.SignMessage) {
+        hardwareTransport.postResponse({
+          id: message.id,
+          command: TrezorCommand.SignMessage,
+          payload: signedMessagePayload
         })
       }
     }
@@ -202,9 +211,10 @@ test('isUnlocked', () => {
 
 const createTrezorKeyringWithTransport = (unlock: HardwareOperationResult,
                                           accounts?: TrezorGetAccountsResponse,
-                                          signedPayload?: SignTransactionResponse) => {
+                                          signedPayload?: SignTransactionResponse,
+                                          signedMessagePayload?: SignMessageResponse) => {
   const hardwareKeyring = new TrezorBridgeKeyring()
-  const transport = createTrezorTransport(unlock, accounts, signedPayload)
+  const transport = createTrezorTransport(unlock, accounts, signedPayload, signedMessagePayload)
   hardwareKeyring.sendTrezorCommand = async (command: TrezorFrameCommand, listener: Function) => {
     return transport.sendCommandToTrezorFrame(command, listener)
   }
@@ -451,5 +461,36 @@ test('Sign transaction failed from unlocked device', () => {
       error: signed.payload.error,
       code: signed.payload.code,
       success: false
+    })
+})
+
+test('Sign message from unlocked device success', () => {
+  const signMessagePayload = {
+    success: true,
+    payload: {
+      signature: 'test'
+    }
+  }
+  const hardwareKeyring = createTrezorKeyringWithTransport(
+    { success: true }, undefined, undefined, signMessagePayload)
+  return expect(hardwareKeyring.signPersonalMessage('m/44\'/60\'/0\'/0', 'Hello!'))
+    .resolves.toStrictEqual({ payload: '0x' + signMessagePayload.payload.signature, success: signMessagePayload.success })
+})
+
+test('Sign message from unlocked device failed', () => {
+  const signMessagePayload = {
+    success: false,
+    payload: {
+      code: 1,
+      error: 'error'
+    }
+  }
+  const hardwareKeyring = createTrezorKeyringWithTransport(
+    { success: true }, undefined, undefined, signMessagePayload)
+  return expect(hardwareKeyring.signPersonalMessage('m/44\'/60\'/0\'/0', 'Hello!'))
+    .resolves.toStrictEqual({
+      success: signMessagePayload.success,
+      code: signMessagePayload.payload.code,
+      error: signMessagePayload.payload.error
     })
 })

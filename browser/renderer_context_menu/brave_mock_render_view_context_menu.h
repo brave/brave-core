@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "components/renderer_context_menu/render_view_context_menu_proxy.h"
 #include "ui/base/models/image_model.h"
 #include "ui/base/models/simple_menu_model.h"
@@ -47,6 +47,10 @@ class BraveMockRenderViewContextMenu : public ui::SimpleMenuModel::Delegate,
   };
 
   explicit BraveMockRenderViewContextMenu(Profile* profile);
+  BraveMockRenderViewContextMenu(const BraveMockRenderViewContextMenu&) =
+      delete;
+  BraveMockRenderViewContextMenu& operator=(
+      const BraveMockRenderViewContextMenu&) = delete;
   ~BraveMockRenderViewContextMenu() override;
 
   // SimpleMenuModel::Delegate implementation.
@@ -102,18 +106,16 @@ class BraveMockRenderViewContextMenu : public ui::SimpleMenuModel::Delegate,
   // An observer used for initializing the status of menu items added in this
   // test. This is owned by our owner and the owner is responsible for its
   // lifetime.
-  RenderViewContextMenuObserver* observer_;
+  raw_ptr<RenderViewContextMenuObserver> observer_ = nullptr;
 
   // Either a regular profile or an incognito profile.
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
 
   // A list of menu items added.
   std::vector<MockMenuItem> items_;
 
   // Is menu printing enabled.
   bool enable_print_menu_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveMockRenderViewContextMenu);
 };
 
 #endif  // BRAVE_BROWSER_RENDERER_CONTEXT_MENU_BRAVE_MOCK_RENDER_VIEW_CONTEXT_MENU_H_

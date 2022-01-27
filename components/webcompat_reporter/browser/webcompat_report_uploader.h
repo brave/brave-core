@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "url/gurl.h"
 
@@ -24,6 +23,8 @@ class WebcompatReportUploader {
  public:
   explicit WebcompatReportUploader(
       scoped_refptr<network::SharedURLLoaderFactory>);
+  WebcompatReportUploader(const WebcompatReportUploader&) = delete;
+  WebcompatReportUploader& operator=(const WebcompatReportUploader&) = delete;
   ~WebcompatReportUploader();
 
   void SubmitReport(std::string report_domain);
@@ -34,8 +35,6 @@ class WebcompatReportUploader {
   void CreateAndStartURLLoader(const GURL& upload_url,
                                const std::string& post_data);
   void OnSimpleURLLoaderComplete(std::unique_ptr<std::string> response_body);
-
-  DISALLOW_COPY_AND_ASSIGN(WebcompatReportUploader);
 };
 
 }  // namespace brave

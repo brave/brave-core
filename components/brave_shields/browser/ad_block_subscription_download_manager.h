@@ -14,6 +14,7 @@
 
 #include "base/callback.h"
 #include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "components/download/public/background_service/download_params.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -124,7 +125,7 @@ class AdBlockSubscriptionDownloadManager
   // The Download Service to schedule list downloads with.
   //
   // Guaranteed to outlive |this|.
-  download::BackgroundDownloadService* download_service_;
+  raw_ptr<download::BackgroundDownloadService> download_service_ = nullptr;
 
   // Whether the download service is available.
   bool is_available_for_downloads_;
@@ -137,7 +138,8 @@ class AdBlockSubscriptionDownloadManager
   SEQUENCE_CHECKER(sequence_checker_);
 
   // Will be notified of success or failure of downloads.
-  AdBlockSubscriptionServiceManager* subscription_manager_;  // NOT OWNED
+  raw_ptr<AdBlockSubscriptionServiceManager> subscription_manager_ =
+      nullptr;  // NOT OWNED
 
   base::RepeatingCallback<base::FilePath(const GURL&)>
       subscription_path_callback_;

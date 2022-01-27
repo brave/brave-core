@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -48,8 +49,8 @@ class BraveBookmarkModelLoadedObserverBrowserTest
   bookmarks::BookmarkModel* bookmark_model() { return bookmark_model_; }
 
  private:
-  Profile* profile_;
-  bookmarks::BookmarkModel* bookmark_model_;
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<bookmarks::BookmarkModel> bookmark_model_ = nullptr;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveBookmarkModelLoadedObserverBrowserTest,

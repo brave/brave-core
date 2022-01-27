@@ -124,7 +124,7 @@ void CookieMonster::SetCanonicalCookieAsync(
 void CookieMonster::GetCookieListWithOptionsAsync(
     const GURL& url,
     const CookieOptions& options,
-    const CookiePartitionKeychain& cookie_partition_keychain,
+    const CookiePartitionKeyCollection& cookie_partition_key_collection,
     GetCookieListCallback callback) {
   if (options.should_use_ephemeral_storage()) {
     if (!options.top_frame_origin()) {
@@ -138,12 +138,12 @@ void CookieMonster::GetCookieListWithOptionsAsync(
         GetOrCreateEphemeralCookieStoreForTopFrameURL(
             options.top_frame_origin()->GetURL());
     ephemeral_monster->GetCookieListWithOptionsAsync(
-        url, options, cookie_partition_keychain, std::move(callback));
+        url, options, cookie_partition_key_collection, std::move(callback));
     return;
   }
 
   ChromiumCookieMonster::GetCookieListWithOptionsAsync(
-      url, options, cookie_partition_keychain, std::move(callback));
+      url, options, cookie_partition_key_collection, std::move(callback));
 }
 
 }  // namespace net

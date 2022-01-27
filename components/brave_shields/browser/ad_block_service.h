@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -50,6 +51,8 @@ class AdBlockService : public AdBlockBaseService {
   explicit AdBlockService(
       BraveComponent::Delegate* delegate,
       std::unique_ptr<AdBlockSubscriptionServiceManager> manager);
+  AdBlockService(const AdBlockService&) = delete;
+  AdBlockService& operator=(const AdBlockService&) = delete;
   ~AdBlockService() override;
 
   void ShouldStartRequest(const GURL& url,
@@ -93,7 +96,7 @@ class AdBlockService : public AdBlockBaseService {
       const std::string& component_id,
       const std::string& component_base64_public_key);
 
-  BraveComponent::Delegate* component_delegate_;
+  raw_ptr<BraveComponent::Delegate> component_delegate_ = nullptr;
 
   std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
       regional_service_manager_;
@@ -103,7 +106,6 @@ class AdBlockService : public AdBlockBaseService {
       subscription_service_manager_;
 
   base::WeakPtrFactory<AdBlockService> weak_factory_{this};
-  DISALLOW_COPY_AND_ASSIGN(AdBlockService);
 };
 
 // Registers the local_state preferences used by Adblock

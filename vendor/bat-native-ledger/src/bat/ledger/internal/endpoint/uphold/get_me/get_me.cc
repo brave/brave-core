@@ -109,6 +109,11 @@ type::Result GetMe::ParseBody(
     user->status = GetUserStatus(*status);
   }
 
+  if (const auto* cdd_status = dictionary->FindStringPath(
+          "verifications.customerDueDiligence.status")) {
+    user->customer_due_diligence_required = *cdd_status == "required";
+  }
+
   return type::Result::LEDGER_OK;
 }
 

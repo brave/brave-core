@@ -1,2 +1,2 @@
 HTTP/1.1 200 OK
-Accept-CH: arch,device-memory,downlink,dpr,ect,lang,model,platform,rtt,save-data,ua,viewport-height,viewport-width,width
+Accept-CH: arch,device-memory,downlink,dpr,ect,lang,model,platform,rtt,save-data,sec-ch-ua-full-version-list,ua,viewport-height,viewport-width,width

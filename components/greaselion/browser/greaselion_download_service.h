@@ -99,6 +99,9 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
  public:
   explicit GreaselionDownloadService(
       LocalDataFilesService* local_data_files_service);
+  GreaselionDownloadService(const GreaselionDownloadService&) = delete;
+  GreaselionDownloadService& operator=(const GreaselionDownloadService&) =
+      delete;
   ~GreaselionDownloadService() override;
 
   std::vector<std::unique_ptr<GreaselionRule>>* rules();
@@ -136,7 +139,6 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<GreaselionDownloadService> weak_factory_;
-  DISALLOW_COPY_AND_ASSIGN(GreaselionDownloadService);
 };  // namespace greaselion
 
 // Creates the GreaselionDownloadService

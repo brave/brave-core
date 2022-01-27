@@ -11,6 +11,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
 #include "url/gurl.h"
@@ -39,7 +40,7 @@ class WalletBubbleManagerDelegateImpl : public WalletBubbleManagerDelegate {
   const std::vector<int32_t>& GetPopupIdsForTesting() override;
 
  private:
-  content::WebContents* web_contents_;
+  raw_ptr<content::WebContents> web_contents_ = nullptr;
   GURL webui_url_;
   std::unique_ptr<BraveWebUIBubbleManagerT<WalletPanelUI>>
       webui_bubble_manager_;

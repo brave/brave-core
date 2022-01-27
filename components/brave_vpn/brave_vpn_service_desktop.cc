@@ -8,12 +8,14 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
@@ -23,7 +25,10 @@
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "net/cookies/cookie_inclusion_status.h"
+#include "net/cookies/parsed_cookie.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
+#include "url/url_util.h"
 
 namespace {
 
@@ -60,13 +65,18 @@ bool IsValidRegion(const brave_vpn::mojom::Region& region) {
   return true;
 }
 
+// On desktop, the environment is tied to SKUs because you would purchase it
+// from `account.brave.com` (or similar, based on env). The credentials for VPN
+// will always be in the same environment as the SKU environment.
+//
+// When the vendor receives a credential from us during auth, it also includes
+// the environment. The vendor then can do a lookup using Payment Service.
 std::string GetBraveVPNPaymentsEnv() {
-  const std::string env = brave_rewards::GetEnvironment();
-  if (env == brave_rewards::kEnvProduction)
+  const std::string env = skus::GetEnvironment();
+  if (env == skus::kEnvProduction)
     return "";
   // Use same value.
-  if (env == brave_rewards::kEnvStaging ||
-      env == brave_rewards::kEnvDevelopment)
+  if (env == skus::kEnvStaging || env == skus::kEnvDevelopment)
     return env;
 
   NOTREACHED();
@@ -82,10 +92,13 @@ std::string GetBraveVPNPaymentsEnv() {
 
 BraveVpnServiceDesktop::BraveVpnServiceDesktop(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* prefs)
-    : BraveVpnService(url_loader_factory), prefs_(prefs) {
+    PrefService* prefs,
+    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+        skus_service_getter)
+    : BraveVpnService(url_loader_factory),
+      prefs_(prefs),
+      skus_service_getter_(skus_service_getter) {
   DCHECK(brave_vpn::IsBraveVPNEnabled());
-  DETACH_FROM_SEQUENCE(sequence_checker_);
 
   auto* cmd = base::CommandLine::ForCurrentProcess();
   is_simulation_ = cmd->HasSwitch(brave_vpn::switches::kBraveVPNSimulation);
@@ -105,7 +118,7 @@ BraveVpnServiceDesktop::BraveVpnServiceDesktop(
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
-      brave_rewards::prefs::kSkusVPNCredential,
+      skus::prefs::kSkusVPNHasCredential,
       base::BindRepeating(&BraveVpnServiceDesktop::OnSkusVPNCredentialUpdated,
                           base::Unretained(this)));
 }
@@ -136,6 +149,7 @@ void BraveVpnServiceDesktop::Shutdown() {
 
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  skus_service_.reset();
   observed_.Reset();
   receivers_.Clear();
   observers_.Clear();
@@ -415,6 +429,44 @@ void BraveVpnServiceDesktop::LoadCachedRegionData() {
   }
 }
 
+void BraveVpnServiceDesktop::OnPrepareCredentialsPresentation(
+    const std::string& credential_as_cookie) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Credential is returned in cookie format.
+  net::CookieInclusionStatus status;
+  net::ParsedCookie credential_cookie(credential_as_cookie, &status);
+  // TODO(bsclifton): have a better check / logging.
+  if (!credential_cookie.IsValid()) {
+    VLOG(2) << __func__ << " : FAILED credential_cookie.IsValid";
+    return;
+  }
+  if (!status.IsInclude()) {
+    VLOG(2) << __func__ << " : FAILED status.IsInclude";
+    return;
+  }
+
+  // Credential value received needs to be URL decoded.
+  // That leaves us with a Base64 encoded JSON blob which is the credential.
+  std::string encoded_credential = credential_cookie.Value();
+  url::RawCanonOutputT<char16_t> unescaped;
+  url::DecodeURLEscapeSequences(
+      encoded_credential.data(), encoded_credential.size(),
+      url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
+  std::string credential;
+  base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
+
+  // Only update credential if different
+  if (skus_credential_ == credential)
+    return;
+
+  skus_credential_ = credential;
+  if (!skus_credential_.empty()) {
+    VLOG(2) << __func__ << " : "
+            << "Loaded cached skus credentials";
+    SetPurchasedState(PurchasedState::PURCHASED);
+  }
+}
+
 void BraveVpnServiceDesktop::LoadPurchasedState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 #if !defined(OFFICIAL_BUILD)
@@ -427,18 +479,25 @@ void BraveVpnServiceDesktop::LoadPurchasedState() {
   }
 #endif
 
-  const std::string credential =
-      prefs_->GetString(brave_rewards::prefs::kSkusVPNCredential);
-  if (skus_credential_ == credential)
+  const bool has_credential =
+      prefs_->GetBoolean(skus::prefs::kSkusVPNHasCredential);
+
+  if (!has_credential) {
+    // TODO(bsclifton): we can show logic for person to login
+    // NOTE: we might save (to profile) if person EVER had a valid
+    // credential. If so, we may want to show an expired dialog
+    // instead of the "purchase" dialog.
+    skus_credential_ = "";
     return;
-
-  skus_credential_ = credential;
-
-  if (!skus_credential_.empty()) {
-    VLOG(2) << __func__ << " : "
-            << "Loaded cached skus credentials";
-    SetPurchasedState(PurchasedState::PURCHASED);
   }
+
+  EnsureMojoConnected();
+
+  // if a credential is ready, we can present it
+  skus_service_->PrepareCredentialsPresentation(
+      skus::GetDomain("vpn"), "*",
+      base::BindOnce(&BraveVpnServiceDesktop::OnPrepareCredentialsPresentation,
+                     base::Unretained(this)));
 }
 
 void BraveVpnServiceDesktop::LoadSelectedRegion() {
@@ -816,6 +875,21 @@ void BraveVpnServiceDesktop::SetPurchasedState(PurchasedState state) {
     obs->OnPurchasedStateChanged(purchased_state_);
 
   ScheduleFetchRegionDataIfNeeded();
+}
+
+void BraveVpnServiceDesktop::EnsureMojoConnected() {
+  if (!skus_service_) {
+    auto pending = skus_service_getter_.Run();
+    skus_service_.Bind(std::move(pending));
+  }
+  DCHECK(skus_service_);
+  skus_service_.set_disconnect_handler(base::BindOnce(
+      &BraveVpnServiceDesktop::OnMojoConnectionError, base::Unretained(this)));
+}
+
+void BraveVpnServiceDesktop::OnMojoConnectionError() {
+  skus_service_.reset();
+  EnsureMojoConnected();
 }
 
 void BraveVpnServiceDesktop::OnSkusVPNCredentialUpdated() {

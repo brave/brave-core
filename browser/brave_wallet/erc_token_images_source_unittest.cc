@@ -19,6 +19,10 @@
 namespace brave_wallet {
 
 class ERCTokenImagesSourceTest : public testing::Test {
+ public:
+  ERCTokenImagesSourceTest(const ERCTokenImagesSourceTest&) = delete;
+  ERCTokenImagesSourceTest& operator=(const ERCTokenImagesSourceTest&) = delete;
+
  protected:
   ERCTokenImagesSourceTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
@@ -63,8 +67,6 @@ class ERCTokenImagesSourceTest : public testing::Test {
   std::unique_ptr<ERCTokenImagesSource> source_;
   bool data_received_ = false;
   std::string data_;
-
-  DISALLOW_COPY_AND_ASSIGN(ERCTokenImagesSourceTest);
 };
 
 TEST_F(ERCTokenImagesSourceTest, GetMimeType) {

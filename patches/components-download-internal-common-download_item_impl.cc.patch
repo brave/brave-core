@@ -1,8 +1,8 @@
 diff --git a/components/download/internal/common/download_item_impl.cc b/components/download/internal/common/download_item_impl.cc
-index 35afa0b40cce4f3b5f0a351778d0f880cc181833..4c4619a85af8146f1bdec925e4e764937451ec1c 100644
+index 9761fe99a6bedef076ff470aec6bb0ecc8ea32b9..32a249494a3e8f655b0f6f5245e0a0247021527f 100644
 --- a/components/download/internal/common/download_item_impl.cc
 +++ b/components/download/internal/common/download_item_impl.cc
-@@ -2041,8 +2041,8 @@ void DownloadItemImpl::OnDownloadCompleting() {
+@@ -2051,8 +2051,8 @@ void DownloadItemImpl::OnDownloadCompleting() {
                       base::Unretained(download_file_.get()),
                       GetTargetFilePath(),
                       delegate_->GetApplicationClientIdForFileScanning(),

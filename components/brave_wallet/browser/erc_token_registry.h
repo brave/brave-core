@@ -9,7 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "build/build_config.h"
