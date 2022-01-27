@@ -139,8 +139,6 @@ double ComputePredictorScore(const AdPredictorInfo<T>& ad_predictor) {
     score += weights.at(kPriorityIndex) / ad_predictor.creative_ad.priority;
   }
 
-  score *= ad_predictor.creative_ad.ptr;
-
   return score;
 }
 
