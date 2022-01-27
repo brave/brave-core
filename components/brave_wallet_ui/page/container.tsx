@@ -15,7 +15,6 @@ import store from './store'
 import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
-
 import { OnboardingWrapper, WalletWidgetStandIn } from '../stories/style'
 import { CryptoView, LockScreen, OnboardingRestore, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
 import {
@@ -100,7 +99,9 @@ function Container (props: Props) {
     isMetaMaskInstalled,
     defaultCurrencies,
     fullTokenList,
-    userVisibleTokensInfo
+    userVisibleTokensInfo,
+    coinMarketData,
+    isLoadingCoinMarketData
   } = props.wallet
 
   // Page Props
@@ -518,6 +519,13 @@ function Container (props: Props) {
     setShowVisibleAssetsModal(showModal)
   }
 
+  const onFetchCoinMarkets = (vsAsset: string, limit: number) => {
+    props.walletActions.getCoinMarkets({
+      vsAsset,
+      limit
+    })
+  }
+
   React.useEffect(() => {
     // Creates a list of Accepted Portfolio Routes
     const acceptedPortfolioRoutes = userVisibleTokensInfo.map((token) => {
@@ -560,6 +568,11 @@ function Container (props: Props) {
       !isWalletLocked &&
       hasInitialized &&
       !allAcceptedRoutes.includes(walletLocation) &&
+      walletLocation !== WalletRoutes.Backup &&
+      walletLocation !== WalletRoutes.Accounts &&
+      walletLocation !== WalletRoutes.AddAccountModal &&
+      walletLocation !== WalletRoutes.AddAssetModal &&
+      walletLocation !== WalletRoutes.Market &&
       acceptedAccountRoutes.length !== 0 &&
       acceptedPortfolioRoutes.length !== 0
     ) {
@@ -708,6 +721,10 @@ function Container (props: Props) {
                 onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
                 foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
                 onUpdateVisibleAssets={onUpdateVisibleAssets}
+                isLoadingCoinMarketData={isLoadingCoinMarketData}
+                coinMarkets={coinMarketData}
+                onFetchCoinMarkets={onFetchCoinMarkets}
+                tradableAssets={swapAssetOptions}
               />
             }
           </Route>

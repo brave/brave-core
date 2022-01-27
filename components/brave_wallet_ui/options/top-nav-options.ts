@@ -7,6 +7,10 @@ export const TopNavOptions = (): TopTabNavObjectType[] => [
     name: getLocale('braveWalletTopNavPortfolio')
   },
   {
+    id: 'market',
+    name: getLocale('braveWalletTopNavMarket')
+  },
+  {
     id: 'accounts',
     name: getLocale('braveWalletTopNavAccounts')
   }

@@ -12,11 +12,12 @@ export interface Props {
   action?: (event: any) => void | undefined
   autoFocus?: boolean
   value?: string
+  disabled?: boolean
 }
 
 export default class SearchBar extends React.PureComponent<Props> {
   render () {
-    const { autoFocus, placeholder, action, value } = this.props
+    const { autoFocus, placeholder, action, value, disabled } = this.props
     return (
       <StyledWrapper>
         <SearchIcon />
@@ -25,6 +26,7 @@ export default class SearchBar extends React.PureComponent<Props> {
           value={value}
           placeholder={placeholder}
           onChange={action}
+          disabled={disabled}
         />
       </StyledWrapper>
     )

@@ -199,6 +199,19 @@ struct AssetPrice {
   string asset_timeframe_change;
 };
 
+struct CoinMarket {
+  string id;
+  string symbol;
+  string name;
+  string image;
+  double market_cap;
+  uint32 market_cap_rank;
+  double current_price;
+  double price_change_24h;
+  double price_change_percentage_24h;
+  double total_volume;
+};
+
 struct SwapParams {
   string taker_address;
   string sell_amount;
@@ -492,6 +505,9 @@ interface AssetRatioService {
 
   // Obtain token info via contract address through etherscan API.
   GetTokenInfo(string contract_address) => (BlockchainToken? token);
+
+  // Obtain list of top currencies and their market data
+  GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
 };
 
 // Implements swapping related functionality through the 0x API.

@@ -44,6 +44,7 @@ import { mockNetworks } from './mock-data/mock-networks'
 import { isStrongPassword } from '../utils/password-utils'
 import Amount from '../utils/amount'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
+
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -703,6 +704,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setFoundTokenInfo(foundToken)
   }
 
+  const onFetchMoreMarketData = () => {
+    console.log('Fetching more coin market data')
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -806,6 +811,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               showVisibleAssetsModal={showVisibleAssetsModal}
                               onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
                               foundTokenInfoByContractAddress={foundTokenInfo}
+                              coinMarketData={[]}
+                              onFetchMoreMarketData={onFetchMoreMarketData}
                             />
                           )}
                         </>

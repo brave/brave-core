@@ -25,6 +25,9 @@ import {
   UpdateUnapprovedTransactionSpendAllowanceType,
   UpdateUnapprovedTransactionNonceType,
   SetTransactionProviderErrorType
+  UpdateUnapprovedTransactionNonceType,
+  GetCoinMarketPayload,
+  GetCoinMarketsResponse
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -117,3 +120,6 @@ export const refreshBalancesAndPriceHistory = createAction('refreshBalancesAndPr
 export const setTransactionProviderError = createAction<SetTransactionProviderErrorType>('setTransactionProviderError')
 export const setSelectedCoin = createAction<BraveWallet.CoinType>('setSelectedCoin')
 export const setDefaultNetworks = createAction<BraveWallet.NetworkInfo[]>('setDefaultNetworks')
+export const getCoinMarkets = createAction<GetCoinMarketPayload>('getCoinMarkets')
+export const setCoinMarkets = createAction<GetCoinMarketsResponse>('setCoinMarkets')
+export const updateIsLoadingCoinMarkets = createAction<boolean>('updateIsLoadingCoinMarkets')
