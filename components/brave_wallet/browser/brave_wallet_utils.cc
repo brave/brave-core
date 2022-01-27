@@ -746,4 +746,20 @@ std::string GetCurrentChainId(PrefService* prefs) {
   return prefs->GetString(kBraveWalletCurrentChainId);
 }
 
+bool SymbolToCoinType(const std::string& symbol, mojom::CoinType* coin) {
+  if (!coin)
+    return false;
+  if (symbol == "ETH") {
+    *coin = mojom::CoinType::ETH;
+    return true;
+  } else if (symbol == "FIL") {
+    *coin = mojom::CoinType::FIL;
+    return true;
+  } else if (symbol == "SOL") {
+    *coin = mojom::CoinType::SOL;
+    return true;
+  }
+  return false;
+}
+
 }  // namespace brave_wallet

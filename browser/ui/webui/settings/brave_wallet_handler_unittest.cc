@@ -236,7 +236,7 @@ TEST(TestBraveWalletHandler, AddEthereumChainWrongNetwork) {
   TestBraveWalletHandler handler;
   brave_wallet::mojom::EthereumChain chain1(
       "0x999", "chain_name", {"https://url1.com"}, {"https://url2.com"},
-      {"https://url3.com"}, "symbol", "symbol_name", 0, false);
+      {"https://url3.com"}, "ETH", "symbol_name", 0, false);
   auto chain_ptr1 = chain1.Clone();
 
   {

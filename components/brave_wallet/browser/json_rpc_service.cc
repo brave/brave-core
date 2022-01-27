@@ -91,9 +91,11 @@ bool IsChainExist(PrefService* prefs, const std::string& chain_id) {
   return false;
 }
 
-bool ShouldValidateEthereumChain(int32_t decimals) {
-  return !decimals ||  // By default we assume user adds Eth network
-         decimals == static_cast<int32_t>(brave_wallet::mojom::CoinType::ETH);
+bool ShouldValidateEthereumChain(const std::string& symbol) {
+  brave_wallet::mojom::CoinType coin;
+  return symbol.empty() ||  // By default we assume user adds Eth network
+         (brave_wallet::SymbolToCoinType(symbol, &coin) &&
+          coin == brave_wallet::mojom::CoinType::ETH);
 }
 
 }  // namespace
@@ -219,7 +221,7 @@ void JsonRpcService::AddCustomChain(mojom::EthereumChainPtr chain,
         l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
     return;
   }
-  bool run_validation = ShouldValidateEthereumChain(chain->decimals);
+  bool run_validation = ShouldValidateEthereumChain(chain->symbol);
   auto result = base::BindOnce(&JsonRpcService::OnCustomChainIdValidated,
                                weak_ptr_factory_.GetWeakPtr(), std::move(chain),
                                std::move(callback));
@@ -275,7 +277,7 @@ void JsonRpcService::AddEthereumChainForOrigin(
                                   base::ASCIIToUTF16(chain->rpc_urls.front())));
     return;
   }
-  bool run_validation = ShouldValidateEthereumChain(chain->decimals);
+  bool run_validation = ShouldValidateEthereumChain(chain->symbol);
   auto result = base::BindOnce(&JsonRpcService::OnEthChainIdValidatedForOrigin,
                                weak_ptr_factory_.GetWeakPtr(), std::move(chain),
                                origin, std::move(callback));

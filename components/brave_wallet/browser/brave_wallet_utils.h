@@ -102,7 +102,7 @@ void RemoveCustomNetwork(PrefService* prefs,
 // Get a specific chain from all chains.
 mojom::EthereumChainPtr GetChain(PrefService* prefs,
                                  const std::string& chain_id);
-
+bool SymbolToCoinType(const std::string& symbol, mojom::CoinType* type);
 // Get the current chain ID from kBraveWalletCurrentChainId pref.
 std::string GetCurrentChainId(PrefService* prefs);
 

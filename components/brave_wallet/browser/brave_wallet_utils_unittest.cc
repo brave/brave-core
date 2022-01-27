@@ -907,4 +907,18 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   EXPECT_EQ(*asset_list2[0].FindBoolKey("visible"), true);
 }
 
+TEST(BraveWalletUtilsUnitTest, SymbolToCoinType) {
+  ASSERT_FALSE(SymbolToCoinType("", nullptr));
+  ASSERT_FALSE(SymbolToCoinType("ETH", nullptr));
+  mojom::CoinType coin = mojom::CoinType::ETH;
+  ASSERT_FALSE(SymbolToCoinType("", &coin));
+  EXPECT_EQ(coin, mojom::CoinType::ETH);
+  ASSERT_TRUE(SymbolToCoinType("FIL", &coin));
+  EXPECT_EQ(coin, mojom::CoinType::FIL);
+  ASSERT_TRUE(SymbolToCoinType("SOL", &coin));
+  EXPECT_EQ(coin, mojom::CoinType::SOL);
+  ASSERT_TRUE(SymbolToCoinType("ETH", &coin));
+  EXPECT_EQ(coin, mojom::CoinType::ETH);
+}
+
 }  // namespace brave_wallet
