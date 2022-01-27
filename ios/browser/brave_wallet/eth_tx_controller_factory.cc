@@ -22,8 +22,7 @@ namespace brave_wallet {
 
 // static
 mojo::PendingRemote<mojom::EthTxController>
-EthTxControllerFactory::GetForBrowserState(
-    ChromeBrowserState* browser_state) {
+EthTxControllerFactory::GetForBrowserState(ChromeBrowserState* browser_state) {
   return static_cast<EthTxController*>(
              GetInstance()->GetServiceForBrowserState(browser_state, true))
       ->MakeRemote();
