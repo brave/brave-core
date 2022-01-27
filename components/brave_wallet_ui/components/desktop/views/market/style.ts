@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-
 export interface StyleProps {
   alignment: 'right' | 'left'
 }

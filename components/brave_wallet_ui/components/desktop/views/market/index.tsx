@@ -1,9 +1,9 @@
 import * as React from 'react'
+
 import { SearchBar } from '../../../shared'
 import { AssetsFilterDropdown } from '../..'
 import { AssetFilterOptions } from '../../../../options/market-data-filter-options'
-import { CoinMarketMetadata, MarketDataTableColumnTypes, SortOrder } from '../../../../constants/types'
-import MarketDataTable from '../../../../components/market-datatable'
+
 import {
   StyledWrapper,
   TopRow
@@ -34,10 +34,10 @@ const MarketView = (props: Props) => {
     const filteredCoinMarketData = filterCoinMarketData(coinsMarketData, searchTerm)
     setCoinsMarketData(filteredCoinMarketData)
   }
-
+  
   const onSelectFilter = (value: string) => {
     setCurrentFilter(value)
-  }
+  }  
 
   const onSort = (columnId: MarketDataTableColumnTypes, newSortOrder: SortOrder) => {
     const updatedTableHeaders = tableHeaders.map(header => {
