@@ -37,9 +37,11 @@ import org.chromium.ui.base.WindowAndroid;
 
 public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     // To delete in bytecode, members from parent class will be used instead.
-    private @Nullable ScrollView mScrollViewForPolicy;
     private View mNtpHeader;
     private FrameLayout mRootView;
+
+    // Own members.
+    private @Nullable ScrollView mScrollViewForPolicy;
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
             WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
@@ -61,6 +63,37 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 launchOrigin, privacyPreferencesManager, toolbarSupplier,
                 launchReliabilityLoggingState, swipeRefreshLayout, overScrollDisabled, viewportView,
                 actionDelegate, helpAndFeedbackLauncher);
+    }
+
+    public void createScrollViewForPolicy() {
+        assert mScrollViewForPolicy == null : "mScrollViewForPolicy should be created only once!";
+
+        // Remove all previously added views.
+        mRootView.removeAllViews();
+
+        mScrollViewForPolicy = new ScrollView(mActivity);
+        mScrollViewForPolicy.setBackgroundColor(
+                ApiCompatibilityUtils.getColor(mActivity.getResources(), R.color.default_bg_color));
+        mScrollViewForPolicy.setVerticalScrollBarEnabled(false);
+
+        // Make scroll view focusable so that it is the next focusable view when the url bar clears
+        // focus.
+        mScrollViewForPolicy.setFocusable(true);
+        mScrollViewForPolicy.setFocusableInTouchMode(true);
+        mScrollViewForPolicy.setContentDescription(
+                mScrollViewForPolicy.getResources().getString(R.string.accessibility_new_tab_page));
+
+        if (mNtpHeader != null) {
+            UiUtils.removeViewFromParent(mNtpHeader);
+            mScrollViewForPolicy.addView(mNtpHeader);
+        }
+        mRootView.addView(mScrollViewForPolicy);
+        mScrollViewForPolicy.setFillViewport(true);
+        mScrollViewForPolicy.requestFocus();
+    }
+
+    public ScrollView getScrollViewForPolicy() {
+        return mScrollViewForPolicy;
     }
 
     public boolean isEnhancedProtectionPromoEnabled() {

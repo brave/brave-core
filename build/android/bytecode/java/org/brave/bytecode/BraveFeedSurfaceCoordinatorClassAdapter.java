@@ -23,9 +23,6 @@ public class BraveFeedSurfaceCoordinatorClassAdapter extends BraveClassVisitor {
         addMethodAnnotation(sBraveFeedSurfaceCoordinatorClassName, "isReliabilityLoggingEnabled",
                 "Ljava/lang/Override;");
 
-        deleteField(sBraveFeedSurfaceCoordinatorClassName, "mScrollViewForPolicy");
-        makeProtectedField(sFeedSurfaceCoordinatorClassName, "mScrollViewForPolicy");
-
         deleteField(sBraveFeedSurfaceCoordinatorClassName, "mNtpHeader");
         makeProtectedField(sFeedSurfaceCoordinatorClassName, "mNtpHeader");
 

@@ -41,13 +41,6 @@
     *** updateTileGridPlaceholderVisibility(...);
 }
 
--keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
-    *** mActivity;
-    *** mScrollViewForPolicy;
-    *** mNtpHeader;
-    *** mRootView;
-}
-
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
     public <init>(...);
     *** mBrowserControlsStateProvider;
@@ -344,7 +337,7 @@
 }
 
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
-    *** mScrollViewForPolicy;
+    *** mActivity;
     *** mNtpHeader;
     *** mRootView;
     *** isEnhancedProtectionPromoEnabled(...);
@@ -357,6 +350,19 @@
     *** mRootView;
     *** isEnhancedProtectionPromoEnabled(...);
     *** isReliabilityLoggingEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.FeedSurfaceMediator {
+    public <init>(...);
+    *** mCoordinator;
+    *** mSnapScrollHelper;
+    *** destroyPropertiesForStream(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceMediator {
+    public <init>(...);
+    *** mCoordinator;
+    *** mSnapScrollHelper;
 }
 
 -keep class org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator {
