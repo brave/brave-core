@@ -44,6 +44,7 @@ provideStrings({
   braveWalletTopTabApps: 'Apps',
   braveWalletTopNavNFTS: 'NFTs',
   braveWalletTopNavAccounts: 'Accounts',
+  braveWalletTopNavMarket: 'Market',
 
   // Chart Timeline Buttons
   braveWalletChartLive: '1H',
@@ -449,5 +450,13 @@ provideStrings({
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',
   braveWalletNFTDetailTokenStandard: 'Token standard',
-  braveWalletNFTDetailTokenID: 'Token ID'
+  braveWalletNFTDetailTokenID: 'Token ID',
+
+  // Market Data Filters
+  braveWalletMarketDataAllAssetsFilter: 'All Assets',
+  braveWalletMarketDataWatchlistFilter: 'Watchlist',
+  braveWalletMarketDataTradableFilter: 'Tradable',
+  braveWalletMarketDataSolanaFilter: 'Solana',
+  braveWalletMarketDataEthereumFilter: 'Ethereum',
+  braveWalletMarketDataBscFilter: 'BSC'
 })

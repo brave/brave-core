@@ -14,8 +14,8 @@ export interface Props {
 
 const MarketView = (props: Props) => {
   const [currentFilter, setCurrentFilter] = React.useState('all')
+
   const onSearch = (event: any) => {
-    console.log(event)
   }
 
   const onSelectFilter = (value: string) => {

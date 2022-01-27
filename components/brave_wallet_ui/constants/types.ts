@@ -112,6 +112,7 @@ export type TopTabNavTypes =
   | 'portfolio'
   | 'apps'
   | 'accounts'
+  | 'market'
 
 export type AddAccountNavTypes =
   | 'create'
@@ -513,6 +514,7 @@ export enum WalletRoutes {
   Onboarding = '/crypto/onboarding',
   Restore = '/crypto/restore-wallet',
   Portfolio = '/crypto/portfolio',
+  Market = '/crypto/market',
   PortfolioSub = '/crypto/portfolio/:id?',
   Accounts = '/crypto/accounts',
   AddAccountModal = '/crypto/accounts/add-account',
@@ -557,4 +559,9 @@ export interface NFTMetadataReturnType {
     facebook: string
     logo: string
   }
+}
+
+export type AssetFilter = {
+  value: string
+  label: string
 }

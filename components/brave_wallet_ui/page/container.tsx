@@ -505,6 +505,7 @@ function Container (props: Props) {
       walletLocation !== WalletRoutes.Accounts &&
       walletLocation !== WalletRoutes.AddAccountModal &&
       walletLocation !== WalletRoutes.AddAssetModal &&
+      walletLocation !== WalletRoutes.Market &&
       acceptedAccountRoutes.length !== 0 &&
       !acceptedAccountRoutes.includes(walletLocation) &&
       walletLocation !== WalletRoutes.Portfolio &&
