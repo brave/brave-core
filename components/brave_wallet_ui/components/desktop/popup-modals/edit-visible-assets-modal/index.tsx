@@ -76,6 +76,7 @@ const EditVisibleAssetsModal = (props: Props) => {
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
   const [tokenDecimals, setTokenDecimals] = React.useState<string>('')
   const [coingeckoID, setCoingeckoID] = React.useState<string>('')
+  const [iconURL, setIconURL] = React.useState<string>('')
 
   // If a user removes all of their assets from the userVisibleTokenInfo list,
   // there is a check in the async/lib.ts folder that will still return the networks
@@ -140,6 +141,13 @@ const EditVisibleAssetsModal = (props: Props) => {
       setHasError(false)
     }
     setCoingeckoID(event.target.value)
+  }
+
+  const handleIconURLChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (hasError) {
+      setHasError(false)
+    }
+    setIconURL(event.target.value)
   }
 
   const nativeAsset = {
@@ -210,12 +218,14 @@ const EditVisibleAssetsModal = (props: Props) => {
       if (foundTokenInfoByContractAddress.isErc721) {
         let token = foundTokenInfoByContractAddress
         token.tokenId = tokenID ? toHex(tokenID) : ''
+        token.logo = iconURL
         setIsLoading(true)
         onAddCustomAsset(token)
         return
       }
       let foundToken = foundTokenInfoByContractAddress
       foundToken.coingeckoId = coingeckoID !== '' ? coingeckoID : foundTokenInfoByContractAddress.coingeckoId
+      foundToken.logo = iconURL
       onAddCustomAsset(foundToken)
     } else {
       const newToken: BraveWallet.BlockchainToken = {
@@ -226,7 +236,7 @@ const EditVisibleAssetsModal = (props: Props) => {
         name: tokenName,
         symbol: tokenSymbol,
         tokenId: tokenID ? toHex(tokenID) : '',
-        logo: '',
+        logo: iconURL,
         visible: true,
         coingeckoId: coingeckoID
       }
@@ -319,6 +329,7 @@ const EditVisibleAssetsModal = (props: Props) => {
       setTokenDecimals('')
       setTokenID('')
       setCoingeckoID('')
+      setIconURL('')
       return
     }
     onFindTokenInfoByContractAddress(tokenContractAddress)
@@ -402,6 +413,11 @@ const EditVisibleAssetsModal = (props: Props) => {
                 <SubDivider />
                 {showAdvancedFields &&
                   <>
+                    <InputLabel>{getLocale('braveWalletIconURL')}</InputLabel>
+                    <Input
+                      value={iconURL}
+                      onChange={handleIconURLChanged}
+                    />
                     <InputLabel>{getLocale('braveWalletWatchListCoingeckoId')}</InputLabel>
                     <Input
                       value={coingeckoID}
