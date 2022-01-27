@@ -43,13 +43,15 @@ class SwapService : public KeyedService, public mojom::SwapService {
   mojo::PendingRemote<mojom::SwapService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::SwapService> receiver);
 
-  // Obtians a quote for the specified asset
+  // Obtains a quote for the specified asset
   void GetPriceQuote(mojom::SwapParamsPtr swap_params,
                      GetPriceQuoteCallback callback) override;
   // Obtains the transaction payload to be signed.
   void GetTransactionPayload(mojom::SwapParamsPtr swap_params,
                              GetTransactionPayloadCallback callback) override;
-
+  // Obtains whether the given chain_id supports swap.
+  void IsSwapSupported(const std::string& chain_id,
+                       IsSwapSupportedCallback callback) override;
   static std::string GetFee(const std::string& chain_id);
   static std::string GetBaseSwapURL(const std::string& chain_id);
   static std::string GetFeeRecipient(const std::string& chain_id);

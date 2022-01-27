@@ -261,4 +261,9 @@ void SwapService::OnGetTransactionPayload(
   std::move(callback).Run(true, std::move(swap_response), absl::nullopt);
 }
 
+void SwapService::IsSwapSupported(const std::string& chain_id,
+                                  IsSwapSupportedCallback callback) {
+  std::move(callback).Run(IsNetworkSupported(chain_id));
+}
+
 }  // namespace brave_wallet
