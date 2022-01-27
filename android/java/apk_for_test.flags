@@ -54,6 +54,7 @@
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
     *** mToolbarSupplier;
+    *** updateSearchProviderHasLogo(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp.BraveNewTabPage {
