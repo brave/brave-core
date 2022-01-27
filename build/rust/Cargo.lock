@@ -60,19 +60,9 @@ dependencies = [
 
 [[package]]
 name = "async-trait"
-version = "0.1.51"
+version = "0.1.52"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "44318e776df68115a881de9a8fd1b9e53368d7a4a5ce4cc48517da3393233a5e"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn",
-]
-
-[[package]]
-name = "async-trait"
-version = "0.1.51"
-source = "git+https://github.com/dtolnay/async-trait#1ab566d3e781aaf71044061b2e38fa8e6771c5f4"
+checksum = "061a7acccaa286c011ddc30970520b98fa40e00c9d644633fb26b5fc63a265e3"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1789,7 +1779,7 @@ checksum = "cbce6d4507c7e4a3962091436e56e95290cb71fa302d0d270e32130b75fbff27"
 name = "skus"
 version = "0.1.0"
 dependencies = [
- "async-trait 0.1.51 (registry+https://github.com/rust-lang/crates.io-index)",
+ "async-trait",
  "base64 0.9.3",
  "bigdecimal",
  "challenge-bypass-ristretto 1.0.0",
@@ -1814,7 +1804,7 @@ dependencies = [
 name = "skus-cxx"
 version = "0.1.0"
 dependencies = [
- "async-trait 0.1.51 (git+https://github.com/dtolnay/async-trait)",
+ "async-trait",
  "cxx",
  "futures-preview",
  "libc",
