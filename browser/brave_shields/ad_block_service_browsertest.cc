@@ -2008,7 +2008,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
 }
 
 // Test cosmetic filtering on elements added dynamically
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DISABLED_CosmeticFilteringDynamic) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
   UpdateAdBlockInstanceWithRules("##.blockme");
 
   WaitForBraveExtensionShieldsDataReady();
@@ -2021,7 +2021,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DISABLED_CosmeticFilteringDynamic) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   auto result_first = EvalJs(contents,
-                             R"(async function waitCSSSelector() {
+                             R"(addElementsDynamically();
+        async function waitCSSSelector() {
           if (await checkSelector('.blockme', 'display', 'none')) {
             window.domAutomationController.send(true);
           } else {
@@ -2219,6 +2220,35 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
       browser()->tab_strip_model()->GetActiveWebContents();
 
   ASSERT_EQ(true, EvalJs(contents, "show_ad"));
+}
+
+// Test cosmetic filtering on an element that already has an `!important`
+// marker on its `display` style.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CosmeticFilteringOverridesImportant) {
+  UpdateAdBlockInstanceWithRules("###inline-block-important");
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  auto result_first = EvalJs(contents,
+                             R"(async function waitCSSSelector() {
+          if (await checkSelector('#inline-block-important', 'display', 'none')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.error('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  ASSERT_TRUE(result_first.error.empty());
+  EXPECT_EQ(base::Value(true), result_first.value);
 }
 
 class DefaultCookieListFlagEnabledTest : public AdBlockServiceTest {
