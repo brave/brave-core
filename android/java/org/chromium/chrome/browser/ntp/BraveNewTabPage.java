@@ -86,4 +86,9 @@ public class BraveNewTabPage extends NewTabPage {
                 /* overScrollDisabled= */ false, /* viewportView= */ null,
                 /* actionDelegate= */ null, HelpAndFeedbackLauncherImpl.getInstance());
     }
+
+    public void updateSearchProviderHasLogo() {
+        // Search provider logo is not used in Brave's NTP.
+        mSearchProviderHasLogo = false;
+    }
 }
