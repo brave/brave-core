@@ -226,8 +226,6 @@ Config.prototype.buildArgs = function () {
   const chrome_version_parts = this.chromeVersion.split('.')
 
   let args = {
-    blink_symbol_level: 0,
-    v8_symbol_level: 0,
     is_asan: this.isAsan(),
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
@@ -355,23 +353,19 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.isDebug() &&
-      this.targetOS !== 'ios' &&
-      this.targetOS !== 'android') {
-    delete args.blink_symbol_level
-    delete args.v8_symbol_level
-
+    this.targetOS !== 'ios' &&
+    this.targetOS !== 'android') {
     if (process.platform === 'darwin') {
       args.enable_stripping = false
     }
+    args.symbol_level = 2
     args.enable_profiling = true
   }
 
-  if (this.sccache) {
-    if (process.platform === 'win32') {
-      args.clang_use_chrome_plugins = false
-      args.use_thin_lto = true
-    }
+  if (this.sccache && process.platform === 'win32') {
+    args.clang_use_chrome_plugins = false
     args.enable_precompiled_headers = false
+    args.use_thin_lto = true
   }
 
   if (this.targetArch === 'x86' && process.platform === 'linux') {
@@ -419,6 +413,10 @@ Config.prototype.buildArgs = function () {
     if (this.buildConfig !== 'Release') {
       // treat non-release builds like Debug builds
       args.treat_warnings_as_errors = false
+    } else {
+      // otherwise there is build error
+      // ld.lld: error: output file too large: 5861255936 bytes
+      args.symbol_level = 1
     }
 
     // Feed is not used in Brave
