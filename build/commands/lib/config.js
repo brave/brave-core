@@ -359,10 +359,6 @@ Config.prototype.buildArgs = function () {
       this.targetOS !== 'android') {
     delete args.blink_symbol_level
     delete args.v8_symbol_level
-
-    if (process.platform === 'darwin') {
-      args.enable_stripping = false
-    }
     args.enable_profiling = true
   }
 
