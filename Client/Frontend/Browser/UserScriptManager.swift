@@ -252,7 +252,7 @@ class UserScriptManager {
         return WKUserScript(source: source,
                             injectionTime: .atDocumentStart,
                             forMainFrameOnly: false,
-                            in: .defaultClient)
+                            in: .page)
     }()
     
     private let PlaylistHelperScript: WKUserScript? = {
