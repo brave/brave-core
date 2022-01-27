@@ -91,11 +91,6 @@ bool IsChainExist(PrefService* prefs, const std::string& chain_id) {
   return false;
 }
 
-bool ShouldValidateEthereumChain(int32_t decimals) {
-  return !decimals ||  // By default we assume user adds Eth network
-         decimals == static_cast<int32_t>(brave_wallet::mojom::CoinType::ETH);
-}
-
 }  // namespace
 
 namespace brave_wallet {
@@ -201,8 +196,8 @@ void JsonRpcService::GetPendingChainRequests(
   std::move(callback).Run(std::move(all_chains));
 }
 
-void JsonRpcService::AddCustomChain(mojom::EthereumChainPtr chain,
-                                    AddCustomChainCallback callback) {
+void JsonRpcService::AddEthereumChain(mojom::EthereumChainPtr chain,
+                                      AddEthereumChainCallback callback) {
   auto chain_id = chain->chain_id;
   auto url = chain->rpc_urls.size() ? GURL(chain->rpc_urls.front()) : GURL();
   if (!url.is_valid()) {
@@ -219,22 +214,18 @@ void JsonRpcService::AddCustomChain(mojom::EthereumChainPtr chain,
         l10n_util::GetStringUTF8(IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
     return;
   }
-  bool run_validation = ShouldValidateEthereumChain(chain->decimals);
-  auto result = base::BindOnce(&JsonRpcService::OnCustomChainIdValidated,
+
+  auto result = base::BindOnce(&JsonRpcService::OnEthChainIdValidated,
                                weak_ptr_factory_.GetWeakPtr(), std::move(chain),
                                std::move(callback));
-  if (run_validation) {
-    RequestInternal(eth::eth_chainId(), true, url,
-                    base::BindOnce(&ChainIdValidationResponse,
-                                   std::move(result), chain_id));
-  } else {
-    std::move(result).Run(true);
-  }
+  RequestInternal(
+      eth::eth_chainId(), true, url,
+      base::BindOnce(&ChainIdValidationResponse, std::move(result), chain_id));
 }
 
-void JsonRpcService::OnCustomChainIdValidated(mojom::EthereumChainPtr chain,
-                                              AddCustomChainCallback callback,
-                                              bool success) {
+void JsonRpcService::OnEthChainIdValidated(mojom::EthereumChainPtr chain,
+                                           AddEthereumChainCallback callback,
+                                           bool success) {
   if (!success) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
@@ -275,18 +266,14 @@ void JsonRpcService::AddEthereumChainForOrigin(
                                   base::ASCIIToUTF16(chain->rpc_urls.front())));
     return;
   }
-  bool run_validation = ShouldValidateEthereumChain(chain->decimals);
+
   auto result = base::BindOnce(&JsonRpcService::OnEthChainIdValidatedForOrigin,
                                weak_ptr_factory_.GetWeakPtr(), std::move(chain),
                                origin, std::move(callback));
 
-  if (run_validation) {
-    RequestInternal(eth::eth_chainId(), true, url,
-                    base::BindOnce(&ChainIdValidationResponse,
-                                   std::move(result), chain_id));
-  } else {
-    std::move(result).Run(true);
-  }
+  RequestInternal(
+      eth::eth_chainId(), true, url,
+      base::BindOnce(&ChainIdValidationResponse, std::move(result), chain_id));
 }
 
 void JsonRpcService::OnEthChainIdValidatedForOrigin(
