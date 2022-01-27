@@ -27,5 +27,9 @@ public class BraveNewTabPageClassAdapter extends BraveClassVisitor {
 
         deleteField(sBraveNewTabPageClassName, "mToolbarSupplier");
         makeProtectedField(sNewTabPageClassName, "mToolbarSupplier");
+
+        makePublicMethod(sNewTabPageClassName, "updateSearchProviderHasLogo");
+        addMethodAnnotation(
+                sBraveNewTabPageClassName, "updateSearchProviderHasLogo", "Ljava/lang/Override;");
     }
 }
