@@ -39,21 +39,18 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
           l10n_util::GetStringUTF16(IDS_SIDEBAR_WALLET_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
           SidebarItem::BuiltInItemType::kWallet, false);
-      break;
     case SidebarItem::BuiltInItemType::kBookmarks:
       return SidebarItem::Create(
           GURL(kSidebarBookmarksURL),
           l10n_util::GetStringUTF16(IDS_SIDEBAR_BOOKMARKS_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
           SidebarItem::BuiltInItemType::kBookmarks, true);
-      break;
     case SidebarItem::BuiltInItemType::kHistory:
       return SidebarItem::Create(
           GURL("chrome://history/"),
           l10n_util::GetStringUTF16(IDS_SIDEBAR_HISTORY_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
           SidebarItem::BuiltInItemType::kHistory, true);
-      break;
     default:
       NOTREACHED();
   }
@@ -88,8 +85,6 @@ std::vector<SidebarItem> GetDefaultSidebarItems() {
   items.push_back(GetBuiltInItemForType(SidebarItem::BuiltInItemType::kWallet));
   items.push_back(
       GetBuiltInItemForType(SidebarItem::BuiltInItemType::kBookmarks));
-  items.push_back(
-      GetBuiltInItemForType(SidebarItem::BuiltInItemType::kHistory));
   return items;
 }
 
@@ -248,7 +243,9 @@ void SidebarService::LoadSidebarItems() {
         // Fallback when built-in item type key is not existed.
         built_in_item = GetBuiltInItemForURL(url);
       }
-      items_.push_back(built_in_item);
+      // Remove blocked item from existing users data.
+      if (!IsBlockedBuiltInItem(built_in_item))
+        items_.push_back(built_in_item);
       continue;
     }
 
@@ -270,6 +267,13 @@ void SidebarService::LoadSidebarItems() {
         GURL(url), base::UTF8ToUTF16(title), type,
         SidebarItem::BuiltInItemType::kNone, open_in_panel));
   }
+}
+
+// For now, only builtin history item is blocked.
+bool SidebarService::IsBlockedBuiltInItem(const SidebarItem& item) const {
+  if (!IsBuiltInType(item))
+    return false;
+  return item.built_in_item_type == SidebarItem::BuiltInItemType::kHistory;
 }
 
 void SidebarService::OnPreferenceChanged(const std::string& pref_name) {

@@ -69,6 +69,7 @@ class SidebarService : public KeyedService {
   void UpdateSidebarItemsToPrefStore();
   std::vector<SidebarItem> GetDefaultSidebarItemsFromCurrentItems() const;
   void OnPreferenceChanged(const std::string& pref_name);
+  bool IsBlockedBuiltInItem(const SidebarItem& item) const;
 
   PrefService* prefs_ = nullptr;
   std::vector<SidebarItem> items_;

@@ -69,6 +69,14 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
 
   EXPECT_EQ(-1, model()->active_index());
 
+  // Add one more item to test with 4 items.
+  SidebarItem new_item;
+  new_item.url = GURL("https://brave.com");
+  service()->AddItem(new_item);
+  EXPECT_EQ(4UL, service()->items().size());
+  EXPECT_EQ(4UL, model()->data_.size());
+  EXPECT_EQ(service()->items().size(), model()->data_.size());
+
   // Move item at 1 to at index 2.
   // Total size and active index is not changed when currently active index is
   // -1.

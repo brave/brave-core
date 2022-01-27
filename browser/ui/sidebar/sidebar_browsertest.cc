@@ -56,8 +56,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://newtab/")));
   EXPECT_FALSE(CanAddCurrentActiveTabToSidebar(browser()));
 
-  // Currently we have 4 default items.
-  EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
+  // Currently we have 3 default items.
+  EXPECT_EQ(3UL, model()->GetAllSidebarItems().size());
   // Activate item that opens in panel.
   controller()->ActivateItemAt(2);
   EXPECT_EQ(2, model()->active_index());
@@ -71,20 +71,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   controller()->ActivateItemAt(1);
   EXPECT_EQ(2, model()->active_index());
 
-  // Try to activate item at index 3.
-  controller()->ActivateItemAt(3);
-  EXPECT_EQ(3, model()->active_index());
-
   // Setting -1 means deactivate current active tab.
   controller()->ActivateItemAt(-1);
   EXPECT_EQ(-1, model()->active_index());
 
-  controller()->ActivateItemAt(3);
+  controller()->ActivateItemAt(2);
 
   // Sidebar items at 2, 3 are opened in panel.
   // Check their webcontents are sidebar webcontents.
   EXPECT_TRUE(model()->IsSidebarWebContents(model()->GetWebContentsAt(2)));
-  EXPECT_TRUE(model()->IsSidebarWebContents(model()->GetWebContentsAt(3)));
   EXPECT_FALSE(
       model()->IsSidebarWebContents(tab_model()->GetActiveWebContents()));
   EXPECT_EQ(browser(),
@@ -94,8 +89,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
 
   // Remove Item at index 0 change active index from 3 to 2.
   SidebarServiceFactory::GetForProfile(browser()->profile())->RemoveItemAt(0);
-  EXPECT_EQ(3UL, model()->GetAllSidebarItems().size());
-  EXPECT_EQ(2, model()->active_index());
+  EXPECT_EQ(2UL, model()->GetAllSidebarItems().size());
+  EXPECT_EQ(1, model()->active_index());
 
   // Check |BrowserView::find_bar_host_view_| is the last child view.
   // If not, findbar dialog is not positioned properly.
@@ -106,15 +101,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
-  // By default, sidebar has 4 items.
-  EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
+  // By default, sidebar has 3 items.
+  EXPECT_EQ(3UL, model()->GetAllSidebarItems().size());
   ASSERT_TRUE(
       ui_test_utils::NavigateToURL(browser(), GURL("brave://settings/")));
 
   EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
   controller()->AddItemWithCurrentTab();
-  // have 5 items.
-  EXPECT_EQ(5UL, model()->GetAllSidebarItems().size());
+  // have 4 items.
+  EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
 
   int current_tab_index = tab_model()->active_index();
   EXPECT_EQ(0, current_tab_index);
@@ -129,8 +124,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
 
   // Activate sidebar item(brave://settings) and check existing first tab is
   // activated.
-  auto item = model()->GetAllSidebarItems()[4];
-  controller()->ActivateItemAt(4);
+  auto item = model()->GetAllSidebarItems()[3];
+  controller()->ActivateItemAt(3);
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), item.url);
 
