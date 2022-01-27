@@ -353,19 +353,17 @@ Config.prototype.buildArgs = function () {
   }
 
   if (this.isDebug() &&
-    this.targetOS !== 'ios' &&
-    this.targetOS !== 'android') {
-    if (process.platform === 'darwin') {
-      args.enable_stripping = false
-    }
-    args.symbol_level = 2
+      this.targetOS !== 'ios' &&
+      this.targetOS !== 'android') {
     args.enable_profiling = true
   }
 
-  if (this.sccache && process.platform === 'win32') {
-    args.clang_use_chrome_plugins = false
+  if (this.sccache) {
+    if (process.platform === 'win32') {
+      args.clang_use_chrome_plugins = false
+      args.use_thin_lto = true
+    }
     args.enable_precompiled_headers = false
-    args.use_thin_lto = true
   }
 
   if (this.targetArch === 'x86' && process.platform === 'linux') {
@@ -413,10 +411,6 @@ Config.prototype.buildArgs = function () {
     if (this.buildConfig !== 'Release') {
       // treat non-release builds like Debug builds
       args.treat_warnings_as_errors = false
-    } else {
-      // otherwise there is build error
-      // ld.lld: error: output file too large: 5861255936 bytes
-      args.symbol_level = 1
     }
 
     // Feed is not used in Brave
