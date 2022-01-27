@@ -66,7 +66,7 @@ enum ProviderError {
 };
 
 enum SolanaProviderError {
-  kSuccess = ProviderError.kSuccess,  // No error
+  kSuccess = 0,  // No error
 
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
@@ -75,28 +75,6 @@ enum SolanaProviderError {
   kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
   kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
   kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
-
-  // Implementation defined RPC server errors
-  // https://docs.rs/solana-client/1.9.9/src/solana_client/rpc_custom_error.rs.html
-  kBlockCleanedUp = -32001,
-  kSendTransactionPreflightFailure = -32002,
-  kTransactionSignatureVerificationFailure = -32003,
-  kBlockNotAvailable = -32004,
-  kNodeUnhealthy = -32005,
-  kTransactionPrecompileVerificationFailure = -32006,
-  kSlotSkipped = -32007,
-  kNoSnapshot = -32008,
-  kLongTermStorageSlotSkipped = -32009,
-  kKeyExcludedFromSecondaryIndex = -32010,
-  kTransactionHistoryNotAvailable = -32011,
-  kScanError = -32012,
-  kTransactionSignatureLenMismatch = -32013,
-  kBlockStatusNotAvailableYet = -32014
-};
-
-union ProviderErrorUnion {
-  ProviderError provider_error;
-  SolanaProviderError solana_provider_error;
 };
 
 // There is one BraveWalletProvider per renderer, the renderer communicates
@@ -106,17 +84,58 @@ interface BraveWalletProvider {
   Init(pending_remote<EventsListener> events_listener);
 
   // Corresponds to window.ethereum.request
-  Request(mojo_base.mojom.Value input, string origin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
 
   // Corresponds to window.ethereum.enable and eth_requestAccounts
-  Enable() => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
-  Send(string method, mojo_base.mojom.Value params, string origin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response,bool reject, string first_allowed_account, bool update_bind_js_properties);
+  RequestEthereumPermissions() => (array<string> accounts, ProviderError error, string message);
+
+  // Used for wallet_addEthereumChain method requests
+  AddEthereumChain(string json_payload) => (ProviderError error, string message);
+
+  // Used for wallet_switchEthereumChain method requests
+  SwitchEthereumChain(string chain_id) => (ProviderError error, string message);
+
+  // Used for eth_sendTransaction method requests without 1559 gas data
+  AddAndApproveTransaction(TxData tx_data, string from) => (string tx_hash, ProviderError error, string error_message);
+
+  // Used for eth_sendTransaction method requests with 1559 gas data
+  AddAndApprove1559Transaction(TxData1559 tx_data, string from) => (string tx_hash, ProviderError error, string error_message);
+
+  // Used for eth_sign and personal_sign
+  SignMessage(string address, string message) => (string signature, ProviderError error, string error_message);
+
+  // Used for personal_ecRecover
+  RecoverAddress(string message, string signature) => (string address, ProviderError error, string error_message);
+
+  // Used for eth_signTypedData
+  // message is for displaying the sign request to users
+  // message_to_sign is the hex representation without 0x for eip712 hash
+  // domain is the domain separator defined in eip712
+  SignTypedMessage(string address, string message,
+                   array<uint8> domain_hash, array<uint8> primary_hash,
+                   mojo_base.mojom.DictionaryValue domain)
+    => (string signature, ProviderError error, string error_message);
 
   // Used for the connect event
   GetChainId() => (string chain_id);
 
+  // Used for getting current network and keyring information.
+  GetNetworkAndDefaultKeyringInfo() => (NetworkInfo network,
+                                        KeyringInfo keyring_info);
+
+  // Used for eth_accounts method requests and as part of RequestEthereumPermissions
+  GetAllowedAccounts(bool include_accounts_when_locked) => (array<string> accounts, ProviderError error, string message);
+
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);
+
+  // Used for wallet_watchAsset.
+  // It will prompt an UI for user to confirm, and add the token into user's
+  // visible asset list if user approves.
+  // Note that we will use the token data from BlockchainRegistry (for
+  // mainnet) or from user asset list if there is an existing token with the
+  // same contract address, instead of the token data in the request.
+  AddSuggestToken(BlockchainToken token) => (bool approved, ProviderError error, string error_message);
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.
@@ -405,10 +424,12 @@ interface KeyringService {
   ImportAccount(string accountName, string privateKey, CoinType coin)
     => (bool success, string address);
 
-  // Imports a filecoin account with a specific private key and network
-  ImportFilecoinAccount(string accountName, string privateKey, string network)
-      => (bool success, string address);
-  
+  ImportFilecoinSECP256K1Account(string accountName, string privateKey, string network)
+    => (bool success, string address);
+
+  ImportFilecoinBLSAccount(string accountName, string privateKey, string network)
+    => (bool success, string address);
+
   // Imports an account via JSON
   ImportAccountFromJson(string accountName, string password, string json)
     => (bool success, string address);
@@ -637,12 +658,11 @@ interface JsonRpcService {
   GetNetworkUrl(CoinType coin) => (string network_url);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
-  GetBalance(string address, CoinType coin, string chain_id) => (string balance, ProviderError error, string error_message);
+  GetBalance(string address, CoinType coin) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,
-                       string address,
-                       string chain_id) => (string balance, ProviderError error, string error_message);
+                       string address) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 allowance for an owner and a spender
   GetERC20TokenAllowance(string contract,
@@ -656,7 +676,8 @@ interface JsonRpcService {
 
   // Used for making requests to the currently selected EVM compatible node for
   // coin ETH and other nodes with corresponding coin types 
-  Request(string json_payload, bool auto_retry_on_network_change, mojo_base.mojom.Value id, CoinType coin) => (mojo_base.mojom.Value id, mojo_base.mojom.Value formed_response, bool reject, string first_allowed_account, bool update_bind_js_properties);
+  Request(string json_payload, bool auto_retry_on_network_change, CoinType coin)
+    => (int32 http_code, string response, map<string, string> headers);
 
   // Adds an observer for the events of JsonRpcService
   AddObserver(pending_remote<JsonRpcServiceObserver> observer);
@@ -670,7 +691,7 @@ interface JsonRpcService {
   // Obtains the balance of a contract's ERC721 token ID for an address
   // Balance is 0x1 if current selected account is the same as token owner's
   // address, otherwise balance is 0x0.
-  GetERC721TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
+  GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (string balance, ProviderError error, string error_message);
 
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api
@@ -700,6 +721,10 @@ enum TransactionType {
   ERC721TransferFrom,
   ERC721SafeTransferFrom,
   Other
+};
+
+// TODO(jocelyn): Fill the struct with needed fields.
+struct SolanaTxData {
 };
 
 // TODO(spylogsster): Fill the struct with needed fields.
@@ -746,7 +771,7 @@ interface TxService {
   AddUnapprovedTransaction(TxDataUnion tx_data_union, string from) => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
-  ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status, ProviderErrorUnion error_union, string error_message);
+  ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status, ProviderError error, string error_message);
 
   // Used to reject a transaction
   RejectTransaction(CoinType coin_type, string tx_meta_id) => (bool status);
@@ -922,22 +947,4 @@ struct EncryptionKeyRequest {
   string origin;
   string address;
   string? message;
-};
-
-struct SolanaAccountMeta {
-  string pubkey;
-  bool is_signer;
-  bool is_writable;
-};
-
-struct SolanaInstruction {
-  string program_id;
-  array<SolanaAccountMeta> account_metas;
-  array<uint8> data;
-};
-
-struct SolanaTxData {
-  string recent_blockhash;
-  string fee_payer;
-  array<SolanaInstruction> instructions;
 };

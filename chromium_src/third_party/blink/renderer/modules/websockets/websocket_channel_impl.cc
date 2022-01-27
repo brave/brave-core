@@ -6,7 +6,6 @@
 #include "third_party/blink/renderer/modules/websockets/websocket_channel_impl.h"
 
 #include "third_party/blink/public/common/features.h"
-#include "third_party/blink/public/common/scheme_registry.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 
 #define WebSocketChannelImpl WebSocketChannelImpl_ChromiumImpl
@@ -40,10 +39,7 @@ bool WebSocketChannelImpl::ShouldDisallowConnection(const KURL& url) {
   if (base::FeatureList::IsEnabled(blink::features::kRestrictWebSocketsPool)) {
     if (blink::WebContentSettingsClient* settings =
             brave::GetContentSettingsClientFor(execution_context_)) {
-      const bool is_extension = CommonSchemeRegistry::IsExtensionScheme(
-          execution_context_->GetSecurityOrigin()->Protocol().Ascii());
-      if (!is_extension &&
-          settings->GetBraveFarblingLevel() != BraveFarblingLevel::OFF) {
+      if (settings->GetBraveFarblingLevel() != BraveFarblingLevel::OFF) {
         websocket_in_use_tracker_ =
             ResourcePoolLimiter::GetInstance().IssueResourceInUseTracker(
                 execution_context_,

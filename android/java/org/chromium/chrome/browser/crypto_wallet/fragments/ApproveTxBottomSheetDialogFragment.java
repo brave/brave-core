@@ -87,8 +87,6 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         mChainDecimals = 18;
     }
 
-    // TODO: This needs to be changed to something that broadcasts to all classes implementing
-    // ApprovedTxObserver.
     public void setApprovedTxObserver(ApprovedTxObserver approvedTxObserver) {
         mApprovedTxObserver = approvedTxObserver;
     }
@@ -188,12 +186,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     @Override
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
-        if (mApprovedTxObserver != null) {
-            if (mRejected || mApproved) {
-                mApprovedTxObserver.OnTxApprovedRejected(mApproved, mAccountName, mTxInfo.id);
-            } else {
-                mApprovedTxObserver.OnTxPending(mAccountName, mTxInfo.id);
-            }
+        if ((mRejected || mApproved) && mApprovedTxObserver != null) {
+            mApprovedTxObserver.OnTxApprovedRejected(mApproved, mAccountName, mTxInfo.id);
         }
     }
 
@@ -362,7 +356,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         txService.approveTransaction(CoinType.ETH, mTxInfo.id, (success, error, errorMessage) -> {
             assert success;
             Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
-                    "approveTransaction", error.getProviderError(), errorMessage);
+                    "approveTransaction", error, errorMessage);
             if (!success) {
                 return;
             }

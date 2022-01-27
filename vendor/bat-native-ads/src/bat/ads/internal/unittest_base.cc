@@ -149,7 +149,7 @@ void UnitTestBase::Initialize() {
 
   SetSysInfo(mojom::SysInfo());
 
-  SetBuildChannel(BuildChannelType::kRelease);
+  SetBuildChannel(false, "test");
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 

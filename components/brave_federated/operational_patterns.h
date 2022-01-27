@@ -73,9 +73,8 @@ class OperationalPatterns final {
   void SendCollectionSlot();
   void SendDelete();
 
-  void LoadPrefs();
   void SavePrefs();
-  void ClearPrefs();
+  void LoadPrefs();
 
   std::string BuildPayload() const;
   std::string BuildDeletePayload() const;

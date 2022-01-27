@@ -18,15 +18,13 @@ import {
   AssetIcon,
   IconsWrapper,
   NetworkIconWrapper,
-  NameColumn,
-  Spacer
+  NameColumn
 } from './style'
-import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
+import { withPlaceholderIcon, CreateNetworkIcon } from '../../shared'
 import { WithHideBalancePlaceholder } from '../'
 
 // Hooks
 import { usePricing } from '../../../common/hooks'
-import { unbiasedRandom } from '../../../utils/random-utils'
 
 interface Props {
   spotPrices: BraveWallet.AssetPrice[]
@@ -50,8 +48,6 @@ const PortfolioAssetItem = (props: Props) => {
     selectedNetwork,
     isPanel
   } = props
-  const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
-  const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] = React.useState(0)
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
@@ -70,14 +66,6 @@ const PortfolioAssetItem = (props: Props) => {
     return computeFiatAmount(assetBalance, token.symbol, token.decimals)
   }, [computeFiatAmount, assetBalance, token])
 
-  const formattedFiatBalance = React.useMemo(() => {
-    return fiatBalance.formatAsFiat(defaultCurrencies.fiat)
-  }, [fiatBalance])
-
-  const isLoading = React.useMemo(() => {
-    return formattedAssetBalance === ''
-  }, [formattedAssetBalance])
-
   const NetworkDescription = React.useMemo(() => {
     if (selectedNetwork && token.contractAddress !== '' && !isPanel) {
       return getLocale('braveWalletPortfolioAssetNetworkDescription')
@@ -87,60 +75,28 @@ const PortfolioAssetItem = (props: Props) => {
     return token.symbol
   }, [selectedNetwork, token])
 
-  React.useEffect(() => {
-    // Randow value between 100 & 250
-    // Set value only once
-    if (assetNameSkeletonWidth === 0) {
-      setAssetNameSkeletonWidth(unbiasedRandom(100, 250))
-    }
-
-    if (assetNetworkSkeletonWidth === 0) {
-      setAssetNetworkSkeletonWidth(unbiasedRandom(100, 250))
-    }
-  }, [])
-
   return (
     <>
       {token.visible &&
         // Selecting an erc721 token is temp disabled until UI is ready for viewing NFTs
-        // or when showing loading skeleton
-        <StyledWrapper disabled={token.isErc721 || isLoading} onClick={action}>
+        <StyledWrapper disabled={token.isErc721} onClick={action}>
           <NameAndIcon>
             <IconsWrapper>
-              {isLoading
-                ? <LoadingSkeleton
-                    circle={true}
-                    width={40}
-                    height={40}
-                  />
-                : <>
-                    <AssetIconWithPlaceholder asset={token} network={selectedNetwork}/>
-                    {selectedNetwork && token.contractAddress !== '' && !isPanel &&
-                      <NetworkIconWrapper>
-                        <CreateNetworkIcon network={selectedNetwork} marginRight={0} />
-                      </NetworkIconWrapper>
-                    }
-                  </>
+              <AssetIconWithPlaceholder asset={token} network={selectedNetwork} />
+              {selectedNetwork && token.contractAddress !== '' && !isPanel &&
+                <NetworkIconWrapper>
+                  <CreateNetworkIcon network={selectedNetwork} marginRight={0} />
+                </NetworkIconWrapper>
               }
             </IconsWrapper>
             <NameColumn>
-              {isLoading
-                ? <>
-                    <LoadingSkeleton width={assetNameSkeletonWidth} height={18} />
-                    <Spacer />
-                    <LoadingSkeleton width={assetNetworkSkeletonWidth} height={18} />
-                  </>
-                : <>
-                    <AssetName>
-                      {token.name} {
-                      token.isErc721 && token.tokenId
-                        ? '#' + new Amount(token.tokenId).toNumber()
-                        : ''
-                      }
-                    </AssetName>
-                    <AssetName>{NetworkDescription}</AssetName>
-                  </>
+              <AssetName>{token.name} {
+                token.isErc721 && token.tokenId
+                  ? '#' + new Amount(token.tokenId).toNumber()
+                  : ''
               }
+              </AssetName>
+              <AssetName>{NetworkDescription}</AssetName>
             </NameColumn>
           </NameAndIcon>
           <BalanceColumn>
@@ -148,17 +104,10 @@ const PortfolioAssetItem = (props: Props) => {
               size='small'
               hideBalances={hideBalances ?? false}
             >
-              {isLoading
-                ? <>
-                    <LoadingSkeleton width={100} height={20} />
-                  </>
-                : <>
-                    {!token.isErc721 &&
-                      <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>
-                    }
-                    <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
-                  </>
+              {!token.isErc721 &&
+                <FiatBalanceText>{fiatBalance.formatAsFiat(defaultCurrencies.fiat)}</FiatBalanceText>
               }
+              <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
             </WithHideBalancePlaceholder>
           </BalanceColumn>
         </StyledWrapper>

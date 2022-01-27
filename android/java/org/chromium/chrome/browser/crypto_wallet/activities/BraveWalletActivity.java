@@ -49,7 +49,6 @@ import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.CryptoWalletOnboardingPagerAdapter;
-import org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.SwapBottomSheetDialogFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.BackupWalletFragment;
 import org.chromium.chrome.browser.crypto_wallet.fragments.onboarding_fragments.RecoveryPhraseFragment;
@@ -82,10 +81,8 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private View mCryptoLayout;
     private View mCryptoOnboardingLayout;
     private View cryptoOnboardingLayout;
-    private ImageView mPendingTxNotification;
     private ImageView mSwapButton;
     private ViewPager cryptoWalletOnboardingViewPager;
-    private CryptoFragmentPageAdapter mCryptoFragmentPageAdapter;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter cryptoWalletOnboardingPagerAdapter;
     private boolean mShowBiometricPrompt;
@@ -144,19 +141,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
             });
         });
 
-        mPendingTxNotification = findViewById(R.id.pending_tx_notification);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            // For Android 7 and above use vector images for send/swap button.
-            // For Android 5 and 6 it is a bitmap specified in activity_brave_wallet.xml.
-            mPendingTxNotification.setImageResource(R.drawable.ic_pending_tx_notification_icon);
-            mPendingTxNotification.setBackgroundResource(R.drawable.ic_pending_tx_notification_bg);
-        }
-
-        mPendingTxNotification.setOnClickListener(v -> {
-            PortfolioFragment portfolioFragment =
-                    mCryptoFragmentPageAdapter.getCurrentPortfolioFragment();
-            if (portfolioFragment != null) portfolioFragment.callAnotherApproveDialog();
-        });
         mCryptoLayout = findViewById(R.id.crypto_layout);
         mCryptoOnboardingLayout = findViewById(R.id.crypto_onboarding_layout);
         cryptoWalletOnboardingViewPager = findViewById(R.id.crypto_wallet_onboarding_viewpager);
@@ -236,7 +220,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         List<NavigationItem> navigationItems = new ArrayList<>();
         mShowBiometricPrompt = true;
         mCryptoLayout.setVisibility(View.GONE);
-        mPendingTxNotification.setVisibility(View.GONE);
         mSwapButton.setVisibility(View.GONE);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         if (type == ONBOARDING_FIRST_PAGE_ACTION) {
@@ -320,9 +303,10 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mCryptoLayout.setVisibility(View.VISIBLE);
 
         ViewPager viewPager = findViewById(R.id.navigation_view_pager);
-        mCryptoFragmentPageAdapter = new CryptoFragmentPageAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(mCryptoFragmentPageAdapter);
-        viewPager.setOffscreenPageLimit(mCryptoFragmentPageAdapter.getCount() - 1);
+        CryptoFragmentPageAdapter adapter =
+                new CryptoFragmentPageAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -359,7 +343,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         addRemoveSecureFlag(true);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
         mCryptoLayout.setVisibility(View.GONE);
-        mPendingTxNotification.setVisibility(View.GONE);
         mSwapButton.setVisibility(View.GONE);
 
         List<NavigationItem> navigationItems = new ArrayList<>();
@@ -388,10 +371,6 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                 backupTopBannerLayout.setVisibility(View.GONE);
             }
         });
-    }
-
-    public void setPendingTxNotificationVisibility(int visibility) {
-        mPendingTxNotification.setVisibility(visibility);
     }
 
     @Override

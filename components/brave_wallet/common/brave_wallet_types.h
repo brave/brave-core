@@ -9,12 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "third_party/abseil-cpp/absl/types/optional.h"
-
-namespace base {
-class Value;
-}  // namespace base
-
 namespace brave_wallet {
 
 typedef unsigned _BitInt(256) uint256_t;
@@ -96,38 +90,6 @@ enum class SolanaTokenInstruction {
   kInitializeAccount3,
   kInitializeMultisig2,
   kInitializeMint2
-};
-
-struct SolanaSignatureStatus {
-  SolanaSignatureStatus() = default;
-  SolanaSignatureStatus(uint64_t slot,
-                        uint64_t confirmations,
-                        const std::string& err,
-                        const std::string& confirmation_status);
-  ~SolanaSignatureStatus() = default;
-  SolanaSignatureStatus(const SolanaSignatureStatus&) = default;
-  bool operator==(const SolanaSignatureStatus&) const;
-  bool operator!=(const SolanaSignatureStatus&) const;
-
-  base::Value ToValue() const;
-  static absl::optional<SolanaSignatureStatus> FromValue(
-      const base::Value& value);
-
-  // The slot the transaction was processed.
-  uint64_t slot = 0;
-  // Number of blocks since signature confirmation. It is specified as usize
-  // (a Rust type) in the getSignatureStatuses JSON-RPC API spec, which will
-  // be 4 bytes on a 32 bit target and 8 bytes on a 64 bit target. We use
-  // uint64_t instead of size_t here to make sure our container is large enough
-  // to handle both cases from server response.
-  uint64_t confirmations = 0;
-  // Non-empty if transaction failed. TransactionError object from the
-  // getSignatureStatuses JSON-RPC API response will be written as a json
-  // string to store here.
-  std::string err;
-  // The transaction's cluster confirmation status; either processed, confirmed,
-  // or finalized.
-  std::string confirmation_status;
 };
 
 }  // namespace brave_wallet

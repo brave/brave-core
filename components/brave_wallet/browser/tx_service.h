@@ -130,7 +130,6 @@ class TxService : public KeyedService,
 
  private:
   friend class EthTxManagerUnitTest;
-  friend class SolanaTxManagerUnitTest;
 
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();

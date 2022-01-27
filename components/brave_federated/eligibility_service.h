@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_ELIGIBILITY_SERVICE_H_
 
 #include "base/power_monitor/power_monitor.h"
-#include "brave/components/brave_federated/eligibility_service_observer.h"
 #include "net/base/network_change_notifier.h"
 
 namespace brave_federated {
@@ -27,17 +26,9 @@ class EligibilityService
   EligibilityService(const EligibilityService&) = delete;
   EligibilityService& operator=(const EligibilityService&) = delete;
 
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
-  void NotifyObservers(bool is_eligible);
-
-  bool IsEligibile() const;
+  bool IsEligibileForFederatedTask();
 
  private:
-  void MaybeChangeEligibility();
-
-  bool IsConnectedToWifiOrEthernet() const;
-
   // base::PowerStateObserver
   void OnPowerStateChange(bool on_battery_power) override;
 
@@ -45,8 +36,8 @@ class EligibilityService
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
 
-  base::ObserverList<Observer> observers_;
-  bool is_eligible_ = false;
+  bool IsConnectionWifiOrEthernet();
+
   bool is_on_battery_power_;
   net::NetworkChangeNotifier::ConnectionType connection_type_;
 };

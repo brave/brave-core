@@ -47,7 +47,6 @@ const ExpandToggleButton = styled.button`
   height: 14px;
   display: flex;
   align-items: center;
-  cursor: pointer;
 
   &:focus-visible {
     --border: 2px solid ${(p) => p.theme.color.focusBorder};

@@ -32,7 +32,9 @@ import HardwareWalletConnect from './hardware-wallet-connect'
 import {
   FilecoinNetwork,
   FilecoinNetworkTypes,
-  FilecoinNetworkLocaleMapping
+  FilecoinNetworkLocaleMapping,
+  FilecoinAddressProtocolTypes,
+  FilecoinAddressProtocolLocaleMapping
 } from '../../../../common/hardware/types'
 
 export interface Props {
@@ -41,7 +43,7 @@ export interface Props {
   onImportAccount: (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => void
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
-  onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork) => void
+  onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
@@ -82,6 +84,7 @@ const AddAccountModal = (props: Props) => {
   const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(undefined)
   const passwordInputRef = React.useRef<HTMLInputElement>(null)
   const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
+  const [filecoinAddressProtocol, setFilecoinAddressProtocol] = React.useState<BraveWallet.FilecoinAddressProtocol>(BraveWallet.FilecoinAddressProtocol.BLS)
 
   const suggestedAccountName = React.useMemo(() => {
     const accountTypeLength = accounts.filter((account) => account.coin === selectedAccountType?.coin).length + 1
@@ -90,6 +93,10 @@ const AddAccountModal = (props: Props) => {
 
   const onChangeFilecoinNetwork = (network: FilecoinNetwork) => {
     setFilecoinNetwork(network)
+  }
+
+  const onChangeFilecoinAddressProtocol = (protocol: string) => {
+    setFilecoinAddressProtocol(Number(protocol))
   }
 
   const importError = React.useMemo(() => {
@@ -128,7 +135,7 @@ const AddAccountModal = (props: Props) => {
     if (tab === 'import') {
       if (importOption === 'key') {
         if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
-          onImportFilecoinAccount(accountName, privateKey, filecoinNetwork)
+          onImportFilecoinAccount(accountName, privateKey, filecoinNetwork, filecoinAddressProtocol)
         } else {
           onImportAccount(accountName, privateKey, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
         }
@@ -241,6 +248,18 @@ const AddAccountModal = (props: Props) => {
                         return (
                           <div data-value={network} key={index}>
                             {networkLocale}
+                          </div>
+                        )
+                      })}
+                    </Select>
+                  </SelectWrapper>
+                  <SelectWrapper>
+                    <Select value={filecoinAddressProtocol.toString()} onChange={onChangeFilecoinAddressProtocol}>
+                      {FilecoinAddressProtocolTypes.map((protocol, index) => {
+                        const protocolLocale = FilecoinAddressProtocolLocaleMapping[protocol]
+                        return (
+                          <div data-value={protocol.toString()} key={index}>
+                            {getLocale('braveWalletFilecoinPrivateKeyProtocol').replace('$1', protocolLocale)}
                           </div>
                         )
                       })}

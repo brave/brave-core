@@ -20,7 +20,7 @@ class BlockTracker {
   virtual ~BlockTracker() = default;
 
   virtual void Start(base::TimeDelta interval) = 0;
-  virtual void Stop();
+  void Stop();
   bool IsRunning() const;
 
  protected:

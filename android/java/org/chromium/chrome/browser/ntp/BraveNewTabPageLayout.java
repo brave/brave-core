@@ -1625,8 +1625,7 @@ public class BraveNewTabPageLayout
                              Profile.getLastUsedRegularProfile())
                             && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal())
                         || BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                                Profile.getLastUsedRegularProfile()))
-                && (!mIsShowOptin && !mIsShowNewsOn)) {
+                                Profile.getLastUsedRegularProfile()))) {
             NTPUtil.showNonDisruptiveBanner((BraveActivity) mActivity, this, brOption,
                                              sponsoredTab, newTabPageListener);
         }

@@ -23,17 +23,6 @@ interface ProfileCell {
 
 export type PendingType = 'tip' | 'ac' | 'recurring'
 
-export function getTypeMessage (type: PendingType) {
-  switch (type) {
-    case 'ac':
-      return 'pendingTypeac'
-    case 'recurring':
-      return 'pendingTyperecurring'
-    case 'tip':
-      return 'pendingTypetip'
-  }
-}
-
 export interface DetailRow {
   profile: ProfileCell
   amount: {
@@ -75,7 +64,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
           },
           {
             content: (
-              <>{getLocale(getTypeMessage(row.type))}</>
+              <>{getLocale(`pendingType${row.type}`)}</>
             )
           },
           {

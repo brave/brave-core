@@ -47,8 +47,6 @@ class BraveWalletService : public KeyedService,
       base::OnceCallback<void(bool, const std::string&, const std::string&)>;
   using AddSuggestTokenCallback =
       base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
-  using RequestNewCallback = base::OnceCallback<
-      void(base::Value, base::Value, bool, const std::string&, bool)>;
 
   BraveWalletService(std::unique_ptr<BraveWalletServiceDelegate> delegate,
                      KeyringService* keyring_service,
@@ -134,8 +132,7 @@ class BraveWalletService : public KeyedService,
   void AddSignMessageRequest(mojom::SignMessageRequestPtr request,
                              SignMessageRequestCallback callback);
   void AddSuggestTokenRequest(mojom::AddSuggestTokenRequestPtr request,
-                              RequestNewCallback callback,
-                              base::Value id);
+                              AddSuggestTokenCallback callback);
 
   void RemovePrefListenersForTests();
 
@@ -192,8 +189,8 @@ class BraveWalletService : public KeyedService,
 
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
-  base::flat_map<std::string, RequestNewCallback> add_suggest_token_callbacks_;
-  base::flat_map<std::string, base::Value> add_suggest_token_ids_;
+  base::flat_map<std::string, AddSuggestTokenCallback>
+      add_suggest_token_callbacks_;
   base::flat_map<std::string, mojom::AddSuggestTokenRequestPtr>
       add_suggest_token_requests_;
   mojo::RemoteSet<mojom::BraveWalletServiceObserver> observers_;

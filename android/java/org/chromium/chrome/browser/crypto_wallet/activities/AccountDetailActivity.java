@@ -228,9 +228,6 @@ public class AccountDetailActivity
     public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {}
 
     @Override
-    public void OnTxPending(String accountName, String txId) {}
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
