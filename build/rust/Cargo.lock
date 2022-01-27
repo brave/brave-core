@@ -223,26 +223,26 @@ checksum = "a439d42c1cc301fb1a248114b56388e447ac1a9afed7bfb1424ae2f4c26f92c7"
 dependencies = [
  "base64 0.13.0",
  "clear_on_drop",
- "crypto-mac 0.10.1",
+ "crypto-mac",
  "curve25519-dalek",
  "digest 0.9.0",
- "hmac 0.10.1",
+ "hmac",
  "rand 0.7.3",
  "rand_chacha 0.2.2",
  "rand_core 0.5.1",
  "serde",
- "subtle 2.4.0",
+ "subtle",
 ]
 
 [[package]]
 name = "challenge-bypass-ristretto-ffi"
-version = "1.0.0-pre.2"
+version = "1.0.0-pre.4"
 dependencies = [
  "base64 0.9.3",
  "challenge-bypass-ristretto",
- "hmac 0.7.1",
- "rand 0.6.5",
- "sha2 0.8.2",
+ "hmac",
+ "rand 0.7.3",
+ "sha2 0.9.8",
 ]
 
 [[package]]
@@ -313,22 +313,12 @@ dependencies = [
 
 [[package]]
 name = "crypto-mac"
-version = "0.7.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4434400df11d95d556bac068ddfedd482915eb18fe8bea89bc80b6e4b1c179e5"
-dependencies = [
- "generic-array 0.12.4",
- "subtle 1.0.0",
-]
-
-[[package]]
-name = "crypto-mac"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bff07008ec701e8028e2ceb8f83f0e4274ee62bd2dbdc4fefff2e9a91824081a"
 dependencies = [
  "generic-array 0.14.4",
- "subtle 2.4.0",
+ "subtle",
 ]
 
 [[package]]
@@ -399,7 +389,7 @@ dependencies = [
  "byteorder",
  "digest 0.9.0",
  "rand_core 0.5.1",
- "subtle 2.4.0",
+ "subtle",
  "zeroize",
 ]
 
@@ -856,21 +846,11 @@ dependencies = [
 
 [[package]]
 name = "hmac"
-version = "0.7.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5dcb5e64cda4c23119ab41ba960d1e170a774c8e4b9d9e6a9bc18aabf5e59695"
-dependencies = [
- "crypto-mac 0.7.0",
- "digest 0.8.1",
-]
-
-[[package]]
-name = "hmac"
 version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c1441c6b1e930e2817404b5046f1f989899143a12bf92de603b69f4e0aee1e15"
 dependencies = [
- "crypto-mac 0.10.1",
+ "crypto-mac",
  "digest 0.9.0",
 ]
 
@@ -1760,7 +1740,7 @@ dependencies = [
  "ed25519-dalek",
  "futures-retry",
  "git-version",
- "hmac 0.10.1",
+ "hmac",
  "http",
  "http-signature-rs",
  "rand 0.7.3",
@@ -1873,12 +1853,6 @@ dependencies = [
  "proc-macro2",
  "quote",
 ]
-
-[[package]]
-name = "subtle"
-version = "1.0.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2d67a5a62ba6e01cb2192ff309324cb4875d0c451d55fe2319433abe7a05a8ee"
 
 [[package]]
 name = "subtle"
