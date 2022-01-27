@@ -33,6 +33,9 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
+import org.chromium.chrome.browser.feed.FeedActionDelegate;
+import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
+import org.chromium.chrome.browser.feed.SnapScrollHelper;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
@@ -113,6 +116,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceMediator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/BraveNewTabPage"));
         Assert.assertTrue(classExists(
@@ -322,6 +327,8 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
                         "isReliabilityLoggingEnabled", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
+                "destroyPropertiesForStream", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/theme/ThemeUtils",
                 "getTextBoxColorForToolbarBackgroundInNonNativePage", false, null));
         Assert.assertTrue(methodExists(
@@ -534,6 +541,10 @@ public class BytecodeTest {
                 PropertyModel.class, Handler.class, Supplier.class, Supplier.class, Supplier.class,
                 LocationBarDataProvider.class, Callback.class, Supplier.class, BookmarkState.class,
                 JankTracker.class, ExploreIconProvider.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
+                "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
+                FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
+                PropertyModel.class, int.class, FeedActionDelegate.class));
     }
 
     @Test
@@ -550,11 +561,13 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mTileGroup"));
         Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mScrollViewForPolicy"));
-        Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mNtpHeader"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mRootView"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/feed/FeedSurfaceMediator", "mCoordinator"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/feed/FeedSurfaceMediator", "mSnapScrollHelper"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/ntp/NewTabPage", "mBrowserControlsStateProvider"));
         Assert.assertTrue(
