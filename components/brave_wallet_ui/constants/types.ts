@@ -115,6 +115,7 @@ export type TopTabNavTypes =
   | 'portfolio'
   | 'apps'
   | 'accounts'
+  | 'market'
 
 export type AddAccountNavTypes =
   | 'create'
@@ -219,6 +220,8 @@ export interface WalletState {
   defaultCurrencies: DefaultCurrencies
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   defaultNetworks: BraveWallet.NetworkInfo[]
+  isLoadingCoinMarketData: boolean
+  coinMarketData: BraveWallet.CoinMarket[]
   selectedNetworkFilter: BraveWallet.NetworkInfo
 }
 
@@ -256,7 +259,6 @@ export interface PageState {
   showAddModal: boolean
   isCryptoWalletsInitialized: boolean
   isMetaMaskInitialized: boolean
-
 }
 
 export interface WalletPageState {
@@ -549,6 +551,7 @@ export enum WalletRoutes {
   Restore = '/crypto/restore-wallet',
   Portfolio = '/crypto/portfolio',
   PortfolioSub = '/crypto/portfolio/:id?',
+  Market = '/crypto/market',
   Accounts = '/crypto/accounts',
   AddAccountModal = '/crypto/accounts/add-account',
   AddAssetModal = '/crypto/portfolio/add-asset',
@@ -625,3 +628,24 @@ export enum CoinTypesMap {
   FIL = BraveWallet.CoinType.FIL,
   SOL = BraveWallet.CoinType.SOL
 }
+
+export type AssetFilterOption =
+  | 'all'
+  | 'tradable'
+
+export type AssetFilter = {
+  value: AssetFilterOption
+  label: string
+}
+
+export type SortOrder =
+  | 'asc'
+  | 'desc'
+
+export type MarketDataTableColumnTypes =
+  | 'assets'
+  | 'currentPrice'
+  | 'duration'
+  | 'totalVolume'
+  | 'marketCap'
+  | 'priceChange24h'

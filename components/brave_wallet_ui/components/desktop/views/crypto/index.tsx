@@ -20,6 +20,7 @@ import { PortfolioView, AccountsView } from '../'
 import {
   HardwareWalletConnectOpts
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
+import MarketView from '../market'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -83,6 +84,10 @@ export interface Props {
   showVisibleAssetsModal: boolean
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
+  isLoadingCoinMarketData: boolean
+  coinMarkets: BraveWallet.CoinMarket[]
+  onFetchCoinMarkets: (vsAsset: string, limit: number) => void
+  tradableAssets: BraveWallet.BlockchainToken[]
 }
 
 const CryptoView = (props: Props) => {
@@ -144,7 +149,11 @@ const CryptoView = (props: Props) => {
     onCancelTransaction,
     onSpeedupTransaction,
     onFindTokenInfoByContractAddress,
-    foundTokenInfoByContractAddress
+    foundTokenInfoByContractAddress,
+    isLoadingCoinMarketData,
+    onFetchCoinMarkets,
+    coinMarkets,
+    tradableAssets
   } = props
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
@@ -358,6 +367,14 @@ const CryptoView = (props: Props) => {
           onSpeedupTransaction={onSpeedupTransaction}
           onCancelTransaction={onCancelTransaction}
           networkList={networkList}
+        />
+      </Route>
+      <Route path={WalletRoutes.Market} exact={true}>
+        <MarketView
+          isLoadingCoinMarketData={isLoadingCoinMarketData}
+          onFetchCoinMarkets={onFetchCoinMarkets}
+          coinMarkets={coinMarkets}
+          tradableAssets={tradableAssets}
         />
       </Route>
 

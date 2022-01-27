@@ -16,7 +16,8 @@ import {
   WalletAccountType,
   UpdateAccountNamePayloadType,
   DefaultCurrencies,
-  AddAccountNavTypes
+  AddAccountNavTypes,
+  CoinMarketMetadata
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
@@ -24,7 +25,7 @@ import { SearchBar, AppList } from '../../components/shared'
 import { getLocale } from '../../../common/locale'
 import { AppsList } from '../../options/apps-list-options'
 import { filterAppList } from '../../utils/filter-app-list'
-import { PortfolioView, AccountsView } from '../../components/desktop/views'
+import { PortfolioView, AccountsView, MarketView } from '../../components/desktop/views'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -78,6 +79,8 @@ export interface Props {
   showVisibleAssetsModal: boolean
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
+  coinMarketData: CoinMarketMetadata[]
+  onFetchMoreMarketData: () => void
 }
 
 const CryptoStoryView = (props: Props) => {
@@ -341,6 +344,11 @@ const CryptoStoryView = (props: Props) => {
           networkList={networkList}
         />
       }
+
+      {selectedTab === 'market' &&
+        <MarketView />
+      }
+
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
