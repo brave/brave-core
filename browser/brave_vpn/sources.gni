@@ -21,6 +21,7 @@ if (enable_brave_vpn) {
     "//components/keyed_service/content",
     "//components/user_prefs",
     "//content/public/browser",
+    "//brave/browser/skus"
   ]
 
   if (is_android) {

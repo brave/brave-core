@@ -16,10 +16,12 @@
 namespace brave_wallet {
 
 // static
-mojom::KeyringController* KeyringControllerFactory::GetForBrowserState(
+mojo::PendingRemote<mojom::KeyringController>
+KeyringControllerFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
   return static_cast<KeyringController*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+             GetInstance()->GetServiceForBrowserState(browser_state, true))
+      ->MakeRemote();
 }
 
 // static

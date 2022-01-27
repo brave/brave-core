@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 5e4f2cf8ad0a9e4eac81a55301d6b0012f9379b9..23b6dac442f7609c56e785599c667d7686839b13 100644
+index f2a12d0545a6d29e61111e98770f58d82dabcfbf..b12dbef9c86575c754f6f8dc8b8595fa125e9883 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1121,6 +1121,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1111,6 +1111,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    downgrade::RegisterPrefs(registry);
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
@@ -10,8 +10,8 @@ index 5e4f2cf8ad0a9e4eac81a55301d6b0012f9379b9..23b6dac442f7609c56e785599c667d76
  
    // This is intentionally last.
    RegisterLocalStatePrefsForMigration(registry);
-@@ -1435,6 +1436,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
-   registry->RegisterBooleanPref(prefs::kPrivacyReviewShowWelcomeCard, true);
+@@ -1429,6 +1430,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+   registry->RegisterBooleanPref(prefs::kPrivacyGuideViewed, false);
  
    RegisterProfilePrefsForMigration(registry);
 +  brave::RegisterProfilePrefs(registry);

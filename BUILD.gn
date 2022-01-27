@@ -120,18 +120,8 @@ if (is_android) {
   }
 }
 
-config("rust_link") {
-  # https://bugzilla.mozilla.org/show_bug.cgi?id=1188030#c14
-  if (!is_component_build) {
-    ldflags = [ "-Wl,-no_compact_unwind" ]
-  }
-}
-
 if (is_mac) {
   group("framework_bundle_data") {
-    # this only seems to work correctly when applied to
-    # the chrome_framework target so we add it here
-    public_configs = [ ":rust_link" ]
     deps = [
       "components/brave_extension/extension/brave_extension:brave_extension_framework_bundle_data",
       "components/brave_rewards/resources/extension:framework_bundle_data",

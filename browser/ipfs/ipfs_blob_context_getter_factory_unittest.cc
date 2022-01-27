@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/run_loop.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -27,6 +28,10 @@ namespace ipfs {
 class IpfsBlobContextGetterFactoryUnitTest : public testing::Test {
  public:
   IpfsBlobContextGetterFactoryUnitTest() = default;
+  IpfsBlobContextGetterFactoryUnitTest(
+      const IpfsBlobContextGetterFactoryUnitTest&) = delete;
+  IpfsBlobContextGetterFactoryUnitTest& operator=(
+      const IpfsBlobContextGetterFactoryUnitTest&) = delete;
   ~IpfsBlobContextGetterFactoryUnitTest() override = default;
 
   void SetUp() override {
@@ -53,10 +58,8 @@ class IpfsBlobContextGetterFactoryUnitTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   std::unique_ptr<TestingProfileManager> profile_manager_;
-
-  DISALLOW_COPY_AND_ASSIGN(IpfsBlobContextGetterFactoryUnitTest);
 };
 
 TEST_F(IpfsBlobContextGetterFactoryUnitTest, GetStorageContext) {

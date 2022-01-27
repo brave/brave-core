@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <vector>
+
+#include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/extensions/api/brave_shields_api.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_api.h"
-#include "chrome/browser/extensions/api/content_settings/content_settings_api_constants.h"
-#include "chrome/browser/extensions/api/content_settings/content_settings_helpers.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_store.h"
 #include "chrome/browser/extensions/extension_function_test_utils.h"
@@ -22,6 +23,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/common/constants.h"
@@ -118,8 +120,23 @@ class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
                                               true);
   }
 
+  // Returns all the active RenderFrameHosts (e.g., not a prerendered or
+  // back-forward cached page) for the test's active WebContents, so that we
+  // don't get mixed with other RFHs that will be available as well now that
+  // BFCache is enabled by default even for pages injecting scripts.
+  std::vector<content::RenderFrameHost*> GetActiveRenderFrameHosts() {
+    DCHECK(active_contents());
+    std::vector<content::RenderFrameHost*> active_frames;
+    for (content::RenderFrameHost* rfh :
+         CollectAllRenderFrameHosts(active_contents())) {
+      if (rfh->IsActive())
+        active_frames.push_back(rfh);
+    }
+    return active_frames;
+  }
+
  private:
-  HostContentSettingsMap* content_settings_;
+  raw_ptr<HostContentSettingsMap> content_settings_ = nullptr;
   scoped_refptr<const extensions::Extension> extension_;
 };
 
@@ -128,19 +145,19 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
 
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html"));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 1u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 1u)
       << "All script loadings should be blocked.";
 
   AllowScriptOriginOnce("a.test");
 
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 2u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 2u)
       << "Scripts from a.test should be temporarily allowed.";
 
   // reload page again
   active_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 2u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 2u)
       << "Scripts from a.test should be temporarily allowed after reload.";
 
   // same doc navigation
@@ -148,7 +165,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
       browser(), embedded_test_server()->GetURL(
                      "a.test", "/load_js_from_origins.html#foo")));
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 2u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 2u)
       << "Scripts from a.test should be temporarily allowed for same doc "
          "navigation.";
 
@@ -157,20 +174,20 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
       browser(),
       embedded_test_server()->GetURL("b.test", "/load_js_from_origins.html")));
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 1u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 1u)
       << "All script loadings should be blocked after navigating away.";
 }
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceDataURL) {
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html"));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 4u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 4u)
       << "All script loadings should not be blocked by default.";
 
   BlockScripts();
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.test", "/load_js_from_origins.html"));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 1u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 1u)
       << "All script loadings should be blocked.";
 
   AllowScriptOriginAndDataURLOnce(
@@ -180,7 +197,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceDataURL) {
       "50LmJvZHkuYXBwZW5kQ2hpbGQoZnJhbWUpOw==");
 
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 3u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 3u)
       << "Scripts from a.test and data URL should be temporarily allowed.";
 }
 
@@ -188,13 +205,13 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnceIframe) {
   BlockScripts();
 
   EXPECT_TRUE(NavigateToURLUntilLoadStop("a.com", "/remote_iframe.html"));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 2u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 2u)
       << "All script loadings should be blocked.";
 
   AllowScriptOriginOnce("b.com");
 
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
-  EXPECT_EQ(CollectAllRenderFrameHosts(active_contents()).size(), 3u)
+  EXPECT_EQ(GetActiveRenderFrameHosts().size(), 3u)
       << "Scripts from b.com should be temporarily allowed.";
 }
 

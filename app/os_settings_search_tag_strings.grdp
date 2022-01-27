@@ -277,6 +277,9 @@
   <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DATA_USAGE" desc="Text for search result item which, when clicked, navigates the user to Nearby Share edit data usage button in settings.">
     Nearby Share data usage
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_NEARBY_SHARE_DEVICES_NEARBY_SHARING_NOTIFICATION" translateable="false" desc="Text for search result item which, when clicked, navigates the user to Nearby Device is trying to share notification toggle.">
+    Nearby Share devices nearby are sharing notification
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_MULTIDEVICE_PHONE_HUB" desc="Text for search result item which, when clicked, navigates the user to Phone Hub settings, with a toggle to enable/disable the feature. Phone hub provides the user with information about their Android phone and allows the user to perform phone-side actions directly in the Chrome OS UI.">
     Phone Hub
   </message>
@@ -318,9 +321,6 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_SYNC" desc="Text for search result item which, when clicked, navigates the user to sync settings.">
     Sync
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_LOCK_SCREEN" desc="Text for search result item which, when clicked, navigates the user to security and sign-in settings.">
-    Security and sign-in
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LOCK_SCREEN_V2" desc="Text for search result item which, when clicked, navigates the user to security and sign-in settings.">
     Lock screen and sign-in
@@ -1058,6 +1058,21 @@
   <message name="IDS_OS_SETTINGS_TAG_PRIVACY_PERIPHERAL_DATA_ACCESS_PROTECTION_ALT5" desc="Text for search result item which, when clicked, navigates the user to privacy settings, with a toggle to enable/disable peripheral data access protection. Alternate phrase for: 'Data access protection for peripherals', 'PCIe', 'Thunderbolt', 'USB', 'USB4'">
     USB-C
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage." translateable="false">
+    Smart privacy protections
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY_SNOOPING" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage with a toggle to enable/disable snooping protection. Alternate phrase for: 'Shoulder surfing', 'Peeking'" translateable="false">
+    Snooping protection
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY_SNOOPING_ALT1" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage with a toggle to enable/disable snooping protection. Alternate phrase for: 'Snooping protection', 'Peeking'" translateable="false">
+    Shoulder surfing
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY_SNOOPING_ALT2" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage with a toggle to enable/disable snooping protection. Alternate phrase for: 'Snooping protection', 'Shoulder surfing'" translateable="false">
+    Peeking
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_SMART_PRIVACY_QUICK_DIM" desc="Text for search result item which, when clicked, navigates the user to the smart privacy subpage with a toggle to enable/disable quick dim." translateable="false">
+    Smart screen lock
+  </message>
 
   <!-- Languages and Input section. -->
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES" desc="Text for search result item which, when clicked, navigates the user to languages settings.">
@@ -1345,6 +1360,9 @@
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ABOUT_DIAGNOSTICS_ALT4" desc="Text for search result item which, when clicked, navigates the user to 'Diagnostics' settings, with a link which opens the Diagnostics App. Alternate phrase for 'Diagnostics', 'Troubleshooting', 'Battery Health', 'CPU Usage'">
     Memory Usage
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ABOUT_FIRMWARE_UPDATES" desc="Text for search result item which, when clicked, navigates the user to 'Firmware updates' settings, with a link which opens the 'Firmware updates' app.">
+    Firmware updates
   </message>
 
   <!-- On Startup section. -->

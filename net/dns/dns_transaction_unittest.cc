@@ -15,6 +15,7 @@
 #include "base/bind.h"
 #include "base/containers/circular_deque.h"
 #include "base/cxx17_backports.h"
+#include "base/memory/raw_ptr.h"
 #include "base/rand_util.h"
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
@@ -106,6 +107,11 @@ class DnsSocketData {
                                 query_->io_buffer()->size(),
                                 num_reads_and_writes()));
   }
+
+  DnsSocketData(const DnsSocketData&) = delete;
+
+  DnsSocketData& operator=(const DnsSocketData&) = delete;
+
   ~DnsSocketData() = default;
 
   // All responses must be added before GetProvider.
@@ -202,8 +208,6 @@ class DnsSocketData {
   std::vector<MockWrite> writes_;
   std::vector<MockRead> reads_;
   std::unique_ptr<SequencedSocketData> provider_;
-
-  DISALLOW_COPY_AND_ASSIGN(DnsSocketData);
 };
 
 class TestSocketFactory;
@@ -213,13 +217,12 @@ class FailingUDPClientSocket : public MockUDPClientSocket {
  public:
   FailingUDPClientSocket(SocketDataProvider* data, net::NetLog* net_log)
       : MockUDPClientSocket(data, net_log) {}
+  FailingUDPClientSocket(const FailingUDPClientSocket&) = delete;
+  FailingUDPClientSocket& operator=(const FailingUDPClientSocket&) = delete;
   ~FailingUDPClientSocket() override = default;
   int Connect(const IPEndPoint& endpoint) override {
     return ERR_CONNECTION_REFUSED;
   }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(FailingUDPClientSocket);
 };
 
 // A variant of MockUDPClientSocket which notifies the factory OnConnect.
@@ -229,13 +232,13 @@ class TestUDPClientSocket : public MockUDPClientSocket {
                       SocketDataProvider* data,
                       net::NetLog* net_log)
       : MockUDPClientSocket(data, net_log), factory_(factory) {}
+  TestUDPClientSocket(const TestUDPClientSocket&) = delete;
+  TestUDPClientSocket& operator=(const TestUDPClientSocket&) = delete;
   ~TestUDPClientSocket() override = default;
   int Connect(const IPEndPoint& endpoint) override;
 
  private:
-  TestSocketFactory* factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(TestUDPClientSocket);
+  raw_ptr<TestSocketFactory> factory_ = nullptr;
 };
 
 // Creates TestUDPClientSockets and keeps endpoints reported via OnConnect.
@@ -428,6 +431,10 @@ class URLRequestMockDohJob : public URLRequestJob, public AsyncSocket {
     MatchQueryData(request, data_provider);
   }
 
+  URLRequestMockDohJob(const URLRequestMockDohJob&) = delete;
+
+  URLRequestMockDohJob& operator=(const URLRequestMockDohJob&) = delete;
+
   // Compare the query contained in either the POST body or the body
   // parameter of the GET query to the write data of the SocketDataProvider.
   static void MatchQueryData(URLRequest* request,
@@ -558,14 +565,12 @@ class URLRequestMockDohJob : public URLRequestJob, public AsyncSocket {
   const int content_length_;
   const char* leftover_data_;
   int leftover_data_len_;
-  SocketDataProvider* data_provider_;
+  raw_ptr<SocketDataProvider> data_provider_ = nullptr;
   const ResponseModifierCallback response_modifier_;
-  IOBuffer* pending_buf_;
+  raw_ptr<IOBuffer> pending_buf_ = nullptr;
   int pending_buf_size_;
 
   base::WeakPtrFactory<URLRequestMockDohJob> weak_factory_{this};
-
-  DISALLOW_COPY_AND_ASSIGN(URLRequestMockDohJob);
 };
 
 class DnsTransactionTestBase : public testing::Test {
@@ -839,6 +844,8 @@ class DnsTransactionTestBase : public testing::Test {
   class DohJobInterceptor : public URLRequestInterceptor {
    public:
     explicit DohJobInterceptor(DnsTransactionTestBase* test) : test_(test) {}
+    DohJobInterceptor(const DohJobInterceptor&) = delete;
+    DohJobInterceptor& operator=(const DohJobInterceptor&) = delete;
     ~DohJobInterceptor() override {}
 
     // URLRequestInterceptor implementation:
@@ -848,9 +855,7 @@ class DnsTransactionTestBase : public testing::Test {
     }
 
    private:
-    DnsTransactionTestBase* test_;
-
-    DISALLOW_COPY_AND_ASSIGN(DohJobInterceptor);
+    raw_ptr<DnsTransactionTestBase> test_ = nullptr;
   };
 
   void SetResponseModifierCallback(ResponseModifierCallback response_modifier) {

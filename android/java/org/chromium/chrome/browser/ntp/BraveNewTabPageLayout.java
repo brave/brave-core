@@ -1342,8 +1342,8 @@ public class BraveNewTabPageLayout
                     GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
                     ? android.R.color.white
                     : android.R.color.black;
-            ImageViewCompat.setImageTintList(
-                    mSuperReferralLogo, ColorStateList.valueOf(floatingButtonIconColor));
+            ImageViewCompat.setImageTintList(mSuperReferralLogo,
+                    ColorStateList.valueOf(getResources().getColor(floatingButtonIconColor)));
             mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

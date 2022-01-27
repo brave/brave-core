@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_GREASELION_GREASELION_SERVICE_FACTORY_H_
 #define BRAVE_BROWSER_GREASELION_GREASELION_SERVICE_FACTORY_H_
 
-#include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
@@ -18,6 +17,9 @@ class GreaselionService;
 
 class GreaselionServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
+  GreaselionServiceFactory(const GreaselionServiceFactory&) = delete;
+  GreaselionServiceFactory& operator=(const GreaselionServiceFactory&) = delete;
+
   static GreaselionService* GetForBrowserContext(
       content::BrowserContext* context);
   static GreaselionServiceFactory* GetInstance();
@@ -32,8 +34,6 @@ class GreaselionServiceFactory : public BrowserContextKeyedServiceFactory {
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
-
-  DISALLOW_COPY_AND_ASSIGN(GreaselionServiceFactory);
 };
 
 }  // namespace greaselion

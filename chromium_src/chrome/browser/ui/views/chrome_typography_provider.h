@@ -17,13 +17,13 @@ class ChromeTypographyProvider : public ChromeTypographyProvider_ChromiumImpl {
   using ChromeTypographyProvider_ChromiumImpl::
       ChromeTypographyProvider_ChromiumImpl;
 
+  ChromeTypographyProvider(const ChromeTypographyProvider&) = delete;
+  ChromeTypographyProvider& operator=(const ChromeTypographyProvider&) = delete;
+
   // TypographyProvider:
   SkColor GetColor(const views::View& view,
                    int context,
                    int style) const override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(ChromeTypographyProvider);
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_CHROME_TYPOGRAPHY_PROVIDER_H_

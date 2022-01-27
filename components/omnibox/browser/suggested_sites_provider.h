@@ -10,7 +10,7 @@
 #include <string>
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "brave/components/omnibox/browser/suggested_sites_match.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider.h"
@@ -21,6 +21,8 @@ class AutocompleteProviderClient;
 class SuggestedSitesProvider : public AutocompleteProvider {
  public:
   explicit SuggestedSitesProvider(AutocompleteProviderClient* client);
+  SuggestedSitesProvider(const SuggestedSitesProvider&) = delete;
+  SuggestedSitesProvider& operator=(const SuggestedSitesProvider&) = delete;
 
   // AutocompleteProvider:
   void Start(const AutocompleteInput& input, bool minimal_changes) override;
@@ -38,8 +40,7 @@ class SuggestedSitesProvider : public AutocompleteProvider {
       const std::string &input_text,
       const std::string &site);
 
-  AutocompleteProviderClient* client_;
-  DISALLOW_COPY_AND_ASSIGN(SuggestedSitesProvider);
+  raw_ptr<AutocompleteProviderClient> client_ = nullptr;
 };
 
 #endif  // BRAVE_COMPONENTS_OMNIBOX_BROWSER_SUGGESTED_SITES_PROVIDER_H_

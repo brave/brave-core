@@ -18,6 +18,10 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
                                  BrowserView* browser_view,
                                  std::unique_ptr<TabMenuModelFactory>
                                      menu_model_factory_override = nullptr);
+  BraveBrowserTabStripController(const BraveBrowserTabStripController&) =
+      delete;
+  BraveBrowserTabStripController& operator=(
+      const BraveBrowserTabStripController&) = delete;
   ~BraveBrowserTabStripController() override;
 
   // BrowserTabStripController overrides:
@@ -28,8 +32,6 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
  private:
   // If non-NULL it means we're showing a menu for the tab.
   std::unique_ptr<BraveTabContextMenuContents> context_menu_contents_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserTabStripController);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_

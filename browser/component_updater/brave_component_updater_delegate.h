@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/macros.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -25,6 +24,9 @@ namespace brave {
 class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
  public:
   BraveComponentUpdaterDelegate();
+  BraveComponentUpdaterDelegate(const BraveComponentUpdaterDelegate&) = delete;
+  BraveComponentUpdaterDelegate& operator=(
+      const BraveComponentUpdaterDelegate&) = delete;
   ~BraveComponentUpdaterDelegate() override;
 
   using ComponentObserver = update_client::UpdateClient::Observer;
@@ -46,8 +48,6 @@ class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
 
  private:
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveComponentUpdaterDelegate);
 };
 
 }  // namespace brave

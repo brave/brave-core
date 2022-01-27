@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/android/jni_android.h"
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_ads/common/brave_ads_host.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -45,7 +46,7 @@ class BraveAdsHostAndroid : public brave_ads::mojom::BraveAdsHost,
  private:
   void RunCallbacksAndReset(bool ads_enabled);
 
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
   base::android::ScopedJavaGlobalRef<jobject> java_object_;
   std::vector<RequestAdsEnabledCallback> callbacks_;
   base::ScopedObservation<brave_rewards::RewardsService,

@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_BOOKMARK_BOOKMARK_PREFS_SERVICE_H_
 #define BRAVE_BROWSER_UI_BOOKMARK_BOOKMARK_PREFS_SERVICE_H_
 
+#include "base/memory/raw_ptr.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/browser_thread.h"
@@ -16,16 +17,16 @@ class Profile;
 class BookmarkPrefsService : public KeyedService {
  public:
   explicit BookmarkPrefsService(Profile* profile);
+  BookmarkPrefsService(const BookmarkPrefsService&) = delete;
+  BookmarkPrefsService& operator=(const BookmarkPrefsService&) = delete;
   ~BookmarkPrefsService() override;
 
  private:
   void OnPreferenceChanged();
 
-  Profile* profile_;
-  PrefService* prefs_;
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
   PrefChangeRegistrar pref_change_registrar_;
-
-  DISALLOW_COPY_AND_ASSIGN(BookmarkPrefsService);
 };
 
 #endif  // BRAVE_BROWSER_UI_BOOKMARK_BOOKMARK_PREFS_SERVICE_H_

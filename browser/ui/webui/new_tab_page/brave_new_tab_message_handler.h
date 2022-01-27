@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_launcher_observer.h"
@@ -36,6 +37,9 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
                                   public TorLauncherObserver {
  public:
   explicit BraveNewTabMessageHandler(Profile* profile);
+  BraveNewTabMessageHandler(const BraveNewTabMessageHandler&) = delete;
+  BraveNewTabMessageHandler& operator=(const BraveNewTabMessageHandler&) =
+      delete;
   ~BraveNewTabMessageHandler() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* local_state);
@@ -74,13 +78,11 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler,
 
   PrefChangeRegistrar pref_change_registrar_;
   // Weak pointer.
-  Profile* profile_;
+  raw_ptr<Profile> profile_ = nullptr;
 #if BUILDFLAG(ENABLE_TOR)
   TorLauncherFactory* tor_launcher_factory_ = nullptr;
 #endif
   base::WeakPtrFactory<BraveNewTabMessageHandler> weak_ptr_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveNewTabMessageHandler);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_BRAVE_NEW_TAB_MESSAGE_HANDLER_H_

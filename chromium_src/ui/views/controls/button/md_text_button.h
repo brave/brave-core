@@ -35,6 +35,8 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   explicit MdTextButton(PressedCallback callback = PressedCallback(),
                         const std::u16string& text = std::u16string(),
                         int button_context = style::CONTEXT_BUTTON_MD);
+  MdTextButton(const MdTextButton&) = delete;
+  MdTextButton& operator=(const MdTextButton&) = delete;
   ~MdTextButton() override;
 
   SkPath GetHighlightPath() const;
@@ -42,9 +44,6 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
  protected:
   // views::Views
   void OnPaintBackground(gfx::Canvas* canvas) override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(MdTextButton);
 };
 
 }  // namespace views

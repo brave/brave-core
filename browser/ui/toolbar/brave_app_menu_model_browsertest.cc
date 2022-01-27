@@ -12,6 +12,7 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -38,7 +39,8 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
  public:
   BraveAppMenuBrowserTest() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-    scoped_feature_list_.InitAndEnableFeature(brave_vpn::features::kBraveVPN);
+    scoped_feature_list_.InitWithFeatures(
+        {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN}, {});
 #endif
   }
 

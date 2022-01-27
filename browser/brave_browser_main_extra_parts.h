@@ -7,21 +7,20 @@
 #define BRAVE_BROWSER_BRAVE_BROWSER_MAIN_EXTRA_PARTS_H_
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
 #include "chrome/browser/chrome_browser_main.h"
 #include "chrome/browser/chrome_browser_main_extra_parts.h"
 
 class BraveBrowserMainExtraParts : public ChromeBrowserMainExtraParts {
  public:
   BraveBrowserMainExtraParts();
+  BraveBrowserMainExtraParts(const BraveBrowserMainExtraParts&) = delete;
+  BraveBrowserMainExtraParts& operator=(const BraveBrowserMainExtraParts&) =
+      delete;
   ~BraveBrowserMainExtraParts() override;
 
   // ChromeBrowserMainExtraParts overrides.
   void PostBrowserStart() override;
   void PreMainMessageLoopRun() override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainExtraParts);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_BROWSER_MAIN_EXTRA_PARTS_H_

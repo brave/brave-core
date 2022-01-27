@@ -20,12 +20,12 @@ class Profile;
 class BraveSettingsUI : public settings::SettingsUI {
  public:
   BraveSettingsUI(content::WebUI* web_ui, const std::string& host);
+  BraveSettingsUI(const BraveSettingsUI&) = delete;
+  BraveSettingsUI& operator=(const BraveSettingsUI&) = delete;
   ~BraveSettingsUI() override;
 
   static void AddResources(content::WebUIDataSource* html_source,
                            Profile* profile);
-
-  DISALLOW_COPY_AND_ASSIGN(BraveSettingsUI);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_SETTINGS_UI_H_

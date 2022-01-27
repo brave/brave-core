@@ -103,10 +103,6 @@ std::string BraveConfigurator::GetChannel() const {
   return std::string("stable");
 }
 
-std::string BraveConfigurator::GetBrand() const {
-  return std::string();
-}
-
 std::string BraveConfigurator::GetLang() const {
   return std::string();
 }
@@ -168,10 +164,6 @@ BraveConfigurator::GetPatcherFactory() {
 
 bool BraveConfigurator::EnabledDeltas() const {
   return configurator_impl_.EnabledDeltas();
-}
-
-bool BraveConfigurator::EnabledComponentUpdates() const {
-  return pref_service_->GetBoolean(prefs::kComponentUpdatesEnabled);
 }
 
 bool BraveConfigurator::EnabledBackgroundDownloader() const {

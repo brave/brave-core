@@ -9,8 +9,6 @@
 #include <string>
 #include <unordered_set>
 
-#include "base/macros.h"
-
 namespace base {
 class CommandLine;
 }
@@ -18,6 +16,8 @@ class CommandLine;
 class BraveCommandLineHelper {
  public:
   explicit BraveCommandLineHelper(base::CommandLine* command_line);
+  BraveCommandLineHelper(const BraveCommandLineHelper&) = delete;
+  BraveCommandLineHelper& operator=(const BraveCommandLineHelper&) = delete;
   inline ~BraveCommandLineHelper() = default;
 
   void AppendSwitch(const char* switch_key);
@@ -38,8 +38,6 @@ class BraveCommandLineHelper {
   base::CommandLine& command_line_;
   std::unordered_set<std::string> enabled_features_;
   std::unordered_set<std::string> disabled_features_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveCommandLineHelper);
 };
 
 #endif  // BRAVE_APP_BRAVE_COMMAND_LINE_HELPER_H_

@@ -19,6 +19,9 @@ class BraveNewTabButton : public NewTabButton {
   static const gfx::Size kButtonSize;
   using NewTabButton::NewTabButton;
 
+  BraveNewTabButton(const BraveNewTabButton&) = delete;
+  BraveNewTabButton& operator=(const BraveNewTabButton&) = delete;
+
  protected:
   void PaintIcon(gfx::Canvas* canvas) override;
 
@@ -28,8 +31,6 @@ class BraveNewTabButton : public NewTabButton {
                        float scale,
                        bool extend_to_top) const override;
   gfx::Insets GetInsets() const override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveNewTabButton);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_NEW_TAB_BUTTON_H_

@@ -339,7 +339,7 @@ AdBlockRegionalServiceManager::GetRegionalLists() {
         !cookie_list_touched) {
       enabled = true;
     } else if (regional_filter_dict) {
-      regional_filter_dict->GetBoolean("enabled", &enabled);
+      enabled = regional_filter_dict->FindBoolKey("enabled").value_or(false);
     }
     dict->SetBoolean("enabled", enabled);
 

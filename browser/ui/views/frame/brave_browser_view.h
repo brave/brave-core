@@ -37,6 +37,8 @@ class WalletButton;
 class BraveBrowserView : public BrowserView {
  public:
   explicit BraveBrowserView(std::unique_ptr<Browser> browser);
+  BraveBrowserView(const BraveBrowserView&) = delete;
+  BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;
 
   void SetStarredState(bool is_starred) override;
@@ -97,8 +99,6 @@ class BraveBrowserView : public BrowserView {
 
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   PrefChangeRegistrar pref_change_registrar_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveBrowserView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_BROWSER_VIEW_H_

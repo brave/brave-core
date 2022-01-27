@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -210,7 +211,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       mojom::ProviderError error,
       const std::string& error_message);
 
-  content::RenderFrame* render_frame_;
+  raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   bool brave_use_native_wallet_;
   bool allow_overwrite_window_ethereum_;
   mojo::Remote<mojom::BraveWalletProvider> brave_wallet_provider_;

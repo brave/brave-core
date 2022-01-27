@@ -35,11 +35,14 @@ struct WebPreferences;
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
   BraveContentBrowserClient();
+  BraveContentBrowserClient(const BraveContentBrowserClient&) = delete;
+  BraveContentBrowserClient& operator=(const BraveContentBrowserClient&) =
+      delete;
   ~BraveContentBrowserClient() override;
 
   // Overridden from ChromeContentBrowserClient:
   std::unique_ptr<content::BrowserMainParts> CreateBrowserMainParts(
-      const content::MainFunctionParams& parameters) override;
+      content::MainFunctionParams parameters) override;
   void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
   void RenderProcessWillLaunch(content::RenderProcessHost* host) override;
   bool BindAssociatedReceiverFromFrame(
@@ -136,6 +139,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::WebContents* web_contents,
       blink::web_pref::WebPreferences* prefs) override;
 
+  void OverrideWebkitPrefs(content::WebContents* web_contents,
+                           blink::web_pref::WebPreferences* prefs) override;
+
  private:
   uint64_t session_token_;
   uint64_t incognito_session_token_;
@@ -144,8 +150,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveContentBrowserClient);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_CONTENT_BROWSER_CLIENT_H_

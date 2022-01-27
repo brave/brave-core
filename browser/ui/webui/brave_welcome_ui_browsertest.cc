@@ -25,8 +25,8 @@ namespace {
 Browser* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
   StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
-                                    chrome::startup::IS_FIRST_RUN);
-  creator.Launch(profile, false, nullptr);
+                                    chrome::startup::IsFirstRun::kYes);
+  creator.Launch(profile, chrome::startup::IsProcessStartup::kNo, nullptr);
   return chrome::FindBrowserWithProfile(profile);
 }
 }

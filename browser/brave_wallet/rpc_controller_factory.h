@@ -25,6 +25,9 @@ class RpcControllerFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context);
   static RpcControllerFactory* GetInstance();
 
+  RpcControllerFactory(const RpcControllerFactory&) = delete;
+  RpcControllerFactory& operator=(const RpcControllerFactory&) = delete;
+
  private:
   friend struct base::DefaultSingletonTraits<RpcControllerFactory>;
 
@@ -35,8 +38,6 @@ class RpcControllerFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(RpcControllerFactory);
 };
 
 }  // namespace brave_wallet

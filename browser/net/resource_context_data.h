@@ -12,7 +12,6 @@
 #include <string>
 
 #include "base/containers/unique_ptr_adapters.h"
-#include "base/macros.h"
 #include "base/memory/ref_counted.h"
 #include "base/supports_user_data.h"
 #include "content/public/browser/browser_thread.h"
@@ -33,6 +32,8 @@ class RequestIDGenerator
     : public base::RefCountedThreadSafe<RequestIDGenerator> {
  public:
   RequestIDGenerator() = default;
+  RequestIDGenerator(const RequestIDGenerator&) = delete;
+  RequestIDGenerator& operator=(const RequestIDGenerator&) = delete;
   int64_t Generate() {
     DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
     return ++id_;
@@ -46,13 +47,14 @@ class RequestIDGenerator
   // thread, we expect at least one memory barrier before actually calling
   // Generate in the IO thread, so we don't protect the variable with a lock.
   int64_t id_ = 0;
-  DISALLOW_COPY_AND_ASSIGN(RequestIDGenerator);
 };
 
 // Owns proxying factories for URLLoaders and websocket proxies. There is
 // one |ResourceContextData| per profile.
 class ResourceContextData : public base::SupportsUserData::Data {
  public:
+  ResourceContextData(const ResourceContextData&) = delete;
+  ResourceContextData& operator=(const ResourceContextData&) = delete;
   ~ResourceContextData() override;
 
   static void StartProxying(
@@ -93,8 +95,6 @@ class ResourceContextData : public base::SupportsUserData::Data {
       websocket_proxies_;
 
   base::WeakPtrFactory<ResourceContextData> weak_factory_;
-
-  DISALLOW_COPY_AND_ASSIGN(ResourceContextData);
 };
 
 #endif  // BRAVE_BROWSER_NET_RESOURCE_CONTEXT_DATA_H_

@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_url_loader.h"
@@ -57,7 +58,7 @@ void SpeedReaderThrottle::WillProcessResponse(
   mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver;
   mojo::PendingRemote<network::mojom::URLLoader> source_loader;
   mojo::PendingReceiver<network::mojom::URLLoaderClient> source_client_receiver;
-  SpeedReaderURLLoader* speedreader_loader;
+  raw_ptr<SpeedReaderURLLoader> speedreader_loader = nullptr;
   std::tie(new_remote, new_receiver, speedreader_loader) =
       SpeedReaderURLLoader::CreateLoader(weak_factory_.GetWeakPtr(),
                                          result_delegate_, response_url,

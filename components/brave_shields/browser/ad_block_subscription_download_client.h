@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "components/download/public/background_service/client.h"
 #include "components/download/public/background_service/download_metadata.h"
 
@@ -50,7 +51,8 @@ class AdBlockSubscriptionDownloadClient : public download::Client {
   // Returns the AdBlockSubscriptionDownloadManager for the profile.
   AdBlockSubscriptionDownloadManager* GetAdBlockSubscriptionDownloadManager();
 
-  AdBlockSubscriptionServiceManager* subscription_manager_;  // NOT OWNED
+  raw_ptr<AdBlockSubscriptionServiceManager> subscription_manager_ =
+      nullptr;  // NOT OWNED
 };
 
 }  // namespace brave_shields

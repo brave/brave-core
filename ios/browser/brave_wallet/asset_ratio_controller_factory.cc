@@ -17,10 +17,12 @@
 namespace brave_wallet {
 
 // static
-mojom::AssetRatioController* AssetRatioControllerFactory::GetForBrowserState(
+mojo::PendingRemote<mojom::AssetRatioController>
+AssetRatioControllerFactory::GetForBrowserState(
     ChromeBrowserState* browser_state) {
   return static_cast<AssetRatioController*>(
-      GetInstance()->GetServiceForBrowserState(browser_state, true));
+             GetInstance()->GetServiceForBrowserState(browser_state, true))
+      ->MakeRemote();
 }
 
 // static

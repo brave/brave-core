@@ -15,15 +15,14 @@ namespace extensions {
 class BraveExtensionProvider : public ManagementPolicy::Provider {
  public:
   BraveExtensionProvider();
+  BraveExtensionProvider(const BraveExtensionProvider&) = delete;
+  BraveExtensionProvider& operator=(const BraveExtensionProvider&) = delete;
   ~BraveExtensionProvider() override;
   std::string GetDebugPolicyProviderName() const override;
   bool UserMayLoad(const Extension* extension,
                    std::u16string* error) const override;
   bool MustRemainInstalled(const Extension* extension,
                            std::u16string* error) const override;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(BraveExtensionProvider);
 };
 
 }  // namespace extensions

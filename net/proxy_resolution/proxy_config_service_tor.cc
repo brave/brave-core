@@ -30,6 +30,8 @@ namespace net {
 class TorProxyMap {
  public:
   TorProxyMap();
+  TorProxyMap(const TorProxyMap&) = delete;
+  TorProxyMap& operator=(const TorProxyMap&) = delete;
   ~TorProxyMap();
   std::string Get(const std::string& key);
   void Erase(const std::string& key);
@@ -44,7 +46,6 @@ class TorProxyMap {
   std::map<std::string, std::pair<std::string, base::Time>> map_;
   std::priority_queue<std::pair<base::Time, std::string>> queue_;
   base::OneShotTimer timer_;
-  DISALLOW_COPY_AND_ASSIGN(TorProxyMap);
 };
 
 namespace {

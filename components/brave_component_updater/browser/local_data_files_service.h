@@ -33,6 +33,8 @@ const char kLocalDataFilesComponentBase64PublicKey[] =
 class LocalDataFilesService : public BraveComponent {
  public:
   explicit LocalDataFilesService(BraveComponent::Delegate* delegate);
+  LocalDataFilesService(const LocalDataFilesService&) = delete;
+  LocalDataFilesService& operator=(const LocalDataFilesService&) = delete;
   ~LocalDataFilesService() override;
   bool Start();
   bool IsInitialized() const { return initialized_; }
@@ -54,8 +56,6 @@ class LocalDataFilesService : public BraveComponent {
 
   bool initialized_;
   base::ObserverList<LocalDataFilesObserver>::Unchecked observers_;
-
-  DISALLOW_COPY_AND_ASSIGN(LocalDataFilesService);
 };
 
 // Creates the LocalDataFilesService

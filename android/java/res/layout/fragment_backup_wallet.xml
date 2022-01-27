@@ -55,7 +55,7 @@
             android:textColor="@color/wallet_secondary_text_color"
             android:textSize="14sp"/>
 
-        <CheckBox
+        <android.widget.CheckBox
             android:id="@+id/backup_wallet_checkbox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_INFOBARS_SYNC_V2_MIGRATE_INFOBAR_DELEGATE_H_
 
 #include "base/compiler_specific.h"
-#include "base/macros.h"
+#include "base/memory/raw_ptr.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "url/gurl.h"
 
@@ -26,6 +26,10 @@ class ContentInfoBarManager;
 // An infobar that is run with a string, buttons, and a "Learn More" link.
 class SyncV2MigrateInfoBarDelegate : public ConfirmInfoBarDelegate {
  public:
+  SyncV2MigrateInfoBarDelegate(const SyncV2MigrateInfoBarDelegate&) = delete;
+  SyncV2MigrateInfoBarDelegate& operator=(const SyncV2MigrateInfoBarDelegate&) =
+      delete;
+
   static void Create(infobars::ContentInfoBarManager* infobar_manager,
                      bool is_v2_user,
                      Profile* profile,
@@ -44,10 +48,8 @@ class SyncV2MigrateInfoBarDelegate : public ConfirmInfoBarDelegate {
   std::u16string GetButtonLabel(InfoBarButton button) const override;
   bool Accept() override;
 
-  Profile* profile_;
-  Browser* browser_;
-
-  DISALLOW_COPY_AND_ASSIGN(SyncV2MigrateInfoBarDelegate);
+  raw_ptr<Profile> profile_ = nullptr;
+  raw_ptr<Browser> browser_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_SYNC_V2_MIGRATE_INFOBAR_DELEGATE_H_

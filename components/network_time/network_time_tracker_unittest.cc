@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/compiler_specific.h"
+#include "base/memory/raw_ptr.h"
 #include "base/message_loop/message_loop.h"
 #include "base/run_loop.h"
 #include "base/strings/stringprintf.h"
@@ -56,8 +57,8 @@ class NetworkTimeTrackerTest : public ::testing::Test {
   }
 
   base::test::ScopedTaskEnvironment task_environment_;
-  base::SimpleTestClock* clock_;
-  base::SimpleTestTickClock* tick_clock_;
+  raw_ptr<base::SimpleTestClock> clock_ = nullptr;
+  raw_ptr<base::SimpleTestTickClock> tick_clock_ = nullptr;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<NetworkTimeTracker> tracker_;
   network::TestURLLoaderFactory test_url_loader_factory_;

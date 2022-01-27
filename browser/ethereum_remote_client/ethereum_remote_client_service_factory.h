@@ -14,6 +14,11 @@ class EthereumRemoteClientService;
 class EthereumRemoteClientServiceFactory
     : public BrowserContextKeyedServiceFactory {
  public:
+  EthereumRemoteClientServiceFactory(
+      const EthereumRemoteClientServiceFactory&) = delete;
+  EthereumRemoteClientServiceFactory& operator=(
+      const EthereumRemoteClientServiceFactory&) = delete;
+
   static EthereumRemoteClientService* GetForContext(
       content::BrowserContext* context);
   static EthereumRemoteClientServiceFactory* GetInstance();
@@ -30,8 +35,6 @@ class EthereumRemoteClientServiceFactory
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
   bool ServiceIsCreatedWithBrowserContext() const override;
-
-  DISALLOW_COPY_AND_ASSIGN(EthereumRemoteClientServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_ETHEREUM_REMOTE_CLIENT_ETHEREUM_REMOTE_CLIENT_SERVICE_FACTORY_H_

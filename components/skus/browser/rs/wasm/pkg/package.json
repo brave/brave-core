@@ -1,0 +1,17 @@
+{
+  "name": "@brave-intl/skus-sdk",
+  "collaborators": [
+    "eV <ev@7pr.xyz>"
+  ],
+  "version": "0.1.0",
+  "files": [
+    "index.js",
+    "skus_sdk_bg.wasm",
+    "skus_sdk.js",
+    "skus_sdk.d.ts"
+  ],
+  "module": "index.js",
+  "type": "module",
+  "types": "skus_sdk.d.ts",
+  "sideEffects": false
+}

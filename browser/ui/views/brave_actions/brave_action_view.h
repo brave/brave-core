@@ -18,10 +18,10 @@ class BraveActionView : public ToolbarActionView {
  public:
   BraveActionView(ToolbarActionViewController* view_controller,
                   ToolbarActionView::Delegate* delegate);
+  BraveActionView(const BraveActionView&) = delete;
+  BraveActionView& operator=(const BraveActionView&) = delete;
 
   SkPath GetHighlightPath() const;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveActionView);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_BRAVE_ACTIONS_BRAVE_ACTION_VIEW_H_

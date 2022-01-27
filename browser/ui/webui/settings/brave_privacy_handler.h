@@ -21,6 +21,8 @@ class Profile;
 class BravePrivacyHandler : public settings::SettingsPageUIHandler {
  public:
   BravePrivacyHandler();
+  BravePrivacyHandler(const BravePrivacyHandler&) = delete;
+  BravePrivacyHandler& operator=(const BravePrivacyHandler&) = delete;
   ~BravePrivacyHandler() override;
   static void AddLoadTimeData(content::WebUIDataSource* data_source,
                               Profile* profile);
@@ -48,8 +50,6 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
 
   Profile* profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;
-
-  DISALLOW_COPY_AND_ASSIGN(BravePrivacyHandler);
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_PRIVACY_HANDLER_H_

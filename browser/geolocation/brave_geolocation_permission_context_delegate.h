@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_DELEGATE_H_
 #define BRAVE_BROWSER_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_DELEGATE_H_
 
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/geolocation/geolocation_permission_context_delegate.h"
 
 class Profile;
@@ -15,6 +16,10 @@ class BraveGeolocationPermissionContextDelegate
  public:
   explicit BraveGeolocationPermissionContextDelegate(
       content::BrowserContext* browser_context);
+  BraveGeolocationPermissionContextDelegate(
+      const BraveGeolocationPermissionContextDelegate&) = delete;
+  BraveGeolocationPermissionContextDelegate& operator=(
+      const BraveGeolocationPermissionContextDelegate&) = delete;
   ~BraveGeolocationPermissionContextDelegate() override;
 
   bool DecidePermission(
@@ -26,8 +31,7 @@ class BraveGeolocationPermissionContextDelegate
       permissions::GeolocationPermissionContext* context) override;
 
  private:
-  Profile* profile_;
-  DISALLOW_COPY_AND_ASSIGN(BraveGeolocationPermissionContextDelegate);
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_DELEGATE_H_
