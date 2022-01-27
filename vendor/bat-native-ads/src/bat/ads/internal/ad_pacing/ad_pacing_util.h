@@ -6,6 +6,8 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PACING_AD_PACING_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PACING_AD_PACING_UTIL_H_
 
+#include <ios>
+
 #include "base/rand_util.h"
 #include "bat/ads/internal/ad_pacing/ad_pacing_random_util.h"
 #include "bat/ads/internal/logging.h"
@@ -19,9 +21,9 @@ bool ShouldPaceAd(const T& ad) {
     return false;
   }
 
-  BLOG(2, "Pacing delivery for creative instance id "
-              << ad.creative_instance_id << " [Roll(" << ad.ptr << "):" << rand
-              << "]");
+  BLOG(2, std::fixed << "Pacing delivery for creative instance id "
+                     << ad.creative_instance_id << " [Roll(" << ad.ptr
+                     << "):" << rand << "]");
 
   return true;
 }

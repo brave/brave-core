@@ -8,6 +8,7 @@
 
 #include <vector>
 
+#include "bat/ads/internal/ad_pacing/ad_pacing.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_predictor_util.h"
 #include "bat/ads/internal/eligible_ads/sample_ads.h"
@@ -20,23 +21,20 @@ class optional;
 namespace ads {
 
 template <typename T>
-T ChooseAd(const ad_targeting::UserModelInfo& user_model,
-           const AdEventList& ad_events,
-           const std::vector<T>& creative_ads) {
+absl::optional<T> ChooseAd(const ad_targeting::UserModelInfo& user_model,
+                           const AdEventList& ad_events,
+                           const std::vector<T>& creative_ads) {
   DCHECK(!creative_ads.empty());
 
+  const std::vector<T>& paced_creative_ads = PaceAds(creative_ads);
+
   CreativeAdPredictorMap<T> creative_ad_predictors;
-  creative_ad_predictors = GroupCreativeAdsByCreativeInstanceId(creative_ads);
+  creative_ad_predictors =
+      GroupCreativeAdsByCreativeInstanceId(paced_creative_ads);
   creative_ad_predictors = ComputePredictorFeaturesAndScores(
       creative_ad_predictors, user_model, ad_events);
 
-  const absl::optional<T> creative_ad_optional =
-      SampleAdFromPredictors(creative_ad_predictors);
-  if (!creative_ad_optional) {
-    return {};
-  }
-
-  return creative_ad_optional.value();
+  return SampleAdFromPredictors(creative_ad_predictors);
 }
 
 }  // namespace ads

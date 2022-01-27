@@ -78,8 +78,15 @@ void EligibleAdsV2::GetEligibleAds(
       return;
     }
 
-    const CreativeNewTabPageAdInfo& creative_ad =
+    const absl::optional<CreativeNewTabPageAdInfo>& creative_ad_optional =
         ChooseAd(user_model, ad_events, eligible_creative_ads);
+    if (!creative_ad_optional) {
+      BLOG(1, "No eligible ads");
+      callback(/* had_opportunity */ true, {});
+      return;
+    }
+
+    const CreativeNewTabPageAdInfo& creative_ad = creative_ad_optional.value();
 
     callback(/* had_opportunity */ true, {creative_ad});
   });
