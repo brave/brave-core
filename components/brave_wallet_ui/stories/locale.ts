@@ -324,6 +324,10 @@ provideStrings({
   braveWalletPanelViewAccountAssets: 'View account assets',
   braveWalletAssetsPanelTitle: 'Account assets',
 
+  // Wallet Welcome Panel
+  braveWalletWelcomePanelDescription: 'Use this panel to securely access web3 and all your crypto assets.',
+  braveWalletWelcomePanelButton: 'Learn more',
+
   // Site Permissions Panel
   braveWalletSitePermissionsTitle: 'Site permissions',
   braveWalletSitePermissionsAccounts: '$1 accounts connected',

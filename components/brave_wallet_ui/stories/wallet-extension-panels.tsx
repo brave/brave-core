@@ -43,7 +43,8 @@ import {
   StyledExtensionWrapperLonger,
   StyledExtensionWrapper,
   ScrollContainer,
-  SelectContainer
+  SelectContainer,
+  StyledWelcomPanel
 } from './style'
 import { mockNetworks } from './mock-data/mock-networks'
 import { AccountAssetOptions, NewAssetOptions } from '../options/asset-options'
@@ -693,18 +694,14 @@ _ConnectedPanel.story = {
 }
 
 export const _SetupWallet = () => {
-  const onRestore = () => {
-    alert('Will navigate to full wallet restore page')
-  }
-
   const onSetup = () => {
     alert('Will navigate to full wallet onboarding page')
   }
 
   return (
-    <StyledExtensionWrapperLonger>
-      <WelcomePanel onRestore={onRestore} onSetup={onSetup} />
-    </StyledExtensionWrapperLonger>
+    <StyledWelcomPanel>
+      <WelcomePanel onSetup={onSetup} />
+    </StyledWelcomPanel>
   )
 }
 

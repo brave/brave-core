@@ -12,6 +12,14 @@ export const PanelWrapper = styled.div<StyleProps>`
   height: ${(p) => p.isLonger ? '540px' : '400px'};
 `
 
+export const WelcomePanelWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 320px;
+  height: 250px;
+`
+
 export const SendWrapper = styled.div`
   flex: 1;
   flex-direction: column;
