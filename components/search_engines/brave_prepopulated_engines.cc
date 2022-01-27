@@ -23,7 +23,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
     brave_engines_map = {
         {PREPOPULATED_ENGINE_ID_GOOGLE, &google},
         {PREPOPULATED_ENGINE_ID_YANDEX, &brave_yandex},
-        {PREPOPULATED_ENGINE_ID_BING, &bing},
+        {PREPOPULATED_ENGINE_ID_BING, &brave_bing},
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO, &duckduckgo},
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE, &duckduckgo_de},
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE, &duckduckgo_au_nz_ie},
@@ -38,6 +38,7 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
                                       const wchar_t* const keyword,
                                       const char* const search_url,
                                       const char* const suggest_url,
+                                      const char* const image_url,
                                       int id) {
   return {name ? name : engine.name,
           keyword ? keyword : engine.keyword,
@@ -45,7 +46,7 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           search_url ? search_url : engine.search_url,
           engine.encoding,
           suggest_url ? suggest_url : engine.suggest_url,
-          engine.image_url,
+          image_url ? image_url : engine.image_url,
           engine.new_tab_url,
           engine.contextual_search_url,
           engine.logo_url,
@@ -90,6 +91,7 @@ const PrepopulatedEngine duckduckgo_de =
                        NULL,
                        "https://duckduckgo.com/?q={searchTerms}&t=bravened",
                        NULL,
+                       NULL,
                        PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE);
 
 const PrepopulatedEngine duckduckgo_au_nz_ie =
@@ -97,6 +99,7 @@ const PrepopulatedEngine duckduckgo_au_nz_ie =
                        NULL,
                        NULL,
                        "https://duckduckgo.com/?q={searchTerms}&t=braveed",
+                       NULL,
                        NULL,
                        PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE);
 
@@ -136,6 +139,7 @@ const PrepopulatedEngine brave_ecosia =
 #endif
                        "&q={searchTerms}&addon=brave",
                        "https://ac.ecosia.org/?q={searchTerms}",
+                       NULL,
                        PREPOPULATED_ENGINE_ID_ECOSIA);
 
 const PrepopulatedEngine qwant = {
@@ -197,6 +201,7 @@ const PrepopulatedEngine brave_yandex =
                        "&text={searchTerms}",
                        "https://suggest.yandex.ru/suggest-ff.cgi?"
                        "part={searchTerms}&v=3&sn=5&srv=brave_desktop",
+                       NULL,
                        PREPOPULATED_ENGINE_ID_YANDEX);
 
 const PrepopulatedEngine brave_search = {
@@ -225,6 +230,15 @@ const PrepopulatedEngine brave_search = {
     NULL,
     PREPOPULATED_ENGINE_ID_BRAVE,
 };
+
+const PrepopulatedEngine brave_bing = ModifyEngineParams(
+    bing,
+    NULL,
+    NULL,
+    "https://www.bing.com/search?q={searchTerms}",
+    "https://www.bing.com/osjson.aspx?query={searchTerms}&language={language}",
+    "https://www.bing.com/images/detail/search?iss=sbiupload#enterInsights",
+    PREPOPULATED_ENGINE_ID_BING);
 
 const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>&
 GetBraveEnginesMap() {

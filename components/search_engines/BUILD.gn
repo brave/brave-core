@@ -1,3 +1,17 @@
 group("search_engines") {
   deps = [ "//components/search_engines" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_prepopulated_engines_unittest.cc" ]
+
+  deps = [
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//components/search_engines",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}
