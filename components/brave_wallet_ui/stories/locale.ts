@@ -44,6 +44,7 @@ provideStrings({
   braveWalletTopTabApps: 'Apps',
   braveWalletTopNavNFTS: 'NFTs',
   braveWalletTopNavAccounts: 'Accounts',
+  braveWalletTopNavMarket: 'Market',
 
   // Chart Timeline Buttons
   braveWalletChartLive: '1H',
@@ -476,5 +477,13 @@ provideStrings({
   // Sweepstakes
   braveWalletSweepstakesTitle: 'Brave Swap-stakes',
   braveWalletSweepstakesDescription: '7 days of crypto giveaways, ~$500k in prizes.',
-  braveWalletSweepstakesCallToAction: 'Enter now!'
+  braveWalletSweepstakesCallToAction: 'Enter now!',
+
+  // Market Data Filters
+  braveWalletMarketDataAllAssetsFilter: 'All Assets',
+  braveWalletMarketDataWatchlistFilter: 'Watchlist',
+  braveWalletMarketDataTradableFilter: 'Tradable',
+  braveWalletMarketDataSolanaFilter: 'Solana',
+  braveWalletMarketDataEthereumFilter: 'Ethereum',
+  braveWalletMarketDataBscFilter: 'BSC'
 })

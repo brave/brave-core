@@ -519,6 +519,7 @@ export enum WalletRoutes {
   Onboarding = '/crypto/onboarding',
   Restore = '/crypto/restore-wallet',
   Portfolio = '/crypto/portfolio',
+  Market = '/crypto/market',
   PortfolioSub = '/crypto/portfolio/:id?',
   Market = '/crypto/market',
   Accounts = '/crypto/accounts',

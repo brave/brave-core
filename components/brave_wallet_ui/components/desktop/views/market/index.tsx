@@ -11,6 +11,8 @@ import {
 import { useMarketDataManagement } from '../../../../common/hooks/market-data-management'
 import { MarketDataTableHeaders } from '../../../../options/market-data-headers'
 import { fetchCoinMarketData } from '../../../../stories/mock-data/mock-coin-market-data'
+import { CoinMarketMetadata, MarketDataTableColumnTypes, SortOrder } from '../../../../constants/types'
+import MarketDataTable from '../../../../components/market-datatable'
 
 export interface Props {
   // coinsMarketData: CoinMarketMetadata[]
@@ -34,10 +36,10 @@ const MarketView = (props: Props) => {
     const filteredCoinMarketData = filterCoinMarketData(coinsMarketData, searchTerm)
     setCoinsMarketData(filteredCoinMarketData)
   }
-  
+
   const onSelectFilter = (value: string) => {
     setCurrentFilter(value)
-  }  
+  }
 
   const onSort = (columnId: MarketDataTableColumnTypes, newSortOrder: SortOrder) => {
     const updatedTableHeaders = tableHeaders.map(header => {

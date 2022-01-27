@@ -25,8 +25,7 @@ import { SearchBar, AppList } from '../../components/shared'
 import { getLocale } from '../../../common/locale'
 import { AppsList } from '../../options/apps-list-options'
 import { filterAppList } from '../../utils/filter-app-list'
-import { PortfolioView, AccountsView } from '../../components/desktop/views'
-import MarketView from '../../components/desktop/views/market'
+import { PortfolioView, AccountsView, MarketView } from '../../components/desktop/views'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
@@ -353,8 +352,7 @@ const CryptoStoryView = (props: Props) => {
       }
 
       {selectedTab === 'market' &&
-        <MarketView
-        />
+        <MarketView />
       }
 
       {showAddModal &&

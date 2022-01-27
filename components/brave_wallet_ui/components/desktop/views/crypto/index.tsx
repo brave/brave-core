@@ -366,6 +366,7 @@ const CryptoView = (props: Props) => {
       <Route path={WalletRoutes.Market} exact={true}>
         <MarketView />
       </Route>
+
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}
