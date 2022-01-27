@@ -356,6 +356,8 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
                 "getActionButtonTintList", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPage",
+                "updateSearchProviderHasLogo", false, null));
     }
 
     @Test
