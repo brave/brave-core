@@ -217,29 +217,14 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
 name = "challenge-bypass-ristretto"
-version = "1.0.0-pre.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "38890f7cb7e8640554535274bdd16748eb882cce132a944da79f916e40e63f37"
-dependencies = [
- "base64 0.9.3",
- "clear_on_drop",
- "crypto-mac 0.7.0",
- "curve25519-dalek 1.2.6",
- "digest 0.8.1",
- "hmac 0.7.1",
- "rand 0.6.5",
- "rand_chacha 0.1.1",
-]
-
-[[package]]
-name = "challenge-bypass-ristretto"
 version = "1.0.0"
-source = "git+https://github.com/brave-intl/challenge-bypass-ristretto?rev=17a7922#17a7922d8e174b20af1230f5b05f949c8c967eb5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a439d42c1cc301fb1a248114b56388e447ac1a9afed7bfb1424ae2f4c26f92c7"
 dependencies = [
  "base64 0.13.0",
  "clear_on_drop",
  "crypto-mac 0.10.1",
- "curve25519-dalek 3.2.0",
+ "curve25519-dalek",
  "digest 0.9.0",
  "hmac 0.10.1",
  "rand 0.7.3",
@@ -254,7 +239,7 @@ name = "challenge-bypass-ristretto-ffi"
 version = "1.0.0-pre.2"
 dependencies = [
  "base64 0.9.3",
- "challenge-bypass-ristretto 1.0.0-pre.0",
+ "challenge-bypass-ristretto",
  "hmac 0.7.1",
  "rand 0.6.5",
  "sha2 0.8.2",
@@ -407,19 +392,6 @@ dependencies = [
 
 [[package]]
 name = "curve25519-dalek"
-version = "1.2.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "57c0d59fed08e452f286b251f88b2fc64a01f50a7b263aa09557ad7285d9e7fa"
-dependencies = [
- "byteorder",
- "clear_on_drop",
- "digest 0.8.1",
- "rand_core 0.3.1",
- "subtle 2.4.0",
-]
-
-[[package]]
-name = "curve25519-dalek"
 version = "3.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0b9fdf9972b2bd6af2d913799d9ebc165ea4d2e65878e329d9c6b372c4491b61"
@@ -531,7 +503,7 @@ version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c762bae6dcaf24c4c84667b8579785430908723d5c889f469d76a41d59cc7a9d"
 dependencies = [
- "curve25519-dalek 3.2.0",
+ "curve25519-dalek",
  "ed25519",
  "rand 0.7.3",
  "serde",
@@ -1782,7 +1754,7 @@ dependencies = [
  "async-trait",
  "base64 0.9.3",
  "bigdecimal",
- "challenge-bypass-ristretto 1.0.0",
+ "challenge-bypass-ristretto",
  "chrono",
  "data-encoding",
  "ed25519-dalek",
