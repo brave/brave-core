@@ -538,6 +538,11 @@ function Container (props: Props) {
       walletLocation !== WalletRoutes.AddAssetModal &&
       walletLocation !== WalletRoutes.Market &&
       !allAcceptedRoutes.includes(walletLocation) &&
+      walletLocation !== WalletRoutes.Backup &&
+      walletLocation !== WalletRoutes.Accounts &&
+      walletLocation !== WalletRoutes.AddAccountModal &&
+      walletLocation !== WalletRoutes.AddAssetModal &&
+      walletLocation !== WalletRoutes.Market &&
       acceptedAccountRoutes.length !== 0 &&
       acceptedPortfolioRoutes.length !== 0
     ) {

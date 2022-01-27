@@ -69,6 +69,6 @@ export {
   OnboardingImportMetaMaskOrLegacy,
   TransactionPopup,
   SwapTooltip,
-  AssetsFilterDropdown,
-  WithHideBalancePlaceholder
+  WithHideBalancePlaceholder,
+  AssetsFilterDropdown
 }
