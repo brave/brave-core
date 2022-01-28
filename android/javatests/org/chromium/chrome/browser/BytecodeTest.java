@@ -255,9 +255,6 @@ public class BytecodeTest {
                         "getMaxRowsForMostVisitedTiles", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
-                "getPermissionsLinkMessage", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
                 "getSearchEngineSourceType", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
