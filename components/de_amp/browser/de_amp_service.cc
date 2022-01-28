@@ -19,11 +19,14 @@ namespace de_amp {
 
 // Check for "amp" or "⚡" in <html> tag
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#ampd
-static const char kDetectAmpPattern[] = "(?:<.*html\\s.*(amp|⚡)\\s.*>)";
-// Look for canonical link
+static const char kGetHtmlTagPattern[] = "(<\\s*html\\s.*>)";
+static const char kDetectAmpPattern[] = "(?:<.*\\s.*(amp|⚡)(?:\\s.*>|>|/>))";
+// Look for canonical link tag and get href
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
-static const char kFindCanonicalLinkPattern[] =
-    "<.*link\\s.*rel=\"canonical\"\\s.*href=\"(.*?)\"";
+static const char kFindCanonicalLinkTagPattern[] =
+    "(<\\s*link\\s.*rel=(?:\"|')canonical(?:\"|')(?:\\s.*>|>|/>))";
+static const char kFindCanonicalHrefInTagPattern[] =
+    "href=(?:\"|')(.*?)(?:\"|')";
 
 DeAmpService::DeAmpService(PrefService* prefs) : prefs_(prefs) {}
 
@@ -52,22 +55,50 @@ bool DeAmpService::IsEnabled() {
   return enabled;
 }
 
-bool DeAmpService::CheckCanonicalLink(GURL canonical_link) {
-  return canonical_link.SchemeIsHTTPOrHTTPS();
+// static
+bool DeAmpService::VerifyCanonicalLink(const GURL canonical_link,
+                                       const GURL original_url) {
+  // Canonical URL should be a valid URL,
+  // be HTTP(S) and not be the same as original URL
+  return canonical_link.is_valid() && canonical_link.SchemeIsHTTPOrHTTPS() &&
+         canonical_link != original_url;
 }
 
 // If AMP page, find canonical link
-bool DeAmpService::FindCanonicalLinkIfAMP(std::string body,
+// canonical link param is populated if found
+// static
+bool DeAmpService::FindCanonicalLinkIfAMP(const std::string& body,
                                           std::string* canonical_link) {
   RE2::Options opt;
   opt.set_case_sensitive(false);
+  // The order of running these regexes is important:
+  // we first get the relevant HTML tag and then find the info.
+  static const base::NoDestructor<re2::RE2> kGetHtmlTagRegex(kGetHtmlTagPattern,
+                                                             opt);
   static const base::NoDestructor<re2::RE2> kDetectAmpRegex(kDetectAmpPattern,
                                                             opt);
-  static const base::NoDestructor<re2::RE2> kFindCanonicalLinkRegex(
-      kFindCanonicalLinkPattern, opt);
+  static const base::NoDestructor<re2::RE2> kFindCanonicalLinkTagRegex(
+      kFindCanonicalLinkTagPattern, opt);
+  static const base::NoDestructor<re2::RE2> kFindCanonicalHrefInTagRegex(
+      kFindCanonicalHrefInTagPattern, opt);
 
-  return RE2::PartialMatch(body, *kDetectAmpRegex) &&
-         RE2::PartialMatch(body, *kFindCanonicalLinkRegex, canonical_link);
+  std::string html_tag;
+  if (!RE2::PartialMatch(body, *kGetHtmlTagRegex, &html_tag)) {
+    // Early exit if we can't find HTML tag - malformed document (or error)
+    return false;
+  }
+  if (!RE2::PartialMatch(html_tag, *kDetectAmpRegex)) {
+    // Not AMP
+    return false;
+  }
+  std::string link_tag;
+  if (!RE2::PartialMatch(body, *kFindCanonicalLinkTagRegex, &link_tag)) {
+    // Can't find link tag, exit
+    return false;
+  }
+  // Find href in canonical link tag
+  return RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex,
+                           canonical_link);
 }
 
 }  // namespace de_amp

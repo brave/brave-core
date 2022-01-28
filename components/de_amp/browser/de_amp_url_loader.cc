@@ -37,7 +37,7 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
 DeAmpURLLoader::CreateLoader(
     base::WeakPtr<DeAmpThrottle> throttle,
     const GURL& response_url,
-    scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
     content::WebContents* contents) {
   mojo::PendingRemote<network::mojom::URLLoader> url_loader;
@@ -61,7 +61,7 @@ DeAmpURLLoader::DeAmpURLLoader(
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
-    scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
     content::WebContents* contents)
     : throttle_(throttle),
@@ -229,7 +229,7 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
 
   if (de_amp_service->FindCanonicalLinkIfAMP(buffered_body_, &canonical_link)) {
     const GURL canonical_url(canonical_link);
-    if (!de_amp_service->CheckCanonicalLink(canonical_url)) {
+    if (!de_amp_service->VerifyCanonicalLink(canonical_url, response_url_)) {
       VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
       CompleteLoading(std::move(buffered_body_));
       return;

@@ -11,15 +11,6 @@ namespace de_amp {
 // Is De-AMP feature currently enabled
 constexpr char kDeAmpPrefEnabled[] = "brave.de_amp.enabled";
 
-// Set if DeAmp was enabled at least once
-constexpr char kDeAmpPrefEverEnabled[] = "brave.de_amp.ever_enabled";
-
-// Number of times the user has toggled DeAmp
-constexpr char kDeAmpPrefToggleCount[] = "brave.de_amp.toggle_count";
-
-// Number of times the "Enable DeAmp" button was shown automatically
-constexpr char kDeAmpPrefPromptCount[] = "brave.de_amp.prompt_count";
-
 }  // namespace de_amp
 
 #endif  // BRAVE_COMPONENTS_DE_AMP_BROWSER_DE_AMP_PREF_NAMES_H_

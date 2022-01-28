@@ -51,7 +51,7 @@ class DeAmpURLLoader : public network::mojom::URLLoaderClient,
                     DeAmpURLLoader*>
   CreateLoader(base::WeakPtr<DeAmpThrottle> throttle,
                const GURL& response_url,
-               scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+               scoped_refptr<base::SequencedTaskRunner> task_runner,
                DeAmpService* service,
                content::WebContents* contents);
 
@@ -60,7 +60,7 @@ class DeAmpURLLoader : public network::mojom::URLLoaderClient,
                  const GURL& response_url,
                  mojo::PendingRemote<network::mojom::URLLoaderClient>
                      destination_url_loader_client,
-                 scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+                 scoped_refptr<base::SequencedTaskRunner> task_runner,
                  DeAmpService* service,
                  content::WebContents* contents);
 
@@ -114,7 +114,7 @@ class DeAmpURLLoader : public network::mojom::URLLoaderClient,
   content::WebContents* contents_;
   DeAmpService* de_amp_service;
 
-  scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
   enum class State { kWaitForBody, kLoading, kSending, kCompleted, kAborted };
   State state_ = State::kWaitForBody;
