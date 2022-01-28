@@ -97,6 +97,11 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="BraveWalletAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:background">@color/wallet_bg</item>
+        <item name="android:colorBackground">@color/wallet_bg</item>
+     </style>
+
     <style name="BraveWalletTabsTextAppearance" parent="TextAppearance.Design.Tab">
       <item name="textAllCaps">false</item>
     </style>

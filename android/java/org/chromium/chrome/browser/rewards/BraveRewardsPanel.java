@@ -1395,6 +1395,7 @@ public class BraveRewardsPanel
                     popup.getMenuInflater().inflate(
                             R.menu.monthly_contribution_popup_menu, popup.getMenu());
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             if (item.getItemId() == R.id.change_amount_menu_id) {
                                 openBannerActivity();
