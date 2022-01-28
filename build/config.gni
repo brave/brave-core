@@ -10,7 +10,7 @@ declare_args() {
   brave_channel = ""
   is_release_channel = false
   base_sparkle_update_url = ""
-  enable_sparkle = is_official_build && is_mac
+  enable_sparkle = (is_official_build || !is_component_build) && is_mac
 
   sparkle_dsa_private_key_file = ""
   sparkle_eddsa_private_key = ""
