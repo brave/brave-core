@@ -1080,6 +1080,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "reportModalTitle", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE },
         { "reportExplanation", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION },
         { "reportDisclaimer", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER },
+        { "reportDetails", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS },
+        { "reportEmail", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EMAIL },
         { "cancel", IDS_BRAVE_WEBCOMPATREPORTER_CANCEL },
         { "submit", IDS_BRAVE_WEBCOMPATREPORTER_SUBMIT },
         // Confirmation modal
