@@ -6,16 +6,18 @@
 package org.chromium.chrome.browser.appmenu;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.view.MenuItemCompat;
 
-import org.chromium.base.Log;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.R;
@@ -29,8 +31,8 @@ import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
-import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
@@ -149,7 +151,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             exit.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.brave_menu_exit));
         }
 
-        if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(mContext)) {
+        if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(mContext)) {
             menu.findItem(R.id.set_default_browser).setVisible(false);
         }
 

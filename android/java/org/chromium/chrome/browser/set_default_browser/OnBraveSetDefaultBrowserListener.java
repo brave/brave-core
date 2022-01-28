@@ -8,6 +8,5 @@
 package org.chromium.chrome.browser.set_default_browser;
 
 public interface OnBraveSetDefaultBrowserListener {
-	
-  default public void OnCheckDefaultResume() {};
+    default public void OnCheckDefaultResume(){};
 }

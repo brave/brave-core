@@ -11,7 +11,6 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import androidx.core.app.ActivityCompat;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -45,6 +44,7 @@ import android.widget.ScrollView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -109,7 +109,6 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.informers.BraveAndroidSyncDisabledInformer;
-import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
@@ -128,6 +127,8 @@ import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
 import org.chromium.chrome.browser.rate.RateUtils;
+import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
+import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 import org.chromium.chrome.browser.settings.BraveNewsPreferences;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
@@ -162,8 +163,6 @@ import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.widget.Toast;
-import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
-import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -179,8 +178,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Brave's extension for ChromeActivity
  */
 @JNINamespace("chrome::android")
-public abstract class BraveActivity<C extends ChromeActivityComponent> extends ChromeActivity
-        implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver, OnBraveSetDefaultBrowserListener {
+public abstract class BraveActivity<C extends ChromeActivityComponent>
+        extends ChromeActivity implements BrowsingDataBridge.OnClearBrowsingDataListener,
+                                          BraveVpnObserver, OnBraveSetDefaultBrowserListener {
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
@@ -212,9 +212,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
      * Settings for sending local notification reminders.
      */
     public static final String CHANNEL_ID = "com.brave.browser";
-    //public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
-    //public static final String ANDROID_PACKAGE_NAME = "android";
-    //public static final String BRAVE_BLOG_URL = "https://brave.com/privacy-features/";
 
     // Explicitly declare this variable to avoid build errors.
     // It will be removed in asm and parent variable will be used instead.
@@ -230,7 +227,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private boolean isSetDefaultBrowserNotification;
     public CompositorViewHolder compositorView;
     public View inflatedSettingsBarLayout;
-    
+
     @SuppressLint("VisibleForTests")
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
@@ -417,11 +414,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void onResume() {
         super.onResume();
 
-        //Log.e("tapan","onresume:"+isDefaultCheckOnResume);
-        if(isDefaultCheckOnResume) {
+        if (isDefaultCheckOnResume) {
             isDefaultCheckOnResume = false;
 
-            if(BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(this)) {
+            if (BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(this)) {
                 BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
             }
         }
@@ -454,7 +450,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         super.performPostInflationStartup();
 
         createNotificationChannel();
-        setupBraveSetDefaultBrowserNotification();
     }
 
     @Override
@@ -504,7 +499,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveSyncWorker.get();
         }
 
-        //Log.e("tapan","Brave activity.java");
         checkForNotificationData();
 
         if (!RateUtils.getInstance(this).getPrefRateEnabled()) {
@@ -588,7 +582,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
         }
 
-        /*if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
+        /*if
+        (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                 == 1) {
             Calendar calender = Calendar.getInstance();
             calender.setTime(new Date());
@@ -596,9 +591,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             OnboardingPrefManager.getInstance().setNextSetDefaultBrowserModalDate(
                     calender.getTimeInMillis());
         }*/
-        //checkSetDefaultBrowserModal();
-        
-        if(!isSetDefaultBrowserNotification) {   
+        // checkSetDefaultBrowserModal();
+
+        if (!isSetDefaultBrowserNotification) {
             BraveSetDefaultBrowserUtils.checkSetDefaultBrowserModal(this);
         }
 
@@ -828,7 +823,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private void checkForNotificationData() {
         Intent notifIntent = getIntent();
         if (notifIntent != null && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE) != null) {
-            
             String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
             switch (notificationType) {
             case RetentionNotificationUtil.HOUR_3:
@@ -859,9 +853,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             case RetentionNotificationUtil.DEFAULT_BROWSER_1:
             case RetentionNotificationUtil.DEFAULT_BROWSER_2:
             case RetentionNotificationUtil.DEFAULT_BROWSER_3:
-                if(!BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(BraveActivity.this) && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
+                if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)
+                        && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
                     isSetDefaultBrowserNotification = true;
-                    BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this);
+                    BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
+                            BraveActivity.this);
                 }
                 break;
             }
@@ -931,20 +927,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-    }
-
-    private void setupBraveSetDefaultBrowserNotification() {
-        // Post task to IO thread because isBraveSetAsDefaultBrowser may cause
-        // sqlite file IO operation underneath
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            Context context = ContextUtils.getApplicationContext();
-            if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(this)) {
-                // Don't ask again
-                return;
-            }
-            Intent intent = new Intent(context, BraveSetDefaultBrowserNotificationService.class);
-            context.sendBroadcast(intent);
-        });
     }
 
     private boolean isNoRestoreState() {
@@ -1055,13 +1037,16 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     public void showDormantUsersEngagementDialog(String notificationType) {
-        DormantUsersEngagementDialogFragment dormantUsersEngagementDialogFragment =
-                new DormantUsersEngagementDialogFragment();
-        dormantUsersEngagementDialogFragment.setCancelable(false);
-        dormantUsersEngagementDialogFragment.setNotificationType(notificationType);
-        dormantUsersEngagementDialogFragment.show(
-                getSupportFragmentManager(), "DormantUsersEngagementDialogFragment");
-        setDormantUsersPrefs();
+        if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(BraveActivity.this)
+                && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
+            DormantUsersEngagementDialogFragment dormantUsersEngagementDialogFragment =
+                    new DormantUsersEngagementDialogFragment();
+            dormantUsersEngagementDialogFragment.setCancelable(false);
+            dormantUsersEngagementDialogFragment.setNotificationType(notificationType);
+            dormantUsersEngagementDialogFragment.show(
+                    getSupportFragmentManager(), "DormantUsersEngagementDialogFragment");
+            setDormantUsersPrefs();
+        }
     }
 
     static public ChromeTabbedActivity getChromeTabbedActivity() {
@@ -1091,8 +1076,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode,
-                                  Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK &&
                 (requestCode == VERIFY_WALLET_ACTIVITY_REQUEST_CODE ||
                  requestCode == USER_WALLET_ACTIVITY_REQUEST_CODE ||
@@ -1107,14 +1091,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         } else if (resultCode == RESULT_OK
                 && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            
             BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
 
         } else if (resultCode == RESULT_OK && requestCode == MONTHLY_CONTRIBUTION_REQUEST_CODE) {
             dismissRewardsPanel();
 
-        } else if(resultCode == RESULT_OK && requestCode == BraveSetDefaultBrowserUtils.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
-
+        } else if (resultCode == RESULT_OK
+                && requestCode == BraveSetDefaultBrowserUtils.DEFAULT_BROWSER_ROLE_REQUEST_CODE) {
             BraveSetDefaultBrowserUtils.setBraveDefaultSuccess();
         }
         super.onActivityResult(requestCode, resultCode, data);
