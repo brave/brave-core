@@ -544,6 +544,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ADDRESS_MISSING_CHECKSUM_INFO_WARNING},
     {"braveWalletNotValidChecksumAddressError",
      IDS_BRAVE_WALLET_NOT_VALID_CHECKSUM_ADDRESS_ERROR},
+    {"braveWalletMissingGasLimitError",
+     IDS_BRAVE_WALLET_MISSING_GAS_LIMIT_ERROR},
     {"braveWalletQueueOf", IDS_BRAVE_WALLET_QUEUE_OF},
     {"braveWalletQueueNext", IDS_BRAVE_WALLET_QUEUE_NEXT},
     {"braveWalletQueueFirst", IDS_BRAVE_WALLET_QUEUE_FIRST},

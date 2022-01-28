@@ -424,6 +424,7 @@ provideStrings({
   braveWalletContractAddressError: 'The receiving address is a tokens contract address',
   braveWalletAddressMissingChecksumInfoWarning: 'Missing checksum information',
   braveWalletNotValidChecksumAddressError: 'Invalid checksum information',
+  braveWalletMissingGasLimitError: 'Missing gas limit',
 
   // Transaction Queue Strings
   braveWalletQueueOf: 'of',

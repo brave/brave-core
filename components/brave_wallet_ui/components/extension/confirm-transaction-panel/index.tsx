@@ -253,7 +253,8 @@ function ConfirmTransactionPanel (props: Props) {
     return (
       !!transactionDetails.sameAddressError ||
       !!transactionDetails.contractAddressError ||
-      transactionDetails.insufficientFundsError
+      transactionDetails.insufficientFundsError ||
+      !!transactionDetails.missingGasLimitError
     )
   }, [transactionDetails])
 
@@ -465,6 +466,12 @@ function ConfirmTransactionPanel (props: Props) {
       {transactionDetails.sameAddressError &&
         <ErrorText>
           {transactionDetails.sameAddressError}
+        </ErrorText>
+      }
+
+      {transactionDetails.missingGasLimitError &&
+        <ErrorText>
+          {transactionDetails.missingGasLimitError}
         </ErrorText>
       }
 
