@@ -191,6 +191,10 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
                 {
                   "publicKey": "XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=",
                   "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
+                  "associatedValue": "0.1"
                 }
               ]
             }
@@ -212,7 +216,8 @@ TEST_F(BatAdsAccountTest, GetIssuersIfAdsAreEnabled) {
                     {"crDVI1R6xHQZ4D9cQu4muVM5MaaM1QcOT4It8Y/CYlw=", 0.0}},
                    {{"JiwFR2EU/Adf1lgox+xqOVPuc6a/rxdy/LguFG5eaXg=", 0.0},
                     {"bPE1QE65mkIgytffeu7STOfly+x10BXCGuk5pVlOHQU=", 0.1},
-                    {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1}});
+                    {"XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=", 0.1},
+                    {"wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=", 0.1}});
 
   EXPECT_EQ(expected_issuers, issuers);
 }
@@ -253,6 +258,10 @@ TEST_F(BatAdsAccountTest, DoNotGetIssuersIfAdsAreDisabled) {
                 },
                 {
                   "publicKey": "XovQyvVWM8ez0mAzTtfqgPIbSpH5/idv8w0KJxhirwA=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
                   "associatedValue": "0.1"
                 }
               ]
@@ -316,6 +325,10 @@ TEST_F(BatAdsAccountTest, DoNotGetInvalidIssuers) {
                 },
                 {
                   "publicKey": "wAcnJtb34Asykf+2jrTWrjFiaTqilklZ6bxLyR3LyFo=",
+                  "associatedValue": "0.1"
+                },
+                {
+                  "publicKey": "ZvzeYOT1geUQXfOsYXBxZj/H26IfiBUVodHl51j68xI=",
                   "associatedValue": "0.1"
                 }
               ]
