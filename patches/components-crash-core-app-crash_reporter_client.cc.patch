@@ -1,8 +1,8 @@
 diff --git a/components/crash/core/app/crash_reporter_client.cc b/components/crash/core/app/crash_reporter_client.cc
-index 0bd07dcc7219e9dbfc24822f17fff1f0d37accab..5c42f34fa25ea1b112987facbb007f50a0f834e5 100644
+index 82b7f241e26184240260d0b6287ded159681e15b..4d74277483d83555aeb0b4a29e288b0b1d4b68d0 100644
 --- a/components/crash/core/app/crash_reporter_client.cc
 +++ b/components/crash/core/app/crash_reporter_client.cc
-@@ -188,6 +188,7 @@ void CrashReporterClient::GetSanitizationInformation(
+@@ -190,6 +190,7 @@ void CrashReporterClient::GetSanitizationInformation(
  #endif
  
  std::string CrashReporterClient::GetUploadUrl() {
