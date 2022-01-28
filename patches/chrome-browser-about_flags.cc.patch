@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index a84ad51d1f3a66c0f9fc9365ff0069d89fe54ea3..65f3d867fe4ebab3f650b3eb69ddd2567c3a922d 100644
+index 8c91d3cd433ec61cfb0466876225410249b92824..d6330771bf555d027eeea317c6df7a791fbbcd4c 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -7706,6 +7706,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7712,6 +7712,7 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(chrome::android::kDragAndDropAndroid)},
- #endif  // defined(OS_ANDROID)
+ #endif  // BUILDFLAG(IS_ANDROID)
  
 +     BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
      {"autofill-enable-update-virtual-card-enrollment",
