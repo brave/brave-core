@@ -249,7 +249,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, RestoreLegacyBraveWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AutoLock);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetSelectedAccount);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, UnknownKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, LazilyCreateKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportedFilecoinAccounts);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxServiceUnitTest;
@@ -276,7 +276,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::vector<uint8_t>& public_key,
       const std::string& network);
   bool IsFilecoinAccount(const std::string& account) const;
-  bool UnlockFilecoinKeyring(const std::string& password);
+  bool IsKeyringExist(const std::string& keyring_id) const;
+  bool CreateFilecoinKeyring();
   size_t GetAccountMetasNumberForKeyring(const std::string& id);
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(

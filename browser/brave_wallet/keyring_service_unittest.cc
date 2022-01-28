@@ -2284,7 +2284,7 @@ TEST_F(KeyringServiceUnitTest, GetChecksumEthAddress) {
   EXPECT_EQ(GetChecksumEthAddress(&service, "hello"), "0x");
 }
 
-TEST_F(KeyringServiceUnitTest, UnknownKeyring) {
+TEST_F(KeyringServiceUnitTest, LazilyCreateKeyring) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeature(
       brave_wallet::features::kBraveWalletFilecoinFeature);
@@ -2309,7 +2309,6 @@ TEST_F(KeyringServiceUnitTest, UnknownKeyring) {
        "0xeffF78040EdeF86A9be71ce89c74A35C4cd5D2eA"}};
 
   service.CreateWallet("brave", base::DoNothing());
-  service.CreateKeyring("one", "brave");
   for (size_t i = 0;
        i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
     bool callback_called = false;
