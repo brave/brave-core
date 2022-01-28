@@ -16,6 +16,7 @@
 #include "bat/ads/category_content_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
@@ -136,6 +137,15 @@ void BatAdsImpl::OnAdNotificationEvent(
     const std::string& uuid,
     const ads::mojom::AdNotificationEventType event_type) {
   ads_->OnAdNotificationEvent(uuid, event_type);
+}
+
+void BatAdsImpl::GetNewTabPageAd(GetNewTabPageAdCallback callback) {
+  auto* holder = new CallbackHolder<GetNewTabPageAdCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  auto get_new_tab_page_ad_callback =
+      std::bind(BatAdsImpl::OnGetNewTabPageAd, holder, _1, _2);
+  ads_->GetNewTabPageAd(get_new_tab_page_ad_callback);
 }
 
 void BatAdsImpl::OnNewTabPageAdEvent(
@@ -289,6 +299,19 @@ void BatAdsImpl::OnShutdown(CallbackHolder<ShutdownCallback>* holder,
                             const bool success) {
   if (holder->is_valid()) {
     std::move(holder->get()).Run(success);
+  }
+
+  delete holder;
+}
+
+// static
+void BatAdsImpl::OnGetNewTabPageAd(
+    CallbackHolder<GetNewTabPageAdCallback>* holder,
+    const bool success,
+    const ads::NewTabPageAdInfo& ad) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(success, ad.ToJson());
   }
 
   delete holder;

@@ -11,6 +11,7 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
 
@@ -196,6 +197,10 @@ Campaign NTPSponsoredImagesData::GetCampaignFromValue(
 
   Campaign campaign;
 
+  if (const std::string* campaign_id = value.FindStringKey(kCampaignIdKey)) {
+    campaign.campaign_id = *campaign_id;
+  }
+
   Logo default_logo;
   if (auto* logo = value.FindDictKey(kLogoKey)) {
     default_logo = GetLogoFromValue(installed_dir, url_prefix, logo);
@@ -287,11 +292,11 @@ base::Value NTPSponsoredImagesData::GetBackgroundAt(size_t campaign_index,
   DCHECK(campaign_index < campaigns.size() && background_index >= 0 &&
          background_index < campaigns[campaign_index].backgrounds.size());
 
-  base::Value data(base::Value::Type::DICTIONARY);
   const auto campaign = campaigns[campaign_index];
   if (!campaign.IsValid())
-    return data;
+    return base::Value();
 
+  base::Value data(base::Value::Type::DICTIONARY);
   data.SetStringKey(kThemeNameKey, theme_name);
   data.SetBoolKey(kIsSponsoredKey, !IsSuperReferral());
   data.SetBoolKey(kIsBackgroundKey, false);
@@ -322,6 +327,41 @@ base::Value NTPSponsoredImagesData::GetBackgroundAt(size_t campaign_index,
   logo_data.SetStringKey(kDestinationURLKey, logo.destination_url);
   data.SetKey(kLogoKey, std::move(logo_data));
   return data;
+}
+
+base::Value NTPSponsoredImagesData::GetBackgroundByAdInfo(
+    const ads::NewTabPageAdInfo& ad_info) {
+  // Find campaign
+  LOG(ERROR) << ad_info.campaign_id;
+  size_t campaign_index = 0;
+  for (; campaign_index != campaigns.size(); ++campaign_index) {
+    LOG(ERROR) << campaigns[campaign_index].campaign_id;
+    if (campaigns[campaign_index].campaign_id == ad_info.campaign_id) {
+      break;
+    }
+  }
+  if (campaign_index == campaigns.size()) {
+    LOG(ERROR) << "Ad campaign wasn't found in NTP sposored images data: "
+               << ad_info.campaign_id;
+    return base::Value();
+  }
+
+  const auto& sponsored_backgrounds = campaigns[campaign_index].backgrounds;
+  size_t background_index = 0;
+  for (; background_index != sponsored_backgrounds.size(); ++background_index) {
+    LOG(ERROR) << sponsored_backgrounds[background_index].creative_instance_id;
+    if (sponsored_backgrounds[background_index].creative_instance_id ==
+        ad_info.creative_instance_id) {
+      break;
+    }
+  }
+  if (background_index == sponsored_backgrounds.size()) {
+    LOG(ERROR) << "Creative instance wasn't found in NTP sposored images data: "
+               << ad_info.creative_instance_id;
+    return base::Value();
+  }
+
+  return GetBackgroundAt(campaign_index, background_index);
 }
 
 void NTPSponsoredImagesData::PrintCampaignsParsingResult() const {

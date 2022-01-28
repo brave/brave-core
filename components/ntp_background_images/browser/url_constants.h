@@ -22,6 +22,8 @@ constexpr char kThemeNameKey[] = "themeName";
 
 constexpr char kLogoKey[] = "logo";
 
+constexpr char kCampaignIdKey[] = "campaignId";
+
 constexpr char kWallpapersKey[] = "wallpapers";
 constexpr char kWallpaperFocalPointKey[] = "focalPoint";
 

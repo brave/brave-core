@@ -17,9 +17,11 @@
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "base/timer/timer.h"
+#include "base/values.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/database.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
@@ -163,6 +165,8 @@ class AdsServiceImpl : public AdsService,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) override;
 
+  absl::optional<std::string> GetPrefetchedNewTabPageAd() override;
+
   void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
 
   void GetAdsHistory(const double from_timestamp,
@@ -207,6 +211,7 @@ class AdsServiceImpl : public AdsService,
   void OnCreate();
 
   void OnInitialize(const bool success);
+  void SetupOnFirstInitialize();
 
   void ShutdownBatAds();
   void OnShutdownBatAds(const bool success);
@@ -253,6 +258,10 @@ class AdsServiceImpl : public AdsService,
   void NotificationTimedOut(const std::string& uuid);
 
   void RegisterResourceComponentsForLocale(const std::string& locale);
+
+  void PrefetchNewTabPageAd();
+
+  void OnPrefetchNewTabPageAd(bool success, const std::string& json);
 
   void OnURLRequestStarted(
       const GURL& final_url,
@@ -463,7 +472,7 @@ class AdsServiceImpl : public AdsService,
 
   bool is_initialized_ = false;
 
-  bool deprecated_data_files_removed_ = false;
+  bool is_setup_on_first_initialize_done_ = false;
 
   bool is_upgrading_from_pre_brave_ads_build_;
 
@@ -483,6 +492,8 @@ class AdsServiceImpl : public AdsService,
   base::OneShotTimer onboarding_timer_;
 
   std::unique_ptr<ads::Database> database_;
+
+  absl::optional<std::string> prefetched_new_tab_page_ad_info_;
 
   ui::IdleState last_idle_state_;
   int last_idle_time_;

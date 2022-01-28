@@ -87,6 +87,7 @@ interface BatAds {
   OnTabClosed(int32 tab_id);
   GetAdNotification(string uuid) => (string json);
   OnAdNotificationEvent(string uuid, ads.mojom.AdNotificationEventType event_type);
+  GetNewTabPageAd() => (bool success, string json);
   OnNewTabPageAdEvent(string uuid, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
   OnPromotedContentAdEvent(string uuid, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
   GetInlineContentAd(string size) => (bool success, string dimensions, string ad);

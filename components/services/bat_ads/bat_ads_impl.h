@@ -86,6 +86,8 @@ class BatAdsImpl :
       const std::string& uuid,
       const ads::mojom::AdNotificationEventType event_type) override;
 
+  void GetNewTabPageAd(GetNewTabPageAdCallback callback) override;
+
   void OnNewTabPageAdEvent(
       const std::string& uuid,
       const std::string& creative_instance_id,
@@ -169,6 +171,11 @@ class BatAdsImpl :
 
     static void OnShutdown(CallbackHolder<ShutdownCallback>* holder,
                            const bool success);
+
+    static void OnGetNewTabPageAd(
+        CallbackHolder<GetNewTabPageAdCallback>* holder,
+        const bool success,
+        const ads::NewTabPageAdInfo& ad);
 
     static void OnGetInlineContentAd(
         CallbackHolder<GetInlineContentAdCallback>* holder,

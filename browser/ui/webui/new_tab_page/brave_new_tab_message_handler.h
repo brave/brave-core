@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/tor/tor_launcher_observer.h"
 #include "components/prefs/pref_change_registrar.h"

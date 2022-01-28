@@ -12,6 +12,10 @@
 #include "bat/ads/export.h"
 #include "bat/ads/new_tab_page_ad_wallpaper_info_aliases.h"
 
+namespace base {
+class DictionaryValue;
+}  // namespace base
+
 namespace ads {
 
 struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
@@ -23,6 +27,9 @@ struct ADS_EXPORT NewTabPageAdInfo final : AdInfo {
 
   std::string ToJson() const;
   bool FromJson(const std::string& json);
+
+  base::DictionaryValue ToValue() const;
+  void FromValue(const base::DictionaryValue& value);
 
   std::string company_name;
   std::string image_url;

@@ -573,7 +573,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
-  auto data = service->GetCurrentWallpaperForDisplay();
+  base::Value data = service->GetCurrentWallpaperForDisplay();
 
   if (!data.is_dict()) {
     ResolveJavascriptCallback(args[0], std::move(wallpaper));
@@ -591,11 +591,14 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
-  constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
+  const std::string* creative_instance_id =
+      data.FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
   const std::string wallpaper_id = base::GenerateGUID();
+  service->BrandedWallpaperWillBeDisplayed(wallpaper_id, creative_instance_id);
+
+  constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
   data.SetStringKey(ntp_background_images::kWallpaperIDKey, wallpaper_id);
   wallpaper.SetKey(kBrandedWallpaperKey, std::move(data));
-  service->BrandedWallpaperWillBeDisplayed(wallpaper_id);
   ResolveJavascriptCallback(args[0], std::move(wallpaper));
 }
 

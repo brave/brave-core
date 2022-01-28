@@ -37,6 +37,7 @@
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
@@ -683,11 +684,21 @@ void AdsServiceImpl::OnInitialize(const bool success) {
 
   StartCheckIdleStateTimer();
 
-  if (!deprecated_data_files_removed_) {
-    deprecated_data_files_removed_ = true;
-    file_task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(&RemoveDeprecatedAdsDataFiles, base_path_));
+  if (!is_setup_on_first_initialize_done_) {
+    SetupOnFirstInitialize();
+    is_setup_on_first_initialize_done_ = true;
   }
+}
+
+void AdsServiceImpl::SetupOnFirstInitialize() {
+  DCHECK(!is_setup_on_first_initialize_done_);
+
+  PrefetchNewTabPageAd();
+
+  PurgeOrphanedAdEventsForType(ads::mojom::AdType::kNewTabPageAd);
+
+  file_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&RemoveDeprecatedAdsDataFiles, base_path_));
 }
 
 void AdsServiceImpl::ShutdownBatAds() {
@@ -1107,6 +1118,22 @@ void AdsServiceImpl::OnOpenNewTabWithAd(const std::string& json) {
   OpenNewTabWithUrl(notification.target_url);
 }
 
+absl::optional<std::string> AdsServiceImpl::GetPrefetchedNewTabPageAd() {
+  if (!connected()) {
+    return absl::nullopt;
+  }
+
+  absl::optional<std::string> ad_info;
+  if (prefetched_new_tab_page_ad_info_) {
+    ad_info = prefetched_new_tab_page_ad_info_;
+    prefetched_new_tab_page_ad_info_.reset();
+  }
+
+  PrefetchNewTabPageAd();
+
+  return ad_info;
+}
+
 void AdsServiceImpl::OnNewTabPageAdEvent(
     const std::string& uuid,
     const std::string& creative_instance_id,
@@ -1210,6 +1237,25 @@ void AdsServiceImpl::RegisterResourceComponentsForLocale(
     const std::string& locale) {
   g_brave_browser_process->resource_component()->RegisterComponentsForLocale(
       locale);
+}
+
+void AdsServiceImpl::PrefetchNewTabPageAd() {
+  if (!connected()) {
+    prefetched_new_tab_page_ad_info_.reset();
+    return;
+  }
+
+  bat_ads_->GetNewTabPageAd(
+      base::BindOnce(&AdsServiceImpl::OnPrefetchNewTabPageAd, AsWeakPtr()));
+}
+
+void AdsServiceImpl::OnPrefetchNewTabPageAd(bool success, const std::string& json) {
+  if (!success) {
+    prefetched_new_tab_page_ad_info_.reset();
+    return;
+  }
+
+  prefetched_new_tab_page_ad_info_ = json;
 }
 
 void AdsServiceImpl::OnURLRequestStarted(

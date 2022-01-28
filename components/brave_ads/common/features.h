@@ -41,6 +41,8 @@ bool IsAllowedToFallbackToCustomAdNotificationsEnabled();
 extern const base::Feature kRequestAdsEnabledApi;
 bool IsRequestAdsEnabledApiEnabled();
 
+extern const base::Feature kNewTabPageSponsoredImageAds;
+
 }  // namespace features
 }  // namespace brave_ads
 

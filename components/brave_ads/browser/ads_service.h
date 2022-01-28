@@ -20,13 +20,10 @@
 #include "components/sessions/core/session_id.h"
 #include "url/gurl.h"
 
-namespace ads {
-struct AdsHistoryInfo;
-}
-
 namespace base {
 class DictionaryValue;
 class ListValue;
+class Value;
 }
 
 namespace user_prefs {
@@ -141,6 +138,8 @@ class AdsService : public KeyedService {
       const std::string& uuid,
       const std::string& creative_instance_id,
       const ads::mojom::InlineContentAdEventType event_type) = 0;
+
+  virtual absl::optional<std::string> GetPrefetchedNewTabPageAd() = 0;
 
   virtual void PurgeOrphanedAdEventsForType(
       const ads::mojom::AdType ad_type) = 0;

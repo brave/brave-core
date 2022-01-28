@@ -148,9 +148,6 @@ base::android::ScopedJavaLocalRef<jobject>
 NTPBackgroundImagesBridge::CreateBrandedWallpaper(base::Value* data) {
   JNIEnv* env = AttachCurrentThread();
 
-  const std::string wallpaper_id = base::GenerateGUID();
-  view_counter_service_->BrandedWallpaperWillBeDisplayed(wallpaper_id);
-
   auto* image_path =
       data->FindStringKey(ntp_background_images::kWallpaperImagePathKey);
   auto* logo_image_path =
@@ -171,6 +168,10 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(base::Value* data) {
       data->FindBoolKey(ntp_background_images::kIsSponsoredKey).value_or(false);
   auto* creative_instance_id =
       data->FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
+
+  const std::string wallpaper_id = base::GenerateGUID();
+  view_counter_service_->BrandedWallpaperWillBeDisplayed(wallpaper_id,
+                                                         creative_instance_id);
 
   return Java_NTPBackgroundImagesBridge_createBrandedWallpaper(
       env, ConvertUTF8ToJavaString(env, *image_path), focal_point_x,

@@ -23,6 +23,9 @@ const base::Feature kAllowedToFallbackToCustomAdNotifications{
 const base::Feature kRequestAdsEnabledApi{"RequestAdsEnabledApi",
                                           base::FEATURE_DISABLED_BY_DEFAULT};
 
+const base::Feature kNewTabPageSponsoredImageAds{
+    "NewTabPageSponsoredImageAds", base::FEATURE_ENABLED_BY_DEFAULT};
+
 namespace {
 
 // Set to true to support multiple displays or false to only support the primary

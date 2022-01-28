@@ -18,6 +18,10 @@
 
 class PrefService;
 
+namespace ads {
+struct NewTabPageAdInfo;
+}  // namespace ads
+
 namespace brave_ads {
 class AdsService;
 }  // namespace brave_ads
@@ -37,6 +41,9 @@ namespace ntp_background_images {
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
 struct TopSite;
+
+using GetCurrentWallpaperForDisplayCallback =
+    base::OnceCallback<void(base::Value)>;
 
 class ViewCounterService : public KeyedService,
                            public NTPBackgroundImagesService::Observer {
@@ -63,16 +70,18 @@ class ViewCounterService : public KeyedService,
                                    const std::string& destination_url,
                                    const std::string& wallpaper_id);
 
-  base::Value GetCurrentWallpaperForDisplay() const;
+  base::Value GetCurrentWallpaperForDisplay();
   base::Value GetCurrentWallpaper() const;
-  base::Value GetCurrentBrandedWallpaper() const;
+  base::Value GetCurrentBrandedWallpaperFromModel() const;
+  base::Value GetCurrentBrandedWallpaper();
   std::vector<TopSite> GetTopSitesData() const;
 
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;
   std::string GetSuperReferralCode() const;
 
-  void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id);
+  void BrandedWallpaperWillBeDisplayed(const std::string& wallpaper_id,
+                                       const std::string* creative_instance_id);
 
   NTPBackgroundImagesData* GetCurrentWallpaperData() const;
   // Gets the current data for branded wallpaper, if there
