@@ -14,7 +14,8 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_ROLE_MANAGER_DIALOG_COUNT = "brave_role_manager_dialog_count";
     public static final String BRAVE_IS_DEFAULT = "brave_is_default";
     public static final String BRAVE_WAS_DEFAULT_ASK_COUNT = "brave_was_default_ask_count";
-    public static final String BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT = "brave_set_default_bottom_sheet_count";
+    public static final String BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT =
+            "brave_set_default_bottom_sheet_count";
     public static final String BRAVE_DEFAULT_DONT_ASK = "brave_default_dont_ask";
     public static final String BRAVE_UPDATE_EXTRA_PARAM =
             "org.chromium.chrome.browser.upgrade.UPDATE_NOTIFICATION_NEW";

@@ -19,22 +19,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.CheckBox;
 
-import androidx.appcompat.widget.AppCompatImageView;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.base.Log;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -43,7 +43,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragment {
-    
     public static SetDefaultBrowserBottomSheetFragment newInstance() {
         return new SetDefaultBrowserBottomSheetFragment();
     }
@@ -63,13 +62,11 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        
         Button nextButton = view.findViewById(R.id.btn_next);
         nextButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(getActivity()!=null) {
+                if (getActivity() != null) {
                     BraveSetDefaultBrowserUtils.openDefaultAppsSettings(getActivity());
                 }
                 dismiss();
@@ -78,16 +75,17 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
 
         CheckBox dontAskCheckBox = view.findViewById(R.id.checkbox_dont_ask);
 
-        int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
-        
-        if(braveDefaultModalCount >= 2) {
+        int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
+                BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
+
+        if (braveDefaultModalCount >= 2) {
             dontAskCheckBox.setVisibility(View.VISIBLE);
         } else {
             dontAskCheckBox.setVisibility(View.GONE);
         }
 
         dontAskCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(isChecked) {
+            if (isChecked) {
                 nextButton.setEnabled(false);
                 nextButton.setBackgroundResource(R.drawable.set_default_rounded_button_disabled);
             } else {
@@ -100,11 +98,17 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
         cancelButton.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dontAskCheckBox.isChecked()) {
+                if (dontAskCheckBox.isChecked()) {
                     BraveSetDefaultBrowserUtils.setBraveDefaultDontAsk();
                 }
                 dismiss();
             }
         }));
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        BraveSetDefaultBrowserUtils.isBottomSheetVisible = false;
     }
 }

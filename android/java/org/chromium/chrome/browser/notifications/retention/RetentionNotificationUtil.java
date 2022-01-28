@@ -14,21 +14,19 @@ import android.content.Intent;
 import android.util.Pair;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
-import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.app.BraveActivity;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -73,9 +71,13 @@ public class RetentionNotificationUtil {
             put(BRAVE_STATS_ADS_TRACKERS, new RetentionNotification(14, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(BRAVE_STATS_DATA, new RetentionNotification(15, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(BRAVE_STATS_TIME, new RetentionNotification(16, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DEFAULT_BROWSER_1, new RetentionNotification(17, 3 * 24 * 60/*48 * 60*/, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DEFAULT_BROWSER_1,
+                    new RetentionNotification(17, 3 * 24 * 60,
+                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(DEFAULT_BROWSER_2, new RetentionNotification(18, 6 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
-            put(DEFAULT_BROWSER_3, new RetentionNotification(19, 30/*20*/ * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DEFAULT_BROWSER_3,
+                    new RetentionNotification(19, 30 * 24 * 60,
+                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(DORMANT_USERS_DAY_14,
                     new RetentionNotification(20, 14 * 24 * 60,
                             BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
@@ -98,29 +100,30 @@ public class RetentionNotificationUtil {
         return mNotificationMap.get(notificationType);
     }
 
-    @SuppressLint("NotificationTrampoline")
+    //@SuppressLint("NotificationTrampoline")
     public static Notification getNotification(
             Context context, String notificationType, String notificationText) {
         RetentionNotification retentionNotification = getNotificationObject(notificationType);
         Log.e("NTP", notificationText);
-        Log.e("tapan",notificationType);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, retentionNotification.getChannelId());
         builder.setContentTitle(retentionNotification.getNotificationTitle());
         builder.setContentText(notificationText);
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText));
         builder.setSmallIcon(R.drawable.ic_chrome);
         builder.setAutoCancel(true);
-        
-        Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());//new Intent(context, BraveActivity.class);//new Intent(Intent.ACTION_MAIN);//new Intent(context, BraveActivity.class);
+
+        Intent launchIntent =
+                context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
         launchIntent.putExtra(NOTIFICATION_TYPE, notificationType);
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, retentionNotification.getNotificationId(), launchIntent,
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context,
+                retentionNotification.getNotificationId(), launchIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT
                         | IntentUtils.getPendingIntentMutabilityFlag(true));
-        
-        builder.setContentIntent(resultPendingIntent);   
-        
+
+        builder.setContentIntent(resultPendingIntent);
+
         return builder.build();
     }
 

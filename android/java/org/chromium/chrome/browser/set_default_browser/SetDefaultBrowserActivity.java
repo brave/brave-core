@@ -20,9 +20,9 @@ import androidx.annotation.NonNull;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 
 public class SetDefaultBrowserActivity extends AsyncInitializationActivity {
     @Override
@@ -33,9 +33,9 @@ public class SetDefaultBrowserActivity extends AsyncInitializationActivity {
         btnSetDefaultBrowser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
                 if (BraveActivity.getBraveActivity() != null) {
-                    BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.getBraveActivity());
+                    BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
+                            BraveActivity.getBraveActivity());
                 }
                 finish();
             }
