@@ -99,15 +99,12 @@ RewardsChromeSyncClient::CreateDataTypeControllers(syncer::SyncService*) {
       std::make_unique<ForwardingModelTypeControllerDelegate>(
           device_info_sync_service_->GetControllerDelegate().get())));
 
-  auto* pref_service_syncable = ChromeSyncClient::GetPrefServiceSyncable();
-
+  DCHECK(scoped_pref_service_syncable_);
   controllers.push_back(
       std::make_unique<SyncableServiceBasedModelTypeController>(
           syncer::PREFERENCES, model_type_store_service_->GetStoreFactory(),
-          pref_service_syncable
-              ? pref_service_syncable->GetSyncableService(syncer::PREFERENCES)
-                    ->AsWeakPtr()
-              : nullptr,
+          scoped_pref_service_syncable_->GetSyncableService(syncer::PREFERENCES)
+              ->AsWeakPtr(),
           base::BindRepeating(&syncer::ReportUnrecoverableError,
                               chrome::GetChannel())));
 
