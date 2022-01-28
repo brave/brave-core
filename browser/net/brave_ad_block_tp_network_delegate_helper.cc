@@ -13,6 +13,7 @@
 #include "base/base64url.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -47,6 +48,16 @@
 #include "url/url_canon.h"
 
 namespace brave {
+
+namespace {
+
+const std::string& GetCanonicalName(
+    const std::vector<std::string>& dns_aliases) {
+  static const base::NoDestructor<std::string> nullstring_result;
+  return dns_aliases.size() >= 1 ? dns_aliases.front() : *nullstring_result;
+}
+
+}  // namespace
 
 network::HostResolver* g_testing_host_resolver;
 
@@ -140,8 +151,8 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
                         base::TimeTicks::Now() - start_time_);
     if (result == net::OK && resolved_addresses) {
       DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
-      std::move(cb_).Run(
-          absl::optional<std::string>(resolved_addresses->GetCanonicalName()));
+      std::move(cb_).Run(absl::optional<std::string>(
+          GetCanonicalName(resolved_addresses.value().dns_aliases())));
     } else {
       std::move(cb_).Run(absl::nullopt);
     }
