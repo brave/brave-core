@@ -56,6 +56,7 @@
 
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
+    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
 
     <!-- Brave news colors -->
     <!-- <color name="card_background">#DC353535</color> -->
