@@ -1,10 +1,10 @@
 diff --git a/third_party/blink/renderer/core/frame/dom_window.h b/third_party/blink/renderer/core/frame/dom_window.h
-index 92111e0eae3dfcd67b554314b3e3421725e9b1c6..504ade77440931538203f67a75a2d47f1b2bbdda 100644
+index 6cf28c350dcf89ac212afba54dff261959848c31..51b8cef343ce17ab58c6b19441b0f86dccb339ab 100644
 --- a/third_party/blink/renderer/core/frame/dom_window.h
 +++ b/third_party/blink/renderer/core/frame/dom_window.h
-@@ -153,6 +153,7 @@ class CORE_EXPORT DOMWindow : public EventTargetWithInlineData {
- 
-   bool anonymous() const { return anonymous_; }
+@@ -162,6 +162,7 @@ class CORE_EXPORT DOMWindow : public EventTargetWithInlineData {
+       mojom::blink::WebFeature property_access,
+       mojom::blink::WebFeature property_access_from_other_page) const;
  
 +  BRAVE_DOM_WINDOW_H
   protected:
