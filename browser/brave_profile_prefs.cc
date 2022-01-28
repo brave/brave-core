@@ -43,6 +43,7 @@
 #include "chrome/browser/prefetch/prefetch_prefs.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
 #include "components/autofill/core/common/autofill_prefs.h"
 #include "components/content_settings/core/common/pref_names.h"
@@ -55,6 +56,7 @@
 #include "components/search_engines/search_engines_pref_names.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/sync/base/pref_names.h"
+#include "components/version_info/channel.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -227,6 +229,14 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
   brave_adaptive_captcha::BraveAdaptiveCaptchaService::RegisterProfilePrefs(
       registry);
+#endif
+
+#if !defined(OS_ANDROID) && !defined(OS_CHROMEOS)
+  // Disable sharing hub on stable only.
+  if (chrome::GetChannel() == version_info::Channel::STABLE) {
+    registry->SetDefaultPrefValue(prefs::kDesktopSharingHubEnabled,
+                                  base::Value(false));
+  }
 #endif
 
 #if defined(OS_ANDROID)
