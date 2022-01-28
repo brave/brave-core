@@ -178,6 +178,17 @@ Config.prototype.isOfficialBuild = function () {
   return this.buildConfig === 'Release'
 }
 
+Config.prototype.isBraveReleaseBuild = function () {
+  const npm_brave_relese_build = getNPMConfig(['is_brave_release_build'])
+  if (npm_brave_relese_build !== undefined) {
+    assert(npm_brave_relese_build === '0' || npm_brave_relese_build === '1',
+      'Bad is_brave_release_build npm value (should be 0 or 1)')
+    return npm_brave_relese_build === '1'
+  }
+
+  return false
+}
+
 Config.prototype.isComponentBuild = function () {
   return this.buildConfig === 'Debug' || this.buildConfig === 'Component'
 }
@@ -293,14 +304,16 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
-  if (process.platform === 'darwin' && this.targetOS != 'ios' && args.is_official_build && !this.shouldSign()) {
-    // Currently we're using is_official_build mode in PR builds on CI. This enables dSYMs
-    // by default, which slows down link phase, but also disables relocatable compilation
-    // on MacOS (aka 'zero goma cachehits' style).
-    //
-    // Don't create dSYMs in unsigned Release builds.
-    // See //build/config/apple/symbols.gni for additional details.
-    args.enable_dsyms = false
+  if (!this.isBraveReleaseBuild()) {
+    if (process.platform === 'darwin' && this.targetOS != 'ios' && args.is_official_build) {
+      // Currently we're using is_official_build mode in PR builds on CI. This enables dSYMs
+      // by default, which slows down link phase, but also disables relocatable compilation
+      // on MacOS (aka 'zero goma cachehits' style).
+      //
+      // Don't create dSYMs in non-public Release builds.
+      // See //build/config/apple/symbols.gni for additional details.
+      args.enable_dsyms = false
+    }
   }
 
   if (this.shouldSign()) {
