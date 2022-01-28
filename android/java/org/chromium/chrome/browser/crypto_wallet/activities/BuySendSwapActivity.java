@@ -11,6 +11,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
@@ -20,9 +21,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -92,6 +96,7 @@ import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.ui.text.NoUnderlineClickableSpan;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -118,6 +123,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
     private TextView mSlippageToleranceText;
     private int radioSlippageToleranceCheckedId;
+    private TextView mMarketLimitPriceText;
 
     public enum ActivityType {
         BUY(0),
@@ -197,6 +203,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         TextView toAssetText = findViewById(R.id.to_asset_text);
 
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
+        mMarketLimitPriceText = findViewById(R.id.market_limit_price_text);
 
         mSlippageToleranceText = findViewById(R.id.slippage_tolerance_dropdown);
 
@@ -440,12 +447,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             } catch (NumberFormatException | NullPointerException ex) {
             }
         }
-        TextView marketLimitPriceText = findViewById(R.id.market_limit_price_text);
         String symbol = "ETH";
         if (mCurrentBlockchainToken != null) {
             symbol = mCurrentBlockchainToken.symbol;
         }
-        marketLimitPriceText.setText(String.format(getString(R.string.market_price_in), symbol));
+        mMarketLimitPriceText.setText(String.format(getString(R.string.market_price_in), symbol));
         checkBalanceShowError(response, errorResponse);
     }
 
@@ -681,6 +687,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void adjustControls() {
         EditText toValueText = findViewById(R.id.to_value_text);
         TextView marketPriceValueText = findViewById(R.id.market_price_value_text);
@@ -892,9 +899,36 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             findViewById(R.id.brave_fee).setVisibility(View.VISIBLE);
             TextView dexAggregator = findViewById(R.id.dex_aggregator);
             dexAggregator.setVisibility(View.VISIBLE);
-            dexAggregator.setOnClickListener(v -> {
-                TabUtils.openUrlInNewTab(false, Utils.DEX_AGGREGATOR_URL);
-                TabUtils.bringChromeTabbedActivityToTheTop(this);
+            dexAggregator.setMovementMethod(LinkMovementMethod.getInstance());
+            String dexAggregatorSrc = getString(R.string.swap_dex_aggregator_name);
+            String degAggregatorText = getString(R.string.wallet_dex_aggregator, dexAggregatorSrc);
+
+            NoUnderlineClickableSpan span = new NoUnderlineClickableSpan(
+                    getResources(), R.color.brave_action_color, (textView) -> {
+                        TabUtils.openUrlInNewTab(false, Utils.DEX_AGGREGATOR_URL);
+                        TabUtils.bringChromeTabbedActivityToTheTop(BuySendSwapActivity.this);
+                    });
+
+            SpannableString dexAggregatorSpanStr = Utils.createSpannableString(
+                    degAggregatorText, dexAggregatorSrc, span, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            dexAggregator.setText(dexAggregatorSpanStr);
+            dexAggregator.setOnTouchListener((v, event) -> {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    // verify if the touch was on textview's drawable
+                    // note: do not add right padding to this textview, or make sure to adjust the
+                    // below condition for extra padding
+                    if (event.getRawX() >= (v.getRight() - dexAggregator.getTotalPaddingRight())) {
+                        Context context = BuySendSwapActivity.this;
+                        Utils.showPopUp(context, context.getString(R.string.swap_text),
+                                context.getString(R.string.brave_wallet_swap_disclaimer_description,
+                                        getString(R.string.swap_dex_aggregator_name)),
+                                context.getString(R.string.dialog_positive_button),
+                                R.drawable.ic_info, (dialog, what) -> {});
+
+                        return true;
+                    }
+                }
+                return false;
             });
             initSwapFromToAssets();
         }
@@ -1488,12 +1522,16 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     for (EthereumChain chain : chains) {
                         if (chainId.equals(chain.chainId)) {
                             TextView fromAssetText = findViewById(R.id.from_asset_text);
+                            TextView marketLimitPriceText =
+                                    findViewById(R.id.market_limit_price_text);
                             if (Utils.isCustomNetwork(chainId)) {
                                 Utils.setBlockiesBitmapCustomAsset(mExecutor, mHandler, null, "",
                                         chain.symbol, getResources().getDisplayMetrics().density,
                                         fromAssetText, this, true, (float) 0.5);
                             }
                             fromAssetText.setText(chain.symbol);
+                            marketLimitPriceText.setText(String.format(
+                                    getString(R.string.market_price_in), chain.symbol));
                             break;
                         }
                     }
