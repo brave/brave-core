@@ -71,7 +71,8 @@ class SecurityIndicatorTest
     auto resource_response = network::mojom::URLResponseHead::New();
     resource_response->mime_type = "text/html";
     resource_response->ssl_info = ssl_info;
-    params->client->OnReceiveResponse(std::move(resource_response));
+    params->client->OnReceiveResponse(std::move(resource_response),
+                                      mojo::ScopedDataPipeConsumerHandle());
     // Send an empty response's body. This pipe is not filled with data.
     mojo::ScopedDataPipeProducerHandle producer_handle;
     mojo::ScopedDataPipeConsumerHandle consumer_handle;
