@@ -222,8 +222,10 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveEarlyHints(
     network::mojom::EarlyHintsPtr early_hints) {}
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
-    network::mojom::URLResponseHeadPtr head) {
-  current_response_ = std::move(head);
+    network::mojom::URLResponseHeadPtr head,
+    mojo::ScopedDataPipeConsumerHandle body) {
+  current_response_head_ = std::move(head);
+  current_response_body_ = std::move(body);
   ctx_->internal_redirect = false;
   HandleResponseOrRedirectHeaders(
       base::BindRepeating(&InProgressRequest::ContinueToResponseStarted,
@@ -233,7 +235,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     network::mojom::URLResponseHeadPtr head) {
-  current_response_ = std::move(head);
+  current_response_head_ = std::move(head);
   DCHECK(ctx_);
   ctx_->internal_redirect = false;
   HandleResponseOrRedirectHeaders(
@@ -324,7 +326,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
       net::HttpUtil::AssembleRawHeaders(headers));
   head->encoded_data_length = 0;
 
-  current_response_ = std::move(head);
+  current_response_head_ = std::move(head);
   ctx_->internal_redirect = true;
   ContinueToBeforeRedirect(redirect_info, net::OK);
 }
@@ -362,8 +364,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     brave_shields::MakeStubResponse(ctx_->mock_data_url, request_, &response,
                                     &response_data);
 
-    target_client_->OnReceiveResponse(std::move(response));
-
     // Create a data pipe for transmitting the response.
     mojo::ScopedDataPipeProducerHandle producer;
     mojo::ScopedDataPipeConsumerHandle consumer;
@@ -374,7 +374,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     }
 
     // Craft the response.
-    target_client_->OnStartLoadingResponseBody(std::move(consumer));
+    if (base::FeatureList::IsEnabled(network::features::kCombineResponseBody)) {
+      target_client_->OnReceiveResponse(std::move(response),
+                                        std::move(consumer));
+    } else {
+      target_client_->OnReceiveResponse(std::move(response),
+                                        mojo::ScopedDataPipeConsumerHandle());
+      target_client_->OnStartLoadingResponseBody(std::move(consumer));
+    }
 
     auto write_data = std::make_unique<WriteData>();
     write_data->client = weak_factory_.GetWeakPtr();
@@ -497,12 +504,12 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   if (override_headers_) {
-    current_response_->headers = override_headers_;
+    current_response_head_->headers = override_headers_;
     // Since we overrode headers we should reparse them:
     // NavigationRequest::ComputePoliciesToCommit uses parsed headers to set
     // CSP, so if we don't reparse our CSP header changes won't work.
-    current_response_->parsed_headers = network::PopulateParsedHeaders(
-        current_response_->headers.get(), request_.url);
+    current_response_head_->parsed_headers = network::PopulateParsedHeaders(
+        current_response_head_->headers.get(), request_.url);
   }
 
   std::string redirect_location;
@@ -532,7 +539,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   proxied_client_receiver_.Resume();
-  target_client_->OnReceiveResponse(std::move(current_response_));
+  target_client_->OnReceiveResponse(std::move(current_response_head_),
+                                    std::move(current_response_body_));
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
@@ -552,7 +560,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
     ctx_->redirect_source = request_.url;
   }
   target_client_->OnReceiveRedirect(redirect_info,
-                                    std::move(current_response_));
+                                    std::move(current_response_head_));
   request_.url = redirect_info.new_url;
   request_.method = redirect_info.new_method;
   request_.site_for_cookies = redirect_info.new_site_for_cookies;
@@ -585,7 +593,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
                                             browser_context_, ctx_);
     int result = factory_->request_handler_->OnHeadersReceived(
         ctx_, std::move(split_once_callback.first),
-        current_response_->headers.get(), &override_headers_, &redirect_url_);
+        current_response_head_->headers.get(), &override_headers_,
+        &redirect_url_);
 
     if (result == net::ERR_BLOCKED_BY_CLIENT) {
       OnRequestError(network::URLLoaderCompletionStatus(result));

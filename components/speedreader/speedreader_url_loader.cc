@@ -81,17 +81,22 @@ SpeedReaderURLLoader::~SpeedReaderURLLoader() = default;
 void SpeedReaderURLLoader::Start(
     mojo::PendingRemote<network::mojom::URLLoader> source_url_loader_remote,
     mojo::PendingReceiver<network::mojom::URLLoaderClient>
-        source_url_client_receiver) {
+        source_url_client_receiver,
+    mojo::ScopedDataPipeConsumerHandle body) {
   source_url_loader_.Bind(std::move(source_url_loader_remote));
   source_url_client_receiver_.Bind(std::move(source_url_client_receiver),
                                    task_runner_);
+  if (body) {
+    OnStartLoadingResponseBody(std::move(body));
+  }
 }
 
 void SpeedReaderURLLoader::OnReceiveEarlyHints(
     network::mojom::EarlyHintsPtr early_hints) {}
 
 void SpeedReaderURLLoader::OnReceiveResponse(
-    network::mojom::URLResponseHeadPtr response_head) {
+    network::mojom::URLResponseHeadPtr response_head,
+    mojo::ScopedDataPipeConsumerHandle body) {
   // OnReceiveResponse() shouldn't be called because SpeedReaderURLLoader is
   // created by SpeedReaderThrottle::WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().

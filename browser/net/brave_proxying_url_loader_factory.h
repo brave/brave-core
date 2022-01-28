@@ -84,8 +84,8 @@ class BraveProxyingURLLoaderFactory
     // network::mojom::URLLoaderClient:
     void OnReceiveEarlyHints(
         network::mojom::EarlyHintsPtr early_hints) override;
-    void OnReceiveResponse(
-        network::mojom::URLResponseHeadPtr response_head) override;
+    void OnReceiveResponse(network::mojom::URLResponseHeadPtr response_head,
+                           mojo::ScopedDataPipeConsumerHandle body) override;
     void OnReceiveRedirect(
         const net::RedirectInfo& redirect_info,
         network::mojom::URLResponseHeadPtr response_head) override;
@@ -148,7 +148,8 @@ class BraveProxyingURLLoaderFactory
     // ExtensionWebRequestEventRouter) through much of the request's lifetime.
     // That code supports both Network Service and non-Network Service behavior,
     // which is why this weirdness exists here.
-    network::mojom::URLResponseHeadPtr current_response_;
+    network::mojom::URLResponseHeadPtr current_response_head_;
+    mojo::ScopedDataPipeConsumerHandle current_response_body_;
     scoped_refptr<net::HttpResponseHeaders> override_headers_;
     GURL redirect_url_;
 

@@ -59,14 +59,15 @@ void SpeedReaderThrottle::WillProcessResponse(
   mojo::PendingRemote<network::mojom::URLLoader> source_loader;
   mojo::PendingReceiver<network::mojom::URLLoaderClient> source_client_receiver;
   raw_ptr<SpeedReaderURLLoader> speedreader_loader = nullptr;
+  mojo::ScopedDataPipeConsumerHandle body;
   std::tie(new_remote, new_receiver, speedreader_loader) =
       SpeedReaderURLLoader::CreateLoader(weak_factory_.GetWeakPtr(),
                                          result_delegate_, response_url,
                                          task_runner_, rewriter_service_);
   delegate_->InterceptResponse(std::move(new_remote), std::move(new_receiver),
-                               &source_loader, &source_client_receiver);
+                               &source_loader, &source_client_receiver, &body);
   speedreader_loader->Start(std::move(source_loader),
-                            std::move(source_client_receiver));
+                            std::move(source_client_receiver), std::move(body));
 }
 
 void SpeedReaderThrottle::Resume() {
