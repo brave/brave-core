@@ -673,6 +673,8 @@ void AdsImpl::Start() {
 
   CleanupAdEvents();
 
+  OnStatementOfAccountsDidChange();
+
   account_->MaybeGetIssuers();
   account_->ProcessClearingCycle();
 
