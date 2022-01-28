@@ -34,7 +34,6 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
     const isStorybook = selectedAsset?.logo.startsWith('static/media/components/brave_wallet_ui/')
 
     const isValidIcon = React.useMemo(() => {
-      console.log(selectedAsset?.logo)
       if (isRemoteURL || isDataURL) {
         const url = new URL(selectedAsset?.logo)
         return isValidIconExtension(url.pathname)
