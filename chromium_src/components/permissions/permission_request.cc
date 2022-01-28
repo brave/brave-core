@@ -16,7 +16,16 @@
 #define IsDuplicateOf IsDuplicateOf_ChromiumImpl
 
 // `kWidevine` handled by an override in `WidevinePermissionRequest` and the
-// Brave Ethereum permission has its own permission request prompt.
+// Brave Ethereum permission has its own permission request prompt on desktop.
+// We hardcode it with Ethereum on Android to prevent assert for empty String.
+#if defined(OS_ANDROID)
+#define BRAVE_ENUM_ITEMS_FOR_SWITCH     \
+  case RequestType::kBraveEthereum:     \
+    return std::u16string(u"Ethereum"); \
+  case RequestType::kWidevine:          \
+    NOTREACHED();                       \
+    return std::u16string();
+#else
 #define BRAVE_ENUM_ITEMS_FOR_SWITCH \
   case RequestType::kBraveEthereum: \
     NOTREACHED();                   \
@@ -24,6 +33,7 @@
   case RequestType::kWidevine:      \
     NOTREACHED();                   \
     return std::u16string();
+#endif
 
 namespace {
 #if BUILDFLAG(IS_ANDROID)

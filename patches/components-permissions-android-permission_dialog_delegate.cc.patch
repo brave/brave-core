@@ -1,8 +1,16 @@
 diff --git a/components/permissions/android/permission_dialog_delegate.cc b/components/permissions/android/permission_dialog_delegate.cc
-index c76378df51a497a9cc53015893e33fa2ae19f1d4..214402321ed8b9f57963832578e636fafee51c9b 100644
+index c76378df51a497a9cc53015893e33fa2ae19f1d4..99726396c5adef531cb5218e2d5ec7c7f03c0883 100644
 --- a/components/permissions/android/permission_dialog_delegate.cc
 +++ b/components/permissions/android/permission_dialog_delegate.cc
-@@ -95,12 +95,14 @@ PermissionDialogDelegate* PermissionDialogDelegate::CreateForTesting(
+@@ -59,6 +59,7 @@ void PermissionDialogJavaDelegate::CreateDialog() {
+   // The controller takes over lifetime management; when the Java delegate is no
+   // longer needed it will in turn free the native delegate
+   // (PermissionDialogDelegate).
++  BRAVE_PERMISSION_DIALOG_DELEGATE_ADD_WALLET_PARAMS
+   Java_PermissionDialogController_createDialog(env, j_delegate_);
+ }
+ 
+@@ -95,12 +96,14 @@ PermissionDialogDelegate* PermissionDialogDelegate::CreateForTesting(
  void PermissionDialogDelegate::Accept(JNIEnv* env,
                                        const JavaParamRef<jobject>& obj) {
    DCHECK(permission_prompt_);
@@ -17,3 +25,11 @@ index c76378df51a497a9cc53015893e33fa2ae19f1d4..214402321ed8b9f57963832578e636fa
    permission_prompt_->Deny();
  }
  
+@@ -123,7 +126,6 @@ PermissionDialogDelegate::PermissionDialogDelegate(
+       permission_prompt_(permission_prompt),
+       java_delegate_(std::move(java_delegate)) {
+   DCHECK(java_delegate_);
+-
+   // Create our Java counterpart, which manages our lifetime.
+   java_delegate_->CreateJavaDelegate(web_contents, this);
+   // Open the Permission Dialog.
