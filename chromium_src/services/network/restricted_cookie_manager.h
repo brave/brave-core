@@ -12,20 +12,20 @@
 #include "net/cookies/site_for_cookies.h"
 #include "services/network/public/mojom/restricted_cookie_manager.mojom.h"
 
-#define RemoveChangeListener                                          \
-  NotUsed() const {}                                                  \
-  net::CookieOptions MakeOptionsForSet(                               \
-      mojom::RestrictedCookieManagerRole role, const GURL& url,       \
-      const net::SiteForCookies& site_for_cookies,                    \
-      const net::IsolationInfo& isolation_info,                       \
-      const CookieSettings& cookie_settings,                          \
-      const net::CookieAccessDelegate* cookie_access_delegate) const; \
-  net::CookieOptions MakeOptionsForGet(                               \
-      mojom::RestrictedCookieManagerRole role, const GURL& url,       \
-      const net::SiteForCookies& site_for_cookies,                    \
-      const net::IsolationInfo& isolation_info,                       \
-      const CookieSettings& cookie_settings,                          \
-      const net::CookieAccessDelegate* cookie_access_delegate) const; \
+#define RemoveChangeListener                                             \
+  NotUsed() const {}                                                     \
+  net::CookieOptions MakeOptionsForSet(                                  \
+      mojom::RestrictedCookieManagerRole role, const GURL& url,          \
+      const net::SiteForCookies& site_for_cookies,                       \
+      const net::IsolationInfo& isolation_info,                          \
+      const CookieSettings& cookie_settings,                             \
+      const net::FirstPartySetMetadata& first_party_set_metadata) const; \
+  net::CookieOptions MakeOptionsForGet(                                  \
+      mojom::RestrictedCookieManagerRole role, const GURL& url,          \
+      const net::SiteForCookies& site_for_cookies,                       \
+      const net::IsolationInfo& isolation_info,                          \
+      const CookieSettings& cookie_settings,                             \
+      const net::FirstPartySetMetadata& first_party_set_metadata) const; \
   void RemoveChangeListener
 
 #include "src/services/network/restricted_cookie_manager.h"
