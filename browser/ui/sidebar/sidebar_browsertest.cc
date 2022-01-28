@@ -58,21 +58,22 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
 
   // Currently we have 4 default items.
   EXPECT_EQ(4UL, model()->GetAllSidebarItems().size());
-  controller()->ActivateItemAt(0);
-  EXPECT_EQ(0, model()->active_index());
-  EXPECT_TRUE(controller()->IsActiveIndex(0));
+  // Activate item that opens in panel.
+  controller()->ActivateItemAt(2);
+  EXPECT_EQ(2, model()->active_index());
+  EXPECT_TRUE(controller()->IsActiveIndex(2));
 
   // Try to activate item at index 1.
   // Default item at index 1 opens in new tab. So, sidebar active index is not
-  // changed. Still active index is 0.
+  // changed. Still active index is 2.
   const auto item = model()->GetAllSidebarItems()[1];
   EXPECT_FALSE(item.open_in_panel);
   controller()->ActivateItemAt(1);
-  EXPECT_EQ(0, model()->active_index());
-
-  // Try to activate item at index 2.
-  controller()->ActivateItemAt(2);
   EXPECT_EQ(2, model()->active_index());
+
+  // Try to activate item at index 3.
+  controller()->ActivateItemAt(3);
+  EXPECT_EQ(3, model()->active_index());
 
   // Setting -1 means deactivate current active tab.
   controller()->ActivateItemAt(-1);
@@ -80,11 +81,14 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
 
   controller()->ActivateItemAt(3);
 
-  EXPECT_TRUE(model()->IsSidebarWebContents(model()->GetWebContentsAt(0)));
+  // Sidebar items at 2, 3 are opened in panel.
+  // Check their webcontents are sidebar webcontents.
+  EXPECT_TRUE(model()->IsSidebarWebContents(model()->GetWebContentsAt(2)));
+  EXPECT_TRUE(model()->IsSidebarWebContents(model()->GetWebContentsAt(3)));
   EXPECT_FALSE(
       model()->IsSidebarWebContents(tab_model()->GetActiveWebContents()));
   EXPECT_EQ(browser(),
-            chrome::FindBrowserWithWebContents(model()->GetWebContentsAt(0)));
+            chrome::FindBrowserWithWebContents(model()->GetWebContentsAt(2)));
   EXPECT_EQ(browser(), chrome::FindBrowserWithWebContents(
                            tab_model()->GetActiveWebContents()));
 
@@ -147,6 +151,49 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   ui_test_utils::NavigateToURL(&navigate_params);
   EXPECT_TRUE(chrome::FindBrowserWithWebContents(
       navigate_params.navigated_or_inserted_contents));
+}
+
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
+  // Click builtin wallet item and it's loaded at current active tab.
+  controller()->ActivateItemAt(1);
+  EXPECT_EQ(0, tab_model()->active_index());
+  auto item = model()->GetAllSidebarItems()[1];
+  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL().host(),
+            item.url.host());
+
+  // Create NTP and click wallet item. Then wallet tab(index 0) is activated.
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  // NTP is active tab.
+  EXPECT_EQ(1, tab_model()->active_index());
+  controller()->ActivateItemAt(1);
+  // Wallet tab is active tab.
+  EXPECT_EQ(0, tab_model()->active_index());
+  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL().host(),
+            item.url.host());
+
+  // Create NTP.
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  // NTP is active tab and load wallet on it.
+  EXPECT_EQ(2, tab_model()->active_index());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), item.url));
+
+  // Click wallet item and then first wallet tab(tab index 0) is activated.
+  controller()->ActivateItemAt(1);
+  EXPECT_EQ(0, tab_model()->active_index());
+
+  // Click wallet item and then second wallet tab(index 2) is activated.
+  controller()->ActivateItemAt(1);
+  EXPECT_EQ(2, tab_model()->active_index());
+
+  // Click wallet item and then first wallet tab(index 0) is activated.
+  controller()->ActivateItemAt(1);
+  EXPECT_EQ(0, tab_model()->active_index());
 }
 
 }  // namespace sidebar

@@ -41,6 +41,8 @@ class SidebarController : public SidebarService::Observer {
   void AddItemWithCurrentTab();
   // If current browser doesn't have a tab for |url|, active tab will load
   // |url|. Otherwise, existing tab will be activated.
+  // ShowSingletonTab() has similar functionality but it loads url in the
+  // new tab.
   void LoadAtTab(const GURL& url);
 
   bool IsActiveIndex(int index) const;
@@ -57,6 +59,10 @@ class SidebarController : public SidebarService::Observer {
  private:
   void OnPreferenceChanged(const std::string& pref_name);
   void UpdateSidebarVisibility();
+
+  // Iterate tabs by host (if tabs with host of URL exist).
+  // Otherwise, load URL in the active tab.
+  void IterateOrLoadAtActiveTab(const GURL& url);
 
   BraveBrowser* browser_ = nullptr;
   // Interface to view.
