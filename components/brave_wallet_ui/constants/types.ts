@@ -565,3 +565,7 @@ export type AssetFilter = {
   value: string
   label: string
 }
+
+export type SortOrder =
+  | 'ascending'
+  | 'descending'
