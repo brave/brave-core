@@ -168,6 +168,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final int SITE_BANNER_REQUEST_CODE = 33;
     public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
     public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
+    public static final int MONTHLY_CONTRIBUTION_REQUEST_CODE = 36;
     public static final String ADD_FUNDS_URL = "brave://rewards/#add-funds";
     public static final String BRAVE_REWARDS_SETTINGS_URL = "brave://rewards/";
     public static final String BRAVE_REWARDS_SETTINGS_WALLET_VERIFICATION_URL =
@@ -1099,6 +1100,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 && requestCode == BraveVpnProfileUtils.BRAVE_VPN_PROFILE_REQUEST_CODE
                 && BraveVpnUtils.isBraveVpnFeatureEnable()) {
             BraveVpnProfileUtils.getInstance().startVpn(BraveActivity.this);
+        } else if (resultCode == RESULT_OK && requestCode == MONTHLY_CONTRIBUTION_REQUEST_CODE) {
+            dismissRewardsPanel();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

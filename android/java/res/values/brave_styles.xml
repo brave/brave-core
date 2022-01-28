@@ -84,6 +84,11 @@
       <item name="android:itemBackground">@color/new_tab_menu_bg_dark_color</item>
     </style>
 
+    <style name="BraveRewardsPanelPopupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textColor">@color/rewards_panel_action_color</item>
+        <item name="android:itemBackground">@color/rewards_panel_bg_color</item>
+    </style>
+
     <style name="BraveTranslucent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/translucent_activity_background_color</item>
