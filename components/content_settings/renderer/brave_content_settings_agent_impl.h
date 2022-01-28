@@ -70,12 +70,8 @@ class BraveContentSettingsAgentImpl
   FRIEND_TEST_ALL_PREFIXES(BraveContentSettingsAgentImplAutoplayBrowserTest,
                            AutoplayAllowedByDefault);
 
-  bool IsBraveShieldsDown(
-      const blink::WebFrame* frame,
-      const GURL& secondary_url);
-
-  // RenderFrameObserver
-  void DidCommitProvisionalLoad(ui::PageTransition transition) override;
+  bool IsBraveShieldsDown(const blink::WebFrame* frame,
+                          const GURL& secondary_url);
 
   bool IsScriptTemporilyAllowed(const GURL& script_url);
 
@@ -98,9 +94,6 @@ class BraveContentSettingsAgentImpl
 
   // cache blocked script url which will later be used in `DidNotAllowScript()`
   GURL blocked_script_url_;
-
-  // temporary allowed script origins we preloaded for the next load
-  base::flat_set<std::string> preloaded_temporarily_allowed_scripts_;
 
   base::flat_map<url::Origin, blink::WebSecurityOrigin>
       cached_ephemeral_storage_origins_;
