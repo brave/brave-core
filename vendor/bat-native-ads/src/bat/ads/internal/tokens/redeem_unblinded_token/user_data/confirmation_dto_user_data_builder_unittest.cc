@@ -164,7 +164,7 @@ TEST_F(BatAdsConfirmationDtoUserDataTest, BuildWithConversion) {
   info.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
   info.conversion_id = "smartbrownfoxes42";
   info.advertiser_public_key = "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  info.confirm_at = Now();
+  info.process_at = Now();
   conversion_queue_items.push_back(info);
 
   Save(conversion_queue_items);

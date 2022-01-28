@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/observer_list.h"
+#include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
 #include "bat/ads/internal/conversions/conversions_observer.h"
 #include "bat/ads/internal/resources/conversions/conversion_id_pattern_info_aliases.h"
@@ -57,10 +58,18 @@ class Conversions final {
   void AddItemToQueue(const AdEventInfo& ad_event,
                       const VerifiableConversionInfo& verifiable_conversion);
 
-  bool RemoveItemFromQueue(
-      const ConversionQueueItemInfo& conversion_queue_item);
   void ProcessQueueItem(const ConversionQueueItemInfo& queue_item);
   void ProcessQueue();
+
+  void RemoveInvalidQueueItem(
+      const ConversionQueueItemInfo& conversion_queue_item,
+      ResultCallback callback);
+  void MarkQueueItemAsProcessed(
+      const ConversionQueueItemInfo& conversion_queue_item,
+      ResultCallback callback);
+  void FailedToConvertQueueItem(
+      const ConversionQueueItemInfo& conversion_queue_item);
+  void ConvertedQueueItem(const ConversionQueueItemInfo& conversion_queue_item);
 
   void StartTimer(const ConversionQueueItemInfo& queue_item);
 
