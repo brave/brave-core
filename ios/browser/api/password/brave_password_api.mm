@@ -297,7 +297,9 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
 // }
 
 - (void)addLogin:(IOSPasswordForm*)passwordForm {
-  password_store_->AddLogin([self createCredentialForm:passwordForm]);
+  password_manager::PasswordForm credentialForm = [self createCredentialForm:passwordForm];
+
+  password_store_->AddLogin(credentialForm);
 }
 
 - (password_manager::PasswordForm)createCredentialForm:
@@ -328,7 +330,7 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
   passwordCredentialForm.url =
       net::GURLWithNSURL(passwordForm.url).DeprecatedGetOriginAsURL();
 
-  if (passwordForm.signOnRealm) {
+  if ([passwordForm.signOnRealm length] != 0) {
     passwordCredentialForm.signon_realm =
         base::SysNSStringToUTF8(passwordForm.signOnRealm);
   } else {
@@ -368,17 +370,12 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
   auto callback = ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
     
     int testNumber = logins.size();
-
     NSLog(@"Test number %d", testNumber);
     
-    //      let loginsList = [self onLoginsResult:std::move(credentials)];
-    
-    // NSMutableArray<IOSPasswordForm*>* loginForms = [[NSMutableArray alloc] init];
-    
-    // completion([loginForms copy]);
-    
-    completion(@[]);
+    NSArray<IOSPasswordForm*>* credentials = [self onLoginsResult:std::move(logins)];
+    completion(credentials);
   };
+  
   auto* consumer = new BravePasswordStoreConsumer(base::BindOnce(callback));
   password_store_->GetAllLogins(consumer->GetWeakPtr());
 }
