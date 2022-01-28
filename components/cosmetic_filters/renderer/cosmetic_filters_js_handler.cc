@@ -97,33 +97,6 @@ const char kHideSelectorsInjectScript[] =
           window.content_cosmetic.scheduleQueuePump(false, false);
         })();)";
 
-const char kForceHideSelectorsInjectScript[] =
-    R"((function() {
-          const selectors = %s;
-          selectors.forEach(selector => {
-            if (typeof selector === 'string') {
-              let rule = selector + '{display:none !important;}';
-              window.cf_worker.injectStylesheet(rule, 0);
-            }
-          });
-        })();)";
-
-const char kStyleSelectorsInjectScript[] =
-    R"((function() {
-          const selectors = %s;
-          for (let selector in selectors) {
-            let rule = selector + '{';
-            selectors[selector].forEach(prop => {
-              if (!rule.endsWith('{')) {
-                rule += ';';
-              }
-              rule += prop;
-            });
-            rule += '}';
-            window.cf_worker.injectStylesheet(rule, 0);
-          };
-        })();)";
-
 std::string LoadDataResource(const int id) {
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(id)) {
@@ -418,11 +391,6 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
       (IsVettedSearchEngine(url_) && !enabled_1st_party_cf_)) {
     hide_selectors_list = nullptr;
   }
-  base::ListValue* force_hide_selectors_list;
-  if (!resources_dict->GetList("force_hide_selectors",
-                               &force_hide_selectors_list)) {
-    force_hide_selectors_list = nullptr;
-  }
 
   if (hide_selectors_list && hide_selectors_list->GetList().size() != 0) {
     std::string json_selectors;
@@ -440,39 +408,34 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
         blink::BackForwardCacheAware::kAllow);
   }
 
+  base::Value* force_hide_selectors_list =
+      resources_dict->FindListKey("force_hide_selectors");
   if (force_hide_selectors_list &&
       force_hide_selectors_list->GetList().size() != 0) {
-    std::string json_selectors;
-    if (!base::JSONWriter::Write(*force_hide_selectors_list, &json_selectors) ||
-        json_selectors.empty()) {
-      json_selectors = "[]";
+    std::string stylesheet = "";
+    for (auto& selector : force_hide_selectors_list->GetList()) {
+      DCHECK(selector.is_string());
+      stylesheet += selector.GetString() + "{display:none !important}";
     }
-    // Building a script for stylesheet modifications
-    std::string new_selectors_script = base::StringPrintf(
-        kForceHideSelectorsInjectScript, json_selectors.c_str());
-    web_frame->ExecuteScriptInIsolatedWorld(
-        isolated_world_id_,
-        blink::WebScriptSource(
-            blink::WebString::FromUTF8(new_selectors_script)),
-        blink::BackForwardCacheAware::kAllow);
+    InjectStylesheet(stylesheet, 0);
   }
 
-  base::DictionaryValue* style_selectors_dictionary = nullptr;
-  if (resources_dict->GetDictionary("style_selectors",
-                                    &style_selectors_dictionary)) {
-    std::string json_selectors;
-    if (base::JSONWriter::Write(*style_selectors_dictionary, &json_selectors) &&
-        !json_selectors.empty() && json_selectors != "{}") {
-      std::string new_selectors_script = base::StringPrintf(
-          kStyleSelectorsInjectScript, json_selectors.c_str());
-      if (!json_selectors.empty()) {
-        web_frame->ExecuteScriptInIsolatedWorld(
-            isolated_world_id_,
-            blink::WebScriptSource(
-                blink::WebString::FromUTF8(new_selectors_script)),
-            blink::BackForwardCacheAware::kAllow);
+  base::Value* style_selectors_dictionary =
+      resources_dict->FindDictKey("style_selectors");
+  if (style_selectors_dictionary) {
+    std::string stylesheet = "";
+    for (const auto kv : style_selectors_dictionary->DictItems()) {
+      std::string selector = kv.first;
+      base::Value& styles = kv.second;
+      DCHECK(styles.is_list());
+      stylesheet += selector + '{';
+      for (auto& style : styles.GetList()) {
+        DCHECK(style.is_string());
+        stylesheet += style.GetString() + ';';
       }
+      stylesheet += '}';
     }
+    InjectStylesheet(stylesheet, 0);
   }
 
   if (!enabled_1st_party_cf_)
