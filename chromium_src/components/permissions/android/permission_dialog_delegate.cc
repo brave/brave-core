@@ -7,12 +7,15 @@
 
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
+#include "base/android/scoped_java_ref.h"
+#include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/android/jni_headers/PermissionDialogController_jni.h"
 #include "components/permissions/android/permission_prompt_android.h"
 #include "components/permissions/features.h"
+#include "components/permissions/permission_request.h"
 #include "components/strings/grit/components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -62,6 +65,19 @@ void ApplyLifetimeToPermissionRequests(
   }
 }
 
+void AddWalletParamsFromPermissionRequests(
+    JNIEnv* env,
+    base::android::ScopedJavaGlobalRef<jobject> j_delegate,
+    PermissionPromptAndroid* permission_prompt) {
+  std::vector<PermissionRequest*> requests =
+      permission_prompt->delegate()->Requests();
+  if (requests.size() == 0 ||
+      requests[0]->request_type() != permissions::RequestType::kBraveEthereum) {
+    return;
+  }
+  Java_BravePermissionDialogDelegate_setUseWalletLayout(env, j_delegate, true);
+}
+
 void Java_PermissionDialogController_createDialog_BraveImpl(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& delegate) {
@@ -76,6 +92,8 @@ void Java_PermissionDialogController_createDialog_BraveImpl(
   ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL \
   ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_ADD_WALLET_PARAMS \
+  AddWalletParamsFromPermissionRequests(env, j_delegate_, permission_prompt_);
 #define Java_PermissionDialogController_createDialog \
   Java_PermissionDialogController_createDialog_BraveImpl
 

@@ -19,6 +19,8 @@ public class BravePermissionDialogDelegate {
     /** Lifetime option index selected by the user. */
     private int mSelectedLifetimeOption;
 
+    private boolean mUseWalletLayout;
+
     public BravePermissionDialogDelegate() {
         mSelectedLifetimeOption = -1;
     }
@@ -48,5 +50,14 @@ public class BravePermissionDialogDelegate {
     @CalledByNative
     public int getSelectedLifetimeOption() {
         return mSelectedLifetimeOption;
+    }
+
+    public boolean getUseWalletLayout() {
+        return mUseWalletLayout;
+    }
+
+    @CalledByNative
+    public void setUseWalletLayout(boolean useWalletLayout) {
+        mUseWalletLayout = useWalletLayout;
     }
 }

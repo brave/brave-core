@@ -1,0 +1,12 @@
+diff --git a/components/browser_ui/modaldialog/android/BUILD.gn b/components/browser_ui/modaldialog/android/BUILD.gn
+index a0d2856104c7d3147878d54b15ba14eb5859857b..ecbd604b767d8e30904abf85ec7ad45b0edbdfef 100644
+--- a/components/browser_ui/modaldialog/android/BUILD.gn
++++ b/components/browser_ui/modaldialog/android/BUILD.gn
+@@ -35,6 +35,7 @@ android_resources("java_resources") {
+     "java/res/values/styles.xml",
+     "java/res/values/themes.xml",
+   ]
++  sources += brave_java_components_resources
+ 
+   deps = [
+     "//components/browser_ui/styles/android:java_resources",
