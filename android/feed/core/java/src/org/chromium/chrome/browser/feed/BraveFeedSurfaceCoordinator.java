@@ -96,10 +96,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         return mScrollViewForPolicy;
     }
 
-    public boolean isEnhancedProtectionPromoEnabled() {
-        return false;
-    }
-
     public boolean isReliabilityLoggingEnabled() {
         return false;
     }

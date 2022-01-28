@@ -315,12 +315,7 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities",
                 "isTabGroupsAndroidEnabled", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator",
-                "isEnhancedProtectionPromoEnabled", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator",
                 "isReliabilityLoggingEnabled", false, null));
-        Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
-                        "isEnhancedProtectionPromoEnabled", false, null));
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
                         "isReliabilityLoggingEnabled", false, null));

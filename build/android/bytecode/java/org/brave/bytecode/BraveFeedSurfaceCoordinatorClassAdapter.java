@@ -15,9 +15,6 @@ public class BraveFeedSurfaceCoordinatorClassAdapter extends BraveClassVisitor {
 
     public BraveFeedSurfaceCoordinatorClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        makePublicMethod(sFeedSurfaceCoordinatorClassName, "isEnhancedProtectionPromoEnabled");
-        addMethodAnnotation(sBraveFeedSurfaceCoordinatorClassName,
-                "isEnhancedProtectionPromoEnabled", "Ljava/lang/Override;");
 
         makePublicMethod(sFeedSurfaceCoordinatorClassName, "isReliabilityLoggingEnabled");
         addMethodAnnotation(sBraveFeedSurfaceCoordinatorClassName, "isReliabilityLoggingEnabled",
