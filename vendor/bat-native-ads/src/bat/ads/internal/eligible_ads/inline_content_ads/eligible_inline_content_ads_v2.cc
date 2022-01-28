@@ -82,8 +82,17 @@ void EligibleAdsV2::GetEligibleAds(
           return;
         }
 
+        const absl::optional<CreativeInlineContentAdInfo>&
+            creative_ad_optional =
+                ChooseAd(user_model, ad_events, eligible_creative_ads);
+        if (!creative_ad_optional) {
+          BLOG(1, "No eligible ads");
+          callback(/* had_opportunity */ true, {});
+          return;
+        }
+
         const CreativeInlineContentAdInfo& creative_ad =
-            ChooseAd(user_model, ad_events, eligible_creative_ads);
+            creative_ad_optional.value();
 
         callback(/* had_opportunity */ true, {creative_ad});
       });

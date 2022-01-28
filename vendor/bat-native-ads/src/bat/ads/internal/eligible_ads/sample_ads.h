@@ -25,7 +25,7 @@ double CalculateNormalisingConstant(
   double normalising_constant = 0.0;
 
   for (const auto& creative_ad_predictor : creative_ad_predictors) {
-    const AdPredictorInfo<T> ad_predictor = creative_ad_predictor.second;
+    const AdPredictorInfo<T>& ad_predictor = creative_ad_predictor.second;
     normalising_constant += ad_predictor.score;
   }
 
