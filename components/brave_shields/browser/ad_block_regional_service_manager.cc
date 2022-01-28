@@ -146,7 +146,7 @@ void AdBlockRegionalServiceManager::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* adblock_replacement_url) {
+    std::string* mock_data_url) {
   if (!IsInitialized())
     return;
 
@@ -155,7 +155,7 @@ void AdBlockRegionalServiceManager::ShouldStartRequest(
   for (const auto& regional_service : regional_services_) {
     regional_service.second->ShouldStartRequest(
         url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-        did_match_exception, did_match_important, adblock_replacement_url);
+        did_match_exception, did_match_important, mock_data_url);
     if (did_match_important && *did_match_important) {
       return;
     }

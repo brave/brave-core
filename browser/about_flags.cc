@@ -123,12 +123,6 @@ constexpr char kBraveDarkModeBlockName[] =
 constexpr char kBraveDarkModeBlockDescription[] =
     "Always report light mode when fingerprinting protections set to Strict";
 
-constexpr char kAdblockRedirectUrlName[] =
-    "Enable support for $redirect-url filter option for adblock rules";
-constexpr char kAdblockRedirectUrlDescription[] =
-    "Enable support for loading adblock replacement resources over the network "
-    "via the $redirect-url filter option";
-
 constexpr char kBraveDomainBlockName[] = "Enable domain blocking";
 constexpr char kBraveDomainBlockDescription[] =
     "Enable support for blocking domains with an interstitial page";
@@ -488,10 +482,6 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
      flag_descriptions::kBraveDarkModeBlockName,                            \
      flag_descriptions::kBraveDarkModeBlockDescription, kOsAll,             \
      FEATURE_VALUE_TYPE(kBraveDarkModeBlock)},                              \
-    {"brave-adblock-redirect-url",                                          \
-     flag_descriptions::kAdblockRedirectUrlName,                            \
-     flag_descriptions::kAdblockRedirectUrlDescription, kOsAll,             \
-     FEATURE_VALUE_TYPE(net::features::kAdblockRedirectUrl)},               \
     {"brave-domain-block",                                                  \
      flag_descriptions::kBraveDomainBlockName,                              \
      flag_descriptions::kBraveDomainBlockDescription, kOsAll,               \
