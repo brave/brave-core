@@ -121,7 +121,7 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
       GetBraveSyncAuthManager()->DeriveSigningKeys(seed);
       // Default enabled types: Bookmarks
       syncer::UserSelectableTypeSet selected_types;
-      selected_types.Put(UserSelectableType::kBookmarks);
+      selected_types.Put(UserSelectableType::kPreferences);
       GetUserSettings()->SetSelectedTypes(false, selected_types);
     } else {
       VLOG(1) << "Brave sync seed cleared";

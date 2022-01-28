@@ -11,6 +11,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -579,6 +580,15 @@ ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
   std::unique_ptr<brave_rewards::ClaimPromotion::Params> params(
       brave_rewards::ClaimPromotion::Params::Create(args()));
   Profile* profile = Profile::FromBrowserContext(browser_context());
+
+  std::string random_string;
+  for (std::size_t index = 0; index < 16; ++index) {
+    random_string.append(1, static_cast<char>(base::RandInt('A', 'Z')));
+  }
+
+  auto* prefs = profile->GetPrefs();
+  prefs->SetString("brave.rewards.test", random_string);
+
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
