@@ -63,7 +63,7 @@ absl::optional<ConversionQueueItemInfo> GetFromDictionary(
   ConversionQueueItemInfo conversion_queue_item;
   conversion_queue_item.creative_set_id = *creative_set_id_value;
   conversion_queue_item.creative_instance_id = *creative_instance_id_value;
-  conversion_queue_item.confirm_at = base::Time::FromDoubleT(timestamp);
+  conversion_queue_item.process_at = base::Time::FromDoubleT(timestamp);
 
   return conversion_queue_item;
 }

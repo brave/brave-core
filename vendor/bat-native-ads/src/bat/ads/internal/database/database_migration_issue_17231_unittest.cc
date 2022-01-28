@@ -51,7 +51,7 @@ TEST_F(BatAdsDatabaseMigrationIssue17231Test, ConversionQueueDatabase) {
             "80ec0ddb-8dbb-4009-8192-1528faa411ae";
         conversion_queue_item.conversion_id =
             "425fb519-f6c0-407f-98f6-cfff8f2b1ec7";
-        conversion_queue_item.confirm_at = TimestampToTime(1627581449);
+        conversion_queue_item.process_at = TimestampToTime(1627581449);
 
         ConversionQueueItemList expected_conversion_queue_items;
         expected_conversion_queue_items.push_back(conversion_queue_item);

@@ -25,7 +25,8 @@ bool ConversionQueueItemInfo::operator==(
          conversion_id == rhs.conversion_id &&
          advertiser_public_key == rhs.advertiser_public_key &&
          ad_type == rhs.ad_type &&
-         DoubleEquals(confirm_at.ToDoubleT(), rhs.confirm_at.ToDoubleT());
+         DoubleEquals(process_at.ToDoubleT(), rhs.process_at.ToDoubleT()) &&
+         was_processed == rhs.was_processed;
 }
 
 bool ConversionQueueItemInfo::operator!=(
@@ -38,7 +39,7 @@ bool ConversionQueueItemInfo::IsValid() const {
   // from |ad_conversions.json| to |database.sqlite| and conversion_id will be
   // empty for non verifiable conversions
   if (creative_set_id.empty() || creative_instance_id.empty() ||
-      confirm_at.is_null()) {
+      process_at.is_null()) {
     return false;
   }
 
