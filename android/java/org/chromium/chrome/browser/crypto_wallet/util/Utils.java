@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -24,15 +25,20 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Handler;
+import android.text.SpannableString;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,8 +64,6 @@ import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.AddAccountActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -67,10 +71,6 @@ import org.chromium.chrome.browser.crypto_wallet.fragments.ApproveTxBottomSheetD
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
 import org.chromium.chrome.browser.crypto_wallet.model.WalletListItemModel;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
-import org.chromium.chrome.browser.crypto_wallet.util.AssetsPricesHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.Blockies;
-import org.chromium.chrome.browser.crypto_wallet.util.PendingTxHelper;
-import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.widget.Toast;
 
@@ -89,11 +89,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Utils {
     public static int ONBOARDING_FIRST_PAGE_ACTION = 1;
@@ -1313,6 +1311,38 @@ public class Utils {
         itemModel.setTxStatus(txStatus);
         c.drawCircle(15, 15, 15, p);
         itemModel.setTxStatusBitmap(txStatusBitmap);
+    }
+
+    public static AlertDialog showPopUp(Context context, String title, String message,
+            String positiveButtonTitle, int icon, DialogInterface.OnClickListener onClickListener) {
+        assert null != context;
+        MaterialAlertDialogBuilder builder =
+                new MaterialAlertDialogBuilder(context, R.style.BraveWalletAlertDialogTheme)
+                        .setTitle(title)
+                        .setMessage(message)
+                        .setIcon(icon);
+        // positive button is only shown if the listener is not null
+        if (null != onClickListener) {
+            builder.setPositiveButton(positiveButtonTitle, onClickListener);
+        }
+        return builder.show();
+    }
+
+    public static SpannableString createSpannableString(
+            String text, ClickableSpan clickListener, int startIndex, int endIndex, int flags) {
+        assert null != text;
+        SpannableString spannableString = new SpannableString(text);
+        spannableString.setSpan(clickListener, startIndex, endIndex, flags);
+        return spannableString;
+    }
+
+    public static SpannableString createSpannableString(
+            String text, String spanText, ClickableSpan clickListener, int flags) {
+        assert null != spanText;
+        assert null != text;
+        int startIndex = text.indexOf(spanText);
+        int endIndex = startIndex + spanText.length();
+        return createSpannableString(text, clickListener, startIndex, endIndex, flags);
     }
 
     public static void warnWhenError(

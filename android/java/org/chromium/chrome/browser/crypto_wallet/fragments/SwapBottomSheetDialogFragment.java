@@ -27,9 +27,9 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 public class SwapBottomSheetDialogFragment
         extends BottomSheetDialogFragment implements View.OnClickListener {
     public static final String TAG_FRAGMENT = SwapBottomSheetDialogFragment.class.getName();
-    LinearLayout mBuyLayout;
-    LinearLayout mSendLayout;
-    LinearLayout mSwapLayout;
+    private LinearLayout mBuyLayout;
+    private LinearLayout mSendLayout;
+    private LinearLayout mSwapLayout;
     private String mChainId;
 
     public static SwapBottomSheetDialogFragment newInstance() {
