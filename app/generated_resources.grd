@@ -5794,11 +5794,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_CUSTOMIZE_BUTTON_TEXT" desc="Text shown on the customize button of an NTP module.">
         Customize cards
       </message>
-      <message name="IDS_NTP_MODULES_STATEFUL_TASKS_VIEWED_AGO" desc="Text shown in a tag on a stateful task module item indicating when an item was viewed.">
-        Viewed <ph name="RELATIVE_TIME">$1<ex>5 days ago</ex></ph>
-      </message>
       <message name="IDS_NTP_MODULES_STATEFUL_TASKS_VIEWED_TODAY" desc="Text shown in a tag on a stateful task module item indicating when an item was viewed.">
         Viewed today
+      </message>
+      <message name="IDS_NTP_MODULES_STATEFUL_TASKS_VIEWED_YESTERDAY" desc="Text shown in a tag on a stateful task module item indicating when an item was viewed.">
+        Viewed yesterday
+      </message>
+      <message name="IDS_NTP_MODULES_STATEFUL_TASKS_VIEWED_PAST_WEEK" desc="Text shown in a tag on a stateful task module item indicating when an item was viewed.">
+        Viewed in the past week
+      </message>
+      <message name="IDS_NTP_MODULES_STATEFUL_TASKS_VIEWED_PAST_MONTH" desc="Text shown in a tag on a stateful task module item indicating when an item was viewed.">
+        Viewed in the past month
+      </message>
+      <message name="IDS_NTP_MODULES_STATEFUL_TASKS_VIEWED_PREVIOUSLY" desc="Text shown in a tag on a stateful task module item indicating when an item was viewed.">
+        Viewed previously
       </message>
       <message name="IDS_NTP_MODULES_SHOPPING_TASKS_SENTENCE" desc="Name of the shopping tasks module in sentence case shown in various UIs.">
         Shopping suggestions
@@ -11425,6 +11434,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_WEBAUTHN_PLATFORM_AUTHENTICATOR_OFF_THE_RECORD_INTERSTITIAL_DENY" desc="Button label on a dialog that asks for the user's permission to set up device-based sign-in (i.e. using their computer's biometric sensor or screen unlock/PIN) on a website while browsing in Private mode.">
          No thanks
+      </message>
+      <message name="IDS_WEBAUTHN_MANAGE_DEVICES" desc="The text of a button that appear at the bottom of a dialog that lists options for signing into a website. If that list contains phones then a button with this label appears to let the user manage their list of phones/tablets. Clicking it opens a settings page that lists the known phones and lets the user delete or rename them.">
+         Manage devices
       </message>
    </if>
 

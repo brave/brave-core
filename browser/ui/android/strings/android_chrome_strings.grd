@@ -1142,6 +1142,48 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_PRIVACY_REVIEW_WEB_APP_ACTIVITY_DESCRIPTION" desc="Description for the Web and App Activity item on the final page of the privacy review">
         Choose whether to include Brave history for more personalized experiences in Brave services
       </message>
+      <message name="IDS_PRIVACY_REVIEW_EXPLANATION_CONTENT_DESCRIPTION" desc="The content description for the privacy review explanation bottom sheet. Read as accessibility string when tapping on the bottom sheet.">
+        Privacy guide explanation
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_EXPLANATION_OPENED_HALF" desc="The accessibility string read when the privacy review explanation bottom sheet is half opened.">
+        Privacy guide explanation opened at half height
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_EXPLANATION_OPENED_FULL" desc="The accessibility string read when the privacy review explanation bottom sheet is fully opened.">
+        Privacy guide explanation opened at full height
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_EXPLANATION_CLOSED_DESCRIPTION" desc="The accessibility string read when the privacy review explanation bottom sheet is closed.">
+        Privacy guide explanation closed
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_STANDARD_ITEM_ONE" desc="First bullet point that describes the details of the Safe Browsing control.">
+        Detects and warns you about dangerous events when they happen
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_STANDARD_ITEM_TWO" desc="Second bullet point that describes the details of the Safe Browsing control.">
+        Checks URLs with a list of unsafe sites stored in Brave
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_STANDARD_ITEM_THREE" desc="Third bullet point that describes the details of the Safe Browsing control.">
+        If a site tries to steal your password, or when you download a harmful file, Brave may send URLs including bits of page content to Safe Browsing
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_ONE" desc="First bullet point that describes the details of the Safe Browsing control.">
+        Warns you about dangerous events before they happen
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_TWO" desc="Second bullet point that describes the details of the Safe Browsing control.">
+        Keeps you safe on Brave and may be used to improve your security in other Brave apps when you are signed in
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_THREE" desc="Third bullet point that describes the details of the Safe Browsing control.">
+        Warns you if passwords are exposed in a data breach
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_FOUR" desc="Fourth bullet point that describes the details of the Safe Browsing control.">
+        Improves security for you and everyone on the web
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_FIVE" desc="Fifth bullet point that describes the details of the Safe Browsing control.">
+        Sends URLs to Safe Browsing to check them
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_SIX" desc="Sixth bullet point that describes the details of the Safe Browsing control.">
+        Sends a small sample of pages, downloads, extension activity, and system information to help discover new threats
+      </message>
+      <message name="IDS_PRIVACY_REVIEW_SB_ENHANCED_ITEM_SEVEN" desc="Seventh bullet point that describes the details of the Safe Browsing control.">
+        Temporarily links this data to your Brave sync chain when you’re signed in, to protect you across Brave apps
+      </message>
 
       <!-- Safety check -->
       <message name="IDS_PREFS_SAFETY_CHECK" desc="Title of the Safety check element in settings, allowing the user to check multiple areas of browser safety. [CHAR_LIMIT=32]">
@@ -1522,41 +1564,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_DATA_REDUCTION_USAGE_RESET_STATISTICS_CONFIRMATION_BUTTON" desc="Text to be displayed on the confirmation button to proceed with resetting the history of data savings.">
         Reset
-      </message>
-
-      <!-- Lite Mode Promo and FRE card -->
-      <message name="IDS_DATA_REDUCTION_PROMO_TITLE_LITE_MODE" desc="The title for the promo inviting users to enable Lite mode">
-        Browse faster. Use less data.
-      </message>
-      <message name="IDS_DATA_REDUCTION_PROMO_SUMMARY_LITE_MODE" desc="Description for the promo inviting users to enable Lite mode. This informs users that their web traffic will sent to Brave to optimize data usage. The Learn more link goes to the help center article for Lite mode." meaning="The translation of percent should be spelled out instead of using the percent symbol.">
-        In Lite mode, Brave loads pages faster and uses up to 60 percent less data. To optimize the pages that you visit, Brave sends your web traffic to Brave. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
-      </message>
-      <message name="IDS_DATA_REDUCTION_PROMO_LEARN_MORE_URL" desc="URL for Lite mode help center article" translateable="false">
-        https://support.google.com/chrome/?p=lite_mode
-      </message>
-      <message name="IDS_DATA_REDUCTION_ENABLE_BUTTON_LITE_MODE" desc="Button the user presses if they want to enable Lite mode">
-        Turn on Lite mode
-      </message>
-      <message name="IDS_DATA_REDUCTION_ENABLED_SWITCH_LITE_MODE" desc="Message to show when the Lite mode feature is enabled via the switch on the First Run Experience card">
-        Lite mode is on
-      </message>
-      <message name="IDS_DATA_REDUCTION_DISABLED_SWITCH_LITE_MODE" desc="Message to show when the Lite mode feature is disabled via the switch on the First Run Experience card">
-        Lite mode is off
-      </message>
-      <message name="IDS_DATA_REDUCTION_ENABLED_TOAST_LITE_MODE" desc="Toast message displayed after the user enables Lite mode from the promo">
-        Lite mode is on. Manage it in Settings.
-      </message>
-      <message name="IDS_DATA_REDUCTION_PROMO_INFOBAR_TITLE" desc="Text to be displayed in the data reduction promo infobar title">
-        Save up to 60% of your data
-      </message>
-      <message name="IDS_DATA_REDUCTION_PROMO_INFOBAR_TEXT" desc="Text to be displayed in the data reduction promo infobar">
-        Brave servers will optimize the pages you visit.
-      </message>
-      <message name="IDS_DATA_REDUCTION_MILESTONE_PROMO_TEXT_MB" desc="Text to be displayed in the data reduction promo message that lets the user know they saved a certain amount of data in MB">
-        Brave has saved you <ph name="megabytes">%1$d<ex>100</ex></ph> MB
-      </message>
-      <message name="IDS_DATA_REDUCTION_MILESTONE_PROMO_TEXT_GB" desc="Text to be displayed in the data reduction promo message that lets the user know they saved a certain amount of data in GB">
-        Brave has saved you <ph name="gigabytes">%1$d<ex>10</ex></ph> GB
       </message>
 
        <!-- Dangerous download -->
@@ -2787,17 +2794,32 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_FRE_UMA_DIALOG_TITLE" desc="Title of the dialog where users can change their Brave metric sharing settings, like usage data. This appears when they open the Brave app for the first time on their phone.">
         Make Brave better
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_HEADER" desc="Header of the section that shows the benefits for users if they turn on the metric sharing option. This header implies 'What you get from Brave' but we have omitted 'from Brave' for brevity.">
-        What you get
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_HEADER" desc="Header of the section that shows the benefits for users if they turn on the metric sharing option.">
+        When on
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Text that describes the concrete benefits users will get if they turn on the metrics sharing option.">
-        New features and improved performance
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_FIRST_SECTION_BODY" desc="Text that describes the benefits users will get if they turn on the metrics sharing option.">
+        Help make Brave better for profiles who use it the way you do
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_HEADER" desc="Header of the section that shows the data that users share with Brave if they turn on the metric sharing option.">
-        What you share with Brave
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_HEADER" desc="Header of the section with info about the data that users share with Brave if they turn on the metric sharing option.">
+        Things to consider
       </message>
-      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_BODY" desc="Text that describes the concrete data that users share with Brave if they turn on the metric sharing option.">
-        Info about your Brave usage that can\u2019t be tied to you\n\nRelevant data from rare Brave crashes, which may include some personal info\n\nIf you turn on sync, metrics may also include info about URLs you visit
+      <message name="IDS_SIGNIN_FRE_UMA_DIALOG_SECOND_SECTION_BODY" desc="Text with info about the data that users share with Brave if they turn on the metric sharing option.">
+        Info is sent to Brave about your Brave usage, but it isn\u2019t tied to you\n\nIf Brave crashes, details about the crash may include some personal info\n\nIf you turn on sync, metrics may also include info about URLs you visit
+      </message>
+      <message name="IDS_SIGNIN_FRE_SUBTITLE_VARIATION_1" desc="Subtitle shown below a welcoming title on the very first screen after opening Brave for the first time. Asks the user to sign in to Brave with their Brave sync chain to use additional features that are only available to signed-in users. Try to limit translations to 50 characters. Do not exceed 75 characters.">
+        Sign in to get the most out of Brave
+      </message>
+      <message name="IDS_SIGNIN_FRE_SUBTITLE_VARIATION_2" desc="Subtitle shown below a welcoming title on the very first screen after opening Brave for the first time. Asks the user to sign in to Brave with their Brave sync chain to use additional features that are only available to signed-in users. Try to limit translations to 50 characters. Do not exceed 75 characters.">
+        Sign in for additional features and Brave\u2019s strongest security
+      </message>
+      <message name="IDS_SIGNIN_FRE_SUBTITLE_VARIATION_3" desc="Subtitle shown below a welcoming title on the very first screen after opening Brave for the first time. Asks the user to sign in to Brave with their Brave sync chain to get more useful features when they're signed in across multiple devices (like phones and computers). Try to limit translations to 50 characters. Do not exceed 75 characters.">
+        Sign in to browse easier across devices
+      </message>
+      <message name="IDS_SIGNIN_FRE_TITLE_VARIATION_1" desc="Title shown on the very first screen after opening Brave for the first time. Asks the user to sign in to Brave with their Brave sync chain to use additional features that are only available to signed-in users. Try to limit translations to 40 characters. Do not exceed 50 characters.">
+        Sign in to get the most out of Brave
+      </message>
+      <message name="IDS_SIGNIN_FRE_TITLE_VARIATION_2" desc="Title shown on the very first screen after opening Brave for the first time. Asks the user to sign in to Brave with their Brave sync chain, so they can personalize and customize Brave and remember their settings in their Brave sync chain. Try to limit translations to 40 characters. Do not exceed 50 characters.">
+        Sign in to make Brave your own
       </message>
 
       <!-- Account Signin Strings -->
