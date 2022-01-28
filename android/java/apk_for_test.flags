@@ -429,11 +429,13 @@
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
     *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
+    *** getCardViewBackgroundColor(...);
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiThemeProvider {
     *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
+    *** getCardViewBackgroundColor(...);
 }
 
 -keep class org.chromium.chrome.browser.autofill.AutofillPopupBridge {

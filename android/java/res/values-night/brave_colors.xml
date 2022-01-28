@@ -13,6 +13,9 @@
     <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
     <color name="dialog_bg_color_dark">@color/toolbar_background_primary</color>
 
+    <!-- Theme colors -->
+    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
+
     <color name="onboarding_text_color">#F0F2FF</color>
     <color name="onboarding_bg_color">#1E2029</color>
     <color name="onboarding_timer_color">#478AFF</color>
