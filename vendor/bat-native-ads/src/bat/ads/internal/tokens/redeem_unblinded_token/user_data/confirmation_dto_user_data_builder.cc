@@ -80,6 +80,7 @@ void Build(const std::string& creative_instance_id,
         absl::optional<base::Value> user_data_as_value =
             base::JSONReader::Read(user_data_as_string);
         if (!user_data_as_value || !user_data_as_value->is_dict()) {
+          NOTREACHED();
           return;
         }
 

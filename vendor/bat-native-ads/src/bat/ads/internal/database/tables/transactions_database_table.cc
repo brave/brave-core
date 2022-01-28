@@ -186,16 +186,6 @@ void Transactions::Update(
     index++;
   }
 
-  command->record_bindings = {
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // created_at
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // creative_instance_id
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // ad_type
-      mojom::DBCommand::RecordBindingType::STRING_TYPE,  // confirmation_type
-      mojom::DBCommand::RecordBindingType::DOUBLE_TYPE   // reconciled_at
-  };
-
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
