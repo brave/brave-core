@@ -17,6 +17,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 
 namespace {
 
@@ -53,12 +54,14 @@ void WebcompatReporterDOMHandler::RegisterMessages() {
 
 void WebcompatReporterDOMHandler::HandleSubmitReport(
     base::Value::ConstListView args) {
-  DCHECK_EQ(args.size(), 1U);
+  DCHECK_EQ(args.size(), 3U);
   if (!args[0].is_string())
     return;
 
-  std::string site_url = args[0].GetString();
-  uploader_->SubmitReport(site_url);
+  GURL site_url(args[0].GetString());
+  const base::Value& details = args[1];
+  const base::Value& contact = args[2];
+  uploader_->SubmitReport(site_url, details, contact);
 }
 
 }  // namespace

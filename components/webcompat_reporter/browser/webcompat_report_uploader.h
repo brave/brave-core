@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/ref_counted.h"
+#include "base/values.h"
 #include "url/gurl.h"
 
 namespace network {
@@ -27,7 +28,9 @@ class WebcompatReportUploader {
   WebcompatReportUploader& operator=(const WebcompatReportUploader&) = delete;
   ~WebcompatReportUploader();
 
-  void SubmitReport(std::string report_domain);
+  void SubmitReport(const GURL& report_url,
+                    const base::Value& details,
+                    const base::Value& contact);
 
  private:
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;

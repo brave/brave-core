@@ -21,6 +21,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/network/public/mojom/fetch_api.mojom-shared.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace brave {
 
@@ -30,13 +31,20 @@ WebcompatReportUploader::WebcompatReportUploader(
 
 WebcompatReportUploader::~WebcompatReportUploader() {}
 
-void WebcompatReportUploader::SubmitReport(std::string report_domain) {
+void WebcompatReportUploader::SubmitReport(const GURL& report_url,
+                                           const base::Value& details,
+                                           const base::Value& contact) {
   std::string api_key = brave_stats::GetAPIKey();
 
   GURL upload_url(WEBCOMPAT_REPORT_ENDPOINT);
 
+  url::Origin report_url_origin = url::Origin::Create(report_url);
+
   base::Value post_data_obj(base::Value::Type::DICTIONARY);
-  post_data_obj.SetKey("domain", base::Value(report_domain));
+  post_data_obj.SetKey("url", base::Value(report_url.spec()));
+  post_data_obj.SetKey("domain", base::Value(report_url_origin.Serialize()));
+  post_data_obj.SetKey("additionalDetails", details.Clone());
+  post_data_obj.SetKey("contactInfo", contact.Clone());
   post_data_obj.SetKey("api_key", base::Value(api_key));
 
   std::string post_data;
@@ -68,7 +76,7 @@ void WebcompatReportUploader::CreateAndStartURLLoader(
           trigger:
             "Though the 'Report a Broken Site' option of the help menu or"
             "the Brave Shields panel."
-          data: "Broken domain and IP address."
+          data: "Broken URL, IP address; user provided additional details and contact information."
           destination: OTHER
           destination_other: "Brave developers"
         }

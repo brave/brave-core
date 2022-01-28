@@ -17,5 +17,7 @@ export {
   InfoText,
   DisclaimerText,
   NonInteractiveURL,
-  SuccessIcon
+  SuccessIcon,
+  Input,
+  TextArea
 } from './display'

@@ -16,7 +16,11 @@ const defaultState: WebcompatReporter.State = {
 const webcompatReporterReducer: Reducer<WebcompatReporter.State | undefined> = (state: WebcompatReporter.State = defaultState, action) => {
   switch (action.type) {
     case types.WEBCOMPATREPORTER_ON_SUBMIT_REPORT:
-      chrome.send('webcompat_reporter.submitReport', [state.siteUrl])
+      chrome.send('webcompat_reporter.submitReport', [
+        state.siteUrl,
+        action.payload.details || null,
+        action.payload.contact || null
+      ])
       state = {
         ...state,
         submitted: true
