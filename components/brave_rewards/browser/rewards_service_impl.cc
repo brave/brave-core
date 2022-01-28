@@ -40,6 +40,7 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger_database.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/vg_sync_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
@@ -317,6 +318,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
+      vg_sync_service_(VgSyncServiceFactory::GetForProfile(profile_)),
       bat_ledger_client_receiver_(new bat_ledger::LedgerClientMojoBridge(this)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -3387,7 +3389,24 @@ void RewardsServiceImpl::RestoreVGs(RestoreVGsCallback callback) {
     bat_ledger_->RestoreVGs(base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
                                            AsWeakPtr(), std::move(callback)));
   }
+  // pair_sync_service_->GetPairs(
+  //    base::BindOnce(&RewardsServiceImpl::OnGetPairs, AsWeakPtr(),
+  //    std::move(callback)));
 }
+
+//void RewardsServiceImpl::OnGetPairs(
+//    RestoreVGsCallback callback,
+//    std::vector<bat_ledger::mojom::PairPtr> pairs) {
+//  if (Connected()) {
+//    for (const auto& p : pairs) {
+//      VLOG(0) << "Pair: " << p->key << ", " << p->value;
+//    }
+//
+//    bat_ledger_->RestoreVGs(std::move(pairs),
+//                            base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
+//                                           AsWeakPtr(), std::move(callback)));
+//  }
+//}
 
 void RewardsServiceImpl::OnRestoreVGs(RestoreVGsCallback callback,
                                       ledger::type::Result result) {
@@ -3544,5 +3563,15 @@ void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
     profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
   }
 }
+
+//void RewardsServiceImpl::AddPair() {
+//  std::string value(8, 0);
+//  for (auto& c : value) {
+//    c = base::RandInt('a', 'z');
+//  }
+//
+//  pair_sync_service_->AddPair(clock_->Now().since_origin().InMicroseconds(),
+//                              std::move(value));
+//}
 
 }  // namespace brave_rewards
