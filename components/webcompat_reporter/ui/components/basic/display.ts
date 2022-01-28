@@ -45,6 +45,8 @@ export const NonInteractiveURL = styled('p')<{}>`
   display: inline-block;
   text-align: left;
   width: fit-content;
+  word-break: break-all;
+  text-decoration: underline;
 `
 
 export const SuccessIcon = styled(CheckCircleIcon)`
@@ -55,4 +57,54 @@ export const SuccessIcon = styled(CheckCircleIcon)`
 
 export const RectangularCard = styled(Card)<CardProps>`
   border-radius: 0;
+`
+
+export const Input = styled.input`
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+  background-color: ${(p) => p.theme.color.background02};
+  box-shadow: none;
+  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border-radius: 4px;
+  font-family: Poppins;
+  font-size: 13px;
+  padding: 10px;
+  margin: 8px 0px;
+  color: ${(p) => p.theme.color.text01};
+  ::placeholder {
+    font-family: Poppins;
+    font-size: 12px;
+    color: ${(p) => p.theme.color.text03};
+    font-weight: normal;
+  }
+  :focus {
+      outline: none;
+  }
+`
+
+export const TextArea = styled.textarea`
+  box-sizing: border-box;
+  width: 100%;
+  outline: none;
+  background-color: ${(p) => p.theme.color.background02};
+  box-shadow: none;
+  border: 1px solid ${(p) => p.theme.color.interactive08};
+  border-radius: 4px;
+  resize: none;
+  font-size: 13px;
+  font-family: Poppins;
+  font-weight: normal;
+  padding: 10px;
+  margin: 8px 0px 0px 0px;
+  color: ${(p) => p.theme.color.text01};
+  ::placeholder {
+      color: ${(p) => p.theme.color.text03};
+      font-weight: normal;
+      font-size: 12px;
+      font-family: Poppins;
+  }
+  :focus {
+      outline: none;
+  }
 `
