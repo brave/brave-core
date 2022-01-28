@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/shell_integration.h b/chrome/browser/shell_integration.h
-index aad3c3bab3107664b39eb3ede873114e8a410890..946032135fe92df69d4d75d228fce9eb9a134af2 100644
+index 76815052bc5c07e6bc37b29e4c749f69483377fc..4642f3885d035d10bc7b7ff041ceefe32c6c199f 100644
 --- a/chrome/browser/shell_integration.h
 +++ b/chrome/browser/shell_integration.h
 @@ -231,6 +231,7 @@ class DefaultBrowserWorker : public DefaultWebClientWorker {
