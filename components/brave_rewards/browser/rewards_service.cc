@@ -10,6 +10,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/common/referrer.h"
 
@@ -86,6 +87,9 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletUphold, "");
   registry->RegisterStringPref(prefs::kWalletBitflyer, "");
   registry->RegisterStringPref(prefs::kWalletGemini, "");
+  registry->RegisterStringPref("brave.rewards.test", "",
+                               user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
+  
 }
 
 }  // namespace brave_rewards

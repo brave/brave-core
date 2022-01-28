@@ -40,6 +40,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_service_observer.h"
+#include "components/sync/driver/sync_user_settings.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -61,7 +64,11 @@ class RewardsDOMHandler
     : public WebUIMessageHandler,
       public brave_ads::AdsServiceObserver,
       public brave_rewards::RewardsNotificationServiceObserver,
-      public brave_rewards::RewardsServiceObserver {
+      public brave_rewards::RewardsServiceObserver,
+      public syncer::SyncServiceObserver {
+ private:
+  std::string passphrase_;
+
  public:
   RewardsDOMHandler();
   RewardsDOMHandler(const RewardsDOMHandler&) = delete;
@@ -286,6 +293,9 @@ class RewardsDOMHandler
       const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
           notifications_list) override;
 
+  // SyncServiceObserver implementation
+  void OnStateChanged(syncer::SyncService* sync) override;
+
   // AdsServiceObserver implementation
   void OnAdRewardsChanged() override;
 
@@ -321,7 +331,14 @@ const char kAutoDetectedAdsSubdivisionTargeting[] =
 
 RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 
-RewardsDOMHandler::~RewardsDOMHandler() {}
+RewardsDOMHandler::~RewardsDOMHandler() {
+  Profile* profile = Profile::FromWebUI(web_ui());
+  DCHECK(profile);
+
+  auto* sync_service = RewardsSyncServiceFactory::GetForProfile(profile);
+  DCHECK(sync_service);
+  sync_service->RemoveObserver(this);
+}
 
 void RewardsDOMHandler::RegisterMessages() {
 #if defined(OS_ANDROID)
@@ -545,10 +562,26 @@ void RewardsDOMHandler::Init() {
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
   rewards_service_->StartProcess(base::DoNothing());
 
-  auto* sync_service = static_cast<syncer::BraveSyncServiceImpl*>(
-      RewardsSyncServiceFactory::GetForProfile(profile));
-  auto sync_code = sync_service->GetOrCreateSyncCode();
-  sync_service->SetSyncCode(sync_code);
+  if (auto* sync_service = static_cast<syncer::BraveSyncServiceImpl*>(
+          RewardsSyncServiceFactory::GetForProfile(profile))) {
+    sync_service->AddObserver(this);
+    sync_service->GetUserSettings()->SetSyncRequested(true);
+
+    auto sync_code = sync_service->GetOrCreateSyncCode();
+    //std::string sync_code =
+    //    "innocent runway firm garlic rebel rely kid glass debate blade seven "
+    //    "boost neck allow grunt mushroom quit cage raven smile mouse health "
+    //    "true ride";
+    DCHECK(!sync_code.empty());
+    passphrase_ = sync_code;
+    VLOG(0) << "Sync code: " << sync_code;
+    sync_service->SetSyncCode(sync_code);
+
+    if (!sync_service->GetUserSettings()->IsFirstSetupComplete()) {
+      sync_service->GetUserSettings()->SetFirstSetupComplete(
+          syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+    }
+  }
 
   ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
 
@@ -978,6 +1011,25 @@ void RewardsDOMHandler::OnGetAllNotifications(
     brave_rewards::RewardsNotificationService* rewards_notification_service,
     const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
         notifications_list) {}
+
+void RewardsDOMHandler::OnStateChanged(syncer::SyncService* sync) {
+  if (auto* sync_service = static_cast<syncer::BraveSyncServiceImpl*>(sync)) {
+    if (!sync_service->IsEngineInitialized())
+      return;
+
+    DCHECK(!passphrase_.empty());
+    auto* sync_user_settings = sync_service->GetUserSettings();
+    if (sync_user_settings->IsPassphraseRequired()) {
+      static_cast<void>(sync_user_settings->SetDecryptionPassphrase(passphrase_));
+    } else {
+      if (sync_user_settings->IsCustomPassphraseAllowed() &&
+          !sync_user_settings->IsUsingExplicitPassphrase() &&
+          !sync_user_settings->IsTrustedVaultKeyRequired()) {
+        sync_user_settings->SetEncryptionPassphrase(passphrase_);
+      }
+    }
+  }
+}
 
 void RewardsDOMHandler::SaveSetting(base::Value::ConstListView args) {
   CHECK_EQ(2U, args.size());
