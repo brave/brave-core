@@ -399,10 +399,17 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         if (finishOnboarding) {
             if (mIsFromDapps) {
                 finish();
-                BraveActivity activity = BraveActivity.getBraveActivity();
-                if (activity != null) {
-                    activity.onShowPanel();
-                }
+                mKeyringService.isLocked(isLocked -> {
+                    if (!isLocked) {
+                        return;
+                    }
+                    // TODO: we still need to figure out is it a permission dialog and show
+                    // or not a panel
+                    BraveActivity activity = BraveActivity.getBraveActivity();
+                    if (activity != null) {
+                        activity.onShowPanel();
+                    }
+                });
 
                 return;
             }

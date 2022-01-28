@@ -1,3 +1,4 @@
+import("//brave/android/brave_java_components_resources.gni")
 import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
 import("//brave/build/android/bytecode/bytecode_rewriter.gni")

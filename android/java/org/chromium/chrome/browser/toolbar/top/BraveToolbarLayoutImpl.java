@@ -935,6 +935,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     public void showWalletPanel() {
+        // TODO detect somehow do we need to show a permission dialog instead
         BraveActivity activity = BraveActivity.getBraveActivity();
         assert activity != null;
         if (activity == null) {

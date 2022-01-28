@@ -14,6 +14,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.ui.LayoutInflaterUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.modaldialog.ModalDialogProperties;
 import org.chromium.ui.modelutil.PropertyModel;
@@ -22,6 +23,12 @@ import org.chromium.ui.modelutil.PropertyModel;
 class BravePermissionDialogModel {
     public static PropertyModel getModel(ModalDialogProperties.Controller controller,
             PermissionDialogDelegate delegate, Runnable touchFilteredCallback) {
+        BravePermissionDialogDelegate braveDelegate =
+                (BravePermissionDialogDelegate) (Object) delegate;
+        if (braveDelegate.getUseWalletLayout()) {
+            return BravePermissionDialogModel.getWalletModel(
+                    controller, delegate, touchFilteredCallback);
+        }
         PropertyModel model =
                 PermissionDialogModel.getModel(controller, delegate, touchFilteredCallback);
         View customView = (View) model.get(ModalDialogProperties.CUSTOM_VIEW);
@@ -72,5 +79,23 @@ class BravePermissionDialogModel {
         });
         radioGroup.check(0);
         layout.addView(radioGroup);
+    }
+
+    public static PropertyModel getWalletModel(ModalDialogProperties.Controller controller,
+            PermissionDialogDelegate delegate, Runnable touchFilteredCallback) {
+        Context context = delegate.getWindow().getContext().get();
+        assert context != null;
+        View customView =
+                LayoutInflaterUtils.inflate(context, R.layout.brave_permission_dialog, null);
+
+        return new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
+                .with(ModalDialogProperties.CONTROLLER, controller)
+                .with(ModalDialogProperties.CUSTOM_VIEW, customView)
+                .with(ModalDialogProperties.POSITIVE_BUTTON_TEXT, delegate.getPrimaryButtonText())
+                .with(ModalDialogProperties.NEGATIVE_BUTTON_TEXT, delegate.getSecondaryButtonText())
+                .with(ModalDialogProperties.CONTENT_DESCRIPTION, delegate.getMessageText())
+                .with(ModalDialogProperties.FILTER_TOUCH_FOR_SECURITY, true)
+                .with(ModalDialogProperties.TOUCH_FILTERED_CALLBACK, touchFilteredCallback)
+                .build();
     }
 }
