@@ -42,7 +42,9 @@ class BraveActionViewController : public ExtensionActionViewController {
   bool IsEnabled(content::WebContents* web_contents) const override;
   gfx::Image GetIcon(content::WebContents* web_contents,
                      const gfx::Size& size) override;
-  ui::MenuModel* GetContextMenu() override;
+  ui::MenuModel* GetContextMenu(
+      extensions::ExtensionContextMenuModel::ContextMenuSource
+          context_menu_source) override;
   bool ExecuteActionUI(std::string relative_path);
   ToolbarActionViewController* GetExtensionViewController(
       const std::string& extension_id);
