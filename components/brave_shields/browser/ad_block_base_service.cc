@@ -120,7 +120,7 @@ void AdBlockBaseService::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* replacement_url) {
+    std::string* mock_data_url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   // if (!IsInitialized())
   //   return;
@@ -135,7 +135,7 @@ void AdBlockBaseService::ShouldStartRequest(
   ad_block_client_->matches(url.spec(), url.host(), tab_host, is_third_party,
                             ResourceTypeToString(resource_type), did_match_rule,
                             did_match_exception, did_match_important,
-                            replacement_url);
+                            mock_data_url);
 
   // LOG(ERROR) << "AdBlockBaseService::ShouldStartRequest(), host: "
   //  << tab_host
@@ -281,13 +281,12 @@ bool AdBlockBaseService::Init() {
 }
 
 void AdBlockBaseService::ResetForTest(const std::string& rules,
-                                      const std::string& resources,
-                                      bool include_redirect_urls) {
+                                      const std::string& resources) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   // This is temporary until adblock-rust supports incrementally adding
   // filter rules to an existing instance. At which point the hack below
   // will dissapear.
-  ad_block_client_.reset(new adblock::Engine(rules, include_redirect_urls));
+  ad_block_client_.reset(new adblock::Engine(rules));
   AddKnownTagsToAdBlockInstance();
   if (!resources.empty()) {
     resources_ = resources;
