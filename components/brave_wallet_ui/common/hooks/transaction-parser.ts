@@ -40,6 +40,7 @@ interface ParsedTransactionFees {
   gasFee: string
   gasFeeFiat: string
   isEIP1559Transaction: boolean
+  missingGasLimitError?: string
 }
 
 interface ParsedTransaction extends ParsedTransactionFees {
@@ -72,6 +73,24 @@ interface ParsedTransaction extends ParsedTransactionFees {
 }
 
 export function useTransactionFeesParser (selectedNetwork: BraveWallet.EthereumChain, networkSpotPrice: string) {
+  /**
+   * Checks if a given gasLimit is empty or zero-value, and returns an
+   * appropriate localized error string.
+   *
+   * @remarks
+   *
+   * This function may only be used on ALL transaction types.
+   *
+   * @param gasLimit - The parsed gasLimit string.
+   * @returns Localized string describing the error, or undefined in case of
+   * no error.
+   */
+  const checkForMissingGasLimitError = React.useCallback((gasLimit: string): string | undefined => {
+    return (gasLimit === '' || normalizeNumericValue(gasLimit) === '0')
+      ? getLocale('braveWalletMissingGasLimitError')
+      : undefined
+  }, [])
+
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
     const { txData } = transactionInfo
     const { baseData: { gasLimit, gasPrice }, maxFeePerGas, maxPriorityFeePerGas } = txData
@@ -88,7 +107,8 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.EthereumC
       maxPriorityFeePerGas: normalizeNumericValue(maxPriorityFeePerGas),
       gasFee,
       gasFeeFiat: formatFiatBalance(gasFee, selectedNetwork.decimals, networkSpotPrice),
-      isEIP1559Transaction
+      isEIP1559Transaction,
+      missingGasLimitError: checkForMissingGasLimitError(gasLimit)
     }
   }, [selectedNetwork, networkSpotPrice])
 }
