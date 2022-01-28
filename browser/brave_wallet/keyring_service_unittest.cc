@@ -661,7 +661,7 @@ TEST_F(KeyringServiceUnitTest, RestoreDefaultKeyring) {
   // salt is regenerated and account num is cleared
   EXPECT_NE(GetStringPrefForKeyring(kPasswordEncryptorSalt, "default"), salt);
   EXPECT_NE(GetStringPrefForKeyring(kPasswordEncryptorNonce, "default"), nonce);
-  service.AddAccount("Account 1", base::DoNothing());
+  service.AddAccount("Account 1", mojom::CoinType::ETH, base::DoNothing());
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
                 ->GetAccountsNumber(),
@@ -679,7 +679,7 @@ TEST_F(KeyringServiceUnitTest, UnlockResumesDefaultKeyring) {
     KeyringService service(GetPrefs());
     service.CreateWallet("brave", base::DoNothing());
     base::RunLoop().RunUntilIdle();
-    service.AddAccount("Account2", base::DoNothing());
+    service.AddAccount("Account2", mojom::CoinType::ETH, base::DoNothing());
     base::RunLoop().RunUntilIdle();
 
     salt = GetStringPrefForKeyring(kPasswordEncryptorSalt, "default");
@@ -797,7 +797,7 @@ TEST_F(KeyringServiceUnitTest, GetDefaultKeyringInfo) {
   EXPECT_TRUE(callback_called);
 
   service.NotifyWalletBackupComplete();
-  service.AddAccount("Account5566", base::DoNothing());
+  service.AddAccount("Account5566", mojom::CoinType::ETH, base::DoNothing());
   base::RunLoop().RunUntilIdle();
 
   callback_called = false;
@@ -1042,7 +1042,7 @@ TEST_F(KeyringServiceUnitTest, AddAccount) {
   service.CreateWallet("brave", base::DoNothing());
   base::RunLoop().RunUntilIdle();
   bool callback_called = false;
-  service.AddAccount("Account5566",
+  service.AddAccount("Account5566", mojom::CoinType::ETH,
                      base::BindLambdaForTesting([&](bool success) {
                        EXPECT_TRUE(success);
                        callback_called = true;
@@ -1062,6 +1062,10 @@ TEST_F(KeyringServiceUnitTest, AddAccount) {
 TEST_F(KeyringServiceUnitTest, GetAccountPathByIndex) {
   EXPECT_EQ(KeyringService::GetAccountPathByIndex(0), "m/44'/60'/0'/0/0");
   EXPECT_EQ(KeyringService::GetAccountPathByIndex(3), "m/44'/60'/0'/0/3");
+  EXPECT_EQ(KeyringService::GetAccountPathByIndex(0, mojom::kFilecoinKeyringId),
+            "0");
+  EXPECT_EQ(KeyringService::GetAccountPathByIndex(3, mojom::kFilecoinKeyringId),
+            "3");
 }
 
 TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
@@ -1962,7 +1966,8 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   auto* default_keyring =
       service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId);
   std::string first_account = default_keyring->GetAddress(0);
-  service.AddAccountForDefaultKeyring("Who does number 2 work for");
+  service.AddAccountForKeyring(mojom::kDefaultKeyringId,
+                               "Who does number 2 work for");
   std::string second_account = default_keyring->GetAddress(1);
 
   // This does not depend on being locked
@@ -2026,7 +2031,7 @@ TEST_F(KeyringServiceUnitTest, AddAccountsWithDefaultName) {
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(service.IsLocked());
 
-  service.AddAccount("AccountAAAAH", base::DoNothing());
+  service.AddAccount("AccountAAAAH", mojom::CoinType::ETH, base::DoNothing());
 
   service.AddAccountsWithDefaultName(3);
 
@@ -2339,8 +2344,8 @@ TEST_F(KeyringServiceUnitTest, LazilyCreateKeyring) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kFilecoinKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
-        EXPECT_FALSE(keyring_info->is_locked);
+        EXPECT_FALSE(keyring_info->is_default_keyring_created);
+        EXPECT_TRUE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         ASSERT_TRUE(keyring_info->account_infos.empty());
         callback_called = true;
@@ -2354,7 +2359,7 @@ TEST_F(KeyringServiceUnitTest, LazilyCreateKeyring) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kFilecoinKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_FALSE(keyring_info->is_default_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         ASSERT_TRUE(keyring_info->account_infos.empty());
@@ -2363,7 +2368,16 @@ TEST_F(KeyringServiceUnitTest, LazilyCreateKeyring) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   service.Unlock("brave", base::DoNothing());
+
+  callback_called = false;
+  service.AddAccount("test 1", mojom::CoinType::FIL,
+                     base::BindLambdaForTesting([&](bool success) {
+                       EXPECT_TRUE(success);
+                       callback_called = true;
+                     }));
   base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
   callback_called = false;
   service.GetKeyringInfo(
       mojom::kDefaultKeyringId,

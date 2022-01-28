@@ -386,8 +386,8 @@ function Container (props: Props) {
     props.walletPageActions.setShowAddModal(false)
   }
 
-  const onCreateAccount = (name: string) => {
-    const created = props.walletPageActions.addAccount({ accountName: name })
+  const onCreateAccount = (name: string, coin: BraveWallet.CoinType) => {
+    const created = props.walletPageActions.addAccount({ accountName: name, coin: coin })
     if (created) {
       onHideAddModal()
     }

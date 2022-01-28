@@ -209,7 +209,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
 
   void AddAccount(const std::string& account_name) {
     base::RunLoop run_loop;
-    keyring_service_->AddAccount(account_name,
+    keyring_service_->AddAccount(account_name, mojom::CoinType::ETH,
                                  base::BindLambdaForTesting([&](bool success) {
                                    ASSERT_TRUE(success);
                                    run_loop.Quit();

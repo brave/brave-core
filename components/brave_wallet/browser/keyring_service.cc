@@ -137,6 +137,14 @@ mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
   return mojom::CoinType::ETH;
 }
 
+std::string GetKeyringIdForCoin(mojom::CoinType coin) {
+  if (coin == mojom::CoinType::FIL) {
+    return mojom::kFilecoinKeyringId;
+  }
+  DCHECK_EQ(coin, mojom::CoinType::ETH);
+  return mojom::kDefaultKeyringId;
+}
+
 static base::span<const uint8_t> ToSpan(base::StringPiece sp) {
   return base::as_bytes(base::make_span(sp));
 }
@@ -414,7 +422,12 @@ std::string KeyringService::GetAccountAddressForKeyring(
 }
 
 // static
-std::string KeyringService::GetAccountPathByIndex(size_t index) {
+std::string KeyringService::GetAccountPathByIndex(
+    size_t index,
+    const std::string& keyring_id) {
+  if (keyring_id == mojom::kFilecoinKeyringId) {
+    return base::NumberToString(index);
+  }
   return std::string(kRootPath) + "/" + base::NumberToString(index);
 }
 
@@ -546,8 +559,8 @@ HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
   // We can remove this some months after the initial wallet launch
   // We didn't store account address in meta pref originally.
   for (size_t i = 0; i < account_no; ++i) {
-    SetAccountMetaForKeyring(prefs_, GetAccountPathByIndex(i), absl::nullopt,
-                             keyring->GetAddress(i), keyring_id);
+    SetAccountMetaForKeyring(prefs_, GetAccountPathByIndex(i, keyring_id),
+                             absl::nullopt, keyring->GetAddress(i), keyring_id);
   }
 
   for (const auto& imported_account_info :
@@ -657,7 +670,7 @@ void KeyringService::CreateWallet(const std::string& password,
                                   CreateWalletCallback callback) {
   auto* keyring = CreateKeyring(mojom::kDefaultKeyringId, password);
   if (keyring) {
-    AddAccountForDefaultKeyring(GetAccountName(1));
+    AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
   }
   std::move(callback).Run(GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId));
 }
@@ -669,12 +682,14 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
   auto* keyring = RestoreKeyring(mojom::kDefaultKeyringId, mnemonic, password,
                                  is_legacy_brave_wallet);
   if (IsFilecoinEnabled()) {
-    RestoreKeyring(mojom::kFilecoinKeyringId, mnemonic, password,
-                   is_legacy_brave_wallet);
+    auto* filecoin_keyring = RestoreKeyring(mojom::kFilecoinKeyringId, mnemonic,
+                                            password, is_legacy_brave_wallet);
+    if (filecoin_keyring && !filecoin_keyring->GetAccountsNumber())
+      AddAccountForKeyring(mojom::kFilecoinKeyringId, GetAccountName(1));
   }
 
   if (keyring && !keyring->GetAccountsNumber()) {
-    AddAccountForDefaultKeyring(GetAccountName(1));
+    AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
   }
   // TODO(darkdh): add account discovery mechanism
 
@@ -705,10 +720,20 @@ const std::string KeyringService::GetMnemonicForKeyringImpl(
 }
 
 void KeyringService::AddAccount(const std::string& account_name,
+                                mojom::CoinType coin,
                                 AddAccountCallback callback) {
-  auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
+  std::string keyring_id = GetKeyringIdForCoin(coin);
+  if (IsFilecoinEnabled() && keyring_id == mojom::kFilecoinKeyringId) {
+    if (!IsKeyringExist(mojom::kFilecoinKeyringId)) {
+      if (!CreateFilecoinKeyring()) {
+        VLOG(1) << "Unable to create Filecoin keyring";
+        return;
+      }
+    }
+  }
+  auto* keyring = GetHDKeyringById(keyring_id);
   if (keyring) {
-    AddAccountForDefaultKeyring(account_name);
+    AddAccountForKeyring(keyring_id, account_name);
   }
 
   NotifyAccountsChanged();
@@ -1033,17 +1058,17 @@ void KeyringService::NotifyWalletBackupComplete() {
   }
 }
 
-void KeyringService::AddAccountForDefaultKeyring(
-    const std::string& account_name) {
-  auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
+void KeyringService::AddAccountForKeyring(const std::string& keyring_id,
+                                          const std::string& account_name) {
+  auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring)
     return;
   keyring->AddAccounts(1);
   size_t accounts_num = keyring->GetAccountsNumber();
   CHECK(accounts_num);
-  SetAccountMetaForKeyring(prefs_, GetAccountPathByIndex(accounts_num - 1),
-                           account_name, keyring->GetAddress(accounts_num - 1),
-                           mojom::kDefaultKeyringId);
+  SetAccountMetaForKeyring(
+      prefs_, GetAccountPathByIndex(accounts_num - 1, keyring_id), account_name,
+      keyring->GetAddress(accounts_num - 1), keyring_id);
 }
 
 absl::optional<std::string> KeyringService::ImportAccountForDefaultKeyring(
@@ -1092,9 +1117,9 @@ std::vector<mojom::AccountInfoPtr> KeyringService::GetAccountInfosForKeyring(
   for (size_t i = 0; i < account_no; ++i) {
     mojom::AccountInfoPtr account_info = mojom::AccountInfo::New();
     account_info->address = GetAccountAddressForKeyring(
-        prefs_, GetAccountPathByIndex(i), keyring_id);
-    account_info->name =
-        GetAccountNameForKeyring(prefs_, GetAccountPathByIndex(i), keyring_id);
+        prefs_, GetAccountPathByIndex(i, keyring_id), keyring_id);
+    account_info->name = GetAccountNameForKeyring(
+        prefs_, GetAccountPathByIndex(i, keyring_id), keyring_id);
     account_info->is_imported = false;
     account_info->coin = GetCoinForKeyring(keyring_id);
     result.push_back(std::move(account_info));
@@ -1271,7 +1296,7 @@ void KeyringService::AddAccountsWithDefaultName(size_t number) {
 
   size_t current_num = keyring->GetAccountsNumber();
   for (size_t i = current_num + 1; i <= current_num + number; ++i) {
-    AddAccountForDefaultKeyring(GetAccountName(i));
+    AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(i));
   }
 }
 
@@ -1544,8 +1569,9 @@ void KeyringService::SetKeyringDerivedAccountName(
     return;
   }
 
-  SetAccountMetaForKeyring(prefs_, GetAccountPathByIndex(index.value()), name,
-                           address, keyring_id);
+  SetAccountMetaForKeyring(prefs_,
+                           GetAccountPathByIndex(index.value(), keyring_id),
+                           name, address, keyring_id);
   NotifyAccountsChanged();
   std::move(callback).Run(true);
 }

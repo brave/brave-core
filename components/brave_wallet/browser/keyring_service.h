@@ -78,7 +78,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& account_path,
       const std::string& id);
 
-  static std::string GetAccountPathByIndex(size_t index);
+  static std::string GetAccountPathByIndex(
+      size_t index,
+      const std::string& keyring_id = mojom::kDefaultKeyringId);
 
   struct ImportedAccountInfo {
     ImportedAccountInfo(const std::string& account_name,
@@ -119,6 +121,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void Lock() override;
   void IsLocked(IsLockedCallback callback) override;
   void AddAccount(const std::string& account_name,
+                  mojom::CoinType coin,
                   AddAccountCallback callback) override;
   void GetPrivateKeyForDefaultKeyringAccount(
       const std::string& address,
@@ -254,7 +257,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxServiceUnitTest;
 
-  void AddAccountForDefaultKeyring(const std::string& account_name);
+  void AddAccountForKeyring(const std::string& keyring_id,
+                            const std::string& account_name);
   mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void OnAutoLockFired();
   HDKeyring* GetKeyringForAddress(const std::string& address);

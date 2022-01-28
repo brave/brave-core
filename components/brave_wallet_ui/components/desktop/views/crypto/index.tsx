@@ -31,7 +31,7 @@ export interface Props {
   onShowBackup: () => void
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
-  onCreateAccount: (name: string) => void
+  onCreateAccount: (name: string, coin: BraveWallet.CoinType) => void
   onImportAccount: (accountName: string, privateKey: string) => void
   onImportFilecoinAccount: (accountName: string, key: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>

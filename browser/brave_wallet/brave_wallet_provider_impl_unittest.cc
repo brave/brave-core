@@ -216,7 +216,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void AddAccount() {
     base::RunLoop run_loop;
     keyring_service_->AddAccount(
-        "New Account", base::BindLambdaForTesting([&run_loop](bool success) {
+        "New Account", mojom::CoinType::ETH,
+        base::BindLambdaForTesting([&run_loop](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));

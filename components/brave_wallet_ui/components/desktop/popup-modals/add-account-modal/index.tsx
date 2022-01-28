@@ -33,7 +33,7 @@ import { FilecoinNetwork } from '../../../../common/hardware/types'
 
 export interface Props {
   onClose: () => void
-  onCreateAccount: (name: string) => void
+  onCreateAccount: (name: string, coin: BraveWallet.CoinType) => void
   onImportAccount: (accountName: string, privateKey: string) => void
   isFilecoinEnabled: boolean
   onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork, protocol: BraveWallet.FilecoinAddressProtocol) => void
@@ -105,15 +105,7 @@ const AddAccountModal = (props: Props) => {
 
   const onClickCreateAccount = () => {
     if (tab === 'create') {
-      if (selectedAccountType?.coin === BraveWallet.CoinType.ETH) {
-        onCreateAccount(accountName)
-      }
-      if (selectedAccountType?.coin === BraveWallet.CoinType.SOL) {
-        // logic here to create a solana account
-      }
-      if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
-        // logic here to create a filecoin account
-      }
+      onCreateAccount(accountName, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
       onRouteBackToAccounts()
       return
     }

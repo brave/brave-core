@@ -396,7 +396,7 @@ interface KeyringService {
   IsLocked() => (bool isLocked);
 
   // Adds an account to the keyring.
-  AddAccount(string accountName) => (bool success);
+  AddAccount(string accountName, CoinType coin ) => (bool success);
 
   // Obtains the private key for the keyring.
   GetPrivateKeyForDefaultKeyringAccount(string address)
