@@ -293,7 +293,7 @@ Config.prototype.buildArgs = function () {
     ...this.extraGnArgs,
   }
 
-  if (process.platform === 'darwin' && this.targetOS != 'ios' && args.is_official_build && !this.shouldSign()) {
+  if (process.platform === 'darwin' && this.targetOS != 'ios' && args.is_official_build) {
     // Currently we're using is_official_build mode in PR builds on CI. This enables dSYMs
     // by default, which slows down link phase, but also disables relocatable compilation
     // on MacOS (aka 'zero goma cachehits' style).
