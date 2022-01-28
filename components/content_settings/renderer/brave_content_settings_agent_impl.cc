@@ -87,21 +87,25 @@ BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
 
 BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {}
 
-void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
-    ui::PageTransition transition) {
-  temporarily_allowed_scripts_ =
-      std::move(preloaded_temporarily_allowed_scripts_);
-  ContentSettingsAgentImpl::DidCommitProvisionalLoad(transition);
-}
-
 bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
     const GURL& script_url) {
   // Check if scripts from this origin are temporily allowed or not.
   // Also matches the full script URL to support data URL cases which we use
   // the full URL to allow it.
-  return base::Contains(temporarily_allowed_scripts_,
-                        url::Origin::Create(script_url).Serialize()) ||
-         base::Contains(temporarily_allowed_scripts_, script_url.spec());
+  bool allow = base::Contains(temporarily_allowed_scripts_,
+                              url::Origin::Create(script_url).Serialize()) ||
+               base::Contains(temporarily_allowed_scripts_, script_url.spec());
+  if (!allow) {
+    // Also check rules in the main frame, because this frame rules may be out
+    // of sync.
+    content::RenderFrame* main_frame = render_frame()->GetMainRenderFrame();
+    if (main_frame && main_frame != render_frame()) {
+      allow = static_cast<BraveContentSettingsAgentImpl*>(
+                  ContentSettingsAgentImpl::Get(main_frame))
+                  ->IsScriptTemporilyAllowed(script_url);
+    }
+  }
+  return allow;
 }
 
 void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
@@ -121,6 +125,10 @@ bool BraveContentSettingsAgentImpl::AllowScript(bool enabled_per_settings) {
   bool allow = ContentSettingsAgentImpl::AllowScript(enabled_per_settings);
   allow = allow || IsBraveShieldsDown(frame, secondary_url) ||
           IsScriptTemporilyAllowed(secondary_url);
+
+  if (!allow) {
+    blocked_script_url_ = secondary_url;
+  }
 
   return allow;
 }
@@ -342,7 +350,7 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool play_requested) {
 
 void BraveContentSettingsAgentImpl::SetAllowScriptsFromOriginsOnce(
     const std::vector<std::string>& origins) {
-  preloaded_temporarily_allowed_scripts_ = std::move(origins);
+  temporarily_allowed_scripts_ = origins;
 }
 
 void BraveContentSettingsAgentImpl::BindBraveShieldsReceiver(
