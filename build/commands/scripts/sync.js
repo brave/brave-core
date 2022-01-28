@@ -5,10 +5,10 @@
 
 const fs = require('fs')
 const program = require('commander')
+const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const Log = require('../lib/sync/logging')
-const os = require('os')
 
 program
   .version(process.env.npm_package_version)
@@ -30,6 +30,20 @@ const maybeInstallDepotTools = (options = config.defaultOptions) => {
     fs.mkdirSync(config.depotToolsDir)
     util.run('git', ['-C', config.depotToolsDir, 'clone', 'https://chromium.googlesource.com/chromium/tools/depot_tools.git', '.'], options)
     Log.progress('Done Depot Tools...')
+  }
+
+  const ninjaLogCfgPath = path.join(config.depotToolsDir, 'ninjalog.cfg');
+  if (!fs.existsSync(ninjaLogCfgPath)) {
+    // Create a ninja config to prevent (auto)ninja from calling goma_auth
+    // each time. See for details:
+    // https://chromium.googlesource.com/chromium/tools/depot_tools/+/main/ninjalog.README.md
+    const ninjaLogCfgConfig = {
+      'is-googler': false,
+      'version': 3,
+      'countdown': 10,
+      'opt-in': false
+    };
+    fs.writeFileSync(ninjaLogCfgPath, JSON.stringify(ninjaLogCfgConfig))
   }
 }
 
