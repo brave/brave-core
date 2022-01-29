@@ -185,8 +185,8 @@ export const TileAction = styled('button')<{}>`
 export const TileFavicon = styled('img')<{}>`
   display: block;
   padding: 16px;
-  width: 70px;
-  height: 70px;
+  width: 64px;
+  height: 64px;
   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   object-fit: contain;
