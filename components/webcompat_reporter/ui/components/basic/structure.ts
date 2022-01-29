@@ -36,3 +36,7 @@ export const IconTitle = styled('div')<{}>`
   display: flex;
   flex-direction: row;
 `
+
+export const FieldCtr = styled.div`
+  margin-top: 8px;
+`

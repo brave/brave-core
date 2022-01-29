@@ -373,9 +373,10 @@
       <!-- WebUI webcompat reporter resources -->
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE" desc="Title for broken website report dialog window">Report a broken site</message>
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION" desc="Label for a website's URL indicating that it will be reported for compatibility issues">Let Brave's developers know that this site doesn't work properly with Shields:</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER" desc="Describes what information is sent to Brave's servers in a broken website report">Note: This site address will be submitted with your Brave version number and your IP address (which will not be stored).</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER" desc="Describes what information is sent to Brave's servers in a broken website report">Note: When you click "Submit", you'll share the site address, your Brave version number, and your IP address with Brave developers. (The IP address will not be stored.)</message>
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DETAILS" desc="Placeholder text for the optional details field in the broken website report">Additional details (optional)</message>
-      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EMAIL" desc="Placeholder text for the optional email contact field in the broken website report">Email address (optional)</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">Contact me at: (optional)</message>
+      <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">Email, Twitter, etc.</message>
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_CANCEL" desc="Text for button to cancel sending a broken website report">Cancel</message>
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_SUBMIT" desc="Text for button to submit a broken website report">Submit</message>
       <message name="IDS_BRAVE_WEBCOMPATREPORTER_THANK_YOU" desc="Thanks the user for submitting a report of a broken website">Thank you!</message>

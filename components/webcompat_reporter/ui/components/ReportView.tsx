@@ -16,7 +16,9 @@ import {
   SideBySideButtons,
   PaddedButton,
   Input,
-  TextArea
+  TextArea,
+  FieldCtr,
+  InputLabel
 } from './basic'
 
 // Localization data
@@ -54,20 +56,28 @@ export default class ReportView extends React.PureComponent<Props, State> {
         <InfoText>{getLocale('reportExplanation')}</InfoText>
         <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
         <DisclaimerText>{getLocale('reportDisclaimer')}</DisclaimerText>
-        <TextArea
-          placeholder={getLocale('reportDetails')}
-          onChange={(ev) => this.setState({ details: ev.target.value })}
-          rows={7}
-          maxLength={2000}
-          value={details}
-        />
-        <Input
-          placeholder={getLocale('reportEmail')}
-          onChange={(ev) => this.setState({ contact: ev.target.value })}
-          type='text'
-          maxLength={2000}
-          value={contact}
-        />
+        <FieldCtr>
+          <TextArea
+            placeholder={getLocale('reportDetails')}
+            onChange={(ev) => this.setState({ details: ev.target.value })}
+            rows={7}
+            maxLength={2000}
+            value={details}
+          />
+        </FieldCtr>
+        <FieldCtr>
+          <InputLabel htmlFor='contact-info'>
+            {getLocale('reportContactLabel')}
+          </InputLabel>
+          <Input
+            placeholder={getLocale('reportContactPlaceholder')}
+            onChange={(ev) => this.setState({ contact: ev.target.value })}
+            type='text'
+            maxLength={2000}
+            value={contact}
+            id='contact-info'
+          />
+        </FieldCtr>
         <SideBySideButtons>
           <PaddedButton
             text={getLocale('cancel')}
