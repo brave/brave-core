@@ -23,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -157,15 +158,16 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                                     });
                         }
                     } else {
-                        mKeyringService.addAccount(mAddAccountText.getText().toString(), result -> {
-                            if (result) {
-                                setResult(Activity.RESULT_OK);
-                                finish();
-                            } else {
-                                mAddAccountText.setError(
-                                        getString(R.string.account_name_empty_error));
-                            }
-                        });
+                        mKeyringService.addAccount(
+                                mAddAccountText.getText().toString(), CoinType.ETH, result -> {
+                                    if (result) {
+                                        setResult(Activity.RESULT_OK);
+                                        finish();
+                                    } else {
+                                        mAddAccountText.setError(
+                                                getString(R.string.account_name_empty_error));
+                                    }
+                                });
                     }
                 }
             }

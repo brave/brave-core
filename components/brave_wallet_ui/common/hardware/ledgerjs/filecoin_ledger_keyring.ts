@@ -63,7 +63,7 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
     for (let i = 0; i < accounts.length; i++) {
       result.push({
         address: accounts[i],
-        derivationPath: (from + i).toString(),
+        derivationPath: this.getPathForIndex(from + i),
         name: getCoinName(this.coin()) + ' ' + this.type(),
         hardwareVendor: this.type(),
         deviceId: this.deviceId,
@@ -111,6 +111,10 @@ export default class FilecoinLedgerKeyring implements LedgerFilecoinKeyring {
 
   signTransaction (path: string, rawTxHex: string): Promise<SignHardwareTransactionOperationResult> {
     throw new Error('Method not implemented.')
+  }
+
+  private readonly getPathForIndex = (index: number): string => {
+    return `m/44'/461'/0'/0/${index}`
   }
 
   private onDisconnected = (e: any) => {
