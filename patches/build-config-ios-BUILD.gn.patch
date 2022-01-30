@@ -8,7 +8,7 @@ index d97fc5fced0cff0fdd7e3a4b36b51de490cf7691..89465017f362c2d30613a5168246a82e
    if (target_environment == "simulator" && current_cpu == "arm64") {
 -    assert(xcode_version_int == 1300)
 +    assert(xcode_version_int == 1300 || xcode_version_int == 1310 ||
-+           xcode_version_int == 1320)
++           xcode_version_int == 1320 || xcode_version_int == 1321)
      ldflags += [
        "-lSystem",
        rebase_path("$ios_toolchains_path/usr/lib/clang/13.0.0/" +
