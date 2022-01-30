@@ -8,7 +8,7 @@ script/uplift.py @bsclifton
 Jenkinsfile @brave/devops-team
 DEPS @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
-Cargo.* @brave/rust-deps-reviewers
+**/Cargo.* @brave/rust-deps-reviewers
 
 # Rewards
 browser/brave_rewards/ @brave/rewards-client
