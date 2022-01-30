@@ -165,6 +165,7 @@ brave_chrome_browser_deps = [
   "//chrome/browser/profiles:profile",
   "//chrome/browser/ui",
   "//chrome/common",
+  "//chrome/common:channel_info",
   "//components/account_id",
   "//components/autofill/core/common",
   "//components/browsing_data/core",
