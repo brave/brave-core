@@ -240,6 +240,9 @@ class BottomToolbarCoordinator implements View.OnLongClickListener {
 
             final OnClickListener homeButtonListener = v -> {
                 if (HomepageManager.isHomepageEnabled()) {
+                    if (BraveActivity.getBraveActivity() != null) {
+                        BraveActivity.getBraveActivity().setComesFromNewTab(true);
+                    }
                     mOriginalHomeButtonRunnable.run();
                 } else {
                     newTabClickListener.onClick(v);

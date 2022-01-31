@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.RequestManager;
+
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
@@ -29,6 +31,7 @@ public class BraveNewsAdapterFeedCard
     private LayoutInflater mInflater;
     private Activity mActivity;
     private View mView;
+    private RequestManager mGlide;
 
     public CopyOnWriteArrayList<FeedItemsCard> mNewsItems;
     private FeedItemsCard mNewsItem;
@@ -37,36 +40,35 @@ public class BraveNewsAdapterFeedCard
 
     private BraveNewsController mBraveNewsController;
 
-    public BraveNewsAdapterFeedCard(Activity activity,
+    public BraveNewsAdapterFeedCard(Activity activity, RequestManager glide,
             CopyOnWriteArrayList<FeedItemsCard> newsItems,
             BraveNewsController braveNewsController) {
         this.mInflater = LayoutInflater.from(activity);
         this.mActivity = activity;
         this.mNewsItems = newsItems;
         this.mBraveNewsController = braveNewsController;
+        this.mGlide = glide;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mView = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.brave_news_row, parent, false);
-        mHolder = new ViewHolder(mView);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.brave_news_row, parent, false);
 
-        return mHolder;
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(
-            @NonNull BraveNewsAdapterFeedCard.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         LinearLayout.LayoutParams params1;
         if (mNewsItems != null) {
-            mNewsItem = mNewsItems.get(position);
-            mHolder.linearLayout.removeAllViews();
+            FeedItemsCard newsItem = mNewsItems.get(position);
+            holder.linearLayout.removeAllViews();
             try {
                 if (mBraveNewsController != null) {
-                    new CardBuilderFeedCard(mBraveNewsController, mHolder.linearLayout, mActivity,
-                            position, mNewsItem, mNewsItem.getCardType());
+                    new CardBuilderFeedCard(mBraveNewsController, mGlide, holder.linearLayout,
+                            mActivity, position, newsItem, newsItem.getCardType());
                 }
 
             } catch (Exception e) {
@@ -80,22 +82,12 @@ public class BraveNewsAdapterFeedCard
         return mNewsItems.size();
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        return 0;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout linearLayout;
 
         ViewHolder(View itemView) {
             super(itemView);
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.card_layout);
+            this.linearLayout = (LinearLayout) itemView.findViewById(R.id.card_layout);
         }
     }
 
