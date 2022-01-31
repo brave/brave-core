@@ -795,7 +795,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1254969878422524947">Per-gas tip limit (Gwei)</translation>
 <translation id="7373308452149471621">Per-gas price limit (Gwei)</translation>
 <translation id="5891811606602061966">Failed to import account, please try again.</translation>
-<translation id="1822506443689803572">Brave uses 0x as a DEX aggregator.</translation>
 <translation id="5061574358754621254">Price data powered by CoinGecko</translation>
 <translation id="4626407663177532837">Quote includes a 0.875% Brave fee.</translation>
 <translation id="8574289650879708853">Add custom asset</translation>
