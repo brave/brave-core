@@ -79,14 +79,14 @@ public class BraveSetDefaultBrowserUtils {
             } else if (SharedPreferencesManager.getInstance().readInt(
                                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                     == 5) {
-                showBraveSetDefaultBrowserDialog(activity);
+                showBraveSetDefaultBrowserDialog(activity, false);
 
             } else if (shouldShowBraveWasDefaultDialog()) {
                 int braveWasDefaultCount = SharedPreferencesManager.getInstance().readInt(
                         BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
                 SharedPreferencesManager.getInstance().writeInt(
                         BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT, braveWasDefaultCount + 1);
-                showBraveSetDefaultBrowserDialog(activity);
+                showBraveSetDefaultBrowserDialog(activity, false);
             }
 
         } else if (isBraveSetAsDefaultBrowser(activity) && !wasBraveDefaultBefore()) {
@@ -94,7 +94,8 @@ public class BraveSetDefaultBrowserUtils {
         }
     }
 
-    public static void showBraveSetDefaultBrowserDialog(AppCompatActivity activity) {
+    public static void showBraveSetDefaultBrowserDialog(
+            AppCompatActivity activity, boolean isFromMenu) {
         /* (Albert Wang): Default app settings didn't get added until API 24
          * https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
          */
@@ -122,11 +123,11 @@ public class BraveSetDefaultBrowserUtils {
                             DEFAULT_BROWSER_ROLE_REQUEST_CODE);
                 }
             } else {
-                showSetDefaultBottomSheet(activity);
+                showSetDefaultBottomSheet(activity, isFromMenu);
             }
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            showSetDefaultBottomSheet(activity);
+            showSetDefaultBottomSheet(activity, isFromMenu);
 
         } else {
             ResolveInfo resolveInfo = getResolveInfo(activity);
@@ -156,17 +157,19 @@ public class BraveSetDefaultBrowserUtils {
                 browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
     }
 
-    private static void showSetDefaultBottomSheet(AppCompatActivity activity) {
+    private static void showSetDefaultBottomSheet(AppCompatActivity activity, boolean isFromMenu) {
         if (!isBottomSheetVisible) {
             isBottomSheetVisible = true;
             SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
-                    SetDefaultBrowserBottomSheetFragment.newInstance();
+                    SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
 
-            int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
-                    BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
-            SharedPreferencesManager.getInstance().writeInt(
-                    BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
-                    braveDefaultModalCount + 1);
+            if (!isFromMenu) {
+                int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
+                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
+                SharedPreferencesManager.getInstance().writeInt(
+                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
+                        braveDefaultModalCount + 1);
+            }
 
             bottomSheetDialog.show(
                     activity.getSupportFragmentManager(), "SetDefaultBrowserBottomSheetFragment");
