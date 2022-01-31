@@ -110,7 +110,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverThreeConsecutiveMonths) {
     expected_statement.next_payment_date = TimestampFromString(
         "5 January 2021 23:59:59.999", /* is_local */ false);
     expected_statement.earnings_this_month = 0.05;
-    expected_statement.earnings_last_month = 0.02;
+    expected_statement.earnings_last_month = 0.01;
     expected_statement.ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);
@@ -161,7 +161,7 @@ TEST_F(BatAdsStatementTest, GetForTransactionsSplitOverTwoYears) {
     expected_statement.next_payment_date = TimestampFromString(
         "5 January 2021 23:59:59.999", /* is_local */ false);
     expected_statement.earnings_this_month = 0.04;
-    expected_statement.earnings_last_month = 0.02;
+    expected_statement.earnings_last_month = 0.01;
     expected_statement.ads_received_this_month = 3;
 
     EXPECT_EQ(expected_statement, statement);

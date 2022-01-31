@@ -33,7 +33,8 @@ void BuildStatement(StatementCallback callback) {
             GetEarningsForThisMonth(transactions) +
             GetUnreconciledEarningsForPreviousMonths(transactions);
 
-        statement.earnings_last_month = GetEarningsForLastMonth(transactions);
+        statement.earnings_last_month =
+            GetReconciledEarningsForLastMonth(transactions);
 
         const base::Time& next_payment_date = GetNextPaymentDate(transactions);
         statement.next_payment_date = next_payment_date.ToDoubleT();
