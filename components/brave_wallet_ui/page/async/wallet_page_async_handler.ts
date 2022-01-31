@@ -66,7 +66,7 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, paylo
 
 handler.on(WalletPageActions.addAccount.getType(), async (store: Store, payload: AddAccountPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.addAccount(payload.accountName)
+  const result = await keyringService.addAccount(payload.accountName, payload.coin)
   return result.success
 })
 

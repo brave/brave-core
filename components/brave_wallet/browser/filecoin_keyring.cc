@@ -60,7 +60,7 @@ std::string FilecoinKeyring::ImportFilecoinBLSAccount(
     return std::string();
   int protocol = static_cast<int>(mojom::FilecoinAddressProtocol::BLS);
   std::string address = network + std::to_string(protocol) +
-                        GetAddressInternal(public_key, protocol);
+                        CreateAddressWithProtocol(public_key, protocol);
   if (!AddImportedAddress(address, std::move(hd_key))) {
     return std::string();
   }
@@ -80,7 +80,7 @@ std::string FilecoinKeyring::ImportFilecoinSECP256K1Account(
   auto payload = BlakeHash(uncompressed_public_key, 20);
   int protocol = static_cast<int>(mojom::FilecoinAddressProtocol::SECP256K1);
   std::string address = network + std::to_string(protocol) +
-                        GetAddressInternal(payload, protocol);
+                        CreateAddressWithProtocol(payload, protocol);
 
   if (!AddImportedAddress(address, std::move(hd_key))) {
     return std::string();
@@ -97,10 +97,19 @@ void FilecoinKeyring::ImportFilecoinAccount(
   if (!AddImportedAddress(address, std::move(hd_key))) {
     return;
   }
-  return;
 }
 
-std::string FilecoinKeyring::GetAddressInternal(
+std::string FilecoinKeyring::GetAddressInternal(const HDKey* hd_key) const {
+  auto uncompressed_public_key = hd_key->GetUncompressedPublicKey();
+  auto payload = BlakeHash(uncompressed_public_key, 20);
+  int protocol = static_cast<int>(mojom::FilecoinAddressProtocol::SECP256K1);
+  // TODO(spylogsster): Get network from settings.
+  std::string network = "t";
+  return network + std::to_string(protocol) +
+         CreateAddressWithProtocol(payload, protocol);
+}
+
+std::string FilecoinKeyring::CreateAddressWithProtocol(
     const std::vector<uint8_t>& payload,
     int protocol_index) const {
   std::vector<uint8_t> checksumPayload(payload);

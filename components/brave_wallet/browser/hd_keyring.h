@@ -69,7 +69,7 @@ class HDKeyring {
   HDKey* GetHDKeyFromAddress(const std::string& address);
 
  protected:
-  std::string GetAddressInternal(const HDKey* hd_key) const;
+  virtual std::string GetAddressInternal(const HDKey* hd_key) const;
   bool AddImportedAddress(const std::string& address,
                           std::unique_ptr<HDKey> hd_key);
 

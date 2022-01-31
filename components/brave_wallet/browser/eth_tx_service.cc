@@ -862,11 +862,11 @@ void EthTxService::Unlocked() {
   UpdatePendingTransactions();
 }
 
-void EthTxService::KeyringCreated() {
+void EthTxService::KeyringCreated(const std::string& keyring_id) {
   UpdatePendingTransactions();
 }
 
-void EthTxService::KeyringRestored() {
+void EthTxService::KeyringRestored(const std::string& keyring_id) {
   UpdatePendingTransactions();
 }
 

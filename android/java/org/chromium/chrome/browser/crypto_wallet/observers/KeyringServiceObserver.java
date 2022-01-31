@@ -8,10 +8,10 @@ package org.chromium.chrome.browser.crypto_wallet.observers;
 public interface KeyringServiceObserver
         extends org.chromium.brave_wallet.mojom.KeyringServiceObserver, WalletMojoObserverBase {
     @Override
-    default void keyringCreated() {}
+    default void keyringCreated(String keyring_id) {}
 
     @Override
-    default void keyringRestored() {}
+    default void keyringRestored(String keyring_id) {}
 
     @Override
     default void keyringReset() {}
