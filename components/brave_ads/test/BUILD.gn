@@ -15,6 +15,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/vendor/bat-native-ads/src/bat/ads/ad_event_history_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/account_unittest.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/account_util_unittest.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/confirmations/confirmations_delegate_mock.cc",
+    "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/confirmations/confirmations_delegate_mock.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/confirmations/confirmations_unittest_util.cc",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/confirmations/confirmations_unittest_util.h",
     "//brave/vendor/bat-native-ads/src/bat/ads/internal/account/statement/ads_received_util_unittest.cc",

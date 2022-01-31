@@ -123,7 +123,7 @@ source_set("ads") {
     "src/bat/ads/internal/account/confirmations/confirmation_info.h",
     "src/bat/ads/internal/account/confirmations/confirmations.cc",
     "src/bat/ads/internal/account/confirmations/confirmations.h",
-    "src/bat/ads/internal/account/confirmations/confirmations_observer.h",
+    "src/bat/ads/internal/account/confirmations/confirmations_delegate.h",
     "src/bat/ads/internal/account/confirmations/confirmations_state.cc",
     "src/bat/ads/internal/account/confirmations/confirmations_state.h",
     "src/bat/ads/internal/account/statement/ads_received_util.cc",
