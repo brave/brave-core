@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") är inte tillåtet i Brave.</translation>
 <translation id="6786747875388722282">Tillägg</translation>
 <translation id="984275831282074731">Betalningsmetoder</translation>
-<translation id="3699882589215410581">Installera och kör Wildwine</translation>
+<translation id="1990886731975529483">Installera och kör Google Wildwine</translation>
 <translation id="8926389886865778422">Fråga inte igen.</translation>
 <translation id="5249433283143453448">Använd komponenten Widevine digital rights management (DRM) för att se skyddad strömmande video och annat innehåll i webbläsaren.</translation>
 <translation id="6241402707160226266">Privat fönster med Tor</translation>
 <translation id="8762452230727230396">Tor gömmer din IP-adress från sidorna du besöker.</translation>
 <translation id="1369311132025451972">Omdirigera .onion-webbplatser automatiskt</translation>
 <translation id="2843777623071353503">Brave öppnar ett Tor-fönster med webbplatsen när onion-tjänsten eller en .onion-domän är tillgänglig.</translation>
-<translation id="8053096063396012732">Installera Widevine</translation>
-<translation id="4840334696217618631">Starta om webbläsaren för att aktivera Widevine</translation>
-<translation id="8410111618231938546">Google Widevine är ett stycke kod för Digital Rights Management (DRM) som vi på Brave Software varken äger eller kan inspektera. Koden för Google Wideline laddas från Googles servrar, inte från våra servrar. Den laddas endast när du aktiverar det här valet. Vi avråder från användning av DRM, men vi respekterar användarens val och tillstår att vissa Brave-användare vill använda tjänster som kräver detta.
-
-Genom att installera detta tillägg godkänner du användarvillkoren för Google Widevine. Du accepterar att Brave inte kan hållas ansvarig för skada eller förlust till följd av din användning av Google Widevine.</translation>
+<translation id="4900351245762303149">Installera Google Widevine</translation>
+<translation id="2313383941300459392">Starta om webbläsaren för att aktivera Google Widevine</translation>
+<translation id="2200626478572277092">Widevine behövs ibland för att spela upp media på en webbsida. Det är ett Google-tillägg som läses in från Googles servrar, som Brave inte kan inspektera. Genom att installera godkänner du Googles användarvillkor.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Läs mer om Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> ber dig att</translation>
 <translation id="410351446219883937">Autospela</translation>
 <translation id="3218385319396786393">Autouppspelning blockerades på denna sida</translation>
 <translation id="4988333904713528597">Autospela alltid på <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="6583467242903731748">Fråga när en webbplats vill komma åt Ethereum-leverantörens API</translation>
 <translation id="7017590444693657895">Blockera webbplatser från att komma åt Ethereum-leverantörens API</translation>
 <translation id="8988939298652262600">Brave granskar inte tillägg gällande säkerhet och trygghet. Installera bara det här tillägget om du litar på utvecklaren.</translation>
+<translation id="933652931229970927">Skicka diagnostikrapporter automatiskt</translation>
+<translation id="1679356339067548863">Hjälp till att förbättra Braves produktstabilitet genom att automatiskt skicka diagnostikrapporter när Brave Browser kraschar eller fryser.</translation>
 <translation id="8081858229109418493">Profilnamn och ikon</translation>
 <translation id="6438096877646138757">Webbplatser som tar bort cookies när du stänger dem</translation>
 <translation id="2988792685798128092">Ta bort vid stängning av webbplats</translation>
@@ -42,7 +46,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="1692470335103807198">Få fler teman</translation>
 <translation id="2906510232093002459">Ordinarie bilder i Brave</translation>
 <translation id="2814998458708016836">Använd brett adressfält</translation>
-<translation id="6123134130710658846">Dölj Brave Rewards-knappen</translation>
+<translation id="6333347122924254968">Visa ikonen Brave-belöningar i adressfältet</translation>
 <translation id="1811404036171336214">Visa alltid bokmärken på en ny fliksida</translation>
 <translation id="1643029991199044105">Bläddra igenom de senast använda flikarna med Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5733490796524078528">Tipsknappar</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Ny flik</translation>
 <translation id="1988804048511540801">Ny fliksida visas</translation>
 <translation id="2970343821770026391">Instrumentpanel</translation>
@@ -89,12 +93,12 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="8612763432858587652">Stäng privat fönster</translation>
 <translation id="8760415064721320867">Privat fönster med Tor</translation>
 <translation id="2055363275850890030">Privat fönster</translation>
-<translation id="8934172355414207733">Privat med Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Detta är ett privat fönster med Tor</translation>
 <translation id="1037341607922068025">Öppna ett privat fönster med Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Öppna i Tor</translation>
-<translation id="7643538479215207633">Öppna med IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publicera och hämta filer från IPFS</translation>
 <translation id="1672270084584211506">Onion tillgänglig</translation>
 <translation id="406832631167785034">Öppna med hjälp av .onion-adress</translation>
@@ -105,7 +109,6 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="4227945450504703638">Valt ljud</translation>
 <translation id="7895302206188277628">Länkat innehåll</translation>
 <translation id="3654831858282189202">Publicera med IPNS-nyckel</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Import utvald text till IPFS</translation>
 <translation id="6925604404524625582">Importera och kopiera länk till IPFS-ögonblicksbild</translation>
 <translation id="1434416574322382019">Nytt privat fönster med Tor</translation>
@@ -238,8 +241,8 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="6358469157239228181">Det här namnet kan inte användas</translation>
 <translation id="5761731140570209168">Lägg till ny peer-anslutningssträng</translation>
 <translation id="2082206983920804886">Rotera nyckel</translation>
-<translation id="2521133093532260474">Det går inte att stoppa den lokala noden</translation>
-<translation id="86879877003581729">Det går inte att starta den lokala noden</translation>
+<translation id="5078501082919354191">Kunde inte stoppa Braves lokala IPFS-nod</translation>
+<translation id="5687424953196903465">Det går inte att starta Braves lokal IPFS-nod</translation>
 <translation id="6476061084931271248">Starta om nod för att tillämpa ändringar</translation>
 <translation id="3754226427671882382">Starta om nod</translation>
 <translation id="949667118776341807">Rotera</translation>
@@ -254,17 +257,22 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="616058968889448209">IPFS-tjänsten har startfel, mer information finns tillgänglig på <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' nyckelimport misslyckades</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' nyckelexport misslyckades</translation>
-<translation id="8860039076160511438">Återställ plånbok</translation>
+<translation id="4993345308607970390">Återställ Brave Wallet</translation>
+<translation id="5975930666279943472">Rensa plånbokstransaktion och nonce-information</translation>
+<translation id="5693968582510626466">Att rensa transaktioner kan vara användbart för utvecklare eller vid rensning av status på en lokal server</translation>
 <translation id="6369495274982305511">Vill du återställa plånboken? Om din plånbok inte säkerhetskopieras kommer du att förlora alla kontouppgifter (inklusive eventuella associerade medel) om du återställer. Skriv in "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
+<translation id="9216386092464743272">Är du säker på att du vill återställa hela din plånbokstransaktion och nonce-information? Det här alternativet används oftast av utvecklare som kör en lokal testserver. Skriv "<ph name="CONFIRMATION_PHRASE"/>" för att bekräfta.</translation>
+<translation id="3752403403443723332">Din plånbok har återställts.</translation>
+<translation id="594766067816395072">Din plånboks transaktionsinformation har återställts.</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="8275038454117074363">Importera</translation>
 <translation id="3654980960391973513">Skapa</translation>
 <translation id="5531501313997312487">Starta nod</translation>
 <translation id="9170907049676078643">Metod för att lösa IPFS-resurser</translation>
 <translation id="1327977588028644528">Gateway</translation>
-<translation id="80225669816651290">Lokal nod</translation>
+<translation id="1195880978080389104">Braves lokala IPFS-nod</translation>
 <translation id="4927734062756955434">IPFS publik gateway-adress</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Läs mer<ph name="END_LINK_MPL"/> om IPFS-lokal nod och gateway-integritetsskydd.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Läs mer<ph name="END_LINK_MPL"/> om Braves lokala IPFS-nod och gateway-integritetsskydd.</translation>
 <translation id="8425213833346101688">Ändra</translation>
 <translation id="557281710253742286">Ställ in IPFS gateway</translation>
 <translation id="8571837315037233299">Gateway-adress</translation>
@@ -273,7 +281,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7703184801853248830">Ogiltig gateway-adress</translation>
 <translation id="7690058578502751948">Endast en giltig IPFS-gateway med Origin-isolering aktiverad kan användas i Brave</translation>
 <translation id="585868419599255817">IPFS public gateway fallback</translation>
-<translation id="207763736230883589">Återgår automatiskt till publik IPFS gateway om din lokala nod inte kan nås.</translation>
+<translation id="2618080188892567155">Återgår automatiskt till offentlig IPFS gateway om Braves lokala IPFS-nod inte kan nås.</translation>
 <translation id="4107552920076294723">Omdirigera IPFS-resurser till konfigurerad IPFS gateway</translation>
 <translation id="6494857428933042381">Använder konfigurerad gateway automatiskt för IPFS-lösningar när en IPFS-gatewayresurs påträffas.</translation>
 <translation id="8655170717758778983">Omdirigera automatiskt till IPFS-sidor via DNSLink när det är möjligt</translation>
@@ -346,10 +354,9 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="780301667611848630">Nej tack</translation>
 <translation id="5039804452771397117">Tillåt</translation>
 <translation id="7053983685419859001">Blockera</translation>
-<translation id="7815301689257843278">Vill du skicka kraschrapporter automatiskt så att Brave kan förhindra att problemet händer igen?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> quit unexpectedly.</translation>
 <translation id="1324417023773393937">Brave-webbläsaren</translation>
-<translation id="1068069727470515940">Du kan ändra <ph name="SETTING_TEXT"/> igen när som helst.</translation>
+<translation id="7276554663454265692">Du kan ändra <ph name="SETTING_TEXT"/> när som helst i webbläsarens inställningar.</translation>
 <translation id="6873781976650514089">den här inställningen</translation>
 <translation id="6040143037577758943">Stäng</translation>
 <translation id="5600566490506283344">Brave-annonsavisering</translation>
@@ -446,7 +453,6 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="2487558607408469181">Blockera explorer URL:er</translation>
 <translation id="6301398959353668507">Fältet kan inte vara tomt.</translation>
 <translation id="7504462451153306677">Ogiltigt format, kedjans id är ett positivt tal</translation>
-<translation id="8325036459845654666">Nätverket har redan lagts till.</translation>
 <translation id="650071759190249039">Internt fel, kunde inte lägga till nätverk.</translation>
 <translation id="868529041590572443">Fyll i all information om ursprungsvalutan</translation>
 <translation id="1062463687579789365">Anpassning av plånboksnätverk</translation>

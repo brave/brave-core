@@ -15,18 +15,20 @@
 <translation id="120759863357279975">Brave-এ <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")এর অনুমতি দেওয়া হয় না।</translation>
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="984275831282074731">পেমেন্ট পদ্ধতি</translation>
-<translation id="3699882589215410581">Widevine ইনস্টল করুন এবং চালান</translation>
+<translation id="1990886731975529483">Google Widevine ইনস্টল করুন এবং চালান</translation>
 <translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
 <translation id="5249433283143453448">ব্রাউজারে সুরক্ষিত ভিডিও স্ট্রিমিং এবং অন্যান্য সামগ্রী দেখতে ওয়াইডওয়াইন ডিজিটাল রাইটস ম্যানেজমেন্ট (ডিআরএম) উপাদান ব্যবহার করুন।</translation>
 <translation id="6241402707160226266">Tor এর সাথে ব্যক্তিগত উইন্ডো</translation>
 <translation id="8762452230727230396">Tor আপনার দেখা সাইটগুলি থেকে IP ঠিকানাগুলিকে লুকায়।</translation>
 <translation id="1369311132025451972">স্বয়ংক্রিয়ভাবে .onion সাইটগুলিতে পুনঃনির্দেশিত করে</translation>
 <translation id="2843777623071353503">যখন উপলব্ধ হবে তখন Brave ওয়েবসাইটের onion পরিষেবা বা Tor উইন্ডোতে .onion ডোমেন খুলবে।</translation>
-<translation id="8053096063396012732">Widevine ইনস্টল করুন</translation>
-<translation id="4840334696217618631">Widevine সক্রিয় করতে ব্রাউজার রিস্টার্ট করুন</translation>
-<translation id="8410111618231938546">Google Widevine একটি ডিজিটাল রাইটস ম্যানেজমেন্ট (DRM) কোড যা Brave সফ্টওয়ের মালিকানাধীন নয় এবং আমরা তা পরীক্ষাও করতে পারি না| Google Widevine Google সার্ভার থেকে লোড করা হয়, আমাদের সার্ভার থেকে নয়| এটি শুধু তখনি লোড করা হয় যখন আপনি এই বিকল্পটি সক্ষম করেন| আমরা DRM ব্যবহার করতে বারণ করি, কিন্তু আমরা ব্যবহারকারীদের পছন্দের সম্মান করি এবং স্বীকার করি যে কিছু Brave ব্যবহারকারী কিছু পরিষেবা ব্যবহার করতে চাইবেন যার জন্য এর প্রয়োজন হবে|
-
-এই এক্সটেনশনটি ইনস্টল করে আপনি Google Widevine এর ব্যবহারের শর্তাবলীর সাথে সম্মত হচ্ছেন| আপনি সম্মত হচ্ছেন আপনার Google Widevine এর ব্যবহারের সাথে সম্পর্কিত কোনো ক্ষতি বা লোকসানের জন্য Brave দায়ী নয়|</translation>
+<translation id="4900351245762303149">Google Widevine ইনস্টল করুন</translation>
+<translation id="2313383941300459392">Google Widevine সক্রিয় করতে ব্রাউজার রিস্টার্ট করুন</translation>
+<translation id="2200626478572277092">একটি ওয়েবপেজে মিডিয়া প্লে করতে কখনও কখনও Widevine প্রয়োজন হয়। এটি Google সার্ভারগুলো থেকে লোড হওয়া Google এক্সটেনশন, যা Brave খুঁটিয়ে দেখতে পারে না। ইনস্টল করে, আপনি Google এর ব্যবহারের শর্তাবলীতে সম্মত হবেন।</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>।
+অথবা <ph name="SETTINGS_EXTENIONS_LINK"/>-এ পরে পরিবর্তন করুন।</translation>
+<translation id="6229752134959014186">Widevine সম্পর্কে আরও জানুন</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> আপনাকে অ্যাড্রেস বারে</translation>
 <translation id="410351446219883937">স্বয়ংক্রিয়ভাবে চালান</translation>
 <translation id="3218385319396786393">এই পৃষ্ঠাতে স্বয়ংক্রিয়ভাবে চালানো  ব্লক করা হয়েছে</translation>
 <translation id="4988333904713528597">সর্বদা <ph name="HOST"/> এ স্বতঃ চলার অনুমতি দিন</translation>
@@ -35,6 +37,8 @@
 <translation id="6583467242903731748">একটি সাইট ইথেরিয়াম সরবরাহকারী API অ্যাক্সেস করতে চাইলে তা জিজ্ঞেস করে</translation>
 <translation id="7017590444693657895">ইথেরিয়াম সরবরাহকারী API অ্যাক্সেস করা থেকে সাইটগুলিকে ব্লক করুন</translation>
 <translation id="8988939298652262600">Brave সুরক্ষা এবং নিরাপত্তার জন্য এক্সটেনশনগুলো পর্যালোচনা করে না। আপনি ডেভেলপারকে বিশ্বাস করলেই শুধুমাত্র এই এক্সটেনশনটি ইনস্টল করুন।</translation>
+<translation id="933652931229970927">স্বয়ংক্রিয়ভাবে ক্র্যাশ রিপোর্টগুলো পাঠায়</translation>
+<translation id="1679356339067548863">Brave ব্রাউজার ক্র্যাশ করলে বা আটকে গেলে স্বয়ংক্রিয়ভাবে সমস্যা নির্ণয়ের রিপোর্টগুলো পাঠিয়ে Brave এর পণ্যের স্থিতিশীলতা উন্নত করতে সহায়তা করুন।</translation>
 <translation id="8081858229109418493">প্রোফাইলের নাম ও আইকন</translation>
 <translation id="6438096877646138757">আপনি সাইট বন্ধ করে দিলে সেগুলো কুকি সাফ করে</translation>
 <translation id="2988792685798128092">সাইট বন্ধ করে সাফ করুন</translation>
@@ -42,7 +46,7 @@
 <translation id="1692470335103807198">আরো থিম পান</translation>
 <translation id="2906510232093002459">Brave ডিফল্ট ছবিসমূহ</translation>
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
-<translation id="6123134130710658846">Brave পুরস্কারের বোতাম লুকান</translation>
+<translation id="6333347122924254968">ঠিকানা বারে Brave পুরস্কারসমূহ দেখান</translation>
 <translation id="1811404036171336214">বুকমার্কগুলি সবর্দা নতুন ট্যাব পৃষ্ঠাতে দেখান</translation>
 <translation id="1643029991199044105">Ctrl-Tab দিয়ে অতি সম্প্রতি ব্যবহৃত ট্যাবগুলিতে ঘুরে বেরান</translation>
 <translation id="1013121820689882118">স্পীডরিডার</translation>
@@ -76,7 +80,7 @@
 <translation id="5733490796524078528">ইঙ্গিত বোতাম</translation>
 <translation id="3905400818082450708">রেড্ডিট</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">নতুন ট্যাব পৃষ্ঠা</translation>
 <translation id="1988804048511540801">নতুন ট্যাব পেজ দেখায়</translation>
 <translation id="2970343821770026391">ড্যাশবোর্ড</translation>
@@ -89,12 +93,12 @@
 <translation id="8612763432858587652">প্রাইভেট উইন্ডো থেকে প্রস্থান করুন</translation>
 <translation id="8760415064721320867">Tor এর সাথে ব্যক্তিগত উইন্ডো</translation>
 <translation id="2055363275850890030">ব্যক্তিগত উইন্ডো</translation>
-<translation id="8934172355414207733">টরের সাথে ব্যক্তিগত</translation>
+<translation id="5410152065859052603">টর</translation>
+<translation id="7897433216002294926">টর <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">এটি টর সহ একটি ব্যক্তিগত উইন্ডো</translation>
 <translation id="1037341607922068025">টর দিয়ে প্রাইভেট উইন্ডো খুলুন</translation>
-<translation id="5410152065859052603">টর</translation>
 <translation id="1725356094208762656">Tor এ খুলুন</translation>
-<translation id="7643538479215207633">IPFS ব্যবহার করে খুলুন</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">IPFS থেকে ফাইলগুলো প্রকাশ এবং পুনরুদ্ধার করুন</translation>
 <translation id="1672270084584211506">অনিয়ন উপলব্ধ</translation>
 <translation id="406832631167785034">.onion ঠিকানা ব্যবহার করে খুলুন</translation>
@@ -105,7 +109,6 @@
 <translation id="4227945450504703638">নির্বাচিত অডিও</translation>
 <translation id="7895302206188277628">লিঙ্ক করা বিষয়বস্তু</translation>
 <translation id="3654831858282189202">IPNS কি-র সাথে পাবলিশ করুন</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">নির্বাচিত পাঠ্য IPFS-এ আমদানি করুন</translation>
 <translation id="6925604404524625582">ইমপোর্ট করুন এবং IPFS স্ন্যাপশট-এ লিংক কপি করুন</translation>
 <translation id="1434416574322382019">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
@@ -238,8 +241,8 @@
 <translation id="6358469157239228181">এই নামটি ব্যবহার করা যাবে না</translation>
 <translation id="5761731140570209168">নতুন পীয়ার সংযোগ স্ট্রিং যোগ করা</translation>
 <translation id="2082206983920804886">ঘোরানোর কী</translation>
-<translation id="2521133093532260474">স্থানীয় নোড বন্ধ করতে অক্ষম</translation>
-<translation id="86879877003581729">স্থানীয় নোড লঞ্চ করতে অক্ষম</translation>
+<translation id="5078501082919354191">Brave স্থানীয় IPFS নোড বন্ধ করতে অক্ষম</translation>
+<translation id="5687424953196903465">Brave স্থানীয় IPFS নোড লঞ্চ করতে অক্ষম</translation>
 <translation id="6476061084931271248">পরিবর্তনগুলি প্রয়োগ করার জন্য নোড রিস্টার্ট করুন</translation>
 <translation id="3754226427671882382">নোড রিস্টার্ট করুন</translation>
 <translation id="949667118776341807">ঘোরান</translation>
@@ -254,17 +257,22 @@
 <translation id="616058968889448209">IPFS পরিষেবা লঞ্চ করার ত্রুটি, <ph name="BEGIN_LINK"/>ডায়াগনস্টিক পৃষ্ঠাতে<ph name="END_LINK"/> আরো তথ্য পাওয়া যাবে</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' কি ইমপোর্ট করা ব্যর্থ হয়েছে</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' কী রপ্তানী করা ব্যর্থ হয়েছে</translation>
-<translation id="8860039076160511438">ওয়ালেট রিসেট করুন</translation>
+<translation id="4993345308607970390">Brave ওয়ালেট রিসেট করুন</translation>
+<translation id="5975930666279943472">ওয়ালেটের লেনদেন এবং বর্তমান তথ্য সাফ করুন</translation>
+<translation id="5693968582510626466">লেনদেনগুলো সাফ করা ডেভেলপারদের জন্য বা একটি স্থানীয় সার্ভারে অবস্থা সাফ করার জন্য উপকারী হতে পারে</translation>
 <translation id="6369495274982305511">আপনি কি আপনার ওয়ালেট রিসেট করার বিষয়ে নিশ্চিত? যদি আপনার ওয়ালেটের ব্যাক আপ নেওয়া না হয় তাহলে রিসেট করার ফলে আপনি সমস্ত অ্যাকাউন্টের ডেটা (যেকোনো সংশ্লিষ্ট তহবিল সহ) হারাবেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
+<translation id="9216386092464743272">আপনি কি আপনার ওয়ালেটের সব লেনদেন এবং বর্তমান তথ্য রিসেট করার বিষয়ে নিশ্চিত? এই বিকল্পটি বেশিরভাগ ক্ষেত্রে একটি স্থানীয় টেস্ট সার্ভার চালনাকারী ডেভেলপাররা ব্যবহার করেন। নিশ্চিত করতে "<ph name="CONFIRMATION_PHRASE"/>" টাইপ করুন।</translation>
+<translation id="3752403403443723332">আপনার ওয়ালেট রিসেট করা হয়েছে।</translation>
+<translation id="594766067816395072">আপনার ওয়ালেটের লেনদেন রিসেট করা হয়েছে।</translation>
 <translation id="1426410128494586442">হ্যাঁ</translation>
 <translation id="8275038454117074363">আমদানি</translation>
 <translation id="3654980960391973513">সৃষ্টি করুন</translation>
 <translation id="5531501313997312487">নোড চালু করুন</translation>
 <translation id="9170907049676078643">IPFS সংস্থানগুলি সমাধান করার পদ্ধতি</translation>
 <translation id="1327977588028644528">গেটওয়ে</translation>
-<translation id="80225669816651290">স্থানীয় নোড</translation>
+<translation id="1195880978080389104">Brave স্থানীয় IPFS নোড</translation>
 <translation id="4927734062756955434">IPFS পাবলিক গেটওয়ে ঠিকানা</translation>
-<translation id="3399481770463167943">IPFS স্থানীয় নোড এবং গেটওয়ে গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK_MPL"/>আরো জানুন<ph name="END_LINK_MPL"/>।</translation>
+<translation id="2178402446227616866">Brave স্থানীয় IPFS নোড এবং গেটওয়ে গোপনীয়তার বিবেচ্য বিষয়গুলো সম্পর্কে <ph name="BEGIN_LINK_MPL"/>আরো জানুন<ph name="END_LINK_MPL"/>।</translation>
 <translation id="8425213833346101688">পরিবর্তন</translation>
 <translation id="557281710253742286">IPFS গেটওয়ে সেট করুন</translation>
 <translation id="8571837315037233299">গেটওয়ের ঠিকানা</translation>
@@ -273,7 +281,7 @@
 <translation id="7703184801853248830">অবৈধ গেটওয়ে ঠিকানা</translation>
 <translation id="7690058578502751948">Brave-এ শুধুমাত্র উত্স আইসোলেসন সহ একটি বৈধ IPFS গেটওয়ে সক্ষম আছে</translation>
 <translation id="585868419599255817">IPFS পাবলিক গেটওয়ে ফলব্যাক</translation>
-<translation id="207763736230883589">আপনার স্থানীয় নোড পৌঁছাতে না পারলে স্বয়ংক্রিয়ভাবে সর্বজনীন IPFS গেটওয়েতে ফিরে যান।</translation>
+<translation id="2618080188892567155">আপনার Brave স্থানীয় IPFS নোড পৌঁছাতে না পারলে স্বয়ংক্রিয়ভাবে সর্বজনীন IPFS গেটওয়েতে ফিরে যান।</translation>
 <translation id="4107552920076294723">কনফিগার করা  IPFS গেটওয়েতে  IPFS সংস্থানগুলি পুনর্নির্দেশ করুন</translation>
 <translation id="6494857428933042381">যখন একটি IPFS গেটওয়ে সংস্থান সম্মুখীন হয় তখন স্বয়ংক্রিয়ভাবে IPFS রেজোলিউশনের জন্য কনফিগার করা গেটওয়ে ব্যবহার করে।</translation>
 <translation id="8655170717758778983">যখন সম্ভব DNSLink এর মাধ্যমে IPFS পেজগুলোতে স্বয়ংক্রিয়ভাবে পুনঃনির্দেশ (রিডাইরেক্ট) করুন</translation>
@@ -346,10 +354,9 @@
 <translation id="780301667611848630">না থাক</translation>
 <translation id="5039804452771397117">অনুমতি দিন</translation>
 <translation id="7053983685419859001">ব্লক করুন</translation>
-<translation id="7815301689257843278">ক্র্যাশ রিপোর্ট স্বয়ংক্রিয়ভাবে পাঠান যাতে এই Brave এই সমস্যাটি আবার না হওয়া আটকাতে পারে?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> অপ্রত্যাশিতভাবে বেরিয়ে গেছে।</translation>
 <translation id="1324417023773393937">Brave ব্রাউজার</translation>
-<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> আপনি যে কোনও সময় আবার পরিবর্তন করতে পারবেন।</translation>
+<translation id="7276554663454265692">ব্রাউজার সেটিংসে যে কোনও সময় আপনি <ph name="SETTING_TEXT"/> পরিবর্তন করতে পারবেন।</translation>
 <translation id="6873781976650514089">এই সেটিংটি</translation>
 <translation id="6040143037577758943">বন্ধ</translation>
 <translation id="5600566490506283344">Brave অ্যাড বিজ্ঞপ্তি</translation>
@@ -446,7 +453,6 @@
 <translation id="2487558607408469181">এক্সপ্লোরার URLগুলি ব্লক করুন</translation>
 <translation id="6301398959353668507">এই ক্ষেত্রটি খালি রাখা যাবে না।</translation>
 <translation id="7504462451153306677">অবৈধ ফরম্যাট, চেন আইডিটি একটি পজিটিভ নম্বর</translation>
-<translation id="8325036459845654666">এই নেটওয়ার্ক ইতিমধ্যে যোগ করা হয়েছে।</translation>
 <translation id="650071759190249039">অভ্যন্তরীণ ত্রুটি, নেটওয়ার্ক যোগ করা যায়নি।</translation>
 <translation id="868529041590572443">দেশীয় মুদ্রা সম্পর্কিত সমস্ত তথ্য পূরণ করুন</translation>
 <translation id="1062463687579789365">ওয়ালেট নেটওয়ার্ক কাস্টমাইজেশন</translation>

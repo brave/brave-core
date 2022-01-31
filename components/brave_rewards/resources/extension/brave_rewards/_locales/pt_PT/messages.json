@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Atualizar Estado",
+    "message": "Atualizar",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Recompensas Brave está a ter um problema. Por favor, tente novamente mais tarde.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Verificar estado",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Parabéns! As suas recompensas de $month$ chegaram!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "As suas $amount$ recompensas de $month$ chegarão em $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "As suas $amount$ recompensas de $month$ estão a caminho. Fique de olho!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Ir para a minha conta $provider$ ",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Terminar sessão de $provider$",
+    "message": "Desligar de $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Pendente",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "Pagamento de $amount$ inicia o processamento em $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Rewards do Ads",

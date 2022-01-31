@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") tidak diizinkan di Brave.</translation>
 <translation id="6786747875388722282">Ekstensi</translation>
 <translation id="984275831282074731">Metode pembayaran</translation>
-<translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
+<translation id="1990886731975529483">Instal dan jalankan Google Widevine</translation>
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="5249433283143453448">Gunakan komponen manajemen hak digital (DRM) Widevine untuk melihat siaran video yang dilindungi dan konten lainnya di peramban.</translation>
 <translation id="6241402707160226266">Jendela privat dengan Tor</translation>
 <translation id="8762452230727230396">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi.</translation>
 <translation id="1369311132025451972">Secara otomatis mengalihkan situs .onion</translation>
 <translation id="2843777623071353503">Brave akan membuka layanan onion dari situs web saat tersedia atau domain .onion di jendela Tor.</translation>
-<translation id="8053096063396012732">Pasang Widevine</translation>
-<translation id="4840334696217618631">Mulai ulang peramban untuk mengaktifkan Widevine</translation>
-<translation id="8410111618231938546">Google Widevine adalah sepotong kode Digital Rights Management (DRM) yang tidak kami miliki dan tidak bisa kami periksa di Brave Software. Kode Google Widevine dimuat dari server Google, bukan dari server kami. Kode ini hanya dimuat jika Anda mengaktifkan pilihan ini. Kami tidak menyarankan penggunaan DRM, tetapi kami menghormati pilihan pengguna dan mengakui bahwa beberapa pengguna Brave ingin menggunakan layanan yang memerlukannya.
-
-Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Widevine. Anda setuju bahwa Brave tidak bertanggung jawab untuk setiap kerusakan atau kerugian sehubungan dengan penggunaan Google Widevine.</translation>
+<translation id="4900351245762303149">Instal Google Widevine</translation>
+<translation id="2313383941300459392">Nyalakan ulang peramban untuk mengaktifkan Google Widevine</translation>
+<translation id="2200626478572277092">Widevine terkadang diperlukan untuk memutar media pada halaman web. Ini merupakan ekstensi Google yang dimuat dari peladen Google, yang tidak dapat diperiksa oleh Brave. Dengan menginstalnya, berarti Anda menyetujui syarat penggunaan Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Atau dapat mengubahnya nanti di <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Pelajari lebih lanjut tentang Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> meminta Anda untuk</translation>
 <translation id="410351446219883937">Putar otomatis</translation>
 <translation id="3218385319396786393">Putar otomatis pada laman ini diblokir</translation>
 <translation id="4988333904713528597">Selalu izinkan putar otomatis di <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="6583467242903731748">Tanyakan jika sebuah situs ingin mengakses API penyedia Ethereum</translation>
 <translation id="7017590444693657895">Blokir situs agar tidak mengakses API penyedia Ethereum</translation>
 <translation id="8988939298652262600">Brave tidak meninjau keamanan dan keselamatan ekstensi. Hanya instal ekstensi ini jika Anda percaya pada pengembangnya.</translation>
+<translation id="933652931229970927">Mengirim laporan diagnostik secara otomatis</translation>
+<translation id="1679356339067548863">Membantu meningkatkan stabilitas produk Brave dengan secara otomatis mengirim laporan diagnostik saat Peramban Brave bermasalah atau macet.</translation>
 <translation id="8081858229109418493">Nama profil dan ikon</translation>
 <translation id="6438096877646138757">Situs yang menghapus cookie saat Anda menutupnya</translation>
 <translation id="2988792685798128092">Hapus saat situs ditutup</translation>
@@ -42,7 +46,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="1692470335103807198">Dapatkan tema lainnya</translation>
 <translation id="2906510232093002459">Gambar default Brave</translation>
 <translation id="2814998458708016836">Gunakan bilah alamat lebar</translation>
-<translation id="6123134130710658846">Sembunyikan tombol Brave Rewards</translation>
+<translation id="6333347122924254968">Tampilkan ikon Brave Rewards pada bilah alamat</translation>
 <translation id="1811404036171336214">Selalu tampilkan bookmark di halaman tab baru</translation>
 <translation id="1643029991199044105">Telusuri tab yang paling sering digunakan dengan Ctrl-Tab</translation>
 <translation id="1013121820689882118">Pembaca Kecepatan</translation>
@@ -76,7 +80,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="5733490796524078528">Tombol tip</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Halaman Tab Baru</translation>
 <translation id="1988804048511540801">Halaman tab baru ditampilkan</translation>
 <translation id="2970343821770026391">Dasbor</translation>
@@ -89,12 +93,12 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8612763432858587652">Keluar Dari Jendela Pribadi</translation>
 <translation id="8760415064721320867">Jendela Pribadi dengan Tor</translation>
 <translation id="2055363275850890030">Jendela Pribadi</translation>
-<translation id="8934172355414207733">Pribadi dengan Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Ini adalah jendela pribadi dengan Tor</translation>
 <translation id="1037341607922068025">Buka Jendela Pribadi dengan Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Buka di Tor</translation>
-<translation id="7643538479215207633">Buka memakai IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publikasikan dan ambil berkas dari IPFS</translation>
 <translation id="1672270084584211506">Onion Tersedia</translation>
 <translation id="406832631167785034">Buka dengan menggunakan alamat .onion</translation>
@@ -105,7 +109,6 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="4227945450504703638">Audio yang dipilih</translation>
 <translation id="7895302206188277628">Konten ditautkan</translation>
 <translation id="3654831858282189202">Publikasikan dengan kunci IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Impor Teks yang dipilih ke IPFS</translation>
 <translation id="6925604404524625582">Impor dan Salin Tautan ke Sekilas Info tentang IPFS</translation>
 <translation id="1434416574322382019">Jendela Pribadi dengan Tor Baru</translation>
@@ -238,8 +241,8 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="6358469157239228181">Nama ini tidak dapat digunakan</translation>
 <translation id="5761731140570209168">Tambahkan string koneksi pihak lain yang baru</translation>
 <translation id="2082206983920804886">Putar kunci</translation>
-<translation id="2521133093532260474">Tidak dapat menghentikan simpul lokal</translation>
-<translation id="86879877003581729">Tidak dapat meluncurkan simpul lokal</translation>
+<translation id="5078501082919354191">Tidak dapat menghentikan node IPFS lokal Brave</translation>
+<translation id="5687424953196903465">Tidak dapat meluncurkan node IPFS lokal Brave</translation>
 <translation id="6476061084931271248">Mulai ulang simpul untuk menerapkan perubahan</translation>
 <translation id="3754226427671882382">Mulai ulang simpul</translation>
 <translation id="949667118776341807">Putar</translation>
@@ -254,17 +257,22 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="616058968889448209">Kesalahan peluncuran layanan IPFS, informasi lebih lanjut tersedia di <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Impor kunci '<ph name="KEY_NAME"/>' telah gagal</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' key export failed</translation>
-<translation id="8860039076160511438">Atur Ulang Wallet</translation>
+<translation id="4993345308607970390">Atur Ulang Brave Wallet</translation>
+<translation id="5975930666279943472">Hapus transaksi dompet dan informasi saat ini</translation>
+<translation id="5693968582510626466">Menghapus transaksi dapat berguna bagi pengembang atau saat menghapus kondisi pada peladen lokal</translation>
 <translation id="6369495274982305511">Anda yakin ingin mengatur ulang dompet Anda? Jika dompet Anda tidak dicadangkan, mengatur ulang akan menyebabkan Anda kehilangan semua data akun (termasuk dana terkait). Ketik "<ph name="CONFIRMATION_PHRASE"/>" untuk mengonfirmasi.</translation>
+<translation id="9216386092464743272">Anda yakin ingin mengatur ulang semua informasi transaksi dompet dan informasi Anda saat ini? Pilihan ini biasanya digunakan para pengembang yang menjalankan peladen percobaan lokal. Ketik "<ph name="CONFIRMATION_PHRASE"/>" untuk mengonfirmasi.</translation>
+<translation id="3752403403443723332">Dompet Anda telah diatur ulang</translation>
+<translation id="594766067816395072">Informasi transaksi dompet Anda telah diatur ulang.</translation>
 <translation id="1426410128494586442">Ya</translation>
 <translation id="8275038454117074363">Impor</translation>
 <translation id="3654980960391973513">Hasilkan</translation>
 <translation id="5531501313997312487">Mulai simpul</translation>
 <translation id="9170907049676078643">Metode untuk mengatasi sumber daya IPFS</translation>
 <translation id="1327977588028644528">Gerbang</translation>
-<translation id="80225669816651290">Node lokal</translation>
+<translation id="1195880978080389104">Node IPFS lokal Brave</translation>
 <translation id="4927734062756955434">Alamat gateway publik IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Pelajari Lebih Lanjut<ph name="END_LINK_MPL"/> tentang simpul lokal IPFS dan pertimbangan privasi gerbang.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Pelajari lebih lanjut<ph name="END_LINK_MPL"/> tentang node IPFS lokal Brave dan pertimbangan privasi gerbang.</translation>
 <translation id="8425213833346101688">Ubah</translation>
 <translation id="557281710253742286">Atur gateway IPFS</translation>
 <translation id="8571837315037233299">Alamat gateway</translation>
@@ -273,7 +281,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7703184801853248830">Alamat gateway tidak sah</translation>
 <translation id="7690058578502751948">Hanya gerbang IPFS yang valid dengan isolasi Asal aktif yang dapat digunakan di Brave</translation>
 <translation id="585868419599255817">Gateway publik IPFS fallback</translation>
-<translation id="207763736230883589">Otomatis kembali ke gateway IPFS publik jika nodus lokal Anda tidak dapat dijangkau.</translation>
+<translation id="2618080188892567155">Secara otomatis kembali ke gerbang IFFS publik jika node IPFS lokal Brave Anda tidak dapat tersambung.</translation>
 <translation id="4107552920076294723">Alihkan sumber daya IPFS ke gateway IPFS yang dikonfigurasi</translation>
 <translation id="6494857428933042381">Secara otomatis menggunakan gateway terkonfigurasi untuk resolusi IPFS saat menemui sumber daya gateway IPFS.</translation>
 <translation id="8655170717758778983">Secara otomatis mengalihkan ke halaman IPFS melalui DNSLink jika memungkinkan</translation>
@@ -346,10 +354,9 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="780301667611848630">Lain kali</translation>
 <translation id="5039804452771397117">Izinkan</translation>
 <translation id="7053983685419859001">Blokir</translation>
-<translation id="7815301689257843278">Kirimkan laporan kegagalan secara otomatis sehingga Brave dapat mencegah masalah ini agar tidak terjadi lagi?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> keluar secara tidak terduga.</translation>
 <translation id="1324417023773393937">Peramban Brave</translation>
-<translation id="1068069727470515940">Anda dapat mengubah <ph name="SETTING_TEXT"/> lagi kapan saja.</translation>
+<translation id="7276554663454265692">Anda dapat mengubah <ph name="SETTING_TEXT"/> kapan saja di pengaturan peramban.</translation>
 <translation id="6873781976650514089">pengaturan ini</translation>
 <translation id="6040143037577758943">Tutup</translation>
 <translation id="5600566490506283344">Notifikasi Brave Ad</translation>
@@ -446,7 +453,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2487558607408469181">Blokir URL penjelajah</translation>
 <translation id="6301398959353668507">Bidang ini tidak dapat dibiarkan kosong.</translation>
 <translation id="7504462451153306677">Format tidak valid, id rantai ini adalah angka positif</translation>
-<translation id="8325036459845654666">Jaringan ini telah ditambahkan.</translation>
 <translation id="650071759190249039">Kesalahan Internal, tidak dapat menambahkan jaringan.</translation>
 <translation id="868529041590572443">Silakan mengisi semua informasi tentang mata uang asal</translation>
 <translation id="1062463687579789365">Kustomisasi jaringan dompet</translation>

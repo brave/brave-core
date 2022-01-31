@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Obnoviť stav",
+    "message": "Obnoviť",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave rewards majú nejaký problém. Prosím, skúste to znovu.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Skontrolovať stav",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Blahoželáme! Dorazili vaše odmeny za mesiac $month$!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Vaše odmeny vo výške $amount$ za mesiac $month$ dorazia o $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Vaše odmeny vo výške $amount$ za mesiac $month$ sú na ceste. Majte oči otvorené!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Prejsť na môj účet $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Odhlásiť od $provider$",
+    "message": "Odpojiť od $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Prebieha",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "Výplata $amount$ sa začne spracovávať o $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Odmeny za reklamy",

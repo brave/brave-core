@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "刷新状态",
+    "message": "刷新",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave 奖励出现了问题。请稍后再试。",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "检查状态",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "恭喜！您的$month$奖励已到账！",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "您的 $amount$ $month$月奖励即将于 $days$ 天内到账",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "您的 $amount$ $month$ 月奖励即将到账。请注意查收！",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "转到我的 $provider$ 帐户",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "从 $provider$ 退出登录",
+    "message": "断开 $provider$ 连接",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "等待审批",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ 支付将在 $days$内开始处理",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "广告奖励",
