@@ -44,16 +44,13 @@ Account::Account(privacy::TokenGeneratorInterface* token_generator)
       refill_unblinded_tokens_(
           std::make_unique<RefillUnblindedTokens>(token_generator)),
       wallet_(std::make_unique<Wallet>()) {
-  confirmations_->AddObserver(this);
-
+  confirmations_->set_delegate(this);
   issuers_->set_delegate(this);
   redeem_unblinded_payment_tokens_->set_delegate(this);
   refill_unblinded_tokens_->set_delegate(this);
 }
 
-Account::~Account() {
-  confirmations_->RemoveObserver(this);
-}
+Account::~Account() = default;
 
 void Account::AddObserver(AccountObserver* observer) {
   DCHECK(observer);
@@ -226,6 +223,18 @@ void Account::NotifyStatementOfAccountsDidChange() const {
   }
 }
 
+void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
+  TopUpUnblindedTokens();
+}
+
+void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
+  TopUpUnblindedTokens();
+}
+
 void Account::OnDidGetIssuers(const IssuersInfo& issuers) {
   const absl::optional<IssuerInfo>& issuer_optional =
       GetIssuerForType(issuers, IssuerType::kPayments);
@@ -252,18 +261,6 @@ void Account::OnDidGetIssuers(const IssuersInfo& issuers) {
 
 void Account::OnFailedToGetIssuers() {
   BLOG(0, "Failed to get issuers");
-}
-
-void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(confirmation.IsValid());
-
-  TopUpUnblindedTokens();
-}
-
-void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(confirmation.IsValid());
-
-  TopUpUnblindedTokens();
 }
 
 void Account::OnDidRedeemUnblindedPaymentTokens(
