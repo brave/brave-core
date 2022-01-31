@@ -5,9 +5,17 @@
 
 #include "content/public/common/user_agent.h"
 
+namespace content {
+std::string BuildModelInfo() {
+  return std::string();
+}
+}  // namespace content
+
 #define BRAVE_GET_ANDROID_OS_INFO \
   include_android_model = IncludeAndroidModel::Exclude;
+#define BuildModelInfo BuildModelInfo_ChromiumImpl
 
 #include "src/content/common/user_agent.cc"
 
+#undef BuildModelInfo_ChromiumImpl
 #undef BRAVE_GET_ANDROID_OS_INFO
