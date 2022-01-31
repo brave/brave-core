@@ -83,22 +83,28 @@ OBJC_EXPORT
 /// @param passwordForm - Password Form to be removed from the store
 - (void)removeLogin:(IOSPasswordForm*)passwordForm;
 
-// /// Remove Selected Password Forms
-// - (void)removeAllLogins;
-
 /// Update List of Password Form
 /// @param newPasswordForm - Updated Password Form including primary keys
 /// @param oldPasswordForm - Old PasswordForm to be updated
 - (void)updateLogin:(IOSPasswordForm*)newPasswordForm
     oldPasswordForm:(IOSPasswordForm*)oldPasswordForm;
 
-/// Fetch Function that will return list of Password Forms
+/// Fetch Function that will return list of all Password Forms
 /// from saved password presenter
+/// @param completion - Block that notifies querying is finished with list of
+/// credentials
 - (void)getSavedLogins:(void (^)(NSArray<IOSPasswordForm*>*)) completion;
 
-- (NSArray<IOSPasswordForm*>*)getSavedLoginsForURL:(NSURL*)url
-                                        formScheme:
-                                            (PasswordFormScheme)formScheme;
+/// Fetch Function that will return list of all Password Forms
+/// from saved password presenter
+/// @param url - URL of the Password Forms that are queried
+/// @param formScheme - Form Scheme of the Password Form 
+/// @param completion - Block that notifies querying is finished with list of
+/// credentials
+- (void)getSavedLoginsForURL:(NSURL*)url
+                  formScheme:(PasswordFormScheme)formScheme
+                  completion:
+                      (void (^)(NSArray<IOSPasswordForm*>*))completion;
 @end
 
 NS_ASSUME_NONNULL_END
