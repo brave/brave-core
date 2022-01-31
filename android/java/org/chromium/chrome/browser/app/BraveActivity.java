@@ -225,6 +225,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private boolean mIsVerification;
     public CompositorViewHolder compositorView;
     public View inflatedSettingsBarLayout;
+    public boolean mLoadedFeed;
+    public boolean mComesFromNewTab;
+    public CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCards;
 
     @SuppressLint("VisibleForTests")
     public BraveActivity() {
@@ -371,27 +374,33 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         setLoadedFeed(false);
+        setComesFromNewTab(false);
         setNewsItemsFeedCards(null);
         BraveSearchEngineUtils.initializeBraveSearchEngineStates(getTabModelSelector());
     }
 
-    public boolean loadedFeed;
-    public CopyOnWriteArrayList<FeedItemsCard> newsItemsFeedCards;
-
     public boolean isLoadedFeed() {
-        return loadedFeed;
+        return mLoadedFeed;
     }
 
     public void setLoadedFeed(boolean loadedFeed) {
-        this.loadedFeed = loadedFeed;
+        this.mLoadedFeed = loadedFeed;
     }
 
     public CopyOnWriteArrayList<FeedItemsCard> getNewsItemsFeedCards() {
-        return newsItemsFeedCards;
+        return mNewsItemsFeedCards;
     }
 
     public void setNewsItemsFeedCards(CopyOnWriteArrayList<FeedItemsCard> newsItemsFeedCards) {
-        this.newsItemsFeedCards = newsItemsFeedCards;
+        this.mNewsItemsFeedCards = newsItemsFeedCards;
+    }
+
+    public void setComesFromNewTab(boolean comesFromNewTab) {
+        this.mComesFromNewTab = comesFromNewTab;
+    }
+
+    public boolean isComesFromNewTab() {
+        return mComesFromNewTab;
     }
 
     @Override
@@ -578,15 +587,18 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_NEWS)) {
             Tab tab = getActivityTab();
+
             if (tab != null) {
                 // if it's new tab add the brave news settings bar to the layout
                 if (tab != null && tab.getUrl().getSpec() != null
                         && UrlUtilities.isNTPUrl(tab.getUrl().getSpec())
                         && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
-                    inflateNewsSettingsBar();
+                    // inflateNewsSettingsBar();
                 } else {
                     removeSettingsBar();
                 }
+            } else {
+                removeSettingsBar();
             }
         }
 
@@ -663,15 +675,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         // get the main compositor view that we'll use to manipulate the views
         compositorView = findViewById(R.id.compositor_view_holder);
         ViewGroup controlContainer = findViewById(R.id.control_container);
-        if (findViewById(R.id.news_settings_bar) != null) {
-            return;
-        }
         if (compositorView != null && controlContainer != null) {
-            int[] coords = {0, 0};
-            controlContainer.getLocationOnScreen(coords);
-            int absoluteTop = coords[1];
-            int absoluteBottom = coords[1] + controlContainer.getHeight();
-
             LayoutInflater inflater = LayoutInflater.from(this);
             // inflate the settings bar layout
             View inflatedSettingsBarLayout =
@@ -679,9 +683,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             View newContentButtonLayout =
                     inflater.inflate(R.layout.brave_news_load_new_content, null);
             // add the bar to the layout stack
-            compositorView.addView(inflatedSettingsBarLayout, 2);
-            compositorView.addView(newContentButtonLayout, 3);
+            if (compositorView.findViewById(R.id.news_settings_bar) != null) {
+                inflatedSettingsBarLayout = compositorView.findViewById(R.id.news_settings_bar);
+            } else {
+                compositorView.addView(inflatedSettingsBarLayout, 2);
+            }
             inflatedSettingsBarLayout.setAlpha(0f);
+            if (compositorView.findViewById(R.id.new_content_layout_id) != null) {
+                newContentButtonLayout = compositorView.findViewById(R.id.new_content_layout_id);
+            } else {
+                compositorView.addView(newContentButtonLayout, 3);
+            }
             FrameLayout.LayoutParams inflatedLayoutParams =
                     new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 100);
 
@@ -698,7 +710,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             inflatedSettingsBarLayout.setLayoutParams(inflatedLayoutParams);
             newContentButtonLayout.setLayoutParams(newContentButtonLayoutParams);
 
-            inflatedSettingsBarLayout.setVisibility(View.VISIBLE);
+            // inflatedSettingsBarLayout.setVisibility(View.VISIBLE);
 
             compositorView.invalidate();
         }
@@ -722,30 +734,33 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
 
         ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
-        ScrollView scrollView = (ScrollView) root.getChildAt(0);
 
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int mDeviceHeight = displayMetrics.heightPixels;
-        int mDeviceWidth = displayMetrics.widthPixels;
+        if (root.getChildAt(0) instanceof ScrollView) {
+            ScrollView scrollView = (ScrollView) root.getChildAt(0);
 
-        Glide.with(this)
-                .asBitmap()
-                .load(bgWallpaper)
-                .centerCrop()
-                .override(mDeviceWidth, mDeviceHeight)
-                .priority(Priority.IMMEDIATE)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource,
-                            @Nullable Transition<? super Bitmap> transition) {
-                        Drawable drawable = new BitmapDrawable(getResources(), resource);
-                        scrollView.setBackground(drawable);
-                    }
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {}
-                });
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int mDeviceHeight = displayMetrics.heightPixels;
+            int mDeviceWidth = displayMetrics.widthPixels;
+
+            Glide.with(this)
+                    .asBitmap()
+                    .load(bgWallpaper)
+                    .centerCrop()
+                    .override(mDeviceWidth, mDeviceHeight)
+                    .priority(Priority.IMMEDIATE)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource,
+                                @Nullable Transition<? super Bitmap> transition) {
+                            Drawable drawable = new BitmapDrawable(getResources(), resource);
+                            scrollView.setBackground(drawable);
+                        }
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {}
+                    });
+        }
     }
 
     private void checkFingerPrintingOnUpgrade() {
