@@ -795,7 +795,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1254969878422524947">Limite de contribution par Gas (Gwei)</translation>
 <translation id="7373308452149471621">Limite de prix par Gas (Gwei)</translation>
 <translation id="5891811606602061966">Échec de l'importation du compte, veuillez réessayer.</translation>
-<translation id="1822506443689803572">Brave utilise 0x comme agrégateur DEX.</translation>
 <translation id="5061574358754621254">Données financières fournies par CoinGecko</translation>
 <translation id="4626407663177532837">L'estimation inclut des frais de 0,875 % facturés par Brave.</translation>
 <translation id="8574289650879708853">Ajouter un actif personnalisé</translation>
