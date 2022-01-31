@@ -455,8 +455,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
         Continue to wallet
       </message>
-      <message name="IDS_MENU_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
+      <message name="IDS_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
         Set as default browser
+      </message>
+      <message name="IDS_MENU_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
+        Set as Default Browser
       </message>
       <message name="IDS_BRAVE_SET_DEFAULT_BROWSER_DIALOG_TEXT" desc="Dialog for setting default browser">
         Select Brave Browser and tap 'Always'
