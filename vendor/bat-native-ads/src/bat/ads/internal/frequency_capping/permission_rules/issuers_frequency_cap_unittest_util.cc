@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/issuers_frequency_cap_unittest_util.h"
 
-#include "bat/ads/internal/tokens/issuers/issuers_unittest_util.h"
+#include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
 
 namespace ads {
 
