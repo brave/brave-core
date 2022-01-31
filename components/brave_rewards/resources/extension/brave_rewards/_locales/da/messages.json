@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Genopfrisk status",
+    "message": "Opdatér",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards har et problem. Prøv venligst igen senere. ",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Kontrollér status",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Tillykke! Din belønning for $month$ er klar!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Dine belønninger på $amount$ for $month$ er klar om $days$ dage",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Dine belønninger på $amount$ for $month$ er på vej. Hold øje med dem!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Gå til min $provider$-konto",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Log ud fra $provider$",
+    "message": "Afbryd forbindelsen til $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Afventer ",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ udbetaling bliver behandlet om $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Belønninger fra reklamer",

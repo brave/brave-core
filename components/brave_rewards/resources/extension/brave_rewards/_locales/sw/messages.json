@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Zimua Hali",
+    "message": "Onyesha upya",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Kuna tatizo kwenye Zawadi za Brave. Tafadhali jaribu tena baadaye.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Angalia hali",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Hongera! Zawadi zako za $month$zimefika!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Zawadi zako za$amount$ $month$ zitafika baada ya $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Zawadi zako za $amount$ $month$ ziko njiani. Endelea kufuatilia kwa makini!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Nenda kwenye akaunti yangu ya $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Ondoka kwenye $provider$",
+    "message": "Tenganisha kutoka kwa $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Inasubiri",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "Malipo ya $amount$ yanaanza kuchakatwa baada ya $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Zawadi kutoka Ads",

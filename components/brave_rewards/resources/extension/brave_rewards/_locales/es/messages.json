@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Actualizar estado",
+    "message": "Actualizar",
     "description": ""
   },
   "pendingTipText": {
@@ -55,15 +55,15 @@
     "description": ""
   },
   "sendTip": {
-    "message": "Enviar Propina",
+    "message": "Enviar propina",
     "description": ""
   },
   "includeInAutoContribute": {
-    "message": "Incluir en Contribución automática",
+    "message": "Incluir en contribución automática",
     "description": ""
   },
   "monthlyContribution": {
-    "message": "Contribución Mensual",
+    "message": "Contribución mensual",
     "description": ""
   },
   "ok": {
@@ -87,7 +87,7 @@
     "description": ""
   },
   "grantCaptchaFailedTitle": {
-    "message": "¡Mmm!... Parece que no. Inténtalo de nuevo.",
+    "message": "No del todo. Inténtelo de nuevo.",
     "description": ""
   },
   "grantCaptchaHint": {
@@ -100,40 +100,80 @@
     }
   },
   "grantCaptchaPassedTitleUGP": {
-    "message": "¡Es tu día de suerte!",
+    "message": "¡Es su día de suerte!",
     "description": ""
   },
   "grantCaptchaPassedTextUGP": {
-    "message": "El token de la concesión está de camino.",
+    "message": "El token de la gratificación está de camino.",
     "description": ""
   },
   "grantCaptchaAmountUGP": {
-    "message": "Concesión gratuita de token",
+    "message": "Concesión de tokens gratuita",
     "description": ""
   },
   "grantCaptchaPassedTitleAds": {
-    "message": "¡Has ganado una Recompensa de Anuncios!",
+    "message": "¡Ha ganado una recompensa por anuncios!",
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Tu Recompensa está de camino a tu monedero de Brave Rewards.",
+    "message": "Su recompensa está de camino a la cartera de recompensas de Brave.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
-    "message": "Tu Cantidad de Recompensas",
+    "message": "Su importe de recompensa",
     "description": ""
   },
   "grantCaptchaExpiration": {
-    "message": "Fecha de vencimiento de la concesión",
+    "message": "Fecha de vencimiento de la gratificación",
     "description": ""
   },
   "grantCaptchaErrorTitle": {
-    "message": "¡Vaya!, algo ha ido mal. Por favor, inténtalo de nuevo más tarde.",
+    "message": "Algo ha ido mal. Inténtelo de nuevo más tarde.",
     "description": ""
   },
   "grantCaptchaErrorText": {
-    "message": "Brave Rewards está teniendo problemas. Por favor, inténtalo de nuevo más tarde.",
+    "message": "Las recompensas de Brave tienen un problema. Inténtelo de nuevo más tarde.",
     "description": ""
+  },
+  "rewardsPaymentCheckStatus": {
+    "message": "Comprobar estado",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "¡Enhorabuena! ¡Ya están aquí tus recompensas de $month$!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Tus recompensas de $amount$ de $month$ estarán disponibles dentro de $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Tus recompensas de $amount$ de $month$ pronto estarán disponibles. ¡Mantente alerta!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
   },
   "walletAccountLink": {
     "message": "Ir a mi cuenta de $provider$\n",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Cerrar sesión en $provider$",
+    "message": "Desconectar de $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -183,7 +223,7 @@
     "description": ""
   },
   "walletLogIntoYourAccount": {
-    "message": "Inicia sesión en tu cuenta de $provider$",
+    "message": "Inicie sesión en su cuenta de $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -207,24 +247,12 @@
     "message": "Pendiente",
     "description": ""
   },
-  "walletPendingRewardsText": {
-    "message": "El pago de $amount$ comenzará a procesarse dentro de $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
-  },
   "walletRewardsFromAds": {
-    "message": "Recompensas de Brave Ads",
+    "message": "Recompensas de los anuncios",
     "description": ""
   },
   "walletRewardsSummary": {
-    "message": "Resumen de Rewards",
+    "message": "Resumen de las recompensas",
     "description": ""
   },
   "walletVerified": {
@@ -232,11 +260,11 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verificar Wallet",
+    "message": "Verificar la cartera",
     "description": ""
   },
   "walletYourBalance": {
-    "message": "Tu saldo",
+    "message": "Su saldo",
     "description": ""
   },
   "notificationAddFunds": {
@@ -256,7 +284,7 @@
     "description": ""
   },
   "notificationAddFundsText": {
-    "message": "Tu cuenta de Brave Rewards está a la espera de un ingreso.",
+    "message": "Su cuenta de recompensas de Brave está a la espera de un ingreso.",
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
@@ -277,11 +305,11 @@
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Por favor, haz un respaldo de tu monedero Brave.",
+    "message": "Haga una copia de seguridad de su cartera de Brave.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Respaldar ahora",
+    "message": "Hacer una copia de seguridad ahora",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
@@ -297,7 +325,7 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "¡Se ha verificado tu monedero!",
+    "message": "¡Se ha verificado su cartera!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
@@ -314,7 +342,7 @@
     "description": ""
   },
   "notificationTokenGrantText": {
-    "message": "Tienes una gratificación esperándote.",
+    "message": "Tiene una gratificación esperándole.",
     "description": ""
   },
   "notificationAdGrantTitle": {
@@ -330,11 +358,11 @@
     "description": ""
   },
   "notificationInsufficientFundsText": {
-    "message": "Tu pago mensual programado para Contribución Automática y contribuciones mensuales no se pudo completar debido a la insuficiencia de fondos. Lo intentaremos de nuevo en 30 días.",
+    "message": "No se han podido completar su pago mensual programado para la contribución automática y las contribuciones mensuales por falta de fondos. Se intentará de nuevo en 30 días.",
     "description": ""
   },
   "notificationMonthlyContributionFailedText": {
-    "message": "Ha ocurrido un problema al procesar tu contribución.",
+    "message": "Se ha producido un error al procesar su contribución.",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -363,7 +391,7 @@
     "description": ""
   },
   "notificationPendingTipFailedText": {
-    "message": "Tienes propinas pendientes debido a fondos insuficientes",
+    "message": "Tiene propinas pendientes por falta de fondos",
     "description": ""
   },
   "onboardingEarnHeader": {
@@ -371,7 +399,7 @@
     "description": ""
   },
   "onboardingEarnText": {
-    "message": "Gane tokens por ver anuncios que respetan la privacidad y apoye automáticamente a sus sitios web y creadores de contenidos favoritos.",
+    "message": "Gane tokens por ver anuncios que respeten la privacidad y apoye automáticamente a sus sitios y creadores de contenido favoritos.",
     "description": ""
   },
   "onboardingSetupAdsHeader": {
@@ -383,11 +411,11 @@
     "description": ""
   },
   "onboardingSetupContributeHeader": {
-    "message": "¿Cuánta aportación mensual quieres dar a tus creadores favoritos?",
+    "message": "¿Cuánta ayuda mensual quiere dar a tus creadores favoritos?",
     "description": ""
   },
   "onboardingSetupContributeSubheader": {
-    "message": "(de tus ganancias por los anuncios)",
+    "message": "(de sus ganancias por anuncios)",
     "description": ""
   },
   "onboardingStartUsingRewards": {
@@ -399,7 +427,7 @@
     "description": ""
   },
   "onboardingTerms": {
-    "message": "Al continuar, aceptas las $tos_link_begin$condiciones del servicio$tos_link_end$ y $pp_link_begin$la política de protección de datos personales$pp_link_end$.",
+    "message": "Al continuar, acepta las $tos_link_begin$condiciones del servicio$tos_link_end$ y la $pp_link_begin$política de privacidad$pp_link_end$.",
     "description": "",
     "placeholders": {
       "tos_link_begin": {
@@ -445,7 +473,7 @@
     "description": ""
   },
   "onboardingPanelWelcomeText": {
-    "message": "Los anuncios privados de Brave te premian con vales que sirven para apoyar a los creadores de contenido. Y a diferencia de los anuncios tradicionales, no tendrás que renunciar a la privacidad de tu información personal.",
+    "message": "Los anuncios privados de Brave le recompensan con tokens para apoyar a los creadores de contenido y, a diferencia de los anuncios tradicionales, sin renunciar a la privacidad de su información personal.",
     "description": ""
   },
   "onboardingPanelAdsHeader": {
@@ -461,15 +489,15 @@
     "description": ""
   },
   "onboardingPanelScheduleText": {
-    "message": "Los vales que hayas conseguido con los anuncios privados de Brave a lo largo del mes en curso se acreditarán el día cinco del mes siguiente.",
+    "message": "Los tokens que gane con los anuncios privados de Brave durante el mes en curso llegarán el día 5 del mes siguiente.",
     "description": ""
   },
   "onboardingPanelAcHeader": {
-    "message": "Retribuir es facilísimo",
+    "message": "Retribuir sin esfuerzo",
     "description": ""
   },
   "onboardingPanelAcText": {
-    "message": "Los creadores reciben tus contribuciones en forma de vales de forma automática según los niveles de interacción que se miden como “atención”.",
+    "message": "Los creadores reciben sus contribuciones de tokens automáticamente en función de sus niveles de compromiso que medimos como «atención».",
     "description": ""
   },
   "onboardingPanelTippingHeader": {
@@ -477,7 +505,7 @@
     "description": ""
   },
   "onboardingPanelTippingText": {
-    "message": "La propina es una forma de animar y apoyar el contenido o los creadores que le gustan. Dé propina.",
+    "message": "Las propinas son una forma de animar y apoyar personalmente el contenido o a los creadores que prefiere. ¡A dar propinas!",
     "description": ""
   },
   "onboardingPanelRedeemHeader": {
@@ -485,7 +513,7 @@
     "description": ""
   },
   "onboardingPanelRedeemText": {
-    "message": "Los vales se pueden usar para mucho más que para apoyar a los creadores. Puedes adquirir contenido digital y otros productos según se vayan incorporando los comercios.",
+    "message": "Los tokens se pueden usar no solo para apoyar a los creadores. Puede comprar contenido digital y otros productos según se vayan incorporando vendedores.",
     "description": ""
   },
   "onboardingPanelSetupHeader": {
@@ -501,7 +529,7 @@
     "description": ""
   },
   "onboardingPanelCompleteText": {
-    "message": "Cuando usas los premios de Brave contribuyes para que la web sea un lugar mejor para todos. ¡Algo que es increíble!",
+    "message": "Al usar las recompensas de Brave, ayuda a hacer de la web un lugar mejor para todos. Y eso es increíble.",
     "description": ""
   },
   "onboardingPanelVerifyHeader": {

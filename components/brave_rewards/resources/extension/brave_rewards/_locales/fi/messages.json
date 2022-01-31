@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Päivitä tila",
+    "message": "Päivitä",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards on kohdannut ongelmia. Ole hyvä ja yritä myöhemmin uudelleen.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Tarkista tila",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Onneksi olkoon! Kuukauden $month$ palkintosi ovat saapuneet!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Sinun $amount$ kuukauden $month$ palkintosi saapuvat $days$ päivässä",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Sinun $amount$ kuukauden $month$ palkintosi ovat matkalla. Pidä niitä silmällä!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Siirry $provider$ -tiliini",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Kirjaudu ulos palveluntarjoajalta $provider$",
+    "message": "Katkaise yhteys palveluntarjoajasta $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Odottaa",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ maksun käsittely aloitetaan $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Palkinnot mainoksista",

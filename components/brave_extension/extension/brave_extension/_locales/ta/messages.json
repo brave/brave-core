@@ -112,19 +112,19 @@
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Fingerprinting attempts",
+    "message": "கைரேகையிடுதல் முயற்சிகள்",
     "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Scripts on this site",
+    "message": "இத்திளத்திலுள்ள சிறுநிரல்கள்",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
-    "message": "Blocked scripts",
+    "message": "தடுக்கப்பட்ட சிறுநிரல்கள்",
     "description": "Message for the script resources blocked"
   },
   "allowedScripts": {
-    "message": "Allowed scripts",
+    "message": "அனுமதிக்கப்பட்ட சிறுநிரல்கள்",
     "description": "Message for the script resources allowed"
   },
   "blockAll": {

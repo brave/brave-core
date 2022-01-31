@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Обновить статус",
+    "message": "Обновить",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "В настоящий момент вознаграждения Brave не работают. Пожалуйста, попробуйте позже.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Проверка статуса",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Вознаграждение за $month$ перечислено!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Вознаграждение за $month$ в размере $amount$ будет перечислено вам через $days$.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Вознаграждение за $month$ в размере $amount$ скоро будет перечислено.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Перейти в мой аккаунт $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Выйти из $provider$",
+    "message": "Отключиться от $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "В ожидании",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "Обработка выплаты в размере $amount$ начнется через $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Вознаграждения за рекламу",

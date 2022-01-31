@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")은(는) Brave에서 허용되지 않습니다.</translation>
 <translation id="6786747875388722282">확장 프로그램</translation>
 <translation id="984275831282074731">결제 수단</translation>
-<translation id="3699882589215410581">Widevine 설치 및 실행</translation>
+<translation id="1990886731975529483">Google Widevine 설치 및 실행</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
 <translation id="5249433283143453448">Widevine 디지털 권리 관리(DRM) 구성 요소 사용으로 브라우저에서 보호된 스트리밍 동영상 및 기타 콘텐츠를 볼 수 있습니다.</translation>
 <translation id="6241402707160226266">Tor와 함께하는 개인정보 보호 창</translation>
 <translation id="8762452230727230396">Tor는 방문하는 사이트에서 IP 주소를 숨깁니다.</translation>
 <translation id="1369311132025451972">.onion 사이트 자동 리디렉션</translation>
 <translation id="2843777623071353503">Tor 창에서 .onion 도메인을 사용할 수 있을 때 Brave가 웹사이트의 onion 서비스를 엽니다.</translation>
-<translation id="8053096063396012732">Widevine 설치</translation>
-<translation id="4840334696217618631">Widevine을 활성화라혀면 브라우저를 재시작하세요</translation>
-<translation id="8410111618231938546">Google Widevine는 Brave Software가 소유하거나 관리 할 수 없는 디지털 권한 관리(DRM) 코드입니다. Google Widevine 코드는 우리의 서버가 아닌 Google 서버에서 로드합니다. 이 기능을 활성화 한 경우에만 로드 되며, 우리는 DRM 사용을 권장하지 않지만 사용자의 선택을 존중하며, 일부 Brave 사용자는 이 서비스가 필요함을 인정합니다.
-
- 이 확장 프로그램을 설치하면 Google Widevine의 이용 약관에 동의하게 됩니다. 당신은 Brave가 Google Widevine 사용과 관련하여 발생한 어떠한 손해 및 손실에 대해 책임지지 않음을 동의하게 됩니다.</translation>
+<translation id="4900351245762303149">Google Widevine 설치</translation>
+<translation id="2313383941300459392">Google Widevine을 활성화하려면 브라우저를 재시작하세요.</translation>
+<translation id="2200626478572277092">웹페이지에서 미디어를 재생하려면 Widevine이 필요한 경우가 있습니다. 이는 Google 서버에서 로드되는 Google 확장 프로그램으로, Brave가 검사할 수 없습니다. 설치하면 Google 이용약관에 동의하게 됩니다.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+나중에 <ph name="SETTINGS_EXTENIONS_LINK"/>에서 변경해도 됩니다.</translation>
+<translation id="6229752134959014186">Widevine에 대해 자세히 알아보세요</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/>에서 요청하는 권한:</translation>
 <translation id="410351446219883937">자동 재생</translation>
 <translation id="3218385319396786393">이 페이지에서는 자동 재생이 차단되었습니다</translation>
 <translation id="4988333904713528597"><ph name="HOST"/>에서 자동 재생 항상 허용하기</translation>
@@ -35,6 +37,8 @@
 <translation id="6583467242903731748">사이트가 Ethereum 제공자 API에 액세스하려고 할 때 묻기</translation>
 <translation id="7017590444693657895">사이트가 Ethereum 제공자 API에 액세스할 수 없도록 차단</translation>
 <translation id="8988939298652262600">Brave는 확장 프로그램의 보안 및 안전을 검토하지 않습니다. 개발자를 신뢰하는 경우에만 이 확장 프로그램을 설치하세요.</translation>
+<translation id="933652931229970927">진단 보고서 자동 전송</translation>
+<translation id="1679356339067548863">Brave 브라우저가 작동이 멎거나 프리징이 발생하면 진단 보고서를 자동 전송하여 Brave 제품 안정성 향상에 도움을 주세요.</translation>
 <translation id="8081858229109418493">프로필 이름 및 아이콘</translation>
 <translation id="6438096877646138757">닫으면 쿠키가 삭제되는 사이트</translation>
 <translation id="2988792685798128092">사이트를 닫으면 삭제</translation>
@@ -42,7 +46,7 @@
 <translation id="1692470335103807198">더 많은 테마 받기</translation>
 <translation id="2906510232093002459">Brave 기본 이미지</translation>
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
-<translation id="6123134130710658846">Brave Rewards 버튼 감추기</translation>
+<translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
 <translation id="1811404036171336214">새 탭 페이지에 책갈피 항상 표시</translation>
 <translation id="1643029991199044105">Ctrl-Tab을 사용하여 가장 최근에 사용한 탭 순환</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@
 <translation id="5733490796524078528">팁 버튼</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">GitHub</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">새 탭 페이지</translation>
 <translation id="1988804048511540801">새 탭 페이지 표시</translation>
 <translation id="2970343821770026391">대시보드</translation>
@@ -89,12 +93,12 @@
 <translation id="8612763432858587652">비공개 창 종료</translation>
 <translation id="8760415064721320867">Tor와 함께하는 비공개 윈도우</translation>
 <translation id="2055363275850890030">비공개 윈도우</translation>
-<translation id="8934172355414207733">Tor 비공개</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Tor 비공개 창입니다</translation>
 <translation id="1037341607922068025">Tor 비공개 창 열기</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Tor에서 열기</translation>
-<translation id="7643538479215207633">IPFS를 사용해서 열기</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">IPFS에서 게시 및 파일 받기</translation>
 <translation id="1672270084584211506">양파 사용 가능</translation>
 <translation id="406832631167785034">.onion 주소를 사용하여 열기</translation>
@@ -105,7 +109,6 @@
 <translation id="4227945450504703638">선택한 오디오</translation>
 <translation id="7895302206188277628">연결된 콘텐츠</translation>
 <translation id="3654831858282189202">IPNS 키로 게시</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">선택한 텍스트를 IPFS로 가져오기</translation>
 <translation id="6925604404524625582">IPFS 스냅샷 링크 가져오기 및 복사</translation>
 <translation id="1434416574322382019">Tor와 함께하는 새로운 비공개 윈도우</translation>
@@ -238,8 +241,8 @@
 <translation id="6358469157239228181">사용할 수 없는 이름</translation>
 <translation id="5761731140570209168">새 피어 연결 문자열 추가</translation>
 <translation id="2082206983920804886">키 로테이션</translation>
-<translation id="2521133093532260474">로컬 노드를 중지할 수 없음</translation>
-<translation id="86879877003581729">로컬 노드를 시작할 수 없음</translation>
+<translation id="5078501082919354191">Brave 로컬 IPFS 노드를 중지할 수 없음</translation>
+<translation id="5687424953196903465">Brave 로컬 IPFS 노드를 시작할 수 없음</translation>
 <translation id="6476061084931271248">변경사항을 적용하려면 노드 재시작 필요</translation>
 <translation id="3754226427671882382">노드 재시작</translation>
 <translation id="949667118776341807">로테이션</translation>
@@ -254,17 +257,22 @@
 <translation id="616058968889448209">IPFS 서비스 런처 오류. 자세한 정보는 <ph name="BEGIN_LINK"/>진단 페이지<ph name="END_LINK"/>에서 확인하세요.</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 키 가져오기 실패</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' 키 내보내기 실패</translation>
-<translation id="8860039076160511438">월렛 초기화</translation>
+<translation id="4993345308607970390">Brave 월렛 초기화</translation>
+<translation id="5975930666279943472">월렛 트랜잭션 및 임시 정보 지우기</translation>
+<translation id="5693968582510626466">트랜잭션 지우기는 개발자가 로컬 서버에서 상태를 지울 때 유용합니다.</translation>
 <translation id="6369495274982305511">월렛을 초기화하시겠습니까? 월렛이 백업되어 있지 않은 경우 초기화하면 모든 계정 데이터(그 안에 담긴 자금 포함)를 잃을 수 있습니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
+<translation id="9216386092464743272">월렛 트랜잭션 및 임시 정보를 초기화하시겠습니까? 이 옵션은 주로 로컬 테스트 서버를 운용하는 개발자가 사용합니다. 확인하려면 "<ph name="CONFIRMATION_PHRASE"/>"를 직접 입력하세요.</translation>
+<translation id="3752403403443723332">월렛이 초기화되었습니다.</translation>
+<translation id="594766067816395072">월렛 트랜잭션 정보가 초기화되었습니다.</translation>
 <translation id="1426410128494586442">예</translation>
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="3654980960391973513">생성</translation>
 <translation id="5531501313997312487">노드 시작</translation>
 <translation id="9170907049676078643">IPFS 리소스 리졸빙에 사용하는 방법</translation>
 <translation id="1327977588028644528">게이트웨이</translation>
-<translation id="80225669816651290">로컬 노드</translation>
+<translation id="1195880978080389104">Brave 로컬 IPFS 노드</translation>
 <translation id="4927734062756955434">IPFS 퍼블릭 게이트웨이 주소</translation>
-<translation id="3399481770463167943">IPFS 로컬 노드 및 게이트웨이 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK_MPL"/>자세히 알아보세요<ph name="END_LINK_MPL"/>.</translation>
+<translation id="2178402446227616866">Brave 로컬 IPFS 노드 및 게이트웨이 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK_MPL"/>자세히 알아보세요<ph name="END_LINK_MPL"/>.</translation>
 <translation id="8425213833346101688">변경</translation>
 <translation id="557281710253742286">IPFS 게이트웨이 설정</translation>
 <translation id="8571837315037233299">게이트웨이 주소</translation>
@@ -273,7 +281,7 @@
 <translation id="7703184801853248830">유효하지 않은 게이트웨이 주소</translation>
 <translation id="7690058578502751948">원본 격리가 활성화된 유효한 IPFS 게이트웨이만 Brave에서 사용 가능</translation>
 <translation id="585868419599255817">IPFS 공용 게이트웨이 대체</translation>
-<translation id="207763736230883589">로컬 노드에 접근할 수 없는 경우에 퍼블릭 IPFS 게이트웨이로 자동 전환합니다.</translation>
+<translation id="2618080188892567155">Brave 로컬 IPFS 노드에 접근할 수 없는 경우에 퍼블릭 IPFS 게이트웨이로 자동 전환합니다.</translation>
 <translation id="4107552920076294723">IPFS 리소스를 설정된 IPFS 게이트웨이로 리다이렉트</translation>
 <translation id="6494857428933042381">IPFS 게이트웨이 리소스가 발견될 경우에 IPFS 레졸루션에 자동으로 설정된 게이트웨이를 사용합니다.</translation>
 <translation id="8655170717758778983">가능한 경우 DNSLink를 통해 IPFS 페이지로 자동으로 리다이렉트</translation>
@@ -346,10 +354,9 @@
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="5039804452771397117">허용</translation>
 <translation id="7053983685419859001">차단</translation>
-<translation id="7815301689257843278">충돌 보고서를 자동 전송하여 Brave가 문제 재발을 방지할 수 있도록 하시겠습니까?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/>가 예기치 않게 종료되었습니다.</translation>
 <translation id="1324417023773393937">Brave 브라우저</translation>
-<translation id="1068069727470515940"><ph name="SETTING_TEXT"/>은 언제든지 다시 변경할 수 있습니다.</translation>
+<translation id="7276554663454265692"><ph name="SETTING_TEXT"/>은 언제든지 브라우저 설정에서 다시 변경할 수 있습니다.</translation>
 <translation id="6873781976650514089">이 설정</translation>
 <translation id="6040143037577758943">닫기</translation>
 <translation id="5600566490506283344">Brave 광고 알림</translation>
@@ -446,7 +453,6 @@
 <translation id="2487558607408469181">블록 탐색기 URL</translation>
 <translation id="6301398959353668507">이 필드는 비워 둘 수 없습니다.</translation>
 <translation id="7504462451153306677">유효하지 않은 형식입니다. 체인 ID는 양수입니다.</translation>
-<translation id="8325036459845654666">이미 추가된 네트워크입니다.</translation>
 <translation id="650071759190249039">내부 오류. 네트워크를 추가할 수 없습니다.</translation>
 <translation id="868529041590572443">네이티브 통화에 대한 모든 정보를 입력하세요.</translation>
 <translation id="1062463687579789365">월렛 네트워크 사용자 지정</translation>

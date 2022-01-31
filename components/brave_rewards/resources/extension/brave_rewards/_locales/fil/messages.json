@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "I-refresh ang Status",
+    "message": "I-refresh",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Nagkakaproblema ang Mga Reward ng Brave. Pakisubukang muli sa ibang pagkakataon.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "I-check ang kalagayan",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Pagbati! Ang iyong $month$ na mga pabuya ay dumating na!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Ang iyong $amount$ $month$ na mga pabuya ay darating sa loob ng $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Ang iyong $amount$ $month$ na mga pabuya ay parating na. Abangan ito!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Pumunta sa aking $provider$ account",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Mag-log out sa $provider$",
+    "message": "Idiskonekta mula sa $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Nakabinbin",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "Magsisimulang maiproseso ang payout ng $amount$ sa loob ng $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Mga Reward mula sa Ads",

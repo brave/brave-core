@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Làm mới Trạng thái",
+    "message": "Làm mới",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Phần thưởng Brave đang gặp sự cố. Vui lòng thử lại sau.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Kiểm tra trạng thái",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Chúc mừng! Phần thưởng $month$ của bạn đã về!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Phần thưởng $amount$ $month$ của bạn sẽ về vào $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Phần thưởng $amount$ $month$ của bạn đang trên đường. Hãy chú ý!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Đến tài khoản $provider$ của tôi",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Đăng xuất khỏi $provider$",
+    "message": "Ngắt kết nối khỏi $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Đang chờ xử lý",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "Khoản tiền thanh toán $amount$ sẽ bắt đầu xử lý trong $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Rewards từ Ads",
