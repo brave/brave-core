@@ -68,7 +68,8 @@ const accounts: WalletAccountType[] = [
     address: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
     balance: '311780000000000000',
     accountType: 'Primary',
-    tokenBalanceRegistry: {}
+    tokenBalanceRegistry: {},
+    coin: BraveWallet.CoinType.ETH
   },
   {
     id: '2',
@@ -76,7 +77,8 @@ const accounts: WalletAccountType[] = [
     address: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
     balance: '311780000000000000',
     accountType: 'Primary',
-    tokenBalanceRegistry: {}
+    tokenBalanceRegistry: {},
+    coin: BraveWallet.CoinType.ETH
   },
   {
     id: '3',
@@ -84,7 +86,8 @@ const accounts: WalletAccountType[] = [
     address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
     balance: '311780000000000000',
     accountType: 'Primary',
-    tokenBalanceRegistry: {}
+    tokenBalanceRegistry: {},
+    coin: BraveWallet.CoinType.ETH
   }
 ]
 
@@ -328,7 +331,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
       address: '1',
       balance: '0.31178',
       accountType: 'Primary',
-      tokenBalanceRegistry: {}
+      tokenBalanceRegistry: {},
+      coin: BraveWallet.CoinType.ETH
     }
   ]
   const transactionList = {

@@ -31,7 +31,7 @@ export interface Props {
   onShowBackup: () => void
   onChangeTimeline: (path: BraveWallet.AssetPriceTimeframe) => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
-  onCreateAccount: (name: string) => void
+  onCreateAccount: (name: string, coin: BraveWallet.CoinType) => void
   onImportAccount: (accountName: string, privateKey: string) => void
   onImportFilecoinAccount: (accountName: string, key: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
@@ -70,6 +70,7 @@ export interface Props {
   transactions: AccountTransactions
   userAssetList: UserAssetInfoType[]
   isLoading: boolean
+  isFilecoinEnabled: boolean
   showAddModal: boolean
   selectedNetwork: BraveWallet.EthereumChain
   isFetchingPortfolioPriceHistory: boolean
@@ -133,6 +134,7 @@ const CryptoView = (props: Props) => {
     transactions,
     selectedAssetFiatPrice,
     selectedAssetCryptoPrice,
+    isFilecoinEnabled,
     isLoading,
     showAddModal,
     isFetchingPortfolioPriceHistory,
@@ -367,6 +369,7 @@ const CryptoView = (props: Props) => {
           onRouteBackToAccounts={onRouteBack}
           onCreateAccount={onCreateAccount}
           onImportAccount={onImportAccount}
+          isFilecoinEnabled={isFilecoinEnabled}
           onImportFilecoinAccount={onImportFilecoinAccount}
           onConnectHardwareWallet={onConnectHardwareWallet}
           onAddHardwareAccounts={onAddHardwareAccounts}

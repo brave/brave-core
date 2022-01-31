@@ -77,7 +77,7 @@ void WalletHandler::OnGetWalletInfo(
   std::move(callback).Run(
       default_keyring->is_default_keyring_created, default_keyring->is_locked,
       std::move(favorite_apps_copy), default_keyring->is_backed_up,
-      std::move(account_infos));
+      std::move(account_infos), brave_wallet::IsFilecoinEnabled());
 }
 
 void WalletHandler::AddFavoriteApp(
