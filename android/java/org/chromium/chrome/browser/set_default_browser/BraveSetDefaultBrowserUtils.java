@@ -160,8 +160,6 @@ public class BraveSetDefaultBrowserUtils {
     private static void showSetDefaultBottomSheet(AppCompatActivity activity, boolean isFromMenu) {
         if (!isBottomSheetVisible) {
             isBottomSheetVisible = true;
-            SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
-                    SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
 
             if (!isFromMenu) {
                 int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
@@ -170,6 +168,9 @@ public class BraveSetDefaultBrowserUtils {
                         BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
                         braveDefaultModalCount + 1);
             }
+
+            SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
+                    SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
 
             bottomSheetDialog.show(
                     activity.getSupportFragmentManager(), "SetDefaultBrowserBottomSheetFragment");

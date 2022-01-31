@@ -87,10 +87,11 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
         }));
 
         CheckBox dontAskCheckBox = view.findViewById(R.id.checkbox_dont_ask);
+
         int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
                 BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
 
-        if (braveDefaultModalCount >= 2 && !isFromMenu) {
+        if (braveDefaultModalCount > 2 && !isFromMenu) {
             dontAskCheckBox.setVisibility(View.VISIBLE);
         } else {
             dontAskCheckBox.setVisibility(View.GONE);
