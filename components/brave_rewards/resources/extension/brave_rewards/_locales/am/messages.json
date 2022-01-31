@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "ኩነትን አድስ",
+    "message": "አድስ",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "የብሬቭ ሽልማት ችግር አለው፤ እባክዎ እንደገና ይሞክሩ፡፡ ",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "ሁኔታን ያረጋግጡ",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "እንኳን ደስ ያለህ! የ $month$ ሽልማቶችዎ መጥተዋል!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "የእርስዎ $amount$ $month$ ሽልማት ይደርሳል በ $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "የእርስዎ $amount$ $month$ ሽልማቶች በመንገድ ላይ ናቸው። ይከታተሉት!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "ወደ የእኔ $provider$ መለያ ይሂዱ",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "ከ $provider$ ውጣ",
+    "message": "ያለውን ግንኙነት ያቁቋርጡ $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "በመጠበቅ ላይ",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ክፍያ ከ$days$በኋላ መካሄድ ይጀምራል",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "ከ Ads ሽልማቶች",

@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Segarkan Status",
+    "message": "Perbarui",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards mengalami kendala. Silakan coba lagi nanti.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Periksa status",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Selamat! Imbalan Anda $month$ telah tiba!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Imbalan $amount$ $month$ Anda akan masuk dalam $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Imbalan $amount$ $month$ Anda akan segera tiba. Bersiap-siaplah!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Masuk ke akun $provider$ saya",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Keluar dari $provider$",
+    "message": "Putuskan koneksi dari $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Tertunda",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ pemrosesan pembayaran dimulai dalam $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Imbalan dari Iklan",

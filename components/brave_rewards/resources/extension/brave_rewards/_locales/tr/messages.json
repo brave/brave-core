@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Durumu Yenile",
+    "message": "Yenile",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards bir sorun yaşıyor. Lütfen daha sonra tekrar deneyiniz.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Durumu kontrol et",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Tebrikler! $month$ ödülleriniz geldi!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "$amount$ tutarlı $month$ ödülleriniz $days$ içerisinde gelecek",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "$amount$ tutarlı $month$ ödülleriniz yolda. Gözünüz cüzdanınızda olsun!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "$provider$ hesabıma git",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "$provider$ oturumunu kapat",
+    "message": "$provider$ bağlantısını kes",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Beklemede",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ tutarlı ödemenin işlenmeye başlamasına kalan süre: $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Ads Ödülleri",

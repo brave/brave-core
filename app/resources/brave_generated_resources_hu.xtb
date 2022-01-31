@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (kiterjesztésazonosító "<ph name="EXTENSION_ID"/>") nem engedélyezett a Brave-ben.</translation>
 <translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="984275831282074731">Fizetési módok</translation>
-<translation id="3699882589215410581">Widevine telepítése és futtatása</translation>
+<translation id="1990886731975529483">Google Widevine telepítése és futtatása</translation>
 <translation id="8926389886865778422">Többször ne figyelmeztessen</translation>
 <translation id="5249433283143453448">Használd a Widevine digitális jogkezelési (DRM) komponenst védett videoadatfolyamok és más tartalmak megtekintéséhez böngésződben.</translation>
 <translation id="6241402707160226266">Privát ablak Torral</translation>
 <translation id="8762452230727230396">Ezzel elrejtheti a felkeresett oldalak elől az IP címét.</translation>
 <translation id="1369311132025451972">.onion oldalak automatikus átirányítása</translation>
 <translation id="2843777623071353503">A Brave megnyitja a webhely onion szolgáltatását, amikor ez lehetséges, vagy a .onion domént egy Tor ablakban.</translation>
-<translation id="8053096063396012732">Widevine telepítése</translation>
-<translation id="4840334696217618631">Widevine engedélyezéséhez indítsa újra a böngészőt</translation>
-<translation id="8410111618231938546">A Google Widevine egy digitális jogkezelő (DRM - Digital Rights Management) kód, amelyet mi a Brave Software vállalatnál nem birtokolunk és nem vizsgálunk meg. A Google Widevine kódot Google szerverektől töltjük be, nem pedig saját szervereinkről. Csak akkor töltődik be, ha engedélyezi ezt az opciót. Javasoljuk a DRM használatát, de tiszteletben tartjuk a felhasználók döntését és elismerjük, hogy néhány Brave felhasználó olyan szolgáltatásokat szeretne használni, amelyekhez ez szükséges.
-
-Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhasználási feltételeit. Beleegyezik abba, hogy a Brave nem felelős semmilyen kárért vagy veszteségért, amely a Google Widevine használatával kapcsolatban keletkezik.</translation>
+<translation id="4900351245762303149">Google Widevine telepítése</translation>
+<translation id="2313383941300459392">A Google Widevine engedélyezéséhez indítsa újra a böngészőt</translation>
+<translation id="2200626478572277092">A Widevine esetenként szükséges egy weblapon található médiatartalmak lejátszásához. A Widevine egy, a Google kiszolgálóiról betöltött Google-bővítmény, amelyet a Brave nem képes megvizsgálni. A telepítéssel beleegyezik a Google használati feltételeibe.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/> 
+Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
+<translation id="6229752134959014186">További tudnivalók a Widevine-ról</translation>
+<translation id="6061083111980694767">A(z) <ph name="SITE_NAME"/> a következő(k)re kéri Önt:</translation>
 <translation id="410351446219883937">Automatikus lejátszás</translation>
 <translation id="3218385319396786393">Ezen az oldalon blokkolták az automatikus lejátszást.</translation>
 <translation id="4988333904713528597">Automatikus lejátszás általános engedélyezése itt: <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="6583467242903731748">Kérdezzen rá, ha egy oldal szeretne hozzáférni az Ethereum szolgáltató API-hoz</translation>
 <translation id="7017590444693657895">Blokkolja az oldalak hozzáférését az Ethereum szolgáltató API-hoz</translation>
 <translation id="8988939298652262600">A Brave nem vizsgálja felül a biztonsági kiterjesztéseket. Csak akkor telepítse ezt a kiterjesztést, ha megbízik a fejlesztőben.</translation>
+<translation id="933652931229970927">Diagnosztikai jelentések automatikus elküldése</translation>
+<translation id="1679356339067548863">Segítsen fejleszteni a Brave termékstabilitását azáltal, hogy engedélyezi a diagnosztikai jelentések automatikus elküldését a Brave böngésző összeomlása vagy lefagyása esetén.</translation>
 <translation id="8081858229109418493">Profilnév és ikon</translation>
 <translation id="6438096877646138757">Olyan oldalak, amelyek a bezárásukkor törlik a sütiket</translation>
 <translation id="2988792685798128092">Törlés az oldal bezárásakor</translation>
@@ -42,7 +46,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="1692470335103807198">Több téma beszerzése</translation>
 <translation id="2906510232093002459">Brave alapértelmezett képek</translation>
 <translation id="2814998458708016836">Használj széles címsort</translation>
-<translation id="6123134130710658846">Brave jutalmak gomb elrejtése</translation>
+<translation id="6333347122924254968">A Brave-jutalmak ikonjának megjelenítése a címsorban</translation>
 <translation id="1811404036171336214">Mindig mutassa könyvjelzőket az új ablakban</translation>
 <translation id="1643029991199044105">Nézd át a legújabban használt ablakokat a Ctrl-Tab billentyűkkel</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="5733490796524078528">Tipp gombok</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Új lap</translation>
 <translation id="1988804048511540801">Ez látható az új ablakban</translation>
 <translation id="2970343821770026391">Műszerfal</translation>
@@ -89,12 +93,12 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="8612763432858587652">Kilépés a privát ablakból</translation>
 <translation id="8760415064721320867">Privát ablak Tor-ral</translation>
 <translation id="2055363275850890030">Privát Ablak</translation>
-<translation id="8934172355414207733">Privát Torral</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Ez egy privát ablak Torral</translation>
 <translation id="1037341607922068025">Indítson egy privát ablakot Torral</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Megnyitás Torban</translation>
-<translation id="7643538479215207633">Megnyitás IPFS használatával</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">IPFS fájlok kiadása és visszaszerzése</translation>
 <translation id="1672270084584211506">Elérhető Onion</translation>
 <translation id="406832631167785034">Megnyitás .onion cím használatával</translation>
@@ -105,7 +109,6 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4227945450504703638">Kiválasztott hangfájl</translation>
 <translation id="7895302206188277628">Kapcsolt tartalom</translation>
 <translation id="3654831858282189202">Közzététel IPNS-kulccsal</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Kiválasztott szöveg importálása IPFS-be</translation>
 <translation id="6925604404524625582">Hivatkozás importálása és másolása az IPFS-pillanatképbe</translation>
 <translation id="1434416574322382019">Új</translation>
@@ -238,8 +241,8 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="6358469157239228181">Ez a név nem használható</translation>
 <translation id="5761731140570209168">Új társkapcsolati karakterlánc hozzáadása</translation>
 <translation id="2082206983920804886">Kulcs elforgatása</translation>
-<translation id="2521133093532260474">A helyi csomópontot nem lehet leállítani</translation>
-<translation id="86879877003581729">A helyi csomópontot nem lehet elindítani</translation>
+<translation id="5078501082919354191">A Brave helyi IPFS-csomópontot nem lehet leállítani</translation>
+<translation id="5687424953196903465">A Brave helyi IPFS-csomópontot nem lehet elindítani</translation>
 <translation id="6476061084931271248">A módosítások alkalmazásához indítsa újra a csomópontot</translation>
 <translation id="3754226427671882382">Csomópont újraindítása</translation>
 <translation id="949667118776341807">Elforgatás</translation>
@@ -254,17 +257,22 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="616058968889448209">IPFS szolgáltatásindítási hiba, további információkat itt találhat: <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">A(z) '<ph name="KEY_NAME"/>' importálása sikertelen volt</translation>
 <translation id="3364053282600191535">A(z) '<ph name="KEY_NAME"/>' exportálása sikertelen volt</translation>
-<translation id="8860039076160511438">Pénztárca visszaállítása</translation>
+<translation id="4993345308607970390">Brave pénztárca visszaállítása</translation>
+<translation id="5975930666279943472">Tárcatranzakciókkal kapcsolatos és nonce-adatok törlése</translation>
+<translation id="5693968582510626466">A tranzakciók törlése hasznos lehet fejlesztők számára, vagy pedig helyi kiszolgáló állapotának nullázásakor</translation>
 <translation id="6369495274982305511">Biztosan visszaállítja a pénztárcáját? Ha a pénztárcáról nem készült biztonsági mentés, a visszaállítással elveszíti az összes fiókadatot (beleértve a kapcsolódó forrásokat). A megerősítéshez írja be a következőt: "<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="9216386092464743272">Biztosan visszaállítja az összes, tárcatranzakciókkal kapcsolatos és nonce-adatot? Ezt a funkciót általában helyi tesztkiszolgálót üzemeltető fejlesztők használják. A megerősítéshez gépelje be a következőt: „<ph name="CONFIRMATION_PHRASE"/>".</translation>
+<translation id="3752403403443723332">A pénztárcája vissza lett állítva.</translation>
+<translation id="594766067816395072">A tárcatranzakciókkal kapcsolatos adatai vissza lettek állítva.</translation>
 <translation id="1426410128494586442">Igen</translation>
 <translation id="8275038454117074363">Importálás</translation>
 <translation id="3654980960391973513">Generálás</translation>
 <translation id="5531501313997312487">Csomópont indítása</translation>
 <translation id="9170907049676078643">Módszer az IPFS források kezelésére</translation>
 <translation id="1327977588028644528">Átjáró</translation>
-<translation id="80225669816651290">Helyi node</translation>
+<translation id="1195880978080389104">Brave helyi IPFS-csomópont</translation>
 <translation id="4927734062756955434">IPFS nyilvános átjáró címe</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tudjon meg többet<ph name="END_LINK_MPL"/> a helyi IPFS csomópontról és a gateway-adatvédelmi szempontokról.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/> További információ<ph name="END_LINK_MPL"/> a Brave helyi IPFS-csomópontokkal és átjárókkal kapcsolatos adatvédelmi szempontokról.</translation>
 <translation id="8425213833346101688">Módosítás</translation>
 <translation id="557281710253742286">IPFS átjáró beállítása</translation>
 <translation id="8571837315037233299">Átjáró címe</translation>
@@ -273,7 +281,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7703184801853248830">Érvénytelen átjárócím</translation>
 <translation id="7690058578502751948">Csak engedélyezett Origin izolációval rendelkező, érvényes IPFS átjárót lehet a Brave-vel használni</translation>
 <translation id="585868419599255817">Visszaállás IPFS nyilvános átjáróra</translation>
-<translation id="207763736230883589">Automatikus visszaállás nyilvános IPFS átjáróra, ha a helyi csomópont nem érhető el.</translation>
+<translation id="2618080188892567155">Automatikus visszaállás a nyilvános IPFS-átjáróra, ha a Brave helyi IPFS-csomópontja nem érhető el.</translation>
 <translation id="4107552920076294723">IPFS források átirányítása a beállított IPFS átjáróra</translation>
 <translation id="6494857428933042381">Automatikusan a beállított átjárót használja IPFS megoldásokhoz, amikor egy IPFS-átjáró forrással találkozik.</translation>
 <translation id="8655170717758778983">Ha lehetséges, DNSLink segítségével automatikusan átirányít IPFS oldalakra.</translation>
@@ -346,10 +354,9 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="780301667611848630">Köszönöm, nem</translation>
 <translation id="5039804452771397117">Engedélyezés</translation>
 <translation id="7053983685419859001">Letiltás</translation>
-<translation id="7815301689257843278">Küldjön a rendszer automatikusan jelentéseket az összeomlásról, hogy a Brave meg tudja előzni a probléma újbóli előfordulását?</translation>
 <translation id="660171790038410175">A <ph name="BROWSER_NAME"/> váratlanul leállt</translation>
 <translation id="1324417023773393937">Brave böngésző</translation>
-<translation id="1068069727470515940">Módosíthatja <ph name="SETTING_TEXT"/> később bármikor.</translation>
+<translation id="7276554663454265692">A(z) <ph name="SETTING_TEXT"/> beállítást bármikor módosíthatja a böngésző beállításaiban.</translation>
 <translation id="6873781976650514089">ezt a beállítást</translation>
 <translation id="6040143037577758943">Bezárás</translation>
 <translation id="5600566490506283344">Brave Ad értesítés</translation>
@@ -446,7 +453,6 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="2487558607408469181">Block explorer URL-ek</translation>
 <translation id="6301398959353668507">Ez a mező nem lehet üres.</translation>
 <translation id="7504462451153306677">Érvénytelen formátum, a láncolatazonosító egy pozitív szám</translation>
-<translation id="8325036459845654666">A hálózat már hozzá lett adva.</translation>
 <translation id="650071759190249039">Belső hiba, sikertelen volt a hálózat hozzáadása.</translation>
 <translation id="868529041590572443">Töltse ki az összes információt a helyi pénznem kapcsán</translation>
 <translation id="1062463687579789365">Wallet hálózatok testreszabása</translation>

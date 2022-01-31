@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Datum dalšího příspěvku</translation>
 <translation id="1397381065858030856">Zobrazené stránky</translation>
 <translation id="2365740070488517695">Příspěvky</translation>
-<translation id="4803566747788858771">Posílejte tvůrcům příspěvky přímo při prohlížení. Stačí použít panel odměn nebo tlačítko pro zaslání příspěvku uvedené přímo na různých stránkách, mezi které patří Twitter, Reddit a GitHub.</translation>
+<translation id="5993195614988368256">Posílejte tvůrcům příspěvky přímo při prohlížení. Stačí použít panel odměn nebo tlačítko pro zaslání příspěvku uvedené přímo na různých stránkách, mezi které patří Twitter, Reddit a GitHub.</translation>
 <translation id="5012991400231464322">Měsíční příspěvky</translation>
 <translation id="2084351799622920487">Nastavte opakující se měsíční příspěvky, abyste mohli stránky průběžně podporovat.</translation>
 <translation id="8150772404570015166">Zatím nebyly nastaveny žádné měsíční příspěvky</translation>
@@ -255,6 +255,8 @@
 <translation id="9074594632540931067">Chyba: Služba BAT není dostupná</translation>
 <translation id="413458922997276130">Váš účet je v systému Uphold momentálně zablokován.</translation>
 <translation id="3579959767665130790">Chyba: Zablokovaný účet</translation>
+<translation id="6554308597291659562">V účtu Uphold je požadováno shromáždění několika informací o vás, než povolíme kompletní funkčnost účtu Uphold. Zkuste to znovu, jakmile tyto informace odešlete ze svého účtu Uphold.</translation>
+<translation id="6996157559236886133">Chyba: Omezená funkčnost účtu Uphold</translation>
 <translation id="819370426249314592">Váš účet je v systému Uphold stále nedokončený.</translation>
 <translation id="4530453398914580957">Chyba: Nedokončený účet</translation>
 <translation id="2388470740942086608">Váš účet je v systému Uphold momentálně uzavřený.</translation>
@@ -262,8 +264,6 @@
 <translation id="7147519373526655987">Při ověřování požadavku prohlížeče na připojení peněženky odměn Brave k vašemu účtu <ph name="PROVIDER"/> došlo k problému. Pro další pomoc můžete <ph name="BEGIN_LINK"/>kontaktovat podporu<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Chyba: požadavek se nepodařilo ověřit</translation>
 <translation id="1737873393693460829">Zapnutím [[title]] vyjadřujete souhlas s <ph name="BEGIN_LINK1"/>Podmínkami služby<ph name="END_LINK1"/> a <ph name="BEGIN_LINK2"/>Zásadami ochrany osobních údajů<ph name="END_LINK2"/>.</translation>
-<translation id="901298512318791028">Vaše výplata <ph name="AMOUNT"/> se začne zpracovávat za <ph name="DAYS"/>.</translation>
-<translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Poznámka: <ph name="BOLD_END"/>Zpracování výplaty a doručení BAT může trvat několik dní.</translation>
 <translation id="4672975606583962967">Zvolte službu peněženky</translation>
 <translation id="1815503044492647974">Zvolte si partnera pro úschovu peněženky. Pokud již máte účet, budete vyzváni k přihlášení a připojení.</translation>
 <translation id="2205685774710519016">Poznámka: Vaše transakce budou po autorizaci viditelné pro vybranou službu peněženky; například uvidí příjemce a výši vašeho spropitného.</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Dokončit ověření peněženky</translation>
 <translation id="9200453331904391567">Odpojit od Brave Rewards</translation>
 <translation id="3656941797339037856">Propojte odměny s Gemini!</translation>
-<translation id="3066983737886188034">Gemini vám umožňuje snadno obchodovat, ukládat a úročit na vaše BAT. Ověřte a propojte svou peněženku Brave Rewards s Gemini hned teď!</translation>
+<translation id="31532096120351460">Obchodujte s více než 50 kryptoměnami, včetně BAT, na platformě Gemini, kde můžete bezpečně ukládat své kryptoměny. V US, HK a SG můžete navíc získat úrokovou sazbu.</translation>
 <translation id="7404779623219601861">Směňujte BAT za dárkové karty</translation>
 <translation id="6215565499749144110">Díky síti TAP Network můžete směňovat vaše BAT za dárkové karty populárních značek.</translation>
 <translation id="6915065518766963119">* Je třeba ověření na Uphold.</translation>
@@ -732,15 +732,15 @@
 <translation id="72868071984333667">Další informace o IPFS a soukromí</translation>
 <translation id="1886162073868201257">Chyba při spouštění služby IPFS</translation>
 <translation id="5357895013476183089">IPFS nepřipojen</translation>
-<translation id="1196783328762622576">Pomocí místního uzlu nelze načíst prostředky IPFS</translation>
+<translation id="7662930734991751511">Pomocí místního uzlu Brave IPFS nelze načíst prostředky IPFS</translation>
 <translation id="1141556610026845297">K načtení požadovaných prostředků IPFS se nepodařilo použít místní uzel IPFS.  Kliknutím na tlačítko „Pokračovat“ místo toho použijete veřejnou bránu a v budoucnu se automaticky vrátíte zpět k veřejné bráně.</translation>
 <translation id="3373798179786163193">Pokračovat s veřejnou bránou</translation>
 <translation id="1974060860693918893">Rozšířená nastavení</translation>
 <translation id="9096577886148726047">Skrýt pokročilé</translation>
-<translation id="7716995370131231171">Brave nemůže načíst požadované prostředky IPFS buď proto, že se nespustil místní uzel, nebo v tuto chvíli nejsou k dispozici žádné připojené peery.  Pokud zvolíte „Pokračovat“, Brave se automaticky přepne zpět na výchozí veřejnou bránu, kdykoli selže použití místního uzlu.  Toto chování můžete kdykoli změnit v nastavení Brave.</translation>
+<translation id="182581792765792826">Brave nemůže načíst požadované prostředky IPFS buď proto, že se nespustil místní uzel Brave IPFS, nebo v tuto chvíli nejsou k dispozici žádné připojené peery.  Pokud zvolíte „Pokračovat“, Brave se automaticky přepne zpět na výchozí veřejnou bránu, kdykoli selže použití místního uzlu Brave IPFS.  Toto chování můžete kdykoli změnit v nastavení Brave.</translation>
 <translation id="8026038288183400906">Předvolba IPFS</translation>
 <translation id="2058855456574089690">Nastavte svou preferenci IPFS</translation>
-<translation id="4447758690649023734">Použít lokální uzel</translation>
+<translation id="4780526507945807546">Použít místní uzel Brave IPFS</translation>
 <translation id="8148464361648742409">Použít veřejnou bránu</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) je veřejná síť pro ukládání a předávání dat formou peer-to-peer. Tento protokol má odlišné zásady ochrany osobních údajů než HTTP(S).</translation>
 <translation id="5410952114182173389">Váš počítač přispívá do veřejné sítě, ale vaše IP adresa a veškerý obsah, o který žádáte nebo poskytujete, by mohl být odhalen. Obsah, o který žádáte přes IPFS, je předtím, než ho dostanete, ověřován.</translation>
@@ -775,16 +775,19 @@
 <translation id="6318437367327684789">navždy</translation>
 <translation id="8797999629784150206"><ph name="SITE_PERMISSIONS"/> můžete kdykoli změnit. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">oprávnění webu</translation>
+<translation id="7717357606512850995">Zkontrolovat stav</translation>
+<translation id="7306880305145342514">Gratulujeme! Vaše odměny <ph name="MONTH"/> dorazily</translation>
+<translation id="3007207731685398329">Vaše odměny <ph name="AMOUNT"/> <ph name="MONTH"/> dorazí za <ph name="DAYS"/></translation>
+<translation id="5878420576943709750">Vaše <ph name="AMOUNT"/> <ph name="MONTH"/> odměny jsou na cestě. Mějte se na pozoru!</translation>
 <translation id="2659764755126740206">Přejít na můj účet <ph name="PROVIDER"/></translation>
 <translation id="2389181429986654814">Pro dokončení ověření přejděte na web <ph name="PROVIDER"/></translation>
 <translation id="7793632266654336758">Abyste mohli začít dostávat odměny, vyplňte ověření identity.</translation>
 <translation id="2394961582378297792">Odhlášeno</translation>
-<translation id="5511950864417840431">Odhlásit se z účtu poskytovatele <ph name="PROVIDER"/></translation>
+<translation id="6080167751812750226">Odpojit od <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Odhadovaný výdělek</translation>
 <translation id="7577100371127227294">Měsíční příspěvky</translation>
 <translation id="5894023780213944778">Moje peněženka</translation>
 <translation id="2613359062756190460">Jednorázové příspěvky</translation>
-<translation id="4240437602809703483"><ph name="AMOUNT"/> výplata se začne zpracovávat za <ph name="DAYS"/></translation>
 <translation id="590733288489975971">Odměny z reklam</translation>
 <translation id="4989163558385430922">Zobrazit vše</translation>
 <translation id="3026978804849658576">Zobrazit výpis</translation>
@@ -815,6 +818,7 @@
 <translation id="9161147058107529840">Očekává se jeden objektový parametr.</translation>
 <translation id="1875861420974447980">ID řetězce se právě používá</translation>
 <translation id="167698752210114155">Došlo k vnitřní chybě</translation>
+<translation id="1128992132632883337">Došlo k chybě analýzy odpovědi</translation>
 <translation id="1680597601664421644">Importovaná mnemotechnika není pro peněženku Brave platná</translation>
 <translation id="4641919696349069826">Požadavek již probíhá</translation>
 <translation id="872806943696014633">Chybí transakční údaje</translation>
@@ -867,12 +871,14 @@
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6598532182053592167">Přidat minci</translation>
 <translation id="629730747756840877">Účet</translation>
+<translation id="3959969108528118741">Vlastník</translation>
 <translation id="3891414008432200754">Cena</translation>
 <translation id="2267753748892043616">Přidat účet</translation>
 <translation id="5061574358754621254">Údaje o cenách poskytované službou CoinGecko</translation>
 <translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Vyměnit</translation>
-<translation id="7020187418439030877"><ph name="NETWORK"/> není podporován</translation>
+<translation id="6295954645230084874">Podpora nákupu není pro <ph name="NETWORK"/> k dispozici</translation>
+<translation id="4171338820961522154">Podpora swapu není pro <ph name="NETWORK"/> k dispozici</translation>
 <translation id="1191686659164947414">Je možné, že u transakce probíhá front running</translation>
 <translation id="632241521608275119">Tolerance posunu</translation>
 <translation id="4500473291496079954">Platnost vyprší</translation>
@@ -880,12 +886,14 @@
 <translation id="2860280209982026951">Brave používá <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> jako agregátor DEX.</translation>
 <translation id="151946611346774041">0x zpracuje adresu Etherea a IP adresu pro provedení transakce (včetně získání cenových nabídek). 0x bude tyto údaje používat POUZE pro účely zpracování transakcí.</translation>
 <translation id="4626407663177532837">Cenová nabídka zahrnuje poplatek pro Brave ve výši $0,875 %.</translation>
+<translation id="8368540604723748428">Příliš mnoho desetinných čárek</translation>
 <translation id="2704606927547763573">Zkopírováno</translation>
 <translation id="6518133107902771759">Ověřit</translation>
 <translation id="1420318137760245955">Vítejte v nové peněžence Brave Wallet</translation>
 <translation id="8303434745767477417">Držte kryptoaktiva ve své úschově. Sledujte výkonnost portfolia a komunikujte s webovými 3 DApps. Obchodujte, investujte, půjčujte si a půjčujte s DeFi. To vše přímo ze soukromého prohlížeče Brave. Nejsou nutná žádná rozšíření ani stahování.</translation>
 <translation id="6972754398087986839">Get Started</translation>
 <translation id="375882617301124395">Zálohujte si kryptopeněženku</translation>
+<translation id="180032279811483155">V dalším kroku se zobrazí fráze pro obnovení o <ph name="RECOVERY_PHRASE_LENGTH"/> slovech, kterou můžete použít k obnovení primárních krypto účtů. Uložte si ji na bezpečné místo. Vaše fráze pro obnovení je jediným způsobem, jak znovu získat přístup k účtu v případě zapomenutého hesla, ztráty nebo krádeže zařízení nebo v případě, že chcete změnit peněženku.</translation>
 <translation id="5024543173656851695">Chápu, že pokud ztratím obnovovací slova, ztratím přístup ke své kryptopeněžence.</translation>
 <translation id="3933122286596948824">Vaše fráze pro obnovení</translation>
 <translation id="5077747669435508720">Zapište si nebo opište tato slova v přesném pořadí uvedeném níže a uložte je na bezpečné místo. Vaše obnovovací fráze je jediným způsobem, jak získat zpět přístup k účtu v případě zapomenutého hesla, ztráty či krádeže zařízení nebo v případě, že chcete změnit peněženku.</translation>
@@ -900,12 +908,14 @@
 <translation id="6901073872645365201">Hesla musí mít alespoň 7 znaků a obsahovat alespoň jedno číslo a jeden speciální znak.</translation>
 <translation id="6657585470893396449">Heslo</translation>
 <translation id="5486261815000869482">Potvrdit heslo</translation>
+<translation id="6138471905279127211">Kritéria hesla nebyla splněna</translation>
 <translation id="467510802200863975">Hesla se neshodují</translation>
 <translation id="5168349973342709369">Zadejte heslo pro odemknutí peněženky</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="5045550434625856497">Nesprávné heslo</translation>
-<translation id="7341660388388100491">Uzamknout krypto</translation>
+<translation id="5242300593039211344">Uzamknout peněženku</translation>
 <translation id="765834632354589737">Záložní peněženka</translation>
+<translation id="1108298724135935307">Připojené weby</translation>
 <translation id="722307450061393855">Zálohujte si peněženku, abyste ochránili svá kryptoaktiva a zajistili, že k nim nikdy neztratíte přístup.</translation>
 <translation id="1018806299114415224">Záloha je nyní k dispozici</translation>
 <translation id="5234764350956374838">Dismiss</translation>
@@ -919,12 +929,20 @@
 <translation id="3331452756822160641">Nové heslo</translation>
 <translation id="8624315169751085215">Zkopírovat do schránky</translation>
 <translation id="1121335910737476837">Primární kryptoměnové účty</translation>
-<translation id="3604193429970465812">Vedlejší účty</translation>
+<translation id="6969147029062037757">Importované účty</translation>
+<translation id="5668765612885835803">V peněžence Brave můžete vytvářet primární účty, které mohou být zálohovány nebo obnovovány z fráze pro obnovení. Chcete-li se dozvědět více o typech účtů, navštivte nápovědu.</translation>
 <translation id="2471916999505901943">Tyto účty lze používat s webovými aplikacemi 3 DApps a lze je zobrazit ve vašem portfoliu. Upozorňujeme však, že sekundární účty nelze obnovit pomocí fráze pro obnovení ze zálohy primárního účtu.</translation>
 <translation id="1940465339426637378">Aktiva</translation>
 <translation id="2236507293802791911">Viditelné prostředky</translation>
 <translation id="7525067979554623046">Vytvořit</translation>
 <translation id="4771176409524282426">Vytvořit účet</translation>
+<translation id="2471867767872178363">Vytvořit účet<ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="1073129495320255278">Importovat účet <ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="6780482003945159712">Vyberte jeden z následujících typů účtů</translation>
+<translation id="7080614857771109950">Podporuje aktiva kompatibilní s EVM na blockchainu Etherea (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="3329841454317342083">Podporuje aktiva kompatibilní s SLP na blockchainu Solana</translation>
+<translation id="4541295941776129088">Uložit aktivum FIL</translation>
+<translation id="232925166623833246">Importovat z hardwarové peněženky</translation>
 <translation id="4324198334837993695">Hardware</translation>
 <translation id="3067168166931605141">Název účtu</translation>
 <translation id="1136772623587250243">Vložit soukromý klíč ze schránky</translation>
@@ -935,7 +953,7 @@
 <translation id="5891811606602061966">Účet se nepodařilo importovat, zkuste to znovu.</translation>
 <translation id="5051929972046200722">Vyberte zařízení s hardwarovou peněženkou</translation>
 <translation id="5745936663807461565">Připojte <ph name="HARDWARE_DEVICE"/> peněženku přímo k počítači.</translation>
-<translation id="5041211872515579638">Odemkněte zařízení a vyberte aplikaci Ethereum.</translation>
+<translation id="4350216031085285578">Odemkněte své zařízení a vyberte aplikaci<ph name="BLOCKCHAIN_NETWORK"/>.</translation>
 <translation id="6892232036314454524">Tato chyba může nastat, pokud je v zařízení Ledger otevřena nesprávná aplikace.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -962,6 +980,7 @@
 <translation id="6018178824574796106">Nepodařilo se přidat vlastní žeton, zkuste to znovu.</translation>
 <translation id="547122651977318828">ID tokenu (pouze u ERC721)</translation>
 <translation id="7544552854944350190">Vyžaduje se ID tokenu</translation>
+<translation id="3842236145820483340">Coingecko ID</translation>
 <translation id="2708402071160162126">VAROVÁNÍ: Nikdy nesdílejte frázi pro obnovení. Kdokoli, kdo tuto frázi zná, vám může vaše prostředky nevratně odcizit.</translation>
 <translation id="2902856457593699108">Zobrazit klíč</translation>
 <translation id="8033497299373164724">Skrýt klíč</translation>
@@ -1030,6 +1049,8 @@
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> připojených účtů</translation>
 <translation id="4305817255990598646">Přepnout</translation>
 <translation id="3890989020011724401">Nový účet</translation>
+<translation id="7257603403519636638">Prohlédnout aktiva účtu</translation>
+<translation id="2092132085082887098">Aktiva účtu</translation>
 <translation id="4460220693591349571">TYP FUNKCE</translation>
 <translation id="838933475572692615">ÚDAJE HEX</translation>
 <translation id="2240831799756994975">BYTY</translation>
@@ -1072,6 +1093,11 @@
 <translation id="6666273175654835609">Odesláno</translation>
 <translation id="2331676293859649642">Potvrzeno</translation>
 <translation id="1165039591588034296">Chyba</translation>
+<translation id="9065572743819293042">Nedávné transakce</translation>
+<translation id="4235538284468006757">Podrobnosti transakce</translation>
+<translation id="7488671812634887146">Urychlit</translation>
+<translation id="1702356231547761669">Hash transakce</translation>
+<translation id="7982789257301363584">Síť</translation>
 <translation id="8941851657764077659">Maximální prioritní poplatek</translation>
 <translation id="8047527352810290817">Upravit plyn</translation>
 <translation id="9091334651803050473">když to není zaručeno, těžaři pravděpodobně upřednostní vaši transakci, pokud zaplatíte vyšší poplatek.</translation>
@@ -1088,6 +1114,10 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Nastavit vlastní</translation>
 <translation id="7400927223938424379">Nastavit navržené</translation>
+<translation id="8179605702342645418">Transakce nemusí být v síti přenesena.</translation>
+<translation id="9100765901046053179">Pokročilá nastavení</translation>
+<translation id="4220062530885628403">Nonce</translation>
+<translation id="2749584096020594976">Hodnota nonce bude automaticky stanovena, pokud toto pole nebude specifikováno.</translation>
 <translation id="1599636444563952897">Oprávnění k limitu výdajů umožňuje <ph name="SITE_ORIGIN"/> vybrat a utratit maximálně následující částku:</translation>
 <translation id="4512871563176965522">Vlastní příspěvek</translation>
 <translation id="749944179568745958">Neplatná adresa ETH</translation>
@@ -1128,6 +1158,11 @@
 <translation id="7017116822583380542">Trezor Bridge není připraven</translation>
 <translation id="3378339846292573874">Přidat navrhovaný token</translation>
 <translation id="2322227405137827074">Přejete si importovat tento token?</translation>
+<translation id="4378475168089649292">Blockchain</translation>
+<translation id="1904295039023858291">Standard tokenu</translation>
+<translation id="9033453977881595182">ID tokenu</translation>
+<translation id="2962388922926051374">Požadavek na metodu „eth_chainId“ na síti<ph name="URL"/> selhal</translation>
+<translation id="8325036459845654666">Tato síť již byla přidána.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Obecné info</translation>
 <translation id="4045404575593562245">Kontrolní události Toru</translation>

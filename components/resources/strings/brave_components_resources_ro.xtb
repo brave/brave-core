@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Următoarea dată pentru contribuție</translation>
 <translation id="1397381065858030856">Siteuri vizualizate</translation>
 <translation id="2365740070488517695">Cadouri bănești</translation>
-<translation id="4803566747788858771">Recompensați-i pe creatorii de conținut direct în timp ce navigați folosind Panoul Recompense sau folosind butonul de recompense intern pe diverse siteuri, incluzând Twitter, Reddit și GitHub.</translation>
+<translation id="5993195614988368256">Recompensați-i pe creatorii de conținut direct în timp ce navigați folosind Panoul Recompense sau folosind butonul de recompense intern pe diverse siteuri, incluzând Twitter, Reddit și GitHub.</translation>
 <translation id="5012991400231464322">Contribuții lunare</translation>
 <translation id="2084351799622920487">Configurați contribuții lunare recurente ca să puteți să sprijiniți site-uri încontinuu.</translation>
 <translation id="8150772404570015166">Nu au fost încă setate contribuții lunare.</translation>
@@ -255,6 +255,8 @@
 <translation id="9074594632540931067">Eroare: token-ul BAT nu este disponibil</translation>
 <translation id="413458922997276130">Contul dvs. Uphold este blocat în prezent.</translation>
 <translation id="3579959767665130790">Eroare: cont blocat</translation>
+<translation id="6554308597291659562">Uphold are nevoie de puțin mai multe informații despre dvs. înainte de a activa toate funcțiile contului Uphold. Încercați din nou după ce ați trimis aceste informații în contul dvs. Uphold.</translation>
+<translation id="6996157559236886133">Eroare: cont Uphold limitat</translation>
 <translation id="819370426249314592">Contul dvs. Uphold este încă în așteptare.</translation>
 <translation id="4530453398914580957">Eroare: cont în așteptare</translation>
 <translation id="2388470740942086608">Contul dvs. Uphold este restricționat în prezent.</translation>
@@ -262,8 +264,6 @@
 <translation id="7147519373526655987">A apărut o problemă cu validarea solicitării browserului dvs. de a conecta portofelul Brave Rewards la contul dvs. <ph name="PROVIDER"/>. Pentru ajutor suplimentar, puteți <ph name="BEGIN_LINK"/>lua legătura cu serviciul de asistență <ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Eroare: solicitarea nu a putut fi validată</translation>
 <translation id="1737873393693460829">Prin activarea [[title]], acceptați <ph name="BEGIN_LINK1"/>Termenii de utilizare<ph name="END_LINK1"/> și <ph name="BEGIN_LINK2"/>Politica de confidențialitate<ph name="END_LINK2"/>.</translation>
-<translation id="901298512318791028">Procesarea plății dvs. de  <ph name="AMOUNT"/> va începe în  <ph name="DAYS"/>.</translation>
-<translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Observație: <ph name="BOLD_END"/>Procesarea plății și primirea tokern-urilor BAT poate dura câteva zile.</translation>
 <translation id="4672975606583962967">Selectați un serviciu de portofel</translation>
 <translation id="1815503044492647974">Selectați un partener de portofel. Dacă aveți deja un cont, vi se va solicita să vă conectați.</translation>
 <translation id="2205685774710519016">Notă: Tranzacțiile dvs. vor fi vizibile pentru serviciul de portofel odată ce autorizați acest lucru; de exemplu, serviciile vor vedea destinatarul și suma cadourilor bănești.</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Finalizați verificarea portofelului</translation>
 <translation id="9200453331904391567">Deconectare de la Brave Rewards</translation>
 <translation id="3656941797339037856">Conectați Brave Rewards de Gemini!</translation>
-<translation id="3066983737886188034">Gemini oferă un mod simplu de a tranzacționa, stoca și câștiga BAT. Confirmați portofelul dvs. cu recompense Brave și conectați-l la Gemini acum!</translation>
+<translation id="31532096120351460">Tranzacționați peste 50 de criptomonede, inclusiv BAT, pe Gemini. Este o platformă sigură pentru păstrarea criptomonedelor dvs. În plus, puteți obține câștiguri din dobânzi în SUA, Hong-Kong și Singapore.</translation>
 <translation id="7404779623219601861">Transformați BAT în carduri cadou</translation>
 <translation id="6215565499749144110">Prin intermediul rețelei TAP, vă puteți transforma BAT-urile în carduri cadou pentru mărci la modă.</translation>
 <translation id="6915065518766963119">* Necesită verificare Uphold.</translation>
@@ -732,15 +732,15 @@
 <translation id="72868071984333667">Află mai multe despre IPFS și politica de confidențialitate</translation>
 <translation id="1886162073868201257">Eroare de lansare serviciu IPFS</translation>
 <translation id="5357895013476183089">IPFS nu este conectat</translation>
-<translation id="1196783328762622576">Nu se pot încărca resursele IPFS folosind nodul local</translation>
+<translation id="7662930734991751511">Nu se pot încărca resursele IPFS folosind nodul IPFS local Brave</translation>
 <translation id="1141556610026845297">Nu s-a putut utiliza nodul IPFS local pentru a încărca resursele IPFS solicitate. Apasă pe butonul „Continuare” pentru a utiliza în schimb poarta de ieșire publică și pentru a reveni automat la aceasta în viitor.</translation>
 <translation id="3373798179786163193">Continuați cu portalul public</translation>
 <translation id="1974060860693918893">Avansate</translation>
 <translation id="9096577886148726047">Ascunde avansat</translation>
-<translation id="7716995370131231171">Brave nu poate încărca resursele IPFS solicitate fie pentru că nodul local nu a pornit, fie pentru că nu există colegi conectați disponibili în acest moment. Dacă alegi „Continuare”, Brave va reveni automat la poarta de ieșire publică implicită ori de câte ori utilizarea nodului local eșuează. Poți schimba acest comportament în orice moment, din setările Brave.</translation>
+<translation id="182581792765792826">Brave nu poate încărca resursele IPFS solicitate fie pentru că nodul IPFS local Brave nu a pornit, fie pentru că nu există colegi conectați disponibili în acest moment. Dacă alegeți opțiunea de a continua, Brave va reveni automat la gateway-ul public implicit ori de câte ori utilizarea nodului IPFS local Brave eșuează. Poți modifica acest comportament în orice moment din setările Brave.</translation>
 <translation id="8026038288183400906">Preferință IPFS</translation>
 <translation id="2058855456574089690">Setați-vă preferința IPFS</translation>
-<translation id="4447758690649023734">Folosiți un nod local</translation>
+<translation id="4780526507945807546">Utilizați un nod IPFS local Brave</translation>
 <translation id="8148464361648742409">Folosiți un gateway public</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) este rețeaua publică pentru stocarea și livrarea de date peer-to-peer. Acest protocol are considerații diferite de confidențialitate față de HTTP(S).</translation>
 <translation id="5410952114182173389">Computerul dvs. contribuie la rețeaua publică, dar adresa dvs. IP și orice conținut pe care îl solicitați sau îl oferiți poate fi expus. Conținutul pe care îl solicitați prin IPFS este verificat înainte de a vă fi oferit.</translation>
@@ -775,16 +775,19 @@
 <translation id="6318437367327684789">totdeauna</translation>
 <translation id="8797999629784150206">Puteți să schimbați <ph name="SITE_PERMISSIONS"/> oricând. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">permisiunea site-ului</translation>
+<translation id="7717357606512850995">Verificați starea</translation>
+<translation id="7306880305145342514">Felicitări! Recompensele dvs. pentru <ph name="MONTH"/> au intrat în cont!</translation>
+<translation id="3007207731685398329">Recompensa dvs. de <ph name="AMOUNT"/> pentru <ph name="MONTH"/> va intra în cont în <ph name="DAYS"/></translation>
+<translation id="5878420576943709750">Recompensa dvs. de <ph name="AMOUNT"/> pentru <ph name="MONTH"/> e pe drum. Monitorizați contul dvs.!</translation>
 <translation id="2659764755126740206">Accesați <ph name="PROVIDER"/> Contul meu</translation>
 <translation id="2389181429986654814">Accesați <ph name="PROVIDER"/> pentru confirmare completă</translation>
 <translation id="7793632266654336758">Finalizați confirmarea identității pentru a începe să primiți recompense.</translation>
 <translation id="2394961582378297792">Deconectat</translation>
-<translation id="5511950864417840431">Deconectați-vă de la <ph name="PROVIDER"/></translation>
+<translation id="6080167751812750226">Deconectați-vă de la <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Venituri estimate</translation>
 <translation id="7577100371127227294">Plăți lunare</translation>
 <translation id="5894023780213944778">Portofelul meu</translation>
 <translation id="2613359062756190460">Cadouri bănești o singură dată</translation>
-<translation id="4240437602809703483">Procesarea plății de<ph name="AMOUNT"/> începe în <ph name="DAYS"/></translation>
 <translation id="590733288489975971">Recompense din reclame</translation>
 <translation id="4989163558385430922">Vedeți tot</translation>
 <translation id="3026978804849658576">Vizualizați extrasul</translation>
@@ -815,6 +818,7 @@
 <translation id="9161147058107529840">Se preconiza un singur parametru de obiect.</translation>
 <translation id="1875861420974447980">Acest ID de lanț este deja utilizat</translation>
 <translation id="167698752210114155">A apărut o eroare internă</translation>
+<translation id="1128992132632883337">A survenit o eroare de analizare a răspunsului</translation>
 <translation id="1680597601664421644">Codul mnemonic importat nu este valid pentru portofelul Brave</translation>
 <translation id="4641919696349069826">Există deja o solicitare în desfășurare</translation>
 <translation id="872806943696014633">Datele privind tranzacția lipsesc</translation>
@@ -867,12 +871,14 @@
 <translation id="6977728312178289892">1 an</translation>
 <translation id="6598532182053592167">Adăugați monedă</translation>
 <translation id="629730747756840877">Cont</translation>
+<translation id="3959969108528118741">Titular</translation>
 <translation id="3891414008432200754">Preț</translation>
 <translation id="2267753748892043616">Adăugați un cont</translation>
 <translation id="5061574358754621254">Date privind prețurile, oferite de CoinGecko</translation>
 <translation id="1483493594462132177">Trimite</translation>
 <translation id="538450413584738399">Schimbați</translation>
-<translation id="7020187418439030877">Rețeaua <ph name="NETWORK"/> nu este acceptată</translation>
+<translation id="6295954645230084874">Asistența pentru achiziții nu este disponibilă pentru <ph name="NETWORK"/></translation>
+<translation id="4171338820961522154">Asistența swap nu este disponibilă pentru <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">Tranzacția poate fi realizată anticipat, pe baza unor informații confidențiale care nu sunt disponibile public</translation>
 <translation id="632241521608275119">Marjă de toleranță</translation>
 <translation id="4500473291496079954">Expiră în</translation>
@@ -880,12 +886,14 @@
 <translation id="2860280209982026951">Brave utilizează <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> ca agregator de schimb descentralizat.</translation>
 <translation id="151946611346774041">0x va procesa adresa Ethereum și adresa IP pentru executarea tranzacției (inclusiv obținerea ofertelor). 0x va utiliza aceste date DOAR în scopul procesării tranzacțiilor.</translation>
 <translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
+<translation id="8368540604723748428">Prea multe zecimale</translation>
 <translation id="2704606927547763573">Copiat</translation>
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="1420318137760245955">Bun venit la noul portofel Brave</translation>
 <translation id="8303434745767477417">Țineți criptomonedele în custodia dvs. Urmăriți performanța portofoliului și interacționați cu aplicații descentralizate web 3. Tranzacționați, investiți, oferiți și obțineți împrumuturi cu DeFi, totul din browserul Brave, care protejează confidențialitatea dvs. Nu aveți nevoie de extensii și nu trebuie să descărcați nimic.</translation>
 <translation id="6972754398087986839">Începe</translation>
 <translation id="375882617301124395">Realizați o copie de rezervă după portofel</translation>
+<translation id="180032279811483155">La pasul următor, veți vedea o expresie de recuperare din <ph name="RECOVERY_PHRASE_LENGTH"/> cuvinte, pe care o puteți folosi pentru a recupera principalele dvs. conturi de criptomonede. Salvați expresia într-un loc sigur. Expresia de recuperare este singura modalitate de a redobândi accesul la cont în cazul unei parole uitate, dacă ați pierdut sau vi s-a furat dispozitivul ori dacă doriți să schimbați portofelele.</translation>
 <translation id="5024543173656851695">Înțeleg faptul că, dacă pierd cuvintele pentru recuperare, nu voi putea accesa portofelul meu cu criptomonede.</translation>
 <translation id="3933122286596948824">Expresia dvs. de recuperare</translation>
 <translation id="5077747669435508720">Scrieți sau copiați aceste cuvinte exact în ordinea indicată mai jos și salvați-le într-un loc sigur. Expresia de recuperare este singura modalitate de a redobândi accesul la cont în cazul unei parole uitate, dacă ați pierdut sau vi s-a furat dispozitivul ori dacă doriți să schimbați portofelele.</translation>
@@ -900,12 +908,14 @@
 <translation id="6901073872645365201">Parolele trebuie să conțină cel puțin 7 caractere, dintre care o cifră și un caracter special.</translation>
 <translation id="6657585470893396449">Parolă</translation>
 <translation id="5486261815000869482">Confirmați parola</translation>
+<translation id="6138471905279127211">Parolele nu corespund.</translation>
 <translation id="467510802200863975">Parolele nu sunt identice</translation>
 <translation id="5168349973342709369">Introduceți parola pentru a debloca portofelul</translation>
 <translation id="9111102763498581341">Deblochează</translation>
 <translation id="5045550434625856497">Parolă incorectă</translation>
-<translation id="7341660388388100491">Blocați portofelul de criptomonede</translation>
+<translation id="5242300593039211344">Blocați portofelul</translation>
 <translation id="765834632354589737">Rezervă Portofel</translation>
+<translation id="1108298724135935307">Site-uri conectate</translation>
 <translation id="722307450061393855">Realizați o copie de rezervă după portofelul dvs. pentru a vă proteja activele și a vă asigura că nu pierdeți accesul niciodată.</translation>
 <translation id="1018806299114415224">Creați o copie de rezervă acum</translation>
 <translation id="5234764350956374838">Închide</translation>
@@ -919,12 +929,20 @@
 <translation id="3331452756822160641">Parolă nouă</translation>
 <translation id="8624315169751085215">Copiază în Clipboard</translation>
 <translation id="1121335910737476837">Principalele conturi de criptomonede</translation>
-<translation id="3604193429970465812">Conturi secundare</translation>
+<translation id="6969147029062037757">Conturi importate</translation>
+<translation id="5668765612885835803">Puteți crea conturi principale în portofelul Brave după care puteți crea copii de rezervă sau pe care le puteți restabili cu ajutorul expresiei de recuperare. Pentru informații suplimentare despre tipurile de conturi, accesați secțiunea de ajutor a contului</translation>
 <translation id="2471916999505901943">Aceste conturi pot fi utilizate cu aplicații descentralizate web 3 și pot fi afișate în portofoliul dvs. Cu toate acestea, conturile secundare nu pot fi restabilite cu expresia de recuperare din copia de rezervă a contului principal.</translation>
 <translation id="1940465339426637378">Active</translation>
 <translation id="2236507293802791911">Active vizibile</translation>
 <translation id="7525067979554623046">Creați</translation>
 <translation id="4771176409524282426">Creați cont</translation>
+<translation id="2471867767872178363">Creați un cont <ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="1073129495320255278">Importați contul <ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="6780482003945159712">Selectați unul dintre următoarele tipuri de cont</translation>
+<translation id="7080614857771109950">Acceptă activele compatibile EVM pe blockchain-ul Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="3329841454317342083">Acceptă activele compatibile SLP pe blockchain-ul Solana</translation>
+<translation id="4541295941776129088">Stocați activul FIL</translation>
+<translation id="232925166623833246">Importare din portofelul hardware</translation>
 <translation id="4324198334837993695">Hardware</translation>
 <translation id="3067168166931605141">Numele contului</translation>
 <translation id="1136772623587250243">Inserați cheia privată din clipboard</translation>
@@ -935,7 +953,7 @@
 <translation id="5891811606602061966">Nu s-a reușit importarea contului. Încercați din nou!</translation>
 <translation id="5051929972046200722">Selectați portofelul dvs. hardware</translation>
 <translation id="5745936663807461565">Conectați portofelul dvs. <ph name="HARDWARE_DEVICE"/> direct la computer.</translation>
-<translation id="5041211872515579638">Deblocați dispozitivul și selectați aplicația Ethereum.</translation>
+<translation id="4350216031085285578">Deblocați dispozitivul și selectați aplicația <ph name="BLOCKCHAIN_NETWORK"/> .</translation>
 <translation id="6892232036314454524">Această eroare poate surveni când se deschide aplicația greșită pe dispozitivul Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -962,6 +980,7 @@
 <translation id="6018178824574796106">Nu s-a reușit adăugarea token-ului personalizat. Încercați din nou!</translation>
 <translation id="547122651977318828">Identificator token (numai pentru ERC721)</translation>
 <translation id="7544552854944350190">Identificatorul token-ului este obligatoriu</translation>
+<translation id="3842236145820483340">ID Coingecko</translation>
 <translation id="2708402071160162126">AVERTISMENT: nu divulgați niciodată expresia de recuperare. Oricine știe această expresie vă poate prelua activele definitiv.</translation>
 <translation id="2902856457593699108">Afișați cheia</translation>
 <translation id="8033497299373164724">Ascundeți cheia</translation>
@@ -1030,6 +1049,8 @@
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> conturi conectate</translation>
 <translation id="4305817255990598646">Comutați</translation>
 <translation id="3890989020011724401">Cont nou</translation>
+<translation id="7257603403519636638">Vedeți activele din cont</translation>
+<translation id="2092132085082887098">Activele din cont</translation>
 <translation id="4460220693591349571">TIP DE FUNCȚIE</translation>
 <translation id="838933475572692615">DATE HEXAZECIMALE</translation>
 <translation id="2240831799756994975">BYȚI</translation>
@@ -1072,6 +1093,11 @@
 <translation id="6666273175654835609">Trimis</translation>
 <translation id="2331676293859649642">Confirmat</translation>
 <translation id="1165039591588034296">Eroare</translation>
+<translation id="9065572743819293042">Tranzacții recente</translation>
+<translation id="4235538284468006757">Detalii privind tranzacțiile</translation>
+<translation id="7488671812634887146">Accelerare</translation>
+<translation id="1702356231547761669">Cod hash tranzacție</translation>
+<translation id="7982789257301363584">Rețea</translation>
 <translation id="8941851657764077659">Taxa maximă pentru prioritate</translation>
 <translation id="8047527352810290817">Editare gas</translation>
 <translation id="9091334651803050473">Deși nu există garanții, probabil că minerii vor acorda prioritate tranzacției dvs. dacă plătiți o taxă mai mare.</translation>
@@ -1088,6 +1114,10 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Setați valoare personalizată</translation>
 <translation id="7400927223938424379">Setați valoarea sugerată</translation>
+<translation id="8179605702342645418">Tranzacția nu poate fi propagată în rețea.</translation>
+<translation id="9100765901046053179">Setări avansate</translation>
+<translation id="4220062530885628403">Nonce</translation>
+<translation id="2749584096020594976">Valoarea nonce va fi determinată automat dacă acest câmp nu este specificat.</translation>
 <translation id="1599636444563952897">Având în vedere permisiunea privind limita de cheltuieli, <ph name="SITE_ORIGIN"/> poate retrage și cheltui suma următoare:</translation>
 <translation id="4512871563176965522">Toleranță personalizată</translation>
 <translation id="749944179568745958">Nu este o adresă ETH validă</translation>
@@ -1128,6 +1158,11 @@
 <translation id="7017116822583380542">Aplicația Trezor Bridge nu este pregătită</translation>
 <translation id="3378339846292573874">Adăugați token sugerat</translation>
 <translation id="2322227405137827074">Doriți să importați acest token?</translation>
+<translation id="4378475168089649292">Blockchain</translation>
+<translation id="1904295039023858291">Standard token</translation>
+<translation id="9033453977881595182">ID token</translation>
+<translation id="2962388922926051374">Eroare la solicitarea metodei 'eth_chainId' pe rețeaua <ph name="URL"/></translation>
+<translation id="8325036459845654666">Această rețea este adăugată deja.</translation>
 <translation id="3155170474926428993">Lansatorul Tor</translation>
 <translation id="3745016858329272300">Informații generale</translation>
 <translation id="4045404575593562245">Evenimente control Tor</translation>

@@ -14,6 +14,7 @@
 <translation id="1030706264415084469"><ph name="URL"/> ingin menyimpan data berukuran besar di perangkat Anda secara permanen</translation>
 <translation id="1032854598605920125">Putar searah jarum jam</translation>
 <translation id="1036348656032585052">Matikan</translation>
+<translation id="1036982837258183574">Tekan |<ph name="ACCELERATOR"/>| untuk keluar dari mode layar penuh</translation>
 <translation id="1038106730571050514">Tampilkan saran</translation>
 <translation id="1038842779957582377">nama tidak diketahui</translation>
 <translation id="1041998700806130099">Pesan lembar tugas</translation>
@@ -154,6 +155,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="1422930527989633628">Dapat meminta untuk menemukan perangkat Bluetooth di sekitar</translation>
 <translation id="1426410128494586442">Ya</translation>
 <translation id="1428146450423315676">Tempat kertas 7</translation>
+<translation id="142858679511221695">Pengguna cloud</translation>
 <translation id="1428729058023778569">Anda melihat peringatan ini karena situs ini tidak mendukung HTTPS. <ph name="BEGIN_LEARN_MORE_LINK"/>Pelajari lebih lanjut<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1430915738399379752">Cetak</translation>
 <translation id="1432581352905426595">Kelola mesin telusur</translation>
@@ -171,6 +173,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="1472675084647422956">Tampilkan lainnya</translation>
 <translation id="1473183651233018052">JIS B10</translation>
 <translation id="147358896496811705">2A0</translation>
+<translation id="1475299637784133125">Mencari versi bowser? Buka</translation>
 <translation id="1476595624592550506">Ubah sandi Anda</translation>
 <translation id="1483493594462132177">Kirim</translation>
 <translation id="1484290072879560759">Pilih Alamat Pengiriman</translation>
@@ -265,6 +268,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="1741613555002899862">Harus ditentukan dan menjadi string yang valid saat DnsOverHttpsMode <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="1745880797583122200">Browser Anda dikelola</translation>
 <translation id="1746113442205726301">Perpindahan image Y</translation>
+<translation id="1747819498338037826">Ubah secara otomatis</translation>
 <translation id="17513872634828108">Buka tab</translation>
 <translation id="1752021286346845558">Kotak surat 8</translation>
 <translation id="1753706481035618306">Nomor halaman</translation>
@@ -391,6 +395,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="2184405333245229118">{COUNT,plural, =1{1 alamat}other{# alamat}}</translation>
 <translation id="2187317261103489799">Deteksi (default)</translation>
 <translation id="2188375229972301266">Beberapa lubang di bawah</translation>
+<translation id="2257044501874719257">Sandi yang baru saja Anda gunakan terekspos dalam pelanggaran data. Untuk mengamankan akun Anda, Pengelola Sandi Brave merekomendasikan untuk mengubah sandi tersebut sekarang lalu memeriksa sandi tersimpan Anda.</translation>
 <translation id="2202020181578195191">Masukkan tahun habis masa berlaku yang valid</translation>
 <translation id="22081806969704220">Baki 3</translation>
 <translation id="2212735316055980242">Kebijakan tidak ditemukan</translation>
@@ -403,7 +408,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="2241693394036365668">File didownload</translation>
 <translation id="2248949050832152960">Gunakan WebAuthn</translation>
 <translation id="2250931979407627383">Jahitan tepi di kiri</translation>
-<translation id="2251943122176102076">Administrator tidak menyarankan untuk mengambil screenshot atau merekam layar karena terdapat konten rahasia yang ditangkap:</translation>
 <translation id="225207911366869382">Nilai ini sudah usang untuk kebijakan ini.</translation>
 <translation id="2258928405015593961">Masukkan tanggal habis masa berlaku yang ada di masa mendatang dan coba lagi</translation>
 <translation id="225943865679747347">Kode kesalahan: <ph name="ERROR_CODE"/></translation>
@@ -631,6 +635,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="3087734570205094154">Bawah</translation>
 <translation id="3095940652251934233">Statement</translation>
 <translation id="3096100844101284527">Tambahkan Alamat Pengambilan</translation>
+<translation id="3098513225387949945">Diabaikan karena daftar "disable" berisi pola yang sama dengan '*', yang berarti menonaktifkan kebijakan.</translation>
 <translation id="3105172416063519923">ID Aset:</translation>
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>Memeriksa konfigurasi DNS aman<ph name="END_LINK"/></translation>
 <translation id="3108943290502734357">Baki Tengah</translation>
@@ -704,6 +709,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="3329013043687509092">Saturasi</translation>
 <translation id="3333762389743153920">Tidak memenuhi syarat untuk kartu virtual</translation>
 <translation id="3338095232262050444">Aman</translation>
+<translation id="3339446062576134663">Cloud (Ash)</translation>
 <translation id="3345782426586609320">Mata</translation>
 <translation id="3355823806454867987">Ubah setelan proxy...</translation>
 <translation id="3360103848165129075">Lembar handler pembayaran</translation>
@@ -728,6 +734,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="3380365263193509176">Kesalahan tidak dikenal</translation>
 <translation id="3380864720620200369">ID Klien:</translation>
 <translation id="3381668585148405088">Verifikasi pembelian Anda</translation>
+<translation id="3383566085871012386">Urutan prioritas saat ini</translation>
 <translation id="3387261909427947069">Metode Pembayaran</translation>
 <translation id="3391030046425686457">Alamat pengiriman</translation>
 <translation id="3391482648489541560">pengeditan file</translation>
@@ -805,6 +812,8 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
       coba hapus dari daftar dan tambahkan lagi.</translation>
 <translation id="3630699740441428070">Administrator perangkat ini telah mengonfigurasi koneksi jaringan Anda, yang memungkinkan mereka untuk melihat traffic jaringan, termasuk situs yang Anda kunjungi.</translation>
 <translation id="3631244953324577188">Biometrik</translation>
+<translation id="3632503704576938756">Berbagi layar dilanjutkan</translation>
+<translation id="3632892046558972264">Berbagi layar dijeda</translation>
 <translation id="1367445511302842209">Tombol Update Brave, tekan Enter untuk mengupdate Brave dari setelan Brave</translation>
 <translation id="3634530185120165534">Baki 5</translation>
 <translation id="5334218736598399301">Simpan ke Akun Brave</translation>
@@ -845,7 +854,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="3760561303380396507">Gunakan Windows Hello dan bukan CVC?</translation>
 <translation id="3761171036307311438">Nama pada kartu:</translation>
 <translation id="3761718714832595332">Sembunyikan status</translation>
-<translation id="3765032636089507299">Halaman Safe Browsing sedang diperbaiki.</translation>
 <translation id="3765588406864124894">Kotak surat 9</translation>
 <translation id="3767485424735936570">Menyalin dan menempelkan konten ini ke <ph name="VM_NAME"/> tidak direkomendasikan oleh kebijakan administrator</translation>
 <translation id="8247912309816231326"><ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk membuat catatan baru di Brave Keep dengan cepat</translation>
@@ -869,6 +877,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="3827112369919217609">Absolut</translation>
 <translation id="3827475930221174051">Berdasarkan aktivitas yang terkait dengan "<ph name="SEARCH_TERM"/>"</translation>
 <translation id="3828924085048779000">Frasa sandi kosong tidak dibolehkan.</translation>
+<translation id="3831065134033923230">Periksa sandi tersimpan Anda</translation>
 <translation id="3831915413245941253"><ph name="ENROLLMENT_DOMAIN"/> telah menginstal ekstensi untuk fungsi tambahan. Ekstensi memiliki akses ke sebagian data Anda.</translation>
 <translation id="3832522519263485449">Beberapa lubang di kiri</translation>
 <translation id="3835233591525155343">Penggunaan perangkat Anda</translation>
@@ -1015,6 +1024,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="4346197816712207223">Kartu Kredit yang Diterima</translation>
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4348834659292907206">Koneksi ke <ph name="SITE"/> tidak aman</translation>
+<translation id="4349365535725594680">Tidak dapat membagikan konten rahasia</translation>
 <translation id="4350629523305688469">Baki Multifungsi</translation>
 <translation id="4351060348582610152"><ph name="ORIGIN"/> ingin memindai perangkat Bluetooth di sekitar. Perangkat berikut telah ditemukan:</translation>
 <translation id="4351175281479794167">Masukkan kode verifikasi</translation>
@@ -1043,13 +1053,13 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="443673843213245140">Penggunaan proxy dinonaktifkan tetapi konfigurasi proxy yang eksplisit ditentukan.</translation>
 <translation id="4450893287417543264">Jangan tampilkan lagi</translation>
 <translation id="4451135742916150903">Dapat meminta untuk terhubung ke perangkat HID</translation>
+<translation id="8416018650396907203">Sandi yang baru saja Anda gunakan terekspos dalam pelanggaran data. Untuk mengamankan akun Anda, Pengelola Sandi Brave merekomendasikan untuk memeriksa sandi tersimpan Anda.</translation>
+<translation id="4455222631300069614">Ubah sandi Anda sekarang</translation>
 <translation id="4460315069258617173">Diizinkan sampai Anda menutup tab untuk situs ini</translation>
 <translation id="4464826014807964867">Situs dengan info dari organisasi Anda</translation>
-<translation id="4465818729556336129">Dokumen ini bersifat rahasia dan administrator tidak menyarankan untuk mencetaknya.</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">Formulir ini tidak aman. Isi otomatis telah dinonaktifkan.</translation>
 <translation id="4477350412780666475">Lagu Berikutnya</translation>
-<translation id="4481394504112738036">File rahasia</translation>
 <translation id="4482953324121162758">Situs ini tidak akan diterjemahkan.</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">Enkripsikan sandi yang disinkronkan dengan Akun Brave Anda</translation>
@@ -1152,7 +1162,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk membuat Spreadsheet Brave baru dengan cepat</translation>
 <translation id="4825507807291741242">Kuat</translation>
 <translation id="483241715238664915">Aktifkan peringatan</translation>
-<translation id="4834718916855725099">Administrator tidak menyarankan untuk mengambil screenshot atau merekam layar karena terdapat konten rahasia di layar:</translation>
 <translation id="4838327282952368871">Sangat Indah</translation>
 <translation id="246176083348620700">Lihat histori Brave Anda</translation>
 <translation id="484462545196658690">Otomatis</translation>
@@ -1198,6 +1207,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="4989163558385430922">Lihat semua</translation>
 <translation id="4989542687859782284">Tidak Tersedia</translation>
 <translation id="4989809363548539747">Plugin ini tidak didukung</translation>
+<translation id="4992066212339426712">Bunyikan</translation>
 <translation id="4995216769782533993">Konfirmasi kode keamanan untuk berbagi detail kartu dengan situs ini</translation>
 <translation id="4995474875135717171">Diubah:</translation>
 <translation id="4995749490935861684"><ph name="CUSTOMIZE_SEARCH_ENGINES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tekan tab lalu Enter untuk mengelola penelusuran situs dan mesin telusur default Anda</translation>
@@ -1268,6 +1278,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="51918995459521422"><ph name="ORIGIN"/> ingin mendownload beberapa file</translation>
 <translation id="519422657042045905">Anotasi tidak tersedia</translation>
 <translation id="5201306358585911203">Halaman tersemat di halaman ini menyatakan</translation>
+<translation id="4885094043301349997">Brave menemukan sandi yang baru saja Anda gunakan dalam pelanggaran data. Asisten Brave dapat mengubah sandi Anda secara otomatis.</translation>
 <translation id="5205222826937269299">Nama wajib diisi</translation>
 <translation id="5209518306177824490">SHA-1 Fingerprint</translation>
 <translation id="5209670883520018268">Baki 20</translation>
@@ -1305,7 +1316,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5300589172476337783">Tampilkan</translation>
 <translation id="5306593769196050043">Kedua lembar</translation>
 <translation id="5307166000025436103">Oke</translation>
-<translation id="5308380583665731573">Sambungkan</translation>
+<translation id="5308380583665731573">Hubungkan</translation>
 <translation id="5308689395849655368">Pelaporan kondisi ngadat dinonaktifkan.</translation>
 <translation id="5314967030527622926">Pembuat buklet</translation>
 <translation id="5316812925700871227">Putar berlawanan arah jarum jam</translation>
@@ -1317,6 +1328,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5038014878861342914">Brave menemukan sandi yang baru saja Anda gunakan dalam pelanggaran data. Untuk mengamankan akun, sebaiknya periksa sandi tersimpan Anda.</translation>
 <translation id="5334013548165032829">Log sistem mendetail</translation>
 <translation id="5334145288572353250">Simpan Alamat?</translation>
+<translation id="5335920952954443287">Hati yang Berdebar</translation>
 <translation id="5340250774223869109">Aplikasi diblokir</translation>
 <translation id="534295439873310000">Perangkat NFC</translation>
 <translation id="5344579389779391559">Halaman ini mungkin mencoba menagih Anda</translation>
@@ -1334,7 +1346,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5398772614898833570">Iklan diblokir</translation>
 <translation id="5400836586163650660">Grey</translation>
 <translation id="540969355065856584">Server ini tidak dapat membuktikan bahwa ini adalah <ph name="DOMAIN"/>; sertifikat keamanannya saat ini tidak valid. Hal ini mungkin disebabkan oleh kesalahan konfigurasi atau ada penyerang yang mengganggu koneksi internet Anda.</translation>
-<translation id="541143247543991491">Cloud (seluruh sistem)</translation>
 <translation id="541416427766103491">Tempat kertas 4</translation>
 <translation id="5421136146218899937">Hapus data penjelajahan...</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ingin mengirimkan notifikasi kepada Anda</translation>
@@ -1353,6 +1364,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5478437291406423475">B6/C4 (Envelope)</translation>
 <translation id="5481076368049295676">Konten ini mungkin mencoba menginstal software berbahaya yang mencuri atau menghapus informasi Anda di perangkat. <ph name="BEGIN_LINK"/>Tetap tampilkan<ph name="END_LINK"/></translation>
 <translation id="54817484435770891">Tambahkan alamat yang valid</translation>
+<translation id="5485973315555778056">Perangkat cloud</translation>
 <translation id="5490432419156082418">Alamat dan Lain-Lain</translation>
 <translation id="5492298309214877701">Situs yang ada di intranet perusahaan, organisasi, atau sekolah ini memiliki URL yang sama dengan situs web eksternal.
     <ph name="LINE_BREAK"/>
@@ -1382,6 +1394,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5571083550517324815">Tidak dapat mengambil dari alamat ini. Pilih alamat lain.</translation>
 <translation id="5580958916614886209">Periksa bulan kedaluwarsa dan coba lagi</translation>
 <translation id="5586446728396275693">Tidak ada alamat yang disimpan</translation>
+<translation id="5587987780934666589">Pengguna platform</translation>
 <translation id="5593349413089863479">Koneksi tidak sepenuhnya aman</translation>
 <translation id="5595485650161345191">Edit alamat</translation>
 <translation id="5598944008576757369">Pilih Metode Pembayaran</translation>
@@ -1438,7 +1451,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5786044859038896871">Ingin mengisi informasi kartu?</translation>
 <translation id="3985758120980526872">Brave menemukan sandi yang baru saja Anda gunakan dalam pelanggaran data. Sebaiknya ubah sandi ini sekarang.</translation>
 <translation id="5789643057113097023">:</translation>
-<translation id="5797429178165847917">Rekam konten rahasia</translation>
 <translation id="5803412860119678065">Ingin mengisi <ph name="CARD_DETAIL"/>?</translation>
 <translation id="5804241973901381774">Izin</translation>
 <translation id="5810442152076338065">Sambungan Anda ke <ph name="DOMAIN"/> dienkripsi menggunakan cipher suite yang sudah usang.</translation>
@@ -1465,7 +1477,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5903264686717710770">Judul:</translation>
 <translation id="5905445707201418379">Diblokir sesuai dengan kebijakan asal <ph name="ORIGIN"/>.</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (disinkronkan)</translation>
-<translation id="5913377024445952699">Tangkapan layar dijeda</translation>
 <translation id="59174027418879706">Diaktifkan</translation>
 <translation id="5919090499915321845">B10</translation>
 <translation id="5920262536204764679">{NUM_COOKIES,plural, =1{1 terpakai}other{# terpakai}}</translation>
@@ -1494,6 +1505,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="6008122969617370890">Urutan N-ke-1</translation>
 <translation id="6008256403891681546">JCB</translation>
 <translation id="6014801569448771146">Periksa sandi Anda</translation>
+<translation id="6014851866995737824">Diabaikan karena daftar "enable" atau "disable" tidak ada.</translation>
 <translation id="6015796118275082299">Tahun</translation>
 <translation id="6017514345406065928">Hijau</translation>
 <translation id="6017850046339264347">Penyerang di <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> dapat menginstal aplikasi penipuan dengan berpura-pura menjadi sesuatu yang lain atau mengumpulkan data yang dapat digunakan untuk melacak Anda. <ph name="BEGIN_LEARN_MORE_LINK"/>Pelajari lebih lanjut<ph name="END_LEARN_MORE_LINK"/></translation>
@@ -1517,6 +1529,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="6051221802930200923">Anda tidak dapat membuka <ph name="SITE"/> sekarang karena situs menggunakan penyematan sertifikat. Error jaringan dan serangan biasanya bersifat sementara, sehingga halaman ini mungkin akan berfungsi nanti.</translation>
 <translation id="6051898664905071243">Jumlah halaman:</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="8949595277192194257">Sandi yang baru saja Anda gunakan terekspos dalam pelanggaran data. Pengelola Sandi Brave merekomendasikan untuk mengubah sandi ini sekarang.</translation>
 <translation id="6055888660316801977">Sheet tidak ada kredensial yang cocok untuk Kredensial pembayaran aman</translation>
 <translation id="6058977677006700226">Gunakan kartu Anda di semua perangkat?</translation>
 <translation id="6059925163896151826">Perangkat USB</translation>
@@ -1588,6 +1601,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="6328786501058569169">Situs ini bersifat menipu</translation>
 <translation id="6337133576188860026">Sediakan ruang kurang dari <ph name="SIZE"/>. Beberapa situs mungkin dimuat lebih lambat saat dibuka lagi.</translation>
 <translation id="6337534724793800597">Filter kebijakan menurut nama</translation>
+<translation id="6340739886198108203">Kebijakan administrator tidak merekomendasikan untuk mengambil screenshot atau merekam layar saat konten rahasia terlihat:</translation>
 <translation id="6349101878882523185">Instal <ph name="APP_NAME"/></translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Tidak ada}=1{1 sandi (untuk <ph name="DOMAIN_LIST"/>, disinkronkan)}=2{2 sandi (untuk <ph name="DOMAIN_LIST"/>, disinkronkan)}other{# sandi (untuk <ph name="DOMAIN_LIST"/>, disinkronkan)}}</translation>
 <translation id="6358450015545214790">Apakah maksud ini?</translation>
@@ -1617,6 +1631,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="7772223497488184427">Ubah sandi Brave</translation>
 <translation id="6433490469411711332">Edit info kontak</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> menolak untuk terhubung.</translation>
+<translation id="6438025220577812695">Ubah sendiri</translation>
 <translation id="6440503408713884761">Diabaikan</translation>
 <translation id="6443406338865242315">Ekstensi dan plugin yang telah Anda instal</translation>
 <translation id="6446163441502663861">Kahu (Envelope)</translation>
@@ -1660,7 +1675,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="6596325263575161958">Opsi enkripsi</translation>
 <translation id="6609880536175561541">Prc7 (Envelope)</translation>
 <translation id="6615297766614333076">Tempat kertas 2</translation>
-<translation id="6623589891453322342">pengendali file</translation>
 <translation id="6624427990725312378">Info Kontak</translation>
 <translation id="6626291197371920147">Tambahkan kartu yang valid</translation>
 <translation id="6628463337424475685"><ph name="ENGINE"/> Penelusuran</translation>
@@ -1751,7 +1765,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="6949872517221025916">Reset Sandi</translation>
 <translation id="6950684638814147129">Error saat mengurai nilai JSON: <ph name="ERROR"/></translation>
 <translation id="695140971690006676">Reset semua</translation>
-<translation id="6954341342296443517">Dapat meminta untuk membuka berbagai jenis file</translation>
 <translation id="6957887021205513506">Sertifikat server tampaknya palsu.</translation>
 <translation id="774679539085757206">Kelola setelan privasi Brave di Akun Brave Anda</translation>
 <translation id="6961844873822989059">Dapat meminta untuk menggunakan font yang diinstal di perangkat Anda</translation>
@@ -1766,6 +1779,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="6972629891077993081">Perangkat HID</translation>
 <translation id="6973656660372572881">Server proxy tetap dan URL skrip .pac telah ditentukan.</translation>
 <translation id="6973932557599545801">Maaf, saya tidak bisa membantu lagi. Silakan lanjutkan sendiri.</translation>
+<translation id="6978236010531171013">Tetap bagikan</translation>
 <translation id="6979158407327259162">Google Drive</translation>
 <translation id="6979440798594660689">Matikan (default)</translation>
 <translation id="1714833602699685456">File yang Anda download akan dikirimkan ke Brave Cloud atau pihak ketiga untuk analisis. Misalnya, file mungkin dipindai untuk mendeteksi data sensitif atau malware.</translation>
@@ -1777,7 +1791,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="7012363358306927923">China UnionPay</translation>
 <translation id="7014741021609395734">Tingkat zoom</translation>
 <translation id="7016992613359344582">Tagihan ini bisa hanya satu kali atau berulang, dan mungkin tidak pasti.</translation>
-<translation id="7024588353896425985">Pengendali file</translation>
 <translation id="7029809446516969842">Sandi</translation>
 <translation id="7030436163253143341">Sertifikat tidak valid</translation>
 <translation id="7031646650991750659">Aplikasi Google Play yang telah diinstal</translation>
@@ -1808,6 +1821,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="7118618213916969306">Telusuri URL papan klip, <ph name="SHORT_URL"/></translation>
 <translation id="7119414471315195487">Tutup tab atau program lain</translation>
 <translation id="7129409597930077180">Tidak dapat mengirim ke alamat ini. Pilih alamat lain.</translation>
+<translation id="7132939140423847331">Admin Anda telah melarang data ini disalin.</translation>
 <translation id="7135130955892390533">Tampilkan status</translation>
 <translation id="7138472120740807366">Metode pengiriman</translation>
 <translation id="7139724024395191329">Emirat</translation>
@@ -1818,7 +1832,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="7153618581592392745">Lembayung Muda</translation>
 <translation id="7156870133441232244">Sebaiknya server diupgrade ke TLS 1.2 atau yang lebih baru.</translation>
 <translation id="717330890047184534">ID GAIA:</translation>
-<translation id="7173920250514487165">Mengambil screenshot konten rahasia di layar</translation>
 <translation id="7174545416324379297">Digabung</translation>
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> dan <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> lainnya}other{<ph name="SHIPPING_OPTION_PREVIEW"/> dan <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> lainnya}}</translation>
 <translation id="7179323680825933600">Simpan dan Isi Metode Pembayaran</translation>
@@ -1950,6 +1963,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="405970181812690156">Bayar di situs dan aplikasi di semua perangkat dengan cepat menggunakan kartu yang disimpan dengan Brave.</translation>
 <translation id="7581199239021537589">Perpindahan image Y sisi 2</translation>
 <translation id="4790068920551988473">Buat acara baru di Brave Kalender dengan cepat</translation>
+<translation id="7591288787774558753">Bagikan konten rahasia?</translation>
 <translation id="7591636454931265313"><ph name="EMBEDDED_URL"/> ingin menggunakan cookie dan data situs di <ph name="TOP_LEVEL_URL"/></translation>
 <translation id="7592362899630581445">Sertifikat server melanggar batasan nama.</translation>
 <translation id="7598391785903975535">Kurang dari <ph name="UPPER_ESTIMATE"/></translation>
@@ -1960,6 +1974,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="5704205738724476508"><ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk melihat dan mengelola sandi di setelan Brave</translation>
 <translation id="8565825862287624454">Administrator Anda telah mengaktifkan Brave Enterprise Connectors di browser Anda. Konektor ini memiliki akses ke beberapa data Anda.</translation>
 <translation id="7619838219691048931">Lembar akhir</translation>
+<translation id="7625242817712715120">Kebijakan administrator tidak merekomendasikan untuk mencetak konten ini</translation>
 <translation id="762844065391966283">Satu per satu</translation>
 <translation id="7633909222644580952">Data performa dan laporan kerusakan</translation>
 <translation id="6386821459680628976">Hapus kartu kredit dari Brave?</translation>
@@ -1972,6 +1987,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="7654909834015434372">Jika Anda mengedit anotasi, dokumen ini akan kembali ke rotasi aslinya</translation>
 <translation id="765676359832457558">Sembunyikan setelan lanjutan...</translation>
 <translation id="7658239707568436148">Batal</translation>
+<translation id="7659878911471462949">Air Mata Kebahagiaan</translation>
 <translation id="7662298039739062396">Setelan yang dikontrol oleh ekstensi</translation>
 <translation id="7663736086183791259">Sertifikat <ph name="CERTIFICATE_VALIDITY"/></translation>
 <translation id="7667346355482952095">Token kebijakan yang dikembalikan kosong atau tidak cocok dengan token saat ini</translation>
@@ -2061,6 +2077,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="7953569069500808819">Jahit tepi di atas</translation>
 <translation id="7956713633345437162">Bookmark seluler</translation>
 <translation id="7961015016161918242">Jangan pernah</translation>
+<translation id="7962467575542381659">Perangkat platform</translation>
 <translation id="7966803981046576691">Jenis akun tugas</translation>
 <translation id="79682505114836835">Nilai "<ph name="VALUE"/>" adalah warna hex yang tidak valid.</translation>
 <translation id="7968982339740310781">Lihat detail</translation>
@@ -2111,6 +2128,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="809898108652741896">A6</translation>
 <translation id="8100588592594801589">Kartu yang tidak valid telah dihapus</translation>
 <translation id="8103161714697287722">Metode Pembayaran</translation>
+<translation id="8103643211515685474">Tetap cetak</translation>
 <translation id="8105368624971345109">Nonaktifkan</translation>
 <translation id="810875025413331850">Tidak ditemukan perangkat di sekitar.</translation>
 <translation id="8116925261070264013">Dinonaktifkan</translation>
@@ -2247,7 +2265,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="8622948367223941507">Legal-Extra</translation>
 <translation id="8623885649813806493">Tidak ada sandi yang cocok. Tampilkan semua sandi yang tersimpan.</translation>
 <translation id="8625384913736129811">Simpan Kartu Ini ke Perangkat Ini</translation>
-<translation id="8627040765059109009">Tangkapan layar dilanjutkan</translation>
 <translation id="865032292777205197">sensor gerakan</translation>
 <translation id="8663226718884576429">Ringkasan Pesanan, <ph name="TOTAL_LABEL"/>, Detail Selengkapnya</translation>
 <translation id="8666678546361132282">Inggris</translation>
@@ -2308,6 +2325,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="886872106311861689">B3</translation>
 <translation id="8870413625673593573">Baru Saja Ditutup</translation>
 <translation id="8870494189203302833">Urutan yang sama menghadap ke bawah</translation>
+<translation id="8870700989640064057">Cetak file rahasia?</translation>
 <translation id="8871553383647848643">Sesuaikan tampilan browser Anda</translation>
 <translation id="8874824191258364635">Masukkan nomor kartu yang valid</translation>
 <translation id="8884537526797090108">Tidak dapat merekam konten rahasia</translation>
@@ -2339,6 +2357,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="447219378802101672"><ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tekan tab lalu Enter untuk melihat histori penjelajahan Anda di Brave</translation>
 <translation id="8987927404178983737">Bulan</translation>
 <translation id="8989148748219918422"><ph name="ORGANIZATION"/> [<ph name="COUNTRY"/>]</translation>
+<translation id="8992061558343343009">Mencari versi sistem? Buka</translation>
 <translation id="899688752321268742"><ph name="URL"/> ingin mengetahui saat Anda aktif menggunakan perangkat ini</translation>
 <translation id="8996941253935762404">Situs yang akan dibuka berisi program berbahaya</translation>
 <translation id="8997023839087525404">Server menampilkan sertifikat yang tidak diungkapkan ke publik melalui kebijakan Transparansi Sertifikat. Ini adalah persyaratan untuk beberapa sertifikat, untuk memastikan bahwa sertifikat dapat dipercaya agar terlindung dari penyerang.</translation>
@@ -2386,6 +2405,7 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="9119042192571987207">Diupload</translation>
 <translation id="9128016270925453879">Kebijakan dimuat</translation>
 <translation id="9128870381267983090">Sambungkan ke jaringan</translation>
+<translation id="9131119348384879525">Rekam konten rahasia?</translation>
 <translation id="9137013805542155359">Perlihatkan halaman asli</translation>
 <translation id="9141013498910525015">Kelola alamat</translation>
 <translation id="9144951720726881238">Tanggal kedaluwarsa:</translation>
@@ -2483,9 +2503,9 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, tekan Tab lalu Enter untuk membuka jendela Pribadi baru untuk meramban secara pribadi</translation>
 <translation id="2418728264526266844">Tombol Buka Jendela Pribadi, tekan Enter untuk membuka jendela Pribadi baru untuk menjelajah secara pribadi</translation>
 <translation id="4920329334239571966">Tutup semua jendela Privat</translation>
-<translation id="7736544743887840328">Tutup semua jendela Privat yang saat ini terbuka.</translation>
-<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tekan tab lalu Masuk untuk menutup semua jendela Privat yang saat ini terbuka.</translation>
-<translation id="1723247378009489676">Tutup tombol jendela Privat, tekan Enter untuk menutup semua jendela Privat yang saat ini terbuka.</translation>
+<translation id="7736544743887840328">Tutup semua jendela Privat yang saat ini masih terbuka</translation>
+<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tekan tab Masuk untuk menutup semua jendela Privat yang saat ini masih terbuka.</translation>
+<translation id="1723247378009489676">Tutup jendela Privat, tekan Masuk untuk menutup semua jendela Privat yang saat ini masih terbuka</translation>
 <translation id="1090109565956608696">Tidak diizinkan di Privat</translation>
 <translation id="6934396344327597525">Meninggalkan mode Privat untuk membayar melalui aplikasi eksternal. Lanjutkan?</translation>
 <translation id="7948746210201997548">{NUM_DAYS, plural,

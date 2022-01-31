@@ -23,6 +23,7 @@
 <translation id="7665553140559834626">Riavvia per aggiornare &amp;Chrome OS</translation>
 <translation id="9220324636239049437">Verrà eliminato 1 elemento da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">Per controllare che le tue altre password siano protette da violazioni dei dati e altri problemi di sicurezza, <ph name="BEGIN_LINK"/>accedi a Brave<ph name="END_LINK"/>.</translation>
+<translation id="5499149312981370855">Scegli se includere la cronologia di Brave per esperienze ancora più personalizzate nei servizi Brave</translation>
 <translation id="142389341645668510">Personalizza Brave</translation>
 <translation id="8745514854244955877">Brave - Accesso rete - <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">Se condividi un computer, i tuoi amici e la tua famiglia possono navigare separatamente e configurare Brave in base alle proprie esigenze.</translation>
@@ -30,14 +31,15 @@
 <translation id="7810992039564280750">Controlla gli URL confrontandoli con un elenco di siti non sicuri memorizzato in Brave. Se un sito cerca di rubare la tua password o se scarichi un file dannoso, Brave potrebbe anche inviare gli URL, inclusi frammenti dei contenuti delle pagine, a Navigazione sicura.</translation>
 <translation id="9095263438435683933">Per inviare un numero da questo dispositivo al tuo telefono Android, accedi a Brave su entrambi i dispositivi.</translation>
 <translation id="3813272600615358652">Questa estensione ha cambiato la pagina mostrata all'avvio di Brave.</translation>
+<translation id="2359808026110333948">Continua</translation>
 <translation id="2576129394594491151">L'estensione "<ph name="EXTENSION_NAME"/>" ha cambiato la pagina mostrata all'avvio di Brave.</translation>
 <translation id="1248225940185478633">Brave deve avere le autorizzazioni di accesso al microfono e alla fotocamera per questo sito</translation>
 <translation id="6078442581074612226">In Brave</translation>
 <translation id="2485422356828889247">Disinstalla</translation>
+<translation id="2372700594671864890">Scopri come Brave ti protegge dal tracciamento tra siti salvaguardando al contempo il Web aperto</translation>
 <translation id="9026991721384951619">Impossibile sincronizzare i dati in Chrome OS perché i dati di accesso dell'account sono obsoleti.</translation>
 <translation id="7798069806040634998">Brave deve avere accesso allo spazio di archiviazione per poter scaricare file</translation>
 <translation id="8447483940522230788">Supporto Brave</translation>
-<translation id="7933006624150961626">Per accedere ai tuoi contenuti Brave su tutti i tuoi dispositivi, accedi per poter attivare la sincronizzazione.</translation>
 <translation id="7291143854620707672">Tutti i dati di Brave generati durante l'utilizzo di questo profilo (come i preferiti, la cronologia, le password e altre impostazioni) possono essere rimossi dall'amministratore del profilo di lavoro. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Per applicare l'aggiornamento è necessario riavviare Chrome OS.</translation>
 <translation id="7387051847644272380">Durante l'installazione si è verificato un errore del sistema operativo. Scarica di nuovo Brave.</translation>
@@ -101,6 +103,7 @@
 <translation id="9183662282810237335">Vuoi uscire comunque da Brave?</translation>
 <translation id="4065288863231444640">Lascia Brave in esecuzione in background</translation>
 <translation id="8148611988012584308">Personalizza e controlla Brave</translation>
+<translation id="4427306783828095590">La protezione avanzata blocca malware e tentativi di phishing con maggiore efficacia</translation>
 <translation id="7084397798469173252">Ti diamo il benvenuto in Brave; nuova finestra del browser aperta</translation>
 <translation id="2633397153656205379">Si è verificato un errore: Brave non si è aggiornato. <ph name="BEGIN_LINK"/>Risolvi i problemi di aggiornamento e gli aggiornamenti non riusciti di Brave.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Vuoi continuare con un nuovo profilo Brave?</translation>
@@ -212,6 +215,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="7339898014177206373">Nuova finestra</translation>
 <translation id="3511996232906761537">I tuoi siti web, i tuoi segnalibri e gli altri contenuti Brave sempre disponibili e aggiornati qui.</translation>
 <translation id="5380963249588143069">L'amministratore di sistema ha configurato Brave per l'apertura di <ph name="ALTERNATIVE_BROWSER_NAME"/> per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="38294420683216447">Con i profili Brave puoi separare tutti i tuoi contenuti di Brave. In questo modo potrai alternare lavoro e divertimento con più facilità.</translation>
 <translation id="5062123544085870375">Riavvia Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave per gli sviluppatori</translation>
 <translation id="2034072705932785495">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera</translation>
@@ -220,6 +224,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="573759479754913123">Informazioni su Chrome OS</translation>
 <translation id="8516116288943000095">Cancella anche i dati di Brave (<ph name="URL"/>)</translation>
 <translation id="5657226924540934362">Se un'impostazione non viene mostrata in questa pagina, cercala nelle <ph name="LINK_BEGIN"/>impostazioni del sistema operativo Brave<ph name="LINK_END"/>.</translation>
+<translation id="155309785154426906">Hai attivato la Navigazione sicura avanzata nel tuo account. Ora attivala per Brave.</translation>
 <translation id="3293668930608086049">Brave sta utilizzando videocamera e microfono.</translation>
 <translation id="2827121003398607864">Da oggi Brave è ancora meglio</translation>
 <translation id="3343095737966473035">Brave non è il browser predefinito</translation>
@@ -231,11 +236,11 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="1652855885539187849">Esiste già un profilo Brave con questo account su questo dispositivo</translation>
 <translation id="8462524920674814187">Per ricevere gli aggiornamenti futuri di Brave, devi avere macOS 10.11 o versioni successive. Su questo computer è installato macOS 10.10.</translation>
 <translation id="7963515534397191222">Non è stato possibile aggiornare Brave alla versione più recente, quindi non potrai utilizzare le nuove funzioni e gli aggiornamenti di sicurezza.</translation>
+<translation id="437139750042419257">I seguenti account sono disponibili per questo profilo Brave</translation>
 <translation id="7573289029918943991">Per controllare se il tuo dispositivo è aggiornato, vai alle <ph name="LINK_BEGIN"/>Impostazioni di Chrome OS<ph name="LINK_END"/></translation>
 <translation id="2925193881330501265">Hai eseguito l'accesso a Brave come <ph name="USER_EMAIL_ADDRESS"/>. Utilizza lo stesso account per eseguire di nuovo l'accesso.</translation>
 <translation id="6915252145142862992">Questa è un'installazione secondaria, di conseguenza Brave non può essere impostato come browser predefinito.</translation>
 <translation id="7685904775439037072">Dopo che Brave avrà ottenuto l'accesso, i siti web potranno chiederti l'accesso.</translation>
-<translation id="828406390101464081">I seguenti account non hanno effettuato l'accesso a nessun profilo Brave. Se vuoi usare un account in un altro profilo, rimuovi per prima cosa questo profilo.</translation>
 <translation id="2061155704815580583">Brave deve avere l'autorizzazione di accesso alla posizione per questo sito</translation>
 <translation id="9067428552314418522">Questo file è pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="8207657266087451193">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave. Puoi disattivare questa funzionalità in qualsiasi momento nelle Impostazioni.</translation>
@@ -244,6 +249,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="89367911614620585">Questo file potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="3360368475735266712">Accedi per sincronizzare e personalizzare Brave sui tuoi dispositivi</translation>
 <translation id="2591326305549412656">L'indirizzo <ph name="USER_EMAIL_ADDRESS"/> utilizzava in precedenza Brave</translation>
+<translation id="3098618823450433881">Per accedere ai tuoi contenuti del browser Brave su tutti i tuoi dispositivi, accedi e attiva la sincronizzazione</translation>
 <translation id="5337999052834672687">{0,plural, =1{Riavvia Brave entro un giorno}one{Riavvia Brave entro # giorni}other{Riavvia Brave entro # giorni}}</translation>
 <translation id="6914496861676471566">L'archivio di installazione è danneggiato o non valido. Scarica di nuovo Brave.</translation>
 <translation id="2097604701283463988">Brave non è aggiornato</translation>
@@ -277,6 +283,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="6568793831116033768">Sistema Chrome OS</translation>
 <translation id="7977787072794666032">Brave potrebbe non funzionare correttamente perché non è più supportato su Windows XP o Windows Vista</translation>
 <translation id="4484434718272972655">Chi usa Brave?</translation>
+<translation id="7173394303099002355">Usa la funzionalità di sicurezza più efficace di Brave</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="1299765473362724475">Brave non è in grado di impedire alle estensioni di registrare la tua cronologia di navigazione. Per disattivare questa estensione in Modalità privata, deseleziona questa opzione.</translation>
 <translation id="1448049584457347995">Per rendere Brave più sicuro, abbiamo disattivato alcune estensioni che non sono elencate nel <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e potrebbero essere state aggiunte a tua insaputa.</translation>

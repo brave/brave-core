@@ -62,6 +62,7 @@
 <translation id="4371533307685765155">DuckDuckGo உடன் தேடு</translation>
 <translation id="548478195417408221">மறைநிலை சாளரங்களை மிகவும் மறைநிலையாக்கு</translation>
 <translation id="3294503279952534143">இம்மறைநிலை சாளரம் மிகவும் மறைநிலையானது</translation>
+<translation id="4644024131266615376">Tor இணைப்புடன்</translation>
 <translation id="6975708438781948564">பிரேவில் Tor பற்றி மேலும் அறிக</translation>
 <translation id="3368922792935385530">இணைக்கப்பட்டது</translation>
 <translation id="4272382368346338917">கூடுதல் வடிகட்டிகள்</translation>
@@ -84,13 +85,16 @@
 <translation id="5804484488647369316">இயல்புநிலை தேடுபொறியை அமை</translation>
 <translation id="3829010735958850433">வரவேற்பு சுற்றுலாவைத் தவிர்</translation>
 <translation id="1201402288615127009">அடுத்தது</translation>
+<translation id="4851215387785619212">பிரேவ் தனிப்பட்ட விளம்பரங்கள்</translation>
 <translation id="6112368337882254910">தானாக-பங்களி</translation>
 <translation id="3325399124634342726">தற்போதைய இம்மாத சம்பாத்தியம் (மதிப்பிடப்பட்டது)</translation>
+<translation id="8593551638387217772">அடுத்த கட்டணத்தேதி</translation>
 <translation id="2539279826042558064">பிரேவ் வெகுமதிகள் மற்றும் விளம்பரங்கள் உம் சாதனத்தில் இந்நேரத்தில் கிடைக்கவில்லை.</translation>
 <translation id="5421369907811917952">பிற அமைப்புகள்</translation>
 <translation id="654711254769318398">பார்த்த விளம்பர பக்கங்கள்</translation>
 <translation id="2532127066761785857">காண்பிக்கப்படும் விளம்பரங்களின் அதிகபட்ச எண்ணிக்கை</translation>
 <translation id="2232753742630178222">ஒரு மணிநேரத்தில் 3 விளம்பரங்கள்</translation>
+<translation id="905529390827000221">மணிக்கு 4 விளம்பரங்கள்</translation>
 <translation id="8446884382197647889">மேலும் அறிக</translation>
 <translation id="4394049700291259645">முடக்கு</translation>
 <translation id="4176463684765177261">முடக்கப்பட்டது</translation>
@@ -100,7 +104,10 @@
 <translation id="2365740070488517695">துணுக்குதவிகள்</translation>
 <translation id="5012991400231464322">மாத பங்களிப்புகள்</translation>
 <translation id="1617202384704994799">விரைவில் வருகிறது.</translation>
+<translation id="2241248417273918295">சம்பாத்தியம் ஒவ்வொரு மாதமும் செலுத்தப்படும்.</translation>
 <translation id="1847863811689960237">நீ விரும்பும் உள்ளடக்கத்திற்கு படைப்பாளர்களுக்கு வெகுமதி.</translation>
+<translation id="4129489167302464118">உம் மாதாந்திர கட்டணம் நீ பார்வையிடும் தளங்களுக்கிடையில் விநியோகிக்கப்பெறுகிறது.</translation>
+<translation id="4898632353264854950">உலாவ உலாவ தளங்கள் தோன்றும்</translation>
 <translation id="3024485967181749006">இம்மாதத்தின் மொத்த துணுக்குதவிகள்</translation>
 <translation id="5055577484189948413">இம்மாதத்தின் மொத்த பங்களிப்புகள்</translation>
 <translation id="4153752809523809915">இன்று உன் அபிமான உள்ளடக்கம் படைத்தவரை துணுக்குதவினீரா?</translation>
@@ -108,6 +115,7 @@
 <translation id="6239274080752256452">நிதிகளை திரும்பப்பெறு</translation>
 <translation id="2726674968268546964">கிள்ளாக்குகள்</translation>
 <translation id="7286722244752781970">வருகையை பதிவு செய்வதற்கு முன் குறைந்தபட்ச பக்க நேரம்</translation>
+<translation id="5510618543889994434">காணொளிகளுக்கு பங்களிப்பை அனுமதி</translation>
 <translation id="8933202740471878108">1 வருகை</translation>
 <translation id="354797634123275103">5 வருகைகள்</translation>
 <translation id="3583700907990488238">10 வருகைகள்</translation>
@@ -198,9 +206,11 @@
 <translation id="3157931365184549694">மீட்டமை</translation>
 <translation id="5717619667204259673">இம்மீட்பு விசையை பத்திரமாக வை.</translation>
 <translation id="3074127054582480056">கவனத்திற்கு</translation>
+<translation id="5830306739231399614">சோகமாக, இன்னும் கிள்ளாக்குகளில்லை.</translation>
 <translation id="7359258898775969374">உம் பணப்பையை நிரப்ப 3 வழிகள்:</translation>
 <translation id="8087614920008846901">நீங்கள் நிதிகளை சேர்க்கலாம்.</translation>
 <translation id="996024295464837691">விளம்பரங்கள் பார்ப்பதிலிருந்து நீங்கள் கிள்ளாக்குகளை சம்பாதிக்கலாம்.</translation>
+<translation id="4919888432594361029"><ph name="PROVIDER"/> இல் நிதிகளைச் சேர், திரும்பப்பெறு மற்றும் நிர்வகி.</translation>
 <translation id="6401272292123354754">பிரேவ் வெகுமதிகள் அடிப்படை கவன கிள்ளக்கின் மேல் எழுப்பப்பட்டது. BAT பற்றி மேலும் அறிக</translation>
 <translation id="7823359893981882407">இங்கே</translation>
 <translation id="3034163433136515805">விரைவுக்குறியை பார்</translation>
@@ -234,6 +244,7 @@
 <translation id="3699674790322420653">முழுமையான பணப்பை சரிபார்ப்பு</translation>
 <translation id="9200453331904391567">பிரேவ் வெகுமதிகளிலிருந்து இணைப்பை துண்டி</translation>
 <translation id="3787061634640932557">அட்டைகளை திருத்து</translation>
+<translation id="1366855498335432549">வைப்பு</translation>
 <translation id="2356070529366658676">கேள்</translation>
 <translation id="2501278716633472235">திரும்பிச் செல்</translation>
 <translation id="2903493209154104877">முகவரிகள்</translation>
@@ -261,11 +272,13 @@
 <translation id="5045550434625856497">தவறான கடவுச்சொல்</translation>
 <translation id="765834632354589737">பணப்பையைப் பிரதியெடு</translation>
 <translation id="5234764350956374838">நிராகரி</translation>
-<translation id="8624315169751085215">கவ்வுபலகைக்கு நகலெடு</translation>
+<translation id="8107437138787377150">நகலகத்திலிருந்து மீட்புச் சொற்றொடரை ஒட்டு</translation>
+<translation id="8624315169751085215">நகலகத்திற்கு நகலெடு</translation>
 <translation id="1940465339426637378">சொத்துக்கள்</translation>
 <translation id="7525067979554623046">உருவாக்கு</translation>
 <translation id="4324198334837993695">வன்பொருள்</translation>
 <translation id="5308380583665731573">இணை</translation>
+<translation id="1136772623587250243">நகலகத்திலிருந்து தனிப்பட்ட விசையை ஒட்டு</translation>
 <translation id="7978412674231730200">தனிப்பட்ட விசை</translation>
 <translation id="4378551569595875038">இணைக்கிறது...</translation>
 <translation id="4522570452068850558">விவரங்கள்</translation>
@@ -278,6 +291,7 @@
 <translation id="4804818685124855865">தொடர்பைத் துண்டி</translation>
 <translation id="6666273175654835609">சமர்ப்பிக்கப்பட்டது</translation>
 <translation id="1165039591588034296">பிழை</translation>
+<translation id="7982789257301363584">நெட்வொர்க்</translation>
 <translation id="3380365263193509176">அறியப்படாத பிழை</translation>
 <translation id="3146531623184244174">இணைப்புகள் HTTPS-க்கு தரமுயர்த்தப்பட்டன</translation>
 <translation id="6203697265754637264">குறுக்கு-தள நினைவிகளை தடு</translation>

@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") はBraveでは許可されていません。</translation>
 <translation id="6786747875388722282">拡張機能</translation>
 <translation id="984275831282074731">お支払い方法</translation>
-<translation id="3699882589215410581">Widevineをインストールして起動する</translation>
+<translation id="1990886731975529483">Google Widevineをインストールして実行</translation>
 <translation id="8926389886865778422">再表示させない</translation>
 <translation id="5249433283143453448">Widevineデジタル著作権管理 (DRM) コンポーネントを使用して、保護されたストリーミング動画と他のコンテンツをブラウザで表示しましょう。</translation>
 <translation id="6241402707160226266">Tor搭載のプライベートウィンドウ</translation>
 <translation id="8762452230727230396">Torは訪問サイトからあなたのIPアドレスを隠します。</translation>
 <translation id="1369311132025451972">.onionサイトに自動的にリダイレクトします</translation>
 <translation id="2843777623071353503">Braveは、利用可能な場合はウェブサイトのオニオンサービスを開くか、またはTorウィンドウで.onionドメインを開きます。</translation>
-<translation id="8053096063396012732">Widevineをインストールする</translation>
-<translation id="4840334696217618631">Widevineを有効にするためにブラウザーを再起動する</translation>
-<translation id="8410111618231938546">Google WidevineはBrave Softwareが所有しておらず、検査できないデジタル著作権管理（DRM）コードの1つです。Google Widevineのコードは弊社のサーバーではなくGoogleのサーバーから割り当てられます。このコードはこのオプションを有効にしている際にのみ読み込まれます。弊社はDRMの使用は推奨しませんがユーザーの選択を尊重しており、一部のBraveユーザーがGoogle Widevineを要求するサービスの利用を望んでいることは承知しております。
-
-この拡張をインストールすると、Google Widevineの使用条件に同意したことになります。Google Widevineの使用に関するいかなる損害や損失にもBraveは責任を負わないことをご了承ください。</translation>
+<translation id="4900351245762303149">Google Widevineをインストール</translation>
+<translation id="2313383941300459392">Google Widevineを有効にするためにブラウザーを再起動する</translation>
+<translation id="2200626478572277092">Webページ上でメディアを再生するために、Widevineが必要となる場合があります。これはGoogleの拡張機能で、Googleのサーバーから読み込まれるためBraveは検査することができません。インストールすることで、お客様はGoogleの使用条件に同意したものとみなされます。</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>。
+または後で<ph name="SETTINGS_EXTENIONS_LINK"/>から変更できます。</translation>
+<translation id="6229752134959014186">Widevineの詳細について</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/>が次の許可を求めています:</translation>
 <translation id="410351446219883937">自動再生</translation>
 <translation id="3218385319396786393">このページで自動再生がブロックされました</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> で自動再生を常に許可する。</translation>
@@ -35,6 +37,8 @@
 <translation id="6583467242903731748">サイトのEthereumプロバイダーAPIへのアクセス可否を確認</translation>
 <translation id="7017590444693657895">EthereumプロバイダーAPIのアクセスからサイトをブロック</translation>
 <translation id="8988939298652262600">Braveではセキュリティーおよび安全を目的とした拡張機能の確認を行っていません。デベロッパーを信用できる場合にのみ、この拡張機能をインストールしてください。</translation>
+<translation id="933652931229970927">診断レポートを自動送信する</translation>
+<translation id="1679356339067548863">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
 <translation id="8081858229109418493">プロフィール名とアイコン</translation>
 <translation id="6438096877646138757">閉じたときにCookiesを消去するサイト</translation>
 <translation id="2988792685798128092">サイトを閉じたときに消去</translation>
@@ -42,7 +46,7 @@
 <translation id="1692470335103807198">より多くのテーマを取得する</translation>
 <translation id="2906510232093002459">Braveデフォルト画像</translation>
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
-<translation id="6123134130710658846">Brave Rewardsボタンを非表示にする</translation>
+<translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
 <translation id="1811404036171336214">常に新しいタブページにブックマークを表示</translation>
 <translation id="1643029991199044105">Ctrl-Tabを使用し、最近使用したタブを繰り替えす</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@
 <translation id="5733490796524078528">チップボタン</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
 <translation id="1988804048511540801">新しいタブページが表示されます</translation>
 <translation id="2970343821770026391">ダッシュボード</translation>
@@ -89,12 +93,12 @@
 <translation id="8612763432858587652">プライベートウィンドウを終了</translation>
 <translation id="8760415064721320867">プライベートウィンドウ+Tor</translation>
 <translation id="2055363275850890030">プライベートウィンドウ</translation>
-<translation id="8934172355414207733">Torを備えたプライベート</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/>件</translation>
 <translation id="1970435562892104727">これはTorを備えたプライベートウィンドウです</translation>
 <translation id="1037341607922068025">Torを備えたプライベートウィンドウを開く</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Torで開く</translation>
-<translation id="7643538479215207633">IPFSを使用して開く</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">公開してファイルをIPFSから取得</translation>
 <translation id="1672270084584211506">利用できるオニオン</translation>
 <translation id="406832631167785034">.onionアドレスを使用して開く</translation>
@@ -105,7 +109,6 @@
 <translation id="4227945450504703638">選択された音声</translation>
 <translation id="7895302206188277628">リンクされたコンテンツ</translation>
 <translation id="3654831858282189202">IPNSキーで公開</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">選択したテキストをIPFSにインポート</translation>
 <translation id="6925604404524625582">インポートしてリンクをIPFSスナップショットにコピー</translation>
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
@@ -239,8 +242,8 @@
 <translation id="6358469157239228181">この名前は使用できません</translation>
 <translation id="5761731140570209168">ピア接続文字列を新規追加</translation>
 <translation id="2082206983920804886">キーのローテーション</translation>
-<translation id="2521133093532260474">ローカルノードを停止できません</translation>
-<translation id="86879877003581729">ローカルノードを起動できません</translation>
+<translation id="5078501082919354191">BraveローカルIPFSノードを停止できません</translation>
+<translation id="5687424953196903465">BraveローカルIPFSノードを起動できません</translation>
 <translation id="6476061084931271248">変更を適用するにはノードを再起動します</translation>
 <translation id="3754226427671882382">ノードを再起動</translation>
 <translation id="949667118776341807">ローテーション</translation>
@@ -255,17 +258,22 @@
 <translation id="616058968889448209">IPFSサービス起動エラー。詳細は<ph name="BEGIN_LINK"/>診断ページ<ph name="END_LINK"/>を参照</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' キーのインポートに失敗しました</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' キーのエクスポートに失敗しました</translation>
-<translation id="8860039076160511438">ウォレットをリセット</translation>
+<translation id="4993345308607970390">Braveウォレットをリセット</translation>
+<translation id="5975930666279943472">ウォレットのトランザクションとノンス情報をクリア</translation>
+<translation id="5693968582510626466">トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利です</translation>
 <translation id="6369495274982305511">ウォレットをリセットしてよろしいですか？ウォレットがバックアップされていない場合、リセットすると、（紐づく資金を含む）すべてのアカウントデータ が失われます。確認のために「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
+<translation id="9216386092464743272">ウォレットのトランザクションとノンス情報をすべてリセットしてもよろしいですか？このオプションは、ローカルでテストサーバーを実行している開発者が主に使用します。確認するには「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
+<translation id="3752403403443723332">ウォレットをリセットしました。</translation>
+<translation id="594766067816395072">ウォレットのトランザクション情報をリセットしました。</translation>
 <translation id="1426410128494586442">はい</translation>
 <translation id="8275038454117074363">追加</translation>
 <translation id="3654980960391973513">生成</translation>
 <translation id="5531501313997312487">ノードの開始</translation>
 <translation id="9170907049676078643">IPFSリソースを解決する方法</translation>
 <translation id="1327977588028644528">ゲートウェイ</translation>
-<translation id="80225669816651290">ローカルノード</translation>
+<translation id="1195880978080389104">BraveローカルIPFSノード</translation>
 <translation id="4927734062756955434">IPFSパブリックゲートウェイアドレス</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>こちら<ph name="END_LINK_MPL"/>からIPFSローカルノードとゲートウェイのプライバシーに関連する考慮事項を確認できます。</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>こちら<ph name="END_LINK_MPL"/>からBraveローカルIPFSノードとゲートウェイのプライバシーに関連する考慮事項を確認できます。</translation>
 <translation id="8425213833346101688">変更</translation>
 <translation id="557281710253742286">IPFSゲートウェイを設定します</translation>
 <translation id="8571837315037233299">ゲートウェイアドレス</translation>
@@ -274,7 +282,7 @@
 <translation id="7703184801853248830">無効なゲートウェイアドレス</translation>
 <translation id="7690058578502751948">Brave で使用できるのは、オリジンアイソレーションが有効になっている有効な IPFS ゲートウェイのみです。</translation>
 <translation id="585868419599255817">IPFSパブリックゲートウェイのフォールバック</translation>
-<translation id="207763736230883589">ローカルノードに到達できない場合は、自動的にパブリックIPFSゲートウェイにフォールバックします。</translation>
+<translation id="2618080188892567155">BraveのローカルIPFSノードに到達できない場合は、自動的にパブリックIPFSゲートウェイにフォールバックします。</translation>
 <translation id="4107552920076294723">IPFSリソースを構成済みIPFSゲートウェイにリダイレクトします</translation>
 <translation id="6494857428933042381">IPFSゲートウェイリソースが検出されると、IPFSの解決のために構成済みゲートウェイを自動的に使用します。</translation>
 <translation id="8655170717758778983">可能な場合は、DNSLink経由でIPFSページに自動的にリダイレクトする</translation>
@@ -347,10 +355,9 @@
 <translation id="780301667611848630">利用しない</translation>
 <translation id="5039804452771397117">許可</translation>
 <translation id="7053983685419859001">ブロック</translation>
-<translation id="7815301689257843278">クラッシュレポートを自動的にBraveに送信して、このような問題の再発防止対策にご協力いただけますか？</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/>が予期せず終了しました。</translation>
 <translation id="1324417023773393937">Braveブラウザ</translation>
-<translation id="1068069727470515940"><ph name="SETTING_TEXT"/>はいつでも変更できます。</translation>
+<translation id="7276554663454265692"><ph name="SETTING_TEXT"/>はブラウザ設定でいつでも変更できます。</translation>
 <translation id="6873781976650514089">この設定</translation>
 <translation id="6040143037577758943">閉じる</translation>
 <translation id="5600566490506283344">Brave Adの通知</translation>
@@ -447,7 +454,6 @@
 <translation id="2487558607408469181">ブロックエクスプローラーURL</translation>
 <translation id="6301398959353668507">この項目は必須です。</translation>
 <translation id="7504462451153306677">形式が無効です。チェーンIDは正の数にしてください</translation>
-<translation id="8325036459845654666">このネットワークは既に追加されています。</translation>
 <translation id="650071759190249039">内部エラーが発生しました。ネットワークを追加できません。</translation>
 <translation id="868529041590572443">ネイティブ通貨についての情報をすべて入力してください</translation>
 <translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>

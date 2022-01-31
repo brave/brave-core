@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Ανανέωση Κατάστασης",
+    "message": "Ανανέωση",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Οι Brave ανταμοιβές παρουσιάζουν κάποιο πρόβλημα. Παρακαλώ προσπαθήστε ξανά αργότερα.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Έλεγχος κατάστασης",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Συγχαρητήρια! Οι ανταμοιβές σας $month$ έφτασαν!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Οι ανταμοιβές σας $amount$ $month$ θα φτάσουν σε $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Οι ανταμοιβές σας $amount$ $month$ είναι καθ' οδόν. Έχετε τον νου σας!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Μεταβείτε στον $provider$ λογαριασμό σας ",
     "description": "",
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Εκκρεμεί",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ η επεξεργασία της πληρωμής αρχίζει σε $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Brave Rewards από διαφημίσεις Brave Ads",

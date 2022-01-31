@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Status aktualisieren",
+    "message": "Aktualisieren",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards hat ein Problem. Bitte versuchen Sie es später erneut.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Status überprüfen",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Glückwunsch! Ihre Rewards für $month$ sind angekommen!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Ihre Rewards in Höhe von $amount$ für $month$ werden in $days$ eintreffen",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Ihre Rewards in Höhe von $amount$ für $month$ sind unterwegs. Sie sind bald da!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Zu meinem $provider$-Konto wechseln ",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Abmelden von $provider$",
+    "message": "Trennen von $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Ausstehend",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ Auszahlung beginnt in $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Belohnungen aus Ads",
