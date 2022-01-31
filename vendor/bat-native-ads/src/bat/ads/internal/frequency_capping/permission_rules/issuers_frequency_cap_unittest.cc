@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/issuers_frequency_cap.h"
 
-#include "bat/ads/internal/tokens/issuers/issuers_info.h"
-#include "bat/ads/internal/tokens/issuers/issuers_unittest_util.h"
-#include "bat/ads/internal/tokens/issuers/issuers_util.h"
+#include "bat/ads/internal/account/issuers/issuers_info.h"
+#include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
+#include "bat/ads/internal/account/issuers/issuers_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
