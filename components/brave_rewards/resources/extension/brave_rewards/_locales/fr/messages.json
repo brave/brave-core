@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Actualiser le statut",
+    "message": "Actualiser",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Récompenses a un problème. Veuillez réessayer plus tard.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Vérifier l'état",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Félicitations ! Vos récompenses gagnées en $month$ sont disponibles !",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Vos récompenses d'un montant de $amount$ gagnées en $month$ seront disponibles dans $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Vos récompenses d'un montant de $amount$ gagnées en $month$ seront bientôt disponibles. Restez à l'affût !",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Accéder à mon compte $provider$",
     "description": "",
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "En attente",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "Le traitement du paiement de $amount$ commence dans $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Récompenses d'Ads",

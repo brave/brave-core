@@ -96,7 +96,7 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "readOnlyFingerprinting": {
-    "message": "Toma de huellas dactilares bloqueada",
+    "message": "Huellas dactilares bloqueadas",
     "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {

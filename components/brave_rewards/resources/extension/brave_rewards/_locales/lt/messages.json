@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Atnaujinti būseną",
+    "message": "Atnaujinti",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Kilo problemų su „Brave Rewards“. Bandykite dar kartą vėliau.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Tikrinti būseną",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Sveikiname! Gavote atlygį už šį mėnesį – $month$!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "$amount$ atlygį už šį mėnesį – $month$ – gausite po $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Jūsų $amount$ atlygis už šį mėnesį – $month$ – jau pakeliui. Užsukite patikrinti!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Eiti į mano $provider$ paskyrą",
     "description": "",
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Laukiama",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ išmoka bus pradėta apdoroti po $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Atlygis už reklamą",

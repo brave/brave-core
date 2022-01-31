@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "রিফ্রেশের স্থিতি",
+    "message": "রিফ্রেশ করুন",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave পুরস্কারে একটি সমস্যা হচ্ছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "স্থিতি পরীক্ষা করুন",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "অভিনন্দন! আপনার $month$ মাসের পুরস্কারগুলো এসে গেছে!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "আপনার $amount$ $month$ মাসের পুরস্কারগুলো $days$ দিনের মধ্যে আসবে",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "আপনার $amount$ $month$ পুরস্কারগুলো আসছে। খেয়াল রাখুন!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "আমার $provider$ অ্যাকাউন্টে যান",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "$provider$ থেকে লগ আউট করুন",
+    "message": "$provider$ থেকে সংযোগ বিচ্ছিন্ন করুন",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "বিচারাধীন রয়েছে",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$days$-এ $amount$ পেআউট প্রক্রিয়াকরণ শুরু করে",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "বিজ্ঞাপন থেকে পুরস্কার",

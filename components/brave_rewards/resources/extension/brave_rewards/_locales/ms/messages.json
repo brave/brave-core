@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Segar Semula Status",
+    "message": "Muat semula",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Ganjaran Brave mengalami masalah. Sila cuba sebentar lagi.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Periksa status",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Tahniah! Ganjaran $month$ anda telah tiba!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Ganjaran $amount$ $month$ anda akan tiba dalam tempoh $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Ganjaran $amount$ $month$ anda sedang dalam perjalanan. Pastikan anda tidak ketinggalan!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Pergi ke akaun $provider$ saya",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Log keluar daripada $provider$",
+    "message": "Putuskan sambungan daripada $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Menunggu",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ pembayaran mula diproses dalam $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Ganjaran dari Iklan",

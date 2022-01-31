@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Оновити статус",
+    "message": "Оновити",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "У Винагород Brave сталася проблема. Будь ласка, спробуйте пізніше.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Перевірити статус",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Вітаємо! Вам надійшли винагороди $month$!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Ваші винагороди на суму $amount$ за $month$ надійдуть через $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Ваші винагороди на суму $amount$ за $month$ скоро надійдуть. Стежте за ними!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Перейти до мого облікового запису $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Вийти з облікового запису $provider$",
+    "message": "Від’єднатися від $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "В очікуванні",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ буде зараховано протягом $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Винагороди від рекламних оголошень",

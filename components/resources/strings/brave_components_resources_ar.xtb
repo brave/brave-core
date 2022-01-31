@@ -196,7 +196,7 @@
 <translation id="2846354907189538">تاريخ المساهمة التالية</translation>
 <translation id="1397381065858030856">المواقع المشاهَدة</translation>
 <translation id="2365740070488517695">المكافآت</translation>
-<translation id="4803566747788858771">قم بمكافأة منشئي المحتوى مباشرةً أثناء تصفحك باستخدام لوحة المكافآت، أو باستخدام زر المكافأة المضمن في مواقع مختلفة بما في ذلك Twitter و Reddit و GitHub.</translation>
+<translation id="5993195614988368256">قم بمكافأة منشئي المحتوى مباشرةً أثناء تصفحك باستخدام لوحة المكافآت، أو باستخدام زر المكافأة المضمن في مواقع مختلفة بما في ذلك Twitter و Reddit و GitHub.</translation>
 <translation id="5012991400231464322">المساهمات الشهرية</translation>
 <translation id="2084351799622920487">قم بإعداد مساهمات شهرية متكررة حتى تتمكن من دعم المواقع بشكل مستمر.</translation>
 <translation id="8150772404570015166">لم يتم إعداد مساهمات شهرية حتى الآن.</translation>
@@ -255,6 +255,8 @@
 <translation id="9074594632540931067">خطأ: BAT غير متوفر</translation>
 <translation id="413458922997276130">حسابك في Uphold محظور حاليًا.</translation>
 <translation id="3579959767665130790">خطأ: حساب محظور</translation>
+<translation id="6554308597291659562">منصة Uphold مطلوبة لجمع المزيد من المعلومات عنك قبل تمكين وظائف حساب Uphold الكاملة. يُرجى المحاولة مرة أخرى بمجرد إرسال هذه المعلومات في حساب Uphold الخاص بك.</translation>
+<translation id="6996157559236886133">خطأ: وظائف محدودة لحساب Uphold</translation>
 <translation id="819370426249314592">لا يزال حسابك في Uphold معلقًا.</translation>
 <translation id="4530453398914580957">خطأ: حساب معلق</translation>
 <translation id="2388470740942086608">حسابك في Uphold مقيد حاليًا.</translation>
@@ -262,8 +264,6 @@
 <translation id="7147519373526655987">هناك مشكلة في التحقق من صحة طلب متصفحك فيما يخص ربط  محفظة مكآفات Brave <ph name="PROVIDER"/>مع حسابك. يمكنك <ph name="BEGIN_LINK"/> الاتصال بالدعم <ph name="END_LINK"/>للحصول على مزيد من المساعدة.</translation>
 <translation id="1316066811927496401">خطأ: تعذر التحقق من صحة الطلب</translation>
 <translation id="1737873393693460829">بتفعيل [[title]]، فأنت توافق على <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
-<translation id="901298512318791028">ستبدأ معالجة عائد <ph name="AMOUNT"/> الخاص بك في غضون <ph name="DAYS"/></translation>
-<translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>It يمكن أن تستغرق معالجة المدفوعات بضعة أيام ووصول أفضل التقنيات المتاحة الخاصة بك.</translation>
 <translation id="4672975606583962967">حدد خدمة المحفظة</translation>
 <translation id="1815503044492647974">حدد شريك المخفظة المستضافة. إذا كان لديك حساب بالفعل، فسيُطلب منك تسجيل الدخول للاتصال</translation>
 <translation id="2205685774710519016">ملاحظة: ستكون معاملاتك مرئية لخدمة المحفظة المحددة بمجرد منح الإذن لها، على سبيل المثال، سيتمكنون من رؤية المستلم ومبالغ الإكراميات التي تدفعها.</translation>
@@ -593,7 +593,7 @@
 <translation id="3699674790322420653">أكمل التحقق من المحفظة</translation>
 <translation id="9200453331904391567">قطع الاتصال بـ Brave Rewards</translation>
 <translation id="3656941797339037856">ربط Rewards بـ Gemini!</translation>
-<translation id="3066983737886188034">تتيح لك Gemini إمكانية التداول والتخزين وكسب فوائد على عملات BAT الخاصة بك. تحقق من محفظة Brave Rewards واربطها بـ Gemini الآن!</translation>
+<translation id="31532096120351460">تداول أكثر من 50 عملة مشفرة، بما في ذلك عملة BAT الرقمية على منصة Gemini. إنها منصة آمنة لتخزين التشفير الخاص بك. بالإضافة إلى أنه يمكنك كسب فائدة في الولايات المتحدة وهونج كونج وسنغافوة.</translation>
 <translation id="7404779623219601861">تبديل BAT ببطاقات هدايا</translation>
 <translation id="6215565499749144110">مع شبكة TAP فبإمكانك تبديل BAT ببطاقات هدايا ذات علامات تجارية شهيرة.</translation>
 <translation id="6915065518766963119">* يتطلب التحقق من Uphold.</translation>
@@ -733,15 +733,15 @@
 <translation id="72868071984333667">تعرف على المزيد حول IPFS والخصوصية</translation>
 <translation id="1886162073868201257">خطأ في تشغيل خدمة IPFS</translation>
 <translation id="5357895013476183089">IPFS غير متصل</translation>
-<translation id="1196783328762622576">لا يمكن تحميل موارد IPFS باستخدام العقدة المحلية</translation>
+<translation id="7662930734991751511">لا يمكن تحميل موارد شبكة تخزين اللامركزية IPFS (نظام الملفات بين الكواكب) باستخدام عقدة IPFS المحلية من متصفح Brave</translation>
 <translation id="1141556610026845297">فشل في استخدام عقدة IPFS المحلية لتحميل موارد IPFS المطلوبة. انقر فوق زر "متابعة" لاستخدام البوابة العامة بدلاً من ذلك، وللعودة تلقائياً إلى البوابة العامة في المستقبل.</translation>
 <translation id="3373798179786163193">تابع استخدام البوابة العامة</translation>
 <translation id="1974060860693918893">الإعدادات المتقدّمة</translation>
 <translation id="9096577886148726047">إخفاء الإعدادات المتقدمة</translation>
-<translation id="7716995370131231171">لا يمكن لـ Brave تحميل موارد IPFS المطلوبة إما لأن العقدة المحلية لم تبدأ، أو لأنه لا يوجد أقران متصلون متوفرون في الوقت الحالي. إذا اخترت "Proceed"، فسيعود Brave تلقائياً إلى البوابة العامة الافتراضية عندما يفشل استخدام العقدة المحلية. يمكنك تغيير هذا السلوك في أي وقت في إعدادات Brave.</translation>
+<translation id="182581792765792826">لا يمكن لمتصفح Brave تحميل موارد IPFS المطلوبة إما لأن عقدة IPFS المحلية من Brave لم تبدأ، أو بسبب عدم وجود نظراء متصلين متاحين في الوقت الحالي. إذا اخترت "متابعة"، فسيعود متصفح Brave تلقائيًا إلى البوابة العامة الافتراضية عندما يفشل استخدام عقدة IPFS المحلية من Brave. يمكنك تغيير هذا الإعداد في أي وقت من إعدادات Brave.</translation>
 <translation id="8026038288183400906">تفضيل IPFS</translation>
 <translation id="2058855456574089690">قم بإعداد تفضيلات IPFS الخاصة بك</translation>
-<translation id="4447758690649023734">استخدم عقدة محلية</translation>
+<translation id="4780526507945807546">استخدم عقدة IPFS المحلية من متصفح Brave</translation>
 <translation id="8148464361648742409">استخدم عنوان بوابة عام</translation>
 <translation id="5123478056123923857">IPFS (نظام الملفات بين الكواكب) هي الشبكة العامة لتخزين وتسليم البيانات من نظير إلى نظير. هذا البروتوكول له اعتبارات خصوصية مختلفة عن HTTP(S).</translation>
 <translation id="5410952114182173389">يساهم جهاز الكمبيوتر الخاص بك في الشبكة العامة، ولكن قد يتم كشف عنوان IP وأي محتوى ’ تطلبه أو تقدمه. يتم التحقق من المحتوى الذي تطلبه عبر IPFS قبل تقديمه إليك.</translation>
@@ -776,16 +776,19 @@
 <translation id="6318437367327684789">للأبد</translation>
 <translation id="8797999629784150206">يمكنك تغيير <ph name="SITE_PERMISSIONS"/> في أي وقت. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">إذن الموقع</translation>
+<translation id="7717357606512850995">تحقق من الحالة</translation>
+<translation id="7306880305145342514">مبروك!<ph name="MONTH"/> وصلت مكافآتك!</translation>
+<translation id="3007207731685398329">ستصل <ph name="AMOUNT"/><ph name="MONTH"/> مكافآتك خلال <ph name="DAYS"/></translation>
+<translation id="5878420576943709750">مكافآتك <ph name="AMOUNT"/><ph name="MONTH"/> في الطريق إليك. ترقبها!</translation>
 <translation id="2659764755126740206">انتقل إلى <ph name="PROVIDER"/> حسابي</translation>
 <translation id="2389181429986654814">انتقل إلى <ph name="PROVIDER"/> لإكمال التحقق</translation>
 <translation id="7793632266654336758">نرجو إكمال التحقق من الهوية لبدء استلام المكافآت.</translation>
 <translation id="2394961582378297792">تم تسجيل الخروج</translation>
-<translation id="5511950864417840431">تسجيل الخروج من <ph name="PROVIDER"/></translation>
+<translation id="6080167751812750226">قطع الاتصال من <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">المكاسب المُقدَّرة</translation>
 <translation id="7577100371127227294">المكافآت الشهرية</translation>
 <translation id="5894023780213944778">محفظتي</translation>
 <translation id="2613359062756190460">تلميحات لمرة واحدة</translation>
-<translation id="4240437602809703483"><ph name="AMOUNT"/> payout begins processing in <ph name="DAYS"/></translation>
 <translation id="590733288489975971">مكافآت من الإعلانات</translation>
 <translation id="4989163558385430922">عرض الكل</translation>
 <translation id="3026978804849658576">عرض البيان</translation>
@@ -816,6 +819,7 @@
 <translation id="9161147058107529840">Expected لم تتلقّ معيار object.</translation>
 <translation id="1875861420974447980">معرّف السلسلة هذا مستخدم حاليًّا</translation>
 <translation id="167698752210114155">حدث خطأ داخلي</translation>
+<translation id="1128992132632883337">حدث خطأ في تحليل الاستجابة</translation>
 <translation id="1680597601664421644">استيراد مساعد الذاكرة غير صالح لمحفظة Brave</translation>
 <translation id="4641919696349069826">هناك طلب قيد التقدم بالفعل</translation>
 <translation id="872806943696014633">بيانات المعاملة مفقودة</translation>
@@ -868,12 +872,14 @@
 <translation id="6977728312178289892">1س</translation>
 <translation id="6598532182053592167">إضافة عملة</translation>
 <translation id="629730747756840877">الحساب</translation>
+<translation id="3959969108528118741">المالك</translation>
 <translation id="3891414008432200754">السعر</translation>
 <translation id="2267753748892043616">إضافة حساب</translation>
 <translation id="5061574358754621254">بيانات أسعار مدعومة من CoinGecko</translation>
 <translation id="1483493594462132177">إرسال</translation>
 <translation id="538450413584738399">تبديل</translation>
-<translation id="7020187418439030877"><ph name="NETWORK"/> غير مدعوم</translation>
+<translation id="6295954645230084874">دعم الشراء غير متوفر لـ<ph name="NETWORK"/></translation>
+<translation id="4171338820961522154">دعم المبادلة غير متوفر لـ <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">قد تكون المعاملة في المقدمة</translation>
 <translation id="632241521608275119">تحمُّل الانزلاق</translation>
 <translation id="4500473291496079954">ينتهي في</translation>
@@ -881,12 +887,14 @@
 <translation id="2860280209982026951">تستخدم Brave <ph name="LINK_BEFORE"/>0x <ph name="LINK_AFTER"/>كمجمع بيانات DEX</translation>
 <translation id="151946611346774041">سيجري 0x معالجة عنوان الإيثيريوم وعنوان الـ IP لتنفيذ المعاملة (بما في ذلك الحصول على عروض الأسعار). سيستخدم 0x هذه البيانات لأغراض معالجة المعاملات فقط.</translation>
 <translation id="4626407663177532837">يشمل عرض الأسعار 0.875٪ كرسوم خاصة بـ Brave.</translation>
+<translation id="8368540604723748428">عدد المنازل العشرية أكثر مما يجب</translation>
 <translation id="2704606927547763573">تم النسخ</translation>
 <translation id="6518133107902771759">تحقق</translation>
 <translation id="1420318137760245955">مرحبًا بك في Brave Wallet الجديد</translation>
 <translation id="8303434745767477417">احتفظ بأصول التشفير. تتبع أداء الحافظة، وتفاعل مع 3 DApps على الويب. تداول واستثمر واقترض وأقرض مع DeFi. استمتع بكامل الحقوق من متصفح الخصوصية Brave. لا يوجد هناك ملحقات ولا يتطلب الأمر تنزيل أي ملف.</translation>
 <translation id="6972754398087986839">البدء</translation>
 <translation id="375882617301124395">قم بعمل نسخة احتياطية من crypto wallet</translation>
+<translation id="180032279811483155">في الخطوة التالية، سترى’<ph name="RECOVERY_PHRASE_LENGTH"/>العبارة الاستردادية، والتي يمكنك استخدامها لاستعادة حسابات عملات التشفير الأساسية الخاصة بك. احفظها في مكان آمن، لأن العبارة الاستردادية الخاصة بك هي الطريقة الوحيدة لاستعادة الوصول إلى الحساب في حالة نسيان كلمة المرور، أو فقدان الجهاز أو سرقته، أو إذا كنت تريد تبديل المحافظ.</translation>
 <translation id="5024543173656851695">أُدرك أنه في حال فقدت كلمات الاسترداد الخاصة بي، فلن أتمكن من الوصول إلى محفظة التشفير الخاصة بي.</translation>
 <translation id="3933122286596948824">عبارة الاسترداد الخاصة بك</translation>
 <translation id="5077747669435508720">اكتب هذه الكلمات أو انسخها بالترتيب الدقيق الموضح أدناه، واحفظها في مكان آمن. عبارة الاسترداد الخاصة بك هي الطريقة الوحيدة لاستعادة الوصول إلى الحساب في حالة نسيان كلمة المرور أو فقدان الجهاز أو سرقته أو إذا كنت تريد تبديل المحافظ.</translation>
@@ -901,12 +909,14 @@
 <translation id="6901073872645365201">يجب أن تتكون كلمات المرور من 7 أحرف على الأقل ، وأن تحتوي على رقم واحد وحرف خاص واحد على الأقل.</translation>
 <translation id="6657585470893396449">كلمة المرور</translation>
 <translation id="5486261815000869482">تأكيد كلمة المرور</translation>
+<translation id="6138471905279127211">معايير كلمة المرور غير متطابقة</translation>
 <translation id="467510802200863975">كلمة المرور غير مطابقة</translation>
 <translation id="5168349973342709369">أدخل كلمة المرور لفتح المحفظة</translation>
 <translation id="9111102763498581341">فتح القفل</translation>
 <translation id="5045550434625856497">كلمة مرور غير صحيحة</translation>
-<translation id="7341660388388100491">Lock Crypto</translation>
+<translation id="5242300593039211344">قفل المحفظة</translation>
 <translation id="765834632354589737">عمل نسخة احتياطية عن المحفظة</translation>
+<translation id="1108298724135935307">المواقع المتصلة</translation>
 <translation id="722307450061393855">انسخ محفظتك احتياطيًا الآن لحماية أصول التشفير الخاصة بك والتأكد من أنك لن تفقد إمكانية الوصول أبدًا.</translation>
 <translation id="1018806299114415224">اعمل نسخة احتياطية الآن</translation>
 <translation id="5234764350956374838">رفض</translation>
@@ -920,12 +930,20 @@
 <translation id="3331452756822160641">كلمة مرور جديدة</translation>
 <translation id="8624315169751085215">نسخ إلى الحافظة</translation>
 <translation id="1121335910737476837">حسابات التفشير الأساسية</translation>
-<translation id="3604193429970465812">الحسابات الثانوية</translation>
+<translation id="6969147029062037757">الحسابات المستوردة</translation>
+<translation id="5668765612885835803">يمكنك إنشاء حسابات أساسية في "محفظة متصفح Brave" والتي يمكن نسخها احتياطيًا أو استعادتها من العبارة الاستردادية. لمعرفة المزيد حول أنواع الحسابات قم بزيارة مساعدة الحساب</translation>
 <translation id="2471916999505901943">يمكن استخدام الحسابات من خلال 3 DApps، ويمكن عرضها في الملف الشخصي الخاص بك. ومع ذلك، يُرجى العلم بأنه لا يمكن تخزين الحسابات الثانوية عبر العبارة الاستردادية في النسخة الاحتياطية من حسابك الأساسي.</translation>
 <translation id="1940465339426637378">الأصول</translation>
 <translation id="2236507293802791911">الأصول المرئية</translation>
 <translation id="7525067979554623046">إنشاء</translation>
 <translation id="4771176409524282426">إنشاء حساب</translation>
+<translation id="2471867767872178363">إنشاء <ph name="BLOCKCHAIN_NETWORK"/>حساب</translation>
+<translation id="1073129495320255278">استيراد <ph name="BLOCKCHAIN_NETWORK"/> حساب</translation>
+<translation id="6780482003945159712">حدد أحد أنواع الحسابات التالية</translation>
+<translation id="7080614857771109950">يدعم الأصول المتوافقة مع الجهاز الافتراضي اللامركزي لمنصة Ethereum على تقنية blockchain لمنصة Ethereum (ERC-20 ، ERC-721 ، ERC-1551 ، ERC-1155)</translation>
+<translation id="3329841454317342083">يدعم الأصول المتوافقة مع عملة SLP على تقنية blockchain لمشروع العملة الرقمية Solana</translation>
+<translation id="4541295941776129088">تخزين الأصول للعملة الرقمية FIL</translation>
+<translation id="232925166623833246">الاستيراد من محفظة الأجهزة</translation>
 <translation id="4324198334837993695">الأجهزة</translation>
 <translation id="3067168166931605141">اسم الحساب</translation>
 <translation id="1136772623587250243">لصق المفتاح الخاص من الحافظة</translation>
@@ -936,7 +954,7 @@
 <translation id="5891811606602061966">تعذّر توريد الحساب. يُرجى المحاولة مرة أخرى.</translation>
 <translation id="5051929972046200722">تحديد جهاز المحفظة الخاص بك</translation>
 <translation id="5745936663807461565">قم بتوصيل محفظة <ph name="HARDWARE_DEVICE"/> الخاصة بك مباشرة بجهاز الكمبيوتر الخاص بك.</translation>
-<translation id="5041211872515579638">افتح جهازك وحدد تطبيق Ethereum.</translation>
+<translation id="4350216031085285578">افتح جهازك وحدد <ph name="BLOCKCHAIN_NETWORK"/> التطبيق.</translation>
 <translation id="6892232036314454524">قد يحدث هذا الخطأ عند فتح التطبيق الخاطئ على جهاز Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">‏‏دفتر الأستاذ</translation>
@@ -963,6 +981,7 @@
 <translation id="6018178824574796106">تعذّر إضافة رمز مخصص، يرجى المحاولة مرة أخرى.</translation>
 <translation id="547122651977318828">معرف الرمز (لـ ERC721 فقط)</translation>
 <translation id="7544552854944350190">معرف الرمز مطلوب</translation>
+<translation id="3842236145820483340">مُعرّف موقع Coingecko</translation>
 <translation id="2708402071160162126">تحذير: لا تشارك عبارة الاسترداد الخاصة بك. يمكن لأي شخص لديه هذه العبارة أن يأخذ أصولك إلى الأبد.</translation>
 <translation id="2902856457593699108">إظهار المفتاح</translation>
 <translation id="8033497299373164724">إخفاء مفتاح</translation>
@@ -1031,6 +1050,8 @@
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> حسابات متصلة</translation>
 <translation id="4305817255990598646">تبديل</translation>
 <translation id="3890989020011724401">حساب جديد</translation>
+<translation id="7257603403519636638">عرض أصول الحساب</translation>
+<translation id="2092132085082887098">أصول الحساب</translation>
 <translation id="4460220693591349571">نوع الوظيفة</translation>
 <translation id="838933475572692615">HEX DATA</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1073,6 +1094,11 @@
 <translation id="6666273175654835609">المقدمة</translation>
 <translation id="2331676293859649642">تم التأكيد</translation>
 <translation id="1165039591588034296">خطأ</translation>
+<translation id="9065572743819293042">المعاملات الأخيرة</translation>
+<translation id="4235538284468006757">تفاصيل المعاملة</translation>
+<translation id="7488671812634887146">الإسراع</translation>
+<translation id="1702356231547761669">تجزئة المعاملة</translation>
+<translation id="7982789257301363584">الشبكة</translation>
 <translation id="8941851657764077659">رسوم الأولوية القصوى</translation>
 <translation id="8047527352810290817">تعديل الغاز</translation>
 <translation id="9091334651803050473">على الرغم من أنه ليس ضمانًا، فمن المرجح أن يعطي عمال المناجم الأولوية لمعاملتك إذا دفعت رسومًا أعلى.</translation>
@@ -1089,6 +1115,10 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">مجموعة مخصصة</translation>
 <translation id="7400927223938424379">المجموعة المقترحة</translation>
+<translation id="8179605702342645418">لا يجوز نشر المعاملة في الشبكة.</translation>
+<translation id="9100765901046053179">الإعدادات المتقدمة</translation>
+<translation id="4220062530885628403">الرقم الخاص</translation>
+<translation id="2749584096020594976">سيتم تحديد قيمة الرقم الخاص تلقائيًا إذا لم يتم تحديد هذا الحقل.</translation>
 <translation id="1599636444563952897">يسمح إذن حد الإنفاق لـ <ph name="SITE_ORIGIN"/> بالسحب وإنفاق ما يصل إلى المبلغ التالي:</translation>
 <translation id="4512871563176965522">بدل مخصص</translation>
 <translation id="749944179568745958">هذا ليس عنوان إيثريوم (ETH) صالحًا</translation>
@@ -1129,6 +1159,11 @@
 <translation id="7017116822583380542">تطبيق Trezor bridge غير جاهز</translation>
 <translation id="3378339846292573874">إضافة عملة رمزية مقترحة</translation>
 <translation id="2322227405137827074">هل ترغب في استيراد هذه العملة الرمزية؟</translation>
+<translation id="4378475168089649292">تقنية سلسة الكتل</translation>
+<translation id="1904295039023858291">معيار "الرمز المميز"</translation>
+<translation id="9033453977881595182">مُعرّف "الرمز المميز"</translation>
+<translation id="2962388922926051374">فشل طلب الطريقة 'eth_chainId' في <ph name="URL"/></translation>
+<translation id="8325036459845654666">تمت إضافة هذه الشبكة بالفعل.</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
