@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.util.Pair;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.TaskStackBuilder;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
