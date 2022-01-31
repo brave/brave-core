@@ -1,0 +1,34 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//chrome/common/features.gni")
+import("//tools/grit/grit_rule.gni")
+import("//ui/webui/resources/tools/generate_grd.gni")
+
+grit("resources") {
+  defines = chrome_grit_defines
+  defines +=
+      [ "SHARED_INTERMEDIATE_DIR=" + rebase_path(root_gen_dir, root_build_dir) ]
+
+  enable_input_discovery_for_gn_analyze = false
+  source = "$target_gen_dir/sidebar_resources.grd"
+  deps = [ ":build_grd" ]
+
+  outputs = [
+    "grit/sidebar_resources.h",
+    "grit/sidebar_resources_map.cc",
+    "grit/sidebar_resources_map.h",
+    "sidebar_resources.pak",
+  ]
+  output_dir = "$root_gen_dir/brave/browser/resources/sidebar"
+  resource_ids = "//brave/browser/resources/resource_ids"
+}
+
+generate_grd("build_grd") {
+  grdp_files = [ "$target_gen_dir/bookmarks/resources.grdp" ]
+  deps = [ "bookmarks:build_grdp" ]
+  grd_prefix = "sidebar"
+  out_grd = "$target_gen_dir/${grd_prefix}_resources.grd"
+}
