@@ -131,6 +131,8 @@ void SpeedreaderModeBubble::Init() {
       std::make_unique<views::ToggleButton>(base::BindRepeating(
           &SpeedreaderModeBubble::OnButtonPressed, base::Unretained(this)));
   site_toggle_button->SetIsOn(tab_helper_->IsEnabledForSite());
+  site_toggle_button->SetAccessibleName(l10n_util::GetStringUTF16(
+      IDS_ACCNAME_SPEEDREADER_DISABLE_THIS_SITE_TOGGLE));
   site_toggle_button_ =
       site_toggle_view->AddChildView(std::move(site_toggle_button));
 
