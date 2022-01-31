@@ -237,9 +237,7 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
 // Tests results of farbling user agent metadata
 IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
                        FarbleNavigatorUserAgentModel) {
-  std::string domain_b = "b.com";
-  GURL url_b =
-      https_server()->GetURL(domain_b, "/navigator/useragentdata.html");
+  GURL url_b = https_server()->GetURL("b.com", "/navigator/useragentdata.html");
   NavigateToURLUntilLoadStop(url_b);
   std::u16string expected_title(u"pass");
   TitleWatcher watcher(contents(), expected_title);
