@@ -88,7 +88,8 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 case RetentionNotificationUtil.DEFAULT_BROWSER_3:
                     if (!BraveSetDefaultBrowserUtils.isBraveSetAsDefaultBrowser(braveActivity)
                             && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
-                        BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(braveActivity);
+                        BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
+                                braveActivity, false);
                     }
                     break;
                 }

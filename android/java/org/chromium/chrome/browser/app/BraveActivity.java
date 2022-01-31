@@ -14,7 +14,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.role.RoleManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -274,7 +273,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         } else if (id == R.id.exit_id) {
             ApplicationLifetime.terminate(false);
         } else if (id == R.id.set_default_browser) {
-            BraveSetDefaultBrowserUtils.openDefaultAppsSettings(BraveActivity.this);
+            BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
@@ -857,7 +856,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                         && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
                     isSetDefaultBrowserNotification = true;
                     BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
-                            BraveActivity.this);
+                            BraveActivity.this, false);
                 }
                 break;
             }

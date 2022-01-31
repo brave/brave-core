@@ -43,14 +43,27 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragment {
-    public static SetDefaultBrowserBottomSheetFragment newInstance() {
-        return new SetDefaultBrowserBottomSheetFragment();
+    private static final String IS_FROM_MENU = "is_from_menu";
+
+    private boolean isFromMenu;
+
+    public static SetDefaultBrowserBottomSheetFragment newInstance(boolean isFromMenu) {
+        final SetDefaultBrowserBottomSheetFragment fragment =
+                new SetDefaultBrowserBottomSheetFragment();
+        final Bundle args = new Bundle();
+        args.putBoolean(IS_FROM_MENU, isFromMenu);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NORMAL, R.style.AppSetDefaultBottomSheetDialogTheme);
+
+        if (getArguments() != null) {
+            isFromMenu = getArguments().getBoolean(IS_FROM_MENU);
+        }
     }
 
     @Override
@@ -74,11 +87,10 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
         }));
 
         CheckBox dontAskCheckBox = view.findViewById(R.id.checkbox_dont_ask);
-
         int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
                 BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
 
-        if (braveDefaultModalCount >= 2) {
+        if (braveDefaultModalCount >= 2 && !isFromMenu) {
             dontAskCheckBox.setVisibility(View.VISIBLE);
         } else {
             dontAskCheckBox.setVisibility(View.GONE);
