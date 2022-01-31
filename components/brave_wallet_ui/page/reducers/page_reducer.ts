@@ -34,7 +34,8 @@ const defaultState: PageState = {
   isFetchingPriceHistory: false,
   showIsRestoring: false,
   setupStillInProgress: false,
-  isCryptoWalletsInstalled: false,
+  isCryptoWalletsInitialized: false,
+  isMetaMaskInitialized: false,
   swapQuote: undefined,
   swapError: undefined
 }
@@ -155,10 +156,17 @@ reducer.on(Actions.setShowAddModal, (state: PageState, payload: boolean) => {
   }
 })
 
-reducer.on(Actions.setCryptoWalletsInstalled, (state: PageState, payload: boolean) => {
+reducer.on(Actions.setCryptoWalletsInitialized, (state: PageState, payload: boolean) => {
   return {
     ...state,
     isCryptoWalletsInstalled: payload
+  }
+})
+
+reducer.on(Actions.setMetaMaskInitialized, (state: PageState, payload: boolean) => {
+  return {
+    ...state,
+    isMetaMaskInitialized: payload
   }
 })
 
