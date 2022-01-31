@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Odśwież status",
+    "message": "Odśwież",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Wystąpił problem z nagrodami przeglądarki Brave. Spróbuj ponownie później.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Sprawdź status",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Gratulacje! Otrzymałeś(-aś) nagrody za $month$!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "$amount$ nagrody/nagród za $month$ otrzymasz za $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Już wkrótce otrzymasz $amount$ nagrody/nagród za $month$. Trzymaj rękę na pulsie!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Przejdź do mojego konta $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Wyloguj z $provider$",
+    "message": "Rozłącz z $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Oczekuje",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "przetwarzanie wypłaty w wysokości $amount$ rozpocznie się za $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Nagrody z reklam",

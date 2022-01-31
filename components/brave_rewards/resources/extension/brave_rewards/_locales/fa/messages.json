@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "تازه‌سازی وضعیت",
+    "message": "بازخوانی",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "«پاداش‌های Brave» با مشکل روبرو است. لطفاً بعداً دوباره امتحان کنید.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "بررسی وضعیت",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "تبریک می‌گوییم! پاداش‌های $month$ شما رسیده است!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "پاداش‌های $amount$ $month$ شما، $days$ دیگر دریافت خواهند شد",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "پاداش‌های $amount$ $month$ در راه هستند. گوش به زنگ باشید!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "رفتن به حساب $provider$ من",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "خروج از $provider$",
+    "message": "قطع ارتباط با $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "معوق",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "پردازش مبلغ پرداختی $amount$ ظرف $days$ شروع می‌شود",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "پاداش‌های حاصل از آگهی‌ها",

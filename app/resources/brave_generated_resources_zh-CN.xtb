@@ -15,18 +15,19 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/>(Brave中不允许使用扩展ID“<ph name="EXTENSION_ID"/>”）。</translation>
 <translation id="6786747875388722282">扩展程序</translation>
 <translation id="984275831282074731">付款方式</translation>
-<translation id="3699882589215410581">安装并运行 Widevine</translation>
+<translation id="1990886731975529483">安装并运行 Google Widevine</translation>
 <translation id="8926389886865778422">不再询问</translation>
 <translation id="5249433283143453448">使用 Widevine 数字版权管理（DRM）组件在浏览器中查看受保护的流视频和其他内容。</translation>
 <translation id="6241402707160226266">带 Tor 的私人窗户</translation>
 <translation id="8762452230727230396">Tor 对你访问的网站隐藏了你的 IP 地址。</translation>
 <translation id="1369311132025451972">自动重定向 .onion 网站</translation>
 <translation id="2843777623071353503">如果可用，Brave 会在 Tor 窗口中打开网站的 onion 服务或 .onion 域名</translation>
-<translation id="8053096063396012732">安装 Widevine</translation>
-<translation id="4840334696217618631">重新启动浏览器以启用 Widevine</translation>
-<translation id="8410111618231938546">Google Widevine 是一款数字版权管理（DRM）代码，Brave Software 不拥有这些代码，也无法检查。 Google Widevine 代码是从 Google 服务器加载的，而不是从我们的服务器加载的。仅在启用此选项时才会加载它。我们不鼓励使用 DRM，但我们尊重用户选择并了解某些 Brave 用户希望使用需要它的服务。
-
-安装此扩展程序即表示您同意 Google Widevine 使用条款。您同意 Brave对您使用 Google Widevine所造成的任何损害或损失概不负责。</translation>
+<translation id="4900351245762303149">安装 Google Widevine</translation>
+<translation id="2313383941300459392">重新启动浏览器以启用 Google Widevine</translation>
+<translation id="2200626478572277092">有时需要 Widevine 才能在网页上播放媒体。这是一个从 Google 服务器加载的 Google 扩展程序，Brave 无法进行检查。安装即表示您同意 Google 的使用条款。</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>。若稍后需更改选项，请前往 <ph name="SETTINGS_EXTENIONS_LINK"/>。</translation>
+<translation id="6229752134959014186">详细了解 Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/>正请求您</translation>
 <translation id="410351446219883937">自动播放</translation>
 <translation id="3218385319396786393">已禁止在此网页上运行自动播放</translation>
 <translation id="4988333904713528597">始终允许自动播放<ph name="HOST"/></translation>
@@ -35,6 +36,8 @@
 <translation id="6583467242903731748">询问站点何时要访问以太坊提供商的 API</translation>
 <translation id="7017590444693657895">阻止站点访问以太坊提供商的 API</translation>
 <translation id="8988939298652262600">Brave 不审查扩展程序的安全性。如果您信任这个开发者，请仅安装这个扩展程序。</translation>
+<translation id="933652931229970927">自动发送诊断报告</translation>
+<translation id="1679356339067548863">Brave 浏览器崩溃或无响应时自动发送诊断报告，帮助提高 Brave 产品稳定性。</translation>
 <translation id="8081858229109418493">个人资料姓名和图标</translation>
 <translation id="6438096877646138757">关闭时所有网站窗口时清除 cookie 的网站</translation>
 <translation id="2988792685798128092">站点关闭时清除</translation>
@@ -42,7 +45,7 @@
 <translation id="1692470335103807198">获得更多主题</translation>
 <translation id="2906510232093002459">Brave 默认图片</translation>
 <translation id="2814998458708016836">使用宽地址栏</translation>
-<translation id="6123134130710658846">隐藏 Brave 奖励按钮</translation>
+<translation id="6333347122924254968">在地址栏显示 Brave 奖励图标</translation>
 <translation id="1811404036171336214">总是显示新标签页上的书签</translation>
 <translation id="1643029991199044105">通过 Ctrl-Tab 循环浏览最近使用的标签页</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +79,7 @@
 <translation id="5733490796524078528">打赏按钮</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">新标签页</translation>
 <translation id="1988804048511540801">新标签页随及会显示</translation>
 <translation id="2970343821770026391">仪表板</translation>
@@ -89,12 +92,12 @@
 <translation id="8612763432858587652">退出私人窗口</translation>
 <translation id="8760415064721320867">用 Tor 打开私人窗口</translation>
 <translation id="2055363275850890030">私人窗口</translation>
-<translation id="8934172355414207733">Tor 的私人窗口</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">这是 Tor 的私人窗口</translation>
 <translation id="1037341607922068025">打开 Tor 的私人窗口</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">在 Tor 中打开</translation>
-<translation id="7643538479215207633">用 IPFS 打开</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">发布并从 IPFS 检索文件</translation>
 <translation id="1672270084584211506">Onion 可用</translation>
 <translation id="406832631167785034">使用 .onion 地址打开</translation>
@@ -105,7 +108,6 @@
 <translation id="4227945450504703638">已选音频</translation>
 <translation id="7895302206188277628">关联内容</translation>
 <translation id="3654831858282189202">使用 IPNS 密钥发布</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">将所选文本导入 IPFS</translation>
 <translation id="6925604404524625582">导入并将链接到 IPFS 快照</translation>
 <translation id="1434416574322382019">用 Tor 打开新的私人窗口</translation>
@@ -238,8 +240,8 @@
 <translation id="6358469157239228181">不能使用此名称</translation>
 <translation id="5761731140570209168">添加新的对等连接字符串</translation>
 <translation id="2082206983920804886">旋转密钥</translation>
-<translation id="2521133093532260474">无法停止本地节点</translation>
-<translation id="86879877003581729">无法启动本地节点</translation>
+<translation id="5078501082919354191">无法停止 Brave 本地 IPFS 节点</translation>
+<translation id="5687424953196903465">无法启动 Brave 本地 IPFS 节点</translation>
 <translation id="6476061084931271248">重启节点来应用更改</translation>
 <translation id="3754226427671882382">重启节点</translation>
 <translation id="949667118776341807">旋转</translation>
@@ -254,17 +256,22 @@
 <translation id="616058968889448209">IPFS 服务启动错误，更多信息参见<ph name="BEGIN_LINK"/>诊断页<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 密钥导入失败</translation>
 <translation id="3364053282600191535"><ph name="KEY_NAME"/>' 密钥导出失败</translation>
-<translation id="8860039076160511438">重置钱包</translation>
+<translation id="4993345308607970390">重置 Brave 钱包</translation>
+<translation id="5975930666279943472">清除钱包交易和随机数信息</translation>
+<translation id="5693968582510626466">清除交易可能对开发人员有用，或者在清除本地服务器的状态时有用</translation>
 <translation id="6369495274982305511">确定要重置钱包吗？如果您的钱包没有备份，重置将导致您丢失所有账户数据（包括所有关联的资金）。输入“<ph name="CONFIRMATION_PHRASE"/>”确认。</translation>
+<translation id="9216386092464743272">您确定要重置所有的钱包交易和随机数信息吗？这个选项主要由运行本地测试服务器的开发人员使用。输入“<ph name="CONFIRMATION_PHRASE"/>”进行确认。</translation>
+<translation id="3752403403443723332">您的钱包已重置。</translation>
+<translation id="594766067816395072">您的钱包交易信息已重置。</translation>
 <translation id="1426410128494586442">是</translation>
 <translation id="8275038454117074363">导入</translation>
 <translation id="3654980960391973513">生成</translation>
 <translation id="5531501313997312487">启动节点</translation>
 <translation id="9170907049676078643">解决 IPFS 资源问题的方法</translation>
 <translation id="1327977588028644528">网关</translation>
-<translation id="80225669816651290">本地节点</translation>
+<translation id="1195880978080389104">Brave 本地 IPFS 节点</translation>
 <translation id="4927734062756955434">IPFS 公共网关地址</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>了解更多<ph name="END_LINK_MPL"/>关于 IPFS 本地节点和网关隐私的注意事项。</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>详细<ph name="END_LINK_MPL"/>了解 Brave 本地 IPFS 节点和网关隐私注意事项。</translation>
 <translation id="8425213833346101688">更改</translation>
 <translation id="557281710253742286">设置 IPFS 网关</translation>
 <translation id="8571837315037233299">网关地址</translation>
@@ -273,7 +280,7 @@
 <translation id="7703184801853248830">网关地址无效</translation>
 <translation id="7690058578502751948">仅启用了 Origin 隔离的有效 IPFS 网关可用于 Brave</translation>
 <translation id="585868419599255817">公共网关回退功能</translation>
-<translation id="207763736230883589">如果无法访问本地节点，则自动回退到公共 IPFS 网关。</translation>
+<translation id="2618080188892567155">如果无法访问 Brave 本地 IPFS 节点，则自动回退到公共 IPFS 网关。</translation>
 <translation id="4107552920076294723">将 IPFS 资源重定向到已配置的 IPFS 网关</translation>
 <translation id="6494857428933042381">当遇到 IPFS 网关资源时，自动使用配置的网关进行 IPFS 解析。</translation>
 <translation id="8655170717758778983">可能时通过 DNSLink 自动重定向到 IPFS 页面</translation>
@@ -346,10 +353,9 @@
 <translation id="780301667611848630">不用了，谢谢</translation>
 <translation id="5039804452771397117">允许</translation>
 <translation id="7053983685419859001">禁止</translation>
-<translation id="7815301689257843278">自动发送崩溃报告以帮助 Brave 防止这个问题再次发生？</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/>意外退出</translation>
 <translation id="1324417023773393937">Brave 浏览器</translation>
-<translation id="1068069727470515940">您可以在任何时候再次更改 <ph name="SETTING_TEXT"/></translation>
+<translation id="7276554663454265692">您可以随时在浏览器设置中更改 <ph name="SETTING_TEXT"/>。</translation>
 <translation id="6873781976650514089">此设置</translation>
 <translation id="6040143037577758943">关闭</translation>
 <translation id="5600566490506283344">Brave 广告通知</translation>
@@ -446,7 +452,6 @@
 <translation id="2487558607408469181">拦截浏览器 URL</translation>
 <translation id="6301398959353668507">此字段不能为空。</translation>
 <translation id="7504462451153306677">无效格式，链 ID 是一个正数</translation>
-<translation id="8325036459845654666">已添加此网络。</translation>
 <translation id="650071759190249039">内部错误，无法添加网络。</translation>
 <translation id="868529041590572443">请填写有关原生货币的所有信息</translation>
 <translation id="1062463687579789365">定制钱包网络</translation>

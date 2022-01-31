@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">የዛሬ ግምባር ቀደም ታሪኮች ሙሉ ለሙሉ የግል በሆነ አቀራረብ፣ ለእርስዎ ብቻ።</translation>
 <translation id="7266075701303521777">Brave ዜና በማስታወቂያ የተደገፈ እና በመሳሪያዎ ላይ ሙሉ ለሙሉ ግላዊነቱ የተዛመደ እና ስም-አልባ በሆነ መልክ በማስታወቂያ የተደገፈ ነው።</translation>
 <translation id="4541978218358617681">ማስታወቅያ</translation>
-<translation id="1765217911817124376">የBrave ዜናዎችን አንቃ</translation>
+<translation id="7823038307453615214">የBrave ዜናዎችን አንቃ</translation>
 <translation id="6527303717912515753">አጋራ</translation>
 <translation id="1654539412343893324">ስለ ውሂብዎ የበለጠ ይወቁ</translation>
 <translation id="2989805286512600854">በአዲስ ትር ውስጥ ይክፈቱ</translation>
@@ -45,7 +45,6 @@
 <translation id="7554145152551782675">ተጨማሪ የBrave አቅርቦቶች</translation>
 <translation id="4975944254857623648">ነባሪ ግብዓቶች</translation>
 <translation id="253886574765651454">ምንጭ አክል</translation>
-<translation id="7823038307453615214">የ Brave ዜናዎችን አሳይ</translation>
 <translation id="5787084571334399599">አሳሹ የጣት አሻራ እንዳይወስድ ይከለክላል</translation>
 <translation id="7459000603787995422">ሲወጡ ትሮችን ይዝጉ</translation>
 <translation id="4448697385961650078">ተከታታዮችን &amp; ማስታወቂያዎችን አግድ</translation>
@@ -53,8 +52,8 @@
 <translation id="1680858055899097121">በማሰሻ ክፍለ ጊዜያት መካከል ትሮችን አይቀያይሩ</translation>
 <translation id="7142548388914389999">የግል ምርት ትንታኔዎች ጠባቂዎች (P3A) ይፍቀዱ።</translation>
 <translation id="5254037869598726291">ስም የለሽ የ P3A መረጃ ጎበዝ አጠቃላይ አጠቃቀምን ለመገመት እና ታዋቂ ባህሪያትን እያሻሻልን መሆኑን ለማረጋገጥ ይረዳል።</translation>
-<translation id="4272190451231642425">የብልሽት ሪፖርቶችን በራስ -ሰር ይላኩ</translation>
-<translation id="2239766974964486304">የብልሽት ሪፖርቶች Brave ለሁሉም ተጠቃሚዎች የምርት ቋሚነትን እንዲያሻሽል ያግዛል።</translation>
+<translation id="933652931229970927">የምርመራ ሪፖርቶችን በራስ -ሰር ይላኩ</translation>
+<translation id="5987838417172370108">የ Brave አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Brave\u2019s ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
 <translation id="7977176350719484850">Est. ውሂብ\nተቀምጧል</translation>
 <translation id="9008534313521214777">የተቆጠበ\nጊዜ በግምት</translation>
 <translation id="6572660632052512096">የዴስክቶፕ ኩነት</translation>
@@ -76,8 +75,7 @@
 <translation id="59174027418879706">ነቅቷል</translation>
 <translation id="4150201353443180367">ማሳያ</translation>
 <translation id="2433507940547922241">ገጽታ</translation>
-<translation id="2804710924397009224">የ Brave ሽልማቶችን አዶ ደብቅ</translation>
-<translation id="7289740269305509613">የ Brave Rewards  አዶ ይደብቃል</translation>
+<translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
 <translation id="8495235435594442882">የነቃ የግርጌ ሰሪ አሞሌ</translation>
 <translation id="6587448235155023666">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ</translation>
 <translation id="8701563696941209024">አሁን እንደገና ያስጀምሩ</translation>
@@ -113,6 +111,7 @@
 <translation id="1166682575529520472">በየወሩ</translation>
 <translation id="1628742278973105368">የመጀመሪያው ወርሃዊ ጉርሻዎን በሚከተለው ላይ ይላካሉ:</translation>
 <translation id="298349922412901215">ማስታወሻ፡ ይህ ፈጣሪ ከ Brave ተጠቃሚዎች መዋጮዎችን ለማግኘት ገና አልተመዘገበም። እነርሱ እስከሚያረጋግጡ ወይም 90 ቀናት እስከሚያልፉ ድረስ መዋጮውን ለማድረግ እንሞክራለን።</translation>
+<translation id="6602036279006002239">ማስታወሻ፥ ይህ ፈጣሪ በአሁኑ ጊዜ ከዋሌትዎ ምክሮችን ለመቀበል አልተዋቀረም። የሚሰጡት ማናቸውም ጠቃሚ ምክር በኪስ ቦርሳዎ ውስጥ እንደተጠበቀ ሆኖ ለ 90 ቀናት በራስ-ሰር እንደገና ይሞክሩ።</translation>
 <translation id="1910721550319506122">እንኳን ደህና መጡ!</translation>
 <translation id="3165726837666415756">ጠቃሚ ምክር በመላክ ይህን ገፅ ሊያግዙ ይችላሉ። ይህ የተሻለ ይዘት ስለሰሩ ማመስገኛ መንገድ ነው። የተረጋገጡ የይዘት ፈጣሪዎች በእያንዳንዱ ወር የመጀመርያ ሳምንት ለጠቃሚ ምክራቸው ይከፈላቸዋል።</translation>
 <translation id="1704859330137112950">ይህን ገፅ በተከታታይ ለማገዝ ከፈለጉ ወርሀዊ ምክሮችን መርሀግብር መያዝ ይችላሉ፡፡</translation>
@@ -190,6 +189,7 @@
 <translation id="8284063834901328650">የተሳሳተ የማመሳሰል QR ኮድ</translation>
 <translation id="859506441384380749">ይህ ኮድ የተፈጠረው ከአገልግሎት ውጭ በሆነው የ Brave ስሪት ነው፣ እባክዎ መጀመሪያ ሌላው መሳሪያዎን ያሻሽሉ።</translation>
 <translation id="3132642509209154999">ይህ ኮድ ጊዜው አልፎበታል። እባክዎ በሌላኛው መሳሪያዎ ላይ አዲስ ይፍጠሩና እንደገና ይሞክሩ።</translation>
+<translation id="2859229680945501779">ይህ ኮድ ልክ ያልሆነ ነው። እባክዎ ሰዓቱ እና የሰዓት ዞን በመሳሪያዎ ላይ በትክክል መዘጋጀታቸውን ያረጋግጡ።</translation>
 <translation id="3149880132460839085">የብሬቭ ማመሳሰል</translation>
 <translation id="3680755684186855422">የብሬቭ ማመሳሰል በተለያዩ መሳሪያዎች ላይ በብሬቭ አሳሾችዎ መካከል የዕልባቶችዎን ውሂብ በግል እንዲያመሳስሉ ያስችልዎታል፡፡</translation>
 <translation id="3735228155296883311">በሌላ መሳሪያ ላይ የፈጠሩትን ኮድ ከማመሳሰያ ሰንሰለት ስካን ያድርጉ። ወይም አዲስ የማመሳሰያ ሰንሰለት ይጀምሩ።</translation>
@@ -293,7 +293,6 @@
 <translation id="5358719431303818601">ሳይረጋገጥ የተላቀቀ</translation>
 <translation id="4241449868720191203">ተረጋግጦ የተላቀቀ</translation>
 <translation id="3248185426436836442">በመጠበቅ ላይ</translation>
-<translation id="2260513517001048012">ማስታወሻ፡ ይህ የ Brave የተረጋገጠ ፈጣሪ እስካሁን መለያውን ባለማዋቀሩ ምክንያት ከ Brave ተጠቃሚዎች መዋጮ ለመቀበል አይችልም። እነርሱ መለያቸውን እስከሚያረጋግጡ ድረስ ወይም 90 ቀን እስከሚያልፍ ድረስ ማሰሻዎ መዋጮ ለማድረግ መሞከሩን ይቀጥላል።</translation>
 <translation id="4488355059795908907">የ Brave የተረጋገጠ ፈጣሪ ከ Brave ተጠቃሚዎች መዋጮዎችን ለመቀበል መለያቸውን እስካሁን አላዋቀሩም። እርስዎ የሚልኩት ማንኛውም የመረጃ ፍንጭ ይህ ሒደት እስከሚጠናቀቅ ድረስ ዋሌትዎ ውስጥ ይቆያል።</translation>
 <translation id="2495032782748793764">የ Brave ነባሪ</translation>
 <translation id="9132378787893584761">Brave ን ለጓደኞችዎ ያጋሩ!</translation>
@@ -535,11 +534,10 @@
 <translation id="2918322085844739869">4</translation>
 <translation id="7267186368513450821">5</translation>
 <translation id="6972003925509023890">1 BAT</translation>
+<translation id="2222442600106681391">2 BAT</translation>
+<translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
 <translation id="8762169086048682708">10 BAT</translation>
-<translation id="7921571842056754133">15 BAT</translation>
-<translation id="3605291544485823713">25 BAT</translation>
-<translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0.00 BAT</translation>
 <translation id="4193129043743994339">0.00 USD</translation>
 <translation id="8792121506918889955">የ WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
@@ -570,7 +568,7 @@
 <translation id="375882617301124395">የ crypto walletዎን ምትኬ ወይም መጠባበቂያ ያስቀምጡ</translation>
 <translation id="8289942708804097960">cryptoን በዱቤ ወይም በዴቢት ካርድ ይግዙ።</translation>
 <translation id="841880029259839903">ክሪፕቶ ይላኩ ወይም ከአንድ መለያ ወደ ሌላ ሂሳብ ያስተላልፉ።</translation>
-<translation id="8982246458261383692">ከ Brave DEX አሰባሳቢ ጋር ምስጢራዊ ንብረቶችን ይቀያይሩ።</translation>
+<translation id="8226778393040773102">ከ Brave DEX አሰባሳቢ ጋር ምስጢራዊ ንብረቶችን ይቀያይሩ።</translation>
 <translation id="1783600039044302171">የእርስዎ ክሪፕቶ በይለፍ ቃል ይጠብቁ</translation>
 <translation id="3726490322412361740">የይለፍ ቃል ያስገቡ</translation>
 <translation id="3038243139480464605">የይለፍ ቃል ያረጋግጡ</translation>
@@ -596,12 +594,16 @@
 <translation id="9120654436199628567">የcrypto መለያን ወደነበረበት መልስ</translation>
 <translation id="4811736040444856406">የመልሶ ማግኛ ደረጃ ያሳዩ</translation>
 <translation id="283071225285270357">የመልሶ ማግኛ ደረጃዎን ያስገቡ</translation>
+<translation id="3943857333388298514">ለጥፍ</translation>
+<translation id="3331452756822160641">አዲስ የይለፍ ቃል</translation>
+<translation id="4854035885012188958">ከ Brave Crypto Wallet ሌጋሲ እየመለስኩ ነው።</translation>
 <translation id="2339124864228588937">የመልሶ ማግኛ ደረጃዎን ያረጋግጡ</translation>
 <translation id="3747079125031086337">በመልሶ ማግኛ ሐረግዎ ውስጥ ያሉትን ቃላት በትክክለኛው ቅደም ተከተል ይምረጡ።</translation>
 <translation id="6518133107902771759">አረጋግጥ</translation>
 <translation id="3157931365184549694">እነበረበት መልስ</translation>
 <translation id="9111102763498581341">ክፈት</translation>
 <translation id="6657585470893396449">የይለፍ ቃል፦</translation>
+<translation id="5619264711680220002">Biometric ክፈት</translation>
 <translation id="5168349973342709369">walletዎን ለመክፈት የይለፍ ቃል ያስገቡ</translation>
 <translation id="1144810021918451336">ከአደገኛ ድርጣቢያዎች፣ ዳውንሎዶች እና ቅጥያዎች አይከላከልልዎትም።</translation>
 <translation id="5760476995887363522">ሐረጎች አልተመሳሰሉም። እባክዎ እንደገና ይሞክሩ።</translation>
@@ -614,6 +616,8 @@
 <translation id="6159566011642056819">ለ (ግምት)</translation>
 <translation id="6998989275928107238">ወደ</translation>
 <translation id="2589431635772931954">አድራሻ ወይም URL</translation>
+<translation id="5517732667776806421">የአጠቃላይ እርማት መረጃ ይጎድላል</translation>
+<translation id="4006711930669471508">ልክ ያልሆነ የፍተሻ መረጃ</translation>
 <translation id="632241521608275119">ተቀባይነት ያለው የዋጋ መንሸራተት</translation>
 <translation id="1987317783729300807">መለያዎች</translation>
 <translation id="3535654229833214438">ዝውውሮች</translation>
@@ -646,7 +650,6 @@
 <translation id="7420359180991315365">ወደ Wyre ይቀጥሉ</translation>
 <translation id="8488282162676695335">የBrave ዋሌት</translation>
 <translation id="3784455785234192852">ቆልፍ</translation>
-<translation id="5040262127954254034">ግላዊነት</translation>
 <translation id="8239147115686034860">በራስ ሰር Brave Walletን ቆልፍ</translation>
 <translation id="414639769490080648">Brave Wallet በራስ ሰር እስኪቆለፍ ድረስ የሚጠብቁት የደቂቃዎች ብዛት</translation>
 <translation id="4993345308607970390">የBraveን ቦርሳ እንደገና አስጀምር</translation>
@@ -764,7 +767,7 @@
 <translation id="6666273175654835609">የቀረበ</translation>
 <translation id="2331676293859649642">ተረጋገጠ</translation>
 <translation id="1165039591588034296">ስህተት</translation>
-<translation id="4354768722613827480">ክፍያ: <ph name="VALUE"/> ብር ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="8364362220156372884">ክፍያ: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">በጣም ፈጣኑን የድር አሳሽ እየተጠቀሙ ነው?</translation>
 <translation id="2065971949051836200">3x እጥፍ ፈጣን በይነመረብ አስቀድሞ በስልክዎ ላይ አለ። ለሁሉም የድር አሰሳዎ Brave ይጠቀሙ።</translation>
 <translation id="2888278614497184977">Brave = 3x ጊዜ ፈጣን የድር አሳሽ</translation>
@@ -789,7 +792,7 @@
 <translation id="1254969878422524947">በነዳጅ የጉርሻ ገደብ (Gwei)</translation>
 <translation id="7373308452149471621">በper-gas ዋጋ ጥግ(Gwei)</translation>
 <translation id="5891811606602061966">መለያውን ለማስገባት አልተቻለም። እባክዎ ዳግም ይሞክሩ።</translation>
-<translation id="7033470144757208254">Brave 0xን እንደ DEX ተደማሪ ይጠቀማል።</translation>
+<translation id="1822506443689803572">Brave 0xን እንደ DEX ተደማሪ ይጠቀማል።</translation>
 <translation id="5061574358754621254">በCoinGecko የተጠናከረ የዋጋ መረጃ</translation>
 <translation id="4626407663177532837">ጥቅሱ 0.875% የBrave ክፍያን ያካትታል።</translation>
 <translation id="8574289650879708853">ብጁ ንብረትን ያክሉ</translation>
@@ -807,7 +810,6 @@
 <translation id="3506416339268164412">የተቀባዩ አድራሻ የማስመሰያ ውል አድራሻ ነው።</translation>
 <translation id="1543259266592091784">ድጎማ ያድርጉ</translation>
 <translation id="3494964159182650590">የሽልማት ማጠቃለያ</translation>
-<translation id="7470079236088529568">ጠቅላላ የይገባኛል ጥያቄ</translation>
 <translation id="590733288489975971">ከማስታወቂያዎች የተገኙ ሽልማቶች</translation>
 <translation id="207268487070188114">የአንድ-ጊዜ ጠቃሚ ምክር</translation>
 <translation id="64394831139134288">የኪስ ቦርሳዬ</translation>
@@ -817,7 +819,30 @@
 <translation id="1549705559752367917">ፍንጭ ይላኩ</translation>
 <translation id="6727102863431372879">ያዘጋጁ</translation>
 <translation id="381822214767083050">ወርሃዊ መዋጮ</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> የአሜሪካን ዶላር</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="5802665280774361839">በአድራሻ አሞሌው ውስጥ ራስ-ሰር ማጠናቀቅን አሳይ</translation>
+<translation id="1241283133946520352">አውታረ መረቦች</translation>
+<translation id="1062463687579789365">የዋሌት ኔትዎርኮችን ማበጀት</translation>
+<translation id="2512821599885971349">አውታረ መረብ አክል</translation>
+<translation id="1330032157352961756">የአዲስ ሰንሰለት መታወቂያ</translation>
+<translation id="8104880458203052748">ልክ ያልሆነ ቅርጸት፣ የሰንሰለቱ መታወቂያ አወንታዊ ቁጥር ነው</translation>
+<translation id="3423620355610881890">ፖዘቲቭ የአስርዮሽ ቁጥር</translation>
+<translation id="726121047592132939">የአዲሱ ሰንሰለት ስም</translation>
+<translation id="1034112277864078119">የሰንሰለት ስም ያስገቡ</translation>
+<translation id="6003394258999088868">ይህ መስክ ባዶ ሊሆን አይገባም</translation>
+<translation id="4672314527143443556">የሰንሰለት መገበያያ ገንዘብ ስም</translation>
+<translation id="4652114030688989556">የመገበያያ ገንዘብ ስም አስገባ</translation>
+<translation id="1079960017149736097">የሰንሰለት መገበያያ ገንዘብ ምልክት</translation>
+<translation id="1288105009659846362">የመገበያያ ገንዘብ ምልክት አስገባ</translation>
+<translation id="665660671251623018">የሰንሰለት መገበያያ ገንዘብ አስርዮሽ</translation>
+<translation id="182619028057179895">ልክ ያልሆነ ቅርጸት፣ የምንዛሬ አስርዮሽ ፖዘቲቭ ቁጥር ነው።</translation>
+<translation id="2978054488731497946">የመገበያያ ገንዘብ አስርዮሽ</translation>
+<translation id="3047726704186619366">የአዶ URLs</translation>
+<translation id="2487558607408469181">አሳሽ URLs ን አግድ</translation>
+<translation id="7059127752542505809">URL ያስገቡ</translation>
+<translation id="2156993118928861787">ልክ ያልሆነ አድራሻ</translation>
+<translation id="6889920539620318793">እንደ ገቢር አቀናብር</translation>
+<translation id="2653659639078652383">አስገባ</translation>
+<translation id="8853725596990766789">መጠኑን ይቀይሩ</translation>
 </translationbundle>

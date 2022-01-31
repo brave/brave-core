@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Aggiorna status",
+    "message": "Aggiorna",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Ricompense Brave sta riscontrando un problema. Per favore, riprova più tardi.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Verifica lo stato",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Congratulazioni! Le ricompense di $month$ sono arrivate!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Le tue ricompense di $month$, per un valore di $amount$, arriveranno fra $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Le tue ricompense di $month$, per un valore di $amount$, sono in arrivo. Tienile d’occhio!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Vai al mio account su $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Esci da $provider$",
+    "message": "Scollegati da $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "In sospeso",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "L'elaborazione del pagamento di $amount$ inizia fra $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Premi di Brave Ads",

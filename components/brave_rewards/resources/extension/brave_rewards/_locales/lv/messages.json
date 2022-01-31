@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Pārlādēt stāvokli",
+    "message": "Atsvaidzināt",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Radusies kļūda saistībā ar Brave balvām. Lūdzu, mēģiniet vēlreiz vēlāk.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Pārbaudīt statusu",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Apsveicam! Jūsu $month$ atlīdzības ir pieejamas!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Jūsu $amount$ $month$ atlīdzības būs pieejamas pēc $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Jūsu $amount$ $month$ atlīdzības ir ceļā. Gaidiet!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Doties uz manu $provider$ kontu",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Izrakstīties no $provider$",
+    "message": "Atvienoties no $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Gaida",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ izmaksas apstrāde sāksies $days$ laikā",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Peļņa no reklāmām",
