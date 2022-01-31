@@ -42,6 +42,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
@@ -68,6 +69,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.brave_news.BraveNewsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
 import org.chromium.chrome.browser.brave_news.models.FeedItemCard;
 import org.chromium.chrome.browser.brave_news.models.FeedItemsCard;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
@@ -105,13 +107,15 @@ public class CardBuilderFeedCard {
     private boolean mIsPromo;
     private String mCreativeInstanceId;
     private String mOffersCategory;
+    private RequestManager mGlide;
 
     private final String TAG = "BN";
     private final int MARGIN_VERTICAL = 10;
     private final String BRAVE_OFFERS_URL = "offers.brave.com";
 
-    public CardBuilderFeedCard(BraveNewsController braveNewsController, LinearLayout layout,
-            Activity activity, int position, FeedItemsCard newsItem, int type) {
+    public CardBuilderFeedCard(BraveNewsController braveNewsController, RequestManager glide,
+            LinearLayout layout, Activity activity, int position, FeedItemsCard newsItem,
+            int type) {
         mLinearLayout = layout;
         mActivity = activity;
         mPosition = position;
@@ -119,6 +123,7 @@ public class CardBuilderFeedCard {
         mNewsItem = newsItem;
         mBraveNewsController = braveNewsController;
         mDeviceWidth = ConfigurationUtils.getDisplayMetrics(activity).get("width");
+        mGlide = glide;
 
         mIsPromo = false;
         mCreativeInstanceId = "";
@@ -222,7 +227,7 @@ public class CardBuilderFeedCard {
                                     LinearLayout.LayoutParams.WRAP_CONTENT));
                     mLinearLayout.addView(tableLayoutTopNews);
 
-                    linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
+                    linearLayoutParams.height = 0;
                     linearLayoutParams.setMargins(
                             mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
                     mLinearLayout.setLayoutParams(linearLayoutParams);
@@ -232,7 +237,8 @@ public class CardBuilderFeedCard {
                         mBraveNewsController.getDisplayAd(adData -> {
                             if (adData != null) {
                                 NTPUtil.setsCurrentDisplayAd(adData);
-
+                                linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
+                                mLinearLayout.setLayoutParams(linearLayoutParams);
                                 FrameLayout.LayoutParams adLogoParams =
                                         new FrameLayout.LayoutParams(
                                                 FrameLayout.LayoutParams.MATCH_PARENT,
@@ -610,7 +616,7 @@ public class CardBuilderFeedCard {
 
                             */
                     mLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-
+                    mLinearLayout.setBackgroundColor(Color.TRANSPARENT);
                     linearLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
                     linearLayoutParams.setMargins(
                             mHorizontalMargin - 20, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
@@ -764,6 +770,7 @@ public class CardBuilderFeedCard {
                             (RecyclerView.LayoutParams) layout.getLayoutParams();
                     marginLayoutParams.setMargins(
                             mHorizontalMargin, 0, mHorizontalMargin, 5 * MARGIN_VERTICAL);
+                    layout.setPadding(0, 0, 0, 0);
                     marginLayoutParams.height = RecyclerView.LayoutParams.WRAP_CONTENT;
                     titleParams =
                             new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -777,13 +784,13 @@ public class CardBuilderFeedCard {
                     layout.addView(publisher);
 
                     imageParams.bottomMargin = 2 * MARGIN_VERTICAL;
+                    imageParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
                     imageParams.height = ConfigurationUtils.isTablet(mActivity)
                             ? (int) (mDeviceWidth * 0.45)
                             : (int) (mDeviceWidth * 0.6);
                     image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    image.setLayoutParams(imageParams);
-
                     setImage(image, "image", index);
+                    image.setLayoutParams(imageParams);
 
                     titleParams.height = LinearLayout.LayoutParams.WRAP_CONTENT;
                     title.setTextSize(ConfigurationUtils.isTablet(mActivity) ? 21 : 17);
@@ -1101,13 +1108,12 @@ public class CardBuilderFeedCard {
 
                     imageRowParams.width = 0;
                     imageRowParams.height = ConfigurationUtils.isTablet(mActivity)
-                            ? 250
+                            ? (int) (mDeviceWidth * 0.13)
                             : (int) (mDeviceWidth * 0.2);
                     imageRowParams.weight = 1;
                     imageRowParams.setMargins(0, 20, 0, 0);
-                    image.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
                     setImage(image, "paired", index);
+                    image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                     imageRowParams.gravity = Gravity.CENTER_VERTICAL;
                     image.setLayoutParams(imageRowParams);
@@ -1345,8 +1351,6 @@ public class CardBuilderFeedCard {
             Url itemImageUrl = getImage(itemMetaData);
             mBraveNewsController.getImageData(itemImageUrl, imageData -> {
                 if (imageData != null) {
-                    Bitmap decodedByte =
-                            BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                     GranularRoundedCorners radius = new GranularRoundedCorners(15, 15, 15, 15);
                     if (!type.equals("paired")) {
                         radius = new GranularRoundedCorners(30, 30, 0, 0);
@@ -1354,13 +1358,8 @@ public class CardBuilderFeedCard {
                     RequestOptions requestOptions = new RequestOptions();
                     requestOptions =
                             requestOptions.centerInside().transform(new CenterCrop(), radius);
-                    Glide.with(mActivity)
-                            .asBitmap()
-                            .thumbnail(ConfigurationUtils.isTablet(mActivity) ? 0.5f : 0.1f)
-                            .load(decodedByte)
-                            .centerCrop()
-                            .apply(requestOptions)
-                            .into(imageView);
+
+                    mGlide.load(imageData).centerCrop().apply(requestOptions).into(imageView);
                 }
             });
         }

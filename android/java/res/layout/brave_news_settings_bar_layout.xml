@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:background="@color/card_background_solid"
+    android:visibility="invisible"
     android:orientation="horizontal"
     android:alpha="0"
     android:paddingHorizontal="20dp">
