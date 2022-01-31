@@ -116,4 +116,11 @@ public class KeystoreHelper {
 
         return new String(cipher.doFinal(Base64.decode(encryptedBase64, Base64.DEFAULT)), "UTF-8");
     }
+
+    public static void resetBiometric() {
+        SharedPreferencesManager manager = SharedPreferencesManager.getInstance();
+        manager.removeKey(BravePreferenceKeys.BRAVE_USE_BIOMETRICS_FOR_WALLET);
+        manager.removeKey(BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_ENCRYPTED);
+        manager.removeKey(BravePreferenceKeys.BRAVE_BIOMETRICS_FOR_WALLET_IV);
+    }
 }
