@@ -360,6 +360,7 @@
   <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_MISSING_CHECKSUM_INFO_WARNING" desc="Send input address missing checksum information">Missing checksum information</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_CHECKSUM_ADDRESS_ERROR" desc="Send input address has invalid checksum information">Invalid checksum information</message>
+  <message name="IDS_BRAVE_WALLET_MISSING_GAS_LIMIT_ERROR" desc="Transaction has missing gas limit information">Missing gas limit</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_OF" desc="Confirm Transaction Queue of">of</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_NEXT" desc="Confirm Transaction Queue next">next</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_FIRST" desc="Confirm Transaction Queue first">first</message>

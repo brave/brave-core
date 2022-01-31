@@ -579,4 +579,72 @@ describe('useTransactionParser hook', () => {
       })
     })
   })
+
+  describe('check for empty gas limit', () => {
+    describe.each([
+      ['ERC20Approve', BraveWallet.TransactionType.ERC20Approve],
+      ['ERC20Transfer', BraveWallet.TransactionType.ERC20Transfer],
+      ['ERC721TransferFrom', BraveWallet.TransactionType.ERC721TransferFrom],
+      ['ERC721SafeTransferFrom', BraveWallet.TransactionType.ERC721SafeTransferFrom],
+      ['ETHSend', BraveWallet.TransactionType.ETHSend],
+      ['Other', BraveWallet.TransactionType.Other]
+    ])('%s', (_, txType) => {
+      it('should return missingGasLimitError if gas limit is zero or empty', () => {
+        const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
+          mockNetwork, [mockAccount], [], [], [mockERC20Token]
+        ))
+
+        const baseMockTransactionInfo = {
+          ...getMockedTransactionInfo(),
+          txType,
+          txArgs: [
+            'mockRecipient',
+            'mockAmount'
+          ]
+        }
+
+        const mockTransactionInfo1 = {
+          ...baseMockTransactionInfo,
+          txData: {
+            ...baseMockTransactionInfo.txData,
+            baseData: {
+              ...baseMockTransactionInfo.txData.baseData,
+              gasLimit: ''
+            }
+          }
+        }
+        const parsedTransaction1 = transactionParser(mockTransactionInfo1)
+        expect(parsedTransaction1.gasLimit).toEqual('')
+        expect(parsedTransaction1.missingGasLimitError).toBeTruthy()
+
+        const mockTransactionInfo2 = {
+          ...baseMockTransactionInfo,
+          txData: {
+            ...baseMockTransactionInfo.txData,
+            baseData: {
+              ...baseMockTransactionInfo.txData.baseData,
+              gasLimit: '0x0'
+            }
+          }
+        }
+        const parsedTransaction2 = transactionParser(mockTransactionInfo2)
+        expect(parsedTransaction2.gasLimit).toEqual('0')
+        expect(parsedTransaction2.missingGasLimitError).toBeTruthy()
+
+        const mockTransactionInfo3 = {
+          ...baseMockTransactionInfo,
+          txData: {
+            ...baseMockTransactionInfo.txData,
+            baseData: {
+              ...baseMockTransactionInfo.txData.baseData,
+              gasLimit: '0x1'
+            }
+          }
+        }
+        const parsedTransaction3 = transactionParser(mockTransactionInfo3)
+        expect(parsedTransaction3.gasLimit).toEqual('1')
+        expect(parsedTransaction3.missingGasLimitError).toBeUndefined()
+      })
+    })
+  })
 })
