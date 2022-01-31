@@ -225,6 +225,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     private boolean isSetDefaultBrowserNotification;
     public CompositorViewHolder compositorView;
     public View inflatedSettingsBarLayout;
+    public boolean mLoadedFeed;
+    public boolean mComesFromNewTab;
+    public CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCards;
 
     @SuppressLint("VisibleForTests")
     public BraveActivity() {

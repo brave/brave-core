@@ -602,6 +602,15 @@ public class BraveNewTabPageLayout
             }
             InitBraveNewsController();
             initNews();
+            Tab tab1 = BraveActivity.getBraveActivity().getActivityTab();
+            int prevScroll = -200;
+            int cardsCount = -200;
+            if (tab1 != null) {
+                prevScroll = SharedPreferencesManager.getInstance().readInt(
+                        Integer.toString(tab1.getId()));
+                cardsCount = SharedPreferencesManager.getInstance().readInt(
+                        "mViewedNewsCardsCount_" + tab1.getId());
+            }
 
             if (BraveActivity.getBraveActivity() != null && mIsNewsOn) {
                 Tab tab = BraveActivity.getBraveActivity().getActivityTab();
@@ -674,6 +683,15 @@ public class BraveNewTabPageLayout
                 }
             }
 
+            Tab tab = BraveActivity.getBraveActivity().getActivityTab();
+            int prevScroll = -2;
+            int cardsCount = -2;
+            if (tab != null) {
+                prevScroll = SharedPreferencesManager.getInstance().readInt(
+                        Integer.toString(tab.getId()));
+                cardsCount = SharedPreferencesManager.getInstance().readInt(
+                        "mViewedNewsCardsCount_" + tab.getId());
+            }
             if (mSettingsBar != null) {
                 mSettingsBar.setVisibility(View.INVISIBLE);
                 mSettingsBar.setAlpha(0f);
