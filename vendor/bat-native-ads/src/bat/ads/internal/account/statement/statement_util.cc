@@ -41,11 +41,11 @@ double GetUnreconciledEarningsForPreviousMonths(
   return GetUnreconciledEarningsForDateRange(transactions, from_time, to_time);
 }
 
-double GetEarningsForLastMonth(const TransactionList& transactions) {
+double GetReconciledEarningsForLastMonth(const TransactionList& transactions) {
   const base::Time& from_time = GetTimeAtBeginningOfLastMonth();
   const base::Time& to_time = GetTimeAtEndOfLastMonth();
 
-  return GetEarningsForDateRange(transactions, from_time, to_time);
+  return GetReconciledEarningsForDateRange(transactions, from_time, to_time);
 }
 
 int GetAdsReceivedForThisMonth(const TransactionList& transactions) {

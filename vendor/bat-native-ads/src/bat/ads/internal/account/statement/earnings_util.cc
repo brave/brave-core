@@ -57,4 +57,19 @@ double GetUnreconciledEarningsForDateRange(const TransactionList& transactions,
   return earnings;
 }
 
+double GetReconciledEarningsForDateRange(const TransactionList& transactions,
+                                         const base::Time& from_time,
+                                         const base::Time& to_time) {
+  double earnings = 0.0;
+
+  for (const auto& transaction : transactions) {
+    if (WasCreatedWithinDateRange(transaction, from_time, to_time) &&
+        DidReconcileTransaction(transaction)) {
+      earnings += transaction.value;
+    }
+  }
+
+  return earnings;
+}
+
 }  // namespace ads
