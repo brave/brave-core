@@ -458,4 +458,23 @@
 <translation id="1062463687579789365">월렛 네트워크 사용자 지정</translation>
 <translation id="2234108191702901162">네트워크를 추가할 수 없음</translation>
 <translation id="2618193846561624884">기존 네트워크를 업데이트하시겠습니까?</translation>
+<translation id="3699882589215410581">Widevine 설치 및 실행</translation>
+<translation id="8053096063396012732">Widevine 설치</translation>
+<translation id="4840334696217618631">Widevine을 활성화라혀면 브라우저를 재시작하세요</translation>
+<translation id="8410111618231938546">Google Widevine는 Brave Software가 소유하거나 관리 할 수 없는 디지털 권한 관리(DRM) 코드입니다. Google Widevine 코드는 우리의 서버가 아닌 Google 서버에서 로드합니다. 이 기능을 활성화 한 경우에만 로드 되며, 우리는 DRM 사용을 권장하지 않지만 사용자의 선택을 존중하며, 일부 Brave 사용자는 이 서비스가 필요함을 인정합니다.
+
+ 이 확장 프로그램을 설치하면 Google Widevine의 이용 약관에 동의하게 됩니다. 당신은 Brave가 Google Widevine 사용과 관련하여 발생한 어떠한 손해 및 손실에 대해 책임지지 않음을 동의하게 됩니다.</translation>
+<translation id="6123134130710658846">Brave Rewards 버튼 감추기</translation>
+<translation id="7038489306457318096">GitHub</translation>
+<translation id="8934172355414207733">Tor 비공개</translation>
+<translation id="7643538479215207633">IPFS를 사용해서 열기</translation>
+<translation id="2521133093532260474">로컬 노드를 중지할 수 없음</translation>
+<translation id="86879877003581729">로컬 노드를 시작할 수 없음</translation>
+<translation id="8860039076160511438">월렛 초기화</translation>
+<translation id="80225669816651290">로컬 노드</translation>
+<translation id="3399481770463167943">IPFS 로컬 노드 및 게이트웨이 개인정보 보호 고려 사항에 대해 <ph name="BEGIN_LINK_MPL"/>자세히 알아보세요<ph name="END_LINK_MPL"/>.</translation>
+<translation id="207763736230883589">로컬 노드에 접근할 수 없는 경우에 퍼블릭 IPFS 게이트웨이로 자동 전환합니다.</translation>
+<translation id="7815301689257843278">충돌 보고서를 자동 전송하여 Brave가 문제 재발을 방지할 수 있도록 하시겠습니까?</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/>은 언제든지 다시 변경할 수 있습니다.</translation>
+<translation id="8325036459845654666">이미 추가된 네트워크입니다.</translation>
 </translationbundle>

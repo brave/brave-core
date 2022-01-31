@@ -458,4 +458,23 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1062463687579789365">Přizpůsobení sítí peněženek</translation>
 <translation id="2234108191702901162">Nelze přidat síť</translation>
 <translation id="2618193846561624884">Chcete aktualizovat stávající síť?</translation>
+<translation id="3699882589215410581">Nainstalovat a spustit Widevine</translation>
+<translation id="8053096063396012732">Instalovat Widevine</translation>
+<translation id="4840334696217618631">Restartujte prohlížeč, abyste povolili Widevine</translation>
+<translation id="8410111618231938546">Google Widevine je kód pro správu digitálních práv (DRM), který ve společnosti Brave Software nevlastníme a nemůžeme jej kontrolovat. Kód Google Widevine je nahráván ze serverů Google, ne z našich serverů. Nahraje se pouze po povolení této možnosti. Používání DRM nedoporučujeme, ale respektujeme volbu uživatele a uznáváme, že někteří uživatelé Brave by rádi využívali služby, které DRM vyžadují.
+
+Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Google Widevine. Souhlasíte s tím, že společnost Brave neodpovídá za škody ani ztráty související s používáním služby Google Widevine.</translation>
+<translation id="6123134130710658846">Skrýt tlačítko Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Soukromé s Torem</translation>
+<translation id="7643538479215207633">Otevřít pomocí protokolu IPFS</translation>
+<translation id="2521133093532260474">Místní uzel nelze zastavit</translation>
+<translation id="86879877003581729">Místní uzel se nepodařilo spustit</translation>
+<translation id="8860039076160511438">Obnovit peněženku</translation>
+<translation id="80225669816651290">Lokální uzel</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Další informace<ph name="END_LINK_MPL"/> o ochraně osobních údajů místního uzlu IPFS a brány.</translation>
+<translation id="207763736230883589">Automaticky přejít zpět na veřejnou bránu IPFS, pokud nelze dosáhnout místního uzlu.</translation>
+<translation id="7815301689257843278">Chcete automaticky odesílat hlášení o výpadcích, aby služba Brave mohla zabránit opakování tohoto problému?</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> můžete opět kdykoli změnit.</translation>
+<translation id="8325036459845654666">Tato síť již byla přidána.</translation>
 </translationbundle>

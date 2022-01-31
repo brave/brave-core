@@ -458,4 +458,23 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="1062463687579789365">Personnalisation des réseaux du portefeuille</translation>
 <translation id="2234108191702901162">Impossible d'ajouter le réseau</translation>
 <translation id="2618193846561624884">Voulez-vous mettre à jour le réseau existant?</translation>
+<translation id="3699882589215410581">Installer et exécuter Widevine</translation>
+<translation id="8053096063396012732">Installez Widevine</translation>
+<translation id="4840334696217618631">Redémarrer le navigateur pour activer Widevine</translation>
+<translation id="8410111618231938546">Google Widevine est un code de gestion des droits numériques (GDN) que Brave Software ne possède pas et ne peut inspecter. Le code Google Widevine est chargé à partir des serveurs Google et non de nos serveurs. Il n'est chargé que lorsque vous activez cette option. Nous décourageons l'utilisation de la GDN, mais nous respectons le choix de l'utilisateur et reconnaissons que certains utilisateurs de Brave aimeraient utiliser les services qui en ont besoin.
+
+En installant cette extension, vous acceptez les conditions d'utilisation de Google Widevine. Vous reconnaissez que Brave n'est pas responsable des dommages ou pertes liés à votre utilisation de Google Widevine.</translation>
+<translation id="6123134130710658846">Cacher le bouton « Récompenses de Brave »</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privé avec Tor</translation>
+<translation id="7643538479215207633">Ouvrir avec IPFS</translation>
+<translation id="2521133093532260474">Impossible d'arrêter le nœud local</translation>
+<translation id="86879877003581729">Impossible de lancer le nœud local</translation>
+<translation id="8860039076160511438">Réinitialiser le portefeuille</translation>
+<translation id="80225669816651290">Nœud local</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>En savoir plus<ph name="END_LINK_MPL"/> sur les considérations relatives à la vie privée pour le nœud local et la passerelle IPFS.</translation>
+<translation id="207763736230883589">Revenez automatiquement à la passerelle IPFS publique si votre nœud local ne peut pas être atteint.</translation>
+<translation id="7815301689257843278">Envoyer automatiquement les rapports de plantage pour que Brave puisse empêcher la répétition de ce problème?</translation>
+<translation id="1068069727470515940">Vous pouvez modifier à nouveau <ph name="SETTING_TEXT"/> à tout moment.</translation>
+<translation id="8325036459845654666">Ce réseau est déjà ajouté.</translation>
 </translationbundle>

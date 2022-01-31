@@ -457,4 +457,23 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1062463687579789365">Maciņa tīklu pielāgošana</translation>
 <translation id="2234108191702901162">Nav iespējams pievienot tīklu</translation>
 <translation id="2618193846561624884">Vai vēlaties atjaunināt esošo tīklu?</translation>
+<translation id="3699882589215410581">Instalēt un palaist Widevine</translation>
+<translation id="8053096063396012732">Instalējiet Widevine</translation>
+<translation id="4840334696217618631">Restartējiet pārlūku, lai iespējotu Widevine</translation>
+<translation id="8410111618231938546">Google Widevine ir Digitālā satura tiesību pārvaldības (DRM) koda daļa, kas mums, Brave Software, nepieder un ko mēs nevaram pārbaudīt. Google Widevine kods tiek ielādēts no Google serveriem, nevis no mūsu serveriem. Tas tiek ielādēts tikai tad, ja Jūs iespējojat šo opciju. Mēs atturam no DRM izmantošanas, bet mēs cienām lietotāju izvēli un pieņemam, ka daži Brave lietotāji vēlas izmantot pakalpojumus, kuriem tas ir nepieciešams.
+
+Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas noteikumiem. Jūs piekrītat, ka Brave neatbild ne par kādiem bojājumiem vai zaudējumiem saistībā ar Jūsu Google Widevine lietojumu.</translation>
+<translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Inkognito ar Tor</translation>
+<translation id="7643538479215207633">Atvērt, izmantojot IPFS</translation>
+<translation id="2521133093532260474">Nav iespējams apturēt vietējo mezglu</translation>
+<translation id="86879877003581729">Nav iespējams palaist vietējo mezglu</translation>
+<translation id="8860039076160511438">Atiestatīt maciņu</translation>
+<translation id="80225669816651290">Vietējais mezgls</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Uzziniet vairāk<ph name="END_LINK_MPL"/> par IPFS vietējā mezgla un vārtejas konfidencialitātes apsvērumiem.</translation>
+<translation id="207763736230883589">Automātiski izmantot IPFS publisko vārteju, ja vietējam mezglam piekļūt nav iespējams.</translation>
+<translation id="7815301689257843278">Vai avārijas atskaites nosūtīt automātiski, lai Brave varētu novērst šīs problēmas atkārtošanos?</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> varat atkal mainīt jebkurā laikā.</translation>
+<translation id="8325036459845654666">Šis tīkls jau ir pievienots.</translation>
 </translationbundle>

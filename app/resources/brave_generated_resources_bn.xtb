@@ -458,4 +458,23 @@
 <translation id="1062463687579789365">ওয়ালেট নেটওয়ার্ক কাস্টমাইজেশন</translation>
 <translation id="2234108191702901162">নেটওয়ার্ক যোগ করা যায়নি</translation>
 <translation id="2618193846561624884">আপনি কি বিদ্যমান নেটওয়ার্ক আপডেট করতে চান?</translation>
+<translation id="3699882589215410581">Widevine ইনস্টল করুন এবং চালান</translation>
+<translation id="8053096063396012732">Widevine ইনস্টল করুন</translation>
+<translation id="4840334696217618631">Widevine সক্রিয় করতে ব্রাউজার রিস্টার্ট করুন</translation>
+<translation id="8410111618231938546">Google Widevine একটি ডিজিটাল রাইটস ম্যানেজমেন্ট (DRM) কোড যা Brave সফ্টওয়ের মালিকানাধীন নয় এবং আমরা তা পরীক্ষাও করতে পারি না| Google Widevine Google সার্ভার থেকে লোড করা হয়, আমাদের সার্ভার থেকে নয়| এটি শুধু তখনি লোড করা হয় যখন আপনি এই বিকল্পটি সক্ষম করেন| আমরা DRM ব্যবহার করতে বারণ করি, কিন্তু আমরা ব্যবহারকারীদের পছন্দের সম্মান করি এবং স্বীকার করি যে কিছু Brave ব্যবহারকারী কিছু পরিষেবা ব্যবহার করতে চাইবেন যার জন্য এর প্রয়োজন হবে|
+
+এই এক্সটেনশনটি ইনস্টল করে আপনি Google Widevine এর ব্যবহারের শর্তাবলীর সাথে সম্মত হচ্ছেন| আপনি সম্মত হচ্ছেন আপনার Google Widevine এর ব্যবহারের সাথে সম্পর্কিত কোনো ক্ষতি বা লোকসানের জন্য Brave দায়ী নয়|</translation>
+<translation id="6123134130710658846">Brave পুরস্কারের বোতাম লুকান</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">টরের সাথে ব্যক্তিগত</translation>
+<translation id="7643538479215207633">IPFS ব্যবহার করে খুলুন</translation>
+<translation id="2521133093532260474">স্থানীয় নোড বন্ধ করতে অক্ষম</translation>
+<translation id="86879877003581729">স্থানীয় নোড লঞ্চ করতে অক্ষম</translation>
+<translation id="8860039076160511438">ওয়ালেট রিসেট করুন</translation>
+<translation id="80225669816651290">স্থানীয় নোড</translation>
+<translation id="3399481770463167943">IPFS স্থানীয় নোড এবং গেটওয়ে গোপনীয়তার বিবেচ্য বিষয়গুলি সম্পর্কে <ph name="BEGIN_LINK_MPL"/>আরো জানুন<ph name="END_LINK_MPL"/>।</translation>
+<translation id="207763736230883589">আপনার স্থানীয় নোড পৌঁছাতে না পারলে স্বয়ংক্রিয়ভাবে সর্বজনীন IPFS গেটওয়েতে ফিরে যান।</translation>
+<translation id="7815301689257843278">ক্র্যাশ রিপোর্ট স্বয়ংক্রিয়ভাবে পাঠান যাতে এই Brave এই সমস্যাটি আবার না হওয়া আটকাতে পারে?</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> আপনি যে কোনও সময় আবার পরিবর্তন করতে পারবেন।</translation>
+<translation id="8325036459845654666">এই নেটওয়ার্ক ইতিমধ্যে যোগ করা হয়েছে।</translation>
 </translationbundle>

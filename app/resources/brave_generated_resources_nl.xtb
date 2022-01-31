@@ -459,4 +459,23 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1062463687579789365">Wallet-netwerken aanpassen</translation>
 <translation id="2234108191702901162">Kan netwerk niet toevoegen</translation>
 <translation id="2618193846561624884">Wil je het bestaande netwerk bijwerken?</translation>
+<translation id="3699882589215410581">Widevine installeren en uitvoeren</translation>
+<translation id="8053096063396012732">Widevine installeren</translation>
+<translation id="4840334696217618631">Start de browser opnieuw om Widevine in te schakelen</translation>
+<translation id="8410111618231938546">Google Widevine is een voorbeeld van Digital Rights Management (DRM) code die wij bij Brave Software niet bezitten en niet kunnen inspecteren. De Google Widevine code wordt geladen vna de Google-servers, en niet van die van ons. Het wordt alleen geladen als je deze optie aanzet. We raden het gebruik van DRM af, maar we respecteren de keuzes van onze gebruikers en begrijpen dat sommige Brave-gebruikers graag diensten willen gebruiken waarvoor DRM nodig is.
+
+Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruikersvoorwaarden. Je gaat er mee akkoord dat Brave niet verantwoordelijk is voor enige schade of verliezen gerelateerd aan je gebruik van Google Widevine</translation>
+<translation id="6123134130710658846">Verberg Brave Rewards-knop</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privé met Tor</translation>
+<translation id="7643538479215207633">Openen met IPFS</translation>
+<translation id="2521133093532260474">Lokaal knooppunt kan niet worden gestopt</translation>
+<translation id="86879877003581729">Lokaal knooppunt kan niet worden gestart</translation>
+<translation id="8860039076160511438">Wallet opnieuw instellen</translation>
+<translation id="80225669816651290">Lokale node</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt en privacy-overwegingen voor de gateway.</translation>
+<translation id="207763736230883589">Val automatisch terug naar de openbare IPFS-gateway als uw lokale knooppunt niet kan worden bereikt.</translation>
+<translation id="7815301689257843278">Automatisch foutrapport verzenden zodat Brave kan voorkomen dat de fout opnieuw optreedt?</translation>
+<translation id="1068069727470515940">Je kunt <ph name="SETTING_TEXT"/> op elk gewenst moment wijzigen.</translation>
+<translation id="8325036459845654666">Dit netwerk is al toegevoegd.</translation>
 </translationbundle>

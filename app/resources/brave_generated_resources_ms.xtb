@@ -458,4 +458,23 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1062463687579789365">Penyesuaian rangkaian dompet</translation>
 <translation id="2234108191702901162">Tidak dapat menambah rangkaian</translation>
 <translation id="2618193846561624884">Adakah anda mahu mengemas kini rangkaian sedia ada?</translation>
+<translation id="3699882589215410581">Pasang dan jalankan Widevine</translation>
+<translation id="8053096063396012732">Pasang Widevine</translation>
+<translation id="4840334696217618631">Hidupkan semula penyemak imbas untuk mengaktifkan Widevine</translation>
+<translation id="8410111618231938546">Google Widevine ialah secebis kod Pengurusan Hak Digital (DRM) yang kami di Perisian Brave tidak memilikinya dan tidak boleh memeriksanya. The Kod Google Widevine dimuatkan dari pelayan Google, bukan dari pelayan kami. Ia dimuatkan hanya apabila anda mendayakan pilihan ini. Kami tidak menggalakkan anda untuk menggunakan DRM, namun kami menghormati pilihan pengguna dan mengakui bahawa sebahagian pengguna Brave ingin menggunakan perkhidmatan yang memerlukannya.
+
+Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevine. Anda bersetuju bahawa Brave tidak bertanggungjawab terhadap sebarang kerosakan atau ganti rugi berhubung dengan penggunaan Google Widevine.</translation>
+<translation id="6123134130710658846">Sembunyi butang Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Peribadi dengan Tor</translation>
+<translation id="7643538479215207633">Buka menggunakan IPFS</translation>
+<translation id="2521133093532260474">Tidak dapat menghentikan nod setempat</translation>
+<translation id="86879877003581729">Tidak dapat melancarkan nod setempat</translation>
+<translation id="8860039076160511438">Tetapkan Semula Dompet</translation>
+<translation id="80225669816651290">Nod tempatan</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Ketahui lebih lanjut<ph name="END_LINK_MPL"/> mengenai nod tempatan IPFS dan pertimbangan privasi get laluan.</translation>
+<translation id="207763736230883589">Kembali ke gerbang IPFS awam secara automatik apabila nod tempatan anda tidak boleh dicapai.</translation>
+<translation id="7815301689257843278">Hantar laporan ranap secara automatik supaya Brave dapat mencegah isu ini daripada berulang lagi?</translation>
+<translation id="1068069727470515940">Anda boleh mengubah <ph name="SETTING_TEXT"/> semula pada bila-bila masa.</translation>
+<translation id="8325036459845654666">Rangkaian ini telah ditambah.</translation>
 </translationbundle>

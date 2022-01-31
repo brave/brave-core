@@ -400,12 +400,12 @@
 <translation id="7427567994475794038">개인정보 보고서를 켜서 지난 3시간 동안 얼마나 많은 추적기 및 광고가 차단되었는지 확인하십시오.</translation>
 <translation id="2053891538879944400">Brave 브라우저로 <ph name="DATA"/> <ph name="DATA_TEXT"/> 데이터를 절약하셨습니다.</translation>
 <translation id="8640064498452534195">절약한 데이터 양을 보려면 개인정보 보고서를 켜십시오.</translation>
-<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.&#128267;</translation>
+<translation id="2252497442547961651">Brave 브라우저는 배터리를 평균적으로 40% 적게 사용합니다.🔋</translation>
 <translation id="1945330434665345785">지난주 Brave 브라우저로 <ph name="COUNT"/> 추적기 및 광고를 차단하셨습니다.</translation>
 <translation id="2883868922264431515">개인정보 존중 광고를 시청하여 토큰을 획득하고 즐겨찾는 웹사이트를 지원하십시오.</translation>
-<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.&#128293;</translation>
-<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.&#128267;</translation>
-<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. &#128168; &#128168;</translation>
+<translation id="5678925890616256956">멋져요! Brave 브라우저로 250개의 트래커와 광고를 차단했습니다.🔥</translation>
+<translation id="9199047775708635708">멋져요! Brave 브라우저로 10MB를 절약했습니다.🔋</translation>
+<translation id="1880168210969863408">멋져요! Brave 브라우저로 로딩 시간 10분을 절약했습니다. 💨 💨</translation>
 <translation id="7408493389591475748">개인정보 보고를 보려면 검색 시작</translation>
 <translation id="9080777565335515917">비공개 및 보안 검색을 위한 기본 브라우저로 Brave를 설정하십시오.</translation>
 <translation id="1390943217516275883">Brave가 비공개 통계를 표시할 수 있도록 허용</translation>
@@ -844,4 +844,19 @@
 <translation id="6889920539620318793">활성으로 설정</translation>
 <translation id="2653659639078652383">제출</translation>
 <translation id="8853725596990766789">금액 변경</translation>
+<translation id="1765217911817124376">Brave News 켜기</translation>
+<translation id="4272190451231642425">비정상 종료 보고서 자동 전송</translation>
+<translation id="2239766974964486304">비정상 종료 보고서는 Brave가 제품 안정성을 개선하는 데 활용되므로 모든 사용자에게 도움이 됩니다.</translation>
+<translation id="2804710924397009224">Brave Rewards 아이콘 숨기기</translation>
+<translation id="7289740269305509613">Brave Rewards 아이콘 숨기기</translation>
+<translation id="2260513517001048012">참고: 이 Brave 확인된 제작자는 Brave 사용자로부터 기부금을 받도록 계정을 아직 구성하지 않았습니다. 브라우저에서 확인할 때까지 또는 90일이 경과할 때까지 계속 기여하려고 합니다.</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="8982246458261383692">Brave DEX 애그리게이터로 암호화폐 자산을 스왑합니다.</translation>
+<translation id="5040262127954254034">개인정보 보호</translation>
+<translation id="4354768722613827480">수수료: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="7033470144757208254">Brave는 DEX 애그리게이터로 0x를 사용합니다.</translation>
+<translation id="7470079236088529568">청구한 보조금 총액</translation>
+<translation id="8845154268466251503">BAT</translation>
 </translationbundle>

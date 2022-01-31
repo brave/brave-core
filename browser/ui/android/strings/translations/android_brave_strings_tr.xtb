@@ -401,12 +401,12 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="7427567994475794038">Son 3 saatte kaç izleyicinin &amp; reklamın engellendiğini görmek için Gizlilik Raporları'nı açın.</translation>
 <translation id="2053891538879944400">Brave tarayıcı ile <ph name="DATA"/> <ph name="DATA_TEXT"/> veri tasarruf ettiniz.</translation>
 <translation id="8640064498452534195">Ne kadar veri tasarruf ettiğinizi görmek için Gizlilik Raporları'nı açın.</translation>
-<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.&#128267;</translation>
+<translation id="2252497442547961651">Brave tarayıcı ortalama %40 daha az pil kullanır.🔋</translation>
 <translation id="1945330434665345785">Brave tarayıcı ile geçen hafta <ph name="COUNT"/> izleyici &amp; reklamı engellediniz.</translation>
 <translation id="2883868922264431515">Gizlilik dostu reklamlar izleyerek token kazanın ve sevdiğiniz websitelerini destekleyin.</translation>
-<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.&#128293;</translation>
-<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.&#128267;</translation>
-<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Güzel! Brave tarayıcı ile 250 izleyici &amp; reklam engellediniz.🔥</translation>
+<translation id="9199047775708635708">Güzel! Brave tarayıcı ile 10 MB tasarruf ettiniz.🔋</translation>
+<translation id="1880168210969863408">Güzel! Brave tarayıcı ile yükleme süresinden 10 Dakika tasarruf ettiniz.💨💨</translation>
 <translation id="7408493389591475748">Gizlilik raporunu görmek için gezinmeye başlayın</translation>
 <translation id="9080777565335515917">Gizli ve güvenli gezinti için, Brave'i varsayılan tarayıcınız yapın.</translation>
 <translation id="1390943217516275883">Brave'in gizlilik istatistiklerinizi göstermesine izin verir</translation>
@@ -845,4 +845,19 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="6889920539620318793">Aktif olarak ayarla</translation>
 <translation id="2653659639078652383">Gönder</translation>
 <translation id="8853725596990766789">Miktarı değiştirin</translation>
+<translation id="1765217911817124376">Brave Haberleri'ni aç</translation>
+<translation id="4272190451231642425">Çökme raporlarını otomatik olarak gönder</translation>
+<translation id="2239766974964486304">Çökme raporları Brave'in tüm kullanıcılar için ürün stabilitesini iyileştirmesine yardımcı olur.</translation>
+<translation id="2804710924397009224">Brave Ödülleri Simgesini Gizle</translation>
+<translation id="7289740269305509613">Brave Ödülleri Simgesini Gizler</translation>
+<translation id="2260513517001048012">NOT: Bu Brave Onaylı Oluşturucu, Brave kullanıcılarından katkı almak için hesabının ayarlarını henüz yapmamış. Doğrulanana veya 90 gün geçene kadar tarayıcınız katkıda bulunmaya devam edecek.</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="8982246458261383692">Brave DEX toplayıcısı ile kripto varlık takas edin.</translation>
+<translation id="5040262127954254034">Gizlilik</translation>
+<translation id="4354768722613827480">Ücret: <ph name="VALUE"/> ETH (<ph name="FIAT_VALUE"/>$)</translation>
+<translation id="7033470144757208254">Brave, DEX toplayıcısı olarak 0x platformunu kullanır.</translation>
+<translation id="7470079236088529568">Talep Edilen Toplam Bağışlar</translation>
+<translation id="8845154268466251503">BAT</translation>
 </translationbundle>

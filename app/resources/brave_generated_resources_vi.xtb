@@ -458,4 +458,23 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1062463687579789365">Tùy biến mạng ví</translation>
 <translation id="2234108191702901162">Không thể thêm mạng</translation>
 <translation id="2618193846561624884">Bạn có muốn cập nhật mạng hiện có không?</translation>
+<translation id="3699882589215410581">Cài và chạy Widevine</translation>
+<translation id="8053096063396012732">Cài đặt Widevine</translation>
+<translation id="4840334696217618631">Khởi động lại trình duyệt để bật Widevine</translation>
+<translation id="8410111618231938546">Google Widevine là một phần của mã Quản lý Quyền Kỹ thuật số (Digital Rights Management hay DRM) mà chúng tôi tại Brave Software không sở hữu và không thể kiểm tra. Mã Google Widevine được tải từ các máy chủ của Google chứ không phải từ các máy chủ của chúng tôi. Mã này chỉ được tải khi bạn bật tùy chọn này. Chúng tôi không khuyến khích sử dụng DRM, nhưng chúng tôi tôn trọng lựa chọn của người dùng và thừa nhận rằng một số người dùng Brave muốn sử dụng các dịch vụ cần tới mã đó.
+
+Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với các Điều khoản Sử dụng của Google Widevine. Bạn đồng ý rằng Brave không chịu trách nhiệm đối với bất kỳ thiệt hại hoặc tổn thất nào liên quan đến việc bạn sử dụng Google Widevine.</translation>
+<translation id="6123134130710658846">Ẩn nút Tiền thưởng Brave</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Riêng tư với Tor</translation>
+<translation id="7643538479215207633">Mở bằng IPFS</translation>
+<translation id="2521133093532260474">Không thể dừng nút cục bộ</translation>
+<translation id="86879877003581729">Không thể khởi chạy nút cục bộ</translation>
+<translation id="8860039076160511438">Đặt lại ví</translation>
+<translation id="80225669816651290">Nút cục bộ</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tìm hiểu thêm<ph name="END_LINK_MPL"/> về nút cục bộ IPFS và các cân nhắc quyền riêng tư của cổng.</translation>
+<translation id="207763736230883589">Tự động quay trở lại cổng mạng IPFS công khai nếu không thể truy cập vào nút cục bộ của bạn.</translation>
+<translation id="7815301689257843278">Tự động gửi báo cáo sự cố để Brave có thể ngăn sự cố này xảy ra lần nữa?</translation>
+<translation id="1068069727470515940">Bạn có thể thay đổi lại <ph name="SETTING_TEXT"/> vào bất kỳ lúc nào.</translation>
+<translation id="8325036459845654666">Mạng này đã được thêm.</translation>
 </translationbundle>

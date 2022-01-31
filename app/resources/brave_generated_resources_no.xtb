@@ -458,4 +458,23 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1062463687579789365">Tilpasning av lommeboknettverk</translation>
 <translation id="2234108191702901162">Kunne ikke legge til nettverk</translation>
 <translation id="2618193846561624884">Vil du oppdatere det eksisterende nettverket?</translation>
+<translation id="3699882589215410581">Installer og kjør Widevine</translation>
+<translation id="8053096063396012732">Installer Widevine</translation>
+<translation id="4840334696217618631">Start nettleseren på nytt for å aktivere Widevine</translation>
+<translation id="8410111618231938546">Google Widevine er en bit Digital Rettighetsstyring (DRM)-kode som vi hos Brave Software ikke eier, og ikke kan inspisere. Google Widevine-koden lastes fra Googles servere, ikke fra våre servere. Den lastes kun når du slår på dette alternativet. Vi fraråder bruk av DRM, men vi respekterer brukerens valg, og anerkjenner at noen Brave-brukere ønsker å bruke tjenester som krever det.
+
+Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. Du samtykker til at Brave ikke er ansvarlig for noen skade eller tap i forbindelse med din bruk av Google Widevine.</translation>
+<translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privat med Tor</translation>
+<translation id="7643538479215207633">Åpne med IPFS</translation>
+<translation id="2521133093532260474">Kan ikke stoppe lokal node</translation>
+<translation id="86879877003581729">Kan ikke starte lokal node</translation>
+<translation id="8860039076160511438">Tilbakestill lommebok</translation>
+<translation id="80225669816651290">Lokal node</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Les mer<ph name="END_LINK_MPL"/> om IPFS-personvernhensyn relatert til lokale noder og inngangsporter.</translation>
+<translation id="207763736230883589">Gå tilbake til offentlig IPFS-systemport dersom den lokale noden din er utilgjengelig.</translation>
+<translation id="7815301689257843278">Send krasjrapporter automatisk, slik at Brave kan forhindre at dette problemet oppstår igjen?</translation>
+<translation id="1068069727470515940">Du kan endre <ph name="SETTING_TEXT"/> igjen, når som helst.</translation>
+<translation id="8325036459845654666">Dette nettverket har allerede blitt lagt til.</translation>
 </translationbundle>

@@ -459,4 +459,23 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="1062463687579789365">Personalización de redes de billeteras</translation>
 <translation id="2234108191702901162">No ha sido posible agregar la red</translation>
 <translation id="2618193846561624884">¿Desea actualizar la red actual?</translation>
+<translation id="3699882589215410581">Instalar y ejecutar Widevine</translation>
+<translation id="8053096063396012732">Instalar Widevine</translation>
+<translation id="4840334696217618631">Reiniciar el navegador para habilitar Widevine</translation>
+<translation id="8410111618231938546">El código de Google Wide Vine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilita esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y reconocemos que algunos usuarios de Brave desean utilizar los servicios cuando son requeridos.
+
+Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al instalar esta extensión aceptas que Brave no es responsable de los daños o pérdidas relacionadas con el uso de Google Widevine.</translation>
+<translation id="6123134130710658846">Ocultar botón de Recompensas Brave</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Ventana privada con Tor</translation>
+<translation id="7643538479215207633">Abrir usando IPFS</translation>
+<translation id="2521133093532260474">No se puede detener el nodo local</translation>
+<translation id="86879877003581729">No se puede iniciar el nodo local</translation>
+<translation id="8860039076160511438">Restablecer billetera</translation>
+<translation id="80225669816651290">Nodo local</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Obtén más información<ph name="END_LINK_MPL"/> sobre las consideraciones de privacidad del nodo local y sobre la puerta de enlace de IPFS.</translation>
+<translation id="207763736230883589">Recurre automáticamente a la puerta de enlace de IPFS pública cuando no se pueda acceder a tu nodo local.</translation>
+<translation id="7815301689257843278">¿Enviar informes de errores automáticamente para que Brave pueda evitar que se repita este problema?</translation>
+<translation id="1068069727470515940">Puedes volver a cambiar <ph name="SETTING_TEXT"/> cuando quieras.</translation>
+<translation id="8325036459845654666">Ya se ha agregado esta red.</translation>
 </translationbundle>

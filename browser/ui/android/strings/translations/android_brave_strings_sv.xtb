@@ -402,12 +402,12 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="7427567994475794038">Aktivera integritetsrapporter för att se hur många trackers och annonser som har blockerats under de senaste 3 timmarna.</translation>
 <translation id="2053891538879944400">Du sparade <ph name="DATA"/> <ph name="DATA_TEXT"/> data med Brave webbläsare.</translation>
 <translation id="8640064498452534195">Aktivera integritetsrapporter för att se hur mycket data du har sparat.</translation>
-<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.&#128267;</translation>
+<translation id="2252497442547961651">Brave-webbläsaren använder i genomsnitt 40 % mindre batteri.🔋</translation>
 <translation id="1945330434665345785">Du blockerade <ph name="COUNT"/> trackers och annonser med Brave webbläsare förra veckan.</translation>
 <translation id="2883868922264431515">Tjäna tokens genom att visa annonser som respekterar din integritet och stöd dina favoritwebbplatser.</translation>
-<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.&#128293;</translation>
-<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.&#128267;</translation>
-<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Utmärkt! Du har blockerat 250 trackers och annonser med Brave-webbläsaren.🔥</translation>
+<translation id="9199047775708635708">Utmärkt! Du har sparat 10 MB med Brave-webbläsaren.🔋</translation>
+<translation id="1880168210969863408">Utmärkt! Du har sparat 10 minuter laddningstid med Brave-webbläsaren.💨💨</translation>
 <translation id="7408493389591475748">Börja surfa för att se integritetsrapporter</translation>
 <translation id="9080777565335515917">Ställ in Brave som din standardwebbläsare för privat och säker surfning.</translation>
 <translation id="1390943217516275883">Tillåt Brave att visa din integritetsstatistik</translation>
@@ -846,4 +846,19 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6889920539620318793">Ange som aktiv</translation>
 <translation id="2653659639078652383">Skicka</translation>
 <translation id="8853725596990766789">Ändra summa</translation>
+<translation id="1765217911817124376">Aktivera Brave News</translation>
+<translation id="4272190451231642425">Skicka kraschrapporter automatiskt</translation>
+<translation id="2239766974964486304">Kraschrapporter hjälper Brave att förbättra produktstabiliteten för alla användare.</translation>
+<translation id="2804710924397009224">Dölj Brave Rewards-ikonen</translation>
+<translation id="7289740269305509613">Döljer Brave Rewards-ikonen</translation>
+<translation id="2260513517001048012">OBS: Denna av Brave verifierade skapare har ännu inte konfigurerat sitt konto för att ta emot bidrag från Brave-användare. Din webbläsare betalar när det är möjligt, om det inte har gått mer än 90 dagar.</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="8982246458261383692">Byt kryptotillgångar med Braves DEX-aggregator.</translation>
+<translation id="5040262127954254034">Sekretess</translation>
+<translation id="4354768722613827480">Avgift: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="7033470144757208254">Brave använder 0x som en DEX-aggregator.</translation>
+<translation id="7470079236088529568">Totalt bidrag begärda</translation>
+<translation id="8845154268466251503">BAT</translation>
 </translationbundle>

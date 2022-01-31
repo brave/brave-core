@@ -457,4 +457,23 @@
 <translation id="1062463687579789365">Настройка сетей кошелька</translation>
 <translation id="2234108191702901162">Невозможно добавить сеть.</translation>
 <translation id="2618193846561624884">Вы хотите обновить существующую сеть?</translation>
+<translation id="3699882589215410581">Установить и запустить Widevine</translation>
+<translation id="8053096063396012732">Установить Widevine</translation>
+<translation id="4840334696217618631">Перезапустите браузер, чтобы включить Widevine</translation>
+<translation id="8410111618231938546">Google Widevine является частью кода Управления цифровыми правами (DRM), в отношении которого Brave Software не имеет прав на владение и изучение. Код Google Widevine загружается из серверов Google, а не наших серверов. Он загружается только в том случае, если вы включите эту опцию. Мы не рекомендуем использовать DRM, но мы уважаем выбор пользователя и признаем, что некоторые пользователи Brave хотели бы пользоваться услугами, которые его требуют.
+
+Установив данное расширение, вы соглашаетесь с Условиями пользования Google Widevine. Вы соглашаетесь с тем, что Brave не несет ответственности за любой ущерб или убытки, причиненные в связи с использованием вами Google Widevine.</translation>
+<translation id="6123134130710658846">Скрыть кнопку Brave Rewards</translation>
+<translation id="7038489306457318096">GitHub</translation>
+<translation id="8934172355414207733">Приватный режим в Tor</translation>
+<translation id="7643538479215207633">Открыть с помощью IPFS</translation>
+<translation id="2521133093532260474">Не удается отключить локальный узел.</translation>
+<translation id="86879877003581729">Не удается запустить локальный узел.</translation>
+<translation id="8860039076160511438">Сбросить</translation>
+<translation id="80225669816651290">Локальный узел</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Узнайте больше<ph name="END_LINK_MPL"/> об обеспечении конфиденциальности на локальном шлюзе и узле IPFS.</translation>
+<translation id="207763736230883589">Автоматически возвращаться к общему шлюзу IPFS, если локальный узел недоступен.</translation>
+<translation id="7815301689257843278">Отправлять отчеты о сбоях автоматически, чтобы браузер Brave мог предотвращать подобные ошибки в будущем?</translation>
+<translation id="1068069727470515940">Вы можете изменить <ph name="SETTING_TEXT"/> в любое время.</translation>
+<translation id="8325036459845654666">Эта сеть уже добавлена.</translation>
 </translationbundle>

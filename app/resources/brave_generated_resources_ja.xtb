@@ -459,4 +459,23 @@
 <translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
 <translation id="2234108191702901162">ネットワークを追加できません</translation>
 <translation id="2618193846561624884">既存のネットワークを更新しますか？</translation>
+<translation id="3699882589215410581">Widevineをインストールして起動する</translation>
+<translation id="8053096063396012732">Widevineをインストールする</translation>
+<translation id="4840334696217618631">Widevineを有効にするためにブラウザーを再起動する</translation>
+<translation id="8410111618231938546">Google WidevineはBrave Softwareが所有しておらず、検査できないデジタル著作権管理（DRM）コードの1つです。Google Widevineのコードは弊社のサーバーではなくGoogleのサーバーから割り当てられます。このコードはこのオプションを有効にしている際にのみ読み込まれます。弊社はDRMの使用は推奨しませんがユーザーの選択を尊重しており、一部のBraveユーザーがGoogle Widevineを要求するサービスの利用を望んでいることは承知しております。
+
+この拡張をインストールすると、Google Widevineの使用条件に同意したことになります。Google Widevineの使用に関するいかなる損害や損失にもBraveは責任を負わないことをご了承ください。</translation>
+<translation id="6123134130710658846">Brave Rewardsボタンを非表示にする</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Torを備えたプライベート</translation>
+<translation id="7643538479215207633">IPFSを使用して開く</translation>
+<translation id="2521133093532260474">ローカルノードを停止できません</translation>
+<translation id="86879877003581729">ローカルノードを起動できません</translation>
+<translation id="8860039076160511438">ウォレットをリセット</translation>
+<translation id="80225669816651290">ローカルノード</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>こちら<ph name="END_LINK_MPL"/>からIPFSローカルノードとゲートウェイのプライバシーに関連する考慮事項を確認できます。</translation>
+<translation id="207763736230883589">ローカルノードに到達できない場合は、自動的にパブリックIPFSゲートウェイにフォールバックします。</translation>
+<translation id="7815301689257843278">クラッシュレポートを自動的にBraveに送信して、このような問題の再発防止対策にご協力いただけますか？</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/>はいつでも変更できます。</translation>
+<translation id="8325036459845654666">このネットワークは既に追加されています。</translation>
 </translationbundle>

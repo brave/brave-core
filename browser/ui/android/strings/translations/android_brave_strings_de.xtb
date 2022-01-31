@@ -399,12 +399,12 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="7427567994475794038">Aktivieren Sie Privatsphäreberichte, um zu sehen, wie viele Tracker &amp; Werbeanzeigen in den letzten 3 Stunden blockiert wurden.</translation>
 <translation id="2053891538879944400">Sie haben <ph name="DATA"/> <ph name="DATA_TEXT"/> Daten mit dem Brave Browser gespart.</translation>
 <translation id="8640064498452534195">Aktivieren Sie die Privatsphäreberichte, um zu sehen, wie viele Daten Sie gespart haben.</translation>
-<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.&#128267;</translation>
+<translation id="2252497442547961651">Brave Browser verbraucht im Durchschnitt 40 % weniger Akku.🔋</translation>
 <translation id="1945330434665345785">Letzte Wochen haben Sie <ph name="COUNT"/> Tracker &amp; Werbeanzeigen mit dem Brave Browser blockiert.</translation>
 <translation id="2883868922264431515">Verdienen Sie Tokens, indem Sie Werbung ansehen, die die Privatsphäre respektiert, und unterstützen Sie Ihre Lieblingswebsites.</translation>
-<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.&#128293;</translation>
-<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.&#128267;</translation>
-<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Toll! Sie haben 250 Tracker und Anzeigen mit Brave Browser blockiert.🔥</translation>
+<translation id="9199047775708635708">Toll! Sie haben 10 MB mit Brave Browser gespart.🔋</translation>
+<translation id="1880168210969863408">Toll! Sie haben 10 Minuten Ladezeit mit Brave Browser gespart.💨💨</translation>
 <translation id="7408493389591475748">Fangen Sie an, zu browsen, um den Privatsphärebericht zu sehen</translation>
 <translation id="9080777565335515917">Legen Sie für privates und sicheres Browsen Brave als Ihren Standardbrowser fest.</translation>
 <translation id="1390943217516275883">Brave erlauben, Ihre Privatsphärestatistik anzuzeigen</translation>
@@ -843,4 +843,19 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6889920539620318793">Als aktiv setzen</translation>
 <translation id="2653659639078652383">Senden</translation>
 <translation id="8853725596990766789">Betrag ändern</translation>
+<translation id="1765217911817124376">Brave News aktivieren</translation>
+<translation id="4272190451231642425">Absturzberichte automatisch senden</translation>
+<translation id="2239766974964486304">Absturzberichte helfen Brave, die Produktstabilität für alle Benutzer zu verbessern.</translation>
+<translation id="2804710924397009224">Brave Rewards-Symbol verbergen</translation>
+<translation id="7289740269305509613">Verbirgt das Brave-Rewards-Symbol</translation>
+<translation id="2260513517001048012">HINWEIS: Dieser von Brave verifizierte Ersteller hat sein Konto noch nicht eingerichtet, um Beiträge von Brave-Benutzern zu erhalten. Ihr Browser wird versuchen, bis zur Verifizierung beizutragen oder bis 90 Tage vergangen sind.</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="8982246458261383692">Krypto-Vermögenswerte mit dem Brave DEX-Aggregator tauschen.</translation>
+<translation id="5040262127954254034">Datenschutz</translation>
+<translation id="4354768722613827480">Gebühr: <ph name="VALUE"/> ETH (<ph name="FIAT_VALUE"/> US-Dollar)</translation>
+<translation id="7033470144757208254">Brave verwendet 0x als DEX-Aggregator.</translation>
+<translation id="7470079236088529568">Insgesamt ausgezahlte Einkünfte</translation>
+<translation id="8845154268466251503">BAT</translation>
 </translationbundle>

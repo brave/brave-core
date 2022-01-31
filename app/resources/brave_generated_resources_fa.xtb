@@ -457,4 +457,23 @@
 <translation id="1062463687579789365">سفارشی‌سازی شبکه‌های کیف پول</translation>
 <translation id="2234108191702901162">افزودن شبکه امکان‌پذیر نیست</translation>
 <translation id="2618193846561624884">می‌خواهید شبکه موجود را به‌روزرسانی کنید؟</translation>
+<translation id="3699882589215410581">Widevine را نصب و اجرا کنید</translation>
+<translation id="8053096063396012732">نصب Widevine</translation>
+<translation id="4840334696217618631">برای فعال کردن Widevine، مرورگر را دوباره راه‌اندازی کنید</translation>
+<translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
+
+با نصب این افزونه، «شرایط استفاده از Google Widevine» را می‌پذیرید و موافقت می‌کنید Brave مسئول هرگونه خسارت یا زیان مرتبط با استفاده شما از Google Widevine نیست.</translation>
+<translation id="6123134130710658846">پنهان کردن دکمه «پاداش‌های Brave»</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">پنجره خصوصی با Tor</translation>
+<translation id="7643538479215207633">باز کردن بااستفاده از IPFS</translation>
+<translation id="2521133093532260474">متوقف کردن گره محلی امکان‌پذیر نیست</translation>
+<translation id="86879877003581729">راه‌اندازی گره محلی امکان‌پذیر نیست</translation>
+<translation id="8860039076160511438">بازنشانی کیف پول</translation>
+<translation id="80225669816651290">گره محلی</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>بیشتر بدانید<ph name="END_LINK_MPL"/>در مورد ملاحظات حریم خصوصی گره محلی IPFS و دروازه.</translation>
+<translation id="207763736230883589">اگر دسترسی به گره محلی ممکن نیست، به‌طور خودکار به دروازه IPFS عمومی برگردانده می‌شوید.</translation>
+<translation id="7815301689257843278">آیا گزارش‌های خرابی به‌طور خودکار ارسال شود تا Brave بتواند از برور مجدد این مشکل جلوگیری کند؟</translation>
+<translation id="1068069727470515940">هروقت بخواهید می‌توانید دوباره <ph name="SETTING_TEXT"/> را تغییر دهید.</translation>
+<translation id="8325036459845654666">این شبکه قبلاً اضافه شده است.</translation>
 </translationbundle>

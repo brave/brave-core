@@ -457,4 +457,23 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="1062463687579789365">Personalização das redes da carteira</translation>
 <translation id="2234108191702901162">Não é possível adicionar a rede</translation>
 <translation id="2618193846561624884">Pretende atualizar a rede existente?</translation>
+<translation id="3699882589215410581">Instalar e correr Widevine</translation>
+<translation id="8053096063396012732">Instalar o Widevine</translation>
+<translation id="4840334696217618631">Reiniciar o navegador para ativar Widevine</translation>
+<translation id="8410111618231938546">O Google Widevine é parte do código da Gestão de Direitos Digitais (GDD) que nós na Brave Software não detemos e não podemos inspecionar. O código do Google Widevine é carregado a partir de servidores da Google, não a partir dos nossos servidores. É carregado apenas quando tem essa opção permitida. Desencorajamos a utilização da GDD, mas respeitamos a escolha do utilizador e reconhecemos que alguns utilizadores do Brave gostariam de utilizar serviços que o requerem.
+
+Ao instalar esta extensão, está a concordar com os Termos de Utilização do Google Widevine. Concorda que a Brave não é responsável por quaisquer danos ou perdas relacionados à sua utilização do Google Widevine.</translation>
+<translation id="6123134130710658846">Ocultar o botão Recompensas Brave</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privacidade com Tor</translation>
+<translation id="7643538479215207633">Abrir pelo uso de IPFS</translation>
+<translation id="2521133093532260474">Não foi possível parar nó local</translation>
+<translation id="86879877003581729">Não foi possível iniciar nó local</translation>
+<translation id="8860039076160511438">Repor carteira</translation>
+<translation id="80225669816651290">Nó local</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> sobre o nó local IPFS e considerações de privacidade do gateway.</translation>
+<translation id="207763736230883589">Caso o seu nó local não possa ser alcançado, faça automaticamente fallback para o gateway IPFS público.</translation>
+<translation id="7815301689257843278">Enviar relatórios de falhas automaticamente, para que o Brave consiga impedir que este problema volte a ocorrer?</translation>
+<translation id="1068069727470515940">Pode alterar <ph name="SETTING_TEXT"/> novamente quando quiser.</translation>
+<translation id="8325036459845654666">Esta rede já foi adicionada.</translation>
 </translationbundle>

@@ -458,4 +458,23 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1062463687579789365">Anpassning av plånboksnätverk</translation>
 <translation id="2234108191702901162">Kunde inte lägga till nätverk</translation>
 <translation id="2618193846561624884">Vill du uppdatera det befintliga nätverket?</translation>
+<translation id="3699882589215410581">Installera och kör Wildwine</translation>
+<translation id="8053096063396012732">Installera Widevine</translation>
+<translation id="4840334696217618631">Starta om webbläsaren för att aktivera Widevine</translation>
+<translation id="8410111618231938546">Google Widevine är ett stycke kod för Digital Rights Management (DRM) som vi på Brave Software varken äger eller kan inspektera. Koden för Google Wideline laddas från Googles servrar, inte från våra servrar. Den laddas endast när du aktiverar det här valet. Vi avråder från användning av DRM, men vi respekterar användarens val och tillstår att vissa Brave-användare vill använda tjänster som kräver detta.
+
+Genom att installera detta tillägg godkänner du användarvillkoren för Google Widevine. Du accepterar att Brave inte kan hållas ansvarig för skada eller förlust till följd av din användning av Google Widevine.</translation>
+<translation id="6123134130710658846">Dölj Brave Rewards-knappen</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privat med Tor</translation>
+<translation id="7643538479215207633">Öppna med IPFS</translation>
+<translation id="2521133093532260474">Det går inte att stoppa den lokala noden</translation>
+<translation id="86879877003581729">Det går inte att starta den lokala noden</translation>
+<translation id="8860039076160511438">Återställ plånbok</translation>
+<translation id="80225669816651290">Lokal nod</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Läs mer<ph name="END_LINK_MPL"/> om IPFS-lokal nod och gateway-integritetsskydd.</translation>
+<translation id="207763736230883589">Återgår automatiskt till publik IPFS gateway om din lokala nod inte kan nås.</translation>
+<translation id="7815301689257843278">Vill du skicka kraschrapporter automatiskt så att Brave kan förhindra att problemet händer igen?</translation>
+<translation id="1068069727470515940">Du kan ändra <ph name="SETTING_TEXT"/> igen när som helst.</translation>
+<translation id="8325036459845654666">Nätverket har redan lagts till.</translation>
 </translationbundle>

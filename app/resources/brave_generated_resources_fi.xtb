@@ -458,4 +458,23 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1062463687579789365">Lompakon verkkojen mukauttaminen</translation>
 <translation id="2234108191702901162">Verkon lisääminen ei onnistu</translation>
 <translation id="2618193846561624884">Haluatko päivittää olemassa olevan verkon?</translation>
+<translation id="3699882589215410581">Asenna ja suorita Widevine</translation>
+<translation id="8053096063396012732">Asenna Widevine</translation>
+<translation id="4840334696217618631">Käynnistä selain uudelleen salliaksesi Widevinen</translation>
+<translation id="8410111618231938546">Google Widevine on osa digitaalisen käyttöoikeuksien hallinnan (DRM) koodia, jota me Brave Softwarella emme omista tai voi tarkkailla. Google Widevine -koodi ladataan Googlen palvelimilta, ei meidän palvelimiltamme. Se ladataan vain, kun sallit tämän vaihtoehdon. Emme suosittele DRM:n käyttöä, mutta kunnioitamme käyttäjiemme valintaa ja tiedostamme, että jotkut Braven käyttäjät saattavat haluta käyttää palveluita, jotka vaativat sitä.
+
+Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyväksyt, että Brave ei ole vastuussa mistään vahingoista tai menetyksistä, jotka liittyvät Google Widevinen käyttöön.</translation>
+<translation id="6123134130710658846">Piilota Brave Rewards -painike</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Yksityinen Torilla</translation>
+<translation id="7643538479215207633">Avaa IPFS:llä</translation>
+<translation id="2521133093532260474">Paikallista solmua ei voi pysäyttää</translation>
+<translation id="86879877003581729">Paikallista solmua ei voi käynnistää</translation>
+<translation id="8860039076160511438">Nollaa lompakko</translation>
+<translation id="80225669816651290">Paikallinen solmu</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Lue lisää<ph name="END_LINK_MPL"/> paikallisen IPFS-noodin ja -yhdyskäytävän tietosuojanäkökohdista.</translation>
+<translation id="207763736230883589">Palaa julkiseen IPFS-porttiin, jos paikalliseen noodiisi ei saada yhteyttä.</translation>
+<translation id="7815301689257843278">Lähetä kaatumisraportit automaattisesti niin, että Brave voi estää tämän ongelman ilmenemisen uudelleen?</translation>
+<translation id="1068069727470515940">Voit muuttaa <ph name="SETTING_TEXT"/> taas milloin tahansa.</translation>
+<translation id="8325036459845654666">Tämä verkko on jo lisätty.</translation>
 </translationbundle>

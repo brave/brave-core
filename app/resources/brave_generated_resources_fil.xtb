@@ -458,4 +458,23 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="1062463687579789365">Pag-customize ng mga network ng wallet</translation>
 <translation id="2234108191702901162">Hindi maidagdag ang network</translation>
 <translation id="2618193846561624884">Gusto mo bang i-update ang dati nang network na ito?</translation>
+<translation id="3699882589215410581">I-install at patakbuhin ang Widevine</translation>
+<translation id="8053096063396012732">I-install ang Widevine</translation>
+<translation id="4840334696217618631">I-restart ang browser para i-enable ang Widevine</translation>
+<translation id="8410111618231938546">Ang Google Widevine ay isang bahagi ng code ng Digital Rights Management (DRM) na hindi namin pag-aari sa Brave Software at hindi namin maaaring suriin. Naka-load ang Google Widevine sa mga server ng Google, hindi sa mga server namin. Malo-load lang ito kapag na-enable mo ang opsyong ito. Hindi namin hinihikayat ang paggamit ng DRM, ngunit iginagalang namin ang pasya ng user at kinikilala namin na ang ilang user ng Brave ay gustong gumamit ng mga serbisyong humihingi nito.
+
+Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntunin ng Paggamit ng Google Widevine. Sumasang-ayon kang walang pananagutan ang Brave para sa anumang pinsala o pagkalugi na nauugnay sa paggamit mo ng Google Widevine.</translation>
+<translation id="6123134130710658846">Itago ang Brave Rewards button</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Pribadong may Tor</translation>
+<translation id="7643538479215207633">Buksan gamit ang IPFS</translation>
+<translation id="2521133093532260474">Hindi maihinto ang lokal na node</translation>
+<translation id="86879877003581729">Hindi mailunsad ang lokal na node</translation>
+<translation id="8860039076160511438">I-reset ang Wallet</translation>
+<translation id="80225669816651290">Lokal na node</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Matuto pa<ph name="END_LINK_MPL"/> tungkol sa IPFS local node at mga konsiderasyon sa privacy sa gateway.</translation>
+<translation id="207763736230883589">Awtomatikong bumalik sa pampublikong gateway ng IPFS kung hindi makaugnayan ang iyong lokal na node.</translation>
+<translation id="7815301689257843278">Awtomatikong mag-send ng mga crash report para awtomatikong mapigilan ng Brave na mangyari ulit ang isyung ito?</translation>
+<translation id="1068069727470515940">Puwede mong baguhin ang <ph name="SETTING_TEXT"/> ulit anumang oras.</translation>
+<translation id="8325036459845654666">Naidagdag na ang network na ito.</translation>
 </translationbundle>

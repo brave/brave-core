@@ -458,4 +458,23 @@
 <translation id="1062463687579789365">การปรับแต่งเครือข่ายกระเป๋าเงิน</translation>
 <translation id="2234108191702901162">ไม่สามารถเพิ่มเครือข่ายได้</translation>
 <translation id="2618193846561624884">คุณต้องการอัปเดตเครือข่ายที่มีอยู่หรือไม่</translation>
+<translation id="3699882589215410581">ติดตั้งและเปิดใช้งาน Widevine</translation>
+<translation id="8053096063396012732">ติดตั้ง Widevine</translation>
+<translation id="4840334696217618631">รีสตาร์ทเบราว์เซอร์เพื่อเปิดใช้ Widevine</translation>
+<translation id="8410111618231938546">Google Widevine คือชิ้นส่วนรหัส Digital Rights Management (DRM) ที่พวกเราที่ Brave Software ไม่ได้เป็นเจ้าของและไม่สามารถทำการตรวจได้ รหัส Google Widevine ได้ถูกโหลดจากเซิร์ฟเวอร์ Google ไม่ได้โหลดจากเซิร์ฟเวอร์ของเรา DRM จะถูกโหลดเมื่อคุณเปิดตัวเลือกนี้  เราไม่สนับสนุนการใช้ DRM แต่เราเคารพการตัดสินใจของผู้ใช้และเข้าใจว่าผู้ใช้ Brave บางท่านอาจต้องการใช้บริการที่ต้องการมัน
+
+โดยการติดตั้งส่วนขยายนี้ คุณได้ยอมรับข้อตกลงการใช้งาน Google Widevine คุณได้ตกลงว่า Brave จะไม่รับผิดชอบต่อความเสียหายหรือสูญหายในการเชื่อมต่อการใช้ Google Widevine ของคุณ</translation>
+<translation id="6123134130710658846">ซ่อนปุ่ม Brave Rewards</translation>
+<translation id="7038489306457318096">GitHub</translation>
+<translation id="8934172355414207733">แบบส่วนตัวผ่าน Tor</translation>
+<translation id="7643538479215207633">เปิดด้วย IPFS</translation>
+<translation id="2521133093532260474">ไม่สามารถปิดโหนดภายในได้</translation>
+<translation id="86879877003581729">ไม่สามารถเปิดใช้โหนดภายในได้</translation>
+<translation id="8860039076160511438">รีเซ็ตกระเป๋าเงิน</translation>
+<translation id="80225669816651290">โหนดภายใน</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_MPL"/> เกี่ยวกับข้อควรพิจารณาเกี่ยวกับความเป็นส่วนตัวของโหนดภายใน IPFS และเกตเวย์</translation>
+<translation id="207763736230883589">ย้อนกลับไปยังเกตเวย์ IPFS สาธารณะโดยอัตโนมัติเมื่อไม่สามารถเข้าถึงโหนดเฉพาะที่ของคุณ</translation>
+<translation id="7815301689257843278">ต้องการส่งรายงานความขัดข้องโดยอัตโนมัติเพื่อให้ Brave สามารถป้องกันปัญหานี้ไม่ให้เกิดขึ้นอีกหรือไม่</translation>
+<translation id="1068069727470515940">คุณสามารถเปลี่ยน <ph name="SETTING_TEXT"/> อีกครั้งเมื่อใดก็ได้</translation>
+<translation id="8325036459845654666">เพิ่มเครือข่ายนี้แล้ว</translation>
 </translationbundle>

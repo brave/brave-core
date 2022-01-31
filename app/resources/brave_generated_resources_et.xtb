@@ -458,4 +458,23 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="1062463687579789365">Rahakoti võrkude kohandamine</translation>
 <translation id="2234108191702901162">Võrku ei õnnestu lisada</translation>
 <translation id="2618193846561624884">Kas soovite olemasolevat võrku uuendada?</translation>
+<translation id="3699882589215410581">Installi ja käivita Widevine</translation>
+<translation id="8053096063396012732">Installi Widevine</translation>
+<translation id="4840334696217618631">Taaskäivita Widevine lubamiseks brauser</translation>
+<translation id="8410111618231938546">Google Widevine on osa digitaalõiguste haldamise (DRM) süsteemist, mida Brave Software ei oma ega saa kontrollida. Google Widevine laaditakse alla Google'i serveritest, mitte meie omadest. See laaditakse alla ainult siis, kui annate selleks oma loa. Me ei soovita DRMi süsteemi kasutamist, kuid austame oma kasutajate valikut ja mõistame, et mõned Brave'i kasutajad soovivad kasutada teenuseid, kus seda vaja on.
+
+Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. Nõustute, et Brave ei vastuta mis tahes kahjude eest, mis tulenevad Google Widevine'i kasutamisest.</translation>
+<translation id="6123134130710658846">Peida Brave Rewards nupp</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Tor'iga privaatne</translation>
+<translation id="7643538479215207633">Ava IPFS-i abil</translation>
+<translation id="2521133093532260474">Lokaalsõlme ei saa peatada</translation>
+<translation id="86879877003581729">Lokaalsõlme ei saa käivitada</translation>
+<translation id="8860039076160511438">Lähtesta rahakott</translation>
+<translation id="80225669816651290">Kohalik sõlm</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Lisateave<ph name="END_LINK_MPL"/> IPFS-i kohaliku sõlme ja lüüsiga seotud privaatsuskaalutluste kohta.</translation>
+<translation id="207763736230883589">Varuvariandina kasutatakse automaatselt IPFS-i avalikku lüüsi, kui kohalik sõlm pole kättesaadav.</translation>
+<translation id="7815301689257843278">Kas saata krahhiaruanded automaatselt, et Brave saaks hoida ära selle probleemi uuesti ilmnemise?</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> saate igal ajal muuta.</translation>
+<translation id="8325036459845654666">See võrk on juba lisatud.</translation>
 </translationbundle>

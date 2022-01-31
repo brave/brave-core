@@ -458,4 +458,23 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1062463687579789365">Prispôsobenie sietí peňaženiek</translation>
 <translation id="2234108191702901162">Nepodarilo sa pridať sieť</translation>
 <translation id="2618193846561624884">Chcete aktualizovať existujúcu sieť?</translation>
+<translation id="3699882589215410581">Nainštalovať a spustiť Widevine</translation>
+<translation id="8053096063396012732">Inštalovať Widevine</translation>
+<translation id="4840334696217618631">Ak chcete povoliť Widevine, reštartujte prehliadač</translation>
+<translation id="8410111618231938546">Google Widewine je časť kódu Digital Rights Management (DRM), ktorý v Brave Software nevlastníme a nemôžeme kontrolovať. Tento kód je načítaný zo serverov Google, nie z našich vlastných serverov. Táto funkcia funguje iba ak ju povolíte. Našich používateľov odraďujeme od používania DRM, ale rešpektujeme ich voľbu a oznávame, že niektorí používatelia Brave chcú používať služby, ktoré DRM požadujú.
+
+Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Widevine.</translation>
+<translation id="6123134130710658846">Skryť tlačidlo Brave odmeny</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Súkromné s Tor</translation>
+<translation id="7643538479215207633">Otvoriť pomocou IPFS</translation>
+<translation id="2521133093532260474">Nie je možné zastaviť lokálny uzol</translation>
+<translation id="86879877003581729">Nie je možné spustiť lokálny uzol</translation>
+<translation id="8860039076160511438">Obnoviť peňaženku</translation>
+<translation id="80225669816651290">Lokálny uzol</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Learn more<ph name="END_LINK_MPL"/> informácie o lokálnom uzle IPFS a podmienkach ochrany osobných údajov brány.</translation>
+<translation id="207763736230883589">Ak sa nemôžete dostať k miestnemu uzlu, automaticky sa vráťte na verejnú bránu IPFS.</translation>
+<translation id="7815301689257843278">Odosielať správy o zlyhaní automaticky, aby mohol prehladač Brave zabrániť tomu, aby sa tento problém opakoval?</translation>
+<translation id="1068069727470515940">Môžete zmeniť <ph name="SETTING_TEXT"/> kedykoľvek znova.</translation>
+<translation id="8325036459845654666">Táto sieť je už pridaná.</translation>
 </translationbundle>

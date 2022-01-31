@@ -458,4 +458,23 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="1062463687579789365">Wallet hálózatok testreszabása</translation>
 <translation id="2234108191702901162">Nem sikerült hozzáadni a hálózatot</translation>
 <translation id="2618193846561624884">Szeretné frissíteni a meglévő hálózatot?</translation>
+<translation id="3699882589215410581">Widevine telepítése és futtatása</translation>
+<translation id="8053096063396012732">Widevine telepítése</translation>
+<translation id="4840334696217618631">Widevine engedélyezéséhez indítsa újra a böngészőt</translation>
+<translation id="8410111618231938546">A Google Widevine egy digitális jogkezelő (DRM - Digital Rights Management) kód, amelyet mi a Brave Software vállalatnál nem birtokolunk és nem vizsgálunk meg. A Google Widevine kódot Google szerverektől töltjük be, nem pedig saját szervereinkről. Csak akkor töltődik be, ha engedélyezi ezt az opciót. Javasoljuk a DRM használatát, de tiszteletben tartjuk a felhasználók döntését és elismerjük, hogy néhány Brave felhasználó olyan szolgáltatásokat szeretne használni, amelyekhez ez szükséges.
+
+Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhasználási feltételeit. Beleegyezik abba, hogy a Brave nem felelős semmilyen kárért vagy veszteségért, amely a Google Widevine használatával kapcsolatban keletkezik.</translation>
+<translation id="6123134130710658846">Brave jutalmak gomb elrejtése</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privát Torral</translation>
+<translation id="7643538479215207633">Megnyitás IPFS használatával</translation>
+<translation id="2521133093532260474">A helyi csomópontot nem lehet leállítani</translation>
+<translation id="86879877003581729">A helyi csomópontot nem lehet elindítani</translation>
+<translation id="8860039076160511438">Pénztárca visszaállítása</translation>
+<translation id="80225669816651290">Helyi node</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tudjon meg többet<ph name="END_LINK_MPL"/> a helyi IPFS csomópontról és a gateway-adatvédelmi szempontokról.</translation>
+<translation id="207763736230883589">Automatikus visszaállás nyilvános IPFS átjáróra, ha a helyi csomópont nem érhető el.</translation>
+<translation id="7815301689257843278">Küldjön a rendszer automatikusan jelentéseket az összeomlásról, hogy a Brave meg tudja előzni a probléma újbóli előfordulását?</translation>
+<translation id="1068069727470515940">Módosíthatja <ph name="SETTING_TEXT"/> később bármikor.</translation>
+<translation id="8325036459845654666">A hálózat már hozzá lett adva.</translation>
 </translationbundle>

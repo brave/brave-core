@@ -458,4 +458,23 @@ Are you sure you want to do this?</translation>
 <translation id="1062463687579789365">Wallet networks customisation</translation>
 <translation id="2234108191702901162">Unable to add network</translation>
 <translation id="2618193846561624884">Do you want to update the existing network?</translation>
+<translation id="3699882589215410581">Install and run Widevine</translation>
+<translation id="8053096063396012732">Install Widevine</translation>
+<translation id="4840334696217618631">Restart browser to enable Widevine</translation>
+<translation id="8410111618231938546">Google Widevine is a piece of Digital Rights Management (DRM) code that we at Brave Software do not own and cannot inspect. The Google Widevine code is loaded from Google servers, not from our servers. It is loaded only when you enable this option. We discourage the use of DRM, but we respect user choice and acknowledge that some Brave users would like to use services that require it.
+
+By installing this extension, you are agreeing to the Google Widevine Terms of Use. You agree that Brave is not responsible for any damages or losses in connection with your use of Google Widevine.</translation>
+<translation id="6123134130710658846">Hide Brave Rewards button</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Private with Tor</translation>
+<translation id="7643538479215207633">Open using IPFS</translation>
+<translation id="2521133093532260474">Unable to stop local node</translation>
+<translation id="86879877003581729">Unable to launch local node</translation>
+<translation id="8860039076160511438">Reset wallet</translation>
+<translation id="80225669816651290">Local node</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Learn more<ph name="END_LINK_MPL"/> about IPFS local node and gateway privacy considerations.</translation>
+<translation id="207763736230883589">Automatically fall back to public IPFS gateway if your local node cannot be reached.</translation>
+<translation id="7815301689257843278">Send crash reports automatically so Brave can prevent this issue from happening again?</translation>
+<translation id="1068069727470515940">You can change <ph name="SETTING_TEXT"/> again at any time.</translation>
+<translation id="8325036459845654666">This network is already added.</translation>
 </translationbundle>

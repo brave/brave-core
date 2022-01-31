@@ -455,4 +455,23 @@
 <translation id="1062463687579789365">התאמה אישית של רשתות הארנק</translation>
 <translation id="2234108191702901162">לא ניתן להוסיף רשת</translation>
 <translation id="2618193846561624884">האם ברצונך לעדכן את הרשת הקיימת?</translation>
+<translation id="3699882589215410581">התקינו והפעילו Widevine</translation>
+<translation id="8053096063396012732">התקן את Widevine</translation>
+<translation id="4840334696217618631">יש להפעיל מחדש את הדפדפן כדי לאפשר את Widevine</translation>
+<translation id="8410111618231938546">Google Widevine הוא מקטע קוד של ניהול זכויות דיגיטליות (DRM), שאיננו שייך לנו ב-Brave Software ואין באפשרותנו לפקח עליו. הקוד של Google Widevine הנטען ישירות מהשרתים של Google, ולא מהשרתים שלנו. הוא נטען רק בעת הפעלת אפשרות זו. אנחנו לא מעודדים שימוש ב-DRM, אך מכבדים את הבחירה של המשתמש ומודעים לכך שחלק מהמשתמשים של Brave מעדיפים להשתמש בשירותים אשר דורשים זאת.
+
+בעת התקנת התוסף הזה, אתם מסכימים לתנאי השימוש של Google Widevine. אתם מסכימים גם ש-Brave אינם אחראים לכל נזקים או הפסדים בהקשר השימוש שלכם ב-Google Widevine.</translation>
+<translation id="6123134130710658846">הסתר את כפתור Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">פרטי עם Tor</translation>
+<translation id="7643538479215207633">לפתוח באמצעות IPFS</translation>
+<translation id="2521133093532260474">לא ניתן לעצור צומת מקומי</translation>
+<translation id="86879877003581729">לא ניתן להפעיל צומת מקומי</translation>
+<translation id="8860039076160511438">אפס ארנק</translation>
+<translation id="80225669816651290">צומת מקומי</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>קבל מידע נוסף<ph name="END_LINK_MPL"/> אודות שיקולי פרטיות צומת ושער IPFS מקומיים.</translation>
+<translation id="207763736230883589">עשה שימוש אוטומטית בשער ה- IPFS הציבורי אם לא ניתן להגיע לצומת המקומי שלך.</translation>
+<translation id="7815301689257843278">האם לשלוח דוח קריסה אוטומטי על מנת ש-Brave  יוכלו למנוע תקלה זו מלחזור?</translation>
+<translation id="1068069727470515940">ניתן לשנות <ph name="SETTING_TEXT"/> שוב בכל עת.</translation>
+<translation id="8325036459845654666">רשת זו כבר נוספת.</translation>
 </translationbundle>

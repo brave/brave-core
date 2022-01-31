@@ -457,4 +457,23 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1062463687579789365">Personalizarea rețelelor de portofele</translation>
 <translation id="2234108191702901162">Nu se poate adăuga rețeaua</translation>
 <translation id="2618193846561624884">Doriți să actualizați rețeaua existentă?</translation>
+<translation id="3699882589215410581">Instalați și rulați Widevine</translation>
+<translation id="8053096063396012732">Instalează Widevine</translation>
+<translation id="4840334696217618631">Repornește browserul pentru activarea Widevine</translation>
+<translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
+
+Instalând această extensie, sunteți de acord cu termenii de utilizare ai Google Widevine. Sunteți de acord că Brave nu este responsabil pentru nicio problemă sau pierdere a conexiunii în timpul utilizării Google Widevine.</translation>
+<translation id="6123134130710658846">Ascunde butonul Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privată cu Tor</translation>
+<translation id="7643538479215207633">Deschideți folosind IPFS</translation>
+<translation id="2521133093532260474">Nu se poate opri nodul local</translation>
+<translation id="86879877003581729">Nu se poate porni nodul local</translation>
+<translation id="8860039076160511438">Resetați portofelul</translation>
+<translation id="80225669816651290">Nod local</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe<ph name="END_LINK_MPL"/> despre nodul IPFS local și confidențialitatea gateway-ului.</translation>
+<translation id="207763736230883589">Revino automat la poarta de ieșire IPFS publică dacă nodul local nu poate fi contactat.</translation>
+<translation id="7815301689257843278">Trimiteți automat rapoarte privind erorile, astfel încât Brave să poată preveni repetarea unor astfel de situații?</translation>
+<translation id="1068069727470515940">Puteți modifica <ph name="SETTING_TEXT"/> din nou în orice moment.</translation>
+<translation id="8325036459845654666">Această rețea este adăugată deja</translation>
 </translationbundle>

@@ -458,4 +458,23 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="1062463687579789365">Prilagajanje omrežij denarnice</translation>
 <translation id="2234108191702901162">Omrežja ni mogoče dodati</translation>
 <translation id="2618193846561624884">Ali želite posodobiti obstoječe omrežje?</translation>
+<translation id="3699882589215410581">Namesti in zaženi Widevine</translation>
+<translation id="8053096063396012732">Namesti Widevine</translation>
+<translation id="4840334696217618631">Znova zaženite brskalnik, da omogočite Widevine</translation>
+<translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ni v lasti družbe Brave Software in ga ne moremo pregledati. Koda Google Widevine je naložena iz strežnikov Google, ne iz naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in se zavedamo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
+
+Če namestite to razširitev, se strinjate s pogoji uporabe Google Widevine. S tem soglašate, da družba Brave ni odgovorna za morebitno škodo ali izgube v zvezi z vašo uporabo orodja Google Widevine.</translation>
+<translation id="6123134130710658846">Skrij gumb Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Zasebno s Tor-om</translation>
+<translation id="7643538479215207633">Odpri z IPFS</translation>
+<translation id="2521133093532260474">Lokalnega vozlišča ni bilo mogoče ustaviti</translation>
+<translation id="86879877003581729">Ni bilo mogoče zagnati lokalnega vozlišča</translation>
+<translation id="8860039076160511438">Ponastavi denarnico</translation>
+<translation id="80225669816651290">Lokalno vozlišče</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Več o tem<ph name="END_LINK_MPL"/> o zasebnosti lokalnih vozlišč in prehodov IPFS.</translation>
+<translation id="207763736230883589">Če vašega lokalnega vozlišča ni mogoče doseči, se samodejno vrnite na javni prehod IPFS.</translation>
+<translation id="7815301689257843278">Samodejno pošiljajte poročila o sesutju strani, da lahko Brave prepreči, da bi se ta težava ponovila?</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> lahko kadar koli znova spremenite.</translation>
+<translation id="8325036459845654666">To omrežje je že dodano.</translation>
 </translationbundle>

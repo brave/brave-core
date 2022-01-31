@@ -458,4 +458,23 @@
 <translation id="1062463687579789365">錢包網路自訂</translation>
 <translation id="2234108191702901162">無法新增網路</translation>
 <translation id="2618193846561624884">要更新現有網路嗎？</translation>
+<translation id="3699882589215410581">安裝並執行 Widevine</translation>
+<translation id="8053096063396012732">安裝 Widevine</translation>
+<translation id="4840334696217618631">重新啟動瀏覽器以啟用 Widevine</translation>
+<translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
+
+安裝該擴充功能即表示您同意 Google Widevine 使用條款。您同意 Brave 不為您使用 Google Widevine 而產生的任何相關損害或損失負責。</translation>
+<translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">用 Tor 進行私人瀏覽</translation>
+<translation id="7643538479215207633">使用 IPFS 開啟</translation>
+<translation id="2521133093532260474">無法停止本機節點</translation>
+<translation id="86879877003581729">無法啟動本機節點</translation>
+<translation id="8860039076160511438">重設錢包</translation>
+<translation id="80225669816651290">本地節點</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>了解更多<ph name="END_LINK_MPL"/>關於 IPFS 本機節點與閘道隱私注意事項。</translation>
+<translation id="207763736230883589">若無法連接您的本地節點，則自動返回公用 IPFS 閘道器。</translation>
+<translation id="7815301689257843278">是否自動傳送當機報告，協助 Brave 防止這個問題再度發生？</translation>
+<translation id="1068069727470515940">您隨時可以再次變更<ph name="SETTING_TEXT"/>。</translation>
+<translation id="8325036459845654666">此網路已新增。</translation>
 </translationbundle>

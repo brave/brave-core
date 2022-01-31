@@ -457,4 +457,23 @@
 <translation id="1062463687579789365">定制钱包网络</translation>
 <translation id="2234108191702901162">无法添加网络</translation>
 <translation id="2618193846561624884">要更新现有网络吗？</translation>
+<translation id="3699882589215410581">安装并运行 Widevine</translation>
+<translation id="8053096063396012732">安装 Widevine</translation>
+<translation id="4840334696217618631">重新启动浏览器以启用 Widevine</translation>
+<translation id="8410111618231938546">Google Widevine 是一款数字版权管理（DRM）代码，Brave Software 不拥有这些代码，也无法检查。 Google Widevine 代码是从 Google 服务器加载的，而不是从我们的服务器加载的。仅在启用此选项时才会加载它。我们不鼓励使用 DRM，但我们尊重用户选择并了解某些 Brave 用户希望使用需要它的服务。
+
+安装此扩展程序即表示您同意 Google Widevine 使用条款。您同意 Brave对您使用 Google Widevine所造成的任何损害或损失概不负责。</translation>
+<translation id="6123134130710658846">隐藏 Brave 奖励按钮</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Tor 的私人窗口</translation>
+<translation id="7643538479215207633">用 IPFS 打开</translation>
+<translation id="2521133093532260474">无法停止本地节点</translation>
+<translation id="86879877003581729">无法启动本地节点</translation>
+<translation id="8860039076160511438">重置钱包</translation>
+<translation id="80225669816651290">本地节点</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>了解更多<ph name="END_LINK_MPL"/>关于 IPFS 本地节点和网关隐私的注意事项。</translation>
+<translation id="207763736230883589">如果无法访问本地节点，则自动回退到公共 IPFS 网关。</translation>
+<translation id="7815301689257843278">自动发送崩溃报告以帮助 Brave 防止这个问题再次发生？</translation>
+<translation id="1068069727470515940">您可以在任何时候再次更改 <ph name="SETTING_TEXT"/></translation>
+<translation id="8325036459845654666">已添加此网络。</translation>
 </translationbundle>

@@ -470,4 +470,24 @@ Binance
 <translation id="1062463687579789365">वॉलेट नेटवर्क में मनचाहे बदलाव</translation>
 <translation id="2234108191702901162">नेटवर्क नहीं जोड़ा जा सका</translation>
 <translation id="2618193846561624884">क्या आप मौजूदा नेटवर्क को अपडेट करना चाहते हैं?</translation>
+<translation id="3699882589215410581">Widevine को इंस्टॉल करें और चलाएँ</translation>
+<translation id="8053096063396012732">Widevine इनस्टॉल करें</translation>
+<translation id="4840334696217618631">Widevine को सक्रिय करने के लिए ब्राउज़र को पुनः आरम्भ करें</translation>
+<translation id="8410111618231938546">Google Widevine डिजिटल अधिकार प्रबंधन (DRM) कोड का हिस्सा है जिसका हम Brave Software न तो मालिकत्व रखते हैं और न ही जांच कर सकते हैं| Google Widevine के कोड Google के सर्वर से संचालित होते हैं, हमारे सर्वर से नहीं| ये तभी काम करते हैं जब आप इस विकल्प को चुनते हैं| हम DRM के प्रयोग को हतोत्साहित करते हैं, पर हम यूजर के चयन का सम्मान करते हैं और समझते हैं कि  कुछ Brave यूजर्स ऐसी सेवाओं जहाँ इसकी ज़रूरत है का प्रयोग करते हैं|
+
+
+इस एक्सटेंशन को इन्स्टॉल करने के साथ, आप Google Wivedine के उपयोग की शर्तों से सहमत हो रहे हैं| आप सहमत हैं की Google Wivedine के प्रयोग से किसी क्षति या नुकसान के सम्बन्ध में Brave ज़िम्मेदार नहीं है|</translation>
+<translation id="6123134130710658846">Brave Rewards बटन छिपाएँ</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">टोर के साथ निजी</translation>
+<translation id="7643538479215207633">IPFS का उपयोग करके खोलें</translation>
+<translation id="2521133093532260474">लोकल नोड नहीं रोक पा रहे हैं</translation>
+<translation id="86879877003581729">लोकल नोड नहीं लांच कर पा रहे हैं</translation>
+<translation id="8860039076160511438">वॉलेट रीसेट करें</translation>
+<translation id="80225669816651290">लोकल नोड</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/> IPFS स्थानीय नोड और गेटवे गोपनीयता विचारों के बारे में <ph name="END_LINK_MPL"/> और जानें.</translation>
+<translation id="207763736230883589">यदि आपके स्थानीय नोड तक नहीं पहुँच सकता है, तो स्वचालित रूप से सार्वजनिक IPFS गेटवे पर वापस जाए।</translation>
+<translation id="7815301689257843278">क्रैश रिपोर्ट अपने आप भेजें ताकि Brave इस समस्या को दोबारा न होने दे?</translation>
+<translation id="1068069727470515940">आप <ph name="SETTING_TEXT"/> फिर से किसी भी समय</translation>
+<translation id="8325036459845654666">यह नेटवर्क पहले ही जोड़ा जा चुका है.</translation>
 </translationbundle>

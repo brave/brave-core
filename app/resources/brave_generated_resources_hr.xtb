@@ -458,4 +458,23 @@ Sigurno želite to napraviti?</translation>
 <translation id="1062463687579789365">Prilagođavanje mreža novčanika</translation>
 <translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
 <translation id="2618193846561624884">Želite li ažurirati postojeću mrežu?</translation>
+<translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
+<translation id="8053096063396012732">Instaliraj aplikaciju Widevine</translation>
+<translation id="4840334696217618631">Poništi preglednik za omogućavanje aplikacije Widevine</translation>
+<translation id="8410111618231938546">Widevine društva Google dio je kȏda za upravljanje digitalnim pravima (DRM) koji društvo Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja društva Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
+
+Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine društva Google. Potvrđujete da Brave ne odgovora ni za kakvu štetu ni gubitke povezane s vašom uporabom Googleova rješenja Widevine.</translation>
+<translation id="6123134130710658846">Sakrij gumb za Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privatni prozor s funkcijom Tor</translation>
+<translation id="7643538479215207633">Otvori uporabom sustava IPFS</translation>
+<translation id="2521133093532260474">Nije moguće zaustaviti lokalni čvor</translation>
+<translation id="86879877003581729">Nije moguće pokrenuti lokalni čvor</translation>
+<translation id="8860039076160511438">Ponovno postavi novčanik</translation>
+<translation id="80225669816651290">Lokalni čvor</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Doznajte više<ph name="END_LINK_MPL"/> o razmatranjima o privatnosti lokalnog čvora i pristupnika sustava IPFS.</translation>
+<translation id="207763736230883589">Automatski se prebacite na javni pristupnik IPFS ako se lokalni čvor ne može dosegnuti.</translation>
+<translation id="7815301689257843278">Treba li poslati izvješća o padu tako da se preglednikom Brave može spriječiti ponovno pojavljivanje ovog problema?</translation>
+<translation id="1068069727470515940">Možete ponovno promijeniti <ph name="SETTING_TEXT"/> u bilo kojem trenutku.</translation>
+<translation id="8325036459845654666">Mreža već dodana.</translation>
 </translationbundle>

@@ -458,4 +458,23 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1062463687579789365">Cüzdan ağları kişiselleştirme</translation>
 <translation id="2234108191702901162">Ağ eklenemiyor</translation>
 <translation id="2618193846561624884">Var olan ağı güncellemek istiyor musunuz?</translation>
+<translation id="3699882589215410581">Widevine'ı yükle ve çalıştır</translation>
+<translation id="8053096063396012732">Widevine'ı yükle</translation>
+<translation id="4840334696217618631">Widevine’ı etkinleştirmek için tarayıcıyı yeniden başlatın</translation>
+<translation id="8410111618231938546">Google Widevine, Brave Yazılım'da sahibi olmadığımız ve denetlemediğimiz bir Digital Rights Management (DRM) kodu parçasıdır. Google Widevine kodu bizim sunucularımızdan değil Google sunucularından yüklenir. Sadece bu seçeneği etkinleştirdiğinizde yüklenir. DRM kullanımını teşvik etmiyoruz, fakat kullanıcı tercihlerine saygı duyuyor ve bazı Brave kullanıcılarının bunu gerektiren hizmetleri kullanmak isteyebileceğini biliyoruz.
+
+Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş sayılırsınız. Brave'in, Google Widevine kullanımı ile oluşabilecek herhangi bir hasar ya da bağlantı kayıplarından sorumlu olmayacağını kabul etmiş sayılırsınız.</translation>
+<translation id="6123134130710658846">Brave Ödülleri butonunu gizle</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Tor ile Gizli</translation>
+<translation id="7643538479215207633">IPFS kullanarak açın</translation>
+<translation id="2521133093532260474">Yerel düğüm durdurulamıyor</translation>
+<translation id="86879877003581729">Yerel düğüm başlatılamıyor</translation>
+<translation id="8860039076160511438">Cüzdanı Sıfırla</translation>
+<translation id="80225669816651290">Yerel düğüm</translation>
+<translation id="3399481770463167943">IPFS yerel düğümü ve ağ geçidi gizlilik hususları hakkında <ph name="BEGIN_LINK_MPL"/>daha fazla bilgi edinin.<ph name="END_LINK_MPL"/></translation>
+<translation id="207763736230883589">Yerel düğümünüze erişilemezse ortak IPFS ağ geçidine otomatik olarak geri düşün.</translation>
+<translation id="7815301689257843278">Brave'in bu sorunun tekrar yaşanmasını önleyebilmesi için kilitlenme raporları otomatik gönderilsin mi?</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> dilediğiniz zaman tekrar değiştirebilirsiniz.</translation>
+<translation id="8325036459845654666">Bu ağ zaten ekli.</translation>
 </translationbundle>

@@ -455,4 +455,23 @@
 <translation id="1062463687579789365">تخصيص شبكات المحفظة</translation>
 <translation id="2234108191702901162">تعذر إضافة الشبكة</translation>
 <translation id="2618193846561624884">هل تريد تحديث الشبكة الموجودة؟</translation>
+<translation id="3699882589215410581">تثبيت وتشغيل Widevine</translation>
+<translation id="8053096063396012732">تثبيت Widevine</translation>
+<translation id="4840334696217618631">أعد تشغيل المتصفح لتمكين Widevine</translation>
+<translation id="8410111618231938546">إن Google Widevine هو جزء من رمز إدارة الحقوق الرقمية (DRM) التي لا نمتلكها ولا يمكننا فحصها في Brave Software. يتم تحميل رمز Google Widevine من خوادم Google، وليس من خوادمنا. يتم تحميله فقط عند تمكين هذا الخيار. نحن لا نشجع استخدام DRM، لكننا نحترم اختيار المستخدم ونقر بأن بعض مستخدمي Brave يرغبون في استخدام الخدمات التي تتطلب ذلك.
+
+عن طريق تثبيت هذا الملحق، إنك توافق على شروط استخدام Google Widevine. وتوافق على أن Brave ليست مسؤولة عن أية أضرار أو خسائر متعلقة باستخدامك لـ Google Widevine.</translation>
+<translation id="6123134130710658846">إخفاء زر Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">الوضع الخاص عبر متصفح تور</translation>
+<translation id="7643538479215207633">افتح باستخدام IPFS</translation>
+<translation id="2521133093532260474">تعذر إيقاف الشبكة المحلية</translation>
+<translation id="86879877003581729">تعذر تشغيل الشبكة المحلية</translation>
+<translation id="8860039076160511438">قم بإعادة تعيين المحفظة</translation>
+<translation id="80225669816651290">عقدة محلية</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>تعرّف على المزيد<ph name="END_LINK_MPL"/> حول اعتبارات الخصوصية بالبوابة والعقدة المحلية IPFS.</translation>
+<translation id="207763736230883589">العودة تلقائياً إلى بوابة IPFS العامة إذا تعذر الوصول إلى العقدة المحلية الخاصة بك.</translation>
+<translation id="7815301689257843278">هل تريد إرسال تقارير الأعطال تلقائيًا حتى يتمكن Brave من منع حدوث هذه المشكلة مرة أخرى؟</translation>
+<translation id="1068069727470515940">يمكنك تغيير <ph name="SETTING_TEXT"/> مرة أخرى في أي وقت.</translation>
+<translation id="8325036459845654666">تمت إضافة هذه الشبكة بالفعل.</translation>
 </translationbundle>
