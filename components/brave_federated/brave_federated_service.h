@@ -23,6 +23,7 @@ class PrefRegistrySimple;
 namespace brave_federated {
 
 class DataStoreService;
+class EligibilityService;
 class OperationalPatterns;
 
 // In the absence of user data collection, Brave is unable to support learning
@@ -66,6 +67,7 @@ class BraveFederatedService : public KeyedService {
 
   std::unique_ptr<OperationalPatterns> operational_patterns_;
   std::unique_ptr<DataStoreService> data_store_service_;
+  std::unique_ptr<EligibilityService> eligibility_service_;
 };
 
 }  // namespace brave_federated

@@ -11,6 +11,8 @@ static_library("brave_federated") {
     "data_stores/ad_notification_timing_data_store.h",
     "data_stores/data_store.cc",
     "data_stores/data_store.h",
+    "eligibility_service.cc",
+    "eligibility_service.h",
     "features.cc",
     "features.h",
     "operational_patterns.cc",
