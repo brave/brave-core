@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<!-- navigator.userAgentData test -->
+<html>
+  <head>
+    <title>fail</title>
+    <meta charset="utf-8">
+</head>
+<body>
+  <script>
+    navigator.userAgentData.getHighEntropyValues(
+      ["model"]).then(ua => {
+        if (ua.model == "") {
+          document.title = "pass";
+        }
+      });
+  </script>
+</body>
+</html>
