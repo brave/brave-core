@@ -47,16 +47,8 @@ Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator)
   redeem_unblinded_token_->set_delegate(this);
 }
 
-Confirmations::~Confirmations() = default;
-
-void Confirmations::AddObserver(ConfirmationsObserver* observer) {
-  DCHECK(observer);
-  observers_.AddObserver(observer);
-}
-
-void Confirmations::RemoveObserver(ConfirmationsObserver* observer) {
-  DCHECK(observer);
-  observers_.RemoveObserver(observer);
+Confirmations::~Confirmations() {
+  delegate_ = nullptr;
 }
 
 void Confirmations::Confirm(const TransactionInfo& transaction) {
@@ -283,7 +275,9 @@ void Confirmations::OnDidRedeemUnblindedToken(
               << " unblinded payment tokens which will be redeemed "
               << FriendlyDateAndTime(next_token_redemption_at));
 
-  NotifyDidConfirm(confirmation);
+  if (delegate_) {
+    delegate_->OnDidConfirm(confirmation);
+  }
 
   StopRetrying();
 
@@ -308,23 +302,11 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
     }
   }
 
-  NotifyFailedToConfirm(confirmation);
+  if (delegate_) {
+    delegate_->OnFailedToConfirm(confirmation);
+  }
 
   ProcessRetryQueue();
-}
-
-void Confirmations::NotifyDidConfirm(
-    const ConfirmationInfo& confirmation) const {
-  for (ConfirmationsObserver& observer : observers_) {
-    observer.OnDidConfirm(confirmation);
-  }
-}
-
-void Confirmations::NotifyFailedToConfirm(
-    const ConfirmationInfo& confirmation) const {
-  for (ConfirmationsObserver& observer : observers_) {
-    observer.OnFailedToConfirm(confirmation);
-  }
 }
 
 }  // namespace ads
