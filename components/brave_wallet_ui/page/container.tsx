@@ -115,7 +115,8 @@ function Container (props: Props) {
     importAccountError,
     importWalletError,
     showAddModal,
-    isCryptoWalletsInstalled,
+    isCryptoWalletsInitialized,
+    isMetaMaskInitialized,
     swapQuote,
     swapError
   } = props.page
@@ -569,8 +570,8 @@ function Container (props: Props) {
               onPasswordProvided={passwordProvided}
               onSubmit={completeWalletSetup}
               onShowRestore={onToggleShowRestore}
-              braveLegacyWalletDetected={isCryptoWalletsInstalled}
-              metaMaskWalletDetected={isMetaMaskInstalled}
+              isCryptoWalletsInitialized={isCryptoWalletsInitialized}
+              isMetaMaskInitialized={isMetaMaskInitialized}
               importError={importWalletError}
               onSetImportError={onSetImportWalletError}
               onImportCryptoWallets={onImportCryptoWallets}

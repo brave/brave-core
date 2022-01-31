@@ -248,7 +248,8 @@ export interface PageState {
   importAccountError: boolean
   importWalletError: ImportWalletError
   showAddModal: boolean
-  isCryptoWalletsInstalled: boolean
+  isCryptoWalletsInitialized: boolean
+  isMetaMaskInitialized: boolean
   swapQuote?: BraveWallet.SwapResponse
   swapError?: SwapErrorResponse
 }

@@ -115,8 +115,8 @@ export const _Onboarding = () => {
           onSubmit={complete}
           onPasswordProvided={passwordProvided}
           onShowRestore={onShowRestor}
-          braveLegacyWalletDetected={true}
-          metaMaskWalletDetected={true}
+          isCryptoWalletsInitialized={true}
+          isMetaMaskInitialized={true}
           onImportMetaMask={complete}
           onImportCryptoWallets={complete}
           onSetImportError={onSetImportError}

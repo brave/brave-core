@@ -14,8 +14,8 @@ import { OnboardingWrapper } from '../style'
 
 export interface Props {
   recoveryPhrase: string[]
-  metaMaskWalletDetected: boolean
-  braveLegacyWalletDetected: boolean
+  isMetaMaskInitialized: boolean
+  isCryptoWalletsInitialized: boolean
   importError: ImportWalletError
   checkIsStrongPassword: (value: string) => Promise<boolean>
   onSetImportError: (hasError: boolean) => void
@@ -29,8 +29,8 @@ export interface Props {
 function Onboarding (props: Props) {
   const {
     recoveryPhrase,
-    metaMaskWalletDetected,
-    braveLegacyWalletDetected,
+    isMetaMaskInitialized,
+    isCryptoWalletsInitialized,
     importError,
     checkIsStrongPassword,
     onSetImportError,
@@ -61,7 +61,7 @@ function Onboarding (props: Props) {
   }, [importError])
 
   const nextStep = () => {
-    if (onboardingStep === WalletOnboardingSteps.OnboardingWelcome && braveLegacyWalletDetected) {
+    if (onboardingStep === WalletOnboardingSteps.OnboardingWelcome && isCryptoWalletsInitialized) {
       setOnboardingStep(WalletOnboardingSteps.OnboardingImportCryptoWallets)
       return
     }
@@ -198,8 +198,8 @@ function Onboarding (props: Props) {
             onRestore={onShowRestore}
             onSetup={nextStep}
             onClickImportMetaMask={onClickImportMetaMask}
-            metaMaskWalletDetected={metaMaskWalletDetected}
-            cryptoWalletsDetected={braveLegacyWalletDetected}
+            isMetaMaskInitialized={isMetaMaskInitialized}
+            isCryptoWalletsInitialized={isCryptoWalletsInitialized}
           />
         }
         {onboardingStep === WalletOnboardingSteps.OnboardingCreatePassword &&
