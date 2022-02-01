@@ -253,6 +253,7 @@ const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
 const string kFilecoinKeyringId = "filecoin";
+const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
 enum FilecoinAddressProtocol {
