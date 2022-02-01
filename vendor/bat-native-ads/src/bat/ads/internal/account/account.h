@@ -12,11 +12,11 @@
 #include "base/observer_list.h"
 #include "bat/ads/internal/account/account_observer.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
+#include "bat/ads/internal/account/issuers/issuers_delegate.h"
+#include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
+#include "bat/ads/internal/account/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/internal/account/statement/statement_aliases.h"
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
-#include "bat/ads/internal/tokens/issuers/issuers_delegate.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
-#include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 
 namespace ads {
 
@@ -62,8 +62,8 @@ class Account final : public ConfirmationsDelegate,
  private:
   base::ObserverList<AccountObserver> observers_;
 
-  std::unique_ptr<Issuers> issuers_;
   std::unique_ptr<Confirmations> confirmations_;
+  std::unique_ptr<Issuers> issuers_;
   std::unique_ptr<RedeemUnblindedPaymentTokens>
       redeem_unblinded_payment_tokens_;
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
