@@ -292,7 +292,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
-            openBraveWallet();
+            openBraveWallet(false);
         } else if (id == R.id.brave_news_id) {
             openBraveNewsSettings();
         } else if (id == R.id.request_brave_vpn_id || id == R.id.request_brave_vpn_check_id) {
@@ -327,7 +327,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
     @Override
     protected void onDestroyInternal() {
         super.onDestroyInternal();
-        mBraveWalletService.close();
+        if (mBraveWalletService != null) {
+            mBraveWalletService.close();
+        }
     }
 
     private void InitBraveWalletService() {
@@ -850,9 +852,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         settingsLauncher.launchSettingsActivity(this, BraveNewsPreferences.class);
     }
 
-    public void openBraveWallet() {
+    public void openBraveWallet(boolean fromDapp) {
         Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
-        braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, true);
+        braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(braveWalletIntent);
     }

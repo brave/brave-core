@@ -67,7 +67,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/BraveWalletServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/EthTxServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/JsonRpcServiceFactory.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/SwapServiceFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AccountDetailActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/activities/AccountDetailsWithQrActivity.java",

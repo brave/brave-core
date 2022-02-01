@@ -50,6 +50,16 @@ void ApplyLifetimeToPermissionRequests(
     JNIEnv* env,
     const JavaParamRef<jobject>& obj,
     PermissionPromptAndroid* permission_prompt) {
+  std::vector<PermissionRequest*> requests =
+      permission_prompt->delegate()->Requests();
+  if (requests.size() != 0 &&
+      requests[0]->request_type() == permissions::RequestType::kBraveEthereum) {
+    // TODO(sergz) make a proper clean up as we don't call it on dialog dismiss
+    // currently
+    Java_BravePermissionDialogDelegate_disconnectMojoServices(env, obj);
+
+    return;
+  }
   if (!base::FeatureList::IsEnabled(features::kPermissionLifetime)) {
     return;
   }
@@ -88,10 +98,20 @@ void Java_PermissionDialogController_createDialog_BraveImpl(
 }  // namespace
 }  // namespace permissions
 
-#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT \
-  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
-#define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL \
-  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT                                \
+  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);             \
+  std::vector<PermissionRequest*> requests =                                   \
+      permission_prompt_->delegate()->Requests();                              \
+  if (requests.size() != 0 &&                                                  \
+      requests[0]->request_type() == permissions::RequestType::kBraveEthereum) \
+    return;
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL                                \
+  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);             \
+  std::vector<PermissionRequest*> requests =                                   \
+      permission_prompt_->delegate()->Requests();                              \
+  if (requests.size() != 0 &&                                                  \
+      requests[0]->request_type() == permissions::RequestType::kBraveEthereum) \
+    return;
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_ADD_WALLET_PARAMS \
   AddWalletParamsFromPermissionRequests(env, j_delegate_, permission_prompt_);
 #define Java_PermissionDialogController_createDialog \
