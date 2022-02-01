@@ -2949,6 +2949,9 @@ TEST_F(KeyringServiceUnitTest, PreCreateFilecoinEncryptor) {
     base::RunLoop().RunUntilIdle();
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
+    // filecoin keyring won't be created
+    EXPECT_FALSE(
+        service.IsKeyringCreated(brave_wallet::mojom::kFilecoinKeyringId));
   }
 }
 
