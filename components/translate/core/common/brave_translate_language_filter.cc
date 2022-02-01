@@ -21,13 +21,13 @@ constexpr base::StringPiece kTargetLanguages[] = {"de", "en", "es", "et", "ru"};
 }  // namespace
 
 bool IsSourceLanguageCodeSupported(const std::string& lang_code) {
-  if (!IsBraveTranslateGoAvailable())
+  if (!IsBraveTranslateGoAvailable() || !ShouldUseBergamotLanguageList())
     return true;
   return base::Contains(kSourceLanguages, lang_code);
 }
 
 bool IsTargetLanguageCodeSupported(const std::string& lang_code) {
-  if (!IsBraveTranslateGoAvailable())
+  if (!IsBraveTranslateGoAvailable() || !ShouldUseBergamotLanguageList())
     return true;
   return base::Contains(kTargetLanguages, lang_code);
 }
