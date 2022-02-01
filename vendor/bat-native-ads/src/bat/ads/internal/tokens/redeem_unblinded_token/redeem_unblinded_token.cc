@@ -139,12 +139,6 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   if (url_response.status_code == net::HTTP_NOT_FOUND) {
     BLOG(1, "Confirmation not found");
 
-    if (!security::Verify(confirmation)) {
-      BLOG(1, "Failed to verify confirmation");
-      OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
-      return;
-    }
-
     ConfirmationInfo new_confirmation = confirmation;
     new_confirmation.was_created = false;
 
@@ -167,6 +161,12 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to fetch payment token");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
+    return;
+  }
+
+  if (!security::Verify(confirmation)) {
+    BLOG(1, "Failed to verify confirmation");
+    OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ false);
     return;
   }
 
