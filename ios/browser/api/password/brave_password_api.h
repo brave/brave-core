@@ -31,6 +31,8 @@ OBJC_EXPORT
 @property(nonatomic, strong) NSURL* url;
 @property(nonatomic, nullable, copy) NSString* signOnRealm;
 @property(nonatomic, nullable, copy) NSDate* dateCreated;
+@property(nonatomic, nullable, copy) NSDate* dateLastUsed;
+@property(nonatomic, nullable, copy) NSDate* datePasswordChanged;
 @property(nonatomic, nullable, copy) NSString* usernameElement;
 @property(nonatomic, nullable, copy) NSString* usernameValue;
 @property(nonatomic, nullable, copy) NSString* passwordElement;
@@ -47,6 +49,10 @@ OBJC_EXPORT
 ///        port for SCHEME_HTML
 ///        The signon_realm is effectively the primary key used for retrieving
 ///        data from the database, so it must not be empty
+/// @param dateCreated - The date when login was saved
+/// @param dateLastUsed - The date when the login was last used by the user 
+/// to login to the site
+/// @param datePasswordChanged - The date when the password value was last changed
 /// @param usernameElement - The string represantation of the name of the
 /// username input element
 /// @param usernameValue - The string represantation of the username
@@ -56,6 +62,8 @@ OBJC_EXPORT
 - (instancetype)initWithURL:(NSURL*)url
                 signOnRealm:(nullable NSString*)signOnRealm
                 dateCreated:(nullable NSDate*)dateCreated
+               dateLastUsed:(nullable NSDate*)dateLastUsed
+        datePasswordChanged:(nullable NSDate*)datePasswordChanged
             usernameElement:(nullable NSString*)usernameElement
               usernameValue:(nullable NSString*)usernameValue
             passwordElement:(nullable NSString*)passwordElement

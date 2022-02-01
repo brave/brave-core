@@ -76,6 +76,8 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
   GURL gurl_;
   std::string signon_realm_;
   base::Time date_created_;
+  base::Time date_last_used_;
+  base::Time date_password_changed_;
   std::u16string username_element_;
   std::u16string username_value_;
   std::u16string password_element_;
@@ -89,6 +91,8 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 - (instancetype)initWithURL:(NSURL*)url
                 signOnRealm:(NSString*)signOnRealm
                 dateCreated:(NSDate*)dateCreated
+               dateLastUsed:(NSDate*)dateLastUsed
+        datePasswordChanged:(NSDate*)datePasswordChanged
             usernameElement:(NSString*)usernameElement
               usernameValue:(NSString*)usernameValue
             passwordElement:(NSString*)passwordElement
@@ -106,6 +110,13 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
       [self setDateCreated:dateCreated];
     }
 
+    if (dateLastUsed) {
+      [self setDateLastUsed:dateLastUsed];
+    }
+
+    if (datePasswordChanged) {
+      [self setDatePasswordChanged:datePasswordChanged];
+    }
     if (usernameElement) {
       [self setUsernameElement:usernameElement];
     }
@@ -151,8 +162,24 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
   date_created_ = base::Time::FromNSDate(dateCreated);
 }
 
+- (void)setDateLastUsed:(NSDate*)dateLastUsed {
+  date_last_used_ = base::Time::FromNSDate(dateLastUsed);
+}
+
+- (void)setDatePasswordChanged:(NSDate*)datePasswordChanged {
+  date_created_ = base::Time::FromNSDate(datePasswordChanged);
+}
+
 - (NSDate*)dateCreated {
   return date_created_.ToNSDate();
+}
+
+- (NSDate*)dateLastUsed {
+  return date_last_used_.ToNSDate();
+}
+
+- (NSDate*)datePasswordChanged {
+  return date_password_changed_.ToNSDate();
 }
 
 - (void)setUsernameElement:(NSString*)usernameElement {
@@ -314,6 +341,20 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
     passwordCredentialForm.date_created = base::Time::Now();
   }
 
+  if (passwordForm.dateLastUsed) {
+    passwordCredentialForm.date_last_used =
+        base::Time::FromNSDate(passwordForm.dateLastUsed);
+  } else {
+    passwordCredentialForm.date_last_used = base::Time::Now();
+  }
+
+  if (passwordForm.datePasswordChanged) {
+    passwordCredentialForm.date_password_modified =
+        base::Time::FromNSDate(passwordForm.datePasswordChanged);
+  } else {
+    passwordCredentialForm.date_password_modified = base::Time::Now();
+  }
+
   if (passwordForm.usernameValue && !passwordForm.passwordValue) {
     passwordCredentialForm.scheme =
         password_manager::PasswordForm::Scheme::kUsernameOnly;
@@ -376,6 +417,8 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
             initWithURL:net::NSURLWithGURL(result->url)
             signOnRealm:base::SysUTF8ToNSString(result->signon_realm)
             dateCreated:result->date_created.ToNSDate()
+            dateLastUsed:result->date_last_used.ToNSDate()
+            datePasswordChanged:result->date_password_modified.ToNSDate()
         usernameElement:base::SysUTF16ToNSString(result->username_element)
           usernameValue:base::SysUTF16ToNSString(result->username_value)
         passwordElement:base::SysUTF16ToNSString(result->password_element)
