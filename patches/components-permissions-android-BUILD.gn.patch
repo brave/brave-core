@@ -6,7 +6,7 @@ index 13ecd738384ecdc89a644b4abcaa96faed333336..9f4240d7ca46ec69c0ebe4a2f53c5e86
      "java/src/org/chromium/components/permissions/nfc/NfcSystemLevelPrompt.java",
      "java/src/org/chromium/components/permissions/nfc/NfcSystemLevelSetting.java",
    ]
-+  sources += brave_components_permissions_java_sources
++  sources += brave_components_permissions_java_sources deps += brave_components_permissions_java_deps
    deps = [
      ":core_java",
      ":java_resources",
