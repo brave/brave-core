@@ -9,6 +9,7 @@
 
 #include "base/base64.h"
 #include "base/logging.h"
+#include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
 #include "components/os_crypt/os_crypt_mocker.h"
 #include "components/prefs/testing_pref_service.h"
@@ -94,6 +95,11 @@ TEST_F(BraveSyncPrefsTest, FailedToDecryptBraveSeedValue) {
   EXPECT_TRUE(failed_to_decrypt);
 
   OSCryptMocker::TearDown();
+}
+
+using BraveSyncPrefsDeathTest = BraveSyncPrefsTest;
+TEST_F(BraveSyncPrefsDeathTest, GetSeedOutNullptrCHECK) {
+  EXPECT_CHECK_DEATH(brave_sync_prefs()->GetSeed(nullptr));
 }
 
 }  // namespace brave_sync

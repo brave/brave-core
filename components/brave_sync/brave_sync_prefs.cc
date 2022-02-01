@@ -103,13 +103,12 @@ std::string Prefs::GetSeedPath() {
 }
 
 std::string Prefs::GetSeed(bool* failed_to_decrypt) const {
-  if (failed_to_decrypt)
-    *failed_to_decrypt = true;
+  CHECK(failed_to_decrypt);
+  *failed_to_decrypt = true;
 
   const std::string encoded_seed = pref_service_->GetString(kSyncV2Seed);
   if (encoded_seed.empty()) {
-    if (failed_to_decrypt)
-      *failed_to_decrypt = false;
+    *failed_to_decrypt = false;
     return std::string();
   }
 
@@ -125,8 +124,7 @@ std::string Prefs::GetSeed(bool* failed_to_decrypt) const {
     return std::string();
   }
 
-  if (failed_to_decrypt)
-    *failed_to_decrypt = false;
+  *failed_to_decrypt = false;
   return seed;
 }
 
