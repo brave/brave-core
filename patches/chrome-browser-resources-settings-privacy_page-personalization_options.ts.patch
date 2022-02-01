@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index dba55563b94ccd173fbc413b399e4a5c3a87d135..4cff9794af13eaf9bfffffb601cffdf72e392488 100644
+index 093bdcc8d22d794fa2a2204b34f1609d749911da..4cff9794af13eaf9bfffffb601cffdf72e392488 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -70,7 +70,7 @@ export class SettingsPersonalizationOptionsElement extends
@@ -38,14 +38,3 @@ index dba55563b94ccd173fbc413b399e4a5c3a87d135..4cff9794af13eaf9bfffffb601cffdf7
    private onMetricsReportingChange_() {
      const enabled = this.$.metricsReportingControl.checked;
      this.browserProxy_.setMetricsReportingEnabled(enabled);
-@@ -202,8 +202,8 @@ export class SettingsPersonalizationOptionsElement extends
-     }
-     // </if>
-     if (this.pageVisibility === undefined) {
--      // Happens in tests.
--      return false;
-+      // pageVisibility isn't defined in non-Guest profiles (crbug.com/1288911).
-+      return true;
-     }
-     return this.pageVisibility.searchPrediction;
-   }
