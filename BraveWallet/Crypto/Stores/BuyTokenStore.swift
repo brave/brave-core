@@ -9,25 +9,25 @@ import BraveCore
 /// A store contains data for buying tokens
 public class BuyTokenStore: ObservableObject {
   /// The current selected token to buy. Default with nil value.
-  @Published var selectedBuyToken: BraveWallet.ERCToken?
+  @Published var selectedBuyToken: BraveWallet.BlockchainToken?
   /// All available buyable tokens
-  @Published var buyTokens: [BraveWallet.ERCToken] = []
+  @Published var buyTokens: [BraveWallet.BlockchainToken] = []
   
-  private let tokenRegistry: BraveWalletERCTokenRegistry
-  private let rpcController: BraveWalletEthJsonRpcController
-  private let buyAssetUrls: [String: String] = [BraveWallet.RopstenChainId: "https://faucet.metamask.io/",
-                                                BraveWallet.RinkebyChainId: "https://www.rinkeby.io/",
+  private let blockchainRegistry: BraveWalletBlockchainRegistry
+  private let rpcService: BraveWalletJsonRpcService
+  private let buyAssetUrls: [String: String] = [BraveWallet.RopstenChainId: "https://faucet.ropsten.be/",
+                                                BraveWallet.RinkebyChainId: "https://www.rinkeby.io/#stats",
                                                 BraveWallet.GoerliChainId: "https://goerli-faucet.slock.it/",
                                                 BraveWallet.KovanChainId: "https://github.com/kovan-testnet/faucet",
                                                 BraveWallet.LocalhostChainId: ""]
   
   public init(
-    tokenRegistry: BraveWalletERCTokenRegistry,
-    rpcController: BraveWalletEthJsonRpcController,
-    prefilledToken: BraveWallet.ERCToken?
+    blockchainRegistry: BraveWalletBlockchainRegistry,
+    rpcService: BraveWalletJsonRpcService,
+    prefilledToken: BraveWallet.BlockchainToken?
   ) {
-    self.tokenRegistry = tokenRegistry
-    self.rpcController = rpcController
+    self.blockchainRegistry = blockchainRegistry
+    self.rpcService = rpcService
     self.selectedBuyToken = prefilledToken
   }
   
@@ -37,22 +37,22 @@ public class BuyTokenStore: ObservableObject {
       return
     }
     
-    tokenRegistry.buyUrl(account.address, symbol: token.symbol, amount: amount) { url in
+    blockchainRegistry.buyUrl(BraveWallet.MainnetChainId, address: account.address, symbol: token.symbol, amount: amount) { url in
       completion(url)
     }
   }
   
   func fetchTestFaucetUrl(completion: @escaping (_ url: String?) -> Void) {
-    rpcController.chainId { [self] chainId in
+    rpcService.chainId { [self] chainId in
       completion(self.buyAssetUrls[chainId])
     }
   }
   
   func fetchBuyTokens() {
-    self.tokenRegistry.buyTokens { tokens in
-      self.buyTokens = tokens.sorted(by: { $0.symbol < $1.symbol })
-      if self.selectedBuyToken == nil, let index = tokens.firstIndex(where: { $0.symbol == "BAT" }) {
-        self.selectedBuyToken = tokens[index]
+    blockchainRegistry.buyTokens(BraveWallet.MainnetChainId) { [self] tokens in
+      buyTokens = tokens.sorted(by: { $0.symbol < $1.symbol })
+      if selectedBuyToken == nil, let index = tokens.firstIndex(where: { $0.symbol == "BAT" }) {
+        selectedBuyToken = tokens[index]
       }
     }
   }

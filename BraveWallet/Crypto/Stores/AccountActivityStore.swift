@@ -12,25 +12,25 @@ class AccountActivityStore: ObservableObject {
   @Published private(set) var transactions: [BraveWallet.TransactionInfo] = []
   
   private let walletService: BraveWalletBraveWalletService
-  private let rpcController: BraveWalletEthJsonRpcController
-  private let assetRatioController: BraveWalletAssetRatioController
-  private let txController: BraveWalletEthTxController
+  private let rpcService: BraveWalletJsonRpcService
+  private let assetRatioService: BraveWalletAssetRatioService
+  private let txService: BraveWalletEthTxService
   
   init(
     account: BraveWallet.AccountInfo,
     walletService: BraveWalletBraveWalletService,
-    rpcController: BraveWalletEthJsonRpcController,
-    assetRatioController: BraveWalletAssetRatioController,
-    txController: BraveWalletEthTxController
+    rpcService: BraveWalletJsonRpcService,
+    assetRatioService: BraveWalletAssetRatioService,
+    txService: BraveWalletEthTxService
   ) {
     self.account = account
     self.walletService = walletService
-    self.rpcController = rpcController
-    self.assetRatioController = assetRatioController
-    self.txController = txController
+    self.rpcService = rpcService
+    self.assetRatioService = assetRatioService
+    self.txService = txService
     
-    self.rpcController.add(self)
-    self.txController.add(self)
+    self.rpcService.add(self)
+    self.txService.add(self)
   }
   
   func update() {
@@ -39,12 +39,12 @@ class AccountActivityStore: ObservableObject {
   }
   
   private func fetchAssets() {
-    rpcController.chainId { [self] chainId in
+    rpcService.chainId { [self] chainId in
       walletService.userAssets(chainId) { tokens in
         assets = tokens.map {
           .init(token: $0, decimalBalance: 0, price: "", history: [])
         }
-        assetRatioController.price(
+        assetRatioService.price(
           tokens.map { $0.symbol.lowercased() },
           toAssets: ["usd"],
           timeframe: .oneDay) { success, prices in
@@ -57,7 +57,7 @@ class AccountActivityStore: ObservableObject {
             }
           }
         for token in tokens {
-          rpcController.balance(for: token, in: account) { value in
+          rpcService.balance(for: token, in: account) { value in
             if let value = value, let index = assets.firstIndex(where: {
               $0.token.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
             }) {
@@ -70,14 +70,14 @@ class AccountActivityStore: ObservableObject {
   }
   
   private func fetchTransactions() {
-    txController.allTransactionInfo(account.address) { transactions in
+    txService.allTransactionInfo(account.address) { transactions in
       self.transactions = transactions
         .sorted(by: { $0.createdTime > $1.createdTime })
     }
   }
 }
 
-extension AccountActivityStore: BraveWalletEthJsonRpcControllerObserver {
+extension AccountActivityStore: BraveWalletJsonRpcServiceObserver {
   func chainChangedEvent(_ chainId: String) {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
       // Handle small gap between chain changing and txController having the correct chain Id
@@ -90,7 +90,7 @@ extension AccountActivityStore: BraveWalletEthJsonRpcControllerObserver {
   }
 }
 
-extension AccountActivityStore: BraveWalletEthTxControllerObserver {
+extension AccountActivityStore: BraveWalletEthTxServiceObserver {
   func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
   }
   func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {

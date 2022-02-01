@@ -25,7 +25,7 @@ extension BraveWallet.EthereumChain: Identifiable {
     chainId
   }
   
-  public var nativeToken: BraveWallet.ERCToken {
+  public var nativeToken: BraveWallet.BlockchainToken {
     .init(contractAddress: "",
           name: symbolName,
           logo: iconUrls.first ?? "",
@@ -34,12 +34,13 @@ extension BraveWallet.EthereumChain: Identifiable {
           symbol: symbol,
           decimals: decimals,
           visible: false,
-          tokenId: ""
+          tokenId: "",
+          coingeckoId: ""
     )
   }
 }
 
-extension BraveWallet.ERCToken: Identifiable {
+extension BraveWallet.BlockchainToken: Identifiable {
   public var id: String {
     symbol.lowercased()
   }
@@ -62,14 +63,14 @@ extension BraveWallet.ERCToken: Identifiable {
 }
 
 extension BraveWallet {
-  /// The address that is expected when you are swapping ETH via SwapController APIs
+  /// The address that is expected when you are swapping ETH via SwapService APIs
   public static let ethSwapAddress: String = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
   
-  ///  The address that is expected when you are swapping DAI via SwapController APIs
+  ///  The address that is expected when you are swapping DAI via SwapService APIs
   ///  Also the contract address to fetch DAI balance on Ropsten
   public static let daiSwapAddress: String = "0xad6d458402f60fd3bd25163575031acdce07538d"
   
-  ///  The address that is expected when you are swapping USDC via SwapController APIs
+  ///  The address that is expected when you are swapping USDC via SwapService APIs
   ///  Also the contract address to fetch USDC balance on Ropsten
   public static let usdcSwapAddress: String = "0x07865c6e87b9f70255377e024ace6630c1eaa37f"
   

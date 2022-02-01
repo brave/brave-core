@@ -7,9 +7,9 @@ import Foundation
 import BraveCore
 import SwiftUI
 
-/// An interface that helps you interact with a eth json-rpc controller
+/// An interface that helps you interact with a json-rpc service
 ///
-/// This wraps a EthJsonRpcController that you would obtain through BraveCore and makes it observable
+/// This wraps a JsonRpcService that you would obtain through BraveCore and makes it observable
 public class NetworkStore: ObservableObject {
   @Published private(set) var ethereumChains: [BraveWallet.EthereumChain] = []
   @Published private(set) var selectedChainId: String = BraveWallet.MainnetChainId
@@ -23,30 +23,30 @@ public class NetworkStore: ObservableObject {
       get: { self.ethereumChains.first(where: { $0.chainId == self.selectedChainId }) ?? .init() },
       set: {
         self.selectedChainId = $0.chainId
-        self.controller.setNetwork($0.chainId) { _ in }
+        self.rpcService.setNetwork($0.chainId) { _ in }
       }
     )
   }
   
-  private let controller: BraveWalletEthJsonRpcController
+  private let rpcService: BraveWalletJsonRpcService
   
-  public init(rpcController: BraveWalletEthJsonRpcController) {
-    controller = rpcController
-    controller.allNetworks { chains in
+  public init(rpcService: BraveWalletJsonRpcService) {
+    self.rpcService = rpcService
+    self.rpcService.allNetworks { chains in
       self.ethereumChains = chains.filter {
         $0.chainId != BraveWallet.LocalhostChainId
       }
     }
-    controller.chainId { chainId in
+    rpcService.chainId { chainId in
       let id = chainId.isEmpty ? BraveWallet.MainnetChainId : chainId
       self.selectedChainId = id
-      self.controller.setNetwork(id) { _ in }
+      self.rpcService.setNetwork(id) { _ in }
     }
-    controller.add(self)
+    rpcService.add(self)
   }
 }
 
-extension NetworkStore: BraveWalletEthJsonRpcControllerObserver {
+extension NetworkStore: BraveWalletJsonRpcServiceObserver {
   public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
   }
   public func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {

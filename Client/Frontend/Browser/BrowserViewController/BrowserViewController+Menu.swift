@@ -141,9 +141,9 @@ extension BrowserViewController {
                 }
             }
             MenuItemButton(icon: #imageLiteral(resourceName: "menu-settings").template, title: Strings.settingsMenuItem) { [unowned self, unowned menuController] in
-                let keyringStore = BraveWallet.KeyringControllerFactory
+                let keyringStore = BraveWallet.KeyringServiceFactory
                     .get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
-                    .map { KeyringStore(keyringController: $0) }
+                    .map { KeyringStore(keyringService: $0) }
                 
                 let vc = SettingsViewController(profile: self.profile,
                                                 tabManager: self.tabManager,
@@ -163,25 +163,25 @@ extension BrowserViewController {
     private func presentWallet() {
         let privateMode = PrivateBrowsingManager.shared.isPrivateBrowsing
         guard
-            let keyringController = BraveWallet.KeyringControllerFactory.get(privateMode: privateMode),
-            let rpcController = BraveWallet.EthJsonRpcControllerFactory.get(privateMode: privateMode),
-            let assetRatioController = BraveWallet.AssetRatioControllerFactory.get(privateMode: privateMode),
+            let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: privateMode),
+            let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: privateMode),
+            let assetRatioService = BraveWallet.AssetRatioServiceFactory.get(privateMode: privateMode),
             let walletService = BraveWallet.ServiceFactory.get(privateMode: privateMode),
-            let swapController = BraveWallet.SwapControllerFactory.get(privateMode: privateMode),
-            let txController = BraveWallet.EthTxControllerFactory.get(privateMode: privateMode)
+            let swapService = BraveWallet.SwapServiceFactory.get(privateMode: privateMode),
+            let txService = BraveWallet.EthTxServiceFactory.get(privateMode: privateMode)
         else {
             log.error("Failed to load wallet. One or more services were unavailable")
             return
         }
         
         let walletStore = WalletStore(
-            keyringController: keyringController,
-            rpcController: rpcController,
+            keyringService: keyringService,
+            rpcService: rpcService,
             walletService: walletService,
-            assetRatioController: assetRatioController,
-            swapController: swapController,
-            tokenRegistry: BraveCoreMain.ercTokenRegistry,
-            transactionController: txController
+            assetRatioService: assetRatioService,
+            swapService: swapService,
+            blockchainRegistry: BraveCoreMain.blockchainRegistry,
+            txService: txService
         )
         
         let vc = WalletHostingViewController(walletStore: walletStore)

@@ -16,7 +16,7 @@ import BraveCore
 ///       .frame(width: 20, height: 20)
 ///
 struct AssetIconView: View {
-  var token: BraveWallet.ERCToken
+  var token: BraveWallet.BlockchainToken
   @ScaledMetric var length: CGFloat = 40
   
   private var fallbackMonogram: some View {
@@ -79,7 +79,8 @@ struct AssetIconView_Previews: PreviewProvider {
       symbol: "XYO",
       decimals: 18,
       visible: false,
-      tokenId: ""
+      tokenId: "",
+      coingeckoId: ""
     ))
       .previewLayout(.sizeThatFits)
       .padding()

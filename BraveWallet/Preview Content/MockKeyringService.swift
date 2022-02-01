@@ -10,16 +10,19 @@ import BraveCore
 /// keyring functionality for the use of SwiftUI Previews.
 ///
 /// - note: Do not use this directly, use ``CryptoKeyringStore.previewStore``
-class TestKeyringController: NSObject, BraveWalletKeyringController {
-  private let keyring: BraveWallet.KeyringInfo = .init()
+class MockKeyringService: BraveWalletKeyringService {
+  private var keyrings: [BraveWallet.KeyringInfo] = [.init(id: BraveWallet.DefaultKeyringId, isDefaultKeyringCreated: true, isLocked: false, isBackedUp: true, accountInfos: [])]
   private var privateKeys: [String: String] = [:]
   private var password = ""
   // Not a real phrase, has a duplicated word for testing
   private let mnemonic = "pass entire pelican lock repair desert entire cactus actress remain gossip rail"
-  private var observers: NSHashTable<BraveWalletKeyringControllerObserver> = .weakObjects()
+  private var observers: NSHashTable<BraveWalletKeyringServiceObserver> = .weakObjects()
   private var selectedAccount: BraveWallet.AccountInfo?
+  private var defaultKeyring: BraveWallet.KeyringInfo {
+    return keyrings.first(where: { $0.id == BraveWallet.DefaultKeyringId }) ?? keyrings[0]
+  }
   
-  func add(_ observer: BraveWalletKeyringControllerObserver) {
+  func add(_ observer: BraveWalletKeyringServiceObserver) {
     observers.add(observer)
   }
   
@@ -60,7 +63,7 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     let info = BraveWallet.AccountInfo()
     info.name = accountName
     info.address = nextAddress()
-    keyring.accountInfos.append(info)
+    defaultKeyring.accountInfos.append(info)
     observers.allObjects.forEach {
       $0.accountsChanged()
     }
@@ -68,11 +71,11 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
   }
   
   func createWallet(_ password: String, completion: @escaping (String) -> Void) {
-    keyring.isDefaultKeyringCreated = true
-    keyring.isLocked = false
+    defaultKeyring.isDefaultKeyringCreated = true
+    defaultKeyring.isLocked = false
     self.password = password
     addAccount("Account 1") { [self] _ in
-      selectedAccount = keyring.accountInfos.first
+      selectedAccount = defaultKeyring.accountInfos.first
     }
     observers.allObjects.forEach {
       $0.keyringCreated()
@@ -80,27 +83,24 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     completion(mnemonic)
   }
   
-  func defaultKeyringInfo(_ completion: @escaping (BraveWallet.KeyringInfo) -> Void) {
-    completion(keyring)
-  }
-  
   func keyringInfo(_ keyringId: String, completion: @escaping (BraveWallet.KeyringInfo) -> Void) {
-    completion(keyring)
+    let keyringInfo = keyrings.first(where: { $0.id == keyringId }) ?? keyrings[0]
+    completion(keyringInfo.copy() as! BraveWallet.KeyringInfo) // swiftlint:disable:this force_cast
   }
   
   func isLocked(_ completion: @escaping (Bool) -> Void) {
-    completion(keyring.isLocked)
+    completion(defaultKeyring.isLocked)
   }
   
   func lock() {
-    keyring.isLocked = true
+    defaultKeyring.isLocked = true
     observers.allObjects.forEach {
       $0.locked()
     }
   }
   
   func isWalletBackedUp(_ completion: @escaping (Bool) -> Void) {
-    completion(keyring.isBackedUp)
+    completion(defaultKeyring.isBackedUp)
   }
   
   func mnemonic(forDefaultKeyring completion: @escaping (String) -> Void) {
@@ -108,13 +108,13 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
   }
   
   func unlock(_ password: String, completion: @escaping (Bool) -> Void) {
-    if !keyring.isDefaultKeyringCreated {
+    if !defaultKeyring.isDefaultKeyringCreated {
       completion(false)
       return
     }
     let passwordsMatch = self.password == password
     if passwordsMatch {
-      keyring.isLocked = false
+      defaultKeyring.isLocked = false
       observers.allObjects.forEach {
         $0.unlocked()
       }
@@ -123,22 +123,13 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
   }
   
   func notifyWalletBackupComplete() {
-    keyring.isBackedUp = true
+    defaultKeyring.isBackedUp = true
     observers.allObjects.forEach {
       $0.backedUp()
     }
   }
   
-  func reset() {
-    keyring.isBackedUp = false
-    keyring.isLocked = false
-    keyring.isDefaultKeyringCreated = false
-    keyring.isBackedUp = false
-    keyring.accountInfos.removeAll()
-  }
-  
   func restoreWallet(_ mnemonic: String, password: String, isLegacyBraveWallet: Bool, completion: @escaping (Bool) -> Void) {
-    reset()
     self.password = password
     // Test store does not test phrase validity
     observers.allObjects.forEach {
@@ -186,7 +177,7 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     info.address = nextImportedAddress()
     info.isImported = true
     privateKeys[info.address] = privateKey
-    keyring.accountInfos.append(info)
+    defaultKeyring.accountInfos.append(info)
     observers.allObjects.forEach {
       $0.accountsChanged()
     }
@@ -218,33 +209,15 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
   }
   
   func removeImportedAccount(_ address: String, completion: @escaping (Bool) -> Void) {
-    guard let index = keyring.accountInfos.firstIndex(where: { $0.address == address }) else {
+    guard let index = defaultKeyring.accountInfos.firstIndex(where: { $0.address == address }) else {
       completion(false)
       return
     }
-    keyring.accountInfos.remove(at: index)
+    defaultKeyring.accountInfos.remove(at: index)
     observers.allObjects.forEach {
       $0.accountsChanged()
     }
     completion(true)
-  }
-  
-  func setDefaultKeyringDerivedAccountName(_ address: String, name: String, completion: @escaping (Bool) -> Void) {
-    if let account = keyring.accountInfos.first(where: { $0.address == address }) {
-      account.name = name
-      completion(true)
-      return
-    }
-    completion(false)
-  }
-  
-  func setDefaultKeyringImportedAccountName(_ address: String, name: String, completion: @escaping (Bool) -> Void) {
-    if let account = keyring.accountInfos.first(where: { $0.address == address && $0.isImported }) {
-      account.name = name
-      completion(true)
-      return
-    }
-    completion(false)
   }
   
   func setDefaultKeyringHardwareAccountName(_ address: String, name: String, completion: @escaping (Bool) -> Void) {
@@ -252,21 +225,9 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
     completion(false)
   }
   
-  func addHardwareAccounts(_ info: [BraveWallet.HardwareWalletAccount]) {
-    // Hardware wallets not supported on iOS
-  }
-  
   func hardwareAccounts(_ completion: @escaping ([BraveWallet.AccountInfo]) -> Void) {
     // Hardware wallets not supported on iOS
     completion([])
-  }
-  
-  func removeHardwareAccount(_ address: String) {
-    // Hardware wallets not supported on iOS
-  }
-  
-  func notifyUserInteraction() {
-    // Test keyring will not auto-lock
   }
   
   func selectedAccount(_ completion: @escaping (String?) -> Void) {
@@ -274,7 +235,7 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
   }
   
   func setSelectedAccount(_ address: String, completion: @escaping (Bool) -> Void) {
-    guard let account = keyring.accountInfos.first(where: { $0.address == address }) else {
+    guard let account = defaultKeyring.accountInfos.first(where: { $0.address == address }) else {
       completion(false)
       return
     }
@@ -331,5 +292,46 @@ class TestKeyringController: NSObject, BraveWalletKeyringController {
   
   func hasPendingUnlockRequest(_ completion: @escaping (Bool) -> Void) {
     completion(false)
+  }
+  
+  func setKeyringDerivedAccountName(_ keyringId: String, address: String, name: String, completion: @escaping (Bool) -> Void) {
+    keyringInfo(keyringId) { keyring in
+      if let account = keyring.accountInfos.first(where: { $0.address == address }) {
+        account.name = name
+        completion(true)
+        return
+      }
+      completion(false)
+    }
+  }
+  
+  func setKeyringImportedAccountName(_ keyringId: String, address: String, name: String, completion: @escaping (Bool) -> Void) {
+    keyringInfo(keyringId) { keyring in
+      if let account = keyring.accountInfos.first(where: { $0.address == address && $0.isImported }) {
+        account.name = name
+        completion(true)
+        return
+      }
+      completion(false)
+    }
+  }
+  
+  func keyringsInfo(_ keyrings: [String], completion: @escaping ([BraveWallet.KeyringInfo]) -> Void) {
+    var keyringInfo = [BraveWallet.KeyringInfo]()
+    for item in self.keyrings {
+      if keyrings.contains(item.id) {
+        keyringInfo.append(item.copy() as! BraveWallet.KeyringInfo) // swiftlint:disable:this force_cast
+      }
+    }
+    completion(keyringInfo)
+  }
+  
+  func addHardwareAccounts(_ info: [BraveWallet.HardwareWalletAccount]) {
+  }
+  
+  func removeHardwareAccount(_ address: String) {
+  }
+  
+  func notifyUserInteraction() {
   }
 }

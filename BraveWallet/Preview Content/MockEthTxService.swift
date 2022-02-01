@@ -8,7 +8,7 @@ import BraveCore
 
 #if DEBUG
 
-class TestEthTxController: BraveWalletEthTxController {
+class MockEthTxService: BraveWalletEthTxService {
   func nonce(forHardwareTransaction txMetaId: String, completion: @escaping (String?) -> Void) {
     completion(nil)
   }
@@ -25,36 +25,12 @@ class TestEthTxController: BraveWalletEthTxController {
     completion(false, [])
   }
   
-  func setDataForUnapprovedTransaction(_ txMetaId: String, data: [NSNumber], completion: @escaping (Bool) -> Void) {
-  }
-  
-  func speedupOrCancelTransaction(_ txMetaId: String, cancel: Bool, completion: @escaping (Bool, String, String) -> Void) {
-  }
-  
-  func retryTransaction(_ txMetaId: String, completion: @escaping (Bool, String, String) -> Void) {
-  }
-  
-  func approveHardwareTransaction(_ txMetaId: String, completion: @escaping (Bool, String) -> Void) {
-  }
-  
-  func processLedgerSignature(_ txMetaId: String, v: String, r: String, s: String, completion: @escaping (Bool) -> Void) {
-  }
-  
   func addUnapprovedTransaction(_ txData: BraveWallet.TxData, from: String, completion: @escaping (Bool, String, String) -> Void) {
     completion(true, "txMetaId", "")
   }
   
   func addUnapproved1559Transaction(_ txData: BraveWallet.TxData1559, from: String, completion: @escaping (Bool, String, String) -> Void) {
     completion(true, "txMetaId", "")
-  }
-  
-  func approveTransaction(_ txMetaId: String, completion: @escaping (Bool) -> Void) {
-  }
-  
-  func rejectTransaction(_ txMetaId: String, completion: @escaping (Bool) -> Void) {
-  }
-  
-  func setGasPriceAndLimitForUnapprovedTransaction(_ txMetaId: String, gasPrice: String, gasLimit: String, completion: @escaping (Bool) -> Void) {
   }
   
   func makeErc20TransferData(_ toAddress: String, amount: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
@@ -65,16 +41,44 @@ class TestEthTxController: BraveWalletEthTxController {
     completion(true, .init())
   }
   
-  func allTransactionInfo(_ from: String, completion: @escaping ([BraveWallet.TransactionInfo]) -> Void) {
+  func approveTransaction(_ txMetaId: String, completion: @escaping (Bool) -> Void) {
   }
   
-  func add(_ observer: BraveWalletEthTxControllerObserver) {
+  func rejectTransaction(_ txMetaId: String, completion: @escaping (Bool) -> Void) {
+  }
+  
+  func setGasPriceAndLimitForUnapprovedTransaction(_ txMetaId: String, gasPrice: String, gasLimit: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
   }
   
   func setGasFeeAndLimitForUnapprovedTransaction(_ txMetaId: String, maxPriorityFeePerGas: String, maxFeePerGas: String, gasLimit: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
   }
   
-  func makeErc721Transfer(fromData from: String, to: String, tokenId: String, completion: @escaping (Bool, [NSNumber]) -> Void) {
+  func setDataForUnapprovedTransaction(_ txMetaId: String, data: [NSNumber], completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
+  func setNonceForUnapprovedTransaction(_ txMetaId: String, nonce: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
+  func allTransactionInfo(_ from: String, completion: @escaping ([BraveWallet.TransactionInfo]) -> Void) {
+    completion([])
+  }
+  
+  func add(_ observer: BraveWalletEthTxServiceObserver) {
+  }
+  
+  func speedupOrCancelTransaction(_ txMetaId: String, cancel: Bool, completion: @escaping (Bool, String, String) -> Void) {
+    completion(false, "", "Error Message")
+  }
+  
+  func retryTransaction(_ txMetaId: String, completion: @escaping (Bool, String, String) -> Void) {
+    completion(false, "", "Error Message")
+  }
+  
+  func reset() {
   }
 }
 

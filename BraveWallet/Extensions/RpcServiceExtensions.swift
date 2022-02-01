@@ -6,13 +6,13 @@
 import Foundation
 import BraveCore
 
-extension BraveWalletEthJsonRpcController {
-  /// Obtain the decimal balance of an `ERCToken` for a given account
+extension BraveWalletJsonRpcService {
+  /// Obtain the decimal balance of an `BlockchainToken` for a given account
   ///
   /// If the call fails for some reason or the resulting wei cannot be converted,
   /// `completion` will be called with `nil`
   func balance(
-    for token: BraveWallet.ERCToken,
+    for token: BraveWallet.BlockchainToken,
     in account: BraveWallet.AccountInfo,
     completion: @escaping (Double?) -> Void
   ) {
@@ -34,7 +34,7 @@ extension BraveWalletEthJsonRpcController {
     }
     network { [self] network in
       if token.symbol == network.symbol {
-        balance(account.address, completion: convert)
+        balance(account.address, coin: .eth, completion: convert)
       } else if token.isErc20 {
         erc20TokenBalance(
           token.contractAddress(in: network),

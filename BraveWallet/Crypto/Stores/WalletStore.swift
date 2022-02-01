@@ -18,34 +18,34 @@ public class WalletStore {
   private var cancellable: AnyCancellable?
   
   public init(
-    keyringController: BraveWalletKeyringController,
-    rpcController: BraveWalletEthJsonRpcController,
+    keyringService: BraveWalletKeyringService,
+    rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
-    assetRatioController: BraveWalletAssetRatioController,
-    swapController: BraveWalletSwapController,
-    tokenRegistry: BraveWalletERCTokenRegistry,
-    transactionController: BraveWalletEthTxController
+    assetRatioService: BraveWalletAssetRatioService,
+    swapService: BraveWalletSwapService,
+    blockchainRegistry: BraveWalletBlockchainRegistry,
+    txService: BraveWalletEthTxService
   ) {
-    self.keyringStore = .init(keyringController: keyringController)
+    self.keyringStore = .init(keyringService: keyringService)
     self.setUp(
-      keyringController: keyringController,
-      rpcController: rpcController,
+      keyringService: keyringService,
+      rpcService: rpcService,
       walletService: walletService,
-      assetRatioController: assetRatioController,
-      swapController: swapController,
-      tokenRegistry: tokenRegistry,
-      transactionController: transactionController
+      assetRatioService: assetRatioService,
+      swapService: swapService,
+      blockchainRegistry: blockchainRegistry,
+      txService: txService
     )
   }
   
   private func setUp(
-    keyringController: BraveWalletKeyringController,
-    rpcController: BraveWalletEthJsonRpcController,
+    keyringService: BraveWalletKeyringService,
+    rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
-    assetRatioController: BraveWalletAssetRatioController,
-    swapController: BraveWalletSwapController,
-    tokenRegistry: BraveWalletERCTokenRegistry,
-    transactionController: BraveWalletEthTxController
+    assetRatioService: BraveWalletAssetRatioService,
+    swapService: BraveWalletSwapService,
+    blockchainRegistry: BraveWalletBlockchainRegistry,
+    txService: BraveWalletEthTxService
   ) {
     self.cancellable = self.keyringStore.$keyring
       .map(\.isDefaultKeyringCreated)
@@ -56,13 +56,13 @@ public class WalletStore {
           self.cryptoStore = nil
         } else if isDefaultKeyringCreated, self.cryptoStore == nil {
           self.cryptoStore = CryptoStore(
-            keyringController: keyringController,
-            rpcController: rpcController,
+            keyringService: keyringService,
+            rpcService: rpcService,
             walletService: walletService,
-            assetRatioController: assetRatioController,
-            swapController: swapController,
-            tokenRegistry: tokenRegistry,
-            transactionController: transactionController
+            assetRatioService: assetRatioService,
+            swapService: swapService,
+            blockchainRegistry: blockchainRegistry,
+            txService: txService
           )
         }
     }

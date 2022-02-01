@@ -41,7 +41,7 @@ struct BuySendSwapDestination: Identifiable, Equatable, Hashable {
   }
   
   var kind: Kind
-  var initialToken: BraveWallet.ERCToken?
+  var initialToken: BraveWallet.BlockchainToken?
   var id: String { kind.id }
 }
 

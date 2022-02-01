@@ -11,9 +11,9 @@ import Shared
 /// A store contains data for swap tokens
 public class SwapTokenStore: ObservableObject {
   /// All  tokens for searching use
-  @Published var allTokens: [BraveWallet.ERCToken] = []
+  @Published var allTokens: [BraveWallet.BlockchainToken] = []
   /// The current selected token to swap from. Default with nil value.
-  @Published var selectedFromToken: BraveWallet.ERCToken? {
+  @Published var selectedFromToken: BraveWallet.BlockchainToken? {
     didSet {
       if let token = selectedFromToken {
         fetchTokenBalance(for: token) { [weak self] balance in
@@ -23,7 +23,7 @@ public class SwapTokenStore: ObservableObject {
     }
   }
   /// The current selected token to swap to. Default with nil value
-  @Published var selectedToToken: BraveWallet.ERCToken? {
+  @Published var selectedToToken: BraveWallet.BlockchainToken? {
     didSet {
       if let token = selectedToToken {
         fetchTokenBalance(for: token) { [weak self] balance in
@@ -95,12 +95,12 @@ public class SwapTokenStore: ObservableObject {
   /// A boolean indicates if this store is making an unapproved tx
   @Published var isMakingTx = false
   
-  private let keyringController: BraveWalletKeyringController
-  private let tokenRegistry: BraveWalletERCTokenRegistry
-  private let rpcController: BraveWalletEthJsonRpcController
-  private let assetRatioController: BraveWalletAssetRatioController
-  private let swapController: BraveWalletSwapController
-  private let transactionController: BraveWalletEthTxController
+  private let keyringService: BraveWalletKeyringService
+  private let blockchainRegistry: BraveWalletBlockchainRegistry
+  private let rpcService: BraveWalletJsonRpcService
+  private let assetRatioService: BraveWalletAssetRatioService
+  private let swapService: BraveWalletSwapService
+  private let txService: BraveWalletEthTxService
   private var accountInfo: BraveWallet.AccountInfo?
   private var slippage = 0.005 {
     didSet {
@@ -136,28 +136,28 @@ public class SwapTokenStore: ObservableObject {
   }
   
   public init(
-    keyringController: BraveWalletKeyringController,
-    tokenRegistry: BraveWalletERCTokenRegistry,
-    rpcController: BraveWalletEthJsonRpcController,
-    assetRatioController: BraveWalletAssetRatioController,
-    swapController: BraveWalletSwapController,
-    transactionController: BraveWalletEthTxController,
-    prefilledToken: BraveWallet.ERCToken?
+    keyringService: BraveWalletKeyringService,
+    blockchainRegistry: BraveWalletBlockchainRegistry,
+    rpcService: BraveWalletJsonRpcService,
+    assetRatioService: BraveWalletAssetRatioService,
+    swapService: BraveWalletSwapService,
+    txService: BraveWalletEthTxService,
+    prefilledToken: BraveWallet.BlockchainToken?
   ) {
-    self.keyringController = keyringController
-    self.tokenRegistry = tokenRegistry
-    self.rpcController = rpcController
-    self.assetRatioController = assetRatioController
-    self.swapController = swapController
-    self.transactionController = transactionController
+    self.keyringService = keyringService
+    self.blockchainRegistry = blockchainRegistry
+    self.rpcService = rpcService
+    self.assetRatioService = assetRatioService
+    self.swapService = swapService
+    self.txService = txService
     self.selectedFromToken = prefilledToken
     
-    self.keyringController.add(self)
-    self.rpcController.add(self)
+    self.keyringService.add(self)
+    self.rpcService.add(self)
   }
   
   private func fetchTokenBalance(
-    for token: BraveWallet.ERCToken,
+    for token: BraveWallet.BlockchainToken,
     completion: @escaping (_ balance: BDouble?) -> Void
   ) {
     guard let account = accountInfo else {
@@ -165,7 +165,7 @@ public class SwapTokenStore: ObservableObject {
       return
     }
     
-    rpcController.balance(for: token, in: account) { balance in
+    rpcService.balance(for: token, in: account) { balance in
       completion(balance.map { BDouble($0) })
     }
   }
@@ -217,7 +217,7 @@ public class SwapTokenStore: ObservableObject {
   
   private func createETHSwapTransaction() {
     isMakingTx = true
-    rpcController.network { [weak self] network in
+    rpcService.network { [weak self] network in
       guard
         let self = self,
         let accountInfo = self.accountInfo,
@@ -227,7 +227,7 @@ public class SwapTokenStore: ObservableObject {
         self?.clearAllAmount()
         return
       }
-      self.swapController.transactionPayload(swapParams) { success, swapResponse, error in
+      self.swapService.transactionPayload(swapParams) { success, swapResponse, error in
         guard success else {
           self.state = .error(Strings.Wallet.unknownError)
           self.clearAllAmount()
@@ -273,7 +273,7 @@ public class SwapTokenStore: ObservableObject {
             value: value,
             data: data
           )
-          self.transactionController.addUnapprovedTransaction(baseData, from: accountInfo.address) { success, txMetaId, error in
+          self.txService.addUnapprovedTransaction(baseData, from: accountInfo.address) { success, txMetaId, error in
             guard success else {
               self.state = .error(Strings.Wallet.unknownError)
               self.clearAllAmount()
@@ -354,9 +354,9 @@ public class SwapTokenStore: ObservableObject {
     else { return }
     
     isMakingTx = true
-    rpcController.network { [weak self] network in
+    rpcService.network { [weak self] network in
       guard let self = self else { return }
-      self.transactionController.makeErc20ApproveData(
+      self.txService.makeErc20ApproveData(
         spenderAddress,
         amount: "0x\(balanceInWeiHex)"
       ) { success, data in
@@ -381,7 +381,7 @@ public class SwapTokenStore: ObservableObject {
             self.isMakingTx = false
           }
         } else {
-          self.transactionController.addUnapprovedTransaction(
+          self.txService.addUnapprovedTransaction(
               baseData,
               from: accountInfo.address,
               completion: { success, txMetaId, error in
@@ -406,7 +406,7 @@ public class SwapTokenStore: ObservableObject {
   ) {
     var maxPriorityFeePerGas = ""
     var maxFeePerGas = ""
-    assetRatioController.gasOracle { [weak self] gasEstimation in
+    assetRatioService.gasOracle { [weak self] gasEstimation in
       guard let self = self else { return }
       if let gasEstimation = gasEstimation {
         // Bump fast priority fee and max fee by 1 GWei if same as average fees.
@@ -420,7 +420,7 @@ public class SwapTokenStore: ObservableObject {
         }
       }
       let eip1559Data = BraveWallet.TxData1559(baseData: baseData, chainId: chainId, maxPriorityFeePerGas: maxPriorityFeePerGas, maxFeePerGas: maxFeePerGas, gasEstimation: gasEstimation)
-      self.transactionController.addUnapproved1559Transaction(eip1559Data, from: account.address) { success, txMetaId, errorMessage in
+      self.txService.addUnapproved1559Transaction(eip1559Data, from: account.address) { success, txMetaId, errorMessage in
         completion(success)
       }
     }
@@ -449,9 +449,9 @@ public class SwapTokenStore: ObservableObject {
     }
     
     // Get ETH balance for this account because gas can only be paid in ETH
-    rpcController.network { [weak self] network in
+    rpcService.network { [weak self] network in
       guard let self = self else { return }
-      self.rpcController.balance(accountInfo.address) { balance, status, _ in
+      self.rpcService.balance(accountInfo.address, coin: .eth) { balance, status, _ in
         if status == BraveWallet.ProviderError.success {
           let fee = gasLimit * gasPrice
           let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
@@ -489,10 +489,10 @@ public class SwapTokenStore: ObservableObject {
     ownerAddress: String,
     spenderAddress: String,
     amountToSend: BDouble,
-    fromToken: BraveWallet.ERCToken
+    fromToken: BraveWallet.BlockchainToken
   ) {
-    rpcController.network { [weak self] network in
-      self?.rpcController.erc20TokenAllowance(
+    rpcService.network { [weak self] network in
+      self?.rpcService.erc20TokenAllowance(
         fromToken.contractAddress(in: network),
         ownerAddress: ownerAddress,
         spenderAddress: spenderAddress
@@ -520,7 +520,7 @@ public class SwapTokenStore: ObservableObject {
   }
   
   func fetchPriceQuote(base: SwapParamsBase) {
-    rpcController.network { [weak self] network in
+    rpcService.network { [weak self] network in
       guard let self = self,
             let swapParams = self.swapParameters(for: base, in: network)
       else {
@@ -529,7 +529,7 @@ public class SwapTokenStore: ObservableObject {
       }
       
       self.updatingPriceQuote = true
-      self.swapController.priceQuote(swapParams) { success, response, error in
+      self.swapService.priceQuote(swapParams) { success, response, error in
         defer { self.updatingPriceQuote = false}
         if success, let response = response {
           self.handlePriceQuoteResponse(response, base: base)
@@ -559,7 +559,7 @@ public class SwapTokenStore: ObservableObject {
     
     func updateSelectedTokens(in network: BraveWallet.EthereumChain) {
       if let fromToken = selectedFromToken { // refresh balance
-        rpcController.balance(for: fromToken, in: accountInfo) { [weak self] balance in
+        rpcService.balance(for: fromToken, in: accountInfo) { [weak self] balance in
           self?.selectedFromTokenBalance = BDouble(balance ?? 0)
         }
       } else {
@@ -567,7 +567,7 @@ public class SwapTokenStore: ObservableObject {
       }
       
       if let toToken = selectedToToken {
-        rpcController.balance(for: toToken, in: accountInfo) { [weak self] balance in
+        rpcService.balance(for: toToken, in: accountInfo) { [weak self] balance in
           self?.selectedToTokenBalance = BDouble(balance ?? 0)
           completion?()
         }
@@ -589,21 +589,19 @@ public class SwapTokenStore: ObservableObject {
       }
     }
     
-    tokenRegistry.allTokens { [weak self] tokens in
+    blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { [weak self] tokens in
       guard let self = self else { return }
       
-      self.rpcController.network { network in
+      self.rpcService.network { network in
         let nativeAsset = network.nativeToken
         if network.chainId == BraveWallet.RopstenChainId {
           let supportedAssets = tokens.filter { BraveWallet.assetsSwapInRopsten.contains($0.symbol) } + [nativeAsset]
           self.allTokens = supportedAssets.sorted(by: { $0.symbol < $1.symbol })
           updateSelectedTokens(in: network)
         } else {
-          self.tokenRegistry.allTokens { [self] tokens in
-            let fullList = tokens + [nativeAsset]
-            self.allTokens = fullList.sorted(by: { $0.symbol < $1.symbol })
-            updateSelectedTokens(in: network)
-          }
+          let fullList = tokens + [nativeAsset]
+          self.allTokens = fullList.sorted(by: { $0.symbol < $1.symbol })
+          updateSelectedTokens(in: network)
         }
       }
     }
@@ -620,7 +618,10 @@ public class SwapTokenStore: ObservableObject {
   #endif
 }
 
-extension SwapTokenStore: BraveWalletKeyringControllerObserver {
+extension SwapTokenStore: BraveWalletKeyringServiceObserver {
+  public func keyringReset() {
+  }
+  
   public func keyringCreated() {
   }
   
@@ -643,9 +644,9 @@ extension SwapTokenStore: BraveWalletKeyringControllerObserver {
   }
   
   public func selectedAccountChanged() {
-    keyringController.defaultKeyringInfo { [self] keyringInfo in
+    keyringService.defaultKeyringInfo { [self] keyringInfo in
       if !keyringInfo.accountInfos.isEmpty {
-        keyringController.selectedAccount { accountAddress in
+        keyringService.selectedAccount { accountAddress in
           let selectedAccountInfo = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ??
             keyringInfo.accountInfos.first!
           prepare(with: selectedAccountInfo) {
@@ -657,7 +658,7 @@ extension SwapTokenStore: BraveWalletKeyringControllerObserver {
   }
 }
 
-extension SwapTokenStore: BraveWalletEthJsonRpcControllerObserver {
+extension SwapTokenStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String) {
     guard
       let accountInfo = accountInfo,
