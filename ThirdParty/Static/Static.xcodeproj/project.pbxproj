@@ -216,9 +216,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 21826ABE1B3F51A100AA9641 /* Build configuration list for PBXNativeTarget "Static-iOS" */;
 			buildPhases = (
+				21826AA71B3F51A100AA9641 /* Headers */,
 				21826AA51B3F51A100AA9641 /* Sources */,
 				21826AA61B3F51A100AA9641 /* Frameworks */,
-				21826AA71B3F51A100AA9641 /* Headers */,
 				21826AA81B3F51A100AA9641 /* Resources */,
 			);
 			buildRules = (
