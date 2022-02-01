@@ -825,15 +825,39 @@ TEST_F(KeyringServiceUnitTest, GetDefaultKeyringInfo) {
 }
 
 TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(
+      brave_wallet::features::kBraveWalletFilecoinFeature);
   {
     KeyringService service(GetPrefs());
     // No encryptor
     service.Lock();
     EXPECT_TRUE(service.IsLocked());
+    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
+
     EXPECT_TRUE(service.CreateEncryptorForKeyring("123", "default"));
     EXPECT_FALSE(service.IsLocked());
+    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
+
+    EXPECT_TRUE(
+        service.CreateEncryptorForKeyring("123", mojom::kFilecoinKeyringId));
+    EXPECT_FALSE(service.IsLocked());
+    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
+
+    EXPECT_TRUE(
+        service.CreateEncryptorForKeyring("123", mojom::kSolanaKeyringId));
+    EXPECT_FALSE(service.IsLocked());
+    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
+
     // No default keyring
     service.Lock();
+    EXPECT_TRUE(service.IsLocked());
+    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
   }
   {
     KeyringService service(GetPrefs());
@@ -843,36 +867,46 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
     service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
         ->AddAccounts(1);
     EXPECT_FALSE(service.IsLocked());
+    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
+    ASSERT_NE(
+        service.CreateKeyring(brave_wallet::mojom::kFilecoinKeyringId, "brave"),
+        nullptr);
+    service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
+        ->AddAccounts(1);
+    ASSERT_NE(
+        service.CreateKeyring(brave_wallet::mojom::kSolanaKeyringId, "brave"),
+        nullptr);
+    service.GetHDKeyringById(brave_wallet::mojom::kSolanaKeyringId)
+        ->AddAccounts(1);
+    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
+    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
 
     service.Lock();
     EXPECT_TRUE(service.IsLocked());
+    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
     EXPECT_FALSE(
         service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId));
+    EXPECT_FALSE(
+        service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId));
+    EXPECT_FALSE(
+        service.GetHDKeyringById(brave_wallet::mojom::kSolanaKeyringId));
 
     service.Unlock("abc",
                    base::BindOnce(&KeyringServiceUnitTest::GetBooleanCallback,
                                   base::Unretained(this)));
     EXPECT_TRUE(service.IsLocked());
+    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_TRUE(service.IsLocked(mojom::kSolanaKeyringId));
 
     service.Unlock("brave",
                    base::BindOnce(&KeyringServiceUnitTest::GetBooleanCallback,
                                   base::Unretained(this)));
     EXPECT_FALSE(service.IsLocked());
-    service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
-        ->AddAccounts(1);
-
-    service.Lock();
-    EXPECT_TRUE(service.IsLocked());
-    EXPECT_FALSE(
-        service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId));
-
-    // Simulate unlock shutdown
-    service.Unlock("brave",
-                   base::BindOnce(&KeyringServiceUnitTest::GetBooleanCallback,
-                                  base::Unretained(this)));
-    EXPECT_FALSE(service.IsLocked());
-    service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
-        ->AddAccounts(1);
+    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
+    EXPECT_FALSE(service.IsLocked(mojom::kSolanaKeyringId));
   }
 }
 
@@ -1072,6 +1106,10 @@ TEST_F(KeyringServiceUnitTest, GetAccountPathByIndex) {
             "m/44'/461'/0'/0/0");
   EXPECT_EQ(KeyringService::GetAccountPathByIndex(3, mojom::kFilecoinKeyringId),
             "m/44'/461'/0'/0/3");
+  EXPECT_EQ(KeyringService::GetAccountPathByIndex(0, mojom::kSolanaKeyringId),
+            "m/44'/501'/0'/0'");
+  EXPECT_EQ(KeyringService::GetAccountPathByIndex(3, mojom::kSolanaKeyringId),
+            "m/44'/501'/3'/0'");
 }
 
 TEST_F(KeyringServiceUnitTest, MigrationPrefs) {
@@ -2799,90 +2837,7 @@ TEST_F(KeyringServiceUnitTest, LazyCreateFilecoinKeyringFromImport) {
             service.GetMnemonicForKeyringImpl(mojom::kFilecoinKeyringId));
 }
 
-TEST_F(KeyringServiceUnitTest, LockAndUnlockWithMultipleKeyrings) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kBraveWalletFilecoinFeature);
-
-  {
-    KeyringService service(GetPrefs());
-    // No encryptor
-    service.Lock();
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
-    EXPECT_TRUE(
-        service.CreateEncryptorForKeyring("123", mojom::kDefaultKeyringId));
-    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-    EXPECT_TRUE(
-        service.CreateEncryptorForKeyring("123", mojom::kFilecoinKeyringId));
-    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
-    // No default keyring
-    service.Lock();
-  }
-  {
-    KeyringService service(GetPrefs());
-    ASSERT_NE(
-        service.CreateKeyring(brave_wallet::mojom::kDefaultKeyringId, "brave"),
-        nullptr);
-    service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
-        ->AddAccounts(1);
-    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-    ASSERT_NE(
-        service.CreateKeyring(brave_wallet::mojom::kFilecoinKeyringId, "brave"),
-        nullptr);
-    service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
-        ->AddAccounts(1);
-    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
-    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
-
-    service.Lock();
-    EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-    EXPECT_FALSE(
-        service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId));
-    EXPECT_FALSE(
-        service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId));
-
-    service.Unlock("abc",
-                   base::BindOnce(&KeyringServiceUnitTest::GetBooleanCallback,
-                                  base::Unretained(this)));
-    EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-
-    service.Unlock("brave",
-                   base::BindOnce(&KeyringServiceUnitTest::GetBooleanCallback,
-                                  base::Unretained(this)));
-    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
-    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
-
-    service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
-        ->AddAccounts(1);
-
-    service.Lock();
-    EXPECT_TRUE(service.IsLocked(mojom::kDefaultKeyringId));
-    EXPECT_TRUE(service.IsLocked(mojom::kFilecoinKeyringId));
-
-    EXPECT_FALSE(
-        service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId));
-    EXPECT_FALSE(
-        service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId));
-
-    // Simulate unlock shutdown
-    service.Unlock("brave",
-                   base::BindOnce(&KeyringServiceUnitTest::GetBooleanCallback,
-                                  base::Unretained(this)));
-    EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
-    EXPECT_FALSE(service.IsLocked(mojom::kFilecoinKeyringId));
-    service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId)
-        ->AddAccounts(1);
-    service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
-        ->AddAccounts(1);
-  }
-}
-
-TEST_F(KeyringServiceUnitTest, PreCreateFilecoinEncryptor) {
+TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
   {
     // Create default wallet with disabled filecoin feature
     KeyringService service(GetPrefs());
@@ -2890,6 +2845,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateFilecoinEncryptor) {
     base::RunLoop().RunUntilIdle();
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
   }
   {
     // Create wallet with enabled filecoin
@@ -2902,22 +2858,25 @@ TEST_F(KeyringServiceUnitTest, PreCreateFilecoinEncryptor) {
     base::RunLoop().RunUntilIdle();
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
   }
   {
-    // Create wallet and enable filecoin before resume
+    // Create wallet and enable filecoin before unlock
     KeyringService service(GetPrefs());
     service.CreateWallet("brave", base::DoNothing());
     base::RunLoop().RunUntilIdle();
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
     service.Lock();
     base::test::ScopedFeatureList feature_list;
     feature_list.InitAndEnableFeature(
         brave_wallet::features::kBraveWalletFilecoinFeature);
 
-    service.ResumeKeyring(brave_wallet::mojom::kFilecoinKeyringId, "brave");
-    ASSERT_FALSE(service.encryptors_.contains(mojom::kDefaultKeyringId));
+    service.Unlock("brave", base::DoNothing());
+    EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
   }
   {
     // Create default wallet and enable filecoin before restore
@@ -2940,6 +2899,7 @@ TEST_F(KeyringServiceUnitTest, PreCreateFilecoinEncryptor) {
     base::RunLoop().RunUntilIdle();
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_FALSE(service.encryptors_.contains(mojom::kFilecoinKeyringId));
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
     base::test::ScopedFeatureList feature_list;
     feature_list.InitAndEnableFeature(
         brave_wallet::features::kBraveWalletFilecoinFeature);
@@ -2949,10 +2909,77 @@ TEST_F(KeyringServiceUnitTest, PreCreateFilecoinEncryptor) {
     base::RunLoop().RunUntilIdle();
     EXPECT_NE(service.encryptors_.at(mojom::kDefaultKeyringId), nullptr);
     EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
-    // filecoin keyring won't be created
+    EXPECT_NE(service.encryptors_.at(mojom::kSolanaKeyringId), nullptr);
+    // non default keyrings won't be created
     EXPECT_FALSE(
         service.IsKeyringCreated(brave_wallet::mojom::kFilecoinKeyringId));
+    EXPECT_FALSE(
+        service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
   }
+}
+
+TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
+  {
+    KeyringService service(GetPrefs());
+    service.CreateWallet("brave", base::DoNothing());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(
+        service.IsKeyringCreated(brave_wallet::mojom::kDefaultKeyringId));
+    EXPECT_FALSE(
+        service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
+
+    // lazily create solana keyring when adding SOL account
+    service.AddAccount("Account 1", mojom::CoinType::SOL, base::DoNothing());
+    EXPECT_TRUE(
+        service.IsKeyringCreated(brave_wallet::mojom::kDefaultKeyringId));
+    EXPECT_TRUE(
+        service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
+
+    service.Lock();
+    service.Unlock("brave", base::DoNothing());
+
+    base::RunLoop run_loop;
+    service.GetKeyringInfo(
+        brave_wallet::mojom::kSolanaKeyringId,
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          EXPECT_EQ(keyring_info->account_infos.size(), 1u);
+          EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+          EXPECT_FALSE(keyring_info->account_infos[0]->is_imported);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+  {
+    KeyringService service(GetPrefs());
+    service.RestoreWallet(kMnemonic1, "brave", false, base::DoNothing());
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(
+        service.IsKeyringCreated(brave_wallet::mojom::kDefaultKeyringId));
+    EXPECT_FALSE(
+        service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
+
+    // lazily create solana keyring when adding SOL account
+    service.AddAccount("Account 1", mojom::CoinType::SOL, base::DoNothing());
+    EXPECT_TRUE(
+        service.IsKeyringCreated(brave_wallet::mojom::kDefaultKeyringId));
+    EXPECT_TRUE(
+        service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
+
+    base::RunLoop run_loop;
+    service.GetKeyringInfo(
+        brave_wallet::mojom::kSolanaKeyringId,
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          EXPECT_EQ(keyring_info->account_infos.size(), 1u);
+          EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
+          EXPECT_EQ(keyring_info->account_infos[0]->address,
+                    "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+          EXPECT_FALSE(keyring_info->account_infos[0]->is_imported);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+  }
+
+  // TODO(darkdh): add lazily create keyring when importing SOL account
 }
 
 }  // namespace brave_wallet
