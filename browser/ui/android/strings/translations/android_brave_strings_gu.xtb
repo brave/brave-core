@@ -29,7 +29,6 @@
 <translation id="59174027418879706">સક્ષમ</translation>
 <translation id="4150201353443180367">ડિસ્પ્લે</translation>
 <translation id="2433507940547922241">દેખાવ</translation>
-<translation id="2804710924397009224">Brave પુરસ્કારો ચિહ્ન છુપાવો</translation>
 <translation id="8495235435594442882">નીચેના ટૂલબારને સક્ષમ કરો</translation>
 <translation id="6587448235155023666">આગલા વખતે જ્યારે તમે Brave ને ફરીથી લોન્ચ કરો ત્યારે તમારા ફેરફારો પ્રભાવમાં આવશે</translation>
 <translation id="8701563696941209024">હમણાં ફરીથી લોન્ચ કરો</translation>
@@ -183,6 +182,7 @@
 <translation id="2359808026110333948">આગળ વધો</translation>
 <translation id="6896758677409633944">કૉપિ કરો</translation>
 <translation id="7665369617277396874">એકાઉન્ટ ઉમેરો</translation>
+<translation id="3943857333388298514">પેસ્ટ કરો</translation>
 <translation id="6518133107902771759">પ્રમાણિત કરો</translation>
 <translation id="3157931365184549694">પુનઃસ્થાપિત કરો</translation>
 <translation id="9111102763498581341">અનલોક કરો</translation>
@@ -191,7 +191,6 @@
 <translation id="6979737339423435258">હંમેશાં</translation>
 <translation id="3819257035322786455">બેકઅપ</translation>
 <translation id="4522570452068850558">વિગતો</translation>
-<translation id="5040262127954254034">ગોપનીયતા</translation>
 <translation id="3435896845095436175">સક્ષમ કરો</translation>
 <translation id="7805768142964895445">સ્થિતિ</translation>
 <translation id="5747552184818312860">સમાપ્ત થાય છે</translation>
@@ -209,5 +208,8 @@
 <translation id="1165039591588034296">ભૂલ</translation>
 <translation id="1177863135347784049">કસ્ટમ</translation>
 <translation id="7791543448312431591">ઉમેરો</translation>
+<translation id="2653659639078652383">સબમિટ કરો</translation>
+<translation id="2804710924397009224">Brave પુરસ્કારો ચિહ્ન છુપાવો</translation>
+<translation id="5040262127954254034">ગોપનીયતા</translation>
 <translation id="8845154268466251503">BAT</translation>
 </translationbundle>

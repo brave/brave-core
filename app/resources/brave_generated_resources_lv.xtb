@@ -15,18 +15,19 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nav atļauts Brave.</translation>
 <translation id="6786747875388722282">Paplašinājumi</translation>
 <translation id="984275831282074731">Maksājumu veidi</translation>
-<translation id="3699882589215410581">Instalēt un palaist Widevine</translation>
+<translation id="1990886731975529483">Instalēt un palaist Google Widevine</translation>
 <translation id="8926389886865778422">Nejautāt atkārtoti</translation>
 <translation id="5249433283143453448">Izmantojiet Widevine digitālā satura tiesību pārvaldības (DRM) komponentu, lai pārlūkā skatītu aizsargātu videostraumējumu un citu saturu.</translation>
 <translation id="6241402707160226266">Inkognito logs ar Tor</translation>
 <translation id="8762452230727230396">Paslēpj Jūsu IP adresi no apmeklētajām vietnēm.</translation>
 <translation id="1369311132025451972">Automātiski novirzīt .onion vietnes</translation>
 <translation id="2843777623071353503">Brave atvērs tīmekļa vietnes onion pakalpojumu, kad tas būs pieejams, vai .onion domēnu Tor logā.</translation>
-<translation id="8053096063396012732">Instalējiet Widevine</translation>
-<translation id="4840334696217618631">Restartējiet pārlūku, lai iespējotu Widevine</translation>
-<translation id="8410111618231938546">Google Widevine ir Digitālā satura tiesību pārvaldības (DRM) koda daļa, kas mums, Brave Software, nepieder un ko mēs nevaram pārbaudīt. Google Widevine kods tiek ielādēts no Google serveriem, nevis no mūsu serveriem. Tas tiek ielādēts tikai tad, ja Jūs iespējojat šo opciju. Mēs atturam no DRM izmantošanas, bet mēs cienām lietotāju izvēli un pieņemam, ka daži Brave lietotāji vēlas izmantot pakalpojumus, kuriem tas ir nepieciešams.
-
-Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas noteikumiem. Jūs piekrītat, ka Brave neatbild ne par kādiem bojājumiem vai zaudējumiem saistībā ar Jūsu Google Widevine lietojumu.</translation>
+<translation id="4900351245762303149">Instalēt Google Widevine</translation>
+<translation id="2313383941300459392">Restartējiet pārlūku, lai iespējotu Google Widevine</translation>
+<translation id="2200626478572277092">Widevine dažkārt ir vajadzīgs, lai atskaņotu mediju failus tīmekļa vietnē. Tas ir Google paplašinājums, ko ielādē no Google serveriem, bet ko Brave nevar pārbaudīt. Instalējot jūs piekrītat Google lietošanas noteikumiem.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/> vai mainīt vēlāk <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
+<translation id="6229752134959014186">Uzzināt vairāk par Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> vēlas, lai jūs</translation>
 <translation id="410351446219883937">Automātiska atskaņošana</translation>
 <translation id="3218385319396786393">Automātiskā atskaņošana šajā lapā tika bloķēta</translation>
 <translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST"/></translation>
@@ -35,6 +36,8 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="6583467242903731748">Jautāt, kad vietne vēlas piekļūt Ethereum pakalpojuma sniedzēja API</translation>
 <translation id="7017590444693657895">Bloķēt vietnēm piekļuvi Ethereum pakalpojuma sniedzēja API</translation>
 <translation id="8988939298652262600">Brave nepārskata paplašinājumu aizsardzību un drošumu. Instalējiet šo paplašinājumu tikai tad, ja uzticaties izstrādātājam.</translation>
+<translation id="933652931229970927">Automātiski nosūtīt diagnostikas ziņojumus</translation>
+<translation id="1679356339067548863">Palīdziet uzlabot Brave produktu stabilitāti, automātiski nosūtot diagnostikas ziņojumus, kad Brave pārlūks avarē vai pārstāj darboties.</translation>
 <translation id="8081858229109418493">Profila nosaukums un ikona</translation>
 <translation id="6438096877646138757">Vietnes, kas notīra sīkfailus, kad jūs tās aizverat</translation>
 <translation id="2988792685798128092">Notīrīt, aizverot vietni</translation>
@@ -42,7 +45,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="1692470335103807198">Iegūt vairāk motīvu</translation>
 <translation id="2906510232093002459">Brave noklusējuma attēli</translation>
 <translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
-<translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
+<translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
 <translation id="1811404036171336214">Vienmēr rādīt grāmatzīmes jaunas cilnes lapā</translation>
 <translation id="1643029991199044105">Pārlūkojiet pēdējā laikā lietotās cilnes, izmantojot Ctrl-Tab</translation>
 <translation id="1013121820689882118">Ātrais lasītājs</translation>
@@ -76,7 +79,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="5733490796524078528">Dzeramnaudas pogas</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Jaunas cilnes lapa</translation>
 <translation id="1988804048511540801">Jaunas cilnes lapa rāda</translation>
 <translation id="2970343821770026391">Informācijas panelis</translation>
@@ -89,12 +92,12 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="8612763432858587652">Iziet no inkognito loga</translation>
 <translation id="8760415064721320867">Inkognito logs ar Tor</translation>
 <translation id="2055363275850890030">Inkognito logs</translation>
-<translation id="8934172355414207733">Inkognito ar Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Šis ir inkognito logs ar Tor</translation>
 <translation id="1037341607922068025">Atvērt inkognito logu ar Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Atvērt Tor</translation>
-<translation id="7643538479215207633">Atvērt, izmantojot IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publicēt un izgūt datnes no IPFS</translation>
 <translation id="1672270084584211506">Onion ir pieejams</translation>
 <translation id="406832631167785034">Atvērt, izmantojot .onion adresi</translation>
@@ -105,7 +108,6 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="4227945450504703638">Atlasītais audio</translation>
 <translation id="7895302206188277628">Saistītais saturs</translation>
 <translation id="3654831858282189202">Publicēt ar IPNS atslēgu</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Importēt atlasīto tekstu IPFS</translation>
 <translation id="6925604404524625582">Importēt un kopēt saiti uz IPFS momentuzņēmumu</translation>
 <translation id="1434416574322382019">Jauns inkognito logs Tor</translation>
@@ -238,8 +240,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6358469157239228181">Šo nosaukumu nevar izmantot</translation>
 <translation id="5761731140570209168">Pievienot jaunu vienranga savienojuma virkni</translation>
 <translation id="2082206983920804886">Pagriezt atslēgu</translation>
-<translation id="2521133093532260474">Nav iespējams apturēt vietējo mezglu</translation>
-<translation id="86879877003581729">Nav iespējams palaist vietējo mezglu</translation>
+<translation id="5078501082919354191">Nebija iespējams apturēt Brave vietējo IPFS mezglu</translation>
+<translation id="5687424953196903465">Nebija iespējams palaist Brave vietējo IPFS mezlu</translation>
 <translation id="6476061084931271248">Restartējiet mezglu, lai izmaiņas stātos spēkā</translation>
 <translation id="3754226427671882382">Restartēt mezglu</translation>
 <translation id="949667118776341807">Pagriezt</translation>
@@ -254,17 +256,22 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="616058968889448209">IPFS pakalpojuma palaišanas kļūda, papildu informācija ir pieejama <ph name="BEGIN_LINK"/>diagnostikas lapā<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' atslēgas importēšana neizdevās</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' atslēgu neizdevās eksportēt</translation>
-<translation id="8860039076160511438">Atiestatīt maciņu</translation>
+<translation id="4993345308607970390">Atiestatīt Brave maku</translation>
+<translation id="5975930666279943472">Notīrīt maka darījumu un aktuālo informāciju</translation>
+<translation id="5693968582510626466">Darījumu notīrīšana var būt noderīga izstrādātājiem vai, lai notīrītu vietējā servera statusu</translation>
 <translation id="6369495274982305511">Vai tiešām vēlaties atiestatīt maciņu? Ja jūsu maciņš nav dublēts, atiestatot jūs zaudēsiet visus konta datus (tostarp visus saistītos līdzekļus). Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu.</translation>
+<translation id="9216386092464743272">Vai tiešām vēlaties atiestatīt visus maka darījumus un aktuālo informāciju? Šo opciju galvenokārt izmanto izstrādātāji, kas pārvalda vietējo testa serveri. Ierakstiet "<ph name="CONFIRMATION_PHRASE"/>", lai apstiprinātu.</translation>
+<translation id="3752403403443723332">Jūsu maks tika atiestatīts.</translation>
+<translation id="594766067816395072">Jūsu maka darījuma informācija tika atiestatīta.</translation>
 <translation id="1426410128494586442">Jā</translation>
 <translation id="8275038454117074363">Importēt</translation>
 <translation id="3654980960391973513">Ģenerēt</translation>
 <translation id="5531501313997312487">Palaist mezglu</translation>
 <translation id="9170907049676078643">IPFS resursu risināšanas metode</translation>
 <translation id="1327977588028644528">Vārteja</translation>
-<translation id="80225669816651290">Vietējais mezgls</translation>
+<translation id="1195880978080389104">Brave vietējais IPFS mezlgs</translation>
 <translation id="4927734062756955434">IPFS publiskās vārtejas adrese</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Uzziniet vairāk<ph name="END_LINK_MPL"/> par IPFS vietējā mezgla un vārtejas konfidencialitātes apsvērumiem.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Uzzināt vairāk<ph name="END_LINK_MPL"/> par Brave vietējo IPFS mezglu un vārtejas privātuma apsvērumiem.</translation>
 <translation id="8425213833346101688">Mainīt</translation>
 <translation id="557281710253742286">Iestatīt IPFS vārteju</translation>
 <translation id="8571837315037233299">Vārtejas adrese</translation>
@@ -273,7 +280,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="7703184801853248830">Nederīga vārtejas adrese</translation>
 <translation id="7690058578502751948">Brave var izmantot tikai derīgu IPFS vārteju ar iespējotu avota izolāciju.</translation>
 <translation id="585868419599255817">IPFS publiskās vārtejas izmantošana</translation>
-<translation id="207763736230883589">Automātiski izmantot IPFS publisko vārteju, ja vietējam mezglam piekļūt nav iespējams.</translation>
+<translation id="2618080188892567155">Automātiski izmantot IPFS publisko vārteju, ja jūsu vietējam Brave IPFS mezglam nav iespējams piekļūt.</translation>
 <translation id="4107552920076294723">Novirzīt IPFS resursus uz konfigurēto IPFS vārteju</translation>
 <translation id="6494857428933042381">Automātiski izmanto konfigurēto vārteju IPFS atrašanai, kad parādās IPFS vārtejas resurss.</translation>
 <translation id="8655170717758778983">Automātiski pārvirzīt uz IPFS lapām, izmantojot DNSLink, kad iespējams</translation>
@@ -346,10 +353,9 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="780301667611848630">Nē, paldies</translation>
 <translation id="5039804452771397117">Atļaut</translation>
 <translation id="7053983685419859001">Bloķēt</translation>
-<translation id="7815301689257843278">Vai avārijas atskaites nosūtīt automātiski, lai Brave varētu novērst šīs problēmas atkārtošanos?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> neparedzēti beidza darbu.</translation>
 <translation id="1324417023773393937">Brave pārlūks</translation>
-<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> varat atkal mainīt jebkurā laikā.</translation>
+<translation id="7276554663454265692">Jūs varat mainīt <ph name="SETTING_TEXT"/> jebkurā laikā pārlūka iestatījumos.</translation>
 <translation id="6873781976650514089">šis iestatījums</translation>
 <translation id="6040143037577758943">Aizvērt</translation>
 <translation id="5600566490506283344">Brave Ad paziņojums</translation>
@@ -446,10 +452,28 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2487558607408469181">Bloķēt pārlūka URL</translation>
 <translation id="6301398959353668507">Šis lauks nevar būt tukšs.</translation>
 <translation id="7504462451153306677">Nederīgs formāts, ķēdes ID ir pozitīvs skaitlis</translation>
-<translation id="8325036459845654666">Šis tīkls jau ir pievienots.</translation>
 <translation id="650071759190249039">Iekšēja kļūda, nav iespējams pievienot tīklu.</translation>
 <translation id="868529041590572443">Lūdzu, ievadiet informāciju par pamata valūtu</translation>
 <translation id="1062463687579789365">Maciņa tīklu pielāgošana</translation>
 <translation id="2234108191702901162">Nav iespējams pievienot tīklu</translation>
 <translation id="2618193846561624884">Vai vēlaties atjaunināt esošo tīklu?</translation>
+<translation id="3699882589215410581">Instalēt un palaist Widevine</translation>
+<translation id="8053096063396012732">Instalējiet Widevine</translation>
+<translation id="4840334696217618631">Restartējiet pārlūku, lai iespējotu Widevine</translation>
+<translation id="8410111618231938546">Google Widevine ir Digitālā satura tiesību pārvaldības (DRM) koda daļa, kas mums, Brave Software, nepieder un ko mēs nevaram pārbaudīt. Google Widevine kods tiek ielādēts no Google serveriem, nevis no mūsu serveriem. Tas tiek ielādēts tikai tad, ja Jūs iespējojat šo opciju. Mēs atturam no DRM izmantošanas, bet mēs cienām lietotāju izvēli un pieņemam, ka daži Brave lietotāji vēlas izmantot pakalpojumus, kuriem tas ir nepieciešams.
+
+Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas noteikumiem. Jūs piekrītat, ka Brave neatbild ne par kādiem bojājumiem vai zaudējumiem saistībā ar Jūsu Google Widevine lietojumu.</translation>
+<translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Inkognito ar Tor</translation>
+<translation id="7643538479215207633">Atvērt, izmantojot IPFS</translation>
+<translation id="2521133093532260474">Nav iespējams apturēt vietējo mezglu</translation>
+<translation id="86879877003581729">Nav iespējams palaist vietējo mezglu</translation>
+<translation id="8860039076160511438">Atiestatīt maciņu</translation>
+<translation id="80225669816651290">Vietējais mezgls</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Uzziniet vairāk<ph name="END_LINK_MPL"/> par IPFS vietējā mezgla un vārtejas konfidencialitātes apsvērumiem.</translation>
+<translation id="207763736230883589">Automātiski izmantot IPFS publisko vārteju, ja vietējam mezglam piekļūt nav iespējams.</translation>
+<translation id="7815301689257843278">Vai avārijas atskaites nosūtīt automātiski, lai Brave varētu novērst šīs problēmas atkārtošanos?</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> varat atkal mainīt jebkurā laikā.</translation>
+<translation id="8325036459845654666">Šis tīkls jau ir pievienots.</translation>
 </translationbundle>

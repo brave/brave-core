@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "تحديث الحالة",
+    "message": "إعادة التحميل",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "توجد مشكلة في مكافآت Brave. الرجاء المحاولة مرة أخرى.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "تحقق من الحالة",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "مبروك! وصلت $month$ مكافآتك!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "ستصل $amount$ $month$ مكافآتك في خلال $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "مكافآتك $amount$ $month$ في الطريق إليك. ترقبها!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "انتقل إلى حساب $provider$ الخاص بي",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "تسجيل خروج من $provider$",
+    "message": "قطع الاتصال من $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "معلَّق",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "سيصل $amount$ في$days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "مكافآت من الإعلانات",

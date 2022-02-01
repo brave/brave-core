@@ -15,7 +15,7 @@
 <translation id="8877432762827303535">オンラインチェックアウト</translation>
 <translation id="6583902294974160967">サポート</translation>
 <translation id="1799030480311994998">機能</translation>
-<translation id="2005732746077850308">Braveシールド &amp; プライバシー</translation>
+<translation id="2005732746077850308">Brave Shields &amp; プライバシー</translation>
 <translation id="4692623383562244444">検索エンジン</translation>
 <translation id="1468415711258933398">通常タブ</translation>
 <translation id="3377025655491224618">プライベートタブ</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Brave Newsは、読みたい記事が上がってくるプライベート・ニュースリーダー。</translation>
 <translation id="7266075701303521777">Braveニュースは広告に支えられていますが、その広告はあなたのデバイス上でマッチングされており、あなたが完全に匿名化された状態でプライバシーを重視して配信されます。</translation>
 <translation id="4541978218358617681">広告</translation>
-<translation id="1765217911817124376">Brave Newsを有効にする</translation>
+<translation id="7823038307453615214">Brave Newsを有効にする</translation>
 <translation id="6527303717912515753">共有</translation>
 <translation id="1654539412343893324">データの詳細について</translation>
 <translation id="2989805286512600854">新しいタブで開く</translation>
@@ -45,7 +45,6 @@
 <translation id="7554145152551782675">その他のBraveオファー</translation>
 <translation id="4975944254857623648">デフォルトのソース</translation>
 <translation id="253886574765651454">ソースを追加</translation>
-<translation id="7823038307453615214">Brave Newsを表示</translation>
 <translation id="5787084571334399599">フィンガープリントを防止します</translation>
 <translation id="7459000603787995422">終了時にタブを閉じる</translation>
 <translation id="4448697385961650078">トラッカーと広告をブロック</translation>
@@ -53,8 +52,8 @@
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
 <translation id="5254037869598726291">匿名化されたP3A情報は、Braveが全体的な使用状況を推定し、よく使われている機能を改善するために役立ちます。</translation>
-<translation id="4272190451231642425">クラッシュレポートを自動送信する</translation>
-<translation id="2239766974964486304">クラッシュレポートにより、すべてのユーザーのBrave製品の安定性を向上できます。</translation>
+<translation id="933652931229970927">診断レポートを自動送信する</translation>
+<translation id="5987838417172370108">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
 <translation id="6572660632052512096">デスクトップモード</translation>
@@ -76,8 +75,7 @@
 <translation id="59174027418879706">有効</translation>
 <translation id="4150201353443180367">表示</translation>
 <translation id="2433507940547922241">デザイン</translation>
-<translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
-<translation id="7289740269305509613">Brave Rewardsアイコンを非表示</translation>
+<translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
 <translation id="8495235435594442882">下部のツールバーを有効にします</translation>
 <translation id="6587448235155023666">変更は、次にBraveを再起動した際に有効になります</translation>
 <translation id="8701563696941209024">今すぐ再起動</translation>
@@ -112,7 +110,8 @@
 <translation id="5441565662498481293">チップの毎月定期支払い設定が完了しました! 宛先:</translation>
 <translation id="1166682575529520472">毎月</translation>
 <translation id="1628742278973105368">チップの毎月定期支払いは、初回は以下の日程で送られます:</translation>
-<translation id="298349922412901215">注意:このクリエイターは、まだBraveユーザーからの支援受け取る設定が完了していません。今後90日間、設定が完了するまでチップの送信を試みます。</translation>
+<translation id="298349922412901215">注意: このクリエイターは、まだBraveユーザーからの支援を受け取るための設定が完了していません。今後90日間、設定が完了するまで支援の実行を試みます。</translation>
+<translation id="6602036279006002239">注意: このクリエイターは現在、あなたのウォレットからチップを受け取る設定が完了していません。あなたが作成したチップは、あなたのウォレットに保留されたまま90日間自動的に再試行されます。</translation>
 <translation id="1910721550319506122">ようこそ！</translation>
 <translation id="3165726837666415756">チップを送って、このサイトを応援できます。素晴らしいコンテンツを提供してくれたクリエイターに感謝の気持ちを伝えましょう。設定が完了しているコンテンツクリエイターには、毎月一週目に送られたチップが支払われます。</translation>
 <translation id="1704859330137112950">このサイトに毎月チップを送って応援することもできます。</translation>
@@ -189,6 +188,7 @@
 <translation id="8284063834901328650">同期用QRコードが誤りです</translation>
 <translation id="859506441384380749">このコードは非推奨バージョンのBraveで生成されました。まず他のデバイスをアップグレードしてください</translation>
 <translation id="3132642509209154999">このコードは期限切れです。他のデバイスで新しいコードを生成してもう一度お試しください。</translation>
+<translation id="2859229680945501779">このコードは無効です。お使いの端末の時刻とタイムゾーンが正しく設定されていることをご確認ください。</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Syncを使うと、さまざまなデバイスの Brave ブラウザ間でブックマークのデータをブライベートに同期することができます。</translation>
 <translation id="3735228155296883311">別の端末で開始した同期チェーンに、コードをスキャンして簡単に追加することができます。あるいはこの端末で新しい同期チェーンを開始することもできます。</translation>
@@ -292,7 +292,6 @@
 <translation id="5358719431303818601">接続の解除が確認されていません</translation>
 <translation id="4241449868720191203">接続の解除が確認されました</translation>
 <translation id="3248185426436836442">保留中</translation>
-<translation id="2260513517001048012">注意：このBrave承認済みクリエイターのアカウントは、まだBraveユーザーの支援を受け取る設定がされていません。お使いのブラウザはクリエイターが確認するまで、または90日経過するまで試行を続けます。</translation>
 <translation id="4488355059795908907">このBrave承認済みクリエイターのアカウントは、まだ支援を受け取る設定が完了していません。クリエイターがプロセスが完了するまで、あなたの送ったチップはウォレット内に残ります。</translation>
 <translation id="2495032782748793764">Braveのデフォルト</translation>
 <translation id="9132378787893584761">友だちとBraveを共有しましょう！</translation>
@@ -401,12 +400,12 @@
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
-<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。&#128267;</translation>
+<translation id="2252497442547961651">Braveブラウザは他のブラウザと比べ、バッテリー使用量が平均40%少なくなっています。🔋</translation>
 <translation id="1945330434665345785">先週、Braveブラウザで <ph name="COUNT"/>件のトラッカーと広告をブロックしました。</translation>
 <translation id="2883868922264431515">プライバシーを尊重する広告を表示してトークンを獲得し、お気に入りのウェブサイトをサポートしましょう。</translation>
-<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。&#128293;</translation>
-<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。&#128267;</translation>
-<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。&#128168;&#128168;</translation>
+<translation id="5678925890616256956">いいですね！Braveブラウザを使って、250件のトラッカー&amp;広告をブロックしました。🔥</translation>
+<translation id="9199047775708635708">いいですね！Braveブラウザで10MBを節約しました。🔋</translation>
+<translation id="1880168210969863408">いいですね！Braveブラウザを使って、読み込み時間を10分節約しました。💨💨</translation>
 <translation id="7408493389591475748">ブラウジングを開始してプライバシーレポートを表示</translation>
 <translation id="9080777565335515917">プライベートで安全なブラウジングのため、Braveをデフォルトのブラウザとして設定します。</translation>
 <translation id="1390943217516275883">Braveにプライバシー統計の表示を許可</translation>
@@ -534,11 +533,10 @@
 <translation id="2918322085844739869">4</translation>
 <translation id="7267186368513450821">5</translation>
 <translation id="6972003925509023890">1 BAT</translation>
+<translation id="2222442600106681391">2 BAT</translation>
+<translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
 <translation id="8762169086048682708">10 BAT</translation>
-<translation id="7921571842056754133">15 BAT</translation>
-<translation id="3605291544485823713">25 BAT</translation>
-<translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0.00 BAT</translation>
 <translation id="4193129043743994339">0.00米ドル</translation>
 <translation id="8792121506918889955">WebRTC IP処理ポリシー</translation>
@@ -569,7 +567,7 @@
 <translation id="375882617301124395">暗号資産ウォレットをバックアップします</translation>
 <translation id="8289942708804097960">クレジットカードまたはデビットカードで暗号資産を購入しましょう。</translation>
 <translation id="841880029259839903">あるアカウントから別のアカウントへ暗号資産を送信また転送できます。</translation>
-<translation id="8982246458261383692">暗号資産アセットをBrave DEXアグリゲーターとスワップします。</translation>
+<translation id="8226778393040773102">暗号資産アセットをBrave DEXアグリゲーターとスワップします。</translation>
 <translation id="1783600039044302171">暗号資産をパスワードで保護</translation>
 <translation id="3726490322412361740">パスワードを入力してください</translation>
 <translation id="3038243139480464605">パスワードを確認</translation>
@@ -595,12 +593,16 @@
 <translation id="9120654436199628567">暗号資産アカウントを復元</translation>
 <translation id="4811736040444856406">リカバリーフレーズを表示</translation>
 <translation id="283071225285270357">リカバリーフレーズを入力</translation>
+<translation id="3943857333388298514">貼り付け</translation>
+<translation id="3331452756822160641">新しいパスワード</translation>
+<translation id="4854035885012188958">従来のBrave暗号資産ウォレットから復元</translation>
 <translation id="2339124864228588937">リカバリーフレーズを確認</translation>
 <translation id="3747079125031086337">あなたのリカバリフレーズに含まれている単語を正しい順序で選択します。</translation>
 <translation id="6518133107902771759">確認</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">パスワード</translation>
+<translation id="5619264711680220002">生体認証によるロック解除</translation>
 <translation id="5168349973342709369">パスワードを入力してウォレットのロックを解除します</translation>
 <translation id="1144810021918451336">危険なウェブサイト、ダウンロード、拡張機能からの保護を無効にする</translation>
 <translation id="5760476995887363522">フレーズが一致しません。もう一度お試しください。</translation>
@@ -613,6 +615,8 @@
 <translation id="6159566011642056819">最大 (推定)</translation>
 <translation id="6998989275928107238">送信先</translation>
 <translation id="2589431635772931954">アドレスまたはURL</translation>
+<translation id="5517732667776806421">チェックサム情報がありません</translation>
+<translation id="4006711930669471508">チェックサム情報が無効です</translation>
 <translation id="632241521608275119">価格変動の許容値</translation>
 <translation id="1987317783729300807">アカウント</translation>
 <translation id="3535654229833214438">取引</translation>
@@ -645,7 +649,6 @@
 <translation id="7420359180991315365">続けてWyreを使用する</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="3784455785234192852">ロック</translation>
-<translation id="5040262127954254034">プライバシー</translation>
 <translation id="8239147115686034860">Braveウォレット を自動的にロック</translation>
 <translation id="414639769490080648">Brave Wallet が自動的にロックされるまで待機する分数</translation>
 <translation id="4993345308607970390">Braveウォレットをリセット</translation>
@@ -765,7 +768,7 @@
 <translation id="6666273175654835609">送信済</translation>
 <translation id="2331676293859649642">確認済</translation>
 <translation id="1165039591588034296">エラー</translation>
-<translation id="4354768722613827480">料金: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="8364362220156372884">料金: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">今お使いのブラウザは最速ですか？</translation>
 <translation id="2065971949051836200">スマートフォンから、インターネットを3倍のスピードでお楽しみいただけます。すべてのWebブラウジングにBraveをお使いください。</translation>
 <translation id="2888278614497184977">Brave = Webブラウジングが3倍高速に</translation>
@@ -790,7 +793,7 @@
 <translation id="1254969878422524947">ガスあたりのチップ制限 (Gwei)</translation>
 <translation id="7373308452149471621">ガスあたりの価格制限 (Gwei)</translation>
 <translation id="5891811606602061966">アカウントのインポートに失敗しました。もう一度やり直してください。</translation>
-<translation id="7033470144757208254">BraveはDEXアグリゲーターとして0xを使用しています</translation>
+<translation id="1822506443689803572">BraveはDEXアグリゲーターとして0xを使用しています</translation>
 <translation id="5061574358754621254">CoinGeckoによる価格データ</translation>
 <translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
 <translation id="8574289650879708853">カスタムアセットを追加</translation>
@@ -806,7 +809,6 @@
 <translation id="3506416339268164412">受取アドレスはトークンのコントラクトアドレスとなります</translation>
 <translation id="1543259266592091784">資金を追加する</translation>
 <translation id="3494964159182650590">リワードの概要</translation>
-<translation id="7470079236088529568">取得済みのトークン合計</translation>
 <translation id="590733288489975971">Adsによる報酬</translation>
 <translation id="207268487070188114">ワンタイムチップ</translation>
 <translation id="64394831139134288">マイウォレット</translation>
@@ -816,7 +818,45 @@
 <translation id="1549705559752367917">チップを送る</translation>
 <translation id="6727102863431372879">設定</translation>
 <translation id="381822214767083050">毎月の支援</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> 米ドル</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="5802665280774361839">アドレス入力時にオートコンプリートを表示</translation>
+<translation id="1241283133946520352">ネットワーク</translation>
+<translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
+<translation id="2512821599885971349">ネットワークを追加</translation>
+<translation id="1330032157352961756">新規チェーンID</translation>
+<translation id="8104880458203052748">形式が無効です。チェーンIDは正の数にしてください</translation>
+<translation id="3423620355610881890">正の10進数</translation>
+<translation id="726121047592132939">新規チェーン名</translation>
+<translation id="1034112277864078119">チェーン名を入力</translation>
+<translation id="6003394258999088868">この項目は必須です</translation>
+<translation id="4672314527143443556">チェーンの通貨名</translation>
+<translation id="4652114030688989556">暗号資産名を入力</translation>
+<translation id="1079960017149736097">チェーンの通貨のシンボル</translation>
+<translation id="1288105009659846362">暗号資産のシンボルを入力</translation>
+<translation id="665660671251623018">チェーンの通貨の小数点桁数</translation>
+<translation id="182619028057179895">形式が無効です。通貨単位は正の数にしてください</translation>
+<translation id="2978054488731497946">通貨の小数点桁数を入力</translation>
+<translation id="3047726704186619366">アイコンURL</translation>
+<translation id="2487558607408469181">ブロックエクスプローラーURL</translation>
+<translation id="7059127752542505809">URLを入力</translation>
+<translation id="2156993118928861787">アドレスが無効です。</translation>
+<translation id="6889920539620318793">アクティブに設定</translation>
+<translation id="2653659639078652383">送信</translation>
+<translation id="8853725596990766789">金額を変更</translation>
+<translation id="1765217911817124376">Brave Newsを有効にする</translation>
+<translation id="4272190451231642425">クラッシュレポートを自動送信する</translation>
+<translation id="2239766974964486304">クラッシュレポートにより、すべてのユーザーのBrave製品の安定性を向上できます。</translation>
+<translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
+<translation id="7289740269305509613">Brave Rewardsアイコンを非表示</translation>
+<translation id="2260513517001048012">注意：このBrave承認済みクリエイターのアカウントは、まだBraveユーザーの支援を受け取る設定がされていません。お使いのブラウザはクリエイターが確認するまで、または90日経過するまで試行を続けます。</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="8982246458261383692">暗号資産アセットをBrave DEXアグリゲーターとスワップします。</translation>
+<translation id="5040262127954254034">プライバシー</translation>
+<translation id="4354768722613827480">料金: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="7033470144757208254">BraveはDEXアグリゲーターとして0xを使用しています</translation>
+<translation id="7470079236088529568">取得済みのトークン合計</translation>
+<translation id="8845154268466251503">BAT</translation>
 </translationbundle>

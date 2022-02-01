@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (plėtinio ID "<ph name="EXTENSION_ID"/>") nėra leidžiamas naršyklėje „Brave“.</translation>
 <translation id="6786747875388722282">Plėtiniai</translation>
 <translation id="984275831282074731">Mokėjimo metodai</translation>
-<translation id="3699882589215410581">Įdiekite ir paleiskite „Widevine“</translation>
+<translation id="1990886731975529483">Įdiekite ir paleiskite „Google Widevine“</translation>
 <translation id="8926389886865778422">Neklauskite dar kartą</translation>
 <translation id="5249433283143453448">Naudokite „Widevine“ skaitmeninių teisių valdymo (DRM) komponentą, jei norite naršyklėje peržiūrėti apsaugotus transliuojamus vaizdo įrašus ir kitą turinį.</translation>
 <translation id="6241402707160226266">Privatus langas su „Tor“</translation>
 <translation id="8762452230727230396">„Tor“ paslepia jūsų IP adresą nuo svetainių, kuriose lankotės.</translation>
 <translation id="1369311132025451972">Automatiškai peradresuoti .onion svetaines</translation>
 <translation id="2843777623071353503">Kai bus galima, „Brave“ „Tor“ lange atvers svetainės „Onion“ paslaugą arba .onion domeną</translation>
-<translation id="8053096063396012732">Diegti „Widevine“</translation>
-<translation id="4840334696217618631">Paleiskite naršyklę iš naujo, kad „Widevine“ pradėtų veikti</translation>
-<translation id="8410111618231938546">„Google Widevine“ yra skaitmeninio teisių valdymo (DRM) kodo elementas, kuris nepriklauso „Brave Software“ ir todėl negalime jo patikrinti. „Google Widevine“ kodas įkeliamas iš „Google“ serverių, o ne iš mūsų serverių. Jis įkeliamas tik tada, kai aktyvinate šią parinktį. Mes neskatiname naudoti DRM, bet gerbiame naudotojų pasirinkimą ir pripažįstame, kad kai kurie „Brave“ naudotojai nori naudotis paslaugomis, kurioms DRM yra reikalingas.
-
-Įdiegdami šį plėtinį sutinkate su „Google Widevine“ naudojimo sąlygomis. Sutinkate, kad „Brave“ nebus atsakinga už jokią žalą ar nuostolius, patirtus dėl naudojimosi „Google Widevine“.</translation>
+<translation id="4900351245762303149">Įdiekite „Google Widevine“</translation>
+<translation id="2313383941300459392">Paleiskite naršyklę iš naujo, kad „Google Widevine“ pradėtų veikti</translation>
+<translation id="2200626478572277092">„Widevine“ kartais reikalinga medijai leisti svetainėje. Tai „Google“ plėtinys, įkeliamas iš „Google“ serverių, kurių „Brave“ tikrinti negali. Įdiegdami sutinkate su „Google“ naudojimo sąlygomis.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Arba vėliau pakeiskite dalyje <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Daugiau sužinokite apie „Widevine“</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> prašo jūsų</translation>
 <translation id="410351446219883937">Leisti automatiškai</translation>
 <translation id="3218385319396786393">Šiame puslapyje automatinio leidimo funkcija buvo užblokuota</translation>
 <translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@
 <translation id="6583467242903731748">Klausti, kai svetainė nori pasiekti eterio tiekėjo API</translation>
 <translation id="7017590444693657895">Blokuoti svetaines, kad nebūtų pasiekiamas eterio tiekėjo API</translation>
 <translation id="8988939298652262600">„Brave“ netikrina šio plėtinio saugumo. Šį plėtinį įdiekite, tik jei pasitikite jo kūrėju.</translation>
+<translation id="933652931229970927">Automatiškai siųsti diagnostikos ataskaitas</translation>
+<translation id="1679356339067548863">Padėkite tobulinti „Brave“ produktų stabilumą, automatiškai siųsdami diagnostikos ataskaitas, kai „Brave“ naršyklė užstringa.</translation>
 <translation id="8081858229109418493">Profilio pavadinimas ir piktograma</translation>
 <translation id="6438096877646138757">Svetainės, kurios išvalo slapukus, kai jas užveriate</translation>
 <translation id="2988792685798128092">Išvalyti užveriant svetainę</translation>
@@ -42,7 +46,7 @@
 <translation id="1692470335103807198">Gauti daugiau temų</translation>
 <translation id="2906510232093002459">„Brave“ numatytieji vaizdai</translation>
 <translation id="2814998458708016836">Naudoti plačią adreso juostą</translation>
-<translation id="6123134130710658846">Slėpti mygtuką „Brave Rewards“</translation>
+<translation id="6333347122924254968">Rodyti „Brave“ atlygio piktogramą adreso juostoje</translation>
 <translation id="1811404036171336214">Visada rodyti žymes naujos kortelės puslapyje</translation>
 <translation id="1643029991199044105">Paskiausiai naudotas korteles perjunkite klavišais Ctrl + Tab</translation>
 <translation id="1013121820689882118">Spartusis skaitlys</translation>
@@ -76,7 +80,7 @@
 <translation id="5733490796524078528">Patarimų mygtukai</translation>
 <translation id="3905400818082450708">„Reddit“</translation>
 <translation id="2635094637295383009">„Twitter“</translation>
-<translation id="7038489306457318096">„Github“</translation>
+<translation id="6032511312767282174">„Github“</translation>
 <translation id="7781069478569868053">Naujo skirtuko puslapis</translation>
 <translation id="1988804048511540801">Naujos kortelės puslapis rodo</translation>
 <translation id="2970343821770026391">Ataskaitų sritis</translation>
@@ -89,12 +93,12 @@
 <translation id="8612763432858587652">Išeiti iš inkognito lango</translation>
 <translation id="8760415064721320867">Privatus langas su „Tor“</translation>
 <translation id="2055363275850890030">Privatus langas</translation>
-<translation id="8934172355414207733">Privatus langas su „Tor“</translation>
+<translation id="5410152065859052603">„Tor“</translation>
+<translation id="7897433216002294926">„Tor“ <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Tai yra inkognito langas su „Tor“</translation>
 <translation id="1037341607922068025">Atverti inkognito langą su „Tor“</translation>
-<translation id="5410152065859052603">„Tor“</translation>
 <translation id="1725356094208762656">Atverti „Tor“ lange</translation>
-<translation id="7643538479215207633">Atidaryti naudojant IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Skelbti ir gauti failus iš IPFS</translation>
 <translation id="1672270084584211506">Galimas „Onion“</translation>
 <translation id="406832631167785034">Atverkite naudodami .onion adresą</translation>
@@ -105,7 +109,6 @@
 <translation id="4227945450504703638">Pasirinktas garsas</translation>
 <translation id="7895302206188277628">Susietas turinys</translation>
 <translation id="3654831858282189202">Publikuoti su IPNS raktu</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Importuoti pažymėtą tekstą į IPFS</translation>
 <translation id="6925604404524625582">Importuoti ir kopijuoti nuorodą į IPFS momentinę kopiją</translation>
 <translation id="1434416574322382019">Naujas inkognito langas su „Tor“</translation>
@@ -238,8 +241,8 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="6358469157239228181">Šio pavadinimo naudoti negalima</translation>
 <translation id="5761731140570209168">Pridėti naują kolegų ryšio eilutę</translation>
 <translation id="2082206983920804886">Pasukti raktą</translation>
-<translation id="2521133093532260474">Negalima sustabdyti vietinio mazgo</translation>
-<translation id="86879877003581729">Negalima paleisti vietinio mazgo</translation>
+<translation id="5078501082919354191">Negalima sustabdyti „Brave“ vietinio IPFS mazgo</translation>
+<translation id="5687424953196903465">Nepavyko paleisti „Brave“ vietinio IPFS mazgo</translation>
 <translation id="6476061084931271248">Paleiskite mazgą iš naujo, kad būtų pritaikyti pakeitimai</translation>
 <translation id="3754226427671882382">Mazgą paleisti iš naujo</translation>
 <translation id="949667118776341807">Pasukti</translation>
@@ -254,17 +257,22 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="616058968889448209">IPFS tarnybos paleidimo klaida, daugiau informacijos rasite <ph name="BEGIN_LINK"/>diagnostikos puslapyje<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">„<ph name="KEY_NAME"/>“ rakto importuoti nepavyko</translation>
 <translation id="3364053282600191535">„<ph name="KEY_NAME"/>“ rakto eksportuoti nepavyko</translation>
-<translation id="8860039076160511438">Iš naujo nustatyti piniginę</translation>
+<translation id="4993345308607970390">Atkurti „Brave“ piniginę</translation>
+<translation id="5975930666279943472">Išvalyti piniginės operacijų ir operacijos numerių informaciją</translation>
+<translation id="5693968582510626466">Operacijų išvalymas gali būti naudingas kūrėjams arba norint išvalyti būseną vietiniame serveryje</translation>
 <translation id="6369495274982305511">Ar tikrai norite iš naujo nustatyti piniginę? Jei piniginės atsarginė kopija nebus sukurta, nustatę iš naujo prarasite visus sąskaitos duomenis (įskaitant visas susijusias lėšas). Patvirtinkite įrašydami „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="9216386092464743272">Ar tikrai norite iš naujo nustatyti visą savo piniginės operacijų ir operacijų numerių informaciją? Šią parinktį dažniausiai naudoja kūrėjai, turintys vietinį testavimo serverį. Jei norite patvirtinti, įrašykite „<ph name="CONFIRMATION_PHRASE"/>“.</translation>
+<translation id="3752403403443723332">Jūsų piniginė atkurta.</translation>
+<translation id="594766067816395072">Jūsų piniginės operacijų informacija atkurta.</translation>
 <translation id="1426410128494586442">Taip</translation>
 <translation id="8275038454117074363">Importuoti</translation>
 <translation id="3654980960391973513">Generuoti</translation>
 <translation id="5531501313997312487">Pradėti mazgą</translation>
 <translation id="9170907049676078643">IPFS išteklių nustatymo metodas</translation>
 <translation id="1327977588028644528">Tinklų sietuvas</translation>
-<translation id="80225669816651290">Vietinis mazgas</translation>
+<translation id="1195880978080389104">„Brave“ vietinis IPFS mazgas</translation>
 <translation id="4927734062756955434">IPFS viešojo tinklų sietuvo adresas</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Sužinokite daugiau<ph name="END_LINK_MPL"/> apie IPFS vietinio mazgo ir tinklų sietuvo privatumo nuostatas.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Sužinokite daugiau<ph name="END_LINK_MPL"/> apie „Brave“ vietinio IPFS mazgo ir tinklų sietuvo privatumo nuostatas.</translation>
 <translation id="8425213833346101688">Keisti</translation>
 <translation id="557281710253742286">Nustatyti IPFS tinklų sietuvą</translation>
 <translation id="8571837315037233299">Tinklų sietuvo adresas</translation>
@@ -273,7 +281,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="7703184801853248830">Netinkamas tinklų sietuvo adresas</translation>
 <translation id="7690058578502751948">„Brave“ galima naudoti tik IPFS tinklų sietuvą, kuriame įjungta kilmės vietos izoliavimo funkcija.</translation>
 <translation id="585868419599255817">IPFS atsarginis viešasis tinklų sietuvas</translation>
-<translation id="207763736230883589">Automatiškai grįžti prie viešojo IPFS tinklų sietuvo, jei vietinio mazgo pasiekti neįmanoma.</translation>
+<translation id="2618080188892567155">Automatiškai grįžti prie viešojo IPFS tinklų sietuvo, jei „Brave“ vietinio IPFS mazgo pasiekti neįmanoma.</translation>
 <translation id="4107552920076294723">Nukreipti IPFS išteklius į sukonfigūruotą IPFS tinklų sietuvą</translation>
 <translation id="6494857428933042381">Kai sutinkamas IPFS tinklų sietuvo išteklius, IPFS nustatymo operacijoms automatiškai naudojamas sukonfigūruotas tinklų sietuvas.</translation>
 <translation id="8655170717758778983">Kai įmanoma, automatiškai nukreipti į IPFS puslapius per „DNSLink“</translation>
@@ -346,10 +354,9 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="780301667611848630">Ačiū, ne</translation>
 <translation id="5039804452771397117">Leisti</translation>
 <translation id="7053983685419859001">Blokuoti</translation>
-<translation id="7815301689257843278">Siųsti gedimo ataskaitas automatiškai, kad „Brave“ galėtų šios problemos išvengti  ateityje?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> netikėtai išsijungė.</translation>
 <translation id="1324417023773393937">„Brave“ naršyklė</translation>
-<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> bet kada galite vėl pakeisti.</translation>
+<translation id="7276554663454265692"><ph name="SETTING_TEXT"/> bet kada galite pakeisti naršyklės nuostatose.</translation>
 <translation id="6873781976650514089">Šią nuostatą</translation>
 <translation id="6040143037577758943">Uždaryti</translation>
 <translation id="5600566490506283344">„Brave Ad“ pranešimas</translation>
@@ -446,10 +453,28 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="2487558607408469181">Blokų naršyklės URL adresai</translation>
 <translation id="6301398959353668507">Šis laukas negali būti tuščias.</translation>
 <translation id="7504462451153306677">Netinkamas formatas, grandinės ID yra teigiamas skaičius</translation>
-<translation id="8325036459845654666">Šis tinklas jau pridėtas.</translation>
 <translation id="650071759190249039">Vidinė klaida, nepavyko pridėti tinklo.</translation>
 <translation id="868529041590572443">Užpildykite visą informaciją apie vietinę valiutą</translation>
 <translation id="1062463687579789365">Piniginės tinklų tinkinimas</translation>
 <translation id="2234108191702901162">Nepavyko pridėti tinklo</translation>
 <translation id="2618193846561624884">Ar norite atnaujinti esamą tinklą?</translation>
+<translation id="3699882589215410581">Įdiekite ir paleiskite „Widevine“</translation>
+<translation id="8053096063396012732">Diegti „Widevine“</translation>
+<translation id="4840334696217618631">Paleiskite naršyklę iš naujo, kad „Widevine“ pradėtų veikti</translation>
+<translation id="8410111618231938546">„Google Widevine“ yra skaitmeninio teisių valdymo (DRM) kodo elementas, kuris nepriklauso „Brave Software“ ir todėl negalime jo patikrinti. „Google Widevine“ kodas įkeliamas iš „Google“ serverių, o ne iš mūsų serverių. Jis įkeliamas tik tada, kai aktyvinate šią parinktį. Mes neskatiname naudoti DRM, bet gerbiame naudotojų pasirinkimą ir pripažįstame, kad kai kurie „Brave“ naudotojai nori naudotis paslaugomis, kurioms DRM yra reikalingas.
+
+Įdiegdami šį plėtinį sutinkate su „Google Widevine“ naudojimo sąlygomis. Sutinkate, kad „Brave“ nebus atsakinga už jokią žalą ar nuostolius, patirtus dėl naudojimosi „Google Widevine“.</translation>
+<translation id="6123134130710658846">Slėpti mygtuką „Brave Rewards“</translation>
+<translation id="7038489306457318096">„Github“</translation>
+<translation id="8934172355414207733">Privatus langas su „Tor“</translation>
+<translation id="7643538479215207633">Atidaryti naudojant IPFS</translation>
+<translation id="2521133093532260474">Negalima sustabdyti vietinio mazgo</translation>
+<translation id="86879877003581729">Negalima paleisti vietinio mazgo</translation>
+<translation id="8860039076160511438">Iš naujo nustatyti piniginę</translation>
+<translation id="80225669816651290">Vietinis mazgas</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Sužinokite daugiau<ph name="END_LINK_MPL"/> apie IPFS vietinio mazgo ir tinklų sietuvo privatumo nuostatas.</translation>
+<translation id="207763736230883589">Automatiškai grįžti prie viešojo IPFS tinklų sietuvo, jei vietinio mazgo pasiekti neįmanoma.</translation>
+<translation id="7815301689257843278">Siųsti gedimo ataskaitas automatiškai, kad „Brave“ galėtų šios problemos išvengti  ateityje?</translation>
+<translation id="1068069727470515940"><ph name="SETTING_TEXT"/> bet kada galite vėl pakeisti.</translation>
+<translation id="8325036459845654666">Šis tinklas jau pridėtas.</translation>
 </translationbundle>

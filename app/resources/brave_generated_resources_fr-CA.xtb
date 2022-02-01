@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") n'est pas autorisé dans Brave.</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="984275831282074731">Modes de paiement</translation>
-<translation id="3699882589215410581">Installer et exécuter Widevine</translation>
+<translation id="1990886731975529483">Installer et exécuter Google Widevine</translation>
 <translation id="8926389886865778422">Ne plus afficher ce message</translation>
 <translation id="5249433283143453448">Utilisez le composant de gestion des droits numériques (DRM) Widevine pour visualiser des vidéos en streaming protégées et d'autres contenus dans le navigateur.</translation>
 <translation id="6241402707160226266">Fenêtre privée avec Tor</translation>
 <translation id="8762452230727230396">Tor masque votre adresse IP lorsque vous visitez des sites.</translation>
 <translation id="1369311132025451972">Rediriger automatiquement les sites .onion</translation>
 <translation id="2843777623071353503">Brave ouvrira le service onion du site Web lorsqu'il est disponible ou le domaine .onion dans une fenêtre Tor</translation>
-<translation id="8053096063396012732">Installez Widevine</translation>
-<translation id="4840334696217618631">Redémarrer le navigateur pour activer Widevine</translation>
-<translation id="8410111618231938546">Google Widevine est un code de gestion des droits numériques (GDN) que Brave Software ne possède pas et ne peut inspecter. Le code Google Widevine est chargé à partir des serveurs Google et non de nos serveurs. Il n'est chargé que lorsque vous activez cette option. Nous décourageons l'utilisation de la GDN, mais nous respectons le choix de l'utilisateur et reconnaissons que certains utilisateurs de Brave aimeraient utiliser les services qui en ont besoin.
-
-En installant cette extension, vous acceptez les conditions d'utilisation de Google Widevine. Vous reconnaissez que Brave n'est pas responsable des dommages ou pertes liés à votre utilisation de Google Widevine.</translation>
+<translation id="4900351245762303149">Installer Google Widevine</translation>
+<translation id="2313383941300459392">Redémarrer le navigateur pour activer Google Widevine</translation>
+<translation id="2200626478572277092">Widevine est parfois requis pour lire du contenu multimédia sur une page Web. Il s'agit d'une extension Google chargée à partir des serveurs Google que Brave ne peut pas inspecter. En installant cette extension, vous acceptez les conditions d'utilisation de Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Apprenez-en davantage sur Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> vous demande de</translation>
 <translation id="410351446219883937">Lecture automatique</translation>
 <translation id="3218385319396786393">La lecture automatique a été bloquée sur cette page</translation>
 <translation id="4988333904713528597">Autorisez toujours l'activation de la lecture automatique <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="6583467242903731748">Demander lorsqu'un site veut accéder à l'API du fournisseur d'Ethereum</translation>
 <translation id="7017590444693657895">Empêcher les sites d'accéder à l'API du fournisseur d'Ethereum</translation>
 <translation id="8988939298652262600">Brave n'examine pas la sécurité et la sûreté des extensions. N'installez cette extension que si vous faites confiance au développeur.</translation>
+<translation id="933652931229970927">Envoyer automatiquement les rapports de diagnostic</translation>
+<translation id="1679356339067548863">Contribuez à améliorer la stabilité des produits de Brave en envoyant automatiquement des rapports de diagnostic lorsque le navigateur Brave plante ou se bloque.</translation>
 <translation id="8081858229109418493">Nom et icône du profil</translation>
 <translation id="6438096877646138757">Sites effaçant les témoins lorsque vous les fermez</translation>
 <translation id="2988792685798128092">Effacer à la fermeture du site</translation>
@@ -42,7 +46,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="1692470335103807198">Obtenir plus de thèmes</translation>
 <translation id="2906510232093002459">Images Brave par défaut</translation>
 <translation id="2814998458708016836">Utiliser une barre d'adresse large</translation>
-<translation id="6123134130710658846">Cacher le bouton « Récompenses de Brave »</translation>
+<translation id="6333347122924254968">Afficher l'icône de récompenses Brave dans la barre d'adresse</translation>
 <translation id="1811404036171336214">Toujours afficher les signets sur le nouvel onglet</translation>
 <translation id="1643029991199044105">Faites défiler les onglets les plus récemment utilisés avec Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5733490796524078528">Boutons de dons</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Nouvel onglet</translation>
 <translation id="1988804048511540801">Le nouvel onglet affiche</translation>
 <translation id="2970343821770026391">Tableau de bord</translation>
@@ -89,12 +93,12 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8612763432858587652">Sortir de la fenêtre privée</translation>
 <translation id="8760415064721320867">Fenêtre privée avec Tor</translation>
 <translation id="2055363275850890030">Fenêtre privée</translation>
-<translation id="8934172355414207733">Privé avec Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Ceci est une fenêtre privée avec Tor</translation>
 <translation id="1037341607922068025">Ouvrir une fenêtre privée avec Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Ouvrir dans Tor</translation>
-<translation id="7643538479215207633">Ouvrir avec IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publier et récupérer des fichiers depuis IPFS</translation>
 <translation id="1672270084584211506">Oignon disponible</translation>
 <translation id="406832631167785034">Ouvrir en utilisant une adresse .onion</translation>
@@ -105,7 +109,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4227945450504703638">Contenu audio sélectionné</translation>
 <translation id="7895302206188277628">Contenu du lien</translation>
 <translation id="3654831858282189202">Publier avec une clé IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Importer le texte sélectionné sur IPFS</translation>
 <translation id="6925604404524625582">Importer et copier le lien vers un instantané IPFS</translation>
 <translation id="1434416574322382019">Nouvelle fenêtre privée avec Tor</translation>
@@ -238,8 +241,8 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="6358469157239228181">Ce nom ne peut pas être utilisé</translation>
 <translation id="5761731140570209168">Ajouter une chaîne de connexion à un pair</translation>
 <translation id="2082206983920804886">Renouveler la clé</translation>
-<translation id="2521133093532260474">Impossible d'arrêter le nœud local</translation>
-<translation id="86879877003581729">Impossible de lancer le nœud local</translation>
+<translation id="5078501082919354191">Impossible d'arrêter le nœud IPFS local Brave</translation>
+<translation id="5687424953196903465">Impossible de lancer le nœud IFS local Brave</translation>
 <translation id="6476061084931271248">Redémarrer le nœud pour appliquer les modifications</translation>
 <translation id="3754226427671882382">Redémarrer le nœud</translation>
 <translation id="949667118776341807">Renouveler</translation>
@@ -254,17 +257,22 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="616058968889448209">Erreur du lancement du service IPFS, plus de renseignements sont offerts sur <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' : échec d'importation de la clé</translation>
 <translation id="3364053282600191535">Échec lors de l'exportation de la clé « <ph name="KEY_NAME"/> »</translation>
-<translation id="8860039076160511438">Réinitialiser le portefeuille</translation>
+<translation id="4993345308607970390">Réinitialiser le portefeuille Brave</translation>
+<translation id="5975930666279943472">Effacer les renseignements relatifs aux transactions et aux nonces du portefeuille</translation>
+<translation id="5693968582510626466">Supprimer les transactions peut être utile pour les développeurs ou lors de la suppression de l'état sur un serveur local</translation>
 <translation id="6369495274982305511">Voulez-vous vraiment réinitialiser votre portefeuille? Si votre portefeuille n'est pas sauvegardé, vous perdrez alors toutes les données de votre compte (y compris tous les fonds associés). Tapez « <ph name="CONFIRMATION_PHRASE"/> » pour confirmer.</translation>
+<translation id="9216386092464743272">Voulez-vous vraiment réinitialiser tous les renseignements relatifs aux transactions et aux nonces de votre portefeuille? Cette option est principalement utilisée par les développeurs exécutant un serveur test local. Saisissez « <ph name="CONFIRMATION_PHRASE"/> » pour confirmer.</translation>
+<translation id="3752403403443723332">Votre portefeuille a été réinitialisé.</translation>
+<translation id="594766067816395072">Les renseignements relatifs aux transactions de votre portefeuille ont été réinitialisés.</translation>
 <translation id="1426410128494586442">Oui</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="3654980960391973513">Générer</translation>
 <translation id="5531501313997312487">Démarrer le nœud</translation>
 <translation id="9170907049676078643">Méthode de résolution des ressources IPFS</translation>
 <translation id="1327977588028644528">Passerelle</translation>
-<translation id="80225669816651290">Nœud local</translation>
+<translation id="1195880978080389104">Nœud IPFS local Brave</translation>
 <translation id="4927734062756955434">Adresse de la passerelle publique IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>En savoir plus<ph name="END_LINK_MPL"/> sur les considérations relatives à la vie privée pour le nœud local et la passerelle IPFS.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>En savoir plus<ph name="END_LINK_MPL"/> sur les considérations relatives à la vie privée pour le nœud IPFS local Brave et la passerelle IPFS.</translation>
 <translation id="8425213833346101688">Modifier</translation>
 <translation id="557281710253742286">Définir la passerelle IPFS</translation>
 <translation id="8571837315037233299">Adresse de la passerelle</translation>
@@ -273,7 +281,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="7703184801853248830">Adresse de passerelle non valide</translation>
 <translation id="7690058578502751948">Seule une passerelle IPFS valide avec l'isolation de l'origine activée peut être utilisée dans Brave</translation>
 <translation id="585868419599255817">Repli vers la passerelle publique IPFS</translation>
-<translation id="207763736230883589">Revenez automatiquement à la passerelle IPFS publique si votre nœud local ne peut pas être atteint.</translation>
+<translation id="2618080188892567155">Revenez automatiquement à la passerelle IPFS publique si votre nœud IPFS local Brave ne peut pas être atteint.</translation>
 <translation id="4107552920076294723">Rediriger les ressources IPFS vers la passerelle IPFS configurée</translation>
 <translation id="6494857428933042381">Utilise automatiquement la passerelle configurée pour les résolutions IPFS lorsqu'une ressource de passerelle IPFS est rencontrée.</translation>
 <translation id="8655170717758778983">Rediriger automatiquement vers des pages IPFS au moyen de DNSLink lorsque cela est possible</translation>
@@ -346,10 +354,9 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="780301667611848630">Non merci</translation>
 <translation id="5039804452771397117">Autoriser</translation>
 <translation id="7053983685419859001">Bloquer</translation>
-<translation id="7815301689257843278">Envoyer automatiquement les rapports de plantage pour que Brave puisse empêcher la répétition de ce problème?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> a cessé de fonctionner de manière inattendue.</translation>
 <translation id="1324417023773393937">Le navigateur Brave</translation>
-<translation id="1068069727470515940">Vous pouvez modifier à nouveau <ph name="SETTING_TEXT"/> à tout moment.</translation>
+<translation id="7276554663454265692">Vous pouvez modifier <ph name="SETTING_TEXT"/> à tout moment dans les paramètres du navigateur.</translation>
 <translation id="6873781976650514089">ce paramètre</translation>
 <translation id="6040143037577758943">Fermer</translation>
 <translation id="5600566490506283344">Notification d'annonce Brave</translation>
@@ -446,10 +453,28 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="2487558607408469181">URL de l'explorateur de bloc</translation>
 <translation id="6301398959353668507">Champ obligatoire.</translation>
 <translation id="7504462451153306677">Format non valide : l'identifiant de la chaîne est un nombre positif</translation>
-<translation id="8325036459845654666">Ce réseau est déjà ajouté.</translation>
 <translation id="650071759190249039">Erreur interne, impossible d'ajouter le réseau.</translation>
 <translation id="868529041590572443">Veuillez remplir tous les renseignements sur la devise native</translation>
 <translation id="1062463687579789365">Personnalisation des réseaux du portefeuille</translation>
 <translation id="2234108191702901162">Impossible d'ajouter le réseau</translation>
 <translation id="2618193846561624884">Voulez-vous mettre à jour le réseau existant?</translation>
+<translation id="3699882589215410581">Installer et exécuter Widevine</translation>
+<translation id="8053096063396012732">Installez Widevine</translation>
+<translation id="4840334696217618631">Redémarrer le navigateur pour activer Widevine</translation>
+<translation id="8410111618231938546">Google Widevine est un code de gestion des droits numériques (GDN) que Brave Software ne possède pas et ne peut inspecter. Le code Google Widevine est chargé à partir des serveurs Google et non de nos serveurs. Il n'est chargé que lorsque vous activez cette option. Nous décourageons l'utilisation de la GDN, mais nous respectons le choix de l'utilisateur et reconnaissons que certains utilisateurs de Brave aimeraient utiliser les services qui en ont besoin.
+
+En installant cette extension, vous acceptez les conditions d'utilisation de Google Widevine. Vous reconnaissez que Brave n'est pas responsable des dommages ou pertes liés à votre utilisation de Google Widevine.</translation>
+<translation id="6123134130710658846">Cacher le bouton « Récompenses de Brave »</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privé avec Tor</translation>
+<translation id="7643538479215207633">Ouvrir avec IPFS</translation>
+<translation id="2521133093532260474">Impossible d'arrêter le nœud local</translation>
+<translation id="86879877003581729">Impossible de lancer le nœud local</translation>
+<translation id="8860039076160511438">Réinitialiser le portefeuille</translation>
+<translation id="80225669816651290">Nœud local</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>En savoir plus<ph name="END_LINK_MPL"/> sur les considérations relatives à la vie privée pour le nœud local et la passerelle IPFS.</translation>
+<translation id="207763736230883589">Revenez automatiquement à la passerelle IPFS publique si votre nœud local ne peut pas être atteint.</translation>
+<translation id="7815301689257843278">Envoyer automatiquement les rapports de plantage pour que Brave puisse empêcher la répétition de ce problème?</translation>
+<translation id="1068069727470515940">Vous pouvez modifier à nouveau <ph name="SETTING_TEXT"/> à tout moment.</translation>
+<translation id="8325036459845654666">Ce réseau est déjà ajouté.</translation>
 </translationbundle>

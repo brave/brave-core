@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (การระบุชื่อสกุลแฟ้ม "<ph name="EXTENSION_ID"/>") ไม่ได้รับอนุญาตในโปรแกรมของเบรฟ (Brave)</translation>
 <translation id="6786747875388722282">ส่วนขยาย</translation>
 <translation id="984275831282074731">วิธีการชำระเงิน</translation>
-<translation id="3699882589215410581">ติดตั้งและเปิดใช้งาน Widevine</translation>
+<translation id="1990886731975529483">ติดตั้งและเรียกใช้ Google Widevine</translation>
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
 <translation id="5249433283143453448">ใช้องค์ประกอบการจัดการสิทธิ์ทางดิจิทัล Widevine (DRM) เพื่อดูสตรีมมิ่งวิดีโอที่มีการป้องกันและเนื้อหาอื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="6241402707160226266">หน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="8762452230727230396">Tor จะซ่อนที่อยู่ IP ของคุณจากเว็บไซต์ที่คุณเยี่ยมชม</translation>
 <translation id="1369311132025451972">ย้ายไปที่เว็บ .onion โดยอัตโนมัติ</translation>
 <translation id="2843777623071353503">Brave จะเปิดบริการเว็บไซต์แบบหัวหอมเมื่อมีให้บริการหรือโดเมนแบบหัวหอมในหน้าต่าง Tor</translation>
-<translation id="8053096063396012732">ติดตั้ง Widevine</translation>
-<translation id="4840334696217618631">รีสตาร์ทเบราว์เซอร์เพื่อเปิดใช้ Widevine</translation>
-<translation id="8410111618231938546">Google Widevine คือชิ้นส่วนรหัส Digital Rights Management (DRM) ที่พวกเราที่ Brave Software ไม่ได้เป็นเจ้าของและไม่สามารถทำการตรวจได้ รหัส Google Widevine ได้ถูกโหลดจากเซิร์ฟเวอร์ Google ไม่ได้โหลดจากเซิร์ฟเวอร์ของเรา DRM จะถูกโหลดเมื่อคุณเปิดตัวเลือกนี้  เราไม่สนับสนุนการใช้ DRM แต่เราเคารพการตัดสินใจของผู้ใช้และเข้าใจว่าผู้ใช้ Brave บางท่านอาจต้องการใช้บริการที่ต้องการมัน
-
-โดยการติดตั้งส่วนขยายนี้ คุณได้ยอมรับข้อตกลงการใช้งาน Google Widevine คุณได้ตกลงว่า Brave จะไม่รับผิดชอบต่อความเสียหายหรือสูญหายในการเชื่อมต่อการใช้ Google Widevine ของคุณ</translation>
+<translation id="4900351245762303149">ติดตั้ง Google Widevine</translation>
+<translation id="2313383941300459392">รีสตาร์ทเบราว์เซอร์เพื่อเปิดใช้งาน Google Widevine</translation>
+<translation id="2200626478572277092">บางครั้งจำเป็นต้องใช้ Widevine เพื่อเล่นสื่อบนเว็บเพจ โดย Widevine เป็นส่วนขยายบน Google ที่โหลดได้จากเซิร์ฟเวอร์ของ Google ซึ่ง Brave ไม่สามารถตรวจสอบได้ และเมื่อคุณติดตั้งส่วนขยายดังกล่าว จะถือว่าคุณยอมรับข้อกำหนดในการให้บริการของ Google</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>
+หรือเปลี่ยนแปลงภายหลังที่ <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
+<translation id="6229752134959014186">เรียนรู้เพิ่มเติมเกี่ยวกับ Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> ขอให้คุณ</translation>
 <translation id="410351446219883937">เล่นอัตโนมัติ</translation>
 <translation id="3218385319396786393">การเล่นอัตโนมัติถูกบล็อกในหน้านี้</translation>
 <translation id="4988333904713528597">ยินยอมให้ทำการเล่นแบบอัตโนมัติบน <ph name="HOST"/> เสมอ</translation>
@@ -35,6 +37,8 @@
 <translation id="6583467242903731748">ถามเมื่อเว็บไซต์ต้องการเข้าถึง API ผู้ให้บริการ Ethereum</translation>
 <translation id="7017590444693657895">บล็อกเว็บไซต์ไม่ให้เข้าถึง API ของผู้ให้บริการ Ethereum</translation>
 <translation id="8988939298652262600">Brave จะไม่ตรวจสอบความมั่นคงและปลอดภัยของส่วนขยาย โปรดติดตั้งส่วนขยายนี้ในกรณีที่คุณเชื่อมั่นในผู้พัฒนาเท่านั้น</translation>
+<translation id="933652931229970927">ส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
+<translation id="1679356339067548863">ช่วยปรับปรุงความเสถียรของผลิตภัณฑ์ Brave โดยส่งรายงานการวินิจฉัยโดยอัตโนมัติเมื่อเบราว์เซอร์ Brave ขัดข้องหรือค้าง</translation>
 <translation id="8081858229109418493">ชื่อโปรไฟล์และไอคอน</translation>
 <translation id="6438096877646138757">เว็บไซต์ที่จะล้างคุกกี้เมื่อคุณปิด</translation>
 <translation id="2988792685798128092">ล้างเมื่อปิดเว็บไซต์</translation>
@@ -42,7 +46,7 @@
 <translation id="1692470335103807198">รับธีมเพิ่มเติม</translation>
 <translation id="2906510232093002459">ภาพเริ่มต้นของ Brave</translation>
 <translation id="2814998458708016836">ใช้แถบที่อยู่แบบกว้าง</translation>
-<translation id="6123134130710658846">ซ่อนปุ่ม Brave Rewards</translation>
+<translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
 <translation id="1811404036171336214">แสดงบุ๊กมาร์คบนหน้าแท็บใหม่</translation>
 <translation id="1643029991199044105">ย้อนกลับไปแท็บที่ใช้ไปล่าสุดด้วย Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@
 <translation id="5733490796524078528">ปุ่มทิป</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">GitHub</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
 <translation id="1988804048511540801">การแสดงหน้าแท็บใหม่</translation>
 <translation id="2970343821770026391">แดชบอร์ด</translation>
@@ -89,12 +93,12 @@
 <translation id="8612763432858587652">ออกจากหน้าต่างส่วนตัว</translation>
 <translation id="8760415064721320867">หน้าต่างส่วนตัว พร้อม Tor</translation>
 <translation id="2055363275850890030">วินโดว์ส่วนบุคคล</translation>
-<translation id="8934172355414207733">แบบส่วนตัวผ่าน Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">นี่เป็นหน้าต่างส่วนตัวที่เชื่อมต่อผ่าน Tor</translation>
 <translation id="1037341607922068025">เปิดหน้าต่างส่วนตัวด้วย Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">เปิดใน Tor</translation>
-<translation id="7643538479215207633">เปิดด้วย IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">เผยแพร่และเรียกดูไฟล์จาก IPFS</translation>
 <translation id="1672270084584211506">บริการหัวหอมพร้อมใช้งาน</translation>
 <translation id="406832631167785034">เปิดโดยใช้ที่อยู่ .onion</translation>
@@ -105,7 +109,6 @@
 <translation id="4227945450504703638">เสียงที่เลือก</translation>
 <translation id="7895302206188277628">เนื้อหาที่เชื่อมโยง</translation>
 <translation id="3654831858282189202">เผยแพร่ด้วยคีย์ IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">นำเข้าข้อความที่เลือกไปยัง IPFS</translation>
 <translation id="6925604404524625582">นำเข้าและคัดลอกลิงค์ไปยังสแนปชอต IPFS</translation>
 <translation id="1434416574322382019">การสร้างวินโดว์ส่วนบุคคลกับทอร์</translation>
@@ -238,8 +241,8 @@
 <translation id="6358469157239228181">ไม่สามารถใช้ชื่อนี้ได้</translation>
 <translation id="5761731140570209168">เพิ่มสตริงการเชื่อมต่อแบบเพียร์</translation>
 <translation id="2082206983920804886">หมุนคีย์</translation>
-<translation id="2521133093532260474">ไม่สามารถปิดโหนดภายในได้</translation>
-<translation id="86879877003581729">ไม่สามารถเปิดใช้โหนดภายในได้</translation>
+<translation id="5078501082919354191">ไม่สามารถปิดใช้งานโหนด IPFS เฉพาะที่บน Brave ได้</translation>
+<translation id="5687424953196903465">ไม่สามารถเปิดใช้งานโหนด IPFS เฉพาะที่บน Brave ได้</translation>
 <translation id="6476061084931271248">รีสตาร์ทโหนดเพื่อใช้การเปลี่ยนแปลง</translation>
 <translation id="3754226427671882382">รีสตาร์ทโหนด</translation>
 <translation id="949667118776341807">หมุน</translation>
@@ -254,17 +257,22 @@
 <translation id="616058968889448209">เกิดข้อผิดพลาดในการเปิดใช้บริการ IPFS กรุณาดูข้อมูลเพิ่มเติมได้ที่ <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">การนำเข้าคีย์ '<ph name="KEY_NAME"/>' ล้มเหลว</translation>
 <translation id="3364053282600191535">ส่งออกคีย์ '<ph name="KEY_NAME"/>' ล้มเหลว</translation>
-<translation id="8860039076160511438">รีเซ็ตกระเป๋าเงิน</translation>
+<translation id="4993345308607970390">รีเซ็ตกระเป๋าเงิน Brave</translation>
+<translation id="5975930666279943472">ล้าข้อมูลธุรกรรมในกระเป๋าเงินและข้อมูล Nonce</translation>
+<translation id="5693968582510626466">การล้างข้อมูลธุรกรรมอาจเป็นประโยชน์ต่อนักพัฒนาหรือเมื่อล้างสถานะบนเซิร์ฟเวอร์ภายใน</translation>
 <translation id="6369495274982305511">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตกระเป๋าเงินของคุณ หากไม่ได้สำรองกระเป๋าเงินของคุณไว้ จะทำให้คุณสูญเสียข้อมูลบัญชีทั้งหมด (รวมถึงเงินที่เกี่ยวข้อง) พิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
+<translation id="9216386092464743272">คุณแน่ใจหรือไม่ว่าต้องการรีเซ็ตข้อมูลธุรกรรมในกระเป๋าเงินและข้อมูล Nonce ซึ่งตัวเลือกนี้ส่วนใหญ่จะใช้โดยนักพัฒนาที่รันเซิร์ฟเวอร์ทดสอบในเครื่อง กรุณาพิมพ์ "<ph name="CONFIRMATION_PHRASE"/>" เพื่อยืนยัน</translation>
+<translation id="3752403403443723332">รีเซ็ตกระเป๋าเงินของคุณแล้ว!</translation>
+<translation id="594766067816395072">รีเซ็ตข้อมูลธุรกรรมในกระเป๋าเงินของคุณแล้ว</translation>
 <translation id="1426410128494586442">ใช่</translation>
 <translation id="8275038454117074363">นำเข้า</translation>
 <translation id="3654980960391973513">สร้าง</translation>
 <translation id="5531501313997312487">เริ่มต้นใช้งานโหนด</translation>
 <translation id="9170907049676078643">วิธีแก้ปัญหาเกี่ยวกับทรัพยากร IPFS</translation>
 <translation id="1327977588028644528">เกตเวย์</translation>
-<translation id="80225669816651290">โหนดภายใน</translation>
+<translation id="1195880978080389104">โหนด IPFS เฉพาะที่บน Brave</translation>
 <translation id="4927734062756955434">ที่อยู่เกตเวย์ IPFS สาธารณะ</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_MPL"/> เกี่ยวกับข้อควรพิจารณาเกี่ยวกับความเป็นส่วนตัวของโหนดภายใน IPFS และเกตเวย์</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_MPL"/>เกี่ยวกับข้อควรพิจารณาเกี่ยวกับความเป็นส่วนตัวของโหนด IPFS เฉพาะที่และเกตเวย์</translation>
 <translation id="8425213833346101688">เปลี่ยน</translation>
 <translation id="557281710253742286">ตั้งค่าเกตเวย์ IPFS</translation>
 <translation id="8571837315037233299">ที่อยู่เกตเวย์</translation>
@@ -273,7 +281,7 @@
 <translation id="7703184801853248830">ที่อยู่เกตเวย์ไม่ถูกต้อง</translation>
 <translation id="7690058578502751948">เฉพาะเกตเวย์ IPFS ซึ่งเปิดใช้งานการแยกต้นทางเท่านั้นที่สามารถใช้ได้ใน Brave</translation>
 <translation id="585868419599255817">ถอยกลับไปที่เกตเวย์สาธารนะ IPFS</translation>
-<translation id="207763736230883589">ย้อนกลับไปยังเกตเวย์ IPFS สาธารณะโดยอัตโนมัติเมื่อไม่สามารถเข้าถึงโหนดเฉพาะที่ของคุณ</translation>
+<translation id="2618080188892567155">ย้อนกลับไปยังเกตเวย์ IPFS สาธารณะโดยอัตโนมัติเมื่อไม่สามารถเข้าถึงโหนด IPFS เฉพาะที่ของคุณได้</translation>
 <translation id="4107552920076294723">เปลี่ยนเส้นทางทรัพยากร IPFS ไปยังเกตเวย์ IPFS ที่กำหนดค่าไว้</translation>
 <translation id="6494857428933042381">ใช้เกตเวย์ที่กำหนดค่าไว้โดยอัตโนมัติในการแก้ปัญหา IPFS เมื่อพบทรัพยากรเกตเวย์ IPFS</translation>
 <translation id="8655170717758778983">เปลี่ยนเส้นทางไปยังหน้า IPFS ผ่าน DNSLink โดยอัตโนมัติทุกครั้งที่ทำได้</translation>
@@ -346,10 +354,9 @@
 <translation id="780301667611848630">ไม่ ขอบคุณ</translation>
 <translation id="5039804452771397117">อนุญาต</translation>
 <translation id="7053983685419859001">บล็อก</translation>
-<translation id="7815301689257843278">ต้องการส่งรายงานความขัดข้องโดยอัตโนมัติเพื่อให้ Brave สามารถป้องกันปัญหานี้ไม่ให้เกิดขึ้นอีกหรือไม่</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> ปิดโดยไม่คาดคิด</translation>
 <translation id="1324417023773393937">เบราว์เซอร์ Brave</translation>
-<translation id="1068069727470515940">คุณสามารถเปลี่ยน <ph name="SETTING_TEXT"/> อีกครั้งเมื่อใดก็ได้</translation>
+<translation id="7276554663454265692">คุณสามารถเปลี่ยน<ph name="SETTING_TEXT"/>อีกครั้งเมื่อใดก็ได้ในการตั้งค่าเบราว์เซอร์</translation>
 <translation id="6873781976650514089">การตั้งค่านี้</translation>
 <translation id="6040143037577758943">ปิด</translation>
 <translation id="5600566490506283344">การแจ้งเตือน Brave Ad</translation>
@@ -446,10 +453,28 @@
 <translation id="2487558607408469181">URL ของ Block Explorer</translation>
 <translation id="6301398959353668507">ต้องกรอกข้อมูลในช่องนี้</translation>
 <translation id="7504462451153306677">รูปแบบไม่ถูกต้อง Chain ID ต้องเป็นจำนวนบวก</translation>
-<translation id="8325036459845654666">เพิ่มเครือข่ายนี้แล้ว</translation>
 <translation id="650071759190249039">เกิดข้อผิดพลาดภายใน ไม่สามารถเพิ่มเครือข่ายได้</translation>
 <translation id="868529041590572443">กรุณากรอกข้อมูลเกี่ยวกับสกุลเงินประจำกระดานเทรดทั้งหมด</translation>
 <translation id="1062463687579789365">การปรับแต่งเครือข่ายกระเป๋าเงิน</translation>
 <translation id="2234108191702901162">ไม่สามารถเพิ่มเครือข่ายได้</translation>
 <translation id="2618193846561624884">คุณต้องการอัปเดตเครือข่ายที่มีอยู่หรือไม่</translation>
+<translation id="3699882589215410581">ติดตั้งและเปิดใช้งาน Widevine</translation>
+<translation id="8053096063396012732">ติดตั้ง Widevine</translation>
+<translation id="4840334696217618631">รีสตาร์ทเบราว์เซอร์เพื่อเปิดใช้ Widevine</translation>
+<translation id="8410111618231938546">Google Widevine คือชิ้นส่วนรหัส Digital Rights Management (DRM) ที่พวกเราที่ Brave Software ไม่ได้เป็นเจ้าของและไม่สามารถทำการตรวจได้ รหัส Google Widevine ได้ถูกโหลดจากเซิร์ฟเวอร์ Google ไม่ได้โหลดจากเซิร์ฟเวอร์ของเรา DRM จะถูกโหลดเมื่อคุณเปิดตัวเลือกนี้  เราไม่สนับสนุนการใช้ DRM แต่เราเคารพการตัดสินใจของผู้ใช้และเข้าใจว่าผู้ใช้ Brave บางท่านอาจต้องการใช้บริการที่ต้องการมัน
+
+โดยการติดตั้งส่วนขยายนี้ คุณได้ยอมรับข้อตกลงการใช้งาน Google Widevine คุณได้ตกลงว่า Brave จะไม่รับผิดชอบต่อความเสียหายหรือสูญหายในการเชื่อมต่อการใช้ Google Widevine ของคุณ</translation>
+<translation id="6123134130710658846">ซ่อนปุ่ม Brave Rewards</translation>
+<translation id="7038489306457318096">GitHub</translation>
+<translation id="8934172355414207733">แบบส่วนตัวผ่าน Tor</translation>
+<translation id="7643538479215207633">เปิดด้วย IPFS</translation>
+<translation id="2521133093532260474">ไม่สามารถปิดโหนดภายในได้</translation>
+<translation id="86879877003581729">ไม่สามารถเปิดใช้โหนดภายในได้</translation>
+<translation id="8860039076160511438">รีเซ็ตกระเป๋าเงิน</translation>
+<translation id="80225669816651290">โหนดภายใน</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_MPL"/> เกี่ยวกับข้อควรพิจารณาเกี่ยวกับความเป็นส่วนตัวของโหนดภายใน IPFS และเกตเวย์</translation>
+<translation id="207763736230883589">ย้อนกลับไปยังเกตเวย์ IPFS สาธารณะโดยอัตโนมัติเมื่อไม่สามารถเข้าถึงโหนดเฉพาะที่ของคุณ</translation>
+<translation id="7815301689257843278">ต้องการส่งรายงานความขัดข้องโดยอัตโนมัติเพื่อให้ Brave สามารถป้องกันปัญหานี้ไม่ให้เกิดขึ้นอีกหรือไม่</translation>
+<translation id="1068069727470515940">คุณสามารถเปลี่ยน <ph name="SETTING_TEXT"/> อีกครั้งเมื่อใดก็ได้</translation>
+<translation id="8325036459845654666">เพิ่มเครือข่ายนี้แล้ว</translation>
 </translationbundle>

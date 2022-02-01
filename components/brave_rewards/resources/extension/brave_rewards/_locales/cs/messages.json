@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Obnovit status",
+    "message": "Obnovit",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Odměny Brave se setkaly s problémem. Zkuste to, prosím, později znovu.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Zkontrolovat stav",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Gratulujeme! Vaše odměny za měsíc $month$ dorazily!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Vaše odměny za měsíc $month$ ve výši $amount$ dorazí za $days$ dny/dnů",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Vaše odměny za měsíc $month$ ve výši $amount$ jsou na cestě. Mějte se na pozoru!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Přejít na můj účet $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Odhlásit se z účtu poskytovatele $provider$",
+    "message": "Odpojit od $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Probíhá",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ výplata se začne zpracovávat za $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Odměny z reklam",

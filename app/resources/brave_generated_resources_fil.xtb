@@ -15,18 +15,20 @@
 <translation id="120759863357279975">Ang <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ay hindi pinapayagan sa Brave.</translation>
 <translation id="6786747875388722282">Mga Extension</translation>
 <translation id="984275831282074731">Mga paraan ng pagbabayad</translation>
-<translation id="3699882589215410581">I-install at patakbuhin ang Widevine</translation>
+<translation id="1990886731975529483">I-install at paganahin ang Google Widevine</translation>
 <translation id="8926389886865778422">Huwag nang itanong ulit</translation>
 <translation id="5249433283143453448">Gamitin ang component ng pamamahala sa mga digital na karapatan (digital rights management, DRM) ng Widevine para manood ng protektadong streaming video at iba pang content sa browser.</translation>
 <translation id="6241402707160226266">Pribadong window na may Tor</translation>
 <translation id="8762452230727230396">Itinatago ng tor ang iyong IP address mula sa mga site na binibisita mo.</translation>
 <translation id="1369311132025451972">Awtomatikong i-redirect ang mga .onion na site</translation>
 <translation id="2843777623071353503">Magbubukas ang Brave ng serbisyo ng onion ng website kapag available ito o ng .onion domain sa window ng Tor.</translation>
-<translation id="8053096063396012732">I-install ang Widevine</translation>
-<translation id="4840334696217618631">I-restart ang browser para i-enable ang Widevine</translation>
-<translation id="8410111618231938546">Ang Google Widevine ay isang bahagi ng code ng Digital Rights Management (DRM) na hindi namin pag-aari sa Brave Software at hindi namin maaaring suriin. Naka-load ang Google Widevine sa mga server ng Google, hindi sa mga server namin. Malo-load lang ito kapag na-enable mo ang opsyong ito. Hindi namin hinihikayat ang paggamit ng DRM, ngunit iginagalang namin ang pasya ng user at kinikilala namin na ang ilang user ng Brave ay gustong gumamit ng mga serbisyong humihingi nito.
-
-Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntunin ng Paggamit ng Google Widevine. Sumasang-ayon kang walang pananagutan ang Brave para sa anumang pinsala o pagkalugi na nauugnay sa paggamit mo ng Google Widevine.</translation>
+<translation id="4900351245762303149">I-install ang Google Widevine</translation>
+<translation id="2313383941300459392">I-restart ang browser para gumana ang Google Widevine</translation>
+<translation id="2200626478572277092">Minsan, kinakailanagan ang Widevine upang paganahin ang media sa isang webpage. Ito ay isang extension sa Google na nakalagay mula sa server ng Google na hindi nai-inspect ng Brave. Sa pag-install nito, sumasang-ayon ka sa mga kondisyon ng paggamit ni Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>
+O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/></translation>
+<translation id="6229752134959014186">Matuto pa tungkol sa Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> ay hiniling sayo na</translation>
 <translation id="410351446219883937">Pag-autoplay</translation>
 <translation id="3218385319396786393">Na-block sa page na ito ang pag-autoplay</translation>
 <translation id="4988333904713528597">Palaging payagan ang autoplay sa <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="6583467242903731748">Magtanong kapag gusto ng isang site na i-access ang API ng Ethereum provider</translation>
 <translation id="7017590444693657895">I-block ang mga site na ma-access ang API ng Ethereum provider</translation>
 <translation id="8988939298652262600">Hindi nagsusuri ng mga extension ang Brave para sa seguridad at kaligtasan. I-install lang ang extension na ito kung pinagkakatiwalaan mo ang developer.</translation>
+<translation id="933652931229970927">Kusang ipadala ang mga ulat ng diagnostic</translation>
+<translation id="1679356339067548863">Tulungang mapabuti ang estabilidad ng produkto ng Brave sa pamamagitan ng kusang pagpapadala ng mga ulat ng diagnostic kapag nagkaproblema o tumigil ang Brave Browser.</translation>
 <translation id="8081858229109418493">Pangalan at icon ng profile</translation>
 <translation id="6438096877646138757">Mga site na nagki-clear ng cookies kapag isinara mo ang mga ito</translation>
 <translation id="2988792685798128092">I-clear sa pagsara sa site</translation>
@@ -42,7 +46,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="1692470335103807198">Kumuha pa ng mga theme</translation>
 <translation id="2906510232093002459">Mga default na image ng Brave</translation>
 <translation id="2814998458708016836">Gumamit ng malapad na address bar</translation>
-<translation id="6123134130710658846">Itago ang Brave Rewards button</translation>
+<translation id="6333347122924254968">Ipakita ang icon ng Mga Brave Reward sa address bar</translation>
 <translation id="1811404036171336214">Ipakita palagi ang mga bookmark sa page na bagong tab</translation>
 <translation id="1643029991199044105">Magpalipat-lipat sa mga pinakakamakailang ginamit na tab gamit ang Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="5733490796524078528">Mga button ng tip</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Page ng Bagong Tab</translation>
 <translation id="1988804048511540801">Nagpapakita ang bagong tab</translation>
 <translation id="2970343821770026391">Dashboard</translation>
@@ -89,12 +93,12 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8612763432858587652">Lumabas sa Pribadong Window</translation>
 <translation id="8760415064721320867">Pribadong Window na may Tor</translation>
 <translation id="2055363275850890030">Pribadong Window</translation>
-<translation id="8934172355414207733">Pribadong may Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Pribadong window ito na may Tor</translation>
 <translation id="1037341607922068025">Magbukas ng Pribadong Window na may Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Buksan sa Tor</translation>
-<translation id="7643538479215207633">Buksan gamit ang IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">I-publish at kunin ang mga file mula sa IPFS</translation>
 <translation id="1672270084584211506">Available ang Onion</translation>
 <translation id="406832631167785034">Buksan gamit ang .onion address</translation>
@@ -105,7 +109,6 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4227945450504703638">Napiling audio</translation>
 <translation id="7895302206188277628">Naka-link na content</translation>
 <translation id="3654831858282189202">I-publish gamit ang key ng IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">I-import ang Piniling Text sa IPFS</translation>
 <translation id="6925604404524625582">I-import at Kopyahin ang Link sa IPFS Snapshot</translation>
 <translation id="1434416574322382019">Bagong Pribadong Window na may Tor</translation>
@@ -238,8 +241,8 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="6358469157239228181">Hindi puwedeng gamitin ang pangalang ito</translation>
 <translation id="5761731140570209168">Magdagdag ng bagong peer connection string</translation>
 <translation id="2082206983920804886">Key sa pag-rotate</translation>
-<translation id="2521133093532260474">Hindi maihinto ang lokal na node</translation>
-<translation id="86879877003581729">Hindi mailunsad ang lokal na node</translation>
+<translation id="5078501082919354191">Hindi napahinto ang Brave local IPFS node</translation>
+<translation id="5687424953196903465">Hidi mapagana ang Brave local IPFS node</translation>
 <translation id="6476061084931271248">I-restart ang node para ma-apply ang mga pagbabago</translation>
 <translation id="3754226427671882382">I-restart ang node</translation>
 <translation id="949667118776341807">I-rotate</translation>
@@ -254,17 +257,22 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="616058968889448209">Error sa paglulunsad ng serbisyo ng IPFS, may higit pang impormasyon sa <ph name="BEGIN_LINK"/>page ng diagnostic<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Hindi na-import ang key na '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">Hindi na-export ang key na '<ph name="KEY_NAME"/>'</translation>
-<translation id="8860039076160511438">I-reset ang Wallet</translation>
+<translation id="4993345308607970390">I-reset ang Brave Wallet</translation>
+<translation id="5975930666279943472">I-clear ang transaksyon sa wallet at impormasyon ng nonce</translation>
+<translation id="5693968582510626466">Ang pag-clear sa mga transaksyon ay maaaring makatutulong sa mga developer o kapag nag-ayos ng katayuan sa isang local server</translation>
 <translation id="6369495274982305511">Sigurado ka bang gusto mong i-reset ang iyong wallet? Kung hindi naka-back up ang iyong wallet, mawawala ang lahat ng data ng iyong account kapag nag-reset (kabilang ang anumang nauugnay na pondo). I-type ang "<ph name="CONFIRMATION_PHRASE"/>" para kumpirmahin.</translation>
+<translation id="9216386092464743272">Sigurado ka bang gusto mong i-reset ang lahat ng transaksyon ng iyong wallet at impormasyon ng nonce? Ang option na ito ay kadalasang ginagamit ng mga developer na nagpapatakbo ng local test server. I-type ang <ph name="CONFIRMATION_PHRASE"/> para maconfirm.</translation>
+<translation id="3752403403443723332">Ang iyong wallet ay na-reset.</translation>
+<translation id="594766067816395072">Ang impormasyon sa transaksyon ng iyong wallet ay na-reset.</translation>
 <translation id="1426410128494586442">Oo</translation>
 <translation id="8275038454117074363">I-import</translation>
 <translation id="3654980960391973513">Buuin</translation>
 <translation id="5531501313997312487">Simulan ang node</translation>
 <translation id="9170907049676078643">Paraan para lutasin ang mga resource ng IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
-<translation id="80225669816651290">Lokal na node</translation>
+<translation id="1195880978080389104">Brave local IPFS node</translation>
 <translation id="4927734062756955434">Pampublikong gateway address ng IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Matuto pa<ph name="END_LINK_MPL"/> tungkol sa IPFS local node at mga konsiderasyon sa privacy sa gateway.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Matuto pa <ph name="END_LINK_MPL"/>tungkol sa Brave local IPFS node at mga pagsasaalang-alang sa privacy ng gateway.</translation>
 <translation id="8425213833346101688">Baguhin</translation>
 <translation id="557281710253742286">Itakda ang gateway ng IPFS</translation>
 <translation id="8571837315037233299">Gateway address</translation>
@@ -273,7 +281,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="7703184801853248830">Invalid na gateway address</translation>
 <translation id="7690058578502751948">Valid na IPFS gateway lang na naka-enable ang Origin isolation ang pwedeng gamitin sa Brave</translation>
 <translation id="585868419599255817">Fallback ng pampublikong gateway ng IPFS</translation>
-<translation id="207763736230883589">Awtomatikong bumalik sa pampublikong gateway ng IPFS kung hindi makaugnayan ang iyong lokal na node.</translation>
+<translation id="2618080188892567155">Kusang bumabalik sa public IPFS gateway kung hindi naabot ang Brave local IPFS node.</translation>
 <translation id="4107552920076294723">I-redirect ang mga resource ng IPFS sa naka-configure na gateway ng IPFS</translation>
 <translation id="6494857428933042381">Awtomatikong ginagamit ang naka-configure na gateway para sa mga paglutas ng IPFS kapag may nakitang resource ng gateway ng IPFS.</translation>
 <translation id="8655170717758778983">Awtomatikong i-redirect sa mga page ng IPFS sa pamamagitan ng DNSLink kapag posible</translation>
@@ -346,10 +354,9 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="780301667611848630">Hindi salamat</translation>
 <translation id="5039804452771397117">Payagan</translation>
 <translation id="7053983685419859001">I-block</translation>
-<translation id="7815301689257843278">Awtomatikong mag-send ng mga crash report para awtomatikong mapigilan ng Brave na mangyari ulit ang isyung ito?</translation>
 <translation id="660171790038410175">Hindi inaasahang nag-quit ang <ph name="BROWSER_NAME"/>.</translation>
 <translation id="1324417023773393937">Brave Browser</translation>
-<translation id="1068069727470515940">Puwede mong baguhin ang <ph name="SETTING_TEXT"/> ulit anumang oras.</translation>
+<translation id="7276554663454265692">Maaari mong baguhin <ph name="SETTING_TEXT"/> ano mang oras sa mga setting ng browser.</translation>
 <translation id="6873781976650514089">setting na ito</translation>
 <translation id="6040143037577758943">Isara</translation>
 <translation id="5600566490506283344">Notification ng Brave Ad</translation>
@@ -446,10 +453,28 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="2487558607408469181">I-block ang mga explorer na URL</translation>
 <translation id="6301398959353668507">Hindi pwedeng blangko ang field.</translation>
 <translation id="7504462451153306677">Invalid na format, ang chain id ay isang positibong numero</translation>
-<translation id="8325036459845654666">Naidagdag na ang network na ito.</translation>
 <translation id="650071759190249039">Internal na Error, hindi maidagdag ang network.</translation>
 <translation id="868529041590572443">Pakilagay ang lahat ng impormasyon tungkol sa native na currency</translation>
 <translation id="1062463687579789365">Pag-customize ng mga network ng wallet</translation>
 <translation id="2234108191702901162">Hindi maidagdag ang network</translation>
 <translation id="2618193846561624884">Gusto mo bang i-update ang dati nang network na ito?</translation>
+<translation id="3699882589215410581">I-install at patakbuhin ang Widevine</translation>
+<translation id="8053096063396012732">I-install ang Widevine</translation>
+<translation id="4840334696217618631">I-restart ang browser para i-enable ang Widevine</translation>
+<translation id="8410111618231938546">Ang Google Widevine ay isang bahagi ng code ng Digital Rights Management (DRM) na hindi namin pag-aari sa Brave Software at hindi namin maaaring suriin. Naka-load ang Google Widevine sa mga server ng Google, hindi sa mga server namin. Malo-load lang ito kapag na-enable mo ang opsyong ito. Hindi namin hinihikayat ang paggamit ng DRM, ngunit iginagalang namin ang pasya ng user at kinikilala namin na ang ilang user ng Brave ay gustong gumamit ng mga serbisyong humihingi nito.
+
+Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntunin ng Paggamit ng Google Widevine. Sumasang-ayon kang walang pananagutan ang Brave para sa anumang pinsala o pagkalugi na nauugnay sa paggamit mo ng Google Widevine.</translation>
+<translation id="6123134130710658846">Itago ang Brave Rewards button</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Pribadong may Tor</translation>
+<translation id="7643538479215207633">Buksan gamit ang IPFS</translation>
+<translation id="2521133093532260474">Hindi maihinto ang lokal na node</translation>
+<translation id="86879877003581729">Hindi mailunsad ang lokal na node</translation>
+<translation id="8860039076160511438">I-reset ang Wallet</translation>
+<translation id="80225669816651290">Lokal na node</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Matuto pa<ph name="END_LINK_MPL"/> tungkol sa IPFS local node at mga konsiderasyon sa privacy sa gateway.</translation>
+<translation id="207763736230883589">Awtomatikong bumalik sa pampublikong gateway ng IPFS kung hindi makaugnayan ang iyong lokal na node.</translation>
+<translation id="7815301689257843278">Awtomatikong mag-send ng mga crash report para awtomatikong mapigilan ng Brave na mangyari ulit ang isyung ito?</translation>
+<translation id="1068069727470515940">Puwede mong baguhin ang <ph name="SETTING_TEXT"/> ulit anumang oras.</translation>
+<translation id="8325036459845654666">Naidagdag na ang network na ito.</translation>
 </translationbundle>

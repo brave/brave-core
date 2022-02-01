@@ -25,6 +25,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7665553140559834626">Relaunch to update &amp;Chrome OS</translation>
 <translation id="9220324636239049437">This will delete 1 item from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="831418749472885028">To check if your other passwords are safe from data breaches and other security issues, <ph name="BEGIN_LINK"/>sign in to Brave<ph name="END_LINK"/>.</translation>
+<translation id="5499149312981370855">Choose whether to include Brave history for more personalised experiences in Brave services</translation>
 <translation id="142389341645668510">Customise Brave</translation>
 <translation id="8745514854244955877">Brave – Network sign-in – <ph name="PAGE_TITLE"/></translation>
 <translation id="5659384504794665581">If you share a computer, friends and family can browse separately and set up Brave just the way they want.</translation>
@@ -32,14 +33,15 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7810992039564280750">Checks URLs with a list of unsafe sites stored in Brave. If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing.</translation>
 <translation id="9095263438435683933">To send a number from here to your Android phone, sign in to Brave on both devices.</translation>
 <translation id="3813272600615358652">This extension has changed the page that is shown when you start Brave.</translation>
+<translation id="2359808026110333948">Continue</translation>
 <translation id="2576129394594491151">The extension "<ph name="EXTENSION_NAME"/>" has changed the page that is shown when you start Brave.</translation>
 <translation id="1248225940185478633">Brave needs camera and microphone permissions for this site</translation>
 <translation id="6078442581074612226">In Brave</translation>
 <translation id="2485422356828889247">Uninstall</translation>
+<translation id="2372700594671864890">See how Brave plans to safeguard you from cross-site tracking while preserving the open web</translation>
 <translation id="9026991721384951619">Chrome OS could not sync your data because your account sign-in details are out of date.</translation>
 <translation id="7798069806040634998">Brave needs storage access to download files</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
-<translation id="7933006624150961626">To access your Brave stuff across all your devices, sign in so that you can turn on sync.</translation>
 <translation id="7291143854620707672">Any Brave data that is generated during the use of this profile (such as the creation of bookmarks, history, passwords and other settings) can be removed by the work profile administrator. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Chrome OS needs to be restarted to apply the update.</translation>
 <translation id="7387051847644272380">An operating system error occurred during installation. Please download Brave again.</translation>
@@ -103,6 +105,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="9183662282810237335">Exit Brave anyway?</translation>
 <translation id="4065288863231444640">Let Brave Run in the Background</translation>
 <translation id="8148611988012584308">Customise and control Brave</translation>
+<translation id="4427306783828095590">Enhanced protection does more to block phishing and malware</translation>
 <translation id="7084397798469173252">Welcome to Brave; new browser window opened</translation>
 <translation id="2633397153656205379">Brave didn't update. Something went wrong. <ph name="BEGIN_LINK"/>Fix Brave update problems and failed updates.<ph name="END_LINK"/></translation>
 <translation id="3679799810790990472">Continue in a new Brave profile?</translation>
@@ -214,6 +217,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="7339898014177206373">New window</translation>
 <translation id="3511996232906761537">Your web, bookmarks and other Brave stuff live here.</translation>
 <translation id="5380963249588143069">Your system administrator has configured Brave to open <ph name="ALTERNATIVE_BROWSER_NAME"/> to access <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="38294420683216447">With Brave profiles, you can separate all of your Brave things. This makes it easier to split between work and fun.</translation>
 <translation id="5062123544085870375">Restart Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave needs permission to access your camera for this site</translation>
@@ -223,6 +227,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="8516116288943000095">Also clear data from Brave (<ph name="URL"/>)</translation>
 <translation id="5657226924540934362">If a setting doesn't show on this page, look in your <ph name="LINK_BEGIN"/>
       Chrome OS settings<ph name="LINK_END"/></translation>
+<translation id="155309785154426906">You turned on Enhanced Safe Browsing in your account. Now get it for Brave.</translation>
 <translation id="3293668930608086049">Brave is using your camera and microphone.</translation>
 <translation id="2827121003398607864">Brave just got better</translation>
 <translation id="3343095737966473035">Brave isn't your default browser</translation>
@@ -234,11 +239,11 @@ Brave is unable to recover your settings.</translation>
 <translation id="1652855885539187849">A Brave profile with this account already exists on this device</translation>
 <translation id="8462524920674814187">To get future Brave updates, you'll need OS X 10.11 or later. This computer is using OS X 10.10.</translation>
 <translation id="7963515534397191222">Brave couldn't update to the latest version, so you're missing out on new features and security fixes.</translation>
+<translation id="437139750042419257">The following accounts are available for this Brave profile</translation>
 <translation id="7573289029918943991">To see if your device is up to date, go to <ph name="LINK_BEGIN"/>Chrome OS Settings<ph name="LINK_END"/></translation>
 <translation id="2925193881330501265">You were signed in to Brave as <ph name="USER_EMAIL_ADDRESS"/>. Please use the same account to sign in again.</translation>
 <translation id="6915252145142862992">This is a secondary installation of Brave, and cannot be made your default browser.</translation>
 <translation id="7685904775439037072">Once Brave has access, websites will be able to ask you for access.</translation>
-<translation id="828406390101464081">The following accounts are not signed into any Brave profiles. If you want to use an account in another profile, remove that profile first.</translation>
 <translation id="2061155704815580583">Brave needs location permission for this site</translation>
 <translation id="9067428552314418522">This file is dangerous, so Brave has blocked it.</translation>
 <translation id="8207657266087451193">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave. You can turn this off in settings at any time.</translation>
@@ -247,6 +252,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="89367911614620585">This file may be dangerous, so Brave has blocked it.</translation>
 <translation id="3360368475735266712">Sign in to sync and personalise Brave across your devices</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> was previously using Brave</translation>
+<translation id="3098618823450433881">To access your Brave browser across all your devices, sign in, then turn on sync</translation>
 <translation id="5337999052834672687">{0,plural, =1{Relaunch Brave within a day}other{Relaunch Brave within # days}}</translation>
 <translation id="6914496861676471566">The installer archive is corrupted or invalid. Please download Brave again.</translation>
 <translation id="2097604701283463988">Brave is Out of Date</translation>
@@ -280,6 +286,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="6568793831116033768">Chrome OS system</translation>
 <translation id="7977787072794666032">Brave may not function correctly because it is no longer supported on Windows XP or Windows Vista</translation>
 <translation id="4484434718272972655">Who's using Brave?</translation>
+<translation id="7173394303099002355">Get Brave's strongest security</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="1299765473362724475">Warning: Brave cannot prevent extensions from recording your browsing history. To disable this extension in Private mode, unselect this option.</translation>
 <translation id="1448049584457347995">To make Brave safer, we disabled some extensions that aren't listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> and may have been added without your knowledge.</translation>

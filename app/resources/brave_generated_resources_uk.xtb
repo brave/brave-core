@@ -15,17 +15,20 @@
 <translation id="120759863357279975">У Brave немає дозволу на <ph name="EXTENSION_NAME"/> extension ID "<ph name="EXTENSION_ID"/>".</translation>
 <translation id="6786747875388722282">Розширення</translation>
 <translation id="984275831282074731">Способи оплати</translation>
-<translation id="3699882589215410581">Встановіть та запустіть Widevine</translation>
+<translation id="1990886731975529483">Установити та запустити Google Widevine</translation>
 <translation id="8926389886865778422">Не запитувати знову</translation>
 <translation id="5249433283143453448">Використовуйте компонент управління цифровими правами Widevine (DRM) для перегляду захищеного потокового відео та іншого вмісту в браузері.</translation>
 <translation id="6241402707160226266">Приватне вікно з Tor</translation>
 <translation id="8762452230727230396">Tor приховує вашу IP адресу від сайтів, які ви відвідуєте.</translation>
 <translation id="1369311132025451972">Автоматично перенаправляти .цибулинний сайт</translation>
 <translation id="2843777623071353503">Якщо вебсайт має onion-сервіс, Brave відкриватиме у вікні Tor його або домен .onion</translation>
-<translation id="8053096063396012732">Встановити Widevine</translation>
-<translation id="4840334696217618631">Перезапустіть браузер, щоб увімкнути Widevine</translation>
-<translation id="8410111618231938546">Google Widevineє частиною коду Digital Rights Management (DRM), яким ми у Brave Software не володіємо і не можемо перевіряти. Код Google Widevine завантажується з серверів Google, не з наших серверів. Він завантажується тільки якщо ви увімкнете таку опцію. Ми не заохочуємо використання DRM, але ми поважаємо вибір користувача і беремо до уваги те, що деякі з користувачів Brave захочуть використовувати сервіси, які його вимагають.
-Встановлюючи це розширення, ви погоджуєтесь з Умовами використання Google Widevine. Ви погоджуєтесь з тим, що Brave не несе жодної відповідальності за будь-яку шкоду або збитки, що настали у зв'язку з вашим використаням Google Widevine.</translation>
+<translation id="4900351245762303149">Установити Google Widevine</translation>
+<translation id="2313383941300459392">Перезапустіть браузер, щоб увімкнути Google Widevine</translation>
+<translation id="2200626478572277092">Додаток Widevine іноді потрібен для відтворення медіавмісту на вебсторінці. Це розширення Google, завантажене із серверів Google, які Brave не може перевірити. Установлюючи його, ви погоджуєтеся з умовами використання Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Або змініть пізніше на вебсайті <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Дізнатися більше про Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> запитує вас</translation>
 <translation id="410351446219883937">Автоматичне відтворення</translation>
 <translation id="3218385319396786393">Автопрогравання заблоковано на цій сторінці</translation>
 <translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST"/></translation>
@@ -34,6 +37,8 @@
 <translation id="6583467242903731748">Запитувати, якщо сайт хоче отримати доступ до API постачальника Ethereum</translation>
 <translation id="7017590444693657895">Блокування доступу для сайтів до API постачальника Ethereum</translation>
 <translation id="8988939298652262600">Brave не перевіряє розширення на предмет безпеки. Встановлюйте це розширення, лише якщо довіряєте його розробнику.</translation>
+<translation id="933652931229970927">Автоматичне надсилання звітів про діагностику</translation>
+<translation id="1679356339067548863">Допоможіть Brave покращити стабільність продукту, автоматично надсилаючи звіти про діагностику, коли браузер Brave несподівано завершить роботу або зависне.</translation>
 <translation id="8081858229109418493">Ім'я та іконка профіля</translation>
 <translation id="6438096877646138757">Сайти, що видаляють файли cookie, коли ви їх закриваєте</translation>
 <translation id="2988792685798128092">Видалення за закриття сайту</translation>
@@ -41,7 +46,7 @@
 <translation id="1692470335103807198">Отримати більше тем</translation>
 <translation id="2906510232093002459">Типові зображення Brave</translation>
 <translation id="2814998458708016836">Використовувати широкий адресний рядок</translation>
-<translation id="6123134130710658846">Сховати кнопку Brave Rewards</translation>
+<translation id="6333347122924254968">Показувати значок Brave Rewards в адресному рядку</translation>
 <translation id="1811404036171336214">Завжди показувати закладки на сторінці нової вкладки</translation>
 <translation id="1643029991199044105">Переходьте між вкладками, які використовувались зовсім недавно за допомогою Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -75,7 +80,7 @@
 <translation id="5733490796524078528">Кнопки підказок</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Сторінка нової вкладки</translation>
 <translation id="1988804048511540801">Покази сторінки нової вкладки</translation>
 <translation id="2970343821770026391">Панель управління</translation>
@@ -88,12 +93,12 @@
 <translation id="8612763432858587652">Залишити приватне вікно</translation>
 <translation id="8760415064721320867">Приватне вікно з Tor</translation>
 <translation id="2055363275850890030">Приватне вікно</translation>
-<translation id="8934172355414207733">Приватне з Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Це приватне вікно в Tor</translation>
 <translation id="1037341607922068025">Відкрити приватне вікно в Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Відкрити в Tor</translation>
-<translation id="7643538479215207633">Відкрити за допомогою IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Опублікування та отримання файлів від системи IPFS</translation>
 <translation id="1672270084584211506">Доступна Цибулина</translation>
 <translation id="406832631167785034">Відкрити за допомогою адреси .onion</translation>
@@ -104,7 +109,6 @@
 <translation id="4227945450504703638">Обране аудіо</translation>
 <translation id="7895302206188277628">Пов’язаний вміст</translation>
 <translation id="3654831858282189202">Публікувати з ключами IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Імпортувати вибраний текст до IPFS</translation>
 <translation id="6925604404524625582">Імпорт і копіювання посилання на миттєвий знімок IPFS</translation>
 <translation id="1434416574322382019">Нове Приватне вікно з Tor</translation>
@@ -237,8 +241,8 @@
 <translation id="6358469157239228181">Цю назву не можна використати</translation>
 <translation id="5761731140570209168">Додайте новий рядок підключення до вузлів</translation>
 <translation id="2082206983920804886">Повернути ключ</translation>
-<translation id="2521133093532260474">Не вдається зупинити локальний вузол</translation>
-<translation id="86879877003581729">Не вдається запустити локальний вузол</translation>
+<translation id="5078501082919354191">Не вдається зупинити локальний вузол IPFS Brave</translation>
+<translation id="5687424953196903465">Не вдається запустити локальний вузол IPFS Brave</translation>
 <translation id="6476061084931271248">Перезапустіть вузол, щоб застосувати зміни</translation>
 <translation id="3754226427671882382">Перезапустити вузол</translation>
 <translation id="949667118776341807">Повернути</translation>
@@ -253,17 +257,22 @@
 <translation id="616058968889448209">Помилка запуску служби IPFS. Детальна інформація доступна на <ph name="BEGIN_LINK"/>сторінці діагностики<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Не вдалося імпортувати ключ «<ph name="KEY_NAME"/>»</translation>
 <translation id="3364053282600191535">Не вдалось експортувати ключ «'<ph name="KEY_NAME"/>'»</translation>
-<translation id="8860039076160511438">Скинути гаманець</translation>
+<translation id="4993345308607970390">Скинути гаманець Brave</translation>
+<translation id="5975930666279943472">Очистити інформацію про транзакції гаманця та нонс</translation>
+<translation id="5693968582510626466">Очищення транзакцій може бути корисним для розробників або під час очищення стану на локальному сервері</translation>
 <translation id="6369495274982305511">Ви дійсно хочете скинути свій гаманець? Якщо ваш гаманець не має резервної копії, скидання призведе до втрати усіх даних облікового запису (зокрема всіх пов’язаних коштів). Уведіть <ph name="CONFIRMATION_PHRASE"/> для підтвердження.</translation>
+<translation id="9216386092464743272">Ви впевнені, що хочете скинути всю інформацію про транзакції та нонс свого гаманця? Цей параметр здебільшого використовується розробниками, які працюють на локальному тестовому сервері. Уведіть «<ph name="CONFIRMATION_PHRASE"/>» для підтвердження.</translation>
+<translation id="3752403403443723332">Параметри вашого гаманця скинуто.</translation>
+<translation id="594766067816395072">Інформацію про транзакції вашого гаманця скинуто.</translation>
 <translation id="1426410128494586442">так</translation>
 <translation id="8275038454117074363">Імпортувати</translation>
 <translation id="3654980960391973513">Створити</translation>
 <translation id="5531501313997312487">Запустити вузол</translation>
 <translation id="9170907049676078643">Спосіб вирішення проблем з ресурсами IPFS</translation>
 <translation id="1327977588028644528">Шлюз</translation>
-<translation id="80225669816651290">Локальний вузол</translation>
+<translation id="1195880978080389104">Локальний вузол IPFS Brave</translation>
 <translation id="4927734062756955434">Адреса відкритого шлюзу IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Докладніше<ph name="END_LINK_MPL"/> про локальний вузол IPFS та визначення приватності шлюзу.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Докладніше<ph name="END_LINK_MPL"/> про локальний вузол IPFS Brave та визначення приватності шлюзу.</translation>
 <translation id="8425213833346101688">Змінити</translation>
 <translation id="557281710253742286">Задати шлюз IPFS</translation>
 <translation id="8571837315037233299">Адреса шлюзу</translation>
@@ -272,7 +281,7 @@
 <translation id="7703184801853248830">Невірна адреса шлюзу</translation>
 <translation id="7690058578502751948">У Brave можна користуватися лише дійсним шлюзом IPFS з увімкненою функцією «Ізоляція походження»</translation>
 <translation id="585868419599255817">Резервний відкритий шлюз IPFS</translation>
-<translation id="207763736230883589">Автоматично переходити на відкритий шлюз IPFS, якщо не вдається зв'язатись із локальним вузлом.</translation>
+<translation id="2618080188892567155">Автоматично переходити на відкритий шлюз IPFS, якщо не вдається зв’язатися з локальним вузлом IPFS Brave.</translation>
 <translation id="4107552920076294723">Перенаправляти ресурси IPFS до налаштованого шлюзу IPFS</translation>
 <translation id="6494857428933042381">Автоматично використовує налаштований шлюз для вирішення проблем із IPFS при виявленні ресурсу шлюзу IPFS</translation>
 <translation id="8655170717758778983">Автоматично перенаправляти на сторінки IPFS через DNSLink, коли це можливо</translation>
@@ -345,10 +354,9 @@
 <translation id="780301667611848630">Ні, дякую</translation>
 <translation id="5039804452771397117">Дозволити</translation>
 <translation id="7053983685419859001">Блокувати</translation>
-<translation id="7815301689257843278">Надсилати звіти про несподіване завершення роботи автоматично, щоб у Brave могли розв’язати цю проблему й запобігти її повторному виникненню?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> несподівано припинив працювати.</translation>
 <translation id="1324417023773393937">Браузер Brave</translation>
-<translation id="1068069727470515940">Ви можете змінити <ph name="SETTING_TEXT"/>) будь-якої миті.</translation>
+<translation id="7276554663454265692">Ви можете змінити <ph name="SETTING_TEXT"/> будь-якої миті в налаштуваннях браузера.</translation>
 <translation id="6873781976650514089">це налаштування</translation>
 <translation id="6040143037577758943">Закрити</translation>
 <translation id="5600566490506283344">Рекламне сповіщення Brave</translation>
@@ -445,10 +453,27 @@
 <translation id="2487558607408469181">URL-адреси диспетчера блоків</translation>
 <translation id="6301398959353668507">Це поле не може бути порожнім.</translation>
 <translation id="7504462451153306677">Недійсний формат, ідентифікатором ланцюга є додатне число</translation>
-<translation id="8325036459845654666">Мережу вже додано.</translation>
 <translation id="650071759190249039">Внутрішня помилка, не вдається додати мережу.</translation>
 <translation id="868529041590572443">Уведіть усю інформацію про рідну валюту</translation>
 <translation id="1062463687579789365">Індивідуальне налаштування мереж гаманця</translation>
 <translation id="2234108191702901162">Неможливо додати мережу</translation>
 <translation id="2618193846561624884">Ви хочете оновити існуючу мережу?</translation>
+<translation id="3699882589215410581">Встановіть та запустіть Widevine</translation>
+<translation id="8053096063396012732">Встановити Widevine</translation>
+<translation id="4840334696217618631">Перезапустіть браузер, щоб увімкнути Widevine</translation>
+<translation id="8410111618231938546">Google Widevineє частиною коду Digital Rights Management (DRM), яким ми у Brave Software не володіємо і не можемо перевіряти. Код Google Widevine завантажується з серверів Google, не з наших серверів. Він завантажується тільки якщо ви увімкнете таку опцію. Ми не заохочуємо використання DRM, але ми поважаємо вибір користувача і беремо до уваги те, що деякі з користувачів Brave захочуть використовувати сервіси, які його вимагають.
+Встановлюючи це розширення, ви погоджуєтесь з Умовами використання Google Widevine. Ви погоджуєтесь з тим, що Brave не несе жодної відповідальності за будь-яку шкоду або збитки, що настали у зв'язку з вашим використаням Google Widevine.</translation>
+<translation id="6123134130710658846">Сховати кнопку Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Приватне з Tor</translation>
+<translation id="7643538479215207633">Відкрити за допомогою IPFS</translation>
+<translation id="2521133093532260474">Не вдається зупинити локальний вузол</translation>
+<translation id="86879877003581729">Не вдається запустити локальний вузол</translation>
+<translation id="8860039076160511438">Скинути гаманець</translation>
+<translation id="80225669816651290">Локальний вузол</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Докладніше<ph name="END_LINK_MPL"/> про локальний вузол IPFS та визначення приватності шлюзу.</translation>
+<translation id="207763736230883589">Автоматично переходити на відкритий шлюз IPFS, якщо не вдається зв'язатись із локальним вузлом.</translation>
+<translation id="7815301689257843278">Надсилати звіти про несподіване завершення роботи автоматично, щоб у Brave могли розв’язати цю проблему й запобігти її повторному виникненню?</translation>
+<translation id="1068069727470515940">Ви можете змінити <ph name="SETTING_TEXT"/>) будь-якої миті.</translation>
+<translation id="8325036459845654666">Мережу вже додано.</translation>
 </translationbundle>

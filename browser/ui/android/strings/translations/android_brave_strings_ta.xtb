@@ -24,8 +24,6 @@
 <translation id="7459000603787995422">வெளியேறுகையில் தாவல்களை மூடு</translation>
 <translation id="4448697385961650078">தடமிகள் &amp; விளம்பரங்கள் தடு</translation>
 <translation id="1680858055899097121">உலாவல் அமர்வுகளுக்கு இடையே தாவல்களை நிலைத்திருக்காதே</translation>
-<translation id="4272190451231642425">சிதைவறிக்கைகளைத் தானாக அனுப்பு</translation>
-<translation id="2239766974964486304">சிதைவறிக்கைகள் எல்லா பயனர்களுக்கும் விளைபொருளின் நிலைப்புத்தன்மையை பிரேவ் மேம்படுத்தவுதவும்.</translation>
 <translation id="7977176350719484850">மதிப்பிட. சேமித்த\nதரவு</translation>
 <translation id="9008534313521214777">மதிப்பிட. சேமித்த\nநேரம்</translation>
 <translation id="6572660632052512096">சாளர பயன்முறை</translation>
@@ -43,8 +41,6 @@
 <translation id="59174027418879706">செயலாக்கப்பட்டது</translation>
 <translation id="4150201353443180367">காட்சியமைவு</translation>
 <translation id="2433507940547922241">தோற்றம்</translation>
-<translation id="2804710924397009224">பிரேவ் வெகுமதிகள் சின்னத்தை மறை</translation>
-<translation id="7289740269305509613">பிரேவ் வெகுமதிகள் சின்னத்தை மறைக்கும்</translation>
 <translation id="8495235435594442882">அடிப்புற கருவிப்பட்டையை இயக்கு</translation>
 <translation id="6587448235155023666">அடுத்த முறை நீங்கள் பிரேவை மறுஏவும்போது உங்கள் மாற்றங்கள் செயல்படும்.</translation>
 <translation id="8701563696941209024">இப்போது மறுஏவு</translation>
@@ -121,7 +117,7 @@
 <translation id="8284063834901328650">தவறான ஒத்திசைவு விரைவுக்குறி</translation>
 <translation id="3149880132460839085">பிரேவ் ஒத்திசைவு</translation>
 <translation id="3680755684186855422">புத்தகக்குறிகள் தரவை உம் பல்வேறு சாதனங்களிலுள்ள பிரேவ் உலாவிகளினிடையே ஒத்திசைத்திட பிரேவ் ஒத்திசைவு அனுமதிக்கிறது.</translation>
-<translation id="5241263629636958324">கவ்வுபலகைக்கு நகலெடுக்கப்பட்டது</translation>
+<translation id="5241263629636958324">நகலகத்திற்கு நகலெடுக்கப்பட்டது</translation>
 <translation id="5817918615728894473">இணை</translation>
 <translation id="7090325819305486658">தரவு விருப்பத்தேர்வுகள்</translation>
 <translation id="728334460283296316">சாதனத்தை நீக்கு</translation>
@@ -133,7 +129,7 @@
 <translation id="2731921493694251495">ஒத்திசைவு சங்கிலி குறியீட்டை உள்ளிடு</translation>
 <translation id="2175927920773552910">விரைவுக்குறி</translation>
 <translation id="8653433343015102968">குறியீடு சொற்கள்</translation>
-<translation id="8624315169751085215">கவ்வுபலகைக்கு நகலெடு</translation>
+<translation id="8624315169751085215">நகலகத்திற்கு நகலெடு</translation>
 <translation id="8730621377337864115">முடிந்தது</translation>
 <translation id="6174119914106813304">இச்சாதனத்தில் ஒத்திசை</translation>
 <translation id="6776430845975754238">அமைப்புகளை மாற்றல் இச்சாதனம் மற்றவையுடன் பகிரும் தரவை மட்டுமே பாதிக்கும்.</translation>
@@ -219,10 +215,13 @@
 <translation id="8446884382197647889">மேலும் அறிக</translation>
 <translation id="4804818685124855865">தொடர்பைத் துண்டி</translation>
 <translation id="2882813124794301799">சில் அடுக்கு</translation>
+<translation id="13296465911709339">உம் சொற்சரம் நகலகத்திற்கு நகலெடுக்கப்பட்டுவிட்டது.</translation>
+<translation id="2735834606413553397">பொது முகவரி நகலகத்திற்கு நகலெடுக்கப்பட்டுவிட்டது.</translation>
 <translation id="7144878232160441200">மீண்டும் முயலவும்</translation>
 <translation id="2977461003134694205">தனியுரிமை புள்ளிவிவரங்கள்</translation>
 <translation id="4643117005422448078">முன்னணி தளங்கள்</translation>
 <translation id="74417429503469271">நீங்கள் அடிக்கடி பார்வையிடும் முன்னணி தளங்களை திற.</translation>
+<translation id="1366855498335432549">வைப்பு</translation>
 <translation id="8688672835843460752">மீதமுள்ளது:</translation>
 <translation id="8804164990146287819">தனியுரிமை கொள்கை</translation>
 <translation id="7930505144430343145">பிரேவ் வெகுமதிகளைக்கு வருக!</translation>
@@ -234,6 +233,7 @@
 <translation id="8722651357687610395">இயல்புநிலையாக பிரேவை அமை</translation>
 <translation id="3479552764303398839">இப்பொழுது இல்லை</translation>
 <translation id="8798099450830957504">இயல்புநிலை</translation>
+<translation id="1822560017823072927">இயல்புநிலை பொதுசன மற்றும் தனிப்பட்ட இடைமுகப்புகள்</translation>
 <translation id="5825943197137337319">இயல்புநிலை பொது இடைமுகங்களை மட்டும்</translation>
 <translation id="3171931580569169744">தாவல் குழுக்களை இயக்கு</translation>
 <translation id="1483493594462132177">அனுப்பு</translation>
@@ -241,6 +241,8 @@
 <translation id="2359808026110333948">தொடர்க</translation>
 <translation id="6896758677409633944">நகலெடு</translation>
 <translation id="7665369617277396874">கணக்கைச் சேர்</translation>
+<translation id="5379398699598690674">பணப்பை (வெள்ளோட்டம்)</translation>
+<translation id="3943857333388298514">ஒட்டு</translation>
 <translation id="6518133107902771759">சரிபார்</translation>
 <translation id="3157931365184549694">மீட்டமை</translation>
 <translation id="9111102763498581341">பூட்டைத் திற</translation>
@@ -252,7 +254,9 @@
 <translation id="1940465339426637378">சொத்துக்கள்</translation>
 <translation id="4522570452068850558">விவரங்கள்</translation>
 <translation id="8488282162676695335">பிரேவ் பணப்பை</translation>
-<translation id="5040262127954254034">தனியுரிமை</translation>
+<translation id="8239147115686034860">தானாக பிரேவ் பணப்பையைப் பூட்டு</translation>
+<translation id="414639769490080648">பிரேவ் பணப்பை தானாக பூட்டப்படும் வரை காத்திருக்க வேண்டிய நிமிடங்கள்</translation>
+<translation id="4993345308607970390">பிரேவ் பணப்பையை அகரமாக்கு</translation>
 <translation id="3435896845095436175">இயக்கு</translation>
 <translation id="7805768142964895445">நிலை</translation>
 <translation id="5747552184818312860">காலாவதியாகும் தேதி</translation>
@@ -274,6 +278,17 @@
 <translation id="1165039591588034296">பிழை</translation>
 <translation id="1177863135347784049">தனிப்பயன்</translation>
 <translation id="7791543448312431591">சேர்</translation>
+<translation id="3494964159182650590">வெகுமதிகள் சுருக்கம்</translation>
 <translation id="1346059596910821859">துணுக்குதவி</translation>
 <translation id="1549705559752367917">துணுக்குதவி அனுப்பு</translation>
+<translation id="5802665280774361839">முகவரிப்பட்டையில் தன்னிறைவுசெய்தலைக் காட்டு</translation>
+<translation id="3047726704186619366">படவுரு உரலிகள்</translation>
+<translation id="7059127752542505809">உரலியை உள்ளிடு</translation>
+<translation id="2156993118928861787">செல்லாத முகவரி</translation>
+<translation id="2653659639078652383">சமர்ப்பி</translation>
+<translation id="4272190451231642425">சிதைவறிக்கைகளைத் தானாக அனுப்பு</translation>
+<translation id="2239766974964486304">சிதைவறிக்கைகள் எல்லா பயனர்களுக்கும் விளைபொருளின் நிலைப்புத்தன்மையை பிரேவ் மேம்படுத்தவுதவும்.</translation>
+<translation id="2804710924397009224">பிரேவ் வெகுமதிகள் சின்னத்தை மறை</translation>
+<translation id="7289740269305509613">பிரேவ் வெகுமதிகள் சின்னத்தை மறைக்கும்</translation>
+<translation id="5040262127954254034">தனியுரிமை</translation>
 </translationbundle>

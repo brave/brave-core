@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Próxima data de contribuição</translation>
 <translation id="1397381065858030856">Sites acessados</translation>
 <translation id="2365740070488517695">Doações</translation>
-<translation id="4803566747788858771">Dê gorjetas aos criadores diretamente ao navegar através do Painel de Recompensas ou ao usar o botão de dica embutida em diversos sites, como Twitter, Reddit e GitHub.</translation>
+<translation id="5993195614988368256">Dê gorjetas aos criadores diretamente ao navegar através do Painel de Recompensas ou ao usar o botão de dica embutida em diversos sites, como Twitter, Reddit e GitHub.</translation>
 <translation id="5012991400231464322">Contribuições mensais</translation>
 <translation id="2084351799622920487">Configure contribuições mensais recorrentes para que você possa oferecer suporte a sites continuamente.</translation>
 <translation id="8150772404570015166">Nenhuma contribuição mensal definida.</translation>
@@ -255,6 +255,8 @@
 <translation id="9074594632540931067">Erro: BAT indisponível</translation>
 <translation id="413458922997276130">Sua conta do Uphold está bloqueada no momento.</translation>
 <translation id="3579959767665130790">Erro: conta bloqueada</translation>
+<translation id="6554308597291659562">O Uphold precisa coletar mais algumas informações sobre você antes de ativar todas as funcionalidades da conta do Uphold. Tente novamente depois de enviar essas informações na sua conta do Uphold.</translation>
+<translation id="6996157559236886133">Erro: funcionalidades da conta do Uphold limitadas</translation>
 <translation id="819370426249314592">Sua conta do Uphold ainda está pendente.</translation>
 <translation id="4530453398914580957">Erro: conta pendente</translation>
 <translation id="2388470740942086608">Sua conta do Uphold está restrita no momento.</translation>
@@ -262,8 +264,6 @@
 <translation id="7147519373526655987">Houve um problema ao validar a solicitação do seu navegador para conectar sua carteira de Recompensas Brave à sua conta do <ph name="PROVIDER"/>. Você pode <ph name="BEGIN_LINK"/>entrar em contato com o suporte<ph name="END_LINK"/> para obter ajuda.</translation>
 <translation id="1316066811927496401">Erro: não foi possível validar a solicitação</translation>
 <translation id="1737873393693460829">Ao ativar [[title]], você concorda com os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e com a <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>
-<translation id="901298512318791028">Seu <ph name="AMOUNT"/> pagamento começará a ser processado em <ph name="DAYS"/>.</translation>
-<translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Observação: <ph name="BOLD_END"/>o processamento do pagamento e o recebimento dos seus BATs podem levar alguns dias.</translation>
 <translation id="4672975606583962967">Escolha um serviço de carteira</translation>
 <translation id="1815503044492647974">Selecione um parceiro de carteira custodial. Se você já tem uma conta, será necessário fazer login para conectar.</translation>
 <translation id="2205685774710519016">Observação: suas transações ficarão visíveis para o serviço de carteira selecionado quando você autorizar. O serviço conseguirá ver, por exemplo, o destinatário e o valor de suas doações.</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Concluir verificação de carteira</translation>
 <translation id="9200453331904391567">Desconectar-se de Brave Rewards</translation>
 <translation id="3656941797339037856">Vincule o Rewards ao Gemini!</translation>
-<translation id="3066983737886188034">Com o Gemini, você pode negociar, armazenar e ganhar juros sobre seus BATs com facilidade. Verifique e vincule sua carteira das Recompensas Brave ao Gemini agora mesmo!</translation>
+<translation id="31532096120351460">Negocie mais de 50 criptomoedas (inclusive BAT) no Gemini, uma plataforma segura para armazenar suas criptomoedas. Além disso, você pode ganhar juros nos EUA, em Hong Kong e em Singapura.</translation>
 <translation id="7404779623219601861">Trocar BAT por vales-presente</translation>
 <translation id="6215565499749144110">Com a TAP Network, você pode trocar sua BAT por vales-presente de marcas famosas.</translation>
 <translation id="6915065518766963119">* É necessário uma verificação da Uphold.</translation>
@@ -732,15 +732,15 @@
 <translation id="72868071984333667">Saiba mais sobre IPFS e privacidade</translation>
 <translation id="1886162073868201257">Erro ao inicializar o Serviço do IFPS</translation>
 <translation id="5357895013476183089">IPFS não conectado</translation>
-<translation id="1196783328762622576">Não foi possível carregar os recursos de IPFS utilizando o nó local</translation>
+<translation id="7662930734991751511">Não é possível carregar os recursos do IPFS utilizando o nó local do IPFS do Brave</translation>
 <translation id="1141556610026845297">Falha ao usar o nó local de IPFS para carregar os recursos de IPFS solicitados. Clique no botão "Prosseguir" para usar o gateway público em vez disso e para automaticamente recorrer ao gateway público no futuro.</translation>
 <translation id="3373798179786163193">Proceder com gateway público</translation>
 <translation id="1974060860693918893">Avançado</translation>
 <translation id="9096577886148726047">Ocultar avançado</translation>
-<translation id="7716995370131231171">O Brave não conseguiu carregar os recursos de IPFS porque o nó local não iniciou ou porque não há pares conectados disponíveis no momento. Se você optar por "Prosseguir", o Brave automaticamente recorrerá ao gateway público padrão sempre que houver uma falha no nó local. Você pode alterar esse comportamento a qualquer momento nas configurações do Brave.</translation>
+<translation id="182581792765792826">O Brave não conseguiu carregar os recursos do IPFS. Isso aconteceu porque o nó local não foi iniciado ou porque não há pares conectados disponíveis no momento. Se você escolher a opção "Prosseguir", o Brave recorrerá automaticamente ao gateway público padrão sempre que houver uma falha no nó local do IPFS do Brave. Você pode alterar esse comportamento a qualquer momento nas configurações do Brave.</translation>
 <translation id="8026038288183400906">Preferências de IPFS</translation>
 <translation id="2058855456574089690">Defina suas preferências de IFPS</translation>
-<translation id="4447758690649023734">Usar um nó local</translation>
+<translation id="4780526507945807546">Usar um nó local do IPFS do Brave</translation>
 <translation id="8148464361648742409">Usar um gateway público</translation>
 <translation id="5123478056123923857">O IPFS (Sistema de Arquivos Interplanetário) é a rede pública para armazenamento e fornecimento de dados par-a-par (P2P). Esse protocolo possui considerações de privacidade diferentes de HTTP(S).</translation>
 <translation id="5410952114182173389">Seu computador contribui para a rede pública, mas seu endereço de IP e todo conteúdo que você está solicitando ou disponibilizando podem ser expostos. O conteúdo que você solicitar via IPFS é verificado antes de ser oferecido a você.</translation>
@@ -775,16 +775,19 @@
 <translation id="6318437367327684789">para sempre</translation>
 <translation id="8797999629784150206">Você pode mudar suas <ph name="SITE_PERMISSIONS"/> a qualquer momento. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">permissão do site</translation>
+<translation id="7717357606512850995">Verificar status</translation>
+<translation id="7306880305145342514">Parabéns! Suas recompensas de <ph name="MONTH"/> chegaram!</translation>
+<translation id="3007207731685398329">Suas recompensas de <ph name="AMOUNT"/> de <ph name="MONTH"/> chegarão em <ph name="DAYS"/></translation>
+<translation id="5878420576943709750">Suas recompensas de <ph name="AMOUNT"/> de <ph name="MONTH"/> estão a caminho. Fique de olho!</translation>
 <translation id="2659764755126740206">Acessar minha conta do <ph name="PROVIDER"/></translation>
 <translation id="2389181429986654814">Acesse <ph name="PROVIDER"/> para concluir a verificação</translation>
 <translation id="7793632266654336758">Conclua a verificação de identidade para começar a receber recompensas.</translation>
 <translation id="2394961582378297792">Sessão encerrada</translation>
-<translation id="5511950864417840431">Encerrar sessão do <ph name="PROVIDER"/></translation>
+<translation id="6080167751812750226">Desconectar-se do <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ganhos estimados</translation>
 <translation id="7577100371127227294">Doações Mensais</translation>
 <translation id="5894023780213944778">Minha carteira</translation>
 <translation id="2613359062756190460">Doações Únicas</translation>
-<translation id="4240437602809703483">O pagamento de <ph name="AMOUNT"/> começa a ser processado em <ph name="DAYS"/></translation>
 <translation id="590733288489975971">Recompensas do Ads</translation>
 <translation id="4989163558385430922">Ver tudo</translation>
 <translation id="3026978804849658576">Ver extrato</translation>
@@ -815,6 +818,7 @@
 <translation id="9161147058107529840">Esperava-se um único parâmetro de objeto.</translation>
 <translation id="1875861420974447980">Este ID de cadeia está sendo usado no momento</translation>
 <translation id="167698752210114155">Ocorreu um erro interno</translation>
+<translation id="1128992132632883337">Ocorreu um erro de análise de resposta</translation>
 <translation id="1680597601664421644">O mnemônico que está sendo importado não é válido para a Carteira Brave</translation>
 <translation id="4641919696349069826">Já há uma solicitação em andamento</translation>
 <translation id="872806943696014633">Os dados da transação não foram encontrados</translation>
@@ -867,12 +871,14 @@
 <translation id="6977728312178289892">1 ano</translation>
 <translation id="6598532182053592167">Adicionar moeda</translation>
 <translation id="629730747756840877">Conta</translation>
+<translation id="3959969108528118741">Proprietário</translation>
 <translation id="3891414008432200754">Preço</translation>
 <translation id="2267753748892043616">Adicionar conta</translation>
 <translation id="5061574358754621254">Dados de preço disponibilizados pela CoinGecko</translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Operação de Swap</translation>
-<translation id="7020187418439030877"><ph name="NETWORK"/> não é compatível</translation>
+<translation id="6295954645230084874">O suporte a compras não está disponível para o <ph name="NETWORK"/></translation>
+<translation id="4171338820961522154">O suporte a operações de swap não está disponível para o <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">Esta transação pode ser uma prática de "front running"</translation>
 <translation id="632241521608275119">Tolerância de slippage</translation>
 <translation id="4500473291496079954">Expira em</translation>
@@ -880,12 +886,14 @@
 <translation id="2860280209982026951">O Brave usa a <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> como agregador DEX.</translation>
 <translation id="151946611346774041">A 0x processará o endereço Ethereum e o endereço IP para realizar uma transação (incluindo a obtenção de cotações). A 0x usará esses dados SOMENTE para fins de processamento de transações.</translation>
 <translation id="4626407663177532837">A cotação inclui uma taxa de 0,875% do Brave.</translation>
+<translation id="8368540604723748428">Excesso de casas decimais</translation>
 <translation id="2704606927547763573">Copiado</translation>
 <translation id="6518133107902771759">Confirmar</translation>
 <translation id="1420318137760245955">Esta é a nova Carteira Brave</translation>
 <translation id="8303434745767477417">Guarde criptoativos em custódia. Monitore o desempenho do portfólio e interaja com dapps Web 3. Negocie, solicite e faça empréstimos e invista com DeFi. Tudo isso diretamente na privacidade do navegador Brave. Sem necessidade de extensões nem downloads.</translation>
 <translation id="6972754398087986839">Primeiros passos</translation>
 <translation id="375882617301124395">Fazer backup da sua carteira de criptomoedas</translation>
+<translation id="180032279811483155">Na próxima etapa, você verá uma frase de recuperação de <ph name="RECOVERY_PHRASE_LENGTH"/> palavras que pode ser usada para recuperar suas contas de criptomoedas principais. Guarde-a em um lugar seguro. Sua frase de recuperação será a única maneira de recuperar o acesso à conta em caso de esquecimento de senha, dispositivo perdido ou roubado ou se você quiser trocar de carteira.</translation>
 <translation id="5024543173656851695">Entendo que, se eu perder minhas palavras de recuperação, não conseguirei acessar minha carteira de criptomoedas.</translation>
 <translation id="3933122286596948824">Sua frase de recuperação</translation>
 <translation id="5077747669435508720">Anote ou copie essas palavras exatamente na ordem exibida abaixo e salve-as em um lugar seguro. Sua frase de recuperação é a única maneira de recuperar o acesso à conta em caso de esquecimento de senha, dispositivo perdido ou roubado ou caso você queira trocar de carteira.</translation>
@@ -900,12 +908,14 @@
 <translation id="6901073872645365201">As senhas precisam ter pelo menos 7 caracteres e conter pelo menos um número e um caractere especial.</translation>
 <translation id="6657585470893396449">Senha</translation>
 <translation id="5486261815000869482">Confirmar senha</translation>
+<translation id="6138471905279127211">Os critérios da senha não correspondem.</translation>
 <translation id="467510802200863975">As senhas não correspondem</translation>
 <translation id="5168349973342709369">Insira a senha para desbloquear a carteira</translation>
 <translation id="9111102763498581341">Desbloquear</translation>
 <translation id="5045550434625856497">Senha incorreta</translation>
-<translation id="7341660388388100491">Bloquear carteira de criptomoedas</translation>
+<translation id="5242300593039211344">Bloquear carteira</translation>
 <translation id="765834632354589737">Fazer Backup da Carteira</translation>
+<translation id="1108298724135935307">Sites conectados</translation>
 <translation id="722307450061393855">Faça backup da sua carteira agora para proteger seus criptoativos e garantir que você nunca perca o acesso.</translation>
 <translation id="1018806299114415224">Fazer backup agora</translation>
 <translation id="5234764350956374838">Dispensar</translation>
@@ -919,12 +929,20 @@
 <translation id="3331452756822160641">Nova senha</translation>
 <translation id="8624315169751085215">Copiar para área de transferência</translation>
 <translation id="1121335910737476837">Contas de criptomoedas principais</translation>
-<translation id="3604193429970465812">Contas secundárias</translation>
+<translation id="6969147029062037757">Contas importadas</translation>
+<translation id="5668765612885835803">Você pode criar contas principais na Carteira Brave que podem ser armazenadas em backup ou restauradas por meio da sua frase de recuperação. Para saber mais sobre os tipos de conta, acesse a ajuda da conta</translation>
 <translation id="2471916999505901943">Essas contas podem ser usadas com dapps Web 3 e podem ser exibidas no seu portfólio. No entanto, tenha em mente que contas secundárias não podem ser restauradas por meio da frase de recuperação a partir do backup da sua conta principal.</translation>
 <translation id="1940465339426637378">Ativos</translation>
 <translation id="2236507293802791911">Ativos visíveis</translation>
 <translation id="7525067979554623046">Criar</translation>
 <translation id="4771176409524282426">Criar conta</translation>
+<translation id="2471867767872178363">Criar conta de <ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="1073129495320255278">Importar conta de<ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="6780482003945159712">Selecione um dos seguintes tipos de conta</translation>
+<translation id="7080614857771109950">Oferece suporte a ativos compatíveis com EVM na blockchain Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="3329841454317342083">Oferece suporte a ativos compatíveis com SLP na blockchain Solana</translation>
+<translation id="4541295941776129088">Armazenar ativo FIL</translation>
+<translation id="232925166623833246">Importar de carteira de hardware</translation>
 <translation id="4324198334837993695">Hardware</translation>
 <translation id="3067168166931605141">Nome da conta</translation>
 <translation id="1136772623587250243">Colar a chave privada da área de transferência</translation>
@@ -935,7 +953,7 @@
 <translation id="5891811606602061966">Houve uma falha ao importar a conta. Tente novamente.</translation>
 <translation id="5051929972046200722">Selecione seu dispositivo de carteira de hardware</translation>
 <translation id="5745936663807461565">Conecte sua carteira <ph name="HARDWARE_DEVICE"/> diretamente ao seu computador.</translation>
-<translation id="5041211872515579638">Desbloqueie seu dispositivo e selecione o app Ethereum.</translation>
+<translation id="4350216031085285578">Desbloqueie seu dispositivo e selecione o app <ph name="BLOCKCHAIN_NETWORK"/>.</translation>
 <translation id="6892232036314454524">Esse erro pode ocorrer quando o aplicativo incorreto é aberto no dispositivo Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -962,6 +980,7 @@
 <translation id="6018178824574796106">Houve uma falha ao adicionar o token personalizado. Tente novamente.</translation>
 <translation id="547122651977318828">ID do token (somente para ERC721)</translation>
 <translation id="7544552854944350190">O ID do token é necessário</translation>
+<translation id="3842236145820483340">ID do Coingecko</translation>
 <translation id="2708402071160162126">ATENÇÃO: nunca compartilhe sua frase de recuperação. Qualquer pessoa com essa frase pode obter seus ativos para sempre.</translation>
 <translation id="2902856457593699108">Mostrar chave</translation>
 <translation id="8033497299373164724">Ocultar chave</translation>
@@ -1030,6 +1049,8 @@
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> contas conectadas</translation>
 <translation id="4305817255990598646">Trocar</translation>
 <translation id="3890989020011724401">Nova conta</translation>
+<translation id="7257603403519636638">Ver ativos da conta</translation>
+<translation id="2092132085082887098">Ativos da conta</translation>
 <translation id="4460220693591349571">TIPO DE FUNÇÃO</translation>
 <translation id="838933475572692615">DADOS HEXADECIMAIS</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1072,6 +1093,11 @@
 <translation id="6666273175654835609">Enviado</translation>
 <translation id="2331676293859649642">Confirmado</translation>
 <translation id="1165039591588034296">Erro</translation>
+<translation id="9065572743819293042">Transações recentes</translation>
+<translation id="4235538284468006757">Detalhes da transação</translation>
+<translation id="7488671812634887146">Acelerar</translation>
+<translation id="1702356231547761669">Hash da transação</translation>
+<translation id="7982789257301363584">Rede</translation>
 <translation id="8941851657764077659">Taxa de prioridade máxima</translation>
 <translation id="8047527352810290817">Editar gás</translation>
 <translation id="9091334651803050473">Embora isso não seja garantido, os mineradores provavelmente priorizarão sua transação se você pagar uma taxa mais alta.</translation>
@@ -1088,6 +1114,10 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Definir taxa personalizada</translation>
 <translation id="7400927223938424379">Definir taxa sugerida</translation>
+<translation id="8179605702342645418">A transação pode não ser propagada na rede.</translation>
+<translation id="9100765901046053179">Configurações avançadas</translation>
+<translation id="4220062530885628403">Nonce</translation>
+<translation id="2749584096020594976">O valor de nonce será determinado automaticamente se este campo não for especificado.</translation>
 <translation id="1599636444563952897">A permissão de limite de gastos possibilita que o <ph name="SITE_ORIGIN"/> saque e gaste até o seguinte valor:</translation>
 <translation id="4512871563176965522">Provisão personalizada</translation>
 <translation id="749944179568745958">Não é um endereço ETH válido</translation>
@@ -1128,6 +1158,11 @@
 <translation id="7017116822583380542">A ponte Trezor não está pronta</translation>
 <translation id="3378339846292573874">Adicionar token sugerido</translation>
 <translation id="2322227405137827074">Você deseja importar este token?</translation>
+<translation id="4378475168089649292">Blockchain</translation>
+<translation id="1904295039023858291">Padrão de token</translation>
+<translation id="9033453977881595182">ID do token</translation>
+<translation id="2962388922926051374">Houve uma falha na solicitação do método "eth_chainId" em <ph name="URL"/></translation>
+<translation id="8325036459845654666">Esta rede já foi adicionada.</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação Geral</translation>
 <translation id="4045404575593562245">Eventos de Controle do Tor</translation>

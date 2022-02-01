@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID phần mở rộng "<ph name="EXTENSION_ID"/>") không được phép trong Brave.</translation>
 <translation id="6786747875388722282">Tiện ích mở rộng</translation>
 <translation id="984275831282074731">Phương thức thanh toán</translation>
-<translation id="3699882589215410581">Cài và chạy Widevine</translation>
+<translation id="1990886731975529483">Cài đặt và chạy Google Widevine</translation>
 <translation id="8926389886865778422">Đừng hỏi lại</translation>
 <translation id="5249433283143453448">Sử dụng thành phần quản lý bản quyền kỹ thuật số Widevine (DRM) để xem video phát trực tuyến được bảo vệ và nội dung khác trong trình duyệt.</translation>
 <translation id="6241402707160226266">Cửa sổ riêng tư với Tor</translation>
 <translation id="8762452230727230396">Tor ẩn địa chỉ IP của bạn khỏi các trang web bạn truy cập.</translation>
 <translation id="1369311132025451972">Tự động chuyển hướng các trang .onion</translation>
 <translation id="2843777623071353503">Brave sẽ mở dịch vụ onion của trang web này khi có sẵn hoặc tên miền .onion trong cửa sổ Tor.</translation>
-<translation id="8053096063396012732">Cài đặt Widevine</translation>
-<translation id="4840334696217618631">Khởi động lại trình duyệt để bật Widevine</translation>
-<translation id="8410111618231938546">Google Widevine là một phần của mã Quản lý Quyền Kỹ thuật số (Digital Rights Management hay DRM) mà chúng tôi tại Brave Software không sở hữu và không thể kiểm tra. Mã Google Widevine được tải từ các máy chủ của Google chứ không phải từ các máy chủ của chúng tôi. Mã này chỉ được tải khi bạn bật tùy chọn này. Chúng tôi không khuyến khích sử dụng DRM, nhưng chúng tôi tôn trọng lựa chọn của người dùng và thừa nhận rằng một số người dùng Brave muốn sử dụng các dịch vụ cần tới mã đó.
-
-Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với các Điều khoản Sử dụng của Google Widevine. Bạn đồng ý rằng Brave không chịu trách nhiệm đối với bất kỳ thiệt hại hoặc tổn thất nào liên quan đến việc bạn sử dụng Google Widevine.</translation>
+<translation id="4900351245762303149">Cài đặt Google Widevine</translation>
+<translation id="2313383941300459392">Khởi động lại trình duyệt để bật Google Widevine</translation>
+<translation id="2200626478572277092">Widevine đôi khi cần thiết để phát phương tiện trên trang web. Đó là một tiện ích mở rộng của Google được tải từ các máy chủ của Google mà Brave không thể kiểm tra. Bằng cách cài đặt, bạn đồng ý với các điều khoản sử dụng của Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Tìm hiểu thêm về Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> đang yêu cầu bạn</translation>
 <translation id="410351446219883937">Tự động phát</translation>
 <translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
 <translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="6583467242903731748">Hỏi khi trang web muốn truy cập vào API của nhà cung cấp Ethereum</translation>
 <translation id="7017590444693657895">Chặn các trang web truy cập API của nhà cung cấp Ethereum</translation>
 <translation id="8988939298652262600">Brave không đánh giá tính bảo mật và an toàn của các tiện ích mở rộng. Chỉ nên cài đặt tiện ích mở rộng này nếu bạn tin tưởng nhà phát triển.</translation>
+<translation id="933652931229970927">Tự động gửi báo cáo chẩn đoán</translation>
+<translation id="1679356339067548863">Giúp cải thiện độ ổn định của sản phẩm Brave bằng cách tự động gửi báo cáo chẩn đoán khi Trình duyệt Brave gặp sự cố hoặc đóng băng.</translation>
 <translation id="8081858229109418493">Tên và ảnh đại diện hồ sơ</translation>
 <translation id="6438096877646138757">Các trang xóa cookie khi bạn đóng lại</translation>
 <translation id="2988792685798128092">Xóa khi đóng trang</translation>
@@ -42,7 +46,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="1692470335103807198">Lấy thêm chủ đề</translation>
 <translation id="2906510232093002459">Hình ảnh mặc định của Brave</translation>
 <translation id="2814998458708016836">Dùng thanh địa chỉ rộng</translation>
-<translation id="6123134130710658846">Ẩn nút Tiền thưởng Brave</translation>
+<translation id="6333347122924254968">Hiển thị biểu tượng Brave Phần thưởng trên thanh địa chỉ</translation>
 <translation id="1811404036171336214">Luôn hiển thị dấu trang trên trang tab mới</translation>
 <translation id="1643029991199044105">Chuyển qua các tab được sử dụng gần đây nhất bằng Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="5733490796524078528">Nút tiền thưởng</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Trang Tab Mới</translation>
 <translation id="1988804048511540801">Trang tab mới hiển thị</translation>
 <translation id="2970343821770026391">Bảng điều khiển</translation>
@@ -89,12 +93,12 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8612763432858587652">Thoát khỏi Cửa sổ Riêng tư</translation>
 <translation id="8760415064721320867">Cửa sổ Riêng tư với Tor</translation>
 <translation id="2055363275850890030">Cửa sổ Riêng tư</translation>
-<translation id="8934172355414207733">Riêng tư với Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Đây là một cửa sổ riêng tư với Tor</translation>
 <translation id="1037341607922068025">Mở Cửa sổ Riêng tư với Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Mở trong Tor</translation>
-<translation id="7643538479215207633">Mở bằng IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Phát hành và truy xuất tệp từ IPFS</translation>
 <translation id="1672270084584211506">Onion Khả dụng</translation>
 <translation id="406832631167785034">Mở bằng địa chỉ .onion</translation>
@@ -105,7 +109,6 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4227945450504703638">Âm thanh đã chọn</translation>
 <translation id="7895302206188277628">Nội dung liên kết</translation>
 <translation id="3654831858282189202">Xuất bản bằng khóa IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Nhập văn bản đã chọn vào IPFS</translation>
 <translation id="6925604404524625582">Nhập và sao chép liên kết đến ảnh chụp nhanh IPFS</translation>
 <translation id="1434416574322382019">Cửa sổ Riêng tư với Tor Mới</translation>
@@ -238,8 +241,8 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6358469157239228181">Tên này không thể sử dụng</translation>
 <translation id="5761731140570209168">Thêm chuỗi kết nối ngang hàng mới</translation>
 <translation id="2082206983920804886">Xoay khóa</translation>
-<translation id="2521133093532260474">Không thể dừng nút cục bộ</translation>
-<translation id="86879877003581729">Không thể khởi chạy nút cục bộ</translation>
+<translation id="5078501082919354191">Không thể dừng nút IPFS cục bộ Brave</translation>
+<translation id="5687424953196903465">Không thể khởi chạy nút IPFS cục bộ Brave</translation>
 <translation id="6476061084931271248">Khởi động lại nút để áp dụng các thay đổi</translation>
 <translation id="3754226427671882382">Khởi động lại nút</translation>
 <translation id="949667118776341807">Xoay</translation>
@@ -254,17 +257,22 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="616058968889448209">Lỗi khởi chạy dịch vụ IPFS, thông tin thêm có sẵn trên <ph name="BEGIN_LINK"/>trang chẩn đoán<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619"><ph name="KEY_NAME"/> nhập khóa không thành công</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' khóa xuất không thành công</translation>
-<translation id="8860039076160511438">Đặt lại ví</translation>
+<translation id="4993345308607970390">Đặt lại Ví Brave</translation>
+<translation id="5975930666279943472">Xóa giao dịch ví và thông tin số giao dịch</translation>
+<translation id="5693968582510626466">Việc xóa các giao dịch có thể hữu ích cho các nhà phát triển hoặc khi xóa trạng thái trên máy chủ cục bộ</translation>
 <translation id="6369495274982305511">Bạn có chắc chắn muốn đặt lại ví của mình không? Nếu ví của bạn không được sao lưu, việc đặt lại sẽ khiến bạn mất tất cả dữ liệu tài khoản (bao gồm mọi khoản tiền liên kết). Gõ "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
+<translation id="9216386092464743272">Bạn có chắc chắn muốn đặt lại tất cả giao dịch ví và thông tin số giao dịch của mình không? Tùy chọn này chủ yếu được sử dụng bởi các nhà phát triển đang chạy máy chủ kiểm thử nội bộ. Nhập "<ph name="CONFIRMATION_PHRASE"/>" để xác nhận.</translation>
+<translation id="3752403403443723332">Ví của bạn đã được đặt lại.</translation>
+<translation id="594766067816395072">Thông tin giao dịch ví của bạn đã được đặt lại.</translation>
 <translation id="1426410128494586442">Có</translation>
 <translation id="8275038454117074363">Nhập</translation>
 <translation id="3654980960391973513">Nhập khóa</translation>
 <translation id="5531501313997312487">Nút Bắt đầu</translation>
 <translation id="9170907049676078643">Phương thức giải quyết tài nguyên IPFS</translation>
 <translation id="1327977588028644528">Cổng vào</translation>
-<translation id="80225669816651290">Nút cục bộ</translation>
+<translation id="1195880978080389104">Nút IPFS cục bộ Brave</translation>
 <translation id="4927734062756955434">Địa chỉ cổng mạng IPFS công khai</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tìm hiểu thêm<ph name="END_LINK_MPL"/> về nút cục bộ IPFS và các cân nhắc quyền riêng tư của cổng.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Tìm hiểu thêm<ph name="END_LINK_MPL"/> về nút IPFS cục bộ Brave và các cân nhắc về quyền riêng tư cổng.</translation>
 <translation id="8425213833346101688">Thay đổi</translation>
 <translation id="557281710253742286">Đặt cổng mạng IPFS</translation>
 <translation id="8571837315037233299">Địa chỉ cổng mạng</translation>
@@ -273,7 +281,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="7703184801853248830">Địa chỉ cổng mạng không hợp lệ</translation>
 <translation id="7690058578502751948">Chỉ có một cổng IPFS hợp lệ với cô lập gốc được bật mới có thể sử dụng trong Brave</translation>
 <translation id="585868419599255817">Dự phòng cổng công khai IPFS</translation>
-<translation id="207763736230883589">Tự động quay trở lại cổng mạng IPFS công khai nếu không thể truy cập vào nút cục bộ của bạn.</translation>
+<translation id="2618080188892567155">Tự động quay lại cổng IPFS công khai nếu không thể truy cập vào nút IPFS cục bộ Brave của bạn.</translation>
 <translation id="4107552920076294723">Chuyển hướng tài nguyên IPFS đến cổng IPFS đã cấu hình</translation>
 <translation id="6494857428933042381">Tự động sử dụng cổng mạng đã được cấu hình đối với các giải pháp IPFS khi gặp tài nguyên cổng mạng IPFS.</translation>
 <translation id="8655170717758778983">Tự động chuyển hướng đến các trang IPFS thông qua DNSLink khi có thể</translation>
@@ -346,10 +354,9 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="780301667611848630">Không, cảm ơn</translation>
 <translation id="5039804452771397117">Cho phép</translation>
 <translation id="7053983685419859001">Chặn</translation>
-<translation id="7815301689257843278">Tự động gửi báo cáo sự cố để Brave có thể ngăn sự cố này xảy ra lần nữa?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> thoát đột ngột.</translation>
 <translation id="1324417023773393937">Trình duyệt Brave</translation>
-<translation id="1068069727470515940">Bạn có thể thay đổi lại <ph name="SETTING_TEXT"/> vào bất kỳ lúc nào.</translation>
+<translation id="7276554663454265692">Bạn có thể thay đổi <ph name="SETTING_TEXT"/> bất kỳ lúc nào trong cài đặt trình duyệt.</translation>
 <translation id="6873781976650514089">cài đặt này</translation>
 <translation id="6040143037577758943">Đóng</translation>
 <translation id="5600566490506283344">Thông báo quảng cáo Brave</translation>
@@ -446,10 +453,28 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2487558607408469181">Chặn URL trình khám phá</translation>
 <translation id="6301398959353668507">Trường này không được trống.</translation>
 <translation id="7504462451153306677">Định dạng không hợp lệ, ID chuỗi là một số dương</translation>
-<translation id="8325036459845654666">Mạng này đã được thêm.</translation>
 <translation id="650071759190249039">Lỗi nội bộ, không thể thêm mạng.</translation>
 <translation id="868529041590572443">Vui lòng điền tất cả thông tin về đồng tiền nguyên bản</translation>
 <translation id="1062463687579789365">Tùy biến mạng ví</translation>
 <translation id="2234108191702901162">Không thể thêm mạng</translation>
 <translation id="2618193846561624884">Bạn có muốn cập nhật mạng hiện có không?</translation>
+<translation id="3699882589215410581">Cài và chạy Widevine</translation>
+<translation id="8053096063396012732">Cài đặt Widevine</translation>
+<translation id="4840334696217618631">Khởi động lại trình duyệt để bật Widevine</translation>
+<translation id="8410111618231938546">Google Widevine là một phần của mã Quản lý Quyền Kỹ thuật số (Digital Rights Management hay DRM) mà chúng tôi tại Brave Software không sở hữu và không thể kiểm tra. Mã Google Widevine được tải từ các máy chủ của Google chứ không phải từ các máy chủ của chúng tôi. Mã này chỉ được tải khi bạn bật tùy chọn này. Chúng tôi không khuyến khích sử dụng DRM, nhưng chúng tôi tôn trọng lựa chọn của người dùng và thừa nhận rằng một số người dùng Brave muốn sử dụng các dịch vụ cần tới mã đó.
+
+Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với các Điều khoản Sử dụng của Google Widevine. Bạn đồng ý rằng Brave không chịu trách nhiệm đối với bất kỳ thiệt hại hoặc tổn thất nào liên quan đến việc bạn sử dụng Google Widevine.</translation>
+<translation id="6123134130710658846">Ẩn nút Tiền thưởng Brave</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Riêng tư với Tor</translation>
+<translation id="7643538479215207633">Mở bằng IPFS</translation>
+<translation id="2521133093532260474">Không thể dừng nút cục bộ</translation>
+<translation id="86879877003581729">Không thể khởi chạy nút cục bộ</translation>
+<translation id="8860039076160511438">Đặt lại ví</translation>
+<translation id="80225669816651290">Nút cục bộ</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Tìm hiểu thêm<ph name="END_LINK_MPL"/> về nút cục bộ IPFS và các cân nhắc quyền riêng tư của cổng.</translation>
+<translation id="207763736230883589">Tự động quay trở lại cổng mạng IPFS công khai nếu không thể truy cập vào nút cục bộ của bạn.</translation>
+<translation id="7815301689257843278">Tự động gửi báo cáo sự cố để Brave có thể ngăn sự cố này xảy ra lần nữa?</translation>
+<translation id="1068069727470515940">Bạn có thể thay đổi lại <ph name="SETTING_TEXT"/> vào bất kỳ lúc nào.</translation>
+<translation id="8325036459845654666">Mạng này đã được thêm.</translation>
 </translationbundle>

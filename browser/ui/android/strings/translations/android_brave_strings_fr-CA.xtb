@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Les gros titres du jour dans un fil entièrement privé, rien que pour vous.</translation>
 <translation id="7266075701303521777">Brave Actualités est financé par des annonces privées et anonymes adaptées à votre appareil.</translation>
 <translation id="4541978218358617681">Annonce</translation>
-<translation id="1765217911817124376">Activer Brave Actualités</translation>
+<translation id="7823038307453615214">Activer Brave Actualités</translation>
 <translation id="6527303717912515753">Partager</translation>
 <translation id="1654539412343893324">En savoir plus sur vos données</translation>
 <translation id="2989805286512600854">Ouvrir dans un nouvel onglet</translation>
@@ -45,7 +45,6 @@
 <translation id="7554145152551782675">Plus d'offres Brave</translation>
 <translation id="4975944254857623648">Sources par défaut</translation>
 <translation id="253886574765651454">Ajouter une source</translation>
-<translation id="7823038307453615214">Afficher Brave News</translation>
 <translation id="5787084571334399599">Empêche le navigateur de transmettre son empreinte</translation>
 <translation id="7459000603787995422">Fermer les onglets à la sortie</translation>
 <translation id="4448697385961650078">Bloquer les traqueurs et les annonces</translation>
@@ -53,8 +52,8 @@
 <translation id="1680858055899097121">Ne persistez pas dans les onglets entre les sessions de navigation</translation>
 <translation id="7142548388914389999">Autoriser l'analyse de produits respectueuse de la vie privée (P3A)</translation>
 <translation id="5254037869598726291">Les données P3A anonymisées permettent à Brave d'estimer l'utilisation globale et de garantir que nous améliorons les fonctionnalités populaires.</translation>
-<translation id="4272190451231642425">Envoyer automatiquement les rapports d'erreur</translation>
-<translation id="2239766974964486304">Les rapports d'erreur aident Brave à améliorer la stabilité des produits pour tous les utilisateurs.</translation>
+<translation id="933652931229970927">Envoyer automatiquement les rapports de diagnostic</translation>
+<translation id="5987838417172370108">Contribuez à améliorer la stabilité des produits de Brave en envoyant automatiquement des rapports de diagnostic lorsque le navigateur Brave plante ou se bloque.</translation>
 <translation id="7977176350719484850">Données\néconomisées</translation>
 <translation id="9008534313521214777">Temps gagné\nestimé</translation>
 <translation id="6572660632052512096">Mode bureau</translation>
@@ -76,8 +75,7 @@
 <translation id="59174027418879706">Activé</translation>
 <translation id="4150201353443180367">Affichage</translation>
 <translation id="2433507940547922241">Apparence</translation>
-<translation id="2804710924397009224">Masquer l'icône de récompenses de Brave</translation>
-<translation id="7289740269305509613">Masque l'icône de Brave Rewards</translation>
+<translation id="6333347122924254968">Afficher l'icône de récompenses Brave dans la barre d'adresse</translation>
 <translation id="8495235435594442882">Activer la barre d'outils inférieure</translation>
 <translation id="6587448235155023666">Vos changements prendront effet la prochaine fois que vous lancerez Brave</translation>
 <translation id="8701563696941209024">RELANCEZ MAINTENANT</translation>
@@ -112,7 +110,8 @@
 <translation id="5441565662498481293">Vous envoyez automatiquement un pourboire à :</translation>
 <translation id="1166682575529520472">Chaque mois</translation>
 <translation id="1628742278973105368">Votre premier pourboire mensuel sera envoyé le :</translation>
-<translation id="298349922412901215">NOTE : ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Nous continuerons à essayer de contribuer jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="298349922412901215">REMARQUE : ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Nous continuerons à essayer de contribuer jusqu'à ce qu'il effectue la vérification, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="6602036279006002239">REMARQUE : ce créateur n'a pas encore configuré son compte pour recevoir des pourboires de votre portefeuille. Tous les pourboires que vous envoyez resteront en attente dans votre portefeuille, et de nouvelles tentatives seront effectuées automatiquement pendant 90 jours.</translation>
 <translation id="1910721550319506122">Bienvenue!</translation>
 <translation id="3165726837666415756">Vous pouvez soutenir ce site en envoyant un pourboire. C'est une façon de les remercier pour la qualité de leur contenu. Les créateurs de contenu vérifié sont payés pour leurs pourboires pendant la première semaine de chaque mois civil.</translation>
 <translation id="1704859330137112950">Si vous le souhaitez, vous pouvez planifier des astuces mensuelles pour soutenir ce site de manière continue.</translation>
@@ -191,6 +190,7 @@ jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.<
 <translation id="8284063834901328650">Mauvaise synchronisation de code QR</translation>
 <translation id="859506441384380749">Ce code a été généré par une version obsolète de Brave. Commencez par mettre à jour l'autre appareil</translation>
 <translation id="3132642509209154999">Ce code a expiré. Veuillez en générer un nouveau depuis votre deuxième appareil, puis réessayer.</translation>
+<translation id="2859229680945501779">Ce code n'est pas valide. Veuillez vérifier que l'heure et le fuseau horaire sont définis correctement sur votre appareil.</translation>
 <translation id="3149880132460839085">Synchronisation de Brave</translation>
 <translation id="3680755684186855422">La synchronisation de Brave vous permet de synchroniser les données des signets en privé entre vos navigateurs Brave sur vos divers appareils.</translation>
 <translation id="3735228155296883311">Il suffit de scanner le code de votre chaîne de synchronisation que vous avez créé sur un autre dispositif. Ou commencez une nouvelle chaîne de synchronisation.</translation>
@@ -294,7 +294,6 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="5358719431303818601">Déconnecté non vérifié</translation>
 <translation id="4241449868720191203">Déconnecté vérifié</translation>
 <translation id="3248185426436836442">En attente</translation>
-<translation id="2260513517001048012">NOTE : Ce créateur vérifié Brave n'a pas encore configuré son compte pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'il soit configuré, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
 <translation id="4488355059795908907">Ce créateur vérifié Brave n'a pas encore configuré son compte pour recevoir les contributions des utilisateurs de Brave. Tous les pourboires que vous envoyez resteront dans votre portefeuille jusqu'à ce qu'il ait terminé ce processus.</translation>
 <translation id="2495032782748793764">Brave par défaut</translation>
 <translation id="9132378787893584761">Partagez Brave avec vos amis !</translation>
@@ -403,12 +402,12 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="7427567994475794038">Activez les rapports de confidentialité pour voir combien de traqueurs et de publicités ont été bloqués dans les 3 derniers jours.</translation>
 <translation id="2053891538879944400">Vous avez économisé <ph name="DATA"/> <ph name="DATA_TEXT"/> de données avec le navigateur Brave.</translation>
 <translation id="8640064498452534195">Activez les Rapports de confidentialité pour voir combien de données vous avez sauvegardées.</translation>
-<translation id="2252497442547961651">Le navigateur Brave utilise en moyenne 40 % de batterie en moins.&#128267;</translation>
+<translation id="2252497442547961651">Le navigateur Brave utilise en moyenne 40 % de batterie en moins.🔋</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traqueurs et publicités avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en regardant des publicités respectant la confidentialité et en soutenant vos sites web favoris.</translation>
-<translation id="5678925890616256956">Bravo! Vous avez bloqué 250 publicités et éléments de pistage avec le navigateur Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bravo! Vous avez économisé 10 Mo avec le navigateur Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bravo! Vous avez gagné 10 minutes de temps de chargement avec le navigateur Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bravo! Vous avez bloqué 250 publicités et éléments de pistage avec le navigateur Brave.🔥</translation>
+<translation id="9199047775708635708">Bravo! Vous avez économisé 10 Mo avec le navigateur Brave.🔋</translation>
+<translation id="1880168210969863408">Bravo! Vous avez gagné 10 minutes de temps de chargement avec le navigateur Brave.💨💨</translation>
 <translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
 <translation id="9080777565335515917">Configurez Brave comme navigateur par défaut pour une navigation confidentielle et sûre.</translation>
 <translation id="1390943217516275883">Autorise Brave à afficher vos statistiques de confidentialité</translation>
@@ -536,11 +535,10 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="2918322085844739869">4</translation>
 <translation id="7267186368513450821">5</translation>
 <translation id="6972003925509023890">1 BAT</translation>
+<translation id="2222442600106681391">2 BAT</translation>
+<translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
 <translation id="8762169086048682708">10 BAT</translation>
-<translation id="7921571842056754133">15 BAT</translation>
-<translation id="3605291544485823713">25 BAT</translation>
-<translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0,00 BAT</translation>
 <translation id="4193129043743994339">0,00 USD</translation>
 <translation id="8792121506918889955">Politique de gestion de l'IP WebRTC</translation>
@@ -571,7 +569,7 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="375882617301124395">Sauvegarder votre portefeuille crypto</translation>
 <translation id="8289942708804097960">Achetez des cryptos avec une carte de crédit ou une carte de débit.</translation>
 <translation id="841880029259839903">Envoyez des cryptos ou transférez-les d'un compte à l'autre.</translation>
-<translation id="8982246458261383692">Échangez des actifs crypto avec l'agrégateur de DEX de Brave.</translation>
+<translation id="8226778393040773102">Échangez des actifs crypto avec l'agrégateur de DEX de Brave.</translation>
 <translation id="1783600039044302171">Sécurisez vos cryptos avec un mot de passe</translation>
 <translation id="3726490322412361740">Entrez votre mot de passe</translation>
 <translation id="3038243139480464605">Confirmer le mot de passe</translation>
@@ -597,12 +595,16 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="9120654436199628567">Restaurer un compte crypto</translation>
 <translation id="4811736040444856406">Afficher la phrase de récupération</translation>
 <translation id="283071225285270357">Entrez votre phrase de récupération</translation>
+<translation id="3943857333388298514">Coller</translation>
+<translation id="3331452756822160641">Nouveau mot de passe</translation>
+<translation id="4854035885012188958">Restauration à partir d'un portefeuille de crypto Brave hérité</translation>
 <translation id="2339124864228588937">Vérifier la phrase de récupération</translation>
 <translation id="3747079125031086337">Sélectionnez les mots de votre phrase de récupération dans le bon ordre.</translation>
 <translation id="6518133107902771759">Vérifier</translation>
 <translation id="3157931365184549694">Restaurer\n</translation>
 <translation id="9111102763498581341">Déverrouiller</translation>
 <translation id="6657585470893396449">Mot de passe</translation>
+<translation id="5619264711680220002">Déverrouillage par authentification biométrique</translation>
 <translation id="5168349973342709369">Entrer le mot de passe pour déverrouiller le portefeuille</translation>
 <translation id="1144810021918451336">Ne vous protège pas contre les extensions, les sites web et les téléchargements dangereux.</translation>
 <translation id="5760476995887363522">Les phrases ne correspondent pas. Veuillez réessayer.</translation>
@@ -615,6 +617,8 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="6159566011642056819">À (estimation)</translation>
 <translation id="6998989275928107238">À</translation>
 <translation id="2589431635772931954">Adresse ou lien</translation>
+<translation id="5517732667776806421">Renseignements relatifs à la somme de contrôle manquants</translation>
+<translation id="4006711930669471508">Renseignements relatifs à la somme de contrôle non valides</translation>
 <translation id="632241521608275119">Tolérance de retard</translation>
 <translation id="1987317783729300807">Comptes</translation>
 <translation id="3535654229833214438">Transactions</translation>
@@ -647,7 +651,6 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="7420359180991315365">Continuer vers Wyre</translation>
 <translation id="8488282162676695335">Portefeuille Brave</translation>
 <translation id="3784455785234192852">Verrouiller</translation>
-<translation id="5040262127954254034">Confidentialité</translation>
 <translation id="8239147115686034860">Verrouiller automatiquement le portefeuille Brave</translation>
 <translation id="414639769490080648">Le nombre de minutes à attendre avant que le portefeuille Brave soit automatiquement verrouillé</translation>
 <translation id="4993345308607970390">Réinitialiser le portefeuille Brave</translation>
@@ -767,7 +770,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="6666273175654835609">Envoyé</translation>
 <translation id="2331676293859649642">Confirmé</translation>
 <translation id="1165039591588034296">Erreur</translation>
-<translation id="4354768722613827480">Frais : <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="8364362220156372884">Frais : <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> (<ph name="FIAT_VALUE"/> $)</translation>
 <translation id="2561824823738097741">Utilisez-vous le navigateur Web le plus rapide?</translation>
 <translation id="2065971949051836200">L'Internet 3 fois plus rapide est déjà sur votre téléphone. Utilisez Brave pour toute votre navigation sur le Web.</translation>
 <translation id="2888278614497184977">Brave = une navigation sur le Web 3 fois plus rapide</translation>
@@ -792,7 +795,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1254969878422524947">Limite de contribution par Gas (Gwei)</translation>
 <translation id="7373308452149471621">Limite de prix par Gas (Gwei)</translation>
 <translation id="5891811606602061966">Échec de l'importation du compte, veuillez réessayer.</translation>
-<translation id="7033470144757208254">Brave utilise 0x comme agrégateur DEX.</translation>
+<translation id="1822506443689803572">Brave utilise 0x comme agrégateur DEX.</translation>
 <translation id="5061574358754621254">Données financières fournies par CoinGecko</translation>
 <translation id="4626407663177532837">L'estimation inclut des frais de 0,875 % facturés par Brave.</translation>
 <translation id="8574289650879708853">Ajouter un actif personnalisé</translation>
@@ -808,7 +811,6 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="3506416339268164412">L'adresse de réception est l'adresse d'un contrat de jeton.</translation>
 <translation id="1543259266592091784">Ajouter des fonds</translation>
 <translation id="3494964159182650590">Résumé des récompenses</translation>
-<translation id="7470079236088529568">Nombre total d'octrois de jetons réclamés</translation>
 <translation id="590733288489975971">Rewards d'Ads</translation>
 <translation id="207268487070188114">Pourboire unique</translation>
 <translation id="64394831139134288">Mon portefeuille</translation>
@@ -818,7 +820,45 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1549705559752367917">Envoyer le pourboire</translation>
 <translation id="6727102863431372879">Définir</translation>
 <translation id="381822214767083050">Contribution mensuelle</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="5802665280774361839">Afficher la saisie semi-automatique dans la barre d'adresse</translation>
+<translation id="1241283133946520352">Réseaux</translation>
+<translation id="1062463687579789365">Personnalisation des réseaux du portefeuille</translation>
+<translation id="2512821599885971349">Ajouter un réseau</translation>
+<translation id="1330032157352961756">Identifiant de la nouvelle chaîne</translation>
+<translation id="8104880458203052748">Format non valide : l'identifiant de la chaîne est un nombre positif</translation>
+<translation id="3423620355610881890">Un nombre décimal positif</translation>
+<translation id="726121047592132939">Nom de la nouvelle chaîne</translation>
+<translation id="1034112277864078119">Saisissez le nom de la chaîne</translation>
+<translation id="6003394258999088868">Le champ ne peut pas être vide</translation>
+<translation id="4672314527143443556">Nom de devise de la chaîne</translation>
+<translation id="4652114030688989556">Saisissez le nom de la devise</translation>
+<translation id="1079960017149736097">Symbole de devise de la chaîne</translation>
+<translation id="1288105009659846362">Saisissez le symbole de la devise</translation>
+<translation id="665660671251623018">Décimales de la devise de la chaîne</translation>
+<translation id="182619028057179895">Format non valide : les décimales de la devise sont un nombre positif</translation>
+<translation id="2978054488731497946">Saisissez les décimales de la devise</translation>
+<translation id="3047726704186619366">URL d'icône</translation>
+<translation id="2487558607408469181">URL de l'explorateur de bloc</translation>
+<translation id="7059127752542505809">Saisissez une URL</translation>
+<translation id="2156993118928861787">Adresse non valide</translation>
+<translation id="6889920539620318793">Définir comme actif</translation>
+<translation id="2653659639078652383">Envoyer</translation>
+<translation id="8853725596990766789">Modifier le montant</translation>
+<translation id="1765217911817124376">Activer Brave Actualités</translation>
+<translation id="4272190451231642425">Envoyer automatiquement les rapports d'erreur</translation>
+<translation id="2239766974964486304">Les rapports d'erreur aident Brave à améliorer la stabilité des produits pour tous les utilisateurs.</translation>
+<translation id="2804710924397009224">Masquer l'icône de récompenses de Brave</translation>
+<translation id="7289740269305509613">Masque l'icône de Brave Rewards</translation>
+<translation id="2260513517001048012">NOTE : Ce créateur vérifié Brave n'a pas encore configuré son compte pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'il soit configuré, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="8982246458261383692">Échangez des actifs crypto avec l'agrégateur de DEX de Brave.</translation>
+<translation id="5040262127954254034">Confidentialité</translation>
+<translation id="4354768722613827480">Frais : <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="7033470144757208254">Brave utilise 0x comme agrégateur DEX.</translation>
+<translation id="7470079236088529568">Nombre total d'octrois de jetons réclamés</translation>
+<translation id="8845154268466251503">BAT</translation>
 </translationbundle>

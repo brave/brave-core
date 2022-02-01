@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") er ikke tillatt hos Brave.</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
 <translation id="984275831282074731">Betalingsmåter</translation>
-<translation id="3699882589215410581">Installer og kjør Widevine</translation>
+<translation id="1990886731975529483">Installer og kjør Google Widevine</translation>
 <translation id="8926389886865778422">Ikke spør igjen</translation>
 <translation id="5249433283143453448">Bruk Widevine digital rights management (DRM)-komponentet for å se på beskyttet strømmevideo og annet innhold i nettleseren.</translation>
 <translation id="6241402707160226266">Privat vindu med Tor</translation>
 <translation id="8762452230727230396">Tor skjuler IP-adressen din for nettstedene du besøker.</translation>
 <translation id="1369311132025451972">Omdiriger .onion-nettsteder automatisk</translation>
 <translation id="2843777623071353503">Brave vil åpne onion-tjenesten på nettsiden når den er tilgjengelig eller .onion-domenet i Tor-vinduet.</translation>
-<translation id="8053096063396012732">Installer Widevine</translation>
-<translation id="4840334696217618631">Start nettleseren på nytt for å aktivere Widevine</translation>
-<translation id="8410111618231938546">Google Widevine er en bit Digital Rettighetsstyring (DRM)-kode som vi hos Brave Software ikke eier, og ikke kan inspisere. Google Widevine-koden lastes fra Googles servere, ikke fra våre servere. Den lastes kun når du slår på dette alternativet. Vi fraråder bruk av DRM, men vi respekterer brukerens valg, og anerkjenner at noen Brave-brukere ønsker å bruke tjenester som krever det.
-
-Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. Du samtykker til at Brave ikke er ansvarlig for noen skade eller tap i forbindelse med din bruk av Google Widevine.</translation>
+<translation id="4900351245762303149">Installer Google Widevine</translation>
+<translation id="2313383941300459392">Start nettleseren på nytt for å aktivere Google Widevine</translation>
+<translation id="2200626478572277092">Widevine kreves noen ganger for å spille av medier på enkelte nettsteder. Dette er en Google-utvidelse som lastes inn fra Google-servere, som Brave ikke kan inspisere. Hvis du installerer utvidelsen, samtykker du i Googles vilkår for bruk.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Finn ut mer om Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> ber deg om å</translation>
 <translation id="410351446219883937">Autospill</translation>
 <translation id="3218385319396786393">Autospill var blokkert på denne siden</translation>
 <translation id="4988333904713528597">Tillat alltid automatisk visning av <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="6583467242903731748">Spør når et nettsted vil få tilgang til Ethereum-leverandørens API</translation>
 <translation id="7017590444693657895">Blokker nettsteder fra å få tilgang til Ethereum-leverandørens API</translation>
 <translation id="8988939298652262600">Brave gjennomgår ikke utvidelser for å sjekke om de er sikre og trygge. Installer denne utvidelsen kun hvis du stoler på utvikleren.</translation>
+<translation id="933652931229970927">Send krasjrapporter automatisk</translation>
+<translation id="1679356339067548863">Bidra til å forbedre produktstabiliteten for Brave ved å automatisk sende diagnoserapporter hvis Brave-nettleseren krasjer eller slutter å fungere.</translation>
 <translation id="8081858229109418493">Profilnavn og -ikon</translation>
 <translation id="6438096877646138757">Sider som sletter informasjonskapsler når du lukker dem</translation>
 <translation id="2988792685798128092">Slett når du lukker siden</translation>
@@ -42,7 +46,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="1692470335103807198">Hent flere temaer</translation>
 <translation id="2906510232093002459">Standardbilder for Brave</translation>
 <translation id="2814998458708016836">Bruk vid adresselinje</translation>
-<translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
+<translation id="6333347122924254968">Vis Brave Rewards-ikonet i adresselinjen</translation>
 <translation id="1811404036171336214">Vis alltid bokmerker på den nye fanesiden</translation>
 <translation id="1643029991199044105">Bla gjennom de sist brukte fanene med Ctrl-Tab</translation>
 <translation id="1013121820689882118">Hurtigleser</translation>
@@ -76,7 +80,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5733490796524078528">Tipsknapper</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Ny fane-side</translation>
 <translation id="1988804048511540801">Ny faneside vises</translation>
 <translation id="2970343821770026391">Instrumentbord</translation>
@@ -89,12 +93,12 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8612763432858587652">Gå ut av privat vindu</translation>
 <translation id="8760415064721320867">Privat vindu med Tor</translation>
 <translation id="2055363275850890030">inkognitovindu</translation>
-<translation id="8934172355414207733">Privat med Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Dette er et privat vindu med Tor</translation>
 <translation id="1037341607922068025">Åpne privat vindu med Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Åpne i Tor</translation>
-<translation id="7643538479215207633">Åpne med IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publiser og hent filer fra IPFS</translation>
 <translation id="1672270084584211506">Onion-tilgjengelig</translation>
 <translation id="406832631167785034">Åpne med .onion-adresse</translation>
@@ -105,7 +109,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4227945450504703638">Valgt lydfil</translation>
 <translation id="7895302206188277628">Lenket innhold</translation>
 <translation id="3654831858282189202">Publiser med IPNS-nøkkel</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Importer valgt tekst til IPFS</translation>
 <translation id="6925604404524625582">Importer og kopier lenke til IPFS-øyeblikksbilde</translation>
 <translation id="1434416574322382019">Nytt privatvindu med Tor</translation>
@@ -238,8 +241,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="6358469157239228181">Dette navnet kan ikke brukes</translation>
 <translation id="5761731140570209168">Legg til ny peer-tilkoblingsstreng</translation>
 <translation id="2082206983920804886">Roter nøkkel</translation>
-<translation id="2521133093532260474">Kan ikke stoppe lokal node</translation>
-<translation id="86879877003581729">Kan ikke starte lokal node</translation>
+<translation id="5078501082919354191">Kunne ikke stoppe den lokale IPFS-noden for Brave</translation>
+<translation id="5687424953196903465">Kunne ikke starte den lokale IPFS-noden for Brave</translation>
 <translation id="6476061084931271248">Start noden på nytt for å aktivere endringene</translation>
 <translation id="3754226427671882382">Start noden på nytt</translation>
 <translation id="949667118776341807">Roter</translation>
@@ -254,17 +257,22 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="616058968889448209">IPFS-opplastingafeil. Du finner mer informasjon på <ph name="BEGIN_LINK"/>diagnosesiden<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>'-nøkkelimport mislyktes</translation>
 <translation id="3364053282600191535">Kunne ikke eksportere nøkkel '<ph name="KEY_NAME"/>'</translation>
-<translation id="8860039076160511438">Tilbakestill lommebok</translation>
+<translation id="4993345308607970390">Tilbakestill Brave-lommeboken</translation>
+<translation id="5975930666279943472">Slett lommeboktransaksjonen og nonce-informasjonen</translation>
+<translation id="5693968582510626466">Sletting av transaksjoner kan være nyttig for utviklere eller ved sletting av tilstanden på en lokal server</translation>
 <translation id="6369495274982305511">Er du sikker på at du vil tilbakestille lommeboken? Om lommeboken din ikke er sikkerhetskopiert, vil tilbakestilling føre til at du mister alle kontodata (inkludert eventuelle tilknyttede midler). Skriv "<ph name="CONFIRMATION_PHRASE"/>" for å bekrefte.</translation>
+<translation id="9216386092464743272">Er du sikker på at du vil tilbakestille all informasjon om transaksjoner og nonce fra lommeboken? Dette alternativet brukes som regel av utviklere som kjører på en lokal testserver. Skriv inn «<ph name="CONFIRMATION_PHRASE"/>» for å bekrefte.</translation>
+<translation id="3752403403443723332">Lommeboken er tilbakestilt.</translation>
+<translation id="594766067816395072">Transaksjonsinformasjonen i lommeboken er tilbakestilt.</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="3654980960391973513">Generer</translation>
 <translation id="5531501313997312487">Start noden</translation>
 <translation id="9170907049676078643">Metode for å løse IPFS-ressurser</translation>
 <translation id="1327977588028644528">Gateway</translation>
-<translation id="80225669816651290">Lokal node</translation>
+<translation id="1195880978080389104">Lokal IPFS-node for Brave</translation>
 <translation id="4927734062756955434">Offentlig IPFS-systemportadresse</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Les mer<ph name="END_LINK_MPL"/> om IPFS-personvernhensyn relatert til lokale noder og inngangsporter.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Finn ut mer<ph name="END_LINK_MPL"/> om den lokale IPFS-noden for Brave og personvernhensyn knyttet til gatewayer.</translation>
 <translation id="8425213833346101688">Endre</translation>
 <translation id="557281710253742286">Konfigurer IPFS-systemport</translation>
 <translation id="8571837315037233299">Systemportadresse</translation>
@@ -273,7 +281,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7703184801853248830">Ugyldig systemport-adresse</translation>
 <translation id="7690058578502751948">Bare gyldige IPFS-gatewayer med Origin-isolering aktivert kan brukes i Brave.</translation>
 <translation id="585868419599255817">Tilbakefall av offentlig IPFS-gateway</translation>
-<translation id="207763736230883589">Gå tilbake til offentlig IPFS-systemport dersom den lokale noden din er utilgjengelig.</translation>
+<translation id="2618080188892567155">Gå automatisk tilbake til den offentlige IPFS-systemporten dersom den lokale noden er utilgjengelig.</translation>
 <translation id="4107552920076294723">Omdiriger IPFS-ressurser til den konfigurerte IPFS-systemporten</translation>
 <translation id="6494857428933042381">Bruker automatisk den konfigurerte systemporten for IPFS-løsninger når en IPFS-systemportressurs oppdages.</translation>
 <translation id="8655170717758778983">Viderekoble automatisk til IPFS-sider via DNSLink når det er mulig</translation>
@@ -346,10 +354,9 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="780301667611848630">Nei takk</translation>
 <translation id="5039804452771397117">Tillat</translation>
 <translation id="7053983685419859001">Blokkér</translation>
-<translation id="7815301689257843278">Send krasjrapporter automatisk, slik at Brave kan forhindre at dette problemet oppstår igjen?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> ble uventet lukket.</translation>
 <translation id="1324417023773393937">Brave-nettleser</translation>
-<translation id="1068069727470515940">Du kan endre <ph name="SETTING_TEXT"/> igjen, når som helst.</translation>
+<translation id="7276554663454265692">Du kan endre <ph name="SETTING_TEXT"/> når som helst i nettleserinnstillingene.</translation>
 <translation id="6873781976650514089">denne innstillingen</translation>
 <translation id="6040143037577758943">Lukk</translation>
 <translation id="5600566490506283344">Varsel om Brave-reklame</translation>
@@ -446,10 +453,28 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="2487558607408469181">Blokker utforskernettadresser</translation>
 <translation id="6301398959353668507">Dette feltet kan ikke stå tomt.</translation>
 <translation id="7504462451153306677">Ugyldig format, kjede-ID er et positivt tall</translation>
-<translation id="8325036459845654666">Dette nettverket har allerede blitt lagt til.</translation>
 <translation id="650071759190249039">Intern feil, kan ikke legge til nettverk.</translation>
 <translation id="868529041590572443">Fyll inn all informasjon om innebygd valuta</translation>
 <translation id="1062463687579789365">Tilpasning av lommeboknettverk</translation>
 <translation id="2234108191702901162">Kunne ikke legge til nettverk</translation>
 <translation id="2618193846561624884">Vil du oppdatere det eksisterende nettverket?</translation>
+<translation id="3699882589215410581">Installer og kjør Widevine</translation>
+<translation id="8053096063396012732">Installer Widevine</translation>
+<translation id="4840334696217618631">Start nettleseren på nytt for å aktivere Widevine</translation>
+<translation id="8410111618231938546">Google Widevine er en bit Digital Rettighetsstyring (DRM)-kode som vi hos Brave Software ikke eier, og ikke kan inspisere. Google Widevine-koden lastes fra Googles servere, ikke fra våre servere. Den lastes kun når du slår på dette alternativet. Vi fraråder bruk av DRM, men vi respekterer brukerens valg, og anerkjenner at noen Brave-brukere ønsker å bruke tjenester som krever det.
+
+Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. Du samtykker til at Brave ikke er ansvarlig for noen skade eller tap i forbindelse med din bruk av Google Widevine.</translation>
+<translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privat med Tor</translation>
+<translation id="7643538479215207633">Åpne med IPFS</translation>
+<translation id="2521133093532260474">Kan ikke stoppe lokal node</translation>
+<translation id="86879877003581729">Kan ikke starte lokal node</translation>
+<translation id="8860039076160511438">Tilbakestill lommebok</translation>
+<translation id="80225669816651290">Lokal node</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Les mer<ph name="END_LINK_MPL"/> om IPFS-personvernhensyn relatert til lokale noder og inngangsporter.</translation>
+<translation id="207763736230883589">Gå tilbake til offentlig IPFS-systemport dersom den lokale noden din er utilgjengelig.</translation>
+<translation id="7815301689257843278">Send krasjrapporter automatisk, slik at Brave kan forhindre at dette problemet oppstår igjen?</translation>
+<translation id="1068069727470515940">Du kan endre <ph name="SETTING_TEXT"/> igjen, når som helst.</translation>
+<translation id="8325036459845654666">Dette nettverket har allerede blitt lagt til.</translation>
 </translationbundle>

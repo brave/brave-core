@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ವಿಸ್ತರಣೆ ID "<ph name="EXTENSION_ID"/>") , ಇದು Brave ನಲ್ಲಿ ಅನುಮತಿಸಲಾಗಿಲ್ಲ.</translation>
 <translation id="6786747875388722282">ವಿಸ್ತರಣೆಗಳು</translation>
 <translation id="984275831282074731">ಪಾವತಿ ವಿಧಾನಗಳು</translation>
-<translation id="3699882589215410581">Widevine ಸ್ಥಾಪಿಸಿ ಮತ್ತು ರನ್ ಮಾಡಿ</translation>
+<translation id="1990886731975529483">Google Widevine ಸ್ಥಾಪಿಸಿ ಮತ್ತು ರನ್ ಮಾಡಿ</translation>
 <translation id="8926389886865778422">ಮತ್ತೆ ಕೇಳಬೇಡಿ</translation>
 <translation id="5249433283143453448">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ರಕ್ಷಿಸಲಾದ ಸ್ಟ್ರೀಮಿಂಗ್ ವೀಡಿಯೊ ಮತ್ತು ಇತರ ವಿಷಯವನ್ನು ವೀಕ್ಷಿಸಲು Widevine ಡಿಜಿಟಲ್ ಹಕ್ಕುಗಳ ನಿರ್ವಹಣೆ (DRM) ಅಂಶವನ್ನು ಬಳಸಿ</translation>
 <translation id="6241402707160226266">Tor ಜೊತೆಗೆ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="8762452230727230396">ನೀವು ಭೇಟಿ ನೀಡುವ ಸೈಟ್ಗಳಿಂದ ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು Tor ಮರೆಮಾಡುತ್ತದೆ.</translation>
 <translation id="1369311132025451972">.onion ಸೈಟ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುನಿರ್ದೇಶಿಸಿ</translation>
 <translation id="2843777623071353503">ಲಭ್ಯವಿದ್ದಾಗ ವೆಬ್‌ಸೈಟ್‌ನ onion ಸೇವೆಯನ್ನು ಅಥವಾ Tor ವಿಂಡೋದಲ್ಲಿ .onion ಡೊಮೇನ್ ಅನ್ನು Brave ತೆರೆಯುತ್ತದೆ.</translation>
-<translation id="8053096063396012732">Widevine ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
-<translation id="4840334696217618631">Widevine ಸಕ್ರಿಯಗೊಳಿಸಲು ಬ್ರೌಸರ್ ರಿಸ್ಟಾರ್ಟ್ ಮಾಡಿ</translation>
-<translation id="8410111618231938546">Google Widevine ಎಂಬುದು ಡಿಜಿಟಲ್ ರೈಟ್ಸ್ ಮ್ಯಾನೇಜ್‌ಮೆಂಟ್ (DRM) ಕೋಡ್‌ನ ಭಾಗವಾಗಿದ್ದು, ನಾವು ಅಂದರೆ Brave ಅದರ ಮಾಲೀಕತ್ವವನ್ನು ಹೊಂದಿರುವುದಿಲ್ಲ ಮತ್ತು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. Google Widevine ಕೋಡ್ ಅನ್ನು Google ಸರ್ವರ್‌ಗಳಿಂದ ಲೋಡ್ ಮಾಡಲಾಗಿರುತ್ತದೆಯೇ ಹೊರತು, ನಮ್ಮ ಸರ್ವರ್‌ಗಳಿಂದಲ್ಲ. ನೀವು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ ಮಾತ್ರವೇ ಇದನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತದೆ. ನಾವು DRM ಬಳಕೆಯನ್ನು ಪ್ರೋತ್ಸಾಹಿಸುವುದಿಲ್ಲವಾದರೂ, ಬಳಕೆದಾರರ ಆಯ್ಕೆಯನ್ನು ನಾವು ಗೌರವಿಸುತ್ತೇವೆ ಹಾಗೆಯೇ ಕೆಲವು Brave ಬಳಕೆದಾರರು ಇದರ ಅಗತ್ಯವಿರುವ ಸೇವೆಗಳನ್ನು ಬಳಸಲು ಬಯಸುತ್ತಾರೆ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೇವೆ.
-
-ಈ ವಿಸ್ತರಣೆಯನ್ನು ಸ್ಥಾಪಿಸುವ ಮೂಲಕ, ನೀವು Google Widevine ಬಳಕೆಯ ನಿಯಮಗಳಿಗೆ ಒಪ್ಪಿಗೆ ಸೂಚಿಸುತ್ತಿದ್ದೀರಿ. ನಿಮ್ಮ Google Widevine ಬಳಕೆಗೆ ಸಂಬಂಧಿಸಿದಂತೆ ಉಂಟಾಗುವ ಯಾವುದೇ ಹಾನಿಗಳು ಅಥವಾ ನಷ್ಟಗಳಿಗೆ Brave ಜವಾಬ್ದಾರರಲ್ಲ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೀರಿ.</translation>
+<translation id="4900351245762303149">Google Widevine ಸ್ಥಾಪಿಸಿ</translation>
+<translation id="2313383941300459392">Google Widevine ಸಕ್ರಿಯಗೊಳಿಸಲು ಬ್ರೌಸರ್ ರಿಸ್ಟಾರ್ಟ್ ಮಾಡಿ</translation>
+<translation id="2200626478572277092">ವೆಬ್‌ಪುಟದಲ್ಲಿ ಮೀಡಿಯಾ ಪ್ಲೇ ಮಾಡುವುದಕ್ಕಾಗಿ ಕೆಲವೊಮ್ಮೆ Widevine ಅಗತ್ಯವಿರುತ್ತದೆ. ಇದು Google ಸರ್ವರ್‌ಗಳಿಂದ ಲೋಡ್ ಮಾಡಲಾದ Google ವಿಸ್ತರಣೆಯಾಗಿದ್ದು, ಅದನ್ನು Brave ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. ಸ್ಥಾಪಿಸುವ ಮೂಲಕ, ನೀವು Google ನ ಸೇವಾ ನಿಯಮಗಳಿಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+ಅಥವಾ <ph name="SETTINGS_EXTENIONS_LINK"/> ನಲ್ಲಿ ನಂತರದಲ್ಲಿ ಬದಲಾಯಿಸಿ.</translation>
+<translation id="6229752134959014186">Widevine ಕುರಿತು ಹೆಚ್ಚು ತಿಳಿಯಿರಿ</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> ನಿಮಗೆ ಹೀಗೆ ಮಾಡಲು ಕೇಳುತ್ತಿದೆ</translation>
 <translation id="410351446219883937">ಸ್ವಯಂಪ್ಲೇ</translation>
 <translation id="3218385319396786393">ಈ ಪುಟದಲ್ಲಿ ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> ನಲ್ಲಿ ಯಾವಾಗಲೂ ಸ್ವಯಂಪ್ಲೇ ಅನುಮತಿಸಿ</translation>
@@ -35,6 +37,8 @@
 <translation id="6583467242903731748">ಎಥೇರಿಯಮ್ ಒದಗಿಸುವವರ API ಪ್ರವೇಶಿಸಲು ಸೈಟ್ ಬಯಸುವ ಸಮಯದಲ್ಲಿ ಕೇಳಿ</translation>
 <translation id="7017590444693657895">ಎಥೇರಿಯಮ್ ಒದಗಿಸುವವರ API ಪ್ರವೇಶಿಸದಂತೆ ಸೈಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="8988939298652262600">ಸುರಕ್ಷತೆ ಹಾಗೂ ರಕ್ಷಣೆಗಾಗಿ ವಿಸ್ತರಣೆಗಳನ್ನು Brave ಪರಿಶೀಲಿಸುವುದಿಲ್ಲ. ನೀವು ಡೆವಲಪರ್ ಮೇಲೆ ನಂಬಿಕೆ ಹೊಂದಿದ್ದಲ್ಲಿ ಮಾತ್ರ ಈ ವಿಸ್ತರಣೆಯನ್ನು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ.</translation>
+<translation id="933652931229970927">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸಿ</translation>
+<translation id="1679356339067548863">Brave ಬ್ರೌಸರ್ ಕ್ರ್ಯಾಶ್ ಆದಾಗ ಅಥವಾ ಫ್ರೀಜ್ ಆದಾಗ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸುವ ಮೂಲಕ Brave ನ ಉತ್ಪನ್ನ ಸ್ಥಿರತೆಯನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ.</translation>
 <translation id="8081858229109418493">ಪ್ರೊಫೈಲ್ ಹೆಸರು ಮತ್ತು ಐಕಾನ್</translation>
 <translation id="6438096877646138757">ನೀವು ಅವುಗಳನ್ನು ಮುಚ್ಚಿದಾಗ ಕುಕೀಗಳನ್ನು ಕ್ಲಿಯರ್ ಮಾಡುವ ಸೈಟ್‌ಗಳು</translation>
 <translation id="2988792685798128092">ಸೈಟ್ ಮುಚ್ಚಿದಾಗ ಕ್ಲಿಯರ್ ಮಾಡಿ</translation>
@@ -42,7 +46,7 @@
 <translation id="1692470335103807198">ಹೆಚ್ಚು ಥೀಮ್‌ಗಳನ್ನು ಪಡೆಯಿರಿ</translation>
 <translation id="2906510232093002459">Brave ಡೀಫಾಲ್ಟ್ ಚಿತ್ರಗಳು</translation>
 <translation id="2814998458708016836">ವೈಡ್ ಅಡ್ರೆಸ್ ಬಾರ್ ಬಳಸಿ</translation>
-<translation id="6123134130710658846">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಬಟನ್ ಮರೆ ಮಾಡಿ</translation>
+<translation id="6333347122924254968">ವಿಳಾಸ ಪಟ್ಟಿಯಲ್ಲಿ Brave ಪುರಸ್ಕಾರಗಳ ಐಕಾನ್ ತೋರಿಸಿ</translation>
 <translation id="1811404036171336214">ಯಾವಾಗಲೂ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಬಾರ್ ಅನ್ನು ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದಲ್ಲಿ ತೋರಿಸಿ</translation>
 <translation id="1643029991199044105">Ctrl-Tab ಮೂಲಕ ಹೆಚ್ಚು ಇತ್ತೀಚಿಗೆ ಬಳಸಲಾದ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಆವರ್ತನಗೊಳಿಸಿ</translation>
 <translation id="1013121820689882118">ಸ್ಪೀಡ್‌ರೀಡರ್</translation>
@@ -76,7 +80,7 @@
 <translation id="5733490796524078528">ಸಲಹೆ ಬಟನ್‌ಗಳು</translation>
 <translation id="3905400818082450708">ರೆಡ್ಡಿಟ್</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟ</translation>
 <translation id="1988804048511540801">ಹೊಸ ಟ್ಯಾಬ್ ಪುಟ ತೋರಿಸುತ್ತದೆ</translation>
 <translation id="2970343821770026391">ಡ್ಯಾಶ್‌ಬೋರ್ಡ್</translation>
@@ -89,12 +93,12 @@
 <translation id="8612763432858587652">ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
 <translation id="8760415064721320867">Tor ಜೊತೆಗೆ ಖಾಸಗಿ ವಿಂಡೋ</translation>
 <translation id="2055363275850890030">ಖಾಸಗಿ ವಿಂಡೋ</translation>
-<translation id="8934172355414207733">Tor ನೊಂದಿಗೆ ಖಾಸಗಿ ವಿಂಡೋ</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">ಇದು Tor ನೊಂದಿಗಿನ ಖಾಸಗಿ ವಿಂಡೋ ಆಗಿದೆ</translation>
 <translation id="1037341607922068025">Tor ನೊಂದಿಗೆ ಖಾಸಗಿ ವಿಂಡೊ ತೆರೆಯಿರಿ</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Tor ತೆರೆಯಿರಿ</translation>
-<translation id="7643538479215207633">IPFS ಬಳಸಿ ತೆರೆಯಿರಿ</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">IPFS ನಿಂದ ಫೈಲ್‌ಗಳನ್ನು ಪ್ರಕಟಿಸಿ ಅಥವಾ ಪಡೆಯಿರಿ</translation>
 <translation id="1672270084584211506">Onion ಲಭ್ಯವಿದೆ</translation>
 <translation id="406832631167785034">.onion ವಿಳಾಸ ಬಳಸಿಕೊಂಡು ತೆರೆಯಿರಿ</translation>
@@ -105,7 +109,6 @@
 <translation id="4227945450504703638">ಆಯ್ಕೆಮಾಡಲಾದ ಆಡಿಯೋ</translation>
 <translation id="7895302206188277628">ಲಿಂಕ್ ಮಾಡಲಾದ ವಿಷಯ</translation>
 <translation id="3654831858282189202">IPNS ಕೀ ಮೂಲಕ ಪ್ರಕಟಿಸಿ</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">ಆಯ್ಕೆಮಾಡಲಾದ ಪಠ್ಯವನ್ನು IPFS ಗೆ ಆಮದು ಮಾಡಿ</translation>
 <translation id="6925604404524625582">ಆಮದು ಮಾಡಿ ಮತ್ತು ಲಿಂಕ್ ಅನ್ನು IPFS ಸ್ನ್ಯಾಪ್‌ಶಾಟ್‌ಗೆ ನಕಲಿಸಿ</translation>
 <translation id="1434416574322382019">Tor ಜೊತೆಗೆ ಹೊಸ ಖಾಸಗಿ ವಿಂಡೋ</translation>
@@ -238,8 +241,8 @@
 <translation id="6358469157239228181">ಈ ಹೆಸರನ್ನು ಬಳಸಲಾಗುವುದಿಲ್ಲ</translation>
 <translation id="5761731140570209168">ಹೊಸ ಪೀರ್ ಕನೆಕ್ಷನ್ ಸ್ಟ್ರಿಂಗ್ ಸೇರಿಸಿ</translation>
 <translation id="2082206983920804886">ತಿರುಗಿಸುವಿಕೆ ಕೀ</translation>
-<translation id="2521133093532260474">ಸ್ಥಳೀಯ ನೋಡ್ ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
-<translation id="86879877003581729">ಸ್ಥಳೀಯ ನೋಡ್ ಆರಂಭಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="5078501082919354191">Brave ಸ್ಥಳೀಯ IPFS ನೋಡ್ ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="5687424953196903465">Brave ಸ್ಥಳೀಯ IPFS ನೋಡ್ ಆರಂಭಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
 <translation id="6476061084931271248">ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಲು ನೋಡ್ ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="3754226427671882382">ನೋಡ್ ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="949667118776341807">ತಿರುಗಿಸಿ</translation>
@@ -254,17 +257,22 @@
 <translation id="616058968889448209">IPFS ಸೇವೆ ಆರಂಭಿಸುವಿಕೆ ದೋಷ, ಹೆಚ್ಚಿನ ಮಾಹಿತಿ <ph name="BEGIN_LINK"/>ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ಪುಟ<ph name="END_LINK"/>ದಲ್ಲಿ ಲಭ್ಯವಿದೆ</translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' ಕೀ ಆಮದು ವಿಫಲಗೊಂಡಿದೆ</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' ಕೀ ರಫ್ತು ವಿಫಲಗೊಂಡಿದೆ</translation>
-<translation id="8860039076160511438">ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಿ</translation>
+<translation id="4993345308607970390">Brave ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಿ</translation>
+<translation id="5975930666279943472">ವ್ಯಾಲೆಟ್ ವಹಿವಾಟು ಮತ್ತು ನೋನ್ಸ್ ಮಾಹಿತಿಯನ್ನು ತೆರವು ಮಾಡಿ</translation>
+<translation id="5693968582510626466">ವಹಿವಾಟುಗಳನ್ನು ತೆರವುಗೊಳಿಸುವುದು ಡೆವಲಪರ್‌ಗಳಿಗೆ ಅಥವಾ ಸ್ಥಳೀಯ ಸರ್ವರ್‌ನಲ್ಲಿ ಸ್ಥಿತಿಯನ್ನು ತೆರವುಗೊಳಿಸುವಾಗ ಉಪಯುಕ್ತವಾಗಿರಬಹುದು</translation>
 <translation id="6369495274982305511">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡದೇ ಇದ್ದರೆ, ಮರುಹೊಂದಿಸುವುದರಿಂದ ನೀವು ಎಲ್ಲಾ ಖಾತೆ ಡೇಟಾ ಕಳೆದುಕೊಳ್ಳುವುದಕ್ಕೆ ಕಾರಣವಾಗುತ್ತದೆ (ಯಾವುದೇ ಸಂಬಂಧಿಸಿದ ಫಂಡ್‌ಗಳನ್ನು ಒಳಗೊಂಡಂತೆ). ದೃಢಪಡಿಸಲು "<ph name="CONFIRMATION_PHRASE"/>" ಟೈಪ್ ಮಾಡಿ.</translation>
+<translation id="9216386092464743272">ನಿಮ್ಮ ಎಲ್ಲಾ ವ್ಯಾಲೆಟ್ ವಹಿವಾಟನ್ನು ಮತ್ತು ನೋನ್ಸ್ ಮಾಹಿತಿಯನ್ನು ಮರುಹೊಂದಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ? ಈ ಆಯ್ಕೆಯನ್ನು ಬಹುಪಾಲು ಸ್ಥಳೀಯ ಟೆಸ್ಟ್ ಸರ್ವರ್ ಅನ್ನು ರನ್ ಮಾಡುತ್ತಿರುವ ಡೆವಲಪರ್‌ಗಳು ಬಳಸುತ್ತಾರೆ. ದೃಢಪಡಿಸಲು "<ph name="CONFIRMATION_PHRASE"/>" ಅನ್ನು ಟೈಪ್ ಮಾಡಿ.</translation>
+<translation id="3752403403443723332">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಲಾಗಿದೆ.</translation>
+<translation id="594766067816395072">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ವಹಿವಾಟು ಮಾಹಿತಿಯನ್ನು ಮರುಹೊಂದಿಸಲಾಗಿದೆ.</translation>
 <translation id="1426410128494586442">ಹೌದು</translation>
 <translation id="8275038454117074363">ಆಮದು</translation>
 <translation id="3654980960391973513">ಜನರೇಟ್ ಮಾಡಿ</translation>
 <translation id="5531501313997312487">ನೋಡ್ ಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="9170907049676078643">IPFS ಸಂಪನ್ಮೂಲಗಳನ್ನು ಪರಿಹರಿಸುವ ವಿಧಾನ</translation>
 <translation id="1327977588028644528">ಗೇಟ್‌ವೇ</translation>
-<translation id="80225669816651290">ಸ್ಥಳೀಯ ನೋಡ್</translation>
+<translation id="1195880978080389104">Brave ಸ್ಥಳೀಯ IPFS ನೋಡ್</translation>
 <translation id="4927734062756955434">IPFS ಸಾರ್ವಜನಿಕ ಗೇಟ್‌ವೇ ವಿಳಾಸ</translation>
-<translation id="3399481770463167943">IPFS ಸ್ಥಳೀಯ ನೋಡ್ ಮತ್ತು ಗೇಟ್‌ವೇ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳ ಕುರಿತು <ph name="BEGIN_LINK_MPL"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK_MPL"/>.</translation>
+<translation id="2178402446227616866">Brave ಸ್ಥಳೀಯ IPFS ನೋಡ್ ಮತ್ತು ಗೇಟ್‌ವೇ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳ ಕುರಿತು <ph name="BEGIN_LINK_MPL"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK_MPL"/>.</translation>
 <translation id="8425213833346101688">ಬದಲಿಸಿ</translation>
 <translation id="557281710253742286">IPFS ಗೇಟ್‌ವೇ ಹೊಂದಿಸಿ</translation>
 <translation id="8571837315037233299">ಗೇಟ್‌ವೇ ವಿಳಾಸ</translation>
@@ -273,7 +281,7 @@
 <translation id="7703184801853248830">ಅಮಾನ್ಯ ಗೇಟ್‌ವೇ ವಿಳಾಸ</translation>
 <translation id="7690058578502751948">ಮೂಲ ಐಸೋಲೇಶನ್ ಸಕ್ರಿಯಗೊಳಿಸಿದ ಮಾನ್ಯ IPFS ಗೇಟ್‌ವೇ ಅನ್ನು ಮಾತ್ರ Brave ನಲ್ಲಿ ಬಳಸಬಹುದು</translation>
 <translation id="585868419599255817">IPFS ಸಾರ್ವಜನಿಕ ಗೇಟ್‌ವೇ ಫಾಲ್‌ಬ್ಯಾಕ್</translation>
-<translation id="207763736230883589">ನಿಮ್ಮ ಸ್ಥಳೀಯ ನೋಡ್ ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಾಗದೇ ಇದ್ದರೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸಾರ್ವಜನಿಕ IPFS ಗೇಟ್‌ವೇ‌ಗೆ ಫಾಲ್‌ ಬ್ಯಾಕ್ ಮಾಡಿ.</translation>
+<translation id="2618080188892567155">ನಿಮ್ಮ Brave ಸ್ಥಳೀಯ IPFS ನೋಡ್ ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಾಗದೇ ಇದ್ದರೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸಾರ್ವಜನಿಕ IPFS ಗೇಟ್‌ವೇ‌ಗೆ ಫಾಲ್‌ ಬ್ಯಾಕ್ ಮಾಡಿ.</translation>
 <translation id="4107552920076294723">ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾದ IPFS ಗೇಟ್‌ವೇಗೆ IPFS ಸಂಪನ್ಮೂಲಗಳನ್ನು ಮರುನಿರ್ದೇಶಿಸಿ</translation>
 <translation id="6494857428933042381">IPFS ಗೇಟ್‌ವೇ ಸಂಪನ್ಮೂಲವು ಸಂಭವಿಸಿದಾಗ IPFS ಗಾಗಿ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾದ ಗೇಟ್‌ವೇ ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬಳಸುತ್ತದೆ.</translation>
 <translation id="8655170717758778983">ಸಾಧ್ಯವಿರುವಾಗ, DNS ಲಿಂಕ್ ಮೂಲಕ IPFS ಪುಟಗಳಿಗೆ ಸ್ವಯಂಚಾಲಿತ ಮರುನಿರ್ದೇಶನ</translation>
@@ -346,10 +354,9 @@
 <translation id="780301667611848630">ಬೇಡ, ಧನ್ಯವಾದಗಳು</translation>
 <translation id="5039804452771397117">ಅನುಮತಿಸಿ</translation>
 <translation id="7053983685419859001">ನಿರ್ಬಂಧಿಸು</translation>
-<translation id="7815301689257843278">ಈ ಸಮಸ್ಯೆ ಮತ್ತೊಮ್ಮೆ ಸಂಬಂಧಿಸುವುದನ್ನು Brave ತಡೆಗಟ್ಟಲಾಗುವಂತೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕ್ರ್ಯಾಶ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸುವುದೇ?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> ಅನಿರೀಕ್ಷಿತವಾಗಿ ನಿರ್ಗಮಿಸಿದೆ.</translation>
 <translation id="1324417023773393937">Brave ಬ್ರೌಸರ್</translation>
-<translation id="1068069727470515940">ನೀವು ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ <ph name="SETTING_TEXT"/> ಅನ್ನು ಬದಲಾಯಿಸಬಹುದು.</translation>
+<translation id="7276554663454265692">ಬ್ರೌಸರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಯಾವುದೇ ಸಮಯದಲ್ಲಿ <ph name="SETTING_TEXT"/> ನೀವು ಬದಲಾಯಿಸಬಹುದು.</translation>
 <translation id="6873781976650514089">ಈ ಸೆಟ್ಟಿಂಗ್</translation>
 <translation id="6040143037577758943">ಮುಚ್ಚಿರಿ</translation>
 <translation id="5600566490506283344">Brave ಜಾಹೀರಾತು ಅಧಿಸೂಚನೆ</translation>
@@ -446,10 +453,28 @@
 <translation id="2487558607408469181">ಎಕ್ಸ್‌ಪ್ಲೋರರ್ URLಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="6301398959353668507">ಈ ಕ್ಷೇತ್ರವು ಖಾಲಿಯಾಗಿರುವಂತಿಲ್ಲ.</translation>
 <translation id="7504462451153306677">ಅಮಾನ್ಯ ಫಾರ್ಮ್ಯಾಟ್, ಚೈನ್ ಐಡಿಯು ಧನಾತ್ಮಕ ಸಂಖ್ಯೆಯಾಗಿದೆ</translation>
-<translation id="8325036459845654666">ಈ ನೆಟ್‌ವರ್ಕ್ ಅನ್ನು ಈಗಾಗಲೇ ಸೇರಿಸಲಾಗಿದೆ.</translation>
 <translation id="650071759190249039">ಆಂತರಿಕ ದೋಷ, ನೆಟ್‌ವರ್ಕ್ ಸೇರಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
 <translation id="868529041590572443">ಮೂಲ ಕರೆನ್ಸಿ ಕುರಿತು ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಮಾಹಿತಿಯನ್ನು ಭರ್ತಿ ಮಾಡಿ</translation>
 <translation id="1062463687579789365">ವ್ಯಾಲೆಟ್ ನೆಟ್‌ವರ್ಕ್‌ಗಳ ಕಸ್ಟಮೈಸೇಶನ್</translation>
 <translation id="2234108191702901162">ನೆಟ್‌ವರ್ಕ್‌ ಸೇರಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
 <translation id="2618193846561624884">ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ನೆಟ್‌ವರ್ಕ್ ಅಪ್‌ಡೇಟ್ ಮಾಡಲು ಬಯಸುವಿರಾ?</translation>
+<translation id="3699882589215410581">Widevine ಸ್ಥಾಪಿಸಿ ಮತ್ತು ರನ್ ಮಾಡಿ</translation>
+<translation id="8053096063396012732">Widevine ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
+<translation id="4840334696217618631">Widevine ಸಕ್ರಿಯಗೊಳಿಸಲು ಬ್ರೌಸರ್ ರಿಸ್ಟಾರ್ಟ್ ಮಾಡಿ</translation>
+<translation id="8410111618231938546">Google Widevine ಎಂಬುದು ಡಿಜಿಟಲ್ ರೈಟ್ಸ್ ಮ್ಯಾನೇಜ್‌ಮೆಂಟ್ (DRM) ಕೋಡ್‌ನ ಭಾಗವಾಗಿದ್ದು, ನಾವು ಅಂದರೆ Brave ಅದರ ಮಾಲೀಕತ್ವವನ್ನು ಹೊಂದಿರುವುದಿಲ್ಲ ಮತ್ತು ಪರಿಶೀಲಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. Google Widevine ಕೋಡ್ ಅನ್ನು Google ಸರ್ವರ್‌ಗಳಿಂದ ಲೋಡ್ ಮಾಡಲಾಗಿರುತ್ತದೆಯೇ ಹೊರತು, ನಮ್ಮ ಸರ್ವರ್‌ಗಳಿಂದಲ್ಲ. ನೀವು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ ಮಾತ್ರವೇ ಇದನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತದೆ. ನಾವು DRM ಬಳಕೆಯನ್ನು ಪ್ರೋತ್ಸಾಹಿಸುವುದಿಲ್ಲವಾದರೂ, ಬಳಕೆದಾರರ ಆಯ್ಕೆಯನ್ನು ನಾವು ಗೌರವಿಸುತ್ತೇವೆ ಹಾಗೆಯೇ ಕೆಲವು Brave ಬಳಕೆದಾರರು ಇದರ ಅಗತ್ಯವಿರುವ ಸೇವೆಗಳನ್ನು ಬಳಸಲು ಬಯಸುತ್ತಾರೆ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೇವೆ.
+
+ಈ ವಿಸ್ತರಣೆಯನ್ನು ಸ್ಥಾಪಿಸುವ ಮೂಲಕ, ನೀವು Google Widevine ಬಳಕೆಯ ನಿಯಮಗಳಿಗೆ ಒಪ್ಪಿಗೆ ಸೂಚಿಸುತ್ತಿದ್ದೀರಿ. ನಿಮ್ಮ Google Widevine ಬಳಕೆಗೆ ಸಂಬಂಧಿಸಿದಂತೆ ಉಂಟಾಗುವ ಯಾವುದೇ ಹಾನಿಗಳು ಅಥವಾ ನಷ್ಟಗಳಿಗೆ Brave ಜವಾಬ್ದಾರರಲ್ಲ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೀರಿ.</translation>
+<translation id="6123134130710658846">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಬಟನ್ ಮರೆ ಮಾಡಿ</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Tor ನೊಂದಿಗೆ ಖಾಸಗಿ ವಿಂಡೋ</translation>
+<translation id="7643538479215207633">IPFS ಬಳಸಿ ತೆರೆಯಿರಿ</translation>
+<translation id="2521133093532260474">ಸ್ಥಳೀಯ ನೋಡ್ ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="86879877003581729">ಸ್ಥಳೀಯ ನೋಡ್ ಆರಂಭಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="8860039076160511438">ವ್ಯಾಲೆಟ್ ಮರುಹೊಂದಿಸಿ</translation>
+<translation id="80225669816651290">ಸ್ಥಳೀಯ ನೋಡ್</translation>
+<translation id="3399481770463167943">IPFS ಸ್ಥಳೀಯ ನೋಡ್ ಮತ್ತು ಗೇಟ್‌ವೇ ಗೌಪ್ಯತೆ ಪರಿಗಣನೆಗಳ ಕುರಿತು <ph name="BEGIN_LINK_MPL"/>ಹೆಚ್ಚು ತಿಳಿಯಿರಿ<ph name="END_LINK_MPL"/>.</translation>
+<translation id="207763736230883589">ನಿಮ್ಮ ಸ್ಥಳೀಯ ನೋಡ್ ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಾಗದೇ ಇದ್ದರೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸಾರ್ವಜನಿಕ IPFS ಗೇಟ್‌ವೇ‌ಗೆ ಫಾಲ್‌ ಬ್ಯಾಕ್ ಮಾಡಿ.</translation>
+<translation id="7815301689257843278">ಈ ಸಮಸ್ಯೆ ಮತ್ತೊಮ್ಮೆ ಸಂಬಂಧಿಸುವುದನ್ನು Brave ತಡೆಗಟ್ಟಲಾಗುವಂತೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕ್ರ್ಯಾಶ್ ವರದಿಗಳನ್ನು ಕಳುಹಿಸುವುದೇ?</translation>
+<translation id="1068069727470515940">ನೀವು ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ <ph name="SETTING_TEXT"/> ಅನ್ನು ಬದಲಾಯಿಸಬಹುದು.</translation>
+<translation id="8325036459845654666">ಈ ನೆಟ್‌ವರ್ಕ್ ಅನ್ನು ಈಗಾಗಲೇ ಸೇರಿಸಲಾಗಿದೆ.</translation>
 </translationbundle>

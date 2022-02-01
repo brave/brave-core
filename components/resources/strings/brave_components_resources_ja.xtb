@@ -199,7 +199,7 @@
 <translation id="2846354907189538">次の支援支払日</translation>
 <translation id="1397381065858030856">閲覧したサイト</translation>
 <translation id="2365740070488517695">チップ</translation>
-<translation id="4803566747788858771">Rewardsパネルを使って閲覧する、またはTwitter、Reddit、GitHubといったさまざまなサイト上に埋め込まれている投げ銭ボタンを使うことで、コンテンツ制作者に直接投げ銭を行いましょう。</translation>
+<translation id="5993195614988368256">Rewardsパネルを使って閲覧する、またはTwitter、Reddit、GitHubといったさまざまなサイト上に埋め込まれている投げ銭ボタンを使うことで、コンテンツ制作者に直接投げ銭を行いましょう。</translation>
 <translation id="5012991400231464322">毎月の支援額</translation>
 <translation id="2084351799622920487">サイトを継続して支援するために、毎月支援を行うように設定します。</translation>
 <translation id="8150772404570015166">毎月の支援額が設定されていません。</translation>
@@ -258,6 +258,8 @@
 <translation id="9074594632540931067">エラー: BATの利用不可</translation>
 <translation id="413458922997276130">現在、Upholdのアカウントがブロックされています。</translation>
 <translation id="3579959767665130790">エラー: ブロックされたアカウント</translation>
+<translation id="6554308597291659562">Upholdが、Upholdのアカウント機能を完全に有効にする前にお客様についての情報収集を要求しています。Upholdアカウントで情報を送信してからもう一度お試しください。</translation>
+<translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
 <translation id="819370426249314592">Upholdのアカウントが保留中です。</translation>
 <translation id="4530453398914580957">エラー: アカウントの保留</translation>
 <translation id="2388470740942086608">現在、Upholdのアカウントが制限されています。</translation>
@@ -265,8 +267,6 @@
 <translation id="7147519373526655987">Brave Rewardsウォレットをお使いの<ph name="PROVIDER"/>アカウントに接続するためのブラウザリクエストの検証中に問題が発生しました。<ph name="BEGIN_LINK"/>サポートに連絡<ph name="END_LINK"/>してヘルプを依頼してください。</translation>
 <translation id="1316066811927496401">エラー: リクエストを検証できませんでした</translation>
 <translation id="1737873393693460829">[[title]]をオンにすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
-<translation id="901298512318791028"><ph name="AMOUNT"/> が <ph name="DAYS"/> 後以降に順次送付されます。</translation>
-<translation id="419485819988779505"><ph name="BOLD_BEGIN"/>注 <ph name="BOLD_END"/>支払いが処理され、BAT が到着するまでに数日かかる場合があります。</translation>
 <translation id="4672975606583962967">ウォレットサービスを選択</translation>
 <translation id="1815503044492647974">ウォレット管理パートナーを選択します。すでにアカウントをお持ちの場合、ログインして接続するよう求められます。</translation>
 <translation id="2205685774710519016">注: 認証すると、取引は選択したウォレットサービスに公開されます（たとえば、チップの受信者と金額が表示されます）。</translation>
@@ -595,7 +595,7 @@
 <translation id="3699674790322420653">ウォレットの認証を完了</translation>
 <translation id="9200453331904391567">Brave Rewardとの接続を解除する</translation>
 <translation id="3656941797339037856">RewardsをGeminiにリンク!</translation>
-<translation id="3066983737886188034">Geminiでは、BATを簡単に取引、保管し、利息を獲得できます。今すぐBrave RewardsウォレットをGeminiで認証して接続しましょう！</translation>
+<translation id="31532096120351460">GeminiでBATを含む50以上の暗号資産を取引しましょう。安全なプラットフォーム上でお手持ちの仮想通貨を保管できます。さらに、米国、香港、シンガポールの取引で利息を得ることができます。</translation>
 <translation id="7404779623219601861">BATをギフトカードと交換する</translation>
 <translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
 <translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>
@@ -735,15 +735,15 @@
 <translation id="72868071984333667">IPFSとプライバシーについて詳しくは知る</translation>
 <translation id="1886162073868201257">IPFSサービスローンチエラー</translation>
 <translation id="5357895013476183089">IPFSが接続されていません</translation>
-<translation id="1196783328762622576">ローカルノードを使用してIPFSリソースをロードできません</translation>
+<translation id="7662930734991751511">BraveローカルIPFSノードを使用してIPFSリソースをロードできません</translation>
 <translation id="1141556610026845297">ローカルIPFSノードを使用して要求されたIPFSリソースをロードできませんでした。代わりにパブリックゲートウェイを使用し、今後はパブリックゲートウェイに自動的にフォールバックするには、[続ける]ボタンをクリックします。</translation>
 <translation id="3373798179786163193">パブリックゲートウェイで続行</translation>
 <translation id="1974060860693918893">詳細設定</translation>
 <translation id="9096577886148726047">高度な設定を隠す</translation>
-<translation id="7716995370131231171">ローカルノードが起動しなかったか、または現時点で利用可能な接続されたピアがないために、Braveは要求されたIPFSリソースをロードできません。[続ける]を選択すると、ローカルノードの使用に失敗するたびにBraveは自動的にデフォルトのパブリックゲートウェイにフォールバックします。この動作は、Braveの設定でどの時点であっても変更することができます。</translation>
+<translation id="182581792765792826">BraveローカルIPFSノードが起動しなかったか、または現時点で利用可能な接続されたピアがないために、Braveは要求されたIPFSリソースをロードできません。[続ける]を選択すると、BraveローカルIPFSノードの使用に失敗するたびにBraveは自動的にデフォルトのパブリックゲートウェイにフォールバックします。この動作は、Braveの設定でどの時点であっても変更することができます。</translation>
 <translation id="8026038288183400906">IPFS設定</translation>
 <translation id="2058855456574089690">IPFSプリファレンスを設定</translation>
-<translation id="4447758690649023734">ローカルノードを使用</translation>
+<translation id="4780526507945807546">BraveローカルIPFSノードを使用する</translation>
 <translation id="8148464361648742409">パブリックゲートウェイを使用</translation>
 <translation id="5123478056123923857">IPFS (惑星間ファイルシステム) はP2Pデータストレージおよびデータ配信用のパブリックネットワークです。このプロトコルはHTTP（S）とは異なる仕方でプライバシーが考慮されています。</translation>
 <translation id="5410952114182173389">あなたのコンピューターはパブリックネットワークに寄与しますが、あなたのIPアドレス、およびあなたがリクエストまたは提供するコンテンツが公開される可能性があります。IPFSを介してリクエストするコンテンツはあなたに提供される前に検証されます。</translation>
@@ -778,16 +778,19 @@
 <translation id="6318437367327684789">無期限</translation>
 <translation id="8797999629784150206"><ph name="SITE_PERMISSIONS"/>をいつでも変更できます。 <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">サイトのアクセス許可</translation>
+<translation id="7717357606512850995">ステータスを確認</translation>
+<translation id="7306880305145342514">おめでとうございます！<ph name="MONTH"/>のリワードを獲得しました！</translation>
+<translation id="3007207731685398329"><ph name="MONTH"/>のリワード<ph name="AMOUNT"/>が<ph name="DAYS"/>で送付されます</translation>
+<translation id="5878420576943709750"><ph name="MONTH"/>のリワード<ph name="AMOUNT"/>を送金中です。少々お待ちください！</translation>
 <translation id="2659764755126740206">私の<ph name="PROVIDER"/>アカウントに移動する</translation>
 <translation id="2389181429986654814"><ph name="PROVIDER"/>に移動して認証を完了します</translation>
 <translation id="7793632266654336758">報酬を受け取るには、本人確認を完了する必要があります。</translation>
 <translation id="2394961582378297792">ログアウト済み</translation>
-<translation id="5511950864417840431"><ph name="PROVIDER"/>からログアウト</translation>
+<translation id="6080167751812750226"><ph name="PROVIDER"/>との接続を解除</translation>
 <translation id="3600355176618429948">推定報酬</translation>
 <translation id="7577100371127227294">毎月のチップ</translation>
 <translation id="5894023780213944778">マイウォレット</translation>
 <translation id="2613359062756190460">一度だけチップを送る</translation>
-<translation id="4240437602809703483"><ph name="AMOUNT"/> が <ph name="DAYS"/> 後以降に順次送付されます。</translation>
 <translation id="590733288489975971">AdsによるRewards</translation>
 <translation id="4989163558385430922">すべてを見る</translation>
 <translation id="3026978804849658576">明細を表示</translation>
@@ -818,6 +821,7 @@
 <translation id="9161147058107529840">単一のオブジェクトのパラメーターが必要です。</translation>
 <translation id="1875861420974447980">このチェーンIDは現在使用中です</translation>
 <translation id="167698752210114155">内部エラーが発生しました</translation>
+<translation id="1128992132632883337">レスポンスのパースエラーが発生しました</translation>
 <translation id="1680597601664421644">インポートされたニーモニックはBraveウォレットで有効ではありません</translation>
 <translation id="4641919696349069826">すでにリクエストを処理中です</translation>
 <translation id="872806943696014633">トランザクションデータがありません</translation>
@@ -870,12 +874,14 @@
 <translation id="6977728312178289892">1年</translation>
 <translation id="6598532182053592167">コインを追加</translation>
 <translation id="629730747756840877">アカウント</translation>
+<translation id="3959969108528118741">所有者</translation>
 <translation id="3891414008432200754">価格</translation>
 <translation id="2267753748892043616">アカウントを追加</translation>
 <translation id="5061574358754621254">CoinGeckoによる価格データ</translation>
 <translation id="1483493594462132177">送信</translation>
 <translation id="538450413584738399">スワップ</translation>
-<translation id="7020187418439030877"><ph name="NETWORK"/>はサポートされていません</translation>
+<translation id="6295954645230084874">購入サポートは<ph name="NETWORK"/>ではご利用いただけません</translation>
+<translation id="4171338820961522154">スワップサポートは<ph name="NETWORK"/>ではご利用いただけません</translation>
 <translation id="1191686659164947414">トランザクションがフロントランニングされている可能性があります</translation>
 <translation id="632241521608275119">価格変動の許容値</translation>
 <translation id="4500473291496079954">有効期限:</translation>
@@ -883,12 +889,14 @@
 <translation id="2860280209982026951">BraveはDEXアグリゲーターとして<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/>を使用しています。</translation>
 <translation id="151946611346774041">0xは、取引を完了するためにイーサリアムのアドレスとIPアドレスを処理します（見積価格の取得を含む）。このデータは、取引処理のためだけに使用されます。</translation>
 <translation id="4626407663177532837">見積りには0.875%のBrave手数料が含まれます。</translation>
+<translation id="8368540604723748428">小数点以下の桁数が多すぎます</translation>
 <translation id="2704606927547763573">コピーしました</translation>
 <translation id="6518133107902771759">認証する</translation>
 <translation id="1420318137760245955">新しい Brave Wallet へようこそ</translation>
 <translation id="8303434745767477417">あなたの管理下に暗号資産を保持します。ポートフォリオのパフォーマンスを追跡し、Web 3 DApp とやり取りします。DeFi で取引、投資、借り入れ、貸し出しを行います。Brave プライバシーブラウザからご利用いただけます。拡張機能やダウンロードは必要ありません。</translation>
 <translation id="6972754398087986839">開始する</translation>
 <translation id="375882617301124395">暗号資産ウォレットをバックアップします</translation>
+<translation id="180032279811483155">次のステップでは、あなたの暗号資産アカウントを回復するために使用できる<ph name="RECOVERY_PHRASE_LENGTH"/>語のリカバリフレーズが表示されます。安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを復旧する唯一の方法が、このリカバリフレーズになります。</translation>
 <translation id="5024543173656851695">リカバリーワードを紛失した場合、自分の暗号資産ウォレットにアクセスできなくなることを理解しました。</translation>
 <translation id="3933122286596948824">リカバリーフレーズ</translation>
 <translation id="5077747669435508720">これらの単語を以下に示す正確な順序で書き留めるかコピーして、安全な場所に保管してください。パスワードを忘れた場合、デバイスを紛失または盗難にあった場合、またはウォレットを切り替えたい場合に、アカウントアクセスを回復する唯一の方法が、このリカバリフレーズになります。</translation>
@@ -903,12 +911,14 @@
 <translation id="6901073872645365201">パスワードは、7 文字以上で、少なくとも 1 つの数字と 1 つの特殊文字を含む必要があります。</translation>
 <translation id="6657585470893396449">パスワード</translation>
 <translation id="5486261815000869482">パスワードを確認</translation>
+<translation id="6138471905279127211">パスワードの条件を満たしていません。</translation>
 <translation id="467510802200863975">パスワードが一致しません</translation>
 <translation id="5168349973342709369">パスワードを入力してウォレットのロックを解除します</translation>
 <translation id="9111102763498581341">ロック解除</translation>
 <translation id="5045550434625856497">パスワードが正しくありません</translation>
-<translation id="7341660388388100491">暗号資産をロック</translation>
+<translation id="5242300593039211344">ウォレットをロック</translation>
 <translation id="765834632354589737">ウォレットをバックアップする</translation>
+<translation id="1108298724135935307">接続したサイト</translation>
 <translation id="722307450061393855">今すぐウォレットをバックアップして、暗号資産を保護し、アクセスを失うことが無いようにしましょう。</translation>
 <translation id="1018806299114415224">今すぐバックアップ</translation>
 <translation id="5234764350956374838">閉じる</translation>
@@ -922,12 +932,20 @@
 <translation id="3331452756822160641">新しいパスワード</translation>
 <translation id="8624315169751085215">クリップボードにコピー</translation>
 <translation id="1121335910737476837">プライマリ暗号資産アカウント</translation>
-<translation id="3604193429970465812">セカンダリアカウント</translation>
-<translation id="2471916999505901943">これらのアカウントは、Web 3 DApp で使用でき、ポートフォリオに表示できます。ただし、プライマリアカウントのバックアップからリカバリフレーズを使用してセカンダリアカウントを復元することはできないことに注意してください。</translation>
+<translation id="6969147029062037757">インポート済みのアカウント</translation>
+<translation id="5668765612885835803">Braveウォレットでは、リカバリフレーズからバックアップまたは復元できるプライマリアカウントを作成することができます。アカウントの種類についての詳細は、アカウントのヘルプをご覧ください</translation>
+<translation id="2471916999505901943">これらのアカウントは、Web 3 DApps で使用でき、ポートフォリオに表示できます。ただし、プライマリアカウントのバックアップからリカバリフレーズを使用してセカンダリアカウントを復元することはできないことに注意してください。</translation>
 <translation id="1940465339426637378">アセット</translation>
 <translation id="2236507293802791911">公開アセット</translation>
 <translation id="7525067979554623046">作成</translation>
 <translation id="4771176409524282426">アカウント作成</translation>
+<translation id="2471867767872178363"><ph name="BLOCKCHAIN_NETWORK"/>アカウントを作成</translation>
+<translation id="1073129495320255278"><ph name="BLOCKCHAIN_NETWORK"/>アカウントをインポート</translation>
+<translation id="6780482003945159712">以下のアカウントタイプのいずれかを選択</translation>
+<translation id="7080614857771109950">イーサリアムブロックチェーン上のEVM対応アセット (ERC-20、ERC-721、ERC-1551、ERC-1155) をサポート</translation>
+<translation id="3329841454317342083">Solanaブロックチェーン上のSLP対応アセットをサポート</translation>
+<translation id="4541295941776129088">FILアセットを保管</translation>
+<translation id="232925166623833246">ハードウェアウォレットからインポート</translation>
 <translation id="4324198334837993695">ハードウェア</translation>
 <translation id="3067168166931605141">アカウント名</translation>
 <translation id="1136772623587250243">クリップボードから秘密鍵を貼り付ける</translation>
@@ -938,7 +956,7 @@
 <translation id="5891811606602061966">アカウントのインポートに失敗しました。もう一度やり直してください。</translation>
 <translation id="5051929972046200722">ハードウェアウォレットデバイスを選択</translation>
 <translation id="5745936663807461565"><ph name="HARDWARE_DEVICE"/>ウォレットをコンピューターに直接接続してください。</translation>
-<translation id="5041211872515579638">デバイスのロックを解除し、イーサリアムアプリを選択します。</translation>
+<translation id="4350216031085285578">デバイスのロックを解除して<ph name="BLOCKCHAIN_NETWORK"/>アプリを選択します。</translation>
 <translation id="6892232036314454524">Ledgerのデバイスで間違ったアプリケーションを開いている場合、このエラーが発生することがあります。</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">台帳</translation>
@@ -965,6 +983,7 @@
 <translation id="6018178824574796106">カスタムトークンの追加に失敗しました。もう一度やり直してください。</translation>
 <translation id="547122651977318828">トークンID (ERC721のみ)</translation>
 <translation id="7544552854944350190">トークンIDが必要です</translation>
+<translation id="3842236145820483340">Coingecko ID</translation>
 <translation id="2708402071160162126">警告: リカバリフレーズは絶対に他の人に教えないでください。このフレーズを知っている人はだれでも、あなたの資産を完全に取得することができます。</translation>
 <translation id="2902856457593699108">キーを表示</translation>
 <translation id="8033497299373164724">キーを隠す</translation>
@@ -1033,6 +1052,8 @@
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/>アカウントを接続しました</translation>
 <translation id="4305817255990598646">切り替える</translation>
 <translation id="3890989020011724401">新規アカウント</translation>
+<translation id="7257603403519636638">アカウントのアセットを確認</translation>
+<translation id="2092132085082887098">アカウントのアセット</translation>
 <translation id="4460220693591349571">機能タイプ</translation>
 <translation id="838933475572692615">HEXデータ</translation>
 <translation id="2240831799756994975">バイト</translation>
@@ -1075,6 +1096,11 @@
 <translation id="6666273175654835609">Submitted</translation>
 <translation id="2331676293859649642">Confirmed</translation>
 <translation id="1165039591588034296">エラー</translation>
+<translation id="9065572743819293042">直近のトランザクション</translation>
+<translation id="4235538284468006757">トランザクション詳細</translation>
+<translation id="7488671812634887146">速度向上</translation>
+<translation id="1702356231547761669">トランザクションハッシュ</translation>
+<translation id="7982789257301363584">ネットワーク</translation>
 <translation id="8941851657764077659">最大優先料金</translation>
 <translation id="8047527352810290817">ガスを編集</translation>
 <translation id="9091334651803050473">保証されているわけではありませんが、あなたがより高い手数料を支払う場合、マイナーはあなたのトランザクションを優先する可能性があります。</translation>
@@ -1091,6 +1117,10 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">カスタム設定</translation>
 <translation id="7400927223938424379">提案を設定</translation>
+<translation id="8179605702342645418">トランザクションがネットワークに伝搬されない場合があります。</translation>
+<translation id="9100765901046053179">詳細設定</translation>
+<translation id="4220062530885628403">ノンス</translation>
+<translation id="2749584096020594976">フィールドが指定されない場合、ノンス値は自動で決定されます。</translation>
 <translation id="1599636444563952897">支出制限の許可は、<ph name="SITE_ORIGIN"/>に次の金額を上限とする引き出しと支出を許可します。</translation>
 <translation id="4512871563176965522">カスタム許可設定</translation>
 <translation id="749944179568745958">有効なETHアドレスではありません</translation>
@@ -1131,6 +1161,11 @@
 <translation id="7017116822583380542">Trezorブリッジの準備が完了していません</translation>
 <translation id="3378339846292573874">推奨トークンを追加</translation>
 <translation id="2322227405137827074">このトークンをインポートしますか?</translation>
+<translation id="4378475168089649292">ブロックチェーン</translation>
+<translation id="1904295039023858291">トークン規格</translation>
+<translation id="9033453977881595182">トークンID</translation>
+<translation id="2962388922926051374"><ph name="URL"/>におけるメソッド 'eth_chainId' のリクエストに失敗しました</translation>
+<translation id="8325036459845654666">このネットワークは既に追加されています。</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>

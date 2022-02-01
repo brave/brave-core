@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID extensie "<ph name="EXTENSION_ID"/>") nu este permis în Brave.</translation>
 <translation id="6786747875388722282">Extensii</translation>
 <translation id="984275831282074731">Metode de plată</translation>
-<translation id="3699882589215410581">Instalați și rulați Widevine</translation>
+<translation id="1990886731975529483">Instalați și rulați Google Widevine</translation>
 <translation id="8926389886865778422">Nu mai întreba</translation>
 <translation id="5249433283143453448">Folosiți componenta de management a drepturilor digitale (DRM) Widevine pentru a vedea conținut video protejat în streaming și alte conținuturi în browser.</translation>
 <translation id="6241402707160226266">Fereastră privată cu Tor</translation>
 <translation id="8762452230727230396">Tor ascunde adresa dvs. de IP de site-urile pe care le vizitați.</translation>
 <translation id="1369311132025451972">Redirecționează automat siteurile .onion</translation>
 <translation id="2843777623071353503">Brave va deschide serviciul onion al site-ului când acesta este disponibil sau domeniul .onion în fereastra Tor.</translation>
-<translation id="8053096063396012732">Instalează Widevine</translation>
-<translation id="4840334696217618631">Repornește browserul pentru activarea Widevine</translation>
-<translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
-
-Instalând această extensie, sunteți de acord cu termenii de utilizare ai Google Widevine. Sunteți de acord că Brave nu este responsabil pentru nicio problemă sau pierdere a conexiunii în timpul utilizării Google Widevine.</translation>
+<translation id="4900351245762303149">Instalați Google Widevine</translation>
+<translation id="2313383941300459392">Reporniți browserul pentru a activa Google Widevine</translation>
+<translation id="2200626478572277092">Uneori, e nevoie de Widevine pentru a reda conținut media pe o pagină web. Este o extensie Google încărcată de pe serverele Google pe care Brave nu o poate verifica. Instalarea presupune că acceptați termenii de utilizare Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Sau modificați ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Aflați mai multe despre Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> vă solicită să</translation>
 <translation id="410351446219883937">Redare automată</translation>
 <translation id="3218385319396786393">Redarea automată a fost blocată pe această pagină</translation>
 <translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="6583467242903731748">Întreabă când un site dorește să acceseze API-ul unui furnizor de Ethereum</translation>
 <translation id="7017590444693657895">Nu permiteți site-urilor să acceseze API-urile furnizorilor de Ethereum</translation>
 <translation id="8988939298652262600">Brave nu evaluează extensiile din punct de vedere al securității și siguranței. Instalează această extensie doar dacă ai încredere în dezvoltator.</translation>
+<translation id="933652931229970927">Trimiteți automat rapoarte de diagnosticare</translation>
+<translation id="1679356339067548863">Contribuiți la îmbunătățirea stabilității Brave prin trimiterea automată de rapoarte de diagnosticare când apar erori ale browserului Brave sau când acesta se blochează.</translation>
 <translation id="8081858229109418493">Nume profil și iconiță</translation>
 <translation id="6438096877646138757">Site-uri care șterg modulele cookie atunci când le închideți</translation>
 <translation id="2988792685798128092">Ștergeți la închiderea site-ului</translation>
@@ -42,7 +46,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="1692470335103807198">Obține mai multe teme</translation>
 <translation id="2906510232093002459">Imagini implicite Brave</translation>
 <translation id="2814998458708016836">Utilizați bara de adrese lată</translation>
-<translation id="6123134130710658846">Ascunde butonul Brave Rewards</translation>
+<translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
 <translation id="1811404036171336214">Afișați întotdeauna marcajele pe o pagină nouă</translation>
 <translation id="1643029991199044105">Navigați prin cele mai utilizate pagini cu Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="5733490796524078528">Butoane pentru contribuții</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Pagină filă nouă</translation>
 <translation id="1988804048511540801">Pagina nouă arată</translation>
 <translation id="2970343821770026391">Tablou de bord</translation>
@@ -89,12 +93,12 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8612763432858587652">Ieșiți din fereastra privată</translation>
 <translation id="8760415064721320867">Fereastră Privată cu Tor</translation>
 <translation id="2055363275850890030">Fereastră Privată</translation>
-<translation id="8934172355414207733">Privată cu Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Aceasta este o fereastră privată cu Tor</translation>
 <translation id="1037341607922068025">Deschideți o fereastră privată cu Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Deschide în Tor</translation>
-<translation id="7643538479215207633">Deschideți folosind IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publica și recupera fișiere de pe IPFS</translation>
 <translation id="1672270084584211506">Disponibil onion</translation>
 <translation id="406832631167785034">Deschideți folosind adresa .onion</translation>
@@ -105,7 +109,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4227945450504703638">Fișier audio selectat</translation>
 <translation id="7895302206188277628">Conținut corelat</translation>
 <translation id="3654831858282189202">Publicați cu cheia IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Importați textul selectat în IPFS</translation>
 <translation id="6925604404524625582">Importați și copiați linkul în IPFS Snapshot</translation>
 <translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
@@ -238,8 +241,8 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6358469157239228181">Acest nume nu poate fi utilizat</translation>
 <translation id="5761731140570209168">Adăugați un nou șir de conexiune pereche</translation>
 <translation id="2082206983920804886">Rotire cheie</translation>
-<translation id="2521133093532260474">Nu se poate opri nodul local</translation>
-<translation id="86879877003581729">Nu se poate porni nodul local</translation>
+<translation id="5078501082919354191">Nu se poate opri nodul IPFS local Brave</translation>
+<translation id="5687424953196903465">Nu se poate porni nodul IPFS local Brave</translation>
 <translation id="6476061084931271248">Reporniți nodul pentru a aplica modificările</translation>
 <translation id="3754226427671882382">Reporniți nodul</translation>
 <translation id="949667118776341807">Rotire</translation>
@@ -254,17 +257,21 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="616058968889448209">Eroare la lansarea serviciului IPFS. Sunt disponibile informații suplimentare în <ph name="BEGIN_LINK"/>pagina de diagnosticare<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Eroare la importarea cheii '<ph name="KEY_NAME"/>'</translation>
 <translation id="3364053282600191535">Eroare la exportarea cheii '<ph name="KEY_NAME"/>'</translation>
-<translation id="8860039076160511438">Resetați portofelul</translation>
+<translation id="4993345308607970390">Resetați portofelul Brave</translation>
+<translation id="5975930666279943472">Ștergeți tranzacțiile din portofel și informația nonce</translation>
+<translation id="5693968582510626466">Ștergerea tranzacțiilor poate fi utilă pentru dezvoltatori sau în cazul golirii informațiilor pe un server local</translation>
 <translation id="6369495274982305511">Sigur doriți să resetați portofelul dvs.? Dacă nu ați realizat o copie de rezervă după portofel, resetarea va duce la pierderea tuturor datelor privind contul (inclusiv a fondurilor asociate). Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
+<translation id="9216386092464743272">Sigur doriți să resetați toate tranzacțiile din portofel și informația nonce? Această opțiune este utilizată în principal de dezvoltatori care rulează un server de test local. Tastați „<ph name="CONFIRMATION_PHRASE"/>” pentru a confirma.</translation>
+<translation id="3752403403443723332">Portofelul dvs. a fost resetat.</translation>
+<translation id="594766067816395072">Informațiile privind tranzacțiile din portofel au fost resetate.</translation>
 <translation id="1426410128494586442">Da</translation>
 <translation id="8275038454117074363">Importă</translation>
 <translation id="3654980960391973513">Generare</translation>
 <translation id="5531501313997312487">Start nod</translation>
 <translation id="9170907049676078643">Metoda de rezolvare a resurselor IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
-<translation id="80225669816651290">Nod local</translation>
+<translation id="1195880978080389104">Nod IPFS local Brave</translation>
 <translation id="4927734062756955434">Adresa ieșirii publice IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe<ph name="END_LINK_MPL"/> despre nodul IPFS local și confidențialitatea gateway-ului.</translation>
 <translation id="8425213833346101688">Modifică</translation>
 <translation id="557281710253742286">Configurează ieșirea IPFS</translation>
 <translation id="8571837315037233299">Adresa de ieșire</translation>
@@ -273,7 +280,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="7703184801853248830">Adresă de ieșire nevalidă</translation>
 <translation id="7690058578502751948">În Brave, se poate utiliza numai un gateway IPFS valid, cu izolarea originii activată</translation>
 <translation id="585868419599255817">Conectare la portalul public IPFS</translation>
-<translation id="207763736230883589">Revino automat la poarta de ieșire IPFS publică dacă nodul local nu poate fi contactat.</translation>
+<translation id="2618080188892567155">Reveniți automat la gateway-ul IPFS public dacă nodul IPFS local Brave nu poate fi accesat.</translation>
 <translation id="4107552920076294723">Redirecționează resursele IPFS către poarta de ieșire IPFS configurată</translation>
 <translation id="6494857428933042381">Utilizează automat poarta de ieșire configurată pentru rezoluții IPFS atunci când se întâlnește o resursă de ieșire IPFS.</translation>
 <translation id="8655170717758778983">Redirecționați automat către paginile IPFS prin DNSLink atunci când este posibil</translation>
@@ -346,10 +353,9 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="780301667611848630">Nu, mulțumesc</translation>
 <translation id="5039804452771397117">Permite</translation>
 <translation id="7053983685419859001">Blochează</translation>
-<translation id="7815301689257843278">Trimiteți automat rapoarte privind erorile, astfel încât Brave să poată preveni repetarea unor astfel de situații?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> s-a închis în mod neașteptat.</translation>
 <translation id="1324417023773393937">Browserul Brave</translation>
-<translation id="1068069727470515940">Puteți modifica <ph name="SETTING_TEXT"/> din nou în orice moment.</translation>
+<translation id="7276554663454265692">Puteți modifica <ph name="SETTING_TEXT"/> în orice moment din setările browserului.</translation>
 <translation id="6873781976650514089">această setare</translation>
 <translation id="6040143037577758943">Închide</translation>
 <translation id="5600566490506283344">Notificare Brave Ad</translation>
@@ -446,10 +452,28 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2487558607408469181">Adrese URL explorator de blocuri</translation>
 <translation id="6301398959353668507">Acest câmp nu poate rămâne gol.</translation>
 <translation id="7504462451153306677">Format incorect, identificatorul lanțului este un număr pozitiv</translation>
-<translation id="8325036459845654666">Această rețea este adăugată deja</translation>
 <translation id="650071759190249039">Eroare internă: nu se poate adăuga rețeaua.</translation>
 <translation id="868529041590572443">Introduceți toate informațiile despre moneda nativă</translation>
 <translation id="1062463687579789365">Personalizarea rețelelor de portofele</translation>
 <translation id="2234108191702901162">Nu se poate adăuga rețeaua</translation>
 <translation id="2618193846561624884">Doriți să actualizați rețeaua existentă?</translation>
+<translation id="3699882589215410581">Instalați și rulați Widevine</translation>
+<translation id="8053096063396012732">Instalează Widevine</translation>
+<translation id="4840334696217618631">Repornește browserul pentru activarea Widevine</translation>
+<translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
+
+Instalând această extensie, sunteți de acord cu termenii de utilizare ai Google Widevine. Sunteți de acord că Brave nu este responsabil pentru nicio problemă sau pierdere a conexiunii în timpul utilizării Google Widevine.</translation>
+<translation id="6123134130710658846">Ascunde butonul Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privată cu Tor</translation>
+<translation id="7643538479215207633">Deschideți folosind IPFS</translation>
+<translation id="2521133093532260474">Nu se poate opri nodul local</translation>
+<translation id="86879877003581729">Nu se poate porni nodul local</translation>
+<translation id="8860039076160511438">Resetați portofelul</translation>
+<translation id="80225669816651290">Nod local</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe<ph name="END_LINK_MPL"/> despre nodul IPFS local și confidențialitatea gateway-ului.</translation>
+<translation id="207763736230883589">Revino automat la poarta de ieșire IPFS publică dacă nodul local nu poate fi contactat.</translation>
+<translation id="7815301689257843278">Trimiteți automat rapoarte privind erorile, astfel încât Brave să poată preveni repetarea unor astfel de situații?</translation>
+<translation id="1068069727470515940">Puteți modifica <ph name="SETTING_TEXT"/> din nou în orice moment.</translation>
+<translation id="8325036459845654666">Această rețea este adăugată deja</translation>
 </translationbundle>

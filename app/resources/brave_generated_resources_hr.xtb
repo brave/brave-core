@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID proširenja <ph name="EXTENSION_ID"/>) nije dopušteno u pregledniku Brave.</translation>
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="984275831282074731">Načini plaćanja</translation>
-<translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
+<translation id="1990886731975529483">Instaliraj i pokreni Google Widevine</translation>
 <translation id="8926389886865778422">Više me ne pitaj</translation>
 <translation id="5249433283143453448">Upotrijebite komponentu Widevine za upravljanje digitalnim pravima (DRM) radi pregledavanja zaštićenog strujanja videozapisa i drugog sadržaja u pregledniku.</translation>
 <translation id="6241402707160226266">Privatni prozor s funkcijom Tor</translation>
 <translation id="8762452230727230396">Tor skriva vašu adresu IP od mrežnih mjesta koje posjećujete.</translation>
 <translation id="1369311132025451972">Automatski preusmjeri mrežna mjesta .onion</translation>
 <translation id="2843777623071353503">Preglednikom Brave otvorit će se usluga onion mrežnog mjesta kada bude dostupna ili domena onion. u prozoru Tor.</translation>
-<translation id="8053096063396012732">Instaliraj aplikaciju Widevine</translation>
-<translation id="4840334696217618631">Poništi preglednik za omogućavanje aplikacije Widevine</translation>
-<translation id="8410111618231938546">Widevine društva Google dio je kȏda za upravljanje digitalnim pravima (DRM) koji društvo Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja društva Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
-
-Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine društva Google. Potvrđujete da Brave ne odgovora ni za kakvu štetu ni gubitke povezane s vašom uporabom Googleova rješenja Widevine.</translation>
+<translation id="4900351245762303149">Instaliraj Google Widevine</translation>
+<translation id="2313383941300459392">Ponovno pokreni preglednik za omogućavanje dodatka Google Widevine</translation>
+<translation id="2200626478572277092">Dodatak Widevine ponekad je potreban za reproduciranje medija na mrežnoj stranici. Radi se o produžetku Google učitanom s poslužitelja Google koje društvo Brave ne može pregledati. Instaliranjem dodatka prihvaćate uvjete upotrebe društva Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Doznaj više o dodatku Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> traži od vas da</translation>
 <translation id="410351446219883937">Automatska reprodukcija</translation>
 <translation id="3218385319396786393">Na ovoj je stranici blokirana automatska reprodukcija</translation>
 <translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="6583467242903731748">Upitaj kada se mrežnim mjestom želi pristupiti pružatelju sučelja API platforme Ethereum</translation>
 <translation id="7017590444693657895">Blokiraj pristup pružatelju sučelja API platforme Ethereum mrežnim mjestima</translation>
 <translation id="8988939298652262600">Društvo Brave ne pregledava razinu sigurnosti i zaštite dodataka. Instalirajte ovaj dodatak samo ako vjerujete programeru.</translation>
+<translation id="933652931229970927">Automatski šalji dijagnostička izvješća</translation>
+<translation id="1679356339067548863">Pomozite unaprijediti stabilnost proizvoda marke Brave automatskim slanjem dijagnostičkih izvješća kada se preglednik Brave sruši ili zamrzne.</translation>
 <translation id="8081858229109418493">Naziv profila i ikona</translation>
 <translation id="6438096877646138757">Mrežna mjesta na kojima se uklanjaju kolačići kada ih zatvorite</translation>
 <translation id="2988792685798128092">Ukloni po zatvaranju mrežnog mjesta</translation>
@@ -42,7 +46,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="1692470335103807198">Dohvati više tema</translation>
 <translation id="2906510232093002459">Zadane slike Brave</translation>
 <translation id="2814998458708016836">Upotrijebi široku adresnu traku</translation>
-<translation id="6123134130710658846">Sakrij gumb za Brave Rewards</translation>
+<translation id="6333347122924254968">Prikaži ikonu Nagrade Brave u adresnoj traci</translation>
 <translation id="1811404036171336214">Uvijek prikaži knjižne oznake na stranici Nova kartica</translation>
 <translation id="1643029991199044105">Pregledajte zadnje upotrijebljene kartice putem Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="5733490796524078528">Gumbi za napojnice</translation>
 <translation id="3905400818082450708">Ponovno uredi</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Stranica Nova kartica</translation>
 <translation id="1988804048511540801">Na stranici Nova kartica prikazuje se</translation>
 <translation id="2970343821770026391">Nadzorna ploča</translation>
@@ -89,12 +93,12 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="8612763432858587652">Izađi iz privatnog prozora</translation>
 <translation id="8760415064721320867">Privatni prozor s funkcijom Tor</translation>
 <translation id="2055363275850890030">Privatni prozor</translation>
-<translation id="8934172355414207733">Privatni prozor s funkcijom Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Ovo je privatni prozor s funkcijom Tor</translation>
 <translation id="1037341607922068025">Otvori privatni prozor s funkcijom Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Otvori u funkciji Tor</translation>
-<translation id="7643538479215207633">Otvori uporabom sustava IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Objavi i dohvati datoteke s protokola IPFS</translation>
 <translation id="1672270084584211506">Dostupan Onion</translation>
 <translation id="406832631167785034">Otvori adresom .onion</translation>
@@ -105,7 +109,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="4227945450504703638">Odabrani zvučni zapis</translation>
 <translation id="7895302206188277628">Povezani sadržaj</translation>
 <translation id="3654831858282189202">Objavi upotrebom ključa IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Uvezi odabrani tekst u sustav IPFS</translation>
 <translation id="6925604404524625582">Uvezi i kopiraj poveznicu za snimku sustava IPFS</translation>
 <translation id="1434416574322382019">Novi privatni prozor s funkcijom Tor</translation>
@@ -238,8 +241,8 @@ Sigurno želite to napraviti?</translation>
 <translation id="6358469157239228181">Ne može se upotrijebiti ovaj naziv</translation>
 <translation id="5761731140570209168">Dodaj novi niz za povezivanje ravnopravnih članova</translation>
 <translation id="2082206983920804886">Rotiraj ključ</translation>
-<translation id="2521133093532260474">Nije moguće zaustaviti lokalni čvor</translation>
-<translation id="86879877003581729">Nije moguće pokrenuti lokalni čvor</translation>
+<translation id="5078501082919354191">Nije moguće zaustaviti lokalni čvor značajke IPFS preglednika Brave</translation>
+<translation id="5687424953196903465">Nije moguće pokrenuti lokalni čvor značajke IPFS preglednika Brave</translation>
 <translation id="6476061084931271248">Ponovno pokreni čvor za primjenu promjena</translation>
 <translation id="3754226427671882382">Ponovno pokreni čvor</translation>
 <translation id="949667118776341807">Rotiraj</translation>
@@ -254,17 +257,22 @@ Sigurno želite to napraviti?</translation>
 <translation id="616058968889448209">Nastala je pogreška pri pokretanju usluge IPFS, a više informacija potražite na dijagnostičkoj stranici <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">uvoz ključa '<ph name="KEY_NAME"/>' nije uspio</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' izvoz ključa nije uspio</translation>
-<translation id="8860039076160511438">Ponovno postavi novčanik</translation>
+<translation id="4993345308607970390">Ponovno postavi novčanik Brave</translation>
+<translation id="5975930666279943472">Ukloni informacije o transakciji novčanika i broju transakcija s iste adrese</translation>
+<translation id="5693968582510626466">Uklanjanje transakcija može biti korisno za razvojne inženjere ili pri uklanjanju sadržaja na lokalnom poslužitelju</translation>
 <translation id="6369495274982305511">Sigurno želite ponovno postaviti novčanik? Ako ne postoji sigurnosna kopija vašeg novčanika, ponovnim postavljanjem prouzročava se gubitak svih podataka računa (uključujući sva povezana sredstva). Upišite „<ph name="CONFIRMATION_PHRASE"/>” za potvrđivanje.</translation>
+<translation id="9216386092464743272">Sigurno želite ponovno postaviti sve informacije o transakciji novčanika i broju transakcija s iste adrese? Tu mogućnost  upotrebljavaju uglavnom razvojni inženjeri koji upravljaju lokalnim testnim poslužiteljem. Upišite „<ph name="CONFIRMATION_PHRASE"/>” za potvrdu.</translation>
+<translation id="3752403403443723332">Vaš je novčanik ponovno postavljen.</translation>
+<translation id="594766067816395072">Informacije o transakciji vašeg novčanika ponovno su postavljene.</translation>
 <translation id="1426410128494586442">Da</translation>
 <translation id="8275038454117074363">Uvezi</translation>
 <translation id="3654980960391973513">Generiraj</translation>
 <translation id="5531501313997312487">Pokreni čvor</translation>
 <translation id="9170907049676078643">Način rješavanja izvora IPFS</translation>
 <translation id="1327977588028644528">Pristupnik</translation>
-<translation id="80225669816651290">Lokalni čvor</translation>
+<translation id="1195880978080389104">Lokalni čvor značajke IPFS preglednika Brave</translation>
 <translation id="4927734062756955434">Javna adresa IPFS pristupnika</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Doznajte više<ph name="END_LINK_MPL"/> o razmatranjima o privatnosti lokalnog čvora i pristupnika sustava IPFS.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Doznajte više<ph name="END_LINK_MPL"/> o razmatranjima o privatnosti lokalnog čvora i pristupnika značajke IPFS preglednika Brave.</translation>
 <translation id="8425213833346101688">Promijeni</translation>
 <translation id="557281710253742286">Postavi pristupnik IPFS</translation>
 <translation id="8571837315037233299">Adresa pristupnika</translation>
@@ -273,7 +281,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="7703184801853248830">Nevaljana adresa pristupnika</translation>
 <translation id="7690058578502751948">U pregledniku Brave može se upotrijebiti samo valjani pristupnik IPFS s omogućenom značajkom Izolacija podrijetla</translation>
 <translation id="585868419599255817">Prebacivanje na javni pristupnik IPFS</translation>
-<translation id="207763736230883589">Automatski se prebacite na javni pristupnik IPFS ako se lokalni čvor ne može dosegnuti.</translation>
+<translation id="2618080188892567155">Automatski se prebacite na javni pristupnik značajke IPFS ako se lokalni čvor te značajke preglednika Brave ne može dosegnuti.</translation>
 <translation id="4107552920076294723">Preusmjeri izvore IPFS na konfigurirani pristupnik IPFS</translation>
 <translation id="6494857428933042381">Automatski se upotrebljava konfigurirani pristupnik za rješenja IPFS-a kada se susretne izvor pristupnika IPFS</translation>
 <translation id="8655170717758778983">Automatski preusmjeri na stranice sustava IPFS putem poveznice DNSLink kad god je to moguće</translation>
@@ -346,10 +354,9 @@ Sigurno želite to napraviti?</translation>
 <translation id="780301667611848630">Ne, hvala</translation>
 <translation id="5039804452771397117">Dopusti</translation>
 <translation id="7053983685419859001">Blokiraj</translation>
-<translation id="7815301689257843278">Treba li poslati izvješća o padu tako da se preglednikom Brave može spriječiti ponovno pojavljivanje ovog problema?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> neočekivano se zatvorio.</translation>
 <translation id="1324417023773393937">Preglednik Brave</translation>
-<translation id="1068069727470515940">Možete ponovno promijeniti <ph name="SETTING_TEXT"/> u bilo kojem trenutku.</translation>
+<translation id="7276554663454265692">U postavkama preglednika možete promijeniti <ph name="SETTING_TEXT"/> u bilo kojem trenutku.</translation>
 <translation id="6873781976650514089">ovu postavku</translation>
 <translation id="6040143037577758943">Zatvori</translation>
 <translation id="5600566490506283344">Obavijest o oglasu u pregledniku Brave</translation>
@@ -446,10 +453,28 @@ Sigurno želite to napraviti?</translation>
 <translation id="2487558607408469181">URL-ovi tražilice Block Explorer</translation>
 <translation id="6301398959353668507">Polje ne smije biti prazno.</translation>
 <translation id="7504462451153306677">Nevažeći oblik, identifikacijska oznaka lanca pozitivan je broj</translation>
-<translation id="8325036459845654666">Mreža već dodana.</translation>
 <translation id="650071759190249039">Interna pogreška, nemogućnost dodavanja mreže.</translation>
 <translation id="868529041590572443">Upišite sve informacije o domaćoj valuti</translation>
 <translation id="1062463687579789365">Prilagođavanje mreža novčanika</translation>
 <translation id="2234108191702901162">Nije moguće dodati mrežu</translation>
 <translation id="2618193846561624884">Želite li ažurirati postojeću mrežu?</translation>
+<translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
+<translation id="8053096063396012732">Instaliraj aplikaciju Widevine</translation>
+<translation id="4840334696217618631">Poništi preglednik za omogućavanje aplikacije Widevine</translation>
+<translation id="8410111618231938546">Widevine društva Google dio je kȏda za upravljanje digitalnim pravima (DRM) koji društvo Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja društva Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
+
+Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine društva Google. Potvrđujete da Brave ne odgovora ni za kakvu štetu ni gubitke povezane s vašom uporabom Googleova rješenja Widevine.</translation>
+<translation id="6123134130710658846">Sakrij gumb za Brave Rewards</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">Privatni prozor s funkcijom Tor</translation>
+<translation id="7643538479215207633">Otvori uporabom sustava IPFS</translation>
+<translation id="2521133093532260474">Nije moguće zaustaviti lokalni čvor</translation>
+<translation id="86879877003581729">Nije moguće pokrenuti lokalni čvor</translation>
+<translation id="8860039076160511438">Ponovno postavi novčanik</translation>
+<translation id="80225669816651290">Lokalni čvor</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Doznajte više<ph name="END_LINK_MPL"/> o razmatranjima o privatnosti lokalnog čvora i pristupnika sustava IPFS.</translation>
+<translation id="207763736230883589">Automatski se prebacite na javni pristupnik IPFS ako se lokalni čvor ne može dosegnuti.</translation>
+<translation id="7815301689257843278">Treba li poslati izvješća o padu tako da se preglednikom Brave može spriječiti ponovno pojavljivanje ovog problema?</translation>
+<translation id="1068069727470515940">Možete ponovno promijeniti <ph name="SETTING_TEXT"/> u bilo kojem trenutku.</translation>
+<translation id="8325036459845654666">Mreža već dodana.</translation>
 </translationbundle>

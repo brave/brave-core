@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Kisah terpopuler hari ini dalam umpan yang benar-benar privat, hanya untuk Anda.</translation>
 <translation id="7266075701303521777">Brave News didukung iklan dengan iklan yang sepenuhnya privat dan anonim yang disesuaikan pada perangkat Anda.</translation>
 <translation id="4541978218358617681">Iklan</translation>
-<translation id="1765217911817124376">Aktifkan Brave News</translation>
+<translation id="7823038307453615214">Aktifkan Brave News</translation>
 <translation id="6527303717912515753">Bagikan</translation>
 <translation id="1654539412343893324">Pelajari lebih lanjut tentang data Anda</translation>
 <translation id="2989805286512600854">Buka di Tab Baru</translation>
@@ -45,7 +45,6 @@
 <translation id="7554145152551782675">Penawaran Brave Lainnya</translation>
 <translation id="4975944254857623648">Sumber bawaan</translation>
 <translation id="253886574765651454">Tambahkan sumber</translation>
-<translation id="7823038307453615214">Tampilkan Brave News</translation>
 <translation id="5787084571334399599">Mencegah pencatatan sidik-jari-peramban</translation>
 <translation id="7459000603787995422">Tutup tab saat keluar</translation>
 <translation id="4448697385961650078">Blokir pelacak &amp; iklan</translation>
@@ -53,8 +52,8 @@
 <translation id="1680858055899097121">Jangan simpan tab antar sesi penjelajahan</translation>
 <translation id="7142548388914389999">Memungkinkan analitik produk yang menjaga privasi (P3A)</translation>
 <translation id="5254037869598726291">Info P3A yang anonim membantu Brave memperkirakan penggunaan keseluruhan, dan memastikan kami meningkatkan fitur yang populer.</translation>
-<translation id="4272190451231642425">Mengirim laporan kerusakan secara otomatis</translation>
-<translation id="2239766974964486304">Laporan kerusakan membantu Brave meningkatkan stabilitas produk bagi semua pengguna.</translation>
+<translation id="933652931229970927">Mengirim laporan diagnostik secara otomatis</translation>
+<translation id="5987838417172370108">Membantu meningkatkan stabilitas produk Brave\u2019s dengan secara otomatis mengirim laporan diagnostik ketika Peramban Brave gagal atau macet.</translation>
 <translation id="7977176350719484850">Perkiraan Data\nDihemat</translation>
 <translation id="9008534313521214777">Est. Waktu\nDihemat</translation>
 <translation id="6572660632052512096">Mode Desktop</translation>
@@ -76,8 +75,7 @@
 <translation id="59174027418879706">Diaktifkan</translation>
 <translation id="4150201353443180367">Tampilan</translation>
 <translation id="2433507940547922241">Tampilan</translation>
-<translation id="2804710924397009224">Sembunyikan Ikon Brave Rewards</translation>
-<translation id="7289740269305509613">Sembunyikan Ikon Brave Rewards</translation>
+<translation id="6333347122924254968">Tampilkan ikon Brave Rewards pada bilah alamat</translation>
 <translation id="8495235435594442882">Aktifkan bilah bawah</translation>
 <translation id="6587448235155023666">Semua perubahan akan berlaku begitu Anda meluncurkan ulang Brave</translation>
 <translation id="8701563696941209024">LUNCURKAN ULANG SEKARANG</translation>
@@ -113,6 +111,7 @@
 <translation id="1166682575529520472">Bulanan</translation>
 <translation id="1628742278973105368">Tip bulanan pertama Anda akan dikirim pada:</translation>
 <translation id="298349922412901215">CATATAN: Pembuat konten ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Kami akan terus berusaha menyalurkan kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
+<translation id="6602036279006002239">CATATAN: Kreator ini saat ini tidak terkonfigurasi untuk menerima tip dari dompet Anda. Setiap tip yang Anda berikan akan tetap tertunda di dompet Anda dan dicoba ulang secara otomatis selama 90 hari.</translation>
 <translation id="1910721550319506122">Selamat datang!</translation>
 <translation id="3165726837666415756">Anda dapat mendukung situs ini dengan mengirim tip. Ini adalah cara berterima kasih kepada mereka karena telah membuat konten yang hebat. Pembuat konten yang telah diverifikasi menerima tip mereka pada minggu pertama setiap bulan.</translation>
 <translation id="1704859330137112950">Jika Anda suka, Anda dapat menjadwalkan tip bulanan untuk mendukung situs ini secara berkelanjutan.</translation>
@@ -190,6 +189,7 @@ mendaftar untuk menerima kontribusi. Peramban Anda akan terus mencoba untuk memb
 <translation id="8284063834901328650">Kode QR sinkronisasi salah</translation>
 <translation id="859506441384380749">Kode ini dihasilkan oleh versi Brave yang lama, silakan tingkatkan perangkat Anda yang lainnya terlebih dahulu</translation>
 <translation id="3132642509209154999">Kode ini telah kedaluwarsa. Silakan menghasilkan yang baru pada perangkat Anda dan coba lagi.</translation>
+<translation id="2859229680945501779">Kode ini tidak valid. Silakan periksa bahwa waktu dan zona waktu telah ditetapkan dengan tepat di peranti Anda.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync memungkinkan Anda menyinkronkan data markah secara pribadi antarperamban Brave pada berbagai perangkat.</translation>
 <translation id="3735228155296883311">Cukup pindai kode dari untai sinkronisasi yang Anda buat di perangkat lain. Atau memulai rantai sinkronisasi baru.</translation>
@@ -293,7 +293,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="5358719431303818601">Terputus tidak terverifikasi</translation>
 <translation id="4241449868720191203">Terputus terverifikasi</translation>
 <translation id="3248185426436836442">Tertunda</translation>
-<translation id="2260513517001048012">CATATAN: Brave Verified Creator ini belum mengonfigurasi akunnya untuk menerima kontribusi dari pengguna Brave. Peramban Anda akan terus mencoba berkontribusi sampai mereka memverifikasi, atau hingga lewat 90 hari.</translation>
 <translation id="4488355059795908907">Brave Verified Creator ini belum mengonfigurasi akunnya untuk menerima kontribusi dari pengguna Brave. Segala tips yang Anda kirimkan akan tetap berada di dompet sampai mereka menyelesaikan prosesnya.</translation>
 <translation id="2495032782748793764">Brave Default</translation>
 <translation id="9132378787893584761">Bagikan Brave ke teman-teman Anda!</translation>
@@ -402,12 +401,12 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7427567994475794038">Nyalakan Pelaporan Privasi untuk melihat berapa banyak pelacak &amp; iklan yang sudah diblokir dalam 3 jam terakhir.</translation>
 <translation id="2053891538879944400">Anda menghemat <ph name="DATA"/> <ph name="DATA_TEXT"/> data dengan peramban Brave.</translation>
 <translation id="8640064498452534195">Nyalakan Pelaporan Privasi untuk melihat berapa besar data yang Anda hemat.</translation>
-<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.&#128267;</translation>
+<translation id="2252497442547961651">Peramban Brave rata-rata memakai baterai 40% lebih sedikit.🔋</translation>
 <translation id="1945330434665345785">Anda memblokir <ph name="COUNT"/> trackers &amp; iklan dengan peramban Brave minggu kemarin.</translation>
 <translation id="2883868922264431515">Dapatkan token dengan melihat iklan yang menghormati privasi dan dukung website favorit Anda.</translation>
-<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.&#128293;</translation>
-<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.&#128267;</translation>
-<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Bagus! Anda telah memblokir 250 pelacak &amp; iklan dengan peramban Brave.🔥</translation>
+<translation id="9199047775708635708">Bagus! Anda telah menghemat 10MB dengan peramban Brave.🔋</translation>
+<translation id="1880168210969863408">Bagus! Anda telah menghemat waktu pemuatan 10 menit waktu dengan peramban Brave.💨💨</translation>
 <translation id="7408493389591475748">Mulailah meramban untuk melihat pelaporan privasi</translation>
 <translation id="9080777565335515917">Atur Brave sebagai peramban default untuk meramban privat dan aman.</translation>
 <translation id="1390943217516275883">Izinkan Brave untuk menunjukkan statistik privasi Anda</translation>
@@ -535,11 +534,10 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="2918322085844739869">4</translation>
 <translation id="7267186368513450821">5</translation>
 <translation id="6972003925509023890">1 BAT</translation>
+<translation id="2222442600106681391">2 BAT</translation>
+<translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
 <translation id="8762169086048682708">10 BAT</translation>
-<translation id="7921571842056754133">15 BAT</translation>
-<translation id="3605291544485823713">25 BAT</translation>
-<translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0,00 BAT</translation>
 <translation id="4193129043743994339">0,00 USD</translation>
 <translation id="8792121506918889955">Kebijakan penanganan IP WebRTC</translation>
@@ -570,7 +568,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="375882617301124395">Cadangkan dompet kripto Anda</translation>
 <translation id="8289942708804097960">Beli kripto dengan kartu kredit atau debit.</translation>
 <translation id="841880029259839903">Kirim kripto atau transfer dari satu akun ke akun lainnya.</translation>
-<translation id="8982246458261383692">Tukar aset kripto dengan agregrator DEX Brave.</translation>
+<translation id="8226778393040773102">Tukar aset kripto dengan agregrator DEX Brave.</translation>
 <translation id="1783600039044302171">Amankan kripto Anda dengan kata sandi</translation>
 <translation id="3726490322412361740">Masukkan Kata Sandi</translation>
 <translation id="3038243139480464605">Verifikasi kata sandi</translation>
@@ -596,12 +594,16 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="9120654436199628567">Pulihkan akun kripto</translation>
 <translation id="4811736040444856406">Tampilkan frasa pemulihan</translation>
 <translation id="283071225285270357">Masukkan frasa pemulihan Anda</translation>
+<translation id="3943857333388298514">Tempelkan</translation>
+<translation id="3331452756822160641">Kata Sandi Baru</translation>
+<translation id="4854035885012188958">Saya mengembalikan dari Dompet Kripto Brave lama</translation>
 <translation id="2339124864228588937">Verifikasi frasa pemulihan</translation>
 <translation id="3747079125031086337">Pilih kata-kata di frasa pemulihan Anda dengan urutan yang benar.</translation>
 <translation id="6518133107902771759">Verifikasi</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
 <translation id="9111102763498581341">Buka kunci</translation>
 <translation id="6657585470893396449">Sandi</translation>
+<translation id="5619264711680220002">Buka kunci biometrik</translation>
 <translation id="5168349973342709369">Masukkan kata sandi untuk membuka kunci dompet</translation>
 <translation id="1144810021918451336">Tidak melindungi Anda terhadap situs-situs, unduhan, dan ekstensi berbahaya.</translation>
 <translation id="5760476995887363522">Frasa tidak sesuai. Silakan coba lagi.</translation>
@@ -614,6 +616,8 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="6159566011642056819">Ke (estimasi)</translation>
 <translation id="6998989275928107238">Ke</translation>
 <translation id="2589431635772931954">Alamat atau URL</translation>
+<translation id="5517732667776806421">Informasi checksum tidak ada</translation>
+<translation id="4006711930669471508">Informasi checksum tidak valid</translation>
 <translation id="632241521608275119">Toleransi selip</translation>
 <translation id="1987317783729300807">Akun</translation>
 <translation id="3535654229833214438">Transaksi</translation>
@@ -646,7 +650,6 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="7420359180991315365">Lanjutkan ke Wyre</translation>
 <translation id="8488282162676695335">Dompet Brave.</translation>
 <translation id="3784455785234192852">Kunci</translation>
-<translation id="5040262127954254034">Privasi</translation>
 <translation id="8239147115686034860">Secara otomatis mengunci Brave Wallet</translation>
 <translation id="414639769490080648">Jumlah menit untuk menunggu hingga Brave Wallet terkunci secara otomatis</translation>
 <translation id="4993345308607970390">Atur Ulang Brave Wallet</translation>
@@ -766,7 +769,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="6666273175654835609">Terkirim</translation>
 <translation id="2331676293859649642">Dikonfirmasi</translation>
 <translation id="1165039591588034296">Error</translation>
-<translation id="4354768722613827480">Biaya: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="8364362220156372884">Biaya: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Apakah Anda menggunakan peramban web tercepat?</translation>
 <translation id="2065971949051836200">Internet yang 3x lebih cepat sudah tersedia di telepon Anda. Gunakan Brave untuk semua penjelajahan web Anda.</translation>
 <translation id="2888278614497184977">Brave = penjelajahan web 3x lebih cepat</translation>
@@ -791,7 +794,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1254969878422524947">Batas tip per-bensin (Gwei)</translation>
 <translation id="7373308452149471621">Batas harga per-bensin (Gwei)</translation>
 <translation id="5891811606602061966">Gagal mengimpor akun, silakan coba lagi.</translation>
-<translation id="7033470144757208254">Brave menggunakan 0x sebagai agregator DEX.</translation>
+<translation id="1822506443689803572">Brave menggunakan 0x sebagai agregator DEX.</translation>
 <translation id="5061574358754621254">Data harga disediakan oleh CoinGecko</translation>
 <translation id="4626407663177532837">Penawaran termasuk 0,875% biaya Brave.</translation>
 <translation id="8574289650879708853">Tambahkan aset khusus</translation>
@@ -807,7 +810,6 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="3506416339268164412">Alamat penerima adalah alamat kontrak token</translation>
 <translation id="1543259266592091784">Tambah dana</translation>
 <translation id="3494964159182650590">Ringkasan Rewards</translation>
-<translation id="7470079236088529568">Total Hibah yang Diklaim</translation>
 <translation id="590733288489975971">Imbalan dari Ads</translation>
 <translation id="207268487070188114">Tip Satu Kali</translation>
 <translation id="64394831139134288">Dompet saya</translation>
@@ -817,7 +819,45 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1549705559752367917">Kirim Tip</translation>
 <translation id="6727102863431372879">Set</translation>
 <translation id="381822214767083050">Kontribusi bulanan</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> Dolar AS</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="5802665280774361839">Tampilkan melengkapi-otomatis di bilah alamat</translation>
+<translation id="1241283133946520352">Jaringan</translation>
+<translation id="1062463687579789365">Kustomisasi jaringan dompet</translation>
+<translation id="2512821599885971349">Tambahkan jaringan</translation>
+<translation id="1330032157352961756">ID rantai baru</translation>
+<translation id="8104880458203052748">Format tidak valid, ID rantai adalah angka positif</translation>
+<translation id="3423620355610881890">Sebuah angka desimal positif</translation>
+<translation id="726121047592132939">Nama rantai baru</translation>
+<translation id="1034112277864078119">Masukkan nama rantai</translation>
+<translation id="6003394258999088868">Bidang ini tidak dapat dikosongkan</translation>
+<translation id="4672314527143443556">Nama mata uang rantai</translation>
+<translation id="4652114030688989556">Masukkan nama mata uang</translation>
+<translation id="1079960017149736097">Simbol mata uang rantai</translation>
+<translation id="1288105009659846362">Masukkan simbol mata uang</translation>
+<translation id="665660671251623018">Desimal mata uang rantai</translation>
+<translation id="182619028057179895">Format tidak valid, desimal mata uang adalah angka positif</translation>
+<translation id="2978054488731497946">Masukkan desimal mata uang</translation>
+<translation id="3047726704186619366">URL Ikon</translation>
+<translation id="2487558607408469181">Blokir URL penjelajah</translation>
+<translation id="7059127752542505809">Masukkan URL</translation>
+<translation id="2156993118928861787">Alamat tidak valid</translation>
+<translation id="6889920539620318793">Ditetapkan sebagai aktif</translation>
+<translation id="2653659639078652383">Kirim</translation>
+<translation id="8853725596990766789">Ubah jumlah</translation>
+<translation id="1765217911817124376">Aktifkan Brave News</translation>
+<translation id="4272190451231642425">Mengirim laporan kerusakan secara otomatis</translation>
+<translation id="2239766974964486304">Laporan kerusakan membantu Brave meningkatkan stabilitas produk bagi semua pengguna.</translation>
+<translation id="2804710924397009224">Sembunyikan Ikon Brave Rewards</translation>
+<translation id="7289740269305509613">Sembunyikan Ikon Brave Rewards</translation>
+<translation id="2260513517001048012">CATATAN: Brave Verified Creator ini belum mengonfigurasi akunnya untuk menerima kontribusi dari pengguna Brave. Peramban Anda akan terus mencoba berkontribusi sampai mereka memverifikasi, atau hingga lewat 90 hari.</translation>
+<translation id="7921571842056754133">15 BAT</translation>
+<translation id="3605291544485823713">25 BAT</translation>
+<translation id="817946134291678509">50 BAT</translation>
+<translation id="8982246458261383692">Tukar aset kripto dengan agregrator DEX Brave.</translation>
+<translation id="5040262127954254034">Privasi</translation>
+<translation id="4354768722613827480">Biaya: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="7033470144757208254">Brave menggunakan 0x sebagai agregator DEX.</translation>
+<translation id="7470079236088529568">Total Hibah yang Diklaim</translation>
+<translation id="8845154268466251503">BAT</translation>
 </translationbundle>

@@ -15,18 +15,19 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (شناسه افزونه "<ph name="EXTENSION_ID"/>") در Brave مجاز نیست.</translation>
 <translation id="6786747875388722282">افزونه‌ها</translation>
 <translation id="984275831282074731">روش‌های پرداخت</translation>
-<translation id="3699882589215410581">Widevine را نصب و اجرا کنید</translation>
+<translation id="1990886731975529483">Google Widevine را نصب و اجرا کنید</translation>
 <translation id="8926389886865778422">دوباره سؤال نشود</translation>
 <translation id="5249433283143453448">از مؤلفه مدیریت حقوق دیجیتال (DRM) Widevine برای مشاهده ویدیوی محافظت‌شده در حال پخش جریانی و سایر محتواها در مرورگر استفاده کنید.</translation>
 <translation id="6241402707160226266">پنجره خصوصی با Tor</translation>
 <translation id="8762452230727230396">Tor نشانی IP شما را از سایت‌هایی که بازدید می‌کنید، مخفی می‌کند.</translation>
 <translation id="1369311132025451972">هدایت خودکار سایت‌های ‎Onion</translation>
 <translation id="2843777623071353503">در صورت وجود، Brave سرویس onion وب‌سایت یا دامنه ‎.onion را در پنجره Tor باز خواهد کرد.</translation>
-<translation id="8053096063396012732">نصب Widevine</translation>
-<translation id="4840334696217618631">برای فعال کردن Widevine، مرورگر را دوباره راه‌اندازی کنید</translation>
-<translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
-
-با نصب این افزونه، «شرایط استفاده از Google Widevine» را می‌پذیرید و موافقت می‌کنید Brave مسئول هرگونه خسارت یا زیان مرتبط با استفاده شما از Google Widevine نیست.</translation>
+<translation id="4900351245762303149">Google Widevine را نصب کنید</translation>
+<translation id="2313383941300459392">برای فعال کردن Google Widevine، مرورگر را دوباره راه‌اندازی کنید</translation>
+<translation id="2200626478572277092">گاهی برای پخش رسانه در صفحه وب، به Widevine نیاز است. Widevine یک افزونه Google است که از سرورهای Google بارگذاری می‌شود و Brave نمی‌تواند آن را بررسی کند. نصب کردن آن به منزله موافقت شما با شرایط استفاده Google می‌باشد.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>. یا بعداً در <ph name="SETTINGS_EXTENIONS_LINK"/> تغییر دهید.</translation>
+<translation id="6229752134959014186">درباره Widevine بیشتر بدانید</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> از شما می‌خواهد که</translation>
 <translation id="410351446219883937">پخش خودکار</translation>
 <translation id="3218385319396786393">پخش خودکار در این صفحه مسدود شد</translation>
 <translation id="4988333904713528597">همیشه در <ph name="HOST"/> به پخش خودکار اجازه داده شود</translation>
@@ -35,6 +36,8 @@
 <translation id="6583467242903731748">وقتی سایتی می‌خواهد به «رابط برنامه‌نویسی کاربردی ارائه‌دهنده اتریم» دسترسی پیدا کند، سؤال شود</translation>
 <translation id="7017590444693657895">مسدود کردن دسترسی سایت‌ها به رابط برنامه‌نویسی کاربردی ارائه‌دهنده اتریم</translation>
 <translation id="8988939298652262600">Brave ایمنی و امنیت افزونه‌ها را بررسی نمی‌کند. فقط درصورتی‌که به برنامه‌نویس اعتماد دارید، این افزونه را نصب کنید.</translation>
+<translation id="933652931229970927">ارسال خودکار گزارش‌های عیب‌یابی</translation>
+<translation id="1679356339067548863">وقتی «مروگر Brave» خراب یا متوقف می‌شود، با ارسال خودکار گزارش‌های عیب‌یابی، به بهبود پایداری محصول Brave کمک کنید.</translation>
 <translation id="8081858229109418493">نام و آیکون نمایه</translation>
 <translation id="6438096877646138757">سایت‌هایی که با بسته شدن، کوکی‌ها را پاک می‌کنند</translation>
 <translation id="2988792685798128092">پاک کردن موقع بسته شدن سایت</translation>
@@ -42,7 +45,7 @@
 <translation id="1692470335103807198">دریافت طرح‌های زمینه بیشتر</translation>
 <translation id="2906510232093002459">تصاویر پیش‌فرض Brave</translation>
 <translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
-<translation id="6123134130710658846">پنهان کردن دکمه «پاداش‌های Brave»</translation>
+<translation id="6333347122924254968">نمایش نماد Brave Rewards در نوار نشانی</translation>
 <translation id="1811404036171336214">نشانک‌ها همیشه در صفحه برگه جدید نمایش داده شود</translation>
 <translation id="1643029991199044105">با Ctrl-Tab بین آخرین برگه‌های استفاده‌شده جابه‌جا شوید</translation>
 <translation id="1013121820689882118">تندخوان</translation>
@@ -76,7 +79,7 @@
 <translation id="5733490796524078528">دکمه‌های انعام</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">صفحه برگه جدید</translation>
 <translation id="1988804048511540801">صفحه برگه جدید نشان می‌دهد</translation>
 <translation id="2970343821770026391">داشبورد</translation>
@@ -89,12 +92,12 @@
 <translation id="8612763432858587652">خروج از پنجره خصوصی</translation>
 <translation id="8760415064721320867">پنجره خصوصی با Tor</translation>
 <translation id="2055363275850890030">پنجره خصوصی</translation>
-<translation id="8934172355414207733">پنجره خصوصی با Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">این پنجره‌ای خصوصی با Tor است</translation>
 <translation id="1037341607922068025">باز کردن پنجره خصوصی با Tor</translation>
-<translation id="5410152065859052603">تور</translation>
 <translation id="1725356094208762656">باز کردن در Tor</translation>
-<translation id="7643538479215207633">باز کردن بااستفاده از IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">انتشار و دریافت فایل‌ها از IPFS</translation>
 <translation id="1672270084584211506">Onion دردسترس است</translation>
 <translation id="406832631167785034">باز کردن استفاده از آدرس ‎.onion</translation>
@@ -105,7 +108,6 @@
 <translation id="4227945450504703638">صدای انتخاب‌شده</translation>
 <translation id="7895302206188277628">محتوای این پیوند</translation>
 <translation id="3654831858282189202">انتشار با کلید IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">وارد کردن متن انتخاب شده به IPFS</translation>
 <translation id="6925604404524625582">وارد کردن و کپی کردن پیوند در عکس فوری IPFS</translation>
 <translation id="1434416574322382019">Window with Tor خصوصی جدید</translation>
@@ -238,8 +240,8 @@
 <translation id="6358469157239228181">این نام قابل استفاده نیست</translation>
 <translation id="5761731140570209168">افزودن رشته اتصال همتای جدید</translation>
 <translation id="2082206983920804886">کلید چرخش</translation>
-<translation id="2521133093532260474">متوقف کردن گره محلی امکان‌پذیر نیست</translation>
-<translation id="86879877003581729">راه‌اندازی گره محلی امکان‌پذیر نیست</translation>
+<translation id="5078501082919354191">متوقف کردن گره IPFS محلی Brave امکان‌پذیر نیست</translation>
+<translation id="5687424953196903465">راه‌اندازی گره IPFS محلی Brave امکان‌پذیر نیست</translation>
 <translation id="6476061084931271248">برای اعمال تغییرات، گره را مجدداً راه‌اندازی کنید</translation>
 <translation id="3754226427671882382">راه‌اندازی مجدد گره</translation>
 <translation id="949667118776341807">چرخش</translation>
@@ -254,17 +256,22 @@
 <translation id="616058968889448209">خطای راه‌اندازی سرویس IPFS، اطلاعات بیشتر در <ph name="BEGIN_LINK"/>diagnostic page<ph name="END_LINK"/> موجود است</translation>
 <translation id="6912148685459054619">کلید «<ph name="KEY_NAME"/>» وارد نشد</translation>
 <translation id="3364053282600191535">کلید '<ph name="KEY_NAME"/>' صادر نشد</translation>
-<translation id="8860039076160511438">بازنشانی کیف پول</translation>
+<translation id="4993345308607970390">بازنشانی کیف پول Brave</translation>
+<translation id="5975930666279943472">پاک کردن اطلاعات نانس و تراکنش کیف پول</translation>
+<translation id="5693968582510626466">ممکن است پاک کردن تراکنش‌ها برای توسعه‌دهندگان یا هنگام پاک کردن وضعیت در سرور محلی مفید باشد</translation>
 <translation id="6369495274982305511">مطمئنید می‌خواهید کیف پول را بازنشانی کنید؟ اگر کیف پولتان پشتیبان‌گیری شده باشد، بازنشانی باعث از بین رفتن همه داده‌های حساب می‌شود (از جمله وجود مربوطه). برای تأیید، «<ph name="CONFIRMATION_PHRASE"/>» را تایپ کنید.</translation>
+<translation id="9216386092464743272">مطمئنید می‌خواهید همه اطلاعات نانس و تراکنش‌های کیف پول خود را بازنشانی کنید؟ اغلب توسعه‌دهندگانی از این گزینه استفاده می‌کنند که سرور آزمایشی محلی را اجرا می‌کنند. برای تأیید، «<ph name="CONFIRMATION_PHRASE"/>» را تایپ کنید.</translation>
+<translation id="3752403403443723332">کیف پول شما بازنشانی شده است.</translation>
+<translation id="594766067816395072">اطلاعات تراکنش کیف پول شما بازنشانی شده است.</translation>
 <translation id="1426410128494586442">بله</translation>
 <translation id="8275038454117074363">وارد کردن</translation>
 <translation id="3654980960391973513">ایجاد</translation>
 <translation id="5531501313997312487">شروع گره</translation>
 <translation id="9170907049676078643">روشی برای تحلیل منابع IPFS</translation>
 <translation id="1327977588028644528">دروازه</translation>
-<translation id="80225669816651290">گره محلی</translation>
+<translation id="1195880978080389104">گره IPFS محلی Brave</translation>
 <translation id="4927734062756955434">نشانی دروازه عمومی IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>بیشتر بدانید<ph name="END_LINK_MPL"/>در مورد ملاحظات حریم خصوصی گره محلی IPFS و دروازه.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>درباره<ph name="END_LINK_MPL"/> گره IPFS محلی Brave و ملاحظات حریم خصوصی درگاه بیشتر بدانید.</translation>
 <translation id="8425213833346101688">تغییر</translation>
 <translation id="557281710253742286">تنظیم دروازه IPFS</translation>
 <translation id="8571837315037233299">نشانی دروازه</translation>
@@ -273,7 +280,7 @@
 <translation id="7703184801853248830">نشانی دروازه نامعتبر است</translation>
 <translation id="7690058578502751948">فقط یک گذرگاه IPFS معتبر با جداسازی Origin فعال می‌تواند در Brave استفاده شود</translation>
 <translation id="585868419599255817">بازگشت دروازه عمومی IPFS</translation>
-<translation id="207763736230883589">اگر دسترسی به گره محلی ممکن نیست، به‌طور خودکار به دروازه IPFS عمومی برگردانده می‌شوید.</translation>
+<translation id="2618080188892567155">اگر دسترسی به گره IPFS محلی Brave ممکن نیست، به‌طور خودکار به درگاه IPFS عمومی برگردانده می‌شوید.</translation>
 <translation id="4107552920076294723">منابع IPFS را به دروازه IPFS پیکربندی‌شده هدایت کنید</translation>
 <translation id="6494857428933042381">وقتی منبع دروازه IPFS نمایان می‌شود، به‌طور خودکار از دروازه پیکربندی‌شده برای تحلیل‌های IPFS استفاده شود.</translation>
 <translation id="8655170717758778983">درصورت امکان، به‌طور خودکار ازطریق DNSLink به صفحات IPFS هدایت می‌شود</translation>
@@ -346,10 +353,9 @@
 <translation id="780301667611848630">نه متشکرم</translation>
 <translation id="5039804452771397117">اجازه دادن</translation>
 <translation id="7053983685419859001">مسدود کردن</translation>
-<translation id="7815301689257843278">آیا گزارش‌های خرابی به‌طور خودکار ارسال شود تا Brave بتواند از برور مجدد این مشکل جلوگیری کند؟</translation>
 <translation id="660171790038410175">از <ph name="BROWSER_NAME"/> به‌طور غیرمنتظره خارج شدید.</translation>
 <translation id="1324417023773393937">مرورگر Brave</translation>
-<translation id="1068069727470515940">هروقت بخواهید می‌توانید دوباره <ph name="SETTING_TEXT"/> را تغییر دهید.</translation>
+<translation id="7276554663454265692">هروقت بخواهید می‌توانید <ph name="SETTING_TEXT"/> را در تنظیمات مرورگر تغییر دهید.</translation>
 <translation id="6873781976650514089">این تنظیم</translation>
 <translation id="6040143037577758943">بستن</translation>
 <translation id="5600566490506283344">اعلان آگهی Brave</translation>
@@ -446,10 +452,28 @@
 <translation id="2487558607408469181">آدرس وب کاوشگر بلوک</translation>
 <translation id="6301398959353668507">این فیلد نباید خالی باشد.</translation>
 <translation id="7504462451153306677">قالب نامعتبر است، شناسه‌ی زنجیره یک عدد مثبت است</translation>
-<translation id="8325036459845654666">این شبکه قبلاً اضافه شده است.</translation>
 <translation id="650071759190249039">خطای داخلی، افزودن شبکه امکان‌پذیر نیست.</translation>
 <translation id="868529041590572443">لطفاً همه اطلاعات مربوط به ارز بومی را وارد کنید</translation>
 <translation id="1062463687579789365">سفارشی‌سازی شبکه‌های کیف پول</translation>
 <translation id="2234108191702901162">افزودن شبکه امکان‌پذیر نیست</translation>
 <translation id="2618193846561624884">می‌خواهید شبکه موجود را به‌روزرسانی کنید؟</translation>
+<translation id="3699882589215410581">Widevine را نصب و اجرا کنید</translation>
+<translation id="8053096063396012732">نصب Widevine</translation>
+<translation id="4840334696217618631">برای فعال کردن Widevine، مرورگر را دوباره راه‌اندازی کنید</translation>
+<translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
+
+با نصب این افزونه، «شرایط استفاده از Google Widevine» را می‌پذیرید و موافقت می‌کنید Brave مسئول هرگونه خسارت یا زیان مرتبط با استفاده شما از Google Widevine نیست.</translation>
+<translation id="6123134130710658846">پنهان کردن دکمه «پاداش‌های Brave»</translation>
+<translation id="7038489306457318096">Github</translation>
+<translation id="8934172355414207733">پنجره خصوصی با Tor</translation>
+<translation id="7643538479215207633">باز کردن بااستفاده از IPFS</translation>
+<translation id="2521133093532260474">متوقف کردن گره محلی امکان‌پذیر نیست</translation>
+<translation id="86879877003581729">راه‌اندازی گره محلی امکان‌پذیر نیست</translation>
+<translation id="8860039076160511438">بازنشانی کیف پول</translation>
+<translation id="80225669816651290">گره محلی</translation>
+<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>بیشتر بدانید<ph name="END_LINK_MPL"/>در مورد ملاحظات حریم خصوصی گره محلی IPFS و دروازه.</translation>
+<translation id="207763736230883589">اگر دسترسی به گره محلی ممکن نیست، به‌طور خودکار به دروازه IPFS عمومی برگردانده می‌شوید.</translation>
+<translation id="7815301689257843278">آیا گزارش‌های خرابی به‌طور خودکار ارسال شود تا Brave بتواند از برور مجدد این مشکل جلوگیری کند؟</translation>
+<translation id="1068069727470515940">هروقت بخواهید می‌توانید دوباره <ph name="SETTING_TEXT"/> را تغییر دهید.</translation>
+<translation id="8325036459845654666">این شبکه قبلاً اضافه شده است.</translation>
 </translationbundle>
