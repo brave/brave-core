@@ -1436,6 +1436,9 @@ Are you sure you want to do this?
         <message name="IDS_SPEEDREADER_DISABLE_THIS_SITE" desc="Label to enable or disable speedreader per site">
           Turn on/off reader mode just for this website. To turn off Speedreader for your entire browser profile, visit
         </message>
+        <message name="IDS_ACCNAME_SPEEDREADER_DISABLE_THIS_SITE_TOGGLE" desc="Accessible text for the toggle to enable or disable speedreader per site">
+          Toggle to turn on/off reader mode just for this website.
+        </message>
         <message name="IDS_PAGE_IS_DISTILLED" desc="Speedreader is enabled on this page">
           in Speedreader
         </message>
