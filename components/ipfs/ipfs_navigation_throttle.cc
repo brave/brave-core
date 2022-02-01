@@ -192,8 +192,11 @@ IpfsNavigationThrottle::ShowIPFSOnboardingInterstitial() {
   // Get the page content before giving up ownership of |page|.
   std::string page_content = page->GetHTMLContents();
 
-  security_interstitials::SecurityInterstitialTabHelper::AssociateBlockingPage(
-      handle, std::move(page));
+  // An interstitial should not be shown in a prerendered page.
+  if (handle->IsInPrimaryMainFrame()) {
+    security_interstitials::SecurityInterstitialTabHelper::
+        AssociateBlockingPage(handle, std::move(page));
+  }
   return content::NavigationThrottle::ThrottleCheckResult(
       content::NavigationThrottle::CANCEL, net::ERR_BLOCKED_BY_CLIENT,
       page_content);
