@@ -178,6 +178,7 @@ provideStrings({
   braveWalletCreateAccountEthereumDescription: 'Supports EVM compatible assets on the Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)',
   braveWalletCreateAccountSolanaDescription: 'Supports SLP compatible assets on the Solana blockchain',
   braveWalletCreateAccountFilecoinDescription: 'Store FIL asset',
+  braveWalletFilecoinPrivateKeyProtocol: 'Private key $1',
 
   // Import Account
   braveWalletImportAccountDisclaimer: 'These accounts can be used with web 3 DApps, and can be shown in your portfolio. However, note that secondary accounts cannot be restored via recovery phrase from your primary account backup.',
@@ -198,7 +199,7 @@ provideStrings({
   braveWalletAddCheckedAccountsHardwareWallet: 'Add checked accounts',
   braveWalletLoadMoreAccountsHardwareWallet: 'Load more',
   braveWalletLoadingMoreAccountsHardwareWallet: 'Loading more...',
-  braveWalletSearchScannedAccounts: 'Search account 0x',
+  braveWalletSearchScannedAccounts: 'Search account',
   braveWalletSwitchHDPathTextHardwareWallet: 'Try switching HD path (above) if you cannot find the account you are looking for.',
   braveWalletLedgerLiveDerivationPath: 'Ledger Live',
   braveWalletLedgerLegacyDerivationPath: 'Legacy (MEW/MyCrypto)',
