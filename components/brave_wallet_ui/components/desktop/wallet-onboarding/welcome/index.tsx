@@ -22,12 +22,12 @@ export interface Props {
   onSetup: () => void
   onRestore: () => void
   onClickImportMetaMask: () => void
-  metaMaskWalletDetected: boolean
-  cryptoWalletsDetected: boolean
+  isMetaMaskInitialized: boolean
+  isCryptoWalletsInitialized: boolean
 }
 
 function OnboardingWelcome (props: Props) {
-  const { onRestore, onSetup, onClickImportMetaMask, metaMaskWalletDetected, cryptoWalletsDetected } = props
+  const { onRestore, onSetup, onClickImportMetaMask, isMetaMaskInitialized, isCryptoWalletsInitialized } = props
 
   const onClickSettings = () => {
     chrome.tabs.create({ url: 'chrome://settings/wallet' }, () => {
@@ -47,7 +47,7 @@ function OnboardingWelcome (props: Props) {
       <Description>{getLocale('braveWalletWelcomeDescription')}</Description>
       <NavButton buttonType='primary' text={getLocale('braveWalletWelcomeButton')} onSubmit={onSetup} />
       <RestoreButton onClick={onRestore}>{getLocale('braveWalletWelcomeRestoreButton')}</RestoreButton>
-      {metaMaskWalletDetected &&
+      {isMetaMaskInitialized &&
         <>
           <Divider />
           <ImportButton onClick={onClickImportMetaMask}>
@@ -56,7 +56,7 @@ function OnboardingWelcome (props: Props) {
           </ImportButton>
         </>
       }
-      {cryptoWalletsDetected &&
+      {isCryptoWalletsInitialized &&
         <CryptoWalletsAlertBox>
           <CryptoWalletsAlertTitle>{getLocale('braveWalletCryptoWalletsDetected')}</CryptoWalletsAlertTitle>
           <CryptoWalletsAlertDescription>{getLocale('braveWalletCryptoWalletsDescriptionOne')}</CryptoWalletsAlertDescription>
