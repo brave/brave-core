@@ -114,9 +114,10 @@ struct EditUserAssetsView: View {
                 EditTokenView(assetStore: store)
                   .osAvailabilityModifiers { content in
                     if #available(iOS 15.0, *) {
-                      modifier(SwipeActionsViewModifier_FB9812596 {
-                        removeCustomToken(store.token)
-                      })
+                      content
+                        .modifier(SwipeActionsViewModifier_FB9812596 {
+                          removeCustomToken(store.token)
+                        })
                     } else {
                       content
                         .contextMenu {
