@@ -6,11 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_DOMAIN_BLOCK_TAB_STORAGE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_DOMAIN_BLOCK_TAB_STORAGE_H_
 
+#include "base/memory/ref_counted.h"
+#include "brave/components/brave_shields/browser/blocked_domain_1pes_lifetime.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
 class WebContents;
 }  // namespace content
+
+namespace ephemeral_storage {
+class EphemeralStorageService;
+}  // namespace ephemeral_storage
 
 namespace brave_shields {
 
@@ -32,13 +38,20 @@ class DomainBlockTabStorage
   void SetIsProceeding(bool is_proceeding) { is_proceeding_ = is_proceeding; }
   bool IsProceeding() const { return is_proceeding_; }
 
+  void Enable1PESForUrlIfPossible(
+      ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
+      const GURL& url,
+      base::OnceCallback<void()> on_ready);
+  void DropBlockedDomain1PESLifetime();
+
  private:
-  explicit DomainBlockTabStorage(content::WebContents* contents) {}
+  explicit DomainBlockTabStorage(content::WebContents* contents);
   friend class content::WebContentsUserData<DomainBlockTabStorage>;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
   // Flag stores whether we are in the middle of a proceed action.
   bool is_proceeding_ = false;
+  scoped_refptr<BlockedDomain1PESLifetime> blocked_domain_1pes_lifetime_;
 };
 
 }  // namespace brave_shields
