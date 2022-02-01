@@ -9,10 +9,10 @@
 
 #include "base/feature_list.h"
 #include "base/test/scoped_feature_list.h"
-#include "bat/ads/internal/features/user_activity/user_activity_features.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
+#include "bat/ads/internal/user_activity/user_activity_features.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

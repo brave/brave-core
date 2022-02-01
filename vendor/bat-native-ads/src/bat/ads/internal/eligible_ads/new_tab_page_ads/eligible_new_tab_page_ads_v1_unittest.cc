@@ -12,7 +12,7 @@
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_unittest_util.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"
 
