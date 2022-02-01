@@ -53,6 +53,25 @@ private class SearchDelegate: NSObject, UISearchBarDelegate, ObservableObject {
   }
 }
 
+// Modifier workaround for FB9812596 to avoid crashing on iOS 14 on Release builds
+@available(iOS 15.0, *)
+private struct SearchableViewModifier_FB9812596: ViewModifier {
+  var text: Binding<String>
+  var prompt: String?
+  var onSubmit: (() -> Void)?
+  
+  func body(content: Content) -> some View {
+    content.searchable(
+      text: text,
+      placement: .navigationBarDrawer(displayMode: .always),
+      prompt: prompt.map(Text.init)
+    )
+    .onSubmit(of: .search) {
+      onSubmit?()
+    }
+  }
+}
+
 extension View {
   /// Adds a search bar to the parent navigation controller to simply filter the contents of the View
   ///
@@ -63,14 +82,7 @@ extension View {
     onSubmit: (() -> Void)? = nil
   ) -> some View {
     if #available(iOS 15.0, *) {
-      searchable(
-        text: text,
-        placement: .navigationBarDrawer(displayMode: .always),
-        prompt: prompt.map(Text.init)
-      )
-      .onSubmit(of: .search) {
-        onSubmit?()
-      }
+      modifier(SearchableViewModifier_FB9812596(text: text, prompt: prompt, onSubmit: onSubmit))
     } else {
       modifier(FilterableViewModifier(query: text, prompt: prompt, onSubmit: onSubmit))
     }

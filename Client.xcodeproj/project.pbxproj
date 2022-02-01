@@ -6925,9 +6925,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 288A2D9F1AB8B3260023ABC3 /* Build configuration list for PBXNativeTarget "Shared" */;
 			buildPhases = (
+				288A2D831AB8B3260023ABC3 /* Headers */,
 				288A2D811AB8B3260023ABC3 /* Sources */,
 				288A2D821AB8B3260023ABC3 /* Frameworks */,
-				288A2D831AB8B3260023ABC3 /* Headers */,
 				288A2D841AB8B3260023ABC3 /* Resources */,
 			);
 			buildRules = (
@@ -6960,9 +6960,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2FCAE2331ABB51F900877008 /* Build configuration list for PBXNativeTarget "Storage" */;
 			buildPhases = (
+				2FCAE2171ABB51F800877008 /* Headers */,
 				2FCAE2151ABB51F800877008 /* Sources */,
 				2FCAE2161ABB51F800877008 /* Frameworks */,
-				2FCAE2171ABB51F800877008 /* Headers */,
 				2FCAE2181ABB51F800877008 /* Resources */,
 			);
 			buildRules = (
@@ -7000,9 +7000,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5D1DC53A20AC9AFB00905E5A /* Build configuration list for PBXNativeTarget "Data" */;
 			buildPhases = (
+				5D1DC51020AC9AF900905E5A /* Headers */,
 				5D1DC50E20AC9AF900905E5A /* Sources */,
 				5D1DC50F20AC9AF900905E5A /* Frameworks */,
-				5D1DC51020AC9AF900905E5A /* Headers */,
 				5D1DC51120AC9AF900905E5A /* Resources */,
 			);
 			buildRules = (
@@ -7039,9 +7039,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5DE7689B20B3456E00FF5533 /* Build configuration list for PBXNativeTarget "BraveShared" */;
 			buildPhases = (
+				5DE7688120B3456C00FF5533 /* Headers */,
 				5DE7687F20B3456C00FF5533 /* Sources */,
 				5DE7688020B3456C00FF5533 /* Frameworks */,
-				5DE7688120B3456C00FF5533 /* Headers */,
 				5DE7688220B3456C00FF5533 /* Resources */,
 			);
 			buildRules = (
@@ -7120,8 +7120,8 @@
 			buildPhases = (
 				F979BE0F25BCC098009B6ACF /* Build packaged javascript files */,
 				2779B7052159297D0044A102 /* Run SwiftLint */,
-				F84B21BA1A090F8100AAB793 /* Sources */,
 				0A43293F21B1CB810041625B /* Headers */,
+				F84B21BA1A090F8100AAB793 /* Sources */,
 				F84B21BC1A090F8100AAB793 /* Resources */,
 				28CE83DE1A1D1E7C00576538 /* Frameworks */,
 				F84B22531A0920C600AAB793 /* Embed App Extensions */,

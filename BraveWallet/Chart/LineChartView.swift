@@ -268,26 +268,27 @@ extension CGPoint {
 
 // MARK: - Accessibility
 
-private struct ChartAccessibilityViewModifier: ViewModifier {
+// Modifier workaround for FB9812596 to avoid crashing on iOS 14 on Release builds
+@available(iOS 15.0, *)
+private struct ChartAccessibilityModifier_FB9812596: ViewModifier {
   var title: String
   var dataPoints: [DataPoint]
   
   func body(content: Content) -> some View {
-    if #available(iOS 15.0, *) {
-      content
-        .accessibilityElement()
-        .accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
-        .accessibilityLabel(title)
-    } else {
-      content
-        .accessibilityLabel(title)
-    }
+    content.accessibilityChartDescriptor(LineChartDescriptor(title: title, values: dataPoints))
   }
 }
 
 extension View {
-  func chartAccessibility(title: String, dataPoints: [DataPoint]) -> some View {
-    modifier(ChartAccessibilityViewModifier(title: title, dataPoints: dataPoints))
+  @ViewBuilder func chartAccessibility(title: String, dataPoints: [DataPoint]) -> some View {
+    Group {
+      if #available(iOS 15.0, *) {
+        self.modifier(ChartAccessibilityModifier_FB9812596(title: title, dataPoints: dataPoints))
+      } else {
+        self
+      }
+    }
+    .accessibilityLabel(title)
   }
 }
 
