@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "รีเฟรชสถานะ",
+    "message": "รีเฟรช",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards มีปัญหาอยู่ในขณะนี้ โปรดลองใหม่ภายหลัง",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "ตรวจสอบสถานะ",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "ยินดีด้วย! คุณได้รับรางวัล $month$ ของคุณแล้ว!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "คุณจะได้รับรางวัลของ $month$ จำนวน $amount$ ของคุณใน $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "รางวัลของ $month$ จำนวน $amount$ ของคุณใกล้เข้ามาแล้ว เตรียมตัวให้พร้อม!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "ไปยังบัญชี $provider$ ของฉัน",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "ออกจากระบบ $provider$",
+    "message": "ออกจาก $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "รอดำเนินการ",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "การจ่าย $amount$ จะเริ่มดำเนินการใน $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Rewards จาก Ads",

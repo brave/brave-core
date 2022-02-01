@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Kito indėlio data</translation>
 <translation id="1397381065858030856">Peržiūrėtos svetainės</translation>
 <translation id="2365740070488517695">Arbatpinigiai</translation>
-<translation id="4803566747788858771">Skirkite arbatpinigių turinio kūrėjams tiesiogiai, kai naršote naudodamiesi „Rewards Panel“ ar naudodamiesi įterpiamų arbatpinigių mygtuku įvairiose svetainėse, įskaitant „Twitter“, „Reddit“ ir „GitHub“.</translation>
+<translation id="5993195614988368256">Skirkite arbatpinigių turinio kūrėjams tiesiogiai, kai naršote naudodamiesi „Rewards Panel“ ar naudodamiesi įterpiamų arbatpinigių mygtuku įvairiose svetainėse, įskaitant „Twitter“, „Reddit“ ir „GitHub“.</translation>
 <translation id="5012991400231464322">Mėnesiniai indėliai</translation>
 <translation id="2084351799622920487">Nustatykite pasikartojančius mėnesinius indėlius, kad galėtumėte nuolat paremti svetaines.</translation>
 <translation id="8150772404570015166">Dar nenustatyta jokių mėnesinių indėlių.</translation>
@@ -255,6 +255,8 @@
 <translation id="9074594632540931067">Klaida: BAT nepasiekiami</translation>
 <translation id="413458922997276130">Jūsų „Uphold“ paskyra šiuo metu užblokuota.</translation>
 <translation id="3579959767665130790">Klaida: užblokuota paskyra</translation>
+<translation id="6554308597291659562">„Uphold“ turi surinkti dar šiek tiek informacijos apie jus, kad galėtų įjungti visas „Uphold“ paskyros funkcijas. Pateikę šią informaciją savo „Uphold“ paskyroje, bandykite dar kartą.</translation>
+<translation id="6996157559236886133">Klaida: apribotos „Uphold“ paskyros funkcijos</translation>
 <translation id="819370426249314592">Jūsų „Uphold“ paskyra vis dar laukianti.</translation>
 <translation id="4530453398914580957">Klaida: laukiama paskyros</translation>
 <translation id="2388470740942086608">Jūsų „Uphold“ paskyra šiuo metu apribota.</translation>
@@ -262,8 +264,6 @@
 <translation id="7147519373526655987">Patvirtinant jūsų naršyklės prašymą prijungti jūsų „Brave Rewards“ piniginę prie jūsų <ph name="PROVIDER"/> paskyros kilo problema. Jei reikia daugiau pagalbos, galite <ph name="BEGIN_LINK"/>kreiptis į pagalbos tarnybą<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Klaida: prašymo patvirtinti nepavyko</translation>
 <translation id="1737873393693460829">Įjungdami [[title]] sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
-<translation id="901298512318791028">Jūsų <ph name="AMOUNT"/> išmoka bus pradėta apdoroti po<ph name="DAYS"/>.</translation>
-<translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Išmoka gali būti apdorota ir BAT galite gauti per keletą dienų.</translation>
 <translation id="4672975606583962967">Pasirinkite piniginės paslaugą</translation>
 <translation id="1815503044492647974">Pasirinkite piniginės apsaugos partnerį. Jei jau turite paskyrą, būsite paprašyti prisijungti, kad galėtumėte užmegzti ryšį.</translation>
 <translation id="2205685774710519016">Pastaba. Jūsų operacijos pasirinktai piniginės paslaugai bus matomos tada, kai duosite leidimą; pavyzdžiui, bus matomas jūsų gavėjas ir arbatpinigių suma.</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Baigti piniginės patvirtinimą</translation>
 <translation id="9200453331904391567">Atsijungti nuo „Brave Rewards“</translation>
 <translation id="3656941797339037856">Susiekite „Rewards“ su „Gemini“!</translation>
-<translation id="3066983737886188034">„Gemini“ suteikia galimybę lengvai prekiauti, laikyti ir uždirbti palūkanų nuo turimų BAT. Patvirtinkite ir susiekite savo „Brave“ atlygio piniginę su „Gemini“ dabar!</translation>
+<translation id="31532096120351460">„Gemini“ prekiaukite daugiau nei 50 kriptovaliutų, įskaitant BAT. Tai saugi platforma kriptovaliutoms laikyti. Be to, US, HK ir  SG galite gauti palūkanų.</translation>
 <translation id="7404779623219601861">Iškeisti BAT į dovanų korteles</translation>
 <translation id="6215565499749144110">TAP tinkle savo BAT galite iškeisti į populiarių prekių ženklų dovanų korteles.</translation>
 <translation id="6915065518766963119">* Reikia „Uphold“ patvirtinimo.</translation>
@@ -732,15 +732,15 @@
 <translation id="72868071984333667">Daugiau informacijos apie IPFS ir privatumą</translation>
 <translation id="1886162073868201257">IPFS paslaugos paleidimo klaida</translation>
 <translation id="5357895013476183089">IPFS neprijungta</translation>
-<translation id="1196783328762622576">IPFS išteklių įkelti naudojant vietinį mazgą nepavyksta</translation>
+<translation id="7662930734991751511">Naudojant „Brave“ vietinį IPFS mazgą, IPFS išteklių įkelti nepavyksta</translation>
 <translation id="1141556610026845297">IPFS išteklių įkėlimas naudojant vietinį IPFS mazgą nepavyko. Spustelėjus mygtuką „Tęsti“ bus naudojamas viešasis tinklų sietuvas ir kitą kartą prie viešojo tinklų sietuvo bus grįžtama automatiškai.</translation>
 <translation id="3373798179786163193">Tęsti naudojant viešąjį tinklų sietuvą</translation>
 <translation id="1974060860693918893">Išplėstiniai</translation>
 <translation id="9096577886148726047">Slėpti išplėstines parinktis</translation>
-<translation id="7716995370131231171">„Brave“ negali įkelti prašomų IPFS išteklių, nes nepaleistas vietinis mazgas arba šiuo metu nėra prisijungusių lygiarangių įrenginių. Jei pasirinksite „Tęsti“, nepavykus pasinaudoti vietiniu mazgu „Brave“ automatiškai grįš prie numatytojo viešojo tinklų sietuvo. Šią veikimo metodiką galima bet kada pakeisti „Brave“ nuostatų skiltyje.</translation>
+<translation id="182581792765792826">„Brave“ negali įkelti prašomų IPFS išteklių, nes nepaleistas „Brave“ vietinis IPFS mazgas arba šiuo metu nėra prisijungusių lygiarangių įrenginių. Jei pasirinksite „Tęsti“, nepavykus pasinaudoti „Brave“ vietiniu IPFS mazgu „Brave“ automatiškai grįš prie numatytojo viešojo tinklų sietuvo. Šią veikimo metodiką galima bet kada pakeisti „Brave“ nuostatų skiltyje.</translation>
 <translation id="8026038288183400906">IPFS nuostatos</translation>
 <translation id="2058855456574089690">Nustatykite norimas IPFS nuostatas</translation>
-<translation id="4447758690649023734">Naudoti vietinį mazgą</translation>
+<translation id="4780526507945807546">Naudoti „Brave“ vietinį IPFS mazgą</translation>
 <translation id="8148464361648742409">Naudoti viešąjį tinklų sietuvą</translation>
 <translation id="5123478056123923857">IPFS (Tarpplanetinė failų sistema) – tai viešasis tinklas, skirtas tarpasmeniniam duomenų laikymui ir tiekimui. Šio protokolo privatumo nustatymai skiriasi nuo HTTP(S).</translation>
 <translation id="5410952114182173389">Jūsų kompiuteris prisideda prie viešojo tinklo, bet jūsų IP adresas ir bet koks turinys, kurio prašote ar teikiate, gali būti matomas. Turinys, kurio prašote per IPFS, patikrinamas prieš jums pateikiant.</translation>
@@ -775,16 +775,19 @@
 <translation id="6318437367327684789">visam laikui</translation>
 <translation id="8797999629784150206">Savo <ph name="SITE_PERMISSIONS"/> galite pakeisti bet kuriuo metu. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">svetainės leidimas</translation>
+<translation id="7717357606512850995">Tikrinti būseną</translation>
+<translation id="7306880305145342514">Sveikiname! Gavote atlygį už šį mėnesį – <ph name="MONTH"/></translation>
+<translation id="3007207731685398329"><ph name="AMOUNT"/> atlygį už šį mėnesį – <ph name="MONTH"/> – gausite po <ph name="DAYS"/></translation>
+<translation id="5878420576943709750">Jūsų <ph name="AMOUNT"/> atlygis už šį mėnesį – <ph name="MONTH"/> – jau pakeliui. Užsukite patikrinti!</translation>
 <translation id="2659764755126740206">Eiti į mano <ph name="PROVIDER"/> paskyrą</translation>
 <translation id="2389181429986654814">Eikite į <ph name="PROVIDER"/>, kad užbaigtumėte patvirtinimą</translation>
 <translation id="7793632266654336758">Atlikite tapatybės patvirtinimą, kad pradėtumėte gauti atlygį</translation>
 <translation id="2394961582378297792">Atsijungta</translation>
-<translation id="5511950864417840431">Atsijungti nuo <ph name="PROVIDER"/></translation>
+<translation id="6080167751812750226">Atsijungti nuo <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Numatomas uždarbis</translation>
 <translation id="7577100371127227294">Mėnesiniai arbatpinigiai</translation>
 <translation id="5894023780213944778">Mano piniginė</translation>
 <translation id="2613359062756190460">Vienkartiniai arbatpinigiai</translation>
-<translation id="4240437602809703483"><ph name="AMOUNT"/> išmoka bus pradėta apdoroti po <ph name="DAYS"/></translation>
 <translation id="590733288489975971">Atlygis už reklamą</translation>
 <translation id="4989163558385430922">Žr. viską</translation>
 <translation id="3026978804849658576">Peržiūrėti ataskaitą</translation>
@@ -815,6 +818,7 @@
 <translation id="9161147058107529840">Tikėtasi vieno objekto parametro.</translation>
 <translation id="1875861420974447980">Šis grandinės ID šiuo metu naudojamas</translation>
 <translation id="167698752210114155">Įvyko vidinė klaida</translation>
+<translation id="1128992132632883337">Įvyko atsakymo analizės klaida</translation>
 <translation id="1680597601664421644">Importuojama mnemonika „Brave“ piniginei yra netinkama</translation>
 <translation id="4641919696349069826">Užklausa jau vykdoma</translation>
 <translation id="872806943696014633">Nėra operacijos duomenų</translation>
@@ -867,12 +871,14 @@
 <translation id="6977728312178289892">1Y</translation>
 <translation id="6598532182053592167">Pridėti monetą</translation>
 <translation id="629730747756840877">Paskyra</translation>
+<translation id="3959969108528118741">Savininkas</translation>
 <translation id="3891414008432200754">Kaina</translation>
 <translation id="2267753748892043616">Pridėti paskyrą</translation>
 <translation id="5061574358754621254">„CoinGecko“ pateikiami kainų duomenys</translation>
 <translation id="1483493594462132177">Siųsti</translation>
 <translation id="538450413584738399">„Swap“</translation>
-<translation id="7020187418439030877"><ph name="NETWORK"/> nepalaikoma</translation>
+<translation id="6295954645230084874"><ph name="NETWORK"/> pirkimo pagalba neteikiama</translation>
+<translation id="4171338820961522154"><ph name="NETWORK"/> mainų pagalba neteikiama</translation>
 <translation id="1191686659164947414">Operacija galėjo būti paveikta kenkėjiškų veiksmų</translation>
 <translation id="632241521608275119">Nesutapimo paklaida</translation>
 <translation id="4500473291496079954">Baigia galioti po</translation>
@@ -880,12 +886,14 @@
 <translation id="2860280209982026951">„Brave“ <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> naudoja kaip DEX rinktuvą.</translation>
 <translation id="151946611346774041">0x apdoros eterio adreso ir IP adreso informaciją, kad įvykdytų operaciją (įskaitant pasiūlymų gavimą). 0x šiuos duomenis naudos TIK operacijų apdorojimo tikslais.</translation>
 <translation id="4626407663177532837">Į pasiūlymą įtrauktas 0,875% „Brave“ mokestis.</translation>
+<translation id="8368540604723748428">Per daug dešimtainių vietų</translation>
 <translation id="2704606927547763573">Nukopij.</translation>
 <translation id="6518133107902771759">Patvirtinti</translation>
 <translation id="1420318137760245955">Sveiki, tai naujoji „Brave“ piniginė</translation>
 <translation id="8303434745767477417">Laikykite kriptoaktyvus savo žinioje. Stebėkite investicijų portfelio rezultatus ir sąveikaukite su „Web3 DApps“. Prekiaukite, skolinkitės ir skolinkite naudodami „DeFi“ tiesiai privačioje naršyklėje „Brave“. Jokių plėtinių ar atsisiuntimų.</translation>
 <translation id="6972754398087986839">Darbo pradžia</translation>
 <translation id="375882617301124395">Susikurkite atsarginę kriptovaliutos piniginės kopiją</translation>
+<translation id="180032279811483155">Atlikdami kitą veiksmą, matysite <ph name="RECOVERY_PHRASE_LENGTH"/> žodžių atkūrimo frazę, kurią galėsite panaudoti pagrindinėms kriptovaliutos sąskaitoms atkurti. Laikykite frazę saugioje vietoje. Ši atkūrimo frazė yra vienintelis būdas atgauti prieigą prie sąskaitos pamiršus slaptažodį, praradus įrenginį ar įvykus įrenginio vagystei, arba norint pereiti nuo vienos piniginės prie kitos.</translation>
 <translation id="5024543173656851695">Suprantu, kad praradęs atkūrimo žodžius neteksiu prieigos prie savo kriptopiniginės.</translation>
 <translation id="3933122286596948824">Jūsų atkūrimo frazė</translation>
 <translation id="5077747669435508720">Užsirašykite arba nukopijuokite šiuos žodžius būtent tokia tvarka, kokia jie rodomi, ir saugokite saugioje vietoje. Šį atkūrimo frazė yra vienintelis būdas norint atgauti prieigą prie sąskaitos pamiršus slaptažodį, praradus įrenginį ar įrenginio vagystės atveju arba norint pereiti nuo vienos piniginės prie kitos.</translation>
@@ -900,12 +908,14 @@
 <translation id="6901073872645365201">Slaptažodžiai turi būti sudaryti bent iš 7 simbolių, turi būti panaudotas bent vienas skaičius ir bent vienas specialusis simbolis.</translation>
 <translation id="6657585470893396449">Slaptažodis</translation>
 <translation id="5486261815000869482">Patvirtinti slaptažodį</translation>
+<translation id="6138471905279127211">Slaptažodžių kriterijai nesutampa.</translation>
 <translation id="467510802200863975">Slaptažodžiai nesutampa</translation>
 <translation id="5168349973342709369">Įveskite slaptažodį, kad atrakintumėte piniginę</translation>
 <translation id="9111102763498581341">Atrakinti</translation>
 <translation id="5045550434625856497">Neteisingas slaptažodis</translation>
-<translation id="7341660388388100491">Užrakinti kriptovaliutą</translation>
+<translation id="5242300593039211344">Užrakinti piniginę</translation>
 <translation id="765834632354589737">Atsarginė piniginė</translation>
+<translation id="1108298724135935307">Prijungtos svetainės</translation>
 <translation id="722307450061393855">Susikurkite atsarginę piniginės kopiją dabar, kad apsaugotumėte kriptoaktyvus ir užtikrintumėte, jog niekada neprarasite prieigos.</translation>
 <translation id="1018806299114415224">Kurti atsarginę kopiją dabar</translation>
 <translation id="5234764350956374838">Atsisakyti</translation>
@@ -919,12 +929,20 @@
 <translation id="3331452756822160641">Naujas slaptažodis</translation>
 <translation id="8624315169751085215">Kopijuoti į iškarpinę</translation>
 <translation id="1121335910737476837">Pagrindinės kriptovaliutų sąskaitos</translation>
-<translation id="3604193429970465812">Papildomos sąskaitos</translation>
-<translation id="2471916999505901943">Šias sąskaitas galima naudoti kartu su „Web3 DApps“ ir jos gali būti rodomos jūsų profilyje. Nepaisant to atminkite, kad įvedus pagrindinės sąskaitos atkūrimo iš atsarginės kopijos frazę atkurti antrinių sąskaitų negalima.</translation>
+<translation id="6969147029062037757">Importuotos paskyros</translation>
+<translation id="5668765612885835803">Galite susikurti pagrindines „Brave“ piniginės sąskaitas, kurias galima atkurti naudojant atkūrimo frazę arba daryti jų atsargines kopijas. Jei norite apie sąskaitų tipus sužinoti daugiau, apsilankykite sąskaitų žinyne</translation>
+<translation id="2471916999505901943">Šias sąskaitas galima naudoti kartu su „Web3 DApps“ ir jos gali būti rodomos jūsų profilyje. Vis dėlto atminkite, kad, įvedus pagrindinės sąskaitos atkūrimo iš atsarginės kopijos frazę, atkurti antrinių sąskaitų negalima.</translation>
 <translation id="1940465339426637378">Turtas</translation>
 <translation id="2236507293802791911">Rodomi aktyvai</translation>
 <translation id="7525067979554623046">Sukurti</translation>
 <translation id="4771176409524282426">Sukurti paskyrą</translation>
+<translation id="2471867767872178363">Kurti <ph name="BLOCKCHAIN_NETWORK"/> sąskaitą</translation>
+<translation id="1073129495320255278">Importuoti <ph name="BLOCKCHAIN_NETWORK"/> sąskaitą</translation>
+<translation id="6780482003945159712">Pasirinkite vieną iš nurodytų sąskaitos tipų</translation>
+<translation id="7080614857771109950">Palaiko su EVM suderinamus išteklius eterio blokų grandinėje (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="3329841454317342083">Palaiko su SLP suderinamus išteklius „Solana“ blokų grandinėje</translation>
+<translation id="4541295941776129088">Saugoti FIL išteklių</translation>
+<translation id="232925166623833246">Importuoti iš aparatinės įrangos piniginės</translation>
 <translation id="4324198334837993695">Aparatinė įranga</translation>
 <translation id="3067168166931605141">Sąskaitos pavadinimas</translation>
 <translation id="1136772623587250243">Įklijuoti privatųjį raktą iš iškarpinės</translation>
@@ -935,7 +953,7 @@
 <translation id="5891811606602061966">Importuoti sąskaitos nepavyko, bandykite dar kartą.</translation>
 <translation id="5051929972046200722">Pasirinkite aparatinės įrangos slaptažodinės įrenginį</translation>
 <translation id="5745936663807461565">Prijunkite savo <ph name="HARDWARE_DEVICE"/> piniginę tiesiogiai prie savo kompiuterio.</translation>
-<translation id="5041211872515579638">Atrakinkite įrenginį ir pasirinkite programą „Ethereum“.</translation>
+<translation id="4350216031085285578">Atrakinkite įrenginį ir pasirinkite programėlę<ph name="BLOCKCHAIN_NETWORK"/>.</translation>
 <translation id="6892232036314454524">Ši klaida gali įvykti, kai „Ledger“ prietaise atverta netinkama programa.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Ledger</translation>
@@ -962,6 +980,7 @@
 <translation id="6018178824574796106">Pridėti pasirinktinio žetono nepavyko, bandykite dar kartą.</translation>
 <translation id="547122651977318828">Žetono ID (tik ERC721)</translation>
 <translation id="7544552854944350190">Reikalingas žetono ID</translation>
+<translation id="3842236145820483340">„Coingecko“ ID</translation>
 <translation id="2708402071160162126">ĮSPĖJIMAS. Niekada neatskleiskite atkūrimo frazės. Sužinoję šią frazę, kiti asmenys gali visam laikui perimti jūsų aktyvus.</translation>
 <translation id="2902856457593699108">Rodyti raktą</translation>
 <translation id="8033497299373164724">Slėpti raktą</translation>
@@ -1030,6 +1049,8 @@
 <translation id="1575262454612599115">Prijungta sąskaitų: <ph name="NUMBER_OF_ACCOUNTS"/></translation>
 <translation id="4305817255990598646">Perjungti</translation>
 <translation id="3890989020011724401">Nauja paskyra</translation>
+<translation id="7257603403519636638">Peržiūrėti sąskaitos išteklius</translation>
+<translation id="2092132085082887098">Sąskaitos ištekliai</translation>
 <translation id="4460220693591349571">FUNKCIJOS TIPAS</translation>
 <translation id="838933475572692615">ŠEŠIOLIKTAINIAI DUOMENYS</translation>
 <translation id="2240831799756994975">BAITAI</translation>
@@ -1072,6 +1093,11 @@
 <translation id="6666273175654835609">Pateikta</translation>
 <translation id="2331676293859649642">Patvirtinta</translation>
 <translation id="1165039591588034296">Klaida</translation>
+<translation id="9065572743819293042">Pastarosios operacijos</translation>
+<translation id="4235538284468006757">Išsami operacijos informacija</translation>
+<translation id="7488671812634887146">Paspartinimas</translation>
+<translation id="1702356231547761669">Operacijos maiša</translation>
+<translation id="7982789257301363584">Tinklas</translation>
 <translation id="8941851657764077659">Didž. prioritetinis mokestis</translation>
 <translation id="8047527352810290817">Redaguoti dujas</translation>
 <translation id="9091334651803050473">Negalime užtikrinti, tačiau sumokėjus daugiau kasėjai gali jūsų operacijai taikyti prioritetą.</translation>
@@ -1088,6 +1114,10 @@
 <translation id="8689322170423904690">GWEI</translation>
 <translation id="8685908198496503620">Nustatyti pasirinktinį</translation>
 <translation id="7400927223938424379">Nustatyti rekomenduojamą</translation>
+<translation id="8179605702342645418">Operacija negali būti platinama tinkle.</translation>
+<translation id="9100765901046053179">Išplėstiniai nustatymai</translation>
+<translation id="4220062530885628403">Operacijos numeris</translation>
+<translation id="2749584096020594976">Jei šis laukas nenurodytas, operacijos numeris bus nustatytas automatiškai.</translation>
 <translation id="1599636444563952897">Pagal leistiną išlaidų limitą <ph name="SITE_ORIGIN"/> leidžiama išimti ir išleisti daugiausia šią sumą:</translation>
 <translation id="4512871563176965522">Pritaikytoji išmokama suma</translation>
 <translation id="749944179568745958">Netinkamas ETH adresas</translation>
@@ -1128,6 +1158,11 @@
 <translation id="7017116822583380542">„Trezor bridge“ neparuošta</translation>
 <translation id="3378339846292573874">Pridėti siūlomą žetoną</translation>
 <translation id="2322227405137827074">Ar norėtumėte importuoti šį žetoną?</translation>
+<translation id="4378475168089649292">Blokų grandinė</translation>
+<translation id="1904295039023858291">Standartinis žetonas</translation>
+<translation id="9033453977881595182">Žetono iD</translation>
+<translation id="2962388922926051374">Metodo 'eth_chainId' prašymo  <ph name="URL"/> pateikti nepavyko</translation>
+<translation id="8325036459845654666">Šis tinklas jau pridėtas.</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="3745016858329272300">Bendroji informacija</translation>
 <translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>

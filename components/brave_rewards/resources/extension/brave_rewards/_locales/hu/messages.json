@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Frissítési állapot",
+    "message": "Frissítés",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "A Brave Jutalmak problémába ütközött. Próbáld újra később.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Állapot ellenőrzése",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Gratulálunk! $month$ havi jutalmai megérkeztek!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "$month$ havi, $amount$ értékű jutalmai $days$ napon belül érkeznek meg",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "$month$ havi, $amount$ értékű jutalmai már úton vannak, nézzen vissza később!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Ugrás a(z) $provider$ fiókomra",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Kijelentkezés innen: $provider$",
+    "message": "Kapcsolat bontása a következővel: $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Várakozó",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ kifizetés feldolgozásának megkezdése $days$ napon belül",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Jutalmak az Ads révén",

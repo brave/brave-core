@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "重新整理狀態",
+    "message": "重新整理",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "「Brave 報酬」發生問題了。請待會再試一次。",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "檢查狀態",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "恭喜！您的 $month$獎勵已入帳！",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "您 $amount$ 的 $month$獎勵將在 $days$內入帳",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "您 $amount$ 的 $month$獎勵即將入帳。敬請留意！",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "到我的 $provider$ 帳戶",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "登出 $provider$",
+    "message": "取消連結 $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "未定",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ 付款開始處理於 $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "廣告獎勵",

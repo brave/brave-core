@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "רענן סטטוס",
+    "message": "רענון",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards נתקל בבעיה. אנא נסו שוב מאוחר יותר.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "בדקו את המצב",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "התגמולים שלכם עבור $month$ הגיעו!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "$amount$ התגמולים שלכם עבור $month$ יגיעו בעוד $days$.",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "$amount$ התגמולים שלכם עבור $month$ בדרך. שימו לב!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "עבור לחשבון ה-$provider$ שלי",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "התנתק מ$provider$",
+    "message": "התנתקו מ-$provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "בהמתנה",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ עיבוד תשלום מתחיל בעוד$days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "תגמולים מפרסומות",

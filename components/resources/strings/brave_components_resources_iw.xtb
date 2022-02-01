@@ -196,7 +196,7 @@
 <translation id="2846354907189538">תאריך התרומה הבאה</translation>
 <translation id="1397381065858030856">אתרים שנצפו</translation>
 <translation id="2365740070488517695">טיפים</translation>
-<translation id="4803566747788858771">תן/י ליוצרי התוכן טיפ ישירות תוך כדי גלישה באמצעות פנל התגמולים, או לחצן הטיפים שמופיע באתרים שונים, בהם טוויטר, Reddit ו-GitHub.</translation>
+<translation id="5993195614988368256">תן/י ליוצרי התוכן טיפ ישירות תוך כדי גלישה באמצעות פנל התגמולים, או לחצן הטיפים שמופיע באתרים שונים, בהם טוויטר, Reddit ו-GitHub.</translation>
 <translation id="5012991400231464322">תרומות חודשיות</translation>
 <translation id="2084351799622920487">הגדירו תרומות חודשיות נשנות כדי שתוכלו לתמוך באתרים באופן רציף.</translation>
 <translation id="8150772404570015166">טרם נקבעו תרומות חודשיות.</translation>
@@ -255,6 +255,8 @@
 <translation id="9074594632540931067">שגיאה: BAT אינו זמין</translation>
 <translation id="413458922997276130">החשבון שלך ב-Uphold חסום כעת.</translation>
 <translation id="3579959767665130790">שגיאה: חשבון חסום</translation>
+<translation id="6554308597291659562">Uphold נדרש לאסוף קצת יותר מידע אודותכם לפני הפעלת הפונקציונליות המלאה של חשבון Uphold. אנא נסו שנית לאחר ששלחת מידע זה אל חשבון Uphold שלכם.</translation>
+<translation id="6996157559236886133">שגיאה: פונקציונליות מוגבלת של חשבון Uphold</translation>
 <translation id="819370426249314592">החשבון שלך ב-Uphold עדין בהשהייה.</translation>
 <translation id="4530453398914580957">שגיאה: חשבון בהשהייה</translation>
 <translation id="2388470740942086608">החשבון שלך ב-Uphold מוגבל כעת.</translation>
@@ -262,8 +264,6 @@
 <translation id="7147519373526655987">התרכשה בעיה באימות בקשת הדפדפן לחבר את ארנק Brave Rewards לחשבון.<ph name="PROVIDER"/>. ניתן <ph name="BEGIN_LINK"/>ליצור קשר עם התמיכה<ph name="END_LINK"/> לקבלת סיוע נוסף.</translation>
 <translation id="1316066811927496401">שגיאה: לא ניתן לאמת את הבקשה</translation>
 <translation id="1737873393693460829">על ידי הפעלת [[title]], הנכם מסכימים ל-<ph name="BEGIN_LINK1"/>תנאי השירות<ph name="END_LINK1"/> ו-<ph name="BEGIN_LINK2"/>ומדיניות הפרטיות<ph name="END_LINK2"/>.</translation>
-<translation id="901298512318791028">התשלום <ph name="AMOUNT"/> שלך יתחיל בעיבוד בעוד <ph name="DAYS"/>.</translation>
-<translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>ייתכן שייקח מספר ימים עד שהתשלום יסתיים וה- BAT שלך יגיע.</translation>
 <translation id="4672975606583962967">בחר שירות ארנק</translation>
 <translation id="1815503044492647974">בחר שותף ארנק ממונה. אם יש ברשותך חשבון, תתבקש להיכנס למערכת כדי להתחבר.</translation>
 <translation id="2205685774710519016">הערה: העסקאות שלך יוצגו בשירות הארנק שנבחר לאחר שתיתן את הרשאתך; למשל, ניתן יהיה לראות את הנמען ואת סכום הטיפים שלך.</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">השלמת אימות הארנק</translation>
 <translation id="9200453331904391567">התנתקות מתגמולי Brave</translation>
 <translation id="3656941797339037856">קשרו פרסים אל Gemini!</translation>
-<translation id="3066983737886188034">Gemini מאפשר לך לסחור בקלות, לאחסן ולהרוויח ריבית על BAT שלך. אמת וקשר את ארנק ה-Brave Rewards שלך עם Gemini עכשיו!</translation>
+<translation id="31532096120351460">סחרו ב-50+ מטבעות קריפטו, כולל BAT, ב-Gemini. זוהי פלטפורמה מאובטחת לאחסון הקריפטו שלך. בנוסף, אתה יכול להרוויח ריבית בארה"ב, הונג קונג וסינגפור.</translation>
 <translation id="7404779623219601861">מימוש BAT עבור כרטיסי מתנה</translation>
 <translation id="6215565499749144110">עם רשת TAP, באפשרותך לממש את ה-BAT שלך עבור כרטיסי מתנה של שמות מותגים פופולריים.</translation>
 <translation id="6915065518766963119">* דורש אימות Uphold</translation>
@@ -732,15 +732,15 @@
 <translation id="72868071984333667">למידע נוסף על IPFS ופרטיות</translation>
 <translation id="1886162073868201257">שגיאה בהפעלת שירות IPFS</translation>
 <translation id="5357895013476183089">IPFS לא מחובר</translation>
-<translation id="1196783328762622576">לא ניתן לטעון משאבי IPFS באמצעות צומת מקומי</translation>
+<translation id="7662930734991751511">לא ניתן לטעון משאבי IPFS באמצעות צומת IPFS מקומי של Brave</translation>
 <translation id="1141556610026845297">נכשל השימוש בצומת ה- IPFS המקומי לטעינת משאבי ה- IPFS המבוקשים. לחצו על כפתור "המשך" בכדי להשתמש בשער הציבורי במקום זאת ולעשות שימוש אוטומטית בשער הציבורי בעתיד.</translation>
 <translation id="3373798179786163193">המשך עם השער הציבורי</translation>
 <translation id="1974060860693918893">מתקדם</translation>
 <translation id="9096577886148726047">הסתר מתקדם</translation>
-<translation id="7716995370131231171">Brave אינו יכול לטעון את משאבי ה- IPFS המבוקשים משום שהצומת המקומי לא הופעל, או מכיוון שאין כרגע עמיתים מחוברים זמינים. אם תבחרו ב"המשך", Brave יעשה שימוש אוטומטי בשער הציבורי המוגדר כברירת מחדל בכל פעם שהשימוש בצומת המקומי נכשל. באפשרותכם לשנות התנהגות זו בכל עת בהגדרות Brave.</translation>
+<translation id="182581792765792826">Brave אינו יכול לטעון את משאבי ה- IPFS המבוקשים משום שהצומת המקומי לא הופעל, או מכיוון שאין כרגע עמיתים מחוברים זמינים. אם תבחרו ב"המשך", Brave יעשה שימוש אוטומטי בשער הציבורי המוגדר כברירת מחדל בכל פעם שהשימוש בצומת IPFS המקומי נכשל. באפשרותכם לשנות התנהגות זו בכל עת בהגדרות Brave.</translation>
 <translation id="8026038288183400906">העדפת IPFS</translation>
 <translation id="2058855456574089690">הגדירו את העדפות IPFS שלכם</translation>
-<translation id="4447758690649023734">השתמש/י בצומת מקומי</translation>
+<translation id="4780526507945807546">השתמשו בצומת IPFS מקומי של Brave</translation>
 <translation id="8148464361648742409">השתמש/י בשער ציבורי</translation>
 <translation id="5123478056123923857">IPFS (מערכת הקבצים המבוזרת, InterPlanetary File System) היא רשת ציבורית לאחסון והעברת נתונים מעמית לעמית. לפרוטוקול זה יש שיקולי פרטיות שונים מאלה של רשתות HTTP.</translation>
 <translation id="5410952114182173389">המחשב שלך תורם לרשת הציבורית, אך כתובת ה-IP שלך ותכנים אחרים שאת/ה מבקש/ת או מספק עלולים להיחשף. תוכן שאת/ה מבקש/ת באמצעות IPFS מאומת לפני שהוא מוגש לך.</translation>
@@ -776,17 +776,20 @@
 <translation id="8797999629784150206">באפשרותך לשנות את ה-<ph name="SITE_PERMISSIONS"/> שלך בכל עת.
  <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">הרשאת אתר</translation>
+<translation id="7717357606512850995">בדקו את המצב</translation>
+<translation id="7306880305145342514">ברכותינו! התגמולים שלכם עבור <ph name="MONTH"/>הגיעו!</translation>
+<translation id="3007207731685398329">התגמולים שלכם עבור <ph name="AMOUNT"/><ph name="MONTH"/> יגיעו בעוד<ph name="DAYS"/>.</translation>
+<translation id="5878420576943709750">התגמולים שלכם עבור <ph name="AMOUNT"/><ph name="MONTH"/> בדרך. שימו לב!</translation>
 <translation id="2659764755126740206">עבור אל חשבון ה-<ph name="PROVIDER"/> שלי</translation>
 <translation id="2389181429986654814">עבור אל <ph name="PROVIDER"/> כדי להשלים את האימות</translation>
 <translation id="7793632266654336758">השלם את אימות זהותך על מנת להתחיל לקבל תגמולים.</translation>
 <translation id="2394961582378297792">התנתק</translation>
-<translation id="5511950864417840431">התנתק מ
+<translation id="6080167751812750226">התנתקו מ
 <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">רווחים מוערכים</translation>
 <translation id="7577100371127227294">טיפים חודשיים</translation>
 <translation id="5894023780213944778">הארנק שלי</translation>
 <translation id="2613359062756190460">טיפ חד-פעמי</translation>
-<translation id="4240437602809703483"><ph name="AMOUNT"/> עיבוד תשלום מתחיל בעוד <ph name="DAYS"/></translation>
 <translation id="590733288489975971">תגמולים מפרסומות</translation>
 <translation id="4989163558385430922">הצג הגל</translation>
 <translation id="3026978804849658576">הצג הצהרה</translation>
@@ -817,6 +820,7 @@
 <translation id="9161147058107529840">המערכת מצפה לפרמטר אובייקט בודד.</translation>
 <translation id="1875861420974447980">מזהה שרשרת זה נמצא כעת בשימוש</translation>
 <translation id="167698752210114155">קרתה שגיאה פנימית</translation>
+<translation id="1128992132632883337">אירעה שגיאת ניתוח תגובה</translation>
 <translation id="1680597601664421644">מסייע הזיכרון המיובא אינו תקף לגבי Brave Wallet</translation>
 <translation id="4641919696349069826">בקשה כבר נמצאת בביצוע</translation>
 <translation id="872806943696014633">חסרים נתוני עסקאות</translation>
@@ -869,12 +873,14 @@
 <translation id="6977728312178289892">שנה אחת</translation>
 <translation id="6598532182053592167">הוסף מטבע</translation>
 <translation id="629730747756840877">חשבון</translation>
+<translation id="3959969108528118741">בעלות</translation>
 <translation id="3891414008432200754">מחיר</translation>
 <translation id="2267753748892043616">הוסף חשבון</translation>
 <translation id="5061574358754621254">נתוני המחירים מופעלים על ידי CoinGecko</translation>
 <translation id="1483493594462132177">שלח</translation>
 <translation id="538450413584738399">Swap</translation>
-<translation id="7020187418439030877"><ph name="NETWORK"/> לא נתמך</translation>
+<translation id="6295954645230084874">קניית תמיכה אינה זמינה עבור <ph name="NETWORK"/></translation>
+<translation id="4171338820961522154">החלפת תמיכה אינה זמינה עבור <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">העסקה ניתנת להטרמה</translation>
 <translation id="632241521608275119">רגישות למעידה</translation>
 <translation id="4500473291496079954">בתוקף עד</translation>
@@ -882,12 +888,14 @@
 <translation id="2860280209982026951">Brave משתמש ב<ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> כאגרגטור של נתוני DEX .</translation>
 <translation id="151946611346774041">העיבוד של כתובת Ethereum וכתובת ה-IP יתבצע באמצעות Ox כדי להשלים עסקה (כולל קבלת הצעות מחיר). המידע ישמש את Ox אך ורק למטרות הטיפול בעסקה.</translation>
 <translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
+<translation id="8368540604723748428">יותר מדי מקומות עשרוניים</translation>
 <translation id="2704606927547763573">הועתק</translation>
 <translation id="6518133107902771759">אימות</translation>
 <translation id="1420318137760245955">ברוכים הבאים ל-Brave Wallet החדש</translation>
 <translation id="8303434745767477417">החזק בנכסי קריפטו במשמורת שלך. עקוב אחר ביצועי תיק ההשקעות וקיים אינטראקציה עם אפליקציות 3D. סחור, השקע, לווה והלווה באמצעות DeFi. הכל ישר מדפדפן הפרטיות Brave. ללא תוספות, ללא צורך בהורדה.</translation>
 <translation id="6972754398087986839">תחילת העבודה</translation>
 <translation id="375882617301124395">גבה את ארנק הקריפטו שלך</translation>
+<translation id="180032279811483155">בצעד הבא תראה’ ביטוי שחזור בן <ph name="RECOVERY_PHRASE_LENGTH"/> מילים, שבו תוכל להשתמש לשחזור חשבונות הקריפטו העיקריים שלך. שמור אותו במקום בטוח. ביטוי השחזור שלך היא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם אתה רוצה להחליף ארנק.</translation>
 <translation id="5024543173656851695">אני מבינ/ה שאם אאבד את מילות השחזור שלי, לא אוכל לגשת לארנק הקריפטו שלי.</translation>
 <translation id="3933122286596948824">ביטוי השחזור שלך</translation>
 <translation id="5077747669435508720">יש לרשום או להעתיק את המילים האלה בסדר המדויק המוצג להלן, ולשמור אותן במקום בטוח. ביטוי השחזור שלך הוא הדרך היחידה להחזיר את הגישה לחשבון במקרה של סיסמה שנשכחה, מכשיר שאבד או נגנב, או אם ברצונך להחליף ארנק.</translation>
@@ -902,12 +910,14 @@
 <translation id="6901073872645365201">הסיסמה חייבת להיות באורך של 7 תווים לפחות והיא חייבת להכיל לפחות מספר אחד ותו מיוחד אחד</translation>
 <translation id="6657585470893396449">סיסמה</translation>
 <translation id="5486261815000869482">אשר סיסמה</translation>
+<translation id="6138471905279127211">קריטריוני הסיסמה אינם תואמים.</translation>
 <translation id="467510802200863975">הססמאות אינן תואמות</translation>
 <translation id="5168349973342709369">הזן סיסמה כדי לפתוח את הארנק</translation>
 <translation id="9111102763498581341">בטל נעילה</translation>
 <translation id="5045550434625856497">סיסמה שגויה</translation>
-<translation id="7341660388388100491">נעל קריפטו</translation>
+<translation id="5242300593039211344">נעילת ארנק</translation>
 <translation id="765834632354589737">ארנק גיבוי</translation>
+<translation id="1108298724135935307">אתרים מחוברים</translation>
 <translation id="722307450061393855">גבה כעת את הארנק שלך כדי להגן על נכסי הקריפטו שלך ולהבטיח שלעולם לא תאבד את הגישה.</translation>
 <translation id="1018806299114415224">גבה כעת</translation>
 <translation id="5234764350956374838">סגור</translation>
@@ -921,12 +931,20 @@
 <translation id="3331452756822160641">סיסמה חדשה</translation>
 <translation id="8624315169751085215">העתק ללוח מודעות</translation>
 <translation id="1121335910737476837">חשבונות קריפטו עיקריים</translation>
-<translation id="3604193429970465812">חשבונות משניים</translation>
-<translation id="2471916999505901943">ניתן להשתמש בחשבונות אלה עם Web 3 DApps וניתן להציג אותם בתיק ההשקעות שלך. עם זאת, שים לב שלא ניתן לשחזר חשבונות משניים באמצעות ביטוי שחזור מהגיבוי הראשי של החשבון שלך.</translation>
+<translation id="6969147029062037757">חשבונות מיובאים</translation>
+<translation id="5668765612885835803">אתה יכול ליצור חשבונות ראשיים בארנק Brave שעשויים להיות מגובים או משוחזרים מביטוי השחזור שלך. למידע נוסף על סוגי חשבונות בקר בעזרה לחשבון</translation>
+<translation id="2471916999505901943">ניתן להשתמש בחשבונות אלה עם Web 3 DApps וניתן להציג אותם בתיק ההשקעות שלכם. עם זאת, שימו לב שלא ניתן לשחזר חשבונות משניים באמצעות ביטוי שחזור מהגיבוי הראשי של החשבון שלך.</translation>
 <translation id="1940465339426637378">נכסים</translation>
 <translation id="2236507293802791911">ערוך נכסים גלויים</translation>
 <translation id="7525067979554623046">צור</translation>
 <translation id="4771176409524282426">יצירת חשבון</translation>
+<translation id="2471867767872178363">צרו חשבון <ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="1073129495320255278">ייבאו חשבון <ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="6780482003945159712">בחרו את אחד מסוגי החשבון הבאים</translation>
+<translation id="7080614857771109950">תומך בנכסים תואמי EVM בבלוקצ'יין Ethereum  (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="3329841454317342083">תומך בנכסים תואמי SLP על בלוקצ'יין Solana</translation>
+<translation id="4541295941776129088">אחסון נכס FIL</translation>
+<translation id="232925166623833246">ייבוא מארנק חומרה</translation>
 <translation id="4324198334837993695">חומרה</translation>
 <translation id="3067168166931605141">שם החשבון</translation>
 <translation id="1136772623587250243">הדבק מפתח פרטי מלוח העתקה</translation>
@@ -937,7 +955,7 @@
 <translation id="5891811606602061966">ייבוא החשבון נכשל. נסה שוב.</translation>
 <translation id="5051929972046200722">בחר את החומרה לארנק שלך</translation>
 <translation id="5745936663807461565">חבר<ph name="HARDWARE_DEVICE"/> את הארנק שלך ישירות למחשב שלך.</translation>
-<translation id="5041211872515579638">בטל את נעילת המכשיר ובחר באפליקציית Ethereum.</translation>
+<translation id="4350216031085285578">פתחו את מכשירכם ובחרו ביישום <ph name="BLOCKCHAIN_NETWORK"/>.</translation>
 <translation id="6892232036314454524">שגיאה זו עשויה להתרחש בעת פתיחת אפלקציה שגויה במכשיר ה-Ledger.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">ספר חשבונות ראשי</translation>
@@ -964,6 +982,7 @@
 <translation id="6018178824574796106">הוספת האסימון המותאם אישית נכשלה. נסה שוב.</translation>
 <translation id="547122651977318828">ID של טוקן (רק עבור ERC721)</translation>
 <translation id="7544552854944350190">נדרש ID של טוקן</translation>
+<translation id="3842236145820483340">זיהוי Coingecko</translation>
 <translation id="2708402071160162126">אזהרה: לעולם אל תחשוף את ביטוי השחזור שלך. כל מי שברשותו ביטוי זה יכול לקחת את הנכסים שלך לצמיתות.</translation>
 <translation id="2902856457593699108">הצג מפתח</translation>
 <translation id="8033497299373164724">הסתר מפתח</translation>
@@ -1032,6 +1051,8 @@
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> חשבונות מחוברים</translation>
 <translation id="4305817255990598646">החלף</translation>
 <translation id="3890989020011724401">חשבון חדש</translation>
+<translation id="7257603403519636638">הצג נכסים בחשבון</translation>
+<translation id="2092132085082887098">נכסים בחשבון</translation>
 <translation id="4460220693591349571">סוג פונקציה</translation>
 <translation id="838933475572692615">נתוני HEX</translation>
 <translation id="2240831799756994975">בתים</translation>
@@ -1074,6 +1095,11 @@
 <translation id="6666273175654835609">הוגש</translation>
 <translation id="2331676293859649642">אושר</translation>
 <translation id="1165039591588034296">שגיאה</translation>
+<translation id="9065572743819293042">פעולות אחרונות</translation>
+<translation id="4235538284468006757">פרטי פעולות</translation>
+<translation id="7488671812634887146">זירוז</translation>
+<translation id="1702356231547761669">עסקת Hash</translation>
+<translation id="7982789257301363584">רשת</translation>
 <translation id="8941851657764077659">מקסימום דמי עדיפות</translation>
 <translation id="8047527352810290817">עריכת דלק</translation>
 <translation id="9091334651803050473">למרות שזה לא מובטח, סביר להניח שכורים יעדיפו את העסקה שלך אם תשלם עמלה גבוהה יותר.</translation>
@@ -1090,6 +1116,10 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">הגדר בהתאמה אישית</translation>
 <translation id="7400927223938424379">הגדר כפי שהוצע</translation>
+<translation id="8179605702342645418">לא ניתן להפיץ את העסקה ברשת.</translation>
+<translation id="9100765901046053179">הגדרות מתקדמות</translation>
+<translation id="4220062530885628403">חוסר</translation>
+<translation id="2749584096020594976">ערך החוסר יוגדר אוטומטית אם השדה הזה נשאר ריק.</translation>
 <translation id="1599636444563952897">הרשאת מגבלת הוצאה מאפשרת <ph name="SITE_ORIGIN"/>למשוך ולהוציא עד לסכום הבא:</translation>
 <translation id="4512871563176965522">קצבה מותאמת אישית</translation>
 <translation id="749944179568745958">כתובת ETH לא חוקית</translation>
@@ -1130,6 +1160,11 @@
 <translation id="7017116822583380542">גשר Trezor אינו מוכן</translation>
 <translation id="3378339846292573874">הוסף אסימון מוצע</translation>
 <translation id="2322227405137827074">האם תהיה מעוניין לייבא אסימון זה?</translation>
+<translation id="4378475168089649292">בלוקצ'יין</translation>
+<translation id="1904295039023858291">טוקן סטנדרטי</translation>
+<translation id="9033453977881595182">זיהוי טוקן</translation>
+<translation id="2962388922926051374">בקשה עבור שיטת 'eth_chainId' ב-<ph name="URL"/>נכשלה</translation>
+<translation id="8325036459845654666">רשת זו כבר נוספה.</translation>
 <translation id="3155170474926428993">דפדפן Tor</translation>
 <translation id="3745016858329272300">מידע כללי</translation>
 <translation id="4045404575593562245">אירועי שליטת Tor</translation>

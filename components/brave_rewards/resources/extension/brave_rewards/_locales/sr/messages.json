@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Osveži status",
+    "message": "Osveži",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave nagrade ima problema. Molimo Vas pokušajte kasnije.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Proveri status",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Čestitamo! Stigle su vaše nagrade za $month$!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Vaše nagrade u iznosu od $amount$ za $month$ stići će za $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Vaše nagrade u iznosu od $amount$ za $month$ sada su na putu. Budite spremni!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Idu u nalog mog dobavljača $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Odjavite se sa $provider$",
+    "message": "Prekini vezu sa $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "U toku",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ isplata započeće sa obradom za $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Nagrade od Ads",

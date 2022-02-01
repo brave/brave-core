@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Värskenda olekut",
+    "message": "Värskenda",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards ei ole praegu saadaval. Proovige hiljem uuesti.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Kontrolli olekut",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Palju õnne! Teie preemiad on kohal (kuu: $month$)!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Teie preemiasumma $amount$ (kuu: $month$) saabub $days$ jooksul",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Teie preemiasumma $amount$ (kuu: $month$) on teel. Hoidke silm peal!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Ava minu konto: $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Logi välja $provider$'ist",
+    "message": "Katkesta ühendus teenusepakkujaga $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Ootel",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ väljamakset hakatakse töötlema $days$ päeva jooksul",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Preemiad Adsilt",

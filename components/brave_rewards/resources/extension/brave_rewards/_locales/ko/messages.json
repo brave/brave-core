@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "상태 새로 고침",
+    "message": "새로고침",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards에 문제가 있습니다. 나중에 다시 시도해 주세요.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "상태 확인",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "축하합니다! $month$ 리워드가 도착했습니다!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "$amount$ $month$ 리워드 도착 예정, $days$ 후",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "$amount$ $month$ 리워드가 곧 도착합니다. 곧 확인 가능합니다!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "내 $provider$ 계정으로 가기",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "$provider$에서 로그아웃",
+    "message": "$provider$에서 연결 해제",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "대기 중",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ 지급 처리 시작, $days$ 후",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "광고로 받은 리워드",

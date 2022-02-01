@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (a extenção ID "<ph name="EXTENSION_ID"/>") não é permitida na Brave.</translation>
 <translation id="6786747875388722282">Extensões</translation>
 <translation id="984275831282074731">Formas de pagamento</translation>
-<translation id="3699882589215410581">Instalar e iniciar Widevine</translation>
+<translation id="1990886731975529483">Instalar e executar o Google Widevine</translation>
 <translation id="8926389886865778422">Não perguntar novamente</translation>
 <translation id="5249433283143453448">Usar o componente de gerenciamento de direitos digitais (DRM) Widevine para exibir vídeos de streaming protegidos e outros conteúdos no navegador.</translation>
 <translation id="6241402707160226266">Janela privada com o Tor</translation>
 <translation id="8762452230727230396">O Tor oculta seu endereço IP dos sites que você visita.</translation>
 <translation id="1369311132025451972">Redireciona automaticamente sites .onion</translation>
 <translation id="2843777623071353503">O Brave abrirá o serviço onion do site quando disponível ou o domínio .onion em uma janela do Tor.</translation>
-<translation id="8053096063396012732">Instalar Widevine</translation>
-<translation id="4840334696217618631">Reinicie o navegador para habilitar o Widevine</translation>
-<translation id="8410111618231938546">O Google Widevine é um código de Gerenciamento de Direitos Digitais (DRM) que nós da Brave Software não possuímos e não podemos inspecionar. O código do Google Widevine é carregado dos servidores do Google, não dos nossos servidores. Ele é carregado apenas quando você ativa essa opção. Desencorajamos o uso de DRM, mas respeitamos a escolha do usuário e reconhecemos que alguns usuários do Brave gostariam de usar serviços que o exigem.
-
-Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevine. Você concorda que o Brave não é responsável por quaisquer danos ou perdas relacionadas ao seu uso do Google Widevine.</translation>
+<translation id="4900351245762303149">Instalar o Google Widevine</translation>
+<translation id="2313383941300459392">Reinicie o navegador para ativar o Google Widevine</translation>
+<translation id="2200626478572277092">Em alguns casos, o Widevine é necessário para reproduzir mídia em uma página da web. Ele é uma extensão do Google que é carregada dos servidores do Google e não pode ser inspecionada pelo Brave. Ao instalar, você concordará com os termos de uso do Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Saiba mais sobre o Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> está solicitando permissão para</translation>
 <translation id="410351446219883937">Reprodução automática</translation>
 <translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
 <translation id="4988333904713528597">Sempre permitir a reprodução automática em <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="6583467242903731748">Perguntar quando um site quiser acessar a API do provedor Ethereum</translation>
 <translation id="7017590444693657895">Impedir que sites acessem a API do provedor Ethereum</translation>
 <translation id="8988939298652262600">O Brave não avalia as extensões quanto a segurança e proteção. Somente instale esta extensão caso confie em seu desenvolvedor.</translation>
+<translation id="933652931229970927">Enviar relatórios de diagnóstico automaticamente</translation>
+<translation id="1679356339067548863">Ajude a melhorar a estabilidade do Brave enviando automaticamente relatórios de diagnóstico quando o navegador Brave apresentar falha ou congelar.</translation>
 <translation id="8081858229109418493">Nome e ícone do perfil</translation>
 <translation id="6438096877646138757">Sites que limpam os cookies quando você os fecha</translation>
 <translation id="2988792685798128092">Limpar ao fechar o site</translation>
@@ -42,7 +46,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="1692470335103807198">Obtenha mais temas</translation>
 <translation id="2906510232093002459">Imagens padrões do Brave</translation>
 <translation id="2814998458708016836">Usar barra de endereços larga</translation>
-<translation id="6123134130710658846">Ocultar botão Recompensas do Brave</translation>
+<translation id="6333347122924254968">Mostrar ícone das Recompensas Brave na barra de endereço</translation>
 <translation id="1811404036171336214">Sempre exibir favoritos na página da nova aba</translation>
 <translation id="1643029991199044105">Alterne entre as abas usadas mais recentemente com Ctrl+Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="5733490796524078528">Botões de doação</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">GitHub</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">Página Nova guia</translation>
 <translation id="1988804048511540801">Exibição da página de nova aba</translation>
 <translation id="2970343821770026391">Painel</translation>
@@ -89,12 +93,12 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="8612763432858587652">Sair da Janela Privada</translation>
 <translation id="8760415064721320867">Janela Privada com o Tor</translation>
 <translation id="2055363275850890030">Janela Privada</translation>
-<translation id="8934172355414207733">Privado com Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Esta é uma janela privada com Tor</translation>
 <translation id="1037341607922068025">Abrir Janela Privada com Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">Abrir no Tor</translation>
-<translation id="7643538479215207633">Abrir usando o IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Publicar e obter arquivos do IPFS</translation>
 <translation id="1672270084584211506">Onion disponível</translation>
 <translation id="406832631167785034">Abrir usando endereço .onion</translation>
@@ -105,7 +109,6 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4227945450504703638">Áudio selecionado</translation>
 <translation id="7895302206188277628">Conteúdo vinculado</translation>
 <translation id="3654831858282189202">Publicar com chave do IPNS</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Importar texto selecionado para o IPFS</translation>
 <translation id="6925604404524625582">Importar e copiar link para instantâneo do IPFS</translation>
 <translation id="1434416574322382019">Nova Janela Privada com Tor</translation>
@@ -238,8 +241,8 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="6358469157239228181">Não é possível usar esse nome</translation>
 <translation id="5761731140570209168">Adicione uma string de conexão de novo par</translation>
 <translation id="2082206983920804886">Girar chave</translation>
-<translation id="2521133093532260474">Não foi possível parar o nó local</translation>
-<translation id="86879877003581729">Não foi possível iniciar o nó local</translation>
+<translation id="5078501082919354191">Não foi possível parar o nó local do IPFS do Brave</translation>
+<translation id="5687424953196903465">Não foi possível iniciar o nó local do IPFS do Brave</translation>
 <translation id="6476061084931271248">Reinicie o nó para aplicar as alterações</translation>
 <translation id="3754226427671882382">Reiniciar nó</translation>
 <translation id="949667118776341807">Girar</translation>
@@ -254,17 +257,22 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="616058968889448209">Erro de inicialização do serviço do IPFS. Mais informações estão disponíveis na <ph name="BEGIN_LINK"/>página de diagnóstico<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Houve uma falha na importação da chave "<ph name="KEY_NAME"/>"</translation>
 <translation id="3364053282600191535">Houve uma falha na exportação da chave "<ph name="KEY_NAME"/>"</translation>
-<translation id="8860039076160511438">Redefinir carteira</translation>
+<translation id="4993345308607970390">Redefinir Carteira Brave</translation>
+<translation id="5975930666279943472">Limpar informações de transação e nonce da carteira</translation>
+<translation id="5693968582510626466">A limpeza de transações pode ser útil para desenvolvedores ou ao limpar o estado em um servidor local</translation>
 <translation id="6369495274982305511">Tem certeza de que deseja redefinir sua carteira? Se sua carteira não for armazenada em backup, a redefinição fará com que você perca todos os dados da conta (incluindo todos os fundos associados). Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="9216386092464743272">Tem certeza de que deseja redefinir todas as suas informações de transações e nonce? Essa opção é usada principalmente por desenvolvedores ao executar um servidor de teste local. Digite "<ph name="CONFIRMATION_PHRASE"/>" para confirmar.</translation>
+<translation id="3752403403443723332">Sua carteira foi redefinida.</translation>
+<translation id="594766067816395072">Suas informações de transações da carteira foram redefinidas.</translation>
 <translation id="1426410128494586442">Sim</translation>
 <translation id="8275038454117074363">Importar</translation>
 <translation id="3654980960391973513">Gerar</translation>
 <translation id="5531501313997312487">Iniciar nó</translation>
 <translation id="9170907049676078643">Método para resolver recursos de IPFS</translation>
 <translation id="1327977588028644528">Gateway</translation>
-<translation id="80225669816651290">Nó local</translation>
+<translation id="1195880978080389104">Nó local do IPFS do Brave</translation>
 <translation id="4927734062756955434">Endereço de gateway público de IPFS</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> sobre o nó local IPFS e considerações de privacidade do gateway.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Saiba mais<ph name="END_LINK_MPL"/> a respeito do nó local do IPFS do Brave e configurações de privacidade de gateway.</translation>
 <translation id="8425213833346101688">Alterar</translation>
 <translation id="557281710253742286">Definir gateway de IPFS</translation>
 <translation id="8571837315037233299">Endereço de gateway</translation>
@@ -273,7 +281,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="7703184801853248830">Endereço de gateway inválido</translation>
 <translation id="7690058578502751948">No Brave, somente um gateway IPFS válido com isolamento de origem ativado pode ser usado</translation>
 <translation id="585868419599255817">Envio por gateway público para o IPFS</translation>
-<translation id="207763736230883589">Recorre automaticamente ao gateway público de IPFS caso não seja possível contatar seu seu nó local.</translation>
+<translation id="2618080188892567155">Recorra automaticamente ao gateway público do IPFS caso não seja possível estabelecer contato com seu nó local do IPFS do Brave.</translation>
 <translation id="4107552920076294723">Redireciona recursos de IPFS para o gateway configurado de IPFS</translation>
 <translation id="6494857428933042381">Automaticamente usa o gateway configurado para resoluções de IPFS quando for encontrado um recurso de gateway de IPFS.</translation>
 <translation id="8655170717758778983">Quando possível, redirecione automaticamente para páginas do IPFS via DNSLink</translation>
@@ -346,10 +354,9 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="780301667611848630">Não</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="7053983685419859001">Bloquear</translation>
-<translation id="7815301689257843278">Enviar relatórios de falhas automaticamente para que o Brave possa impedir que esse problema volte a ocorrer?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> fechou de modo inesperado.</translation>
 <translation id="1324417023773393937">Navegador Brave</translation>
-<translation id="1068069727470515940">Você poderá alterar <ph name="SETTING_TEXT"/> novamente quando quiser.</translation>
+<translation id="7276554663454265692">Você pode alterar <ph name="SETTING_TEXT"/> a qualquer momento nas configurações do navegador.</translation>
 <translation id="6873781976650514089">esta configuração</translation>
 <translation id="6040143037577758943">Fechar</translation>
 <translation id="5600566490506283344">Notificação de anúncio do Brave</translation>
@@ -446,7 +453,6 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="2487558607408469181">URLs do Block Explorer</translation>
 <translation id="6301398959353668507">Este campo não pode ficar em branco.</translation>
 <translation id="7504462451153306677">Formato inválido. O ID da cadeia é um número positivo</translation>
-<translation id="8325036459845654666">Esta rede já foi adicionada.</translation>
 <translation id="650071759190249039">Erro interno. Não foi possível adicionar a rede.</translation>
 <translation id="868529041590572443">Preencha todas as informações sobre a moeda nativa</translation>
 <translation id="1062463687579789365">Personalização de redes de carteiras</translation>

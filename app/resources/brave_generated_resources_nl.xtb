@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is in Brave niet toegestaan.</translation>
 <translation id="6786747875388722282">Extensies</translation>
 <translation id="984275831282074731">Betaalmethodes</translation>
-<translation id="3699882589215410581">Widevine installeren en uitvoeren</translation>
+<translation id="1990886731975529483">Google Widevine installeren en uitvoeren</translation>
 <translation id="8926389886865778422">Niet meer vragen</translation>
 <translation id="5249433283143453448">Gebruik Widevine digital rights management (DRM) component om beschermde streaming-video en andere inhoud in de browser te bekijken.</translation>
 <translation id="6241402707160226266">Privéscherm met Tor</translation>
 <translation id="8762452230727230396">Tor verbergt je IP-adres van de websites die je bezoekt.</translation>
 <translation id="1369311132025451972">Automatisch .onion-sites doorverwijzen</translation>
 <translation id="2843777623071353503">Indien beschikbaar opent Brave een 'onion'-dienst van de website of een .onion-domein in een Tor-venster.</translation>
-<translation id="8053096063396012732">Widevine installeren</translation>
-<translation id="4840334696217618631">Start de browser opnieuw om Widevine in te schakelen</translation>
-<translation id="8410111618231938546">Google Widevine is een voorbeeld van Digital Rights Management (DRM) code die wij bij Brave Software niet bezitten en niet kunnen inspecteren. De Google Widevine code wordt geladen vna de Google-servers, en niet van die van ons. Het wordt alleen geladen als je deze optie aanzet. We raden het gebruik van DRM af, maar we respecteren de keuzes van onze gebruikers en begrijpen dat sommige Brave-gebruikers graag diensten willen gebruiken waarvoor DRM nodig is.
-
-Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruikersvoorwaarden. Je gaat er mee akkoord dat Brave niet verantwoordelijk is voor enige schade of verliezen gerelateerd aan je gebruik van Google Widevine</translation>
+<translation id="4900351245762303149">Google Widevine installeren</translation>
+<translation id="2313383941300459392">Start de browser opnieuw om Google Widevine in te schakelen</translation>
+<translation id="2200626478572277092">Widevine is soms nodig om media af te spelen op een webpagina. Het is een extensie van Google die wordt geladen vanaf Google-servers, die Brave niet kan inspecteren. Door te installeren gaat u akkoord met de gebruiksvoorwaarden van Google.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
+Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+<translation id="6229752134959014186">Lees meer over Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> vraagt u om</translation>
 <translation id="410351446219883937">Automatisch afspelen</translation>
 <translation id="3218385319396786393">Automatisch afspelen is op deze pagina geblokkeerd</translation>
 <translation id="4988333904713528597">Automatisch afspelen altijd toestaan in <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="6583467242903731748">Vragen wanneer een site toegang wil tot de Ethereum-aanbieder-API</translation>
 <translation id="7017590444693657895">Toegang tot Ethereum-aanbieder-API blokkeren voor sites</translation>
 <translation id="8988939298652262600">Brave controleert extensies niet op veiligheid. Installeer deze extensie alleen als u de ontwikkelaar vertrouwt.</translation>
+<translation id="933652931229970927">Diagnostische rapporten automatisch verzenden</translation>
+<translation id="1679356339067548863">Help de productstabiliteit van Brave te verbeteren door automatisch diagnostische rapporten te versturen wanneer de Brave-browser crasht of vastloopt.</translation>
 <translation id="8081858229109418493">Profielnaam en pictogram</translation>
 <translation id="6438096877646138757">Websites die cookies wissen wanneer u alle vensters sluit</translation>
 <translation id="2988792685798128092">Cookies wissen wanneer u een website sluit</translation>
@@ -42,7 +46,7 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="1692470335103807198">Krijg meer thema's</translation>
 <translation id="2906510232093002459">brave standaardafbeeldingen</translation>
 <translation id="2814998458708016836">Gebruik brede adresbalk</translation>
-<translation id="6123134130710658846">Verberg Brave Rewards-knop</translation>
+<translation id="6333347122924254968">Het Brave Beloningen-pictogram tonen in de adresbalk</translation>
 <translation id="1811404036171336214">Toon bladwijzers altijd op een nieuwe tabbladpagina</translation>
 <translation id="1643029991199044105">Ga door de meest  recent gebruikte tabbladen met Ctrl-Tab</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -77,7 +81,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="5733490796524078528">Beloningsknoppen</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">Nieuwe tabbladpagina</translation>
 <translation id="1988804048511540801">Nieuw tabblad toont</translation>
 <translation id="2970343821770026391">Dashboard</translation>
@@ -90,12 +94,12 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="8612763432858587652">Private Window afsluiten</translation>
 <translation id="8760415064721320867">Privévenster met Tor</translation>
 <translation id="2055363275850890030">Privévenster</translation>
-<translation id="8934172355414207733">Privé met Tor</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">Dit is een privévenster met Tor</translation>
 <translation id="1037341607922068025">Private Window openen met Tor</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">In Tor openen</translation>
-<translation id="7643538479215207633">Openen met IPFS</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Bestanden publiceren en ophalen uit IPFS</translation>
 <translation id="1672270084584211506">Onion beschikbaar</translation>
 <translation id="406832631167785034">Openen met .onion-adres</translation>
@@ -106,7 +110,6 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="4227945450504703638">Geselecteerde audio</translation>
 <translation id="7895302206188277628">Gekoppelde inhoud</translation>
 <translation id="3654831858282189202">Publiceren met IPNS-sleutel</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">Geselecteerde tekst naar IPFS importeren</translation>
 <translation id="6925604404524625582">Koppeling importeren en kopiëren naar IPFS-momentopname</translation>
 <translation id="1434416574322382019">Nieuw Privévenster in Tor</translation>
@@ -239,8 +242,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="6358469157239228181">Deze naam mag niet worden gebruikt</translation>
 <translation id="5761731140570209168">Een nieuwe peer-verbindingsreeks toevoegen</translation>
 <translation id="2082206983920804886">Sleutel vernieuwen</translation>
-<translation id="2521133093532260474">Lokaal knooppunt kan niet worden gestopt</translation>
-<translation id="86879877003581729">Lokaal knooppunt kan niet worden gestart</translation>
+<translation id="5078501082919354191">Lokale IPFS-knooppunt van Brave kan niet worden gestopt</translation>
+<translation id="5687424953196903465">Lokale IPFS-knooppunt van Brave kan niet worden gestart</translation>
 <translation id="6476061084931271248">Knooppunt opnieuw opstarten om wijzigingen door te voeren</translation>
 <translation id="3754226427671882382">Knooppunt opnieuw starten</translation>
 <translation id="949667118776341807">Vernieuwen</translation>
@@ -255,17 +258,22 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="616058968889448209">IPFS-fout bij starten van de service. Meer informatie is beschikbaar op de <ph name="BEGIN_LINK"/>pagina met diagnostiek<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Importeren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
 <translation id="3364053282600191535">Exporteren van sleutel '<ph name="KEY_NAME"/>' is mislukt</translation>
-<translation id="8860039076160511438">Wallet opnieuw instellen</translation>
+<translation id="4993345308607970390">Brave-wallet opnieuw instellen</translation>
+<translation id="5975930666279943472">Wallet-transactie en nonce-informatie wissen</translation>
+<translation id="5693968582510626466">Transacties wissen kan nuttig zijn voor ontwikkelaars of wanneer een lokale server wordt opgeschoond</translation>
 <translation id="6369495274982305511">Weet je zeker dat je je wallet opnieuw wilt instellen? Als je geen back-up van je wallet hebt, gaan alle accountgegevens verloren (inclusief het eventuele saldo) wanneer je je wallet opnieuw instelt. Typ "<ph name="CONFIRMATION_PHRASE"/>" om te bevestigen.</translation>
+<translation id="9216386092464743272">Weet u zeker dat u uw gehele wallet-transactie en alle nonce-informatie wilt wissen? Deze optie wordt voornamelijk gebruikt door ontwikkelaars die een lokale testserver uitvoeren. Typ '<ph name="CONFIRMATION_PHRASE"/>' om te bevestigen.</translation>
+<translation id="3752403403443723332">Uw wallet is opnieuw ingesteld.</translation>
+<translation id="594766067816395072">Uw wallet-transactie-informatie is opnieuw ingesteld.</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="8275038454117074363">Importeren</translation>
 <translation id="3654980960391973513">Genereren</translation>
 <translation id="5531501313997312487">Knooppunt starten</translation>
 <translation id="9170907049676078643">Methode voor het oplossen van IPFS-bronnen</translation>
 <translation id="1327977588028644528">Gateway</translation>
-<translation id="80225669816651290">Lokale node</translation>
+<translation id="1195880978080389104">Lokaal IPFS-knooppunt van Brave</translation>
 <translation id="4927734062756955434">Openbaar IPFS-gateway-adres</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt en privacy-overwegingen voor de gateway.</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Meer informatie<ph name="END_LINK_MPL"/> over het lokale IPFS-knooppunt van Brave en privacyoverwegingen voor de gateway.</translation>
 <translation id="8425213833346101688">Wijzigen</translation>
 <translation id="557281710253742286">Stel IPFS-gateway in</translation>
 <translation id="8571837315037233299">Gateway-adres</translation>
@@ -274,7 +282,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7703184801853248830">Ongeldig gateway-adres</translation>
 <translation id="7690058578502751948">Alleen een geldige IPFS-gateway waarbij de herkomstisolatie is ingeschakeld kan in Brave worden gebruikt</translation>
 <translation id="585868419599255817">Terugvallen op de publieke IPFS-poort</translation>
-<translation id="207763736230883589">Val automatisch terug naar de openbare IPFS-gateway als uw lokale knooppunt niet kan worden bereikt.</translation>
+<translation id="2618080188892567155">Val automatisch terug op de openbare IPFS-gateway als uw lokale IPFS-knooppunt niet kan worden bereikt.</translation>
 <translation id="4107552920076294723">IPFS-bronnen omleiden naar de geconfigureerde IPFS-gateway</translation>
 <translation id="6494857428933042381">Gebruikt automatisch de geconfigureerde gateway voor IPFS-resoluties wanneer een IPFS-gatewaybron is aangetroffen.</translation>
 <translation id="8655170717758778983">Indien mogelijk automatisch omleiden naar IPFS-pagina's via DNSLink</translation>
@@ -347,10 +355,9 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="780301667611848630">Nee, bedankt</translation>
 <translation id="5039804452771397117">Toestaan</translation>
 <translation id="7053983685419859001">Blokkeren</translation>
-<translation id="7815301689257843278">Automatisch foutrapport verzenden zodat Brave kan voorkomen dat de fout opnieuw optreedt?</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> is onverwachts gestopt.</translation>
 <translation id="1324417023773393937">Brave-browser</translation>
-<translation id="1068069727470515940">Je kunt <ph name="SETTING_TEXT"/> op elk gewenst moment wijzigen.</translation>
+<translation id="7276554663454265692">U kunt <ph name="SETTING_TEXT"/> op elk gewenst moment wijzigen in de browserinstellingen.</translation>
 <translation id="6873781976650514089">deze instelling</translation>
 <translation id="6040143037577758943">Sluit</translation>
 <translation id="5600566490506283344">Brave-advertentiemelding</translation>
@@ -447,7 +454,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2487558607408469181">Explorer-URL's blokkeren</translation>
 <translation id="6301398959353668507">Dit veld mag niet leeg zijn.</translation>
 <translation id="7504462451153306677">Ongeldige notatie, de keten-ID is een positief nummer</translation>
-<translation id="8325036459845654666">Dit netwerk is al toegevoegd.</translation>
 <translation id="650071759190249039">Interne fout, kan netwerk niet toevoegen.</translation>
 <translation id="868529041590572443">Verstrek alle informatie over de oorspronkelijke valuta</translation>
 <translation id="1062463687579789365">Wallet-netwerken aanpassen</translation>
