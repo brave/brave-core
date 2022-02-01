@@ -14,7 +14,7 @@ struct AssetSearchView: View {
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   
-  @State private var allTokens: [BraveWallet.ERCToken] = []
+  @State private var allTokens: [BraveWallet.BlockchainToken] = []
   
   var body: some View {
     NavigationView {
@@ -47,7 +47,7 @@ struct AssetSearchView: View {
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
-      cryptoStore.tokenRegistry.allTokens { tokens in
+      cryptoStore.blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { tokens in
         self.allTokens = tokens.sorted(by: { $0.symbol < $1.symbol })
       }
     }

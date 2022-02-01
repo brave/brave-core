@@ -7,7 +7,7 @@ import Foundation
 import BraveCore
 
 public struct AssetViewModel: Identifiable, Equatable {
-  var token: BraveWallet.ERCToken
+  var token: BraveWallet.BlockchainToken
   var decimalBalance: Double
   var price: String
   var history: [BraveWallet.AssetTimePrice]
@@ -48,33 +48,33 @@ public class PortfolioStore: ObservableObject {
   
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     walletService: self.walletService,
-    tokenRegistry: self.tokenRegistry,
-    rpcController: self.rpcController
+    blockchainRegistry: self.blockchainRegistry,
+    rpcService: self.rpcService
   )
   
-  private let keyringController: BraveWalletKeyringController
-  private let rpcController: BraveWalletEthJsonRpcController
+  private let keyringService: BraveWalletKeyringService
+  private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
-  private let assetRatioController: BraveWalletAssetRatioController
-  private let tokenRegistry: BraveWalletERCTokenRegistry
+  private let assetRatioService: BraveWalletAssetRatioService
+  private let blockchainRegistry: BraveWalletBlockchainRegistry
   
   public init(
-    keyringController: BraveWalletKeyringController,
-    rpcController: BraveWalletEthJsonRpcController,
+    keyringService: BraveWalletKeyringService,
+    rpcService: BraveWalletJsonRpcService,
     walletService: BraveWalletBraveWalletService,
-    assetRatioController: BraveWalletAssetRatioController,
-    tokenRegistry: BraveWalletERCTokenRegistry
+    assetRatioService: BraveWalletAssetRatioService,
+    blockchainRegistry: BraveWalletBlockchainRegistry
   ) {
-    self.keyringController = keyringController
-    self.rpcController = rpcController
+    self.keyringService = keyringService
+    self.rpcService = rpcService
     self.walletService = walletService
-    self.assetRatioController = assetRatioController
-    self.tokenRegistry = tokenRegistry
+    self.assetRatioService = assetRatioService
+    self.blockchainRegistry = blockchainRegistry
     
-    self.rpcController.add(self)
-    self.keyringController.add(self)
+    self.rpcService.add(self)
+    self.keyringService.add(self)
     
-    keyringController.isLocked { [self] isLocked in
+    keyringService.isLocked { [self] isLocked in
       if !isLocked {
         update()
       }
@@ -93,7 +93,7 @@ public class PortfolioStore: ObservableObject {
       for asset in userVisibleAssets {
         let token = asset.token
         group.enter()
-        rpcController.balance(for: token, in: account) { [weak self] balance in
+        rpcService.balance(for: token, in: account) { [weak self] balance in
           defer { group.leave() }
           guard let self = self,
                 let balance = balance,
@@ -108,7 +108,7 @@ public class PortfolioStore: ObservableObject {
   }
   
   func fetchPrices(_ completion: @escaping () -> Void) {
-    assetRatioController.price(
+    assetRatioService.price(
       userVisibleAssets.map { $0.token.symbol.lowercased() },
       toAssets: ["usd"],
       timeframe: timeframe
@@ -137,7 +137,7 @@ public class PortfolioStore: ObservableObject {
     // Fill prices for each asset
     for asset in assets {
       group.enter()
-      assetRatioController.priceHistory(
+      assetRatioService.priceHistory(
         asset.token.symbol,
         vsAsset: "usd",
         timeframe: timeframe
@@ -156,7 +156,7 @@ public class PortfolioStore: ObservableObject {
   
   func update() {
     isLoadingBalances = true
-    rpcController.chainId { [self] chainId in
+    rpcService.chainId { [self] chainId in
       // Get user assets for the selected chain
       walletService.userAssets(chainId) { [self] tokens in
         userVisibleAssets = tokens.filter(\.visible).map {
@@ -164,7 +164,7 @@ public class PortfolioStore: ObservableObject {
         }
         let group = DispatchGroup()
         group.enter()
-        keyringController.defaultKeyringInfo { keyring in
+        keyringService.defaultKeyringInfo { keyring in
           fetchBalances(accounts: keyring.accountInfos) {
             fetchHistoryForNonZeroBalances {
               group.leave()
@@ -206,7 +206,7 @@ public class PortfolioStore: ObservableObject {
   }
 }
 
-extension PortfolioStore: BraveWalletEthJsonRpcControllerObserver {
+extension PortfolioStore: BraveWalletJsonRpcServiceObserver {
   public func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
   }
   
@@ -218,7 +218,10 @@ extension PortfolioStore: BraveWalletEthJsonRpcControllerObserver {
   }
 }
 
-extension PortfolioStore: BraveWalletKeyringControllerObserver {
+extension PortfolioStore: BraveWalletKeyringServiceObserver {
+  public func keyringReset() {
+  }
+  
   public func accountsChanged() {
     update()
   }

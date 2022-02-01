@@ -24,7 +24,7 @@ struct TransactionView: View {
   var info: BraveWallet.TransactionInfo
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
-  var visibleTokens: [BraveWallet.ERCToken]
+  var visibleTokens: [BraveWallet.BlockchainToken]
   var displayAccountCreator: Bool
   var assetRatios: [String: Double]
   

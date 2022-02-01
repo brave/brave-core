@@ -8,7 +8,7 @@ import BraveCore
 
 #if DEBUG
 
-class TestAssetRatioController: BraveWalletAssetRatioController {
+class MockAssetRatioService: BraveWalletAssetRatioService {
   private let assets: [String: BraveWallet.AssetPrice] = [
     "eth": .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23"),
     "bat": .init(fromAsset: "bat", toAsset: "usd", price: "0.627699", assetTimeframeChange: "-0.019865"),
@@ -19,9 +19,6 @@ class TestAssetRatioController: BraveWalletAssetRatioController {
     }
     completion(!prices.isEmpty, Array(prices.values))
   }
-  func priceHistory(_ asset: String, vsAsset: String, timeframe: BraveWallet.AssetPriceTimeframe, completion: @escaping (Bool, [BraveWallet.AssetTimePrice]) -> Void) {
-    //    completion(true, assets)
-  }
   
   func estimatedTime(_ gasPrice: String, completion: @escaping (Bool, String) -> Void) {
     completion(false, "")
@@ -31,8 +28,12 @@ class TestAssetRatioController: BraveWalletAssetRatioController {
     completion(nil)
   }
   
-  func tokenInfo(_ contractAddress: String, completion: @escaping (BraveWallet.ERCToken?) -> Void) {
+  func tokenInfo(_ contractAddress: String, completion: @escaping (BraveWallet.BlockchainToken?) -> Void) {
     completion(nil)
+  }
+  
+  func priceHistory(_ asset: String, vsAsset: String, timeframe: BraveWallet.AssetPriceTimeframe, completion: @escaping (Bool, [BraveWallet.AssetTimePrice]) -> Void) {
+    completion(false, [])
   }
 }
 

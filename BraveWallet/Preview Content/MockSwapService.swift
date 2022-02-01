@@ -8,7 +8,7 @@ import BraveCore
 
 #if DEBUG
 
-class TestSwapController: BraveWalletSwapController {
+class MockSwapService: BraveWalletSwapService {
   func transactionPayload(_ params: BraveWallet.SwapParams, completion: @escaping (Bool, BraveWallet.SwapResponse?, String?) -> Void) {
     completion(true,
                 .init(price: "", guaranteedPrice: "", to: "", data: "", value: "", gas: "", estimatedGas: "", gasPrice: "", protocolFee: "", minimumProtocolFee: "", buyTokenAddress: "", sellTokenAddress: "", buyAmount: "", sellAmount: "", allowanceTarget: "", sellTokenToEthRate: "", buyTokenToEthRate: ""),

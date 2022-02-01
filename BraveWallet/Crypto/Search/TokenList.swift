@@ -8,12 +8,12 @@ import BraveCore
 import struct Shared.Strings
 
 struct TokenList<Content: View>: View {
-  var tokens: [BraveWallet.ERCToken]
-  var content: (BraveWallet.ERCToken) -> Content
+  var tokens: [BraveWallet.BlockchainToken]
+  var content: (BraveWallet.BlockchainToken) -> Content
   
   @State private var query = ""
   
-  private var filteredTokens: [BraveWallet.ERCToken] {
+  private var filteredTokens: [BraveWallet.BlockchainToken] {
     let normalizedQuery = query.lowercased()
     if normalizedQuery.isEmpty {
       return tokens
@@ -25,8 +25,8 @@ struct TokenList<Content: View>: View {
   }
   
   init(
-    tokens: [BraveWallet.ERCToken],
-    @ViewBuilder content: @escaping (BraveWallet.ERCToken) -> Content
+    tokens: [BraveWallet.BlockchainToken],
+    @ViewBuilder content: @escaping (BraveWallet.BlockchainToken) -> Content
   ) {
     self.tokens = tokens
     self.content = content
@@ -70,7 +70,7 @@ struct TokenList<Content: View>: View {
 #if DEBUG
 struct TokenListView_Previews: PreviewProvider {
   static var previews: some View {
-    TokenList(tokens: TestTokenRegistry.testTokens) { token in
+    TokenList(tokens: MockBlockchainRegistry.testTokens) { token in
       Text(token.name)
     }
   }

@@ -61,7 +61,7 @@ struct RecoveryWord: Hashable, Identifiable {
 
 /// An interface that helps you interact with a users keyring
 ///
-/// This wraps a KeyringController that you would obtain through BraveCore and makes it observable
+/// This wraps a KeyringService that you would obtain through BraveCore and makes it observable
 public class KeyringStore: ObservableObject {
   /// The users current keyring information. By default this is an empty keyring which has no accounts.
   @Published private(set) var keyring: BraveWallet.KeyringInfo = .init()
@@ -81,13 +81,13 @@ public class KeyringStore: ObservableObject {
   /// The number of minutes to wait until the Brave Wallet is automatically locked
   @Published var autoLockInterval: AutoLockInterval = .minute {
     didSet {
-      controller.setAutoLockMinutes(autoLockInterval.value) { _ in }
+      keyringService.setAutoLockMinutes(autoLockInterval.value) { _ in }
     }
   }
   /// The users selected account when buying/sending/swapping currencies
   @Published var selectedAccount: BraveWallet.AccountInfo = .init() {
     didSet {
-      controller.setSelectedAccount(selectedAccount.address) { _ in }
+      keyringService.setSelectedAccount(selectedAccount.address) { _ in }
     }
   }
   /// For showing wallet in the main Settings only when default keyring is created
@@ -95,14 +95,14 @@ public class KeyringStore: ObservableObject {
     return keyring.isDefaultKeyringCreated
   }
   
-  private let controller: BraveWalletKeyringController
+  private let keyringService: BraveWalletKeyringService
   private var cancellable: AnyCancellable?
   
-  public init(keyringController: BraveWalletKeyringController) {
-    controller = keyringController
-    controller.add(self)
+  public init(keyringService: BraveWalletKeyringService) {
+    self.keyringService = keyringService
+    self.keyringService.add(self)
     updateKeyringInfo()
-    controller.defaultKeyringInfo { [self] keyringInfo in
+    self.keyringService.defaultKeyringInfo { [self] keyringInfo in
       isOnboardingVisible = !keyringInfo.isDefaultKeyringCreated
       if Self.isKeychainPasswordStored && isOnboardingVisible {
         // If a user deletes the app and they had a stored user password in the past that keychain item
@@ -112,7 +112,7 @@ public class KeyringStore: ObservableObject {
         Self.resetKeychainStoredPassword()
       }
     }
-    controller.autoLockMinutes { minutes in
+    self.keyringService.autoLockMinutes { minutes in
       self.autoLockInterval = .init(value: minutes)
     }
     cancellable = NotificationCenter.default
@@ -123,7 +123,7 @@ public class KeyringStore: ObservableObject {
   }
   
   private func updateKeyringInfo() {
-    controller.defaultKeyringInfo { [self] keyringInfo in
+    keyringService.defaultKeyringInfo { [self] keyringInfo in
       if UIApplication.shared.applicationState != .active {
         // Changes made in the backgroud due to timers going off at launch don't
         // re-render things properly.
@@ -133,7 +133,7 @@ public class KeyringStore: ObservableObject {
       }
       keyring = keyringInfo
       if !keyring.accountInfos.isEmpty {
-        controller.selectedAccount { accountAddress in
+        keyringService.selectedAccount { accountAddress in
           selectedAccount = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ??
             keyringInfo.accountInfos.first!
         }
@@ -146,19 +146,19 @@ public class KeyringStore: ObservableObject {
   }
   
   func notifyWalletBackupComplete() {
-    controller.notifyWalletBackupComplete()
+    keyringService.notifyWalletBackupComplete()
   }
   
   func lock() {
     lockedManually = true
-    controller.lock()
+    keyringService.lock()
   }
   
   func unlock(password: String, completion: @escaping (Bool) -> Void) {
     if !keyring.isDefaultKeyringCreated {
       return
     }
-    controller.unlock(password) { [weak self] unlocked in
+    keyringService.unlock(password) { [weak self] unlocked in
       completion(unlocked)
       if unlocked {
         // Reset this state for next unlock
@@ -169,18 +169,18 @@ public class KeyringStore: ObservableObject {
   }
   
   func isStrongPassword(_ password: String, completion: @escaping (Bool) -> Void) {
-    controller.isStrongPassword(password, completion: completion)
+    keyringService.isStrongPassword(password, completion: completion)
   }
   
   func createWallet(password: String, completion: ((String) -> Void)? = nil) {
-    controller.createWallet(password) { [weak self] mnemonic in
+    keyringService.createWallet(password) { [weak self] mnemonic in
       self?.updateKeyringInfo()
       completion?(mnemonic)
     }
   }
   
   func recoveryPhrase(_ completion: @escaping ([RecoveryWord]) -> Void) {
-    controller.mnemonic { phrase in
+    keyringService.mnemonic { phrase in
       let words = phrase
         .split(separator: " ")
         .enumerated()
@@ -194,7 +194,7 @@ public class KeyringStore: ObservableObject {
   }
   
   func restoreWallet(phrase: String, password: String, isLegacyBraveWallet: Bool, completion: ((Bool) -> Void)? = nil) {
-    controller.restoreWallet(
+    keyringService.restoreWallet(
       phrase,
       password: password,
       isLegacyBraveWallet: isLegacyBraveWallet
@@ -211,14 +211,14 @@ public class KeyringStore: ObservableObject {
   }
   
   func addPrimaryAccount(_ name: String, completion: ((Bool) -> Void)? = nil) {
-    controller.addAccount(name) { success in
+    keyringService.addAccount(name) { success in
       self.updateKeyringInfo()
       completion?(success)
     }
   }
   
   func addSecondaryAccount(_ name: String, privateKey: String, completion: ((Bool, String) -> Void)? = nil) {
-    controller.importAccount(name, privateKey: privateKey) { success, address in
+    keyringService.importAccount(name, privateKey: privateKey) { success, address in
       self.updateKeyringInfo()
       completion?(success, address)
     }
@@ -230,13 +230,13 @@ public class KeyringStore: ObservableObject {
     password: String,
     completion: ((Bool, String) -> Void)? = nil
   ) {
-    controller.importAccount(fromJson: name, password: password, json: json) { success, address in
+    keyringService.importAccount(fromJson: name, password: password, json: json) { success, address in
       completion?(success, address)
     }
   }
   
   func removeSecondaryAccount(forAddress address: String, completion: ((Bool) -> Void)? = nil) {
-    controller.removeImportedAccount(address) { success in
+    keyringService.removeImportedAccount(address) { success in
       self.updateKeyringInfo()
       completion?(success)
     }
@@ -248,25 +248,24 @@ public class KeyringStore: ObservableObject {
       completion?(success)
     }
     if account.isImported {
-      controller.setDefaultKeyringImportedAccountName(account.address, name: name, completion: handler)
+      keyringService.setKeyringImportedAccountName(BraveWallet.DefaultKeyringId, address: account.address, name: name, completion: handler)
     } else {
-      controller.setDefaultKeyringDerivedAccountName(account.address, name: name, completion: handler)
+      keyringService.setKeyringDerivedAccountName(BraveWallet.DefaultKeyringId, address: account.address, name: name, completion: handler)
     }
   }
   
   func reset() {
-    controller.reset()
     isOnboardingVisible = true
     Self.resetKeychainStoredPassword()
   }
   
   func privateKey(for account: BraveWallet.AccountInfo, completion: @escaping (String?) -> Void) {
     if account.isPrimary {
-      controller.privateKey(forDefaultKeyringAccount: account.address) { success, key in
+      keyringService.privateKey(forDefaultKeyringAccount: account.address) { success, key in
         completion(success ? key : nil)
       }
     } else {
-      controller.privateKey(forImportedAccount: account.address) { success, key in
+      keyringService.privateKey(forImportedAccount: account.address) { success, key in
         completion(success ? key : nil)
       }
     }
@@ -277,7 +276,7 @@ public class KeyringStore: ObservableObject {
       // Auto-lock isn't running until the keyring is unlocked
       return
     }
-    controller.notifyUserInteraction()
+    keyringService.notifyUserInteraction()
   }
   
   // MARK: - Keychain
@@ -364,7 +363,10 @@ public class KeyringStore: ObservableObject {
   }
 }
 
-extension KeyringStore: BraveWalletKeyringControllerObserver {
+extension KeyringStore: BraveWalletKeyringServiceObserver {
+  public func keyringReset() {
+  }
+  
   public func autoLockMinutesChanged() {
   }
   

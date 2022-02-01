@@ -14,34 +14,34 @@ class SendTokenStoreTests: XCTestCase {
     
     func testPrefilledToken() {
         var store = SendTokenStore(
-            keyringController: TestKeyringController(),
-            rpcController: TestEthJsonRpcController(),
-            walletService: TestBraveWalletService(),
-            transactionController: TestEthTxController(),
-            tokenRegistery: TestTokenRegistry(),
+            keyringService: MockKeyringService(),
+            rpcService: MockJsonRpcService(),
+            walletService: MockBraveWalletService(),
+            txService: MockEthTxService(),
+            blockchainRegistry: MockBlockchainRegistry(),
             prefilledToken: nil
         )
         XCTAssertNil(store.selectedSendToken)
         
         store = SendTokenStore(
-            keyringController: TestKeyringController(),
-            rpcController: TestEthJsonRpcController(),
-            walletService: TestBraveWalletService(),
-            transactionController: TestEthTxController(),
-            tokenRegistery: TestTokenRegistry(),
+            keyringService: MockKeyringService(),
+            rpcService: MockJsonRpcService(),
+            walletService: MockBraveWalletService(),
+            txService: MockEthTxService(),
+            blockchainRegistry: MockBlockchainRegistry(),
             prefilledToken: .previewToken
         )
-        XCTAssertEqual(store.selectedSendToken?.symbol.lowercased(), BraveWallet.ERCToken.previewToken.symbol.lowercased())
+        XCTAssertEqual(store.selectedSendToken?.symbol.lowercased(), BraveWallet.BlockchainToken.previewToken.symbol.lowercased())
     }
     
     func testFetchAssets() {
-        let testRpcController = TestEthJsonRpcController()
+        let rpcService = MockJsonRpcService()
         let store = SendTokenStore(
-            keyringController: TestKeyringController(),
-            rpcController: testRpcController,
-            walletService: TestBraveWalletService(),
-            transactionController: TestEthTxController(),
-            tokenRegistery: TestTokenRegistry(),
+            keyringService: MockKeyringService(),
+            rpcService: rpcService,
+            walletService: MockBraveWalletService(),
+            txService: MockEthTxService(),
+            blockchainRegistry: MockBlockchainRegistry(),
             prefilledToken: nil
         )
         let ex = expectation(description: "fetch-assets")
@@ -52,7 +52,7 @@ class SendTokenStoreTests: XCTestCase {
                 XCTFail("Token was nil")
                 return
             }
-            testRpcController.network { network in
+            rpcService.network { network in
                 XCTAssertEqual(token.symbol, network.symbol)
             }
         }.store(in: &cancellables)
@@ -64,11 +64,11 @@ class SendTokenStoreTests: XCTestCase {
     
     func testMakeSendETHEIP1559Transaction() {
         let store = SendTokenStore(
-            keyringController: TestKeyringController(),
-            rpcController: TestEthJsonRpcController(),
-            walletService: TestBraveWalletService(),
-            transactionController: TestEthTxController(),
-            tokenRegistery: TestTokenRegistry(),
+            keyringService: MockKeyringService(),
+            rpcService: MockJsonRpcService(),
+            walletService: MockBraveWalletService(),
+            txService: MockEthTxService(),
+            blockchainRegistry: MockBlockchainRegistry(),
             prefilledToken: .previewToken
         )
         store.setUpTest()
@@ -83,19 +83,19 @@ class SendTokenStoreTests: XCTestCase {
     }
     
     func testMakeSendETHTransaction() {
-        let rpcController = TestEthJsonRpcController()
+        let rpcService = MockJsonRpcService()
         let store = SendTokenStore(
-            keyringController: TestKeyringController(),
-            rpcController: rpcController,
-            walletService: TestBraveWalletService(),
-            transactionController: TestEthTxController(),
-            tokenRegistery: TestTokenRegistry(),
+            keyringService: MockKeyringService(),
+            rpcService: rpcService,
+            walletService: MockBraveWalletService(),
+            txService: MockEthTxService(),
+            blockchainRegistry: MockBlockchainRegistry(),
             prefilledToken: .previewToken
         )
         store.setUpTest()
         
         let ex = expectation(description: "send-eth-transaction")
-        rpcController.setNetwork(BraveWallet.RopstenChainId) { success in
+        rpcService.setNetwork(BraveWallet.RopstenChainId) { success in
             XCTAssertTrue(success)
             store.sendToken(amount: "0.01") { success in
                 defer { ex.fulfill() }
@@ -109,14 +109,14 @@ class SendTokenStoreTests: XCTestCase {
     
     func testMakeSendERC20EIP1559Transaction() {
         let store = SendTokenStore(
-            keyringController: TestKeyringController(),
-            rpcController: TestEthJsonRpcController(),
-            walletService: TestBraveWalletService(),
-            transactionController: TestEthTxController(),
-            tokenRegistery: TestTokenRegistry(),
+            keyringService: MockKeyringService(),
+            rpcService: MockJsonRpcService(),
+            walletService: MockBraveWalletService(),
+            txService: MockEthTxService(),
+            blockchainRegistry: MockBlockchainRegistry(),
             prefilledToken: nil
         )
-        let token: BraveWallet.ERCToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, symbol: batSymbol, decimals: 18, visible: true, tokenId: "")
+        let token: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, symbol: batSymbol, decimals: 18, visible: true, tokenId: "", coingeckoId: "")
         store.selectedSendToken = token
         store.setUpTest()
         
@@ -131,19 +131,19 @@ class SendTokenStoreTests: XCTestCase {
     }
     
     func testMakeSendERC20Transaction() {
-        let rpcController = TestEthJsonRpcController()
+        let rpcService = MockJsonRpcService()
         let store = SendTokenStore(
-            keyringController: TestKeyringController(),
-            rpcController: rpcController,
-            walletService: TestBraveWalletService(),
-            transactionController: TestEthTxController(),
-            tokenRegistery: TestTokenRegistry(),
+            keyringService: MockKeyringService(),
+            rpcService: rpcService,
+            walletService: MockBraveWalletService(),
+            txService: MockEthTxService(),
+            blockchainRegistry: MockBlockchainRegistry(),
             prefilledToken: .previewToken
         )
         store.setUpTest()
         
         let ex = expectation(description: "send-bat-transaction")
-        rpcController.setNetwork(BraveWallet.RopstenChainId) { success in
+        rpcService.setNetwork(BraveWallet.RopstenChainId) { success in
             XCTAssertTrue(success)
             store.sendToken(amount: "0.01") { success in
                 defer { ex.fulfill() }

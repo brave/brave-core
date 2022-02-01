@@ -7,7 +7,7 @@ import Foundation
 import BraveCore
 
 public class AssetStore: ObservableObject, Equatable {
-  @Published var token: BraveWallet.ERCToken
+  @Published var token: BraveWallet.BlockchainToken
   @Published var isVisible: Bool {
     didSet {
       if isCustomToken {
@@ -33,7 +33,7 @@ public class AssetStore: ObservableObject, Equatable {
   init(
     walletService: BraveWalletBraveWalletService,
     chainId: String,
-    token: BraveWallet.ERCToken,
+    token: BraveWallet.BlockchainToken,
     isCustomToken: Bool,
     isVisible: Bool
   ) {
@@ -53,18 +53,18 @@ public class UserAssetsStore: ObservableObject {
   @Published private(set) var assetStores: [AssetStore] = []
   
   private let walletService: BraveWalletBraveWalletService
-  private let tokenRegistry: BraveWalletERCTokenRegistry
-  private let rpcController: BraveWalletEthJsonRpcController
+  private let blockchainRegistry: BraveWalletBlockchainRegistry
+  private let rpcService: BraveWalletJsonRpcService
   
   public init(
     walletService: BraveWalletBraveWalletService,
-    tokenRegistry: BraveWalletERCTokenRegistry,
-    rpcController: BraveWalletEthJsonRpcController
+    blockchainRegistry: BraveWalletBlockchainRegistry,
+    rpcService: BraveWalletJsonRpcService
   ) {
     self.walletService = walletService
-    self.tokenRegistry = tokenRegistry
-    self.rpcController = rpcController
-    self.rpcController.add(self)
+    self.blockchainRegistry = blockchainRegistry
+    self.rpcService = rpcService
+    self.rpcService.add(self)
     
     fetchVisibleAssets()
   }
@@ -73,7 +73,7 @@ public class UserAssetsStore: ObservableObject {
     walletService.userAssets(network.chainId) { [self] userAssets in
       let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
       let isTestnet = network.chainId != BraveWallet.MainnetChainId
-      tokenRegistry.allTokens { registryTokens in
+      blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { registryTokens in
         let allTokens = (isTestnet ? [] : registryTokens) + [network.nativeToken]
         assetStores = allTokens.union(userAssets, f: { $0.id }).map { token in
           AssetStore(
@@ -88,8 +88,8 @@ public class UserAssetsStore: ObservableObject {
     }
   }
   
-  func addUserAsset(token: BraveWallet.ERCToken, completion: @escaping (_ success: Bool) -> Void) {
-    rpcController.network { [weak self] network in
+  func addUserAsset(token: BraveWallet.BlockchainToken, completion: @escaping (_ success: Bool) -> Void) {
+    rpcService.network { [weak self] network in
       guard let self = self else { return }
       self.walletService.addUserAsset(token, chainId: network.chainId) { success in
         if success {
@@ -100,8 +100,8 @@ public class UserAssetsStore: ObservableObject {
     }
   }
   
-  func removeUserAsset(token: BraveWallet.ERCToken, completion: @escaping (_ success: Bool) -> Void) {
-    rpcController.network { [weak self] network in
+  func removeUserAsset(token: BraveWallet.BlockchainToken, completion: @escaping (_ success: Bool) -> Void) {
+    rpcService.network { [weak self] network in
       guard let self = self else { return }
       self.walletService.removeUserAsset(token, chainId: network.chainId) { success in
         if success {
@@ -113,15 +113,15 @@ public class UserAssetsStore: ObservableObject {
   }
   
   func fetchVisibleAssets() {
-    rpcController.network { [weak self] network in
+    rpcService.network { [weak self] network in
       self?.updateSelectedAssets(network)
     }
   }
 }
 
-extension UserAssetsStore: BraveWalletEthJsonRpcControllerObserver {
+extension UserAssetsStore: BraveWalletJsonRpcServiceObserver {
   public func chainChangedEvent(_ chainId: String) {
-    rpcController.network { [weak self] network in
+    rpcService.network { [weak self] network in
       self?.updateSelectedAssets(network)
     }
   }

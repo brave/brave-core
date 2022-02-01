@@ -41,32 +41,32 @@ class AssetDetailStore: ObservableObject {
   
   private(set) var assetPriceValue: Double = 0.0
   
-  private let assetRatioController: BraveWalletAssetRatioController
-  private let keyringController: BraveWalletKeyringController
-  private let rpcController: BraveWalletEthJsonRpcController
-  private let txController: BraveWalletEthTxController
-  private let tokenRegistry: BraveWalletERCTokenRegistry
+  private let assetRatioService: BraveWalletAssetRatioService
+  private let keyringService: BraveWalletKeyringService
+  private let rpcService: BraveWalletJsonRpcService
+  private let txService: BraveWalletEthTxService
+  private let blockchainRegistry: BraveWalletBlockchainRegistry
   
-  let token: BraveWallet.ERCToken
+  let token: BraveWallet.BlockchainToken
   
   init(
-    assetRatioController: BraveWalletAssetRatioController,
-    keyringController: BraveWalletKeyringController,
-    rpcController: BraveWalletEthJsonRpcController,
-    txController: BraveWalletEthTxController,
-    tokenRegistry: BraveWalletERCTokenRegistry,
-    token: BraveWallet.ERCToken
+    assetRatioService: BraveWalletAssetRatioService,
+    keyringService: BraveWalletKeyringService,
+    rpcService: BraveWalletJsonRpcService,
+    txService: BraveWalletEthTxService,
+    blockchainRegistry: BraveWalletBlockchainRegistry,
+    token: BraveWallet.BlockchainToken
   ) {
-    self.assetRatioController = assetRatioController
-    self.keyringController = keyringController
-    self.rpcController = rpcController
-    self.txController = txController
-    self.tokenRegistry = tokenRegistry
+    self.assetRatioService = assetRatioService
+    self.keyringService = keyringService
+    self.rpcService = rpcService
+    self.txService = txService
+    self.blockchainRegistry = blockchainRegistry
     self.token = token
     
-    self.keyringController.add(self)
-    self.rpcController.add(self)
-    self.txController.add(self)
+    self.keyringService.add(self)
+    self.rpcService.add(self)
+    self.txService.add(self)
   }
   
   static let priceFormatter = NumberFormatter().then {
@@ -84,15 +84,15 @@ class AssetDetailStore: ObservableObject {
     isLoadingPrice = true
     isLoadingChart = true
     
-    tokenRegistry.buyTokens { [self] tokens in
+    blockchainRegistry.buyTokens(BraveWallet.MainnetChainId) { [self] tokens in
       isBuySupported = tokens.first(where: { $0.symbol.lowercased() == token.symbol.lowercased() }) != nil
     }
     
-    keyringController.defaultKeyringInfo { [self] keyring in
+    keyringService.defaultKeyringInfo { [self] keyring in
       accounts = keyring.accountInfos.map {
         .init(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
       }
-      assetRatioController.price(
+      assetRatioService.price(
         [token.symbol],
         toAssets: ["usd", "btc"],
         timeframe: timeframe) { [weak self] success, prices in
@@ -115,7 +115,7 @@ class AssetDetailStore: ObservableObject {
             self.btcRatio = "\(assetPrice.price) BTC"
           }
         }
-      assetRatioController.priceHistory(
+      assetRatioService.priceHistory(
         token.symbol,
         vsAsset: "usd",
         timeframe: timeframe
@@ -131,11 +131,11 @@ class AssetDetailStore: ObservableObject {
   
   func fetchAccountBalances() {
     isLoadingAccountBalances = true
-    keyringController.defaultKeyringInfo { [self] keyring in
+    keyringService.defaultKeyringInfo { [self] keyring in
       let group = DispatchGroup()
       for account in keyring.accountInfos {
         group.enter()
-        rpcController.balance(for: token, in: account) { value in
+        rpcService.balance(for: token, in: account) { value in
           defer { group.leave() }
           if let index = accounts.firstIndex(where: { $0.account.address == account.address }) {
             accounts[index].decimalBalance = value ?? 0.0
@@ -151,14 +151,14 @@ class AssetDetailStore: ObservableObject {
   }
   
   func fetchTransactions() {
-    rpcController.network { [weak self] network in
+    rpcService.network { [weak self] network in
       guard let self = self else { return }
-      self.keyringController.defaultKeyringInfo { keyring in
+      self.keyringService.defaultKeyringInfo { keyring in
         var allTransactions: [BraveWallet.TransactionInfo] = []
         let group = DispatchGroup()
         for account in keyring.accountInfos {
           group.enter()
-          self.txController.allTransactionInfo(account.address) { txs in
+          self.txService.allTransactionInfo(account.address) { txs in
             defer { group.leave() }
             allTransactions.append(contentsOf: txs)
           }
@@ -183,9 +183,12 @@ class AssetDetailStore: ObservableObject {
   }
 }
 
-extension AssetDetailStore: BraveWalletKeyringControllerObserver {
+extension AssetDetailStore: BraveWalletKeyringServiceObserver {
+  func keyringReset() {
+  }
+  
   func accountsChanged() {
-    keyringController.defaultKeyringInfo { [self] keyring in
+    keyringService.defaultKeyringInfo { [self] keyring in
       accounts = keyring.accountInfos.map {
         .init(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
       }
@@ -216,11 +219,11 @@ extension AssetDetailStore: BraveWalletKeyringControllerObserver {
   }
 }
 
-extension AssetDetailStore: BraveWalletEthJsonRpcControllerObserver {
+extension AssetDetailStore: BraveWalletJsonRpcServiceObserver {
   func chainChangedEvent(_ chainId: String) {
     fetchAccountBalances()
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-      // There's some async gap between the chain changing and the EthTxController having the the correct
+      // There's some async gap between the chain changing and the EthTxService having the the correct
       // chain which results in fetching the _previous_ chains transactions
       self.fetchTransactions()
     }
@@ -231,7 +234,7 @@ extension AssetDetailStore: BraveWalletEthJsonRpcControllerObserver {
   }
 }
 
-extension AssetDetailStore: BraveWalletEthTxControllerObserver {
+extension AssetDetailStore: BraveWalletEthTxServiceObserver {
   func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
   }
   func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {

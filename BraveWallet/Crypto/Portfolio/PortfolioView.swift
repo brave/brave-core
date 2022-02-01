@@ -59,7 +59,7 @@ struct PortfolioView: View {
   
   @State private var tableInset: CGFloat = -16.0
   
-  @State private var selectedToken: BraveWallet.ERCToken?
+  @State private var selectedToken: BraveWallet.BlockchainToken?
   
   var body: some View {
     List {

@@ -84,15 +84,16 @@ struct AddCustomAssetView: View {
   }
   
   private func addCustomToken() {
-    let token = BraveWallet.ERCToken(contractAddress: addressInput,
-                                     name: nameInput,
-                                     logo: "",
-                                     isErc20: true,
-                                     isErc721: false,
-                                     symbol: symbolInput,
-                                     decimals: Int32(decimalsInput) ?? 18,
-                                     visible: true,
-                                     tokenId: "")
+    let token = BraveWallet.BlockchainToken(contractAddress: addressInput,
+                                            name: nameInput,
+                                            logo: "",
+                                            isErc20: true,
+                                            isErc721: false,
+                                            symbol: symbolInput,
+                                            decimals: Int32(decimalsInput) ?? 18,
+                                            visible: true,
+                                            tokenId: "",
+                                            coingeckoId: "")
     userAssetStore.addUserAsset(token: token) { [self] success in
       if success {
         presentationMode.dismiss()
@@ -106,9 +107,9 @@ struct AddCustomAssetView: View {
 #if DEBUG
 struct AddCustomAssetView_Previews: PreviewProvider {
     static var previews: some View {
-      AddCustomAssetView(userAssetStore: UserAssetsStore(walletService: TestBraveWalletService(),
-                                                         tokenRegistry: TestTokenRegistry(),
-                                                         rpcController: TestEthJsonRpcController()))
+      AddCustomAssetView(userAssetStore: UserAssetsStore(walletService: MockBraveWalletService(),
+                                                         blockchainRegistry: MockBlockchainRegistry(),
+                                                         rpcService: MockJsonRpcService()))
     }
 }
 #endif

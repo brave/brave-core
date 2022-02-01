@@ -10,11 +10,11 @@ import BraveCore
 /// functionality for the use of SwiftUI Previews.
 ///
 /// - note: Do not use this directly, use ``NetworkStore.previewStore``
-class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
+class MockJsonRpcService: BraveWalletJsonRpcService {
   private var chainId: String = BraveWallet.MainnetChainId
   private var networks: [BraveWallet.EthereumChain] = [.mainnet, .rinkeby, .ropsten]
   private var networkURL: URL?
-  private var observers: NSHashTable<BraveWalletEthJsonRpcControllerObserver> = .weakObjects()
+  private var observers: NSHashTable<BraveWalletJsonRpcServiceObserver> = .weakObjects()
   
   func chainId(_ completion: @escaping (String) -> Void) {
     completion(chainId)
@@ -32,7 +32,7 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
     completion(networks.first(where: { $0.chainId == self.chainId }) ?? .init())
   }
   
-  func balance(_ address: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+  func balance(_ address: String, coin: BraveWallet.CoinType, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     // return fake sufficient ETH balance `0x13e25e19dc20ba7` is about 0.0896 ETH
     completion("0x13e25e19dc20ba7", .success, "")
   }
@@ -41,28 +41,12 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
     completion("10", .success, "")
   }
   
-  func unstoppableDomainsProxyReaderGetMany(_ contractAddress: String, domain: String, keys: [String], completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
-  }
-  
-  func ensProxyReaderGetResolverAddress(_ contractAddress: String, domain: String, completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
-  }
-  
   func request(_ jsonPayload: String, autoRetryOnNetworkChange: Bool, completion: @escaping (Int32, String, [String: String]) -> Void) {
     completion(0, "", [:])
   }
   
-  func add(_ observer: BraveWalletEthJsonRpcControllerObserver) {
+  func add(_ observer: BraveWalletJsonRpcServiceObserver) {
     observers.add(observer)
-  }
-  
-  func add(_ chain: BraveWallet.EthereumChain, origin: URL, completion: @escaping (String, Bool) -> Void) {
-    self.networks.append(chain)
-  }
-  
-  func addEthereumChainRequestCompleted(_ chainId: String, approved: Bool) {
-    
   }
   
   func pendingChainRequests(_ completion: @escaping ([BraveWallet.EthereumChain]) -> Void) {
@@ -71,10 +55,6 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
   
   func allNetworks(_ completion: @escaping ([BraveWallet.EthereumChain]) -> Void) {
     completion(networks)
-  }
-  
-  func setCustomNetworkForTesting(_ chainId: String, providerUrl: URL) {
-    
   }
   
   func setNetwork(_ chainId: String, completion: @escaping (Bool) -> Void) {
@@ -88,10 +68,6 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
   
   func ensGetEthAddr(_ domain: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
     completion("", .unknownChain, "Error Message")
-  }
-  
-  func unstoppableDomainsGetEthAddr(_ domain: String, completion: @escaping (Bool, String) -> Void) {
-    completion(false, "")
   }
   
   func unstoppableDomainsGetEthAddr(_ domain: String, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
@@ -110,8 +86,33 @@ class TestEthJsonRpcController: NSObject, BraveWalletEthJsonRpcController {
     completion([])
   }
   
+  func removeEthereumChain(_ chainId: String, completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+  
+  func add(_ chain: BraveWallet.EthereumChain, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .chainDisconnected, "Error Message")
+  }
+  
+  func addEthereumChain(forOrigin chain: BraveWallet.EthereumChain, origin: URL, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
+    completion("", .chainDisconnected, "Error Message")
+  }
+  
+  func addEthereumChainRequestCompleted(_ chainId: String, approved: Bool) {
+  }
+  
   func notifySwitchChainRequestProcessed(_ approved: Bool, origin: URL) {
-    
+  }
+  
+  func setCustomNetworkForTesting(_ chainId: String, providerUrl: URL) {
+  }
+  
+  func solanaBalance(_ pubkey: String, completion: @escaping (UInt64, BraveWallet.SolanaProviderError, String) -> Void) {
+    completion(0, .internalError, "Error Message")
+  }
+  
+  func splTokenAccountBalance(_ pubkey: String, completion: @escaping (String, UInt8, String, BraveWallet.SolanaProviderError, String) -> Void) {
+    completion("", 0, "", .internalError, "Error Message")
   }
 }
 
