@@ -60,6 +60,10 @@ ConfirmationType::Value ConfirmationType::value() const {
 }
 
 ConfirmationType::operator std::string() const {
+  return ToString();
+}
+
+std::string ConfirmationType::ToString() const {
   switch (value_) {
     case kUndefined: {
       return kUndefinedConfirmationType;

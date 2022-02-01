@@ -5,11 +5,13 @@
 
 #include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 
+#include <map>
 #include <utility>
 
 #include "base/check.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
@@ -23,6 +25,8 @@ namespace ads {
 using challenge_bypass_ristretto::TokenPreimage;
 using challenge_bypass_ristretto::VerificationKey;
 using challenge_bypass_ristretto::VerificationSignature;
+
+constexpr char kAdFormatKey[] = "ad_format";
 
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     RedeemUnblindedPaymentTokensUrlRequestBuilder(
@@ -82,6 +86,9 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
 
   dictionary.SetKey("payload", base::Value(payload));
 
+  base::Value totals = CreateTotals();
+  dictionary.SetKey("totals", std::move(totals));
+
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
 
@@ -124,6 +131,38 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
   }
 
   return payment_request_dto;
+}
+
+base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateTotals()
+    const {
+  std::map<std::string, std::map<std::string, int>> buckets;
+  for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
+    const std::string& ad_type = unblinded_payment_token.ad_type.ToString();
+    const std::string& confirmation_type =
+        unblinded_payment_token.confirmation_type.ToString();
+
+    buckets[ad_type][confirmation_type]++;
+  }
+
+  base::Value totals(base::Value::Type::LIST);
+  for (const auto& bucket : buckets) {
+    base::Value total(base::Value::Type::DICTIONARY);
+
+    const std::string& ad_format = bucket.first;
+    total.SetKey(kAdFormatKey, base::Value(ad_format));
+
+    const std::map<std::string, int>& confirmations = bucket.second;
+    for (const auto& confirmation : confirmations) {
+      const std::string& confirmation_type = confirmation.first;
+      const std::string& count = base::NumberToString(confirmation.second);
+
+      total.SetKey(confirmation_type, base::Value(count));
+    }
+
+    totals.Append(std::move(total));
+  }
+
+  return totals;
 }
 
 base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(

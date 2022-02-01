@@ -38,6 +38,7 @@ class ConfirmationType final {
 
   Value value() const;
   operator std::string() const;
+  std::string ToString() const;
 
   bool operator==(const ConfirmationType& rhs) const;
   bool operator!=(const ConfirmationType& rhs) const;
