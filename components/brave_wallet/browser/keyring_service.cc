@@ -626,7 +626,9 @@ HDKeyring* KeyringService::RestoreKeyring(const std::string& keyring_id,
     return nullptr;
   }
 
-  if (!CreateKeyringInternal(keyring_id, mnemonic, is_legacy_brave_wallet)) {
+  // non default keyrings can only create encryptors for lazily keyring creation
+  if (keyring_id != mojom::kDefaultKeyringId ||
+      !CreateKeyringInternal(keyring_id, mnemonic, is_legacy_brave_wallet)) {
     return nullptr;
   }
 
@@ -680,11 +682,10 @@ void KeyringService::CreateWallet(const std::string& password,
     AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
   }
 
+  // keep encryptor pre-created
+  // to be able to lazily create keyring later
   if (IsFilecoinEnabled()) {
-    // If Filecoin keyring doesnt exist we keep encryptor pre-created
-    // to be able to lazily create keyring later
-    if (!IsKeyringExist(mojom::kFilecoinKeyringId) &&
-        !CreateEncryptorForKeyring(password, mojom::kFilecoinKeyringId)) {
+    if (!CreateEncryptorForKeyring(password, mojom::kFilecoinKeyringId)) {
       VLOG(1) << "Unable to create filecoin encryptor";
     }
   }
@@ -698,6 +699,10 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
                                    RestoreWalletCallback callback) {
   auto* keyring = RestoreKeyring(mojom::kDefaultKeyringId, mnemonic, password,
                                  is_legacy_brave_wallet);
+  if (keyring && !keyring->GetAccountsNumber()) {
+    AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
+  }
+
   if (IsFilecoinEnabled()) {
     auto* filecoin_keyring = RestoreKeyring(mojom::kFilecoinKeyringId, mnemonic,
                                             password, is_legacy_brave_wallet);
@@ -705,9 +710,6 @@ void KeyringService::RestoreWallet(const std::string& mnemonic,
       AddAccountForKeyring(mojom::kFilecoinKeyringId, GetAccountName(1));
   }
 
-  if (keyring && !keyring->GetAccountsNumber()) {
-    AddAccountForKeyring(mojom::kDefaultKeyringId, GetAccountName(1));
-  }
   // TODO(darkdh): add account discovery mechanism
 
   std::move(callback).Run(keyring);
