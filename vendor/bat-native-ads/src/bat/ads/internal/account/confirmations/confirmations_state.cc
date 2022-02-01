@@ -364,6 +364,10 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
         confirmation_dictionary->FindStringKey("ad_type");
     if (ad_type) {
       confirmation.ad_type = AdType(*ad_type);
+    } else {
+      // Migrate legacy confirmations, this value is not used right now so safe
+      // to set to |kAdNotification|
+      confirmation.ad_type = AdType::kAdNotification;
     }
 
     // Token info
