@@ -76,6 +76,7 @@ public class AssetDetailActivity
     private Handler mHandler;
     private AccountInfo[] accountInfos;
     private WalletCoinAdapter mWalletTxCoinAdapter;
+    private boolean mHasNewTx;
 
     @Override
     protected void triggerLayoutInflation() {
@@ -189,6 +190,15 @@ public class AssetDetailActivity
         onInitialLayoutInflationComplete();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (mHasNewTx) {
+            setUpAccountList();
+            mHasNewTx = false;
+        }
+    }
+
     private void getPriceHistory(String asset, String vsAsset, int timeframe) {
         if (mAssetRatioService != null) {
             mAssetRatioService.getPriceHistory(asset, vsAsset, timeframe,
@@ -299,6 +309,11 @@ public class AssetDetailActivity
     @Override
     public void onTransactionStatusChanged(TransactionInfo txInfo) {
         mWalletTxCoinAdapter.onTransactionUpdate(txInfo);
+    }
+
+    @Override
+    public void onNewUnapprovedTx(TransactionInfo txInfo) {
+        mHasNewTx = true;
     }
 
     @Override
