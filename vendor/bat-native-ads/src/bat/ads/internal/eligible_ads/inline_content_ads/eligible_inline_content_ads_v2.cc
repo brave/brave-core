@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/inline_content_ad_info.h"
+#include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_exclusion_rules.h"
@@ -17,9 +18,8 @@
 #include "bat/ads/internal/database/tables/creative_inline_content_ads_database_table.h"
 #include "bat/ads/internal/eligible_ads/choose_ad.h"
 #include "bat/ads/internal/eligible_ads/frequency_capping.h"
-#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 
 namespace ads {

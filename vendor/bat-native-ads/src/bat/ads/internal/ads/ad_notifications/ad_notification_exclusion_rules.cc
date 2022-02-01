@@ -7,7 +7,7 @@
 
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/dismissed_frequency_cap.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 
 namespace ads {
 namespace ad_notifications {

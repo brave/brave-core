@@ -8,8 +8,8 @@
 #include <algorithm>
 
 #include "base/time/time.h"
+#include "bat/ads/internal/account/statement/ad_rewards_features.h"
 #include "bat/ads/internal/account/transactions/reconciled_transactions_util.h"
-#include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
 
 namespace ads {
 
