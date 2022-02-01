@@ -1,12 +1,12 @@
 diff --git a/components/permissions/android/BUILD.gn b/components/permissions/android/BUILD.gn
-index 958cacdd47e63f09692ad610ab2711fddeafd4d5..82e6083d952f176aa49b0892d050478bbd2ff966 100644
+index 958cacdd47e63f09692ad610ab2711fddeafd4d5..8c0804c12c84bd90a56b44b9689576b55caf32b3 100644
 --- a/components/permissions/android/BUILD.gn
 +++ b/components/permissions/android/BUILD.gn
-@@ -126,6 +126,7 @@ android_library("java") {
-     "java/src/org/chromium/components/permissions/nfc/NfcSystemLevelPrompt.java",
-     "java/src/org/chromium/components/permissions/nfc/NfcSystemLevelSetting.java",
+@@ -141,6 +141,7 @@ android_library("java") {
+     "//third_party/androidx:androidx_vectordrawable_vectordrawable_java",
+     "//ui/android:ui_java",
    ]
-+  sources += brave_components_permissions_java_sources
-   deps = [
-     ":core_java",
-     ":java_resources",
++  sources += brave_components_permissions_java_sources deps += brave_components_permissions_java_deps
+   annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
+   resources_package = "org.chromium.components.permissions"
+ }

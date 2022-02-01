@@ -7,9 +7,13 @@ package org.chromium.components.permissions;
 
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.mojo.bindings.ConnectionErrorHandler;
+import org.chromium.mojo.system.MojoException;
 
 @JNINamespace("permissions")
-public class BravePermissionDialogDelegate {
+public class BravePermissionDialogDelegate implements ConnectionErrorHandler {
     /** Text to show before lifetime options. */
     private String mLifetimeOptionsText;
 
@@ -20,9 +24,12 @@ public class BravePermissionDialogDelegate {
     private int mSelectedLifetimeOption;
 
     private boolean mUseWalletLayout;
+    private KeyringService mKeyringService;
 
     public BravePermissionDialogDelegate() {
         mSelectedLifetimeOption = -1;
+        mKeyringService = null;
+        mUseWalletLayout = false;
     }
 
     @CalledByNative
@@ -59,5 +66,32 @@ public class BravePermissionDialogDelegate {
     @CalledByNative
     public void setUseWalletLayout(boolean useWalletLayout) {
         mUseWalletLayout = useWalletLayout;
+        if (mUseWalletLayout) {
+            InitKeyringService();
+        }
+    }
+
+    @CalledByNative
+    public void disconnectMojoServices() {
+        if (mKeyringService == null) {
+            return;
+        }
+        mKeyringService.close();
+        mKeyringService = null;
+    }
+
+    @Override
+    public void onConnectionError(MojoException e) {
+        mKeyringService.close();
+        mKeyringService = null;
+        InitKeyringService();
+    }
+
+    protected void InitKeyringService() {
+        if (mKeyringService != null) {
+            return;
+        }
+
+        mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
     }
 }

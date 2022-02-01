@@ -89,14 +89,14 @@ public class DappsBottomSheetDialogFragment
                     if (activity == null) {
                         return;
                     }
-                    activity.openBraveWallet();
+                    activity.openBraveWallet(true);
                 } else {
                     BraveActivity activity = BraveActivity.getBraveActivity();
                     assert activity != null;
                     if (activity == null) {
                         return;
                     }
-                    activity.openBraveWallet();
+                    activity.openBraveWallet(true);
                 }
                 dismiss();
             }
