@@ -115,15 +115,24 @@ def external_component_license_file(preamble, components):
 def list_sub_components(base_dir):
     found = []
     for dirpath, dirs, dummy in os.walk(base_dir):
-        for dir_name in dirs:
+        for dir_name in sorted(dirs):
             found.append(extract_license_info(os.path.join(dirpath, dir_name)))
     return found
 
 
 def write_license_file(directory, contents):
     file_path = os.path.join(directory, 'LICENSE')
+
+    if os.path.isfile(file_path):
+        with open(file_path, mode='r', encoding='utf-8') as file_handle:
+            old_contents = file_handle.read()
+            if old_contents == contents:
+                return False  # Don't overwrite file needlessly.
+
     with open(file_path, mode='wt', encoding='utf-8') as file_handle:
         file_handle.write(contents)
+
+    return True
 
 
 def list_ntp_backgrounds(metadata_file):
@@ -191,10 +200,10 @@ def main():
                        'The Brave Browser and such lists are separate and independent works.'
 
     adblock_components = list_sub_components(adblock_lists_dir)
-    write_license_file(adblock_dir, external_component_license_file(
-        adblock_preamble, adblock_components))
-    print('  - %s sub-components added in adblock/LICENSE' %
-          len(adblock_components))
+    if write_license_file(adblock_dir, external_component_license_file(
+            adblock_preamble, adblock_components)):
+        print('  - %s sub-components added in adblock/LICENSE' %
+              len(adblock_components))
 
     # Brave Local Data component
     local_data_dir = os.path.join(third_party_dir, 'local_data')
@@ -204,10 +213,10 @@ def main():
                           'The Brave Browser and such data files are separate and independent works.'
 
     local_data_components = list_sub_components(local_data_lists_dir)
-    write_license_file(local_data_dir, external_component_license_file(
-        local_data_preamble, local_data_components))
-    print('  - %s sub-components added in local_data/LICENSE' %
-          len(local_data_components))
+    if write_license_file(local_data_dir, external_component_license_file(
+            local_data_preamble, local_data_components)):
+        print('  - %s sub-components added in local_data/LICENSE' %
+              len(local_data_components))
 
     # Brave New Tab UI component
     ntp_data_dir = os.path.join(components_dir, 'brave_new_tab_ui', 'data')
@@ -217,10 +226,10 @@ def main():
 
     ntp_backgrounds = list_ntp_backgrounds(
         os.path.join(ntp_data_dir, 'backgrounds.ts'))
-    write_license_file(ntp_data_dir, generate_backgrounds_license(
-        ntp_backgrounds_preamble, ntp_backgrounds))
-    print('  - %s sub-components added in brave_new_tab_ui/data/LICENSE' %
-          len(ntp_backgrounds))
+    if write_license_file(ntp_data_dir, generate_backgrounds_license(
+            ntp_backgrounds_preamble, ntp_backgrounds)):
+        print('  - %s sub-components added in brave_new_tab_ui/data/LICENSE' %
+              len(ntp_backgrounds))
 
 
 if __name__ == '__main__':
