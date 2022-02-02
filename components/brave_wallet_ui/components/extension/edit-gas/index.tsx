@@ -125,7 +125,12 @@ const EditGas = (props: Props) => {
   const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const suggestedSliderStep = event.target.value
     setSuggestedSliderStep(suggestedSliderStep)
-    setSuggestedMaxPriorityFee(suggestedMaxPriorityFeeChoices[Number(suggestedSliderStep)])
+    const hexString = suggestedMaxPriorityFeeChoices[Number(suggestedSliderStep)]
+    setSuggestedMaxPriorityFee(hexString)
+    setMaxPriorityFeePerGas(toGWei(hexString))
+    const computedMaxFeePerGasWei = addNumericValues(baseFeePerGas, hexString)
+    const computedMaxFeePerGasGWei = toGWei(computedMaxFeePerGasWei)
+    setMaxFeePerGas(computedMaxFeePerGasGWei)
   }
 
   const showSuggestedMaxPriorityPanel = isEIP1559Transaction && maxPriorityPanel === MaxPriorityPanels.setSuggested
