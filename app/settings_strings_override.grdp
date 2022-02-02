@@ -88,6 +88,9 @@
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="Label for block third party cookies in Private radio toggle">
     Block third-party cookies in Private
   </message>
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_EXPAND_A11Y_LABEL" desc="Label for the button that toggles showing the detailed description of blocking third party cookies in Private. Only visible by screen reader software.">
+    Show details about blocking third-party cookies in Private
+  </message>
   <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in Private radio toggle">
     While in Private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may not work.
   </message>
