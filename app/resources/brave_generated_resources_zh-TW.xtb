@@ -15,18 +15,20 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") 在 Brave 中是不允許的。</translation>
 <translation id="6786747875388722282">擴充功能</translation>
 <translation id="984275831282074731">付款方式</translation>
-<translation id="3699882589215410581">安裝並執行 Widevine</translation>
+<translation id="1990886731975529483">安裝並執行 Google Widevine</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="5249433283143453448">使用 Widevine 數位版權管理 (DRM) 元件以在瀏覽器中檢視受保護的串流影片與其他內容。</translation>
 <translation id="6241402707160226266">使用 Tor 的隱私視窗</translation>
 <translation id="8762452230727230396">Tor 會讓您對您造訪的網站隱藏 IP 位置。</translation>
 <translation id="1369311132025451972">自動重新導向 .onion 網站</translation>
 <translation id="2843777623071353503">Brave 會在服務可用時開啟網站的洋蔥服務，或在 Tor 視窗中開啟 .onion 網域。</translation>
-<translation id="8053096063396012732">安裝 Widevine</translation>
-<translation id="4840334696217618631">重新啟動瀏覽器以啟用 Widevine</translation>
-<translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
-
-安裝該擴充功能即表示您同意 Google Widevine 使用條款。您同意 Brave 不為您使用 Google Widevine 而產生的任何相關損害或損失負責。</translation>
+<translation id="4900351245762303149">安裝 Google Widevine</translation>
+<translation id="2313383941300459392">重新啟動瀏覽器以啟用 Google Widevine</translation>
+<translation id="2200626478572277092">有時需有 Widevine 才能在網頁上播放媒體。這是從 Google 伺服器載入的 Google 擴充功能，Brave 無法檢查。安裝即代表您同意 Google 的使用條款。</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>。
+或稍後在 <ph name="SETTINGS_EXTENIONS_LINK"/> 變更。</translation>
+<translation id="6229752134959014186">深入瞭解 Widevine</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/> 正要求您</translation>
 <translation id="410351446219883937">自動播放</translation>
 <translation id="3218385319396786393">此頁面已禁止自動播放</translation>
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST"/></translation>
@@ -35,6 +37,8 @@
 <translation id="6583467242903731748">網站希望存取以太坊提供者 API 時詢問我</translation>
 <translation id="7017590444693657895">禁止網站存取以太坊提供者 API</translation>
 <translation id="8988939298652262600">Brave 不會審查延伸套件的漏洞和安全性。僅在您信任開發者的情況下，才安裝這個延伸套件。</translation>
+<translation id="933652931229970927">自動傳送診斷報告</translation>
+<translation id="1679356339067548863">在 Brave 瀏覽器當機或凍結時自動傳送診斷報告，協助改善 Brave 的產品穩定性。</translation>
 <translation id="8081858229109418493">設定檔名稱和圖示</translation>
 <translation id="6438096877646138757">關閉時清除 cookie 的網站</translation>
 <translation id="2988792685798128092">網站關閉時清除</translation>
@@ -42,7 +46,7 @@
 <translation id="1692470335103807198">取得更多主題</translation>
 <translation id="2906510232093002459">Brave 預設圖像</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
-<translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
+<translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
 <translation id="1811404036171336214">總是在新分頁上顯示書籤</translation>
 <translation id="1643029991199044105">使用 Ctrl-Tab 循環瀏覽最近使用的分頁</translation>
 <translation id="1013121820689882118">Speedreader</translation>
@@ -76,7 +80,7 @@
 <translation id="5733490796524078528">打賞按鈕</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="7038489306457318096">Github</translation>
+<translation id="6032511312767282174">Github</translation>
 <translation id="7781069478569868053">新分頁</translation>
 <translation id="1988804048511540801">新的索引標籤頁顯示</translation>
 <translation id="2970343821770026391">儀表板​​</translation>
@@ -89,12 +93,12 @@
 <translation id="8612763432858587652">離開私人視窗</translation>
 <translation id="8760415064721320867">使用 Tor 的隱私視窗</translation>
 <translation id="2055363275850890030">隱私視窗</translation>
-<translation id="8934172355414207733">用 Tor 進行私人瀏覽</translation>
+<translation id="5410152065859052603">Tor</translation>
+<translation id="7897433216002294926">Tor <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">這是 Tor 的私人視窗</translation>
 <translation id="1037341607922068025">用 Tor 開啟私人視窗</translation>
-<translation id="5410152065859052603">Tor</translation>
 <translation id="1725356094208762656">在 Tor 中開啟</translation>
-<translation id="7643538479215207633">使用 IPFS 開啟</translation>
+<translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">在 IPFS 發佈並擷取檔案</translation>
 <translation id="1672270084584211506">Onion 可用</translation>
 <translation id="406832631167785034">使用 .onion 位址開啟</translation>
@@ -105,7 +109,6 @@
 <translation id="4227945450504703638">選取的音訊</translation>
 <translation id="7895302206188277628">連結的內容</translation>
 <translation id="3654831858282189202">使用 IPNS 金鑰發佈</translation>
-<translation id="7691598647605453992">IPFS</translation>
 <translation id="1047401034925735299">將選取的文字匯入至 IPFS</translation>
 <translation id="6925604404524625582">匯入並複製連結至 IPFS 快拍圖像</translation>
 <translation id="1434416574322382019">以 Tor 開啟新私有窗口</translation>
@@ -238,8 +241,8 @@
 <translation id="6358469157239228181">此名稱無法使用</translation>
 <translation id="5761731140570209168">新增新的對等連線字串</translation>
 <translation id="2082206983920804886">旋轉金鑰</translation>
-<translation id="2521133093532260474">無法停止本機節點</translation>
-<translation id="86879877003581729">無法啟動本機節點</translation>
+<translation id="5078501082919354191">無法停止 Brave 本機 IPFS 節點</translation>
+<translation id="5687424953196903465">無法啟動 Brave 本機 IPFS 節點</translation>
 <translation id="6476061084931271248">重新啟動節點，以套用變更</translation>
 <translation id="3754226427671882382">重新啟動節點</translation>
 <translation id="949667118776341807">旋轉</translation>
@@ -254,17 +257,22 @@
 <translation id="616058968889448209">IPFS 服務啟動錯誤，更多資訊請參閱<ph name="BEGIN_LINK"/>診斷頁面<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' 金鑰匯入失敗</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' 金鑰匯出失敗</translation>
-<translation id="8860039076160511438">重設錢包</translation>
+<translation id="4993345308607970390">重設 Brave 錢包</translation>
+<translation id="5975930666279943472">清除錢包交易和 nonce 資訊</translation>
+<translation id="5693968582510626466">清除交易對開發人員或清除本機伺服器上的狀態而言很實用</translation>
 <translation id="6369495274982305511">確定要重設錢包嗎？如果錢包未備份，重設將會導致您失去所有帳戶資料（包括任何關聯的資金）。鍵入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
+<translation id="9216386092464743272">您確定要重設所有錢包交易和 nonce 資訊嗎？執行本機測試伺服器的開發人員通常使用此選項。輸入「<ph name="CONFIRMATION_PHRASE"/>」以確認。</translation>
+<translation id="3752403403443723332">您的錢包已重設。</translation>
+<translation id="594766067816395072">您的錢包交易資訊已重設。</translation>
 <translation id="1426410128494586442">是</translation>
 <translation id="8275038454117074363">匯入</translation>
 <translation id="3654980960391973513">產生</translation>
 <translation id="5531501313997312487">啟動節點</translation>
 <translation id="9170907049676078643">解析 IPFS 資源的方法</translation>
 <translation id="1327977588028644528">閘道</translation>
-<translation id="80225669816651290">本地節點</translation>
+<translation id="1195880978080389104">Brave 本機 IPFS 節點</translation>
 <translation id="4927734062756955434">IPFS 公用閘道器位址</translation>
-<translation id="3399481770463167943"><ph name="BEGIN_LINK_MPL"/>了解更多<ph name="END_LINK_MPL"/>關於 IPFS 本機節點與閘道隱私注意事項。</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>深入瞭解<ph name="END_LINK_MPL"/> Brave 本機 IPFS 節點與閘道隱私注意事項。</translation>
 <translation id="8425213833346101688">變更</translation>
 <translation id="557281710253742286">設定 IPFS 閘道器</translation>
 <translation id="8571837315037233299">閘道器位址</translation>
@@ -273,7 +281,7 @@
 <translation id="7703184801853248830">無效的閘道器位址</translation>
 <translation id="7690058578502751948">僅啟用了 Origin 隔離的有效 IPFS 閘道可用於 Brave</translation>
 <translation id="585868419599255817">IPFS 公開閘道器汰退</translation>
-<translation id="207763736230883589">若無法連接您的本地節點，則自動返回公用 IPFS 閘道器。</translation>
+<translation id="2618080188892567155">如果無法連接 Brave 本機 IPFS 節點，自動回復公用 IPFS 閘道。</translation>
 <translation id="4107552920076294723">將 IPFS 資源重新導向到已設定的 IPFS 閘道器</translation>
 <translation id="6494857428933042381">當遇到 IPFS 閘道器資源時，自動使用設定的閘道器進行 IPFS 解析。</translation>
 <translation id="8655170717758778983">可行時，自動透過 DNSLink 重新導向至 IPFS 頁面</translation>
@@ -346,10 +354,9 @@
 <translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="5039804452771397117">允許</translation>
 <translation id="7053983685419859001">封鎖</translation>
-<translation id="7815301689257843278">是否自動傳送當機報告，協助 Brave 防止這個問題再度發生？</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/>無預期結束。</translation>
 <translation id="1324417023773393937">Brave 瀏覽器</translation>
-<translation id="1068069727470515940">您隨時可以再次變更<ph name="SETTING_TEXT"/>。</translation>
+<translation id="7276554663454265692">您隨時可以在瀏覽器設定變更 <ph name="SETTING_TEXT"/>。</translation>
 <translation id="6873781976650514089">這項設定</translation>
 <translation id="6040143037577758943">關閉</translation>
 <translation id="5600566490506283344">Brave 廣告通知</translation>
@@ -446,7 +453,6 @@
 <translation id="2487558607408469181">區塊瀏覽器 URL</translation>
 <translation id="6301398959353668507">這個欄位不能留空。</translation>
 <translation id="7504462451153306677">格式無效，區塊鏈 ID 必須是正數。</translation>
-<translation id="8325036459845654666">此網路已新增。</translation>
 <translation id="650071759190249039">內部錯誤，無法新增網路。</translation>
 <translation id="868529041590572443">請填寫關於原生貨幣的所有資訊</translation>
 <translation id="1062463687579789365">錢包網路自訂</translation>

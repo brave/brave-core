@@ -248,7 +248,8 @@ class EthTxServiceUnitTest : public testing::Test {
     run_loop.Run();
     keyring_service_->CreateWallet("testing123", base::DoNothing());
     base::RunLoop().RunUntilIdle();
-    keyring_service_->AddAccount("Account 1", base::DoNothing());
+    keyring_service_->AddAccount("Account 1", mojom::CoinType::ETH,
+                                 base::DoNothing());
     base::RunLoop().RunUntilIdle();
 
     ASSERT_TRUE(base::HexStringToBytes(

@@ -27,6 +27,7 @@ export interface WalletAccountType {
   balance: string
   accountType: 'Primary' | 'Secondary' | 'Ledger' | 'Trezor'
   deviceId?: string
+  coin: BraveWallet.CoinType
 }
 
 export interface UserAccountType {
@@ -184,6 +185,7 @@ export interface DefaultCurrencies {
 
 export interface WalletState {
   hasInitialized: boolean
+  isFilecoinEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: BraveWallet.AppItem[]
@@ -245,7 +247,8 @@ export interface PageState {
   importAccountError: boolean
   importWalletError: ImportWalletError
   showAddModal: boolean
-  isCryptoWalletsInstalled: boolean
+  isCryptoWalletsInitialized: boolean
+  isMetaMaskInitialized: boolean
   swapQuote?: BraveWallet.SwapResponse
   swapError?: SwapErrorResponse
 }
@@ -271,6 +274,7 @@ export interface AccountInfo {
   name: string
   isImported: boolean
   hardware?: HardwareInfo
+  coin: BraveWallet.CoinType
 }
 
 export interface WalletInfoBase {
@@ -279,6 +283,7 @@ export interface WalletInfoBase {
   favoriteApps: BraveWallet.AppItem[]
   isWalletBackedUp: boolean
   accountInfos: AccountInfo[]
+  isFilecoinEnabled: boolean
 }
 
 export interface WalletInfo extends WalletInfoBase {

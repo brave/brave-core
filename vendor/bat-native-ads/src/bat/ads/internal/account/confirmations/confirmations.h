@@ -10,9 +10,9 @@
 #include <string>
 
 #include "base/observer_list.h"
-#include "bat/ads/internal/account/confirmations/confirmations_observer.h"
+#include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
+#include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/backoff_timer.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 
 namespace base {
 class DictionaryValue;
@@ -35,15 +35,17 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   explicit Confirmations(privacy::TokenGeneratorInterface* token_generator);
   ~Confirmations() override;
 
-  void AddObserver(ConfirmationsObserver* observer);
-  void RemoveObserver(ConfirmationsObserver* observer);
+  void set_delegate(ConfirmationsDelegate* delegate) {
+    DCHECK_EQ(delegate_, nullptr);
+    delegate_ = delegate;
+  }
 
   void Confirm(const TransactionInfo& transaction);
 
   void ProcessRetryQueue();
 
  private:
-  base::ObserverList<ConfirmationsObserver> observers_;
+  ConfirmationsDelegate* delegate_ = nullptr;
 
   privacy::TokenGeneratorInterface* token_generator_;  // NOT OWNED
 
@@ -65,9 +67,6 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
       const ConfirmationInfo& confirmation);
   void AppendToRetryQueue(const ConfirmationInfo& confirmation);
   void RemoveFromRetryQueue(const ConfirmationInfo& confirmation);
-
-  void NotifyDidConfirm(const ConfirmationInfo& confirmation) const;
-  void NotifyFailedToConfirm(const ConfirmationInfo& confirmation) const;
 
   // RedeemUnblindedTokenDelegate:
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;

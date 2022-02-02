@@ -14,6 +14,7 @@
 <translation id="1030706264415084469"><ph name="URL"/> ចង់ផ្ទុក​ទិន្នន័យ​ទំហំធំ​នៅលើ​ឧបករណ៍​របស់អ្នក​ជា​អចិន្ត្រៃយ៍</translation>
 <translation id="1032854598605920125">បង្វិលតាមទ្រនិចនាឡិកា</translation>
 <translation id="1036348656032585052">បិទ</translation>
+<translation id="1036982837258183574">ចុច |<ph name="ACCELERATOR"/>| ដើម្បីចេញពីមុខងារអេក្រង់ពេញ</translation>
 <translation id="1038106730571050514">បង្ហាញ​ការណែនាំ</translation>
 <translation id="1038842779957582377">ឈ្មោះមិនស្គាល់</translation>
 <translation id="1041998700806130099">សារអំពី​សន្លឹកកិច្ចការ</translation>
@@ -156,6 +157,7 @@
 <translation id="1422930527989633628">អាចស្នើសុំ​ស្វែងរក​ឧបករណ៍​ប៊្លូធូស​ដែលនៅជិត</translation>
 <translation id="1426410128494586442">បាទ/ចាស</translation>
 <translation id="1428146450423315676">ទម្រគំនរទី 7</translation>
+<translation id="142858679511221695">អ្នកប្រើប្រាស់ពពក</translation>
 <translation id="1428729058023778569">អ្នកមើលឃើញ​ការព្រមាននេះ ដោយសារ​គេហទំព័រនេះ​មិនស្គាល់ HTTPS ទេ។ <ph name="BEGIN_LEARN_MORE_LINK"/>ស្វែងយល់បន្ថែម<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1430915738399379752">បោះពុម្ព</translation>
 <translation id="1432581352905426595">គ្រប់គ្រងម៉ាស៊ីនស្វែងរក</translation>
@@ -173,6 +175,7 @@
 <translation id="1472675084647422956">បង្ហាញ​ច្រើនទៀត</translation>
 <translation id="1473183651233018052">JIS B10</translation>
 <translation id="147358896496811705">2A0</translation>
+<translation id="1475299637784133125">កំពុងរកមើល​កំណែ​កម្មវិធីរុករកតាមអ៊ីនធឺណិត​ឬ? ចូលមើល</translation>
 <translation id="1476595624592550506">ប្ដូរ​ពាក្យ​សម្ងាត់​របស់​អ្នក</translation>
 <translation id="1483493594462132177">ផ្ញើ</translation>
 <translation id="1484290072879560759">ជ្រើសរើសអាសយដ្ឋាន​ដឹក​ជញ្ជូន</translation>
@@ -267,6 +270,7 @@
 <translation id="1741613555002899862">ត្រូវតែ​បានបញ្ជាក់ និងជា​ជួរអក្សរ​ដែលត្រឹមត្រូវ​នៅពេល DnsOverHttpsMode គឺ <ph name="SECURE_DNS_MODE_SECURE"/>។</translation>
 <translation id="1745880797583122200">កម្មវិធីរុករកតាមអ៊ីនធឺណិត​របស់អ្នកត្រូវ​បានគ្រប់គ្រង</translation>
 <translation id="1746113442205726301">ការប្ដូរ​រូបភាព Y</translation>
+<translation id="1747819498338037826">ប្ដូរដោយ​ស្វ័យប្រវត្តិ</translation>
 <translation id="17513872634828108">បើកផ្ទាំង</translation>
 <translation id="1752021286346845558">ប្រអប់​សំបុត្រទី 8</translation>
 <translation id="1753706481035618306">លេខទំព័រ</translation>
@@ -400,6 +404,7 @@
 <translation id="2184405333245229118">{COUNT,plural, =1{អាសយដ្ឋាន 1}other{អាសយដ្ឋាន #}}</translation>
 <translation id="2187317261103489799">ស្វែងរក (លំនាំដើម)</translation>
 <translation id="2188375229972301266">ចោះ​ច្រើនរន្ធ​ខាងក្រោម</translation>
+<translation id="2257044501874719257">ពាក្យសម្ងាត់ដែលអ្នកទើបតែប្រើត្រូវបានរកឃើញនៅក្នុងការបែកធ្លាយទិន្នន័យ។ ដើម្បីការពារសុវត្ថិភាពគណនីរបស់អ្នក កម្មវិធីគ្រប់គ្រងពាក្យសម្ងាត់ Brave ណែនាំឱ្យផ្លាស់ប្ដូរពាក្យសម្ងាត់នេះឥឡូវនេះ រួចពិនិត្យមើលពាក្យសម្ងាត់ដែលអ្នកបានរក្សាទុក។</translation>
 <translation id="2202020181578195191">បញ្ចូលឆ្នាំផុតកំណត់ឲ្យបានត្រឹមត្រូវ</translation>
 <translation id="22081806969704220">ទម្រទី 3</translation>
 <translation id="2212735316055980242">គោលការណ៍មិនត្រូវបានរកឃើញទេ</translation>
@@ -412,7 +417,6 @@
 <translation id="2241693394036365668">ឯកសារ​ត្រូវបាន​ទាញយក</translation>
 <translation id="2248949050832152960">ប្រើ WebAuthn</translation>
 <translation id="2250931979407627383">ដេរគែម​ខាងឆ្វេង</translation>
-<translation id="2251943122176102076">អ្នកគ្រប់គ្រង​មិនណែនាំឱ្យ​ថតអេក្រង់ ឬថតវីដេអូអេក្រង់ទេ ដោយសារខ្លឹមសារសម្ងាត់ត្រូវបានថត៖</translation>
 <translation id="225207911366869382">តម្លៃនេះត្រូវបានបដិសេធសម្រាប់គោលការណ៍នេះ។</translation>
 <translation id="2258928405015593961">បញ្ចូល​កាលបរិច្ឆេទ​ផុតកំណត់​ក្នុងពេល​អនាគត រួច​ព្យាយាម​ម្ដងទៀត</translation>
 <translation id="225943865679747347">កំហុសឆ្គងលេខកូដ៖ <ph name="ERROR_CODE"/></translation>
@@ -644,6 +648,7 @@
 <translation id="3087734570205094154">ខាងក្រោម</translation>
 <translation id="3095940652251934233">Statement</translation>
 <translation id="3096100844101284527">បញ្ចូល​អាសយដ្ឋាន​ទទួល</translation>
+<translation id="3098513225387949945">មិនបាន​អើពើ ដោយសារ​បញ្ជីបិទ​មានតួអក្សរ​ជំនួស '*' ដែលស្មើនឹង​ការបិទ​គោលការណ៍។</translation>
 <translation id="3105172416063519923">ID ទ្រព្យសកម្ម៖</translation>
 <translation id="3107591622054137333"><ph name="BEGIN_LINK"/>ពិនិត្យ​ការកំណត់រចនាសម្ព័ន្ធ DNS សុវត្ថិភាព<ph name="END_LINK"/></translation>
 <translation id="3108943290502734357">ទម្រកណ្ដាល</translation>
@@ -717,6 +722,7 @@
 <translation id="3329013043687509092">កម្រិតពណ៌</translation>
 <translation id="3333762389743153920">មិនមានសិទ្ធិសម្រាប់​កាតនិម្មិតទេ</translation>
 <translation id="3338095232262050444">សុវត្ថិភាព</translation>
+<translation id="3339446062576134663">ពពក (ប្រផេះ)</translation>
 <translation id="3345782426586609320">ភ្នែក</translation>
 <translation id="3355823806454867987">ប្តូរការកំណត់ប្រូកស៊ី...</translation>
 <translation id="3360103848165129075">សន្លឹក​កម្មវិធីគ្រប់គ្រង​ការបង់ប្រាក់</translation>
@@ -741,6 +747,7 @@
 <translation id="3380365263193509176">កំហុសឆ្គងមិនស្គាល់</translation>
 <translation id="3380864720620200369">លេខសម្គាល់អតិថិជន៖</translation>
 <translation id="3381668585148405088">ផ្ទៀងផ្ទាត់ការទិញរបស់អ្នក</translation>
+<translation id="3383566085871012386">លំដាប់អាទិភាពបច្ចុប្បន្ន</translation>
 <translation id="3387261909427947069">វិធី​បង់ប្រាក់</translation>
 <translation id="3391030046425686457">អាសយដ្ឋានបញ្ជូន</translation>
 <translation id="3391482648489541560">ការកែ​ឯកសារ</translation>
@@ -820,6 +827,8 @@
       សូមសាកល្បងយកវាចេញពីបញ្ជី ហើយបន្ថែមវាម្តងទៀត។</translation>
 <translation id="3630699740441428070">អ្នកគ្រប់គ្រង​ឧបករណ៍​នេះ​បានកំណត់រចនាសម្ព័ន្ធ​ការតភ្ជាប់​បណ្ដាញ​របស់អ្នក ដែលសកម្មភាពនេះអាច​អនុញ្ញាតឱ្យ​ពួកគេ​មើលឃើញ​ចរាចរណ៍បណ្ដាញ​របស់អ្នក រួមទាំង​គេហទំព័រ​ដែលអ្នក​ចូលមើល​ផងដែរ​។</translation>
 <translation id="3631244953324577188">ជីវមាត្រ</translation>
+<translation id="3632503704576938756">បានបន្ត​ការបង្ហាញ​អេក្រង់</translation>
+<translation id="3632892046558972264">បានផ្អាក​ការបង្ហាញ​អេក្រង់</translation>
 <translation id="1367445511302842209">ប៊ូតុង "ដំឡើងកំណែ Brave" ចុច "Enter" ដើម្បីដំឡើងកំណែ Brave ពីការកំណត់ Brave របស់អ្នក</translation>
 <translation id="3634530185120165534">ទម្រទី 5</translation>
 <translation id="5334218736598399301">រក្សាទុក​នៅក្នុង​គណនី Brave</translation>
@@ -860,7 +869,6 @@
 <translation id="3760561303380396507">ប្រើ Windows Hello ជំនួសឱ្យ CVC?</translation>
 <translation id="3761171036307311438">ឈ្មោះ​នៅ​លើ​កាត៖</translation>
 <translation id="3761718714832595332">លាក់ស្ថានភាព</translation>
-<translation id="3765032636089507299">​ទំព័រ​រុករក​ដោយ​សុវត្ថិភាពស្ថិតក្នុងការរៀបចំ។</translation>
 <translation id="3765588406864124894">ប្រអប់​សំបុត្រទី 9</translation>
 <translation id="3767485424735936570">គោលការណ៍​អ្នកគ្រប់គ្រង​មិនណែនាំឱ្យ​ចម្លង និងដាក់ចូលខ្លឹមសារនេះទៅក្នុង <ph name="VM_NAME"/> ទេ</translation>
 <translation id="8247912309816231326"><ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ចុច Tab រួចចុច Enter ដើម្បីបង្កើត​កំណត់ចំណាំថ្មី​នៅក្នុង Brave Keep បានរហ័ស</translation>
@@ -884,6 +892,7 @@
 <translation id="3827112369919217609">ដាច់ខាត</translation>
 <translation id="3827475930221174051">ផ្អែកលើ​សកម្មភាព​ដែលពាក់ព័ន្ធនឹង "<ph name="SEARCH_TERM"/>"</translation>
 <translation id="3828924085048779000">ឃ្លាសម្ងាត់ទទេមិនត្រូវបានអនុញ្ញាតទេ។</translation>
+<translation id="3831065134033923230">ពិនិត្យមើល​ពាក្យសម្ងាត់​ដែលអ្នក​បានរក្សាទុក</translation>
 <translation id="3831915413245941253"><ph name="ENROLLMENT_DOMAIN"/> បានដំឡើង​កម្មវិធីបន្ថែមសម្រាប់​មុខងារបន្ថែម។ កម្មវិធីបន្ថែម​មានសិទ្ធិចូលប្រើ​ទិន្នន័យមួយចំនួន​របស់អ្នក។</translation>
 <translation id="3832522519263485449">ចោះ​ច្រើនរន្ធ​ខាងឆ្វេង</translation>
 <translation id="3835233591525155343">ការប្រើប្រាស់​ឧបករណ៍របស់អ្នក</translation>
@@ -1035,6 +1044,7 @@
 <translation id="4346197816712207223">បណ្ណ​ឥណទាន​ដែល​​ទទួលយក</translation>
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4348834659292907206">ការតភ្ជាប់ទៅ <ph name="SITE"/> មិនមាន​សុវត្ថិភាពទេ</translation>
+<translation id="4349365535725594680">មិនអាច​ចែករំលែក​ខ្លឹមសារសម្ងាត់​បានទេ</translation>
 <translation id="4350629523305688469">ទម្រ​ពហុមុខងារ</translation>
 <translation id="4351060348582610152"><ph name="ORIGIN"/> ចង់ស្កេនរក​ឧបករណ៍ប៊្លូធូស​នៅជិត។ បានរកឃើញ​ឧបករណ៍​ខាងក្រោម៖</translation>
 <translation id="4351175281479794167">បញ្ចូល​លេខ​កូដ​ផ្ទៀងផ្ទាត់</translation>
@@ -1063,14 +1073,14 @@
 <translation id="443673843213245140">ការប្រើប្រូកស៊ីត្រូវបានបិទដំណើរការ ប៉ុន្តែការកំណត់ប្រូកស៊ីដែលច្បាស់លាស់ត្រូវបានបញ្ជាក់។</translation>
 <translation id="4450893287417543264">កុំបង្ហាញម្ដងទៀត</translation>
 <translation id="4451135742916150903">អាចស្នើសុំ​ភ្ជាប់ជាមួយ​ឧបករណ៍ HID</translation>
+<translation id="8416018650396907203">ពាក្យសម្ងាត់ដែលអ្នកទើបតែប្រើត្រូវបានរកឃើញនៅក្នុងការបែកធ្លាយទិន្នន័យ។ ដើម្បីការពារសុវត្ថិភាពគណនីរបស់អ្នក កម្មវិធីគ្រប់គ្រងពាក្យសម្ងាត់ Brave ណែនាំឱ្យពិនិត្យមើលពាក្យសម្ងាត់ដែលអ្នកបានរក្សាទុក។</translation>
+<translation id="4455222631300069614">សូមប្ដូរ​ពាក្យសម្ងាត់​របស់អ្នក​ឥឡូវនេះ</translation>
 <translation id="4460315069258617173">អនុញ្ញាត រហូតទាល់តែអ្នកបិទផ្ទាំងសម្រាប់គេហទំព័រនេះ</translation>
 <translation id="4464826014807964867">គេហទំព័រដែលមានព័ត៌មានពីស្ថាប័នរបស់អ្នក</translation>
-<translation id="4465818729556336129">ឯកសារនេះ​គឺ​ជាការសម្ងាត់ ហើយអ្នកគ្រប់គ្រងរបស់អ្នកមិនណែនាំឱ្យបោះពុម្ពទេ។</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>។ <ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">ទម្រង់នេះ​មិនមានសុវត្ថិភាពទេ។ មុខងារបំពេញស្វ័យប្រវត្តិ​ត្រូវបានបិទ។</translation>
 <translation id="4477350412780666475">សំនៀង​បន្ទាប់</translation>
 <translation id="3683567996395248272">អ្វីដែល​មុខងារ​ឯកជន​ធ្វើ</translation>
-<translation id="4481394504112738036">ឯកសារសម្ងាត់</translation>
 <translation id="4482953324121162758">គេហទំព័រនេះ​នឹង​មិនត្រូវ​បានបកប្រែទេ។</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">អ៊ីនគ្រីប​ពាក្យសម្ងាត់​ដែលបាន​ធ្វើសមកាលកម្ម​ជាមួយគណនី Brave របស់អ្នក</translation>
@@ -1181,7 +1191,6 @@
           <ph name="LIST_ITEM"/>ក្រុមហ៊ុន​ផ្ដល់​សេវាកម្ម​អ៊ីនធឺណិត​អាចពិនិត្យតាមដាន​ចរាចរណ៍បណ្ដាញ<ph name="END_LIST_ITEM"/>
         <ph name="END_LIST"/></translation>
 <translation id="483241715238664915">បើក​ការព្រមាន</translation>
-<translation id="4834718916855725099">អ្នកគ្រប់គ្រង​មិនណែនាំឱ្យ​ថតអេក្រង់ ឬថតវីដេអូអេក្រង់ទេ ដោយសារមាន​ខ្លឹមសារសម្ងាត់នៅលើអេក្រង់៖</translation>
 <translation id="4838327282952368871">ដូចក្ដី​សុបិន</translation>
 <translation id="246176083348620700">មើលប្រវត្តិ Brave របស់អ្នក</translation>
 <translation id="484462545196658690">ស្វ័យប្រវត្តិ</translation>
@@ -1228,6 +1237,7 @@
 <translation id="4989163558385430922">មើល​ទាំងអស់</translation>
 <translation id="4989542687859782284">មិន​អាច​ប្រើ​បាន</translation>
 <translation id="4989809363548539747">មិនស្គាល់កម្មវិធីជំនួយនេះទេ</translation>
+<translation id="4992066212339426712">បើកសម្លេង</translation>
 <translation id="4995216769782533993">បញ្ជាក់​កូដ​សុវត្ថិភាព ដើម្បីចែករំលែក​ព័ត៌មាន​លម្អិតអំពីកាត​របស់អ្នក​ជាមួយ​គេហទំព័រនេះ</translation>
 <translation id="4995474875135717171">បាន​កែប្រែ៖</translation>
 <translation id="4995749490935861684"><ph name="CUSTOMIZE_SEARCH_ENGINES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ចុច "tab" រួចចុច "Enter" ដើម្បីគ្រប់គ្រង​ការស្វែងរក​នៅលើគេហទំព័រ និងម៉ាស៊ីនស្វែងរក​លំនាំដើមរបស់អ្នក</translation>
@@ -1298,6 +1308,7 @@
 <translation id="51918995459521422"><ph name="ORIGIN"/> ចង់ទាញយកឯកសារច្រើន</translation>
 <translation id="519422657042045905">មិនមាន​ចំណារទេ</translation>
 <translation id="5201306358585911203">ទំព័របង្កប់​នៅលើ​ទំព័រ​នេះ​និយាយ​ថា</translation>
+<translation id="4885094043301349997">Brave បានរកឃើញ​ពាក្យសម្ងាត់​ដែលអ្នកទើបតែប្រើ នៅក្នុង​ការបែកធ្លាយ​ទិន្នន័យ។ Brave ជំនួយការ​របស់អ្នក​អាចប្ដូរ​ពាក្យសម្ងាត់​របស់អ្នក​បានដោយស្វ័យប្រវត្តិ។</translation>
 <translation id="5205222826937269299">តម្រូវឲ្យមានឈ្មោះ</translation>
 <translation id="5209518306177824490">ស្នាមម្រាមដៃ SHA-1</translation>
 <translation id="5209670883520018268">ទម្រទី 20</translation>
@@ -1347,6 +1358,7 @@
 <translation id="5038014878861342914">Brave បានរកឃើញ​ពាក្យសម្ងាត់​ដែលអ្នកទើបតែប្រើ នៅក្នុង​ការបែកធ្លាយ​ទិន្នន័យ។ ដើម្បី​រក្សាសុវត្ថិភាព​គណនីរបស់អ្នក យើងសូមណែនាំឱ្យ​ពិនិត្យមើល​ពាក្យសម្ងាត់​ដែលអ្នកបានរក្សាទុក។</translation>
 <translation id="5334013548165032829">កំណត់ហេតុ​ប្រព័ន្ធលម្អិត</translation>
 <translation id="5334145288572353250">រក្សាទុក​អាសយដ្ឋាន​ឬ?</translation>
+<translation id="5335920952954443287">​បេះដូង​លោត</translation>
 <translation id="5340250774223869109">កម្មវិធី​ត្រូវបាន​ទប់ស្កាត់</translation>
 <translation id="534295439873310000">ឧបករណ៍ NFC</translation>
 <translation id="5344579389779391559">ទំព័រ​នេះ​អាច​នឹងព្យាយាម​គិតប្រាក់ពីអ្នក</translation>
@@ -1364,7 +1376,6 @@
 <translation id="5398772614898833570">បាន​ទប់ស្កាត់​ការផ្សាយពាណិជ្ជកម្ម</translation>
 <translation id="5400836586163650660">ប្រផេះ</translation>
 <translation id="540969355065856584">ម៉ាស៊ីនមេនេះមិនអាចបង្ហាញថាវាជា <ph name="DOMAIN"/> នោះទេ វិញ្ញាបនបត្រសុវត្ថិភាពរបស់វាមិនមានសុពលភាពទេនៅពេលនេះ។ វាអាចបណ្តាលមកពីការកំណត់រចនាសម្ព័ន្ធមិនត្រឹមត្រូវ ឬមានអ្នកវាយប្រហារកំពុងរារាំងការតភ្ជាប់របស់អ្នក។</translation>
-<translation id="541143247543991491">ពពក (កម្រិត​ប្រព័ន្ធ)</translation>
 <translation id="541416427766103491">ទម្រគំនរ​ទី 4</translation>
 <translation id="5421136146218899937">ជម្រះទិន្នន័យរុករក...</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ចង់​ផ្ញើ​ការជូន​ដំណឹងទៅអ្នក</translation>
@@ -1383,6 +1394,7 @@
 <translation id="5478437291406423475">B6/C4 (ស្រោម​សំបុត្រ)</translation>
 <translation id="5481076368049295676">ខ្លឹមសារក្នុងទំព័រនេះអាច​នឹងព្យាយាម​ដំឡើងកម្មវិធី​គ្រោះថ្នាក់​ដែល​លួចយក ឬលុប​ព័ត៌មាន​នៅលើ​ឧបករណ៍​របស់អ្នក។ <ph name="BEGIN_LINK"/>សូម​បង្ហាញ​ទោះបីជា​យ៉ាង​ណា​ក៏​ដោយ<ph name="END_LINK"/></translation>
 <translation id="54817484435770891">បន្ថែមអាសយដ្ឋានត្រឹមត្រូវ</translation>
+<translation id="5485973315555778056">ម៉ាស៊ីនពពក</translation>
 <translation id="5490432419156082418">អាសយដ្ឋាន​ និងច្រើន​ទៀត</translation>
 <translation id="5492298309214877701">គេហទំព័រលើអ៊ីត្រាណិតរបស់ក្រុមហ៊ុន ស្ថាប័ន ឬសាលារៀននេះមាន URL ដូចគ្នាទៅនឹងគេហទំព័រខាងក្រៅ។
     <ph name="LINE_BREAK"/>
@@ -1412,6 +1424,7 @@
 <translation id="5571083550517324815">មិនអាចទៅយកពីអាសយដ្ឋាននេះបានទេ។ សូមជ្រើសរើសអាសយដ្ឋានផ្សេង។</translation>
 <translation id="5580958916614886209">ពិនិត្យមើល​ខែ​ផុត​កំណត់​របស់អ្នក​ រួច​ព្យាយាម​ម្តង​ទៀត​</translation>
 <translation id="5586446728396275693">គ្មានអាសយដ្ឋានដែលបានរក្សាទុកទេ</translation>
+<translation id="5587987780934666589">អ្នកប្រើប្រាស់ប្រព័ន្ធ</translation>
 <translation id="5593349413089863479">ការ​តភ្ជាប់នេះមិនមានសុវត្ថិភាពទាំងស្រុងទេ</translation>
 <translation id="5595485650161345191">កែអាសយដ្ឋាន</translation>
 <translation id="5598944008576757369">ជ្រើសរើស​វិធី​បង់ប្រាក់</translation>
@@ -1468,7 +1481,6 @@
 <translation id="5786044859038896871">តើអ្នកចង់បំពេញព័ត៌មានកាតរបស់អ្នកដែរទេ?</translation>
 <translation id="3985758120980526872">Brave បានរកឃើញ​ពាក្យសម្ងាត់​ដែលអ្នកទើបតែប្រើ នៅក្នុង​ការបែកធ្លាយ​ទិន្នន័យ។ យើង​សូមណែនាំឱ្យប្ដូរ​ពាក្យសម្ងាត់នេះ​ឥឡូវនេះ។</translation>
 <translation id="5789643057113097023">.</translation>
-<translation id="5797429178165847917">ថតខ្លឹមសារសម្ងាត់</translation>
 <translation id="5803412860119678065">តើអ្នកចង់បំពេញ <ph name="CARD_DETAIL"/> របស់អ្នកដែរទេ?</translation>
 <translation id="5804241973901381774">ការអនុញ្ញាត</translation>
 <translation id="5810442152076338065">ការតភ្ជាប់របស់អ្នកទៅ <ph name="DOMAIN"/> ត្រូវបានអ៊ីនគ្រីបដោយប្រើឈុតសរសេរសម្ងាត់ដែលគេលែងប្រើ។</translation>
@@ -1495,7 +1507,6 @@
 <translation id="5903264686717710770">ចំណង​ជើង៖</translation>
 <translation id="5905445707201418379">បានទប់ស្កាត់​ដោយ​ផ្អែកលើ​គោលការណ៍​ដើម​របស់ <ph name="ORIGIN"/> ។</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (បានធ្វើសមកាលកម្ម)</translation>
-<translation id="5913377024445952699">បានផ្អាក​ការថត​អេក្រង់</translation>
 <translation id="59174027418879706">បានបើកដំណើរការ</translation>
 <translation id="5919090499915321845">B10</translation>
 <translation id="5920262536204764679">{NUM_COOKIES,plural, =1{បានប្រើ 1}other{បានប្រើ #}}</translation>
@@ -1524,6 +1535,7 @@
 <translation id="6008122969617370890">លំដាប់លំដោយ N-to-1</translation>
 <translation id="6008256403891681546">JCB</translation>
 <translation id="6014801569448771146">ពិនិត្យពាក្យសម្ងាត់​របស់អ្នក</translation>
+<translation id="6014851866995737824">មិនបាន​អើពើ ដោយសារ​មិនមាន​បញ្ជី "បើក" ឬ "បិទ"។</translation>
 <translation id="6015796118275082299">ឆ្នាំ</translation>
 <translation id="6017514345406065928">បៃតង</translation>
 <translation id="6017850046339264347">អ្នក​វាយ​ប្រហារ​នៅលើ <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> អាច​ដំឡើង​កម្មវិធី​បញ្ឆោត​ដែល​ក្លែង​ធ្វើជាអ្វីម្យ៉ាង ឬ​ប្រមូល​ទិន្នន័យ​ដែល​អាច​នឹងត្រូវ​បាន​ប្រើ​ដើម្បី​តាម​ដានអ្នក។ <ph name="BEGIN_LEARN_MORE_LINK"/>ស្វែងយល់បន្ថែម<ph name="END_LEARN_MORE_LINK"/></translation>
@@ -1547,6 +1559,7 @@
 <translation id="6051221802930200923">អ្នក​មិន​អាច​ចូលទៅកាន់ <ph name="SITE"/> ឥឡូវនេះ​បានទេ ដោយសារតែគេហទំព័រនេះ​ប្រើ​ការខ្ទាស់វិញ្ញាបនបត្រ។ ជាទូទៅបញ្ហា​បណ្តាញ ឬ​ការវាយប្រហារ​កើត​ឡើង​ជាបណ្តោះអាសន្ន ដូច្នេះ​ទំព័រ​នេះ​នឹងដំណើរការល្អឡើងវិញនៅពេលក្រោយ។</translation>
 <translation id="6051898664905071243">ចំនួន​ទំព័រ៖</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="8949595277192194257">ពាក្យសម្ងាត់ដែលអ្នកទើបតែប្រើត្រូវបានរកឃើញនៅក្នុងការបែកធ្លាយទិន្នន័យ។ កម្មវិធីគ្រប់គ្រងពាក្យសម្ងាត់ Brave ណែនាំឱ្យផ្លាស់ប្ដូរពាក្យសម្ងាត់នេះឥឡូវនេះ។</translation>
 <translation id="6055888660316801977">សន្លឹក​ព័ត៌មានផ្ទៀងផ្ទាត់​ការបង់ប្រាក់​មានសុវត្ថិភាព ដែលគ្មានព័ត៌មានផ្ទៀងផ្ទាត់​ត្រូវគ្នា</translation>
 <translation id="6058977677006700226">ប្រើបណ្ណរបស់អ្នក​នៅលើឧបករណ៍​ទាំងអស់របស់អ្នកឬ?</translation>
 <translation id="6059925163896151826">ឧបករណ៍ USB</translation>
@@ -1619,6 +1632,7 @@
 <translation id="6328786501058569169">ទំព័រនេះមានការបោកប្រាស់</translation>
 <translation id="6337133576188860026">បង្កើន​ទំហំផ្ទុក​តិចជាង <ph name="SIZE"/> ។ ទំព័រ​មួយចំនួន​អាចផ្ទុក​យឺតជាងមុន នៅពេលដែលអ្នក​ចូល​លើកក្រោយ។</translation>
 <translation id="6337534724793800597">ត្រងគោលការណ៍តាមឈ្មោះ</translation>
+<translation id="6340739886198108203">គោលការណ៍​អ្នកគ្រប់គ្រង​មិនណែនាំឱ្យ​ថតវីដេអូ ឬថតរូបអេក្រង់ទេ នៅពេលអាច​មើលឃើញខ្លឹមសារ​សម្ងាត់៖</translation>
 <translation id="6349101878882523185">ដំឡើង <ph name="APP_NAME"/></translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{គ្មាន}=1{ពាក្យសម្ងាត់ 1 (សម្រាប់ <ph name="DOMAIN_LIST"/>, បាន​ធ្វើសមកាលកម្ម)}=2{ពាក្យសម្ងាត់ 2 (សម្រាប់ <ph name="DOMAIN_LIST"/>, បាន​ធ្វើសមកាលកម្ម)}other{ពាក្យសម្ងាត់ # (សម្រាប់ <ph name="DOMAIN_LIST"/>, បាន​ធ្វើសមកាលកម្ម)}}</translation>
 <translation id="6358450015545214790">តើវាមានន័យដូចម្តេច?</translation>
@@ -1648,6 +1662,7 @@
 <translation id="7772223497488184427">ប្ដូរ​ពាក្យសម្ងាត់ Brave</translation>
 <translation id="6433490469411711332">កែសម្រួលព័ត៌មានទំនាក់ទំនង</translation>
 <translation id="6433595998831338502"><ph name="HOST_NAME"/> បានបដិសេធក្នុងការតភ្ជាប់</translation>
+<translation id="6438025220577812695">ប្ដូរពាក្យសម្ងាត់​ដោយខ្លួនឯង</translation>
 <translation id="6440503408713884761">មិនត្រូវបាន​អើពើ</translation>
 <translation id="6443406338865242315">ថាតើ​កម្មវិធីបន្ថែម និងកម្មវិធី​ជំនួយណាខ្លះដែលអ្នកបានដំឡើង</translation>
 <translation id="6446163441502663861">Kahu (ស្រោម​សំបុត្រ)</translation>
@@ -1691,7 +1706,6 @@
 <translation id="6596325263575161958">ជម្រើសការអ៊ីនគ្រីប</translation>
 <translation id="6609880536175561541">Prc7 (ស្រោម​សំបុត្រ)</translation>
 <translation id="6615297766614333076">ទម្រគំនរ​ទី 2</translation>
-<translation id="6623589891453322342">ឧបករណ៍ដោះស្រាយឯកសារ</translation>
 <translation id="6624427990725312378">ព័ត៌មាន​ទំនាក់ទំនង</translation>
 <translation id="6626291197371920147">បញ្ចូលលេខកាតឲ្យបានត្រឹមត្រូវ</translation>
 <translation id="6628463337424475685"><ph name="ENGINE"/> ស្វែងរក</translation>
@@ -1783,7 +1797,6 @@
 <translation id="6949872517221025916">កំណត់ពាក្យសម្ងាត់ឡើងវិញ</translation>
 <translation id="6950684638814147129">មាន​បញ្ហា​ពេល​កំពុងញែក​តម្លៃ JSON៖ <ph name="ERROR"/></translation>
 <translation id="695140971690006676">កំណត់​ឡើងវិញ​ទាំងអស់</translation>
-<translation id="6954341342296443517">អាចស្នើសុំបើក​ប្រភេទឯកសារ</translation>
 <translation id="6957887021205513506">វិញ្ញាបនប័ត្រម៉ាស៊ីនមេបានរកឃើញថាជាការបន្លំ។</translation>
 <translation id="774679539085757206">គ្រប់គ្រង​ការកំណត់ឯកជនភាព Brave នៅក្នុងគណនី Brave របស់អ្នក</translation>
 <translation id="6961844873822989059">អាចស្នើសុំ​ប្រើពុម្ពអក្សរ ដែលបានដំឡើង​នៅលើឧបករណ៍​របស់អ្នក</translation>
@@ -1798,6 +1811,7 @@
 <translation id="6972629891077993081">ឧបករណ៍ HID</translation>
 <translation id="6973656660372572881">ទាំងម៉ាស៊ីនមេប្រូកស៊ីថេរ និង URL ស្គ្រីបផេកត្រូវបានបញ្ជាក់់។</translation>
 <translation id="6973932557599545801">សូមអភ័យទោស ខ្ញុំ​មិនអាច​ជួយបានទេ សូមបន្ត​ដោយ​ខ្លួនឯង។</translation>
+<translation id="6978236010531171013">មិនអីទេ ចែករំលែកចុះ</translation>
 <translation id="6979158407327259162">Google Drive</translation>
 <translation id="6979440798594660689">បិទសំឡេង (លំនាំដើម)</translation>
 <translation id="1714833602699685456">ឯកសារ​ដែលអ្នក​ទាញយក​ត្រូវបានផ្ញើ​ទៅ Brave Cloud ឬ​ភាគីទីបី​ដើម្បី​វិភាគ។ ឧទាហរណ៍ ឯកសារទាំងនោះ​អាចត្រូវបានស្កេន ដើម្បីរកមើល​ទិន្នន័យ​រសើប ឬ​កម្មវិធីគ្រោះថ្នាក់​។</translation>
@@ -1809,7 +1823,6 @@
 <translation id="7012363358306927923">China UnionPay</translation>
 <translation id="7014741021609395734">កម្រិត​ពង្រីកបង្រួម</translation>
 <translation id="7016992613359344582">ការគិតប្រាក់ទាំងនេះអាចធ្វើឡើងម្ដង ឬច្រើន​ដង ហើយអាចនឹងមិនមាន​ការបញ្ជាក់ច្បាស់លាស់នោះទេ។</translation>
-<translation id="7024588353896425985">ឧបករណ៍ដោះស្រាយឯកសារ</translation>
 <translation id="7029809446516969842">ពាក្យសម្ងាត់</translation>
 <translation id="7030436163253143341">វិញ្ញាបនបត្រ​មិនមានសុពលភាពទេ</translation>
 <translation id="7031646650991750659">ថាតើកម្មវិធី Google Play ណាខ្លះដែលអ្នកបានដំឡើង</translation>
@@ -1840,6 +1853,7 @@
 <translation id="7118618213916969306">ស្វែងរក URL ឃ្លីបបត, <ph name="SHORT_URL"/></translation>
 <translation id="7119414471315195487">បិទផ្ទាំង ឬកម្មវិធីផ្សេងទៀត</translation>
 <translation id="7129409597930077180">មិនអាចដឹកជញ្ជូនតាមប្រៃសណីយ៍ទៅអាសយដ្ឋាននេះបានទេ។ សូមជ្រើសរើសអាសយដ្ឋានផ្សេង។</translation>
+<translation id="7132939140423847331">អ្នកគ្រប់គ្រង​របស់អ្នក​បានហាមឃាត់​មិនឱ្យ​ចម្លងទិន្នន័យនេះ។</translation>
 <translation id="7135130955892390533">បង្ហាញ​ស្ថានភាព</translation>
 <translation id="7138472120740807366">មធ្យោបាយដឹកជញ្ជូនផ្ទាល់</translation>
 <translation id="7139724024395191329">អារ៉ាប់រួម</translation>
@@ -1850,7 +1864,6 @@
 <translation id="7153618581592392745">ឡាវិនឌ័រ</translation>
 <translation id="7156870133441232244">ម៉ាស៊ីនមេគួរតែដំឡើង​កំណែទៅ TLS 1.2 ឬខ្ពស់ជាងនេះ។</translation>
 <translation id="717330890047184534">លេខ​សម្គាល់ Gaia៖</translation>
-<translation id="7173920250514487165">ថតខ្លឹមសារសម្ងាត់​នៅលើអេក្រង់របស់អ្នក</translation>
 <translation id="7174545416324379297">បានបញ្ចូលគ្នា</translation>
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> និង <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> ទៀត}other{<ph name="SHIPPING_OPTION_PREVIEW"/> និង <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> ទៀត}}</translation>
 <translation id="7179323680825933600">រក្សាទុក និងបំពេញ​វិធីបង់ប្រាក់</translation>
@@ -1988,6 +2001,7 @@
 <translation id="405970181812690156">បង់ប្រាក់យ៉ាងឆាប់រហ័សក្នុងគេហទំព័រ និងកម្មវិធីនៅលើឧបករណ៍នានាដោយប្រើកាតដែលអ្នកបានរក្សាទុកជាមួយ Brave។</translation>
 <translation id="7581199239021537589">ការប្ដូរ​រូបភាព Y នៃចំហៀងទី 2</translation>
 <translation id="4790068920551988473">បង្កើត​ព្រឹត្តិការណ៍ថ្មី​នៅក្នុង Brave ប្រតិទិន​បានរហ័ស</translation>
+<translation id="7591288787774558753">ចែករំលែក​ខ្លឹមសារ​សម្ងាត់ឬ?</translation>
 <translation id="7591636454931265313"><ph name="EMBEDDED_URL"/> ចង់ប្រើ​ទិន្នន័យ​គេហទំព័រ និង​ខូគី​នៅលើ <ph name="TOP_LEVEL_URL"/></translation>
 <translation id="7592362899630581445">វិញ្ញាបនប័ត្រម៉ាស៊ីនមេបំពានលើឧបសគ្គឈ្មោះ។</translation>
 <translation id="7598391785903975535">តិចជាង <ph name="UPPER_ESTIMATE"/></translation>
@@ -1998,6 +2012,7 @@
 <translation id="5704205738724476508"><ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ចុច "Tab" រួចចុច "Enter" ដើម្បីមើល និងគ្រប់គ្រងពាក្យសម្ងាត់របស់អ្នកនៅក្នុងការកំណត់ Brave</translation>
 <translation id="8565825862287624454">អ្នកគ្រប់គ្រង​របស់អ្នក​បានបើក Brave Enterprise Connectors នៅលើ​កម្មវិធីរុករក​តាមអ៊ីនធឺណិត​របស់អ្នក​។ កម្មវិធីភ្ជាប់ទាំងនេះមានសិទ្ធិចូលប្រើ​ទិន្នន័យមួយចំនួនរបស់អ្នក។</translation>
 <translation id="7619838219691048931">សន្លឹកបញ្ចប់</translation>
+<translation id="7625242817712715120">គោលការណ៍​អ្នកគ្រប់គ្រង​មិនណែនាំឱ្យ​បោះពុម្ពខ្លឹមសារ​នេះទេ</translation>
 <translation id="762844065391966283">ម្ដងមួយៗ</translation>
 <translation id="7633909222644580952">ទិន្នន័យ​ប្រតិបត្តិការ និងរបាយការណ៍​អំពីការគាំង</translation>
 <translation id="6386821459680628976">យកកាតឥណទានចេញពី Brave ឬ?</translation>
@@ -2010,6 +2025,7 @@
 <translation id="7654909834015434372">នៅពេល​អ្នក​កែ​ចំណារ ឯកសារនេះ​នឹងត្រឡប់ទៅ​ការបង្វិល​ដើម​របស់វា​វិញ</translation>
 <translation id="765676359832457558">លាក់ការកំណត់កម្រិតខ្ពស់...</translation>
 <translation id="7658239707568436148">បដិសេធ</translation>
+<translation id="7659878911471462949">រំភើបចិត្តដល់ស្រក់ទឹកភ្នែក</translation>
 <translation id="7662298039739062396">ការកំណត់​គ្រប់គ្រង​ដោយ​កម្មវិធីបន្ថែម</translation>
 <translation id="7663736086183791259">វិញ្ញាបនបត្រ <ph name="CERTIFICATE_VALIDITY"/></translation>
 <translation id="1090109565956608696">មិនអនុញ្ញាត​នៅក្នុង​មុខងារឯកជនទេ</translation>
@@ -2100,6 +2116,7 @@
 <translation id="7953569069500808819">ដេរគែម​ខាងលើ</translation>
 <translation id="7956713633345437162">ចំណាំទូរស័ព្ទ</translation>
 <translation id="7961015016161918242">មិនដែល</translation>
+<translation id="7962467575542381659">ម៉ាស៊ីនប្រព័ន្ធ</translation>
 <translation id="7966803981046576691">ប្រភេទ​គណនី​ការងារ</translation>
 <translation id="79682505114836835">តម្លៃ "<ph name="VALUE"/>" គឺជាពណ៌ hex ដែលមិន​ត្រឹមត្រូវ។</translation>
 <translation id="7968982339740310781">មើលព័ត៌មានលំអិត</translation>
@@ -2151,6 +2168,7 @@
 <translation id="809898108652741896">A6</translation>
 <translation id="8100588592594801589">បានលុប​បណ្ណ​ដែលមិនត្រឹមត្រូវចេញហើយ</translation>
 <translation id="8103161714697287722">វិធី​បង់ប្រាក់</translation>
+<translation id="8103643211515685474">មិនអីទេ បោះពុម្ពចុះ</translation>
 <translation id="8105368624971345109">បិទ</translation>
 <translation id="810875025413331850">រក​មិនឃើញ​ឧបករណ៍​ដែលនៅជិត​ទេ។</translation>
 <translation id="8116925261070264013">បានបិទសំឡេង</translation>
@@ -2295,7 +2313,6 @@
 <translation id="8622948367223941507">Legal-Extra</translation>
 <translation id="8623885649813806493">គ្មាន​ពាក្យសម្ងាត់​ដែលត្រូវគ្នាទេ។ បង្ហាញ​ពាក្យសម្ងាត់​ដែលបានរក្សាទុក​ទាំងអស់។</translation>
 <translation id="8625384913736129811">រក្សាទុកបណ្ណនេះទៅក្នុងឧបករណ៍នេះ</translation>
-<translation id="8627040765059109009">បានបន្ត​ការថត​អេក្រង់</translation>
 <translation id="865032292777205197">ឧបករណ៍​ចាប់ចលនា</translation>
 <translation id="8663226718884576429">ការ​សង្ខេប​អំពី​ការបញ្ជាទិញ, <ph name="TOTAL_LABEL"/>, ព័ត៌មាន​លម្អិត​បន្ថែម</translation>
 <translation id="8666678546361132282">ភាសាអង់គ្លេស</translation>
@@ -2359,6 +2376,7 @@
 <translation id="886872106311861689">B3</translation>
 <translation id="8870413625673593573">បានបិទកន្លងទៅថ្មីៗ</translation>
 <translation id="8870494189203302833">ផ្កាប់ចុះតាមលំដាប់លំដោយ​ដូចគ្នា</translation>
+<translation id="8870700989640064057">បោះពុម្ព​ឯកសារ​សម្ងាត់ឬ?</translation>
 <translation id="8871553383647848643">ប្ដូររូបរាង​នៃកម្មវិធីរុករកតាមអ៊ីនធឺណិត​របស់អ្នក​តាមបំណង</translation>
 <translation id="8874824191258364635">បញ្ចូលលេខបណ្ណដែលត្រឹមត្រូវ</translation>
 <translation id="8884537526797090108">មិនអាចថតខ្លឹមសារសម្ងាត់បានទេ</translation>
@@ -2390,6 +2408,7 @@
 <translation id="447219378802101672"><ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT"/>, ចុច "tab" រួចចុច "Enter" ដើម្បីមើលប្រវត្តិរុករក​តាមអ៊ីនធឺណិត​របស់អ្នកនៅក្នុង Brave</translation>
 <translation id="8987927404178983737">ខែ</translation>
 <translation id="8989148748219918422"><ph name="ORGANIZATION"/> [<ph name="COUNTRY"/>]</translation>
+<translation id="8992061558343343009">កំពុង​រកមើល​កំណែប្រព័ន្ធឬ? ចូលមើល</translation>
 <translation id="899688752321268742"><ph name="URL"/> ចង់ដឹងអំពីពេលវេលាដែល​អ្នកកំពុងប្រើ​ឧបករណ៍នេះយ៉ាងសកម្ម</translation>
 <translation id="8996941253935762404">គេហទំព័រខាងមុខផ្ទុកកម្មវិធីបង្កគ្រោះថ្នាក់</translation>
 <translation id="8997023839087525404">ម៉ាស៊ីនមេបាននាំមកជូននូវវិញ្ញាបនបត្រមួយដែលមិនបានបង្ហាញជាសាធារណៈទេដោយប្រើ គោលការណ៍តម្លាភាពវិញ្ញាបនបត្រ។ វាជាលក្ខខណ្ឌតម្រូវឲ្យមានសម្រាប់វិញ្ញាបនបត្រមួយចំនួន ដើម្បីធ្វើឲ្យប្រាកដថាពួកវាគួរឲ្យទុកចិត្ត និងដើម្បីការពារប្រឆាំងអ្នកវាយប្រហារ។</translation>
@@ -2437,6 +2456,7 @@
 <translation id="9119042192571987207">បាន​បង្ហោះ</translation>
 <translation id="9128016270925453879">គោលការណ៍ត្រូវបានផ្ទុក</translation>
 <translation id="9128870381267983090">ភ្ជាប់ទៅបណ្តាញ</translation>
+<translation id="9131119348384879525">ថត​ខ្លឹមសារសម្ងាត់​ឬ?</translation>
 <translation id="9137013805542155359">បង្ហាញប្រភពដើម</translation>
 <translation id="9141013498910525015">គ្រប់គ្រង​អាសយដ្ឋាន</translation>
 <translation id="9144951720726881238">កាល​បរិច្ឆេទ​ផុតកំណត់៖</translation>

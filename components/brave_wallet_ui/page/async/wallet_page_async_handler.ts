@@ -66,7 +66,7 @@ handler.on(WalletPageActions.restoreWallet.getType(), async (store: Store, paylo
 
 handler.on(WalletPageActions.addAccount.getType(), async (store: Store, payload: AddAccountPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.addAccount(payload.accountName)
+  const result = await keyringService.addAccount(payload.accountName, payload.coin)
   return result.success
 })
 
@@ -183,8 +183,8 @@ handler.on(WalletPageActions.checkWalletsToImport.getType(), async (store) => {
   const mmResult =
     await braveWalletService.isExternalWalletInitialized(
       BraveWallet.ExternalWalletType.MetaMask)
-  store.dispatch(WalletPageActions.setCryptoWalletsInstalled(cwResult.initialized))
-  store.dispatch(WalletActions.setMetaMaskInstalled(mmResult.initialized))
+  store.dispatch(WalletPageActions.setCryptoWalletsInitialized(cwResult.initialized))
+  store.dispatch(WalletPageActions.setMetaMaskInitialized(mmResult.initialized))
 })
 
 handler.on(WalletPageActions.importFromCryptoWallets.getType(), async (store: Store, payload: ImportFromExternalWalletPayloadType) => {

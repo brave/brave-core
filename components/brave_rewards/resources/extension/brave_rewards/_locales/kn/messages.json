@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "ಸ್ಥಿತಿ ರಿಫ್ರೆಶ್ ಮಾಡಿ",
+    "message": "ರಿಫ್ರೆಶ್ ಮಾಡಿ",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards ಏನೋ ಸಮಸ್ಯೆ ಎದುರಿಸುತ್ತಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "ಸ್ಥಿತಿ ಪರಿಶೀಲಿಸಿ",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "ಅಭಿನಂದನೆಗಳು! ನಿಮ್ಮ $month$ ಪುರಸ್ಕಾರಗಳು ಆಗಮಿಸಿವೆ!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "ನಿಮ್ಮ $amount$ $month$ ಪುರಸ್ಕಾರಗಳು $days$ ದಿನದಲ್ಲಿ ಆಗಮಿಸುತ್ತದೆ",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "ನಿಮ್ಮ $amount$ $month$ ಪುರಸ್ಕಾರಗಳು ಆಗಮಿಸುತ್ತಿವೆ. ನಿಗಾ ಇರಿಸಿ!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "ನನ್ನ $provider$ ಖಾತೆಗೆ ಹೋಗಿ",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "$provider$ ನಿಂದ ಲಾಗ್ ಔಟ್ ಮಾಡಿ",
+    "message": "$provider$ ನಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "ಬಾಕಿ ಉಳಿದಿರುವುದು",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "$amount$ ಪೇಔಟ್ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಿಕೆ $days$ ದಿನಗಳಲ್ಲಿ ಆರಂಭವಾಗುತ್ತದೆ",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "ಜಾಹೀರಾತುಗಳಿಂದ ರಿವಾರ್ಡ್‌ಗಳು",

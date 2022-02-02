@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Actualizar estado",
+    "message": "Actualizar",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Ha ocurrido un error en Brave Rewards. Vuelve a intentarlo más tarde.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Comprobar estado",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "¡Enhorabuena! Has recibido tus recompensas de $month$.",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Recibirás tus recompensas de $month$ por un valor de $amount$ en $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Tus recompensas de $month$ por un valor de $amount$ pronto estarán disponibles. ¡Estate atento!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Ir a mi cuenta de $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Cerrar sesión en $provider$",
+    "message": "Desconectar de $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Pendiente",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "El pago de $amount$ comenzará a procesarse dentro de $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Recompensas de anuncios",

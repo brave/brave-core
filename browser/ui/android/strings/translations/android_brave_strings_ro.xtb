@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Principalele informații ale zilei într-un flux complet privat pentru dvs.</translation>
 <translation id="7266075701303521777">Știrile Brave sunt susținute prin anunțuri furnizate întru totul confidențial și anonim pe dispozitivul dvs.</translation>
 <translation id="4541978218358617681">Reclamă</translation>
-<translation id="1765217911817124376">Activați știrile Brave</translation>
+<translation id="7823038307453615214">Activați știrile Brave</translation>
 <translation id="6527303717912515753">Trimite</translation>
 <translation id="1654539412343893324">Aflați mai multe despre datele dvs.</translation>
 <translation id="2989805286512600854">Deschideți în filă nouă</translation>
@@ -45,7 +45,6 @@
 <translation id="7554145152551782675">Mai multe oferte Brave</translation>
 <translation id="4975944254857623648">Surse implicite</translation>
 <translation id="253886574765651454">Adăugați sursă</translation>
-<translation id="7823038307453615214">Afișați Brave News</translation>
 <translation id="5787084571334399599">Previne amprentarea browserului</translation>
 <translation id="7459000603787995422">Închideți paginile la ieșire</translation>
 <translation id="4448697385961650078">Blocare șabloane de urmărire &amp; reclame</translation>
@@ -53,8 +52,8 @@
 <translation id="1680858055899097121">Nu păstra paginile între sesiunile de navigare</translation>
 <translation id="7142548388914389999">Permiteți datele de analiză referitoare la produs cu menținerea confidențialități (P3A)</translation>
 <translation id="5254037869598726291">Datele analitice anonime despre produs, cu protejarea confidențialității (P3A), ajută Brave să facă estimări privind utilizarea globală și să se asigure că îmbunătățește funcțiile utilizate la scară largă.</translation>
-<translation id="4272190451231642425">Trimiteți automat rapoarte de blocare</translation>
-<translation id="2239766974964486304">Rapoartele de blocare ajută Brave să îmbunătățească stabilitatea produsului pentru toți utilizatorii.</translation>
+<translation id="933652931229970927">Trimiteți automat rapoarte de diagnosticare</translation>
+<translation id="5987838417172370108">Contribuiți la îmbunătățirea stabilității Brave prin trimiterea automată de rapoarte de diagnosticare când apar erori ale browserului Brave sau când acesta se blochează.</translation>
 <translation id="7977176350719484850">Date est.\neconomisite</translation>
 <translation id="9008534313521214777">Timp\neconomisit estimat</translation>
 <translation id="6572660632052512096">Mod desktop</translation>
@@ -76,8 +75,7 @@
 <translation id="59174027418879706">Activat</translation>
 <translation id="4150201353443180367">Ecran</translation>
 <translation id="2433507940547922241">Aspect</translation>
-<translation id="2804710924397009224">Ascunde iconița recompenselor Brave</translation>
-<translation id="7289740269305509613">Ascunde pictograma Recompense Brave</translation>
+<translation id="6333347122924254968">Afișați pictograma Recompense Brave în bara de adrese</translation>
 <translation id="8495235435594442882">Activați bara de instrumente de jos</translation>
 <translation id="6587448235155023666">Modificările dvs. vor intra în vigoare la următoarea pornire a Brave</translation>
 <translation id="8701563696941209024">RELANSEAZĂ ACUM</translation>
@@ -112,7 +110,8 @@
 <translation id="5441565662498481293">Trimiți automat o plată către:</translation>
 <translation id="1166682575529520472">Lunar</translation>
 <translation id="1628742278973105368">Prima plată lunară va fi trimisă pe:</translation>
-<translation id="298349922412901215">NOTĂ: Acest creator nu s-a înregistrat încă pentru a primi contribuții de la utilizatorii Brave. Vom continua să încercăm să contribuim până când sunt verificați sau până când trec 90 de zile.</translation>
+<translation id="298349922412901215">NOTĂ: acest creator nu s-a înregistrat încă pentru a primi contribuții de la utilizatorii Brave. Vom continua să încercăm să contribuim până când sunt verificați sau până când trec 90 de zile.</translation>
+<translation id="6602036279006002239">NOTĂ: acest creator nu este configurat în prezent pentru a primi contribuții din portofelul dvs. Orice plată pe care o faceți va rămâne în așteptare în portofel și se va reîncerca automat efectuarea acesteia timp de 90 de zile.</translation>
 <translation id="1910721550319506122">Bun venit!</translation>
 <translation id="3165726837666415756">Puteți ajuta acest site trimițând un mic bacșiș. În acest mod le mulțumiți pentru conținutul excelent pe care îl produc. Creatorii de conținut verificați sunt plătiți pentru donațiile lor în fiecare săptămână a lunilor calendaristice.</translation>
 <translation id="1704859330137112950">Dacă doriți, puteți programa plăți lunare pentru a sprijini acest site în mod continuu.</translation>
@@ -189,6 +188,7 @@ lună...</translation>
 <translation id="8284063834901328650">Cod QR de sincronizare greșit</translation>
 <translation id="859506441384380749">Acest cod a fost generat de o versiune Brave perimată. Actualizați întâi celălalt dispozitiv al dvs.</translation>
 <translation id="3132642509209154999">Acest cod a expirat. Generați un cod nou pe celălalt dispozitiv al dvs. și încercați din nou.</translation>
+<translation id="2859229680945501779">Acest cod nu este corect. Verificați dacă ora și fusul orar sunt setate corect pe dispozitivul dvs.</translation>
 <translation id="3149880132460839085">Sincronizare Brave</translation>
 <translation id="3680755684186855422">Sincronizarea Brave vă permite să sincronizați datele despre marcaje în mod privat între browserele dvs. Brave de pe diversele dispozitive.</translation>
 <translation id="3735228155296883311">Scanați codul din lanțul de sincronizare pe care l-ați creat pe alt dispozitiv. Sau porniți un nou lanț de sincronizare.</translation>
@@ -292,7 +292,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5358719431303818601">Deconectare neverificată</translation>
 <translation id="4241449868720191203">Deconectat verificat</translation>
 <translation id="3248185426436836442">În așteptare</translation>
-<translation id="2260513517001048012">NOTĂ: Acest Creator Verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatori Brave. Browserul dvs. va continua să încerce să contribuie până când va avea loc o verificare sau până când vor trece 90 de zile.</translation>
 <translation id="4488355059795908907">Acest Creator Verificat Brave nu și-a configurat contul încă pentru a primi contribuții de la utilizatori Brave. Orice fonduri pe care doriți să i le trimiteți vor rămâne în portofelul dvs. până când utilizatorul va finaliza acest proces.</translation>
 <translation id="2495032782748793764">Brave implicit</translation>
 <translation id="9132378787893584761">Partajații Brave cu prietenii dvs.!</translation>
@@ -534,11 +533,10 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2918322085844739869">4</translation>
 <translation id="7267186368513450821">5</translation>
 <translation id="6972003925509023890">1 BAT</translation>
+<translation id="2222442600106681391">2 BAT</translation>
+<translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
 <translation id="8762169086048682708">10 BAT</translation>
-<translation id="7921571842056754133">15 BAT</translation>
-<translation id="3605291544485823713">25 BAT</translation>
-<translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0,00 BAT</translation>
 <translation id="4193129043743994339">0,00 USD</translation>
 <translation id="8792121506918889955">Politică de manipulare IP WebRTC</translation>
@@ -569,7 +567,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="375882617301124395">Realizați o copie de rezervă după portofel</translation>
 <translation id="8289942708804097960">Cumpărați criptomonede folosind un card de credit ori un card de debit.</translation>
 <translation id="841880029259839903">Trimiteți criptomonede sau transferați dintr-un cont în altul!</translation>
-<translation id="8982246458261383692">Tranzacționați criptomonede cu agregatorul de schimb descentralizat Brave!</translation>
+<translation id="8226778393040773102">Tranzacționați criptomonede cu agregatorul de schimb descentralizat Brave!</translation>
 <translation id="1783600039044302171">Securizați contul dvs. pentru criptomonede cu o parolă</translation>
 <translation id="3726490322412361740">Introduceți parola</translation>
 <translation id="3038243139480464605">Confirmați parola</translation>
@@ -595,12 +593,16 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="9120654436199628567">Restabiliți contul pentru criptomonede</translation>
 <translation id="4811736040444856406">Afișați expresia pentru recuperare</translation>
 <translation id="283071225285270357">Introduceți expresia de recuperare</translation>
+<translation id="3943857333388298514">Inserați</translation>
+<translation id="3331452756822160641">Parolă nouă</translation>
+<translation id="4854035885012188958">Efectuez restabilirea din vechiul portofel de criptomonede Brave</translation>
 <translation id="2339124864228588937">Confirmați expresia de recuperare</translation>
 <translation id="3747079125031086337">Selectați cuvintele din expresia de recuperare în ordinea corectă</translation>
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="3157931365184549694">Restabilește</translation>
 <translation id="9111102763498581341">Deblochează</translation>
 <translation id="6657585470893396449">Parolă</translation>
+<translation id="5619264711680220002">Deblocare biometrică</translation>
 <translation id="5168349973342709369">Introduceți parola pentru a debloca portofelul</translation>
 <translation id="1144810021918451336">Nu te protejează de siteurile, descărcările și extensiile periculoase.</translation>
 <translation id="5760476995887363522">Expresiile nu corespund. Încercați din nou!</translation>
@@ -613,6 +615,8 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6159566011642056819">Până la (estimare)</translation>
 <translation id="6998989275928107238">Către</translation>
 <translation id="2589431635772931954">Adresă sau URL</translation>
+<translation id="5517732667776806421">Informații lipsă privind suma de verificare</translation>
+<translation id="4006711930669471508">Informații incorecte privind suma de verificare</translation>
 <translation id="632241521608275119">Marjă de toleranță</translation>
 <translation id="1987317783729300807">Conturi</translation>
 <translation id="3535654229833214438">Tranzacții</translation>
@@ -645,7 +649,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="7420359180991315365">Continuați la Wyre</translation>
 <translation id="8488282162676695335">Portofelul Brave</translation>
 <translation id="3784455785234192852">Blocați</translation>
-<translation id="5040262127954254034">Confidențialitate</translation>
 <translation id="8239147115686034860">Blocați automat portofelul Brave</translation>
 <translation id="414639769490080648">Numărul de minute de așteptare până la blocarea automată a portofelului Brave</translation>
 <translation id="4993345308607970390">Resetați portofelul Brave</translation>
@@ -765,7 +768,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6666273175654835609">Trimis</translation>
 <translation id="2331676293859649642">Confirmat</translation>
 <translation id="1165039591588034296">Eroare</translation>
-<translation id="4354768722613827480">Taxă: <ph name="VALUE"/> ETH ($<ph name="FIAT_VALUE"/>)</translation>
+<translation id="8364362220156372884">Taxă: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> (<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Folosiți cel mai rapid browser?</translation>
 <translation id="2065971949051836200">Internetul de 3 ori mai rapid este deja disponibil pe telefonul dvs. Folosiți Brave pentru navigarea pe internet!</translation>
 <translation id="2888278614497184977">Brave înseamnă o navigare de 3 ori mai rapidă.</translation>
@@ -790,7 +793,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1254969878422524947">Limita contribuției pentru gas (Gwei)</translation>
 <translation id="7373308452149471621">Limita prețului pentru gas (Gwei)</translation>
 <translation id="5891811606602061966">Nu s-a reușit importarea contului. Încercați din nou!</translation>
-<translation id="7033470144757208254">Brave utilizează 0x ca agregator de schimb descentralizat.</translation>
 <translation id="5061574358754621254">Date privind prețurile, oferite de CoinGecko</translation>
 <translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
 <translation id="8574289650879708853">Adăugați activ personalizat</translation>
@@ -806,7 +808,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="3506416339268164412">Adresa destinatară este o adresă din contractul pentru un token.</translation>
 <translation id="1543259266592091784">Adaugă fonduri</translation>
 <translation id="3494964159182650590">Rezumat recompense</translation>
-<translation id="7470079236088529568">Total granturi revendicate</translation>
 <translation id="590733288489975971">Recompense din reclame</translation>
 <translation id="207268487070188114">Contribuție unică</translation>
 <translation id="64394831139134288">Portofelul meu</translation>
@@ -816,7 +817,30 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1549705559752367917">Trimiteți bacșiș</translation>
 <translation id="6727102863431372879">Setați</translation>
 <translation id="381822214767083050">Contribuție lunară</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="5802665280774361839">Afișați completarea automată în bara de adrese</translation>
+<translation id="1241283133946520352">Rețele</translation>
+<translation id="1062463687579789365">Personalizarea rețelelor de portofele</translation>
+<translation id="2512821599885971349">Adăugați rețea</translation>
+<translation id="1330032157352961756">Identificatorul noului lanț</translation>
+<translation id="8104880458203052748">Format incorect, identificatorul lanțului este un număr pozitiv</translation>
+<translation id="3423620355610881890">Un număr zecimal pozitiv</translation>
+<translation id="726121047592132939">Numele noului lanț</translation>
+<translation id="1034112277864078119">Introduceți numele lanțului</translation>
+<translation id="6003394258999088868">Câmpul nu poate rămâne gol</translation>
+<translation id="4672314527143443556">Numele monedei lanțului</translation>
+<translation id="4652114030688989556">Introduceți numele monedei</translation>
+<translation id="1079960017149736097">Simbolul monedei lanțului</translation>
+<translation id="1288105009659846362">Introduceți simbolul monedei</translation>
+<translation id="665660671251623018">Zecimalele monedei lanțului</translation>
+<translation id="182619028057179895">Format incorect, zecimalele monedei sunt un număr pozitiv</translation>
+<translation id="2978054488731497946">Introduceți zecimalele monedei</translation>
+<translation id="3047726704186619366">Adrese URL pictograme</translation>
+<translation id="2487558607408469181">Adrese URL explorator de blocuri</translation>
+<translation id="7059127752542505809">Introduceți URL</translation>
+<translation id="2156993118928861787">Adresă incorectă</translation>
+<translation id="6889920539620318793">Setați ca activă</translation>
+<translation id="2653659639078652383">Trimiteți</translation>
+<translation id="8853725596990766789">Modificați suma</translation>
 </translationbundle>

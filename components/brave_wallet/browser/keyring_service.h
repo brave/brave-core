@@ -15,6 +15,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -77,7 +78,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& account_path,
       const std::string& id);
 
-  static std::string GetAccountPathByIndex(size_t index);
+  static std::string GetAccountPathByIndex(
+      size_t index,
+      const std::string& keyring_id = mojom::kDefaultKeyringId);
 
   struct ImportedAccountInfo {
     ImportedAccountInfo(const std::string& account_name,
@@ -118,6 +121,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void Lock() override;
   void IsLocked(IsLockedCallback callback) override;
   void AddAccount(const std::string& account_name,
+                  mojom::CoinType coin,
                   AddAccountCallback callback) override;
   void GetPrivateKeyForDefaultKeyringAccount(
       const std::string& address,
@@ -197,7 +201,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void AddAccountsWithDefaultName(size_t number);
 
-  bool IsLocked() const;
+  bool IsLocked(const std::string& keyring_id = mojom::kDefaultKeyringId) const;
   bool HasPendingUnlockRequest() const;
   void RequestUnlock();
   absl::optional<std::string> GetSelectedAccount() const;
@@ -229,6 +233,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateNonceForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateEncryptorForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateDefaultKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateFilecoinKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
+                           LockAndUnlockWithMultipleKeyrings);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
+                           LazyCreateFilecoinKeyringFromImport);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            CreateDefaultKeyringInternal);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, RestoreDefaultKeyring);
@@ -248,12 +257,15 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, RestoreLegacyBraveWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AutoLock);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetSelectedAccount);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, UnknownKeyring);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, LazilyCreateKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportedFilecoinAccounts);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateFilecoinEncryptor);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateFilecoinEncryptor);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxServiceUnitTest;
 
-  void AddAccountForDefaultKeyring(const std::string& account_name);
+  void AddAccountForKeyring(const std::string& keyring_id,
+                            const std::string& account_name);
   mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void OnAutoLockFired();
   HDKeyring* GetKeyringForAddress(const std::string& address);
@@ -275,6 +287,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::vector<uint8_t>& public_key,
       const std::string& network);
   bool IsFilecoinAccount(const std::string& account) const;
+  bool IsKeyringExist(const std::string& keyring_id) const;
+  bool CreateFilecoinKeyring();
   size_t GetAccountMetasNumberForKeyring(const std::string& id);
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
@@ -315,10 +329,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void OnAutoLockPreferenceChanged();
   void OnSelectedAccountPreferenceChanged();
 
-  std::unique_ptr<PasswordEncryptor> encryptor_;
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::flat_map<std::string, std::unique_ptr<HDKeyring>> keyrings_;
+  base::flat_map<std::string, std::unique_ptr<PasswordEncryptor>> encryptors_;
 
   raw_ptr<PrefService> prefs_ = nullptr;
   bool request_unlock_pending_ = false;

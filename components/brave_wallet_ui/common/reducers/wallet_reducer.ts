@@ -37,6 +37,7 @@ import { normalizeNumericValue } from '../../utils/bn-utils'
 
 const defaultState: WalletState = {
   hasInitialized: false,
+  isFilecoinEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
   favoriteApps: [],
@@ -96,7 +97,8 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
       balance: '',
       accountType: getAccountType(info),
       deviceId: info.hardware ? info.hardware.deviceId : '',
-      tokenBalanceRegistry: {}
+      tokenBalanceRegistry: {},
+      coin: info.coin
     } as WalletAccountType
   })
   const selectedAccount = payload.selectedAccount
@@ -106,6 +108,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
     ...state,
     hasInitialized: true,
     isWalletCreated: payload.isWalletCreated,
+    isFilecoinEnabled: payload.isFilecoinEnabled,
     isWalletLocked: payload.isWalletLocked,
     favoriteApps: payload.favoriteApps,
     accounts,
@@ -187,17 +190,14 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: WalletState, payloa
 })
 
 reducer.on(WalletActions.tokenBalancesUpdated, (state: WalletState, payload: GetBlockchainTokenBalanceReturnInfo) => {
-  const userVisibleTokensInfo = state.userVisibleTokensInfo
+  const visibleTokens = state.userVisibleTokensInfo
+    .filter(asset => asset.contractAddress !== '')
 
   let accounts: WalletAccountType[] = [...state.accounts]
   accounts.forEach((account, accountIndex) => {
     payload.balances[accountIndex].forEach((info, tokenIndex) => {
-      const contractAddress = userVisibleTokensInfo[tokenIndex].contractAddress.toLowerCase()
-      if (contractAddress === '') {
-        accounts[accountIndex].balance = normalizeNumericValue(account.balance)
-      } else if (info.error === BraveWallet.ProviderError.kSuccess && userVisibleTokensInfo[tokenIndex].isErc721) {
-        accounts[accountIndex].tokenBalanceRegistry[contractAddress] = normalizeNumericValue(info.balance)
-      } else if (info.error === BraveWallet.ProviderError.kSuccess) {
+      if (info.error === BraveWallet.ProviderError.kSuccess) {
+        const contractAddress = visibleTokens[tokenIndex].contractAddress.toLowerCase()
         accounts[accountIndex].tokenBalanceRegistry[contractAddress] = normalizeNumericValue(info.balance)
       }
     })

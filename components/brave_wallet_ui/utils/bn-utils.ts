@@ -37,12 +37,15 @@ export function multiplyNumericValues (a: string, b: string): string {
  * This function is typically used for converting a hex value to
  * numeric value.
  *
+ * Invalid values return an empty string.
+ *
  * @param value Numeric value to normalize.
  */
 export function normalizeNumericValue (value: string): string {
-  return value === ''
+  const valueBN = new BigNumber(value)
+  return valueBN.isNaN()
     ? ''
-    : new BigNumber(value).toFixed(0)
+    : valueBN.toFixed(0)
 }
 
 export function isNumericValueGreaterThan (a: string, b: string): boolean {

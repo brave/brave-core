@@ -81,7 +81,7 @@
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_COOKIES_BLOCKED_ALL" desc="Menu option that would allow all cookies.">
-    All cookies blocked
+    All cookies allowed
   </message>
 
   <message name="IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED" desc="An accessible label for expand/collapse button.">

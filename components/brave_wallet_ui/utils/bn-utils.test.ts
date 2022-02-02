@@ -20,6 +20,12 @@ describe('bn-utils', () => {
     expect(normalizeNumericValue('0x2')).toEqual('2')
   })
 
+  it('should normalize invalid numeric values to empty string', () => {
+    expect(normalizeNumericValue('')).toEqual('')
+    expect(normalizeNumericValue('0x')).toEqual('')
+    expect(normalizeNumericValue('invalid value')).toEqual('')
+  })
+
   it('should compare two numeric values', () => {
     expect(isNumericValueGreaterThan('0x2', '0x3')).toEqual(false)
     expect(isNumericValueGreaterThan('2', '3')).toEqual(false)

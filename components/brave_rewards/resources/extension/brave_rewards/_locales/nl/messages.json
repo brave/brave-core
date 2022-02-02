@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Status vernieuwen",
+    "message": "Vernieuwen",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards ondervindt problemen. Probeer het later opnieuw.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Status controleren",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Gefeliciteerd! Uw beloningen voor $month$ zijn er!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Uw beloningen voor $month$ ter waarde van $amount$ zijn er over $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Uw beloningen voor $month$ ter waarde van $amount$ zijn onderweg. Houd een oogje in het zeil!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Ga naar mijn $provider$ account",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Log uit bij $provider$",
+    "message": "Verbreek de verbinding met $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "In afwachting",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "Uitbetaling van $amount$ wordt verwerkt over $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Beloningen uit advertenties",

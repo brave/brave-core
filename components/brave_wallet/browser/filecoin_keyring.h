@@ -33,10 +33,11 @@ class FilecoinKeyring : public HDKeyring {
                                        const std::string& network);
   void ImportFilecoinAccount(const std::vector<uint8_t>& input_key,
                              const std::string& address);
+  std::string GetAddressInternal(const HDKey* hd_key) const override;
 
  protected:
-  std::string GetAddressInternal(const std::vector<uint8_t>& payload,
-                                 int protocol) const;
+  std::string CreateAddressWithProtocol(const std::vector<uint8_t>& payload,
+                                        int protocol) const;
   std::unique_ptr<HDKey> root_;
   std::unique_ptr<HDKey> master_key_;
 

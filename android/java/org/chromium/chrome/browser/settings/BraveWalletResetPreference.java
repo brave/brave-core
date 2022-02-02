@@ -28,6 +28,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletNativeUtils;
 import org.chromium.ui.KeyboardVisibilityDelegate;
@@ -87,6 +88,7 @@ public class BraveWalletResetPreference
                     if (TextUtils.equals(inputText, mConfirmationPhrase)) {
                         Log.w(TAG, "Reset");
                         WalletNativeUtils.resetWallet();
+                        KeystoreHelper.resetBiometric();
                         Utils.setCryptoOnboarding(true);
                     }
 

@@ -8,6 +8,9 @@
 #include "bat/ads/ad_type.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/account/issuers/issuers_info.h"
+#include "bat/ads/internal/account/issuers/issuers_unittest_util.h"
+#include "bat/ads/internal/account/issuers/issuers_util.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
@@ -16,9 +19,6 @@
 #include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
-#include "bat/ads/internal/tokens/issuers/issuers_info.h"
-#include "bat/ads/internal/tokens/issuers/issuers_unittest_util.h"
-#include "bat/ads/internal/tokens/issuers/issuers_util.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
@@ -546,7 +546,7 @@ TEST_F(BatAdsAccountTest, GetStatement) {
         expected_statement.next_payment_date = TimestampFromString(
             "5 January 2021 23:59:59.999", /* is_local */ false);
         expected_statement.earnings_this_month = 0.05;
-        expected_statement.earnings_last_month = 0.02;
+        expected_statement.earnings_last_month = 0.01;
         expected_statement.ads_received_this_month = 3;
 
         EXPECT_EQ(expected_statement, statement);

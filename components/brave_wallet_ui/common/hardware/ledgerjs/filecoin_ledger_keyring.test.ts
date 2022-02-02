@@ -2,12 +2,14 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
-
+import { TextEncoder, TextDecoder } from 'util'
+global.TextDecoder = TextDecoder
+global.TextEncoder = TextEncoder
 import { LEDGER_HARDWARE_VENDOR } from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import FilecoinLedgerKeyring, { extractPublicKeyForBLS } from './filecoin_ledger_keyring'
 import { CoinType } from '@glif/filecoin-address'
 import { LedgerProvider } from '@glif/filecoin-wallet-provider'
-import { BraveWallet } from 'components/brave_wallet_ui/constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 class MockApp {
   async getAccounts (from: number, to: number, coinType?: CoinType): Promise<string[]> {
@@ -41,7 +43,7 @@ test('Extracting accounts from device', () => {
       payload: [{
         address: '0',
         coin: BraveWallet.CoinType.FIL,
-        derivationPath: '0',
+        derivationPath: 'm/44\'/461\'/0\'/0/0',
         deviceId: 'device1',
         hardwareVendor: 'Ledger',
         name: 'Filecoin Ledger'

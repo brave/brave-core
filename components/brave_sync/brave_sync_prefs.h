@@ -32,7 +32,7 @@ class Prefs {
 
   static std::string GetSeedPath();
 
-  std::string GetSeed() const;
+  std::string GetSeed(bool* failed_to_decrypt) const;
   bool SetSeed(const std::string& seed);
 
   bool IsSyncV1Migrated() const;

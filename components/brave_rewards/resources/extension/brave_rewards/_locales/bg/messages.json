@@ -16,7 +16,7 @@
     "description": ""
   },
   "refreshStatus": {
-    "message": "Обновяване на състоянието",
+    "message": "Опресняване",
     "description": ""
   },
   "pendingTipText": {
@@ -135,6 +135,46 @@
     "message": "Brave Rewards има проблеми. Опитайте отново по-късно.",
     "description": ""
   },
+  "rewardsPaymentCheckStatus": {
+    "message": "Проверка на състоянието",
+    "description": ""
+  },
+  "rewardsPaymentCompleted": {
+    "message": "Поздравления! Вашите награди за $month$ пристигнаха!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
+  },
+  "rewardsPaymentPending": {
+    "message": "Вашите награди от $amount$ за $month$ ще пристигнат след $days$",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      },
+      "days": {
+        "content": "$3"
+      }
+    }
+  },
+  "rewardsPaymentProcessing": {
+    "message": "Вашите награди от $amount$ за $month$ са на път. Бъдете нащрек!",
+    "description": "",
+    "placeholders": {
+      "amount": {
+        "content": "$1"
+      },
+      "month": {
+        "content": "$2"
+      }
+    }
+  },
   "walletAccountLink": {
     "message": "Отидете в моя акаунт в $provider$",
     "description": "",
@@ -170,7 +210,7 @@
     "description": ""
   },
   "walletDisconnectLink": {
-    "message": "Излизане от $provider$",
+    "message": "Прекъсване на връзката с $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -206,18 +246,6 @@
   "walletPending": {
     "message": "Предстоящо",
     "description": ""
-  },
-  "walletPendingRewardsText": {
-    "message": "Обработването на плащането на $amount$ започва след $days$",
-    "description": "",
-    "placeholders": {
-      "amount": {
-        "content": "$1"
-      },
-      "days": {
-        "content": "$2"
-      }
-    }
   },
   "walletRewardsFromAds": {
     "message": "Награди от реклами",

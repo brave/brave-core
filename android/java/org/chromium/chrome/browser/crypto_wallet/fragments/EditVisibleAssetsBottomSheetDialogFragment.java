@@ -421,12 +421,12 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
                     || mType == WalletCoinAdapter.AdapterType.BUY_ASSETS_LIST
                     || mType == WalletCoinAdapter.AdapterType.SWAP_FROM_ASSETS_LIST) {
                 ((BuySendSwapActivity) activity)
-                        .updateBuySendAsset(checkedAssets.get(0).getSubTitle(),
-                                checkedAssets.get(0).getBlockchainToken());
+                        .updateBuySendSwapAsset(checkedAssets.get(0).getSubTitle(),
+                                checkedAssets.get(0).getBlockchainToken(), true);
             } else if (mType == WalletCoinAdapter.AdapterType.SWAP_TO_ASSETS_LIST) {
                 ((BuySendSwapActivity) activity)
-                        .updateSwapToAsset(checkedAssets.get(0).getSubTitle(),
-                                checkedAssets.get(0).getBlockchainToken());
+                        .updateBuySendSwapAsset(checkedAssets.get(0).getSubTitle(),
+                                checkedAssets.get(0).getBlockchainToken(), false);
             }
         }
         dismiss();

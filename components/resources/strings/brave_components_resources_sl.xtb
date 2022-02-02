@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Datum naslednjega prispevka</translation>
 <translation id="1397381065858030856">Ogledane strani</translation>
 <translation id="2365740070488517695">Donacije</translation>
-<translation id="4803566747788858771">Med brskanjem lahko neposredno donirate ustvarjalcem vsebine z uporabo nadzorne plošče za donacije ali gumba v vrstici za doniranje na različnih spletnih straneh, vključno s Twitterjem, Redditom in GitHubom.</translation>
+<translation id="5993195614988368256">Med brskanjem lahko neposredno donirate ustvarjalcem vsebine z uporabo nadzorne plošče za donacije ali gumba v vrstici za doniranje na različnih spletnih straneh, vključno s Twitterjem, Redditom in GitHubom.</translation>
 <translation id="5012991400231464322">Mesečni prispevki</translation>
 <translation id="2084351799622920487">Ponavljajoče mesečne prispevke nastavite tako, da boste lahko spletne strani podpirali neprekinjeno.</translation>
 <translation id="8150772404570015166">Mesečni prispevki še niso vzpostavljeni.</translation>
@@ -255,6 +255,8 @@
 <translation id="9074594632540931067">Napaka: BAT ni na voljo</translation>
 <translation id="413458922997276130">Vaš račun pri Uphold je trenutno blokiran.</translation>
 <translation id="3579959767665130790">Napaka: blokiran račun</translation>
+<translation id="6554308597291659562">Uphold mora zbrati nekaj več informacij o vas, preden omogočite celotno funkcionalnost računa Uphold. Poskusite znova, ko vnesete te podatke v svoj račun Uphold.</translation>
+<translation id="6996157559236886133">Napaka: omejena funkcionalnost računa Uphold</translation>
 <translation id="819370426249314592">Vaš račun pri Upholdu je na čakanju.</translation>
 <translation id="4530453398914580957">Napaka: račun na čakanju</translation>
 <translation id="2388470740942086608">Vaš račun pri Uphold ima trenutno omejen dostop.</translation>
@@ -262,8 +264,6 @@
 <translation id="7147519373526655987">There was a problem validating your browser's request to connect your Brave Rewards wallet to your <ph name="PROVIDER"/> prišlo do težave. Lahko <ph name="BEGIN_LINK"/>se obrnete na našo podporo strankam<ph name="END_LINK"/> in poiščete pomoč.</translation>
 <translation id="1316066811927496401">Napaka: Zahteve ni bilo mogoče potrditi</translation>
 <translation id="1737873393693460829">Če vklopite [[title]], se strinjate s <ph name="BEGIN_LINK1"/>pogoji storitve<ph name="END_LINK1"/> in <ph name="BEGIN_LINK2"/>s politiko zasebnosti<ph name="END_LINK2"/>.</translation>
-<translation id="901298512318791028">Vaše <ph name="AMOUNT"/> izplačilo se bo začelo obdelovati <ph name="DAYS"/>.</translation>
-<translation id="419485819988779505"><ph name="BOLD_BEGIN"/>Note: <ph name="BOLD_END"/>Obdelava izplačila in prihod BAT lahko traja nekaj dni.</translation>
 <translation id="4672975606583962967">Izberite storitev denarnice</translation>
 <translation id="1815503044492647974">Izberite skrbniško denarnico. Če že imate račun, se boste morali prijaviti, da se povežete.</translation>
 <translation id="2205685774710519016">Opomba: Vaše transakcije bodo vidne izbrani storitvi denarnice po odobritvi; na primer, lahko bodo videli prejemnika in vrednost vaših prispevkov.</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Zaključi preverjanje denarnice</translation>
 <translation id="9200453331904391567">Prekinite povezavo z Brave Rewards</translation>
 <translation id="3656941797339037856">Povežite Rewards z Gemini!</translation>
-<translation id="3066983737886188034">Gemini vam omogoča enostavno trgovanje, shranjevanje in zaslužek z obrestmi za vaš BAT. Preverite in povežite svojo denarnico nagrad Brave z Gemini!</translation>
+<translation id="31532096120351460">Trgujte s 50+ kriptovalutami, vključno z BAT, na Gemini. To je varna platforma za shranjevanje vaše kriptovalute. Poleg tega lahko zaslužite obresti v ZDA, HK in SG.</translation>
 <translation id="7404779623219601861">Unovčite BAT za darilne kartice</translation>
 <translation id="6215565499749144110">Z omrežjem TAP Network lahko svoj BAT unovčite za darilne kartice priljubljene blagovne znamke.</translation>
 <translation id="6915065518766963119">* Zahteva preverjanje računa Uphold.</translation>
@@ -732,15 +732,15 @@
 <translation id="72868071984333667">Preberite več o IPFS in zasebnosti</translation>
 <translation id="1886162073868201257">Napaka pri zagonu storitve IPFS</translation>
 <translation id="5357895013476183089">IPFS ni povezan</translation>
-<translation id="1196783328762622576">Z lokalnim vozliščem ni mogoče naložiti virov IPFS</translation>
+<translation id="7662930734991751511">Virov IPFS ni mogoče naložiti z uporabo lokalnega vozlišča IPFS Brave</translation>
 <translation id="1141556610026845297">Za nalaganje zahtevanih virov IPFS lokalnega vozlišča IPFS ni uspelo. Kliknite gumb "Nadaljuj", če želite namesto tega uporabiti javni prehod in se v prihodnosti samodejno vrniti na javni prehod.</translation>
 <translation id="3373798179786163193">Nadaljuj z javnim prehodom</translation>
 <translation id="1974060860693918893">Dodatno</translation>
 <translation id="9096577886148726047">Skrij napredno</translation>
-<translation id="7716995370131231171">Brave ne more naložiti zahtevanih virov IPFS bodisi zato, ker se lokalno vozlišče ni zagnalo ali ker trenutno ni na voljo povezanih vrstnikov. Če izberete »Nadaljuj«, se bo Brave samodejno vrnil na privzeti javni prehod, kadar uporaba lokalnega vozlišča ne uspe. To vedenje lahko kadar koli spremenite v nastavitvah Brave.</translation>
+<translation id="182581792765792826">Brave ne more naložiti zahtevanih virov IPFS, ker se lokalno vozlišče IPFS Brave ni zagnalo ali ker trenutno ni na voljo nobenih povezanih enakovrednih. Če izberete »Nadaljuj«, se bo Brave samodejno vrnil na privzeti javni prehod, ko bo uporaba lokalnega vozlišča IPFS Brave neuspešna. To vedenje lahko kadar koli spremenite v nastavitvah Brave.</translation>
 <translation id="8026038288183400906">Nastavitev IPFS</translation>
 <translation id="2058855456574089690">Nastavite svojo nastavitev IPFS</translation>
-<translation id="4447758690649023734">Uporabite lokalno vozlišče</translation>
+<translation id="4780526507945807546">Uporabite lokalno vozlišče IPFS Brave</translation>
 <translation id="8148464361648742409">Uporabite javni prehod</translation>
 <translation id="5123478056123923857">IPFS (InterPlanetary File System) je javno omrežje za medsebojno shranjevanje in dostavo podatkov. Ta protokol se glede zasebnosti razlikuje od HTTP(S).</translation>
 <translation id="5410952114182173389">Vaš računalnik prispeva v javno omrežje, vendar bi lahko bili izpostavljeni vaš naslov IP in vsa vsebina, ki jo zahtevate ali zagotovite. Vsebina, ki jo zahtevate prek IPFS, je preverjena, preden vam jo ponudimo.</translation>
@@ -775,16 +775,19 @@
 <translation id="6318437367327684789">vedno</translation>
 <translation id="8797999629784150206">Dovoljenja za svoje <ph name="SITE_PERMISSIONS"/> lahko kadarkoli spremenite. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">dovoljenje za spletno mesto</translation>
+<translation id="7717357606512850995">Preverite stanje</translation>
+<translation id="7306880305145342514">Čestitamo! Vaša nagrada za mesec <ph name="MONTH"/> je tukaj!</translation>
+<translation id="3007207731685398329">Vaša nagrada <ph name="AMOUNT"/> <ph name="MONTH"/> prispe čez <ph name="DAYS"/></translation>
+<translation id="5878420576943709750">Vaša nagrada <ph name="AMOUNT"/> <ph name="MONTH"/> je na poti. Pričakujte jo kmalu!</translation>
 <translation id="2659764755126740206">Pojdi na moj <ph name="PROVIDER"/> račun</translation>
 <translation id="2389181429986654814">Če želite dokončati preverjanje, pojdite na <ph name="PROVIDER"/></translation>
 <translation id="7793632266654336758">Če želite prejemati nagrade, dokončajte preverjanje identitete.</translation>
 <translation id="2394961582378297792">Odjavljeni</translation>
-<translation id="5511950864417840431">Odjava iz <ph name="PROVIDER"/></translation>
+<translation id="6080167751812750226">Prekini povezavo z <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ocenjeni zaslužek</translation>
 <translation id="7577100371127227294">Mesečne donacije</translation>
 <translation id="5894023780213944778">Moja denarnica</translation>
 <translation id="2613359062756190460">Enkratne donacije</translation>
-<translation id="4240437602809703483"><ph name="AMOUNT"/> bo obdelan in plačan čez <ph name="DAYS"/></translation>
 <translation id="590733288489975971">Nagrade z oglaševanjem</translation>
 <translation id="4989163558385430922">Pokaži vse</translation>
 <translation id="3026978804849658576">Ogled evidence</translation>
@@ -815,6 +818,7 @@
 <translation id="9161147058107529840">Pričakovan posamezen parameter objekta.</translation>
 <translation id="1875861420974447980">Ta verižni ID se trenutno uporablja</translation>
 <translation id="167698752210114155">Prišlo je do notranje napake</translation>
+<translation id="1128992132632883337">Prišlo je do napake pri razčlenjevanju odgovora</translation>
 <translation id="1680597601664421644">Mnemonika, ki se uvozi, ne velja za Brave Wallet</translation>
 <translation id="4641919696349069826">Zahteva je že v teku</translation>
 <translation id="872806943696014633">Manjkajo podatki o transakcijah</translation>
@@ -867,12 +871,14 @@
 <translation id="6977728312178289892">1 leto</translation>
 <translation id="6598532182053592167">Dodaj kovanec</translation>
 <translation id="629730747756840877">Račun</translation>
+<translation id="3959969108528118741">Lastnik</translation>
 <translation id="3891414008432200754">Cena</translation>
 <translation id="2267753748892043616">Dodaj račun</translation>
 <translation id="5061574358754621254">Podatke o cenah omogoča CoinGecko</translation>
 <translation id="1483493594462132177">Pošlji</translation>
 <translation id="538450413584738399">Menjava</translation>
-<translation id="7020187418439030877"><ph name="NETWORK"/> ni podprt</translation>
+<translation id="6295954645230084874">Podpora za nakup <ph name="NETWORK"/> ni na voljo</translation>
+<translation id="4171338820961522154">Podpora za zamenjavo ni na voljo za <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">Transakcija je lahko vnaprejšnja</translation>
 <translation id="632241521608275119">Toleranca padca</translation>
 <translation id="4500473291496079954">Poteče čez</translation>
@@ -880,12 +886,14 @@
 <translation id="2860280209982026951">Brave uporablja <ph name="LINK_BEFORE"/>0x<ph name="LINK_AFTER"/> kot DEX agregator.</translation>
 <translation id="151946611346774041">0x bo obdelal naslov Ethereum in naslov IP za izvedbo transakcije (vključno s pridobivanjem ponudb). 0x bo te podatke uporabil SAMO za namene obdelave transakcij.</translation>
 <translation id="4626407663177532837">Ponudba vključuje 0,875 % Brave pristojbine.</translation>
+<translation id="8368540604723748428">Preveč decimalnih mest</translation>
 <translation id="2704606927547763573">Kopirano</translation>
 <translation id="6518133107902771759">Preveri</translation>
 <translation id="1420318137760245955">Dobrodošli v novi Brave denarnici</translation>
 <translation id="8303434745767477417">V lasti imejte kripto sredstva. Sledite uspešnosti portfelja in sodelujte z aplikacijami web3 DApps. Trgujte, vlagajte, izposojajte in posojajte z DeFi. Vse v brskalniku zasebnosti Brave. Brez razširitev, prenos ni potreben.</translation>
 <translation id="6972754398087986839">Začnite</translation>
 <translation id="375882617301124395">Varnostno kopirajte svojo kripto denarnico</translation>
+<translation id="180032279811483155">V naslednjem koraku boste videli obnovitveno frazo s<ph name="RECOVERY_PHRASE_LENGTH"/> besedami, ki jo lahko uporabite za obnovitev svojih primarnih kripto računov. Shrani ga na varno mesto. Vaš obnovitveni stavek je edini način za ponovno pridobitev dostopa do računa v primeru pozabljenega gesla, izgubljene ali ukradene naprave ali če želite zamenjati denarnico.</translation>
 <translation id="5024543173656851695">Zavedam se, da ne morem dostopati do svoje denarnice s kriptovalutami, če izgubim svoje ključne besede za obnovitev dostopa.</translation>
 <translation id="3933122286596948824">Vaša fraza za obnovitev</translation>
 <translation id="5077747669435508720">Te besede si zapišite ali prepišite v natančnem vrstnem redu, ki je prikazan spodaj, in jih shranite. Vaša fraza za obnovitev je edini način, da ponovno pridobite dostop do računa v primeru pozabljenega gesla, izgubljene ali ukradene naprave ali če želite zamenjati denarnico.</translation>
@@ -900,12 +908,14 @@
 <translation id="6901073872645365201">Gesla morajo biti sestavljena iz najmanj 7 znakov in vsebovati vsaj eno številko in en poseben znak.</translation>
 <translation id="6657585470893396449">Geslo</translation>
 <translation id="5486261815000869482">Potrdi geslo</translation>
+<translation id="6138471905279127211">Kriteriji gesla se ne ujemajo.</translation>
 <translation id="467510802200863975">Gesli se ne ujemata</translation>
 <translation id="5168349973342709369">Vnesite geslo za odklep denarnice</translation>
 <translation id="9111102763498581341">Odkleni</translation>
 <translation id="5045550434625856497">Nepravilno geslo</translation>
-<translation id="7341660388388100491">Zakleni kripto</translation>
+<translation id="5242300593039211344">Zakleni denarnico</translation>
 <translation id="765834632354589737">Varnostna kopija denarnice</translation>
+<translation id="1108298724135935307">Povezana spletna mesta</translation>
 <translation id="722307450061393855">Rezervirajte denarnico zdaj, da zaščitite svoja kripto sredstva in zagotovite, da nikoli ne izgubite dostopa.</translation>
 <translation id="1018806299114415224">Varnostno kopijo naredite zdaj</translation>
 <translation id="5234764350956374838">Opusti</translation>
@@ -919,12 +929,20 @@
 <translation id="3331452756822160641">Novo geslo</translation>
 <translation id="8624315169751085215">Kopiraj v odložišče</translation>
 <translation id="1121335910737476837">Primarni kripto računi</translation>
-<translation id="3604193429970465812">Sekundarni računi</translation>
+<translation id="6969147029062037757">Uvoženi računi</translation>
+<translation id="5668765612885835803">V denarnici Wallet lahko ustvarite primarne račune, ki jih je mogoče varnostno kopirati ali obnoviti iz vaše obnovitvene fraze. Če želite izvedeti več o vrstah računov, obiščite pomoč za račun</translation>
 <translation id="2471916999505901943">Ti računi se lahko uporabljajo z aplikacijami web3 DApps in so lahko prikazani v vašem portfelju. Pri tem pa upoštevajte, da sekundarnih računov ni mogoče obnoviti s frazo za obnovitev iz varnostne kopije primarnega računa.</translation>
 <translation id="1940465339426637378">Sredstva</translation>
 <translation id="2236507293802791911">Vidna sredstva</translation>
 <translation id="7525067979554623046">Ustvari</translation>
 <translation id="4771176409524282426">Ustvari račun</translation>
+<translation id="2471867767872178363">Ustvarite račun<ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="1073129495320255278">Uvozite račun<ph name="BLOCKCHAIN_NETWORK"/></translation>
+<translation id="6780482003945159712">Izberite eno od naslednjih vrst računov</translation>
+<translation id="7080614857771109950">Podpira sredstva, ki so združljiva z EVM na blokovni verigi Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
+<translation id="3329841454317342083">Podpira sredstva, združljiva s SLP, na blokovni verigi Solana</translation>
+<translation id="4541295941776129088">Shrani sredstvo FIL</translation>
+<translation id="232925166623833246">Uvoz iz strojne denarnice</translation>
 <translation id="4324198334837993695">Strojna oprema</translation>
 <translation id="3067168166931605141">Ime računa</translation>
 <translation id="1136772623587250243">Zalepite zasebni ključ iz odložišča</translation>
@@ -935,7 +953,7 @@
 <translation id="5891811606602061966">Računa ni bilo mogoče uvoziti. Poskusite znova.</translation>
 <translation id="5051929972046200722">Izberite svojo hardversko denarnico</translation>
 <translation id="5745936663807461565">Povežite <ph name="HARDWARE_DEVICE"/> vašo denarnico neposredno z vašim računalnikom.</translation>
-<translation id="5041211872515579638">Odklenite napravo in izberite aplikacijo Ethereum.</translation>
+<translation id="4350216031085285578">Odklenite napravo in izberite aplikacijo <ph name="BLOCKCHAIN_NETWORK"/> .</translation>
 <translation id="6892232036314454524">Ta napaka se lahko pojavi, ko je na napravi Ledger odprta napačna aplikacija.</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">Knjiženje</translation>
@@ -962,6 +980,7 @@
 <translation id="6018178824574796106">Žetona po meri ni bilo mogoče dodati. Poskusite znova.</translation>
 <translation id="547122651977318828">ID žetona (samo za ERC721)</translation>
 <translation id="7544552854944350190">ID žetona je obvezen</translation>
+<translation id="3842236145820483340">Coingecko ID</translation>
 <translation id="2708402071160162126">OPOZORILO: Svoje fraze za obnovitev nikoli z nikom ne delite. Vsakdo, ki jo ima, vam lahko vzame sredstva za vedno.</translation>
 <translation id="2902856457593699108">Pokaži ključ</translation>
 <translation id="8033497299373164724">Skrij ključ</translation>
@@ -1030,6 +1049,8 @@
 <translation id="1575262454612599115"><ph name="NUMBER_OF_ACCOUNTS"/> povezanih računov</translation>
 <translation id="4305817255990598646">Zamenjava</translation>
 <translation id="3890989020011724401">Nov račun</translation>
+<translation id="7257603403519636638">Oglejte si sredstva računa</translation>
+<translation id="2092132085082887098">Sredstva računa</translation>
 <translation id="4460220693591349571">VRSTA FUNKCIJE</translation>
 <translation id="838933475572692615">ŠESTIŠKI PODATKI</translation>
 <translation id="2240831799756994975">BAJTI</translation>
@@ -1072,6 +1093,11 @@
 <translation id="6666273175654835609">Potrjeno</translation>
 <translation id="2331676293859649642">Potrjeno</translation>
 <translation id="1165039591588034296">Napaka</translation>
+<translation id="9065572743819293042">Nedavne transakcije</translation>
+<translation id="4235538284468006757">Podrobnosti o transakciji</translation>
+<translation id="7488671812634887146">Pospešek</translation>
+<translation id="1702356231547761669">Razpršitev transakcije</translation>
+<translation id="7982789257301363584">Omrežje</translation>
 <translation id="8941851657764077659">Pristojbina za najvišjo prednost</translation>
 <translation id="8047527352810290817">Uredi plin</translation>
 <translation id="9091334651803050473">Čeprav to ni jamstvo, bodo rudarji verjetno dali prednost vaši transakciji, če plačate višjo pristojbino.</translation>
@@ -1088,6 +1114,10 @@
 <translation id="8689322170423904690">Gwei</translation>
 <translation id="8685908198496503620">Nastavi po meri</translation>
 <translation id="7400927223938424379">Nastavi po priporočilu</translation>
+<translation id="8179605702342645418">Transakcija se ne sme širiti v omrežju.</translation>
+<translation id="9100765901046053179">Napredne nastavitve</translation>
+<translation id="4220062530885628403">Število nonce</translation>
+<translation id="2749584096020594976">Vrednost žetona bo samodejno določena, če to polje ni določeno.</translation>
 <translation id="1599636444563952897">Dovoljenje za omejitev porabe omogoča <ph name="SITE_ORIGIN"/>, da sredstva dvigne in porabi do naslednjega zneska:</translation>
 <translation id="4512871563176965522">Dodatek po meri</translation>
 <translation id="749944179568745958">Ni veljaven ETH naslov</translation>
@@ -1128,6 +1158,11 @@
 <translation id="7017116822583380542">Most Trezor ni pripravljen</translation>
 <translation id="3378339846292573874">Dodaj predlagani element</translation>
 <translation id="2322227405137827074">Ali želite ta element uvoziti?</translation>
+<translation id="4378475168089649292">Veriga blokov</translation>
+<translation id="1904295039023858291">Standard žetona</translation>
+<translation id="9033453977881595182">ID žetona</translation>
+<translation id="2962388922926051374">Zahteva za metodo 'eth_chainId' na <ph name="URL"/> ni bila uspešna</translation>
+<translation id="8325036459845654666">To omrežje je že dodano.</translation>
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
 <translation id="3745016858329272300">Splošne informacije</translation>
 <translation id="4045404575593562245">Tor nadzorni dogodki</translation>

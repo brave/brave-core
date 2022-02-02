@@ -12,6 +12,12 @@
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/account/issuers/issuer_types.h"
+#include "bat/ads/internal/account/issuers/issuers.h"
+#include "bat/ads/internal/account/issuers/issuers_info.h"
+#include "bat/ads/internal/account/issuers/issuers_util.h"
+#include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
+#include "bat/ads/internal/account/refill_unblinded_tokens/refill_unblinded_tokens.h"
 #include "bat/ads/internal/account/statement/statement.h"
 #include "bat/ads/internal/account/transactions/transactions.h"
 #include "bat/ads/internal/account/wallet/wallet.h"
@@ -24,12 +30,6 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_interface.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
-#include "bat/ads/internal/tokens/issuers/issuer_types.h"
-#include "bat/ads/internal/tokens/issuers/issuers.h"
-#include "bat/ads/internal/tokens/issuers/issuers_info.h"
-#include "bat/ads/internal/tokens/issuers/issuers_util.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens.h"
-#include "bat/ads/internal/tokens/refill_unblinded_tokens/refill_unblinded_tokens.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/statement_info.h"
 #include "bat/ads/transaction_info.h"
@@ -37,23 +37,20 @@
 namespace ads {
 
 Account::Account(privacy::TokenGeneratorInterface* token_generator)
-    : issuers_(std::make_unique<Issuers>()),
-      confirmations_(std::make_unique<Confirmations>(token_generator)),
+    : confirmations_(std::make_unique<Confirmations>(token_generator)),
+      issuers_(std::make_unique<Issuers>()),
       redeem_unblinded_payment_tokens_(
           std::make_unique<RedeemUnblindedPaymentTokens>()),
       refill_unblinded_tokens_(
           std::make_unique<RefillUnblindedTokens>(token_generator)),
       wallet_(std::make_unique<Wallet>()) {
-  confirmations_->AddObserver(this);
-
+  confirmations_->set_delegate(this);
   issuers_->set_delegate(this);
   redeem_unblinded_payment_tokens_->set_delegate(this);
   refill_unblinded_tokens_->set_delegate(this);
 }
 
-Account::~Account() {
-  confirmations_->RemoveObserver(this);
-}
+Account::~Account() = default;
 
 void Account::AddObserver(AccountObserver* observer) {
   DCHECK(observer);
@@ -226,6 +223,18 @@ void Account::NotifyStatementOfAccountsDidChange() const {
   }
 }
 
+void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
+  TopUpUnblindedTokens();
+}
+
+void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
+  DCHECK(confirmation.IsValid());
+
+  TopUpUnblindedTokens();
+}
+
 void Account::OnDidGetIssuers(const IssuersInfo& issuers) {
   const absl::optional<IssuerInfo>& issuer_optional =
       GetIssuerForType(issuers, IssuerType::kPayments);
@@ -252,18 +261,6 @@ void Account::OnDidGetIssuers(const IssuersInfo& issuers) {
 
 void Account::OnFailedToGetIssuers() {
   BLOG(0, "Failed to get issuers");
-}
-
-void Account::OnDidConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(confirmation.IsValid());
-
-  TopUpUnblindedTokens();
-}
-
-void Account::OnFailedToConfirm(const ConfirmationInfo& confirmation) {
-  DCHECK(confirmation.IsValid());
-
-  TopUpUnblindedTokens();
 }
 
 void Account::OnDidRedeemUnblindedPaymentTokens(

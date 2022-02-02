@@ -18,6 +18,9 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_util.h"
+#include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token.h"
+#include "bat/ads/internal/account/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
@@ -27,9 +30,6 @@
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h"
 #include "bat/ads/internal/time_formatting_util.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_util.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/transaction_info.h"
 
@@ -47,16 +47,8 @@ Confirmations::Confirmations(privacy::TokenGeneratorInterface* token_generator)
   redeem_unblinded_token_->set_delegate(this);
 }
 
-Confirmations::~Confirmations() = default;
-
-void Confirmations::AddObserver(ConfirmationsObserver* observer) {
-  DCHECK(observer);
-  observers_.AddObserver(observer);
-}
-
-void Confirmations::RemoveObserver(ConfirmationsObserver* observer) {
-  DCHECK(observer);
-  observers_.RemoveObserver(observer);
+Confirmations::~Confirmations() {
+  delegate_ = nullptr;
 }
 
 void Confirmations::Confirm(const TransactionInfo& transaction) {
@@ -283,7 +275,9 @@ void Confirmations::OnDidRedeemUnblindedToken(
               << " unblinded payment tokens which will be redeemed "
               << FriendlyDateAndTime(next_token_redemption_at));
 
-  NotifyDidConfirm(confirmation);
+  if (delegate_) {
+    delegate_->OnDidConfirm(confirmation);
+  }
 
   StopRetrying();
 
@@ -308,23 +302,11 @@ void Confirmations::OnFailedToRedeemUnblindedToken(
     }
   }
 
-  NotifyFailedToConfirm(confirmation);
+  if (delegate_) {
+    delegate_->OnFailedToConfirm(confirmation);
+  }
 
   ProcessRetryQueue();
-}
-
-void Confirmations::NotifyDidConfirm(
-    const ConfirmationInfo& confirmation) const {
-  for (ConfirmationsObserver& observer : observers_) {
-    observer.OnDidConfirm(confirmation);
-  }
-}
-
-void Confirmations::NotifyFailedToConfirm(
-    const ConfirmationInfo& confirmation) const {
-  for (ConfirmationsObserver& observer : observers_) {
-    observer.OnFailedToConfirm(confirmation);
-  }
 }
 
 }  // namespace ads

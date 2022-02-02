@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Tämän päivän suosituimmat tarinat täysin yksityisessä syötteessä, juuri sinulle.</translation>
 <translation id="7266075701303521777">Brave-uutiset on mainostuettu. Mainokset ovat täysin yksityisiä ja anonymisoituja laitteeseesi perustuen.</translation>
 <translation id="4541978218358617681">Mainos</translation>
-<translation id="1765217911817124376">Ota Brave News käyttöön</translation>
+<translation id="7823038307453615214">Ota Brave News käyttöön</translation>
 <translation id="6527303717912515753">Jaa</translation>
 <translation id="1654539412343893324">Lue lisää tiedoistasi</translation>
 <translation id="2989805286512600854">Avaa uudessa välilehdessä</translation>
@@ -45,7 +45,6 @@
 <translation id="7554145152551782675">Lisää Brave-tarjouksia</translation>
 <translation id="4975944254857623648">Oletusarvoiset lähteet</translation>
 <translation id="253886574765651454">Lisää lähde</translation>
-<translation id="7823038307453615214">Näytä Brave News</translation>
 <translation id="5787084571334399599">Estää selaimen sormenjälkitunnistamisen</translation>
 <translation id="7459000603787995422">Sulje välilehdet poistuttaessa</translation>
 <translation id="4448697385961650078">Estä seuraimet &amp; mainokset</translation>
@@ -53,8 +52,8 @@
 <translation id="1680858055899097121">Älä säilytä välilehtiä selausistuntojen välillä</translation>
 <translation id="7142548388914389999">Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)</translation>
 <translation id="5254037869598726291">Anonymisoidut P3A-tiedot auttavat Bravea arvioimaan kokonaiskäyttöä ja varmistamaan, että parannamme suosittuja ominaisuuksia.</translation>
-<translation id="4272190451231642425">Lähetä virheraportit automaattisesti</translation>
-<translation id="2239766974964486304">Virheraporttien avulla Brave voi parantaa tuotteen vakautta kaikille käyttäjille.</translation>
+<translation id="933652931229970927">Lähetä diagnostiikkaraportit automaattisesti</translation>
+<translation id="5987838417172370108">Auta parantamaan Brave\u2019:n tuotteen stabiilisuutta lähettämällä diagnostiikkaraportit automaattisesti, kun Brave-selain kaatuu tai jäätyy.</translation>
 <translation id="7977176350719484850">Tallennettuja\ntietoja keskimäärin</translation>
 <translation id="9008534313521214777">Arvioitu säästetty\naika</translation>
 <translation id="6572660632052512096">Työpöytätila</translation>
@@ -76,8 +75,7 @@
 <translation id="59174027418879706">Käytössä</translation>
 <translation id="4150201353443180367">Näyttö</translation>
 <translation id="2433507940547922241">Ulkonäkö</translation>
-<translation id="2804710924397009224">Piilota Brave Rewards -kuvake</translation>
-<translation id="7289740269305509613">Piilota Brave-palkintojen kuvake</translation>
+<translation id="6333347122924254968">Näytä Brave-palkinnot-kuvake osoiterivillä</translation>
 <translation id="8495235435594442882">Ota alalaidan työkalupalkki käyttöön</translation>
 <translation id="6587448235155023666">Muutokset tulevat voimaan, kun käynnistät Braven uudelleen seuraavan kerran</translation>
 <translation id="8701563696941209024">KÄYNNISTÄ UUDELLEEN NYT</translation>
@@ -113,6 +111,7 @@
 <translation id="1166682575529520472">Kuukausittainen</translation>
 <translation id="1628742278973105368">Ensimmäinen kuukausittainen vinkkisi lähetetään ajankohtana:</translation>
 <translation id="298349922412901215">HUOMAUTUS: Tämä sisällöntuottaja ei ole vielä rekisteröitynyt, eikä hän voi vastaanottaa lahjoituksia Braven käyttäjiltä. Yritämme lähettää lahjoituksia toistuvasti, kunnes sisällöntuottaja vahvistetaan tai 90 päivää on kulunut.</translation>
+<translation id="6602036279006002239">HUOMAA: Tätä tekijää ei ole tällä hetkellä määritetty saamaan tippejä lompakostasi. Kaikki antamasi tipit pysyvät lompakossasi, ja niitä yritetään antaa automaattisesti 90 päivän ajan.</translation>
 <translation id="1910721550319506122">Tervetuloa!</translation>
 <translation id="3165726837666415756">Voit tukea tätä sivustoa antamalla tipin. Tällä tavoin voit kiittää sivuston ylläpitäjiä upean sisällön luomisesta. Tipit maksetaan vahvistetuille sisällöntuottajille kunkin kalenterikuukauden ensimmäisellä viikolla.</translation>
 <translation id="1704859330137112950">Voit jättää tämän sivuston tueksi kuukausittaisen tipin, jos haluat.</translation>
@@ -191,6 +190,7 @@ kunnes sisällöntuottajat vahvistetaan tai 90 päivää on kulunut.</translatio
 <translation id="8284063834901328650">Väärä synkronointiruutukoodi</translation>
 <translation id="859506441384380749">Tämän koodin on luonut Braven vanhentunut versio. Päivitä ensin toinen laitteesi.</translation>
 <translation id="3132642509209154999">Tämä koodi on vanhentunut. Luo uusi toisella laitteellasi ja yritä uudelleen.</translation>
+<translation id="2859229680945501779">Tämä koodi on virheellinen. Tarkista, että aika ja aikavyöhyke on määritetty oikein laitteessasi.</translation>
 <translation id="3149880132460839085">Brave-synkronointi</translation>
 <translation id="3680755684186855422">Brave-synkronosointi mahdollistaa kirjanmerkkien synkronointidatan yksityisesti Brave-selaintesi eri laitteiden välillä.</translation>
 <translation id="3735228155296883311">Skannaa koodi synkronointiketjustasi, jonka loit toisella laitteella. Voit myös aloittaa uuden synkronointiketjun.</translation>
@@ -294,7 +294,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5358719431303818601">Yhteyden katkaisua ei vahvistettu</translation>
 <translation id="4241449868720191203">Yhteyden katkaisu vahvistettu</translation>
 <translation id="3248185426436836442">Odottaa</translation>
-<translation id="2260513517001048012">HUOMIO: Tämä Braven vahvistettu kehittäjä ei ole vielä asettanut tiliään vastaanottamaan Braven käyttäjien lahjoituksia. Selaimesi pyrkii tekemään lahjoituksen joko heidän vahvistukseensa tai 90 vuorokauden kulumiseen saakka.</translation>
 <translation id="4488355059795908907">Braven vahvistettu kehittäjä ei ole vielä asettanut tiliään vastaanottamaan Braven käyttäjien lahjoituksia. Kaikki lähettämäsi tipit säilytetään lompakossasi tämän prosessin viimeistelyyn saakka.</translation>
 <translation id="2495032782748793764">Braven oletusasetukset</translation>
 <translation id="9132378787893584761">Jaa Brave ystävillesi!</translation>
@@ -536,11 +535,10 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="2918322085844739869">4</translation>
 <translation id="7267186368513450821">5</translation>
 <translation id="6972003925509023890">1 BAT</translation>
+<translation id="2222442600106681391">2 BAT</translation>
+<translation id="5615587419952694404">3 BAT</translation>
 <translation id="8867821173176188875">5 BAT</translation>
 <translation id="8762169086048682708">10 BAT</translation>
-<translation id="7921571842056754133">15 BAT</translation>
-<translation id="3605291544485823713">25 BAT</translation>
-<translation id="817946134291678509">50 BAT</translation>
 <translation id="4548973860489847866">0.00 BAT</translation>
 <translation id="4193129043743994339">0.00 USD</translation>
 <translation id="8792121506918889955">WebRTC IP:n käsittelykäytäntö</translation>
@@ -571,7 +569,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="375882617301124395">Varmuuskopioi kryptolompakkosi</translation>
 <translation id="8289942708804097960">Osta kryptovaluuttaa luotto- tai pankkikortilla.</translation>
 <translation id="841880029259839903">Lähetä kryptoa tai siirrä sitä tililtä toiselle.</translation>
-<translation id="8982246458261383692">Vaihda krypto-omaisuutta Braven DEX-aggregaattorin avulla.</translation>
+<translation id="8226778393040773102">Vaihda krypto-omaisuutta Braven DEX-aggregaattorin avulla.</translation>
 <translation id="1783600039044302171">Suojaa kryptosi salasanalla</translation>
 <translation id="3726490322412361740">Anna salasana</translation>
 <translation id="3038243139480464605">Vahvista salasana</translation>
@@ -597,12 +595,16 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="9120654436199628567">Kryptotilin palauttaminen</translation>
 <translation id="4811736040444856406">Näytä palautuslause</translation>
 <translation id="283071225285270357">Anna palautuslauseesi</translation>
+<translation id="3943857333388298514">Liitä</translation>
+<translation id="3331452756822160641">Uusi salasana</translation>
+<translation id="4854035885012188958">Palautan vanhasta Brave-kryptolompakosta</translation>
 <translation id="2339124864228588937">Vahvista palautuslauseesi</translation>
 <translation id="3747079125031086337">Valitse palautuslauseen sanat oikeassa järjestyksessä.</translation>
 <translation id="6518133107902771759">Vahvista</translation>
 <translation id="3157931365184549694">Palauta</translation>
 <translation id="9111102763498581341">Poista lukitus</translation>
 <translation id="6657585470893396449">Salasana</translation>
+<translation id="5619264711680220002">Biometrinen avaus</translation>
 <translation id="5168349973342709369">Avaa lompakko antamalla salasana</translation>
 <translation id="1144810021918451336">Ei suojele sinua vaarallisilta verkkosivustoilta, latauksilta ja laajennuksilta.</translation>
 <translation id="5760476995887363522">Lauseet eivät täsmää. Yritä uudelleen.</translation>
@@ -615,6 +617,8 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="6159566011642056819">arvoon (arvio)</translation>
 <translation id="6998989275928107238">Kohde</translation>
 <translation id="2589431635772931954">Osoite tai URL</translation>
+<translation id="5517732667776806421">Tarkistussummatiedot puuttuvat</translation>
+<translation id="4006711930669471508">Virheelliset tarkistussummatiedot</translation>
 <translation id="632241521608275119">Myöhästymisen toleranssi</translation>
 <translation id="1987317783729300807">Tilit</translation>
 <translation id="3535654229833214438">Liiketapahtumat</translation>
@@ -647,7 +651,6 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="7420359180991315365">Jatka Wyreen</translation>
 <translation id="8488282162676695335">Brave-lompakko</translation>
 <translation id="3784455785234192852">Lukitse</translation>
-<translation id="5040262127954254034">Tietosuoja</translation>
 <translation id="8239147115686034860">Lukitse Brave Wallet -lompakko automaattisesti</translation>
 <translation id="414639769490080648">Odottavien minuuttien määrä, kunnes Brave Wallet -lompakko lukitaan automaattisesti</translation>
 <translation id="4993345308607970390">Nollaa Brave Wallet</translation>
@@ -767,7 +770,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6666273175654835609">Lähetetty</translation>
 <translation id="2331676293859649642">Vahvistettu</translation>
 <translation id="1165039591588034296">Virhe</translation>
-<translation id="4354768722613827480">Maksu: <ph name="VALUE"/> ETH (<ph name="FIAT_VALUE"/> $)</translation>
+<translation id="8364362220156372884">Maksu: <ph name="VALUE"/> <ph name="CHAIN_ASSET"/> ($<ph name="FIAT_VALUE"/>)</translation>
 <translation id="2561824823738097741">Käytätkö nopeinta verkkoselainta?</translation>
 <translation id="2065971949051836200">Kolme kertaa nopeampi Internet on jo puhelimessasi. Käytä Brave-selainta kaikkeen verkkoselailuun.</translation>
 <translation id="2888278614497184977">Brave = kolme kertaa nopeampaa verkkoselailua</translation>
@@ -792,7 +795,6 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1254969878422524947">Gas-kohtainen tippiraja (Gwei)</translation>
 <translation id="7373308452149471621">Gas-kohtainen hintaraja (Gwei)</translation>
 <translation id="5891811606602061966">Tilin tuonti epäonnistui. Yritä uudelleen.</translation>
-<translation id="7033470144757208254">Brave käyttää 0x:ää DEX-aggregaattorina.</translation>
 <translation id="5061574358754621254">Hintatiedot tarjoaa CoinGecko</translation>
 <translation id="4626407663177532837">Hintatarjous sisältää 0,875 %:n Brave-maksun.</translation>
 <translation id="8574289650879708853">Lisää mukautettuja varoja</translation>
@@ -807,8 +809,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="749944179568745958">Virheellinen ETH-osoite</translation>
 <translation id="3506416339268164412">Vastaanotto-osoite on tokenin sopimusosoite</translation>
 <translation id="1543259266592091784">Lisää varoja</translation>
-<translation id="3494964159182650590">Palkintojen yhteenveto</translation>
-<translation id="7470079236088529568">Lunastetut lahjoitukset yhteensä</translation>
+<translation id="3494964159182650590">Palkkioiden yhteenveto</translation>
 <translation id="590733288489975971">Palkinnot Ads-mainoksista</translation>
 <translation id="207268487070188114">Kertaluontoinen tippi</translation>
 <translation id="64394831139134288">Oma lompakkoni</translation>
@@ -818,7 +819,30 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1549705559752367917">Lähetä tippi</translation>
 <translation id="6727102863431372879">Aseta</translation>
 <translation id="381822214767083050">Kuukausittainen avustus</translation>
-<translation id="8845154268466251503">BAT</translation>
 <translation id="7732576862074737148">≈ <ph name="VALUE"/> USD</translation>
 <translation id="3079421456571897484"><ph name="VALUE"/> BAT</translation>
+<translation id="5802665280774361839">Näytä automaattinen täydennys osoiterivillä</translation>
+<translation id="1241283133946520352">Verkot</translation>
+<translation id="1062463687579789365">Lompakon verkkojen mukauttaminen</translation>
+<translation id="2512821599885971349">Lisää verkko</translation>
+<translation id="1330032157352961756">Uuden ketjun tunnus</translation>
+<translation id="8104880458203052748">Virheellinen muoto, ketjun tunnus on positiivinen luku</translation>
+<translation id="3423620355610881890">Positiivinen desimaaliluku</translation>
+<translation id="726121047592132939">Uuden ketjun nimi</translation>
+<translation id="1034112277864078119">Anna ketjun nimi</translation>
+<translation id="6003394258999088868">Kenttä ei voi olla tyhjä</translation>
+<translation id="4672314527143443556">Ketjun valuutan nimi</translation>
+<translation id="4652114030688989556">Anna valuutan nimi</translation>
+<translation id="1079960017149736097">Ketjun valuutan symboli</translation>
+<translation id="1288105009659846362">Anna valuutan symboli</translation>
+<translation id="665660671251623018">Ketjun valuutan desimaalit</translation>
+<translation id="182619028057179895">Virheellinen muoto, valuutan desimaalit on positiivinen luku</translation>
+<translation id="2978054488731497946">Anna valuutan desimaalit</translation>
+<translation id="3047726704186619366">Kuvakkeen URL-osoitteet</translation>
+<translation id="2487558607408469181">Lohkoketjuohjelman URL-osoitteet</translation>
+<translation id="7059127752542505809">Anna URL-osoite</translation>
+<translation id="2156993118928861787">Virheellinen osoite</translation>
+<translation id="6889920539620318793">Aseta aktiiviseksi</translation>
+<translation id="2653659639078652383">Lähetä</translation>
+<translation id="8853725596990766789">Muuta summa</translation>
 </translationbundle>

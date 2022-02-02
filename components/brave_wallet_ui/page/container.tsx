@@ -77,6 +77,7 @@ function Container (props: Props) {
   const { pathname: walletLocation } = useLocation()
   // Wallet Props
   const {
+    isFilecoinEnabled,
     isWalletCreated,
     isWalletLocked,
     isWalletBackedUp,
@@ -114,7 +115,8 @@ function Container (props: Props) {
     importAccountError,
     importWalletError,
     showAddModal,
-    isCryptoWalletsInstalled,
+    isCryptoWalletsInitialized,
+    isMetaMaskInitialized,
     swapQuote,
     swapError
   } = props.page
@@ -385,8 +387,8 @@ function Container (props: Props) {
     props.walletPageActions.setShowAddModal(false)
   }
 
-  const onCreateAccount = (name: string) => {
-    const created = props.walletPageActions.addAccount({ accountName: name })
+  const onCreateAccount = (name: string, coin: BraveWallet.CoinType) => {
+    const created = props.walletPageActions.addAccount({ accountName: name, coin: coin })
     if (created) {
       onHideAddModal()
     }
@@ -567,8 +569,8 @@ function Container (props: Props) {
               onPasswordProvided={passwordProvided}
               onSubmit={completeWalletSetup}
               onShowRestore={onToggleShowRestore}
-              braveLegacyWalletDetected={isCryptoWalletsInstalled}
-              metaMaskWalletDetected={isMetaMaskInstalled}
+              isCryptoWalletsInitialized={isCryptoWalletsInitialized}
+              isMetaMaskInitialized={isMetaMaskInitialized}
               importError={importWalletError}
               onSetImportError={onSetImportWalletError}
               onImportCryptoWallets={onImportCryptoWallets}
@@ -624,6 +626,7 @@ function Container (props: Props) {
                 onCreateAccount={onCreateAccount}
                 onImportAccount={onImportAccount}
                 onImportFilecoinAccount={onImportFilecoinAccount}
+                isFilecoinEnabled={isFilecoinEnabled}
                 isLoading={isFetchingPriceHistory}
                 showAddModal={showAddModal}
                 onHideAddModal={onHideAddModal}

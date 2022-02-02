@@ -163,13 +163,12 @@ export default function useSend (
     }
 
     // Resets State
-    if (toAddressOrUrl === '') {
+    if (toAddressOrUrl === '' || selectedAccount.coin === BraveWallet.CoinType.FIL) {
       setAddressError('')
       setAddressWarning('')
       setToAddress('')
       return
     }
-
     // Fallback error state
     setAddressWarning('')
     setAddressError(getLocale('braveWalletNotValidAddress'))
