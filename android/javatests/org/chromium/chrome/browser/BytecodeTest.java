@@ -266,6 +266,9 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils",
                 "prepareLaunchPromoIfNeeded", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils",
+                "prepareLaunchPromoIfNeeded", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "onOrientationChange", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
