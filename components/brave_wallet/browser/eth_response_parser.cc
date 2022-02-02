@@ -51,6 +51,76 @@ bool ParseEthGetBlockNumber(const std::string& json, uint256_t* block_num) {
   return true;
 }
 
+bool ParseEthGetFeeHistory(const std::string& json,
+                           std::vector<std::string>* base_fee_per_gas,
+                           std::vector<double>* gas_used_ratio,
+                           std::string* oldest_block,
+                           std::vector<std::vector<std::string>>* reward) {
+  CHECK(base_fee_per_gas);
+  CHECK(gas_used_ratio);
+  CHECK(oldest_block);
+  CHECK(reward);
+
+  base_fee_per_gas->clear();
+  gas_used_ratio->clear();
+  oldest_block->clear();
+  reward->clear();
+
+  base::Value result;
+  if (!ParseResult(json, &result))
+    return false;
+  const base::DictionaryValue* result_dict = nullptr;
+  if (!result.GetAsDictionary(&result_dict))
+    return false;
+  DCHECK(result_dict);
+
+  const base::ListValue* base_fee_list = nullptr;
+  if (!result_dict->GetList("baseFeePerGas", &base_fee_list))
+    return false;
+  for (const base::Value& entry : base_fee_list->GetList()) {
+    const std::string* v = entry.GetIfString();
+    // If we have unexpected output, so just return false
+    if (!v)
+      return false;
+    base_fee_per_gas->push_back(*v);
+  }
+
+  if (!result_dict->GetList("gasUsedRatio", &base_fee_list))
+    return false;
+
+  for (const base::Value& entry : base_fee_list->GetList()) {
+    absl::optional<double> v = entry.GetIfDouble();
+    // If we have unexpected output, so just return false
+    if (!v)
+      return false;
+    gas_used_ratio->push_back(*v);
+  }
+
+  if (!result_dict->GetString("oldestBlock", oldest_block))
+    return false;
+
+  const base::ListValue* reward_list_list = nullptr;
+  if (result_dict->GetList("reward", &reward_list_list)) {
+    for (const base::Value& reward_list : reward_list_list->GetList()) {
+      // If we have unexpected output, so just return false
+      if (!reward_list.is_list())
+        return false;
+
+      reward->push_back(std::vector<std::string>());
+      std::vector<std::string>& current_reward_vector = reward->back();
+      for (const auto& entry : reward_list.GetList()) {
+        const std::string* v = entry.GetIfString();
+        // If we have unexpected output, so just return false
+        if (!v)
+          return false;
+        current_reward_vector.push_back(*v);
+      }
+    }
+  }
+
+  return true;
+}
+
 bool ParseEthGetBalance(const std::string& json, std::string* hex_balance) {
   return brave_wallet::ParseSingleStringResult(json, hex_balance);
 }
