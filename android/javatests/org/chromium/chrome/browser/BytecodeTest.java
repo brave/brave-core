@@ -263,6 +263,12 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/ui/appmenu/AppMenu", "getPopupPosition", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ui/appmenu/AppMenu",
                 "runMenuItemEnterAnimations", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils",
+                "prepareLaunchPromoIfNeeded", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils",
+                "prepareLaunchPromoIfNeeded", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "onOrientationChange", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",

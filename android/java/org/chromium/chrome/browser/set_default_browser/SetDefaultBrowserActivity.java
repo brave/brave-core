@@ -5,7 +5,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-package org.chromium.chrome.browser;
+package org.chromium.chrome.browser.set_default_browser;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
@@ -22,6 +22,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 
 public class SetDefaultBrowserActivity extends AsyncInitializationActivity {
     @Override
@@ -33,7 +34,8 @@ public class SetDefaultBrowserActivity extends AsyncInitializationActivity {
             @Override
             public void onClick(View view) {
                 if (BraveActivity.getBraveActivity() != null) {
-                    BraveActivity.getBraveActivity().handleBraveSetDefaultBrowserDialog();
+                    BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
+                            BraveActivity.getBraveActivity(), false);
                 }
                 finish();
             }

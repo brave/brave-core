@@ -34,25 +34,22 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/set_default_browser_title"
-            android:lineSpacingMultiplier="1.2"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="29dp"
+            android:layout_marginEnd="29dp"
             android:layout_marginBottom="16dp"
             android:textSize="24sp"
-            android:textColor="@color/onboarding_text_color"
-            android:textStyle="bold" />
+            android:textColor="@color/set_default_text_color"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/set_default_browser_text"
-            android:lineSpacingMultiplier="1.2"
             android:layout_marginStart="52dp"
             android:layout_marginEnd="52dp"
             android:layout_marginBottom="16dp"
             android:textSize="16sp"
-            android:textColor="@color/onboarding_text_color"/>
+            android:textColor="@color/set_default_text_color"/>
 
         <Button
             android:id="@+id/btn_set_default_browser"
