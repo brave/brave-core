@@ -5,10 +5,14 @@
 
 #include <utility>
 
+#include "base/base64.h"
 #include "base/logging.h"
+#include "base/test/gtest_util.h"
 #include "base/test/task_environment.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync/driver/sync_service_impl_delegate.h"
+#include "build/build_config.h"
+#include "components/os_crypt/os_crypt.h"
 #include "components/os_crypt/os_crypt_mocker.h"
 #include "components/sync/driver/data_type_manager_impl.h"
 #include "components/sync/driver/fake_data_type_controller.h"
@@ -78,6 +82,10 @@ class BraveSyncServiceImplTest : public testing::Test {
 
   SyncPrefs* sync_prefs() { return &sync_prefs_; }
 
+  PrefService* pref_service() {
+    return sync_service_impl_bundle_.pref_service();
+  }
+
   BraveSyncServiceImpl* brave_sync_service_impl() {
     return sync_service_impl_.get();
   }
@@ -109,7 +117,9 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphrase) {
   bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
   EXPECT_TRUE(set_code_result);
 
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(), kValidSyncCode);
+  bool failed_to_decrypt = false;
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), kValidSyncCode);
+  EXPECT_FALSE(failed_to_decrypt);
 
   OSCryptMocker::TearDown();
 }
@@ -126,7 +136,9 @@ TEST_F(BraveSyncServiceImplTest, InvalidPassphrase) {
       brave_sync_service_impl()->SetSyncCode("word one and then two");
   EXPECT_FALSE(set_code_result);
 
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(), "");
+  bool failed_to_decrypt = false;
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
+  EXPECT_FALSE(failed_to_decrypt);
 
   OSCryptMocker::TearDown();
 }
@@ -145,7 +157,55 @@ TEST_F(BraveSyncServiceImplTest, ValidPassphraseLeadingTrailingWhitespace) {
       brave_sync_service_impl()->SetSyncCode(sync_code_extra_whitespace);
   EXPECT_TRUE(set_code_result);
 
-  EXPECT_EQ(brave_sync_prefs()->GetSeed(), kValidSyncCode);
+  bool failed_to_decrypt = false;
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), kValidSyncCode);
+  EXPECT_FALSE(failed_to_decrypt);
+
+  OSCryptMocker::TearDown();
+}
+
+// Google test doc strongly recommends to use ``*DeathTest` naming
+// for test suite
+using BraveSyncServiceImplDeathTest = BraveSyncServiceImplTest;
+
+TEST_F(BraveSyncServiceImplDeathTest, EmulateGetOrCreateSyncCodeCHECK) {
+  OSCryptMocker::SetUp();
+
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  std::string wrong_seed = "123";
+  std::string encrypted_wrong_seed;
+  EXPECT_TRUE(OSCrypt::EncryptString(wrong_seed, &encrypted_wrong_seed));
+
+  std::string encoded_wrong_seed;
+  base::Base64Encode(encrypted_wrong_seed, &encoded_wrong_seed);
+  pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
+                            encoded_wrong_seed);
+
+  EXPECT_CHECK_DEATH(brave_sync_service_impl()->GetOrCreateSyncCode());
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, StopAndClearForBraveSeed) {
+  OSCryptMocker::SetUp();
+
+  CreateSyncService(SyncServiceImpl::MANUAL_START);
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  bool set_code_result = brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  EXPECT_TRUE(set_code_result);
+
+  brave_sync_service_impl()->StopAndClear();
+
+  bool failed_to_decrypt = false;
+  EXPECT_EQ(brave_sync_prefs()->GetSeed(&failed_to_decrypt), "");
+  EXPECT_FALSE(failed_to_decrypt);
 
   OSCryptMocker::TearDown();
 }

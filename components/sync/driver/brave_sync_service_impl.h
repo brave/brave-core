@@ -30,6 +30,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   // SyncServiceImpl implementation
   bool IsSetupInProgress() const override;
+  void StopAndClear() override;
 
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
