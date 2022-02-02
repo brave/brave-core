@@ -111,6 +111,8 @@ def combine_override_xtb_into_original(source_string_path):
                 xml_declaration=False, encoding='utf-8').strip())
         with open(os.path.join(source_base_path, xtb_path), mode='wb') as f:
             f.write(xtb_content)
+        # Delete the override xtb for this lang
+        os.remove(os.path.join(override_base_path, override_xtb_path))
 
 
 # Helper functions
