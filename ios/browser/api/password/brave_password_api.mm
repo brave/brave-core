@@ -142,6 +142,18 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
   return self;
 }
 
+- (void)updatePasswordForm:(NSString*)usernameValue 
+              passwordValue:(NSString*)passwordValue {
+
+  if ([usernameValue length] != 0) {
+    [self setUsernameValue:usernameValue];
+  }
+
+  if([passwordValue length] != 0) {
+    [self setPasswordValue:passwordValue];
+  }
+}
+
 - (void)setUrl:(NSURL*)url {
   gurl_ = net::GURLWithNSURL(url);
 }

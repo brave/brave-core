@@ -70,6 +70,10 @@ OBJC_EXPORT
               passwordValue:(nullable NSString*)passwordValue
             isBlockedByUser:(bool)isBlockedByUser
                      scheme:(PasswordFormScheme)scheme;
+
+  - (void)updatePasswordForm:(nullable NSString*)usernameValue
+               passwordValue:(nullable NSString*)passwordValue;
+
 @end
 
 NS_SWIFT_NAME(BravePasswordAPI)
