@@ -69,7 +69,7 @@ hooks = [
   {
     'name': 'generate_licenses',
     'pattern': '.',
-    'action': ['python', 'script/generate_licenses.py'],
+    'action': ['vpython3', 'script/generate_licenses.py'],
   },
 ]
 
