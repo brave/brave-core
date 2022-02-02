@@ -158,7 +158,6 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
     const std::string& type,
     const base::Value& value) const {
   // ES6 section 20.1.2.6 Number.MAX_SAFE_INTEGER
-  constexpr uint64_t kMaxSafeIntegerUint64 = 9007199254740991;  // 2^53-1
   constexpr double kMaxSafeInteger = static_cast<double>(kMaxSafeIntegerUint64);
   std::vector<uint8_t> result;
 
