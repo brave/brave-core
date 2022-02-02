@@ -85,6 +85,14 @@ const EditGas = (props: Props) => {
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = React.useState<string>(toGWei(transactionFees.maxPriorityFeePerGas))
   const [maxFeePerGas, setMaxFeePerGas] = React.useState<string>(toGWei(transactionFees.maxFeePerGas))
 
+  React.useEffect(
+    () => {
+      const maxWeiValue = addNumericValues(baseFeePerGas, gWeiToWei(maxPriorityFeePerGas))
+      setMaxFeePerGas(toGWei(maxWeiValue))
+    },
+    [baseFeePerGas]
+  )
+
   const handleGasPriceInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGasPrice(event.target.value)
   }
