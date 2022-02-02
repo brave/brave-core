@@ -8,6 +8,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/no_destructor.h"
+
 namespace {
 
 // The brave publisher key in alternative to google one (kPublisherKeyHash).
@@ -19,9 +21,9 @@ constexpr uint8_t kBravePublisherKeyHash[] = {
     0x82, 0xa5, 0x95, 0xa5, 0xa9, 0xac, 0x8c, 0xcf, 0x90, 0x14};
 
 std::vector<uint8_t>& GetBravePublisherKey() {
-  static std::vector<uint8_t> brave_publisher_key(
+  static base::NoDestructor<std::vector<uint8_t>> brave_publisher_key(
       std::begin(kBravePublisherKeyHash), std::end(kBravePublisherKeyHash));
-  return brave_publisher_key;
+  return *brave_publisher_key;
 }
 
 // Used in the patch in crx_verifier.cc.

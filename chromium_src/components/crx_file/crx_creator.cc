@@ -8,7 +8,7 @@
 namespace crx_file {
 class CrxFileHeader;
 
-std::string BraveGetCrxId(const std::string& key, CrxFileHeader* header);
+std::string GetCrxId_BraveImpl(const std::string& key, CrxFileHeader* header);
 }  // namespace crx_file
 
 #include "src/components/crx_file/crx_creator.cc"
@@ -17,7 +17,7 @@ namespace crx_file {
 
 // Override for GetCrxId() in SignArchiveAndCreateHeader() to generate the
 // correct signed data for the second signature.
-std::string BraveGetCrxId(const std::string& key, CrxFileHeader* header) {
+std::string GetCrxId_BraveImpl(const std::string& key, CrxFileHeader* header) {
   if (header->sha256_with_rsa_size() > 0) {
     const AsymmetricKeyProof& first_proof = header->sha256_with_rsa()[0];
     return GetCrxId(first_proof.public_key());
