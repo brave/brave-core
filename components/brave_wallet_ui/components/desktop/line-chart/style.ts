@@ -1,18 +1,25 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
 
 interface StyleProps {
   labelPosition: 'start' | 'middle' | 'end'
   labelTranslate: number
   isLoading: boolean
+  customStyle?: {[key: string]: string}
 }
 
-export const StyledWrapper = styled.div`
+export const StyledWrapper = styled.div<Partial<StyleProps>>`
   width: 100%;
   height: 200px;
   margin-bottom: 30px;
   box-sizing: border-box;
   position: relative;
+  ${p => p.customStyle
+    ? css`
+      ${p.customStyle}
+    `
+    : ''
+  };
 `
 
 export const LabelWrapper = styled.div<Partial<StyleProps>>`

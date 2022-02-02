@@ -44,6 +44,8 @@ import { mockNetworks } from './mock-data/mock-networks'
 import { isStrongPassword } from '../utils/password-utils'
 import Amount from '../utils/amount'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
+import { mockCoinMarketData } from './mock-data/mock-coin-market-data'
+
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -805,6 +807,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               showVisibleAssetsModal={showVisibleAssetsModal}
                               onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
                               foundTokenInfoByContractAddress={foundTokenInfo}
+                              coinMarketData={mockCoinMarketData}
                             />
                           )}
                         </>

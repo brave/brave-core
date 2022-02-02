@@ -27,6 +27,8 @@ export interface Props {
   isDown: boolean
   isLoading: boolean
   isDisabled: boolean
+  showPulsatingDot?: boolean
+  customStyle?: {[key: string]: string}
 }
 
 const EmptyChartData = [
@@ -45,7 +47,7 @@ const EmptyChartData = [
 ]
 
 function LineChart (props: Props) {
-  const { priceData, onUpdateBalance, isAsset, isDown, isLoading, isDisabled } = props
+  const { priceData, onUpdateBalance, isAsset, isDown, isLoading, isDisabled, customStyle, showPulsatingDot } = props
   const [position, setPosition] = React.useState<number>(0)
 
   const chartData = React.useMemo(() => {
@@ -80,7 +82,7 @@ function LineChart (props: Props) {
   }
 
   return (
-    <StyledWrapper>
+    <StyledWrapper customStyle={customStyle}>
       <LoadingOverlay isLoading={isLoading}>
         <LoadIcon />
       </LoadingOverlay>
@@ -114,11 +116,17 @@ function LineChart (props: Props) {
             stroke={isAsset ? isDown ? '#EE6374' : '#2AC194' : priceData.length <= 0 ? '#BF14A2' : 'url(#lineGradient)'}
             fill='none'
           />
-          <ReferenceDot x={chartData[lastPoint].date.toString()} y={chartData[lastPoint].close} shape={CustomReferenceDot} />
+          {showPulsatingDot &&
+            <ReferenceDot x={chartData[lastPoint].date.toString()} y={chartData[lastPoint].close} shape={CustomReferenceDot} />
+          }
         </AreaChart>
       </ResponsiveContainer>
     </StyledWrapper>
   )
+}
+
+LineChart.defaultProps = {
+  showPulsatingDot: true
 }
 
 export default LineChart

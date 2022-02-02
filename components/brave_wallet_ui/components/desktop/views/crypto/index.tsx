@@ -20,6 +20,8 @@ import { PortfolioView, AccountsView } from '../'
 import {
   HardwareWalletConnectOpts
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
+import MarketView from '../market'
+import { MarketDataTableHeaders } from '../../../../options/market-data-headers'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -362,7 +364,12 @@ const CryptoView = (props: Props) => {
           onCancelTransaction={onCancelTransaction}
         />
       </Route>
-
+      <Route path={WalletRoutes.Market} exact={true}>
+        <MarketView
+          coinMarkData={[]}
+          marketDataTableHeaders={MarketDataTableHeaders}
+        />
+      </Route>
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}

@@ -16,7 +16,8 @@ import {
   WalletAccountType,
   UpdateAccountNamePayloadType,
   DefaultCurrencies,
-  AddAccountNavTypes
+  AddAccountNavTypes,
+  CoinMarketMetadata
 } from '../../constants/types'
 import { TopNavOptions } from '../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../components/desktop'
@@ -28,6 +29,7 @@ import { PortfolioView, AccountsView } from '../../components/desktop/views'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
+import { MarketDataTableHeaders } from '../../options/market-data-headers'
 
 export interface Props {
   defaultCurrencies: DefaultCurrencies
@@ -79,6 +81,7 @@ export interface Props {
   showVisibleAssetsModal: boolean
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
+  coinMarketData: CoinMarketMetadata[]
 }
 
 const CryptoStoryView = (props: Props) => {
@@ -131,7 +134,8 @@ const CryptoStoryView = (props: Props) => {
     onFindTokenInfoByContractAddress,
     onUpdateVisibleAssets,
     onAddCustomAsset,
-    foundTokenInfoByContractAddress
+    foundTokenInfoByContractAddress,
+    coinMarketData
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
@@ -347,6 +351,14 @@ const CryptoStoryView = (props: Props) => {
           onCancelTransaction={onClickCancelTransaction}
         />
       }
+
+      {selectedTab === 'market' &&
+        <MarketView
+          coinMarkData={coinMarketData}
+          marketDataTableHeaders={MarketDataTableHeaders}
+        />
+      }
+
       {showAddModal &&
         <AddAccountModal
           accounts={accounts}

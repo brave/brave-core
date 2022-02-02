@@ -3,19 +3,18 @@ import * as React from 'react'
 import { StyledWrapper, PriceChange, ArrowDown, ArrowUp } from './style'
 
 export interface Props {
-  change: number
+  isDown: boolean
+  priceChangePercentage: string
 }
 
 const AssetPriceChange = (props: Props) => {
-  const { change } = props
-
-  const absChange = Math.abs(change)
+  const { isDown, priceChangePercentage } = props
 
   return (
-    <StyledWrapper change={change}>
-      {change > 0 ? <ArrowUp /> : <ArrowDown />}
-      <PriceChange change={change}>
-        {absChange}%
+    <StyledWrapper isDown={isDown}>
+      {isDown ? <ArrowDown /> : <ArrowUp /> }
+      <PriceChange>
+        {priceChangePercentage}
       </PriceChange>
     </StyledWrapper>
   )

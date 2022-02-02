@@ -4,7 +4,7 @@ import ArrowDownIcon from '../../assets/svg-icons/arrow-down-white-icon.svg'
 import ArrowUpIcon from '../../assets/svg-icons/arrow-up-white-icon.svg'
 
 export interface StyleProps {
-  change: number
+  isDown: boolean
 }
 
 export const StyledWrapper = styled.span<StyleProps>`
@@ -12,11 +12,11 @@ export const StyledWrapper = styled.span<StyleProps>`
   align-items: center;
   padding: 4px 9px;
   border-radius: 8px;
-  background-color: ${p => p.change > 0 ? '#2AC194' : '#F75A3A'};
+  background-color: ${p => p.isDown ? '#F75A3A' : '#2AC194'};
   width: 62px;
   height: 24px;
 `
-export const PriceChange = styled.span<StyleProps>`
+export const PriceChange = styled.span<Partial<StyleProps>>`
   display: flex;
   align-items: center;
   font-family: Poppins;
