@@ -15,6 +15,7 @@
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
@@ -388,6 +389,14 @@ void BraveVpnServiceDesktop::GetConnectionState(
 
 void BraveVpnServiceDesktop::GetPurchasedState(
     GetPurchasedStateCallback callback) {
+  SetPurchasedState(PurchasedState::LOADING);
+  // if a credential is ready, we can present it
+  EnsureMojoConnected();
+  skus_service_->CredentialSummary(
+      skus::GetDomain("vpn"),
+      base::BindOnce(&BraveVpnServiceDesktop::OnCredentialSummary,
+                     base::Unretained(this)));
+
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " : " << static_cast<int>(purchased_state_);
   std::move(callback).Run(purchased_state_);
@@ -426,6 +435,32 @@ void BraveVpnServiceDesktop::LoadCachedRegionData() {
       VLOG(2) << __func__ << " : "
               << "Loaded cached device region";
     }
+  }
+}
+
+void BraveVpnServiceDesktop::OnCredentialSummary(
+    const std::string& summary_string) {
+  std::string summary_string_trimmed;
+  base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
+                            &summary_string_trimmed);
+  if (summary_string_trimmed.length() == 0) {
+    // no credential found; person needs to login
+    LOG(ERROR) << "OnCredentialSummary IS EMPTY!";
+    SetPurchasedState(PurchasedState::NOT_PURCHASED);
+    return;
+  }
+
+  LOG(ERROR) << "OnCredentialSummary: " << summary_string;
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+
+  // TODO(bsclifton): pull out to a separate method
+  if (records_v) {
+    const base::Value* active = records_v->FindKey("active");
+    LOG(ERROR) << "active = "
+               << ((bool)active && active->is_bool() && active->GetBool());
   }
 }
 
@@ -865,6 +900,24 @@ void BraveVpnServiceDesktop::ParseAndCacheHostnames(
 }
 
 void BraveVpnServiceDesktop::SetPurchasedState(PurchasedState state) {
+  switch (state) {
+    case PurchasedState::NOT_PURCHASED:
+      LOG(ERROR) << "SetPurchasedState(NOT_PURCHASED);";
+      break;
+    case PurchasedState::PURCHASED:
+      LOG(ERROR) << "SetPurchasedState(PURCHASED);";
+      break;
+    case PurchasedState::EXPIRED:
+      LOG(ERROR) << "SetPurchasedState(EXPIRED);";
+      break;
+    case PurchasedState::LOADING:
+      LOG(ERROR) << "SetPurchasedState(LOADING);";
+      break;
+    case PurchasedState::FAILED:
+      LOG(ERROR) << "SetPurchasedState(FAILED);";
+      break;
+  }
+
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (purchased_state_ == state)
     return;

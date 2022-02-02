@@ -23,7 +23,14 @@ const observer = {
     store.dispatch(Actions.connectionStateChanged({ connectionStatus }))
   },
   onPurchasedStateChanged: (state: PurchasedState) => {
-    if (state === PurchasedState.PURCHASED) store.dispatch(Actions.purchaseConfirmed())
+    switch (state) {
+      case PurchasedState.PURCHASED:
+        store.dispatch(Actions.purchaseConfirmed())
+        break;
+      case PurchasedState.NOT_PURCHASED:
+        store.dispatch(Actions.showSellView())
+        break;
+    }
   }
 }
 const serviceObserver = new ServiceObserverReceiver(observer)

@@ -68,6 +68,8 @@ enum PurchasedState {
   NOT_PURCHASED,
   PURCHASED,
   EXPIRED,
+  LOADING,
+  FAILED,
 };
 
 struct Region {

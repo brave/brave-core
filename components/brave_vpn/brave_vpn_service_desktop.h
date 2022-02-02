@@ -134,6 +134,7 @@ class BraveVpnServiceDesktop
                                  bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
+  void OnCredentialSummary(const std::string& summary_string);
   void OnPrepareCredentialsPresentation(
       const std::string& credential_as_cookie);
 
