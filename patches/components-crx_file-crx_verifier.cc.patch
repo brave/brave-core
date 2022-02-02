@@ -1,16 +1,8 @@
 diff --git a/components/crx_file/crx_verifier.cc b/components/crx_file/crx_verifier.cc
-index e6e81b0705599ff4aa262e5ebc70ec90bf22af5d..f6e607c9b000651f4cf37c6c9cbe246b4d9b6593 100644
+index e6e81b0705599ff4aa262e5ebc70ec90bf22af5d..2fdfb68cf4087818b961dcf3dffcf14562c6b2ae 100644
 --- a/components/crx_file/crx_verifier.cc
 +++ b/components/crx_file/crx_verifier.cc
-@@ -13,6 +13,7 @@
- 
- #include "base/base64.h"
- #include "base/bind.h"
-+#include "base/logging.h"
- #include "base/callback.h"
- #include "base/cxx17_backports.h"
- #include "base/files/file.h"
-@@ -183,6 +184,7 @@ VerifierResult VerifyCrx3(
+@@ -183,6 +183,7 @@ VerifierResult VerifyCrx3(
        found_publisher_key =
            found_publisher_key || key_hash == publisher_key ||
            (accept_publisher_test_key && key_hash == *publisher_test_key);
@@ -18,12 +10,3 @@ index e6e81b0705599ff4aa262e5ebc70ec90bf22af5d..f6e607c9b000651f4cf37c6c9cbe246b
        auto v = std::make_unique<crypto::SignatureVerifier>();
        static_assert(sizeof(unsigned char) == sizeof(uint8_t),
                      "Unsupported char size.");
-@@ -200,7 +202,7 @@ VerifierResult VerifyCrx3(
-     return VerifierResult::ERROR_REQUIRED_PROOF_MISSING;
- 
-   if (require_publisher_key && !found_publisher_key)
--    return VerifierResult::ERROR_REQUIRED_PROOF_MISSING;
-+    LOG(ERROR) << "VerifierResult::ERROR_REQUIRED_PROOF_MISSING";
- 
-   // Update and finalize the verifiers with [archive].
-   if (!ReadHashAndVerifyArchive(file, hash, verifiers))

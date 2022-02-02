@@ -10,7 +10,9 @@
 
 namespace {
 
-// TODO(atuchin): replace this to the real key hash.
+// The brave publisher key in alternative to google one (kPublisherKeyHash).
+// The private key is located in 1Password:"Component/Extensions Brave publisher
+// signing key".
 constexpr uint8_t kBravePublisherKeyHash[] = {
     0xd5, 0x7d, 0xbb, 0xe7, 0xc5, 0x93, 0x8a, 0x4c, 0x9c, 0x7a, 0x88,
     0xf0, 0x43, 0x4,  0x53, 0xf0, 0x7c, 0x32, 0x18, 0xf6, 0xc9, 0x74,
