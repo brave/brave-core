@@ -19,7 +19,6 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
@@ -99,7 +98,6 @@ public class RetentionNotificationUtil {
         return mNotificationMap.get(notificationType);
     }
 
-    //@SuppressLint("NotificationTrampoline")
     public static Notification getNotification(
             Context context, String notificationType, String notificationText) {
         RetentionNotification retentionNotification = getNotificationObject(notificationType);
