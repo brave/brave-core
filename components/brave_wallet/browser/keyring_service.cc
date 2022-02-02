@@ -662,7 +662,7 @@ mojom::KeyringInfoPtr KeyringService::GetKeyringInfoSync(
     const std::string& keyring_id) {
   mojom::KeyringInfoPtr keyring_info = mojom::KeyringInfo::New();
   keyring_info->id = keyring_id;
-  keyring_info->is_default_keyring_created = IsKeyringCreated(keyring_id);
+  keyring_info->is_keyring_created = IsKeyringCreated(keyring_id);
   keyring_info->is_locked = IsLocked(keyring_id);
   bool backup_complete = false;
   const base::Value* value =

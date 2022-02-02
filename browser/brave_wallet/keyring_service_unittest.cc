@@ -785,7 +785,8 @@ TEST_F(KeyringServiceUnitTest, GetDefaultKeyringInfo) {
   service.GetKeyringInfo(
       mojom::kDefaultKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_FALSE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
+        EXPECT_FALSE(keyring_info->is_keyring_created);
         EXPECT_TRUE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         EXPECT_TRUE(keyring_info->account_infos.empty());
@@ -801,7 +802,8 @@ TEST_F(KeyringServiceUnitTest, GetDefaultKeyringInfo) {
   service.GetKeyringInfo(
       mojom::kDefaultKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
+        EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         EXPECT_EQ(keyring_info->account_infos.size(), 1u);
@@ -821,7 +823,8 @@ TEST_F(KeyringServiceUnitTest, GetDefaultKeyringInfo) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kDefaultKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
+        EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_TRUE(keyring_info->is_backed_up);
         EXPECT_EQ(keyring_info->account_infos.size(), 2u);
@@ -1289,7 +1292,8 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kDefaultKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
+        EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         EXPECT_EQ(keyring_info->account_infos.size(), 3u);
@@ -1754,7 +1758,8 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kDefaultKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
+        EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         EXPECT_EQ(keyring_info->account_infos.size(), 4u);
@@ -2118,7 +2123,8 @@ TEST_F(KeyringServiceUnitTest, AddAccountsWithDefaultName) {
   service.GetKeyringInfo(
       mojom::kDefaultKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
+        EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_EQ(keyring_info->account_infos.size(), 5u);
         EXPECT_FALSE(keyring_info->account_infos[0]->address.empty());
         EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
@@ -2296,7 +2302,8 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringHardwareAccountName) {
   service.GetKeyringInfo(
       mojom::kDefaultKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
+        EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         EXPECT_EQ(keyring_info->account_infos.size(), 4u);
@@ -2423,7 +2430,8 @@ TEST_F(KeyringServiceUnitTest, LazilyCreateKeyring) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kFilecoinKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_FALSE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kFilecoinKeyringId);
+        EXPECT_FALSE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         ASSERT_TRUE(keyring_info->account_infos.empty());
@@ -2438,7 +2446,8 @@ TEST_F(KeyringServiceUnitTest, LazilyCreateKeyring) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kFilecoinKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_FALSE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kFilecoinKeyringId);
+        EXPECT_FALSE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         ASSERT_TRUE(keyring_info->account_infos.empty());
@@ -2467,7 +2476,8 @@ TEST_F(KeyringServiceUnitTest, LazilyCreateKeyring) {
   service.GetKeyringInfo(
       mojom::kDefaultKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kDefaultKeyringId);
+        EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         EXPECT_EQ(keyring_info->account_infos.size(), 4u);
@@ -2600,7 +2610,8 @@ TEST_F(KeyringServiceUnitTest, ImportedFilecoinAccounts) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kFilecoinKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_TRUE(keyring_info->is_default_keyring_created);
+        EXPECT_EQ(keyring_info->id, mojom::kFilecoinKeyringId);
+        EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
         EXPECT_EQ(keyring_info->account_infos.size(), 3u);
@@ -3007,6 +3018,8 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     service.GetKeyringInfo(
         brave_wallet::mojom::kSolanaKeyringId,
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          EXPECT_EQ(keyring_info->id, mojom::kSolanaKeyringId);
+          EXPECT_TRUE(keyring_info->is_keyring_created);
           EXPECT_EQ(keyring_info->account_infos.size(), 2u);
           EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
           EXPECT_FALSE(keyring_info->account_infos[0]->is_imported);
@@ -3041,6 +3054,8 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     service.GetKeyringInfo(
         brave_wallet::mojom::kSolanaKeyringId,
         base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          EXPECT_EQ(keyring_info->id, mojom::kSolanaKeyringId);
+          EXPECT_TRUE(keyring_info->is_keyring_created);
           EXPECT_EQ(keyring_info->account_infos.size(), 1u);
           EXPECT_EQ(keyring_info->account_infos[0]->name, "Account 1");
           EXPECT_EQ(keyring_info->account_infos[0]->address,

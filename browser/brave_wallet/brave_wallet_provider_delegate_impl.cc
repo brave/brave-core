@@ -162,7 +162,8 @@ void BraveWalletProviderDelegateImpl::
     ContinueRequestEthereumPermissionsKeyringInfo(
         RequestEthereumPermissionsCallback callback,
         brave_wallet::mojom::KeyringInfoPtr keyring_info) {
-  if (!keyring_info->is_default_keyring_created) {
+  DCHECK_EQ(keyring_info->id, brave_wallet::mojom::kDefaultKeyringId);
+  if (!keyring_info->is_keyring_created) {
     ShowWalletOnboarding(web_contents_);
     std::move(callback).Run(
         std::vector<std::string>(), mojom::ProviderError::kInternalError,
