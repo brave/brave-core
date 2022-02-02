@@ -30,7 +30,8 @@ import {
   ChartControlBar,
   LineChart,
   SelectNetworkDropdown,
-  EditVisibleAssetsModal
+  EditVisibleAssetsModal,
+  WithHideBalancePlaceholder
 } from '../../'
 
 // import NFTDetails from './components/nft-details'
@@ -56,7 +57,8 @@ import {
   PercentBubble,
   PercentText,
   ArrowIcon,
-  BalanceRow
+  BalanceRow,
+  ShowBalanceButton
 } from './style'
 
 export interface Props {
@@ -141,6 +143,7 @@ const Portfolio = (props: Props) => {
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
+  const [hideBalances, setHideBalances] = React.useState<boolean>(false)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
 
   const toggleShowNetworkDropdown = () => {
@@ -248,6 +251,10 @@ const Portfolio = (props: Props) => {
     )
     : ''
 
+  const onToggleHideBalances = () => {
+    setHideBalances(!hideBalances)
+  }
+
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
@@ -267,18 +274,27 @@ const Portfolio = (props: Props) => {
             />
           }
         </BalanceRow>
-        {!selectedAsset?.isErc721 &&
-          <ChartControlBar
-            onSubmit={onChangeTimeline}
-            selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
-            timelineOptions={ChartTimelineOptions()}
+        <BalanceRow>
+          {!selectedAsset?.isErc721 &&
+            <ChartControlBar
+              onSubmit={onChangeTimeline}
+              selectedTimeline={selectedAsset ? selectedTimeline : selectedPortfolioTimeline}
+              timelineOptions={ChartTimelineOptions()}
+            />
+          }
+          <ShowBalanceButton
+            hideBalances={hideBalances}
+            onClick={onToggleHideBalances}
           />
-        }
+        </BalanceRow>
       </TopRow>
       {!selectedAsset ? (
-        <>
+        <WithHideBalancePlaceholder
+          size='big'
+          hideBalances={hideBalances}
+        >
           <BalanceText>{fullPortfolioFiatBalance !== '' ? CurrencySymbols[defaultCurrencies.fiat] : ''}{hoverBalance || fullPortfolioFiatBalance}</BalanceText>
-        </>
+        </WithHideBalancePlaceholder>
       ) : (
         <>
           {!selectedAsset.isErc721 &&
@@ -337,6 +353,7 @@ const Portfolio = (props: Props) => {
         onCancelTransaction={onCancelTransaction}
         onRetryTransaction={onRetryTransaction}
         onSpeedupTransaction={onSpeedupTransaction}
+        hideBalances={hideBalances}
       />
       {!selectedAsset &&
         <TokenLists
@@ -347,6 +364,7 @@ const Portfolio = (props: Props) => {
           onSetFilteredAssetList={onSetFilteredAssetList}
           onSelectAsset={selectAsset}
           onShowAssetModal={toggleShowVisibleAssetModal}
+          hideBalances={hideBalances}
         />
       }
       {showVisibleAssetsModal &&
