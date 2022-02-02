@@ -94,6 +94,7 @@
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/common/content_client.h"
 #include "content/public/common/content_switches.h"
+#include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -777,6 +778,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
     content::BrowserContext* browser_context) {
   if (url->host() == chrome::kChromeUISyncHost) {
     GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
     replacements.SetHostStr(chrome::kChromeUISettingsHost);
     replacements.SetPathStr(kBraveSyncPath);
     *url = url->ReplaceComponents(replacements);
