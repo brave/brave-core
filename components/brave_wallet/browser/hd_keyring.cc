@@ -160,6 +160,13 @@ void HDKeyring::SignTransaction(const std::string& address,
   tx->ProcessSignature(signature, recid, chain_id);
 }
 
+std::vector<uint8_t> HDKeyring::SignMessage(
+    const std::string& address,
+    const std::vector<uint8_t>& message) {
+  NOTREACHED() << "ETH shouldn't use this signing function";
+  return std::vector<uint8_t>();
+}
+
 std::vector<uint8_t> HDKeyring::SignMessage(const std::string& address,
                                             const std::vector<uint8_t>& message,
                                             uint256_t chain_id,

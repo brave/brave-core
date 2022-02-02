@@ -112,6 +112,13 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
          CreateAddressWithProtocol(payload, protocol);
 }
 
+std::vector<uint8_t> FilecoinKeyring::SignMessage(
+    const std::string& address,
+    const std::vector<uint8_t>& message) {
+  // NOT IMPLEMENTED
+  return std::vector<uint8_t>();
+}
+
 std::string FilecoinKeyring::CreateAddressWithProtocol(
     const std::vector<uint8_t>& payload,
     int protocol_index) const {
