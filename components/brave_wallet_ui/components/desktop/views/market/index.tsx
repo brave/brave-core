@@ -1,6 +1,4 @@
 import * as React from 'react'
-import InfiniteScroll from 'react-infinite-scroll-component'
-
 import { SearchBar } from '../../../shared'
 import { AssetsFilterDropdown } from '../..'
 import { AssetFilterOptions } from '../../../../options/market-data-filter-options'
@@ -62,6 +60,9 @@ const MarketView = (props: Props) => {
     setSortedMarketData(updatedMarketData)
   }, [sortOrder, sortByColumnId])
 
+  const onFetchMoreData = () => {
+  }
+
   return (
     <StyledWrapper>
       <TopRow>
@@ -76,21 +77,12 @@ const MarketView = (props: Props) => {
           action={onSearch}
         />
       </TopRow>
-      <InfiniteScroll
-        dataLength={sortedMarketData.length}
-        next={() => console.log('load more')}
-        hasMore={true}
-        loader={<h4>Loading...</h4>}
-        style={{
-          width: '100%'
-        }}
-      >
-        <MarketDataTable
-          headers={tableHeaders}
-          coinMarketData={sortedMarketData}
-          onSort={onSort}
-        />
-      </InfiniteScroll>
+      <MarketDataTable
+        headers={tableHeaders}
+        coinMarketData={sortedMarketData}
+        onFetchMoreData={onFetchMoreData}
+        onSort={onSort}
+      />
     </StyledWrapper>
   )
 }
