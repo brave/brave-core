@@ -242,15 +242,6 @@ GURL AssetRatioService::GetEstimatedTimeURL(const std::string& gas_price) {
   return GURL(spec);
 }
 
-// static
-GURL AssetRatioService::GetGasOracleURL() {
-  std::string spec = base::StringPrintf(
-      "%sv2/etherscan/passthrough?module=gastracker&action=gasoracle",
-      base_url_for_test_.is_empty() ? kAssetRatioBaseURL
-                                    : base_url_for_test_.spec().c_str());
-  return GURL(spec);
-}
-
 void AssetRatioService::GetEstimatedTime(const std::string& gas_price,
                                          GetEstimatedTimeCallback callback) {
   auto internal_callback =
@@ -277,27 +268,6 @@ void AssetRatioService::OnGetEstimatedTime(
   }
 
   std::move(callback).Run(true, seconds);
-}
-
-void AssetRatioService::GetGasOracle(GetGasOracleCallback callback) {
-  auto internal_callback =
-      base::BindOnce(&AssetRatioService::OnGetGasOracle,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  api_request_helper_->Request("GET", GetGasOracleURL(), "", "", true,
-                               std::move(internal_callback));
-}
-
-void AssetRatioService::OnGetGasOracle(
-    GetGasOracleCallback callback,
-    const int status,
-    const std::string& body,
-    const base::flat_map<std::string, std::string>& headers) {
-  if (status < 200 || status > 299) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  std::move(callback).Run(ParseGasOracle(body));
 }
 
 // static
