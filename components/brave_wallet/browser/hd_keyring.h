@@ -62,6 +62,9 @@ class HDKeyring {
                                            const std::vector<uint8_t>& message,
                                            uint256_t chain_id,
                                            bool is_eip712);
+  // for non-ETH keyring signing
+  virtual std::vector<uint8_t> SignMessage(const std::string& address,
+                                           const std::vector<uint8_t>& message);
   // Obtains the address that signed the message
   // message: The keccak256 hash of the message (33 bytes = 04 prefix + 32
   // bytes)

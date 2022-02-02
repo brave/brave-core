@@ -1333,6 +1333,18 @@ bool KeyringService::RecoverAddressByDefaultKeyring(
   return HDKeyring::RecoverAddress(message, signature, address);
 }
 
+std::vector<uint8_t> KeyringService::SignMessage(
+    const std::string& keyring_id,
+    const std::string& address,
+    const std::vector<uint8_t>& message) {
+  auto* keyring = GetHDKeyringById(keyring_id);
+  if (!keyring || keyring_id == mojom::kDefaultKeyringId) {
+    return std::vector<uint8_t>();
+  }
+
+  return keyring->SignMessage(address, message);
+}
+
 void KeyringService::AddAccountsWithDefaultName(size_t number) {
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
   if (!keyring) {

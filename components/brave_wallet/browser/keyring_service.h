@@ -195,6 +195,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& address,
       const std::vector<uint8_t>& message,
       bool is_eip712 = false);
+  std::vector<uint8_t> SignMessage(const std::string& keyring_id,
+                                   const std::string& address,
+                                   const std::vector<uint8_t>& message);
   bool RecoverAddressByDefaultKeyring(const std::vector<uint8_t>& message,
                                       const std::vector<uint8_t>& signature,
                                       std::string* address);

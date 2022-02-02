@@ -2982,4 +2982,43 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
   // TODO(darkdh): add lazily create keyring when importing SOL account
 }
 
+TEST_F(KeyringServiceUnitTest, SignMessage) {
+  KeyringService service(GetPrefs());
+  service.RestoreWallet(kMnemonic1, "brave", false, base::DoNothing());
+  base::RunLoop().RunUntilIdle();
+
+  const std::vector<uint8_t> message = {0xde, 0xad, 0xbe, 0xef};
+
+  // solana keyring doesn't exist yet
+  EXPECT_TRUE(service
+                  .SignMessage(mojom::kSolanaKeyringId,
+                               "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                               message)
+                  .empty());
+
+  // create solona keyring
+  service.AddAccount("Account 1", mojom::CoinType::SOL, base::DoNothing());
+  ASSERT_TRUE(service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
+
+  // not suppprt default keyring
+  EXPECT_TRUE(service
+                  .SignMessage(mojom::kDefaultKeyringId,
+                               "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+                               message)
+                  .empty());
+
+  // invalid address for Solana keyring
+  EXPECT_TRUE(service
+                  .SignMessage(mojom::kSolanaKeyringId,
+                               "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+                               message)
+                  .empty());
+
+  EXPECT_FALSE(service
+                   .SignMessage(mojom::kSolanaKeyringId,
+                                "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                                message)
+                   .empty());
+}
+
 }  // namespace brave_wallet
