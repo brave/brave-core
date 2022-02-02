@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index 75473709e0ee6dfa8b5ab79c9d6bff13b4764992..59e8a07a927e9088cdf68ddafc7cf43ff2db045c 100644
+index 66d1dff5b2b261d4f7eface578b93d7d1d30bc19..7a6b72288b4a4d7c4962cecc70573107882bc6d5 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
-@@ -154,6 +154,7 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
+@@ -151,6 +151,7 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
                               &(rules->script_rules));
    map->GetSettingsForOneType(ContentSettingsType::POPUPS,
                               &(rules->popup_redirect_rules));

@@ -1,5 +1,5 @@
 diff --git a/components/crash/core/app/breakpad_linux.cc b/components/crash/core/app/breakpad_linux.cc
-index ec5b5b9b4da3b19e851c414695b2150b6588ecc7..9836bf6840a6bcefd9da343a3d7cb2df6a4e8c5f 100644
+index 6950ea182ea55b3fd35d8f7e2c5e0dda24328274..47db004442803f68b59e8669fd53348e0043098a 100644
 --- a/components/crash/core/app/breakpad_linux.cc
 +++ b/components/crash/core/app/breakpad_linux.cc
 @@ -1461,7 +1461,7 @@ bool IsValidCrashReportId(const char* buf, size_t bytes_read,

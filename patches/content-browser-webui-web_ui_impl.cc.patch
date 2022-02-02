@@ -1,8 +1,8 @@
 diff --git a/content/browser/webui/web_ui_impl.cc b/content/browser/webui/web_ui_impl.cc
-index c8c389b8fa8d81a7ce8677b9e4e6445c73d22980..da877109bd1ee599c2c54b19de2352200bf8e755 100644
+index f8f8ca4542c698424d188a5fc08094b13f7cbd81..7f643894fea93b37abbc506b77a5bc792f5c6e4f 100644
 --- a/content/browser/webui/web_ui_impl.cc
 +++ b/content/browser/webui/web_ui_impl.cc
-@@ -75,6 +75,7 @@ WebUIImpl::WebUIImpl(WebContentsImpl* contents, RenderFrameHostImpl* frame_host)
+@@ -76,6 +76,7 @@ WebUIImpl::WebUIImpl(WebContentsImpl* contents, RenderFrameHostImpl* frame_host)
               RenderFrameHostImpl::LifecycleStateImpl::kActive ||
           frame_host->lifecycle_state() ==
               RenderFrameHostImpl::LifecycleStateImpl::kSpeculative);

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 093bdcc8d22d794fa2a2204b34f1609d749911da..4cff9794af13eaf9bfffffb601cffdf72e392488 100644
+index 06f398999e27448f9982e4435ae13b4ee097e249..a9fcdbca8ef9791fb2ae9ac2a15eebdc0e158932 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-@@ -70,7 +70,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -73,7 +73,7 @@ export class SettingsPersonalizationOptionsElement extends
  
        syncStatus: Object,
  
@@ -11,7 +11,7 @@ index 093bdcc8d22d794fa2a2204b34f1609d749911da..4cff9794af13eaf9bfffffb601cffdf7
        // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
        // (but handled differently in C++).
        metricsReportingPref_: {
-@@ -106,7 +106,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -109,7 +109,7 @@ export class SettingsPersonalizationOptionsElement extends
    pageVisibility: PrivacyPageVisibility;
    syncStatus: SyncStatus;
  
@@ -20,7 +20,7 @@ index 093bdcc8d22d794fa2a2204b34f1609d749911da..4cff9794af13eaf9bfffffb601cffdf7
    private metricsReportingPref_: chrome.settingsPrivate.PrefObject;
    private showRestart_: boolean;
    // </if>
-@@ -128,7 +128,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -131,7 +131,7 @@ export class SettingsPersonalizationOptionsElement extends
    ready() {
      super.ready();
  
@@ -29,7 +29,7 @@ index 093bdcc8d22d794fa2a2204b34f1609d749911da..4cff9794af13eaf9bfffffb601cffdf7
      const setMetricsReportingPref = (metricsReporting: MetricsReporting) =>
          this.setMetricsReportingPref_(metricsReporting);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
-@@ -162,7 +162,7 @@ export class SettingsPersonalizationOptionsElement extends
+@@ -165,7 +165,7 @@ export class SettingsPersonalizationOptionsElement extends
    }
    // </if>
  
