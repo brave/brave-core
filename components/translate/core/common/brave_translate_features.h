@@ -36,7 +36,7 @@ bool ShouldUpdateLanguagesList();
 // google translate endpoint. False by default, use it only for local testing.
 bool UseGoogleTranslateEndpoint();
 
-// True if the supported languages should be limited to the list supported by
+// True if supported languages should be limited to the list supported by
 // Bergamot engine.
 bool ShouldUseBergamotLanguageList();
 
