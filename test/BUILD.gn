@@ -643,6 +643,7 @@ if (!is_android) {
       "//brave/browser/extensions/api/brave_theme_api_browsertest.cc",
       "//brave/browser/extensions/brave_base_local_data_files_browsertest.cc",
       "//brave/browser/extensions/brave_base_local_data_files_browsertest.h",
+      "//brave/browser/extensions/brave_crx_generation_browsertest.cc",
       "//brave/browser/extensions/brave_extension_functional_test.cc",
       "//brave/browser/extensions/brave_extension_functional_test.h",
       "//brave/browser/extensions/brave_extension_provider_browsertest.cc",
