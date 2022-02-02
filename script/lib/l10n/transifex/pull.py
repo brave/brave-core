@@ -29,7 +29,7 @@ from lib.l10n.validation import validate_tags_in_one_string
 # API functions
 # -------------
 
-def pull_source_files_from_transifex(source_file_path, filename):
+def pull_source_files_from_transifex(source_file_path, filename, dump_path):
     """Downloads translations from Transifex"""
     ext = os.path.splitext(source_file_path)[1]
     if ext == '.grd':
@@ -41,7 +41,7 @@ def pull_source_files_from_transifex(source_file_path, filename):
             xtb_file_path = os.path.join(base_path, xtb_rel_path)
             print(f'Updating: {xtb_file_path} {lang_code}')
             xml_content = get_transifex_translation_file_content(
-                source_file_path, filename, lang_code)
+                source_file_path, filename, lang_code, dump_path)
             xml_content = fixup_bad_ph_tags_from_raw_transifex_string(
                 xml_content)
             errors = validate_tags_in_transifex_strings(xml_content)
@@ -57,9 +57,8 @@ def pull_source_files_from_transifex(source_file_path, filename):
         lang_codes = get_acceptable_json_lang_codes(langs_dir_path)
         for lang_code in lang_codes:
             print(f'getting filename {filename} for lang_code {lang_code}')
-            content = get_transifex_translation_file_content(source_file_path,
-                                                             filename,
-                                                             lang_code)
+            content = get_transifex_translation_file_content(
+                source_file_path, filename, lang_code, dump_path)
             localized_translation_path = (
                 os.path.join(langs_dir_path, lang_code, 'messages.json'))
             dir_path = os.path.dirname(localized_translation_path)
@@ -140,13 +139,16 @@ def transifex_lang_to_xtb_lang(lang):
 
 
 def get_transifex_translation_file_content(source_file_path, filename,
-                                           lang_code):
+                                           lang_code, dump_path):
     """Obtains a translation Android xml format and returns the string"""
     lang_code = xtb_lang_to_transifex_lang(lang_code)
     resource_name = transifex_name_from_filename(source_file_path, filename)
     content = transifex_get_resource_l10n(resource_name, lang_code)
     ext = os.path.splitext(source_file_path)[1]
     content = fix_transifex_translation_file_content(content, ext)
+    if dump_path:
+        with open(dump_path, mode='wb') as f:
+            f.write(content)
     verify_transifex_translation_file_content(content, ext)
     return content.decode('utf-8')
 

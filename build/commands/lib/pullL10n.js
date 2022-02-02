@@ -32,8 +32,12 @@ const pullL10n = (options) => {
   })
 
   l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath) => {
-    if (!options.grd_path || sourceStringPath.endsWith(path.sep + options.grd_path))
-      util.run('python3', ['script/pull-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
+    if (!options.grd_path || sourceStringPath.endsWith(path.sep + options.grd_path)) {
+      let cmd_args = ['script/pull-l10n.py', '--source_string_path', sourceStringPath]
+      if (options.debug)
+        cmd_args.push('--debug')
+      util.run('python3', cmd_args, cmdOptions)
+    }
   })
 }
 
