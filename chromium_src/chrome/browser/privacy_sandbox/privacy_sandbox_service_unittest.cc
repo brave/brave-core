@@ -27,6 +27,7 @@
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 #include "components/privacy_sandbox/privacy_sandbox_settings.h"
 #include "components/privacy_sandbox/privacy_sandbox_test_util.h"
+#include "components/profile_metrics/browser_profile_type.h"
 #include "components/signin/public/identity_manager/account_info.h"
 #include "components/signin/public/identity_manager/identity_test_environment.h"
 #include "components/strings/grit/components_strings.h"
@@ -73,7 +74,8 @@ class PrivacySandboxServiceTest : public testing::Test {
         PrivacySandboxSettingsFactory::GetForProfile(profile()),
         CookieSettingsFactory::GetForProfile(profile()).get(),
         profile()->GetPrefs(), policy_service(), sync_service(),
-        identity_test_env()->identity_manager(), mock_floc_id_provider());
+        identity_test_env()->identity_manager(), mock_floc_id_provider(),
+        profile_metrics::BrowserProfileType::kRegular);
   }
 
   virtual void InitializePrefsBeforeStart() {}
