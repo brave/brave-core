@@ -573,17 +573,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             BraveRewardsHelper.setNextRewardsOnboardingModalDate(calender.getTimeInMillis());
         }
 
-        /*if
-        (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
-                == 1) {
-            Calendar calender = Calendar.getInstance();
-            calender.setTime(new Date());
-            calender.add(Calendar.DATE, DAYS_5);
-            OnboardingPrefManager.getInstance().setNextSetDefaultBrowserModalDate(
-                    calender.getTimeInMillis());
-        }*/
-        // checkSetDefaultBrowserModal();
-
         if (!isSetDefaultBrowserNotification) {
             BraveSetDefaultBrowserUtils.checkSetDefaultBrowserModal(this);
         }
