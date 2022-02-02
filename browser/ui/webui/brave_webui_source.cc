@@ -734,6 +734,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "showAll", IDS_BRAVE_UI_SHOW_ALL },
         { "viewedSites", IDS_BRAVE_UI_VIEWED_SITES },
 
+        { "promoLearnMore", IDS_BRAVE_UI_PROMO_LEARN_MORE },
+        { "promoDismiss", IDS_BRAVE_UI_PROMO_DISMISS },
+
+        { "bitflyerVerificationPromoTitle", IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_TITLE },  // NOLINT
+        { "bitflyerVerificationPromoInfo", IDS_BRAVE_UI_BITFLYER_VERIFICATION_PROMO_INFO },    // NOLINT
+
         { "geminiPromoTitle", IDS_BRAVE_UI_GEMINI_PROMO_TITLE },
         { "geminiPromoInfo", IDS_BRAVE_UI_GEMINI_PROMO_INFO },
 

@@ -12,6 +12,7 @@ import {
   SettingsPageMobile as Page
 } from '../../ui/components/mobile'
 import { ModalRedirect } from '../../ui/components'
+import { Promo } from '../../android_page/components/promo'
 
 import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
@@ -23,6 +24,7 @@ import MonthlyContributionBox from './monthlyContributionBox'
 import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
+import { getActivePromos, getPromo, PromoType } from '../../page/promos'
 import { getWalletProviderName } from '../utils'
 
 export interface Props extends Rewards.ComponentProps {
@@ -149,6 +151,10 @@ class SettingsPage extends React.Component<Props, State> {
         this.actions.processRewardsPageUrl(window.location.pathname, window.location.search)
       }
     }
+  }
+
+  onDismissPromo = (promo: PromoType) => {
+    this.actions.dismissPromoPrompt(promo)
   }
 
   getPromotionsClaims = () => {
@@ -325,6 +331,41 @@ class SettingsPage extends React.Component<Props, State> {
     }
   }
 
+  renderPromos = () => {
+    const { currentCountryCode, ui } = this.props.rewardsData
+    const { promosDismissed } = ui
+
+    return (
+      <>
+        {getActivePromos(this.props.rewardsData, true).map((key: PromoType) => {
+           if (promosDismissed && promosDismissed[key]) {
+             return null
+           }
+
+           const promo = getPromo(key, this.props.rewardsData)
+           if (!promo) {
+             return null
+           }
+
+           const { supportedLocales } = promo
+           if (supportedLocales && supportedLocales.length && !supportedLocales.includes(currentCountryCode)) {
+             return null
+           }
+
+           return (
+             <Promo
+               key={`${key}-promo`}
+               title={promo.title}
+               link={promo.link}
+               copy={promo.copy}
+               onDismissPromo={this.onDismissPromo.bind(this, key)}
+             />
+           )
+        })}
+      </>
+    )
+  }
+
   renderSettings () {
     return (
       <>
@@ -343,6 +384,7 @@ class SettingsPage extends React.Component<Props, State> {
         {this.getPromotionsClaims()}
         <PageWallet showManageWalletButton={false} />
         {this.getRedirectModal()}
+        {this.renderPromos()}
         {this.renderSettings()}
       </Page>
     )
