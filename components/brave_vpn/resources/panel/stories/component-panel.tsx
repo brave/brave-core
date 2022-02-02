@@ -77,9 +77,10 @@ export const _SellPanel = () => {
 }
 
 export const _SettingsPanel = () => {
+  const closeSettingsPanel = () => {}
   return (
     <S.PanelFrame>
-      <SettingsPanel />
+      <SettingsPanel closeSettingsPanel={closeSettingsPanel} />
     </S.PanelFrame>
   )
 }

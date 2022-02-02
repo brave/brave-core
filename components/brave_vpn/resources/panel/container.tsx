@@ -8,7 +8,7 @@ import { useSelector } from './state/hooks'
 
 function Main () {
   const currentView = useSelector(state => state.currentView)
-  const isLoading = currentView === null
+  const isLoading = currentView === null || currentView === ViewType.Loading
 
   if (isLoading) return (<LoadingPanel />)
 

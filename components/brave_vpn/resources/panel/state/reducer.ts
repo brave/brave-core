@@ -96,6 +96,13 @@ reducer.on(Actions.showSellView, (state): RootState => {
   }
 })
 
+reducer.on(Actions.showLoadingView, (state): RootState => {
+  return {
+    ...state,
+    currentView: ViewType.Loading
+  }
+})
+
 reducer.on(Actions.initialized, (state, payload): RootState => {
   return {
     ...state,

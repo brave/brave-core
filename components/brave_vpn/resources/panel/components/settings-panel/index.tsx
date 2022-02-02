@@ -5,7 +5,11 @@ import { useSelector } from '../../state/hooks'
 import * as S from './style'
 import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 
-function SettingsPanel () {
+interface Props {
+  closeSettingsPanel: React.MouseEventHandler<HTMLButtonElement>
+}
+
+function SettingsPanel (props: Props) {
   const productUrls = useSelector(state => state.productUrls)
 
   return (
@@ -14,7 +18,8 @@ function SettingsPanel () {
         <S.PanelHeader>
           <S.BackButton
             type='button'
-            aria-description='Go back to main panel'
+            onClick={props.closeSettingsPanel}
+            aria-label='Close settings'
           >
             <i><CaratStrongLeftIcon /></i>
             <span>{getLocale('braveVpnSettings')}</span>

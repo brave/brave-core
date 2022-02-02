@@ -78,6 +78,10 @@ handler.on(Actions.initialize.getType(), async (store) => {
   if (state === PurchasedState.PURCHASED) {
     store.dispatch(Actions.purchaseConfirmed())
   }
+
+  if (state === PurchasedState.LOADING) {
+    store.dispatch(Actions.showLoadingView())
+  }
 })
 
 export default handler.middleware

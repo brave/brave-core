@@ -7,17 +7,28 @@ import SelectRegionList from '../select-region-list'
 import PanelBox from '../panel-box'
 import Toggle from '../toggle'
 import ErrorPanel from '../error-panel'
+import SettingsPanel from '../settings-panel'
 import { useSelector, useDispatch } from '../../state/hooks'
 import * as Actions from '../../state/actions'
 
 function MainPanel () {
   const dispatch = useDispatch()
+  const [isSettingsPanelVisible, setSettingsPanelVisible] = React.useState(false)
   const currentRegion = useSelector(state => state.currentRegion)
   const hasError = useSelector(state => state.hasError)
   const isSelectingRegion = useSelector(state => state.isSelectingRegion)
 
   const onSelectRegionButtonClick = () => {
     dispatch(Actions.toggleRegionSelector(true))
+  }
+
+  const handleSettingsButtonClick = () => setSettingsPanelVisible(true)
+  const closeSettingsPanel = () => setSettingsPanelVisible(false)
+
+  if (isSettingsPanelVisible) {
+    return (<SettingsPanel
+      closeSettingsPanel={closeSettingsPanel}
+    />)
   }
 
   if (isSelectingRegion) {
@@ -34,6 +45,7 @@ function MainPanel () {
         <S.PanelHeader>
           <S.SettingsButton
             type='button'
+            onClick={handleSettingsButtonClick}
           >
             <SettingsAdvancedIcon />
           </S.SettingsButton>

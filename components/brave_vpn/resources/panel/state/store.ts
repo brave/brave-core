@@ -26,10 +26,13 @@ const observer = {
     switch (state) {
       case PurchasedState.PURCHASED:
         store.dispatch(Actions.purchaseConfirmed())
-        break;
+        break
       case PurchasedState.NOT_PURCHASED:
         store.dispatch(Actions.showSellView())
-        break;
+        break
+      case PurchasedState.LOADING:
+        store.dispatch(Actions.showLoadingView())
+        break
     }
   }
 }

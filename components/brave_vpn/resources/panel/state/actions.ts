@@ -36,6 +36,7 @@ export const retryConnect = createAction('retryConnect')
 export const initialize = createAction('initialize')
 export const purchaseConfirmed = createAction('purchaseConfirmed')
 export const showSellView = createAction('showSellView')
+export const showLoadingView = createAction('showLoadingView')
 
 export const initialized = createAction<initializedPayload>('initialized')
 export const showMainView = createAction<showMainViewPayload>('showMainView')
