@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js'
+import * as numeral from 'numeral'
 
 import { CurrencySymbols } from './currency-symbols'
 
@@ -64,4 +65,28 @@ export const formatTokenAmountWithCommasAndDecimals = (value: string, symbol: st
     return ''
   }
   return formatWithCommasAndDecimals(value) + ' ' + symbol
+}
+
+export const formatPriceWithAbbreviation = (value: string, defaultCurrency: string, decimals: number = 2): string => {
+  if (!value) {
+    return ''
+  }
+  const decimalPlacesFormat = String('').padEnd(decimals, '0')
+  const currencySymbol = CurrencySymbols[defaultCurrency]
+
+  return currencySymbol + numeral(value).format(`0.${decimalPlacesFormat}a`).toUpperCase()
+}
+
+export const formatPricePercentageChange = (value: string | number, absoluteValue: true): string => {
+  if (!value) {
+    return ''
+  }
+
+  const formattedValue = numeral(value).format('0.00')
+
+  if (absoluteValue && formattedValue.startsWith('-')) {
+    return formattedValue.substring(1) + '%' // remove the '-' sign
+  }
+
+  return formattedValue + '%'
 }

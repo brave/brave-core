@@ -43,6 +43,8 @@ import {
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { mockNetworks } from './mock-data/mock-networks'
 import { isStrongPassword } from '../utils/password-utils'
+import { mockCoinMarketData } from './mock-data/mock-coin-market-data'
+
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -768,6 +770,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               showVisibleAssetsModal={showVisibleAssetsModal}
                               onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
                               foundTokenInfoByContractAddress={foundTokenInfo}
+                              coinMarketData={mockCoinMarketData}
                             />
                           )}
                         </>

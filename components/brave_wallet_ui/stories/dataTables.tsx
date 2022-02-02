@@ -7,7 +7,7 @@ import { storiesOf } from '@storybook/react'
 import { withKnobs, object } from '@storybook/addon-knobs'
 
 // Components
-import Table, { Cell, Row } from '../components/shared/datatable'
+import Table, { Header, Row } from '../components/shared/datatable'
 
 storiesOf('Wallet/Desktop/Components', module)
   .addDecorator(withKnobs)
@@ -49,30 +49,29 @@ storiesOf('Wallet/Desktop/Components', module)
       }
     ]
 
-    const header: Cell[] = [
+    const header: Header[] = [
       {
+        id: 'site',
         content: 'Site visited',
-        sortOrder: 'descending'
+        sortable: true,
+        sortOrder: 'desc'
       },
       {
+        id: 'Attention',
         content: 'Attention',
-        // customStyle: {
-        //   'text-align': 'right'
-        // },
-        sortOrder: 'ascending'
+        sortOrder: 'desc'
       },
       {
-        content: 'Tokens'
-        // customStyle: {
-        //   'text-align': 'right'
-        // }
+        id: 'tokens',
+        content: 'Tokens',
+        sortable: true
       }
     ]
 
     return (
       <div>
         <Table
-          header={object('Header', header)}
+          headers={object('Header', header)}
           rows={object('Rows', rows)}
         >
           404: Publishers not found :)

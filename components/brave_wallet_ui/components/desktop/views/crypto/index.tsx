@@ -21,6 +21,7 @@ import {
   HardwareWalletConnectOpts
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
 import MarketView from '../market'
+import { MarketDataTableHeaders } from '../../../../options/market-data-headers'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -360,7 +361,10 @@ const CryptoView = (props: Props) => {
         />
       </Route>
       <Route path={WalletRoutes.Market} exact={true}>
-        <MarketView />
+        <MarketView
+          coinMarkData={[]}
+          marketDataTableHeaders={MarketDataTableHeaders}
+        />
       </Route>
 
       {showAddModal &&

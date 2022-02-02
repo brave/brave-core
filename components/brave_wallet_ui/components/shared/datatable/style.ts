@@ -9,9 +9,10 @@ import { Cell, Row } from './index'
 import ArrowDownIcon from '../../../assets/svg-icons/arrow-down-fill.svg'
 import ArrowUpIcon from '../../../assets/svg-icons/arrow-up-fill.svg'
 
-export interface StyledThProps {
+export interface StyleProps {
   customStyle?: {[key: string]: string}
   sortOrder: SortOrder
+  sortable?: boolean
 }
 
 export const StyledTBody = styled.tbody`
@@ -34,7 +35,7 @@ export const StyledTable = styled('table')<{}>`
   min-width: 100%;
 `
 
-export const StyledTH = styled('th')<Partial<StyledThProps>>`
+export const StyledTH = styled('th')<Partial<StyleProps>>`
   text-align: left;
   font-family: Poppins;
   font-size: 12px;
@@ -43,7 +44,12 @@ export const StyledTH = styled('th')<Partial<StyledThProps>>`
   letter-spacing: 0.01em;
   border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
   color: ${(p) => p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
-  padding: 0 0 8px 0;
+  padding: 0 40px 8px 10px;
+  cursor: ${p => p.sortable ? 'pointer' : 'default'};
+
+  &:hover {
+    color: ${p => p.sortable ? p.theme.color.text02 : p.theme.color.text03};
+  }
 
   ${p => p.customStyle
     ? css`
@@ -54,6 +60,7 @@ export const StyledTH = styled('th')<Partial<StyledThProps>>`
 `
 
 export const StyledTR = styled('tr')<Partial<Row>>`
+
   ${p => p.customStyle
     ? css`
       ${p.customStyle}
@@ -72,8 +79,7 @@ export const StyledTD = styled('td')<Partial<Cell>>`
   font-family: Poppins;
   font-size: 14px;
   line-height: 20px;
-  padding-bottom: 16px;
-
+  padding: 0 40px 16px 10px;
 
   ${p => p.customStyle
     ? css`
@@ -81,22 +87,40 @@ export const StyledTD = styled('td')<Partial<Cell>>`
     `
     : ''
   };
-`
 
-export const ArrowDown = styled.div`
+  &:last-child {
+    padding-right: 10px;
+  }
+`
+export const ArrowWrapper = styled.div`
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 9px;
   height: 6px;
+  margin-right: 3px;
+`
+
+export const ArrowBase = styled.div`
+  display: inline-flex;
+  width: 100%;
+  height: 100%;
   background-repeat: no-repeat;
+`
+export const ArrowDown = styled(ArrowBase)`
   background-image: url(${ArrowDownIcon});
-  margin-right: 3px;
 `
 
-export const ArrowUp = styled.div`
-  display: inline-flex;
-  width: 9px;
-  height: 6px;
-  background-repeat: no-repeat;
+export const ArrowUp = styled(ArrowBase)`
   background-image: url(${ArrowUpIcon});
-  margin-right: 3px;
+`
+export const CellContentWrapper = styled.div<Partial<StyleProps>>`
+  display: flex;
+  align-items: center;
+  ${p => p.customStyle
+    ? css`
+      ${p.customStyle}
+    `
+    : ''
+  };
 `

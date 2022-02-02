@@ -567,5 +567,30 @@ export type AssetFilter = {
 }
 
 export type SortOrder =
-  | 'ascending'
-  | 'descending'
+  | 'asc'
+  | 'desc'
+
+export type MarketDataTableColumnTypes =
+  | 'assets'
+  | 'currentPrice'
+  | 'duration'
+  | 'totalVolume'
+  | 'marketCap'
+  | 'priceChange24h'
+
+// This interface will mostly change
+// once we have an api for getting
+// coin market data
+export interface CoinMarketMetadata {
+  coinGeckoID: string
+  symbol: string
+  name: string
+  imageUrl: string
+  marketCap: number
+  marketCapRank: number
+  currentPrice: number
+  priceChange24h: number
+  priceChangePercentage24h: number
+  totalVolume: number
+  priceHistory: PriceDataObjectType[]
+}

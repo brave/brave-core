@@ -3,13 +3,29 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StyledTH, StyledNoContent, StyledTable, StyledTBody, StyledTD, StyledTR, ArrowDown, ArrowUp } from './style'
+import {
+  StyledTH,
+  StyledNoContent,
+  StyledTable,
+  StyledTBody,
+  StyledTD,
+  StyledTR,
+  ArrowDown,
+  ArrowUp,
+  ArrowWrapper
+} from './style'
 import { SortOrder } from '../../../constants/types'
 
+export interface Header {
+  id: string
+  customStyle?: {[key: string]: string}
+  content: React.ReactNode
+  sortable?: boolean
+  sortOrder?: SortOrder
+}
 export interface Cell {
   customStyle?: {[key: string]: string}
   content: React.ReactNode
-  sortOrder?: SortOrder
 }
 
 export interface Row {
@@ -19,37 +35,58 @@ export interface Row {
 
 export interface Props {
   id?: string
-  header?: Cell[]
+  headers?: Header[]
   children?: React.ReactNode
   rows?: Row[]
   rowTheme?: {[key: string]: string}
+  onSort?: (column: string, newSortOrder: SortOrder) => void
 }
 
 const Table = (props: Props) => {
-  const { id, header, rows, children } = props
+  const { id, headers, rows, children, onSort } = props
+
+  const onHeaderClick = (headerId: string, currentSortOrder: SortOrder) => {
+    const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc'
+
+    if (onSort) {
+      onSort(headerId, newSortOrder)
+    }
+  }
+
+  const renderHeaders = (headers: Header[]) => {
+    return headers.map((header, index) => {
+      const { id, content, sortable, sortOrder, customStyle } = header
+
+      return (
+        <StyledTH
+          key={`${id}-th-${index}`}
+          customStyle={customStyle}
+          sortable={sortable}
+          sortOrder={sortOrder}
+          onClick={() => sortable && onHeaderClick(id, sortOrder ?? 'desc')}
+        >
+          {sortable &&
+            <ArrowWrapper>
+              {sortOrder === 'asc' ? <ArrowUp /> : null}
+              {sortOrder === 'desc' ? <ArrowDown /> : null}
+            </ArrowWrapper>
+          }
+          {content}
+        </StyledTH>
+      )
+    })
+  }
 
   return (
     <div id={id}>
       {
-        header && header.length > 0
+        headers && headers.length > 0
         ? <StyledTable>
           {
-            header
+            headers
             ? <thead>
               <tr>
-              {
-                header.map((cell: Cell, i: number) =>
-                    <StyledTH
-                      key={`${id}-th-${i}`}
-                      customStyle={cell.customStyle}
-                      sortOrder={cell.sortOrder}
-                    >
-                      {cell.sortOrder === 'ascending' && <ArrowUp />}
-                      {cell.sortOrder === 'descending' && <ArrowDown />}
-                      {cell.content}
-                    </StyledTH>
-                )
-              }
+                {renderHeaders(headers)}
               </tr>
             </thead>
             : null
