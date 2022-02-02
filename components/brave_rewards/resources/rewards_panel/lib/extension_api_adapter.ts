@@ -208,6 +208,7 @@ chrome.braveRewards.onPromotions.addListener((result, promotions) => {
       type,
       amount: obj.amount,
       createdAt: obj.createdAt * 1000 || null,
+      claimableUntil: obj.claimableUntil * 1000 || null,
       expiresAt: obj.expiresAt * 1000 || null
     })
   }

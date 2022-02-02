@@ -23,6 +23,15 @@ function parseGrantId (id: string) {
   return (parts.length > 1 && parts.pop()) || ''
 }
 
+function parseGrantDetails (args: string[]) {
+  return {
+    amount: parseFloat(args[0]) || 0,
+    createdAt: parseFloat(args[1]) || null,
+    claimableUntil: parseFloat(args[2]) || null,
+    expiresAt: null
+  }
+}
+
 function mapProvider (name: string): ExternalWalletProvider {
   const provider = externalWalletProviderFromString(name.toLocaleLowerCase())
   return provider || 'uphold'
@@ -81,15 +90,21 @@ export function mapNotification (
       return create<GrantAvailableNotification>({
         ...baseProps,
         type: 'grant-available',
-        source: 'ugp',
-        grantId: parseGrantId(obj.id)
+        grantInfo: {
+          type: 'ugp',
+          id: parseGrantId(obj.id),
+          ...parseGrantDetails(obj.args)
+        }
       })
     case ExtensionNotificationType.GRANT_ADS:
       return create<GrantAvailableNotification>({
         ...baseProps,
         type: 'grant-available',
-        source: 'ads',
-        grantId: parseGrantId(obj.id)
+        grantInfo: {
+          type: 'ads',
+          id: parseGrantId(obj.id),
+          ...parseGrantDetails(obj.args)
+        }
       })
     case ExtensionNotificationType.BACKUP_WALLET:
       return {

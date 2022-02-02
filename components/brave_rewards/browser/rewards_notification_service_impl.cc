@@ -12,6 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/rand_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -345,6 +346,9 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
         : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT;
 
     RewardsNotificationService::RewardsNotificationArgs args;
+    args.push_back(base::NumberToString(item->approximate_value));
+    args.push_back(base::NumberToString(item->created_at * 1000));
+    args.push_back(base::NumberToString(item->claimable_until * 1000));
 
     bool only_once = true;
   #if defined(OS_ANDROID)

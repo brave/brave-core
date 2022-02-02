@@ -71,6 +71,7 @@ declare namespace RewardsExtension {
     promotionId: string
     amount: number
     createdAt: number
+    claimableUntil: number
     expiresAt: number
     status: PromotionStatus
     type: PromotionTypes

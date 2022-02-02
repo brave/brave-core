@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import GrantClaim, { Type } from '../../ui/components/grantClaim'
+import { ClaimGrantView } from './claim_grant_view'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
@@ -39,30 +39,22 @@ class Promotion extends React.Component<Props> {
 
   render () {
     const { promotion } = this.props
-
-    if (!promotion) {
+    if (!promotion || !promotion.promotionId) {
       return null
     }
 
-    let type = 'ugp'
-    let promoId
-
-    if (promotion.type) {
-      type = this.convertPromotionTypesToType(promotion.type)
-    }
-
-    if (promotion.promotionId) {
-      promoId = promotion.promotionId
-    }
-
     return (
-      <>
-        {
-          type
-            ? <GrantClaim type={type as Type} onClaim={this.onShow.bind(this, promoId)} testId={'claimGrant'}/>
-            : null
-        }
-      </>
+      <ClaimGrantView
+        grantInfo={{
+          id: promotion.promotionId,
+          type: this.convertPromotionTypesToType(promotion.type),
+          amount: promotion.amount,
+          createdAt: promotion.createdAt,
+          claimableUntil: promotion.claimableUntil,
+          expiresAt: promotion.expiresAt
+        }}
+        onClaim={this.onShow.bind(this, promotion.promotionId)}
+      />
     )
   }
 }

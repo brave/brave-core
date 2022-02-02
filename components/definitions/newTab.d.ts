@@ -255,6 +255,8 @@ declare namespace NewTab {
     type: PromotionTypes
     promotionId: string
     createdAt: number
+    claimableUntil?: number
+    expiresAt?: number
     amount: number
   }
 

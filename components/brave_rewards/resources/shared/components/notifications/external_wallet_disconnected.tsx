@@ -13,10 +13,9 @@ export function ExternalWalletDisconnected (props: NotificationViewProps) {
 
   return (
     <div>
-      <Title
-        style='error'
-        text={getString('notificationWalletDisconnectedTitle')}
-      />
+      <Title style='error'>
+        {getString('notificationWalletDisconnectedTitle')}
+      </Title>
       <Body>{getString('notificationWalletDisconnectedText')}</Body>
       <Action
         notification={props.notification}

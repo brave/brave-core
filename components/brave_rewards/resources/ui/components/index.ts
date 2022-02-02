@@ -10,7 +10,6 @@ import BoxAlert from './boxAlert'
 import CategoryLikePicker from './categoryLikePicker'
 import DisabledContent from './disabledContent'
 import GrantCaptcha from './grantCaptcha'
-import GrantClaim from './grantClaim'
 import GrantComplete from './grantComplete'
 import GrantError from './grantError'
 import GrantWrapper from './grantWrapper'
@@ -57,7 +56,6 @@ export {
   CategoryLikePicker,
   DisabledContent,
   GrantCaptcha,
-  GrantClaim,
   GrantComplete,
   GrantError,
   GrantWrapper,

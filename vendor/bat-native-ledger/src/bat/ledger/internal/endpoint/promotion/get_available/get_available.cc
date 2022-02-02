@@ -172,6 +172,14 @@ type::Result GetAvailable::ParseBody(
       promotion->expires_at = time.ToDoubleT();
     }
 
+    auto* claimable_until = item.FindStringKey("claimableUntil");
+    if (claimable_until) {
+      base::Time time;
+      if (base::Time::FromUTCString(claimable_until->c_str(), &time)) {
+        promotion->claimable_until = time.ToDoubleT();
+      }
+    }
+
     auto* public_keys = item.FindListKey("publicKeys");
     if (!public_keys || public_keys->GetList().empty()) {
       corrupted_promotions->push_back(promotion->id);
