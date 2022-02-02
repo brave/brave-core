@@ -70,6 +70,22 @@ std::string eth_blockNumber() {
   return GetJsonRpcNoParams("eth_blockNumber");
 }
 
+std::string eth_feeHistory(int num_blocks,
+                           const std::string& head,
+                           const std::vector<double>& reward_percentiles) {
+  base::Value percentile_values(base::Value::Type::LIST);
+  for (size_t i = 0; i < reward_percentiles.size(); ++i) {
+    percentile_values.Append(base::Value(reward_percentiles[i]));
+  }
+
+  base::Value params(base::Value::Type::LIST);
+  params.Append(base::Value(num_blocks));
+  params.Append(base::Value(head));
+  params.Append(std::move(percentile_values));
+  base::Value dictionary = GetJsonRpcDictionary("eth_feeHistory", &params);
+  return GetJSON(dictionary);
+}
+
 std::string eth_getBalance(const std::string& address,
                            const std::string& quantity_tag) {
   return GetJsonRpc2Params("eth_getBalance", address, quantity_tag);
