@@ -68,7 +68,7 @@ type::Result PostTransactionUphold::CheckStatusCode(const int status_code) {
     return type::Result::LEDGER_ERROR;
   }
 
-  if (status_code != net::HTTP_CREATED) {
+  if (status_code != net::HTTP_CREATED && status_code != net::HTTP_OK) {
     BLOG(0, "Unexpected HTTP status: " << status_code);
     return type::Result::LEDGER_ERROR;
   }
