@@ -15,6 +15,7 @@ typedef unsigned _BitInt(256) uint256_t;
 typedef _BitInt(256) int256_t;
 typedef unsigned _BitInt(128) uint128_t;
 typedef _BitInt(128) int128_t;
+constexpr uint64_t kMaxSafeIntegerUint64 = 9007199254740991;  // 2^53-1
 
 struct TransactionReceipt {
   TransactionReceipt();
