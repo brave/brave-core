@@ -33,17 +33,46 @@ interface UIHandler {
 interface DataHandler {
   RegisterUIHandler(pending_remote<UIHandler> ui_handler);
   GetSiteBlockInfo() => (SiteBlockInfo site_block_info);
-  GetAdBlockMode() => (AdBlockMode mode);
+  GetSiteSettings() => (SiteSettings site_settings);
   SetAdBlockMode(AdBlockMode mode);
+  SetFingerprintMode(FingerprintMode mode);
+  SetCookieBlockMode(CookieBlockMode mode);
+  SetIsNoScriptsEnabled(bool is_enabled);
+  SetHTTPSEverywhereEnabled(bool is_enabled);
 };
 
 struct SiteBlockInfo {
   string host;
   int32 total_blocked_resources;
+  bool is_shields_enabled;
+  array<url.mojom.Url> ads_list;
+  array<url.mojom.Url> http_redirects_list;
+  array<url.mojom.Url> js_list;
+  array<url.mojom.Url> fingerprints_list;
+};
+
+struct SiteSettings {
+  AdBlockMode ad_block_mode;
+  FingerprintMode fingerprint_mode;
+  CookieBlockMode cookie_block_mode;
+  bool is_https_everywhere_enabled;
+  bool is_noscript_enabled;
 };
 
 enum AdBlockMode {
   AGGRESSIVE,
   STANDARD,
+  ALLOW
+};
+
+enum FingerprintMode {
+  STRICT,
+  STANDARD,
+  ALLOW
+};
+
+enum CookieBlockMode {
+  CROSS_SITE_BLOCKED,
+  BLOCKED,
   ALLOW
 };
