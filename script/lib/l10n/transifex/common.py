@@ -104,4 +104,4 @@ def get_acceptable_json_lang_codes(langs_dir_path):
     lang_codes.discard('hn')
     lang_codes.discard('ph')
     lang_codes.discard('ht')
-    return lang_codes
+    return sorted(lang_codes)
