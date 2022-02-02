@@ -115,12 +115,16 @@ group("constants") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "//brave/components/brave_sync/brave_sync_prefs_unittest.cc",
     "//brave/components/brave_sync/qr_code_data_unittest.cc",
     "//brave/components/brave_sync/qr_code_validator_unittest.cc",
   ]
 
   deps = [
+    ":prefs",
     ":qr_code_data",
     "//base/test:test_support",
+    "//components/os_crypt:test_support",
+    "//components/prefs:test_support",
   ]
 }

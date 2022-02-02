@@ -303,8 +303,10 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   }
 
   brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
-  std::string sync_code = brave_sync_prefs.GetSeed();
+  bool failed_to_decrypt = false;
+  std::string sync_code = brave_sync_prefs.GetSeed(&failed_to_decrypt);
   DCHECK_NE(sync_code.size(), 0u);
+  DCHECK(!failed_to_decrypt);
 
   if (service->GetUserSettings()->IsPassphraseRequired()) {
     SetDecryptionPassphrase(service);
