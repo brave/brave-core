@@ -478,6 +478,48 @@ void JsonRpcService::OnGetBlockNumber(
   std::move(callback).Run(block_number, mojom::ProviderError::kSuccess, "");
 }
 
+void JsonRpcService::GetFeeHistory(GetFeeHistoryCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetFeeHistory,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(
+      eth::eth_feeHistory(40, "latest", std::vector<double>{20, 50, 80}), true,
+      std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetFeeHistory(
+    GetFeeHistoryCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        std::vector<std::string>(), std::vector<double>(), "",
+        std::vector<std::vector<std::string>>(),
+        mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::vector<std::string> base_fee_per_gas;
+  std::vector<double> gas_used_ratio;
+  std::string oldest_block;
+  std::vector<std::vector<std::string>> reward;
+  if (!eth::ParseEthGetFeeHistory(body, &base_fee_per_gas, &gas_used_ratio,
+                                  &oldest_block, &reward)) {
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run(std::vector<std::string>(), std::vector<double>(),
+                            "", std::vector<std::vector<std::string>>(), error,
+                            error_message);
+    return;
+  }
+
+  std::move(callback).Run(base_fee_per_gas, gas_used_ratio, oldest_block,
+                          reward, mojom::ProviderError::kSuccess, "");
+}
+
 void JsonRpcService::GetBalance(const std::string& address,
                                 mojom::CoinType coin,
                                 JsonRpcService::GetBalanceCallback callback) {
