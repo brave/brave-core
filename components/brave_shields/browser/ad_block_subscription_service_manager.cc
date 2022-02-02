@@ -426,29 +426,24 @@ AdBlockSubscriptionServiceManager::UrlCosmeticResources(
   return first_value;
 }
 
-absl::optional<base::Value>
-AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
+base::Value AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  absl::optional<base::Value> first_value = absl::nullopt;
+  base::Value first_value(base::Value::Type::LIST);
 
   base::AutoLock lock(subscription_services_lock_);
   for (auto it = subscription_services_.begin();
        it != subscription_services_.end(); it++) {
     auto info = GetInfo(it->first);
     if (info && info->enabled) {
-      absl::optional<base::Value> next_value =
+      base::Value next_value =
           it->second->HiddenClassIdSelectors(classes, ids, exceptions);
-      if (first_value && first_value->is_list()) {
-        if (next_value && next_value->is_list()) {
-          for (auto i = next_value->GetList().begin();
-               i < next_value->GetList().end(); i++) {
-            first_value->Append(std::move(*i));
-          }
-        }
-      } else {
-        first_value = std::move(next_value);
+      DCHECK(next_value.is_list());
+
+      for (auto i = next_value.GetList().begin();
+           i < next_value.GetList().end(); i++) {
+        first_value.Append(std::move(*i));
       }
     }
   }

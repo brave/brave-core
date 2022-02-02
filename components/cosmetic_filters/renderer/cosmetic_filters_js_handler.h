@@ -72,6 +72,7 @@ class CosmeticFiltersJSHandler {
   void InjectStylesheet(const std::string& stylesheet, int id);
   void UninjectStylesheet(int id);
 
+  bool generichide_ = false;
   std::map<int, std::unique_ptr<blink::WebString>> inserted_stylesheet_ids;
 
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;

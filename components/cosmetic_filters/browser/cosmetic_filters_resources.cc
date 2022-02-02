@@ -63,8 +63,7 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
   auto selectors =
       ad_block_service_->HiddenClassIdSelectors(classes, ids, exceptions);
 
-  std::move(callback).Run(selectors ? std::move(selectors.value())
-                                    : base::Value());
+  std::move(callback).Run(std::move(selectors));
 }
 
 void CosmeticFiltersResources::UrlCosmeticResources(

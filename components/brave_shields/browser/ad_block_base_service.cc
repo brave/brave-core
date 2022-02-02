@@ -215,7 +215,7 @@ absl::optional<base::Value> AdBlockBaseService::UrlCosmeticResources(
   return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
 }
 
-absl::optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
+base::Value AdBlockBaseService::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
@@ -223,8 +223,14 @@ absl::optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
   //   return;
 
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-  return base::JSONReader::Read(
+  absl::optional<base::Value> result = base::JSONReader::Read(
       ad_block_client_->hiddenClassIdSelectors(classes, ids, exceptions));
+
+  if (!result) {
+    return base::ListValue();
+  } else {
+    return std::move(*result);
+  }
 }
 
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path,

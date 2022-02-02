@@ -2048,6 +2048,49 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
   EXPECT_EQ(base::Value(true), result_second.value);
 }
 
+// Test cosmetic filtering on elements added dynamically, using a rule from the
+// custom filters
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamicCustom) {
+  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+                  ->UpdateCustomFilters("##.blockme"));
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  GURL tab_url =
+      embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
+
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  auto result_first = EvalJs(contents,
+                             R"(addElementsDynamically();
+        async function waitCSSSelector() {
+          if (await checkSelector('.blockme', 'display', 'none')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())",
+                             content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  ASSERT_TRUE(result_first.error.empty());
+  EXPECT_EQ(base::Value(true), result_first.value);
+
+  auto result_second = EvalJs(contents,
+                              R"(async function waitCSSSelector() {
+          if (await checkSelector('.dontblockme', 'display', 'block')) {
+            window.domAutomationController.send(true);
+          } else {
+            console.log('still waiting for css selector');
+            setTimeout(waitCSSSelector, 200);
+          }
+        } waitCSSSelector())",
+                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
+  ASSERT_TRUE(result_second.error.empty());
+  EXPECT_EQ(base::Value(true), result_second.value);
+}
+
 // Test cosmetic filtering ignores generic cosmetic rules in the presence of a
 // `generichide` exception rule, both for elements added dynamically and
 // elements present at page load
