@@ -14,7 +14,6 @@
 #include "base/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
@@ -71,7 +70,7 @@ mojom::GasEstimation1559Ptr GetMojomGasEstimation() {
       "0x3b9aca00" /* Hex of 1 * 1e9 */, "0xaf16b1600" /* Hex of 47 * 1e9 */,
       "0x77359400" /* Hex of 2 * 1e9 */, "0xb2d05e000" /* Hex of 48 * 1e9 */,
       "0xb2d05e00" /* Hex of 3 * 1e9 */, "0xb68a0aa00" /* Hex of 49 * 1e9 */,
-      "0xad8075b7a" /* Hex of 46574033786 */);
+      "0xab5d04c00" /* Hex of 4600000000 */);
 }
 
 void MakeERC721TransferFromDataCallback(base::RunLoop* run_loop,
@@ -176,22 +175,6 @@ class EthTxServiceUnitTest : public testing::Test {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
-
-          if (request.url.spec().find("action=gasoracle") !=
-              std::string::npos) {
-            url_loader_factory_.AddResponse(
-                request.url.spec(),
-                "{\"payload\": {\"status\": \"1\", \"message\": \"\", "
-                "\"result\": {\"LastBlock\": \"13243541\", \"SafeGasPrice\": "
-                "\"47\", \"ProposeGasPrice\": \"48\", \"FastGasPrice\": "
-                "\"49\", \"suggestBaseFee\": \"46.574033786\", "
-                "\"gasUsedRatio\": "
-                "\"0.27036175840958,0.0884828740801432,0.0426623303159149,0."
-                "972173412918789,0.319781207901446\"}}, \"lastUpdated\": "
-                "\"2021-09-22T21:45:40.015Z\"}");
-            return;
-          }
-
           base::StringPiece request_string(request.request_body->elements()
                                                ->at(0)
                                                .As<network::DataElementBytes>()
@@ -216,6 +199,37 @@ class EthTxServiceUnitTest : public testing::Test {
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
                 "\"1\"}");
+          } else if (*method == "eth_feeHistory") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                // baseFeePerGas's last value (pending block's baseFee) is
+                // calculated in a way so that it would be 48gwei for max fee.
+                // i.e. step back from 48gwei by subtracting 2gwei and then
+                // dividing by 1.125.
+                // Reards are 1gwei, 2gwei, and 3gwei to match
+                // GetMojomGasEstimation
+                R"(
+                {
+                  "jsonrpc":"2.0",
+                  "id":1,
+                  "result": {
+                    "baseFeePerGas": [
+                      "0x24beaded75",
+                      "0x9852aee39"
+                    ],
+                    "gasUsedRatio": [
+                      0.9054214892490816
+                    ],
+                    "oldestBlock": "0xd6b1b0",
+                    "reward": [
+                      [
+                        "0x3B9ACA00",
+                        "0x77359400",
+                        "0xB2D05E00"
+                      ]
+                    ]
+                  }
+                })");
           }
         }));
 
@@ -224,8 +238,6 @@ class EthTxServiceUnitTest : public testing::Test {
     json_rpc_service_.reset(
         new JsonRpcService(shared_url_loader_factory_, &prefs_));
     keyring_service_.reset(new KeyringService(&prefs_));
-    asset_ratio_service_.reset(
-        new AssetRatioService(shared_url_loader_factory_));
 
     auto tx_state_manager =
         std::make_unique<EthTxStateManager>(&prefs_, json_rpc_service_.get());
@@ -234,10 +246,10 @@ class EthTxServiceUnitTest : public testing::Test {
     auto pending_tx_tracker = std::make_unique<EthPendingTxTracker>(
         tx_state_manager.get(), json_rpc_service_.get(), nonce_tracker.get());
 
-    eth_tx_service_.reset(new EthTxService(
-        json_rpc_service_.get(), keyring_service_.get(),
-        asset_ratio_service_.get(), std::move(tx_state_manager),
-        std::move(nonce_tracker), std::move(pending_tx_tracker), &prefs_));
+    eth_tx_service_.reset(
+        new EthTxService(json_rpc_service_.get(), keyring_service_.get(),
+                         std::move(tx_state_manager), std::move(nonce_tracker),
+                         std::move(pending_tx_tracker), &prefs_));
 
     base::RunLoop run_loop;
     json_rpc_service_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
@@ -372,7 +384,6 @@ class EthTxServiceUnitTest : public testing::Test {
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<EthTxService> eth_tx_service_;
-  std::unique_ptr<AssetRatioService> asset_ratio_service_;
   std::vector<uint8_t> data_;
 };
 
