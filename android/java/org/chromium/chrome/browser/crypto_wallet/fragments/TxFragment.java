@@ -135,9 +135,9 @@ public class TxFragment extends Fragment {
                     RadioGroup radioGroup = dialog.findViewById(R.id.max_priority_radio_group);
                     radioGroup.clearCheck();
                     radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-                        AssetRatioService assetRatioService = getAssetRatioService();
-                        assert assetRatioService != null;
-                        assetRatioService.getGasOracle(estimation -> {
+                        EthTxService ethTxService = getEthTxService();
+                        assert ethTxService != null;
+                        ethTxService.getGasEstimation1559(estimation -> {
                             mTxInfo.txData.gasEstimation = estimation;
                             mCheckedPriorityId = checkedId;
                             String gasLimit = mTxInfo.txData.baseData.gasLimit;
