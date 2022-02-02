@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 8c91d3cd433ec61cfb0466876225410249b92824..d6330771bf555d027eeea317c6df7a791fbbcd4c 100644
+index fddb668a340443c66f51db921e56bbfdc3e04446..8ddb8abcdd7b5d98097ce019fbde70558aa347be 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -7712,6 +7712,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -7719,6 +7719,7 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(chrome::android::kDragAndDropAndroid)},
  #endif  // BUILDFLAG(IS_ANDROID)
  
