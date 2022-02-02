@@ -1547,41 +1547,6 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
 }
 
-TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559DisablePolygon) {
-  std::vector<base::Value> values;
-
-  // Define EthereumChain for Polygon network with is_eip1559 set to true.
-  brave_wallet::mojom::EthereumChain polygon(
-      "0x89", "Polygon Mainnet", {"https://url.com"}, {"https://url.com"},
-      {"https://url.com"}, "Polygon Matic", "MATIC", 18, true);
-  auto polygon_ptr = polygon.Clone();
-  values.push_back(brave_wallet::EthereumChainToValue(polygon_ptr));
-
-  UpdateCustomNetworks(prefs(), &values);
-
-  // Expected is_eip1559 should always be false for Polygon.
-  TestJsonRpcServiceObserver observer(polygon.chain_id, false);
-  json_rpc_service_->AddObserver(observer.GetReceiver());
-
-  // Switching to Polygon should update is_eip1559 to false, even if it
-  // was previously set to true.
-  EXPECT_TRUE(GetIsEip1559FromPrefs(polygon.chain_id));
-  SetIsEip1559Interceptor(true);
-  SetNetwork(polygon.chain_id);
-  EXPECT_TRUE(observer.chain_changed_called());
-  EXPECT_TRUE(observer.is_eip1559_changed_called());
-  EXPECT_FALSE(GetIsEip1559FromPrefs(polygon.chain_id));
-
-  // Switching to Polygon again should not call observer methods for change
-  // in is_eip1559.
-  observer.Reset(polygon.chain_id, false);
-  SetIsEip1559Interceptor(true);
-  SetNetwork(polygon.chain_id);
-  EXPECT_TRUE(observer.chain_changed_called());
-  EXPECT_FALSE(observer.is_eip1559_changed_called());
-  EXPECT_FALSE(GetIsEip1559FromPrefs(polygon.chain_id));
-}
-
 TEST_F(JsonRpcServiceUnitTest, GetEthAddrInvalidDomain) {
   const std::vector<std::string> invalid_domains = {"", ".eth", "-brave.eth",
                                                     "brave-.eth", "b.eth"};
