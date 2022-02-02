@@ -51,7 +51,6 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
-import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
@@ -73,7 +72,6 @@ import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.AssetRatioServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
@@ -388,8 +386,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     }
 
     private void sendSwapTransaction(TxData data, String from) {
-        assert mAssetRatioService != null;
-        mAssetRatioService.getGasOracle(estimation -> {
+        assert mEthTxService != null;
+        mEthTxService.getGasEstimation1559(estimation -> {
             String maxPriorityFeePerGas = "";
             String maxFeePerGas = "";
             if (estimation.fastMaxPriorityFeePerGas.equals(estimation.avgMaxPriorityFeePerGas)) {
