@@ -22,6 +22,7 @@ import AssetWatchlistItem from './asset-watchlist-item'
 import SelectNetworkDropdown from './select-network-dropdown'
 import TransactionPopup from './transaction-popup'
 import SwapTooltip from './swap-tooltip'
+import WithHideBalancePlaceholder from './with-hide-balance-placeholder'
 import { CryptoView, PortfolioView } from './views'
 import {
   OnboardingWelcome,
@@ -68,5 +69,6 @@ export {
   OnboardingImportMetaMaskOrLegacy,
   TransactionPopup,
   SwapTooltip,
-  AssetsFilterDropdown
+  AssetsFilterDropdown,
+  WithHideBalancePlaceholder
 }

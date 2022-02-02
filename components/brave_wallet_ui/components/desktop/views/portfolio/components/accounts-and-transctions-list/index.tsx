@@ -18,7 +18,8 @@ import {
 import {
   PortfolioTransactionItem,
   PortfolioAccountItem,
-  AddButton
+  AddButton,
+  WithHideBalancePlaceholder
 } from '../../../../'
 
 // Hooks
@@ -46,6 +47,7 @@ export interface Props {
   formattedFullAssetBalance: string
   selectedAssetTransactions: BraveWallet.TransactionInfo[]
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
+  hideBalances: boolean
   onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => () => void
@@ -65,6 +67,7 @@ const AccountsAndTransactionsList = (props: Props) => {
     formattedFullAssetBalance,
     selectedAssetTransactions,
     userVisibleTokensInfo,
+    hideBalances,
     onSelectAccount,
     onClickAddAccount,
     onSelectAsset,
@@ -93,7 +96,12 @@ const AccountsAndTransactionsList = (props: Props) => {
           <DividerRow>
             <DividerText>{selectedAsset?.isErc721 ? getLocale('braveWalletOwner') : getLocale('braveWalletAccounts')}</DividerText>
             {!selectedAsset?.isErc721 &&
-              <AssetBalanceDisplay>{formatFiatAmountWithCommasAndDecimals(fullAssetFiatBalance, defaultCurrencies.fiat)} {formattedFullAssetBalance}</AssetBalanceDisplay>
+              <WithHideBalancePlaceholder
+                size='small'
+                hideBalances={hideBalances}
+              >
+                <AssetBalanceDisplay>{formatFiatAmountWithCommasAndDecimals(fullAssetFiatBalance, defaultCurrencies.fiat)} {formattedFullAssetBalance}</AssetBalanceDisplay>
+              </WithHideBalancePlaceholder>
             }
           </DividerRow>
           <SubDivider />
@@ -108,6 +116,7 @@ const AccountsAndTransactionsList = (props: Props) => {
               address={account.address}
               assetBalance={getBalance(account, selectedAsset)}
               selectedNetwork={selectedNetwork}
+              hideBalances={hideBalances}
             />
           )}
           <ButtonRow>
