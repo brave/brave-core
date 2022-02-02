@@ -15,12 +15,12 @@
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
+#include "brave/components/brave_wallet/browser/eth_gas_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -108,14 +108,12 @@ bool EthTxService::ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
 EthTxService::EthTxService(
     JsonRpcService* json_rpc_service,
     KeyringService* keyring_service,
-    AssetRatioService* asset_ratio_service,
     std::unique_ptr<EthTxStateManager> tx_state_manager,
     std::unique_ptr<EthNonceTracker> nonce_tracker,
     std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
     PrefService* prefs)
     : json_rpc_service_(json_rpc_service),
       keyring_service_(keyring_service),
-      asset_ratio_service_(asset_ratio_service),
       prefs_(prefs),
       tx_state_manager_(std::move(tx_state_manager)),
       nonce_tracker_(std::move(nonce_tracker)),
@@ -303,10 +301,11 @@ void EthTxService::AddUnapproved1559Transaction(
       tx_data->base_data->data.empty() ? "" : ToHex(tx_data->base_data->data);
 
   if (!tx_ptr->max_priority_fee_per_gas() || !tx_ptr->max_fee_per_gas()) {
-    asset_ratio_service_->GetGasOracle(base::BindOnce(
-        &EthTxService::OnGetGasOracle, weak_factory_.GetWeakPtr(), from,
-        tx_data->base_data->to, tx_data->base_data->value, data, gas_limit,
-        std::move(tx_ptr), std::move(callback)));
+    GetGasEstimation1559(
+        base::BindOnce(&EthTxService::OnGetGasOracleForUnapprovedTransaction,
+                       weak_factory_.GetWeakPtr(), from, tx_data->base_data->to,
+                       tx_data->base_data->value, data, gas_limit,
+                       std::move(tx_ptr), std::move(callback)));
   } else if (gas_limit.empty()) {
     json_rpc_service_->GetEstimateGas(
         from, tx_data->base_data->to, "" /* gas */, "" /* gas_price */,
@@ -321,14 +320,15 @@ void EthTxService::AddUnapproved1559Transaction(
   }
 }
 
-void EthTxService::OnGetGasOracle(const std::string& from,
-                                  const std::string& to,
-                                  const std::string& value,
-                                  const std::string& data,
-                                  const std::string& gas_limit,
-                                  std::unique_ptr<Eip1559Transaction> tx,
-                                  AddUnapprovedTransactionCallback callback,
-                                  mojom::GasEstimation1559Ptr gas_estimation) {
+void EthTxService::OnGetGasOracleForUnapprovedTransaction(
+    const std::string& from,
+    const std::string& to,
+    const std::string& value,
+    const std::string& data,
+    const std::string& gas_limit,
+    std::unique_ptr<Eip1559Transaction> tx,
+    AddUnapprovedTransactionCallback callback,
+    mojom::GasEstimation1559Ptr gas_estimation) {
   auto estimation =
       Eip1559Transaction::GasEstimation::FromMojomGasEstimation1559(
           std::move(gas_estimation));
@@ -896,7 +896,7 @@ void EthTxService::SpeedupOrCancelTransaction(
       tx->set_data(std::vector<uint8_t>());
     }
 
-    asset_ratio_service_->GetGasOracle(base::BindOnce(
+    GetGasEstimation1559(base::BindOnce(
         &EthTxService::ContinueSpeedupOrCancel1559Transaction,
         weak_factory_.GetWeakPtr(), meta->from.ToChecksumAddress(),
         Uint256ValueToHex(meta->tx->gas_limit()), std::move(tx),
@@ -1034,6 +1034,54 @@ void EthTxService::RetryTransaction(const std::string& tx_meta_id,
                                    std::move(tx), std::move(callback),
                                    Uint256ValueToHex(meta->tx->gas_limit()),
                                    mojom::ProviderError::kSuccess, "");
+}
+
+void EthTxService::GetGasEstimation1559(GetGasEstimation1559Callback callback) {
+  json_rpc_service_->GetFeeHistory(
+      base::BindOnce(&EthTxService::OnGetGasEstimation1559,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void EthTxService::OnGetGasEstimation1559(
+    GetGasEstimation1559Callback callback,
+    const std::vector<std::string>& base_fee_per_gas,
+    const std::vector<double>& gas_used_ratio,
+    const std::string& oldest_block,
+    const std::vector<std::vector<std::string>>& reward,
+    mojom::ProviderError error,
+    const std::string& error_message) {
+  if (error != mojom::ProviderError::kSuccess) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  uint256_t low_priority_fee;
+  uint256_t avg_priority_fee;
+  uint256_t high_priority_fee;
+  uint256_t suggested_base_fee_per_gas;
+  if (!eth::GetSuggested1559Fees(base_fee_per_gas, gas_used_ratio, oldest_block,
+                                 reward, &low_priority_fee, &avg_priority_fee,
+                                 &high_priority_fee,
+                                 &suggested_base_fee_per_gas)) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  mojom::GasEstimation1559Ptr estimation = mojom::GasEstimation1559::New();
+  estimation->base_fee_per_gas = Uint256ValueToHex(suggested_base_fee_per_gas);
+  estimation->slow_max_priority_fee_per_gas =
+      Uint256ValueToHex(low_priority_fee);
+  estimation->avg_max_priority_fee_per_gas =
+      Uint256ValueToHex(avg_priority_fee);
+  estimation->fast_max_priority_fee_per_gas =
+      Uint256ValueToHex(high_priority_fee);
+  estimation->slow_max_fee_per_gas =
+      Uint256ValueToHex(suggested_base_fee_per_gas + low_priority_fee);
+  estimation->avg_max_fee_per_gas =
+      Uint256ValueToHex(suggested_base_fee_per_gas + avg_priority_fee);
+  estimation->fast_max_fee_per_gas =
+      Uint256ValueToHex(suggested_base_fee_per_gas + high_priority_fee);
+  std::move(callback).Run(std::move(estimation));
 }
 
 void EthTxService::Reset() {

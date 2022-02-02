@@ -57,10 +57,7 @@ std::unique_ptr<KeyedService> EthTxServiceFactory::BuildServiceInstanceFor(
       JsonRpcServiceFactory::GetServiceForState(browser_state);
   auto* keyring_service =
       KeyringServiceFactory::GetServiceForState(browser_state);
-  auto* asset_ratio_service =
-      AssetRatioServiceFactory::GetServiceForState(browser_state);
   return brave_wallet::BuildEthTxService(json_rpc_service, keyring_service,
-                                         asset_ratio_service,
                                          browser_state->GetPrefs());
 }
 

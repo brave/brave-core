@@ -501,7 +501,6 @@ interface AssetRatioService {
   // Gas estimation APIs
   GetEstimatedTime(string gas_price /* decimal string in wei */) =>
       (bool success, string seconds);
-  GetGasOracle() => (GasEstimation1559? estimation);
 
   // Obtain token info via contract address through etherscan API.
   GetTokenInfo(string contract_address) => (BlockchainToken? token);
@@ -751,6 +750,9 @@ interface EthTxService {
   GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
   GetTransactionMessageToSign(string tx_meta_id) => (string? message);
   ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status);
+
+  // Gas estimation API via eth_feeHistory API
+  GetGasEstimation1559() => (GasEstimation1559? estimation);
 
   // Resets the keyring and the related preferences
   Reset();

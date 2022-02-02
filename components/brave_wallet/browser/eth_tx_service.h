@@ -32,7 +32,6 @@ namespace brave_wallet {
 
 class EthTxServiceUnitTest;
 
-class AssetRatioService;
 class JsonRpcService;
 class KeyringService;
 
@@ -44,7 +43,6 @@ class EthTxService : public KeyedService,
  public:
   explicit EthTxService(JsonRpcService* json_rpc_service,
                         KeyringService* keyring_service,
-                        AssetRatioService* asset_ratio_service,
                         std::unique_ptr<EthTxStateManager> tx_state_manager,
                         std::unique_ptr<EthNonceTracker> nonce_tracker,
                         std::unique_ptr<EthPendingTxTracker> pending_tx_tracker,
@@ -122,6 +120,10 @@ class EthTxService : public KeyedService,
       GetTransactionMessageToSignCallback callback) override;
   void AddObserver(
       ::mojo::PendingRemote<mojom::EthTxServiceObserver> observer) override;
+
+  // Gas estimation API via eth_feeHistory API
+  void GetGasEstimation1559(GetGasEstimation1559Callback callback) override;
+
   // Resets things back to the original state of EthTxService
   // To be used when the Wallet is reset / erased
   void Reset() override;
@@ -176,14 +178,23 @@ class EthTxService : public KeyedService,
       const std::string& result,
       mojom::ProviderError error,
       const std::string& error_message);
-  void OnGetGasOracle(const std::string& from,
-                      const std::string& to,
-                      const std::string& value,
-                      const std::string& data,
-                      const std::string& gas_limit,
-                      std::unique_ptr<Eip1559Transaction> tx,
-                      AddUnapprovedTransactionCallback callback,
-                      mojom::GasEstimation1559Ptr gas_estimation);
+  void OnGetGasEstimation1559(
+      GetGasEstimation1559Callback callback,
+      const std::vector<std::string>& base_fee_per_gas,
+      const std::vector<double>& gas_used_ratio,
+      const std::string& oldest_block,
+      const std::vector<std::vector<std::string>>& reward,
+      mojom::ProviderError error,
+      const std::string& error_message);
+  void OnGetGasOracleForUnapprovedTransaction(
+      const std::string& from,
+      const std::string& to,
+      const std::string& value,
+      const std::string& data,
+      const std::string& gas_limit,
+      std::unique_ptr<Eip1559Transaction> tx,
+      AddUnapprovedTransactionCallback callback,
+      mojom::GasEstimation1559Ptr gas_estimation);
   void CheckIfBlockTrackerShouldRun();
   void UpdatePendingTransactions();
 
@@ -232,7 +243,6 @@ class EthTxService : public KeyedService,
 
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;        // NOT OWNED
   raw_ptr<KeyringService> keyring_service_ = nullptr;         // NOT OWNED
-  raw_ptr<AssetRatioService> asset_ratio_service_ = nullptr;  // NOT OWNED
   raw_ptr<PrefService> prefs_ = nullptr;                      // NOT OWNED
   std::unique_ptr<EthTxStateManager> tx_state_manager_;
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
