@@ -1597,7 +1597,14 @@ bool KeyringService::LazilyCreateKeyring(const std::string& keyring_id) {
     return true;
   // we use same mnemonic from default keyring for non default keyrings
   auto mnemonic = GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId);
-  return CreateKeyringInternal(keyring_id, mnemonic, false);
+  if (!CreateKeyringInternal(keyring_id, mnemonic, false))
+    return false;
+
+  for (const auto& observer : observers_) {
+    observer->KeyringCreated(keyring_id);
+  }
+
+  return true;
 }
 
 void KeyringService::GetSelectedAccount(GetSelectedAccountCallback callback) {
