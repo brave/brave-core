@@ -5887,6 +5887,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDDEN_TODAY" desc="Confirmation text shown when Brave Photos Memories were hidden from the new tab page for today.">
         Memories hidden for today
       </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_SOFT_OPT_OUT" desc="Confirmation text shown when Brave Photos Memories is soft disabled">
+        Memories hidden for two days
+      </message>
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLE" desc="Part of label (combined with IDS_NTP_MODULES_DISABLE_BUTTON_TEXT) used to disable Brave Photos Memories from the new tab page.">
         memories
       </message>
@@ -5913,6 +5916,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_OPT_OUT" desc="Label of the button to opt-out of Brave Photos in the new tab page.">
         No thanks
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_SOFT_OPT_OUT" desc="Label of the button to soft opt-out of Brave Photos in the new tab page.">
+        Ask me later
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_EXAMPLE" desc="Example of a memory title for the Brave Photos module in the new tab page.">
         2 years ago
