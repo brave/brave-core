@@ -5,9 +5,9 @@
 
 #include "bat/ads/internal/user_activity/user_activity_scoring_util.h"
 
-#include "bat/ads/internal/features/user_activity/user_activity_features.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
 #include "bat/ads/internal/user_activity/user_activity_event_info.h"
+#include "bat/ads/internal/user_activity/user_activity_features.h"
 #include "bat/ads/internal/user_activity/user_activity_scoring.h"
 #include "bat/ads/internal/user_activity/user_activity_trigger_info_aliases.h"
 #include "bat/ads/internal/user_activity/user_activity_util.h"

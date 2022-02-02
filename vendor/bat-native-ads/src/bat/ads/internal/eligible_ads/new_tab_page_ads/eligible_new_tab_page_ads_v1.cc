@@ -8,6 +8,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_pacing/ad_pacing.h"
 #include "bat/ads/internal/ad_priority/ad_priority.h"
+#include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting.h"
 #include "bat/ads/internal/ad_targeting/ad_targeting_user_model_info.h"
@@ -19,9 +20,8 @@
 #include "bat/ads/internal/eligible_ads/frequency_capping.h"
 #include "bat/ads/internal/eligible_ads/seen_ads.h"
 #include "bat/ads/internal/eligible_ads/seen_advertisers.h"
-#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 
 namespace ads {
 namespace new_tab_page_ads {

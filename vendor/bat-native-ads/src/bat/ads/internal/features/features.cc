@@ -7,14 +7,14 @@
 
 #include <string>
 
-#include "bat/ads/internal/features/ad_rewards/ad_rewards_features.h"
-#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
+#include "bat/ads/internal/account/statement/ad_rewards_features.h"
+#include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/features/bandits/epsilon_greedy_bandit_features.h"
 #include "bat/ads/internal/features/purchase_intent/purchase_intent_features.h"
 #include "bat/ads/internal/features/text_classification/text_classification_features.h"
-#include "bat/ads/internal/features/user_activity/user_activity_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/user_activity/user_activity_features.h"
 
 namespace ads {
 namespace features {
