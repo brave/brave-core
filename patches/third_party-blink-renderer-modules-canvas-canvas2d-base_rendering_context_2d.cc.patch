@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 631000242f6e9472e99b6946ed61b36d6cf84a9b..d94669b2b088cc664a2440cdc781c9b3acd6c95e 100644
+index f3d51c5b939fd054010ef066d0d5da22d4e014ad..466887996c5e1fef9a42a815a72a5ea59c167500 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 @@ -1940,6 +1940,7 @@ ImageData* BaseRenderingContext2D::getImageData(

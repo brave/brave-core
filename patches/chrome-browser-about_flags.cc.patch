@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index d1b66475ef7443bf98a82d54fa35c3fe2ca2aba2..dccf7a4bbe44be7494db95ae37e4491d2fda667d 100644
+index 0d8812d7b15ab6b9e2fa4f804495c47eb1ed13f5..95b21cfe0207325526f30c91112722fcf58c4a31 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -7660,6 +7660,7 @@ const FeatureEntry kFeatureEntries[] = {
-      SINGLE_VALUE_TYPE(switches::kPervasiveSystemAccentColor)},
- #endif
+@@ -7780,6 +7780,7 @@ const FeatureEntry kFeatureEntries[] = {
+      FEATURE_VALUE_TYPE(chrome::android::kDragAndDropAndroid)},
+ #endif  // defined(OS_ANDROID)
  
-+    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
++     BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
  #if defined(OS_ANDROID)
      {"use-ulp-languages-in-chrome",
       flag_descriptions::kUseULPLanguagesInChromeName,
