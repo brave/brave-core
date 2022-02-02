@@ -50,6 +50,8 @@ class SyncSettingsTableViewController: UITableViewController {
             navigationItem.setHidesBackButton(true, animated: false)
             navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self,
                                                                 action: #selector(doneTapped))
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSyncInternalsTapped))
         }
     }
     
@@ -94,8 +96,18 @@ class SyncSettingsTableViewController: UITableViewController {
     
     // MARK: Actions
     
-    @objc private func doneTapped() {
+    @objc
+    private func doneTapped() {
         navigationController?.popToRootViewController(animated: true)
+    }
+    
+    @objc
+    private func onSyncInternalsTapped() {
+        let syncInternalsController = syncAPI.createSyncInternalsController().then {
+            $0.title = Strings.braveSyncInternalsTitle
+        }
+        
+        navigationController?.pushViewController(syncInternalsController, animated: true)
     }
     
     private func presentAlertPopup(for type: DeviceRemovalType, device: BraveSyncDevice) {

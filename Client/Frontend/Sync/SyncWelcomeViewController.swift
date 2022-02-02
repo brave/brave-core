@@ -171,6 +171,8 @@ class SyncWelcomeViewController: SyncViewController {
         buttonsStackView.addArrangedSubview(newToSyncButton)
         buttonsStackView.addArrangedSubview(existingUserButton)
         mainStackView.addArrangedSubview(buttonsStackView)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSyncInternalsTapped))
     }
     
     /// Sync setup failure is handled here because it can happen from few places in children VCs(new chain, qr code, codewords)
@@ -185,6 +187,15 @@ class SyncWelcomeViewController: SyncViewController {
                 bvc?.present(SyncAlerts.initializationError, animated: true)
             }
         }
+    }
+    
+    @objc
+    private func onSyncInternalsTapped() {
+        let syncInternalsController = syncAPI.createSyncInternalsController().then {
+            $0.title = Strings.braveSyncInternalsTitle
+        }
+        
+        navigationController?.pushViewController(syncInternalsController, animated: true)
     }
     
     @objc func newToSyncAction() {

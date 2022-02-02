@@ -15,6 +15,9 @@ private let log = Logger.browserLogger
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    // This property must be non-null because even though it's optional,
+    // Chromium force unwraps it and uses it. For this reason, we always set this window property to the scene's main window.
+    internal var window: UIWindow?
     private var windowProtection: WindowProtection?
     private var sceneInfo: AppDelegate.SceneInfoModel?
     static var shouldHandleUrpLookup = false
@@ -99,6 +102,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             $0.rootViewController = navigationController
         }
+        
+        self.window = window
         
         // TODO: Refactor to accept a UIWindowScene
         // Then store the `windowProtection` in the `BrowserViewController` directly.
