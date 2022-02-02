@@ -8,9 +8,7 @@ impl KVClient for NativeClient {
 
     #[allow(clippy::needless_lifetimes)]
     fn get_store<'a>(&'a self) -> Result<RefMut<'a, NativeClientContext>, errors::InternalError> {
-        self.ctx
-            .try_borrow_mut()
-            .or(Err(errors::InternalError::BorrowFailed))
+        self.ctx.try_borrow_mut().or(Err(errors::InternalError::BorrowFailed))
     }
 }
 

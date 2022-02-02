@@ -119,9 +119,7 @@ where
     async fn get_orders(&self) -> Result<Option<Vec<Order>>, InternalError> {
         let mut store = self.get_store()?;
         let state: KVState = store.get_state()?;
-        let orders = state
-            .orders
-            .map(|os| os.into_iter().map(|(_, order)| order).collect());
+        let orders = state.orders.map(|os| os.into_iter().map(|(_, order)| order).collect());
         event!(Level::DEBUG, orders = ?orders, "got orders");
         Ok(orders)
     }
@@ -192,9 +190,7 @@ where
         let mut state: KVState = store.get_state()?;
 
         if state.credentials.is_none() {
-            state.credentials = Some(CredentialsState {
-                items: HashMap::new(),
-            });
+            state.credentials = Some(CredentialsState { items: HashMap::new() });
         }
 
         if let Some(credentials) = state.credentials.as_mut() {
@@ -204,11 +200,7 @@ where
                 unblinded_creds: None,
                 issuer_id: None,
             });
-            if credentials
-                .items
-                .insert(item_id.to_string(), creds)
-                .is_some()
-            {
+            if credentials.items.insert(item_id.to_string(), creds).is_some() {
                 return Err(InternalError::StorageWriteFailed(
                     "Item credentials were already initialized".to_string(),
                 ));
@@ -246,15 +238,13 @@ where
                     _ => {
                         return Err(InternalError::StorageWriteFailed(
                             "Item is not single use".to_string(),
-                        ))
+                        ));
                     }
                 }
                 return store.set_state(&state);
             }
         }
-        Err(InternalError::StorageWriteFailed(
-            "Item credentials were not initiated".to_string(),
-        ))
+        Err(InternalError::StorageWriteFailed("Item credentials were not initiated".to_string()))
     }
 
     #[instrument]
@@ -279,14 +269,12 @@ where
                     _ => {
                         return Err(InternalError::StorageWriteFailed(
                             "Item is not single use".to_string(),
-                        ))
+                        ));
                     }
                 }
             }
         }
-        Err(InternalError::StorageWriteFailed(
-            "Item credentials were not completed".to_string(),
-        ))
+        Err(InternalError::StorageWriteFailed("Item credentials were not completed".to_string()))
     }
 
     #[instrument]
@@ -298,9 +286,7 @@ where
         let mut state: KVState = store.get_state()?;
 
         if state.credentials.is_none() {
-            state.credentials = Some(CredentialsState {
-                items: HashMap::new(),
-            });
+            state.credentials = Some(CredentialsState { items: HashMap::new() });
         }
 
         if let Some(credentials) = state.credentials.as_mut() {
@@ -313,7 +299,7 @@ where
                     _ => {
                         return Err(InternalError::StorageReadFailed(
                             "Item is not time limited".to_string(),
-                        ))
+                        ));
                     }
                 }
             }
@@ -333,9 +319,7 @@ where
         let mut state: KVState = store.get_state()?;
 
         if state.credentials.is_none() {
-            state.credentials = Some(CredentialsState {
-                items: HashMap::new(),
-            });
+            state.credentials = Some(CredentialsState { items: HashMap::new() });
         }
 
         if let Some(credentials) = state.credentials.as_mut() {

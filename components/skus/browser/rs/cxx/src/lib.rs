@@ -197,9 +197,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
         .with_max_level(tracing::Level::TRACE)
         .init();
 
-    let env = env
-        .parse::<skus::Environment>()
-        .unwrap_or(skus::Environment::Local);
+    let env = env.parse::<skus::Environment>().unwrap_or(skus::Environment::Local);
 
     let pool = LocalPool::new();
     let mut spawner = pool.spawner();
@@ -208,10 +206,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
             is_shutdown: Rc::new(RefCell::new(false)),
             pool: Rc::new(RefCell::new(pool)),
             spawner: spawner.clone(),
-            ctx: Rc::new(RefCell::new(NativeClientContext {
-                environment: env.clone(),
-                ctx,
-            })),
+            ctx: Rc::new(RefCell::new(NativeClientContext { environment: env.clone(), ctx })),
         },
         env,
         None,
@@ -247,12 +242,7 @@ impl CppSDK {
     ) {
         let mut spawner = self.sdk.client.spawner.clone();
         if spawner
-            .spawn_local(refresh_order_task(
-                self.sdk.clone(),
-                callback,
-                callback_state,
-                order_id,
-            ))
+            .spawn_local(refresh_order_task(self.sdk.clone(), callback, callback_state, order_id))
             .is_err()
         {
             debug!("pool is shutdown");
@@ -380,11 +370,7 @@ async fn fetch_order_credentials_task(
     callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
     order_id: String,
 ) {
-    match sdk
-        .fetch_order_credentials(&order_id)
-        .await
-        .map_err(|e| e.into())
-    {
+    match sdk.fetch_order_credentials(&order_id).await.map_err(|e| e.into()) {
         Ok(_) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok),
         Err(e) => callback.0(callback_state.into_raw(), e),
     }
@@ -411,16 +397,10 @@ async fn prepare_credentials_presentation_task(
     domain: String,
     path: String,
 ) {
-    match sdk
-        .prepare_credentials_presentation(&domain, &path)
-        .await
-        .map_err(|e| e.into())
-    {
-        Ok(Some(presentation)) => callback.0(
-            callback_state.into_raw(),
-            ffi::SkusResult::Ok,
-            &presentation,
-        ),
+    match sdk.prepare_credentials_presentation(&domain, &path).await.map_err(|e| e.into()) {
+        Ok(Some(presentation)) => {
+            callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &presentation)
+        }
         Ok(None) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, ""),
         Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
@@ -428,7 +408,7 @@ async fn prepare_credentials_presentation_task(
 
 #[repr(transparent)]
 pub struct CredentialSummaryCallback(
-    pub extern "C" fn(
+    pub  extern "C" fn(
         callback_state: *mut ffi::CredentialSummaryCallbackState,
         result: ffi::SkusResult,
         summary: &str,
@@ -450,9 +430,7 @@ async fn credential_summary_task(
         .matching_credential_summary(&domain)
         .await
         .and_then(|summary| {
-            summary
-                .map(|summary| serde_json::to_string(&summary).map_err(|e| e.into()))
-                .transpose()
+            summary.map(|summary| serde_json::to_string(&summary).map_err(|e| e.into())).transpose()
         })
         .map_err(|e| e.into())
     {
