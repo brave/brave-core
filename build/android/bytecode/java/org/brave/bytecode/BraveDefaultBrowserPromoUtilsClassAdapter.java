@@ -8,13 +8,16 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveDefaultBrowserPromoUtilsClassAdapter extends BraveClassVisitor {
-    static String sDefaultBrowserPromoUtilsClassName = "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils";
+    static String sDefaultBrowserPromoUtilsClassName =
+            "org/chromium/chrome/browser/ui/default_browser_promo/DefaultBrowserPromoUtils";
 
-    static String sBraveDefaultBrowserPromoUtilsClassName = "org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils";
+    static String sBraveDefaultBrowserPromoUtilsClassName =
+            "org/chromium/chrome/browser/ui/default_browser_promo/BraveDefaultBrowserPromoUtils";
 
     public BraveDefaultBrowserPromoUtilsClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        changeMethodOwner(sDefaultBrowserPromoUtilsClassName, "prepareLaunchPromoIfNeeded", sBraveDefaultBrowserPromoUtilsClassName);
+        changeMethodOwner(sDefaultBrowserPromoUtilsClassName, "prepareLaunchPromoIfNeeded",
+                sBraveDefaultBrowserPromoUtilsClassName);
     }
 }
