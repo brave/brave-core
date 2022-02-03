@@ -19,7 +19,6 @@
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
@@ -129,7 +128,6 @@ class BraveVpnServiceDesktop
 
   void EnsureMojoConnected();
   void OnMojoConnectionError();
-  void OnSkusVPNCredentialUpdated();
   void OnGetSubscriberCredential(const std::string& subscriber_credential,
                                  bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
@@ -147,7 +145,6 @@ class BraveVpnServiceDesktop
   PrefService* prefs_ = nullptr;
   base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
       skus_service_getter_;
-  PrefChangeRegistrar pref_change_registrar_;
   std::string skus_credential_;
   mojo::Remote<skus::mojom::SkusService> skus_service_;
   std::vector<brave_vpn::mojom::Region> regions_;

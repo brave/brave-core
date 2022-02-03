@@ -272,7 +272,7 @@ TEST_F(BraveVPNServiceTest, DISABLED_HostnamesTest) {
 // TODO(bsclifton): fix after flow is decided
 TEST_F(BraveVPNServiceTest, DISABLED_LoadPurchasedStateTest) {
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, service_->purchased_state_);
-  pref_service_.SetBoolean(skus::prefs::kSkusVPNHasCredential, true);
+  //pref_service_.SetBoolean(skus::prefs::kSkusVPNHasCredential, true);
   EXPECT_EQ(PurchasedState::PURCHASED, service_->purchased_state_);
 }
 
@@ -330,7 +330,7 @@ TEST_F(BraveVPNServiceTest, DISABLED_ConnectionInfoTest) {
   // Check valid connection info is set when valid hostname and profile
   // credential are fetched.
   service_->connection_state_ = ConnectionState::CONNECTING;
-  pref_service_.SetBoolean(skus::prefs::kSkusVPNHasCredential, true);
+  //pref_service_.SetBoolean(skus::prefs::kSkusVPNHasCredential, true);
   service_->OnFetchHostnames("region-a", GetHostnamesData(), true);
   EXPECT_EQ(ConnectionState::CONNECTING, service_->connection_state_);
 
