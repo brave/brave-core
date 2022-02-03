@@ -294,7 +294,7 @@ export interface WalletInfo extends WalletInfoBase {
 export interface SwapErrorResponse {
   code: number
   reason: string
-  validationErrors: Array<{ field: string, code: number, reason: string }>
+  validationErrors?: Array<{ field: string, code: number, reason: string }>
 }
 
 export type AmountValidationErrorType =
