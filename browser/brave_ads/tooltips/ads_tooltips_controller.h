@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_tooltips/brave_tooltip_delegate.h"
 #include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
@@ -38,7 +39,7 @@ class AdsTooltipsController : public AdsTooltipsDelegate,
   // brave_tooltips::BraveTooltipDelegate:
   void OnTooltipWidgetDestroyed(const std::string& tooltip_id) override;
 
-  Profile* profile_ = nullptr;  // NOT OWNED
+  raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 };
 
 }  // namespace brave_ads

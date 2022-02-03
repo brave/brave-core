@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
@@ -42,10 +43,11 @@ class EligibleAdsBase {
   void set_last_served_ad(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
-  ad_targeting::geographic::SubdivisionTargeting*
-      subdivision_targeting_;  // NOT OWNED
+  raw_ptr<ad_targeting::geographic::SubdivisionTargeting>
+      subdivision_targeting_ = nullptr;  // NOT OWNED
 
-  resource::AntiTargeting* anti_targeting_resource_;  // NOT OWNED
+  raw_ptr<resource::AntiTargeting> anti_targeting_resource_ =
+      nullptr;  // NOT OWNED
 
   AdInfo last_served_ad_;
 };

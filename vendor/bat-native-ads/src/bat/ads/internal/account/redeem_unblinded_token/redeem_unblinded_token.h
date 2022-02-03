@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_REDEEM_UNBLINDED_TOKEN_REDEEM_UNBLINDED_TOKEN_H_
 
 #include "base/check_op.h"
+#include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 
@@ -49,7 +50,7 @@ class RedeemUnblindedToken final {
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
                                       const bool should_retry);
 
-  RedeemUnblindedTokenDelegate* delegate_ = nullptr;
+  raw_ptr<RedeemUnblindedTokenDelegate> delegate_ = nullptr;
 };
 
 }  // namespace ads

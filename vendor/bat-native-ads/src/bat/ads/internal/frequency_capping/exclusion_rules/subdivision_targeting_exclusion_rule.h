@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
@@ -38,8 +39,8 @@ class SubdivisionTargetingExclusionRule final
   std::string GetLastMessage() const override;
 
  private:
-  ad_targeting::geographic::SubdivisionTargeting*
-      subdivision_targeting_;  // NOT OWNED
+  raw_ptr<ad_targeting::geographic::SubdivisionTargeting>
+      subdivision_targeting_ = nullptr;  // NOT OWNED
 
   std::string last_message_;
 

@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
@@ -85,7 +86,7 @@ class AdsTabHelper : public content::WebContentsObserver,
 #endif
 
   SessionID tab_id_;
-  AdsService* ads_service_ = nullptr;  // NOT OWNED
+  raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
   bool is_active_ = false;
   bool is_browser_active_ = true;
   std::vector<GURL> redirect_chain_;
