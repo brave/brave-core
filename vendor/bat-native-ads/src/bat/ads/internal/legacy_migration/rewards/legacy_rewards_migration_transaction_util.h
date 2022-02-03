@@ -16,15 +16,18 @@ class optional;
 }  // namespace absl
 
 namespace ads {
+
+struct TransactionInfo;
+
 namespace rewards {
 
-TransactionList GetTransactionsForThisMonth(
-    const TransactionList& transactions);
-
-absl::optional<TransactionInfo>
-BuildTransactionForUnreconciledTransactionsForPreviousMonths(
-    const TransactionList& transaction_history,
+TransactionList GetAllUnreconciledTransactions(
+    const TransactionList& transactions,
     const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
+
+absl::optional<TransactionList>
+BuildTransactionsForReconciledTransactionsThisMonth(
+    const PaymentList& payments);
 
 absl::optional<TransactionInfo>
 BuildTransactionForReconciledTransactionsLastMonth(const PaymentList& payments);

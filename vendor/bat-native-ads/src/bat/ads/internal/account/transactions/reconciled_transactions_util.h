@@ -16,9 +16,9 @@ namespace ads {
 
 struct TransactionInfo;
 
+bool DidReconcileTransaction(const TransactionInfo& transaction);
 bool DidReconcileTransactionsLastMonth(const TransactionList& transactions);
 bool DidReconcileTransactionsThisMonth(const TransactionList& transactions);
-bool DidReconcileTransaction(const TransactionInfo& transaction);
 bool DidReconcileTransactionWithinDateRange(const TransactionInfo& transaction,
                                             const base::Time& from_time,
                                             const base::Time& to_time);

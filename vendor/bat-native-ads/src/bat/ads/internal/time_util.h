@@ -14,15 +14,17 @@ namespace ads {
 
 int GetLocalTimeAsMinutes(const base::Time& time);
 
-base::Time AdjustTimeToBeginningOfPreviousMonth(const base::Time& time);
-base::Time AdjustTimeToEndOfPreviousMonth(const base::Time& time);
-base::Time AdjustTimeToBeginningOfMonth(const base::Time& time);
-base::Time AdjustTimeToEndOfMonth(const base::Time& time);
+base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time& time);
+base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time& time);
+base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time& time);
+base::Time AdjustLocalTimeToEndOfMonth(const base::Time& time);
 
-base::Time GetTimeAtBeginningOfLastMonth();
-base::Time GetTimeAtEndOfLastMonth();
-base::Time GetTimeAtBeginningOfThisMonth();
-base::Time GetTimeAtEndOfThisMonth();
+base::Time GetTimeInDistantPast();
+
+base::Time GetLocalTimeAtBeginningOfLastMonth();
+base::Time GetLocalTimeAtEndOfLastMonth();
+base::Time GetLocalTimeAtBeginningOfThisMonth();
+base::Time GetLocalTimeAtEndOfThisMonth();
 
 // TODO(https://github.com/brave/brave-browser/issues/20169): Remove this
 // function when base::Time::FromLocalExploded for linux sandbox will be fixed.

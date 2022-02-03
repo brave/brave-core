@@ -27,30 +27,21 @@ base::Time GetNextPaymentDate(const TransactionList& transactions) {
 }
 
 double GetEarningsForThisMonth(const TransactionList& transactions) {
-  const base::Time& from_time = GetTimeAtBeginningOfThisMonth();
-  const base::Time& to_time = base::Time::Now();
+  const double unreconciled_earnings = GetUnreconciledEarnings(transactions);
 
-  return GetEarningsForDateRange(transactions, from_time, to_time);
+  const double reconciled_earnings_this_month =
+      GetReconciledEarningsForThisMonth(transactions);
+
+  return unreconciled_earnings + reconciled_earnings_this_month;
 }
 
-double GetUnreconciledEarningsForPreviousMonths(
-    const TransactionList& transactions) {
-  const base::Time& from_time = base::Time();
-  const base::Time& to_time = GetTimeAtEndOfLastMonth();
-
-  return GetUnreconciledEarningsForDateRange(transactions, from_time, to_time);
-}
-
-double GetReconciledEarningsForLastMonth(const TransactionList& transactions) {
-  const base::Time& from_time = GetTimeAtBeginningOfLastMonth();
-  const base::Time& to_time = GetTimeAtEndOfLastMonth();
-
-  return GetReconciledEarningsForDateRange(transactions, from_time, to_time);
+double GetEarningsForLastMonth(const TransactionList& transactions) {
+  return GetReconciledEarningsForLastMonth(transactions);
 }
 
 int GetAdsReceivedForThisMonth(const TransactionList& transactions) {
-  const base::Time& from_time = GetTimeAtBeginningOfThisMonth();
-  const base::Time& to_time = base::Time::Now();
+  const base::Time& from_time = GetLocalTimeAtBeginningOfThisMonth();
+  const base::Time& to_time = GetLocalTimeAtEndOfThisMonth();
 
   return GetAdsReceivedForDateRange(transactions, from_time, to_time);
 }

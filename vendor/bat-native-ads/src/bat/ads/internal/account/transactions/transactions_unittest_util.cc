@@ -28,7 +28,7 @@ TransactionInfo BuildTransaction(const double value,
   TransactionInfo transaction;
 
   transaction.id = base::GenerateGUID();
-  transaction.created_at = Now().ToDoubleT();
+  transaction.created_at = NowAsTimestamp();
   transaction.creative_instance_id = base::GenerateGUID();
   transaction.value = value;
   transaction.ad_type = AdType::kAdNotification;
