@@ -24,6 +24,10 @@ export const PriceChange = styled.span<Partial<StyleProps>>`
   font-weight: 400;
   letter-spacing: 0.01em;
   color: ${p => p.theme.color.background01};
+  
+  @media (prefers-color-scheme: dark) {
+    color: ${p => p.theme.color.text};
+  }
 `
 
 export const ArrowBase = styled.span`
