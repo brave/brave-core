@@ -456,7 +456,3 @@
 -keep class org.chromium.chrome.browser.ui.default_browser_promo.DefaultBrowserPromoUtils {
     *** prepareLaunchPromoIfNeeded(...);
 }
-
--keep class org.chromium.chrome.browser.flags.CachedFeatureFlags {
-    *** getConsistentBooleanValue(...);
-}
