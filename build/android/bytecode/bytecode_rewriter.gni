@@ -3,7 +3,6 @@ import("//build/config/python.gni")
 brave_bytecode_jars = [
   "obj/brave/android/features/tab_ui/java.javac.jar",
   "obj/brave/android/java/org/chromium/chrome/browser/search_engines/settings/java.javac.jar",
-  "obj/brave/browser/flags/java.javac.jar",
   "obj/brave/browser/notifications/java.javac.jar",
   "obj/brave/browser/ui/android/omnibox/java.javac.jar",
   "obj/brave/browser/ui/android/theme/java.javac.jar",
@@ -11,7 +10,6 @@ brave_bytecode_jars = [
   "obj/chrome/android/base_module_java.javac.jar",
   "obj/chrome/android/chrome_java.javac.jar",
   "obj/chrome/android/features/tab_ui/java.javac.jar",
-  "obj/chrome/browser/flags/java.javac.jar",
   "obj/chrome/browser/notifications/java.javac.jar",
   "obj/chrome/browser/safe_browsing/android/java.javac.jar",
   "obj/chrome/browser/search_engines/android/java.javac.jar",
