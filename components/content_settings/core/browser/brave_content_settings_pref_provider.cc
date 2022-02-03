@@ -448,20 +448,6 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   rules.clear();
   brave_cookie_rules_[incognito].clear();
 
-  // kGoogleLoginControlType preference adds an exception for
-  // accounts.google.com to access cookies in 3p context to allow login using
-  // google oauth. The exception is added before all overrides to allow google
-  // oauth to work when the user sets custom overrides for a site.
-  // For example: Google OAuth will be allowed if the user allows all cookies
-  // and sets 3p cookie blocking for a site.
-  if (prefs_->GetBoolean(kGoogleLoginControlType)) {
-      auto rule = Rule(ContentSettingsPattern::FromString(kGoogleOAuthPattern),
-                       ContentSettingsPattern::Wildcard(),
-                       base::Value::FromUniquePtrValue(
-                           ContentSettingToValue(CONTENT_SETTING_ALLOW)));
-      rules.emplace_back(CloneRule(rule));
-      brave_cookie_rules_[incognito].emplace_back(CloneRule(rule));  
-}
   // non-pref based exceptions should go in the cookie_settings_base.cc
   // chromium_src override
 
