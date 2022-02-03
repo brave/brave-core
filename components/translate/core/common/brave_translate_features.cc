@@ -18,6 +18,9 @@ const base::Feature kUseBraveTranslateGo{
 const base::FeatureParam<bool> kUpdateLanguageListParam{
     &kUseBraveTranslateGo, "update-languages", false};
 
+const base::FeatureParam<bool> kUseBergamotLanguageList{
+    &kUseBraveTranslateGo, "use-bergamot-language-list", true};
+
 }  // namespace features
 
 bool IsBraveTranslateGoAvailable() {
@@ -45,6 +48,11 @@ bool UseGoogleTranslateEndpoint() {
   return IsBraveTranslateGoAvailable() &&
          base::CommandLine::ForCurrentProcess()->HasSwitch(
              switches::kBraveTranslateUseGoogleEndpoint);
+}
+
+bool ShouldUseBergamotLanguageList() {
+  return IsBraveTranslateGoAvailable() &&
+         features::kUseBergamotLanguageList.Get();
 }
 
 }  // namespace translate
