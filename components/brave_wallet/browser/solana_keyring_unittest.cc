@@ -89,4 +89,27 @@ TEST(SolanaKeyringUnitTest, Accounts) {
   EXPECT_TRUE(keyring.GetEncodedPrivateKey("brave").empty());
 }
 
+TEST(SolanaKeyringUnitTest, SignMessage) {
+  SolanaKeyring keyring;
+  std::unique_ptr<std::vector<uint8_t>> seed =
+      MnemonicToSeed(std::string(mnemonic), "");
+  keyring.ConstructRootHDKey(*seed, "m/44'/501'");
+
+  keyring.AddAccounts();
+  EXPECT_EQ(keyring.GetAddress(0),
+            "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu");
+
+  // Message: Hello Brave
+  const std::vector<uint8_t> message = {72, 101, 108, 108, 111, 32,
+                                        66, 114, 97,  118, 101};
+  const std::vector<uint8_t> expected_signature = {
+      2,   179, 226, 40,  228, 8,   248, 176, 39,  21,  205, 26,  136,
+      7,   92,  162, 178, 18,  181, 212, 58,  93,  159, 167, 207, 74,
+      58,  102, 213, 60,  21,  217, 236, 188, 90,  75,  120, 116, 130,
+      104, 20,  185, 45,  50,  115, 244, 223, 167, 114, 6,   225, 189,
+      103, 51,  156, 215, 22,  207, 130, 197, 57,  39,  186, 12};
+  auto signature = keyring.SignMessage(keyring.GetAddress(0), message);
+  EXPECT_EQ(signature, expected_signature);
+}
+
 }  // namespace brave_wallet
