@@ -13,6 +13,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/legacy_migration/rewards/payment_info.h"
+#include "bat/ads/internal/time_util.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
 namespace rewards {
@@ -27,10 +29,8 @@ std::string GetFormattedBalanceDate(const base::Time& time) {
   return base::StringPrintf("%04d-%02d", exploded.year, exploded.month);
 }
 
-}  // namespace
-
-double GetPaymentBalanceForMonth(const PaymentList& payments,
-                                 const base::Time& time) {
+absl::optional<PaymentInfo> GetPaymentForMonth(const PaymentList& payments,
+                                               const base::Time& time) {
   const std::string& formatted_date = GetFormattedBalanceDate(time);
 
   const auto iter = std::find_if(payments.cbegin(), payments.cend(),
@@ -38,12 +38,26 @@ double GetPaymentBalanceForMonth(const PaymentList& payments,
                                    return payment.month == formatted_date;
                                  });
   if (iter == payments.end()) {
-    return 0.0;
+    return absl::nullopt;
   }
 
   const PaymentInfo& payment = *iter;
 
-  return payment.balance;
+  return payment;
+}
+
+}  // namespace
+
+absl::optional<PaymentInfo> GetPaymentForThisMonth(
+    const PaymentList& payments) {
+  const base::Time& time = GetLocalTimeAtBeginningOfThisMonth();
+  return GetPaymentForMonth(payments, time);
+}
+
+absl::optional<PaymentInfo> GetPaymentForLastMonth(
+    const PaymentList& payments) {
+  const base::Time& time = GetLocalTimeAtBeginningOfLastMonth();
+  return GetPaymentForMonth(payments, time);
 }
 
 }  // namespace rewards

@@ -69,9 +69,6 @@ absl::optional<TransactionList> GetTransactionsFromList(
 
   TransactionList transactions;
 
-  const base::Time& now = base::Time::Now();
-  const double reconciled_at_timestamp = now.ToDoubleT();
-
   for (const auto& transaction_value : value.GetList()) {
     if (!transaction_value.is_dict()) {
       return absl::nullopt;
@@ -83,13 +80,6 @@ absl::optional<TransactionList> GetTransactionsFromList(
       return absl::nullopt;
     }
     TransactionInfo transaction = transaction_optional.value();
-
-    // Legacy |transaction_history| state in "confirmations.json" does not
-    // contain the date of redemption. However, for migration purposes setting
-    // |reconciled_at| to the current time for all transactions will be adequate
-    // as we will force a token redemption after migration by setting
-    // |prefs::kNextTokenRedemptionAt| to the current time
-    transaction.reconciled_at = reconciled_at_timestamp;
 
     transactions.push_back(transaction);
   }

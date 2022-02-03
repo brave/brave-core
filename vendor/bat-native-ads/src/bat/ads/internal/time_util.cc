@@ -111,7 +111,7 @@ int GetLocalTimeAsMinutes(const base::Time& time) {
   return (exploded.hour * base::Time::kMinutesPerHour) + exploded.minute;
 }
 
-base::Time AdjustTimeToBeginningOfPreviousMonth(const base::Time& time) {
+base::Time AdjustLocalTimeToBeginningOfPreviousMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -141,7 +141,7 @@ base::Time AdjustTimeToBeginningOfPreviousMonth(const base::Time& time) {
   return adjusted_time;
 }
 
-base::Time AdjustTimeToEndOfPreviousMonth(const base::Time& time) {
+base::Time AdjustLocalTimeToEndOfPreviousMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -171,7 +171,7 @@ base::Time AdjustTimeToEndOfPreviousMonth(const base::Time& time) {
   return adjusted_time;
 }
 
-base::Time AdjustTimeToBeginningOfMonth(const base::Time& time) {
+base::Time AdjustLocalTimeToBeginningOfMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -195,7 +195,7 @@ base::Time AdjustTimeToBeginningOfMonth(const base::Time& time) {
   return adjusted_time;
 }
 
-base::Time AdjustTimeToEndOfMonth(const base::Time& time) {
+base::Time AdjustLocalTimeToEndOfMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
   DCHECK(exploded.HasValidValues());
@@ -219,24 +219,28 @@ base::Time AdjustTimeToEndOfMonth(const base::Time& time) {
   return adjusted_time;
 }
 
-base::Time GetTimeAtBeginningOfLastMonth() {
-  const base::Time& now = base::Time::Now();
-  return AdjustTimeToBeginningOfPreviousMonth(now);
+base::Time GetTimeInDistantPast() {
+  return base::Time();
 }
 
-base::Time GetTimeAtEndOfLastMonth() {
+base::Time GetLocalTimeAtBeginningOfLastMonth() {
   const base::Time& now = base::Time::Now();
-  return AdjustTimeToEndOfPreviousMonth(now);
+  return AdjustLocalTimeToBeginningOfPreviousMonth(now);
 }
 
-base::Time GetTimeAtBeginningOfThisMonth() {
+base::Time GetLocalTimeAtEndOfLastMonth() {
   const base::Time& now = base::Time::Now();
-  return AdjustTimeToBeginningOfMonth(now);
+  return AdjustLocalTimeToEndOfPreviousMonth(now);
 }
 
-base::Time GetTimeAtEndOfThisMonth() {
+base::Time GetLocalTimeAtBeginningOfThisMonth() {
   const base::Time& now = base::Time::Now();
-  return AdjustTimeToEndOfMonth(now);
+  return AdjustLocalTimeToBeginningOfMonth(now);
+}
+
+base::Time GetLocalTimeAtEndOfThisMonth() {
+  const base::Time& now = base::Time::Now();
+  return AdjustLocalTimeToEndOfMonth(now);
 }
 
 void SetFromLocalExplodedFailedForTesting(bool set_failed) {
