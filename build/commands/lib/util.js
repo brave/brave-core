@@ -25,6 +25,7 @@ async function applyPatches() {
   Log.progress('Applying patches...')
   // Always detect if we need to apply patches, since user may have modified
   // either chromium source files, or .patch files manually
+  // Extra comment by mherrmann to test a PR CI build.
   const coreRepoPath = config.braveCoreDir
   const patchesPath = path.join(coreRepoPath, 'patches')
   const v8PatchesPath = path.join(patchesPath, 'v8')
