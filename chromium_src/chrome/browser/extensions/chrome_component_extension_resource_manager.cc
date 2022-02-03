@@ -16,12 +16,6 @@
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources_map.h"
 #endif
 
-#define BRAVE_REWARDS_EXTENSION_RESOURCES                           \
-  AddComponentResourceEntries(kBraveRewardsExtensionResources,      \
-                              kBraveRewardsExtensionResourcesSize); \
-  AddComponentResourceEntries(kBraveRewardsPanelGenerated,          \
-                              kBraveRewardsPanelGeneratedSize);
-
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #define BRAVE_WEBTORRENT_RESOURCES                            \
   AddComponentResourceEntries(kBraveWebtorrentResources,      \
@@ -36,7 +30,10 @@
   AddComponentResourceEntries(kBraveExtension, kBraveExtensionSize); \
   AddComponentResourceEntries(kBraveExtensionGenerated,              \
                               kBraveExtensionGeneratedSize);         \
-  BRAVE_REWARDS_EXTENSION_RESOURCES                                  \
+  AddComponentResourceEntries(kBraveRewardsExtensionResources,       \
+                              kBraveRewardsExtensionResourcesSize);  \
+  AddComponentResourceEntries(kBraveRewardsPanelGenerated,           \
+                              kBraveRewardsPanelGeneratedSize);      \
   BRAVE_WEBTORRENT_RESOURCES
 
 #include "src/chrome/browser/extensions/chrome_component_extension_resource_manager.cc"
