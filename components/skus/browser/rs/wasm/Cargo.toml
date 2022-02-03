@@ -10,7 +10,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 async-trait = "0.1.52"
 skus = { path = "../lib", default_features = false, features = ["wasm"] }
-futures-util-preview = "0.3.0-alpha.17"
+futures-util-preview = "0.3.0-alpha.19"
 js-sys = "0.3"
 serde = "1.0"
 serde_derive = "1.0"

@@ -878,7 +878,7 @@ dependencies = [
 
 [[package]]
 name = "skus-sdk"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "async-trait",
  "console_error_panic_hook",
