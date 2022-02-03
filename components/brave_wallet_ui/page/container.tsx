@@ -126,6 +126,7 @@ function Container (props: Props) {
   const [buyAmount, setBuyAmount] = React.useState('')
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
+  const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
 
   const {
     swapAssetOptions,
@@ -502,6 +503,21 @@ function Container (props: Props) {
     const acceptedAccountRoutes = accounts.map((account) => {
       return `${WalletRoutes.Accounts}/${account.address}`
     })
+
+    const allAcceptedRoutes = [
+      WalletRoutes.Backup,
+      WalletRoutes.Accounts,
+      WalletRoutes.AddAccountModal,
+      WalletRoutes.AddAssetModal,
+      WalletRoutes.Portfolio,
+      ...acceptedPortfolioRoutes,
+      ...acceptedAccountRoutes
+    ]
+
+    if (allAcceptedRoutes.includes(walletLocation)) {
+      setSessionRoute(walletLocation)
+    }
+
     if (!hasInitialized) {
       return
     }
@@ -521,13 +537,15 @@ function Container (props: Props) {
       walletLocation !== WalletRoutes.AddAccountModal &&
       walletLocation !== WalletRoutes.AddAssetModal &&
       walletLocation !== WalletRoutes.Market &&
+      !allAcceptedRoutes.includes(walletLocation) &&
       acceptedAccountRoutes.length !== 0 &&
-      !acceptedAccountRoutes.includes(walletLocation) &&
-      walletLocation !== WalletRoutes.Portfolio &&
-      acceptedPortfolioRoutes.length !== 0 &&
-      !acceptedPortfolioRoutes.includes(walletLocation)
+      acceptedPortfolioRoutes.length !== 0
     ) {
-      history.push(WalletRoutes.Portfolio)
+      if (sessionRoute) {
+        history.push(sessionRoute)
+      } else {
+        history.push(WalletRoutes.Portfolio)
+      }
     }
   }, [
     walletLocation,
