@@ -176,6 +176,9 @@ public class CryptoStore: ObservableObject {
     return store
   }
   
+  private(set) lazy var settingsStore = SettingsStore(keyringService: keyringService,
+                                                      walletService: walletService)
+  
   func fetchUnapprovedTransactions() {
     keyringService.defaultKeyringInfo { [self] keyring in
       var pendingTransactions: [BraveWallet.TransactionInfo] = []

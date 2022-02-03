@@ -139,4 +139,13 @@ extension TransactionConfirmationStore {
   }
 }
 
+extension SettingsStore {
+  static var previewStore: SettingsStore {
+    .init(
+      keyringService: MockKeyringService(),
+      walletService: MockBraveWalletService()
+    )
+  }
+}
+
 #endif
