@@ -47,6 +47,7 @@ EXCLUDES = [
     'content/browser/tld_ephemeral_lifetime.cc',
     'content/public/browser/tld_ephemeral_lifetime.h',
     'third_party/blink/common/origin_trials/origin_trials.cc',
+    'third_party/blink/renderer/bindings/modules/v8/v8_navigator.cc',
     'third_party/blink/renderer/modules/battery/navigator_batterytest.cc',
     'third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc',
     'third_party/blink/renderer/modules/quota/navigator_storagetest.cc',
@@ -58,7 +59,8 @@ GRIT_EXCLUDES = [
 ]
 
 GRIT_INCLUDES = [
-    'third_party/blink/common/origin_trials/origin_trials.cc'
+    'third_party/blink/common/origin_trials/origin_trials.cc',
+    'third_party/blink/renderer/bindings/modules/v8/v8_navigator.cc',
 ]
 
 
