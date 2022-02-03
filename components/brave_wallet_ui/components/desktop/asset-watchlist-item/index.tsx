@@ -38,6 +38,10 @@ const AssetWatchlistItem = (props: Props) => {
     onSelectAsset(key, selected, token, isCustom)
   }
 
+  const onClickAsset = () => {
+    onSelectAsset(token.contractAddress, !isSelected, token, isCustom)
+  }
+
   const onClickRemoveAsset = () => {
     onRemoveAsset(token)
   }
@@ -48,7 +52,7 @@ const AssetWatchlistItem = (props: Props) => {
 
   return (
     <StyledWrapper>
-      <NameAndIcon>
+      <NameAndIcon onClick={onClickAsset}>
         <AssetIconWithPlaceholder selectedAsset={token} />
         <NameAndSymbol>
           <AssetName>{token.name} {token.isErc721 ? hexToNumber(token.tokenId ?? '') : ''}</AssetName>
