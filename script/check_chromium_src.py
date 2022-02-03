@@ -44,6 +44,7 @@ EXCLUDES = [
     'base/feature_override.h',
     'chrome/installer/linux/common/brave-browser/chromium-browser.appdata.xml',
     'chrome/installer/linux/common/brave-browser/chromium-browser.info',
+    'chrome/installer/setup/brave_behaviors.cc',
     'content/browser/tld_ephemeral_lifetime.cc',
     'content/public/browser/tld_ephemeral_lifetime.h',
     'third_party/blink/common/origin_trials/origin_trials.cc',
