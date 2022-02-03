@@ -13,6 +13,6 @@
       std::make_unique<syncer::BraveSyncServiceImplDelegate>( \
           DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state)));
 
-#include "src/ios/chrome/browser/sync/sync_service_factory.cc"
+#include "src/ios/chrome/browser/sync/sync_service_factory.mm"
 
 #undef BRAVE_BUILD_SERVICE_INSTANCE_FOR
