@@ -172,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
 
   const int default_provider_id =
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE;
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
 
   // Check tor profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
@@ -198,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   EXPECT_TRUE(tor_profile->IsTor());
 
   const int default_provider_id =
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE;
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             default_provider_id);

@@ -19,7 +19,7 @@ TorWindowSearchEngineProviderService(Profile* otr_profile)
   DCHECK(otr_profile->IsTor());
 
   auto provider_data = TemplateURLDataFromPrepopulatedEngine(
-      TemplateURLPrepopulateData::brave_search);
+      TemplateURLPrepopulateData::brave_search_tor);
   default_template_url_for_tor_ = std::make_unique<TemplateURL>(*provider_data);
 
   ConfigureSearchEngineProvider();
