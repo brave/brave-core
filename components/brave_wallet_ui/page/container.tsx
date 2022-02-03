@@ -659,6 +659,7 @@ function Container (props: Props) {
                 onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
                 foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
                 onUpdateVisibleAssets={onUpdateVisibleAssets}
+                onSelectAccount={onSelectAccount}
               />
             }
           </Route>

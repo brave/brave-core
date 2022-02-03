@@ -11,7 +11,8 @@ import {
   UpdateAccountNamePayloadType,
   WalletRoutes,
   DefaultCurrencies,
-  AddAccountNavTypes
+  AddAccountNavTypes,
+  UserAccountType
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
@@ -49,6 +50,7 @@ export interface Props {
   onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onOpenWalletSettings: () => void
   onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
+  onSelectAccount: (account: UserAccountType) => void
   defaultCurrencies: DefaultCurrencies
   addUserAssetError: boolean
   hasImportError: boolean
@@ -111,6 +113,7 @@ const CryptoView = (props: Props) => {
     onHideAddModal,
     onShowVisibleAssetsModal,
     onUpdateVisibleAssets,
+    onSelectAccount,
     showVisibleAssetsModal,
     defaultCurrencies,
     defaultWallet,
@@ -235,8 +238,9 @@ const CryptoView = (props: Props) => {
     setHideNav(false)
   }
 
-  const onSelectAccount = (account: WalletAccountType | undefined) => {
+  const onClickSelectAccount = (account: WalletAccountType | undefined) => {
     if (account) {
+      onSelectAccount(account)
       history.push(`${WalletRoutes.Accounts}/${account.address}`)
     }
   }
@@ -308,7 +312,7 @@ const CryptoView = (props: Props) => {
           selectedTimeline={selectedTimeline}
           selectedPortfolioTimeline={selectedPortfolioTimeline}
           onSelectAsset={selectAsset}
-          onSelectAccount={onSelectAccount}
+          onSelectAccount={onClickSelectAccount}
           onClickAddAccount={onClickAddAccount}
           onSelectNetwork={onSelectNetwork}
           onAddCustomAsset={onAddCustomAsset}
@@ -346,7 +350,7 @@ const CryptoView = (props: Props) => {
           onRemoveAccount={onRemoveAccount}
           onDoneViewingPrivateKey={onDoneViewingPrivateKey}
           onViewPrivateKey={onViewPrivateKey}
-          onSelectAccount={onSelectAccount}
+          onSelectAccount={onClickSelectAccount}
           onSelectAsset={selectAsset}
           goBack={goBack}
           selectedAccount={selectedAccount}
