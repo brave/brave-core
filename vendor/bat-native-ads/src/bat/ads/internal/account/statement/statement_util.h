@@ -17,9 +17,7 @@ namespace ads {
 base::Time GetNextPaymentDate(const TransactionList& transactions);
 
 double GetEarningsForThisMonth(const TransactionList& transactions);
-double GetUnreconciledEarningsForPreviousMonths(
-    const TransactionList& transactions);
-double GetReconciledEarningsForLastMonth(const TransactionList& transactions);
+double GetEarningsForLastMonth(const TransactionList& transactions);
 
 int GetAdsReceivedForThisMonth(const TransactionList& transactions);
 
