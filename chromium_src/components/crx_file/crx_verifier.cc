@@ -20,7 +20,7 @@ constexpr uint8_t kBravePublisherKeyHash[] = {
     0xf0, 0x43, 0x4,  0x53, 0xf0, 0x7c, 0x32, 0x18, 0xf6, 0xc9, 0x74,
     0x82, 0xa5, 0x95, 0xa5, 0xa9, 0xac, 0x8c, 0xcf, 0x90, 0x14};
 
-std::vector<uint8_t>& GetBravePublisherKey() {
+std::vector<uint8_t>& GetBravePublisherKeyHash() {
   static base::NoDestructor<std::vector<uint8_t>> brave_publisher_key(
       std::begin(kBravePublisherKeyHash), std::end(kBravePublisherKeyHash));
   return *brave_publisher_key;
@@ -28,15 +28,15 @@ std::vector<uint8_t>& GetBravePublisherKey() {
 
 // Used in the patch in crx_verifier.cc.
 bool IsBravePublisher(const std::vector<uint8_t>& key_hash) {
-  return GetBravePublisherKey() == key_hash;
+  return GetBravePublisherKeyHash() == key_hash;
 }
 
 }  // namespace
 
 namespace crx_file {
 
-void SetBravePublisherKeyForTesting(const std::vector<uint8_t>& test_key) {
-  GetBravePublisherKey() = test_key;
+void SetBravePublisherKeyHashForTesting(const std::vector<uint8_t>& test_key) {
+  GetBravePublisherKeyHash() = test_key;
 }
 
 }  // namespace crx_file

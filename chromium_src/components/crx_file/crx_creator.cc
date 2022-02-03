@@ -6,9 +6,11 @@
 #include "components/crx_file/crx_creator.h"
 
 namespace crx_file {
+
 class CrxFileHeader;
 
 std::string GetCrxId_BraveImpl(const std::string& key, CrxFileHeader* header);
+
 }  // namespace crx_file
 
 #include "src/components/crx_file/crx_creator.cc"

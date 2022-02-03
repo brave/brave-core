@@ -24,6 +24,35 @@
 
 namespace extensions {
 
+namespace {
+// Generate a publish key hash from .pem file in the format used in
+// crx_verifier.cc.
+std::vector<uint8_t> GetPublicKeyHash(const base::FilePath& pem_path) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+
+  std::string private_key_contents;
+  if (!base::ReadFileToString(pem_path, &private_key_contents))
+    return {};
+  std::string private_key_bytes;
+  if (!Extension::ParsePEMKeyBytes(private_key_contents, &private_key_bytes))
+    return {};
+
+  auto private_key = crypto::RSAPrivateKey::CreateFromPrivateKeyInfo(
+      std::vector<uint8_t>(private_key_bytes.begin(), private_key_bytes.end()));
+  if (!private_key)
+    return {};
+
+  std::vector<uint8_t> public_key;
+  private_key->ExportPublicKey(&public_key);
+
+  std::vector<uint8_t> key_hash(crypto::kSHA256Length);
+  crypto::SHA256HashString(std::string(public_key.begin(), public_key.end()),
+                           key_hash.data(), key_hash.size());
+  return key_hash;
+}
+
+}  // namespace
+
 class BraveCrxGenerationTest : public InProcessBrowserTest {
  public:
   BraveCrxGenerationTest() {
@@ -57,7 +86,6 @@ class BraveCrxGenerationTest : public InProcessBrowserTest {
   base::FilePath CreateTestCrx() {
     base::ScopedAllowBlockingForTesting allow_blocking;
 
-    brave::RegisterPathProvider();
     const auto extension_dir =
         GetTestDataDir().AppendASCII("extensions/trivial_extension");
 
@@ -76,32 +104,6 @@ class BraveCrxGenerationTest : public InProcessBrowserTest {
 
   base::ScopedTempDir temp_directory_;
 };
-
-// Generate a publish key hash from .pem file in the format used in
-// crx_verifier.cc.
-std::vector<uint8_t> GetPublicKeyHash(const base::FilePath& pem_path) {
-  base::ScopedAllowBlockingForTesting allow_blocking;
-
-  std::string private_key_contents;
-  if (!base::ReadFileToString(pem_path, &private_key_contents))
-    return {};
-  std::string private_key_bytes;
-  if (!Extension::ParsePEMKeyBytes(private_key_contents, &private_key_bytes))
-    return {};
-
-  auto private_key = crypto::RSAPrivateKey::CreateFromPrivateKeyInfo(
-      std::vector<uint8_t>(private_key_bytes.begin(), private_key_bytes.end()));
-  if (!private_key)
-    return {};
-
-  std::vector<uint8_t> public_key;
-  private_key->ExportPublicKey(&public_key);
-
-  std::vector<uint8_t> key_hash(crypto::kSHA256Length);
-  crypto::SHA256HashString(std::string(public_key.begin(), public_key.end()),
-                           key_hash.data(), key_hash.size());
-  return key_hash;
-}
 
 IN_PROC_BROWSER_TEST_F(BraveCrxGenerationTest,
                        CrxVerificationWithoutPublisherProof) {
@@ -132,7 +134,7 @@ IN_PROC_BROWSER_TEST_F(BraveCrxGenerationTest,
   const auto public_key_hash = GetPublicKeyHash(publisher_test_key_path);
   ASSERT_GT(public_key_hash.size(), 0u);
   // Register it's hash as publisher proof key has (replacing the real one).
-  crx_file::SetBravePublisherKeyForTesting(public_key_hash);
+  crx_file::SetBravePublisherKeyHashForTesting(public_key_hash);
 
   // Add the test key to the command line for using in crx generating process.
   base::CommandLine::ForCurrentProcess()->AppendSwitchPath(

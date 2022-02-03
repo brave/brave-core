@@ -10,7 +10,7 @@
 
 namespace crx_file {
 
-void SetBravePublisherKeyForTesting(const std::vector<uint8_t>& test_key);
+void SetBravePublisherKeyHashForTesting(const std::vector<uint8_t>& test_key);
 
 }  // namespace crx_file
 
