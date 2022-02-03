@@ -61,8 +61,10 @@ class SettingsViewController: TableViewController {
     private let feedDataSource: FeedDataSource
     private let historyAPI: BraveHistoryAPI
     private let syncAPI: BraveSyncAPI
-    private let walletKeyringStore: KeyringStore?
+    private let walletSettingsStore: SettingsStore?
     private let windowProtection: WindowProtection?
+    
+    private let featureSectionUUID: UUID = .init()
 
     init(profile: Profile,
          tabManager: TabManager,
@@ -72,7 +74,7 @@ class SettingsViewController: TableViewController {
          windowProtection: WindowProtection?,
          historyAPI: BraveHistoryAPI,
          syncAPI: BraveSyncAPI,
-         walletKeyringStore: KeyringStore? = nil
+         walletSettingsStore: SettingsStore? = nil
     ) {
         self.profile = profile
         self.tabManager = tabManager
@@ -82,7 +84,7 @@ class SettingsViewController: TableViewController {
         self.windowProtection = windowProtection
         self.historyAPI = historyAPI
         self.syncAPI = syncAPI
-        self.walletKeyringStore = walletKeyringStore
+        self.walletSettingsStore = walletSettingsStore
         
         super.init(style: .insetGrouped)
     }
@@ -97,7 +99,7 @@ class SettingsViewController: TableViewController {
         
         navigationItem.title = Strings.settings
         tableView.accessibilityIdentifier = "SettingsViewController.tableView"
-        dataSource.sections = sections
+        setUpSections()
         
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
         
@@ -123,6 +125,7 @@ class SettingsViewController: TableViewController {
         navigationController?.pushViewController(hostingController, animated: true)
     }
     
+    // Do not use `sections` directly to access sections/rows. Use DataSource.sections instead.
     private var sections: [Static.Section] {
         var list = [
             defaultBrowserSection,
@@ -208,7 +211,8 @@ class SettingsViewController: TableViewController {
                         historyAPI: self.historyAPI)
                     self.navigationController?.pushViewController(controller, animated: true)
                 }, image: #imageLiteral(resourceName: "settings-shields"), accessory: .disclosureIndicator)
-            ]
+            ],
+            uuid: featureSectionUUID.uuidString
         )
         
         if BraveRewards.isAvailable, let rewards = rewards {
@@ -248,15 +252,6 @@ class SettingsViewController: TableViewController {
                 self.navigationController?.pushViewController(playlistSettings, animated: true)
             }, image: #imageLiteral(resourceName: "settings-playlist").template, accessory: .disclosureIndicator)
         )
-        
-        if #available(iOS 14.0, *), let keyringStore = walletKeyringStore, keyringStore.isDefaultKeyringCreated {
-            section.rows.append(
-                Row(text: Strings.Wallet.braveWallet, selection: { [unowned self] in
-                    let vc = UIHostingController(rootView: WalletSettingsView(keyringStore: keyringStore))
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }, image: #imageLiteral(resourceName: "menu-crypto").template, accessory: .disclosureIndicator)
-            )
-        }
         
         return section
     }()
@@ -580,6 +575,26 @@ class SettingsViewController: TableViewController {
             ]
         )
     }()
+    
+    private func setUpSections() {
+        if let settingsStore = walletSettingsStore {
+            settingsStore.isDefaultKeyringCreated { [weak self] created in
+                guard let self = self else { return }
+                var copyOfSections = self.sections
+                if created, let index = self.sections.firstIndex(where: {
+                    $0.uuid == self.featureSectionUUID.uuidString
+                }) {
+                    copyOfSections[index].rows.append(
+                        Row(text: Strings.Wallet.braveWallet, selection: { [unowned self] in
+                            let vc = UIHostingController(rootView: WalletSettingsView(settingsStore: settingsStore))
+                            self.navigationController?.pushViewController(vc, animated: true)
+                        }, image: #imageLiteral(resourceName: "menu-crypto").template, accessory: .disclosureIndicator)
+                    )
+                }
+                self.dataSource.sections = copyOfSections
+            }
+        }
+    }
     
     // MARK: - Actions
     

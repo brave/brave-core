@@ -35,7 +35,8 @@ struct AccountsView: View {
   var body: some View {
     List {
       Section(
-        header: AccountsHeaderView(keyringStore: keyringStore)
+        header: AccountsHeaderView(keyringStore: keyringStore,
+                                   settingsStore: cryptoStore.settingsStore)
           .resetListHeaderStyle()
       ) {
       }

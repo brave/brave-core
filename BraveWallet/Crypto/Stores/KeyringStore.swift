@@ -78,21 +78,11 @@ public class KeyringStore: ObservableObject {
   /// and dismisses the `UnlockWalletView`. We need to keep the unlock view/biometrics prompt up until
   /// the user dismisess it or enables it.
   @Published var isRestoreFromUnlockBiometricsPromptVisible: Bool = false
-  /// The number of minutes to wait until the Brave Wallet is automatically locked
-  @Published var autoLockInterval: AutoLockInterval = .minute {
-    didSet {
-      keyringService.setAutoLockMinutes(autoLockInterval.value) { _ in }
-    }
-  }
   /// The users selected account when buying/sending/swapping currencies
   @Published var selectedAccount: BraveWallet.AccountInfo = .init() {
     didSet {
       keyringService.setSelectedAccount(selectedAccount.address) { _ in }
     }
-  }
-  /// For showing wallet in the main Settings only when default keyring is created
-  public var isDefaultKeyringCreated: Bool {
-    return keyring.isDefaultKeyringCreated
   }
   
   private let keyringService: BraveWalletKeyringService
@@ -111,9 +101,6 @@ public class KeyringStore: ObservableObject {
         // and should be removed.
         Self.resetKeychainStoredPassword()
       }
-    }
-    self.keyringService.autoLockMinutes { minutes in
-      self.autoLockInterval = .init(value: minutes)
     }
     cancellable = NotificationCenter.default
       .publisher(for: UIApplication.didBecomeActiveNotification, object: nil)
@@ -254,11 +241,6 @@ public class KeyringStore: ObservableObject {
     }
   }
   
-  func reset() {
-    isOnboardingVisible = true
-    Self.resetKeychainStoredPassword()
-  }
-  
   func privateKey(for account: BraveWallet.AccountInfo, completion: @escaping (String?) -> Void) {
     if account.isPrimary {
       keyringService.privateKey(forDefaultKeyringAccount: account.address) { success, key in
@@ -365,6 +347,8 @@ public class KeyringStore: ObservableObject {
 
 extension KeyringStore: BraveWalletKeyringServiceObserver {
   public func keyringReset() {
+    isOnboardingVisible = true
+    Self.resetKeychainStoredPassword()
   }
   
   public func autoLockMinutesChanged() {

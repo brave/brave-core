@@ -8,20 +8,20 @@ import struct Shared.Strings
 import BraveUI
 
 public struct WalletSettingsView: View {
-  @ObservedObject var keyringStore: KeyringStore
+  @ObservedObject var settingsStore: SettingsStore
   
   @State private var isShowingResetAlert = false
   
-  public init(keyringStore: KeyringStore) {
-    self.keyringStore = keyringStore
+  public init(settingsStore: SettingsStore) {
+    self.settingsStore = settingsStore
   }
-  
+
   private var autoLockIntervals: [AutoLockInterval] {
     var all = AutoLockInterval.allOptions
-    if !all.contains(keyringStore.autoLockInterval) {
+    if !all.contains(settingsStore.autoLockInterval) {
       // Ensure that the users selected interval always appears as an option even if
       // we remove it from `allOptions`
-      all.append(keyringStore.autoLockInterval)
+      all.append(settingsStore.autoLockInterval)
     }
     return all.sorted(by: { $0.value < $1.value })
   }
@@ -32,7 +32,7 @@ public struct WalletSettingsView: View {
         footer: Text(Strings.Wallet.autoLockFooter)
           .foregroundColor(Color(.secondaryBraveLabel))
       ) {
-        Picker(selection: $keyringStore.autoLockInterval) {
+        Picker(selection: $settingsStore.autoLockInterval) {
           ForEach(autoLockIntervals) { interval in
             Text(interval.label)
               .tag(interval)
@@ -60,7 +60,7 @@ public struct WalletSettingsView: View {
         title: Text(Strings.Wallet.settingsResetWalletAlertTitle),
         message: Text(Strings.Wallet.settingsResetWalletAlertMessage),
         primaryButton: .destructive(Text(Strings.Wallet.settingsResetWalletAlertButtonTitle), action: {
-          keyringStore.reset()
+          settingsStore.reset()
         }),
         secondaryButton: .cancel(Text(Strings.no))
       )
@@ -72,7 +72,7 @@ public struct WalletSettingsView: View {
 struct WalletSettingsView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      WalletSettingsView(keyringStore: .previewStore)
+      WalletSettingsView(settingsStore: .previewStore)
     }
   }
 }
