@@ -340,6 +340,20 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
           "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
         ]
       })");
+  const std::string wrong_order(
+      R"({
+        "params": [
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83",
+          "0xdeadbeef"
+        ]
+      })");
+  const std::string two_address_looking_params(
+      R"({
+        "params": [
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf84",
+          "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83"
+        ]
+      })");
 
   std::string address;
   std::string message;
@@ -370,6 +384,18 @@ TEST(EthResponseHelperUnitTest, ParsePersonalSignParams) {
   // To be consistent with MM :S
   EXPECT_EQ(ToHex("0x"), "0x3078");
   EXPECT_EQ(message, "0x3078");
+
+  // MM allows the wrong order and figures out the correct order if the first
+  // order is an address by mistake.
+  EXPECT_TRUE(ParsePersonalSignParams(wrong_order, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_EQ(message, "0xdeadbeef");
+
+  // Make sure that 2 arguments of the same length doesn't re-order
+  EXPECT_TRUE(
+      ParsePersonalSignParams(two_address_looking_params, &address, &message));
+  EXPECT_EQ(address, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf83");
+  EXPECT_EQ(message, "0x9b2055d370f73ec7d8a03e965129118dc8f5bf84");
 
   EXPECT_FALSE(ParsePersonalSignParams(json, &address, nullptr));
   EXPECT_FALSE(ParsePersonalSignParams(json, nullptr, &message));
