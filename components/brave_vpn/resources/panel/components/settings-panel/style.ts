@@ -36,20 +36,6 @@ export const Card = styled.li`
   border-radius: 8px;
 `
 
-export const CardRow = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 9px 16px;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--divider-color);
-  color: ${(p) => p.theme.color.text01};
-
-  &:last-child {
-    border-bottom: 0;
-    justify-content: center;
-  }
-`
-
 export const PanelContent = styled.section`
   padding: 25px 24px 25px 24px;
   z-index: 2;

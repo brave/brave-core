@@ -26,21 +26,11 @@ function SettingsPanel (props: Props) {
           </S.BackButton>
         </S.PanelHeader>
         <S.List>
-          <S.Card>
-            <S.CardRow>
-              <dt>{getLocale('braveVpnStatus')}</dt>
-              <dd>Yearly subscription</dd>
-            </S.CardRow>
-            <S.CardRow>
-              <dt>{getLocale('braveVpnExpires')}</dt>
-              <dd>1/12/22</dd>
-            </S.CardRow>
-            <S.CardRow>
-              <a href={productUrls?.manage} target='_blank'>
-                {getLocale('braveVpnManageSubscription')}
-              </a>
-            </S.CardRow>
-          </S.Card>
+          <li>
+            <a href={productUrls?.manage} target='_blank'>
+              {getLocale('braveVpnManageSubscription')}
+            </a>
+          </li>
           <li>
             <a href={productUrls?.feedback} target='_blank'>
               {getLocale('braveVpnContactSupport')}
