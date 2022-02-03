@@ -220,6 +220,7 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/autofill/AutofillPopupBridge"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/flags/CachedFeatureFlags"));
     }
 
     @Test
@@ -364,6 +365,8 @@ public class BytecodeTest {
                 "getActionButtonTintList", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPage",
                 "updateSearchProviderHasLogo", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/flags/CachedFeatureFlags",
+                "getConsistentBooleanValue", false, null));
     }
 
     @Test
