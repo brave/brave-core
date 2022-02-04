@@ -36,6 +36,7 @@ public class RetentionNotificationUtil {
     public static String NOTIFICATION_TYPE = "notification_type";
     private static final String BRAVE_BROWSER = "Brave Browser";
 
+    public static final String HOUR_2 = "hour_2";
     public static final String HOUR_3 = "hour_3";
     public static final String HOUR_24 = "hour_24";
     public static final String DAY_6 = "day_6";
@@ -56,6 +57,10 @@ public class RetentionNotificationUtil {
 
     private static Map<String, RetentionNotification> mNotificationMap = new HashMap<String, RetentionNotification>() {
         {
+            put(HOUR_2,
+                    new RetentionNotification(2, 2, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                            ContextUtils.getApplicationContext().getResources().getString(
+                                    R.string.notification_bitflyer_promo_title)));
             put(HOUR_3,
                     new RetentionNotification(
                             3, 3 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
@@ -119,17 +124,22 @@ public class RetentionNotificationUtil {
     public static String getNotificationText(Context context, String notificationType) {
         DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
         switch (notificationType) {
-        case HOUR_3:
-            if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                long adsTrackersCount = mDatabaseHelper.getAllStats().size();
-                if (adsTrackersCount >= 5) {
-                    return String.format(context.getResources().getString(R.string.notification_hour_3_text_1), adsTrackersCount);
+            case HOUR_2:
+                return context.getResources().getString(R.string.notification_bitflyer_promo_text);
+            case HOUR_3:
+                if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    long adsTrackersCount = mDatabaseHelper.getAllStats().size();
+                    if (adsTrackersCount >= 5) {
+                        return String.format(context.getResources().getString(
+                                                     R.string.notification_hour_3_text_1),
+                                adsTrackersCount);
+                    } else {
+                        return context.getResources().getString(
+                                R.string.notification_hour_3_text_2);
+                    }
                 } else {
-                    return context.getResources().getString(R.string.notification_hour_3_text_2);
+                    return context.getResources().getString(R.string.notification_hour_3_text_3);
                 }
-            } else {
-                return context.getResources().getString(R.string.notification_hour_3_text_3);
-            }
         case HOUR_24:
             if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
                 Pair<String, String> dataSavedPair =

@@ -2772,6 +2772,12 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_CHANGE_AMOUNT" desc="Brave rewards monthly contribution text">
       Change amount
     </message>
+    <message name="IDS_NOTIFICATION_BITFLYER_PROMO_TITLE" desc="Bitflyer promo notification title">
+      Now you can verify your Rewards wallet with bitFlyer in Brave for Android as well!
+    </message>
+    <message name="IDS_NOTIFICATION_BITFLYER_PROMO_TEXT" desc="Bitflyer promo notification text">
+      Check special BAT present campaign - chance of getting BAT as much as ¥50,000. Let's manage BAT you earn by verifying your Rewards wallet with bitFlyer.
+    </message>
     </messages>
   </release>
 </grit>

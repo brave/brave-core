@@ -131,6 +131,7 @@ import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
 import org.chromium.chrome.browser.util.BraveDbUtil;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnCalloutDialogFragment;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.BraveVpnObserver;
@@ -182,6 +183,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     public static final String OPEN_URL = "open_url";
+    public static final String BITFLYER_PROMO_URL = "http://try.bravesoftware.jp/brave_20220121-1/";
 
     public static final String BRAVE_PRODUCTION_PACKAGE_NAME = "com.brave.browser";
     public static final String BRAVE_BETA_PACKAGE_NAME = "com.brave.browser_beta";
@@ -518,6 +520,10 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveSyncInformers.show();
         BraveAndroidSyncDisabledInformer.showInformers();
 
+        // if (!OnboardingPrefManager.getInstance().isBitflyerPromoNotificationShown()) {
+        RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_2);
+        // }
+
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
                 && PackageUtils.isFirstInstall(this)) {
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
@@ -784,31 +790,34 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (notifIntent != null && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE) != null) {
             String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
             switch (notificationType) {
-            case RetentionNotificationUtil.HOUR_3:
-            case RetentionNotificationUtil.HOUR_24:
-            case RetentionNotificationUtil.EVERY_SUNDAY:
-                checkForBraveStats();
-                break;
-            case RetentionNotificationUtil.DAY_6:
-            case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
-            case RetentionNotificationUtil.BRAVE_STATS_DATA:
-            case RetentionNotificationUtil.BRAVE_STATS_TIME:
-                if (getActivityTab() != null && getActivityTab().getUrl().getSpec() != null
-                        && !UrlUtilities.isNTPUrl(getActivityTab().getUrl().getSpec())) {
-                    getTabCreator(false).launchUrl(
-                            UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
-                }
-                break;
-            case RetentionNotificationUtil.DAY_10:
-            case RetentionNotificationUtil.DAY_30:
-            case RetentionNotificationUtil.DAY_35:
-                openRewardsPanel();
-                break;
-            case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
-            case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
-            case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
-                showDormantUsersEngagementDialog(notificationType);
-                break;
+                case RetentionNotificationUtil.HOUR_2:
+                    TabUtils.openUrlInNewTab(false, BITFLYER_PROMO_URL);
+                    break;
+                case RetentionNotificationUtil.HOUR_3:
+                case RetentionNotificationUtil.HOUR_24:
+                case RetentionNotificationUtil.EVERY_SUNDAY:
+                    checkForBraveStats();
+                    break;
+                case RetentionNotificationUtil.DAY_6:
+                case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
+                case RetentionNotificationUtil.BRAVE_STATS_DATA:
+                case RetentionNotificationUtil.BRAVE_STATS_TIME:
+                    if (getActivityTab() != null && getActivityTab().getUrl().getSpec() != null
+                            && !UrlUtilities.isNTPUrl(getActivityTab().getUrl().getSpec())) {
+                        getTabCreator(false).launchUrl(
+                                UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                    }
+                    break;
+                case RetentionNotificationUtil.DAY_10:
+                case RetentionNotificationUtil.DAY_30:
+                case RetentionNotificationUtil.DAY_35:
+                    openRewardsPanel();
+                    break;
+                case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
+                case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
+                case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                    showDormantUsersEngagementDialog(notificationType);
+                    break;
             }
         }
     }
