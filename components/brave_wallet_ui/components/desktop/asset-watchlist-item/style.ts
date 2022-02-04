@@ -11,12 +11,16 @@ export const StyledWrapper = styled.div`
   margin: 8px 0px;
 `
 
-export const NameAndIcon = styled.div`
+export const NameAndIcon = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
   width: 60%;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
 `
 
 export const NameAndSymbol = styled.div`
