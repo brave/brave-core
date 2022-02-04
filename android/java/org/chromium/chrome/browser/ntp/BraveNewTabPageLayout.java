@@ -1146,6 +1146,7 @@ public class BraveNewTabPageLayout
                                     }
                                 });
 
+                                // Double tap on the settings bar to scroll back up
                                 mSettingsBar.setOnTouchListener(new OnTouchListener() {
                                     private GestureDetector gestureDetector =
                                             new GestureDetector(mActivity,
