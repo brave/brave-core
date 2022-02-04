@@ -450,7 +450,13 @@ public class Utils {
         String multiplier = Utils.getDecimalsDepNumber(decimals);
         if (dotPosition != -1) {
             int zeroToRemove = number.length() - dotPosition - 1;
-            multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
+            if (zeroToRemove < multiplier.length()) {
+                multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
+            } else {
+                number = number.substring(
+                        0, number.length() - (zeroToRemove - multiplier.length() + 1));
+                multiplier = "1";
+            }
             number = number.replace(".", "");
         }
         try {
@@ -482,10 +488,16 @@ public class Utils {
             return "0x0";
         }
         int dotPosition = number.indexOf(".");
-        String multiplier = getDecimalsDepNumber(decimals);
+        String multiplier = Utils.getDecimalsDepNumber(decimals);
         if (dotPosition != -1) {
             int zeroToRemove = number.length() - dotPosition - 1;
-            multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
+            if (zeroToRemove < multiplier.length()) {
+                multiplier = multiplier.substring(0, multiplier.length() - zeroToRemove);
+            } else {
+                number = number.substring(
+                        0, number.length() - (zeroToRemove - multiplier.length() + 1));
+                multiplier = "1";
+            }
             number = number.replace(".", "");
         }
         BigInteger bigNumber = new BigInteger(number, 10);
