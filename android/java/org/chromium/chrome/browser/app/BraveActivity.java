@@ -263,6 +263,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             ShareDelegate shareDelegate = (ShareDelegate) getShareDelegateSupplier().get();
             shareDelegate.share(currentTab, false, ShareOrigin.OVERFLOW_MENU);
             return true;
+        } else if (id == R.id.reload_menu_id) {
+            setComesFromNewTab(true);
         }
 
         if (super.onMenuOrKeyboardAction(id, fromMenu)) {
@@ -694,8 +696,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             } else {
                 compositorView.addView(newContentButtonLayout, 3);
             }
-            FrameLayout.LayoutParams inflatedLayoutParams =
-                    new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 100);
+            FrameLayout.LayoutParams inflatedLayoutParams = new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, dpToPx(this, 55));
 
             FrameLayout.LayoutParams newContentButtonLayoutParams = new FrameLayout.LayoutParams(
                     FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
@@ -733,33 +735,35 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void setBackground(Bitmap bgWallpaper) {
         CompositorViewHolder compositorView = findViewById(R.id.compositor_view_holder);
 
-        ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
+        if (compositorView != null) {
+            ViewGroup root = (ViewGroup) compositorView.getChildAt(1);
 
-        if (root.getChildAt(0) instanceof ScrollView) {
-            ScrollView scrollView = (ScrollView) root.getChildAt(0);
+            if (root.getChildAt(0) instanceof ScrollView) {
+                ScrollView scrollView = (ScrollView) root.getChildAt(0);
 
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int mDeviceHeight = displayMetrics.heightPixels;
-            int mDeviceWidth = displayMetrics.widthPixels;
+                DisplayMetrics displayMetrics = new DisplayMetrics();
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                int mDeviceHeight = displayMetrics.heightPixels;
+                int mDeviceWidth = displayMetrics.widthPixels;
 
-            Glide.with(this)
-                    .asBitmap()
-                    .load(bgWallpaper)
-                    .centerCrop()
-                    .override(mDeviceWidth, mDeviceHeight)
-                    .priority(Priority.IMMEDIATE)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(new CustomTarget<Bitmap>() {
-                        @Override
-                        public void onResourceReady(@NonNull Bitmap resource,
-                                @Nullable Transition<? super Bitmap> transition) {
-                            Drawable drawable = new BitmapDrawable(getResources(), resource);
-                            scrollView.setBackground(drawable);
-                        }
-                        @Override
-                        public void onLoadCleared(@Nullable Drawable placeholder) {}
-                    });
+                Glide.with(this)
+                        .asBitmap()
+                        .load(bgWallpaper)
+                        .centerCrop()
+                        .override(mDeviceWidth, mDeviceHeight)
+                        .priority(Priority.IMMEDIATE)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(new CustomTarget<Bitmap>() {
+                            @Override
+                            public void onResourceReady(@NonNull Bitmap resource,
+                                    @Nullable Transition<? super Bitmap> transition) {
+                                Drawable drawable = new BitmapDrawable(getResources(), resource);
+                                scrollView.setBackground(drawable);
+                            }
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {}
+                        });
+            }
         }
     }
 
