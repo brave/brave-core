@@ -70,7 +70,7 @@ class AdBlockSubscriptionServiceManager {
   void AddResources(const std::string& resources);
 
   absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
-  absl::optional<base::Value> HiddenClassIdSelectors(
+  base::Value HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);

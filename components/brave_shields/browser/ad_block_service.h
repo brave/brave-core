@@ -69,7 +69,7 @@ class AdBlockService : public AdBlockBaseService {
       const std::string& tab_host);
   absl::optional<base::Value> UrlCosmeticResources(
       const std::string& url) override;
-  absl::optional<base::Value> HiddenClassIdSelectors(
+  base::Value HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions) override;

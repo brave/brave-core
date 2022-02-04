@@ -253,32 +253,22 @@ absl::optional<base::Value> AdBlockRegionalServiceManager::UrlCosmeticResources(
   return first_value;
 }
 
-absl::optional<base::Value>
-AdBlockRegionalServiceManager::HiddenClassIdSelectors(
+base::Value AdBlockRegionalServiceManager::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  base::AutoLock lock(regional_services_lock_);
-  auto it = regional_services_.begin();
-  if (it == regional_services_.end()) {
-    return absl::optional<base::Value>();
-  }
-  absl::optional<base::Value> first_value =
-      it->second->HiddenClassIdSelectors(classes, ids, exceptions);
+  base::Value first_value(base::Value::Type::LIST);
 
-  for ( ; it != regional_services_.end(); it++) {
-    absl::optional<base::Value> next_value =
+  base::AutoLock lock(regional_services_lock_);
+  for (auto it = regional_services_.begin(); it != regional_services_.end();
+       it++) {
+    base::Value next_value =
         it->second->HiddenClassIdSelectors(classes, ids, exceptions);
-    if (first_value && first_value->is_list()) {
-      if (next_value && next_value->is_list()) {
-        for (auto i = next_value->GetList().begin();
-                i < next_value->GetList().end();
-                i++) {
-          first_value->Append(std::move(*i));
-        }
-      }
-    } else {
-      first_value = std::move(next_value);
+    DCHECK(next_value.is_list());
+
+    for (auto i = next_value.GetList().begin(); i < next_value.GetList().end();
+         i++) {
+      first_value.Append(std::move(*i));
     }
   }
 

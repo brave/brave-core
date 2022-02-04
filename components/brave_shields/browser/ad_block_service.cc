@@ -162,58 +162,53 @@ absl::optional<base::Value> AdBlockService::UrlCosmeticResources(
   return resources;
 }
 
-absl::optional<base::Value> AdBlockService::HiddenClassIdSelectors(
+// The return value here is formatted differently from the rest of the adblock
+// service instances. We need to distinguish between selectors returned from
+// the default engine and those returned by other engines, but still comply
+// with the virtual method signature.
+// This can be improved once interfaces are decoupled in
+// https://github.com/brave/brave-core/pull/10994.
+// For now, this returns a dict with two properties:
+//  - "hide_selectors" - wraps the result from the default engine
+//  - "force_hide_selectors" - wraps appended results from all other engines
+base::Value AdBlockService::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  absl::optional<base::Value> hide_selectors =
+  base::Value hide_selectors =
       AdBlockBaseService::HiddenClassIdSelectors(classes, ids, exceptions);
 
-  absl::optional<base::Value> regional_selectors =
+  base::Value regional_selectors =
       regional_service_manager()->HiddenClassIdSelectors(classes, ids,
                                                          exceptions);
+  DCHECK(regional_selectors.is_list());
 
-  if (hide_selectors && hide_selectors->is_list()) {
-    if (regional_selectors && regional_selectors->is_list()) {
-      for (auto i = regional_selectors->GetList().begin();
-           i < regional_selectors->GetList().end(); i++) {
-        hide_selectors->Append(std::move(*i));
-      }
-    }
-  } else {
-    hide_selectors = std::move(regional_selectors);
-  }
-
-  absl::optional<base::Value> custom_selectors =
+  base::Value custom_selectors =
       custom_filters_service()->HiddenClassIdSelectors(classes, ids,
                                                        exceptions);
+  DCHECK(custom_selectors.is_list());
 
-  absl::optional<base::Value> subscription_selectors =
+  base::Value subscription_selectors =
       subscription_service_manager()->HiddenClassIdSelectors(classes, ids,
                                                              exceptions);
+  DCHECK(subscription_selectors.is_list());
 
-  if (custom_selectors && custom_selectors->is_list()) {
-    if (subscription_selectors && subscription_selectors->is_list()) {
-      for (auto i = subscription_selectors->GetList().begin();
-           i < subscription_selectors->GetList().end(); i++) {
-        custom_selectors->Append(std::move(*i));
-      }
-    }
-  } else {
-    custom_selectors = std::move(subscription_selectors);
+  base::Value force_hide_selectors = std::move(regional_selectors);
+
+  for (auto i = custom_selectors.GetList().begin();
+       i < custom_selectors.GetList().end(); i++) {
+    force_hide_selectors.Append(std::move(*i));
   }
 
-  if (!hide_selectors || !hide_selectors->is_list())
-    hide_selectors = base::ListValue();
-
-  if (custom_selectors && custom_selectors->is_list()) {
-    for (auto i = custom_selectors->GetList().begin();
-         i < custom_selectors->GetList().end(); i++) {
-      hide_selectors->Append(std::move(*i));
-    }
+  for (auto i = subscription_selectors.GetList().begin();
+       i < subscription_selectors.GetList().end(); i++) {
+    force_hide_selectors.Append(std::move(*i));
   }
 
-  return hide_selectors;
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetKey("hide_selectors", std::move(hide_selectors));
+  result.SetKey("force_hide_selectors", std::move(force_hide_selectors));
+  return result;
 }
 
 AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {

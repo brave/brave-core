@@ -358,11 +358,10 @@ void CosmeticFiltersJSHandler::ApplyRules() {
     return;
 
   // Working on css rules, we do that on a main frame only
-  bool generichide =
-      resources_dict_->FindBoolKey("generichide").value_or(false);
+  generichide_ = resources_dict_->FindBoolKey("generichide").value_or(false);
   std::string cosmetic_filtering_init_script = base::StringPrintf(
       kCosmeticFilteringInitScript, enabled_1st_party_cf_ ? "true" : "false",
-      generichide ? "true" : "false");
+      generichide_ ? "true" : "false");
   std::string pre_init_script = base::StringPrintf(
       kPreInitScript, cosmetic_filtering_init_script.c_str());
 
@@ -443,28 +442,43 @@ void CosmeticFiltersJSHandler::CSSRulesRoutine(
 }
 
 void CosmeticFiltersJSHandler::OnHiddenClassIdSelectors(base::Value result) {
-  // If its a vetted engine AND we're not in aggressive
-  // mode, don't check these elements.
-  if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_))
+  if (generichide_) {
     return;
+  }
 
-  // We expect a List value from adblock service. That is
-  // an extra check to be sure that adblock file exist and gives us
-  // rules that we expect
-  base::ListValue* selectors_list;
-  if (!result.GetAsList(&selectors_list))
+  DCHECK(result.is_dict());
+
+  base::Value* hide_selectors = result.FindListKey("hide_selectors");
+  DCHECK(hide_selectors);
+
+  base::Value* force_hide_selectors =
+      result.FindListKey("force_hide_selectors");
+  DCHECK(force_hide_selectors);
+
+  if (force_hide_selectors->GetList().size() != 0) {
+    std::string stylesheet = "";
+    for (auto& selector : force_hide_selectors->GetList()) {
+      DCHECK(selector.is_string());
+      stylesheet += selector.GetString() + "{display:none !important}";
+    }
+    InjectStylesheet(stylesheet, 0);
+  }
+
+  // If its a vetted engine AND we're not in aggressive
+  // mode, don't check elements from the default engine (in hide_selectors).
+  if (!enabled_1st_party_cf_ && IsVettedSearchEngine(url_))
     return;
 
   blink::WebLocalFrame* web_frame = render_frame_->GetWebFrame();
   std::string json_selectors;
-  if (!base::JSONWriter::Write(*selectors_list, &json_selectors) ||
+  if (!base::JSONWriter::Write(*hide_selectors, &json_selectors) ||
       json_selectors.empty()) {
     json_selectors = "[]";
   }
   // Building a script for stylesheet modifications
   std::string new_selectors_script =
       base::StringPrintf(kHideSelectorsInjectScript, json_selectors.c_str());
-  if (selectors_list->GetList().size() != 0) {
+  if (hide_selectors->GetList().size() != 0) {
     web_frame->ExecuteScriptInIsolatedWorld(
         isolated_world_id_,
         blink::WebScriptSource(
