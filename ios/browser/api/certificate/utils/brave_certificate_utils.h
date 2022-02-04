@@ -11,7 +11,7 @@
 
 namespace certificate {
 namespace utils {
-NSData* NSDataFromString(const std::string& str);
+NSData* NSStringToData(const std::string& str);
 }  // namespace utils
 }  // namespace certificate
 

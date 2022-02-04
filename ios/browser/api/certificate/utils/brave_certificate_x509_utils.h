@@ -17,8 +17,8 @@
 #include "net/der/parse_values.h"
 #include "third_party/boringssl/src/include/openssl/base.h"
 
-namespace x509 {
-namespace utils {
+namespace certificate {
+namespace x509_utils {
 std::vector<net::der::Input> SupportedExtensionOIDs();
 
 bool ExtractEmbeddedSCT(
@@ -55,7 +55,7 @@ std::string SignatureAlgorithmIdToName(
 
 base::Time GeneralizedTimeToTime(
     const net::der::GeneralizedTime& generalized_time);
-}  // namespace utils
-}  // namespace x509
+}  // namespace x509_utils
+}  // namespace certificate
 
 #endif  // BRAVE_IOS_BROWSER_API_CERTIFICATE_UTILS_BRAVE_CERTIFICATE_X509_UTILS_H_

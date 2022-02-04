@@ -36,22 +36,23 @@
 
     net::der::Input algorithm_tlv;
     net::der::Input spk;
-    if (x509::utils::ParseSubjectPublicKeyInfo(certificate->tbs().spki_tlv,
-                                               &algorithm_tlv, &spk)) {
+    if (certificate::x509_utils::ParseSubjectPublicKeyInfo(
+            certificate->tbs().spki_tlv, &algorithm_tlv, &spk)) {
       net::der::Input algorithm_oid;
       net::der::Input parameters;
 
-      if (x509::utils::ParseAlgorithmSequence(algorithm_tlv, &algorithm_oid,
-                                              &parameters)) {
+      if (certificate::x509_utils::ParseAlgorithmSequence(
+              algorithm_tlv, &algorithm_oid, &parameters)) {
         _objectIdentifier =
-            certificate::utils::NSDataFromString(algorithm_oid.AsString());
+            certificate::utils::NSStringToData(algorithm_oid.AsString());
 
-        std::string absolute_oid = x509::utils::NIDToAbsoluteOID(algorithm_oid);
+        std::string absolute_oid =
+            certificate::x509_utils::NIDToAbsoluteOID(algorithm_oid);
         if (!absolute_oid.empty()) {
           _absoluteObjectIdentifier = base::SysUTF8ToNSString(absolute_oid);
         }
 
-        if (!x509::utils::IsNull(parameters)) {
+        if (!certificate::x509_utils::IsNull(parameters)) {
           std::string parameters_string = parameters.AsString();
           _parameters = base::SysUTF8ToNSString(base::HexEncode(
               parameters_string.data(), parameters_string.size()));
@@ -59,11 +60,12 @@
       }
 
       // SPK has the unused bit count. Remove it.
-      // FOR SOME INSANELY WEIRD REASON, IF this is called in a LOOP, it LOOPS
-      // FOREVER! It never actually removes the prefix!
-      /*if (base::StartsWith(spk.AsStringPiece(), "\0")) {
-        spk.AsStringPiece().remove_prefix(1);
-        spk = net::der::Input(spk.AsStringPiece());
+      // When doing extensions, we can use the below to parse the SPK and then
+      // the extensions. For now, not needed.
+      /*auto spk_string = spk.AsStringPiece();
+      if (base::StartsWith(spk_string, "\0")) {
+        spk_string.remove_prefix(1);
+        spk = net::der::Input(spk_string);
       }*/
     }
 
@@ -130,8 +132,8 @@
         spk = net::der::Input(
             static_cast<const std::uint8_t*>([external_representation bytes]),
             [external_representation length]);
-        if (x509::utils::ParseRSAPublicKeyInfo(spk, &modulus,
-                                               &public_exponent)) {
+        if (certificate::x509_utils::ParseRSAPublicKeyInfo(spk, &modulus,
+                                                           &public_exponent)) {
           std::string modulus_string = modulus.AsString();
           _keyHexEncoded = base::SysUTF8ToNSString(
               base::HexEncode(modulus_string.data(), modulus_string.size()));

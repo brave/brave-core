@@ -108,10 +108,10 @@
              1;  // version + 1
   _signature = [[BraveCertificateSignature alloc]
       initWithCertificate:extended_cert_.get()];
-  _notValidBefore = x509::utils::GeneralizedTimeToTime(
+  _notValidBefore = certificate::x509_utils::GeneralizedTimeToTime(
                         extended_cert_->tbs().validity_not_before)
                         .ToNSDate();
-  _notValidAfter = x509::utils::GeneralizedTimeToTime(
+  _notValidAfter = certificate::x509_utils::GeneralizedTimeToTime(
                        extended_cert_->tbs().validity_not_after)
                        .ToNSDate();
   _publicKeyInfo = [[BraveCertificatePublicKeyInfo alloc]
