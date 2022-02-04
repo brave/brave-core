@@ -12,6 +12,7 @@
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/browser/brave_wallet/fil_tx_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
@@ -22,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -89,7 +91,9 @@ void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<brave_wallet::mojom::EthTxService>
         eth_tx_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
-        brave_wallet_service_receiver) {
+        brave_wallet_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::FilTxService>
+        fil_tx_service_receiver) {
   DCHECK(page);
   auto* profile = Profile::FromWebUI(web_ui());
   DCHECK(profile);
@@ -111,6 +115,10 @@ void WalletPageUI::CreatePageHandler(
       profile, std::move(eth_tx_service_receiver));
   brave_wallet::BraveWalletServiceFactory::BindForContext(
       profile, std::move(brave_wallet_service_receiver));
+  if (brave_wallet::IsFilecoinEnabled()) {
+    brave_wallet::FilTxServiceFactory::BindForContext(
+        profile, std::move(fil_tx_service_receiver));
+  }
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();
   if (blockchain_registry) {

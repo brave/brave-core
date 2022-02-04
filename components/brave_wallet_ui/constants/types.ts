@@ -359,6 +359,7 @@ interface BaseTransactionParams {
   // EIP-1559 gas pricing
   maxPriorityFeePerGas?: string
   maxFeePerGas?: string
+  coin?: BraveWallet.CoinType
 }
 
 export interface SendTransactionParams extends BaseTransactionParams {

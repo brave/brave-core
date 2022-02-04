@@ -10,6 +10,7 @@
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/fil_tx_service.h"
 #include "components/user_prefs/user_prefs.h"
 
 namespace brave_wallet {
@@ -26,6 +27,23 @@ std::unique_ptr<EthTxService> BuildEthTxService(
   auto eth_pending_tx_tracker = std::make_unique<EthPendingTxTracker>(
       tx_state_manager.get(), json_rpc_service, eth_nonce_tracker.get());
   return std::make_unique<EthTxService>(
+      json_rpc_service, keyring_service, asset_ratio_service,
+      std::move(tx_state_manager), std::move(eth_nonce_tracker),
+      std::move(eth_pending_tx_tracker), prefs);
+}
+
+std::unique_ptr<FilTxService> BuildFilTxService(
+    JsonRpcService* json_rpc_service,
+    KeyringService* keyring_service,
+    AssetRatioService* asset_ratio_service,
+    PrefService* prefs) {
+  auto tx_state_manager =
+      std::make_unique<EthTxStateManager>(prefs, json_rpc_service);
+  auto eth_nonce_tracker = std::make_unique<EthNonceTracker>(
+      tx_state_manager.get(), json_rpc_service);
+  auto eth_pending_tx_tracker = std::make_unique<EthPendingTxTracker>(
+      tx_state_manager.get(), json_rpc_service, eth_nonce_tracker.get());
+  return std::make_unique<FilTxService>(
       json_rpc_service, keyring_service, asset_ratio_service,
       std::move(tx_state_manager), std::move(eth_nonce_tracker),
       std::move(eth_pending_tx_tracker), prefs);

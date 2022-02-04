@@ -1037,7 +1037,7 @@ void EthTxService::RetryTransaction(const std::string& tx_meta_id,
 }
 
 void EthTxService::Reset() {
-  ClearEthTxServiceProfilePrefs(prefs_);
+  ClearTxServiceProfilePrefs(prefs_);
   eth_block_tracker_->Stop();
   pending_tx_tracker_->Reset();
   known_no_pending_tx = false;

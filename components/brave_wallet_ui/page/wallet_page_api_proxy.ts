@@ -25,7 +25,8 @@ class WalletPageApiProxy extends WalletApiProxy {
       this.keyringService.$.bindNewPipeAndPassReceiver(),
       this.blockchainRegistry.$.bindNewPipeAndPassReceiver(),
       this.ethTxService.$.bindNewPipeAndPassReceiver(),
-      this.braveWalletService.$.bindNewPipeAndPassReceiver())
+      this.braveWalletService.$.bindNewPipeAndPassReceiver(),
+      this.filTxService.$.bindNewPipeAndPassReceiver())
   }
 }
 

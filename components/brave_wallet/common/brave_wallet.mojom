@@ -149,7 +149,8 @@ interface PanelHandlerFactory {
                      pending_receiver<KeyringService> keyring_service,
                      pending_receiver<BlockchainRegistry> blockchain_registry,
                      pending_receiver<EthTxService> eth_tx_service,
-                     pending_receiver<BraveWalletService> brave_wallet_service);
+                     pending_receiver<BraveWalletService> brave_wallet_service,
+                     pending_receiver<FilTxService> fil_tx_service);
 };
 
 interface PageHandlerFactory {
@@ -163,7 +164,8 @@ interface PageHandlerFactory {
                     pending_receiver<KeyringService> keyring_service,
                     pending_receiver<BlockchainRegistry> blockchain_registry,
                     pending_receiver<EthTxService> eth_tx_service,
-                    pending_receiver<BraveWalletService> brave_wallet_service);
+                    pending_receiver<BraveWalletService> brave_wallet_service,
+                    pending_receiver<FilTxService> fil_tx_service);
 
 };
 
@@ -708,6 +710,33 @@ interface EthTxServiceObserver {
 
   // Fired when a transaction is updated
   OnTransactionStatusChanged(TransactionInfo tx_info);
+};
+
+// For transaction management such as creation, broadcasting, and storing
+// transactions.
+interface FilTxService {
+  // Used to add a transaction
+  AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
+  // Used to approve a transaction
+  ApproveTransaction(string tx_meta_id) => (bool status);
+
+  // Used to reject a transaction
+  RejectTransaction(string tx_meta_id) => (bool status);
+  // Obtains a list of all transactions from an address.
+  // This returns different data depending on which network is currently selected in JsonRpcService
+  GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
+
+  // Adds an observer for EthTxService
+  AddObserver(pending_remote<EthTxServiceObserver> observer);
+
+  // Used to retry a transaction
+  RetryTransaction(string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
+  GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
+  GetTransactionMessageToSign(string tx_meta_id) => (string? message);
+  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status);
+
+  // Resets the keyring and the related preferences
+  Reset();
 };
 
 // For transaction management such as creation, broadcasting, and storing

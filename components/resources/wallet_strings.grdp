@@ -355,6 +355,7 @@
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_PROPOSED_ALLOWANCE" desc="Edit allowance panel button">Proposed allowance</message>
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_CUSTOM_ALLOWANCE" desc="Edit allowance panel button">Custom allowance</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">Not a valid ETH address</message>
+  <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid address</message>
   <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain <ph name="DOMAIN_NAME"><ex>doug.wallet</ex>$1</ph> is not registered</message>
   <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address</message>

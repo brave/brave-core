@@ -55,6 +55,8 @@ static_library("browser") {
     "fil_requests.h",
     "fil_response_parser.cc",
     "fil_response_parser.h",
+    "fil_tx_service.cc",
+    "fil_tx_service.h",
     "filecoin_keyring.cc",
     "filecoin_keyring.h",
     "hd_key.cc",

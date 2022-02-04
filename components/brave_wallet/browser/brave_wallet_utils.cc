@@ -76,6 +76,28 @@ bool GetUseStagingInfuraEndpoint() {
   return env->HasVar("BRAVE_INFURA_STAGING");
 }
 
+// Keeping chaind ids as 0x1000+ until we add symbol as key in
+// https://github.com/brave/brave-browser/issues/20831
+const brave_wallet::mojom::EthereumChain kFilecoinNetworks[] = {
+    {"0x1000",
+     "Filecoin Mainnet",
+     {},
+     {},
+     {"https://api.node.glif.io/rpc/v0"},
+     "FIL",
+     "Filecoin",
+     18,
+     true},
+    {"0x1001",
+     "Filecoin Testnet",
+     {},
+     {},
+     {"https://calibration.node.glif.io/rpc/v0"},
+     "FIL",
+     "Filecoin",
+     18,
+     true}};
+
 const char kGanacheLocalhostURL[] = "http://localhost:7545/";
 
 // Precompiled networks available in native wallet.
@@ -198,6 +220,14 @@ mojom::EthereumChainPtr GetKnownChain(PrefService* prefs,
       result->rpc_urls.push_back(GetInfuraURLForKnownChainId(chain_id));
     return result;
   }
+  if (IsFilecoinEnabled()) {
+    for (const auto& network : kFilecoinNetworks) {
+      if (network.chain_id != chain_id)
+        continue;
+      return network.Clone();
+    }
+  }
+
   return nullptr;
 }
 
@@ -586,6 +616,11 @@ void GetAllKnownChains(PrefService* prefs,
   for (const auto& network : kKnownNetworks) {
     chains->push_back(GetKnownChain(prefs, network.chain_id));
   }
+  if (IsFilecoinEnabled()) {
+    for (const auto& network : kFilecoinNetworks) {
+      chains->push_back(GetKnownChain(prefs, network.chain_id));
+    }
+  }
 }
 
 GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
@@ -624,6 +659,13 @@ std::string GetKnownNetworkId(const std::string& chain_id) {
   // does not have infura subdomain.
   if (chain_id == mojom::kLocalhostChainId) {
     for (const auto& network : kKnownNetworks) {
+      if (network.chain_id == chain_id) {
+        return GURL(network.rpc_urls.front()).spec();
+      }
+    }
+  }
+  if (IsFilecoinEnabled()) {
+    for (const auto& network : kFilecoinNetworks) {
       if (network.chain_id == chain_id) {
         return GURL(network.rpc_urls.front()).spec();
       }

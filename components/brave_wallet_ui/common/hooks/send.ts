@@ -17,7 +17,7 @@ import {
   GetChecksumEthAddressReturnInfo,
   AmountValidationErrorType
 } from '../../constants/types'
-import { isValidAddress } from '../../utils/address-utils'
+import { isValidAddress, isValidFilAddress } from '../../utils/address-utils'
 import { getLocale } from '../../../common/locale'
 import { toWeiHex } from '../../utils/format-balances'
 
@@ -131,7 +131,18 @@ export default function useSend (
       setAddressError(getLocale('braveWalletContractAddressError'))
       return
     }
-
+    if (selectedAccount.coin === BraveWallet.CoinType.FIL) {
+      setToAddress(toAddressOrUrl)
+      const valid = isValidFilAddress(toAddressOrUrl)
+      if (!valid) {
+        setAddressWarning('')
+        setAddressError(getLocale('braveWalletNotValidFilAddress'))
+        return
+      }
+      setAddressWarning('')
+      setAddressError('')
+      return
+    }
     // If value starts with 0x, will check if it's a valid address
     if (valueToLowerCase.startsWith('0x')) {
       setToAddress(toAddressOrUrl)
@@ -193,7 +204,8 @@ export default function useSend (
     !selectedSendAsset.isErc721 && !selectedSendAsset.isErc20 && sendTransaction({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, selectedSendAsset.decimals)
+      value: toWeiHex(sendAmount, selectedSendAsset.decimals),
+      coin: selectedAccount.coin
     })
 
     setToAddressOrUrl('')

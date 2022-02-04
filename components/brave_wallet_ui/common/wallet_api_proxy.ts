@@ -17,6 +17,7 @@ export default class WalletApiProxy {
   keyringService = getBraveKeyring()
   blockchainRegistry = new BraveWallet.BlockchainRegistryRemote()
   ethTxService = new BraveWallet.EthTxServiceRemote()
+  filTxService = new BraveWallet.FilTxServiceRemote()
   braveWalletService = new BraveWallet.BraveWalletServiceRemote()
 
   addJsonRpcServiceObserver (store: Store) {
