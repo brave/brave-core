@@ -176,6 +176,7 @@ export default function useSwap (
     if (!quote) {
       setFromAmount('')
       setToAmount('')
+      setExchangeRate('')
       return
     }
 

@@ -140,6 +140,7 @@ function Swap (props: Props) {
   const onReset = () => {
     onInputChange('', 'from')
     onInputChange('', 'to')
+    onInputChange('', 'rate')
     setPresetAmountValue(0)
   }
 
