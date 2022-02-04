@@ -173,8 +173,8 @@ export default function useSwap (
 
     const { buyAmount, sellAmount, price, buyTokenToEthRate, sellTokenToEthRate } = quote
 
-    setFromAmount(formatInputValue(sellAmount, fromAsset.decimals))
-    setToAmount(formatInputValue(buyAmount, toAsset.decimals))
+    setFromAmount(formatInputValue(sellAmount, fromAsset.decimals, false))
+    setToAmount(formatInputValue(buyAmount, toAsset.decimals, false))
 
     /**
      * Price computation block
