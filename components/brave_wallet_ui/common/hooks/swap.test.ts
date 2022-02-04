@@ -152,6 +152,32 @@ describe('useSwap hook', () => {
   })
 
   describe('swap validation errors', () => {
+    it('should not return error if From and To amount are empty', async () => {
+      // Step 1: Initialize the useSwap hook.
+      const { result, waitForValueToChange, waitFor } = renderHook(() => useSwap(
+        mockAccount,
+        mockNetwork,
+        AccountAssetOptions,
+        WalletPageActions.fetchPageSwapQuote,
+        mockGetERC20Allowance,
+        WalletActions.approveERC20Allowance,
+        mockIsSwapSupportedFactory(true),
+        mockQuote
+      ))
+
+      // Step 2: Consume the update to isSwapSupported, so it does not fire
+      // in the middle of a future update.
+      await waitForValueToChange(() => result.current.isSwapSupported)
+
+      // OK: From and To amounts are 0, and swapValidationError is undefined.
+      // KO: Test case times out.
+      await waitFor(() => {
+        expect(result.current.fromAmount).toBe('0')
+        expect(result.current.toAmount).toBe('0')
+        expect(result.current.swapValidationError).toBeUndefined()
+      })
+    })
+
     it('should return error if From amount has decimals overflow', async () => {
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset: ETH

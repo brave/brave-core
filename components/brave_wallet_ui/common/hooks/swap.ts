@@ -110,6 +110,10 @@ export default function useSwap (
   )
 
   const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
+    if (!fromAmount && !toAmount) {
+      return
+    }
+
     if (hasDecimalsOverflow(fromAmount, fromAsset)) {
       return 'fromAmountDecimalsOverflow'
     }
@@ -347,8 +351,10 @@ export default function useSwap (
     })
   }, [selectedAccount, selectedNetwork, fromAsset, toAsset])
 
-  // Set isLoading to false as soon as quote has been fetched.
-  React.useEffect(() => setIsLoading(false), [quote])
+  // Set isLoading to false as soon as:
+  //  - swap quote has been fetched.
+  //  - error from 0x API is available in rawError.
+  React.useEffect(() => setIsLoading(false), [quote, rawError])
 
   const onSwapQuoteRefresh = () => {
     const customSlippage = {
