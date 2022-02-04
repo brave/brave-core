@@ -31,11 +31,16 @@ public class SettingsStore: ObservableObject {
   
   func reset() {
     walletService.reset()
+    KeyringStore.resetKeychainStoredPassword()
   }
   
   public func isDefaultKeyringCreated(_ completion: @escaping (Bool) -> Void) {
     keyringService.defaultKeyringInfo { keyring in
       completion(keyring.isDefaultKeyringCreated)
     }
+  }
+  
+  public func addKeyringServiceObserver(_ observer: BraveWalletKeyringServiceObserver) {
+    keyringService.add(observer)
   }
 }

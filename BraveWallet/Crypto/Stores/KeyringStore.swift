@@ -348,7 +348,6 @@ public class KeyringStore: ObservableObject {
 extension KeyringStore: BraveWalletKeyringServiceObserver {
   public func keyringReset() {
     isOnboardingVisible = true
-    Self.resetKeychainStoredPassword()
   }
   
   public func autoLockMinutesChanged() {

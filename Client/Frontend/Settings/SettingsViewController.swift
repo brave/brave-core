@@ -65,6 +65,7 @@ class SettingsViewController: TableViewController {
     private let windowProtection: WindowProtection?
     
     private let featureSectionUUID: UUID = .init()
+    private let walletRowUUID: UUID = .init()
 
     init(profile: Profile,
          tabManager: TabManager,
@@ -581,15 +582,27 @@ class SettingsViewController: TableViewController {
             settingsStore.isDefaultKeyringCreated { [weak self] created in
                 guard let self = self else { return }
                 var copyOfSections = self.sections
-                if created, let index = self.sections.firstIndex(where: {
+                if let featureSectionIndex = self.sections.firstIndex(where: {
                     $0.uuid == self.featureSectionUUID.uuidString
                 }) {
-                    copyOfSections[index].rows.append(
-                        Row(text: Strings.Wallet.braveWallet, selection: { [unowned self] in
-                            let vc = UIHostingController(rootView: WalletSettingsView(settingsStore: settingsStore))
-                            self.navigationController?.pushViewController(vc, animated: true)
-                        }, image: #imageLiteral(resourceName: "menu-crypto").template, accessory: .disclosureIndicator)
-                    )
+                    let walletRowIndex = copyOfSections[featureSectionIndex].rows.firstIndex(where: {
+                        $0.uuid == self.walletRowUUID.uuidString
+                    })
+                    if created, walletRowIndex == nil {
+                        settingsStore.addKeyringServiceObserver(self)
+                        copyOfSections[featureSectionIndex].rows.append(
+                            Row(text: Strings.Wallet.braveWallet,
+                                selection: { [unowned self] in
+                                    let vc = UIHostingController(rootView: WalletSettingsView(settingsStore: settingsStore))
+                                    self.navigationController?.pushViewController(vc, animated: true)
+                                },
+                                image: #imageLiteral(resourceName: "menu-crypto").template,
+                                accessory: .disclosureIndicator,
+                                uuid: self.walletRowUUID.uuidString)
+                        )
+                    } else if !created, let index = walletRowIndex {
+                        copyOfSections.remove(at: index)
+                    }
                 }
                 self.dataSource.sections = copyOfSections
             }
@@ -615,5 +628,21 @@ class SettingsViewController: TableViewController {
         if dataSource.sections.isEmpty { return }
         dataSource.sections[0] = Static.Section()
         Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
+    }
+}
+
+extension SettingsViewController: BraveWalletKeyringServiceObserver {
+    func keyringCreated() {}
+    func keyringRestored() {}
+    func locked() {}
+    func unlocked() {}
+    func backedUp() {}
+    func accountsChanged() {}
+    func autoLockMinutesChanged() {}
+    func selectedAccountChanged() {}
+    
+    func keyringReset() {
+        setUpSections()
+        navigationController?.popViewController(animated: true)
     }
 }
