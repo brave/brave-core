@@ -52,6 +52,7 @@ brave_core_public_headers = [
   "$root_gen_dir/brave/ios/browser/api/ledger/ledger.mojom.objc.h",
   "//brave/ios/browser/keyed_service/keyed_service_factory_wrapper.h",
   "$root_gen_dir/brave/ios/browser/api/skus/skus_sdk.mojom.objc.h",
+  "//brave/ios/browser/api/version_info/version_info_ios.h",
 ]
 
 action("brave_core_umbrella_header") {
