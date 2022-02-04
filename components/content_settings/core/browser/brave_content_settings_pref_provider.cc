@@ -369,34 +369,40 @@ bool BravePrefProvider::SetWebsiteSetting(
     ContentSettingsType content_type,
     std::unique_ptr<base::Value>&& in_value,
     const ContentSettingConstraints& constraints) {
+  // TODO(bridiver) - this is currently broken in ways that can cause real
+  // problems if people try to use it so disable completely until we migrate
+  // the brave cookie settings to use CookieControlsMode::kBlockThirdParty
+  // https://github.com/brave/brave-browser/issues/16127
+  //
   // handle changes to brave cookie settings from chromium cookie settings UI
-  if (content_type == ContentSettingsType::COOKIES) {
-    auto* value = in_value.get();
-    auto match = std::find_if(
-        brave_cookie_rules_[off_the_record_].begin(),
-        brave_cookie_rules_[off_the_record_].end(),
-        [primary_pattern, secondary_pattern, value](const auto& rule) {
-          return rule.primary_pattern == primary_pattern &&
-                 rule.secondary_pattern == secondary_pattern &&
-                 ValueToContentSetting(&rule.value) !=
-                    ValueToContentSetting(value); });
-    if (match != brave_cookie_rules_[off_the_record_].end()) {
-      // swap primary/secondary pattern - see CloneRule
-      auto plugin_primary_pattern = secondary_pattern;
-      auto plugin_secondary_pattern = primary_pattern;
+  // if (content_type == ContentSettingsType::COOKIES) {
+  //   auto* value = in_value.get();
+  //   auto match = std::find_if(
+  //       brave_cookie_rules_[off_the_record_].begin(),
+  //       brave_cookie_rules_[off_the_record_].end(),
+  //       [primary_pattern, secondary_pattern, value](const auto& rule) {
+  //         return rule.primary_pattern == primary_pattern &&
+  //                rule.secondary_pattern == secondary_pattern &&
+  //                ValueToContentSetting(&rule.value) !=
+  //                   ValueToContentSetting(value); });
+  //   if (match != brave_cookie_rules_[off_the_record_].end()) {
+  //     // swap primary/secondary pattern - see CloneRule
+  //     auto plugin_primary_pattern = secondary_pattern;
+  //     auto plugin_secondary_pattern = primary_pattern;
 
-      // convert to legacy firstParty format for brave plugin settings
-      if (plugin_primary_pattern == plugin_secondary_pattern) {
-        plugin_secondary_pattern =
-            ContentSettingsPattern::FromString("https://firstParty/*");
-      }
+  //     // convert to legacy firstParty format for brave plugin settings
+  //     if (plugin_primary_pattern == plugin_secondary_pattern) {
+  //       plugin_secondary_pattern =
+  //           ContentSettingsPattern::FromString("https://firstParty/*");
+  //     }
 
-      // change to type ContentSettingsType::BRAVE_COOKIES
-      return SetWebsiteSettingInternal(
-          plugin_primary_pattern, plugin_secondary_pattern,
-          ContentSettingsType::BRAVE_COOKIES, std::move(in_value), constraints);
-    }
-  }
+  //     // change to type ContentSettingsType::BRAVE_COOKIES
+  //     return SetWebsiteSettingInternal(
+  //         plugin_primary_pattern, plugin_secondary_pattern,
+  //         ContentSettingsType::BRAVE_COOKIES, std::move(in_value),
+  //         constraints);
+  //   }
+  // }
 
   return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
                                    content_type, std::move(in_value),
