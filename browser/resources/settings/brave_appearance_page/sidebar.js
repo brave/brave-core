@@ -30,7 +30,6 @@ Polymer({
         return [
           {value: 0, name: this.i18n('appearanceSettingsShowOptionAlways')},
           {value: 1, name: this.i18n('appearanceSettingsShowOptionMouseOver')},
-          {value: 2, name: this.i18n('appearanceSettingsShowOptionOnClick')},
           {value: 3, name: this.i18n('appearanceSettingsShowOptionNever')},
         ];
       },

@@ -8,11 +8,9 @@
 #include <algorithm>
 #include <utility>
 
-#include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/sidebar/constants.h"
-#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -92,18 +90,17 @@ std::vector<SidebarItem> GetDefaultSidebarItems() {
 
 // static
 void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  if (!base::FeatureList::IsEnabled(kSidebarFeature))
-    return;
-
   registry->RegisterListPref(kSidebarItems);
   registry->RegisterIntegerPref(
-      kSidebarShowOption, static_cast<int>(ShowSidebarOption::kShowAlways));
+      kSidebarShowOption, static_cast<int>(ShowSidebarOption::kShowNever));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
 }
 
 SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
   DCHECK(prefs_);
   LoadSidebarItems();
+
+  MigrateSidebarShowOptions();
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(
@@ -113,6 +110,17 @@ SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
 }
 
 SidebarService::~SidebarService() = default;
+
+void SidebarService::MigrateSidebarShowOptions() {
+  auto option =
+      static_cast<ShowSidebarOption>(prefs_->GetInteger(kSidebarShowOption));
+  // Show on click is deprecated. Treat it as show on mouse over.
+  if (option == ShowSidebarOption::kShowOnClick) {
+    option = ShowSidebarOption::kShowOnMouseOver;
+    prefs_->SetInteger(kSidebarShowOption,
+                       static_cast<int>(ShowSidebarOption::kShowOnMouseOver));
+  }
+}
 
 void SidebarService::AddItem(const SidebarItem& item) {
   items_.push_back(item);
@@ -207,6 +215,7 @@ SidebarService::ShowSidebarOption SidebarService::GetSidebarShowOption() const {
 }
 
 void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
+  DCHECK_NE(ShowSidebarOption::kShowOnClick, show_options);
   prefs_->SetInteger(kSidebarShowOption, static_cast<int>(show_options));
 }
 

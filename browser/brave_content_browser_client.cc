@@ -180,7 +180,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/webui/sidebar/sidebar.mojom.h"
 #include "brave/browser/ui/webui/sidebar/sidebar_bookmarks_ui.h"
-#include "brave/components/sidebar/features.h"
 #endif
 
 #if !defined(OS_ANDROID)
@@ -501,10 +500,8 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  if (base::FeatureList::IsEnabled(sidebar::kSidebarFeature)) {
-    chrome::internal::RegisterWebUIControllerInterfaceBinder<
-        sidebar::mojom::BookmarksPageHandlerFactory, SidebarBookmarksUI>(map);
-  }
+  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+      sidebar::mojom::BookmarksPageHandlerFactory, SidebarBookmarksUI>(map);
 #endif
 
 // Brave News

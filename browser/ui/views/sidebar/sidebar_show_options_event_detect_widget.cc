@@ -13,8 +13,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/geometry/rect.h"
-#include "ui/gfx/paint_vector_icon.h"
-#include "ui/views/background.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/widget.h"
 
@@ -22,30 +20,6 @@
 #include "ui/aura/window.h"
 #include "ui/views/view_constants_aura.h"
 #endif
-
-namespace {
-
-class WidgetBackground : public views::Background {
- public:
-  WidgetBackground() = default;
-  ~WidgetBackground() override = default;
-  WidgetBackground(const WidgetBackground&) = delete;
-  WidgetBackground& operator=(const WidgetBackground&) = delete;
-
-  void Paint(gfx::Canvas* canvas, views::View* view) const override {
-    canvas->DrawColor(SkColorSetARGB(0x8E, 0, 0, 0));
-
-    // Draw icon on center of this view.
-    const auto icon =
-        gfx::CreateVectorIcon(kSidebarHoverWidgetButtonIcon, SK_ColorWHITE);
-    const auto icon_size = icon.size();
-    const auto icon_x = (view->width() - icon_size.width()) / 2;
-    const auto icon_y = (view->height() - icon_size.height()) / 2;
-    canvas->DrawImageInt(icon, icon_x, icon_y);
-  }
-};
-
-}  // namespace
 
 class SidebarShowOptionsEventDetectWidget::ContentsView : public views::View {
  public:
@@ -58,32 +32,7 @@ class SidebarShowOptionsEventDetectWidget::ContentsView : public views::View {
   ContentsView& operator=(const ContentsView&) = delete;
 
   void OnMouseEntered(const ui::MouseEvent& event) override {
-    if (delegate_->ShouldShowOnHover()) {
-      delegate_->ShowSidebar();
-    } else {
-      SetBackground(std::make_unique<WidgetBackground>());
-    }
-  }
-
-  void OnMouseExited(const ui::MouseEvent& event) override {
-    SetBackground(nullptr);
-  }
-
-  bool OnMousePressed(const ui::MouseEvent& event) override {
-    if (delegate_->ShouldShowOnHover()) {
-      return View::OnMousePressed(event);
-    }
-
     delegate_->ShowSidebar();
-    return true;
-  }
-
-  std::u16string GetTooltipText(const gfx::Point& p) const override {
-    if (delegate_->ShouldShowOnHover())
-      return View::GetTooltipText(p);
-
-    return l10n_util::GetStringUTF16(
-        IDS_SIDEBAR_TOOLTIP_ON_SHOW_OPTIONS_WIDGET);
   }
 
  private:
@@ -110,7 +59,6 @@ SidebarShowOptionsEventDetectWidget::~SidebarShowOptionsEventDetectWidget() =
 
 void SidebarShowOptionsEventDetectWidget::Show() {
   DCHECK(widget_);
-  contents_view_->SetBackground(nullptr);
   widget_->Show();
   AdjustWidgetBounds();
 }
@@ -147,10 +95,7 @@ void SidebarShowOptionsEventDetectWidget::OnViewBoundsChanged(
 void SidebarShowOptionsEventDetectWidget::AdjustWidgetBounds() {
   auto rect = browser_view_->contents_container()->bounds();
   constexpr int kWidgetNarrowWidth = 7;
-  constexpr int kWidgetWidth = 30;
-  const int widget_width =
-      delegate_->ShouldShowOnHover() ? kWidgetNarrowWidth : kWidgetWidth;
-  rect.set_width(widget_width);
+  rect.set_width(kWidgetNarrowWidth);
   contents_view_->SetPreferredSize(rect.size());
   widget_->SetBounds(rect);
 }

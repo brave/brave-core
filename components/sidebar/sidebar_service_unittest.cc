@@ -6,10 +6,7 @@
 #include <memory>
 #include <utility>
 
-#include "base/feature_list.h"
-#include "base/test/scoped_feature_list.h"
 #include "brave/components/sidebar/constants.h"
-#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -26,10 +23,6 @@ class SidebarServiceTest : public testing::Test,
   ~SidebarServiceTest() override = default;
 
   void SetUp() override {
-    // Disable by default till we implement all sidebar features.
-    EXPECT_FALSE(base::FeatureList::IsEnabled(kSidebarFeature));
-
-    scoped_feature_list_.InitAndEnableFeature(kSidebarFeature);
     SidebarService::RegisterProfilePrefs(prefs_.registry());
   }
 
@@ -78,7 +71,6 @@ class SidebarServiceTest : public testing::Test,
 
   TestingPrefServiceSimple prefs_;
   std::unique_ptr<SidebarService> service_;
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 TEST_F(SidebarServiceTest, AddRemoveItems) {
@@ -246,6 +238,24 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithoutBuiltInItemTypeKey) {
   EXPECT_EQ(1UL, service_->items().size());
   EXPECT_EQ(SidebarItem::BuiltInItemType::kBraveTalk,
             service_->items()[0].built_in_item_type);
+}
+
+TEST_F(SidebarServiceTest, SidebarShowOptionsDeprecationTest) {
+  // Show on click is deprecated.
+  // Treat it as a show on mouse over.
+  prefs_.SetInteger(
+      kSidebarShowOption,
+      static_cast<int>(SidebarService::ShowSidebarOption::kShowOnClick));
+
+  InitService();
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowOnMouseOver,
+            service_->GetSidebarShowOption());
+}
+
+TEST_F(SidebarServiceTest, SidebarShowOptionsDefaultTest) {
+  InitService();
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowNever,
+            service_->GetSidebarShowOption());
 }
 
 }  // namespace sidebar

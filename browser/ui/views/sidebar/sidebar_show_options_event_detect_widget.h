@@ -23,7 +23,6 @@ class SidebarShowOptionsEventDetectWidget : public views::ViewObserver,
   class Delegate {
    public:
     virtual void ShowSidebar() = 0;
-    virtual bool ShouldShowOnHover() = 0;
 
    protected:
     virtual ~Delegate() {}

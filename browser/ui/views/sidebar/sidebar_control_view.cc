@@ -142,9 +142,6 @@ void SidebarControlView::ShowContextMenuForViewImpl(
       static_cast<int>(ShowSidebarOption::kShowOnMouseOver),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
   context_menu_model_->AddCheckItem(
-      static_cast<int>(ShowSidebarOption::kShowOnClick),
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ONCLICK));
-  context_menu_model_->AddCheckItem(
       static_cast<int>(ShowSidebarOption::kShowNever),
       l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
   context_menu_runner_ = std::make_unique<views::MenuRunner>(

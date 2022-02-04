@@ -64,7 +64,6 @@
 #if BUILDFLAG(ENABLE_SIDEBAR)
 #include "brave/browser/ui/webui/sidebar/sidebar_bookmarks_ui.h"
 #include "brave/components/sidebar/constants.h"
-#include "brave/components/sidebar/features.h"
 #endif
 
 using content::WebUI;
@@ -136,8 +135,7 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new TorInternalsUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  } else if (host == kSidebarBookmarksHost &&
-             base::FeatureList::IsEnabled(sidebar::kSidebarFeature)) {
+  } else if (host == kSidebarBookmarksHost) {
     return new SidebarBookmarksUI(web_ui);
 #endif
   }
@@ -164,8 +162,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       (url.host_piece() == kVPNPanelHost && brave_vpn::IsBraveVPNEnabled()) ||
 #endif
 #if BUILDFLAG(ENABLE_SIDEBAR)
-      (url.host_piece() == kSidebarBookmarksHost &&
-       base::FeatureList::IsEnabled(sidebar::kSidebarFeature)) ||
+      url.host_piece() == kSidebarBookmarksHost ||
 #endif
 #if !defined(OS_ANDROID)
       url.host_piece() == kWalletPanelHost ||
