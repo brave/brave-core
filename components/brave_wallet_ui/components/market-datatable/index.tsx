@@ -94,6 +94,7 @@ const MarketDataTable = (props: Props) => {
           isAsset={true}
           onUpdateBalance={() => {}}
           showPulsatingDot={false}
+          showTooltip={false}
           customStyle={{
             height: '20px',
             width: '100%',
