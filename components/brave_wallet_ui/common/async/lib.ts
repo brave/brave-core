@@ -205,10 +205,17 @@ export function refreshPrices () {
 
     const getTokenPrices = await Promise.all(GetFlattenedAccountBalances(accounts).map(async (token) => {
       const emptyPrice = {
-        fromAsset: token.token.symbol,
+        fromAsset: token.token.symbol.toLowerCase(),
         toAsset: defaultFiatCurrency,
         price: '',
         assetTimeframeChange: ''
+      }
+
+      if (token.token.symbol.toLowerCase() === selectedNetwork.symbol.toLowerCase()) {
+        return {
+          ...emptyPrice,
+          price: nativeAssetPrice
+        }
       }
 
       // If a tokens balance is 0 we do not make an unnecessary api call for the price of that token
