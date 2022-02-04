@@ -23,8 +23,8 @@
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
-// #include "brave/ios/browser/api/history/brave_password_observer.h"
-// #include "brave/ios/browser/api/history/password_store_listener_ios.h"
+#include "brave/ios/browser/api/password/brave_password_observer.h"
+#include "brave/ios/browser/api/password/password_store_listener_ios.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -268,61 +268,6 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
     delete this;
 }
 
-#pragma mark - BravePasswordStoreObserver
-
-class BravePasswordStoreObserver 
-  : public password_manager::PasswordStoreInterface::Observer {
- public:
-  BravePasswordStoreObserver(
-      scoped_refptr<password_manager::PasswordStoreInterface> store,
-      base::RepeatingClosure logins_changed_closure);
-  ~BravePasswordStoreObserver() override;
-
-  base::WeakPtr<BravePasswordStoreObserver> GetWeakPtr();
-
-  // Called when the contents of the password store change.
-  void OnLoginsChanged(
-      password_manager::PasswordStoreInterface* store,
-      const password_manager::PasswordStoreChangeList& changes) override;
-  void OnLoginsRetained(password_manager::PasswordStoreInterface* store,
-                        const std::vector<password_manager::PasswordForm>&
-                            retained_passwords) override;
- private:
-  scoped_refptr<password_manager::PasswordStoreInterface> store_;
-  base::RepeatingClosure logins_changed_closure_;
-
-  base::WeakPtrFactory<BravePasswordStoreObserver> weak_ptr_factory_{this};
-};
-
-base::WeakPtr<BravePasswordStoreObserver> BravePasswordStoreObserver::GetWeakPtr() {
-  return weak_ptr_factory_.GetWeakPtr();
-}
-
-BravePasswordStoreObserver::BravePasswordStoreObserver(
-    scoped_refptr<password_manager::PasswordStoreInterface> store,
-    base::RepeatingClosure logins_changed_closure)
-    : store_(store), logins_changed_closure_(logins_changed_closure) {
-  if (store_)
-    store_->AddObserver(this);
-}
-
-BravePasswordStoreObserver::~BravePasswordStoreObserver() {
-  if (store_)
-    store_->RemoveObserver(this);
-}
-
-void BravePasswordStoreObserver::OnLoginsChanged(
-    password_manager::PasswordStoreInterface* /*store*/,
-    const password_manager::PasswordStoreChangeList& /*changes*/) {
-  logins_changed_closure_.Run();
-}
-
-void BravePasswordStoreObserver::OnLoginsRetained(
-    password_manager::PasswordStoreInterface* /*store*/,
-    const std::vector<password_manager::PasswordForm>& /*retained_passwords*/) {
-  logins_changed_closure_.Run();
-}
-
 #pragma mark - BravePasswordAPI
 
 @interface BravePasswordAPI () {
@@ -351,14 +296,15 @@ void BravePasswordStoreObserver::OnLoginsRetained(
   return password_store_->IsAbleToSavePasswords();
 }
 
-// - (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer
-// {
-//   return [[PasswordStoreListenerImpl alloc] init:observer];
-// }
+- (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer
+{
+  return [[PasswordStoreListenerImpl alloc] init:observer
+                                   passwordStore:password_store_];
+}
 
-// - (void)removeObserver:(id<PasswordStoreListener>)observer {
-//   [observer destroy];
-// }
+- (void)removeObserver:(id<PasswordStoreListener>)observer {
+  [observer destroy];
+}
 
 - (void)addLogin:(IOSPasswordForm*)passwordForm {
   password_manager::PasswordForm credentialForm = [self createCredentialForm:passwordForm];

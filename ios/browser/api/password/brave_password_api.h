@@ -19,8 +19,8 @@ typedef NS_ENUM(NSUInteger, PasswordFormScheme) {
   PasswordFormSchemeUsernameOnly
 };
 
-// @protocol PasswordStoreObserver;
-// @protocol PasswordStoreListener;
+@protocol PasswordStoreObserver;
+@protocol PasswordStoreListener;
 
 @class IOSPasswordForm;
 
@@ -82,8 +82,8 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) bool isAbleToSavePasswords;
 
-// - (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer;
-// - (void)removeObserver:(id<PasswordStoreListener>)observer;
+- (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer;
+- (void)removeObserver:(id<PasswordStoreListener>)observer;
 
 - (instancetype)init NS_UNAVAILABLE;
 
