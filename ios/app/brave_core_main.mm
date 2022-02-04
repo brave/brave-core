@@ -164,7 +164,11 @@ const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
 }
 
 - (void)onAppWillTerminate:(NSNotification*)notification {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  _mainBrowserState = nullptr;
   _webMain.reset();
+  _delegate.reset();
+  _webClient.reset();
 }
 
 - (void)scheduleLowPriorityStartupTasks {
