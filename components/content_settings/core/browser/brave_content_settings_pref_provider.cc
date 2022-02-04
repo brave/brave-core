@@ -399,7 +399,8 @@ bool BravePrefProvider::SetWebsiteSetting(
   //     // change to type ContentSettingsType::BRAVE_COOKIES
   //     return SetWebsiteSettingInternal(
   //         plugin_primary_pattern, plugin_secondary_pattern,
-  //         ContentSettingsType::BRAVE_COOKIES, std::move(in_value), constraints);
+  //         ContentSettingsType::BRAVE_COOKIES, std::move(in_value),
+  //         constraints);
   //   }
   // }
 
