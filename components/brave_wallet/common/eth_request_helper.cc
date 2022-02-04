@@ -288,6 +288,16 @@ bool ParsePersonalSignParams(const std::string& json,
   if (!address_str || !message_str)
     return false;
 
+  // MetaMask accepts input in the wrong order, so we try for the right order
+  // but if it's invalid then we allow it to be swapped if the other combination
+  // is valid
+  if (!EthAddress::IsValidAddress(*address_str) &&
+      EthAddress::IsValidAddress(*message_str)) {
+    const std::string* temp = address_str;
+    address_str = message_str;
+    message_str = temp;
+  }
+
   *address = *address_str;
   // MM encodes 0x as a string and not an empty value
   if (IsValidHexString(*message_str) && *message_str != "0x") {
