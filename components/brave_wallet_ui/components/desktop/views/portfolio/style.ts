@@ -1,9 +1,12 @@
 import styled from 'styled-components'
 import { ArrowUpIcon } from 'brave-ui/components/icons'
-import { AssetIconProps, AssetIconFactory } from '../../../shared/style'
+import EyeOnIcon from '../../../../assets/svg-icons/eye-on-icon.svg'
+import EyeOffIcon from '../../../../assets/svg-icons/eye-off-icon.svg'
+import { AssetIconProps, AssetIconFactory, WalletButton } from '../../../shared/style'
 
 interface StyleProps {
   isDown: boolean
+  hideBalances: boolean
 }
 
 export const StyledWrapper = styled.div`
@@ -207,4 +210,23 @@ export const CoinGeckoText = styled.span`
   font-weight: normal;
   color: ${(p) => p.theme.color.text03};
   margin: 15px 0px;
+`
+
+export const ShowBalanceButton = styled(WalletButton) <Partial<StyleProps>>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 0px;
+  margin-left: 16px;
+  width: 18px;
+  height: 18px;
+  background-color: ${(p) => p.theme.color.text02};
+  -webkit-mask-image: url(${(p) => p.hideBalances ? EyeOffIcon : EyeOnIcon});
+  mask-image: url(${(p) => p.hideBalances ? EyeOffIcon : EyeOnIcon});
+  mask-size: cover;
 `

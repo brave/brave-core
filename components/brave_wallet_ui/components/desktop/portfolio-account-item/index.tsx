@@ -16,7 +16,7 @@ import { formatBalance } from '../../../utils/format-balances'
 import { Tooltip } from '../../shared'
 import { getLocale } from '../../../../common/locale'
 import { BraveWallet, DefaultCurrencies } from '../../../constants/types'
-import { TransactionPopup } from '../'
+import { TransactionPopup, WithHideBalancePlaceholder } from '../'
 
 // Styled Components
 import {
@@ -44,6 +44,7 @@ export interface Props {
   assetDecimals: number
   selectedNetwork: BraveWallet.EthereumChain
   name: string
+  hideBalances?: boolean
 }
 
 const PortfolioAccountItem = (props: Props) => {
@@ -55,6 +56,7 @@ const PortfolioAccountItem = (props: Props) => {
     assetDecimals,
     selectedNetwork,
     defaultCurrencies,
+    hideBalances,
     spotPrices
   } = props
   const [showAccountPopup, setShowAccountPopup] = React.useState<boolean>(false)
@@ -98,8 +100,13 @@ const PortfolioAccountItem = (props: Props) => {
       </NameAndIcon>
       <RightSide>
         <BalanceColumn>
-          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
-          <AssetBalanceText>{formatTokenAmountWithCommasAndDecimals(formattedAssetBalance, assetTicker)}</AssetBalanceText>
+          <WithHideBalancePlaceholder
+            size='small'
+            hideBalances={hideBalances ?? false}
+          >
+            <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
+            <AssetBalanceText>{formatTokenAmountWithCommasAndDecimals(formattedAssetBalance, assetTicker)}</AssetBalanceText>
+          </WithHideBalancePlaceholder>
         </BalanceColumn>
         <MoreButton onClick={onShowTransactionPopup}>
           <MoreIcon />

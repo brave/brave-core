@@ -21,6 +21,7 @@ import {
   AssetIcon
 } from './style'
 import { withPlaceholderIcon } from '../../shared'
+import { WithHideBalancePlaceholder } from '../'
 
 // Hooks
 import { usePricing } from '../../../common/hooks'
@@ -31,6 +32,7 @@ interface Props {
   assetBalance: string
   token: BraveWallet.BlockchainToken
   defaultCurrencies: DefaultCurrencies
+  hideBalances?: boolean
 }
 
 const PortfolioAssetItem = (props: Props) => {
@@ -39,7 +41,8 @@ const PortfolioAssetItem = (props: Props) => {
     assetBalance,
     action,
     token,
-    defaultCurrencies
+    defaultCurrencies,
+    hideBalances
   } = props
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
@@ -65,10 +68,15 @@ const PortfolioAssetItem = (props: Props) => {
             <AssetName>{token.name} {token.isErc721 ? hexToNumber(token.tokenId ?? '') : ''}</AssetName>
           </NameAndIcon>
           <BalanceColumn>
-            {!token.isErc721 &&
-              <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
-            }
-            <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
+            <WithHideBalancePlaceholder
+              size='small'
+              hideBalances={hideBalances ?? false}
+            >
+              {!token.isErc721 &&
+                <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
+              }
+              <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
+            </WithHideBalancePlaceholder>
           </BalanceColumn>
         </StyledWrapper>
       }
