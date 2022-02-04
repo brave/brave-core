@@ -29,6 +29,7 @@ export interface Props {
   isDisabled: boolean
   showPulsatingDot?: boolean
   customStyle?: {[key: string]: string}
+  showTooltip?: boolean
 }
 
 const EmptyChartData = [
@@ -47,7 +48,7 @@ const EmptyChartData = [
 ]
 
 function LineChart (props: Props) {
-  const { priceData, onUpdateBalance, isAsset, isDown, isLoading, isDisabled, customStyle, showPulsatingDot } = props
+  const { priceData, onUpdateBalance, isAsset, isDown, isLoading, isDisabled, customStyle, showPulsatingDot, showTooltip } = props
   const [position, setPosition] = React.useState<number>(0)
 
   const chartData = React.useMemo(() => {
@@ -101,7 +102,7 @@ function LineChart (props: Props) {
           </defs>
           <YAxis hide={true} domain={['auto', 'auto']} />
           <XAxis hide={true} dataKey='date' />
-          {priceData.length > 0 && !isDisabled &&
+          {priceData.length > 0 && !isDisabled && showTooltip &&
             <Tooltip
               isAnimationActive={false}
               position={{ x: position, y: 0 }}
@@ -126,7 +127,8 @@ function LineChart (props: Props) {
 }
 
 LineChart.defaultProps = {
-  showPulsatingDot: true
+  showPulsatingDot: true,
+  showTooltip: true
 }
 
 export default LineChart

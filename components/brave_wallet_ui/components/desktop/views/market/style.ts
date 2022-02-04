@@ -6,7 +6,7 @@ export const StyledWrapper = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 `
 
 export const TopRow = styled.div`
@@ -15,6 +15,6 @@ export const TopRow = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   gap: 10px;
 `
