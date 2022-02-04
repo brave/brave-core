@@ -210,6 +210,7 @@ void SidebarControlView::OnButtonPressed(views::View* view) {
 
 void SidebarControlView::Update() {
   UpdateItemAddButtonState();
+  sidebar_items_view_->Update();
 }
 
 void SidebarControlView::UpdateItemAddButtonState() {

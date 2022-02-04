@@ -155,9 +155,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   // Click builtin wallet item and it's loaded at current active tab.
-  controller()->ActivateItemAt(1);
-  EXPECT_EQ(0, tab_model()->active_index());
   auto item = model()->GetAllSidebarItems()[1];
+  EXPECT_FALSE(controller()->DoesBrowserHaveOpenedTabForItem(item));
+  controller()->ActivateItemAt(1);
+  EXPECT_TRUE(controller()->DoesBrowserHaveOpenedTabForItem(item));
+  EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL().host(),
             item.url.host());
 

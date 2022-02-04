@@ -459,3 +459,7 @@ bool SidebarItemsScrollView::IsItemReorderingInProgress() const {
 bool SidebarItemsScrollView::IsBubbleVisible() const {
   return contents_view_->IsBubbleVisible();
 }
+
+void SidebarItemsScrollView::Update() {
+  contents_view_->Update();
+}

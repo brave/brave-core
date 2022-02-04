@@ -88,6 +88,11 @@ gfx::Size SidebarItemsContentsView::CalculatePreferredSize() const {
 void SidebarItemsContentsView::OnThemeChanged() {
   View::OnThemeChanged();
 
+  // BuiltIn items use different icon set based on theme.
+  UpdateAllBuiltInItemsViewState();
+}
+
+void SidebarItemsContentsView::Update() {
   UpdateAllBuiltInItemsViewState();
 }
 
@@ -97,13 +102,27 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   if (children().size() != items.size())
     return;
 
-  // BuiltIn items different colored images depends on theme.
   const int active_index = sidebar_model_->active_index();
-  int index = 0;
-  for (const auto& item : items) {
-    if (sidebar::IsBuiltInType(item))
-      UpdateItemViewStateAt(index, index == active_index);
-    index++;
+  const int items_num = items.size();
+  for (int item_index = 0; item_index < items_num; ++item_index) {
+    const auto item = items[item_index];
+    if (!sidebar::IsBuiltInType(item))
+      continue;
+
+    if (item.open_in_panel) {
+      UpdateItemViewStateAt(item_index, item_index == active_index);
+      continue;
+    }
+
+    // If browser window has tab that loads brave talk, brave talk panel icon
+    // will use colored one for normal state also.
+    if (item.built_in_item_type ==
+        sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
+      UpdateItemViewStateAt(
+          item_index,
+          browser_->sidebar_controller()->DoesBrowserHaveOpenedTabForItem(
+              item));
+    }
   }
 }
 
