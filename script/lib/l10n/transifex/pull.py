@@ -14,8 +14,8 @@ import lxml.etree  # pylint: disable=import-error
 from lib.l10n.grd_utils import (get_grd_strings,
                                 get_override_file_path,
                                 get_xtb_files)
-from lib.l10n.transifex.api_wrapper import transifex_get_resource_l10n
 from lib.l10n.transifex.common import (get_acceptable_json_lang_codes,
+                                       get_api_wrapper,
                                        get_strings_dict_from_xml_content,
                                        textify_from_transifex,
                                        transifex_name_from_filename)
@@ -143,8 +143,9 @@ def get_transifex_translation_file_content(source_file_path, filename,
     """Obtains a translation Android xml format and returns the string"""
     lang_code = xtb_lang_to_transifex_lang(lang_code)
     resource_name = transifex_name_from_filename(source_file_path, filename)
-    content = transifex_get_resource_l10n(resource_name, lang_code)
     ext = os.path.splitext(source_file_path)[1]
+    content = get_api_wrapper().transifex_get_resource_l10n(
+        resource_name, lang_code, ext)
     content = fix_transifex_translation_file_content(content, ext)
     if dump_path:
         with open(dump_path, mode='wb') as f:

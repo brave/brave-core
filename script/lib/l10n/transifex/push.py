@@ -16,11 +16,8 @@ import lxml.etree  # pylint: disable=import-error
 from lib.l10n.grd_utils import (get_grd_languages,
                                 get_grd_strings,
                                 get_original_grd)
-from lib.l10n.transifex.api_wrapper import (transifex_get_resource_source,
-                                            transifex_upload_resource_content,
-                                            transifex_upload_string_desc,
-                                            transifex_upload_string_l10n)
 from lib.l10n.transifex.common import (get_acceptable_json_lang_codes,
+                                       get_api_wrapper,
                                        get_strings_dict_from_xml_content,
                                        transifex_name_from_filename)
 
@@ -167,8 +164,9 @@ def upload_source_string_file_to_transifex(source_file_path, filename,
     """Uploads the specified source string file to transifex"""
     print(f'Uploading resource for filename {filename}')
     resource_name = transifex_name_from_filename(source_file_path, filename)
-    return transifex_upload_resource_content(resource_name, xml_content,
-                                             i18n_type)
+    return get_api_wrapper().transifex_upload_resource_content(resource_name,
+                                                               xml_content,
+                                                               i18n_type)
 
 
 def check_for_chromium_upgrade_extra_langs(src_root, grd_file_path):
@@ -194,7 +192,7 @@ def get_transifex_source_resource_strings(grd_file_path):
     """Obtains the list of strings from Transifex"""
     filename = os.path.basename(grd_file_path).split('.')[0]
     resource_name = transifex_name_from_filename(grd_file_path, filename)
-    content = transifex_get_resource_source(resource_name)
+    content = get_api_wrapper().transifex_get_resource_source(resource_name)
     return get_strings_dict_from_xml_content(content)
 
 
@@ -223,7 +221,8 @@ def upload_string_desc(source_file_path, filename, string_name, string_desc):
     resource_name = transifex_name_from_filename(source_file_path, filename)
     print('Uploading string description for string: '
           f'{string_name} (hash: {string_hash})')
-    transifex_upload_string_desc(resource_name, string_hash, string_desc)
+    get_api_wrapper().transifex_upload_string_desc(resource_name, string_hash,
+                                                   string_desc)
 
 
 def get_transifex_string_hash(string_name):
@@ -238,8 +237,8 @@ def upload_missing_translation_to_transifex(source_string_path, lang_code,
     resource_name = transifex_name_from_filename(source_string_path, filename)
     string_hash = get_transifex_string_hash(string_name)
     translated_value = braveify(translated_value)
-    transifex_upload_string_l10n(resource_name, string_hash, lang_code,
-                                 translated_value)
+    get_api_wrapper().transifex_upload_string_l10n(resource_name, string_hash,
+                                                   lang_code, translated_value)
     print(f'Uploaded {lang_code} string: {string_name}...')
 
 

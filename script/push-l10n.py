@@ -25,8 +25,7 @@ SOURCE_ROOT = os.path.dirname(BRAVE_SOURCE_ROOT)
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Push strings to Transifex')
-    parser.add_argument('--source_string_path',
-                        nargs=1)
+    parser.add_argument('--source_string_path', nargs=1)
     return parser.parse_args()
 
 

@@ -12,6 +12,18 @@ import lxml.etree  # pylint: disable=import-error
 
 from lib.l10n.grd_utils import textify
 
+brave_project_name = 'brave'
+
+# Transifex API v2 will be deprecated on April 7, 2022
+use_api_v3 = True
+
+if use_api_v3:
+    from lib.l10n.transifex.api_v3_wrapper import \
+        TransifexAPIV3Wrapper as APIWrapper
+else:
+    from lib.l10n.transifex.api_v2_wrapper import \
+        TransifexAPIV2Wrapper as APIWrapper
+
 
 # This module contains functionality common to both pulling down translations
 # from Transifex and pushing source strings up to Transifex.
@@ -105,3 +117,13 @@ def get_acceptable_json_lang_codes(langs_dir_path):
     lang_codes.discard('ph')
     lang_codes.discard('ht')
     return sorted(lang_codes)
+
+
+# Wrapper instance
+def get_api_wrapper():
+    if get_api_wrapper.wrapper is None:
+        get_api_wrapper.wrapper = APIWrapper(project_name=brave_project_name)
+    return get_api_wrapper.wrapper
+
+
+get_api_wrapper.wrapper = None
