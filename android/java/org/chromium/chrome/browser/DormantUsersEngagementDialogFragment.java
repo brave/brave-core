@@ -31,6 +31,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -100,7 +101,8 @@ public class DormantUsersEngagementDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (BraveActivity.getBraveActivity() != null) {
-                    BraveActivity.getBraveActivity().handleBraveSetDefaultBrowserDialog();
+                    BraveSetDefaultBrowserUtils.openDefaultAppsSettings(
+                            BraveActivity.getBraveActivity());
                 }
                 dismiss();
             }

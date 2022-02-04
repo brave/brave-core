@@ -48,7 +48,8 @@ export function Card () {
               amount: 0.15,
               type: 'ads',
               createdAt: Date.now(),
-              expiresAt: null
+              claimableUntil: Date.now() + 1000 * 10 * 24 * 60 * 60,
+              expiresAt: Date.now() + 1000 * 10 * 24 * 60 * 60
             } : null}
             nextPaymentDate={nextPaymentDate}
             earningsThisMonth={0.142}
@@ -57,7 +58,6 @@ export function Card () {
             contributionsThisMonth={10}
             onEnableRewards={actionLogger('onEnableRewards')}
             onEnableAds={actionLogger('onEnableAds')}
-            onDismissGrant={actionLogger('onDismissGrant')}
             onClaimGrant={actionLogger('onClaimGrant')}
           />
         </div>

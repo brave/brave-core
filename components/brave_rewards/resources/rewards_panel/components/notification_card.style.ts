@@ -129,9 +129,16 @@ export const title = styled.div`
   &.error .icon {
     color: var(--brave-palette-red500);
   }
+
+  &.custom {
+    font-size: 16px;
+  }
 `
 
 export const body = styled.div`
+  margin-top: 10px;
+  color: var(--brave-palette-neutral700);
+
   .brave-theme-dark & {
     color: var(--brave-palette-grey400);
   }

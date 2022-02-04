@@ -240,7 +240,7 @@ enum Result {
   IN_PROGRESS= 33,
   REWARDS_OFF = 34,
   AC_OFF = 35,
-  
+
   DEVICE_LIMIT_REACHED = 36,
   MISMATCHED_PROVIDER_ACCOUNTS = 37,
   UPHOLD_BLOCKED_USER = 38,
@@ -375,6 +375,7 @@ struct Promotion {
   double approximate_value;
   PromotionStatus status;
   uint64 created_at;
+  uint64 claimable_until;
   uint64 expires_at;
   uint64 claimed_at;
   bool legacy_claimed;

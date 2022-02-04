@@ -455,8 +455,11 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_CONTINUE_TO_WALLET" desc="Text for continue to wallet button">
         Continue to wallet
       </message>
-      <message name="IDS_MENU_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
+      <message name="IDS_SET_DEFAULT_BROWSER" desc="Button text for dormant users engagement dialog">
         Set as default browser
+      </message>
+      <message name="IDS_MENU_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
+        Set as Default Browser
       </message>
       <message name="IDS_BRAVE_SET_DEFAULT_BROWSER_DIALOG_TEXT" desc="Dialog for setting default browser">
         Select Brave Browser and tap 'Always'
@@ -466,18 +469,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_DEFAULT_BROWSER_GO_TO_SETTINGS" desc="Toast message for those without 7.0 to go to settings to change default browser">
         You've already set a default browser. You may change the default browser in your app settings.
-      </message>
-      <message name="IDS_BRAVE_DEFAULT_BROWSER_TITLE" desc="Title for default browser notification.">
-        Brave is lightning fast
-      </message>
-      <message name="IDS_BRAVE_DEFAULT_BROWSER_BODY" desc="Body for default browser notification.">
-        Make Brave your default browser!
-      </message>
-      <message name="IDS_BRAVE_MAKE_DEFAULT_TEXT" desc="Text for positive default browser notification button.">
-        Make default
-      </message>
-      <message name="IDS_BRAVE_MAKE_DEFAULT_NO" desc="Negative button text for making default browser.">
-        No
       </message>
       <message name="IDS_MENU_BRAVE_REWARDS" desc="Title for brave rewards menu item">
         Brave Rewards
@@ -523,6 +514,21 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="A button to make monthly tipping">
         Make this monthly
+      </message>
+      <message name="IDS_BRAVE_CANCEL" desc="Set default browser modal button text">
+        Cancel
+      </message>
+      <message name="IDS_BRAVE_NEXT" desc="Set default browser modal button text">
+        Next
+      </message>
+      <message name="IDS_BRAVE_PRIVACY_SET_DEFAULT_BROWSER" desc="Set default browser modal title">
+        To improve your privacy, set Brave as your default Browser
+      </message>
+      <message name="IDS_BRAVE_CHOOSE" desc="Set default browser modal text">
+        Choose Brave on the next screen.
+      </message>
+      <message name="IDS_BRAVE_DONT_ASK_AGAIN" desc="Set default browser modal text">
+        Don't ask again
       </message>
       <message name="IDS_BRAVE_UI_MONTH_JAN" desc="Name of a month">JANUARY</message>
       <message name="IDS_BRAVE_UI_MONTH_FEB" desc="Name of a month">FEBRUARY</message>
@@ -1744,13 +1750,13 @@ Are you sure you want to do this?
         Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!
       </message>
       <message name="IDS_SET_DEFAULT_BROWSER_TITLE" desc="Set default browser modal title">
-        Open all links with Brave to protect your privacy
+        Make Brave your default browser
       </message>
       <message name="IDS_SET_DEFAULT_BROWSER_TEXT" desc="Set default browser modal text">
-        Brave Shields blocks trackers &amp; ads, saves data, and saves you time on every site you visit.
+        With Brave as default, every link you click opens with Brave’s privacy protections.
       </message>
       <message name="IDS_SET_BRAVE_DEFAULT_BROWSER" desc="Set default browser modal button text">
-        Set Brave as default
+        Set as default
       </message>
       <message name="IDS_NOT_NOW" desc="Set default browser modal button text">
         Not now

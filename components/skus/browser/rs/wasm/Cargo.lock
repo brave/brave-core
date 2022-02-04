@@ -135,7 +135,8 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "challenge-bypass-ristretto"
 version = "1.0.0"
-source = "git+https://github.com/brave-intl/challenge-bypass-ristretto?rev=17a7922#17a7922d8e174b20af1230f5b05f949c8c967eb5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a439d42c1cc301fb1a248114b56388e447ac1a9afed7bfb1424ae2f4c26f92c7"
 dependencies = [
  "base64 0.13.0",
  "clear_on_drop",

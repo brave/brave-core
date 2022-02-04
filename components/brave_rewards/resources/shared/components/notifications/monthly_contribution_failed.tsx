@@ -22,10 +22,9 @@ export function MonthlyContributionFailed (props: NotificationViewProps) {
 
   return (
     <div>
-      <Title
-        style='error'
-        text={getString('notificationMonthlyContributionFailedTitle')}
-      />
+      <Title style='error'>
+        {getString('notificationMonthlyContributionFailedTitle')}
+      </Title>
       <Body>{getString(message)}</Body>
       <Action notification={props.notification} />
     </div>

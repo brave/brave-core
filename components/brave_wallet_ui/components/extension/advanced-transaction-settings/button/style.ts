@@ -18,6 +18,7 @@ export const StyledButton = styled(WalletButton)`
 
 export const SettingsIcon = styled(SettingsAdvancedIcon)`
   padding-bottom: 12px;
+  color: ${(p) => p.theme.color.text03};
 `
 
 export const TabLine = styled.div`

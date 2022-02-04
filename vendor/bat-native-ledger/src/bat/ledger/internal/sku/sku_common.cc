@@ -59,7 +59,7 @@ void SKUCommon::OnTransactionCompleted(
     ledger::SKUOrderCallback callback) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order status was not updated");
-    callback(type::Result::LEDGER_ERROR, "");
+    callback(result, "");
     return;
   }
 

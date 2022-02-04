@@ -65,6 +65,8 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       const toMilliseconds = 1000
       promotions = promotions.map((promotion: Rewards.Promotion) => {
         promotion.expiresAt = promotion.expiresAt * toMilliseconds
+        promotion.claimableUntil = promotion.claimableUntil * toMilliseconds
+        promotion.createdAt = promotion.createdAt * toMilliseconds
         return updatePromotion(promotion, state.promotions || [])
       })
 

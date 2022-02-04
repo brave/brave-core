@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { ExternalWalletProvider } from '../../lib/external_wallet'
+import { GrantInfo } from '../../lib/grant_info'
 
 export type NotificationType =
   'add-funds' |
@@ -34,8 +35,7 @@ export interface MonthlyContributionFailedNotification extends Notification {
 
 export interface GrantAvailableNotification extends Notification {
   type: 'grant-available'
-  source: 'ads' | 'ugp'
-  grantId: string
+  grantInfo: GrantInfo
 }
 
 export interface PendingPublisherVerifiedNotification extends Notification {

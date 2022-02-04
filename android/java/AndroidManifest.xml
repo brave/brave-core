@@ -1,10 +1,3 @@
-<receiver android:name="org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService"
-    android:exported="false">
-    <intent-filter>
-          <action android:name="DEEP_LINK"/>
-    </intent-filter>
-</receiver>
-
 <receiver android:name="org.chromium.chrome.browser.notifications.retention.RetentionNotificationPublisher"
     android:exported="false">
 </receiver>
@@ -46,7 +39,7 @@
     tools:ignore="LockedOrientationActivity"/>
 
 <activity
-    android:name="org.chromium.chrome.browser.SetDefaultBrowserActivity"
+    android:name="org.chromium.chrome.browser.set_default_browser.SetDefaultBrowserActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>

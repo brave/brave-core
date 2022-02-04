@@ -275,8 +275,12 @@
     "message": "Reconnect",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Claim",
+  "notificationClaimRewards": {
+    "message": "Claim Rewards",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Claim Tokens",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Token grants",
+    "message": "A token grant is available!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "You have a grant waiting for you.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Rewards: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Ads earnings received",
-    "description": ""
+    "message": "Your $month$ Ad Rewards are here!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Your rewards from Brave Private Ads are here!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly contribution failed",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "You have $days$ left to claim",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "There was a problem processing your contribution.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Monthly contribution failed",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {

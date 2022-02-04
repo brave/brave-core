@@ -7,7 +7,7 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/ad_events/ad_events.h"
-#include "bat/ads/internal/features/ad_serving/ad_serving_features.h"
+#include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
 namespace ads {

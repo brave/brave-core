@@ -51,6 +51,10 @@
                   "type": "integer",
                   "description": "when the promotion record was created"
                 },
+                "claimableUntil": {
+                  "type": "integer",
+                  "description": "when the promotion is no longer claimable"
+                },
                 "expiresAt": {
                   "type": "integer",
                   "description": "when promotion expires"

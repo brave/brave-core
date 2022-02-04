@@ -24,7 +24,7 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/transferred_frequency_cap.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 
 namespace ads {
 

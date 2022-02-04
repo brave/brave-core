@@ -1,6 +1,6 @@
 # Brave Core
 
-Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.
+Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make the Brave browser. Please also check https://github.com/brave/brave-browser
 
 Follow [@brave](https://twitter.com/brave) on Twitter for important announcements.
 

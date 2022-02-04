@@ -54,7 +54,7 @@ export const SelectWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 250px;
-  margin: 15px 0px 15px 0px;
+  margin-bottom: 15px;
 `
 
 export const DisclaimerWrapper = styled.div`
@@ -146,4 +146,16 @@ export const SelectAccountTitle = styled.span`
   letter-spacing: 0.01em;
   color: ${(p) => p.theme.color.text02};
   margin-bottom: 12px;
+`
+
+export const ImportDisclaimer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  background-color: ${(p) => p.theme.color.warningBackground};
+  border-radius: 16px;
+  padding: 10px;
+  margin: 15px 0px 15px 0px;
 `

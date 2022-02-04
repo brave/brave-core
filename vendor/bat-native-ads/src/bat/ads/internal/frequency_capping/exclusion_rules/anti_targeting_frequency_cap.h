@@ -11,7 +11,7 @@
 #include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_aliases.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting_info.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_info.h"
 
 namespace ads {
 

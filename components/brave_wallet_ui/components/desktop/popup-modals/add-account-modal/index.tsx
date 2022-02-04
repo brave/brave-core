@@ -17,7 +17,7 @@ import {
   Input,
   StyledWrapper,
   DisclaimerText,
-  DisclaimerWrapper,
+  ImportDisclaimer,
   SelectWrapper,
   ImportButton,
   ImportRow,
@@ -29,7 +29,13 @@ import {
 
 import { HardwareWalletConnectOpts } from './hardware-wallet-connect/types'
 import HardwareWalletConnect from './hardware-wallet-connect'
-import { FilecoinNetwork } from '../../../../common/hardware/types'
+import {
+  FilecoinNetwork,
+  FilecoinNetworkTypes,
+  FilecoinNetworkLocaleMapping,
+  FilecoinAddressProtocolTypes,
+  FilecoinAddressProtocolLocaleMapping
+} from '../../../../common/hardware/types'
 
 export interface Props {
   onClose: () => void
@@ -75,6 +81,16 @@ const AddAccountModal = (props: Props) => {
   const [password, setPassword] = React.useState<string>('')
   const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(undefined)
   const passwordInputRef = React.useRef<HTMLInputElement>(null)
+  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
+  const [filecoinAddressProtocol, setFilecoinAddressProtocol] = React.useState<BraveWallet.FilecoinAddressProtocol>(BraveWallet.FilecoinAddressProtocol.BLS)
+
+  const onChangeFilecoinNetwork = (network: FilecoinNetwork) => {
+    setFilecoinNetwork(network)
+  }
+
+  const onChangeFilecoinAddressProtocol = (protocol: string) => {
+    setFilecoinAddressProtocol(Number(protocol))
+  }
 
   const importError = React.useMemo(() => {
     return hasImportError
@@ -112,7 +128,7 @@ const AddAccountModal = (props: Props) => {
     if (tab === 'import') {
       if (importOption === 'key') {
         if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
-          onImportFilecoinAccount(accountName, privateKey, BraveWallet.FILECOIN_TESTNET, BraveWallet.FilecoinAddressProtocol.BLS)
+          onImportFilecoinAccount(accountName, privateKey, filecoinNetwork, filecoinAddressProtocol)
         } else {
           onImportAccount(accountName, privateKey)
         }
@@ -214,22 +230,52 @@ const AddAccountModal = (props: Props) => {
         <StyledWrapper>
           {tab === 'import' &&
             <>
-              <DisclaimerWrapper>
+              <ImportDisclaimer>
                 <DisclaimerText>{getLocale('braveWalletImportAccountDisclaimer')}</DisclaimerText>
-              </DisclaimerWrapper>
-              <SelectWrapper>
-                <Select
-                  value={importOption}
-                  onChange={onImportOptionChange}
-                >
-                  <div data-value='key'>
-                    {getLocale('braveWalletImportAccountKey')}
-                  </div>
-                  <div data-value='file'>
-                    {getLocale('braveWalletImportAccountFile')}
-                  </div>
-                </Select>
-              </SelectWrapper>
+              </ImportDisclaimer>
+              {selectedAccountType?.coin === BraveWallet.CoinType.FIL ? (
+                <>
+                  <SelectWrapper>
+                    <Select value={filecoinNetwork} onChange={onChangeFilecoinNetwork}>
+                      {FilecoinNetworkTypes.map((network, index) => {
+                        const networkLocale = FilecoinNetworkLocaleMapping[network]
+                        return (
+                          <div data-value={network} key={index}>
+                            {networkLocale}
+                          </div>
+                        )
+                      })}
+                    </Select>
+                  </SelectWrapper>
+                  <SelectWrapper>
+                    <Select value={filecoinAddressProtocol.toString()} onChange={onChangeFilecoinAddressProtocol}>
+                      {FilecoinAddressProtocolTypes.map((protocol, index) => {
+                        const protocolLocale = FilecoinAddressProtocolLocaleMapping[protocol]
+                        return (
+                          <div data-value={protocol.toString()} key={index}>
+                            {getLocale('braveWalletFilecoinPrivateKeyProtocol').replace('$1', protocolLocale)}
+                          </div>
+                        )
+                      })}
+                    </Select>
+                  </SelectWrapper>
+                </>
+              ) : (
+                <SelectWrapper>
+                  <Select
+                    value={importOption}
+                    onChange={onImportOptionChange}
+                  >
+                    <div data-value='key'>
+                      {getLocale('braveWalletImportAccountKey')}
+                    </div>
+                    <div data-value='file'>
+                      {getLocale('braveWalletImportAccountFile')}
+                    </div>
+                  </Select>
+                </SelectWrapper>
+              )
+              }
               {importError &&
                 <ErrorText>{getLocale('braveWalletImportAccountError')}</ErrorText>
               }
@@ -294,6 +340,8 @@ const AddAccountModal = (props: Props) => {
                 accounts.filter(account => ['Ledger', 'Trezor'].includes(account.accountType))
               }
               selectedNetwork={selectedNetwork}
+              filecoinNetwork={filecoinNetwork}
+              onChangeFilecoinNetwork={onChangeFilecoinNetwork}
             />
           }
         </StyledWrapper>

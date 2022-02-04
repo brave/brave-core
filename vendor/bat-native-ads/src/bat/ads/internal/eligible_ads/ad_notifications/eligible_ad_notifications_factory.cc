@@ -9,7 +9,7 @@
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_base.h"
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_v1.h"
 #include "bat/ads/internal/eligible_ads/ad_notifications/eligible_ad_notifications_v2.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 
 namespace ads {
 namespace ad_notifications {

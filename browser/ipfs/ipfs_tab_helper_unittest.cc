@@ -37,12 +37,14 @@ class IpfsTabHelperUnitTest : public testing::Test {
     ASSERT_TRUE(web_contents_.get());
     ASSERT_TRUE(
         ipfs::IPFSTabHelper::MaybeCreateForWebContents(web_contents_.get()));
-    profile_->GetPrefs()->SetInteger(
-        kIPFSResolveMethod,
-        static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+    SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
   }
 
   TestingProfile* profile() { return profile_; }
+  void SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes type) {
+    profile_->GetPrefs()->SetInteger(kIPFSResolveMethod,
+                                     static_cast<int>(type));
+  }
 
   ipfs::IPFSTabHelper* ipfs_tab_helper() {
     return ipfs::IPFSTabHelper::FromWebContents(web_contents_.get());
@@ -82,29 +84,90 @@ TEST_F(IpfsTabHelperUnitTest, CanResolveURLTest) {
 TEST_F(IpfsTabHelperUnitTest, URLResolvingTest) {
   auto* helper = ipfs_tab_helper();
   ASSERT_TRUE(helper);
+  GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                                chrome::GetChannel());
 
   GURL test_url("ipns://brantly.eth/page?query#ref");
   helper->SetPageURLForTesting(test_url);
-  helper->IPFSLinkResolved(GURL("ipns://brantly.eth/"));
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), test_url.spec());
+  helper->IPFSLinkResolved(helper->ResolveDNSLinkURL(test_url));
+  auto resolved_url = helper->GetIPFSResolvedURL();
+  EXPECT_EQ(resolved_url.host(), gateway.host());
+  EXPECT_EQ(resolved_url.path(), "/brantly.eth/page");
+  EXPECT_EQ(resolved_url.query(), "query");
+  EXPECT_EQ(resolved_url.ref(), "ref");
 
   test_url = GURL("ipns://brantly.eth/");
   helper->SetPageURLForTesting(test_url);
-  helper->IPFSLinkResolved(GURL("ipns://brantly.eth/"));
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), test_url.spec());
+  helper->IPFSLinkResolved(helper->ResolveDNSLinkURL(test_url));
+  resolved_url = helper->GetIPFSResolvedURL();
+  EXPECT_EQ(resolved_url.host(), gateway.host());
+  EXPECT_EQ(resolved_url.path(), "/brantly.eth/");
+  EXPECT_EQ(resolved_url.query(), "");
+  EXPECT_EQ(resolved_url.ref(), "");
 
-  test_url = GURL("https://ipfs.io/ipfs/bafy/wiki/empty.html?query#ref");
+  test_url = GURL("https://docs.ipfs.io/install/ipfs-desktop/?foo=bar#ref");
   helper->SetPageURLForTesting(test_url);
-  helper->IPFSLinkResolved(GURL("ipfs://bafy"));
+  helper->IPFSLinkResolved(helper->ResolveDNSLinkURL(test_url));
+  resolved_url = helper->GetIPFSResolvedURL();
+  EXPECT_EQ(resolved_url.host(), gateway.host());
+  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/install/ipfs-desktop/");
+  EXPECT_EQ(resolved_url.query(), "foo=bar");
+  EXPECT_EQ(resolved_url.ref(), "ref");
 
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(),
-            "ipfs://bafy/wiki/empty.html?query#ref");
-
-  test_url = GURL("https://ipfs.io/ipfs/bafy");
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+  test_url = GURL("https://docs.ipfs.io/install/ipfs-desktop/?foo=bar#ref");
+  gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                           chrome::GetChannel());
   helper->SetPageURLForTesting(test_url);
-  helper->IPFSLinkResolved(GURL("ipfs://bafy"));
+  helper->IPFSLinkResolved(helper->ResolveDNSLinkURL(test_url));
+  resolved_url = helper->GetIPFSResolvedURL();
+  EXPECT_EQ(resolved_url.host(), gateway.host());
+  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/install/ipfs-desktop/");
+  EXPECT_EQ(resolved_url.query(), "foo=bar");
+  EXPECT_EQ(resolved_url.ref(), "ref");
+}
 
-  EXPECT_EQ(helper->GetIPFSResolvedURL().spec(), "ipfs://bafy");
+TEST_F(IpfsTabHelperUnitTest, ResolveDNSLinkURL) {
+  auto* helper = ipfs_tab_helper();
+  ASSERT_TRUE(helper);
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
+  GURL gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                                chrome::GetChannel());
+
+  GURL test_url("https://docs.ipfs.io/");
+  auto resolved_url = helper->ResolveDNSLinkURL(test_url);
+  EXPECT_EQ(resolved_url.host(), gateway.host());
+  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/");
+
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+  gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                           chrome::GetChannel());
+
+  resolved_url = helper->ResolveDNSLinkURL(test_url);
+  EXPECT_EQ(resolved_url.host(), gateway.host());
+  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/");
+
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL);
+  gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                           chrome::GetChannel());
+
+  test_url = GURL("https://docs.ipfs.io/install/ipfs-desktop/?foo=bar#qqqq");
+  resolved_url = helper->ResolveDNSLinkURL(test_url);
+  EXPECT_EQ(resolved_url.host(), gateway.host());
+  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/install/ipfs-desktop/");
+  EXPECT_TRUE(resolved_url.query().empty());
+  EXPECT_TRUE(resolved_url.ref().empty());
+
+  SetIPFSResolveMethodPref(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+  gateway = ipfs::GetConfiguredBaseGateway(profile()->GetPrefs(),
+                                           chrome::GetChannel());
+
+  test_url = GURL("https://docs.ipfs.io/install/ipfs-desktop/?foo=bar#qqqq");
+  resolved_url = helper->ResolveDNSLinkURL(test_url);
+  EXPECT_EQ(resolved_url.host(), gateway.host());
+  EXPECT_EQ(resolved_url.path(), "/ipns/docs.ipfs.io/install/ipfs-desktop/");
+  EXPECT_TRUE(resolved_url.query().empty());
+  EXPECT_TRUE(resolved_url.ref().empty());
 }
 
 TEST_F(IpfsTabHelperUnitTest, GatewayResolving) {

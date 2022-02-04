@@ -42,6 +42,11 @@
     <color name="onboarding_indicator_selected_color">#FF7654</color>
     <color name="onboarding_indicator_default_color">#C2C4CF</color>
 
+    <!-- Set Default Browser colors -->
+    <color name="set_default_bottom_sheet_bg_color">@android:color/white</color>
+    <color name="set_default_text_color">#212529</color>
+    <color name="set_default_bottom_sheet_button_disable_color">#DADCE8</color>
+
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@color/modern_grey_50</color>
     <color name="brave_sync_border_color">@color/modern_grey_50</color>

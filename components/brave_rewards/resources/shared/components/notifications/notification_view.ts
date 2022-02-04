@@ -7,8 +7,8 @@ import * as React from 'react'
 import { Notification, NotificationAction } from './notification'
 
 export interface NotificationTitleProps {
-  style?: 'funding' | 'information' | 'error'
-  text: string
+  style?: 'funding' | 'information' | 'error' | 'custom'
+  children: React.ReactNode
 }
 
 export type NotificationTitle = (props: NotificationTitleProps) => JSX.Element

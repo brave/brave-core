@@ -6,7 +6,7 @@
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad_exclusion_rules.h"
 
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/resources/frequency_capping/anti_targeting_resource.h"
+#include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 
 namespace ads {
 namespace inline_content_ads {
