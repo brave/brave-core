@@ -14,7 +14,6 @@ namespace ads {
 
 class AdType;
 class ConfirmationType;
-struct CreativeAdInfo;
 struct TransactionInfo;
 struct WalletInfo;
 
@@ -29,13 +28,13 @@ class AccountObserver : public base::CheckedObserver {
   // Invoked if the wallet is invalid
   virtual void OnInvalidWallet() {}
 
-  // Invoked when funds are deposited for a |transaction|
-  virtual void OnDepositedFunds(const TransactionInfo& transaction) {}
+  // Invoked after successfully processing a deposit
+  virtual void OnDidProcessDeposit(const TransactionInfo& transaction) {}
 
-  // Invoked when funds fail to deposit for |creative_instance_id|, |ad_type|
-  // and |confirmation_type|
-  virtual void OnFailedToDepositFunds(
-      const CreativeAdInfo& creative_ad,
+  // Invoked after failing to process a deposit for |creative_instance_id|,
+  // |ad_type| and |confirmation_type|
+  virtual void OnFailedToProcessDeposit(
+      const std::string& creative_instance_id,
       const AdType& ad_type,
       const ConfirmationType& confirmation_type) {}
 

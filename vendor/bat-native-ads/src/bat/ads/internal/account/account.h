@@ -27,7 +27,6 @@ class Issuers;
 class RedeemUnblindedPaymentTokens;
 class RefillUnblindedTokens;
 class Wallet;
-struct CreativeAdInfo;
 struct IssuersInfo;
 struct WalletInfo;
 
@@ -51,9 +50,9 @@ class Account final : public ConfirmationsObserver,
 
   void MaybeGetIssuers() const;
 
-  void DepositFunds(const std::string& creative_instance_id,
-                    const AdType& ad_type,
-                    const ConfirmationType& confirmation_type);
+  void Deposit(const std::string& creative_instance_id,
+               const AdType& ad_type,
+               const ConfirmationType& confirmation_type);
 
   void GetStatement(StatementCallback callback) const;
 
@@ -69,13 +68,14 @@ class Account final : public ConfirmationsObserver,
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
   std::unique_ptr<Wallet> wallet_;
 
-  void Credit(const CreativeAdInfo& creative_ad,
-              const AdType& ad_type,
-              const ConfirmationType& confirmation_type) const;
-
-  void TopUpUnblindedTokens();
+  void ProcessDeposit(const std::string& creative_instance_id,
+                      const AdType& ad_type,
+                      const ConfirmationType& confirmation_type,
+                      const double value) const;
 
   void ProcessUnclearedTransactions();
+
+  void TopUpUnblindedTokens();
 
   void Reset();
 
@@ -83,9 +83,9 @@ class Account final : public ConfirmationsObserver,
   void NotifyWalletDidChange(const WalletInfo& wallet) const;
   void NotifyInvalidWallet() const;
 
-  void NotifyDepositedFunds(const TransactionInfo& transaction) const;
-  void NotifyFailedToDepositFunds(
-      const CreativeAdInfo& creative_ad,
+  void NotifyDidProcessDeposit(const TransactionInfo& transaction) const;
+  void NotifyFailedToProcessDeposit(
+      const std::string& creative_instance_id,
       const AdType& ad_type,
       const ConfirmationType& confirmation_type) const;
 
