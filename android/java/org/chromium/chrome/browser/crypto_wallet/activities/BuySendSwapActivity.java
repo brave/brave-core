@@ -300,11 +300,21 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
                 updateBalance(mCustomAccountAdapter.getTitleAtPosition(
                                       mAccountSpinner.getSelectedItemPosition()),
-                        mActivityType != ActivityType.SWAP);
+                        true);
+                // We have to call that for SWAP, to update both from and to
+                // balance
+                if (mActivityType == ActivityType.SWAP) {
+                    updateBalance(mCustomAccountAdapter.getTitleAtPosition(
+                                          mAccountSpinner.getSelectedItemPosition()),
+                            false);
+                }
             });
         } else if (parent.getId() == R.id.accounts_spinner) {
-            updateBalance(mCustomAccountAdapter.getTitleAtPosition(position),
-                    mActivityType != ActivityType.SWAP);
+            updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), true);
+            // We have to call that for SWAP, to update both from and to balance
+            if (mActivityType == ActivityType.SWAP) {
+                updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), false);
+            }
         }
     }
 
