@@ -254,11 +254,11 @@ class BravePasswordStoreConsumer
     void OnGetPasswordStoreResults(
       std::vector<std::unique_ptr<password_manager::PasswordForm>> results) override;
 
-    base::WeakPtrFactory<BravePasswordStoreConsumer> weak_factory_{this};
+    base::WeakPtrFactory<BravePasswordStoreConsumer> weak_ptr_factory_{this};
 };
 
 base::WeakPtr<BravePasswordStoreConsumer> BravePasswordStoreConsumer::GetWeakPtr() {
-  return weak_factory_.GetWeakPtr();
+  return weak_ptr_factory_.GetWeakPtr();
 }
 
 void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
@@ -266,6 +266,61 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
 
     std::move(callback).Run(std::move(results));
     delete this;
+}
+
+#pragma mark - BravePasswordStoreObserver
+
+class BravePasswordStoreObserver 
+  : public password_manager::PasswordStoreInterface::Observer {
+ public:
+  BravePasswordStoreObserver(
+      scoped_refptr<password_manager::PasswordStoreInterface> store,
+      base::RepeatingClosure logins_changed_closure);
+  ~BravePasswordStoreObserver() override;
+
+  base::WeakPtr<BravePasswordStoreObserver> GetWeakPtr();
+
+  // Called when the contents of the password store change.
+  void OnLoginsChanged(
+      password_manager::PasswordStoreInterface* store,
+      const password_manager::PasswordStoreChangeList& changes) override;
+  void OnLoginsRetained(password_manager::PasswordStoreInterface* store,
+                        const std::vector<password_manager::PasswordForm>&
+                            retained_passwords) override;
+ private:
+  scoped_refptr<password_manager::PasswordStoreInterface> store_;
+  base::RepeatingClosure logins_changed_closure_;
+
+  base::WeakPtrFactory<BravePasswordStoreObserver> weak_ptr_factory_{this};
+};
+
+base::WeakPtr<BravePasswordStoreObserver> BravePasswordStoreObserver::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
+BravePasswordStoreObserver::BravePasswordStoreObserver(
+    scoped_refptr<password_manager::PasswordStoreInterface> store,
+    base::RepeatingClosure logins_changed_closure)
+    : store_(store), logins_changed_closure_(logins_changed_closure) {
+  if (store_)
+    store_->AddObserver(this);
+}
+
+BravePasswordStoreObserver::~BravePasswordStoreObserver() {
+  if (store_)
+    store_->RemoveObserver(this);
+}
+
+void BravePasswordStoreObserver::OnLoginsChanged(
+    password_manager::PasswordStoreInterface* /*store*/,
+    const password_manager::PasswordStoreChangeList& /*changes*/) {
+  logins_changed_closure_.Run();
+}
+
+void BravePasswordStoreObserver::OnLoginsRetained(
+    password_manager::PasswordStoreInterface* /*store*/,
+    const std::vector<password_manager::PasswordForm>& /*retained_passwords*/) {
+  logins_changed_closure_.Run();
 }
 
 #pragma mark - BravePasswordAPI
