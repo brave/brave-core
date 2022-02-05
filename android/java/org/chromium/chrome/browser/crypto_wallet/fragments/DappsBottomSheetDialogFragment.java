@@ -5,17 +5,15 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -23,9 +21,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 
 public class DappsBottomSheetDialogFragment
         extends BottomSheetDialogFragment implements View.OnClickListener {
@@ -61,29 +58,25 @@ public class DappsBottomSheetDialogFragment
     }
 
     @Override
-    public void setupDialog(@NonNull Dialog dialog, int style) {
-        super.setupDialog(dialog, style);
-
-        @SuppressLint("InflateParams")
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view =
-                LayoutInflater.from(getContext()).inflate(R.layout.dapps_bottom_sheet, null);
+                LayoutInflater.from(getContext()).inflate(R.layout.dapps_bottom_sheet, container, false);
 
         mMainView = view;
-        dialog.setContentView(mMainView);
-        ViewParent parent = mMainView.getParent();
-        ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         mbtUnlock = mMainView.findViewById(R.id.unlock);
-        assert mbtUnlock != null;
-        if (!mShowOnboarding) {
-            mbtUnlock.setText(getResources().getString(R.string.unlock));
-        } else {
+
+        if (mShowOnboarding) {
             mbtUnlock.setText(getResources().getString(R.string.setup_crypto));
+            TextView tvDappUrl = view.findViewById(R.id.tv_dapp_url);
+            tvDappUrl.setText(getCurrentHostHttpAddress());
+        } else {
+            mbtUnlock.setText(getResources().getString(R.string.unlock));
         }
+
         mbtUnlock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mShowOnboarding) {
-                    // TODO make a check what view has to be shown
+                if (mShowOnboarding) {
                     BraveActivity activity = BraveActivity.getBraveActivity();
                     assert activity != null;
                     if (activity == null) {
@@ -91,6 +84,7 @@ public class DappsBottomSheetDialogFragment
                     }
                     activity.openBraveWallet(true);
                 } else {
+                    // TODO make a check what view has to be shown
                     BraveActivity activity = BraveActivity.getBraveActivity();
                     assert activity != null;
                     if (activity == null) {
@@ -101,6 +95,7 @@ public class DappsBottomSheetDialogFragment
                 dismiss();
             }
         });
+        return view;
     }
 
     @Override
@@ -113,5 +108,13 @@ public class DappsBottomSheetDialogFragment
         // }
         // Utils.openBuySendSwapActivity(getActivity(), activityType);
         // dismiss();
+    }
+
+    private String getCurrentHostHttpAddress() {
+        ChromeTabbedActivity activity = BraveActivity.getChromeTabbedActivity();
+        if (activity != null) {
+            return activity.getActivityTab().getUrl().getSpec();
+        }
+        return "";
     }
 }
