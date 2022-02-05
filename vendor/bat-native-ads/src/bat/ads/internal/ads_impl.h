@@ -97,7 +97,6 @@ struct AdInfo;
 struct AdNotificationInfo;
 struct AdsHistoryInfo;
 struct ConversionQueueItemInfo;
-struct CreativeAdInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 struct PromotedContentAdInfo;
@@ -283,9 +282,9 @@ class AdsImpl final : public Ads,
   void OnWalletDidUpdate(const WalletInfo& wallet) override;
   void OnWalletDidChange(const WalletInfo& wallet) override;
   void OnInvalidWallet() override;
-  void OnDepositedFunds(const TransactionInfo& transaction) override;
-  void OnFailedToDepositFunds(
-      const CreativeAdInfo& creative_ad,
+  void OnDidProcessDeposit(const TransactionInfo& transaction) override;
+  void OnFailedToProcessDeposit(
+      const std::string& creative_instnce_id,
       const AdType& ad_type,
       const ConfirmationType& confirmation_type) override;
   void OnStatementOfAccountsDidChange() override;
