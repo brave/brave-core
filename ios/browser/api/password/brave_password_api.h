@@ -50,9 +50,9 @@ OBJC_EXPORT
 ///        The signon_realm is effectively the primary key used for retrieving
 ///        data from the database, so it must not be empty
 /// @param dateCreated - The date when login was saved
-/// @param dateLastUsed - The date when the login was last used by the user 
+/// @param dateLastUsed - The date when the login was last used by the user
 /// to login to the site
-/// @param datePasswordChanged - The date when the password value was last changed
+/// @param datePasswordChanged - Date when the password value was last changed
 /// @param usernameElement - The string represantation of the name of the
 /// username input element
 /// @param usernameValue - The string represantation of the username
@@ -110,7 +110,7 @@ OBJC_EXPORT
 /// Fetch Function that will return list of all Password Forms
 /// from saved password presenter
 /// @param url - URL of the Password Forms that are queried
-/// @param formScheme - Form Scheme of the Password Form 
+/// @param formScheme - Form Scheme of the Password Form
 /// @param completion - Block that notifies querying is finished with list of
 /// credentials
 - (void)getSavedLoginsForURL:(NSURL*)url

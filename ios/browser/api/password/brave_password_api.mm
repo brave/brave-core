@@ -6,21 +6,15 @@
 #include "brave/ios/browser/api/password/brave_password_api.h"
 
 #include "base/bind.h"
-#include "base/memory/ref_counted.h"
-#include "base/notreached.h"
-#include "base/run_loop.h"
 #include "base/strings/sys_string_conversions.h"
 
-#include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_form_digest.h"
-#include "components/password_manager/core/browser/password_store.h"
 #include "components/password_manager/core/browser/password_store_consumer.h"
 #include "components/password_manager/core/browser/password_store_interface.h"
 
 #include "ios/web/public/thread/web_thread.h"
 #include "net/base/mac/url_conversions.h"
-#include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
 #include "brave/ios/browser/api/password/brave_password_observer.h"
@@ -237,35 +231,39 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 }
 @end
 
-#pragma mark - BravePasswordStoreConsumer
+#pragma mark - PasswordStoreConsumerIOS
 
-class BravePasswordStoreConsumer
-  : public password_manager::PasswordStoreConsumer {
+class PasswordStoreConsumerIOS
+    : public password_manager::PasswordStoreConsumer {
  public:
-  BravePasswordStoreConsumer(
-    base::OnceCallback<void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)> callback) 
-        : callback(std::move(callback)) {}
+  PasswordStoreConsumerIOS(
+      base::OnceCallback<
+          void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)>
+          callback)
+      : consumer_callback(std::move(callback)) {}
 
-    base::WeakPtr<BravePasswordStoreConsumer> GetWeakPtr();
+  base::WeakPtr<PasswordStoreConsumerIOS> GetWeakPtr();
 
  private:
-    base::OnceCallback<void(std::vector<std::unique_ptr<password_manager::PasswordForm>>)> callback;
+  base::OnceCallback<void(
+      std::vector<std::unique_ptr<password_manager::PasswordForm>>)>
+      consumer_callback;
 
-    void OnGetPasswordStoreResults(
-      std::vector<std::unique_ptr<password_manager::PasswordForm>> results) override;
+  void OnGetPasswordStoreResults(
+      std::vector<std::unique_ptr<password_manager::PasswordForm>> results)
+      override;
 
-    base::WeakPtrFactory<BravePasswordStoreConsumer> weak_ptr_factory_{this};
+  base::WeakPtrFactory<PasswordStoreConsumerIOS> weak_ptr_factory_{this};
 };
 
-base::WeakPtr<BravePasswordStoreConsumer> BravePasswordStoreConsumer::GetWeakPtr() {
+base::WeakPtr<PasswordStoreConsumerIOS> PasswordStoreConsumerIOS::GetWeakPtr() {
   return weak_ptr_factory_.GetWeakPtr();
 }
 
-void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
-  std::vector<std::unique_ptr<password_manager::PasswordForm>> results) {
-
-    std::move(callback).Run(std::move(results));
-    delete this;
+void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
+    std::vector<std::unique_ptr<password_manager::PasswordForm>> results) {
+  std::move(consumer_callback).Run(std::move(results));
+  delete this;
 }
 
 #pragma mark - BravePasswordAPI
@@ -307,9 +305,7 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
 }
 
 - (void)addLogin:(IOSPasswordForm*)passwordForm {
-  password_manager::PasswordForm credentialForm = [self createCredentialForm:passwordForm];
-
-  password_store_->AddLogin(credentialForm);
+  password_store_->AddLogin([self createCredentialForm:passwordForm]);
 }
 
 - (password_manager::PasswordForm)createCredentialForm:
@@ -395,8 +391,9 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
     NSArray<IOSPasswordForm*>* credentials = [self onLoginsResult:std::move(logins)];
     completion(credentials);
   };
-  
-  auto* password_consumer = new BravePasswordStoreConsumer(base::BindOnce(fetchCredentialsCallback));
+
+  auto* password_consumer =
+      new PasswordStoreConsumerIOS(base::BindOnce(fetchCredentialsCallback));
   password_store_->GetAllLogins(password_consumer->GetWeakPtr());
 }
 
@@ -408,8 +405,9 @@ void BravePasswordStoreConsumer::OnGetPasswordStoreResults(
     NSArray<IOSPasswordForm*>* credentials = [self onLoginsResult:std::move(logins)];
     completion(credentials);
   };
-  
-  auto* password_consumer = new BravePasswordStoreConsumer(base::BindOnce(fetchCredentialsCallback));
+
+  auto* password_consumer =
+      new PasswordStoreConsumerIOS(base::BindOnce(fetchCredentialsCallback));
 
   password_manager::PasswordFormDigest form_digest_args =
       password_manager::PasswordFormDigest(

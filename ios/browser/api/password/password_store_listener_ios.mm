@@ -6,14 +6,9 @@
 #include "brave/ios/browser/api/password/password_store_listener_ios.h"
 
 #include "base/check.h"
-#include "base/memory/ref_counted.h"
-#include "base/strings/sys_string_conversions.h"
 
 #include "components/password_manager/core/browser/password_form.h"
-#include "components/password_manager/core/browser/password_store.h"
 #include "components/password_manager/core/browser/password_store_interface.h"
-#include "net/base/mac/url_conversions.h"
-#include "url/gurl.h"
 
 #include "brave/ios/browser/api/password/brave_password_api.h"
 #include "brave/ios/browser/api/password/brave_password_observer.h"
@@ -73,18 +68,16 @@ void PasswordStoreListenerIOS::OnLoginsRetained(
 
 @interface PasswordStoreListenerImpl () {
   std::unique_ptr<brave::ios::PasswordStoreListenerIOS> observer_;
-  scoped_refptr<password_manager::PasswordStoreInterface> store_;
 }
 @end
 
 @implementation PasswordStoreListenerImpl
 - (instancetype)init:(id<PasswordStoreObserver>)observer
-      passwordStore:(void*)store {
+       passwordStore:
+           (scoped_refptr<password_manager::PasswordStoreInterface>)store {
   if ((self = [super init])) {
     observer_ = std::make_unique<brave::ios::PasswordStoreListenerIOS>(
-        observer, static_cast<scoped_refptr<password_manager::PasswordStoreInterface>>(store));
-
-    store_ = static_cast<scoped_refptr<password_manager::PasswordStoreInterface>>(store);
+        observer, store);
   }
   return self;
 }

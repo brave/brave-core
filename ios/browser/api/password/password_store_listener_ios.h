@@ -8,22 +8,24 @@
 #ifndef BRAVE_IOS_BROWSER_API_PASSWORD_PASSWORD_STORE_LISTENER_IOS_H_
 #define BRAVE_IOS_BROWSER_API_PASSWORD_PASSWORD_STORE_LISTENER_IOS_H_
 
-#include "base/memory/ref_counted.h"
+#include <vector>
+
 #include "brave/ios/browser/api/password/brave_password_observer.h"
 
 #include "components/password_manager/core/browser/password_form.h"
-#include "components/password_manager/core/browser/password_store.h"
 #include "components/password_manager/core/browser/password_store_interface.h"
 
 @interface PasswordStoreListenerImpl : NSObject <PasswordStoreListener>
 - (instancetype)init:(id<PasswordStoreObserver>)observer
-      passwordStore:(void*)store;
+       passwordStore:
+           (scoped_refptr<password_manager::PasswordStoreInterface>)store;
 @end
 
 namespace brave {
 namespace ios {
 
-class PasswordStoreListenerIOS : public password_manager::PasswordStoreInterface::Observer {
+class PasswordStoreListenerIOS
+    : public password_manager::PasswordStoreInterface::Observer {
  public:
   explicit PasswordStoreListenerIOS(id<PasswordStoreObserver> observer,
       scoped_refptr<password_manager::PasswordStoreInterface> store);
@@ -39,7 +41,7 @@ class PasswordStoreListenerIOS : public password_manager::PasswordStoreInterface
                             retained_passwords) override;
 
   id<PasswordStoreObserver> observer_;
-  scoped_refptr<password_manager::PasswordStoreInterface> store_;  // NOT OWNED
+  scoped_refptr<password_manager::PasswordStoreInterface> store_;
 };
 
 }  // namespace ios

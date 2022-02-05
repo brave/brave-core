@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#include "base/memory/ref_counted.h"
 #include "brave/ios/browser/api/password/brave_password_api.h"
 
 NS_ASSUME_NONNULL_BEGIN
