@@ -2877,6 +2877,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_WALLET" desc="Content description for the button that allows an access to Brave Wallet.">
       Access Brave Wallet
     </message>
+    <message name="IDS_DAPP_BOTTOM_SHEET_WALLET_CONNECTIVITY_INFO" desc="Brave wallet Dapp wallet connectivity bottom sheet text">
+      Use this panel to securely access web3 and all your crypto assets.
+    </message>
     </messages>
   </release>
 </grit>

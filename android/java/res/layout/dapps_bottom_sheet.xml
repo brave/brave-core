@@ -1,53 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
      This Source Code Form is subject to the terms of the Mozilla Public
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/. */ -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="RtlSymmetry"
     android:background="@color/wallet_bg"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:ignore="RtlSymmetry">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:paddingVertical="10dp"
         android:gravity="center"
         android:text="@string/brave_ui_brave_wallet"
         android:textColor="@color/wallet_text_color"
         android:textSize="16sp" />
 
-     <View
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/wallet_edittext_outline_color" />
 
+    <ImageView
+        android:id="@+id/iv_dapp_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="22dp"
+        android:background="@color/white_alpha_65"
+        android:contentDescription="@null"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_dapp_url"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/tv_dapp_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:text="@string/dapp_bottom_sheet_wallet_connectivity_info" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/unlock"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:layout_weight = "1"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/crypto_wallet_blue_button"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
         android:text="@string/unlock"
         android:textAllCaps="false"
-        android:textSize="16sp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
         android:textColor="@android:color/white"
-        style="?android:attr/borderlessButtonStyle"/>
-
-
+        android:textSize="16sp" />
 </LinearLayout>
