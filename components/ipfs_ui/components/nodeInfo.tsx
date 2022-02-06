@@ -31,6 +31,10 @@ export class NodeInfo extends React.Component<Props, {}> {
         <div>
           {getLocale('version')}: {this.props.nodeInfo.version}
         </div>
+        {this.props.nodeInfo.component_version &&
+        <div>
+          {getLocale('componentVersion')}: {this.props.nodeInfo.component_version}
+        </div>}
       </Section>
     )
   }
