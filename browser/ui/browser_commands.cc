@@ -11,6 +11,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
@@ -47,6 +48,11 @@
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+#include "brave/components/ipfs/ipfs_utils.h"
+#include "chrome/common/channel_info.h"
 #endif
 
 using content::WebContents;
@@ -132,6 +138,19 @@ void ToggleBraveVPNButton(Browser* browser) {
   auto* prefs = browser->profile()->GetPrefs();
   const bool show = prefs->GetBoolean(brave_vpn::prefs::kBraveVPNShowButton);
   prefs->SetBoolean(brave_vpn::prefs::kBraveVPNShowButton, !show);
+#endif
+}
+
+void OpenIpfsFilesWebUI(Browser* browser) {
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+  auto* prefs = browser->profile()->GetPrefs();
+  DCHECK(ipfs::IsLocalGatewayConfigured(prefs));
+  GURL gateway = ipfs::GetAPIServer(chrome::GetChannel());
+  GURL::Replacements replacements;
+  replacements.SetPathStr("/webui/");
+  replacements.SetRefStr("/files");
+  auto target_url = gateway.ReplaceComponents(replacements);
+  chrome::AddTabAt(browser, GURL(target_url), -1, true);
 #endif
 }
 

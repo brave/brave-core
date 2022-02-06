@@ -541,11 +541,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="Title case: The name of the open a link in private window with Tor command">
           Open Link in Brave Private Window with Tor
         </message>
-        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE" desc="Title case: The text label of a menu item to share local file using IPFS.">
-          Share Local File Using IPFS
+        <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FILE" desc="Title case: The text label of a menu item to share local file using IPFS.">
+          Import and Share a File
         </message>
-        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER" desc="Title case: The text label of a menu item to share local fodler using IPFS.">
-          Share Local Folder Using IPFS
+        <message name="IDS_APP_MENU_IPFS_OPEN_FILES" desc="Title case: The text label of a menu item to open IPFS webui files page.">
+          Open Files
+        </message>
+        <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FOLDER" desc="Title case: The text label of a menu item to share local fodler using IPFS.">
+          Import and Share a Directorys
+        </message>
+        <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FILE" desc="Title case: The text label of a menu item to publish local file under IPFS key.">
+          With a File
+        </message>
+        <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER" desc="Title case: The text label of a menu item to publish local fodler under IPFS key.">
+          With a Directory
+        </message>
+        <message name="IDS_APP_MENU_IPFS_UPDATE_IPNS" desc="Title case: The text label of a menu item to update IPNS.">
+          Update IPNS
         </message>
       </if>
       <if expr="not use_titlecase">
@@ -555,8 +567,14 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_IMPORT_WITHOUT_PUBLISHING" desc="The name of the IPFS context menu item to import content without publishing">
           Import and copy link to IPFS snapshot
         </message>
-        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FILE" desc="The text label of a menu item to share local file using IPFS.">
-          Share local file using IPFS
+        <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FILE" desc="The text label of a menu item to share local file using IPFS.">
+          Import and share a file
+        </message>
+        <message name="IDS_APP_MENU_IPFS_OPEN_FILES" desc="Title case: The text label of a menu item to open IPFS webui files page.">
+          Open files
+        </message>
+        <message name="IDS_APP_MENU_IPFS_UPDATE_IPNS" desc="Title case: The text label of a menu item to update IPNS.">
+          Update IPNS
         </message>
         <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="The text label of a menu item to open a new off-the-record window with Tor.">
           New private window with Tor
@@ -567,8 +585,14 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
         <message name="IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP" desc="The name of the open a link in private window with Tor command">
           Open link in Brave private window with Tor
         </message>
-        <message name="IDS_APP_MENU_IPFS_IMPORT_LOCAL_FOLDER" desc="The text label of a menu item to share local folder using IPFS.">
-          Share local folder using IPFS
+        <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FOLDER" desc="The text label of a menu item to share local folder using IPFS.">
+          Import and share a directory
+        </message>
+        <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FILE" desc="Title case: The text label of a menu item to publish local file under IPFS key.">
+          With a File
+        </message>
+        <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER" desc="Title case: The text label of a menu item to publish local fodler under IPFS key.">
+          With a Directory
         </message>
       </if>
       <message name="IDS_PROFILES_TOR_PROFILE_NAME" desc="Name of the Tor profile.">

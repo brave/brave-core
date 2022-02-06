@@ -12,6 +12,8 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
+#include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -33,6 +35,12 @@
 #include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
 #include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
 #include "brave/components/brave_vpn/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+#include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/components/ipfs/ipfs_service.h"
+#include "brave/components/ipfs/keys/ipns_keys_manager.h"
 #endif
 
 class BraveAppMenuBrowserTest : public InProcessBrowserTest {
@@ -59,7 +67,30 @@ class BraveAppMenuBrowserTest : public InProcessBrowserTest {
 
   base::test::ScopedFeatureList scoped_feature_list_;
 #endif
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+  void SetIPNSKeys(Browser* browser, int count) {
+    auto* ipfs_service_ =
+        ipfs::IpfsServiceFactory::GetInstance()->GetForContext(
+            browser->profile());
+    ASSERT_TRUE(ipfs_service_);
+    ipfs_service_->SetAllowIpfsLaunchForTest(true);
+    std::unordered_map<std::string, std::string> keys;
+    for (auto i = 0; i < count; i++) {
+      auto value = std::to_string(i);
+      keys[value] = value;
+    }
+    ipfs_service_->GetIpnsKeysManager()->SetKeysForTest(keys);
+  }
+#endif
 };
+
+void CheckCommandsAreDisabledInMenuModel(
+    ui::SimpleMenuModel* model,
+    const std::vector<int>& disabled_commands) {
+  for (int id : disabled_commands)
+    EXPECT_EQ(-1, model->GetIndexOfCommandId(id));
+}
 
 void CheckCommandsAreDisabledInMenuModel(
     Browser* browser,
@@ -67,8 +98,29 @@ void CheckCommandsAreDisabledInMenuModel(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
   model.Init();
-  for (int id : disabled_commands)
-    EXPECT_EQ(-1, model.GetIndexOfCommandId(id));
+  CheckCommandsAreDisabledInMenuModel(&model, disabled_commands);
+}
+
+void CheckIpfsCommandsAreDisabledForMode(Browser* browser,
+                                         ipfs::IPFSResolveMethodTypes mode) {
+  std::vector<int> commands_disabled = {IDC_APP_MENU_IPFS};
+  browser->profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
+                                             static_cast<int>(mode));
+
+  CheckCommandsAreDisabledInMenuModel(browser, commands_disabled);
+}
+
+void CheckCommandsAreInOrderInMenuModel(
+    ui::SimpleMenuModel* model,
+    const std::vector<int>& commands_in_order) {
+  std::vector<int> commands_index;
+  for (int id : commands_in_order) {
+    int index = model->GetIndexOfCommandId(id);
+    EXPECT_NE(-1, index);
+    commands_index.push_back(index);
+  }
+  EXPECT_TRUE(
+      std::is_sorted(std::begin(commands_index), std::end(commands_index)));
 }
 
 void CheckCommandsAreInOrderInMenuModel(
@@ -77,15 +129,7 @@ void CheckCommandsAreInOrderInMenuModel(
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   BraveAppMenuModel model(browser_view->toolbar(), browser);
   model.Init();
-
-  std::vector<int> commands_index;
-  for (int id : commands_in_order) {
-    int index = model.GetIndexOfCommandId(id);
-    EXPECT_NE(-1, index);
-    commands_index.push_back(index);
-  }
-  EXPECT_TRUE(
-      std::is_sorted(std::begin(commands_index), std::end(commands_index)));
+  CheckCommandsAreInOrderInMenuModel(&model, commands_in_order);
 }
 
 // Test brave menu order test.
@@ -276,5 +320,85 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BraveVPNMenuTest) {
   CheckCommandsAreInOrderInMenuModel(browser(), commands_enabled_for_purchased);
   CheckCommandsAreDisabledInMenuModel(browser(),
                                       commands_disabled_for_purchased);
+}
+#endif
+
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BraveIpfsMenuTest) {
+  CheckIpfsCommandsAreDisabledForMode(
+      browser(), ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+  CheckIpfsCommandsAreDisabledForMode(browser(),
+                                      ipfs::IPFSResolveMethodTypes::IPFS_ASK);
+  CheckIpfsCommandsAreDisabledForMode(
+      browser(), ipfs::IPFSResolveMethodTypes::IPFS_DISABLED);
+  browser()->profile()->GetPrefs()->SetInteger(
+      kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
+
+  std::vector<int> commands_enabled_with_local_node = {IDC_APP_MENU_IPFS};
+  {
+    SetIPNSKeys(browser(), 0);
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+    BraveAppMenuModel model(browser_view->toolbar(), browser());
+    model.Init();
+
+    CheckCommandsAreInOrderInMenuModel(&model,
+                                       commands_enabled_with_local_node);
+
+    std::vector<int> commands_enabled_without_keys = {
+        IDC_APP_MENU_IPFS_SHARE_LOCAL_FILE,
+        IDC_APP_MENU_IPFS_SHARE_LOCAL_FOLDER};
+    CheckCommandsAreInOrderInMenuModel(&model.ipfs_submenu_model_,
+                                       commands_enabled_without_keys);
+    std::vector<int> commands_disabled_without_keys = {
+        IDC_APP_MENU_IPFS_UPDATE_IPNS};
+    CheckCommandsAreDisabledInMenuModel(&model.ipfs_submenu_model_,
+                                        commands_disabled_without_keys);
+  }
+  {
+    int count = 3;
+    SetIPNSKeys(browser(), count);
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+    BraveAppMenuModel model(browser_view->toolbar(), browser());
+    model.Init();
+
+    CheckCommandsAreInOrderInMenuModel(&model,
+                                       commands_enabled_with_local_node);
+
+    std::vector<int> commands_enabled_with_keys = {
+        IDC_APP_MENU_IPFS_SHARE_LOCAL_FILE,
+        IDC_APP_MENU_IPFS_SHARE_LOCAL_FOLDER, IDC_APP_MENU_IPFS_UPDATE_IPNS};
+    CheckCommandsAreInOrderInMenuModel(&model.ipfs_submenu_model_,
+                                       commands_enabled_with_keys);
+    std::vector<int> submenu_commands_enabled_with_keys = {
+        IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FILE,
+        IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER};
+    CheckCommandsAreInOrderInMenuModel(&model.ipns_submenu_model_,
+                                       submenu_commands_enabled_with_keys);
+
+    EXPECT_EQ(model.ipns_keys_submenu_models_.size(), 2u);
+
+    int commands_start = IDC_CONTENT_CONTEXT_IMPORT_IPNS_KEYS_START;
+    {
+      auto& submenu = model.ipns_keys_submenu_models_.at(
+          IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FILE);
+      std::vector<int> keys_commands_enabled;
+      for (auto i = 0; i < count; i++) {
+        keys_commands_enabled.push_back(commands_start++);
+      }
+
+      CheckCommandsAreInOrderInMenuModel(submenu.get(), keys_commands_enabled);
+    }
+    {
+      auto& submenu = model.ipns_keys_submenu_models_.at(
+          IDC_APP_MENU_IPFS_PUBLISH_LOCAL_FOLDER);
+      std::vector<int> keys_commands_enabled;
+      for (auto i = 0; i < count; i++) {
+        keys_commands_enabled.push_back(commands_start++);
+      }
+
+      CheckCommandsAreInOrderInMenuModel(submenu.get(), keys_commands_enabled);
+    }
+  }
 }
 #endif

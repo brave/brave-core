@@ -39,7 +39,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS)
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/pref_names.h"
@@ -159,6 +159,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     UpdateCommandEnabled(IDC_SPEEDREADER_ICON_ONCLICK, true);
     UpdateCommandEnabled(IDC_DISTILL_PAGE, false);
   }
+#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
+  UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
+#endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -302,6 +305,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_ABOUT_BRAVE_VPN:
     case IDC_MANAGE_BRAVE_VPN_PLAN:
       brave::OpenBraveVPNUrls(browser_, id);
+      break;
+    case IDC_APP_MENU_IPFS_OPEN_FILES:
+      brave::OpenIpfsFilesWebUI(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;
