@@ -30,6 +30,7 @@ import("//brave/browser/ntp_background_images/sources.gni")
 import("//brave/browser/permissions/sources.gni")
 import("//brave/browser/search_engines/sources.gni")
 import("//brave/browser/speedreader/sources.gni")
+import("//brave/browser/sync_pairs/sources.gni")
 import("//brave/browser/themes/sources.gni")
 import("//brave/browser/web_discovery/sources.gni")
 import("//brave/build/rust/config.gni")
@@ -407,6 +408,7 @@ brave_chrome_browser_sources += brave_browser_ntp_background_images_sources
 brave_chrome_browser_sources += brave_browser_permissions_sources
 brave_chrome_browser_sources += brave_browser_search_engines_sources
 brave_chrome_browser_sources += brave_browser_speedreader_sources
+brave_chrome_browser_sources += brave_browser_sync_pairs_sources
 brave_chrome_browser_sources += brave_browser_themes_sources
 brave_chrome_browser_sources += brave_browser_web_discovery_sources
 

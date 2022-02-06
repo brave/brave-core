@@ -1,0 +1,21 @@
+diff --git a/components/sync/base/user_selectable_type.cc b/components/sync/base/user_selectable_type.cc
+index ffb367d200ee3fdecc354ff0d2d574b5f1c8e010..e1c73293f69dd2b0f98077e2744b144e40aa1006 100644
+--- a/components/sync/base/user_selectable_type.cc
++++ b/components/sync/base/user_selectable_type.cc
+@@ -37,6 +37,7 @@ constexpr char kAppsTypeName[] = "apps";
+ constexpr char kReadingListTypeName[] = "readingList";
+ constexpr char kTabsTypeName[] = "tabs";
+ constexpr char kWifiConfigurationsTypeName[] = "wifiConfigurations";
++constexpr char kPairsTypeName[] = "pairs";
+ 
+ UserSelectableTypeInfo GetUserSelectableTypeInfo(UserSelectableType type) {
+   // UserSelectableTypeInfo::type_name is used in js code and shouldn't be
+@@ -106,6 +107,8 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(UserSelectableType type) {
+       return {kWifiConfigurationsTypeName,
+               WIFI_CONFIGURATIONS,
+               {WIFI_CONFIGURATIONS}};
++    case UserSelectableType::kPairs:
++      return {kPairsTypeName, PAIRS, {PAIRS}};
+     }
+   }
+   NOTREACHED();

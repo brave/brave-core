@@ -1,0 +1,20 @@
+diff --git a/components/browser_sync/profile_sync_components_factory_impl.cc b/components/browser_sync/profile_sync_components_factory_impl.cc
+index 7656bc8bf4382f4320a55fe3d73e8bc2c3396e0f..b8fbabeca174d9fa9513cf3d890f893387bac2b1 100644
+--- a/components/browser_sync/profile_sync_components_factory_impl.cc
++++ b/components/browser_sync/profile_sync_components_factory_impl.cc
+@@ -394,6 +394,15 @@ ProfileSyncComponentsFactoryImpl::CreateCommonDataTypeControllers(
+         CreateForwardingControllerDelegate(syncer::USER_CONSENTS)));
+   }
+ 
++  if (!disabled_types.Has(syncer::PAIRS)) {
++    controllers.push_back(std::make_unique<ModelTypeController>(
++        syncer::PAIRS,
++        /*delegate_for_full_sync_mode=*/
++        CreateForwardingControllerDelegate(syncer::PAIRS),
++        /*delegate_for_transport_mode=*/
++        CreateForwardingControllerDelegate(syncer::PAIRS)));
++  }
++
+   return controllers;
+ }
+ 

@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/sync/chrome_sync_client.cc b/chrome/browser/sync/chrome_sync_client.cc
+index 9a6cbd434fe4fa0c30b7632f100b481375287873..26a1d897204c0ee1775d0b2ecd20a2c9fdc42ec6 100644
+--- a/chrome/browser/sync/chrome_sync_client.cc
++++ b/chrome/browser/sync/chrome_sync_client.cc
+@@ -12,6 +12,8 @@
+ #include "base/feature_list.h"
+ #include "base/path_service.h"
+ #include "base/syslog_logging.h"
++#include "brave/browser/sync_pairs/pair_sync_service.h"
++#include "brave/browser/sync_pairs/pair_sync_service_factory.h"
+ #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
+ #include "chrome/browser/bookmarks/bookmark_model_factory.h"
+@@ -640,6 +642,9 @@ ChromeSyncClient::GetSyncableServiceForType(syncer::ModelType type) {
+ base::WeakPtr<syncer::ModelTypeControllerDelegate>
+ ChromeSyncClient::GetControllerDelegateForModelType(syncer::ModelType type) {
+   switch (type) {
++    case syncer::PAIRS:
++      return PairSyncServiceFactory::GetForProfile(profile_)
++          ->GetControllerDelegate();
+     case syncer::READING_LIST: {
+       DCHECK(reading_list::switches::IsReadingListEnabled());
+       return ReadingListModelFactory::GetForBrowserContext(profile_)
