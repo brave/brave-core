@@ -13,6 +13,7 @@ group("brave_providers") {
 
     # The individual API implementations.
     "//ios/chrome/browser/providers/app_distribution:chromium_app_distribution",
+    "//ios/chrome/browser/providers/app_utils:chromium_app_utils",
     "//ios/chrome/browser/providers/branded_images:chromium_branded_images",
     "//ios/chrome/browser/providers/lens:chromium_lens",
     "//ios/chrome/browser/providers/modals:chromium_modals",
@@ -22,7 +23,9 @@ group("brave_providers") {
     "//ios/chrome/browser/providers/risk_data:chromium_risk_data",
     "//ios/chrome/browser/providers/signin:chromium_signin_error",
     "//ios/chrome/browser/providers/signin:chromium_signin_resources",
+    "//ios/chrome/browser/providers/signin:chromium_signin_sso",
     "//ios/chrome/browser/providers/text_zoom:chromium_text_zoom",
+    "//ios/chrome/browser/providers/ui_utils:chromium_ui_utils",
     "//ios/chrome/browser/providers/url_rewriters:chromium_url_rewriters",
     "//ios/chrome/browser/providers/voice_search:chromium_voice_search",
 
