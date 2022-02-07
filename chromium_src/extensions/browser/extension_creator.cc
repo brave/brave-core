@@ -13,16 +13,16 @@ namespace {
 const char kPublisherKeySwitch[] = "brave-extension-publisher-key";
 }  // namespace
 
-#define BRAVE_CREATE_CRX(output_path, zip_path, signing_key)          \
-  const auto* cmd = base::CommandLine::ForCurrentProcess();           \
-  std::unique_ptr<crypto::RSAPrivateKey> publisher_key;               \
-  if (cmd->HasSwitch(kPublisherKeySwitch)) {                          \
-    publisher_key =                                                   \
-        ReadInputKey(cmd->GetSwitchValuePath(kPublisherKeySwitch));   \
-    if (!publisher_key)                                               \
-      return false; /* error_message_ was be set by ReadInputKey() */ \
-  }                                                                   \
-  result = crx_file::CreateWithPublisherKey(output_path, zip_path,    \
+#define BRAVE_CREATE_CRX(output_path, zip_path, signing_key)        \
+  const auto* cmd = base::CommandLine::ForCurrentProcess();         \
+  std::unique_ptr<crypto::RSAPrivateKey> publisher_key;             \
+  if (cmd->HasSwitch(kPublisherKeySwitch)) {                        \
+    publisher_key =                                                 \
+        ReadInputKey(cmd->GetSwitchValuePath(kPublisherKeySwitch)); \
+    if (!publisher_key)                                             \
+      return false; /* error_message_ was set by ReadInputKey() */  \
+  }                                                                 \
+  result = crx_file::CreateWithPublisherKey(output_path, zip_path,  \
                                             signing_key, publisher_key.get());
 
 #include "src/extensions/browser/extension_creator.cc"
