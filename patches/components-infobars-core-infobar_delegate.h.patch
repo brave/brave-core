@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index ab8370f6e236aa18df04e4aa8965af7f97441366..f659595227b9d99848e269d2971c5b43a6c37e15 100644
+index 18cce1fc4f50ea41287148bef53dfa444548a3f3..a116243b749847b5fc484187e86a5d921eeaca84 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -176,6 +176,7 @@ class InfoBarDelegate {
-     AUTOFILL_OFFER_NOTIFICATION_INFOBAR_DELEGATE = 105,
+@@ -177,6 +177,7 @@ class InfoBarDelegate {
      AUTOFILL_ADDRESS_PROFILE_INFOBAR_DELEGATE_IOS = 106,
      ADD_TO_READING_LIST_IOS = 107,
+     IOS_PERMISSIONS_INFOBAR_DELEGATE = 108,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  
