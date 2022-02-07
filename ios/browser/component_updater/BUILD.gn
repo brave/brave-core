@@ -5,8 +5,8 @@
 
 source_set("component_updater") {
   sources = [
-    "component_updater_utils.cc",
     "component_updater_utils.h",
+    "component_updater_utils.mm",
   ]
   deps = [
     "//base",
