@@ -334,6 +334,7 @@ source_set("ui") {
     deps += [
       "//brave/components/ipfs",
       "//brave/components/ipfs_ui:generated_resources",
+      "//components/component_updater",
     ]
   }
 
