@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/base64.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
@@ -60,12 +61,11 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
 
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
-  std::string system_program_ID = "11111111111111111111111111111111";
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
 
   SolanaInstruction instruction(
       // Program ID
-      system_program_ID,
+      kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
@@ -118,7 +118,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   // Test two signers.
   instruction = SolanaInstruction(
       // Program ID
-      system_program_ID,
+      kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, true, true)},
@@ -180,7 +180,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   std::vector<uint8_t> oversized_data(1232, 1);
   instruction = SolanaInstruction(
       // Program ID
-      system_program_ID,
+      kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},

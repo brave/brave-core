@@ -43,6 +43,11 @@ SolanaInstruction::SolanaInstruction(const SolanaInstruction&) = default;
 
 SolanaInstruction::~SolanaInstruction() = default;
 
+bool SolanaInstruction::operator==(const SolanaInstruction& ins) const {
+  return program_id_ == ins.program_id_ && accounts_ == ins.accounts_ &&
+         data_ == ins.data_;
+}
+
 // An instruction contains a program id index, followed by a compact-array of
 // account address indexes, followed by a compact-array of opaque 8-bit data.
 // The program id index is used to identify an on-chain program that can

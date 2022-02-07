@@ -26,6 +26,7 @@ class SolanaInstruction {
   ~SolanaInstruction();
 
   SolanaInstruction(const SolanaInstruction&);
+  bool operator==(const SolanaInstruction&) const;
 
   bool Serialize(const std::vector<SolanaAccountMeta>& message_account_metas,
                  std::vector<uint8_t>* bytes) const;
