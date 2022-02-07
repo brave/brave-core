@@ -67,7 +67,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kDefaultBaseCryptocurrency, "BTC");
   registry->RegisterBooleanPref(kShowWalletIconOnToolbar, true);
   registry->RegisterDictionaryPref(kBraveWalletTransactions);
-  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterListPref(kBraveWalletCustomNetworks);
   registry->RegisterStringPref(kBraveWalletCurrentChainId,
@@ -77,6 +76,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
   registry->RegisterStringPref(kBraveWalletSelectedAccount, "");
   registry->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
+}
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+  registry->RegisterTimePref(kBraveWalletLastUnlockTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletP3AReportedUnlockTime, base::Time());
+  registry->RegisterTimePref(kBraveWalletPingReportedUnlockTime, base::Time());
 }
 
 void RegisterProfilePrefsForMigration(

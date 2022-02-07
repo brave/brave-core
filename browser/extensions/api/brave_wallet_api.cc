@@ -68,8 +68,7 @@ ExtensionFunction::ResponseAction BraveWalletNotifyWalletUnlockFunction::Run() {
     return RespondNow(Error("Not available in Tor context"));
   }
 
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  ::brave_wallet::UpdateLastUnlockPref(profile->GetPrefs());
+  ::brave_wallet::UpdateLastUnlockPref();
 
   return RespondNow(NoArguments());
 }

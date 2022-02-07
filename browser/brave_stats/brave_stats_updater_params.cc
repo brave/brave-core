@@ -58,17 +58,28 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(
 
 BraveStatsUpdaterParams::~BraveStatsUpdaterParams() {}
 
+bool BraveStatsUpdaterParams::GetDailyVal() const {
+  return base::CompareCaseInsensitiveASCII(ymd_, last_check_ymd_) == 1;
+}
+
 std::string BraveStatsUpdaterParams::GetDailyParam() const {
-  return BooleanToString(
-      base::CompareCaseInsensitiveASCII(ymd_, last_check_ymd_) == 1);
+  return BooleanToString(GetDailyVal());
+}
+
+bool BraveStatsUpdaterParams::GetWeeklyVal() const {
+  return last_check_woy_ == 0 || woy_ != last_check_woy_;
 }
 
 std::string BraveStatsUpdaterParams::GetWeeklyParam() const {
-  return BooleanToString(last_check_woy_ == 0 || woy_ != last_check_woy_);
+  return BooleanToString(GetWeeklyVal());
+}
+
+bool BraveStatsUpdaterParams::GetMonthlyVal() const {
+  return last_check_month_ == 0 || month_ != last_check_month_;
 }
 
 std::string BraveStatsUpdaterParams::GetMonthlyParam() const {
-  return BooleanToString(last_check_month_ == 0 || month_ != last_check_month_);
+  return BooleanToString(GetMonthlyVal());
 }
 
 std::string BraveStatsUpdaterParams::GetFirstCheckMadeParam() const {
@@ -104,12 +115,18 @@ std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
   }
 }
 
-std::string BraveStatsUpdaterParams::GetWalletEnabledParam() const {
-  base::Time wallet_last_unlocked =
-      profile_pref_service_->GetTime(kBraveWalletLastUnlockTime);
-  uint8_t usage_bitset =
-      UsageBitstringFromTimestamp(wallet_last_unlocked, GetReferenceTime());
-  return std::to_string(usage_bitset);
+uint8_t BraveStatsUpdaterParams::GetWalletVal() const {
+  return UsageBitfieldFromTimestamp(wallet_last_unlocked_,
+                                    last_reported_wallet_unlock_);
+}
+
+std::string BraveStatsUpdaterParams::GetWalletParam() const {
+  return std::to_string(GetWalletVal());
+}
+
+bool BraveStatsUpdaterParams::IsActive() const {
+  return GetWalletVal() > 0 || GetMonthlyVal() || GetWeeklyVal() ||
+         GetDailyVal();
 }
 
 void BraveStatsUpdaterParams::LoadPrefs() {
@@ -118,6 +135,10 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   last_check_month_ = stats_pref_service_->GetInteger(kLastCheckMonth);
   first_check_made_ = stats_pref_service_->GetBoolean(kFirstCheckMade);
   week_of_installation_ = stats_pref_service_->GetString(kWeekOfInstallation);
+  wallet_last_unlocked_ =
+      stats_pref_service_->GetTime(kBraveWalletLastUnlockTime);
+  last_reported_wallet_unlock_ =
+      stats_pref_service_->GetTime(kBraveWalletPingReportedUnlockTime);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
 
@@ -143,6 +164,10 @@ void BraveStatsUpdaterParams::SavePrefs() {
   stats_pref_service_->SetInteger(kLastCheckMonth, month_);
   stats_pref_service_->SetBoolean(kFirstCheckMade, true);
   stats_pref_service_->SetString(kWeekOfInstallation, week_of_installation_);
+
+  last_reported_wallet_unlock_ = wallet_last_unlocked_;
+  stats_pref_service_->SetTime(kBraveWalletPingReportedUnlockTime,
+                               last_reported_wallet_unlock_);
 }
 
 std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {
@@ -212,8 +237,8 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
       net::AppendQueryParameter(update_url, "adsEnabled", GetAdsEnabledParam());
   update_url =
       net::AppendQueryParameter(update_url, "arch", GetProcessArchParam());
-  update_url = net::AppendQueryParameter(update_url, "walletActive",
-                                         GetWalletEnabledParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "wallet", GetWalletParam());
   return update_url;
 }
 

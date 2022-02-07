@@ -691,6 +691,8 @@ void KeyringService::CreateWallet(const std::string& password,
   }
 
   std::move(callback).Run(GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId));
+
+  UpdateLastUnlockPref();
 }
 
 void KeyringService::RestoreWallet(const std::string& mnemonic,
@@ -1381,7 +1383,7 @@ void KeyringService::Unlock(const std::string& password,
     }
   }
 
-  UpdateLastUnlockPref(prefs_);
+  UpdateLastUnlockPref();
   request_unlock_pending_ = false;
   for (const auto& observer : observers_) {
     observer->Unlocked();
@@ -1523,8 +1525,6 @@ bool KeyringService::CreateKeyringInternal(const std::string& keyring_id,
   DCHECK(keyring) << "No HDKeyring for " << keyring_id;
   if (keyring)
     keyring->ConstructRootHDKey(*seed, GetRootPath(keyring_id));
-
-  UpdateLastUnlockPref(prefs_);
 
   return true;
 }

@@ -18,6 +18,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
@@ -125,6 +126,15 @@ void BraveStatsUpdater::OnProfileAdded(Profile* profile) {
 void BraveStatsUpdater::Start() {
   // Startup timer, only initiated once we've checked for a promo
   // code.
+  if (pref_service_) {
+    pref_change_registrar_.reset(new PrefChangeRegistrar());
+    pref_change_registrar_->Init(pref_service_);
+    pref_change_registrar_->Add(
+        kBraveWalletLastUnlockTime,
+        base::BindRepeating(&BraveStatsUpdater::ReportWalletUnlock,
+                            base::Unretained(this)));
+  }
+
   DCHECK(!server_ping_startup_timer_);
   server_ping_startup_timer_ = std::make_unique<base::OneShotTimer>();
 
@@ -287,7 +297,7 @@ bool BraveStatsUpdater::IsReferralInitialized() {
 }
 
 bool BraveStatsUpdater::IsAdsEnabled() {
-  return ProfileManager::GetPrimaryUserProfile()->GetPrefs()->GetBoolean(
+  return ProfileManager::GetActiveUserProfile()->GetPrefs()->GetBoolean(
       ads::prefs::kEnabled);
 }
 
@@ -321,8 +331,6 @@ void BraveStatsUpdater::QueueServerPing() {
       base::BindOnce(&BraveStatsUpdater::StartServerPingStartupTimer,
                      base::Unretained(this)));
   if (!referrals_initialized) {
-    pref_change_registrar_.reset(new PrefChangeRegistrar());
-    pref_change_registrar_->Init(pref_service_);
     pref_change_registrar_->Add(
         kReferralInitialization,
         base::BindRepeating(&BraveStatsUpdater::OnReferralInitialization,
@@ -366,10 +374,15 @@ void BraveStatsUpdater::SendServerPing() {
   auto resource_request = std::make_unique<network::ResourceRequest>();
 
   auto* profile_pref_service =
-      ProfileManager::GetPrimaryUserProfile()->GetPrefs();
+      ProfileManager::GetActiveUserProfile()->GetPrefs();
+
   auto stats_updater_params =
       std::make_unique<brave_stats::BraveStatsUpdaterParams>(
           pref_service_, profile_pref_service, arch_);
+
+  if (!stats_updater_params->IsActive()) {
+    return;
+  }
 
   auto endpoint = BuildStatsEndpoint(kBraveUsageStandardPath);
   resource_request->url = GetUpdateURL(endpoint, *stats_updater_params);
@@ -424,6 +437,13 @@ void BraveStatsUpdater::SendUserTriggeredPing() {
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnThresholdLoaderComplete,
                      base::Unretained(this)));
+}
+
+void BraveStatsUpdater::ReportWalletUnlock() {
+  if (!pref_service_->GetBoolean(kStatsReportingEnabled)) {
+    return;
+  }
+  SendServerPing();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -128,7 +128,8 @@ class BraveWalletService : public KeyedService,
   // To be used when the Wallet is reset / erased
   void Reset() override;
 
-  void RecordWalletUsage(base::Time wallet_last_used);
+  void RecordWalletUsage(base::Time wallet_last_used,
+                         base::Time wallet_last_reported_use);
 
   void AddSignMessageRequest(mojom::SignMessageRequestPtr request,
                              SignMessageRequestCallback callback);
@@ -155,6 +156,8 @@ class BraveWalletService : public KeyedService,
       const std::string& chain_id);
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
   void OnP3ATimerFired();
+
+  void RecordWalletUsageFromPrefs();
 
   void OnGetImportInfo(
       const std::string& new_password,
@@ -193,6 +196,7 @@ class BraveWalletService : public KeyedService,
   raw_ptr<PrefService> prefs_ = nullptr;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;
+  PrefChangeRegistrar local_pref_change_registrar_;
   base::RepeatingTimer p3a_periodic_timer_;
   base::WeakPtrFactory<BraveWalletService> weak_ptr_factory_;
 };

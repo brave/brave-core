@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "chrome/browser/browser_process.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -125,11 +126,16 @@ BraveWalletService::BraveWalletService(
     delegate_->AddObserver(this);
   DCHECK(prefs_);
 
+  auto* local_state = g_browser_process->local_state();
+  if (local_state) {
+    local_pref_change_registrar_.Init(local_state);
+    local_pref_change_registrar_.Add(
+        kBraveWalletLastUnlockTime,
+        base::BindRepeating(
+            &BraveWalletService::OnWalletUnlockPreferenceChanged,
+            base::Unretained(this)));
+  }
   pref_change_registrar_.Init(prefs_);
-  pref_change_registrar_.Add(
-      kBraveWalletLastUnlockTime,
-      base::BindRepeating(&BraveWalletService::OnWalletUnlockPreferenceChanged,
-                          base::Unretained(this)));
   pref_change_registrar_.Add(
       kDefaultWallet2,
       base::BindRepeating(&BraveWalletService::OnDefaultWalletChanged,
@@ -539,18 +545,31 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
 }
 
 void BraveWalletService::OnP3ATimerFired() {
-  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
-  RecordWalletUsage(wallet_last_used);
+  RecordWalletUsageFromPrefs();
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(
     const std::string& pref_name) {
-  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
-  RecordWalletUsage(wallet_last_used);
+  RecordWalletUsageFromPrefs();
 }
 
-void BraveWalletService::RecordWalletUsage(base::Time wallet_last_used) {
-  uint8_t usage = brave_stats::UsageBitstringFromTimestamp(wallet_last_used);
+void BraveWalletService::RecordWalletUsageFromPrefs() {
+  auto* local_prefs = g_browser_process->local_state();
+  if (!local_prefs)
+    return;
+  base::Time wallet_last_used =
+      local_prefs->GetTime(kBraveWalletLastUnlockTime);
+  base::Time wallet_last_reported_use =
+      local_prefs->GetTime(kBraveWalletP3AReportedUnlockTime);
+  RecordWalletUsage(wallet_last_used, wallet_last_reported_use);
+  local_prefs->SetTime(kBraveWalletP3AReportedUnlockTime, wallet_last_used);
+}
+
+void BraveWalletService::RecordWalletUsage(
+    base::Time wallet_last_used,
+    base::Time wallet_last_reported_use) {
+  uint8_t usage = brave_stats::UsageBitfieldFromTimestamp(
+      wallet_last_used, wallet_last_reported_use);
 
   bool daily = !!(usage & brave_stats::kIsDailyUser);
   UMA_HISTOGRAM_BOOLEAN(kBraveWalletDailyHistogramName, daily);
@@ -560,6 +579,9 @@ void BraveWalletService::RecordWalletUsage(base::Time wallet_last_used) {
 
   bool monthly = !!(usage & brave_stats::kIsMonthlyUser);
   UMA_HISTOGRAM_BOOLEAN(kBraveWalletMonthlyHistogramName, monthly);
+
+  VLOG(1) << "Wallet usage p3a: monthly=" << monthly << ", weekly=" << weekly
+          << ", daily=" << daily;
 }
 
 void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {

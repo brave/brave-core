@@ -1206,20 +1206,34 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, RecordWalletHistogram) {
-  service_->RecordWalletUsage(base::Time::Now());
+  base::Time last_use;
+  base::Time last_reported_use;
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-31", &last_use));
+
+  EXPECT_TRUE(base::Time::FromString("2020-03-30", &last_reported_use));
+  service_->RecordWalletUsage(last_use, last_reported_use);
   histogram_tester_->ExpectBucketCount(kBraveWalletDailyHistogramName, true, 1);
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, true,
+                                       0);
+  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, true,
+                                       0);
+
+  EXPECT_TRUE(base::Time::FromString("2020-02-15", &last_reported_use));
+  service_->RecordWalletUsage(last_use, last_reported_use);
+  histogram_tester_->ExpectBucketCount(kBraveWalletDailyHistogramName, true, 2);
   histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, true,
                                        1);
   histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, true,
                                        1);
 
-  service_->RecordWalletUsage(base::Time::Now() + base::Days(31));
-  histogram_tester_->ExpectBucketCount(kBraveWalletDailyHistogramName, false,
+  EXPECT_TRUE(base::Time::FromString("2020-03-28", &last_reported_use));
+  service_->RecordWalletUsage(last_use, last_reported_use);
+  histogram_tester_->ExpectBucketCount(kBraveWalletDailyHistogramName, true, 3);
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, true,
                                        2);
-  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, false,
-                                       2);
-  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, false,
-                                       2);
+  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, true,
+                                       1);
 }
 
 TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {

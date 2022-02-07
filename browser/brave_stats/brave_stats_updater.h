@@ -84,6 +84,8 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   void SendUserTriggeredPing();
   void SendServerPing();
 
+  void ReportWalletUnlock();
+
   bool IsAdsEnabled();
   bool IsReferralInitialized();
   bool HasDoneThresholdPing();

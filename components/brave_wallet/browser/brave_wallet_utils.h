@@ -61,7 +61,7 @@ void SecureZeroData(void* data, size_t size);
 // This is done in a utils function instead of in the KeyringService
 // because we call it both from the old extension and the new wallet when
 // it unlocks.
-void UpdateLastUnlockPref(PrefService* prefs);
+void UpdateLastUnlockPref();
 
 base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(

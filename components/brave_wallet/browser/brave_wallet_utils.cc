@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/vendor/bip39wally-core-native/include/wally_bip39.h"
+#include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "crypto/random.h"
@@ -482,8 +483,11 @@ void SecureZeroData(void* data, size_t size) {
 // This is done in a utils function instead of in the KeyringService
 // because we call it both from the old extension and the new wallet when
 // it unlocks.
-void UpdateLastUnlockPref(PrefService* prefs) {
-  prefs->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+void UpdateLastUnlockPref() {
+  auto* local_state = g_browser_process->local_state();
+  if (local_state) {
+    local_state->SetTime(kBraveWalletLastUnlockTime, base::Time::Now());
+  }
 }
 
 base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt) {
