@@ -30,7 +30,8 @@ export interface Props {
   toAmount: string
   fromAssetBalance: string
   toAssetBalance: string
-  assetOptions: BraveWallet.BlockchainToken[]
+  swapToListAssetOptions: BraveWallet.BlockchainToken[]
+  swapFromListAssetOptions: BraveWallet.BlockchainToken[]
   isFetchingQuote: boolean
   isSubmitDisabled: boolean
   validationError?: SwapValidationErrorType
@@ -69,7 +70,8 @@ function SwapTab (props: Props) {
     toAmount,
     fromAssetBalance,
     toAssetBalance,
-    assetOptions,
+    swapToListAssetOptions,
+    swapFromListAssetOptions,
     isFetchingQuote,
     isSubmitDisabled,
     validationError,
@@ -93,7 +95,8 @@ function SwapTab (props: Props) {
   } = props
   const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
   const [isSelectingAsset, setIsSelectingAsset] = React.useState<ToOrFromType>('from')
-  const [filteredAssetList, setFilteredAssetList] = React.useState<BraveWallet.BlockchainToken[]>(assetOptions)
+  const [filteredToAssetList, setFilteredToAssetList] = React.useState<BraveWallet.BlockchainToken[]>(swapToListAssetOptions)
+  const [filteredFromAssetList, setFilteredFromAssetList] = React.useState<BraveWallet.BlockchainToken[]>(swapFromListAssetOptions)
 
   const onChangeSwapView = (view: BuySendSwapViewTypes, option?: ToOrFromType) => {
     if (option) {
@@ -120,8 +123,13 @@ function SwapTab (props: Props) {
   }
 
   const onFilterAssetList = (asset: BraveWallet.BlockchainToken) => {
-    const newList = assetOptions.filter((assets) => assets !== asset)
-    setFilteredAssetList(newList)
+    if (isSelectingAsset === 'from') {
+      const newList = swapToListAssetOptions.filter((assets) => assets !== asset)
+      setFilteredToAssetList(newList)
+    } else {
+      const newList = swapFromListAssetOptions.filter((assets) => assets !== asset)
+      setFilteredFromAssetList(newList)
+    }
   }
 
   const onInputChange = (value: string, name: string) => {
@@ -185,7 +193,7 @@ function SwapTab (props: Props) {
           accounts={accounts}
           networkList={networkList}
           goBack={goBack}
-          assetOptions={filteredAssetList}
+          assetOptions={isSelectingAsset === 'from' ? filteredFromAssetList : filteredToAssetList}
           onClickSelectAccount={onClickSelectAccount}
           onClickSelectNetwork={onClickSelectNetwork}
           onSelectedAsset={onSelectAsset}
