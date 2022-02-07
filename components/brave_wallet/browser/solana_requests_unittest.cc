@@ -22,6 +22,18 @@ TEST(SolanaRequestsUnitTest, getTokenAccountBalance) {
       R"({"id":1,"jsonrpc":"2.0","method":"getTokenAccountBalance","params":["key"]})");
 }
 
+TEST(SolanaRequestsUnitTest, sendTransaction) {
+  ASSERT_EQ(
+      sendTransaction("signed_tx"),
+      R"({"id":1,"jsonrpc":"2.0","method":"sendTransaction","params":["signed_tx",{"encoding":"base64"}]})");
+}
+
+TEST(SolanaRequestsUnitTest, getLatestBlockhash) {
+  ASSERT_EQ(
+      getLatestBlockhash(),
+      R"({"id":1,"jsonrpc":"2.0","method":"getLatestBlockhash","params":[]})");
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

@@ -1480,4 +1480,72 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
                           mojom::SolanaProviderError::kSuccess, "");
 }
 
+void JsonRpcService::SendSolanaTransaction(
+    const std::string& signed_tx,
+    SendSolanaTransactionCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnSendSolanaTransaction,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(solana::sendTransaction(signed_tx), true,
+                 std::move(internal_callback));
+}
+
+void JsonRpcService::OnSendSolanaTransaction(
+    SendSolanaTransactionCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::string transaction_id;
+  if (!solana::ParseSendTransaction(body, &transaction_id)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(transaction_id, mojom::SolanaProviderError::kSuccess,
+                          "");
+}
+
+void JsonRpcService::GetSolanaLatestBlockhash(
+    GetSolanaLatestBlockhashCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSolanaLatestBlockhash,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(solana::getLatestBlockhash(), true,
+                 std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetSolanaLatestBlockhash(
+    GetSolanaLatestBlockhashCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::string blockhash;
+  if (!solana::ParseGetLatestBlockhash(body, &blockhash)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    std::move(callback).Run("", error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(blockhash, mojom::SolanaProviderError::kSuccess, "");
+}
+
 }  // namespace brave_wallet
