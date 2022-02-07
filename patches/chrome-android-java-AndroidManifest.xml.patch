@@ -1,55 +1,59 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 0b65abf6bb2826e9ada7e599db1b1cc2d9d9c8c1..3fcddf52544b99993b0ca2acb467b04a4c940824 100644
+index 22ae4ea0f891930634ee08be350c8fe37be589db..ab78af4cf84d6cafd6144e3c70e29e2f45313df8 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -59,7 +59,9 @@ by a child template that "extends" this file.
      <uses-permission-sdk-23 android:name="android.permission.BLUETOOTH_SCAN"
                              android:usesPermissionFlags="neverForLocation"/>
  
+-    <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS"/>
 +<!--
-     <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS"/>
++     <uses-permission-sdk-23 android:name="android.permission.READ_CONTACTS"/>
 +-->
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -67,18 +69,26 @@ by a child template that "extends" this file.
+@@ -67,16 +69,24 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
      <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 +<!--
-     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
++     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 +-->
      <uses-permission android:name="android.permission.INTERNET"/>
+-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
 +<!--
-     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
++     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
 +-->
      <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+-    <uses-permission android:name="android.permission.NFC"/>
 +<!--
-     <uses-permission android:name="android.permission.NFC"/>
++     <uses-permission android:name="android.permission.NFC"/>
 +-->
      <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-     <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+-    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 +<!--
-     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
++     <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 +-->
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -124,7 +134,9 @@ by a child template that "extends" this file.
+@@ -121,7 +131,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
+-    <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
 +<!--
-     <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
++     <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
 +--> <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -171,6 +183,7 @@ by a child template that "extends" this file.
+@@ -168,6 +180,7 @@ by a child template that "extends" this file.
      <!-- Set android:largeHeap to "true" to allow more than the default
           Java heap limit (32Mb on Nexus S, 48Mb on Xoom). -->
        <application android:name="{% block application_name %}org.chromium.chrome.browser.base.SplitChromeApplication{% endblock %}"
@@ -57,7 +61,7 @@ index 0b65abf6bb2826e9ada7e599db1b1cc2d9d9c8c1..3fcddf52544b99993b0ca2acb467b04a
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -331,6 +344,7 @@ by a child template that "extends" this file.
+@@ -328,6 +341,7 @@ by a child template that "extends" this file.
                  <action android:name="android.web.action.APP_ATTRIBUTION" />
                  <category android:name="android.intent.category.DEFAULT" />
              </intent-filter>
@@ -65,7 +69,7 @@ index 0b65abf6bb2826e9ada7e599db1b1cc2d9d9c8c1..3fcddf52544b99993b0ca2acb467b04a
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -1202,6 +1216,7 @@ by a child template that "extends" this file.
+@@ -1199,6 +1213,7 @@ by a child template that "extends" this file.
              android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" >
          </activity>
  
@@ -73,7 +77,7 @@ index 0b65abf6bb2826e9ada7e599db1b1cc2d9d9c8c1..3fcddf52544b99993b0ca2acb467b04a
          {% block extra_application_definitions %}
          {% endblock %}
        {% endmacro %}
-@@ -1280,6 +1295,7 @@ by a child template that "extends" this file.
+@@ -1277,6 +1292,7 @@ by a child template that "extends" this file.
        <!-- ARCore APK integration -->
        <!-- This tag indicates that this application optionally uses ARCore. -->
        <meta-data android:name="com.google.ar.core" android:value="optional" />

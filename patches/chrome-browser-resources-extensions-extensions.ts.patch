@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/extensions.ts b/chrome/browser/resources/extensions/extensions.ts
-index 67185bb055f409023dbf3b33563a54313cd81766..1e1fe04f3049a347b2a290e5455baeaa442c697f 100644
+index fdf591c15ce6c38b826252e278f5f752a8044b6a..dce788987a7ba879620ef13ddb607c5eaed14638 100644
 --- a/chrome/browser/resources/extensions/extensions.ts
 +++ b/chrome/browser/resources/extensions/extensions.ts
 @@ -2,6 +2,7 @@
@@ -9,4 +9,4 @@ index 67185bb055f409023dbf3b33563a54313cd81766..1e1fe04f3049a347b2a290e5455baeaa
 +import './brave_overrides/index.js';
  import './manager.js';
  
- export {getToastManager} from 'chrome://resources/cr_elements/cr_toast/cr_toast_manager.js';
+ export {CrCheckboxElement} from 'chrome://resources/cr_elements/cr_checkbox/cr_checkbox.m.js';
