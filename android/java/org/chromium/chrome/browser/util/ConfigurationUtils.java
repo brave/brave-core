@@ -17,6 +17,9 @@ import org.chromium.ui.base.DeviceFormFactor;
 import java.util.HashMap;
 
 public class ConfigurationUtils {
+    public static final String WIDTH = "width";
+    public static final String HEIGHT = "height";
+
     public static boolean isLandscape(Context context) {
         int orientation = context.getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
@@ -37,8 +40,8 @@ public class ConfigurationUtils {
         int deviceHeight = displayMetrics.heightPixels;
 
         HashMap<String, Integer> map = new HashMap<String, Integer>();
-        map.put("width", deviceWidth);
-        map.put("height", deviceHeight);
+        map.put(WIDTH, deviceWidth);
+        map.put(HEIGHT, deviceHeight);
 
         return map;
     }
@@ -50,8 +53,8 @@ public class ConfigurationUtils {
         float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
 
         HashMap<String, Float> map = new HashMap<String, Float>();
-        map.put("width", dpWidth);
-        map.put("height", dpHeight);
+        map.put(WIDTH, dpWidth);
+        map.put(HEIGHT, dpHeight);
 
         return map;
     }

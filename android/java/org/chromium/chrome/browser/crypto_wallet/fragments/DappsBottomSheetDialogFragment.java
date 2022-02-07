@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 public class DappsBottomSheetDialogFragment
         extends BottomSheetDialogFragment implements View.OnClickListener {
@@ -58,9 +60,15 @@ public class DappsBottomSheetDialogFragment
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view =
-                LayoutInflater.from(getContext()).inflate(R.layout.dapps_bottom_sheet, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        final View view = LayoutInflater.from(getContext())
+                                  .inflate(R.layout.dapps_bottom_sheet, container, false);
+
+        int displayHeight =
+                ConfigurationUtils.getDisplayMetrics(getActivity()).get(ConfigurationUtils.HEIGHT);
+        view.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, displayHeight / 2));
 
         mMainView = view;
         mbtUnlock = mMainView.findViewById(R.id.unlock);
