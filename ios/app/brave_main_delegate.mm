@@ -52,15 +52,6 @@ BraveMainDelegate::~BraveMainDelegate() {}
 
 void BraveMainDelegate::BasicStartupComplete() {
   auto* command_line(base::CommandLine::ForCurrentProcess());
-
-  syncer::ModelTypeSet disabledTypes = syncer::ModelTypeSet(
-      // syncer::PASSWORDS,
-      syncer::PROXY_TABS, syncer::AUTOFILL,
-      // syncer::PREFERENCES,
-      syncer::READING_LIST, syncer::USER_CONSENTS);
-
-  command_line->RemoveSwitch(switches::kDisableSyncTypes);
-  command_line->AppendSwitchASCII(switches::kDisableSyncTypes, syncer::ModelTypeSetToString(disabledTypes));
   command_line->AppendSwitch(switches::kDisableEnterprisePolicy);
 
   if (!command_line->HasSwitch(switches::kComponentUpdater)) {
