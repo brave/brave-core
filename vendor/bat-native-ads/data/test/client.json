@@ -11,13 +11,13 @@
   },
   "adsShownHistory": [
   ],
-  "adsUUIDSeen": {
-  },
-  "advertisersUUIDSeen": {
-  },
-  "pageProbabilitiesHistory": [
-  ],
+  "nextCheckServeAd": 0,
   "purchaseIntentSignalHistory": {
   },
-  "nextCheckServeAd": 0
+  "seenAds": {
+  },
+  "seenAdvertisers": {
+  },
+  "textClassificationProbabilitiesHistory": [
+  ]
 }

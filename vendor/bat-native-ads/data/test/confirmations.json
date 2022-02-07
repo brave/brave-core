@@ -1,10 +1,9 @@
 {
-  "catalog_issuers": {
-  },
   "confirmations": {
     "failed_confirmations": []
   },
-  "next_token_redemption_date_in_seconds": "4102444799",
+  "issuers": {
+  },
   "unblinded_payment_tokens": [],
   "unblinded_tokens": []
 }
