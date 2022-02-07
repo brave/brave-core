@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/hd_key.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
 #include "base/check.h"
 #include "base/json/json_reader.h"
@@ -11,8 +11,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
+#include "brave/components/brave_wallet/common/mem_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
 #include "brave/third_party/bitcoin-core/src/src/crypto/ripemd160.h"
 #include "brave/third_party/bitcoin-core/src/src/secp256k1/include/secp256k1_recovery.h"
@@ -172,12 +172,12 @@ std::unique_ptr<HDKey> HDKey::GenerateFromExtendedKey(const std::string& key) {
 
   if (*ptr == 0x00) {
     DCHECK_EQ(version, MAINNET_PRIVATE);
-    std::vector<uint8_t> key(ptr + 1, ptr + 33);
-    hdkey->SetPrivateKey(key);
+    std::vector<uint8_t> private_key(ptr + 1, ptr + 33);
+    hdkey->SetPrivateKey(private_key);
   } else {
     DCHECK_EQ(version, MAINNET_PUBLIC);
-    std::vector<uint8_t> key(ptr, ptr + 33);
-    hdkey->SetPublicKey(key);
+    std::vector<uint8_t> public_key(ptr, ptr + 33);
+    hdkey->SetPublicKey(public_key);
   }
 
   return hdkey;
@@ -373,7 +373,7 @@ std::string HDKey::GetPrivateExtendedKey() const {
   return Serialize(MAINNET_PRIVATE, key);
 }
 
-std::string HDKey::GetHexEncodedPrivateKey() const {
+std::string HDKey::GetEncodedPrivateKey() const {
   return base::ToLowerASCII(base::HexEncode(private_key_));
 }
 
@@ -424,7 +424,7 @@ void HDKey::SetChainCode(const std::vector<uint8_t>& value) {
   chain_code_ = value;
 }
 
-std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
+std::unique_ptr<HDKeyBase> HDKey::DeriveChild(uint32_t index) {
   std::unique_ptr<HDKey> hdkey = std::make_unique<HDKey>();
   bool is_hardened = index >= HARDENED_OFFSET;
   std::vector<uint8_t> data;
@@ -500,10 +500,10 @@ std::unique_ptr<HDKey> HDKey::DeriveChild(uint32_t index) {
   hdkey->parent_fingerprint_ = fingerprint_;
   hdkey->index_ = index;
 
-  return hdkey;
+  return std::unique_ptr<HDKeyBase>{hdkey.release()};
 }
 
-std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(const std::string& path) {
+std::unique_ptr<HDKeyBase> HDKey::DeriveChildFromPath(const std::string& path) {
   std::unique_ptr<HDKey> hd_key = std::make_unique<HDKey>();
   if (path == "m") {
     if (!private_key_.empty())
@@ -511,7 +511,7 @@ std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(const std::string& path) {
     else
       hd_key->SetPublicKey(public_key_);
     hd_key->chain_code_ = chain_code_;
-    return hd_key;
+    return std::unique_ptr<HDKeyBase>{hd_key.release()};
   }
   std::vector<std::string> entries =
       base::SplitString(path, "/", base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -547,11 +547,12 @@ std::unique_ptr<HDKey> HDKey::DeriveChildFromPath(const std::string& path) {
     if (is_hardened)
       child_index += HARDENED_OFFSET;
 
-    hd_key = hd_key->DeriveChild(child_index);
+    std::unique_ptr<HDKeyBase> child_key = hd_key->DeriveChild(child_index);
+    hd_key = std::unique_ptr<HDKey>{static_cast<HDKey*>(child_key.release())};
     if (!hd_key)
       return nullptr;
   }
-  return hd_key;
+  return std::unique_ptr<HDKeyBase>{hd_key.release()};
 }
 
 std::vector<uint8_t> HDKey::Sign(const std::vector<uint8_t>& msg, int* recid) {

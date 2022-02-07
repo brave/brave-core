@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/hd_key.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -22,6 +22,8 @@ class FilecoinKeyring : public HDKeyring {
  public:
   FilecoinKeyring();
   ~FilecoinKeyring() override;
+  FilecoinKeyring(const FilecoinKeyring&) = delete;
+  FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
 
   Type type() const override;
 
@@ -33,18 +35,11 @@ class FilecoinKeyring : public HDKeyring {
                                        const std::string& network);
   void ImportFilecoinAccount(const std::vector<uint8_t>& input_key,
                              const std::string& address);
-  std::string GetAddressInternal(const HDKey* hd_key) const override;
-
- protected:
-  std::string CreateAddressWithProtocol(const std::vector<uint8_t>& payload,
-                                        int protocol) const;
-  std::unique_ptr<HDKey> root_;
-  std::unique_ptr<HDKey> master_key_;
+  std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
 
  private:
-  friend FilecoinKeyring;
-  FilecoinKeyring(const FilecoinKeyring&) = delete;
-  FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
+  std::string CreateAddressWithProtocol(const std::vector<uint8_t>& payload,
+                                        int protocol) const;
 };
 
 }  // namespace brave_wallet

@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_HD_KEYRING_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_HD_KEYRING_H_
 
-#include "brave/components/brave_wallet/browser/hd_key.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 
 #include <memory>
 #include <string>
@@ -23,16 +23,18 @@ class EthTransaction;
 
 class HDKeyring {
  public:
-  enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin, kFilecoin };
+  enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin, kFilecoin, kSolana };
 
   HDKeyring();
   virtual ~HDKeyring();
+  HDKeyring(const HDKeyring&) = delete;
+  HDKeyring& operator=(const HDKeyring&) = delete;
 
   virtual Type type() const;
   virtual void ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                   const std::string& hd_path);
 
-  void AddAccounts(size_t number = 1);
+  virtual void AddAccounts(size_t number = 1);
   // This will return vector of address of all accounts
   std::vector<std::string> GetAccounts() const;
   absl::optional<size_t> GetAccountIndex(const std::string& address) const;
@@ -45,8 +47,10 @@ class HDKeyring {
   size_t GetImportedAccountsNumber() const;
   bool RemoveImportedAccount(const std::string& address);
 
-  // Bitcoin keyring can override this for different address calculation
-  virtual std::string GetAddress(size_t index) const;
+  std::string GetAddress(size_t index) const;
+  // Find private key by address (it would be hex or base58 depends on
+  // underlying hd key
+  std::string GetEncodedPrivateKey(const std::string& address);
 
   // TODO(darkdh): Abstract Transacation class
   // eth_signTransaction
@@ -66,25 +70,23 @@ class HDKeyring {
                              const std::vector<uint8_t>& signature,
                              std::string* address);
 
-  HDKey* GetHDKeyFromAddress(const std::string& address);
-
  protected:
-  virtual std::string GetAddressInternal(const HDKey* hd_key) const;
+  // Bitcoin keyring can override this for different address calculation
+  virtual std::string GetAddressInternal(HDKeyBase* hd_key) const;
   bool AddImportedAddress(const std::string& address,
                           std::unique_ptr<HDKey> hd_key);
+  HDKeyBase* GetHDKeyFromAddress(const std::string& address);
 
-  std::unique_ptr<HDKey> root_;
-  std::unique_ptr<HDKey> master_key_;
-  std::vector<std::unique_ptr<HDKey>> accounts_;
+  std::unique_ptr<HDKeyBase> root_;
+  std::unique_ptr<HDKeyBase> master_key_;
+  std::vector<std::unique_ptr<HDKeyBase>> accounts_;
   // (address, key)
-  base::flat_map<std::string, std::unique_ptr<HDKey>> imported_accounts_;
+  base::flat_map<std::string, std::unique_ptr<HDKeyBase>> imported_accounts_;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(HDKeyringUnitTest, ConstructRootHDKey);
   FRIEND_TEST_ALL_PREFIXES(HDKeyringUnitTest, SignMessage);
-
-  HDKeyring(const HDKeyring&) = delete;
-  HDKeyring& operator=(const HDKeyring&) = delete;
+  FRIEND_TEST_ALL_PREFIXES(SolanaKeyringUnitTest, ConstructRootHDKey);
 };
 
 }  // namespace brave_wallet
