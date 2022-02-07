@@ -22,6 +22,8 @@ struct RepoStats;
 struct NodeInfo;
 }  // namespace ipfs
 
+class TestIPFSDomHandler;
+
 class IPFSDOMHandler : public content::WebUIMessageHandler,
                        public ipfs::IpfsServiceObserver {
  public:
@@ -41,6 +43,8 @@ class IPFSDOMHandler : public content::WebUIMessageHandler,
   void OnInstallationEvent(ipfs::ComponentUpdaterEvents event) override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(TestIPFSDomHandler, AddComponentVersion);
+  FRIEND_TEST_ALL_PREFIXES(TestIPFSDomHandler, ComponentNotRegistered);
   void HandleGetConnectedPeers(base::Value::ConstListView args);
   void HandleGetAddressesConfig(base::Value::ConstListView args);
   void OnGetAddressesConfig(bool success,
@@ -60,6 +64,12 @@ class IPFSDOMHandler : public content::WebUIMessageHandler,
   void HandleGarbageCollection(base::Value::ConstListView args);
   void OnGarbageCollection(bool success, const std::string& error);
 
+  void SetIpfsClientUpdaterVersionForTesting(const std::string& version) {
+    client_updater_version_for_testing_ = version;
+  }
+  std::string GetIpfsClientUpdaterVersion() const;
+
+  absl::optional<std::string> client_updater_version_for_testing_;
   base::ScopedObservation<ipfs::IpfsService, ipfs::IpfsServiceObserver>
       service_observer_{this};
   base::WeakPtrFactory<IPFSDOMHandler> weak_ptr_factory_;

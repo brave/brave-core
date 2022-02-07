@@ -48,6 +48,7 @@ declare namespace IPFS {
   export interface NodeInfo {
     id: string
     version: string
+    component_version: string
   }
 
   export interface InstallationProgress {
