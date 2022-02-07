@@ -22,13 +22,8 @@ class DesktopModeTabHelper
   // content::WebContentsObserver overrides:
   void NavigationEntryCommitted(
       const content::LoadCommittedDetails& load_details) override;
-  void DidStartNavigation(
-      content::NavigationHandle* navigation_handle) override;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-
- private:
-  bool need_override_ua_ = false;
 };
 
 #endif  // BRAVE_BROWSER_ANDROID_PREFERENCES_WEBSITE_DESKTOP_MODE_TAB_HELPER_H_
