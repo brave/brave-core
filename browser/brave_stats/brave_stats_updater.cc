@@ -18,6 +18,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
@@ -437,6 +438,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastCheckMonth, 0);
   registry->RegisterStringPref(kLastCheckYMD, std::string());
   registry->RegisterStringPref(kWeekOfInstallation, std::string());
+  registry->RegisterTimePref(kBraveWalletPingReportedUnlockTime, base::Time());
 }
 
 }  // namespace brave_stats

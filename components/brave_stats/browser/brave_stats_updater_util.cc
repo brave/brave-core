@@ -103,26 +103,32 @@ std::string GetAPIKey() {
 //        |||_____ Daily
 //        ||______ Weekly
 //        |_______ Monthly
-uint8_t UsageBitstringFromTimestamp(const base::Time& time,
-                                    const base::Time& reference) {
-  base::Time::Exploded target_exploded;
-  time.LocalExplode(&target_exploded);
-  uint8_t enabled_bitset = kIsInactiveUser;
+uint8_t UsageBitfieldFromTimestamp(const base::Time& last_usage_time,
+                                   const base::Time& last_reported_usage_time) {
+  uint8_t result = kIsInactiveUser;
 
-  base::Time::Exploded reference_exploded;
-  reference.LocalExplode(&reference_exploded);
-  if (reference_exploded.year == target_exploded.year) {
-    if (reference_exploded.month == target_exploded.month) {
-      enabled_bitset |= kIsMonthlyUser;
-      if (GetIsoWeekNumber(time) == GetIsoWeekNumber(reference)) {
-        enabled_bitset |= kIsWeeklyUser;
-        if (reference_exploded.day_of_month == target_exploded.day_of_month) {
-          enabled_bitset |= kIsDailyUser;
-        }
-      }
-    }
+  base::Time::Exploded usage_time_exp;
+  last_usage_time.LocalExplode(&usage_time_exp);
+
+  base::Time::Exploded report_time_exp;
+  last_reported_usage_time.LocalExplode(&report_time_exp);
+
+  bool is_year_diff = report_time_exp.year != usage_time_exp.year;
+  bool is_month_diff = report_time_exp.month != usage_time_exp.month;
+
+  if (is_year_diff || is_month_diff) {
+    result |= kIsMonthlyUser;
   }
-  return enabled_bitset;
+  if (is_year_diff || GetIsoWeekNumber(last_usage_time) !=
+                          GetIsoWeekNumber(last_reported_usage_time)) {
+    result |= kIsWeeklyUser;
+  }
+  if (is_year_diff || is_month_diff ||
+      usage_time_exp.day_of_month != report_time_exp.day_of_month) {
+    result |= kIsDailyUser;
+  }
+
+  return result;
 }
 
 }  // namespace brave_stats

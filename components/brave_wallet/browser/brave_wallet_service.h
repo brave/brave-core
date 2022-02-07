@@ -17,6 +17,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/weekly_storage/weekly_storage.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
@@ -29,9 +30,10 @@ class PrefService;
 
 namespace brave_wallet {
 
-constexpr char kBraveWalletDailyHistogramName[] = "Brave.Wallet.UsageDaily";
-constexpr char kBraveWalletWeeklyHistogramName[] = "Brave.Wallet.UsageWeekly";
-constexpr char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly";
+constexpr char kBraveWalletWeeklyHistogramName[] =
+    "Brave.Wallet.UsageDaysInWeek";
+constexpr char kBraveWalletMonthlyHistogramName[] =
+    "Brave.Wallet.UsageMonthly.2";
 
 class KeyringService;
 class JsonRpcService;
@@ -128,12 +130,15 @@ class BraveWalletService : public KeyedService,
   // To be used when the Wallet is reset / erased
   void Reset() override;
 
-  void RecordWalletUsage(base::Time wallet_last_used);
-
   void AddSignMessageRequest(mojom::SignMessageRequestPtr request,
                              SignMessageRequestCallback callback);
   void AddSuggestTokenRequest(mojom::AddSuggestTokenRequestPtr request,
                               AddSuggestTokenCallback callback);
+
+  void RecordWalletUsage();
+
+  // For unit tests
+  void RemovePrefListeners();
 
  private:
   friend class BraveWalletProviderImplUnitTest;
@@ -155,6 +160,11 @@ class BraveWalletService : public KeyedService,
       const std::string& chain_id);
   void OnWalletUnlockPreferenceChanged(const std::string& pref_name);
   void OnP3ATimerFired();
+
+  void WriteStatsToHistogram(base::Time wallet_last_used,
+                             base::Time first_p3a_report,
+                             base::Time last_p3a_report,
+                             unsigned use_days_in_week);
 
   void OnGetImportInfo(
       const std::string& new_password,
