@@ -12,7 +12,6 @@
 #include "bat/ads/internal/account/transactions/transactions_unittest_util.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 #include "bat/ads/internal/privacy/tokens/token_generator_mock.h"
@@ -70,16 +69,16 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
 
   void OnInvalidWallet() override { invalid_wallet_ = true; }
 
-  void OnDepositedFunds(const TransactionInfo& transaction) override {
-    deposited_funds_ = true;
+  void OnDidProcessDeposit(const TransactionInfo& transaction) override {
+    did_process_deposit_ = true;
     transaction_ = transaction;
   }
 
-  void OnFailedToDepositFunds(
-      const CreativeAdInfo& creative_instance_id,
+  void OnFailedToProcessDeposit(
+      const std::string& creative_instance_id,
       const AdType& ad_type,
       const ConfirmationType& confirmation_type) override {
-    failed_to_deposit_funds_ = true;
+    failed_to_process_deposit_ = true;
   }
 
   void OnStatementOfAccountsDidChange() override {
@@ -94,8 +93,8 @@ class BatAdsAccountTest : public AccountObserver, public UnitTestBase {
   bool invalid_wallet_ = false;
 
   TransactionInfo transaction_;
-  bool deposited_funds_ = false;
-  bool failed_to_deposit_funds_ = false;
+  bool did_process_deposit_ = false;
+  bool failed_to_process_deposit_ = false;
 
   bool statement_of_accounts_did_change_ = false;
 };
@@ -402,7 +401,7 @@ TEST_F(BatAdsAccountTest, DoNotGetMissingPaymentIssuers) {
   EXPECT_EQ(expected_issuers, issuers);
 }
 
-TEST_F(BatAdsAccountTest, DepositFunds) {
+TEST_F(BatAdsAccountTest, DepositForCash) {
   // Arrange
   CreativeAdNotificationList creative_ads;
   CreativeDaypartInfo daypart_info;
@@ -432,15 +431,23 @@ TEST_F(BatAdsAccountTest, DepositFunds) {
   Save(creative_ads);
 
   // Act
-  account_->DepositFunds(info.creative_instance_id, AdType::kAdNotification,
-                         ConfirmationType::kViewed);
+  account_->Deposit(info.creative_instance_id, AdType::kAdNotification,
+                    ConfirmationType::kViewed);
 
   // Assert
-  EXPECT_TRUE(deposited_funds_);
-  EXPECT_FALSE(failed_to_deposit_funds_);
+  EXPECT_TRUE(did_process_deposit_);
+  EXPECT_FALSE(failed_to_process_deposit_);
   EXPECT_TRUE(statement_of_accounts_did_change_);
 
-  const TransactionList& expected_transactions = {transaction_};
+  TransactionList expected_transactions;
+  TransactionInfo expected_transaction;
+  expected_transaction.id = transaction_.id;
+  expected_transaction.created_at = NowAsTimestamp();
+  expected_transaction.creative_instance_id = info.creative_instance_id;
+  expected_transaction.value = 1.0;
+  expected_transaction.ad_type = AdType::kAdNotification;
+  expected_transaction.confirmation_type = ConfirmationType::kViewed;
+  expected_transactions.push_back(expected_transaction);
 
   transactions::GetForDateRange(
       DistantPast(), DistantFuture(),
@@ -451,7 +458,39 @@ TEST_F(BatAdsAccountTest, DepositFunds) {
       });
 }
 
-TEST_F(BatAdsAccountTest, DoNotDepositFundsIfCreativeInstanceIdDoesNotExist) {
+TEST_F(BatAdsAccountTest, DepositForNonCash) {
+  // Arrange
+
+  // Act
+  account_->Deposit("3519f52c-46a4-4c48-9c2b-c264c0067f04",
+                    AdType::kAdNotification, ConfirmationType::kClicked);
+
+  // Assert
+  EXPECT_TRUE(did_process_deposit_);
+  EXPECT_FALSE(failed_to_process_deposit_);
+  EXPECT_TRUE(statement_of_accounts_did_change_);
+
+  TransactionList expected_transactions;
+  TransactionInfo expected_transaction;
+  expected_transaction.id = transaction_.id;
+  expected_transaction.created_at = NowAsTimestamp();
+  expected_transaction.creative_instance_id =
+      "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+  expected_transaction.value = 0.0;
+  expected_transaction.ad_type = AdType::kAdNotification;
+  expected_transaction.confirmation_type = ConfirmationType::kClicked;
+  expected_transactions.push_back(expected_transaction);
+
+  transactions::GetForDateRange(
+      DistantPast(), DistantFuture(),
+      [&expected_transactions](const bool success,
+                               const TransactionList& transactions) {
+        ASSERT_TRUE(success);
+        EXPECT_EQ(expected_transactions, transactions);
+      });
+}
+
+TEST_F(BatAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   // Arrange
   CreativeAdNotificationList creative_ads;
   CreativeDaypartInfo daypart_info;
@@ -481,12 +520,12 @@ TEST_F(BatAdsAccountTest, DoNotDepositFundsIfCreativeInstanceIdDoesNotExist) {
   Save(creative_ads);
 
   // Act
-  account_->DepositFunds("eaa6224a-876d-4ef8-a384-9ac34f238631",
-                         AdType::kAdNotification, ConfirmationType::kViewed);
+  account_->Deposit("eaa6224a-876d-4ef8-a384-9ac34f238631",
+                    AdType::kAdNotification, ConfirmationType::kViewed);
 
   // Assert
-  EXPECT_FALSE(deposited_funds_);
-  EXPECT_TRUE(failed_to_deposit_funds_);
+  EXPECT_FALSE(did_process_deposit_);
+  EXPECT_TRUE(failed_to_process_deposit_);
   EXPECT_FALSE(statement_of_accounts_did_change_);
 
   transactions::GetForDateRange(
