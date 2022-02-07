@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 2825190b68c3c729ccda055c0fadabbcf489f110..d2368af843f9d3eca08ee1ba5b84d3995485363a 100644
+index e24182d7e23ad859004536c4a9f4b165f71d1419..3f4edb6df67a768e54d4f53fe9c198b07d1986a8 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -2679,6 +2679,7 @@ const FeatureEntry::FeatureVariation kUseMultipleOverlaysVariations[] = {
+@@ -2753,6 +2753,7 @@ const FeatureEntry::FeatureVariation kUseMultipleOverlaysVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

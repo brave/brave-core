@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/extensions/updater/chrome_update_client_config.h b/chrome/browser/extensions/updater/chrome_update_client_config.h
-index 52ac975fcff18df926f3a6042409a25103144d69..d5ed08ed0bc8dfee280b3983544164bd13f9e629 100644
+index d756727d4a71a227a257d8be647ccf9c5a8327ee..a71bc4b437373362c608ce95445fe9efa46272c2 100644
 --- a/chrome/browser/extensions/updater/chrome_update_client_config.h
 +++ b/chrome/browser/extensions/updater/chrome_update_client_config.h
-@@ -90,6 +90,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
-   static void SetChromeUpdateClientConfigFactoryForTesting(
-       FactoryCallback factory);
- 
+@@ -79,6 +79,7 @@ class ChromeUpdateClientConfig : public update_client::Configurator {
+   GetProtocolHandlerFactory() const override;
+   absl::optional<bool> IsMachineExternallyManaged() const override;
+   update_client::UpdaterStateProvider GetUpdaterStateProvider() const override;
 +  BRAVE_CHROME_UPDATE_CLIENT_CONFIG_H_
-  private:
-   raw_ptr<content::BrowserContext> context_ = nullptr;
-   component_updater::ConfiguratorImpl impl_;
+ 
+  protected:
+   friend class base::RefCountedThreadSafe<ChromeUpdateClientConfig>;
