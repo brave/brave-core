@@ -76,7 +76,6 @@ KeyedService* EthTxServiceFactory::BuildServiceInstanceFor(
   return brave_wallet::BuildEthTxService(
              JsonRpcServiceFactory::GetServiceForContext(context),
              KeyringServiceFactory::GetServiceForContext(context),
-             AssetRatioServiceFactory::GetServiceForContext(context),
              user_prefs::UserPrefs::Get(context))
       .release();
 }

@@ -85,6 +85,14 @@ const EditGas = (props: Props) => {
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = React.useState<string>(toGWei(transactionFees.maxPriorityFeePerGas))
   const [maxFeePerGas, setMaxFeePerGas] = React.useState<string>(toGWei(transactionFees.maxFeePerGas))
 
+  React.useEffect(
+    () => {
+      const maxWeiValue = addNumericValues(baseFeePerGas, gWeiToWei(maxPriorityFeePerGas))
+      setMaxFeePerGas(toGWei(maxWeiValue))
+    },
+    [baseFeePerGas]
+  )
+
   const handleGasPriceInputChanged = (event: React.ChangeEvent<HTMLInputElement>) => {
     setGasPrice(event.target.value)
   }
@@ -117,7 +125,12 @@ const EditGas = (props: Props) => {
   const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const suggestedSliderStep = event.target.value
     setSuggestedSliderStep(suggestedSliderStep)
-    setSuggestedMaxPriorityFee(suggestedMaxPriorityFeeChoices[Number(suggestedSliderStep)])
+    const hexString = suggestedMaxPriorityFeeChoices[Number(suggestedSliderStep)]
+    setSuggestedMaxPriorityFee(hexString)
+    setMaxPriorityFeePerGas(toGWei(hexString))
+    const computedMaxFeePerGasWei = addNumericValues(baseFeePerGas, hexString)
+    const computedMaxFeePerGasGWei = toGWei(computedMaxFeePerGasWei)
+    setMaxFeePerGas(computedMaxFeePerGasGWei)
   }
 
   const showSuggestedMaxPriorityPanel = isEIP1559Transaction && maxPriorityPanel === MaxPriorityPanels.setSuggested

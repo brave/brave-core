@@ -54,7 +54,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                        GetPriceHistoryCallback callback) override;
   void GetEstimatedTime(const std::string& gas_price,
                         GetEstimatedTimeCallback callback) override;
-  void GetGasOracle(GetGasOracleCallback callback) override;
   void GetTokenInfo(const std::string& contract_address,
                     GetTokenInfoCallback callback) override;
 
@@ -66,7 +65,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
       const std::string& vs_asset,
       brave_wallet::mojom::AssetPriceTimeframe timeframe);
   static GURL GetEstimatedTimeURL(const std::string& gas_price);
-  static GURL GetGasOracleURL();
   static GURL GetTokenInfoURL(const std::string& contract_address);
 
   static void SetBaseURLForTest(const GURL& base_url_for_test);
@@ -91,11 +89,6 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
-
-  void OnGetGasOracle(GetGasOracleCallback callback,
-                      const int status,
-                      const std::string& body,
-                      const base::flat_map<std::string, std::string>& headers);
 
   void OnGetTokenInfo(GetTokenInfoCallback callback,
                       const int status,

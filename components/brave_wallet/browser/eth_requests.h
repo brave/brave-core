@@ -7,6 +7,8 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ETH_REQUESTS_H_
 
 #include <string>
+#include <vector>
+
 #include "base/values.h"
 
 namespace brave_wallet {
@@ -42,6 +44,10 @@ std::string eth_gasPrice();
 std::string eth_accounts();
 // Returns the number of most recent block.
 std::string eth_blockNumber();
+// Returns the fee history.
+std::string eth_feeHistory(int num_blocks,
+                           const std::string& head,
+                           const std::vector<double>& reward_percentiles);
 // Returns the balance of the account of given address.
 std::string eth_getBalance(const std::string& address,
                            const std::string& quantity_tag);

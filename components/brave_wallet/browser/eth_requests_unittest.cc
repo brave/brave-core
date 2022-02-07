@@ -83,6 +83,12 @@ TEST(EthRequestUnitTest, eth_blockNumber) {
       R"({"id":1,"jsonrpc":"2.0","method":"eth_blockNumber","params":[]})");
 }
 
+TEST(EthRequestUnitTest, eth_feeHistory) {
+  ASSERT_EQ(
+      eth_feeHistory(40, "latest", std::vector<double>{20, 50, 80}),
+      R"({"id":1,"jsonrpc":"2.0","method":"eth_feeHistory","params":[40,"latest",[20.0,50.0,80.0]]})");
+}
+
 TEST(EthRequestUnitTest, eth_getBalance) {
   ASSERT_EQ(
       eth_getBalance("0x407d73d8a49eeb85d32cf465507dd71d507100c1", "latest"),

@@ -362,19 +362,6 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
   if (error != mojom::ProviderError::kSuccess)
     return;
 
-  // Disable EIP-1559 on selected networks, by overwriting is_eip1559 to
-  // false.
-  //
-  // This list needs to be updated until we have a generic EIP-1559 gas
-  // oracle. See: https://github.com/brave/brave-browser/issues/20469.
-  if (chain_id == "0x13881" ||  // Polygon Mumbai Testnet
-      chain_id == "0x89" ||     // Polygon Mainnet
-      chain_id == "0xa86a" ||   // Avalanche Mainnet
-      chain_id == "0xa869"      // Avalanche Fuji Testnet
-  ) {
-    is_eip1559 = false;
-  }
-
   bool changed = false;
   if (chain_id == brave_wallet::mojom::kLocalhostChainId) {
     changed = prefs_->GetBoolean(kSupportEip1559OnLocalhostChain) != is_eip1559;
@@ -476,6 +463,48 @@ void JsonRpcService::OnGetBlockNumber(
   }
 
   std::move(callback).Run(block_number, mojom::ProviderError::kSuccess, "");
+}
+
+void JsonRpcService::GetFeeHistory(GetFeeHistoryCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetFeeHistory,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(
+      eth::eth_feeHistory(40, "latest", std::vector<double>{20, 50, 80}), true,
+      std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetFeeHistory(
+    GetFeeHistoryCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        std::vector<std::string>(), std::vector<double>(), "",
+        std::vector<std::vector<std::string>>(),
+        mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::vector<std::string> base_fee_per_gas;
+  std::vector<double> gas_used_ratio;
+  std::string oldest_block;
+  std::vector<std::vector<std::string>> reward;
+  if (!eth::ParseEthGetFeeHistory(body, &base_fee_per_gas, &gas_used_ratio,
+                                  &oldest_block, &reward)) {
+    mojom::ProviderError error;
+    std::string error_message;
+    ParseErrorResult(body, &error, &error_message);
+    std::move(callback).Run(std::vector<std::string>(), std::vector<double>(),
+                            "", std::vector<std::vector<std::string>>(), error,
+                            error_message);
+    return;
+  }
+
+  std::move(callback).Run(base_fee_per_gas, gas_used_ratio, oldest_block,
+                          reward, mojom::ProviderError::kSuccess, "");
 }
 
 void JsonRpcService::GetBalance(const std::string& address,
