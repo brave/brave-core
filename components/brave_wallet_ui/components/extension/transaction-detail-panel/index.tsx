@@ -13,6 +13,7 @@ import {
   formatFiatAmountWithCommasAndDecimals,
   formatTokenAmountWithCommasAndDecimals
 } from '../../../utils/format-prices'
+import { formatBalance } from '../../../utils/format-balances'
 
 import { getLocale } from '../../../../common/locale'
 import {
@@ -159,7 +160,7 @@ const TransactionDetailPanel = (props: Props) => {
           {getLocale('braveWalletAllowSpendTransactionFee')}
         </DetailTitle>
         <BalanceColumn>
-          <DetailTextDark>{transactionDetails.gasFee} {selectedNetwork.symbol}</DetailTextDark>
+          <DetailTextDark>{formatTokenAmountWithCommasAndDecimals(formatBalance(transactionDetails.gasFee, selectedNetwork.decimals), selectedNetwork.symbol)}</DetailTextDark>
           <DetailTextDark>{formatFiatAmountWithCommasAndDecimals(transactionDetails.gasFeeFiat, defaultCurrencies.fiat)}</DetailTextDark>
         </BalanceColumn>
       </DetailRow>
