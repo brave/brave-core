@@ -11,5 +11,6 @@ include_rules = [
   "+components/history/core/browser",
   "+components/keyed_service/core",
   "+ios/public/provider/chrome/browser/chrome_browser_provider.h",
+  "+ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h",
   "+ios/web/public/init/web_main.h",
 ]
