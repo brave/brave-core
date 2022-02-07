@@ -403,8 +403,9 @@ interface KeyringService {
   GetPrivateKeyForDefaultKeyringAccount(string address)
     => (bool success, string privateKey);
 
-  // Imports an account with a specific private key to the keyring
-  ImportAccount(string accountName, string privateKey)
+  // Imports an account with a specific private key to the corresponding keyring
+  // privateKey can be coin preferred encoding, ex. hex or base58
+  ImportAccount(string accountName, string privateKey, CoinType coin)
     => (bool success, string address);
 
   ImportFilecoinSECP256K1Account(string accountName, string privateKey, string network)

@@ -31,6 +31,18 @@ std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromSeed(
   return std::make_unique<HDKeyEd25519>(std::move(master_private_key));
 }
 
+// static
+std::unique_ptr<HDKeyEd25519> HDKeyEd25519::GenerateFromPrivateKey(
+    const std::vector<uint8_t>& private_key) {
+  auto master_private_key = generate_ed25519_extended_secrect_key_from_bytes(
+      rust::Slice<const uint8_t>{private_key.data(), private_key.size()});
+  if (!master_private_key->is_ok()) {
+    VLOG(0) << std::string(master_private_key->error_message());
+    return nullptr;
+  }
+  return std::make_unique<HDKeyEd25519>(std::move(master_private_key));
+}
+
 std::unique_ptr<HDKeyBase> HDKeyEd25519::DeriveChild(uint32_t index) {
   auto child_private_key = private_key_->unwrap().derive_child(index);
   if (!child_private_key->is_ok()) {

@@ -40,7 +40,7 @@ import {
 export interface Props {
   onClose: () => void
   onCreateAccount: (name: string, coin: BraveWallet.CoinType) => void
-  onImportAccount: (accountName: string, privateKey: string) => void
+  onImportAccount: (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => void
   isFilecoinEnabled: boolean
   onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
@@ -130,7 +130,7 @@ const AddAccountModal = (props: Props) => {
         if (selectedAccountType?.coin === BraveWallet.CoinType.FIL) {
           onImportFilecoinAccount(accountName, privateKey, filecoinNetwork, filecoinAddressProtocol)
         } else {
-          onImportAccount(accountName, privateKey)
+          onImportAccount(accountName, privateKey, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
         }
       } else {
         if (file) {

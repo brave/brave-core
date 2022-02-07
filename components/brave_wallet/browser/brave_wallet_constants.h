@@ -616,6 +616,8 @@ constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
 // ERC-165 identifier for ERC721 interface.
 constexpr char kERC721InterfaceId[] = "0x80ac58cd";
 
+constexpr int kSolanaKeypairSize = 64;
+constexpr int kSolanaPrikeySize = 32;
 constexpr int kSolanaPubkeySize = 32;
 constexpr int kSolanaBlockhashSize = 32;
 // 1232 = 1280(IPv6 minimum MTU) - 40(size of the IPv6 header) - 8(size of the

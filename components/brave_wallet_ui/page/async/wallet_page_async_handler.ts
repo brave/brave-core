@@ -101,7 +101,7 @@ handler.on(WalletPageActions.selectAsset.getType(), async (store: Store, payload
 
 handler.on(WalletPageActions.importAccount.getType(), async (store: Store, payload: ImportAccountPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.importAccount(payload.accountName, payload.privateKey)
+  const result = await keyringService.importAccount(payload.accountName, payload.privateKey, payload.coin)
   if (result.success) {
     store.dispatch(WalletPageActions.setImportAccountError(false))
     store.dispatch(WalletPageActions.setShowAddModal(false))

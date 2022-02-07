@@ -27,6 +27,8 @@ class HDKeyEd25519 : public HDKeyBase {
 
   static std::unique_ptr<HDKeyEd25519> GenerateFromSeed(
       const std::vector<uint8_t>& seed);
+  static std::unique_ptr<HDKeyEd25519> GenerateFromPrivateKey(
+      const std::vector<uint8_t>& private_key);
 
   // Always performs harden derivation
   // index will automatically transformed to hardened index

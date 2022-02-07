@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -110,6 +111,32 @@ TEST(SolanaKeyringUnitTest, SignMessage) {
       103, 51,  156, 215, 22,  207, 130, 197, 57,  39,  186, 12};
   auto signature = keyring.SignMessage(keyring.GetAddress(0), message);
   EXPECT_EQ(signature, expected_signature);
+}
+
+TEST(SolanaKeyringUnitTest, ImportAccount) {
+  SolanaKeyring keyring;
+  std::vector<uint8_t> private_key;
+  ASSERT_TRUE(base::HexStringToBytes(
+      "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7",
+      &private_key));
+  keyring.ImportAccount(private_key);
+  EXPECT_EQ(keyring.GetImportedAccountsNumber(), 1u);
+  EXPECT_EQ(keyring.GetEncodedPrivateKey(
+                "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ"),
+            "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
+            "YbQtaJQKLXET9jVjepWXe");
+
+  private_key.clear();
+  ASSERT_TRUE(base::HexStringToBytes(
+      "bee602cc7dd4c1be27d8459892ab4e23f7a1d31ffde8cdd50542068ada52a201",
+      &private_key));
+  keyring.ImportAccount(private_key);
+  EXPECT_EQ(keyring.GetImportedAccountsNumber(), 2u);
+
+  EXPECT_FALSE(keyring.RemoveImportedAccount("InvalidAddress"));
+  EXPECT_TRUE(keyring.RemoveImportedAccount(
+      "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ"));
+  EXPECT_EQ(keyring.GetImportedAccountsNumber(), 1u);
 }
 
 }  // namespace brave_wallet

@@ -144,7 +144,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                                     });
                         } else {
                             mKeyringService.importAccount(mAddAccountText.getText().toString(),
-                                    mPrivateKeyControl.getText().toString().trim(),
+                                    mPrivateKeyControl.getText().toString().trim(), CoinType.ETH,
                                     (result, address) -> {
                                         if (result) {
                                             setResult(Activity.RESULT_OK);

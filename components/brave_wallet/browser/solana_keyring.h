@@ -29,6 +29,8 @@ class SolanaKeyring : public HDKeyring {
       const std::string& address,
       const std::vector<uint8_t>& message) override;
 
+  std::string ImportAccount(const std::vector<uint8_t>& private_key) override;
+
  private:
   std::string GetAddressInternal(HDKeyBase* hd_key) const override;
 };

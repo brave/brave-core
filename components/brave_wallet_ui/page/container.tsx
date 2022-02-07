@@ -405,8 +405,8 @@ function Container (props: Props) {
     props.walletPageActions.addHardwareAccounts(selected)
   }
 
-  const onImportAccount = (accountName: string, privateKey: string) => {
-    props.walletPageActions.importAccount({ accountName, privateKey })
+  const onImportAccount = (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => {
+    props.walletPageActions.importAccount({ accountName, privateKey, coin })
   }
 
   const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => {

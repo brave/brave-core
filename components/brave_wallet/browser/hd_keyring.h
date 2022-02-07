@@ -77,7 +77,7 @@ class HDKeyring {
   // Bitcoin keyring can override this for different address calculation
   virtual std::string GetAddressInternal(HDKeyBase* hd_key) const;
   bool AddImportedAddress(const std::string& address,
-                          std::unique_ptr<HDKey> hd_key);
+                          std::unique_ptr<HDKeyBase> hd_key);
   HDKeyBase* GetHDKeyFromAddress(const std::string& address);
 
   std::unique_ptr<HDKeyBase> root_;

@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
+#include "brave/components/brave_wallet/browser/solana_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -607,7 +608,7 @@ HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
         filecoin_keyring->ImportFilecoinAccount(
             private_key, imported_account_info.account_address);
       }
-    } else if (keyring_id == mojom::kDefaultKeyringId) {
+    } else {
       keyring->ImportAccount(private_key);
     }
   }
@@ -962,21 +963,44 @@ absl::optional<std::string> KeyringService::ImportBLSAccountForFilecoinKeyring(
 }
 
 void KeyringService::ImportAccount(const std::string& account_name,
-                                   const std::string& private_key_hex,
+                                   const std::string& private_key,
+                                   mojom::CoinType coin,
                                    ImportAccountCallback callback) {
-  if (account_name.empty() || private_key_hex.empty() ||
-      !encryptors_[mojom::kDefaultKeyringId]) {
+  std::string keyring_id = GetKeyringIdForCoin(coin);
+  if (account_name.empty() || private_key.empty() || !encryptors_[keyring_id]) {
     std::move(callback).Run(false, "");
     return;
   }
 
-  std::vector<uint8_t> private_key;
-  if (!base::HexStringToBytes(private_key_hex, &private_key)) {
+  std::vector<uint8_t> private_key_bytes;
+  if (keyring_id == mojom::kDefaultKeyringId) {
+    if (!base::HexStringToBytes(private_key, &private_key_bytes)) {
+      std::move(callback).Run(false, "");
+      return;
+    }
+  } else if (keyring_id == mojom::kSolanaKeyringId) {
+    if (!LazilyCreateKeyring(keyring_id)) {
+      VLOG(1) << "Unable to create Solana keyring";
+      std::move(callback).Run(false, "");
+      return;
+    }
+    std::vector<uint8_t> keypair(kSolanaKeypairSize);
+    if (!Base58Decode(private_key, &keypair, keypair.size())) {
+      std::move(callback).Run(false, "");
+      return;
+    }
+    // extract private key from keypair
+    private_key_bytes = std::vector<uint8_t>(
+        keypair.begin(), keypair.begin() + kSolanaPrikeySize);
+  }
+
+  if (private_key_bytes.empty()) {
     std::move(callback).Run(false, "");
     return;
   }
 
-  auto address = ImportAccountForDefaultKeyring(account_name, private_key);
+  auto address =
+      ImportAccountForKeyring(keyring_id, account_name, private_key_bytes);
   if (!address) {
     std::move(callback).Run(false, "");
     return;
@@ -1000,8 +1024,8 @@ void KeyringService::ImportAccountFromJson(const std::string& account_name,
     return;
   }
 
-  auto address =
-      ImportAccountForDefaultKeyring(account_name, hd_key->private_key());
+  auto address = ImportAccountForKeyring(mojom::kDefaultKeyringId, account_name,
+                                         hd_key->private_key());
   if (!address) {
     std::move(callback).Run(false, "");
     return;
@@ -1117,10 +1141,11 @@ void KeyringService::AddAccountForKeyring(const std::string& keyring_id,
       keyring->GetAddress(accounts_num - 1), keyring_id);
 }
 
-absl::optional<std::string> KeyringService::ImportAccountForDefaultKeyring(
+absl::optional<std::string> KeyringService::ImportAccountForKeyring(
+    const std::string& keyring_id,
     const std::string& account_name,
     const std::vector<uint8_t>& private_key) {
-  auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
+  auto* keyring = GetHDKeyringById(keyring_id);
   if (!keyring) {
     return absl::nullopt;
   }
@@ -1130,15 +1155,15 @@ absl::optional<std::string> KeyringService::ImportAccountForDefaultKeyring(
     return absl::nullopt;
   }
   std::vector<uint8_t> encrypted_private_key;
-  if (!encryptors_[mojom::kDefaultKeyringId]->Encrypt(
-          private_key, GetOrCreateNonceForKeyring(mojom::kDefaultKeyringId),
-          &encrypted_private_key)) {
+  if (!encryptors_[keyring_id]->Encrypt(private_key,
+                                        GetOrCreateNonceForKeyring(keyring_id),
+                                        &encrypted_private_key)) {
     return absl::nullopt;
   }
   ImportedAccountInfo info(account_name, address,
                            base::Base64Encode(encrypted_private_key),
-                           mojom::CoinType::ETH);
-  SetImportedAccountForKeyring(prefs_, info, mojom::kDefaultKeyringId);
+                           GetCoinForKeyring(keyring_id));
+  SetImportedAccountForKeyring(prefs_, info, keyring_id);
 
   NotifyAccountsChanged();
 

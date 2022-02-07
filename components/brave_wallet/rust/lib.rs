@@ -3,7 +3,7 @@ use ed25519_dalek_bip32::derivation_path::{
     ChildIndexError, DerivationPath, DerivationPathParseError,
 };
 use ed25519_dalek_bip32::ed25519_dalek::{
-    Keypair, Signature, SignatureError, Signer, KEYPAIR_LENGTH, PUBLIC_KEY_LENGTH,
+    Keypair, SecretKey, Signature, SignatureError, Signer, KEYPAIR_LENGTH, PUBLIC_KEY_LENGTH,
     SECRET_KEY_LENGTH, SIGNATURE_LENGTH,
 };
 use ed25519_dalek_bip32::Error as Ed25519Bip32Error;
@@ -63,6 +63,10 @@ mod ffi {
         type Ed25519DalekVerificationResult;
 
         fn generate_ed25519_extended_secrect_key_from_seed(
+            bytes: &[u8],
+        ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
+
+        fn generate_ed25519_extended_secrect_key_from_bytes(
             bytes: &[u8],
         ) -> Box<Ed25519DalekExtendedSecretKeyResult>;
 
@@ -164,6 +168,20 @@ fn generate_ed25519_extended_secrect_key_from_seed(
 ) -> Box<Ed25519DalekExtendedSecretKeyResult> {
     Box::new(Ed25519DalekExtendedSecretKeyResult::from(
         ExtendedSecretKey::from_seed(bytes).map_err(|err| Error::from(err)),
+    ))
+}
+fn generate_ed25519_extended_secrect_key_from_bytes(
+    bytes: &[u8],
+) -> Box<Ed25519DalekExtendedSecretKeyResult> {
+    Box::new(Ed25519DalekExtendedSecretKeyResult::from(
+        SecretKey::from_bytes(bytes).map_err(|err| Error::from(err)).and_then(|secret_key| {
+            Ok(ExtendedSecretKey {
+                depth: 0,
+                child_index: ChildIndex::Normal(0),
+                secret_key,
+                chain_code: [0; 32],
+            })
+        }),
     ))
 }
 

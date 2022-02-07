@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_keyring.h"
 
 #include <memory>
+#include <utility>
 
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 
@@ -43,6 +44,21 @@ std::vector<uint8_t> SolanaKeyring::SignMessage(
     return std::vector<uint8_t>();
 
   return hd_key->Sign(message);
+}
+
+std::string SolanaKeyring::ImportAccount(
+    const std::vector<uint8_t>& private_key) {
+  std::unique_ptr<HDKeyEd25519> hd_key =
+      HDKeyEd25519::GenerateFromPrivateKey(private_key);
+  if (!hd_key)
+    return std::string();
+
+  const std::string address = GetAddressInternal(hd_key.get());
+  if (!AddImportedAddress(address, std::move(hd_key))) {
+    return std::string();
+  }
+
+  return address;
 }
 
 std::string SolanaKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {

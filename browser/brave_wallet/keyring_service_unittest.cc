@@ -219,10 +219,11 @@ class KeyringServiceUnitTest : public testing::Test {
   static absl::optional<std::string> ImportAccount(
       KeyringService* service,
       const std::string& name,
-      const std::string& private_key) {
+      const std::string& private_key,
+      mojom::CoinType coin) {
     absl::optional<std::string> account;
     base::RunLoop run_loop;
-    service->ImportAccount(name, private_key,
+    service->ImportAccount(name, private_key, coin,
                            base::BindLambdaForTesting(
                                [&](bool success, const std::string& address) {
                                  if (success) {
@@ -1241,6 +1242,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
     bool callback_called = false;
     service.ImportAccount(
         imported_accounts[i].name, imported_accounts[i].private_key,
+        mojom::CoinType::ETH,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {
               EXPECT_TRUE(success);
@@ -1692,6 +1694,7 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
     EXPECT_FALSE(observer.AccountsChangedFired());
     service.ImportAccount(
         imported_accounts[i].name, imported_accounts[i].private_key,
+        mojom::CoinType::ETH,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {
               EXPECT_TRUE(success);
@@ -2076,7 +2079,8 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   absl::optional<std::string> imported_account = ImportAccount(
       &service, "Best Evil Son",
       // 0xDc06aE500aD5ebc5972A0D8Ada4733006E905976
-      "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5");
+      "d118a12a1e3b595d7d9e5599370df4ddc58d246a3ae4a795597e50eb6a32afb5",
+      mojom::CoinType::ETH);
   ASSERT_TRUE(imported_account.has_value());
   EXPECT_TRUE(Lock(&service));
   EXPECT_TRUE(SetSelectedAccount(&service, &observer, *imported_account));
@@ -2405,6 +2409,7 @@ TEST_F(KeyringServiceUnitTest, LazilyCreateKeyring) {
     bool callback_called = false;
     service.ImportAccount(
         imported_accounts[i].name, imported_accounts[i].private_key,
+        mojom::CoinType::ETH,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {
               EXPECT_TRUE(success);
@@ -3028,6 +3033,7 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
           run_loop.Quit();
         }));
     run_loop.Run();
+    service.Reset();
   }
   {
     KeyringService service(GetPrefs());
@@ -3064,9 +3070,75 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
           run_loop.Quit();
         }));
     run_loop.Run();
+    service.Reset();
   }
 
-  // TODO(darkdh): add lazily create keyring when importing SOL account
+  {
+    KeyringService service(GetPrefs());
+    TestKeyringServiceObserver observer;
+    service.AddObserver(observer.GetReceiver());
+    service.CreateWallet("brave", base::DoNothing());
+    base::RunLoop().RunUntilIdle();
+
+    // lazily create keyring when importing SOL account
+    absl::optional<std::string> imported_account = ImportAccount(
+        &service, "Imported Account 1",
+        "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
+        "YbQtaJQKLXET9jVjepWXe",
+        mojom::CoinType::SOL);
+    ASSERT_TRUE(imported_account.has_value());
+    EXPECT_EQ(*imported_account,
+              "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
+    EXPECT_TRUE(
+        service.IsKeyringCreated(brave_wallet::mojom::kDefaultKeyringId));
+    EXPECT_TRUE(
+        service.IsKeyringCreated(brave_wallet::mojom::kSolanaKeyringId));
+    // wait for observer
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(observer.IsKeyringCreated(mojom::kSolanaKeyringId));
+
+    // wrong encoded private key (same bytes but not encoded in keypair)
+    EXPECT_EQ(ImportAccount(&service, "Imported Failed",
+                            "3v1fSGD1JW5XnAd2FWrjV6HWJHM9DofVjuNt4T5b7CDL",
+                            mojom::CoinType::SOL),
+              absl::nullopt);
+
+    base::RunLoop run_loop;
+    service.GetKeyringInfo(
+        brave_wallet::mojom::kSolanaKeyringId,
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          EXPECT_EQ(keyring_info->id, mojom::kSolanaKeyringId);
+          EXPECT_TRUE(keyring_info->is_keyring_created);
+          ASSERT_EQ(keyring_info->account_infos.size(), 1u);
+          EXPECT_EQ(keyring_info->account_infos[0]->name, "Imported Account 1");
+          EXPECT_EQ(keyring_info->account_infos[0]->address,
+                    "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
+          EXPECT_TRUE(keyring_info->account_infos[0]->is_imported);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+
+    service.Lock();
+    EXPECT_TRUE(Unlock(&service, "brave"));
+
+    base::RunLoop run_loop2;
+    // imported accounts persist after lock & unlock
+    service.GetKeyringInfo(
+        brave_wallet::mojom::kSolanaKeyringId,
+        base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
+          EXPECT_EQ(keyring_info->id, mojom::kSolanaKeyringId);
+          EXPECT_TRUE(keyring_info->is_keyring_created);
+          ASSERT_EQ(keyring_info->account_infos.size(), 1u);
+          EXPECT_EQ(keyring_info->account_infos[0]->name, "Imported Account 1");
+          EXPECT_EQ(keyring_info->account_infos[0]->address,
+                    "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
+          EXPECT_TRUE(keyring_info->account_infos[0]->is_imported);
+          run_loop2.Quit();
+        }));
+    run_loop2.Run();
+
+    service.Reset();
+  }
 }
 
 TEST_F(KeyringServiceUnitTest, SignMessage) {

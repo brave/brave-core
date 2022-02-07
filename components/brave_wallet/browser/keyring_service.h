@@ -128,6 +128,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       GetPrivateKeyForDefaultKeyringAccountCallback callback) override;
   void ImportAccount(const std::string& account_name,
                      const std::string& private_key,
+                     mojom::CoinType coin,
                      ImportAccountCallback callback) override;
   void ImportAccountFromJson(const std::string& account_name,
                              const std::string& password,
@@ -270,7 +271,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   std::vector<uint8_t> GetPrivateKeyFromKeyring(const std::string& address,
                                                 const std::string& keyring_id);
   // Address will be returned when success
-  absl::optional<std::string> ImportAccountForDefaultKeyring(
+  absl::optional<std::string> ImportAccountForKeyring(
+      const std::string& keyring_id,
       const std::string& account_name,
       const std::vector<uint8_t>& private_key);
   absl::optional<std::string> ImportSECP256K1AccountForFilecoinKeyring(

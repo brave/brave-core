@@ -188,4 +188,35 @@ TEST(HDKeyEd25519UnitTest, SignAndVerify) {
   EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(32, 0xff)));
 }
 
+TEST(HDKeyEd25519UnitTest, GenerateFromPrivateKey) {
+  std::vector<uint8_t> private_key;
+  ASSERT_TRUE(base::HexStringToBytes(
+      "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7",
+      &private_key));
+  auto master_key = HDKeyEd25519::GenerateFromPrivateKey(private_key);
+  EXPECT_EQ(master_key->GetEncodedPrivateKey(),
+            "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTndnC"
+            "YbQtaJQKLXET9jVjepWXe");
+  EXPECT_EQ(master_key->GetBase58EncodedPublicKey(),
+            "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ");
+
+  // 31 bytes
+  private_key.clear();
+  ASSERT_TRUE(base::HexStringToBytes(
+      "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19",
+      &private_key));
+  EXPECT_FALSE(HDKeyEd25519::GenerateFromPrivateKey(private_key));
+
+  // 33 bytes
+  private_key.clear();
+  ASSERT_TRUE(base::HexStringToBytes(
+      "2b4be7f19ee27bbf30c667b642d5f4aa69fd169872f8fc3059c08ebae2eb19e7ff",
+      &private_key));
+  EXPECT_FALSE(HDKeyEd25519::GenerateFromPrivateKey(private_key));
+
+  // 0 bytes
+  private_key.clear();
+  EXPECT_FALSE(HDKeyEd25519::GenerateFromPrivateKey(private_key));
+}
+
 }  // namespace brave_wallet
