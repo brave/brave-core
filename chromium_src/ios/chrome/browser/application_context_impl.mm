@@ -46,6 +46,7 @@
 #include "ios/chrome/browser/prefs/ios_chrome_pref_service_factory.h"
 #import "ios/chrome/browser/safe_browsing/safe_browsing_service.h"
 #include "ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h"
+#include "ios/public/provider/chrome/browser/signin/signin_sso_api.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "net/log/net_log.h"
 #include "net/log/net_log_capture_mode.h"
@@ -305,6 +306,14 @@ breadcrumbs::BreadcrumbPersistentStorageManager*
 ApplicationContextImpl::GetBreadcrumbPersistentStorageManager() {
   DCHECK(thread_checker_.CalledOnValidThread());
   return nullptr;
+}
+
+id<SingleSignOnService> ApplicationContextImpl::GetSSOService() {
+  if (!single_sign_on_service_) {
+    single_sign_on_service_ = ios::provider::CreateSSOService();
+    DCHECK(single_sign_on_service_);
+  }
+  return single_sign_on_service_;
 }
 
 void ApplicationContextImpl::SetApplicationLocale(const std::string& locale) {
