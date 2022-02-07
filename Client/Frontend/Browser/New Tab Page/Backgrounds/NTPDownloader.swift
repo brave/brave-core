@@ -275,38 +275,51 @@ class NTPDownloader {
             }
             
             let metadata = try Data(contentsOf: metadataFileURL)
-            if Self.isCampaignEnded(data: metadata) {
-                try self.removeCampaign(type: type)
-                return nil
-            }
-            
+
             guard let downloadsFolderURL = type.saveLocation else { throw "Can't find location to save" }
             
             switch type {
             case .sponsor:
-                let sponsor = try JSONDecoder().decode(NTPSponsor.self, from: metadata)
-                                
-                let logo = sponsor.logo.map {
-                    NTPLogo(
-                        imageUrl: downloadsFolderURL.appendingPathComponent($0.imageUrl).path,
-                        alt: $0.alt,
-                        companyName: $0.companyName,
-                        destinationUrl: $0.destinationUrl)
+                if Self.isSponsorCampaignEnded(data: metadata) {
+                    try self.removeCampaign(type: type)
+                    return nil
                 }
-                
-                let wallpapers = mapNTPBackgroundsToFullPath(sponsor.wallpapers, basePath: downloadsFolderURL)
-                
-                return NTPSponsor(wallpapers: wallpapers, logo: logo)
+
+                let schema = try JSONDecoder().decode(NTPSchema.self, from: metadata)
+
+                var campaigns: [NTPCampaign] = [NTPCampaign]()
+
+                if let schemaCampaigns = schema.campaigns {
+                    campaigns.append(contentsOf: schemaCampaigns)
+                }
+
+                if let schemaWallpapers = schema.wallpapers, campaigns.isEmpty {
+                    /// If campaigns are not defined in the scema fallback to wallpapers
+                    let campaign: NTPCampaign = NTPCampaign(wallpapers: schemaWallpapers, logo: schema.logo)
+                    campaigns.append(campaign)
+                }
+
+                let fullPathCampaigns = campaigns.map {
+                    NTPCampaign(wallpapers: mapNTPWallpapersToFullPath($0.wallpapers, basePath: downloadsFolderURL),
+                                logo: mapNTPLogoToFullPath($0.logo, basePath: downloadsFolderURL))
+                }
+
+                return NTPSponsor(schemaVersion: 1, campaigns: fullPathCampaigns)
             case .superReferral(let code):
+                if Self.isSuperReferralCampaignEnded(data: metadata) {
+                    try self.removeCampaign(type: type)
+                    return nil
+                }
+
                 let customTheme = try JSONDecoder().decode(CustomTheme.self, from: metadata)
                 
-                let wallpapers = mapNTPBackgroundsToFullPath(customTheme.wallpapers, basePath: downloadsFolderURL)
+                let wallpapers = mapNTPWallpapersToFullPath(customTheme.wallpapers, basePath: downloadsFolderURL)
                 
                 // At the moment we do not anything with logo for super referrals.
                 let logo: NTPLogo? = nil
-                
-                return CustomTheme(themeName: customTheme.themeName, wallpapers: wallpapers, logo: logo,
-                                   topSites: customTheme.topSites, refCode: code)
+
+                return CustomTheme(themeName: customTheme.themeName, wallpapers: wallpapers,
+                                   logo: logo, topSites: customTheme.topSites, refCode: code)
             }
         } catch {
             logger.error(error)
@@ -315,15 +328,22 @@ class NTPDownloader {
         return nil
     }
     
-    private func mapNTPBackgroundsToFullPath(_ backgrounds: [NTPBackground],
-                                             basePath: URL) -> [NTPBackground] {
-        backgrounds.map {
-            NTPBackground(imageUrl: basePath.appendingPathComponent($0.imageUrl).path,
-                          focalPoint: $0.focalPoint,
-                          creativeInstanceId: $0.creativeInstanceId)
+    private func mapNTPWallpapersToFullPath(_ wallpapers: [NTPWallpaper], basePath: URL) -> [NTPWallpaper] {
+        wallpapers.map {
+            NTPWallpaper(imageUrl: basePath.appendingPathComponent($0.imageUrl).path, logo: $0.logo,
+                         focalPoint: $0.focalPoint, creativeInstanceId: $0.creativeInstanceId)
         }
     }
-    
+
+    private func mapNTPLogoToFullPath(_ logo: NTPLogo?, basePath: URL) -> NTPLogo? {
+        guard let logo = logo else {
+          return nil
+        }
+
+        return NTPLogo(imageUrl: basePath.appendingPathComponent(logo.imageUrl).path, alt: logo.alt,
+                       companyName: logo.companyName, destinationUrl: logo.destinationUrl)
+    }
+
     private func getETag(type: ResourceType) -> String? {
         do {
             let etagFileURL = try self.ntpETagFileURL(type: type)
@@ -392,10 +412,17 @@ class NTPDownloader {
                 return completion(nil, nil, .metadataError("Invalid \(type.resourceName) for NTP Download"))
             }
             
-            if Self.isCampaignEnded(data: data) {
-                return completion(nil, nil, .campaignEnded)
+            switch type {
+            case .sponsor:
+                if Self.isSponsorCampaignEnded(data: data) {
+                    return completion(nil, nil, .campaignEnded)
+                }
+            case .superReferral(let code):
+                if Self.isSuperReferralCampaignEnded(data: data) {
+                    return completion(nil, nil, .campaignEnded)
+                }
             }
-            
+
             self.unpackMetadata(type: type, data: data) { url, error in
                 completion(url, cacheInfo, error)
             }
@@ -464,32 +491,47 @@ class NTPDownloader {
             let group = DispatchGroup()
             
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true, attributes: nil)
-            
-            func decodeAndSave(type: ResourceType) throws -> NTPBackgroundProtocol {
+
+            func decodeAndSave(type: ResourceType) throws -> (wallpapers: [NTPWallpaper], logos: [NTPLogo], topSites: [CustomTheme.TopSite]?) {
                 switch type {
                 case .sponsor:
-                    let item = try JSONDecoder().decode(NTPSponsor.self, from: data)
+                    let schema = try JSONDecoder().decode(NTPSchema.self, from: data)
                     let metadataFileURL = directory.appendingPathComponent(type.resourceName)
-                    try JSONEncoder().encode(item).write(to: metadataFileURL, options: .atomic)
-                    return item
+                    try JSONEncoder().encode(schema).write(to: metadataFileURL, options: .atomic)
+
+                    var wallpapers: [NTPWallpaper] = [NTPWallpaper]()
+                    var logos: [NTPLogo] = [NTPLogo]()
+
+                    if let schemaCampaigns = schema.campaigns {
+                        wallpapers.append(contentsOf: schemaCampaigns.flatMap(\.wallpapers))
+                        logos.append(contentsOf: schemaCampaigns.compactMap(\.logo))
+                    }
+
+                    logos.append(contentsOf: wallpapers.compactMap(\.logo))
+
+                    if let schemaWallpapers = schema.wallpapers, wallpapers.isEmpty {
+                        /// If campaigns are not defined in the scema fallback to wallpapers
+                        wallpapers.append(contentsOf: schemaWallpapers.compactMap { $0 })
+                        logos.append(contentsOf: [schema.logo].compactMap { $0 })
+                    }
+
+                    return (wallpapers, logos, nil)
                 case .superReferral:
                     let item = try JSONDecoder().decode(CustomTheme.self, from: data)
                     let metadataFileURL = directory.appendingPathComponent(type.resourceName)
                     try JSONEncoder().encode(item).write(to: metadataFileURL, options: .atomic)
-                    return item
+                    return (item.wallpapers, [item.logo].compactMap { $0 }, item.topSites)
                 }
             }
-            
+
             let item = try decodeAndSave(type: type)
             
             var imagesToDownload = [String]()
             
-            if let logo = item.logo {
-                imagesToDownload.append(logo.imageUrl)
-            }
-            
+            imagesToDownload.append(contentsOf: item.logos.map { $0.imageUrl })
             imagesToDownload.append(contentsOf: item.wallpapers.map { $0.imageUrl })
-            
+            imagesToDownload.append(contentsOf: item.wallpapers.compactMap { $0.logo?.imageUrl })
+
             for itemURL in imagesToDownload {
                 group.enter()
                 self.download(type: type, path: itemURL, etag: nil) { data, _, err in
@@ -516,7 +558,7 @@ class NTPDownloader {
                 }
             }
             
-            if let customTheme = item as? CustomTheme, let topSites = customTheme.topSites {
+            if let topSites = item.topSites {
                 /// For favicons we do not move them to temp directory but write directly to a folder with favicon overrides.
                 guard let saveLocation =
                     FileManager.default.getOrCreateFolder(name: NTPDownloader.faviconOverridesDirectory) else {
@@ -581,17 +623,39 @@ class NTPDownloader {
         guard let saveLocation = type.saveLocation else { throw "Can't find location to save" }
         return saveLocation.appendingPathComponent(type.resourceName)
     }
-    
-    static func isCampaignEnded(data: Data) -> Bool {
+
+    static func isSponsorCampaignEnded(data: Data) -> Bool {
+        var hasWallpapers = false
+        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+           let wallpapers = json["wallpapers"] as? [[String: Any]],
+           wallpapers.count > 0 {
+               hasWallpapers = true
+        }
+
+        var hasCampaigns = false
+        if let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+           let campaigns = json["campaigns"] as? [[String: Any]],
+           campaigns.count > 0 {
+               hasCampaigns = true
+        }
+
+        if !hasWallpapers && !hasCampaigns {
+            return true
+        }
+
+        return false
+    }
+
+    static func isSuperReferralCampaignEnded(data: Data) -> Bool {
         guard let json = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
               let wallpapers = json["wallpapers"] as? [[String: Any]],
               wallpapers.count > 0 else {
             return true
         }
-        
+
         return false
     }
-    
+
     private struct CacheResponse {
         let statusCode: Int
         let etag: String

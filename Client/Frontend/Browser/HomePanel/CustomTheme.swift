@@ -5,7 +5,7 @@
 import Foundation
 
 /// A set of attributes that are used to customized the Brave app.
-struct CustomTheme: Codable, NTPBackgroundProtocol, NTPThemeable {
+struct CustomTheme: Codable, NTPThemeable {
     private enum CodingKeys: String, CodingKey {
         case wallpapers, logo, topSites, themeName
     }
@@ -13,7 +13,7 @@ struct CustomTheme: Codable, NTPBackgroundProtocol, NTPThemeable {
     /// Name of the custom theme.
     var themeName: String
     /// Wallpapers to show on new tab page.
-    let wallpapers: [NTPBackground]
+    let wallpapers: [NTPWallpaper]
     /// Brand's logo to show on new tab page.
     var logo: NTPLogo?
     /// Custom favorites that are created at first launch.
