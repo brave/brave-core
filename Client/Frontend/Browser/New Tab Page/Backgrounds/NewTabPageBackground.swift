@@ -17,7 +17,7 @@ class NewTabPageBackground: PreferencesObserver {
     /// The source of new tab page backgrounds
     private let dataSource: NTPDataSource
     /// The current background image & possibly sponsor
-    private(set) var currentBackground: (wallpaper: NTPBackground, type: NTPDataSource.BackgroundType)? {
+    private(set) var currentBackground: (wallpaper: NTPWallpaper, type: NTPDataSource.BackgroundType)? {
         didSet {
             wallpaperId = UUID()
             changed?()

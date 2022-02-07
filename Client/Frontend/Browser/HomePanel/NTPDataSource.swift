@@ -38,24 +38,31 @@ class NTPDataSource {
     ///     be reset back to `1` after reaching `4`, and when the value is `2`, a sponsored image will be shown.
     // This can be easily converted to a preference to persist
     private var backgroundRotationCounter = 1
-    
-    /// The `index` for the next sponsored image to show.
-    ///     e.g. if `0` it should show the `0th` sponsored image _when a sponsored image should be shown_
-    /// This does _not_ impact _when_ a sponsored image is shown, but rather _what_ sponsored image is shown.
-    /// The maximum of this value is undetermined, as that depends on how many images exist in the current sponsorship.
+
+    /// The `index` for the next sponsored image campaign to show.
+    ///     e.g. if `0` it should show the `0th` sponsored image campaign _when a sponsored image campaign should be shown_
+    /// This does _not_ impact _when_ a sponsored image campaiggn is shown, but rather _what_ sponsored image campaign is shown.
+    /// The maximum of this value is undetermined, as that depends on how many campaigns exist in the current sponsorship.
     // This can be easily converted to a preference to persist
-    private var sponsoredBackgroundRotationIndex = 0
+    private var sponsoredBackgroundRotationCampaignIndex = 0
+
+    /// The `index` for the next sponsored image wallpaper to show.
+    ///     e.g. if `0` it should show the `0th` sponsored image wallpaper _when a sponsored image wallpaper should be shown_
+    /// This does _not_ impact _when_ a sponsored image wallpaper is shown, but rather _what_ sponsored image wallpaper is shown.
+    /// The maximum of this value is undetermined, as that depends on how many images exist in the current sponsorship campaign.
+    // This can be easily converted to a preference to persist
+    private var sponsoredBackgroundRotationWallpaperIndexes: [Int] = []
 
     private lazy var downloader = NTPDownloader()
     private var customTheme: CustomTheme?
     private var sponsor: NTPSponsor?
     
-    private lazy var standardBackgrounds: [NTPBackground] = {
+    private lazy var standardBackgrounds: [NTPWallpaper] = {
         let backgroundFilePath = "ntp-data"
         guard let backgroundData = self.loadData(file: backgroundFilePath) else { return [] }
         
         do {
-            return try JSONDecoder().decode([NTPBackground].self, from: backgroundData)
+            return try JSONDecoder().decode([NTPWallpaper].self, from: backgroundData)
         } catch {
             return []
         }
@@ -109,13 +116,13 @@ class NTPDataSource {
         /// Uses random images, keeps in-memory list of recently viewed images to avoid showing it too often.
         case randomOrderAvoidDuplicates
     }
-    
-    func newBackground() -> (NTPBackground, BackgroundType)? {
+
+    func newBackground() -> (NTPWallpaper, BackgroundType)? {
         if !Preferences.NewTabPage.backgroundImages.value { return nil }
         
         // Identifying the background array to use
         let (backgroundSet, backgroundType, strategy) = {
-            () -> ([NTPBackground], BackgroundType, ImageRotationStrategy) in
+            () -> ([NTPWallpaper], BackgroundType, ImageRotationStrategy) in
             
             if let theme = customTheme,
                 let refCode = theme.refCode,
@@ -129,7 +136,12 @@ class NTPDataSource {
                     && !PrivateBrowsingManager.shared.isPrivateBrowsing
                 
                 if attemptSponsored {
-                    return (sponsor.wallpapers, .withBrandLogo(sponsor.logo), .sponsoredRotation)
+                    // Force a max, and wrap back down if it is hit.
+                    sponsoredBackgroundRotationCampaignIndex %= sponsor.campaigns.count
+
+                    if let campaign = sponsor.campaigns[safe: sponsoredBackgroundRotationCampaignIndex] {
+                        return (campaign.wallpapers, .withBrandLogo(campaign.logo), .sponsoredRotation)
+                    }
                 }
             }
             
@@ -143,11 +155,22 @@ class NTPDataSource {
             switch strategy {
             case .sponsoredRotation:
                 defer {
-                    sponsoredBackgroundRotationIndex += 1
+                    // Rotate wallpaper.
+                    sponsoredBackgroundRotationWallpaperIndexes[sponsoredBackgroundRotationCampaignIndex] += 1
                     // Force a max, and wrap back down if it is hit.
-                    sponsoredBackgroundRotationIndex %= backgroundSet.count
+                    sponsoredBackgroundRotationWallpaperIndexes[sponsoredBackgroundRotationCampaignIndex] %= backgroundSet.count
+
+                    // Rotate campaign.
+                    sponsoredBackgroundRotationCampaignIndex += 1
+
+                    // Force a max, and wrap back down if it is hit.
+                    if let sponsor = sponsor {
+                      sponsoredBackgroundRotationCampaignIndex %= sponsor.campaigns.count
+                    }
                 }
-                return sponsoredBackgroundRotationIndex
+
+                return sponsoredBackgroundRotationWallpaperIndexes[sponsoredBackgroundRotationCampaignIndex]
+
             case .randomOrderAvoidDuplicates:
                 let availableRange = 0..<backgroundSet.count
                 // This takes all indeces and filters out ones that were shown recently
@@ -201,6 +224,17 @@ class NTPDataSource {
 extension NTPDataSource: NTPDownloaderDelegate {
     func onSponsorUpdated(sponsor: NTPSponsor?) {
         self.sponsor = sponsor
+
+        if let sponsor = sponsor {
+            let count: Int = sponsor.campaigns.count
+
+            // Pick the first campaign randomly
+            sponsoredBackgroundRotationCampaignIndex = Int.random(in: 0..<count)
+
+            // Start with the first wallpaper
+            sponsoredBackgroundRotationWallpaperIndexes = [Int](repeating: 0, count: count)
+        }
+
         // Force to set up basic favorites if it hasn't been done already.
         initializeFavorites?(nil)
     }

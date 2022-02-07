@@ -4,42 +4,61 @@
 
 import Foundation
 
-protocol NTPBackgroundProtocol {
-    /// Wallpapers to show on new tab page.
-    var wallpapers: [NTPBackground] { get }
-    /// Brand's logo to show on new tab page.
-    var logo: NTPLogo? { get }
-}
-
-/// This is for conformance only. At the moment it's basically the same as `NTPBackgroundProtocol`,
-/// but in the future we might add custom NTP theming that doesn't change background images.
+/// This is for conformance only, but in the future we might add custom NTP theming that doesn't change background images.
 protocol NTPThemeable {}
 
-struct NTPSponsor: Codable, NTPBackgroundProtocol, NTPThemeable {
-    let wallpapers: [NTPBackground]
+/// Backwards compatible schema to support both wallpapers and campaigns.
+struct NTPSchema: Codable, NTPThemeable {
+    /// Sponsor schema version.
+    var schemaVersion: Int
+    /// Wallpapers to show on new tab page.
+    var wallpapers: [NTPWallpaper]?
+    /// Brand logo to show on new tab page. Can be overridden by wallpaper logo.
+    var logo: NTPLogo?
+    /// Campaigns to show on the new tab page.
+    var campaigns: [NTPCampaign]?
+}
+
+/// Sponsors that can be shown on the new tab page.
+struct NTPSponsor: Codable, NTPThemeable {
+    /// Sponsor schema version.
+    var schemaVersion: Int
+    /// Campaigns to show on the new tab page.
+    var campaigns: [NTPCampaign]
+}
+
+/// Campaigns that can be shown on the new tab page.
+struct NTPCampaign: Codable {
+    /// Wallpapers to show on new tab page.
+    var wallpapers: [NTPWallpaper]
+    /// Brand logo to show on new tab page. Can be overridden by wallpaper logo.
     var logo: NTPLogo?
 }
 
-/// A background image that can be showed on new tab page.
+/// Wallpaper that can be shown on the new tab page.
 /// A class instead of a struct since it includes a mutating property (`image`). If a struct this will lead to any `willSet` / `didSet`
 ///     observers being called again, since the struct instance will have been mutated.
-class NTPBackground: Codable {
+class NTPWallpaper: Codable {
     let imageUrl: String
     
+    /// Only available for sponsored images, not normal wallpapers. Overrides default campaign logo
+    let logo: NTPLogo?
+
     /// Required instead of `CGPoint` due to x/y being optionals
     let focalPoint: FocalPoint?
     
     // Only available for sponsored images, not normal wallpapers
     let creativeInstanceId: String?
-
+    
     /// Only available for normal wallpapers, not for sponsored images
     let credit: Credit?
     
-    /// Whether the background is a packaged resource or a remote one, impacts how it should be loaded
+    /// Whether the wallpaper is a packaged resource or a remote one, impacts how it should be loaded
     let packaged: Bool?
     
-    init(imageUrl: String, focalPoint: FocalPoint?, creativeInstanceId: String?) {
+    init(imageUrl: String, logo: NTPLogo?, focalPoint: FocalPoint?, creativeInstanceId: String?) {
         self.imageUrl = imageUrl
+        self.logo = logo
         self.focalPoint = focalPoint
         self.creativeInstanceId = creativeInstanceId
         self.credit = nil
@@ -55,7 +74,7 @@ class NTPBackground: Codable {
         let x: CGFloat?
         let y: CGFloat?
     }
-    
+
     var image: UIImage? {
         // Remote resources are downloaded files, so must be loaded differently
         if packaged == true {
@@ -71,6 +90,7 @@ class NTPBackground: Codable {
     }
 }
 
+/// Brand logo that can be shown on the new tab page.
 class NTPLogo: Codable {
     let imageUrl: String
     let alt: String
