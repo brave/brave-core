@@ -3,15 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_federated_learning/brave_operational_patterns_features.h"
+#include "brave/components/brave_federated/features.h"
 
 #include "base/metrics/field_trial_params.h"
 
-namespace operational_patterns {
+namespace brave_federated {
 namespace features {
 
 namespace {
-const char kFeatureName[] = "FederatedLearningOperationalPatterns";
+
+const char kFeatureName[] = "BraveFederatedLearning";
+
+const char kFieldTrialParameterOperationalPatternsEnabled[] =
+    "operational_patterns_enabled";
+const bool kDefaultOperationalPatternsEnabled = false;
 
 const char kFieldTrialParameterCollectionSlotSizeInMinutes[] =
     "collection_slot_size_in_minutes";
@@ -27,31 +32,37 @@ const int kDefaultCollectionIDLifetimeInDays = 1;
 
 }  // namespace
 
-const base::Feature kUserOperationalPatterns{kFeatureName,
-                                             base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kFederatedLearning{kFeatureName,
+                                       base::FEATURE_DISABLED_BY_DEFAULT};
+
+bool IsFederatedLearningEnabled() {
+  return base::FeatureList::IsEnabled(kFederatedLearning);
+}
 
 bool IsOperationalPatternsEnabled() {
-  return base::FeatureList::IsEnabled(kUserOperationalPatterns);
+  return GetFieldTrialParamByFeatureAsBool(
+      kFederatedLearning, kFieldTrialParameterOperationalPatternsEnabled,
+      kDefaultOperationalPatternsEnabled);
 }
 
 int GetCollectionSlotSizeValue() {
   return GetFieldTrialParamByFeatureAsInt(
-      kUserOperationalPatterns, kFieldTrialParameterCollectionSlotSizeInMinutes,
+      kFederatedLearning, kFieldTrialParameterCollectionSlotSizeInMinutes,
       kDefaultCollectionSlotSizeInMinutes);
 }
 
 int GetSimulateLocalTrainingStepDurationValue() {
   return GetFieldTrialParamByFeatureAsInt(
-      kUserOperationalPatterns,
+      kFederatedLearning,
       kFieldTrialParameterSimulateLocalTrainingStepDurationInMinutes,
       kDefaultSimulateLocalTrainingStepDurationInMinutes);
 }
 
 int GetCollectionIdLifetime() {
   return GetFieldTrialParamByFeatureAsInt(
-      kUserOperationalPatterns, kFieldTrialParameterCollectionIDLifetimeInDays,
+      kFederatedLearning, kFieldTrialParameterCollectionIDLifetimeInDays,
       kDefaultCollectionIDLifetimeInDays);
 }
 
 }  // namespace features
-}  // namespace operational_patterns
+}  // namespace brave_federated
