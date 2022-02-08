@@ -6,23 +6,23 @@
 #include "bat/ads/internal/ads/exclusion_rules_base.h"
 
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/anti_targeting_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/dislike_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/anti_targeting_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/dislike_exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_month_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/per_week_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/split_test_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/transferred_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_month_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_week_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/split_test_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/subdivision_targeting_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/transferred_exclusion_rule.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 
@@ -36,56 +36,60 @@ ExclusionRulesBase::ExclusionRulesBase(
   DCHECK(subdivision_targeting);
   DCHECK(anti_targeting_resource);
 
-  split_test_frequency_cap_ = std::make_unique<SplitTestFrequencyCap>();
-  exclusion_rules_.push_back(split_test_frequency_cap_.get());
+  split_test_exclusion_rule_ = std::make_unique<SplitTestExclusionRule>();
+  exclusion_rules_.push_back(split_test_exclusion_rule_.get());
 
-  subdivision_targeting_frequency_cap_ =
-      std::make_unique<SubdivisionTargetingFrequencyCap>(subdivision_targeting);
-  exclusion_rules_.push_back(subdivision_targeting_frequency_cap_.get());
+  subdivision_targeting_exclusion_rule_ =
+      std::make_unique<SubdivisionTargetingExclusionRule>(
+          subdivision_targeting);
+  exclusion_rules_.push_back(subdivision_targeting_exclusion_rule_.get());
 
-  anti_targeting_frequency_cap_ = std::make_unique<AntiTargetingFrequencyCap>(
+  anti_targeting_exclusion_rule_ = std::make_unique<AntiTargetingExclusionRule>(
       anti_targeting_resource, browsing_history);
-  exclusion_rules_.push_back(anti_targeting_frequency_cap_.get());
+  exclusion_rules_.push_back(anti_targeting_exclusion_rule_.get());
 
-  dislike_frequency_cap_ = std::make_unique<DislikeFrequencyCap>();
-  exclusion_rules_.push_back(dislike_frequency_cap_.get());
+  dislike_exclusion_rule_ = std::make_unique<DislikeExclusionRule>();
+  exclusion_rules_.push_back(dislike_exclusion_rule_.get());
 
-  marked_as_inappropriate_frequency_cap_ =
-      std::make_unique<MarkedAsInappropriateFrequencyCap>();
-  exclusion_rules_.push_back(marked_as_inappropriate_frequency_cap_.get());
+  marked_as_inappropriate_exclusion_rule_ =
+      std::make_unique<MarkedAsInappropriateExclusionRule>();
+  exclusion_rules_.push_back(marked_as_inappropriate_exclusion_rule_.get());
 
-  marked_to_no_longer_receive_frequency_cap_ =
-      std::make_unique<MarkedToNoLongerReceiveFrequencyCap>();
-  exclusion_rules_.push_back(marked_to_no_longer_receive_frequency_cap_.get());
+  marked_to_no_longer_receive_exclusion_rule_ =
+      std::make_unique<MarkedToNoLongerReceiveExclusionRule>();
+  exclusion_rules_.push_back(marked_to_no_longer_receive_exclusion_rule_.get());
 
-  conversion_frequency_cap_ =
-      std::make_unique<ConversionFrequencyCap>(ad_events);
-  exclusion_rules_.push_back(conversion_frequency_cap_.get());
+  conversion_exclusion_rule_ =
+      std::make_unique<ConversionExclusionRule>(ad_events);
+  exclusion_rules_.push_back(conversion_exclusion_rule_.get());
 
-  transferred_frequency_cap_ =
-      std::make_unique<TransferredFrequencyCap>(ad_events);
-  exclusion_rules_.push_back(transferred_frequency_cap_.get());
+  transferred_exclusion_rule_ =
+      std::make_unique<TransferredExclusionRule>(ad_events);
+  exclusion_rules_.push_back(transferred_exclusion_rule_.get());
 
-  total_max_frequency_cap_ = std::make_unique<TotalMaxFrequencyCap>(ad_events);
-  exclusion_rules_.push_back(total_max_frequency_cap_.get());
+  total_max_exclusion_rule_ =
+      std::make_unique<TotalMaxExclusionRule>(ad_events);
+  exclusion_rules_.push_back(total_max_exclusion_rule_.get());
 
-  per_month_frequency_cap_ = std::make_unique<PerMonthFrequencyCap>(ad_events);
-  exclusion_rules_.push_back(per_month_frequency_cap_.get());
+  per_month_exclusion_rule_ =
+      std::make_unique<PerMonthExclusionRule>(ad_events);
+  exclusion_rules_.push_back(per_month_exclusion_rule_.get());
 
-  per_week_frequency_cap_ = std::make_unique<PerWeekFrequencyCap>(ad_events);
-  exclusion_rules_.push_back(per_week_frequency_cap_.get());
+  per_week_exclusion_rule_ = std::make_unique<PerWeekExclusionRule>(ad_events);
+  exclusion_rules_.push_back(per_week_exclusion_rule_.get());
 
-  daily_cap_frequency_cap_ = std::make_unique<DailyCapFrequencyCap>(ad_events);
-  exclusion_rules_.push_back(daily_cap_frequency_cap_.get());
+  daily_cap_exclusion_rule_ =
+      std::make_unique<DailyCapExclusionRule>(ad_events);
+  exclusion_rules_.push_back(daily_cap_exclusion_rule_.get());
 
-  per_day_frequency_cap_ = std::make_unique<PerDayFrequencyCap>(ad_events);
-  exclusion_rules_.push_back(per_day_frequency_cap_.get());
+  per_day_exclusion_rule_ = std::make_unique<PerDayExclusionRule>(ad_events);
+  exclusion_rules_.push_back(per_day_exclusion_rule_.get());
 
-  daypart_frequency_cap_ = std::make_unique<DaypartFrequencyCap>();
-  exclusion_rules_.push_back(daypart_frequency_cap_.get());
+  daypart_exclusion_rule_ = std::make_unique<DaypartExclusionRule>();
+  exclusion_rules_.push_back(daypart_exclusion_rule_.get());
 
-  per_hour_frequency_cap_ = std::make_unique<PerHourFrequencyCap>(ad_events);
-  exclusion_rules_.push_back(per_hour_frequency_cap_.get());
+  per_hour_exclusion_rule_ = std::make_unique<PerHourExclusionRule>(ad_events);
+  exclusion_rules_.push_back(per_hour_exclusion_rule_.get());
 }
 
 ExclusionRulesBase::~ExclusionRulesBase() = default;

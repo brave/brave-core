@@ -22,7 +22,7 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-class DismissedFrequencyCap;
+class DismissedExclusionRule;
 
 namespace ad_notifications {
 namespace frequency_capping {
@@ -37,7 +37,7 @@ class ExclusionRules final : public ExclusionRulesBase {
   ~ExclusionRules() override;
 
  private:
-  std::unique_ptr<DismissedFrequencyCap> dismissed_frequency_cap_;
+  std::unique_ptr<DismissedExclusionRule> dismissed_exclusion_rule_;
 
   ExclusionRules(const ExclusionRules&) = delete;
   ExclusionRules& operator=(const ExclusionRules&) = delete;
