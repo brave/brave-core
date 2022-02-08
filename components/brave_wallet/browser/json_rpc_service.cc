@@ -199,7 +199,8 @@ void JsonRpcService::GetPendingChainRequests(
 void JsonRpcService::AddEthereumChain(mojom::EthereumChainPtr chain,
                                       AddEthereumChainCallback callback) {
   auto chain_id = chain->chain_id;
-  auto url = chain->rpc_urls.size() ? GURL(chain->rpc_urls.front()) : GURL();
+  GURL url = GetFirstValidChainURL(chain->rpc_urls);
+
   if (!url.is_valid()) {
     std::move(callback).Run(
         chain_id, mojom::ProviderError::kUserRejectedRequest,
@@ -229,8 +230,9 @@ void JsonRpcService::OnEthChainIdValidated(mojom::EthereumChainPtr chain,
   if (!success) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
-        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-                                  base::ASCIIToUTF16(chain->rpc_urls.front())));
+        l10n_util::GetStringFUTF8(
+            IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+            base::ASCIIToUTF16(GetFirstValidChainURL(chain->rpc_urls).spec())));
     return;
   }
 
@@ -258,12 +260,12 @@ void JsonRpcService::AddEthereumChainForOrigin(
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
     return;
   }
-  auto url = chain->rpc_urls.size() ? GURL(chain->rpc_urls.front()) : GURL();
+  GURL url = GetFirstValidChainURL(chain->rpc_urls);
   if (!url.is_valid()) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
         l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-                                  base::ASCIIToUTF16(chain->rpc_urls.front())));
+                                  base::ASCIIToUTF16(url.spec())));
     return;
   }
 
@@ -284,8 +286,9 @@ void JsonRpcService::OnEthChainIdValidatedForOrigin(
   if (!success) {
     std::move(callback).Run(
         chain->chain_id, mojom::ProviderError::kUserRejectedRequest,
-        l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-                                  base::ASCIIToUTF16(chain->rpc_urls.front())));
+        l10n_util::GetStringFUTF8(
+            IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+            base::ASCIIToUTF16(GetFirstValidChainURL(chain->rpc_urls).spec())));
     return;
   }
 

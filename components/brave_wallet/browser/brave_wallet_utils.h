@@ -72,6 +72,7 @@ void GetAllKnownChains(PrefService* prefs,
 const std::vector<mojom::EthereumChain> GetAllKnownNetworksForTesting();
 void GetAllCustomChains(PrefService* prefs,
                         std::vector<mojom::EthereumChainPtr>* result);
+GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
 void GetAllChains(PrefService* prefs,
                   std::vector<mojom::EthereumChainPtr>* result);
 GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id);
@@ -105,6 +106,13 @@ mojom::EthereumChainPtr GetChain(PrefService* prefs,
 
 // Get the current chain ID from kBraveWalletCurrentChainId pref.
 std::string GetCurrentChainId(PrefService* prefs);
+
+// Returns the first URL to use that:
+// 1. Has no variables in it like ${INFURA_API_KEY}
+// 2. Is HTTP or HTTPS
+// Otherwise if there is a URL in the list, it returns the first one.
+// Otherwise returns an empty GURL
+GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
 
 }  // namespace brave_wallet
 

@@ -263,9 +263,9 @@ TEST(TestBraveWalletHandler, AddEthereumChainWrongNetwork) {
   auto arg3_list = data.arg3()->GetList();
   ASSERT_EQ(arg3_list.size(), 2UL);
   EXPECT_EQ(arg3_list[0].GetBool(), false);
-  std::string error_message =
-      l10n_util::GetStringFUTF8(IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-                                base::ASCIIToUTF16(chain1.rpc_urls.front()));
+  std::string error_message = l10n_util::GetStringFUTF8(
+      IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+      base::ASCIIToUTF16(GURL(chain1.rpc_urls.front()).spec()));
   EXPECT_EQ(arg3_list[1].GetString(), error_message);
 }
 TEST(TestBraveWalletHandler, AddEthereumChainFail) {

@@ -910,9 +910,10 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
               const std::string& error_message) {
             ASSERT_FALSE(chain_id.empty());
             EXPECT_EQ(error, fourth_expected);
-            EXPECT_EQ(error_message, l10n_util::GetStringFUTF8(
-                                         IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-                                         base::ASCIIToUTF16(network_url)));
+            EXPECT_EQ(error_message,
+                      l10n_util::GetStringFUTF8(
+                          IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                          base::ASCIIToUTF16(GURL(network_url).spec())));
             fourth_callback_is_called = true;
           }));
   base::RunLoop().RunUntilIdle();
@@ -935,9 +936,10 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
               const std::string& error_message) {
             ASSERT_FALSE(chain_id.empty());
             EXPECT_EQ(error, fifth_expected);
-            EXPECT_EQ(error_message, l10n_util::GetStringFUTF8(
-                                         IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
-                                         base::ASCIIToUTF16(network_url)));
+            EXPECT_EQ(error_message,
+                      l10n_util::GetStringFUTF8(
+                          IDS_BRAVE_WALLET_ETH_CHAIN_ID_FAILED,
+                          base::ASCIIToUTF16(GURL(network_url).spec())));
             fifth_callback_is_called = true;
           }));
   base::RunLoop().RunUntilIdle();
