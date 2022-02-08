@@ -237,7 +237,7 @@ class WelcomeViewController: UIViewController {
             
             topImageView.transform = topTransform
             bottomImageView.transform = bottomTransform
-            skipButton.alpha = 1.0
+            skipButton.alpha = 0.0
             contentContainer.spacing = 25.0
             iconBackgroundView.alpha = 1.0
             iconView.snp.remakeConstraints {
