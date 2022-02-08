@@ -29,6 +29,7 @@ class DesktopModeTabHelper
 
  private:
   bool need_override_ua_ = false;
+  bool navigation_started_ = false;
 };
 
 #endif  // BRAVE_BROWSER_ANDROID_PREFERENCES_WEBSITE_DESKTOP_MODE_TAB_HELPER_H_
