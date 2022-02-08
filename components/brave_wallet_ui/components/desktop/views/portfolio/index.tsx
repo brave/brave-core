@@ -361,6 +361,7 @@ const Portfolio = (props: Props) => {
           userAssetList={userAssetList}
           filteredAssetList={filteredAssetList}
           tokenPrices={transactionSpotPrices}
+          selectedNetwork={selectedNetwork}
           onSetFilteredAssetList={onSetFilteredAssetList}
           onSelectAsset={selectAsset}
           onShowAssetModal={toggleShowVisibleAssetModal}

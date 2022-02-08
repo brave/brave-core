@@ -9,6 +9,7 @@ import {
   formatFiatAmountWithCommasAndDecimals,
   formatTokenAmountWithCommasAndDecimals
 } from '../../../utils/format-prices'
+import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
@@ -18,9 +19,12 @@ import {
   BalanceColumn,
   FiatBalanceText,
   NameAndIcon,
-  AssetIcon
+  AssetIcon,
+  IconsWrapper,
+  NetworkIconWrapper,
+  NameColumn
 } from './style'
-import { withPlaceholderIcon } from '../../shared'
+import { withPlaceholderIcon, CreateNetworkIcon } from '../../shared'
 import { WithHideBalancePlaceholder } from '../'
 
 // Hooks
@@ -33,6 +37,7 @@ interface Props {
   token: BraveWallet.BlockchainToken
   defaultCurrencies: DefaultCurrencies
   hideBalances?: boolean
+  selectedNetwork?: BraveWallet.EthereumChain
 }
 
 const PortfolioAssetItem = (props: Props) => {
@@ -42,7 +47,8 @@ const PortfolioAssetItem = (props: Props) => {
     action,
     token,
     defaultCurrencies,
-    hideBalances
+    hideBalances,
+    selectedNetwork
   } = props
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
@@ -58,14 +64,33 @@ const PortfolioAssetItem = (props: Props) => {
     return computeFiatAmount(assetBalance, token.symbol, token.decimals)
   }, [computeFiatAmount, assetBalance, token])
 
+  const NetworkDescription = React.useMemo(() => {
+    if (selectedNetwork && token.contractAddress !== '') {
+      return getLocale('braveWalletPortfolioAssetNetworkDescription')
+        .replace('$1', token.symbol)
+        .replace('$2', selectedNetwork?.chainName ?? '')
+    }
+    return token.symbol
+  }, [selectedNetwork, token])
+
   return (
     <>
       {token.visible &&
         // Selecting an erc721 token is temp disabled until UI is ready for viewing NFT's
         <StyledWrapper disabled={token.isErc721} onClick={action}>
           <NameAndIcon>
-            <AssetIconWithPlaceholder selectedAsset={token} />
-            <AssetName>{token.name} {token.isErc721 ? hexToNumber(token.tokenId ?? '') : ''}</AssetName>
+            <IconsWrapper>
+              <AssetIconWithPlaceholder selectedAsset={token} />
+              {selectedNetwork && token.contractAddress !== '' &&
+                <NetworkIconWrapper>
+                  <CreateNetworkIcon network={selectedNetwork} marginRight={0} />
+                </NetworkIconWrapper>
+              }
+            </IconsWrapper>
+            <NameColumn>
+              <AssetName>{token.name} {token.isErc721 ? hexToNumber(token.tokenId ?? '') : ''}</AssetName>
+              <AssetName>{NetworkDescription}</AssetName>
+            </NameColumn>
           </NameAndIcon>
           <BalanceColumn>
             <WithHideBalancePlaceholder

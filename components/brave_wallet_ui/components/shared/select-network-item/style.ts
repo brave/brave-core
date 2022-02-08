@@ -2,10 +2,6 @@ import styled from 'styled-components'
 import { WalletButton } from '../style'
 import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
 
-interface StyleProps {
-  orb: string
-}
-
 export const StyledWrapper = styled(WalletButton)`
   display: flex;
   width: 100%;
@@ -36,15 +32,6 @@ export const NetworkName = styled.span`
   font-weight: 600;
   color: ${(p) => p.theme.color.text01};
   text-align: left;
-`
-
-export const AccountCircle = styled.div<StyleProps>`
-  width: 10px;
-  height: 10px;
-  border-radius: 100%;
-  background-image: url(${(p) => p.orb});
-  background-size: cover;
-  margin-right: 14px;
 `
 
 export const BigCheckMark = styled.div`

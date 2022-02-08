@@ -31,6 +31,7 @@ export interface Props {
   defaultCurrencies: DefaultCurrencies
   userAssetList: UserAssetInfoType[]
   hideBalances: boolean
+  selectedNetwork: BraveWallet.EthereumChain
   onSetFilteredAssetList: (filteredList: UserAssetInfoType[]) => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => () => void
   onShowAssetModal: () => void
@@ -43,6 +44,7 @@ const TokenLists = (props: Props) => {
     defaultCurrencies,
     userAssetList,
     hideBalances,
+    selectedNetwork,
     onSelectAsset,
     onShowAssetModal,
     onSetFilteredAssetList
@@ -80,6 +82,7 @@ const TokenLists = (props: Props) => {
           assetBalance={item.assetBalance}
           token={item.asset}
           hideBalances={hideBalances}
+          selectedNetwork={selectedNetwork}
         />
       )}
       {erc721TokenList.length !== 0 &&
@@ -96,6 +99,7 @@ const TokenLists = (props: Props) => {
               assetBalance={item.assetBalance}
               token={item.asset}
               hideBalances={hideBalances}
+              selectedNetwork={selectedNetwork}
             />
           )}
         </>

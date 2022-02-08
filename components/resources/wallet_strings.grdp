@@ -65,6 +65,7 @@
   <message name="IDS_BRAVE_WALLET_CHART_ALL_TIME" desc="Chart control bar All button">All</message>
   <message name="IDS_BRAVE_WALLET_ADD_COIN" desc="Portfolio Add Coin button">Add Coin</message>
   <message name="IDS_BRAVE_WALLET_BALANCE" desc="Portfolio Balance title">Balance</message>
+  <message name="IDS_BRAVE_WALLET_PORTFOLIO_ASSET_NETWORK_DESCRIPTION" desc="Portfolio Asset Item Network Description"><ph name="SYMBOL"><ex>BAT</ex>$1</ph> on <ph name="NETWORK"><ex>Ethereum Mainnet</ex>$2</ph></message>
   <message name="IDS_BRAVE_WALLET_ACCOUNTS" desc="Accounts subview button">Accounts</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT" desc="Account subview title">Account</message>
   <message name="IDS_BRAVE_WALLET_OWNER" desc="Account subview NFT title">Owner</message>

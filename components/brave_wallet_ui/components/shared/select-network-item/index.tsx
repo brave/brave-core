@@ -1,10 +1,9 @@
 import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
-import { create } from 'ethereum-blockies'
+import { CreateNetworkIcon } from '../'
 // Styled Components
 import {
   StyledWrapper,
-  AccountCircle,
   NetworkName,
   LeftSide,
   BigCheckMark
@@ -19,14 +18,10 @@ export interface Props {
 function SelectNetworkItem (props: Props) {
   const { network, onSelectNetwork, selectedNetwork } = props
 
-  const orb = React.useMemo(() => {
-    return create({ seed: network.chainName, size: 8, scale: 16 }).toDataURL()
-  }, [network])
-
   return (
     <StyledWrapper onClick={onSelectNetwork}>
       <LeftSide>
-        <AccountCircle orb={orb} />
+        <CreateNetworkIcon network={network} marginRight={14} />
         <NetworkName>{network.chainName}</NetworkName>
       </LeftSide>
       {selectedNetwork.chainId === network.chainId &&
