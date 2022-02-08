@@ -39,12 +39,6 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #endif
 
-#if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
-#include "brave/components/ipfs/ipfs_constants.h"
-#include "brave/components/ipfs/ipfs_utils.h"
-#include "brave/components/ipfs/pref_names.h"
-#endif
-
 namespace {
 
 bool IsBraveCommands(int id) {
