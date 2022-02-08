@@ -4,7 +4,6 @@ import { AssetsFilterDropdown } from '../..'
 import { AssetFilterOptions } from '../../../../options/market-data-filter-options'
 import { CoinMarketMetadata, MarketDataTableColumnTypes, SortOrder } from '../../../../constants/types'
 import MarketDataTable, { MarketDataHeader } from '../../../../components/market-datatable'
-
 import {
   StyledWrapper,
   TopRow
@@ -12,23 +11,23 @@ import {
 import { useMarketDataManagement } from '../../../../common/hooks/market-data-management'
 
 export interface Props {
-  coinMarkData: CoinMarketMetadata[]
+  coinsMarketData: CoinMarketMetadata[]
   marketDataTableHeaders: MarketDataHeader[]
+  onFetchMoreMarketData: () => void
 }
 
 const MarketView = (props: Props) => {
-  const { coinMarkData, marketDataTableHeaders } = props
-  const [sortedMarketData, setSortedMarketData] = React.useState(coinMarkData)
+  const { coinsMarketData, marketDataTableHeaders, onFetchMoreMarketData } = props
+  const [sortedMarketData, setSortedMarketData] = React.useState(coinsMarketData)
   const [tableHeaders, setTableHeaders] = React.useState(marketDataTableHeaders)
   const [currentFilter, setCurrentFilter] = React.useState('all')
   const [sortOrder, setSortOrder] = React.useState<SortOrder>('desc')
   const [sortByColumnId, setSortByColumnId] = React.useState<MarketDataTableColumnTypes>('marketCap')
-
   const { sortCoinMarketData, filterCoinMarketData } = useMarketDataManagement(sortedMarketData, sortOrder, sortByColumnId)
 
   const onSearch = (event: any) => {
     const searchTerm = event.target.value
-    const filteredCoinMarketData = filterCoinMarketData(coinMarkData, searchTerm)
+    const filteredCoinMarketData = filterCoinMarketData(coinsMarketData, searchTerm)
     setSortedMarketData(filteredCoinMarketData)
   }
 
@@ -80,7 +79,7 @@ const MarketView = (props: Props) => {
       <MarketDataTable
         headers={tableHeaders}
         coinMarketData={sortedMarketData}
-        onFetchMoreData={onFetchMoreData}
+        onFetchMoreMarketData={onFetchMoreMarketData}
         onSort={onSort}
       />
     </StyledWrapper>

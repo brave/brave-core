@@ -82,6 +82,7 @@ export interface Props {
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
   coinMarketData: CoinMarketMetadata[]
+  onFetchMoreMarketData: () => void
 }
 
 const CryptoStoryView = (props: Props) => {
@@ -135,7 +136,8 @@ const CryptoStoryView = (props: Props) => {
     onUpdateVisibleAssets,
     onAddCustomAsset,
     foundTokenInfoByContractAddress,
-    coinMarketData
+    coinMarketData,
+    onFetchMoreMarketData
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
@@ -354,8 +356,9 @@ const CryptoStoryView = (props: Props) => {
 
       {selectedTab === 'market' &&
         <MarketView
-          coinMarkData={coinMarketData}
+          coinsMarketData={coinMarketData}
           marketDataTableHeaders={MarketDataTableHeaders}
+          onFetchMoreMarketData={onFetchMoreMarketData}
         />
       }
 

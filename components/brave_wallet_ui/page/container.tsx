@@ -15,7 +15,8 @@ import store from './store'
 import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
-
+// TODO: Remove mock data fetch
+import { fetchCoinMarketData } from '../stories/mock-data/mock-coin-market-data'
 import { OnboardingWrapper, WalletWidgetStandIn } from '../stories/style'
 import { CryptoView, LockScreen, OnboardingRestore, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
 import {
@@ -27,7 +28,8 @@ import {
   WalletAccountType,
   WalletPageState,
   WalletRoutes,
-  WalletState
+  WalletState,
+  CoinMarketMetadata
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -128,6 +130,9 @@ function Container (props: Props) {
   const [selectedWidgetTab, setSelectedWidgetTab] = React.useState<BuySendSwapTypes>('buy')
   const [showVisibleAssetsModal, setShowVisibleAssetsModal] = React.useState<boolean>(false)
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
+  const [coinsMarketData, setCoinsMarketData] = React.useState<CoinMarketMetadata[]>([])
+  const [currentMarketDataPage, setCurrentMarketDataPage] = React.useState<number>(1)
+  const marketDataPageSize = 50
 
   const {
     swapAssetOptions,
@@ -573,6 +578,16 @@ function Container (props: Props) {
 
   const hideMainComponents = (isWalletCreated && !setupStillInProgress) && !isWalletLocked && walletLocation !== WalletRoutes.Backup
 
+  React.useEffect(() => {
+    const fetchCoinsData = async () => {
+      const coins = await fetchCoinMarketData('usd', marketDataPageSize, currentMarketDataPage)
+      setCoinsMarketData(coins)
+      setCurrentMarketDataPage(currentMarketDataPage + 1)
+    }
+
+    fetchCoinsData()
+  }, [])
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -693,6 +708,8 @@ function Container (props: Props) {
                 onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
                 foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
                 onUpdateVisibleAssets={onUpdateVisibleAssets}
+                coinsMarketData={coinsMarketData}
+                onFetchMoreMarketData={() => console.log('fetch coin market data')}
               />
             }
           </Route>

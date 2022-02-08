@@ -703,6 +703,10 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     setFoundTokenInfo(foundToken)
   }
 
+  const onFetchMoreMarketData = () => {
+    console.log('Fetching more coin market data')
+  }
+
   return (
     <WalletPageLayout>
       {/* <SideNav
@@ -808,6 +812,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
                               foundTokenInfoByContractAddress={foundTokenInfo}
                               coinMarketData={mockCoinMarketData}
+                              onFetchMoreMarketData={onFetchMoreMarketData}
                             />
                           )}
                         </>

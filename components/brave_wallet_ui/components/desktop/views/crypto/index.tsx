@@ -11,7 +11,8 @@ import {
   UpdateAccountNamePayloadType,
   WalletRoutes,
   DefaultCurrencies,
-  AddAccountNavTypes
+  AddAccountNavTypes,
+  CoinMarketMetadata
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
@@ -86,6 +87,8 @@ export interface Props {
   showVisibleAssetsModal: boolean
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
+  coinsMarketData: CoinMarketMetadata[]
+  onFetchMoreMarketData: () => void
 }
 
 const CryptoView = (props: Props) => {
@@ -147,7 +150,9 @@ const CryptoView = (props: Props) => {
     onCancelTransaction,
     onSpeedupTransaction,
     onFindTokenInfoByContractAddress,
-    foundTokenInfoByContractAddress
+    foundTokenInfoByContractAddress,
+    coinsMarketData,
+    onFetchMoreMarketData
   } = props
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
@@ -366,8 +371,9 @@ const CryptoView = (props: Props) => {
       </Route>
       <Route path={WalletRoutes.Market} exact={true}>
         <MarketView
-          coinMarkData={[]}
+          coinsMarketData={coinsMarketData}
           marketDataTableHeaders={MarketDataTableHeaders}
+          onFetchMoreMarketData={onFetchMoreMarketData}
         />
       </Route>
       {showAddModal &&
