@@ -32,18 +32,31 @@ DesktopModeTabHelper::~DesktopModeTabHelper() {
 
 void DesktopModeTabHelper::NavigationEntryCommitted(
     const content::LoadCommittedDetails& load_details) {
-  content::NavigationEntry* entry =
-      web_contents()->GetController().GetLastCommittedEntry();
-  if (entry == nullptr)
+  if (!need_override_ua_)
     return;
 
   const bool desktop_mode_enabled = IsDesktopModeEnabled(web_contents());
+  content::NavigationEntry* entry =
+      web_contents()->GetController().GetLastCommittedEntry();
   if (desktop_mode_enabled == entry->GetIsOverridingUserAgent())
     return;
 
   entry->SetIsOverridingUserAgent(desktop_mode_enabled);
   static_cast<content::WebContentsImpl*>(web_contents())->
       UpdateOverridingUserAgent();
+}
+
+void DesktopModeTabHelper::DidStartNavigation(
+    content::NavigationHandle* navigation_handle) {
+  // We need to override UA on the first navigation only.
+  if (!navigation_started_) {
+    navigation_started_ = true;
+    need_override_ua_ = true;
+    return;
+  }
+
+  // We should not override UA on all the next navigations.
+  need_override_ua_ = false;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(DesktopModeTabHelper);
