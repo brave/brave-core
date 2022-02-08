@@ -280,7 +280,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         } else if (id == R.id.exit_id) {
             ApplicationLifetime.terminate(false);
         } else if (id == R.id.set_default_browser) {
-            BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, true);
+            BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(BraveActivity.this, false, false, true);
         } else if (id == R.id.brave_rewards_id) {
             openNewOrSelectExistingTab(BRAVE_REWARDS_SETTINGS_URL);
         } else if (id == R.id.brave_wallet_id) {
@@ -854,7 +854,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                         && !BraveSetDefaultBrowserUtils.isBraveDefaultDontAsk()) {
                     isSetDefaultBrowserNotification = true;
                     BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
-                            BraveActivity.this, false);
+                            BraveActivity.this, false, false, false);
                 }
                 break;
             }

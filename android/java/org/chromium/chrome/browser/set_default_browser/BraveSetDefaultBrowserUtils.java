@@ -78,14 +78,14 @@ public class BraveSetDefaultBrowserUtils {
             } else if (SharedPreferencesManager.getInstance().readInt(
                                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                     == 5) {
-                showBraveSetDefaultBrowserDialog(activity, false);
+                showBraveSetDefaultBrowserDialog(activity, false, false, false);
 
             } else if (shouldShowBraveWasDefaultDialog()) {
                 int braveWasDefaultCount = SharedPreferencesManager.getInstance().readInt(
                         BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
                 SharedPreferencesManager.getInstance().writeInt(
                         BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT, braveWasDefaultCount + 1);
-                showBraveSetDefaultBrowserDialog(activity, false);
+                showBraveSetDefaultBrowserDialog(activity, false, false, false);
             }
 
         } else if (isBraveSetAsDefaultBrowser(activity) && !wasBraveDefaultBefore()) {
@@ -94,7 +94,7 @@ public class BraveSetDefaultBrowserUtils {
     }
 
     public static void showBraveSetDefaultBrowserDialog(
-            AppCompatActivity activity, boolean isFromMenu) {
+            AppCompatActivity activity, boolean isShowInAppPopup, boolean isDirectDoSetDefault, boolean isFromMenu) {
         /* (Albert Wang): Default app settings didn't get added until API 24
          * https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
          */
@@ -105,18 +105,12 @@ public class BraveSetDefaultBrowserUtils {
             return;
         }
 
-        int roleManagerOpenCount = SharedPreferencesManager.getInstance().readInt(
-                BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && roleManagerOpenCount < 2) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && isShowInAppPopup) {
             RoleManager roleManager = activity.getSystemService(RoleManager.class);
 
             if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
                 if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
-                    // save role manager open count as the second times onwards the dialog is shown,
-                    // the system allows the user to click on "don't show again".
-                    SharedPreferencesManager.getInstance().writeInt(
-                            BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT,
-                            roleManagerOpenCount + 1);
+                    
                     activity.startActivityForResult(
                             roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
                             DEFAULT_BROWSER_ROLE_REQUEST_CODE);
@@ -125,22 +119,22 @@ public class BraveSetDefaultBrowserUtils {
                 showSetDefaultBottomSheet(activity, isFromMenu);
             }
 
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            showSetDefaultBottomSheet(activity, isFromMenu);
+        } else if (supportsDefault() && isDirectDoSetDefault) {
+        
+            openDefaultAppsSettings(activity);
 
+        } else if(supportsDefault()) {
+            showSetDefaultBottomSheet(activity, isFromMenu);
         } else {
             ResolveInfo resolveInfo = getResolveInfo(activity);
-            if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
-                    || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
-                // (Albert Wang): From what I've experimented on 6.0,
-                // default browser popup is in the middle of the screen for
-                // these versions. So we shouldn't show the toast.
-                openBraveBlog(activity);
-            } else {
-                Toast toast = Toast.makeText(
-                        activity, R.string.brave_default_browser_go_to_settings, Toast.LENGTH_LONG);
-                toast.show();
-            }
+        if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
+            || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
+            openBraveBlog(activity);
+        } else {
+            Toast toast = Toast.makeText(
+                activity, R.string.brave_default_browser_go_to_settings, Toast.LENGTH_LONG);
+            toast.show();
+        }
         }
     }
 
@@ -182,7 +176,6 @@ public class BraveSetDefaultBrowserUtils {
         }
 
         Intent intent = new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
-        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 
