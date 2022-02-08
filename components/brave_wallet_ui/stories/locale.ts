@@ -57,6 +57,7 @@ provideStrings({
   // Portfolio View
   braveWalletAddCoin: 'Add Coin',
   braveWalletBalance: 'Balance',
+  braveWalletPortfolioAssetNetworkDescription: '$1 on $2',
 
   // Portfolio SubView
   braveWalletAccounts: 'Accounts',

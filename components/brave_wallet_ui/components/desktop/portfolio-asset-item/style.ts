@@ -64,3 +64,32 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
   height: 'auto'
 })
+
+export const IconsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: relative;
+  margin-right: 6px;
+`
+
+export const NetworkIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: absolute;
+  bottom: 0px;
+  right: 4px;
+  background-color: ${(p) => p.theme.color.background02};
+  border-radius: 100%;
+  padding: 2px;
+`
+
+export const NameColumn = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+`
