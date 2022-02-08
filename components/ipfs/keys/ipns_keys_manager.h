@@ -64,6 +64,10 @@ class IpnsKeysManager : public IpfsServiceObserver {
   void SetServerEndpointForTest(const GURL& gurl);
   void SetLoadCallbackForTest(LoadKeysCallback callback);
   int GetLastLoadRetryForTest() const;
+  void SetKeysForTest(
+      const std::unordered_map<std::string, std::string>& keys) {
+    keys_ = keys;
+  }
 
  private:
   using SimpleURLLoaderList =
