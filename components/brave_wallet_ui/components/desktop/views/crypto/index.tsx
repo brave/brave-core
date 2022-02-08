@@ -11,8 +11,7 @@ import {
   UpdateAccountNamePayloadType,
   WalletRoutes,
   DefaultCurrencies,
-  AddAccountNavTypes,
-  CoinMarketMetadata
+  AddAccountNavTypes
 } from '../../../../constants/types'
 import { TopNavOptions } from '../../../../options/top-nav-options'
 import { TopTabNav, WalletBanner, AddAccountModal } from '../../'
@@ -22,7 +21,6 @@ import {
   HardwareWalletConnectOpts
 } from '../../popup-modals/add-account-modal/hardware-wallet-connect/types'
 import MarketView from '../market'
-import { MarketDataTableHeaders } from '../../../../options/market-data-headers'
 
 interface ParamsType {
   category?: TopTabNavTypes
@@ -150,9 +148,7 @@ const CryptoView = (props: Props) => {
     onCancelTransaction,
     onSpeedupTransaction,
     onFindTokenInfoByContractAddress,
-    foundTokenInfoByContractAddress,
-    coinsMarketData,
-    onFetchMoreMarketData
+    foundTokenInfoByContractAddress
   } = props
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
@@ -370,11 +366,7 @@ const CryptoView = (props: Props) => {
         />
       </Route>
       <Route path={WalletRoutes.Market} exact={true}>
-        <MarketView
-          coinsMarketData={coinsMarketData}
-          marketDataTableHeaders={MarketDataTableHeaders}
-          onFetchMoreMarketData={onFetchMoreMarketData}
-        />
+        <MarketView />
       </Route>
       {showAddModal &&
         <AddAccountModal

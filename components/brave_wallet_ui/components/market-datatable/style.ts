@@ -9,11 +9,17 @@ export const StyledWrapper = styled.div`
   flex: 1;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
-  overflow-y: scroll;
+  max-height: 100vh;
+  overflow-y: auto;
 
   & > div.infinite-scroll-component {
     width: 100%;
+  }
+
+  &::scroll-behavior {
+    scroll-behavior: smooth;
+    background-color: transparent;
+    scrollbar-width: 5px;
   }
 `
 

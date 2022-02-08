@@ -15,6 +15,11 @@ export interface StyleProps {
   sortable?: boolean
 }
 
+export const StyledWrapper = styled.div`
+  width: 100%;
+  overflow: auto
+`
+
 export const StyledTBody = styled.tbody`
   ::before {
     content: '';
@@ -32,7 +37,11 @@ export const StyledNoContent = styled('div')<{}>`
 `
 
 export const StyledTable = styled('table')<{}>`
+  position: relative;
   min-width: 100%;
+`
+
+export const StyledTHead = styled('thead')`
 `
 
 export const StyledTH = styled('th')<Partial<StyleProps>>`
@@ -46,6 +55,7 @@ export const StyledTH = styled('th')<Partial<StyleProps>>`
   color: ${(p) => p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
   padding: 0 40px 8px 10px;
   cursor: ${p => p.sortable ? 'pointer' : 'default'};
+  background: ${p => p.theme.color.background01};
 
   &:hover {
     color: ${p => p.sortable ? p.theme.color.text02 : p.theme.color.text03};

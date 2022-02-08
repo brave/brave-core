@@ -4,9 +4,11 @@
 
 import * as React from 'react'
 import {
+  StyledWrapper,
   StyledTH,
   StyledNoContent,
   StyledTable,
+  StyledTHead,
   StyledTBody,
   StyledTD,
   StyledTR,
@@ -78,17 +80,17 @@ const Table = (props: Props) => {
   }
 
   return (
-    <div id={id}>
+    <StyledWrapper id={id}>
       {
         headers && headers.length > 0
         ? <StyledTable>
           {
             headers
-            ? <thead>
+            ? <StyledTHead>
               <tr>
                 {renderHeaders(headers)}
               </tr>
-            </thead>
+            </StyledTHead>
             : null
           }
           {
@@ -126,7 +128,7 @@ const Table = (props: Props) => {
         </StyledNoContent>
         : null
       }
-    </div>
+    </StyledWrapper>
   )
 }
 
