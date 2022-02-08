@@ -28,7 +28,7 @@ const WalletMorePopup = (props: Props) => {
   } = props
 
   const onClickConnectedSites = () => {
-    chrome.tabs.create({ url: 'brave://settings/content/ethereum?search=ethereum' }, () => {
+    chrome.tabs.create({ url: 'brave://settings/content/ethereum' }, () => {
       if (chrome.runtime.lastError) {
         console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
       }
