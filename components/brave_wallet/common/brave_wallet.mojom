@@ -253,6 +253,7 @@ const string kFilecoinTestnet = "t";
 const string kFilecoinMainnet = "f";
 
 const string kFilecoinKeyringId = "filecoin";
+const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
 
 enum FilecoinAddressProtocol {
@@ -285,7 +286,7 @@ struct AccountInfo {
 
 struct KeyringInfo {
   string id;
-  bool is_default_keyring_created;
+  bool is_keyring_created;
   bool is_locked;
   bool is_backed_up;
   array<AccountInfo> account_infos;

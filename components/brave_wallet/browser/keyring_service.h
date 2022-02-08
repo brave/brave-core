@@ -195,6 +195,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& address,
       const std::vector<uint8_t>& message,
       bool is_eip712 = false);
+  std::vector<uint8_t> SignMessage(const std::string& keyring_id,
+                                   const std::string& address,
+                                   const std::vector<uint8_t>& message);
   bool RecoverAddressByDefaultKeyring(const std::vector<uint8_t>& message,
                                       const std::vector<uint8_t>& signature,
                                       std::string* address);
@@ -222,11 +225,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void HasPendingUnlockRequest(
       HasPendingUnlockRequestCallback callback) override;
 
-  /* TODO(darkdh): For other keyrings support
-  void DeleteKeyring(size_t index);
-  HDKeyring* GetKeyring(size_t index);
-  */
-
  private:
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetPrefInBytesForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetPrefInBytesForKeyring);
@@ -234,8 +232,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateEncryptorForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateDefaultKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateFilecoinKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
-                           LockAndUnlockWithMultipleKeyrings);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            LazyCreateFilecoinKeyringFromImport);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
@@ -260,7 +256,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, LazilyCreateKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportedFilecoinAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateFilecoinEncryptor);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateFilecoinEncryptor);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateEncryptors);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxServiceUnitTest;
 
@@ -288,7 +284,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& network);
   bool IsFilecoinAccount(const std::string& account) const;
   bool IsKeyringExist(const std::string& keyring_id) const;
-  bool CreateFilecoinKeyring();
+  bool LazilyCreateKeyring(const std::string& keyring_id);
   size_t GetAccountMetasNumberForKeyring(const std::string& id);
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(

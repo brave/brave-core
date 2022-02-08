@@ -37,6 +37,10 @@ class FilecoinKeyring : public HDKeyring {
                              const std::string& address);
   std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
 
+  std::vector<uint8_t> SignMessage(
+      const std::string& address,
+      const std::vector<uint8_t>& message) override;
+
  private:
   std::string CreateAddressWithProtocol(const std::vector<uint8_t>& payload,
                                         int protocol) const;

@@ -35,6 +35,16 @@ void SolanaKeyring::AddAccounts(size_t number) {
   }
 }
 
+std::vector<uint8_t> SolanaKeyring::SignMessage(
+    const std::string& address,
+    const std::vector<uint8_t>& message) {
+  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
+  if (!hd_key)
+    return std::vector<uint8_t>();
+
+  return hd_key->Sign(message);
+}
+
 std::string SolanaKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   if (!hd_key_base)
     return std::string();

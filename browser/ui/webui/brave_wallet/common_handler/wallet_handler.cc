@@ -75,7 +75,7 @@ void WalletHandler::OnGetWalletInfo(
   const auto& default_keyring = keyring_infos.front();
   DCHECK_EQ(default_keyring->id, brave_wallet::mojom::kDefaultKeyringId);
   std::move(callback).Run(
-      default_keyring->is_default_keyring_created, default_keyring->is_locked,
+      default_keyring->is_keyring_created, default_keyring->is_locked,
       std::move(favorite_apps_copy), default_keyring->is_backed_up,
       std::move(account_infos), brave_wallet::IsFilecoinEnabled());
 }
