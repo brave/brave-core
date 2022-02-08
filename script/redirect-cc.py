@@ -51,9 +51,8 @@ def replace_cc_arg(args):
 
     # Get the original chromium dir location, triple parent of current
     # redirect-cc.py
-    chromium_original_dir = os.path.abspath(os.path.join(this_py_path,
-                                                         os.pardir, os.pardir,
-                                                         os.pardir))
+    chromium_original_dir = os.path.abspath(
+        os.path.join(this_py_path, os.pardir, os.pardir, os.pardir))
 
     if len(chromium_original_dir) >= len(abs_path_cc) + 1:
         # Could not get original chromium src dir
@@ -84,7 +83,9 @@ def replace_cc_arg(args):
                               rel_path)
     if os.path.isfile(brave_path):
         # Okay, we can replace
-        args[index_path] = os.path.relpath(brave_path, os.path.abspath('.'))
+        args[index_path] = os.path.relpath(brave_path,
+                                           os.path.abspath('.')).replace(
+                                               '\\', '/')
         return brave_path
 
 
