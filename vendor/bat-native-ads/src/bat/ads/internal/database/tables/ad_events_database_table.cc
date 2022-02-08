@@ -117,6 +117,28 @@ void AdEvents::GetAll(GetAdEventsCallback callback) {
   RunTransaction(query, callback);
 }
 
+void AdEvents::GetForType(const mojom::AdType ad_type,
+                          GetAdEventsCallback callback) {
+  const std::string& ad_type_as_string = AdType(ad_type).ToString();
+
+  const std::string& query = base::StringPrintf(
+      "SELECT "
+      "ae.uuid, "
+      "ae.type, "
+      "ae.confirmation_type, "
+      "ae.campaign_id, "
+      "ae.creative_set_id, "
+      "ae.creative_instance_id, "
+      "ae.advertiser_id, "
+      "ae.timestamp "
+      "FROM %s AS ae "
+      "WHERE type = '%s' "
+      "ORDER BY timestamp DESC",
+      GetTableName().c_str(), ad_type_as_string.c_str());
+
+  RunTransaction(query, callback);
+}
+
 void AdEvents::PurgeExpired(ResultCallback callback) {
   const std::string& query = base::StringPrintf(
       "DELETE FROM %s "

@@ -39,8 +39,7 @@ std::string PromotedContentAdsPerDayPermissionRule::GetLastMessage() const {
 
 bool PromotedContentAdsPerDayPermissionRule::DoesRespectCap(
     const std::deque<base::Time>& history) {
-  const base::TimeDelta& time_constraint =
-      base::Seconds(base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
+  const base::TimeDelta& time_constraint = base::Days(1);
 
   const int cap = features::GetMaximumPromotedContentAdsPerDay();
 

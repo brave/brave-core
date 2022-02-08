@@ -29,6 +29,8 @@ class AdEvents final : public Table {
 
   void GetAll(GetAdEventsCallback callback);
 
+  void GetForType(const mojom::AdType ad_type, GetAdEventsCallback callback);
+
   void PurgeExpired(ResultCallback callback);
   void PurgeOrphaned(const mojom::AdType ad_type, ResultCallback callback);
 

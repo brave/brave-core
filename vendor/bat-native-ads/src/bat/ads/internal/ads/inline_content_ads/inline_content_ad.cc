@@ -73,25 +73,31 @@ void InlineContentAd::FireEvent(
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
-    if (!success) {
-      BLOG(1, "Inline content ad: Failed to get ad events");
-      NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
-      return;
-    }
+  database_table.GetForType(
+      mojom::AdType::kInlineContentAd,
+      [=](const bool success, const AdEventList& ad_events) {
+        if (!success) {
+          BLOG(1, "Inline content ad: Failed to get ad events");
+          NotifyInlineContentAdEventFailed(uuid, creative_instance_id,
+                                           event_type);
+          return;
+        }
 
-    if (event_type == mojom::InlineContentAdEventType::kViewed &&
-        HasFiredAdViewedEvent(ad, ad_events)) {
-      BLOG(1, "Inline content ad: Not allowed as already viewed uuid " << uuid);
-      NotifyInlineContentAdEventFailed(uuid, creative_instance_id, event_type);
-      return;
-    }
+        if (event_type == mojom::InlineContentAdEventType::kViewed &&
+            HasFiredAdViewedEvent(ad, ad_events)) {
+          BLOG(1, "Inline content ad: Not allowed as already viewed uuid "
+                      << uuid);
+          NotifyInlineContentAdEventFailed(uuid, creative_instance_id,
+                                           event_type);
+          return;
+        }
 
-    const auto ad_event = inline_content_ads::AdEventFactory::Build(event_type);
-    ad_event->FireEvent(ad);
+        const auto ad_event =
+            inline_content_ads::AdEventFactory::Build(event_type);
+        ad_event->FireEvent(ad);
 
-    NotifyInlineContentAdEvent(ad, event_type);
-  });
+        NotifyInlineContentAdEvent(ad, event_type);
+      });
 }
 
 void InlineContentAd::NotifyInlineContentAdEvent(

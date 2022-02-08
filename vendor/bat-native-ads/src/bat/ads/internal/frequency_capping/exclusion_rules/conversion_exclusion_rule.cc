@@ -10,14 +10,13 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_client_helper.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 #include "bat/ads/pref_names.h"
 
 namespace ads {
 
 namespace {
-const int kConversionExclusionRule = 1;
+const int kConversionCap = 1;
 }  // namespace
 
 ConversionExclusionRule::ConversionExclusionRule(const AdEventList& ad_events)
@@ -76,11 +75,10 @@ bool ConversionExclusionRule::DoesRespectCap(
       ad_events.cbegin(), ad_events.cend(),
       [&creative_ad](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == ConfirmationType::kConversion &&
-               ad_event.creative_set_id == creative_ad.creative_set_id &&
-               DoesAdTypeSupportFrequencyCapping(ad_event.type);
+               ad_event.creative_set_id == creative_ad.creative_set_id;
       });
 
-  if (count >= kConversionExclusionRule) {
+  if (count >= kConversionCap) {
     return false;
   }
 
