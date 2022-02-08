@@ -614,6 +614,12 @@ constexpr char kCryptoEthAddressKey[] = "crypto.ETH.address";
 // ERC-165 identifier for ERC721 interface.
 constexpr char kERC721InterfaceId[] = "0x80ac58cd";
 
+constexpr int kSolanaPubkeySize = 32;
+constexpr int kSolanaBlockhashSize = 32;
+// 1232 = 1280(IPv6 minimum MTU) - 40(size of the IPv6 header) - 8(size of the
+// fragment header)
+constexpr size_t kSolanaMaxTxSize = 1232;
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

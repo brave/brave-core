@@ -63,10 +63,18 @@ static_library("browser") {
     "password_encryptor.h",
     "pref_names.cc",
     "pref_names.h",
+    "solana_account_meta.cc",
+    "solana_account_meta.h",
+    "solana_instruction.cc",
+    "solana_instruction.h",
+    "solana_message.cc",
+    "solana_message.h",
     "solana_requests.cc",
     "solana_requests.h",
     "solana_response_parser.cc",
     "solana_response_parser.h",
+    "solana_transaction.cc",
+    "solana_transaction.h",
     "swap_response_parser.cc",
     "swap_response_parser.h",
     "swap_service.cc",
@@ -76,6 +84,7 @@ static_library("browser") {
   ]
   deps = [
     ":hd_keyring",
+    ":solana_utils",
     ":transaction",
     "//base",
     "//brave/components/api_request_helper",
@@ -116,6 +125,18 @@ static_library("ethereum_permission_utils") {
     "//base",
     "//third_party/re2",
     "//url",
+  ]
+}
+
+source_set("solana_utils") {
+  sources = [
+    "solana_utils.cc",
+    "solana_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/third_party/bitcoin-core",  # for base58
   ]
 }
 

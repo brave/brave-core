@@ -27,7 +27,10 @@ static_library("bitcoin-core") {
 
   public_configs = [ ":external_config" ]
 
-  visibility = [ "//brave/components/brave_wallet/browser/internal:hd_key" ]
+  visibility = [
+    "//brave/components/brave_wallet/browser:solana_utils",  # for base58
+    "//brave/components/brave_wallet/browser/internal:hd_key",
+  ]
 
   # Do NOT add any files here without security review
   sources = [
