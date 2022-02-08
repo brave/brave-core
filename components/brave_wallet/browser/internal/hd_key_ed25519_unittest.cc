@@ -166,4 +166,26 @@ TEST(HDKeyEd25519UnitTest, GetEncodedPrivateKey) {
             "YbQtaJQKLXET9jVjepWXe");
 }
 
+TEST(HDKeyEd25519UnitTest, SignAndVerify) {
+  std::vector<uint8_t> bytes;
+  EXPECT_TRUE(
+      base::HexStringToBytes("000102030405060708090a0b0c0d0e0f", &bytes));
+  auto key = HDKeyEd25519::GenerateFromSeed(bytes);
+  const std::vector<uint8_t> msg_a(32, 0x00);
+  const std::vector<uint8_t> msg_b(32, 0x08);
+  const std::vector<uint8_t> sig_a = key->Sign(msg_a, nullptr);
+  const std::vector<uint8_t> sig_b = key->Sign(msg_b, nullptr);
+
+  EXPECT_TRUE(key->Verify(msg_a, sig_a));
+  EXPECT_TRUE(key->Verify(msg_b, sig_b));
+
+  // wrong signature
+  EXPECT_FALSE(key->Verify(msg_a, sig_b));
+  EXPECT_FALSE(key->Verify(msg_b, sig_a));
+
+  // signature size != 64
+  EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(128, 0xff)));
+  EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(32, 0xff)));
+}
+
 }  // namespace brave_wallet
