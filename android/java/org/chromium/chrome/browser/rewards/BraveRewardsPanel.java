@@ -713,6 +713,8 @@ public class BraveRewardsPanel
     private void fetchRewardsData() {
         mWalletBalanceLayout.setAlpha(0.4f);
         mWalletBalanceProgress.setVisibility(View.VISIBLE);
+        mBraveRewardsNativeWorker.GetRecurringDonations();
+        mBraveRewardsNativeWorker.GetAutoContributeProperties();
         mBraveRewardsNativeWorker.GetRewardsParameters();
         mBraveRewardsNativeWorker.GetExternalWallet();
         mAdsStatementLayout.setAlpha(0.4f);
@@ -860,6 +862,7 @@ public class BraveRewardsPanel
                 braveRewardsOnboardingModalView.setVisibility(View.GONE);
                 BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
                 BraveRewardsNativeWorker.getInstance().SetAutoContributeEnabled(true);
+                mBraveRewardsNativeWorker.GetAutoContributeProperties();
                 BraveRewardsHelper.setShowBraveRewardsOnboardingModal(false);
                 showBraveRewardsOnboarding(root, true);
             }
@@ -1051,15 +1054,6 @@ public class BraveRewardsPanel
             }
             if (tvUSD != null) {
                 tvUSD.setText(textUSD);
-            }
-            if (mBraveRewardsNativeWorker != null) {
-                String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
-                mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
-                        .setVisibility(walletType.equals(BraveWalletProvider.UPHOLD) ? View.VISIBLE
-                                                                                     : View.GONE);
-                mPopupView.findViewById(R.id.auto_contribute_summary_layout)
-                        .setVisibility(walletType.equals(BraveWalletProvider.UPHOLD) ? View.VISIBLE
-                                                                                     : View.GONE);
             }
         }
 
@@ -1352,8 +1346,6 @@ public class BraveRewardsPanel
             mSwitchAutoContribute.setOnCheckedChangeListener(autoContributeSwitchListener);
         }
         updatePublisherStatus(mBraveRewardsNativeWorker.GetPublisherStatus(mCurrentTabId));
-        mBraveRewardsNativeWorker.GetRecurringDonations();
-        mBraveRewardsNativeWorker.GetAutoContributeProperties();
     }
 
     @Override
@@ -1362,6 +1354,10 @@ public class BraveRewardsPanel
                 && mBraveRewardsNativeWorker.IsAutoContributeEnabled()) {
             mPopupView.findViewById(R.id.attention_layout).setVisibility(View.VISIBLE);
             mPopupView.findViewById(R.id.auto_contribution_layout).setVisibility(View.VISIBLE);
+            mPopupView.findViewById(R.id.auto_contribute_summary_seperator)
+                    .setVisibility(View.VISIBLE);
+            mPopupView.findViewById(R.id.auto_contribute_summary_layout)
+                    .setVisibility(View.VISIBLE);
         }
     }
 
