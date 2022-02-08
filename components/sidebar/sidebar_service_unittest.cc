@@ -254,7 +254,7 @@ TEST_F(SidebarServiceTest, SidebarShowOptionsDeprecationTest) {
 
 TEST_F(SidebarServiceTest, SidebarShowOptionsDefaultTest) {
   InitService();
-  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowNever,
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
             service_->GetSidebarShowOption());
 }
 

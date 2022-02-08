@@ -92,7 +92,7 @@ std::vector<SidebarItem> GetDefaultSidebarItems() {
 void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kSidebarItems);
   registry->RegisterIntegerPref(
-      kSidebarShowOption, static_cast<int>(ShowSidebarOption::kShowNever));
+      kSidebarShowOption, static_cast<int>(ShowSidebarOption::kShowAlways));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
 }
 
