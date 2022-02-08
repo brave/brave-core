@@ -548,7 +548,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
           Open Files
         </message>
         <message name="IDS_APP_MENU_IPFS_SHARE_LOCAL_FOLDER" desc="Title case: The text label of a menu item to share local fodler using IPFS.">
-          Import and Share a Directorys
+          Import and Share a Directory
         </message>
         <message name="IDS_APP_MENU_IPFS_PUBLISH_LOCAL_FILE" desc="Title case: The text label of a menu item to publish local file under IPFS key.">
           With a File
