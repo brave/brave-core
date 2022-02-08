@@ -48,9 +48,15 @@ void DesktopModeTabHelper::NavigationEntryCommitted(
 
 void DesktopModeTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
-  content::NavigationEntry* entry =
-      web_contents()->GetController().GetLastCommittedEntry();
-  need_override_ua_ = entry == nullptr;
+  // We need to override UA on the first navigation only.
+  if (!navigation_started_) {
+    navigation_started_ = true;
+    need_override_ua_ = true;
+    return;
+  }
+
+  // We should not override UA on all the next navigations.
+  need_override_ua_ = false;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(DesktopModeTabHelper);
