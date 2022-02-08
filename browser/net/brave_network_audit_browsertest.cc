@@ -16,7 +16,9 @@
 #include "base/time/time.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
+#include "brave/browser/ui/brave_browser.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -26,6 +28,12 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "third_party/re2/src/re2/re2.h"
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
+#include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/components/sidebar/sidebar_item.h"
+#endif
 
 namespace brave {
 namespace {
@@ -291,6 +299,28 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkAuditTest, BasicTests) {
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("brave://wallet")));
   WaitForTimeout(kMaxTimeoutPerLoadedURL);
+
+#if BUILDFLAG(ENABLE_SIDEBAR)
+  auto* sidebar_controller =
+      static_cast<BraveBrowser*>(browser())->sidebar_controller();
+  auto* sidebar_model = sidebar_controller->model();
+  auto all_items = sidebar_model->GetAllSidebarItems();
+  const int item_num = all_items.size();
+  const int builtin_panel_item_total = 1;
+  int builtin_panel_item_count = 0;
+  for (int i = 0; i < item_num; ++i) {
+    auto item = all_items[i];
+    // Load all builtin panel items.
+    if (sidebar::IsBuiltInType(item) && item.open_in_panel) {
+      builtin_panel_item_count++;
+      sidebar_controller->ActivateItemAt(i);
+      WaitForTimeout(kMaxTimeoutPerLoadedURL);
+    }
+  }
+  // Currently, builtin panel item is one.
+  // If it's increased, --test-launcher-time should be increased also.
+  EXPECT_EQ(builtin_panel_item_total, builtin_panel_item_count);
+#endif
 }
 
 }  // namespace

@@ -13,6 +13,7 @@ import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/sidebar/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/translate/core/common/buildflags.gni")
@@ -992,7 +993,9 @@ if (!is_android) {
 
     deps = [
       "//base",
+      "//brave/browser/ui",
       "//brave/components/brave_rewards/browser",
+      "//brave/components/sidebar/buildflags",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
@@ -1004,6 +1007,13 @@ if (!is_android) {
       "//testing/gmock",
       "//third_party/re2",
     ]
+
+    if (enable_sidebar) {
+      deps += [
+        "//brave/browser/ui/sidebar",
+        "//brave/components/sidebar",
+      ]
+    }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
