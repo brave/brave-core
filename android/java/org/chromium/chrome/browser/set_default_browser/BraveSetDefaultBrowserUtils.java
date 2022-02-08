@@ -93,8 +93,8 @@ public class BraveSetDefaultBrowserUtils {
         }
     }
 
-    public static void showBraveSetDefaultBrowserDialog(
-            AppCompatActivity activity, boolean isShowInAppPopup, boolean isDirectDoSetDefault, boolean isFromMenu) {
+    public static void showBraveSetDefaultBrowserDialog(AppCompatActivity activity,
+            boolean isShowInAppPopup, boolean isDirectDoSetDefault, boolean isFromMenu) {
         /* (Albert Wang): Default app settings didn't get added until API 24
          * https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
          */
@@ -110,7 +110,6 @@ public class BraveSetDefaultBrowserUtils {
 
             if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
                 if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
-                    
                     activity.startActivityForResult(
                             roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
                             DEFAULT_BROWSER_ROLE_REQUEST_CODE);
@@ -120,21 +119,20 @@ public class BraveSetDefaultBrowserUtils {
             }
 
         } else if (supportsDefault() && isDirectDoSetDefault) {
-        
             openDefaultAppsSettings(activity);
 
-        } else if(supportsDefault()) {
+        } else if (supportsDefault()) {
             showSetDefaultBottomSheet(activity, isFromMenu);
         } else {
             ResolveInfo resolveInfo = getResolveInfo(activity);
-        if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
-            || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
-            openBraveBlog(activity);
-        } else {
-            Toast toast = Toast.makeText(
-                activity, R.string.brave_default_browser_go_to_settings, Toast.LENGTH_LONG);
-            toast.show();
-        }
+            if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
+                    || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
+                openBraveBlog(activity);
+            } else {
+                Toast toast = Toast.makeText(
+                        activity, R.string.brave_default_browser_go_to_settings, Toast.LENGTH_LONG);
+                toast.show();
+            }
         }
     }
 

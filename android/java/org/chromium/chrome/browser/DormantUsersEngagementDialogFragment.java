@@ -101,7 +101,6 @@ public class DormantUsersEngagementDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if (BraveActivity.getBraveActivity() != null) {
-
                     BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
                             BraveActivity.getBraveActivity(), false, true, false);
                 }
