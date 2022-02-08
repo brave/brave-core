@@ -37,13 +37,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
+import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
 import org.chromium.chrome.browser.crypto_wallet.listeners.OnWalletListItemClick;
@@ -82,10 +83,17 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
     private BlockchainRegistry getBlockchainRegistry() {
         Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBlockchainRegistry();
-        } else if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getBlockchainRegistry();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getBlockchainRegistry();
+        }
+
+        return null;
+    }
+
+    private AssetRatioService getAssetRatioService() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getAssetRatioService();
         }
 
         return null;
@@ -93,10 +101,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
     private BraveWalletService getBraveWalletService() {
         Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletService();
-        } else if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getBraveWalletService();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getBraveWalletService();
         }
 
         return null;
@@ -104,10 +110,8 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
     private KeyringService getKeyringService() {
         Activity activity = getActivity();
-        if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getKeyringService();
-        } else if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getKeyringService();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getKeyringService();
         }
 
         return null;
@@ -310,24 +314,54 @@ public class EditVisibleAssetsBottomSheetDialogFragment extends BottomSheetDialo
 
     private class TextWatcherImpl implements TextWatcher {
         Dialog mDialog;
+        boolean selfChange;
 
         public void setDialog(Dialog dialog) {
             mDialog = dialog;
+            selfChange = false;
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (selfChange) return;
             EditText tokenNameEdit = mDialog.findViewById(R.id.token_name);
             EditText tokenContractAddressEdit = mDialog.findViewById(R.id.token_contract_address);
             EditText tokenSymbolEdit = mDialog.findViewById(R.id.token_symbol);
             EditText tokenDecimalsEdit = mDialog.findViewById(R.id.token_decimals);
             Button addButton = mDialog.findViewById(R.id.add);
-            if (tokenNameEdit.getText().toString().isEmpty()
-                    || !tokenContractAddressEdit.getText().toString().startsWith("0x")
-                    || tokenSymbolEdit.getText().toString().isEmpty()
-                    || tokenDecimalsEdit.getText().toString().isEmpty()) {
-                addButton.setEnabled(false);
+            String tokenName = tokenNameEdit.getText().toString();
+            String tokenSymbol = tokenSymbolEdit.getText().toString();
+            String contractAddress = tokenContractAddressEdit.getText().toString();
 
+            addButton.setEnabled(false);
+            boolean checked = false;
+            for (WalletListItemModel item : walletCoinAdapter.getCheckedAssets()) {
+                if (item.getTitle().equals(tokenName) || item.getSubTitle().equals(tokenSymbol)) {
+                    checked = true;
+                    break;
+                }
+            }
+            if (!contractAddress.startsWith("0x") || checked) {
+                return;
+            }
+
+            AssetRatioService assetRatioService = getAssetRatioService();
+            // Do not assert here, service can be null when backed from dialog
+            if (assetRatioService != null) {
+                assetRatioService.getTokenInfo(contractAddress, token -> {
+                    if (token != null) {
+                        selfChange = true;
+                        tokenNameEdit.setText(token.name, TextView.BufferType.EDITABLE);
+                        tokenSymbolEdit.setText(token.symbol, TextView.BufferType.EDITABLE);
+                        tokenDecimalsEdit.setText(
+                                String.valueOf(token.decimals), TextView.BufferType.EDITABLE);
+                        selfChange = false;
+                    }
+                });
+            }
+
+            if (tokenName.isEmpty() || tokenSymbol.isEmpty()
+                    || tokenDecimalsEdit.getText().toString().isEmpty()) {
                 return;
             }
 
