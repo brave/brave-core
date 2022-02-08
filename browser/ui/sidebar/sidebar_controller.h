@@ -47,6 +47,8 @@ class SidebarController : public SidebarService::Observer {
 
   bool IsActiveIndex(int index) const;
 
+  bool DoesBrowserHaveOpenedTabForItem(const SidebarItem& item) const;
+
   void SetSidebar(Sidebar* sidebar);
   Sidebar* sidebar() const { return sidebar_; }
 

@@ -75,6 +75,7 @@ class SidebarItemsContentsView : public views::View,
   void ClearDragIndicator();
 
   bool IsBubbleVisible() const;
+  void Update();
 
  private:
   enum ContextMenuIDs {

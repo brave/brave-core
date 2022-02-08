@@ -55,6 +55,12 @@ bool SidebarController::IsActiveIndex(int index) const {
   return sidebar_model_->active_index() == index;
 }
 
+bool SidebarController::DoesBrowserHaveOpenedTabForItem(
+    const SidebarItem& item) const {
+  DCHECK(!item.open_in_panel);
+  return !GetAllExistingTabIndexForHost(browser_, item.url.host()).empty();
+}
+
 void SidebarController::ActivateItemAt(int index) {
   // -1 means there is no active item.
   DCHECK_GE(index, -1);

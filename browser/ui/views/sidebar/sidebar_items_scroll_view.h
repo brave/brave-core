@@ -81,6 +81,7 @@ class SidebarItemsScrollView : public views::View,
 
   bool IsItemReorderingInProgress() const;
   bool IsBubbleVisible() const;
+  void Update();
 
  private:
   void UpdateArrowViewsTheme();
