@@ -1,6 +1,6 @@
 use bls_signatures::{PrivateKey, Serialize};
 
-#[cxx::bridge]
+#[cxx::bridge(namespace = bls)]
 mod ffi {
     extern "Rust" {
         fn fil_private_key_public_key(private_key: &[u8; 32]) -> [u8; 48];
@@ -13,9 +13,8 @@ mod ffi {
 pub fn fil_private_key_public_key(private_key: &[u8; 32]) -> [u8; 48] {
     let wrapped_private_key = PrivateKey::from_bytes(private_key);
     let mut public_key: [u8; 48] = [0; 48];
-    if !wrapped_private_key.is_err() {
+    if let Ok(wrapped_private_key) = wrapped_private_key {
         wrapped_private_key
-            .unwrap()
             .public_key()
             .write_bytes(&mut public_key.as_mut())
             .expect("preallocated");

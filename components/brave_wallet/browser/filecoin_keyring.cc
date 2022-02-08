@@ -65,7 +65,7 @@ std::string FilecoinKeyring::ImportFilecoinBLSAccount(
   int protocol = static_cast<int>(mojom::FilecoinAddressProtocol::BLS);
   std::array<uint8_t, 32> payload;
   std::copy_n(private_key.begin(), 32, payload.begin());
-  auto result = fil_private_key_public_key(payload);
+  auto result = bls::fil_private_key_public_key(payload);
   std::vector<uint8_t> public_key(result.begin(), result.end());
   if (std::all_of(public_key.begin(), public_key.end(),
                   [](int i) { return i == 0; }))
