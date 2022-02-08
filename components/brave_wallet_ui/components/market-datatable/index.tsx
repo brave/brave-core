@@ -1,10 +1,12 @@
 import * as React from 'react'
+import InfinitieScroll from 'react-infinite-scroll-component'
 import { CoinMarketMetadata, MarketDataTableColumnTypes, SortOrder } from '../../constants/types'
 import Table, { Cell, Header, Row } from '../shared/datatable'
 import {
   AssetsColumnWrapper,
   AssetsColumnItemSpacer,
   StyledWrapper,
+  TableWrapper,
   TextWrapper,
   LineChartWrapper
 } from './style'
@@ -25,11 +27,12 @@ export interface MarketDataHeader extends Header {
 export interface Props {
   headers: MarketDataHeader[]
   coinMarketData: CoinMarketMetadata[]
+  onFetchMoreMarketData: () => void
   onSort?: (column: MarketDataTableColumnTypes, newSortOrder: SortOrder) => void
 }
 
 const MarketDataTable = (props: Props) => {
-  const { headers, coinMarketData, onSort } = props
+  const { headers, coinMarketData, onSort, onFetchMoreMarketData } = props
 
   const renderCells = (coinMarkDataItem: CoinMarketMetadata) => {
     const {
@@ -123,11 +126,22 @@ const MarketDataTable = (props: Props) => {
 
   return (
     <StyledWrapper>
-      <Table
-        headers={headers}
-        rows={rows}
-        onSort={onSort}
-      />
+      <InfinitieScroll
+        dataLength={coinMarketData.length}
+        next={onFetchMoreMarketData}
+        loader={<div>Loading...</div>}
+        endMessage={<div>You have seen it all</div>}
+        hasMore={true}
+        style={{ width: '100%' }}
+      >
+        <TableWrapper>
+          <Table
+            headers={headers}
+            rows={rows}
+            onSort={onSort}
+          />
+        </TableWrapper>
+      </InfinitieScroll>
     </StyledWrapper>
   )
 }
