@@ -13,7 +13,7 @@ const AssetNameAndIcon = (props: Props) => {
 
   return (
     <StyledWrapper>
-      <AssetIcon src={assetLogo}/>
+      <AssetIcon src={`chrome://image?${assetLogo}`}/>
       <NameAndSymbolWrapper>
         <AssetName>{assetName}</AssetName>
         <AssetSymbol>{symbol}</AssetSymbol>

@@ -27,12 +27,13 @@ export interface MarketDataHeader extends Header {
 export interface Props {
   headers: MarketDataHeader[]
   coinMarketData: CoinMarketMetadata[]
+  moreDataAvailable: boolean
   onFetchMoreMarketData: () => void
   onSort?: (column: MarketDataTableColumnTypes, newSortOrder: SortOrder) => void
 }
 
 const MarketDataTable = (props: Props) => {
-  const { headers, coinMarketData, onSort, onFetchMoreMarketData } = props
+  const { headers, coinMarketData, onSort, onFetchMoreMarketData, moreDataAvailable } = props
 
   const renderCells = (coinMarkDataItem: CoinMarketMetadata) => {
     const {
@@ -125,23 +126,23 @@ const MarketDataTable = (props: Props) => {
   }, [coinMarketData, headers])
 
   return (
-    <StyledWrapper>
-      <InfinitieScroll
-        dataLength={coinMarketData.length}
-        next={onFetchMoreMarketData}
-        loader={<div>Loading...</div>}
-        endMessage={<div>You have seen it all</div>}
-        hasMore={true}
-        style={{ width: '100%' }}
-      >
-        <TableWrapper>
-          <Table
-            headers={headers}
-            rows={rows}
-            onSort={onSort}
-          />
-        </TableWrapper>
-      </InfinitieScroll>
+    <StyledWrapper id="scrollable">
+        <InfinitieScroll
+          dataLength={coinMarketData.length}
+          next={onFetchMoreMarketData}
+          loader={<div>Loading...</div>}
+          endMessage={<div>You have seen it all</div>}
+          hasMore={moreDataAvailable}
+          scrollableTarget="scrollable"
+        >
+          <TableWrapper>
+            <Table
+              headers={headers}
+              rows={rows}
+              onSort={onSort}
+            />
+          </TableWrapper>
+        </InfinitieScroll>
     </StyledWrapper>
   )
 }

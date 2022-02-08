@@ -1,4 +1,5 @@
 import { CoinMarketMetadata } from '../../constants/types'
+import { coinsJsonData } from './coins-json-data'
 
 export const mockCoinMarketData = [
   {
@@ -102,37 +103,30 @@ export const mockCoinMarketData = [
   }
 ] as CoinMarketMetadata[]
 
-export const fetchCoinMarketData = async (currencySymbols: string, perPage: number, page: number): Promise<CoinMarketMetadata[]> => {
+export const fetchCoinMarketData = async (perPage: number, page: number = 1): Promise<CoinMarketMetadata[]> => {
   try {
-    const url = `https://api.coingecko.com/api/v3/markets?vs_currency=${currencySymbols}&order=market_cap_desc&per_page=${perPage}&page=${page}`
-    const response = await fetch(url)
+    const coinsData = JSON.parse(coinsJsonData)
+    const pagedData = coinsData.slice((page - 1) * perPage, page * perPage)
+    const coins = pagedData.map((coin: any) => {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const { id, name, symbol, current_price, image, market_cap, market_cap_rank, price_change_24h, price_change_percentage_24h, total_volume } = coin
 
-    const { data } = await response.json()
+      return {
+        coinGeckoID: id,
+        symbol,
+        name,
+        imageUrl: image,
+        marketCap: market_cap,
+        marketCapRank: market_cap_rank,
+        currentPrice: current_price,
+        priceChange24h: price_change_24h,
+        priceChangePercentage24h: price_change_percentage_24h,
+        totalVolume: total_volume,
+        priceHistory: []
+      }
+    })
 
-    if (response.ok) {
-      const coins = data.map((coin: any) => {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        const { id, name, symbol, image, current_price, market_cap, market_cap_rank, price_change_percentage_24h_in_currency, price_change_percentage_24h, total_volume } = coin
-
-        return {
-          coinGeckoID: id,
-          symbol,
-          name,
-          imageUrl: image.large,
-          marketCap: market_cap,
-          marketCapRank: market_cap_rank,
-          currentPrice: current_price,
-          priceChange24h: price_change_percentage_24h,
-          priceChangePercentage24h: price_change_percentage_24h_in_currency,
-          totalVolume: total_volume,
-          priceHistory: []
-        }
-      })
-
-      return coins
-    } else {
-      return Promise.reject(new Error(`${response.status} ${response.statusText}`))
-    }
+    return coins
   } catch (error) {
     console.error(error)
     return Promise.reject(error)
