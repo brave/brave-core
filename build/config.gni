@@ -69,8 +69,11 @@ if (is_win) {
     }
   } else {
     if (brave_channel == "nightly") {
-      # Temporary support PR's builds on nightly.
-      # TODO(atuchin): revert it after PRs start to use development channel.
+      # Temporary support PR's Static builds on nightly channel.
+      # CI expect the installer files (*Setup.exe) in the output dir are
+      # correspond passed brave_channel. Therefore to make Static+nightly work
+      # we should set _channel to "Nightly".
+      # TODO(atuchin): revert after PRs start to use the development channel.
       _channel = "Nightly"
       brave_app_guid = "{C6CB981E-DB30-4876-8639-109F8933582C}"
     } else {
