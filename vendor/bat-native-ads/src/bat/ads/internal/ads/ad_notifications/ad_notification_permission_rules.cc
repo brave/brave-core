@@ -5,15 +5,15 @@
 
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_permission_rules.h"
 
-#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/allow_notifications_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/browser_is_active_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/full_screen_mode_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/media_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/network_connection_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/allow_notifications_permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/browser_is_active_permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/do_not_disturb_permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/full_screen_mode_permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/media_permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/network_connection_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
 
 namespace ads {
@@ -29,48 +29,48 @@ bool PermissionRules::HasPermission() const {
     return false;
   }
 
-  AllowNotificationsFrequencyCap allow_notifications_frequency_cap;
-  if (!ShouldAllow(&allow_notifications_frequency_cap)) {
+  AllowNotificationsPermissionRule allow_notifications_permission_rule;
+  if (!ShouldAllow(&allow_notifications_permission_rule)) {
     return false;
   }
 
-  NetworkConnectionFrequencyCap network_connection_frequency_cap;
-  if (!ShouldAllow(&network_connection_frequency_cap)) {
+  NetworkConnectionPermissionRule network_connection_permission_rule;
+  if (!ShouldAllow(&network_connection_permission_rule)) {
     return false;
   }
 
-  FullScreenModeFrequencyCap full_screen_mode_frequency_cap;
-  if (!ShouldAllow(&full_screen_mode_frequency_cap)) {
+  FullScreenModePermissionRule full_screen_mode_permission_rule;
+  if (!ShouldAllow(&full_screen_mode_permission_rule)) {
     return false;
   }
 
-  BrowserIsActiveFrequencyCap browser_is_active_frequency_cap;
-  if (!ShouldAllow(&browser_is_active_frequency_cap)) {
+  BrowserIsActivePermissionRule browser_is_active_permission_rule;
+  if (!ShouldAllow(&browser_is_active_permission_rule)) {
     return false;
   }
 
-  DoNotDisturbFrequencyCap do_not_disturb_frequency_cap;
-  if (!ShouldAllow(&do_not_disturb_frequency_cap)) {
+  DoNotDisturbPermissionRule do_not_disturb_permission_rule;
+  if (!ShouldAllow(&do_not_disturb_permission_rule)) {
     return false;
   }
 
-  MediaFrequencyCap media_frequency_cap;
-  if (!ShouldAllow(&media_frequency_cap)) {
+  MediaPermissionRule media_permission_rule;
+  if (!ShouldAllow(&media_permission_rule)) {
     return false;
   }
 
-  AdsPerDayFrequencyCap ads_per_day_frequency_cap;
-  if (!ShouldAllow(&ads_per_day_frequency_cap)) {
+  AdsPerDayPermissionRule ads_per_day_permission_rule;
+  if (!ShouldAllow(&ads_per_day_permission_rule)) {
     return false;
   }
 
-  AdsPerHourFrequencyCap ads_per_hour_frequency_cap;
-  if (!ShouldAllow(&ads_per_hour_frequency_cap)) {
+  AdsPerHourPermissionRule ads_per_hour_permission_rule;
+  if (!ShouldAllow(&ads_per_hour_permission_rule)) {
     return false;
   }
 
-  MinimumWaitTimeFrequencyCap minimum_wait_time_frequency_cap;
-  if (!ShouldAllow(&minimum_wait_time_frequency_cap)) {
+  MinimumWaitTimePermissionRule minimum_wait_time_permission_rule;
+  if (!ShouldAllow(&minimum_wait_time_permission_rule)) {
     return false;
   }
 

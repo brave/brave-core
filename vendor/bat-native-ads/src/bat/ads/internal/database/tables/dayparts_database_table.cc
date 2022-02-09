@@ -16,7 +16,7 @@
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/daypart_exclusion_rule.h"
 
 namespace ads {
 namespace database {

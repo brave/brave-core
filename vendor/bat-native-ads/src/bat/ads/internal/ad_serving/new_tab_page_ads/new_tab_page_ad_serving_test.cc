@@ -9,7 +9,7 @@
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_unittest_util.h"
 #include "bat/ads/internal/database/tables/creative_new_tab_page_ads_database_table.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap_unittest_util.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_permission_rule_unittest_util.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_util.h"

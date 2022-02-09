@@ -6,7 +6,7 @@
 #include "bat/ads/internal/ads/ad_notifications/ad_notification_exclusion_rules.h"
 
 #include "bat/ads/internal/ad_serving/ad_targeting/geographic/subdivision/subdivision_targeting.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/dismissed_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/dismissed_exclusion_rule.h"
 #include "bat/ads/internal/resources/frequency_capping/anti_targeting/anti_targeting_resource.h"
 
 namespace ads {
@@ -22,8 +22,9 @@ ExclusionRules::ExclusionRules(
                          subdivision_targeting,
                          anti_targeting_resource,
                          browsing_history) {
-  dismissed_frequency_cap_ = std::make_unique<DismissedFrequencyCap>(ad_events);
-  exclusion_rules_.push_back(dismissed_frequency_cap_.get());
+  dismissed_exclusion_rule_ =
+      std::make_unique<DismissedExclusionRule>(ad_events);
+  exclusion_rules_.push_back(dismissed_exclusion_rule_.get());
 }
 
 ExclusionRules::~ExclusionRules() = default;

@@ -14,6 +14,10 @@
 
 namespace ads {
 
+class AdType;
+
+bool DoesAdTypeSupportFrequencyCapping(const AdType& type);
+
 template <typename T>
 bool ShouldExclude(const T& ad, ExclusionRule<T>* exclusion_rule) {
   DCHECK(exclusion_rule);
@@ -22,7 +26,7 @@ bool ShouldExclude(const T& ad, ExclusionRule<T>* exclusion_rule) {
     return false;
   }
 
-  const std::string last_message = exclusion_rule->GetLastMessage();
+  const std::string& last_message = exclusion_rule->GetLastMessage();
   if (!last_message.empty()) {
     BLOG(2, last_message);
   }

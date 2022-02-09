@@ -20,7 +20,7 @@ bool ShouldAllow(PermissionRule* permission_rule) {
     return true;
   }
 
-  const std::string last_message = permission_rule->GetLastMessage();
+  const std::string& last_message = permission_rule->GetLastMessage();
   if (!last_message.empty()) {
     BLOG(2, last_message);
   }

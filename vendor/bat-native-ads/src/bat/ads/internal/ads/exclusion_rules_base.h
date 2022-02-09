@@ -27,23 +27,23 @@ namespace resource {
 class AntiTargeting;
 }  // namespace resource
 
-class AntiTargetingFrequencyCap;
-class ConversionFrequencyCap;
-class DailyCapFrequencyCap;
-class DaypartFrequencyCap;
-class DislikeFrequencyCap;
+class AntiTargetingExclusionRule;
+class ConversionExclusionRule;
+class DailyCapExclusionRule;
+class DaypartExclusionRule;
+class DislikeExclusionRule;
 template <typename T>
 class ExclusionRule;
-class MarkedAsInappropriateFrequencyCap;
-class MarkedToNoLongerReceiveFrequencyCap;
-class PerDayFrequencyCap;
-class PerHourFrequencyCap;
-class PerMonthFrequencyCap;
-class PerWeekFrequencyCap;
-class SplitTestFrequencyCap;
-class SubdivisionTargetingFrequencyCap;
-class TotalMaxFrequencyCap;
-class TransferredFrequencyCap;
+class MarkedAsInappropriateExclusionRule;
+class MarkedToNoLongerReceiveExclusionRule;
+class PerDayExclusionRule;
+class PerHourExclusionRule;
+class PerMonthExclusionRule;
+class PerWeekExclusionRule;
+class SplitTestExclusionRule;
+class SubdivisionTargetingExclusionRule;
+class TotalMaxExclusionRule;
+class TransferredExclusionRule;
 
 class ExclusionRulesBase {
  public:
@@ -64,24 +64,24 @@ class ExclusionRulesBase {
                           ExclusionRule<CreativeAdInfo>* exclusion_rule);
 
  private:
-  std::unique_ptr<AntiTargetingFrequencyCap> anti_targeting_frequency_cap_;
-  std::unique_ptr<ConversionFrequencyCap> conversion_frequency_cap_;
-  std::unique_ptr<DailyCapFrequencyCap> daily_cap_frequency_cap_;
-  std::unique_ptr<DaypartFrequencyCap> daypart_frequency_cap_;
-  std::unique_ptr<DislikeFrequencyCap> dislike_frequency_cap_;
-  std::unique_ptr<MarkedAsInappropriateFrequencyCap>
-      marked_as_inappropriate_frequency_cap_;
-  std::unique_ptr<MarkedToNoLongerReceiveFrequencyCap>
-      marked_to_no_longer_receive_frequency_cap_;
-  std::unique_ptr<PerDayFrequencyCap> per_day_frequency_cap_;
-  std::unique_ptr<PerHourFrequencyCap> per_hour_frequency_cap_;
-  std::unique_ptr<PerMonthFrequencyCap> per_month_frequency_cap_;
-  std::unique_ptr<PerWeekFrequencyCap> per_week_frequency_cap_;
-  std::unique_ptr<SplitTestFrequencyCap> split_test_frequency_cap_;
-  std::unique_ptr<SubdivisionTargetingFrequencyCap>
-      subdivision_targeting_frequency_cap_;
-  std::unique_ptr<TotalMaxFrequencyCap> total_max_frequency_cap_;
-  std::unique_ptr<TransferredFrequencyCap> transferred_frequency_cap_;
+  std::unique_ptr<AntiTargetingExclusionRule> anti_targeting_exclusion_rule_;
+  std::unique_ptr<ConversionExclusionRule> conversion_exclusion_rule_;
+  std::unique_ptr<DailyCapExclusionRule> daily_cap_exclusion_rule_;
+  std::unique_ptr<DaypartExclusionRule> daypart_exclusion_rule_;
+  std::unique_ptr<DislikeExclusionRule> dislike_exclusion_rule_;
+  std::unique_ptr<MarkedAsInappropriateExclusionRule>
+      marked_as_inappropriate_exclusion_rule_;
+  std::unique_ptr<MarkedToNoLongerReceiveExclusionRule>
+      marked_to_no_longer_receive_exclusion_rule_;
+  std::unique_ptr<PerDayExclusionRule> per_day_exclusion_rule_;
+  std::unique_ptr<PerHourExclusionRule> per_hour_exclusion_rule_;
+  std::unique_ptr<PerMonthExclusionRule> per_month_exclusion_rule_;
+  std::unique_ptr<PerWeekExclusionRule> per_week_exclusion_rule_;
+  std::unique_ptr<SplitTestExclusionRule> split_test_exclusion_rule_;
+  std::unique_ptr<SubdivisionTargetingExclusionRule>
+      subdivision_targeting_exclusion_rule_;
+  std::unique_ptr<TotalMaxExclusionRule> total_max_exclusion_rule_;
+  std::unique_ptr<TransferredExclusionRule> transferred_exclusion_rule_;
 
   bool IsCached(const CreativeAdInfo& creative_ad) const;
   void AddToCache(const std::string& uuid);

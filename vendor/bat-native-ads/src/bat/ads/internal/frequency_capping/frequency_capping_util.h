@@ -8,18 +8,12 @@
 
 #include <deque>
 
-#include "bat/ads/internal/ad_events/ad_event_info_aliases.h"
-
 namespace base {
 class Time;
 class TimeDelta;
 }  // namespace base
 
 namespace ads {
-
-class AdType;
-
-bool DoesAdTypeSupportFrequencyCapping(const AdType& type);
 
 bool DoesHistoryRespectCapForRollingTimeConstraint(
     const std::deque<base::Time>& history,

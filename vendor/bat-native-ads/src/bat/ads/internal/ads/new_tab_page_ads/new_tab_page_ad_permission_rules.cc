@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_permission_rules.h"
 
-#include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_frequency_cap.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_hour_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_day_permission_rule.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/new_tab_page_ads_per_hour_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
 
 namespace ads {
@@ -22,13 +22,13 @@ bool PermissionRules::HasPermission() const {
     return false;
   }
 
-  NewTabPageAdsPerDayFrequencyCap ads_per_day_frequency_cap;
-  if (!ShouldAllow(&ads_per_day_frequency_cap)) {
+  NewTabPageAdsPerDayPermissionRule ads_per_day_permission_rule;
+  if (!ShouldAllow(&ads_per_day_permission_rule)) {
     return false;
   }
 
-  NewTabPageAdsPerHourFrequencyCap ads_per_hour_frequency_cap;
-  if (!ShouldAllow(&ads_per_hour_frequency_cap)) {
+  NewTabPageAdsPerHourPermissionRule ads_per_hour_permission_rule;
+  if (!ShouldAllow(&ads_per_hour_permission_rule)) {
     return false;
   }
 

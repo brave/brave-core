@@ -5,30 +5,9 @@
 
 #include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
 
-#include "base/notreached.h"
 #include "base/time/time.h"
-#include "bat/ads/ad_type.h"
 
 namespace ads {
-
-bool DoesAdTypeSupportFrequencyCapping(const AdType& type) {
-  switch (type.value()) {
-    case AdType::kAdNotification:
-    case AdType::kInlineContentAd: {
-      return true;
-    }
-
-    case AdType::kNewTabPageAd:
-    case AdType::kPromotedContentAd: {
-      return false;
-    }
-
-    case AdType::kUndefined: {
-      NOTREACHED();
-      return false;
-    }
-  }
-}
 
 bool DoesHistoryRespectCapForRollingTimeConstraint(
     const std::deque<base::Time>& history,
@@ -36,7 +15,7 @@ bool DoesHistoryRespectCapForRollingTimeConstraint(
     const int cap) {
   int count = 0;
 
-  const base::Time now = base::Time::Now();
+  const base::Time& now = base::Time::Now();
 
   for (const auto& time : history) {
     if (now - time < time_constraint) {
