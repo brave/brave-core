@@ -82,36 +82,38 @@ void PromotedContentAd::FireEvent(
     const std::string& creative_instance_id,
     const mojom::PromotedContentAdEventType event_type) {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
-    if (!success) {
-      BLOG(1, "Promoted content ad: Failed to get ad events");
-      NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
-                                         event_type);
-      return;
-    }
+  database_table.GetForType(
+      mojom::AdType::kPromotedContentAd,
+      [=](const bool success, const AdEventList& ad_events) {
+        if (!success) {
+          BLOG(1, "Promoted content ad: Failed to get ad events");
+          NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
+                                             event_type);
+          return;
+        }
 
-    if (event_type == mojom::PromotedContentAdEventType::kViewed &&
-        HasFiredAdViewedEvent(ad, ad_events)) {
-      BLOG(1,
-           "Promoted content ad: Not allowed as already viewed uuid " << uuid);
-      NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
-                                         event_type);
-      return;
-    }
+        if (event_type == mojom::PromotedContentAdEventType::kViewed &&
+            HasFiredAdViewedEvent(ad, ad_events)) {
+          BLOG(1, "Promoted content ad: Not allowed as already viewed uuid "
+                      << uuid);
+          NotifyPromotedContentAdEventFailed(uuid, creative_instance_id,
+                                             event_type);
+          return;
+        }
 
-    if (event_type == mojom::PromotedContentAdEventType::kViewed) {
-      // TODO(tmancey): We need to fire an ad served event until promoted
-      // content ads are served by the ads library
-      FireEvent(uuid, creative_instance_id,
-                mojom::PromotedContentAdEventType::kServed);
-    }
+        if (event_type == mojom::PromotedContentAdEventType::kViewed) {
+          // TODO(tmancey): We need to fire an ad served event until promoted
+          // content ads are served by the ads library
+          FireEvent(uuid, creative_instance_id,
+                    mojom::PromotedContentAdEventType::kServed);
+        }
 
-    const auto ad_event =
-        promoted_content_ads::AdEventFactory::Build(event_type);
-    ad_event->FireEvent(ad);
+        const auto ad_event =
+            promoted_content_ads::AdEventFactory::Build(event_type);
+        ad_event->FireEvent(ad);
 
-    NotifyPromotedContentAdEvent(ad, event_type);
-  });
+        NotifyPromotedContentAdEvent(ad, event_type);
+      });
 }
 
 void PromotedContentAd::NotifyPromotedContentAdEvent(

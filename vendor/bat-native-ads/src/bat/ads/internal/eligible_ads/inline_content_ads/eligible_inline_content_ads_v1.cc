@@ -40,21 +40,24 @@ void EligibleAdsV1::GetForUserModel(
   BLOG(1, "Get eligible inline content ads:");
 
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
-    if (!success) {
-      BLOG(1, "Failed to get ad events");
-      callback(/* had_opportunity */ false, {});
-      return;
-    }
+  database_table.GetForType(
+      mojom::AdType::kInlineContentAd,
+      [=](const bool success, const AdEventList& ad_events) {
+        if (!success) {
+          BLOG(1, "Failed to get ad events");
+          callback(/* had_opportunity */ false, {});
+          return;
+        }
 
-    const int max_count = features::GetBrowsingHistoryMaxCount();
-    const int days_ago = features::GetBrowsingHistoryDaysAgo();
-    AdsClientHelper::Get()->GetBrowsingHistory(
-        max_count, days_ago, [=](const BrowsingHistoryList& browsing_history) {
-          GetEligibleAds(user_model, dimensions, ad_events, browsing_history,
-                         callback);
-        });
-  });
+        const int max_count = features::GetBrowsingHistoryMaxCount();
+        const int days_ago = features::GetBrowsingHistoryDaysAgo();
+        AdsClientHelper::Get()->GetBrowsingHistory(
+            max_count, days_ago,
+            [=](const BrowsingHistoryList& browsing_history) {
+              GetEligibleAds(user_model, dimensions, ad_events,
+                             browsing_history, callback);
+            });
+      });
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -102,11 +105,17 @@ void EligibleAdsV1::GetForParentChildSegments(
         const CreativeInlineContentAdList& eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
-          BLOG(1, "No eligible ads for parent-child segments");
+          BLOG(1, "No eligible ads out of "
+                      << creative_ads.size()
+                      << " ads for parent-child segments");
           GetForParentSegments(user_model, dimensions, ad_events,
                                browsing_history, callback);
           return;
         }
+
+        BLOG(1, eligible_creative_ads.size()
+                    << " eligible ads out of " << creative_ads.size()
+                    << " ads for parent-child segments");
 
         callback(/* had_opportunity */ true, eligible_creative_ads);
       });
@@ -143,10 +152,15 @@ void EligibleAdsV1::GetForParentSegments(
         const CreativeInlineContentAdList& eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
-          BLOG(1, "No eligible ads for parent segments");
+          BLOG(1, "No eligible ads out of " << creative_ads.size()
+                                            << " ads for parent segments");
           GetForUntargeted(dimensions, ad_events, browsing_history, callback);
           return;
         }
+
+        BLOG(1, eligible_creative_ads.size()
+                    << " eligible ads out of " << creative_ads.size()
+                    << " ads for parent segments");
 
         callback(/* had_opportunity */ true, eligible_creative_ads);
       });
@@ -173,7 +187,12 @@ void EligibleAdsV1::GetForUntargeted(
         const CreativeInlineContentAdList& eligible_creative_ads =
             FilterCreativeAds(creative_ads, ad_events, browsing_history);
         if (eligible_creative_ads.empty()) {
-          BLOG(1, "No eligible ads for untargeted segment");
+          BLOG(1, "No eligible ads out of " << creative_ads.size()
+                                            << " ads for untargeted segment");
+        } else {
+          BLOG(1, eligible_creative_ads.size()
+                      << " eligible ads out of " << creative_ads.size()
+                      << " ads for untargeted segment");
         }
 
         callback(/* had_opportunity */ true, eligible_creative_ads);

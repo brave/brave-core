@@ -68,35 +68,6 @@ TEST_F(BatAdsDailyCapExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
 }
 
 TEST_F(BatAdsDailyCapExclusionRuleTest,
-       AllowAdIfDoesNotExceedCapForMultipleTypes) {
-  // Arrange
-  CreativeAdInfo creative_ad;
-  creative_ad.campaign_id = kCampaignIds.at(0);
-  creative_ad.daily_cap = 2;
-
-  AdEventList ad_events;
-
-  const AdEventInfo ad_event_1 = GenerateAdEvent(
-      AdType::kAdNotification, creative_ad, ConfirmationType::kServed);
-  ad_events.push_back(ad_event_1);
-
-  const AdEventInfo ad_event_2 = GenerateAdEvent(
-      AdType::kNewTabPageAd, creative_ad, ConfirmationType::kServed);
-  ad_events.push_back(ad_event_2);
-
-  const AdEventInfo ad_event_3 = GenerateAdEvent(
-      AdType::kPromotedContentAd, creative_ad, ConfirmationType::kServed);
-  ad_events.push_back(ad_event_3);
-
-  // Act
-  DailyCapExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
-
-  // Assert
-  EXPECT_FALSE(should_exclude);
-}
-
-TEST_F(BatAdsDailyCapExclusionRuleTest,
        AllowAdIfDoesNotExceedCapForNoMatchingCampaigns) {
   // Arrange
   CreativeAdInfo creative_ad_1;

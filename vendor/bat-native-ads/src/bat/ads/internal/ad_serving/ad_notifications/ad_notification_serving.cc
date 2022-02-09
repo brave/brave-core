@@ -119,14 +119,15 @@ void AdServing::MaybeServeAd() {
     return;
   }
 
-  const ad_targeting::UserModelInfo user_model = ad_targeting::BuildUserModel();
+  const ad_targeting::UserModelInfo& user_model =
+      ad_targeting::BuildUserModel();
 
   DCHECK(eligible_ads_);
   eligible_ads_->GetForUserModel(
       user_model, [=](const bool had_opportunity,
                       const CreativeAdNotificationList& creative_ads) {
         if (had_opportunity) {
-          const SegmentList segments =
+          const SegmentList& segments =
               ad_targeting::GetTopParentChildSegments(user_model);
           p2a::RecordAdOpportunityForSegments(AdType::kAdNotification,
                                               segments);
@@ -141,9 +142,9 @@ void AdServing::MaybeServeAd() {
         BLOG(1, "Found " << creative_ads.size() << " eligible ads");
 
         const int rand = base::RandInt(0, creative_ads.size() - 1);
-        const CreativeAdNotificationInfo creative_ad = creative_ads.at(rand);
+        const CreativeAdNotificationInfo& creative_ad = creative_ads.at(rand);
 
-        const AdNotificationInfo ad = BuildAdNotification(creative_ad);
+        const AdNotificationInfo& ad = BuildAdNotification(creative_ad);
         if (!ServeAd(ad)) {
           BLOG(1, "Failed to serve ad notification");
           FailedToServeAd();

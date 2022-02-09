@@ -9,13 +9,12 @@
 #include <iterator>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping_features.h"
 
 namespace ads {
 
 namespace {
-const int kTransferredExclusionRule = 1;
+const int kTransferredCap = 1;
 }  // namespace
 
 TransferredExclusionRule::TransferredExclusionRule(const AdEventList& ad_events)
@@ -58,11 +57,10 @@ bool TransferredExclusionRule::DoesRespectCap(
       [&now, &time_constraint, &creative_ad](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == ConfirmationType::kTransferred &&
                ad_event.campaign_id == creative_ad.campaign_id &&
-               now - ad_event.created_at < time_constraint &&
-               DoesAdTypeSupportFrequencyCapping(ad_event.type);
+               now - ad_event.created_at < time_constraint;
       });
 
-  if (count >= kTransferredExclusionRule) {
+  if (count >= kTransferredCap) {
     return false;
   }
 

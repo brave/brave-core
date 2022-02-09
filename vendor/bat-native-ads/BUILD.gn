@@ -661,7 +661,6 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/exclusion_rules/dismissed_exclusion_rule.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/dismissed_exclusion_rule.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h",
-    "src/bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_exclusion_rule.cc",
     "src/bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_exclusion_rule.h",

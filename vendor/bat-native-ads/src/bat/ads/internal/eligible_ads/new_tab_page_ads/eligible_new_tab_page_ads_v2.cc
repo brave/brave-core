@@ -38,20 +38,23 @@ void EligibleAdsV2::GetForUserModel(
   BLOG(1, "Get eligible new tab page ads:");
 
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
-    if (!success) {
-      BLOG(1, "Failed to get ad events");
-      callback(/* had_opportunity */ false, {});
-      return;
-    }
+  database_table.GetForType(
+      mojom::AdType::kNewTabPageAd,
+      [=](const bool success, const AdEventList& ad_events) {
+        if (!success) {
+          BLOG(1, "Failed to get ad events");
+          callback(/* had_opportunity */ false, {});
+          return;
+        }
 
-    const int max_count = features::GetBrowsingHistoryMaxCount();
-    const int days_ago = features::GetBrowsingHistoryDaysAgo();
-    AdsClientHelper::Get()->GetBrowsingHistory(
-        max_count, days_ago, [=](const BrowsingHistoryList& browsing_history) {
-          GetEligibleAds(user_model, ad_events, browsing_history, callback);
-        });
-  });
+        const int max_count = features::GetBrowsingHistoryMaxCount();
+        const int days_ago = features::GetBrowsingHistoryDaysAgo();
+        AdsClientHelper::Get()->GetBrowsingHistory(
+            max_count, days_ago,
+            [=](const BrowsingHistoryList& browsing_history) {
+              GetEligibleAds(user_model, ad_events, browsing_history, callback);
+            });
+      });
 }
 
 ///////////////////////////////////////////////////////////////////////////////

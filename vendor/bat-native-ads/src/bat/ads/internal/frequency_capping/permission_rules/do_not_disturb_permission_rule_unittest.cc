@@ -80,7 +80,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest,
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
 
   // Act
   {
@@ -131,7 +131,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForIOS) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
 
   // Act
   {
@@ -161,7 +161,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForMacOS) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
 
   // Act
   {
@@ -191,7 +191,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForWindows) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
 
   // Act
   {
@@ -221,7 +221,7 @@ TEST_F(BatAdsDoNotDisturbPermissionRuleTest, AlwaysAllowAdForLinux) {
   BrowserManager::Get()->OnActive();
   BrowserManager::Get()->OnForegrounded();
 
-  AdvanceClock(Now().LocalMidnight() + base::Hours(24) - Now());
+  AdvanceClock(Now().LocalMidnight() + base::Days(1) - Now());
 
   // Act
   {

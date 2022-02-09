@@ -10,12 +10,11 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
 
 namespace ads {
 
 namespace {
-const int kPerHourExclusionRule = 1;
+const int kPerHourCap = 1;
 }  // namespace
 
 PerHourExclusionRule::PerHourExclusionRule(const AdEventList& ad_events)
@@ -48,8 +47,7 @@ bool PerHourExclusionRule::DoesRespectCap(const AdEventList& ad_events,
                                           const CreativeAdInfo& creative_ad) {
   const base::Time& now = base::Time::Now();
 
-  const base::TimeDelta& time_constraint =
-      base::Seconds(base::Time::kSecondsPerHour);
+  const base::TimeDelta& time_constraint = base::Hours(1);
 
   const int count = std::count_if(
       ad_events.cbegin(), ad_events.cend(),
@@ -57,11 +55,10 @@ bool PerHourExclusionRule::DoesRespectCap(const AdEventList& ad_events,
         return ad_event.confirmation_type == ConfirmationType::kServed &&
                ad_event.creative_instance_id ==
                    creative_ad.creative_instance_id &&
-               now - ad_event.created_at < time_constraint &&
-               DoesAdTypeSupportFrequencyCapping(ad_event.type);
+               now - ad_event.created_at < time_constraint;
       });
 
-  if (count >= kPerHourExclusionRule) {
+  if (count >= kPerHourCap) {
     return false;
   }
 

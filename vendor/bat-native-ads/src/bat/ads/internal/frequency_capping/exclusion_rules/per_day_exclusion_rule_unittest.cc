@@ -77,35 +77,6 @@ TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCap) {
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsPerDayExclusionRuleTest,
-       AllowAdIfDoesNotExceedCapForMultipleTypes) {
-  // Arrange
-  CreativeAdInfo creative_ad;
-  creative_ad.creative_set_id = kCreativeSetId;
-  creative_ad.per_day = 2;
-
-  AdEventList ad_events;
-
-  AdEventInfo ad_event_1 = GenerateAdEvent(AdType::kAdNotification, creative_ad,
-                                           ConfirmationType::kServed);
-  ad_events.push_back(ad_event_1);
-
-  AdEventInfo ad_event_2 = GenerateAdEvent(AdType::kNewTabPageAd, creative_ad,
-                                           ConfirmationType::kServed);
-  ad_events.push_back(ad_event_2);
-
-  AdEventInfo ad_event_3 = GenerateAdEvent(
-      AdType::kPromotedContentAd, creative_ad, ConfirmationType::kServed);
-  ad_events.push_back(ad_event_3);
-
-  // Act
-  PerDayExclusionRule frequency_cap(ad_events);
-  const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);
-
-  // Assert
-  EXPECT_FALSE(should_exclude);
-}
-
 TEST_F(BatAdsPerDayExclusionRuleTest, AllowAdIfDoesNotExceedCapAfter1Day) {
   // Arrange
   CreativeAdInfo creative_ad;

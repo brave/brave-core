@@ -9,7 +9,6 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
 
 namespace ads {
 
@@ -48,16 +47,14 @@ bool PerDayExclusionRule::DoesRespectCap(const AdEventList& ad_events,
 
   const base::Time& now = base::Time::Now();
 
-  const base::TimeDelta& time_constraint =
-      base::Seconds(base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
+  const base::TimeDelta& time_constraint = base::Days(1);
 
   const int count = std::count_if(
       ad_events.cbegin(), ad_events.cend(),
       [&now, &time_constraint, &creative_ad](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == ConfirmationType::kServed &&
                ad_event.creative_set_id == creative_ad.creative_set_id &&
-               now - ad_event.created_at < time_constraint &&
-               DoesAdTypeSupportFrequencyCapping(ad_event.type);
+               now - ad_event.created_at < time_constraint;
       });
 
   if (count >= creative_ad.per_day) {

@@ -9,7 +9,6 @@
 #include <iterator>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule_util.h"
 
 namespace ads {
 
@@ -45,8 +44,7 @@ bool TotalMaxExclusionRule::DoesRespectCap(const AdEventList& ad_events,
       ad_events.cbegin(), ad_events.cend(),
       [&creative_ad](const AdEventInfo& ad_event) {
         return ad_event.confirmation_type == ConfirmationType::kServed &&
-               ad_event.creative_set_id == creative_ad.creative_set_id &&
-               DoesAdTypeSupportFrequencyCapping(ad_event.type);
+               ad_event.creative_set_id == creative_ad.creative_set_id;
       });
 
   if (count >= creative_ad.total_max) {

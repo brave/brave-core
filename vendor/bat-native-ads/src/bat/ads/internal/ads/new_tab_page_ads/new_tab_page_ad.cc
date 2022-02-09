@@ -83,33 +83,37 @@ void NewTabPageAd::FireEvent(const NewTabPageAdInfo& ad,
                              const std::string& creative_instance_id,
                              const mojom::NewTabPageAdEventType event_type) {
   database::table::AdEvents database_table;
-  database_table.GetAll([=](const bool success, const AdEventList& ad_events) {
-    if (!success) {
-      BLOG(1, "New tab page ad: Failed to get ad events");
-      NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
-      return;
-    }
+  database_table.GetForType(
+      mojom::AdType::kNewTabPageAd,
+      [=](const bool success, const AdEventList& ad_events) {
+        if (!success) {
+          BLOG(1, "New tab page ad: Failed to get ad events");
+          NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
+          return;
+        }
 
-    if (event_type == mojom::NewTabPageAdEventType::kViewed &&
-        HasFiredAdViewedEvent(ad, ad_events)) {
-      BLOG(1, "New tab page ad: Not allowed as already viewed uuid " << uuid);
-      NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
-      return;
-    }
+        if (event_type == mojom::NewTabPageAdEventType::kViewed &&
+            HasFiredAdViewedEvent(ad, ad_events)) {
+          BLOG(1,
+               "New tab page ad: Not allowed as already viewed uuid " << uuid);
+          NotifyNewTabPageAdEventFailed(uuid, creative_instance_id, event_type);
+          return;
+        }
 
-    if (event_type == mojom::NewTabPageAdEventType::kViewed) {
-      // TODO(https://github.com/brave/brave-browser/issues/14015): We need to
-      // fire an ad served event until new tab page ads are served by the ads
-      // library
-      FireEvent(uuid, creative_instance_id,
-                mojom::NewTabPageAdEventType::kServed);
-    }
+        if (event_type == mojom::NewTabPageAdEventType::kViewed) {
+          // TODO(https://github.com/brave/brave-browser/issues/14015): We need
+          // to fire an ad served event until new tab page ads are served by the
+          // ads library
+          FireEvent(uuid, creative_instance_id,
+                    mojom::NewTabPageAdEventType::kServed);
+        }
 
-    const auto ad_event = new_tab_page_ads::AdEventFactory::Build(event_type);
-    ad_event->FireEvent(ad);
+        const auto ad_event =
+            new_tab_page_ads::AdEventFactory::Build(event_type);
+        ad_event->FireEvent(ad);
 
-    NotifyNewTabPageAdEvent(ad, event_type);
-  });
+        NotifyNewTabPageAdEvent(ad, event_type);
+      });
 }
 
 void NewTabPageAd::NotifyNewTabPageAdEvent(
