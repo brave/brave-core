@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/themes/theme_helper.h b/chrome/browser/themes/theme_helper.h
-index 620ef92c02c34daa3b1729f47381f1c56f1ce44b..2bd8fd82c324a39d5a9dd82a19d6afca01bede77 100644
+index d10c2b6c03c475ba91ce714dda656d7fe9ee3870..2100c64d80e23d6ddd6c3eb068e955a18857abfd 100644
 --- a/chrome/browser/themes/theme_helper.h
 +++ b/chrome/browser/themes/theme_helper.h
 @@ -108,6 +108,7 @@ class ThemeHelper {
