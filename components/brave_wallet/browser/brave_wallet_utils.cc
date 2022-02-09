@@ -172,9 +172,7 @@ GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
   for (const auto& it : custom_chains) {
     if (it->chain_id != chain_id)
       continue;
-    if (it->rpc_urls.empty())
-      return GURL();
-    return GURL(it->rpc_urls.front());
+    return GetFirstValidChainURL(it->rpc_urls);
   }
   return GURL();
 }
@@ -227,6 +225,22 @@ void GetAllCustomChains(PrefService* prefs,
     if (chain)
       result->push_back(chain->Clone());
   }
+}
+
+GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls) {
+  if (chain_urls.empty())
+    return GURL();
+  for (const std::string& spec : chain_urls) {
+    GURL url(spec);
+    if (spec.find("${INFURA_API_KEY}") == std::string::npos &&
+        spec.find("${ALCHEMY_API_KEY}") == std::string::npos &&
+        spec.find("${API_KEY}") == std::string::npos &&
+        spec.find("${PULSECHAIN_API_KEY}") == std::string::npos &&
+        url.SchemeIsHTTPOrHTTPS()) {
+      return url;
+    }
+  }
+  return GURL(chain_urls.front());
 }
 
 bool IsNativeWalletEnabled() {
