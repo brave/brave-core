@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
-index 7c380a9e2856b8f777c14eae78172e2ea7131f86..a35883b0f158bc199a9a35e219d4038d3f87bd19 100644
+index 7df17d2ab579968d3b73103fd4319f5bcad55da9..ed47c70ab8b4725a8150afd8d8edee32e2be979a 100644
 --- a/chrome/browser/resources/bookmarks/BUILD.gn
 +++ b/chrome/browser/resources/bookmarks/BUILD.gn
-@@ -49,6 +49,7 @@ generate_grd("build_grd") {
+@@ -50,6 +50,7 @@ generate_grd("build_grd") {
    }
    grd_prefix = "bookmarks"
    out_grd = "$target_gen_dir/${grd_prefix}_resources.grd"
@@ -10,7 +10,7 @@ index 7c380a9e2856b8f777c14eae78172e2ea7131f86..a35883b0f158bc199a9a35e219d4038d
  }
  
  preprocess_if_expr("preprocess") {
-@@ -108,4 +109,5 @@ ts_library("build_ts") {
+@@ -116,4 +117,5 @@ ts_library("build_ts") {
      ":preprocess",
      ":preprocess_generated",
    ]
