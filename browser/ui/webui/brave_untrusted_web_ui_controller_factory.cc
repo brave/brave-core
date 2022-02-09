@@ -27,7 +27,6 @@ WebUIConfigList CreateConfigs() {
         const std::string& host = config->host();
         config_list.emplace_back(host, std::move(config));
       };
-  ALLOW_UNUSED_LOCAL(register_config);
   register_config(std::make_unique<trezor::UntrustedTrezorUIConfig>());
   return config_list;
 }
