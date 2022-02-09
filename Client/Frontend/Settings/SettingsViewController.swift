@@ -482,19 +482,20 @@ class SettingsViewController: TableViewController {
         let version = String(format: Strings.versionTemplate,
                              Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
                              Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "")
+        let coreVersion = "BraveCore \(BraveCoreVersionInfo.braveCoreVersion) (\(BraveCoreVersionInfo.chromiumVersion))"
         return Static.Section(
             header: .title(Strings.about),
             rows: [
                 Row(text: version, selection: { [unowned self] in
                     let device = UIDevice.current
-                    let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                    let actionSheet = UIAlertController(title: version, message: coreVersion, preferredStyle: .actionSheet)
                     actionSheet.popoverPresentationController?.sourceView = self.view
                     actionSheet.popoverPresentationController?.sourceRect = self.view.bounds
                     let iOSVersion = "\(device.systemName) \(UIDevice.current.systemVersion)"
                     
                     let deviceModel = String(format: Strings.deviceTemplate, device.modelName, iOSVersion)
                     let copyDebugInfoAction = UIAlertAction(title: Strings.copyAppInfoToClipboard, style: .default) { _ in
-                        UIPasteboard.general.strings = [version, deviceModel]
+                        UIPasteboard.general.strings = [version, coreVersion, deviceModel]
                     }
                     
                     actionSheet.addAction(copyDebugInfoAction)
