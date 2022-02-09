@@ -29,9 +29,6 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
-import org.chromium.chrome.browser.set_default_browser.SetDefaultBrowserActivity;
-import org.chromium.chrome.browser.set_default_browser.SetDefaultBrowserBottomSheetFragment;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.widget.Toast;
 
@@ -124,7 +121,7 @@ public class BraveSetDefaultBrowserUtils {
         }
     }
 
-    public static setDefaultBrowser(AppCompatActivity activity) {
+    public static void setDefaultBrowser(Activity activity) {
         int roleManagerOpenCount = SharedPreferencesManager.getInstance().readInt(
                 BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT);
 

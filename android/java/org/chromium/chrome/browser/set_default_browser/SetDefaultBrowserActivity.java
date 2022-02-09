@@ -22,7 +22,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.init.AsyncInitializationActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
-import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 
 public class SetDefaultBrowserActivity extends AsyncInitializationActivity {
     @Override
