@@ -6,6 +6,8 @@
 brave_java_resources = [
   "java/res/anim/activity_fade_in.xml",
   "java/res/anim/activity_fade_out.xml",
+  "java/res/anim/slide_in.xml",
+  "java/res/anim/slide_out.xml",
   "java/res/anim/cycle.xml",
   "java/res/anim/shake.xml",
   "java/res/color/crypto_wallet_radiobutton_color_selector.xml",
