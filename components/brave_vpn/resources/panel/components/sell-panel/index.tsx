@@ -16,10 +16,10 @@ function SellPanel () {
     getLocale('braveVpnFeature5')
   ]), [])
 
-  const handleClick = () => {
+  const handleClick = (intent: string) => {
     if (!productUrls) return
-    const url = new URL('?intent=checkout&product=vpn', productUrls.manage)
-    window.open(url, '_blank')
+    const url = new URL(`?intent=${intent}&product=vpn`, productUrls.manage)
+    chrome.tabs.create({ url: url.href })
   }
 
   return (
@@ -46,9 +46,9 @@ function SellPanel () {
             type='default'
             brand='rewards'
             text={getLocale('braveVpnBuy')}
-            onClick={handleClick}
+            onClick={handleClick.bind(null, 'checkout')}
           />
-          <a href={productUrls?.manage} target='_blank'>
+          <a href="#" onClick={handleClick.bind(null, 'recover')}>
             {getLocale('braveVpnPurchased')}
           </a>
         </S.ActionArea>

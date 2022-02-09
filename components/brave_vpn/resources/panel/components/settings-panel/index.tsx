@@ -12,6 +12,11 @@ interface Props {
 function SettingsPanel (props: Props) {
   const productUrls = useSelector(state => state.productUrls)
 
+  const handleClick = (entry: string) => {
+    if (!productUrls) return
+    chrome.tabs.create({url: productUrls?.[entry]})
+  }
+
   return (
     <S.Box>
       <S.PanelContent>
@@ -27,17 +32,17 @@ function SettingsPanel (props: Props) {
         </S.PanelHeader>
         <S.List>
           <li>
-            <a href={productUrls?.manage} target='_blank'>
+            <a href="#" onClick={handleClick.bind(this, 'manage')}>
               {getLocale('braveVpnManageSubscription')}
             </a>
           </li>
           <li>
-            <a href={productUrls?.feedback} target='_blank'>
+            <a href="#" onClick={handleClick.bind(this, 'feedback')}>
               {getLocale('braveVpnContactSupport')}
             </a>
           </li>
           <li>
-            <a href={productUrls?.about} target='_blank'>
+            <a href="#" onClick={handleClick.bind(this, 'about')}>
               {getLocale('braveVpnAbout')}
               {' '}
               {getLocale('braveVpn')}
