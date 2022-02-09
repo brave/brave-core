@@ -117,8 +117,6 @@ source_set("ui") {
       "webui/new_tab_page/brave_new_tab_ui.h",
       "webui/new_tab_page/brave_new_tab_ui_utils.cc",
       "webui/new_tab_page/brave_new_tab_ui_utils.h",
-      "webui/new_tab_page/brave_untrusted_source.cc",
-      "webui/new_tab_page/brave_untrusted_source.h",
       "webui/new_tab_page/top_sites_message_handler.cc",
       "webui/new_tab_page/top_sites_message_handler.h",
       "webui/settings/brave_appearance_handler.cc",

@@ -33,8 +33,6 @@
       <include name="IDR_BRAVE_NEW_TAB_IMG1" file="../img/newtab/bookmarks_btn.svg" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_IMG4" file="../img/newtab/history_btn.svg" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_IMG2" file="../img/newtab/settings_prefs_btn.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_HTML" file="../brave_new_tab_ui/untrusted/custom_background_image.html" type="BINDATA" />
-      <include name="IDR_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_JS" file="../brave_new_tab_ui/untrusted/custom_background_image.js" type="BINDATA" />
 
       <!-- WebUI wallet resources -->
       <if expr="not is_android">

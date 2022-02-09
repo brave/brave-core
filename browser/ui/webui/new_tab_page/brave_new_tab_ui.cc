@@ -8,14 +8,12 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "base/strings/stringprintf.h"
 #include "brave/browser/brave_news/brave_news_controller_factory.h"
 #include "brave/browser/new_tab/new_tab_shows_options.h"
 #include "brave/browser/ntp_background_images/ntp_custom_background_images_service_factory.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
-#include "brave/browser/ui/webui/new_tab_page/brave_untrusted_source.h"
 #include "brave/browser/ui/webui/new_tab_page/top_sites_message_handler.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
@@ -23,12 +21,11 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/background/ntp_custom_background_service.h"
 #include "chrome/browser/search/background/ntp_custom_background_service_factory.h"
-#include "chrome/common/url_constants.h"
+#include "chrome/browser/ui/webui/new_tab_page/untrusted_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "content/public/common/url_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
@@ -67,15 +64,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       base::WrapUnique(new TopSitesMessageHandler(profile)));
 
   // For custom background images.
-  // Allow embedding of iframes for chrome-untrusted://new-tab-page
-  // for user uploaded image resources.
-  web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameSrc,
-      base::StringPrintf("frame-src %s;",
-                         chrome::kChromeUIUntrustedNewTabPageUrl));
   content::URLDataSource::Add(profile,
-                              std::make_unique<BraveUntrustedSource>(profile));
+                              std::make_unique<UntrustedSource>(profile));
 }
 
 BraveNewTabUI::~BraveNewTabUI() = default;
