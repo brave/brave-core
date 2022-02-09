@@ -257,6 +257,9 @@ class AdsImpl final : public Ads,
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;
 
+  uint32_t last_html_loaded_hash_ = 0;
+  uint32_t last_text_loaded_hash_ = 0;
+
   void set(privacy::TokenGeneratorInterface* token_generator);
 
   void InitializeBrowserManager();
