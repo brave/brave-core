@@ -5,6 +5,8 @@
 
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 
+#include <utility>
+
 #include "content/public/renderer/render_frame.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -13,12 +15,9 @@ namespace brave_wallet {
 
 BraveWalletRenderFrameObserver::BraveWalletRenderFrameObserver(
     content::RenderFrame* render_frame,
-    brave::mojom::DynamicParams dynamic_params)
-    : RenderFrameObserver(render_frame), dynamic_params_(dynamic_params) {
-  native_javascript_handle_.reset(new BraveWalletJSHandler(
-      render_frame, dynamic_params.brave_use_native_wallet,
-      dynamic_params.allow_overwrite_window_ethereum));
-}
+    GetDynamicParamsCallback get_dynamic_params_callback)
+    : RenderFrameObserver(render_frame),
+      get_dynamic_params_callback_(std::move(get_dynamic_params_callback)) {}
 
 BraveWalletRenderFrameObserver::~BraveWalletRenderFrameObserver() {}
 
@@ -36,11 +35,19 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank")
     url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
                .GetURL();
-
-  if (!dynamic_params_.brave_use_native_wallet || !native_javascript_handle_ ||
-      !url_.SchemeIsHTTPOrHTTPS())
+  if (!url_.SchemeIsHTTPOrHTTPS())
     return;
+  auto dynamic_params = get_dynamic_params_callback_.Run();
+  if (!dynamic_params.brave_use_native_wallet) {
+    native_javascript_handle_.reset();
+    return;
+  }
 
+  if (!native_javascript_handle_) {
+    native_javascript_handle_.reset(new BraveWalletJSHandler(
+        render_frame(), dynamic_params.brave_use_native_wallet,
+        dynamic_params.allow_overwrite_window_ethereum));
+  }
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
   native_javascript_handle_->ConnectEvent();
 }
