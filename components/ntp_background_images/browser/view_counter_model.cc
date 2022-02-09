@@ -109,6 +109,19 @@ void ViewCounterModel::RegisterPageViewForBackgroundImages() {
   current_wallpaper_image_index_ %= total_image_count_;
 }
 
+void ViewCounterModel::IncreaseBackgroundWallpaperImageIndex() {
+  // NTP BI component is not ready.
+  if (total_image_count_ == 0)
+    return;
+
+  if (!show_wallpaper_)
+    return;
+
+  // Increase background image index
+  current_wallpaper_image_index_++;
+  current_wallpaper_image_index_ %= total_image_count_;
+}
+
 void ViewCounterModel::Reset() {
   current_wallpaper_image_index_ = 0;
   total_image_count_ = 0;

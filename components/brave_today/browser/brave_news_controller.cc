@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/callback_helpers.h"
 #include "base/guid.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -445,7 +446,7 @@ void BraveNewsController::OnDisplayAdPurgeOrphanedEvents() {
     return;
   }
   ads_service_->PurgeOrphanedAdEventsForType(
-      ads::mojom::AdType::kInlineContentAd);
+      ads::mojom::AdType::kInlineContentAd, base::DoNothing());
 }
 
 void BraveNewsController::CheckForPublishersUpdate() {

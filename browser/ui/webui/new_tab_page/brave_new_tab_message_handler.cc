@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"
 #include "base/metrics/histogram_macros.h"
@@ -590,7 +589,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
-  auto data = service->GetCurrentWallpaperForDisplay();
+  base::Value data = service->GetCurrentWallpaperForDisplay();
 
   if (!data.is_dict()) {
     ResolveJavascriptCallback(args[0], std::move(wallpaper));
@@ -608,11 +607,14 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
     return;
   }
 
+  const std::string* creative_instance_id =
+      data.FindStringKey(ntp_background_images::kCreativeInstanceIDKey);
+  const std::string* wallpaper_id =
+      data.FindStringKey(ntp_background_images::kWallpaperIDKey);
+  service->BrandedWallpaperWillBeDisplayed(wallpaper_id, creative_instance_id);
+
   constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
-  const std::string wallpaper_id = base::GenerateGUID();
-  data.SetStringKey(ntp_background_images::kWallpaperIDKey, wallpaper_id);
   wallpaper.SetKey(kBrandedWallpaperKey, std::move(data));
-  service->BrandedWallpaperWillBeDisplayed(wallpaper_id);
   ResolveJavascriptCallback(args[0], std::move(wallpaper));
 }
 

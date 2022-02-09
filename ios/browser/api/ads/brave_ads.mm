@@ -649,11 +649,13 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
       static_cast<ads::mojom::PromotedContentAdEventType>(eventType));
 }
 
-- (void)purgeOrphanedAdEvents:(AdsAdType)adType {
+- (void)purgeOrphanedAdEvents:(AdsAdType)adType
+                   completion:(void (^)(BOOL success))completion {
   if (![self isAdsServiceRunning]) {
     return;
   }
-  ads->PurgeOrphanedAdEventsForType(static_cast<ads::mojom::AdType>(adType));
+  ads->PurgeOrphanedAdEventsForType(static_cast<ads::mojom::AdType>(adType),
+                                    completion);
 }
 
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived,

@@ -16,11 +16,13 @@ AdInfo& AdInfo::operator=(const AdInfo& info) = default;
 AdInfo::~AdInfo() = default;
 
 bool AdInfo::operator==(const AdInfo& rhs) const {
-  return type == rhs.type && placement_id == rhs.placement_id &&
-         creative_instance_id == rhs.creative_instance_id &&
-         creative_set_id == rhs.creative_set_id &&
-         campaign_id == rhs.campaign_id && advertiser_id == rhs.advertiser_id &&
-         segment == rhs.segment && target_url == rhs.target_url;
+  auto tie = [](const AdInfo& ad) {
+    return std::tie(ad.type, ad.placement_id, ad.creative_instance_id,
+                    ad.creative_set_id, ad.campaign_id, ad.advertiser_id,
+                    ad.segment, ad.target_url);
+  };
+
+  return tie(*this) == tie(rhs);
 }
 
 bool AdInfo::operator!=(const AdInfo& rhs) const {

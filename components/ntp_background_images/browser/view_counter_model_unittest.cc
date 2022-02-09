@@ -212,4 +212,34 @@ TEST(ViewCounterModelTest, NTPSuperReferralTest) {
   }
 }
 
+TEST(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
+  ViewCounterModel model;
+  model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
+  model.set_total_image_count(kTestImageCount);
+
+  // Loading initial count times.
+  for (int i = 0; i < ViewCounterModel::kInitialCountToBrandedWallpaper; ++i) {
+    EXPECT_EQ(i, model.current_wallpaper_image_index());
+    model.RegisterPageView();
+  }
+  EXPECT_TRUE(model.ShouldShowBrandedWallpaper());
+  const int initial_wallpaper_image_index =
+      model.current_wallpaper_image_index();
+
+  // Simulate that sponsored image ad was frequency capped by ads service. In
+  // this case next background wallpaper will be shown.
+  model.IncreaseBackgroundWallpaperImageIndex();
+
+  int expected_image_index =
+      (initial_wallpaper_image_index + 1) % model.total_image_count_;
+  EXPECT_EQ(expected_image_index, model.current_wallpaper_image_index());
+
+  // Process register page view for sponsored image.
+  model.RegisterPageView();
+
+  expected_image_index =
+      (initial_wallpaper_image_index + 2) % model.total_image_count_;
+  EXPECT_EQ(expected_image_index, model.current_wallpaper_image_index());
+}
+
 }  // namespace ntp_background_images

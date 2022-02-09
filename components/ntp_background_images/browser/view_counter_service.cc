@@ -108,15 +108,12 @@ ViewCounterService::ViewCounterService(
 ViewCounterService::~ViewCounterService() = default;
 
 void ViewCounterService::BrandedWallpaperWillBeDisplayed(
-    const std::string& wallpaper_id) {
+    const std::string* wallpaper_id,
+    const std::string* creative_instance_id) {
   if (ads_service_) {
-    base::Value data = ViewCounterService::GetCurrentWallpaperForDisplay();
-    DCHECK(!data.is_none());
-
-    const std::string* creative_instance_id =
-        data.FindStringKey(kCreativeInstanceIDKey);
     ads_service_->TriggerNewTabPageAdEvent(
-        wallpaper_id, creative_instance_id ? *creative_instance_id : "",
+        wallpaper_id ? *wallpaper_id : "",
+        creative_instance_id ? *creative_instance_id : "",
         ads::mojom::NewTabPageAdEventType::kViewed);
   }
 
@@ -137,12 +134,20 @@ NTPSponsoredImagesData* ViewCounterService::GetCurrentBrandedWallpaperData()
   return service_->GetBrandedImagesData(false);
 }
 
-base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
+base::Value ViewCounterService::GetCurrentWallpaperForDisplay() {
   if (ShouldShowBrandedWallpaper()) {
-    return GetCurrentBrandedWallpaper();
-  } else {
-    return GetCurrentWallpaper();
+    base::Value branded_wallpaper = GetCurrentBrandedWallpaper();
+    if (branded_wallpaper.is_dict()) {
+      return branded_wallpaper;
+    }
+    // Failed to get branded wallpaper as it was frequency capped by ads
+    // service. In this case next background wallpaper should be shown on NTP.
+    // To do this we need to increment background wallpaper index as it wasn't
+    // incremented during the last RegisterPageView() call.
+    model_.IncreaseBackgroundWallpaperImageIndex();
   }
+
+  return GetCurrentWallpaper();
 }
 
 base::Value ViewCounterService::GetCurrentWallpaper() const {
@@ -159,16 +164,39 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
 }
 
 base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {
-  if (GetCurrentBrandedWallpaperData()) {
-    size_t current_campaign_index;
-    size_t current_background_index;
-    std::tie(current_campaign_index, current_background_index) =
-        model_.GetCurrentBrandedImageIndex();
-    return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
-        current_campaign_index, current_background_index);
+  NTPSponsoredImagesData* images_data = GetCurrentBrandedWallpaperData();
+  if (!images_data) {
+    return base::Value();
   }
 
-  return base::Value();
+  const bool should_frequency_cap_ads =
+      ads_service_ && ads_service_->IsEnabled();
+  if (should_frequency_cap_ads && !images_data->IsSuperReferral()) {
+    return GetCurrentBrandedWallpaperByAdInfo();
+  }
+
+  return GetCurrentBrandedWallpaperFromModel();
+}
+
+base::Value ViewCounterService::GetCurrentBrandedWallpaperByAdInfo() const {
+  DCHECK(ads_service_);
+
+  absl::optional<ads::NewTabPageAdInfo> ad_info =
+      ads_service_->GetPrefetchedNewTabPageAd();
+  if (!ad_info) {
+    return base::Value();
+  }
+
+  return GetCurrentBrandedWallpaperData()->GetBackgroundByAdInfo(*ad_info);
+}
+
+base::Value ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
+  size_t current_campaign_index;
+  size_t current_background_index;
+  std::tie(current_campaign_index, current_background_index) =
+      model_.GetCurrentBrandedImageIndex();
+  return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
+      current_campaign_index, current_background_index);
 }
 
 std::vector<TopSite> ViewCounterService::GetTopSitesData() const {

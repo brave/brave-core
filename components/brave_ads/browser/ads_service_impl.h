@@ -180,7 +180,11 @@ class AdsServiceImpl : public AdsService,
       const ads::mojom::SearchResultAdEventType event_type,
       TriggerSearchResultAdEventCallback callback) override;
 
-  void PurgeOrphanedAdEventsForType(const ads::mojom::AdType ad_type) override;
+  absl::optional<ads::NewTabPageAdInfo> GetPrefetchedNewTabPageAd() override;
+
+  void PurgeOrphanedAdEventsForType(
+      const ads::mojom::AdType ad_type,
+      PurgeOrphanedAdEventsForTypeCallback callback) override;
 
   void GetHistory(const base::Time from_time,
                   const base::Time to_time,
@@ -224,6 +228,7 @@ class AdsServiceImpl : public AdsService,
   void OnCreate();
 
   void OnInitialize(const bool success);
+  void SetupOnFirstInitialize();
 
   void ShutdownBatAds();
   void OnShutdownBatAds(const bool success);
@@ -270,6 +275,9 @@ class AdsServiceImpl : public AdsService,
 
   void RegisterResourceComponentsForLocale(const std::string& locale);
 
+  void PrefetchNewTabPageAd();
+  void OnPrefetchNewTabPageAd(bool success, const std::string& json);
+
   void OnURLRequestStarted(
       const GURL& final_url,
       const network::mojom::URLResponseHead& response_head);
@@ -290,6 +298,8 @@ class AdsServiceImpl : public AdsService,
       const bool success,
       const std::string& placement_id,
       const ads::mojom::SearchResultAdEventType event_type);
+
+  void OnPurgeOrphanedAdEventsForNewTabPageAds(const bool success);
 
   void OnGetHistory(OnGetHistoryCallback callback, const std::string& json);
 
@@ -479,7 +489,7 @@ class AdsServiceImpl : public AdsService,
 
   bool is_initialized_ = false;
 
-  bool deprecated_data_files_removed_ = false;
+  bool is_setup_on_first_initialize_done_ = false;
 
   bool needs_browser_update_to_see_ads_ = false;
 
@@ -501,6 +511,8 @@ class AdsServiceImpl : public AdsService,
   base::OneShotTimer onboarding_timer_;
 
   std::unique_ptr<ads::Database> database_;
+
+  absl::optional<ads::NewTabPageAdInfo> prefetched_new_tab_page_ad_info_;
 
   ui::IdleState last_idle_state_;
   int last_idle_time_;

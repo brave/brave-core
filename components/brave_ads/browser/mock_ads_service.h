@@ -96,7 +96,11 @@ class MockAdsService : public AdsService {
                     const ads::mojom::SearchResultAdEventType,
                     TriggerSearchResultAdEventCallback));
 
-  MOCK_METHOD1(PurgeOrphanedAdEventsForType, void(const ads::mojom::AdType));
+  MOCK_METHOD0(GetPrefetchedNewTabPageAd,
+               absl::optional<ads::NewTabPageAdInfo>());
+
+  MOCK_METHOD2(PurgeOrphanedAdEventsForType,
+               void(ads::mojom::AdType, PurgeOrphanedAdEventsForTypeCallback));
 
   MOCK_METHOD3(GetHistory, void(base::Time, base::Time, OnGetHistoryCallback));
 

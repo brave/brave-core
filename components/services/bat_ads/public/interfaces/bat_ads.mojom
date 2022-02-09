@@ -98,12 +98,13 @@ interface BatAds {
   OnTabClosed(int32 tab_id);
   GetNotificationAd(string placement_id) => (string json);
   TriggerNotificationAdEvent(string placement_id, ads.mojom.NotificationAdEventType event_type);
+  GetNewTabPageAd() => (bool success, string json);
   TriggerNewTabPageAdEvent(string placement_id, string creative_instance_id, ads.mojom.NewTabPageAdEventType event_type);
   TriggerPromotedContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.PromotedContentAdEventType event_type);
   GetInlineContentAd(string dimensions) => (bool success, string dimensions, string ad);
   TriggerInlineContentAdEvent(string placement_id, string creative_instance_id, ads.mojom.InlineContentAdEventType event_type);
   TriggerSearchResultAdEvent(ads.mojom.SearchResultAd ad_mojom, ads.mojom.SearchResultAdEventType event_type) => (bool success, string placement_id, ads.mojom.SearchResultAdEventType event_type);
-  PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type);
+  PurgeOrphanedAdEventsForType(ads.mojom.AdType ad_type) => (bool success);
   RemoveAllHistory() => (bool success);
   OnWalletUpdated(string payment_id, string seed);
   GetHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) => (mojo_base.mojom.BigString json);
