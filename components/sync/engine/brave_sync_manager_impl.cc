@@ -17,8 +17,7 @@ BraveSyncManagerImpl::~BraveSyncManagerImpl() {}
 void BraveSyncManagerImpl::StartSyncingNormally(base::Time last_poll_time) {
   SyncManagerImpl::StartSyncingNormally(last_poll_time);
   // Remove this hack when we have FCM invalidation integrated.
-  // We only enable BOOKMARKS by default so only force refresh it
-  RefreshTypes(ModelTypeSet(BOOKMARKS));
+  RefreshTypes(ModelTypeSet::All());
 }
 
 }  // namespace syncer
