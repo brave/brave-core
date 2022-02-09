@@ -482,6 +482,13 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
         </if>
 
+      <if expr="chromeos_ash or chromeos_lacros">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
+
       <if expr="chromeos">
         </if>
       <if expr="lacros">
@@ -1016,6 +1023,9 @@ are declared in tools/grit/grit_rule.gni.
     <if expr="use_titlecase">
       </if>
     <if expr="not use_titlecase">
+      </if>
+
+    <if expr="chromeos_ash">
       </if>
   </messages>
 </release>

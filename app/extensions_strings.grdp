@@ -270,7 +270,10 @@
     Permissions
   </message>
   <message name="IDS_EXTENSIONS_ITEM_PERMISSIONS_EMPTY" desc="The text to indicate that an extension does not have any special permissions.">
-    This extension requires no special permissions.
+    This extension requires no special permissions
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_PERMISSIONS_AND_SITE_ACCESS_EMPTY" desc="The text to indicate that an extension does not have any special permissions or any site access.">
+    This extension requires no special permissions and has no additional site access
   </message>
   <message name="IDS_EXTENSIONS_ITEM_REMOVE_EXTENSION" desc="The label on the button to remove an extension.">
     Remove extension
@@ -282,7 +285,7 @@
     Add a new page
   </message>
   <message name="IDS_EXTENSIONS_ITEM_SITE_ACCESS_EMPTY" desc="The text to indicate that an extension does not have any site access.">
-    This extension has no additional site access.
+    This extension has no additional site access
   </message>
   <message name="IDS_EXTENSIONS_ITEM_SOURCE" desc="The label above an extension's source, which indicates where the extension came from (webstore, third-party, local disk, etc).">
     Source
@@ -373,6 +376,15 @@
   </message>
   <message name="IDS_EXTENSIONS_SITE_PERMISSIONS_PAGE_TITLE" desc="The title for the extensions site permissions management page.">
     Site permissions
+  </message>
+  <message name="IDS_EXTENSIONS_PERMITTED_SITES" desc="The label above the list of sites that extensions are always permitted to run in.">
+    All extensions allowed
+  </message>
+  <message name="IDS_EXTENSIONS_RESTRICTED_SITES" desc="The label above the list of sites that extensions are not allowed to run in.">
+    Not allowed to use extensions
+  </message>
+  <message name="IDS_EXTENSIONS_NO_SITES_ADDED" desc="The text displayed when a list of sites in the site permissions page is empty.">
+    No sites added
   </message>
   <message name="IDS_EXTENSIONS_EDIT_SHORTCUT" desc="The label for a button to edit the shortcut.">
     Edit shortcut
