@@ -644,6 +644,10 @@ are declared in tools/grit/grit_rule.gni.
             Remove highlight
           </message>
 
+          <message name="IDS_CONTENT_CONTEXT_RESHARELINKTOTEXT" desc="The name of the Reshare Copy Link to Highlight command in the content area context menu">
+            Copy link to highlight
+          </message>
+
           <message name="IDS_CONTENT_CONTEXT_SAVEIMAGEAS" desc="The name of the Save Image As command in the content area context menu">
             Sa&amp;ve image as...
           </message>
@@ -886,6 +890,10 @@ are declared in tools/grit/grit_rule.gni.
 
           <message name="IDS_CONTENT_CONTEXT_REMOVELINKTOTEXT" desc="In TitleCase: The name of the Remove Highlights command in the content area context menu">
             Remove Highlight
+          </message>
+
+          <message name="IDS_CONTENT_CONTEXT_RESHARELINKTOTEXT" desc="In Title Case: The name of the Reshare Copy Link to Highlight command in the content area context menu">
+            Copy Link to Highlight
           </message>
 
           <message name="IDS_CONTENT_CONTEXT_SAVEIMAGEAS" desc="In Title Case: The name of the Save Image As command in the content area context menu">
@@ -4852,6 +4860,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_EXTENSIONS_TAB_TITLE" desc="Title of the installed extensions tab in the Extensions Menu">
         Installed
       </message>
+      <message name="IDS_EXTENSIONS_MENU_EXTENSIONS_TAB_DISCOVER_MORE_TITLE" desc="Text of the button in the installed extensions tab used to open the webstore page">
+        Discover more extensions
+      </message>
 
       <!-- Settings API bubble -->
       <message name="IDS_EXTENSIONS_SETTINGS_API_TITLE_HOME_PAGE_BUBBLE" desc="Title of a bubble warning users that an extension has overridden their home page setting">
@@ -4954,6 +4965,29 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_WEB_APP_WINDOW_CONTROLS_OVERLAY_DISABLED_ALERT" desc="Status change notification that the title bar is showing after window controls overlay is disabled">
         Title bar is now showing
       </message>
+
+      <message name="IDS_WEB_APP_SETTINGS_TITLE" desc="Title of web app settings page">
+        Apps
+      </message>
+
+      <if expr="chromeos_ash or chromeos_lacros">
+        <then>
+          <message name="IDS_WEB_APP_SETTINGS_LINK" desc="Text of the link pointing to the app settings page. This appears at the bottom of the Permissions pane of the Page Information Window for app windows (in place of 'Site settings').">
+            App settings
+          </message>
+          <message name="IDS_WEB_APP_SETTINGS_LINK_TOOLTIP" desc="The text of the tooltip on IDS_WEB_APP_SETTINGS_LINK.">
+            Go to app settings
+          </message>
+        </then>
+        <else>
+          <message name="IDS_WEB_APP_SETTINGS_LINK" desc="Text of the link pointing to the app settings page. The link appears in app window/tab -&gt; page info bubble in place of Site Settings, and in chrome://apps right click menu">
+            Settings
+          </message>
+          <message name="IDS_WEB_APP_SETTINGS_LINK_TOOLTIP" desc="The text of the tooltip on IDS_WEB_APP_SETTINGS_LINK.">
+            Go to settings
+          </message>
+        </else>
+      </if>
 
       <!-- Components -->
       <message name="IDS_COMPONENTS_TITLE" desc="Title for the chrome://components page.">
@@ -6317,6 +6351,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_TAB_SCROLL_TRAILING" desc="The accessible name for the TabStrip trailing scroll button.">
         Scroll towards the last tab
       </message>
+      <message name="IDS_ACCNAME_MUTE_TAB" desc="The accessible name for the Mute tab button.">
+        Mute tab
+      </message>
 
       <!-- Clipboard permission -->
       <message name="IDS_ALLOWED_CLIPBOARD_TITLE" desc="Title of the info bubble shown when a site has been allowed access to read the contents of the system clipboard.">
@@ -6416,6 +6453,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_TAB_GROUPS_NAMED_GROUP_TOOLTIP" desc="Dynamic tooltip to display on hover over named tab group.">
         <ph name="GROUP_NAME">$1<ex>New Group</ex></ph> - <ph name="GROUP_CONTENT_STRING">$2<ex>"New Tab" and one other</ex></ph>
+      </message>
+      <message name="IDS_TAB_AUDIO_MUTING_PROMO" desc="Text shown on the promotional UI appearing next to the tab alert indicator.">
+        Click the speaker icon to mute this tab
       </message>
       <if expr="use_titlecase">
         <message name="IDS_PROMO_DISMISS_BUTTON" desc="Text shown on the button for the user to acknowledge that they understand the message">
@@ -11296,8 +11336,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CABLEV2_2ND_FACTOR_DESCRIPTION" desc="The contents of a dialog shown when the user tries to sign-in using a phone as a security key, or tries to register their phone as a security key for a future sign-in. A security key is traditionally a small USB device that is touched to confirm a sign-in (e.g. a gNubby) and, in this context, the phone is replacing the need for a separate device. The placeholder for the notification title will be replaced with the string that will appear in the notification on the phone. These messages are 4300134428943426639 and 581442427601260656.">
         <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> sent a notification to your phone. To confirm it's you, tap the “<ph name="NOTIFICATIONTITLE"><ex>Verify with this phone</ex>$2</ph>” notification and follow the steps.
       </message>
-      <message name="IDS_WEBAUTHN_CABLEV2_ADD_PHONE" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone.">
-        Add a new phone
+      <message name="IDS_WEBAUTHN_CABLEV2_ADD_PHONE" desc="The label on a button-like element in a list of options. Clicking this causes Brave to show a QR code that the user can scan with their phone to use that phone for signing into a website. Here 'phone' is used as a short hand for smartphone. Currently this ability is specific to Android phones.">
+        Add a new Android phone
       </message>
 
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
@@ -11549,11 +11589,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
         =1 {Checking this file with your organization's security policies...}
       other {Checking these files with your organization's security policies...}}
     </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PRINT_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of a printed document to see if it complies with enterprise policies">
+      Checking this document with your organization's security policies...
+    </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_SUCCESS_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of data when it complies with enterprise policies">
       {NUM_FILES, plural,
         =0 {Security checks are done. Your data will be uploaded.}
         =1 {Security checks are done. Your file will be uploaded.}
       other {Security checks are done. Your files will be uploaded.}}
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PRINT_SUCCESS_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of a printed document when it complies with enterprise policies">
+        Security checks are done. Your document will be printed.
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of uploaded data when it doesn't comply with enterprise security policies">
       {NUM_FILES, plural,
@@ -11566,6 +11612,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         =0 {This data has sensitive or dangerous content}
         =1 {This file has sensitive or dangerous content}
       other {These files have sensitive or dangerous content}}
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PRINT_WARNING_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of a printed document when it doesn't comply with enterprise security policies">
+        This document has sensitive content.
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_TIMEOUT_MESSAGE" desc="Message shown in tab modal dialog after a deep scan times out.">
       Something went wrong. Scanning could not be completed. Please try again.
@@ -11583,6 +11632,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       {NUM_FILES, plural,
         =1 {This file is too big for a security check. You can upload files up to 50 MB.}
       other {Some of these files are too big for a security check. You can upload files up to 50 MB.}}
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_LARGE_PRINT_FAILURE_MESSAGE" desc="Message shown in the tab modal dialog when the printed document to be scanned is too large according to the enterprise policies">
+        This document is too big for a security check. You can print documents of up to 50 MB.
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_ENCRYPTED_FILE_FAILURE_MESSAGE" desc="Message shown in the tab modal dialog when the uploaded file to be scanned is encrypted and when this is not allowed by enterprise policies">
       {NUM_FILES, plural,
@@ -11603,6 +11655,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_BYPASS_JUSTIFICATION_LABEL" desc="Text displayed in the label above the bypass justification text area, explaining to the user that they have to enter a justification for uploading the file/pasted data even though there was a data loss prevention warning.">
       Please enter a reason for uploading this data:
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_BYPASS_JUSTIFICATION_TEXT_LIMIT_LABEL" desc="A label that contains the current amount of characters in the bypass justification text box, as well as the maximum limit of characters. This is displayed to the user so they know when the limit is exceeded.">
+      <ph name="ACTUAL_CHAR_COUNT">$1<ex>10</ex></ph>/<ph name="MAX_CHAR_COUNT">$2<ex>280</ex></ph>
     </message>
 
 
@@ -11921,6 +11976,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <if expr="not use_titlecase">
       <message name="IDS_TAILORED_SECURITY_UNCONSENTED_PROMOTION_NOTIFICATION_ACCEPT" desc="Accept button on notification prompting the user to enable Enhanced Safe Browsing after they have enabled account-level protections.">
         Continue
+      </message>
+    </if>
+
+    <!-- Input overlay strings -->
+    <if expr="chromeos_ash">
+      <message name="IDS_INPUT_OVERLAY_MENU_ENTRY_BUTTON" desc="Button to access Input Overlay's settings menu.">
+        Game Control
       </message>
     </if>
   </messages>
