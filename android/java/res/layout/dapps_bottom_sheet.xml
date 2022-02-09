@@ -12,7 +12,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:maxHeight="350dp"
-    android:background="@color/wallet_bg"
+    android:background="@color/brave_wallet_dapp_bg_color"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="12dp"
@@ -26,12 +26,12 @@
         android:layout_weight="1">
 
         <TextView
+            style="@style/BraveWalletTextViewWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingVertical="10dp"
             android:text="@string/brave_ui_brave_wallet"
-            android:textColor="@color/wallet_text_color"
             android:textSize="16sp" />
 
         <View
@@ -52,6 +52,7 @@
 
         <TextView
             android:id="@+id/tv_dapp_url"
+            style="@style/BraveWalletTextViewWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
@@ -60,6 +61,7 @@
 
         <TextView
             android:id="@+id/tv_dapp_desc"
+            style="@style/BraveWalletTextViewWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
@@ -71,14 +73,10 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/unlock"
-        style="?android:attr/borderlessButtonStyle"
+        style="@style/BraveWalletDAppsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/crypto_wallet_blue_button"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="8dp"
         android:text="@string/unlock"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
         android:textSize="16sp" />
 </LinearLayout>
