@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <tuple>
+
 #include "base/callback_helpers.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/ignore_result.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -270,7 +271,7 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
     path = path.AppendASCII("Profile 2");
     base::ScopedAllowBlockingForTesting allow_blocking;
     // Clean up profile directory when the test is done.
-    ignore_result(profile2_dir_.Set(path));
+    std::ignore = profile2_dir_.Set(path);
     ProfileManager* profile_manager = g_browser_process->profile_manager();
     size_t starting_number_of_profiles = profile_manager->GetNumberOfProfiles();
     if (!base::PathExists(path) && !base::CreateDirectory(path))

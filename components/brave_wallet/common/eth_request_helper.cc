@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 
 #include <memory>
+#include <tuple>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -244,11 +245,11 @@ bool NormalizeEthRequest(const std::string& input_json,
 
   const base::Value* found_id = out_dict->FindPath(kId);
   if (!found_id) {
-    ALLOW_UNUSED_LOCAL(
-        out_dict->SetPath("id", kDefaultRequestIdWhenUnspecified.Clone()));
+    std::ignore =
+        out_dict->SetPath("id", kDefaultRequestIdWhenUnspecified.Clone());
   }
 
-  ALLOW_UNUSED_LOCAL(out_dict->SetStringPath("jsonrpc", kRequestJsonRPC));
+  std::ignore = out_dict->SetStringPath("jsonrpc", kRequestJsonRPC);
   base::JSONWriter::Write(*out_dict, output_json);
 
   return true;
