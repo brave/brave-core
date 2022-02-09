@@ -20,9 +20,12 @@ namespace brave_wallet {
 
 class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
  public:
+  using GetDynamicParamsCallback =
+      base::RepeatingCallback<const brave::mojom::DynamicParams&()>;
+
   explicit BraveWalletRenderFrameObserver(
       content::RenderFrame* render_frame,
-      brave::mojom::DynamicParams dynamic_params);
+      GetDynamicParamsCallback get_dynamic_params_callback);
   ~BraveWalletRenderFrameObserver() override;
 
   // RenderFrameObserver implementation.
@@ -40,7 +43,7 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
   std::unique_ptr<BraveWalletJSHandler> native_javascript_handle_;
 
   GURL url_;
-  const brave::mojom::DynamicParams dynamic_params_;
+  GetDynamicParamsCallback get_dynamic_params_callback_;
 };
 
 }  // namespace brave_wallet
