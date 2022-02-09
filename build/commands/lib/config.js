@@ -54,7 +54,7 @@ var packageConfigBraveCore = function (key) {
 
 const getNPMConfig = (key) => {
   if (!NpmConfig) {
-    const list = run(npmCommand, ['config', 'list', '--json'])
+    const list = run(npmCommand, ['config', 'list', '--json'], {cwd: rootDir})
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
