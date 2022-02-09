@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle" android:padding="12dp">
+            <solid android:color="@color/modern_grey_700"/>
+            <corners android:radius="48dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle" android:padding="12dp">
+            <solid android:color="@color/brave_wallet_dapp_button_color"/>
+            <corners android:radius="48dp"/>
+        </shape>
+    </item>
+</selector>
