@@ -315,7 +315,7 @@
     "jest-junit": "13.0.0",
     "less": "3.13.1",
     "less-loader": "4.1.0",
-    "log-update": "3.4.0",
+    "log-update": "4.0.0",
     "mkdirp": "0.5.5",
     "mz": "2.7.0",
     "react": "16.14.0",
@@ -335,7 +335,7 @@
     "typescript-plugin-styled-components": "2.0.0",
     "url-loader": "0.6.2",
     "webpack": "4.46.0",
-    "webpack-cli": "3.3.12"
+    "webpack-cli": "4.0.0"
   },
   "dependencies": {
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
