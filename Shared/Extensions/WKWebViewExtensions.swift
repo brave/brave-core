@@ -11,6 +11,17 @@ enum JavascriptError: Error {
     case invalid
 }
 
+public extension WKUserScript {
+    static func create(source: String, injectionTime: WKUserScriptInjectionTime, forMainFrameOnly: Bool, in contentWorld: WKContentWorld) -> WKUserScript {
+        
+        if #available(iOS 14.3, *) {
+            return WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: forMainFrameOnly, in: contentWorld)
+        } else {
+            return WKUserScript(source: source, injectionTime: injectionTime, forMainFrameOnly: forMainFrameOnly)
+        }
+    }
+}
+
 public extension WKWebView {
     func generateJSFunctionString(functionName: String, args: [Any?], escapeArgs: Bool = true) -> (javascript: String, error: Error?) {
         var sanitizedArgs = [String]()
@@ -58,13 +69,24 @@ public extension WKWebView {
             javascript = js.javascript
         }
         
-        // swiftlint:disable:next safe_javascript
-        evaluateJavaScript(javascript, in: nil, in: contentWorld) { result  in
-            switch result {
-                case .success(let value):
-                    completion?(value, nil)
-                case .failure(let error):
+        if #available(iOS 14.3, *) {
+            // swiftlint:disable:next safe_javascript
+            evaluateJavaScript(javascript, in: nil, in: contentWorld) { result  in
+                switch result {
+                    case .success(let value):
+                        completion?(value, nil)
+                    case .failure(let error):
+                        completion?(nil, error)
+                }
+            }
+        } else {
+            // swiftlint:disable:next safe_javascript
+            evaluateJavaScript(javascript) { result, error in
+                if let error = error {
                     completion?(nil, error)
+                } else {
+                    completion?(result, error)
+                }
             }
         }
     }

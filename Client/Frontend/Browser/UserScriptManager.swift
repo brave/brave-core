@@ -138,7 +138,7 @@ class UserScriptManager {
                 let source = try? NSString(contentsOfFile: path, encoding: String.Encoding.utf8.rawValue) as String {
                 let wrappedSource = "(function() { const SECURITY_TOKEN = '\(UserScriptManager.messageHandlerTokenString)'; \(source) })()"
                 
-                return WKUserScript(source: wrappedSource,
+                return WKUserScript.create(source: wrappedSource,
                                     injectionTime: injectionTime,
                                     forMainFrameOnly: mainFrameOnly,
                                     in: sandboxed ? .defaultClient : .page)
@@ -154,7 +154,7 @@ class UserScriptManager {
         }
         var alteredSource = source
         alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "FingerprintingProtection\(messageHandlerTokenString)", options: .literal)
-        return WKUserScript(source: alteredSource,
+        return WKUserScript.create(source: alteredSource,
                             injectionTime: .atDocumentStart,
                             forMainFrameOnly: false,
                             in: .page)
@@ -166,7 +166,7 @@ class UserScriptManager {
             return nil
         }
         
-        return WKUserScript(source: source,
+        return WKUserScript.create(source: source,
                             injectionTime: .atDocumentStart,
                             forMainFrameOnly: false,
                             in: .page)
@@ -188,7 +188,7 @@ class UserScriptManager {
         alteredSource = alteredSource.replacingOccurrences(of: "$<paymentreqcallback>", with: "PaymentRequestCallback\(securityTokenString)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "PaymentRequest\(messageHandlerTokenString)", options: .literal)
         
-        return WKUserScript(source: alteredSource,
+        return WKUserScript.create(source: alteredSource,
                             injectionTime: .atDocumentStart,
                             forMainFrameOnly: false,
                             in: .page)
@@ -204,7 +204,7 @@ class UserScriptManager {
         alteredSource = alteredSource.replacingOccurrences(of: "$<downloadManager>", with: "D\(securityTokenString)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "ResourceDownloadManager\(messageHandlerTokenString)", options: .literal)
         
-        return WKUserScript(source: alteredSource,
+        return WKUserScript.create(source: alteredSource,
                             injectionTime: .atDocumentEnd,
                             forMainFrameOnly: false,
                             in: .defaultClient)
@@ -224,7 +224,7 @@ class UserScriptManager {
         alteredSource = alteredSource.replacingOccurrences(of: "$<windowRenderer>", with: "W\(securityTokenString)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "WindowRenderHelper\(messageHandlerTokenString)", options: .literal)
         
-        return WKUserScript(source: alteredSource,
+        return WKUserScript.create(source: alteredSource,
                             injectionTime: .atDocumentStart,
                             forMainFrameOnly: false,
                             in: .defaultClient)
@@ -236,7 +236,7 @@ class UserScriptManager {
             return nil
         }
         
-        return WKUserScript(source: source,
+        return WKUserScript.create(source: source,
                             injectionTime: .atDocumentStart,
                             forMainFrameOnly: false,
                             in: .page)
@@ -249,7 +249,7 @@ class UserScriptManager {
             return nil
         }
         
-        return WKUserScript(source: source,
+        return WKUserScript.create(source: source,
                             injectionTime: .atDocumentStart,
                             forMainFrameOnly: false,
                             in: .page)
@@ -294,7 +294,7 @@ class UserScriptManager {
             alteredSource = alteredSource.replacingOccurrences(of: $0.key, with: $0.value, options: .literal)
         })
         
-        return WKUserScript(source: alteredSource,
+        return WKUserScript.create(source: alteredSource,
                             injectionTime: .atDocumentStart,
                             forMainFrameOnly: false,
                             in: .page)
@@ -318,7 +318,7 @@ class UserScriptManager {
             alteredSource = alteredSource.replacingOccurrences(of: $0.key, with: $0.value, options: .literal)
         })
         
-        return WKUserScript(source: alteredSource,
+        return WKUserScript.create(source: alteredSource,
                             injectionTime: .atDocumentStart,
                             forMainFrameOnly: false,
                             in: .page)
