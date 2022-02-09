@@ -6,10 +6,12 @@ import {
   WalletRoutes,
   WalletAccountType
 } from '../../../constants/types'
+import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
-  StyledWrapper
+  StyledWrapper,
+  AddAssetButton
 } from './style'
 
 import { PortfolioAssetItem } from '../../desktop'
@@ -21,6 +23,7 @@ export interface Props {
   defaultCurrencies: DefaultCurrencies
   selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: WalletAccountType
+  onAddAsset: () => void
 }
 
 const AssetsPanel = (props: Props) => {
@@ -29,7 +32,8 @@ const AssetsPanel = (props: Props) => {
     spotPrices,
     defaultCurrencies,
     selectedNetwork,
-    selectedAccount
+    selectedAccount,
+    onAddAsset
   } = props
 
   const getBalance = useBalance(selectedNetwork)
@@ -45,6 +49,11 @@ const AssetsPanel = (props: Props) => {
 
   return (
     <StyledWrapper>
+      <AddAssetButton
+        onClick={onAddAsset}
+      >
+        {getLocale('braveWalletAddAsset')}
+      </AddAssetButton>
       {userAssetList?.map((asset) =>
         <PortfolioAssetItem
           spotPrices={spotPrices}

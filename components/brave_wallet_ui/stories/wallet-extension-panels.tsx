@@ -676,6 +676,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         selectedAccount={selectedAccount}
                         spotPrices={[]}
                         userAssetList={AccountAssetOptions}
+                        onAddAsset={onAddAsset}
                       />
                     }
                   </ScrollContainer>

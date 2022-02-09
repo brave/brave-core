@@ -973,6 +973,7 @@ function Container (props: Props) {
                 selectedAccount={selectedAccount}
                 userAssetList={panelUserAssetList}
                 spotPrices={transactionSpotPrices}
+                onAddAsset={onAddAsset}
               />
             </ScrollContainer>
           </Panel>
