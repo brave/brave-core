@@ -63,7 +63,7 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
             @Override
             public void onClick(View v) {
                 if (getActivity() != null) {
-                    BraveSetDefaultBrowserUtils.openDefaultAppsSettings(getActivity());
+                    BraveSetDefaultBrowserUtils.setDefaultBrowser(getActivity());
                 }
                 dismiss();
             }

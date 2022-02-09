@@ -78,14 +78,14 @@ public class BraveSetDefaultBrowserUtils {
             } else if (SharedPreferencesManager.getInstance().readInt(
                                BravePreferenceKeys.BRAVE_APP_OPEN_COUNT)
                     == 5) {
-                showBraveSetDefaultBrowserDialog(activity, false, false, false);
+                showBraveSetDefaultBrowserDialog(activity, false);
 
             } else if (shouldShowBraveWasDefaultDialog()) {
                 int braveWasDefaultCount = SharedPreferencesManager.getInstance().readInt(
                         BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT);
                 SharedPreferencesManager.getInstance().writeInt(
                         BravePreferenceKeys.BRAVE_WAS_DEFAULT_ASK_COUNT, braveWasDefaultCount + 1);
-                showBraveSetDefaultBrowserDialog(activity, false, false, false);
+                showBraveSetDefaultBrowserDialog(activity, false);
             }
 
         } else if (isBraveSetAsDefaultBrowser(activity) && !wasBraveDefaultBefore()) {
@@ -93,8 +93,8 @@ public class BraveSetDefaultBrowserUtils {
         }
     }
 
-    public static void showBraveSetDefaultBrowserDialog(AppCompatActivity activity,
-            boolean isShowInAppPopup, boolean isDirectDoSetDefault, boolean isFromMenu) {
+    public static void showBraveSetDefaultBrowserDialog(
+            AppCompatActivity activity, boolean isFromMenu) {
         /* (Albert Wang): Default app settings didn't get added until API 24
          * https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
          */
@@ -105,24 +105,51 @@ public class BraveSetDefaultBrowserUtils {
             return;
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && isShowInAppPopup) {
+        if (!isBottomSheetVisible) {
+            isBottomSheetVisible = true;
+
+            if (!isFromMenu) {
+                int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
+                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
+                SharedPreferencesManager.getInstance().writeInt(
+                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
+                        braveDefaultModalCount + 1);
+            }
+
+            SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
+                    SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
+
+            bottomSheetDialog.show(
+                    activity.getSupportFragmentManager(), "SetDefaultBrowserBottomSheetFragment");
+        }
+    }
+
+    public static setDefaultBrowser(AppCompatActivity activity) {
+        int roleManagerOpenCount = SharedPreferencesManager.getInstance().readInt(
+                BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && roleManagerOpenCount < 2) {
             RoleManager roleManager = activity.getSystemService(RoleManager.class);
 
             if (roleManager.isRoleAvailable(RoleManager.ROLE_BROWSER)) {
                 if (!roleManager.isRoleHeld(RoleManager.ROLE_BROWSER)) {
+                    // save role manager open count as the second times onwards the dialog is shown,
+                    // the system allows the user to click on "don't show again".
+                    SharedPreferencesManager.getInstance().writeInt(
+                            BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT,
+                            roleManagerOpenCount + 1);
+
                     activity.startActivityForResult(
                             roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
                             DEFAULT_BROWSER_ROLE_REQUEST_CODE);
                 }
             } else {
-                showSetDefaultBottomSheet(activity, isFromMenu);
+                openDefaultAppsSettings(activity);
             }
 
-        } else if (supportsDefault() && isDirectDoSetDefault) {
+        } else if (supportsDefault()) {
             openDefaultAppsSettings(activity);
 
-        } else if (supportsDefault()) {
-            showSetDefaultBottomSheet(activity, isFromMenu);
         } else {
             ResolveInfo resolveInfo = getResolveInfo(activity);
             if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
@@ -148,27 +175,7 @@ public class BraveSetDefaultBrowserUtils {
                 browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
     }
 
-    private static void showSetDefaultBottomSheet(AppCompatActivity activity, boolean isFromMenu) {
-        if (!isBottomSheetVisible) {
-            isBottomSheetVisible = true;
-
-            if (!isFromMenu) {
-                int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
-                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
-                SharedPreferencesManager.getInstance().writeInt(
-                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
-                        braveDefaultModalCount + 1);
-            }
-
-            SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
-                    SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
-
-            bottomSheetDialog.show(
-                    activity.getSupportFragmentManager(), "SetDefaultBrowserBottomSheetFragment");
-        }
-    }
-
-    public static void openDefaultAppsSettings(Activity activity) {
+    private static void openDefaultAppsSettings(Activity activity) {
         if (activity instanceof OnBraveSetDefaultBrowserListener) {
             ((OnBraveSetDefaultBrowserListener) activity).OnCheckDefaultResume();
         }

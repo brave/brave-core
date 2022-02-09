@@ -11,6 +11,7 @@ public final class BravePreferenceKeys {
     public static final String BRAVE_BOTTOM_TOOLBAR_SET_KEY = "brave_bottom_toolbar_enabled";
     public static final String BRAVE_USE_CUSTOM_TABS = "use_custom_tabs";
     public static final String BRAVE_APP_OPEN_COUNT = "brave_app_open_count";
+    public static final String BRAVE_ROLE_MANAGER_DIALOG_COUNT = "brave_role_manager_dialog_count";
     public static final String BRAVE_IS_DEFAULT = "brave_is_default";
     public static final String BRAVE_WAS_DEFAULT_ASK_COUNT = "brave_was_default_ask_count";
     public static final String BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT =

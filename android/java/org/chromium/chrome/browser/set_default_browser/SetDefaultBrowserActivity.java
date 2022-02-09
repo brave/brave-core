@@ -34,8 +34,7 @@ public class SetDefaultBrowserActivity extends AsyncInitializationActivity {
             @Override
             public void onClick(View view) {
                 if (BraveActivity.getBraveActivity() != null) {
-                    BraveSetDefaultBrowserUtils.showBraveSetDefaultBrowserDialog(
-                            BraveActivity.getBraveActivity(), true, false, false);
+                    BraveSetDefaultBrowserUtils.setDefaultBrowser(BraveActivity.getBraveActivity());
                 }
                 finish();
             }
