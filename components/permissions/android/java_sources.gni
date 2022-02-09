@@ -1,5 +1,7 @@
 brave_components_permissions_java_sources = [
   "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/KeyringServiceFactory.java",
+  "//brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/Blockies.java",
+  "//brave/components/permissions/android/java/src/org/chromium/components/permissions/BraveAccountsListAdapter.java",
   "//brave/components/permissions/android/java/src/org/chromium/components/permissions/BravePermissionDialogDelegate.java",
   "//brave/components/permissions/android/java/src/org/chromium/components/permissions/BravePermissionDialogModel.java",
 ]

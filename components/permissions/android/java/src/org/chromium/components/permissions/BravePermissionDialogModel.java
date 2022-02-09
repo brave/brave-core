@@ -13,7 +13,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.brave_wallet.mojom.AccountInfo;
+import org.chromium.brave_wallet.mojom.BraveWalletConstants;
+import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.ui.LayoutInflaterUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.modaldialog.ModalDialogProperties;
@@ -88,11 +94,34 @@ class BravePermissionDialogModel {
         View customView =
                 LayoutInflaterUtils.inflate(context, R.layout.brave_permission_dialog, null);
 
+        BravePermissionDialogDelegate braveDelegate =
+                (BravePermissionDialogDelegate) (Object) delegate;
+        KeyringService keyringService = braveDelegate.getKeyringService();
+        assert keyringService != null;
+        keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+            if (keyringInfo == null) {
+                return;
+            }
+            RecyclerView recyclerView = (RecyclerView) customView.findViewById(R.id.accounts_list);
+            recyclerView.setAdapter(braveDelegate.getAccountsListAdapter(keyringInfo.accountInfos));
+            LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+            recyclerView.setLayoutManager(layoutManager);
+        });
+        TextView title = customView.findViewById(R.id.title);
+        title.setText(braveDelegate.getWalletConnectTitle());
+        TextView subTitle = customView.findViewById(R.id.sub_title);
+        subTitle.setText(braveDelegate.getWalletConnectSubTitle());
+        TextView accountsTitle = customView.findViewById(R.id.title_accounts);
+        accountsTitle.setText(braveDelegate.getWalletConnectAccountsTitle());
+        TextView warningTitle = customView.findViewById(R.id.warning_title);
+        warningTitle.setText(braveDelegate.getWalletWarningTitle());
+
         return new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
                 .with(ModalDialogProperties.CONTROLLER, controller)
                 .with(ModalDialogProperties.CUSTOM_VIEW, customView)
-                .with(ModalDialogProperties.POSITIVE_BUTTON_TEXT, delegate.getPrimaryButtonText())
-                .with(ModalDialogProperties.NEGATIVE_BUTTON_TEXT, delegate.getSecondaryButtonText())
+                .with(ModalDialogProperties.POSITIVE_BUTTON_TEXT,
+                        braveDelegate.getConnectButtonText())
+                .with(ModalDialogProperties.NEGATIVE_BUTTON_TEXT, braveDelegate.getBackButtonText())
                 .with(ModalDialogProperties.CONTENT_DESCRIPTION, delegate.getMessageText())
                 .with(ModalDialogProperties.FILTER_TOUCH_FOR_SECURITY, true)
                 .with(ModalDialogProperties.TOUCH_FILTERED_CALLBACK, touchFilteredCallback)
