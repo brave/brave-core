@@ -148,7 +148,8 @@ interface PanelHandlerFactory {
                      pending_receiver<AssetRatioService> asset_ratio_service,
                      pending_receiver<KeyringService> keyring_service,
                      pending_receiver<BlockchainRegistry> blockchain_registry,
-                     pending_receiver<EthTxService> eth_tx_service,
+                     pending_receiver<TxService> tx_service,
+                     pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                      pending_receiver<BraveWalletService> brave_wallet_service);
 };
 
@@ -162,7 +163,8 @@ interface PageHandlerFactory {
                     pending_receiver<AssetRatioService> asset_ratio_service,
                     pending_receiver<KeyringService> keyring_service,
                     pending_receiver<BlockchainRegistry> blockchain_registry,
-                    pending_receiver<EthTxService> eth_tx_service,
+                    pending_receiver<TxService> tx_service,
+                    pending_receiver<EthTxManagerProxy> eth_tx_manager_proxy,
                     pending_receiver<BraveWalletService> brave_wallet_service);
 
 };
@@ -716,7 +718,7 @@ struct TransactionInfo {
   mojo_base.mojom.TimeDelta confirmed_time;
 };
 
-interface EthTxServiceObserver {
+interface TxServiceObserver {
   // Fired when a new unapproved transaction is encountered
   OnNewUnapprovedTx(TransactionInfo tx_info);
 
@@ -730,19 +732,37 @@ interface EthTxServiceObserver {
 
 // For transaction management such as creation, broadcasting, and storing
 // transactions.
-interface EthTxService {
+interface TxService {
   // Used to add a transaction
-  AddUnapprovedTransaction(TxData tx_data, string from) => (bool success, string tx_meta_id, string error_message);
-
-  // Used to add an EIP 1559 transaction
-  AddUnapproved1559Transaction(TxData1559 tx_data, string from) => (bool success, string tx_meta_id, string error_message);
+  AddUnapprovedTransaction(TxDataUnion tx_data_union, string from) => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
-  ApproveTransaction(string tx_meta_id) => (bool status);
+  ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status);
 
   // Used to reject a transaction
-  RejectTransaction(string tx_meta_id) => (bool status);
+  RejectTransaction(CoinType coin_type, string tx_meta_id) => (bool status);
 
+  // Obtains a list of all transactions from an address.
+  // This returns different data depending on which network is currently selected in JsonRpcService
+  GetAllTransactionInfo(CoinType coin_type, string from) => (array<TransactionInfo> transaction_infos);
+
+  // Used to speed-up or cancel a transaction
+  SpeedupOrCancelTransaction(CoinType coin_type, string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);
+
+  // Used to retry a transaction
+  RetryTransaction(CoinType coin_type, string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
+
+  GetTransactionMessageToSign(CoinType coin_type, string tx_meta_id) => (string? message);
+
+  // Adds an observer for TxService
+  AddObserver(pending_remote<TxServiceObserver> observer);
+
+  // Resets the keyring and the related preferences
+  Reset();
+};
+
+// Transaction related APIs specific to EVM.
+interface EthTxManagerProxy {
   // Used for modifying transaction data
   SetGasPriceAndLimitForUnapprovedTransaction(string tx_meta_id, string gas_price, string gas_limit) => (bool success);
   SetGasFeeAndLimitForUnapprovedTransaction(string tx_meta_id, string max_priority_fee_per_gas, string max_fee_per_gas, string gas_limit) => (bool success);
@@ -754,27 +774,11 @@ interface EthTxService {
   MakeERC20ApproveData(string spender_address, string amount) => (bool success, array<uint8> data);
   MakeERC721TransferFromData(string from, string to, string token_id, string contract_address) => (bool success, array<uint8> data);
 
-  // Obtains a list of all transactions from an address.
-  // This returns different data depending on which network is currently selected in JsonRpcService
-  GetAllTransactionInfo(string from) => (array<TransactionInfo> transaction_infos);
-
-  // Adds an observer for EthTxService
-  AddObserver(pending_remote<EthTxServiceObserver> observer);
-
-  // Used to speed-up or cancel a transaction
-  SpeedupOrCancelTransaction(string tx_meta_id, bool cancel) => (bool success, string tx_meta_id, string error_message);
-
-  // Used to retry a transaction
-  RetryTransaction(string tx_meta_id) => (bool success, string tx_meta_id, string error_message);
-  GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
-  GetTransactionMessageToSign(string tx_meta_id) => (string? message);
-  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status);
-
   // Gas estimation API via eth_feeHistory API
   GetGasEstimation1559() => (GasEstimation1559? estimation);
 
-  // Resets the keyring and the related preferences
-  Reset();
+  GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
+  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status);
 };
 
 interface BraveWalletServiceObserver {
