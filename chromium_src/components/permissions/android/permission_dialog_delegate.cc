@@ -5,11 +5,15 @@
 
 #include "components/permissions/android/permission_dialog_delegate.h"
 
+#include <string>
+#include <vector>
+
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
 #include "base/android/scoped_java_ref.h"
 #include "brave/components/brave_wallet/browser/ethereum_permission_utils.h"
 #include "brave/components/permissions/android/jni_headers/BravePermissionDialogDelegate_jni.h"
+#include "brave/components/permissions/contexts/brave_ethereum_permission_context.h"
 #include "brave/components/permissions/permission_lifetime_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/permissions/android/jni_headers/PermissionDialogController_jni.h"
@@ -86,6 +90,53 @@ void AddWalletParamsFromPermissionRequests(
     return;
   }
   Java_BravePermissionDialogDelegate_setUseWalletLayout(env, j_delegate, true);
+  Java_BravePermissionDialogDelegate_setWalletConnectTitle(
+      env, j_delegate,
+      base::android::ConvertUTF16ToJavaString(
+          env, l10n_util::GetStringUTF16(
+                   IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_TITLE)));
+  Java_BravePermissionDialogDelegate_setWalletConnectSubTitle(
+      env, j_delegate,
+      base::android::ConvertUTF16ToJavaString(
+          env, l10n_util::GetStringUTF16(
+                   IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_SUB_TITLE)));
+  Java_BravePermissionDialogDelegate_setWalletConnectAccountsTitle(
+      env, j_delegate,
+      base::android::ConvertUTF16ToJavaString(
+          env, l10n_util::GetStringUTF16(
+                   IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_ACCOUNTS_TITLE)));
+  Java_BravePermissionDialogDelegate_setWalletWarningTitle(
+      env, j_delegate,
+      base::android::ConvertUTF16ToJavaString(
+          env, l10n_util::GetStringUTF16(
+                   IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_WARNING_TITLE)));
+  Java_BravePermissionDialogDelegate_setConnectButtonText(
+      env, j_delegate,
+      base::android::ConvertUTF16ToJavaString(
+          env, l10n_util::GetStringUTF16(
+                   IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_CONNECT_BUTTON_TEXT)));
+  Java_BravePermissionDialogDelegate_setBackButtonText(
+      env, j_delegate,
+      base::android::ConvertUTF16ToJavaString(
+          env, l10n_util::GetStringUTF16(
+                   IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_BACK_BUTTON_TEXT)));
+}
+
+void ApplyBraveWalletPermissions(JNIEnv* env,
+                                 const JavaParamRef<jobject>& obj,
+                                 PermissionPromptAndroid* permission_prompt) {
+  std::vector<std::string> accounts;
+  base::android::AppendJavaStringArrayToStringVector(
+      env, Java_BravePermissionDialogDelegate_getSelectedAccounts(env, obj),
+      &accounts);
+  permissions::BraveEthereumPermissionContext::AcceptOrCancel(
+      accounts,
+      const_cast<content::WebContents*>(permission_prompt->web_contents()));
+}
+
+void CancelBraveWalletPermissions(PermissionPromptAndroid* permission_prompt) {
+  permissions::BraveEthereumPermissionContext::Cancel(
+      const_cast<content::WebContents*>(permission_prompt->web_contents()));
 }
 
 void Java_PermissionDialogController_createDialog_BraveImpl(
@@ -98,20 +149,23 @@ void Java_PermissionDialogController_createDialog_BraveImpl(
 }  // namespace
 }  // namespace permissions
 
-#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT                                \
-  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);             \
-  std::vector<PermissionRequest*> requests =                                   \
-      permission_prompt_->delegate()->Requests();                              \
-  if (requests.size() != 0 &&                                                  \
-      requests[0]->request_type() == permissions::RequestType::kBraveEthereum) \
-    return;
+#define BRAVE_PERMISSION_DIALOG_DELEGATE_ACCEPT                               \
+  ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);            \
+  std::vector<PermissionRequest*> requests =                                  \
+      permission_prompt_->delegate()->Requests();                             \
+  if (requests.size() != 0 && requests[0]->request_type() ==                  \
+                                  permissions::RequestType::kBraveEthereum) { \
+    ApplyBraveWalletPermissions(env, obj, permission_prompt_);                \
+    return;                                                                   \
+  }
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_CANCEL                                \
   ApplyLifetimeToPermissionRequests(env, obj, permission_prompt_);             \
   std::vector<PermissionRequest*> requests =                                   \
       permission_prompt_->delegate()->Requests();                              \
   if (requests.size() != 0 &&                                                  \
       requests[0]->request_type() == permissions::RequestType::kBraveEthereum) \
-    return;
+    CancelBraveWalletPermissions(permission_prompt_);                          \
+  return;
 #define BRAVE_PERMISSION_DIALOG_DELEGATE_ADD_WALLET_PARAMS \
   AddWalletParamsFromPermissionRequests(env, j_delegate_, permission_prompt_);
 #define Java_PermissionDialogController_createDialog \

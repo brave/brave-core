@@ -941,12 +941,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (activity == null) {
             return;
         }
-        DappsDialog dappsDialog =
-                DappsDialog.newInstance(getContext());
+        DappsDialog dappsDialog = DappsDialog.newInstance(getContext());
         dappsDialog.showOnboarding(Utils.shouldShowCryptoOnboarding());
         // dappsBottomSheetDialogFragment.showOnboarding(Utils.shouldShowCryptoOnboarding());
         // dappsBottomSheetDialogFragment.show(
-        //         activity.getSupportFragmentManager(), DappsBottomSheetDialogFragment.TAG_FRAGMENT);
+        //         activity.getSupportFragmentManager(),
+        //         DappsBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     @Override

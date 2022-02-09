@@ -110,7 +110,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/WalletMojoObserverBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AssetsPricesHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/AsyncUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/Blockies.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/ItemOffsetDecoration.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/KeystoreHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/util/NavigationItem.java",

@@ -2,5 +2,7 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-brave_java_components_resources =
-    [ "//brave/android/java/res_components/layout/brave_permission_dialog.xml" ]
+brave_java_components_resources = [
+  "//brave/android/java/res_components/layout/brave_permission_dialog.xml",
+  "//brave/android/java/res_components/layout/brave_wallet_accounts_list_item.xml",
+]
