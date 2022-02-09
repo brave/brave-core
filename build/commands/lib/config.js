@@ -40,7 +40,7 @@ var packageConfig = function (key, sourceDir = rootDir) {
   // packages.config should include version string.
   let obj = Object.assign({}, packages.config, { version: packages.version })
   for (var i = 0, len = key.length; i < len; i++) {
-    if (!obj) {
+    if (obj === undefined) {
       return obj
     }
     obj = obj[key[i]]
@@ -54,11 +54,20 @@ var packageConfigBraveCore = function (key) {
 
 const getNPMConfig = (key) => {
   if (!NpmConfig) {
-    const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
+    const list = run(npmCommand, ['config', 'list', '--json'])
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
-  return NpmConfig[key.join('-').replace(/_/g, '-')] || packageConfigBraveCore(key) || packageConfig(key)
+  // NpmConfig has the multiple copy of the same variable: one from .npmrc
+  // (that we want to) and one from the environment.
+  // https://docs.npmjs.com/cli/v7/using-npm/config#environment-variables
+  const npmConfigValue = NpmConfig[key.join('_')]
+  if (npmConfigValue !== undefined)
+    return npmConfigValue
+  const packageConfigBraveCoreValue = packageConfigBraveCore(key)
+  if (packageConfigBraveCoreValue !== undefined)
+    return packageConfigBraveCoreValue
+  return packageConfig(key)
 }
 
 const parseExtraInputs = (inputs, accumulator, callback) => {
