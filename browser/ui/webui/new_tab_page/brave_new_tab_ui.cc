@@ -18,15 +18,19 @@
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/common/features.h"
+#include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
+#include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/background/ntp_custom_background_service.h"
 #include "chrome/browser/search/background/ntp_custom_background_service_factory.h"
-#include "chrome/browser/ui/webui/new_tab_page/untrusted_source.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "ui/base/l10n/l10n_util.h"
+
+using ntp_background_images::NTPCustomBackgroundImagesServiceFactory;
+using ntp_background_images::NTPCustomImagesSource;
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     : ui::MojoWebUIController(
@@ -48,12 +52,12 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, name, kBraveNewTabGenerated, kBraveNewTabGeneratedSize,
       IDR_BRAVE_NEW_TAB_HTML);
-  auto* ntp_custom_background_service =
-      NtpCustomBackgroundServiceFactory::GetForProfile(profile);
-
-  source->AddBoolean(
-      "featureCustomBackgroundEnabled",
-      !ntp_custom_background_service->IsCustomBackgroundDisabledByPolicy());
+  if (auto* ntp_custom_background_service =
+          NtpCustomBackgroundServiceFactory::GetForProfile(profile)) {
+    source->AddBoolean(
+        "featureCustomBackgroundEnabled",
+        !ntp_custom_background_service->IsCustomBackgroundDisabledByPolicy());
+  }
   // Let frontend know about feature flags
   source->AddBoolean(
       "featureFlagBraveNewsEnabled",
@@ -64,8 +68,14 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       base::WrapUnique(new TopSitesMessageHandler(profile)));
 
   // For custom background images.
-  content::URLDataSource::Add(profile,
-                              std::make_unique<UntrustedSource>(profile));
+  if (auto* ntp_custom_background_images_service =
+          NTPCustomBackgroundImagesServiceFactory::GetForContext(profile)) {
+    content::URLDataSource::Add(
+        profile,
+        std::make_unique<NTPCustomImagesSource>(
+            ntp_custom_background_images_service,
+            std::make_unique<ImageDecoderImpl>()));
+  }
 }
 
 BraveNewTabUI::~BraveNewTabUI() = default;

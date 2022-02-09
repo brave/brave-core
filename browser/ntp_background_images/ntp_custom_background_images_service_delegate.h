@@ -25,7 +25,7 @@ class NTPCustomBackgroundImagesServiceDelegate
  private:
   // NTPCustomBackgroundImagesService::Delegate overrides:
   bool IsCustomBackgroundEnabled() override;
-  GURL GetCustomBackgroundImageURL() override;
+  base::FilePath GetCustomBackgroundImageLocalFilePath() override;
 
   Profile* profile_ = nullptr;
 };

@@ -12,6 +12,7 @@
 
 namespace base {
 class Value;
+class FilePath;
 }  // namespace base
 
 class GURL;
@@ -23,7 +24,7 @@ class NTPCustomBackgroundImagesService : public KeyedService {
   class Delegate {
    public:
     virtual bool IsCustomBackgroundEnabled() = 0;
-    virtual GURL GetCustomBackgroundImageURL() = 0;
+    virtual base::FilePath GetCustomBackgroundImageLocalFilePath() = 0;
 
     virtual ~Delegate() = default;
   };
@@ -38,6 +39,7 @@ class NTPCustomBackgroundImagesService : public KeyedService {
 
   bool ShouldShowCustomBackground() const;
   base::Value GetBackground() const;
+  base::FilePath GetImageFilePath();
 
  private:
   // KeyedService overrides:

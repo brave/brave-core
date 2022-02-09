@@ -53,7 +53,6 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void FileSelectionCanceled(void* params) override;
 
   bool IsCustomBackgroundEnabled() const;
-  GURL GetCustomBackgroundImageURL() const;
 
   mojo::Receiver<brave_new_tab_page::mojom::PageHandler> page_handler_;
   mojo::Remote<brave_new_tab_page::mojom::Page> page_;

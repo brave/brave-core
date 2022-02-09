@@ -5,11 +5,13 @@
 
 #include "brave/browser/ntp_background_images/ntp_custom_background_images_service_delegate.h"
 
+#include "base/files/file_path.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/background/ntp_background_data.h"
 #include "chrome/browser/search/background/ntp_custom_background_service.h"
 #include "chrome/browser/search/background/ntp_custom_background_service_factory.h"
 #include "chrome/common/pref_names.h"
+#include "chrome/common/url_constants.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
@@ -31,18 +33,14 @@ bool NTPCustomBackgroundImagesServiceDelegate::IsCustomBackgroundEnabled() {
       prefs::kNtpCustomBackgroundLocalToDevice);
 }
 
-GURL NTPCustomBackgroundImagesServiceDelegate::GetCustomBackgroundImageURL() {
-  DCHECK(IsCustomBackgroundEnabled());
-  auto* service = NtpCustomBackgroundServiceFactory::GetForProfile(profile_);
-  DCHECK(service);
-  if (!service)
-    return GURL();
+base::FilePath NTPCustomBackgroundImagesServiceDelegate::GetCustomBackgroundImageLocalFilePath() {
+  if (!IsCustomBackgroundEnabled())
+    return base::FilePath();
 
-  auto background = service->GetCustomBackground();
-  if (!background)
-    return GURL();
+  return profile_->GetPath().AppendASCII(
+      chrome::kChromeUIUntrustedNewTabPageBackgroundFilename);
 
-  return background->custom_background_url;
+  return base::FilePath();
 }
 
 }  // namespace ntp_background_images

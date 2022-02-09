@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/files/file_path.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/background/ntp_background_data.h"
 #include "chrome/browser/search/background/ntp_custom_background_service.h"
@@ -80,25 +81,12 @@ bool BraveNewTabPageHandler::IsCustomBackgroundEnabled() const {
       prefs::kNtpCustomBackgroundLocalToDevice);
 }
 
-GURL BraveNewTabPageHandler::GetCustomBackgroundImageURL() const {
-  auto* service = NtpCustomBackgroundServiceFactory::GetForProfile(profile_);
-  DCHECK(service);
-  if (!service)
-    return GURL();
-
-  auto background = service->GetCustomBackground();
-  if (!background)
-    return GURL();
-
-  return background->custom_background_url;
-}
-
 void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
   brave_new_tab_page::mojom::CustomBackgroundPtr value =
       brave_new_tab_page::mojom::CustomBackground::New();
   // Pass empty struct when custom background is disabled.
   if (IsCustomBackgroundEnabled())
-    value->url = GetCustomBackgroundImageURL();
+    value->url = GURL(ntp_background_images::kCustomWallpaperURL);
   page_->OnBackgroundUpdated(std::move(value));
 }
 

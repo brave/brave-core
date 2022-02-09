@@ -10,8 +10,12 @@ namespace ntp_background_images {
 
 constexpr char kBackgroundWallpaperHost[] = "background-wallpaper";
 constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
+constexpr char kCustomWallpaperHost[] = "custom-wallpaper";
 constexpr char kSuperReferralPath[] = "super-referral/";
 constexpr char kSponsoredImagesPath[] = "sponsored-images/";
+
+constexpr char kCustomWallpaperFileName[] = "background.jpg";
+constexpr char kCustomWallpaperURL[] = "chrome://custom-wallpaper/background.jpg";
 
 constexpr char kCampaignsKey[] = "campaigns";
 

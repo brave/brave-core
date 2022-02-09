@@ -62,6 +62,8 @@ static_library("browser") {
     sources += [
       "ntp_custom_background_images_service.cc",
       "ntp_custom_background_images_service.h",
+      "ntp_custom_images_source.cc",
+      "ntp_custom_images_source.h",
     ]
   }
 }

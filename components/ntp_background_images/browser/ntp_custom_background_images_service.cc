@@ -5,10 +5,13 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
 
+#include <string>
 #include <utility>
 
+#include "base/files/file_path.h"
 #include "base/values.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
+#include "content/public/common/url_constants.h"
 #include "url/gurl.h"
 
 namespace ntp_background_images {
@@ -27,14 +30,13 @@ bool NTPCustomBackgroundImagesService::ShouldShowCustomBackground() const {
 
 base::Value NTPCustomBackgroundImagesService::GetBackground() const {
   base::Value data(base::Value::Type::DICTIONARY);
-  const GURL url = delegate_->GetCustomBackgroundImageURL();
-  if (url.is_empty())
-    return data;
-
-  data.SetStringKey(kWallpaperImageURLKey,
-                    delegate_->GetCustomBackgroundImageURL().spec());
+  data.SetStringKey(kWallpaperImageURLKey, kCustomWallpaperURL);
   data.SetBoolKey(kIsBackgroundKey, true);
   return data;
+}
+
+base::FilePath NTPCustomBackgroundImagesService::GetImageFilePath() {
+  return delegate_->GetCustomBackgroundImageLocalFilePath();
 }
 
 void NTPCustomBackgroundImagesService::Shutdown() {
