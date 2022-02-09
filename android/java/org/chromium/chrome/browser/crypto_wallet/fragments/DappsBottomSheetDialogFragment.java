@@ -169,5 +169,4 @@ public class DappsBottomSheetDialogFragment
         mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
         updateView(getView());
     }
-
 }

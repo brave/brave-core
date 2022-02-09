@@ -65,7 +65,7 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.crypto_wallet.fragments.DappsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.crypto_wallet.dialog.DappsDialog;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltipUtils;
@@ -941,11 +941,12 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (activity == null) {
             return;
         }
-        DappsBottomSheetDialogFragment dappsBottomSheetDialogFragment =
-                DappsBottomSheetDialogFragment.newInstance();
-        dappsBottomSheetDialogFragment.showOnboarding(Utils.shouldShowCryptoOnboarding());
-        dappsBottomSheetDialogFragment.show(
-                activity.getSupportFragmentManager(), DappsBottomSheetDialogFragment.TAG_FRAGMENT);
+        DappsDialog dappsDialog =
+                DappsDialog.newInstance(getContext());
+        dappsDialog.showOnboarding(Utils.shouldShowCryptoOnboarding());
+        // dappsBottomSheetDialogFragment.showOnboarding(Utils.shouldShowCryptoOnboarding());
+        // dappsBottomSheetDialogFragment.show(
+        //         activity.getSupportFragmentManager(), DappsBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     @Override

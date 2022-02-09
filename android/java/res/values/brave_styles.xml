@@ -147,10 +147,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/brave_wallet_dapp_text_color</item>
         <item name="android:background">@drawable/crypto_wallet_dapps_button</item>
-        <item name="android:paddingStart">4dp</item>
-        <item name="android:paddingEnd">4dp</item>
-        <item name="android:paddingTop">4dp</item>
-        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>
     </style>
@@ -159,5 +159,16 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="BraveWalletDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowMinWidthMajor">98%</item>
+        <item name="android:windowMinWidthMinor">98%</item>
+        <item name="android:windowAnimationStyle">@style/BraveWalletDialogAnimation</item>
+    </style>
+
+    <style name="BraveWalletDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in</item>
+        <item name="android:windowExitAnimation">@anim/slide_out</item>
     </style>
 </resources>
