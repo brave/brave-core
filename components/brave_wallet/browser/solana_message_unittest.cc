@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/test/gtest_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -18,11 +19,10 @@ TEST(SolanaMessageUnitTest, Serialize) {
   // Test serializing a message for transfering SOL.
   std::string from_account = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
   std::string to_account = "3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD";
-  std::string system_program_ID = "11111111111111111111111111111111";
 
   SolanaInstruction instruction(
       // Program ID
-      system_program_ID,
+      kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
@@ -73,7 +73,7 @@ TEST(SolanaMessageUnitTest, GetUniqueAccountMetas) {
   std::vector<SolanaAccountMeta> unique_account_metas;
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
 
-  std::string program1 = "11111111111111111111111111111111";
+  std::string program1 = kSolanaSystemProgramId;
   std::string program2 = "Config1111111111111111111111111111111111111";
   std::string account1 = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
   std::string account2 = "3QpJ3j1vq1PfqJdvCcHKWuePykqoUYSvxyRb3Cnh79BD";

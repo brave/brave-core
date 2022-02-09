@@ -37,7 +37,7 @@ TEST(SolanaUtilsUnitTest, Base58Decode) {
   std::vector<uint8_t> program_bytes;
   std::vector<uint8_t> recent_blockhash_bytes;
   std::string account = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
-  std::string program = "11111111111111111111111111111111";
+  std::string program = kSolanaSystemProgramId;
   std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
 
   EXPECT_TRUE(Base58Decode(account, &account_bytes, kSolanaPubkeySize));

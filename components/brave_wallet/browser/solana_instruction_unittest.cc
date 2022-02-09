@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/test/gtest_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -18,11 +19,10 @@ TEST(SolanaInstructionUnitTest, Serialize) {
   // itself.
   std::string from_account = "3Lu176FQzbQJCc8iL9PnmALbpMPhZeknoturApnXRDJw";
   std::string to_account = from_account;
-  std::string system_program_ID = "11111111111111111111111111111111";
 
   SolanaInstruction instruction(
       // Program ID
-      system_program_ID,
+      kSolanaSystemProgramId,
       // Accounts
       {SolanaAccountMeta(from_account, true, true),
        SolanaAccountMeta(to_account, false, true)},
@@ -31,7 +31,7 @@ TEST(SolanaInstructionUnitTest, Serialize) {
 
   std::vector<SolanaAccountMeta> account_metas = {
       SolanaAccountMeta(from_account, true, true),
-      SolanaAccountMeta(system_program_ID, false, false)};
+      SolanaAccountMeta(kSolanaSystemProgramId, false, false)};
   std::vector<uint8_t> bytes;
   EXPECT_TRUE(instruction.Serialize(account_metas, &bytes));
   std::vector<uint8_t> expected_bytes = {
@@ -51,8 +51,8 @@ TEST(SolanaInstructionUnitTest, Serialize) {
 
   // Account not found.
   EXPECT_FALSE(instruction.Serialize(
-      {SolanaAccountMeta(system_program_ID, false, false),
-       SolanaAccountMeta(system_program_ID, false, false)},
+      {SolanaAccountMeta(kSolanaSystemProgramId, false, false),
+       SolanaAccountMeta(kSolanaSystemProgramId, false, false)},
       &bytes));
 
   // Input account meta length > uint8_t max.
@@ -69,7 +69,7 @@ TEST(SolanaInstructionUnitTest, Serialize) {
   // Instruction account size > uint8_t max.
   SolanaInstruction invalid_instruction(
       // Program ID
-      system_program_ID,
+      kSolanaSystemProgramId,
       // Accounts
       oversize_account_metas,
       // Data

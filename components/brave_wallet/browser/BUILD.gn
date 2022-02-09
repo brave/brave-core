@@ -67,6 +67,8 @@ static_library("browser") {
     "solana_account_meta.h",
     "solana_instruction.cc",
     "solana_instruction.h",
+    "solana_instruction_builder.cc",
+    "solana_instruction_builder.h",
     "solana_message.cc",
     "solana_message.h",
     "solana_requests.cc",
