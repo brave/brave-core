@@ -1,13 +1,9 @@
 import * as React from 'react'
 import { BraveWallet } from '../../../constants/types'
-import { SelectNetwork, Tooltip } from '../../shared'
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
+import { SelectNetwork, Tooltip, SelectNetworkButton } from '../../shared'
 // Styled Components
 import {
   StyledWrapper,
-  OvalButton,
-  OvalButtonText,
-  CaratDownIcon,
   DropDown
 } from './style'
 
@@ -27,10 +23,10 @@ function SelectNetworkDropdown (props: Props) {
       <Tooltip
         text={selectedNetwork.chainName}
       >
-        <OvalButton onClick={onClick}>
-          <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
-          <CaratDownIcon />
-        </OvalButton>
+        <SelectNetworkButton
+          onClick={onClick}
+          selectedNetwork={selectedNetwork}
+        />
       </Tooltip>
       {showNetworkDropDown &&
         <DropDown>

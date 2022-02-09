@@ -5,7 +5,7 @@ import {
   ConnectedBottomNav,
   ConnectedHeader
 } from '../'
-import { Tooltip } from '../../shared'
+import { Tooltip, SelectNetworkButton } from '../../shared'
 import {
   formatFiatAmountWithCommasAndDecimals,
   formatTokenAmountWithCommasAndDecimals
@@ -25,7 +25,6 @@ import {
   OvalButton,
   OvalButtonText,
   BigCheckMark,
-  CaratDownIcon,
   StatusRow,
   BalanceColumn,
   SwitchIcon,
@@ -34,7 +33,6 @@ import {
 
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
 // Hooks
@@ -154,10 +152,11 @@ const ConnectedPanel = (props: Props) => {
             text={selectedNetwork.chainName}
             positionRight={true}
           >
-            <OvalButton onClick={navigate('networks')}>
-              <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
-              <CaratDownIcon />
-            </OvalButton>
+            <SelectNetworkButton
+              onClick={navigate('networks')}
+              selectedNetwork={selectedNetwork}
+              isPanel={true}
+            />
           </Tooltip>
         </StatusRow>
         <BalanceColumn>
