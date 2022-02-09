@@ -193,4 +193,9 @@
 
     <color name="rewards_panel_foreground_color">#80000000</color>
     <color name="rewards_divider_color">#E9E9F4</color>
+
+    <!--  Brave Wallet DApp  -->
+    <color name="brave_wallet_dapp_button_color">#FFFFFF</color>
+    <color name="brave_wallet_dapp_bg_color">@color/brave_action_color</color>
+    <color name="brave_wallet_dapp_text_color">#171919</color>
 </resources>

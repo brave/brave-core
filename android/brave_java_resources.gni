@@ -566,6 +566,7 @@ brave_java_resources = [
   "java/res/drawable/card_bg.xml",
   "java/res/drawable/circular_progress.xml",
   "java/res/drawable/crypto_wallet_blue_button.xml",
+  "java/res/drawable/crypto_wallet_dapps_button.xml",
   "java/res/drawable/default_dot.xml",
   "java/res/drawable/default_indicator.xml",
   "java/res/drawable/ic_accessibility.xml",
