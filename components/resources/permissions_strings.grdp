@@ -21,4 +21,22 @@
   <message name="IDS_PERMISSIONS_BUBBLE_SITE_PERMISSION_LINK" desc="Site permission link in the footnote description.">
     site permission
   </message>
+  <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_TITLE" desc="Title text for a request to connect a wallet.">
+    Connect With Brave Wallet
+  </message>
+  <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_SUB_TITLE" desc="Sub title text for a request to connect a wallet.">
+    Select account(s)
+  </message>
+  <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_ACCOUNTS_TITLE" desc="Title text for a request to connect a wallet for an accounts section.">
+    New account
+  </message>
+  <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_WARNING_TITLE" desc="Title text for a request to connect a wallet for a warning section.">
+    Only connect with sites you trust.
+  </message>
+  <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_CONNECT_BUTTON_TEXT" desc="Connect button text for Brave wallet permission dialog.">
+    Connect
+  </message>
+  <message name="IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_BACK_BUTTON_TEXT" desc="Back button text for Brave wallet permission dialog.">
+    Back
+  </message>
 </grit-part>

@@ -7,6 +7,7 @@ package org.chromium.components.permissions;
 
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
+import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
@@ -25,6 +26,13 @@ public class BravePermissionDialogDelegate implements ConnectionErrorHandler {
 
     private boolean mUseWalletLayout;
     private KeyringService mKeyringService;
+    private String mConnectWalletTitle;
+    private String mConnectWalletSubTitle;
+    private String mConnectWalletAccountsTitle;
+    private String mWalletWarningTitle;
+    private String mConnectButtonText;
+    private String mBackButtonText;
+    private BraveAccountsListAdapter mAccountsListAdapter;
 
     public BravePermissionDialogDelegate() {
         mSelectedLifetimeOption = -1;
@@ -72,6 +80,72 @@ public class BravePermissionDialogDelegate implements ConnectionErrorHandler {
     }
 
     @CalledByNative
+    public void setWalletConnectTitle(String title) {
+        mConnectWalletTitle = title;
+    }
+
+    public String getWalletConnectTitle() {
+        return mConnectWalletTitle;
+    }
+
+    @CalledByNative
+    public void setWalletConnectSubTitle(String subTitle) {
+        mConnectWalletSubTitle = subTitle;
+    }
+
+    public String getWalletConnectSubTitle() {
+        return mConnectWalletSubTitle;
+    }
+
+    @CalledByNative
+    public void setWalletConnectAccountsTitle(String subTitle) {
+        mConnectWalletAccountsTitle = subTitle;
+    }
+
+    public String getWalletConnectAccountsTitle() {
+        return mConnectWalletAccountsTitle;
+    }
+
+    @CalledByNative
+    public void setWalletWarningTitle(String warningTitle) {
+        mWalletWarningTitle = warningTitle;
+    }
+
+    public String getWalletWarningTitle() {
+        return mWalletWarningTitle;
+    }
+
+    @CalledByNative
+    public void setConnectButtonText(String connectButtonText) {
+        mConnectButtonText = connectButtonText;
+    }
+
+    public String getConnectButtonText() {
+        return mConnectButtonText;
+    }
+
+    @CalledByNative
+    public void setBackButtonText(String backButtonText) {
+        mBackButtonText = backButtonText;
+    }
+
+    public String getBackButtonText() {
+        return mBackButtonText;
+    }
+
+    @CalledByNative
+    public String[] getSelectedAccounts() {
+        assert mAccountsListAdapter != null;
+        AccountInfo[] accountInfo = mAccountsListAdapter.getCheckedAccounts();
+        String[] accounts = new String[accountInfo.length];
+        for (int i = 0; i < accountInfo.length; i++) {
+            accounts[i] = accountInfo[i].address;
+        }
+
+        return accounts;
+    }
+
+    @CalledByNative
     public void disconnectMojoServices() {
         if (mKeyringService == null) {
             return;
@@ -93,5 +167,16 @@ public class BravePermissionDialogDelegate implements ConnectionErrorHandler {
         }
 
         mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
+    }
+
+    public KeyringService getKeyringService() {
+        return mKeyringService;
+    }
+
+    public BraveAccountsListAdapter getAccountsListAdapter(AccountInfo[] accountInfo) {
+        assert mAccountsListAdapter == null;
+        mAccountsListAdapter = new BraveAccountsListAdapter(accountInfo);
+
+        return mAccountsListAdapter;
     }
 }

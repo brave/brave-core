@@ -21,8 +21,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.base.Log;
-import org.chromium.chrome.R;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -31,8 +31,8 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
-public class DappsBottomSheetDialogFragment
-        extends BottomSheetDialogFragment implements View.OnClickListener, ConnectionErrorHandler, KeyringServiceObserver {
+public class DappsBottomSheetDialogFragment extends BottomSheetDialogFragment
+        implements View.OnClickListener, ConnectionErrorHandler, KeyringServiceObserver {
     public static final String TAG_FRAGMENT = DappsBottomSheetDialogFragment.class.getName();
 
     private View mMainView;
@@ -72,14 +72,17 @@ public class DappsBottomSheetDialogFragment
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view =
-                LayoutInflater.from(getContext()).inflate(R.layout.dapps_bottom_sheet, container, false);
-        int displayHeight = ConfigurationUtils.getDisplayMetrics(getActivity()).get(ConfigurationUtils.HEIGHT);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        final View view = LayoutInflater.from(getContext())
+                                  .inflate(R.layout.dapps_bottom_sheet, container, false);
+        int displayHeight =
+                ConfigurationUtils.getDisplayMetrics(getActivity()).get(ConfigurationUtils.HEIGHT);
 
         mMainView = view;
         mbtUnlock = mMainView.findViewById(R.id.unlock);
-        view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        view.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         view.getLayoutParams().height = displayHeight / 2; // set sheet height as half of the screen
         view.requestLayout();
 

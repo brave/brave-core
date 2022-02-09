@@ -17,8 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.chromium.chrome.R;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -28,8 +28,7 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.PropertyModel;
 
-public class DappsDialog
-        extends Dialog implements ConnectionErrorHandler, KeyringServiceObserver {
+public class DappsDialog extends Dialog implements ConnectionErrorHandler, KeyringServiceObserver {
     public static final String TAG_FRAGMENT = DappsDialog.class.getName();
 
     private Button mbtUnlock;
@@ -84,7 +83,6 @@ public class DappsDialog
             }
             dismiss();
         });
-
     }
 
     private void openWallet() {
