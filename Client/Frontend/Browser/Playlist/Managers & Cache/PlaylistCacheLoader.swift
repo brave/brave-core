@@ -378,7 +378,7 @@ class PlaylistWebLoader: UIView {
         replacements.forEach({
             alteredSource = alteredSource.replacingOccurrences(of: $0.key, with: $0.value, options: .literal)
         })
-        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
+        return WKUserScript.create(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false, in: .page)
     }()
     
     private weak var certStore: CertStore?
