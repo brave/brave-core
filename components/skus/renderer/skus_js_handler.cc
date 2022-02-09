@@ -5,6 +5,7 @@
 
 #include "brave/components/skus/renderer/skus_js_handler.h"
 
+#include <tuple>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -172,7 +173,7 @@ void SkusJSHandler::OnRefreshOrder(
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
             .ToLocalChecked();
-    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    std::ignore = resolver->Reject(context, result);
     return;
   }
 
@@ -182,13 +183,13 @@ void SkusJSHandler::OnRefreshOrder(
         v8::String::NewFromUtf8(isolate,
                                 "Error converting response to dictionary")
             .ToLocalChecked();
-    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    std::ignore = resolver->Reject(context, result);
     return;
   }
 
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, local_result));
+  std::ignore = resolver->Resolve(context, local_result);
 }
 
 // window.chrome.braveSkus.fetch_order_credentials
@@ -233,7 +234,7 @@ void SkusJSHandler::OnFetchOrderCredentials(
   v8::Local<v8::String> result;
   result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
 
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  std::ignore = resolver->Resolve(context, result);
 }
 
 // window.chrome.braveSkus.prepare_credentials_presentation
@@ -279,7 +280,7 @@ void SkusJSHandler::OnPrepareCredentialsPresentation(
   v8::Local<v8::String> result;
   result = v8::String::NewFromUtf8(isolate, response.c_str()).ToLocalChecked();
 
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, result));
+  std::ignore = resolver->Resolve(context, result);
 }
 
 // window.chrome.braveSkus.credential_summary
@@ -330,7 +331,7 @@ void SkusJSHandler::OnCredentialSummary(
     v8::Local<v8::String> result =
         v8::String::NewFromUtf8(isolate, "Error parsing JSON response")
             .ToLocalChecked();
-    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    std::ignore = resolver->Reject(context, result);
     return;
   }
 
@@ -340,13 +341,13 @@ void SkusJSHandler::OnCredentialSummary(
         v8::String::NewFromUtf8(isolate,
                                 "Error converting response to dictionary")
             .ToLocalChecked();
-    ALLOW_UNUSED_LOCAL(resolver->Reject(context, result));
+    std::ignore = resolver->Reject(context, result);
     return;
   }
 
   v8::Local<v8::Value> local_result =
       content::V8ValueConverter::Create()->ToV8Value(result_dict, context);
-  ALLOW_UNUSED_LOCAL(resolver->Resolve(context, local_result));
+  std::ignore = resolver->Resolve(context, local_result);
 }
 
 }  // namespace skus

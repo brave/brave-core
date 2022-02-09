@@ -21,13 +21,12 @@ namespace {
 
 WebUIConfigList CreateConfigs() {
   WebUIConfigList config_list;
-  auto register_config =
+  [[maybe_unused]] auto register_config =
       [&config_list](std::unique_ptr<ui::WebUIConfig> config) {
         DCHECK_EQ(config->scheme(), content::kChromeUIUntrustedScheme);
         const std::string& host = config->host();
         config_list.emplace_back(host, std::move(config));
       };
-  ALLOW_UNUSED_LOCAL(register_config);
   register_config(std::make_unique<trezor::UntrustedTrezorUIConfig>());
   return config_list;
 }
