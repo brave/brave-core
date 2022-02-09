@@ -118,17 +118,20 @@ class TestEthTxServiceObserver
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {}
 
   void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx) override {
-    EXPECT_EQ(tx->tx_data->base_data->nonce,
+    ASSERT_TRUE(tx->tx_data_union->is_eth_tx_data_1559());
+    EXPECT_EQ(tx->tx_data_union->get_eth_tx_data_1559()->base_data->nonce,
               base::ToLowerASCII(expected_nonce_));
-    EXPECT_EQ(tx->tx_data->base_data->gas_price,
+    EXPECT_EQ(tx->tx_data_union->get_eth_tx_data_1559()->base_data->gas_price,
               base::ToLowerASCII(expected_gas_price_));
-    EXPECT_EQ(tx->tx_data->base_data->gas_limit,
+    EXPECT_EQ(tx->tx_data_union->get_eth_tx_data_1559()->base_data->gas_limit,
               base::ToLowerASCII(expected_gas_limit_));
-    EXPECT_EQ(tx->tx_data->max_priority_fee_per_gas,
-              base::ToLowerASCII(expected_max_priority_fee_per_gas_));
-    EXPECT_EQ(tx->tx_data->max_fee_per_gas,
+    EXPECT_EQ(
+        tx->tx_data_union->get_eth_tx_data_1559()->max_priority_fee_per_gas,
+        base::ToLowerASCII(expected_max_priority_fee_per_gas_));
+    EXPECT_EQ(tx->tx_data_union->get_eth_tx_data_1559()->max_fee_per_gas,
               base::ToLowerASCII(expected_max_fee_per_gas_));
-    EXPECT_EQ(tx->tx_data->base_data->data, expected_data_);
+    EXPECT_EQ(tx->tx_data_union->get_eth_tx_data_1559()->base_data->data,
+              expected_data_);
     tx_updated_ = true;
   }
 

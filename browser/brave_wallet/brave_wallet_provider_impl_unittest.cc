@@ -893,8 +893,9 @@ TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionNoChainId) {
 
   std::vector<mojom::TransactionInfoPtr> infos = GetAllTransactionInfo();
   ASSERT_EQ(infos.size(), 2UL);
-  EXPECT_EQ(infos[0]->tx_data->chain_id, "0x4");
-  EXPECT_EQ(infos[1]->tx_data->chain_id, "0x4");
+  ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
+  EXPECT_EQ(infos[0]->tx_data_union->get_eth_tx_data_1559()->chain_id, "0x4");
+  EXPECT_EQ(infos[1]->tx_data_union->get_eth_tx_data_1559()->chain_id, "0x4");
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddAndApprove1559TransactionError) {

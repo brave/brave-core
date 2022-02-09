@@ -485,19 +485,25 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti->from_address, meta.from.ToChecksumAddress());
   EXPECT_EQ(ti->tx_hash, meta.tx_hash);
   EXPECT_EQ(ti->tx_status, meta.status);
-  EXPECT_EQ(ti->tx_data->base_data->nonce,
+
+  ASSERT_TRUE(ti->tx_data_union->is_eth_tx_data_1559());
+  EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->nonce,
             Uint256ValueToHex(meta.tx->nonce().value()));
-  EXPECT_EQ(ti->tx_data->base_data->gas_price,
+  EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->gas_price,
             Uint256ValueToHex(meta.tx->gas_price()));
-  EXPECT_EQ(ti->tx_data->base_data->gas_limit,
+  EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->gas_limit,
             Uint256ValueToHex(meta.tx->gas_limit()));
-  EXPECT_EQ(ti->tx_data->base_data->to, meta.tx->to().ToHex());
-  EXPECT_EQ(ti->tx_data->base_data->value, Uint256ValueToHex(meta.tx->value()));
-  EXPECT_EQ(ti->tx_data->base_data->data, meta.tx->data());
-  EXPECT_EQ(ti->tx_data->chain_id, "");
-  EXPECT_EQ(ti->tx_data->max_priority_fee_per_gas, "");
-  EXPECT_EQ(ti->tx_data->max_fee_per_gas, "");
-  EXPECT_FALSE(ti->tx_data->gas_estimation);
+  EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->to,
+            meta.tx->to().ToHex());
+  EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->value,
+            Uint256ValueToHex(meta.tx->value()));
+  EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->base_data->data,
+            meta.tx->data());
+  EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->chain_id, "");
+  EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->max_priority_fee_per_gas,
+            "");
+  EXPECT_EQ(ti->tx_data_union->get_eth_tx_data_1559()->max_fee_per_gas, "");
+  EXPECT_FALSE(ti->tx_data_union->get_eth_tx_data_1559()->gas_estimation);
   EXPECT_EQ(meta.created_time.ToJavaTime(), ti->created_time.InMilliseconds());
   EXPECT_EQ(meta.submitted_time.ToJavaTime(),
             ti->submitted_time.InMilliseconds());
@@ -527,21 +533,27 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti1->from_address, meta1.from.ToChecksumAddress());
   EXPECT_EQ(ti1->tx_hash, meta1.tx_hash);
   EXPECT_EQ(ti1->tx_status, meta1.status);
-  EXPECT_EQ(ti1->tx_data->base_data->nonce,
+
+  ASSERT_TRUE(ti1->tx_data_union->is_eth_tx_data_1559());
+  EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->nonce,
             Uint256ValueToHex(meta1.tx->nonce().value()));
-  EXPECT_EQ(ti1->tx_data->base_data->gas_price,
+  EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->gas_price,
             Uint256ValueToHex(meta1.tx->gas_price()));
-  EXPECT_EQ(ti1->tx_data->base_data->gas_limit,
+  EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->gas_limit,
             Uint256ValueToHex(meta1.tx->gas_limit()));
-  EXPECT_EQ(ti1->tx_data->base_data->to, meta1.tx->to().ToHex());
-  EXPECT_EQ(ti1->tx_data->base_data->value,
+  EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->to,
+            meta1.tx->to().ToHex());
+  EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->value,
             Uint256ValueToHex(meta1.tx->value()));
-  EXPECT_EQ(ti1->tx_data->base_data->data, meta1.tx->data());
+  EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->data,
+            meta1.tx->data());
   auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta1.tx.get());
-  EXPECT_EQ(ti1->tx_data->chain_id, Uint256ValueToHex(tx2930->chain_id()));
-  EXPECT_EQ(ti1->tx_data->max_priority_fee_per_gas, "");
-  EXPECT_EQ(ti1->tx_data->max_fee_per_gas, "");
-  EXPECT_FALSE(ti1->tx_data->gas_estimation);
+  EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->chain_id,
+            Uint256ValueToHex(tx2930->chain_id()));
+  EXPECT_EQ(
+      ti1->tx_data_union->get_eth_tx_data_1559()->max_priority_fee_per_gas, "");
+  EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->max_fee_per_gas, "");
+  EXPECT_FALSE(ti1->tx_data_union->get_eth_tx_data_1559()->gas_estimation);
 
   // type2
   std::unique_ptr<Eip1559Transaction> tx2 =
@@ -568,39 +580,51 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
   EXPECT_EQ(ti2->from_address, meta2.from.ToChecksumAddress());
   EXPECT_EQ(ti2->tx_hash, meta2.tx_hash);
   EXPECT_EQ(ti2->tx_status, meta2.status);
-  EXPECT_EQ(ti2->tx_data->base_data->nonce,
+  ASSERT_TRUE(ti2->tx_data_union->is_eth_tx_data_1559());
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->nonce,
             Uint256ValueToHex(meta2.tx->nonce().value()));
-  EXPECT_EQ(ti2->tx_data->base_data->gas_price,
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->gas_price,
             Uint256ValueToHex(meta2.tx->gas_price()));
-  EXPECT_EQ(ti2->tx_data->base_data->gas_limit,
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->gas_limit,
             Uint256ValueToHex(meta2.tx->gas_limit()));
-  EXPECT_EQ(ti2->tx_data->base_data->to, meta2.tx->to().ToHex());
-  EXPECT_EQ(ti2->tx_data->base_data->value,
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->to,
+            meta2.tx->to().ToHex());
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->value,
             Uint256ValueToHex(meta2.tx->value()));
-  EXPECT_EQ(ti2->tx_data->base_data->data, meta2.tx->data());
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->data,
+            meta2.tx->data());
   auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(meta2.tx.get());
-  EXPECT_EQ(ti2->tx_data->chain_id, Uint256ValueToHex(tx1559->chain_id()));
-  EXPECT_EQ(ti2->tx_data->max_priority_fee_per_gas,
-            Uint256ValueToHex(tx1559->max_priority_fee_per_gas()));
-  EXPECT_EQ(ti2->tx_data->max_fee_per_gas,
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->chain_id,
+            Uint256ValueToHex(tx1559->chain_id()));
+  EXPECT_EQ(
+      ti2->tx_data_union->get_eth_tx_data_1559()->max_priority_fee_per_gas,
+      Uint256ValueToHex(tx1559->max_priority_fee_per_gas()));
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->max_fee_per_gas,
             Uint256ValueToHex(tx1559->max_fee_per_gas()));
-  ASSERT_TRUE(ti2->tx_data->gas_estimation);
-  EXPECT_EQ(ti2->tx_data->gas_estimation->slow_max_priority_fee_per_gas,
+  ASSERT_TRUE(ti2->tx_data_union->get_eth_tx_data_1559()->gas_estimation);
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
+                ->gas_estimation->slow_max_priority_fee_per_gas,
             Uint256ValueToHex(
                 tx1559->gas_estimation().slow_max_priority_fee_per_gas));
   EXPECT_EQ(
-      ti2->tx_data->gas_estimation->avg_max_priority_fee_per_gas,
+      ti2->tx_data_union->get_eth_tx_data_1559()
+          ->gas_estimation->avg_max_priority_fee_per_gas,
       Uint256ValueToHex(tx1559->gas_estimation().avg_max_priority_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data->gas_estimation->fast_max_priority_fee_per_gas,
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
+                ->gas_estimation->fast_max_priority_fee_per_gas,
             Uint256ValueToHex(
                 tx1559->gas_estimation().fast_max_priority_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data->gas_estimation->slow_max_fee_per_gas,
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
+                ->gas_estimation->slow_max_fee_per_gas,
             Uint256ValueToHex(tx1559->gas_estimation().slow_max_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data->gas_estimation->avg_max_fee_per_gas,
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
+                ->gas_estimation->avg_max_fee_per_gas,
             Uint256ValueToHex(tx1559->gas_estimation().avg_max_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data->gas_estimation->fast_max_fee_per_gas,
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
+                ->gas_estimation->fast_max_fee_per_gas,
             Uint256ValueToHex(tx1559->gas_estimation().fast_max_fee_per_gas));
-  EXPECT_EQ(ti2->tx_data->gas_estimation->base_fee_per_gas,
+  EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()
+                ->gas_estimation->base_fee_per_gas,
             Uint256ValueToHex(tx1559->gas_estimation().base_fee_per_gas));
 }
 
