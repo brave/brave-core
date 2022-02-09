@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/net/ios_chrome_network_delegate.h b/ios/chrome/browser/net/ios_chrome_network_delegate.h
+index 830e12ec3a388..00ed8ecbb6083 100644
+--- a/ios/chrome/browser/net/ios_chrome_network_delegate.h
++++ b/ios/chrome/browser/net/ios_chrome_network_delegate.h
+@@ -48,6 +48,7 @@ class IOSChromeNetworkDelegate : public net::NetworkDelegateImpl {
+                                         PrefService* pref_service);
+ 
+  private:
++  friend IOSChromeNetworkDelegate_BraveImpl;
+   // NetworkDelegate implementation.
+   int OnBeforeURLRequest(net::URLRequest* request,
+                          net::CompletionOnceCallback callback,

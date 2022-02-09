@@ -7,6 +7,7 @@ brave_common_visibility_targets = [
   "//brave:browser_dependencies",
   "//brave:child_dependencies",
   "//brave/browser/*",
+  "//brave/ios/browser/*",
   "//brave/renderer/*",
   "//brave/test/*",
   "//brave/utility/*",
