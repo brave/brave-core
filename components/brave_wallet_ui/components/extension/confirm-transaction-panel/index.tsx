@@ -130,7 +130,7 @@ function ConfirmTransactionPanel (props: Props) {
     updateUnapprovedTransactionNonce
   } = props
 
-  const { txData: { gasEstimation: transactionGasEstimates } } = transactionInfo
+  const transactionGasEstimates = transactionInfo.txDataUnion.ethTxData1559?.gasEstimation
 
   const [maxPriorityPanel, setMaxPriorityPanel] = React.useState<MaxPriorityPanels>(MaxPriorityPanels.setSuggested)
   const [suggestedSliderStep, setSuggestedSliderStep] = React.useState<string>('1')

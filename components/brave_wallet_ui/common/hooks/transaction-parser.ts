@@ -92,9 +92,11 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.EthereumC
   }, [])
 
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo): ParsedTransactionFees => {
-    const { txData } = transactionInfo
-    const { baseData: { gasLimit, gasPrice }, maxFeePerGas, maxPriorityFeePerGas } = txData
-
+    const { txDataUnion: { ethTxData1559: txData } } = transactionInfo
+    const gasLimit = txData?.baseData.gasLimit || ''
+    const gasPrice = txData?.baseData.gasPrice || ''
+    const maxFeePerGas = txData?.maxFeePerGas || ''
+    const maxPriorityFeePerGas = txData?.maxPriorityFeePerGas || ''
     const isEIP1559Transaction = maxPriorityFeePerGas !== '' && maxFeePerGas !== ''
     const gasFee = isEIP1559Transaction
       ? multiplyNumericValues(maxFeePerGas, gasLimit)
@@ -179,9 +181,10 @@ export function useTransactionParser (
   }
 
   return React.useCallback((transactionInfo: BraveWallet.TransactionInfo) => {
-    const { txArgs, txData, fromAddress, txType } = transactionInfo
-    const { baseData } = txData
-    const { value, to, nonce } = baseData
+    const { txArgs, txDataUnion: { ethTxData1559: txData }, fromAddress, txType } = transactionInfo
+    const value = txData?.baseData.value || ''
+    const to = txData?.baseData.to || ''
+    const nonce = txData?.baseData.nonce || ''
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
     const token = findToken(to)
     const accountNativeBalance = getBalance(account)

@@ -170,7 +170,7 @@ const PortfolioTransactionItem = (props: Props) => {
       }
 
       // Detect sending to 0x Exchange Proxy
-      case transaction.txData.baseData.to.toLowerCase() === SwapExchangeProxy: {
+      case transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy: {
         const text = getLocale('braveWalletSwap')
         return displayAccountName ? text.toLowerCase() : text
       }
@@ -219,7 +219,7 @@ const PortfolioTransactionItem = (props: Props) => {
       }
 
       // FIXME: Add as new BraveWallet.TransactionType on the service side.
-      case transaction.txData.baseData.to.toLowerCase() === SwapExchangeProxy: {
+      case transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy: {
         return (
           <DetailRow>
             <DetailTextDark>
