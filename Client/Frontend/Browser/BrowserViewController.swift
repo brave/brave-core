@@ -1961,7 +1961,7 @@ extension BrowserViewController: TabDelegate {
         }
 
         let errorHelper = ErrorPageHelper(certStore: profile.certStore)
-        tab.addContentScript(errorHelper, name: ErrorPageHelper.name(), contentWorld: .defaultClient)
+        tab.addContentScript(errorHelper, name: ErrorPageHelper.name(), contentWorld: .page)
 
         let sessionRestoreHelper = SessionRestoreHelper(tab: tab)
         sessionRestoreHelper.delegate = self
@@ -1984,7 +1984,7 @@ extension BrowserViewController: TabDelegate {
         // let spotlightHelper = SpotlightHelper(tab: tab)
         // tab.addHelper(spotlightHelper, name: SpotlightHelper.name())
 
-        tab.addContentScript(LocalRequestHelper(), name: LocalRequestHelper.name(), contentWorld: .defaultClient)
+        tab.addContentScript(LocalRequestHelper(), name: LocalRequestHelper.name(), contentWorld: .page)
 
         tab.contentBlocker.setupTabTrackingProtection()
         tab.addContentScript(tab.contentBlocker, name: ContentBlockerHelper.name(), contentWorld: .page)
