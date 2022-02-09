@@ -140,7 +140,6 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
             holder.text1Text.setVisibility(View.GONE);
             holder.text2Text.setVisibility(View.GONE);
             if (mType == AdapterType.EDIT_VISIBLE_ASSETS_LIST) {
-                holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());
                 holder.assetCheck.setVisibility(View.VISIBLE);
                 holder.assetCheck.setOnCheckedChangeListener(
                         new CompoundButton.OnCheckedChangeListener() {
@@ -153,7 +152,9 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                                             || item.getSubTitle().equals(
                                                     holder.subTitleText.getText())) {
                                         if (isChecked) {
-                                            mCheckedPositions.add((Integer) i);
+                                            if (!mCheckedPositions.contains((Integer) i)) {
+                                                mCheckedPositions.add((Integer) i);
+                                            }
                                         } else {
                                             mCheckedPositions.remove((Integer) i);
                                         }
@@ -164,6 +165,7 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                                         walletListItemModel, isChecked);
                             }
                         });
+                holder.assetCheck.setChecked(walletListItemModel.getIsUserSelected());
             }
         }
 
@@ -213,6 +215,11 @@ public class WalletCoinAdapter extends RecyclerView.Adapter<WalletCoinAdapter.Vi
                 || mType == AdapterType.SWAP_FROM_ASSETS_LIST) {
             walletListItemModelListCopy.addAll(walletListItemModelList);
             mCheckedPositions.clear();
+        }
+        for (int i = 0; i < walletListItemModelListCopy.size(); i++) {
+            if (walletListItemModelListCopy.get(i).getIsUserSelected()) {
+                mCheckedPositions.add((Integer) i);
+            }
         }
     }
 
