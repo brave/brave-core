@@ -292,28 +292,26 @@ extension Tab {
         
         let group = DispatchGroup()
         group.enter()
-        
-        webView.evaluateSafeJavaScript(functionName: "document.documentElement.outerHTML.toString", contentWorld: .defaultClient) { html, _ in
+
+        webView.evaluateSafeJavaScript(functionName: "new XMLSerializer().serializeToString", args: ["document"], contentWorld: WKContentWorld.defaultClient, escapeArgs: false) { html, _ in
             htmlBlob = html as? String
             group.leave()
         }
-        
+
         if shouldClassifyLoadsForAds {
             group.enter()
-            webView.evaluateSafeJavaScript(functionName: "document.body.innerText", contentWorld: .defaultClient, asFunction: false) { text, _ in
-                // Get the list of words in the page and join them together with a space
-                // to send to the classifier
-                classifierText = (text as? String)?.words.joined(separator: " ")
+            webView.evaluateSafeJavaScript(functionName: "document?.body?.innerText", contentWorld: .defaultClient, asFunction: false) { text, _ in
+                classifierText = text as? String
                 group.leave()
-            }
+             }
         }
-        
+
         group.notify(queue: .main) {
             let faviconURL = URL(string: self.displayFavicon?.url ?? "")
             if faviconURL == nil {
                 log.warning("No favicon found in \(self) to report to rewards panel")
             }
-            rewards.reportLoadedPage(url: url, redirectionURLs: urls,
+            rewards.reportLoadedPage(url: url, redirectionURLs: urls.isEmpty ? [url] : urls,
                                      faviconURL: faviconURL, tabId: Int(self.rewardsId),
                                      html: htmlBlob ?? "", adsInnerText: classifierText)
         }
