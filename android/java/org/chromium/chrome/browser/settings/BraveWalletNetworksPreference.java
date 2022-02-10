@@ -48,7 +48,7 @@ public class BraveWalletNetworksPreference extends Preference
                 TintedDrawable.constructTintedDrawable(getContext(), R.drawable.plus,
                         R.color.default_control_color_active_baseline),
                 null, null, null);
-        mbtAddNetwork.setOnClickListener(view -> { mLauncher.launchAddNetwork(""); });
+        mbtAddNetwork.setOnClickListener(view -> { mLauncher.launchAddNetwork("", false); });
         mLauncher.setRefresher(this);
 
         InitJsonRpcService();
@@ -71,8 +71,8 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     @Override
-    public void onItemClicked(EthereumChain chain) {
-        mLauncher.launchAddNetwork(chain.chainId);
+    public void onItemClicked(EthereumChain chain, boolean activeNetwork) {
+        mLauncher.launchAddNetwork(chain.chainId, activeNetwork);
     }
 
     @Override
