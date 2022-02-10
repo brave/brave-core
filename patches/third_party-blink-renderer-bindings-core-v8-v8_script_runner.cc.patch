@@ -64,6 +64,64 @@ index 43e2ca14dde26828a13251413d7d966e893dab34..2d2c95bda46835e607540da8393c5a87
        v8::MaybeLocal<v8::Script> script =
            v8::ScriptCompiler::Compile(isolate->GetCurrentContext(), &source,
                                        v8::ScriptCompiler::kConsumeCodeCache);
+@@ -486,6 +516,57 @@ ScriptEvaluationResult V8ScriptRunner::CompileAndRunScript(
+                                       sanitize_script_errors, compile_options,
+                                       no_cache_reason, referrer_info)
+             .ToLocal(&script)) {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      {
++        ScriptSourceLocationType script_location = source.SourceLocationType();
++        if (script_location != ScriptSourceLocationType::kInspector) {
++          ::brave_page_graph::PageGraph* page_graph = window->GetFrame()->GetDocument()
++            ->GetPageGraph();
++          if (page_graph != nullptr) {
++            const int script_id = script->GetUnboundScript()->GetId();
++            if (script_location ==
++                ScriptSourceLocationType::kEvalForScheduledAction) {
++              page_graph->RegisterScriptCompilationFromEval(
++                  source.ParentScriptId(), script_id, source.Source().ToString());
++            } else {
++              ::brave_page_graph::ScriptType type;
++              switch (script_location) {
++                case ScriptSourceLocationType::kExternalFile:
++                  type = ::brave_page_graph::ScriptType::kExternalFile;
++                  break;
++                case ScriptSourceLocationType::kInline:
++                  type = ::brave_page_graph::ScriptType::kInline;
++                  break;
++                case ScriptSourceLocationType::kInlineInsideDocumentWrite:
++                  type =
++                    ::brave_page_graph::ScriptType::kInlineInsideDocumentWrite;
++                  break;
++                case ScriptSourceLocationType::kInlineInsideGeneratedElement:
++                  type =
++                    ::brave_page_graph::ScriptType::kInlineInsideGeneratedElement;
++                  break;
++                case ScriptSourceLocationType::kInternal:
++                  type = ::brave_page_graph::ScriptType::kInternal;
++                  break;
++                case ScriptSourceLocationType::kJavascriptUrl:
++                  type = ::brave_page_graph::ScriptType::kJavascriptUrl;
++                  break;
++                case ScriptSourceLocationType::kEvalForScheduledAction:
++                  type = ::brave_page_graph::ScriptType::kEvalForScheduledAction;
++                  break;
++                case ScriptSourceLocationType::kInspector:
++                default:
++                  type = ::brave_page_graph::ScriptType::kInspector;
++                  break;
++              }
++              if (script_location == ScriptSourceLocationType::kJavascriptUrl)
++                page_graph->RegisterJavaScriptURL(source);
++              page_graph->RegisterScriptCompilation(source, script_id, type);
++            }
++          }
++        }
++      }
++// #endif
+       maybe_result =
+           V8ScriptRunner::RunCompiledScript(isolate, script, execution_context);
+       probe::DidProduceCompilationCache(
 @@ -752,7 +752,7 @@ ScriptEvaluationResult V8ScriptRunner::EvaluateModule(
    //
    // The settings object is |module_script->SettingsObject()|.
