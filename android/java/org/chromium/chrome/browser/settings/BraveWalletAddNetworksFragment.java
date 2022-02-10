@@ -38,7 +38,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         /**
          * Launches BraveWalletAddNetworksFragment.
          */
-        void launchAddNetwork(String chainId);
+        void launchAddNetwork(String chainId, boolean activeNetwork);
         void setRefresher(Refresher refresher);
     }
 
@@ -64,12 +64,17 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         final View view = inflater.inflate(R.layout.brave_wallet_add_network, container, false);
 
         Button btAdd = view.findViewById(R.id.add);
-        btAdd.setOnClickListener(v -> {
-            if (!validateInputsAddChain(view)) {
-                // We have some errors in inputs
-                return;
-            }
-        });
+        boolean activeNetwork = getActivity().getIntent().getBooleanExtra("activeNetwork", false);
+        if (!activeNetwork) {
+            btAdd.setOnClickListener(v -> {
+                if (!validateInputsAddChain(view)) {
+                    // We have some errors in inputs
+                    return;
+                }
+            });
+        } else {
+            btAdd.setVisibility(View.GONE);
+        }
         mChainId = getActivity().getIntent().getStringExtra("chainId");
         if (!mChainId.isEmpty()) {
             btAdd.setText(R.string.brave_wallet_add_network_submit);

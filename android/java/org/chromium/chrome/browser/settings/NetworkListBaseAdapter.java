@@ -39,7 +39,7 @@ import java.util.List;
  */
 public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
     interface ItemClickListener {
-        void onItemClicked(EthereumChain chain);
+        void onItemClicked(EthereumChain chain, boolean activeNetwork);
         void onItemRemove(EthereumChain chain);
         void onItemSetAsActive(EthereumChain chain);
     }
@@ -68,7 +68,7 @@ public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
             mListener = listener;
         }
 
-        protected void updateNetworkInfo(EthereumChain item) {
+        void updateNetworkInfo(EthereumChain item, boolean activeNetwork) {
             mTitle.setText(item.chainName);
             String description = item.chainId;
             if (item.rpcUrls.length > 0) {
@@ -80,7 +80,7 @@ public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             // The more button will become visible if setMenuButtonDelegate is called.
             mMoreButton.setVisibility(View.GONE);
-            mItem.setOnClickListener(view -> mListener.onItemClicked(item));
+            mItem.setOnClickListener(view -> mListener.onItemClicked(item, activeNetwork));
         }
 
         /**
@@ -112,18 +112,22 @@ public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
     @SuppressLint("NotifyDataSetChanged")
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
         final EthereumChain info = mElements.get(i);
-        ((RowViewHolder) viewHolder).updateNetworkInfo(info);
+        boolean activeNetwork = info.chainId.equals(mActiveChainId);
+        ((RowViewHolder) viewHolder).updateNetworkInfo(info, activeNetwork);
+
+        if (activeNetwork) {
+            return;
+        }
 
         ModelList menuItems = new ModelList();
         menuItems.add(buildMenuListItem(R.string.edit, 0, 0));
-        if (!info.chainId.equals(mActiveChainId)) {
-            menuItems.add(buildMenuListItem(R.string.remove, 0, 0));
-            menuItems.add(buildMenuListItem(R.string.brave_wallet_add_network_set_as_active, 0, 0));
-        }
+        menuItems.add(buildMenuListItem(R.string.remove, 0, 0));
+        menuItems.add(buildMenuListItem(R.string.brave_wallet_add_network_set_as_active, 0, 0));
+
         ListMenu.Delegate delegate = (model) -> {
             int textId = model.get(ListMenuItemProperties.TITLE_ID);
             if (textId == R.string.edit) {
-                mListener.onItemClicked(info);
+                mListener.onItemClicked(info, activeNetwork);
             } else if (textId == R.string.remove) {
                 mListener.onItemRemove(info);
             } else if (textId == R.string.brave_wallet_add_network_set_as_active) {

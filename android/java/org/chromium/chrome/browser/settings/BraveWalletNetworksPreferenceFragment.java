@@ -49,10 +49,11 @@ public class BraveWalletNetworksPreferenceFragment extends BravePreferenceFragme
     }
 
     @Override
-    public void launchAddNetwork(String chainId) {
+    public void launchAddNetwork(String chainId, boolean activeNetwork) {
         Intent intent = mSettingsLauncher.createSettingsActivityIntent(
                 getActivity(), BraveWalletAddNetworksFragment.class.getName());
         intent.putExtra("chainId", chainId);
+        intent.putExtra("activeNetwork", activeNetwork);
         startActivityForResult(intent, REQUEST_CODE_ADD_NETWORK);
     }
 
