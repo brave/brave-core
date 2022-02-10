@@ -16,7 +16,9 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_tx_service.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -192,6 +194,11 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
           &BraveDefaultExtensionsHandler::OnWidevineEnabledChanged,
           base::Unretained(this)));
 #endif
+  pref_change_registrar_.Init(profile_->GetPrefs());
+  pref_change_registrar_.Add(
+      kDefaultWallet2,
+      base::BindRepeating(&BraveDefaultExtensionsHandler::OnWalletTypeChanged,
+                          base::Unretained(this)));
 }
 
 bool BraveDefaultExtensionsHandler::IsRestartNeeded() {
@@ -370,6 +377,17 @@ void BraveDefaultExtensionsHandler::IsWidevineEnabled(
 #else
                             base::Value(false));
 #endif
+}
+
+void BraveDefaultExtensionsHandler::OnWalletTypeChanged() {
+  if (brave_wallet::GetDefaultWallet(profile_->GetPrefs()) ==
+      brave_wallet::mojom::DefaultWallet::CryptoWallets)
+    return;
+  extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(profile_)->extension_service();
+  service->DisableExtension(
+      ethereum_remote_client_extension_id,
+      extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
 }
 
 void BraveDefaultExtensionsHandler::OnWidevineEnabledChanged() {

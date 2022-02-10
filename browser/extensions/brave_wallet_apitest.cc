@@ -13,6 +13,8 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "chrome/browser/extensions/extension_apitest.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "extensions/common/constants.h"
@@ -143,6 +145,50 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     LoadExtension(extension_dir_.AppendASCII("notBraveWallet"));
   ASSERT_TRUE(extension);
   ASSERT_TRUE(catcher.GetNextResult()) << message_;
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
+                       ChangeTypeCryptoWalletsToBaveWallet) {
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::CryptoWallets);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("brave://settings/")));
+
+  const Extension* extension =
+      LoadExtension(extension_dir_.AppendASCII("braveWallet"));
+  ASSERT_TRUE(extension);
+  extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(browser()->profile())
+          ->extension_service();
+  ASSERT_TRUE(service->IsExtensionEnabled(ethereum_remote_client_extension_id));
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWallet);
+  ASSERT_FALSE(
+      service->IsExtensionEnabled(ethereum_remote_client_extension_id));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
+                       ChangeTypeCryptoWalletsToBraveWalletPreferExtension) {
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::CryptoWallets);
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("brave://settings/")));
+
+  const Extension* extension =
+      LoadExtension(extension_dir_.AppendASCII("braveWallet"));
+  ASSERT_TRUE(extension);
+  extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(browser()->profile())
+          ->extension_service();
+  ASSERT_TRUE(service->IsExtensionEnabled(ethereum_remote_client_extension_id));
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  ASSERT_FALSE(
+      service->IsExtensionEnabled(ethereum_remote_client_extension_id));
 }
 
 }  // namespace
