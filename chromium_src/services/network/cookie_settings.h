@@ -18,7 +18,7 @@
       const GURL& url, const net::SiteForCookies& site_for_cookies, \
       const absl::optional<url::Origin>& top_frame_origin,          \
       net::SamePartyContext::Type same_party_context_type) const;   \
-  bool IsPrivacyModeEnabled
+  net::NetworkDelegate::PrivacySetting IsPrivacyModeEnabled
 
 #define AnnotateAndMoveUserBlockedCookies                           \
   AnnotateAndMoveUserBlockedEphemeralCookies(                       \
