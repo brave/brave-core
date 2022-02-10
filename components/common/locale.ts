@@ -97,7 +97,7 @@ export function splitStringForTag (text: string, tagStartNumber: number = 1): Sp
       duringTag = text.substring(tagStartIndex + tagOpenPlaceholder.length, tagEndIndex)
       afterTag = text.substring(tagEndIndex + tagClosePlaceholder.length)
     } else {
-      // Hande we have a single replacement block
+      // Handle we have a single replacement block
       afterTag = text.substring(tagStartIndex + tagOpenPlaceholder.length)
     }
   }
