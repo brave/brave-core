@@ -69,7 +69,8 @@ void BraveContentRendererClient::RenderFrameCreated(
   if (base::FeatureList::IsEnabled(
           brave_wallet::features::kNativeBraveWalletFeature)) {
     new brave_wallet::BraveWalletRenderFrameObserver(
-        render_frame, BraveRenderThreadObserver::GetDynamicParams());
+        render_frame,
+        base::BindRepeating(&BraveRenderThreadObserver::GetDynamicParams));
   }
 
   if (brave_search::IsDefaultAPIEnabled()) {
