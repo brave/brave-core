@@ -305,20 +305,6 @@
     *** getModel(...);
 }
 
--keep class org.chromium.chrome.browser.compositor.layouts.LayoutManagerChromePhone
-
--keep class org.chromium.chrome.browser.compositor.layouts.BraveLayoutManagerChrome
-
--keep class org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities {
-    *** isGridTabSwitcherEnabled(...);
-    *** isTabGroupsAndroidEnabled(...);
-}
-
--keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities {
-    *** isGridTabSwitcherEnabled(...);
-    *** isTabGroupsAndroidEnabled(...);
-}
-
 -keep class org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl {
     public <init>(...);
 }

@@ -1812,9 +1812,6 @@ Are you sure you want to do this?
       <message name="IDS_SETTINGS_WEBRTC_POLICY_DISABLE_NON_PROXIED_UDP" desc="Select value">
         Disable non-proxied UDP
       </message>
-      <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for enabling Tab Groups.">
-        Enable Tab Groups
-      </message>
       <message name="IDS_VERIFYING_WALLET_ALLOWS" desc="Uphold login verify text">
         Verifying wallet allows you to manage your funds easily, adding &amp; withdrawing
       </message>
