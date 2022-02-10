@@ -3,16 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_ALERT_INDICATOR_H_
-#define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_ALERT_INDICATOR_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_ALERT_INDICATOR_BUTTON_H_
+#define BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_ALERT_INDICATOR_BUTTON_H_
 
-#include "chrome/browser/ui/views/tabs/alert_indicator.h"
+#include "chrome/browser/ui/views/tabs/alert_indicator_button.h"
 
-class BraveAlertIndicator : public AlertIndicator {
+class BraveAlertIndicatorButton : public AlertIndicatorButton {
  public:
-  explicit BraveAlertIndicator(Tab* parent_tab);
-  BraveAlertIndicator(const BraveAlertIndicator&) = delete;
-  BraveAlertIndicator& operator=(const BraveAlertIndicator&) = delete;
+  explicit BraveAlertIndicatorButton(Tab* parent_tab);
+  BraveAlertIndicatorButton(const BraveAlertIndicatorButton&) = delete;
+  BraveAlertIndicatorButton& operator=(const BraveAlertIndicatorButton&) =
+      delete;
 
  private:
   class BraveAlertBackground;
@@ -31,4 +32,4 @@ class BraveAlertIndicator : public AlertIndicator {
   bool mouse_pressed_ = false;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_ALERT_INDICATOR_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_ALERT_INDICATOR_BUTTON_H_
