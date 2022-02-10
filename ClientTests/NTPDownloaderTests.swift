@@ -5,6 +5,8 @@
 
 import XCTest
 @testable import Client
+import Shared
+import BraveShared
 
 class NTPDownloaderTests: XCTestCase {
 
@@ -24,6 +26,53 @@ class NTPDownloaderTests: XCTestCase {
         XCTAssertFalse(NTPDownloader.isSponsorCampaignEnded(data: validWallpapersJson.asData))
         XCTAssertFalse(NTPDownloader.isSponsorCampaignEnded(data: validCampaignsJson.asData))
         XCTAssertFalse(NTPDownloader.isSponsorCampaignEnded(data: validWallpapersAndCampaignsJson.asData))
+    }
+    
+    func testURLSponsoredPath() throws {
+        let publicChannels: [AppBuildChannel] = [.release, .beta]
+        let privateChannels: [AppBuildChannel] = [.debug, .dev, .enterprise]
+        let locales: [Locale] = [.init(identifier: "en_US"), .init(identifier: "pl_PL")]
+        
+        locales.forEach { locale in
+            publicChannels.forEach {
+                let type = NTPDownloader.ResourceType.sponsor.resourceBaseURL(for: $0, locale: locale)
+                XCTAssertEqual(type, URL(string: "https://mobile-data.s3.brave.com/\(locale.regionCode!)/ios"))
+                
+                let invalidLocaleType = NTPDownloader.ResourceType.sponsor
+                    .resourceBaseURL(for: $0, locale: .init(identifier: "bad locale region code"))
+                XCTAssertNil(invalidLocaleType)
+            }
+            
+            privateChannels.forEach {
+                let type = NTPDownloader.ResourceType.sponsor.resourceBaseURL(for: $0, locale: locale)
+                XCTAssertEqual(type, URL(string: "https://mobile-data-dev.s3.brave.software/\(locale.regionCode!)/ios"))
+                
+                let invalidLocaleType = NTPDownloader.ResourceType.sponsor
+                    .resourceBaseURL(for: $0, locale: .init(identifier: "bad locale region code"))
+                XCTAssertNil(invalidLocaleType)
+            }
+        }
+    }
+    
+    func testURLSuperReferrerPath() throws {
+        let publicChannels: [AppBuildChannel] = [.release, .beta]
+        let privateChannels: [AppBuildChannel] = [.debug, .dev, .enterprise]
+        let locales: [Locale] = [.init(identifier: "en_US"), .init(identifier: "pl_PL")]
+        let codes = ["abc", "XXX"]
+        
+        codes.forEach { code in
+            locales.forEach { locale in
+                publicChannels.forEach {
+                    let type = NTPDownloader.ResourceType.superReferral(code: code).resourceBaseURL(for: $0, locale: locale)
+                    XCTAssertEqual(type, URL(string: "https://mobile-data.s3.brave.com/superreferrer/\(code)"))
+                }
+                
+                privateChannels.forEach {
+                    let type = NTPDownloader.ResourceType.superReferral(code: code).resourceBaseURL(for: $0, locale: locale)
+                    XCTAssertEqual(type, URL(string: "https://mobile-data-dev.s3.brave.software/superreferrer/\(code)"))
+                }
+            }
+        }
     }
 
     // MARK: - Json input
