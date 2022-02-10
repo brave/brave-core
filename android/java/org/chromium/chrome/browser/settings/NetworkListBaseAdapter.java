@@ -68,7 +68,7 @@ public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
             mListener = listener;
         }
 
-        protected void updateNetworkInfo(EthereumChain item, boolean activeNetwork) {
+        void updateNetworkInfo(EthereumChain item, boolean activeNetwork) {
             mTitle.setText(item.chainName);
             String description = item.chainId;
             if (item.rpcUrls.length > 0) {
