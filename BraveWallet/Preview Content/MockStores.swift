@@ -110,7 +110,8 @@ extension UserAssetsStore {
     .init(
       walletService: MockBraveWalletService(),
       blockchainRegistry: MockBlockchainRegistry(),
-      rpcService: MockJsonRpcService()
+      rpcService: MockJsonRpcService(),
+      assetRatioService: MockAssetRatioService()
     )
   }
 }

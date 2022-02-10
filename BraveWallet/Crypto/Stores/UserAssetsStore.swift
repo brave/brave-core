@@ -51,19 +51,25 @@ public class AssetStore: ObservableObject, Equatable {
 
 public class UserAssetsStore: ObservableObject {
   @Published private(set) var assetStores: [AssetStore] = []
+  @Published var isSearchingToken: Bool = false
   
   private let walletService: BraveWalletBraveWalletService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let rpcService: BraveWalletJsonRpcService
+  private let assetRatioService: BraveWalletAssetRatioService
+  private var allTokens: [BraveWallet.BlockchainToken] = []
+  private var timer: Timer?
   
   public init(
     walletService: BraveWalletBraveWalletService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
-    rpcService: BraveWalletJsonRpcService
+    rpcService: BraveWalletJsonRpcService,
+    assetRatioService: BraveWalletAssetRatioService
   ) {
     self.walletService = walletService
     self.blockchainRegistry = blockchainRegistry
     self.rpcService = rpcService
+    self.assetRatioService = assetRatioService
     self.rpcService.add(self)
     
     fetchVisibleAssets()
@@ -74,7 +80,7 @@ public class UserAssetsStore: ObservableObject {
       let visibleAssetIds = userAssets.filter(\.visible).map(\.id)
       let isTestnet = network.chainId != BraveWallet.MainnetChainId
       blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { registryTokens in
-        let allTokens = (isTestnet ? [] : registryTokens) + [network.nativeToken]
+        allTokens = (isTestnet ? [] : registryTokens) + [network.nativeToken]
         assetStores = allTokens.union(userAssets, f: { $0.id }).map { token in
           AssetStore(
             walletService: walletService,
@@ -115,6 +121,30 @@ public class UserAssetsStore: ObservableObject {
   func fetchVisibleAssets() {
     rpcService.network { [weak self] network in
       self?.updateSelectedAssets(network)
+    }
+  }
+  
+  func tokenInfo(by contractAddress: String, completion: @escaping (BraveWallet.BlockchainToken?) -> Void) {
+    if let assetStore = assetStores.first(where: { $0.token.contractAddress.lowercased() == contractAddress.lowercased() }) { // First check user's visible assets
+      completion(assetStore.token)
+    } else if let token = allTokens.first(where: { $0.contractAddress.lowercased() == contractAddress.lowercased() }) { // Then check full tokens list
+      completion(token)
+    } else { // Last network call to get token info by its contractAddress only if the network is Mainnet
+      timer?.invalidate()
+      timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: false, block: { [weak self] _ in
+        guard let self = self else { return }
+        self.rpcService.network { network in
+          if network.id == BraveWallet.MainnetChainId {
+            self.isSearchingToken = true
+            self.assetRatioService.tokenInfo(contractAddress) { token in
+              self.isSearchingToken = false
+              completion(token)
+            }
+          } else {
+            completion(nil)
+          }
+        }
+      })
     }
   }
 }

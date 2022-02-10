@@ -49,7 +49,8 @@ public class PortfolioStore: ObservableObject {
   public private(set) lazy var userAssetsStore: UserAssetsStore = .init(
     walletService: self.walletService,
     blockchainRegistry: self.blockchainRegistry,
-    rpcService: self.rpcService
+    rpcService: self.rpcService,
+    assetRatioService: self.assetRatioService
   )
   
   private let keyringService: BraveWalletKeyringService
