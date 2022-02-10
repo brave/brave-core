@@ -7,11 +7,10 @@
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
 
 class Browser;
-class Profile;
 
 namespace sidebar {
 
-bool CanUseSidebar(Profile* profile);
+bool CanUseSidebar(Browser* browser);
 bool CanAddCurrentActiveTabToSidebar(Browser* browser);
 
 }  // namespace sidebar

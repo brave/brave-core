@@ -31,7 +31,7 @@
 #include "content/public/common/content_features.h"
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/components/sidebar/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -88,8 +88,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // TODO(simonhong): Remove this when sidebar is shipped by default in all
   // channels.
-  html_source->AddBoolean("isSidebarFeatureEnabled",
-                          sidebar::CanUseSidebar(profile));
+  html_source->AddBoolean(
+      "isSidebarFeatureEnabled",
+      base::FeatureList::IsEnabled(sidebar::kSidebarFeature));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   html_source->AddBoolean("isBraveVPNEnabled", brave_vpn::IsBraveVPNEnabled());

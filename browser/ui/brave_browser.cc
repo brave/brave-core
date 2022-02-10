@@ -20,7 +20,7 @@
 
 BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  if (!sidebar::CanUseSidebar(profile()) || !is_type_normal())
+  if (!sidebar::CanUseSidebar(this))
     return;
   // Below call order is important.
   // When reaches here, Sidebar UI is setup in BraveBrowserView but

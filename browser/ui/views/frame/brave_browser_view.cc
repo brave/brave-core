@@ -146,8 +146,7 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
   // Only normal window (tabbed) should have sidebar.
-  if (!sidebar::CanUseSidebar(browser_->profile()) ||
-      !browser_->is_type_normal()) {
+  if (!sidebar::CanUseSidebar(browser_.get())) {
     return;
   }
 
@@ -214,8 +213,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
 }
 
 ContentsLayoutManager* BraveBrowserView::GetContentsLayoutManager() const {
-  if (sidebar::CanUseSidebar(browser_->profile()) &&
-      browser_->is_type_normal()) {
+  if (sidebar::CanUseSidebar(browser_.get())) {
     return static_cast<ContentsLayoutManager*>(
         original_contents_container_->GetLayoutManager());
   }
