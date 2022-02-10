@@ -72,6 +72,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     view.window?.addGestureRecognizer(gesture)
+    UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
   }
   
   // MARK: -
@@ -81,7 +82,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
   }
   
   public override var shouldAutorotate: Bool {
-    false
+    true
   }
 }
 
