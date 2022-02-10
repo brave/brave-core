@@ -2848,13 +2848,13 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Enter currency decimals
     </message>
     <message name="IDS_BRAVE_WALLET_ADD_NETWORK_RPC_URLS" desc="Brave wallet networks pref add network field name" translateable="false">
-      RPC URLs
+      RPC URL
     </message>
     <message name="IDS_BRAVE_WALLET_ADD_NETWORK_ICON_URLS" desc="Brave wallet networks pref add network field name">
-      Icon URLs
+      Icon URL
     </message>
     <message name="IDS_BRAVE_WALLET_ADD_NETWORK_BLOCK_EXPLORER_URLS" desc="Brave wallet networks pref add network field name">
-      Block explorer URLs
+      Block explorer URL
     </message>
     <message name="IDS_BRAVE_WALLET_ADD_NETWORK_URLS_HINT" desc="Brave wallet networks pref add network field hint">
       Enter URL

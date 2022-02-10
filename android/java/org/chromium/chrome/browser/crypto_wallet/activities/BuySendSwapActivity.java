@@ -1375,7 +1375,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 Spinner spinner = findViewById(R.id.network_spinner);
                 spinner.setOnItemSelectedListener(this);
                 mJsonRpcService.getAllNetworks(chains -> {
-                    EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                    EthereumChain[] customNetworks = new EthereumChain[0];
+                    // We want to hide custom networks for BUY and SWAP screens. We are
+                    // going to add a support for SWAP at least in the near future.
+                    if (mActivityType == ActivityType.SEND) {
+                        customNetworks = Utils.getCustomNetworks(chains);
+                    }
                     // Creating adapter for spinner
                     NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(this,
                             Utils.getNetworksList(this, customNetworks),
