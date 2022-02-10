@@ -59,17 +59,18 @@ EpsilonGreedyBanditArmMap MaybeDeleteArms(
     const EpsilonGreedyBanditArmMap& arms) {
   EpsilonGreedyBanditArmMap updated_arms = arms;
 
-  for (const auto& arm : updated_arms) {
-    const auto iter =
-        std::find(kSegments.cbegin(), kSegments.cend(), arm.first);
-    if (iter != kSegments.end()) {
+  for (auto arm_iter = updated_arms.begin(); arm_iter != updated_arms.end();) {
+    const auto segment_iter =
+        std::find(kSegments.cbegin(), kSegments.cend(), arm_iter->first);
+    if (segment_iter != kSegments.end()) {
+      ++arm_iter;
       continue;
     }
 
-    updated_arms.erase(arm.first);
-
-    BLOG(2, "Epsilon greedy bandit arm was deleted for " << arm.first
+    BLOG(2, "Epsilon greedy bandit arm was deleted for " << arm_iter->first
                                                          << " segment ");
+
+    arm_iter = updated_arms.erase(arm_iter);
   }
 
   return updated_arms;
