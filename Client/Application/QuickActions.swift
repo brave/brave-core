@@ -49,6 +49,7 @@ class QuickActions: NSObject {
         guard let shortCutType = ShortcutType(fullType: shortcutItem.type) else { return false }
 
         DispatchQueue.main.async {
+            self.dismissAlertPopupView()
             self.handleShortCutItemOfType(shortCutType, userData: shortcutItem.userInfo, browserViewController: bvc)
         }
 
@@ -68,6 +69,10 @@ class QuickActions: NSObject {
 
     fileprivate func handleOpenNewTab(withBrowserViewController bvc: BrowserViewController, isPrivate: Bool) {
         bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
+    }
+
+    fileprivate func dismissAlertPopupView() {
+        UIApplication.shared.keyWindow?.subviews.forEach { ($0 as? AlertPopupView)?.dismissWithType(dismissType: .noAnimation) }
     }
 
     fileprivate func handleScanQR(withBrowserViewController bvc: BrowserViewController) {
