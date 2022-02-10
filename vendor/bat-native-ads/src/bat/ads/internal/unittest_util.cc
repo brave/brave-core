@@ -33,11 +33,11 @@ namespace ads {
 
 namespace {
 
-static std::map<std::string, uint16_t> g_url_endpoint_indexes;
+static base::flat_map<std::string, uint16_t> g_url_endpoint_indexes;
 
-static std::map<std::string, std::vector<double>> g_ad_events;
+static base::flat_map<std::string, std::vector<double>> g_ad_events;
 
-static std::map<std::string, std::string> g_prefs;
+static base::flat_map<std::string, std::string> g_prefs;
 
 std::string GetUuid(const std::string& name) {
   const ::testing::TestInfo* const test_info =

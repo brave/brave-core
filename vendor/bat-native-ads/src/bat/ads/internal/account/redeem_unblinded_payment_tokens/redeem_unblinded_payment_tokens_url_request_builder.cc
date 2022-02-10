@@ -5,10 +5,10 @@
 
 #include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_url_request_builder.h"
 
-#include <map>
 #include <utility>
 
 #include "base/check.h"
+#include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
@@ -135,7 +135,7 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
 
 base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateTotals()
     const {
-  std::map<std::string, std::map<std::string, int>> buckets;
+  base::flat_map<std::string, base::flat_map<std::string, int>> buckets;
   for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
     const std::string& ad_type = unblinded_payment_token.ad_type.ToString();
     const std::string& confirmation_type =
@@ -151,7 +151,7 @@ base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateTotals()
     const std::string& ad_format = bucket.first;
     total.SetKey(kAdFormatKey, base::Value(ad_format));
 
-    const std::map<std::string, int>& confirmations = bucket.second;
+    const base::flat_map<std::string, int>& confirmations = bucket.second;
     for (const auto& confirmation : confirmations) {
       const std::string& confirmation_type = confirmation.first;
       const std::string& count = base::NumberToString(confirmation.second);

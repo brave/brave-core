@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/rand_util.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arms.h"
@@ -28,7 +29,8 @@ namespace {
 
 const size_t kTopArmCount = 3;
 
-using ArmBucketMap = std::map<double, std::vector<EpsilonGreedyBanditArmInfo>>;
+using ArmBucketMap =
+    base::flat_map<double, std::vector<EpsilonGreedyBanditArmInfo>>;
 using ArmList = std::vector<EpsilonGreedyBanditArmInfo>;
 using ArmBucketPair = std::pair<double, ArmList>;
 using ArmBucketList = std::vector<ArmBucketPair>;

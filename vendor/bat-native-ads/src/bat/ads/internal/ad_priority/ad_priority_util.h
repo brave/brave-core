@@ -7,14 +7,15 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PRIORITY_AD_PRIORITY_UTIL_H_
 
 #include <algorithm>
-#include <map>
 #include <utility>
+
+#include "base/containers/flat_map.h"
 
 namespace ads {
 
 template <typename T>
-std::map<unsigned int, T> SortAdsIntoPrioritizedBuckets(const T& ads) {
-  std::map<unsigned int, T> buckets;
+base::flat_map<unsigned int, T> SortAdsIntoPrioritizedBuckets(const T& ads) {
+  base::flat_map<unsigned int, T> buckets;
 
   for (const auto& ad : ads) {
     if (ad.priority == 0) {
@@ -35,7 +36,7 @@ std::map<unsigned int, T> SortAdsIntoPrioritizedBuckets(const T& ads) {
 
 template <typename T>
 std::pair<unsigned int, T> GetHighestPriorityBucket(
-    const std::map<unsigned int, T>& buckets) {
+    const base::flat_map<unsigned int, T>& buckets) {
   const auto iter = std::min_element(
       buckets.cbegin(), buckets.cend(),
       [](const auto& lhs, const auto& rhs) { return lhs.first < rhs.first; });

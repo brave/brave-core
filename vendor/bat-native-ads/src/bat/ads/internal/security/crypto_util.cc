@@ -59,7 +59,7 @@ std::vector<uint8_t> GetHKDF(const std::string& secret) {
 
 }  // namespace
 
-std::string Sign(const std::map<std::string, std::string>& headers,
+std::string Sign(const base::flat_map<std::string, std::string>& headers,
                  const std::string& key_id,
                  const std::string& secret_key) {
   if (headers.empty() || key_id.empty() || secret_key.empty()) {

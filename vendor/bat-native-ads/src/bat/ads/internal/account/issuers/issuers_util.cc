@@ -6,8 +6,8 @@
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 
 #include <algorithm>
-#include <map>
 
+#include "base/containers/flat_map.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
 #include "bat/ads/internal/account/issuers/issuer_info.h"
@@ -35,7 +35,7 @@ bool PublicKeyExists(const IssuerInfo& issuer, const std::string& public_key) {
 }  // namespace
 
 bool IsIssuerValid(const IssuerInfo& issuer) {
-  std::map<double, int> buckets;
+  base::flat_map<double, int> buckets;
   for (const auto& public_key : issuer.public_keys) {
     const double bucket = public_key.second;
     buckets[bucket]++;

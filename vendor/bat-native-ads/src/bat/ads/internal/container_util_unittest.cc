@@ -6,9 +6,9 @@
 #include "bat/ads/internal/container_util.h"
 
 #include <deque>
-#include <map>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -118,11 +118,11 @@ TEST(BatAdsContainerUtilTest, SplitEmptyVector) {
 
 TEST(BatAdsContainerUtilTest, CompareMatchingMaps) {
   // Arrange
-  const std::map<std::string, std::string> map_1 = {{"key 1", "value 1"},
-                                                    {"key 2", "value 2"}};
+  const base::flat_map<std::string, std::string> map_1 = {{"key 1", "value 1"},
+                                                          {"key 2", "value 2"}};
 
-  const std::map<std::string, std::string> map_2 = {{"key 2", "value 2"},
-                                                    {"key 1", "value 1"}};
+  const base::flat_map<std::string, std::string> map_2 = {{"key 2", "value 2"},
+                                                          {"key 1", "value 1"}};
 
   // Act
   const bool does_equal = CompareMaps(map_1, map_2);
@@ -133,8 +133,8 @@ TEST(BatAdsContainerUtilTest, CompareMatchingMaps) {
 
 TEST(BatAdsContainerUtilTest, CompareIdenticalMatchingMaps) {
   // Arrange
-  const std::map<std::string, std::string> map = {{"key 1", "value 1"},
-                                                  {"key 2", "value 2"}};
+  const base::flat_map<std::string, std::string> map = {{"key 1", "value 1"},
+                                                        {"key 2", "value 2"}};
 
   // Act
   const bool does_equal = CompareMaps(map, map);
@@ -145,11 +145,11 @@ TEST(BatAdsContainerUtilTest, CompareIdenticalMatchingMaps) {
 
 TEST(BatAdsContainerUtilTest, CompareNonMatchingMaps) {
   // Arrange
-  const std::map<std::string, std::string> map_1 = {{"key 1", "value 1"},
-                                                    {"key 2", "value 2"}};
+  const base::flat_map<std::string, std::string> map_1 = {{"key 1", "value 1"},
+                                                          {"key 2", "value 2"}};
 
-  const std::map<std::string, std::string> map_2 = {{"key 3", "value 3"},
-                                                    {"key 4", "value 4"}};
+  const base::flat_map<std::string, std::string> map_2 = {{"key 3", "value 3"},
+                                                          {"key 4", "value 4"}};
 
   // Act
   const bool does_equal = CompareMaps(map_1, map_2);
@@ -160,7 +160,7 @@ TEST(BatAdsContainerUtilTest, CompareNonMatchingMaps) {
 
 TEST(BatAdsContainerUtilTest, CompareEmptyMaps) {
   // Arrange
-  const std::map<std::string, std::string> map = {};
+  const base::flat_map<std::string, std::string> map = {};
 
   // Act
   const bool does_equal = CompareMaps(map, map);

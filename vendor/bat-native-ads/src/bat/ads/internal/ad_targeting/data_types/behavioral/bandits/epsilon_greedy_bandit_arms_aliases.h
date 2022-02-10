@@ -6,16 +6,16 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_ARMS_ALIASES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_TARGETING_DATA_TYPES_BEHAVIORAL_BANDITS_EPSILON_GREEDY_BANDIT_ARMS_ALIASES_H_
 
-#include <map>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/bandits/epsilon_greedy_bandit_arm_info.h"
 
 namespace ads {
 namespace ad_targeting {
 
 using EpsilonGreedyBanditArmMap =
-    std::map<std::string, EpsilonGreedyBanditArmInfo>;
+    base::flat_map<std::string, EpsilonGreedyBanditArmInfo>;
 
 }  // namespace ad_targeting
 }  // namespace ads
