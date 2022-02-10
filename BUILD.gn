@@ -57,16 +57,16 @@ if (!is_ios) {
 
 if (is_win) {
   # create_installer_archive.py assumes that last_chrome_installer folder has
-  # courgette.exe.
+  # courgette.exe. The original courgette.exe runs out of memory on Brave's
+  # binaries. As of January 2022, this seems to be a known issue and was
+  # confirmed by Chromium developers. The recommended workaround is to use
+  # another tool, Zucchini, as a drop-in replacement.
   if (build_delta_installer) {
-    copy("copy_courgette_binary") {
+    copy("copy_zucchini_binary_as_courgette") {
       visibility = [ ":mini_installer_dependencies" ]
-      sources = [ "$root_out_dir/courgette.exe" ]
-      outputs = [ "$root_out_dir/$last_chrome_installer/{{source_file_part}}" ]
-      deps = [
-        "//courgette",
-        "//courgette:copy_courgette_binaries",
-      ]
+      sources = [ "$root_out_dir/zucchini.exe" ]
+      outputs = [ "$root_out_dir/$last_chrome_installer/courgette.exe" ]
+      deps = [ "//components/zucchini:zucchini" ]
     }
   }
 
@@ -74,7 +74,7 @@ if (is_win) {
     deps = [ ":brave" ]
 
     if (build_delta_installer) {
-      deps += [ ":copy_courgette_binary" ]
+      deps += [ ":copy_zucchini_binary_as_courgette" ]
     }
   }
 }
