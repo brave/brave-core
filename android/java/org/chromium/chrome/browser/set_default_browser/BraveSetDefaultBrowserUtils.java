@@ -29,9 +29,6 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.set_default_browser.OnBraveSetDefaultBrowserListener;
-import org.chromium.chrome.browser.set_default_browser.SetDefaultBrowserActivity;
-import org.chromium.chrome.browser.set_default_browser.SetDefaultBrowserBottomSheetFragment;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.ui.widget.Toast;
 
@@ -105,8 +102,29 @@ public class BraveSetDefaultBrowserUtils {
             return;
         }
 
+        if (!isBottomSheetVisible) {
+            isBottomSheetVisible = true;
+
+            if (!isFromMenu) {
+                int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
+                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
+                SharedPreferencesManager.getInstance().writeInt(
+                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
+                        braveDefaultModalCount + 1);
+            }
+
+            SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
+                    SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
+
+            bottomSheetDialog.show(
+                    activity.getSupportFragmentManager(), "SetDefaultBrowserBottomSheetFragment");
+        }
+    }
+
+    public static void setDefaultBrowser(Activity activity) {
         int roleManagerOpenCount = SharedPreferencesManager.getInstance().readInt(
                 BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && roleManagerOpenCount < 2) {
             RoleManager roleManager = activity.getSystemService(RoleManager.class);
 
@@ -117,24 +135,22 @@ public class BraveSetDefaultBrowserUtils {
                     SharedPreferencesManager.getInstance().writeInt(
                             BravePreferenceKeys.BRAVE_ROLE_MANAGER_DIALOG_COUNT,
                             roleManagerOpenCount + 1);
+
                     activity.startActivityForResult(
                             roleManager.createRequestRoleIntent(RoleManager.ROLE_BROWSER),
                             DEFAULT_BROWSER_ROLE_REQUEST_CODE);
                 }
             } else {
-                showSetDefaultBottomSheet(activity, isFromMenu);
+                openDefaultAppsSettings(activity);
             }
 
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            showSetDefaultBottomSheet(activity, isFromMenu);
+        } else if (supportsDefault()) {
+            openDefaultAppsSettings(activity);
 
         } else {
             ResolveInfo resolveInfo = getResolveInfo(activity);
             if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
                     || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
-                // (Albert Wang): From what I've experimented on 6.0,
-                // default browser popup is in the middle of the screen for
-                // these versions. So we shouldn't show the toast.
                 openBraveBlog(activity);
             } else {
                 Toast toast = Toast.makeText(
@@ -156,33 +172,12 @@ public class BraveSetDefaultBrowserUtils {
                 browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
     }
 
-    private static void showSetDefaultBottomSheet(AppCompatActivity activity, boolean isFromMenu) {
-        if (!isBottomSheetVisible) {
-            isBottomSheetVisible = true;
-
-            if (!isFromMenu) {
-                int braveDefaultModalCount = SharedPreferencesManager.getInstance().readInt(
-                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT);
-                SharedPreferencesManager.getInstance().writeInt(
-                        BravePreferenceKeys.BRAVE_SET_DEFAULT_BOTTOM_SHEET_COUNT,
-                        braveDefaultModalCount + 1);
-            }
-
-            SetDefaultBrowserBottomSheetFragment bottomSheetDialog =
-                    SetDefaultBrowserBottomSheetFragment.newInstance(isFromMenu);
-
-            bottomSheetDialog.show(
-                    activity.getSupportFragmentManager(), "SetDefaultBrowserBottomSheetFragment");
-        }
-    }
-
-    public static void openDefaultAppsSettings(Activity activity) {
+    private static void openDefaultAppsSettings(Activity activity) {
         if (activity instanceof OnBraveSetDefaultBrowserListener) {
             ((OnBraveSetDefaultBrowserListener) activity).OnCheckDefaultResume();
         }
 
         Intent intent = new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS);
-        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         activity.startActivity(intent);
     }
 

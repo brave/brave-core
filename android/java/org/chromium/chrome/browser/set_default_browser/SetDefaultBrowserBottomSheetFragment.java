@@ -23,7 +23,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
-import org.chromium.chrome.browser.set_default_browser.BraveSetDefaultBrowserUtils;
 
 public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragment {
     private static final String IS_FROM_MENU = "is_from_menu";
@@ -63,7 +62,7 @@ public class SetDefaultBrowserBottomSheetFragment extends BottomSheetDialogFragm
             @Override
             public void onClick(View v) {
                 if (getActivity() != null) {
-                    BraveSetDefaultBrowserUtils.openDefaultAppsSettings(getActivity());
+                    BraveSetDefaultBrowserUtils.setDefaultBrowser(getActivity());
                 }
                 dismiss();
             }
