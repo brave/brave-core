@@ -85,8 +85,13 @@ void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
   brave_new_tab_page::mojom::CustomBackgroundPtr value =
       brave_new_tab_page::mojom::CustomBackground::New();
   // Pass empty struct when custom background is disabled.
-  if (IsCustomBackgroundEnabled())
-    value->url = GURL(ntp_background_images::kCustomWallpaperURL);
+  if (IsCustomBackgroundEnabled()) {
+    // Add a timestamp to the url to prevent the browser from using a cached
+    // version when "Upload an image" is used multiple times.
+    std::string time_string = std::to_string(base::Time::Now().ToTimeT());
+    std::string local_string(ntp_background_images::kCustomWallpaperURL);
+    value->url = GURL(local_string + "?ts=" + time_string);
+  }
   page_->OnBackgroundUpdated(std::move(value));
 }
 
