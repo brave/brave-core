@@ -29,14 +29,14 @@ std::string GetCrxId_BraveImpl(const std::string& key, CrxFileHeader* header) {
 
 CreatorResult CreateWithPublisherKey(const base::FilePath& output_path,
                                      const base::FilePath& zip_path,
-                                     crypto::RSAPrivateKey* signing_key,
+                                     crypto::RSAPrivateKey* developer_key,
                                      crypto::RSAPrivateKey* publisher_key) {
   CrxFileHeader header;
   base::File file(zip_path, base::File::FLAG_OPEN | base::File::FLAG_READ);
-  const CreatorResult signing_result =
-      SignArchiveAndCreateHeader(output_path, &file, signing_key, &header);
-  if (signing_result != CreatorResult::OK)
-    return signing_result;
+  const CreatorResult developer_signing_result =
+      SignArchiveAndCreateHeader(output_path, &file, developer_key, &header);
+  if (developer_signing_result != CreatorResult::OK)
+    return developer_signing_result;
 
   if (publisher_key) {
     file.Seek(base::File::Whence::FROM_BEGIN, 0);
@@ -46,8 +46,7 @@ CreatorResult CreateWithPublisherKey(const base::FilePath& output_path,
       return publisher_signing_result;
   }
 
-  const CreatorResult result = WriteCRX(header, output_path, &file);
-  return result;
+  return WriteCRX(header, output_path, &file);
 }
 
 }  // namespace crx_file

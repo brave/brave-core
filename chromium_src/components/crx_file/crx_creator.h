@@ -10,10 +10,11 @@
 
 namespace crx_file {
 
-CreatorResult CreateWithPublisherKey(const base::FilePath& output_path,
-                                     const base::FilePath& zip_path,
-                                     crypto::RSAPrivateKey* signing_key,
-                                     crypto::RSAPrivateKey* publisher_key);
+CreatorResult CreateWithPublisherKey(
+    const base::FilePath& output_path,
+    const base::FilePath& zip_path,
+    crypto::RSAPrivateKey* developer_key /*signing_key in Chromium*/,
+    crypto::RSAPrivateKey* publisher_key);
 }  // namespace crx_file
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_CRX_FILE_CRX_CREATOR_H_

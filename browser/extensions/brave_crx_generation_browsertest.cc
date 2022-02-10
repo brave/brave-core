@@ -107,7 +107,7 @@ class BraveCrxGenerationTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveCrxGenerationTest,
                        CrxVerificationWithoutPublisherProof) {
-  // Generate CRX without the publisher proof (only standart author's
+  // Generate CRX without the publisher proof (only standard developer's
   // signature).
   const auto crx_path = CreateTestCrx();
 
