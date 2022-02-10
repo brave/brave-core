@@ -9,11 +9,7 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { toProperCase } from '../../../utils/string-utils'
 import { mojoTimeDeltaToJSDate } from '../../../utils/datetime-utils'
-import {
-  formatFiatAmountWithCommasAndDecimals,
-  formatTokenAmountWithCommasAndDecimals
-} from '../../../utils/format-prices'
-import { formatBalance } from '../../../utils/format-balances'
+import Amount from '../../../utils/amount'
 
 import { getLocale } from '../../../../common/locale'
 import {
@@ -125,14 +121,16 @@ const TransactionDetailPanel = (props: Props) => {
       transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) {
       return transactionDetails.erc721BlockchainToken?.name + ' ' + transactionDetails.erc721TokenId
     }
-    return formatTokenAmountWithCommasAndDecimals(transactionDetails.value, transactionDetails.symbol)
+    return new Amount(transactionDetails.value)
+      .formatAsAsset(undefined, transactionDetails.symbol)
   }, [transactionDetails, transaction])
 
   const transactionFiatValue = React.useMemo((): string => {
     if (transaction.txType !== BraveWallet.TransactionType.ERC721TransferFrom &&
       transaction.txType !== BraveWallet.TransactionType.ERC721SafeTransferFrom &&
       transaction.txType !== BraveWallet.TransactionType.ERC20Approve) {
-      return formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatValue, defaultCurrencies.fiat)
+      return transactionDetails.fiatValue
+        .formatAsFiat(defaultCurrencies.fiat)
     }
     return ''
   }, [transactionDetails, transaction, defaultCurrencies])
@@ -160,8 +158,19 @@ const TransactionDetailPanel = (props: Props) => {
           {getLocale('braveWalletAllowSpendTransactionFee')}
         </DetailTitle>
         <BalanceColumn>
-          <DetailTextDark>{formatTokenAmountWithCommasAndDecimals(formatBalance(transactionDetails.gasFee, selectedNetwork.decimals), selectedNetwork.symbol)}</DetailTextDark>
-          <DetailTextDark>{formatFiatAmountWithCommasAndDecimals(transactionDetails.gasFeeFiat, defaultCurrencies.fiat)}</DetailTextDark>
+          <DetailTextDark>
+            {
+              new Amount(transactionDetails.gasFee)
+                .divideByDecimals(selectedNetwork.decimals)
+                .formatAsAsset(6, selectedNetwork.symbol)
+            }
+          </DetailTextDark>
+          <DetailTextDark>
+            {
+              new Amount(transactionDetails.gasFeeFiat)
+                .formatAsFiat(defaultCurrencies.fiat)
+            }
+          </DetailTextDark>
         </BalanceColumn>
       </DetailRow>
       <DetailRow>

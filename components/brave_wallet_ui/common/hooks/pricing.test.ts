@@ -18,16 +18,16 @@ describe('usePricing hook', () => {
 
     it('should compute fiat amount for DOG token', () => {
       const { result } = renderHook(() => usePricing(mockAssetPrices))
-      expect(result.current.computeFiatAmount('7', 'DOG', 1)).toEqual('70.00')
+      expect(result.current.computeFiatAmount('7', 'DOG', 1).formatAsFiat()).toEqual('70.00')
     })
 
     it('should return empty fiat value for unknown token', () => {
       const { result } = renderHook(() => usePricing(mockAssetPrices))
-      expect(result.current.computeFiatAmount('7', 'CAT', 0)).toEqual('')
+      expect(result.current.computeFiatAmount('7', 'CAT', 0).formatAsFiat()).toEqual('')
     })
 
     it('should return empty fiat value for empty amount', () => {
       const { result } = renderHook(() => usePricing(mockAssetPrices))
-      expect(result.current.computeFiatAmount('', 'DOG', 0)).toEqual('')
+      expect(result.current.computeFiatAmount('', 'DOG', 0).formatAsFiat()).toEqual('')
     })
 })

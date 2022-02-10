@@ -25,12 +25,14 @@ import {
   FilecoinNetworkLocaleMapping
 } from '../../../../../common/hardware/types'
 import { BraveWallet, WalletAccountType, CreateAccountOptionsType } from '../../../../../constants/types'
-import { reduceAddress } from '../../../../../utils/reduce-address'
 import { getLocale } from '../../../../../../common/locale'
 import { NavButton } from '../../../../extension'
 import { SearchBar } from '../../../../shared'
 import { DisclaimerText } from '../style'
-import { formatBalance } from '../../../../../utils/format-balances'
+
+// Utils
+import { reduceAddress } from '../../../../../utils/reduce-address'
+import Amount from '../../../../../utils/amount'
 
 interface Props {
   hardwareWallet: string
@@ -221,7 +223,9 @@ function AccountListItem (props: AccountListItemProps) {
 
   React.useMemo(() => {
     getBalance(account.address).then((result) => {
-      const formattedBalance = formatBalance(result, selectedNetwork.decimals)
+      const formattedBalance = new Amount(result)
+        .divideByDecimals(selectedNetwork.decimals)
+        .format()
       setBalance(formattedBalance)
     }).catch()
   }, [account])

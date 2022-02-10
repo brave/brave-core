@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { getLocale } from '../../../common/locale'
 import { BraveWallet, BlockExplorerUrlTypes } from '../../constants/types'
-import { hexToNumber } from '../../utils/format-balances'
+import Amount from '../../utils/amount'
 
 export default function useExplorer (network: BraveWallet.EthereumChain) {
   return React.useCallback(
@@ -18,7 +18,9 @@ export default function useExplorer (network: BraveWallet.EthereumChain) {
         return
       }
 
-      const url = type === 'contract' ? `${explorerURL}/${value}?a=${hexToNumber(id ?? '', true)}` : `${explorerURL}/${type}/${value}`
+      const url = type === 'contract'
+        ? `${explorerURL}/${value}?a=${new Amount(id ?? '').format()}`
+        : `${explorerURL}/${type}/${value}`
 
       if (!chrome.tabs) {
         window.open(url, '_blank')

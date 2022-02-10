@@ -6,12 +6,6 @@ import {
   ConnectedHeader
 } from '../'
 import { Tooltip, SelectNetworkButton } from '../../shared'
-import {
-  formatFiatAmountWithCommasAndDecimals,
-  formatTokenAmountWithCommasAndDecimals
-} from '../../../utils/format-prices'
-import { formatBalance } from '../../../utils/format-balances'
-import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 
 // Styled Components
 import {
@@ -34,6 +28,8 @@ import {
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
+import Amount from '../../../utils/amount'
 
 // Hooks
 import { useExplorer, usePricing } from '../../../common/hooks'
@@ -114,11 +110,9 @@ const ConnectedPanel = (props: Props) => {
     return !BuySupportedChains.includes(selectedNetwork.chainId)
   }, [BuySupportedChains, selectedNetwork])
 
-  const formattedAssetBalance = formatBalance(selectedAccount.balance, selectedNetwork.decimals)
-
-  const formattedAssetBalanceWithDecimals = selectedAccount.balance
-    ? formatTokenAmountWithCommasAndDecimals(formattedAssetBalance, selectedNetwork.symbol)
-    : ''
+  const formattedAssetBalance = new Amount(selectedAccount.balance)
+    .divideByDecimals(selectedNetwork.decimals)
+    .formatAsAsset(6, selectedNetwork.symbol)
 
   const { computeFiatAmount } = usePricing(spotPrices)
 
@@ -169,8 +163,10 @@ const ConnectedPanel = (props: Props) => {
           </Tooltip>
         </BalanceColumn>
         <BalanceColumn>
-          <AssetBalanceText>{formattedAssetBalanceWithDecimals}</AssetBalanceText>
-          <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(selectedAccountFiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
+          <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
+          <FiatBalanceText>
+            {selectedAccountFiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+          </FiatBalanceText>
         </BalanceColumn>
         <MoreAssetsButton onClick={navigate('assets')}>{getLocale('braveWalletPanelViewAccountAssets')}</MoreAssetsButton>
       </CenterColumn>

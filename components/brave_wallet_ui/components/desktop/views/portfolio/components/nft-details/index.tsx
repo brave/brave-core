@@ -11,7 +11,7 @@ import {
 import { useExplorer } from '../../../../../../common/hooks'
 
 // Utils
-import { hexToNumber } from '../../../../../../utils/format-balances'
+import Amount from '../../../../../../utils/amount'
 import { CurrencySymbols } from '../../../../../../utils/currency-symbols'
 import { getLocale } from '../../../../../../../common/locale'
 
@@ -87,7 +87,13 @@ const NFTDetails = (props: Props) => {
     <StyledWrapper>
       <NFTImage src={selectedAsset.logo} />
       <DetailColumn>
-        <TokenName>{selectedAsset.name} {hexToNumber(selectedAsset.tokenId)}</TokenName>
+        <TokenName>
+          {selectedAsset.name} {
+            selectedAsset.tokenId
+              ? '#' + new Amount(selectedAsset.tokenId).toNumber()
+              : ''
+          }
+        </TokenName>
         <TokenFiatValue>{CurrencySymbols[defaultCurrencies.fiat]}{nftMetadata.floorFiatPrice}</TokenFiatValue>
         <TokenCryptoValue>{nftMetadata.floorCryptoPrice} {selectedNetwork.symbol}</TokenCryptoValue>
         <DetailSectionRow>
@@ -102,7 +108,13 @@ const NFTDetails = (props: Props) => {
           <DetailSectionColumn>
             <DetailSectionTitle>{getLocale('braveWalletNFTDetailTokenID')}</DetailSectionTitle>
             <ProjectDetailIDRow>
-              <DetailSectionValue>{hexToNumber(selectedAsset.tokenId)}</DetailSectionValue>
+              <DetailSectionValue>
+                {
+                  selectedAsset.tokenId
+                    ? '#' + new Amount(selectedAsset.tokenId).toNumber()
+                    : ''
+                }
+              </DetailSectionValue>
               <ExplorerButton onClick={onClickViewOnBlockExplorer('contract', selectedAsset.contractAddress, selectedAsset.tokenId)}>
                 <ExplorerIcon />
               </ExplorerButton>

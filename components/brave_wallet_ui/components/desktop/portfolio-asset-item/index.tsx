@@ -4,11 +4,7 @@ import * as React from 'react'
 import { BraveWallet, DefaultCurrencies } from '../../../constants/types'
 
 // Utils
-import { formatBalance, hexToNumber } from '../../../utils/format-balances'
-import {
-  formatFiatAmountWithCommasAndDecimals,
-  formatTokenAmountWithCommasAndDecimals
-} from '../../../utils/format-prices'
+import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
@@ -56,8 +52,12 @@ const PortfolioAssetItem = (props: Props) => {
   }, [])
 
   const formattedAssetBalance = token.isErc721
-    ? formatBalance(assetBalance, token.decimals)
-    : formatTokenAmountWithCommasAndDecimals(formatBalance(assetBalance, token.decimals), token.symbol)
+    ? new Amount(assetBalance)
+      .divideByDecimals(token.decimals)
+      .format()
+    : new Amount(assetBalance)
+      .divideByDecimals(token.decimals)
+      .formatAsAsset(6, token.symbol)
 
   const { computeFiatAmount } = usePricing(spotPrices)
   const fiatBalance = React.useMemo(() => {
@@ -76,7 +76,7 @@ const PortfolioAssetItem = (props: Props) => {
   return (
     <>
       {token.visible &&
-        // Selecting an erc721 token is temp disabled until UI is ready for viewing NFT's
+        // Selecting an erc721 token is temp disabled until UI is ready for viewing NFTs
         <StyledWrapper disabled={token.isErc721} onClick={action}>
           <NameAndIcon>
             <IconsWrapper>
@@ -88,7 +88,12 @@ const PortfolioAssetItem = (props: Props) => {
               }
             </IconsWrapper>
             <NameColumn>
-              <AssetName>{token.name} {token.isErc721 ? hexToNumber(token.tokenId ?? '') : ''}</AssetName>
+              <AssetName>{token.name} {
+                token.isErc721 && token.tokenId
+                  ? '#' + new Amount(token.tokenId).toNumber()
+                  : ''
+                }
+              </AssetName>
               <AssetName>{NetworkDescription}</AssetName>
             </NameColumn>
           </NameAndIcon>
@@ -98,7 +103,7 @@ const PortfolioAssetItem = (props: Props) => {
               hideBalances={hideBalances ?? false}
             >
               {!token.isErc721 &&
-                <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
+                <FiatBalanceText>{fiatBalance.formatAsFiat(defaultCurrencies.fiat)}</FiatBalanceText>
               }
               <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
             </WithHideBalancePlaceholder>

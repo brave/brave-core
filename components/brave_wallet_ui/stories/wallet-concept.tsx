@@ -36,13 +36,13 @@ import { mockRPCResponse } from './mock-data/rpc-response'
 import { CurrentPriceMockData } from './mock-data/current-price-data'
 import { PriceHistoryMockData } from './mock-data/price-history-data'
 import { mockUserWalletPreferences } from './mock-data/user-wallet-preferences'
-import { formatWithCommasAndDecimals } from '../utils/format-prices'
 import { getLocale } from '../../common/locale'
 import {
   HardwareWalletConnectOpts
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { mockNetworks } from './mock-data/mock-networks'
 import { isStrongPassword } from '../utils/password-utils'
+import Amount from '../utils/amount'
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -453,7 +453,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     const grandTotal = amountList.reduce(function (a, b) {
       return a + b
     }, 0)
-    return formatWithCommasAndDecimals(grandTotal.toString())
+    return new Amount(grandTotal)
+      .format(6, true)
   }
 
   // This will change once we hit a real api for pricing

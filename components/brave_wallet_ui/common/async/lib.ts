@@ -20,7 +20,7 @@ import * as WalletActions from '../actions/wallet_actions'
 // Utils
 import { GetNetworkInfo } from '../../utils/network-utils'
 import { GetTokenParam, GetFlattenedAccountBalances } from '../../utils/api-utils'
-import { normalizeNumericValue } from '../../utils/bn-utils'
+import Amount from '../../utils/amount'
 
 import getAPIProxy from './bridge'
 import { Dispatch, State } from './types'
@@ -81,7 +81,7 @@ export const getBalance = (address: string): Promise<string> => {
     const { jsonRpcService } = getAPIProxy()
     const result = await jsonRpcService.getBalance(address, BraveWallet.CoinType.ETH)
     if (result.error === BraveWallet.ProviderError.kSuccess) {
-      resolve(normalizeNumericValue(result.balance))
+      resolve(Amount.normalize(result.balance))
     } else {
       reject()
     }

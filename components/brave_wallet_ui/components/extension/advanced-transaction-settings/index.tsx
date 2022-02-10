@@ -14,7 +14,7 @@ import {
 } from './style'
 
 // Utils
-import { toHex } from '../../../utils/format-balances'
+import Amount from '../../../utils/amount'
 
 export interface Props {
   onCancel: () => void
@@ -41,7 +41,7 @@ const AdvancedTransactionSettings = (props: Props) => {
   const onSave = () => {
     updateUnapprovedTransactionNonce({
       txMetaId,
-      nonce: customNonce && toHex(customNonce)
+      nonce: customNonce && new Amount(customNonce).toHex()
     })
     onCancel()
   }

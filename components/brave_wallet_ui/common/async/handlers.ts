@@ -32,8 +32,11 @@ import {
   WalletState,
   WalletInfo
 } from '../../constants/types'
-import { toWeiHex } from '../../utils/format-balances'
+
+// Utils
 import { hexStrToNumberArray } from '../../utils/hex-utils'
+import Amount from '../../utils/amount'
+
 import getAPIProxy from './bridge'
 import {
   refreshKeyringInfo,
@@ -497,8 +500,8 @@ export const fetchSwapQuoteFactory = (
       const params = {
         from: accountAddress,
         to,
-        value: toWeiHex(value, 0),
-        gas: toWeiHex(estimatedGas, 0),
+        value: new Amount(value).toHex(),
+        gas: new Amount(estimatedGas).toHex(),
         data: hexStrToNumberArray(data),
         maxPriorityFeePerGas,
         maxFeePerGas

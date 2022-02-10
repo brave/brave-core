@@ -1,5 +1,4 @@
 import * as React from 'react'
-import BigNumber from 'bignumber.js'
 
 import { getLocale } from '../../../../common/locale'
 import { BraveWallet } from '../../../constants/types'
@@ -8,16 +7,7 @@ import { UpdateUnapprovedTransactionGasFieldsType } from '../../../common/consta
 import { NavButton, Panel } from '../'
 
 // Utils
-import {
-  formatFiatGasFee,
-  toGWei,
-  addCurrencies,
-  formatGasFee,
-  gWeiToWei,
-  gWeiToWeiHex,
-  toWeiHex
-} from '../../../utils/format-balances'
-import { addNumericValues } from '../../../utils/bn-utils'
+import Amount from '../../../utils/amount'
 
 // Hooks
 import { useTransactionFeesParser } from '../../../common/hooks'
@@ -81,14 +71,33 @@ const EditGas = (props: Props) => {
 
   const [suggestedMaxPriorityFee, setSuggestedMaxPriorityFee] = React.useState<string>(suggestedMaxPriorityFeeChoices[1])
   const [gasLimit, setGasLimit] = React.useState<string>(transactionFees.gasLimit)
-  const [gasPrice, setGasPrice] = React.useState<string>(toGWei(transactionFees.gasPrice))
-  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = React.useState<string>(toGWei(transactionFees.maxPriorityFeePerGas))
-  const [maxFeePerGas, setMaxFeePerGas] = React.useState<string>(toGWei(transactionFees.maxFeePerGas))
+  const [gasPrice, setGasPrice] = React.useState<string>(
+    new Amount(transactionFees.gasPrice)
+      .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
+      .format()
+  )
+  const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = React.useState<string>(
+    new Amount(transactionFees.maxPriorityFeePerGas)
+      .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
+      .format()
+  )
+  const [maxFeePerGas, setMaxFeePerGas] = React.useState<string>(
+    new Amount(transactionFees.maxFeePerGas)
+      .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
+      .format()
+  )
 
   React.useEffect(
     () => {
-      const maxWeiValue = addNumericValues(baseFeePerGas, gWeiToWei(maxPriorityFeePerGas))
-      setMaxFeePerGas(toGWei(maxWeiValue))
+      const maxPriorityFeePerGasWei = new Amount(maxPriorityFeePerGas)
+        .multiplyByDecimals(9) // GWei-per-gas → Wei conversion
+
+      const maxFeePerGasWeiValue = new Amount(baseFeePerGas)
+        .plus(maxPriorityFeePerGasWei)
+
+      setMaxFeePerGas(maxFeePerGasWeiValue
+        .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
+        .format())
     },
     [baseFeePerGas]
   )
@@ -105,8 +114,16 @@ const EditGas = (props: Props) => {
     const value = event.target.value
     setMaxPriorityFeePerGas(value)
 
-    const computedMaxFeePerGasWei = addNumericValues(baseFeePerGas, gWeiToWei(value))
-    const computedMaxFeePerGasGWei = toGWei(computedMaxFeePerGasWei)
+    const maxPriorityFeePerGasWei = new Amount(value)
+      .multiplyByDecimals(9) // GWei-per-gas → Wei-per-gas conversion
+
+    const computedMaxFeePerGasWei = new Amount(baseFeePerGas)
+      .plus(maxPriorityFeePerGasWei)
+
+    const computedMaxFeePerGasGWei = computedMaxFeePerGasWei
+      .divideByDecimals(9) // Wei-per-gas → GWei-per-gas conversion
+      .format()
+
     setMaxFeePerGas(computedMaxFeePerGasGWei)
   }
 
@@ -127,26 +144,41 @@ const EditGas = (props: Props) => {
     setSuggestedSliderStep(suggestedSliderStep)
     const hexString = suggestedMaxPriorityFeeChoices[Number(suggestedSliderStep)]
     setSuggestedMaxPriorityFee(hexString)
-    setMaxPriorityFeePerGas(toGWei(hexString))
-    const computedMaxFeePerGasWei = addNumericValues(baseFeePerGas, hexString)
-    const computedMaxFeePerGasGWei = toGWei(computedMaxFeePerGasWei)
+    setMaxPriorityFeePerGas(new Amount(hexString)
+      .divideByDecimals(9)
+      .format())
+    const computedMaxFeePerGasWei = new Amount(baseFeePerGas)
+      .plus(hexString)
+    const computedMaxFeePerGasGWei = computedMaxFeePerGasWei
+      .divideByDecimals(9)
+      .format()
     setMaxFeePerGas(computedMaxFeePerGasGWei)
   }
 
   const showSuggestedMaxPriorityPanel = isEIP1559Transaction && maxPriorityPanel === MaxPriorityPanels.setSuggested
   const showCustomMaxPriorityPanel = isEIP1559Transaction && maxPriorityPanel === MaxPriorityPanels.setCustom
   const suggestedEIP1559GasFee = showSuggestedMaxPriorityPanel
-    ? formatGasFee(
-      addCurrencies(suggestedMaxPriorityFee, baseFeePerGas),
-      gasLimit,
-      selectedNetwork.decimals
-    )
+    ? new Amount(baseFeePerGas)
+      .plus(suggestedMaxPriorityFee)
+      .times(gasLimit) // Wei-per-gas → Wei conversion
+      .divideByDecimals(selectedNetwork.decimals) // Wei → ETH conversion
+      .format(6)
     : undefined
-  const suggestedEIP1559FiatGasFee = suggestedEIP1559GasFee && formatFiatGasFee(suggestedEIP1559GasFee, networkSpotPrice)
+
+  const suggestedEIP1559FiatGasFee = suggestedEIP1559GasFee && new Amount(suggestedEIP1559GasFee)
+    .times(networkSpotPrice)
+    .formatAsFiat()
+
   const customEIP1559GasFee = showCustomMaxPriorityPanel
-    ? formatGasFee(gWeiToWei(maxFeePerGas), gasLimit, selectedNetwork.decimals)
+    ? new Amount(maxFeePerGas)
+      .multiplyByDecimals(9) // GWei-per-gas → Wei-per-gas conversion
+      .times(gasLimit) // Wei-per-gas → Wei
+      .divideByDecimals(selectedNetwork.decimals) // Wei → ETH conversion
+      .format(6)
     : undefined
-  const customEIP1559FiatGasFee = customEIP1559GasFee && formatFiatGasFee(customEIP1559GasFee, networkSpotPrice)
+  const customEIP1559FiatGasFee = customEIP1559GasFee && new Amount(customEIP1559GasFee)
+    .times(networkSpotPrice)
+    .formatAsFiat()
 
   const gasLimitComponent = (
     <>
@@ -164,8 +196,11 @@ const EditGas = (props: Props) => {
     if (!isEIP1559Transaction) {
       updateUnapprovedTransactionGasFields({
         txMetaId: transactionInfo.id,
-        gasPrice: gWeiToWeiHex(gasPrice),
-        gasLimit: toWeiHex(gasLimit, 0)
+        gasPrice: new Amount(gasPrice)
+          .multiplyByDecimals(9)
+          .toHex(),
+        gasLimit: new Amount(gasLimit)
+          .toHex()
       })
 
       onCancel()
@@ -175,16 +210,24 @@ const EditGas = (props: Props) => {
     if (maxPriorityPanel === MaxPriorityPanels.setCustom) {
       updateUnapprovedTransactionGasFields({
         txMetaId: transactionInfo.id,
-        maxPriorityFeePerGas: gWeiToWeiHex(maxPriorityFeePerGas),
-        maxFeePerGas: gWeiToWeiHex(maxFeePerGas),
-        gasLimit: toWeiHex(gasLimit, 0)
+        maxPriorityFeePerGas: new Amount(maxPriorityFeePerGas)
+          .multiplyByDecimals(9)
+          .toHex(),
+        maxFeePerGas: new Amount(maxFeePerGas)
+          .multiplyByDecimals(9)
+          .toHex(),
+        gasLimit: new Amount(gasLimit)
+          .toHex()
       })
     } else if (maxPriorityPanel === MaxPriorityPanels.setSuggested) {
       updateUnapprovedTransactionGasFields({
         txMetaId: transactionInfo.id,
-        gasLimit: toWeiHex(gasLimit, 0),
+        gasLimit: new Amount(gasLimit)
+          .toHex(),
         maxPriorityFeePerGas: suggestedMaxPriorityFee,
-        maxFeePerGas: addCurrencies(suggestedMaxPriorityFee, baseFeePerGas)
+        maxFeePerGas: new Amount(baseFeePerGas)
+          .plus(suggestedMaxPriorityFee)
+          .toHex()
       })
     }
 
@@ -195,7 +238,9 @@ const EditGas = (props: Props) => {
     return (
       !isEIP1559Transaction &&
       gasPrice !== '' &&
-      new BigNumber(gWeiToWei(gasPrice)).isZero()
+      new Amount(gasPrice)
+        .multiplyByDecimals(9)
+        .isZero()
     )
   }, [gasPrice])
 
@@ -204,7 +249,7 @@ const EditGas = (props: Props) => {
       return true
     }
 
-    if (new BigNumber(gasLimit).lte(0)) {
+    if (new Amount(gasLimit).lte(0)) {
       return true
     }
 
@@ -212,7 +257,8 @@ const EditGas = (props: Props) => {
       return true
     }
 
-    if (!isEIP1559Transaction && new BigNumber(gWeiToWei(gasPrice)).lt(0)) {
+    if (!isEIP1559Transaction &&
+        new Amount(gasPrice).multiplyByDecimals(9).isNegative()) {
       return true
     }
 
@@ -220,11 +266,14 @@ const EditGas = (props: Props) => {
       return true
     }
 
-    if (isEIP1559Transaction && new BigNumber(baseFeePerGas).gt(gWeiToWei(maxFeePerGas))) {
+    if (isEIP1559Transaction &&
+        new Amount(maxFeePerGas).multiplyByDecimals(9).lte(baseFeePerGas)
+    ) {
       return true
     }
 
-    return isEIP1559Transaction && new BigNumber(gWeiToWei(maxPriorityFeePerGas)).lt(0)
+    return isEIP1559Transaction &&
+      new Amount(maxPriorityFeePerGas).multiplyByDecimals(9).isNegative()
   }, [gasLimit, gasPrice, maxPriorityFeePerGas, maxFeePerGas])
 
   return (
@@ -241,7 +290,10 @@ const EditGas = (props: Props) => {
             <CurrentBaseRow>
               <CurrentBaseText>{getLocale('braveWalletEditGasBaseFee')}</CurrentBaseText>
               <CurrentBaseText>
-                {`${toGWei(baseFeePerGas)} ${getLocale('braveWalletEditGasGwei')}`}
+                {
+                  `${new Amount(baseFeePerGas).divideByDecimals(9).format()} 
+                  ${getLocale('braveWalletEditGasGwei')}`
+                }
               </CurrentBaseText>
             </CurrentBaseRow>
 
