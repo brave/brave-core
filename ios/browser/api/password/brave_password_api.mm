@@ -136,6 +136,26 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
   return self;
 }
 
+- (id)copyWithZone:(NSZone*)zone {
+    IOSPasswordForm* passwordFormCopy = [[[self class] allocWithZone:zone] init];
+
+    if (passwordFormCopy) {
+        passwordFormCopy.url = self.url;
+        passwordFormCopy.signOnRealm = self.signOnRealm;
+        passwordFormCopy.dateCreated = self.dateCreated;
+        passwordFormCopy.dateLastUsed = self.dateLastUsed;
+        passwordFormCopy.datePasswordChanged = self.datePasswordChanged;
+        passwordFormCopy.usernameElement = self.usernameElement;
+        passwordFormCopy.usernameValue = self.usernameValue;
+        passwordFormCopy.passwordElement = self.passwordElement;
+        passwordFormCopy.passwordValue = self.passwordValue;
+        passwordFormCopy.isBlockedByUser = self.isBlockedByUser;
+        passwordFormCopy.scheme = self.scheme;
+    }
+
+    return passwordFormCopy;
+}
+
 - (void)updatePasswordForm:(NSString*)usernameValue 
               passwordValue:(NSString*)passwordValue {
 
@@ -334,7 +354,7 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
   }
 
   passwordCredentialForm.url =
-      net::GURLWithNSURL(passwordForm.url).DeprecatedGetOriginAsURL();
+      net::GURLWithNSURL(passwordForm.url);
 
   if ([passwordForm.signOnRealm length] != 0) {
     passwordCredentialForm.signon_realm =

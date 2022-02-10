@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, PasswordFormScheme) {
 
 NS_SWIFT_NAME(PasswordForm)
 OBJC_EXPORT
-@interface IOSPasswordForm : NSObject
+@interface IOSPasswordForm : NSObject<NSCopying> 
 
 @property(nonatomic, strong) NSURL* url;
 @property(nonatomic, nullable, copy) NSString* signOnRealm;
