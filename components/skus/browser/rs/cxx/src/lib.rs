@@ -202,7 +202,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
         .unwrap_or(skus::Environment::Local);
 
     let pool = LocalPool::new();
-    let mut spawner = pool.spawner();
+    let spawner = pool.spawner();
     let sdk = skus::sdk::SDK::new(
         NativeClient {
             is_shutdown: Rc::new(RefCell::new(false)),
@@ -245,7 +245,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
         order_id: String,
     ) {
-        let mut spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.spawner.clone();
         if spawner
             .spawn_local(refresh_order_task(
                 self.sdk.clone(),
@@ -267,7 +267,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
         order_id: String,
     ) {
-        let mut spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.spawner.clone();
         if spawner
             .spawn_local(fetch_order_credentials_task(
                 self.sdk.clone(),
@@ -290,7 +290,7 @@ impl CppSDK {
         domain: String,
         path: String,
     ) {
-        let mut spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.spawner.clone();
         if spawner
             .spawn_local(prepare_credentials_presentation_task(
                 self.sdk.clone(),
@@ -313,7 +313,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
         domain: String,
     ) {
-        let mut spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.spawner.clone();
         if spawner
             .spawn_local(credential_summary_task(
                 self.sdk.clone(),
