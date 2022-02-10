@@ -57,6 +57,19 @@ void HDKeyring::AddAccounts(size_t number) {
   }
 }
 
+void HDKeyring::AddDiscoveryAccounts(size_t number) {
+  size_t cur_accounts_number = discovery_accounts_.size();
+  for (size_t i = cur_accounts_number; i < cur_accounts_number + number; ++i) {
+    if (root_) {
+      discovery_accounts_.push_back(root_->DeriveChild(i));
+    }
+  }
+}
+
+void HDKeyring::ClearDiscoveryAccounts() {
+  discovery_accounts_.clear();
+}
+
 std::vector<std::string> HDKeyring::GetAccounts() const {
   std::vector<std::string> addresses;
   for (size_t i = 0; i < accounts_.size(); ++i) {
@@ -77,6 +90,10 @@ absl::optional<size_t> HDKeyring::GetAccountIndex(
 
 size_t HDKeyring::GetAccountsNumber() const {
   return accounts_.size();
+}
+
+size_t HDKeyring::GetDiscoveryAccountsNumber() const {
+  return discovery_accounts_.size();
 }
 
 void HDKeyring::RemoveAccount() {
@@ -123,6 +140,12 @@ std::string HDKeyring::GetAddress(size_t index) const {
   if (accounts_.empty() || index >= accounts_.size())
     return std::string();
   return GetAddressInternal(accounts_[index].get());
+}
+
+std::string HDKeyring::GetDiscoveryAddress(size_t index) const {
+  if (discovery_accounts_.empty() || index >= discovery_accounts_.size())
+    return std::string();
+  return GetAddressInternal(discovery_accounts_[index].get());
 }
 
 std::string HDKeyring::GetEncodedPrivateKey(const std::string& address) {

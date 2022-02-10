@@ -12,6 +12,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
@@ -37,11 +38,12 @@ class EthTransaction;
 class KeyringServiceUnitTest;
 class BraveWalletProviderImplUnitTest;
 class FilecoinKeyring;
+class JsonRpcService;
 
 // This class is not thread-safe and should have single owner
 class KeyringService : public KeyedService, public mojom::KeyringService {
  public:
-  explicit KeyringService(PrefService* prefs);
+  KeyringService(JsonRpcService* json_rpc_service, PrefService* prefs);
   ~KeyringService() override;
 
   static void MigrateObsoleteProfilePrefs(PrefService* prefs);
@@ -262,6 +264,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   void AddAccountForKeyring(const std::string& keyring_id,
                             const std::string& account_name);
+  void AddDiscoveryAccountsForKeyring(int attempts_left);
   mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void OnAutoLockFired();
   HDKeyring* GetKeyringForAddress(const std::string& address);
@@ -325,11 +328,17 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void OnAutoLockPreferenceChanged();
   void OnSelectedAccountPreferenceChanged();
 
+  void OnGetTransactionCount(int attempts_left,
+                             uint256_t result,
+                             mojom::ProviderError error,
+                             const std::string& error_message);
+
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::flat_map<std::string, std::unique_ptr<HDKeyring>> keyrings_;
   base::flat_map<std::string, std::unique_ptr<PasswordEncryptor>> encryptors_;
 
+  raw_ptr<JsonRpcService> json_rpc_service_;
   raw_ptr<PrefService> prefs_ = nullptr;
   bool request_unlock_pending_ = false;
 
@@ -338,6 +347,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   KeyringService(const KeyringService&) = delete;
   KeyringService& operator=(const KeyringService&) = delete;
+
+  base::WeakPtrFactory<KeyringService> discovery_weak_factory_{this};
 };
 
 }  // namespace brave_wallet

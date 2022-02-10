@@ -35,10 +35,13 @@ class HDKeyring {
                                   const std::string& hd_path);
 
   virtual void AddAccounts(size_t number = 1);
+  void AddDiscoveryAccounts(size_t number);
+  void ClearDiscoveryAccounts();
   // This will return vector of address of all accounts
   std::vector<std::string> GetAccounts() const;
   absl::optional<size_t> GetAccountIndex(const std::string& address) const;
   size_t GetAccountsNumber() const;
+  size_t GetDiscoveryAccountsNumber() const;
   // Only support removing accounts from the back to prevents gaps
   void RemoveAccount();
 
@@ -48,6 +51,7 @@ class HDKeyring {
   bool RemoveImportedAccount(const std::string& address);
 
   std::string GetAddress(size_t index) const;
+  std::string GetDiscoveryAddress(size_t index) const;
   // Find private key by address (it would be hex or base58 depends on
   // underlying hd key
   std::string GetEncodedPrivateKey(const std::string& address);
@@ -85,6 +89,8 @@ class HDKeyring {
   std::vector<std::unique_ptr<HDKeyBase>> accounts_;
   // (address, key)
   base::flat_map<std::string, std::unique_ptr<HDKeyBase>> imported_accounts_;
+
+  std::vector<std::unique_ptr<HDKeyBase>> discovery_accounts_;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(HDKeyringUnitTest, ConstructRootHDKey);
