@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/tabs/brave_alert_indicator.h"
+#include "brave/browser/ui/views/tabs/brave_alert_indicator_button.h"
 
 #include <memory>
 #include <string>
@@ -34,9 +34,10 @@ bool IsAudioState(const absl::optional<TabAlertState>& state) {
 
 }  // namespace
 
-class BraveAlertIndicator::BraveAlertBackground : public views::Background {
+class BraveAlertIndicatorButton::BraveAlertBackground
+    : public views::Background {
  public:
-  explicit BraveAlertBackground(BraveAlertIndicator* host_view)
+  explicit BraveAlertBackground(BraveAlertIndicatorButton* host_view)
     : host_view_(host_view) {
   }
 
@@ -59,15 +60,15 @@ class BraveAlertIndicator::BraveAlertBackground : public views::Background {
   }
 
  private:
-  raw_ptr<BraveAlertIndicator> host_view_ = nullptr;
+  raw_ptr<BraveAlertIndicatorButton> host_view_ = nullptr;
 };
 
-BraveAlertIndicator::BraveAlertIndicator(Tab* parent_tab)
-    : AlertIndicator(parent_tab) {
+BraveAlertIndicatorButton::BraveAlertIndicatorButton(Tab* parent_tab)
+    : AlertIndicatorButton(parent_tab) {
   SetBackground(std::make_unique<BraveAlertBackground>(this));
 }
 
-SkColor BraveAlertIndicator::GetBackgroundColor() const {
+SkColor BraveAlertIndicatorButton::GetBackgroundColor() const {
   SkColor fill_color = parent_tab_->controller()->GetTabBackgroundColor(
       parent_tab_->IsActive() ? TabActive::kInactive : TabActive::kActive,
       BrowserFrameActiveState::kUseCurrent);
@@ -80,22 +81,22 @@ SkColor BraveAlertIndicator::GetBackgroundColor() const {
                                              mouse_pressed_ ? 72 : 36);
 }
 
-bool BraveAlertIndicator::OnMousePressed(const ui::MouseEvent& event) {
+bool BraveAlertIndicatorButton::OnMousePressed(const ui::MouseEvent& event) {
   mouse_pressed_ = true;
   SchedulePaint();
 
   if (!IsTabAudioToggleable())
-    return AlertIndicator::OnMousePressed(event);
+    return AlertIndicatorButton::OnMousePressed(event);
 
   return true;
 }
 
-void BraveAlertIndicator::OnMouseReleased(const ui::MouseEvent& event) {
+void BraveAlertIndicatorButton::OnMouseReleased(const ui::MouseEvent& event) {
   mouse_pressed_ = false;
   SchedulePaint();
 
   if (!IsTabAudioToggleable() || !IsMouseHovered())
-    return AlertIndicator::OnMouseReleased(event);
+    return AlertIndicatorButton::OnMouseReleased(event);
 
   auto* tab_strip = static_cast<TabStrip*>(parent_tab_->controller());
   const int tab_index = tab_strip->GetModelIndexOf(parent_tab_);
@@ -110,25 +111,25 @@ void BraveAlertIndicator::OnMouseReleased(const ui::MouseEvent& event) {
                            TabMutedReason::CONTENT_SETTING, std::string());
 }
 
-void BraveAlertIndicator::OnMouseEntered(const ui::MouseEvent& event) {
+void BraveAlertIndicatorButton::OnMouseEntered(const ui::MouseEvent& event) {
   if (IsTabAudioToggleable())
     SchedulePaint();
-  AlertIndicator::OnMouseExited(event);
+  AlertIndicatorButton::OnMouseExited(event);
 }
 
-void BraveAlertIndicator::OnMouseExited(const ui::MouseEvent& event) {
+void BraveAlertIndicatorButton::OnMouseExited(const ui::MouseEvent& event) {
   if (IsTabAudioToggleable())
     SchedulePaint();
-  AlertIndicator::OnMouseExited(event);
+  AlertIndicatorButton::OnMouseExited(event);
 }
 
-bool BraveAlertIndicator::OnMouseDragged(const ui::MouseEvent& event) {
+bool BraveAlertIndicatorButton::OnMouseDragged(const ui::MouseEvent& event) {
   if (IsTabAudioToggleable())
     SchedulePaint();
-  return AlertIndicator::OnMouseDragged(event);
+  return AlertIndicatorButton::OnMouseDragged(event);
 }
 
-bool BraveAlertIndicator::IsTabAudioToggleable() const {
+bool BraveAlertIndicatorButton::IsTabAudioToggleable() const {
   // The alert indicator being interactive can be disabled entirely
   if (!base::FeatureList::IsEnabled(features::kTabAudioIconInteractive)) {
     return false;

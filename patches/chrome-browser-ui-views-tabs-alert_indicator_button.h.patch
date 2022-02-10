@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/ui/views/tabs/alert_indicator_button.h b/chrome/browser/ui/views/tabs/alert_indicator_button.h
+index b22209ca9a16afbae492cd08df6b49b214de06e2..ba0d24b9895c96f860c2ed337ceb3409ab2f114a 100644
+--- a/chrome/browser/ui/views/tabs/alert_indicator_button.h
++++ b/chrome/browser/ui/views/tabs/alert_indicator_button.h
+@@ -78,6 +78,7 @@ class AlertIndicatorButton : public views::ImageButton,
+   gfx::ImageSkia GetImageToPaint() override;
+ 
+  private:
++  friend class BraveAlertIndicatorButton;
+   friend class AlertIndicatorButtonTest;
+   friend class TabTest;
+   class FadeAnimationDelegate;
+@@ -100,4 +101,4 @@ class AlertIndicatorButton : public views::ImageButton,
+   absl::optional<TabAlertState> showing_alert_state_;
+ };
+ 
+-#endif  // CHROME_BROWSER_UI_VIEWS_TABS_ALERT_INDICATOR_BUTTON_H_
+\ No newline at end of file
++#endif  // CHROME_BROWSER_UI_VIEWS_TABS_ALERT_INDICATOR_BUTTON_H_
