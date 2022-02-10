@@ -1,11 +1,10 @@
 import * as React from 'react'
 import { UserAccountType, BuySendSwapViewTypes, BraveWallet } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
-import { reduceNetworkDisplayName } from '../../../utils/network-utils'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import { Tooltip } from '../../shared'
+import { Tooltip, SelectNetworkButton } from '../../shared'
 import { getLocale } from '../../../../common/locale'
 // Styled Components
 import {
@@ -15,9 +14,6 @@ import {
   AccountCircle,
   AccountName,
   NameAndIcon,
-  OvalButton,
-  OvalButtonText,
-  CaratDownIcon,
   SwitchIcon
 } from './style'
 
@@ -60,10 +56,10 @@ function SwapHeader (props: Props) {
         </Tooltip>
       </NameAndIcon>
       <Tooltip text={selectedNetwork.chainName}>
-        <OvalButton onClick={onShowNetworks}>
-          <OvalButtonText>{reduceNetworkDisplayName(selectedNetwork.chainName)}</OvalButtonText>
-          <CaratDownIcon />
-        </OvalButton>
+        <SelectNetworkButton
+          selectedNetwork={selectedNetwork}
+          onClick={onShowNetworks}
+        />
       </Tooltip>
     </StyledWrapper >
   )

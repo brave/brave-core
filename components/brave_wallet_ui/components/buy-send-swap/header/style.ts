@@ -1,9 +1,6 @@
 import styled from 'styled-components'
 import SwitchDown from '../../../assets/svg-icons/switch-icon.svg'
 import { WalletButton } from '../../shared/style'
-import {
-  CaratCircleODownIcon
-} from 'brave-ui/components/icons'
 
 interface StyleProps {
   orb: string
@@ -66,37 +63,6 @@ export const AccountCircle = styled(WalletButton) <StyleProps>`
   border: none;
   margin-right: 8px;
   position: relative;
-`
-
-export const CaratDownIcon = styled(CaratCircleODownIcon)`
-  width: 14px;
-  height: 14px;
-  margin-left: 8px;
-  color: ${(p) => p.theme.color.interactive07};
-`
-
-// Will use brave-ui button comp in the future!
-// Currently is missing "tiny" variant
-export const OvalButton = styled(WalletButton)`
-  display: flex;;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  outline: none;
-  background: none;
-  border-radius: 48px;
-  padding: 3px 14px;
-  border: ${(p) => `1px solid ${p.theme.color.interactive08}`};
-  fontSize: 14px;
-`
-
-export const OvalButtonText = styled.span`
-  font-family: Poppins;
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-  font-weight: 600;
 `
 
 export const SwitchIcon = styled.div`

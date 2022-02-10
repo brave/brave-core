@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import CheckMark from '../../../assets/svg-icons/big-checkmark.svg'
 import SwitchDown from '../../../assets/svg-icons/switch-icon.svg'
-import { CaratCircleODownIcon } from 'brave-ui/components/icons'
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
@@ -102,12 +101,6 @@ export const NotConnectedIcon = styled.div`
   border: 1px solid rgba(255,255,255,0.5);
 `
 
-export const CaratDownIcon = styled(CaratCircleODownIcon)`
-  width: 14px;
-  height: 14px;
-  margin-left: 8px;
-`
-
 export const OvalButton = styled(WalletButton)`
   display: flex;
   align-items: center;
@@ -116,9 +109,8 @@ export const OvalButton = styled(WalletButton)`
   outline: none;
   background: none;
   border-radius: 48px;
-  padding: 3px 14px;
+  padding: 3px 10px;
   border: 1px solid rgba(255,255,255,0.5);
-  fontSize: 14px;
   color: ${(p) => p.theme.palette.white};
   &:disabled {
     cursor: default;
