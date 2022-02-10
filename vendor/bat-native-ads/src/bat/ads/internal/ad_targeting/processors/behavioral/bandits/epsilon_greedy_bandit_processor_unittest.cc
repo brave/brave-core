@@ -38,6 +38,16 @@ class BatAdsEpsilonGreedyBanditProcessorTest : public UnitTestBase {
 
 TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, InitializeAllArmsFromResource) {
   // Arrange
+  EpsilonGreedyBanditArmMap prefs_arms;
+  EpsilonGreedyBanditArmInfo prefs_arm_info;
+  prefs_arm_info.segment = "foo";
+  prefs_arms["foo"] = prefs_arm_info;
+  prefs_arm_info.segment = "bar";
+  prefs_arms["bar"] = prefs_arm_info;
+
+  AdsClientHelper::Get()->SetStringPref(
+      prefs::kEpsilonGreedyBanditArms,
+      EpsilonGreedyBanditArms::ToJson(prefs_arms));
 
   // Act
   processor::EpsilonGreedyBandit processor;
@@ -48,6 +58,9 @@ TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, InitializeAllArmsFromResource) {
   EpsilonGreedyBanditArmMap arms = EpsilonGreedyBanditArms::FromJson(json);
 
   EXPECT_EQ(30U, arms.size());
+
+  EXPECT_EQ(0u, arms.count("foo"));
+  EXPECT_EQ(0u, arms.count("bar"));
 }
 
 TEST_F(BatAdsEpsilonGreedyBanditProcessorTest, NeverProcessed) {
