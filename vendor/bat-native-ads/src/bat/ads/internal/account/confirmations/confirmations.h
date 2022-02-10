@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
@@ -45,9 +46,10 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
   void ProcessRetryQueue();
 
  private:
-  ConfirmationsDelegate* delegate_ = nullptr;
+  raw_ptr<ConfirmationsDelegate> delegate_ = nullptr;
 
-  privacy::TokenGeneratorInterface* token_generator_;  // NOT OWNED
+  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+      nullptr;  // NOT OWNED
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
 

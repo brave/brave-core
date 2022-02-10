@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_ISSUERS_ISSUERS_H_
 
 #include "base/check_op.h"
+#include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/account/issuers/issuers_delegate.h"
 #include "bat/ads/internal/backoff_timer.h"
 #include "bat/ads/internal/timer.h"
@@ -29,7 +30,7 @@ class Issuers {
   void MaybeFetch();
 
  private:
-  IssuersDelegate* delegate_ = nullptr;
+  raw_ptr<IssuersDelegate> delegate_ = nullptr;
 
   bool is_fetching_ = false;
 

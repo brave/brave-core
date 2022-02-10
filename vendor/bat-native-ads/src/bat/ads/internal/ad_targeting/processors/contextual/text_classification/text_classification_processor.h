@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/ad_targeting/processors/processor.h"
 
 namespace ads {
@@ -27,7 +28,7 @@ class TextClassification final : public Processor<std::string> {
   void Process(const std::string& text) override;
 
  private:
-  resource::TextClassification* resource_;
+  raw_ptr<resource::TextClassification> resource_ = nullptr;
 };
 
 }  // namespace processor

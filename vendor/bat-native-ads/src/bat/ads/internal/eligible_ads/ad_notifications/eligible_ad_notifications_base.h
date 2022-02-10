@@ -6,6 +6,7 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_BASE_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ELIGIBLE_ADS_AD_NOTIFICATIONS_ELIGIBLE_AD_NOTIFICATIONS_BASE_H_
 
+#include "base/memory/raw_ptr.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/internal/bundle/creative_ad_notification_info_aliases.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_aliases.h"
@@ -39,10 +40,11 @@ class EligibleAdsBase {
   void set_last_served_ad(const AdInfo& ad) { last_served_ad_ = ad; }
 
  protected:
-  ad_targeting::geographic::SubdivisionTargeting*
-      subdivision_targeting_;  // NOT OWNED
+  raw_ptr<ad_targeting::geographic::SubdivisionTargeting>
+      subdivision_targeting_ = nullptr;  // NOT OWNED
 
-  resource::AntiTargeting* anti_targeting_resource_;  // NOT OWNED
+  raw_ptr<resource::AntiTargeting> anti_targeting_resource_ =
+      nullptr;  // NOT OWNED
 
   AdInfo last_served_ad_;
 };

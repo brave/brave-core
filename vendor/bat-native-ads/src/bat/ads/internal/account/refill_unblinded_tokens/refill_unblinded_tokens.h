@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check_op.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ads/internal/account/refill_unblinded_tokens/refill_unblinded_tokens_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
@@ -69,9 +70,10 @@ class RefillUnblindedTokens final {
 
   bool is_processing_ = false;
 
-  privacy::TokenGeneratorInterface* token_generator_;  // NOT OWNED
+  raw_ptr<privacy::TokenGeneratorInterface> token_generator_ =
+      nullptr;  // NOT OWNED
 
-  RefillUnblindedTokensDelegate* delegate_ = nullptr;
+  raw_ptr<RefillUnblindedTokensDelegate> delegate_ = nullptr;
 
   base::WeakPtrFactory<RefillUnblindedTokens> weak_ptr_factory_{this};
 };

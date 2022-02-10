@@ -7,6 +7,7 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_ACCOUNT_REDEEM_UNBLINDED_PAYMENT_TOKENS_REDEEM_UNBLINDED_PAYMENT_TOKENS_H_
 
 #include "base/check_op.h"
+#include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_delegate.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/backoff_timer.h"
@@ -59,7 +60,7 @@ class RedeemUnblindedPaymentTokens final {
   base::TimeDelta CalculateTokenRedemptionDelay();
   base::Time CalculateNextTokenRedemptionDate();
 
-  RedeemUnblindedPaymentTokensDelegate* delegate_ = nullptr;
+  raw_ptr<RedeemUnblindedPaymentTokensDelegate> delegate_ = nullptr;
 };
 
 }  // namespace ads

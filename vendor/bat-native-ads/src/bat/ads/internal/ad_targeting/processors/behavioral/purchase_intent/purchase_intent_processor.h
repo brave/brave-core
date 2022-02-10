@@ -9,6 +9,7 @@
 #include <cstdint>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "bat/ads/internal/ad_targeting/processors/processor.h"
 #include "bat/ads/internal/segments/segments_aliases.h"
 #include "url/gurl.h"
@@ -34,7 +35,7 @@ class PurchaseIntent final : public Processor<GURL> {
   void Process(const GURL& url) override;
 
  private:
-  resource::PurchaseIntent* resource_;  // NOT OWNED
+  raw_ptr<resource::PurchaseIntent> resource_ = nullptr;  // NOT OWNED
 
   PurchaseIntentSignalInfo ExtractSignal(const GURL& url) const;
 

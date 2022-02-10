@@ -457,8 +457,8 @@ class AdsServiceImpl : public AdsService,
   raw_ptr<history::HistoryService> history_service_ = nullptr;  // NOT OWNED
 
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
-  brave_adaptive_captcha::BraveAdaptiveCaptchaService*
-      adaptive_captcha_service_;  // NOT OWNED
+  raw_ptr<brave_adaptive_captcha::BraveAdaptiveCaptchaService>
+      adaptive_captcha_service_ = nullptr;  // NOT OWNED
   std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate_;
 #endif
 
