@@ -3,6 +3,7 @@
 set -e
 
 current_arch=$(uname -m)
+target_architecture="$current_arch"
 current_dir="`pwd`/`dirname $0`"
 framework_drop_point="$current_dir"
 node_modules_path="$current_dir/../node_modules/brave-core-ios"
@@ -33,7 +34,11 @@ case $i in
     ;;
     --debug)
     release_flag="Debug"
-    sim_dir="out/ios_Debug_"$current_arch"_simulator"
+    if [ "$target_architecture" = "x86_64" ]; then
+      sim_dir="out/ios_Debug_simulator"
+    else
+      sim_dir="out/ios_Debug_"$current_arch"_simulator"
+    fi
     device_dir="out/ios_Debug_arm64"
     shift
     ;;
@@ -51,6 +56,11 @@ case $i in
     ;;
 esac
 done
+
+# Fixing compiling //build/config/rust.gni on x86_64 which requires target_cpu="x64"
+if [ "$target_architecture" = "x86_64" ]; then
+  target_architecture="x64"
+fi
 
 # If neither argument is supplied, build both
 if [ "$build_simulator" = 0 ] && [ "$build_device" = 0 ]; then
@@ -89,7 +99,7 @@ bc_framework_args=""
 mc_framework_args=""
 
 if [ "$build_simulator" = 1 ]; then
-  npm run build -- $release_flag --target_os=ios --target_arch=$current_arch --target_environment=simulator
+  npm run build -- $release_flag --target_os=ios --target_arch=$target_architecture --target_environment=simulator
   bc_framework_args="-framework $sim_dir/BraveCore.framework -debug-symbols $(pwd)/$sim_dir/BraveCore.dSYM"
   mc_framework_args="-framework $sim_dir/MaterialComponents.framework"
 fi
