@@ -8,7 +8,7 @@ import BraveCore
 import Shared
 
 struct AddCustomAssetView: View {
-  
+  @ObservedObject var userAssetStore: UserAssetsStore
   @Environment(\.presentationMode) @Binding private var presentationMode
   
   @State private var nameInput = ""
@@ -17,34 +17,68 @@ struct AddCustomAssetView: View {
   @State private var decimalsInput = ""
   @State private var showError = false
   
-  var userAssetStore: UserAssetsStore
-  
   var body: some View {
     NavigationView {
       Form {
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenName))
         ) {
-          TextField(Strings.Wallet.enterTokenName, text: $nameInput)
+          HStack {
+            TextField(Strings.Wallet.enterTokenName, text: $nameInput)
+              .disabled(userAssetStore.isSearchingToken)
+            if userAssetStore.isSearchingToken && nameInput.isEmpty {
+              ProgressView()
+            }
+          }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenContractAddress))
         ) {
           TextField(Strings.Wallet.enterContractAddress, text: $addressInput)
+            .onChange(of: addressInput) { newValue in
+              if !newValue.isEmpty, newValue.isETHAddress {
+                userAssetStore.tokenInfo(by: newValue) { token in
+                  if let token = token, !token.isErc721 {
+                    if nameInput.isEmpty {
+                      nameInput = token.name
+                    }
+                    if symbolInput.isEmpty {
+                      symbolInput = token.symbol
+                    }
+                    if decimalsInput.isEmpty {
+                      decimalsInput = "\(token.decimals)"
+                    }
+                  }
+                }
+              }
+            }
+            .disabled(userAssetStore.isSearchingToken)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.tokenSymbol))
         ) {
-          TextField(Strings.Wallet.enterTokenSymbol, text: $symbolInput)
+          HStack {
+            TextField(Strings.Wallet.enterTokenSymbol, text: $symbolInput)
+              .disabled(userAssetStore.isSearchingToken)
+            if userAssetStore.isSearchingToken && symbolInput.isEmpty {
+              ProgressView()
+            }
+          }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         Section(
           header: WalletListHeaderView(title: Text(Strings.Wallet.decimalsPrecision))
         ) {
-          TextField(NumberFormatter().string(from: NSNumber(value: 0)) ?? "0", text: $decimalsInput)
-            .keyboardType(.numberPad)
+          HStack {
+            TextField(NumberFormatter().string(from: NSNumber(value: 0)) ?? "0", text: $decimalsInput)
+              .keyboardType(.numberPad)
+              .disabled(userAssetStore.isSearchingToken)
+            if userAssetStore.isSearchingToken && decimalsInput.isEmpty {
+              ProgressView()
+            }
+          }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -109,7 +143,8 @@ struct AddCustomAssetView_Previews: PreviewProvider {
     static var previews: some View {
       AddCustomAssetView(userAssetStore: UserAssetsStore(walletService: MockBraveWalletService(),
                                                          blockchainRegistry: MockBlockchainRegistry(),
-                                                         rpcService: MockJsonRpcService()))
+                                                         rpcService: MockJsonRpcService(),
+                                                         assetRatioService: MockAssetRatioService()))
     }
 }
 #endif
