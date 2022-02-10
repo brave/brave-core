@@ -66,7 +66,7 @@ bool Conversions::FromJson(const std::string& json) {
     return false;
   }
 
-  if (absl::optional<int> version = root->FindIntPath("version")) {
+  if (absl::optional<int> version = root->FindIntKey("version")) {
     if (kVersionId != *version) {
       BLOG(1, "Failed to load from JSON, version missing");
       return false;
@@ -74,38 +74,26 @@ bool Conversions::FromJson(const std::string& json) {
   }
 
   base::Value* conversion_id_patterns_value =
-      root->FindDictPath("conversion_id_patterns");
+      root->FindDictKey("conversion_id_patterns");
   if (!conversion_id_patterns_value) {
     BLOG(1, "Failed to load from JSON, conversion patterns missing");
     return false;
   }
 
-  if (!conversion_id_patterns_value->is_dict()) {
-    BLOG(1, "Failed to load from JSON, conversion patterns not of type dict");
-    return false;
-  }
-
-  base::DictionaryValue* dict;
-  if (!conversion_id_patterns_value->GetAsDictionary(&dict)) {
-    BLOG(1, "Failed to load from JSON, get conversion patterns as dict");
-    return false;
-  }
-
-  for (base::DictionaryValue::Iterator iter(*dict); !iter.IsAtEnd();
-       iter.Advance()) {
-    if (!iter.value().is_dict()) {
+  for (const auto value : conversion_id_patterns_value->DictItems()) {
+    if (!value.second.is_dict()) {
       BLOG(1, "Failed to load from JSON, conversion pattern not of type dict")
       return false;
     }
 
-    const std::string* id_pattern = iter.value().FindStringKey("id_pattern");
-    if (id_pattern->empty()) {
+    const std::string* id_pattern = value.second.FindStringKey("id_pattern");
+    if (!id_pattern || id_pattern->empty()) {
       BLOG(1, "Failed to load from JSON, pattern id_pattern missing");
       return false;
     }
 
-    const std::string* search_in = iter.value().FindStringKey("search_in");
-    if (search_in->empty()) {
+    const std::string* search_in = value.second.FindStringKey("search_in");
+    if (!search_in || search_in->empty()) {
       BLOG(1, "Failed to load from JSON, pattern search_in missing");
       return false;
     }
@@ -113,7 +101,7 @@ bool Conversions::FromJson(const std::string& json) {
     ConversionIdPatternInfo info;
     info.id_pattern = *id_pattern;
     info.search_in = *search_in;
-    info.url_pattern = iter.key();
+    info.url_pattern = value.first;
     conversion_id_patterns.insert({info.url_pattern, info});
   }
 
