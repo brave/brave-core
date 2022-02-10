@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/net/stub_resolver_config_reader.cc b/chrome/browser/net/stub_resolver_config_reader.cc
-index 63035047782e814bb31acc18c610b61c91f740be..fdcc1c427a6709152b8ec7156e7b3b31364173d0 100644
+index afb28697d0aabca0acce4ee2f4beee63f5ffd78d..751576f7f559ed7879f06ad24eb8bf7ac14ca1c8 100644
 --- a/chrome/browser/net/stub_resolver_config_reader.cc
 +++ b/chrome/browser/net/stub_resolver_config_reader.cc
-@@ -370,6 +370,7 @@ SecureDnsConfig StubResolverConfigReader::GetAndUpdateConfiguration(
+@@ -369,6 +369,7 @@ SecureDnsConfig StubResolverConfigReader::GetAndUpdateConfiguration(
+   if (secure_dns_mode != net::SecureDnsMode::kOff) {
      doh_config = net::DnsOverHttpsConfig::FromStringLax(
          local_state_->GetString(prefs::kDnsOverHttpsTemplates));
++    BRAVE_GET_AND_UPDATE_CONFIGURATION
    }
-+  BRAVE_GET_AND_UPDATE_CONFIGURATION
    if (update_network_service) {
      content::GetNetworkService()->ConfigureStubHostResolver(
-         GetInsecureStubResolverEnabled(), secure_dns_mode, doh_config.servers(),
