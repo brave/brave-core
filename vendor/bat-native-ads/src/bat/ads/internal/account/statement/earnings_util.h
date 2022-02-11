@@ -8,23 +8,11 @@
 
 #include "bat/ads/transaction_info_aliases.h"
 
-namespace base {
-class Time;
-}  // namespace base
-
 namespace ads {
 
-double GetEarningsForDateRange(const TransactionList& transactions,
-                               const base::Time& from_time,
-                               const base::Time& to_time);
-
-double GetUnreconciledEarningsForDateRange(const TransactionList& transactions,
-                                           const base::Time& from_time,
-                                           const base::Time& to_time);
-
-double GetReconciledEarningsForDateRange(const TransactionList& transactions,
-                                         const base::Time& from_time,
-                                         const base::Time& to_time);
+double GetUnreconciledEarnings(const TransactionList& transactions);
+double GetReconciledEarningsForThisMonth(const TransactionList& transactions);
+double GetReconciledEarningsForLastMonth(const TransactionList& transactions);
 
 }  // namespace ads
 

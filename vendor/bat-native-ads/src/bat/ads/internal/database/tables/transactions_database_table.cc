@@ -172,9 +172,10 @@ void Transactions::Update(
       "UPDATE %s "
       "SET reconciled_at = %s "
       "WHERE reconciled_at == 0 "
-      "AND id IN %s",
+      "AND (id IN %s OR creative_instance_id IN %s)",
       GetTableName().c_str(), TimeAsTimestampString(base::Time::Now()).c_str(),
-      BuildBindingParameterPlaceholder(transaction_ids.size()).c_str());
+      BuildBindingParameterPlaceholder(transaction_ids.size()).c_str(),
+      BuildBindingParameterPlaceholder(1).c_str());
 
   mojom::DBCommandPtr command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
@@ -185,6 +186,10 @@ void Transactions::Update(
     BindString(command.get(), index, transaction_id);
     index++;
   }
+
+  BindString(command.get(), index,
+             rewards::kMigrationUnreconciledTransactionId);
+  index++;
 
   mojom::DBTransactionPtr transaction = mojom::DBTransaction::New();
   transaction->commands.push_back(std::move(command));

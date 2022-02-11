@@ -9,9 +9,9 @@
 #include "base/time/time.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/transactions/transactions_util.h"
-#include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_earnings_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_util.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_transaction_constants.h"
+#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_util.h"
 #include "bat/ads/transaction_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -19,55 +19,125 @@
 namespace ads {
 namespace rewards {
 
-TransactionList GetTransactionsForThisMonth(
-    const TransactionList& transactions) {
-  const base::Time& from_time = GetTimeAtBeginningOfThisMonth();
-  const base::Time& to_time = base::Time::Now();
+namespace {
 
-  return GetTransactionsForDateRange(transactions, from_time, to_time);
+TransactionList GetUnreconciledTransactionsForDateRange(
+    const TransactionList& transactions,
+    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+    const base::Time& from_time,
+    const base::Time& to_time) {
+  const size_t unblinded_payment_token_count = unblinded_payment_tokens.size();
+
+  if (transactions.size() < unblinded_payment_token_count) {
+    BLOG(0, "Invalid transaction history");
+    return {};
+  }
+
+  TransactionList unreconciled_transactions(
+      transactions.end() - unblinded_payment_token_count, transactions.end());
+
+  return GetTransactionsForDateRange(unreconciled_transactions, from_time,
+                                     to_time);
 }
 
-absl::optional<TransactionInfo>
-BuildTransactionForUnreconciledTransactionsForPreviousMonths(
-    const TransactionList& transaction_history,
-    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
-  const base::Time& from_time = base::Time();
-  const base::Time& to_time = GetTimeAtEndOfLastMonth();
+}  // namespace
 
-  const double value = GetUnreconciledEarningsForDateRange(
-      transaction_history, unblinded_payment_tokens, from_time, to_time);
-  if (value == 0.0) {
+TransactionList GetAllUnreconciledTransactions(
+    const TransactionList& transactions,
+    const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens) {
+  const base::Time& from_time = GetTimeInDistantPast();
+  const base::Time& to_time = GetLocalTimeAtEndOfThisMonth();
+
+  TransactionList unreconciled_transactions =
+      GetUnreconciledTransactionsForDateRange(
+          transactions, unblinded_payment_tokens, from_time, to_time);
+
+  for (auto& transaction : unreconciled_transactions) {
+    // |created_at|, |value| and |confirmation_type| are set from legacy state
+    transaction.id = base::GenerateGUID();
+    transaction.creative_instance_id = kMigrationUnreconciledTransactionId;
+    transaction.ad_type = AdType::kAdNotification;
+  }
+
+  return unreconciled_transactions;
+}
+
+absl::optional<TransactionList>
+BuildTransactionsForReconciledTransactionsThisMonth(
+    const PaymentList& payments) {
+  const absl::optional<PaymentInfo>& payment_optional =
+      GetPaymentForThisMonth(payments);
+  if (!payment_optional) {
     return absl::nullopt;
   }
 
-  TransactionInfo transaction;
-  transaction.id = rewards::kMigrationUnreconciledTransactionId;
-  transaction.created_at = base::Time::Now().ToDoubleT();
-  transaction.value = value;
-  transaction.confirmation_type = ConfirmationType::kViewed;
+  const PaymentInfo& payment = payment_optional.value();
 
-  return transaction;
+  if (payment.balance == 0.0) {
+    return absl::nullopt;
+  }
+
+  const base::Time& time = GetLocalTimeAtBeginningOfThisMonth();
+  const double timestamp = time.ToDoubleT();
+
+  TransactionList reconciled_transactions;
+
+  // Add a transaction with the payment balance for this month as the value
+  TransactionInfo reconciled_transaction;
+  reconciled_transaction.id = base::GenerateGUID();
+  reconciled_transaction.created_at = timestamp;
+  reconciled_transaction.creative_instance_id = base::GenerateGUID();
+  reconciled_transaction.value = payment.balance;
+  reconciled_transaction.ad_type = AdType::kAdNotification;
+  reconciled_transaction.confirmation_type = ConfirmationType::kViewed;
+  reconciled_transaction.reconciled_at = timestamp;
+  reconciled_transactions.push_back(reconciled_transaction);
+
+  // Add |transaction_count - 1| transactions with a value of 0.0 to migrate ads
+  // received this month
+  for (int i = 0; i < payment.transaction_count - 1; i++) {
+    TransactionInfo reconciled_transaction;
+    reconciled_transaction.id = base::GenerateGUID();
+    reconciled_transaction.created_at = timestamp;
+    reconciled_transaction.creative_instance_id = base::GenerateGUID();
+    reconciled_transaction.value = 0.0;
+    reconciled_transaction.ad_type = AdType::kAdNotification;
+    reconciled_transaction.confirmation_type = ConfirmationType::kViewed;
+    reconciled_transaction.reconciled_at = timestamp;
+    reconciled_transactions.push_back(reconciled_transaction);
+  }
+
+  return reconciled_transactions;
 }
 
 absl::optional<TransactionInfo>
 BuildTransactionForReconciledTransactionsLastMonth(
     const PaymentList& payments) {
-  const base::Time& time = GetTimeAtBeginningOfLastMonth();
-  const double timestamp = time.ToDoubleT();
-
-  const double value = GetPaymentBalanceForMonth(payments, time);
-  if (value == 0.0) {
+  const absl::optional<PaymentInfo>& payment_optional =
+      GetPaymentForLastMonth(payments);
+  if (!payment_optional) {
     return absl::nullopt;
   }
 
-  TransactionInfo transaction;
-  transaction.id = base::GenerateGUID();
-  transaction.created_at = timestamp;
-  transaction.value = value;
-  transaction.confirmation_type = ConfirmationType::kViewed;
-  transaction.reconciled_at = timestamp;
+  const PaymentInfo& payment = payment_optional.value();
 
-  return transaction;
+  if (payment.balance == 0.0) {
+    return absl::nullopt;
+  }
+
+  const base::Time& time = GetLocalTimeAtBeginningOfLastMonth();
+  const double timestamp = time.ToDoubleT();
+
+  TransactionInfo reconciled_transaction;
+  reconciled_transaction.id = base::GenerateGUID();
+  reconciled_transaction.created_at = timestamp;
+  reconciled_transaction.creative_instance_id = base::GenerateGUID();
+  reconciled_transaction.value = payment.balance;
+  reconciled_transaction.ad_type = AdType::kAdNotification;
+  reconciled_transaction.confirmation_type = ConfirmationType::kViewed;
+  reconciled_transaction.reconciled_at = timestamp;
+
+  return reconciled_transaction;
 }
 
 }  // namespace rewards
