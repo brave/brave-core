@@ -226,7 +226,7 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   }
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  if (sidebar::CanUseSidebar(browser()->profile())) {
+  if (sidebar::CanUseSidebar(browser())) {
     sub_menus_.push_back(std::make_unique<SidebarMenuModel>(browser()));
     InsertSubMenuWithStringIdAt(
         GetIndexOfBraveSidebarItem(), IDC_SIDEBAR_SHOW_OPTION_MENU,

@@ -182,7 +182,7 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
 
 void BraveBrowserCommandController::UpdateCommandForSidebar() {
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  if (sidebar::CanUseSidebar(browser_->profile()))
+  if (sidebar::CanUseSidebar(browser_))
     UpdateCommandEnabled(IDC_SIDEBAR_SHOW_OPTION_MENU, true);
 #endif
 }
