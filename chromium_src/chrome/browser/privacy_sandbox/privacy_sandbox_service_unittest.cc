@@ -128,7 +128,7 @@ TEST_F(PrivacySandboxServiceTest, GetFlocIdForDisplay) {
       prefs::kPrivacySandboxApisEnabled, true);
 
   // In Brave, we actually don't enable anything here.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
   EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
 
   federated_learning::FlocId floc_id = federated_learning::FlocId::CreateValid(
@@ -181,7 +181,7 @@ TEST_F(PrivacySandboxServiceTest, GetFlocIdNextUpdateForDisplay) {
       prefs::kPrivacySandboxFlocEnabled, true);
 
   // In Brave, we actually don't enable anything here.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
   EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
 
   std::map<base::TimeDelta, std::u16string> offsets_to_expected_string = {
@@ -229,7 +229,7 @@ TEST_F(PrivacySandboxServiceTest, GetFlocStatusForDisplay) {
       prefs::kPrivacySandboxApisEnabled, true);
 
   // In Brave, we actually don't enable anything here.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
   EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
 
   // Will report not active since nothing is actually enabled.
@@ -280,7 +280,7 @@ TEST_F(PrivacySandboxServiceTest, IsFlocIdResettable) {
       prefs::kPrivacySandboxApisEnabled, true);
 
   // In Brave, we actually don't enable anything here.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
   EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
   EXPECT_FALSE(privacy_sandbox_service()->IsFlocIdResettable());
 
