@@ -1298,7 +1298,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     public void updateBuySendSwapAsset(
             String asset, BlockchainToken blockchainToken, boolean buySend) {
         if (!buySend && mCurrentBlockchainToken != null
-                && mCurrentBlockchainToken.symbol.equals(blockchainToken.symbol))
+                        && mCurrentBlockchainToken.symbol.equals(blockchainToken.symbol)
+                || buySend && mCurrentSwapToBlockchainToken != null
+                        && mCurrentSwapToBlockchainToken.symbol.equals(blockchainToken.symbol))
             return;
 
         TextView assetText = buySend ? mFromAssetText : mToAssetText;
