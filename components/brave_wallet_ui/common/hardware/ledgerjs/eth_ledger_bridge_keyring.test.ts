@@ -108,13 +108,40 @@ test('Extract accounts from unknown device', () => {
     .rejects.toThrow()
 })
 
-test('Sign personal message successfully', () => {
+test('Sign personal message successfully with padding v<27', () => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
   ledgerHardwareKeyring.app = new MockApp()
-  ledgerHardwareKeyring.app.signature = { v: 1, r: 'b68983', s: 'r68983' }
+  ledgerHardwareKeyring.app.signature = { v: 0, r: 'b68983', s: 'r68983' }
   return expect(ledgerHardwareKeyring.signPersonalMessage(
     'm/44\'/60\'/0\'/0/0', 'message'))
-    .resolves.toStrictEqual({ payload: '0xb68983r68983-26', success: true })
+    .resolves.toStrictEqual({ payload: '0xb68983r6898300', success: true })
+})
+
+test('Sign personal message successfully with padding v>=27', () => {
+  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
+  ledgerHardwareKeyring.app = new MockApp()
+  ledgerHardwareKeyring.app.signature = { v: 28, r: 'b68983', s: 'r68983' }
+  return expect(ledgerHardwareKeyring.signPersonalMessage(
+    'm/44\'/60\'/0\'/0/0', 'message'))
+    .resolves.toStrictEqual({ payload: '0xb68983r6898301', success: true })
+})
+
+test('Sign personal message successfully without padding v>=27', () => {
+  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
+  ledgerHardwareKeyring.app = new MockApp()
+  ledgerHardwareKeyring.app.signature = { v: 44, r: 'b68983', s: 'r68983' }
+  return expect(ledgerHardwareKeyring.signPersonalMessage(
+    'm/44\'/60\'/0\'/0/0', 'message'))
+    .resolves.toStrictEqual({ payload: '0xb68983r6898311', success: true })
+})
+
+test('Sign personal message successfully without padding v<27', () => {
+  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
+  ledgerHardwareKeyring.app = new MockApp()
+  ledgerHardwareKeyring.app.signature = { v: 17, r: 'b68983', s: 'r68983' }
+  return expect(ledgerHardwareKeyring.signPersonalMessage(
+    'm/44\'/60\'/0\'/0/0', 'message'))
+    .resolves.toStrictEqual({ payload: '0xb68983r6898311', success: true })
 })
 
 test('Sign personal message failed', () => {
