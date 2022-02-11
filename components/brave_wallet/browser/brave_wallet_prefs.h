@@ -19,7 +19,7 @@ void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs);
 void ClearKeyringServiceProfilePrefs(PrefService* prefs);
-void ClearEthTxServiceProfilePrefs(PrefService* prefs);
+void ClearTxServiceProfilePrefs(PrefService* prefs);
 void ClearBraveWalletServicePrefs(PrefService* prefs);
 void MigrateObsoleteProfilePrefs(PrefService* prefs);
 
