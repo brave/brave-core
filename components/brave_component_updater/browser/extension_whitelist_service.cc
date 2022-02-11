@@ -12,9 +12,6 @@
 #include "base/task/task_runner_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/vendor/extension-whitelist/extension_whitelist_parser.h"
-#include "extensions/common/extension.h"
-
-using extensions::Extension;
 
 namespace brave_component_updater {
 
@@ -42,10 +39,6 @@ bool ExtensionWhitelistService::IsBlacklisted(
     const std::string& extension_id) const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return extension_whitelist_client_->isBlacklisted(extension_id.c_str());
-}
-
-bool ExtensionWhitelistService::IsVetted(const Extension* extension) const {
-  return ExtensionWhitelistService::IsVetted(extension->id());
 }
 
 bool ExtensionWhitelistService::IsVetted(const std::string& id) const {
