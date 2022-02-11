@@ -71,7 +71,11 @@ void FirstRunDialog::Show(base::RepeatingClosure learn_more_callback,
 FirstRunDialog::FirstRunDialog(base::RepeatingClosure learn_more_callback,
                                base::RepeatingClosure quit_runloop)
     : quit_runloop_(quit_runloop) {
-  ALLOW_UNUSED_LOCAL(report_crashes_);
+  // ALLOW_UNUSED_LOCAL has been removed and [[maybe_unused]] can only be used
+  // alongside declarations, so reference it here just to silence the compiler's
+  // -Wunused errors without having to override the header file.
+  if (report_crashes_)
+    report_crashes_->GetChecked();
 
   SetTitle(l10n_util::GetStringUTF16(IDS_FIRSTRUN_DIALOG_WINDOW_TITLE_BRAVE));
   SetButtons(ui::DIALOG_BUTTON_OK);

@@ -18,10 +18,9 @@ crx_file::VerifierFormat GetVerifierFormat() {
 }
 }  // namespace
 
-#define crx_format_requirement                  \
-  crx_format_requirement = GetVerifierFormat(); \
-  crx_file::VerifierFormat _temp_var;           \
-  ALLOW_UNUSED_LOCAL(_temp_var);                \
+#define crx_format_requirement                         \
+  crx_format_requirement = GetVerifierFormat();        \
+  [[maybe_unused]] crx_file::VerifierFormat _temp_var; \
   _temp_var
 #include "src/components/component_updater/component_updater_service.cc"
 #undef crx_format_requirement
