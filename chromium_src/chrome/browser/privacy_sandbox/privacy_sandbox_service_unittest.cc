@@ -34,6 +34,7 @@
 #include "components/sync/base/user_selectable_type.h"
 #include "components/sync/driver/test_sync_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/browser/interest_group_manager.h"
 #include "content/public/common/content_features.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -59,6 +60,22 @@ class MockFlocIdProvider : public federated_learning::FlocIdProvider {
   MOCK_METHOD(base::Time, GetApproximateNextComputeTime, (), (const, override));
 };
 
+class TestInterestGroupManager : public content::InterestGroupManager {
+ public:
+  void SetInterestGroupJoiningOrigins(const std::vector<url::Origin>& origins) {
+    origins_ = origins;
+  }
+
+  // content::InterestGroupManager:
+  void GetAllInterestGroupJoiningOrigins(
+      base::OnceCallback<void(std::vector<url::Origin>)> callback) override {
+    std::move(callback).Run(origins_);
+  }
+
+ private:
+  std::vector<url::Origin> origins_;
+};
+
 }  // namespace
 
 class PrivacySandboxServiceTest : public testing::Test {
@@ -75,6 +92,7 @@ class PrivacySandboxServiceTest : public testing::Test {
         CookieSettingsFactory::GetForProfile(profile()).get(),
         profile()->GetPrefs(), policy_service(), sync_service(),
         identity_test_env()->identity_manager(), mock_floc_id_provider(),
+        test_interest_group_manager(),
         profile_metrics::BrowserProfileType::kRegular);
   }
 
@@ -103,6 +121,9 @@ class PrivacySandboxServiceTest : public testing::Test {
   MockFlocIdProvider* mock_floc_id_provider() {
     return &mock_floc_id_provider_;
   }
+  TestInterestGroupManager* test_interest_group_manager() {
+    return &test_interest_group_manager_;
+  }
 
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
@@ -113,6 +134,7 @@ class PrivacySandboxServiceTest : public testing::Test {
   base::test::ScopedFeatureList feature_list_;
   syncer::TestSyncService sync_service_;
   MockFlocIdProvider mock_floc_id_provider_;
+  TestInterestGroupManager test_interest_group_manager_;
 
   std::unique_ptr<PrivacySandboxService> privacy_sandbox_service_;
 };
