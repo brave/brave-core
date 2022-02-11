@@ -20,6 +20,8 @@ void CompactU16Encode(uint16_t u16, std::vector<uint8_t>* compact_u16);
 bool Base58Decode(const std::string& str,
                   std::vector<uint8_t>* ret,
                   int max_ret_len);
+// A bridge function to call EncodeBase58 in bitcoin-core.
+std::string Base58Encode(const std::vector<uint8_t>& bytes);
 
 }  // namespace brave_wallet
 

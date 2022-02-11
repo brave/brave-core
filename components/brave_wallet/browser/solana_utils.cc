@@ -34,4 +34,8 @@ bool Base58Decode(const std::string& str,
   return DecodeBase58(str, *ret, max_ret_len);
 }
 
+std::string Base58Encode(const std::vector<uint8_t>& bytes) {
+  return EncodeBase58(bytes);
+}
+
 }  // namespace brave_wallet

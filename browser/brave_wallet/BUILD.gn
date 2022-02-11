@@ -24,6 +24,7 @@ source_set("brave_wallet") {
   deps = [
     "//brave/browser/profiles:util",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/factory",
@@ -55,6 +56,7 @@ source_set("brave_wallet_delegate") {
   deps = [
     "//brave/browser/brave_wallet",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
     "//components/content_settings/core/common",
@@ -147,6 +149,7 @@ source_set("unit_tests") {
     "//brave/browser/brave_wallet:tab_helper",
     "//brave/common",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
     "//brave/components/brave_wallet/browser:hd_keyring",
     "//brave/components/brave_wallet/browser:transaction",

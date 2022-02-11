@@ -31,6 +31,7 @@ source_set("brave_wallet") {
     ":wallet_mojom_wrappers",
     "//base",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:constants",
     "//ios/chrome/browser",
     "//net",
   ]

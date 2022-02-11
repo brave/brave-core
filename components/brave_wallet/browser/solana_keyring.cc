@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 
 namespace brave_wallet {
@@ -46,8 +47,10 @@ std::vector<uint8_t> SolanaKeyring::SignMessage(
   return hd_key->Sign(message);
 }
 
-std::string SolanaKeyring::ImportAccount(
-    const std::vector<uint8_t>& private_key) {
+std::string SolanaKeyring::ImportAccount(const std::vector<uint8_t>& keypair) {
+  // extract private key from keypair
+  std::vector<uint8_t> private_key = std::vector<uint8_t>(
+      keypair.begin(), keypair.begin() + kSolanaPrikeySize);
   std::unique_ptr<HDKeyEd25519> hd_key =
       HDKeyEd25519::GenerateFromPrivateKey(private_key);
   if (!hd_key)

@@ -2740,12 +2740,26 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     // wait for observer
     base::RunLoop().RunUntilIdle();
     EXPECT_TRUE(observer.IsKeyringCreated(mojom::kSolanaKeyringId));
+    std::string private_key;
+    EXPECT_TRUE(GetPrivateKeyForImportedAccount(
+        &service, "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ",
+        &private_key));
+    EXPECT_EQ(private_key,
+              "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTnd"
+              "nCYbQtaJQKLXET9jVjepWXe");
 
     // wrong encoded private key (same bytes but not encoded in keypair)
     EXPECT_EQ(ImportAccount(&service, "Imported Failed",
                             "3v1fSGD1JW5XnAd2FWrjV6HWJHM9DofVjuNt4T5b7CDL",
                             mojom::CoinType::SOL),
               absl::nullopt);
+    imported_account = ImportAccount(
+        &service, "Imported Account 2",
+        "4pNHX6ATNXad3KZTb2PXTosW5ceaxqx45M9NH9pjcZCH9qoQKx6RMzUjuzm6J9Y2uwjCxJ"
+        "c5JsjL1TrGr1X3nPFP",
+        mojom::CoinType::SOL);
+    ASSERT_TRUE(imported_account.has_value());
+    ASSERT_TRUE(RemoveImportedAccount(&service, *imported_account));
 
     base::RunLoop run_loop;
     service.GetKeyringInfo(
