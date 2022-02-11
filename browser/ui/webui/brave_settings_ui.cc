@@ -30,10 +30,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/components/sidebar/features.h"
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/features.h"
 #endif
@@ -85,13 +81,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isIdleDetectionFeatureEnabled",
       base::FeatureList::IsEnabled(features::kIdleDetection));
-#if BUILDFLAG(ENABLE_SIDEBAR)
-  // TODO(simonhong): Remove this when sidebar is shipped by default in all
-  // channels.
-  html_source->AddBoolean(
-      "isSidebarFeatureEnabled",
-      base::FeatureList::IsEnabled(sidebar::kSidebarFeature));
-#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   html_source->AddBoolean("isBraveVPNEnabled", brave_vpn::IsBraveVPNEnabled());
 #endif

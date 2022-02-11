@@ -7,7 +7,6 @@ import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bun
 import '../settings_shared_css.js';
 import '../settings_vars_css.js';
 import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
-import {loadTimeData} from "../i18n_setup.js"
 
 /**
  * 'settings-brave-appearance-sidebar' is the settings page area containing
@@ -38,15 +37,6 @@ Polymer({
     sidebarShowEnabledLabel_: {
       readOnly: false,
       type: String,
-    },
-
-    // TODO(simonhong): Remove this when sidebar is shipped by default in all
-    // channels.
-    isSidebarFeatureEnabled_: {
-      type: Boolean,
-      value() {
-        return loadTimeData.getBoolean('isSidebarFeatureEnabled');
-      },
     },
   },
 
