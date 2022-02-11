@@ -24,8 +24,12 @@ bool IsTrialDisabledInBrave(base::StringPiece trial_name) {
   // When updating also update the array in the overload below.
   // clang-format off
   static const char* const kBraveDisabledTrialNames[] = {
+      "AdInterestGroupAPI",
       "ConversionMeasurement",
-      "DigitalGoods",
+      "CrossOriginOpenerPolicyReporting",
+      "DeviceAttributes",
+      "DigitalGoodsV2",
+      "InterestCohortAPI",
       "Fledge",
       "Parakeet",
       "Prerender2",
@@ -48,16 +52,21 @@ bool IsTrialDisabledInBrave(base::StringPiece trial_name) {
 bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   // When updating also update the array in the overload above.
   // clang-format off
-  static const std::array<OriginTrialFeature, 9> kBraveDisabledTrialFeatures = {
-      OriginTrialFeature::kConversionMeasurement,
-      OriginTrialFeature::kDigitalGoods,
-      OriginTrialFeature::kFledge,
-      OriginTrialFeature::kParakeet,
-      OriginTrialFeature::kPrerender2,
-      OriginTrialFeature::kSignedExchangeSubresourcePrefetch,
-      OriginTrialFeature::kSubresourceWebBundles,
-      OriginTrialFeature::kTrustTokens,
-  };
+  static const std::array<OriginTrialFeature, 12> kBraveDisabledTrialFeatures =
+      {   // NOLINT
+          OriginTrialFeature::kAdInterestGroupAPI,
+          OriginTrialFeature::kConversionMeasurement,
+          OriginTrialFeature::kCrossOriginOpenerPolicyReporting,
+          OriginTrialFeature::kDeviceAttributes,
+          OriginTrialFeature::kDigitalGoods,
+          OriginTrialFeature::kInterestCohortAPI,
+          OriginTrialFeature::kFledge,
+          OriginTrialFeature::kParakeet,
+          OriginTrialFeature::kPrerender2,
+          OriginTrialFeature::kSignedExchangeSubresourcePrefetch,
+          OriginTrialFeature::kSubresourceWebBundles,
+          OriginTrialFeature::kTrustTokens,
+      };
   // clang-format on
 
   return base::Contains(kBraveDisabledTrialFeatures, feature);
