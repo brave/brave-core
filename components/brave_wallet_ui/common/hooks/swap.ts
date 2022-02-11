@@ -24,13 +24,18 @@ import { formatInputValue, toHex, toWei, toWeiHex } from '../../utils/format-bal
 import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
 import useBalance from './balance'
+import useAssets from './assets'
 
 const SWAP_VALIDATION_ERROR_CODE = 100
 
 export default function useSwap (
+  accounts: WalletAccountType[],
+  fullTokenList: BraveWallet.BlockchainToken[],
+  userVisibleTokensInfo: BraveWallet.BlockchainToken[],
+  spotPrices: BraveWallet.AssetPrice[],
+  getBuyAssets: () => Promise<BraveWallet.BlockchainToken[]>,
   selectedAccount: WalletAccountType,
   selectedNetwork: BraveWallet.EthereumChain,
-  swapAssetOptions: BraveWallet.BlockchainToken[],
   fetchSwapQuote: SimpleActionCreator<SwapParamsPayloadType>,
   getERC20Allowance: (contractAddress: string, ownerAddress: string, spenderAddress: string) => Promise<string>,
   approveERC20Allowance: SimpleActionCreator<ApproveERC20Params>,
@@ -38,25 +43,43 @@ export default function useSwap (
   quote?: BraveWallet.SwapResponse,
   rawError?: SwapErrorResponse
 ) {
+  const {
+    swapFromAssetOptions,
+    swapToAssetOptions
+  } = useAssets(
+    accounts,
+    selectedAccount,
+    selectedNetwork,
+    fullTokenList,
+    userVisibleTokensInfo,
+    spotPrices,
+    getBuyAssets
+  )
+
   const [exchangeRate, setExchangeRate] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
-  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(swapAssetOptions[0])
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
   const [customSlippageTolerance, setCustomSlippageTolerance] = React.useState<string>('')
   const [toAmount, setToAmount] = React.useState('')
-  const [toAsset, setToAsset] = React.useState<BraveWallet.BlockchainToken>(swapAssetOptions[1])
-  const [filteredAssetList, setFilteredAssetList] = React.useState<BraveWallet.BlockchainToken[]>(swapAssetOptions)
+  const [filteredToAssetList, setFilteredToAssetList] = React.useState<BraveWallet.BlockchainToken[]>(swapToAssetOptions)
+  const [filteredFromAssetList, setFilteredFromAssetList] = React.useState<BraveWallet.BlockchainToken[]>(swapFromAssetOptions)
+  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(swapFromAssetOptions[0])
+  const [toAsset, setToAsset] = React.useState<BraveWallet.BlockchainToken>(swapToAssetOptions[1])
   const [swapToOrFrom, setSwapToOrFrom] = React.useState<ToOrFromType>('from')
   const [allowance, setAllowance] = React.useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isSupported, setIsSupported] = React.useState<boolean>(false)
 
   React.useEffect(() => {
-    setFromAsset(swapAssetOptions[0])
-    setToAsset(swapAssetOptions[1])
-  }, [swapAssetOptions])
+    const fromAsset = swapFromAssetOptions[0]
+    const toAsset = swapToAssetOptions[1]
+    setFromAsset(fromAsset)
+    setToAsset(toAsset)
+    onFilterAssetList(fromAsset, 'from')
+    onFilterAssetList(toAsset, 'to')
+  }, [swapFromAssetOptions, swapToAssetOptions])
 
   React.useEffect(() => {
     isSwapSupported(selectedNetwork).then(
@@ -65,7 +88,7 @@ export default function useSwap (
   }, [selectedNetwork])
 
   React.useEffect(() => {
-    if (!fromAsset.isErc20) {
+    if (fromAsset && !fromAsset.isErc20) {
       setAllowance(undefined)
       return
     }
@@ -76,10 +99,11 @@ export default function useSwap (
     }
 
     const { allowanceTarget } = quote
-
-    getERC20Allowance(fromAsset.contractAddress, selectedAccount.address, allowanceTarget)
-      .then(value => setAllowance(value))
-      .catch(e => console.log(e))
+    if (fromAsset) {
+      getERC20Allowance(fromAsset.contractAddress, selectedAccount.address, allowanceTarget)
+        .then(value => setAllowance(value))
+        .catch(e => console.log(e))
+    }
   }, [fromAsset, quote, selectedAccount])
 
   const getBalance = useBalance(selectedNetwork)
@@ -491,6 +515,8 @@ export default function useSwap (
       setToAsset(asset)
     }
 
+    onFilterAssetList(asset, toOrFrom)
+
     onSwapParamsChange(
       {
         toOrFrom,
@@ -513,14 +539,28 @@ export default function useSwap (
     }
   }
 
-  const onFilterAssetList = (asset: BraveWallet.BlockchainToken) => {
-    const newList = swapAssetOptions.filter((assets) => assets !== asset)
-    setFilteredAssetList(newList)
+  const onFilterAssetList = (selectedAsset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
+    setSwapToOrFrom(toOrFrom)
+    const predicate = (asset: BraveWallet.BlockchainToken) => {
+      if (asset && selectedAsset) {
+        return asset.symbol !== selectedAsset.symbol
+      }
+      return false
+    }
+
+    if (toOrFrom === 'to') {
+      const newList = swapFromAssetOptions.filter(predicate)
+      setFilteredFromAssetList(newList)
+    } else {
+      const newList = swapToAssetOptions.filter(predicate)
+      setFilteredToAssetList(newList)
+    }
   }
 
   return {
     exchangeRate,
-    filteredAssetList,
+    filteredToAssetList,
+    filteredFromAssetList,
     fromAmount,
     fromAsset,
     isFetchingSwapQuote: isLoading,

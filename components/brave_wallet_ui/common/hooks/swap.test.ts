@@ -1,11 +1,39 @@
 import { act, renderHook } from '@testing-library/react-hooks'
 
 // Constants
-import { mockAccount, mockNetwork } from '../constants/mocks'
-import { BraveWallet } from '../../constants/types'
+import { mockAccount, mockNetwork, mockAssetPrices } from '../constants/mocks'
+import { BraveWallet, WalletAccountType } from '../../constants/types'
 
 // Options
 import { AccountAssetOptions } from '../../options/asset-options'
+const mockAccounts = [
+  {
+    ...mockAccount,
+    balance: '1000000000000000000',
+    tokenBalanceRegistry: {
+      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '1000000000000000000',
+      [AccountAssetOptions[2].contractAddress.toLowerCase()]: '1000000000000000000'
+    }
+  } as WalletAccountType,
+  {
+    ...mockAccount,
+    balance: '1000000000000000000',
+    tokenBalanceRegistry: {
+      [AccountAssetOptions[1].contractAddress.toLowerCase()]: '1000000000000000000',
+      [AccountAssetOptions[2].contractAddress.toLowerCase()]: '1000000000000000000'
+    }
+  } as WalletAccountType
+]
+
+const userVisibleTokensInfo = [AccountAssetOptions[1], AccountAssetOptions[2]] // BNB, BTC
+const getBuyAssets = async () => {
+  return await userVisibleTokensInfo
+}
+
+const mockVisibleList = [
+  AccountAssetOptions[0],
+  AccountAssetOptions[1]
+]
 
 // Actions
 import * as WalletPageActions from '../../page/actions/wallet_page_actions'
@@ -13,6 +41,7 @@ import * as WalletActions from '../actions/wallet_actions'
 
 // Hooks
 import useSwap from './swap'
+import * as useAssets from './assets'
 
 jest.useFakeTimers()
 
@@ -44,12 +73,21 @@ const mockQuote = {
   buyTokenToEthRate: '1'
 } as BraveWallet.SwapResponse
 
+beforeEach(() => {
+  // Clear all mocks
+  jest.clearAllMocks()
+})
+
 describe('useSwap hook', () => {
   it('should initialize From and To assets', async () => {
     const { result, waitForNextUpdate } = renderHook(() => useSwap(
+      mockAccounts,
+      AccountAssetOptions,
+      mockVisibleList,
+      mockAssetPrices,
+      getBuyAssets,
       mockAccount,
       mockNetwork,
-      AccountAssetOptions,
       WalletPageActions.fetchPageSwapQuote,
       mockGetERC20Allowance,
       WalletActions.approveERC20Allowance,
@@ -64,9 +102,13 @@ describe('useSwap hook', () => {
 
   it('should return if network supports swap or not', async () => {
     const { result, waitFor } = renderHook(() => useSwap(
+      mockAccounts,
+      AccountAssetOptions,
+      mockVisibleList,
+      mockAssetPrices,
+      getBuyAssets,
       mockAccount,
       mockNetwork,
-      AccountAssetOptions,
       WalletPageActions.fetchPageSwapQuote,
       mockGetERC20Allowance,
       WalletActions.approveERC20Allowance,
@@ -83,9 +125,13 @@ describe('useSwap hook', () => {
       const mockFn = jest.fn(() => Promise.resolve('mockErc20Allowance'))
 
       const { waitForNextUpdate } = renderHook(() => useSwap(
+        mockAccounts,
+        AccountAssetOptions,
+        mockVisibleList,
+        mockAssetPrices,
+        getBuyAssets,
         mockAccount,
         mockNetwork,
-        AccountAssetOptions,
         WalletPageActions.fetchPageSwapQuote,
         mockFn,
         WalletActions.approveERC20Allowance,
@@ -101,13 +147,14 @@ describe('useSwap hook', () => {
     it('should not query allowance if no quote', async () => {
       const mockFn = jest.fn(() => Promise.resolve('mockErc20Allowance'))
 
-      // Remove first item in the list, since it is the native asset.
-      const swapAssets = AccountAssetOptions.slice(1)
-
       const { waitForNextUpdate } = renderHook(() => useSwap(
+        mockAccounts,
+        AccountAssetOptions,
+        mockVisibleList,
+        mockAssetPrices,
+        getBuyAssets,
         mockAccount,
         mockNetwork,
-        swapAssets,
         WalletPageActions.fetchPageSwapQuote,
         mockFn,
         WalletActions.approveERC20Allowance,
@@ -125,15 +172,16 @@ describe('useSwap hook', () => {
         allowanceTarget: 'mockAllowanceTarget'
       }
 
-      // Remove first item in the list, since it is the native asset.
-      const swapAssets = AccountAssetOptions.slice(1)
-
       const mockFn = jest.fn(() => Promise.resolve('mockErc20Allowance'))
 
       const { waitForNextUpdate } = renderHook(() => useSwap(
-        mockAccount,
+        mockAccounts,
+        AccountAssetOptions,
+        userVisibleTokensInfo,
+        mockAssetPrices,
+        getBuyAssets,
+        mockAccounts[0],
         mockNetwork,
-        swapAssets,
         WalletPageActions.fetchPageSwapQuote,
         mockFn,
         WalletActions.approveERC20Allowance,
@@ -144,7 +192,7 @@ describe('useSwap hook', () => {
       await waitForNextUpdate()
 
       expect(mockFn).toBeCalledWith(
-        swapAssets[0].contractAddress,
+        userVisibleTokensInfo[0].contractAddress,
         mockAccount.address,
         quote.allowanceTarget
       )
@@ -155,9 +203,13 @@ describe('useSwap hook', () => {
     it('should not return error if From and To amount are empty', async () => {
       // Step 1: Initialize the useSwap hook.
       const { result, waitForValueToChange, waitFor } = renderHook(() => useSwap(
-        mockAccount,
-        mockNetwork,
+        mockAccounts,
         AccountAssetOptions,
+        userVisibleTokensInfo,
+        mockAssetPrices,
+        getBuyAssets,
+        mockAccounts[0],
+        mockNetwork,
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
@@ -179,16 +231,28 @@ describe('useSwap hook', () => {
     })
 
     it('should return error if From amount has decimals overflow', async () => {
+      const useAssetsMock = jest.spyOn(useAssets, 'default')
+      useAssetsMock.mockReturnValue({
+        swapFromAssetOptions: userVisibleTokensInfo, // From Asset: BAT
+        swapToAssetOptions: userVisibleTokensInfo,
+        sendAssetOptions: [],
+        buyAssetOptions: [],
+        panelUserAssetList: []
+      })
       // Step 1: Initialize the useSwap hook with the following parameters.
-      //    From asset: ETH
-      //    Balance:    1 ETH
+      //    From asset: BAT
+      //    Balance:    1 BAT
       const { result, waitForValueToChange, waitFor } = renderHook(() => useSwap(
+        mockAccounts,
+        userVisibleTokensInfo,
+        userVisibleTokensInfo,
+        mockAssetPrices,
+        getBuyAssets,
         {
           ...mockAccount,
           balance: '1000000000000000000' // 1 ETH
         },
         mockNetwork,
-        AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
@@ -228,12 +292,24 @@ describe('useSwap hook', () => {
     })
 
     it('should return error if To amount has decimals overflow', async () => {
+      const useAssetsMock = jest.spyOn(useAssets, 'default')
+      useAssetsMock.mockReturnValue({
+        swapFromAssetOptions: AccountAssetOptions,
+        swapToAssetOptions: mockVisibleList, // From Asset: BAT
+        sendAssetOptions: [],
+        buyAssetOptions: [],
+        panelUserAssetList: []
+      })
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    To asset: BAT
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccounts,
+        AccountAssetOptions,
+        mockVisibleList,
+        mockAssetPrices,
+        getBuyAssets,
         mockAccount,
         mockNetwork,
-        AccountAssetOptions, // To asset is BAT
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
@@ -273,13 +349,25 @@ describe('useSwap hook', () => {
     })
 
     it('should return error if From ETH amount has insufficient balance', async () => {
+      const useAssetsMock = jest.spyOn(useAssets, 'default')
+      useAssetsMock.mockReturnValue({
+        swapFromAssetOptions: AccountAssetOptions, // From Asset: ETH
+        swapToAssetOptions: mockVisibleList,
+        sendAssetOptions: [],
+        buyAssetOptions: [],
+        panelUserAssetList: []
+      })
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset: ETH
       //    Balance:    0.000000000000123456 ETH
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccounts,
+        AccountAssetOptions,
+        mockVisibleList,
+        mockAssetPrices,
+        getBuyAssets,
         mockAccount, // Balance: 123456 Wei
         mockNetwork,
-        AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
@@ -322,7 +410,22 @@ describe('useSwap hook', () => {
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset: BAT
       //    Balance:    0.000000000000123456 ETH
+
+      const useAssetsMock = jest.spyOn(useAssets, 'default')
+      useAssetsMock.mockReturnValue({
+        swapFromAssetOptions: userVisibleTokensInfo, // From Asset: BAT
+        swapToAssetOptions: userVisibleTokensInfo,
+        sendAssetOptions: [],
+        buyAssetOptions: [],
+        panelUserAssetList: []
+      })
+
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccounts,
+        userVisibleTokensInfo,
+        userVisibleTokensInfo,
+        mockAssetPrices,
+        getBuyAssets,
         {
           ...mockAccount,
           tokenBalanceRegistry: {
@@ -330,7 +433,6 @@ describe('useSwap hook', () => {
           }
         },
         mockNetwork,
-        AccountAssetOptions.slice(1), // From asset is BAT
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
@@ -370,14 +472,26 @@ describe('useSwap hook', () => {
     })
 
     it('should return error if From ETH asset has insufficient balance for fees', async () => {
+      const useAssetsMock = jest.spyOn(useAssets, 'default')
+      useAssetsMock.mockReturnValue({
+        swapFromAssetOptions: AccountAssetOptions, // From Asset: ETH
+        swapToAssetOptions: AccountAssetOptions,
+        sendAssetOptions: [],
+        buyAssetOptions: [],
+        panelUserAssetList: []
+      })
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset: ETH
       //    Balance:    0.000000000000123456 ETH
       //    Quote fees: 0.000000000001000000 ETH
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccounts,
+        AccountAssetOptions,
+        mockVisibleList,
+        mockAssetPrices,
+        getBuyAssets,
         mockAccount, // Balance: 123456 Wei
         mockNetwork,
-        AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
@@ -401,18 +515,39 @@ describe('useSwap hook', () => {
     })
 
     it('should return error if From ETH asset has insufficient balance for fees + swap', async () => {
+      const useAssetsMock = jest.spyOn(useAssets, 'default')
+      useAssetsMock.mockReturnValue({
+        swapFromAssetOptions: AccountAssetOptions, // From Asset: ETH
+        swapToAssetOptions: AccountAssetOptions,
+        sendAssetOptions: [],
+        buyAssetOptions: [],
+        panelUserAssetList: []
+      })
+
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset:  ETH
       //    From amount: 0.000000000000234560 ETH
       //    Quote fees:  0.000000000001000000 ETH
       //    Balance:     0.000000000001234560 ETH
-      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
+      const mockAccounts = [
         {
           ...mockAccount,
-          balance: '1234560' // 1234560 Wei
-        },
+          balance: '1234560'
+        } as WalletAccountType,
+        {
+          ...mockAccount,
+          balance: '1234560'
+        } as WalletAccountType
+      ]
+
+      const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccounts,
+        AccountAssetOptions,
+        mockVisibleList,
+        mockAssetPrices,
+        getBuyAssets,
+        mockAccounts[0], // Balance: 123456 Wei
         mockNetwork,
-        AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
@@ -450,12 +585,25 @@ describe('useSwap hook', () => {
     })
 
     it('should return error if not enough allowance', async () => {
+      const useAssetsMock = jest.spyOn(useAssets, 'default')
+      useAssetsMock.mockReturnValue({
+        swapFromAssetOptions: userVisibleTokensInfo, // From Asset: BAT
+        swapToAssetOptions: userVisibleTokensInfo,
+        sendAssetOptions: [],
+        buyAssetOptions: [],
+        panelUserAssetList: []
+      })
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset:  BAT
       //    From amount: 10 BAT
       //    Quote fees:  0.000000000001 ETH
       //    Balance:     20 BAT
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccounts,
+        userVisibleTokensInfo,
+        userVisibleTokensInfo,
+        mockAssetPrices,
+        getBuyAssets,
         {
           ...mockAccount,
           balance: '1000000000000000000', // 1 ETH
@@ -464,7 +612,6 @@ describe('useSwap hook', () => {
           }
         },
         mockNetwork,
-        AccountAssetOptions.slice(1), // From asset is BAT
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
@@ -495,19 +642,32 @@ describe('useSwap hook', () => {
       })
     })
 
+    // TODO: Fix failing test case.
     it('should return error if insufficient liquidity', async () => {
+      const useAssetsMock = jest.spyOn(useAssets, 'default')
+      useAssetsMock.mockReturnValue({
+        swapFromAssetOptions: AccountAssetOptions,
+        swapToAssetOptions: AccountAssetOptions,
+        sendAssetOptions: [],
+        buyAssetOptions: [],
+        panelUserAssetList: []
+      })
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset:  ETH
       //    From amount: 0.1 ETH
       //    Quote fees:  0.000000000001 ETH
       //    Balance:     1 ETH
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccounts,
+        AccountAssetOptions,
+        AccountAssetOptions,
+        mockAssetPrices,
+        getBuyAssets,
         {
           ...mockAccount,
           balance: '1000000000000000000' // 1 ETH
         },
         mockNetwork,
-        AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
@@ -550,18 +710,31 @@ describe('useSwap hook', () => {
     })
 
     it('should return error if gas estimation failed', async () => {
+      const useAssetsMock = jest.spyOn(useAssets, 'default')
+      useAssetsMock.mockReturnValue({
+        swapFromAssetOptions: AccountAssetOptions, // From Asset: ETH
+        swapToAssetOptions: AccountAssetOptions,
+        sendAssetOptions: [],
+        buyAssetOptions: [],
+        panelUserAssetList: []
+      })
+
       // Step 1: Initialize the useSwap hook with the following parameters.
       //    From asset:  ETH
       //    From amount: 0.1 ETH
       //    Quote fees:  0.000000000001 ETH
       //    Balance:     1 ETH
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccounts,
+        AccountAssetOptions,
+        AccountAssetOptions,
+        mockAssetPrices,
+        getBuyAssets,
         {
           ...mockAccount,
           balance: '1000000000000000000' // 1 ETH
         },
         mockNetwork,
-        AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
         WalletActions.approveERC20Allowance,
