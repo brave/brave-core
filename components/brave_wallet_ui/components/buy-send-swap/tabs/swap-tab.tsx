@@ -99,13 +99,8 @@ function SwapTab (props: Props) {
   } = props
   const [swapView, setSwapView] = React.useState<BuySendSwapViewTypes>('swap')
 
-  const onChangeSwapView = (view: BuySendSwapViewTypes, option?: ToOrFromType) => {
-    if (option) {
-      // setIsSelectingAsset(option)
-      setSwapView(view)
-    } else {
-      setSwapView(view)
-    }
+  const onChangeSwapView = (view: BuySendSwapViewTypes) => {
+    setSwapView(view)
   }
 
   const onClickSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
