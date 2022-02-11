@@ -27,8 +27,7 @@ import {
   SwapDisclaimerRow,
   AlertIcon,
   SwapFeesNoticeRow,
-  SwapFeesNoticeText,
-  ResetRow
+  SwapFeesNoticeText
 } from './style'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { ResetButton } from '../shared-styles'
@@ -198,21 +197,6 @@ function Swap (props: Props) {
         customSlippageTolerance={customSlippageTolerance}
         onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
       />
-
-      <ResetRow>
-        <ResetButton
-          onClick={onReset}
-          >
-            {getLocale('braveWalletReset')}
-        </ResetButton>
-      </ResetRow>
-
-      <SwapFeesNoticeRow>
-        <SwapFeesNoticeText>
-          {getLocale('braveWalletSwapFeesNotice')}
-        </SwapFeesNoticeText>
-      </SwapFeesNoticeRow>
-
       <SwapNavButton
         disabled={isSubmitDisabled}
         buttonType='primary'
@@ -224,6 +208,16 @@ function Swap (props: Props) {
             : <SwapButtonText>{submitText}</SwapButtonText>
         }
       </SwapNavButton>
+      <ResetButton
+        onClick={onReset}
+        >
+          {getLocale('braveWalletReset')}
+      </ResetButton>
+      <SwapFeesNoticeRow>
+        <SwapFeesNoticeText>
+          {getLocale('braveWalletSwapFeesNotice')}
+        </SwapFeesNoticeText>
+      </SwapFeesNoticeRow>
       <SwapDisclaimerRow>
         <SwapDisclaimerText>
           {beforeTag}

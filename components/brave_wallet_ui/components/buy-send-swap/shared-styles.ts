@@ -79,15 +79,6 @@ export const DividerText = styled.span`
   color: ${(p) => p.theme.color.text01};
 `
 
-export const ButtonRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
-  margin-bottom: 14px;
-`
-
 export const ResetButton = styled(WalletButton)`
   display: flex;
   flex-direction: row;
@@ -103,6 +94,7 @@ export const ResetButton = styled(WalletButton)`
   letter-spacing: 0.01em;
   padding: 2px 0px;
   width: 48px;
+  margin: 12px 0px;
   background-color: ${(p) => p.theme.palette.white};
   color: ${(p) => p.theme.color.interactive05};
   @media (prefers-color-scheme: dark) {
