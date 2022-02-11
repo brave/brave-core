@@ -15,12 +15,13 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
+#include "base/sequence_checker.h"
 #include "base/synchronization/lock.h"
-#include "base/threading/thread_checker.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "components/prefs/pref_service.h"
@@ -154,13 +155,15 @@ class AdBlockSubscriptionServiceManager {
   std::map<GURL, std::unique_ptr<AdBlockEngine>> subscription_services_;
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionSourceProvider>>
       subscription_source_providers_;
+  std::map<GURL, std::unique_ptr<AdBlockService::SourceProviderObserver>>
+      subscription_source_observers_;
   std::unique_ptr<component_updater::TimerUpdateScheduler>
       subscription_update_timer_;
 
   base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_;
   base::Lock subscription_services_lock_;
 
-  THREAD_CHECKER(thread_checker_);
+  SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<AdBlockSubscriptionServiceManager> weak_ptr_factory_{
       this};

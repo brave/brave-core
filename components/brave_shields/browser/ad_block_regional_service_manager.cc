@@ -54,8 +54,7 @@ void AdBlockRegionalServiceManager::Init(
   initialized_ = true;
 }
 
-AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
-}
+AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {}
 
 void AdBlockRegionalServiceManager::StartRegionalServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -107,8 +106,8 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
       enabled = regional_filter_dict->FindBoolKey("enabled").value_or(false);
     }
     if (enabled) {
-      auto catalog_entry = brave_shields::FindAdBlockFilterListByUUID(
-          regional_catalog_, uuid);
+      auto catalog_entry =
+          brave_shields::FindAdBlockFilterListByUUID(regional_catalog_, uuid);
       auto existing_engine = regional_services_.find(uuid);
       // Iterating through locally enabled lists - don't disable any engines or
       // update existing engines with a potentially new catalog entry. They'll
@@ -118,13 +117,18 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
         auto regional_source_provider =
             std::make_unique<AdBlockRegionalSourceProvider>(
                 component_update_service_, *catalog_entry);
-        auto regional_service = std::make_unique<AdBlockEngine>(task_runner_);
-        regional_service->Init(regional_source_provider.get(),
-                               resource_provider_);
+        auto regional_service = std::make_unique<AdBlockEngine>();
+        auto observer =
+            std::make_unique<AdBlockService::SourceProviderObserver>(
+                existing_engine->second->AsWeakPtr(),
+                regional_source_provider.get(), resource_provider_,
+                task_runner_);
         regional_services_.insert(
             std::make_pair(uuid, std::move(regional_service)));
         regional_source_providers_.insert(
             std::make_pair(uuid, std::move(regional_source_provider)));
+        regional_source_observers_.insert(
+            std::make_pair(uuid, std::move(observer)));
       }
     }
   }
@@ -148,11 +152,6 @@ void AdBlockRegionalServiceManager::UpdateFilterListPrefs(
 }
 
 bool AdBlockRegionalServiceManager::Start() {
-  base::AutoLock lock(regional_services_lock_);
-  for (const auto& regional_service : regional_services_) {
-    regional_service.second->Start();
-  }
-
   return true;
 }
 
@@ -200,19 +199,18 @@ void AdBlockRegionalServiceManager::EnableTag(const std::string& tag,
   }
 }
 
-void AdBlockRegionalServiceManager::AddResources(
-    const std::string& resources) {
+void AdBlockRegionalServiceManager::AddResources(const std::string& resources) {
   base::AutoLock lock(regional_services_lock_);
   for (const auto& regional_service : regional_services_) {
     regional_service.second->AddResources(resources);
   }
 }
 
-void AdBlockRegionalServiceManager::EnableFilterList(
-    const std::string& uuid, bool enabled) {
+void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
+                                                     bool enabled) {
   DCHECK(!uuid.empty());
-  auto catalog_entry = brave_shields::FindAdBlockFilterListByUUID(
-      regional_catalog_, uuid);
+  auto catalog_entry =
+      brave_shields::FindAdBlockFilterListByUUID(regional_catalog_, uuid);
 
   // Enable or disable the specified filter list
   base::AutoLock lock(regional_services_lock_);
@@ -223,12 +221,16 @@ void AdBlockRegionalServiceManager::EnableFilterList(
     auto regional_source_provider =
         std::make_unique<AdBlockRegionalSourceProvider>(
             component_update_service_, *catalog_entry);
-    auto regional_service = std::make_unique<AdBlockEngine>(task_runner_);
-    regional_service->Init(regional_source_provider.get(), resource_provider_);
+    auto regional_service = std::make_unique<AdBlockEngine>();
+    auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
+        regional_service->AsWeakPtr(), regional_source_provider.get(),
+        resource_provider_, task_runner_);
     regional_services_.insert(
         std::make_pair(uuid, std::move(regional_service)));
     regional_source_providers_.insert(
         std::make_pair(uuid, std::move(regional_source_provider)));
+    regional_source_observers_.insert(
+        std::make_pair(uuid, std::move(observer)));
   } else {
     DCHECK(it != regional_services_.end());
     regional_services_.erase(it);
@@ -236,6 +238,10 @@ void AdBlockRegionalServiceManager::EnableFilterList(
     auto it2 = regional_source_providers_.find(uuid);
     DCHECK(it2 != regional_source_providers_.end());
     regional_source_providers_.erase(it2);
+
+    auto it3 = regional_source_observers_.find(uuid);
+    DCHECK(it3 != regional_source_observers_.end());
+    regional_source_observers_.erase(it3);
   }
 
   // Update preferences to reflect enabled/disabled state of specified
@@ -256,7 +262,7 @@ absl::optional<base::Value> AdBlockRegionalServiceManager::UrlCosmeticResources(
   absl::optional<base::Value> first_value =
       it->second->UrlCosmeticResources(url);
 
-  for ( ; it != regional_services_.end(); it++) {
+  for (; it != regional_services_.end(); it++) {
     absl::optional<base::Value> next_value =
         it->second->UrlCosmeticResources(url);
     if (first_value) {
@@ -294,7 +300,7 @@ base::Value AdBlockRegionalServiceManager::HiddenClassIdSelectors(
 }
 
 void AdBlockRegionalServiceManager::SetRegionalCatalog(
-        std::vector<adblock::FilterList> catalog) {
+    std::vector<adblock::FilterList> catalog) {
   regional_catalog_ = std::move(catalog);
   StartRegionalServices();
 }

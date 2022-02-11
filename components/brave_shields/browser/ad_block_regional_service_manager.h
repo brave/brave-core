@@ -21,6 +21,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_catalog_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_source_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
@@ -98,6 +99,8 @@ class AdBlockRegionalServiceManager
   std::map<std::string, std::unique_ptr<AdBlockEngine>> regional_services_;
   std::map<std::string, std::unique_ptr<AdBlockRegionalSourceProvider>>
       regional_source_providers_;
+  std::map<std::string, std::unique_ptr<AdBlockService::SourceProviderObserver>>
+      regional_source_observers_;
 
   std::vector<adblock::FilterList> regional_catalog_;
 

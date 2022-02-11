@@ -16,19 +16,13 @@
 #include "base/json/json_reader.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/task/post_task.h"
-#include "base/task/thread_pool.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/origin.h"
 
-using brave_component_updater::BraveComponent;
-using content::BrowserThread;
 using namespace net::registry_controlled_domains;  // NOLINT
 
 namespace {
@@ -103,15 +97,9 @@ std::string ResourceTypeToString(blink::mojom::ResourceType resource_type) {
 
 namespace brave_shields {
 
-AdBlockEngine::AdBlockEngine(
-    scoped_refptr<base::SequencedTaskRunner> task_runner)
-    : BaseBraveShieldsService(task_runner),
-      ad_block_client_(new adblock::Engine()),
-      weak_factory_(this) {}
+AdBlockEngine::AdBlockEngine() : ad_block_client_(new adblock::Engine()) {}
 
-AdBlockEngine::~AdBlockEngine() {
-  GetTaskRunner()->DeleteSoon(FROM_HERE, ad_block_client_.release());
-}
+AdBlockEngine::~AdBlockEngine() {}
 
 void AdBlockEngine::ShouldStartRequest(const GURL& url,
                                        blink::mojom::ResourceType resource_type,
@@ -121,7 +109,6 @@ void AdBlockEngine::ShouldStartRequest(const GURL& url,
                                        bool* did_match_exception,
                                        bool* did_match_important,
                                        std::string* mock_data_url) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
@@ -144,8 +131,6 @@ absl::optional<std::string> AdBlockEngine::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
@@ -165,13 +150,6 @@ absl::optional<std::string> AdBlockEngine::GetCspDirectives(
 }
 
 void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
-  if (BrowserThread::CurrentlyOn(BrowserThread::UI)) {
-    GetTaskRunner()->PostTask(
-        FROM_HERE, base::BindOnce(&AdBlockEngine::EnableTag,
-                                  base::Unretained(this), tag, enabled));
-    return;
-  }
-
   if (enabled) {
     if (tags_.find(tag) == tags_.end()) {
       ad_block_client_->addTag(tag);
@@ -188,13 +166,6 @@ void AdBlockEngine::EnableTag(const std::string& tag, bool enabled) {
 }
 
 void AdBlockEngine::AddResources(const std::string& resources) {
-  if (BrowserThread::CurrentlyOn(BrowserThread::UI)) {
-    GetTaskRunner()->PostTask(
-        FROM_HERE, base::BindOnce(&AdBlockEngine::AddResources,
-                                  base::Unretained(this), resources));
-    return;
-  }
-
   ad_block_client_->addResources(resources);
 }
 
@@ -204,7 +175,6 @@ bool AdBlockEngine::TagExists(const std::string& tag) {
 
 absl::optional<base::Value> AdBlockEngine::UrlCosmeticResources(
     const std::string& url) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
 }
 
@@ -212,7 +182,6 @@ base::Value AdBlockEngine::HiddenClassIdSelectors(
     const std::vector<std::string>& classes,
     const std::vector<std::string>& ids,
     const std::vector<std::string>& exceptions) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   absl::optional<base::Value> result = base::JSONReader::Read(
       ad_block_client_->hiddenClassIdSelectors(classes, ids, exceptions));
 
@@ -223,34 +192,22 @@ base::Value AdBlockEngine::HiddenClassIdSelectors(
   }
 }
 
-void AdBlockEngine::OnInitialListLoad(bool deserialize,
-                                      const DATFileDataBuffer& dat_buf) {
+void AdBlockEngine::Load(bool deserialize,
+                         const DATFileDataBuffer& dat_buf,
+                         const std::string& resources_json) {
   if (deserialize) {
-    OnDATLoaded(dat_buf);
+    OnDATLoaded(dat_buf, resources_json);
   } else {
-    OnListSourceLoaded(dat_buf);
+    OnListSourceLoaded(dat_buf, resources_json);
   }
 }
 
-bool AdBlockEngine::Init(AdBlockSourceProvider* source_provider,
-                         AdBlockResourceProvider* resource_provider) {
-  source_provider->LoadDATBuffer(base::BindOnce(
-      &AdBlockEngine::OnInitialListLoad, weak_factory_.GetWeakPtr()));
-  source_provider->AddObserver(this);
-
-  // Resources will be reloaded later when rules are provided, so no need to do
-  // anything here.
-  resource_provider_ = resource_provider;
-
-  return true;
-}
-
 void AdBlockEngine::UpdateAdBlockClient(
-    std::unique_ptr<adblock::Engine> ad_block_client) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+    std::unique_ptr<adblock::Engine> ad_block_client,
+    const std::string& resources_json) {
   ad_block_client_ = std::move(ad_block_client);
+  AddResources(resources_json);
   AddKnownTagsToAdBlockInstance();
-  DemandResourceReload();
 }
 
 void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
@@ -258,52 +215,26 @@ void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
                 [&](const std::string tag) { ad_block_client_->addTag(tag); });
 }
 
-void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& list_source) {
-  GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&AdBlockEngine::UpdateFiltersOnFileTaskRunner,
-                                base::Unretained(this), list_source));
+void AdBlockEngine::OnListSourceLoaded(const DATFileDataBuffer& filters,
+                                       const std::string& resources_json) {
+  UpdateAdBlockClient(
+      std::make_unique<adblock::Engine>(
+          reinterpret_cast<const char*>(filters.data()), filters.size()),
+      resources_json);
 }
 
-void AdBlockEngine::UpdateFiltersOnFileTaskRunner(
-    const DATFileDataBuffer& filters) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-
-  UpdateAdBlockClient(std::make_unique<adblock::Engine>(
-      reinterpret_cast<const char*>(filters.data()), filters.size()));
-}
-
-void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf) {
+void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,
+                                const std::string& resources_json) {
   // An empty buffer will not load successfully.
   if (dat_buf.empty()) {
     return;
   }
-  GetTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&AdBlockEngine::UpdateDATOnFileTaskRunner,
-                                base::Unretained(this), dat_buf));
-}
 
-void AdBlockEngine::UpdateDATOnFileTaskRunner(
-    const DATFileDataBuffer& dat_buf) {
-  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
-  auto e = std::make_unique<adblock::Engine>();
-  e->deserialize(reinterpret_cast<const char*>(&dat_buf.front()),
-                 dat_buf.size());
+  auto client = std::make_unique<adblock::Engine>();
+  client->deserialize(reinterpret_cast<const char*>(&dat_buf.front()),
+                      dat_buf.size());
 
-  UpdateAdBlockClient(std::move(e));
-}
-
-void AdBlockEngine::OnResourcesLoaded(const std::string& resources_json) {
-  ad_block_client_->addResources(resources_json);
-}
-
-void AdBlockEngine::DemandResourceReload() {
-  DCHECK(resource_provider_);
-  resource_provider_->LoadResources(base::BindOnce(
-      &AdBlockEngine::OnResourcesLoaded, weak_factory_.GetWeakPtr()));
-}
-
-bool AdBlockEngine::Init() {
-  return true;
+  UpdateAdBlockClient(std::move(client), resources_json);
 }
 
 }  // namespace brave_shields

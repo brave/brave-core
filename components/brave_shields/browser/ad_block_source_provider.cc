@@ -13,24 +13,33 @@ AdBlockSourceProvider::~AdBlockSourceProvider() {}
 
 void AdBlockSourceProvider::AddObserver(
     AdBlockSourceProvider::Observer* observer) {
-  observers_.AddObserver(observer);
+  if (!observers_.HasObserver(observer))
+    observers_.AddObserver(observer);
 }
 
 void AdBlockSourceProvider::RemoveObserver(
     AdBlockSourceProvider::Observer* observer) {
-  observers_.RemoveObserver(observer);
+  if (observers_.HasObserver(observer))
+    observers_.RemoveObserver(observer);
 }
 
-void AdBlockSourceProvider::OnDATLoaded(const DATFileDataBuffer& dat_buf) {
+void AdBlockSourceProvider::OnDATLoaded(bool deserialize,
+                                        const DATFileDataBuffer& dat_buf) {
   for (auto& observer : observers_) {
-    observer.OnDATLoaded(dat_buf);
+    observer.OnDATLoaded(deserialize, dat_buf);
   }
 }
 
-void AdBlockSourceProvider::OnListSourceLoaded(
-    const DATFileDataBuffer& list_source) {
-  for (auto& observer : observers_) {
-    observer.OnListSourceLoaded(list_source);
+void AdBlockSourceProvider::LoadDAT(AdBlockSourceProvider::Observer* observer) {
+  LoadDATBuffer(base::BindOnce(&AdBlockSourceProvider::OnLoad,
+                               weak_factory_.GetWeakPtr(), observer));
+}
+
+void AdBlockSourceProvider::OnLoad(AdBlockSourceProvider::Observer* observer,
+                                   bool deserialize,
+                                   const DATFileDataBuffer& dat_buf) {
+  if (observers_.HasObserver(observer)) {
+    observer->OnDATLoaded(deserialize, dat_buf);
   }
 }
 

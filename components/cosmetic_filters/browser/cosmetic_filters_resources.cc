@@ -26,6 +26,7 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
     const std::string& input,
     const std::vector<std::string>& exceptions,
     HiddenClassIdSelectorsCallback callback) {
+  DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
   absl::optional<base::Value> input_value = base::JSONReader::Read(input);
   if (!input_value || !input_value->is_dict()) {
     // Nothing to work with
@@ -69,6 +70,7 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
 void CosmeticFiltersResources::UrlCosmeticResources(
     const std::string& url,
     UrlCosmeticResourcesCallback callback) {
+  DCHECK(ad_block_service_->GetTaskRunner()->RunsTasksInCurrentSequence());
   auto resources = ad_block_service_->UrlCosmeticResources(url);
   std::move(callback).Run(resources ? std::move(resources.value())
                                     : base::Value());

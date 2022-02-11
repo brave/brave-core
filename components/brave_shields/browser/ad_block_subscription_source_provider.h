@@ -28,8 +28,6 @@ class AdBlockSubscriptionSourceProvider : public AdBlockSourceProvider {
       const AdBlockSubscriptionSourceProvider&) = delete;
   ~AdBlockSubscriptionSourceProvider() override;
 
-  void ReloadListFromDisk();
-
   void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) override;

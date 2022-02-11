@@ -8,9 +8,8 @@
 
 #include <string>
 
+#include "base/sequence_checker.h"
 #include "base/callback.h"
-#include "base/memory/weak_ptr.h"
-#include "base/observer_list.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/ad_block_source_provider.h"
 
@@ -34,6 +33,8 @@ class AdBlockCustomFiltersSourceProvider : public AdBlockSourceProvider {
 
  private:
   PrefService* local_state_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 
   AdBlockCustomFiltersSourceProvider(
       const AdBlockCustomFiltersSourceProvider&) = delete;

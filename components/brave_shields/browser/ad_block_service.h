@@ -13,7 +13,12 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
+#include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_source_provider.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/browser/browser_thread.h"
@@ -39,13 +44,41 @@ class AdBlockDefaultSourceProvider;
 class AdBlockRegionalServiceManager;
 class AdBlockCustomFiltersSourceProvider;
 class AdBlockRegionalCatalogProvider;
-class AdBlockResourceProvider;
-class AdBlockSourceProvider;
 class AdBlockSubscriptionServiceManager;
 
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService {
  public:
+  class SourceProviderObserver : public AdBlockResourceProvider::Observer,
+                                 public AdBlockSourceProvider::Observer {
+   public:
+    SourceProviderObserver(
+        base::WeakPtr<AdBlockEngine> adblock_engine,
+        AdBlockSourceProvider* source_provider,
+        AdBlockResourceProvider* resource_provider,
+        scoped_refptr<base::SequencedTaskRunner> task_runner);
+    SourceProviderObserver(const SourceProviderObserver&) = delete;
+    SourceProviderObserver& operator=(const SourceProviderObserver&) = delete;
+    ~SourceProviderObserver() override;
+
+   private:
+    // AdBlockSourceProvider::Observer
+    void OnDATLoaded(bool deserialize,
+                     const DATFileDataBuffer& dat_buf) override;
+
+    // AdBlockResourceProvider::Observer
+    void OnResourcesLoaded(const std::string& resources_json) override;
+
+    bool deserialize_;
+    DATFileDataBuffer dat_buf_;
+    base::WeakPtr<AdBlockEngine> adblock_engine_;
+    raw_ptr<AdBlockSourceProvider> source_provider_;      // not owned
+    raw_ptr<AdBlockResourceProvider> resource_provider_;  // not owned
+    scoped_refptr<base::SequencedTaskRunner> task_runner_;
+
+    base::WeakPtrFactory<SourceProviderObserver> weak_factory_{this};
+  };
+
   explicit AdBlockService(
       PrefService* local_state,
       std::string locale,
@@ -81,11 +114,9 @@ class AdBlockService {
 
   AdBlockCustomFiltersSourceProvider* custom_filters_source_provider();
 
-  AdBlockRegionalCatalogProvider* regional_catalog_provider();
-
   void EnableTag(const std::string& tag, bool enabled);
 
-  base::SequencedTaskRunner* GetTaskRunner() { return task_runner_.get(); }
+  base::SequencedTaskRunner* GetTaskRunner();
 
   bool Start();
 
@@ -116,8 +147,10 @@ class AdBlockService {
 
   std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
       regional_service_manager_;
-  std::unique_ptr<brave_shields::AdBlockEngine> custom_filters_service_;
-  std::unique_ptr<brave_shields::AdBlockEngine> default_service_;
+  std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
+      custom_filters_service_;
+  std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
+      default_service_;
   std::unique_ptr<brave_shields::AdBlockSubscriptionServiceManager>
       subscription_service_manager_;
 
@@ -125,6 +158,11 @@ class AdBlockService {
       custom_filters_source_provider_;
   std::unique_ptr<brave_shields::AdBlockDefaultSourceProvider>
       default_source_provider_;
+
+  std::unique_ptr<SourceProviderObserver> default_service_observer_;
+  std::unique_ptr<SourceProviderObserver> custom_filters_service_observer_;
+
+  SEQUENCE_CHECKER(sequence_checker_);
 
   base::WeakPtrFactory<AdBlockService> weak_factory_{this};
 };

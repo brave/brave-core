@@ -151,7 +151,7 @@ GURL AdBlockSubscriptionServiceManager::GetListTextFileUrl(
 
 void AdBlockSubscriptionServiceManager::OnUpdateTimer(
     component_updater::TimerUpdateScheduler::OnFinishedCallback on_finished) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!local_state_)
     return;
@@ -199,7 +199,7 @@ void AdBlockSubscriptionServiceManager::StartDownload(const GURL& sub_url,
 
 void AdBlockSubscriptionServiceManager::CreateSubscription(
     const GURL& sub_url) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto it = subscription_services_.find(sub_url);
   if (it != subscription_services_.end()) {
@@ -212,15 +212,16 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   info.last_successful_update_attempt = base::Time();
   info.enabled = true;
 
-  auto subscription_service = std::make_unique<AdBlockEngine>(task_runner_);
+  auto subscription_service = std::make_unique<AdBlockEngine>();
   UpdateSubscriptionPrefs(sub_url, info);
 
   auto subscription_source_provider =
       std::make_unique<AdBlockSubscriptionSourceProvider>(
           local_state_,
           GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
-  subscription_service->Init(subscription_source_provider.get(),
-                             resource_provider_);
+  auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
+      subscription_service->AsWeakPtr(), subscription_source_provider.get(),
+      resource_provider_, task_runner_);
 
   {
     base::AutoLock lock(subscription_services_lock_);
@@ -229,6 +230,8 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
         std::make_pair(sub_url, std::move(subscription_service)));
     subscription_source_providers_.insert(
         std::make_pair(sub_url, std::move(subscription_source_provider)));
+    subscription_source_observers_.insert(
+        std::make_pair(sub_url, std::move(observer)));
   }
 
   StartDownload(sub_url, true);
@@ -236,7 +239,7 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
 
 std::vector<SubscriptionInfo>
 AdBlockSubscriptionServiceManager::GetSubscriptions() {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto infos = std::vector<SubscriptionInfo>();
 
   for (const auto& subscription_service : subscription_services_) {
@@ -250,7 +253,7 @@ AdBlockSubscriptionServiceManager::GetSubscriptions() {
 
 void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
                                                            bool enabled) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto info = GetInfo(sub_url);
   DCHECK(info);
 
@@ -261,7 +264,7 @@ void AdBlockSubscriptionServiceManager::EnableSubscription(const GURL& sub_url,
 
 void AdBlockSubscriptionServiceManager::DeleteSubscription(
     const GURL& sub_url) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   {
     base::AutoLock lock(subscription_services_lock_);
     auto it = subscription_services_.find(sub_url);
@@ -270,6 +273,9 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
     auto it2 = subscription_source_providers_.find(sub_url);
     DCHECK(it2 != subscription_source_providers_.end());
     subscription_source_providers_.erase(it2);
+    auto it3 = subscription_source_observers_.find(sub_url);
+    DCHECK(it3 != subscription_source_observers_.end());
+    subscription_source_observers_.erase(it3);
   }
   ClearSubscriptionPrefs(sub_url);
 
@@ -283,13 +289,13 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
 
 void AdBlockSubscriptionServiceManager::RefreshSubscription(const GURL& sub_url,
                                                             bool from_ui) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   StartDownload(sub_url, true);
 }
 
 void AdBlockSubscriptionServiceManager::OnGetDownloadManager(
     AdBlockSubscriptionDownloadManager* download_manager) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   download_manager_ = download_manager->AsWeakPtr();
   // base::Unretained is ok here because AdBlockSubscriptionServiceManager will
   // outlive AdBlockSubscriptionDownloadManager
@@ -335,7 +341,7 @@ absl::optional<SubscriptionInfo> AdBlockSubscriptionServiceManager::GetInfo(
 }
 
 void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!local_state_)
     return;
@@ -354,19 +360,22 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
       GURL sub_url(key);
       info = BuildInfoFromDict(sub_url, list_subscription_dict);
 
-      auto subscription_service = std::make_unique<AdBlockEngine>(task_runner_);
+      auto subscription_service = std::make_unique<AdBlockEngine>();
 
       auto subscription_source_provider =
           std::make_unique<AdBlockSubscriptionSourceProvider>(
               local_state_,
               GetSubscriptionPath(sub_url).Append(kCustomSubscriptionListText));
-      subscription_service->Init(subscription_source_provider.get(),
-                                 resource_provider_);
+      auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
+          subscription_service->AsWeakPtr(), subscription_source_provider.get(),
+          resource_provider_, task_runner_);
 
       subscription_services_.insert(
           std::make_pair(sub_url, std::move(subscription_service)));
       subscription_source_providers_.insert(
           std::make_pair(sub_url, std::move(subscription_source_provider)));
+      subscription_source_observers_.insert(
+          std::make_pair(sub_url, std::move(observer)));
     }
   }
 }
@@ -376,7 +385,7 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
 void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
     const GURL& sub_url,
     const SubscriptionInfo& info) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
     return;
 
@@ -401,7 +410,7 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
 // subscription.
 void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
     const GURL& sub_url) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
     return;
 
@@ -416,10 +425,6 @@ void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
 }
 
 bool AdBlockSubscriptionServiceManager::Start() {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  for (const auto& subscription_service : subscription_services_) {
-    subscription_service.second->Start();
-  }
   return true;
 }
 
@@ -448,7 +453,7 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
 
 void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
                                                   bool enabled) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   for (const auto& subscription_service : subscription_services_) {
     subscription_service.second->EnableTag(tag, enabled);
   }
@@ -456,7 +461,7 @@ void AdBlockSubscriptionServiceManager::EnableTag(const std::string& tag,
 
 void AdBlockSubscriptionServiceManager::AddResources(
     const std::string& resources) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   for (const auto& subscription_service : subscription_services_) {
     subscription_service.second->AddResources(resources);
   }
@@ -514,9 +519,10 @@ base::Value AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
 
 void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
     const GURL& sub_url) {
-  DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
-  auto it = subscription_source_providers_.find(sub_url);
-  if (it == subscription_source_providers_.end())
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  auto subscription_source_provider =
+      subscription_source_providers_.find(sub_url);
+  if (subscription_source_provider == subscription_source_providers_.end())
     return;
 
   auto info = GetInfo(sub_url);
@@ -527,7 +533,12 @@ void AdBlockSubscriptionServiceManager::OnSubscriptionDownloaded(
   info->last_successful_update_attempt = info->last_update_attempt;
   UpdateSubscriptionPrefs(sub_url, *info);
 
-  it->second->ReloadListFromDisk();
+  auto subscription_source_observer =
+      subscription_source_observers_.find(sub_url);
+  DCHECK(subscription_source_observer != subscription_source_observers_.end());
+
+  subscription_source_provider->second->LoadDAT(
+      (subscription_source_observer->second).get());
 
   NotifyObserversOfServiceEvent();
 }

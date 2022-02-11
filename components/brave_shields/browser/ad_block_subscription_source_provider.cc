@@ -23,14 +23,6 @@ AdBlockSubscriptionSourceProvider::AdBlockSubscriptionSourceProvider(
 
 AdBlockSubscriptionSourceProvider::~AdBlockSubscriptionSourceProvider() {}
 
-void AdBlockSubscriptionSourceProvider::ReloadListFromDisk() {
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&brave_component_updater::ReadDATFileData, list_file_),
-      base::BindOnce(&AdBlockSubscriptionSourceProvider::OnListSourceLoaded,
-                     weak_factory_.GetWeakPtr()));
-}
-
 void AdBlockSubscriptionSourceProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {

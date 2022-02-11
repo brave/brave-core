@@ -50,7 +50,7 @@ void AdBlockRegionalSourceProvider::OnComponentReady(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, dat_file_path),
       base::BindOnce(&AdBlockRegionalSourceProvider::OnDATLoaded,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr(), true));
 }
 
 void AdBlockRegionalSourceProvider::LoadDATBuffer(

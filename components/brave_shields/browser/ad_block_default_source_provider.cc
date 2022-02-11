@@ -44,7 +44,7 @@ void AdBlockDefaultSourceProvider::OnComponentReady(
       base::BindOnce(&brave_component_updater::ReadDATFileData,
                      component_path_.AppendASCII(DAT_FILE)),
       base::BindOnce(&AdBlockDefaultSourceProvider::OnDATLoaded,
-                     weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr(), true));
 
   // Load the resources (as a string)
   base::ThreadPool::PostTaskAndReplyWithResult(

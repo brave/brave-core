@@ -14,17 +14,12 @@
 #include <utility>
 #include <vector>
 
-#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
-#include "base/sequence_checker.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_source_provider.h"
-#include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
+#include "url/gurl.h"
 
-using brave_component_updater::BraveComponent;
 using brave_component_updater::DATFileDataBuffer;
 
 namespace adblock {
@@ -39,17 +34,15 @@ class PerfPredictorTabHelperTest;
 namespace brave_shields {
 
 // Brave Shields service managing an adblock engine.
-class AdBlockEngine : public BaseBraveShieldsService,
-                      public AdBlockResourceProvider::Observer,
-                      public AdBlockSourceProvider::Observer {
+class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
  public:
   using GetDATFileDataResult =
       brave_component_updater::LoadDATFileDataResult<adblock::Engine>;
 
-  explicit AdBlockEngine(scoped_refptr<base::SequencedTaskRunner> task_runner);
+  AdBlockEngine();
   AdBlockEngine(const AdBlockEngine&) = delete;
   AdBlockEngine& operator=(const AdBlockEngine&) = delete;
-  ~AdBlockEngine() override;
+  ~AdBlockEngine();
 
   void ShouldStartRequest(const GURL& url,
                           blink::mojom::ResourceType resource_type,
@@ -58,7 +51,7 @@ class AdBlockEngine : public BaseBraveShieldsService,
                           bool* did_match_rule,
                           bool* did_match_exception,
                           bool* did_match_important,
-                          std::string* mock_data_url) override;
+                          std::string* mock_data_url);
   absl::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
@@ -67,29 +60,26 @@ class AdBlockEngine : public BaseBraveShieldsService,
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
-  virtual absl::optional<base::Value> UrlCosmeticResources(
+  absl::optional<base::Value> UrlCosmeticResources(
       const std::string& url);
-  virtual base::Value HiddenClassIdSelectors(
+  base::Value HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,
       const std::vector<std::string>& exceptions);
 
-  void OnListSourceLoaded(const DATFileDataBuffer& list_source) override;
-  void OnDATLoaded(const DATFileDataBuffer& list_source) override;
-
-  void OnResourcesLoaded(const std::string& resources_json) override;
-
-  void OnInitialListLoad(bool deserialize, const DATFileDataBuffer& dat_buf);
-
-  bool Init(AdBlockSourceProvider* source_provider,
-            AdBlockResourceProvider* resource_provider);
+  void Load(bool deserialize,
+            const DATFileDataBuffer& dat_buf,
+            const std::string& resources_json);
 
  protected:
-  void GetDATFileData(const base::FilePath& dat_file_path,
-                      bool deserialize = true,
-                      base::OnceClosure callback = base::DoNothing());
   void AddKnownTagsToAdBlockInstance();
-  void UpdateAdBlockClient(std::unique_ptr<adblock::Engine> ad_block_client);
+  void UpdateAdBlockClient(std::unique_ptr<adblock::Engine> ad_block_client,
+                           const std::string& resources_json);
+  void OnListSourceLoaded(const DATFileDataBuffer& filters,
+                          const std::string& resources_json);
+
+  void OnDATLoaded(const DATFileDataBuffer& dat_buf,
+                   const std::string& resources_json);
 
   std::unique_ptr<adblock::Engine> ad_block_client_;
 
@@ -99,22 +89,7 @@ class AdBlockEngine : public BaseBraveShieldsService,
   friend class ::EphemeralStorage1pDomainBlockBrowserTest;
   friend class ::PerfPredictorTabHelperTest;
 
-  bool Init() override;
-
-  void UpdateFiltersOnFileTaskRunner(const DATFileDataBuffer& filters);
-  void UpdateDATOnFileTaskRunner(const DATFileDataBuffer& dat_buf);
-
-  void DemandResourceReload();
-
-  void OnGetDATFileData(base::OnceClosure callback,
-                        GetDATFileDataResult result);
-  void OnPreferenceChanges(const std::string& pref_name);
-
   std::set<std::string> tags_;
-
-  raw_ptr<AdBlockResourceProvider> resource_provider_;
-
-  base::WeakPtrFactory<AdBlockEngine> weak_factory_;
 };
 
 }  // namespace brave_shields

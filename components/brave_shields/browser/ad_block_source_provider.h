@@ -7,9 +7,9 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_SOURCE_PROVIDER_H_
 
 #include "base/callback.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -19,8 +19,8 @@ class AdBlockSourceProvider {
  public:
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnDATLoaded(const DATFileDataBuffer& dat_buf) = 0;
-    virtual void OnListSourceLoaded(const DATFileDataBuffer& list_source) = 0;
+    virtual void OnDATLoaded(bool deserialize,
+                             const DATFileDataBuffer& dat_buf) = 0;
   };
 
   AdBlockSourceProvider();
@@ -29,16 +29,21 @@ class AdBlockSourceProvider {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  void LoadDAT(Observer* observer);
+
+ protected:
   virtual void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) = 0;
 
- protected:
-  void OnDATLoaded(const DATFileDataBuffer& dat_buf);
-  void OnListSourceLoaded(const DATFileDataBuffer& list_source);
+  void OnLoad(AdBlockSourceProvider::Observer* observer,
+              bool deserialize,
+              const DATFileDataBuffer& dat_buf);
+  void OnDATLoaded(bool deserialize, const DATFileDataBuffer& dat_buf);
 
  private:
   base::ObserverList<Observer> observers_;
+  base::WeakPtrFactory<AdBlockSourceProvider> weak_factory_{this};
 };
 
 }  // namespace brave_shields

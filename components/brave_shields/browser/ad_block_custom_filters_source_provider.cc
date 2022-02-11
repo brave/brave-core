@@ -5,15 +5,12 @@
 
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_source_provider.h"
 
-#include <string>
 #include <utility>
 #include <vector>
 
-#include "base/logging.h"
+#include "base/threading/thread_task_runner_handle.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 
 namespace brave_shields {
 
@@ -24,7 +21,7 @@ AdBlockCustomFiltersSourceProvider::AdBlockCustomFiltersSourceProvider(
 AdBlockCustomFiltersSourceProvider::~AdBlockCustomFiltersSourceProvider() {}
 
 std::string AdBlockCustomFiltersSourceProvider::GetCustomFilters() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
     return std::string();
   return local_state_->GetString(prefs::kAdBlockCustomFilters);
@@ -32,35 +29,30 @@ std::string AdBlockCustomFiltersSourceProvider::GetCustomFilters() {
 
 bool AdBlockCustomFiltersSourceProvider::UpdateCustomFilters(
     const std::string& custom_filters) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
     return false;
   local_state_->SetString(prefs::kAdBlockCustomFilters, custom_filters);
 
   auto buffer =
       std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
-  OnListSourceLoaded(buffer);
+  OnDATLoaded(false, buffer);
 
   return true;
-}
-
-void RespondWithCustomFilters(
-    base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
-        cb,
-    std::string custom_filters) {
-  auto buffer =
-      std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
-  std::move(cb).Run(false, buffer);
 }
 
 void AdBlockCustomFiltersSourceProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
-  content::GetUIThreadTaskRunner({})->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&AdBlockCustomFiltersSourceProvider::GetCustomFilters,
-                     base::Unretained(this)),
-      base::BindOnce(&RespondWithCustomFilters, std::move(cb)));
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  auto custom_filters = GetCustomFilters();
+
+  auto buffer =
+      std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());
+
+  // PostTask so this has an async return to match other loaders
+  base::ThreadTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(cb), false, std::move(buffer)));
 }
 
 }  // namespace brave_shields

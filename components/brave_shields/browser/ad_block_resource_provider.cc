@@ -15,12 +15,14 @@ AdBlockResourceProvider::~AdBlockResourceProvider() {}
 
 void AdBlockResourceProvider::AddObserver(
     AdBlockResourceProvider::Observer* observer) {
-  observers_.AddObserver(observer);
+  if (!observers_.HasObserver(observer))
+    observers_.AddObserver(observer);
 }
 
 void AdBlockResourceProvider::RemoveObserver(
     AdBlockResourceProvider::Observer* observer) {
-  observers_.RemoveObserver(observer);
+  if (observers_.HasObserver(observer))
+    observers_.RemoveObserver(observer);
 }
 
 void AdBlockResourceProvider::OnResourcesLoaded(
