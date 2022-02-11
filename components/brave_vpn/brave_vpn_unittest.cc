@@ -8,7 +8,7 @@
 #include "base/feature_list.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/features.h"
 #include "brave/components/brave_vpn/pref_names.h"
@@ -55,8 +55,8 @@ class BraveVPNServiceTest : public testing::Test {
     skus_service_ = std::make_unique<skus::SkusServiceImpl>(&pref_service_,
                                                             url_loader_factory);
     auto callback = base::BindRepeating(GetSkusService);
-    service_ = std::make_unique<BraveVpnServiceDesktop>(
-        url_loader_factory, &pref_service_, callback);
+    service_ = std::make_unique<BraveVpnService>(url_loader_factory,
+                                                 &pref_service_, callback);
   }
 
   std::string GetRegionsData() {
@@ -219,7 +219,7 @@ class BraveVPNServiceTest : public testing::Test {
   base::test::ScopedFeatureList scoped_feature_list_;
   content::BrowserTaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable pref_service_;
-  std::unique_ptr<BraveVpnServiceDesktop> service_;
+  std::unique_ptr<BraveVpnService> service_;
 };
 
 // TODO(bsclifton): re-enable test after figuring out why crash is happening
@@ -272,7 +272,7 @@ TEST_F(BraveVPNServiceTest, DISABLED_HostnamesTest) {
 // TODO(bsclifton): fix after flow is decided
 TEST_F(BraveVPNServiceTest, DISABLED_LoadPurchasedStateTest) {
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, service_->purchased_state_);
-  //pref_service_.SetBoolean(skus::prefs::kSkusVPNHasCredential, true);
+  // pref_service_.SetBoolean(skus::prefs::kSkusVPNHasCredential, true);
   EXPECT_EQ(PurchasedState::PURCHASED, service_->purchased_state_);
 }
 
@@ -314,7 +314,7 @@ TEST_F(BraveVPNServiceTest, DISABLED_CancelConnectingTest) {
 
   service_->cancel_connecting_ = true;
   service_->connection_state_ = ConnectionState::CONNECTING;
-  service_->OnGetSubscriberCredential("", true);
+  service_->OnGetSubscriberCredentialV12("", true);
   EXPECT_FALSE(service_->cancel_connecting_);
   EXPECT_EQ(ConnectionState::DISCONNECTED, service_->connection_state_);
 
@@ -330,7 +330,7 @@ TEST_F(BraveVPNServiceTest, DISABLED_ConnectionInfoTest) {
   // Check valid connection info is set when valid hostname and profile
   // credential are fetched.
   service_->connection_state_ = ConnectionState::CONNECTING;
-  //pref_service_.SetBoolean(skus::prefs::kSkusVPNHasCredential, true);
+  // pref_service_.SetBoolean(skus::prefs::kSkusVPNHasCredential, true);
   service_->OnFetchHostnames("region-a", GetHostnamesData(), true);
   EXPECT_EQ(ConnectionState::CONNECTING, service_->connection_state_);
 

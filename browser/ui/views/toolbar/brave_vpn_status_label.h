@@ -9,7 +9,7 @@
 #include "brave/components/brave_vpn/brave_vpn_service_observer.h"
 #include "ui/views/controls/label.h"
 
-class BraveVpnServiceDesktop;
+class BraveVpnService;
 class Browser;
 
 class BraveVPNStatusLabel : public views::Label,
@@ -29,7 +29,7 @@ class BraveVPNStatusLabel : public views::Label,
   void UpdateState();
 
   Browser* browser_ = nullptr;
-  BraveVpnServiceDesktop* service_ = nullptr;
+  BraveVpnService* service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_STATUS_LABEL_H_

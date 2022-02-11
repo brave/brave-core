@@ -9,7 +9,7 @@
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
-class BraveVpnServiceDesktop;
+class BraveVpnService;
 
 class BraveVPNServiceObserver : public brave_vpn::mojom::ServiceObserver {
  public:
@@ -18,7 +18,7 @@ class BraveVPNServiceObserver : public brave_vpn::mojom::ServiceObserver {
   BraveVPNServiceObserver(const BraveVPNServiceObserver&) = delete;
   BraveVPNServiceObserver& operator=(const BraveVPNServiceObserver&) = delete;
 
-  void Observe(BraveVpnServiceDesktop* service);
+  void Observe(BraveVpnService* service);
 
   // brave_vpn::mojom::ServiceObserver overrides:
   void OnConnectionStateChanged(

@@ -10,7 +10,7 @@
 
 #include "brave/browser/ui/webui/brave_vpn/vpn_panel_handler.h"
 #include "brave/components/brave_vpn/brave_vpn.mojom.h"
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"

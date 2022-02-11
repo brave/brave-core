@@ -7,14 +7,14 @@
 
 #include <utility>
 
-#include "brave/components/brave_vpn/brave_vpn_service_desktop.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 
 BraveVPNServiceObserver::BraveVPNServiceObserver() = default;
 
 BraveVPNServiceObserver::~BraveVPNServiceObserver() = default;
 
-void BraveVPNServiceObserver::Observe(BraveVpnServiceDesktop* service) {
+void BraveVPNServiceObserver::Observe(BraveVpnService* service) {
   if (!service)
     return;
 

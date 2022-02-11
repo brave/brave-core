@@ -10,7 +10,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 
-class BraveVpnServiceDesktop;
+class BraveVpnService;
 class Browser;
 
 class BraveVPNButton : public ToolbarButton, public BraveVPNServiceObserver {
@@ -37,7 +37,7 @@ class BraveVPNButton : public ToolbarButton, public BraveVPNServiceObserver {
   void OnButtonPressed(const ui::Event& event);
 
   Browser* browser_ = nullptr;
-  BraveVpnServiceDesktop* service_ = nullptr;
+  BraveVpnService* service_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_VPN_BUTTON_H_

@@ -18,8 +18,6 @@ namespace content {
 class WebUI;
 }  // namespace content
 
-class BraveVpnServiceDesktop;
-
 class VPNPanelHandler : public brave_vpn::mojom::PanelHandler {
  public:
   using GetWebContentsForTabCallback =

@@ -67,7 +67,7 @@ void VPNPanelUI::CreatePanelHandler(
   panel_handler_ =
       std::make_unique<VPNPanelHandler>(std::move(panel_receiver), this);
 
-  BraveVpnServiceDesktop* vpn_service_desktop =
+  BraveVpnService* vpn_service_desktop =
       BraveVpnServiceFactory::GetForProfile(profile);
   if (vpn_service_desktop) {
     vpn_service_desktop->BindInterface(std::move(vpn_service_receiver));
