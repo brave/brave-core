@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/eth_response_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -32,7 +33,7 @@ namespace brave_wallet {
 BraveWalletProviderImpl::BraveWalletProviderImpl(
     HostContentSettingsMap* host_content_settings_map,
     JsonRpcService* json_rpc_service,
-    mojo::PendingRemote<mojom::EthTxService> tx_service,
+    TxService* tx_service,
     KeyringService* keyring_service,
     BraveWalletService* brave_wallet_service,
     std::unique_ptr<BraveWalletProviderDelegate> delegate,
@@ -40,6 +41,7 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
     : host_content_settings_map_(host_content_settings_map),
       delegate_(std::move(delegate)),
       json_rpc_service_(json_rpc_service),
+      tx_service_(tx_service),
       keyring_service_(keyring_service),
       brave_wallet_service_(brave_wallet_service),
       prefs_(prefs),
@@ -49,11 +51,9 @@ BraveWalletProviderImpl::BraveWalletProviderImpl(
       rpc_observer_receiver_.BindNewPipeAndPassRemote());
 
   DCHECK(tx_service);
-  tx_service_.Bind(std::move(tx_service));
-  tx_service_.set_disconnect_handler(base::BindOnce(
-      &BraveWalletProviderImpl::OnConnectionError, weak_factory_.GetWeakPtr()));
   tx_service_->AddObserver(tx_observer_receiver_.BindNewPipeAndPassRemote());
 
+  DCHECK(keyring_service);
   keyring_service_->AddObserver(
       keyring_observer_receiver_.BindNewPipeAndPassRemote());
   host_content_settings_map_->AddObserver(this);
@@ -238,7 +238,7 @@ void BraveWalletProviderImpl::ContinueAddAndApproveTransaction(
   }
 
   tx_service_->AddUnapprovedTransaction(
-      std::move(tx_data), from,
+      mojom::TxDataUnion::NewEthTxData(std::move(tx_data)), from,
       base::BindOnce(
           &BraveWalletProviderImpl::OnAddUnapprovedTransactionAdapter,
           weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -319,8 +319,8 @@ void BraveWalletProviderImpl::ContinueAddAndApprove1559TransactionWithAccounts(
     return;
   }
 
-  tx_service_->AddUnapproved1559Transaction(
-      std::move(tx_data), from,
+  tx_service_->AddUnapprovedTransaction(
+      mojom::TxDataUnion::NewEthTxData1559(std::move(tx_data)), from,
       base::BindOnce(
           &BraveWalletProviderImpl::OnAddUnapprovedTransactionAdapter,
           weak_factory_.GetWeakPtr(), std::move(callback)));
@@ -668,7 +668,6 @@ void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
 }
 
 void BraveWalletProviderImpl::OnConnectionError() {
-  tx_service_.reset();
   rpc_observer_receiver_.reset();
   tx_observer_receiver_.reset();
   keyring_observer_receiver_.reset();
