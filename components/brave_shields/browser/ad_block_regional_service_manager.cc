@@ -120,7 +120,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
         auto regional_service = std::make_unique<AdBlockEngine>();
         auto observer =
             std::make_unique<AdBlockService::SourceProviderObserver>(
-                existing_engine->second->AsWeakPtr(),
+                regional_service->AsWeakPtr(),
                 regional_source_provider.get(), resource_provider_,
                 task_runner_);
         regional_services_.insert(
