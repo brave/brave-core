@@ -110,6 +110,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kFirstPartySets,
     &features::kIdleDetection,
     &features::kNotificationTriggers,
+    &features::kPrivacySandboxSettings3,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
