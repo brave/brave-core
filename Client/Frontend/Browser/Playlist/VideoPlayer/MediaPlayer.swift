@@ -466,6 +466,43 @@ extension MediaPlayer {
             self.attachLayer()
         }.store(in: &notificationObservers)
         
+        NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
+        .receive(on: RunLoop.main)
+        .sink { [weak self] notification in
+            
+            guard let self = self,
+                  let userInfo = notification.userInfo,
+                  let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+                  let type = AVAudioSession.InterruptionType(rawValue: typeValue) else {
+                      
+                return
+            }
+
+            switch type {
+            case .began:
+                // An interruption began. Update the UI as necessary.
+                self.pause()
+
+            case .ended:
+               // An interruption ended. Resume playback, if appropriate.
+                guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {
+                    return
+                }
+                
+                let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+                if options.contains(.shouldResume) {
+                    // An interruption ended. Resume playback.
+                    self.play()
+                } else {
+                    // An interruption ended. Don't resume playback.
+                    log.debug("Interuption ended, but suggests not to resume playback.")
+                }
+
+            default:
+                break
+            }
+        }.store(in: &notificationObservers)
+        
         NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)
         .receive(on: RunLoop.main)
         .sink { [weak self] _ in
