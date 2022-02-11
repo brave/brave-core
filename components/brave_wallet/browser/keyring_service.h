@@ -232,7 +232,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateNonceForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateEncryptorForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateDefaultKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateFilecoinKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            LazyCreateFilecoinKeyringFromImport);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
@@ -248,15 +247,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AddAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportedAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
-                           GetPrivateKeyForDefaultKeyringAccount);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            SetDefaultKeyringDerivedAccountMeta);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, RestoreLegacyBraveWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AutoLock);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetSelectedAccount);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, LazilyCreateKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportedFilecoinAccounts);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateFilecoinEncryptor);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportFilecoinAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateEncryptors);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxServiceUnitTest;
