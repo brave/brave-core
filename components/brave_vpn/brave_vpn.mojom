@@ -23,26 +23,50 @@ interface PanelHandler {
 };
 
 interface ServiceObserver {
+  [EnableIfNot=is_android]
   OnConnectionCreated();
+
+  [EnableIfNot=is_android]
   OnConnectionRemoved();
+
+  [EnableIfNot=is_android]
   OnConnectionStateChanged(ConnectionState state);
+
   OnPurchasedStateChanged(PurchasedState state);
 };
 
 // Browser-side handler for vpn service things
 interface ServiceHandler {
-  GetConnectionState() => (ConnectionState state);
-  GetPurchasedState() => (PurchasedState state);
   AddObserver(pending_remote<ServiceObserver> observer);
+  GetPurchasedState() => (PurchasedState state);
+
+  [EnableIfNot=is_android]
+  GetConnectionState() => (ConnectionState state);
+
+  [EnableIfNot=is_android]
   CreateVPNConnection();
+
+  [EnableIfNot=is_android]
   Connect();
+
+  [EnableIfNot=is_android]
   Disconnect();
+
   // Gets all region from internal cache which is fetched from Guardian API
+  [EnableIfNot=is_android]
   GetAllRegions() => (array<Region> regions);
+
   // Gets region based on user's device timezone
+  [EnableIfNot=is_android]
   GetDeviceRegion() => (Region device_region);
+
+  [EnableIfNot=is_android]
   GetSelectedRegion() => (Region current_region);
+
+  [EnableIfNot=is_android]
   SetSelectedRegion(Region region);
+
+  [EnableIfNot=is_android]
   GetProductUrls() => (ProductUrls urls);
 };
 

@@ -35,15 +35,16 @@ BraveVpnServiceFactory::BraveVpnServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "BraveVpnService",
           BrowserContextDependencyManager::GetInstance()) {
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   DependsOn(skus::SkusServiceFactory::GetInstance());
-#endif
 }
 
 BraveVpnServiceFactory::~BraveVpnServiceFactory() = default;
 
 KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+  // TODO(simonhong): Can we use this check for android?
+  // For now, vpn is disabled by default on desktop but not sure on
+  // android.
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   if (!brave_vpn::IsBraveVPNEnabled())
     return nullptr;
@@ -53,16 +54,16 @@ KeyedService* BraveVpnServiceFactory::BuildServiceInstanceFor(
   auto shared_url_loader_factory =
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess();
 
-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
   auto callback = base::BindRepeating(
       [](content::BrowserContext* context) {
         return skus::SkusServiceFactory::GetForContext(context);
       },
       context);
-  return new BraveVpnService(
-      shared_url_loader_factory, user_prefs::UserPrefs::Get(context), callback);
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
+  return new BraveVpnService(shared_url_loader_factory,
+                             user_prefs::UserPrefs::Get(context), callback);
 #elif BUILDFLAG(IS_ANDROID)
-  return new BraveVpnService(shared_url_loader_factory);
+  return new BraveVpnService(shared_url_loader_factory, callback);
 #endif
 }
 

@@ -21,12 +21,14 @@ class BraveVPNServiceObserver : public brave_vpn::mojom::ServiceObserver {
   void Observe(BraveVpnService* service);
 
   // brave_vpn::mojom::ServiceObserver overrides:
-  void OnConnectionStateChanged(
-      brave_vpn::mojom::ConnectionState state) override {}
   void OnPurchasedStateChanged(
       brave_vpn::mojom::PurchasedState state) override {}
+#if !defined(OS_ANDROID)
+  void OnConnectionStateChanged(
+      brave_vpn::mojom::ConnectionState state) override {}
   void OnConnectionCreated() override {}
   void OnConnectionRemoved() override {}
+#endif
 
  private:
   mojo::Receiver<brave_vpn::mojom::ServiceObserver> receiver_{this};

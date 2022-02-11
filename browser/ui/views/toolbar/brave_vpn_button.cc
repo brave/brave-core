@@ -99,7 +99,7 @@ class VPNButtonMenuModel : public ui::SimpleMenuModel,
   }
 
   raw_ptr<Browser> browser_ = nullptr;
-  raw_ptr<BraveVpnServiceDesktop> service_ = nullptr;
+  raw_ptr<BraveVpnService> service_ = nullptr;
 };
 
 }  // namespace

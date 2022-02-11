@@ -13,23 +13,23 @@
 #include <vector>
 
 #include "base/scoped_observation.h"
-#include "base/sequence_checker.h"
 #include "base/timer/timer.h"
-#include "brave/components/brave_vpn/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
-#include "brave/components/skus/common/skus_sdk.mojom.h"
-#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "mojo/public/cpp/bindings/remote_set.h"
-#endif
+#endif  // !defined(OS_ANDROID)
 
 #include "base/bind.h"
 #include "base/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/sequence_checker.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_vpn/brave_vpn.mojom.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
@@ -45,20 +45,27 @@ class Value;
 class PrefService;
 
 using ConnectionState = brave_vpn::mojom::ConnectionState;
-using PurchasedState = brave_vpn::mojom::PurchasedState;
 #endif  // !defined(OS_ANDROID)
 
+using PurchasedState = brave_vpn::mojom::PurchasedState;
+
+// This class is used by desktop and android.
+// However, it includes desktop specific impls and it's hidden
+// by OS_ANDROID ifdef.
 class BraveVpnService :
 #if !defined(OS_ANDROID)
       public brave_vpn::BraveVPNOSConnectionAPI::Observer,
-      public brave_vpn::mojom::ServiceHandler,
 #endif
+      public brave_vpn::mojom::ServiceHandler,
       public KeyedService {
  public:
-  BraveVpnService(
 #if defined(OS_ANDROID)
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  BraveVpnService(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+          skus_service_getter);
 #else
+  BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
@@ -85,10 +92,7 @@ class BraveVpnService :
       mojo::PendingReceiver<brave_vpn::mojom::ServiceHandler> receiver);
 
   // mojom::vpn::ServiceHandler
-  void AddObserver(
-      mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) override;
   void GetConnectionState(GetConnectionStateCallback callback) override;
-  void GetPurchasedState(GetPurchasedStateCallback callback) override;
   void Connect() override;
   void Disconnect() override;
   void CreateVPNConnection() override;
@@ -101,6 +105,11 @@ class BraveVpnService :
 
   using ResponseCallback =
       base::OnceCallback<void(const std::string&, bool success)>;
+
+  // mojom::vpn::ServiceHandler
+  void AddObserver(
+      mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) override;
+  void GetPurchasedState(GetPurchasedStateCallback callback) override;
 
   void GetAllServerRegions(ResponseCallback callback);
   void GetTimezonesForRegions(ResponseCallback callback);
@@ -148,7 +157,6 @@ class BraveVpnService :
 
   brave_vpn::BraveVPNConnectionInfo GetConnectionInfo();
   void LoadCachedRegionData();
-  void LoadPurchasedState();
   void LoadSelectedRegion();
   void UpdateAndNotifyConnectionStateChange(ConnectionState state);
 
@@ -168,20 +176,14 @@ class BraveVpnService :
   void SetDeviceRegion(const brave_vpn::mojom::Region& region);
 
   std::string GetCurrentTimeZone();
-  void SetPurchasedState(PurchasedState state);
   void ScheduleFetchRegionDataIfNeeded();
   std::unique_ptr<brave_vpn::Hostname> PickBestHostname(
       const std::vector<brave_vpn::Hostname>& hostnames);
 
-  void EnsureMojoConnected();
-  void OnMojoConnectionError();
   void OnGetSubscriberCredentialV12(const std::string& subscriber_credential,
                                     bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
-  void OnCredentialSummary(const std::string& summary_string);
-  void OnPrepareCredentialsPresentation(
-      const std::string& credential_as_cookie);
 
   brave_vpn::BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI();
 
@@ -216,36 +218,44 @@ class BraveVpnService :
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
+  void LoadPurchasedState();
+  void SetPurchasedState(PurchasedState state);
+  void EnsureMojoConnected();
+  void OnMojoConnectionError();
+  void OnCredentialSummary(const std::string& summary_string);
+  void OnPrepareCredentialsPresentation(
+      const std::string& credential_as_cookie);
+
 #if !defined(OS_ANDROID)
   PrefService* prefs_ = nullptr;
-  base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
-      skus_service_getter_;
-  std::string skus_credential_;
-  mojo::Remote<skus::mojom::SkusService> skus_service_;
   std::vector<brave_vpn::mojom::Region> regions_;
   brave_vpn::mojom::Region device_region_;
   brave_vpn::mojom::Region selected_region_;
   std::unique_ptr<brave_vpn::Hostname> hostname_;
   brave_vpn::BraveVPNConnectionInfo connection_info_;
   bool cancel_connecting_ = false;
-  PurchasedState purchased_state_ = PurchasedState::NOT_PURCHASED;
   ConnectionState connection_state_ = ConnectionState::DISCONNECTED;
   bool needs_connect_ = false;
   base::ScopedObservation<brave_vpn::BraveVPNOSConnectionAPI,
                           brave_vpn::BraveVPNOSConnectionAPI::Observer>
       observed_{this};
   mojo::ReceiverSet<brave_vpn::mojom::ServiceHandler> receivers_;
-  mojo::RemoteSet<brave_vpn::mojom::ServiceObserver> observers_;
   base::RepeatingTimer region_data_update_timer_;
 
   // Only for testing.
   std::string test_timezone_;
   bool is_simulation_ = false;
-
-  SEQUENCE_CHECKER(sequence_checker_);
 #endif
 
+  SEQUENCE_CHECKER(sequence_checker_);
+
+  base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+      skus_service_getter_;
+  mojo::Remote<skus::mojom::SkusService> skus_service_;
+  PurchasedState purchased_state_ = PurchasedState::NOT_PURCHASED;
+  mojo::RemoteSet<brave_vpn::mojom::ServiceObserver> observers_;
   api_request_helper::APIRequestHelper api_request_helper_;
+  std::string skus_credential_;
   base::WeakPtrFactory<BraveVpnService> weak_ptr_factory_;
 };
 

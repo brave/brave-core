@@ -12,16 +12,29 @@ preprocess_mojo_manifest = "preprocessed_mojo_manifest.json"
 
 static_library("brave_vpn") {
   sources = [
+    "brave_vpn_constants.h",
     "brave_vpn_service.cc",
     "brave_vpn_service.h",
+    "brave_vpn_service_observer.cc",
+    "brave_vpn_service_observer.h",
+    "brave_vpn_utils.cc",
+    "brave_vpn_utils.h",
+    "features.cc",
+    "features.h",
   ]
 
   deps = [
+    ":mojom",
     "//base",
     "//brave/components/api_request_helper:api_request_helper",
+    "//brave/components/resources:strings",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
     "//components/keyed_service/core",
     "//services/network/public/cpp",
     "//third_party/abseil-cpp:absl",
+    "//ui/base",
     "//url",
   ]
 
@@ -31,18 +44,11 @@ static_library("brave_vpn") {
     sources += [
       "brave_vpn_connection_info.cc",
       "brave_vpn_connection_info.h",
-      "brave_vpn_constants.h",
       "brave_vpn_data_types.h",
       "brave_vpn_os_connection_api.cc",
       "brave_vpn_os_connection_api.h",
       "brave_vpn_os_connection_api_sim.cc",
       "brave_vpn_os_connection_api_sim.h",
-      "brave_vpn_service_observer.cc",
-      "brave_vpn_service_observer.h",
-      "brave_vpn_utils.cc",
-      "brave_vpn_utils.h",
-      "features.cc",
-      "features.h",
       "pref_names.cc",
       "pref_names.h",
       "switches.h",
@@ -69,14 +75,8 @@ static_library("brave_vpn") {
 
     deps += [
       ":brave_vpn_internal",
-      ":mojom",
-      "//brave/components/resources:strings",
-      "//brave/components/skus/browser",
-      "//brave/components/skus/common",
-      "//brave/components/skus/common:mojom",
       "//components/prefs",
       "//third_party/icu",
-      "//ui/base",
     ]
   }
 }

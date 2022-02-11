@@ -16,25 +16,24 @@
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_vpn/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
-#include "brave/components/skus/browser/pref_names.h"
-#include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "net/cookies/cookie_inclusion_status.h"
-#include "net/cookies/parsed_cookie.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
-#include "url/url_util.h"
-#endif
+#endif  // !defined(OS_ANDROID)
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/utf_string_conversions.h"
+#include "brave/components/skus/browser/skus_utils.h"
+#include "net/cookies/cookie_inclusion_status.h"
+#include "net/cookies/parsed_cookie.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/url_util.h"
 
 namespace {
 
@@ -162,12 +161,18 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
 
 }  // namespace
 
-BraveVpnService::BraveVpnService(
 #if defined(OS_ANDROID)
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
-      weak_ptr_factory_(this) {}
+BraveVpnService::BraveVpnService(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
+        skus_service_getter)
+    : skus_service_getter_(skus_service_getter),
+      api_request_helper_(GetNetworkTrafficAnnotationTag(), url_loader_factory),
+      weak_ptr_factory_(this) {
+  LoadPurchasedState();
+}
 #else
+BraveVpnService::BraveVpnService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* prefs,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
@@ -426,12 +431,6 @@ void BraveVpnService::ToggleConnection() {
   can_disconnect ? Disconnect() : Connect();
 }
 
-void BraveVpnService::AddObserver(
-    mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  observers_.Add(std::move(observer));
-}
-
 brave_vpn::BraveVPNConnectionInfo BraveVpnService::GetConnectionInfo() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return connection_info_;
@@ -448,14 +447,6 @@ void BraveVpnService::GetConnectionState(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " : " << connection_state_;
   std::move(callback).Run(connection_state_);
-}
-
-void BraveVpnService::GetPurchasedState(
-    GetPurchasedStateCallback callback) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  LoadPurchasedState();
-  VLOG(2) << __func__ << " : " << static_cast<int>(purchased_state_);
-  std::move(callback).Run(purchased_state_);
 }
 
 void BraveVpnService::FetchRegionData() {
@@ -497,102 +488,6 @@ void BraveVpnService::LoadCachedRegionData() {
   }
 }
 
-void BraveVpnService::OnCredentialSummary(
-    const std::string& summary_string) {
-  std::string summary_string_trimmed;
-  base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
-                            &summary_string_trimmed);
-  if (summary_string_trimmed.length() == 0) {
-    // no credential found; person needs to login
-    LOG(ERROR) << "No credential found; user needs to login!";
-    SetPurchasedState(PurchasedState::NOT_PURCHASED);
-    return;
-  }
-
-  LOG(ERROR) << "credential_summary returned: `" << summary_string << "`";
-  base::JSONReader::ValueWithError value_with_error =
-      base::JSONReader::ReadAndReturnValueWithError(
-          summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
-  absl::optional<base::Value>& records_v = value_with_error.value;
-
-  if (records_v) {
-    const base::Value* active = records_v->FindKey("active");
-    bool has_credential = active && active->is_bool() && active->GetBool();
-    if (has_credential) {
-      LOG(ERROR) << "Active credential found!";
-      // if a credential is ready, we can present it
-      EnsureMojoConnected();
-      skus_service_->PrepareCredentialsPresentation(
-          skus::GetDomain("vpn"), "*",
-          base::BindOnce(
-              &BraveVpnService::OnPrepareCredentialsPresentation,
-              base::Unretained(this)));
-    } else {
-      LOG(ERROR) << "Credential appears to be expired.";
-      SetPurchasedState(PurchasedState::EXPIRED);
-    }
-  }
-}
-
-void BraveVpnService::OnPrepareCredentialsPresentation(
-    const std::string& credential_as_cookie) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // Credential is returned in cookie format.
-  net::CookieInclusionStatus status;
-  net::ParsedCookie credential_cookie(credential_as_cookie, &status);
-  // TODO(bsclifton): have a better check / logging.
-  // should these failed states be considered NOT_PURCHASED?
-  // or maybe it can be considered FAILED status?
-  if (!credential_cookie.IsValid()) {
-    LOG(ERROR) << __func__ << " : FAILED credential_cookie.IsValid";
-    return;
-  }
-  if (!status.IsInclude()) {
-    LOG(ERROR) << __func__ << " : FAILED status.IsInclude";
-    return;
-  }
-
-  // Credential value received needs to be URL decoded.
-  // That leaves us with a Base64 encoded JSON blob which is the credential.
-  std::string encoded_credential = credential_cookie.Value();
-  url::RawCanonOutputT<char16_t> unescaped;
-  url::DecodeURLEscapeSequences(
-      encoded_credential.data(), encoded_credential.size(),
-      url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
-  std::string credential;
-  base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
-
-  // Only update credential if different
-  SetPurchasedState(PurchasedState::PURCHASED);
-  if (skus_credential_ == credential) {
-    return;
-  }
-  skus_credential_ = credential;
-  if (!skus_credential_.empty()) {
-    VLOG(2) << __func__ << " : "
-            << "Loaded cached skus credentials";
-  }
-}
-
-void BraveVpnService::LoadPurchasedState() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if !defined(OFFICIAL_BUILD)
-  auto* cmd = base::CommandLine::ForCurrentProcess();
-  if (cmd->HasSwitch(brave_vpn::switches::kBraveVPNTestMonthlyPass)) {
-    skus_credential_ =
-        cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNTestMonthlyPass);
-    SetPurchasedState(PurchasedState::PURCHASED);
-    return;
-  }
-#endif
-
-  SetPurchasedState(PurchasedState::LOADING);
-  EnsureMojoConnected();
-  skus_service_->CredentialSummary(
-      skus::GetDomain("vpn"),
-      base::BindOnce(&BraveVpnService::OnCredentialSummary,
-                     base::Unretained(this)));
-}
 
 void BraveVpnService::LoadSelectedRegion() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -966,52 +861,6 @@ void BraveVpnService::ParseAndCacheHostnames(
       GetBraveVPNPaymentsEnv(), skus_credential_);
 }
 
-void BraveVpnService::SetPurchasedState(PurchasedState state) {
-  switch (state) {
-    case PurchasedState::NOT_PURCHASED:
-      LOG(ERROR) << "SetPurchasedState(NOT_PURCHASED);";
-      break;
-    case PurchasedState::PURCHASED:
-      LOG(ERROR) << "SetPurchasedState(PURCHASED);";
-      break;
-    case PurchasedState::EXPIRED:
-      LOG(ERROR) << "SetPurchasedState(EXPIRED);";
-      break;
-    case PurchasedState::LOADING:
-      LOG(ERROR) << "SetPurchasedState(LOADING);";
-      break;
-    case PurchasedState::FAILED:
-      LOG(ERROR) << "SetPurchasedState(FAILED);";
-      break;
-  }
-
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (purchased_state_ == state)
-    return;
-
-  purchased_state_ = state;
-
-  for (const auto& obs : observers_)
-    obs->OnPurchasedStateChanged(purchased_state_);
-
-  ScheduleFetchRegionDataIfNeeded();
-}
-
-void BraveVpnService::EnsureMojoConnected() {
-  if (!skus_service_) {
-    auto pending = skus_service_getter_.Run();
-    skus_service_.Bind(std::move(pending));
-  }
-  DCHECK(skus_service_);
-  skus_service_.set_disconnect_handler(base::BindOnce(
-      &BraveVpnService::OnMojoConnectionError, base::Unretained(this)));
-}
-
-void BraveVpnService::OnMojoConnectionError() {
-  skus_service_.reset();
-  EnsureMojoConnected();
-}
-
 void BraveVpnService::OnGetSubscriberCredentialV12(
     const std::string& subscriber_credential,
     bool success) {
@@ -1107,14 +956,174 @@ BraveVpnService::GetBraveVPNConnectionAPI() {
 }
 #endif  // !defined(OS_ANDROID)
 
-void BraveVpnService::Shutdown() {
+void BraveVpnService::AddObserver(
+    mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  observers_.Add(std::move(observer));
+}
+
+void BraveVpnService::GetPurchasedState(
+    GetPurchasedStateCallback callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  LoadPurchasedState();
+  VLOG(2) << __func__ << " : " << static_cast<int>(purchased_state_);
+  std::move(callback).Run(purchased_state_);
+}
+
+void BraveVpnService::LoadPurchasedState() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+#if !defined(OFFICIAL_BUILD) && !defined(OS_ANDROID)
+  auto* cmd = base::CommandLine::ForCurrentProcess();
+  if (cmd->HasSwitch(brave_vpn::switches::kBraveVPNTestMonthlyPass)) {
+    skus_credential_ =
+        cmd->GetSwitchValueASCII(brave_vpn::switches::kBraveVPNTestMonthlyPass);
+    SetPurchasedState(PurchasedState::PURCHASED);
+    return;
+  }
+#endif
+
+  SetPurchasedState(PurchasedState::LOADING);
+  EnsureMojoConnected();
+  skus_service_->CredentialSummary(
+      skus::GetDomain("vpn"),
+      base::BindOnce(&BraveVpnService::OnCredentialSummary,
+                     base::Unretained(this)));
+}
+
+void BraveVpnService::OnCredentialSummary(
+    const std::string& summary_string) {
+  std::string summary_string_trimmed;
+  base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
+                            &summary_string_trimmed);
+  if (summary_string_trimmed.length() == 0) {
+    // no credential found; person needs to login
+    LOG(ERROR) << "No credential found; user needs to login!";
+    SetPurchasedState(PurchasedState::NOT_PURCHASED);
+    return;
+  }
+
+  LOG(ERROR) << "credential_summary returned: `" << summary_string << "`";
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+
+  if (records_v) {
+    const base::Value* active = records_v->FindKey("active");
+    bool has_credential = active && active->is_bool() && active->GetBool();
+    if (has_credential) {
+      LOG(ERROR) << "Active credential found!";
+      // if a credential is ready, we can present it
+      EnsureMojoConnected();
+      skus_service_->PrepareCredentialsPresentation(
+          skus::GetDomain("vpn"), "*",
+          base::BindOnce(
+              &BraveVpnService::OnPrepareCredentialsPresentation,
+              base::Unretained(this)));
+    } else {
+      LOG(ERROR) << "Credential appears to be expired.";
+      SetPurchasedState(PurchasedState::EXPIRED);
+    }
+  }
+}
+
+void BraveVpnService::OnPrepareCredentialsPresentation(
+    const std::string& credential_as_cookie) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Credential is returned in cookie format.
+  net::CookieInclusionStatus status;
+  net::ParsedCookie credential_cookie(credential_as_cookie, &status);
+  // TODO(bsclifton): have a better check / logging.
+  // should these failed states be considered NOT_PURCHASED?
+  // or maybe it can be considered FAILED status?
+  if (!credential_cookie.IsValid()) {
+    LOG(ERROR) << __func__ << " : FAILED credential_cookie.IsValid";
+    return;
+  }
+  if (!status.IsInclude()) {
+    LOG(ERROR) << __func__ << " : FAILED status.IsInclude";
+    return;
+  }
+
+  // Credential value received needs to be URL decoded.
+  // That leaves us with a Base64 encoded JSON blob which is the credential.
+  std::string encoded_credential = credential_cookie.Value();
+  url::RawCanonOutputT<char16_t> unescaped;
+  url::DecodeURLEscapeSequences(
+      encoded_credential.data(), encoded_credential.size(),
+      url::DecodeURLMode::kUTF8OrIsomorphic, &unescaped);
+  std::string credential;
+  base::UTF16ToUTF8(unescaped.data(), unescaped.length(), &credential);
+
+  // Only update credential if different
+  SetPurchasedState(PurchasedState::PURCHASED);
+  if (skus_credential_ == credential) {
+    return;
+  }
+  skus_credential_ = credential;
+  if (!skus_credential_.empty()) {
+    VLOG(2) << __func__ << " : "
+            << "Loaded cached skus credentials";
+  }
+}
+
+void BraveVpnService::SetPurchasedState(PurchasedState state) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  switch (state) {
+    case PurchasedState::NOT_PURCHASED:
+      LOG(ERROR) << "SetPurchasedState(NOT_PURCHASED);";
+      break;
+    case PurchasedState::PURCHASED:
+      LOG(ERROR) << "SetPurchasedState(PURCHASED);";
+      break;
+    case PurchasedState::EXPIRED:
+      LOG(ERROR) << "SetPurchasedState(EXPIRED);";
+      break;
+    case PurchasedState::LOADING:
+      LOG(ERROR) << "SetPurchasedState(LOADING);";
+      break;
+    case PurchasedState::FAILED:
+      LOG(ERROR) << "SetPurchasedState(FAILED);";
+      break;
+  }
+
+  if (purchased_state_ == state)
+    return;
+
+  purchased_state_ = state;
+
+  for (const auto& obs : observers_)
+    obs->OnPurchasedStateChanged(purchased_state_);
+
 #if !defined(OS_ANDROID)
+  ScheduleFetchRegionDataIfNeeded();
+#endif
+}
+
+void BraveVpnService::EnsureMojoConnected() {
+  if (!skus_service_) {
+    auto pending = skus_service_getter_.Run();
+    skus_service_.Bind(std::move(pending));
+  }
+  DCHECK(skus_service_);
+  skus_service_.set_disconnect_handler(base::BindOnce(
+      &BraveVpnService::OnMojoConnectionError, base::Unretained(this)));
+}
+
+void BraveVpnService::OnMojoConnectionError() {
+  skus_service_.reset();
+  EnsureMojoConnected();
+}
+
+void BraveVpnService::Shutdown() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   skus_service_.reset();
+  observers_.Clear();
+
+#if !defined(OS_ANDROID)
   observed_.Reset();
   receivers_.Clear();
-  observers_.Clear();
 #endif
 }
 
