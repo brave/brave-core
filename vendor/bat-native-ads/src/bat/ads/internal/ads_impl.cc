@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/hash/hash.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ad_info.h"
@@ -166,6 +167,13 @@ void AdsImpl::OnHtmlLoaded(const int32_t tab_id,
     return;
   }
 
+  const uint32_t hash = base::FastHash(html);
+  if (hash == last_html_loaded_hash_) {
+    BLOG(1, "HTML content has not changed");
+    return;
+  }
+  last_html_loaded_hash_ = hash;
+
   ad_transfer_->MaybeTransferAd(tab_id, redirect_chain);
   conversions_->MaybeConvert(redirect_chain, html,
                              conversions_resource_->get());
@@ -179,6 +187,13 @@ void AdsImpl::OnTextLoaded(const int32_t tab_id,
   if (!IsInitialized()) {
     return;
   }
+
+  const uint32_t hash = base::FastHash(text);
+  if (hash == last_text_loaded_hash_) {
+    BLOG(1, "Text content has not changed");
+    return;
+  }
+  last_text_loaded_hash_ = hash;
 
   const std::string url = redirect_chain.back();
 
