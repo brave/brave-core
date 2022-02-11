@@ -108,6 +108,13 @@ const createTrezorTransport = (unlock: HardwareOperationResult,
           payload: signedMessagePayload
         })
       }
+      if (message.command === TrezorCommand.SignTypedMessage) {
+        hardwareTransport.postResponse({
+          id: message.id,
+          command: message.command,
+          payload: signedMessagePayload
+        })
+      }
     }
   }
   hardwareTransport.createBridge = async () => {
@@ -496,4 +503,31 @@ test('Sign message from unlocked device failed', () => {
       code: signMessagePayload.payload.code,
       error: signMessagePayload.payload.error
     })
+})
+
+test('Sign typed from unlocked device, success', () => {
+  const signMessagePayload = {
+    success: true,
+    payload: {
+      signature: 'test'
+    }
+  }
+  const hardwareKeyring = createTrezorKeyringWithTransport(
+    { success: true }, undefined, undefined, signMessagePayload)
+  return expect(hardwareKeyring.signEip712Message('m/44\'/60\'/0\'/0', 'domainSeparatorHex', 'hashStructMessageHex'))
+    .resolves.toStrictEqual({ payload: signMessagePayload.payload.signature, success: signMessagePayload.success })
+})
+
+test('Sign typed message api not supported', () => {
+  const signMessagePayload = {
+    success: false,
+    payload: {
+      code: 'Method_InvalidParameter',
+      error: 'some text'
+    }
+  }
+  const hardwareKeyring = createTrezorKeyringWithTransport(
+    { success: true }, undefined, undefined, signMessagePayload)
+  return expect(hardwareKeyring.signEip712Message('m/44\'/60\'/0\'/0', 'domainSeparatorHex', 'hashStructMessageHex'))
+    .resolves.toStrictEqual({ error: getLocale('braveWalletTrezorSignTypedDataError'), success: signMessagePayload.success })
 })

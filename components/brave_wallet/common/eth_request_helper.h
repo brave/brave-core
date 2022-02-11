@@ -46,7 +46,9 @@ bool ParseEthSignTypedDataParams(const std::string& json,
                                  std::string* message,
                                  std::vector<uint8_t>* message_to_sign,
                                  base::Value* domain,
-                                 EthSignTypedDataHelper::Version version);
+                                 EthSignTypedDataHelper::Version version,
+                                 std::vector<uint8_t>* domain_hash_out,
+                                 std::vector<uint8_t>* primary_hash_out);
 
 bool ParseSwitchEthereumChainParams(const std::string& json,
                                     std::string* chain_id);

@@ -17,7 +17,9 @@ import {
   SignMessageCommand,
   SignMessageResponsePayload,
   SignMessageResponse,
-  UnlockResponse
+  UnlockResponse,
+  SignTypedMessageCommand,
+  SignTypedMessageResponsePayload
 } from '../common/hardware/trezor/trezor-messages'
 import { addTrezorCommandHandler } from '../common/hardware/trezor/trezor-command-handler'
 
@@ -66,6 +68,14 @@ addTrezorCommandHandler(TrezorCommand.SignTransaction, (command: SignTransaction
 addTrezorCommandHandler(TrezorCommand.SignMessage, (command: SignMessageCommand, source: Window): Promise<SignMessageResponsePayload> => {
   return new Promise(async (resolve) => {
     TrezorConnect.ethereumSignMessage(command.payload).then((result: SignMessageResponse) => {
+      resolve({ id: command.id, command: command.command, payload: result, origin: command.origin })
+    })
+  })
+})
+
+addTrezorCommandHandler(TrezorCommand.SignTypedMessage, (command: SignTypedMessageCommand, source: Window): Promise<SignTypedMessageResponsePayload> => {
+  return new Promise(async (resolve) => {
+    TrezorConnect.ethereumSignTypedData(command.payload).then((result: SignMessageResponse) => {
       resolve({ id: command.id, command: command.command, payload: result, origin: command.origin })
     })
   })

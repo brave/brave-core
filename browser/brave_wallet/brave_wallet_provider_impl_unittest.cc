@@ -426,6 +426,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
                         const std::string& message,
                         const std::string& message_to_sign,
                         base::Value&& domain,
+                        const std::string& domain_hash,
+                        const std::string& primary_hash,
                         std::string* signature_out,
                         mojom::ProviderError* error_out,
                         std::string* error_message_out) {
@@ -434,7 +436,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
 
     base::RunLoop run_loop;
     provider()->SignTypedMessage(
-        address, message, message_to_sign, std::move(domain),
+        address, message, message_to_sign, std::move(domain), domain_hash,
+        primary_hash,
         base::BindLambdaForTesting([&](const std::string& signature,
                                        mojom::ProviderError error,
                                        const std::string& error_message) {
@@ -1222,16 +1225,20 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
   mojom::ProviderError error;
   std::string error_message;
   base::Value domain(base::Value::Type::DICTIONARY);
+  std::string domain_hash = "test_domain_hash";
+  std::string primary_hash = "test_primary_hash";
   domain.SetIntKey("chainId", 1);
   SignTypedMessage(absl::nullopt, "1234", "{...}", valid_message_to_sign,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), domain_hash, primary_hash, &signature,
+                   &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   SignTypedMessage(absl::nullopt, "0x12345678", "{...}", valid_message_to_sign,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), domain_hash, primary_hash, &signature,
+                   &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
@@ -1240,7 +1247,8 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
   const std::string address = "0x1234567890123456789012345678901234567890";
   // domain not dict
   SignTypedMessage(absl::nullopt, address, "{...}", valid_message_to_sign,
-                   base::Value("not dict"), &signature, &error, &error_message);
+                   base::Value("not dict"), domain_hash, primary_hash,
+                   &signature, &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
@@ -1248,7 +1256,8 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
 
   // not valid hex
   SignTypedMessage(absl::nullopt, address, "{...}", "brave", domain.Clone(),
-                   &signature, &error, &error_message);
+                   domain_hash, primary_hash, &signature, &error,
+                   &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
@@ -1256,7 +1265,8 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
 
   // not valid eip712 hash
   SignTypedMessage(absl::nullopt, address, "{...}", "deadbeef", domain.Clone(),
-                   &signature, &error, &error_message);
+                   domain_hash, primary_hash, &signature, &error,
+                   &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
   EXPECT_EQ(error_message,
@@ -1266,7 +1276,8 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
   std::string chain_id = "0x4";
   // not active network
   SignTypedMessage(absl::nullopt, address, "{...}", valid_message_to_sign,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), domain_hash, primary_hash, &signature,
+                   &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kInternalError);
   EXPECT_EQ(error_message,
@@ -1276,7 +1287,8 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
   domain.SetIntKey("chainId", 1);
 
   SignTypedMessage(absl::nullopt, address, "{...}", valid_message_to_sign,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), domain_hash, primary_hash, &signature,
+                   &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message,
@@ -1287,7 +1299,8 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
   const std::vector<std::string> addresses = GetAddresses();
   ASSERT_FALSE(address.empty());
   SignTypedMessage(absl::nullopt, addresses[0], "{...}", valid_message_to_sign,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), domain_hash, primary_hash, &signature,
+                   &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message,
@@ -1297,7 +1310,8 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
   Navigate(url);
   AddEthereumPermission(url);
   SignTypedMessage(true, addresses[0], "{...}", valid_message_to_sign,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), domain_hash, primary_hash, &signature,
+                   &error, &error_message);
 
   EXPECT_FALSE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kSuccess);
@@ -1305,18 +1319,41 @@ TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
 
   // User reject request
   SignTypedMessage(false, addresses[0], "{...}", valid_message_to_sign,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), domain_hash, primary_hash, &signature,
+                   &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
   EXPECT_EQ(error_message,
             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  // not valid eip712 domain hash
+  domain_hash.clear();
+  SignTypedMessage(absl::nullopt, address, "{...}", "deadbeef", domain.Clone(),
+                   domain_hash, primary_hash, &signature, &error,
+                   &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+  domain_hash = "test_domain_hash";
+  // not valid eip712 primary hash
+  primary_hash.clear();
+  SignTypedMessage(absl::nullopt, address, "{...}", "deadbeef", domain.Clone(),
+                   domain_hash, primary_hash, &signature, &error,
+                   &error_message);
+  EXPECT_TRUE(signature.empty());
+  EXPECT_EQ(error, mojom::ProviderError::kInvalidParams);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+
+  primary_hash = "test_primary_hash";
 
   keyring_service()->Lock();
 
   // nullopt for the first param here because we don't AddSignMessageRequest
   // whent here are no accounts returned.
   SignTypedMessage(absl::nullopt, addresses[0], "{...}", valid_message_to_sign,
-                   domain.Clone(), &signature, &error, &error_message);
+                   domain.Clone(), domain_hash, primary_hash, &signature,
+                   &error, &error_message);
   EXPECT_TRUE(signature.empty());
   EXPECT_EQ(error, mojom::ProviderError::kUnauthorized);
   EXPECT_EQ(error_message,

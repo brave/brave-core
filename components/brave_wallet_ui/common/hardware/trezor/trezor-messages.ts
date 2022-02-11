@@ -5,7 +5,7 @@
 import { loadTimeData } from '../../../../common/loadTimeData'
 import { Unsuccessful, EthereumSignTransaction, CommonParams, Success } from 'trezor-connect'
 import { HDNodeResponse } from 'trezor-connect/lib/typescript'
-import { EthereumSignedTx, EthereumSignMessage } from 'trezor-connect/lib/typescript/networks/ethereum'
+import { EthereumSignedTx, EthereumSignMessage, EthereumSignTypedHash } from 'trezor-connect/lib/typescript/networks/ethereum'
 import { MessageSignature } from 'trezor-connect/lib/typescript/trezor/protobuf'
 export const kTrezorBridgeUrl = loadTimeData.getString('braveWalletTrezorBridgeUrl')
 
@@ -13,7 +13,8 @@ export enum TrezorCommand {
   Unlock = 'trezor-unlock',
   GetAccounts = 'trezor-get-accounts',
   SignTransaction = 'trezor-sign-transaction',
-  SignMessage = 'trezor-sign-message'
+  SignMessage = 'trezor-sign-message',
+  SignTypedMessage = 'trezor-sign-typed-message'
 }
 
 export enum TrezorErrorsCodes {
@@ -82,7 +83,18 @@ export type SignMessageResponsePayload = CommandMessage & {
   payload: SignMessageResponse
 }
 
-export type TrezorFrameCommand = GetAccountsCommand | UnlockCommand | SignTransactionCommand | SignMessageCommand
+// SignTypedMessage command
+export type SignTypedMessageCommandPayload = CommonParams & EthereumSignTypedHash
+export type SignTypedMessageCommand = CommandMessage & {
+  command: TrezorCommand.SignTypedMessage
+  payload: SignTypedMessageCommandPayload
+}
+export type SignTypedMessageResponse = Unsuccessful | Success<MessageSignature>
+export type SignTypedMessageResponsePayload = CommandMessage & {
+  payload: SignTypedMessageResponse
+}
+
+export type TrezorFrameCommand = GetAccountsCommand | UnlockCommand | SignTransactionCommand | SignMessageCommand | SignTypedMessageCommand
 export type TrezorFrameResponse = UnlockResponsePayload | GetAccountsResponsePayload | SignTransactionResponsePayload | SignMessageResponsePayload
 
 // Trezor library is loaded inside the chrome-untrusted webui page
