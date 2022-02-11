@@ -6,13 +6,14 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LOCALE_SUPPORTED_COUNTRY_CODES_ALIASES_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LOCALE_SUPPORTED_COUNTRY_CODES_ALIASES_H_
 
-#include <set>
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 
 namespace ads {
 
+using SupportedCountryCodesSet = base::flat_set<std::string>;
 using SupportedCountryCodesMap = base::flat_map<int, SupportedCountryCodesSet>;
 
 }  // namespace ads

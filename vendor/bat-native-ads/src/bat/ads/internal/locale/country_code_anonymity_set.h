@@ -6,12 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LOCALE_COUNTRY_CODE_ANONYMITY_SET_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_LOCALE_COUNTRY_CODE_ANONYMITY_SET_H_
 
-#include <set>
 #include <string>
+
+#include "base/containers/flat_set.h"
 
 namespace ads {
 
-const std::set<std::string> kCountryCodeAnonymitySet = {
+const base::flat_set<std::string> kCountryCodeAnonymitySet = {
     "US",  // United States of America
     "CA",  // Canada
     "GB",  // United Kingdom (Great Britain and Northern Ireland)

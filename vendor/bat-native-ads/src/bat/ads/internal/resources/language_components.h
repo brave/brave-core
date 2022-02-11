@@ -6,12 +6,13 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_LANGUAGE_COMPONENTS_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_RESOURCES_LANGUAGE_COMPONENTS_H_
 
-#include <set>
 #include <string>
+
+#include "base/containers/flat_set.h"
 
 namespace ads {
 
-const std::set<std::string> kComponentLanguageIds = {
+const base::flat_set<std::string> kComponentLanguageIds = {
     "ijmgabghpbflfadffhpmjklamndnonha", "hddanjaanmjbdklklpldpgpmbdmaiihb",
     "blcjdmhlkddhompnlbjlpccpelipihem", "pecokcgeeiabdlkfkfjpmfldfhhjlmom",
     "pgkommhmfkkkfbbcnnfhlkagbodoimjm", "emopjfcnkbjfedjbfgajdajnkkfekcbl",
