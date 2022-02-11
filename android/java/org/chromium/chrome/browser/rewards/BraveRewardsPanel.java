@@ -1172,6 +1172,11 @@ public class BraveRewardsPanel
                 mPopupView.findViewById(R.id.rewards_from_ads_summary_layout)
                         .setVisibility(View.VISIBLE);
             }
+            // Hide rewards from ads when verified but disconnected from provider
+            if (walletStatus == BraveRewardsExternalWallet.DISCONNECTED_VERIFIED) {
+                mPopupView.findViewById(R.id.rewards_from_ads_summary_layout)
+                        .setVisibility(View.GONE);
+            }
         }
     }
 
