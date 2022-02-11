@@ -308,12 +308,11 @@ class KeyringServiceUnitTest : public testing::Test {
       KeyringService* service,
       const std::string& account_name,
       const std::string& private_key,
-      const std::string& public_key,
       const std::string& network) {
     absl::optional<std::string> account;
     base::RunLoop run_loop;
     service->ImportFilecoinBLSAccount(
-        account_name, private_key, public_key, network,
+        account_name, private_key, network,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {
               if (success)
@@ -2457,19 +2456,17 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
      "6fb6f9558e69398189fb2a27a"}
 #endif
   };
-  auto* filecoin_keyring =
-      service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId);
   auto amount = sizeof(imported_accounts) / sizeof(imported_accounts[0]);
   for (size_t i = 0; i < amount; ++i) {
-    bool callback_called = false;
+    absl::optional<std::string> address;
     if (imported_accounts[i].type == std::string("secp256k1")) {
       address = ImportFilecoinSECP256K1Account(
           &service, imported_accounts[i].name, imported_accounts[i].private_key,
           mojom::kFilecoinTestnet);
     } else {
-      address = ImportFilecoinBLSAccount(
-          &service, imported_accounts[i].name, imported_accounts[i].private_key,
-          imported_accounts[i].public_key, mojom::kFilecoinTestnet);
+      address = ImportFilecoinBLSAccount(&service, imported_accounts[i].name,
+                                         imported_accounts[i].private_key,
+                                         mojom::kFilecoinTestnet);
     }
     ASSERT_TRUE(address.has_value());
     EXPECT_EQ(address, imported_accounts[i].address);
@@ -2492,7 +2489,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   // filecoin keyring will be lazily created in first FIL import
   auto* filecoin_keyring =
       service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId);
-  EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), 4u);
+  EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), amount);
 
   EXPECT_TRUE(RemoveImportedAccount(&service, imported_accounts[1].address));
   base::RunLoop().RunUntilIdle();
@@ -2581,206 +2578,6 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   EXPECT_EQ(service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
                 ->GetImportedAccountsNumber(),
             amount - 1);
-
-  const base::Value* imported_accounts_value =
-      KeyringService::GetPrefForKeyring(
-          GetPrefs(), kImportedAccounts,
-          brave_wallet::mojom::kFilecoinKeyringId);
-  ASSERT_TRUE(imported_accounts_value);
-  EXPECT_EQ(imported_accounts_value->GetList()[0]
-                .FindKey(kAccountAddress)
-                ->GetString(),
-            imported_accounts[0].address);
-  // private key is encrypted
-  const std::string encrypted_private_key =
-      imported_accounts_value->GetList()[0]
-          .FindKey(kEncryptedPrivateKey)
-          ->GetString();
-  EXPECT_FALSE(encrypted_private_key.empty());
-
-  std::vector<uint8_t> private_key0;
-  ASSERT_TRUE(
-      base::HexStringToBytes(imported_accounts[0].private_key, &private_key0));
-  EXPECT_NE(encrypted_private_key, base::Base64Encode(private_key0));
-}
-
-TEST_F(KeyringServiceUnitTest, CreateFilecoinKeyring) {
-  KeyringService service(GetPrefs());
-  EXPECT_EQ(service.CreateKeyring(mojom::kDefaultKeyringId, ""), nullptr);
-  HDKeyring* keyring =
-      service.CreateKeyring(mojom::kDefaultKeyringId, "brave1");
-  EXPECT_EQ(keyring->type(), HDKeyring::Type::kDefault);
-  keyring->AddAccounts(1);
-  const std::string address1 = keyring->GetAddress(0);
-  EXPECT_FALSE(address1.empty());
-  EXPECT_TRUE(
-      HasPrefForKeyring(kPasswordEncryptorSalt, mojom::kDefaultKeyringId));
-  EXPECT_TRUE(
-      HasPrefForKeyring(kPasswordEncryptorNonce, mojom::kDefaultKeyringId));
-  EXPECT_TRUE(HasPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId));
-  // Filecoin feature not enabled
-  bool callback_called = false;
-  service.AddAccount("Failed", mojom::CoinType::FIL,
-                     base::BindLambdaForTesting([&](bool success) {
-                       ASSERT_FALSE(success);
-                       callback_called = true;
-                     }));
-  base::RunLoop().RunUntilIdle();
-  ASSERT_TRUE(callback_called);
-  EXPECT_FALSE(service.IsKeyringExist(mojom::kFilecoinKeyringId));
-  EXPECT_FALSE(
-      HasPrefForKeyring(kPasswordEncryptorSalt, mojom::kFilecoinKeyringId));
-  EXPECT_FALSE(
-      HasPrefForKeyring(kPasswordEncryptorNonce, mojom::kFilecoinKeyringId));
-  EXPECT_FALSE(
-      HasPrefForKeyring(kEncryptedMnemonic, mojom::kFilecoinKeyringId));
-
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kBraveWalletFilecoinFeature);
-  TestKeyringServiceObserver observer;
-  service.AddObserver(observer.GetReceiver());
-
-  // Filecoin feature enabled, no encryptor
-  callback_called = false;
-  service.AddAccount("Failed", mojom::CoinType::FIL,
-                     base::BindLambdaForTesting([&](bool success) {
-                       ASSERT_FALSE(success);
-                       callback_called = true;
-                     }));
-  EXPECT_FALSE(observer.IsKeyringCreated(mojom::kFilecoinKeyringId));
-  base::RunLoop().RunUntilIdle();
-  ASSERT_TRUE(callback_called);
-  service.Lock();
-  service.Unlock("brave1",
-                 base::BindOnce(&KeyringServiceUnitTest::GetBooleanCallback,
-                                base::Unretained(this)));
-  // Filecoin encryptor created
-  EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId), nullptr);
-  EXPECT_NE(service.encryptors_.at(mojom::kFilecoinKeyringId),
-            service.encryptors_.at(mojom::kDefaultKeyringId));
-  // Filecoin feature enabled, encryptor created
-  callback_called = false;
-  service.AddAccount("Success", mojom::CoinType::FIL,
-                     base::BindLambdaForTesting([&](bool success) {
-                       ASSERT_TRUE(success);
-                       callback_called = true;
-                     }));
-  base::RunLoop().RunUntilIdle();
-  ASSERT_TRUE(callback_called);
-
-  EXPECT_TRUE(service.IsKeyringExist(mojom::kFilecoinKeyringId));
-  EXPECT_TRUE(observer.IsKeyringCreated(mojom::kFilecoinKeyringId));
-
-  EXPECT_EQ(service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
-                ->GetAccountsNumber(),
-            1u);
-  EXPECT_FALSE(
-      service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
-          ->GetAddress(0)
-          .empty());
-
-  service.AddAccountForKeyring(mojom::kFilecoinKeyringId, "Account 2");
-
-  EXPECT_EQ(service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
-                ->GetAccountsNumber(),
-            2u);
-  EXPECT_FALSE(
-      service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
-          ->GetAddress(1)
-          .empty());
-
-  EXPECT_TRUE(
-      HasPrefForKeyring(kPasswordEncryptorSalt, mojom::kFilecoinKeyringId));
-  EXPECT_TRUE(
-      HasPrefForKeyring(kPasswordEncryptorNonce, mojom::kFilecoinKeyringId));
-  EXPECT_TRUE(HasPrefForKeyring(kEncryptedMnemonic, mojom::kFilecoinKeyringId));
-
-  EXPECT_NE(
-      GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId),
-      GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kFilecoinKeyringId));
-
-  auto default_mnemonic =
-      service.GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId);
-  ASSERT_FALSE(default_mnemonic.empty());
-  EXPECT_EQ(default_mnemonic,
-            service.GetMnemonicForKeyringImpl(mojom::kFilecoinKeyringId));
-}
-
-TEST_F(KeyringServiceUnitTest, LazyCreateFilecoinKeyringFromImport) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(
-      brave_wallet::features::kBraveWalletFilecoinFeature);
-
-  KeyringService service(GetPrefs());
-  service.CreateWallet("brave1", base::DoNothing());
-  base::RunLoop().RunUntilIdle();
-  TestKeyringServiceObserver observer;
-  service.AddObserver(observer.GetReceiver());
-  EXPECT_TRUE(
-      HasPrefForKeyring(kPasswordEncryptorSalt, mojom::kDefaultKeyringId));
-  EXPECT_TRUE(
-      HasPrefForKeyring(kPasswordEncryptorNonce, mojom::kDefaultKeyringId));
-  EXPECT_TRUE(HasPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId));
-
-  EXPECT_TRUE(
-      HasPrefForKeyring(kPasswordEncryptorSalt, mojom::kFilecoinKeyringId));
-  EXPECT_FALSE(
-      HasPrefForKeyring(kPasswordEncryptorNonce, mojom::kFilecoinKeyringId));
-  EXPECT_FALSE(
-      HasPrefForKeyring(kEncryptedMnemonic, mojom::kFilecoinKeyringId));
-  EXPECT_FALSE(service.IsKeyringExist(mojom::kFilecoinKeyringId));
-  EXPECT_TRUE(service.IsKeyringExist(mojom::kDefaultKeyringId));
-  const struct {
-    const char* name;
-    const char* private_key;
-    const char* address;
-    const char* type;
-    const char* public_key;
-  } imported_accounts[] = {
-      {"Imported Filecoin account 1",
-       /*"rQG5jnbc+y64fckG+T0EHVwpLBmW9IgAT7U990HXcGk=",*/
-       "ad01b98e76dcfb2eb87dc906f93d041d5c292c1996f488004fb53df741d77069",
-       "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy", "secp256k1", ""}};
-
-  bool callback_called = false;
-  service.ImportFilecoinSECP256K1Account(
-      imported_accounts[0].name, imported_accounts[0].private_key,
-      mojom::kFilecoinTestnet,
-      base::BindLambdaForTesting([&](bool success, const std::string& address) {
-        EXPECT_TRUE(success);
-        EXPECT_EQ(imported_accounts[0].address, address);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
-  ASSERT_TRUE(callback_called);
-  EXPECT_TRUE(observer.IsKeyringCreated(mojom::kFilecoinKeyringId));
-
-  callback_called = false;
-  // Imported accounts should be restored
-  service.GetKeyringInfo(
-      brave_wallet::mojom::kFilecoinKeyringId,
-      base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->account_infos.size(), 1u);
-        EXPECT_EQ(keyring_info->account_infos[0]->address,
-                  imported_accounts[0].address);
-        EXPECT_EQ(keyring_info->account_infos[0]->name,
-                  imported_accounts[0].name);
-        EXPECT_TRUE(keyring_info->account_infos[0]->is_imported);
-        callback_called = true;
-      }));
-  base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(callback_called);
-  EXPECT_NE(
-      GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId),
-      GetStringPrefForKeyring(kEncryptedMnemonic, mojom::kFilecoinKeyringId));
-  EXPECT_TRUE(service.IsKeyringExist(mojom::kFilecoinKeyringId));
-  EXPECT_TRUE(service.IsKeyringExist(mojom::kDefaultKeyringId));
-  auto default_mnemonic =
-      service.GetMnemonicForKeyringImpl(mojom::kDefaultKeyringId);
-  ASSERT_FALSE(default_mnemonic.empty());
-  EXPECT_EQ(default_mnemonic,
-            service.GetMnemonicForKeyringImpl(mojom::kFilecoinKeyringId));
 }
 
 TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
