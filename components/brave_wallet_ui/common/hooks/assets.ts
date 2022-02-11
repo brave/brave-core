@@ -53,7 +53,7 @@ export default function useAssets (
     }).catch(e => console.error(e))
   }, [])
 
-  const panelUserAssetList = React.useMemo(() => {
+  const positiveBalanceAssets = React.useMemo(() => {
     if (!userVisibleTokensInfo) {
       return []
     }
@@ -79,9 +79,10 @@ export default function useAssets (
   }, [selectedAccount, userVisibleTokensInfo, getBalance, computeFiatAmount])
 
   return {
-    swapAssetOptions,
+    swapFromAssetOptions: positiveBalanceAssets,
+    swapToAssetOptions: swapAssetOptions,
     sendAssetOptions: userVisibleTokensInfo,
     buyAssetOptions,
-    panelUserAssetList
+    panelUserAssetList: positiveBalanceAssets
   }
 }
