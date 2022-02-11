@@ -124,10 +124,8 @@ void BraveWebMainParts::PreMainMessageLoopRun() {
   brave::EnsureBrowserStateKeyedServiceFactoriesBuilt();
   ios::ChromeBrowserStateManager* browser_state_manager =
       application_context_->GetChromeBrowserStateManager();
-  ChromeBrowserState* last_used_browser_state =
+  [[maybe_unused]] ChromeBrowserState* last_used_browser_state =
       browser_state_manager->GetLastUsedBrowserState();
-
-  ALLOW_UNUSED_LOCAL(last_used_browser_state);
 }
 
 void BraveWebMainParts::PostMainMessageLoopRun() {
