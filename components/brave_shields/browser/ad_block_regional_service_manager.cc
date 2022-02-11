@@ -117,7 +117,9 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
         auto regional_source_provider =
             std::make_unique<AdBlockRegionalSourceProvider>(
                 component_update_service_, *catalog_entry);
-        auto regional_service = std::make_unique<AdBlockEngine>();
+        auto regional_service =
+            std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
+                new AdBlockEngine(), base::OnTaskRunnerDeleter(task_runner_));
         auto observer =
             std::make_unique<AdBlockService::SourceProviderObserver>(
                 regional_service->AsWeakPtr(),
@@ -221,7 +223,9 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     auto regional_source_provider =
         std::make_unique<AdBlockRegionalSourceProvider>(
             component_update_service_, *catalog_entry);
-    auto regional_service = std::make_unique<AdBlockEngine>();
+    auto regional_service =
+        std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
+            new AdBlockEngine(), base::OnTaskRunnerDeleter(task_runner_));
     auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
         regional_service->AsWeakPtr(), regional_source_provider.get(),
         resource_provider_, task_runner_);

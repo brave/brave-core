@@ -39,7 +39,7 @@ namespace brave_shields {
 class AdBlockResourceProvider;
 class AdBlockSubscriptionServiceManagerObserver;
 class AdBlockSubscriptionSourceProvider;
-}
+}  // namespace brave_shields
 
 class AdBlockServiceTest;
 
@@ -147,12 +147,14 @@ class AdBlockSubscriptionServiceManager {
   raw_ptr<PrefService> local_state_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<AdBlockResourceProvider> resource_provider_;
-  raw_ptr<brave_component_updater::BraveComponent::Delegate> delegate_;  // NOT OWNED
+  raw_ptr<brave_component_updater::BraveComponent::Delegate>
+      delegate_;  // NOT OWNED
   base::WeakPtr<AdBlockSubscriptionDownloadManager> download_manager_;
   base::FilePath subscription_path_;
   std::unique_ptr<base::DictionaryValue> subscriptions_;
 
-  std::map<GURL, std::unique_ptr<AdBlockEngine>> subscription_services_;
+  std::map<GURL, std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
+      subscription_services_;
   std::map<GURL, std::unique_ptr<AdBlockSubscriptionSourceProvider>>
       subscription_source_providers_;
   std::map<GURL, std::unique_ptr<AdBlockService::SourceProviderObserver>>

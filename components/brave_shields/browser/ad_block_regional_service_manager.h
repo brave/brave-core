@@ -96,7 +96,9 @@ class AdBlockRegionalServiceManager
   std::string locale_;
   bool initialized_;
   base::Lock regional_services_lock_;
-  std::map<std::string, std::unique_ptr<AdBlockEngine>> regional_services_;
+  std::map<std::string,
+           std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
+      regional_services_;
   std::map<std::string, std::unique_ptr<AdBlockRegionalSourceProvider>>
       regional_source_providers_;
   std::map<std::string, std::unique_ptr<AdBlockService::SourceProviderObserver>>

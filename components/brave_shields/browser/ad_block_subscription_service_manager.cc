@@ -212,7 +212,9 @@ void AdBlockSubscriptionServiceManager::CreateSubscription(
   info.last_successful_update_attempt = base::Time();
   info.enabled = true;
 
-  auto subscription_service = std::make_unique<AdBlockEngine>();
+  auto subscription_service =
+      std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
+          new AdBlockEngine(), base::OnTaskRunnerDeleter(task_runner_));
   UpdateSubscriptionPrefs(sub_url, info);
 
   auto subscription_source_provider =
@@ -360,7 +362,9 @@ void AdBlockSubscriptionServiceManager::LoadSubscriptionServices() {
       GURL sub_url(key);
       info = BuildInfoFromDict(sub_url, list_subscription_dict);
 
-      auto subscription_service = std::make_unique<AdBlockEngine>();
+      auto subscription_service =
+          std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
+              new AdBlockEngine(), base::OnTaskRunnerDeleter(task_runner_));
 
       auto subscription_source_provider =
           std::make_unique<AdBlockSubscriptionSourceProvider>(
