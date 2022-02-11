@@ -13,6 +13,7 @@ import {
   DivderTextWrapper,
   DividerText
 } from '../shared-styles'
+import useFuse from '../../../common/hooks/fuse'
 
 export interface Props {
   assets: BraveWallet.BlockchainToken[]
@@ -29,29 +30,24 @@ function SelectAsset (props: Props) {
     onSelectAsset
   } = props
 
-  const fuse = React.useMemo(() => new Fuse(assets, {
+  const fuseOptions: Fuse.IFuseOptions<BraveWallet.BlockchainToken> = React.useMemo(() => ({
     shouldSort: true,
     threshold: 0.45,
     location: 0,
     distance: 100,
     minMatchCharLength: 1,
     keys: [
-      { name: 'asset.name', weight: 0.5 },
-      { name: 'asset.symbol', weight: 0.5 }
+      { name: 'name', weight: 0.5 },
+      { name: 'symbol', weight: 0.5 }
     ]
-  }), [assets])
+  }), [])
 
-  const [filteredAssetList, setFilteredAssetList] = React.useState<BraveWallet.BlockchainToken[]>(assets)
+  const [searchTerm, setSearchTerm] = React.useState('')
 
-  const filterAssetList = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const search = event.target.value
-    if (search === '') {
-      setFilteredAssetList(assets)
-    } else {
-      const filteredList = fuse.search(search).map((result: Fuse.FuseResult<BraveWallet.BlockchainToken>) => result.item)
-      setFilteredAssetList(filteredList)
-    }
-  }, [fuse, assets])
+  const filteredAssetList = useFuse(assets, searchTerm, fuseOptions)
+  const searchAction = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value)
+  }
 
   const erc271Tokens = React.useMemo(() => filteredAssetList.filter((token) => token.isErc721), [filteredAssetList])
 
@@ -63,7 +59,7 @@ function SelectAsset (props: Props) {
         hasAddButton={true}
         onClickAdd={onAddAsset}
       />
-      <SearchBar placeholder={getLocale('braveWalletSearchAsset')} action={filterAssetList} autoFocus={true} />
+      <SearchBar placeholder={getLocale('braveWalletSearchAsset')} action={searchAction} autoFocus={true} />
       <SelectScrollSearchContainer>
         {
           // Temp filtering out erc721 tokens, sending will be handled in a different PR
