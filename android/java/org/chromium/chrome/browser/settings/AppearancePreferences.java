@@ -33,6 +33,9 @@ import org.chromium.ui.base.DeviceFormFactor;
 public class AppearancePreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener, BraveRewardsObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
+    public static final String PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION =
+            "hide_brave_rewards_icon_migration";
+    public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
     public static final String PREF_BRAVE_NIGHT_MODE_ENABLED = "brave_night_mode_enabled_key";
     public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
     public static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
@@ -56,7 +59,7 @@ public class AppearancePreferences extends BravePreferenceFragment
         }
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
-            removePreferenceIfPresent(PREF_HIDE_BRAVE_REWARDS_ICON);
+            removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
         }
     }
 
@@ -72,13 +75,13 @@ public class AppearancePreferences extends BravePreferenceFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ChromeSwitchPreference hideBraveRewardsIconPref =
-                (ChromeSwitchPreference) findPreference(PREF_HIDE_BRAVE_REWARDS_ICON);
-        if (hideBraveRewardsIconPref != null) {
+        ChromeSwitchPreference showBraveRewardsIconPref =
+                (ChromeSwitchPreference) findPreference(PREF_SHOW_BRAVE_REWARDS_ICON);
+        if (showBraveRewardsIconPref != null) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-            hideBraveRewardsIconPref.setChecked(
-                    !sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false));
-            hideBraveRewardsIconPref.setOnPreferenceChangeListener(this);
+            showBraveRewardsIconPref.setChecked(
+                    sharedPreferences.getBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, true));
+            showBraveRewardsIconPref.setOnPreferenceChangeListener(this);
         }
 
         Preference nightModeEnabled = findPreference(PREF_BRAVE_NIGHT_MODE_ENABLED);
@@ -150,10 +153,10 @@ public class AppearancePreferences extends BravePreferenceFragment
                             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus)
                     .apply();
             BraveRelaunchUtils.askForRelaunch(getActivity());
-        } else if (PREF_HIDE_BRAVE_REWARDS_ICON.equals(key)) {
+        } else if (PREF_SHOW_BRAVE_REWARDS_ICON.equals(key)) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, !(boolean) newValue);
+            sharedPreferencesEditor.putBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, !(boolean) newValue);
             sharedPreferencesEditor.apply();
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_BRAVE_NIGHT_MODE_ENABLED.equals(key)) {
