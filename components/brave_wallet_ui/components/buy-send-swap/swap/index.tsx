@@ -57,7 +57,7 @@ export interface Props {
   onSelectPresetAmount: (percent: number) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
-  onFilterAssetList: (asset: BraveWallet.BlockchainToken) => void
+  onFilterAssetList: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void
   onQuoteRefresh: () => void
 }
 
@@ -93,12 +93,12 @@ function Swap (props: Props) {
 
   const onShowAssetTo = () => {
     onChangeSwapView('assets', 'to')
-    onFilterAssetList(fromAsset)
+    onFilterAssetList(toAsset, 'to')
   }
 
   const onShowAssetFrom = () => {
     onChangeSwapView('assets', 'from')
-    onFilterAssetList(toAsset)
+    onFilterAssetList(fromAsset, 'from')
   }
 
   const submitText = React.useMemo(() => {

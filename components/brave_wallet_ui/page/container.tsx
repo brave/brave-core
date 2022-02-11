@@ -129,7 +129,6 @@ function Container (props: Props) {
   const [sessionRoute, setSessionRoute] = React.useState<string | undefined>(undefined)
 
   const {
-    swapAssetOptions,
     sendAssetOptions,
     buyAssetOptions
   } = useAssets(
@@ -160,7 +159,10 @@ function Container (props: Props) {
     toAmount,
     toAsset,
     customSlippageTolerance,
+    swapToOrFrom,
     isSwapSupported,
+    filteredFromAssetList,
+    filteredToAssetList,
     onToggleOrderType,
     onSwapQuoteRefresh,
     onSetToAmount,
@@ -171,11 +173,16 @@ function Container (props: Props) {
     onSelectExpiration,
     onSelectSlippageTolerance,
     onSelectTransactAsset,
-    onCustomSlippageToleranceChange
+    onCustomSlippageToleranceChange,
+    onFilterAssetList
   } = useSwap(
+    accounts,
+    fullTokenList,
+    userVisibleTokensInfo,
+    transactionSpotPrices,
+    getBuyAssets,
     selectedAccount,
     selectedNetwork,
-    swapAssetOptions,
     props.walletPageActions.fetchPageSwapQuote,
     getERC20Allowance,
     props.walletActions.approveERC20Allowance,
@@ -708,11 +715,13 @@ function Container (props: Props) {
             selectedSendAsset={selectedSendAsset}
             sendAssetBalance={sendAssetBalance}
             sendAssetOptions={sendAssetOptions}
-            swapAssetOptions={swapAssetOptions}
+            swapFromAssetOptions={filteredFromAssetList}
+            swapToAssetOptions={filteredToAssetList}
             isFetchingSwapQuote={isFetchingSwapQuote}
             isSwapSubmitDisabled={isSwapButtonDisabled}
             isSwapSupported={isSwapSupported}
             customSlippageTolerance={customSlippageTolerance}
+            toOrFrom={swapToOrFrom}
             defaultCurrencies={defaultCurrencies}
             onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
             onSetBuyAmount={onSetBuyAmount}
@@ -738,6 +747,7 @@ function Container (props: Props) {
             onSelectSendAsset={onSelectSendAsset}
             onAddNetwork={onAddNetwork}
             onAddAsset={onShowVisibleAssetsModal}
+            onFilterAssetList={onFilterAssetList}
           />
         </WalletWidgetStandIn>
       }

@@ -47,11 +47,13 @@ export interface Props {
   addressWarning: string
   buyAssetOptions: BraveWallet.BlockchainToken[]
   sendAssetOptions: BraveWallet.BlockchainToken[]
-  swapAssetOptions: BraveWallet.BlockchainToken[]
+  swapFromAssetOptions: BraveWallet.BlockchainToken[]
+  swapToAssetOptions: BraveWallet.BlockchainToken[]
   isFetchingSwapQuote: boolean
   isSwapSubmitDisabled: boolean
   isSwapSupported: boolean
   customSlippageTolerance: string
+  toOrFrom: ToOrFromType
   defaultCurrencies: DefaultCurrencies
   onCustomSlippageToleranceChange: (value: string) => void
   onSubmitBuy: (asset: BraveWallet.BlockchainToken) => void
@@ -77,6 +79,7 @@ export interface Props {
   onSelectSendAsset: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void
   onAddNetwork: () => void
   onAddAsset: (value: boolean) => void
+  onFilterAssetList: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void
 }
 
 function BuySendSwap (props: Props) {
@@ -106,7 +109,8 @@ function BuySendSwap (props: Props) {
     toAddressOrUrl,
     buyAssetOptions,
     sendAssetOptions,
-    swapAssetOptions,
+    swapFromAssetOptions,
+    swapToAssetOptions,
     swapValidationError,
     sendAmountValidationError,
     isFetchingSwapQuote,
@@ -115,6 +119,7 @@ function BuySendSwap (props: Props) {
     customSlippageTolerance,
     defaultCurrencies,
     onCustomSlippageToleranceChange,
+    toOrFrom,
     onSubmitBuy,
     onSubmitSend,
     onSubmitSwap,
@@ -137,7 +142,8 @@ function BuySendSwap (props: Props) {
     onSwapQuoteRefresh,
     onSelectSendAsset,
     onAddNetwork,
-    onAddAsset
+    onAddAsset,
+    onFilterAssetList
   } = props
 
   // Switched this to useLayoutEffect to fix bad setState call error
@@ -192,6 +198,7 @@ function BuySendSwap (props: Props) {
           isSubmitDisabled={isSwapSubmitDisabled}
           validationError={swapValidationError}
           customSlippageTolerance={customSlippageTolerance}
+          toOrFrom={toOrFrom}
           onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
           onSubmitSwap={onSubmitSwap}
           flipSwapAssets={flipSwapAssets}
@@ -205,10 +212,12 @@ function BuySendSwap (props: Props) {
           onSetFromAmount={onSetFromAmount}
           onSetToAmount={onSetToAmount}
           onSelectPresetAmount={onSelectPresetFromAmount}
-          assetOptions={swapAssetOptions}
+          swapFromAssetOptions={swapFromAssetOptions}
+          swapToAssetOptions={swapToAssetOptions}
           onQuoteRefresh={onSwapQuoteRefresh}
           onAddNetwork={onAddNetwork}
           onAddAsset={onClickAddAsset}
+          onFilterAssetList={onFilterAssetList}
         />
       }
       {selectedTab === 'send' &&

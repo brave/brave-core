@@ -139,7 +139,6 @@ function Container (props: Props) {
   const [buyAmount, setBuyAmount] = React.useState('')
 
   const {
-    swapAssetOptions,
     sendAssetOptions,
     buyAssetOptions,
     panelUserAssetList
@@ -157,7 +156,8 @@ function Container (props: Props) {
 
   const {
     exchangeRate,
-    filteredAssetList,
+    filteredFromAssetList,
+    filteredToAssetList,
     fromAmount,
     fromAsset,
     isFetchingSwapQuote,
@@ -184,9 +184,13 @@ function Container (props: Props) {
     onSelectTransactAsset,
     onCustomSlippageToleranceChange
   } = useSwap(
+    accounts,
+    props.wallet.fullTokenList,
+    userVisibleTokensInfo,
+    transactionSpotPrices,
+    getBuyAssets,
     selectedAccount,
     selectedNetwork,
-    swapAssetOptions,
     props.walletPanelActions.fetchPanelSwapQuote,
     getERC20Allowance,
     props.walletActions.approveERC20Allowance,
@@ -710,7 +714,7 @@ function Container (props: Props) {
     } else if (selectedPanel === 'send') {
       assets = sendAssetOptions
     } else { // swap
-      assets = filteredAssetList
+      assets = swapToOrFrom === 'from' ? filteredFromAssetList : filteredToAssetList
     }
     return (
       <PanelWrapper isLonger={false}>
