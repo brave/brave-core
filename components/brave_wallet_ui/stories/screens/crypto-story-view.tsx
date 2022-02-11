@@ -68,7 +68,7 @@ export interface Props {
   getBalance: (address: string) => Promise<string>
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
-  onImportAccount: (accountName: string, privateKey: string) => void
+  onImportAccount: (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => void
   onImportFilecoinAccount: (accountName: string, privateKey: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onCreateAccount: (name: string) => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void

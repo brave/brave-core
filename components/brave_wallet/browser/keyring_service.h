@@ -128,6 +128,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       GetPrivateKeyForDefaultKeyringAccountCallback callback) override;
   void ImportAccount(const std::string& account_name,
                      const std::string& private_key,
+                     mojom::CoinType coin,
                      ImportAccountCallback callback) override;
   void ImportAccountFromJson(const std::string& account_name,
                              const std::string& password,
@@ -174,7 +175,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       SetKeyringImportedAccountNameCallback callback) override;
 
   void Reset(bool notify_observer = true);
-  bool IsKeyringCreated(const std::string& keyring_id);
+  bool IsKeyringCreated(const std::string& keyring_id) const;
   bool IsHardwareAccount(const std::string& account) const;
   void SignTransactionByDefaultKeyring(const std::string& address,
                                        EthTransaction* tx,
@@ -231,7 +232,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, GetOrCreateNonceForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateEncryptorForKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateDefaultKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateFilecoinKeyring);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            LazyCreateFilecoinKeyringFromImport);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
@@ -247,15 +247,11 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AddAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportedAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
-                           GetPrivateKeyForDefaultKeyringAccount);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest,
                            SetDefaultKeyringDerivedAccountMeta);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, RestoreLegacyBraveWallet);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, AutoLock);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetSelectedAccount);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, LazilyCreateKeyring);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportedFilecoinAccounts);
-  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, CreateFilecoinEncryptor);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportFilecoinAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateEncryptors);
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxServiceUnitTest;
@@ -264,13 +260,14 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                             const std::string& account_name);
   mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void OnAutoLockFired();
-  HDKeyring* GetKeyringForAddress(const std::string& address);
+  std::string GetKeyringIdForAddress(const std::string& address);
   HDKeyring* GetHDKeyringById(const std::string& keyring_id) const;
   std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync() const;
   std::vector<uint8_t> GetPrivateKeyFromKeyring(const std::string& address,
                                                 const std::string& keyring_id);
   // Address will be returned when success
-  absl::optional<std::string> ImportAccountForDefaultKeyring(
+  absl::optional<std::string> ImportAccountForKeyring(
+      const std::string& keyring_id,
       const std::string& account_name,
       const std::vector<uint8_t>& private_key);
   absl::optional<std::string> ImportSECP256K1AccountForFilecoinKeyring(
@@ -282,7 +279,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::vector<uint8_t>& private_key,
       const std::vector<uint8_t>& public_key,
       const std::string& network);
-  bool IsFilecoinAccount(const std::string& account) const;
   bool IsKeyringExist(const std::string& keyring_id) const;
   bool LazilyCreateKeyring(const std::string& keyring_id);
   size_t GetAccountMetasNumberForKeyring(const std::string& id);

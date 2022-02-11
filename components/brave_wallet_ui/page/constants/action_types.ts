@@ -20,6 +20,7 @@ export type AddAccountPayloadType = {
 export type ImportAccountPayloadType = {
   accountName: string
   privateKey: string
+  coin: BraveWallet.CoinType
 }
 
 export type ImportFilecoinAccountPayloadType = {

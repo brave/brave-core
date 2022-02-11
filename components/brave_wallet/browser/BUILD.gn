@@ -14,8 +14,6 @@ static_library("browser") {
     "blockchain_list_parser.h",
     "blockchain_registry.cc",
     "blockchain_registry.h",
-    "brave_wallet_constants.cc",
-    "brave_wallet_constants.h",
     "brave_wallet_prefs.cc",
     "brave_wallet_prefs.h",
     "brave_wallet_provider_delegate.h",
@@ -85,6 +83,7 @@ static_library("browser") {
     "wallet_data_files_installer.h",
   ]
   deps = [
+    ":constants",
     ":hd_keyring",
     ":solana_utils",
     ":transaction",
@@ -130,6 +129,21 @@ static_library("ethereum_permission_utils") {
   ]
 }
 
+source_set("constants") {
+  sources = [
+    "brave_wallet_constants.cc",
+    "brave_wallet_constants.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/resources:strings_grit",
+    "//ui/base:base",
+  ]
+}
+
 source_set("solana_utils") {
   sources = [
     "solana_utils.cc",
@@ -153,6 +167,7 @@ source_set("hd_keyring") {
   ]
 
   deps = [
+    ":constants",
     ":transaction",
     "internal:hd_key",
     "//base",
