@@ -120,6 +120,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &federated_learning::kFederatedLearningOfCohorts,
     &federated_learning::kFlocIdComputedEventLogging,
     &media::kLiveCaption,
+    &net::features::kPartitionedCookies,
     &network::features::kTrustTokens,
     &network_time::kNetworkTimeServiceQuerying,
     &optimization_guide::features::kOptimizationHints,
