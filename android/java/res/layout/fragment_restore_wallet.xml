@@ -46,6 +46,7 @@
             android:layout_marginEnd="48dp"
             android:gravity="top"
             android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dp"
             android:background="@drawable/rounded_wallet_edittext"
             android:hint="@string/enter_recovery_phrase"
             android:importantForAutofill="no"
@@ -58,6 +59,19 @@
             android:textSize="14sp"
             android:textColor="@color/wallet_text_color"
             android:textColorHint="@color/brave_theme_hint_text" />
+
+        <android.widget.CheckBox
+            android:id="@+id/restore_legacy_wallet_checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:layout_gravity="center_horizontal"
+            android:buttonTint="@color/brave_action_color"
+            android:paddingVertical="8dp"
+            android:visibility="gone"
+            android:textColor="@color/wallet_secondary_text_color"
+            android:text="@string/restore_legacy_wallet_recovery_phrase"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,27 +96,14 @@
                 android:id="@+id/restore_wallet_copy_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
+                android:padding="8dp"
                 app:srcCompat="@drawable/ic_copy"
                 android:contentDescription="@string/accessibility_restore_wallet_copy_image"
                 android:background="?android:attr/selectableItemBackground"
                 android:layout_gravity="center_horizontal"
                 android:clickable="true"
                 android:focusable="true"/>
-
         </LinearLayout>
-
-        <android.widget.CheckBox
-            android:id="@+id/restore_legacy_wallet_checkbox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            android:layout_gravity="center_horizontal"
-            android:buttonTint="@color/brave_action_color"
-            android:visibility="gone"
-            android:textColor="@color/wallet_secondary_text_color"
-            android:text="@string/restore_legacy_wallet_recovery_phrase"/>
 
         <TextView
             android:layout_width="match_parent"
