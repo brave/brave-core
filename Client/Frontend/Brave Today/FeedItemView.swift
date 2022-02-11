@@ -53,6 +53,7 @@ class FeedItemView: UIView {
     }
     lazy var callToActionButton = CallToActionButton().then {
         $0.setContentHuggingPriority(.required, for: .horizontal)
+        $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
     
     /// Generates the view hierarchy given a layout component
