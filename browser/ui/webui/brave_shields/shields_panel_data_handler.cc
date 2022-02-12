@@ -100,6 +100,13 @@ void ShieldsPanelDataHandler::SetHTTPSEverywhereEnabled(bool is_enabled) {
   shields_data_ctrlr->SetIsHTTPSEverywhereEnabled(is_enabled);
 }
 
+void ShieldsPanelDataHandler::SetBraveShieldsEnabled(bool is_enabled) {
+  auto* shields_data_ctrlr = GetActiveShieldsDataController();
+  DCHECK(shields_data_ctrlr);
+
+  shields_data_ctrlr->SetBraveShieldsEnabled(is_enabled);
+}
+
 BraveShieldsDataController*
 ShieldsPanelDataHandler::GetActiveShieldsDataController() {
   auto* profile = Profile::FromWebUI(webui_controller_->web_ui());
@@ -129,6 +136,8 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
       shields_data_ctrlr->GetFingerprintsList();
   site_block_info_.http_redirects_list =
       shields_data_ctrlr->GetHttpRedirectsList();
+  site_block_info_.is_shields_enabled =
+      shields_data_ctrlr->GetBraveShieldsEnabled();
 
   // Notify remote that data changed
   if (ui_handler_remote_) {

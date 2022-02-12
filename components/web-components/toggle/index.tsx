@@ -10,11 +10,12 @@ interface ToggleProps {
   isOn?: boolean
   disabled?: boolean
   accessibleLabel?: string
+  brand?: Brand
   onChange?: (isOn: boolean) => unknown
 }
-interface FabulouslyLargeToggleProps extends Omit<ToggleProps, 'size'> {
-  brand?: Brand
-}
+
+// We dont set the size for large toggles as they're always consistent
+interface FabulouslyLargeToggleProps extends Omit<ToggleProps, 'size'> {}
 
 function useToggleProps (props: ToggleProps) {
   const [isOn, setIsOn] = React.useState(props.isOn ?? false)
@@ -35,7 +36,8 @@ function useToggleProps (props: ToggleProps) {
     'disabled': props.disabled,
     'size': props.size,
     'aria-label': props.accessibleLabel,
-    'aria-checked': props.isOn
+    'aria-checked': props.isOn,
+    'brand': props.brand
   })
 }
 

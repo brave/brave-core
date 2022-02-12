@@ -44,6 +44,7 @@ class ShieldsPanelDataHandler : public brave_shields::mojom::DataHandler,
   void SetCookieBlockMode(CookieBlockMode mode) override;
   void SetIsNoScriptsEnabled(bool is_enabled) override;
   void SetHTTPSEverywhereEnabled(bool is_enabled) override;
+  void SetBraveShieldsEnabled(bool is_enabled) override;
 
  private:
   BraveShieldsDataController* GetActiveShieldsDataController();

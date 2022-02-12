@@ -16,16 +16,20 @@ import getPanelBrowserAPI from './api/panel_browser_api'
 import Container from './container'
 import { useSiteBlockInfoData, useSiteSettingsData } from './state/hooks'
 import DataContext from './state/context'
+import { ViewType } from './state/component_types'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
   const { siteBlockInfo } = useSiteBlockInfoData()
   const { siteSettings, getSiteSettings } = useSiteSettingsData()
+  const [viewType, setViewType] = React.useState<ViewType>(ViewType.Main)
 
   const store = {
     siteBlockInfo,
     siteSettings,
-    getSiteSettings
+    getSiteSettings,
+    viewType,
+    setViewType
   }
 
   React.useEffect(() => {
@@ -34,6 +38,8 @@ function App () {
     const onVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
         getPanelBrowserAPI().panelHandler.showUI()
+        // Reset the view type back to main panel
+        setViewType(ViewType.Main)
       }
     }
 
