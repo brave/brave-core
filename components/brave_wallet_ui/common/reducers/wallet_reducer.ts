@@ -38,6 +38,7 @@ import { normalizeNumericValue } from '../../utils/bn-utils'
 const defaultState: WalletState = {
   hasInitialized: false,
   isFilecoinEnabled: false,
+  isSolanaEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
   favoriteApps: [],
@@ -179,7 +180,7 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: WalletState, payloa
 
   // Refresh selectedAccount object
   const selectedAccount = accounts.find(
-      account => account === state.selectedAccount
+    account => account === state.selectedAccount
   ) ?? state.selectedAccount
 
   return {

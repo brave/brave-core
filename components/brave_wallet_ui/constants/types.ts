@@ -186,6 +186,7 @@ export interface DefaultCurrencies {
 export interface WalletState {
   hasInitialized: boolean
   isFilecoinEnabled: boolean
+  isSolanaEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
   favoriteApps: BraveWallet.AppItem[]
