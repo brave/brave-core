@@ -442,8 +442,8 @@ function Container (props: Props) {
     props.walletActions.getAllTokensList()
   }
 
-  const onViewPrivateKey = (address: string, isDefault: boolean) => {
-    props.walletPageActions.viewPrivateKey({ address, isDefault })
+  const onViewPrivateKey = (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => {
+    props.walletPageActions.viewPrivateKey({ address, isDefault, coin })
   }
 
   const onDoneViewingPrivateKey = () => {

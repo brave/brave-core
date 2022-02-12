@@ -123,9 +123,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void AddAccount(const std::string& account_name,
                   mojom::CoinType coin,
                   AddAccountCallback callback) override;
-  void GetPrivateKeyForDefaultKeyringAccount(
+  void GetPrivateKeyForKeyringAccount(
       const std::string& address,
-      GetPrivateKeyForDefaultKeyringAccountCallback callback) override;
+      mojom::CoinType coin,
+      GetPrivateKeyForKeyringAccountCallback callback) override;
   void ImportAccount(const std::string& account_name,
                      const std::string& private_key,
                      mojom::CoinType coin,

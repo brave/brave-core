@@ -57,6 +57,7 @@ export type WalletCreatedPayloadType = {
 export type ViewPrivateKeyPayloadType = {
   isDefault: boolean
   address: string
+  coin: BraveWallet.CoinType
 }
 
 export type RecoveryWordsAvailablePayloadType = {

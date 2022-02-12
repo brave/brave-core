@@ -266,13 +266,14 @@ class KeyringServiceUnitTest : public testing::Test {
     return success;
   }
 
-  static absl::optional<std::string> GetPrivateKeyForDefaultKeyringAccount(
+  static absl::optional<std::string> GetPrivateKeyForKeyringAccount(
       KeyringService* service,
-      const std::string& address) {
+      const std::string& address,
+      mojom::CoinType coin) {
     absl::optional<std::string> private_key;
     base::RunLoop run_loop;
-    service->GetPrivateKeyForDefaultKeyringAccount(
-        address,
+    service->GetPrivateKeyForKeyringAccount(
+        address, coin,
         base::BindLambdaForTesting([&](bool success, const std::string& key) {
           if (success)
             private_key = key;
@@ -1583,32 +1584,48 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
   EXPECT_NE(encrypted_private_key, base::Base64Encode(private_key_bytes));
 }
 
-TEST_F(KeyringServiceUnitTest, GetPrivateKeyForDefaultKeyringAccount) {
+TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
   KeyringService service(GetPrefs());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
 
-  absl::optional<std::string> private_key =
-      GetPrivateKeyForDefaultKeyringAccount(
-          &service, "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db");
+  absl::optional<std::string> private_key = GetPrivateKeyForKeyringAccount(
+      &service, "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db",
+      mojom::CoinType::ETH);
   ASSERT_TRUE(private_key.has_value());
   EXPECT_EQ(*private_key,
             "919af8081ce2a02d9650bf3e10ffb6b7cbadbb1dca749122d7d982cdb6cbcc50");
 
   // account not added yet
-  EXPECT_EQ(GetPrivateKeyForDefaultKeyringAccount(
-                &service, "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0"),
-            absl::nullopt);
+  EXPECT_FALSE(GetPrivateKeyForKeyringAccount(
+      &service, "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
+      mojom::CoinType::ETH));
   ASSERT_TRUE(AddAccount(&service, "Account 2", mojom::CoinType::ETH));
 
-  private_key = GetPrivateKeyForDefaultKeyringAccount(
-      &service, "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0");
+  private_key = GetPrivateKeyForKeyringAccount(
+      &service, "0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0",
+      mojom::CoinType::ETH);
   ASSERT_TRUE(private_key.has_value());
   EXPECT_EQ(*private_key,
             "17c31fdade7d84f22462f398df300405a76fc11b1fe5a9e286dc8c3b0913e31c");
 
-  EXPECT_EQ(GetPrivateKeyForDefaultKeyringAccount(&service, ""), absl::nullopt);
-  EXPECT_EQ(GetPrivateKeyForDefaultKeyringAccount(&service, "0x123"),
-            absl::nullopt);
+  EXPECT_FALSE(
+      GetPrivateKeyForKeyringAccount(&service, "", mojom::CoinType::ETH));
+  EXPECT_FALSE(
+      GetPrivateKeyForKeyringAccount(&service, "0x123", mojom::CoinType::ETH));
+
+  // Other keyrings
+  // account not added yet
+  EXPECT_FALSE(GetPrivateKeyForKeyringAccount(
+      &service, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+      mojom::CoinType::SOL));
+  ASSERT_TRUE(AddAccount(&service, "Account 1", mojom::CoinType::SOL));
+  private_key = GetPrivateKeyForKeyringAccount(
+      &service, "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+      mojom::CoinType::SOL);
+  ASSERT_TRUE(private_key.has_value());
+  EXPECT_EQ(*private_key,
+            "LNWjgQq8NhxWTUhz9jAD7koZfsKDwdJuLmVHyMxfjaFAamqXbtyUd3TcYQV2vPeRoM"
+            "58gw7Ez8qsvKSZee6KdUQ");
 }
 
 TEST_F(KeyringServiceUnitTest, SetDefaultKeyringDerivedAccountMeta) {
