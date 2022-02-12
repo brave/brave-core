@@ -129,6 +129,8 @@ class TxService : public KeyedService,
   void GetGasEstimation1559(GetGasEstimation1559Callback callback) override;
 
  private:
+  friend class EthTxManagerUnitTest;
+
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();
 

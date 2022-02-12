@@ -10,17 +10,17 @@
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
-#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
+#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -178,10 +178,10 @@ class BraveWalletServiceUnitTest : public testing::Test {
         KeyringServiceFactory::GetServiceForContext(profile_.get());
     json_rpc_service_ =
         JsonRpcServiceFactory::GetServiceForContext(profile_.get());
-    eth_tx_service_ = EthTxServiceFactory::GetServiceForContext(profile_.get());
+    tx_service = TxServiceFactory::GetServiceForContext(profile_.get());
     service_.reset(new BraveWalletService(
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
-        json_rpc_service_, eth_tx_service_, GetPrefs()));
+        json_rpc_service_, tx_service, GetPrefs()));
     observer_.reset(new TestBraveWalletServiceObserver());
     service_->AddObserver(observer_->GetReceiver());
 
@@ -534,7 +534,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
   std::unique_ptr<BraveWalletService> service_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   JsonRpcService* json_rpc_service_;
-  EthTxService* eth_tx_service_;
+  TxService* tx_service;
   std::unique_ptr<TestBraveWalletServiceObserver> observer_;
   base::test::ScopedFeatureList scoped_feature_list_;
 
