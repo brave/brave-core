@@ -299,7 +299,7 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
 export function refreshTransactionHistory (address?: string) {
   return async (dispatch: Dispatch, getState: () => State) => {
     const apiProxy = getAPIProxy()
-    const { ethTxService } = apiProxy
+    const { txService } = apiProxy
 
     const { wallet: { accounts, transactions } } = getState()
 
@@ -309,7 +309,7 @@ export function refreshTransactionHistory (address?: string) {
 
     const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
       async (acc, account) => acc.then(async (obj) => {
-        const { transactionInfos } = await ethTxService.getAllTransactionInfo(account.address)
+        const { transactionInfos } = await txService.getAllTransactionInfo(BraveWallet.CoinType.ETH, account.address)
         obj[account.address] = transactionInfos
         return obj
       }), Promise.resolve({}))
