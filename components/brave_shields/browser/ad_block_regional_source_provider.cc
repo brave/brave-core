@@ -34,9 +34,7 @@ AdBlockRegionalSourceProvider::AdBlockRegionalSourceProvider(
   }
 }
 
-AdBlockRegionalSourceProvider::~AdBlockRegionalSourceProvider() {
-  DCHECK(component_updater_service_->UnregisterComponent(component_id_));
-}
+AdBlockRegionalSourceProvider::~AdBlockRegionalSourceProvider() {}
 
 void AdBlockRegionalSourceProvider::OnComponentReady(
     const base::FilePath& path) {
@@ -70,6 +68,10 @@ void AdBlockRegionalSourceProvider::LoadDATBuffer(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, dat_file_path),
       base::BindOnce(std::move(cb), true));
+}
+
+bool AdBlockRegionalSourceProvider::Delete() && {
+  return component_updater_service_->UnregisterComponent(component_id_);
 }
 
 }  // namespace brave_shields

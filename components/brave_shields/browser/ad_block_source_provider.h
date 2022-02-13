@@ -24,12 +24,16 @@ class AdBlockSourceProvider {
   };
 
   AdBlockSourceProvider();
+  AdBlockSourceProvider(const AdBlockSourceProvider&) = delete;
+  AdBlockSourceProvider& operator=(const AdBlockSourceProvider&) = delete;
   virtual ~AdBlockSourceProvider();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
   void LoadDAT(Observer* observer);
+
+  virtual bool Delete() &&;
 
  protected:
   virtual void LoadDATBuffer(

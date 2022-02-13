@@ -236,16 +236,17 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     regional_source_observers_.insert(
         std::make_pair(uuid, std::move(observer)));
   } else {
+    auto observer = regional_source_observers_.find(uuid);
+    DCHECK(observer != regional_source_observers_.end());
+    regional_source_observers_.erase(observer);
+
     DCHECK(it != regional_services_.end());
     regional_services_.erase(it);
 
     auto it2 = regional_source_providers_.find(uuid);
     DCHECK(it2 != regional_source_providers_.end());
+    std::move(*it2->second).Delete();
     regional_source_providers_.erase(it2);
-
-    auto it3 = regional_source_observers_.find(uuid);
-    DCHECK(it3 != regional_source_observers_.end());
-    regional_source_observers_.erase(it3);
   }
 
   // Update preferences to reflect enabled/disabled state of specified

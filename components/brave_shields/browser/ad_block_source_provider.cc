@@ -43,4 +43,8 @@ void AdBlockSourceProvider::OnLoad(AdBlockSourceProvider::Observer* observer,
   }
 }
 
+bool AdBlockSourceProvider::Delete() && {
+  return false;
+}
+
 }  // namespace brave_shields

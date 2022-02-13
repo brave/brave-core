@@ -269,15 +269,15 @@ void AdBlockSubscriptionServiceManager::DeleteSubscription(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   {
     base::AutoLock lock(subscription_services_lock_);
+    auto observer = subscription_source_observers_.find(sub_url);
+    DCHECK(observer != subscription_source_observers_.end());
+    subscription_source_observers_.erase(observer);
     auto it = subscription_services_.find(sub_url);
     DCHECK(it != subscription_services_.end());
     subscription_services_.erase(it);
     auto it2 = subscription_source_providers_.find(sub_url);
     DCHECK(it2 != subscription_source_providers_.end());
     subscription_source_providers_.erase(it2);
-    auto it3 = subscription_source_observers_.find(sub_url);
-    DCHECK(it3 != subscription_source_observers_.end());
-    subscription_source_observers_.erase(it3);
   }
   ClearSubscriptionPrefs(sub_url);
 

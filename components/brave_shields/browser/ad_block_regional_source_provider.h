@@ -39,6 +39,8 @@ class AdBlockRegionalSourceProvider : public AdBlockSourceProvider {
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) override;
 
+  bool Delete() && override;
+
  private:
   friend class ::AdBlockServiceTest;
 
