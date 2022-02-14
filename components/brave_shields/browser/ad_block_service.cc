@@ -18,8 +18,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_source_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_default_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_default_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
@@ -62,19 +62,19 @@ void AdBlockServiceDomainResolver(const char* host,
 
 AdBlockService::SourceProviderObserver::SourceProviderObserver(
     base::WeakPtr<AdBlockEngine> adblock_engine,
-    AdBlockSourceProvider* source_provider,
+    AdBlockFiltersProvider* filters_provider,
     AdBlockResourceProvider* resource_provider,
     scoped_refptr<base::SequencedTaskRunner> task_runner)
     : adblock_engine_(adblock_engine),
-      source_provider_(source_provider),
+      filters_provider_(filters_provider),
       resource_provider_(resource_provider),
       task_runner_(task_runner) {
-  source_provider_->AddObserver(this);
-  source_provider_->LoadDAT(this);
+  filters_provider_->AddObserver(this);
+  filters_provider_->LoadDAT(this);
 }
 
 AdBlockService::SourceProviderObserver::~SourceProviderObserver() {
-  source_provider_->RemoveObserver(this);
+  filters_provider_->RemoveObserver(this);
   resource_provider_->RemoveObserver(this);
 }
 
@@ -257,8 +257,8 @@ AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
     regional_service_manager_ =
         brave_shields::AdBlockRegionalServiceManagerFactory(
             local_state_, locale_, component_update_service_, GetTaskRunner());
-    regional_service_manager_->Init(default_source_provider_.get(),
-                                    default_source_provider_.get());
+    regional_service_manager_->Init(default_filters_provider_.get(),
+                                    default_filters_provider_.get());
   }
   return regional_service_manager_.get();
 }
@@ -269,8 +269,8 @@ AdBlockEngine* AdBlockService::default_service() {
         std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
             new AdBlockEngine(), base::OnTaskRunnerDeleter(GetTaskRunner()));
     default_service_observer_ = std::make_unique<SourceProviderObserver>(
-        default_service_->AsWeakPtr(), default_source_provider_.get(),
-        default_source_provider_.get(), GetTaskRunner());
+        default_service_->AsWeakPtr(), default_filters_provider_.get(),
+        default_filters_provider_.get(), GetTaskRunner());
   }
   return default_service_.get();
 }
@@ -281,22 +281,21 @@ AdBlockEngine* AdBlockService::custom_filters_service() {
         std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
             new AdBlockEngine(), base::OnTaskRunnerDeleter(GetTaskRunner()));
     custom_filters_service_observer_ = std::make_unique<SourceProviderObserver>(
-        custom_filters_service_->AsWeakPtr(),
-        custom_filters_source_provider_.get(), default_source_provider_.get(),
-        GetTaskRunner());
+        custom_filters_service_->AsWeakPtr(), custom_filters_provider_.get(),
+        default_filters_provider_.get(), GetTaskRunner());
   }
   return custom_filters_service_.get();
 }
 
-brave_shields::AdBlockCustomFiltersSourceProvider*
-AdBlockService::custom_filters_source_provider() {
-  return custom_filters_source_provider_.get();
+brave_shields::AdBlockCustomFiltersProvider*
+AdBlockService::custom_filters_provider() {
+  return custom_filters_provider_.get();
 }
 
 brave_shields::AdBlockSubscriptionServiceManager*
 AdBlockService::subscription_service_manager() {
   if (!subscription_service_manager_->IsInitialized()) {
-    subscription_service_manager_->Init(default_source_provider_.get());
+    subscription_service_manager_->Init(default_filters_provider_.get());
   }
   return subscription_service_manager_.get();
 }
@@ -315,11 +314,11 @@ AdBlockService::AdBlockService(
       custom_filters_service_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
       default_service_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
       subscription_service_manager_(std::move(subscription_service_manager)) {
-  default_source_provider_ =
-      std::make_unique<brave_shields::AdBlockDefaultSourceProvider>(
+  default_filters_provider_ =
+      std::make_unique<brave_shields::AdBlockDefaultFiltersProvider>(
           component_update_service_);
-  custom_filters_source_provider_ =
-      std::make_unique<brave_shields::AdBlockCustomFiltersSourceProvider>(
+  custom_filters_provider_ =
+      std::make_unique<brave_shields::AdBlockCustomFiltersProvider>(
           local_state_);
 }
 
@@ -360,7 +359,7 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
 }
 
 void AdBlockService::UseSourceProvidersForTest(
-    AdBlockSourceProvider* source_provider,
+    AdBlockFiltersProvider* source_provider,
     AdBlockResourceProvider* resource_provider) {
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
       default_service_->AsWeakPtr(), source_provider, resource_provider,
@@ -368,7 +367,7 @@ void AdBlockService::UseSourceProvidersForTest(
 }
 
 void AdBlockService::UseCustomSourceProvidersForTest(
-    AdBlockSourceProvider* source_provider,
+    AdBlockFiltersProvider* source_provider,
     AdBlockResourceProvider* resource_provider) {
   custom_filters_service_observer_ = std::make_unique<SourceProviderObserver>(
       custom_filters_service_->AsWeakPtr(), source_provider, resource_provider,

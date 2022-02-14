@@ -3,19 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/test_source_provider.h"
+#include "brave/components/brave_shields/browser/test_filters_provider.h"
 
 #include <string>
 #include <utility>
 
 namespace brave_shields {
 
-TestSourceProvider::TestSourceProvider(const std::string& rules,
-                                       const std::string& resources)
+TestFiltersProvider::TestFiltersProvider(const std::string& rules,
+                                         const std::string& resources)
     : rules_(rules), resources_(resources) {}
 
-TestSourceProvider::TestSourceProvider(const base::FilePath& dat_location,
-                                       const std::string& resources)
+TestFiltersProvider::TestFiltersProvider(const base::FilePath& dat_location,
+                                         const std::string& resources)
     : resources_(resources) {
   CHECK(!dat_location.empty());
 
@@ -24,9 +24,9 @@ TestSourceProvider::TestSourceProvider(const base::FilePath& dat_location,
   CHECK(!dat_buffer_.empty());
 }
 
-TestSourceProvider::~TestSourceProvider() {}
+TestFiltersProvider::~TestFiltersProvider() {}
 
-void TestSourceProvider::LoadDATBuffer(
+void TestFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (dat_buffer_.empty()) {
@@ -37,7 +37,7 @@ void TestSourceProvider::LoadDATBuffer(
   }
 }
 
-void TestSourceProvider::LoadResources(
+void TestFiltersProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
   std::move(cb).Run(resources_);
 }

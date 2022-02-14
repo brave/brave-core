@@ -12,6 +12,7 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/interstitials/security_interstitial_page_test_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,12 +46,17 @@ class EphemeralStorage1pDomainBlockBrowserTest
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules,
                                       const std::string& resources = "") {
+    source_provider_ =
+        std::make_unique<brave_shields::TestFiltersProvider>(rules, resources);
+
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
     ad_block_service->GetTaskRunner()->PostTask(
         FROM_HERE,
-        base::BindOnce(&brave_shields::AdBlockService::ResetForTest,
-                       base::Unretained(ad_block_service), rules, resources));
+        base::BindOnce(
+            &brave_shields::AdBlockService::UseSourceProvidersForTest,
+            base::Unretained(ad_block_service), source_provider_.get(),
+            source_provider_.get()));
     WaitForAdBlockServiceThreads();
   }
 
@@ -160,6 +166,7 @@ class EphemeralStorage1pDomainBlockBrowserTest
   }
 
  protected:
+  std::unique_ptr<brave_shields::TestFiltersProvider> source_provider_;
   base::test::ScopedFeatureList scoped_feature_list_;
   GURL a_site_simple_url_;
   GURL b_site_simple_url_;

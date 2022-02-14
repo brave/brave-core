@@ -18,7 +18,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_download_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
-#include "brave/components/brave_shields/browser/test_source_provider.h"
+#include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "brave/test/base/testing_brave_browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/chrome_paths.h"
@@ -32,7 +32,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 using brave::ResponseCallback;
-using brave_shields::TestSourceProvider;
+using brave_shields::TestFiltersProvider;
 
 namespace {
 
@@ -129,9 +129,9 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
   }
 
   void ResetAdblockInstance(std::string rules, std::string resources) {
-    source_provider_ = std::make_unique<TestSourceProvider>(rules, resources);
+    filters_provider_ = std::make_unique<TestFiltersProvider>(rules, resources);
     g_brave_browser_process->ad_block_service()->UseSourceProvidersForTest(
-        source_provider_.get(), source_provider_.get());
+        filters_provider_.get(), filters_provider_.get());
   }
 
   // Returns true if the request handler deferred control back to the calling
@@ -165,7 +165,7 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
 
   std::unique_ptr<StubResolverConfigReader> stub_resolver_config_reader_;
 
-  std::unique_ptr<TestSourceProvider> source_provider_;
+  std::unique_ptr<TestFiltersProvider> filters_provider_;
 
  private:
   std::unique_ptr<network::HostResolver> resolver_wrapper_;

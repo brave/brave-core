@@ -29,15 +29,14 @@ class EphemeralStorageService;
 namespace brave_shields {
 
 class AdBlockService;
-class AdBlockCustomFiltersSourceProvider;
+class AdBlockCustomFiltersProvider;
 
 class DomainBlockNavigationThrottle : public content::NavigationThrottle {
  public:
   explicit DomainBlockNavigationThrottle(
       content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
-      AdBlockCustomFiltersSourceProvider*
-          ad_block_custom_filters_source_provider,
+      AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       HostContentSettingsMap* content_settings,
       const std::string& locale);
@@ -50,8 +49,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
   static std::unique_ptr<DomainBlockNavigationThrottle> MaybeCreateThrottleFor(
       content::NavigationHandle* navigation_handle,
       AdBlockService* ad_block_service,
-      AdBlockCustomFiltersSourceProvider*
-          ad_block_custom_filters_source_provider,
+      AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       HostContentSettingsMap* content_settings,
       const std::string& locale);
@@ -70,8 +68,7 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
   void Enable1PESAndResume();
 
   AdBlockService* ad_block_service_ = nullptr;
-  AdBlockCustomFiltersSourceProvider* ad_block_custom_filters_source_provider_ =
-      nullptr;
+  AdBlockCustomFiltersProvider* ad_block_custom_filters_provider_ = nullptr;
   ephemeral_storage::EphemeralStorageService* ephemeral_storage_service_ =
       nullptr;
   HostContentSettingsMap* content_settings_ = nullptr;

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TEST_SOURCE_PROVIDER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TEST_SOURCE_PROVIDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TEST_FILTERS_PROVIDER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TEST_FILTERS_PROVIDER_H_
 
 #include <string>
 #include <vector>
@@ -12,20 +12,20 @@
 #include "base/callback.h"
 #include "base/files/file_path.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_resource_provider.h"
-#include "brave/components/brave_shields/browser/ad_block_source_provider.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
 namespace brave_shields {
 
-class TestSourceProvider : public AdBlockSourceProvider,
-                           public AdBlockResourceProvider {
+class TestFiltersProvider : public AdBlockFiltersProvider,
+                            public AdBlockResourceProvider {
  public:
-  TestSourceProvider(const std::string& rules, const std::string& resources);
-  TestSourceProvider(const base::FilePath& dat_location,
-                     const std::string& resources);
-  ~TestSourceProvider() override;
+  TestFiltersProvider(const std::string& rules, const std::string& resources);
+  TestFiltersProvider(const base::FilePath& dat_location,
+                      const std::string& resources);
+  ~TestFiltersProvider() override;
 
   void LoadDATBuffer(
       base::OnceCallback<void(bool deserialize,
@@ -42,4 +42,4 @@ class TestSourceProvider : public AdBlockSourceProvider,
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TEST_SOURCE_PROVIDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TEST_FILTERS_PROVIDER_H_

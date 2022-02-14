@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_regional_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_filters_provider.h"
 
 #include <memory>
 #include <string>
@@ -18,7 +18,7 @@
 
 namespace brave_shields {
 
-AdBlockRegionalSourceProvider::AdBlockRegionalSourceProvider(
+AdBlockRegionalFiltersProvider::AdBlockRegionalFiltersProvider(
     component_updater::ComponentUpdateService* cus,
     const adblock::FilterList& catalog_entry)
     : uuid_(catalog_entry.uuid),
@@ -29,14 +29,14 @@ AdBlockRegionalSourceProvider::AdBlockRegionalSourceProvider(
     RegisterAdBlockRegionalComponent(
         component_updater_service_, catalog_entry.base64_public_key,
         component_id_, catalog_entry.title,
-        base::BindRepeating(&AdBlockRegionalSourceProvider::OnComponentReady,
+        base::BindRepeating(&AdBlockRegionalFiltersProvider::OnComponentReady,
                             weak_factory_.GetWeakPtr()));
   }
 }
 
-AdBlockRegionalSourceProvider::~AdBlockRegionalSourceProvider() {}
+AdBlockRegionalFiltersProvider::~AdBlockRegionalFiltersProvider() {}
 
-void AdBlockRegionalSourceProvider::OnComponentReady(
+void AdBlockRegionalFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
   component_path_ = path;
 
@@ -47,11 +47,11 @@ void AdBlockRegionalSourceProvider::OnComponentReady(
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData, dat_file_path),
-      base::BindOnce(&AdBlockRegionalSourceProvider::OnDATLoaded,
+      base::BindOnce(&AdBlockRegionalFiltersProvider::OnDATLoaded,
                      weak_factory_.GetWeakPtr(), true));
 }
 
-void AdBlockRegionalSourceProvider::LoadDATBuffer(
+void AdBlockRegionalFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (component_path_.empty()) {
@@ -70,7 +70,7 @@ void AdBlockRegionalSourceProvider::LoadDATBuffer(
       base::BindOnce(std::move(cb), true));
 }
 
-bool AdBlockRegionalSourceProvider::Delete() && {
+bool AdBlockRegionalFiltersProvider::Delete() && {
   return component_updater_service_->UnregisterComponent(component_id_);
 }
 

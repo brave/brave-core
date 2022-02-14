@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_SOURCE_PROVIDER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_SOURCE_PROVIDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_FILTERS_PROVIDER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_FILTERS_PROVIDER_H_
 
 #include "base/callback.h"
 #include "base/memory/weak_ptr.h"
@@ -15,7 +15,9 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace brave_shields {
 
-class AdBlockSourceProvider {
+// Interface for any source that can load filters or serialized filter data
+// into an adblock engine.
+class AdBlockFiltersProvider {
  public:
   class Observer : public base::CheckedObserver {
    public:
@@ -23,10 +25,10 @@ class AdBlockSourceProvider {
                              const DATFileDataBuffer& dat_buf) = 0;
   };
 
-  AdBlockSourceProvider();
-  AdBlockSourceProvider(const AdBlockSourceProvider&) = delete;
-  AdBlockSourceProvider& operator=(const AdBlockSourceProvider&) = delete;
-  virtual ~AdBlockSourceProvider();
+  AdBlockFiltersProvider();
+  AdBlockFiltersProvider(const AdBlockFiltersProvider&) = delete;
+  AdBlockFiltersProvider& operator=(const AdBlockFiltersProvider&) = delete;
+  virtual ~AdBlockFiltersProvider();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -40,16 +42,16 @@ class AdBlockSourceProvider {
       base::OnceCallback<void(bool deserialize,
                               const DATFileDataBuffer& dat_buf)>) = 0;
 
-  void OnLoad(AdBlockSourceProvider::Observer* observer,
+  void OnLoad(AdBlockFiltersProvider::Observer* observer,
               bool deserialize,
               const DATFileDataBuffer& dat_buf);
   void OnDATLoaded(bool deserialize, const DATFileDataBuffer& dat_buf);
 
  private:
   base::ObserverList<Observer> observers_;
-  base::WeakPtrFactory<AdBlockSourceProvider> weak_factory_{this};
+  base::WeakPtrFactory<AdBlockFiltersProvider> weak_factory_{this};
 };
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_SOURCE_PROVIDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_FILTERS_PROVIDER_H_

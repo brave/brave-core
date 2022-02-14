@@ -38,7 +38,7 @@ class JSONValueConverter;
 namespace brave_shields {
 class AdBlockResourceProvider;
 class AdBlockSubscriptionServiceManagerObserver;
-class AdBlockSubscriptionSourceProvider;
+class AdBlockSubscriptionFiltersProvider;
 }  // namespace brave_shields
 
 class AdBlockServiceTest;
@@ -155,8 +155,8 @@ class AdBlockSubscriptionServiceManager {
 
   std::map<GURL, std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>>
       subscription_services_;
-  std::map<GURL, std::unique_ptr<AdBlockSubscriptionSourceProvider>>
-      subscription_source_providers_;
+  std::map<GURL, std::unique_ptr<AdBlockSubscriptionFiltersProvider>>
+      subscription_filters_providers_;
   std::map<GURL, std::unique_ptr<AdBlockService::SourceProviderObserver>>
       subscription_source_observers_;
   std::unique_ptr<component_updater::TimerUpdateScheduler>

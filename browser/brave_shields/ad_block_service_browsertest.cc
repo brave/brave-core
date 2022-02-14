@@ -23,7 +23,8 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_component_installer.h"
-#include "brave/components/brave_shields/browser/ad_block_default_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_default_filters_provider.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
@@ -108,7 +109,7 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
     const std::string& rules,
     const std::string& resources) {
   auto source_provider =
-      std::make_unique<brave_shields::TestSourceProvider>(rules, resources);
+      std::make_unique<brave_shields::TestFiltersProvider>(rules, resources);
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
@@ -124,10 +125,10 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
 }
 
 void AdBlockServiceTest::UpdateAdBlockInstanceWithDAT(
-    base::FilePath dat_location,
-    std::string resources) {
+    const base::FilePath& dat_location,
+    const std::string& resources) {
   base::ScopedAllowBlockingForTesting allow_blocking;
-  auto source_provider = std::make_unique<brave_shields::TestSourceProvider>(
+  auto source_provider = std::make_unique<brave_shields::TestFiltersProvider>(
       dat_location, resources);
 
   brave_shields::AdBlockService* ad_block_service =
@@ -147,7 +148,7 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
     const std::string& rules,
     const std::string& resources) {
   auto source_provider =
-      std::make_unique<brave_shields::TestSourceProvider>(rules, resources);
+      std::make_unique<brave_shields::TestFiltersProvider>(rules, resources);
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
@@ -204,7 +205,7 @@ bool AdBlockServiceTest::InstallDefaultAdBlockExtension(
     return false;
 
   g_brave_browser_process->ad_block_service()
-      ->default_source_provider_->OnComponentReady(ad_block_extension->path());
+      ->default_filters_provider_->OnComponentReady(ad_block_extension->path());
   WaitForAdBlockServiceThreads();
 
   return true;
@@ -239,10 +240,10 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
                 ->regional_services_.size(),
             1ULL);
 
-  auto regional_source_provider = g_brave_browser_process->ad_block_service()
-                                      ->regional_service_manager()
-                                      ->regional_source_providers_.find(uuid);
-  regional_source_provider->second->OnComponentReady(
+  auto regional_filters_provider = g_brave_browser_process->ad_block_service()
+                                       ->regional_service_manager()
+                                       ->regional_filters_providers_.find(uuid);
+  regional_filters_provider->second->OnComponentReady(
       ad_block_extension->path());
   WaitForAdBlockServiceThreads();
 
@@ -277,12 +278,6 @@ void AdBlockServiceTest::WaitForBraveExtensionShieldsDataReady() {
 
 void AdBlockServiceTest::ShieldsDown(const GURL& url) {
   brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
-}
-
-void AdBlockServiceTest::EnableRedirectUrlParsing() {
-  g_brave_browser_process->ad_block_service()
-      ->default_service()
-      ->EnableRedirectUrlParsingForTest();
 }
 
 // Load a page with an ad image, and make sure it is blocked.
@@ -1907,7 +1902,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
 // Test cosmetic filtering on elements added dynamically, using a rule from the
 // custom filters
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamicCustom) {
-  ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
+  ASSERT_TRUE(g_brave_browser_process->ad_block_service()
+                  ->custom_filters_provider()
                   ->UpdateCustomFilters("##.blockme"));
 
   WaitForBraveExtensionShieldsDataReady();
@@ -2183,13 +2179,14 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest,
       "hwI1lqfKbFnyr4aP"
       "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
       "Removes advertisements from French websites"));
-  g_brave_browser_process->ad_block_regional_service_manager()
+  g_brave_browser_process->ad_block_service()
+      ->regional_service_manager()
       ->SetRegionalCatalog(regional_catalog);
 
   {
-    const auto lists =
-        g_brave_browser_process->ad_block_regional_service_manager()
-            ->GetRegionalLists();
+    const auto lists = g_brave_browser_process->ad_block_service()
+                           ->regional_service_manager()
+                           ->GetRegionalLists();
     // Although never explicitly enabled, it should be presented as enabled by
     // default at first.
     ASSERT_EQ(1UL, lists->GetList().size());
@@ -2197,17 +2194,19 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest,
   }
 
   // Enable the filter list, and then disable it again.
-  g_brave_browser_process->ad_block_regional_service_manager()
+  g_brave_browser_process->ad_block_service()
+      ->regional_service_manager()
       ->EnableFilterList(brave_shields::kCookieListUuid, true);
-  g_brave_browser_process->ad_block_regional_service_manager()
+  g_brave_browser_process->ad_block_service()
+      ->regional_service_manager()
       ->EnableFilterList(brave_shields::kCookieListUuid, false);
 
   WaitForBraveExtensionShieldsDataReady();
 
   {
-    const auto lists =
-        g_brave_browser_process->ad_block_regional_service_manager()
-            ->GetRegionalLists();
+    const auto lists = g_brave_browser_process->ad_block_service()
+                           ->regional_service_manager()
+                           ->GetRegionalLists();
     // It should be actually disabled now.
     ASSERT_EQ(1UL, lists->GetList().size());
     EXPECT_EQ(false, lists->GetList()[0].FindKey("enabled")->GetBool());

@@ -12,7 +12,7 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/test_source_provider.h"
+#include "brave/components/brave_shields/browser/test_filters_provider.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -39,7 +39,7 @@ uint64_t getProfileAdsBlocked(Browser* browser) {
 
 }  // namespace
 
-using brave_shields::TestSourceProvider;
+using brave_shields::TestFiltersProvider;
 
 class PerfPredictorTabHelperTest : public InProcessBrowserTest {
  public:
@@ -71,7 +71,7 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
   }
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules) {
-    source_provider_ = std::make_unique<TestSourceProvider>(rules, "");
+    filters_provider_ = std::make_unique<TestFiltersProvider>(rules, "");
 
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
@@ -80,8 +80,8 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
         FROM_HERE,
         base::BindOnce(
             &brave_shields::AdBlockService::UseSourceProvidersForTest,
-            base::Unretained(ad_block_service), source_provider_.get(),
-            source_provider_.get()));
+            base::Unretained(ad_block_service), filters_provider_.get(),
+            filters_provider_.get()));
 
     WaitForAdBlockServiceThreads();
   }
@@ -92,7 +92,7 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
     ASSERT_TRUE(tr_helper->Run());
   }
 
-  std::unique_ptr<TestSourceProvider> source_provider_;
+  std::unique_ptr<TestFiltersProvider> filters_provider_;
 };
 
 IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {

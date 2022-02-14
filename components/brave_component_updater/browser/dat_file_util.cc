@@ -12,16 +12,10 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 
-namespace brave_component_updater {
-
-DATFileDataBuffer ReadDATFileData(const base::FilePath& dat_file_path) {
-  DATFileDataBuffer buffer;
-  GetDATFileData(dat_file_path, &buffer);
-  return buffer;
-}
+namespace {
 
 void GetDATFileData(const base::FilePath& file_path,
-                    DATFileDataBuffer* buffer) {
+                    brave_component_updater::DATFileDataBuffer* buffer) {
   int64_t size = 0;
   if (!base::PathExists(file_path) ||
       !base::GetFileSize(file_path, &size) ||
@@ -39,6 +33,16 @@ void GetDATFileData(const base::FilePath& file_path,
     LOG(ERROR) << "GetDATFileData: cannot "
                << "read dat file " << file_path;
   }
+}
+
+}  // namespace
+
+namespace brave_component_updater {
+
+DATFileDataBuffer ReadDATFileData(const base::FilePath& dat_file_path) {
+  DATFileDataBuffer buffer;
+  GetDATFileData(dat_file_path, &buffer);
+  return buffer;
 }
 
 std::string GetDATFileAsString(const base::FilePath& file_path) {

@@ -17,7 +17,6 @@ namespace brave_component_updater {
 
 using DATFileDataBuffer = std::vector<unsigned char>;
 
-void GetDATFileData(const base::FilePath& file_path, DATFileDataBuffer* buffer);
 std::string GetDATFileAsString(const base::FilePath& file_path);
 
 DATFileDataBuffer ReadDATFileData(const base::FilePath& dat_file_path);

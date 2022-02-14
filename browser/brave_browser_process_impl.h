@@ -34,8 +34,6 @@ class LocalDataFilesService;
 
 namespace brave_shields {
 class AdBlockService;
-class AdBlockCustomFiltersSourceProvider;
-class AdBlockRegionalServiceManager;
 class HTTPSEverywhereService;
 }  // namespace brave_shields
 

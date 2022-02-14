@@ -59,11 +59,11 @@ std::unique_ptr<DomainBlockNavigationThrottle>
 DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
     content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
-    AdBlockCustomFiltersSourceProvider* ad_block_custom_filters_source_provider,
+    AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     HostContentSettingsMap* content_settings,
     const std::string& locale) {
-  if (!ad_block_service || !ad_block_custom_filters_source_provider)
+  if (!ad_block_service || !ad_block_custom_filters_provider)
     return nullptr;
   if (!base::FeatureList::IsEnabled(brave_shields::features::kBraveDomainBlock))
     return nullptr;
@@ -71,22 +71,20 @@ DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
   if (!navigation_handle->IsInMainFrame())
     return nullptr;
   return std::make_unique<DomainBlockNavigationThrottle>(
-      navigation_handle, ad_block_service,
-      ad_block_custom_filters_source_provider, ephemeral_storage_service,
-      content_settings, locale);
+      navigation_handle, ad_block_service, ad_block_custom_filters_provider,
+      ephemeral_storage_service, content_settings, locale);
 }
 
 DomainBlockNavigationThrottle::DomainBlockNavigationThrottle(
     content::NavigationHandle* navigation_handle,
     AdBlockService* ad_block_service,
-    AdBlockCustomFiltersSourceProvider* ad_block_custom_filters_source_provider,
+    AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
     HostContentSettingsMap* content_settings,
     const std::string& locale)
     : content::NavigationThrottle(navigation_handle),
       ad_block_service_(ad_block_service),
-      ad_block_custom_filters_source_provider_(
-          ad_block_custom_filters_source_provider),
+      ad_block_custom_filters_provider_(ad_block_custom_filters_provider),
       ephemeral_storage_service_(ephemeral_storage_service),
       content_settings_(content_settings),
       locale_(locale) {
@@ -193,7 +191,7 @@ void DomainBlockNavigationThrottle::ShowInterstitial() {
   // The controller client implements the actual logic to "go back" or "proceed"
   // from the interstitial.
   auto controller_client = std::make_unique<DomainBlockControllerClient>(
-      web_contents, request_url, ad_block_custom_filters_source_provider_,
+      web_contents, request_url, ad_block_custom_filters_provider_,
       ephemeral_storage_service_, pref_service, locale_);
 
   // This handles populating the HTML template of the interstitial page with

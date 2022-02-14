@@ -877,7 +877,7 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
           brave_shields::DomainBlockNavigationThrottle::MaybeCreateThrottleFor(
               handle, g_brave_browser_process->ad_block_service(),
               g_brave_browser_process->ad_block_service()
-                  ->custom_filters_source_provider(),
+                  ->custom_filters_provider(),
               EphemeralStorageServiceFactory::GetForContext(context),
               HostContentSettingsMapFactory::GetForProfile(
                   Profile::FromBrowserContext(context)),

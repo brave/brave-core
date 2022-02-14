@@ -28,7 +28,7 @@ class EphemeralStorageService;
 
 namespace brave_shields {
 
-class AdBlockCustomFiltersSourceProvider;
+class AdBlockCustomFiltersProvider;
 
 class DomainBlockControllerClient
     : public security_interstitials::SecurityInterstitialControllerClient {
@@ -39,8 +39,7 @@ class DomainBlockControllerClient
   DomainBlockControllerClient(
       content::WebContents* web_contents,
       const GURL& request_url,
-      AdBlockCustomFiltersSourceProvider*
-          ad_block_custom_filters_source_provider,
+      AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
       PrefService* prefs,
       const std::string& locale);
@@ -61,8 +60,8 @@ class DomainBlockControllerClient
   void OnCanEnable1PESForUrl(bool can_enable_1pes);
 
   const GURL request_url_;
-  raw_ptr<AdBlockCustomFiltersSourceProvider>
-      ad_block_custom_filters_source_provider_ = nullptr;
+  raw_ptr<AdBlockCustomFiltersProvider> ad_block_custom_filters_provider_ =
+      nullptr;
   raw_ptr<ephemeral_storage::EphemeralStorageService>
       ephemeral_storage_service_ = nullptr;
   bool dont_warn_again_;

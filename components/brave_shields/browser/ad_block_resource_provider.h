@@ -17,6 +17,8 @@ using brave_component_updater::DATFileDataBuffer;
 
 namespace brave_shields {
 
+// Interface for any source that can load resource replacements into an adblock
+// engine.
 class AdBlockResourceProvider {
  public:
   class Observer : public base::CheckedObserver {

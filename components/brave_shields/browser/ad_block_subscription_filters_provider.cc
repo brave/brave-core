@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_subscription_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_subscription_filters_provider.h"
 
 #include <utility>
 
@@ -16,14 +16,14 @@
 
 namespace brave_shields {
 
-AdBlockSubscriptionSourceProvider::AdBlockSubscriptionSourceProvider(
+AdBlockSubscriptionFiltersProvider::AdBlockSubscriptionFiltersProvider(
     PrefService* local_state,
     base::FilePath list_file)
     : list_file_(list_file) {}
 
-AdBlockSubscriptionSourceProvider::~AdBlockSubscriptionSourceProvider() {}
+AdBlockSubscriptionFiltersProvider::~AdBlockSubscriptionFiltersProvider() {}
 
-void AdBlockSubscriptionSourceProvider::LoadDATBuffer(
+void AdBlockSubscriptionFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   base::ThreadPool::PostTaskAndReplyWithResult(

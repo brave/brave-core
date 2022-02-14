@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_CUSTOM_FILTERS_SOURCE_PROVIDER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_CUSTOM_FILTERS_SOURCE_PROVIDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_CUSTOM_FILTERS_PROVIDER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_CUSTOM_FILTERS_PROVIDER_H_
 
 #include <string>
 
-#include "base/sequence_checker.h"
 #include "base/callback.h"
+#include "base/sequence_checker.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_shields/browser/ad_block_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -19,10 +19,13 @@ class PrefService;
 
 namespace brave_shields {
 
-class AdBlockCustomFiltersSourceProvider : public AdBlockSourceProvider {
+class AdBlockCustomFiltersProvider : public AdBlockFiltersProvider {
  public:
-  explicit AdBlockCustomFiltersSourceProvider(PrefService* local_state);
-  ~AdBlockCustomFiltersSourceProvider() override;
+  explicit AdBlockCustomFiltersProvider(PrefService* local_state);
+  ~AdBlockCustomFiltersProvider() override;
+  AdBlockCustomFiltersProvider(const AdBlockCustomFiltersProvider&) = delete;
+  AdBlockCustomFiltersProvider& operator=(const AdBlockCustomFiltersProvider&) =
+      delete;
 
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
@@ -35,13 +38,8 @@ class AdBlockCustomFiltersSourceProvider : public AdBlockSourceProvider {
   PrefService* local_state_;
 
   SEQUENCE_CHECKER(sequence_checker_);
-
-  AdBlockCustomFiltersSourceProvider(
-      const AdBlockCustomFiltersSourceProvider&) = delete;
-  AdBlockCustomFiltersSourceProvider& operator=(
-      const AdBlockCustomFiltersSourceProvider&) = delete;
 };
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_CUSTOM_FILTERS_SOURCE_PROVIDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_CUSTOM_FILTERS_PROVIDER_H_

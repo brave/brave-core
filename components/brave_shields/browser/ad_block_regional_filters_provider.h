@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_SOURCE_PROVIDER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_SOURCE_PROVIDER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_FILTERS_PROVIDER_H_
+#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_FILTERS_PROVIDER_H_
 
 #include <string>
 
@@ -12,10 +12,8 @@
 #include "base/observer_list.h"
 #include "brave/components/adblock_rust_ffi/src/wrapper.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_shields/browser/ad_block_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_filters_provider.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
-
-using brave_component_updater::DATFileDataBuffer;
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -29,15 +27,20 @@ class AdBlockServiceTest;
 
 namespace brave_shields {
 
-class AdBlockRegionalSourceProvider : public AdBlockSourceProvider {
+class AdBlockRegionalFiltersProvider : public AdBlockFiltersProvider {
  public:
-  AdBlockRegionalSourceProvider(component_updater::ComponentUpdateService* cus,
-                                const adblock::FilterList& catalog_entry);
-  ~AdBlockRegionalSourceProvider() override;
+  AdBlockRegionalFiltersProvider(component_updater::ComponentUpdateService* cus,
+                                 const adblock::FilterList& catalog_entry);
+  ~AdBlockRegionalFiltersProvider() override;
+  AdBlockRegionalFiltersProvider(const AdBlockRegionalFiltersProvider&) =
+      delete;
+  AdBlockRegionalFiltersProvider& operator=(
+      const AdBlockRegionalFiltersProvider&) = delete;
 
   void LoadDATBuffer(
-      base::OnceCallback<void(bool deserialize,
-                              const DATFileDataBuffer& dat_buf)>) override;
+      base::OnceCallback<void(
+          bool deserialize,
+          const brave_component_updater::DATFileDataBuffer& dat_buf)>) override;
 
   bool Delete() && override;
 
@@ -51,13 +54,9 @@ class AdBlockRegionalSourceProvider : public AdBlockSourceProvider {
   std::string component_id_;
   component_updater::ComponentUpdateService* component_updater_service_;
 
-  base::WeakPtrFactory<AdBlockRegionalSourceProvider> weak_factory_{this};
-
-  AdBlockRegionalSourceProvider(const AdBlockRegionalSourceProvider&) = delete;
-  AdBlockRegionalSourceProvider& operator=(
-      const AdBlockRegionalSourceProvider&) = delete;
+  base::WeakPtrFactory<AdBlockRegionalFiltersProvider> weak_factory_{this};
 };
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_SOURCE_PROVIDER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_AD_BLOCK_REGIONAL_FILTERS_PROVIDER_H_

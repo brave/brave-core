@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_default_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_default_filters_provider.h"
 
 #include <memory>
 #include <string>
@@ -21,20 +21,20 @@ const char kAdBlockResourcesFilename[] = "resources.json";
 
 namespace brave_shields {
 
-AdBlockDefaultSourceProvider::AdBlockDefaultSourceProvider(
+AdBlockDefaultFiltersProvider::AdBlockDefaultFiltersProvider(
     component_updater::ComponentUpdateService* cus) {
   // Can be nullptr in unit tests
   if (cus) {
     RegisterAdBlockDefaultComponent(
         cus,
-        base::BindRepeating(&AdBlockDefaultSourceProvider::OnComponentReady,
+        base::BindRepeating(&AdBlockDefaultFiltersProvider::OnComponentReady,
                             weak_factory_.GetWeakPtr()));
   }
 }
 
-AdBlockDefaultSourceProvider::~AdBlockDefaultSourceProvider() {}
+AdBlockDefaultFiltersProvider::~AdBlockDefaultFiltersProvider() {}
 
-void AdBlockDefaultSourceProvider::OnComponentReady(
+void AdBlockDefaultFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
   component_path_ = path;
 
@@ -43,7 +43,7 @@ void AdBlockDefaultSourceProvider::OnComponentReady(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::ReadDATFileData,
                      component_path_.AppendASCII(DAT_FILE)),
-      base::BindOnce(&AdBlockDefaultSourceProvider::OnDATLoaded,
+      base::BindOnce(&AdBlockDefaultFiltersProvider::OnDATLoaded,
                      weak_factory_.GetWeakPtr(), true));
 
   // Load the resources (as a string)
@@ -51,7 +51,7 @@ void AdBlockDefaultSourceProvider::OnComponentReady(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      component_path_.AppendASCII(kAdBlockResourcesFilename)),
-      base::BindOnce(&AdBlockDefaultSourceProvider::OnResourcesLoaded,
+      base::BindOnce(&AdBlockDefaultFiltersProvider::OnResourcesLoaded,
                      weak_factory_.GetWeakPtr()));
 
   // Load the regional catalog (as a string)
@@ -59,11 +59,11 @@ void AdBlockDefaultSourceProvider::OnComponentReady(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&brave_component_updater::GetDATFileAsString,
                      component_path_.AppendASCII(REGIONAL_CATALOG)),
-      base::BindOnce(&AdBlockDefaultSourceProvider::OnRegionalCatalogLoaded,
+      base::BindOnce(&AdBlockDefaultFiltersProvider::OnRegionalCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
 }
 
-void AdBlockDefaultSourceProvider::LoadDATBuffer(
+void AdBlockDefaultFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   if (component_path_.empty()) {
@@ -79,7 +79,7 @@ void AdBlockDefaultSourceProvider::LoadDATBuffer(
       base::BindOnce(std::move(cb), true));
 }
 
-void AdBlockDefaultSourceProvider::LoadResources(
+void AdBlockDefaultFiltersProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
   if (component_path_.empty()) {
     // If the path is not ready yet, don't run the callback. An update should be
@@ -94,7 +94,7 @@ void AdBlockDefaultSourceProvider::LoadResources(
       std::move(cb));
 }
 
-void AdBlockDefaultSourceProvider::LoadRegionalCatalog(
+void AdBlockDefaultFiltersProvider::LoadRegionalCatalog(
     base::OnceCallback<void(const std::string& catalog_json)> cb) {
   if (component_path_.empty()) {
     // If the path is not ready yet, don't run the callback. An update should be

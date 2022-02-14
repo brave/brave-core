@@ -33,7 +33,7 @@ class PerfPredictorTabHelperTest;
 
 namespace brave_shields {
 
-// Brave Shields service managing an adblock engine.
+// Service managing an adblock engine.
 class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
  public:
   using GetDATFileDataResult =
@@ -60,8 +60,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);
 
-  absl::optional<base::Value> UrlCosmeticResources(
-      const std::string& url);
+  absl::optional<base::Value> UrlCosmeticResources(const std::string& url);
   base::Value HiddenClassIdSelectors(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,

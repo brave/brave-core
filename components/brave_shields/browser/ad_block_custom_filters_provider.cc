@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_source_provider.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_provider.h"
 
 #include <utility>
 #include <vector>
@@ -14,20 +14,20 @@
 
 namespace brave_shields {
 
-AdBlockCustomFiltersSourceProvider::AdBlockCustomFiltersSourceProvider(
+AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state)
     : local_state_(local_state) {}
 
-AdBlockCustomFiltersSourceProvider::~AdBlockCustomFiltersSourceProvider() {}
+AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
 
-std::string AdBlockCustomFiltersSourceProvider::GetCustomFilters() {
+std::string AdBlockCustomFiltersProvider::GetCustomFilters() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
     return std::string();
   return local_state_->GetString(prefs::kAdBlockCustomFilters);
 }
 
-bool AdBlockCustomFiltersSourceProvider::UpdateCustomFilters(
+bool AdBlockCustomFiltersProvider::UpdateCustomFilters(
     const std::string& custom_filters) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!local_state_)
@@ -41,7 +41,7 @@ bool AdBlockCustomFiltersSourceProvider::UpdateCustomFilters(
   return true;
 }
 
-void AdBlockCustomFiltersSourceProvider::LoadDATBuffer(
+void AdBlockCustomFiltersProvider::LoadDATBuffer(
     base::OnceCallback<void(bool deserialize, const DATFileDataBuffer& dat_buf)>
         cb) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
