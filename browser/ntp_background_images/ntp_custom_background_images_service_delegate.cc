@@ -28,10 +28,11 @@ bool NTPCustomBackgroundImagesServiceDelegate::IsCustomBackgroundEnabled() {
   if (prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict))
     return false;
 
-  return prefs->GetBoolean(kNTPCustomBackgroundEnabled);
+  return prefs->GetBoolean(kNewTabPageCustomBackgroundEnabled);
 }
 
-base::FilePath NTPCustomBackgroundImagesServiceDelegate::GetCustomBackgroundImageLocalFilePath() {
+base::FilePath NTPCustomBackgroundImagesServiceDelegate::
+    GetCustomBackgroundImageLocalFilePath() {
   if (!IsCustomBackgroundEnabled())
     return base::FilePath();
   return profile_->GetPath().AppendASCII(kSanitizedImageFileName);

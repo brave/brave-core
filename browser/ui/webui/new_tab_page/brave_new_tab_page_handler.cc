@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_page_handler.h"
 
-#include <memory>
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -14,6 +12,8 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/memory/ref_counted_memory.h"
+#include "base/task/post_task.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/ntp_background_images/constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
@@ -23,19 +23,16 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "ui/base/l10n/l10n_util.h"
-#include "url/gurl.h"
-
-#include "base/task/post_task.h"
-#include "base/task/thread_pool.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 #include "third_party/skia/include/core/SkBitmap.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image.h"
+#include "url/gurl.h"
 
 BraveNewTabPageHandler::BraveNewTabPageHandler(
     mojo::PendingReceiver<brave_new_tab_page::mojom::PageHandler>
@@ -76,8 +73,9 @@ void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
 
 void BraveNewTabPageHandler::UseBraveBackground() {
   // Call ntp custom background images service.
-  profile_->GetPrefs()->SetBoolean(kNTPCustomBackgroundEnabled, false);
+  profile_->GetPrefs()->SetBoolean(kNewTabPageCustomBackgroundEnabled, false);
   OnCustomBackgroundImageUpdated();
+  DeleteSanitizedImageFile();
 }
 
 bool BraveNewTabPageHandler::IsCustomBackgroundEnabled() const {
@@ -85,7 +83,7 @@ bool BraveNewTabPageHandler::IsCustomBackgroundEnabled() const {
   if (prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict))
     return false;
 
-  return prefs->GetBoolean(kNTPCustomBackgroundEnabled);
+  return prefs->GetBoolean(kNewTabPageCustomBackgroundEnabled);
 }
 
 void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
@@ -106,9 +104,8 @@ void BraveNewTabPageHandler::FileSelected(const base::FilePath& path,
                                           int index,
                                           void* params) {
   profile_->set_last_selected_directory(path.DirName());
-  // Convert it first and use converted image path.
-  // When finished delete it.
-  // Send image body to image decoder in isolated process.
+  // By saving sanitized image, we don't need to do it whenever
+  // NTP opens.
   ConvertSelectedImageFileAndSave(path);
   select_file_dialog_ = nullptr;
 }
@@ -168,7 +165,7 @@ void BraveNewTabPageHandler::OnSavedEncodedImage(bool success) {
   if (!success)
     return;
 
-  profile_->GetPrefs()->SetBoolean(kNTPCustomBackgroundEnabled, true);
+  profile_->GetPrefs()->SetBoolean(kNewTabPageCustomBackgroundEnabled, true);
   OnCustomBackgroundImageUpdated();
 }
 

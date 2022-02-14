@@ -19,10 +19,14 @@ source_set("ntp_custom_background_images") {
   deps = [
     "//base",
     "//brave/browser/profiles:util",
+    "//brave/common:pref_names",
     "//brave/components/ntp_background_images/browser",
-    "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common",
     "//chrome/common:constants",
     "//components/keyed_service/content",
+    "//components/prefs",
     "//components/user_prefs",
+    "//url",
   ]
 }

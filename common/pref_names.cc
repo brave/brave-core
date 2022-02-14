@@ -64,6 +64,8 @@ const char kNewTabPageShowGemini[] = "brave.new_tab_page.show_gemini";
 const char kNewTabPageShowBraveTalk[] = "brave.new_tab_page.show_together";
 const char kNewTabPageHideAllWidgets[] = "brave.new_tab_page.hide_all_widgets";
 const char kNewTabPageShowsOptions[] = "brave.new_tab_page.shows_options";
+const char kNewTabPageCustomBackgroundEnabled[] =
+    "brave.new_tab_page.custom_background_enabled";
 const char kBraveTodayIntroDismissed[] = "brave.today.intro_dismissed";
 const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
@@ -95,9 +97,6 @@ const char kTabsSearchShow[] = "brave.tabs_search_show";
 const char kDontAskForCrashReporting[] = "brave.dont_ask_for_crash_reporting";
 const char kEnableMediaRouterOnRestart[] =
     "brave.enable_media_router_on_restart";
-
-const char kNTPCustomBackgroundEnabled[] =
-    "brave.ntp_custom_background_enabled";
 
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";

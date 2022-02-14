@@ -56,6 +56,7 @@ extern const char kNewTabPageShowGemini[];
 extern const char kNewTabPageShowBraveTalk[];
 extern const char kNewTabPageHideAllWidgets[];
 extern const char kNewTabPageShowsOptions[];
+extern const char kNewTabPageCustomBackgroundEnabled[];
 extern const char kBraveTodayIntroDismissed[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
 extern const char kAutocompleteEnabled[];
@@ -93,8 +94,6 @@ extern const char kSafetynetStatus[];
 extern const char kDefaultBrowserLaunchingCount[];
 extern const char kTabsSearchShow[];
 extern const char kDontAskForCrashReporting[];
-
-extern const char kNTPCustomBackgroundEnabled[];
 
 // Cast extension requires a browser restart once the setting is toggled.
 // kEnableMediaRouterOnRestart is used as a proxy to identify the current

@@ -15,7 +15,8 @@ constexpr char kSuperReferralPath[] = "super-referral/";
 constexpr char kSponsoredImagesPath[] = "sponsored-images/";
 
 constexpr char kCustomWallpaperFileName[] = "background.jpg";
-constexpr char kCustomWallpaperURL[] = "chrome://custom-wallpaper/background.jpg";
+constexpr char kCustomWallpaperURL[] =
+    "chrome://custom-wallpaper/background.jpg";
 
 constexpr char kCampaignsKey[] = "campaigns";
 

@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/values.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
@@ -141,15 +142,15 @@ class ViewCounterService : public KeyedService,
 
   void UpdateP3AValues() const;
 
-  NTPBackgroundImagesService* service_ = nullptr;  // not owned
-  brave_ads::AdsService* ads_service_ = nullptr;  // not owned
-  PrefService* prefs_ = nullptr;  // not owned
+  raw_ptr<NTPBackgroundImagesService> service_ = nullptr;
+  raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
   bool is_supported_locale_ = false;
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;
 
   // Can be null if custom background is not supported.
-  NTPCustomBackgroundImagesService* custom_bi_service_ = nullptr;
+  raw_ptr<NTPCustomBackgroundImagesService> custom_bi_service_ = nullptr;
 
   // If P3A is enabled, these will track number of tabs created
   // and the ratio of those which are branded images.

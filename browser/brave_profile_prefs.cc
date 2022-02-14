@@ -35,6 +35,7 @@
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
+#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
@@ -329,7 +330,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       kNewTabPageShowsOptions,
       static_cast<int>(NewTabPageShowsOptions::kDashboard));
-  registry->RegisterBooleanPref(kNTPCustomBackgroundEnabled, false);
+
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+  registry->RegisterBooleanPref(kNewTabPageCustomBackgroundEnabled, false);
+#endif
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   registry->RegisterIntegerPref(kERCPrefVersion, 0);

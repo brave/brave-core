@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
 #define BRAVE_BROWSER_NTP_BACKGROUND_IMAGES_NTP_CUSTOM_BACKGROUND_IMAGES_SERVICE_DELEGATE_H_
 
+#include "base/memory/raw_ptr.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
 
 class Profile;
@@ -27,7 +28,7 @@ class NTPCustomBackgroundImagesServiceDelegate
   bool IsCustomBackgroundEnabled() override;
   base::FilePath GetCustomBackgroundImageLocalFilePath() override;
 
-  Profile* profile_ = nullptr;
+  raw_ptr<Profile> profile_ = nullptr;
 };
 
 }  // namespace ntp_background_images
