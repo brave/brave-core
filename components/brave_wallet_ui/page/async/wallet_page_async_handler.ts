@@ -32,7 +32,7 @@ import { NewUnapprovedTxAdded } from '../../common/constants/action_types'
 import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
 import { GetTokenParam } from '../../utils/api-utils'
-import { extractPublicKeyForBLS, encodeKeyToHex } from '../../common/hardware/ledgerjs/filecoin_ledger_keyring'
+import { encodeKeyToHex } from '../../common/hardware/ledgerjs/filecoin_ledger_keyring'
 
 const handler = new AsyncActionHandler()
 
@@ -114,7 +114,7 @@ handler.on(WalletPageActions.importFilecoinAccount.getType(), async (store: Stor
   const { keyringService } = getWalletPageApiProxy()
   const result = (payload.protocol === BraveWallet.FilecoinAddressProtocol.SECP256K1)
     ? await keyringService.importFilecoinSECP256K1Account(payload.accountName, encodeKeyToHex(payload.privateKey), payload.network)
-    : await keyringService.importFilecoinBLSAccount(payload.accountName, payload.privateKey, extractPublicKeyForBLS(payload.privateKey), payload.network)
+    : await keyringService.importFilecoinBLSAccount(payload.accountName, payload.privateKey, payload.network)
 
   if (result.success) {
     store.dispatch(WalletPageActions.setImportAccountError(false))

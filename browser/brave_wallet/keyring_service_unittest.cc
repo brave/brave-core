@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/components/bls/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
@@ -307,12 +308,11 @@ class KeyringServiceUnitTest : public testing::Test {
       KeyringService* service,
       const std::string& account_name,
       const std::string& private_key,
-      const std::string& public_key,
       const std::string& network) {
     absl::optional<std::string> account;
     base::RunLoop run_loop;
     service->ImportFilecoinBLSAccount(
-        account_name, private_key, public_key, network,
+        account_name, private_key, network,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {
               if (success)
@@ -2433,36 +2433,40 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
     const char* type;
     const char* public_key;
   } imported_accounts[] = {
-      {"Imported Filecoin account 1",
-       /*"rQG5jnbc+y64fckG+T0EHVwpLBmW9IgAT7U990HXcGk=",*/
-       "ad01b98e76dcfb2eb87dc906f93d041d5c292c1996f488004fb53df741d77069",
-       "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy", "secp256k1", ""},
-      {"Imported Filecoin account 2",
-       /*"9zGm0c5xNCYIKKE/QyvumrUDC9vnpaF4GtaOdlr4YQM=",*/
-       "f731a6d1ce7134260828a13f432bee9ab5030bdbe7a5a1781ad68e765af86103",
-       "t1gfpgfwrxdntcmcfqm7epsxrmsxlmsryvjkgat3i", "secp256k1", ""},
-      {"Imported Filecoin account 3",
-       /*"hEZRG5O7HGPT66ufJapik5943MBiyFMACwaLx0aK0TQ=",*/
-       "8446511b93bb1c63d3ebab9f25aa62939f78dcc062c853000b068bc7468ad134",
-       "t1gcfbv323mpexk2pumtkgibtvrulxarnafxryyly", "secp256k1", ""},
-      {"Imported Filecoin account 4",
-       "fbf541635f70a7919efe024235a0d669760938619263c38b8773e398bee91234",
-       "t3wilvmgf76qxkd3aj6inzeilz7gghu5w46zgmu4m5jte752xxgbkjifg2o35w7fky42jzq"
-       "ge7wkrhuobdjg2a",
-       "bls",
-       "b2175618bff42ea1ec09f21b922179f98c7a76dcf64cca719d4cc9feeaf730549414da7"
-       "6fb6f9558e69398189fb2a27a"}};
-  for (size_t i = 0;
-       i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
+    {"Imported Filecoin account 1",
+     /*"rQG5jnbc+y64fckG+T0EHVwpLBmW9IgAT7U990HXcGk=",*/
+     "ad01b98e76dcfb2eb87dc906f93d041d5c292c1996f488004fb53df741d77069",
+     "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy", "secp256k1", ""},
+    {"Imported Filecoin account 2",
+     /*"9zGm0c5xNCYIKKE/QyvumrUDC9vnpaF4GtaOdlr4YQM=",*/
+     "f731a6d1ce7134260828a13f432bee9ab5030bdbe7a5a1781ad68e765af86103",
+     "t1gfpgfwrxdntcmcfqm7epsxrmsxlmsryvjkgat3i", "secp256k1", ""},
+    {"Imported Filecoin account 3",
+     /*"hEZRG5O7HGPT66ufJapik5943MBiyFMACwaLx0aK0TQ=",*/
+     "8446511b93bb1c63d3ebab9f25aa62939f78dcc062c853000b068bc7468ad134",
+     "t1gcfbv323mpexk2pumtkgibtvrulxarnafxryyly", "secp256k1", ""}
+#if BUILDFLAG(ENABLE_RUST_BLS)
+    ,
+    {"Imported Filecoin account 4",
+     "fbf541635f70a7919efe024235a0d669760938619263c38b8773e398bee91234",
+     "t3wilvmgf76qxkd3aj6inzeilz7gghu5w46zgmu4m5jte752xxgbkjifg2o35w7fky42jzq"
+     "ge7wkrhuobdjg2a",
+     "bls",
+     "b2175618bff42ea1ec09f21b922179f98c7a76dcf64cca719d4cc9feeaf730549414da7"
+     "6fb6f9558e69398189fb2a27a"}
+#endif
+  };
+  auto amount = sizeof(imported_accounts) / sizeof(imported_accounts[0]);
+  for (size_t i = 0; i < amount; ++i) {
     absl::optional<std::string> address;
     if (imported_accounts[i].type == std::string("secp256k1")) {
       address = ImportFilecoinSECP256K1Account(
           &service, imported_accounts[i].name, imported_accounts[i].private_key,
           mojom::kFilecoinTestnet);
     } else {
-      address = ImportFilecoinBLSAccount(
-          &service, imported_accounts[i].name, imported_accounts[i].private_key,
-          imported_accounts[i].public_key, mojom::kFilecoinTestnet);
+      address = ImportFilecoinBLSAccount(&service, imported_accounts[i].name,
+                                         imported_accounts[i].private_key,
+                                         mojom::kFilecoinTestnet);
     }
     ASSERT_TRUE(address.has_value());
     EXPECT_EQ(address, imported_accounts[i].address);
@@ -2485,14 +2489,14 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   // filecoin keyring will be lazily created in first FIL import
   auto* filecoin_keyring =
       service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId);
-  EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), 4u);
+  EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), amount);
 
   EXPECT_TRUE(RemoveImportedAccount(&service, imported_accounts[1].address));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
 
   observer.Reset();
-  EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), 3u);
+  EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), amount - 1);
   // remove invalid address
   EXPECT_FALSE(RemoveImportedAccount(&service, "0xxxxxxxxxx0"));
   base::RunLoop().RunUntilIdle();
@@ -2506,7 +2510,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
         EXPECT_TRUE(keyring_info->is_keyring_created);
         EXPECT_FALSE(keyring_info->is_locked);
         EXPECT_FALSE(keyring_info->is_backed_up);
-        EXPECT_EQ(keyring_info->account_infos.size(), 3u);
+        EXPECT_EQ(keyring_info->account_infos.size(), amount - 1);
         EXPECT_EQ(keyring_info->account_infos[0]->address,
                   imported_accounts[0].address);
         EXPECT_EQ(keyring_info->account_infos[0]->name,
@@ -2517,18 +2521,18 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
         EXPECT_EQ(keyring_info->account_infos[1]->name,
                   imported_accounts[2].name);
         EXPECT_TRUE(keyring_info->account_infos[1]->is_imported);
-
+#if BUILDFLAG(ENABLE_RUST_BLS)
         EXPECT_EQ(keyring_info->account_infos[2]->address,
                   imported_accounts[3].address);
         EXPECT_EQ(keyring_info->account_infos[2]->name,
                   imported_accounts[3].name);
         EXPECT_TRUE(keyring_info->account_infos[2]->is_imported);
+#endif
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
-  EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), 3u);
-
+  EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), amount - 1);
   service.Lock();
   // cannot get private key when locked
   std::string private_key;
@@ -2543,7 +2547,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   service.GetKeyringInfo(
       brave_wallet::mojom::kFilecoinKeyringId,
       base::BindLambdaForTesting([&](mojom::KeyringInfoPtr keyring_info) {
-        EXPECT_EQ(keyring_info->account_infos.size(), 3u);
+        EXPECT_EQ(keyring_info->account_infos.size(), amount - 1);
         EXPECT_EQ(keyring_info->account_infos[0]->address,
                   imported_accounts[0].address);
         EXPECT_EQ(keyring_info->account_infos[0]->name,
@@ -2560,7 +2564,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
                 ->GetImportedAccountsNumber(),
-            3u);
+            amount - 1);
   // private key should also be available now
   private_key.clear();
   EXPECT_TRUE(GetPrivateKeyForImportedAccount(
@@ -2573,7 +2577,7 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   EXPECT_EQ(default_keyring->GetImportedAccountsNumber(), 0u);
   EXPECT_EQ(service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId)
                 ->GetImportedAccountsNumber(),
-            3u);
+            amount - 1);
 }
 
 TEST_F(KeyringServiceUnitTest, PreCreateEncryptors) {
