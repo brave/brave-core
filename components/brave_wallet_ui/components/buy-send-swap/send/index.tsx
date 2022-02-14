@@ -10,7 +10,7 @@ import {
 import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
 import { getLocale } from '../../../../common/locale'
-import { ButtonRow, ErrorText, ResetButton } from '../shared-styles'
+import { ErrorText, ResetButton } from '../shared-styles'
 // Styled Components
 import {
   StyledWrapper
@@ -103,7 +103,6 @@ function Send (props: Props) {
       {insuficientFundsError &&
         <ErrorText>{getLocale('braveWalletSwapInsufficientBalance')}</ErrorText>
       }
-      <ButtonRow>
         <NavButton
           disabled={addressError !== '' ||
             toAddressOrUrl === '' ||
@@ -122,7 +121,6 @@ function Send (props: Props) {
         >
           {getLocale('braveWalletReset')}
         </ResetButton>
-      </ButtonRow>
     </StyledWrapper>
   )
 }
