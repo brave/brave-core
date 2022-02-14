@@ -14,17 +14,9 @@
 #include "content/public/browser/url_data_source.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace gfx {
-class Image;
-}  // namespace gfx
-
 namespace base {
 class FilePath;
 }  // namespace base
-
-namespace image_fetcher {
-class ImageDecoder;
-}  // namespace image_fetcher
 
 namespace ntp_background_images {
 
@@ -33,8 +25,7 @@ class NTPCustomBackgroundImagesService;
 // This serves background image data.
 class NTPCustomImagesSource : public content::URLDataSource {
  public:
-  NTPCustomImagesSource(NTPCustomBackgroundImagesService* service,
-      std::unique_ptr<image_fetcher::ImageDecoder> image_decoder);
+  explicit NTPCustomImagesSource(NTPCustomBackgroundImagesService* service);
   ~NTPCustomImagesSource() override;
 
   NTPCustomImagesSource(const NTPCustomImagesSource&) = delete;
@@ -47,16 +38,14 @@ class NTPCustomImagesSource : public content::URLDataSource {
                         const content::WebContents::Getter& wc_getter,
                         GotDataCallback callback) override;
   std::string GetMimeType(const std::string& path) override;
+  bool AllowCaching() override;
 
   void GetImageFile(const base::FilePath& image_file_path,
                     GotDataCallback callback);
   void OnGotImageFile(GotDataCallback callback,
                       absl::optional<std::string> input);
-  void OnImageDecoded(GotDataCallback callback,
-                      const gfx::Image& image);
 
   raw_ptr<NTPCustomBackgroundImagesService> service_ = nullptr;  // not owned
-  std::unique_ptr<image_fetcher::ImageDecoder> image_decoder_;
   base::WeakPtrFactory<NTPCustomImagesSource> weak_factory_;
 };
 

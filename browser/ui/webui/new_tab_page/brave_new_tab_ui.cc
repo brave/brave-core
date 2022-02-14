@@ -19,7 +19,6 @@
 #include "brave/components/brave_today/browser/brave_news_controller.h"
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
-#include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search/background/ntp_custom_background_service.h"
 #include "chrome/browser/search/background/ntp_custom_background_service_factory.h"
@@ -70,11 +69,9 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   // For custom background images.
   if (auto* ntp_custom_background_images_service =
           NTPCustomBackgroundImagesServiceFactory::GetForContext(profile)) {
-    content::URLDataSource::Add(
-        profile,
-        std::make_unique<NTPCustomImagesSource>(
-            ntp_custom_background_images_service,
-            std::make_unique<ImageDecoderImpl>()));
+    content::URLDataSource::Add(profile,
+                                std::make_unique<NTPCustomImagesSource>(
+                                    ntp_custom_background_images_service));
   }
 }
 

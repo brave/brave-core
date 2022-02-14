@@ -17,12 +17,8 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
-#include "components/image_fetcher/core/image_decoder.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "third_party/skia/include/core/SkBitmap.h"
-#include "ui/gfx/codec/png_codec.h"
-#include "ui/gfx/image/image.h"
 
 namespace ntp_background_images {
 
@@ -38,11 +34,8 @@ absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
 }  // namespace
 
 NTPCustomImagesSource::NTPCustomImagesSource(
-    NTPCustomBackgroundImagesService* service,
-    std::unique_ptr<image_fetcher::ImageDecoder> image_decoder)
-    : service_(service),
-      image_decoder_(std::move(image_decoder)),
-      weak_factory_(this) {
+    NTPCustomBackgroundImagesService* service)
+    : service_(service), weak_factory_(this) {
   DCHECK(service_);
 }
 
@@ -62,6 +55,10 @@ void NTPCustomImagesSource::StartDataRequest(
 
 std::string NTPCustomImagesSource::GetMimeType(const std::string& path) {
   return "image/jpeg";
+}
+
+bool NTPCustomImagesSource::AllowCaching() {
+  return false;
 }
 
 void NTPCustomImagesSource::GetImageFile(
@@ -84,29 +81,11 @@ void NTPCustomImagesSource::OnGotImageFile(
     return;
   }
 
-  // Send image body to image decoder in isolated process.
-  image_decoder_->DecodeImage(
-      *input, gfx::Size() /* No particular size desired. */,
-      base::BindOnce(&NTPCustomImagesSource::OnImageDecoded,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void NTPCustomImagesSource::OnImageDecoded(
-    content::URLDataSource::GotDataCallback callback,
-    const gfx::Image& image) {
-  // Re-encode vetted image as PNG and send to requester.
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(
-          [](const SkBitmap& bitmap) {
-            auto encoded = base::MakeRefCounted<base::RefCountedBytes>();
-            return gfx::PNGCodec::EncodeBGRASkBitmap(
-                       bitmap, /*discard_transparency=*/false, &encoded->data())
-                       ? encoded
-                       : base::MakeRefCounted<base::RefCountedBytes>();
-          },
-          image.AsBitmap()),
-      std::move(callback));
+  scoped_refptr<base::RefCountedMemory> bytes;
+  bytes = new base::RefCountedBytes(
+      reinterpret_cast<const unsigned char*>(input->c_str()), input->length());
+  std::move(callback).Run(std::move(bytes));
+  return;
 }
 
 }  // namespace ntp_background_images
