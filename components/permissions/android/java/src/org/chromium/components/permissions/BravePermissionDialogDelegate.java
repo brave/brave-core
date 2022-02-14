@@ -5,16 +5,30 @@
 
 package org.chromium.components.permissions;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.view.View;
+import android.widget.ImageView;
+
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
+import org.chromium.content_public.browser.ImageDownloadCallback;
+import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
+import org.chromium.url.GURL;
+
+import java.util.Iterator;
+import java.util.List;
 
 @JNINamespace("permissions")
-public class BravePermissionDialogDelegate implements ConnectionErrorHandler {
+public class BravePermissionDialogDelegate
+        implements ConnectionErrorHandler, ImageDownloadCallback {
+    static final int MAX_BITMAP_SIZE_FOR_DOWNLOAD = 2048;
     /** Text to show before lifetime options. */
     private String mLifetimeOptionsText;
 
@@ -32,10 +46,18 @@ public class BravePermissionDialogDelegate implements ConnectionErrorHandler {
     private String mWalletWarningTitle;
     private String mConnectButtonText;
     private String mBackButtonText;
+    private String mDomain;
+    private String mFavIconURL;
+    private ImageView mFavIcon;
+    private WebContents mWebContents;
+    // The pending download image request id, which is set when calling
+    // {@link WebContents#downloadImage()}, and reset when image download completes
+    private int mRequestId;
     private BraveAccountsListAdapter mAccountsListAdapter;
 
     public BravePermissionDialogDelegate() {
         mSelectedLifetimeOption = -1;
+        mRequestId = -1;
         mKeyringService = null;
         mUseWalletLayout = false;
     }
@@ -131,6 +153,63 @@ public class BravePermissionDialogDelegate implements ConnectionErrorHandler {
 
     public String getBackButtonText() {
         return mBackButtonText;
+    }
+
+    @CalledByNative
+    public void setDomain(String domain) {
+        mDomain = domain;
+    }
+
+    public String getDomain() {
+        return mDomain;
+    }
+
+    @CalledByNative
+    public void setWebContents(WebContents webContents) {
+        mWebContents = webContents;
+    }
+
+    @CalledByNative
+    public void setFavIconURL(String url) {
+        mFavIconURL = url;
+    }
+
+    public void setFavIcon(ImageView imageView) {
+        mFavIcon = imageView;
+        if (mFavIconURL.isEmpty()) {
+            return;
+        }
+        mRequestId = mWebContents.downloadImage(new GURL(mFavIconURL), // url
+                true, // isFavicon
+                MAX_BITMAP_SIZE_FOR_DOWNLOAD, // maxBitmapSize
+                false, // bypassCache
+                this); // callback
+    }
+
+    @Override
+    public void onFinishDownloadImage(int id, int httpStatusCode, GURL imageUrl,
+            List<Bitmap> bitmaps, List<Rect> originalImageSizes) {
+        if (id != mRequestId) return;
+
+        Iterator<Bitmap> iterBitmap = bitmaps.iterator();
+        Iterator<Rect> iterSize = originalImageSizes.iterator();
+
+        Bitmap bestBitmap = null;
+        Rect bestSize = new Rect(0, 0, 0, 0);
+        while (iterBitmap.hasNext() && iterSize.hasNext()) {
+            Bitmap bitmap = iterBitmap.next();
+            Rect size = iterSize.next();
+            if (size.width() > bestSize.width() && size.height() > bestSize.height()) {
+                bestBitmap = bitmap;
+                bestSize = size;
+            }
+        }
+        if (mFavIcon == null || bestSize.width() == 0 || bestSize.height() == 0) {
+            return;
+        }
+
+        mFavIcon.setImageBitmap(bestBitmap);
+        mFavIcon.setVisibility(View.VISIBLE);
     }
 
     @CalledByNative

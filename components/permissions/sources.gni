@@ -31,6 +31,7 @@ brave_components_permissions_deps = [
   "//components/pref_registry",
   "//services/preferences/public/cpp",
   "//third_party/blink/public/common",
+  "//third_party/blink/public/mojom:mojom_platform",
   "//ui/base",
   "//url",
 ]

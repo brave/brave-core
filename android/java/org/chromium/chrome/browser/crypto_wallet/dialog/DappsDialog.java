@@ -37,9 +37,11 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
     private ModalDialogManager mManager;
     private PropertyModel mModel;
     private Dialog mDialog;
+    private boolean mDismissed;
 
     public DappsDialog(@NonNull Context context) {
         super(context, R.style.BraveWalletDialog);
+        mDismissed = false;
     }
 
     public static DappsDialog newInstance(Context context) {
@@ -55,7 +57,6 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        initKeyringService();
         setContentView(R.layout.dapps_bottom_sheet);
 
         Window window = getWindow();
@@ -66,12 +67,14 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
 
         TextView tvDappUrl = findViewById(R.id.tv_dapp_url);
         mbtUnlock = findViewById(R.id.unlock);
+        initKeyringService();
 
         tvDappUrl.setText(getCurrentHostHttpAddress());
         updateView();
         mbtUnlock.setOnClickListener(v -> {
             if (mShowOnboarding) {
                 openWallet();
+                dismiss();
             } else {
                 mKeyringService.isLocked(isLocked -> {
                     if (isLocked) {
@@ -79,9 +82,9 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
                     } else {
                         // Todo: show option to connect account
                     }
+                    dismiss();
                 });
             }
-            dismiss();
         });
     }
 
@@ -96,10 +99,13 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
         super.dismiss();
         if (mKeyringService != null) {
             mKeyringService.close();
+            mKeyringService = null;
         }
+        mDismissed = true;
     }
 
     private void updateView() {
+        assert mbtUnlock != null;
         if (mShowOnboarding) {
             mbtUnlock.setText(getContext().getString(R.string.setup_crypto));
         } else if (mKeyringService != null) {
@@ -123,9 +129,15 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringService.close();
-        mKeyringService = null;
-        initKeyringService();
+        if (mKeyringService != null) {
+            mKeyringService.close();
+            mKeyringService = null;
+        }
+        // The connection error often occures when the dialog is already
+        // dismissed.
+        if (!mDismissed) {
+            initKeyringService();
+        }
     }
 
     private void initKeyringService() {
