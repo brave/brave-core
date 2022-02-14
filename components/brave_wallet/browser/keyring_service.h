@@ -52,10 +52,13 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static const base::Value* GetPrefForKeyring(PrefService* prefs,
                                               const std::string& key,
                                               const std::string& id);
-  static base::Value* GetPrefForHardwareKeyringUpdate(PrefService* prefs);
+  static base::Value* GetPrefForHardwareKeyringUpdate(PrefService* prefs,
+                                                      const std::string& id);
   static base::Value* GetPrefForKeyringUpdate(PrefService* prefs,
                                               const std::string& key,
                                               const std::string& id);
+  static std::vector<std::string> GetAvailableKeyringsFromPrefs(
+      PrefService* prefs);
   // If keyring dicionary for id doesn't exist, it will be created.
   static void SetPrefForKeyring(PrefService* prefs,
                                 const std::string& key,
@@ -69,7 +72,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const absl::optional<std::string> name,
       const absl::optional<std::string> address,
       const std::string& id);
-
+  static std::string GetKeyringIdForCoin(mojom::CoinType coin);
   static std::string GetAccountNameForKeyring(PrefService* prefs,
                                               const std::string& account_path,
                                               const std::string& id);
@@ -179,6 +182,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void Reset(bool notify_observer = true);
   bool IsKeyringCreated(const std::string& keyring_id) const;
   bool IsHardwareAccount(const std::string& account) const;
+  std::string GetKeyringIdForHardwareAccount(const std::string& account) const;
+  std::string GetKeyringIdForAccount(const std::string& address) const;
   void SignTransactionByDefaultKeyring(const std::string& address,
                                        EthTransaction* tx,
                                        uint256_t chain_id);
@@ -263,7 +268,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   mojom::KeyringInfoPtr GetKeyringInfoSync(const std::string& keyring_id);
   void OnAutoLockFired();
   HDKeyring* GetHDKeyringById(const std::string& keyring_id) const;
-  std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync() const;
+  std::vector<mojom::AccountInfoPtr> GetHardwareAccountsSync(
+      const std::string& keyring_id) const;
   std::vector<uint8_t> GetPrivateKeyFromKeyring(const std::string& address,
                                                 const std::string& keyring_id);
   // Address will be returned when success
@@ -281,10 +287,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       const std::string& network);
   bool IsKeyringExist(const std::string& keyring_id) const;
   bool LazilyCreateKeyring(const std::string& keyring_id);
-  size_t GetAccountMetasNumberForKeyring(const std::string& id);
+  size_t GetAccountMetasNumberForKeyring(const std::string& id) const;
 
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
-      const std::string& id);
+      const std::string& id) const;
   bool UpdateNameForHardwareAccountSync(const std::string& address,
                                         const std::string& name);
   const std::string GetMnemonicForKeyringImpl(const std::string& keyring_id);

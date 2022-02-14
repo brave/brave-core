@@ -23,6 +23,7 @@ extern const char kBraveWalletSelectedAccount[];
 extern const char kSupportEip1559OnLocalhostChain[];
 
 // DEPRECATED
+extern const char kBraveWalletHardwareKeyring[];
 extern const char kBraveWalletWeb3ProviderDeprecated[];
 extern const char kDefaultWalletDeprecated[];
 extern const char kBraveWalletPasswordEncryptorSalt[];

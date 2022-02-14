@@ -27,6 +27,7 @@ const char kSupportEip1559OnLocalhostChain[] =
     "brave.wallet.support_eip1559_on_localhost_chain";
 
 // DEPRECATED
+const char kBraveWalletHardwareKeyring[] = "brave.wallet.keyrings.hardware";
 const char kBraveWalletPasswordEncryptorSalt[] =
     "brave.wallet.password_encryptor.salt";
 const char kBraveWalletPasswordEncryptorNonce[] =
