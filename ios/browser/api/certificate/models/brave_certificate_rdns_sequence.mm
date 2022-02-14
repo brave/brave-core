@@ -7,7 +7,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_utils.h"
 #include "brave/ios/browser/api/certificate/utils/brave_certificate_x509_utils.h"
-#include "brave/ios/browser/api/common/conversions.h"
+#include "brave/base/mac/conversions.h"
 #include "net/cert/x509_cert_types.h"
 #include "net/der/input.h"
 
