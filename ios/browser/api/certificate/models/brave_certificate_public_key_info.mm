@@ -59,11 +59,12 @@
       }
 
       // SPK has the unused bit count. Remove it.
-      // FOR SOME INSANELY WEIRD REASON, IF this is called in a LOOP, it LOOPS
-      // FOREVER! It never actually removes the prefix!
-      /*if (base::StartsWith(spk.AsStringPiece(), "\0")) {
-        spk.AsStringPiece().remove_prefix(1);
-        spk = net::der::Input(spk.AsStringPiece());
+      // When doing extensions, we can use the below to parse the SPK and then the extensions
+      // For now, not needed.
+      /*auto spk_string = spk.AsStringPiece();
+      if (base::StartsWith(spk_string, "\0")) {
+        spk_string.remove_prefix(1);
+        spk = net::der::Input(spk_string);
       }*/
     }
 
