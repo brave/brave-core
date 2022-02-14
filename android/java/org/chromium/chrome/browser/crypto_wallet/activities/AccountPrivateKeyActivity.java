@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
@@ -94,11 +95,12 @@ public class AccountPrivateKeyActivity extends BraveWalletBaseActivity {
         super.finishNativeInitialization();
 
         assert mKeyringService != null;
-        mKeyringService.getPrivateKeyForDefaultKeyringAccount(mAddress, (result, privateKey) -> {
-            if (result) {
-                EditText privateKeyText = findViewById(R.id.private_key_text);
-                privateKeyText.setText(privateKey);
-            }
-        });
+        mKeyringService.getPrivateKeyForKeyringAccount(
+                mAddress, CoinType.ETH, (result, privateKey) -> {
+                    if (result) {
+                        EditText privateKeyText = findViewById(R.id.private_key_text);
+                        privateKeyText.setText(privateKey);
+                    }
+                });
     }
 }

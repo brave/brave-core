@@ -65,7 +65,7 @@ export interface Props {
   transactionSpotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType | undefined
   defaultCurrencies: DefaultCurrencies
-  onViewPrivateKey: (address: string, isDefault: boolean) => void
+  onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onDoneViewingPrivateKey: () => void
   toggleNav: () => void
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void

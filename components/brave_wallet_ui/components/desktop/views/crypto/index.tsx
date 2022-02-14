@@ -42,7 +42,7 @@ export interface Props {
   onHideAddModal: () => void
   onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onRemoveAccount: (address: string, hardware: boolean) => void
-  onViewPrivateKey: (address: string, isDefault: boolean) => void
+  onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onDoneViewingPrivateKey: () => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onSetImportError: (error: boolean) => void

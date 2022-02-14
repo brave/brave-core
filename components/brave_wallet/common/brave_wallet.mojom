@@ -402,7 +402,7 @@ interface KeyringService {
   AddAccount(string accountName, CoinType coin ) => (bool success);
 
   // Obtains the private key for the keyring.
-  GetPrivateKeyForDefaultKeyringAccount(string address)
+  GetPrivateKeyForKeyringAccount(string address, CoinType coin)
     => (bool success, string privateKey);
 
   // Imports an account with a specific private key to the corresponding keyring
