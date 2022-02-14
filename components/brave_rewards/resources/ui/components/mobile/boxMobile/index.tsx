@@ -20,7 +20,7 @@ export interface Props {
   type: Type
   id?: string
   title: string
-  description?: string
+  description?: React.ReactNode
   settingsChild?: React.ReactNode
   children?: React.ReactNode
   toggle?: boolean

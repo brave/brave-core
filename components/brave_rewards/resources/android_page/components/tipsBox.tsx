@@ -14,6 +14,7 @@ import {
   ModalDonation
 } from '../../ui/components'
 import { BoxMobile } from '../../ui/components/mobile'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 import { Provider } from '../../ui/components/profile'
 import {
   StyledListContent,
@@ -23,6 +24,7 @@ import {
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
+import * as urls from '../../shared/lib/rewards_urls'
 import * as utils from '../utils'
 import { DetailRow } from '../../ui/components/tableDonation'
 
@@ -79,6 +81,14 @@ class TipBox extends React.Component<Props, State> {
     })
   }
 
+  getDescription = () => {
+    return (
+      <div>
+        {getLocale('donationDesc')} <NewTabLink href={urls.tippingLearnMoreURL}>{getLocale('donationDescLearnMore')}</NewTabLink>
+      </div>
+    )
+  }
+
   onModalToggle = () => {
     this.setState({
       modalShowAll: !this.state.modalShowAll
@@ -106,7 +116,7 @@ class TipBox extends React.Component<Props, State> {
         checked={true}
         title={getLocale('donationTitle')}
         type={'donation'}
-        description={getLocale('donationDesc')}
+        description={this.getDescription()}
       >
         {
           this.state.modalShowAll

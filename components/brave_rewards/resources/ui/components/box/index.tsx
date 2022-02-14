@@ -30,7 +30,7 @@ export type Type = 'ads' | 'contribute' | 'donation'
 export interface Props {
   title: string
   id?: string
-  description?: string
+  description?: React.ReactNode
   toggle?: boolean
   checked?: boolean
   attachedAlert?: React.ReactNode
