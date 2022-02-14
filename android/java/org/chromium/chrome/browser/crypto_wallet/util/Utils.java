@@ -56,7 +56,6 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.ProviderError;
@@ -64,6 +63,7 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
+import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
@@ -1004,7 +1004,7 @@ public class Utils {
     }
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,
-            AssetRatioService assetRatioService, EthTxService ethTxService,
+            AssetRatioService assetRatioService, TxService txService,
             BlockchainRegistry blockchainRegistry, BraveWalletService braveWalletService,
             String assetSymbol, String contractAddress, int assetDecimals,
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
@@ -1038,7 +1038,7 @@ public class Utils {
                                                    Locale.getDefault()))) {
                             try {
                                 fetchTransactions(accountInfos, Double.valueOf(tempPrice),
-                                        Double.valueOf(tempPrice), ethTxService, blockchainRegistry,
+                                        Double.valueOf(tempPrice), txService, blockchainRegistry,
                                         contractAddress, rvTransactions, callback, context,
                                         assetSymbol, assetDecimals, chainId, assetRatioService,
                                         braveWalletService, finalChainSymbol, finalChainDecimals,
@@ -1060,7 +1060,7 @@ public class Utils {
                                     try {
                                         fetchTransactions(accountInfos,
                                                 Double.valueOf(chainSymbolPrice),
-                                                Double.valueOf(tempPriceAsset), ethTxService,
+                                                Double.valueOf(tempPriceAsset), txService,
                                                 blockchainRegistry, contractAddress, rvTransactions,
                                                 callback, context, assetSymbol, assetDecimals,
                                                 chainId, assetRatioService, braveWalletService,
@@ -1074,14 +1074,14 @@ public class Utils {
     }
 
     private static void fetchTransactions(AccountInfo[] accountInfos, double chainSymbolPrice,
-            double assetPrice, EthTxService ethTxService, BlockchainRegistry blockchainRegistry,
+            double assetPrice, TxService txService, BlockchainRegistry blockchainRegistry,
             String contractAddress, RecyclerView rvTransactions, OnWalletListItemClick callback,
             Context context, String assetSymbol, int assetDecimals, String chainId,
             AssetRatioService assetRatioService, BraveWalletService braveWalletService,
             String chainSymbol, int chainDecimals, WalletCoinAdapter walletTxCoinAdapter) {
-        assert ethTxService != null;
+        assert txService != null;
         PendingTxHelper pendingTxHelper =
-                new PendingTxHelper(ethTxService, accountInfos, true, contractAddress);
+                new PendingTxHelper(txService, accountInfos, true, contractAddress);
         pendingTxHelper.fetchTransactions(() -> {
             HashMap<String, TransactionInfo[]> pendingTxInfos = pendingTxHelper.getTransactions();
             if (assetSymbol != null && assetDecimals != 0) {

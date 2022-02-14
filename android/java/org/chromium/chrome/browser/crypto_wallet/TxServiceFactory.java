@@ -8,7 +8,8 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
+import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -17,29 +18,39 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 @JNINamespace("chrome::android")
-public class EthTxServiceFactory {
+public class TxServiceFactory {
     private static final Object lock = new Object();
-    private static EthTxServiceFactory instance;
+    private static TxServiceFactory instance;
 
-    public static EthTxServiceFactory getInstance() {
+    public static TxServiceFactory getInstance() {
         synchronized (lock) {
             if (instance == null) {
-                instance = new EthTxServiceFactory();
+                instance = new TxServiceFactory();
             }
         }
         return instance;
     }
 
-    private EthTxServiceFactory() {}
+    private TxServiceFactory() {}
 
-    public EthTxService getEthTxService(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = EthTxServiceFactoryJni.get().getInterfaceToEthTxService();
+    public TxService getTxService(ConnectionErrorHandler connectionErrorHandler) {
+        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToTxService();
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
-        EthTxService ethTxService = EthTxService.MANAGER.attachProxy(handle, 0);
-        Handler handler = ((Interface.Proxy) ethTxService).getProxyHandler();
+        TxService txService = TxService.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) txService).getProxyHandler();
         handler.setErrorHandler(connectionErrorHandler);
 
-        return ethTxService;
+        return txService;
+    }
+
+    public EthTxManagerProxy getEthTxManagerProxy(ConnectionErrorHandler connectionErrorHandler) {
+        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToEthTxManagerProxy();
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+        EthTxManagerProxy ethTxManagerProxy = EthTxManagerProxy.MANAGER.attachProxy(handle, 0);
+        Handler handler = ((Interface.Proxy) ethTxManagerProxy).getProxyHandler();
+        handler.setErrorHandler(connectionErrorHandler);
+
+        return ethTxManagerProxy;
     }
 
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
@@ -48,6 +59,7 @@ public class EthTxServiceFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToEthTxService();
+        int getInterfaceToTxService();
+        int getInterfaceToEthTxManagerProxy();
     }
 }

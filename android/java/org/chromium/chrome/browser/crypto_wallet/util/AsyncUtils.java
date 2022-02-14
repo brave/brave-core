@@ -11,9 +11,9 @@ import org.chromium.brave_wallet.mojom.AssetPrice;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.AssetTimePrice;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.brave_wallet.mojom.TxService;
 
 public class AsyncUtils {
     private final static String TAG = "AsyncUtils";
@@ -134,8 +134,8 @@ public class AsyncUtils {
         }
     }
 
-    public static class GetAllTransactionInfoResponseContext extends SingleResponseBaseContext
-            implements EthTxService.GetAllTransactionInfo_Response {
+    public static class GetAllTransactionInfoResponseContext
+            extends SingleResponseBaseContext implements TxService.GetAllTransactionInfo_Response {
         public TransactionInfo[] txInfos;
         public String name;
 

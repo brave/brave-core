@@ -25,7 +25,7 @@ import androidx.fragment.app.Fragment;
 
 import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
-import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
@@ -65,12 +65,12 @@ public class TxFragment extends Fragment {
         return null;
     }
 
-    private EthTxService getEthTxService() {
+    private EthTxManagerProxy getEthTxManagerProxy() {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getEthTxService();
+            return ((BuySendSwapActivity) activity).getEthTxManagerProxy();
         } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthTxService();
+            return ((BraveWalletActivity) activity).getEthTxManagerProxy();
         }
 
         return null;
@@ -137,9 +137,9 @@ public class TxFragment extends Fragment {
                     RadioGroup radioGroup = dialog.findViewById(R.id.max_priority_radio_group);
                     radioGroup.clearCheck();
                     radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-                        EthTxService ethTxService = getEthTxService();
-                        assert ethTxService != null;
-                        ethTxService.getGasEstimation1559(estimation -> {
+                        EthTxManagerProxy ethTxManagerProxy = getEthTxManagerProxy();
+                        assert ethTxManagerProxy != null;
+                        ethTxManagerProxy.getGasEstimation1559(estimation -> {
                             mTxInfo.txDataUnion.getEthTxData1559().gasEstimation = estimation;
                             mCheckedPriorityId = checkedId;
                             String gasLimit =
@@ -240,9 +240,9 @@ public class TxFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         mPreviousCheckedPriorityId = mCheckedPriorityId;
-                        EthTxService ethTxService = getEthTxService();
-                        assert ethTxService != null;
-                        if (ethTxService == null) {
+                        EthTxManagerProxy ethTxManagerProxy = getEthTxManagerProxy();
+                        assert ethTxManagerProxy != null;
+                        if (ethTxManagerProxy == null) {
                             dialog.dismiss();
 
                             return;
@@ -254,7 +254,8 @@ public class TxFragment extends Fragment {
                             EditText gasFeeEdit = dialog.findViewById(R.id.gas_fee_edit);
                             mTxInfo.txDataUnion.getEthTxData1559().baseData.gasPrice =
                                     Utils.toHexWei(gasFeeEdit.getText().toString(), 9);
-                            ethTxService.setGasPriceAndLimitForUnapprovedTransaction(mTxInfo.id,
+                            ethTxManagerProxy.setGasPriceAndLimitForUnapprovedTransaction(
+                                    mTxInfo.id,
                                     mTxInfo.txDataUnion.getEthTxData1559().baseData.gasPrice,
                                     mTxInfo.txDataUnion.getEthTxData1559().baseData.gasLimit,
                                     success -> {
@@ -307,7 +308,7 @@ public class TxFragment extends Fragment {
                             mTxInfo.txDataUnion.getEthTxData1559().maxPriorityFeePerGas =
                                     maxPriorityFeePerGas;
                             mTxInfo.txDataUnion.getEthTxData1559().maxFeePerGas = maxFeePerGas;
-                            ethTxService.setGasFeeAndLimitForUnapprovedTransaction(mTxInfo.id,
+                            ethTxManagerProxy.setGasFeeAndLimitForUnapprovedTransaction(mTxInfo.id,
                                     maxPriorityFeePerGas, maxFeePerGas, gasLimit, success -> {
                                         if (!success) {
                                             return;

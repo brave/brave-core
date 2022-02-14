@@ -7,8 +7,8 @@ package org.chromium.chrome.browser.crypto_wallet.observers;
 
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 
-public interface EthTxServiceObserver
-        extends org.chromium.brave_wallet.mojom.EthTxServiceObserver, WalletMojoObserverBase {
+public interface TxServiceObserver
+        extends org.chromium.brave_wallet.mojom.TxServiceObserver, WalletMojoObserverBase {
     @Override
     default void onNewUnapprovedTx(TransactionInfo txInfo) {}
 

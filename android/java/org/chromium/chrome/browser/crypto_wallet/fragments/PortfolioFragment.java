@@ -36,11 +36,11 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.EthTxService;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
+import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
@@ -87,10 +87,10 @@ public class PortfolioFragment extends Fragment
         return null;
     }
 
-    private EthTxService getEthTxService() {
+    private TxService getTxService() {
         Activity activity = getActivity();
         if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthTxService();
+            return ((BraveWalletActivity) activity).getTxService();
         }
 
         return null;
@@ -484,7 +484,7 @@ public class PortfolioFragment extends Fragment
 
     private void getPendingTx(AccountInfo[] accountInfos) {
         PendingTxHelper pendingTxHelper =
-                new PendingTxHelper(getEthTxService(), accountInfos, false, null);
+                new PendingTxHelper(getTxService(), accountInfos, false, null);
         pendingTxHelper.fetchTransactions(() -> {
             mPendingTxInfos = pendingTxHelper.getTransactions();
             callAnotherApproveDialog();

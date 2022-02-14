@@ -56,8 +56,7 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.EthTxService;
-import org.chromium.brave_wallet.mojom.EthTxServiceObserver;
+import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
@@ -71,13 +70,16 @@ import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionStatus;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
+import org.chromium.brave_wallet.mojom.TxDataUnion;
+import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.brave_wallet.mojom.TxServiceObserver;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
-import org.chromium.chrome.browser.crypto_wallet.EthTxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.SwapServiceFactory;
+import org.chromium.chrome.browser.crypto_wallet.TxServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.adapters.AccountSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.WalletCoinAdapter;
@@ -396,8 +398,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     }
 
     private void sendSwapTransaction(TxData data, String from) {
-        assert mEthTxService != null;
-        mEthTxService.getGasEstimation1559(estimation -> {
+        assert mEthTxManagerProxy != null;
+        mEthTxManagerProxy.getGasEstimation1559(estimation -> {
             String maxPriorityFeePerGas = "";
             String maxFeePerGas = "";
             if (estimation.fastMaxPriorityFeePerGas.equals(estimation.avgMaxPriorityFeePerGas)) {
@@ -1174,9 +1176,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
     private void activateErc20Allowance() {
         assert mAllowanceTarget != null && !mAllowanceTarget.isEmpty();
-        assert mEthTxService != null;
+        assert mEthTxManagerProxy != null;
         assert mCurrentBlockchainToken != null;
-        mEthTxService.makeErc20ApproveData(mAllowanceTarget,
+        mEthTxManagerProxy.makeErc20ApproveData(mAllowanceTarget,
                 Utils.toHexWei(String.format(Locale.getDefault(), "%.4f", mConvertedFromBalance),
                         mCurrentBlockchainToken.decimals),
                 (success, data) -> {
@@ -1210,7 +1212,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 isEIP1559 = network.isEip1559;
             }
 
-            assert mEthTxService != null;
+            assert mTxService != null;
             if (isEIP1559) {
                 TxData1559 txData1559 = new TxData1559();
                 txData1559.baseData = data;
@@ -1225,21 +1227,23 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 txData1559.gasEstimation.fastMaxPriorityFeePerGas = "";
                 txData1559.gasEstimation.fastMaxFeePerGas = "";
                 txData1559.gasEstimation.baseFeePerGas = "";
-                mEthTxService.addUnapproved1559Transaction(
-                        txData1559, from, (success, tx_meta_id, error_message) -> {
+                TxDataUnion txDataUnion = new TxDataUnion();
+                txDataUnion.setEthTxData1559(txData1559);
+                mTxService.addUnapprovedTransaction(
+                        txDataUnion, from, (success, tx_meta_id, error_message) -> {
                             // Do nothing here when success as we will receive an
-                            // unapproved transaction in
-                            // EthTxServiceObserver
+                            // unapproved transaction in TxServiceObserver.
                             // When we have error, let the user know,
                             // error_message is localized, do not disable send button
                             setSendToFromValueValidationResult(error_message, false, true);
                         });
             } else {
-                mEthTxService.addUnapprovedTransaction(
-                        data, from, (success, tx_meta_id, error_message) -> {
+                TxDataUnion txDataUnion = new TxDataUnion();
+                txDataUnion.setEthTxData(data);
+                mTxService.addUnapprovedTransaction(
+                        txDataUnion, from, (success, tx_meta_id, error_message) -> {
                             // Do nothing here when success as we will receive an
-                            // unapproved transaction in
-                            // EthTxServiceObserver
+                            // unapproved transaction in TxServiceObserver.
                             // When we have error, let the user know,
                             // error_message is localized, do not disable send button
                             setSendToFromValueValidationResult(error_message, false, true);
@@ -1250,11 +1254,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
 
     private void addUnapprovedTransactionERC20(
             String to, String value, String from, String contractAddress) {
-        assert mEthTxService != null;
-        if (mEthTxService == null) {
+        assert mEthTxManagerProxy != null;
+        if (mEthTxManagerProxy == null) {
             return;
         }
-        mEthTxService.makeErc20TransferData(to, value, (success, data) -> {
+        mEthTxManagerProxy.makeErc20TransferData(to, value, (success, data) -> {
             if (!success) {
                 return;
             }
