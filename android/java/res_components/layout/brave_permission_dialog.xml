@@ -11,6 +11,24 @@
     android:gravity="start"
     style="@style/AlertDialogContent">
 
+    <ImageView
+        android:id="@+id/favicon"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@null"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/domain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="15sp" />
+
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
@@ -39,24 +57,23 @@
         android:textColor="@color/wallet_text_color"
         android:textSize="14sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/wallet_edittext_outline_color" />
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_weight="0.5"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp" >
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/wallet_edittext_outline_color" />
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fillViewport="true"
-            tools:ignore="UselessParent" >
+            android:paddingTop="15dp"
+            android:paddingBottom="25dp"
+            android:fillViewport="true" >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/accounts_list"
@@ -64,27 +81,26 @@
                 android:layout_height="0dp" />
 
         </ScrollView>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="4"
-        android:layout_height="match_parent"
-        android:gravity="bottom"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/wallet_edittext_outline_color" />
-
-        <TextView
-            android:id="@+id/warning_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:textColor="@color/wallet_text_color"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/wallet_edittext_outline_color" />
+
+            <TextView
+                android:id="@+id/warning_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:textColor="@color/wallet_text_color"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -21,7 +21,10 @@
 #include "components/permissions/features.h"
 #include "components/permissions/permission_request.h"
 #include "components/strings/grit/components_strings.h"
+#include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/mojom/favicon/favicon_url.mojom.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/gurl.h"
 
 namespace permissions {
 namespace {
@@ -79,6 +82,18 @@ void ApplyLifetimeToPermissionRequests(
   }
 }
 
+GURL GetFavIconURL(const std::vector<blink::mojom::FaviconURLPtr>& candidates) {
+  for (const auto& candidate : candidates) {
+    if (!candidate->icon_url.is_valid() ||
+        candidate->icon_type != blink::mojom::FaviconIconType::kFavicon)
+      continue;
+
+    return candidate->icon_url;
+  }
+
+  return GURL();
+}
+
 void AddWalletParamsFromPermissionRequests(
     JNIEnv* env,
     base::android::ScopedJavaGlobalRef<jobject> j_delegate,
@@ -120,6 +135,26 @@ void AddWalletParamsFromPermissionRequests(
       base::android::ConvertUTF16ToJavaString(
           env, l10n_util::GetStringUTF16(
                    IDS_PERMISSIONS_CONNECT_BRAVE_WALLET_BACK_BUTTON_TEXT)));
+  Java_BravePermissionDialogDelegate_setDomain(
+      env, j_delegate,
+      base::android::ConvertUTF8ToJavaString(
+          env,
+          const_cast<content::WebContents*>(permission_prompt->web_contents())
+              ->GetLastCommittedURL()
+              .DeprecatedGetOriginAsURL()
+              .spec()));
+  GURL fav_icon_url = GetFavIconURL(
+      const_cast<content::WebContents*>(permission_prompt->web_contents())
+          ->GetFaviconURLs());
+  if (fav_icon_url.is_valid()) {
+    Java_BravePermissionDialogDelegate_setFavIconURL(
+        env, j_delegate,
+        base::android::ConvertUTF8ToJavaString(env, fav_icon_url.spec()));
+  }
+  Java_BravePermissionDialogDelegate_setWebContents(
+      env, j_delegate,
+      const_cast<content::WebContents*>(permission_prompt->web_contents())
+          ->GetJavaWebContents());
 }
 
 void ApplyBraveWalletPermissions(JNIEnv* env,
