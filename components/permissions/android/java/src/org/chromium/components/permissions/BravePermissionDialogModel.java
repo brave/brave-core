@@ -115,6 +115,9 @@ class BravePermissionDialogModel {
         accountsTitle.setText(braveDelegate.getWalletConnectAccountsTitle());
         TextView warningTitle = customView.findViewById(R.id.warning_title);
         warningTitle.setText(braveDelegate.getWalletWarningTitle());
+        TextView domain = customView.findViewById(R.id.domain);
+        domain.setText(braveDelegate.getDomain());
+        braveDelegate.setFavIcon(customView.findViewById(R.id.favicon));
 
         return new PropertyModel.Builder(ModalDialogProperties.ALL_KEYS)
                 .with(ModalDialogProperties.CONTROLLER, controller)
