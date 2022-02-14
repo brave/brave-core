@@ -495,35 +495,35 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // chromium_src override
 
   // add chromium cookies
-  auto chromium_cookies_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::COOKIES,
-      incognito);
-  while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
-    rules.emplace_back(CloneRule(chromium_cookies_iterator->Next()));
+  {
+    auto chromium_cookies_iterator =
+        PrefProvider::GetRuleIterator(ContentSettingsType::COOKIES, incognito);
+    while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
+      rules.emplace_back(CloneRule(chromium_cookies_iterator->Next()));
+    }
   }
-  chromium_cookies_iterator.reset();
-
-  auto brave_shields_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::BRAVE_SHIELDS, incognito);
 
   // collect shield rules
   std::vector<Rule> shield_rules;
-  while (brave_shields_iterator && brave_shields_iterator->HasNext()) {
-    shield_rules.emplace_back(CloneRule(brave_shields_iterator->Next()));
+  {
+    auto brave_shields_iterator = PrefProvider::GetRuleIterator(
+        ContentSettingsType::BRAVE_SHIELDS, incognito);
+    while (brave_shields_iterator && brave_shields_iterator->HasNext()) {
+      shield_rules.emplace_back(CloneRule(brave_shields_iterator->Next()));
+    }
   }
 
-  brave_shields_iterator.reset();
-
   // add brave cookies after checking shield status
-  auto brave_cookies_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::BRAVE_COOKIES, incognito);
-
-  // Matching cookie rules against shield rules.
-  while (brave_cookies_iterator && brave_cookies_iterator->HasNext()) {
-    auto rule = brave_cookies_iterator->Next();
-    if (IsActive(rule, shield_rules)) {
-      rules.emplace_back(CloneRule(rule, true));
-      brave_cookie_rules_[incognito].emplace_back(CloneRule(rule, true));
+  {
+    auto brave_cookies_iterator = PrefProvider::GetRuleIterator(
+        ContentSettingsType::BRAVE_COOKIES, incognito);
+    // Matching cookie rules against shield rules.
+    while (brave_cookies_iterator && brave_cookies_iterator->HasNext()) {
+      auto rule = brave_cookies_iterator->Next();
+      if (IsActive(rule, shield_rules)) {
+        rules.emplace_back(CloneRule(rule, true));
+        brave_cookie_rules_[incognito].emplace_back(CloneRule(rule, true));
+      }
     }
   }
 
