@@ -69,15 +69,17 @@ public class PendingTxHelper {
                             newValue.add(txInfo);
                         } else if (!mFilterByContractAddress.isEmpty()) {
                             if (mFilterByContractAddress.toLowerCase(Locale.getDefault())
-                                            .equals(txInfo.txData.baseData.to.toLowerCase(
-                                                    Locale.getDefault()))) {
+                                            .equals(txInfo.txDataUnion.getEthTxData1559()
+                                                            .baseData.to.toLowerCase(
+                                                                    Locale.getDefault()))) {
                                 newValue.add(txInfo);
                             }
                             if (mRopstenContractAddress != null
                                     && !mRopstenContractAddress.isEmpty()
                                     && mRopstenContractAddress.toLowerCase(Locale.getDefault())
-                                               .equals(txInfo.txData.baseData.to.toLowerCase(
-                                                       Locale.getDefault()))) {
+                                               .equals(txInfo.txDataUnion.getEthTxData1559()
+                                                               .baseData.to.toLowerCase(
+                                                                       Locale.getDefault()))) {
                                 newValue.add(txInfo);
                             }
 

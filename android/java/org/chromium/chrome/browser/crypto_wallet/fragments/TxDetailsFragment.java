@@ -50,7 +50,7 @@ public class TxDetailsFragment extends Fragment {
     @SuppressLint("ClickableViewAccessibility")
     public void setupView(View view) {
         if ((mTxInfo.txParams.length == 0 || mTxInfo.txArgs.length == 0)
-                && mTxInfo.txData.baseData.data.length == 0) {
+                && mTxInfo.txDataUnion.getEthTxData1559().baseData.data.length == 0) {
             return;
         }
         assert mTxInfo.txParams.length == mTxInfo.txArgs.length;
@@ -97,8 +97,10 @@ public class TxDetailsFragment extends Fragment {
             detailsParam3Widget.setText(detailsParam3);
         }
 
-        if (mTxInfo.txParams.length == 0 && mTxInfo.txData.baseData.data.length != 0) {
-            String detailsParam1 = Utils.numberArrayToHexStr(mTxInfo.txData.baseData.data);
+        if (mTxInfo.txParams.length == 0
+                && mTxInfo.txDataUnion.getEthTxData1559().baseData.data.length != 0) {
+            String detailsParam1 =
+                    Utils.numberArrayToHexStr(mTxInfo.txDataUnion.getEthTxData1559().baseData.data);
             TextView detailsParam1Widget = view.findViewById(R.id.tx_details_param_1);
             detailsParam1Widget.setVisibility(View.VISIBLE);
             detailsParam1Widget.setText(detailsParam1);

@@ -996,7 +996,7 @@ public class Utils {
     public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
             AppCompatActivity activity, AccountInfo[] accountInfos) {
         assert txInfo != null;
-        String to = txInfo.txData.baseData.to;
+        String to = txInfo.txDataUnion.getEthTxData1559().baseData.to;
         if (txInfo.txType == TransactionType.ERC20_TRANSFER && txInfo.txArgs.length > 1) {
             to = txInfo.txArgs[0];
         }
@@ -1124,8 +1124,9 @@ public class Utils {
                                 decimals = chainDecimals;
                             }
                             if (token.contractAddress.toLowerCase(Locale.getDefault())
-                                            .equals(txInfo.txData.baseData.to.toLowerCase(
-                                                    Locale.getDefault()))) {
+                                            .equals(txInfo.txDataUnion.getEthTxData1559()
+                                                            .baseData.to.toLowerCase(
+                                                                    Locale.getDefault()))) {
                                 assets.put(txInfo.id, symbol);
                                 assetsDecimals.put(symbol, decimals);
                                 break;
@@ -1205,8 +1206,8 @@ public class Utils {
                 assetPrice = assetPriceTemp;
             }
         }
-        String valueAsset = txInfo.txData.baseData.value;
-        String to = txInfo.txData.baseData.to;
+        String valueAsset = txInfo.txDataUnion.getEthTxData1559().baseData.value;
+        String to = txInfo.txDataUnion.getEthTxData1559().baseData.to;
         Date date = new Date(txInfo.createdTime.microseconds / 1000);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault());
         String strDate = dateFormat.format(date);
@@ -1244,7 +1245,8 @@ public class Utils {
                     assetSymbol, "0x Exchange Proxy");
             valueToDisplay = "0.0000 " + assetSymbol;
         }
-        if (txInfo.txData.baseData.to.toLowerCase(Locale.getDefault())
+        if (txInfo.txDataUnion.getEthTxData1559()
+                        .baseData.to.toLowerCase(Locale.getDefault())
                         .equals(Utils.SWAP_EXCHANGE_PROXY.toLowerCase(Locale.getDefault()))) {
             action = String.format(context.getResources().getString(R.string.wallet_tx_info_swap),
                     accountName, strDate);
@@ -1257,14 +1259,16 @@ public class Utils {
         WalletListItemModel itemModel =
                 new WalletListItemModel(R.drawable.ic_eth, action, detailInfo, null, null);
         updateWalletCoinTransactionStatus(itemModel, context, txInfo);
-        boolean isEIP1559 = !txInfo.txData.maxPriorityFeePerGas.isEmpty()
-                && !txInfo.txData.maxFeePerGas.isEmpty();
+        boolean isEIP1559 = !txInfo.txDataUnion.getEthTxData1559().maxPriorityFeePerGas.isEmpty()
+                && !txInfo.txDataUnion.getEthTxData1559().maxFeePerGas.isEmpty();
         double totalGas = isEIP1559
-                ? Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
-                                           txInfo.txData.maxFeePerGas),
+                ? Utils.fromHexWei(
+                        Utils.multiplyHexBN(txInfo.txDataUnion.getEthTxData1559().baseData.gasLimit,
+                                txInfo.txDataUnion.getEthTxData1559().maxFeePerGas),
                         18)
-                : Utils.fromHexWei(Utils.multiplyHexBN(txInfo.txData.baseData.gasLimit,
-                                           txInfo.txData.baseData.gasPrice),
+                : Utils.fromHexWei(
+                        Utils.multiplyHexBN(txInfo.txDataUnion.getEthTxData1559().baseData.gasLimit,
+                                txInfo.txDataUnion.getEthTxData1559().baseData.gasPrice),
                         18);
         double totalGasFiat = totalGas * chainSymbolPrice;
         itemModel.setChainSymbol(chainSymbol);
