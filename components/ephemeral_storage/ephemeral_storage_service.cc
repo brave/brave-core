@@ -29,7 +29,7 @@ EphemeralStorageService::EphemeralStorageService(
 EphemeralStorageService::~EphemeralStorageService() = default;
 
 void EphemeralStorageService::Shutdown() {
-  for (const auto& pattern : patterns_to_cleanup_) {
+  for (const auto& pattern : patterns_to_cleanup_on_shutdown_) {
     host_content_settings_map_->SetContentSettingCustomScope(
         pattern, ContentSettingsPattern::Wildcard(),
         ContentSettingsType::COOKIES, CONTENT_SETTING_DEFAULT);
@@ -57,9 +57,9 @@ void EphemeralStorageService::Set1PESEnabledForUrl(const GURL& url,
                                                    bool enable) {
   auto pattern = ContentSettingsPattern::FromURLNoWildcard(url);
   if (enable) {
-    patterns_to_cleanup_.insert(pattern);
+    patterns_to_cleanup_on_shutdown_.insert(pattern);
   } else {
-    patterns_to_cleanup_.erase(pattern);
+    patterns_to_cleanup_on_shutdown_.erase(pattern);
   }
   host_content_settings_map_->SetContentSettingCustomScope(
       pattern, ContentSettingsPattern::Wildcard(), ContentSettingsType::COOKIES,

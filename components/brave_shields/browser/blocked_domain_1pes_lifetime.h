@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -21,6 +21,11 @@ class EphemeralStorageService;
 
 namespace brave_shields {
 
+// Manages the lifetime of auto-enabled 1PES mode (by DomainBlock feature).
+// Each instance is shared by each 1PES-enabled top-level frame with the same
+// BlockedDomain1PESLifetime::Key. When the last top-level frame holding a
+// reference is destroyed or navigates to a non-blocked domain, 1PES will be
+// disabled.
 class BlockedDomain1PESLifetime
     : public base::RefCounted<BlockedDomain1PESLifetime>,
       public base::SupportsWeakPtr<BlockedDomain1PESLifetime> {

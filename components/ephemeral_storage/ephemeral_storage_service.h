@@ -55,7 +55,8 @@ class EphemeralStorageService
 
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
-  base::flat_set<ContentSettingsPattern> patterns_to_cleanup_;
+  // These patterns are removed on service Shutdown.
+  base::flat_set<ContentSettingsPattern> patterns_to_cleanup_on_shutdown_;
 
   base::WeakPtrFactory<EphemeralStorageService> weak_ptr_factory_{this};
 };
