@@ -129,8 +129,7 @@ export const resetBlockingResources: shieldState.ResetBlockingResources = (state
   return { ...state, tabs }
 }
 
-export const updateShieldsIconBadgeText: shieldState.UpdateShieldsIconBadgeText = (state) => {
-  const tabId: number = getActiveTabId(state)
+export const updateShieldsIconBadgeText: shieldState.UpdateShieldsIconBadgeText = (state, tabId) => {
   const tab: shieldState.Tab = state.tabs[tabId]
   if (tab) {
     const total = getTotalResourcesBlocked(tab)
@@ -142,8 +141,7 @@ export const updateShieldsIconBadgeText: shieldState.UpdateShieldsIconBadgeText 
   }
 }
 
-export const updateShieldsIconImage: shieldState.UpdateShieldsIconImage = (state) => {
-  const tabId: number = getActiveTabId(state)
+export const updateShieldsIconImage: shieldState.UpdateShieldsIconImage = (state, tabId) => {
   const tab: shieldState.Tab = state.tabs[tabId]
   if (tab) {
     const url: string = tab.url
@@ -152,20 +150,14 @@ export const updateShieldsIconImage: shieldState.UpdateShieldsIconImage = (state
   }
 }
 
-export const updateShieldsIcon: shieldState.UpdateShieldsIcon = (state) => {
-  updateShieldsIconBadgeText(state)
-  updateShieldsIconImage(state)
+export const updateShieldsIcon: shieldState.UpdateShieldsIcon = (state, tabId) => {
+  updateShieldsIconBadgeText(state, tabId)
+  updateShieldsIconImage(state, tabId)
 }
 
 export const focusedWindowChanged: shieldState.FocusedWindowChanged = (state, windowId) => {
   if (windowId !== -1) {
     state = updateFocusedWindow(state, windowId)
-    if (getActiveTabId(state)) {
-      requestShieldPanelData(getActiveTabId(state))
-      updateShieldsIcon(state)
-    } else {
-      console.warn('no tab id so cannot request shield data from window focus change!')
-    }
   }
   return state
 }

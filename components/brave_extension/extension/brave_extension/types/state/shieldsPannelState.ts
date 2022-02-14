@@ -80,9 +80,9 @@ export type ResetBlockingResources = (state: State, tabId: number) => State
 
 export type ResetNoScriptInfo = (state: State, tabId: number, newOrigin: string) => State
 
-export type UpdateShieldsIconBadgeText = (state: State) => void
-export type UpdateShieldsIconImage = (state: State) => void
-export type UpdateShieldsIcon = (state: State) => void
+export type UpdateShieldsIconBadgeText = (state: State, tabId: number) => void
+export type UpdateShieldsIconImage = (state: State, tabId: number) => void
+export type UpdateShieldsIcon = (state: State, tabId: number) => void
 export type FocusedWindowChanged = (state: State, windowId: number) => State
 export type RequestDataAndUpdateActiveTab = (state: State, windowId: number, tabId: number) => State
 

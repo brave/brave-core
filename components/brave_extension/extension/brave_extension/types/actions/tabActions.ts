@@ -27,8 +27,10 @@ interface TabDataChangedReturn {
 }
 
 export type TabDataChanged = (tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => TabDataChangedReturn
+interface TabRemovedReturn { type: types.TAB_REMOVED, tabId: number }
 
 export type tabActions =
   ActiveTabChangedReturn |
   TabCreatedReturn |
-  TabDataChangedReturn
+  TabDataChangedReturn |
+  TabRemovedReturn

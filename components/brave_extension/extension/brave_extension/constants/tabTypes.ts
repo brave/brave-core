@@ -5,3 +5,4 @@
 export const ACTIVE_TAB_CHANGED = 'ACTIVE_TAB_CHANGED'
 export const TAB_DATA_CHANGED = 'TAB_DATA_CHANGED'
 export const TAB_CREATED = 'TAB_CREATED'
+export const TAB_REMOVED = 'TAB_REMOVED'

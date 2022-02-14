@@ -79,15 +79,16 @@ export default function shieldsPanelReducer (
     case tabTypes.ACTIVE_TAB_CHANGED: {
       const windowId: number = action.windowId
       const tabId: number = action.tabId
-      state = shieldsPanelState.requestDataAndUpdateActiveTab(state, windowId, tabId)
-      shieldsPanelState.updateShieldsIcon(state)
+      state = shieldsPanelState.updateActiveTab(state, windowId, tabId)
       break
     }
     case tabTypes.TAB_DATA_CHANGED: {
       const tab: chrome.tabs.Tab = action.tab
-      if (tab.active && tab.id) {
+      // What are the changes that could cause updates in shield data which we should fetch
+      // - new url (shields might be disabled for the domain)
+      if (tab.id && action.changeInfo.url) {
         state = shieldsPanelState.requestDataAndUpdateActiveTab(state, tab.windowId, tab.id)
-        shieldsPanelState.updateShieldsIcon(state)
+        shieldsPanelState.updateShieldsIcon(state, tab.id)
       }
       break
     }
@@ -97,17 +98,31 @@ export default function shieldsPanelReducer (
         break
       }
 
-      if (tab.active && tab.id) {
+      if (tab.id) {
         state = shieldsPanelState.requestDataAndUpdateActiveTab(state, tab.windowId, tab.id)
-        shieldsPanelState.updateShieldsIcon(state)
+        shieldsPanelState.updateShieldsIcon(state, tab.id)
       }
+      break
+    }
+    case tabTypes.TAB_REMOVED: {
+      console.log('tab created', state)
+      if (!action.tabId) {
+        break
+      }
+      state = {
+        ...state,
+        tabs: {
+          ...state.tabs
+        }
+      }
+      delete state.tabs[action.tabId]
       break
     }
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED: {
       // @ts-expect-error (petemill) - shields Tab / ShieldDetails types are a mess of
       // and used interchangably and all this code will be removed soon.
       state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
-      shieldsPanelState.updateShieldsIcon(state)
+      shieldsPanelState.updateShieldsIcon(state, action.details.id)
       if (chrome.test && shieldsPanelState.getActiveTabData(state)) {
         chrome.test.sendMessage('brave-extension-shields-data-ready')
       }
@@ -181,14 +196,11 @@ export default function shieldsPanelReducer (
     }
     case shieldsPanelTypes.RESOURCE_BLOCKED: {
       const tabId: number = action.details.tabId
-      const currentTabId: number = shieldsPanelState.getActiveTabId(state)
       state = shieldsPanelState.updateResourceBlocked(
         state, tabId, action.details.blockType, action.details.subresource)
-      if (tabId === currentTabId) {
-        const isShieldsActive: boolean = shieldsPanelState.isShieldsActive(state, tabId)
-        if (isShieldsActive) {
-          shieldsPanelState.updateShieldsIconBadgeText(state)
-        }
+      const isShieldsActive: boolean = shieldsPanelState.isShieldsActive(state, tabId)
+      if (isShieldsActive) {
+        shieldsPanelState.updateShieldsIconBadgeText(state, tabId)
       }
       break
     }

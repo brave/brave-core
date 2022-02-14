@@ -20,6 +20,13 @@ export const tabCreated: actions.TabCreated = (tab) => {
   }
 }
 
+export const tabRemoved = (tabId: number) => {
+  return {
+    type: types.TAB_REMOVED,
+    tabId
+  }
+}
+
 export const tabDataChanged: actions.TabDataChanged = (tabId, changeInfo, tab) => {
   return {
     type: types.TAB_DATA_CHANGED,
