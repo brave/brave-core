@@ -31,8 +31,6 @@ const mockVisibleList = [
   AccountAssetOptions[1]
 ]
 
-const expectedResult = [AccountAssetOptions[0]]
-
 const getBuyAssets = async () => {
   return await mockVisibleList
 }
@@ -43,15 +41,7 @@ describe('useAssets hook', () => {
     await act(async () => {
       await waitForNextUpdate()
     })
-    expect(result.current.panelUserAssetList).toEqual(expectedResult)
-  })
-
-  it('Selected account has 0 balances, should return an empty array', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccounts[1], mockNetwork, mockVisibleList, mockVisibleList, mockAssetPrices, getBuyAssets))
-    await act(async () => {
-      await waitForNextUpdate()
-    })
-    expect(result.current.panelUserAssetList).toEqual([])
+    expect(result.current.panelUserAssetList).toEqual(mockVisibleList)
   })
 
   it('should return empty array for panelUserAssetList if visible assets is empty', async () => {

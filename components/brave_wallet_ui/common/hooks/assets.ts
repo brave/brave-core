@@ -62,12 +62,7 @@ export default function useAssets (
       return []
     }
 
-    const nonZeroBalanceAssets = userVisibleTokensInfo.filter(token => {
-      const balance = getBalance(selectedAccount, token)
-      return balance !== '' && parseInt(balance) > 0
-    })
-
-    return nonZeroBalanceAssets.sort(function (a, b) {
+    return userVisibleTokensInfo.sort(function (a, b) {
       const aBalance = getBalance(selectedAccount, a)
       const bBalance = getBalance(selectedAccount, b)
 
