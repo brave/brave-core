@@ -15,11 +15,13 @@ import {
   Tokens,
   ModalDonation
 } from '../../ui/components'
+import { NewTabLink } from '../../shared/components/new_tab_link'
 import { Provider } from '../../ui/components/profile'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
+import * as urls from '../../shared/lib/rewards_urls'
 import * as utils from '../utils'
 import { DetailRow } from '../../ui/components/tableDonation'
 
@@ -157,6 +159,14 @@ class TipBox extends React.Component<Props, State> {
     )
   }
 
+  getDescription = () => {
+    return (
+      <div>
+        {getLocale('donationDesc')} <NewTabLink href={urls.tippingLearnMoreURL}>{getLocale('donationDescLearnMore')}</NewTabLink>
+      </div>
+    )
+  }
+
   render () {
     const { parameters, tipsList } = this.props.rewardsData
     const tipRows = this.getTipsRows()
@@ -170,7 +180,7 @@ class TipBox extends React.Component<Props, State> {
       <Box
         title={getLocale('donationTitle')}
         type={'donation'}
-        description={getLocale('donationDesc')}
+        description={this.getDescription()}
         settingsChild={this.donationSettingsChild()}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}
