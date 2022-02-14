@@ -223,6 +223,13 @@ function Container (props: Props) {
     setSelectedAccounts([selectedAccount])
   }, [selectedAccount])
 
+  React.useEffect(() => {
+    if (hasIncorrectPassword) {
+      // Clear the incorrect password
+      setInputValue('')
+    }
+  }, [hasIncorrectPassword])
+
   const getSelectedAccountBalance = useBalance(selectedNetwork)
   const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset)
   const fromAssetBalance = getSelectedAccountBalance(selectedAccount, fromAsset)
@@ -575,6 +582,7 @@ function Container (props: Props) {
       <PanelWrapper isLonger={false}>
         <StyledExtensionWrapper>
           <LockPanel
+            value={inputValue}
             hasPasswordError={hasIncorrectPassword}
             onSubmit={unlockWallet}
             disabled={inputValue === ''}

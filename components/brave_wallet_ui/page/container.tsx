@@ -553,6 +553,13 @@ function Container (props: Props) {
     accounts
   ])
 
+  React.useEffect(() => {
+    if (hasIncorrectPassword) {
+      // Clear incorrect password
+      setInputValue('')
+    }
+  }, [hasIncorrectPassword])
+
   const hideMainComponents = (isWalletCreated && !setupStillInProgress) && !isWalletLocked && walletLocation !== WalletRoutes.Backup
 
   return (
@@ -595,6 +602,7 @@ function Container (props: Props) {
             {isWalletLocked &&
               <OnboardingWrapper>
                 <LockScreen
+                  value={inputValue}
                   onSubmit={unlockWallet}
                   disabled={inputValue === ''}
                   onPasswordChanged={handlePasswordChanged}
