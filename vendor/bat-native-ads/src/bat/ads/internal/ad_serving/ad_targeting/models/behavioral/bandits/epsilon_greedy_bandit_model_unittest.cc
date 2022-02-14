@@ -43,6 +43,22 @@ TEST_F(BatAdsEpsilonGreedyBanditModelTest,
   EXPECT_TRUE(segments.empty());
 }
 
+TEST_F(BatAdsEpsilonGreedyBanditModelTest, EligableSegmentsAreEmpty) {
+  // Arrange
+  base::test::ScopedFeatureList scoped_feature_list;
+  scoped_feature_list.InitAndEnableFeatureWithParameters(
+      features::kEpsilonGreedyBandit, {{"epsilon_value", "0.5"}});
+
+  processor::EpsilonGreedyBandit processor;
+
+  // Act
+  EpsilonGreedyBandit model;
+  const SegmentList segments = model.GetSegments();
+
+  // Assert
+  EXPECT_TRUE(segments.empty());
+}
+
 TEST_F(BatAdsEpsilonGreedyBanditModelTest, GetSegmentsIfNeverProcessed) {
   // Arrange
   SaveAllSegments();
