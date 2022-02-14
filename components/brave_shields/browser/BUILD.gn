@@ -27,6 +27,8 @@ static_library("browser") {
     "adblock_stub_response.h",
     "base_brave_shields_service.cc",
     "base_brave_shields_service.h",
+    "blocked_domain_1pes_lifetime.cc",
+    "blocked_domain_1pes_lifetime.h",
     "brave_shields_p3a.cc",
     "brave_shields_p3a.h",
     "brave_shields_util.cc",

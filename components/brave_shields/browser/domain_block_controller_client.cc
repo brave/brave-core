@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/domain_block_tab_storage.h"
-#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/settings_page_helper.h"
 #include "components/security_interstitials/core/metrics_helper.h"
@@ -66,9 +65,10 @@ void DomainBlockControllerClient::Proceed() {
   }
 
   if (!dont_warn_again_ && ephemeral_storage_service_) {
-    ephemeral_storage_service_->Enable1PESForUrlIfPossible(
-        request_url_, base::BindOnce(&DomainBlockControllerClient::ReloadPage,
-                                     weak_ptr_factory_.GetWeakPtr()));
+    tab_storage->Enable1PESForUrlIfPossible(
+        ephemeral_storage_service_, request_url_,
+        base::BindOnce(&DomainBlockControllerClient::ReloadPage,
+                       weak_ptr_factory_.GetWeakPtr()));
   } else {
     ReloadPage();
   }

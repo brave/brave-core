@@ -7,11 +7,9 @@
 
 #include <utility>
 
-#include "base/strings/strcat.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/common/content_settings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/site_instance.h"
 #include "net/base/features.h"
@@ -28,7 +26,15 @@ EphemeralStorageService::EphemeralStorageService(
   DCHECK(host_content_settings_map_);
 }
 
-EphemeralStorageService::~EphemeralStorageService() {}
+EphemeralStorageService::~EphemeralStorageService() = default;
+
+void EphemeralStorageService::Shutdown() {
+  for (const auto& pattern : patterns_to_cleanup_on_shutdown_) {
+    host_content_settings_map_->SetContentSettingCustomScope(
+        pattern, ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::COOKIES, CONTENT_SETTING_DEFAULT);
+  }
+}
 
 void EphemeralStorageService::CanEnable1PESForUrl(
     const GURL& url,
@@ -49,10 +55,14 @@ void EphemeralStorageService::CanEnable1PESForUrl(
 
 void EphemeralStorageService::Set1PESEnabledForUrl(const GURL& url,
                                                    bool enable) {
+  auto pattern = ContentSettingsPattern::FromURLNoWildcard(url);
+  if (enable) {
+    patterns_to_cleanup_on_shutdown_.insert(pattern);
+  } else {
+    patterns_to_cleanup_on_shutdown_.erase(pattern);
+  }
   host_content_settings_map_->SetContentSettingCustomScope(
-      ContentSettingsPattern::FromString(
-          base::StrCat({"[*.]", url.host_piece(), ":*"})),
-      ContentSettingsPattern::Wildcard(), ContentSettingsType::COOKIES,
+      pattern, ContentSettingsPattern::Wildcard(), ContentSettingsType::COOKIES,
       enable ? CONTENT_SETTING_SESSION_ONLY : CONTENT_SETTING_DEFAULT);
 }
 
@@ -64,7 +74,7 @@ bool EphemeralStorageService::Is1PESEnabledForUrl(const GURL& url) const {
 
 void EphemeralStorageService::Enable1PESForUrlIfPossible(
     const GURL& url,
-    base::OnceCallback<void()> on_ready) {
+    base::OnceCallback<void(bool)> on_ready) {
   CanEnable1PESForUrl(
       url,
       base::BindOnce(&EphemeralStorageService::OnCanEnable1PESForUrl,
@@ -73,12 +83,12 @@ void EphemeralStorageService::Enable1PESForUrlIfPossible(
 
 void EphemeralStorageService::OnCanEnable1PESForUrl(
     const GURL& url,
-    base::OnceCallback<void()> on_ready,
+    base::OnceCallback<void(bool)> on_ready,
     bool can_enable_1pes) {
   if (can_enable_1pes) {
     Set1PESEnabledForUrl(url, true);
   }
-  std::move(on_ready).Run();
+  std::move(on_ready).Run(can_enable_1pes);
 }
 
 bool EphemeralStorageService::IsDefaultCookieSetting(const GURL& url) const {

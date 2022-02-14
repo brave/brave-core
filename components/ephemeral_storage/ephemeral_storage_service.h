@@ -7,7 +7,9 @@
 #define BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_H_
 
 #include "base/callback.h"
+#include "base/containers/flat_set.h"
 #include "base/memory/weak_ptr.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
 
@@ -30,6 +32,8 @@ class EphemeralStorageService
                           HostContentSettingsMap* host_content_settings_map);
   ~EphemeralStorageService() override;
 
+  void Shutdown() override;
+
   // Performs storage check (cookies, localStorage) and callbacks `true` if
   // nothing is stored in all of these storages.
   void CanEnable1PESForUrl(
@@ -41,16 +45,18 @@ class EphemeralStorageService
   bool Is1PESEnabledForUrl(const GURL& url) const;
   // Enables 1PES for url if nothing is stored for |url|.
   void Enable1PESForUrlIfPossible(const GURL& url,
-                                  base::OnceCallback<void()> on_ready);
+                                  base::OnceCallback<void(bool)> on_ready);
 
  private:
   void OnCanEnable1PESForUrl(const GURL& url,
-                             base::OnceCallback<void()> on_ready,
+                             base::OnceCallback<void(bool)> on_ready,
                              bool can_enable_1pes);
   bool IsDefaultCookieSetting(const GURL& url) const;
 
-  content::BrowserContext* context_ = nullptr;
-  HostContentSettingsMap* host_content_settings_map_ = nullptr;
+  raw_ptr<content::BrowserContext> context_ = nullptr;
+  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
+  // These patterns are removed on service Shutdown.
+  base::flat_set<ContentSettingsPattern> patterns_to_cleanup_on_shutdown_;
 
   base::WeakPtrFactory<EphemeralStorageService> weak_ptr_factory_{this};
 };

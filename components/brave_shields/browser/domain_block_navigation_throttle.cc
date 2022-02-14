@@ -19,7 +19,6 @@
 #include "brave/components/brave_shields/browser/domain_block_page.h"
 #include "brave/components/brave_shields/browser/domain_block_tab_storage.h"
 #include "brave/components/brave_shields/common/features.h"
-#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "components/security_interstitials/content/security_interstitial_tab_helper.h"
@@ -110,13 +109,18 @@ DomainBlockNavigationThrottle::WillStartRequest() {
 
   domain_blocking_type_ =
       brave_shields::GetDomainBlockingType(content_settings_, request_url);
+  content::WebContents* web_contents = handle->GetWebContents();
   // Maybe don't block based on Brave Shields settings
-  if (domain_blocking_type_ == DomainBlockingType::kNone)
+  if (domain_blocking_type_ == DomainBlockingType::kNone) {
+    DomainBlockTabStorage* tab_storage =
+        DomainBlockTabStorage::FromWebContents(web_contents);
+    if (tab_storage)
+      tab_storage->DropBlockedDomain1PESLifetime();
     return content::NavigationThrottle::PROCEED;
+  }
 
   // If user has just chosen to proceed on our interstitial, don't show
   // another one.
-  content::WebContents* web_contents = handle->GetWebContents();
   DomainBlockTabStorage* tab_storage =
       DomainBlockTabStorage::GetOrCreate(web_contents);
   if (tab_storage->IsProceeding())
@@ -156,6 +160,10 @@ DomainBlockNavigationThrottle::WillProcessResponse() {
 void DomainBlockNavigationThrottle::OnShouldBlockDomain(
     bool should_block_domain) {
   if (!should_block_domain) {
+    DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
+        navigation_handle()->GetWebContents());
+    if (tab_storage)
+      tab_storage->DropBlockedDomain1PESLifetime();
     // Navigation was deferred while we called the ad block service on a task
     // runner, but now we know that we want to allow navigation to continue.
     Resume();
@@ -215,10 +223,14 @@ void DomainBlockNavigationThrottle::ShowInterstitial() {
 
 void DomainBlockNavigationThrottle::Enable1PESAndResume() {
   DCHECK(ephemeral_storage_service_);
-  ephemeral_storage_service_->Enable1PESForUrlIfPossible(
-      navigation_handle()->GetURL(),
-      base::BindOnce(&DomainBlockNavigationThrottle::Resume,
-                     weak_ptr_factory_.GetWeakPtr()));
+  DomainBlockTabStorage* tab_storage = DomainBlockTabStorage::FromWebContents(
+      navigation_handle()->GetWebContents());
+  if (tab_storage) {
+    tab_storage->Enable1PESForUrlIfPossible(
+        ephemeral_storage_service_, navigation_handle()->GetURL(),
+        base::BindOnce(&DomainBlockNavigationThrottle::Resume,
+                       weak_ptr_factory_.GetWeakPtr()));
+  }
 }
 
 const char* DomainBlockNavigationThrottle::GetNameForLogging() {

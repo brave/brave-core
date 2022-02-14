@@ -5,7 +5,11 @@
 
 #include "brave/components/brave_shields/browser/domain_block_tab_storage.h"
 
+#include <utility>
+
+#include "base/containers/flat_map.h"
 #include "base/memory/ptr_util.h"
+#include "base/no_destructor.h"
 #include "content/public/browser/web_contents.h"
 
 namespace brave_shields {
@@ -14,6 +18,8 @@ namespace brave_shields {
 // Upstream does this too.
 const void* const kDomainBlockTabStorageKey = &kDomainBlockTabStorageKey;
 
+DomainBlockTabStorage::DomainBlockTabStorage(content::WebContents* contents)
+    : content::WebContentsUserData<DomainBlockTabStorage>(*contents) {}
 DomainBlockTabStorage::~DomainBlockTabStorage() = default;
 
 // static
@@ -25,6 +31,25 @@ DomainBlockTabStorage* DomainBlockTabStorage::GetOrCreate(
     storage = FromWebContents(web_contents);
   }
   return storage;
+}
+
+void DomainBlockTabStorage::Enable1PESForUrlIfPossible(
+    ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
+    const GURL& url,
+    base::OnceCallback<void()> on_ready) {
+  if (url.HostIsIPAddress()) {
+    std::move(on_ready).Run();
+    return;
+  }
+
+  DCHECK(ephemeral_storage_service);
+  blocked_domain_1pes_lifetime_ =
+      BlockedDomain1PESLifetime::GetOrCreate(ephemeral_storage_service, url);
+  blocked_domain_1pes_lifetime_->AddOnReadyCallback(std::move(on_ready));
+}
+
+void DomainBlockTabStorage::DropBlockedDomain1PESLifetime() {
+  blocked_domain_1pes_lifetime_.reset();
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(DomainBlockTabStorage);
