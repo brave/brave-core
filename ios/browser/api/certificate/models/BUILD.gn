@@ -26,6 +26,7 @@ source_set("models") {
 
   deps = [
     "//base",
+    "//brave/base/mac",
     "//brave/ios/browser/api/certificate/utils",
     "//brave/ios/browser/api/common",
     "//crypto",
