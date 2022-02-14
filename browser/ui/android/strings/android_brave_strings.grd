@@ -1981,7 +1981,7 @@ Are you sure you want to do this?
       New Password
     </message>
     <message name="IDS_RESTORE_LEGACY_WALLET_RECOVERY_PHRASE" desc="Brave Wallet onboarding past image accessibility text">
-      I'm restoring from legacy Brave Crypto Wallet
+      Import from legacy Brave crypto wallets?
     </message>
     <message name="IDS_VERIFY_RECOVERY_PHRASE" desc="Brave Wallet onboarding text">
       Verify recovery phrase
