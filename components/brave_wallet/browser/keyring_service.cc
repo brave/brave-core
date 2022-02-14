@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -126,14 +127,6 @@ const char kCoinType[] = "coin_type";
 const char kLegacyBraveWallet[] = "legacy_brave_wallet";
 const char kHardwareKeyrings[] = "hardware";
 const char kHardwareDerivationPath[] = "derivation_path";
-
-std::string GetKeyringId(HDKeyring::Type type) {
-  if (type == HDKeyring::kFilecoin)
-    return mojom::kFilecoinKeyringId;
-  else if (type == HDKeyring::kSolana)
-    return mojom::kSolanaKeyringId;
-  return mojom::kDefaultKeyringId;
-}
 
 mojom::CoinType GetCoinForKeyring(const std::string& keyring_id) {
   if (keyring_id == mojom::kFilecoinKeyringId) {
@@ -603,7 +596,7 @@ HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
       continue;
     }
     if (keyring_id == mojom::kFilecoinKeyringId) {
-      auto* filecoin_keyring = static_cast<FilecoinKeyring*>(keyring);
+      auto* filecoin_keyring = reinterpret_cast<FilecoinKeyring*>(keyring);
       if (filecoin_keyring) {
         filecoin_keyring->ImportFilecoinAccount(
             private_key, imported_account_info.account_address);
@@ -884,7 +877,7 @@ KeyringService::ImportSECP256K1AccountForFilecoinKeyring(
     const std::string& account_name,
     const std::vector<uint8_t>& private_key,
     const std::string& network) {
-  auto* keyring = static_cast<FilecoinKeyring*>(
+  auto* keyring = reinterpret_cast<FilecoinKeyring*>(
       GetHDKeyringById(mojom::kFilecoinKeyringId));
   if (!keyring) {
     return absl::nullopt;
@@ -915,7 +908,7 @@ absl::optional<std::string> KeyringService::ImportBLSAccountForFilecoinKeyring(
     const std::string& account_name,
     const std::vector<uint8_t>& private_key,
     const std::string& network) {
-  auto* keyring = static_cast<FilecoinKeyring*>(
+  auto* keyring = reinterpret_cast<FilecoinKeyring*>(
       GetHDKeyringById(mojom::kFilecoinKeyringId));
   if (!keyring) {
     return absl::nullopt;
@@ -1093,8 +1086,7 @@ void KeyringService::RemoveImportedAccount(
     std::move(callback).Run(false);
     return;
   }
-  RemoveImportedAccountForKeyring(prefs_, address,
-                                  GetKeyringId(keyring->type()));
+  RemoveImportedAccountForKeyring(prefs_, address, keyring_id);
 
   NotifyAccountsChanged();
   if (address == prefs_->GetString(kBraveWalletSelectedAccount)) {
@@ -1304,7 +1296,8 @@ void KeyringService::SignTransactionByDefaultKeyring(const std::string& address,
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
   if (!keyring)
     return;
-  keyring->SignTransaction(address, tx, chain_id);
+  reinterpret_cast<EthereumKeyring*>(keyring)->SignTransaction(address, tx,
+                                                               chain_id);
 }
 
 KeyringService::SignatureWithError::SignatureWithError() = default;
@@ -1330,7 +1323,8 @@ KeyringService::SignatureWithError KeyringService::SignMessageByDefaultKeyring(
 
   // MM currently doesn't provide chain_id when signing message
   std::vector<uint8_t> signature =
-      keyring->SignMessage(address, message, 0, is_eip712);
+      reinterpret_cast<EthereumKeyring*>(keyring)->SignMessage(address, message,
+                                                               0, is_eip712);
   if (signature.empty()) {
     ret.signature = absl::nullopt;
     ret.error_message =
@@ -1347,7 +1341,7 @@ bool KeyringService::RecoverAddressByDefaultKeyring(
     const std::vector<uint8_t>& signature,
     std::string* address) {
   CHECK(address);
-  return HDKeyring::RecoverAddress(message, signature, address);
+  return EthereumKeyring::RecoverAddress(message, signature, address);
 }
 
 std::vector<uint8_t> KeyringService::SignMessage(
@@ -1575,7 +1569,7 @@ bool KeyringService::CreateKeyringInternal(const std::string& keyring_id,
                       keyring_id);
 
   if (keyring_id == mojom::kDefaultKeyringId) {
-    keyrings_[mojom::kDefaultKeyringId] = std::make_unique<HDKeyring>();
+    keyrings_[mojom::kDefaultKeyringId] = std::make_unique<EthereumKeyring>();
   } else if (keyring_id == mojom::kFilecoinKeyringId) {
     DCHECK(::brave_wallet::IsFilecoinEnabled());
     keyrings_[mojom::kFilecoinKeyringId] = std::make_unique<FilecoinKeyring>();

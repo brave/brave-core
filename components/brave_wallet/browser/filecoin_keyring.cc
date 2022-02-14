@@ -46,10 +46,6 @@ namespace brave_wallet {
 FilecoinKeyring::FilecoinKeyring() = default;
 FilecoinKeyring::~FilecoinKeyring() = default;
 
-FilecoinKeyring::Type FilecoinKeyring::type() const {
-  return kFilecoin;
-}
-
 std::string FilecoinKeyring::ImportFilecoinBLSAccount(
     const std::vector<uint8_t>& private_key,
     const std::string& network) {
@@ -124,13 +120,6 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   std::string network = "t";
   return network + std::to_string(protocol) +
          CreateAddressWithProtocol(payload, protocol);
-}
-
-std::vector<uint8_t> FilecoinKeyring::SignMessage(
-    const std::string& address,
-    const std::vector<uint8_t>& message) {
-  // NOT IMPLEMENTED
-  return std::vector<uint8_t>();
 }
 
 std::string FilecoinKeyring::CreateAddressWithProtocol(

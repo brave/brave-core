@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -12,10 +12,6 @@
 #include "brave/components/brave_wallet/browser/internal/hd_key_ed25519.h"
 
 namespace brave_wallet {
-
-HDKeyring::Type SolanaKeyring::type() const {
-  return HDKeyring::kSolana;
-}
 
 void SolanaKeyring::ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                        const std::string& hd_path) {
@@ -35,16 +31,6 @@ void SolanaKeyring::AddAccounts(size_t number) {
       accounts_.push_back(root_->DeriveChild(i)->DeriveChild(0));
     }
   }
-}
-
-std::vector<uint8_t> SolanaKeyring::SignMessage(
-    const std::string& address,
-    const std::vector<uint8_t>& message) {
-  HDKeyBase* hd_key = GetHDKeyFromAddress(address);
-  if (!hd_key)
-    return std::vector<uint8_t>();
-
-  return hd_key->Sign(message);
 }
 
 std::string SolanaKeyring::ImportAccount(const std::vector<uint8_t>& keypair) {

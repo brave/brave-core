@@ -27,7 +27,7 @@ class HDKeyBase {
       const std::string& path) = 0;
 
   virtual std::vector<uint8_t> Sign(const std::vector<uint8_t>& msg,
-                                    int* recid = nullptr) = 0;
+                                    int* recid) = 0;
   virtual bool Verify(const std::vector<uint8_t>& msg,
                       const std::vector<uint8_t>& sig) = 0;
 
