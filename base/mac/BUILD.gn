@@ -3,22 +3,23 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//build/config/ios/rules.gni")
-import("//ios/build/config.gni")
+if (is_mac) {
+  import("//build/config/mac/rules.gni")
+}
 
-source_set("common") {
+if (is_ios) {
+  import("//build/config/ios/rules.gni")
+  import("//ios/build/config.gni")
+}
+
+source_set("mac") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
-  sources = [
-    "common_operations.h",
-    "common_operations.mm",
-  ]
+  if (is_mac) {
+    sources = [
+      "conversions.h",
+    ]
 
-  deps = [
-    "//base",
-    "//net",
-    "//url",
-  ]
-
-  frameworks = [ "Foundation.framework" ]
+    frameworks = [ "Foundation.framework" ]
+  }
 }
