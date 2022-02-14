@@ -15,7 +15,6 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kOmniboxTriggerForNoStatePrefetch, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kPrivacySandboxSettings3, base::FEATURE_DISABLED_BY_DEFAULT},
     // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated
     // on this feature.
     {kWebUIDarkMode, base::FEATURE_ENABLED_BY_DEFAULT},
