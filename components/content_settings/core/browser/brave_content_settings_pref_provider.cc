@@ -79,12 +79,10 @@ Rule CloneRule(const Rule& original_rule, bool reverse_patterns = false) {
 
 class BraveShieldsRuleIterator : public RuleIterator {
  public:
-  BraveShieldsRuleIterator(base::Lock* lock,
-                           const std::vector<Rule>::const_iterator& rules_it,
-                           const std::vector<Rule>::const_iterator& rules_end)
+  BraveShieldsRuleIterator(base::Lock* lock, const std::vector<Rule>& rules)
       : auto_lock_(*lock, base::AutoLock::AlreadyAcquired()),
-        rules_it_(rules_it),
-        rules_end_(rules_end) {}
+        rules_it_(rules.begin()),
+        rules_end_(rules.end()) {}
 
   BraveShieldsRuleIterator(const BraveShieldsRuleIterator&) = delete;
 
@@ -100,7 +98,7 @@ class BraveShieldsRuleIterator : public RuleIterator {
  private:
   base::AutoLock auto_lock_;
   std::vector<Rule>::const_iterator rules_it_;
-  std::vector<Rule>::const_iterator rules_end_;
+  const std::vector<Rule>::const_iterator rules_end_;
 };
 
 bool IsActive(const Rule& cookie_rule,
@@ -446,10 +444,10 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
     ContentSettingsType content_type,
     bool incognito) const NO_THREAD_SAFETY_ANALYSIS {
   if (content_type == ContentSettingsType::COOKIES) {
+    // Lock is similar to the upstream ContentSettingsPref implementation.
     lock_.Acquire();
     const auto& rules = cookie_rules_.at(incognito);
-    return std::make_unique<BraveShieldsRuleIterator>(&lock_, rules.begin(),
-                                                      rules.end());
+    return std::make_unique<BraveShieldsRuleIterator>(&lock_, rules);
   }
 
   return PrefProvider::GetRuleIterator(content_type, incognito);
