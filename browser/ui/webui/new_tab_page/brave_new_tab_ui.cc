@@ -20,8 +20,7 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_custom_images_source.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search/background/ntp_custom_background_service.h"
-#include "chrome/browser/search/background/ntp_custom_background_service_factory.h"
+#include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/strings/grit/components_strings.h"
 #include "content/public/browser/url_data_source.h"
@@ -51,12 +50,10 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
       web_ui, name, kBraveNewTabGenerated, kBraveNewTabGeneratedSize,
       IDR_BRAVE_NEW_TAB_HTML);
-  if (auto* ntp_custom_background_service =
-          NtpCustomBackgroundServiceFactory::GetForProfile(profile)) {
-    source->AddBoolean(
-        "featureCustomBackgroundEnabled",
-        !ntp_custom_background_service->IsCustomBackgroundDisabledByPolicy());
-  }
+  source->AddBoolean("featureCustomBackgroundEnabled",
+                     !profile->GetPrefs()->IsManagedPreference(
+                         prefs::kNtpCustomBackgroundDict));
+
   // Let frontend know about feature flags
   source->AddBoolean(
       "featureFlagBraveNewsEnabled",
@@ -107,11 +104,9 @@ void BraveNewTabUI::CreatePageHandler(
         pending_page_handler) {
   DCHECK(pending_page.is_valid());
   Profile* profile = Profile::FromWebUI(web_ui());
-  auto* ntp_custom_background_service =
-      NtpCustomBackgroundServiceFactory::GetForProfile(profile);
   page_handler_ = std::make_unique<BraveNewTabPageHandler>(
       std::move(pending_page_handler), std::move(pending_page), profile,
-      ntp_custom_background_service, web_ui()->GetWebContents());
+      web_ui()->GetWebContents());
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewTabUI)

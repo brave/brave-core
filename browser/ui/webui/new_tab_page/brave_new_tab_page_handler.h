@@ -10,8 +10,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
-#include "chrome/browser/search/background/ntp_custom_background_service.h"
-#include "chrome/browser/search/background/ntp_custom_background_service_observer.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -37,7 +35,6 @@ class NtpCustomBackgroundService;
 class Profile;
 
 class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
-                               public NtpCustomBackgroundServiceObserver,
                                public ui::SelectFileDialog::Listener {
  public:
   BraveNewTabPageHandler(
@@ -45,7 +42,6 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
           pending_page_handler,
       mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
       Profile* profile,
-      NtpCustomBackgroundService* ntp_custom_background_service,
       content::WebContents* web_contents);
   ~BraveNewTabPageHandler() override;
 
@@ -57,9 +53,8 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void ChooseLocalCustomBackground() override;
   void UseBraveBackground() override;
 
-  // NtpCustomBackgroundServiceObserver overrides:
-  void OnCustomBackgroundImageUpdated() override;
-  void OnNtpCustomBackgroundServiceShuttingDown() override;
+  // Observe NTPCustomBackgroundImagesService.
+  void OnCustomBackgroundImageUpdated();
 
   // SelectFileDialog::Listener overrides:
   void FileSelected(const base::FilePath& path,
@@ -73,19 +68,14 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void OnGotImageFile(absl::optional<std::string> input);
   void OnImageDecoded(const gfx::Image& image);
   void OnSavedEncodedImage(bool success);
-  base::FilePath GetTempConvertedImageFilePath() const;
-  void CleanUp();
+  base::FilePath GetSanitizedImageFilePath() const;
+  void DeleteSanitizedImageFile();
 
   mojo::Receiver<brave_new_tab_page::mojom::PageHandler> page_handler_;
   mojo::Remote<brave_new_tab_page::mojom::Page> page_;
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<NtpCustomBackgroundService> ntp_custom_background_service_ = nullptr;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
   scoped_refptr<ui::SelectFileDialog> select_file_dialog_;
-  base::ScopedObservation<NtpCustomBackgroundService,
-                          NtpCustomBackgroundServiceObserver>
-      ntp_custom_background_service_observation_{this};
-  bool delete_temporarily_converted_file_ = false;
   std::unique_ptr<image_fetcher::ImageDecoder> image_decoder_;
   base::WeakPtrFactory<BraveNewTabPageHandler> weak_factory_;
 };

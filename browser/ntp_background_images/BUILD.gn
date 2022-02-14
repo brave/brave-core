@@ -9,6 +9,7 @@ assert(enable_custom_background)
 
 source_set("ntp_custom_background_images") {
   sources = [
+    "constants.h",
     "ntp_custom_background_images_service_delegate.cc",
     "ntp_custom_background_images_service_delegate.h",
     "ntp_custom_background_images_service_factory.cc",
@@ -19,6 +20,7 @@ source_set("ntp_custom_background_images") {
     "//base",
     "//brave/browser/profiles:util",
     "//brave/components/ntp_background_images/browser",
+    "//chrome/browser/profiles",
     "//chrome/common:constants",
     "//components/keyed_service/content",
     "//components/user_prefs",

@@ -14,12 +14,11 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/memory/ref_counted_memory.h"
+#include "brave/browser/ntp_background_images/constants.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "chrome/browser/image_fetcher/image_decoder_impl.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/search/background/ntp_background_data.h"
-#include "chrome/browser/search/background/ntp_custom_background_service.h"
-#include "chrome/browser/search/background/ntp_custom_background_service_factory.h"
 #include "chrome/browser/ui/chrome_select_file_policy.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/grit/generated_resources.h"
@@ -43,18 +42,12 @@ BraveNewTabPageHandler::BraveNewTabPageHandler(
         pending_page_handler,
     mojo::PendingRemote<brave_new_tab_page::mojom::Page> pending_page,
     Profile* profile,
-    NtpCustomBackgroundService* ntp_custom_background_service,
     content::WebContents* web_contents)
     : page_handler_(this, std::move(pending_page_handler)),
       page_(std::move(pending_page)),
       profile_(profile),
-      ntp_custom_background_service_(ntp_custom_background_service),
       web_contents_(web_contents),
-      weak_factory_(this) {
-  DCHECK(ntp_custom_background_service_);
-  ntp_custom_background_service_observation_.Observe(
-      ntp_custom_background_service_);
-}
+      weak_factory_(this) {}
 
 BraveNewTabPageHandler::~BraveNewTabPageHandler() = default;
 
@@ -82,17 +75,17 @@ void BraveNewTabPageHandler::ChooseLocalCustomBackground() {
 }
 
 void BraveNewTabPageHandler::UseBraveBackground() {
-  if (ntp_custom_background_service_)
-    ntp_custom_background_service_->ResetCustomBackgroundInfo();
+  // Call ntp custom background images service.
+  profile_->GetPrefs()->SetBoolean(kNTPCustomBackgroundEnabled, false);
+  OnCustomBackgroundImageUpdated();
 }
 
 bool BraveNewTabPageHandler::IsCustomBackgroundEnabled() const {
-  auto* service = NtpCustomBackgroundServiceFactory::GetForProfile(profile_);
-  if (service->IsCustomBackgroundDisabledByPolicy())
+  auto* prefs = profile_->GetPrefs();
+  if (prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict))
     return false;
 
-  return profile_->GetPrefs()->GetBoolean(
-      prefs::kNtpCustomBackgroundLocalToDevice);
+  return prefs->GetBoolean(kNTPCustomBackgroundEnabled);
 }
 
 void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
@@ -107,25 +100,16 @@ void BraveNewTabPageHandler::OnCustomBackgroundImageUpdated() {
     value->url = GURL(local_string + "?ts=" + time_string);
   }
   page_->OnBackgroundUpdated(std::move(value));
-  CleanUp();
-}
-
-void BraveNewTabPageHandler::OnNtpCustomBackgroundServiceShuttingDown() {
-  ntp_custom_background_service_observation_.Reset();
-  ntp_custom_background_service_ = nullptr;
 }
 
 void BraveNewTabPageHandler::FileSelected(const base::FilePath& path,
                                           int index,
                                           void* params) {
-  if (ntp_custom_background_service_) {
-    profile_->set_last_selected_directory(path.DirName());
-    // Convert it first and use converted image path.
-    // When finished delete it.
-    // Send image body to image decoder in isolated process.
-    ConvertSelectedImageFileAndSave(path);
-  }
-
+  profile_->set_last_selected_directory(path.DirName());
+  // Convert it first and use converted image path.
+  // When finished delete it.
+  // Send image body to image decoder in isolated process.
+  ConvertSelectedImageFileAndSave(path);
   select_file_dialog_ = nullptr;
 }
 
@@ -175,7 +159,7 @@ void BraveNewTabPageHandler::OnImageDecoded(const gfx::Image& image) {
                 temp_file_path,
                 base::span<const uint8_t>(encoded->front(), encoded->size()));
           },
-          image.AsBitmap(), GetTempConvertedImageFilePath()),
+          image.AsBitmap(), GetSanitizedImageFilePath()),
       base::BindOnce(&BraveNewTabPageHandler::OnSavedEncodedImage,
                      weak_factory_.GetWeakPtr()));
 }
@@ -184,25 +168,19 @@ void BraveNewTabPageHandler::OnSavedEncodedImage(bool success) {
   if (!success)
     return;
 
-  delete_temporarily_converted_file_ = true;
-  // Pass converted image in user dir.
-  ntp_custom_background_service_->SelectLocalBackgroundImage(
-      GetTempConvertedImageFilePath());
+  profile_->GetPrefs()->SetBoolean(kNTPCustomBackgroundEnabled, true);
+  OnCustomBackgroundImageUpdated();
 }
 
-void BraveNewTabPageHandler::CleanUp() {
-  if (!delete_temporarily_converted_file_)
-    return;
-
-  delete_temporarily_converted_file_ = false;
+void BraveNewTabPageHandler::DeleteSanitizedImageFile() {
   base::ThreadPool::PostTask(FROM_HERE, {base::MayBlock()},
                              base::BindOnce(base::GetDeleteFileCallback(),
-                                            GetTempConvertedImageFilePath()));
+                                            GetSanitizedImageFilePath()));
 }
 
-base::FilePath BraveNewTabPageHandler::GetTempConvertedImageFilePath() const {
-  constexpr char kTempConvertedImageFileName[] = "temp_background_image.png";
-  return profile_->GetPath().Append(kTempConvertedImageFileName);
+base::FilePath BraveNewTabPageHandler::GetSanitizedImageFilePath() const {
+  return profile_->GetPath().AppendASCII(
+      ntp_background_images::kSanitizedImageFileName);
 }
 
 image_fetcher::ImageDecoder* BraveNewTabPageHandler::GetImageDecoder() {

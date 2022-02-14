@@ -329,6 +329,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(
       kNewTabPageShowsOptions,
       static_cast<int>(NewTabPageShowsOptions::kDashboard));
+  registry->RegisterBooleanPref(kNTPCustomBackgroundEnabled, false);
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   registry->RegisterIntegerPref(kERCPrefVersion, 0);

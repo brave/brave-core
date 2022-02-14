@@ -96,6 +96,9 @@ const char kDontAskForCrashReporting[] = "brave.dont_ask_for_crash_reporting";
 const char kEnableMediaRouterOnRestart[] =
     "brave.enable_media_router_on_restart";
 
+const char kNTPCustomBackgroundEnabled[] =
+    "brave.ntp_custom_background_enabled";
+
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
 const char kPlayYTVideoInBrowserEnabled[] =
