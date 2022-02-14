@@ -8,6 +8,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Theme colors -->
+    <color name="brave_white">@android:color/white</color>
+
     <!-- Overriding chromium theme colors to brave theme colors -->
     <color name="baseline_primary_100">#F9C3B6</color>
     <color name="baseline_primary_200">#FF7654</color>
