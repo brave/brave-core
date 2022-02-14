@@ -18,6 +18,7 @@
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/permissions/features.h"
+#include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
 #include "content/public/browser/render_view_host.h"
@@ -112,7 +113,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kFirstPartySets,
     &features::kIdleDetection,
     &features::kNotificationTriggers,
-    &features::kPrivacySandboxSettings3,
+    &privacy_sandbox::kPrivacySandboxSettings3,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
