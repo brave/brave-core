@@ -65,7 +65,7 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.crypto_wallet.dialog.DappsDialog;
+import org.chromium.chrome.browser.crypto_wallet.controller.DAppsWalletController;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltip;
 import org.chromium.chrome.browser.custom_layout.popup_window_tooltip.PopupWindowTooltipUtils;
@@ -930,23 +930,26 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 mIsInitialNotificationPosted = false;
             }
         } else if (mBraveWalletButton == v && mBraveWalletButton != null) {
-            showWalletPanel();
+            showWalletPanel(v);
         }
     }
 
-    public void showWalletPanel() {
+    public void showWalletPanel(View v) {
         // TODO detect somehow do we need to show a permission dialog instead
         BraveActivity activity = BraveActivity.getBraveActivity();
         assert activity != null;
         if (activity == null) {
             return;
         }
-        DappsDialog dappsDialog = DappsDialog.newInstance(getContext());
-        dappsDialog.showOnboarding(Utils.shouldShowCryptoOnboarding());
-        // dappsBottomSheetDialogFragment.showOnboarding(Utils.shouldShowCryptoOnboarding());
-        // dappsBottomSheetDialogFragment.show(
-        //         activity.getSupportFragmentManager(),
-        //         DappsBottomSheetDialogFragment.TAG_FRAGMENT);
+        DAppsWalletController controller = new DAppsWalletController(getContext(), v);
+        controller.showWalletPanel();
+        //        dappsBottomSheetDialogFragment.show(
+        //                activity.getSupportFragmentManager(),
+        //                DappsBottomSheetDialogFragment.TAG_FRAGMENT);
+    }
+
+    public void showWalletPanel() {
+        showWalletPanel(this);
     }
 
     @Override

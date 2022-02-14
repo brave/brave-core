@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.crypto_wallet.dialog;
+package org.chromium.chrome.browser.crypto_wallet.modal;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -25,8 +25,6 @@ import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserver;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
-import org.chromium.ui.modaldialog.ModalDialogManager;
-import org.chromium.ui.modelutil.PropertyModel;
 
 public class DappsDialog extends Dialog implements ConnectionErrorHandler, KeyringServiceObserver {
     public static final String TAG_FRAGMENT = DappsDialog.class.getName();
@@ -34,8 +32,6 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
     private Button mbtUnlock;
     private boolean mShowOnboarding;
     private KeyringService mKeyringService;
-    private ModalDialogManager mManager;
-    private PropertyModel mModel;
     private Dialog mDialog;
     private boolean mDismissed;
 
@@ -146,6 +142,5 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
         }
 
         mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
-        updateView();
     }
 }

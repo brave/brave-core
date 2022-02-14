@@ -2880,6 +2880,21 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_DAPP_BOTTOM_SHEET_WALLET_CONNECTIVITY_INFO" desc="Brave wallet Dapp wallet connectivity bottom sheet text">
       Use this panel to securely access web3 and all your crypto assets.
     </message>
+    <message name="IDS_DAPP_WALLET_PANEL_CONNECTIVITY_STATUS" desc="Brave wallet Dapp wallet connectivity status">
+      Not connected...
+    </message>
+    <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_ACCOUNT" desc="Content description for account image on Brave wallet Dapp wallet panel">
+      User account
+    </message>
+    <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_ACCOUNT_ANCHOR" desc="Content description for anchor account image on Brave wallet Dapp wallet panel">
+      Switch account
+    </message>
+    <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_MENU" desc="Content description for menu options on Brave wallet Dapp wallet panel">
+      Menu
+    </message>
+    <message name="IDS_ACCESSIBILITY_WALLET_DAPP_PANEL_EXPAND" desc="Content description for expand panel action on Brave wallet Dapp wallet panel">
+      Expand
+    </message>
     </messages>
   </release>
 </grit>
