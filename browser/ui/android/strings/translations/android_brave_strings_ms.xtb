@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Ini iklan Brave pertama anda. Ketik untuk mengetahui lebih lanjut.</translation>
 <translation id="2070991379950719711">Mula menggunakan Ganjaran Brave</translation>
 <translation id="48520986898237073">Teruskan ke dompet</translation>
-<translation id="3570367516044491911">Tetapkan sebagai pelayar lalai</translation>
+<translation id="6800338374677644736">Tetapkan sebagai pelayar lalai</translation>
 <translation id="19715420010996093">Pilih Pelayar Brave dan ketik 'Sentiasa'</translation>
 <translation id="3546439402724649282">Brave sudah pun ditetapkan sebagai pelayar lalai anda.</translation>
 <translation id="8389661903259423907">Anda telah pun menetapkan pelayar lalai. Anda boleh mengubah pelayar lalai melalui tetapan aplikasi anda.</translation>
-<translation id="7091885296442320770">Brave amat pantas</translation>
-<translation id="2171928016777725844">Jadikan Brave sebagai pelayar lalai anda!</translation>
-<translation id="7136694880210472378">Jadikan lalai</translation>
-<translation id="4250680216510889253">Tidak</translation>
 <translation id="8826007068782654809">Terima kasih</translation>
 <translation id="6665366815203065060">Anda baru sahaja menghantar tip kepada:</translation>
 <translation id="5441565662498481293">Anda menghantar tip secara automatik kepada:</translation>
@@ -524,9 +520,9 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6478996494082389936">analitik produk peribadi.</translation>
 <translation id="5187052478998910855">Perlukan penerangan semula tentang Ganjaran?</translation>
 <translation id="8622329973403382303">Teroka untuk mempelajari bagaimana caranya untuk mencatat nama dalam sejarah sebagai bintang rock Ganjaran!</translation>
-<translation id="8401711613788729448">Buka semua pautan dengan Brave untuk melindungi privasi anda</translation>
-<translation id="3184805785843994538">Perisai Brave menyekat penjejak &amp; ads, menyimpan data, dan menjimatkan masa anda di setiap tapak web yang anda layari.</translation>
-<translation id="8722651357687610395">Tetapkan Brave sebagai lalai</translation>
+<translation id="7625138338483121345">Buka semua pautan dengan Brave untuk melindungi privasi anda</translation>
+<translation id="4511485286950743564">Perisai Brave menyekat penjejak &amp; ads, menyimpan data, dan menjimatkan masa anda di setiap tapak web yang anda layari.</translation>
+<translation id="9218430445555521422">Tetapkan Brave sebagai lalai</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -596,7 +592,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="283071225285270357">Masukkan frasa pemulihan anda</translation>
 <translation id="3943857333388298514">Tampal</translation>
 <translation id="3331452756822160641">Kata Laluan Baharu</translation>
-<translation id="4854035885012188958">Saya sedang memulihkan daripada legasi Dompet Kripto Brave</translation>
+<translation id="4359319875297001084">Saya sedang memulihkan daripada legasi Dompet Kripto Brave</translation>
 <translation id="2339124864228588937">Sahkan frasa pemulihan</translation>
 <translation id="3747079125031086337">Pilih perkataan dalam frasa pemulihan anda mengikut urutan yang betul.</translation>
 <translation id="6518133107902771759">Sahkan</translation>
@@ -794,6 +790,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1254969878422524947">Had tip per gas (Gwei)</translation>
 <translation id="7373308452149471621">Had harga per gas (Gwei)</translation>
 <translation id="5891811606602061966">Gagal mengimport akaun, sila cuba lagi.</translation>
+<translation id="1822506443689803572">Brave menggunakan 0x sebagai agregator DEX.</translation>
 <translation id="5061574358754621254">Data harga dikuasakan oleh CoinGecko</translation>
 <translation id="4626407663177532837">Sebut harga termasuk yuran Brave sebanyak 0.875%.</translation>
 <translation id="8574289650879708853">Tambah aset tersuai</translation>
@@ -804,6 +801,7 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="4351811224047421378">Titik perpuluhan tepat</translation>
 <translation id="8614026298974065517">Alih keluar aset tersuai</translation>
 <translation id="4378941981362528553">Adakah anda mahu mengalih keluar <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) token?</translation>
+<translation id="4250680216510889253">Tidak</translation>
 <translation id="8971278306757462297">Alamat penerima ialah alamat anda sendiri</translation>
 <translation id="749944179568745958">Bukan alamat ETH yang sah</translation>
 <translation id="3506416339268164412">Alamat penerima ialah alamat kontrak token</translation>
@@ -837,8 +835,8 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="665660671251623018">Titik perpuluhan mata wang rantaian</translation>
 <translation id="182619028057179895">Format tidak sah, titik perpuluhan mata wang ialah nombor positif</translation>
 <translation id="2978054488731497946">Masukkan titik perpuluhan mata wang</translation>
-<translation id="3047726704186619366">Ikon URL</translation>
-<translation id="2487558607408469181">Sekat URL penjelajah</translation>
+<translation id="7642841516562576649">Ikon URL</translation>
+<translation id="4693057234255364395">Sekat URL penjelajah</translation>
 <translation id="7059127752542505809">Masukkan URL</translation>
 <translation id="2156993118928861787">Alamat tidak sah</translation>
 <translation id="6889920539620318793">Tetapkan sebagai aktif</translation>

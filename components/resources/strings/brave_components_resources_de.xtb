@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Abonnement beenden</translation>
 <translation id="1209739344687072997">Melden Sie eine fehlerhafte Website</translation>
 <translation id="8510478288840333677">Informieren Sie Braves Entwickler darüber, dass diese Website in Kombination mit Shields nicht richtig funktioniert:</translation>
-<translation id="6013164422534859494">Hinweis: Diese Website-Adresse wir zusammen mit Ihrer Brave-Versionsnummer und Ihrer IP-Adresse (die nicht gespeichert wird) übertragen.</translation>
+<translation id="4105411033440701818">Hinweis: Diese Website-Adresse wir zusammen mit Ihrer Brave-Versionsnummer und Ihrer IP-Adresse (die nicht gespeichert wird) übertragen.</translation>
 <translation id="5299848999918506028">Vielen Dank!</translation>
 <translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
 <translation id="2974339193389078578">Brave, das neue Internet</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Nächstes Beitragsdatum</translation>
 <translation id="1397381065858030856">Besuchte Seiten</translation>
 <translation id="2365740070488517695">Trinkgelder</translation>
-<translation id="5993195614988368256">Geben Sie Urhebern direkt beim Browsen über das "Reward Panel" ein Trinkgeld oder nutzen Sie dazu den "Trinkgeld"-Button auf verschiedenen Webseiten, wie z. B. Twitter, Reddit und GitHub.</translation>
+<translation id="5810507495128831593">Geben Sie Urhebern direkt beim Browsen über das "Reward Panel" ein Trinkgeld oder nutzen Sie dazu den "Trinkgeld"-Button auf verschiedenen Webseiten, wie z. B. Twitter, Reddit und GitHub.</translation>
 <translation id="5012991400231464322">Monatliche Beiträge</translation>
 <translation id="2084351799622920487">Erstellen Sie wiederkehrende monatliche Beiträge, damit Sie Websites kontinuierlich unterstützen können.</translation>
 <translation id="8150772404570015166">Noch keine monatlichen Beiträge erstellt.</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Wallet-Verifizierung abschließen</translation>
 <translation id="9200453331904391567">Verbindung zu Brave Rewards trennen</translation>
 <translation id="3656941797339037856">Verknüpfen Sie Belohnungen mit Gemini!</translation>
-<translation id="31532096120351460">Handeln Sie mit mehr als 50 Kryptowährungen, einschließlich BAT, auf Gemini. Dies ist eine sichere Plattform zum Speichern Ihrer Kryptowährung. Außerdem können Sie Zinsen in den USA, HK und SG verdienen.</translation>
+<translation id="31532096120351460">Handeln Sie mit mehr als 50 Kryptowährungen, einschließlich TFA, auf Gemini. Dies ist eine sichere Plattform zum Speichern Ihrer Kryptowährung. Außerdem können Sie Zinsen in den USA, Hong Kong und Singapur verdienen.</translation>
 <translation id="7404779623219601861">BAT gegen Geschenkgutscheine eintauschen</translation>
 <translation id="6215565499749144110">Mithilfe des TAP Network können Sie Ihre BAT gegen Geschenkgutscheine beliebter Marken eintauschen.</translation>
 <translation id="6915065518766963119">* Erfordert Uphold-Verifizierung.</translation>
@@ -776,7 +776,7 @@
 <translation id="8797999629784150206">Sie können Ihre <ph name="SITE_PERMISSIONS"/> jederzeit ändern. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">Site-Berechtigung</translation>
 <translation id="7717357606512850995">Status überprüfen</translation>
-<translation id="7306880305145342514">Glückwunsch! Ihre <ph name="MONTH"/>-Rewards sind angekommen!</translation>
+<translation id="7306880305145342514">Glückwunsch! Ihre Belohnungen für <ph name="MONTH"/> sind angekommen!</translation>
 <translation id="3007207731685398329">Ihre <ph name="AMOUNT"/> <ph name="MONTH"/> Rewards kommen in <ph name="DAYS"/> an</translation>
 <translation id="5878420576943709750">Ihre <ph name="AMOUNT"/> <ph name="MONTH"/> Rewards sind unterwegs. Sie sind bald da!</translation>
 <translation id="2659764755126740206">Wechseln zu meinem <ph name="PROVIDER"/> Konto</translation>
@@ -792,10 +792,8 @@
 <translation id="4989163558385430922">Alle anzeigen</translation>
 <translation id="3026978804849658576">Kontoauszug ansehen</translation>
 <translation id="8494748383523030337">Ihr Kontostand</translation>
-<translation id="3343165035032571678">Sie haben <ph name="AMOUNT"/> über das Ansehen von Brave Private-Anzeigen verdient.</translation>
-<translation id="6618415862402597254">Anzeigenverdienste erhalten</translation>
-<translation id="5981646694027725752">Verdienste in Anspruch nehmen</translation>
-<translation id="2556441076129789027">Token in Anspruch nehmen</translation>
+<translation id="3274366539954332481">Anzeigenverdienste erhalten</translation>
+<translation id="9013419433042554094">Token in Anspruch nehmen</translation>
 <translation id="5544777623605368410">Verdienst</translation>
 <translation id="3273637494083639780">Die Verarbeitung der Token, die Sie diesen Monat verdienen, beginnt am <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Dies kann aufgrund von Marktschwankungen variieren.</translation>
@@ -807,8 +805,7 @@
 <translation id="6777169449483742979">Sie verdienen Token für das Ansehen dieses gesponserten Bildes.</translation>
 <translation id="5486114327664215175">Verdienen Sie Token für das Ansehen dieses Bildes und unterstützen Sie Inhaltsersteller.</translation>
 <translation id="2940863921746574646">Token-Guthaben</translation>
-<translation id="1714906256929297600">Verwenden Sie Werbetoken, um Inhaltsersteller zu unterstützen, bevor diese ablaufen.</translation>
-<translation id="2426048501007152001">Verfügbare Token</translation>
+<translation id="2221902203895354376">Verfügbare Token</translation>
 <translation id="7701466644604753106">Speedreader EINSCHALTEN</translation>
 <translation id="763042262431778831">Speedreader ABSCHALTEN</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -908,7 +905,7 @@
 <translation id="6901073872645365201">Passwörter müssen mindestens 7 Zeichen lang sein und mindestens eine Zahl und ein Sonderzeichen enthalten.</translation>
 <translation id="6657585470893396449">Passwort</translation>
 <translation id="5486261815000869482">Passwort bestätigen</translation>
-<translation id="6138471905279127211">Kennwortkriterien stimmen nicht überein.</translation>
+<translation id="6138471905279127211">Passwortkriterien stimmen nicht überein.</translation>
 <translation id="467510802200863975">Passwörter stimmen nicht überein</translation>
 <translation id="5168349973342709369">Geben Sie das Passwort ein, um die Wallet zu entsperren</translation>
 <translation id="9111102763498581341">Entsperren</translation>
@@ -930,7 +927,7 @@
 <translation id="8624315169751085215">In Zwischenablage kopieren</translation>
 <translation id="1121335910737476837">Primäre Kryptokonten</translation>
 <translation id="6969147029062037757">Importierte Konten</translation>
-<translation id="5668765612885835803">Sie können in Brave Wallet primäre Konten erstellen, die von Ihrer Wiederherstellungsphrase gesichert oder damit wiederhergestellt werden können. Weitere Informationen zu Kontotypen finden Sie in der Kontohilfe</translation>
+<translation id="5668765612885835803">Sie können in Ihrer Brave-Wallet primäre Konten erstellen, die von Ihrer Wiederherstellungsphrase gesichert oder damit wiederhergestellt werden können. Weitere Informationen zu Kontotypen finden Sie in der Kontohilfe</translation>
 <translation id="2471916999505901943">Diese Konten können mit Web 3 DApps verwendet und in Ihrem Portfolio angezeigt werden. Beachten Sie jedoch, dass sekundäre Konten nicht über die Wiederherstellungsphrase aus Ihrem primären Konto-Backup wiederhergestellt werden können.</translation>
 <translation id="1940465339426637378">Vermögenswerte</translation>
 <translation id="2236507293802791911">Sichtbare Assets</translation>
@@ -961,7 +958,7 @@
 <translation id="1943188256166395881">Geprüfte Konten hinzufügen</translation>
 <translation id="8554010658308662631">Mehr laden</translation>
 <translation id="6998738230710304743">Lade mehr …</translation>
-<translation id="4970164249406565575">Konto suchen 0x</translation>
+<translation id="5592304751234049046">Konto suchen 0x</translation>
 <translation id="6151024411349343484">Versuchen Sie, den HD-Pfad (oben) zu wechseln, wenn Sie das gesuchte Konto nicht finden können.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Veraltet (MEW/MyCrypto)</translation>
@@ -1190,7 +1187,7 @@
 <translation id="5544888475837817215">Alle Tracker und Anzeigen zulassen</translation>
 <translation id="6203697265754637264">Websiteübergreifende Cookies deaktiviert</translation>
 <translation id="4627427111733173920">Cookies blockiert</translation>
-<translation id="7855168553463825937">Alle Cookies blockiert</translation>
+<translation id="3972324600756617403">Alle Cookies blockiert</translation>
 <translation id="8366221601425141146">Fingerprinting blockiert</translation>
 <translation id="5582686930349810484">Fingerabdruck blockiert (Standard)</translation>
 <translation id="6696441392507885865">Fingerabdrücke blockiert (streng, Websites können fehlerhaft laden)</translation>

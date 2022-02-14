@@ -55,7 +55,7 @@
 <translation id="933652931229970927">अपने आप नैदानिक रिपोर्ट भेजें</translation>
 <translation id="5987838417172370108">Brave ब्राउज़र के क्रैश या फ़्रीज़ होने पर अपने आप नैदानिक रिपोर्ट भेजकर Brave\u2019s प्रोडक्ट स्थिरता को बेहतर बनाने में मदद करें.</translation>
 <translation id="7977176350719484850">डेटा\nसेव किया गया</translation>
-<translation id="9008534313521214777">अनुमानित समय\nसेव किया</translation>
+<translation id="9008534313521214777">अनुमानित समय\nसेव किया गया</translation>
 <translation id="6572660632052512096">डेस्कटॉप मोड</translation>
 <translation id="1340503115760585811">नए टैब के लिए डेस्कटॉप व्यू को सक्षम करें</translation>
 <translation id="7924540991929826186">नए टैब के लिए साइटों के मोबाइल संस्करणों का उपयोग करें (अनुशंसित)</translation>
@@ -85,7 +85,7 @@
 <translation id="5808759341041733958">डिफ़ॉल्ट खोज इंजन चुनें</translation>
 <translation id="1331593888918588693">आप बाद में ऐप सेटिंग्स में हमेशा अपनी पसंद बदल सकते हैं।</translation>
 <translation id="5806601733251372221">Brave शील्ड्स</translation>
-<translation id="8537217141725709400"><ph name="TOKEN"/>s अर्जित करें</translation>
+<translation id="8537217141725709400"><ph name="TOKEN"/>s पाएं</translation>
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="5870330605209713397">गोपनीयता-सम्बंधित विज्ञापन देखकर और डिफ़ॉल्ट रूप से अपने पसंदीदा साइटों और निर्माताओं का समर्थन करें।</translation>
 <translation id="5302488867897327287">स्टार्ट यूजिंग ब्रेव रिवार्ड्स का उपयोग करके, आप इससे सहमत हैं</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">यह आपका पहला Brave विज्ञापन है। और जानने के लिए टैप करें।</translation>
 <translation id="2070991379950719711">ब्रेव रिवार्ड्स का उपयोग करना शुरू करें</translation>
 <translation id="48520986898237073">वॉलेट में योगदान करें</translation>
-<translation id="3570367516044491911">डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
+<translation id="6800338374677644736">डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
 <translation id="19715420010996093">Brave ब्राउज़र का चयन करें और 'हमेशा' टैप करें</translation>
 <translation id="3546439402724649282">Brave पहले से ही आपके डिफ़ॉल्ट ब्राउज़र के रूप में सेट है।</translation>
 <translation id="8389661903259423907">आपने पहले ही एक डिफ़ॉल्ट ब्राउज़र सेट कर लिया है। आप अपनी ऐप सेटिंग में डिफ़ॉल्ट ब्राउज़र को बदल सकते हैं।</translation>
-<translation id="7091885296442320770">Brave बिजली की तरह तेज है</translation>
-<translation id="2171928016777725844">Brave को अपना डिफ़ॉल्ट ब्राउज़र बनाएं!</translation>
-<translation id="7136694880210472378">डिफ़ॉल्ट बनाएं</translation>
-<translation id="4250680216510889253">नहीं</translation>
 <translation id="8826007068782654809">धन्यवाद</translation>
 <translation id="6665366815203065060">आपने अभी को एक टिप भेजा है:</translation>
 <translation id="5441565662498481293">आप स्वचालित रूप से को एक टिप भेज रहे हैं:</translation>
@@ -521,9 +517,9 @@
 <translation id="6478996494082389936">निजी उत्पाद का विश्लेषण।</translation>
 <translation id="5187052478998910855">पुरस्कारों के बारे में नई जानकारी चाहिए?</translation>
 <translation id="8622329973403382303">पुरस्कार रॉकस्टार के रूप में इतिहास दर्ज होने के लिए यह कैसे काम करता है, यह जानने के लिए एक त्वरित टूर करें!</translation>
-<translation id="8401711613788729448">अपनी गोपनीयता की रक्षा के लिए सभी लिंक को Brave के साथ खोलें</translation>
-<translation id="3184805785843994538">Brave Shields ट्रैकर्स &amp; विज्ञापनों को ब्लॉक करता है, डेटा सेव करता है और प्रत्येक साइट पर आपका समय बचाता है।</translation>
-<translation id="8722651357687610395">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
+<translation id="7625138338483121345">अपनी गोपनीयता की रक्षा के लिए सभी लिंक को Brave के साथ खोलें</translation>
+<translation id="4511485286950743564">Brave Shields ट्रैकर्स &amp; विज्ञापनों को ब्लॉक करता है, डेटा सेव करता है और प्रत्येक साइट पर आपका समय बचाता है।</translation>
+<translation id="9218430445555521422">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -593,7 +589,7 @@
 <translation id="283071225285270357">रिकवरी फ्रेज़ एंटर करें</translation>
 <translation id="3943857333388298514">चिपकाएं</translation>
 <translation id="3331452756822160641">नया पासवर्ड</translation>
-<translation id="4854035885012188958">मैं लिगेसी Brave Crypto वॉलेट से रस्टोर कर रहा हूँ</translation>
+<translation id="4359319875297001084">मैं लिगेसी Brave Crypto वॉलेट से रस्टोर कर रहा हूँ</translation>
 <translation id="2339124864228588937">रिकवरी वाक्यांश वेरीफ़ाई करें</translation>
 <translation id="3747079125031086337">अपने रिकवरी फ़्रेज़ में शब्दों को उनके सही क्रम में चुनें.</translation>
 <translation id="6518133107902771759">सत्यापित करें</translation>
@@ -791,6 +787,7 @@
 <translation id="1254969878422524947">प्रति-गैस टिप सीमा (Gwei)</translation>
 <translation id="7373308452149471621">प्रति-गैस मूल्य सीमा (Gwei)</translation>
 <translation id="5891811606602061966">अकाउंट इम्पोर्ट नहीं हो पाया, कृपया दोबारा कोशिश करें.</translation>
+<translation id="1822506443689803572">Brave 0x का इस्तेमाल DEX एग्रीगेटर के तौर पर करता है.</translation>
 <translation id="5061574358754621254">मूल्य डेटा CoinGecko द्वारा संचालित है</translation>
 <translation id="4626407663177532837">कोट में 0.875% Brave शुल्क शामिल है.</translation>
 <translation id="8574289650879708853">कस्टम एसेट जोड़ें</translation>
@@ -801,11 +798,12 @@
 <translation id="4351811224047421378">डेसिमल ऑफ़ प्रिसिशन</translation>
 <translation id="8614026298974065517">कस्टम एसेट हटाएँ</translation>
 <translation id="4378941981362528553">क्या आप <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) टोकन हटाना चाहते हैं?</translation>
+<translation id="4250680216510889253">नहीं</translation>
 <translation id="8971278306757462297">प्राप्त करने वाला पता आपका अपना पता है</translation>
 <translation id="749944179568745958">यह कोई मान्य ETH पता नहीं है</translation>
 <translation id="3506416339268164412">प्राप्त करने वाला पता एक टोकन का कॉन्ट्रैक्ट पता है</translation>
 <translation id="1543259266592091784">धनराशि जोड़ें</translation>
-<translation id="3494964159182650590">इनामों का संक्षिप्त विवरण</translation>
+<translation id="3494964159182650590">रिवॉर्ड के बारे में जानकारी</translation>
 <translation id="590733288489975971">विज्ञापनों से रिवॉर्ड</translation>
 <translation id="207268487070188114">1- टाइम टिप</translation>
 <translation id="64394831139134288">मेरा वॉलेट</translation>
@@ -834,8 +832,8 @@
 <translation id="665660671251623018">चेन की करेंसी में डेसिमल</translation>
 <translation id="182619028057179895">अमान्य फ़ॉर्मेट, करेंसी डेसीमल एक धनात्मक संख्या है</translation>
 <translation id="2978054488731497946">करेंसी के डेसिमल डालें</translation>
-<translation id="3047726704186619366">आइकन के URL</translation>
-<translation id="2487558607408469181">Explorer के URL ब्लॉक करें</translation>
+<translation id="7642841516562576649">आइकन के URL</translation>
+<translation id="4693057234255364395">Explorer के URL ब्लॉक करें</translation>
 <translation id="7059127752542505809">URL डालें</translation>
 <translation id="2156993118928861787">अमान्य पता</translation>
 <translation id="6889920539620318793">एक्टिव के तौर पर सेट करें</translation>

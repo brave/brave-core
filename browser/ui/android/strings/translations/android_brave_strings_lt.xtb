@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Tai jūsų pirmoji „Brave“ reklama. Bakstelėkite, jei norite sužinoti daugiau.</translation>
 <translation id="2070991379950719711">Pradėti naudotis „Brave Rewards“</translation>
 <translation id="48520986898237073">Tęsti su pinigine</translation>
-<translation id="3570367516044491911">Nustatyti kaip numatytąją naršyklę</translation>
+<translation id="6800338374677644736">Nustatyti kaip numatytąją naršyklę</translation>
 <translation id="19715420010996093">Pasirinkite naršyklę „Brave“ ir bakstelėkite „Visada“</translation>
 <translation id="3546439402724649282">„Brave“ jau nustatyta kaip jūsų numatytoji naršyklė.</translation>
 <translation id="8389661903259423907">Jau nustatėte numatytąją naršyklę. Numatytąją naršyklę galite keisti programos nuostatose.</translation>
-<translation id="7091885296442320770">„Brave“ veikia žaibo greičiu</translation>
-<translation id="2171928016777725844">Padarykite „Brave“ numatytąja naršykle!</translation>
-<translation id="7136694880210472378">Padaryti numatytuoju</translation>
-<translation id="4250680216510889253">Ne</translation>
 <translation id="8826007068782654809">Dėkojame</translation>
 <translation id="6665366815203065060">Gavėjas, kuriam ką tik nusiuntėte arbatpinigių:</translation>
 <translation id="5441565662498481293">Automatiškai siunčiamų arbatpinigių gavėjas:</translation>
@@ -529,9 +525,9 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="6478996494082389936">privačią produkto analizę.</translation>
 <translation id="5187052478998910855">Galbūt jums reikia prisiminti, kaip veikia „Rewards“?</translation>
 <translation id="8622329973403382303">Žinioms apie veikimą atnaujinti peržiūrėkite trumpą apžvalgą ir tapkite „Rewards“ žvaigžde!</translation>
-<translation id="8401711613788729448">Visas nuorodas atverkite per „Brave“, kad apsaugotumėte savo privatumą</translation>
-<translation id="3184805785843994538">„Brave Shields“ blokuoja sekiklius ir reklamas, įrašo duomenis ir taupo jūsų laiką kiekvienoje svetainėje, kurioje lankotės.</translation>
-<translation id="8722651357687610395">Nustatyti „Brave“ kaip numatytąją</translation>
+<translation id="7625138338483121345">Visas nuorodas atverkite per „Brave“, kad apsaugotumėte savo privatumą</translation>
+<translation id="4511485286950743564">„Brave Shields“ blokuoja sekiklius ir reklamas, įrašo duomenis ir taupo jūsų laiką kiekvienoje svetainėje, kurioje lankotės.</translation>
+<translation id="9218430445555521422">Nustatyti „Brave“ kaip numatytąją</translation>
 <translation id="3479552764303398839">Ne dabar</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -601,7 +597,7 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="283071225285270357">Įveskite atkūrimo frazę</translation>
 <translation id="3943857333388298514">Įdėti</translation>
 <translation id="3331452756822160641">Naujas slaptažodis</translation>
-<translation id="4854035885012188958">Atkuriu iš senesnės „Brave“ kriptovaliutos piniginės</translation>
+<translation id="4359319875297001084">Atkuriu iš senesnės „Brave“ kriptovaliutos piniginės</translation>
 <translation id="2339124864228588937">Patikrinkite atkūrimo frazę</translation>
 <translation id="3747079125031086337">Pasirinkite atkūrimo frazės žodžius tinkama tvarka.</translation>
 <translation id="6518133107902771759">Patvirtinti</translation>
@@ -799,6 +795,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1254969878422524947">Kaina už dujų arbatpinigių ribą (GWEI)</translation>
 <translation id="7373308452149471621">Kaina už dujų kainos ribą (GWEI)</translation>
 <translation id="5891811606602061966">Importuoti sąskaitos nepavyko, bandykite dar kartą.</translation>
+<translation id="1822506443689803572">„Brave“ naudoja 0x kaip DEX agregatorių.</translation>
 <translation id="5061574358754621254">„CoinGecko“ pateikiami kainų duomenys</translation>
 <translation id="4626407663177532837">Į pasiūlymą įtrauktas 0,875% „Brave“ mokestis.</translation>
 <translation id="8574289650879708853">Pridėti pasirinktinį aktyvą</translation>
@@ -809,6 +806,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="4351811224047421378">Skaičiai po kablelio</translation>
 <translation id="8614026298974065517">Pašalinti pasirinktinį aktyvą</translation>
 <translation id="4378941981362528553">Ar norite pašalinti <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) žetoną?</translation>
+<translation id="4250680216510889253">Ne</translation>
 <translation id="8971278306757462297">Gavimo adresas yra jūsų pačių adresas</translation>
 <translation id="749944179568745958">Netinkamas ETH adresas</translation>
 <translation id="3506416339268164412">Gavimo adresas yra žetono sutarties adresas</translation>
@@ -842,8 +840,8 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="665660671251623018">Grandinės valiutos skaitmenys po kablelio</translation>
 <translation id="182619028057179895">Netinkamas formatas, valiutos dešimtainės trupmenos yra teigiamas skaičius</translation>
 <translation id="2978054488731497946">Įveskite valiutos skaitmenis po kablelio</translation>
-<translation id="3047726704186619366">Piktogramų URL adresai</translation>
-<translation id="2487558607408469181">Blokų naršyklės URL adresai</translation>
+<translation id="7642841516562576649">Piktogramų URL adresai</translation>
+<translation id="4693057234255364395">Blokų naršyklės URL adresai</translation>
 <translation id="7059127752542505809">Įveskite URL</translation>
 <translation id="2156993118928861787">Netinkamas adresas</translation>
 <translation id="6889920539620318793">Nustatyti kaip aktyvų</translation>

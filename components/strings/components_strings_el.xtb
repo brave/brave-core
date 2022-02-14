@@ -2523,9 +2523,9 @@
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, πατήστε Tab και Enter για να ανοίξετε ένα νέο Ιδιωτικό παράθυρο για ιδιωτική περιήγηση</translation>
 <translation id="2418728264526266844">Κουμπί ανοίγματος Ιδιωτικού Παραθύρου, πατήστε Enter για άνοιγμα ενός νέου Ιδιωτικού παραθύρου για ιδιωτική περιήγηση</translation>
 <translation id="4920329334239571966">Κλείστε όλα τα ιδιωτικά παράθυρα</translation>
-<translation id="7736544743887840328">Κλείστε όλα τα ιδιωτικά παράθυρα που είναι ανοιχτά αυτήν τη στιγμή</translation>
-<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Πατήστε Tab, μετά Enter, για να κλείσετε όλα τα ιδιωτικά παράθυρα που είναι ανοιχτά αυτήν τη στιγμή</translation>
-<translation id="1723247378009489676">Κουμπί για κλείσιμο των ιδιωτικών παραθύρων. Πατήστε Enter για να κλείσετε όλα τα ιδιωτικά παράθυρα που είναι ανοιχτά αυτήν τη στιγμή</translation>
+<translation id="7736544743887840328">Κλείστε όλα τα ανοιχτά ιδιωτικά παράθυρα</translation>
+<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Πατήστε Tab, μετά Enter, για να κλείσετε όλα τα ανοιχτά ιδιωτικά παράθυρα</translation>
+<translation id="1723247378009489676">Κουμπί κλεισίματος ιδιωτικών παραθύρων. Πατήστε Enter για να κλείσετε όλα τα ανοιχτά ιδιωτικά παράθυρα</translation>
 <translation id="1090109565956608696">Δεν επιτρέπεται σε Ιδιωτική λειτουργία</translation>
 <translation id="6934396344327597525">Αποχωρείτε από τη λειτουργία ανώνυμης περιήγησης για πληρωμή μέσω εξωτερικής εφαρμογής. Συνέχεια;</translation>
 <translation id="7948746210201997548">{NUM_DAYS, plural,

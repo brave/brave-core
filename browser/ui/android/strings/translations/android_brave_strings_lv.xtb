@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Šī ir jūsu pirmā Brave reklāma. Pieskarieties, lai uzzinātu vairāk.</translation>
 <translation id="2070991379950719711">Sākt izmantot Brave Rewards</translation>
 <translation id="48520986898237073">Pāriet uz maku</translation>
-<translation id="3570367516044491911">Iestatīt kā noklusējuma pārlūku</translation>
+<translation id="6800338374677644736">Iestatīt kā noklusējuma pārlūku</translation>
 <translation id="19715420010996093">Atlasiet Brave pārlūku un pieskarieties pie "Vienmēr"</translation>
 <translation id="3546439402724649282">Brave jau ir iestatīts kā jūsu noklusējuma pārlūks.</translation>
 <translation id="8389661903259423907">Jums jau ir iestatīts noklusējuma pārlūks. Savu noklusējuma pārlūku varat nomainīt lietotņu iestatījumos.</translation>
-<translation id="7091885296442320770">Brave ir zibenīgi ātrs</translation>
-<translation id="2171928016777725844">Iestatiet Brave par noklusējuma pārlūku!</translation>
-<translation id="7136694880210472378">Iestatīt par noklusējumu</translation>
-<translation id="4250680216510889253">Nē</translation>
 <translation id="8826007068782654809">Paldies!</translation>
 <translation id="6665366815203065060">Jūs tikko nosūtījāt dzeramnaudu:</translation>
 <translation id="5441565662498481293">Jūs automātiski nosūtāt dzeramnaudu:</translation>
@@ -525,9 +521,9 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="6478996494082389936">privātu produktu analīze.</translation>
 <translation id="5187052478998910855">Vai vēlaties atsvaidzināt zināšanas par balvām?</translation>
 <translation id="8622329973403382303">Izejiet ātru tūri, lai atsvaidzinātu zināšanas par to, kā tas darbojas, un iekļūtu vēsturē kā balvu rokzvaigzne!</translation>
-<translation id="8401711613788729448">Atveriet visas saites ar Brave, lai aizsargātu savu konfidencialitāti</translation>
-<translation id="3184805785843994538">Brave aizsargi bloķē izsekotājus un reklāmas, ietaupa datus un jūsu laiku ikvienā apmeklētajā vietnē.</translation>
-<translation id="8722651357687610395">Iestatīt Brave kā noklusējuma pārlūku</translation>
+<translation id="7625138338483121345">Atveriet visas saites ar Brave, lai aizsargātu savu konfidencialitāti</translation>
+<translation id="4511485286950743564">Brave aizsargi bloķē izsekotājus un reklāmas, ietaupa datus un jūsu laiku ikvienā apmeklētajā vietnē.</translation>
+<translation id="9218430445555521422">Iestatīt Brave kā noklusējuma pārlūku</translation>
 <translation id="3479552764303398839">Vēlāk</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="283071225285270357">Ievadiet savu atkopšanas frāzi</translation>
 <translation id="3943857333388298514">Ielīmēt</translation>
 <translation id="3331452756822160641">Jaunā parole</translation>
-<translation id="4854035885012188958">Es atjaunoju no mantotā Brave kriptovalūtas maka</translation>
+<translation id="4359319875297001084">Es atjaunoju no mantotā Brave kriptovalūtas maka</translation>
 <translation id="2339124864228588937">Verificēt atkopšanas frāzi</translation>
 <translation id="3747079125031086337">Atlasiet atkopšanas frāzes vārdus pareizajā secībā.</translation>
 <translation id="6518133107902771759">Pārbaudīt</translation>
@@ -795,6 +791,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1254969878422524947">Dzeramnaudas ierobežojums par Gas (Gwei)</translation>
 <translation id="7373308452149471621">Cenas ierobežojums par Gas (Gwei)</translation>
 <translation id="5891811606602061966">Neizdevās importēt kontu. Lūdzu, mēģiniet vēlreiz.</translation>
+<translation id="1822506443689803572">Brave izmanto 0x kā DEX apkopotāju.</translation>
 <translation id="5061574358754621254">Cenas datus nodrošina CoinGecko</translation>
 <translation id="4626407663177532837">Piedāvājuma cenā ir iekļauta Brave maksa 0,875% apmērā.</translation>
 <translation id="8574289650879708853">Pievienot pielāgotu līdzekli</translation>
@@ -805,6 +802,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="4351811224047421378">Precizitātes decimāldaļas</translation>
 <translation id="8614026298974065517">Noņemt pielāgotu līdzekli</translation>
 <translation id="4378941981362528553">Vai vēlaties noņemt marķieri<ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Nē</translation>
 <translation id="8971278306757462297">Saņēmēja adrese ir jūsu paša adrese</translation>
 <translation id="749944179568745958">ETH adrese nav derīga</translation>
 <translation id="3506416339268164412">Saņēmēja adrese ir marķiera līguma adrese</translation>
@@ -838,8 +836,8 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="665660671251623018">Ķēdes valūtas decimālskaitļi</translation>
 <translation id="182619028057179895">Nederīgs formāts, valūtas decimālskaiļi ir pozitīvs skaitlis</translation>
 <translation id="2978054488731497946">Ievadīt valūtas decimālskaitļus</translation>
-<translation id="3047726704186619366">Ikonas URL</translation>
-<translation id="2487558607408469181">Bloķēt pārlūka URL</translation>
+<translation id="7642841516562576649">Ikonas URL</translation>
+<translation id="4693057234255364395">Bloķēt pārlūka URL</translation>
 <translation id="7059127752542505809">Ievadiet URL</translation>
 <translation id="2156993118928861787">Nederīga adrese</translation>
 <translation id="6889920539620318793">Iestatīt kā aktīvu</translation>

@@ -53,9 +53,9 @@
 <translation id="7142548388914389999">Дозволити аналітику продуктів зі збереженням конфіденційності (P3A)</translation>
 <translation id="5254037869598726291">Анонімізована інформація P3A допомагає Brave оцінити загальний досвід використання й забезпечити покращення популярних функцій.</translation>
 <translation id="933652931229970927">Автоматичне надсилання звітів про діагностику</translation>
-<translation id="5987838417172370108">Допоможіть Brave\u2019s покращити стабільність продукту, автоматично надсилаючи звіти про діагностику, коли браузер Brave несподівано завершить роботу або зависне.</translation>
+<translation id="5987838417172370108">Допоможіть Brave покращити стабільність продукту, автоматично надсилаючи звіти про діагностику, коли браузер Brave несподівано завершить роботу або зависне.</translation>
 <translation id="7977176350719484850">Приблизн. заощаджено\nданих</translation>
-<translation id="9008534313521214777">Приблизн. зекономлений\nчас</translation>
+<translation id="9008534313521214777">Приблизно зекономлено\nчасу</translation>
 <translation id="6572660632052512096">Настільний режим</translation>
 <translation id="1340503115760585811">Увімкнути перегляд робочого столу для нових вкладок</translation>
 <translation id="7924540991929826186">Використовувати мобільні версії сайтів для нових вкладок (рекомендовано)</translation>
@@ -85,7 +85,7 @@
 <translation id="5808759341041733958">Виберіть усталений пошуковик</translation>
 <translation id="1331593888918588693">Ви можете змінити свій вибір у будь-який час у налаштуваннях додатка.</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="8537217141725709400">Заробляйте <ph name="TOKEN"/>s</translation>
+<translation id="8537217141725709400">Заробляйте <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="5870330605209713397">переглядаючи оголошення, що не порушують конфіденційності, і автоматично підтримуйте свої улюблені сайти та творців.</translation>
 <translation id="5302488867897327287">Натиснувши "Почати користуватися Brave Rewards", ви приймаєте</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Це ваша перша реклама Brave. Натисніть, щоб дізнатись більше.</translation>
 <translation id="2070991379950719711">Почати користуватися Brave Rewards</translation>
 <translation id="48520986898237073">Перейти до гаманця</translation>
-<translation id="3570367516044491911">Визначити типовим веб-переглядачем</translation>
+<translation id="6800338374677644736">Визначити типовим веб-переглядачем</translation>
 <translation id="19715420010996093">Оберіть браузер Brave та клацніть "Завжди"</translation>
 <translation id="3546439402724649282">Brave вже є вашим типовим веб-переглядачем.</translation>
 <translation id="8389661903259423907">Ви вже визначили типовий веб-переглядач. Його можна змінити у налаштуваннях вашого застосунку.</translation>
-<translation id="7091885296442320770">Brave надзвичайно швидкий</translation>
-<translation id="2171928016777725844">Зробіть Brave своїм браузером за вмовчанням!</translation>
-<translation id="7136694880210472378">Установити за умовчанням</translation>
-<translation id="4250680216510889253">ні</translation>
 <translation id="8826007068782654809">Дякуємо</translation>
 <translation id="6665366815203065060">Ви щойно надіслали чайові:</translation>
 <translation id="5441565662498481293">Ви автоматично надсилаєте чайові:</translation>
@@ -172,7 +168,7 @@
 <translation id="683765328936486920">на YouTube</translation>
 <translation id="8969049974285901797">на Twitch</translation>
 <translation id="3692362746128814480">Ви виділили <ph name="BAT_VALUE"/> BAT творцям, що ще не зареєструвались для отримання внесків. Ваш веб-переглядач і далі намагатиметься переказати внесок, поки вони не підтвердять свою особу чи поки не спливе 90 діб.</translation>
-<translation id="3101693828171454453">не достатньо <ph name="TOKEN"/>s</translation>
+<translation id="3101693828171454453">не достатньо <ph name="TOKEN"/></translation>
 <translation id="6940273954212603510">будь ласка</translation>
 <translation id="1036277985068412734">додати кошти</translation>
 <translation id="3492491948683276944">встановити щомісячні чайові</translation>
@@ -522,9 +518,9 @@
 <translation id="6478996494082389936">конфіденційну аналітику щодо продукту.</translation>
 <translation id="5187052478998910855">Потрібно освіжити пам'ять щодо нагород?</translation>
 <translation id="8622329973403382303">Перегляньте короткий огляд, щоб згадати, як це працює, і увійти в історію як ґуру нагород!</translation>
-<translation id="8401711613788729448">Відкривайте всі посилання через Brave, щоб захистити вашу приватність.</translation>
-<translation id="3184805785843994538">Щити Brave блокують відстежувачі та рекламу, зберігають дані та заощаджують ваш час на кожному сайті, який ви відвідуєте.</translation>
-<translation id="8722651357687610395">Встановіть Brave  за замовчуванням</translation>
+<translation id="7625138338483121345">Відкривайте всі посилання через Brave, щоб захистити вашу приватність.</translation>
+<translation id="4511485286950743564">Щити Brave блокують відстежувачі та рекламу, зберігають дані та заощаджують ваш час на кожному сайті, який ви відвідуєте.</translation>
+<translation id="9218430445555521422">Встановіть Brave  за замовчуванням</translation>
 <translation id="3479552764303398839">Не зараз</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -594,7 +590,7 @@
 <translation id="283071225285270357">Уведіть відновлювальну фразу</translation>
 <translation id="3943857333388298514">Уставити</translation>
 <translation id="3331452756822160641">Новий пароль</translation>
-<translation id="4854035885012188958">Я виконую відновлення зі старої версії криптогаманця Brave</translation>
+<translation id="4359319875297001084">Я виконую відновлення зі старої версії криптогаманця Brave</translation>
 <translation id="2339124864228588937">Підтвердьте відновлювальну фразу</translation>
 <translation id="3747079125031086337">Розташуйте слова у відновлювальній фразі в правильному порядку.</translation>
 <translation id="6518133107902771759">Підтвердити</translation>
@@ -792,6 +788,7 @@
 <translation id="1254969878422524947">Ліміт відрахування за пальне (Gwei)</translation>
 <translation id="7373308452149471621">Ліміт цін на пальне (Gwei)</translation>
 <translation id="5891811606602061966">Сталася помилка під час імпортування облікового запису. Спробуйте ще раз.</translation>
+<translation id="1822506443689803572">Brave використовує 0x як агрегатор DEX.</translation>
 <translation id="5061574358754621254">Дані про ціни надано CoinGecko</translation>
 <translation id="4626407663177532837">Розцінка включає збір Brave у розмірі 0,875 %.</translation>
 <translation id="8574289650879708853">Додати користувацькі активи</translation>
@@ -802,6 +799,7 @@
 <translation id="4351811224047421378">Знаків після коми</translation>
 <translation id="8614026298974065517">Вилучити користувацький актив</translation>
 <translation id="4378941981362528553">Ви бажаєте вилучити токен <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">ні</translation>
 <translation id="8971278306757462297">Адреса отримувача є вашою власною адресою</translation>
 <translation id="749944179568745958">Не є дійсною адресою ETH</translation>
 <translation id="3506416339268164412">Адреса отримувача є контрактною адресою токену</translation>
@@ -835,8 +833,8 @@
 <translation id="665660671251623018">Кількість розрядів після коми валюти ланцюга</translation>
 <translation id="182619028057179895">Недійсний формат, кількість розрядів після коми валюти є додатним числом</translation>
 <translation id="2978054488731497946">Уведіть кількість розрядів після коми валюти</translation>
-<translation id="3047726704186619366">URL-адреси значка</translation>
-<translation id="2487558607408469181">URL-адреси диспетчера блоків</translation>
+<translation id="7642841516562576649">URL-адреси значка</translation>
+<translation id="4693057234255364395">URL-адреси диспетчера блоків</translation>
 <translation id="7059127752542505809">Увести URL-адресу</translation>
 <translation id="2156993118928861787">Недійсна адреса</translation>
 <translation id="6889920539620318793">Установити як активну</translation>

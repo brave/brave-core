@@ -140,7 +140,7 @@
     "description": ""
   },
   "rewardsPaymentCompleted": {
-    "message": "Glückwunsch! Ihre Rewards für $month$ sind angekommen!",
+    "message": "Glückwunsch! Ihre Belohnungen für $month$ sind angekommen!",
     "description": "",
     "placeholders": {
       "month": {
@@ -149,7 +149,7 @@
     }
   },
   "rewardsPaymentPending": {
-    "message": "Ihre Rewards in Höhe von $amount$ für $month$ werden in $days$ eintreffen",
+    "message": "Ihre Belohnungen in Höhe von $amount$ für $month$ werden in $days$ eintreffen",
     "description": "",
     "placeholders": {
       "amount": {
@@ -164,7 +164,7 @@
     }
   },
   "rewardsPaymentProcessing": {
-    "message": "Ihre Rewards in Höhe von $amount$ für $month$ sind unterwegs. Sie sind bald da!",
+    "message": "Ihre Belohnungen in Höhe von $amount$ für $month$ sind unterwegs. Sie sind bald da!",
     "description": "",
     "placeholders": {
       "amount": {

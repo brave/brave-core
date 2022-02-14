@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Odhlásit z odběru</translation>
 <translation id="1209739344687072997">Nahlásit porouchané stránky</translation>
 <translation id="8510478288840333677">Dejte vývojářům Brave vědět, že tyto stránky se zabezpečením Shields nefungují správně:</translation>
-<translation id="6013164422534859494">Poznámka: adresa těchto stránek bude odeslána s číslem verze vašeho Brave a vaší IP adresou (tento údaj se neukládá).</translation>
+<translation id="4105411033440701818">Poznámka: adresa těchto stránek bude odeslána s číslem verze vašeho Brave a vaší IP adresou (tento údaj se neukládá).</translation>
 <translation id="5299848999918506028">Děkujeme!</translation>
 <translation id="76550953340008122">Díky, že jste vývojářům Brave dali vědět, že tyto stránky vykazují nějakou chybu. Budeme se usilovně snažit ji opravit!</translation>
 <translation id="2974339193389078578">Odvážně brázděte internet s prohlížečem Brave</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Datum dalšího příspěvku</translation>
 <translation id="1397381065858030856">Zobrazené stránky</translation>
 <translation id="2365740070488517695">Příspěvky</translation>
-<translation id="5993195614988368256">Posílejte tvůrcům příspěvky přímo při prohlížení. Stačí použít panel odměn nebo tlačítko pro zaslání příspěvku uvedené přímo na různých stránkách, mezi které patří Twitter, Reddit a GitHub.</translation>
+<translation id="5810507495128831593">Posílejte tvůrcům příspěvky přímo při prohlížení. Stačí použít panel odměn nebo tlačítko pro zaslání příspěvku uvedené přímo na různých stránkách, mezi které patří Twitter, Reddit a GitHub.</translation>
 <translation id="5012991400231464322">Měsíční příspěvky</translation>
 <translation id="2084351799622920487">Nastavte opakující se měsíční příspěvky, abyste mohli stránky průběžně podporovat.</translation>
 <translation id="8150772404570015166">Zatím nebyly nastaveny žádné měsíční příspěvky</translation>
@@ -792,10 +792,8 @@
 <translation id="4989163558385430922">Zobrazit vše</translation>
 <translation id="3026978804849658576">Zobrazit výpis</translation>
 <translation id="8494748383523030337">Váš zůstatek</translation>
-<translation id="3343165035032571678">Za prohlížení soukromých reklam Brave jste vydělali <ph name="AMOUNT"/>!</translation>
-<translation id="6618415862402597254">Přijaté příjmy z reklamy</translation>
-<translation id="5981646694027725752">Vyzvednout si výdělky</translation>
-<translation id="2556441076129789027">Vybrat tokeny</translation>
+<translation id="3274366539954332481">Přijaté příjmy z reklamy</translation>
+<translation id="9013419433042554094">Vybrat tokeny</translation>
 <translation id="5544777623605368410">Výdělek</translation>
 <translation id="3273637494083639780">Tokeny, které získáte tento měsíc, se začnou zpracovávat <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Může se lišit v závislosti na volatilitě trhu.</translation>
@@ -807,8 +805,7 @@
 <translation id="6777169449483742979">Za zobrazení tohoto sponzorovaného obrázku získáváte tokeny.</translation>
 <translation id="5486114327664215175">Získejte tokeny za zobrazení tohoto obrázku a podpořte tvůrce obsahu.</translation>
 <translation id="2940863921746574646">Zůstatek tokenů</translation>
-<translation id="1714906256929297600">Použijte své propagační tokeny a přispějte tvůrcům dříve, než vyprší jejich platnost!</translation>
-<translation id="2426048501007152001">Dostupné tokeny</translation>
+<translation id="2221902203895354376">Dostupné tokeny</translation>
 <translation id="7701466644604753106">Zapnout Speedreader</translation>
 <translation id="763042262431778831">Vypnout Speedreader</translation>
 <translation id="8488282162676695335">Peněženka Brave</translation>
@@ -961,7 +958,7 @@
 <translation id="1943188256166395881">Přidání zaškrtnutých účtů</translation>
 <translation id="8554010658308662631">Nahrát více</translation>
 <translation id="6998738230710304743">Načítají se další...</translation>
-<translation id="4970164249406565575">Vyhledávání účtu 0x</translation>
+<translation id="5592304751234049046">Vyhledávání účtu 0x</translation>
 <translation id="6151024411349343484">Pokud nemůžete najít hledaný účet, zkuste změnit cestu k HD (výše).</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Starší verze (MEW/MyCrypto)</translation>
@@ -1190,7 +1187,7 @@
 <translation id="5544888475837817215">Povolit všechny sledovače a reklamy</translation>
 <translation id="6203697265754637264">Soubory cookies třetích stran blokovány</translation>
 <translation id="4627427111733173920">Soubory cookies jsou blokovány</translation>
-<translation id="7855168553463825937">Všechny soubory cookie blokovány</translation>
+<translation id="3972324600756617403">Všechny soubory cookie blokovány</translation>
 <translation id="8366221601425141146">Shromažďování otisků zařízení bylo zablokováno</translation>
 <translation id="5582686930349810484">Získání otisku blokováno (standardně)</translation>
 <translation id="6696441392507885865">Získávání otisku blokováno (striktně, může narušit fungování stránek)</translation>

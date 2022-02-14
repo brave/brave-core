@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">זה פרסומת Brave הראשון שלך. נא להקיש כדי ללמוד עוד.</translation>
 <translation id="2070991379950719711">התחל להשתמש ב-Brave Rewards</translation>
 <translation id="48520986898237073">המשך לארנק</translation>
-<translation id="3570367516044491911">הגדר כדפדפן ברירת המחדל</translation>
+<translation id="6800338374677644736">הגדר כדפדפן ברירת המחדל</translation>
 <translation id="19715420010996093">בחר/י בדפדפן Brave והקש/י על "תמיד"</translation>
 <translation id="3546439402724649282">Brave כבר מוגדר כדפדפן ברירת המחדל שלך.</translation>
 <translation id="8389661903259423907">כבר הגדרת דפדפן ברירת מחדל. באפשרותך לשנות את דפדפן ברירת המחדל בהגדרות האפליקציה שלך.</translation>
-<translation id="7091885296442320770">Brave מהיר כברק</translation>
-<translation id="2171928016777725844">הפכ/י את Brave לדפדפן ברירת המחדל שלך!</translation>
-<translation id="7136694880210472378">הפוך לברירת מחדל</translation>
-<translation id="4250680216510889253">לא</translation>
 <translation id="8826007068782654809">תודה</translation>
 <translation id="6665366815203065060">הרגע שלחת טיפ אל:</translation>
 <translation id="5441565662498481293">את/ה שולח/ת אוטומטי טיפ אל:</translation>
@@ -525,9 +521,9 @@
 <translation id="6478996494082389936">אנליטיקס מוצר פרטי.</translation>
 <translation id="5187052478998910855">זקוקים לרענון לגבי Rewards?</translation>
 <translation id="8622329973403382303">ערכו סיור מהיר כדי לרענן ידיעתכם לגבי איך זה עובד להיכנס להיסטוריה בתור כוכב רוק של Rewards!</translation>
-<translation id="8401711613788729448">פתיחת קישורים באמצעות Brave תשמור על פרטיותך</translation>
-<translation id="3184805785843994538">Brave Shields חוסם כלי מעקב וamp;amp; פרסומות, חוסך בנתונים וחוסך לך זמן בכל אתר שתבקר/י בו.</translation>
-<translation id="8722651357687610395">הגדר/י את Brave כברירת מחדל</translation>
+<translation id="7625138338483121345">פתיחת קישורים באמצעות Brave תשמור על פרטיותך</translation>
+<translation id="4511485286950743564">Brave Shields חוסם כלי מעקב וamp;amp; פרסומות, חוסך בנתונים וחוסך לך זמן בכל אתר שתבקר/י בו.</translation>
+<translation id="9218430445555521422">הגדר/י את Brave כברירת מחדל</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@
 <translation id="283071225285270357">יש להזין את ביטוי השחזור שלך</translation>
 <translation id="3943857333388298514">הדבק</translation>
 <translation id="3331452756822160641">סיסמה חדשה</translation>
-<translation id="4854035885012188958">ביצוע שחזור ארנק קריפטו של Brave מהדור הקודם</translation>
+<translation id="4359319875297001084">ביצוע שחזור ארנק קריפטו של Brave מהדור הקודם</translation>
 <translation id="2339124864228588937">אמת ביטוי שחזור</translation>
 <translation id="3747079125031086337">בחר את המילים בביטוי השחזור שלך בסדר הנכון שלהן.</translation>
 <translation id="6518133107902771759">אימות</translation>
@@ -796,6 +792,7 @@
 <translation id="1254969878422524947">הגבלת טיפ לפי הדלק(Gwei)</translation>
 <translation id="7373308452149471621">הגבלת מחיר דלק (Gwei)</translation>
 <translation id="5891811606602061966">ייבוא החשבון נכשל. נסה שוב.</translation>
+<translation id="1822506443689803572">Brave משתמש ב-0x כאגרגטור DEX.</translation>
 <translation id="5061574358754621254">נתוני המחירים מופעלים על ידי CoinGecko</translation>
 <translation id="4626407663177532837">הצעת המחיר כוללת עמלת Brave של 0.875%.</translation>
 <translation id="8574289650879708853">הוסף נכס מותאם אישית</translation>
@@ -806,6 +803,7 @@
 <translation id="4351811224047421378">רמת דיוק עשרוני</translation>
 <translation id="8614026298974065517">הסר נכס מותאם אישית</translation>
 <translation id="4378941981362528553">האם ברצונך להסיר אסימון <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">לא</translation>
 <translation id="8971278306757462297">כתובת הנמען היא הכתובת של עצמך</translation>
 <translation id="749944179568745958">כתובת ETH לא חוקית</translation>
 <translation id="3506416339268164412">כתובת הנמען היא כתובת חוזה של אסימון</translation>
@@ -839,8 +837,8 @@
 <translation id="665660671251623018">עשרוני מטבע השרשרת</translation>
 <translation id="182619028057179895">פורמט לא חוקי, מזהה השרשרת הינו מספר חיובי</translation>
 <translation id="2978054488731497946">הזן את עשרוני המטבע</translation>
-<translation id="3047726704186619366">כתובות URL של הסמל</translation>
-<translation id="2487558607408469181">חסימת כתובות URL של סייר</translation>
+<translation id="7642841516562576649">כתובות URL של הסמל</translation>
+<translation id="4693057234255364395">חסימת כתובות URL של סייר</translation>
 <translation id="7059127752542505809">הזן כתובת URL</translation>
 <translation id="2156993118928861787">כתובת לא חוקית</translation>
 <translation id="6889920539620318793">הגדר כפעיל</translation>

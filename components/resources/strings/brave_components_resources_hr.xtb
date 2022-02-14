@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Otkaži pretplatu</translation>
 <translation id="1209739344687072997">Prijavi nevaljano mjesto</translation>
 <translation id="8510478288840333677">Javite razvojnim inženjerima preglednika Brave da ovo mjesto ne radi ispravno prilikom korištenja značajke Štitovi:</translation>
-<translation id="6013164422534859494">Napomena: Adresa se ovog mjesta šalje zajedno s vašim brojem inačice preglednika Brave i vašom adresom IP (koja se ne pohranjuje).</translation>
+<translation id="4105411033440701818">Napomena: Adresa se ovog mjesta šalje zajedno s vašim brojem inačice preglednika Brave i vašom adresom IP (koja se ne pohranjuje).</translation>
 <translation id="5299848999918506028">Hvala vam!</translation>
 <translation id="76550953340008122">Hvala vam što se javili razvojnim inženjerima preglednika Brave da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!</translation>
 <translation id="2974339193389078578">Brave, novo iskustvo interneta</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Datum sljedećeg doprinosa</translation>
 <translation id="1397381065858030856">Pregledana mrežna mjesta</translation>
 <translation id="2365740070488517695">Napojnice</translation>
-<translation id="5993195614988368256">Izravno dajte napojnice stvarateljima sadržaja tijekom pregledavanja korištenjem oknom Nagrade ili upotrijebite ugrađeni gumb za napojnice na različitim mrežnim mjestima poput Twittera, Reddita i GitHuba.</translation>
+<translation id="5810507495128831593">Izravno dajte napojnice stvarateljima sadržaja tijekom pregledavanja korištenjem oknom Nagrade ili upotrijebite ugrađeni gumb za napojnice na različitim mrežnim mjestima poput Twittera, Reddita i GitHuba.</translation>
 <translation id="5012991400231464322">Mjesečni doprinosi</translation>
 <translation id="2084351799622920487">Postavite i ponavljajuće mjesečne napojnice da biste neprekidno podržavali mrežna mjesta.</translation>
 <translation id="8150772404570015166">Nijedan mjesečni doprinos nije još postavljen.</translation>
@@ -792,10 +792,8 @@
 <translation id="4989163558385430922">Prikaži sve</translation>
 <translation id="3026978804849658576">Prikaži izjavu</translation>
 <translation id="8494748383523030337">Vaš raspoloživi iznos</translation>
-<translation id="3343165035032571678">Zaradili ste <ph name="AMOUNT"/> pregledavanjem privatnih oglasa Brave!</translation>
-<translation id="6618415862402597254">Primljena zarada za oglase</translation>
-<translation id="5981646694027725752">Potražuj zaradu</translation>
-<translation id="2556441076129789027">Potražuj tokene</translation>
+<translation id="3274366539954332481">Primljena zarada za oglase</translation>
+<translation id="9013419433042554094">Potražuj tokene</translation>
 <translation id="5544777623605368410">Zarada</translation>
 <translation id="3273637494083639780">Obrada tokena koje zaradite ovaj mjesec započinje <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">To se može mijenjati ovisno o stanju tržišta.</translation>
@@ -807,8 +805,7 @@
 <translation id="6777169449483742979">Zarađujete tokene pregledavanjem ove sponzorirane slike.</translation>
 <translation id="5486114327664215175">Zaradite tokene pregledavanjem ove slike i dajte podršku autorima sadržaja.</translation>
 <translation id="2940863921746574646">Stanje tokena</translation>
-<translation id="1714906256929297600">Upotrijebite promotivne tokene za davanje doprinosa autorima prije njihovog istjecanja!</translation>
-<translation id="2426048501007152001">Dostupni tokeni</translation>
+<translation id="2221902203895354376">Dostupni tokeni</translation>
 <translation id="7701466644604753106">UKLJUČI mjerač brzine</translation>
 <translation id="763042262431778831">ISKLJUČI mjerač brzine</translation>
 <translation id="8488282162676695335">Novčanik Brave</translation>
@@ -961,7 +958,7 @@
 <translation id="1943188256166395881">Dodaj označene račune</translation>
 <translation id="8554010658308662631">Učitaj više</translation>
 <translation id="6998738230710304743">Učitavanje još sadržaja...</translation>
-<translation id="4970164249406565575">Pretraži račun 0x</translation>
+<translation id="5592304751234049046">Pretraži račun 0x</translation>
 <translation id="6151024411349343484">Pokušajte promijeniti putanju HD (iznad) ako ne možete pronaći račun koji tražite.</translation>
 <translation id="2844691569989101734">Ledger Uživo</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -1190,7 +1187,7 @@
 <translation id="5544888475837817215">Dopusti sve elemente za praćenje i oglase</translation>
 <translation id="6203697265754637264">Blokirani kolačići za praćenje na više mjesta</translation>
 <translation id="4627427111733173920">Kolačići su blokirani</translation>
-<translation id="7855168553463825937">Svi kolačići blokirani</translation>
+<translation id="3972324600756617403">Svi kolačići blokirani</translation>
 <translation id="8366221601425141146">Blokirano pritiskanje prstima</translation>
 <translation id="5582686930349810484">Blokirano pritiskanja prstima (standardno)</translation>
 <translation id="6696441392507885865">Blokirano ostavljanje otiska prsta (strogo, mogu se rušiti mrežna mjesta)</translation>

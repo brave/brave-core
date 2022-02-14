@@ -141,7 +141,7 @@
 <translation id="4720556299488643018">登録を解除</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
-<translation id="6013164422534859494">注記：このサイトのアドレスは、お使いのBraveバージョンとIPアドレス（保存はされません）とともに送信されます。</translation>
+<translation id="4105411033440701818">注記：このサイトのアドレスは、お使いのBraveバージョンとIPアドレス（保存はされません）とともに送信されます。</translation>
 <translation id="5299848999918506028">ありがとうございます！</translation>
 <translation id="76550953340008122">このサイトの問題をBraveの開発者にお知らせいただき、ありがとうございます。最善を尽くしてその修正を行います！</translation>
 <translation id="2974339193389078578">Brave がもたらす新しいインターネットの世界</translation>
@@ -199,7 +199,7 @@
 <translation id="2846354907189538">次の支援支払日</translation>
 <translation id="1397381065858030856">閲覧したサイト</translation>
 <translation id="2365740070488517695">チップ</translation>
-<translation id="5993195614988368256">Rewardsパネルを使って閲覧する、またはTwitter、Reddit、GitHubといったさまざまなサイト上に埋め込まれている投げ銭ボタンを使うことで、コンテンツ制作者に直接投げ銭を行いましょう。</translation>
+<translation id="5810507495128831593">Rewardsパネルを使って閲覧する、またはTwitter、Reddit、GitHubといったさまざまなサイト上に埋め込まれている投げ銭ボタンを使うことで、コンテンツ制作者に直接投げ銭を行いましょう。</translation>
 <translation id="5012991400231464322">毎月の支援額</translation>
 <translation id="2084351799622920487">サイトを継続して支援するために、毎月支援を行うように設定します。</translation>
 <translation id="8150772404570015166">毎月の支援額が設定されていません。</translation>
@@ -595,7 +595,7 @@
 <translation id="3699674790322420653">ウォレットの認証を完了</translation>
 <translation id="9200453331904391567">Brave Rewardとの接続を解除する</translation>
 <translation id="3656941797339037856">RewardsをGeminiにリンク!</translation>
-<translation id="31532096120351460">GeminiでBATを含む50以上の暗号資産を取引しましょう。安全なプラットフォーム上でお手持ちの仮想通貨を保管できます。さらに、米国、香港、シンガポールの取引で利息を得ることができます。</translation>
+<translation id="31532096120351460">GeminiでBATを含む50以上の暗号資産を取引しましょう。安全なプラットフォーム上でお手持ちの暗号資産を保管できます。</translation>
 <translation id="7404779623219601861">BATをギフトカードと交換する</translation>
 <translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
 <translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>
@@ -780,7 +780,7 @@
 <translation id="581582843259146919">サイトのアクセス許可</translation>
 <translation id="7717357606512850995">ステータスを確認</translation>
 <translation id="7306880305145342514">おめでとうございます！<ph name="MONTH"/>のリワードを獲得しました！</translation>
-<translation id="3007207731685398329"><ph name="MONTH"/>のリワード<ph name="AMOUNT"/>が<ph name="DAYS"/>で送付されます</translation>
+<translation id="3007207731685398329"><ph name="MONTH"/>のリワード<ph name="AMOUNT"/>が<ph name="DAYS"/>後以降に順次送付されます。</translation>
 <translation id="5878420576943709750"><ph name="MONTH"/>のリワード<ph name="AMOUNT"/>を送金中です。少々お待ちください！</translation>
 <translation id="2659764755126740206">私の<ph name="PROVIDER"/>アカウントに移動する</translation>
 <translation id="2389181429986654814"><ph name="PROVIDER"/>に移動して認証を完了します</translation>
@@ -795,10 +795,8 @@
 <translation id="4989163558385430922">すべてを見る</translation>
 <translation id="3026978804849658576">明細を表示</translation>
 <translation id="8494748383523030337">残高</translation>
-<translation id="3343165035032571678">Brave Private Adsの閲覧により<ph name="AMOUNT"/>を獲得しました！</translation>
-<translation id="6618415862402597254">広告報酬を受け取りました</translation>
-<translation id="5981646694027725752">報酬を要請</translation>
-<translation id="2556441076129789027">トークンの獲得</translation>
+<translation id="3274366539954332481">広告報酬を受け取りました</translation>
+<translation id="9013419433042554094">トークンの獲得</translation>
 <translation id="5544777623605368410">報酬</translation>
 <translation id="3273637494083639780">あなたが今月獲得したトークンは<ph name="DATE"/>以降に処理が開始されます。</translation>
 <translation id="1029300693989825319">これは、市場のボラティリティに応じて変化する可能性があります。</translation>
@@ -810,8 +808,7 @@
 <translation id="6777169449483742979">このスポンサー画像を見ることでトークンを獲得できます。</translation>
 <translation id="5486114327664215175">このような画像を閲覧することでトークンを獲得し、コンテンツクリエイターを支援しましょう。</translation>
 <translation id="2940863921746574646">トークン残高</translation>
-<translation id="1714906256929297600">プロモーショントークンを使って、有効期限が切れる前にクリエイターそ支援しましょう！</translation>
-<translation id="2426048501007152001">利用できるトークン</translation>
+<translation id="2221902203895354376">利用できるトークン</translation>
 <translation id="7701466644604753106">Speedreaderをオンにする</translation>
 <translation id="763042262431778831">Speedreaderをオフにする</translation>
 <translation id="8488282162676695335">Braveウォレット</translation>
@@ -956,7 +953,7 @@
 <translation id="5891811606602061966">アカウントのインポートに失敗しました。もう一度やり直してください。</translation>
 <translation id="5051929972046200722">ハードウェアウォレットデバイスを選択</translation>
 <translation id="5745936663807461565"><ph name="HARDWARE_DEVICE"/>ウォレットをコンピューターに直接接続してください。</translation>
-<translation id="4350216031085285578">デバイスのロックを解除して<ph name="BLOCKCHAIN_NETWORK"/>アプリを選択します。</translation>
+<translation id="4350216031085285578">デバイスのロックを解除して<ph name="BLOCKCHAIN_NETWORK"/>を選択します。</translation>
 <translation id="6892232036314454524">Ledgerのデバイスで間違ったアプリケーションを開いている場合、このエラーが発生することがあります。</translation>
 <translation id="6598291715079540080">Trezor</translation>
 <translation id="5605670050355397069">台帳</translation>
@@ -964,7 +961,7 @@
 <translation id="1943188256166395881">チェック済みアカウントを追加</translation>
 <translation id="8554010658308662631">もっと読み込む</translation>
 <translation id="6998738230710304743">さらに読み込んでいます...</translation>
-<translation id="4970164249406565575">アカウント 0x を検索</translation>
+<translation id="5592304751234049046">アカウント 0x を検索</translation>
 <translation id="6151024411349343484">探しているアカウントが見つからない場合は、HD パス (上記) を切り替えてみてください。</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">レガシー (MEW/MyCrypto)</translation>
@@ -983,7 +980,7 @@
 <translation id="6018178824574796106">カスタムトークンの追加に失敗しました。もう一度やり直してください。</translation>
 <translation id="547122651977318828">トークンID (ERC721のみ)</translation>
 <translation id="7544552854944350190">トークンIDが必要です</translation>
-<translation id="3842236145820483340">Coingecko ID</translation>
+<translation id="3842236145820483340">CoinGecko ID</translation>
 <translation id="2708402071160162126">警告: リカバリフレーズは絶対に他の人に教えないでください。このフレーズを知っている人はだれでも、あなたの資産を完全に取得することができます。</translation>
 <translation id="2902856457593699108">キーを表示</translation>
 <translation id="8033497299373164724">キーを隠す</translation>
@@ -1193,7 +1190,7 @@
 <translation id="5544888475837817215">すべてのトラッカーと広告を許可</translation>
 <translation id="6203697265754637264">クロスサイト・クッキーをブロック</translation>
 <translation id="4627427111733173920">クッキーをブロック</translation>
-<translation id="7855168553463825937">すべてのCookiesをブロック</translation>
+<translation id="3972324600756617403">すべてのCookiesをブロック</translation>
 <translation id="8366221601425141146">フィンガープリントがブロックされました</translation>
 <translation id="5582686930349810484">フィンガープリントをブロック済み（標準）</translation>
 <translation id="6696441392507885865">フィンガープリントをブロック（強、サイト破損の可能性）</translation>

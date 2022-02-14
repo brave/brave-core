@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">בטל הרשמה כמנוי</translation>
 <translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
 <translation id="8510478288840333677">הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם Shields:</translation>
-<translation id="6013164422534859494">תשומת לבך: כתובת אתר זה תשלח ביחד עם מספר גרסת Brave  שלך וכתובת ה-IP שלך (שלא יישמרו).</translation>
+<translation id="4105411033440701818">תשומת לבך: כתובת אתר זה תשלח ביחד עם מספר גרסת Brave  שלך וכתובת ה-IP שלך (שלא יישמרו).</translation>
 <translation id="5299848999918506028">תודה!</translation>
 <translation id="76550953340008122">תודה שהודעת למפתחים של Brave שמשהו לא תקין באתר זה. אנו נעשה כמיטב יכולתנו לתקן זאת!</translation>
 <translation id="2974339193389078578">ברוכים הבאים לדפדפן Brave</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">תאריך התרומה הבאה</translation>
 <translation id="1397381065858030856">אתרים שנצפו</translation>
 <translation id="2365740070488517695">טיפים</translation>
-<translation id="5993195614988368256">תן/י ליוצרי התוכן טיפ ישירות תוך כדי גלישה באמצעות פנל התגמולים, או לחצן הטיפים שמופיע באתרים שונים, בהם טוויטר, Reddit ו-GitHub.</translation>
+<translation id="5810507495128831593">תן/י ליוצרי התוכן טיפ ישירות תוך כדי גלישה באמצעות פנל התגמולים, או לחצן הטיפים שמופיע באתרים שונים, בהם טוויטר, Reddit ו-GitHub.</translation>
 <translation id="5012991400231464322">תרומות חודשיות</translation>
 <translation id="2084351799622920487">הגדירו תרומות חודשיות נשנות כדי שתוכלו לתמוך באתרים באופן רציף.</translation>
 <translation id="8150772404570015166">טרם נקבעו תרומות חודשיות.</translation>
@@ -794,10 +794,8 @@
 <translation id="4989163558385430922">הצג הגל</translation>
 <translation id="3026978804849658576">הצג הצהרה</translation>
 <translation id="8494748383523030337">היתרה שלך</translation>
-<translation id="3343165035032571678">הרווחת <ph name="AMOUNT"/> מצפיה ב-Brave Private Ads!</translation>
-<translation id="6618415862402597254">תגמולי פרסומות התקבלו</translation>
-<translation id="5981646694027725752">תביעת רווחים</translation>
-<translation id="2556441076129789027">תביעת אסימונים</translation>
+<translation id="3274366539954332481">תגמולי פרסומות התקבלו</translation>
+<translation id="9013419433042554094">תביעת אסימונים</translation>
 <translation id="5544777623605368410">רווחים</translation>
 <translation id="3273637494083639780">עיבוד אסימונים שהרווחת החודש יתחיל ב-<ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">זה עשוי להשתנות בהתבסס על תנודתיות השוק.</translation>
@@ -809,8 +807,7 @@
 <translation id="6777169449483742979">אתה’re הנך מרוויח טוקנים עבור צפייה בתמונה ממומנת זו.</translation>
 <translation id="5486114327664215175">ניתן להרוויח טוקנים על ידי צפייה בתמונה זו ותמיכה ביוצרי התוכן.</translation>
 <translation id="2940863921746574646">יתרת טוקנים</translation>
-<translation id="1714906256929297600">השתמש בטוקנים הפרסומיים שלך לתמוך ביוצרים לפני תפוגתם!</translation>
-<translation id="2426048501007152001">טוקנים זמינים</translation>
+<translation id="2221902203895354376">טוקנים זמינים</translation>
 <translation id="7701466644604753106">הפעלת Speedreader</translation>
 <translation id="763042262431778831">כיבוי Speedreader</translation>
 <translation id="8488282162676695335">ארנק Brave</translation>
@@ -963,7 +960,7 @@
 <translation id="1943188256166395881">הצג חשבונות מסומנים</translation>
 <translation id="8554010658308662631">טען עוד</translation>
 <translation id="6998738230710304743">טוען עוד...</translation>
-<translation id="4970164249406565575">חיפוש בחשבון 0x</translation>
+<translation id="5592304751234049046">חיפוש בחשבון 0x</translation>
 <translation id="6151024411349343484">נסה לשנות נתיב HD (למעלה) אם אינך יכול למצוא את החשבון שאתה מחפש.</translation>
 <translation id="2844691569989101734">פנקס בזמן אמת</translation>
 <translation id="7265732100380987017">דור קודם (MEW/MyCrypto)</translation>
@@ -1193,7 +1190,7 @@
 <translation id="5544888475837817215">אפשר את כל העוקבים והמודעות</translation>
 <translation id="6203697265754637264">קבצי cookie מרובי-אתרים (cross-site) נחסמו</translation>
 <translation id="4627427111733173920">קבצי עוגיות חסומים</translation>
-<translation id="7855168553463825937">כל העוגיות חסומות</translation>
+<translation id="3972324600756617403">כל העוגיות חסומות</translation>
 <translation id="8366221601425141146">טביעות אצבעות נחסמו</translation>
 <translation id="5582686930349810484">טביעות אצבע חסומות (סטנדרטי)</translation>
 <translation id="6696441392507885865">טביעת אצבע חסומה (קפדני, אתרים עלולים להישבר)</translation>

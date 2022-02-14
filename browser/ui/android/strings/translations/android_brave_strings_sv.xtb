@@ -55,7 +55,7 @@
 <translation id="933652931229970927">Skicka diagnostikrapporter automatiskt</translation>
 <translation id="5987838417172370108">Hjälp till att förbättra Braves produktstabilitet genom att automatiskt skicka diagnostikrapporter när Brave Browser kraschar eller fryser.</translation>
 <translation id="7977176350719484850">Uppsk. data\nsparade</translation>
-<translation id="9008534313521214777">Ung. tid\nsparad</translation>
+<translation id="9008534313521214777">Ber. tid\nsparad</translation>
 <translation id="6572660632052512096">Skrivbordsläge</translation>
 <translation id="1340503115760585811">Aktivera Skrivbordsvy för nya flikar</translation>
 <translation id="7924540991929826186">Använd mobilversioner av webbplatser för nya flikar (rekommenderas)</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Detta är din första Brave-annons. Tryck för att läsa mer.</translation>
 <translation id="2070991379950719711">Börja använda Brave Rewards</translation>
 <translation id="48520986898237073">Fortsätt till plånboken</translation>
-<translation id="3570367516044491911">Ställ in som standardwebbläsare</translation>
+<translation id="6800338374677644736">Ställ in som standardwebbläsare</translation>
 <translation id="19715420010996093">Välj webbläsaren Brave och tryck på ”Alltid”.</translation>
 <translation id="3546439402724649282">Brave är redan inställd som din standardwebbläsare.</translation>
 <translation id="8389661903259423907">Du har redan angett en standardwebbläsare. Du kan ändra din standardwebbläsare i appinställningarna.</translation>
-<translation id="7091885296442320770">Brave är blixtsnabb</translation>
-<translation id="2171928016777725844">Gör Brave till din standardwebbläsare!</translation>
-<translation id="7136694880210472378">Ange som standard</translation>
-<translation id="4250680216510889253">Nej</translation>
 <translation id="8826007068782654809">Tack</translation>
 <translation id="6665366815203065060">Du skickade precis dricks till:</translation>
 <translation id="5441565662498481293">Du skickar automatiskt dricks till:</translation>
@@ -525,9 +521,9 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="6478996494082389936">privata produktanalyser.</translation>
 <translation id="5187052478998910855">Behöver du en repetition om Belöningar?</translation>
 <translation id="8622329973403382303">Ta en snabb rundtur för att friska upp minnet av hur det fungerar för att gå till historien som en Belöningarnas rockstjärna!</translation>
-<translation id="8401711613788729448">Öppna alla länkar med Brave för att värna din integritet.</translation>
-<translation id="3184805785843994538">Brave Shields blockar spårare &amp; annonser samt sparar data och tid på varje sajt du besöker.</translation>
-<translation id="8722651357687610395">Ställ in Brave som ordinarie.</translation>
+<translation id="7625138338483121345">Öppna alla länkar med Brave för att värna din integritet.</translation>
+<translation id="4511485286950743564">Brave Shields blockar spårare &amp; annonser samt sparar data och tid på varje sajt du besöker.</translation>
+<translation id="9218430445555521422">Ställ in Brave som ordinarie.</translation>
 <translation id="3479552764303398839">Inte nu</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="283071225285270357">Ange din återställningsfras</translation>
 <translation id="3943857333388298514">Klistra in</translation>
 <translation id="3331452756822160641">Nytt lösenord</translation>
-<translation id="4854035885012188958">Jag återställer från en äldre Brave kryptoplånbok</translation>
+<translation id="4359319875297001084">Jag återställer från en äldre Brave kryptoplånbok</translation>
 <translation id="2339124864228588937">Bekräfta återställningsfras</translation>
 <translation id="3747079125031086337">Välj orden i din återställningsfras i rätt ordning.</translation>
 <translation id="6518133107902771759">Verifiera</translation>
@@ -795,6 +791,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1254969878422524947">Gräns per spets (Gwei)</translation>
 <translation id="7373308452149471621">Prisgräns per gas (Gwei)</translation>
 <translation id="5891811606602061966">Det gick inte att importera kontot. Vänligen försök igen.</translation>
+<translation id="1822506443689803572">Brave använder 0x som en DEX-aggregator.</translation>
 <translation id="5061574358754621254">Prisdata från CoinGecko</translation>
 <translation id="4626407663177532837">Offerten inkluderar en avgift på 0,875 % till Brave.</translation>
 <translation id="8574289650879708853">Lägg till anpassad tillgång</translation>
@@ -805,6 +802,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="4351811224047421378">Precisionsdecimaler</translation>
 <translation id="8614026298974065517">Ta bort anpassad tillgång</translation>
 <translation id="4378941981362528553">Vill du ta bort token för <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Nej</translation>
 <translation id="8971278306757462297">Mottagaradressen är din egen adress</translation>
 <translation id="749944179568745958">Inte en giltig ETH-adress</translation>
 <translation id="3506416339268164412">Mottagaradressen är ett tokens kontraktadress</translation>
@@ -838,8 +836,8 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="665660671251623018">Kedjans valutadecimaler</translation>
 <translation id="182619028057179895">Ogiltigt format, valutadecimalerna är ett positivt tal</translation>
 <translation id="2978054488731497946">Ange kedjans valutadecimaler</translation>
-<translation id="3047726704186619366">Symbol URL:er</translation>
-<translation id="2487558607408469181">Blockera explorer URL:er</translation>
+<translation id="7642841516562576649">Symbol URL:er</translation>
+<translation id="4693057234255364395">Blockera URL:er för utforskare</translation>
 <translation id="7059127752542505809">Ange URL</translation>
 <translation id="2156993118928861787">Ogiltig adress</translation>
 <translation id="6889920539620318793">Ange som aktiv</translation>
