@@ -9,6 +9,7 @@ source_set("browser_tests") {
   testonly = true
 
   sources = [
+    "brave_wallet_js_handler_browsertest.cc",
     "digital_goods_api_browsertest.cc",
     "file_system_access_browsertest.cc",
     "navigator_connection_attribute_browsertest.cc",
@@ -21,7 +22,9 @@ source_set("browser_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/common",
+    "//brave/components/brave_wallet/browser",
     "//chrome/browser/ui",
+    "//chrome/common",
     "//chrome/test:test_support_ui",
     "//components/embedder_support",
     "//components/web_package",
