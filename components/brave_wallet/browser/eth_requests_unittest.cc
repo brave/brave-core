@@ -187,9 +187,8 @@ TEST(EthRequestUnitTest, eth_estimateGas) {
                       "0xd46e8dd67c5d32be8058bb8eb970870f07244567", "0x76c0",
                       "0x9184e72a000", "0x9184e72a",
                       "0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f07244"
-                      "5675058bb8eb970870f072445675",
-                      "latest"),
-      R"({"id":1,"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"data":"0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675","from":"0xb60e8dd61c5d32be8058bb8eb970870f07233155","gas":"0x76c0","gasPrice":"0x9184e72a000","to":"0xd46e8dd67c5d32be8058bb8eb970870f07244567","value":"0x9184e72a"},"latest"]})");  // NOLINT
+                      "5675058bb8eb970870f072445675"),
+      R"({"id":1,"jsonrpc":"2.0","method":"eth_estimateGas","params":[{"data":"0xd46e8dd67c5d32be8d46e8dd67c5d32be8058bb8eb970870f072445675058bb8eb970870f072445675","from":"0xb60e8dd61c5d32be8058bb8eb970870f07233155","gas":"0x76c0","gasPrice":"0x9184e72a000","to":"0xd46e8dd67c5d32be8058bb8eb970870f07244567","value":"0x9184e72a"}]})");  // NOLINT
 }
 
 TEST(EthRequestUnitTest, eth_getBlockByHash) {

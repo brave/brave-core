@@ -116,13 +116,17 @@ std::string eth_call(const std::string& from_address,
 // Note that the estimate may be significantly more than the amount of gas
 // actually used by the transaction, for a variety of reasons including EVM
 // mechanics and node performance.
+//
+// Some EVM clients allow passing an optional block parameter called
+// QUANTITY|TAG, however the official specs in github.com/ethereum/eth1.0-specs
+// do not. Therefore to support chains that follow the official specs, we do not
+// allow specifying this parameter.
 std::string eth_estimateGas(const std::string& from_address,
                             const std::string& to_address,
                             const std::string& gas,
                             const std::string& gas_price,
                             const std::string& value,
-                            const std::string& data,
-                            const std::string& quantity_tag);
+                            const std::string& data);
 // Returns information about a block by hash.
 std::string eth_getBlockByHash(const std::string& block_hash,
                                bool full_transaction_object);

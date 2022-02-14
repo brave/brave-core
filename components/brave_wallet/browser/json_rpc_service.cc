@@ -1093,7 +1093,7 @@ void JsonRpcService::GetEstimateGas(const std::string& from_address,
       base::BindOnce(&JsonRpcService::OnGetEstimateGas,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   return Request(eth::eth_estimateGas(from_address, to_address, gas, gas_price,
-                                      value, data, "latest"),
+                                      value, data),
                  true, std::move(internal_callback));
 }
 
