@@ -37,6 +37,7 @@ import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
@@ -352,8 +353,10 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         if (txService == null) {
             return;
         }
-        txService.approveTransaction(CoinType.ETH, mTxInfo.id, success -> {
+        txService.approveTransaction(CoinType.ETH, mTxInfo.id, (success, error, errorMessage) -> {
             assert success;
+            Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
+                    "approveTransaction", error, errorMessage);
             if (!success) {
                 return;
             }

@@ -286,8 +286,11 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     base::RunLoop run_loop;
     tx_service_->ApproveTransaction(
         mojom::CoinType::ETH, tx_meta_id,
-        base::BindLambdaForTesting([&](bool success) {
+        base::BindLambdaForTesting([&](bool success, mojom::ProviderError error,
+                                       const std::string& error_message) {
           EXPECT_TRUE(success);
+          EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+          EXPECT_TRUE(error_message.empty());
           run_loop.Quit();
         }));
     run_loop.Run();
