@@ -45,7 +45,7 @@ void RecordWalletState(const WalletState& state) {
       answer = 1;
     }
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletState", answer, 5);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletState", answer, 6);
 }
 
 void RecordWalletBalance(bool wallet_created, bool rewards_enabled, size_t b) {
@@ -54,15 +54,17 @@ void RecordWalletBalance(bool wallet_created, bool rewards_enabled, size_t b) {
     answer = 1;
   } else if (rewards_enabled) {
     DCHECK(wallet_created);
-    if (b < 10) {
+    if (b == 0) {
       answer = 2;
-    } else if (10 <= b && b < 50) {
+    } else if (b < 10) {
       answer = 3;
-    } else if (50 <= b) {
+    } else if (10 <= b && b < 50) {
       answer = 4;
+    } else if (50 <= b) {
+      answer = 5;
     }
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletBalance.2", answer, 4);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletBalance.3", answer, 6);
 }
 
 void RecordAutoContributionsState(AutoContributionsState state, int count) {
@@ -93,7 +95,7 @@ void RecordAutoContributionsState(AutoContributionsState state, int count) {
       NOTREACHED();
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.AutoContributionsState.2", answer,
-                             5);
+                             6);
 }
 
 void RecordTipsState(bool wallet_created,
@@ -118,7 +120,7 @@ void RecordTipsState(bool wallet_created,
       answer = 4;
     }
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.TipsState.2", answer, 5);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.TipsState.2", answer, 6);
 }
 
 void RecordAdsState(AdsState state) {
