@@ -23,26 +23,26 @@
     _bytesSize = 0;
 
     _digest =
-        base::SysUTF8ToNSString(x509::utils::SignatureAlgorithmDigestToName(
+        base::SysUTF8ToNSString(certificate::x509_utils::SignatureAlgorithmDigestToName(
             certificate->signature_algorithm()));
     _algorithm =
-        base::SysUTF8ToNSString(x509::utils::SignatureAlgorithmIdToName(
+        base::SysUTF8ToNSString(certificate::x509_utils::SignatureAlgorithmIdToName(
             certificate->signature_algorithm()));
 
     net::der::Input signature_oid;
     net::der::Input signature_params;
-    if (x509::utils::ParseAlgorithmIdentifier(
+    if (certificate::x509_utils::ParseAlgorithmIdentifier(
             certificate->signature_algorithm_tlv(), &signature_oid,
             &signature_params)) {
       _objectIdentifier =
-          certificate::utils::NSDataFromString(signature_oid.AsString());
+          certificate::utils::NSStringToData(signature_oid.AsString());
 
-      std::string absolute_oid = x509::utils::NIDToAbsoluteOID(signature_oid);
+      std::string absolute_oid = certificate::x509_utils::NIDToAbsoluteOID(signature_oid);
       if (!absolute_oid.empty()) {
         _absoluteObjectIdentifier = base::SysUTF8ToNSString(absolute_oid);
       }
 
-      if (!x509::utils::IsNull(signature_params)) {
+      if (!certificate::x509_utils::IsNull(signature_params)) {
         std::string signature_params_string = signature_params.AsString();
         _parameters = base::SysUTF8ToNSString(base::HexEncode(
             signature_params_string.data(), signature_params_string.size()));
