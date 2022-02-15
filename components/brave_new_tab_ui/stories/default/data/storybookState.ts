@@ -9,6 +9,10 @@ import dummyBrandedWallpaper from './brandedWallpaper'
 function generateStaticImages (images: NewTab.BackgroundWallpaper[]) {
   const staticImages = { SpaceX: undefined }
   for (const image of images) {
+    // author is optional field.
+    if (!image.author) {
+      continue
+    }
     Object.assign(staticImages, {
       [image.author]: {
         ...image,
