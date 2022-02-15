@@ -10,8 +10,11 @@ class IOSChromeNetworkDelegate;
 using IOSChromeNetworkDelegate_BraveImpl = IOSChromeNetworkDelegate;
 
 #define IOSChromeNetworkDelegate IOSChromeNetworkDelegate_ChromiumImpl
+#define BRAVE_IOS_CHROME_NETWORK_DELEGATE_H \
+  friend IOSChromeNetworkDelegate_BraveImpl;
 #include "src/ios/chrome/browser/net/ios_chrome_network_delegate.h"
 #undef IOSChromeNetworkDelegate
+#undef BRAVE_IOS_CHROME_NETWORK_DELEGATE_H
 
 class IOSChromeNetworkDelegate : public IOSChromeNetworkDelegate_ChromiumImpl {
  public:

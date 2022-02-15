@@ -49,8 +49,5 @@ source_set("browser") {
 }
 
 group("chromium_src") {
-  deps = [
-    "//brave/common",
-    "//brave/extensions:common",
-  ]
+  deps = [ "//brave/common" ]
 }

@@ -9,18 +9,13 @@
 #include "src/ios/chrome/browser/net/ios_chrome_network_delegate.cc"
 #undef IOSChromeNetworkDelegate
 
+#include "brave/common/brave_service_key_helper.h"
 #include "brave/common/network_constants.h"
-#include "extensions/common/url_pattern.h"
 
 namespace {
 
 void AddBraveServicesKeyHeader(net::URLRequest* request) {
-  static URLPattern brave_proxy_pattern(URLPattern::SCHEME_HTTPS,
-                                        kBraveProxyPattern);
-  static URLPattern bravesoftware_proxy_pattern(URLPattern::SCHEME_HTTPS,
-                                                kBraveSoftwareProxyPattern);
-  if (brave_proxy_pattern.MatchesURL(request->url()) ||
-      bravesoftware_proxy_pattern.MatchesURL(request->url())) {
+  if (brave::ShouldAddBraveServicesKeyHeader(request->url())) {
     request->SetExtraRequestHeaderByName(
         kBraveServicesKeyHeader, BRAVE_SERVICES_KEY, true /* overrwrite */);
   }
