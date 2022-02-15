@@ -744,7 +744,7 @@ public class BraveNewTabPageLayout
         if (mImageCreditLayout != null) {
             LinearLayout.LayoutParams linearLayoutParams =
                     (LinearLayout.LayoutParams) mImageCreditLayout.getLayoutParams();
-            int widgetCompensation = dpToPx(mActivity, 60);
+            int widgetCompensation = 0;
             if (ntpWidgetViewPager.getChildCount() <= 0) {
                 widgetCompensation = -dpToPx(mActivity, 70);
             }
@@ -1530,13 +1530,17 @@ public class BraveNewTabPageLayout
         mBgImageView = (ImageView) findViewById(R.id.bg_image_view);
         mBgImageView.setScaleType(ImageView.ScaleType.MATRIX);
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        mActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int mDeviceHeight = displayMetrics.heightPixels;
+        int mDeviceWidth = displayMetrics.widthPixels;
+
         ViewTreeObserver observer = mBgImageView.getViewTreeObserver();
         observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                mWorkerTask =
-                        new FetchWallpaperWorkerTask(ntpImage, mBgImageView.getMeasuredWidth(),
-                                mBgImageView.getMeasuredHeight(), wallpaperRetrievedCallback);
+                mWorkerTask = new FetchWallpaperWorkerTask(
+                        ntpImage, mDeviceWidth, mDeviceHeight, wallpaperRetrievedCallback);
                 mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                 mBgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
