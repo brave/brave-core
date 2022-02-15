@@ -109,6 +109,7 @@ class AdBlockRegionalServiceManager
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
   raw_ptr<AdBlockResourceProvider> resource_provider_;
+  raw_ptr<AdBlockRegionalCatalogProvider> catalog_provider_;
 
   base::WeakPtrFactory<AdBlockRegionalServiceManager> weak_factory_{this};
 };

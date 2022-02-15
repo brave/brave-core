@@ -358,6 +358,10 @@ void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kAdBlockCheckedDefaultRegion, false);
 }
 
+AdBlockResourceProvider* AdBlockService::resource_provider() {
+  return default_filters_provider_.get();
+}
+
 void AdBlockService::UseSourceProvidersForTest(
     AdBlockFiltersProvider* source_provider,
     AdBlockResourceProvider* resource_provider) {

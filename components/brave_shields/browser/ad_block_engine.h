@@ -70,6 +70,14 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
             const DATFileDataBuffer& dat_buf,
             const std::string& resources_json);
 
+  class TestObserver : public base::CheckedObserver {
+   public:
+    virtual void OnEngineUpdated() = 0;
+  };
+
+  void AddObserverForTest(TestObserver* observer);
+  void RemoveObserverForTest(TestObserver* observer);
+
  protected:
   void AddKnownTagsToAdBlockInstance();
   void UpdateAdBlockClient(std::unique_ptr<adblock::Engine> ad_block_client,
@@ -89,6 +97,8 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   friend class ::PerfPredictorTabHelperTest;
 
   std::set<std::string> tags_;
+
+  base::ObserverList<TestObserver> test_observers_;
 };
 
 }  // namespace brave_shields

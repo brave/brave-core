@@ -148,12 +148,6 @@ class BraveAdBlockTPNetworkDelegateHelperTest : public testing::Test {
     return rc == net::ERR_IO_PENDING;
   }
 
-  void EnableRedirectUrlParsing() {
-    g_brave_browser_process->ad_block_service()
-        ->default_service()
-        ->EnableRedirectUrlParsingForTest();
-  }
-
   std::unique_ptr<ScopedTestingLocalState> local_state_;
 
   std::unique_ptr<TestingBraveComponentUpdaterDelegate>

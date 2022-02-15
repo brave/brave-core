@@ -208,6 +208,9 @@ void AdBlockEngine::UpdateAdBlockClient(
   ad_block_client_ = std::move(ad_block_client);
   AddResources(resources_json);
   AddKnownTagsToAdBlockInstance();
+  for (auto& observer : test_observers_) {
+    observer.OnEngineUpdated();
+  }
 }
 
 void AdBlockEngine::AddKnownTagsToAdBlockInstance() {
@@ -235,6 +238,17 @@ void AdBlockEngine::OnDATLoaded(const DATFileDataBuffer& dat_buf,
                       dat_buf.size());
 
   UpdateAdBlockClient(std::move(client), resources_json);
+}
+
+void AdBlockEngine::AddObserverForTest(AdBlockEngine::TestObserver* observer) {
+  if (!test_observers_.HasObserver(observer))
+    test_observers_.AddObserver(observer);
+}
+
+void AdBlockEngine::RemoveObserverForTest(
+    AdBlockEngine::TestObserver* observer) {
+  if (test_observers_.HasObserver(observer))
+    test_observers_.RemoveObserver(observer);
 }
 
 }  // namespace brave_shields

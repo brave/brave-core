@@ -47,14 +47,17 @@ void AdBlockRegionalServiceManager::Init(
     AdBlockRegionalCatalogProvider* catalog_provider) {
   DCHECK(!initialized_);
   resource_provider_ = resource_provider;
-  catalog_provider->LoadRegionalCatalog(
+  catalog_provider_ = catalog_provider;
+  catalog_provider_->LoadRegionalCatalog(
       base::BindOnce(&AdBlockRegionalServiceManager::OnRegionalCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
-  catalog_provider->AddObserver(this);
+  catalog_provider_->AddObserver(this);
   initialized_ = true;
 }
 
-AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {}
+AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
+  catalog_provider_->RemoveObserver(this);
+}
 
 void AdBlockRegionalServiceManager::StartRegionalServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -124,12 +127,10 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
             std::make_unique<AdBlockService::SourceProviderObserver>(
                 regional_service->AsWeakPtr(), regional_filters_provider.get(),
                 resource_provider_, task_runner_);
-        regional_services_.insert(
-            std::make_pair(uuid, std::move(regional_service)));
+        regional_services_.insert({uuid, std::move(regional_service)});
         regional_filters_providers_.insert(
-            std::make_pair(uuid, std::move(regional_filters_provider)));
-        regional_source_observers_.insert(
-            std::make_pair(uuid, std::move(observer)));
+            {uuid, std::move(regional_filters_provider)});
+        regional_source_observers_.insert({uuid, std::move(observer)});
       }
     }
   }
@@ -228,12 +229,10 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     auto observer = std::make_unique<AdBlockService::SourceProviderObserver>(
         regional_service->AsWeakPtr(), regional_filters_provider.get(),
         resource_provider_, task_runner_);
-    regional_services_.insert(
-        std::make_pair(uuid, std::move(regional_service)));
+    regional_services_.insert({uuid, std::move(regional_service)});
     regional_filters_providers_.insert(
-        std::make_pair(uuid, std::move(regional_filters_provider)));
-    regional_source_observers_.insert(
-        std::make_pair(uuid, std::move(observer)));
+        {uuid, std::move(regional_filters_provider)});
+    regional_source_observers_.insert({uuid, std::move(observer)});
   } else {
     auto observer = regional_source_observers_.find(uuid);
     DCHECK(observer != regional_source_observers_.end());

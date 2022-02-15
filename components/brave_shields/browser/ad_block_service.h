@@ -130,7 +130,6 @@ class AdBlockService {
 
   static std::string g_ad_block_dat_file_version_;
 
-  void InitCustomFilters();
   AdBlockResourceProvider* resource_provider();
 
   void UseSourceProvidersForTest(AdBlockFiltersProvider* source_provider,
