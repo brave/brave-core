@@ -1205,23 +1205,6 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
       GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
 }
 
-TEST_F(BraveWalletServiceUnitTest, RecordWalletHistogram) {
-  service_->RecordWalletUsage(base::Time::Now());
-  histogram_tester_->ExpectBucketCount(kBraveWalletDailyHistogramName, true, 1);
-  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, true,
-                                       1);
-  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, true,
-                                       1);
-
-  service_->RecordWalletUsage(base::Time::Now() + base::Days(31));
-  histogram_tester_->ExpectBucketCount(kBraveWalletDailyHistogramName, false,
-                                       2);
-  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, false,
-                                       2);
-  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, false,
-                                       2);
-}
-
 TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {
   const char* new_password = "brave1234!";
   bool success;
