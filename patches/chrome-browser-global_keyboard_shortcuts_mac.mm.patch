@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/global_keyboard_shortcuts_mac.mm b/chrome/browser/global_keyboard_shortcuts_mac.mm
-index eb0dbf983127e6e432812cedc9812ac5c61be142..110f9163fb240fc8825fd94c214bf657b4c1ab6b 100644
+index e0c51db2f75a8617c36dab51d2e7e7b57be0be09..d351a3ed04de53662619c9d07d67f042b4b5483a 100644
 --- a/chrome/browser/global_keyboard_shortcuts_mac.mm
 +++ b/chrome/browser/global_keyboard_shortcuts_mac.mm
-@@ -176,6 +176,7 @@ std::vector<KeyboardShortcutData> CreateKeyboardShortcutVector() {
+@@ -175,6 +175,7 @@ std::vector<KeyboardShortcutData> CreateKeyboardShortcutVector() {
      // Special shortcuts for Zoom in and out.
      {true,  false, false, false, kVK_ANSI_KeypadPlus,   IDC_ZOOM_PLUS},
      {true,  false, false, false, kVK_ANSI_KeypadMinus,  IDC_ZOOM_MINUS},
