@@ -160,6 +160,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private BraveRewardsPanel mRewardsPopup;
+    private DAppsWalletController mDAppsWalletController;
     private BraveTalkOptInPopup mBraveTalkOptInPopup;
     private BraveShieldsContentSettings mBraveShieldsContentSettings;
     private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
@@ -941,8 +942,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (activity == null) {
             return;
         }
-        DAppsWalletController controller = new DAppsWalletController(getContext(), v);
-        controller.showWalletPanel();
+        mDAppsWalletController =
+                new DAppsWalletController(getContext(), v, dialog -> mDAppsWalletController = null);
+        mDAppsWalletController.showWalletPanel();
         //        dappsBottomSheetDialogFragment.show(
         //                activity.getSupportFragmentManager(),
         //                DappsBottomSheetDialogFragment.TAG_FRAGMENT);
@@ -1162,6 +1164,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
+    public void dismissWalletPanelOrDialog() {
+        if (mDAppsWalletController != null) {
+            mDAppsWalletController.dismiss();
+            mDAppsWalletController = null;
+        }
+    }
+
     public void onRewardsPanelDismiss() {
         mRewardsPopup = null;
     }
@@ -1174,6 +1183,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mRewardsPopup != null) {
             dismissRewardsPanel();
         }
+        dismissWalletPanelOrDialog();
 
         if (mBraveTalkOptInPopup != null) {
             mBraveTalkOptInPopup.dismissPopup();

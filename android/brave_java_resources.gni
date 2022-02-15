@@ -578,6 +578,7 @@ brave_java_resources = [
   "java/res/drawable/ic_arrow_clock.xml",
   "java/res/drawable/ic_arrow_down.xml",
   "java/res/drawable/ic_arrow_down_circular_filled.xml",
+  "java/res/drawable/ic_arrow_down_circular_filled_transparent.xml",
   "java/res/drawable/ic_arrow_downward.xml",
   "java/res/drawable/ic_arrow_drop_down_white.xml",
   "java/res/drawable/ic_arrow_forward.xml",
