@@ -555,7 +555,9 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_macosx">
         </if>
       <if expr="not is_android">
-        </if>
+        <if expr="chromeos_ash">
+          </if>
+      </if>
 
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
@@ -937,10 +939,6 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="not use_titlecase">
       </if>
     </if>
-
-  <if expr="not is_android">
-      </if>
-
 
     <if expr="not is_android">
       </if>
