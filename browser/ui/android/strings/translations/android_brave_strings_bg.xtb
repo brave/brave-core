@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Това е първата ви Brave реклама. Докоснете, за да научите повече.</translation>
 <translation id="2070991379950719711">Започнете да използвате Brave Rewards</translation>
 <translation id="48520986898237073">Продължаване към портфейла</translation>
-<translation id="3570367516044491911">Задаване като браузър по подразбиране</translation>
+<translation id="6800338374677644736">Задаване като браузър по подразбиране</translation>
 <translation id="19715420010996093">Изберете Brave Browser и докоснете „Винаги“</translation>
 <translation id="3546439402724649282">Brave вече е зададен като браузърът ви по подразбиране.</translation>
 <translation id="8389661903259423907">Вече сте задали браузър по подразбиране. Можете да промените браузъра по подразбиране в настройките на приложението си.</translation>
-<translation id="7091885296442320770">Brave е светкавично бърз</translation>
-<translation id="2171928016777725844">Направете Brave вашия браузър по подразбиране!</translation>
-<translation id="7136694880210472378">Задаване като основна</translation>
-<translation id="4250680216510889253">Не</translation>
 <translation id="8826007068782654809">Благодарим Ви</translation>
 <translation id="6665366815203065060">Току-що изпратихте бакшиш на:</translation>
 <translation id="5441565662498481293">Автоматично изпращате бакшиш на:</translation>
@@ -524,9 +520,9 @@
 <translation id="6478996494082389936">поверителен продуктов анализ.</translation>
 <translation id="5187052478998910855">Нуждаете се от опреснителен курс за Rewards?</translation>
 <translation id="8622329973403382303">Направете кратка обиколка, за да разберете как работи и да влезете в историята като рокзвезда на Rewards!</translation>
-<translation id="8401711613788729448">Отворете всички връзки с Brave, за да защитите поверителността си</translation>
-<translation id="3184805785843994538">Brave Shields блокира тракерите &amp; реклами, спестява ви данни и време на всеки сайт, който посещавате.</translation>
-<translation id="8722651357687610395">Задайте Brave по подразбиране</translation>
+<translation id="7625138338483121345">Отворете всички връзки с Brave, за да защитите поверителността си</translation>
+<translation id="4511485286950743564">Brave Shields блокира тракерите &amp; реклами, спестява ви данни и време на всеки сайт, който посещавате.</translation>
+<translation id="9218430445555521422">Задайте Brave по подразбиране</translation>
 <translation id="3479552764303398839">Не сега</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -596,7 +592,7 @@
 <translation id="283071225285270357">Въвеждане на фразата за възстановяване</translation>
 <translation id="3943857333388298514">Поставяне</translation>
 <translation id="3331452756822160641">Нова парола</translation>
-<translation id="4854035885012188958">Възстановявам от наследени криптопортфейли в Brave</translation>
+<translation id="4359319875297001084">Възстановявам от наследени криптопортфейли в Brave</translation>
 <translation id="2339124864228588937">Потвърждаване на фразата за възстановяване</translation>
 <translation id="3747079125031086337">Избeрете думите във фразата за възстановяване в правилния им ред.</translation>
 <translation id="6518133107902771759">Потвърждаване</translation>
@@ -805,6 +801,7 @@
 <translation id="4351811224047421378">Точност до десетични знаци</translation>
 <translation id="8614026298974065517">Премахване на персонализиран актив</translation>
 <translation id="4378941981362528553">Искате ли да премахнете токена<ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Не</translation>
 <translation id="8971278306757462297">Адресът на получаване е вашият собствен адрес</translation>
 <translation id="749944179568745958">ETH адресът не е валиден</translation>
 <translation id="3506416339268164412">Адресът на получаване е адресът на договора на токена</translation>
@@ -838,8 +835,8 @@
 <translation id="665660671251623018">Десетични знаци на валутата на веригата</translation>
 <translation id="182619028057179895">Невалиден формат, десетичните знаци на валутата са положително число</translation>
 <translation id="2978054488731497946">Въведете десетични знаци на валутата</translation>
-<translation id="3047726704186619366">URL адреси на икона</translation>
-<translation id="2487558607408469181">URL адреси на Block Explorer</translation>
+<translation id="7642841516562576649">URL адреси на икона</translation>
+<translation id="4693057234255364395">URL адреси на Block Explorer</translation>
 <translation id="7059127752542505809">Въвеждане на URL адрес</translation>
 <translation id="2156993118928861787">Невалиден адрес</translation>
 <translation id="6889920539620318793">Задаване като активна</translation>

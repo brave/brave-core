@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Hủy đăng ký</translation>
 <translation id="1209739344687072997">Báo cáo trang web bị hỏng</translation>
 <translation id="8510478288840333677">Hãy thông báo cho các nhà phát triển của Brave biết trang web này không hoạt động đúng cách với Shields:</translation>
-<translation id="6013164422534859494">Lưu ý: Trang web này sẽ được gửi cùng với số phiên bản Brave và địa chỉ IP của bạn (chúng tôi sẽ không lưu trữ thông tin này).</translation>
+<translation id="4105411033440701818">Lưu ý: Trang web này sẽ được gửi cùng với số phiên bản Brave và địa chỉ IP của bạn (chúng tôi sẽ không lưu trữ thông tin này).</translation>
 <translation id="5299848999918506028">Cảm ơn bạn!</translation>
 <translation id="76550953340008122">Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!</translation>
 <translation id="2974339193389078578">Brave - một trải nghiệm Internet mới</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Hoàn thành xác thực ví</translation>
 <translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
 <translation id="3656941797339037856">Liên kết Rewards với Gemini!</translation>
-<translation id="31532096120351460">Giao dịch hơn 50 loại tiền điện tử, bao gồm cả BAT, trên Gemini. Đó là một nền tảng an toàn để lưu trữ tiền điện tử của bạn. Ngoài ra, bạn có thể kiếm được tiền lãi ở US, HK và SG.</translation>
+<translation id="31532096120351460">Giao dịch hơn 50 loại tiền điện tử, bao gồm cả BAT, trên Gemini. Đó là một nền tảng an toàn để lưu trữ tiền điện tử của bạn. Ngoài ra, bạn có thể kiếm được tiền lãi ở Mỹ, Hồng Kông và Singapore.</translation>
 <translation id="7404779623219601861">Đổi BAT lấy Thẻ quà tặng</translation>
 <translation id="6215565499749144110">Với Mạng TAP, bạn có thể đổi BAT của mình lấy các thẻ quà tặng nhãn hiệu nổi tiếng.</translation>
 <translation id="6915065518766963119">* Cần phải Xác thực Uphold.</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Xem tất cả</translation>
 <translation id="3026978804849658576">Xem sao kê</translation>
 <translation id="8494748383523030337">Số dư của bạn</translation>
-<translation id="3343165035032571678">Bạn đã kiếm được <ph name="AMOUNT"/> từ việc xem Quảng cáo Riêng tư Brave!</translation>
-<translation id="6618415862402597254">Doanh thu quảng cáo nhận được</translation>
-<translation id="5981646694027725752">Nhận doanh thu</translation>
-<translation id="2556441076129789027">Nhận token</translation>
+<translation id="9013419433042554094">Nhận token</translation>
 <translation id="5544777623605368410">Doanh thu</translation>
 <translation id="3273637494083639780">Các token mà bạn kiếm được trong tháng này sẽ bắt đầu xử lý vào <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Điều này có thể khác nhau dựa vào sự biến động của thị trường.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Bạn đang kiếm được token khi xem hình ảnh được tài trợ này.</translation>
 <translation id="5486114327664215175">Kiếm token khi xem hình ảnh này và ủng hộ các nhà sáng tạo nội dung.</translation>
 <translation id="2940863921746574646">Số dư token</translation>
-<translation id="1714906256929297600">Sử dụng các token khuyến mãi của bạn để đóng góp cho các nhà sáng tạo nội dung trước khi chúng hết hạn!</translation>
-<translation id="2426048501007152001">Token khả dụng</translation>
+<translation id="2221902203895354376">Token khả dụng</translation>
 <translation id="7701466644604753106">BẬT Trình đọc tốc độ</translation>
 <translation id="763042262431778831">TẮT Trình đọc tốc độ</translation>
 <translation id="8488282162676695335">Ví Brave</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Thêm tài khoản đã đánh dấu</translation>
 <translation id="8554010658308662631">Tải thêm</translation>
 <translation id="6998738230710304743">Đang tải thêm...</translation>
-<translation id="4970164249406565575">Tìm kiếm tài khoản 0x</translation>
+<translation id="5592304751234049046">Tìm kiếm tài khoản 0x</translation>
 <translation id="6151024411349343484">Hãy thử chuyển đường dẫn HD (ở trên) nếu bạn không tìm được tài khoản mà bạn đang tìm kiếm.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Cũ (MEW/MyCrypto)</translation>
@@ -980,7 +976,7 @@
 <translation id="6018178824574796106">Không thêm được token tùy chỉnh, vui lòng thử lại.</translation>
 <translation id="547122651977318828">ID token (chỉ dành cho ERC721)</translation>
 <translation id="7544552854944350190">Cần có ID token</translation>
-<translation id="3842236145820483340">Mã Coingecko</translation>
+<translation id="3842236145820483340">Mã CoinGecko</translation>
 <translation id="2708402071160162126">CẢNH BÁO: Không bao giờ chia sẻ cụm từ khôi phục của bạn. Bất cứ ai có cụm từ này có thể lấy đi vĩnh viễn tài sản của bạn.</translation>
 <translation id="2902856457593699108">Hiển thị khóa</translation>
 <translation id="8033497299373164724">Ẩn khóa</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Cho phép tất cả trình theo dõi và quảng cáo</translation>
 <translation id="6203697265754637264">Đã chặn cookie trên mọi website</translation>
 <translation id="4627427111733173920">Đã chặn cookie</translation>
-<translation id="7855168553463825937">Tất cả cookie bị chặn</translation>
+<translation id="3972324600756617403">Tất cả cookie bị chặn</translation>
 <translation id="8366221601425141146">Đã chặn tính năng tạo dấu vân tay</translation>
 <translation id="5582686930349810484">Vân tay bị chặn (tiêu chuẩn)</translation>
 <translation id="6696441392507885865">Lấy dấu vân tay bị chặn (nghiêm ngặt, các trang có thể bị hỏng)</translation>

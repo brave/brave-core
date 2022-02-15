@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Tühista tellimus</translation>
 <translation id="1209739344687072997">Teata mittetoimivast veebisaidist</translation>
 <translation id="8510478288840333677">Andke Brave’i arendajatele teada, et see veebisait ei toimi kaitsega õigesti:</translation>
-<translation id="6013164422534859494">Märkus. Selle veebisaidi aadress esitatakse koos teie Brave’i versiooninumbri ja teie IP-aadressiga (mida ei salvestata).</translation>
+<translation id="4105411033440701818">Märkus. Selle veebisaidi aadress esitatakse koos teie Brave’i versiooninumbri ja teie IP-aadressiga (mida ei salvestata).</translation>
 <translation id="5299848999918506028">Täname!</translation>
 <translation id="76550953340008122">Täname, et andsite Brave’i arendajatele teada, et selle veebisaidiga on midagi valesti. Anname endast parima, et see korda teha!</translation>
 <translation id="2974339193389078578">Brave'i uus Internet</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Kuva kõik</translation>
 <translation id="3026978804849658576">Kuva väljavõte</translation>
 <translation id="8494748383523030337">Teie saldo</translation>
-<translation id="3343165035032571678">Teenisite Brave'i privaatsete reklaamide vaatamisega <ph name="AMOUNT"/>.</translation>
-<translation id="6618415862402597254">Laekunud reklaamitasu</translation>
-<translation id="5981646694027725752">Võta tasu vastu</translation>
-<translation id="2556441076129789027">Võta tokenid vastu</translation>
+<translation id="9013419433042554094">Võta tokenid vastu</translation>
 <translation id="5544777623605368410">Tasu</translation>
 <translation id="3273637494083639780">Sel kuul teenitud tokenite töötlemine algab <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">See võib turu volatiilsusest sõltuvalt erineda.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Teenite selle spondeeritud kujutise vaatamise eest tokeneid.</translation>
 <translation id="5486114327664215175">Selle pildi vaatamise eest saate teenida tokeneid ja toetada sisuloojaid.</translation>
 <translation id="2940863921746574646">Tokenisaldo</translation>
-<translation id="1714906256929297600">Kasutage oma soodustokeneid enne nende aegumist loojatele annetamiseks.</translation>
-<translation id="2426048501007152001">Saadaolevad tokenid</translation>
+<translation id="2221902203895354376">Saadaolevad tokenid</translation>
 <translation id="7701466644604753106">Lülitage kiirlugeja SISSE</translation>
 <translation id="763042262431778831">Lülitage kiirlugeja VÄLJA</translation>
 <translation id="8488282162676695335">Brave'i rahakott</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Märgitud kontode lisamine</translation>
 <translation id="8554010658308662631">Laadi rohkem</translation>
 <translation id="6998738230710304743">Laaditakse rohkem ...</translation>
-<translation id="4970164249406565575">Otsi kontot 0x</translation>
+<translation id="5592304751234049046">Otsi kontot 0x</translation>
 <translation id="6151024411349343484">Kui te ei leia otsitavat kontot, proovige vahetada HD-teed (ülal).</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Pärand (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Luba kõik jälgijad ja reklaamid</translation>
 <translation id="6203697265754637264">Saitidevahelised küpsised on blokeeritud</translation>
 <translation id="4627427111733173920">Küpsised blokeeritud</translation>
-<translation id="7855168553463825937">Kõik küpsised blokeeritud</translation>
+<translation id="3972324600756617403">Kõik küpsised blokeeritud</translation>
 <translation id="8366221601425141146">Seadmetuvastus blokeeritud</translation>
 <translation id="5582686930349810484">Seadmetuvastus blokeeritud (standardne)</translation>
 <translation id="6696441392507885865">Seadmetuvastus blokeeritud (range, veebisaidid ei pruugi toimida)</translation>

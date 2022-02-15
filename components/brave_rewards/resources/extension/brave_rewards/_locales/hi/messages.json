@@ -140,7 +140,7 @@
     "description": ""
   },
   "rewardsPaymentCompleted": {
-    "message": "मुबारक हो! आपका $month$रिवॉर्ड आ गया है!",
+    "message": "मुबारक हो! आपका $month$ का रिवॉर्ड आ गया है!",
     "description": "",
     "placeholders": {
       "month": {

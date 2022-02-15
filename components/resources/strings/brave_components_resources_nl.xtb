@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Afmelden</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
-<translation id="6013164422534859494">Opmerking: dit siteadres wordt verzonden met uw Brave-versienummer en uw IP-adres (dat niet wordt opgeslagen).</translation>
+<translation id="4105411033440701818">Opmerking: dit siteadres wordt verzonden met uw Brave-versienummer en uw IP-adres (dat niet wordt opgeslagen).</translation>
 <translation id="5299848999918506028">Bedankt!</translation>
 <translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
 <translation id="2974339193389078578">Brave, het nieuwe internet</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Alles tonen</translation>
 <translation id="3026978804849658576">Afschrift bekijken</translation>
 <translation id="8494748383523030337">Je saldo</translation>
-<translation id="3343165035032571678">Je hebt <ph name="AMOUNT"/> verdiend met het bekijken van Brave-privéadvertenties!</translation>
-<translation id="6618415862402597254">Ontvangen reclameopbrengsten</translation>
-<translation id="5981646694027725752">Verdiensten claimen</translation>
-<translation id="2556441076129789027">Tokens claimen</translation>
+<translation id="9013419433042554094">Tokens claimen</translation>
 <translation id="5544777623605368410">Bezig met verdienen</translation>
 <translation id="3273637494083639780">De tokens die je deze maand verdient, worden verwerkt vanaf <ph name="DATE"/></translation>
 <translation id="1029300693989825319">Dit is mogelijk afhankelijk van de kwetsbaarheid van de markt.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Je verdient tokens voor het bekijken van deze gesponsorde afbeelding.</translation>
 <translation id="5486114327664215175">Verdien tokens door deze afbeelding te bekijken en ondersteun makers van content.</translation>
 <translation id="2940863921746574646">Tokensaldo</translation>
-<translation id="1714906256929297600">Gebruik je promotietokens om makers te ondersteunen voordat ze vervallen!</translation>
-<translation id="2426048501007152001">Tokens beschikbaar</translation>
+<translation id="2221902203895354376">Tokens beschikbaar</translation>
 <translation id="7701466644604753106">Schakel Speedreader in</translation>
 <translation id="763042262431778831">Schakel Speedreader UIT</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -908,7 +904,7 @@
 <translation id="6901073872645365201">Wachtwoord moet ten minste 7 tekens bevatten, waaronder ten minste één nummer en één speciaal teken.</translation>
 <translation id="6657585470893396449">Wachtwoord</translation>
 <translation id="5486261815000869482">Wachtwoord bevestigen</translation>
-<translation id="6138471905279127211">Criteria voor wachtwoord komen niet overeen.</translation>
+<translation id="6138471905279127211">Er wordt niet voldaan aan de criteria voor wachtwoorden.</translation>
 <translation id="467510802200863975">Wachtwoorden komen niet overeen</translation>
 <translation id="5168349973342709369">Voer het wachtwoord in om de wallet te ontgrendelen</translation>
 <translation id="9111102763498581341">Ontsluit</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Gecontroleerde accounts toevoegen</translation>
 <translation id="8554010658308662631">Meer laden</translation>
 <translation id="6998738230710304743">Meer aan het laden...</translation>
-<translation id="4970164249406565575">Account 0x zoeken</translation>
+<translation id="5592304751234049046">Account 0x zoeken</translation>
 <translation id="6151024411349343484">Probeer over te schakelen naar een ander HD-pad (hierboven) als je het account waar je naar op zoekt bent niet kunt vinden.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Alle trackers en advertenties toestaan</translation>
 <translation id="6203697265754637264">Cross-site cookies geblokkeerd</translation>
 <translation id="4627427111733173920">Cookies zijn geblokkeerd.</translation>
-<translation id="7855168553463825937">Alle cookies zijn geblokkeerd</translation>
+<translation id="3972324600756617403">Alle cookies zijn geblokkeerd</translation>
 <translation id="8366221601425141146">Fingerprinting geblokkeerd</translation>
 <translation id="5582686930349810484">Vingerafdrukken geblokkeerd (standaard)</translation>
 <translation id="6696441392507885865">Vingerafdruk geblokkeerd (strikt, kan ervoor zorgen dat websites niet werken)</translation>

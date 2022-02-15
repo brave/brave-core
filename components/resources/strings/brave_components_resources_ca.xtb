@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Cancel·la la subscripció</translation>
 <translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
 <translation id="8510478288840333677">Fes saber als desenvolupadors de Brace que aquesta web no funciona de forma adequada amb els Escuts:</translation>
-<translation id="6013164422534859494">Nota: aquesta adreça web s'enviarà amb el teu número de la versió de Brave i la teva adreça IP (que no es guardarà).</translation>
+<translation id="4105411033440701818">Nota: aquesta adreça web s'enviarà amb el teu número de la versió de Brave i la teva adreça IP (que no es guardarà).</translation>
 <translation id="5299848999918506028">Gràcies!</translation>
 <translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Brave que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
 <translation id="2974339193389078578">Brave, la nova Internet</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Mostra-ho tot</translation>
 <translation id="3026978804849658576">Visualitza l'extracte</translation>
 <translation id="8494748383523030337">El vostre Saldo</translation>
-<translation id="3343165035032571678">Has guanyat <ph name="AMOUNT"/>per haver vist Anuncis Privats de Brave!</translation>
-<translation id="6618415862402597254">Guanys d'anuncis rebuts</translation>
-<translation id="5981646694027725752">Reclamar guanys</translation>
-<translation id="2556441076129789027">Reclamar fitxes</translation>
+<translation id="9013419433042554094">Reclamar fitxes</translation>
 <translation id="5544777623605368410">Guany</translation>
 <translation id="3273637494083639780">Les fitxes que has guanyat aquest mes començaran a processar-se el <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Això pot variar depenent de la volatilitat del mercat.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Guanyes fitxes per veure aquesta imatge patrocinada.</translation>
 <translation id="5486114327664215175">Guanyes fitxes per veure aquesta imatge i dones suport als creadors de contingut.</translation>
 <translation id="2940863921746574646">Saldo de fitxes</translation>
-<translation id="1714906256929297600">Utilitza les teves fitxes promocionals per ajudar els creadors abans que caduquin!</translation>
-<translation id="2426048501007152001">Fitxes disponibles</translation>
+<translation id="2221902203895354376">Fitxes disponibles</translation>
 <translation id="7701466644604753106">Activar el lector de velocitat</translation>
 <translation id="763042262431778831">Desactivar el lector de velocitat</translation>
 <translation id="8488282162676695335">Cartera Brave</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Afegeix comptes verificats</translation>
 <translation id="8554010658308662631">Carrega'n més</translation>
 <translation id="6998738230710304743">Carregant-ne més...</translation>
-<translation id="4970164249406565575">Cerca compte 0x</translation>
+<translation id="5592304751234049046">Cerca compte 0x</translation>
 <translation id="6151024411349343484">Proveu de canviar la ruta HD (a sobre) si no trobeu el compte que esteu cercant.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Llegat (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Permet tots els rastrejadors i anuncis</translation>
 <translation id="6203697265754637264">Galetes entre llocs bloquejades</translation>
 <translation id="4627427111733173920">Galetes bloquejades</translation>
-<translation id="7855168553463825937">Totes les galetes bloquejades</translation>
+<translation id="3972324600756617403">Totes les galetes bloquejades</translation>
 <translation id="8366221601425141146">Impremtes digitals bloquejades</translation>
 <translation id="5582686930349810484">Impremtes digitals bloquejades (estàndard)</translation>
 <translation id="6696441392507885865">Empremta digital bloquejada (estrictament, pot trencar llocs)</translation>

@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Dette er din første Brave-annonce. Tryk for at lære mere.</translation>
 <translation id="2070991379950719711">Begynd at bruge Brave Rewards</translation>
 <translation id="48520986898237073">Fortsæt til tegnebog</translation>
-<translation id="3570367516044491911">Indstil som standardbrowser</translation>
+<translation id="6800338374677644736">Indstil som standardbrowser</translation>
 <translation id="19715420010996093">Vælg Brave Browser, og tryk på "Altid"</translation>
 <translation id="3546439402724649282">Brave er allerede indstillet som din standardbrowser.</translation>
 <translation id="8389661903259423907">Du har allerede indstillet en standardbrowser. Du kan ændre standardbrowser i dine appindstillinger.</translation>
-<translation id="7091885296442320770">Brave er lynhurtig</translation>
-<translation id="2171928016777725844">Gør Brave til din standardbrowser!</translation>
-<translation id="7136694880210472378">Gør til standard</translation>
-<translation id="4250680216510889253">Nej</translation>
 <translation id="8826007068782654809">Tak</translation>
 <translation id="6665366815203065060">Du har lige sendt drikkepenge til:</translation>
 <translation id="5441565662498481293">Du sender automatisk drikkepenge til:</translation>
@@ -524,9 +520,9 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="6478996494082389936">analyser over private produkter</translation>
 <translation id="5187052478998910855">Har du brug for en opfriskning omkring Rewards?</translation>
 <translation id="8622329973403382303">Tag en hurtig rundvisning for at få et overblik over, hvordan det er at være en del af historien som en Rewards-rockstjerne!</translation>
-<translation id="8401711613788729448">Åbn alle links med Brave for at beskytte dine data</translation>
-<translation id="3184805785843994538">Brave Shields blokerer trackere og annoncer, gemmer data og sparer dig tid på hver hjemmeside, du besøger.</translation>
-<translation id="8722651357687610395">Indstil Brave som standard</translation>
+<translation id="7625138338483121345">Åbn alle links med Brave for at beskytte dine data</translation>
+<translation id="4511485286950743564">Brave Shields blokerer trackere og annoncer, gemmer data og sparer dig tid på hver hjemmeside, du besøger.</translation>
+<translation id="9218430445555521422">Indstil Brave som standard</translation>
 <translation id="3479552764303398839">Ikke nu</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -596,7 +592,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="283071225285270357">Indtast din gendannelsessætning</translation>
 <translation id="3943857333388298514">Indsæt</translation>
 <translation id="3331452756822160641">Ny adgangskode</translation>
-<translation id="4854035885012188958">Jeg genopretter fra legacy Brave crypto-wallets?</translation>
+<translation id="4359319875297001084">Jeg genopretter fra legacy Brave crypto-wallets?</translation>
 <translation id="2339124864228588937">Bekræft gendannelsessætning</translation>
 <translation id="3747079125031086337">Vælg ordene i din gendannelsessætning i den rigtige rækkefølge.</translation>
 <translation id="6518133107902771759">Bekræft</translation>
@@ -805,6 +801,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="4351811224047421378">Decimalpræcision</translation>
 <translation id="8614026298974065517">Fjern tilpasset aktiv</translation>
 <translation id="4378941981362528553">Vil du fjerne <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) token?</translation>
+<translation id="4250680216510889253">Nej</translation>
 <translation id="8971278306757462297">Modtageradressen er din egen adresse</translation>
 <translation id="749944179568745958">Ikke gyldig ETH-adresse</translation>
 <translation id="3506416339268164412">Modtager adressen er en polets kontraktadresse</translation>
@@ -825,7 +822,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1241283133946520352">Netværk</translation>
 <translation id="1062463687579789365">Tilpasning af Wallet-netværk</translation>
 <translation id="2512821599885971349">Tilføj netværk</translation>
-<translation id="1330032157352961756">Id for ny kæde</translation>
+<translation id="1330032157352961756">Id for ny blockchain</translation>
 <translation id="8104880458203052748">Ugyldigt format. Kæde-ID er et positivt tal.</translation>
 <translation id="3423620355610881890">Et positivt decimaltal</translation>
 <translation id="726121047592132939">Navn på ny kæde</translation>
@@ -838,8 +835,8 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="665660671251623018">Kædens valutandecimaler</translation>
 <translation id="182619028057179895">Ugyldigt format. Valutadecimaler er et positivt tal</translation>
 <translation id="2978054488731497946">Angiv valutadecimaler</translation>
-<translation id="3047726704186619366">Ikon-url'er</translation>
-<translation id="2487558607408469181">Blokér Explorer-url'er</translation>
+<translation id="7642841516562576649">Ikon-url'er</translation>
+<translation id="4693057234255364395">Blokér Explorer-url'er</translation>
 <translation id="7059127752542505809">Indtast URL</translation>
 <translation id="2156993118928861787">Ugyldig adresse</translation>
 <translation id="6889920539620318793">Markér som aktiv</translation>

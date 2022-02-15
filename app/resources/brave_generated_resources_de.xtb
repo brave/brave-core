@@ -114,15 +114,11 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1434416574322382019">Neues privates Fenster mit Tor</translation>
 <translation id="4703780849509456860">Link in privatem Fenster mit Tor öffnen</translation>
 <translation id="3488584642074079080">Link in Brave in privatem Fenster mit Tor öffnen</translation>
-<translation id="7475547933708221517">Lokale Datei mit IPFS freigeben</translation>
-<translation id="2286177249736199435">Lokalen Ordner mit IPFS freigeben</translation>
 <translation id="4491895534716990473">Ausgewählten Text in IPFS importieren</translation>
 <translation id="8883166554766780543">Importieren und Link in IPFS-Snapshot kopieren</translation>
-<translation id="784573715436258741">Geben Sie die lokale Datei mit IPFS frei</translation>
 <translation id="6313675821927505581">Neues privates Fenster mit Tor</translation>
 <translation id="2638041073279639246">Link in privatem Fenster mit Tor öffnen</translation>
 <translation id="3425600262621021599">Link in privatem Brave-Fenster mit Tor öffnen</translation>
-<translation id="575838692088926391">Lokalen Ordner mit IPFS freigeben</translation>
 <translation id="2515126961943087659">Bat Ads-Service</translation>
 <translation id="7924918279836988121">Bat-Ledger-Dienst</translation>
 <translation id="4472575034687746823">Start</translation>
@@ -257,7 +253,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="616058968889448209">Fehler beim Starten des IFPS-Dienstes. Weitere Informationen finden Sie auf der <ph name="BEGIN_LINK"/>Diagnoseseite<ph name="END_LINK"/></translation>
 <translation id="6912148685459054619">Import des „<ph name="KEY_NAME"/>“-Schlüssels fehlgeschlagen</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' Schlüssel-Export fehlgeschlagen</translation>
-<translation id="4993345308607970390">Brave Wallet zurücksetzen</translation>
+<translation id="4993345308607970390">Brave-Wallet zurücksetzen</translation>
 <translation id="5975930666279943472">Wallet-Transaktion und Nonce-Informationen löschen</translation>
 <translation id="5693968582510626466">Das Löschen von Transaktionen kann für Entwickler oder beim Löschen des Status auf einem lokalen Server nützlich sein</translation>
 <translation id="6369495274982305511">Möchten Sie Ihre Wallet wirklich zurücksetzen? Wenn Ihre Wallet nicht gesichert wird, führt das Zurücksetzen dazu, dass alle Ihre Kontodaten (einschließlich zugehöriger Geldmittel) verloren gehen. Geben Sie zur Bestätigung "<ph name="CONFIRMATION_PHRASE"/>" ein.</translation>

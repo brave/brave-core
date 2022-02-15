@@ -55,7 +55,7 @@
 <translation id="933652931229970927">Diagnostische rapporten automatisch verzenden</translation>
 <translation id="5987838417172370108">Help de productstabiliteit van Brave te verbeteren door automatisch diagnostische rapporten te verzenden wanneer de Brave-browser crasht of vastloopt.</translation>
 <translation id="7977176350719484850">Geschatte hoeveelheid\ndata bespaard</translation>
-<translation id="9008534313521214777">Gem. Bespaarde\nTijd</translation>
+<translation id="9008534313521214777">Gem. bespaarde\ntijd</translation>
 <translation id="6572660632052512096">Desktop-modus</translation>
 <translation id="1340503115760585811">Schakel Desktop Weergave in voor nieuwe tabbladen</translation>
 <translation id="7924540991929826186">Gebruik mobiele versies van sites voor nieuwe tabbladen (aanbevolen)</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Dit is je eerste Brave advertentie. Tik om meer te leren.</translation>
 <translation id="2070991379950719711">Starten met het gebruik van Brave Rewards</translation>
 <translation id="48520986898237073">Doorgaan naar wallet</translation>
-<translation id="3570367516044491911">Stel in als standaard browser</translation>
+<translation id="6800338374677644736">Stel in als standaard browser</translation>
 <translation id="19715420010996093">Selecteer de Brave Browser en druk op 'Altijd'</translation>
 <translation id="3546439402724649282">Brave is al ingesteld als je standaardbrowser.</translation>
 <translation id="8389661903259423907">Je hebt al een standaardbrowser ingesteld. Je kunt de standaardbrowser wijzigen in de instellingen van je app.</translation>
-<translation id="7091885296442320770">Brave is razendsnel</translation>
-<translation id="2171928016777725844">Maak van Brave je standaardbrowser!</translation>
-<translation id="7136694880210472378">Instellen als standaard</translation>
-<translation id="4250680216510889253">Nee</translation>
 <translation id="8826007068782654809">Bedankt</translation>
 <translation id="6665366815203065060">Je hebt zojuist een tip verzonden naar:</translation>
 <translation id="5441565662498481293">Je stuurt automatisch een fooi naar:</translation>
@@ -525,9 +521,9 @@ Beschikbaar</translation>
 <translation id="6478996494082389936">privé productanalyse.</translation>
 <translation id="5187052478998910855">Heeft u een opfrisser nodig over Rewards?</translation>
 <translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>
-<translation id="8401711613788729448">Open alle links met Brave om uw privacy te beschermen</translation>
-<translation id="3184805785843994538">Brave Shields blokkeert trackers &amp; advertenties, bespaart data, en bespaart tijd op elke website die u bezoekt.</translation>
-<translation id="8722651357687610395">Stel Brave in als standaard</translation>
+<translation id="7625138338483121345">Open alle links met Brave om uw privacy te beschermen</translation>
+<translation id="4511485286950743564">Brave Shields blokkeert trackers &amp; advertenties, bespaart data, en bespaart tijd op elke website die u bezoekt.</translation>
+<translation id="9218430445555521422">Stel Brave in als standaard</translation>
 <translation id="3479552764303398839">Niet nu</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@ Beschikbaar</translation>
 <translation id="283071225285270357">Voer je herstelwoorden in</translation>
 <translation id="3943857333388298514">Plakken</translation>
 <translation id="3331452756822160641">Nieuw wachtwoord</translation>
-<translation id="4854035885012188958">Ik herstel vanuit een verouderde Brave-cryptowallet</translation>
+<translation id="4359319875297001084">Ik herstel vanuit een verouderde Brave-cryptowallet</translation>
 <translation id="2339124864228588937">Herstelwoorden verifiëren</translation>
 <translation id="3747079125031086337">Selecteer de woorden van je herstelzin in de juiste volgorde.</translation>
 <translation id="6518133107902771759">Verifieer</translation>
@@ -806,6 +802,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="4351811224047421378">Zichtbare decimalen</translation>
 <translation id="8614026298974065517">Aangepaste asset verwijderen</translation>
 <translation id="4378941981362528553">Wilt u de token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) verwijderen?</translation>
+<translation id="4250680216510889253">Nee</translation>
 <translation id="8971278306757462297">Het ontvangende adres is je eigen adres</translation>
 <translation id="749944179568745958">Geen geldig ETH-adres</translation>
 <translation id="3506416339268164412">Het ontvangende adres is een contractadres van een token</translation>
@@ -826,7 +823,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1241283133946520352">Netwerken</translation>
 <translation id="1062463687579789365">Wallet-netwerken aanpassen</translation>
 <translation id="2512821599885971349">Netwerk toevoegen</translation>
-<translation id="1330032157352961756">ID van nieuwe keten</translation>
+<translation id="1330032157352961756">ID van nieuwe blockchain</translation>
 <translation id="8104880458203052748">Ongeldige notatie, de keten-ID is een positief nummer</translation>
 <translation id="3423620355610881890">Een positief decimaal getal</translation>
 <translation id="726121047592132939">De naam van de nieuwe keten</translation>
@@ -839,8 +836,8 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="665660671251623018">Decimalen ketenvaluta</translation>
 <translation id="182619028057179895">Ongeldige notatie, de valutadecimalen zijn een positief getal</translation>
 <translation id="2978054488731497946">Voer valutadecimalen in</translation>
-<translation id="3047726704186619366">Pictogram-URL's</translation>
-<translation id="2487558607408469181">Explorer-URL's blokkeren</translation>
+<translation id="7642841516562576649">Pictogram-URL's</translation>
+<translation id="4693057234255364395">URL's van blokverkenners</translation>
 <translation id="7059127752542505809">Voer URL in</translation>
 <translation id="2156993118928861787">Ongeldig adres</translation>
 <translation id="6889920539620318793">Instellen als actief</translation>

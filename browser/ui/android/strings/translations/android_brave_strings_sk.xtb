@@ -55,7 +55,7 @@
 <translation id="933652931229970927">Automaticky odosielať diagnostické správy</translation>
 <translation id="5987838417172370108">Pomôžte zlepšiť stabilitu produktu Brave automatickým odosielaním diagnostických správ, keď prehliadač Brave spadne alebo zamrzne.</translation>
 <translation id="7977176350719484850">Odhad. dáta\nUšetrené</translation>
-<translation id="9008534313521214777">Predpokladaný čas\nUšetrený</translation>
+<translation id="9008534313521214777">Približný ušetrený\nčas</translation>
 <translation id="6572660632052512096">Desktop mód</translation>
 <translation id="1340503115760585811">Povoliť desktop mód v nových kartách</translation>
 <translation id="7924540991929826186">Použiť mobilné verzie stránok v nových kartách (odporúčané)</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Toto je vaša prvá Brave reklama. Kliknutím zistíte viac.</translation>
 <translation id="2070991379950719711">Začnite používať Odmeny Brave</translation>
 <translation id="48520986898237073">Pokračujte do peňaženky</translation>
-<translation id="3570367516044491911">Nastaviť ako predvolený prehliadač</translation>
+<translation id="6800338374677644736">Nastaviť ako predvolený prehliadač</translation>
 <translation id="19715420010996093">Zvoľte si Prehliadač Brave a klepnite na „Vždy“</translation>
 <translation id="3546439402724649282">Brave je už nastavený ako váš predvolený prehliadač.</translation>
 <translation id="8389661903259423907">Už ste nastavili predvolený prehliadač. Môžete ho zmeniť v nastaveniach aplikácie.</translation>
-<translation id="7091885296442320770">Prehliadač Brave je rýchly ako blesk</translation>
-<translation id="2171928016777725844">Urobiť z Brave predvolený prehliadač!</translation>
-<translation id="7136694880210472378">Nastaviť ako predvolený</translation>
-<translation id="4250680216510889253">Nie</translation>
 <translation id="8826007068782654809">Ďakujeme</translation>
 <translation id="6665366815203065060">Práve ste poslali príspevok na:</translation>
 <translation id="5441565662498481293">Príspevok odosielate automaticky na:</translation>
@@ -523,9 +519,9 @@ Naozaj chcete pokračovať?</translation>
 <translation id="6478996494082389936">súkromné analýzy produktov.</translation>
 <translation id="5187052478998910855">Potrebujete obnovenia na Odmeny?</translation>
 <translation id="8622329973403382303">Urobte si krátku prehliadku, aby ste si osvojili, ako funguje vstup do histórie ako rocková hviezda Odmien!</translation>
-<translation id="8401711613788729448">Pre ochranu svojho súkromia otvorte všetky odkazy s programom Brave</translation>
-<translation id="3184805785843994538">Brave Shields blokuje sledovače &amp; reklamy, šetrí dáta a šetrí váš čas na každej stránke, ktorú navštívite.</translation>
-<translation id="8722651357687610395">Nastaviť Brave ako predvolené</translation>
+<translation id="7625138338483121345">Pre ochranu svojho súkromia otvorte všetky odkazy s programom Brave</translation>
+<translation id="4511485286950743564">Brave Shields blokuje sledovače &amp; reklamy, šetrí dáta a šetrí váš čas na každej stránke, ktorú navštívite.</translation>
+<translation id="9218430445555521422">Nastaviť Brave ako predvolené</translation>
 <translation id="3479552764303398839">Teraz nie</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -595,7 +591,7 @@ Naozaj chcete pokračovať?</translation>
 <translation id="283071225285270357">Zadajte svoju frázu na obnovenie</translation>
 <translation id="3943857333388298514">Prilepiť</translation>
 <translation id="3331452756822160641">Nové heslo</translation>
-<translation id="4854035885012188958">Obnovujem zo staršej kryptopeňaženky Brave</translation>
+<translation id="4359319875297001084">Obnovujem zo staršej kryptopeňaženky Brave</translation>
 <translation id="2339124864228588937">Overiť frázu na obnovenie</translation>
 <translation id="3747079125031086337">Vyberte si slová vo svojej fráze na obnovenie v správnom poradí.</translation>
 <translation id="6518133107902771759">Overiť</translation>
@@ -804,6 +800,7 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="4351811224047421378">Počet desatinných miest presnosti</translation>
 <translation id="8614026298974065517">Odstrániť vlastné aktívum</translation>
 <translation id="4378941981362528553">Chcete odstrániť token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Nie</translation>
 <translation id="8971278306757462297">Adresa prijímateľa je vaša vlastná</translation>
 <translation id="749944179568745958">Nejde o platnú adresu ETH</translation>
 <translation id="3506416339268164412">Adresa prijímateľa je kontaktná adresa tokenu</translation>
@@ -837,8 +834,8 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="665660671251623018">Počet desatinných miest meny reťazca</translation>
 <translation id="182619028057179895">Neplatný formát, desatinné miesto meny je kladné číslo</translation>
 <translation id="2978054488731497946">Zadajte počet desatinných miest meny</translation>
-<translation id="3047726704186619366">Adresy URL ikon</translation>
-<translation id="2487558607408469181">Adresy URL blokového prieskumníka</translation>
+<translation id="7642841516562576649">Adresy URL ikon</translation>
+<translation id="4693057234255364395">Adresy URL blokového prieskumníka</translation>
 <translation id="7059127752542505809">Zadajte adresu URL</translation>
 <translation id="2156993118928861787">Neplatná adresa</translation>
 <translation id="6889920539620318793">Nastaviť ako aktívne</translation>

@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">আনসাবস্ক্রাইব করুন</translation>
 <translation id="1209739344687072997">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="8510478288840333677">এই সাইটটি শিল্ডগুলির সাথে সঠিকভাবে কাজ করছে না তা Brave-এর ডেভলপারকে জানান:</translation>
-<translation id="6013164422534859494">মনে রাখবেন: আপনার Brave এর সংস্করণের নম্বর এবং আপনার IP ঠিকানা সহ এই সাইটের ঠিকানাটি জমা দেওয়া হবে (যেটি সংরক্ষণ করা হবে না)৷</translation>
+<translation id="4105411033440701818">মনে রাখবেন: আপনার Brave এর সংস্করণের নম্বর এবং আপনার IP ঠিকানা সহ এই সাইটের ঠিকানাটি জমা দেওয়া হবে (যেটি সংরক্ষণ করা হবে না)৷</translation>
 <translation id="5299848999918506028">ধন্যবাদ!</translation>
 <translation id="76550953340008122">এই সাইটের সাথে কিছু ত্রুটি ঘটেছে তা Brave-এর বিকাশকারীদেরকে জানানোর জন্য ধন্যবাদ৷ এটির সমাধান করার জন্য আমরা আমাদের সর্বোত্তম চেষ্টা করব!</translation>
 <translation id="2974339193389078578">Brave নতুন ইন্টারনেটটি</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">সবকয়টি দেখুন</translation>
 <translation id="3026978804849658576">স্টেটমেন্ট দেখুন</translation>
 <translation id="8494748383523030337">আপনার ব্যালেন্স</translation>
-<translation id="3343165035032571678">Brave ব্যাক্তিগত বিজ্ঞাপন দেখে আপনি <ph name="AMOUNT"/> উপার্জন করেছেন!</translation>
-<translation id="6618415862402597254">বিজ্ঞাপন উপার্জন প্রাপ্ত হয়েছে</translation>
-<translation id="5981646694027725752">উপার্জন দাবি করুন</translation>
-<translation id="2556441076129789027">টোকেন দাবি করুন</translation>
+<translation id="9013419433042554094">টোকেন দাবি করুন</translation>
 <translation id="5544777623605368410">উপার্জন</translation>
 <translation id="3273637494083639780">এই মাসে আপনি যে টোকেনগুলি উপার্জন করেছেন তার প্রক্রিয়াকরণ <ph name="DATE"/> শুরু হবে।</translation>
 <translation id="1029300693989825319">এটি বাজারের অস্থিরতার উপর ভিত্তি করে ভিন্ন হতে পারে।</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">আপনি এই প্রযোজিত ছবিটি দেখার জন্য টোকেন উপার্জন করছেন।</translation>
 <translation id="5486114327664215175">এই ছবিটি দেখার জন্য টোকেন অর্জন করুন এবং কনটেন্ট নির্মাতাদের সমর্থন করুন।</translation>
 <translation id="2940863921746574646">টোকেন ব্যালেন্স</translation>
-<translation id="1714906256929297600">মেয়াদ শেষ হওয়ার আগে ক্রিয়েটরদের জন্য অবদান রাখতে আপনার প্রচারমূলক টোকেন ব্যবহার করুন!</translation>
-<translation id="2426048501007152001">টোকেন উপলভ্য</translation>
+<translation id="2221902203895354376">টোকেন উপলভ্য</translation>
 <translation id="7701466644604753106">স্পীডরিডার চালু করুন</translation>
 <translation id="763042262431778831">স্পীডরিডার বন্ধ করুন</translation>
 <translation id="8488282162676695335">Brave ওয়ালেট</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">চেক করা অ্যাকাউন্টগুলো যোগ করুন</translation>
 <translation id="8554010658308662631">আরও লোড করুন</translation>
 <translation id="6998738230710304743">আরো লোড হচ্ছে...</translation>
-<translation id="4970164249406565575">অ্যাকাউন্ট অনুসন্ধান করুন 0x</translation>
+<translation id="5592304751234049046">অ্যাকাউন্ট অনুসন্ধান করুন 0x</translation>
 <translation id="6151024411349343484">আপনি যে অ্যাকাউন্টটি খুঁজছেন সেটি না পেলে HD পথ (উপরে) স্যুইচ করার চেষ্টা করুন।</translation>
 <translation id="2844691569989101734">লেজার লাইভ</translation>
 <translation id="7265732100380987017">লিগ্যাসি (MEW/MyCrypto)</translation>
@@ -980,7 +976,7 @@
 <translation id="6018178824574796106">কাস্টম টোকেন যোগ করতে ব্যর্থ, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="547122651977318828">টোকেন ID (শুধুমাত্র ERC721-এর জন্য)</translation>
 <translation id="7544552854944350190">টোকেন ID আবশ্যক</translation>
-<translation id="3842236145820483340">Coingecko আইডি</translation>
+<translation id="3842236145820483340">CoinGecko আইডি</translation>
 <translation id="2708402071160162126">সতর্কতা: আপনার পুনরুদ্ধারের বাক্যাংশটি কখনও শেয়ার করবেন না। এই বাক্যাংশের সাথে যে কেউ আপনার সম্পদ চিরতরে নিতে পারে।</translation>
 <translation id="2902856457593699108">চাবি দেখান</translation>
 <translation id="8033497299373164724">চাবি লুকান</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">সমস্ত ট্র্যাকার এবং বিজ্ঞাপনকে অনুমোদন করুন</translation>
 <translation id="6203697265754637264">ক্রশ-সাইট কুকিগুলি ব্লক করা হয়েছে</translation>
 <translation id="4627427111733173920">কুকিগুলি ব্লক করা হয়েছে</translation>
-<translation id="7855168553463825937">সমস্ত কুকিকে অনুমোদন দেওয়া হয়েছে</translation>
+<translation id="3972324600756617403">সমস্ত কুকিকে অনুমোদন দেওয়া হয়েছে</translation>
 <translation id="8366221601425141146">আঙুলের ছাপ ব্লক করা হয়েছে</translation>
 <translation id="5582686930349810484">ফ্রিঙ্গারপ্রিন্টিং ব্লক করা হয়েছে (আদর্শ)</translation>
 <translation id="6696441392507885865">ফিঙ্গারপ্রিন্টিং ব্লক করা হয়েছে (কঠোর, সাইটগুলি ঠিকমত কাজ নাও করতে পারে)</translation>

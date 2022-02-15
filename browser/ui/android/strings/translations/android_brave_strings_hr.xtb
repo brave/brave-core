@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Ovo je vaš prvi oglas Brave. Dodirnite kako biste saznali više.</translation>
 <translation id="2070991379950719711">Počni upotrebljavati uslugu Brave Rewards</translation>
 <translation id="48520986898237073">Nastavi na novčanik</translation>
-<translation id="3570367516044491911">Postavi kao zadani preglednik</translation>
+<translation id="6800338374677644736">Postavi kao zadani preglednik</translation>
 <translation id="19715420010996093">Odaberi preglednik Brave i dodirni „Uvijek”</translation>
 <translation id="3546439402724649282">Preglednik je Brave postavljen kao vaš zadani preglednik.</translation>
 <translation id="8389661903259423907">Već ste postavili svoj zadani preglednik. Možete promijeniti zadani preglednik u postavkama svoje aplikacije.</translation>
-<translation id="7091885296442320770">Preglednik je Brave iznimno brz</translation>
-<translation id="2171928016777725844">Postavite preglednik Brave za svoj zadani preglednik!</translation>
-<translation id="7136694880210472378">Postavi kao zadano</translation>
-<translation id="4250680216510889253">Ne</translation>
 <translation id="8826007068782654809">Hvala</translation>
 <translation id="6665366815203065060">Upravo ste poslali napojnicu:</translation>
 <translation id="5441565662498481293">Automatski šaljete napojnicu:</translation>
@@ -525,9 +521,9 @@ Sigurno želite to napraviti?</translation>
 <translation id="6478996494082389936">privatna analitika proizvoda.</translation>
 <translation id="5187052478998910855">Trebate podsjetnik na Rewards?</translation>
 <translation id="8622329973403382303">Krenite u kratki obilazak kako biste razjasnili kako se ulazi u povijest kao zvijezda Rewards!</translation>
-<translation id="8401711613788729448">Otvori sve poveznice preglednikom Brave radi zaštite privatnosti</translation>
-<translation id="3184805785843994538">Značajkom Brave Shields blokiraju se elementi za praćenje, oglasi, štedi podatkovni promet kao i vrijeme na svakom mrežnom mjestu koje posjetite.</translation>
-<translation id="8722651357687610395">Postavi preglednik Brave kao zadan</translation>
+<translation id="7625138338483121345">Otvori sve poveznice preglednikom Brave radi zaštite privatnosti</translation>
+<translation id="4511485286950743564">Značajkom Brave Shields blokiraju se elementi za praćenje, oglasi, štedi podatkovni promet kao i vrijeme na svakom mrežnom mjestu koje posjetite.</translation>
+<translation id="9218430445555521422">Postavi preglednik Brave kao zadan</translation>
 <translation id="3479552764303398839">Ne sada</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="283071225285270357">Unesite svoju rečenicu za oporavak</translation>
 <translation id="3943857333388298514">Zalijepi</translation>
 <translation id="3331452756822160641">Nova lozinka</translation>
-<translation id="4854035885012188958">Vraćam iz starijeg kriptonovčanika Brave</translation>
+<translation id="4359319875297001084">Vraćam iz starijeg kriptonovčanika Brave</translation>
 <translation id="2339124864228588937">Provjeri rečenicu za oporavak</translation>
 <translation id="3747079125031086337">Odaberite riječi u svojoj rečenici za oporavak ispravnim redoslijedom.</translation>
 <translation id="6518133107902771759">Potvrdi</translation>
@@ -806,6 +802,7 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="4351811224047421378">Precizni decimalni brojevi</translation>
 <translation id="8614026298974065517">Ukloni prilagođenu imovinu</translation>
 <translation id="4378941981362528553">Želite li ukloniti token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Ne</translation>
 <translation id="8971278306757462297">Adresa primatelja vaša je adresa</translation>
 <translation id="749944179568745958">Nevaljana adresa ETH</translation>
 <translation id="3506416339268164412">Adresa primatelja ugovorna je adresa tokena</translation>
@@ -839,8 +836,8 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="665660671251623018">Decimale valute lanca</translation>
 <translation id="182619028057179895">Nevažeći oblik, decimale valute pozitivan su broj</translation>
 <translation id="2978054488731497946">Upiši decimale valute</translation>
-<translation id="3047726704186619366">URL-ovi ikone</translation>
-<translation id="2487558607408469181">URL-ovi tražilice Block Explorer</translation>
+<translation id="7642841516562576649">URL-ovi ikone</translation>
+<translation id="4693057234255364395">URL-ovi tražilice Block Explorer</translation>
 <translation id="7059127752542505809">Upiši URL</translation>
 <translation id="2156993118928861787">Nevaljana adresa</translation>
 <translation id="6889920539620318793">Postavi kao aktivno</translation>

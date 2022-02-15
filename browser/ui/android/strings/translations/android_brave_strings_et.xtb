@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">See on Teie esimene Brave’i reklaam. Lisateabe saamiseks puudutage.</translation>
 <translation id="2070991379950719711">Alusta Brave Rewardsi kasutamist</translation>
 <translation id="48520986898237073">Ava rahakott</translation>
-<translation id="3570367516044491911">Määra tavabrauseriks</translation>
+<translation id="6800338374677644736">Määra tavabrauseriks</translation>
 <translation id="19715420010996093">Valige Brave'i brauser ja puudutage valikut „Alati“</translation>
 <translation id="3546439402724649282">Brave on juba vaikebrauser.</translation>
 <translation id="8389661903259423907">Oled juba määranud vaikebrauseri. Seda saad muuda rakenduse seadetest.</translation>
-<translation id="7091885296442320770">Brave on välkkiire</translation>
-<translation id="2171928016777725844">Määrake Brave vaikebrauseriks!</translation>
-<translation id="7136694880210472378">Muuda vaikevalikuks</translation>
-<translation id="4250680216510889253">Ei</translation>
 <translation id="8826007068782654809">Täname</translation>
 <translation id="6665366815203065060">Saatsite just preemia:</translation>
 <translation id="5441565662498481293">Saadate automaatselt preemiaid:</translation>
@@ -525,9 +521,9 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="6478996494082389936">privaatset tooteanalüüsi teavet.</translation>
 <translation id="5187052478998910855">Kas vajate Rewardsi kohta mäluvärskendust?</translation>
 <translation id="8622329973403382303">Tehke kiire ringkäik, et meenutada, kuidas see toimis, ja võite ajalukku minna Rewardsi staarina!</translation>
-<translation id="8401711613788729448">Avage kõik lingid Brave'iga, et kaitsta oma privaatust</translation>
-<translation id="3184805785843994538">Brave'i kaitse blokeerib jälitajad ja reklaamid, salvestab andmed ja hoiab aega kokku igal veebisaidil, mida külastate.</translation>
-<translation id="8722651357687610395">Määra Brave vaikebrauseriks</translation>
+<translation id="7625138338483121345">Avage kõik lingid Brave'iga, et kaitsta oma privaatust</translation>
+<translation id="4511485286950743564">Brave'i kaitse blokeerib jälitajad ja reklaamid, salvestab andmed ja hoiab aega kokku igal veebisaidil, mida külastate.</translation>
+<translation id="9218430445555521422">Määra Brave vaikebrauseriks</translation>
 <translation id="3479552764303398839">Mitte praegu</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="283071225285270357">Sisestage oma taastamise lause</translation>
 <translation id="3943857333388298514">Kleebi</translation>
 <translation id="3331452756822160641">Uus parool</translation>
-<translation id="4854035885012188958">Taastan Brave'i pärand-krüptorahakotist</translation>
+<translation id="4359319875297001084">Taastan Brave'i pärand-krüptorahakotist</translation>
 <translation id="2339124864228588937">Taastamise lause kinnitamine</translation>
 <translation id="3747079125031086337">Valige oma taastefraasi sõnad õiges järjekorras.</translation>
 <translation id="6518133107902771759">Kinnita</translation>
@@ -806,6 +802,7 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="4351811224047421378">Täpsuse kümnendkohad</translation>
 <translation id="8614026298974065517">Kohandatud vara eemaldamine</translation>
 <translation id="4378941981362528553">Kas soovite eemaldada tokeni <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Ei</translation>
 <translation id="8971278306757462297">Vastuvõtja aadress on teie enda aadress</translation>
 <translation id="749944179568745958">Ei ole kehtiv ETH-i aadress</translation>
 <translation id="3506416339268164412">Vastuvõtja aadress on tokeni lepinguaadress</translation>
@@ -839,8 +836,8 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="665660671251623018">Ahela vääringu kümnendkohad</translation>
 <translation id="182619028057179895">Vigane vorming, valuuta kümnendkohtade hulk on positiivne arv</translation>
 <translation id="2978054488731497946">Sisestage ahela vääringu kümnendkohad</translation>
-<translation id="3047726704186619366">Ikoonide URL-id</translation>
-<translation id="2487558607408469181">Plokiuurijate URL-id</translation>
+<translation id="7642841516562576649">Ikoonide URL-id</translation>
+<translation id="4693057234255364395">Plokiuurijate URL-id</translation>
 <translation id="7059127752542505809">Sisestage URL</translation>
 <translation id="2156993118928861787">Kehtetu aadress</translation>
 <translation id="6889920539620318793">Määra aktiivseks</translation>

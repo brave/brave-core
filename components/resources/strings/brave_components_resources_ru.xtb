@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Отказаться от подписки</translation>
 <translation id="1209739344687072997">Сообщить о неисправности сайта</translation>
 <translation id="8510478288840333677">Сообщите разработчикам Brave, что Защита на этом сайте не работает должным образом:</translation>
-<translation id="6013164422534859494">Примечание. Эта ссылка будет закреплена за вашим IP-адресом (который мы не храним) и номером версии Brave.</translation>
+<translation id="4105411033440701818">Примечание. Эта ссылка будет закреплена за вашим IP-адресом (который мы не храним) и номером версии Brave.</translation>
 <translation id="5299848999918506028">Спасибо!</translation>
 <translation id="76550953340008122">Спасибо, что сообщили разработчикам Brave о неполадке на этом сайте. Мы сделаем все возможное, чтобы исправить ее!</translation>
 <translation id="2974339193389078578">Brave. Новый Интернет</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Завершить проверку кошелька</translation>
 <translation id="9200453331904391567">Отключиться от храбрых наград Brave Rewards</translation>
 <translation id="3656941797339037856">Привяжите Rewards к Gemini</translation>
-<translation id="31532096120351460">Покупайте и продавайте криптовалюты на Gemini. Это надежная платформа, где можно хранить более 50 криптовалют, включая BAT, и получать проценты в США, Гонконге и Сингапуре.</translation>
+<translation id="31532096120351460">Покупайте и продавайте криптовалюты, включая BAT, на Gemini. Это надежная платформа, где можно хранить более 50 криптовалют и получать проценты в США, Гонконге и Сингапуре.</translation>
 <translation id="7404779623219601861">Использовать BAT для подарочных карт</translation>
 <translation id="6215565499749144110">С сетью TAP вы можете использовать BAT для оплаты подарочных карт популярных торговых брендов.</translation>
 <translation id="6915065518766963119">*Требует верификации в Uphold.</translation>
@@ -775,7 +775,7 @@
 <translation id="6318437367327684789">навсегда</translation>
 <translation id="8797999629784150206">Вы можете в любой момент изменить <ph name="SITE_PERMISSIONS"/>. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">разрешение сайта</translation>
-<translation id="7717357606512850995">Проверка статуса</translation>
+<translation id="7717357606512850995">Проверить статус</translation>
 <translation id="7306880305145342514">Вам начислено вознаграждение за <ph name="MONTH"/>!</translation>
 <translation id="3007207731685398329">Вознаграждение за <ph name="MONTH"/> в размере <ph name="AMOUNT"/> будет перечислено вам через <ph name="DAYS"/>.</translation>
 <translation id="5878420576943709750">Вознаграждение за <ph name="MONTH"/> в размере <ph name="AMOUNT"/> скоро будет перечислено.</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Показать все</translation>
 <translation id="3026978804849658576">Открыть отчет</translation>
 <translation id="8494748383523030337">Ваш баланс</translation>
-<translation id="3343165035032571678">Вы заработали <ph name="AMOUNT"/> за просмотр Brave Private Ads!</translation>
-<translation id="6618415862402597254">Полученный доход от Ad</translation>
-<translation id="5981646694027725752">Вывести доход</translation>
-<translation id="2556441076129789027">Получить баллы</translation>
+<translation id="9013419433042554094">Получить баллы</translation>
 <translation id="5544777623605368410">Доход</translation>
 <translation id="3273637494083639780">Обработка баллов, заработанных в этом месяце, начнется <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Из-за колебания рынка курс может изменяться.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Вы получите баллы за просмотр этого рекламного изображения.</translation>
 <translation id="5486114327664215175">Получите баллы за просмотр этого изображения и поддержите авторов контента.</translation>
 <translation id="2940863921746574646">Баланс баллов</translation>
-<translation id="1714906256929297600">Отправьте авторам контента баллы, полученные за просмотр рекламы, до истечения их срока действия.</translation>
-<translation id="2426048501007152001">Доступные баллы</translation>
+<translation id="2221902203895354376">Доступные баллы</translation>
 <translation id="7701466644604753106">Включить Speedreader</translation>
 <translation id="763042262431778831">Выключить Speedreader</translation>
 <translation id="8488282162676695335">Кошелек Brave</translation>
@@ -908,7 +904,7 @@
 <translation id="6901073872645365201">Пароль должен содержать не менее 7 символов и включать хотя бы одну цифру и один специальный символ.</translation>
 <translation id="6657585470893396449">Пароль</translation>
 <translation id="5486261815000869482">Подтвердить пароль</translation>
-<translation id="6138471905279127211">Пароли не совпадают.</translation>
+<translation id="6138471905279127211">Пароль не соответствует требованиям.</translation>
 <translation id="467510802200863975">Пароли не совпадают.</translation>
 <translation id="5168349973342709369">Введите пароль, чтобы разблокировать кошелек</translation>
 <translation id="9111102763498581341">Unlock</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Добавить проверенные аккаунты</translation>
 <translation id="8554010658308662631">Еще</translation>
 <translation id="6998738230710304743">Загрузка…</translation>
-<translation id="4970164249406565575">Поиск аккаунтов (0x)</translation>
+<translation id="5592304751234049046">Поиск аккаунтов (0x)</translation>
 <translation id="6151024411349343484">Если вам не удается найти нужный аккаунт, попробуйте сменить путь в HD-кошельке (выше).</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Устаревшая версия (MEW/MyCrypto)</translation>
@@ -980,7 +976,7 @@
 <translation id="6018178824574796106">Не удалось добавить пользовательский токен. Повторите попытку.</translation>
 <translation id="547122651977318828">Идентификатор балла (только для ERC721)</translation>
 <translation id="7544552854944350190">Требуется идентификатор балла.</translation>
-<translation id="3842236145820483340">Coingecko ID</translation>
+<translation id="3842236145820483340">CoinGecko ID</translation>
 <translation id="2708402071160162126">ВНИМАНИЕ! Никому не сообщайте секретную фразу. С ее помощью любой может получить доступ к вашим активам.</translation>
 <translation id="2902856457593699108">Показать ключ</translation>
 <translation id="8033497299373164724">Скрыть ключ</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Разрешить все трекеры и рекламу</translation>
 <translation id="6203697265754637264">Межсайтовые куки заблокированы</translation>
 <translation id="4627427111733173920">Файлы куки заблокированы</translation>
-<translation id="7855168553463825937">Все файлы cookie заблокированы</translation>
+<translation id="3972324600756617403">Все файлы cookie заблокированы</translation>
 <translation id="8366221601425141146">Сбор цифровых отпечатков заблокирован</translation>
 <translation id="5582686930349810484">Сбор цифровых отпечатков заблокирован (стандартно)</translation>
 <translation id="6696441392507885865">Сбор цифровых отпечатков заблокирован (может нарушать работу сайтов)</translation>

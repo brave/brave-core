@@ -114,15 +114,11 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1434416574322382019">Dirisha Jipya Binafsi na Tor</translation>
 <translation id="4703780849509456860">Fungua kiungo kwenye Dirisha Binafsi kwa Tor</translation>
 <translation id="3488584642074079080">Fungua kiungo kwenye Dirisha Binafsi la Brave kwa Tor</translation>
-<translation id="7475547933708221517">Shiriki Faili ya Ndani Ukitumia IPFS</translation>
-<translation id="2286177249736199435">Shiriki Folda ya Ndani Ukitumia IPFS</translation>
 <translation id="4491895534716990473">Leta maandishi yaliyoteuliwa kwenye IPFS</translation>
 <translation id="8883166554766780543">Leta na unakili kiungo kwenye picha ya IPFS</translation>
-<translation id="784573715436258741">Shiriki faili ya ndani ukitumia IPFS</translation>
 <translation id="6313675821927505581">Dirisha Jipya la Binafsi na Tor</translation>
 <translation id="2638041073279639246">Fungua kiungo kwenye dirisha la binafsi na Tor</translation>
 <translation id="3425600262621021599">Fungua kiungo kwenye dirisha la binafsi la Brave na Tor</translation>
-<translation id="575838692088926391">Shiriki folda ya ndani ukitumia IPFS</translation>
 <translation id="2515126961943087659">Huduma ya Matangazo ya Bat</translation>
 <translation id="7924918279836988121">Huduma ya Leja ya Bat</translation>
 <translation id="4472575034687746823">Anza</translation>
@@ -272,6 +268,9 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="1327977588028644528">Lango</translation>
 <translation id="1195880978080389104">Nodi ya ndani ya IPFS ya Brave</translation>
 <translation id="4927734062756955434">Anwani ya lango la umma la IPFS</translation>
+<translation id="2178402446227616866">1 <ph name="BEGIN_LINK_MPL"/> Jifunze zaidi
+2 <ph name="END_LINK_MPL"/>
+kuhusu nodi ya IPFS ya Jasiri ya eneo lako na masuala ya faragha ya lango.</translation>
 <translation id="8425213833346101688">Badilisha</translation>
 <translation id="557281710253742286">Weka lango la IPFS</translation>
 <translation id="8571837315037233299">Anwani ya lango</translation>

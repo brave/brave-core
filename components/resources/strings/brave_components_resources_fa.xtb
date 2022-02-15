@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">لغو اشتراک</translation>
 <translation id="1209739344687072997">گزارش خرابی سایت</translation>
 <translation id="8510478288840333677">به توسعه‌دهندگان Brave اطلاع دهید که «سپرهای ایمنی» در این سایت به‌خوبی کار نمی‌کند.</translation>
-<translation id="6013164422534859494">توجه: نشانی این سایت به‌همراه شماره نسخه Brave شما و نشانی IP شما (که ذخیره نخواهد شد) ارسال می‌شود.</translation>
+<translation id="4105411033440701818">توجه: نشانی این سایت به‌همراه شماره نسخه Brave شما و نشانی IP شما (که ذخیره نخواهد شد) ارسال می‌شود.</translation>
 <translation id="5299848999918506028">متشکریم!</translation>
 <translation id="76550953340008122">متشکریم که وجود مشکل در این سایت را به توسعه‌دهندگان Brave اطلاع دادید. تمام تلاشمان را برای رفع مشکل آن به کار می‌گیریم.</translation>
 <translation id="2974339193389078578">Brave اینترنت جدید است</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">مشاهده همه</translation>
 <translation id="3026978804849658576">مشاهده بیانیه</translation>
 <translation id="8494748383523030337">موجودی شما</translation>
-<translation id="3343165035032571678">از تماشای Brave Private Ads،‏ <ph name="AMOUNT"/> کسب کرده‌اید!</translation>
-<translation id="6618415862402597254">درآمدهای حاصل از آگهی‌ها دریافت شد</translation>
-<translation id="5981646694027725752">مطالبه درآمدها</translation>
-<translation id="2556441076129789027">مطالبه توکن‌ها</translation>
+<translation id="9013419433042554094">مطالبه توکن‌ها</translation>
 <translation id="5544777623605368410">درآمد</translation>
 <translation id="3273637494083639780">پردازش توکن‌هایی که در این ماه کسب می‌کنید در تاریخ <ph name="DATE"/> شروع خواهد شد.</translation>
 <translation id="1029300693989825319">این مورد ممکن است بر اساس نوسان بازار متفاوت باشد.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">برای مشاهده این تصویر دارای حامی مالی، توکن کسب می‌کنید.</translation>
 <translation id="5486114327664215175">بابت مشاهده این تصویر و پشتیبانی از پدیدآورندگان محتوا، توکن کسب کنید.</translation>
 <translation id="2940863921746574646">موجودی توکن</translation>
-<translation id="1714906256929297600">قبل از منقضی شدن توکن‌های تبلیغاتی، از آن‌ها برای کمک به سازندگان استفاده کنید!</translation>
-<translation id="2426048501007152001">توکن‌های موجود</translation>
+<translation id="2221902203895354376">توکن‌های موجود</translation>
 <translation id="7701466644604753106">روشن کردن تندخوان</translation>
 <translation id="763042262431778831">خاموش کردن تندخوان</translation>
 <translation id="8488282162676695335">کیف پول Brave</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">افزودن حساب‌های بررسی‌شده</translation>
 <translation id="8554010658308662631">بارگیری بیشتر</translation>
 <translation id="6998738230710304743">درحال بارگیری موارد بیشتر…</translation>
-<translation id="4970164249406565575">جستجوی حساب 0x</translation>
+<translation id="5592304751234049046">جستجوی حساب 0x</translation>
 <translation id="6151024411349343484">اگر حساب مورد نظر خود را پیدا نکردید، سعی کنید به مسیر HD (در بالا) تغییر دهید.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">موروثی (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">مجاز بودن همه ردیاب‌ها و آگهی‌ها</translation>
 <translation id="6203697265754637264">کوکی‌های بین سایتی مسدود شدند</translation>
 <translation id="4627427111733173920">کوکی‌ها مسدود شدند</translation>
-<translation id="7855168553463825937">همه کوکی‌ها مسدود هستند</translation>
+<translation id="3972324600756617403">همه کوکی‌ها مسدود هستند</translation>
 <translation id="8366221601425141146">اثر انگشت مسدود شده است</translation>
 <translation id="5582686930349810484">تشخیص اثر انگشت مسدود شد (استاندارد)</translation>
 <translation id="6696441392507885865">انگشت‌نگاری مسدود شد (شدید، ممکن است منجر به خرابی سایت‌ها شود)</translation>

@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Avsluta prenumeration</translation>
 <translation id="1209739344687072997">Rapportera en trasig webbplats</translation>
 <translation id="8510478288840333677">Låt Braves utvecklare veta att denna webbplats inte fungerar korrekt med Shields:</translation>
-<translation id="6013164422534859494">Obs! Denna webbplatsadress kommer att skickas in med ditt Brave-versionsnummer och din IP-adress (som inte kommer att lagras).</translation>
+<translation id="4105411033440701818">Obs! Denna webbplatsadress kommer att skickas in med ditt Brave-versionsnummer och din IP-adress (som inte kommer att lagras).</translation>
 <translation id="5299848999918506028">Tack!</translation>
 <translation id="76550953340008122">Tack för att du lät Braves utvecklare veta att något är fel på denna webbplats. Vi ska göra vårt bästa för att fixa det!</translation>
 <translation id="2974339193389078578">Brave är det nya internet</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Slutför verifiering av plånbok</translation>
 <translation id="9200453331904391567">Frånkoppla Brave Rewards</translation>
 <translation id="3656941797339037856">Länka Rewards till Gemini!</translation>
-<translation id="31532096120351460">Handla över 50 kryptovalutor, inklusive BAT, på Gemini. Det är en säker plattform för att lagra dina kryptovalutor. Dessutom kan du tjäna ränta i US, HK och SG.</translation>
+<translation id="31532096120351460">Handla över 50 kryptovalutor, inklusive BAT, på Gemini. Det är en säker plattform för att lagra dina kryptovalutor. Dessutom kan du tjäna ränta i USA, Hongkong och Singapore.</translation>
 <translation id="7404779623219601861">Lös in BAT mot presentkort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du lösa in din BAT och få presentkort på populära märken.</translation>
 <translation id="6915065518766963119">* Kräver godkänd verifiering.</translation>
@@ -776,9 +776,9 @@
 <translation id="8797999629784150206">Du kan ändra dina <ph name="SITE_PERMISSIONS"/> när som helst. <ph name="LEARN_MORE"/></translation>
 <translation id="581582843259146919">webbplatsbehörighet</translation>
 <translation id="7717357606512850995">Kontrollera status</translation>
-<translation id="7306880305145342514">Grattis! Din <ph name="MONTH"/>-belöningar är här!</translation>
-<translation id="3007207731685398329">Dina <ph name="AMOUNT"/> <ph name="MONTH"/>-belöningar kommer om <ph name="DAYS"/></translation>
-<translation id="5878420576943709750">Dina <ph name="AMOUNT"/> <ph name="MONTH"/>-belöningar är på väg. Håll utkik!</translation>
+<translation id="7306880305145342514">Grattis! Din <ph name="MONTH"/> är här!</translation>
+<translation id="3007207731685398329">Dina <ph name="AMOUNT"/> <ph name="MONTH"/> kommer om <ph name="DAYS"/></translation>
+<translation id="5878420576943709750">Dina <ph name="AMOUNT"/> belöning för <ph name="MONTH"/> är på väg. Håll utkik!</translation>
 <translation id="2659764755126740206">Gå till mitt <ph name="PROVIDER"/>-konto</translation>
 <translation id="2389181429986654814">Gå till <ph name="PROVIDER"/> för att slutföra verifieringen</translation>
 <translation id="7793632266654336758">Slutför identitetsverifieringen för att börja ta emot belöningar.</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">See alla</translation>
 <translation id="3026978804849658576">Visa utdrag</translation>
 <translation id="8494748383523030337">Ditt saldo</translation>
-<translation id="3343165035032571678">Du tjänade <ph name="AMOUNT"/> på att visa Braves privata annonser!</translation>
-<translation id="6618415862402597254">Annonsintäkter mottagna</translation>
-<translation id="5981646694027725752">Gör anspråk på vinstmedel</translation>
-<translation id="2556441076129789027">Gör anspråk på tokens</translation>
+<translation id="9013419433042554094">Gör anspråk på tokens</translation>
 <translation id="5544777623605368410">Vinstmedel</translation>
 <translation id="3273637494083639780">Tokens du tjänar den här månaden börjar behandlas den <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Detta kan variera beroende på marknadens volatilitet.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Du tjänar tokens för att se den här sponsrade bilden.</translation>
 <translation id="5486114327664215175">Tjäna tokens för att se den här bilden och stöd innehållsskapare.</translation>
 <translation id="2940863921746574646">Tokensaldo</translation>
-<translation id="1714906256929297600">Använd dina kampanjtokens för at bidra till skapare innan de löper ut!</translation>
-<translation id="2426048501007152001">Tokens tillgängliga</translation>
+<translation id="2221902203895354376">Tokens tillgängliga</translation>
 <translation id="7701466644604753106">Slå PÅ snabbläsaren</translation>
 <translation id="763042262431778831">Slå AV snabbläsaren</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Lägg till kontrollerade konton</translation>
 <translation id="8554010658308662631">Ladda mer</translation>
 <translation id="6998738230710304743">Laddar fler...</translation>
-<translation id="4970164249406565575">Sök konto 0x</translation>
+<translation id="5592304751234049046">Sök konto 0x</translation>
 <translation id="6151024411349343484">Testa att byta HD-sökväg (ovan) om du inte hittar det konto du letar efter.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Tillåt alla spårare och annonser</translation>
 <translation id="6203697265754637264">Kakor för flera webbplatser blockerade</translation>
 <translation id="4627427111733173920">Kakor blockerades</translation>
-<translation id="7855168553463825937">Alla cookies godkända</translation>
+<translation id="3972324600756617403">Alla cookies godkända</translation>
 <translation id="8366221601425141146">Fingeravtryck blockerat</translation>
 <translation id="5582686930349810484">Fingeravtrycksläsning hindrad (standard)</translation>
 <translation id="6696441392507885865">Fingeravtryck blockerade (strikt, kan göra att webbplatser inte fungerar)</translation>

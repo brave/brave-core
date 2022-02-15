@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Toto je vaše první reklama Brave. Klepněte pro více informací.</translation>
 <translation id="2070991379950719711">Začít používat Brave Rewards</translation>
 <translation id="48520986898237073">Pokračovat do peněženky</translation>
-<translation id="3570367516044491911">Nastavit jako výchozí prohlížeč</translation>
+<translation id="6800338374677644736">Nastavit jako výchozí prohlížeč</translation>
 <translation id="19715420010996093">Vyberte prohlížeč Brave a klepněte na „Vždy“</translation>
 <translation id="3546439402724649282">Brave je již nastaven jako výchozí prohlížeč.</translation>
 <translation id="8389661903259423907">Výchozí prohlížeč je již nastaven. Můžete jej změnit v nastavení aplikace.</translation>
-<translation id="7091885296442320770">Brave je rychlý jako blesk</translation>
-<translation id="2171928016777725844">Nastavte si Brave jako výchozí prohlížeč!</translation>
-<translation id="7136694880210472378">Nastavit jako výchozí</translation>
-<translation id="4250680216510889253">Ne</translation>
 <translation id="8826007068782654809">Děkujeme</translation>
 <translation id="6665366815203065060">Právě jste poslali příspěvek:</translation>
 <translation id="5441565662498481293">Automaticky posíláte příspěvek:</translation>
@@ -522,9 +518,9 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="6478996494082389936">soukromé analýzy produktů.</translation>
 <translation id="5187052478998910855">Potřebujete vzpruhu na Rewards?</translation>
 <translation id="8622329973403382303">Podívejte se na krátkou prohlídku a zjistěte, jak se zapsat do historie jako Rewards rockstar!</translation>
-<translation id="8401711613788729448">Otvírejte všechny odkazy pomocí Brave a chraňte tak svoje soukromí</translation>
-<translation id="3184805785843994538">Funkce Brave Shields blokuje sledovače a reklamy, šetří data a při návštěvě každého webu vám šetří čas.</translation>
-<translation id="8722651357687610395">Nastavit Brave jako výchozí</translation>
+<translation id="7625138338483121345">Otvírejte všechny odkazy pomocí Brave a chraňte tak svoje soukromí</translation>
+<translation id="4511485286950743564">Funkce Brave Shields blokuje sledovače a reklamy, šetří data a při návštěvě každého webu vám šetří čas.</translation>
+<translation id="9218430445555521422">Nastavit Brave jako výchozí</translation>
 <translation id="3479552764303398839">Teď ne</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -594,7 +590,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="283071225285270357">Zadejte frázi pro obnovení</translation>
 <translation id="3943857333388298514">Vložit</translation>
 <translation id="3331452756822160641">Nové heslo</translation>
-<translation id="4854035885012188958">Obnovuji ze starší kryptopeněženky Brave</translation>
+<translation id="4359319875297001084">Obnovuji ze starší kryptopeněženky Brave</translation>
 <translation id="2339124864228588937">Ověřte frázi pro obnovení</translation>
 <translation id="3747079125031086337">Vyberte slova ve frázi pro obnovu ve správném pořadí.</translation>
 <translation id="6518133107902771759">Ověřit</translation>
@@ -803,6 +799,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="4351811224047421378">Přesnost na desetinná místa</translation>
 <translation id="8614026298974065517">Odstranit vlastní prostředky</translation>
 <translation id="4378941981362528553">Chcete odstranit token<ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Ne</translation>
 <translation id="8971278306757462297">Příjmová adresa je vaše vlastní adresa</translation>
 <translation id="749944179568745958">Neplatná adresa ETH</translation>
 <translation id="3506416339268164412">Příjmová adresa je smluvní adresa tokenu</translation>
@@ -823,7 +820,7 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="1241283133946520352">Sítě</translation>
 <translation id="1062463687579789365">Přizpůsobení sítí peněženek</translation>
 <translation id="2512821599885971349">Přidat síť</translation>
-<translation id="1330032157352961756">ID nového řetězce</translation>
+<translation id="1330032157352961756">ID nového blockchainu</translation>
 <translation id="8104880458203052748">Nesprávný formát, ID řetězce je kladné číslo</translation>
 <translation id="3423620355610881890">Kladné desetinné číslo</translation>
 <translation id="726121047592132939">Název nového řetězce</translation>
@@ -836,8 +833,8 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="665660671251623018">Desetinná čísla měny řetězce</translation>
 <translation id="182619028057179895">Nesprávný formát, desetinná místa měny je kladné číslo</translation>
 <translation id="2978054488731497946">Zadejte desetinná místa měny</translation>
-<translation id="3047726704186619366">URL adresy ikon</translation>
-<translation id="2487558607408469181">Blokování URL adres průzkumníka</translation>
+<translation id="7642841516562576649">URL adresy ikon</translation>
+<translation id="4693057234255364395">Blokování URL adres průzkumníka</translation>
 <translation id="7059127752542505809">Zadejte adresu URL</translation>
 <translation id="2156993118928861787">Neplatná adresa</translation>
 <translation id="6889920539620318793">Nastavit jako aktivní</translation>

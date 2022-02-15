@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Mag-unsubscribe</translation>
 <translation id="1209739344687072997">Mag-ulat ng sirang site</translation>
 <translation id="8510478288840333677">Ipaalam sa mga developer ng Brave na hindi gumagana nang maayos sa Shields ang site na ito:</translation>
-<translation id="6013164422534859494">Tandaan: Isusumite ang address ng site na ito kasama ng iyong numero ng bersyon ng Brave at iyong IP address (na hindi iso-store).</translation>
+<translation id="4105411033440701818">Tandaan: Isusumite ang address ng site na ito kasama ng iyong numero ng bersyon ng Brave at iyong IP address (na hindi iso-store).</translation>
 <translation id="5299848999918506028">Salamat!</translation>
 <translation id="76550953340008122">Salamat sa pagbibigay-alam sa mga developer ng Brave na may problema sa site na ito. Gagawin namin ang buong makakaya namin para ayusin ito!</translation>
 <translation id="2974339193389078578">Brave, ang bagong Internet</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Tingnan ang lahat</translation>
 <translation id="3026978804849658576">Tingnan ang statement</translation>
 <translation id="8494748383523030337">Ang Iyong Balanse</translation>
-<translation id="3343165035032571678">Nakakuha ka ng <ph name="AMOUNT"/> mula sa panonood ng Brave Private Ads!</translation>
-<translation id="6618415862402597254">Natanggap na kita sa Ads</translation>
-<translation id="5981646694027725752">Kunin ang mga kita</translation>
-<translation id="2556441076129789027">Kunin ang mga token</translation>
+<translation id="9013419433042554094">Kunin ang mga token</translation>
 <translation id="5544777623605368410">Kita</translation>
 <translation id="3273637494083639780">Ang mga token na kinita mo sa buwang ito ay sisimulang iproseso sa <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Maaaring iba ito batay sa volatility ng merkado.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Kumikita ka ng mga token sa pagtingin sa sponsored na larawang ito.</translation>
 <translation id="5486114327664215175">Kumita ng mga token sa pagtingin sa larawang ito at sa pagsuporta sa mga creator ng content.</translation>
 <translation id="2940863921746574646">Balanse ng Token</translation>
-<translation id="1714906256929297600">Gamitin ang iyong mga promosyonal na token para magbigay sa mga creator bago mag-expire ang mga ito!</translation>
-<translation id="2426048501007152001">Mga available na token</translation>
+<translation id="2221902203895354376">Mga available na token</translation>
 <translation id="7701466644604753106">I-ON ang Speedreader</translation>
 <translation id="763042262431778831">I-OFF ang Speedreader</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Magdagdag ng mga na-check na account</translation>
 <translation id="8554010658308662631">Mag-load pa</translation>
 <translation id="6998738230710304743">Naglo-load pa...</translation>
-<translation id="4970164249406565575">Maghanap ng account 0x</translation>
+<translation id="5592304751234049046">Maghanap ng account 0x</translation>
 <translation id="6151024411349343484">Subukang palitan ang HD path (sa itaas) kung hindi mo makita ang account na hinahanap mo.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Payagan ang lahat ng tracker at ad</translation>
 <translation id="6203697265754637264">Na-block ang cross-site cookies</translation>
 <translation id="4627427111733173920">Naka-block ang cookies</translation>
-<translation id="7855168553463825937">Na-block ang lahat ng cookie</translation>
+<translation id="3972324600756617403">Na-block ang lahat ng cookie</translation>
 <translation id="8366221601425141146">Na-block ang pag-fingerprint</translation>
 <translation id="5582686930349810484">Naka-block ang fingerprinting (standard)</translation>
 <translation id="6696441392507885865">Na-block ang paggamit ng fingerprint (mahigpit, posibleng masira ang mga site)</translation>

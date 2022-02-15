@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Atsisakyti prenumeratos</translation>
 <translation id="1209739344687072997">Pranešti apie neveikiančią svetainę</translation>
 <translation id="8510478288840333677">Praneškite „Brave“ kūrėjams, kad ši svetainė neveikia tinkamai su skydais:</translation>
-<translation id="6013164422534859494">Pastaba: šios svetainės adresas bus pateiktas su „Brave“ versijos numeriu ir jūsų IP adresu (kuris nebus saugomas).</translation>
+<translation id="4105411033440701818">Pastaba: šios svetainės adresas bus pateiktas su „Brave“ versijos numeriu ir jūsų IP adresu (kuris nebus saugomas).</translation>
 <translation id="5299848999918506028">Dėkojame!</translation>
 <translation id="76550953340008122">Dėkojame, kad pranešėte „Brave“ kūrėjams, jog su šia svetaine kažkas negerai. Pasistengsime ją sutvarkyti!</translation>
 <translation id="2974339193389078578">Naršykite su „Brave“ naujajame internete</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Žr. viską</translation>
 <translation id="3026978804849658576">Peržiūrėti ataskaitą</translation>
 <translation id="8494748383523030337">Jūsų balansas</translation>
-<translation id="3343165035032571678">Už „Brave Private Ads“ peržiūras uždirbote <ph name="AMOUNT"/>!</translation>
-<translation id="6618415862402597254">Gautas uždarbis už reklamas</translation>
-<translation id="5981646694027725752">Pasiimti uždarbį</translation>
-<translation id="2556441076129789027">Pasiimti žetonus</translation>
+<translation id="9013419433042554094">Pasiimti žetonus</translation>
 <translation id="5544777623605368410">Uždarbis</translation>
 <translation id="3273637494083639780">Per šį mėnesį gauti žetonai bus pradėti apdoroti <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Tai gali kisti dėl rinkos nepastovumo.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Už šio vaizdo peržiūrą uždirbate žetonų.</translation>
 <translation id="5486114327664215175">Gaukite žetonų už šio vaizdo peržiūrą ir paremkite turinio kūrėjus.</translation>
 <translation id="2940863921746574646">Žetonų likutis</translation>
-<translation id="1714906256929297600">Paremkite kūrėjus savo už reklamas gautais žetonais, kol jų galiojimas nepasibaigė!</translation>
-<translation id="2426048501007152001">Turimi žetonai</translation>
+<translation id="2221902203895354376">Turimi žetonai</translation>
 <translation id="7701466644604753106">ĮJUNGTI spartųjį skaitlį</translation>
 <translation id="763042262431778831">IŠJUNGTI spartųjį skaitlį</translation>
 <translation id="8488282162676695335">„Brave“ piniginė</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Pridėti pažymėtas sąskaitas</translation>
 <translation id="8554010658308662631">Įkelti daugiau</translation>
 <translation id="6998738230710304743">Įkelti daugiau...</translation>
-<translation id="4970164249406565575">Ieškoti 0x sąskaitos</translation>
+<translation id="5592304751234049046">Ieškoti 0x sąskaitos</translation>
 <translation id="6151024411349343484">Jei nepavyksta rasti ieškomos sąskaitos, bandykite pakeisti HD kelią (viršuje).</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">„Legacy (MEW /MyCrypto)“</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Leisti visus sekiklius ir reklamas</translation>
 <translation id="6203697265754637264">Kelių svetainių slapukai užblokuoti</translation>
 <translation id="4627427111733173920">Slapukai užblokuoti</translation>
-<translation id="7855168553463825937">Visi slapukai užblokuoti</translation>
+<translation id="3972324600756617403">Visi slapukai užblokuoti</translation>
 <translation id="8366221601425141146">Kontrolinių kodų kūrimas užblokuotas</translation>
 <translation id="5582686930349810484">Kontrolinių kodų kūrimas blokuojamas (standartiškai)</translation>
 <translation id="6696441392507885865">Kontrolinių kodų kūrimas blokuojamas (griežtai, gali neveikti svetainės)</translation>

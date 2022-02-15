@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">To Twoja pierwsza reklama Brave. Kliknij, aby dowiedzieć się więcej.</translation>
 <translation id="2070991379950719711">Zacznij korzystać z nagród Brave.</translation>
 <translation id="48520986898237073">Przejdź do portfela</translation>
-<translation id="3570367516044491911">Ustaw jako domyślną przeglądarkę</translation>
+<translation id="6800338374677644736">Ustaw jako domyślną przeglądarkę</translation>
 <translation id="19715420010996093">Wybierz przeglądarkę Brave i kliknij „Zawsze”</translation>
 <translation id="3546439402724649282">Brave jest już ustawiona jako Twoja domyślna przeglądarka.</translation>
 <translation id="8389661903259423907">Domyślna przeglądarka jest już ustawiona. Możesz zmienić domyślną przeglądarkę w ustawieniach aplikacji.</translation>
-<translation id="7091885296442320770">Brave jest szybka jak błyskawica</translation>
-<translation id="2171928016777725844">Ustaw Brave jako domyślną przeglądarkę!</translation>
-<translation id="7136694880210472378">Ustaw jako domyślną</translation>
-<translation id="4250680216510889253">Nie</translation>
 <translation id="8826007068782654809">Dziękujemy</translation>
 <translation id="6665366815203065060">Wysłałeś własnie napiwek do:</translation>
 <translation id="5441565662498481293">Wysyłasz automatyczne napiwki do:</translation>
@@ -524,9 +520,9 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="6478996494082389936">analityka prywatnego produktu</translation>
 <translation id="5187052478998910855">Potrzebujesz powtórzenia w zakresie nagród?</translation>
 <translation id="8622329973403382303">Przejdź krótki kurs, aby dowiedzieć się, jak przejść do historii jako gwiazda nagród!</translation>
-<translation id="8401711613788729448">Otwieraj wszystkie łącza w Brave, aby chronić swoją prywatność</translation>
-<translation id="3184805785843994538">Brave Shields blokuje pliki śledzące &amp; reklamy, zachowuje dane i pozwala oszczędzić czas na każdej odwiedzanej stronie.</translation>
-<translation id="8722651357687610395">Ustaw Brave jako domyślną</translation>
+<translation id="7625138338483121345">Otwieraj wszystkie łącza w Brave, aby chronić swoją prywatność</translation>
+<translation id="4511485286950743564">Brave Shields blokuje pliki śledzące &amp; reklamy, zachowuje dane i pozwala oszczędzić czas na każdej odwiedzanej stronie.</translation>
+<translation id="9218430445555521422">Ustaw Brave jako domyślną</translation>
 <translation id="3479552764303398839">Nie teraz</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -596,7 +592,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="283071225285270357">Wprowadź swoje wyrażenie odzyskiwania</translation>
 <translation id="3943857333388298514">Wklej</translation>
 <translation id="3331452756822160641">Nowe hasło</translation>
-<translation id="4854035885012188958">Odzyskuję kopię ze starego portfela kryptowalut Brave</translation>
+<translation id="4359319875297001084">Odzyskuję kopię ze starego portfela kryptowalut Brave</translation>
 <translation id="2339124864228588937">Zweryfikuj wyrażenie odzyskiwania</translation>
 <translation id="3747079125031086337">Wprowadź słowa Twojego wyrażenia odzyskiwania w prawidłowej kolejności.</translation>
 <translation id="6518133107902771759">Weryfikuj</translation>
@@ -805,6 +801,7 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="4351811224047421378">Dokładność liczb po przecinku</translation>
 <translation id="8614026298974065517">Usuń niestandardowe środki</translation>
 <translation id="4378941981362528553">Czy chcesz usunąć token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Nie</translation>
 <translation id="8971278306757462297">Adres docelowy to Twój własny adres.</translation>
 <translation id="749944179568745958">Nieprawidłowy adres ETH</translation>
 <translation id="3506416339268164412">Adres docelowy to adres kontraktu tokena</translation>
@@ -838,8 +835,8 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="665660671251623018">Liczba miejsc po przecinku waluty łańcucha</translation>
 <translation id="182619028057179895">Nieprawidłowy format. Cyfry po przecinku są liczbą dodatnią</translation>
 <translation id="2978054488731497946">Wprowadź liczbę miejsc po przecinku waluty</translation>
-<translation id="3047726704186619366">Adresy URL ikon</translation>
-<translation id="2487558607408469181">Adresy URL eksploratorów bloków</translation>
+<translation id="7642841516562576649">Adresy URL ikon</translation>
+<translation id="4693057234255364395">Adresy URL eksploratorów bloków</translation>
 <translation id="7059127752542505809">Podaj adres URL</translation>
 <translation id="2156993118928861787">Nieprawidłowy adres</translation>
 <translation id="6889920539620318793">Ustaw jako aktywną</translation>

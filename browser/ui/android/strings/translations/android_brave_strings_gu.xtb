@@ -42,13 +42,9 @@
 <translation id="454386012157232640">મને કોઈ જાહેરાત દેખાઈ નથી</translation>
 <translation id="1448877943847791441">Brave તમારી પ્રથમ જાહેરાત</translation>
 <translation id="6511854390690723657">આ તમારી પહેલી Brave જાહેરાત છે. વધુ જાણવા ટૅપ કરો.</translation>
-<translation id="3570367516044491911">ડિફૉલ્ટ બ્રાઉઝર તરીકે સેટ કરો</translation>
+<translation id="6800338374677644736">ડિફૉલ્ટ બ્રાઉઝર તરીકે સેટ કરો</translation>
 <translation id="3546439402724649282">Brave પહેલીથી તમારું ડિફૉલ્ટ બ્રાઉઝર છે.</translation>
 <translation id="8389661903259423907">તમે પહેલેથી જ ડિફૉલ્ટ બ્રાઉઝર સેટ કર્યું છે. તમે તમારી એપ્લિકેશન સેટિંગ્સમાં જઈને ડિફૉલ્ટ બ્રાઉઝર બદલી શકો છો.</translation>
-<translation id="7091885296442320770">Brave વીજળીની જેમ ઝડપી છે</translation>
-<translation id="2171928016777725844">Brave ને તમારું ડિફૉલ્ટ બ્રાઉઝર બનાવો!</translation>
-<translation id="7136694880210472378">ડિફૉલ્ટ બનાવો</translation>
-<translation id="4250680216510889253">નહીં</translation>
 <translation id="8826007068782654809">તમારો આભાર</translation>
 <translation id="6665366815203065060">તમે હમણાં જ એક ટીપ મોકલી છે:</translation>
 <translation id="5441565662498481293">તમે ટીપને આપમેળે આમને મોકલી રહ્યાં છો:</translation>
@@ -208,6 +204,7 @@
 <translation id="1165039591588034296">ભૂલ</translation>
 <translation id="1177863135347784049">કસ્ટમ</translation>
 <translation id="7791543448312431591">ઉમેરો</translation>
+<translation id="4250680216510889253">નહીં</translation>
 <translation id="2653659639078652383">સબમિટ કરો</translation>
 <translation id="2804710924397009224">Brave પુરસ્કારો ચિહ્ન છુપાવો</translation>
 <translation id="5040262127954254034">ગોપનીયતા</translation>

@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">এটি হল আপনার প্রথম Brave বিজ্ঞাপন। আরও জানতে আলতো চাপুন।</translation>
 <translation id="2070991379950719711">Brave Rewards ব্যবহার শুরু করা হল</translation>
 <translation id="48520986898237073">ওয়ালেটে চালিয়ে যান</translation>
-<translation id="3570367516044491911">ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
+<translation id="6800338374677644736">ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
 <translation id="19715420010996093">Brave ব্রাউজার নির্বাচন করুন এবং 'সর্বদা' ট্যাপ করুন</translation>
 <translation id="3546439402724649282">ইতিমধ্যেই আপনার ডিফল্ট ব্রাউজার হিসাবে Brave সেট করা হয়েছে।</translation>
 <translation id="8389661903259423907">আপনি ইতিমধ্যেই একটি ডিফল্ট ব্রাউজার সেট করেছেন। আপনি আপনার অ্যাপ সেটিংসে ডিফল্ট ব্রাউজার পরিবর্তন করতে পারেন।</translation>
-<translation id="7091885296442320770">Brave দ্রুত প্রদর্শিত হয়</translation>
-<translation id="2171928016777725844">Brave-কে আপনার ডিফল্ট ব্রাউজার করে তুলুন!</translation>
-<translation id="7136694880210472378">ডিফল্ট করুন</translation>
-<translation id="4250680216510889253">না</translation>
 <translation id="8826007068782654809">আপনাকে ধন্যবাদ</translation>
 <translation id="6665366815203065060">আপনি এইমাত্র একটি বখশিশ পাঠিয়েছেন একে:</translation>
 <translation id="5441565662498481293">আপনি স্বয়ংক্রিয়ভাবে একটি বখশিশ পাঠিয়েছেন একে:</translation>
@@ -525,9 +521,9 @@
 <translation id="6478996494082389936">ব্যক্তিগত পণ্য বিশ্লেষণ।</translation>
 <translation id="5187052478998910855">পুরষ্কারে একটি রিফ্রেশার দরকার?</translation>
 <translation id="8622329973403382303">পুরষ্কার রকস্টার হিসাবে ইতিহাসে এটি কীভাবে নামতে সাহায্য করে তা ব্রাশ আপ করার জন্য দ্রুত ভ্রমণ করুন!</translation>
-<translation id="8401711613788729448">আপনার গোপনীয়তা রক্ষা করতে Brave এর সাথে সমস্ত লিঙ্ক খুলুন</translation>
-<translation id="3184805785843994538">Brave Shields ট্র্যাকারদের &amp;  বিজ্ঞাপন টি ব্লক করে, ডেটা সাশ্রয় করে এবং আপনি যে কোনও সাইটে যান আপনার সময় সাশ্রয় করে।</translation>
-<translation id="8722651357687610395">Brave কে ডিফল্ট হিসাবে সেট করুন</translation>
+<translation id="7625138338483121345">আপনার গোপনীয়তা রক্ষা করতে Brave এর সাথে সমস্ত লিঙ্ক খুলুন</translation>
+<translation id="4511485286950743564">Brave Shields ট্র্যাকারদের &amp;  বিজ্ঞাপন টি ব্লক করে, ডেটা সাশ্রয় করে এবং আপনি যে কোনও সাইটে যান আপনার সময় সাশ্রয় করে।</translation>
+<translation id="9218430445555521422">Brave কে ডিফল্ট হিসাবে সেট করুন</translation>
 <translation id="3479552764303398839">এখনই নয়</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@
 <translation id="283071225285270357">আপনার রিকভারি বাক্যাংশ লিখুন</translation>
 <translation id="3943857333388298514">পেস্ট করুন</translation>
 <translation id="3331452756822160641">নতুন পাসওয়ার্ড</translation>
-<translation id="4854035885012188958">আমি লিগেসি Brave ক্রিপ্টো ওয়ালেট থেকে রিস্টোর করছি</translation>
+<translation id="4359319875297001084">আমি লিগেসি Brave ক্রিপ্টো ওয়ালেট থেকে রিস্টোর করছি</translation>
 <translation id="2339124864228588937">রিকভারি বাক্যাংশ যাচাই করুন</translation>
 <translation id="3747079125031086337">আপনার পুনরুদ্ধারের পদবন্ধটির শব্দগুলি তাদের সঠিক ক্রমে নির্বাচন করুন।</translation>
 <translation id="6518133107902771759">যাচাই করুন</translation>
@@ -806,6 +802,7 @@
 <translation id="4351811224047421378">নির্ভুলতার দশমিক</translation>
 <translation id="8614026298974065517">কাস্টম সম্পদ সরান</translation>
 <translation id="4378941981362528553">আপনি কি <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) টোকেন সরাতে চান?</translation>
+<translation id="4250680216510889253">না</translation>
 <translation id="8971278306757462297">প্রাপ্ত ঠিকানাটি আপনার নিজের ঠিকানা</translation>
 <translation id="749944179568745958">একটি বৈধ ETH ঠিকানা নয়</translation>
 <translation id="3506416339268164412">প্রাপ্তির ঠিকানাটি একটি টোকেনের চুক্তির ঠিকানা</translation>
@@ -839,8 +836,8 @@
 <translation id="665660671251623018">চেইনের মুদ্রার দশমিক</translation>
 <translation id="182619028057179895">অকার্যকর ফরম্যাট, মুদ্রার দশমিক সংখ্যাটি হলো একটি ধনাত্মক সংখ্যা</translation>
 <translation id="2978054488731497946">মুদ্রার দশমিক লিখুন</translation>
-<translation id="3047726704186619366">আইকন URLগুলো</translation>
-<translation id="2487558607408469181">এক্সপ্লোরার URLগুলো ব্লক করুন</translation>
+<translation id="7642841516562576649">আইকন URLগুলো</translation>
+<translation id="4693057234255364395">এক্সপ্লোরার URLগুলো ব্লক করুন</translation>
 <translation id="7059127752542505809">URL লিখুন</translation>
 <translation id="2156993118928861787">অবৈধ ঠিকানা</translation>
 <translation id="6889920539620318793">অ্যাক্টিভ হিসেবে সেট করুন</translation>
