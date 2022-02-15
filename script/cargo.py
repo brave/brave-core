@@ -34,6 +34,8 @@ def run_cargo(command, args):
         toolchains_path = os.path.abspath(
             os.path.join(rustup_path, 'toolchains', args.toolchain, "bin"))
         env['PATH'] = toolchains_path + os.pathsep + env['PATH']
+        llvm_ar = os.path.join(toolchains_path, 'llvm-ar')
+        env['AR'] = llvm_ar
 
     if args.mac_deployment_target is not None:
         env['MACOSX_DEPLOYMENT_TARGET'] = args.mac_deployment_target
