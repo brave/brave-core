@@ -98,7 +98,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/listeners/OnNextPage.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/listeners/OnWalletListItemClick.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/modal/BraveWalletPanel.java",
-  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/modal/DappsDialog.java",
+  "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/modal/DAppsDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/TxNonSwipeableViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/model/WalletListItemModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/crypto_wallet/observers/ApprovedTxObserver.java",

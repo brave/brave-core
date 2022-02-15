@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.modal;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Window;
@@ -26,22 +27,25 @@ import org.chromium.chrome.browser.crypto_wallet.observers.KeyringServiceObserve
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 
-public class DappsDialog extends Dialog implements ConnectionErrorHandler, KeyringServiceObserver {
-    public static final String TAG_FRAGMENT = DappsDialog.class.getName();
+public class DAppsDialog extends Dialog implements ConnectionErrorHandler, KeyringServiceObserver {
+    public static final String TAG_FRAGMENT = DAppsDialog.class.getName();
 
     private Button mbtUnlock;
     private boolean mShowOnboarding;
     private KeyringService mKeyringService;
-    private Dialog mDialog;
+    private DialogInterface.OnDismissListener mOnDismissListener;
     private boolean mDismissed;
 
-    public DappsDialog(@NonNull Context context) {
+    public DAppsDialog(
+            @NonNull Context context, DialogInterface.OnDismissListener onDismissListener) {
         super(context, R.style.BraveWalletDialog);
         mDismissed = false;
+        mOnDismissListener = onDismissListener;
     }
 
-    public static DappsDialog newInstance(Context context) {
-        return new DappsDialog(context);
+    public static DAppsDialog newInstance(
+            Context context, DialogInterface.OnDismissListener onDismissListener) {
+        return new DAppsDialog(context, onDismissListener);
     }
 
     public void showOnboarding(boolean showOnboarding) {
@@ -54,6 +58,7 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dapps_bottom_sheet);
+        initKeyringService();
 
         Window window = getWindow();
         WindowManager.LayoutParams wlp = window.getAttributes();
@@ -63,7 +68,6 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
 
         TextView tvDappUrl = findViewById(R.id.tv_dapp_url);
         mbtUnlock = findViewById(R.id.unlock);
-        initKeyringService();
 
         tvDappUrl.setText(getCurrentHostHttpAddress());
         updateView();
@@ -98,6 +102,9 @@ public class DappsDialog extends Dialog implements ConnectionErrorHandler, Keyri
             mKeyringService = null;
         }
         mDismissed = true;
+        if (mOnDismissListener != null) {
+            mOnDismissListener.onDismiss(this);
+        }
     }
 
     private void updateView() {

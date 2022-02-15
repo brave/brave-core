@@ -1017,6 +1017,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         }
     }
 
+    public void dismissWalletPanelOrDialog() {
+        BraveToolbarLayoutImpl layout = findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.dismissWalletPanelOrDialog();
+        }
+    }
+
     public void openRewardsPanel() {
         BraveToolbarLayoutImpl layout = (BraveToolbarLayoutImpl) findViewById(R.id.toolbar);
         assert layout != null;
@@ -1138,6 +1146,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
                  requestCode == USER_WALLET_ACTIVITY_REQUEST_CODE ||
                  requestCode == SITE_BANNER_REQUEST_CODE) ) {
             dismissRewardsPanel();
+            dismissWalletPanelOrDialog();
             if (data != null) {
                 String open_url = data.getStringExtra(BraveActivity.OPEN_URL);
                 if (!TextUtils.isEmpty(open_url)) {
