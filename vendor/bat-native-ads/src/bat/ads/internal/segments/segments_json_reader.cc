@@ -6,7 +6,6 @@
 #include "bat/ads/internal/segments/segments_json_reader.h"
 
 #include "base/json/json_reader.h"
-#include "base/notreached.h"
 #include "base/values.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -14,26 +13,26 @@ namespace ads {
 namespace JSONReader {
 
 SegmentList ReadSegments(const std::string& json) {
-  SegmentList segments;
-
   absl::optional<base::Value> value = base::JSONReader::Read(json);
   if (!value) {
-    return segments;
+    return {};
   }
 
   base::ListValue* list = nullptr;
   if (!value->GetAsList(&list)) {
-    return segments;
+    return {};
   }
 
+  SegmentList segments;
   for (const auto& element : list->GetList()) {
     if (!element.is_string()) {
-      NOTREACHED();
-      continue;
+      return {};
     }
 
     const std::string segment = element.GetString();
-    DCHECK(!segment.empty());
+    if (segment.empty()) {
+      return {};
+    }
 
     segments.push_back(segment);
   }
