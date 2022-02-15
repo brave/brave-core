@@ -47,10 +47,9 @@ async def ProcessBinary(semaphore, options, binary):
         module_line = None
         with open(sym_temp_output) as f:
             MODULE_PATTERN = r"MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)"
-            if module_line == None:
-                module_line = re.match(MODULE_PATTERN, f.readline())
-        if module_line == None:
-            return False, "No module name found for " + binary
+            module_line = re.match(MODULE_PATTERN, f.readline())
+            if not module_line:
+                return False, "No module name found for " + binary
 
         output_path = os.path.join(options.symbols_dir, module_line.group(2),
                                    module_line.group(1))
@@ -93,7 +92,7 @@ async def GenerateSymbols(options, binaries):
     return True
 
 
-def main():
+async def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('directories',
                         nargs='+',
@@ -127,10 +126,9 @@ def main():
         pdbs += glob.glob(os.path.join(directory, '*.exe.pdb'))
         pdbs += glob.glob(os.path.join(directory, '*.dll.pdb'))
 
-    result = asyncio.run(GenerateSymbols(args, pdbs))
-
-    return 1 if result else 0
+    result = await GenerateSymbols(args, pdbs)
+    sys.exit(0 if result else 1)
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    asyncio.run(main())
