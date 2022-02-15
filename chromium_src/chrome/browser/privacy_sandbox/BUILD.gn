@@ -10,13 +10,11 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//chrome/browser",
-    "//chrome/browser/ui/webui/federated_learning:mojo_bindings",
     "//chrome/common:chrome_features",
     "//chrome/test:test_support",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/content_settings/core/test:test_support",
-    "//components/federated_learning",
     "//components/policy/core/common:test_support",
     "//components/privacy_sandbox:privacy_sandbox",
     "//components/privacy_sandbox:privacy_sandbox_prefs",
