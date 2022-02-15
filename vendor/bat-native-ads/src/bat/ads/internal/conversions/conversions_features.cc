@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/conversions/conversions_features.h"
 
+#include "base/metrics/field_trial_params.h"
 #include "bat/ads/internal/features/features_util.h"
 
 namespace ads {

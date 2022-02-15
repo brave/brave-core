@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SEARCH_COMMON_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace brave_search {
 namespace features {

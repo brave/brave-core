@@ -6,6 +6,7 @@
 #include "bat/ads/internal/features/features_util.h"
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 #include "base/time/time_delta_from_string.h"
 #include "bat/ads/internal/logging.h"
