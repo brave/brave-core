@@ -119,6 +119,8 @@ class NTPBackgroundImagesService {
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
                            BasicSuperReferralDataTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BackgroundImagesTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           GetCurrentWallpaperTest);
 
   void OnSponsoredComponentReady(bool is_super_referral,
                                  const base::FilePath& installed_dir);
