@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.crypto_wallet.modal;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -23,12 +24,13 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
-public class BraveWalletPanel {
+public class BraveWalletPanel implements DialogInterface {
     private static final String TAG = "BraveWalletPanel";
     private final View mAnchorViewHost;
     private final PopupWindow mPopupWindow;
     private ViewGroup mPopupView;
     private final ChromeTabbedActivity mActivity;
+    private DialogInterface.OnDismissListener mOnDismissListener;
 
     public BraveWalletPanel(View mAnchorViewHost) {
         this.mAnchorViewHost = mAnchorViewHost;
@@ -50,10 +52,18 @@ public class BraveWalletPanel {
         });
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
-            public void onDismiss() {}
+            public void onDismiss() {
+                dismiss();
+            }
         });
         mActivity = BraveRewardsHelper.getChromeTabbedActivity();
         setUpViews();
+    }
+
+    public BraveWalletPanel(
+            View anchorViewHost, DialogInterface.OnDismissListener onDismissListener) {
+        this(anchorViewHost);
+        mOnDismissListener = onDismissListener;
     }
 
     public void showLikePopDownMenu() {
@@ -70,8 +80,21 @@ public class BraveWalletPanel {
         mPopupWindow.showAsDropDown(mAnchorViewHost, 0, 0);
     }
 
+    @Override
+    public void cancel() {
+        dismiss();
+    }
+
+    @Override
     public void dismiss() {
         mPopupWindow.dismiss();
+        if (mOnDismissListener != null) {
+            mOnDismissListener.onDismiss(this);
+        }
+    }
+
+    public boolean isShowing() {
+        return mPopupWindow.isShowing();
     }
 
     private void setUpViews() {
@@ -84,5 +107,7 @@ public class BraveWalletPanel {
         mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
 
         mPopupWindow.setContentView(mPopupView);
+        // TODO: show connected or disconnected account page
+        // TODO: show selected network page
     }
 }
