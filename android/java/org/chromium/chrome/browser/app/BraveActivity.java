@@ -520,9 +520,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         BraveSyncInformers.show();
         BraveAndroidSyncDisabledInformer.showInformers();
 
-        // if (!OnboardingPrefManager.getInstance().isBitflyerPromoNotificationShown()) {
-        RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_2);
-        // }
+        String countryCode = Locale.getDefault().getCountry();
+        if (!OnboardingPrefManager.getInstance().isBitflyerPromoNotificationShown()
+                && countryCode.equals("JP")) {
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_2);
+            OnboardingPrefManager.getInstance().setBitflyerPromoNotificationShown(true);
+        }
 
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
                 && PackageUtils.isFirstInstall(this)) {
@@ -1089,6 +1092,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         return null;
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        checkForNotificationData();
     }
 
     @Override

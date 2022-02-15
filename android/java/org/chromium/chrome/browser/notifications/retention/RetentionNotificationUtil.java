@@ -58,7 +58,8 @@ public class RetentionNotificationUtil {
     private static Map<String, RetentionNotification> mNotificationMap = new HashMap<String, RetentionNotification>() {
         {
             put(HOUR_2,
-                    new RetentionNotification(2, 2, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
+                    new RetentionNotification(2, 2 * 60,
+                            BraveChannelDefinitions.ChannelId.BRAVE_BROWSER,
                             ContextUtils.getApplicationContext().getResources().getString(
                                     R.string.notification_bitflyer_promo_title)));
             put(HOUR_3,
@@ -111,13 +112,17 @@ public class RetentionNotificationUtil {
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText));
         builder.setSmallIcon(R.drawable.ic_chrome);
         builder.setAutoCancel(true);
-        if (notificationType.equals(DEFAULT_BROWSER_1)
-                || notificationType.equals(DEFAULT_BROWSER_2)
-                || notificationType.equals(DEFAULT_BROWSER_3)) {
-            builder.setContentIntent(BraveSetDefaultBrowserNotificationService.getDefaultAppSettingsIntent(context));
-        } else {
-            builder.setContentIntent(getRetentionNotificationActionIntent(context, notificationType));
-        }
+        Intent launchIntent =
+                context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        launchIntent.putExtra(NOTIFICATION_TYPE, notificationType);
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context,
+                retentionNotification.getNotificationId(), launchIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+                        | IntentUtils.getPendingIntentMutabilityFlag(true));
+
+        builder.setContentIntent(resultPendingIntent);
         return builder.build();
     }
 
