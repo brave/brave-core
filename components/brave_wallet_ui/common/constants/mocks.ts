@@ -13,18 +13,20 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
     id: '1',
     fromAddress: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
     txHash: '',
-    txData: {
-      baseData: {
-        to: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
-        value: '0x01706a99bf354000',
-        data: new Uint8Array(0),
-        nonce: '0x03',
-        gasLimit: '0x5208',
-        gasPrice: '0x22ecb25c00'
-      },
-      chainId: '1337',
-      maxPriorityFeePerGas: '',
-      maxFeePerGas: ''
+    txDataUnion: {
+      ethTxData1559: {
+        baseData: {
+          to: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
+          value: '0x01706a99bf354000',
+          data: new Uint8Array(0),
+          nonce: '0x03',
+          gasLimit: '0x5208',
+          gasPrice: '0x22ecb25c00'
+        },
+        chainId: '1337',
+        maxPriorityFeePerGas: '',
+        maxFeePerGas: ''
+      }
     },
     txStatus: BraveWallet.TransactionStatus.Approved,
     txType: BraveWallet.TransactionType.Other,

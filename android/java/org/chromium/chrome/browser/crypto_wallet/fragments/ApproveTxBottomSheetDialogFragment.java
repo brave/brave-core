@@ -243,15 +243,17 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                                         decimals = mChainDecimals;
                                     }
                                     if (token.contractAddress.toLowerCase(Locale.getDefault())
-                                                    .equals(mTxInfo.txData.baseData.to.toLowerCase(
-                                                            Locale.getDefault()))) {
+                                                    .equals(mTxInfo.txDataUnion.getEthTxData1559()
+                                                                    .baseData.to.toLowerCase(
+                                                                            Locale.getDefault()))) {
                                         fillAssetDependentControls(symbol, view, decimals);
                                         break;
                                     }
                                 }
                             });
                 } else {
-                    if (mTxInfo.txData.baseData.to.toLowerCase(Locale.getDefault())
+                    if (mTxInfo.txDataUnion.getEthTxData1559()
+                                    .baseData.to.toLowerCase(Locale.getDefault())
                                     .equals(Utils.SWAP_EXCHANGE_PROXY.toLowerCase(
                                             Locale.getDefault()))) {
                         txType.setText(getResources().getString(R.string.swap));
@@ -281,8 +283,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     private void fillAssetDependentControls(String asset, View view, int decimals) {
-        String valueToConvert = mTxInfo.txData.baseData.value;
-        String to = mTxInfo.txData.baseData.to;
+        String valueToConvert = mTxInfo.txDataUnion.getEthTxData1559().baseData.value;
+        String to = mTxInfo.txDataUnion.getEthTxData1559().baseData.to;
         if (mTxInfo.txType == TransactionType.ERC20_TRANSFER && mTxInfo.txArgs.length > 1) {
             valueToConvert = mTxInfo.txArgs[1];
             to = mTxInfo.txArgs[0];
@@ -306,7 +308,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
                     if (values.length != 0) {
                         valueFiat = values[0].price;
                     }
-                    String valueAsset = mTxInfo.txData.baseData.value;
+                    String valueAsset = mTxInfo.txDataUnion.getEthTxData1559().baseData.value;
                     if (mTxInfo.txType == TransactionType.ERC20_TRANSFER
                             && mTxInfo.txArgs.length > 1) {
                         valueAsset = mTxInfo.txArgs[1];

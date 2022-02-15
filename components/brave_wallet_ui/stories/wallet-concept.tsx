@@ -56,19 +56,24 @@ export const transactionDummyData: AccountTransactions = {
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-      txData: {
-        baseData: {
-          data: Array.from(new Uint8Array(24)),
-          gasLimit: '0xfde8',
-          gasPrice: '0x20000000000',
-          nonce: '0x1',
-          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-          value: '0xb1a2bc2ec50000'
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec50000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
         },
-        chainId: '',
-        maxFeePerGas: '',
-        maxPriorityFeePerGas: '',
-        gasEstimation: undefined
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 3,
@@ -82,19 +87,24 @@ export const transactionDummyData: AccountTransactions = {
     {
       fromAddress: '0x7843981e0b96135073b26043ea24c950d4ec385b',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-      txData: {
-        baseData: {
-          data: Array.from(new Uint8Array(24)),
-          gasLimit: '0xfde8',
-          gasPrice: '0x20000000000',
-          nonce: '0x1',
-          to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
-          value: '0xb1a2bc2ec90000'
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
         },
-        chainId: '',
-        maxFeePerGas: '',
-        maxPriorityFeePerGas: '',
-        gasEstimation: undefined
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 4,
@@ -108,19 +118,24 @@ export const transactionDummyData: AccountTransactions = {
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-      txData: {
-        baseData: {
-          data: Array.from(new Uint8Array(24)),
-          gasLimit: '0xfde8',
-          gasPrice: '0x20000000000',
-          nonce: '0x1',
-          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-          value: '0xb1a2bc2ec90000'
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
         },
-        chainId: '',
-        maxFeePerGas: '',
-        maxPriorityFeePerGas: '',
-        gasEstimation: undefined
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 2,
@@ -134,19 +149,24 @@ export const transactionDummyData: AccountTransactions = {
     {
       fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-      txData: {
-        baseData: {
-          data: Array.from(new Uint8Array(24)),
-          gasLimit: '0xfde8',
-          gasPrice: '0x20000000000',
-          nonce: '0x1',
-          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-          value: '0xb1a2bc2ec90000'
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
         },
-        chainId: '',
-        maxFeePerGas: '',
-        maxPriorityFeePerGas: '',
-        gasEstimation: undefined
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 1,
@@ -162,19 +182,24 @@ export const transactionDummyData: AccountTransactions = {
     {
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-      txData: {
-        baseData: {
-          data: Array.from(new Uint8Array(24)),
-          gasLimit: '0xfde8',
-          gasPrice: '0x20000000000',
-          nonce: '0x1',
-          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-          value: '0xb1a2bc2ec90000'
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
         },
-        chainId: '',
-        maxFeePerGas: '',
-        maxPriorityFeePerGas: '',
-        gasEstimation: undefined
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 0,
@@ -188,19 +213,24 @@ export const transactionDummyData: AccountTransactions = {
     {
       fromAddress: '0x73A29A1da97149722eB09c526E4eAd698895bDCf',
       id: '13cf4882-d3c0-44cd-a8c2-aca1fcf85c4a',
-      txData: {
-        baseData: {
-          data: Array.from(new Uint8Array(24)),
-          gasLimit: '0xfde8',
-          gasPrice: '0x20000000000',
-          nonce: '0x1',
-          to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
-          value: '0xb1a2bc2ec90000'
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            data: Array.from(new Uint8Array(24)),
+            gasLimit: '0xfde8',
+            gasPrice: '0x20000000000',
+            nonce: '0x1',
+            to: '0xcd3a3f8e0e4bdc174c9e2e63b4c22e15a7f7f92a',
+            value: '0xb1a2bc2ec90000'
+          },
+          chainId: '',
+          maxFeePerGas: '',
+          maxPriorityFeePerGas: '',
+          gasEstimation: undefined
         },
-        chainId: '',
-        maxFeePerGas: '',
-        maxPriorityFeePerGas: '',
-        gasEstimation: undefined
+        ethTxData: undefined,
+        solanaTxData: undefined,
+        filTxData: undefined
       },
       txHash: '0x55732e30af74a450cd438be2a02c765ea62cb4ec8dda5cb12ed8dc5d21ac15d3',
       txStatus: 5,

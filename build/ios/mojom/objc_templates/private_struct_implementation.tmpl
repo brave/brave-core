@@ -49,7 +49,7 @@
 {
   if ((self = [super init])) {
 {%- for field in struct.fields %}
-    self.{{field.name|objc_property_formatter}} = {{field|cpp_to_objc_assign('obj')}};
+    self.{{field.name|objc_property_formatter}} = {{field|cpp_to_objc_assign('obj.')}};
 {%- endfor %}
   }
   return self;

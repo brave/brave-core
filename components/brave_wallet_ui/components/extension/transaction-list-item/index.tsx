@@ -132,7 +132,7 @@ const TransactionsListItem = (props: Props) => {
       }
 
       // FIXME: Add as new TransactionType on the service side.
-      case transaction.txData.baseData.to.toLowerCase() === SwapExchangeProxy: {
+      case transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy: {
         return (
           <>
             <DetailRow>

@@ -108,7 +108,7 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
 
   return mojom::TransactionInfo::New(
       meta.id, meta.from.ToChecksumAddress(), meta.tx_hash,
-      mojom::TxData1559::New(
+      mojom::TxDataUnion::NewEthTxData1559(mojom::TxData1559::New(
           mojom::TxData::New(
               meta.tx->nonce() ? Uint256ValueToHex(meta.tx->nonce().value())
                                : "",
@@ -117,7 +117,7 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
               meta.tx->to().ToChecksumAddress(),
               Uint256ValueToHex(meta.tx->value()), meta.tx->data()),
           chain_id, max_priority_fee_per_gas, max_fee_per_gas,
-          std::move(gas_estimation_1559_ptr)),
+          std::move(gas_estimation_1559_ptr))),
       meta.status, tx_type, tx_params, tx_args,
       base::Milliseconds(meta.created_time.ToJavaTime()),
       base::Milliseconds(meta.submitted_time.ToJavaTime()),

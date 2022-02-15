@@ -54,7 +54,10 @@ export async function signTrezorTransaction (
   if (!nonce || !nonce.nonce) {
     return { success: false, error: getLocale('braveWalletApproveTransactionError') }
   }
-  txInfo.txData.baseData.nonce = nonce.nonce
+  if (!txInfo.txDataUnion.ethTxData1559) {
+    return { success: false, error: getLocale('braveWalletApproveTransactionError') }
+  }
+  txInfo.txDataUnion.ethTxData1559.baseData.nonce = nonce.nonce
   const signed = await deviceKeyring.signTransaction(path, txInfo, chainId.chainId)
   if (!signed || !signed.success || !signed.payload) {
     const error = signed.error ? signed.error : getLocale('braveWalletSignOnDeviceError')

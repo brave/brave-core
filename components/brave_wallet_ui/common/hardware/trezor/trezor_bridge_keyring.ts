@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { assert } from 'chrome://resources/js/assert.m.js'
 import { publicToAddress, toChecksumAddress, bufferToHex } from 'ethereumjs-util'
 import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
@@ -164,7 +165,7 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   private prepareTransactionPayload = (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): SignTransactionCommandPayload => {
-    const isEIP1559Transaction = txInfo.txData.maxPriorityFeePerGas !== '' && txInfo.txData.maxFeePerGas !== ''
+    const isEIP1559Transaction = txInfo.txDataUnion.ethTxData1559?.maxPriorityFeePerGas !== '' && txInfo.txDataUnion.ethTxData1559?.maxFeePerGas !== ''
     if (isEIP1559Transaction) {
       return this.createEIP1559TransactionPayload(path, txInfo, chainId)
     }
@@ -172,32 +173,34 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
   }
 
   private createEIP1559TransactionPayload = (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+    assert(txInfo.txDataUnion.ethTxData1559)
     return {
       path: path,
       transaction: {
-        to: txInfo.txData.baseData.to,
-        value: txInfo.txData.baseData.value,
-        data: bufferToHex(Buffer.from(txInfo.txData.baseData.data)).toString(),
+        to: txInfo.txDataUnion.ethTxData1559?.baseData.to ?? '',
+        value: txInfo.txDataUnion.ethTxData1559?.baseData.value ?? '',
+        data: bufferToHex(Buffer.from(txInfo.txDataUnion.ethTxData1559?.baseData.data ?? [])).toString(),
         chainId: parseInt(chainId, 16),
-        nonce: txInfo.txData.baseData.nonce,
-        gasLimit: txInfo.txData.baseData.gasLimit,
-        maxFeePerGas: txInfo.txData.maxFeePerGas,
-        maxPriorityFeePerGas: txInfo.txData.maxPriorityFeePerGas
+        nonce: txInfo.txDataUnion.ethTxData1559?.baseData.nonce ?? '',
+        gasLimit: txInfo.txDataUnion.ethTxData1559?.baseData.gasLimit ?? '',
+        maxFeePerGas: txInfo.txDataUnion.ethTxData1559?.maxFeePerGas ?? '',
+        maxPriorityFeePerGas: txInfo.txDataUnion.ethTxData1559?.maxPriorityFeePerGas ?? ''
       }
     }
   }
 
   private createLegacyTransactionPayload = (path: string, txInfo: BraveWallet.TransactionInfo, chainId: string): SignTransactionCommandPayload => {
+    assert(txInfo.txDataUnion.ethTxData1559)
     return {
       path: path,
       transaction: {
-        to: txInfo.txData.baseData.to,
-        value: txInfo.txData.baseData.value,
-        data: bufferToHex(Buffer.from(txInfo.txData.baseData.data)).toString(),
+        to: txInfo.txDataUnion.ethTxData1559?.baseData.to ?? '',
+        value: txInfo.txDataUnion.ethTxData1559?.baseData.value ?? '',
+        data: bufferToHex(Buffer.from(txInfo.txDataUnion.ethTxData1559?.baseData.data ?? [])).toString(),
         chainId: parseInt(chainId, 16),
-        nonce: txInfo.txData.baseData.nonce,
-        gasLimit: txInfo.txData.baseData.gasLimit,
-        gasPrice: txInfo.txData.baseData.gasPrice
+        nonce: txInfo.txDataUnion.ethTxData1559?.baseData.nonce ?? '',
+        gasLimit: txInfo.txDataUnion.ethTxData1559?.baseData.gasLimit ?? '',
+        gasPrice: txInfo.txDataUnion.ethTxData1559?.baseData.gasPrice ?? ''
       }
     }
   }

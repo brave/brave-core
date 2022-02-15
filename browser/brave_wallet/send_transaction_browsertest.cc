@@ -71,7 +71,9 @@ class TestEthTxServiceObserver
   TestEthTxServiceObserver() {}
 
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx) override {
-    EXPECT_EQ(tx->tx_data->chain_id.empty(), !expect_eip1559_tx_);
+    ASSERT_TRUE(tx->tx_data_union->is_eth_tx_data_1559());
+    EXPECT_EQ(tx->tx_data_union->get_eth_tx_data_1559()->chain_id.empty(),
+              !expect_eip1559_tx_);
     run_loop_new_unapproved_->Quit();
   }
 
@@ -341,7 +343,10 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
-    EXPECT_TRUE(infos[0]->tx_data->base_data->nonce.empty());
+    ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
+    EXPECT_TRUE(infos[0]
+                    ->tx_data_union->get_eth_tx_data_1559()
+                    ->base_data->nonce.empty());
 
     ApproveTransaction(infos[0]->id);
 
@@ -351,7 +356,9 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Submitted, infos[0]->tx_status);
     EXPECT_FALSE(infos[0]->tx_hash.empty());
-    EXPECT_EQ(infos[0]->tx_data->base_data->nonce, "0x9604");
+    ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
+    EXPECT_EQ(infos[0]->tx_data_union->get_eth_tx_data_1559()->base_data->nonce,
+              "0x9604");
 
     WaitForSendTransactionResultReady();
     EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionResult()",
@@ -387,7 +394,10 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Unapproved, infos[0]->tx_status);
-    EXPECT_TRUE(infos[0]->tx_data->base_data->nonce.empty());
+    ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
+    EXPECT_TRUE(infos[0]
+                    ->tx_data_union->get_eth_tx_data_1559()
+                    ->base_data->nonce.empty());
 
     RejectTransaction(infos[0]->id);
 
@@ -397,7 +407,10 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
         base::EqualsCaseInsensitiveASCII(from(), infos[0]->from_address));
     EXPECT_EQ(mojom::TransactionStatus::Rejected, infos[0]->tx_status);
     EXPECT_TRUE(infos[0]->tx_hash.empty());
-    EXPECT_TRUE(infos[0]->tx_data->base_data->nonce.empty());
+    ASSERT_TRUE(infos[0]->tx_data_union->is_eth_tx_data_1559());
+    EXPECT_TRUE(infos[0]
+                    ->tx_data_union->get_eth_tx_data_1559()
+                    ->base_data->nonce.empty());
 
     WaitForSendTransactionResultReady();
     EXPECT_EQ(EvalJs(web_contents(), "getSendTransactionError()",

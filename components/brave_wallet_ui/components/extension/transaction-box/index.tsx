@@ -14,14 +14,11 @@ const txKeys = Object.keys(BraveWallet.TransactionType)
 const TransactionDetailBox = (props: Props) => {
   const { transactionInfo } = props
   const {
-    txData: {
-      baseData: { data }
-    },
     txArgs,
     txParams,
     txType
   } = transactionInfo
-
+  const data = transactionInfo.txDataUnion.ethTxData1559?.baseData.data || []
   return (
     <>
       {data.length === 0 ? (

@@ -30,6 +30,10 @@
 {%    include "private_struct_implementation.tmpl" %}
 {%- endfor %}
 
+{%- for union in unions %}
+{%    include "private_union_implementation.tmpl" %}
+{%- endfor %}
+
 {%- for interface in interfaces %}
 {%    include "private_interface_implementation.tmpl" %}
 {%- endfor %}
