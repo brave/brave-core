@@ -79,6 +79,9 @@ SegmentList GetEligibleSegments() {
 EpsilonGreedyBanditArmMap GetEligibleArms(
     const EpsilonGreedyBanditArmMap& arms) {
   const SegmentList eligible_segments = GetEligibleSegments();
+  if (eligible_segments.empty()) {
+    return {};
+  }
 
   EpsilonGreedyBanditArmMap eligible_arms;
 
@@ -119,7 +122,7 @@ ArmList GetTopArms(const ArmBucketList& buckets, const size_t count) {
     ArmList arms = bucket.second;
     if (arms.size() > available_arms) {
       // Sample without replacement
-      base::RandomShuffle(begin(arms), end(arms));
+      base::RandomShuffle(std::begin(arms), std::end(arms));
       arms.resize(available_arms);
     }
 
@@ -136,8 +139,10 @@ SegmentList ExploreSegments(const EpsilonGreedyBanditArmMap& arms) {
     segments.push_back(arm.first);
   }
 
-  base::RandomShuffle(begin(segments), end(segments));
-  segments.resize(kTopArmCount);
+  if (segments.size() > kTopArmCount) {
+    base::RandomShuffle(std::begin(segments), std::end(segments));
+    segments.resize(kTopArmCount);
+  }
 
   BLOG(2, "Exploring epsilon greedy bandit segments:");
   for (const auto& segment : segments) {
