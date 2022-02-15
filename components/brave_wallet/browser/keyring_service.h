@@ -254,7 +254,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportFilecoinAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateEncryptors);
   friend class BraveWalletProviderImplUnitTest;
-  friend class EthTxServiceUnitTest;
+  friend class EthTxManagerUnitTest;
 
   void AddAccountForKeyring(const std::string& keyring_id,
                             const std::string& account_name);

@@ -11,10 +11,10 @@
 #include "base/files/file_path.h"
 #include "brave/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/swap_service_factory.h"
+#include "brave/browser/brave_wallet/tx_service_factory.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_common_ui.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/common/webui_url_constants.h"
@@ -22,10 +22,10 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/eth_tx_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/swap_service.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/sanitized_image_source.h"
@@ -86,8 +86,9 @@ void WalletPageUI::CreatePageHandler(
         keyring_service_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BlockchainRegistry>
         blockchain_registry_receiver,
-    mojo::PendingReceiver<brave_wallet::mojom::EthTxService>
-        eth_tx_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::TxService> tx_service_receiver,
+    mojo::PendingReceiver<brave_wallet::mojom::EthTxManagerProxy>
+        eth_tx_manager_proxy_receiver,
     mojo::PendingReceiver<brave_wallet::mojom::BraveWalletService>
         brave_wallet_service_receiver) {
   DCHECK(page);
@@ -107,8 +108,10 @@ void WalletPageUI::CreatePageHandler(
       profile, std::move(asset_ratio_service_receiver));
   brave_wallet::KeyringServiceFactory::BindForContext(
       profile, std::move(keyring_service_receiver));
-  brave_wallet::EthTxServiceFactory::BindForContext(
-      profile, std::move(eth_tx_service_receiver));
+  brave_wallet::TxServiceFactory::BindForContext(
+      profile, std::move(tx_service_receiver));
+  brave_wallet::TxServiceFactory::BindEthTxManagerProxyForContext(
+      profile, std::move(eth_tx_manager_proxy_receiver));
   brave_wallet::BraveWalletServiceFactory::BindForContext(
       profile, std::move(brave_wallet_service_receiver));
 

@@ -8,10 +8,10 @@
 #include "brave/ios/browser/api/brave_wallet/brave_wallet.mojom.objc+private.h"
 #include "brave/ios/browser/brave_wallet/asset_ratio_service_factory.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/ios/browser/brave_wallet/eth_tx_service_factory.h"
 #include "brave/ios/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/ios/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/ios/browser/brave_wallet/swap_service_factory.h"
+#include "brave/ios/browser/brave_wallet/tx_service_factory.h"
 #include "brave/ios/browser/keyed_service/keyed_service_factory_wrapper+private.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 
@@ -43,15 +43,28 @@
 }
 @end
 
-@implementation BraveWalletEthTxServiceFactory
+@implementation BraveWalletTxServiceFactory
 + (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
   auto service =
-      brave_wallet::EthTxServiceFactory::GetForBrowserState(browserState);
+      brave_wallet::TxServiceFactory::GetForBrowserState(browserState);
   if (!service) {
     return nil;
   }
-  return [[BraveWalletEthTxServiceMojoImpl alloc]
-      initWithEthTxService:std::move(service)];
+  return [[BraveWalletTxServiceMojoImpl alloc]
+      initWithTxService:std::move(service)];
+}
+@end
+
+@implementation BraveWalletEthTxManagerProxyFactory
++ (nullable id)serviceForBrowserState:(ChromeBrowserState*)browserState {
+  auto proxy =
+      brave_wallet::TxServiceFactory::GetEthTxManagerProxyForBrowserState(
+          browserState);
+  if (!proxy) {
+    return nil;
+  }
+  return [[BraveWalletEthTxManagerProxyMojoImpl alloc]
+      initWithEthTxManagerProxy:std::move(proxy)];
 }
 @end
 

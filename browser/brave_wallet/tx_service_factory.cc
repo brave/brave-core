@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/eth_tx_service_factory.h"
+#include "brave/browser/brave_wallet/tx_service_factory.h"
 
 #include <memory>
 #include <utility>
@@ -13,8 +13,7 @@
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/eth_tx_service.h"
-#include "brave/components/brave_wallet/factory/eth_tx_service_factory_helper.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/user_prefs/user_prefs.h"
@@ -24,63 +23,84 @@
 namespace brave_wallet {
 
 // static
-EthTxServiceFactory* EthTxServiceFactory::GetInstance() {
-  return base::Singleton<EthTxServiceFactory>::get();
+TxServiceFactory* TxServiceFactory::GetInstance() {
+  return base::Singleton<TxServiceFactory>::get();
 }
 
 // static
-mojo::PendingRemote<mojom::EthTxService> EthTxServiceFactory::GetForContext(
+mojo::PendingRemote<mojom::TxService> TxServiceFactory::GetForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
-    return mojo::PendingRemote<mojom::EthTxService>();
+    return mojo::PendingRemote<mojom::TxService>();
   }
 
-  return static_cast<EthTxService*>(
+  return static_cast<TxService*>(
              GetInstance()->GetServiceForBrowserContext(context, true))
       ->MakeRemote();
 }
 
 // static
-EthTxService* EthTxServiceFactory::GetServiceForContext(
+mojo::PendingRemote<mojom::EthTxManagerProxy>
+TxServiceFactory::GetEthTxManagerProxyForContext(
+    content::BrowserContext* context) {
+  if (!IsAllowedForContext(context)) {
+    return mojo::PendingRemote<mojom::EthTxManagerProxy>();
+  }
+
+  return static_cast<TxService*>(
+             GetInstance()->GetServiceForBrowserContext(context, true))
+      ->MakeEthTxManagerProxyRemote();
+}
+
+// static
+TxService* TxServiceFactory::GetServiceForContext(
     content::BrowserContext* context) {
   if (!IsAllowedForContext(context)) {
     return nullptr;
   }
-  return static_cast<EthTxService*>(
+  return static_cast<TxService*>(
       GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 // static
-void EthTxServiceFactory::BindForContext(
+void TxServiceFactory::BindForContext(
     content::BrowserContext* context,
-    mojo::PendingReceiver<mojom::EthTxService> receiver) {
-  auto* eth_tx_service = EthTxServiceFactory::GetServiceForContext(context);
-  if (eth_tx_service) {
-    eth_tx_service->Bind(std::move(receiver));
+    mojo::PendingReceiver<mojom::TxService> receiver) {
+  auto* tx_service = TxServiceFactory::GetServiceForContext(context);
+  if (tx_service) {
+    tx_service->Bind(std::move(receiver));
   }
 }
 
-EthTxServiceFactory::EthTxServiceFactory()
+// static
+void TxServiceFactory::BindEthTxManagerProxyForContext(
+    content::BrowserContext* context,
+    mojo::PendingReceiver<mojom::EthTxManagerProxy> receiver) {
+  auto* tx_service = TxServiceFactory::GetServiceForContext(context);
+  if (tx_service) {
+    tx_service->BindEthTxManagerProxy(std::move(receiver));
+  }
+}
+
+TxServiceFactory::TxServiceFactory()
     : BrowserContextKeyedServiceFactory(
-          "EthTxService",
+          "TxService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(brave_wallet::JsonRpcServiceFactory::GetInstance());
   DependsOn(brave_wallet::KeyringServiceFactory::GetInstance());
   DependsOn(brave_wallet::AssetRatioServiceFactory::GetInstance());
 }
 
-EthTxServiceFactory::~EthTxServiceFactory() {}
+TxServiceFactory::~TxServiceFactory() {}
 
-KeyedService* EthTxServiceFactory::BuildServiceInstanceFor(
+KeyedService* TxServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return brave_wallet::BuildEthTxService(
-             JsonRpcServiceFactory::GetServiceForContext(context),
-             KeyringServiceFactory::GetServiceForContext(context),
-             user_prefs::UserPrefs::Get(context))
-      .release();
+  return new TxService(JsonRpcServiceFactory::GetServiceForContext(context),
+                       KeyringServiceFactory::GetServiceForContext(context),
+                       user_prefs::UserPrefs::Get(context));
 }
 
-content::BrowserContext* EthTxServiceFactory::GetBrowserContextToUse(
+content::BrowserContext* TxServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }

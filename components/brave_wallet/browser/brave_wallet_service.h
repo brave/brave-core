@@ -35,7 +35,7 @@ constexpr char kBraveWalletMonthlyHistogramName[] = "Brave.Wallet.UsageMonthly";
 
 class KeyringService;
 class JsonRpcService;
-class EthTxService;
+class TxService;
 
 class BraveWalletService : public KeyedService,
                            public mojom::BraveWalletService,
@@ -46,12 +46,11 @@ class BraveWalletService : public KeyedService,
   using AddSuggestTokenCallback =
       base::OnceCallback<void(bool, mojom::ProviderError, const std::string&)>;
 
-  explicit BraveWalletService(
-      std::unique_ptr<BraveWalletServiceDelegate> delegate,
-      KeyringService* keyring_service,
-      JsonRpcService* json_rpc_service,
-      EthTxService* eth_tx_service,
-      PrefService* prefs);
+  BraveWalletService(std::unique_ptr<BraveWalletServiceDelegate> delegate,
+                     KeyringService* keyring_service,
+                     JsonRpcService* json_rpc_service,
+                     TxService* tx_service,
+                     PrefService* prefs);
   ~BraveWalletService() override;
 
   BraveWalletService(const BraveWalletService&) = delete;
@@ -189,7 +188,7 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<BraveWalletServiceDelegate> delegate_;
   raw_ptr<KeyringService> keyring_service_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  raw_ptr<EthTxService> eth_tx_service_ = nullptr;
+  raw_ptr<TxService> tx_service_ = nullptr;
   raw_ptr<PrefService> prefs_ = nullptr;
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   PrefChangeRegistrar pref_change_registrar_;

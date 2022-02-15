@@ -94,14 +94,16 @@ const getMockedProxyServices = (
         return '0x123'
       }
     },
-    ethTxService: {
+    txService: {
+      getTransactionMessageToSign: (coinType: BraveWallet.CoinType, id: string): GetTransactionMessageToSignReturnInfo | undefined => {
+        expect(id).toStrictEqual(expectedId)
+        return messageToSign
+      }
+    },
+    ethTxManagerProxy: {
       getNonceForHardwareTransaction: (id: string): GetNonceForHardwareTransactionReturnInfo | undefined => {
         expect(id).toStrictEqual(expectedId)
         return nonce
-      },
-      getTransactionMessageToSign: (id: string): GetTransactionMessageToSignReturnInfo | undefined => {
-        expect(id).toStrictEqual(expectedId)
-        return messageToSign
       },
       processHardwareSignature: (id: string, v: string, r: string, s: string): ProcessHardwareSignatureReturnInfo | undefined => {
         expect(id).toStrictEqual(expectedId)

@@ -34,13 +34,14 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.EthTxService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
 import org.chromium.brave_wallet.mojom.TxData;
 import org.chromium.brave_wallet.mojom.TxData1559;
+import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
@@ -105,16 +106,16 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         return null;
     }
 
-    private EthTxService getEthTxService() {
+    private TxService getTxService() {
         Activity activity = getActivity();
         if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getEthTxService();
+            return ((BuySendSwapActivity) activity).getTxService();
         } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthTxService();
+            return ((BraveWalletActivity) activity).getTxService();
         } else if (activity instanceof AccountDetailActivity) {
-            return ((AccountDetailActivity) activity).getEthTxService();
+            return ((AccountDetailActivity) activity).getTxService();
         } else if (activity instanceof AssetDetailActivity) {
-            return ((AssetDetailActivity) activity).getEthTxService();
+            return ((AssetDetailActivity) activity).getTxService();
         }
 
         return null;
@@ -332,11 +333,11 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     private void rejectTransaction(boolean dismiss) {
-        EthTxService ethTxService = getEthTxService();
-        if (ethTxService == null) {
+        TxService txService = getTxService();
+        if (txService == null) {
             return;
         }
-        ethTxService.rejectTransaction(mTxInfo.id, success -> {
+        txService.rejectTransaction(CoinType.ETH, mTxInfo.id, success -> {
             assert success;
             if (!success || !dismiss) {
                 return;
@@ -347,11 +348,11 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     private void approveTransaction() {
-        EthTxService ethTxService = getEthTxService();
-        if (ethTxService == null) {
+        TxService txService = getTxService();
+        if (txService == null) {
             return;
         }
-        ethTxService.approveTransaction(mTxInfo.id, success -> {
+        txService.approveTransaction(CoinType.ETH, mTxInfo.id, success -> {
             assert success;
             if (!success) {
                 return;

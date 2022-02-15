@@ -23,7 +23,8 @@ class WalletPanelApiProxy extends WalletApiProxy {
         this.assetRatioService.$.bindNewPipeAndPassReceiver(),
         this.keyringService.$.bindNewPipeAndPassReceiver(),
         this.blockchainRegistry.$.bindNewPipeAndPassReceiver(),
-        this.ethTxService.$.bindNewPipeAndPassReceiver(),
+        this.txService.$.bindNewPipeAndPassReceiver(),
+        this.ethTxManagerProxy.$.bindNewPipeAndPassReceiver(),
         this.braveWalletService.$.bindNewPipeAndPassReceiver())
   }
 }
