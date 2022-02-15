@@ -25,7 +25,7 @@ class SidebarService : public KeyedService {
   enum class ShowSidebarOption {
     kShowAlways = 0,
     kShowOnMouseOver,
-    kShowOnClick,
+    kShowOnClick,  // Don't use. Deprecated.
     kShowNever,
   };
 
@@ -70,6 +70,7 @@ class SidebarService : public KeyedService {
   std::vector<SidebarItem> GetDefaultSidebarItemsFromCurrentItems() const;
   void OnPreferenceChanged(const std::string& pref_name);
   bool IsBlockedBuiltInItem(const SidebarItem& item) const;
+  void MigrateSidebarShowOptions();
 
   PrefService* prefs_ = nullptr;
   std::vector<SidebarItem> items_;

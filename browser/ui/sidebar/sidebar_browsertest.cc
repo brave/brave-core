@@ -10,7 +10,6 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
-#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -23,9 +22,7 @@ namespace sidebar {
 class SidebarBrowserTest : public InProcessBrowserTest,
                            public SidebarModel::Observer {
  public:
-  SidebarBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(kSidebarFeature);
-  }
+  SidebarBrowserTest() {}
   ~SidebarBrowserTest() override = default;
 
   BraveBrowser* brave_browser() {
@@ -38,8 +35,6 @@ class SidebarBrowserTest : public InProcessBrowserTest,
   SidebarController* controller() {
     return brave_browser()->sidebar_controller();
   }
-
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {

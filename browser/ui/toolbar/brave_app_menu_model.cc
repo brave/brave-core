@@ -81,8 +81,6 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
                  l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
     AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER,
                  l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
-    AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_ONCLICK,
-                 l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ONCLICK));
     AddCheckItem(IDC_SIDEBAR_SHOW_OPTION_NEVER,
                  l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
   }
@@ -93,8 +91,6 @@ class SidebarMenuModel : public ui::SimpleMenuModel,
         return ShowSidebarOption::kShowAlways;
       case IDC_SIDEBAR_SHOW_OPTION_MOUSEOVER:
         return ShowSidebarOption::kShowOnMouseOver;
-      case IDC_SIDEBAR_SHOW_OPTION_ONCLICK:
-        return ShowSidebarOption::kShowOnClick;
       case IDC_SIDEBAR_SHOW_OPTION_NEVER:
         return ShowSidebarOption::kShowNever;
       default:

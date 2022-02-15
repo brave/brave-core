@@ -11,6 +11,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"
 
@@ -55,6 +56,9 @@ content::WebContents* SidebarModelData::GetWebContents() {
 }
 
 void SidebarModelData::LoadURL(const GURL& url) {
+  // Only internal webui can be loaded in sidebar panel now.
+  // Revisit when we want to load any url in panel.
+  DCHECK(url.SchemeIs(content::kChromeUIScheme));
   GetWebContents()->GetController().LoadURL(url, content::Referrer(),
                                             ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
                                             std::string());

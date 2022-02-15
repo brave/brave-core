@@ -1411,9 +1411,6 @@ Are you sure you want to do this?
         <message name="IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE" desc="Title of sidebar add item bubble">
           Add to Sidebar
         </message>
-        <message name="IDS_SIDEBAR_TOOLTIP_ON_SHOW_OPTIONS_WIDGET" desc="Label of tooltip of sidebar show options widget area">
-          Show sidebar
-        </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_TITLE" desc="Title of sidebar show option menu">
           Show Sidebar
         </message>
@@ -1422,9 +1419,6 @@ Are you sure you want to do this?
         </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER" desc="Label for show sidebar on mousee over option">
           On mouseover
-        </message>
-        <message name="IDS_SIDEBAR_SHOW_OPTION_ONCLICK" desc="Label for show sidebar on click option">
-          On click
         </message>
         <message name="IDS_SIDEBAR_SHOW_OPTION_NEVER" desc="Label for show sidebar on click option">
           Never

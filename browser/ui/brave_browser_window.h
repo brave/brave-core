@@ -26,17 +26,17 @@ class BraveBrowserWindow : public BrowserWindow {
  public:
   ~BraveBrowserWindow() override {}
 
-  virtual void StartTabCycling() = 0;
+  virtual void StartTabCycling() {}
 
   virtual speedreader::SpeedreaderBubbleView* ShowSpeedreaderBubble(
       speedreader::SpeedreaderTabHelper* tab_helper,
-      bool is_enabled) = 0;
+      bool is_enabled);
 
 #if BUILDFLAG(ENABLE_SIDEBAR)
-  virtual sidebar::Sidebar* InitSidebar() = 0;
+  virtual sidebar::Sidebar* InitSidebar();
 #endif
 
-  virtual void ShowBraveVPNBubble() = 0;
+  virtual void ShowBraveVPNBubble() {}
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_BROWSER_WINDOW_H_

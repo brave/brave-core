@@ -23,7 +23,6 @@
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/browser/switches.h"
 #include "brave/components/skus/common/features.h"
@@ -35,10 +34,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN) && !defined(OS_ANDROID)
 #include "brave/components/brave_vpn/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#include "brave/components/sidebar/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -159,10 +154,6 @@ constexpr char kBraveNTPBrandedWallpaperDemoDescription[] =
     "Force dummy data for the Branded Wallpaper New Tab Page Experience. "
     "View rate and user opt-in conditionals will still be followed to decide "
     "when to display the Branded Wallpaper.";
-
-constexpr char kBraveSidebarName[] = "Enable Sidebar";
-// TODO(simon): Use better description.
-constexpr char kBraveSidebarDescription[] = "Enable Sidebar";
 
 constexpr char kBraveSpeedreaderName[] = "Enable SpeedReader";
 constexpr char kBraveSpeedreaderDescription[] =
@@ -338,17 +329,6 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
      flag_descriptions::kBraveSkusEnvDescription,       \
      kOsMac | kOsWin | kOsAndroid,                      \
      MULTI_VALUE_TYPE(flag_descriptions::kBraveSkusEnvChoices)},
-
-#if BUILDFLAG(ENABLE_SIDEBAR)
-#define SIDEBAR_FEATURE_ENTRIES                     \
-    {kBraveSidebarFeatureInternalName,              \
-     flag_descriptions::kBraveSidebarName,          \
-     flag_descriptions::kBraveSidebarDescription,   \
-     kOsMac | kOsWin | kOsLinux,                    \
-     FEATURE_VALUE_TYPE(sidebar::kSidebarFeature)},
-#else
-#define SIDEBAR_FEATURE_ENTRIES
-#endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #define SPEEDREADER_FEATURE_ENTRIES \
@@ -565,7 +545,6 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
     BRAVE_REWARDS_GEMINI_FEATURE_ENTRIES                                    \
     BRAVE_VPN_FEATURE_ENTRIES                                               \
     BRAVE_SKU_SDK_FEATURE_ENTRIES                                           \
-    SIDEBAR_FEATURE_ENTRIES                                                 \
     SPEEDREADER_FEATURE_ENTRIES                                             \
     BRAVE_SHIELDS_V2_FEATURE_ENTRIES                                        \
     BRAVE_TRANSLATE_GO_FEATURE_ENTRIES

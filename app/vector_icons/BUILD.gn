@@ -29,7 +29,6 @@ aggregate_vector_icons("brave_vector_icons") {
       "sidebar_brave_together.icon",
       "sidebar_crypto_wallet.icon",
       "sidebar_history.icon",
-      "sidebar_hover_widget_button.icon",
       "sidebar_item_added_check.icon",
       "sidebar_items_down_arrow.icon",
       "sidebar_items_up_arrow.icon",
