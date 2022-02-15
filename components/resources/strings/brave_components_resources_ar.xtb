@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">إلغاء الاشتراك</translation>
 <translation id="1209739344687072997">الإبلاغ عن موقع إلكتروني معطل</translation>
 <translation id="8510478288840333677">إخطار مطوري Brave بأن هذا الموقع لا يعمل بشكلٍ سليم مع Shields:</translation>
-<translation id="6013164422534859494">ملاحظة: سيتم تقديم عنوان الموقع هذا مع ما يخصك من رقم إصدار Brave وعنوان IP (والذي لن يتم تخزينه).</translation>
+<translation id="4105411033440701818">ملاحظة: سيتم تقديم عنوان الموقع هذا مع ما يخصك من رقم إصدار Brave وعنوان IP (والذي لن يتم تخزينه).</translation>
 <translation id="5299848999918506028">شكراً لك!</translation>
 <translation id="76550953340008122">شكراً لإخطارك مطوري Brave بوجود خطأٍ في هذا الموقع. سنبذل قصارى جهدنا لإصلاحه!</translation>
 <translation id="2974339193389078578">مرحبًا بك في متصفّح Brave</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">تاريخ المساهمة التالية</translation>
 <translation id="1397381065858030856">المواقع المشاهَدة</translation>
 <translation id="2365740070488517695">المكافآت</translation>
-<translation id="5993195614988368256">قم بمكافأة منشئي المحتوى مباشرةً أثناء تصفحك باستخدام لوحة المكافآت، أو باستخدام زر المكافأة المضمن في مواقع مختلفة بما في ذلك Twitter و Reddit و GitHub.</translation>
+<translation id="5810507495128831593">قم بمكافأة منشئي المحتوى مباشرةً أثناء تصفحك باستخدام لوحة المكافآت، أو باستخدام زر المكافأة المضمن في مواقع مختلفة بما في ذلك Twitter و Reddit و GitHub.</translation>
 <translation id="5012991400231464322">المساهمات الشهرية</translation>
 <translation id="2084351799622920487">قم بإعداد مساهمات شهرية متكررة حتى تتمكن من دعم المواقع بشكل مستمر.</translation>
 <translation id="8150772404570015166">لم يتم إعداد مساهمات شهرية حتى الآن.</translation>
@@ -793,10 +793,7 @@
 <translation id="4989163558385430922">عرض الكل</translation>
 <translation id="3026978804849658576">عرض البيان</translation>
 <translation id="8494748383523030337">رصيدك</translation>
-<translation id="3343165035032571678">لقد ربحت <ph name="AMOUNT"/> من مشاهدة إعلانات Brave الخاصة!</translation>
-<translation id="6618415862402597254">أرباح الإعلانات المستلمة</translation>
-<translation id="5981646694027725752">المطالبة بالأرباح</translation>
-<translation id="2556441076129789027">رموز المطالبة</translation>
+<translation id="9013419433042554094">رموز المطالبة</translation>
 <translation id="5544777623605368410">الربح</translation>
 <translation id="3273637494083639780">ستبدأ معالجة الرموز التي تربحها هذا الشهر في <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">قد يختلف هذا بناءً على تقلبات السوق.</translation>
@@ -808,8 +805,7 @@
 <translation id="6777169449483742979">أنت ’re تكسب رموزًا مقابل مشاهدة هذه الصورة الدعائية.</translation>
 <translation id="5486114327664215175">اربح الرموز لمشاهدة هذه الصورة ودعم منشئي المحتوى.</translation>
 <translation id="2940863921746574646">رصيد الرمز</translation>
-<translation id="1714906256929297600">استخدم الرموز الترويجية للمساهمة في منشئي المحتوى قبل انتهاء صلاحيتها!</translation>
-<translation id="2426048501007152001">الرموز المتاحة</translation>
+<translation id="2221902203895354376">الرموز المتاحة</translation>
 <translation id="7701466644604753106">تشغيل قارئ السرعة</translation>
 <translation id="763042262431778831">أوقف قارئ السرعة</translation>
 <translation id="8488282162676695335">محفظة Brave</translation>
@@ -962,7 +958,7 @@
 <translation id="1943188256166395881">إضافة حسابات محددة</translation>
 <translation id="8554010658308662631">تحميل المزيد</translation>
 <translation id="6998738230710304743">تحميل المزيد...</translation>
-<translation id="4970164249406565575">البحث عن الحساب 0x</translation>
+<translation id="5592304751234049046">البحث عن الحساب 0x</translation>
 <translation id="6151024411349343484">حاول تبديل مسار HD (أعلاه) إذا لم تتمكن من العثور على الحساب الذي تبحث عنه.</translation>
 <translation id="2844691569989101734">دفتر الأستاذ العام المباشر</translation>
 <translation id="7265732100380987017">قديم (MEW / MyCrypto)</translation>
@@ -1191,7 +1187,7 @@
 <translation id="5544888475837817215">السماح بجميع أدوات التتبع والإعلانات</translation>
 <translation id="6203697265754637264">تم حظر ملفات تعريف الارتباط عبر المواقع</translation>
 <translation id="4627427111733173920">تم حجب ملفات تعريف الارتباط</translation>
-<translation id="7855168553463825937">تم حظر جميع ملفات تعريف الارتباط</translation>
+<translation id="3972324600756617403">تم حظر جميع ملفات تعريف الارتباط</translation>
 <translation id="8366221601425141146">تم حظر البصمات</translation>
 <translation id="5582686930349810484">حظر بصمات الأصابع (قياسي)</translation>
 <translation id="6696441392507885865">حظر بصمات الأصابع (دقيق، قد تتعطل المواقع)</translation>

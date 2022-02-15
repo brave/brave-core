@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Aceasta este prima reclamă Brave. Apăsați pentru a afla mai multe.</translation>
 <translation id="2070991379950719711">Începeți să folosiți Recompensele Brave</translation>
 <translation id="48520986898237073">Continuați spre portofel</translation>
-<translation id="3570367516044491911">Setați ca browser implicit</translation>
+<translation id="6800338374677644736">Setați ca browser implicit</translation>
 <translation id="19715420010996093">Selectați Brave Browser și atingeți „Întotdeauna”</translation>
 <translation id="3546439402724649282">Brave este setat deja ca browser implicit.</translation>
 <translation id="8389661903259423907">Ați setat deja un browser implicit. Puteți să schimbați browserul implicit din setările aplicației.</translation>
-<translation id="7091885296442320770">Brave este foarte rapid</translation>
-<translation id="2171928016777725844">Setați Brave ca browser implicit!</translation>
-<translation id="7136694880210472378">Setează ca prestabilit</translation>
-<translation id="4250680216510889253">Nu</translation>
 <translation id="8826007068782654809">Vă mulțumim</translation>
 <translation id="6665366815203065060">Tocmai ai trimis o plată către:</translation>
 <translation id="5441565662498481293">Trimiți automat o plată către:</translation>
@@ -523,9 +519,9 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6478996494082389936">date de analiză produs privat.</translation>
 <translation id="5187052478998910855">Ai nevoie de o actualizare a Recompenselor?</translation>
 <translation id="8622329973403382303">Fă un tur rapid pentru a vedea cum funcționează, pentru a intra în istorie ca un campion al Recompenselor!</translation>
-<translation id="8401711613788729448">Deschideți toate linkurile cu Brave pentru a vă proteja confidențialitatea</translation>
-<translation id="3184805785843994538">Brave Shield blochează programele de urmărire și reclamele, economisește date și timp pe fiecare website pe care îl accesați.</translation>
-<translation id="8722651357687610395">Setați Brave ca browser prestabilit</translation>
+<translation id="7625138338483121345">Deschideți toate linkurile cu Brave pentru a vă proteja confidențialitatea</translation>
+<translation id="4511485286950743564">Brave Shield blochează programele de urmărire și reclamele, economisește date și timp pe fiecare website pe care îl accesați.</translation>
+<translation id="9218430445555521422">Setați Brave ca browser prestabilit</translation>
 <translation id="3479552764303398839">Nu acum</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -595,7 +591,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="283071225285270357">Introduceți expresia de recuperare</translation>
 <translation id="3943857333388298514">Inserați</translation>
 <translation id="3331452756822160641">Parolă nouă</translation>
-<translation id="4854035885012188958">Efectuez restabilirea din vechiul portofel de criptomonede Brave</translation>
+<translation id="4359319875297001084">Efectuez restabilirea din vechiul portofel de criptomonede Brave</translation>
 <translation id="2339124864228588937">Confirmați expresia de recuperare</translation>
 <translation id="3747079125031086337">Selectați cuvintele din expresia de recuperare în ordinea corectă</translation>
 <translation id="6518133107902771759">Confirmați</translation>
@@ -803,6 +799,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="4351811224047421378">Zecimale de precizie</translation>
 <translation id="8614026298974065517">Eliminați activ personalizat</translation>
 <translation id="4378941981362528553">Doriți să eliminați tokenul <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Nu</translation>
 <translation id="8971278306757462297">Adresa destinatară este propria dvs. adresă</translation>
 <translation id="749944179568745958">Nu este o adresă ETH validă</translation>
 <translation id="3506416339268164412">Adresa destinatară este o adresă din contractul pentru un token.</translation>
@@ -823,7 +820,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1241283133946520352">Rețele</translation>
 <translation id="1062463687579789365">Personalizarea rețelelor de portofele</translation>
 <translation id="2512821599885971349">Adăugați rețea</translation>
-<translation id="1330032157352961756">Identificatorul noului lanț</translation>
+<translation id="1330032157352961756">Identificatorul noului blockchain</translation>
 <translation id="8104880458203052748">Format incorect, identificatorul lanțului este un număr pozitiv</translation>
 <translation id="3423620355610881890">Un număr zecimal pozitiv</translation>
 <translation id="726121047592132939">Numele noului lanț</translation>
@@ -836,8 +833,8 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="665660671251623018">Zecimalele monedei lanțului</translation>
 <translation id="182619028057179895">Format incorect, zecimalele monedei sunt un număr pozitiv</translation>
 <translation id="2978054488731497946">Introduceți zecimalele monedei</translation>
-<translation id="3047726704186619366">Adrese URL pictograme</translation>
-<translation id="2487558607408469181">Adrese URL explorator de blocuri</translation>
+<translation id="7642841516562576649">Adrese URL pictograme</translation>
+<translation id="4693057234255364395">Adrese URL explorator de blocuri</translation>
 <translation id="7059127752542505809">Introduceți URL</translation>
 <translation id="2156993118928861787">Adresă incorectă</translation>
 <translation id="6889920539620318793">Setați ca activă</translation>

@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Cancelar subscrição</translation>
 <translation id="1209739344687072997">Comunicar ''site'' com problemas</translation>
 <translation id="8510478288840333677">Permita que os programadores do Brave saibam que o ''site'' não funciona corretamente com as «Proteções»</translation>
-<translation id="6013164422534859494">Nota: o endereço do ''site'' será submetido com o seu número da versão do Brave e do seu endereço de  IP (que não serão guardados).</translation>
+<translation id="4105411033440701818">Nota: o endereço do ''site'' será submetido com o seu número da versão do Brave e do seu endereço de  IP (que não serão guardados).</translation>
 <translation id="5299848999918506028">Obrigado!</translation>
 <translation id="76550953340008122">Obrigado por comunicar aos programadores do Brave que há algo de errado com este ''site''. Nós iremos fazer o nosso melhor para o corrigir.</translation>
 <translation id="2974339193389078578">Brave: a nova Internet</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Data da próxima contribuição</translation>
 <translation id="1397381065858030856">Sites visualizados</translation>
 <translation id="2365740070488517695">Doações</translation>
-<translation id="5993195614988368256">Dê contribuições diretamente aos criadores de conteúdos enquanto navega através do Painel de Recompensas ou do botão de dicas embutido em vários sites, como o Twitter, Reddit e GitHub.</translation>
+<translation id="5810507495128831593">Dê contribuições diretamente aos criadores de conteúdos enquanto navega através do Painel de Recompensas ou do botão de dicas embutido em vários sites, como o Twitter, Reddit e GitHub.</translation>
 <translation id="5012991400231464322">Contribuições Mensais</translation>
 <translation id="2084351799622920487">Configure contribuições mensais recorrentes para que possa apoiar websites de forma contínua.</translation>
 <translation id="8150772404570015166">Ainda nenhuma contribuição mensal configurada.</translation>
@@ -255,7 +255,7 @@
 <translation id="9074594632540931067">Erro: BAT indisponível</translation>
 <translation id="413458922997276130">A sua conta Uphold está atualmente bloqueada.</translation>
 <translation id="3579959767665130790">Erro: conta bloqueada</translation>
-<translation id="6554308597291659562">É necessária a Uphold para recolher um pouco mais de informações suas antes de ativar a funcionalidade da conta Uphold totalmente. Tente novamente após ter submetido esta informação na sua conta Uphold.</translation>
+<translation id="6554308597291659562">É necessário que a Uphold recolha um pouco mais de informações suas antes de ativar a funcionalidade da conta Uphold totalmente. Tente novamente após ter submetido esta informação na sua conta Uphold.</translation>
 <translation id="6996157559236886133">Erro: funcionalidade da conta Uphold limitada</translation>
 <translation id="819370426249314592">A sua conta Uphold ainda está pendente.</translation>
 <translation id="4530453398914580957">Erro: conta pendente</translation>
@@ -777,8 +777,8 @@
 <translation id="581582843259146919">permissão do site</translation>
 <translation id="7717357606512850995">Verificar estado</translation>
 <translation id="7306880305145342514">Parabéns! As suas recompensas de <ph name="MONTH"/> chegaram!</translation>
-<translation id="3007207731685398329">As suas recompensas de <ph name="MONTH"/> de <ph name="AMOUNT"/> chegarão em <ph name="DAYS"/></translation>
-<translation id="5878420576943709750">As suas recompensas de <ph name="MONTH"/> de <ph name="AMOUNT"/> estão a caminho. Fique de olho!</translation>
+<translation id="3007207731685398329">As suas recompensas de <ph name="AMOUNT"/> de <ph name="MONTH"/> chegarão em <ph name="DAYS"/></translation>
+<translation id="5878420576943709750">As suas recompensas de <ph name="AMOUNT"/> de <ph name="MONTH"/> estão a caminho. Fique de olho!</translation>
 <translation id="2659764755126740206">Ir para a minha conta <ph name="PROVIDER"/></translation>
 <translation id="2389181429986654814">Aceder a <ph name="PROVIDER"/> para finalizar a verificação</translation>
 <translation id="7793632266654336758">Proceda à verificação da identidade para começar a receber recompensas.</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Ver tudo</translation>
 <translation id="3026978804849658576">Ver extrato</translation>
 <translation id="8494748383523030337">O seu saldo</translation>
-<translation id="3343165035032571678">Recebeu <ph name="AMOUNT"/> por visualizar os anúncios privados do Brave!</translation>
-<translation id="6618415862402597254">Lucros de anúncio recebidos</translation>
-<translation id="5981646694027725752">Reivindicar lucros</translation>
-<translation id="2556441076129789027">Reivindicar tokens</translation>
+<translation id="9013419433042554094">Reivindicar tokens</translation>
 <translation id="5544777623605368410">Lucros</translation>
 <translation id="3273637494083639780">Os tokens que recebeu este mês serão processados a <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Isto pode variar consoante a volatilidade do mercado.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Está a receber tokens por visualizar esta imagem patrocionada.</translation>
 <translation id="5486114327664215175">Obtenha tokens ao visualizar esta imagem e apoie os criadores de conteúdo.</translation>
 <translation id="2940863921746574646">Saldo de token</translation>
-<translation id="1714906256929297600">Utilize os tokens promocionais para dar contribuições aos criadores antes que expirem!</translation>
-<translation id="2426048501007152001">Tokens disponíveis</translation>
+<translation id="2221902203895354376">Tokens disponíveis</translation>
 <translation id="7701466644604753106">LIGAR Speedreader</translation>
 <translation id="763042262431778831">DESLIGAR Speedreader</translation>
 <translation id="8488282162676695335">Wallet Brave</translation>
@@ -877,8 +873,8 @@
 <translation id="5061574358754621254">Dados de preços disponibilizados pela CoinGecko</translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Trocar</translation>
-<translation id="6295954645230084874">Comprar suporte não está disponível para <ph name="NETWORK"/></translation>
-<translation id="4171338820961522154">Trocar suporte não está disponível para <ph name="NETWORK"/></translation>
+<translation id="6295954645230084874">O suporte de compra não está disponível para <ph name="NETWORK"/></translation>
+<translation id="4171338820961522154">O suporte de trocas não está disponível para <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">Esta transação pode ser uma prática de "front running"</translation>
 <translation id="632241521608275119">Tolerância de desvio</translation>
 <translation id="4500473291496079954">Expira em</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Adicionar contas verificadas</translation>
 <translation id="8554010658308662631">Carregar mais</translation>
 <translation id="6998738230710304743">A carregar mais...</translation>
-<translation id="4970164249406565575">Pesquisar conta 0x</translation>
+<translation id="5592304751234049046">Pesquisar conta 0x</translation>
 <translation id="6151024411349343484">Experimente alterar o diretório HD (acima) se não conseguir encontrar a conta de que está à procura.</translation>
 <translation id="2844691569989101734">Ledger em tempo real</translation>
 <translation id="7265732100380987017">Legado (MEW/MyCrypto)</translation>
@@ -980,7 +976,7 @@
 <translation id="6018178824574796106">Falha ao adicionar token personalizado, tente novamente.</translation>
 <translation id="547122651977318828">ID de token (apenas para ERC721)</translation>
 <translation id="7544552854944350190">É necessário o ID de token</translation>
-<translation id="3842236145820483340">ID da Coingecko</translation>
+<translation id="3842236145820483340">ID da CoinGecko</translation>
 <translation id="2708402071160162126">AVISO: Nunca divulgue a sua frase de recuperação. Qualquer pessoa na posse desta frase pode roubar os seus ativos permanentemente.</translation>
 <translation id="2902856457593699108">Mostrar chave</translation>
 <translation id="8033497299373164724">Ocultar chave</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Permitir todos os rastreadores e anúncios</translation>
 <translation id="6203697265754637264">Cookies cross-site bloqueados</translation>
 <translation id="4627427111733173920">Cookies bloqueados</translation>
-<translation id="7855168553463825937">Todos os cookies bloqueados</translation>
+<translation id="3972324600756617403">Todos os cookies bloqueados</translation>
 <translation id="8366221601425141146">Fingerprinting bloqueada</translation>
 <translation id="5582686930349810484">Impressão digital bloqueada (padrão)</translation>
 <translation id="6696441392507885865">Impressão digital bloqueada (estrita, pode abrir sites)</translation>

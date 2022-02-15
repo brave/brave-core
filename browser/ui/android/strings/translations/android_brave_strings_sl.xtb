@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">To je vaš prvi oglas Brave. Dotaknite se za več informacij.</translation>
 <translation id="2070991379950719711">Začnite uporabljati Brave Rewards</translation>
 <translation id="48520986898237073">Nadaljuj na denarnico</translation>
-<translation id="3570367516044491911">Nastavite kot privzeti brskalnik</translation>
+<translation id="6800338374677644736">Nastavite kot privzeti brskalnik</translation>
 <translation id="19715420010996093">Izberi brskalnik Brave in tapni 'Vedno'</translation>
 <translation id="3546439402724649282">Brskalnik Brave je že nastavljen kot privzeti brskalnik.</translation>
 <translation id="8389661903259423907">Privzeti brskalnik ste že nastavili. Privzeti brskalnik lahko spremenite v nastavitvah svoje aplikacije.</translation>
-<translation id="7091885296442320770">Brskalnik Brave je neverjetno hiter</translation>
-<translation id="2171928016777725844">Nastavite brskalnik Brave za svoj privzeti brskalnik!</translation>
-<translation id="7136694880210472378">Nastavi za privzeto</translation>
-<translation id="4250680216510889253">Ne</translation>
 <translation id="8826007068782654809">Hvala.</translation>
 <translation id="6665366815203065060">Pravkar ste poslali donacijo prejemniku:</translation>
 <translation id="5441565662498481293">Samodejno pošiljate donacijo prejemniku:</translation>
@@ -524,9 +520,9 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="6478996494082389936">zasebna analitika izdelkov.</translation>
 <translation id="5187052478998910855">Potrebujete kratko osvežitev o Rewards?</translation>
 <translation id="8622329973403382303">Na hitro si oglejte, kako vse skupaj deluje, da se boste zapisali v zgodovino kot zvezda Rewards!</translation>
-<translation id="8401711613788729448">Odprite vse povezave z Brave, da zaščitite svojo zasebnost</translation>
-<translation id="3184805785843994538">Brave Shields blokira sledilce i oglase, shranjuje podatke in prihrani čas na vsakem spletnem mestu, ki ga obiščete.</translation>
-<translation id="8722651357687610395">Privzeto nastavite Brave</translation>
+<translation id="7625138338483121345">Odprite vse povezave z Brave, da zaščitite svojo zasebnost</translation>
+<translation id="4511485286950743564">Brave Shields blokira sledilce i oglase, shranjuje podatke in prihrani čas na vsakem spletnem mestu, ki ga obiščete.</translation>
+<translation id="9218430445555521422">Privzeto nastavite Brave</translation>
 <translation id="3479552764303398839">Ne zdaj</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -596,7 +592,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="283071225285270357">Vnesite svojo frazo za obnovitev dostopa</translation>
 <translation id="3943857333388298514">Prilepi</translation>
 <translation id="3331452756822160641">Novo geslo</translation>
-<translation id="4854035885012188958">Obnavljam iz starejše kripto denarnice Brave</translation>
+<translation id="4359319875297001084">Obnavljam iz starejše kripto denarnice Brave</translation>
 <translation id="2339124864228588937">Potrdite frazo za obnovitev</translation>
 <translation id="3747079125031086337">V frazi za obnovitev izberite besede v pravilnem vrstnem redu.</translation>
 <translation id="6518133107902771759">Preveri</translation>
@@ -804,6 +800,7 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="4351811224047421378">Decimalke natančnosti</translation>
 <translation id="8614026298974065517">Odstranite sredstvo po meri</translation>
 <translation id="4378941981362528553">Ali želite odstraniti enoto<ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Ne</translation>
 <translation id="8971278306757462297">Prejemni naslov je vaš naslov</translation>
 <translation id="749944179568745958">Ni veljaven ETH naslov</translation>
 <translation id="3506416339268164412">Prejemni naslov je pogodbeni naslov žetona</translation>
@@ -837,8 +834,8 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="665660671251623018">Decimalke valute verige</translation>
 <translation id="182619028057179895">Neveljavna oblika, decimalke valute so pozitivno število</translation>
 <translation id="2978054488731497946">Vnesite decimalke valute</translation>
-<translation id="3047726704186619366">URL-ji ikon</translation>
-<translation id="2487558607408469181">URL-ji raziskovalca blokov</translation>
+<translation id="7642841516562576649">URL-ji ikon</translation>
+<translation id="4693057234255364395">URL-ji raziskovalca blokov</translation>
 <translation id="7059127752542505809">Vnesite URL</translation>
 <translation id="2156993118928861787">Neveljaven naslov</translation>
 <translation id="6889920539620318793">Nastavi kot aktivno</translation>

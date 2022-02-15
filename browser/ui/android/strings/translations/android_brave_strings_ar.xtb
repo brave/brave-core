@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">هذا هو إعلانك الأول من Brave. انقر للاطلاع على المزيد.</translation>
 <translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
 <translation id="48520986898237073">الاستمرار إلى المحفظة</translation>
-<translation id="3570367516044491911">تعيين كمتصفح افتراضي</translation>
+<translation id="6800338374677644736">تعيين كمتصفح افتراضي</translation>
 <translation id="19715420010996093">حدد متصفح Brave وانقر على "دائماً"</translation>
 <translation id="3546439402724649282">تم تعيين Brave بالفعل كمتصفح افتراضي.</translation>
 <translation id="8389661903259423907">لقد قمت بالفعل بتعيين المتصفح الافتراضي. يمكنك تغيير المتصفح الافتراضي في إعدادات التطبيق الخاصة بك.</translation>
-<translation id="7091885296442320770">Brave بسرعة البرق</translation>
-<translation id="2171928016777725844">اجعل Brave متصفحك الافتراضي!</translation>
-<translation id="7136694880210472378">تعيين كافتراضي</translation>
-<translation id="4250680216510889253">لا</translation>
 <translation id="8826007068782654809">شكراً لك</translation>
 <translation id="6665366815203065060">تم إرسال إكراميتك للتو إلى:</translation>
 <translation id="5441565662498481293">إنك ترسل الإكراميات تلقائيًا إلى:</translation>
@@ -518,9 +514,9 @@
 <translation id="6478996494082389936">تحليلات المنتج الخاص.</translation>
 <translation id="5187052478998910855">هل تحتاج إلى تذكير بـ Rewards؟</translation>
 <translation id="8622329973403382303">قم بجولة سريعة للتعرف على الطريقة التي تعمل بها لتدخل التاريخ كنجم Rewards لامع!</translation>
-<translation id="8401711613788729448">افتح جميع الروابط بواسطة متصفح Brave لحماية خصوصيتك</translation>
-<translation id="3184805785843994538">تمنع Brave Shields برامج التتبع &amp; والإعلانات، وتحفظ البيانات، وتوفر لك الوقت في كل موقع تزوره.</translation>
-<translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
+<translation id="7625138338483121345">افتح جميع الروابط بواسطة متصفح Brave لحماية خصوصيتك</translation>
+<translation id="4511485286950743564">تمنع Brave Shields برامج التتبع &amp; والإعلانات، وتحفظ البيانات، وتوفر لك الوقت في كل موقع تزوره.</translation>
+<translation id="9218430445555521422">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -590,7 +586,7 @@
 <translation id="283071225285270357">أدخِل عبارة الاسترداد</translation>
 <translation id="3943857333388298514">لصق</translation>
 <translation id="3331452756822160641">كلمة مرور جديدة</translation>
-<translation id="4854035885012188958">أستعيد من "محفظة العملات الرقمية من متصفح Brave" التي لا يُستغنى عنها</translation>
+<translation id="4359319875297001084">أستعيد من "محفظة العملات الرقمية من متصفح Brave" التي لا يُستغنى عنها</translation>
 <translation id="2339124864228588937">تحقق من عبارة الاسترداد</translation>
 <translation id="3747079125031086337">تحديد الكلمات في العبارة الاستردادية في مكانها الصحيح.</translation>
 <translation id="6518133107902771759">تحقق</translation>
@@ -798,6 +794,7 @@
 <translation id="4351811224047421378">دقة الكسور العشرية</translation>
 <translation id="8614026298974065517">إزالة الأصول المخصصة</translation>
 <translation id="4378941981362528553">هل تريد إزالة الرمز المميز <ph name="TOKEN_NAME"/>()<ph name="TOKEN_SYMBOL"/>؟</translation>
+<translation id="4250680216510889253">لا</translation>
 <translation id="8971278306757462297">عنوان الاستلام هو العنوان الخاص بك</translation>
 <translation id="749944179568745958">هذا ليس عنوان إيثريوم (ETH) صالحًا</translation>
 <translation id="3506416339268164412">عنوان الاستلام هو عنوان عقد العملة الرمزية</translation>
@@ -831,8 +828,8 @@
 <translation id="665660671251623018">الكسور العشرية لعملات السلسلة</translation>
 <translation id="182619028057179895">التنسيق غير صالح، تكون الكسور العشرية للعملة رقمًا موجبًا</translation>
 <translation id="2978054488731497946">قم بإدخال الكسور العشرية للعملات</translation>
-<translation id="3047726704186619366">عناوين محدد موقع الموارد الموحد (URL) للأيقونات</translation>
-<translation id="2487558607408469181">منع عناوين URL (محدد موقع الموارد الموحد) للمستكشف</translation>
+<translation id="7642841516562576649">عناوين محدد موقع الموارد الموحد (URL) للأيقونات</translation>
+<translation id="4693057234255364395">منع عناوين URL (محدد موقع الموارد الموحد) للمستكشف</translation>
 <translation id="7059127752542505809">إدخال URL</translation>
 <translation id="2156993118928861787">عنوان غير صالح</translation>
 <translation id="6889920539620318793">تعيين كنشط</translation>

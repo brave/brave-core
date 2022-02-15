@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Avslutt abonnement</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="8510478288840333677">Gi utviklerne av Brave beskjed om at dette nettstedet ikke fungerer skikkelig med Shields:</translation>
-<translation id="6013164422534859494">Merk: Adressen til dette nettstedet blir sendt inn sammen med Brave-versjonsnummeret og IP-adressen din (som ikke blir lagret).</translation>
+<translation id="4105411033440701818">Merk: Adressen til dette nettstedet blir sendt inn sammen med Brave-versjonsnummeret og IP-adressen din (som ikke blir lagret).</translation>
 <translation id="5299848999918506028">Takk skal du ha!</translation>
 <translation id="76550953340008122">Takk for at du ga beskjed til utviklerne av Brave om at noe er galt med dette nettstedet. Vi skal gjøre vårt beste for å rette det!</translation>
 <translation id="2974339193389078578">Brave – velkommen til det nye Internett</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Neste bidragsdato</translation>
 <translation id="1397381065858030856">Nettsteder besøkt</translation>
 <translation id="2365740070488517695">Tips</translation>
-<translation id="5993195614988368256">Send tips direkte til innholdsskaperne når du surfer, ved bruk av belønningspanelet eller den innebygde tips-knappen på diverse nettsteder, som Twitter, Reddit og GitHub.</translation>
+<translation id="5810507495128831593">Send tips direkte til innholdsskaperne når du surfer, ved bruk av belønningspanelet eller den innebygde tips-knappen på diverse nettsteder, som Twitter, Reddit og GitHub.</translation>
 <translation id="5012991400231464322">Månedlige bidrag</translation>
 <translation id="2084351799622920487">Konfigurer gjentakende månedlige bidrag, slik at du kan støtte nettsteder kontinuerlig.</translation>
 <translation id="8150772404570015166">Ingen månedlige bidrag er konfigurert ennå.</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Se alle</translation>
 <translation id="3026978804849658576">Vis kontoutskrift</translation>
 <translation id="8494748383523030337">Saldoen din</translation>
-<translation id="3343165035032571678">Du tjente <ph name="AMOUNT"/> ved å se Brave Private Ads!</translation>
-<translation id="6618415862402597254">Annonseinntekt mottatt</translation>
-<translation id="5981646694027725752">Gjør krav på inntekter</translation>
-<translation id="2556441076129789027">Krev inn tokener</translation>
+<translation id="9013419433042554094">Krev inn tokener</translation>
 <translation id="5544777623605368410">Tjener</translation>
 <translation id="3273637494083639780">Tokenene du tjener denne måneden vil begynne å behandles <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Dette kan variere basert på markedsvolatilitet.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Du tjener tokener for å se dette sponsede bildet.</translation>
 <translation id="5486114327664215175">Tjen tokener for å vise dette bildet og støtt innholdsskapere.</translation>
 <translation id="2940863921746574646">Token-saldo</translation>
-<translation id="1714906256929297600">Bruk kampanjetokenene dine for å bidra til skapere før de utløper!</translation>
-<translation id="2426048501007152001">Tilgjengelige tokener</translation>
+<translation id="2221902203895354376">Tilgjengelige tokener</translation>
 <translation id="7701466644604753106">Slå PÅ Hurtigleser</translation>
 <translation id="763042262431778831">Slå AV Hurtigleser</translation>
 <translation id="8488282162676695335">Brave-lommebok</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Legg til markerte kontoer</translation>
 <translation id="8554010658308662631">Last inn mer</translation>
 <translation id="6998738230710304743">Laster inn mer …</translation>
-<translation id="4970164249406565575">Søk i kontoen 0x</translation>
+<translation id="5592304751234049046">Søk i kontoen 0x</translation>
 <translation id="6151024411349343484">Prøv å bytte HD-bane (over) hvis du ikke finner kontoen du leter etter.</translation>
 <translation id="2844691569989101734">Ledger – Live</translation>
 <translation id="7265732100380987017">Utrangerte (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Tillat alle sporinger og annonser</translation>
 <translation id="6203697265754637264">Tredjeparts informasjonskapsler blokkert</translation>
 <translation id="4627427111733173920">Informasjonskapler er blokkert</translation>
-<translation id="7855168553463825937">Alle informasjonskapsler blokkert</translation>
+<translation id="3972324600756617403">Alle informasjonskapsler blokkert</translation>
 <translation id="8366221601425141146">Fingerprinting blokkert</translation>
 <translation id="5582686930349810484">Fingerskrift blokkert (standard)</translation>
 <translation id="6696441392507885865">Fingerskrift blokkert (streng, sider kan slutte å fungere)</translation>

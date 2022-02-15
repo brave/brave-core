@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Это ваша первая реклама Brave. Нажмите, чтобы узнать больше.</translation>
 <translation id="2070991379950719711">Начать использовать Brave Rewards</translation>
 <translation id="48520986898237073">Перейти в кошелек</translation>
-<translation id="3570367516044491911">Установить в качестве браузера по умолчанию</translation>
+<translation id="6800338374677644736">Установить в качестве браузера по умолчанию</translation>
 <translation id="19715420010996093">Выберите Brave Browser в списке и нажмите 'Всегда'</translation>
 <translation id="3546439402724649282">Brave уже установлен в качестве браузера по умолчанию.</translation>
 <translation id="8389661903259423907">Вы уже установили браузер по умолчанию. Вы можете изменить браузер по умолчанию в настройках вашего приложения.</translation>
-<translation id="7091885296442320770">Brave работает молниеносно</translation>
-<translation id="2171928016777725844">Сделайте Brave вашим браузером по умолчанию!</translation>
-<translation id="7136694880210472378">Использовать по умолчанию</translation>
-<translation id="4250680216510889253">Нет</translation>
 <translation id="8826007068782654809">Спасибо</translation>
 <translation id="6665366815203065060">Вы только что отправили чаевые:</translation>
 <translation id="5441565662498481293">Вы автоматически отправляете чаевые:</translation>
@@ -525,9 +521,9 @@
 <translation id="6478996494082389936">приватную аналитику продукта.</translation>
 <translation id="5187052478998910855">Хотите освежить в памяти, как работает Rewards?</translation>
 <translation id="8622329973403382303">Пройдите быстрый тур, чтобы закрепить в памяти, как работает Rewards, и стать настоящей рок-звездой платформы!</translation>
-<translation id="8401711613788729448">Открывать все ссылки в Brave для защиты вашей приватности</translation>
-<translation id="3184805785843994538">Защита Brave блокирует трекеры и рекламу, экономит данные и ваше время при каждом посещении сайта.</translation>
-<translation id="8722651357687610395">Установить Brave по умолчанию</translation>
+<translation id="7625138338483121345">Открывать все ссылки в Brave для защиты вашей приватности</translation>
+<translation id="4511485286950743564">Защита Brave блокирует трекеры и рекламу, экономит данные и ваше время при каждом посещении сайта.</translation>
+<translation id="9218430445555521422">Установить Brave по умолчанию</translation>
 <translation id="3479552764303398839">Не сейчас</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@
 <translation id="283071225285270357">Введите секретную фразу</translation>
 <translation id="3943857333388298514">Вставить</translation>
 <translation id="3331452756822160641">Новый пароль</translation>
-<translation id="4854035885012188958">Восстановление из устаревшего криптокошелька Brave</translation>
+<translation id="4359319875297001084">Восстановление из устаревшего криптокошелька Brave</translation>
 <translation id="2339124864228588937">Подтвердите секретную фразу</translation>
 <translation id="3747079125031086337">В правильном порядке выберите слова секретной фразы.</translation>
 <translation id="6518133107902771759">Подтвердить</translation>
@@ -805,6 +801,7 @@
 <translation id="4351811224047421378">Количество знаков после запятой</translation>
 <translation id="8614026298974065517">Удаление актива</translation>
 <translation id="4378941981362528553">Удалить токен <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Нет</translation>
 <translation id="8971278306757462297">Адрес получателя совпадает с адресом отправителя.</translation>
 <translation id="749944179568745958">Недействительный адрес ETH.</translation>
 <translation id="3506416339268164412">Адрес получателя совпадает с адресом контракта токена</translation>
@@ -838,8 +835,8 @@
 <translation id="665660671251623018">Количество знаков после запятой у валюты цепи</translation>
 <translation id="182619028057179895">Неправильный формат. Количество знаков после запятой у валюты должно быть положительным числом.</translation>
 <translation id="2978054488731497946">Введите количество знаков после запятой у валюты</translation>
-<translation id="3047726704186619366">URL значка</translation>
-<translation id="2487558607408469181">Блокировка ссылок Explorer</translation>
+<translation id="7642841516562576649">URL значка</translation>
+<translation id="4693057234255364395">Ссылки на обозреватели блоков</translation>
 <translation id="7059127752542505809">Введите URL</translation>
 <translation id="2156993118928861787">Неверный адрес</translation>
 <translation id="6889920539620318793">Установить как действующую</translation>

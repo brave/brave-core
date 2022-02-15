@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Peruuta tilaus</translation>
 <translation id="1209739344687072997">Ilmoita toimimattomasta sivustosta</translation>
 <translation id="8510478288840333677">Tuo Braven kehittäjien tietoon, ettei tämä sivusto toimi kunnolla kilpien kanssa:</translation>
-<translation id="6013164422534859494">Huom. Tämän sivuston osoite lähetetään yhdessä Brave-versiosi numeron ja IP-osoitteesi (jota ei tallenneta) kanssa.</translation>
+<translation id="4105411033440701818">Huom. Tämän sivuston osoite lähetetään yhdessä Brave-versiosi numeron ja IP-osoitteesi (jota ei tallenneta) kanssa.</translation>
 <translation id="5299848999918506028">Kiitos!</translation>
 <translation id="76550953340008122">Toit Braven kehittäjien tietoon, että tällä sivustolla on jotakin vialla. Kiitos siitä! Teemme parhaamme korjataksemme asian.</translation>
 <translation id="2974339193389078578">Brave - uusi Internet</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Seuraava lahjoituspäivämäärä</translation>
 <translation id="1397381065858030856">Katsotut sivustot</translation>
 <translation id="2365740070488517695">Tipit</translation>
-<translation id="5993195614988368256">Anna sisällönluojille tippi suoraan selatessasi käyttämällä palkintopaneelia tai käyttämällä tekstiin sidottua tippipainiketta tietyillä sivustoilla, esimerkkeinä Twitter, Reddit ja GitHub.</translation>
+<translation id="5810507495128831593">Anna sisällönluojille tippi suoraan selatessasi käyttämällä palkintopaneelia tai käyttämällä tekstiin sidottua tippipainiketta tietyillä sivustoilla, esimerkkeinä Twitter, Reddit ja GitHub.</translation>
 <translation id="5012991400231464322">Kuukausittaiset avustukset</translation>
 <translation id="2084351799622920487">Aseta toistuvat kuukausittaiset avustukset, niin voit tukea sivustoja jatkuvalta pohjalta.</translation>
 <translation id="8150772404570015166">Kuukausittaisia avustuksia ei ole vielä asetettu.</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Näytä kaikki</translation>
 <translation id="3026978804849658576">Näytä tiliote</translation>
 <translation id="8494748383523030337">Saldosi</translation>
-<translation id="3343165035032571678">Ansaitsit <ph name="AMOUNT"/> katsomalla Brave Private Ads -mainoksia!</translation>
-<translation id="6618415862402597254">Mainosansiot vastaanotettu</translation>
-<translation id="5981646694027725752">Lunasta ansiot</translation>
-<translation id="2556441076129789027">Lunasta tokenit</translation>
+<translation id="9013419433042554094">Lunasta tokenit</translation>
 <translation id="5544777623605368410">Ansiot</translation>
 <translation id="3273637494083639780">Tässä kuussa ansaitsemiesi tokenien käsittely alkaa <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Tämä voi vaihdella markkinoiden volatiliteetin mukaan.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Ansaitset tokeneita tämän sponsoroidun kuvan katselusta.</translation>
 <translation id="5486114327664215175">Ansaitse tokeneita tämän kuvan katselusta ja tue sisällöntuottajia.</translation>
 <translation id="2940863921746574646">Tokenisaldo</translation>
-<translation id="1714906256929297600">Käytä kampanjatokeneita antaaksesi lahjoituksia sisällöntuottajille ennen kuin ne vanhenevat!</translation>
-<translation id="2426048501007152001">Käytettävissä olevat tokenit</translation>
+<translation id="2221902203895354376">Käytettävissä olevat tokenit</translation>
 <translation id="7701466644604753106">Ota SpeedReader käyttöön</translation>
 <translation id="763042262431778831">Poista SpeedReader käytöstä</translation>
 <translation id="8488282162676695335">Brave-lompakko</translation>
@@ -908,7 +904,7 @@
 <translation id="6901073872645365201">Salasanassa on oltava vähintään 7 merkkiä, yksi numero ja yksi erikoismerkki.</translation>
 <translation id="6657585470893396449">Salasana</translation>
 <translation id="5486261815000869482">Vahvista salasana</translation>
-<translation id="6138471905279127211">Salasana ehtoja ei täytetä.</translation>
+<translation id="6138471905279127211">Salasanaehtoja ei täytetä.</translation>
 <translation id="467510802200863975">Salasanat eivät täsmää</translation>
 <translation id="5168349973342709369">Avaa lompakko antamalla salasana</translation>
 <translation id="9111102763498581341">Poista lukitus</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Lisää tarkistettuja tilejä</translation>
 <translation id="8554010658308662631">Lataa lisää</translation>
 <translation id="6998738230710304743">Ladataan lisää...</translation>
-<translation id="4970164249406565575">Hae tili 0x</translation>
+<translation id="5592304751234049046">Hae tili 0x</translation>
 <translation id="6151024411349343484">Kokeile vaihtaa HD-polkua (yllä), jos et löydä etsimääsi tiliä.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Vanha (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Salli kaikki seurannat ja mainokset</translation>
 <translation id="6203697265754637264">Cross-site-evästeet estetty</translation>
 <translation id="4627427111733173920">Evästeet estetty</translation>
-<translation id="7855168553463825937">Kaikki evästeet sallittu</translation>
+<translation id="3972324600756617403">Kaikki evästeet sallittu</translation>
 <translation id="8366221601425141146">Fingerprinting-tunniste estetty</translation>
 <translation id="5582686930349810484">Sormenjälkitunnistus estetty (standardi)</translation>
 <translation id="6696441392507885865">Sormenjälkitunnistus estetty (tiukka, voi rikkoa sivustoja)</translation>

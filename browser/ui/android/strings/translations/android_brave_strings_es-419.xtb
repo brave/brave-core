@@ -53,7 +53,7 @@
 <translation id="7142548388914389999">Permitir análisis de productos que preservan la privacidad (P3A)</translation>
 <translation id="5254037869598726291">La información P3A anonimizada permite a Brave estimar el uso general y seguir mejorando las funciones más populares.</translation>
 <translation id="933652931229970927">Enviar automáticamente informes de diagnóstico</translation>
-<translation id="5987838417172370108">Ayuda a mejorar la estabilidad de Brave\u2019 enviando automáticamente informes de diagnóstico cuando el navegador falle o se bloquee.</translation>
+<translation id="5987838417172370108">Ayuda a mejorar la estabilidad de Brave enviando automáticamente informes de diagnóstico cuando el navegador falle o se bloquee.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
 <translation id="9008534313521214777">Tiempo ahorrado estimado</translation>
 <translation id="6572660632052512096">Modo de escritorio</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Este es tu primer anuncio de Brave. Pulsa para obtener más información.</translation>
 <translation id="2070991379950719711">Comenzar a utilizar Recompensas Brave</translation>
 <translation id="48520986898237073">Continuar a la billetera</translation>
-<translation id="3570367516044491911">Establecer como navegador predeterminado</translation>
+<translation id="6800338374677644736">Establecer como navegador predeterminado</translation>
 <translation id="19715420010996093">Selecciona el navegador Brave y pulsa "Siempre"</translation>
 <translation id="3546439402724649282">Brave ya es tu navegador predeterminado.</translation>
 <translation id="8389661903259423907">Ya has definido un navegador predeterminado. Puedes cambiarlo en los ajustes de tu app.</translation>
-<translation id="7091885296442320770">Brave es ultrarrápido</translation>
-<translation id="2171928016777725844">¿Quieres que Brave sea tu navegador predeterminado?</translation>
-<translation id="7136694880210472378">Configurar como predeterminado</translation>
-<translation id="4250680216510889253">No</translation>
 <translation id="8826007068782654809">Gracias</translation>
 <translation id="6665366815203065060">Has enviado una propina a:</translation>
 <translation id="5441565662498481293">Estás enviando automáticamente una propina a:</translation>
@@ -524,9 +520,9 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="6478996494082389936">análisis de productos privados.</translation>
 <translation id="5187052478998910855">¿Necesitas actualizarte en cuanto a Rewards?</translation>
 <translation id="8622329973403382303">¡Haz un recorrido rápido para repasar cómo funciona y pasar a la historia como una estrella de Rewards!</translation>
-<translation id="8401711613788729448">Abre todos los enlaces con Brave para proteger tu privacidad</translation>
-<translation id="3184805785843994538">Brave Shields bloquea rastreadores y anuncios, además de ahorrarte datos y tiempo en todos los sitios que visitas.</translation>
-<translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
+<translation id="7625138338483121345">Abre todos los enlaces con Brave para proteger tu privacidad</translation>
+<translation id="4511485286950743564">Brave Shields bloquea rastreadores y anuncios, además de ahorrarte datos y tiempo en todos los sitios que visitas.</translation>
+<translation id="9218430445555521422">Establecer Brave como predeterminado</translation>
 <translation id="3479552764303398839">Ahora no</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -596,7 +592,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="283071225285270357">Introduce tu frase de recuperación</translation>
 <translation id="3943857333388298514">Pegar</translation>
 <translation id="3331452756822160641">Contraseña nueva</translation>
-<translation id="4854035885012188958">Restauración a partir de una billetera de criptomonedas de Brave anterior</translation>
+<translation id="4359319875297001084">Restauración a partir de una billetera de criptomonedas de Brave anterior</translation>
 <translation id="2339124864228588937">Verificar la frase de recuperación</translation>
 <translation id="3747079125031086337">Seleccione las palabras de su frase de recuperación en el orden correcto.</translation>
 <translation id="6518133107902771759">Verificar</translation>
@@ -804,6 +800,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="4351811224047421378">Decimales de precisión</translation>
 <translation id="8614026298974065517">Eliminar activo personalizado</translation>
 <translation id="4378941981362528553">Desea eliminar el token (<ph name="TOKEN_NAME"/><ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">No</translation>
 <translation id="8971278306757462297">La dirección de recepción es tu propia dirección</translation>
 <translation id="749944179568745958">No es una dirección de ETH válida</translation>
 <translation id="3506416339268164412">La dirección de recepción es la dirección de contrato del token</translation>
@@ -837,8 +834,8 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="665660671251623018">Decimales de la divisa de la cadena</translation>
 <translation id="182619028057179895">Formato no válido; el decimal de la cadena es un número positivo.</translation>
 <translation id="2978054488731497946">Introduce los decimales de la divisa</translation>
-<translation id="3047726704186619366">URL de los íconos</translation>
-<translation id="2487558607408469181">URL de explorador de bloques</translation>
+<translation id="7642841516562576649">URL de los íconos</translation>
+<translation id="4693057234255364395">URL de explorador de bloques</translation>
 <translation id="7059127752542505809">Introduce la URL</translation>
 <translation id="2156993118928861787">Dirección no válida</translation>
 <translation id="6889920539620318793">Establecer como activa</translation>

@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">这是您的第一个 Brave 广告。点按以了解更多信息。</translation>
 <translation id="2070991379950719711">开始使用 Brave Rewards</translation>
 <translation id="48520986898237073">继续进入钱包</translation>
-<translation id="3570367516044491911">设置为默认浏览器</translation>
+<translation id="6800338374677644736">设置为默认浏览器</translation>
 <translation id="19715420010996093">选择 Brave 浏览器并轻按 "始终"</translation>
 <translation id="3546439402724649282">Brave 已被设置为您的默认浏览器。</translation>
 <translation id="8389661903259423907">您已经设置了默认浏览器。您可以在应用设置中更改默认浏览器。</translation>
-<translation id="7091885296442320770">Brave 快如闪电</translation>
-<translation id="2171928016777725844">将 Brave 设为您的默认浏览器！</translation>
-<translation id="7136694880210472378">设为默认搜索引擎</translation>
-<translation id="4250680216510889253">否</translation>
 <translation id="8826007068782654809">谢谢</translation>
 <translation id="6665366815203065060">您刚刚已发送打赏至：</translation>
 <translation id="5441565662498481293">您正在自动发送打赏至：</translation>
@@ -524,9 +520,9 @@
 <translation id="6478996494082389936">私人产品分析。</translation>
 <translation id="5187052478998910855">需要重新了解一下 Rewards？</translation>
 <translation id="8622329973403382303">赶快来快速浏览一下它是如何成为 Rewards 摇滚明星的历史记录吧！</translation>
-<translation id="8401711613788729448">用 Brave 打开所有链接保护您的隐私</translation>
-<translation id="3184805785843994538">Brave Shields 可阻止追踪器和广告、保存数据，从而节省您访问每个网站的时间。</translation>
-<translation id="8722651357687610395">将 Brave 设置为默认</translation>
+<translation id="7625138338483121345">用 Brave 打开所有链接保护您的隐私</translation>
+<translation id="4511485286950743564">Brave Shields 可阻止追踪器和广告、保存数据，从而节省您访问每个网站的时间。</translation>
+<translation id="9218430445555521422">将 Brave 设置为默认</translation>
 <translation id="3479552764303398839">以后再说</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -596,7 +592,7 @@
 <translation id="283071225285270357">输入您的恢复密语</translation>
 <translation id="3943857333388298514">粘贴</translation>
 <translation id="3331452756822160641">新密码</translation>
-<translation id="4854035885012188958">我正在从旧版 Brave 加密钱包恢复</translation>
+<translation id="4359319875297001084">我正在从旧版 Brave 加密钱包恢复</translation>
 <translation id="2339124864228588937">验证恢复密语</translation>
 <translation id="3747079125031086337">按照正确的顺序选择恢复短语中的单词。</translation>
 <translation id="6518133107902771759">验证</translation>
@@ -804,6 +800,7 @@
 <translation id="4351811224047421378">精确小数点</translation>
 <translation id="8614026298974065517">删除定制资产</translation>
 <translation id="4378941981362528553">你想删除<ph name="TOKEN_NAME"/>（<ph name="TOKEN_SYMBOL"/>）代币吗？</translation>
+<translation id="4250680216510889253">否</translation>
 <translation id="8971278306757462297">接收地址是您自己的地址</translation>
 <translation id="749944179568745958">不是有效的 ETH 地址</translation>
 <translation id="3506416339268164412">接收地址是代币的合约地址。</translation>
@@ -837,8 +834,8 @@
 <translation id="665660671251623018">链的货币小数</translation>
 <translation id="182619028057179895">格式无效，货币小数是正数</translation>
 <translation id="2978054488731497946">输入货币小数</translation>
-<translation id="3047726704186619366">图标 URL</translation>
-<translation id="2487558607408469181">拦截浏览器 URL</translation>
+<translation id="7642841516562576649">图标 URL</translation>
+<translation id="4693057234255364395">拦截浏览器 URL</translation>
 <translation id="7059127752542505809">输入 URL</translation>
 <translation id="2156993118928861787">无效地址</translation>
 <translation id="6889920539620318793">设为活动</translation>

@@ -53,7 +53,7 @@
 <translation id="7142548388914389999">Az adatvédelmet megőrző termékelemzés (P3A) engedélyezése</translation>
 <translation id="5254037869598726291">Az anonimizált P3A információk segítségével a Brave felmérheti az átlagos használatot, és biztosíthatja a népszerű funkciók folyamatos fejlesztését.</translation>
 <translation id="933652931229970927">Diagnosztikai jelentések automatikus elküldése</translation>
-<translation id="5987838417172370108">Segítsen fejleszteni a Brave\u2019s termékstabilitását azáltal, hogy engedélyezi a diagnosztikai jelentések automatikus elküldését a Brave böngésző összeomlása vagy lefagyása esetén.</translation>
+<translation id="5987838417172370108">Segítsen fejleszteni a Brave termékstabilitását azáltal, hogy engedélyezi a diagnosztikai jelentések automatikus elküldését a Brave böngésző összeomlása vagy lefagyása esetén.</translation>
 <translation id="7977176350719484850">Becs. adatok\nmentve</translation>
 <translation id="9008534313521214777">Becsült megtakarított\nidő</translation>
 <translation id="6572660632052512096">Asztali mód</translation>
@@ -85,7 +85,7 @@
 <translation id="5808759341041733958">Válasszon alapértelmezett keresőmotort</translation>
 <translation id="1331593888918588693">Az alkalmazás beállításaiban később bármikor változtathatod a beállításokat.</translation>
 <translation id="5806601733251372221">Brave védelem</translation>
-<translation id="8537217141725709400">Szerezzen <ph name="TOKEN"/>s</translation>
+<translation id="8537217141725709400">Szerezzen <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave jutalmak</translation>
 <translation id="5870330605209713397">magánéletet tiszteletben tartó hirdetések megtekintésével, és alapértelmezettként támogassa kedvenc oldalait és alkotóit.</translation>
 <translation id="5302488867897327287">A Brave Rewards használatára kattintva elfogadja a</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Ez az első Brave hirdetése. Koppintson, ha szeretne többet megtudni.</translation>
 <translation id="2070991379950719711">Használja a Brave Rewardsot</translation>
 <translation id="48520986898237073">Tovább a pénztárcához</translation>
-<translation id="3570367516044491911">Beállítás alapértelmezett böngészőként</translation>
+<translation id="6800338374677644736">Beállítás alapértelmezett böngészőként</translation>
 <translation id="19715420010996093">Válaszd ki a Brave böngészőt és kattints a 'Mindig'-re</translation>
 <translation id="3546439402724649282">A Brave már be van állítva alapértelmezett böngészőként.</translation>
 <translation id="8389661903259423907">Már beállított egy alapértelmezett böngészőt. Az alapértelmezett böngészőt az alkalmazás beállításaiban lehet változtatni.</translation>
-<translation id="7091885296442320770">A Brave villámgyors</translation>
-<translation id="2171928016777725844">Legyen a Brave az alapértelmezett böngésző!</translation>
-<translation id="7136694880210472378">Legyen alapértelmezett</translation>
-<translation id="4250680216510889253">Nem</translation>
 <translation id="8826007068782654809">Köszönjük</translation>
 <translation id="6665366815203065060">Borravalót küldött neki:</translation>
 <translation id="5441565662498481293">Automatikusan borravalót küldesz ide:</translation>
@@ -173,7 +169,7 @@ hónapban...</translation>
 <translation id="683765328936486920">YouTube-on</translation>
 <translation id="8969049974285901797">Twitchen</translation>
 <translation id="3692362746128814480">Kijelölt <ph name="BAT_VALUE"/> BAT-ot olyan alkotóknak, akik még nem jelentkeztek be hozzájárulások fogadására. Böngészője próbálkozni fog a hozzájárulással, amíg elvégzik az ellenőrzést, vagy eltelik 90 nap.</translation>
-<translation id="3101693828171454453">nincs elég <ph name="TOKEN"/>s</translation>
+<translation id="3101693828171454453">nincs elég <ph name="TOKEN"/></translation>
 <translation id="6940273954212603510">kérem</translation>
 <translation id="1036277985068412734">pénz hozzáadása</translation>
 <translation id="3492491948683276944">havi borravaló beállítása</translation>
@@ -523,9 +519,9 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="6478996494082389936">privát termékelemzés.</translation>
 <translation id="5187052478998910855">Kell egy kis frissítés a Rewardsot illetően?</translation>
 <translation id="8622329973403382303">Nézz meg egy gyors bemutatót, hogy tisztázódjon, hogyan működik, és Rewards rocksztárként jegyezhessen fel a történelem!</translation>
-<translation id="8401711613788729448">Nyiss meg minden hivatkozást Brave-ben, hogy vigyázz az adataidra.</translation>
-<translation id="3184805785843994538">A Brave Shields blokkolja a követőket és reklámokat, menti az adatokat, és időt spórol neked minden felkeresett oldalon.</translation>
-<translation id="8722651357687610395">Tedd a Brave-et alapértelmezetté</translation>
+<translation id="7625138338483121345">Nyiss meg minden hivatkozást Brave-ben, hogy vigyázz az adataidra.</translation>
+<translation id="4511485286950743564">A Brave Shields blokkolja a követőket és reklámokat, menti az adatokat, és időt spórol neked minden felkeresett oldalon.</translation>
+<translation id="9218430445555521422">Tedd a Brave-et alapértelmezetté</translation>
 <translation id="3479552764303398839">Ne most</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -595,7 +591,7 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="283071225285270357">Add meg a helyreállítási kifejezést</translation>
 <translation id="3943857333388298514">Beillesztés</translation>
 <translation id="3331452756822160641">Új jelszó</translation>
-<translation id="4854035885012188958">Visszaállítás régebbi Brave kriptotárcából</translation>
+<translation id="4359319875297001084">Visszaállítás régebbi Brave kriptotárcából</translation>
 <translation id="2339124864228588937">Igazold vissza a helyreállítási kifejezést</translation>
 <translation id="3747079125031086337">Válassza ki a helyreállítási kifejezés szavait a megfelelő sorrendben.</translation>
 <translation id="6518133107902771759">Ellenőrzés</translation>
@@ -803,6 +799,7 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="4351811224047421378">A pontosság tizedesjegyei</translation>
 <translation id="8614026298974065517">Egyéni eszköz eltávolítása</translation>
 <translation id="4378941981362528553">El szeretné távolítani a(z) <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) tokent?</translation>
+<translation id="4250680216510889253">Nem</translation>
 <translation id="8971278306757462297">A fogadó cím az Ön saját címe</translation>
 <translation id="749944179568745958">Érvénytelen ETH cím</translation>
 <translation id="3506416339268164412">A fogadó cím egy token szerződési címe</translation>
@@ -836,8 +833,8 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="665660671251623018">A láncolat pénznemének tizedesjegyei</translation>
 <translation id="182619028057179895">Érvénytelen formátum, a pénznem tizedesjegyei pozitív számot képeznek</translation>
 <translation id="2978054488731497946">Adja meg a pénznem tizedesjegyeit</translation>
-<translation id="3047726704186619366">Ikon-URL-ek</translation>
-<translation id="2487558607408469181">Block explorer URL-ek</translation>
+<translation id="7642841516562576649">Ikon-URL-ek</translation>
+<translation id="4693057234255364395">Block explorer URL-ek</translation>
 <translation id="7059127752542505809">Adja meg az URL-t</translation>
 <translation id="2156993118928861787">Érvénytelen cím</translation>
 <translation id="6889920539620318793">Beállítás aktívként</translation>
