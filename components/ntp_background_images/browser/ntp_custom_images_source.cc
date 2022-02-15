@@ -50,7 +50,7 @@ void NTPCustomImagesSource::StartDataRequest(
     const content::WebContents::Getter& wc_getter,
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  GetImageFile(service_->GetImageFilePath() , std::move(callback));
+  GetImageFile(service_->GetImageFilePath(), std::move(callback));
 }
 
 std::string NTPCustomImagesSource::GetMimeType(const std::string& path) {
@@ -61,9 +61,8 @@ bool NTPCustomImagesSource::AllowCaching() {
   return false;
 }
 
-void NTPCustomImagesSource::GetImageFile(
-    const base::FilePath& image_file_path,
-    GotDataCallback callback) {
+void NTPCustomImagesSource::GetImageFile(const base::FilePath& image_file_path,
+                                         GotDataCallback callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFileToString, image_file_path),
@@ -71,9 +70,8 @@ void NTPCustomImagesSource::GetImageFile(
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void NTPCustomImagesSource::OnGotImageFile(
-    GotDataCallback callback,
-    absl::optional<std::string> input) {
+void NTPCustomImagesSource::OnGotImageFile(GotDataCallback callback,
+                                           absl::optional<std::string> input) {
   if (!input) {
     content::GetUIThreadTaskRunner({})->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback),
