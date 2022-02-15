@@ -8,9 +8,7 @@ assert(is_apple)
 source_set("mac") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
-  sources = [
-    "conversions.h",
-  ]
+  sources = [ "conversions.h" ]
 
   frameworks = [ "Foundation.framework" ]
 }

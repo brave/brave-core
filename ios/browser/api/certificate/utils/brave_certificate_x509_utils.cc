@@ -24,8 +24,8 @@
 #include "third_party/boringssl/src/include/openssl/err.h"
 #include "third_party/boringssl/src/include/openssl/obj.h"
 
-namespace x509 {
-namespace utils {
+namespace certificate {
+namespace x509_utils {
 std::vector<net::der::Input> SupportedExtensionOIDs() {
   return {net::SubjectKeyIdentifierOid(),
           net::KeyUsageOid(),
@@ -319,5 +319,5 @@ base::Time GeneralizedTimeToTime(
   net::der::GeneralizedTimeToTime(generalized_time, &time);
   return time;
 }
-}  // namespace utils
-}  // namespace x509
+}  // namespace x509_utils
+}  // namespace certificate

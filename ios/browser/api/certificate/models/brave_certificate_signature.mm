@@ -22,11 +22,11 @@
     _parameters = [[NSString alloc] init];
     _bytesSize = 0;
 
-    _digest =
-        base::SysUTF8ToNSString(certificate::x509_utils::SignatureAlgorithmDigestToName(
+    _digest = base::SysUTF8ToNSString(
+        certificate::x509_utils::SignatureAlgorithmDigestToName(
             certificate->signature_algorithm()));
-    _algorithm =
-        base::SysUTF8ToNSString(certificate::x509_utils::SignatureAlgorithmIdToName(
+    _algorithm = base::SysUTF8ToNSString(
+        certificate::x509_utils::SignatureAlgorithmIdToName(
             certificate->signature_algorithm()));
 
     net::der::Input signature_oid;
@@ -37,7 +37,8 @@
       _objectIdentifier =
           certificate::utils::NSStringToData(signature_oid.AsString());
 
-      std::string absolute_oid = certificate::x509_utils::NIDToAbsoluteOID(signature_oid);
+      std::string absolute_oid =
+          certificate::x509_utils::NIDToAbsoluteOID(signature_oid);
       if (!absolute_oid.empty()) {
         _absoluteObjectIdentifier = base::SysUTF8ToNSString(absolute_oid);
       }
