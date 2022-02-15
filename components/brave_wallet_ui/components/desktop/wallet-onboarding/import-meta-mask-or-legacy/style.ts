@@ -86,7 +86,10 @@ export const LostButton = styled(WalletButton)`
   font-size: 13px;
   line-height: 19px;
   letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text03};
+  color: ${(p) => p.theme.color.interactive05};
+  @media (prefers-color-scheme: dark) {
+    color: ${(p) => p.theme.palette.blurple300};
+  }
   margin-top: 35px;
   max-width: 340px;
 `
