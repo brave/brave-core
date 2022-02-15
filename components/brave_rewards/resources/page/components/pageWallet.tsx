@@ -14,8 +14,6 @@ import {
 } from '../../ui/components'
 import { WalletCard, ExternalWalletAction } from '../../shared/components/wallet_card'
 import { ExternalWallet, ExternalWalletProvider, ExternalWalletStatus } from '../../shared/lib/external_wallet'
-import { WalletAddIcon, WalletWithdrawIcon } from 'brave-ui/components/icons'
-import { AlertWallet } from '../../ui/components/walletWrapper'
 import { Provider } from '../../ui/components/profile'
 import { DetailRow as PendingDetailRow, PendingType } from '../../ui/components/tablePending'
 // Utils
@@ -164,11 +162,6 @@ class PageWallet extends React.Component<Props, State> {
     console.log('onModalBackupOnImport')
   }
 
-  getConversion = () => {
-    const { balance, parameters } = this.props.rewardsData
-    return utils.convertBalance(balance.total, parameters.rate)
-  }
-
   onModalActivityToggle = () => {
     if (!this.state.modalActivity) {
       this.actions.getMonthlyReport()
@@ -244,44 +237,6 @@ class PageWallet extends React.Component<Props, State> {
       }
       this.actions.getMonthlyReport(parseInt(items[1], 10), parseInt(items[0], 10))
     }
-  }
-
-  walletAlerts = (): AlertWallet | null => {
-    const {
-      disconnectWalletError,
-      walletRecoveryStatus,
-      walletServerProblem
-    } = this.props.rewardsData.ui
-
-    if (walletServerProblem) {
-      return {
-        node: <><b>{getLocale('uhOh')}</b> {getLocale('serverNotResponding')}</>,
-        type: 'error'
-      }
-    }
-
-    if (walletRecoveryStatus === 0) {
-      return {
-        node: <><b>{getLocale('walletRestored')}</b> {getLocale('walletRecoverySuccess')}</>,
-        type: 'success',
-        onAlertClose: () => {
-          this.actions.onClearAlert('walletRecoveryStatus')
-        }
-      }
-    }
-
-    const { externalWallet } = this.props.rewardsData
-    if (externalWallet && disconnectWalletError) {
-      return {
-        node: <><b>{getLocale('uhOh')}</b><br />{getLocale('disconnectWalletFailed').replace('$1', utils.getWalletProviderName(externalWallet))}<br /><br /><a href='https://support.brave.com/hc/en-us/articles/360062026432'>{getLocale('learnMore')}</a></>,
-        type: 'error',
-        onAlertClose: () => {
-          this.actions.onClearAlert('disconnectWalletError')
-        }
-      }
-    }
-
-    return null
   }
 
   getPendingRows = (): PendingDetailRow[] => {
@@ -442,36 +397,8 @@ class PageWallet extends React.Component<Props, State> {
     window.open(externalWallet.accountUrl, '_self')
   }
 
-  getGreetings = () => {
-    const { externalWallet } = this.props.rewardsData
-    if (!externalWallet || !externalWallet.userName) {
-      return ''
-    }
-
-    return getLocale('greetingsVerified', { name: externalWallet.userName })
-  }
-
   onDisconnectClick = () => {
     this.actions.disconnectWallet()
-  }
-
-  getActions = () => {
-    return [
-      {
-        name: getLocale('panelAddFunds'),
-        action: this.onFundsAction.bind(this, 'add'),
-        icon: <WalletAddIcon />,
-        testId: 'panel-add-funds',
-        externalWallet: true
-      },
-      {
-        name: getLocale('panelWithdrawFunds'),
-        action: this.onFundsAction.bind(this, 'withdraw'),
-        icon: <WalletWithdrawIcon />,
-        testId: 'panel-withdraw-funds',
-        externalWallet: true
-      }
-    ]
   }
 
   getBalanceToken = (key: string) => {

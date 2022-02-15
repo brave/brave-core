@@ -6,7 +6,6 @@ import BigNumber from 'bignumber.js'
 
 import { lookupExternalWalletProviderName } from '../../shared/lib/external_wallet'
 import { getMessage } from './background/api/locale_api'
-import { WalletState } from '../../ui/components/walletWrapper'
 
 export const convertBalance = (tokens: number, rate: number): string => {
   if (tokens === 0) {
@@ -92,40 +91,6 @@ export const isPublisherNotVerified = (status?: RewardsExtension.PublisherStatus
   }
 
   return status === 0
-}
-
-export const getWalletStatus = (externalWallet?: RewardsExtension.ExternalWallet): WalletState | undefined => {
-  if (!externalWallet) {
-    return 'unverified'
-  }
-
-  switch (externalWallet.status) {
-    // ledger::type::WalletStatus::CONNECTED
-    case 1:
-      return 'connected'
-    // ledger::type::WalletStatus::VERIFIED
-    case 2:
-      return 'verified'
-    // ledger::type::WalletStatus::DISCONNECTED_NOT_VERIFIED
-    case 3:
-      return 'disconnected_unverified'
-    // ledger::type::WalletStatus::DISCONNECTED_VERIFIED
-    case 4:
-      return 'disconnected_verified'
-    // ledger::type::WalletStatus::PENDING
-    case 5:
-      return 'pending'
-    default:
-      return 'unverified'
-  }
-}
-
-export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) => {
-  if (!externalWallet || !externalWallet.userName) {
-    return ''
-  }
-
-  return getMessage('greetingsVerified', [externalWallet.userName])
 }
 
 export const handleExternalWalletLink = (balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {

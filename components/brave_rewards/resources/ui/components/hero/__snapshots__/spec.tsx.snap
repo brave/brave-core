@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Hero tests basic tests matches the snapshot 1`] = `
-<div
-  className="sc-bdVaJa izGEVs"
-  id="test-hero"
-/>
-`;
