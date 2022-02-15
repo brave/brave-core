@@ -473,4 +473,8 @@
 <translation id="7815301689257843278">是否自動傳送當機報告，協助 Brave 防止這個問題再度發生？</translation>
 <translation id="1068069727470515940">您隨時可以再次變更<ph name="SETTING_TEXT"/>。</translation>
 <translation id="8325036459845654666">此網路已新增。</translation>
+<translation id="7475547933708221517">使用 IPFS 共用本機檔案</translation>
+<translation id="2286177249736199435">使用 IPFS 分享本機資料夾</translation>
+<translation id="784573715436258741">使用 IPFS 共用本機檔案</translation>
+<translation id="575838692088926391">使用 IPFS 分享本機資料夾</translation>
 </translationbundle>

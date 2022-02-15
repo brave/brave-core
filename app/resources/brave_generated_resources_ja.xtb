@@ -474,4 +474,8 @@
 <translation id="7815301689257843278">クラッシュレポートを自動的にBraveに送信して、このような問題の再発防止対策にご協力いただけますか？</translation>
 <translation id="1068069727470515940"><ph name="SETTING_TEXT"/>はいつでも変更できます。</translation>
 <translation id="8325036459845654666">このネットワークは既に追加されています。</translation>
+<translation id="7475547933708221517">IPFSを使用してローカルファイルを共有</translation>
+<translation id="2286177249736199435">IPFSを使用してローカルフォルダを共有</translation>
+<translation id="784573715436258741">IPFSを使用してローカルファイルを共有</translation>
+<translation id="575838692088926391">IPFSを使用してローカルフォルダを共有</translation>
 </translationbundle>

@@ -472,4 +472,8 @@
 <translation id="7815301689257843278">自动发送崩溃报告以帮助 Brave 防止这个问题再次发生？</translation>
 <translation id="1068069727470515940">您可以在任何时候再次更改 <ph name="SETTING_TEXT"/></translation>
 <translation id="8325036459845654666">已添加此网络。</translation>
+<translation id="7475547933708221517">使用 IPFS 共享本地文件</translation>
+<translation id="2286177249736199435">使用 IPFS 分享本地文件夹</translation>
+<translation id="784573715436258741">使用 IPFS 共享本地文件</translation>
+<translation id="575838692088926391">使用 IPFS 共享本地文件夹</translation>
 </translationbundle>

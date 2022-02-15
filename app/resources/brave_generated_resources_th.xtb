@@ -473,4 +473,8 @@
 <translation id="7815301689257843278">ต้องการส่งรายงานความขัดข้องโดยอัตโนมัติเพื่อให้ Brave สามารถป้องกันปัญหานี้ไม่ให้เกิดขึ้นอีกหรือไม่</translation>
 <translation id="1068069727470515940">คุณสามารถเปลี่ยน <ph name="SETTING_TEXT"/> อีกครั้งเมื่อใดก็ได้</translation>
 <translation id="8325036459845654666">เพิ่มเครือข่ายนี้แล้ว</translation>
+<translation id="7475547933708221517">แบ่งปันไฟล์ในเครื่องโดยใช้ IPFS</translation>
+<translation id="2286177249736199435">แบ่งปันโฟลเดอร์ภายในเครื่องโดยใช้ IPFS</translation>
+<translation id="784573715436258741">แบ่งปันฟล์ในเครื่องโดยใช้ IPFS</translation>
+<translation id="575838692088926391">แบ่งปันโฟลเดอร์ในเครื่องโดยใช้ IPFS</translation>
 </translationbundle>

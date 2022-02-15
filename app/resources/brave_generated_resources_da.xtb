@@ -474,4 +474,8 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="7815301689257843278">Vil du sende automatiske rapporter om lukning, så Brave kan forhindre fejlen i at ske igen?</translation>
 <translation id="1068069727470515940">Du kan ændre <ph name="SETTING_TEXT"/> igen når som helst.</translation>
 <translation id="8325036459845654666">Netværk allerede tilføjet</translation>
+<translation id="7475547933708221517">Del lokal file med IPFS</translation>
+<translation id="2286177249736199435">Del lokal mappe via IPFS</translation>
+<translation id="784573715436258741">Del lokal fil med IPFS</translation>
+<translation id="575838692088926391">Del lokal mappe via IPFS</translation>
 </translationbundle>

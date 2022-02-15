@@ -473,4 +473,8 @@
 <translation id="7815301689257843278">충돌 보고서를 자동 전송하여 Brave가 문제 재발을 방지할 수 있도록 하시겠습니까?</translation>
 <translation id="1068069727470515940"><ph name="SETTING_TEXT"/>은 언제든지 다시 변경할 수 있습니다.</translation>
 <translation id="8325036459845654666">이미 추가된 네트워크입니다.</translation>
+<translation id="7475547933708221517">IPFS를 사용하여 로컬 파일 공유</translation>
+<translation id="2286177249736199435">IPFS를 사용하여 로컬 폴더 공유</translation>
+<translation id="784573715436258741">IPFS를 사용하여 로컬 파일 공유</translation>
+<translation id="575838692088926391">IPFS를 사용하여 로컬 폴더 공유</translation>
 </translationbundle>
