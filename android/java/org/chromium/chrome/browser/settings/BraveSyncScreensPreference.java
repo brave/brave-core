@@ -1369,11 +1369,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
   }
 
   private void setSyncDoneLayout() {
-      if (SyncSettingsUtils.getSyncError() == SyncError.ANDROID_SYNC_DISABLED) {
-          mBraveSyncBtnAndroidSyncSettings.setVisibility(View.VISIBLE);
-      } else {
-          mBraveSyncBtnAndroidSyncSettings.setVisibility(View.GONE);
-      }
+      // We probably don't need this UI element anymore.
+      mBraveSyncBtnAndroidSyncSettings.setVisibility(View.GONE);
 
       if (!deviceInfoObserverSet) {
           BraveSyncDevices.get().addDeviceInfoChangedListener(this);
