@@ -114,15 +114,11 @@
 <translation id="1434416574322382019">Νέο Ιδιωτικό Παράθυρο με Tor</translation>
 <translation id="4703780849509456860">Άνοιγμα Συνδέσμου σε Ιδιωτικό Παράθυρο με Tor</translation>
 <translation id="3488584642074079080">Άνοιγμα συνδέσμου σε Ιδιωτικό Παράθυρο Brave μέσω Tor</translation>
-<translation id="7475547933708221517">Κοινοποίηση τοπικού αρχείου μέσω IPFS</translation>
-<translation id="2286177249736199435">Κοινή χρήση Τοπικού Φακέλου Χρησιμοποιώντας IPFS</translation>
 <translation id="4491895534716990473">Εισαγωγή επιλεγμένου κειμένου σε IPFS</translation>
 <translation id="8883166554766780543">Εισαγωγή και αντιγραφή συνδέσμου σε στιγμιότυπο IPFS</translation>
-<translation id="784573715436258741">Κοινοποίηση τοπικού αρχείου μέσω IPFS</translation>
 <translation id="6313675821927505581">Νέο ιδιωτικό παράθυρο με Tor</translation>
 <translation id="2638041073279639246">Ανοίξτε σύνδεσμο σε ιδιωτικό παράθυρο με Tor</translation>
 <translation id="3425600262621021599">Ανοίξτε σύνδεσμο σε ιδιωτικό παράθυρο Brave με Tor</translation>
-<translation id="575838692088926391">Κοινή χρήση τοπικού φακέλου χρησιμοποιώντας IPFS</translation>
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
 <translation id="7924918279836988121">Υπηρεσία Bat Ledger</translation>
 <translation id="4472575034687746823">Έναρξη</translation>
@@ -458,4 +454,8 @@
 <translation id="1062463687579789365">Προσαρμογή δικτύων πορτοφολιού</translation>
 <translation id="2234108191702901162">Δεν είναι δυνατή η προσθήκη δικτύου</translation>
 <translation id="2618193846561624884">Θέλετε να ενημερώσετε το υπάρχον δίκτυο;</translation>
+<translation id="7475547933708221517">Κοινοποίηση τοπικού αρχείου μέσω IPFS</translation>
+<translation id="2286177249736199435">Κοινή χρήση Τοπικού Φακέλου Χρησιμοποιώντας IPFS</translation>
+<translation id="784573715436258741">Κοινοποίηση τοπικού αρχείου μέσω IPFS</translation>
+<translation id="575838692088926391">Κοινή χρήση τοπικού φακέλου χρησιμοποιώντας IPFS</translation>
 </translationbundle>

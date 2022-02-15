@@ -114,15 +114,11 @@ ou modifiez les autorisations plus tard à l'adresse <ph name="SETTINGS_EXTENION
 <translation id="1434416574322382019">Nouvelle fenêtre privée avec Tor</translation>
 <translation id="4703780849509456860">Ouvrir le lien dans une fenêtre privée avec Tor</translation>
 <translation id="3488584642074079080">Ouvrir le lien dans la fenêtre privée Brave avec Tor</translation>
-<translation id="7475547933708221517">Partager le fichier local via IPFS</translation>
-<translation id="2286177249736199435">Partager le dossier local via IPFS</translation>
 <translation id="4491895534716990473">Importer le texte sélectionné sur IPFS</translation>
 <translation id="8883166554766780543">Importez et copiez le lien vers un instantané IPFS</translation>
-<translation id="784573715436258741">Partager le fichier local via IPFS</translation>
 <translation id="6313675821927505581">Nouvelle fenêtre privée avec Tor</translation>
 <translation id="2638041073279639246">Ouvrir le lien dans une fenêtre privée avec Tor</translation>
 <translation id="3425600262621021599">Ouvrir le lien dans la fenêtre privée de Brave avec Tor</translation>
-<translation id="575838692088926391">Partager le dossier local via IPFS</translation>
 <translation id="2515126961943087659">Service d'annonces Bat</translation>
 <translation id="7924918279836988121">Service du livre des jetons d’attention de base</translation>
 <translation id="4472575034687746823">Commencez</translation>
@@ -458,4 +454,8 @@ Voulez-vous vraiment continuer?</translation>
 <translation id="1062463687579789365">Personnalisation des réseaux du portefeuille</translation>
 <translation id="2234108191702901162">Impossible d'ajouter le réseau</translation>
 <translation id="2618193846561624884">Voulez-vous mettre à jour le réseau existant?</translation>
+<translation id="7475547933708221517">Partager le fichier local via IPFS</translation>
+<translation id="2286177249736199435">Partager le dossier local via IPFS</translation>
+<translation id="784573715436258741">Partager le fichier local via IPFS</translation>
+<translation id="575838692088926391">Partager le dossier local via IPFS</translation>
 </translationbundle>

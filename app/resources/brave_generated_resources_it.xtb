@@ -114,15 +114,11 @@ Oppure cambia in seguito la tua scelta su <ph name="SETTINGS_EXTENIONS_LINK"/>.<
 <translation id="1434416574322382019">Nuova finestra privata con Tor</translation>
 <translation id="4703780849509456860">Apri il collegamento in una finestra privata con Tor</translation>
 <translation id="3488584642074079080">Apri il collegamento in una finestra privata Brave con Tor</translation>
-<translation id="7475547933708221517">Condividi il file locale su IPFS</translation>
-<translation id="2286177249736199435">Condividi una cartella locale usando l’IPFS</translation>
 <translation id="4491895534716990473">Importa il testo selezionato su IPFS</translation>
 <translation id="8883166554766780543">Importa e copia il collegamento allo snapshot IPFS</translation>
-<translation id="784573715436258741">Condividi il file locale con IPFS</translation>
 <translation id="6313675821927505581">Nuova finestra privata con Tor</translation>
 <translation id="2638041073279639246">Apri il link in una finestra privata con Tor</translation>
 <translation id="3425600262621021599">Apri il link in una finestra privata Brave con Tor</translation>
-<translation id="575838692088926391">Condividi una cartella locale usando l’IPFS</translation>
 <translation id="2515126961943087659">Servizio pubblicità Bat</translation>
 <translation id="7924918279836988121">Servizio Libro Mastro Bat</translation>
 <translation id="4472575034687746823">Come iniziare</translation>
@@ -458,4 +454,8 @@ Confermi di voler procedere?</translation>
 <translation id="1062463687579789365">Personalizzazione delle reti del portafoglio</translation>
 <translation id="2234108191702901162">Impossibile aggiungere la rete</translation>
 <translation id="2618193846561624884">Vuoi aggiornare la rete esistente?</translation>
+<translation id="7475547933708221517">Condividi il file locale su IPFS</translation>
+<translation id="2286177249736199435">Condividi una cartella locale usando l’IPFS</translation>
+<translation id="784573715436258741">Condividi il file locale con IPFS</translation>
+<translation id="575838692088926391">Condividi una cartella locale usando l’IPFS</translation>
 </translationbundle>

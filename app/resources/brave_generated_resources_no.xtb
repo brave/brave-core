@@ -114,15 +114,11 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1434416574322382019">Nytt privatvindu med Tor</translation>
 <translation id="4703780849509456860">Åpne lenke i privatvindu med Tor</translation>
 <translation id="3488584642074079080">Åpne lenke i Brave-privatvindu med Tor</translation>
-<translation id="7475547933708221517">Del lokal fil ved hjelp av IPFS</translation>
-<translation id="2286177249736199435">Del lokal mappe ved å bruke IPFS</translation>
 <translation id="4491895534716990473">Importer utvalgt tekst til IPFS</translation>
 <translation id="8883166554766780543">Importer og kopier kobling til IPFS-øyeblikksbilde</translation>
-<translation id="784573715436258741">Del lokal fil ved hjelp av IPFS</translation>
 <translation id="6313675821927505581">Nytt privat vindu med Tor</translation>
 <translation id="2638041073279639246">Åpne lenke i privat vindu med Tor</translation>
 <translation id="3425600262621021599">Åpne lenke i Brave privat vindu med Tor</translation>
-<translation id="575838692088926391">Del lokal mappe ved å bruke IPFS</translation>
 <translation id="2515126961943087659">Bat Ads-tjeneste</translation>
 <translation id="7924918279836988121">Bat-reskontrotjeneste</translation>
 <translation id="4472575034687746823">Kom i gang</translation>
@@ -458,4 +454,8 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1062463687579789365">Tilpasning av lommeboknettverk</translation>
 <translation id="2234108191702901162">Kunne ikke legge til nettverk</translation>
 <translation id="2618193846561624884">Vil du oppdatere det eksisterende nettverket?</translation>
+<translation id="7475547933708221517">Del lokal fil ved hjelp av IPFS</translation>
+<translation id="2286177249736199435">Del lokal mappe ved å bruke IPFS</translation>
+<translation id="784573715436258741">Del lokal fil ved hjelp av IPFS</translation>
+<translation id="575838692088926391">Del lokal mappe ved å bruke IPFS</translation>
 </translationbundle>

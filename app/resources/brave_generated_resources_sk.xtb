@@ -114,15 +114,11 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="1434416574322382019">Nové súkromné okno s Torom</translation>
 <translation id="4703780849509456860">Otvoriť odkaz v súkromnom okne s Torom</translation>
 <translation id="3488584642074079080">Torom otvoriť odkaz v súkromnom okne Brave</translation>
-<translation id="7475547933708221517">Zdieľanie lokálneho súboru pomocou IPFS</translation>
-<translation id="2286177249736199435">Zdieľať lokálny priečinok pomocou IPFS</translation>
 <translation id="4491895534716990473">Importovať vybraný text do IPFS</translation>
 <translation id="8883166554766780543">Importovať a kopírovať odkaz do výpisu IPFS</translation>
-<translation id="784573715436258741">Zdieľať lokálny súbor pomocou IPFS</translation>
 <translation id="6313675821927505581">Nové súkromné okno s Torom</translation>
 <translation id="2638041073279639246">Otvoriť odkaz v súkromnom okne s Torom</translation>
 <translation id="3425600262621021599">Otvoriť odkaz v súkromnom okne Brave s Torom</translation>
-<translation id="575838692088926391">Zdieľať lokálny priečinok pomocou IPFS</translation>
 <translation id="2515126961943087659">Reklamná služba Bat</translation>
 <translation id="7924918279836988121">Služba Bat ledger</translation>
 <translation id="4472575034687746823">Začíname</translation>
@@ -458,4 +454,8 @@ Naozaj chcete pokračovať?</translation>
 <translation id="1062463687579789365">Prispôsobenie sietí peňaženiek</translation>
 <translation id="2234108191702901162">Nepodarilo sa pridať sieť</translation>
 <translation id="2618193846561624884">Chcete aktualizovať existujúcu sieť?</translation>
+<translation id="7475547933708221517">Zdieľanie lokálneho súboru pomocou IPFS</translation>
+<translation id="2286177249736199435">Zdieľať lokálny priečinok pomocou IPFS</translation>
+<translation id="784573715436258741">Zdieľať lokálny súbor pomocou IPFS</translation>
+<translation id="575838692088926391">Zdieľať lokálny priečinok pomocou IPFS</translation>
 </translationbundle>

@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Voici votre première publicité sur Brave. Tapez pour en savoir plus.</translation>
 <translation id="2070991379950719711">Commencer à utiliser Brave Rewards</translation>
 <translation id="48520986898237073">Continuer vers le portefeuille</translation>
-<translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
+<translation id="6800338374677644736">Définir comme navigateur par défaut</translation>
 <translation id="19715420010996093">Sélectionnez le navigateur Brave et appuyez sur « Toujours ».</translation>
 <translation id="3546439402724649282">Brave est déjà configuré comme votre navigateur par défaut.</translation>
 <translation id="8389661903259423907">Vous avez déjà configuré un navigateur par défaut. Vous pouvez changer le navigateur par défaut dans les paramètres de votre application.</translation>
-<translation id="7091885296442320770">Brave est rapide comme l'éclair</translation>
-<translation id="2171928016777725844">Faites de Brave votre navigateur par défaut !</translation>
-<translation id="7136694880210472378">Utiliser par défaut</translation>
-<translation id="4250680216510889253">Non</translation>
 <translation id="8826007068782654809">Merci</translation>
 <translation id="6665366815203065060">Vous venez d'envoyer un don à :</translation>
 <translation id="5441565662498481293">Vous envoyez automatiquement des dons à :</translation>
@@ -400,12 +396,12 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="7427567994475794038">Activez les rapports de confidentialité pour voir combien de traceurs &amp; d'annonces ont été bloqués au cours des 3 dernières heures.</translation>
 <translation id="2053891538879944400">Vous avez enregistré les données <ph name="DATA"/> <ph name="DATA_TEXT"/> avec le navigateur Brave.</translation>
 <translation id="8640064498452534195">Activez les rapports de confidentialité pour voir combien de données vous avez enregistrées.</translation>
-<translation id="2252497442547961651">Le navigateur Brave consomme en moyenne 40 % de batterie en moins.&#128267;</translation>
+<translation id="2252497442547961651">Le navigateur Brave consomme en moyenne 40 % de batterie en moins.🔋</translation>
 <translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traceurs &amp; annonces avec le navigateur Brave la semaine dernière.</translation>
 <translation id="2883868922264431515">Gagnez des jetons en visualisant des annonces respectueuses de la vie privée et soutenez vos sites web préférés.</translation>
-<translation id="5678925890616256956">Super ! Vous avez bloqué 250 traceurs et publicités avec le navigateur Brave.&#128293;</translation>
-<translation id="9199047775708635708">Super ! Vous avez économisé 10 Mo grâce au navigateur Brave.&#128267;</translation>
-<translation id="1880168210969863408">Super ! Vous avez économisé 10 minutes de temps de chargement avec le navigateur Brave.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Super ! Vous avez bloqué 250 traceurs et publicités avec le navigateur Brave.🔥</translation>
+<translation id="9199047775708635708">Super ! Vous avez économisé 10 Mo grâce au navigateur Brave.🔋</translation>
+<translation id="1880168210969863408">Super ! Vous avez économisé 10 minutes de temps de chargement avec le navigateur Brave.💨💨</translation>
 <translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
 <translation id="9080777565335515917">Définissez Brave comme votre navigateur par défaut pour une navigation privée et sécurisée.</translation>
 <translation id="1390943217516275883">Permettre à Brave de montrer vos statistiques privées</translation>
@@ -523,9 +519,9 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="6478996494082389936">Analyse de données de produits privée.</translation>
 <translation id="5187052478998910855">Besoin qu'on vous rafraîchisse la mémoire au sujet des Rewards ?</translation>
 <translation id="8622329973403382303">Suivez une rapide visite guidée pour savoir comment faire pour qu'on se rappelle de vous en tant que star des Rewards !</translation>
-<translation id="8401711613788729448">Ouvrez tous les liens avec Brave afin de protéger votre confidentialité</translation>
-<translation id="3184805785843994538">Brave Shields bloque les trackers et les publicités, sauvegarde les données et vous fait gagner du temps sur chaque site que vous visitez.</translation>
-<translation id="8722651357687610395">Définir Brave par défaut</translation>
+<translation id="7625138338483121345">Ouvrez tous les liens avec Brave afin de protéger votre confidentialité</translation>
+<translation id="4511485286950743564">Brave Shields bloque les trackers et les publicités, sauvegarde les données et vous fait gagner du temps sur chaque site que vous visitez.</translation>
+<translation id="9218430445555521422">Définir Brave par défaut</translation>
 <translation id="3479552764303398839">Pas maintenant</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -595,7 +591,7 @@ Voulez-vous vraiment continuer ?</translation>
 <translation id="283071225285270357">Entrez votre phrase de récupération</translation>
 <translation id="3943857333388298514">Coller</translation>
 <translation id="3331452756822160641">Nouveau mot de passe</translation>
-<translation id="4854035885012188958">Restauration à partir d'un portefeuille de crypto Brave hérité</translation>
+<translation id="4359319875297001084">Restauration à partir d'un portefeuille de crypto Brave hérité</translation>
 <translation id="2339124864228588937">Vérifier la phrase de récupération</translation>
 <translation id="3747079125031086337">Sélectionnez les mots de votre phrase de récupération dans le bon ordre.</translation>
 <translation id="6518133107902771759">Valider</translation>
@@ -804,6 +800,7 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="4351811224047421378">Décimales de précision</translation>
 <translation id="8614026298974065517">Retirer l'actif personnalisé</translation>
 <translation id="4378941981362528553">Voulez-vous retirer l'actif <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) ?</translation>
+<translation id="4250680216510889253">Non</translation>
 <translation id="8971278306757462297">L'adresse de réception est votre propre adresse</translation>
 <translation id="749944179568745958">Adresse ETH non valide</translation>
 <translation id="3506416339268164412">L'adresse de réception est l'adresse d'un contrat de jeton.</translation>
@@ -837,11 +834,21 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="665660671251623018">Décimales de la devise de la chaîne</translation>
 <translation id="182619028057179895">Format non valide : les décimales de la devise sont un nombre positif</translation>
 <translation id="2978054488731497946">Saisissez les décimales de la devise</translation>
-<translation id="3047726704186619366">URL d'icône</translation>
-<translation id="2487558607408469181">URL de l'explorateur de bloc</translation>
+<translation id="7642841516562576649">URL d'icône</translation>
+<translation id="4693057234255364395">URL de l'explorateur de bloc</translation>
 <translation id="7059127752542505809">Saisissez une URL</translation>
 <translation id="2156993118928861787">Adresse non valide</translation>
 <translation id="6889920539620318793">Définir comme actif</translation>
 <translation id="2653659639078652383">Envoyer</translation>
 <translation id="8853725596990766789">Modifier le montant</translation>
+<translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
+<translation id="7091885296442320770">Brave est rapide comme l'éclair</translation>
+<translation id="2171928016777725844">Faites de Brave votre navigateur par défaut !</translation>
+<translation id="7136694880210472378">Utiliser par défaut</translation>
+<translation id="8401711613788729448">Ouvrez tous les liens avec Brave afin de protéger votre confidentialité</translation>
+<translation id="3184805785843994538">Brave Shields bloque les trackers et les publicités, sauvegarde les données et vous fait gagner du temps sur chaque site que vous visitez.</translation>
+<translation id="8722651357687610395">Définir Brave par défaut</translation>
+<translation id="4854035885012188958">Restauration à partir d'un portefeuille de crypto Brave hérité</translation>
+<translation id="3047726704186619366">URL d'icône</translation>
+<translation id="2487558607408469181">URL de l'explorateur de bloc</translation>
 </translationbundle>

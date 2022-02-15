@@ -115,15 +115,11 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="1434416574322382019">Nueva ventana privada con Tor</translation>
 <translation id="4703780849509456860">Abrir vínculo en una ventana privada con Tor</translation>
 <translation id="3488584642074079080">Abrir vínculo en una ventana privada de Brave con Tor</translation>
-<translation id="7475547933708221517">Compartir archivo local con IPFS</translation>
-<translation id="2286177249736199435">Compartir carpeta local mediante IPFS</translation>
 <translation id="4491895534716990473">Importar el texto seleccionado a IPFS</translation>
 <translation id="8883166554766780543">Importar y copiar el enlace a la instantánea de IPFS</translation>
-<translation id="784573715436258741">Compartir archivo local con IPFS</translation>
 <translation id="6313675821927505581">Nueva ventana privada con Tor</translation>
 <translation id="2638041073279639246">Abrir vínculo en una ventana privada con Tor</translation>
 <translation id="3425600262621021599">Abrir vínculo en una ventana privada de Brave con Tor</translation>
-<translation id="575838692088926391">Compartir carpeta local mediante IPFS</translation>
 <translation id="2515126961943087659">Servicio publicitario BAT</translation>
 <translation id="7924918279836988121">Servicio de contabilidad de BAT</translation>
 <translation id="4472575034687746823">Comenzar</translation>
@@ -459,4 +455,8 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="1062463687579789365">Personalización de redes de billeteras</translation>
 <translation id="2234108191702901162">No ha sido posible agregar la red</translation>
 <translation id="2618193846561624884">¿Desea actualizar la red actual?</translation>
+<translation id="7475547933708221517">Compartir archivo local con IPFS</translation>
+<translation id="2286177249736199435">Compartir carpeta local mediante IPFS</translation>
+<translation id="784573715436258741">Compartir archivo local con IPFS</translation>
+<translation id="575838692088926391">Compartir carpeta local mediante IPFS</translation>
 </translationbundle>

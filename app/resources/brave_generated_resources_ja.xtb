@@ -24,7 +24,7 @@
 <translation id="2843777623071353503">Braveは、利用可能な場合はウェブサイトのオニオンサービスを開くか、またはTorウィンドウで.onionドメインを開きます。</translation>
 <translation id="4900351245762303149">Google Widevineをインストール</translation>
 <translation id="2313383941300459392">Google Widevineを有効にするためにブラウザーを再起動する</translation>
-<translation id="2200626478572277092">Webページ上でメディアを再生するために、Widevineが必要となる場合があります。これはGoogleの拡張機能で、Googleのサーバーから読み込まれるためBraveは検査することができません。インストールすることで、お客様はGoogleの使用条件に同意したものとみなされます。</translation>
+<translation id="2200626478572277092">Webページ上でメディアを再生するために、Widevineが必要となる場合があります。これはGoogleの拡張機能で、Googleのサーバーから読み込まれるためBraveは精査することができません。インストールすることで、お客様はGoogleの使用条件に同意したものとみなされます。</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>。
 または後で<ph name="SETTINGS_EXTENIONS_LINK"/>から変更できます。</translation>
 <translation id="6229752134959014186">Widevineの詳細について</translation>
@@ -114,15 +114,11 @@
 <translation id="1434416574322382019">新しいプライベートウィンドウ+Tor</translation>
 <translation id="4703780849509456860">トーアのプライベートウィンドウでリンクを開く</translation>
 <translation id="3488584642074079080">Braveプライベートウィンドウ+Tor でリンクを開く</translation>
-<translation id="7475547933708221517">IPFSを使用してローカルファイルを共有</translation>
-<translation id="2286177249736199435">IPFSを使用してローカルフォルダを共有</translation>
 <translation id="4491895534716990473">選択したテキストをIPFSにインポート</translation>
 <translation id="8883166554766780543">インポートしてリンクをIPFSスナップショットにコピー</translation>
-<translation id="784573715436258741">IPFSを使用してローカルファイルを共有</translation>
 <translation id="6313675821927505581">Torで新しいプライベートウィンドウを開く</translation>
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
-<translation id="575838692088926391">IPFSを使用してローカルフォルダを共有</translation>
 <translation id="2515126961943087659">BAT 広告サービス</translation>
 <translation id="7924918279836988121">BAT 台帳サービス</translation>
 <translation id="4472575034687746823">Get started</translation>
@@ -262,7 +258,7 @@
 <translation id="5975930666279943472">ウォレットのトランザクションとノンス情報をクリア</translation>
 <translation id="5693968582510626466">トランザクションのクリアは、開発者にとって、またはローカルサーバーの状態をクリアするときに便利です</translation>
 <translation id="6369495274982305511">ウォレットをリセットしてよろしいですか？ウォレットがバックアップされていない場合、リセットすると、（紐づく資金を含む）すべてのアカウントデータ が失われます。確認のために「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
-<translation id="9216386092464743272">ウォレットのトランザクションとノンス情報をすべてリセットしてもよろしいですか？このオプションは、ローカルでテストサーバーを実行している開発者が主に使用します。確認するには「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
+<translation id="9216386092464743272">ウォレットのトランザクションとノンス情報をすべてリセットしてもよろしいですか？このオプションは、ローカルでテストサーバーを実行している開発者が主に使用します。確認して実行するには「<ph name="CONFIRMATION_PHRASE"/>」を入力してください。</translation>
 <translation id="3752403403443723332">ウォレットをリセットしました。</translation>
 <translation id="594766067816395072">ウォレットのトランザクション情報をリセットしました。</translation>
 <translation id="1426410128494586442">はい</translation>
@@ -459,4 +455,8 @@
 <translation id="1062463687579789365">ウォレットネットワークのカスタマイズ</translation>
 <translation id="2234108191702901162">ネットワークを追加できません</translation>
 <translation id="2618193846561624884">既存のネットワークを更新しますか？</translation>
+<translation id="7475547933708221517">IPFSを使用してローカルファイルを共有</translation>
+<translation id="2286177249736199435">IPFSを使用してローカルフォルダを共有</translation>
+<translation id="784573715436258741">IPFSを使用してローカルファイルを共有</translation>
+<translation id="575838692088926391">IPFSを使用してローカルフォルダを共有</translation>
 </translationbundle>

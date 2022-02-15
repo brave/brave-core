@@ -114,15 +114,11 @@
 <translation id="1434416574322382019">以 Tor 開啟新私有窗口</translation>
 <translation id="4703780849509456860">使用 Tor 在隱私視窗中打開連結</translation>
 <translation id="3488584642074079080">使用 Tor 在隱私視窗中打開連結</translation>
-<translation id="7475547933708221517">使用 IPFS 共用本機檔案</translation>
-<translation id="2286177249736199435">使用 IPFS 分享本機資料夾</translation>
 <translation id="4491895534716990473">將選取的文字匯入至 IPFS</translation>
 <translation id="8883166554766780543">匯入並複製連結至 IPFS 快照</translation>
-<translation id="784573715436258741">使用 IPFS 共用本機檔案</translation>
 <translation id="6313675821927505581">新的使用 Tor 的視窗</translation>
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
-<translation id="575838692088926391">使用 IPFS 分享本機資料夾</translation>
 <translation id="2515126961943087659">BAT 廣告服務</translation>
 <translation id="7924918279836988121">Bat 分類帳服務</translation>
 <translation id="4472575034687746823">開始使用</translation>
@@ -241,7 +237,7 @@
 <translation id="6358469157239228181">此名稱無法使用</translation>
 <translation id="5761731140570209168">新增新的對等連線字串</translation>
 <translation id="2082206983920804886">旋轉金鑰</translation>
-<translation id="5078501082919354191">無法停止 Brave 本機 IPFS 節點</translation>
+<translation id="5078501082919354191">無法關閉 Brave 本機 IPFS 節點</translation>
 <translation id="5687424953196903465">無法啟動 Brave 本機 IPFS 節點</translation>
 <translation id="6476061084931271248">重新啟動節點，以套用變更</translation>
 <translation id="3754226427671882382">重新啟動節點</translation>
@@ -458,4 +454,8 @@
 <translation id="1062463687579789365">錢包網路自訂</translation>
 <translation id="2234108191702901162">無法新增網路</translation>
 <translation id="2618193846561624884">要更新現有網路嗎？</translation>
+<translation id="7475547933708221517">使用 IPFS 共用本機檔案</translation>
+<translation id="2286177249736199435">使用 IPFS 分享本機資料夾</translation>
+<translation id="784573715436258741">使用 IPFS 共用本機檔案</translation>
+<translation id="575838692088926391">使用 IPFS 分享本機資料夾</translation>
 </translationbundle>

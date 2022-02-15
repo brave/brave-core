@@ -115,15 +115,11 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="1434416574322382019">Nieuw Privévenster in Tor</translation>
 <translation id="4703780849509456860">Open Link in Privévenster in Tor</translation>
 <translation id="3488584642074079080">Open Link met Brave Privévenster met Tor</translation>
-<translation id="7475547933708221517">Lokaal bestand delen met IPFS</translation>
-<translation id="2286177249736199435">Lokale map delen met IPFS</translation>
 <translation id="4491895534716990473">Geselecteerde tekst importeren naar IPFS</translation>
 <translation id="8883166554766780543">Koppeling importeren en kopiëren naar IPFS-momentopname</translation>
-<translation id="784573715436258741">Lokaal bestand delen met IPFS</translation>
 <translation id="6313675821927505581">Nieuw privévenster met Tor</translation>
 <translation id="2638041073279639246">Een link in een privévenster met Tor openen</translation>
 <translation id="3425600262621021599">Een link in een Brave privévenster met Tor openen</translation>
-<translation id="575838692088926391">Lokale map delen met IPFS</translation>
 <translation id="2515126961943087659">Bat Ads-service</translation>
 <translation id="7924918279836988121">Batregisterservice</translation>
 <translation id="4472575034687746823">Aan de slag</translation>
@@ -459,4 +455,8 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1062463687579789365">Wallet-netwerken aanpassen</translation>
 <translation id="2234108191702901162">Kan netwerk niet toevoegen</translation>
 <translation id="2618193846561624884">Wil je het bestaande netwerk bijwerken?</translation>
+<translation id="7475547933708221517">Lokaal bestand delen met IPFS</translation>
+<translation id="2286177249736199435">Lokale map delen met IPFS</translation>
+<translation id="784573715436258741">Lokaal bestand delen met IPFS</translation>
+<translation id="575838692088926391">Lokale map delen met IPFS</translation>
 </translationbundle>

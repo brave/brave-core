@@ -113,15 +113,11 @@
 <translation id="1434416574322382019">用 Tor 打开新的私人窗口</translation>
 <translation id="4703780849509456860">用 Tor 在私人窗口中打开链接</translation>
 <translation id="3488584642074079080">用 Tor 在 Brave 私人窗口中打开链接</translation>
-<translation id="7475547933708221517">使用 IPFS 共享本地文件</translation>
-<translation id="2286177249736199435">使用 IPFS 分享本地文件夹</translation>
 <translation id="4491895534716990473">将所选文本导入 IPFS</translation>
 <translation id="8883166554766780543">导入并复制链接到 IPFS 快照</translation>
-<translation id="784573715436258741">使用 IPFS 共享本地文件</translation>
 <translation id="6313675821927505581">用 Tor 打开新的隐私窗口</translation>
 <translation id="2638041073279639246">用 Tor 在隐私窗口中打开</translation>
 <translation id="3425600262621021599">用 Tor 在 Brave 隐私窗口中打开链接</translation>
-<translation id="575838692088926391">使用 IPFS 共享本地文件夹</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
 <translation id="4472575034687746823">开始使用</translation>
@@ -457,4 +453,8 @@
 <translation id="1062463687579789365">定制钱包网络</translation>
 <translation id="2234108191702901162">无法添加网络</translation>
 <translation id="2618193846561624884">要更新现有网络吗？</translation>
+<translation id="7475547933708221517">使用 IPFS 共享本地文件</translation>
+<translation id="2286177249736199435">使用 IPFS 分享本地文件夹</translation>
+<translation id="784573715436258741">使用 IPFS 共享本地文件</translation>
+<translation id="575838692088926391">使用 IPFS 共享本地文件夹</translation>
 </translationbundle>

@@ -113,15 +113,11 @@
 <translation id="1434416574322382019">Jauns inkognito logs Tor</translation>
 <translation id="4703780849509456860">Atvērt saiti inkognito logā Tor</translation>
 <translation id="3488584642074079080">Atvērt saiti Brave inkognito logā Tor</translation>
-<translation id="7475547933708221517">Kopīgot lokālo failu, izmantojot IPFS</translation>
-<translation id="2286177249736199435">Kopīgot lokālo mapi, izmantojot IPFS</translation>
 <translation id="4491895534716990473">Importēt atlasīto tekstu IPFS</translation>
 <translation id="8883166554766780543">Importēt un kopēt saiti uz IPFS momentuzņēmumu</translation>
-<translation id="784573715436258741">Kopīgot lokālo failu, izmantojot IPFS</translation>
 <translation id="6313675821927505581">Jauns inkognito logs, izmantojot Tor</translation>
 <translation id="2638041073279639246">Atvērt saiti inkognito logā, izmantojot Tor</translation>
 <translation id="3425600262621021599">Atvērt saiti Brave inkognito logā, izmantojot Tor</translation>
-<translation id="575838692088926391">Kopīgot lokālo mapi, izmantojot IPFS</translation>
 <translation id="2515126961943087659">BAT reklāmu pakalpojums</translation>
 <translation id="7924918279836988121">BAT norēķinu pakalpojums</translation>
 <translation id="4472575034687746823">Sākt darbu</translation>
@@ -457,4 +453,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="1062463687579789365">Maciņa tīklu pielāgošana</translation>
 <translation id="2234108191702901162">Nav iespējams pievienot tīklu</translation>
 <translation id="2618193846561624884">Vai vēlaties atjaunināt esošo tīklu?</translation>
+<translation id="7475547933708221517">Kopīgot lokālo failu, izmantojot IPFS</translation>
+<translation id="2286177249736199435">Kopīgot lokālo mapi, izmantojot IPFS</translation>
+<translation id="784573715436258741">Kopīgot lokālo failu, izmantojot IPFS</translation>
+<translation id="575838692088926391">Kopīgot lokālo mapi, izmantojot IPFS</translation>
 </translationbundle>

@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Annulla l’iscrizione</translation>
 <translation id="1209739344687072997">Segnala un sito non funzionante</translation>
 <translation id="8510478288840333677">Segnala agli sviluppatori di Brave che questo sito non funziona bene con gli Scudi:</translation>
-<translation id="6013164422534859494">Nota: l'indirizzo di questo sito verrà inviato assieme al numero della tua versione di Brave e il tuo indirizzo IP (che non verrà conservato).</translation>
+<translation id="4105411033440701818">Nota: l'indirizzo di questo sito verrà inviato assieme al numero della tua versione di Brave e il tuo indirizzo IP (che non verrà conservato).</translation>
 <translation id="5299848999918506028">Grazie!</translation>
 <translation id="76550953340008122">Grazie, hai fatto notare agli sviluppatori di Brave che qualcosa non va su questo sito. Faremo del nostro meglio per rimediare!</translation>
 <translation id="2974339193389078578">Brave: Internet rinnovato</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Data del prossimo contributo</translation>
 <translation id="1397381065858030856">Siti visitati</translation>
 <translation id="2365740070488517695">Donazioni</translation>
-<translation id="5993195614988368256">Contribuisci direttamente mentre navighi usando il Pannello Premi, o usando il tasto TIP su vari siti inclusi Twitter, Reddit e GitHub.</translation>
+<translation id="5810507495128831593">Contribuisci direttamente mentre navighi usando il Pannello Premi, o usando il tasto TIP su vari siti inclusi Twitter, Reddit e GitHub.</translation>
 <translation id="5012991400231464322">Contributi mensili</translation>
 <translation id="2084351799622920487">Imposta contributi mensili ricorrenti in modo da poter supportare i siti in modo continuo.</translation>
 <translation id="8150772404570015166">Non sono ancora stati istituiti contributi mensili.</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Completa verifica del portafoglio</translation>
 <translation id="9200453331904391567">Scollegati da Brave Rewards</translation>
 <translation id="3656941797339037856">Collega Rewards a Gemini!</translation>
-<translation id="31532096120351460">Su Gemini puoi comprare e vendere oltre 50 criptovalute, incluso il BAT. Si tratta di una piattaforma sicura per il deposito delle criptovalute, e dà anche la possibilità di guadagnare interessi in US, HK e SG.</translation>
+<translation id="31532096120351460">Su Gemini puoi comprare e vendere oltre 50 criptovalute, incluso il BAT. Si tratta di una piattaforma sicura per il deposito delle criptovalute, e dà anche la possibilità di guadagnare interessi negli USA, a Hong Kong e a Singapore.</translation>
 <translation id="7404779623219601861">Riscatta BAT per Carte Regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puoi riscattare i tuoi BAT per carte regalo di marchi popolari.</translation>
 <translation id="6915065518766963119">* Richiede verifica Uphold</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Visualizza tutto</translation>
 <translation id="3026978804849658576">Visualizza l’estratto conto</translation>
 <translation id="8494748383523030337">Il tuo saldo</translation>
-<translation id="3343165035032571678">Hai guadagnato <ph name="AMOUNT"/> visualizzando gli annunci privati Brave!</translation>
-<translation id="6618415862402597254">Guadagni ottenuti con l'annuncio</translation>
-<translation id="5981646694027725752">Richiedi guadagni</translation>
-<translation id="2556441076129789027">Richiedi token</translation>
+<translation id="9013419433042554094">Richiedi token</translation>
 <translation id="5544777623605368410">Guadagno</translation>
 <translation id="3273637494083639780">I token che hai guadagnato questo mese verranno elaborati a partire dal giorno <ph name="DATE"/></translation>
 <translation id="1029300693989825319">Può variare in base alla volatilità del mercato.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Stai guadagnando token per la visualizzazione di questa immagine sponsorizzata.</translation>
 <translation id="5486114327664215175">Guadagna token visualizzando l'immagine e supporta gli autori di contenuti.</translation>
 <translation id="2940863921746574646">Saldo token</translation>
-<translation id="1714906256929297600">Usa i token promozionali per inviare contributi agli autori prima che scadano!</translation>
-<translation id="2426048501007152001">Token disponibili</translation>
+<translation id="2221902203895354376">Token disponibili</translation>
 <translation id="7701466644604753106">Attiva Speedreader</translation>
 <translation id="763042262431778831">Disattiva Speedreader</translation>
 <translation id="8488282162676695335">Portafoglio Brave</translation>
@@ -908,7 +904,7 @@
 <translation id="6901073872645365201">Le password devono essere composte da almeno 7 caratteri e contenere almeno un numero e un carattere speciale.</translation>
 <translation id="6657585470893396449">Password</translation>
 <translation id="5486261815000869482">Conferma la password</translation>
-<translation id="6138471905279127211">I criteri della password non corrispondono.</translation>
+<translation id="6138471905279127211">I criteri della password non corrispondono a quelli richiesti.</translation>
 <translation id="467510802200863975">Le password non corrispondono</translation>
 <translation id="5168349973342709369">Inserisci la password per sbloccare il portafoglio</translation>
 <translation id="9111102763498581341">Sblocca</translation>
@@ -941,7 +937,7 @@
 <translation id="6780482003945159712">Seleziona uno dei seguenti tipi di conto</translation>
 <translation id="7080614857771109950">Supporta gli asset compatibili con EVM nella blockchain di Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="3329841454317342083">Supporta gli asset compatibili con SLP nella blockchain di Solana</translation>
-<translation id="4541295941776129088">Deposita asse FIL</translation>
+<translation id="4541295941776129088">Deposita asset FIL</translation>
 <translation id="232925166623833246">Importa dal portafoglio hardware</translation>
 <translation id="4324198334837993695">Hardware</translation>
 <translation id="3067168166931605141">Nome dell'account</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Aggiungi account verificati</translation>
 <translation id="8554010658308662631">Caricane altri</translation>
 <translation id="6998738230710304743">Caricamento di altri in corso...</translation>
-<translation id="4970164249406565575">Cerca account 0x</translation>
+<translation id="5592304751234049046">Cerca account 0x</translation>
 <translation id="6151024411349343484">Se non riesci a trovare l'account che stai cercando, prova a cambiare percorso HD (qui sopra).</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -980,7 +976,7 @@
 <translation id="6018178824574796106">Aggiunta del token personalizzato non riuscita. Riprova.</translation>
 <translation id="547122651977318828">ID token (solo per ERC721)</translation>
 <translation id="7544552854944350190">ID token richiesto</translation>
-<translation id="3842236145820483340">ID Coingecko</translation>
+<translation id="3842236145820483340">ID CoinGecko</translation>
 <translation id="2708402071160162126">AVVISO: non condividere mai la tua chiave di recupero. Chiunque entri in possesso di questa frase può impossessarsi dei tuoi asset per sempre.</translation>
 <translation id="2902856457593699108">Mostra chiave</translation>
 <translation id="8033497299373164724">Nascondi chiave</translation>
@@ -1095,7 +1091,7 @@
 <translation id="1165039591588034296">Errore</translation>
 <translation id="9065572743819293042">Transazioni recenti</translation>
 <translation id="4235538284468006757">Dettagli della transazione</translation>
-<translation id="7488671812634887146">Accelerazione</translation>
+<translation id="7488671812634887146">Accelera</translation>
 <translation id="1702356231547761669">Hash della transazione</translation>
 <translation id="7982789257301363584">Rete</translation>
 <translation id="8941851657764077659">Commissione per la massima priorità</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Consenti tutti i tracker e gli annunci pubblicitari</translation>
 <translation id="6203697265754637264">Cookie cross-site bloccati</translation>
 <translation id="4627427111733173920">Cookie bloccati</translation>
-<translation id="7855168553463825937">Tutti i cookie bloccati</translation>
+<translation id="3972324600756617403">Tutti i cookie bloccati</translation>
 <translation id="8366221601425141146">Riconoscimento impronta bloccato</translation>
 <translation id="5582686930349810484">Fingerprinting bloccato (standard)</translation>
 <translation id="6696441392507885865">Fingerprinting bloccato (impostazione rigida, alcuni siti potrebbero non funzionare)</translation>
@@ -1230,4 +1226,14 @@
 <translation id="6973157709854838218">Non mostrare il tuo saldo</translation>
 <translation id="4548946945059463969">Mostra il tuo saldo sullo schermo</translation>
 <translation id="242959166945779492">Non hai alcun saldo sul tuo conto. Visita FTX per acquistarne un po'.</translation>
+<translation id="6013164422534859494">Nota: l'indirizzo di questo sito verrà inviato assieme al numero della tua versione di Brave e il tuo indirizzo IP (che non verrà conservato).</translation>
+<translation id="5993195614988368256">Contribuisci direttamente mentre navighi usando il Pannello Premi, o usando il tasto TIP su vari siti inclusi Twitter, Reddit e GitHub.</translation>
+<translation id="3343165035032571678">Hai guadagnato <ph name="AMOUNT"/> visualizzando gli annunci privati Brave!</translation>
+<translation id="6618415862402597254">Guadagni ottenuti con l'annuncio</translation>
+<translation id="5981646694027725752">Richiedi guadagni</translation>
+<translation id="2556441076129789027">Richiedi token</translation>
+<translation id="1714906256929297600">Usa i token promozionali per inviare contributi agli autori prima che scadano!</translation>
+<translation id="2426048501007152001">Token disponibili</translation>
+<translation id="4970164249406565575">Cerca account 0x</translation>
+<translation id="7855168553463825937">Tutti i cookie bloccati</translation>
 </translationbundle>

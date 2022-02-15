@@ -114,15 +114,11 @@
 <translation id="1434416574322382019">Нове Приватне вікно з Tor</translation>
 <translation id="4703780849509456860">Відкрити посилання у Приватному вікні з Tor</translation>
 <translation id="3488584642074079080">Відкрити посилання у Приватному вікні Brave з Tor</translation>
-<translation id="7475547933708221517">Поділитися файлом з локального сховища через IPFS</translation>
-<translation id="2286177249736199435">Поділитися папкою з локального сховища через IPFS</translation>
 <translation id="4491895534716990473">Імпортувати обраний текст до IPFS</translation>
 <translation id="8883166554766780543">Імпорт і копіювання посилання на миттєвий знімок IPFS</translation>
-<translation id="784573715436258741">Поділитися файлом з локального сховища через IPFS</translation>
 <translation id="6313675821927505581">Нове приватне вікно з Tor</translation>
 <translation id="2638041073279639246">Відкрийте посилання у приватномі вікні з Tor</translation>
 <translation id="3425600262621021599">Відкрийте посилання у приватномі вікні  Brave з Tor</translation>
-<translation id="575838692088926391">Поділитися папкою з локального сховища через IPFS</translation>
 <translation id="2515126961943087659">Сервіс реклами з використанням BAT</translation>
 <translation id="7924918279836988121">Сервіс реєстраційного журналу Bat</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
@@ -241,7 +237,7 @@
 <translation id="6358469157239228181">Цю назву не можна використати</translation>
 <translation id="5761731140570209168">Додайте новий рядок підключення до вузлів</translation>
 <translation id="2082206983920804886">Повернути ключ</translation>
-<translation id="5078501082919354191">Не вдається зупинити локальний вузол IPFS Brave</translation>
+<translation id="5078501082919354191">Не вдається вимкнути локальний вузол IPFS Brave</translation>
 <translation id="5687424953196903465">Не вдається запустити локальний вузол IPFS Brave</translation>
 <translation id="6476061084931271248">Перезапустіть вузол, щоб застосувати зміни</translation>
 <translation id="3754226427671882382">Перезапустити вузол</translation>
@@ -458,4 +454,8 @@
 <translation id="1062463687579789365">Індивідуальне налаштування мереж гаманця</translation>
 <translation id="2234108191702901162">Неможливо додати мережу</translation>
 <translation id="2618193846561624884">Ви хочете оновити існуючу мережу?</translation>
+<translation id="7475547933708221517">Поділитися файлом з локального сховища через IPFS</translation>
+<translation id="2286177249736199435">Поділитися папкою з локального сховища через IPFS</translation>
+<translation id="784573715436258741">Поділитися файлом з локального сховища через IPFS</translation>
+<translation id="575838692088926391">Поділитися папкою з локального сховища через IPFS</translation>
 </translationbundle>

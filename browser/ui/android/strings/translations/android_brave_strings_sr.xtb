@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Ovo je vaša prva Brave reklama. Dodirnite da biste saznali više.</translation>
 <translation id="2070991379950719711">Počnite da koristite Brave nagrade</translation>
 <translation id="48520986898237073">Nastavi ka novčaniku</translation>
-<translation id="3570367516044491911">Postavi kao podrazumevani pregledač</translation>
+<translation id="6800338374677644736">Postavi kao podrazumevani pregledač</translation>
 <translation id="19715420010996093">Izaberite Brave pregledač i dodirnite 'Uvek'</translation>
 <translation id="3546439402724649282">Brave je već postavljen kao vaš podrazumevani pregledač.</translation>
 <translation id="8389661903259423907">Već ste postavili podrazumevani pregledač. Možete promeniti podrazumevani pregledač u vašim podešavanjima aplikacije.</translation>
-<translation id="7091885296442320770">Brave je brz kao munja</translation>
-<translation id="2171928016777725844">Postavite Brave kao podrazumevani pregledač!</translation>
-<translation id="7136694880210472378">Постави као подразумевано</translation>
-<translation id="4250680216510889253">Ne</translation>
 <translation id="8826007068782654809">Hvala vam</translation>
 <translation id="6665366815203065060">Upravo ste poslali napojnicu ka:</translation>
 <translation id="5441565662498481293">Ne šaljete automatski napojnicu ka:</translation>
@@ -400,12 +396,12 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="7427567994475794038">Uključite Izveštaje o privatnosti da biste videli koliko je pratilaca &amp; reklama blokirano u poslednja 3 sata.</translation>
 <translation id="2053891538879944400">Sačuvali ste <ph name="DATA"/> <ph name="DATA_TEXT"/> podataka sa svojim pregledačem.</translation>
 <translation id="8640064498452534195">Uključite Izveštaje o privatnosti da biste videli koliko ste podataka sačuvali.</translation>
-<translation id="2252497442547961651">Brave pretraživač u proseku troši 40% manje baterije.&#128267;</translation>
+<translation id="2252497442547961651">Brave pretraživač u proseku troši 40% manje baterije.🔋</translation>
 <translation id="1945330434665345785">Blokirali ste <ph name="COUNT"/> pratioca &amp; reklama sa Brave pregledačem prošle nedelje.</translation>
 <translation id="2883868922264431515">Zaradite tokene gledajući reklame koji poštuju privatnost i podržite svoje omiljene veb lokacije.</translation>
-<translation id="5678925890616256956">Lep! Blokirali ste 250 praćenja &amp; oglasa uz pomoć Brave pregledača.&#128293;</translation>
-<translation id="9199047775708635708">Lepo! Uštedeli ste 10MB pomoću Brave pretraživača.&#128267;</translation>
-<translation id="1880168210969863408">Lepo! Uštedeli ste 10 minuta vremena učitavanja pomoću Brave pretraživača.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Lep! Blokirali ste 250 praćenja &amp; oglasa uz pomoć Brave pregledača.🔥</translation>
+<translation id="9199047775708635708">Lepo! Uštedeli ste 10MB pomoću Brave pretraživača.🔋</translation>
+<translation id="1880168210969863408">Lepo! Uštedeli ste 10 minuta vremena učitavanja pomoću Brave pretraživača.💨💨</translation>
 <translation id="7408493389591475748">Započnite pregledanje da biste videli izveštaje o privatnosti</translation>
 <translation id="9080777565335515917">Postavite Brave kao svoj podrazumevani pregledač za privatno i sigurno pregledanje.</translation>
 <translation id="1390943217516275883">Omogućuje da Brave prikazuje vašu statistiku privatnosti</translation>
@@ -523,9 +519,9 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="6478996494082389936">analitika privatnog proizvoda.</translation>
 <translation id="5187052478998910855">Treba vam osveženje za nagrade?</translation>
 <translation id="8622329973403382303">Krenite u kratku turneju da biste razjasnili kako se ulazi u istoriju kao Rewards rok zvezda!</translation>
-<translation id="8401711613788729448">Otvorite sve veze putem Brave-a da biste zaštitili svoju privatnost</translation>
-<translation id="3184805785843994538">Brave Shields blokira praćenja i &amp; oglase, čuva podatke i štedi Vaše vreme na svakom sajtu koji posetite.</translation>
-<translation id="8722651357687610395">Postavite Brave kao podrazumevani</translation>
+<translation id="7625138338483121345">Otvorite sve veze putem Brave-a da biste zaštitili svoju privatnost</translation>
+<translation id="4511485286950743564">Brave Shields blokira praćenja i &amp; oglase, čuva podatke i štedi Vaše vreme na svakom sajtu koji posetite.</translation>
+<translation id="9218430445555521422">Postavite Brave kao podrazumevani</translation>
 <translation id="3479552764303398839">Не сада</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -595,7 +591,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="283071225285270357">Unesite frazu za oporavak</translation>
 <translation id="3943857333388298514">Nalepi</translation>
 <translation id="3331452756822160641">Nova lozinka</translation>
-<translation id="4854035885012188958">Vraćanje iz zastarelih Brave kripto novčanika</translation>
+<translation id="4359319875297001084">Vraćanje iz zastarelih Brave kripto novčanika</translation>
 <translation id="2339124864228588937">Potvrdite frazu za obnavljanje</translation>
 <translation id="3747079125031086337">Izaberite reči u vašoj frazi za oporavak u njihovom tačnom redosledu.</translation>
 <translation id="6518133107902771759">Верификуј</translation>
@@ -804,6 +800,7 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="4351811224047421378">Decimale preciznosti</translation>
 <translation id="8614026298974065517">Uklanjanje novih sredstava</translation>
 <translation id="4378941981362528553">Da li želite da uklonite <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) token?</translation>
+<translation id="4250680216510889253">Ne</translation>
 <translation id="8971278306757462297">Prijemna adresa je vaša sopstvena adresa</translation>
 <translation id="749944179568745958">ETH adresa nije važeća</translation>
 <translation id="3506416339268164412">Prijemna adresa je adresa ugovora tokena</translation>
@@ -837,11 +834,21 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="665660671251623018">Decimale valute lanca</translation>
 <translation id="182619028057179895">Neispravan format, decimale valute su pozitivan broj</translation>
 <translation id="2978054488731497946">Uneti decimale valute</translation>
-<translation id="3047726704186619366">URL ikonice</translation>
-<translation id="2487558607408469181">URL blok istraživača</translation>
+<translation id="7642841516562576649">URL ikonice</translation>
+<translation id="4693057234255364395">URL blok istraživača</translation>
 <translation id="7059127752542505809">Upišite URL adresu</translation>
 <translation id="2156993118928861787">Nevažeća adresa</translation>
 <translation id="6889920539620318793">Podesiti kao aktivno</translation>
 <translation id="2653659639078652383">Pošalji</translation>
 <translation id="8853725596990766789">Izmenite iznos</translation>
+<translation id="3570367516044491911">Postavi kao podrazumevani pregledač</translation>
+<translation id="7091885296442320770">Brave je brz kao munja</translation>
+<translation id="2171928016777725844">Postavite Brave kao podrazumevani pregledač!</translation>
+<translation id="7136694880210472378">Постави као подразумевано</translation>
+<translation id="8401711613788729448">Otvorite sve veze putem Brave-a da biste zaštitili svoju privatnost</translation>
+<translation id="3184805785843994538">Brave Shields blokira praćenja i &amp; oglase, čuva podatke i štedi Vaše vreme na svakom sajtu koji posetite.</translation>
+<translation id="8722651357687610395">Postavite Brave kao podrazumevani</translation>
+<translation id="4854035885012188958">Vraćanje iz zastarelih Brave kripto novčanika</translation>
+<translation id="3047726704186619366">URL ikonice</translation>
+<translation id="2487558607408469181">URL blok istraživača</translation>
 </translationbundle>

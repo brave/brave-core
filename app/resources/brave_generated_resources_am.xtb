@@ -114,15 +114,11 @@
 <translation id="1434416574322382019">አዲስ የግል መስኮት በ Brave</translation>
 <translation id="4703780849509456860">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3488584642074079080">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
-<translation id="7475547933708221517">IPFS ን በመጠቀም የውስጥ ፋይልን ያጋሩ</translation>
-<translation id="2286177249736199435">IPFS ን በመጠቀም የግል አቃፊዎን ያጋሩ</translation>
 <translation id="4491895534716990473">የተመረጠውን ጽሑፍ ወደ IPFS ያስመጡ</translation>
 <translation id="8883166554766780543">ወደ IPFS ቅጽበታዊ ገጽ እይታ የሚልከውን ማስፈንጠሪያ ያስመጡ እና ይቅዱ</translation>
-<translation id="784573715436258741">IPFS ን በመጠቀም የውስጥ ፋይልን ያጋሩ</translation>
 <translation id="6313675821927505581">አዲስ የግል መስኮት በ Brave</translation>
 <translation id="2638041073279639246">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3425600262621021599">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
-<translation id="575838692088926391">IPFSን በመጠቀም የግል አቃፊዎን ያጋሩ</translation>
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
 <translation id="4472575034687746823">ይጀምሩ</translation>
@@ -458,4 +454,8 @@
 <translation id="1062463687579789365">የዋሌት ኔትዎርኮችን ማበጀት</translation>
 <translation id="2234108191702901162">አውታረ መረቡን ማከል አልተቻለም</translation>
 <translation id="2618193846561624884">አሁን ያለውን አውታረ መረብ ማዘመን ይፈልጋሉ?</translation>
+<translation id="7475547933708221517">IPFS ን በመጠቀም የውስጥ ፋይልን ያጋሩ</translation>
+<translation id="2286177249736199435">IPFS ን በመጠቀም የግል አቃፊዎን ያጋሩ</translation>
+<translation id="784573715436258741">IPFS ን በመጠቀም የውስጥ ፋይልን ያጋሩ</translation>
+<translation id="575838692088926391">IPFSን በመጠቀም የግል አቃፊዎን ያጋሩ</translation>
 </translationbundle>

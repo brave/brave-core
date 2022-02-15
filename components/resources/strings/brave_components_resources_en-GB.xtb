@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Unsubscribe</translation>
 <translation id="1209739344687072997">Report a broken site</translation>
 <translation id="8510478288840333677">Let Brave's developers know that this site doesn't work properly with Shields:</translation>
-<translation id="6013164422534859494">Note: This site address will be submitted with your Brave version number and your IP address (which will not be stored).</translation>
+<translation id="4105411033440701818">Note: This site address will be submitted with your Brave version number and your IP address (which will not be stored).</translation>
 <translation id="5299848999918506028">Thank you!</translation>
 <translation id="76550953340008122">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
 <translation id="2974339193389078578">Brave the new Internet</translation>
@@ -164,7 +164,7 @@
 <translation id="1201402288615127009">Next</translation>
 <translation id="7954950242989581218">Browse safe and sound</translation>
 <translation id="2188651882929633653">Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to “down” if a site doesn’t seem to be working. Brave uses <ph name="BEGIN_LINK_P3A"/>completely private product analytics<ph name="END_LINK_P3A"/> to estimate the overall usage of certain features. You can turn this off in <ph name="BEGIN_LINK_P3A_SETTINGS"/>Settings<ph name="END_LINK_P3A_SETTINGS"/>.</translation>
-<translation id="4851215387785619212">Brave private ads</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
 <translation id="3114984266384096064">Earn [[currency]] by viewing Brave Private Ads. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="3742599705619405136">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Next contribution date</translation>
 <translation id="1397381065858030856">Sites viewed</translation>
 <translation id="2365740070488517695">Tips</translation>
-<translation id="5993195614988368256">Tip content creators directly as you browse by using the Rewards Panel, or by using the inline tip button on various sites including Twitter, Reddit and GitHub.</translation>
+<translation id="5810507495128831593">Tip content creators directly as you browse by using the Rewards Panel, or by using the inline tip button on various sites including Twitter, Reddit and GitHub.</translation>
 <translation id="5012991400231464322">Monthly Contributions</translation>
 <translation id="2084351799622920487">Set up recurring monthly contributions so you can support sites continuously.</translation>
 <translation id="8150772404570015166">No monthly contributions set up yet.</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">See all</translation>
 <translation id="3026978804849658576">View statement</translation>
 <translation id="8494748383523030337">Your balance</translation>
-<translation id="3343165035032571678">You earned <ph name="AMOUNT"/> from viewing Brave Private Ads!</translation>
-<translation id="6618415862402597254">Ad earnings received</translation>
-<translation id="5981646694027725752">Claim earnings</translation>
-<translation id="2556441076129789027">Claim tokens</translation>
+<translation id="9013419433042554094">Claim tokens</translation>
 <translation id="5544777623605368410">Earning</translation>
 <translation id="3273637494083639780">The tokens you earn this month will begin processing on <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">This may vary based on market volatility.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">You’re earning tokens for viewing this sponsored image.</translation>
 <translation id="5486114327664215175">Earn tokens for viewing this image and support content creators.</translation>
 <translation id="2940863921746574646">Token balance</translation>
-<translation id="1714906256929297600">Use your promotional tokens to contribute to creators before they expire!</translation>
-<translation id="2426048501007152001">Tokens available</translation>
+<translation id="2221902203895354376">Tokens available</translation>
 <translation id="7701466644604753106">Turn ON speedreader</translation>
 <translation id="763042262431778831">Turn OFF speedreader</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Add checked accounts</translation>
 <translation id="8554010658308662631">Load more</translation>
 <translation id="6998738230710304743">Loading more ...</translation>
-<translation id="4970164249406565575">Search account 0x</translation>
+<translation id="5592304751234049046">Search account 0x</translation>
 <translation id="6151024411349343484">Try switching HD path (above) if you cannot find the account you are looking for.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Allow all trackers and ads</translation>
 <translation id="6203697265754637264">Cross-site cookies blocked</translation>
 <translation id="4627427111733173920">Cookies blocked</translation>
-<translation id="7855168553463825937">All cookies blocked</translation>
+<translation id="3972324600756617403">All cookies blocked</translation>
 <translation id="8366221601425141146">Fingerprinting blocked</translation>
 <translation id="5582686930349810484">Fingerprinting blocked (standard)</translation>
 <translation id="6696441392507885865">Fingerprinting blocked (strict, sites may break)</translation>
@@ -1230,4 +1226,14 @@
 <translation id="6973157709854838218">Hide your balances from display</translation>
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
+<translation id="6013164422534859494">Note: This site address will be submitted with your Brave version number and your IP address (which will not be stored).</translation>
+<translation id="5993195614988368256">Tip content creators directly as you browse by using the Rewards Panel, or by using the inline tip button on various sites including Twitter, Reddit and GitHub.</translation>
+<translation id="3343165035032571678">You earned <ph name="AMOUNT"/> from viewing Brave Private Ads!</translation>
+<translation id="6618415862402597254">Ad earnings received</translation>
+<translation id="5981646694027725752">Claim earnings</translation>
+<translation id="2556441076129789027">Claim tokens</translation>
+<translation id="1714906256929297600">Use your promotional tokens to contribute to creators before they expire!</translation>
+<translation id="2426048501007152001">Tokens available</translation>
+<translation id="4970164249406565575">Search account 0x</translation>
+<translation id="7855168553463825937">All cookies blocked</translation>
 </translationbundle>
