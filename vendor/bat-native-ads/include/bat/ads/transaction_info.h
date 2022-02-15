@@ -38,7 +38,6 @@ struct ADS_EXPORT TransactionInfo final {
   double reconciled_at = 0.0;
 
   void ToDictionary(base::Value* dictionary) const;
-
   void FromDictionary(base::DictionaryValue* dictionary);
 };
 

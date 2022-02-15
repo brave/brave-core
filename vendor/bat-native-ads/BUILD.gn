@@ -686,8 +686,6 @@ source_set("ads") {
     "src/bat/ads/internal/legacy_migration/conversions/legacy_conversion_migration.h",
     "src/bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.cc",
     "src/bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h",
-    "src/bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_earnings_util.cc",
-    "src/bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_earnings_util.h",
     "src/bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader.cc",
     "src/bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader.h",
     "src/bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration_payments_json_reader_util.cc",
