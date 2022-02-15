@@ -21,7 +21,7 @@ import {
 } from './style'
 
 export interface Props {
-  selectedAsset: BraveWallet.BlockchainToken
+  selectedAsset?: BraveWallet.BlockchainToken
   selectedAssetAmount: string
   selectedAssetBalance: string
   toAddressOrUrl: string
@@ -73,6 +73,10 @@ function Send (props: Props) {
   }
 
   const insufficientFundsError = React.useMemo((): boolean => {
+    if (!selectedAsset) {
+      return false
+    }
+
     const amountWei = new Amount(selectedAssetAmount)
       .multiplyByDecimals(selectedAsset.decimals)
 

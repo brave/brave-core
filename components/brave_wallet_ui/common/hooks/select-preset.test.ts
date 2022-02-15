@@ -23,10 +23,10 @@ describe('usePreset hook', () => {
         }
       },
       mockNetwork,
-      mockERC20Token,
-      mockERC20Token,
       mockFunc,
-      jest.fn()
+      jest.fn(),
+      mockERC20Token,
+      mockERC20Token
     ))
 
     calcPresetAmount('swap')(percent)
