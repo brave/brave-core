@@ -285,6 +285,7 @@ export interface WalletInfoBase {
   isWalletBackedUp: boolean
   accountInfos: AccountInfo[]
   isFilecoinEnabled: boolean
+  isSolanaEnabled: boolean
 }
 
 export interface WalletInfo extends WalletInfoBase {

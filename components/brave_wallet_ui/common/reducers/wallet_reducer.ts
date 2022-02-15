@@ -110,6 +110,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
     hasInitialized: true,
     isWalletCreated: payload.isWalletCreated,
     isFilecoinEnabled: payload.isFilecoinEnabled,
+    isSolanaEnabled: payload.isSolanaEnabled,
     isWalletLocked: payload.isWalletLocked,
     favoriteApps: payload.favoriteApps,
     accounts,
