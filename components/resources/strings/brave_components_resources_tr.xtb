@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Abonelikten çık</translation>
 <translation id="1209739344687072997">Arızalı bir siteyi bildir</translation>
 <translation id="8510478288840333677">Bu sitenin Kalkanlar'la düzgün çalışmadığını Brave geliştiricilerine bildirin:</translation>
-<translation id="6013164422534859494">Not: Bu site adresi, Brave versiyon numaranız ve IP adresiniz (kaydedilmeyecek) ile birlikte gönderilecektir.</translation>
+<translation id="4105411033440701818">Not: Bu site adresi, Brave versiyon numaranız ve IP adresiniz (kaydedilmeyecek) ile birlikte gönderilecektir.</translation>
 <translation id="5299848999918506028">Teşekkür ederiz!</translation>
 <translation id="76550953340008122">Bu sitede yanlış bir şeyler olduğunu Brave geliştiricilerine bildirdiğiniz için teşekkür ederiz. Düzeltmek için elimizden geleni yapacağız!</translation>
 <translation id="2974339193389078578">Brave, yeni İnternet</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Tümünü gör</translation>
 <translation id="3026978804849658576">Bildirimi görüntüle</translation>
 <translation id="8494748383523030337">Bakiyeniz</translation>
-<translation id="3343165035032571678">Brave Özel Reklamları görüntüleyerek <ph name="AMOUNT"/> kazandınız!</translation>
-<translation id="6618415862402597254">Reklam kazançları alındı</translation>
-<translation id="5981646694027725752">Kazanımları al</translation>
-<translation id="2556441076129789027">Token'ları al</translation>
+<translation id="9013419433042554094">Token'ları al</translation>
 <translation id="5544777623605368410">Kazanıyor</translation>
 <translation id="3273637494083639780">Bu ay kazandığınız token'lar <ph name="DATE"/> itibarıyla işlenmeye başlayacak.</translation>
 <translation id="1029300693989825319">Bu, piyasa volatilitesine göre değişebilir.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Bu sponsorlu görseli görüntülediğiniz için token kazanıyorsunuz.</translation>
 <translation id="5486114327664215175">Bu görseli görüntüleyerek token kazanın ve içerik üreticilerini destekleyin.</translation>
 <translation id="2940863921746574646">Token Bakiyesi</translation>
-<translation id="1714906256929297600">Tanıtım token'larını zamanı dolmadan kullanın ve geliştiricilere katkıda bulunun!</translation>
-<translation id="2426048501007152001">Mevcut token'lar</translation>
+<translation id="2221902203895354376">Mevcut token'lar</translation>
 <translation id="7701466644604753106">Speedreader'ı Aç</translation>
 <translation id="763042262431778831">Speedreader'ı Kapat</translation>
 <translation id="8488282162676695335">Brave Cüzdan</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">İşaretli hesapları ekle</translation>
 <translation id="8554010658308662631">Daha fazla yükle</translation>
 <translation id="6998738230710304743">Daha fazlası yükleniyor...</translation>
-<translation id="4970164249406565575">0x hesabını ara</translation>
+<translation id="5592304751234049046">0x hesabını ara</translation>
 <translation id="6151024411349343484">Aradığınız hesabı bulamıyorsanız HD yolunu (yukarıda) değiştirmeyi deneyin.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Eski (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Tüm izleyici ve reklamlara izin ver</translation>
 <translation id="6203697265754637264">Siteler arası çerezler engellendi</translation>
 <translation id="4627427111733173920">Çerezler engellendi</translation>
-<translation id="7855168553463825937">Tüm çerezler engellendi</translation>
+<translation id="3972324600756617403">Tüm çerezler engellendi</translation>
 <translation id="8366221601425141146">Engellenen parmak izleri</translation>
 <translation id="5582686930349810484">Parmak izi engelli (standart)</translation>
 <translation id="6696441392507885865">Parmak izi engelli (katı, siteleri bozabilir)</translation>
@@ -1230,4 +1226,13 @@
 <translation id="6973157709854838218">Bakiyenizi ekranda gizleyin</translation>
 <translation id="4548946945059463969">Bakiyenizi ekranda gösterin</translation>
 <translation id="242959166945779492">Hesabınızda bakiye yok. Satın almak için FTX'i ziyaret edin.</translation>
+<translation id="6013164422534859494">Not: Bu site adresi, Brave versiyon numaranız ve IP adresiniz (kaydedilmeyecek) ile birlikte gönderilecektir.</translation>
+<translation id="3343165035032571678">Brave Özel Reklamları görüntüleyerek <ph name="AMOUNT"/> kazandınız!</translation>
+<translation id="6618415862402597254">Reklam kazançları alındı</translation>
+<translation id="5981646694027725752">Kazanımları al</translation>
+<translation id="2556441076129789027">Token'ları al</translation>
+<translation id="1714906256929297600">Tanıtım token'larını zamanı dolmadan kullanın ve geliştiricilere katkıda bulunun!</translation>
+<translation id="2426048501007152001">Mevcut token'lar</translation>
+<translation id="4970164249406565575">0x hesabını ara</translation>
+<translation id="7855168553463825937">Tüm çerezler engellendi</translation>
 </translationbundle>

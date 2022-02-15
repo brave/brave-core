@@ -53,9 +53,9 @@
 <translation id="7142548388914389999">Salli yksityisyyden säilyttävä tuoteanalytiikka (P3A)</translation>
 <translation id="5254037869598726291">Anonymisoidut P3A-tiedot auttavat Bravea arvioimaan kokonaiskäyttöä ja varmistamaan, että parannamme suosittuja ominaisuuksia.</translation>
 <translation id="933652931229970927">Lähetä diagnostiikkaraportit automaattisesti</translation>
-<translation id="5987838417172370108">Auta parantamaan Brave\u2019:n tuotteen stabiilisuutta lähettämällä diagnostiikkaraportit automaattisesti, kun Brave-selain kaatuu tai jäätyy.</translation>
+<translation id="5987838417172370108">Auta parantamaan Braven tuotteen stabiilisuutta lähettämällä diagnostiikkaraportit automaattisesti, kun Brave-selain kaatuu tai jäätyy.</translation>
 <translation id="7977176350719484850">Tallennettuja\ntietoja keskimäärin</translation>
-<translation id="9008534313521214777">Arvioitu säästetty\naika</translation>
+<translation id="9008534313521214777">Arvioitu säästetty aika</translation>
 <translation id="6572660632052512096">Työpöytätila</translation>
 <translation id="1340503115760585811">Ota työpöytätila käyttöön uusissa välilehdissä</translation>
 <translation id="7924540991929826186">Käytä sivustojen mobiiliversioita uusissa välilehdissä (suositellaan)</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Tämä on ensimmäinen Brave-mainoksesi. Napauta tätä saadaksesi lisätietoja.</translation>
 <translation id="2070991379950719711">Aloita Brave-palkintojen käyttö</translation>
 <translation id="48520986898237073">Jatka lompakkoon</translation>
-<translation id="3570367516044491911">Aseta oletusselaimeksi</translation>
+<translation id="6800338374677644736">Aseta oletusselaimeksi</translation>
 <translation id="19715420010996093">Valitse Brave Browser ja paina 'Aina'</translation>
 <translation id="3546439402724649282">Brave on jo asetettu oletusselaimeksi.</translation>
 <translation id="8389661903259423907">Olet jo asettanut oletusselaimen. Voit vaihtaa oletusselainta sovelluksen asetuksista.</translation>
-<translation id="7091885296442320770">Brave on salamannopea</translation>
-<translation id="2171928016777725844">Aseta Brave oletusselaimeksi!</translation>
-<translation id="7136694880210472378">Aseta oletukseksi</translation>
-<translation id="4250680216510889253">Ei</translation>
 <translation id="8826007068782654809">Kiitos</translation>
 <translation id="6665366815203065060">Olet juuri lähettänyt vinkin kohteelle:</translation>
 <translation id="5441565662498481293">Lähetät automaattisesti vinkin kohteelle:</translation>
@@ -525,9 +521,9 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="6478996494082389936">yksityistuoteanalytiikka.</translation>
 <translation id="5187052478998910855">Tarvitsetko kertausta Rewardsin toiminnasta?</translation>
 <translation id="8622329973403382303">Käy pikakierroksella kerrataksesi, kuinka voit siirtyä historiassa alaspäin Rewards-ammattilaisen tavoin!</translation>
-<translation id="8401711613788729448">Avaa kaikki linkit Bravella suojellaksesi yksityisyyttäsi</translation>
-<translation id="3184805785843994538">Brave Shields estää seurantalaitteet &amp; mainokset, säästää dataa ja aikaa jokaisella vierailemallasi sivulla.</translation>
-<translation id="8722651357687610395">Aseta Brave oletukseksi</translation>
+<translation id="7625138338483121345">Avaa kaikki linkit Bravella suojellaksesi yksityisyyttäsi</translation>
+<translation id="4511485286950743564">Brave Shields estää seurantalaitteet &amp; mainokset, säästää dataa ja aikaa jokaisella vierailemallasi sivulla.</translation>
+<translation id="9218430445555521422">Aseta Brave oletukseksi</translation>
 <translation id="3479552764303398839">Ei nyt</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="283071225285270357">Anna palautuslauseesi</translation>
 <translation id="3943857333388298514">Liitä</translation>
 <translation id="3331452756822160641">Uusi salasana</translation>
-<translation id="4854035885012188958">Palautan vanhasta Brave-kryptolompakosta</translation>
+<translation id="4359319875297001084">Palautan vanhasta Brave-kryptolompakosta</translation>
 <translation id="2339124864228588937">Vahvista palautuslauseesi</translation>
 <translation id="3747079125031086337">Valitse palautuslauseen sanat oikeassa järjestyksessä.</translation>
 <translation id="6518133107902771759">Vahvista</translation>
@@ -806,6 +802,7 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="4351811224047421378">Desimaalitarkkuus</translation>
 <translation id="8614026298974065517">Poista mukautettu vara</translation>
 <translation id="4378941981362528553">Haluatko poistaa tokenin <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Ei</translation>
 <translation id="8971278306757462297">Vastaanotto-osoite on oma osoitteesi</translation>
 <translation id="749944179568745958">Virheellinen ETH-osoite</translation>
 <translation id="3506416339268164412">Vastaanotto-osoite on tokenin sopimusosoite</translation>
@@ -839,8 +836,8 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="665660671251623018">Ketjun valuutan desimaalit</translation>
 <translation id="182619028057179895">Virheellinen muoto, valuutan desimaalit on positiivinen luku</translation>
 <translation id="2978054488731497946">Anna valuutan desimaalit</translation>
-<translation id="3047726704186619366">Kuvakkeen URL-osoitteet</translation>
-<translation id="2487558607408469181">Lohkoketjuohjelman URL-osoitteet</translation>
+<translation id="7642841516562576649">Kuvakkeen URL-osoitteet</translation>
+<translation id="4693057234255364395">Lohkoketjuohjelman URL-osoitteet</translation>
 <translation id="7059127752542505809">Anna URL-osoite</translation>
 <translation id="2156993118928861787">Virheellinen osoite</translation>
 <translation id="6889920539620318793">Aseta aktiiviseksi</translation>
@@ -861,4 +858,14 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="7033470144757208254">Brave käyttää 0x:ää DEX-aggregaattorina.</translation>
 <translation id="7470079236088529568">Lunastetut lahjoitukset yhteensä</translation>
 <translation id="8845154268466251503">BAT</translation>
+<translation id="3570367516044491911">Aseta oletusselaimeksi</translation>
+<translation id="7091885296442320770">Brave on salamannopea</translation>
+<translation id="2171928016777725844">Aseta Brave oletusselaimeksi!</translation>
+<translation id="7136694880210472378">Aseta oletukseksi</translation>
+<translation id="8401711613788729448">Avaa kaikki linkit Bravella suojellaksesi yksityisyyttäsi</translation>
+<translation id="3184805785843994538">Brave Shields estää seurantalaitteet &amp; mainokset, säästää dataa ja aikaa jokaisella vierailemallasi sivulla.</translation>
+<translation id="8722651357687610395">Aseta Brave oletukseksi</translation>
+<translation id="4854035885012188958">Palautan vanhasta Brave-kryptolompakosta</translation>
+<translation id="3047726704186619366">Kuvakkeen URL-osoitteet</translation>
+<translation id="2487558607408469181">Lohkoketjuohjelman URL-osoitteet</translation>
 </translationbundle>

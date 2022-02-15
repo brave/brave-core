@@ -55,7 +55,7 @@
 <translation id="933652931229970927">Invia automaticamente i rapporti di diagnostica</translation>
 <translation id="5987838417172370108">Contribuisci ad aumentare la stabilità di Brave inviando automaticamente i rapporti di diagnostica quando il browser di Brave si arresta in modo anomalo o resta bloccato.</translation>
 <translation id="7977176350719484850">Dati\nrisparmiati</translation>
-<translation id="9008534313521214777">Tempo stimato\nRisparmiato</translation>
+<translation id="9008534313521214777">Tempo stimato\nrisparmiato</translation>
 <translation id="6572660632052512096">Modalità Desktop</translation>
 <translation id="1340503115760585811">Abilita la Vista Desktop per nuove schede</translation>
 <translation id="7924540991929826186">Utilizza le versioni per cellulari dei siti per le nuove schede (consigliato)</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Questo è il tuo primo annuncio di Brave. Tocca per saperne di più.</translation>
 <translation id="2070991379950719711">Inizia a usare Brave Rewards</translation>
 <translation id="48520986898237073">Prosegui per il portafoglio</translation>
-<translation id="3570367516044491911">Imposta come browser predefinito</translation>
+<translation id="6800338374677644736">Imposta come browser predefinito</translation>
 <translation id="19715420010996093">Scegli il browser Brave e premi su 'Sempre'</translation>
 <translation id="3546439402724649282">Brave è già impostato come browser predefinito.</translation>
 <translation id="8389661903259423907">Hai già impostato un browser predefinito. Puoi cambiare il browser predefinito nelle impostazioni della tua applicazione.</translation>
-<translation id="7091885296442320770">Brave è veloce come un fulmine</translation>
-<translation id="2171928016777725844">Fai di Brave il tuo browser predefinito!</translation>
-<translation id="7136694880210472378">Imposta come predefinito</translation>
-<translation id="4250680216510889253">No</translation>
 <translation id="8826007068782654809">Grazie</translation>
 <translation id="6665366815203065060">Hai appena inviato una mancia a:</translation>
 <translation id="5441565662498481293">Invii automaticamente una mancia a:</translation>
@@ -174,7 +170,7 @@ attività in questo mese...</translation>
 <translation id="8969049974285901797">su Twitch</translation>
 <translation id="3692362746128814480">Hai designato <ph name="BAT_VALUE"/> BAT per i creatori che non si sono 
 ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di contribuire fino a quando non avranno effettuato la verifica, o fino a quando non saranno trascorsi 90 giorni.</translation>
-<translation id="3101693828171454453">non abbastanza <ph name="TOKEN"/>s</translation>
+<translation id="3101693828171454453">non abbastanza <ph name="TOKEN"/></translation>
 <translation id="6940273954212603510">per favore</translation>
 <translation id="1036277985068412734">aggiungi fondi</translation>
 <translation id="3492491948683276944">imposta la mancia mensile</translation>
@@ -524,9 +520,9 @@ Confermi di voler procedere?</translation>
 <translation id="6478996494082389936">analisi dei prodotti privati.</translation>
 <translation id="5187052478998910855">Serve un ripasso su Rewards?</translation>
 <translation id="8622329973403382303">Fai un breve tour per rinfrescare la memoria su come funziona per passare alla storia come una rockstar di Rewards!</translation>
-<translation id="8401711613788729448">Apri tutti i link con Brave per proteggere la tua privacy</translation>
-<translation id="3184805785843994538">Brave Shields blocca tracciatori e pubblicità, risparmia il consumo di dati e ti fa risparmiare tempo su ogni sito che visiti.</translation>
-<translation id="8722651357687610395">Imposta Brave come default</translation>
+<translation id="7625138338483121345">Apri tutti i link con Brave per proteggere la tua privacy</translation>
+<translation id="4511485286950743564">Brave Shields blocca tracciatori e pubblicità, risparmia il consumo di dati e ti fa risparmiare tempo su ogni sito che visiti.</translation>
+<translation id="9218430445555521422">Imposta Brave come default</translation>
 <translation id="3479552764303398839">Non adesso</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -596,7 +592,7 @@ Confermi di voler procedere?</translation>
 <translation id="283071225285270357">Inserisci la frase di recupero</translation>
 <translation id="3943857333388298514">Incolla</translation>
 <translation id="3331452756822160641">Nuova password</translation>
-<translation id="4854035885012188958">Sto eseguendo il ripristino dal precedente portafoglio Brave di criptovalute</translation>
+<translation id="4359319875297001084">Sto eseguendo il ripristino dal precedente portafoglio Brave di criptovalute</translation>
 <translation id="2339124864228588937">Verifica la frase di recupero</translation>
 <translation id="3747079125031086337">Seleziona le parole nella tua frase di recupero nell'ordine corretto.</translation>
 <translation id="6518133107902771759">Verifica</translation>
@@ -805,6 +801,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="4351811224047421378">Precisione decimale</translation>
 <translation id="8614026298974065517">Rimuovi l’asset personalizzato</translation>
 <translation id="4378941981362528553">Vuoi rimuovere il token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">No</translation>
 <translation id="8971278306757462297">L’indirizzo di destinazione è il tuo stesso indirizzo</translation>
 <translation id="749944179568745958">Indirizzo ETH non valido</translation>
 <translation id="3506416339268164412">L’indirizzo di destinazione è l’indirizzo di contratto di un token</translation>
@@ -825,7 +822,7 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1241283133946520352">Reti</translation>
 <translation id="1062463687579789365">Personalizzazione delle reti del portafoglio</translation>
 <translation id="2512821599885971349">Aggiungi rete</translation>
-<translation id="1330032157352961756">L’ID della nuova catena</translation>
+<translation id="1330032157352961756">L’ID della nuova blockchain</translation>
 <translation id="8104880458203052748">Formato non valido, l’ID della catena è un numero positivo</translation>
 <translation id="3423620355610881890">Un numero decimale positivo</translation>
 <translation id="726121047592132939">Il nome della nuova catena</translation>
@@ -838,8 +835,8 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="665660671251623018">Decimali della valuta della catena</translation>
 <translation id="182619028057179895">Formato non valido, i decimali della valuta sono un numero positivo</translation>
 <translation id="2978054488731497946">Inserisci i decimali della valuta</translation>
-<translation id="3047726704186619366">URL delle icone</translation>
-<translation id="2487558607408469181">URL dell’esploratore di blocchi</translation>
+<translation id="7642841516562576649">URL delle icone</translation>
+<translation id="4693057234255364395">URL dell’esploratore di blocchi</translation>
 <translation id="7059127752542505809">Inserisci l’URL</translation>
 <translation id="2156993118928861787">Indirizzo non valido</translation>
 <translation id="6889920539620318793">Imposta come attivo</translation>
@@ -860,4 +857,14 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="7033470144757208254">Brave usa 0x come aggregatore DEX.</translation>
 <translation id="7470079236088529568">Contributi totali riscossi</translation>
 <translation id="8845154268466251503">BAT</translation>
+<translation id="3570367516044491911">Imposta come browser predefinito</translation>
+<translation id="7091885296442320770">Brave è veloce come un fulmine</translation>
+<translation id="2171928016777725844">Fai di Brave il tuo browser predefinito!</translation>
+<translation id="7136694880210472378">Imposta come predefinito</translation>
+<translation id="8401711613788729448">Apri tutti i link con Brave per proteggere la tua privacy</translation>
+<translation id="3184805785843994538">Brave Shields blocca tracciatori e pubblicità, risparmia il consumo di dati e ti fa risparmiare tempo su ogni sito che visiti.</translation>
+<translation id="8722651357687610395">Imposta Brave come default</translation>
+<translation id="4854035885012188958">Sto eseguendo il ripristino dal precedente portafoglio Brave di criptovalute</translation>
+<translation id="3047726704186619366">URL delle icone</translation>
+<translation id="2487558607408469181">URL dell’esploratore di blocchi</translation>
 </translationbundle>

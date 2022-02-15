@@ -115,15 +115,11 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="1434416574322382019">Yeni Tor ile Özel Pencere</translation>
 <translation id="4703780849509456860">Bağlantıyı Tor içeren Özel Pencereyle Aç</translation>
 <translation id="3488584642074079080">Tor ile Brave Özel Pencere Açma Linki</translation>
-<translation id="7475547933708221517">IPFS Kullanarak Yerel Dosya Paylaş</translation>
-<translation id="2286177249736199435">IPFS Kullanarak Yerel Klasör Paylaşın</translation>
 <translation id="4491895534716990473">Seçilen metni IPFS'ye aktar</translation>
 <translation id="8883166554766780543">IPFS anlık görüntü bağlantısını içe aktarın ve kopyalayın</translation>
-<translation id="784573715436258741">IPFS kullanarak yerel dosya paylaş</translation>
 <translation id="6313675821927505581">Tor ile yeni özel pencere</translation>
 <translation id="2638041073279639246">Bağlantıyı Tor ile özel pencerede aç</translation>
 <translation id="3425600262621021599">Bağlantıyı Brave'de Tor ile özel pencerede aç</translation>
-<translation id="575838692088926391">IPFS kullanarak yerel klasör paylaşın</translation>
 <translation id="2515126961943087659">Bat Reklam Servisi</translation>
 <translation id="7924918279836988121">Bat Ledger Servisi</translation>
 <translation id="4472575034687746823">Başlayın</translation>
@@ -273,6 +269,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="1327977588028644528">Ağ geçidi</translation>
 <translation id="1195880978080389104">Brave yerel IPFS düğümü</translation>
 <translation id="4927734062756955434">IPFS ortak ağ geçidi adresi</translation>
+<translation id="2178402446227616866">Brave yerel IPFS düğümü ve ağ geçidi gizlilik hususları hakkında <ph name="BEGIN_LINK_MPL"/>daha fazla bilgi edinin.<ph name="END_LINK_MPL"/></translation>
 <translation id="8425213833346101688">Değiştir</translation>
 <translation id="557281710253742286">IPFS ağ geçidi belirleyin</translation>
 <translation id="8571837315037233299">Ağ geçidi adresi</translation>
@@ -477,4 +474,8 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7815301689257843278">Brave'in bu sorunun tekrar yaşanmasını önleyebilmesi için kilitlenme raporları otomatik gönderilsin mi?</translation>
 <translation id="1068069727470515940"><ph name="SETTING_TEXT"/> dilediğiniz zaman tekrar değiştirebilirsiniz.</translation>
 <translation id="8325036459845654666">Bu ağ zaten ekli.</translation>
+<translation id="7475547933708221517">IPFS Kullanarak Yerel Dosya Paylaş</translation>
+<translation id="2286177249736199435">IPFS Kullanarak Yerel Klasör Paylaşın</translation>
+<translation id="784573715436258741">IPFS kullanarak yerel dosya paylaş</translation>
+<translation id="575838692088926391">IPFS kullanarak yerel klasör paylaşın</translation>
 </translationbundle>

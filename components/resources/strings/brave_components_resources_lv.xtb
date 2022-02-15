@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Anulēt abonementu</translation>
 <translation id="1209739344687072997">Ziņot par bojātu vietni</translation>
 <translation id="8510478288840333677">Paziņojiet Brave izstrādātājiem, kad šī vietne ar aizsargiem nedarbojas pareizi:</translation>
-<translation id="6013164422534859494">Piezīme: Tiks iesniegta vietnes adrese ar jūsu Brave versijas numuru un jūsu IP adresi (kas netiks saglabāta).</translation>
+<translation id="4105411033440701818">Piezīme: Tiks iesniegta vietnes adrese ar jūsu Brave versijas numuru un jūsu IP adresi (kas netiks saglabāta).</translation>
 <translation id="5299848999918506028">Paldies!</translation>
 <translation id="76550953340008122">Paldies, ka paziņojāt Brave izstrādātājiem par problēmām ar šo vietni. Pacentīsimies to salabot!</translation>
 <translation id="2974339193389078578">Brave —  jaunais internets!</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Skatīt visu</translation>
 <translation id="3026978804849658576">Skatīt pārskatu</translation>
 <translation id="8494748383523030337">Jūsu atlikums</translation>
-<translation id="3343165035032571678">Jūs nopelnījāt <ph name="AMOUNT"/>, apskatot Brave privātās reklāmas!</translation>
-<translation id="6618415862402597254">Saņemtie ieņēmumi no reklāmām</translation>
-<translation id="5981646694027725752">Ieņēmumi no prasībām</translation>
-<translation id="2556441076129789027">Prasību žetoni</translation>
+<translation id="9013419433042554094">Prasību žetoni</translation>
 <translation id="5544777623605368410">Ieņēmumi</translation>
 <translation id="3273637494083639780">Žetoni, ko nopelnīsiet šomēnes, tiks apstrādāti <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Daudzums var mainīties atkarībā no tirgus svārstībām.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Jūs pelnāt žetonus par šī sponsorētā attēla skatīšanu.</translation>
 <translation id="5486114327664215175">Nopelniet žetonus, apskatot šo attēlu, un atbalstiet satura veidotājus.</translation>
 <translation id="2940863921746574646">Žetonu atlikums</translation>
-<translation id="1714906256929297600">Izmantojiet reklāmas žetonus, lai atbalstītu veidotājus, pirms beidzas to derīgums!</translation>
-<translation id="2426048501007152001">Pieejamie žetoni</translation>
+<translation id="2221902203895354376">Pieejamie žetoni</translation>
 <translation id="7701466644604753106">Ieslēgt ātro lasītāju</translation>
 <translation id="763042262431778831">Izslēgt ātro lasītāju</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Pievienojiet atzīmētos kontus.</translation>
 <translation id="8554010658308662631">Ielādēt vairāk</translation>
 <translation id="6998738230710304743">Ielādē vairāk...</translation>
-<translation id="4970164249406565575">Meklēt kontu 0x</translation>
+<translation id="5592304751234049046">Meklēt kontu 0x</translation>
 <translation id="6151024411349343484">Ja nevarat atrast meklēto kontu, mēģiniet pārslēgt HD ceļu (iepriekš).</translation>
 <translation id="2844691569989101734">Ledger reāllaikā</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Atļaut visus izsekotājus un reklāmas</translation>
 <translation id="6203697265754637264">Bloķēti starpvietņu sīkfaili</translation>
 <translation id="4627427111733173920">Bloķētie sīkfaili</translation>
-<translation id="7855168553463825937">Visi sīkfaili bloķēti</translation>
+<translation id="3972324600756617403">Visi sīkfaili bloķēti</translation>
 <translation id="8366221601425141146">Pirkstu nospiedumu ņemšana bloķēta</translation>
 <translation id="5582686930349810484">Pirkstu nospiedumu ņemšana bloķēta (standarta režīms)</translation>
 <translation id="6696441392507885865">Pirkstu nospiedumu ņemšana bloķēta (stingrais režīms, var radīt darbības traucējumus)</translation>
@@ -1230,4 +1226,13 @@
 <translation id="6973157709854838218">Paslēpt bilanci no displeja</translation>
 <translation id="4548946945059463969">Atklājiet savu bilanci ekrānā</translation>
 <translation id="242959166945779492">Jūsu kontā nav atlikuma. Apmeklējiet FTX, lai iegādātos valūtu.</translation>
+<translation id="6013164422534859494">Piezīme: Tiks iesniegta vietnes adrese ar jūsu Brave versijas numuru un jūsu IP adresi (kas netiks saglabāta).</translation>
+<translation id="3343165035032571678">Jūs nopelnījāt <ph name="AMOUNT"/>, apskatot Brave privātās reklāmas!</translation>
+<translation id="6618415862402597254">Saņemtie ieņēmumi no reklāmām</translation>
+<translation id="5981646694027725752">Ieņēmumi no prasībām</translation>
+<translation id="2556441076129789027">Prasību žetoni</translation>
+<translation id="1714906256929297600">Izmantojiet reklāmas žetonus, lai atbalstītu veidotājus, pirms beidzas to derīgums!</translation>
+<translation id="2426048501007152001">Pieejamie žetoni</translation>
+<translation id="4970164249406565575">Meklēt kontu 0x</translation>
+<translation id="7855168553463825937">Visi sīkfaili bloķēti</translation>
 </translationbundle>

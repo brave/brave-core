@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Cancelar suscripción</translation>
 <translation id="1209739344687072997">Informar sobre un sitio roto</translation>
 <translation id="8510478288840333677">Informa a los desarrolladores de Brave de que los escudos no funcionan como es debido.</translation>
-<translation id="6013164422534859494">Nota: La dirección de este sitio se enviará junto con el número de la versión de Brave que usas y tu dirección IP (que no quedará almacenada).</translation>
+<translation id="4105411033440701818">Nota: La dirección de este sitio se enviará junto con el número de la versión de Brave que usas y tu dirección IP (que no quedará almacenada).</translation>
 <translation id="5299848999918506028">¡Gracias!</translation>
 <translation id="76550953340008122">Gracias por informar a los desarrolladores de Brave de que hay un problema en este sitio. Haremos todo lo posible por solucionarlo.</translation>
 <translation id="2974339193389078578">Disfrute de una nueva Internet con Brave</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Ver todo</translation>
 <translation id="3026978804849658576">Ver estado</translation>
 <translation id="8494748383523030337">Tu saldo</translation>
-<translation id="3343165035032571678">¡Ha ganado <ph name="AMOUNT"/> por ver Brave Private Ads!</translation>
-<translation id="6618415862402597254">Ganancias por anuncios recibidas</translation>
-<translation id="5981646694027725752">Reclamar ganancias</translation>
-<translation id="2556441076129789027">Reclamar tokens</translation>
+<translation id="9013419433042554094">Reclamar tokens</translation>
 <translation id="5544777623605368410">Ingresos</translation>
 <translation id="3273637494083639780">Los tokens que gane este mes empezarán a procesarse el <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Podría variar debido a la inestabilidad del mercado.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Está ganando tokens por ver esta imagen promocionada.</translation>
 <translation id="5486114327664215175">Gane tokens por ver esta imagen y apoyar a creadores de contenido.</translation>
 <translation id="2940863921746574646">Saldo de tokens</translation>
-<translation id="1714906256929297600">¡Use sus tokens promocionales para apoyar a creadores antes de que caduquen!</translation>
-<translation id="2426048501007152001">Tokens disponibles</translation>
+<translation id="2221902203895354376">Tokens disponibles</translation>
 <translation id="7701466644604753106">Activar Speedreader</translation>
 <translation id="763042262431778831">Desactivar Speedreader</translation>
 <translation id="8488282162676695335">Billetera de Brave</translation>
@@ -877,8 +873,8 @@
 <translation id="5061574358754621254">Datos sobre precios con la tecnología de CoinGecko</translation>
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Intercambio</translation>
-<translation id="6295954645230084874">No se admiten compras para <ph name="NETWORK"/></translation>
-<translation id="4171338820961522154">No se admiten intercambios para <ph name="NETWORK"/></translation>
+<translation id="6295954645230084874">No se admiten compras de <ph name="NETWORK"/></translation>
+<translation id="4171338820961522154">No se admiten intercambios de <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">La transacción podría tener carácter ventajista</translation>
 <translation id="632241521608275119">Tolerancia de deslizamiento</translation>
 <translation id="4500473291496079954">Caduca en</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Agregar cuentas marcadas</translation>
 <translation id="8554010658308662631">Cargar más</translation>
 <translation id="6998738230710304743">Cargando más...</translation>
-<translation id="4970164249406565575">Buscar cuenta 0x</translation>
+<translation id="5592304751234049046">Buscar cuenta 0x</translation>
 <translation id="6151024411349343484">Intente cambiar la ruta de HD (arriba) si no puede encontrar la cuenta que está buscando.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Permitir todos los rastreadores y anuncios</translation>
 <translation id="6203697265754637264">Bloquear cookies entres sitios</translation>
 <translation id="4627427111733173920">Cookies bloqueadas</translation>
-<translation id="7855168553463825937">Se han bloqueado todas las cookies</translation>
+<translation id="3972324600756617403">Se han bloqueado todas las cookies</translation>
 <translation id="8366221601425141146">Creación de huella digital del dispositivo bloqueada</translation>
 <translation id="5582686930349810484">Huellas digitales bloqueadas (estándar)</translation>
 <translation id="6696441392507885865">Huellas digitales bloqueadas (estricto, los sitios podrían dejar de funcionar)</translation>
@@ -1230,4 +1226,13 @@
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
+<translation id="6013164422534859494">Nota: La dirección de este sitio se enviará junto con el número de la versión de Brave que usas y tu dirección IP (que no quedará almacenada).</translation>
+<translation id="3343165035032571678">¡Ha ganado <ph name="AMOUNT"/> por ver Brave Private Ads!</translation>
+<translation id="6618415862402597254">Ganancias por anuncios recibidas</translation>
+<translation id="5981646694027725752">Reclamar ganancias</translation>
+<translation id="2556441076129789027">Reclamar tokens</translation>
+<translation id="1714906256929297600">¡Use sus tokens promocionales para apoyar a creadores antes de que caduquen!</translation>
+<translation id="2426048501007152001">Tokens disponibles</translation>
+<translation id="4970164249406565575">Buscar cuenta 0x</translation>
+<translation id="7855168553463825937">Se han bloqueado todas las cookies</translation>
 </translationbundle>

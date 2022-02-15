@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">これは初めてのBrave広告です。タップして詳細をご覧ください。</translation>
 <translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
 <translation id="48520986898237073">引き続きウォレットに進む</translation>
-<translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
+<translation id="6800338374677644736">デフォルトのブラウザに設定</translation>
 <translation id="19715420010996093">Braveブラウザーを選択して[常に]をタップします</translation>
 <translation id="3546439402724649282">Braveは、すでにデフォルトブラウザとして設定されています。</translation>
 <translation id="8389661903259423907">すでにデフォルトブラウザが設定されています。アプリの設定でデフォルトブラウザを変更するこができます。</translation>
-<translation id="7091885296442320770">Braveは非常に高速です</translation>
-<translation id="2171928016777725844">Braveをデフォルトのブラウザにしてください！</translation>
-<translation id="7136694880210472378">デフォルトに設定</translation>
-<translation id="4250680216510889253">いいえ</translation>
 <translation id="8826007068782654809">ありがとうございます</translation>
 <translation id="6665366815203065060">チップを送りました! 宛先 :</translation>
 <translation id="5441565662498481293">チップの毎月定期支払い設定が完了しました! 宛先:</translation>
@@ -523,9 +519,9 @@
 <translation id="6478996494082389936">プライバシーを保護した製品分析</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
 <translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsの達人として歴史に名を残すための仕組みをマスターしてください！</translation>
-<translation id="8401711613788729448">あなたのプライバシーを保護するためにBraveですべてのリンクを開く</translation>
-<translation id="3184805785843994538">「Brave Shields」は、トラッカーと広告をブロックし、データ通信量を節約し、あなたが訪問するすべてのサイトで時間を節約します。</translation>
-<translation id="8722651357687610395">Braveをデフォルトに設定</translation>
+<translation id="7625138338483121345">あなたのプライバシーを保護するためにBraveですべてのリンクを開く</translation>
+<translation id="4511485286950743564">「Brave Shields」は、トラッカーと広告をブロックし、データ通信量を節約し、あなたが訪問するすべてのサイトで時間を節約します。</translation>
+<translation id="9218430445555521422">Braveをデフォルトに設定</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -595,7 +591,7 @@
 <translation id="283071225285270357">リカバリーフレーズを入力</translation>
 <translation id="3943857333388298514">貼り付け</translation>
 <translation id="3331452756822160641">新しいパスワード</translation>
-<translation id="4854035885012188958">従来のBrave暗号資産ウォレットから復元</translation>
+<translation id="4359319875297001084">従来のBrave暗号資産ウォレットから復元</translation>
 <translation id="2339124864228588937">リカバリーフレーズを確認</translation>
 <translation id="3747079125031086337">あなたのリカバリフレーズに含まれている単語を正しい順序で選択します。</translation>
 <translation id="6518133107902771759">確認</translation>
@@ -804,6 +800,7 @@
 <translation id="4351811224047421378">小数点桁数</translation>
 <translation id="8614026298974065517">カスタムアセットを削除</translation>
 <translation id="4378941981362528553"><ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/> ) トークンを削除しますか？</translation>
+<translation id="4250680216510889253">いいえ</translation>
 <translation id="8971278306757462297">受取アドレスにご自身のアドレスが指定されています</translation>
 <translation id="749944179568745958">有効なETHアドレスではありません</translation>
 <translation id="3506416339268164412">受取アドレスはトークンのコントラクトアドレスとなります</translation>
@@ -837,8 +834,8 @@
 <translation id="665660671251623018">チェーンの通貨の小数点桁数</translation>
 <translation id="182619028057179895">形式が無効です。通貨単位は正の数にしてください</translation>
 <translation id="2978054488731497946">通貨の小数点桁数を入力</translation>
-<translation id="3047726704186619366">アイコンURL</translation>
-<translation id="2487558607408469181">ブロックエクスプローラーURL</translation>
+<translation id="7642841516562576649">アイコンURL</translation>
+<translation id="4693057234255364395">ブロックエクスプローラーURL</translation>
 <translation id="7059127752542505809">URLを入力</translation>
 <translation id="2156993118928861787">アドレスが無効です。</translation>
 <translation id="6889920539620318793">アクティブに設定</translation>
@@ -859,4 +856,14 @@
 <translation id="7033470144757208254">BraveはDEXアグリゲーターとして0xを使用しています</translation>
 <translation id="7470079236088529568">取得済みのトークン合計</translation>
 <translation id="8845154268466251503">BAT</translation>
+<translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
+<translation id="7091885296442320770">Braveは非常に高速です</translation>
+<translation id="2171928016777725844">Braveをデフォルトのブラウザにしてください！</translation>
+<translation id="7136694880210472378">デフォルトに設定</translation>
+<translation id="8401711613788729448">あなたのプライバシーを保護するためにBraveですべてのリンクを開く</translation>
+<translation id="3184805785843994538">「Brave Shields」は、トラッカーと広告をブロックし、データ通信量を節約し、あなたが訪問するすべてのサイトで時間を節約します。</translation>
+<translation id="8722651357687610395">Braveをデフォルトに設定</translation>
+<translation id="4854035885012188958">従来のBrave暗号資産ウォレットから復元</translation>
+<translation id="3047726704186619366">アイコンURL</translation>
+<translation id="2487558607408469181">ブロックエクスプローラーURL</translation>
 </translationbundle>

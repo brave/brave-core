@@ -53,9 +53,9 @@
 <translation id="7142548388914389999">อนุญาตการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว (P3A)</translation>
 <translation id="5254037869598726291">ข้อมูล P3A ที่ไม่ระบุชื่อช่วยให้ Brave ประเมินการใช้งานโดยรวม และช่วยให้มั่นใจว่าเรากำลังปรับปรุงฟีเจอร์ยอดนิยม</translation>
 <translation id="933652931229970927">ส่งรายงานข้อขัดข้องโดยอัตโนมัติ</translation>
-<translation id="5987838417172370108">ช่วยปรับปรุงความเสถียรของผลิตภัณฑ์ Brave\u2019s โดยส่งรายงานการวินิจฉัยโดยอัตโนมัติเมื่อเบราว์เซอร์ Brave ขัดข้องหรือค้าง</translation>
+<translation id="5987838417172370108">ช่วยปรับปรุงความเสถียรของผลิตภัณฑ์ Brave โดยส่งรายงานการวินิจฉัยโดยอัตโนมัติเมื่อเบราว์เซอร์ Brave ขัดข้องหรือค้าง</translation>
 <translation id="7977176350719484850">ข้อมูลที่บันทึกไว้โดยประมาณ</translation>
-<translation id="9008534313521214777">เวลาที่ประหยัด\nโดยประมาณ</translation>
+<translation id="9008534313521214777">ประหยัดเวลาโดยประมาณ</translation>
 <translation id="6572660632052512096">โหมดเดสก์ท็อป</translation>
 <translation id="1340503115760585811">ใช้งานมุมมองเดสก์ท็อปเมื่อเปิดแท็บใหม่</translation>
 <translation id="7924540991929826186">ใช้เว็บไซต์เวอร์ชันอุปกรณ์มือถือเมื่อเปิดแท็บใหม่ (แนะนำ)</translation>
@@ -85,7 +85,7 @@
 <translation id="5808759341041733958">เลื่อกเอนจิ้นค้นหาเริ่มต้น</translation>
 <translation id="1331593888918588693">คุณสามารถเปลี่ยนการตั้งค่าในภายหลังได้เสมอในการตั้งค่าแอป</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="8537217141725709400">รับ <ph name="TOKEN"/>s</translation>
+<translation id="8537217141725709400">รับ <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="5870330605209713397">ด้วยการดูโฆษณาที่เคารพความเป็นส่วนตัวและสนับสนุนเว็บและครีเอเตอร์คนโปรดของคุณ</translation>
 <translation id="5302488867897327287">เมื่อแตะเริ่มต้นใช้ Brave Reward จะถือว่าคุณยอมรับใน</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">นี่เป็นโฆษณา Brave อันแรกของคุณ แตะเพื่อเรียนรู้เพิ่มเติม</translation>
 <translation id="2070991379950719711">เริ่มต้นใช้ Brave Reward</translation>
 <translation id="48520986898237073">ไปยังกระเป๋าเงิน</translation>
-<translation id="3570367516044491911">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
+<translation id="6800338374677644736">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="19715420010996093">เลือกเบราว์เซอร์ Brave แล้วแตะ 'เสมอ'</translation>
 <translation id="3546439402724649282">Brave ถูกตั้งเป็นเบราว์เซอร์เริ่มต้นของคุณอยู่แล้ว</translation>
 <translation id="8389661903259423907">คุณตั้งเบราว์เซอร์เริ่มต้นไปแล้ว คุณสามารถเปลี่ยนเบราว์เซอร์เริ่มต้นได้ในการตั้งค่าแอป</translation>
-<translation id="7091885296442320770">Brave รวดเร็วดุจสายฟ้า</translation>
-<translation id="2171928016777725844">ทำให้ Brave เป็นเบราว์เซอร์เริ่มต้น!</translation>
-<translation id="7136694880210472378">ทำให้เป็นค่าเริ่มต้น</translation>
-<translation id="4250680216510889253">ไม่มี</translation>
 <translation id="8826007068782654809">ขอบคุณ</translation>
 <translation id="6665366815203065060">คุณเพิ่งส่งทิปให้กับ:</translation>
 <translation id="5441565662498481293">คุณกำลังส่งทิปโดยอัตโนมัติไปยัง:</translation>
@@ -175,7 +171,7 @@
 <translation id="3692362746128814480">คุณได้กำหนด <ph name="BAT_VALUE"/> BAT ให้กับผู้สร้างที่ยังไม่ได้
 ลงทะเบียนเพื่อรับการสนับสนุน เบราว์เซอร์ของคุณจะพยายามที่จะส่งการสนับสนุนให้ต่อไป
 จนกว่าผู้สร้างจะยืนยันตัวตน หรือจนเมื่อผ่านไปครบ 90 วัน</translation>
-<translation id="3101693828171454453"><ph name="TOKEN"/>s มีไม่เพียงพอ</translation>
+<translation id="3101693828171454453"><ph name="TOKEN"/> มีไม่เพียงพอ</translation>
 <translation id="6940273954212603510">โปรด</translation>
 <translation id="1036277985068412734">เพิ่มเงินทุน</translation>
 <translation id="3492491948683276944">ตั้งทิปรายเดือน</translation>
@@ -525,9 +521,9 @@
 <translation id="6478996494082389936">ระบบวิเคราะห์ผลิตภัณฑ์แบบส่วนตัว</translation>
 <translation id="5187052478998910855">อยากฟื้นวิชาเก็บ Reward รึเปล่า</translation>
 <translation id="8622329973403382303">ดูบทแนะนำฉบับย่อเพื่อเติมเกร็ดความรู้ว่าคุณต้องทำอย่างไรเพื่อให้ถูกจารึกเป็นดาวเด่นแห่งวงการ Reward</translation>
-<translation id="8401711613788729448">เปิดลิงก์ทั้งหมดด้วย Brave เพื่อปกป้องความเป็นส่วนตัวของคุณ</translation>
-<translation id="3184805785843994538">Brave Shields บล็อกเครื่องมือติดตามและโฆษณา บันทึกข้อมูล และช่วยให้คุณประหยัดเวลาในทุกเว็บไซต์ที่คุณเยี่ยมชม</translation>
-<translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
+<translation id="7625138338483121345">เปิดลิงก์ทั้งหมดด้วย Brave เพื่อปกป้องความเป็นส่วนตัวของคุณ</translation>
+<translation id="4511485286950743564">Brave Shields บล็อกเครื่องมือติดตามและโฆษณา บันทึกข้อมูล และช่วยให้คุณประหยัดเวลาในทุกเว็บไซต์ที่คุณเยี่ยมชม</translation>
+<translation id="9218430445555521422">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@
 <translation id="283071225285270357">ป้อนวลีกู้คืนของคุณ</translation>
 <translation id="3943857333388298514">วาง</translation>
 <translation id="3331452756822160641">รหัสผ่านใหม่</translation>
-<translation id="4854035885012188958">ฉันกำลังกู้คืนจากกระเป๋าเงินคริปโต Brave ที่มีอยู่เดิม</translation>
+<translation id="4359319875297001084">ฉันกำลังกู้คืนจากกระเป๋าเงินคริปโต Brave ที่มีอยู่เดิม</translation>
 <translation id="2339124864228588937">ยืนยันวลีกู้คืน</translation>
 <translation id="3747079125031086337">เลือกคำในกลุ่มคำสำหรับการกู้คืนของคุณตามลำดับที่ถูกต้อง</translation>
 <translation id="6518133107902771759">ยืนยัน</translation>
@@ -806,11 +802,12 @@
 <translation id="4351811224047421378">ความเที่ยงตรงของทศนิยม</translation>
 <translation id="8614026298974065517">ลบสินทรัพย์ที่กำหนดเอง</translation>
 <translation id="4378941981362528553">คุณต้องการลบโทเค็น <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) หรือไม่</translation>
+<translation id="4250680216510889253">ไม่มี</translation>
 <translation id="8971278306757462297">ที่อยู่สำหรับรับเหรียญคือที่อยู่ของคุณเอง</translation>
 <translation id="749944179568745958">ที่อยู่ ETH ไม่ถูกต้อง</translation>
 <translation id="3506416339268164412">ที่อยู่รับเหรียญคือที่อยู่สัญญาโทเค็น (Token Contract Address)</translation>
 <translation id="1543259266592091784">เพิ่มเงินทุน</translation>
-<translation id="3494964159182650590">สรุปรางวัล</translation>
+<translation id="3494964159182650590">รางวัลทั้งหมด</translation>
 <translation id="590733288489975971">Rewards จาก Ads</translation>
 <translation id="207268487070188114">ทิปครั้งเดียว</translation>
 <translation id="64394831139134288">กระเป๋าเงินของฉัน</translation>
@@ -826,7 +823,7 @@
 <translation id="1241283133946520352">เครือข่าย</translation>
 <translation id="1062463687579789365">การปรับแต่งเครือข่ายกระเป๋าเงิน</translation>
 <translation id="2512821599885971349">เพิ่มเครือข่าย</translation>
-<translation id="1330032157352961756">ID ของ Chain ใหม่</translation>
+<translation id="1330032157352961756">ID ของบล็อกเชนใหม่</translation>
 <translation id="8104880458203052748">รูปแบบไม่ถูกต้อง Chain ID ต้องเป็นจำนวนบวก</translation>
 <translation id="3423620355610881890">เลขทศนิยมฐานสิบ</translation>
 <translation id="726121047592132939">ชื่อ Chain ใหม่</translation>
@@ -839,8 +836,8 @@
 <translation id="665660671251623018">ทศนิยมสกุลเงินของ Chain</translation>
 <translation id="182619028057179895">รูปแบบไม่ถูกต้อง ทศนิยมสกุลเงินต้องเป็นจำนวนบวก</translation>
 <translation id="2978054488731497946">ใส่ทศนิยมสกุลเงิน</translation>
-<translation id="3047726704186619366">URL ไอคอน</translation>
-<translation id="2487558607408469181">URL ของ Block Explorer</translation>
+<translation id="7642841516562576649">URL ไอคอน</translation>
+<translation id="4693057234255364395">URL ของ Block Explorer</translation>
 <translation id="7059127752542505809">ป้อน URL</translation>
 <translation id="2156993118928861787">ที่อยู่ไม่ถูกต้อง</translation>
 <translation id="6889920539620318793">ตั้งค่าเป็นใช้งาน</translation>
@@ -861,4 +858,14 @@
 <translation id="7033470144757208254">Brave ใช้ 0x เป็นเครื่องมือค้นหาตลาด​แลกเปลี่ยน (DEX Aggregator)</translation>
 <translation id="7470079236088529568">สิทธิ์ที่ใช้ทั้งหมด</translation>
 <translation id="8845154268466251503">BAT</translation>
+<translation id="3570367516044491911">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
+<translation id="7091885296442320770">Brave รวดเร็วดุจสายฟ้า</translation>
+<translation id="2171928016777725844">ทำให้ Brave เป็นเบราว์เซอร์เริ่มต้น!</translation>
+<translation id="7136694880210472378">ทำให้เป็นค่าเริ่มต้น</translation>
+<translation id="8401711613788729448">เปิดลิงก์ทั้งหมดด้วย Brave เพื่อปกป้องความเป็นส่วนตัวของคุณ</translation>
+<translation id="3184805785843994538">Brave Shields บล็อกเครื่องมือติดตามและโฆษณา บันทึกข้อมูล และช่วยให้คุณประหยัดเวลาในทุกเว็บไซต์ที่คุณเยี่ยมชม</translation>
+<translation id="8722651357687610395">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
+<translation id="4854035885012188958">ฉันกำลังกู้คืนจากกระเป๋าเงินคริปโต Brave ที่มีอยู่เดิม</translation>
+<translation id="3047726704186619366">URL ไอคอน</translation>
+<translation id="2487558607408469181">URL ของ Block Explorer</translation>
 </translationbundle>

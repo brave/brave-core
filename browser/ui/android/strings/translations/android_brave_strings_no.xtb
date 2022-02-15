@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Dette er din første Brave-annonse. Trykk for å finne ut mer.</translation>
 <translation id="2070991379950719711">Earn &amp; Gi</translation>
 <translation id="48520986898237073">Fortsett til lommeboken</translation>
-<translation id="3570367516044491911">Angi som standardnettleser</translation>
+<translation id="6800338374677644736">Angi som standardnettleser</translation>
 <translation id="19715420010996093">Velg Brave Browser og trykk på 'Alltid'</translation>
 <translation id="3546439402724649282">Brave er allerede angitt som standardnettleser.</translation>
 <translation id="8389661903259423907">Du har allerede angitt en standardnettleser. Du kan endre standardnettleseren i appinnstillingene.</translation>
-<translation id="7091885296442320770">Brave er lynrask</translation>
-<translation id="2171928016777725844">Gjør Brave til standardnettleser!</translation>
-<translation id="7136694880210472378">Bruk som standard</translation>
-<translation id="4250680216510889253">Nei</translation>
 <translation id="8826007068782654809">Tusen takk</translation>
 <translation id="6665366815203065060">Du sendte nettopp tips til:</translation>
 <translation id="5441565662498481293">Du sender automatisk et tips til:</translation>
@@ -524,9 +520,9 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="6478996494082389936">privat produktanalyse.</translation>
 <translation id="5187052478998910855">Behov for å friske opp kunnskapene dine om Rewards?</translation>
 <translation id="8622329973403382303">Ta en rask omvisning og frisk opp kunnskapen om hvordan du går inn i historien som Rewards-rockestjerne!</translation>
-<translation id="8401711613788729448">Åpne alle lenker med Brave for å sikre personvernet ditt</translation>
-<translation id="3184805785843994538">Brave Shields blokkerer trackere og annonser, lagrer data og sparer deg for tid på hvert nettsted du besøker.</translation>
-<translation id="8722651357687610395">Sett Brave som standard</translation>
+<translation id="7625138338483121345">Åpne alle lenker med Brave for å sikre personvernet ditt</translation>
+<translation id="4511485286950743564">Brave Shields blokkerer trackere og annonser, lagrer data og sparer deg for tid på hvert nettsted du besøker.</translation>
+<translation id="9218430445555521422">Sett Brave som standard</translation>
 <translation id="3479552764303398839">Ikke nå</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -596,7 +592,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="283071225285270357">Angi gjenopprettingsfrasen</translation>
 <translation id="3943857333388298514">Lim inn</translation>
 <translation id="3331452756822160641">Nytt passord</translation>
-<translation id="4854035885012188958">Jeg gjenoppretter fra en utrangert Brave Crypto-lommebok.</translation>
+<translation id="4359319875297001084">Jeg gjenoppretter fra en utrangert Brave Crypto-lommebok.</translation>
 <translation id="2339124864228588937">Bekreft gjenopprettingsfrase</translation>
 <translation id="3747079125031086337">Velg ordene i sikkerhetsfrasen din i riktig rekkefølge.</translation>
 <translation id="6518133107902771759">Bekreft</translation>
@@ -805,6 +801,7 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="4351811224047421378">Presisjonsdesimaler</translation>
 <translation id="8614026298974065517">Fjern spesialtilpasset aktivum</translation>
 <translation id="4378941981362528553">Vil du fjerne <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)-tokenet?</translation>
+<translation id="4250680216510889253">Nei</translation>
 <translation id="8971278306757462297">Mottaksadressen er din egen adresse</translation>
 <translation id="749944179568745958">Ikke en gyldig ETH-adresse</translation>
 <translation id="3506416339268164412">Mottaksadressen er en tokens kontraktadresse</translation>
@@ -838,8 +835,8 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="665660671251623018">Kjedens valutadesimaler</translation>
 <translation id="182619028057179895">Ugyldig format. valutadesimalene er et positivt tall.</translation>
 <translation id="2978054488731497946">Skriv inn valutadesimaler</translation>
-<translation id="3047726704186619366">Ikonnettadresser</translation>
-<translation id="2487558607408469181">Blokker utforskernettadresser</translation>
+<translation id="7642841516562576649">Ikonnettadresser</translation>
+<translation id="4693057234255364395">Blokker utforskernettadresser</translation>
 <translation id="7059127752542505809">Skriv inn nettadresse</translation>
 <translation id="2156993118928861787">Ugyldig adresse</translation>
 <translation id="6889920539620318793">Sett som aktiv</translation>
@@ -860,4 +857,14 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="7033470144757208254">Brave bruker 0x som en DEX-aggregator.</translation>
 <translation id="7470079236088529568">Tildelinger hentet</translation>
 <translation id="8845154268466251503">BAT</translation>
+<translation id="3570367516044491911">Angi som standardnettleser</translation>
+<translation id="7091885296442320770">Brave er lynrask</translation>
+<translation id="2171928016777725844">Gjør Brave til standardnettleser!</translation>
+<translation id="7136694880210472378">Bruk som standard</translation>
+<translation id="8401711613788729448">Åpne alle lenker med Brave for å sikre personvernet ditt</translation>
+<translation id="3184805785843994538">Brave Shields blokkerer trackere og annonser, lagrer data og sparer deg for tid på hvert nettsted du besøker.</translation>
+<translation id="8722651357687610395">Sett Brave som standard</translation>
+<translation id="4854035885012188958">Jeg gjenoppretter fra en utrangert Brave Crypto-lommebok.</translation>
+<translation id="3047726704186619366">Ikonnettadresser</translation>
+<translation id="2487558607408469181">Blokker utforskernettadresser</translation>
 </translationbundle>

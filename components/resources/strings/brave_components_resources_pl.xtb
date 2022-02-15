@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Cofnij subskrypcję</translation>
 <translation id="1209739344687072997">Zgłoś uszkodzoną stronę</translation>
 <translation id="8510478288840333677">Poinformuj programistów Brave, że ta strona nie działa prawidłowo z tarczami Brave.</translation>
-<translation id="6013164422534859494">Uwaga: przesłany zostanie adres niniejszej witryny wraz z numerem wersji Brave i Twoim adresem IP (który nie zostanie zapisany).</translation>
+<translation id="4105411033440701818">Uwaga: przesłany zostanie adres niniejszej witryny wraz z numerem wersji Brave i Twoim adresem IP (który nie zostanie zapisany).</translation>
 <translation id="5299848999918506028">Dziękujemy!</translation>
 <translation id="76550953340008122">Dziękujemy za poinformowanie deweloperów Brave, że coś jest nie tak z tą witryną. Dołożymy wszelkich starań, aby ją naprawić!</translation>
 <translation id="2974339193389078578">Przeglądaj internet z Brave</translation>
@@ -255,7 +255,7 @@
 <translation id="9074594632540931067">Błąd: BAT niedostępny</translation>
 <translation id="413458922997276130">Twoje konto w portfelu Uphold jest obecnie zablokowane.</translation>
 <translation id="3579959767665130790">Błąd: konto zablokowane</translation>
-<translation id="6554308597291659562">Uphold jest wymagane w celu zebrania trochę większej ilości informacji o Tobie przed uruchomieniem pełnej funkcjonalności konta Uphold. Spróbuj ponownie po przesłaniu tych informacji w koncie Uphold.</translation>
+<translation id="6554308597291659562">Firma Uphold jest zobligowana do zebrania kilku dodatkowych informacji o Tobie przed uruchomieniem pełnej funkcjonalności konta Uphold. Spróbuj ponownie po przesłaniu tych informacji w koncie Uphold.</translation>
 <translation id="6996157559236886133">Błąd: ograniczona funkcjonalność konta Uphold</translation>
 <translation id="819370426249314592">Twoje konto w Uphold jest nadal w trakcie oczekiwania.</translation>
 <translation id="4530453398914580957">Błąd: Konto w trakcie oczekiwania</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Pokaż wszystko</translation>
 <translation id="3026978804849658576">Wyświetl zestawienie</translation>
 <translation id="8494748383523030337">Twoje saldo</translation>
-<translation id="3343165035032571678">Udało Ci się zarobić <ph name="AMOUNT"/> na oglądaniu Brave Private Ads!</translation>
-<translation id="6618415862402597254">Uzyskane dochody z reklam</translation>
-<translation id="5981646694027725752">Wypłać zyski</translation>
-<translation id="2556441076129789027">Wypłać tokeny</translation>
+<translation id="9013419433042554094">Wypłać tokeny</translation>
 <translation id="5544777623605368410">Zarabianie</translation>
 <translation id="3273637494083639780">Przetwarzanie tokenów, które zarobisz w tym miesiącu, rozpocznie się<ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Może się różnić w zależności od zmienności rynku.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Zarabiasz tokeny za oglądanie tego sponsorowanego obrazu.</translation>
 <translation id="5486114327664215175">Zarabiaj tokeny, oglądając ten obraz, i wspieraj twórców treści.</translation>
 <translation id="2940863921746574646">Saldo tokenów</translation>
-<translation id="1714906256929297600">Wykorzystaj promocyjne tokeny, zanim wygasną, aby wesprzeć twórców!</translation>
-<translation id="2426048501007152001">Dostępne tokeny</translation>
+<translation id="2221902203895354376">Dostępne tokeny</translation>
 <translation id="7701466644604753106">Włącz Speedreader</translation>
 <translation id="763042262431778831">Wyłącz Speedreader</translation>
 <translation id="8488282162676695335">Portfel Brave</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Dodaj zaznaczone konta</translation>
 <translation id="8554010658308662631">Wczytaj więcej</translation>
 <translation id="6998738230710304743">Trwa wczytywanie…</translation>
-<translation id="4970164249406565575">Wyszukaj konto 0x</translation>
+<translation id="5592304751234049046">Wyszukaj konto 0x</translation>
 <translation id="6151024411349343484">Jeżeli nie możesz odszukać konta, spróbuj zmienić ścieżkę HD (powyżej).</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Starsze (MEW/MyCrypto)</translation>
@@ -1096,7 +1092,7 @@
 <translation id="9065572743819293042">Niedawne transakcje</translation>
 <translation id="4235538284468006757">Dane transakcji</translation>
 <translation id="7488671812634887146">Przyspiesz</translation>
-<translation id="1702356231547761669">Informacje o transakcji</translation>
+<translation id="1702356231547761669">Hash transakcji</translation>
 <translation id="7982789257301363584">Sieć</translation>
 <translation id="8941851657764077659">Maksymalna opłata priorytetowa</translation>
 <translation id="8047527352810290817">Edytuj gaz</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Zezwalaj na skrypty śledzące i reklamy</translation>
 <translation id="6203697265754637264">Pliki cookie stron trzecich zablokowane</translation>
 <translation id="4627427111733173920">Pliki cookie zablokowane</translation>
-<translation id="7855168553463825937">Wszystkie pliki cookie zablokowane</translation>
+<translation id="3972324600756617403">Wszystkie pliki cookie zablokowane</translation>
 <translation id="8366221601425141146">Zablokowano funkcję odcisku palca</translation>
 <translation id="5582686930349810484">Zablokuj rozpoznawanie urządzenia (standardowe)</translation>
 <translation id="6696441392507885865">Zablokowane rozpoznawanie urządzenia (ścisłe, strony mogą nie działać)</translation>
@@ -1230,4 +1226,13 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
+<translation id="6013164422534859494">Uwaga: przesłany zostanie adres niniejszej witryny wraz z numerem wersji Brave i Twoim adresem IP (który nie zostanie zapisany).</translation>
+<translation id="3343165035032571678">Udało Ci się zarobić <ph name="AMOUNT"/> na oglądaniu Brave Private Ads!</translation>
+<translation id="6618415862402597254">Uzyskane dochody z reklam</translation>
+<translation id="5981646694027725752">Wypłać zyski</translation>
+<translation id="2556441076129789027">Wypłać tokeny</translation>
+<translation id="1714906256929297600">Wykorzystaj promocyjne tokeny, zanim wygasną, aby wesprzeć twórców!</translation>
+<translation id="2426048501007152001">Dostępne tokeny</translation>
+<translation id="4970164249406565575">Wyszukaj konto 0x</translation>
+<translation id="7855168553463825937">Wszystkie pliki cookie zablokowane</translation>
 </translationbundle>

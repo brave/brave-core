@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Este é o seu primeiro anúncio Brave. Toque para ficar a saber mais.</translation>
 <translation id="2070991379950719711">Ganhar &amp; Dar</translation>
 <translation id="48520986898237073">Continuar para a wallet (carteira)</translation>
-<translation id="3570367516044491911">Definir como navegador predefinido</translation>
+<translation id="6800338374677644736">Definir como navegador predefinido</translation>
 <translation id="19715420010996093">Selecione o Navegador Brave e clique em 'Sempre'</translation>
 <translation id="3546439402724649282">Brave já está definido como o seu navegador predefinido.</translation>
 <translation id="8389661903259423907">Já definiu um navegador padrão. Poderá alterar o navegador padrão nas definições da sua aplicação.</translation>
-<translation id="7091885296442320770">O Brave é rapidíssimo</translation>
-<translation id="2171928016777725844">Torne o Brave no seu navegador predefinido!</translation>
-<translation id="7136694880210472378">Predefinir</translation>
-<translation id="4250680216510889253">Não</translation>
 <translation id="8826007068782654809">Obrigado</translation>
 <translation id="6665366815203065060">Acabou de enviar uma doação para:</translation>
 <translation id="5441565662498481293">Está a contribuir automaticamente para:</translation>
@@ -525,9 +521,9 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="6478996494082389936">análises privadas de produtos.</translation>
 <translation id="5187052478998910855">Precisa ser atualizado quanto ao Rewards?</translation>
 <translation id="8622329973403382303">Proceda a uma viagem rápida para rever como funciona e entrar para a história como uma estrela rock do Rewards!</translation>
-<translation id="8401711613788729448">Abra todos os links com Brave para a proteção da sua privacidade</translation>
-<translation id="3184805785843994538">O Brave Shields bloqueia rastreadores &amp; anúncios, economiza dados e tempo em todos os sites por si visitados</translation>
-<translation id="8722651357687610395">Definir o Brave como padrão</translation>
+<translation id="7625138338483121345">Abra todos os links com Brave para a proteção da sua privacidade</translation>
+<translation id="4511485286950743564">O Brave Shields bloqueia rastreadores &amp; anúncios, economiza dados e tempo em todos os sites por si visitados</translation>
+<translation id="9218430445555521422">Definir o Brave como padrão</translation>
 <translation id="3479552764303398839">Agora não</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@ Tem a certeza de que pretende continuar?</translation>
 <translation id="283071225285270357">Introduza a sua frase de recuperação</translation>
 <translation id="3943857333388298514">Colar</translation>
 <translation id="3331452756822160641">Nova palavra-passe</translation>
-<translation id="4854035885012188958">Estou a restaurar dos legados das carteiras cripto Brave</translation>
+<translation id="4359319875297001084">Estou a restaurar dos legados das carteiras cripto Brave</translation>
 <translation id="2339124864228588937">Verificar frase de recuperação</translation>
 <translation id="3747079125031086337">Selecione as palavras na sua frase de recuperação na sua ordem correta.</translation>
 <translation id="6518133107902771759">Verificar</translation>
@@ -806,6 +802,7 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="4351811224047421378">Decimais de precisão</translation>
 <translation id="8614026298974065517">Remover ativo personalizado</translation>
 <translation id="4378941981362528553">Deseja remover o token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">Não</translation>
 <translation id="8971278306757462297">O endereço de receção é o seu próprio endereço</translation>
 <translation id="749944179568745958">Não é um endereço ETH válido</translation>
 <translation id="3506416339268164412">O endereço de receção é o endereço de contrato de um token</translation>
@@ -839,8 +836,8 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="665660671251623018">Decimais da moeda da cadeia</translation>
 <translation id="182619028057179895">Formato inválido, os decimais da moedas são um número positivo</translation>
 <translation id="2978054488731497946">Introduzir decimais da moeda</translation>
-<translation id="3047726704186619366">URLs de ícones</translation>
-<translation id="2487558607408469181">URLs do Block Explorer</translation>
+<translation id="7642841516562576649">URLs de ícones</translation>
+<translation id="4693057234255364395">URLs do Block Explorer</translation>
 <translation id="7059127752542505809">Introduzir o URL</translation>
 <translation id="2156993118928861787">Endereço inválido</translation>
 <translation id="6889920539620318793">Definido como ativo</translation>
@@ -861,4 +858,14 @@ Se não aceitar este pedido, a VPN não voltará a ligar e a sua ligação à In
 <translation id="7033470144757208254">O Brave utiliza a 0x como agregador DEX.</translation>
 <translation id="7470079236088529568">Total de doações reivindicadas</translation>
 <translation id="8845154268466251503">BAT</translation>
+<translation id="3570367516044491911">Definir como navegador predefinido</translation>
+<translation id="7091885296442320770">O Brave é rapidíssimo</translation>
+<translation id="2171928016777725844">Torne o Brave no seu navegador predefinido!</translation>
+<translation id="7136694880210472378">Predefinir</translation>
+<translation id="8401711613788729448">Abra todos os links com Brave para a proteção da sua privacidade</translation>
+<translation id="3184805785843994538">O Brave Shields bloqueia rastreadores &amp; anúncios, economiza dados e tempo em todos os sites por si visitados</translation>
+<translation id="8722651357687610395">Definir o Brave como padrão</translation>
+<translation id="4854035885012188958">Estou a restaurar dos legados das carteiras cripto Brave</translation>
+<translation id="3047726704186619366">URLs de ícones</translation>
+<translation id="2487558607408469181">URLs do Block Explorer</translation>
 </translationbundle>

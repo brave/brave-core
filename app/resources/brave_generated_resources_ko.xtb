@@ -114,15 +114,11 @@
 <translation id="1434416574322382019">Tor와 함께하는 새로운 비공개 윈도우</translation>
 <translation id="4703780849509456860">Tor와 함께 비공개 윈도우에서 링크 열기</translation>
 <translation id="3488584642074079080">Brave 비공개 창의 링크를 Tor로 열기</translation>
-<translation id="7475547933708221517">IPFS를 사용하여 로컬 파일 공유</translation>
-<translation id="2286177249736199435">IPFS를 사용하여 로컬 폴더 공유</translation>
 <translation id="4491895534716990473">선택한 텍스트를 IPFS로 가져오기</translation>
 <translation id="8883166554766780543">IPFS 스냅샷 링크 가져오기 및 복사</translation>
-<translation id="784573715436258741">IPFS를 사용하여 로컬 파일 공유</translation>
 <translation id="6313675821927505581">Tor를 이용한 새로운 비공개 윈도우</translation>
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
-<translation id="575838692088926391">IPFS를 사용하여 로컬 폴더 공유</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
 <translation id="4472575034687746823">시작하기</translation>
@@ -477,4 +473,8 @@
 <translation id="7815301689257843278">충돌 보고서를 자동 전송하여 Brave가 문제 재발을 방지할 수 있도록 하시겠습니까?</translation>
 <translation id="1068069727470515940"><ph name="SETTING_TEXT"/>은 언제든지 다시 변경할 수 있습니다.</translation>
 <translation id="8325036459845654666">이미 추가된 네트워크입니다.</translation>
+<translation id="7475547933708221517">IPFS를 사용하여 로컬 파일 공유</translation>
+<translation id="2286177249736199435">IPFS를 사용하여 로컬 폴더 공유</translation>
+<translation id="784573715436258741">IPFS를 사용하여 로컬 파일 공유</translation>
+<translation id="575838692088926391">IPFS를 사용하여 로컬 폴더 공유</translation>
 </translationbundle>

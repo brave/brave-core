@@ -114,15 +114,11 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1434416574322382019">Nova Janela Privada com Tor</translation>
 <translation id="4703780849509456860">Abrir Link em Janela Privada com Tor</translation>
 <translation id="3488584642074079080">Abrir o Link em Janela Privada da Brave com Tor</translation>
-<translation id="7475547933708221517">Compartilhar arquivo local usando o IPFS</translation>
-<translation id="2286177249736199435">Compartilhar pasta local usando o IPFS</translation>
 <translation id="4491895534716990473">Importar texto selecionado para o IPFS</translation>
 <translation id="8883166554766780543">Importar e copiar link para instantâneo do IPFS</translation>
-<translation id="784573715436258741">Compartilhar arquivo local usando o IPFS</translation>
 <translation id="6313675821927505581">Nova janela privada com o Tor</translation>
 <translation id="2638041073279639246">Abrir link em janela privada com o Tor</translation>
 <translation id="3425600262621021599">Abrir link em janela privada do Brave com o Tor</translation>
-<translation id="575838692088926391">Compartilhar pasta local usando o IPFS</translation>
 <translation id="2515126961943087659">Serviço de Anúncios Bat</translation>
 <translation id="7924918279836988121">Serviço Ledger do BAT</translation>
 <translation id="4472575034687746823">Primeiros passos</translation>
@@ -477,4 +473,8 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="7815301689257843278">Enviar relatórios de falhas automaticamente para que o Brave possa impedir que esse problema volte a ocorrer?</translation>
 <translation id="1068069727470515940">Você poderá alterar <ph name="SETTING_TEXT"/> novamente quando quiser.</translation>
 <translation id="8325036459845654666">Esta rede já foi adicionada.</translation>
+<translation id="7475547933708221517">Compartilhar arquivo local usando o IPFS</translation>
+<translation id="2286177249736199435">Compartilhar pasta local usando o IPFS</translation>
+<translation id="784573715436258741">Compartilhar arquivo local usando o IPFS</translation>
+<translation id="575838692088926391">Compartilhar pasta local usando o IPFS</translation>
 </translationbundle>

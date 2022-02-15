@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">구독 취소</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
-<translation id="6013164422534859494">참고: 이 사이트 주소는 Brave  (브레이브) 버전 번호 및 귀하의 IP 주소 (저장되지 않음)와 함께 제출됩니다.</translation>
+<translation id="4105411033440701818">참고: 이 사이트 주소는 Brave  (브레이브) 버전 번호 및 귀하의 IP 주소 (저장되지 않음)와 함께 제출됩니다.</translation>
 <translation id="5299848999918506028">감사합니다!</translation>
 <translation id="76550953340008122">이 사이트에 문제가 있다는 것을 Brave (브레이브) 개발자에게 알려 주셔서 감사합니다. 최선을 다해 문제를 해결하겠습니다!</translation>
 <translation id="2974339193389078578">새로운 인터넷 세상, Brave</translation>
@@ -255,7 +255,7 @@
 <translation id="9074594632540931067">오류: BAT 이용 불가</translation>
 <translation id="413458922997276130">귀하의 Uphold 계정이 현재 차단되어 있습니다.</translation>
 <translation id="3579959767665130790">오류: 차단된 계정</translation>
-<translation id="6554308597291659562">Uphold 계정의 기능을 온전히 활성화하려면 귀하에 대한 정보를 Uphold에서 몇 가지 더 수집해야 합니다. Uphold 계정에서 이 정보를 제출한 후 다시 시도하세ㅛ.</translation>
+<translation id="6554308597291659562">Uphold 계정의 기능을 온전히 활성화하려면 귀하에 대한 정보를 Uphold에서 몇 가지 더 수집해야 합니다. Uphold 계정에서 이 정보를 제출한 후 다시 시도하세요.</translation>
 <translation id="6996157559236886133">오류: Uphold 계정 기능 제한</translation>
 <translation id="819370426249314592">귀하의 Uphold 계정이 아직 보류 중입니다.</translation>
 <translation id="4530453398914580957">오류: 계정 보류 중</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">모두 보기</translation>
 <translation id="3026978804849658576">명세서 보기</translation>
 <translation id="8494748383523030337">귀하의 잔액</translation>
-<translation id="3343165035032571678">Brave Private Ads를 보고 <ph name="AMOUNT"/>가 적립되었습니다!</translation>
-<translation id="6618415862402597254">광고 수익 받음</translation>
-<translation id="5981646694027725752">적립 받기</translation>
-<translation id="2556441076129789027">토큰 받기</translation>
+<translation id="9013419433042554094">토큰 받기</translation>
 <translation id="5544777623605368410">수익</translation>
 <translation id="3273637494083639780">이번 달 적립된 토큰은 <ph name="DATE"/>에 처리 시작됩니다.</translation>
 <translation id="1029300693989825319">시장 변동성에 따라 달라질 수 있습니다.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">이 스폰서 이미지를 보며 토큰이 적립되고 있습니다.</translation>
 <translation id="5486114327664215175">이 이미지를 보고 토큰을 적립하여 콘텐츠 제작자를 후원할 수 있습니다.</translation>
 <translation id="2940863921746574646">토큰 잔액</translation>
-<translation id="1714906256929297600">프로모션 토큰이 만료되기 전에 사용하여 제작자에게 기부하세요!</translation>
-<translation id="2426048501007152001">사용 가능한 토큰</translation>
+<translation id="2221902203895354376">사용 가능한 토큰</translation>
 <translation id="7701466644604753106">스피드리더 켜기</translation>
 <translation id="763042262431778831">스피드리더 끄기</translation>
 <translation id="8488282162676695335">Brave 월렛</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">확인된 계정 추가</translation>
 <translation id="8554010658308662631">더 로드하기</translation>
 <translation id="6998738230710304743">더 로드 중...</translation>
-<translation id="4970164249406565575">계정 검색 0x</translation>
+<translation id="5592304751234049046">계정 검색 0x</translation>
 <translation id="6151024411349343484">찾고자 하는 계정을 찾을 수 없으면 HD 경로(위)를 전환해보세요.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">레거시(MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">모든 트래커 및 광고 허용</translation>
 <translation id="6203697265754637264">사이트 간 쿠키가 차단됨</translation>
 <translation id="4627427111733173920">쿠키 차단됨</translation>
-<translation id="7855168553463825937">모든 쿠키 차단됨</translation>
+<translation id="3972324600756617403">모든 쿠키 차단됨</translation>
 <translation id="8366221601425141146">지문 인식 차단됨</translation>
 <translation id="5582686930349810484">지문 채취 차단됨(표준)</translation>
 <translation id="6696441392507885865">핑거프린팅 차단됨(엄격, 사이트가 깨져 보일 수 있음)</translation>
@@ -1230,4 +1226,13 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="6013164422534859494">참고: 이 사이트 주소는 Brave  (브레이브) 버전 번호 및 귀하의 IP 주소 (저장되지 않음)와 함께 제출됩니다.</translation>
+<translation id="3343165035032571678">Brave Private Ads를 보고 <ph name="AMOUNT"/>가 적립되었습니다!</translation>
+<translation id="6618415862402597254">광고 수익 받음</translation>
+<translation id="5981646694027725752">적립 받기</translation>
+<translation id="2556441076129789027">토큰 받기</translation>
+<translation id="1714906256929297600">프로모션 토큰이 만료되기 전에 사용하여 제작자에게 기부하세요!</translation>
+<translation id="2426048501007152001">사용 가능한 토큰</translation>
+<translation id="4970164249406565575">계정 검색 0x</translation>
+<translation id="7855168553463825937">모든 쿠키 차단됨</translation>
 </translationbundle>

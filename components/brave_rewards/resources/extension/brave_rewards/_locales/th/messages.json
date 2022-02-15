@@ -140,7 +140,7 @@
     "description": ""
   },
   "rewardsPaymentCompleted": {
-    "message": "ยินดีด้วย! คุณได้รับรางวัล $month$ ของคุณแล้ว!",
+    "message": "ยินดีด้วย! รางวัลสำหรับเดือน $month$ ของคุณมาถึงแล้ว!",
     "description": "",
     "placeholders": {
       "month": {
@@ -149,7 +149,7 @@
     }
   },
   "rewardsPaymentPending": {
-    "message": "คุณจะได้รับรางวัลของ $month$ จำนวน $amount$ ของคุณใน $days$",
+    "message": "รางวัลสำหรับเดือน $month$ จำนวน $amount$ ของคุณจะมาถึงในอีก $days$",
     "description": "",
     "placeholders": {
       "amount": {
@@ -164,7 +164,7 @@
     }
   },
   "rewardsPaymentProcessing": {
-    "message": "รางวัลของ $month$ จำนวน $amount$ ของคุณใกล้เข้ามาแล้ว เตรียมตัวให้พร้อม!",
+    "message": "รางวัลสำหรับเดือน $month$ จำนวน $amount$ ของคุณใกล้เข้ามาแล้ว เตรียมรับรางวัลได้เลย!",
     "description": "",
     "placeholders": {
       "amount": {

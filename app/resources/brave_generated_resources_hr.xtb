@@ -114,15 +114,11 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="1434416574322382019">Novi privatni prozor s funkcijom Tor</translation>
 <translation id="4703780849509456860">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
 <translation id="3488584642074079080">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
-<translation id="7475547933708221517">Podijeli lokalnu datoteku putem sustava IPFS</translation>
-<translation id="2286177249736199435">Podijeli lokalnu mapu putem sustava IPFS</translation>
 <translation id="4491895534716990473">Uvezi odabrani tekst u sustav IPFS</translation>
 <translation id="8883166554766780543">Uvezi i kopiraj poveznicu za snimku sustava IPFS</translation>
-<translation id="784573715436258741">Podijeli lokalnu datoteku putem sustava IPFS</translation>
 <translation id="6313675821927505581">Novi privatni prozor s funkcijom Tor</translation>
 <translation id="2638041073279639246">Otvori poveznicu u privatnom prozoru s funkcijom Tor</translation>
 <translation id="3425600262621021599">Otvori poveznicu u privatnom prozoru preglednika Brave s funkcijom Tor</translation>
-<translation id="575838692088926391">Podijeli lokalnu mapu putem sustava IPFS</translation>
 <translation id="2515126961943087659">Usluga Bat oglašavanja</translation>
 <translation id="7924918279836988121">Usluga bat registra</translation>
 <translation id="4472575034687746823">Početak korištenja</translation>
@@ -477,4 +473,8 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine druš
 <translation id="7815301689257843278">Treba li poslati izvješća o padu tako da se preglednikom Brave može spriječiti ponovno pojavljivanje ovog problema?</translation>
 <translation id="1068069727470515940">Možete ponovno promijeniti <ph name="SETTING_TEXT"/> u bilo kojem trenutku.</translation>
 <translation id="8325036459845654666">Mreža već dodana.</translation>
+<translation id="7475547933708221517">Podijeli lokalnu datoteku putem sustava IPFS</translation>
+<translation id="2286177249736199435">Podijeli lokalnu mapu putem sustava IPFS</translation>
+<translation id="784573715436258741">Podijeli lokalnu datoteku putem sustava IPFS</translation>
+<translation id="575838692088926391">Podijeli lokalnu mapu putem sustava IPFS</translation>
 </translationbundle>
