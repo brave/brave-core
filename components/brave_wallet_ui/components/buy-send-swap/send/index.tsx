@@ -11,6 +11,8 @@ import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
 import { getLocale } from '../../../../common/locale'
 import { ErrorText, ResetButton } from '../shared-styles'
+import { toWei } from '../../../utils/format-balances'
+
 // Styled Components
 import {
   StyledWrapper
@@ -72,8 +74,8 @@ function Send (props: Props) {
     if (parseFloat(selectedAssetAmount) === 0) {
       return false
     }
-    return Number(selectedAssetAmount) > Number(selectedAssetBalance)
-  }, [selectedAssetBalance, selectedAssetAmount])
+    return Number(toWei(selectedAssetAmount, selectedAsset.decimals)) > Number(selectedAssetBalance)
+  }, [selectedAssetBalance, selectedAssetAmount, selectedAsset])
 
   return (
     <StyledWrapper>
@@ -103,24 +105,24 @@ function Send (props: Props) {
       {insuficientFundsError &&
         <ErrorText>{getLocale('braveWalletSwapInsufficientBalance')}</ErrorText>
       }
-        <NavButton
-          disabled={addressError !== '' ||
-            toAddressOrUrl === '' ||
-            parseFloat(selectedAssetAmount) === 0 ||
-            selectedAssetAmount === '' ||
-            insuficientFundsError ||
-            amountValidationError !== undefined
-          }
-          buttonType='primary'
-          text={getLocale('braveWalletSend')}
-          onSubmit={onSubmit}
-        />
+      <NavButton
+        disabled={addressError !== '' ||
+          toAddressOrUrl === '' ||
+          parseFloat(selectedAssetAmount) === 0 ||
+          selectedAssetAmount === '' ||
+          insuficientFundsError ||
+          amountValidationError !== undefined
+        }
+        buttonType='primary'
+        text={getLocale('braveWalletSend')}
+        onSubmit={onSubmit}
+      />
 
-        <ResetButton
-          onClick={onReset}
-        >
-          {getLocale('braveWalletReset')}
-        </ResetButton>
+      <ResetButton
+        onClick={onReset}
+      >
+        {getLocale('braveWalletReset')}
+      </ResetButton>
     </StyledWrapper>
   )
 }
