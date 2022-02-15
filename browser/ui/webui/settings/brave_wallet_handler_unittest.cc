@@ -165,7 +165,7 @@ TEST(TestBraveWalletHandler, RemoveEthereumChain) {
   args.Append(base::Value("id"));
   args.Append(base::Value("chain_id"));
 
-  handler.RemoveEthereumChain(args.GetList());
+  handler.RemoveEthereumChain(args.GetListDeprecated());
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg3()->is_bool());
   EXPECT_EQ(data.arg3()->GetBool(), true);
@@ -202,7 +202,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   handler.SetEthChainIdInterceptor(chain1.rpc_urls.front(), "0x999");
   base::RunLoop loop;
   handler.SetChainCallbackForTesting(loop.QuitClosure());
-  handler.AddEthereumChain(args.GetList());
+  handler.AddEthereumChain(args.GetListDeprecated());
   loop.Run();
   {
     std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
@@ -215,7 +215,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
       handler.prefs()->GetDictionary(kBraveWalletUserAssets);
   const base::Value* list = assets_pref->FindKey("0x999");
   ASSERT_TRUE(list->is_list());
-  base::Value::ConstListView asset_list = list->GetList();
+  base::Value::ConstListView asset_list = list->GetListDeprecated();
   ASSERT_EQ(asset_list.size(), 1u);
 
   EXPECT_EQ(*asset_list[0].FindStringKey("contract_address"), "");
@@ -230,12 +230,12 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
   auto args2 = base::ListValue();
   args2.Append(base::Value("id"));
   args2.Append(base::Value(json_string));
-  handler.AddEthereumChain(args2.GetList());
+  handler.AddEthereumChain(args2.GetListDeprecated());
   const auto& data = *handler.web_ui()->call_data()[1];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
 
-  auto arg3_list = data.arg3()->GetList();
+  auto arg3_list = data.arg3()->GetListDeprecated();
   ASSERT_EQ(arg3_list.size(), 2UL);
   EXPECT_EQ(arg3_list[0].GetBool(), false);
   std::string error_message =
@@ -274,13 +274,13 @@ TEST(TestBraveWalletHandler, AddEthereumChainWrongNetwork) {
   handler.SetEthChainIdInterceptor(chain1.rpc_urls.front(), "0x11");
   base::RunLoop loop;
   handler.SetChainCallbackForTesting(loop.QuitClosure());
-  handler.AddEthereumChain(args.GetList());
+  handler.AddEthereumChain(args.GetListDeprecated());
   loop.Run();
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
 
-  auto arg3_list = data.arg3()->GetList();
+  auto arg3_list = data.arg3()->GetListDeprecated();
   ASSERT_EQ(arg3_list.size(), 2UL);
   EXPECT_EQ(arg3_list[0].GetBool(), false);
   std::string error_message = l10n_util::GetStringFUTF8(
@@ -300,7 +300,7 @@ TEST(TestBraveWalletHandler, AddEthereumChainFail) {
   auto args = base::ListValue();
   args.Append(base::Value("id"));
   args.Append(base::Value(""));
-  handler.AddEthereumChain(args.GetList());
+  handler.AddEthereumChain(args.GetListDeprecated());
 
   {
     std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
@@ -311,12 +311,12 @@ TEST(TestBraveWalletHandler, AddEthereumChainFail) {
   auto args2 = base::ListValue();
   args2.Append(base::Value("id"));
   args2.Append(base::Value(R"({"chain_name\":"a","rpcUrl":["http://u.c"]})"));
-  handler.AddEthereumChain(args2.GetList());
+  handler.AddEthereumChain(args2.GetListDeprecated());
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
 
-  auto arg3_list = data.arg3()->GetList();
+  auto arg3_list = data.arg3()->GetListDeprecated();
   ASSERT_EQ(arg3_list.size(), 2UL);
   EXPECT_EQ(arg3_list[0].GetBool(), false);
   std::string error_message =
@@ -358,7 +358,7 @@ TEST(TestBraveWalletHandler, GetNetworkList) {
   }
   auto args = base::ListValue();
   args.Append(base::Value("id"));
-  handler.GetCustomNetworksList(args.GetList());
+  handler.GetCustomNetworksList(args.GetListDeprecated());
   const auto& data = *handler.web_ui()->call_data()[0];
   ASSERT_TRUE(data.arg1()->is_string());
   EXPECT_EQ(data.arg1()->GetString(), "id");
@@ -366,13 +366,13 @@ TEST(TestBraveWalletHandler, GetNetworkList) {
   absl::optional<base::Value> expected_list =
       base::JSONReader::Read(data.arg3()->GetString());
   ASSERT_TRUE(expected_list);
-  auto expected_chain1 =
-      brave_wallet::ValueToEthNetworkInfo(expected_list.value().GetList()[0]);
+  auto expected_chain1 = brave_wallet::ValueToEthNetworkInfo(
+      expected_list.value().GetListDeprecated()[0]);
   ASSERT_TRUE(expected_chain1);
   EXPECT_EQ(*expected_chain1, chain1);
 
-  auto expected_chain2 =
-      brave_wallet::ValueToEthNetworkInfo(expected_list.value().GetList()[1]);
+  auto expected_chain2 = brave_wallet::ValueToEthNetworkInfo(
+      expected_list.value().GetListDeprecated()[1]);
   ASSERT_TRUE(expected_chain2);
   EXPECT_EQ(*expected_chain2, chain2);
 }
@@ -413,7 +413,7 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
     args.Append(base::Value("id"));
     args.Append(base::Value("chain_id2"));
 
-    handler.SetActiveNetwork(args.GetList());
+    handler.SetActiveNetwork(args.GetListDeprecated());
     const auto& data = *handler.web_ui()->call_data()[0];
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), true);
@@ -427,7 +427,7 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
     args.Append(base::Value("id"));
     args.Append(base::Value("unknown_chain_id"));
 
-    handler.SetActiveNetwork(args.GetList());
+    handler.SetActiveNetwork(args.GetListDeprecated());
     const auto& data = *handler.web_ui()->call_data()[1];
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), false);

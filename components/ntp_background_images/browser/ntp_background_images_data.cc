@@ -74,9 +74,9 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
   }
 
   if (auto* images = json_value->FindListKey(kImagesKey)) {
-    const int image_count = images->GetList().size();
+    const int image_count = images->GetListDeprecated().size();
     for (int i = 0; i < image_count; ++i) {
-      const auto& image = images->GetList()[i];
+      const auto& image = images->GetListDeprecated()[i];
       Background background;
       background.image_file =
           installed_dir.AppendASCII(*image.FindStringKey(kImageSourceKey));

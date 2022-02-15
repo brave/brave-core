@@ -42,7 +42,7 @@ ParseMappings(const base::StringPiece entities, bool discard_irrelevant) {
   }
 
   // Collect the mappings
-  for (auto& entity : document->GetList()) {
+  for (auto& entity : document->GetListDeprecated()) {
     const std::string* entity_name = entity.FindStringPath("name");
     if (!entity_name)
       continue;
@@ -54,7 +54,7 @@ ParseMappings(const base::StringPiece entities, bool discard_irrelevant) {
     if (!entity_domains)
       continue;
 
-    for (auto& entity_domain_it : entity_domains->GetList()) {
+    for (auto& entity_domain_it : entity_domains->GetListDeprecated()) {
       if (!entity_domain_it.is_string()) {
         continue;
       }

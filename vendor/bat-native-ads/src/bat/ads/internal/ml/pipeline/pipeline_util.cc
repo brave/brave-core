@@ -33,7 +33,8 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
   }
 
   absl::optional<TransformationVector> transformations = TransformationVector();
-  for (const base::Value& transformation : transformations_value->GetList()) {
+  for (const base::Value& transformation :
+       transformations_value->GetListDeprecated()) {
     const std::string* transformation_type =
         transformation.FindStringKey("transformation_type");
 
@@ -78,7 +79,7 @@ absl::optional<TransformationVector> ParsePipelineTransformations(
       }
 
       std::vector<int> ngram_range;
-      for (const base::Value& n : ngram_sizes->GetList()) {
+      for (const base::Value& n : ngram_sizes->GetListDeprecated()) {
         if (n.is_int()) {
           ngram_range.push_back(n.GetInt());
         } else {
@@ -119,7 +120,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
   }
 
   std::vector<std::string> classes;
-  for (const base::Value& class_name : specified_classes->GetList()) {
+  for (const base::Value& class_name : specified_classes->GetListDeprecated()) {
     if (!class_name.is_string()) {
       return absl::nullopt;
     }
@@ -144,7 +145,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
       return absl::nullopt;
     }
     std::vector<double> class_coef_weights;
-    for (const base::Value& weight : this_class->GetList()) {
+    for (const base::Value& weight : this_class->GetListDeprecated()) {
       if (weight.is_double() || weight.is_int()) {
         class_coef_weights.push_back(weight.GetDouble());
       } else {
@@ -160,7 +161,7 @@ absl::optional<model::Linear> ParsePipelineClassifier(
     return absl::nullopt;
   }
 
-  auto biases_list = biases->GetList();
+  auto biases_list = biases->GetListDeprecated();
   if (biases_list.size() != classes.size()) {
     return absl::nullopt;
   }

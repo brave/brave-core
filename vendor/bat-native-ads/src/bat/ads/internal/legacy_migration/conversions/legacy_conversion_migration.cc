@@ -74,7 +74,7 @@ absl::optional<ConversionQueueItemList> GetFromList(const base::Value* list) {
 
   ConversionQueueItemList conversion_queue_items;
 
-  for (const auto& value : list->GetList()) {
+  for (const auto& value : list->GetListDeprecated()) {
     if (!value.is_dict()) {
       return absl::nullopt;
     }

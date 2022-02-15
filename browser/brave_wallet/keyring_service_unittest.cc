@@ -1581,13 +1581,13 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
       KeyringService::GetPrefForKeyring(GetPrefs(), kImportedAccounts,
                                         mojom::kDefaultKeyringId);
   ASSERT_TRUE(imported_accounts_value);
-  EXPECT_EQ(imported_accounts_value->GetList()[0]
+  EXPECT_EQ(imported_accounts_value->GetListDeprecated()[0]
                 .FindKey(kAccountAddress)
                 ->GetString(),
             imported_accounts[0].address);
   // private key is encrypted
   const std::string encrypted_private_key =
-      imported_accounts_value->GetList()[0]
+      imported_accounts_value->GetListDeprecated()[0]
           .FindKey(kEncryptedPrivateKey)
           ->GetString();
   EXPECT_FALSE(encrypted_private_key.empty());
@@ -1657,7 +1657,7 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
                                         mojom::kDefaultKeyringId);
   ASSERT_TRUE(imported_accounts_value);
   const std::string encrypted_private_key =
-      imported_accounts_value->GetList()[0]
+      imported_accounts_value->GetListDeprecated()[0]
           .FindKey(kEncryptedPrivateKey)
           ->GetString();
   EXPECT_FALSE(encrypted_private_key.empty());

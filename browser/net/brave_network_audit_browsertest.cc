@@ -259,7 +259,7 @@ class BraveNetworkAuditTest : public InProcessBrowserTest {
     // Ensure it has an "events" property.
     base::Value* events = main->FindListPath("events");
     ASSERT_TRUE(events && events->is_list());
-    ASSERT_FALSE(events->GetList().empty());
+    ASSERT_FALSE(events->GetListDeprecated().empty());
 
     EXPECT_TRUE(PerformNetworkAuditProcess(events))
         << "network-audit FAILED. Import " << net_log_path_.AsUTF8Unsafe()

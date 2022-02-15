@@ -94,7 +94,7 @@ void CallMethodOfObject(blink::WebLocalFrame* web_frame,
   }
 
   std::vector<v8::Local<v8::Value>> args;
-  for (auto const& argument : arguments.GetList()) {
+  for (auto const& argument : arguments.GetListDeprecated()) {
     args.push_back(
         content::V8ValueConverter::Create()->ToV8Value(&argument, context));
   }

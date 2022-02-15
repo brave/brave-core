@@ -436,7 +436,7 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
   } else {
     DictionaryPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
     for (base::Value& custom_network :
-         update.Get()->FindKey(kEthereumPrefKey)->GetList()) {
+         update.Get()->FindKey(kEthereumPrefKey)->GetListDeprecated()) {
       if (!custom_network.is_dict())
         continue;
 

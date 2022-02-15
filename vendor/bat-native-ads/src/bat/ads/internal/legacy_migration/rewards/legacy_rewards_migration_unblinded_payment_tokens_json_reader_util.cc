@@ -64,7 +64,7 @@ GetUnblindedPaymentTokensFromList(const base::Value& value) {
 
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens;
 
-  for (const auto& unblinded_payment_token_value : value.GetList()) {
+  for (const auto& unblinded_payment_token_value : value.GetListDeprecated()) {
     if (!unblinded_payment_token_value.is_dict()) {
       return absl::nullopt;
     }

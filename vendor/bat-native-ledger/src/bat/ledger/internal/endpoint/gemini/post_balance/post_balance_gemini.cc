@@ -46,7 +46,7 @@ type::Result PostBalance::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  for (auto&& balance : balances->GetList()) {
+  for (auto&& balance : balances->GetListDeprecated()) {
     const auto* currency_code = balance.FindStringKey("currency");
     if (!currency_code || *currency_code != "BAT") {
       continue;

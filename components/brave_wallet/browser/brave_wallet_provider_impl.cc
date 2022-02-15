@@ -125,7 +125,7 @@ void BraveWalletProviderImpl::AddEthereumChain(const std::string& json_payload,
                             "", true);
     return;
   }
-  const auto list = params->GetList();
+  const auto list = params->GetListDeprecated();
   if (list.empty()) {
     formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInvalidParams,

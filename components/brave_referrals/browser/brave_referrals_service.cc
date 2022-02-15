@@ -179,7 +179,7 @@ bool BraveReferralsHeaders::GetMatchingReferralHeaders(
       LOG(WARNING) << "Failed to retrieve 'headers' key from referral headers";
       continue;
     }
-    for (const auto& domain_value : domains_list->GetList()) {
+    for (const auto& domain_value : domains_list->GetListDeprecated()) {
       URLPattern url_pattern(URLPattern::SCHEME_HTTPS |
                              URLPattern::SCHEME_HTTP);
       url_pattern.SetScheme("*");
