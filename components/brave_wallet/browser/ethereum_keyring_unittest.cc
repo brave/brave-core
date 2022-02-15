@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_wallet/browser/hd_keyring.h"
+#include "brave/components/brave_wallet/browser/ethereum_keyring.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
@@ -14,8 +15,8 @@
 
 namespace brave_wallet {
 
-TEST(HDKeyringUnitTest, ConstructRootHDKey) {
-  HDKeyring keyring;
+TEST(EthereumKeyringUnitTest, ConstructRootHDKey) {
+  EthereumKeyring keyring;
   std::vector<uint8_t> seed;
   EXPECT_TRUE(base::HexStringToBytes(
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
@@ -34,15 +35,15 @@ TEST(HDKeyringUnitTest, ConstructRootHDKey) {
             "ozqYKB8jHxmhe7bEqyBEdPNWyPgCm2aZfs9tbLVYujvL3");
 }
 
-TEST(HDKeyringUnitTest, Accounts) {
-  HDKeyring keyring;
+TEST(EthereumKeyringUnitTest, Accounts) {
+  EthereumKeyring keyring;
   std::vector<uint8_t> seed;
   EXPECT_TRUE(base::HexStringToBytes(
       "13ca6c28d26812f82db27908de0b0b7b18940cc4e9d96ebd7de190f706741489907ef65b"
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   keyring.ConstructRootHDKey(seed, "m/44'/60'/0'/0");
-  keyring.AddAccounts();
+  keyring.AddAccounts(1);
   EXPECT_EQ(keyring.GetAddress(0),
             "0x2166fB4e11D44100112B1124ac593081519cA1ec");
   keyring.AddAccounts(2);
@@ -77,14 +78,14 @@ TEST(HDKeyringUnitTest, Accounts) {
             "0x02e77f0e2fa06F95BDEa79Fad158477723145838");
 
   EXPECT_TRUE(keyring.GetAddress(4).empty());
-  HDKeyring keyring2;
+  EthereumKeyring keyring2;
   keyring2.ConstructRootHDKey(seed, "m|123|44444");
   EXPECT_TRUE(keyring2.GetAddress(0).empty());
 }
 
-TEST(HDKeyringUnitTest, SignTransaction) {
+TEST(EthereumKeyringUnitTest, SignTransaction) {
   // Specific signature check is in eth_transaction_unittest.cc
-  HDKeyring keyring;
+  EthereumKeyring keyring;
   EthTransaction tx = *EthTransaction::FromTxData(
       mojom::TxData::New("0x09", "0x4a817c800", "0x5208",
                          "0x3535353535353535353535353535353535353535",
@@ -98,12 +99,12 @@ TEST(HDKeyringUnitTest, SignTransaction) {
       "8f9e36c31dc46e81472b6a5e40a4487e725ace445b8203f243fb8958",
       &seed));
   keyring.ConstructRootHDKey(seed, "m/44'/60'/0'/0");
-  keyring.AddAccounts();
+  keyring.AddAccounts(1);
   keyring.SignTransaction(keyring.GetAddress(0), &tx, 0);
   EXPECT_TRUE(tx.IsSigned());
 }
 
-TEST(HDKeyringUnitTest, SignMessage) {
+TEST(EthereumKeyringUnitTest, SignMessage) {
   std::vector<uint8_t> private_key;
   EXPECT_TRUE(base::HexStringToBytes(
       "6969696969696969696969696969696969696969696969696969696969696969",
@@ -112,7 +113,7 @@ TEST(HDKeyringUnitTest, SignMessage) {
   std::unique_ptr<HDKey> key = std::make_unique<HDKey>();
   key->SetPrivateKey(private_key);
 
-  HDKeyring keyring;
+  EthereumKeyring keyring;
   keyring.accounts_.push_back(std::move(key));
   EXPECT_EQ(keyring.GetAddress(0),
             "0xbE93f9BacBcFFC8ee6663f2647917ed7A20a57BB");
@@ -156,7 +157,7 @@ TEST(HDKeyringUnitTest, SignMessage) {
             "bf3780d68ff28e72c0ccb4f515b3d527c585abf59bc03531f5047b0357ef3329");
 }
 
-TEST(HDKeyringUnitTest, ImportedAccounts) {
+TEST(EthereumKeyringUnitTest, ImportedAccounts) {
   const struct {
     const char* key;
     const char* address;
@@ -173,7 +174,7 @@ TEST(HDKeyringUnitTest, ImportedAccounts) {
       // Used for Sign Transaction
       {"8140CEA58E3BEBD6174DBC589A7F70E049556233D32E44969D62E51DD0D1189A",
        "0x2166fB4e11D44100112B1124ac593081519cA1ec"}};
-  HDKeyring keyring;
+  EthereumKeyring keyring;
   size_t private_keys_size = sizeof(private_keys) / sizeof(private_keys[0]);
   for (size_t i = 0; i < private_keys_size; ++i) {
     std::vector<uint8_t> private_key;

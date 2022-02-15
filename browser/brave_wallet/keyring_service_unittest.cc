@@ -750,7 +750,6 @@ TEST_F(KeyringServiceUnitTest, CreateDefaultKeyring) {
 
     HDKeyring* keyring =
         service.CreateKeyring(mojom::kDefaultKeyringId, "brave1");
-    EXPECT_EQ(keyring->type(), HDKeyring::Type::kDefault);
     keyring->AddAccounts(1);
     const std::string address1 = keyring->GetAddress(0);
     EXPECT_FALSE(address1.empty());

@@ -23,18 +23,15 @@ class EthTransaction;
 
 class HDKeyring {
  public:
-  enum Type { kDefault = 0, kLedger, kTrezor, kBitcoin, kFilecoin, kSolana };
-
   HDKeyring();
   virtual ~HDKeyring();
   HDKeyring(const HDKeyring&) = delete;
   HDKeyring& operator=(const HDKeyring&) = delete;
 
-  virtual Type type() const;
   virtual void ConstructRootHDKey(const std::vector<uint8_t>& seed,
                                   const std::string& hd_path);
 
-  virtual void AddAccounts(size_t number = 1);
+  virtual void AddAccounts(size_t number);
   // This will return vector of address of all accounts
   std::vector<std::string> GetAccounts() const;
   absl::optional<size_t> GetAccountIndex(const std::string& address) const;
@@ -52,30 +49,12 @@ class HDKeyring {
   // underlying hd key
   std::string GetEncodedPrivateKey(const std::string& address);
 
-  // TODO(darkdh): Abstract Transacation class
-  // eth_signTransaction
-  virtual void SignTransaction(const std::string& address,
-                               EthTransaction* tx,
-                               uint256_t chain_id);
-  // eth_sign
-  virtual std::vector<uint8_t> SignMessage(const std::string& address,
-                                           const std::vector<uint8_t>& message,
-                                           uint256_t chain_id,
-                                           bool is_eip712);
-  // for non-ETH keyring signing
-  virtual std::vector<uint8_t> SignMessage(const std::string& address,
-                                           const std::vector<uint8_t>& message);
-  // Obtains the address that signed the message
-  // message: The keccak256 hash of the message (33 bytes = 04 prefix + 32
-  // bytes)
-  // signature: The 64 byte signature + v parameter (0 chain id assumed)
-  static bool RecoverAddress(const std::vector<uint8_t>& message,
-                             const std::vector<uint8_t>& signature,
-                             std::string* address);
+  std::vector<uint8_t> SignMessage(const std::string& address,
+                                   const std::vector<uint8_t>& message);
 
  protected:
   // Bitcoin keyring can override this for different address calculation
-  virtual std::string GetAddressInternal(HDKeyBase* hd_key) const;
+  virtual std::string GetAddressInternal(HDKeyBase* hd_key) const = 0;
   bool AddImportedAddress(const std::string& address,
                           std::unique_ptr<HDKeyBase> hd_key);
   HDKeyBase* GetHDKeyFromAddress(const std::string& address);
@@ -87,8 +66,8 @@ class HDKeyring {
   base::flat_map<std::string, std::unique_ptr<HDKeyBase>> imported_accounts_;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(HDKeyringUnitTest, ConstructRootHDKey);
-  FRIEND_TEST_ALL_PREFIXES(HDKeyringUnitTest, SignMessage);
+  FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, ConstructRootHDKey);
+  FRIEND_TEST_ALL_PREFIXES(EthereumKeyringUnitTest, SignMessage);
   FRIEND_TEST_ALL_PREFIXES(SolanaKeyringUnitTest, ConstructRootHDKey);
 };
 

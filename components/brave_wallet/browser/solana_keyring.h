@@ -1,4 +1,4 @@
-/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -20,14 +20,9 @@ class SolanaKeyring : public HDKeyring {
   SolanaKeyring(const SolanaKeyring&) = delete;
   SolanaKeyring& operator=(const SolanaKeyring&) = delete;
 
-  Type type() const override;
   void ConstructRootHDKey(const std::vector<uint8_t>& seed,
                           const std::string& hd_path) override;
-  void AddAccounts(size_t number = 1) override;
-
-  std::vector<uint8_t> SignMessage(
-      const std::string& address,
-      const std::vector<uint8_t>& message) override;
+  void AddAccounts(size_t number) override;
 
   std::string ImportAccount(const std::vector<uint8_t>& keypair) override;
 

@@ -38,7 +38,7 @@ TEST(SolanaKeyringUnitTest, Accounts) {
       MnemonicToSeed(std::string(mnemonic), "");
   keyring.ConstructRootHDKey(*seed, "m/44'/501'");
 
-  keyring.AddAccounts();
+  keyring.AddAccounts(1);
   EXPECT_EQ(keyring.GetAddress(0),
             "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu");
   EXPECT_EQ(keyring.GetEncodedPrivateKey(
@@ -96,7 +96,7 @@ TEST(SolanaKeyringUnitTest, SignMessage) {
       MnemonicToSeed(std::string(mnemonic), "");
   keyring.ConstructRootHDKey(*seed, "m/44'/501'");
 
-  keyring.AddAccounts();
+  keyring.AddAccounts(1);
   EXPECT_EQ(keyring.GetAddress(0),
             "8J7fu34oNJSKXcauNQMXRdKAHY7zQ7rEaQng8xtQNpSu");
 

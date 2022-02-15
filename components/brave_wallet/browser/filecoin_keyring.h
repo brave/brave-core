@@ -25,8 +25,6 @@ class FilecoinKeyring : public HDKeyring {
   FilecoinKeyring(const FilecoinKeyring&) = delete;
   FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
 
-  Type type() const override;
-
   std::string ImportFilecoinSECP256K1Account(
       const std::vector<uint8_t>& input_key,
       const std::string& network);
@@ -35,10 +33,6 @@ class FilecoinKeyring : public HDKeyring {
   void ImportFilecoinAccount(const std::vector<uint8_t>& input_key,
                              const std::string& address);
   std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
-
-  std::vector<uint8_t> SignMessage(
-      const std::string& address,
-      const std::vector<uint8_t>& message) override;
 
  private:
   std::string CreateAddressWithProtocol(const std::vector<uint8_t>& payload,

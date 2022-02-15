@@ -161,6 +161,8 @@ source_set("solana_utils") {
 
 source_set("hd_keyring") {
   sources = [
+    "ethereum_keyring.cc",
+    "ethereum_keyring.h",
     "filecoin_keyring.cc",
     "filecoin_keyring.h",
     "hd_keyring.cc",
