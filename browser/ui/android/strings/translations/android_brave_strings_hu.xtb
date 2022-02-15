@@ -396,12 +396,12 @@ Biztosan végrehajtja a műveletet?</translation>
 <translation id="7427567994475794038">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi hirdetés és követő lett letiltva az elmúlt 3 órában.</translation>
 <translation id="2053891538879944400"><ph name="DATA"/> <ph name="DATA_TEXT"/> adatot spóroltál a Brave böngészővel.</translation>
 <translation id="8640064498452534195">Kapcsold be az adatvédelmi jelentéseket, hogy lásd mennyi adatot spóroltál.</translation>
-<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.&#128267;</translation>
+<translation id="2252497442547961651">A Brave böngésző átlagosan 40%-kal kevesebb akkumulátort használ.🔋</translation>
 <translation id="1945330434665345785">Az elmúlt héten <ph name="COUNT"/> követőt és reklámot blokkoltál a Brave böngészővel.</translation>
 <translation id="2883868922264431515">Szerezz tokeneket magánéletet tiszteletben tartó reklámok nézésével, és támogasd kedvenc weboldalaidat.</translation>
-<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.&#128293;</translation>
+<translation id="5678925890616256956">Remek! Blokkolt 250 követőt &amp; hirdetést a Brave böngészővel.🔥</translation>
 <translation id="9199047775708635708">Nagyszerű! Már 10MB-ot takarított meg a Brave böngészővel.</translation>
-<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.&#128168;&#128168;</translation>
+<translation id="1880168210969863408">Nagyszerű! 10 perc töltési időt spórolt meg a Brave böngészővel.💨💨</translation>
 <translation id="7408493389591475748">Az adatvédelmi jelentés megtekintéséhez kezdj el böngészni</translation>
 <translation id="9080777565335515917">Tedd a Brave-et alapértelmezett böngésződdé, hogy a böngészés privát és biztonságos legyen.</translation>
 <translation id="1390943217516275883">Engedélyezi, hogy a Brave megmutassa adatvédelmi statisztikáidat</translation>
@@ -841,4 +841,14 @@ Ha nem fogadja el ezt a kérelmet, a VPN nem kapcsolódik újra, és az internet
 <translation id="6889920539620318793">Beállítás aktívként</translation>
 <translation id="2653659639078652383">Elküldés</translation>
 <translation id="8853725596990766789">Összeg módosítása</translation>
+<translation id="3570367516044491911">Beállítás alapértelmezett böngészőként</translation>
+<translation id="7091885296442320770">A Brave villámgyors</translation>
+<translation id="2171928016777725844">Legyen a Brave az alapértelmezett böngésző!</translation>
+<translation id="7136694880210472378">Legyen alapértelmezett</translation>
+<translation id="8401711613788729448">Nyiss meg minden hivatkozást Brave-ben, hogy vigyázz az adataidra.</translation>
+<translation id="3184805785843994538">A Brave Shields blokkolja a követőket és reklámokat, menti az adatokat, és időt spórol neked minden felkeresett oldalon.</translation>
+<translation id="8722651357687610395">Tedd a Brave-et alapértelmezetté</translation>
+<translation id="4854035885012188958">Visszaállítás régebbi Brave kriptotárcából</translation>
+<translation id="3047726704186619366">Ikon-URL-ek</translation>
+<translation id="2487558607408469181">Block explorer URL-ek</translation>
 </translationbundle>

@@ -398,12 +398,12 @@ Are you sure you want to do this?</translation>
 <translation id="7427567994475794038">Turn on privacy reports to see how many trackers &amp; ads have been blocked in the past 3 hours.</translation>
 <translation id="2053891538879944400">You saved <ph name="DATA"/> <ph name="DATA_TEXT"/> data with Brave browser.</translation>
 <translation id="8640064498452534195">Turn on privacy reports to see how much data you've saved.</translation>
-<translation id="2252497442547961651">Brave browser uses 40% less battery on average.&#128267;</translation>
+<translation id="2252497442547961651">Brave browser uses 40% less battery on average.🔋</translation>
 <translation id="1945330434665345785">You blocked <ph name="COUNT"/> trackers &amp; ads with Brave browser last week.</translation>
 <translation id="2883868922264431515">Earn tokens by viewing privacy-respecting ads and support your favourite websites.</translation>
-<translation id="5678925890616256956">Nice! You've blocked 250 trackers &amp; ads with Brave browser.&#128293;</translation>
-<translation id="9199047775708635708">Nice! You've saved 10 MB with Brave browser.&#128267;</translation>
-<translation id="1880168210969863408">Nice! You've saved 10 mins of loading time with Brave browser.&#128168;&#128168;</translation>
+<translation id="5678925890616256956">Nice! You've blocked 250 trackers &amp; ads with Brave browser.🔥</translation>
+<translation id="9199047775708635708">Nice! You've saved 10 MB with Brave browser.🔋</translation>
+<translation id="1880168210969863408">Nice! You've saved 10 mins of loading time with Brave browser.💨💨</translation>
 <translation id="7408493389591475748">Start browsing to see privacy reporting</translation>
 <translation id="9080777565335515917">Set Brave as your default browser for private and secure browsing.</translation>
 <translation id="1390943217516275883">Allows Brave to show your privacy statistics</translation>
@@ -843,4 +843,14 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="6889920539620318793">Set as active</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="8853725596990766789">Change amount</translation>
+<translation id="3570367516044491911">Set as default browser</translation>
+<translation id="7091885296442320770">Brave is lightning fast</translation>
+<translation id="2171928016777725844">Make Brave your default browser!</translation>
+<translation id="7136694880210472378">Make default</translation>
+<translation id="8401711613788729448">Open all links with Brave to protect your privacy</translation>
+<translation id="3184805785843994538">Brave Shields blocks trackers &amp; ads, saves data and saves you time on every site you visit.</translation>
+<translation id="8722651357687610395">Set Brave as default</translation>
+<translation id="4854035885012188958">I'm restoring from legacy Brave Crypto Wallet</translation>
+<translation id="3047726704186619366">Icon URLs</translation>
+<translation id="2487558607408469181">Block explorer URLs</translation>
 </translationbundle>
