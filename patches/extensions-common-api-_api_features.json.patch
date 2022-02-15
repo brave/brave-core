@@ -1,5 +1,5 @@
 diff --git a/extensions/common/api/_api_features.json b/extensions/common/api/_api_features.json
-index 87381229e29c563673702e479b86b95d21c9c6f3..cd3b97108fa89f67f2a2e0a6ba4ff3394b9c279d 100644
+index dbd9ee97a605730da38ff528e8ae1e930bb04054..d7f126ce0b805c0d6ddcc9e8b512ace2357b03c1 100644
 --- a/extensions/common/api/_api_features.json
 +++ b/extensions/common/api/_api_features.json
 @@ -553,6 +553,7 @@
@@ -9,4 +9,4 @@ index 87381229e29c563673702e479b86b95d21c9c6f3..cd3b97108fa89f67f2a2e0a6ba4ff339
 +      ,"chrome://newtab/*"
      ]
    },{
-     "channel": "dev",
+     "channel": "stable",

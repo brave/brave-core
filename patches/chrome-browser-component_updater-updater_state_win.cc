@@ -1,7 +1,7 @@
-diff --git a/components/update_client/updater_state_win.cc b/components/update_client/updater_state_win.cc
-index 099bd0e326c49ce45322f96a14d70c5edf22aae3..528f038987599181c5f48ccd3eb002f924257ebd 100644
---- a/components/update_client/updater_state_win.cc
-+++ b/components/update_client/updater_state_win.cc
+diff --git a/chrome/browser/component_updater/updater_state_win.cc b/chrome/browser/component_updater/updater_state_win.cc
+index 8030caa0f8ca5a9e77fd982c4b01fac4b35cc9b3..72f36ff6fbb919d048256bdbe592bbad8093334b 100644
+--- a/chrome/browser/component_updater/updater_state_win.cc
++++ b/chrome/browser/component_updater/updater_state_win.cc
 @@ -24,20 +24,32 @@ namespace {
  
  // Google Update group policy settings.
