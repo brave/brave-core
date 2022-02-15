@@ -535,6 +535,15 @@ CHAR_LIMIT guidelines:
       <message name="IDS_AUTOFILL_PAYMENTS_AUTHENTICATOR_SELECTION_DIALOG_NEGATIVE_BUTTON_LABEL" desc="Negative button label for the dialog where the user selects an authenticator from a list of options.">
         Cancel
       </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_VIRTUAL_CARD_UNENROLL_DIALOG_TITLE" desc="Title for the dialog where the user confirms that they wish to unenroll a card from Virtual Cards.">
+        Remove your virtual card?
+      </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_VIRTUAL_CARD_UNENROLL_DIALOG_MESSAGE" desc="Message for the dialog where the user confirms that they wish to unenroll a card from Virtual Cards.">
+        You’ll no longer be able to use your virtual card with Brave Pay. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about virtual cards<ph name="END_LINK1">&lt;/link1&gt;</ph>
+      </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_VIRTUAL_CARD_UNENROLL_DIALOG_POSITIVE_BUTTON_LABEL" desc="Positive button label for the dialog where the user confirms that they wish to unenroll a card from Virtual Cards.">
+        Remove
+      </message>
 
        <!-- Payment Request section preview strings -->
        <message name="IDS_PAYMENT_REQUEST_PAYMENT_METHODS_PREVIEW" desc="This is a snippet of a payment method a user has saved to Brave, plus an indication of the number of additional payment methods the user has saved.         Its function is to show the user has payment methods that can be used to complete a payment, and thus doesn't have to type the entire payment method. [ICU Syntax]">
@@ -810,12 +819,6 @@ Touch &amp; hold any word to search. To refine your search, select more or fewer
       <message name="IDS_CONTEXTUAL_SEARCH_NO_THANKS_BUTTON" desc="A button to confirm and dismiss opt out promo">
         No thanks
       </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_HELP_BODY" desc="Some help text that is shown in the body of a paragraph. The text tells the user what gesture to use instead of a previous gesture in order to search.">
-        To search from this page, touch &amp; hold words instead of tapping them
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_HELP_HEADER" desc="Summary help text that is shown at the top of a paragraph. The text tells the user what gesture to use in order to search.">
-        Touch &amp; hold for more relevant info
-      </message>
       <message name="IDS_CONTEXTUAL_SEARCH_DEFAULT_CAPTION" desc="Summary help text that is shown as a second line in the Contextual Search peeking bottom sheet telling the user that they can tap the text in order to open the sheet and see search results there.">
         Tap to see search results
       </message>
@@ -934,16 +937,54 @@ Privacy Sandbox trials are still in active development and are available in sele
         Your interests as estimated by Brave
       </message>
       <message name="IDS_PRIVACY_SANDBOX_TOPIC_EMPTY_STATE" desc="Summary shown when no interests for ad personlization are available." translateable="false">
-        A list of interests will appear here as you browse the web.
+        A list of interests will appear here as you browse the web
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_REMOVED_TOPICS_EMPTY_STATE" desc="Summary shown when no interests for ad personlization are available." translateable="false">
+        Interest you removed will appear here
       </message>
       <message name="IDS_PRIVACY_SANDBOX_FLEDGE_INTERESTS_CATEGORY" desc="Title of a section of the settings page to configure ad personalization." translateable="false">
         Sites you visit that define your interests
       </message>
        <message name="IDS_PRIVACY_SANDBOX_FLEDGE_UNDER_DEVELOPMENT_NOTICE" desc="Text to explain that a feature for ad personalization is not implemented yet." translateable="false">
-        This feature is currently under development.
+        This feature is currently under development
       </message>
       <message name="IDS_PRIVACY_SANDBOX_DESCRIPTION_PLACEHOLDER" desc="This is only used until final strings are approved and should never be translated." translateable="false">
         Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+      </message>
+
+      <!-- Privacy Sandbox dialog. The strings are preliminary. -->
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_NO_BUTTON" desc="Button to decline enabling Privacy Sandbox features." translateable="false">
+        No thanks
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_YES_BUTTON" desc="Button to accept enabling Privacy Sandbox features." translateable="false">
+        I’m in
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_ACKNOWLEDGE_BUTTON" desc="Button to acknowledge the notice about Privacy Sandbox features." translateable="false">
+        Got it
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_DIALOG_SETTINGS_BUTTON" desc="Button to go to Privacy Sandbox settings." translateable="false">
+        Settings
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_TITLE" desc="Title for the Privacy Sandbox consent dialog." translateable="false">
+        Help us build a more private web
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_SUBTITLE" desc="Subtitle for the Privacy Sandbox consent dialog." translateable="false">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_HEADING_ONE" desc="First heading for the Privacy Sandbox consent dialog text." translateable="false">
+        Lorem ipsum dolor sit
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DESCRIPTION_ONE" desc="First paragraph for the Privacy Sandbox consent dialog text." translateable="false">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_HEADING_TWO" desc="Second heading for the Privacy Sandbox consent dialog text." translateable="false">
+        Lorem ipsum dolor sit
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DESCRIPTION_TWO" desc="Second paragraph for the Privacy Sandbox consent dialog text." translateable="false">
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_TITLE" desc="Title for the Privacy Sandbox notice dialog." translateable="false">
+        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your data
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -3163,7 +3204,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <!-- Feature notification guide -->
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_TITLE" desc="Notification title text educating user about tips and tricks in chrome.">
-        Brave tips:
+        Brave tips
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_DEFAULT_BROWSER" desc="Notification body text educating user about setting chrome as default browser.">
         Learn how to set chrome as your default
@@ -3854,23 +3895,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_CONTEXTUAL_SEARCH_QUICK_ACTION_CAPTION_GENERIC_WEBSITE" desc="Caption displayed in the Contextual Search bar prompting the user to navigate to a web page.">
         Go to page
       </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_ENABLE" desc="An in-product-help message for the Touch to Search feature on Brave Android. The message encourages users to let Brave Search servers have access to the page content to get better translations.">
-        To get better translations, let Brave Search use the current page
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_ENTITY" desc="An in-product-help message for the Tap to Search feature on Brave Android. The message encourages users to open a panel that contains search results for the word or phrase they tapped on.">
-        See instant search results in this panel
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_SEARCH_RESULT" desc="An in-product-help message for the Tap to Search feature. It encourages users to open the Tap to Search panel to see search results for a word or phrase they have tapped.">
-        Tap a word to search instantly or see related actions
-      </message>
       <message name="IDS_CONTEXTUAL_SEARCH_IPH_TAP" desc="An in-product-help message for encouraging users to tap instead of long pressing to trigger the Tap to Search feature.">
         You can also search with a quick tap on a word
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_TOUCH_AND_HOLD" desc="An in-product-help message for encouraging users to use a touch and hold gesture to trigger the Touch to Search feature.">
-        To search, touch &amp; hold a word
-      </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_IPH_TOUCH_AND_HOLD_ENGAGED" desc="An in-product-help message for encouraging engaged users to use a touch and hold gesture to trigger the Touch to Search feature.">
-        To search, touch &amp; hold a word instead of tapping it
       </message>
 
       <!-- Web apps -->
@@ -5106,6 +5132,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Creating GIF <ph name="PERCENT">%1$d<ex>13</ex></ph>%%
       </message>
 
+      <message name="IDS_LIGHTWEIGHT_REACTIONS_CREATING_GIF_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="The accessibility text to read when GIF creation begins.">
+        Creating GIF
+      </message>
+
       <message name="IDS_LIGHTWEIGHT_REACTIONS_TOOLBAR_ANNOUNCEMENT" is_accessibility_with_no_ui="true" desc="The accessibility text to read when the lightweight reactions toolbar is selected. The user can then select a reaction from the toolbar to place on the screen.">
         Choose an emotion
       </message>
@@ -5329,17 +5359,17 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- WebID Account Selection strings -->
-      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_SINGLE" desc="Header for Account Selection sheet where the user only has a single account to sign up with." translateable="false">
-        Sign in to <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph>
+      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_AUTO" desc="Header for sign in sheet. Sheet is shown to inform user of sign in. Sign in occurs automatically. (User can cancel)." translateable="false">
+        Signing in to <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_URL">%2$s<ex>idp.com</ex></ph>
       </message>
-      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE" desc="Header for Account Selection sheet where the user can pick an account to sign up with." translateable="false">
-        Choose an account for <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph>
+      <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to prompt user for sign in consent." translateable="false">
+        Sign in to <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_URL">%2$s<ex>idp.com</ex></ph>
       </message>
-      <message name="IDS_ACCOUNT_SELECTION_SHEET_IDP_SUBHEADER" desc="Sub-heading for Account Selection sheet where user can pick an account to sign up with." translateable="false">
-        with <ph name="IDENTITY_PROVIDER_URL">%1$s<ex>idp.com</ex></ph>
+      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_LINKS" desc="The consent text shown to the user before sign up." translateable="false">
+          To continue, <ph name="PROVIDER_NAME">%1$s<ex>provider.example</ex></ph> will share your name, email, address, and profile picture with this site.
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up." translateable="false">
-        To continue, <ph name="PROVIDER_NAME">%1$s<ex>provider.example</ex></ph> will share your name, email, address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>terms of service<ph name="END_LINK2">&lt;/link2&gt;</ph>.
+        To continue, <ph name="PROVIDER_NAME">%1$s<ex>provider.example</ex></ph> will share your name, email, address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK2">&lt;/link_terms_of_service&gt;</ph>.
       </message>
 
       <message name="IDS_ACCOUNT_SELECTION_CONTINUE" desc="Title of the button that continues filling with the only available set of credentials." translateable="false">
@@ -5356,9 +5386,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCOUNT_SELECTION_SHEET_CLOSED" desc="Accessibility string read when the Account Selection bottom sheet showing a list of the user's accounts is closed." translateable="false">
         List of accounts to be selected is closed.
-      </message>
-      <message name="IDS_SIGN_IN_SHEET_TITLE" desc="Header for sign in sheet." translateable="false">
-        Sign in to <ph name="SITE_NAME">%1$s<ex>rp.example</ex></ph>
       </message>
       <message name="IDS_VERIFY_SHEET_TITLE" desc="Header for verify sheet." translateable="false">
         Verifying…
@@ -5431,6 +5458,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Profile Management strings -->
+      <message name="IDS_MANAGED_BROWSER" desc="The text label of the chrome://management page in the app menu">
+        Managed browser
+      </message>
       <message name="IDS_MANAGEMENT" desc="Title of the chrome://management page, which shows whether the account is managed.">
         Management
       </message>
