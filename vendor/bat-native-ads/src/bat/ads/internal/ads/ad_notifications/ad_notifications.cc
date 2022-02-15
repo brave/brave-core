@@ -227,7 +227,7 @@ std::deque<AdNotificationInfo> AdNotifications::GetNotificationsFromList(
 
   std::deque<AdNotificationInfo> notifications;
 
-  for (auto& item : list->GetList()) {
+  for (auto& item : list->GetListDeprecated()) {
     base::DictionaryValue* dictionary = nullptr;
     if (!item.GetAsDictionary(&dictionary)) {
       continue;

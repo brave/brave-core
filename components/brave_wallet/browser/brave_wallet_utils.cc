@@ -219,7 +219,7 @@ void GetAllCustomChains(PrefService* prefs,
       prefs->GetList(kBraveWalletCustomNetworks);
   if (!custom_networks_list)
     return;
-  for (const auto& it : custom_networks_list->GetList()) {
+  for (const auto& it : custom_networks_list->GetListDeprecated()) {
     absl::optional<mojom::EthereumChain> chain =
         brave_wallet::ValueToEthereumChain(it);
     if (chain)

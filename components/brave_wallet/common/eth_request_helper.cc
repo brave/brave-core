@@ -33,7 +33,7 @@ absl::optional<base::Value::ListStorage> GetParamsList(
   if (!params || !params->is_list())
     return absl::nullopt;
 
-  return std::move(*params).TakeList();
+  return std::move(*params).TakeListDeprecated();
 }
 
 absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {

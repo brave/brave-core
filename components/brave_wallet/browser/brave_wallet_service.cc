@@ -86,7 +86,8 @@ base::CheckedContiguousIterator<T> FindAsset(
   DCHECK(user_assets_list && user_assets_list->is_list());
 
   auto iter = std::find_if(
-      user_assets_list->GetList().begin(), user_assets_list->GetList().end(),
+      user_assets_list->GetListDeprecated().begin(),
+      user_assets_list->GetListDeprecated().end(),
       [&](const base::Value& value) {
         if (!value.is_dict()) {
           return false;
@@ -218,7 +219,7 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
   }
 
   std::vector<mojom::BlockchainTokenPtr> result;
-  for (const auto& token : tokens->GetList()) {
+  for (const auto& token : tokens->GetListDeprecated()) {
     mojom::BlockchainTokenPtr tokenPtr = ValueToBlockchainToken(token);
     if (tokenPtr)
       result.push_back(std::move(tokenPtr));
@@ -260,7 +261,7 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
 
   auto it = FindAsset(user_assets_list, checksum_address, token->token_id,
                       token->is_erc721);
-  if (it != user_assets_list->GetList().end())
+  if (it != user_assets_list->GetListDeprecated().end())
     return false;
 
   base::Value value(base::Value::Type::DICTIONARY);
@@ -349,7 +350,7 @@ bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
 
   auto it = FindAsset(user_assets_list, checksum_address, token->token_id,
                       token->is_erc721);
-  if (it == user_assets_list->GetList().end())
+  if (it == user_assets_list->GetListDeprecated().end())
     return false;
 
   it->SetKey("visible", base::Value(visible));
@@ -381,7 +382,7 @@ mojom::BlockchainTokenPtr BraveWalletService::GetUserAsset(
     return nullptr;
 
   auto it = FindAsset(user_assets_list, checksum_address, token_id, is_erc721);
-  if (it == user_assets_list->GetList().end())
+  if (it == user_assets_list->GetListDeprecated().end())
     return nullptr;
 
   return ValueToBlockchainToken(*it);
@@ -527,7 +528,7 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
 
   for (auto user_asset_list : user_assets_pref->DictItems()) {
     auto it = FindAsset(&user_asset_list.second, "eth", "", false);
-    if (it == user_asset_list.second.GetList().end())
+    if (it == user_asset_list.second.GetListDeprecated().end())
       continue;
 
     base::DictionaryValue* asset = nullptr;

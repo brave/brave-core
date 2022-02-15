@@ -258,14 +258,14 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
     return;
   }
 
-  if (signed_tokens_list->GetList().size() != 1) {
+  if (signed_tokens_list->GetListDeprecated().size() != 1) {
     BLOG(0, "Response has too many signedTokens");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
     return;
   }
 
   std::vector<SignedToken> signed_tokens;
-  for (const auto& value : signed_tokens_list->GetList()) {
+  for (const auto& value : signed_tokens_list->GetListDeprecated()) {
     DCHECK(value.is_string());
     const std::string signed_token_base64 = value.GetString();
     SignedToken signed_token = SignedToken::decode_base64(signed_token_base64);

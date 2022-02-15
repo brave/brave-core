@@ -97,11 +97,11 @@ type::Result GetMe::ParseBody(
   const auto* currencies = dictionary->FindListKey("currencies");
   if (currencies) {
     const std::string currency = "BAT";
-    auto bat_in_list = std::find(
-        currencies->GetList().begin(),
-        currencies->GetList().end(),
-        base::Value(currency));
-    user->bat_not_allowed = bat_in_list == currencies->GetList().end();
+    auto bat_in_list =
+        std::find(currencies->GetListDeprecated().begin(),
+                  currencies->GetListDeprecated().end(), base::Value(currency));
+    user->bat_not_allowed =
+        bat_in_list == currencies->GetListDeprecated().end();
   }
 
   const auto* status = dictionary->FindStringKey("status");

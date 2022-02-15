@@ -103,7 +103,7 @@ bool AntiTargeting::FromJson(const std::string& json) {
     }
 
     std::set<std::string> sites;
-    for (const auto& site : iter.value().GetList()) {
+    for (const auto& site : iter.value().GetListDeprecated()) {
       sites.insert(site.GetString());
     }
 

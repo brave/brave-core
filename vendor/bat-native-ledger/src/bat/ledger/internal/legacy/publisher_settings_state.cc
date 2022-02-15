@@ -126,7 +126,8 @@ bool PublisherSettingsState::FromDict(
   }
 
   const ReportBalanceState report_balance_state;
-  for (const auto& monthly_balance_value : monthly_balances_list->GetList()) {
+  for (const auto& monthly_balance_value :
+       monthly_balances_list->GetListDeprecated()) {
     if (!monthly_balance_value.is_dict()) {
       NOTREACHED();
       continue;
@@ -164,7 +165,7 @@ bool PublisherSettingsState::FromDict(
       dictionary->FindListKey(kProcessedPendingPublishersKey);
   if (processed_pending_publishers_list) {
     for (const auto& processed_pending_publisher_value :
-        processed_pending_publishers_list->GetList()) {
+         processed_pending_publishers_list->GetListDeprecated()) {
       if (!processed_pending_publisher_value.is_string()) {
         NOTREACHED();
         continue;

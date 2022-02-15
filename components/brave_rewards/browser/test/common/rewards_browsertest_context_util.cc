@@ -444,7 +444,7 @@ std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
       content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
 
   std::vector<double> result;
-  for (const auto& value : options.GetList()) {
+  for (const auto& value : options.GetListDeprecated()) {
     result.push_back(value.GetDouble());
   }
   return result;

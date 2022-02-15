@@ -393,7 +393,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
 
   const std::string* mnemonic = nullptr;
   absl::optional<int> number_of_accounts = absl::nullopt;
-  for (const auto& keyring : keyrings->GetList()) {
+  for (const auto& keyring : keyrings->GetListDeprecated()) {
     DCHECK(keyring.is_dict());
     const auto* type = keyring.FindStringKey("type");
     if (!type) {

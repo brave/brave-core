@@ -67,7 +67,7 @@ type::Result PostAccount::ParseBody(const std::string& body,
     return type::Result::LEDGER_ERROR;
   }
 
-  const base::Value::ConstListView user_list = users->GetList();
+  const base::Value::ConstListView user_list = users->GetListDeprecated();
   if (user_list.size() == 0) {
     BLOG(0, "No users associated with this token");
     return type::Result::LEDGER_ERROR;

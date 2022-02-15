@@ -61,7 +61,7 @@ BraveOmniboxClientImpl::BraveOmniboxClientImpl(
   // Record initial search count p3a value.
   const base::Value* search_p3a =
       profile_->GetPrefs()->GetList(kSearchCountPrefName);
-  if (search_p3a->GetList().size() == 0) {
+  if (search_p3a->GetListDeprecated().size() == 0) {
     RecordSearchEventP3A(0);
   }
 }

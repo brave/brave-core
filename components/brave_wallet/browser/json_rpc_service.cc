@@ -371,7 +371,7 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
     prefs_->SetBoolean(kSupportEip1559OnLocalhostChain, is_eip1559);
   } else {
     ListPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
-    for (base::Value& custom_network : update.Get()->GetList()) {
+    for (base::Value& custom_network : update.Get()->GetListDeprecated()) {
       if (!custom_network.is_dict())
         continue;
 

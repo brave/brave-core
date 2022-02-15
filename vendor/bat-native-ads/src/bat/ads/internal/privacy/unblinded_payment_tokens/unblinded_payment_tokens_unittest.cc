@@ -83,13 +83,14 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsList) {
   const base::Value& list = get_unblinded_payment_tokens()->GetTokensAsList();
 
   // Assert
-  base::ListValue list_values(list.GetList());
+  base::ListValue list_values(list.GetListDeprecated());
 
   const UnblindedPaymentTokenList& unblinded_payment_tokens =
       get_unblinded_payment_tokens()->GetAllTokens();
-  EXPECT_EQ(list_values.GetList().size(), unblinded_payment_tokens.size());
+  EXPECT_EQ(list_values.GetListDeprecated().size(),
+            unblinded_payment_tokens.size());
 
-  for (auto& value : list_values.GetList()) {
+  for (auto& value : list_values.GetListDeprecated()) {
     base::DictionaryValue* dictionary = nullptr;
     if (!value.GetAsDictionary(&dictionary)) {
       FAIL();
@@ -135,7 +136,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsListWithEmptyList) {
   const base::Value& list = get_unblinded_payment_tokens()->GetTokensAsList();
 
   // Assert
-  EXPECT_TRUE(list.GetList().empty());
+  EXPECT_TRUE(list.GetListDeprecated().empty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokens) {

@@ -299,8 +299,9 @@ PermissionExpirations::ParseExpiringPermissions(
     return expiring_permissions;
   }
 
-  expiring_permissions.reserve(expiring_permissions_val.GetList().size());
-  for (const auto& item : expiring_permissions_val.GetList()) {
+  expiring_permissions.reserve(
+      expiring_permissions_val.GetListDeprecated().size());
+  for (const auto& item : expiring_permissions_val.GetListDeprecated()) {
     if (!item.is_dict()) {
       continue;
     }

@@ -101,7 +101,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
   }
 
   std::vector<std::string> segments;
-  for (const auto& segment_value : list3->GetList()) {
+  for (const auto& segment_value : list3->GetListDeprecated()) {
     const std::string segment = segment_value.GetString();
     if (segment.empty()) {
       BLOG(1, "Failed to load from JSON, empty segment found");
@@ -133,7 +133,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
        it.Advance()) {
     ad_targeting::PurchaseIntentSegmentKeywordInfo info;
     info.keywords = it.key();
-    for (const auto& segment_ix : it.value().GetList()) {
+    for (const auto& segment_ix : it.value().GetListDeprecated()) {
       if (static_cast<size_t>(segment_ix.GetInt()) >= segments.size()) {
         BLOG(1, "Failed to load from JSON, segment keywords are ill-formed");
         return false;
@@ -188,7 +188,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
   }
 
   // For each set of sites and segments
-  for (auto& set : list1->GetList()) {
+  for (auto& set : list1->GetListDeprecated()) {
     if (!set.is_dict()) {
       BLOG(1, "Failed to load from JSON, site set not of type dict");
       return false;
@@ -203,7 +203,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
     }
 
     std::vector<std::string> site_segments;
-    for (auto& seg : seg_list->GetList()) {
+    for (auto& seg : seg_list->GetListDeprecated()) {
       site_segments.push_back(segments.at(seg.GetInt()));
     }
 
@@ -215,7 +215,7 @@ bool PurchaseIntent::FromJson(const std::string& json) {
       return false;
     }
 
-    for (const auto& site : site_list->GetList()) {
+    for (const auto& site : site_list->GetListDeprecated()) {
       ad_targeting::PurchaseIntentSiteInfo info;
       info.segments = site_segments;
       info.url_netloc = site.GetString();

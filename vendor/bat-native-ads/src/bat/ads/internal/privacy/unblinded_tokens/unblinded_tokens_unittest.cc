@@ -83,13 +83,13 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsList) {
   const base::Value& list = get_unblinded_tokens()->GetTokensAsList();
 
   // Assert
-  base::ListValue list_values(list.GetList());
+  base::ListValue list_values(list.GetListDeprecated());
 
   const UnblindedTokenList& unblinded_tokens =
       get_unblinded_tokens()->GetAllTokens();
-  EXPECT_EQ(list_values.GetList().size(), unblinded_tokens.size());
+  EXPECT_EQ(list_values.GetListDeprecated().size(), unblinded_tokens.size());
 
-  for (auto& value : list_values.GetList()) {
+  for (auto& value : list_values.GetListDeprecated()) {
     base::DictionaryValue* dictionary = nullptr;
     if (!value.GetAsDictionary(&dictionary)) {
       FAIL();
@@ -129,7 +129,7 @@ TEST_F(BatAdsUnblindedTokensTest, GetTokensAsListWithEmptyList) {
   const base::Value& list = get_unblinded_tokens()->GetTokensAsList();
 
   // Assert
-  EXPECT_TRUE(list.GetList().empty());
+  EXPECT_TRUE(list.GetListDeprecated().empty());
 }
 
 TEST_F(BatAdsUnblindedTokensTest, SetTokens) {

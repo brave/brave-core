@@ -90,7 +90,7 @@ bool GeminiJSONParser::GetAccountBalancesFromJSON(
     return false;
   }
 
-  for (const base::Value &val : pv_arr->GetList()) {
+  for (const base::Value& val : pv_arr->GetListDeprecated()) {
     const base::Value* currency = val.FindKey("currency");
     const base::Value* available = val.FindKey("available");
 
@@ -125,11 +125,12 @@ bool GeminiJSONParser::GetDepositInfoFromJSON(
   }
 
   const base::Value* pv_arr = records_v->FindKey("data");
-  if (!pv_arr || !pv_arr->is_list() || pv_arr->GetList().size() == 0) {
+  if (!pv_arr || !pv_arr->is_list() ||
+      pv_arr->GetListDeprecated().size() == 0) {
     return false;
   }
 
-  const base::Value &val = pv_arr->GetList()[0];
+  const base::Value& val = pv_arr->GetListDeprecated()[0];
   const base::Value* asset_address = val.FindKey("address");
 
   if (asset_address && asset_address->is_string()) {
