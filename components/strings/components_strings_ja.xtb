@@ -2510,7 +2510,7 @@
 <translation id="2418728264526266844">プライベートにブラウズするには、[プライベートウィンドウ] のボタンを押したあと、[Enter] を押して、新しいプライベートウィンドウを開きます</translation>
 <translation id="4920329334239571966">すべてのプライベートウィンドウを閉じる</translation>
 <translation id="7736544743887840328">現在開いているすべてのプライベートウィンドウを閉じる</translation>
-<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>。「タブ」「Enter」の順に押して、現在開いているすべてのプライベートウィンドウを閉じます</translation>
+<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>。「tab」「Enter」の順に押して、現在開いているすべてのプライベートウィンドウを閉じます</translation>
 <translation id="1723247378009489676">プライベートウィンドウを閉じるボタン。Enterを押して現在開いているすべてのプライベートウィンドウを閉じます</translation>
 <translation id="1090109565956608696">プライベートでは許可されていません</translation>
 <translation id="6934396344327597525">外部アプリケーションを経由したお支払いの処理に進むため、プライベートモードを解除します。続行しますか？</translation>

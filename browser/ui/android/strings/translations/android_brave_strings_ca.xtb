@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Aquest és el teu primer anunci de Brave. Toca per a més informació.</translation>
 <translation id="2070991379950719711">Comenceu a utilitzar Recompenses Brave</translation>
 <translation id="48520986898237073">Continueu cap a la cartera</translation>
-<translation id="3570367516044491911">Configura com a navegador predeterminat</translation>
+<translation id="6800338374677644736">Configura com a navegador predeterminat</translation>
 <translation id="19715420010996093">Selecciona el navegador Brave i clica 'Sempre'</translation>
 <translation id="3546439402724649282">Brave ja s'ha configurat com el teu navegador predeterminat.</translation>
 <translation id="8389661903259423907">Ja has configurat un navegador predeterminat. Pots modificar el navegador predeterminat a la configuració de l'aplicació.</translation>
-<translation id="7091885296442320770">Brave funciona a gran velocitat</translation>
-<translation id="2171928016777725844">Estableix Brave com a navegador predeterminat</translation>
-<translation id="7136694880210472378">Estableix com a predeterminat</translation>
-<translation id="4250680216510889253">No</translation>
 <translation id="8826007068782654809">Gràcies</translation>
 <translation id="6665366815203065060">Has enviat una propina a:</translation>
 <translation id="5441565662498481293">Envies una propina automàticament a:</translation>
@@ -526,9 +522,9 @@ Segur que vols continuar?</translation>
 <translation id="6478996494082389936">anàlisi de producte privat.</translation>
 <translation id="5187052478998910855">Necessiteu un recordatori sobre Rewards?</translation>
 <translation id="8622329973403382303">Feu un tour ràpid per a repassar com podeu passar a la història com una superestrella de Rewards!</translation>
-<translation id="8401711613788729448">Obriu tots els enllaços amb Brave per protegir la vostra privadesa</translation>
-<translation id="3184805785843994538">Brave Shields bloqueja els rastrejadors i anuncis, estalvia dades i també us estalvia temps a cada lloc que visiteu.</translation>
-<translation id="8722651357687610395">Estableix Brave com a predeterminat</translation>
+<translation id="7625138338483121345">Obriu tots els enllaços amb Brave per protegir la vostra privadesa</translation>
+<translation id="4511485286950743564">Brave Shields bloqueja els rastrejadors i anuncis, estalvia dades i també us estalvia temps a cada lloc que visiteu.</translation>
+<translation id="9218430445555521422">Estableix Brave com a predeterminat</translation>
 <translation id="3479552764303398839">Ara no</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -598,7 +594,7 @@ Segur que vols continuar?</translation>
 <translation id="283071225285270357">Introduïu la frase de recuperació</translation>
 <translation id="3943857333388298514">Enganxa</translation>
 <translation id="3331452756822160641">Contrasenya nova</translation>
-<translation id="4854035885012188958">Estic restablint del llegat Criptomoneder Brave</translation>
+<translation id="4359319875297001084">Estic restablint del llegat Criptomoneder Brave</translation>
 <translation id="2339124864228588937">Comproveu la frase de recuperació</translation>
 <translation id="3747079125031086337">Seleccioneu les paraules de la vostra frase de recuperació en l'ordre correcte.</translation>
 <translation id="6518133107902771759">Verifica</translation>
@@ -807,6 +803,7 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="4351811224047421378">Decimals de precisió</translation>
 <translation id="8614026298974065517">Elimina l'actiu personalitzat</translation>
 <translation id="4378941981362528553">Vols eliminar <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>) el testimoni?</translation>
+<translation id="4250680216510889253">No</translation>
 <translation id="8971278306757462297">L'adreça de recepció és la teva pròpia</translation>
 <translation id="749944179568745958">No és una adreça ETH vàlida</translation>
 <translation id="3506416339268164412">L'adreça de recepció és l'adreça de contracte d'un testimoni</translation>
@@ -840,8 +837,8 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="665660671251623018">Decimals de la moneda de la cadena</translation>
 <translation id="182619028057179895">Format no vàlid, els decimals de la moneda són un nombre positiu</translation>
 <translation id="2978054488731497946">Introdueix els decimals de la moneda</translation>
-<translation id="3047726704186619366">URL d'icona</translation>
-<translation id="2487558607408469181">Bloqueja URL de l'explorador</translation>
+<translation id="7642841516562576649">URL d'icona</translation>
+<translation id="4693057234255364395">Bloqueja URL de l'explorador</translation>
 <translation id="7059127752542505809">Introdueix URL</translation>
 <translation id="2156993118928861787">Adreça no vàlida</translation>
 <translation id="6889920539620318793">Estableix com a actiu</translation>

@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Opsig abonnement</translation>
 <translation id="1209739344687072997">Rapporter en side der ikke virker</translation>
 <translation id="8510478288840333677">Fortæl Braves udviklere at denne side ikke fungerer ordentligt med Shields</translation>
-<translation id="6013164422534859494">Note: Adressen på siden vil blive sendt sammen med din Brave-version og din IP-adresse (som ikke bliver gemt)</translation>
+<translation id="4105411033440701818">Note: Adressen på siden vil blive sendt sammen med din Brave-version og din IP-adresse (som ikke bliver gemt)</translation>
 <translation id="5299848999918506028">Tak!</translation>
 <translation id="76550953340008122">Tak for at du har fortalt Braves udviklere om at der er fejl på siden. Vi vil gøre vores bedste for at ordne fejlen!</translation>
 <translation id="2974339193389078578">Brave, det nye internet</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Næste bidragsdato</translation>
 <translation id="1397381065858030856">Sete sider</translation>
 <translation id="2365740070488517695">Donationer</translation>
-<translation id="5993195614988368256">Giv indholdsskabere direkte besked mens du browser ved at bruge Præmiepanelet eller den indbyggede tip-knap på forskellige sider, f.eks. Twitter, Reddit og GitHub.</translation>
+<translation id="5810507495128831593">Giv indholdsskabere direkte besked mens du browser ved at bruge Præmiepanelet eller den indbyggede tip-knap på forskellige sider, f.eks. Twitter, Reddit og GitHub.</translation>
 <translation id="5012991400231464322">Månedlige bidrag</translation>
 <translation id="2084351799622920487">Opret tilbagevendende månedlige bidrag, så du kan støtte sider kontinuerligt.</translation>
 <translation id="8150772404570015166">Ingen månedlige bidrag er oprettet endnu.</translation>
@@ -592,7 +592,7 @@
 <translation id="3699674790322420653">Gennemfør tegnebogsverificering</translation>
 <translation id="9200453331904391567">Afbryd forbindelsen fra Brave Belønninger</translation>
 <translation id="3656941797339037856">Knyt Rewards til Gemini!</translation>
-<translation id="31532096120351460">Handl 50+ crypto-valutaer, inklusive BAT, på Gemini. Det er en sikker platform til opbevaring af dine crypto-valutaer. Og du kan optjene renter i US, HK og SG.</translation>
+<translation id="31532096120351460">Handl 50+ crypto-valutaer, inklusive BAT, på Gemini. Det er en sikker platform til opbevaring af dine crypto-valutaer. Og du kan optjene renter i USA, Hong Kong og Singapore.</translation>
 <translation id="7404779623219601861">Indløs BAT for gavekort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du indløse din BAT for populære gavekort til mærkevarer.</translation>
 <translation id="6915065518766963119">* Kræver støtte-verificering.</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Se alle</translation>
 <translation id="3026978804849658576">Se opgørelse</translation>
 <translation id="8494748383523030337">Din saldo</translation>
-<translation id="3343165035032571678">Du tjente <ph name="AMOUNT"/> ved at se Brave Private Ads!</translation>
-<translation id="6618415862402597254">Reklameindtjening modtaget</translation>
-<translation id="5981646694027725752">Få indtjening</translation>
-<translation id="2556441076129789027">Få tokens</translation>
+<translation id="9013419433042554094">Få tokens</translation>
 <translation id="5544777623605368410">Indtjening</translation>
 <translation id="3273637494083639780">De tokens, du har tjent denne måned, vil blive behandlet den <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Dette kan variere baseret på markedsvolatilitet.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Du tjener tokens for at se dette sponsorerede billede.</translation>
 <translation id="5486114327664215175">Tjen tokens ved at se dette billede og støtte indholdsskabere.</translation>
 <translation id="2940863921746574646">Tokensaldo</translation>
-<translation id="1714906256929297600">Brug dine kampagnetokens til at bidrage til skabere, inden de udløber!</translation>
-<translation id="2426048501007152001">Tokens tilgængelige</translation>
+<translation id="2221902203895354376">Tokens tilgængelige</translation>
 <translation id="7701466644604753106">Tænd for speedreader</translation>
 <translation id="763042262431778831">SLUK for speedreader</translation>
 <translation id="8488282162676695335">Brave-wallet</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Tilføj markerede konti</translation>
 <translation id="8554010658308662631">Indlæs mere</translation>
 <translation id="6998738230710304743">Indlæser flere ...</translation>
-<translation id="4970164249406565575">Søg konto 0x</translation>
+<translation id="5592304751234049046">Søg konto 0x</translation>
 <translation id="6151024411349343484">Prøv at skifte HD path (ovenstående), hvis du ikke kan finde den konto, du leder efter.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -980,7 +976,7 @@
 <translation id="6018178824574796106">Kunne ikke tilføje tilpasset polet. Prøv igen.</translation>
 <translation id="547122651977318828">Token-id (kun for ERC721)</translation>
 <translation id="7544552854944350190">Token-id kræves</translation>
-<translation id="3842236145820483340">Coingecko-ID</translation>
+<translation id="3842236145820483340">CoinGecko-ID</translation>
 <translation id="2708402071160162126">ADVARSEL: Del aldrig din gendannelsessætning. Personer i besiddelse af sætningen kan tage dine aktiver permanent.</translation>
 <translation id="2902856457593699108">Vis nøgle</translation>
 <translation id="8033497299373164724">Skjul nøgle</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Tillad alle trackere og reklamer</translation>
 <translation id="6203697265754637264">Cross-site-cookies blokeret</translation>
 <translation id="4627427111733173920">Cookies blokeret</translation>
-<translation id="7855168553463825937">Alle cookies blokeret</translation>
+<translation id="3972324600756617403">Alle cookies blokeret</translation>
 <translation id="8366221601425141146">Fingeraftryk blokeret</translation>
 <translation id="5582686930349810484">Fingeraftryk er blokeret (standard)</translation>
 <translation id="6696441392507885865">Fingeraftryk blokeret (streng, kan ødelægge sider)</translation>

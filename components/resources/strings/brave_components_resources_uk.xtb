@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Скасувати підписку</translation>
 <translation id="1209739344687072997">Повідомити про зламаний сайт</translation>
 <translation id="8510478288840333677">Повідомте розробникам Brave, що цей сайт погано працює із Щитами:</translation>
-<translation id="6013164422534859494">Примітка: адресу цього сайту буде передано разом із версією вашого Brave та IP-адресою (котра не збережеться).</translation>
+<translation id="4105411033440701818">Примітка: адресу цього сайту буде передано разом із версією вашого Brave та IP-адресою (котра не збережеться).</translation>
 <translation id="5299848999918506028">Дякуємо!</translation>
 <translation id="76550953340008122">Дякуємо за повідомлення розробникам Brave щодо проблеми із цим сайтом. Ми постараємося її виправити!</translation>
 <translation id="2974339193389078578">Створімо новий Інтернет разом з Brave</translation>
@@ -196,7 +196,7 @@
 <translation id="2846354907189538">Дата наступного внеску</translation>
 <translation id="1397381065858030856">Переглянуті сайти</translation>
 <translation id="2365740070488517695">Чайові</translation>
-<translation id="5993195614988368256">Лишайте чайові творцям контенту безпосередньо під час перегляду за допомогою Панелі Нагород, або користуючись вбудованою кнопкою на різних сайтах, включно з Twitter, Reddit та GitHub.</translation>
+<translation id="5810507495128831593">Лишайте чайові творцям контенту безпосередньо під час перегляду за допомогою Панелі Нагород, або користуючись вбудованою кнопкою на різних сайтах, включно з Twitter, Reddit та GitHub.</translation>
 <translation id="5012991400231464322">Щомісячні внески</translation>
 <translation id="2084351799622920487">Налаштуйте періодичні щомісячні внески, щоб підтримувати сайти безперервно.</translation>
 <translation id="8150772404570015166">Жодних щомісячних внесків ще не заплановано.</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Переглянути все</translation>
 <translation id="3026978804849658576">Переглянути виписку</translation>
 <translation id="8494748383523030337">Ваш баланс</translation>
-<translation id="3343165035032571678">Ваші надходження від перегляду приватних реклам Brave становлять<ph name="AMOUNT"/>!</translation>
-<translation id="6618415862402597254">Отримані нарахування від реклами</translation>
-<translation id="5981646694027725752">Забрати нарахування</translation>
-<translation id="2556441076129789027">Забрати токени</translation>
+<translation id="9013419433042554094">Забрати токени</translation>
 <translation id="5544777623605368410">Нарахування</translation>
 <translation id="3273637494083639780">Обробка токенів, які було нараховано в цьому місяці, розпочнеться <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Це може залежати від коливань на ринку.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Вам нараховуються токени за перегляд цього спонсорованого зображення.</translation>
 <translation id="5486114327664215175">Отримуйте токени за перегляд цього зображення й підтримуйте авторів вмісту.</translation>
 <translation id="2940863921746574646">Залишок токенів</translation>
-<translation id="1714906256929297600">Використайте свої акційні токени, щоб зробити внесок на користь авторів до закінчення терміну їхньої дії!</translation>
-<translation id="2426048501007152001">Доступні токени</translation>
+<translation id="2221902203895354376">Доступні токени</translation>
 <translation id="7701466644604753106">УВІМКНУТИ Speedreader</translation>
 <translation id="763042262431778831">ВИМКНУТИ Speedreader</translation>
 <translation id="8488282162676695335">Гаманець Brave</translation>
@@ -877,8 +873,8 @@
 <translation id="5061574358754621254">Дані про ціни надано CoinGecko</translation>
 <translation id="1483493594462132177">Надіслати</translation>
 <translation id="538450413584738399">Своп</translation>
-<translation id="6295954645230084874">Підтримка покупки недоступна для <ph name="NETWORK"/></translation>
-<translation id="4171338820961522154">Підтримка свопу недоступна для <ph name="NETWORK"/></translation>
+<translation id="6295954645230084874">Покупки недоступні для <ph name="NETWORK"/></translation>
+<translation id="4171338820961522154">Своп недоступний для <ph name="NETWORK"/></translation>
 <translation id="1191686659164947414">До транзакції може застосовуватися фронтранінг</translation>
 <translation id="632241521608275119">Толерантність до прослизання</translation>
 <translation id="4500473291496079954">Спливає через</translation>
@@ -908,7 +904,7 @@
 <translation id="6901073872645365201">Паролі мають містити щонайменше 7 символів і принаймні одну цифру й один спеціальний символ.</translation>
 <translation id="6657585470893396449">Пароль</translation>
 <translation id="5486261815000869482">Підтвердити пароль</translation>
-<translation id="6138471905279127211">Критерії паролів не збігаються.</translation>
+<translation id="6138471905279127211">Пароль не відповідає критеріям.</translation>
 <translation id="467510802200863975">Паролі не збігаються</translation>
 <translation id="5168349973342709369">Уведіть пароль, щоб розблокувати гаманець</translation>
 <translation id="9111102763498581341">Розблокувати</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Додати перевірені облікові записи</translation>
 <translation id="8554010658308662631">Завантажити більше</translation>
 <translation id="6998738230710304743">Завантажуються додаткові дані…</translation>
-<translation id="4970164249406565575">Пошук облікового запису 0x</translation>
+<translation id="5592304751234049046">Пошук облікового запису 0x</translation>
 <translation id="6151024411349343484">Спробуйте змінити шлях до HD-гаманця (вище), якщо ви не можете знайти обліковий запис, який шукаєте.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Дозволити всі трекери й рекламу</translation>
 <translation id="6203697265754637264">Сторонні куки заблоковано</translation>
 <translation id="4627427111733173920">Куки заблоковано</translation>
-<translation id="7855168553463825937">Усі файли cookie заблоковано</translation>
+<translation id="3972324600756617403">Усі файли cookie заблоковано</translation>
 <translation id="8366221601425141146">Цифрові відбитки заблоковано</translation>
 <translation id="5582686930349810484">Цифрові відбитки заблоковано (стандартно)</translation>
 <translation id="6696441392507885865">Цифрові відбитки заблоковано (суворо, сайти можуть не працювати)</translation>

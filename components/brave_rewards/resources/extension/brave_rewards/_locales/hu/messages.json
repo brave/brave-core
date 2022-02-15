@@ -149,7 +149,7 @@
     }
   },
   "rewardsPaymentPending": {
-    "message": "$month$ havi, $amount$ értékű jutalmai $days$ napon belül érkeznek meg",
+    "message": "$month$ havi, $amount$ értékű jutalmai $days$ múlva vagy annál hamarabb érkeznek meg",
     "description": "",
     "placeholders": {
       "amount": {

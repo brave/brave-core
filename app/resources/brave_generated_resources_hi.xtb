@@ -15,12 +15,21 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
 <translation id="6786747875388722282">एक्सटेंशन</translation>
 <translation id="984275831282074731">भुगतान के तरीके</translation>
+<translation id="1990886731975529483">Widevine को इंस्टॉल करें और चलाएँ</translation>
 <translation id="8926389886865778422">दोबारा न पूछें</translation>
 <translation id="5249433283143453448">वाइडवाइन डिजिटल राइट्सस मैनेजमेंट (डीआरएम) के आंशिक प्रयोग से आप स्ट्रीम किये गए गोपनीय वीडियो के साथ और भी दूसरे कंटेंट देख सकते हैं.</translation>
 <translation id="6241402707160226266">Tor के साथ प्राइवेट विंडो</translation>
 <translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
 <translation id="1369311132025451972">.onion साइटों पर अपने आप रीडायरेक्ट करें</translation>
 <translation id="2843777623071353503">Brave उपलब्ध होने पर वेबसाइट की onion सेवा या Tor विंडो में .onion खोलेगा</translation>
+<translation id="4900351245762303149">Google Widevine को इंस्टॉल करें</translation>
+<translation id="2313383941300459392">Google Widevine को इनेबल करने के लिए ब्राउज़र को रीस्टार्ट करें</translation>
+<translation id="2200626478572277092">किसी वेबपेज पर मीडिया चलाने के लिए कभी-कभी Widevine की आवश्यकता होती है. यह Google सर्वर से लोड किया गया एक Google एक्सटेंशन है, जिसका Brave निरीक्षण नहीं कर सकता. इंस्टॉल करके, आप Google की उपयोग की शर्तों से सहमत होंगे.</translation>
+<translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>
+
+या बाद में <ph name="SETTINGS_EXTENIONS_LINK"/>पर बदलें.</translation>
+<translation id="6229752134959014186">Widevine के बारे में अधिक जानें</translation>
+<translation id="6061083111980694767"><ph name="SITE_NAME"/>आपसे अनुरोध करता है</translation>
 <translation id="410351446219883937">स्वतः प्ले</translation>
 <translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> पर हमेश स्वतः चालू का अनुमति दें</translation>
@@ -30,6 +39,7 @@
 <translation id="7017590444693657895">साइटों को एथेरियम प्रदाता API तक पहुँचने से रोकें</translation>
 <translation id="8988939298652262600">Brave सुरक्षा और बचाव के लिए एक्सटेंशन की समीक्षा नहीं करता है। यदि आप डेवलपर पर भरोसा करते हैं तो ही इस एक्सटेंशन को इंस्टॉल करें।</translation>
 <translation id="933652931229970927">अपने आप नैदानिक रिपोर्ट भेजें</translation>
+<translation id="1679356339067548863">Brave ब्राउज़र के क्रैश या फ़्रीज़ होने पर अपने आप नैदानिक रिपोर्ट भेजकर Brave की प्रोडक्ट स्थिरता को बेहतर बनाने में मदद करें.</translation>
 <translation id="8081858229109418493">प्रोफाइल का नाम और आइकन</translation>
 <translation id="6438096877646138757">साइटें जो बंद करने पर कुकीज़ को साफ़ करती हैं</translation>
 <translation id="2988792685798128092">साइट बंद करने पर साफ़ करें</translation>
@@ -118,6 +128,7 @@ Binance
 <translation id="8760415064721320867">टोर के साथ प्राइवेट विंडो</translation>
 <translation id="2055363275850890030">गोपनीय विंडो</translation>
 <translation id="5410152065859052603">टोर</translation>
+<translation id="7897433216002294926">टोर <ph name="COUNT"/></translation>
 <translation id="1970435562892104727">यह टोर के साथ एक निजी विंडो है</translation>
 <translation id="1037341607922068025">टोर के साथ निजी विंडो खोलें</translation>
 <translation id="1725356094208762656">Tor में खोलें</translation>
@@ -137,15 +148,11 @@ Binance
 <translation id="1434416574322382019">टोर के साथ नया गोपनीय विंडो</translation>
 <translation id="4703780849509456860">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
 <translation id="3488584642074079080">ब्रेव गोपनीय विंडो में टोर के साथ लिंक खोलें</translation>
-<translation id="7475547933708221517">IPFS का इस्तेमाल करके लोकल फ़ाइल शेयर करें</translation>
-<translation id="2286177249736199435">IPFS का इस्तेमाल करके लोकल फ़ोल्डर शेयर करें</translation>
 <translation id="4491895534716990473">चुने गए टेक्स्ट को IPFS में इम्पोर्ट करें</translation>
 <translation id="8883166554766780543">IPFS स्नैपशॉट के लिए लिंक इम्पोर्ट और कॉपी करें</translation>
-<translation id="784573715436258741">IPFS का इस्तेमाल करके लोकल फ़ाइल शेयर करें</translation>
 <translation id="6313675821927505581">Tor के साथ नई प्राइवेट विंडो</translation>
 <translation id="2638041073279639246">Tor के साथ प्राइवेट विंडो में लिंक खोलें</translation>
 <translation id="3425600262621021599">Tor के साथ ब्रेव प्राइवेट विंडो में लिंक खोलें</translation>
-<translation id="575838692088926391">IPFS का इस्तेमाल करके लोकल फ़ोल्डर शेयर करें</translation>
 <translation id="2515126961943087659">Bat विज्ञापन सेवा</translation>
 <translation id="7924918279836988121">Bat खाता सेवाएं</translation>
 <translation id="4472575034687746823">आरंभ करें</translation>
@@ -264,6 +271,8 @@ Binance
 <translation id="6358469157239228181">यह नाम इस्तेमाल नहीं किया जा सकता</translation>
 <translation id="5761731140570209168">नई सहकर्मी कनेक्शन स्ट्रिंग जोड़ें</translation>
 <translation id="2082206983920804886">की घुमाएँ</translation>
+<translation id="5078501082919354191">Brave स्थानीय IPFS नोड को नहीं रोक पा रहे हैं</translation>
+<translation id="5687424953196903465">Brave स्थानीय IPFS नोड को लांच कर पा रहे हैं</translation>
 <translation id="6476061084931271248">बदलाव लागू करने के लिए नोड को रीस्टार्ट करें</translation>
 <translation id="3754226427671882382">नोड रीस्टार्ट करें</translation>
 <translation id="949667118776341807">घुमाएँ</translation>
@@ -279,14 +288,21 @@ Binance
 <translation id="6912148685459054619">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
 <translation id="3364053282600191535">'<ph name="KEY_NAME"/>' की इम्पोर्ट नहीं हो पाया</translation>
 <translation id="4993345308607970390">Brave वॉलेट रीसेट करें</translation>
+<translation id="5975930666279943472">वॉलेट लेनदेन और गलत-सूचना साफ़ करें</translation>
+<translation id="5693968582510626466">ट्रांजेक्शन हटाने से स्थानीय सर्वर पर स्टेट क्लियर करते समय या डेवलपर्स के लिए उपयोगी हो सकता है</translation>
 <translation id="6369495274982305511">क्या आप वाकई अपने वॉलेट को रीसेट करना चाहते हैं? अगर आपके वॉलेट का बैकअप नहीं लिया गया है, तो रीसेट करने से अकाउंट का पूरा डेटा खो जाएगा (इससे जुड़े फ़ंड के साथ). कन्फ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
+<translation id="9216386092464743272">क्या आप वाकई अपने सभी वॉलेट लेनदेन और गैर-सूचना को रीसेट करना चाहते हैं? यह विकल्प ज्यादातर लोकल टेस्ट सर्वर चलाने वाले डेवलपर्स द्वारा इस्तेमाल किया जाता है. कंफ़र्म करने के लिए "<ph name="CONFIRMATION_PHRASE"/>" टाइप करें.</translation>
+<translation id="3752403403443723332">आपका वॉलेट रिसेट किया गया.</translation>
+<translation id="594766067816395072">आपकी वॉलेट लेन-देन की जानकारी रीसेट कर दी गई थी.</translation>
 <translation id="1426410128494586442">हां</translation>
 <translation id="8275038454117074363">आयात करें</translation>
 <translation id="3654980960391973513">जेनरेट करें</translation>
 <translation id="5531501313997312487">नोड चालू करें</translation>
 <translation id="9170907049676078643">IPFS संसाधनों को सुलझाने की विधि</translation>
 <translation id="1327977588028644528">गेटवे</translation>
+<translation id="1195880978080389104">Brave स्थानीय IPFS नोड</translation>
 <translation id="4927734062756955434">IPFS पब्लिक गेटवे पता</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Brave स्थानीय  IPFS नोड और गेटवे गोपनीयता विचारों के बारे में और <ph name="END_LINK_MPL"/> में जानें.</translation>
 <translation id="8425213833346101688">बदलें</translation>
 <translation id="557281710253742286">IPFS गेटवे सेट करें</translation>
 <translation id="8571837315037233299">गेटवे पता</translation>
@@ -295,6 +311,7 @@ Binance
 <translation id="7703184801853248830">अमान्य गेटवे पता</translation>
 <translation id="7690058578502751948">Brave में केवल एक वैध IPFS गेटवे का उपयोग किया जा सकता है जिसमें मूल अलगाव सक्षम है.</translation>
 <translation id="585868419599255817">IPFS पब्लिक गेटवे फ़ॉलबैक</translation>
+<translation id="2618080188892567155">अगर आपके Brave स्थानीय नोड तक नहीं पहुँच सकता है, तो अपने आप सार्वजनिक IPFS गेटवे पर वापस चला जाएगा.</translation>
 <translation id="4107552920076294723">IPFS संसाधनों को कॉन्फ़िगर किए गए IPFS गेटवे पर पुनर्निर्देशित करें</translation>
 <translation id="6494857428933042381">जब IPFS गेटवे संसाधन की जानकारी होती है, तो IPFS प्रस्तावों के लिए कॉन्फ़िगर किए गए गेटवे का स्वचालित रूप से उपयोग करता है।</translation>
 <translation id="8655170717758778983">जब संभव हो तो DNSLink के माध्यम से IPFS पृष्ठों पर स्वचालित रूप से रीडायरेक्ट करें</translation>
@@ -369,6 +386,7 @@ Binance
 <translation id="7053983685419859001">ब्लॉक करें</translation>
 <translation id="660171790038410175"><ph name="BROWSER_NAME"/> यकायक बंद हो गया.</translation>
 <translation id="1324417023773393937">Brave ब्राउज़र</translation>
+<translation id="7276554663454265692">आप ब्राउज़र सेटिंग में जाकर कभी भी <ph name="SETTING_TEXT"/> बदल सकते हैं</translation>
 <translation id="6873781976650514089">यह सेटिंग</translation>
 <translation id="6040143037577758943">बंद करें</translation>
 <translation id="5600566490506283344">Brave विज्ञापन नोटिफ़िकेशन</translation>
