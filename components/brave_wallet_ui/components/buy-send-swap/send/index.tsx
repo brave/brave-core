@@ -11,7 +11,9 @@ import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
 import { getLocale } from '../../../../common/locale'
 import { ErrorText, ResetButton } from '../shared-styles'
-import { toWei } from '../../../utils/format-balances'
+
+// Utils
+import Amount from '../../../utils/amount'
 
 // Styled Components
 import {
@@ -70,11 +72,15 @@ function Send (props: Props) {
     onSelectPresetAmount(percent)
   }
 
-  const insuficientFundsError = React.useMemo((): boolean => {
-    if (parseFloat(selectedAssetAmount) === 0) {
+  const insufficientFundsError = React.useMemo((): boolean => {
+    const amountWei = new Amount(selectedAssetAmount)
+      .multiplyByDecimals(selectedAsset.decimals)
+
+    if (amountWei.isZero()) {
       return false
     }
-    return Number(toWei(selectedAssetAmount, selectedAsset.decimals)) > Number(selectedAssetBalance)
+
+    return amountWei.gt(selectedAssetBalance)
   }, [selectedAssetBalance, selectedAssetAmount, selectedAsset])
 
   return (
@@ -102,7 +108,7 @@ function Send (props: Props) {
         inputName='address'
         onPaste={onPasteFromClipboard}
       />
-      {insuficientFundsError &&
+      {insufficientFundsError &&
         <ErrorText>{getLocale('braveWalletSwapInsufficientBalance')}</ErrorText>
       }
       <NavButton
@@ -110,7 +116,7 @@ function Send (props: Props) {
           toAddressOrUrl === '' ||
           parseFloat(selectedAssetAmount) === 0 ||
           selectedAssetAmount === '' ||
-          insuficientFundsError ||
+          insufficientFundsError ||
           amountValidationError !== undefined
         }
         buttonType='primary'

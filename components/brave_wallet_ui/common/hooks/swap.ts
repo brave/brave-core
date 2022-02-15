@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { SimpleActionCreator } from 'redux-act'
-import BigNumber from 'bignumber.js'
 
 import {
   BraveWallet,
@@ -20,7 +19,7 @@ import {
 } from '../../constants/types'
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../options/expiration-preset-options'
-import { formatInputValue, toHex, toWei, toWeiHex } from '../../utils/format-balances'
+import Amount from '../../utils/amount'
 import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
 import useBalance from './balance'
@@ -86,17 +85,17 @@ export default function useSwap (
   const fromAssetBalance = getBalance(selectedAccount, fromAsset)
   const ethBalance = getBalance(selectedAccount)
 
-  const feesBN = React.useMemo(() => {
+  const feesWrapped = React.useMemo(() => {
     if (!quote) {
-      return new BigNumber('0')
+      return new Amount('0')
     }
 
     // NOTE: Swap will eventually use EIP-1559 gas fields, but we rely on
     // gasPrice as a fee-ceiling for validation of inputs.
     const { gasPrice, gas } = quote
-    const gasPriceBN = new BigNumber(gasPrice)
-    const gasBN = new BigNumber(gas)
-    return gasPriceBN.multipliedBy(gasBN)
+    const gasPriceWrapped = new Amount(gasPrice)
+    const gasWrapped = new Amount(gas)
+    return gasPriceWrapped.times(gasWrapped)
   }, [quote])
 
   const hasDecimalsOverflow = React.useCallback(
@@ -105,7 +104,8 @@ export default function useSwap (
         return false
       }
 
-      return new BigNumber(amount).times(10 ** asset.decimals).decimalPlaces() > 0
+      const amountBaseWrapped = new Amount(amount).multiplyByDecimals(asset.decimals)
+      return amountBaseWrapped.value && amountBaseWrapped.value.decimalPlaces() > 0
     }, []
   )
 
@@ -122,24 +122,24 @@ export default function useSwap (
       return 'toAmountDecimalsOverflow'
     }
 
-    const fromAmountWei = toWei(fromAmount, fromAsset.decimals)
-    const amountBN = new BigNumber(fromAmountWei)
-    const balanceBN = new BigNumber(fromAssetBalance)
-    const ethBalanceBN = new BigNumber(ethBalance)
+    const fromAmountWrapped = new Amount(fromAmount)
+      .multiplyByDecimals(fromAsset.decimals)
+    const balanceWrapped = new Amount(fromAssetBalance)
+    const ethBalanceWrapped = new Amount(ethBalance)
 
-    if (amountBN.gt(balanceBN)) {
+    if (fromAmountWrapped.gt(balanceWrapped)) {
       return 'insufficientBalance'
     }
 
-    if (feesBN.gt(ethBalanceBN)) {
+    if (feesWrapped.gt(ethBalanceWrapped)) {
       return 'insufficientEthBalance'
     }
 
-    if (fromAsset.symbol === selectedNetwork.symbol && amountBN.plus(feesBN).gt(balanceBN)) {
+    if (fromAsset.symbol === selectedNetwork.symbol && fromAmountWrapped.plus(feesWrapped).gt(balanceWrapped)) {
       return 'insufficientEthBalance'
     }
 
-    if (allowance !== undefined && new BigNumber(allowance).lt(amountBN)) {
+    if (allowance !== undefined && new Amount(allowance).lt(fromAmountWrapped)) {
       return 'insufficientAllowance'
     }
 
@@ -167,7 +167,7 @@ export default function useSwap (
     toAmount,
     fromAssetBalance,
     ethBalance,
-    feesBN,
+    feesWrapped,
     rawError,
     allowance
   ])
@@ -186,8 +186,13 @@ export default function useSwap (
 
     const { buyAmount, sellAmount, price, buyTokenToEthRate, sellTokenToEthRate } = quote
 
-    setFromAmount(formatInputValue(sellAmount, fromAsset.decimals, false))
-    setToAmount(formatInputValue(buyAmount, toAsset.decimals, false))
+    setFromAmount(new Amount(sellAmount)
+      .divideByDecimals(fromAsset.decimals)
+      .format())
+
+    setToAmount(new Amount(buyAmount)
+      .divideByDecimals(toAsset.decimals)
+      .format())
 
     /**
      * Price computation block
@@ -205,18 +210,18 @@ export default function useSwap (
      * consider the latter. This is typically when the user modifies the amount
      * in the From field.
      */
-    const priceBN = new BigNumber(price)
-    const approxPriceBN = new BigNumber(buyTokenToEthRate).dividedBy(sellTokenToEthRate)
-    let bestEstimatePriceBN
-    if (approxPriceBN.div(priceBN).toFixed(0) === '1') {
-      bestEstimatePriceBN = priceBN
-    } else if (priceBN.div(approxPriceBN).toFixed(0) === '1') {
-      bestEstimatePriceBN = priceBN
+    const priceWrapped = new Amount(price)
+    const approxPriceWrapped = new Amount(buyTokenToEthRate).div(sellTokenToEthRate)
+    let bestEstimatePriceWrapped
+    if (approxPriceWrapped.div(priceWrapped).eq(new Amount(1))) {
+      bestEstimatePriceWrapped = priceWrapped
+    } else if (priceWrapped.div(approxPriceWrapped).eq(new Amount(1))) {
+      bestEstimatePriceWrapped = priceWrapped
     } else {
-      bestEstimatePriceBN = approxPriceBN
+      bestEstimatePriceWrapped = approxPriceWrapped
     }
 
-    const bestEstimatePrice = bestEstimatePriceBN.toFixed(4, BigNumber.ROUND_UP)
+    const bestEstimatePrice = bestEstimatePriceWrapped.format(6)
     setExchangeRate(bestEstimatePrice)
   }, [quote])
 
@@ -257,8 +262,8 @@ export default function useSwap (
     let fromAssetNext = overrides.fromAsset ?? fromAsset
     let toAssetNext = overrides.toAsset ?? toAsset
 
-    let fromAmountWei
-    let toAmountWei
+    let fromAmountWeiWrapped
+    let toAmountWeiWrapped
 
     /**
      * STEP 2: Get the amount (in base units) to associate with the From field
@@ -278,10 +283,8 @@ export default function useSwap (
         return
       }
 
-      fromAmountWei = toWei(
-        overrides.amount ?? state.fromAmount,
-        fromAssetNext.decimals
-      )
+      fromAmountWeiWrapped = new Amount(overrides.amount ?? state.fromAmount)
+        .multiplyByDecimals(fromAssetNext.decimals)
     }
 
     /**
@@ -308,15 +311,11 @@ export default function useSwap (
       }
 
       if (overrides.toAsset === undefined) {
-        toAmountWei = toWei(
-          overrides.amount ?? state.toAmount,
-          toAssetNext.decimals
-        )
+        toAmountWeiWrapped = new Amount(overrides.amount ?? state.toAmount)
+          .multiplyByDecimals(toAssetNext.decimals)
       } else {
-        fromAmountWei = toWei(
-          state.fromAmount,
-          fromAssetNext.decimals
-        )
+        fromAmountWeiWrapped = new Amount(state.fromAmount)
+          .multiplyByDecimals(fromAssetNext.decimals)
       }
     }
 
@@ -326,12 +325,12 @@ export default function useSwap (
      * The following block makes it impossible to enter 0-ish amount
      * values.
      */
-    if (toAmountWei === '0') {
+    if (toAmountWeiWrapped?.isUndefined() || toAmountWeiWrapped?.isZero()) {
       setToAmount('')
       return
     }
 
-    if (fromAmountWei === '0') {
+    if (fromAmountWeiWrapped?.isUndefined() || fromAmountWeiWrapped?.isZero()) {
       setFromAmount('')
       return
     }
@@ -342,9 +341,9 @@ export default function useSwap (
     setIsLoading(true)
     fetchSwapQuote({
       fromAsset: fromAssetNext,
-      fromAssetAmount: fromAmountWei,
+      fromAssetAmount: fromAmountWeiWrapped?.format(),
       toAsset: toAssetNext,
-      toAssetAmount: toAmountWei,
+      toAssetAmount: toAmountWeiWrapped?.format(),
       accountAddress: selectedAccount.address,
       slippageTolerance: overrides.slippageTolerance ?? slippageTolerance,
       networkChainId: selectedNetwork.chainId,
@@ -456,8 +455,11 @@ export default function useSwap (
 
     if (swapValidationError === 'insufficientAllowance' && allowance) {
       const allowanceHex = !fromAssetBalance
-        ? toWeiHex(fromAmount, fromAsset.decimals)
-        : toHex(fromAssetBalance)
+        ? new Amount(fromAmount)
+          .multiplyByDecimals(fromAsset.decimals)
+          .toHex()
+        : new Amount(fromAssetBalance)
+          .toHex()
 
       approveERC20Allowance({
         from: selectedAccount.address,
@@ -476,13 +478,17 @@ export default function useSwap (
     )
   }
 
-  const isSwapButtonDisabled = React.useMemo(() => (
-    isLoading ||
-    quote === undefined ||
-    (swapValidationError && swapValidationError !== 'insufficientAllowance') ||
-    toWei(toAmount, toAsset.decimals) === '0' ||
-    toWei(fromAmount, fromAsset.decimals) === '0'
-  ), [toAmount, fromAmount, toAsset, fromAsset, quote, swapValidationError, isLoading])
+  const isSwapButtonDisabled = React.useMemo(() => {
+    return (
+      isLoading ||
+      quote === undefined ||
+      (swapValidationError && swapValidationError !== 'insufficientAllowance') ||
+      new Amount(toAmount).isUndefined() ||
+      new Amount(toAmount).isZero() ||
+      new Amount(fromAmount).isUndefined() ||
+      new Amount(fromAmount).isZero()
+    )
+  }, [toAmount, fromAmount, quote, swapValidationError, isLoading])
 
   const onSelectTransactAsset = (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {

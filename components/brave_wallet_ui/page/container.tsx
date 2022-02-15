@@ -35,10 +35,9 @@ import Onboarding from '../stories/screens/onboarding'
 import BackupWallet from '../stories/screens/backup-wallet'
 
 // Utils
-import { formatWithCommasAndDecimals } from '../utils/format-prices'
+import Amount from '../utils/amount'
 import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { mojoTimeDeltaToJSDate } from '../utils/datetime-utils'
-import { addNumericValues } from '../utils/bn-utils'
 
 import {
   findENSAddress,
@@ -324,7 +323,7 @@ function Container (props: Props) {
 
     return amounts.reduce(function (a, b) {
       return a !== '' && b !== ''
-        ? addNumericValues(a, b)
+        ? new Amount(a).plus(b).format()
         : ''
     })
   }, [accounts, getAccountBalance])
@@ -356,11 +355,9 @@ function Container (props: Props) {
       })
 
     const grandTotal = visibleAssetFiatBalances.reduce(function (a, b) {
-      return a !== '' && b !== ''
-        ? addNumericValues(a, b)
-        : ''
+      return a.plus(b)
     })
-    return formatWithCommasAndDecimals(grandTotal)
+    return grandTotal.formatAsFiat()
   }, [userAssetList, fullAssetBalance, computeFiatAmount])
 
   const onChangeTimeline = (timeline: BraveWallet.AssetPriceTimeframe) => {

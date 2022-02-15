@@ -69,7 +69,7 @@ export default function useAssets (
       const bFiatBalance = computeFiatAmount(bBalance, b.symbol, b.decimals)
       const aFiatBalance = computeFiatAmount(aBalance, a.symbol, a.decimals)
 
-      return Number(bFiatBalance) - Number(aFiatBalance)
+      return bFiatBalance.toNumber() - aFiatBalance.toNumber()
     })
   }, [selectedAccount, userVisibleTokensInfo, getBalance, computeFiatAmount])
 

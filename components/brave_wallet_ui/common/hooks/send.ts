@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { SimpleActionCreator } from 'redux-act'
-import BigNumber from 'bignumber.js'
 
 import {
   BraveWallet,
@@ -17,9 +16,11 @@ import {
   GetChecksumEthAddressReturnInfo,
   AmountValidationErrorType
 } from '../../constants/types'
-import { isValidAddress } from '../../utils/address-utils'
 import { getLocale } from '../../../common/locale'
-import { toWeiHex } from '../../utils/format-balances'
+
+// Utils
+import { isValidAddress } from '../../utils/address-utils'
+import Amount from '../../utils/amount'
 
 export default function useSend (
   findENSAddress: (address: string) => Promise<GetEthAddrReturnInfo>,
@@ -78,7 +79,10 @@ export default function useSend (
       return
     }
 
-    return new BigNumber(sendAmount).times(10 ** selectedSendAsset.decimals).decimalPlaces() > 0
+    const amountBN = new Amount(sendAmount)
+      .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
+      .value // extract BigNumber object wrapped by Amount
+    return amountBN && amountBN.decimalPlaces() > 0
       ? 'fromAmountDecimalsOverflow'
       : undefined
   }, [sendAmount, selectedSendAsset])
@@ -178,7 +182,9 @@ export default function useSend (
     selectedSendAsset.isErc20 && sendERC20Transfer({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, selectedSendAsset.decimals),
+      value: new Amount(sendAmount)
+        .multiplyByDecimals(selectedSendAsset.decimals) // ETH → Wei conversion
+        .toHex(),
       contractAddress: selectedSendAsset.contractAddress
     })
 
@@ -193,7 +199,9 @@ export default function useSend (
     !selectedSendAsset.isErc721 && !selectedSendAsset.isErc20 && sendTransaction({
       from: selectedAccount.address,
       to: toAddress,
-      value: toWeiHex(sendAmount, selectedSendAsset.decimals)
+      value: new Amount(sendAmount)
+        .multiplyByDecimals(selectedSendAsset.decimals)
+        .toHex()
     })
 
     setToAddressOrUrl('')

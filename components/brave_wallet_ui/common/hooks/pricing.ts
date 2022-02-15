@@ -6,7 +6,7 @@
 import * as React from 'react'
 
 import { BraveWallet } from '../../constants/types'
-import { formatFiatBalance } from '../../utils/format-balances'
+import Amount from '../../utils/amount'
 
 export default function usePricing (spotPrices: BraveWallet.AssetPrice[]) {
   const findAssetPrice = React.useCallback((symbol: string) => {
@@ -15,14 +15,16 @@ export default function usePricing (spotPrices: BraveWallet.AssetPrice[]) {
     )?.price ?? ''
   }, [spotPrices])
 
-  const computeFiatAmount = React.useCallback((value: string, symbol: string, decimals: number) => {
+  const computeFiatAmount = React.useCallback((value: string, symbol: string, decimals: number): Amount => {
     const price = findAssetPrice(symbol)
 
     if (!price || !value) {
-      return ''
+      return Amount.empty()
     }
 
-    return formatFiatBalance(value, decimals, price)
+    return new Amount(value)
+      .divideByDecimals(decimals) // Wei → ETH conversion
+      .times(price)
   }, [findAssetPrice])
 
   return { computeFiatAmount, findAssetPrice }

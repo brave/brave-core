@@ -7,11 +7,7 @@ import { useExplorer, usePricing } from '../../../common/hooks'
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
-import {
-  formatFiatAmountWithCommasAndDecimals,
-  formatTokenAmountWithCommasAndDecimals
-} from '../../../utils/format-prices'
-import { formatBalance } from '../../../utils/format-balances'
+import Amount from '../../../utils/amount'
 
 import { Tooltip } from '../../shared'
 import { getLocale } from '../../../../common/locale'
@@ -70,7 +66,9 @@ const PortfolioAccountItem = (props: Props) => {
 
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
 
-  const formattedAssetBalance = formatBalance(assetBalance, assetDecimals)
+  const formattedAssetBalance = new Amount(assetBalance)
+    .divideByDecimals(assetDecimals)
+    .format(6, true)
 
   const { computeFiatAmount } = usePricing(spotPrices)
   const fiatBalance = React.useMemo(() => {
@@ -104,8 +102,10 @@ const PortfolioAccountItem = (props: Props) => {
             size='small'
             hideBalances={hideBalances ?? false}
           >
-            <FiatBalanceText>{formatFiatAmountWithCommasAndDecimals(fiatBalance, defaultCurrencies.fiat)}</FiatBalanceText>
-            <AssetBalanceText>{formatTokenAmountWithCommasAndDecimals(formattedAssetBalance, assetTicker)}</AssetBalanceText>
+            <FiatBalanceText>
+              {fiatBalance.formatAsFiat(defaultCurrencies.fiat)}
+            </FiatBalanceText>
+            <AssetBalanceText>{`${formattedAssetBalance} ${assetTicker}`}</AssetBalanceText>
           </WithHideBalancePlaceholder>
         </BalanceColumn>
         <MoreButton onClick={onShowTransactionPopup}>

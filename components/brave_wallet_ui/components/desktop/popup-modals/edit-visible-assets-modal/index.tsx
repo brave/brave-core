@@ -7,7 +7,6 @@ import {
 import { NavButton } from '../../../extension'
 import { SearchBar } from '../../../shared'
 import { getLocale } from '../../../../../common/locale'
-import { toHex } from '../../../../utils/format-balances'
 
 // Styled Components
 import {
@@ -31,6 +30,9 @@ import {
   AdvancedButton,
   AdvancedIcon
 } from './style'
+
+// Utils
+import Amount from '../../../../utils/amount'
 
 export interface Props {
   onClose: () => void
@@ -217,7 +219,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     if (foundTokenInfoByContractAddress) {
       if (foundTokenInfoByContractAddress.isErc721) {
         let token = foundTokenInfoByContractAddress
-        token.tokenId = tokenID ? toHex(tokenID) : ''
+        token.tokenId = tokenID ? new Amount(tokenID).toHex() : ''
         token.logo = iconURL
         setIsLoading(true)
         onAddCustomAsset(token)
@@ -235,7 +237,7 @@ const EditVisibleAssetsModal = (props: Props) => {
         isErc721: !!tokenID,
         name: tokenName,
         symbol: tokenSymbol,
-        tokenId: tokenID ? toHex(tokenID) : '',
+        tokenId: tokenID ? new Amount(tokenID).toHex() : '',
         logo: iconURL,
         visible: true,
         coingeckoId: coingeckoID

@@ -10,9 +10,7 @@ import {
 
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
-import {
-  formatFiatAmountWithCommasAndDecimals
-} from '../../../../../../utils/format-prices'
+import Amount from '../../../../../../utils/amount'
 
 // Components
 import {
@@ -43,7 +41,7 @@ export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
   accounts: WalletAccountType[]
   selectedNetwork: BraveWallet.EthereumChain
-  fullAssetFiatBalance: string
+  fullAssetFiatBalance: Amount
   formattedFullAssetBalance: string
   selectedAssetTransactions: BraveWallet.TransactionInfo[]
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
@@ -100,7 +98,9 @@ const AccountsAndTransactionsList = (props: Props) => {
                 size='small'
                 hideBalances={hideBalances}
               >
-                <AssetBalanceDisplay>{formatFiatAmountWithCommasAndDecimals(fullAssetFiatBalance, defaultCurrencies.fiat)} {formattedFullAssetBalance}</AssetBalanceDisplay>
+                <AssetBalanceDisplay>
+                  {fullAssetFiatBalance.formatAsFiat(defaultCurrencies.fiat)} {formattedFullAssetBalance}
+                </AssetBalanceDisplay>
               </WithHideBalancePlaceholder>
             }
           </DividerRow>

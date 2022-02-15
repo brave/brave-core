@@ -11,11 +11,7 @@ import {
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
 import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/datetime-utils'
-import {
-  formatFiatAmountWithCommasAndDecimals,
-  formatTokenAmountWithCommasAndDecimals
-} from '../../../utils/format-prices'
-import { formatBalance } from '../../../utils/format-balances'
+import Amount from '../../../utils/amount'
 
 // Hooks
 import { useExplorer, useTransactionParser } from '../../../common/hooks'
@@ -308,15 +304,30 @@ const PortfolioTransactionItem = (props: Props) => {
       </StatusRow>
       <DetailRow>
         <BalanceColumn>
-          <DetailTextDark>{/* We need to return a Transaction Time Stamp to calculate Fiat value here */}{formatFiatAmountWithCommasAndDecimals(transactionDetails.fiatValue, defaultCurrencies.fiat)}</DetailTextDark>
-          <DetailTextLight>{formatTokenAmountWithCommasAndDecimals(transactionDetails.nativeCurrencyTotal, selectedNetwork.symbol)}</DetailTextLight>
+          <DetailTextDark>
+            {/* We need to return a Transaction Time Stamp to calculate Fiat value here */}
+            {transactionDetails.fiatValue
+              .formatAsFiat(defaultCurrencies.fiat)}
+          </DetailTextDark>
+          <DetailTextLight>{transactionDetails.formattedNativeCurrencyTotal}</DetailTextLight>
         </BalanceColumn>
         <TransactionFeesTooltip
           text={
             <>
               <TransactionFeeTooltipTitle>{getLocale('braveWalletAllowSpendTransactionFee')}</TransactionFeeTooltipTitle>
-              <TransactionFeeTooltipBody>{formatTokenAmountWithCommasAndDecimals(formatBalance(transactionDetails.gasFee, selectedNetwork.decimals), selectedNetwork.symbol)}</TransactionFeeTooltipBody>
-              <TransactionFeeTooltipBody>{formatFiatAmountWithCommasAndDecimals(transactionDetails.gasFeeFiat, defaultCurrencies.fiat)}</TransactionFeeTooltipBody>
+              <TransactionFeeTooltipBody>
+                {
+                  new Amount(transactionDetails.gasFee)
+                    .divideByDecimals(selectedNetwork.decimals)
+                    .formatAsAsset(6, selectedNetwork.symbol)
+                }
+              </TransactionFeeTooltipBody>
+              <TransactionFeeTooltipBody>
+                {
+                  new Amount(transactionDetails.gasFeeFiat)
+                    .formatAsFiat(defaultCurrencies.fiat)
+                }
+              </TransactionFeeTooltipBody>
             </>
           }
         >

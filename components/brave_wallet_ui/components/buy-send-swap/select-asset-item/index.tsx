@@ -2,7 +2,9 @@ import * as React from 'react'
 
 import { BraveWallet } from '../../../constants/types'
 import { withPlaceholderIcon } from '../../shared'
-import { hexToNumber } from '../../../utils/format-balances'
+
+// Utils
+import Amount from '../../../utils/amount'
 
 // Styled Components
 import {
@@ -29,7 +31,13 @@ function SelectAssetItem (props: Props) {
     <StyledWrapper onClick={onSelectAsset}>
       <AssetIconWithPlaceholder selectedAsset={asset} />
       <AssetAndBalance>
-        <AssetName>{asset.name} {asset.isErc721 ? hexToNumber(asset.tokenId ?? '') : ''}</AssetName>
+        <AssetName>
+          {asset.name} {
+            asset.isErc721 && asset.tokenId
+              ? '#' + new Amount(asset.tokenId).toNumber()
+              : ''
+          }
+        </AssetName>
         <AssetBalance>{asset.symbol}</AssetBalance>
       </AssetAndBalance>
     </StyledWrapper>

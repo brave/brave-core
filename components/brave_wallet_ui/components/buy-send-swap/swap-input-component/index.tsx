@@ -8,15 +8,16 @@ import {
   AmountPresetTypes,
   DefaultCurrencies
 } from '../../../constants/types'
-import { CurrencySymbols } from '../../../utils/currency-symbols'
 import { AmountPresetOptions } from '../../../options/amount-preset-options'
 import { SlippagePresetOptions } from '../../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../../options/expiration-preset-options'
-import { formatWithCommasAndDecimals } from '../../../utils/format-prices'
 import { getLocale } from '../../../../common/locale'
-import { reduceAddress } from '../../../utils/reduce-address'
 import { withPlaceholderIcon } from '../../shared'
-import { formatBalance, hexToNumber } from '../../../utils/format-balances'
+
+// Utils
+import { reduceAddress } from '../../../utils/reduce-address'
+import { CurrencySymbols } from '../../../utils/currency-symbols'
+import Amount from '../../../utils/amount'
 
 // Styled Components
 import {
@@ -224,9 +225,9 @@ function SwapInputComponent (props: Props) {
   }, [])
 
   const formattedAssetBalance = selectedAssetBalance
-    ? getLocale('braveWalletBalance') + ': ' + formatWithCommasAndDecimals(
-        formatBalance(selectedAssetBalance, selectedAsset?.decimals ?? 18)
-      )
+    ? getLocale('braveWalletBalance') + ': ' + new Amount(selectedAssetBalance)
+      .divideByDecimals(selectedAsset?.decimals ?? 18)
+      .format(6, true)
     : ''
 
   return (
@@ -285,7 +286,13 @@ function SwapInputComponent (props: Props) {
               <AssetButton isERC721={selectedAsset?.isErc721} onClick={onShowSelection}>
                 <ButtonLeftSide>
                   <AssetIconWithPlaceholder selectedAsset={selectedAsset} />
-                  <AssetTicker>{selectedAsset?.symbol} {selectedAsset?.isErc721 ? hexToNumber(selectedAsset?.tokenId ?? '') : ''}</AssetTicker>
+                  <AssetTicker>
+                    {selectedAsset?.symbol} {
+                      selectedAsset?.isErc721 && selectedAsset?.tokenId
+                        ? '#' + new Amount(selectedAsset.tokenId).toNumber()
+                        : ''
+                    }
+                  </AssetTicker>
                 </ButtonLeftSide>
                 <CaratDownIcon />
               </AssetButton>

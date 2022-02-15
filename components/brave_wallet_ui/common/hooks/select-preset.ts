@@ -3,15 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import BigNumber from 'bignumber.js'
-
 import { BraveWallet, WalletAccountType } from '../../constants/types'
 
 // Hooks
 import useBalance from './balance'
 
 // Utils
-import { formatInputValue } from '../../utils/format-balances'
+import Amount from '../../utils/amount'
 
 export default function usePreset (
   selectedAccount: WalletAccountType,
@@ -28,11 +26,11 @@ export default function usePreset (
     const decimals = selectedAsset?.decimals ?? 18
 
     const assetBalance = getBalance(selectedAccount, selectedAsset) || '0'
-    const amountBN = new BigNumber(assetBalance).times(percent)
+    const amountWrapped = new Amount(assetBalance).times(percent)
 
     const formattedAmount = (percent === 1)
-      ? formatInputValue(amountBN.toString(), decimals, false)
-      : formatInputValue(amountBN.toString(), decimals)
+      ? amountWrapped.divideByDecimals(decimals).format()
+      : amountWrapped.divideByDecimals(decimals).format(6)
 
     if (sendOrSwap === 'send') {
       onSetSendAmount(formattedAmount)
