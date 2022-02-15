@@ -7,40 +7,13 @@
 
 #include "base/time/time.h"
 #include "bat/ads/internal/account/transactions/reconciled_transactions_util.h"
+#include "bat/ads/internal/account/transactions/transactions_util.h"
+#include "bat/ads/internal/time_util.h"
 #include "bat/ads/transaction_info.h"
 
 namespace ads {
 
 namespace {
-
-bool WasCreatedWithinDateRange(const TransactionInfo& transaction,
-                               const base::Time& from_time,
-                               const base::Time& to_time) {
-  const base::Time& created_at =
-      base::Time::FromDoubleT(transaction.created_at);
-
-  if (created_at >= from_time && created_at <= to_time) {
-    return true;
-  }
-
-  return false;
-}
-
-}  // namespace
-
-double GetEarningsForDateRange(const TransactionList& transactions,
-                               const base::Time& from_time,
-                               const base::Time& to_time) {
-  double earnings = 0.0;
-
-  for (const auto& transaction : transactions) {
-    if (WasCreatedWithinDateRange(transaction, from_time, to_time)) {
-      earnings += transaction.value;
-    }
-  }
-
-  return earnings;
-}
 
 double GetUnreconciledEarningsForDateRange(const TransactionList& transactions,
                                            const base::Time& from_time,
@@ -48,8 +21,8 @@ double GetUnreconciledEarningsForDateRange(const TransactionList& transactions,
   double earnings = 0.0;
 
   for (const auto& transaction : transactions) {
-    if (WasCreatedWithinDateRange(transaction, from_time, to_time) &&
-        !DidReconcileTransaction(transaction)) {
+    if (!DidReconcileTransactionWithinDateRange(transaction, from_time,
+                                                to_time)) {
       earnings += transaction.value;
     }
   }
@@ -63,13 +36,36 @@ double GetReconciledEarningsForDateRange(const TransactionList& transactions,
   double earnings = 0.0;
 
   for (const auto& transaction : transactions) {
-    if (WasCreatedWithinDateRange(transaction, from_time, to_time) &&
-        DidReconcileTransaction(transaction)) {
+    if (DidReconcileTransactionWithinDateRange(transaction, from_time,
+                                               to_time)) {
       earnings += transaction.value;
     }
   }
 
   return earnings;
+}
+
+}  // namespace
+
+double GetUnreconciledEarnings(const TransactionList& transactions) {
+  const base::Time& from_time = GetTimeInDistantPast();
+  const base::Time& to_time = GetLocalTimeAtEndOfThisMonth();
+
+  return GetUnreconciledEarningsForDateRange(transactions, from_time, to_time);
+}
+
+double GetReconciledEarningsForThisMonth(const TransactionList& transactions) {
+  const base::Time& from_time = GetLocalTimeAtBeginningOfThisMonth();
+  const base::Time& to_time = GetLocalTimeAtEndOfThisMonth();
+
+  return GetReconciledEarningsForDateRange(transactions, from_time, to_time);
+}
+
+double GetReconciledEarningsForLastMonth(const TransactionList& transactions) {
+  const base::Time& from_time = GetLocalTimeAtBeginningOfLastMonth();
+  const base::Time& to_time = GetLocalTimeAtEndOfLastMonth();
+
+  return GetReconciledEarningsForDateRange(transactions, from_time, to_time);
 }
 
 }  // namespace ads

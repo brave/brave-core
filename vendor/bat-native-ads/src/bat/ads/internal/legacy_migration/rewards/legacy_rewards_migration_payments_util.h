@@ -8,15 +8,19 @@
 
 #include "bat/ads/internal/legacy_migration/rewards/payment_info_aliases.h"
 
-namespace base {
-class Time;
-}  // namespace base
+namespace absl {
+template <typename T>
+class optional;
+}  // namespace absl
 
 namespace ads {
+
+struct PaymentInfo;
+
 namespace rewards {
 
-double GetPaymentBalanceForMonth(const PaymentList& payments,
-                                 const base::Time& time);
+absl::optional<PaymentInfo> GetPaymentForThisMonth(const PaymentList& payments);
+absl::optional<PaymentInfo> GetPaymentForLastMonth(const PaymentList& payments);
 
 }  // namespace rewards
 }  // namespace ads

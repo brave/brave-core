@@ -44,22 +44,29 @@ absl::optional<TransactionList> BuildTransactionsFromJson(
   const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens =
       unblinded_payment_tokens_optional.value();
 
-  // Get a list of transactions for this month
-  TransactionList transactions =
-      GetTransactionsForThisMonth(transaction_history);
+  // Get a list of all unreconciled transactions
+  TransactionList transactions = GetAllUnreconciledTransactions(
+      transaction_history, unblinded_payment_tokens);
 
-  // Append a single transaction with an accumulated value for unreconciled
-  // transactions for previous months
-  const TransactionInfo& unreconciled_transaction =
-      BuildTransactionForUnreconciledTransactionsForPreviousMonths(
-          transaction_history, unblinded_payment_tokens);
-  transactions.push_back(unreconciled_transaction);
+  // Append a list of reconciled transactions for this month
+  const absl::optional<TransactionList>& reconciled_transactions_optional =
+      BuildTransactionsForReconciledTransactionsThisMonth(payments);
+  if (reconciled_transactions_optional) {
+    const TransactionList& reconciled_transactions =
+        reconciled_transactions_optional.value();
+    transactions.insert(transactions.end(), reconciled_transactions.cbegin(),
+                        reconciled_transactions.cend());
+  }
 
   // Append a single transaction with an accumulated value for reconciled
   // transactions last month for calculating the next payment date
-  const TransactionInfo& reconciled_transaction =
+  const absl::optional<TransactionInfo>& reconciled_transaction_optional =
       BuildTransactionForReconciledTransactionsLastMonth(payments);
-  transactions.push_back(reconciled_transaction);
+  if (reconciled_transaction_optional) {
+    const TransactionInfo& reconciled_transaction =
+        reconciled_transaction_optional.value();
+    transactions.push_back(reconciled_transaction);
+  }
 
   return transactions;
 }

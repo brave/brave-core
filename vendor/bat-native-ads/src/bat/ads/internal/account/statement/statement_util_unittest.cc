@@ -62,77 +62,43 @@ TEST_F(BatAdsStatementUtilTest, GetEarningsForThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo& transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed);
+      BuildTransaction(0.02, ConfirmationType::kViewed);
   transactions.push_back(transaction_1);
+
+  const TransactionInfo& transaction_2 =
+      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+  transactions.push_back(transaction_2);
 
   AdvanceClock(TimeFromString("25 December 2020", /* is_local */ true));
 
-  const TransactionInfo& transaction_2 =
-      BuildTransaction(0.0, ConfirmationType::kClicked);
-  transactions.push_back(transaction_2);
-
   const TransactionInfo& transaction_3 =
-      BuildTransaction(0.03, ConfirmationType::kViewed);
+      BuildTransaction(0.0, ConfirmationType::kClicked);
   transactions.push_back(transaction_3);
 
   const TransactionInfo& transaction_4 =
-      BuildTransaction(0.02, ConfirmationType::kViewed);
+      BuildTransaction(0.03, ConfirmationType::kViewed);
   transactions.push_back(transaction_4);
+
+  const TransactionInfo& transaction_5 =
+      BuildTransaction(0.02, ConfirmationType::kViewed);
+  transactions.push_back(transaction_5);
 
   // Act
   const double earnings = GetEarningsForThisMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.05;
+  const double expected_earnings = 0.07;
   EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
 }
 
-TEST_F(BatAdsStatementUtilTest, GetUnreconciledEarningsForPreviousMonths) {
-  // Arrange
-  AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
-
-  TransactionList transactions;
-
-  const base::Time& reconciled_at = Now() + base::Days(1);
-  const TransactionInfo& transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, reconciled_at);
-  transactions.push_back(transaction_1);
-
-  const TransactionInfo& transaction_2 =
-      BuildTransaction(0.04, ConfirmationType::kViewed);
-  transactions.push_back(transaction_2);
-
-  AdvanceClock(TimeFromString("3 December 2020", /* is_local */ true));
-
-  const TransactionInfo& transaction_3 =
-      BuildTransaction(0.0, ConfirmationType::kClicked);
-  transactions.push_back(transaction_3);
-
-  const TransactionInfo& transaction_4 =
-      BuildTransaction(0.03, ConfirmationType::kViewed);
-  transactions.push_back(transaction_4);
-
-  const TransactionInfo& transaction_5 =
-      BuildTransaction(0.02, ConfirmationType::kViewed);
-  transactions.push_back(transaction_5);
-
-  // Act
-  const double earnings =
-      GetUnreconciledEarningsForPreviousMonths(transactions);
-
-  // Assert
-  const double expected_earnings = 0.04;
-  EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
-}
-
-TEST_F(BatAdsStatementUtilTest, GetReconciledEarningsForLastMonth) {
+TEST_F(BatAdsStatementUtilTest, GetEarningsForLastMonth) {
   // Arrange
   AdvanceClock(TimeFromString("5 November 2020", /* is_local */ true));
 
   TransactionList transactions;
 
   const TransactionInfo& transaction_1 =
-      BuildTransaction(0.01, ConfirmationType::kViewed, Now());
+      BuildTransaction(0.02, ConfirmationType::kViewed, Now());
   transactions.push_back(transaction_1);
 
   const TransactionInfo& transaction_2 =
@@ -154,10 +120,10 @@ TEST_F(BatAdsStatementUtilTest, GetReconciledEarningsForLastMonth) {
   transactions.push_back(transaction_5);
 
   // Act
-  const double earnings = GetReconciledEarningsForLastMonth(transactions);
+  const double earnings = GetEarningsForLastMonth(transactions);
 
   // Assert
-  const double expected_earnings = 0.01;
+  const double expected_earnings = 0.02;
   EXPECT_TRUE(DoubleEquals(expected_earnings, earnings));
 }
 
