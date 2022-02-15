@@ -54,7 +54,16 @@ class BraveStatsUpdaterTest : public testing::Test {
   ~BraveStatsUpdaterTest() override {}
 
   void SetUp() override {
-    task_environment_.AdvanceClock(base::Days(2) + base::Minutes(30));
+    base::Time future_mock_time;
+#if defined(OS_ANDROID)
+    task_environment_.AdvanceClock(base::Days(2));
+#else
+    if (base::Time::FromString("3000-01-04", &future_mock_time)) {
+      task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
+    }
+#endif
+    task_environment_.AdvanceClock(base::Minutes(30));
+
     profile_ = CreateBraveAdsProfile();
     EXPECT_TRUE(profile_.get() != NULL);
     brave_stats::RegisterLocalStatePrefs(testing_local_state_.registry());

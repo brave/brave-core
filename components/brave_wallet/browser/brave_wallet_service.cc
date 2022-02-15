@@ -11,7 +11,6 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
-#include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -23,6 +22,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/weekly_storage/weekly_storage.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -74,7 +74,7 @@
 //
 //
 namespace {
-constexpr int kRefreshP3AFrequencyHours = 3;
+constexpr int kRefreshP3AFrequencyHours = 24;
 
 // T could be base::Value or const base::Value
 template <typename T>
@@ -164,6 +164,11 @@ BraveWalletService::MakeRemote() {
   mojo::PendingRemote<mojom::BraveWalletService> remote;
   receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
   return remote;
+}
+
+// For unit tests
+void BraveWalletService::RemovePrefListenersForTests() {
+  pref_change_registrar_.RemoveAll();
 }
 
 void BraveWalletService::Bind(
@@ -539,28 +544,73 @@ void BraveWalletService::MigrateUserAssetEthContractAddress(
 }
 
 void BraveWalletService::OnP3ATimerFired() {
-  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
-  RecordWalletUsage(wallet_last_used);
+  RecordWalletUsage();
 }
 
 void BraveWalletService::OnWalletUnlockPreferenceChanged(
     const std::string& pref_name) {
-  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
-  RecordWalletUsage(wallet_last_used);
+  RecordWalletUsage();
 }
 
-void BraveWalletService::RecordWalletUsage(base::Time wallet_last_used) {
-  uint8_t usage = brave_stats::UsageBitfieldFromTimestamp(wallet_last_used,
-                                                          base::Time::Now());
+void BraveWalletService::RecordWalletUsage() {
+  VLOG(1) << "Wallet P3A: starting report";
+  base::Time wallet_last_used = prefs_->GetTime(kBraveWalletLastUnlockTime);
+  base::Time first_p3a_report = prefs_->GetTime(kBraveWalletP3AFirstReportTime);
+  base::Time last_p3a_report = prefs_->GetTime(kBraveWalletP3ALastReportTime);
 
-  bool daily = !!(usage & brave_stats::kIsDailyUser);
-  UMA_HISTOGRAM_BOOLEAN(kBraveWalletDailyHistogramName, daily);
+  VLOG(1) << "Wallet P3A: first report: " << first_p3a_report
+          << " last_report: " << last_p3a_report;
 
-  bool weekly = !!(usage & brave_stats::kIsWeeklyUser);
-  UMA_HISTOGRAM_BOOLEAN(kBraveWalletWeeklyHistogramName, weekly);
+  WeeklyStorage weekly_store(prefs_, kBraveWalletP3AWeeklyStorage);
+  if (wallet_last_used > last_p3a_report) {
+    weekly_store.ReplaceTodaysValueIfGreater(1);
+    VLOG(1) << "Wallet P3A: Reporting day in week, curr days in week val: "
+            << weekly_store.GetWeeklySum();
+  }
 
-  bool monthly = !!(usage & brave_stats::kIsMonthlyUser);
-  UMA_HISTOGRAM_BOOLEAN(kBraveWalletMonthlyHistogramName, monthly);
+  WriteStatsToHistogram(wallet_last_used, first_p3a_report, last_p3a_report,
+                        weekly_store.GetWeeklySum());
+
+  prefs_->SetTime(kBraveWalletP3ALastReportTime, base::Time::Now());
+  if (first_p3a_report.is_null())
+    prefs_->SetTime(kBraveWalletP3AFirstReportTime, base::Time::Now());
+}
+
+void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,
+                                               base::Time first_p3a_report,
+                                               base::Time last_p3a_report,
+                                               unsigned use_days_in_week) {
+  base::Time::Exploded now_exp;
+  base::Time::Exploded last_report_exp;
+  base::Time::Exploded last_used_exp;
+  base::Time::Now().LocalExplode(&now_exp);
+  last_p3a_report.LocalExplode(&last_report_exp);
+  wallet_last_used.LocalExplode(&last_used_exp);
+
+  bool new_month_detected =
+      !last_p3a_report.is_null() && (now_exp.year != last_report_exp.year ||
+                                     now_exp.month != last_report_exp.month);
+
+  if (new_month_detected) {
+    bool used_last_month = !wallet_last_used.is_null() &&
+                           last_report_exp.month == last_used_exp.month &&
+                           last_report_exp.year == last_used_exp.year;
+    VLOG(1) << "Wallet P3A: New month detected. used last month: "
+            << used_last_month;
+    UMA_HISTOGRAM_BOOLEAN(kBraveWalletMonthlyHistogramName, used_last_month);
+  }
+
+  bool week_passed_since_install =
+      (last_p3a_report - first_p3a_report).InDays() >= 7;
+  if (week_passed_since_install) {
+    VLOG(1) << "Wallet P3A: recording daily/weekly. weekly_sum: "
+            << use_days_in_week;
+    UMA_HISTOGRAM_EXACT_LINEAR(kBraveWalletWeeklyHistogramName,
+                               use_days_in_week, 8);
+  } else {
+    VLOG(1) << "Wallet P3A: Need 7 days of reports before recording "
+               "daily/weekly, skipping";
+  }
 }
 
 void BraveWalletService::GetActiveOrigin(GetActiveOriginCallback callback) {
