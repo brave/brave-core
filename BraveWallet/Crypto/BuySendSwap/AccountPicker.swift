@@ -105,7 +105,7 @@ struct AccountPicker: View {
   
   private var networkPickerView: some View {
     NetworkPicker(
-      networks: networkStore.ethereumChains,
+      networkStore: networkStore,
       selectedNetwork: networkStore.selectedChainBinding
     )
   }

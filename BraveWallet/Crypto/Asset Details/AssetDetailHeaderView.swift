@@ -53,7 +53,7 @@ struct AssetDetailHeaderView: View {
           VStack(alignment: .leading) {
             HStack {
               NetworkPicker(
-                networks: networkStore.ethereumChains,
+                networkStore: networkStore,
                 selectedNetwork: networkStore.selectedChainBinding
               )
               if horizontalSizeClass == .regular {
@@ -81,7 +81,7 @@ struct AssetDetailHeaderView: View {
               .fixedSize(horizontal: false, vertical: true)
               .font(.title3.weight(.semibold))
             NetworkPicker(
-              networks: networkStore.ethereumChains,
+              networkStore: networkStore,
               selectedNetwork: networkStore.selectedChainBinding
             )
             if horizontalSizeClass == .regular {
@@ -143,7 +143,7 @@ struct AssetDetailHeaderView: View {
       Divider()
         .padding(.bottom)
       HStack {
-        if assetDetailStore.isBuySupported {
+        if assetDetailStore.isBuySupported && !networkStore.selectedChain.isCustom {
           Button(
             action: {
               buySendSwapDestination = BuySendSwapDestination(
@@ -165,15 +165,17 @@ struct AssetDetailHeaderView: View {
         ) {
           Text(Strings.Wallet.send)
         }
-        Button(
-          action: {
-            buySendSwapDestination = BuySendSwapDestination(
-              kind: .swap,
-              initialToken: assetDetailStore.token
-            )
+        if !networkStore.selectedChain.isCustom {
+          Button(
+            action: {
+              buySendSwapDestination = BuySendSwapDestination(
+                kind: .swap,
+                initialToken: assetDetailStore.token
+              )
+            }
+          ) {
+            Text(Strings.Wallet.swap)
           }
-        ) {
-          Text(Strings.Wallet.swap)
         }
       }
       .buttonStyle(BraveFilledButtonStyle(size: .normal))

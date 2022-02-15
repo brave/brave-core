@@ -5,6 +5,7 @@
 //import GCDWebServers
 @testable import Client
 import UIKit
+import Shared
 
 import XCTest
 

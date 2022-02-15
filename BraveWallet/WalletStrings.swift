@@ -1429,12 +1429,12 @@ extension Strings {
       value: "Add custom asset",
       comment: "The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen."
     )
-    public static let deleteCustomToken = NSLocalizedString(
-      "wallet.deleteCustomToken",
+    public static let delete = NSLocalizedString(
+      "wallet.delete",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Delete",
-      comment: "The title of the option inside the context menu for custom asset row in edit user asset screen."
+      comment: "The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen."
     )
     public static let transactionTypeApprove = NSLocalizedString(
       "wallet.transactionTypeApprove",
@@ -1561,6 +1561,216 @@ extension Strings {
       bundle: .braveWallet,
       value: "Beta",
       comment: "Appended to 'Wallet' so that it appears as 'Wallet (Beta)' in the app menu. Describing 'beta' software"
+    )
+    public static let customNetworkChainIdTitle = NSLocalizedString(
+      "wallet.customNetworkChainIdTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "The ID of the chain",
+      comment: "The title above the input field for users to input network chain ID in Custom Network Details Screen."
+    )
+    public static let customNetworkChainIdPlaceholder = NSLocalizedString(
+      "wallet.customNetworkChainIdPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter chain ID",
+      comment: "The placeholder for the input field for users to input network chain ID in Custom Network Details Screen."
+    )
+    public static let customNetworkChainIdErrMsg = NSLocalizedString(
+      "wallet.customNetworkChainIdErrMsg",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Invalid format—chain ID must be a positive number.",
+      comment: "The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen."
+    )
+    public static let customNetworkChainNameTitle = NSLocalizedString(
+      "wallet.customNetworkChainNameTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "The name of the chain",
+      comment: "The title above the input field for users to input network chain name in Custom Network Details Screen."
+    )
+    public static let customNetworkChainNamePlaceholder = NSLocalizedString(
+      "wallet.customNetworkChainNamePlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter chain name",
+      comment: "The placeholder for the input field for users to input network chain name in Custom Network Details Screen."
+    )
+    public static let customNetworkEmptyErrMsg = NSLocalizedString(
+      "wallet.customNetworkEmptyErrMsg",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "This field cannot be blank.",
+      comment: "The error message for the input fields cannot be empty in Custom Network Details Screen."
+    )
+    public static let customNetworkSymbolNameTitle = NSLocalizedString(
+      "wallet.customNetworkSymbolNameTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Chain's currency name",
+      comment: "The title above the input field for users to input network currency symbol name in Custom Network Details Screen."
+    )
+    public static let customNetworkSymbolNamePlaceholder = NSLocalizedString(
+      "wallet.customNetworkSymbolNamePlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter currency name",
+      comment: "The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen."
+    )
+    public static let customNetworkSymbolTitle = NSLocalizedString(
+      "wallet.customNetworkSymbolTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Chain's currency symbol",
+      comment: "The title above the input field for users to input network currency symbol in Custom Network Details Screen."
+    )
+    public static let customNetworkSymbolPlaceholder = NSLocalizedString(
+      "wallet.customNetworkSymbolPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter currency symbol",
+      comment: "The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen."
+    )
+    public static let customNetworkCurrencyDecimalTitle = NSLocalizedString(
+      "wallet.customNetworkCurrencyDecimalTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Chain's currency decimals",
+      comment: "The title above the input field for users to input network currency decimal in Custom Network Details Screen."
+    )
+    public static let customNetworkCurrencyDecimalPlaceholder = NSLocalizedString(
+      "wallet.customNetworkCurrencyDecimalPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter currency decimals",
+      comment: "The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen."
+    )
+    public static let customNetworkCurrencyDecimalErrMsg = NSLocalizedString(
+      "wallet.customNetworkCurrencyDecimalErrMsg",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Invalid format—currency decimals must be a positive number.",
+      comment: "The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen."
+    )
+    public static let customNetworkRpcUrlsTitle = NSLocalizedString(
+      "wallet.customNetworkRpcUrlsTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "RPC URLs",
+      comment: "The title above the input fields for users to input network rpc urls in Custom Network Details Screen."
+    )
+    public static let customNetworkUrlsPlaceholder = NSLocalizedString(
+      "wallet.customNetworkUrlsPlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter URL(s)",
+      comment: "The placeholder for the input field for users to input network rpc url in Custom Network Details Screen."
+    )
+    public static let customNetworkInvalidAddressErrMsg = NSLocalizedString(
+      "wallet.customNetworkInvalidAddressErrMsg",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Invalid address.",
+      comment: "The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen."
+    )
+    public static let customNetworkIconUrlsTitle = NSLocalizedString(
+      "wallet.customNetworkIconUrlsTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Icon URLs",
+      comment: "The title above the input fields for users to input network icon urls in Custom Network Details Screen."
+    )
+    public static let customNetworkBlockExplorerUrlsTitle = NSLocalizedString(
+      "wallet.customNetworkBlockExplorerUrlsTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Block explorer URLs",
+      comment: "The title above the input fields for users to input network block explorer urls in Custom Network Details Screen."
+    )
+    public static let editfCustomNetworkTitle = NSLocalizedString(
+      "wallet.editfCustomNetworkTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Edit Network",
+      comment: "The title of form for users to edit an existed custom network."
+    )
+    public static let customNetworkDetailsTitle = NSLocalizedString(
+      "wallet.customNetworkDetailsTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Add New Network",
+      comment: "The title for Custom Network Details Screen for user to add or edit custom network."
+    )
+    public static let settingsNetworkButtonTitle = NSLocalizedString(
+      "wallet.settingsNetworkButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Networks",
+      comment: "The title of a button that will go the list of networks."
+    )
+    public static let networkFooter = NSLocalizedString(
+      "wallet.networkFooter",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Wallet networks customization",
+      comment: "The footer beneath the networks title in settings screen."
+    )
+    public static let networkIdDuplicationErrMsg = NSLocalizedString(
+      "wallet.networkIdDuplicationErrMsg",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Chain ID already exists",
+      comment: "An error message will pop up when the user tries to add a custom network that its id already exists."
+    )
+    public static let failedToAddCustomNetworkErrorTitle = NSLocalizedString(
+      "wallet.failedToAddCustomNetworkErrorTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Failed to add this network.",
+      comment: "The title of an alert when the custom network the user attempted to add fails for some reason"
+    )
+    public static let failedToAddCustomNetworkErrorMessage = NSLocalizedString(
+      "wallet.failedToAddCustomNetworkErrorMessage",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Please try again.",
+      comment: "The message of an alert when the custom network the user attempted to add fails for some reason"
+    )
+    public static let customNetworksTitle = NSLocalizedString(
+      "wallet.customNetworksTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Custom Networks",
+      comment: "The title of custom network list screen"
+    )
+    public static let addCustomNetworkBarItemTitle = NSLocalizedString(
+      "wallet.addCustomNetworkBarItemTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Add Network",
+      comment: "The title of bar item for users to add custom network screen"
+    )
+    public static let saveCustomNetworkButtonTitle = NSLocalizedString(
+      "wallet.saveCustomNetworkButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Save",
+      comment: "The title of the button on top right navigation bar for the users to click to save a new custom network."
+    )
+    public static let addCustomNetworkDropdownButtonTitle = NSLocalizedString(
+      "wallet.addCustomNetworkDropdownButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Add Network…",
+      comment: "The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network."
+    )
+    public static let noNetworks = NSLocalizedString(
+      "wallet.noNetworks",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "No Networks Added",
+      comment: "The empty state displayed when the user has not yet added any custom networks."
     )
   }
 }

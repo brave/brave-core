@@ -9,11 +9,16 @@ import BraveUI
 
 public struct WalletSettingsView: View {
   @ObservedObject var settingsStore: SettingsStore
+  @ObservedObject var networkStore: NetworkStore
   
   @State private var isShowingResetAlert = false
   
-  public init(settingsStore: SettingsStore) {
+  public init(
+    settingsStore: SettingsStore,
+    networkStore: NetworkStore
+  ) {
     self.settingsStore = settingsStore
+    self.networkStore = networkStore
   }
 
   private var autoLockIntervals: [AutoLockInterval] {
@@ -35,11 +40,23 @@ public struct WalletSettingsView: View {
         Picker(selection: $settingsStore.autoLockInterval) {
           ForEach(autoLockIntervals) { interval in
             Text(interval.label)
+              .foregroundColor(Color(.secondaryBraveLabel))
               .tag(interval)
           }
         } label: {
           Text(Strings.Wallet.autoLockTitle)
+            .foregroundColor(Color(.braveLabel))
             .padding(.vertical, 4)
+        }
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      Section(
+        footer: Text(Strings.Wallet.networkFooter)
+          .foregroundColor(Color(.secondaryBraveLabel))
+      ) {
+        NavigationLink(destination: CustomNetworkListView(networkStore: networkStore)) {
+          Text(Strings.Wallet.settingsNetworkButtonTitle)
+            .foregroundColor(Color(.braveLabel))
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -72,7 +89,10 @@ public struct WalletSettingsView: View {
 struct WalletSettingsView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      WalletSettingsView(settingsStore: .previewStore)
+      WalletSettingsView(
+        settingsStore: .previewStore,
+        networkStore: .previewStore
+      )
     }
   }
 }

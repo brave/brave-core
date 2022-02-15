@@ -38,6 +38,16 @@ extension BraveWallet.EthereumChain: Identifiable {
           coingeckoId: ""
     )
   }
+  
+  public var isCustom: Bool {
+    let ethNetworks = [BraveWallet.MainnetChainId,
+                       BraveWallet.RinkebyChainId,
+                       BraveWallet.RopstenChainId,
+                       BraveWallet.GoerliChainId,
+                       BraveWallet.KovanChainId,
+                       BraveWallet.LocalhostChainId]
+    return !ethNetworks.contains(id)
+  }
 }
 
 extension BraveWallet.BlockchainToken: Identifiable {
