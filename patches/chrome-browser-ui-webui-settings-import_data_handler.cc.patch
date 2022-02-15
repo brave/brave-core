@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/import_data_handler.cc b/chrome/browser/ui/webui/settings/import_data_handler.cc
-index b5e64571b0a0dbd265c6b07056ced60ef437cec6..954eefdb6fcf967e9ad27550ddce6be697b2787a 100644
+index 7ddbe3ce9c62bebd4f547e185faf2540c3808ab6..59bdd44fce37145fb14bb54503d30fb312a3802f 100644
 --- a/chrome/browser/ui/webui/settings/import_data_handler.cc
 +++ b/chrome/browser/ui/webui/settings/import_data_handler.cc
-@@ -130,6 +130,7 @@ void ImportDataHandler::HandleImportData(const base::ListValue* args) {
+@@ -130,6 +130,7 @@ void ImportDataHandler::HandleImportData(base::Value::ConstListView args) {
      selected_items |= importer::PASSWORDS;
    if (*types.FindBoolKey(prefs::kImportDialogSearchEngine))
      selected_items |= importer::SEARCH_ENGINES;
