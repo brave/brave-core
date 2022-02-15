@@ -30,27 +30,26 @@ struct is_objc_type {
   static const bool value = is_objc_convertible<NSObject, T>::value;
 };
 
-
 /// Converts from an std::vector<T> to the equivalent NSArray
 template <typename T>
 NSArray* vector_to_ns(const std::vector<T>& vector) {
   NSMutableArray* array = [[NSMutableArray alloc] init];
   for (const T& value : vector) {
-    if constexpr(is_objc_type<T>::value) {
+    if constexpr (is_objc_type<T>::value) {
       /// Convert any `std::vector<Objective-C*>` to `NSArray<ObjectiveC*>`
       [array addObject:value];
-    } else if constexpr(std::is_fundamental<T>::value) {
+    } else if constexpr (std::is_fundamental<T>::value) {
       /// Converts any `std::vector<Fundamental-Type>` (primitives, etc..) to
       /// `NSArray<Wrapped<FundamentalType>*>`
       [array addObject:@(value)];
-    } else if constexpr(std::is_same<T, std::string>::value) {
+    } else if constexpr (std::is_same<T, std::string>::value) {
       /// Converts any `std::vector<std::string>` to `NSArray<NSString*>`
       [array addObject:[NSString stringWithUTF8String:value.c_str()]];
     } else {
       return nullptr;
     }
   }
-  
+
   return array;
 }
 
@@ -59,19 +58,19 @@ NSArray* vector_to_ns(const std::vector<T>& vector) {
 template <typename T>
 std::vector<T> ns_to_vector(NSArray* array) {
   std::vector<T> vector;
-  
+
   /// Convert any `NSArray<NSNumber*>` to `std::vector<NSNumber*>`
   /// Convert any `NSArray<NSString*>` to `std::vector<NSString*>`
   /// Convert any `NSArray<NSObject*>` to `std::vector<NSObject*>`
-  if constexpr(is_objc_type<T>::value) {
+  if constexpr (is_objc_type<T>::value) {
     for (T value : array) {
       vector.emplace_back(value);
     }
-  } else if constexpr (std::is_fundamental<T>::value) {
+  } else if constexpr (std::is_fundamental<T>::value) {  // NOLINT
     /// Converts any `NSArray<Wrapped<FundamentalType>*>` to
     /// `std::vector<Fundamental-Type>` (primitives, etc..) When converting
-    /// `[1, 1.2, 3, 4, 5]` an ASSERTION will be thrown on `1.2` if `T` is of type
-    /// integer.
+    /// `[1, 1.2, 3, 4, 5]` an ASSERTION will be thrown on `1.2` if `T` is of
+    /// type integer.
     for (NSNumber* value : array) {
       if (CFGetTypeID((__bridge CFTypeRef)value) != CFNumberGetTypeID()) {
         NSCAssert(false, @"NSNumber Conversion Failed - Not A NSNumber.");
@@ -89,15 +88,18 @@ std::vector<T> ns_to_vector(NSArray* array) {
           NSCAssert(false,
                     @"NSNumber Conversion to Floating-Point Primitive Failed");
         }
-      } else if constexpr (std::is_integral<T>::value && std::is_unsigned<T>::value) {
+      } else if constexpr (std::is_integral<T>::value &&  // NOLINT
+                           std::is_unsigned<T>::value) {
         UInt64 result = 0;
         if (CFNumberGetValue(ref, CFNumberGetType(ref), &result)) {
           vector.push_back(static_cast<T>(result));
         } else {
-          NSCAssert(false,
-                    @"NSNumber Conversion to Unsigned Integer Primitive Failed");
+          NSCAssert(
+              false,
+              @"NSNumber Conversion to Unsigned Integer Primitive Failed");
         }
-      } else if constexpr (std::is_integral<T>::value && std::is_signed<T>::value) {
+      } else if constexpr (std::is_integral<T>::value &&  // NOLINT
+                           std::is_signed<T>::value) {
         SInt64 result = 0;
         if (CFNumberGetValue(ref, CFNumberGetType(ref), &result)) {
           vector.push_back(static_cast<T>(result));
@@ -105,13 +107,15 @@ std::vector<T> ns_to_vector(NSArray* array) {
           NSCAssert(false,
                     @"NSNumber Conversion to Signed Integer Primitive Failed");
         }
-      } else if constexpr(std::is_floating_point<T>::value) {
-        NSCAssert(false, @"NSNumber Conversion to Floating-Point Primitive Failed");
+      } else if constexpr (std::is_floating_point<T>::value) {
+        NSCAssert(false,
+                  @"NSNumber Conversion to Floating-Point Primitive Failed");
       } else {
-        NSCAssert(false, @"NSNumber Conversion to Unknown Primitive Type Failed");
+        NSCAssert(false,
+                  @"NSNumber Conversion to Unknown Primitive Type Failed");
       }
     }
-  } else if constexpr(std::is_same<T, std::string>::value) {
+  } else if constexpr (std::is_same<T, std::string>::value) {  // NOLINT
     /// Converts any `NSArray<NSString*>` to `std::vector<std::string>`
     for (NSString* value : array) {
       vector.emplace_back([value UTF8String]);

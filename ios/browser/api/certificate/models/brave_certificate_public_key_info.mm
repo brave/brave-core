@@ -36,17 +36,18 @@
 
     net::der::Input algorithm_tlv;
     net::der::Input spk;
-    if (certificate::x509_utils::ParseSubjectPublicKeyInfo(certificate->tbs().spki_tlv,
-                                               &algorithm_tlv, &spk)) {
+    if (certificate::x509_utils::ParseSubjectPublicKeyInfo(
+            certificate->tbs().spki_tlv, &algorithm_tlv, &spk)) {
       net::der::Input algorithm_oid;
       net::der::Input parameters;
 
-      if (certificate::x509_utils::ParseAlgorithmSequence(algorithm_tlv, &algorithm_oid,
-                                              &parameters)) {
+      if (certificate::x509_utils::ParseAlgorithmSequence(
+              algorithm_tlv, &algorithm_oid, &parameters)) {
         _objectIdentifier =
             certificate::utils::NSStringToData(algorithm_oid.AsString());
 
-        std::string absolute_oid = certificate::x509_utils::NIDToAbsoluteOID(algorithm_oid);
+        std::string absolute_oid =
+            certificate::x509_utils::NIDToAbsoluteOID(algorithm_oid);
         if (!absolute_oid.empty()) {
           _absoluteObjectIdentifier = base::SysUTF8ToNSString(absolute_oid);
         }
@@ -59,8 +60,8 @@
       }
 
       // SPK has the unused bit count. Remove it.
-      // When doing extensions, we can use the below to parse the SPK and then the extensions
-      // For now, not needed.
+      // When doing extensions, we can use the below to parse the SPK and then
+      // the extensions. For now, not needed.
       /*auto spk_string = spk.AsStringPiece();
       if (base::StartsWith(spk_string, "\0")) {
         spk_string.remove_prefix(1);
@@ -132,7 +133,7 @@
             static_cast<const std::uint8_t*>([external_representation bytes]),
             [external_representation length]);
         if (certificate::x509_utils::ParseRSAPublicKeyInfo(spk, &modulus,
-                                               &public_exponent)) {
+                                                           &public_exponent)) {
           std::string modulus_string = modulus.AsString();
           _keyHexEncoded = base::SysUTF8ToNSString(
               base::HexEncode(modulus_string.data(), modulus_string.size()));
