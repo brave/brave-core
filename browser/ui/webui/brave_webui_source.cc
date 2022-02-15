@@ -503,6 +503,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "disconnectWalletFailed",  IDS_BRAVE_REWARDS_LOCAL_SERVER_DISCONNECT_FAILED },         // NOLINT
         { "donationTitle",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE },
         { "donationDesc",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC },
+        { "donationDescLearnMore",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC_LEARN_MORE },             // NOLINT
         { "donationTotalDonations",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS },            // NOLINT
         { "donationTotalMonthlyContribution",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_MONTHLY_CONTRIBUTION },       // NOLINT
         { "donationVisitSome",  IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME },
