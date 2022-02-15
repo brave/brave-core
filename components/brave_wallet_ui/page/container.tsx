@@ -226,7 +226,14 @@ function Container (props: Props) {
   const fromAssetBalance = getAccountBalance(selectedAccount, fromAsset)
   const toAssetBalance = getAccountBalance(selectedAccount, toAsset)
 
-  const onSelectPresetAmountFactory = usePreset(selectedAccount, selectedNetwork, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
+  const onSelectPresetAmountFactory = usePreset(
+    selectedAccount,
+    selectedNetwork,
+    onSetFromAmount,
+    onSetSendAmount,
+    fromAsset,
+    selectedSendAsset
+  )
 
   const onToggleShowRestore = React.useCallback(() => {
     if (walletLocation === WalletRoutes.Restore) {

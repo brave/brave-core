@@ -23,7 +23,7 @@ export interface Props {
   accounts: UserAccountType[]
   networkList: BraveWallet.EthereumChain[]
   orderType: OrderTypes
-  selectedSendAsset: BraveWallet.BlockchainToken
+  selectedSendAsset?: BraveWallet.BlockchainToken
   sendAssetBalance: string
   swapToAsset: BraveWallet.BlockchainToken
   swapFromAsset: BraveWallet.BlockchainToken

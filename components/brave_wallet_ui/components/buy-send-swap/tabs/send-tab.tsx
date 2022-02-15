@@ -14,7 +14,7 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  selectedAsset: BraveWallet.BlockchainToken
+  selectedAsset?: BraveWallet.BlockchainToken
   selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   selectedAssetAmount: string

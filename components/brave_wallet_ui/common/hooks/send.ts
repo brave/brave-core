@@ -33,7 +33,8 @@ export default function useSend (
   sendERC721TransferFrom: SimpleActionCreator<ERC721TransferFromParams>,
   fullTokenList: BraveWallet.BlockchainToken[]
 ) {
-  const [selectedSendAsset, setSelectedSendAsset] = React.useState<BraveWallet.BlockchainToken>(sendAssetOptions[0])
+  // selectedSendAsset can be undefined if sendAssetOptions is an empty array.
+  const [selectedSendAsset, setSelectedSendAsset] = React.useState<BraveWallet.BlockchainToken | undefined>(sendAssetOptions[0])
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState('')
   const [toAddress, setToAddress] = React.useState('')
   const [addressError, setAddressError] = React.useState('')
@@ -75,7 +76,7 @@ export default function useSend (
   }
 
   const sendAmountValidationError: AmountValidationErrorType | undefined = React.useMemo(() => {
-    if (!sendAmount) {
+    if (!sendAmount || !selectedSendAsset) {
       return
     }
 
@@ -179,6 +180,11 @@ export default function useSend (
   }, [toAddressOrUrl, selectedAccount])
 
   const onSubmitSend = () => {
+    if (!selectedSendAsset) {
+      console.log('Failed to submit Send transaction: no send asset selected')
+      return
+    }
+
     selectedSendAsset.isErc20 && sendERC20Transfer({
       from: selectedAccount.address,
       to: toAddress,

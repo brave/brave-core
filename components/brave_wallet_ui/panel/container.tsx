@@ -228,7 +228,14 @@ function Container (props: Props) {
   const fromAssetBalance = getSelectedAccountBalance(selectedAccount, fromAsset)
   const toAssetBalance = getSelectedAccountBalance(selectedAccount, toAsset)
 
-  const onSelectPresetAmountFactory = usePreset(selectedAccount, selectedNetwork, fromAsset, selectedSendAsset, onSetFromAmount, onSetSendAmount)
+  const onSelectPresetAmountFactory = usePreset(
+    selectedAccount,
+    selectedNetwork,
+    onSetFromAmount,
+    onSetSendAmount,
+    fromAsset,
+    selectedSendAsset
+  )
 
   const onSetBuyAmount = (value: string) => {
     setBuyAmount(value)
