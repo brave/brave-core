@@ -16,6 +16,12 @@ const char kBraveWalletLastUnlockTime[] =
     "brave.wallet.wallet_last_unlock_time";
 const char kBraveWalletPingReportedUnlockTime[] =
     "brave.wallet.wallet_report_unlock_time_ping";
+const char kBraveWalletP3ALastReportTime[] =
+    "brave.wallet.wallet_p3a_last_report_time";
+const char kBraveWalletP3AFirstReportTime[] =
+    "brave.wallet.wallet_p3a_first_report_time";
+const char kBraveWalletP3AWeeklyStorage[] =
+    "brave.wallet.wallet_p3a_weekly_storage";
 const char kBraveWalletCustomNetworks[] = "brave.wallet.wallet_custom_networks";
 const char kBraveWalletCurrentChainId[] =
     "brave.wallet.wallet_current_chain_id";

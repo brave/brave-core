@@ -168,6 +168,15 @@ class BraveWalletServiceUnitTest : public testing::Test {
     scoped_feature_list_.InitAndEnableFeature(
         features::kNativeBraveWalletFeature);
 
+    base::Time future_mock_time;
+#if defined(OS_ANDROID)
+    task_environment_.AdvanceClock(base::Days(2));
+#else
+    if (base::Time::FromString("3000-01-04", &future_mock_time)) {
+      task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
+    }
+#endif
+
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
@@ -1204,6 +1213,83 @@ TEST_F(BraveWalletServiceUnitTest, MigrateUserAssetEthContractAddress) {
 
   EXPECT_TRUE(
       GetPrefs()->GetBoolean(kBraveWalletUserAssetEthContractAddressMigrated));
+}
+
+TEST_F(BraveWalletServiceUnitTest, RecordWalletNoUse) {
+  EXPECT_EQ(GetPrefs()->GetTime(kBraveWalletP3ALastReportTime),
+            base::Time::Now());
+  EXPECT_EQ(GetPrefs()->GetTime(kBraveWalletP3AFirstReportTime),
+            base::Time::Now());
+
+  task_environment_.FastForwardBy(base::Days(3));
+  // Still in the one week "no report" period, we should not see any reporting
+  histogram_tester_->ExpectTotalCount(kBraveWalletWeeklyHistogramName, 0);
+  histogram_tester_->ExpectTotalCount(kBraveWalletMonthlyHistogramName, 0);
+
+  task_environment_.FastForwardBy(base::Days(5));
+  // Just exited the "no report" period, we should have one report
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 0, 1);
+  histogram_tester_->ExpectTotalCount(kBraveWalletMonthlyHistogramName, 0);
+}
+
+TEST_F(BraveWalletServiceUnitTest, RecordWalletWeekly) {
+  service_->RemovePrefListenersForTests();
+  // skipping one week "no report" period
+  task_environment_.FastForwardBy(base::Days(8));
+
+  // unlocked wallet on day 1
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime,
+                      base::Time::Now() + base::Minutes(1));
+  task_environment_.FastForwardBy(base::Days(1));
+  // now we are at day 2
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 1, 1);
+
+  task_environment_.FastForwardBy(base::Days(2));
+  // day 4
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 1, 3);
+
+  // unlocked wallet on day 4
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime,
+                      base::Time::Now() + base::Minutes(1));
+  task_environment_.FastForwardBy(base::Days(1));
+  // day 5
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 1, 3);
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 2, 1);
+
+  task_environment_.FastForwardBy(base::Days(2));
+  // day 7
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 1, 3);
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 2, 3);
+
+  task_environment_.FastForwardBy(base::Days(2));
+  // day 9, first use is no longer in weekly lookback
+  histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 1, 4);
+}
+
+TEST_F(BraveWalletServiceUnitTest, RecordWalletMonthly) {
+  service_->RemovePrefListenersForTests();
+  // skipping one week "no report" period
+  task_environment_.AdvanceClock(base::Days(8));
+  task_environment_.FastForwardBy(base::Minutes(1));
+  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, 0, 0);
+
+  // unlocked wallet for first time during current month
+  GetPrefs()->SetTime(kBraveWalletLastUnlockTime,
+                      base::Time::Now() + base::Minutes(1));
+  task_environment_.AdvanceClock(base::Days(1));
+  task_environment_.FastForwardBy(base::Minutes(1));
+  // we do not report the monthly use until the next month
+  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, 0, 0);
+
+  // skipping ahead to new month, should report monthly use
+  task_environment_.AdvanceClock(base::Days(31));
+  task_environment_.FastForwardBy(base::Minutes(1));
+  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, 1, 1);
+
+  // skipping ahead another month without using wallet
+  task_environment_.AdvanceClock(base::Days(31));
+  task_environment_.FastForwardBy(base::Minutes(1));
+  histogram_tester_->ExpectBucketCount(kBraveWalletMonthlyHistogramName, 0, 1);
 }
 
 TEST_F(BraveWalletServiceUnitTest, OnGetImportInfo) {

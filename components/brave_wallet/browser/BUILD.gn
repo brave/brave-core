@@ -109,6 +109,7 @@ static_library("browser") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
+    "//brave/components/weekly_storage:weekly_storage",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/component_updater",
     "//components/content_settings/core/browser",
