@@ -59,7 +59,6 @@ bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
           OriginTrialFeature::kCrossOriginOpenerPolicyReporting,
           OriginTrialFeature::kDeviceAttributes,
           OriginTrialFeature::kDigitalGoods,
-          OriginTrialFeature::kInterestCohortAPI,
           OriginTrialFeature::kFledge,
           OriginTrialFeature::kParakeet,
           OriginTrialFeature::kPrerender2,
