@@ -335,9 +335,11 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
       maxFeePerGas: payload.maxFeePerGas || '',
       gasEstimation: undefined
     }
-    addResult = await apiProxy.txService.addUnapprovedTransaction({ ethTxData1559: txData1559, ethTxData: undefined, solanaTxData: undefined, filTxData: undefined }, payload.from)
+    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
+    addResult = await apiProxy.txService.addUnapprovedTransaction({ ethTxData1559: txData1559 }, payload.from)
   } else {
-    addResult = await apiProxy.txService.addUnapprovedTransaction({ ethTxData: txData, ethTxData1559: undefined, solanaTxData: undefined, filTxData: undefined }, payload.from)
+    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
+    addResult = await apiProxy.txService.addUnapprovedTransaction({ ethTxData: txData }, payload.from)
   }
 
   if (!addResult.success) {
