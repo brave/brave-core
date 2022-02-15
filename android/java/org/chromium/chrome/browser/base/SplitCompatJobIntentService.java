@@ -38,7 +38,7 @@ public class SplitCompatJobIntentService extends JobIntentService {
         } else {
             context = SplitCompatApplication.createChromeContext(context);
         }
-        mImpl = (Impl) SplitCompatUtils.newInstance(context, mServiceClassName);
+        mImpl = (Impl) BundleUtils.newInstance(context, mServiceClassName);
         mImpl.setService(this);
         super.attachBaseContext(context);
     }
