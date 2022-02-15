@@ -275,7 +275,7 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   }
 
   std::vector<SignedToken> signed_tokens;
-  for (const auto& value : signed_tokens_list->GetList()) {
+  for (const auto& value : signed_tokens_list->GetListDeprecated()) {
     DCHECK(value.is_string());
 
     const std::string signed_token_base64 = value.GetString();

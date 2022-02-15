@@ -96,8 +96,8 @@ type::Result GetAvailable::ParseBody(
     return type::Result::LEDGER_OK;
   }
 
-  const auto promotion_size = promotions->GetList().size();
-  for (auto& item : promotions->GetList()) {
+  const auto promotion_size = promotions->GetListDeprecated().size();
+  for (auto& item : promotions->GetListDeprecated()) {
     type::PromotionPtr promotion = type::Promotion::New();
 
     const auto* id = item.FindStringKey("id");
@@ -181,7 +181,7 @@ type::Result GetAvailable::ParseBody(
     }
 
     auto* public_keys = item.FindListKey("publicKeys");
-    if (!public_keys || public_keys->GetList().empty()) {
+    if (!public_keys || public_keys->GetListDeprecated().empty()) {
       corrupted_promotions->push_back(promotion->id);
       continue;
     }

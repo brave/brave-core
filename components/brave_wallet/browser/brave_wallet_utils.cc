@@ -321,7 +321,7 @@ void GetAllEthCustomChains(PrefService* prefs,
       custom_networks->FindKey(kEthereumPrefKey);
   if (!eth_custom_networks_list)
     return;
-  for (const auto& it : eth_custom_networks_list->GetList()) {
+  for (const auto& it : eth_custom_networks_list->GetListDeprecated()) {
     mojom::NetworkInfoPtr chain = brave_wallet::ValueToEthNetworkInfo(it);
     if (chain)
       result->push_back(chain->Clone());

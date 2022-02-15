@@ -511,8 +511,8 @@ base::Value AdBlockSubscriptionServiceManager::HiddenClassIdSelectors(
           it->second->HiddenClassIdSelectors(classes, ids, exceptions);
       DCHECK(next_value.is_list());
 
-      for (auto i = next_value.GetList().begin();
-           i < next_value.GetList().end(); i++) {
+      for (auto i = next_value.GetListDeprecated().begin();
+           i < next_value.GetListDeprecated().end(); i++) {
         first_value.Append(std::move(*i));
       }
     }

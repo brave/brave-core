@@ -54,7 +54,7 @@ void UnblindedTokens::SetTokens(const UnblindedTokenList& unblinded_tokens) {
 void UnblindedTokens::SetTokensFromList(const base::Value& list) {
   UnblindedTokenList unblinded_tokens;
 
-  for (const auto& value : list.GetList()) {
+  for (const auto& value : list.GetListDeprecated()) {
     std::string unblinded_token_base64;
     std::string public_key_base64;
 

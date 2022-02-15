@@ -288,8 +288,9 @@ void KeyringService::MigrateObsoleteProfilePrefs(PrefService* prefs) {
     const base::Value* account_names_list =
         prefs->GetList(kBraveWalletAccountNames);
     if (account_names_list &&
-        account_names_list->GetList().size() == account_num) {
-      base::Value::ConstListView account_names = account_names_list->GetList();
+        account_names_list->GetListDeprecated().size() == account_num) {
+      base::Value::ConstListView account_names =
+          account_names_list->GetListDeprecated();
       for (size_t i = 0; i < account_names.size(); ++i) {
         SetAccountMetaForKeyring(prefs, GetAccountPathByIndex(i),
                                  account_names[i].GetString(), "",
@@ -512,7 +513,7 @@ KeyringService::GetImportedAccountsForKeyring(PrefService* prefs,
       GetPrefForKeyring(prefs, kImportedAccounts, id);
   if (!imported_accounts)
     return result;
-  for (const auto& imported_account : imported_accounts->GetList()) {
+  for (const auto& imported_account : imported_accounts->GetListDeprecated()) {
     const std::string* account_name =
         imported_account.FindStringKey(kAccountName);
     const std::string* account_address =
@@ -543,7 +544,7 @@ void KeyringService::RemoveImportedAccountForKeyring(PrefService* prefs,
   if (!value)
     return;
   imported_accounts = value->Clone();
-  const auto imported_accounts_list = imported_accounts.GetList();
+  const auto imported_accounts_list = imported_accounts.GetListDeprecated();
   for (const auto& imported_account : imported_accounts_list) {
     const std::string* account_address =
         imported_account.FindStringKey(kAccountAddress);
@@ -1699,7 +1700,8 @@ void KeyringService::SetKeyringImportedAccountName(
   }
 
   imported_accounts = value->Clone();
-  base::Value::ListView imported_accounts_list = imported_accounts.GetList();
+  base::Value::ListView imported_accounts_list =
+      imported_accounts.GetListDeprecated();
 
   bool name_updated = false;
   for (size_t i = 0; i < imported_accounts_list.size(); ++i) {

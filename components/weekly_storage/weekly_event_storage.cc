@@ -79,7 +79,7 @@ void WeeklyEventStorage::Load() {
   if (!list) {
     return;
   }
-  for (auto& it : list->GetList()) {
+  for (auto& it : list->GetListDeprecated()) {
     const auto day = base::ValueToTime(it.FindKey("day"));
     const auto value = it.FindIntKey("value");
     if (!day || !value) {

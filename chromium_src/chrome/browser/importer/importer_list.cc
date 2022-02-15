@@ -17,7 +17,7 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                          base::ListValue* chrome_profiles,
                          const base::FilePath& user_data_folder,
                          const std::string& brand) {
-  for (const auto& value : chrome_profiles->GetList()) {
+  for (const auto& value : chrome_profiles->GetListDeprecated()) {
     const base::DictionaryValue* dict;
     if (!value.GetAsDictionary(&dict))
       continue;

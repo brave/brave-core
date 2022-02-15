@@ -248,7 +248,7 @@ void ExtractAndLogStats(const base::DictionaryValue& dict) {
     if (!grants_value->is_list()) {
       LOG(WARNING) << "Bad grant value in ledger_state.";
     } else {
-      const auto& grants = grants_value->GetList();
+      const auto& grants = grants_value->GetListDeprecated();
       // Sum all grants.
       for (const auto& grant : grants) {
         if (!grant.is_dict()) {

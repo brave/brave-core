@@ -41,7 +41,7 @@ absl::optional<std::string> GetDiagnosticsValueByKey(
   DCHECK(diagnostics.is_list());
 
   const std::string* value = nullptr;
-  for (const base::Value& item : diagnostics.GetList()) {
+  for (const base::Value& item : diagnostics.GetListDeprecated()) {
     DCHECK(item.is_dict());
     const std::string* found_key = item.FindStringKey(kDiagnosticsEntryKey);
     if (found_key && *found_key == key) {

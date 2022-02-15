@@ -552,7 +552,7 @@ bool BraveVpnServiceDesktop::ParseAndCacheRegionList(base::Value region_value) {
     return false;
 
   regions_.clear();
-  for (const auto& value : region_value.GetList()) {
+  for (const auto& value : region_value.GetListDeprecated()) {
     DCHECK(value.is_dict());
     if (!value.is_dict())
       continue;
@@ -616,7 +616,7 @@ void BraveVpnServiceDesktop::ParseAndCacheDeviceRegionName(
     return;
   }
 
-  for (const auto& timezones : timezones_value.GetList()) {
+  for (const auto& timezones : timezones_value.GetListDeprecated()) {
     DCHECK(timezones.is_dict());
     if (!timezones.is_dict())
       continue;
@@ -629,7 +629,7 @@ void BraveVpnServiceDesktop::ParseAndCacheDeviceRegionName(
     if (!timezone_list_value || !timezone_list_value->is_list())
       continue;
 
-    for (const auto& timezone : timezone_list_value->GetList()) {
+    for (const auto& timezone : timezone_list_value->GetListDeprecated()) {
       DCHECK(timezone.is_string());
       if (!timezone.is_string())
         continue;
@@ -813,7 +813,7 @@ void BraveVpnServiceDesktop::ParseAndCacheHostnames(
   constexpr char kCapacityScoreKey[] = "capacity-score";
 
   std::vector<brave_vpn::Hostname> hostnames;
-  for (const auto& value : hostnames_value.GetList()) {
+  for (const auto& value : hostnames_value.GetListDeprecated()) {
     DCHECK(value.is_dict());
     if (!value.is_dict())
       continue;

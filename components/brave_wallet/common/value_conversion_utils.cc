@@ -34,19 +34,19 @@ mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
   const base::Value* explorerUrlsListValue =
       params_dict->FindListKey("blockExplorerUrls");
   if (explorerUrlsListValue) {
-    for (const auto& entry : explorerUrlsListValue->GetList())
+    for (const auto& entry : explorerUrlsListValue->GetListDeprecated())
       chain.block_explorer_urls.push_back(entry.GetString());
   }
 
   const base::Value* iconUrlsValue = params_dict->FindListKey("iconUrls");
   if (iconUrlsValue) {
-    for (const auto& entry : iconUrlsValue->GetList())
+    for (const auto& entry : iconUrlsValue->GetListDeprecated())
       chain.icon_urls.push_back(entry.GetString());
   }
 
   const base::Value* rpcUrlsValue = params_dict->FindListKey("rpcUrls");
   if (rpcUrlsValue) {
-    for (const auto& entry : rpcUrlsValue->GetList())
+    for (const auto& entry : rpcUrlsValue->GetListDeprecated())
       chain.rpc_urls.push_back(entry.GetString());
   }
   const base::Value* nativeCurrencyValue =

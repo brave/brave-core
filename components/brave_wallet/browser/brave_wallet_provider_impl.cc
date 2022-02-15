@@ -96,7 +96,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
-  const auto list = params->GetList();
+  const auto list = params->GetListDeprecated();
   if (list.empty()) {
     std::move(callback).Run(
         mojom::ProviderError::kInvalidParams,

@@ -58,8 +58,8 @@ class BatAdsHashVectorizerTest : public UnitTestBase {
     const HashVectorizer vectorizer;
     const std::map<unsigned, double> frequencies =
         vectorizer.GetFrequencies(input_value);
-    auto idx_list = idx->GetList();
-    auto count_list = count->GetList();
+    auto idx_list = idx->GetListDeprecated();
+    auto count_list = count->GetListDeprecated();
 
     // Assert
     ASSERT_EQ(frequencies.size(), idx_list.size());

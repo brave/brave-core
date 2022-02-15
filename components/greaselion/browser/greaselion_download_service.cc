@@ -114,7 +114,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
       }
     }
   }
-  for (const auto& urls_it : urls_value->GetList()) {
+  for (const auto& urls_it : urls_value->GetListDeprecated()) {
     std::string pattern_string = urls_it.GetString();
     URLPattern pattern;
     pattern.SetValidSchemes(URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS);
@@ -125,7 +125,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
     }
     url_patterns_.push_back(pattern_string);
   }
-  for (const auto& scripts_it : scripts_value->GetList()) {
+  for (const auto& scripts_it : scripts_value->GetListDeprecated()) {
     base::FilePath script_path = resource_dir.AppendASCII(
         scripts_it.GetString());
     if (script_path.ReferencesParent()) {
@@ -288,7 +288,7 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
   }
   base::ListValue* root_list = nullptr;
   root->GetAsList(&root_list);
-  for (base::Value& rule_it : root_list->GetList()) {
+  for (base::Value& rule_it : root_list->GetListDeprecated()) {
     base::DictionaryValue* rule_dict = nullptr;
     rule_it.GetAsDictionary(&rule_dict);
     base::DictionaryValue* preconditions_value = nullptr;

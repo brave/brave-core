@@ -311,7 +311,7 @@ bool ConfirmationsState::GetFailedConfirmationsFromDictionary(
 
   ConfirmationList new_failed_confirmations;
 
-  for (const auto& value : failed_confirmations->GetList()) {
+  for (const auto& value : failed_confirmations->GetListDeprecated()) {
     const base::DictionaryValue* confirmation_dictionary = nullptr;
     if (!value.GetAsDictionary(&confirmation_dictionary)) {
       BLOG(0, "Confirmation should be a dictionary");
