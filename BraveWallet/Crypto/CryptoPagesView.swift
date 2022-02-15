@@ -58,7 +58,10 @@ struct CryptoPagesView: View {
       })
       .background(
         NavigationLink(
-          destination: WalletSettingsView(settingsStore: cryptoStore.settingsStore),
+          destination: WalletSettingsView(
+            settingsStore: cryptoStore.settingsStore,
+            networkStore: cryptoStore.networkStore
+          ),
           isActive: $isShowingSettings
         ) {
           Text(Strings.Wallet.settings)
@@ -214,7 +217,8 @@ private class CryptoPagesViewController: TabbedPageViewController {
   
   @objc private func tappedSwapButton() {
     let controller = FixedHeightHostingPanModalController(
-      rootView: BuySendSwapView(action: { [weak self] destination in
+      rootView: BuySendSwapView(network: cryptoStore.networkStore.selectedChain,
+                                action: { [weak self] destination in
         self?.dismiss(animated: true, completion: {
           self?.buySendSwapDestination = destination
         })

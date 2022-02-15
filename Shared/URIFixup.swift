@@ -3,9 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-import Shared
 
-class URIFixup {
+public class URIFixup {
     private static func isValidIPAddress(_ host: String) -> Bool {
         var buffer = [UInt8](repeating: 0, count: Int(INET6_ADDRSTRLEN))
         if inet_pton(AF_INET, host, &buffer) != 0 ||
@@ -60,7 +59,7 @@ class URIFixup {
         return url
     }
     
-    static func getURL(_ entry: String) -> URL? {
+    public static func getURL(_ entry: String) -> URL? {
         if let url = URL(string: entry), InternalURL.isValid(url: url) {
             return URL(string: entry)
         }

@@ -62,6 +62,7 @@ class SettingsViewController: TableViewController {
     private let historyAPI: BraveHistoryAPI
     private let syncAPI: BraveSyncAPI
     private let walletSettingsStore: SettingsStore?
+    private let walletNetworkStore: NetworkStore?
     private let windowProtection: WindowProtection?
     
     private let featureSectionUUID: UUID = .init()
@@ -75,7 +76,8 @@ class SettingsViewController: TableViewController {
          windowProtection: WindowProtection?,
          historyAPI: BraveHistoryAPI,
          syncAPI: BraveSyncAPI,
-         walletSettingsStore: SettingsStore? = nil
+         walletSettingsStore: SettingsStore? = nil,
+         walletNetworkStore: NetworkStore? = nil
     ) {
         self.profile = profile
         self.tabManager = tabManager
@@ -86,6 +88,7 @@ class SettingsViewController: TableViewController {
         self.historyAPI = historyAPI
         self.syncAPI = syncAPI
         self.walletSettingsStore = walletSettingsStore
+        self.walletNetworkStore = walletNetworkStore
         
         super.init(style: .insetGrouped)
     }
@@ -579,7 +582,7 @@ class SettingsViewController: TableViewController {
     }()
     
     private func setUpSections() {
-        if let settingsStore = walletSettingsStore {
+        if let settingsStore = walletSettingsStore, let networkStore = walletNetworkStore {
             settingsStore.isDefaultKeyringCreated { [weak self] created in
                 guard let self = self else { return }
                 var copyOfSections = self.sections
@@ -594,7 +597,7 @@ class SettingsViewController: TableViewController {
                         copyOfSections[featureSectionIndex].rows.append(
                             Row(text: Strings.Wallet.braveWallet,
                                 selection: { [unowned self] in
-                                    let vc = UIHostingController(rootView: WalletSettingsView(settingsStore: settingsStore))
+                                    let vc = UIHostingController(rootView: WalletSettingsView(settingsStore: settingsStore, networkStore: networkStore))
                                     self.navigationController?.pushViewController(vc, animated: true)
                                 },
                                 image: #imageLiteral(resourceName: "menu-crypto").template,

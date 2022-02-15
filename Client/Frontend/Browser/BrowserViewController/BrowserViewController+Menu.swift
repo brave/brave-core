@@ -147,6 +147,9 @@ extension BrowserViewController {
                     settingsStore = SettingsStore(keyringService: keyringService,
                                                   walletService: walletService)
                 }
+                let networkStore = BraveWallet.JsonRpcServiceFactory
+                    .get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)
+                    .map({ NetworkStore(rpcService: $0) })
                 
                 let vc = SettingsViewController(profile: self.profile,
                                                 tabManager: self.tabManager,
@@ -156,7 +159,8 @@ extension BrowserViewController {
                                                 windowProtection: self.windowProtection,
                                                 historyAPI: self.historyAPI,
                                                 syncAPI: self.syncAPI,
-                                                walletSettingsStore: settingsStore)
+                                                walletSettingsStore: settingsStore,
+                                                walletNetworkStore: networkStore)
                 vc.settingsDelegate = self
                 menuController.pushInnerMenu(vc)
             }

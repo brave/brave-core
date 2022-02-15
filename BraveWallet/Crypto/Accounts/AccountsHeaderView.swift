@@ -9,6 +9,7 @@ import struct Shared.Strings
 struct AccountsHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
   var settingsStore: SettingsStore
+  var networkStore: NetworkStore
   
   @State private var isPresentingBackup: Bool = false
   @State private var isPresentingAddAccount: Bool = false
@@ -49,7 +50,8 @@ struct AccountsHeaderView: View {
               .navigationViewStyle(StackNavigationViewStyle())
             }
         )
-        NavigationLink(destination: WalletSettingsView(settingsStore: settingsStore)
+        NavigationLink(destination: WalletSettingsView(settingsStore: settingsStore,
+                                                       networkStore: networkStore)
         ) {
           Label(Strings.Wallet.settings, image: "brave.gear")
             .labelStyle(.iconOnly)
@@ -66,7 +68,8 @@ struct AccountsHeaderView_Previews: PreviewProvider {
   static var previews: some View {
     AccountsHeaderView(
       keyringStore: .previewStore,
-      settingsStore: .previewStore
+      settingsStore: .previewStore,
+      networkStore: .previewStore
     )
       .previewLayout(.sizeThatFits)
       .previewColorSchemes()

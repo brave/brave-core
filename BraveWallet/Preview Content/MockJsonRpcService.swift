@@ -87,11 +87,17 @@ class MockJsonRpcService: BraveWalletJsonRpcService {
   }
   
   func removeEthereumChain(_ chainId: String, completion: @escaping (Bool) -> Void) {
-    completion(false)
+    if let index = networks.firstIndex(where: { $0.chainId == chainId }) {
+      networks.remove(at: index)
+      completion(true)
+    } else {
+      completion(false)
+    }
   }
   
   func add(_ chain: BraveWallet.EthereumChain, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {
-    completion("", .chainDisconnected, "Error Message")
+    networks.append(chain)
+    completion("", .success, "")
   }
   
   func addEthereumChain(forOrigin chain: BraveWallet.EthereumChain, origin: URL, completion: @escaping (String, BraveWallet.ProviderError, String) -> Void) {

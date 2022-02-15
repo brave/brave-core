@@ -4,13 +4,29 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import SwiftUI
+import BraveCore
 import struct Shared.Strings
 
 struct BuySendSwapView: View {
+  var network: BraveWallet.EthereumChain
   var action: (BuySendSwapDestination) -> Void
-  var destinations = [BuySendSwapDestination(kind: .buy),
-                      BuySendSwapDestination(kind: .send),
-                      BuySendSwapDestination(kind: .swap)]
+  var destinations: [BuySendSwapDestination]
+  
+  init(
+    network: BraveWallet.EthereumChain,
+    action: @escaping (BuySendSwapDestination) -> Void
+  ) {
+    self.network = network
+    self.action = action
+    if network.isCustom {
+      destinations = [BuySendSwapDestination(kind: .send)]
+    } else {
+      destinations = [BuySendSwapDestination(kind: .buy),
+                        BuySendSwapDestination(kind: .send),
+                        BuySendSwapDestination(kind: .swap)]
+    }
+  }
+  
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       ForEach(destinations, id: \.self) { destination in
@@ -42,7 +58,7 @@ struct BuySendSwapView: View {
 #if DEBUG
 struct BuySendSwapView_Previews: PreviewProvider {
   static var previews: some View {
-    BuySendSwapView(action: { _ in })
+    BuySendSwapView(network: .init(), action: { _ in })
       .previewLayout(.sizeThatFits)
 //      .previewColorSchemes()
       .previewSizeCategories([.large, .accessibilityLarge])
