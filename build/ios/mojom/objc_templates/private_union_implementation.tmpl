@@ -1,0 +1,114 @@
+
+{%- set cpp_namespace = union|cpp_namespace_from_kind %}
+{%- set objc_class_name = "%s%s"|format(class_prefix, union.name) %}
+{%- set tag_enum_name = "%sTag"|format(objc_class_name) %}
+
+@interface {{objc_class_name}} ()
+@property (nonatomic, readwrite) {{tag_enum_name}} tag;
+@end
+
+@implementation {{objc_class_name}}
+
+{%- for field in union.fields %}
+{%-   set property_name = field.name|objc_property_formatter %}
+@synthesize {{property_name}}=_{{property_name}};
+{%- endfor %}
+
+- (instancetype)init
+{
+  if ((self = [super init])) {
+    self.tag = {{tag_enum_name}}Null;
+  }
+  return self;
+}
+
+{%- for field in union.fields %}
+{%-   set type = field.kind|objc_wrapper_type %}
+{%-   set property_name = field.name|objc_property_formatter %}
+{%-   set function_name = field.name|under_to_camel(lower_initial=False) %}
+{%-   set field_tag = "%s%s"|format(tag_enum_name, field.name|objc_enum_formatter) %}
+{%-   set property_modifiers = field.kind|objc_property_modifiers(inside_union=True) %}
+
+- (instancetype)initWith{{function_name}}:({{type}})value
+{
+  if ((self = [super init])) {
+    self.tag = {{field_tag}};
+    self.{{property_name}} = value;
+  }
+  return self;
+}
+
+- ({{type}}){{property_name}} {
+  if (self.tag == {{field_tag}}) {
+    return _{{property_name}};
+  }
+  return 0;
+}
+
+- (void)set{{function_name}}:({{type}})value {
+  self.tag = {{field_tag}};
+{%- if "copy" in property_modifiers %}
+  _{{property_name}} = [value copy];
+{%- else %}
+  _{{property_name}} = value;
+{%- endif %}
+}
+
+{%- endfor %}
+
+- (id)copyWithZone:(nullable NSZone *)zone
+{
+  auto copy = [[{{objc_class_name}} alloc] init];
+  copy.tag = self.tag;
+{%- for field in union.fields %}
+{%-   set name = field.name|objc_property_formatter %}
+  copy.{{name}} = self.{{name}};
+{%- endfor %}
+  return copy;
+}
+
+@end
+
+@implementation {{objc_class_name}} (Private)
+
+- (instancetype)initWith{{union.name}}:(const {{cpp_namespace}}::{{union.name}} &)obj
+{
+  if ((self = [super init])) {
+    switch (obj.which()) {
+{%- for field in union.fields %}
+      case {{cpp_namespace}}::{{union.name}}::Tag::k{{field.name|under_to_camel(lower_initial=False)}}:
+        self.{{field.name|objc_property_formatter}} = {{field|cpp_to_objc_assign('obj.get_', '()')}};
+        break;
+{%- endfor %}
+      default:
+        self.tag = {{tag_enum_name}}Null;
+        break;
+    }
+  }
+  return self;
+}
+
+- (instancetype)initWith{{union.name}}Ptr:({{cpp_namespace}}::{{union.name}}Ptr)obj
+{
+  return [self initWith{{union.name}}:*obj];
+}
+
+- ({{cpp_namespace}}::{{union.name}}Ptr)cppObjPtr
+{
+  auto obj = {{cpp_namespace}}::{{union.name}}::New();
+  switch (self.tag) {
+    case {{tag_enum_name}}Null: {
+      break;
+    }
+{%- for field in union.fields %}
+{%-   set field_tag = "%s%s"|format(tag_enum_name, field.name|objc_enum_formatter) %}
+    case {{field_tag}}: {
+      obj->set_{{field.name}}({{field|objc_to_cpp_assign('self')}});
+      break;
+    }
+{%- endfor %}
+  }
+  return obj;
+}
+
+@end

@@ -307,6 +307,24 @@ class PendingRemoteMojoTypemap(MojoTypemap):
     def CppToObjC(self, accessor):
         return None
 
+class UnionMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return mojom.IsUnionKind(kind)
+    def ObjCWrappedType(self):
+        return "%s%s*" % (ObjCPrefixFromKind(self.kind), self.kind.name)
+    def ExpectedCppType(self):
+        return "%s::%sPtr" % (CppNamespaceFromKind(self.kind), self.kind.name)
+    def DefaultObjCValue(self, default):
+        args = (ObjCPrefixFromKind(self.kind), self.kind.name)
+        return "[[%s%s alloc] init]" % args
+    def ObjCToCpp(self, accessor):
+        return "%s.cppObjPtr" % accessor
+    def CppToObjC(self, accessor):
+        args = (ObjCPrefixFromKind(self.kind), self.kind.name, self.kind.name,
+                accessor)
+        return "[[%s%s alloc] initWith%s:*%s]" % args
+
 _mojo_typemaps = [
     StringMojoTypemap,
     TimeMojoTypemap,
@@ -320,6 +338,7 @@ _mojo_typemaps = [
     BaseDictionaryValueMojoTypemap,
     StructMojoTypemap,
     PendingRemoteMojoTypemap,
+    UnionMojoTypemap,
 ]
 
 def MojoTypemapForKind(kind, is_inside_container=False):
@@ -409,12 +428,13 @@ class Generator(generator.Generator):
             return typestring
         return "const %s&" % typestring
 
-    def _GetObjCPropertyModifiers(self, kind):
+    def _GetObjCPropertyModifiers(self, kind, inside_union=False):
         modifiers = ['nonatomic']
         if (mojom.IsArrayKind(kind) or mojom.IsStringKind(kind) or
                 mojom.IsMapKind(kind) or mojom.IsStructKind(kind)):
             modifiers.append('copy')
-        if mojom.IsNullableKind(kind):
+        if ((inside_union and mojom.IsObjectKind(kind))
+                or mojom.IsNullableKind(kind)):
             modifiers.append('nullable')
         return ', '.join(modifiers)
 
@@ -497,9 +517,10 @@ class Generator(generator.Generator):
                     accessor, cpp_assign)
         return cpp_assign
 
-    def _CppToObjCAssign(self, field, obj=None):
+    def _CppToObjCAssign(self, field, prefix=None, suffix=None):
         kind = field.kind
-        accessor = "%s%s" % (obj + "." if obj else "", field.name)
+        accessor = "%s%s%s" % (prefix if prefix else "",
+                               field.name, (suffix if suffix else ""))
         typemap = MojoTypemapForKind(kind)
         if mojom.IsNullableKind(kind):
             if mojom.IsStructKind(kind):
@@ -528,6 +549,9 @@ class Generator(generator.Generator):
         all_interfaces = [item for item in
                           self.module.interfaces if item.name not in
                           self.excludedTypes]
+        all_unions = [item for item in
+                      self.module.unions if item.name not in
+                      self.excludedTypes]
         all_enums = list(self.module.enums)
         for struct in all_structs:
             all_enums.extend(struct.enums)
@@ -563,7 +587,7 @@ class Generator(generator.Generator):
             "module_name": os.path.basename(self.module.path),
             "class_prefix": ObjCPrefixFromModule(self.module),
             "structs": all_structs,
-            "unions": self.module.unions,
+            "unions": all_unions,
             "constants": self.module.constants
         }
 

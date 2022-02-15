@@ -27,6 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 {%    include "private_struct_declaration.tmpl" %}
 {%- endfor %}
 
+{%- for union in unions %}
+{%    include "private_union_declaration.tmpl" %}
+{%- endfor %}
+
 {%- for interface in interfaces %}
 {%    include "private_interface_declaration.tmpl" %}
 {%- endfor %}
