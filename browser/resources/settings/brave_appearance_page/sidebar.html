@@ -1,7 +1,11 @@
 <style include="settings-shared iron-flex">
+  .settings-box.bottom-border {
+    border-top: none;
+    border-bottom: var(--cr-separator-line);
+  }
 </style>
 <template is="dom-if" if="[[isSidebarFeatureEnabled_]]">
-  <div class="settings-box">
+  <div class="settings-box bottom-border">
     <div class="flex" id="labelWrapper" aria-hidden="true">
       <div class="label">$i18n{appearanceSettingsShowOptionTitle}</div>
       <div class="secondary label" id="sub-label">
