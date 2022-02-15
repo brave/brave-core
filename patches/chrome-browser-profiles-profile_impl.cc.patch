@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_impl.cc b/chrome/browser/profiles/profile_impl.cc
-index a106ae0218566b1fc5f05da7bf8e54dd68ffbfdd..3440dcd5408f6bb015069a91b902d3fc6549ed52 100644
+index bd0c693804407b5b40ec3da3a61496000e2a0710..ab0ebe32e468efc680abb59139dc04b038abaf23 100644
 --- a/chrome/browser/profiles/profile_impl.cc
 +++ b/chrome/browser/profiles/profile_impl.cc
-@@ -364,7 +364,7 @@ std::unique_ptr<Profile> Profile::CreateProfile(const base::FilePath& path,
+@@ -362,7 +362,7 @@ std::unique_ptr<Profile> Profile::CreateProfile(const base::FilePath& path,
      NOTREACHED();
    }
  
