@@ -12,6 +12,7 @@
 
 class SidebarButtonView : public views::ImageButton {
  public:
+  METADATA_HEADER(SidebarButtonView);
   static const int kSidebarButtonSize = 42;
 
   class Delegate {

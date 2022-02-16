@@ -31,6 +31,7 @@ class SidebarItemsContentsView : public views::View,
                                  public views::WidgetObserver,
                                  public ui::SimpleMenuModel::Delegate {
  public:
+  METADATA_HEADER(SidebarItemsContentsView);
   SidebarItemsContentsView(BraveBrowser* browser,
                            views::DragController* drag_controller);
   ~SidebarItemsContentsView() override;

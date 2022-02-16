@@ -24,6 +24,7 @@ class SidebarItemAddedFeedbackBubble : public views::BubbleDialogDelegateView,
                                        public views::ViewObserver,
                                        public gfx::AnimationDelegate {
  public:
+  METADATA_HEADER(SidebarItemAddedFeedbackBubble);
   SidebarItemAddedFeedbackBubble(views::View* anchor_view,
                                  views::View* items_contents_view);
   ~SidebarItemAddedFeedbackBubble() override;

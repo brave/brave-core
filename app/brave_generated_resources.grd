@@ -1438,6 +1438,12 @@ Are you sure you want to do this?
         <message name="IDS_SIDEBAR_ADDED_FEEDBACK_TITLE_2" desc="Label for second row text in item added feedback bubble">
           Right-click to remove
         </message>
+        <message name="IDS_SIDEBAR_ITEMS_SCROLL_UP_BUTTON_ACCESSIBLE_NAME" desc="Text to be spoken when scroll up button is shown">
+          Scroll up
+        </message>
+        <message name="IDS_SIDEBAR_ITEMS_SCROLL_DOWN_BUTTON_ACCESSIBLE_NAME" desc="Text to be spoken when scroll down button is shown">
+          Scroll down
+        </message>
       </if>
 
       <!-- Speedreader -->

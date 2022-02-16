@@ -42,6 +42,7 @@ class SidebarContainerView
       public SidebarShowOptionsEventDetectWidget::Delegate,
       public sidebar::SidebarModel::Observer {
  public:
+  METADATA_HEADER(SidebarContainerView);
   explicit SidebarContainerView(BraveBrowser* browser);
   ~SidebarContainerView() override;
 

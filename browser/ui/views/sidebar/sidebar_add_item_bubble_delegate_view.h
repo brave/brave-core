@@ -20,6 +20,7 @@ struct SidebarItem;
 class SidebarAddItemBubbleDelegateView
     : public views::BubbleDialogDelegateView {
  public:
+  METADATA_HEADER(SidebarAddItemBubbleDelegateView);
   SidebarAddItemBubbleDelegateView(BraveBrowser* browser,
                                    views::View* anchor_view);
   ~SidebarAddItemBubbleDelegateView() override;
