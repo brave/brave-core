@@ -1,5 +1,6 @@
 include_rules = [
   "+ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h",
+  "+brave/common",
   "+components/component_updater",
   "+components/gcm_driver/gcm_driver.h",
   "+components/history/core/browser",
@@ -15,6 +16,7 @@ include_rules = [
   "+components/signin/core/browser",
   "+components/ukm",
   "+components/version_info",
+  "+extensions/common",
   "+mojo/public/cpp",
   "+services/metrics/public/cpp",
   "+services/network/network_change_manager.h",
