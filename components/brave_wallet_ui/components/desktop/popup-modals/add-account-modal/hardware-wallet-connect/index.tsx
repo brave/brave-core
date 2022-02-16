@@ -53,9 +53,9 @@ export default function (props: Props) {
     LedgerDerivationPaths.LedgerLive
   )
   const [showAccountsList, setShowAccountsList] = React.useState<boolean>(false)
-  const getErrorMessage = (error: any) => {
+  const getErrorMessage = (error: any, accountTypeName: string) => {
     if (error.statusCode && error.statusCode === 27404) { // Unknown Error
-      return { error: getLocale('braveWalletConnectHardwareInfo2'), userHint: '' }
+      return { error: getLocale('braveWalletConnectHardwareInfo2').replace('$1', accountTypeName), userHint: '' }
     }
 
     if (error.statusCode && (error.statusCode === 27904 || error.statusCode === 26368)) { // INCORRECT_LENGTH or INS_NOT_SUPPORTED
@@ -81,7 +81,7 @@ export default function (props: Props) {
     }).then((result) => {
       setAccounts(result)
     }).catch((error) => {
-      setConnectionError(getErrorMessage(error))
+      setConnectionError(getErrorMessage(error, selectedAccountType.name))
       setShowAccountsList(false)
     }).finally(
       () => setIsConnecting(false)
@@ -150,7 +150,7 @@ export default function (props: Props) {
       setAccounts([...accounts, ...result])
       setShowAccountsList(true)
     }).catch((error) => {
-      setConnectionError(getErrorMessage(error))
+      setConnectionError(getErrorMessage(error, selectedAccountType.name))
       setShowAccountsList(false)
     }).finally(
       () => setIsConnecting(false)

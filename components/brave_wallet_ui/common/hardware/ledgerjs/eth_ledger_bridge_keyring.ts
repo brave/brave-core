@@ -63,7 +63,7 @@ export default class LedgerBridgeKeyring extends LedgerEthereumKeyring {
   }
 
   isUnlocked = (): boolean => {
-    return this.app !== undefined
+    return this.app !== undefined && this.deviceId !== undefined
   }
 
   makeApp = async () => {
@@ -71,21 +71,20 @@ export default class LedgerBridgeKeyring extends LedgerEthereumKeyring {
   }
 
   unlock = async (): Promise<HardwareOperationResult> => {
-    if (this.app) {
+    if (this.isUnlocked()) {
       return { success: true }
     }
 
-    await this.makeApp()
     if (!this.app) {
-      return { success: false }
+      await this.makeApp()
     }
-
-    const eth: Eth = this.app
-    eth.transport.on('disconnect', this.onDisconnected)
-    const zeroPath = this.getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
-    const address = (await eth.getAddress(zeroPath)).address
-    this.deviceId = await hardwareDeviceIdFromAddress(address)
-
+    if (this.app && !this.deviceId) {
+      const eth: Eth = this.app
+      eth.transport.on('disconnect', this.onDisconnected)
+      const zeroPath = this.getPathForIndex(0, LedgerDerivationPaths.LedgerLive)
+      const address = (await eth.getAddress(zeroPath)).address
+      this.deviceId = await hardwareDeviceIdFromAddress(address)
+    }
     return { success: this.isUnlocked() }
   }
 
