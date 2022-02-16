@@ -23,7 +23,6 @@
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/task/task_runner_util.h"
 #include "base/values.h"
 #include "base/version.h"
@@ -230,6 +229,8 @@ GreaselionServiceImpl::GreaselionServiceImpl(
       update_pending_(false),
       pending_installs_(0),
       task_runner_(std::move(task_runner)),
+      extension_dirs_(new std::vector<base::ScopedTempDir>,
+                      base::OnTaskRunnerDeleter(task_runner_)),
       browser_version_(
           version_info::GetBraveVersionWithoutChromiumMajorVersion()),
       weak_factory_(this) {
@@ -325,7 +326,7 @@ void GreaselionServiceImpl::PostConvert(
     LOG(ERROR) << "Could not load Greaselion script";
   } else {
     greaselion_extensions_.push_back(converted_extension->first->id());
-    extension_dirs_.push_back(std::move(converted_extension->second));
+    extension_dirs_->push_back(std::move(converted_extension->second));
     extension_system_->ready().Post(
         FROM_HERE, base::BindOnce(&GreaselionServiceImpl::Install,
                                   weak_factory_.GetWeakPtr(),
