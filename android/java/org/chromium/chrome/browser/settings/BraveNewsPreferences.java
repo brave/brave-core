@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
-import androidx.preference.CheckBoxPreference;
 import androidx.preference.EditTextPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -20,7 +19,6 @@ import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_news.mojom.Publisher;
 import org.chromium.brave_news.mojom.PublisherType;
@@ -54,12 +52,11 @@ public class BraveNewsPreferences extends BravePreferenceFragment
     public static final String PREF_SHOW_OPTIN = "show_optin";
     public static final String PREF_SOURCES_SECTION = "your_sources_section";
     public static final String PREF_ADD_SOURCES = "add_source_news";
-    public static final String PREF_ADD_RSS_SOURCES = "news_source_1";
     private static final String PREF_RSS_SOURCES = "rss_sources";
 
     private ChromeSwitchPreference mTurnOnNews;
     private ChromeSwitchPreference mShowNews;
-    private EditTextPreference addSource;
+    private EditTextPreference mAddSource;
     private PreferenceScreen mMainScreen;
     private PreferenceCategory mRssCategory;
     private PreferenceManager mPreferenceManager;
@@ -91,57 +88,62 @@ public class BraveNewsPreferences extends BravePreferenceFragment
         mBraveNewsController.getPublishers((publishers) -> {
             List<Publisher> allPublishers = new ArrayList<>();
             List<Publisher> categoryPublishers = new ArrayList<>();
+            List<Publisher> rssPublishers = new ArrayList<>();
             for (Map.Entry<String, Publisher> entry : publishers.entrySet()) {
                 Publisher publisher = entry.getValue();
                 if (publisher.type != PublisherType.DIRECT_SOURCE) {
                     categoryPublishers.add(publisher);
                     mCategsPublishers.put(publisher.categoryName, categoryPublishers);
                 } else {
-                    addRss(publisher);
+                    rssPublishers.add(publisher);
                 }
             }
             mCategsPublishers.put("All Sources", allPublishers);
             addCategs(mCategsPublishers);
+            addRss(rssPublishers);
         });
     }
 
-    private void addRss(Publisher publisher) {
-        if (publisher.type != PublisherType.DIRECT_SOURCE) {
-            return;
-        }
-        SwitchPreference source = new SwitchPreference(ContextUtils.getApplicationContext());
-        boolean enabled = false;
-        if (publisher.userEnabledStatus == UserEnabled.ENABLED) {
-            enabled = true;
-        } else if (publisher.userEnabledStatus == UserEnabled.NOT_MODIFIED) {
-            enabled = publisher.isEnabled;
-        }
-        source.setTitle(publisher.publisherName);
-        source.setKey(publisher.publisherName);
-        source.setChecked(enabled);
-        source.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                @UserEnabled.EnumType
-                int type = UserEnabled.NOT_MODIFIED;
-                if ((boolean) newValue) {
-                    type = UserEnabled.ENABLED;
-                } else {
-                    type = UserEnabled.DISABLED;
-                }
-
-                SharedPreferencesManager.getInstance().writeBoolean(
-                        BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, true);
-
-                if (mBraveNewsController != null) {
-                    mBraveNewsController.setPublisherPref(publisher.publisherId, type);
-                }
-
-                source.setChecked((boolean) newValue);
-                return false;
+    private void addRss(List<Publisher> publishers) {
+        for (Publisher publisher : publishers) {
+            assert (publisher.type == PublisherType.DIRECT_SOURCE);
+            SwitchPreference source = new SwitchPreference(ContextUtils.getApplicationContext());
+            boolean enabled = false;
+            if (publisher.userEnabledStatus == UserEnabled.ENABLED) {
+                enabled = true;
+            } else if (publisher.userEnabledStatus == UserEnabled.NOT_MODIFIED) {
+                enabled = publisher.isEnabled;
             }
-        });        
-        mRssCategory.addPreference(source);
+            source.setTitle(publisher.publisherName);
+            source.setKey(publisher.publisherName);
+            source.setDefaultValue((boolean) true);
+            source.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    @UserEnabled.EnumType
+                    int type = UserEnabled.NOT_MODIFIED;
+                    if ((boolean) newValue) {
+                        type = UserEnabled.ENABLED;
+                    } else {
+                        type = UserEnabled.DISABLED;
+                    }
+
+                    SharedPreferencesManager.getInstance().writeBoolean(
+                            BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, true);
+
+                    if (mBraveNewsController != null) {
+                        mBraveNewsController.setPublisherPref(publisher.publisherId, type);
+                    }
+                    source.setChecked((boolean) newValue);
+                    if (!(boolean) newValue) {
+                        mRssCategory.removePreference(source);
+                    }
+                    return false;
+                }
+            });
+            mRssCategory.addPreference(source);
+            source.setChecked(true);
+        }
     }
 
     private void addCategs(TreeMap<String, List<Publisher>> publisherCategories) {
@@ -186,11 +188,11 @@ public class BraveNewsPreferences extends BravePreferenceFragment
         mPreferenceManager = getPreferenceManager();
         mMainScreen = mPreferenceManager.getPreferenceScreen();
 
-        addSource = (EditTextPreference) findPreference(PREF_RSS_SOURCES);
-        if (addSource != null) {
-            addSource.setPositiveButtonText(R.string.search_title);
-            addSource.setOnPreferenceChangeListener(this);
-            addSource.setText("");
+        mAddSource = (EditTextPreference) findPreference(PREF_RSS_SOURCES);
+        if (mAddSource != null) {
+            mAddSource.setPositiveButtonText(R.string.search_title);
+            mAddSource.setOnPreferenceChangeListener(this);
+            mAddSource.setText("");
         }
 
         boolean isNewsOn = BravePrefServiceBridge.getInstance().getNewsOptIn();
@@ -241,7 +243,7 @@ public class BraveNewsPreferences extends BravePreferenceFragment
                     rssUrl, (isValidFeed, isDuplicate, result) -> {
                         if (isValidFeed && !isDuplicate && result != null) {
                             SharedPreferencesManager.getInstance().writeBoolean(
-                                BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, true);
+                                    BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, true);
                             getActivity().finish();
                             SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
                             settingsLauncher.launchSettingsActivity(

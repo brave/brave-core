@@ -16,10 +16,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
-import androidx.preference.SwitchPreferenceCompat;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_news.mojom.Publisher;
 import org.chromium.brave_news.mojom.UserEnabled;

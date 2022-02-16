@@ -24,7 +24,7 @@
         android:dependency="kNewTabPageShowToday"
         android:title="@string/news_your_sources_section"/>
 
-    <EditTextPreference
+    <androidx.preference.EditTextPreference
         android:key="rss_sources"
         android:title="@string/news_add_source"
         android:defaultValue="@string/news_feed_site_url"
