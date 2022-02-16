@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
 import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.SnapScrollHelper;
+import org.chromium.chrome.browser.feed.sort_ui.FeedOptionsCoordinator;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
@@ -50,6 +51,7 @@ import org.chromium.chrome.browser.omnibox.SearchEngineLogoUtils;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.status.PageInfoIPHController;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxPedalDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.SuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
@@ -109,7 +111,6 @@ public class BytecodeTest {
     @SmallTest
     public void testClassesExist() throws Exception {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/MainSettings"));
-        Assert.assertTrue(classExists("org/chromium/chrome/browser/sync/AndroidSyncSettings"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPageLayout"));
@@ -224,10 +225,6 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testMethodsExist() throws Exception {
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings",
-                "updateCachedSettings", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings",
-                "setChromeSyncEnabled", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "extensiveBookmarkChangesBeginning", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
@@ -434,12 +431,12 @@ public class BytecodeTest {
                 ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
                 OneshotSupplier.class, boolean.class, ObservableSupplier.class,
                 OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, WindowAndroid.class, Supplier.class, Supplier.class,
-                StatusBarColorController.class, AppMenuDelegate.class,
+                OneshotSupplier.class, WindowAndroid.class, Supplier.class, boolean.class,
+                Supplier.class, StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
                 OneshotSupplier.class, SnackbarManager.class, JankTracker.class, Supplier.class,
-                OneshotSupplier.class, boolean.class));
+                OneshotSupplier.class, OmniboxPedalDelegate.class, boolean.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -501,7 +498,8 @@ public class BytecodeTest {
                 ObservableSupplier.class, ObservableSupplier.class, Callback.class, Supplier.class,
                 Supplier.class, ObservableSupplier.class, BooleanSupplier.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class));
+                BooleanSupplier.class, OfflineDownloader.class, boolean.class, boolean.class,
+                ObservableSupplier.class, Callback.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
@@ -512,7 +510,7 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/share/ShareDelegateImpl",
                 "org/chromium/chrome/browser/share/BraveShareDelegateImpl",
                 BottomSheetController.class, ActivityLifecycleDispatcher.class, Supplier.class,
-                ShareDelegateImpl.ShareSheetDelegate.class, boolean.class));
+                Supplier.class, ShareDelegateImpl.ShareSheetDelegate.class, boolean.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/autofill/AutofillPopupBridge",
                         "org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge", View.class,
@@ -523,22 +521,17 @@ public class BytecodeTest {
                 Context.class, AutocompleteDelegate.class, UrlBarEditingTextStateProvider.class,
                 PropertyModel.class, Handler.class, Supplier.class, Supplier.class, Supplier.class,
                 LocationBarDataProvider.class, Callback.class, Supplier.class, BookmarkState.class,
-                JankTracker.class, ExploreIconProvider.class));
+                JankTracker.class, ExploreIconProvider.class, OmniboxPedalDelegate.class));
         Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
                 "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
                 FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
-                PropertyModel.class, int.class, FeedActionDelegate.class));
+                PropertyModel.class, int.class, FeedActionDelegate.class,
+                FeedOptionsCoordinator.class));
     }
 
     @Test
     @SmallTest
     public void testFieldsExist() throws Exception {
-        Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/sync/AndroidSyncSettings", "mIsSyncable"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/sync/AndroidSyncSettings", "mChromeSyncEnabled"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/sync/AndroidSyncSettings", "mMasterSyncEnabled"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/ntp/NewTabPageLayout", "mSiteSectionView"));
         Assert.assertTrue(
