@@ -7,17 +7,12 @@
 
 #include <utility>
 
-#include "base/rand_util.h"
-#include "base/time/default_clock.h"
 #include "brave/components/sync/protocol/pair_specifics.pb.h"
 
 PairSyncService::PairSyncService(
     std::unique_ptr<PairSyncBridge> pair_sync_bridge)
     : pair_sync_bridge_(
-          (DCHECK(pair_sync_bridge), std::move(pair_sync_bridge))),
-      clock_(base::DefaultClock::GetInstance()) {
-  timer_.Start(FROM_HERE, base::Seconds(10), this, &PairSyncService::AddPair);
-}
+          (DCHECK(pair_sync_bridge), std::move(pair_sync_bridge))) {}
 
 PairSyncService::~PairSyncService() = default;
 
@@ -29,15 +24,31 @@ PairSyncService::GetControllerDelegate() {
 
 void PairSyncService::Shutdown() {}
 
-void PairSyncService::AddPair() {
+void PairSyncService::AddPair(std::int64_t key, const std::string& value) {
   sync_pb::PairSpecifics pair;
-  pair.set_key(clock_->Now().since_origin().InMicroseconds());
-
-  std::string value(8, 0);
-  for (auto& c : value) {
-    c = base::RandInt('a', 'z');
-  }
-  pair.set_value(std::move(value));
+  pair.set_key(key);
+  pair.set_value(value);
 
   pair_sync_bridge_->AddPair(std::move(pair));
+}
+
+void PairSyncService::GetPairs(GetPairsCallback callback) {
+  pair_sync_bridge_->GetPairs(base::BindOnce(&PairSyncService::OnGetPairs,
+                                             base::Unretained(this),
+                                             std::move(callback)));
+}
+
+void PairSyncService::OnGetPairs(
+    GetPairsCallback callback, std::unique_ptr<syncer::DataBatch> data_batch) {
+  std::vector<std::pair<std::int64_t, std::string>> pairs;
+
+  if (data_batch) {
+    while (data_batch->HasNext()) {
+      auto key_and_data = data_batch->Next();
+      const auto& pair = key_and_data.second->specifics.pair();
+      pairs.emplace_back(pair.key(), pair.value());
+    }
+  }
+
+  std::move(callback).Run(std::move(pairs));
 }

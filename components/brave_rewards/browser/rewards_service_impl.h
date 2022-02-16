@@ -25,6 +25,7 @@
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
+#include "brave/browser/brave_rewards/vg_sync_service.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
@@ -776,6 +777,11 @@ class RewardsServiceImpl : public RewardsService,
 
   bool IsValidWalletType(const std::string& wallet_type) const;
 
+  //void AddPair();
+
+  //void OnGetPairs(RestoreVGsCallback callback,
+  //                std::vector<bat_ledger::mojom::PairPtr> pairs);
+
 #if defined(OS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();
   void GrantAttestationResult(
@@ -789,6 +795,7 @@ class RewardsServiceImpl : public RewardsService,
   raw_ptr<greaselion::GreaselionService> greaselion_service_ =
       nullptr;  // NOT OWNED
 #endif
+  raw_ptr<VgSyncService> vg_sync_service_ = nullptr;  // NOT OWNED
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;
   mojo::AssociatedRemote<bat_ledger::mojom::BatLedger> bat_ledger_;

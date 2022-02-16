@@ -73,6 +73,10 @@ PairSyncBridge::GetControllerDelegate() {
   return change_processor()->GetControllerDelegate();
 }
 
+void PairSyncBridge::GetPairs(DataCallback callback) {
+  GetAllDataForDebugging(std::move(callback));
+}
+
 std::unique_ptr<syncer::MetadataChangeList>
 PairSyncBridge::CreateMetadataChangeList() {
   return syncer::ModelTypeStore::WriteBatch::CreateMetadataChangeList();

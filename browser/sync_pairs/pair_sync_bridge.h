@@ -32,6 +32,8 @@ class PairSyncBridge : public syncer::ModelTypeSyncBridge {
 
   base::WeakPtr<syncer::ModelTypeControllerDelegate> GetControllerDelegate();
 
+  void GetPairs(DataCallback callback);
+
   // ModelTypeSyncBridge implementation:
   std::unique_ptr<syncer::MetadataChangeList> CreateMetadataChangeList()
       override;
