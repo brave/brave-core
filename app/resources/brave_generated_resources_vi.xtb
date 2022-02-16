@@ -114,15 +114,11 @@ Hoặc thay đổi sau tại <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1434416574322382019">Cửa sổ Riêng tư với Tor Mới</translation>
 <translation id="4703780849509456860">Mở Liên kết trong Cửa sổ Riêng tư với Tor</translation>
 <translation id="3488584642074079080">Mở Liên kết trong Cửa sổ Riêng tư với Tor của Brave</translation>
-<translation id="7475547933708221517">Chia sẻ tệp cục bộ sử dụng IPFS</translation>
-<translation id="2286177249736199435">Chia sẻ thư mục cục bộ bằng IPFS</translation>
 <translation id="4491895534716990473">Nhập văn bản đã chọn vào IPFS</translation>
 <translation id="8883166554766780543">Nhập và sao chép liên kết tới ảnh chụp nhanh IPFS</translation>
-<translation id="784573715436258741">Chia sẻ tệp cục bộ sử dụng IPFS</translation>
 <translation id="6313675821927505581">Mở cửa sổ cá nhân mới với công nghệ Tor</translation>
 <translation id="2638041073279639246">Mở liên kết trong cửa sổ cá nhân mới với công nghệ Tor</translation>
 <translation id="3425600262621021599">Mở liên kết trong cửa sổ cá nhân Brave với công nghệ Tor</translation>
-<translation id="575838692088926391">Chia sẻ thư mục cục bộ bằng IPFS</translation>
 <translation id="2515126961943087659">Dịch vụ Bat Ads</translation>
 <translation id="7924918279836988121">Dịch vụ Sổ cái Bat</translation>
 <translation id="4472575034687746823">Bắt đầu</translation>
@@ -241,7 +237,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6358469157239228181">Tên này không thể sử dụng</translation>
 <translation id="5761731140570209168">Thêm chuỗi kết nối ngang hàng mới</translation>
 <translation id="2082206983920804886">Xoay khóa</translation>
-<translation id="5078501082919354191">Không thể dừng nút IPFS cục bộ Brave</translation>
+<translation id="5078501082919354191">Không thể tắt nút IPFS cục bộ Brave</translation>
 <translation id="5687424953196903465">Không thể khởi chạy nút IPFS cục bộ Brave</translation>
 <translation id="6476061084931271248">Khởi động lại nút để áp dụng các thay đổi</translation>
 <translation id="3754226427671882382">Khởi động lại nút</translation>
@@ -477,4 +473,8 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="7815301689257843278">Tự động gửi báo cáo sự cố để Brave có thể ngăn sự cố này xảy ra lần nữa?</translation>
 <translation id="1068069727470515940">Bạn có thể thay đổi lại <ph name="SETTING_TEXT"/> vào bất kỳ lúc nào.</translation>
 <translation id="8325036459845654666">Mạng này đã được thêm.</translation>
+<translation id="7475547933708221517">Chia sẻ tệp cục bộ sử dụng IPFS</translation>
+<translation id="2286177249736199435">Chia sẻ thư mục cục bộ bằng IPFS</translation>
+<translation id="784573715436258741">Chia sẻ tệp cục bộ sử dụng IPFS</translation>
+<translation id="575838692088926391">Chia sẻ thư mục cục bộ bằng IPFS</translation>
 </translationbundle>

@@ -26,7 +26,7 @@
 <translation id="2313383941300459392">Reporniți browserul pentru a activa Google Widevine</translation>
 <translation id="2200626478572277092">Uneori, e nevoie de Widevine pentru a reda conținut media pe o pagină web. Este o extensie Google încărcată de pe serverele Google pe care Brave nu o poate verifica. Instalarea presupune că acceptați termenii de utilizare Google.</translation>
 <translation id="4931114810905682683"><ph name="LEARN_MORE_ABOUT_WIDEVINE"/>.
-Sau modificați ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
+Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6229752134959014186">Aflați mai multe despre Widevine</translation>
 <translation id="6061083111980694767"><ph name="SITE_NAME"/> vă solicită să</translation>
 <translation id="410351446219883937">Redare automată</translation>
@@ -114,15 +114,11 @@ Sau modificați ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1434416574322382019">Fereastră Privată nouă cu Tor</translation>
 <translation id="4703780849509456860">Deschide Link în Fereastră Privată cu Tor</translation>
 <translation id="3488584642074079080">Deschide Link în Fereastra Privată Brave cu Tor</translation>
-<translation id="7475547933708221517">Distribuiți fișierul local cu ajutorul IPFS</translation>
-<translation id="2286177249736199435">Distribuiți dosarul local cu ajutorul IPFS</translation>
 <translation id="4491895534716990473">Importați textul selectat în IPFS</translation>
 <translation id="8883166554766780543">Importați și copiați linkul la instantaneul IPFS</translation>
-<translation id="784573715436258741">Distribuiți fișierul local cu ajutorul IPFS</translation>
 <translation id="6313675821927505581">Fereastră privată nouă cu Tor</translation>
 <translation id="2638041073279639246">Deschideți linkul în fereastră privată cu Tor</translation>
 <translation id="3425600262621021599">Deschideți linkul în fereastră privată Brave cu Tor</translation>
-<translation id="575838692088926391">Distribuiți dosarul local cu ajutorul IPFS</translation>
 <translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
 <translation id="7924918279836988121">Serviciu Bat Ledger</translation>
 <translation id="4472575034687746823">Începeți</translation>
@@ -272,6 +268,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1327977588028644528">Gateway</translation>
 <translation id="1195880978080389104">Nod IPFS local Brave</translation>
 <translation id="4927734062756955434">Adresa ieșirii publice IPFS</translation>
+<translation id="2178402446227616866"><ph name="BEGIN_LINK_MPL"/>Aflați mai multe <ph name="END_LINK_MPL"/> despre nodul IPFS local Brave și confidențialitatea gateway-ului.</translation>
 <translation id="8425213833346101688">Modifică</translation>
 <translation id="557281710253742286">Configurează ieșirea IPFS</translation>
 <translation id="8571837315037233299">Adresa de ieșire</translation>
@@ -476,4 +473,8 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7815301689257843278">Trimiteți automat rapoarte privind erorile, astfel încât Brave să poată preveni repetarea unor astfel de situații?</translation>
 <translation id="1068069727470515940">Puteți modifica <ph name="SETTING_TEXT"/> din nou în orice moment.</translation>
 <translation id="8325036459845654666">Această rețea este adăugată deja</translation>
+<translation id="7475547933708221517">Distribuiți fișierul local cu ajutorul IPFS</translation>
+<translation id="2286177249736199435">Distribuiți dosarul local cu ajutorul IPFS</translation>
+<translation id="784573715436258741">Distribuiți fișierul local cu ajutorul IPFS</translation>
+<translation id="575838692088926391">Distribuiți dosarul local cu ajutorul IPFS</translation>
 </translationbundle>

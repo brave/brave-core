@@ -85,7 +85,7 @@
 <translation id="5808759341041733958">Elige el motor de búsqueda predeterminado</translation>
 <translation id="1331593888918588693">Después podrá cambiar sus preferencias en la configuración de la aplicación.</translation>
 <translation id="5806601733251372221">Escudos Brave</translation>
-<translation id="8537217141725709400">Gane <ph name="TOKEN"/>s</translation>
+<translation id="8537217141725709400">Gana <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="5870330605209713397">viendo anuncios que respeten la privacidad y apoye sus sitios y creadores favoritos predeterminados.</translation>
 <translation id="5302488867897327287">Al tocar Empezar a utilizar Brave Rewards, aceptas las</translation>
@@ -97,14 +97,10 @@
 <translation id="6511854390690723657">Este es tu primer anuncio de Brave. Pulsa para obtener más información.</translation>
 <translation id="2070991379950719711">Empezar a utilizar Brave Rewards</translation>
 <translation id="48520986898237073">Continuar con el monedero</translation>
-<translation id="3570367516044491911">Establecer como navegador predeterminado</translation>
+<translation id="6800338374677644736">Establecer como navegador predeterminado</translation>
 <translation id="19715420010996093">Selecciona Brave Browser y pulsa en «Siempre».</translation>
 <translation id="3546439402724649282">Brave ya está configurado como tu navegador predeterminado.</translation>
 <translation id="8389661903259423907">Ya has configurado un navegador predeterminado. Puedes cambiar el navegador predeterminado en la configuración de la aplicación.</translation>
-<translation id="7091885296442320770">Brave es más veloz que un rayo</translation>
-<translation id="2171928016777725844">¡Convierte a Brave en tu navegador predeterminado!</translation>
-<translation id="7136694880210472378">Establecer como predeterminado</translation>
-<translation id="4250680216510889253">No</translation>
 <translation id="8826007068782654809">Gracias</translation>
 <translation id="6665366815203065060">Acabas de enviar una propina a:</translation>
 <translation id="5441565662498481293">Estás enviando automáticamente una propina a:</translation>
@@ -525,9 +521,9 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="6478996494082389936">análisis privados de productos.</translation>
 <translation id="5187052478998910855">¿Necesitas hacer un repaso de las Rewards?</translation>
 <translation id="8622329973403382303">Repaso rápido para saber cómo pasar a la historia como una estrella de las recompensas.</translation>
-<translation id="8401711613788729448">Abre todos los enlaces con Brave para proteger tu privacidad</translation>
-<translation id="3184805785843994538">Los escudos de Brave bloquean rastreadores y anuncios, ahorran datos y le ahorran tiempo en cada sitio que visita.</translation>
-<translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
+<translation id="7625138338483121345">Abre todos los enlaces con Brave para proteger tu privacidad</translation>
+<translation id="4511485286950743564">Los escudos de Brave bloquean rastreadores y anuncios, ahorran datos y le ahorran tiempo en cada sitio que visita.</translation>
+<translation id="9218430445555521422">Establecer Brave como predeterminado</translation>
 <translation id="3479552764303398839">Ahora no</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -597,7 +593,7 @@ Verifica que ha sido un dispositivo tuyo el que ha generado estas palabras clave
 <translation id="283071225285270357">Introduce tu frase de recuperación</translation>
 <translation id="3943857333388298514">Pegar</translation>
 <translation id="3331452756822160641">Contraseña nueva</translation>
-<translation id="4854035885012188958">Restauración a partir de una cartera de criptomonedas de Brave anterior</translation>
+<translation id="4359319875297001084">Restauración a partir de una cartera de criptomonedas de Brave anterior</translation>
 <translation id="2339124864228588937">Verificar frase de recuperación</translation>
 <translation id="3747079125031086337">Seleccione las palabras de la frase de recuperación en el orden correcto.</translation>
 <translation id="6518133107902771759">Verificar</translation>
@@ -806,6 +802,7 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="4351811224047421378">Decimales de precisión</translation>
 <translation id="8614026298974065517">Eliminar activo personalizado</translation>
 <translation id="4378941981362528553">¿Quieres eliminar el token <ph name="TOKEN_NAME"/> (<ph name="TOKEN_SYMBOL"/>)?</translation>
+<translation id="4250680216510889253">No</translation>
 <translation id="8971278306757462297">La dirección de recepción es la suya propia</translation>
 <translation id="749944179568745958">No es una dirección de ETH válida</translation>
 <translation id="3506416339268164412">La dirección de recepción es la dirección del contrato del token</translation>
@@ -839,8 +836,8 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="665660671251623018">Decimales de la divisa de la cadena</translation>
 <translation id="182619028057179895">Formato no válido; los decimales de la divisa forman un número positivo</translation>
 <translation id="2978054488731497946">Introduce los decimales de la divisa</translation>
-<translation id="3047726704186619366">URL de los iconos</translation>
-<translation id="2487558607408469181">URL de exploradores de bloques</translation>
+<translation id="7642841516562576649">URL de los iconos</translation>
+<translation id="4693057234255364395">URL de exploradores de bloques</translation>
 <translation id="7059127752542505809">Escribir URL</translation>
 <translation id="2156993118928861787">Dirección no válida</translation>
 <translation id="6889920539620318793">Establecer como activo</translation>
@@ -861,4 +858,14 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="7033470144757208254">Brave utiliza 0x como agregador DEX.</translation>
 <translation id="7470079236088529568">Concesiones reclamadas en total</translation>
 <translation id="8845154268466251503">BAT</translation>
+<translation id="3570367516044491911">Establecer como navegador predeterminado</translation>
+<translation id="7091885296442320770">Brave es más veloz que un rayo</translation>
+<translation id="2171928016777725844">¡Convierte a Brave en tu navegador predeterminado!</translation>
+<translation id="7136694880210472378">Establecer como predeterminado</translation>
+<translation id="8401711613788729448">Abre todos los enlaces con Brave para proteger tu privacidad</translation>
+<translation id="3184805785843994538">Los escudos de Brave bloquean rastreadores y anuncios, ahorran datos y le ahorran tiempo en cada sitio que visita.</translation>
+<translation id="8722651357687610395">Establecer Brave como predeterminado</translation>
+<translation id="4854035885012188958">Restauración a partir de una cartera de criptomonedas de Brave anterior</translation>
+<translation id="3047726704186619366">URL de los iconos</translation>
+<translation id="2487558607408469181">URL de exploradores de bloques</translation>
 </translationbundle>

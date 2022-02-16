@@ -114,15 +114,11 @@ lub zmień później w <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1434416574322382019">Nowe okno prywatne z obsługą sieci Tor</translation>
 <translation id="4703780849509456860">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3488584642074079080">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
-<translation id="7475547933708221517">Udostępnij plik lokalny, używając IPFS</translation>
-<translation id="2286177249736199435">Udostępnij lokalny folder, używając IPFS</translation>
 <translation id="4491895534716990473">Importuj zaznaczony tekst do IPFS</translation>
 <translation id="8883166554766780543">Zaimportuj i skopiuj link do migawki IPFS</translation>
-<translation id="784573715436258741">Udostępnij plik lokalny, używając IPFS</translation>
 <translation id="6313675821927505581">Nowe okno prywatne z obsługą sieci Tor</translation>
 <translation id="2638041073279639246">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
 <translation id="3425600262621021599">Otwórz link w oknie prywatnym z obsługą sieci Tor</translation>
-<translation id="575838692088926391">Udostępnij lokalny folder, używając IPFS</translation>
 <translation id="2515126961943087659">Usługa reklam Bat</translation>
 <translation id="7924918279836988121">Usługa Ledger Bat</translation>
 <translation id="4472575034687746823">Podstawowe</translation>
@@ -476,4 +472,8 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="7815301689257843278">Czy automatycznie wysyłać raporty o awariach, aby przeglądarka Brave mogła zapobiec ponownemu wystąpieniu tego problemu?</translation>
 <translation id="1068069727470515940">Możesz zmienić <ph name="SETTING_TEXT"/> ponownie w dowolnym momencie.</translation>
 <translation id="8325036459845654666">Ta sieć jest już dodana.</translation>
+<translation id="7475547933708221517">Udostępnij plik lokalny, używając IPFS</translation>
+<translation id="2286177249736199435">Udostępnij lokalny folder, używając IPFS</translation>
+<translation id="784573715436258741">Udostępnij plik lokalny, używając IPFS</translation>
+<translation id="575838692088926391">Udostępnij lokalny folder, używając IPFS</translation>
 </translationbundle>

@@ -114,15 +114,11 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="1434416574322382019">Új</translation>
 <translation id="4703780849509456860">Link megnyitása Tor használatával privát ablakban</translation>
 <translation id="3488584642074079080">Hivatkozás megnyitása Brave Privát Ablakkal a Torban</translation>
-<translation id="7475547933708221517">Helyi fájl megosztása IPFS használatával</translation>
-<translation id="2286177249736199435">Helyi mappa megosztása IPFS használatával</translation>
 <translation id="4491895534716990473">Kiválasztott szöveg importálása IPFS-be</translation>
 <translation id="8883166554766780543">Hivatkozás importálása és másolása az IPFS-pillanatképbe</translation>
-<translation id="784573715436258741">Helyi fájl megosztása IPFS használatával</translation>
 <translation id="6313675821927505581">Új privát ablak a Tor böngészővel</translation>
 <translation id="2638041073279639246">Hivatkozás megnyitása privát ablakban a Tor böngészővel</translation>
 <translation id="3425600262621021599">Hivatkozás megnyitása Brave privát ablakban a Tor böngészővel</translation>
-<translation id="575838692088926391">Helyi mappa megosztása IPFS használatával</translation>
 <translation id="2515126961943087659">BAT hirdetési szolgáltatás</translation>
 <translation id="7924918279836988121">Bat főkönyvi szolgáltatás</translation>
 <translation id="4472575034687746823">Kezdő lépések</translation>
@@ -477,4 +473,8 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="7815301689257843278">Küldjön a rendszer automatikusan jelentéseket az összeomlásról, hogy a Brave meg tudja előzni a probléma újbóli előfordulását?</translation>
 <translation id="1068069727470515940">Módosíthatja <ph name="SETTING_TEXT"/> később bármikor.</translation>
 <translation id="8325036459845654666">A hálózat már hozzá lett adva.</translation>
+<translation id="7475547933708221517">Helyi fájl megosztása IPFS használatával</translation>
+<translation id="2286177249736199435">Helyi mappa megosztása IPFS használatával</translation>
+<translation id="784573715436258741">Helyi fájl megosztása IPFS használatával</translation>
+<translation id="575838692088926391">Helyi mappa megosztása IPFS használatával</translation>
 </translationbundle>

@@ -138,7 +138,7 @@
 <translation id="4720556299488643018">Se désinscrire</translation>
 <translation id="1209739344687072997">Signaler une panne du site</translation>
 <translation id="8510478288840333677">Faites savoir aux développeurs de Brave que ce site ne fonctionne pas correctement avec les boucliers :</translation>
-<translation id="6013164422534859494">Remarque : l'adresse de ce site sera soumise avec votre numéro de version Brave et votre adresse IP (qui ne sera pas stockée).</translation>
+<translation id="4105411033440701818">Remarque : l'adresse de ce site sera soumise avec votre numéro de version Brave et votre adresse IP (qui ne sera pas stockée).</translation>
 <translation id="5299848999918506028">Merci !</translation>
 <translation id="76550953340008122">Merci d'avoir fait savoir aux développeurs de Brave qu'il y a quelque chose qui ne marche pas sur ce site. Nous ferons de notre mieux pour le réparer !</translation>
 <translation id="2974339193389078578">Brave est le nouvel Internet</translation>
@@ -792,10 +792,7 @@
 <translation id="4989163558385430922">Tout voir</translation>
 <translation id="3026978804849658576">Afficher le relevé</translation>
 <translation id="8494748383523030337">Votre solde</translation>
-<translation id="3343165035032571678">Vous avez gagné <ph name="AMOUNT"/> en regardant des Brave Private Ads !</translation>
-<translation id="6618415862402597254">Revenus Ads reçus</translation>
-<translation id="5981646694027725752">Réclamer des revenus</translation>
-<translation id="2556441076129789027">Réclamer des jetons</translation>
+<translation id="9013419433042554094">Réclamer des jetons</translation>
 <translation id="5544777623605368410">Revenus</translation>
 <translation id="3273637494083639780">Le traitement des jetons obtenus ce mois-ci commencera le <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Cela peut varier selon la volatilité du marché.</translation>
@@ -807,8 +804,7 @@
 <translation id="6777169449483742979">Vous gagnez des jetons en visualisant cette image sponsorisée.</translation>
 <translation id="5486114327664215175">Gagnez des jetons en visualisant cette image et soutenez les créateurs de contenu.</translation>
 <translation id="2940863921746574646">Solde de jetons</translation>
-<translation id="1714906256929297600">Utilisez vos jetons promotionnels pour soutenir les créateurs avant qu'ils n'expirent !</translation>
-<translation id="2426048501007152001">Jetons disponibles</translation>
+<translation id="2221902203895354376">Jetons disponibles</translation>
 <translation id="7701466644604753106">Activer Speedreader</translation>
 <translation id="763042262431778831">Désactiver Speedreader</translation>
 <translation id="8488282162676695335">Portefeuille Brave</translation>
@@ -961,7 +957,7 @@
 <translation id="1943188256166395881">Ajouter les comptes cochés</translation>
 <translation id="8554010658308662631">Charger plus</translation>
 <translation id="6998738230710304743">Chargement…</translation>
-<translation id="4970164249406565575">Rechercher un compte 0x</translation>
+<translation id="5592304751234049046">Rechercher un compte 0x</translation>
 <translation id="6151024411349343484">Essayez de changer de path HD (ci-dessus) si vous ne parvenez pas à trouver le compte que vous recherchez.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Hérités (MEW/MyCrypto)</translation>
@@ -1190,7 +1186,7 @@
 <translation id="5544888475837817215">Autoriser tous les traceurs et toutes les annonces</translation>
 <translation id="6203697265754637264">Cookies intersites bloqués</translation>
 <translation id="4627427111733173920">Cookies bloqués</translation>
-<translation id="7855168553463825937">Tous les cookies bloqués</translation>
+<translation id="3972324600756617403">Tous les cookies bloqués</translation>
 <translation id="8366221601425141146">Empreinte digitale bloquée</translation>
 <translation id="5582686930349810484">Empreintes digitales bloquées (standard)</translation>
 <translation id="6696441392507885865">Script de création d'une empreinte numérique bloqué (strict, peut casser les sites)</translation>
@@ -1230,4 +1226,13 @@
 <translation id="6973157709854838218">Masquer vos soldes</translation>
 <translation id="4548946945059463969">Afficher vos soldes à l'écran</translation>
 <translation id="242959166945779492">Le solde de votre compte est nul. Accédez à FTX pour acheter des devises.</translation>
+<translation id="6013164422534859494">Remarque : l'adresse de ce site sera soumise avec votre numéro de version Brave et votre adresse IP (qui ne sera pas stockée).</translation>
+<translation id="3343165035032571678">Vous avez gagné <ph name="AMOUNT"/> en regardant des Brave Private Ads !</translation>
+<translation id="6618415862402597254">Revenus Ads reçus</translation>
+<translation id="5981646694027725752">Réclamer des revenus</translation>
+<translation id="2556441076129789027">Réclamer des jetons</translation>
+<translation id="1714906256929297600">Utilisez vos jetons promotionnels pour soutenir les créateurs avant qu'ils n'expirent !</translation>
+<translation id="2426048501007152001">Jetons disponibles</translation>
+<translation id="4970164249406565575">Rechercher un compte 0x</translation>
+<translation id="7855168553463825937">Tous les cookies bloqués</translation>
 </translationbundle>
