@@ -168,8 +168,8 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
     // Handle if we are in a continuing pressed state for this extension.
     if (is_rewards_pressed_ && id == brave_rewards_extension_id) {
       is_rewards_pressed_ = false;
-      actions_[id].view_controller_->ExecuteAction(
-          true, ToolbarActionViewController::InvocationSource::kToolbarButton);
+      actions_[id].view_controller_->ExecuteUserAction(
+          ToolbarActionViewController::InvocationSource::kToolbarButton);
     }
   }
 }
@@ -403,8 +403,8 @@ void BraveActionsContainer::OnBraveActionShouldTrigger(
       actions_[extension_id].view_controller_
           ->ExecuteActionUI(*ui_relative_path);
     else
-      actions_[extension_id].view_controller_->ExecuteAction(
-          true, ToolbarActionViewController::InvocationSource::kApi);
+      actions_[extension_id].view_controller_->ExecuteUserAction(
+          ToolbarActionViewController::InvocationSource::kApi);
   }
 }
 
