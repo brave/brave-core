@@ -11,7 +11,7 @@
     <color name="baseline_primary_100">#5B2A23</color>
     <color name="baseline_primary_200">#F35333</color>
     <color name="default_text_color_on_accent1_baseline">@color/default_text_color_on_accent1_light</color>
-    <color name="dialog_bg_color_dark">@color/toolbar_background_primary</color>
+    <color name="dialog_bg_color_dark_baseline">@color/toolbar_background_primary</color>
 
     <!-- Theme colors -->
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
