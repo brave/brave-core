@@ -39,6 +39,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -911,8 +912,12 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignature) {
       tx_meta_id, "0x00",
       "0x93b9121e82df014428924df439ff044f89c205dd76a194f8b11f50d2eade744e",
       "0x7aa705c9144742836b7fbbd0745c57f67b60df7b8d1790fe59f91ed8d2bfc11d",
-      base::BindLambdaForTesting([&](bool success) {
+      base::BindLambdaForTesting([&](bool success,
+                                     mojom::ProviderError error_out,
+                                     const std::string& error_message_out) {
         EXPECT_TRUE(success);
+        EXPECT_EQ(error_out, mojom::ProviderError::kSuccess);
+        EXPECT_TRUE(error_message_out.empty());
         auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
         EXPECT_TRUE(tx_meta);
         EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Submitted);
@@ -942,8 +947,14 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignatureFail) {
   callback_called = false;
   eth_tx_manager()->ProcessHardwareSignature(
       tx_meta_id, "0x00", "9ff044f89c205dd76a194f8b11f50d2eade744e", "",
-      base::BindLambdaForTesting([&](bool success) {
+      base::BindLambdaForTesting([&](bool success,
+                                     mojom::ProviderError error_out,
+                                     const std::string& error_message_out) {
         EXPECT_FALSE(success);
+        EXPECT_EQ(error_out, mojom::ProviderError::kInternalError);
+        EXPECT_EQ(error_message_out,
+                  l10n_util::GetStringUTF8(
+                      IDS_BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR));
         auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
         EXPECT_TRUE(tx_meta);
         EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Error);
@@ -956,8 +967,14 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignatureFail) {
   callback_called = false;
   eth_tx_manager()->ProcessHardwareSignature(
       "-1", "0x00", "9ff044f89c205dd76a194f8b11f50d2eade744e", "",
-      base::BindLambdaForTesting([&](bool success) {
+      base::BindLambdaForTesting([&](bool success,
+                                     mojom::ProviderError error_out,
+                                     const std::string& error_message_out) {
         EXPECT_FALSE(success);
+        EXPECT_EQ(error_out, mojom::ProviderError::kResourceNotFound);
+        EXPECT_EQ(
+            error_message_out,
+            l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();

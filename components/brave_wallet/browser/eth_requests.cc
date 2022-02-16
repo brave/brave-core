@@ -205,8 +205,7 @@ std::string eth_estimateGas(const std::string& from_address,
                             const std::string& gas,
                             const std::string& gas_price,
                             const std::string& val,
-                            const std::string& data,
-                            const std::string& quantity_tag) {
+                            const std::string& data) {
   base::Value params(base::Value::Type::LIST);
   base::Value transaction(base::Value::Type::DICTIONARY);
   AddKeyIfNotEmpty(&transaction, "data", data);
@@ -216,7 +215,6 @@ std::string eth_estimateGas(const std::string& from_address,
   transaction.SetKey("to", base::Value(to_address));
   AddKeyIfNotEmpty(&transaction, "value", val);
   params.Append(std::move(transaction));
-  params.Append(std::move(quantity_tag));
   base::Value dictionary = GetJsonRpcDictionary("eth_estimateGas", &params);
   return GetJSON(dictionary);
 }

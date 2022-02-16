@@ -738,7 +738,7 @@ interface TxService {
   AddUnapprovedTransaction(TxDataUnion tx_data_union, string from) => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
-  ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status);
+  ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status, ProviderError error, string error_message);
 
   // Used to reject a transaction
   RejectTransaction(CoinType coin_type, string tx_meta_id) => (bool status);
@@ -779,7 +779,7 @@ interface EthTxManagerProxy {
   GetGasEstimation1559() => (GasEstimation1559? estimation);
 
   GetNonceForHardwareTransaction(string tx_meta_id) => (string? nonce);
-  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status);
+  ProcessHardwareSignature(string tx_meta_id, string v, string r, string s) => (bool status, ProviderError error, string error_message);
 };
 
 interface BraveWalletServiceObserver {
