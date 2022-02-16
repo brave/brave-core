@@ -355,7 +355,7 @@ interface KeyringServiceObserver {
   AutoLockMinutesChanged();
 
   // Fired when the selected account setting changes
-  SelectedAccountChanged();
+  SelectedAccountChanged(CoinType coin);
 };
 
 // List of tokens and coins that are supported.
@@ -464,7 +464,7 @@ interface KeyringService {
   NotifyUserInteraction();
 
   // Obtains the selected account
-  GetSelectedAccount() => (string? address);
+  GetSelectedAccount(CoinType coin) => (string? address);
 
   // Sets the selected account
   SetSelectedAccount(string address, CoinType coin) => (bool success);

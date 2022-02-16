@@ -724,7 +724,9 @@ void BraveWalletProviderImpl::OnTransactionStatusChanged(
   add_tx_callbacks_.erase(tx_meta_id);
 }
 
-void BraveWalletProviderImpl::SelectedAccountChanged() {
+void BraveWalletProviderImpl::SelectedAccountChanged(mojom::CoinType coin) {
+  if (coin != mojom::CoinType::ETH)
+    return;
   UpdateKnownAccounts();
 }
 

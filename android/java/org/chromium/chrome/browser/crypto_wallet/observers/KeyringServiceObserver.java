@@ -32,5 +32,5 @@ public interface KeyringServiceObserver
     default void autoLockMinutesChanged() {}
 
     @Override
-    default void selectedAccountChanged() {}
+    default void selectedAccountChanged(int coin) {}
 }

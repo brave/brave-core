@@ -16,7 +16,6 @@
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -213,12 +212,13 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool IsLocked(const std::string& keyring_id = mojom::kDefaultKeyringId) const;
   bool HasPendingUnlockRequest() const;
   void RequestUnlock();
-  absl::optional<std::string> GetSelectedAccount() const;
+  absl::optional<std::string> GetSelectedAccount(mojom::CoinType coin) const;
 
   void AddObserver(
       ::mojo::PendingRemote<mojom::KeyringServiceObserver> observer) override;
   void NotifyUserInteraction() override;
-  void GetSelectedAccount(GetSelectedAccountCallback callback) override;
+  void GetSelectedAccount(mojom::CoinType coin,
+                          GetSelectedAccountCallback callback) override;
   void SetSelectedAccount(const std::string& address,
                           mojom::CoinType coin,
                           SetSelectedAccountCallback callback) override;
@@ -327,7 +327,9 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void StopAutoLockTimer();
   void ResetAutoLockTimer();
   void OnAutoLockPreferenceChanged();
-  void OnSelectedAccountPreferenceChanged();
+  void NotifySelectedAccountChanged(mojom::CoinType coin);
+  void SetSelectedAccountForCoin(mojom::CoinType coin,
+                                 const std::string& address);
 
   std::unique_ptr<base::OneShotTimer> auto_lock_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;

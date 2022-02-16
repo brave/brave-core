@@ -243,7 +243,7 @@ class EthTxManager : public TxManager,
   void BackedUp() override {}
   void AccountsChanged() override {}
   void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged() override {}
+  void SelectedAccountChanged(mojom::CoinType coin) override {}
 
   // EthBlockTracker::Observer:
   void OnLatestBlock(uint256_t block_num) override {}

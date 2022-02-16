@@ -350,7 +350,7 @@ export function refreshKeyringInfo () {
     }
 
     // Get selectedAccountAddress
-    const getSelectedAccount = await keyringService.getSelectedAccount()
+    const getSelectedAccount = await keyringService.getSelectedAccount(BraveWallet.CoinType.ETH)
     const selectedAddress = getSelectedAccount.address
 
     // Fallback account address if selectedAccount returns null
