@@ -1597,6 +1597,9 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
 }
 
 TEST_F(KeyringServiceUnitTest, GetPrivateKeyForKeyringAccount) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(
+      brave_wallet::features::kBraveWalletSolanaFeature);
   KeyringService service(GetPrefs());
   ASSERT_TRUE(RestoreWallet(&service, kMnemonic1, "brave", false));
 
