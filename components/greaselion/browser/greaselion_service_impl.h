@@ -17,6 +17,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/version.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
@@ -96,7 +97,8 @@ class GreaselionServiceImpl : public GreaselionService,
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::ObserverList<GreaselionService::Observer> observers_;
   std::vector<extensions::ExtensionId> greaselion_extensions_;
-  std::vector<base::ScopedTempDir> extension_dirs_;
+  std::unique_ptr<std::vector<base::ScopedTempDir>, base::OnTaskRunnerDeleter>
+      extension_dirs_;
   base::Version browser_version_;
   base::WeakPtrFactory<GreaselionServiceImpl> weak_factory_;
 };
