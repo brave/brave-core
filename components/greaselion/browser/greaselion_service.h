@@ -45,6 +45,9 @@ class GreaselionService : public KeyedService,
   GreaselionService(const GreaselionService&) = delete;
   GreaselionService& operator=(const GreaselionService&) = delete;
 
+  // KeyedService
+  void Shutdown() override {}
+
   virtual void SetFeatureEnabled(GreaselionFeature feature, bool enabled) = 0;
   virtual void UpdateInstalledExtensions() = 0;
   virtual bool IsGreaselionExtension(const std::string& id) = 0;
