@@ -186,6 +186,8 @@ TEST(HDKeyEd25519UnitTest, SignAndVerify) {
   // signature size != 64
   EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(128, 0xff)));
   EXPECT_FALSE(key->Verify(msg_a, std::vector<uint8_t>(32, 0xff)));
+  EXPECT_FALSE(key->Verify(msg_b, std::vector<uint8_t>(128, 0xff)));
+  EXPECT_FALSE(key->Verify(msg_b, std::vector<uint8_t>(32, 0xff)));
 }
 
 TEST(HDKeyEd25519UnitTest, GenerateFromPrivateKey) {

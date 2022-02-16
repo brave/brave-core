@@ -2,6 +2,7 @@ use core::fmt;
 use ed25519_dalek_bip32::derivation_path::{
     ChildIndexError, DerivationPath, DerivationPathParseError,
 };
+use ed25519_dalek_bip32::ed25519_dalek::ed25519::signature::Signature as SignatureTrait;
 use ed25519_dalek_bip32::ed25519_dalek::{
     Keypair, SecretKey, Signature, SignatureError, Signer, KEYPAIR_LENGTH, PUBLIC_KEY_LENGTH,
     SECRET_KEY_LENGTH, SIGNATURE_LENGTH,
@@ -87,7 +88,7 @@ mod ffi {
         fn verify(
             self: &Ed25519DalekExtendedSecretKey,
             msg: &[u8],
-            sig: [u8; 64],
+            sig: &[u8],
         ) -> Box<Ed25519DalekVerificationResult>;
 
         fn to_bytes(self: &Ed25519DalekSignature) -> [u8; 64];
@@ -219,12 +220,12 @@ impl Ed25519DalekExtendedSecretKey {
     fn verify(
         self: &Ed25519DalekExtendedSecretKey,
         msg: &[u8],
-        sig: [u8; 64],
+        sig: &[u8],
     ) -> Box<Ed25519DalekVerificationResult> {
         Box::new(Ed25519DalekVerificationResult::from(
             Keypair::from_bytes(&self.keypair_raw())
                 .map_err(|err| Error::from(err))
-                .and_then(|keypair| Ok(keypair.verify(msg, &Signature::new(sig))?)),
+                .and_then(|keypair| Ok(keypair.verify(msg, &Signature::from_bytes(sig)?)?)),
         ))
     }
 }
