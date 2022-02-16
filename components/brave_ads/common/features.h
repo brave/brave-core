@@ -29,6 +29,7 @@ bool IsCustomAdNotificationsEnabled();
 #if !defined(OS_ANDROID)
 int AdNotificationFadeDuration();
 std::string AdNotificationDarkModeBackgroundColor();
+bool ShouldAttachAdNotificationToBrowserWindow();
 double AdNotificationNormalizedDisplayCoordinateX();
 int AdNotificationInsetX();
 double AdNotificationNormalizedDisplayCoordinateY();

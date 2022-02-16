@@ -100,13 +100,14 @@ void AdjustBoundsAndSnapToFitWorkAreaForWidget(views::Widget* widget,
 AdNotificationPopup::AdNotificationPopup(
     Profile* profile,
     const AdNotification& ad_notification,
-    gfx::NativeWindow browser_native_window)
+    gfx::NativeWindow browser_native_window,
+    gfx::NativeView browser_native_view)
     : profile_(profile),
       ad_notification_(ad_notification),
       animation_(std::make_unique<gfx::LinearAnimation>(this)) {
   DCHECK(profile_);
 
-  CreatePopup(browser_native_window);
+  CreatePopup(browser_native_window, browser_native_view);
 
   NotifyAccessibilityEvent(ax::mojom::Event::kAlert, true);
 
@@ -256,7 +257,8 @@ void AdNotificationPopup::ClosePopup() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdNotificationPopup::CreatePopup(gfx::NativeWindow browser_native_window) {
+void AdNotificationPopup::CreatePopup(gfx::NativeWindow browser_native_window,
+                                      gfx::NativeView browser_native_view) {
   SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets()));
 
@@ -273,7 +275,7 @@ void AdNotificationPopup::CreatePopup(gfx::NativeWindow browser_native_window) {
   container_view->SetPosition(point);
   container_view->SetSize(ad_notification_view_->size());
 
-  CreateWidgetView(browser_native_window);
+  CreateWidgetView(browser_native_window, browser_native_view);
 }
 
 gfx::Point AdNotificationPopup::GetDefaultOriginForSize(const gfx::Size& size) {
@@ -372,14 +374,16 @@ gfx::Insets AdNotificationPopup::GetShadowMargin() const {
 }
 
 void AdNotificationPopup::CreateWidgetView(
-    gfx::NativeWindow browser_native_window) {
+    gfx::NativeWindow browser_native_window,
+    gfx::NativeView browser_native_view) {
   // The widget instance is owned by its NativeWidget. For more details see
   // ui/views/widget/widget.h
   AdNotificationPopupWidget* widget = new AdNotificationPopupWidget();
   widget->set_focus_on_creation(false);
   widget_observation_.Observe(widget);
 
-  widget->InitWidget(this, CalculateBounds(), browser_native_window);
+  widget->InitWidget(this, CalculateBounds(), browser_native_window,
+                     browser_native_view);
 
   if (!g_disable_fade_in_animation_for_testing) {
     widget->SetOpacity(0.0);

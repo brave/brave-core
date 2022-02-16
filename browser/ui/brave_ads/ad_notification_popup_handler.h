@@ -32,7 +32,8 @@ class AdNotificationPopupHandler final {
   // |ad_notification|.
   static void Show(Profile* profile,
                    const AdNotification& ad_notification,
-                   gfx::NativeWindow browser_native_window);
+                   gfx::NativeWindow browser_native_window,
+                   gfx::NativeView browser_native_view);
 
   // Close the notification popup view for the given |notification_id|.
   // |by_user| is true if the notification popup was closed by the user,

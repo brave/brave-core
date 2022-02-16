@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "brave/components/brave_ads/common/features.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/widget/widget_delegate.h"
@@ -22,7 +23,8 @@ AdNotificationPopupWidget::AdNotificationPopupWidget() = default;
 void AdNotificationPopupWidget::InitWidget(
     views::WidgetDelegate* delegate,
     const gfx::Rect& bounds,
-    gfx::NativeWindow browser_native_window) {
+    gfx::NativeWindow browser_native_window,
+    gfx::NativeView browser_native_view) {
   DCHECK(delegate);
 
   views::Widget::InitParams params;
@@ -39,7 +41,12 @@ void AdNotificationPopupWidget::InitWidget(
   params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
 #endif  // defined(OS_LINUX)
   params.bounds = bounds;
-  params.context = browser_native_window;
+
+  if (features::ShouldAttachAdNotificationToBrowserWindow()) {
+    params.parent = browser_native_view;
+  } else {
+    params.context = browser_native_window;
+  }
 
 #if defined(OS_WIN)
   // We want to ensure that this toast always goes to the native desktop,
