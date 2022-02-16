@@ -31,7 +31,7 @@ absl::optional<TransactionInfo> ParseTransaction(const base::Value& value) {
   TransactionInfo transaction;
 
   // Id
-  transaction.id = base::GenerateGUID();
+  transaction.id = base::GUID::GenerateRandomV4().AsLowercaseString();
 
   // Created at
   const std::string* created_at = value.FindStringKey(kCreatedAtKey);

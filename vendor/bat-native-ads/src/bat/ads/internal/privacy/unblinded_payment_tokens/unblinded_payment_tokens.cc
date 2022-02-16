@@ -82,7 +82,8 @@ void UnblindedPaymentTokens::SetTokensFromList(const base::Value& list) {
         dictionary->FindStringKey("transaction_id");
     if (!transaction_id_value) {
       // Migrate legacy confirmations
-      unblinded_payment_token.transaction_id = base::GenerateGUID();
+      unblinded_payment_token.transaction_id =
+          base::GUID::GenerateRandomV4().AsLowercaseString();
     } else {
       unblinded_payment_token.transaction_id = *transaction_id_value;
     }
