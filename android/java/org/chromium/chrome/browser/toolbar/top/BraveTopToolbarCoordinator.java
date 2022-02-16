@@ -15,6 +15,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.identity_disc.IdentityDiscController;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.ButtonData;
@@ -29,6 +30,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.user_education.UserEducationHelper;
 import org.chromium.chrome.features.start_surface.StartSurface;
 import org.chromium.chrome.features.start_surface.StartSurfaceConfiguration;
+import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.ui.resources.ResourceManager;
 
 import java.util.List;
@@ -62,7 +64,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             boolean isTabToGtsAnimationEnabled, boolean isStartSurfaceEnabled,
             boolean isTabGroupsAndroidContinuationEnabled, HistoryDelegate historyDelegate,
             BooleanSupplier partnerHomepageEnabledSupplier, OfflineDownloader offlineDownloader,
-            boolean initializeWithIncognitoColors) {
+            boolean initializeWithIncognitoColors, boolean shouldHideToolbarLayoutOnStart,
+            ObservableSupplier<Profile> profileSupplier,
+            Callback<LoadUrlParams> startSurfaceLogoClickedCallback) {
         super(controlContainer, toolbarLayout, toolbarDataProvider, tabController,
                 userEducationHelper, buttonDataProviders, layoutStateProviderSupplier,
                 normalThemeColorProvider, overviewThemeColorProvider,
@@ -74,7 +78,8 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 isIncognitoModeEnabledSupplier, isGridTabSwitcherEnabled,
                 isTabToGtsAnimationEnabled, isStartSurfaceEnabled,
                 isTabGroupsAndroidContinuationEnabled, historyDelegate,
-                partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors);
+                partnerHomepageEnabledSupplier, offlineDownloader, initializeWithIncognitoColors,
+                shouldHideToolbarLayoutOnStart, profileSupplier, startSurfaceLogoClickedCallback);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;
