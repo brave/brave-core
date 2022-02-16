@@ -183,7 +183,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
     private static final String PREF_CLEAR_ON_EXIT = "clear_on_exit";
     public static final String OPEN_URL = "open_url";
-    public static final String BITFLYER_PROMO_URL = "https://try.bravesoftware.jp/brave_20220121-1/";
+    public static final String BITFLYER_PROMO_URL = "https://brave.com/ja/bitflyer-on-android/";
 
     public static final String BRAVE_PRODUCTION_PACKAGE_NAME = "com.brave.browser";
     public static final String BRAVE_BETA_PACKAGE_NAME = "com.brave.browser_beta";
