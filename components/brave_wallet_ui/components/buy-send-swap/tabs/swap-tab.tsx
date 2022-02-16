@@ -178,7 +178,7 @@ function SwapTab (props: Props) {
           />
         </>
       }
-      {swapView !== 'send' &&
+      {swapView !== 'swap' &&
         <AccountsAssetsNetworks
           selectedAccount={selectedAccount}
           selectedNetwork={selectedNetwork}
