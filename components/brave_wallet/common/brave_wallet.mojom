@@ -301,7 +301,8 @@ interface WalletHandler {
                       array<AppItem> favoriteApps,
                       bool isWalletBackedUp,
                       array<AccountInfo> accountInfos,
-                      bool IsFilecoinEnabled);
+                      bool isFilecoinEnabled,
+                      bool isSolanaEnabled);
 
   // Adds a favorite app to the apps list
   AddFavoriteApp(AppItem appItem);

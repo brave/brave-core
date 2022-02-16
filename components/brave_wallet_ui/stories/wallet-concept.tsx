@@ -250,7 +250,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
     locked
   } = args
   const [view] = React.useState<NavTypes>('crypto')
-  const [isFilecoinEnabled, setIsFilecoinEnabled] = React.useState<boolean>(true)
+  const [isFilecoinEnabled] = React.useState<boolean>(true)
+  const [isSolanaEnabled] = React.useState<boolean>(true)
   const [needsOnboarding, setNeedsOnboarding] = React.useState<boolean>(onboarding)
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
   const [needsBackup, setNeedsBackup] = React.useState<boolean>(true)
@@ -501,7 +502,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
 
   const onImportAccountFromJson = (name: string, password: string, json: string) => {
     // doesnt do anything in storybook
-    setIsFilecoinEnabled(true)
   }
 
   const onToggleAddModal = () => {
@@ -775,6 +775,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
                               onCreateAccount={onCreateAccount}
                               onImportAccount={onImportAccount}
                               isFilecoinEnabled={isFilecoinEnabled}
+                              isSolanaEnabled={isSolanaEnabled}
                               onImportFilecoinAccount={onImportFilecoinAccount}
                               onConnectHardwareWallet={onConnectHardwareWallet}
                               onAddHardwareAccounts={onAddHardwareAccounts}

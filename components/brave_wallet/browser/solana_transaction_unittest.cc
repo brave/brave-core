@@ -8,11 +8,14 @@
 #include <memory>
 
 #include "base/base64.h"
+#include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "components/user_prefs/user_prefs.h"
@@ -43,6 +46,35 @@ class SolanaTransactionUnitTest : public testing::Test {
 
   KeyringService* keyring_service() { return keyring_service_.get(); }
 
+  static bool RestoreWallet(KeyringService* service,
+                            const std::string& mnemonic,
+                            const std::string& password,
+                            bool is_legacy_brave_wallet) {
+    bool success = false;
+    base::RunLoop run_loop;
+    service->RestoreWallet(mnemonic, password, is_legacy_brave_wallet,
+                           base::BindLambdaForTesting([&](bool v) {
+                             success = v;
+                             run_loop.Quit();
+                           }));
+    run_loop.Run();
+    return success;
+  }
+
+  static bool AddAccount(KeyringService* service,
+                         const std::string& account_name,
+                         mojom::CoinType coin) {
+    bool success = false;
+    base::RunLoop run_loop;
+    service->AddAccount(account_name, coin,
+                        base::BindLambdaForTesting([&](bool v) {
+                          success = v;
+                          run_loop.Quit();
+                        }));
+    run_loop.Run();
+    return success;
+  }
+
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
   std::unique_ptr<content::TestBrowserContext> browser_context_;
@@ -51,13 +83,13 @@ class SolanaTransactionUnitTest : public testing::Test {
 };
 
 TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
-  keyring_service()->RestoreWallet(kMnemonic, "brave", false,
-                                   base::DoNothing());
-  base::RunLoop().RunUntilIdle();
-  keyring_service()->AddAccount("Account 1", mojom::CoinType::SOL,
-                                base::DoNothing());
-  keyring_service()->AddAccount("Account 2", mojom::CoinType::SOL,
-                                base::DoNothing());
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(
+      brave_wallet::features::kBraveWalletSolanaFeature);
+  ASSERT_TRUE(RestoreWallet(keyring_service(), kMnemonic, "brave", false));
+
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 1", mojom::CoinType::SOL));
+  ASSERT_TRUE(AddAccount(keyring_service(), "Account 2", mojom::CoinType::SOL));
 
   std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
   std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
