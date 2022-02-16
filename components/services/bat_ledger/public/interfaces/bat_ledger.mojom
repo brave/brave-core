@@ -24,6 +24,11 @@ interface BatLedgerService {
   GetRetryInterval() => (int32 retry_interval);
 };
 
+struct Pair {
+  int64 key;
+  string value;
+};
+
 interface BatLedger {
   Initialize(bool execute_create_script) => (ledger.mojom.Result result);
   CreateWallet() => (ledger.mojom.Result result);
@@ -157,7 +162,7 @@ interface BatLedger {
 
   GetEventLogs() => (array<ledger.mojom.EventLog> logs);
   
-  RestoreVGs() => (ledger.mojom.Result result);
+  RestoreVGs(array<Pair> pairs) => (ledger.mojom.Result result);
 
   GetBraveWallet() => (ledger.mojom.BraveWallet? wallet);
 

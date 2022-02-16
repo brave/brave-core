@@ -1139,7 +1139,8 @@ void BatLedgerImpl::OnRestoreVGs(CallbackHolder<RestoreVGsCallback>* holder,
   delete holder;
 }
 
-void BatLedgerImpl::RestoreVGs(RestoreVGsCallback callback) {
+void BatLedgerImpl::RestoreVGs(std::vector<bat_ledger::mojom::PairPtr> pairs,
+                               RestoreVGsCallback callback) {
   auto* holder =
       new CallbackHolder<RestoreVGsCallback>(AsWeakPtr(), std::move(callback));
 

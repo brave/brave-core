@@ -25,6 +25,7 @@
 #include "base/json/json_string_value_serializer.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
+#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
@@ -35,11 +36,13 @@
 #include "base/task/task_runner_util.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "base/time/default_clock.h"
 #include "base/time/time.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger_database.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/sync_pairs/pair_sync_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
@@ -317,6 +320,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
+      pair_sync_service_(PairSyncServiceFactory::GetForProfile(profile_)),
+      clock_(base::DefaultClock::GetInstance()),
       bat_ledger_client_receiver_(new bat_ledger::LedgerClientMojoBridge(this)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
@@ -1711,6 +1716,9 @@ bool RewardsServiceImpl::ShouldShowOnboarding() const {
 void RewardsServiceImpl::EnableRewards() {
   StartProcess(base::BindOnce(
       &RewardsServiceImpl::OnStartProcessForEnableRewards, AsWeakPtr()));
+
+  timer_.Start(FROM_HERE, base::Seconds(10), this,
+               &RewardsServiceImpl::AddPair);
 }
 
 void RewardsServiceImpl::OnStartProcessForEnableRewards() {
@@ -3383,8 +3391,20 @@ void RewardsServiceImpl::OnGetEventLogs(
 }
 
 void RewardsServiceImpl::RestoreVGs(RestoreVGsCallback callback) {
+  pair_sync_service_->GetPairs(
+      base::BindOnce(&RewardsServiceImpl::OnGetPairs, AsWeakPtr(), std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetPairs(
+    RestoreVGsCallback callback,
+    std::vector<bat_ledger::mojom::PairPtr> pairs) {
   if (Connected()) {
-    bat_ledger_->RestoreVGs(base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
+    for (const auto& p : pairs) {
+      VLOG(0) << "Pair: " << p->key << ", " << p->value;
+    }
+
+    bat_ledger_->RestoreVGs(std::move(pairs),
+                            base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
                                            AsWeakPtr(), std::move(callback)));
   }
 }
@@ -3543,6 +3563,16 @@ void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
   if (IsValidWalletType(wallet_type)) {
     profile_->GetPrefs()->SetString(prefs::kExternalWalletType, wallet_type);
   }
+}
+
+void RewardsServiceImpl::AddPair() {
+  std::string value(8, 0);
+  for (auto& c : value) {
+    c = base::RandInt('a', 'z');
+  }
+
+  pair_sync_service_->AddPair(clock_->Now().since_origin().InMicroseconds(),
+                              std::move(value));
 }
 
 }  // namespace brave_rewards

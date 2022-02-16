@@ -244,7 +244,8 @@ class BatLedgerImpl :
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
-  void RestoreVGs(RestoreVGsCallback callback) override;
+  void RestoreVGs(std::vector<bat_ledger::mojom::PairPtr> pairs,
+                  RestoreVGsCallback callback) override;
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
