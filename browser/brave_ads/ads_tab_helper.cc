@@ -10,7 +10,6 @@
 
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/dom_distiller/content/browser/distiller_javascript_utils.h"
 #include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
 #include "components/sessions/content/session_tab_helper.h"
@@ -46,11 +45,6 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   OnBrowserSetLastActive(BrowserList::GetInstance()->GetLastActive());
 #endif
   OnVisibilityChanged(web_contents->GetVisibility());
-
-  // Set the JavaScript world ID if not assigned yet.
-  if (!dom_distiller::DistillerJavaScriptWorldIdIsSet())
-    dom_distiller::SetDistillerJavaScriptWorldId(
-        ISOLATED_WORLD_ID_BRAVE_INTERNAL);
 }
 
 AdsTabHelper::~AdsTabHelper() {
