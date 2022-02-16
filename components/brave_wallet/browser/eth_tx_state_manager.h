@@ -30,7 +30,7 @@ namespace brave_wallet {
 
 class JsonRpcService;
 
-class EthTxStateManager : public mojom::JsonRpcServiceObserver {
+class EthTxStateManager {
  public:
   struct TxMeta {
     TxMeta();
@@ -52,7 +52,7 @@ class EthTxStateManager : public mojom::JsonRpcServiceObserver {
 
   explicit EthTxStateManager(PrefService* prefs,
                              JsonRpcService* json_rpc_service);
-  ~EthTxStateManager() override;
+  ~EthTxStateManager();
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
 
@@ -70,13 +70,6 @@ class EthTxStateManager : public mojom::JsonRpcServiceObserver {
       absl::optional<mojom::TransactionStatus> status,
       absl::optional<EthAddress> from);
 
-  // mojom::JsonRpcServiceObserver
-  void ChainChangedEvent(const std::string& chain_id) override;
-  void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
-                                          const std::string& error) override;
-  void OnIsEip1559Changed(const std::string& chain_id,
-                          bool is_eip1559) override {}
-
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) {
@@ -93,9 +86,7 @@ class EthTxStateManager : public mojom::JsonRpcServiceObserver {
   base::ObserverList<Observer> observers_;
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  mojo::Receiver<mojom::JsonRpcServiceObserver> observer_receiver_{this};
-  std::string chain_id_;
-  std::string network_url_;
+
   base::WeakPtrFactory<EthTxStateManager> weak_factory_;
 };
 

@@ -34,9 +34,6 @@ EthTxStateManager::EthTxStateManager(PrefService* prefs,
                                      JsonRpcService* json_rpc_service)
     : prefs_(prefs), json_rpc_service_(json_rpc_service), weak_factory_(this) {
   DCHECK(json_rpc_service_);
-  json_rpc_service_->AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
-  chain_id_ = json_rpc_service_->GetChainId();
-  network_url_ = json_rpc_service_->GetNetworkUrl();
 }
 EthTxStateManager::~EthTxStateManager() = default;
 
@@ -225,7 +222,8 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
 void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::Value* dict = update.Get();
-  const std::string path = GetNetworkId(prefs_, chain_id_) + "." + meta.id;
+  const std::string path =
+      GetNetworkId(prefs_, json_rpc_service_->GetChainId()) + "." + meta.id;
   bool is_add = dict->FindPath(path) == nullptr;
   dict->SetPath(path, TxMetaToValue(meta));
   if (!is_add) {
@@ -247,8 +245,8 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
   const base::Value* dict = prefs_->GetDictionary(kBraveWalletTransactions);
   if (!dict)
     return nullptr;
-  const base::Value* value =
-      dict->FindPath(GetNetworkId(prefs_, chain_id_) + "." + id);
+  const base::Value* value = dict->FindPath(
+      GetNetworkId(prefs_, json_rpc_service_->GetChainId()) + "." + id);
   if (!value)
     return nullptr;
 
@@ -258,7 +256,8 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
 void EthTxStateManager::DeleteTx(const std::string& id) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
   base::Value* dict = update.Get();
-  dict->RemovePath(GetNetworkId(prefs_, chain_id_) + "." + id);
+  dict->RemovePath(GetNetworkId(prefs_, json_rpc_service_->GetChainId()) + "." +
+                   id);
 }
 
 void EthTxStateManager::WipeTxs() {
@@ -272,7 +271,7 @@ EthTxStateManager::GetTransactionsByStatus(
   std::vector<std::unique_ptr<EthTxStateManager::TxMeta>> result;
   const base::Value* dict = prefs_->GetDictionary(kBraveWalletTransactions);
   const base::Value* network_dict =
-      dict->FindKey(GetNetworkId(prefs_, chain_id_));
+      dict->FindKey(GetNetworkId(prefs_, json_rpc_service_->GetChainId()));
   if (!network_dict)
     return result;
 
@@ -289,15 +288,6 @@ EthTxStateManager::GetTransactionsByStatus(
   }
   return result;
 }
-
-void EthTxStateManager::ChainChangedEvent(const std::string& chain_id) {
-  chain_id_ = chain_id;
-  network_url_ = json_rpc_service_->GetNetworkUrl();
-}
-
-void EthTxStateManager::OnAddEthereumChainRequestCompleted(
-    const std::string& chain_id,
-    const std::string& error) {}
 
 void EthTxStateManager::RetireTxByStatus(mojom::TransactionStatus status,
                                          size_t max_num) {
