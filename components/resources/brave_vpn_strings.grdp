@@ -99,4 +99,16 @@
   <message name="IDS_BRAVE_VPN_LOADING" desc="Label to show below loader icon">
     One moment while loading…
   </message>
+
+  <message name="IDS_BRAVE_VPN_EDIT_PAYMENT" desc="Button title to update payment information">
+    Edit payment method
+  </message>
+
+  <message name="IDS_BRAVE_VPN_PAYMENT_FAILURE" desc="Title to show payment failure has occured from the server">
+    Edit payment method
+  </message>
+
+  <message name="IDS_BRAVE_VPN_PAYMENT_FAILURE_REASON" desc="A long form on the consequence of failed payment">
+    Looks like your most recent payment for did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.
+  </message>
 </grit-part>

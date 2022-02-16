@@ -75,6 +75,10 @@ handler.on(Actions.initialize.getType(), async (store) => {
     store.dispatch(Actions.showSellView())
   }
 
+  if (state === PurchasedState.EXPIRED) {
+    store.dispatch(Actions.showSubscriptionExpiredView())
+  }
+
   if (state === PurchasedState.PURCHASED) {
     store.dispatch(Actions.purchaseConfirmed())
   }

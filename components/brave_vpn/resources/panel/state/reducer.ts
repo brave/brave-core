@@ -103,6 +103,13 @@ reducer.on(Actions.showLoadingView, (state): RootState => {
   }
 })
 
+reducer.on(Actions.showSubscriptionExpiredView, (state): RootState => {
+  return {
+    ...state,
+    currentView: ViewType.Expired
+  }
+})
+
 reducer.on(Actions.initialized, (state, payload): RootState => {
   return {
     ...state,

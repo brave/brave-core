@@ -965,7 +965,6 @@ void BraveVpnService::AddObserver(
 void BraveVpnService::GetPurchasedState(
     GetPurchasedStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  LoadPurchasedState();
   VLOG(2) << __func__ << " : " << static_cast<int>(purchased_state_);
   std::move(callback).Run(purchased_state_);
 }

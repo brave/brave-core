@@ -9,6 +9,7 @@ import * as S from './style'
 import { ConnectionState } from '../api/panel_browser_api'
 import { mockRegionList } from './mock-data/region-list'
 import ErrorPanel from '../components/error-panel'
+import ErrorSubscriptionExpired from '../components/error-subscription-failed-panel'
 import SelectRegionList from '../components/select-region-list'
 import MainPanel from '../components/main-panel'
 import SellPanel from '../components/sell-panel'
@@ -56,6 +57,14 @@ export const _Error = () => {
   return (
     <S.PanelFrame>
       <ErrorPanel />
+    </S.PanelFrame>
+  )
+}
+
+export const _ErrorSubscriptionExpired = () => {
+  return (
+    <S.PanelFrame>
+      <ErrorSubscriptionExpired />
     </S.PanelFrame>
   )
 }

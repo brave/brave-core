@@ -26,5 +26,8 @@ provideStrings({
   braveVpnFeature3: 'Choose your VPN location',
   braveVpnFeature4: 'Fast and unlimited up to 100 Mbps',
   braveVpnFeature5: '24/7 support',
-  braveVpnLoading: 'One moment while loading…'
+  braveVpnLoading: 'One moment while loading…',
+  braveVpnEditPaymentMethod: 'Edit payment method',
+  braveVpnPaymentFailure: 'There was a problem with your payment',
+  braveVpnPaymentFailureReason: 'Looks like your most recent payment for did not go through. Access to this subscription will pause until the payment issue is resolved. Try to edit your payment method, or contact Brave support.'
 })

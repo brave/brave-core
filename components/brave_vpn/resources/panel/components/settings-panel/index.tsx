@@ -14,7 +14,7 @@ function SettingsPanel (props: Props) {
 
   const handleClick = (entry: string) => {
     if (!productUrls) return
-    chrome.tabs.create({url: productUrls?.[entry]})
+    chrome.tabs.create({ url: productUrls?.[entry] })
   }
 
   return (

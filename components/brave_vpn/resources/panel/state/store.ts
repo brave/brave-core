@@ -30,6 +30,9 @@ const observer = {
       case PurchasedState.NOT_PURCHASED:
         store.dispatch(Actions.showSellView())
         break
+      case PurchasedState.EXPIRED:
+        store.dispatch(Actions.showSubscriptionExpiredView())
+        break
       case PurchasedState.LOADING:
         store.dispatch(Actions.showLoadingView())
         break
