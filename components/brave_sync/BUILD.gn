@@ -72,12 +72,14 @@ source_set("prefs") {
   ]
 }
 
-source_set("qr_code_data") {
+source_set("time_limited_codes") {
   sources = [
     "qr_code_data.cc",
     "qr_code_data.h",
     "qr_code_validator.cc",
     "qr_code_validator.h",
+    "time_limited_words.cc",
+    "time_limited_words.h",
   ]
 
   deps = [
@@ -105,7 +107,7 @@ group("brave_sync") {
     ":features",
     ":network_time_helper",
     ":prefs",
-    ":qr_code_data",
+    ":time_limited_codes",
     "//base",
   ]
 }
@@ -120,11 +122,12 @@ source_set("unit_tests") {
     "//brave/components/brave_sync/brave_sync_prefs_unittest.cc",
     "//brave/components/brave_sync/qr_code_data_unittest.cc",
     "//brave/components/brave_sync/qr_code_validator_unittest.cc",
+    "//brave/components/brave_sync/time_limited_words_unittest.cc",
   ]
 
   deps = [
     ":prefs",
-    ":qr_code_data",
+    ":time_limited_codes",
     "//base/test:test_support",
     "//components/os_crypt:test_support",
     "//components/prefs:test_support",
