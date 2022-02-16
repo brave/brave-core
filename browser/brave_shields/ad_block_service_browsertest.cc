@@ -113,11 +113,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithRules(
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
-  ad_block_service->GetTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&brave_shields::AdBlockService::UseSourceProvidersForTest,
-                     base::Unretained(ad_block_service), source_provider.get(),
-                     source_provider.get()));
+  ad_block_service->UseSourceProvidersForTest(source_provider.get(),
+                                              source_provider.get());
 
   source_providers_.push_back(std::move(source_provider));
 
@@ -133,11 +130,8 @@ void AdBlockServiceTest::UpdateAdBlockInstanceWithDAT(
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
-  ad_block_service->GetTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&brave_shields::AdBlockService::UseSourceProvidersForTest,
-                     base::Unretained(ad_block_service), source_provider.get(),
-                     source_provider.get()));
+  ad_block_service->UseSourceProvidersForTest(source_provider.get(),
+                                              source_provider.get());
 
   source_providers_.push_back(std::move(source_provider));
 
@@ -152,12 +146,8 @@ void AdBlockServiceTest::UpdateCustomAdBlockInstanceWithRules(
 
   brave_shields::AdBlockService* ad_block_service =
       g_brave_browser_process->ad_block_service();
-  ad_block_service->GetTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &brave_shields::AdBlockService::UseCustomSourceProvidersForTest,
-          base::Unretained(ad_block_service), source_provider.get(),
-          source_provider.get()));
+  ad_block_service->UseCustomSourceProvidersForTest(source_provider.get(),
+                                                    source_provider.get());
 
   source_providers_.push_back(std::move(source_provider));
 
@@ -221,7 +211,7 @@ class EngineTestObserver : public brave_shields::AdBlockEngine::TestObserver {
       : engine_(engine) {
     engine_->AddObserverForTest(this);
   }
-  ~EngineTestObserver() override { engine_->RemoveObserverForTest(this); }
+  ~EngineTestObserver() override { engine_->RemoveObserverForTest(); }
 
   EngineTestObserver(const EngineTestObserver& other) = delete;
   EngineTestObserver& operator=(const EngineTestObserver& other) = delete;
@@ -237,7 +227,8 @@ class EngineTestObserver : public brave_shields::AdBlockEngine::TestObserver {
 };
 
 bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
-    const std::string& uuid) {
+    const std::string& uuid,
+    bool enable_list) {
   // The regional adblock engines depend on the default engine for resource
   // loads.
   EXPECT_TRUE(InstallDefaultAdBlockExtension());
@@ -257,32 +248,36 @@ bool AdBlockServiceTest::InstallRegionalAdBlockExtension(
   g_brave_browser_process->ad_block_service()
       ->regional_service_manager()
       ->SetRegionalCatalog(regional_catalog);
-  const extensions::Extension* ad_block_extension =
-      InstallExtension(test_data_dir.AppendASCII("adblock-data")
-                           .AppendASCII("adblock-regional")
-                           .AppendASCII(uuid),
-                       1);
-  if (!ad_block_extension)
-    return false;
 
-  g_brave_browser_process->ad_block_service()
-      ->regional_service_manager()
-      ->EnableFilterList(uuid, true);
-  EXPECT_EQ(g_brave_browser_process->ad_block_service()
-                ->regional_service_manager()
-                ->regional_services_.size(),
-            1ULL);
+  if (enable_list) {
+    const extensions::Extension* ad_block_extension =
+        InstallExtension(test_data_dir.AppendASCII("adblock-data")
+                             .AppendASCII("adblock-regional")
+                             .AppendASCII(uuid),
+                         1);
+    if (!ad_block_extension)
+      return false;
 
-  auto regional_engine = g_brave_browser_process->ad_block_service()
-                             ->regional_service_manager()
-                             ->regional_services_.find(uuid);
-  EngineTestObserver regional_engine_observer(regional_engine->second.get());
-  auto regional_filters_provider = g_brave_browser_process->ad_block_service()
-                                       ->regional_service_manager()
-                                       ->regional_filters_providers_.find(uuid);
-  regional_filters_provider->second->OnComponentReady(
-      ad_block_extension->path());
-  regional_engine_observer.Wait();
+    g_brave_browser_process->ad_block_service()
+        ->regional_service_manager()
+        ->EnableFilterList(uuid, true);
+    EXPECT_EQ(g_brave_browser_process->ad_block_service()
+                  ->regional_service_manager()
+                  ->regional_services_.size(),
+              1ULL);
+
+    auto regional_engine = g_brave_browser_process->ad_block_service()
+                               ->regional_service_manager()
+                               ->regional_services_.find(uuid);
+    EngineTestObserver regional_engine_observer(regional_engine->second.get());
+    auto regional_filters_provider =
+        g_brave_browser_process->ad_block_service()
+            ->regional_service_manager()
+            ->regional_filters_providers_.find(uuid);
+    regional_filters_provider->second->OnComponentReady(
+        ad_block_extension->path());
+    regional_engine_observer.Wait();
+  }
 
   return true;
 }
@@ -2231,31 +2226,9 @@ class DefaultCookieListFlagEnabledTest : public AdBlockServiceTest {
 
 // Test that the `brave-adblock-default-1p-blocking` flag forces the Cookie
 // List UUID to be enabled, until manually enabled and then disabled again.
-IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest,
-                       CosmeticFilteringIframeScriptlet) {
-  ASSERT_TRUE(InstallDefaultAdBlockExtension());
-  std::vector<adblock::FilterList> regional_catalog =
-      std::vector<adblock::FilterList>();
-  regional_catalog.push_back(adblock::FilterList(
-      brave_shields::kCookieListUuid,
-      "https://easylist-downloads.adblockplus.org/liste_fr.txt",
-      "EasyList Liste FR", {"fr"}, "https://forums.lanik.us/viewforum.php?f=91",
-      "emaecjinaegfkoklcdafkiocjhoeilao",
-      "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsbqIWuMS7r2OPXCsIPbbLG1H"
-      "/"
-      "d3NM9uzCMscw7R9ZV3TwhygvMOpZrNp4Y4hImy2H+HE0OniCqzuOAaq7+"
-      "SHXcdHwItvLK"
-      "tnRmeWgdqxgEdzJ8rZMWnfi+dODTbA4QvxI6itU5of8trDFbLzFqgnEOBk8ZxtjM/"
-      "M5v3"
-      "UeYh+EYHSEyHnDSJKbKevlXC931xlbdca0q0Ps3Ln6w/pJFByGbOh212mD/"
-      "PvwS6jIH3L"
-      "YjrMVUMefKC/ywn/AAdnwM5mGirm1NflQCJQOpTjIhbRIXBlACfV/"
-      "hwI1lqfKbFnyr4aP"
-      "Odg3JcOZZVoyi+ko3rKG3vH9JPWEy24Ys9A3SYpTwIDAQAB",
-      "Removes advertisements from French websites"));
-  g_brave_browser_process->ad_block_service()
-      ->regional_service_manager()
-      ->SetRegionalCatalog(regional_catalog);
+IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
+  ASSERT_TRUE(
+      InstallRegionalAdBlockExtension(brave_shields::kCookieListUuid, false));
 
   {
     const auto lists = g_brave_browser_process->ad_block_service()

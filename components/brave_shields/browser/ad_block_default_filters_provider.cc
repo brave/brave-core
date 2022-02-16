@@ -82,8 +82,9 @@ void AdBlockDefaultFiltersProvider::LoadDATBuffer(
 void AdBlockDefaultFiltersProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
   if (component_path_.empty()) {
-    // If the path is not ready yet, don't run the callback. An update should be
-    // pushed soon.
+    // If the path is not ready yet, run the callback with empty resources to
+    // avoid blocking filter data loads.
+    std::move(cb).Run("[]");
     return;
   }
 

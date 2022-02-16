@@ -17,6 +17,7 @@
 #include "brave/components/brave_shields/browser/ad_block_engine.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
+#include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -26,8 +27,6 @@
 
 using adblock::FilterList;
 using brave_shields::features::kBraveAdblockCookieListDefault;
-
-const char kCookieListUuid[] = "AC023D22-AE88-4060-A978-4FEEEC4221693";
 
 namespace brave_shields {
 

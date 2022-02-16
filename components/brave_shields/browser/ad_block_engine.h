@@ -76,7 +76,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
   };
 
   void AddObserverForTest(TestObserver* observer);
-  void RemoveObserverForTest(TestObserver* observer);
+  void RemoveObserverForTest();
 
  protected:
   void AddKnownTagsToAdBlockInstance();
@@ -98,7 +98,7 @@ class AdBlockEngine : public base::SupportsWeakPtr<AdBlockEngine> {
 
   std::set<std::string> tags_;
 
-  base::ObserverList<TestObserver> test_observers_;
+  raw_ptr<TestObserver> test_observer_ = nullptr;
 };
 
 }  // namespace brave_shields

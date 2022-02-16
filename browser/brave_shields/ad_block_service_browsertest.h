@@ -35,11 +35,12 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
 
   HostContentSettingsMap* content_settings();
   void UpdateAdBlockInstanceWithRules(const std::string& rules,
-                                      const std::string& resources = "");
+                                      const std::string& resources = "[]");
   void UpdateAdBlockInstanceWithDAT(const base::FilePath& dat_location,
-                                    const std::string& resources = "");
-  void UpdateCustomAdBlockInstanceWithRules(const std::string& rules,
-                                            const std::string& resources = "");
+                                    const std::string& resources = "[]");
+  void UpdateCustomAdBlockInstanceWithRules(
+      const std::string& rules,
+      const std::string& resources = "[]");
   void AssertTagExists(const std::string& tag, bool expected_exists) const;
   void InitEmbeddedTestServer();
   void GetTestDataDir(base::FilePath* test_data_dir);
@@ -48,7 +49,8 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   bool InstallDefaultAdBlockExtension(
       const std::string& extension_dir = "adblock-default",
       int expected_change = 1);
-  bool InstallRegionalAdBlockExtension(const std::string& uuid);
+  bool InstallRegionalAdBlockExtension(const std::string& uuid,
+                                       bool enable_list = true);
   void SetSubscriptionIntervals();
   void WaitForAdBlockServiceThreads();
   void WaitForBraveExtensionShieldsDataReady();

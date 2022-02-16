@@ -51,12 +51,8 @@ class EphemeralStorage1pDomainBlockBrowserTest
 
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
-    ad_block_service->GetTaskRunner()->PostTask(
-        FROM_HERE,
-        base::BindOnce(
-            &brave_shields::AdBlockService::UseSourceProvidersForTest,
-            base::Unretained(ad_block_service), source_provider_.get(),
-            source_provider_.get()));
+    ad_block_service->UseSourceProvidersForTest(source_provider_.get(),
+                                                source_provider_.get());
     WaitForAdBlockServiceThreads();
   }
 
