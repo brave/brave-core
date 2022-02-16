@@ -547,7 +547,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
             Uint256ValueToHex(meta1.tx->value()));
   EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->base_data->data,
             meta1.tx->data());
-  auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta1.tx.get());
+  auto* tx2930 = static_cast<Eip2930Transaction*>(meta1.tx.get());
   EXPECT_EQ(ti1->tx_data_union->get_eth_tx_data_1559()->chain_id,
             Uint256ValueToHex(tx2930->chain_id()));
   EXPECT_EQ(
@@ -593,7 +593,7 @@ TEST_F(EthTxStateManagerUnitTest, TxMetaToTransactionInfo) {
             Uint256ValueToHex(meta2.tx->value()));
   EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->base_data->data,
             meta2.tx->data());
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(meta2.tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(meta2.tx.get());
   EXPECT_EQ(ti2->tx_data_union->get_eth_tx_data_1559()->chain_id,
             Uint256ValueToHex(tx1559->chain_id()));
   EXPECT_EQ(

@@ -596,7 +596,7 @@ HDKeyring* KeyringService::ResumeKeyring(const std::string& keyring_id,
       continue;
     }
     if (keyring_id == mojom::kFilecoinKeyringId) {
-      auto* filecoin_keyring = reinterpret_cast<FilecoinKeyring*>(keyring);
+      auto* filecoin_keyring = static_cast<FilecoinKeyring*>(keyring);
       if (filecoin_keyring) {
         filecoin_keyring->ImportFilecoinAccount(
             private_key, imported_account_info.account_address);
@@ -884,7 +884,7 @@ KeyringService::ImportSECP256K1AccountForFilecoinKeyring(
     const std::string& account_name,
     const std::vector<uint8_t>& private_key,
     const std::string& network) {
-  auto* keyring = reinterpret_cast<FilecoinKeyring*>(
+  auto* keyring = static_cast<FilecoinKeyring*>(
       GetHDKeyringById(mojom::kFilecoinKeyringId));
   if (!keyring) {
     return absl::nullopt;
@@ -915,7 +915,7 @@ absl::optional<std::string> KeyringService::ImportBLSAccountForFilecoinKeyring(
     const std::string& account_name,
     const std::vector<uint8_t>& private_key,
     const std::string& network) {
-  auto* keyring = reinterpret_cast<FilecoinKeyring*>(
+  auto* keyring = static_cast<FilecoinKeyring*>(
       GetHDKeyringById(mojom::kFilecoinKeyringId));
   if (!keyring) {
     return absl::nullopt;
@@ -1291,8 +1291,8 @@ void KeyringService::SignTransactionByDefaultKeyring(const std::string& address,
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
   if (!keyring)
     return;
-  reinterpret_cast<EthereumKeyring*>(keyring)->SignTransaction(address, tx,
-                                                               chain_id);
+  static_cast<EthereumKeyring*>(keyring)->SignTransaction(address, tx,
+                                                          chain_id);
 }
 
 KeyringService::SignatureWithError::SignatureWithError() = default;
@@ -1318,8 +1318,8 @@ KeyringService::SignatureWithError KeyringService::SignMessageByDefaultKeyring(
 
   // MM currently doesn't provide chain_id when signing message
   std::vector<uint8_t> signature =
-      reinterpret_cast<EthereumKeyring*>(keyring)->SignMessage(address, message,
-                                                               0, is_eip712);
+      static_cast<EthereumKeyring*>(keyring)->SignMessage(address, message, 0,
+                                                          is_eip712);
   if (signature.empty()) {
     ret.signature = absl::nullopt;
     ret.error_message =

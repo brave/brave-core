@@ -280,9 +280,8 @@ bool BraveEthereumPermissionContext::HasEthereumPermission(
     bool* has_permission) {
   CHECK(has_permission);
   *has_permission = false;
-  auto* permission_manager =
-      reinterpret_cast<permissions::BravePermissionManager*>(
-          permissions::PermissionsClient::Get()->GetPermissionManager(context));
+  auto* permission_manager = static_cast<permissions::BravePermissionManager*>(
+      permissions::PermissionsClient::Get()->GetPermissionManager(context));
   if (!permission_manager)
     return false;
 
@@ -307,9 +306,8 @@ bool BraveEthereumPermissionContext::ResetEthereumPermission(
     content::BrowserContext* context,
     const std::string& origin_spec,
     const std::string& account) {
-  auto* permission_manager =
-      reinterpret_cast<permissions::BravePermissionManager*>(
-          permissions::PermissionsClient::Get()->GetPermissionManager(context));
+  auto* permission_manager = static_cast<permissions::BravePermissionManager*>(
+      permissions::PermissionsClient::Get()->GetPermissionManager(context));
   if (!permission_manager)
     return false;
 

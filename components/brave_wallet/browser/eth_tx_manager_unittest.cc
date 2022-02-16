@@ -1133,7 +1133,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithGasFeeAndLimit) {
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
@@ -1162,7 +1162,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithoutGasLimit) {
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
@@ -1192,7 +1192,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithoutGasFee) {
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1224,7 +1224,7 @@ TEST_F(EthTxManagerUnitTest,
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1257,7 +1257,7 @@ TEST_F(EthTxManagerUnitTest,
   EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
 
   // Gas fee and estimation should be filled by gas oracle.
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1291,7 +1291,7 @@ TEST_F(EthTxManagerUnitTest,
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
@@ -1320,7 +1320,7 @@ TEST_F(EthTxManagerUnitTest,
   // Gas limit obtained by querying eth_estimateGas.
   EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
 
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
@@ -1353,7 +1353,7 @@ TEST_F(EthTxManagerUnitTest,
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
 
   // Gas fee and estimation should be filled by gas oracle.
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1386,7 +1386,7 @@ TEST_F(EthTxManagerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
 
   // Gas fee and estimation should be filled by gas oracle.
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1472,7 +1472,7 @@ TEST_F(EthTxManagerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
   EXPECT_EQ(tx_meta->tx->gas_limit(), update_gas_limit);
-  tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(),
             update_max_priority_fee_per_gas);
   EXPECT_EQ(tx1559->max_fee_per_gas(), update_max_fee_per_gas);
@@ -1670,13 +1670,13 @@ TEST_F(EthTxManagerUnitTest, Speedup1559Transaction) {
   auto expected_tx_meta = eth_tx_manager()->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
   auto* expected_tx1559_ptr =
-      reinterpret_cast<Eip1559Transaction*>(expected_tx_meta->tx.get());
+      static_cast<Eip1559Transaction*>(expected_tx_meta->tx.get());
   expected_tx1559_ptr->set_max_priority_fee_per_gas(
       2200000000ULL);                                        // 2 * 1.1 gwei
   expected_tx1559_ptr->set_max_fee_per_gas(52800000000ULL);  // 48 * 1.1 gwei
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  auto* tx1559_ptr = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(*expected_tx1559_ptr, *tx1559_ptr);
 
   // Speedup with original gas fees + 10% < avg gas fees should use avg
@@ -1689,12 +1689,12 @@ TEST_F(EthTxManagerUnitTest, Speedup1559Transaction) {
   expected_tx_meta = eth_tx_manager()->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
   expected_tx1559_ptr =
-      reinterpret_cast<Eip1559Transaction*>(expected_tx_meta->tx.get());
+      static_cast<Eip1559Transaction*>(expected_tx_meta->tx.get());
   expected_tx1559_ptr->set_max_priority_fee_per_gas(2000000000ULL);  // 2 Gwei
   expected_tx1559_ptr->set_max_fee_per_gas(48000000000ULL);          // 48 Gwei
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  tx1559_ptr = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(*expected_tx1559_ptr, *tx1559_ptr);
 
   // Non-exist transaction should fail.
@@ -1766,8 +1766,8 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
   auto* orig_tx1559_ptr =
-      reinterpret_cast<Eip1559Transaction*>(orig_tx_meta->tx.get());
-  auto* tx1559_ptr = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+      static_cast<Eip1559Transaction*>(orig_tx_meta->tx.get());
+  auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(tx1559_ptr->nonce(), orig_tx1559_ptr->nonce());
   EXPECT_EQ(Uint256ValueToHex(tx1559_ptr->nonce().value()), "0x8");
   EXPECT_EQ(tx1559_ptr->max_priority_fee_per_gas(),
@@ -1839,7 +1839,7 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   EXPECT_TRUE(callback_called);
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  auto* tx1559_ptr = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
   EXPECT_EQ(*tx1559_ptr, tx1559.value());
 
   // Non-exist transaction should fail.

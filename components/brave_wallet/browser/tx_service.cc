@@ -51,7 +51,7 @@ TxManager* TxService::GetTxManager(mojom::CoinType coin_type) {
 }
 
 EthTxManager* TxService::GetEthTxManager() {
-  return reinterpret_cast<EthTxManager*>(GetTxManager(mojom::CoinType::ETH));
+  return static_cast<EthTxManager*>(GetTxManager(mojom::CoinType::ETH));
 }
 
 mojo::PendingRemote<mojom::TxService> TxService::MakeRemote() {
