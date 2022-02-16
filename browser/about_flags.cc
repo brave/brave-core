@@ -242,10 +242,6 @@ constexpr char kBraveWalletFilecoinName[] =
 constexpr char kBraveWalletFilecoinDescription[] =
     "Filecoin support for native Brave Wallet";
 
-constexpr char kBraveWalletSolanaName[] = "Enable Brave Wallet Solana support";
-constexpr char kBraveWalletSolanaDescription[] =
-    "Solana support for native Brave Wallet";
-
 constexpr char kBraveNewsName[] = "Enable Brave News";
 constexpr char kBraveNewsDescription[] =
     "Brave News is completely private and includes anonymized ads matched on "
@@ -365,22 +361,17 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
 #define BRAVE_IPFS_FEATURE_ENTRIES
 #endif
 
-#define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                    \
-    {"native-brave-wallet",                                                    \
-     flag_descriptions::kNativeBraveWalletName,                                \
-     flag_descriptions::kNativeBraveWalletDescription,                         \
-     kOsDesktop | flags_ui::kOsAndroid,                                        \
-     FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)},   \
-    {"brave-wallet-filecoin",                                                  \
-     flag_descriptions::kBraveWalletFilecoinName,                              \
-     flag_descriptions::kBraveWalletFilecoinDescription,                       \
-     kOsDesktop | flags_ui::kOsAndroid,                                        \
-     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletFilecoinFeature)}, \
-    {"brave-wallet-solana",                                                    \
-     flag_descriptions::kBraveWalletSolanaName,                                \
-     flag_descriptions::kBraveWalletSolanaDescription,                         \
-     kOsDesktop | flags_ui::kOsAndroid,                                        \
-     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletSolanaFeature)},
+#define BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                  \
+    {"native-brave-wallet",                                                  \
+     flag_descriptions::kNativeBraveWalletName,                              \
+     flag_descriptions::kNativeBraveWalletDescription,                       \
+     kOsDesktop | flags_ui::kOsAndroid,                                      \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kNativeBraveWalletFeature)}, \
+    {"brave-wallet-filecoin",                                                \
+     flag_descriptions::kBraveWalletFilecoinName,                            \
+     flag_descriptions::kBraveWalletFilecoinDescription,                     \
+     kOsDesktop | flags_ui::kOsAndroid,                                      \
+     FEATURE_VALUE_TYPE(brave_wallet::features::kBraveWalletFilecoinFeature)},
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                  \
     {"brave-news",                                                  \

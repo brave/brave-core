@@ -525,8 +525,6 @@ void JsonRpcService::GetBalance(const std::string& address,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback));
     return Request(fil_getBalance(address), true, std::move(internal_callback));
   }
-  std::move(callback).Run("", mojom::ProviderError::kInternalError,
-                          l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 void JsonRpcService::OnEthGetBalance(

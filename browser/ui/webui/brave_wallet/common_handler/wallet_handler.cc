@@ -46,12 +46,10 @@ void WalletHandler::OnConnectionError() {
 
 void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   EnsureConnected();
-  std::vector<std::string> ids = {brave_wallet::mojom::kDefaultKeyringId};
-  if (brave_wallet::IsFilecoinEnabled())
+  std::vector<std::string> ids(1, brave_wallet::mojom::kDefaultKeyringId);
+  if (brave_wallet::IsFilecoinEnabled()) {
     ids.push_back(brave_wallet::mojom::kFilecoinKeyringId);
-  if (brave_wallet::IsSolanaEnabled())
-    ids.push_back(brave_wallet::mojom::kSolanaKeyringId);
-
+  }
   keyring_service_->GetKeyringsInfo(
       ids, base::BindOnce(&WalletHandler::OnGetWalletInfo,
                           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -79,8 +77,7 @@ void WalletHandler::OnGetWalletInfo(
   std::move(callback).Run(
       default_keyring->is_keyring_created, default_keyring->is_locked,
       std::move(favorite_apps_copy), default_keyring->is_backed_up,
-      std::move(account_infos), brave_wallet::IsFilecoinEnabled(),
-      brave_wallet::IsSolanaEnabled());
+      std::move(account_infos), brave_wallet::IsFilecoinEnabled());
 }
 
 void WalletHandler::AddFavoriteApp(

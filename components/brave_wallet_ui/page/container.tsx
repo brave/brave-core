@@ -77,7 +77,6 @@ function Container (props: Props) {
   // Wallet Props
   const {
     isFilecoinEnabled,
-    isSolanaEnabled,
     isWalletCreated,
     isWalletLocked,
     isWalletBackedUp,
@@ -646,7 +645,6 @@ function Container (props: Props) {
                 onImportAccount={onImportAccount}
                 onImportFilecoinAccount={onImportFilecoinAccount}
                 isFilecoinEnabled={isFilecoinEnabled}
-                isSolanaEnabled={isSolanaEnabled}
                 isLoading={isFetchingPriceHistory}
                 showAddModal={showAddModal}
                 onHideAddModal={onHideAddModal}

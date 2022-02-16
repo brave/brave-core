@@ -54,7 +54,6 @@ export interface Props {
   transactionSpotPrices: BraveWallet.AssetPrice[]
   hasImportError: boolean
   isFilecoinEnabled: boolean
-  isSolanaEnabled: boolean
   onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
   onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onLockWallet: () => void
@@ -108,7 +107,6 @@ const CryptoStoryView = (props: Props) => {
     isFetchingPortfolioPriceHistory,
     showVisibleAssetsModal,
     isFilecoinEnabled,
-    isSolanaEnabled,
     onShowVisibleAssetsModal,
     onLockWallet,
     onShowBackup,
@@ -356,7 +354,6 @@ const CryptoStoryView = (props: Props) => {
           onImportAccount={onImportAccount}
           onImportFilecoinAccount={onImportFilecoinAccount}
           isFilecoinEnabled={isFilecoinEnabled}
-          isSolanaEnabled={isSolanaEnabled}
           onConnectHardwareWallet={onConnectHardwareWallet}
           onAddHardwareAccounts={onAddHardwareAccounts}
           getBalance={getBalance}
