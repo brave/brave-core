@@ -45,7 +45,7 @@ class BraveActionViewController : public ExtensionActionViewController {
   ui::MenuModel* GetContextMenu(
       extensions::ExtensionContextMenuModel::ContextMenuSource
           context_menu_source) override;
-  bool ExecuteActionUI(std::string relative_path);
+  void ExecuteActionUI(const std::string& relative_path);
   ToolbarActionViewController* GetExtensionViewController(
       const std::string& extension_id);
 
@@ -58,11 +58,17 @@ class BraveActionViewController : public ExtensionActionViewController {
       extensions::ExtensionRegistry* extension_registry,
       ExtensionsContainer* extensions_container);
 
+  // ExtensionActionViewController overrides
   ExtensionActionViewController* GetPreferredPopupViewController() override;
-  bool TriggerPopupWithUrl(PopupShowAction show_action,
-                           const GURL& popup_url,
-                           bool grant_tab_permissions) override;
+  void TriggerPopup(PopupShowAction show_action,
+                    bool grant_tab_permissions) override;
   void OnPopupClosed() override;
+
+  // Shared logic for ExecuteActionUI() and TriggerPopup().
+  void TriggerPopupWithUrl(PopupShowAction show_action,
+                           const GURL& popup_url,
+                           bool grant_tab_permissions);
+
   // Returns the image source for the icon.
   std::unique_ptr<BraveActionIconWithBadgeImageSource> GetIconImageSource(
       content::WebContents* web_contents,
