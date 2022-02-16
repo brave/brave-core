@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.TabLaunchType;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 
@@ -47,27 +48,83 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                 launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(launchIntent);
                 switch (notificationType) {
+                    case RetentionNotificationUtil.HOUR_2:
+                        TabUtils.openUrlInNewTab(false, BraveActivity.BITFLYER_PROMO_URL);
+                        break;
+                    case RetentionNotificationUtil.HOUR_3:
+                    case RetentionNotificationUtil.HOUR_24:
+                    case RetentionNotificationUtil.EVERY_SUNDAY:
+                        braveActivity.checkForBraveStats();
+                        break;
+                    case RetentionNotificationUtil.DAY_6:
+                    case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
+                    case RetentionNotificationUtil.BRAVE_STATS_DATA:
+                    case RetentionNotificationUtil.BRAVE_STATS_TIME:
+                        if (braveActivity.getActivityTab() != null
+                                && braveActivity.getActivityTab().getUrl().getSpec() != null
+                                && !UrlUtilities.isNTPUrl(
+                                        braveActivity.getActivityTab().getUrl().getSpec())) {
+                            braveActivity.getTabCreator(false).launchUrl(
+                                    UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                        }
+                        break;
+                    case RetentionNotificationUtil.DAY_10:
+                    case RetentionNotificationUtil.DAY_30:
+                    case RetentionNotificationUtil.DAY_35:
+                        braveActivity.openRewardsPanel();
+                        break;
+                    case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
+                    case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
+                    case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
+                        if (System.currentTimeMillis()
+                                > OnboardingPrefManager.getInstance()
+                                          .getDormantUsersNotificationTime(notificationType)) {
+                            braveActivity.showDormantUsersEngagementDialog(notificationType);
+                        } else {
+                            RetentionNotificationUtil.scheduleNotificationWithTime(context,
+                                    notificationType,
+                                    OnboardingPrefManager.getInstance()
+                                            .getDormantUsersNotificationTime(notificationType));
+                        }
+                        break;
+                }
+            } else {
+                backgroundNotificationAction(context, intent);
+            }
+        } else {
+            switch (notificationType) {
+                case RetentionNotificationUtil.HOUR_2:
                 case RetentionNotificationUtil.HOUR_3:
                 case RetentionNotificationUtil.HOUR_24:
-                case RetentionNotificationUtil.EVERY_SUNDAY:
-                    braveActivity.checkForBraveStats();
-                    break;
                 case RetentionNotificationUtil.DAY_6:
                 case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
                 case RetentionNotificationUtil.BRAVE_STATS_DATA:
                 case RetentionNotificationUtil.BRAVE_STATS_TIME:
-                    if (braveActivity.getActivityTab() != null
-                            && braveActivity.getActivityTab().getUrl().getSpec() != null
-                            && !UrlUtilities.isNTPUrl(
-                                    braveActivity.getActivityTab().getUrl().getSpec())) {
-                        braveActivity.getTabCreator(false).launchUrl(
-                                UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                    createNotification(context, intent);
+                    break;
+                case RetentionNotificationUtil.DEFAULT_BROWSER_1:
+                case RetentionNotificationUtil.DEFAULT_BROWSER_2:
+                case RetentionNotificationUtil.DEFAULT_BROWSER_3:
+                    if (!BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(
+                                context)) {
+                        createNotification(context, intent);
                     }
                     break;
                 case RetentionNotificationUtil.DAY_10:
                 case RetentionNotificationUtil.DAY_30:
                 case RetentionNotificationUtil.DAY_35:
-                    braveActivity.openRewardsPanel();
+                    // Can't check for rewards code in background
+                    if (braveActivity != null
+                            && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
+                                    Profile.getLastUsedRegularProfile())
+                            && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+                        createNotification(context, intent);
+                    }
+                    break;
+                case RetentionNotificationUtil.EVERY_SUNDAY:
+                    if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
+                        createNotification(context, intent);
+                    }
                     break;
                 case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
                 case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
@@ -75,7 +132,7 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                     if (System.currentTimeMillis()
                             > OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
                                     notificationType)) {
-                        braveActivity.showDormantUsersEngagementDialog(notificationType);
+                        createNotification(context, intent);
                     } else {
                         RetentionNotificationUtil.scheduleNotificationWithTime(context,
                                 notificationType,
@@ -83,57 +140,6 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
                                         notificationType));
                     }
                     break;
-                }
-            } else {
-                backgroundNotificationAction(context, intent);
-            }
-        } else {
-            switch (notificationType) {
-            case RetentionNotificationUtil.HOUR_3:
-            case RetentionNotificationUtil.HOUR_24:
-            case RetentionNotificationUtil.DAY_6:
-            case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
-            case RetentionNotificationUtil.BRAVE_STATS_DATA:
-            case RetentionNotificationUtil.BRAVE_STATS_TIME:
-                createNotification(context, intent);
-                break;
-            case RetentionNotificationUtil.DEFAULT_BROWSER_1:
-            case RetentionNotificationUtil.DEFAULT_BROWSER_2:
-            case RetentionNotificationUtil.DEFAULT_BROWSER_3:
-                if (!BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(context)) {
-                    createNotification(context, intent);
-                }
-                break;
-            case RetentionNotificationUtil.DAY_10:
-            case RetentionNotificationUtil.DAY_30:
-            case RetentionNotificationUtil.DAY_35:
-                // Can't check for rewards code in background
-                if (braveActivity != null
-                        && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(
-                                Profile.getLastUsedRegularProfile())
-                        && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
-                    createNotification(context, intent);
-                }
-                break;
-            case RetentionNotificationUtil.EVERY_SUNDAY:
-                if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
-                    createNotification(context, intent);
-                }
-                break;
-            case RetentionNotificationUtil.DORMANT_USERS_DAY_14:
-            case RetentionNotificationUtil.DORMANT_USERS_DAY_25:
-            case RetentionNotificationUtil.DORMANT_USERS_DAY_40:
-                if (System.currentTimeMillis()
-                        > OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
-                                notificationType)) {
-                    createNotification(context, intent);
-                } else {
-                    RetentionNotificationUtil.scheduleNotificationWithTime(context,
-                            notificationType,
-                            OnboardingPrefManager.getInstance().getDormantUsersNotificationTime(
-                                    notificationType));
-                }
-                break;
             }
         }
     }

@@ -55,6 +55,7 @@ public class OnboardingPrefManager {
     public static final String FROM_NOTIFICATION = "from_notification";
     public static final String FROM_STATS = "from_stats";
     public static final String ONE_TIME_NOTIFICATION = "one_time_notification";
+    public static final String BITFLYER_PROMO_NOTIFICATION = "bitflyer_promo_notification";
     public static final String DORMANT_USERS_NOTIFICATION = "dormant_users_notification";
     public static final String ADS_TRACKERS_NOTIFICATION = "ads_trackers_notification";
     public static final String DATA_SAVED_NOTIFICATION = "data_saved_notification";
@@ -310,6 +311,17 @@ public class OnboardingPrefManager {
     public void setOneTimeNotificationStarted(boolean isOneTimeNotificationStarted) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(ONE_TIME_NOTIFICATION, isOneTimeNotificationStarted);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean isBitflyerPromoNotificationShown() {
+        return mSharedPreferences.getBoolean(BITFLYER_PROMO_NOTIFICATION, false);
+    }
+
+    public void setBitflyerPromoNotificationShown(boolean isBitflyerPromoNotificationShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(
+                BITFLYER_PROMO_NOTIFICATION, isBitflyerPromoNotificationShown);
         sharedPreferencesEditor.apply();
     }
 
