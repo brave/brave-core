@@ -430,12 +430,12 @@ function Container (props: Props) {
     props.walletPageActions.setImportWalletError({ hasError })
   }
 
-  const onRemoveAccount = (address: string, hardware: boolean) => {
+  const onRemoveAccount = (address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
     if (hardware) {
       props.walletPageActions.removeHardwareAccount({ address })
       return
     }
-    props.walletPageActions.removeImportedAccount({ address })
+    props.walletPageActions.removeImportedAccount({ address, coin })
   }
 
   const onUpdateAccountName = (payload: UpdateAccountNamePayloadType): { success: boolean } => {

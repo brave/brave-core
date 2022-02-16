@@ -137,7 +137,7 @@ handler.on(WalletPageActions.importAccountFromJson.getType(), async (store: Stor
 
 handler.on(WalletPageActions.removeImportedAccount.getType(), async (store: Store, payload: RemoveImportedAccountPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
-  const result = await keyringService.removeImportedAccount(payload.address)
+  const result = await keyringService.removeImportedAccount(payload.address, payload.coin)
   return result.success
 })
 
@@ -145,7 +145,7 @@ handler.on(WalletPageActions.viewPrivateKey.getType(), async (store: Store, payl
   const keyringService = getWalletPageApiProxy().keyringService
   const result = payload.isDefault
     ? await keyringService.getPrivateKeyForKeyringAccount(payload.address, payload.coin)
-    : await keyringService.getPrivateKeyForImportedAccount(payload.address)
+    : await keyringService.getPrivateKeyForImportedAccount(payload.address, payload.coin)
   store.dispatch(WalletPageActions.privateKeyAvailable({ privateKey: result.privateKey }))
 })
 

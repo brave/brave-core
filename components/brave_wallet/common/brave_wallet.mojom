@@ -424,11 +424,11 @@ interface KeyringService {
     => (bool success, string address);
 
   // Obtains the private key for an imported account
-  GetPrivateKeyForImportedAccount(string address)
+  GetPrivateKeyForImportedAccount(string address, CoinType coin)
     => (bool success, string privateKey);
 
   // Removes an imported account
-  RemoveImportedAccount(string address) => (bool success);
+  RemoveImportedAccount(string address, CoinType coin) => (bool success);
 
   // Determines if the keyring has been backed up
   IsWalletBackedUp() => (bool backed_up);

@@ -62,7 +62,7 @@ export interface Props {
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onDoneViewingPrivateKey: () => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
-  onRemoveAccount: (address: string, hardware: boolean) => void
+  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
   onSelectNetwork: (network: BraveWallet.EthereumChain) => void
   onToggleAddModal: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }

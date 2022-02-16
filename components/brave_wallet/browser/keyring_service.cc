@@ -1037,8 +1037,9 @@ std::vector<uint8_t> KeyringService::GetPrivateKeyFromKeyring(
 
 void KeyringService::GetPrivateKeyForImportedAccount(
     const std::string& address,
+    mojom::CoinType coin,
     GetPrivateKeyForImportedAccountCallback callback) {
-  const std::string keyring_id = GetKeyringIdForAddress(address);
+  const std::string keyring_id = GetKeyringIdForCoin(coin);
   if (address.empty() || !encryptors_[keyring_id]) {
     std::move(callback).Run(false, "");
     return;
@@ -1058,20 +1059,6 @@ void KeyringService::GetPrivateKeyForImportedAccount(
   std::move(callback).Run(false, "");
 }
 
-std::string KeyringService::GetKeyringIdForAddress(const std::string& address) {
-  for (auto* const keyring_id :
-       {mojom::kFilecoinKeyringId, mojom::kSolanaKeyringId}) {
-    for (const auto& account_info :
-         GetImportedAccountsForKeyring(prefs_, keyring_id)) {
-      if (address == account_info.account_address) {
-        return keyring_id;
-      }
-    }
-  }
-
-  return brave_wallet::mojom::kDefaultKeyringId;
-}
-
 HDKeyring* KeyringService::GetHDKeyringById(
     const std::string& keyring_id) const {
   if (keyrings_.contains(keyring_id))
@@ -1081,12 +1068,13 @@ HDKeyring* KeyringService::GetHDKeyringById(
 
 void KeyringService::RemoveImportedAccount(
     const std::string& address,
+    mojom::CoinType coin,
     RemoveImportedAccountCallback callback) {
   if (address.empty()) {
     std::move(callback).Run(false);
     return;
   }
-  const std::string keyring_id = GetKeyringIdForAddress(address);
+  const std::string keyring_id = GetKeyringIdForCoin(coin);
   auto* keyring = GetHDKeyringById(keyring_id);
 
   if (!keyring || !keyring->RemoveImportedAccount(address)) {

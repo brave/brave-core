@@ -3,7 +3,10 @@ import { reduceAddress } from '../../../utils/reduce-address'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 import { create } from 'ethereum-blockies'
 import { Tooltip } from '../../shared'
-import { WalletAccountType } from '../../../constants/types'
+import {
+  BraveWallet,
+  WalletAccountType
+} from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 
 // Styled Components
@@ -26,7 +29,7 @@ export interface Props {
   onClick: (account: WalletAccountType) => void
   account: WalletAccountType
   isHardwareWallet: boolean
-  onRemoveAccount: (address: string, hardware: boolean) => void
+  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
 }
 
 function AccountListItem (props: Props) {
@@ -52,7 +55,7 @@ function AccountListItem (props: Props) {
   const removeAccount = () => {
     let confirmAction = confirm(`Are you sure to remove ${account.name}?`)
     if (confirmAction) {
-      onRemoveAccount(account.address, isHardwareWallet)
+      onRemoveAccount(account.address, isHardwareWallet, account.coin)
     }
   }
 
