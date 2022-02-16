@@ -12,6 +12,7 @@ import {
 import { toProperCase } from '../../../utils/string-utils'
 import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/datetime-utils'
 import Amount from '../../../utils/amount'
+import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
 // Hooks
 import { useExplorer, useTransactionParser } from '../../../common/hooks'
@@ -104,6 +105,10 @@ const PortfolioTransactionItem = (props: Props) => {
   }
 
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)
+
+  const onClickCopyTransactionHash = (transactionHash: string) => {
+    copyToClipboard(transactionHash)
+  }
 
   const onClickRetryTransaction = () => {
     onRetryTransaction(transaction)
@@ -336,7 +341,7 @@ const PortfolioTransactionItem = (props: Props) => {
           </CoinsButton>
         </TransactionFeesTooltip>
 
-        {transactionDetails.status !== BraveWallet.TransactionStatus.Rejected ? (
+        {(transactionDetails.status !== BraveWallet.TransactionStatus.Rejected && transactionDetails.status !== BraveWallet.TransactionStatus.Unapproved) ? (
           <MoreButton onClick={onShowTransactionPopup}>
             <MoreIcon />
           </MoreButton>
@@ -346,10 +351,17 @@ const PortfolioTransactionItem = (props: Props) => {
 
         {showTransactionPopup &&
           <TransactionPopup>
-            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed] &&
+            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed].includes(transactionDetails.status) &&
               <TransactionPopupItem
                 onClick={onClickViewOnBlockExplorer('tx', transaction.txHash)}
                 text={getLocale('braveWalletTransactionExplorer')}
+              />
+            }
+
+            {[BraveWallet.TransactionStatus.Approved, BraveWallet.TransactionStatus.Submitted, BraveWallet.TransactionStatus.Confirmed].includes(transactionDetails.status) &&
+              <TransactionPopupItem
+                onClick={() => onClickCopyTransactionHash(transaction.txHash)}
+                text={getLocale('braveWalletTransactionCopyHash')}
               />
             }
 
