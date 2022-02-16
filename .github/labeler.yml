@@ -1,4 +1,5 @@
 CI/run-audit-deps:
+- DEPS
 - package.json
 - package-lock.json
 - script/audit_deps.py
