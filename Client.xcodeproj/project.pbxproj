@@ -913,7 +913,6 @@
 		7482205C1DBAB56300EEEA72 /* MailProviders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7482205B1DBAB56300EEEA72 /* MailProviders.swift */; };
 		74E36D781B71323500D69DA1 /* SettingsContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E36D771B71323500D69DA1 /* SettingsContentViewController.swift */; };
 		78A9D0962407B4A90077576C /* BraveGetUA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78A9D0952407B4A90077576C /* BraveGetUA.swift */; };
-		78BA4B602472F9F900BD0897 /* UserReferralProgramTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78BA4B5C2472F8C100BD0897 /* UserReferralProgramTests.swift */; };
 		7B10AA9F1E3A15020002DD08 /* DataExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B10AA9E1E3A15020002DD08 /* DataExtensions.swift */; };
 		7B10AABB1E3A1F650002DD08 /* URLRequestExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B10AABA1E3A1F650002DD08 /* URLRequestExtensions.swift */; };
 		7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7B2142FC1E5E055000CDD3FC /* InfoPlist.strings */; };
@@ -1023,7 +1022,6 @@
 		CA10BE7C2704BA7900A265A6 /* GlobalSignRootCA_R5.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F23126CBD27900658EAC /* GlobalSignRootCA_R5.cer */; };
 		CA10BE7D2704BA7900A265A6 /* SFSRootCAG2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 4481F22C26CBD1C600658EAC /* SFSRootCAG2.cer */; };
 		CA10BE7F2704BCAE00A265A6 /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = CA10BE7E2704BCAE00A265A6 /* leaf.cer */; };
-		CA19C774275FE131004235B9 /* OnboardingPrivacyConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19C773275FE131004235B9 /* OnboardingPrivacyConsentViewController.swift */; };
 		CA19C781275FE26A004235B9 /* OnboardingCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA19C780275FE26A004235B9 /* OnboardingCommon.swift */; };
 		CA1B699027303D6B00F7CAC0 /* WelcomeViewCallout.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA1B698F27303D6B00F7CAC0 /* WelcomeViewCallout.swift */; };
 		CA220258271881E3002D3582 /* InternalSchemeHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA220257271881E3002D3582 /* InternalSchemeHandler.swift */; };
@@ -2860,7 +2858,6 @@
 		74C027441B2A348C001B1E88 /* SessionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionData.swift; sourceTree = "<group>"; };
 		74E36D771B71323500D69DA1 /* SettingsContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsContentViewController.swift; sourceTree = "<group>"; };
 		78A9D0952407B4A90077576C /* BraveGetUA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveGetUA.swift; sourceTree = "<group>"; };
-		78BA4B5C2472F8C100BD0897 /* UserReferralProgramTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReferralProgramTests.swift; sourceTree = "<group>"; };
 		7B10AA9E1E3A15020002DD08 /* DataExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataExtensions.swift; sourceTree = "<group>"; };
 		7B10AABA1E3A1F650002DD08 /* URLRequestExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLRequestExtensions.swift; sourceTree = "<group>"; };
 		7B2142FD1E5E055000CDD3FC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2961,7 +2958,6 @@
 		CA0EE174273C248C00F269DA /* OnboardingPulseAnimationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPulseAnimationView.swift; sourceTree = "<group>"; };
 		CA0EE176273C402900F269DA /* WelcomeNTPOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeNTPOnboardingView.swift; sourceTree = "<group>"; };
 		CA10BE7E2704BCAE00A265A6 /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
-		CA19C773275FE131004235B9 /* OnboardingPrivacyConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPrivacyConsentViewController.swift; sourceTree = "<group>"; };
 		CA19C780275FE26A004235B9 /* OnboardingCommon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCommon.swift; sourceTree = "<group>"; };
 		CA1B698F27303D6B00F7CAC0 /* WelcomeViewCallout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewCallout.swift; sourceTree = "<group>"; };
 		CA220257271881E3002D3582 /* InternalSchemeHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternalSchemeHandler.swift; sourceTree = "<group>"; };
@@ -3553,7 +3549,6 @@
 				CA1B698327303D5800F7CAC0 /* Welcome */,
 				5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */,
 				5EC594EC232C2C8F00922111 /* OnboardingWebViewController.swift */,
-				CA19C773275FE131004235B9 /* OnboardingPrivacyConsentViewController.swift */,
 				0A764F30230EE5CA003A1D9B /* OnboardingState.swift */,
 				0A6E095E230E05BC00AB3F19 /* onboarding-shields.json */,
 				5E1D8C6E232C0BDB00BDE662 /* onboarding-rewards.json */,
@@ -5515,7 +5510,6 @@
 				5965CA212215D4A0000B9EC1 /* CustomHeaderDataTests.swift */,
 				2777273F22EB44B300F0214C /* StringExtensionTests.swift */,
 				5EEB25DD234E667700279091 /* CertificatePinningTest.swift */,
-				78BA4B5C2472F8C100BD0897 /* UserReferralProgramTests.swift */,
 				27A1AC062485618600344503 /* PrivateCDNTests.swift */,
 			);
 			path = BraveSharedTests;
@@ -8211,7 +8205,6 @@
 			files = (
 				A176323C20CF2AF900126F25 /* DeferredTestUtils.swift in Sources */,
 				5DE7689420B3456E00FF5533 /* BraveSharedTests.swift in Sources */,
-				78BA4B602472F9F900BD0897 /* UserReferralProgramTests.swift in Sources */,
 				27A1AC072485618600344503 /* PrivateCDNTests.swift in Sources */,
 				2777274022EB44B300F0214C /* StringExtensionTests.swift in Sources */,
 				27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */,
@@ -8503,7 +8496,6 @@
 				4422D55821BFFB7F00BF1855 /* unicode_casefold.cc in Sources */,
 				C6620BBB213BCEC6009FE75A /* TabType.swift in Sources */,
 				2FCEED8526EAAB6C00892699 /* HistoryAPIExtensions.swift in Sources */,
-				CA19C774275FE131004235B9 /* OnboardingPrivacyConsentViewController.swift in Sources */,
 				44A58CEA26947100005C0879 /* BraveSearchDebugMenuFixture.swift in Sources */,
 				277C5B21254CAD790032DEF2 /* BraveRewardsExtensions.swift in Sources */,
 				4422D50721BFFB7600BF1855 /* port_posix.cc in Sources */,

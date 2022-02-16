@@ -65,7 +65,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             SceneDelegate.shouldHandleUrpLookup = false
             
             if let urp = UserReferralProgram.shared {
-                browserViewController.handleReferralLookup(urp, checkClipboard: false)
+                browserViewController.handleReferralLookup(urp)
             }
         }
         
@@ -386,32 +386,10 @@ extension SceneDelegate: UIViewControllerRestoration {
 }
 
 extension BrowserViewController {
-    func handleReferralLookup(_ urp: UserReferralProgram, checkClipboard: Bool) {
-        let initialOnboarding =
-            Preferences.General.basicOnboardingProgress.value == OnboardingProgress.none.rawValue
-        
-        // FIXME: Update to iOS14 clipboard api once ready (#2838)
-        if initialOnboarding && UIPasteboard.general.hasStrings {
-            log.debug("Skipping URP call at app launch, this is handled in privacy consent onboarding screen")
-            return
-        }
+    func handleReferralLookup(_ urp: UserReferralProgram) {
         
         if Preferences.URP.referralLookupOutstanding.value == true {
-            var refCode: String?
-            
-            if Preferences.URP.referralCode.value == nil {
-                UrpLog.log("No ref code exists on launch, attempting clipboard retrieval")
-                let savedRefCode = checkClipboard ? UIPasteboard.general.string : nil
-                refCode = UserReferralProgram.sanitize(input: savedRefCode)
-                
-                if refCode != nil {
-                    UrpLog.log("Clipboard ref code found: " + (savedRefCode ?? "!Clipboard Empty!"))
-                    UrpLog.log("Clearing clipboard.")
-                    UIPasteboard.general.clearPasteboard()
-                }
-            }
-            
-            urp.referralLookup(refCode: refCode) { referralCode, offerUrl in
+            urp.referralLookup() { referralCode, offerUrl in
                 // Attempting to send ping after first urp lookup.
                 // This way we can grab the referral code if it exists, see issue #2586.
                 (UIApplication.shared.delegate as? AppDelegate)?.dau.sendPingToServer()

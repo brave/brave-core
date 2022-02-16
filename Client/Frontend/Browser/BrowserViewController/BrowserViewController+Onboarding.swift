@@ -15,30 +15,7 @@ extension BrowserViewController {
     func presentOnboardingIntro() {
         if Preferences.DebugFlag.skipOnboardingIntro == true { return }
         
-        if Preferences.URP.referralCode.value == nil &&
-            UIPasteboard.general.hasStrings &&
-            (Preferences.General.basicOnboardingCompleted.value != OnboardingState.completed.rawValue &&
-             Preferences.General.basicOnboardingCompleted.value != OnboardingState.skipped.rawValue) {
-            let controller = OnboardingPrivacyConsentViewController()
-            
-            controller.handleReferralLookup = { [weak self] urp, consentGranted in
-                self?.handleReferralLookup(urp, checkClipboard: consentGranted)
-            }
-            
-            controller.onPrivacyConsentCompleted = { [weak self, unowned controller] in
-                guard let self = self else { return }
-                if Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue || Preferences.General.basicOnboardingCompleted.value == OnboardingState.skipped.rawValue {
-                    controller.dismiss(animated: true, completion: nil)
-                    return
-                }
-                
-                self.presentOnboardingWelcomeScreen(on: controller)
-            }
-            
-            present(controller, animated: false)
-        } else {
-            presentOnboardingWelcomeScreen(on: self)
-        }
+        presentOnboardingWelcomeScreen(on: self)
     }
 
     func presentOnboardingWelcomeScreen(on parentController: UIViewController) {

@@ -15,7 +15,6 @@ public class UserReferralProgram {
     public static let shared = UserReferralProgram()
     
     private static let apiKeyPlistKey = "API_KEY"
-    private static let clipboardPrefix = "F83AB73F-9852-4F01-ABA8-7830B8825993"
     
     struct HostUrl {
         static let staging = "https://laptop-updates.bravesoftware.com"
@@ -54,7 +53,7 @@ public class UserReferralProgram {
     }
     
     /// Looks for referral and returns its landing page if possible.
-    public func referralLookup(refCode: String?, completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void) {
+    public func referralLookup(completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void) {
         UrpLog.log("first run referral lookup")
         
         let referralBlock: (ReferralData?, UrpError?) -> Void = { [weak self] referral, error in
@@ -72,7 +71,7 @@ public class UserReferralProgram {
                 self.referralLookupRetry.timer =
                     Timer.scheduledTimer(withTimeInterval: self.referralLookupRetry.retryTimeInterval,
                                          repeats: true) { [weak self] _ in
-                        self?.referralLookup(refCode: refCode) { refCode, offerUrl in
+                        self?.referralLookup() { refCode, offerUrl in
                             completion(refCode, offerUrl)
                         }
                 }
@@ -115,12 +114,6 @@ public class UserReferralProgram {
             self.initRetryPingConnection(numberOfTimes: 30)
             
             completion(ref.referralCode, nil)
-        }
-        
-        if let refCode = refCode {
-            // This is also potentially set after server network request,
-            //  esp important for binaries that require server ref code retrieval.
-            Preferences.URP.referralCode.value = refCode
         }
         
         // Since ref-code method may not be repeatable (e.g. clipboard was cleared), this should be retrieved from prefs,
@@ -226,24 +219,6 @@ public class UserReferralProgram {
             return referralCode
         }
         return nil
-    }
-    
-    /// Passing string, attempts to derive a ref code from it.
-    /// Uses very strict matching.
-    /// Returns the sanitized code, or nil if no code was found
-    public class func sanitize(input: String?) -> String? {
-        guard
-            var input = input,
-            input.hasPrefix(self.clipboardPrefix),
-            input.count > self.clipboardPrefix.count
-            else { return nil }
-        
-        // +1 to strip off `:` that proceeds the defined prefix
-        input.removeFirst(self.clipboardPrefix.count + 1)
-        let valid = input.range(of: #"\b[A-Z]{3}[0-9]{3}\b"#, options: .regularExpression) != nil
-
-        // Both conditions must be met
-        return valid ? input : nil
     }
     
     /// Same as `customHeaders` only blocking on result, to gaurantee data is available
