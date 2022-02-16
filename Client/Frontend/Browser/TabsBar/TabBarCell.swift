@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveShared
+import Combine
 
 class TabBarCell: UICollectionViewCell {
     
@@ -24,11 +25,11 @@ class TabBarCell: UICollectionViewCell {
     }()
     
     private let separatorLine = UIView().then {
-        $0.backgroundColor = .braveSeparator
+        $0.backgroundColor = .urlBarSeparator
     }
     
     let separatorLineRight = UIView().then {
-        $0.backgroundColor = .braveSeparator
+        $0.backgroundColor = .urlBarSeparator
         $0.isHidden = true
     }
     
@@ -47,19 +48,35 @@ class TabBarCell: UICollectionViewCell {
             if $0.userInterfaceStyle == .dark {
                 return UIColor.black.withAlphaComponent(0.25)
             }
-            return UIColor.black.withAlphaComponent(0.05)
+            return UIColor.black.withAlphaComponent(0.1)
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .secondaryBraveBackground
+        backgroundColor = .urlBarBackground
         
         [deselectedOverlayView, closeButton, titleLabel, separatorLine, separatorLineRight].forEach { contentView.addSubview($0) }
         initConstraints()
         
         isSelected = false
+        privateModeCancellable = PrivateBrowsingManager.shared
+            .$isPrivateBrowsing
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] isPrivateBrowsing in
+                self?.updateColors(isPrivateBrowsing)
+            })
     }
+    
+    private var privateModeCancellable: AnyCancellable?
+    private func updateColors(_ isPrivateBrowsing: Bool) {
+        if isPrivateBrowsing {
+            backgroundColor = .privateModeBackground
+        } else {
+            backgroundColor = .urlBarBackground
+        }
+    }
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -107,13 +124,15 @@ class TabBarCell: UICollectionViewCell {
         if isSelected {
             titleLabel.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.semibold)
             titleLabel.alpha = 1.0
+            titleLabel.textColor = .bravePrimary
             closeButton.isHidden = false
             deselectedOverlayView.isHidden = true
         }
             // Prevent swipe and release outside- deselects cell.
         else if currentIndex != tabManager?.currentDisplayedIndex {
             titleLabel.font = UIFont.systemFont(ofSize: 12)
-            titleLabel.alpha = 0.6
+            titleLabel.alpha = 0.8
+            titleLabel.textColor = .braveLabel
             closeButton.isHidden = true
             deselectedOverlayView.isHidden = false
         }

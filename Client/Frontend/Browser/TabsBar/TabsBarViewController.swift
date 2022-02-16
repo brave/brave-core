@@ -7,6 +7,7 @@ import UIKit
 import SnapKit
 import Shared
 import BraveShared
+import Combine
 
 protocol TabsBarViewControllerDelegate: AnyObject {
     func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: Tab)
@@ -50,7 +51,12 @@ class TabsBarViewController: UIViewController {
     }()
     
     private let bottomLine = UIView().then {
-        $0.backgroundColor = .braveSeparator
+        $0.backgroundColor = .init { traitCollection in
+            if traitCollection.userInterfaceStyle == .dark {
+                return UIColor(white: 0.0, alpha: 0.3)
+            }
+            return .braveSeparator
+        }
     }
     
     fileprivate weak var tabManager: TabManager?
@@ -68,7 +74,7 @@ class TabsBarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .secondaryBraveBackground
+        view.backgroundColor = .urlBarBackground
         collectionView.backgroundColor = view.backgroundColor
         
         tabManager?.addDelegate(self)
@@ -102,7 +108,7 @@ class TabsBarViewController: UIViewController {
         
         bottomLine.snp.makeConstraints { make in
             make.height.equalTo(1.0 / UIScreen.main.scale)
-            make.top.equalTo(view.snp.bottom)
+            make.bottom.equalTo(view.snp.bottom)
             make.left.right.equalTo(view)
         }
         
@@ -131,6 +137,24 @@ class TabsBarViewController: UIViewController {
         newTabMenu.append(openNewTab)
         
         plusButton.menu = UIMenu(title: "", identifier: nil, children: newTabMenu)
+        privateModeCancellable = PrivateBrowsingManager.shared
+            .$isPrivateBrowsing
+            .removeDuplicates()
+            .sink(receiveValue: { [weak self] isPrivateBrowsing in
+                self?.updateColors(isPrivateBrowsing)
+            })
+    }
+    
+    private var privateModeCancellable: AnyCancellable?
+    private func updateColors(_ isPrivateBrowsing: Bool) {
+        let backgroundColor: UIColor
+        if isPrivateBrowsing {
+            backgroundColor = .privateModeBackground
+        } else {
+            backgroundColor = .urlBarBackground
+        }
+        view.backgroundColor = backgroundColor
+        collectionView.backgroundColor = view.backgroundColor
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -661,7 +661,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
 
         // Temporary work around for covering the non-clipped web view content
         statusBarOverlay = UIView()
-        statusBarOverlay.backgroundColor = .secondaryBraveBackground
+        statusBarOverlay.backgroundColor = .urlBarBackground
         view.addSubview(statusBarOverlay)
 
         topTouchArea = UIButton()
@@ -751,7 +751,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                 if isPrivateBrowsing {
                     self?.statusBarOverlay.backgroundColor = .privateModeBackground
                 } else {
-                    self?.statusBarOverlay.backgroundColor = .secondaryBraveBackground
+                    self?.statusBarOverlay.backgroundColor = .urlBarBackground
                 }
             })
     }
@@ -1148,6 +1148,10 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
     
     func updateTabsBarVisibility() {
+        defer {
+            topToolbar.line.isHidden = !tabsBar.view.isHidden
+        }
+        
         if tabManager.selectedTab == nil {
             tabsBar.view.isHidden = true
             return

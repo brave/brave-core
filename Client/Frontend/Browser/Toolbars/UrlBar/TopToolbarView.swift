@@ -117,7 +117,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
 
     let line = UIView().then {
-        $0.backgroundColor = .braveSeparator
+        $0.backgroundColor = .urlBarSeparator
     }
     
     let tabsButton = TabsButton()
@@ -197,14 +197,14 @@ class TopToolbarView: UIView, ToolbarProtocol {
         if isPrivateBrowsing {
             backgroundColor = .privateModeBackground
         } else {
-            backgroundColor = .secondaryBraveBackground
+            backgroundColor = .urlBarBackground
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = .secondaryBraveBackground
+        backgroundColor = .urlBarBackground
         
         locationContainer.addSubview(locationView)
         
