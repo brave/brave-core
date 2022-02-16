@@ -257,10 +257,11 @@ class KeyringServiceUnitTest : public testing::Test {
   }
 
   static bool RemoveImportedAccount(KeyringService* service,
-                                    const std::string& address) {
+                                    const std::string& address,
+                                    mojom::CoinType coin) {
     bool success;
     base::RunLoop run_loop;
-    service->RemoveImportedAccount(address,
+    service->RemoveImportedAccount(address, coin,
                                    base::BindLambdaForTesting([&](bool v) {
                                      success = v;
                                      run_loop.Quit();
@@ -271,11 +272,12 @@ class KeyringServiceUnitTest : public testing::Test {
 
   static bool GetPrivateKeyForImportedAccount(KeyringService* service,
                                               const std::string& address,
+                                              mojom::CoinType coin,
                                               std::string* private_key) {
     bool success;
     base::RunLoop run_loop;
     service->GetPrivateKeyForImportedAccount(
-        address,
+        address, coin,
         base::BindLambdaForTesting([&](bool v, const std::string& key) {
           success = v;
           *private_key = key;
@@ -1422,19 +1424,22 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
     EXPECT_EQ(imported_accounts[i].address, *imported_account);
 
     std::string private_key;
-    EXPECT_TRUE(GetPrivateKeyForImportedAccount(
-        &service, imported_accounts[i].address, &private_key));
+    EXPECT_TRUE(
+        GetPrivateKeyForImportedAccount(&service, imported_accounts[i].address,
+                                        mojom::CoinType::ETH, &private_key));
     EXPECT_EQ(imported_accounts[i].private_key, private_key);
   }
 
   observer.Reset();
-  EXPECT_TRUE(RemoveImportedAccount(&service, imported_accounts[1].address));
+  EXPECT_TRUE(RemoveImportedAccount(&service, imported_accounts[1].address,
+                                    mojom::CoinType::ETH));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
 
   observer.Reset();
   // remove invalid address
-  EXPECT_FALSE(RemoveImportedAccount(&service, "0xxxxxxxxxx0"));
+  EXPECT_FALSE(
+      RemoveImportedAccount(&service, "0xxxxxxxxxx0", mojom::CoinType::ETH));
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(observer.AccountsChangedFired());
 
@@ -1468,8 +1473,9 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
   service.Lock();
   // cannot get private key when locked
   std::string private_key;
-  EXPECT_FALSE(GetPrivateKeyForImportedAccount(
-      &service, imported_accounts[0].address, &private_key));
+  EXPECT_FALSE(
+      GetPrivateKeyForImportedAccount(&service, imported_accounts[0].address,
+                                      mojom::CoinType::ETH, &private_key));
   EXPECT_TRUE(private_key.empty());
 
   EXPECT_TRUE(Unlock(&service, "brave"));
@@ -1497,8 +1503,9 @@ TEST_F(KeyringServiceUnitTest, ImportedAccounts) {
 
   // private key should also be available now
   private_key.clear();
-  EXPECT_TRUE(GetPrivateKeyForImportedAccount(
-      &service, imported_accounts[0].address, &private_key));
+  EXPECT_TRUE(
+      GetPrivateKeyForImportedAccount(&service, imported_accounts[0].address,
+                                      mojom::CoinType::ETH, &private_key));
   EXPECT_EQ(imported_accounts[0].private_key, private_key);
 
   // Imported accounts should also be restored in default keyring
@@ -1576,8 +1583,8 @@ TEST_F(KeyringServiceUnitTest, ImportedAccountFromJson) {
 
   // check restore by getting private key
   std::string private_key;
-  EXPECT_TRUE(GetPrivateKeyForImportedAccount(&service, expected_address,
-                                              &private_key));
+  EXPECT_TRUE(GetPrivateKeyForImportedAccount(
+      &service, expected_address, mojom::CoinType::ETH, &private_key));
   EXPECT_EQ(expected_private_key, private_key);
 
   // private key is encrypted
@@ -1786,8 +1793,9 @@ TEST_F(KeyringServiceUnitTest, SetDefaultKeyringImportedAccountName) {
   for (size_t i = 0;
        i < sizeof(imported_accounts) / sizeof(imported_accounts[0]); ++i) {
     std::string private_key;
-    EXPECT_TRUE(GetPrivateKeyForImportedAccount(
-        &service, imported_accounts[i].address, &private_key));
+    EXPECT_TRUE(
+        GetPrivateKeyForImportedAccount(&service, imported_accounts[i].address,
+                                        mojom::CoinType::ETH, &private_key));
     EXPECT_EQ(imported_accounts[i].private_key, private_key);
   }
 
@@ -2106,7 +2114,8 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   observer.Reset();
   EXPECT_TRUE(Unlock(&service, "brave"));
   EXPECT_TRUE(RemoveImportedAccount(
-      &service, "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976"));
+      &service, "0xDc06aE500aD5ebc5972A0D8Ada4733006E905976",
+      mojom::CoinType::ETH));
   EXPECT_TRUE(Lock(&service));
   EXPECT_EQ(absl::nullopt, GetSelectedAccount(&service));
   base::RunLoop().RunUntilIdle();
@@ -2497,8 +2506,9 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
     }
 
     std::string private_key;
-    EXPECT_TRUE(GetPrivateKeyForImportedAccount(
-        &service, imported_accounts[i].address, &private_key));
+    EXPECT_TRUE(
+        GetPrivateKeyForImportedAccount(&service, imported_accounts[i].address,
+                                        mojom::CoinType::FIL, &private_key));
     EXPECT_EQ(imported_accounts[i].private_key, private_key);
   }
   // filecoin keyring will be lazily created in first FIL import
@@ -2506,14 +2516,16 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
       service.GetHDKeyringById(brave_wallet::mojom::kFilecoinKeyringId);
   EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), amount);
 
-  EXPECT_TRUE(RemoveImportedAccount(&service, imported_accounts[1].address));
+  EXPECT_TRUE(RemoveImportedAccount(&service, imported_accounts[1].address,
+                                    mojom::CoinType::FIL));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
 
   observer.Reset();
   EXPECT_EQ(filecoin_keyring->GetImportedAccountsNumber(), amount - 1);
   // remove invalid address
-  EXPECT_FALSE(RemoveImportedAccount(&service, "0xxxxxxxxxx0"));
+  EXPECT_FALSE(
+      RemoveImportedAccount(&service, "0xxxxxxxxxx0", mojom::CoinType::FIL));
   base::RunLoop().RunUntilIdle();
   EXPECT_FALSE(observer.AccountsChangedFired());
 
@@ -2551,8 +2563,9 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   service.Lock();
   // cannot get private key when locked
   std::string private_key;
-  EXPECT_FALSE(GetPrivateKeyForImportedAccount(
-      &service, imported_accounts[0].address, &private_key));
+  EXPECT_FALSE(
+      GetPrivateKeyForImportedAccount(&service, imported_accounts[0].address,
+                                      mojom::CoinType::FIL, &private_key));
   EXPECT_TRUE(private_key.empty());
 
   EXPECT_TRUE(Unlock(&service, "brave"));
@@ -2582,8 +2595,9 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
             amount - 1);
   // private key should also be available now
   private_key.clear();
-  EXPECT_TRUE(GetPrivateKeyForImportedAccount(
-      &service, imported_accounts[0].address, &private_key));
+  EXPECT_TRUE(
+      GetPrivateKeyForImportedAccount(&service, imported_accounts[0].address,
+                                      mojom::CoinType::FIL, &private_key));
   EXPECT_EQ(imported_accounts[0].private_key, private_key);
 
   auto* default_keyring =
@@ -2788,7 +2802,7 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
     std::string private_key;
     EXPECT_TRUE(GetPrivateKeyForImportedAccount(
         &service, "C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ",
-        &private_key));
+        mojom::CoinType::SOL, &private_key));
     EXPECT_EQ(private_key,
               "sCzwsBKmKtk5Hgb4YUJAduQ5nmJq4GTyzCXhrKonAGaexa83MgSZuTSMS6TSZTnd"
               "nCYbQtaJQKLXET9jVjepWXe");
@@ -2804,7 +2818,8 @@ TEST_F(KeyringServiceUnitTest, SolanaKeyring) {
         "c5JsjL1TrGr1X3nPFP",
         mojom::CoinType::SOL);
     ASSERT_TRUE(imported_account.has_value());
-    ASSERT_TRUE(RemoveImportedAccount(&service, *imported_account));
+    ASSERT_TRUE(RemoveImportedAccount(&service, *imported_account,
+                                      mojom::CoinType::SOL));
 
     base::RunLoop run_loop;
     service.GetKeyringInfo(

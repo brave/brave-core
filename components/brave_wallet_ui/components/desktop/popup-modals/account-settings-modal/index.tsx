@@ -42,7 +42,7 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onCopyToClipboard: () => void
   onChangeTab: (id: AccountSettingsNavTypes) => void
-  onRemoveAccount: (address: string, hardware: boolean) => void
+  onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onDoneViewingPrivateKey: () => void
   onToggleNav: () => void
@@ -108,7 +108,7 @@ const AddAccountModal = (props: Props) => {
   }
 
   const removeAccount = () => {
-    onRemoveAccount(account.address, false)
+    onRemoveAccount(account.address, false, account.coin)
     onToggleNav()
     onClose()
   }
