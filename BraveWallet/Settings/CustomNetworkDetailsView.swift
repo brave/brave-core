@@ -58,7 +58,7 @@ class CustomNetworkModel: ObservableObject {
   @Published var networkName = NetworkInputItem(input: "") {
     didSet {
       if networkName.input != oldValue.input {
-        if networkId.input.isEmpty {
+        if networkName.input.isEmpty {
           networkName.error = Strings.Wallet.customNetworkEmptyErrMsg
         } else {
           networkName.error = nil
