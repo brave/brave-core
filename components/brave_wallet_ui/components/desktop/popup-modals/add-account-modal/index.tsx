@@ -42,6 +42,7 @@ export interface Props {
   onCreateAccount: (name: string, coin: BraveWallet.CoinType) => void
   onImportAccount: (accountName: string, privateKey: string, coin: BraveWallet.CoinType) => void
   isFilecoinEnabled: boolean
+  isSolanaEnabled: boolean
   onImportFilecoinAccount: (accountName: string, key: string, network: FilecoinNetwork, protocol: BraveWallet.FilecoinAddressProtocol) => void
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
@@ -60,6 +61,7 @@ const AddAccountModal = (props: Props) => {
     accounts,
     selectedNetwork,
     isFilecoinEnabled,
+    isSolanaEnabled,
     hasImportError,
     tab,
     onClose,
@@ -73,16 +75,21 @@ const AddAccountModal = (props: Props) => {
     onSetImportError,
     onRouteBackToAccounts
   } = props
-  const suggestedAccountName = `${getLocale('braveWalletAccount')} ${accounts.length + 1}`
+
   const [importOption, setImportOption] = React.useState<string>('key')
   const [file, setFile] = React.useState<HTMLInputElement['files']>()
-  const [accountName, setAccountName] = React.useState<string>(suggestedAccountName)
+  const [accountName, setAccountName] = React.useState<string>('')
   const [privateKey, setPrivateKey] = React.useState<string>('')
   const [password, setPassword] = React.useState<string>('')
   const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(undefined)
   const passwordInputRef = React.useRef<HTMLInputElement>(null)
   const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
   const [filecoinAddressProtocol, setFilecoinAddressProtocol] = React.useState<BraveWallet.FilecoinAddressProtocol>(BraveWallet.FilecoinAddressProtocol.BLS)
+
+  const suggestedAccountName = React.useMemo(() => {
+    const accountTypeLength = accounts.filter((account) => account.coin === selectedAccountType?.coin).length + 1
+    return `${selectedAccountType?.name} ${getLocale('braveWalletAccount')} ${accountTypeLength}`
+  }, [accounts, selectedAccountType])
 
   const onChangeFilecoinNetwork = (network: FilecoinNetwork) => {
     setFilecoinNetwork(network)
@@ -188,8 +195,7 @@ const AddAccountModal = (props: Props) => {
   const modalTitle = React.useMemo((): string => {
     switch (tab) {
       case 'create':
-        // Will need different logic here to determine how many accounts a user has for each network.
-        setAccountName(selectedAccountType?.name + ' ' + suggestedAccountName)
+        setAccountName(suggestedAccountName)
         return selectedAccountType
           ? getLocale('braveWalletCreateAccount').replace('$1', selectedAccountType.name)
           : getLocale('braveWalletCreateAccountButton')
@@ -261,19 +267,23 @@ const AddAccountModal = (props: Props) => {
                   </SelectWrapper>
                 </>
               ) : (
-                <SelectWrapper>
-                  <Select
-                    value={importOption}
-                    onChange={onImportOptionChange}
-                  >
-                    <div data-value='key'>
-                      {getLocale('braveWalletImportAccountKey')}
-                    </div>
-                    <div data-value='file'>
-                      {getLocale('braveWalletImportAccountFile')}
-                    </div>
-                  </Select>
-                </SelectWrapper>
+                <>
+                  {selectedAccountType?.coin === BraveWallet.CoinType.ETH &&
+                    <SelectWrapper>
+                      <Select
+                        value={importOption}
+                        onChange={onImportOptionChange}
+                      >
+                        <div data-value='key'>
+                          {getLocale('braveWalletImportAccountKey')}
+                        </div>
+                        <div data-value='file'>
+                          {getLocale('braveWalletImportAccountFile')}
+                        </div>
+                      </Select>
+                    </SelectWrapper>
+                  }
+                </>
               )
               }
               {importError &&
@@ -349,7 +359,7 @@ const AddAccountModal = (props: Props) => {
         <SelectAccountTypeWrapper>
           <SelectAccountTitle>{getLocale('braveWalletCreateAccountTitle')}</SelectAccountTitle>
           <DividerLine />
-          {CreateAccountOptions(isFilecoinEnabled).map((network) =>
+          {CreateAccountOptions(isFilecoinEnabled, isSolanaEnabled).map((network) =>
             <SelectAccountItemWrapper key={network.coin}>
               <AccountTypeItem
                 onClickCreate={onSelectAccountType(network)}
