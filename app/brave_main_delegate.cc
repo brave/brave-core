@@ -36,14 +36,6 @@
 #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
 
-#if BUILDFLAG(IS_ANDROID)
-#include "base/android/jni_android.h"
-#include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
-#include "components/signin/public/base/account_consistency_method.h"
-#else
-#include "chrome/browser/ui/profile_picker.h"
-#endif
-
 namespace {
 
 const char kBraveOriginTrialsPublicKey[] =
@@ -152,90 +144,3 @@ void BraveMainDelegate::PreSandboxStartup() {
     brave::InitializeResourceBundle();
   }
 }
-
-bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
-  BraveCommandLineHelper command_line(base::CommandLine::ForCurrentProcess());
-  command_line.AppendSwitch(switches::kDisableClientSidePhishingDetection);
-  command_line.AppendSwitch(switches::kDisableDomainReliability);
-  command_line.AppendSwitch(switches::kEnableDomDistiller);
-  command_line.AppendSwitch(switches::kNoPings);
-
-  std::string update_url = GetUpdateURLHost();
-  if (!update_url.empty()) {
-    std::string source = "url-source=" + update_url;
-    command_line.AppendSwitchASCII(switches::kComponentUpdater, source.c_str());
-  }
-
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          embedder_support::kOriginTrialPublicKey)) {
-    command_line.AppendSwitchASCII(embedder_support::kOriginTrialPublicKey,
-                                   kBraveOriginTrialsPublicKey);
-  }
-
-  std::string brave_sync_service_url = BRAVE_SYNC_ENDPOINT;
-#if BUILDFLAG(IS_ANDROID)
-  AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
-#endif  // BUILDFLAG(IS_ANDROID))
-
-  // Brave's sync protocol does not use the sync service url
-  command_line.AppendSwitchASCII(syncer::kSyncServiceURL,
-                                 brave_sync_service_url.c_str());
-
-  command_line.AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
-
-  // Brave variations
-  const std::string kVariationsServerURL = BRAVE_VARIATIONS_SERVER_URL;
-  command_line.AppendSwitchASCII(variations::switches::kVariationsServerURL,
-                                 kVariationsServerURL.c_str());
-  // Insecure fall-back for variations is set to the same (secure) URL. This is
-  // done so that if VariationsService tries to fall back to insecure url the
-  // check for kHttpScheme in VariationsService::MaybeRetryOverHTTP would
-  // prevent it from doing so as we don't want to use an insecure fall-back.
-  const std::string kVariationsInsecureServerURL = BRAVE_VARIATIONS_SERVER_URL;
-  command_line.AppendSwitchASCII(
-      variations::switches::kVariationsInsecureServerURL,
-      kVariationsInsecureServerURL.c_str());
-
-  // Runtime-enabled features. To override Chromium features default state
-  // please see: brave/chromium_src/base/feature_override.h
-  std::unordered_set<const char*> enabled_features = {};
-
-  // Runtime-disabled features. To override Chromium features default state
-  // please see: brave/chromium_src/base/feature_override.h
-  std::unordered_set<const char*> disabled_features = {};
-
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDisableDnsOverHttps)) {
-    disabled_features.insert(features::kDnsOverHttps.name);
-  }
-
-  command_line.AppendFeatures(enabled_features, disabled_features);
-
-  bool ret = ChromeMainDelegate::BasicStartupComplete(exit_code);
-
-  return ret;
-}
-
-#if BUILDFLAG(IS_ANDROID)
-void BraveMainDelegate::AdjustSyncServiceUrlForAndroid(
-    std::string* brave_sync_service_url) {
-  DCHECK_NE(brave_sync_service_url, nullptr);
-  const char kProcessTypeSwitchName[] = "type";
-
-  // On Android we can detect data dir only on host process, and we cannot
-  // for example on renderer or gpu-process, because JNI is not initialized
-  // And no sense to override sync service url for them in anyway
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-          kProcessTypeSwitchName)) {
-    // This is something other than browser process
-    return;
-  }
-
-  JNIEnv* env = base::android::AttachCurrentThread();
-  bool b_use_staging_sync_server =
-      Java_BraveQAPreferences_isSyncStagingUsed(env);
-  if (b_use_staging_sync_server) {
-    *brave_sync_service_url = kBraveSyncServiceStagingURL;
-  }
-}
-#endif  // BUILDFLAG(IS_ANDROID))
