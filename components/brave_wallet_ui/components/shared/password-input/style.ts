@@ -1,8 +1,12 @@
 import styled from 'styled-components'
 import WarningCircle from '../../../assets/svg-icons/warning-circle-icon.svg'
+import EyeOnIcon from '../../../assets/svg-icons/eye-on-icon.svg'
+import EyeOffIcon from '../../../assets/svg-icons/eye-off-icon.svg'
+import { WalletButton } from '../../shared/style'
 
 interface StyleProps {
   hasError: boolean
+  showPassword?: boolean
 }
 
 export const StyledWrapper = styled.div`
@@ -12,7 +16,15 @@ export const StyledWrapper = styled.div`
   flex-direction: column;
   width: 100%;
 `
-
+export const InputWrapper = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+`
 export const Input = styled.input<StyleProps>`
   box-sizing: border-box;
   width: 100%;
@@ -49,7 +61,6 @@ export const Input = styled.input<StyleProps>`
       -webkit-appearance: none;
       margin: 0;
   }
-  margin-bottom: 10px;
 `
 
 export const ErrorRow = styled.div`
@@ -78,4 +89,24 @@ export const WarningIcon = styled.div`
   width: 14px;
   height: 15px;
   background: url(${WarningCircle});
+`
+
+export const ToggleVisibilityButton = styled(WalletButton)<Partial<StyleProps>>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 0px;
+  width: 18px;
+  height: 18px;
+  background-color: ${(p) => p.theme.color.text02};
+  -webkit-mask-image: url(${(p) => p.showPassword ? EyeOffIcon : EyeOnIcon});
+  mask-image: url(${(p) => p.showPassword ? EyeOffIcon : EyeOnIcon});
+  mask-size: cover;
 `
