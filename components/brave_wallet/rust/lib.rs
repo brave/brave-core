@@ -2,7 +2,6 @@ use core::fmt;
 use ed25519_dalek_bip32::derivation_path::{
     ChildIndexError, DerivationPath, DerivationPathParseError,
 };
-use ed25519_dalek_bip32::ed25519_dalek::ed25519::signature::Signature as SignatureTrait;
 use ed25519_dalek_bip32::ed25519_dalek::{
     Keypair, SecretKey, Signature, SignatureError, Signer, KEYPAIR_LENGTH, PUBLIC_KEY_LENGTH,
     SECRET_KEY_LENGTH, SIGNATURE_LENGTH,
