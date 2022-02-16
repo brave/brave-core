@@ -117,7 +117,7 @@ void EthereumKeyring::SignTransaction(const std::string& address,
 std::string EthereumKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   if (!hd_key_base)
     return std::string();
-  HDKey* hd_key = reinterpret_cast<HDKey*>(hd_key_base);
+  HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
   const std::vector<uint8_t> public_key = hd_key->GetUncompressedPublicKey();
   // trim the header byte 0x04
   const std::vector<uint8_t> pubkey_no_header(public_key.begin() + 1,

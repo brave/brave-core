@@ -81,11 +81,11 @@ mojom::TransactionInfoPtr EthTxStateManager::TxMetaToTransactionInfo(
   mojom::GasEstimation1559Ptr gas_estimation_1559_ptr = nullptr;
   if (meta.tx->type() == 1) {
     // When type is 1 it's always Eip2930Transaction
-    auto* tx2930 = reinterpret_cast<Eip2930Transaction*>(meta.tx.get());
+    auto* tx2930 = static_cast<Eip2930Transaction*>(meta.tx.get());
     chain_id = Uint256ValueToHex(tx2930->chain_id());
   } else if (meta.tx->type() == 2) {
     // When type is 2 it's always Eip1559Transaction
-    auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(meta.tx.get());
+    auto* tx1559 = static_cast<Eip1559Transaction*>(meta.tx.get());
     chain_id = Uint256ValueToHex(tx1559->chain_id());
     max_priority_fee_per_gas =
         Uint256ValueToHex(tx1559->max_priority_fee_per_gas());

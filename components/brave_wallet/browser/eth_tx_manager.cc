@@ -768,7 +768,7 @@ void EthTxManager::SetGasFeeAndLimitForUnapprovedTransaction(
     return;
   }
 
-  auto* tx1559 = reinterpret_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
 
   uint256_t value;
   if (!HexValueToUint256(max_priority_fee_per_gas, &value)) {
@@ -902,7 +902,7 @@ void EthTxManager::SpeedupOrCancelTransaction(
 
   if (meta->tx->type() == 2) {  // EIP1559
     auto tx = std::make_unique<Eip1559Transaction>(
-        *reinterpret_cast<Eip1559Transaction*>(meta->tx.get()));
+        *static_cast<Eip1559Transaction*>(meta->tx.get()));
     if (cancel) {
       tx->set_to(meta->from);
       tx->set_value(0);
@@ -1038,7 +1038,7 @@ void EthTxManager::RetryTransaction(const std::string& tx_meta_id,
   std::unique_ptr<EthTransaction> tx;
   if (meta->tx->type() == 2) {  // EIP1559
     tx = std::make_unique<Eip1559Transaction>(
-        *reinterpret_cast<Eip1559Transaction*>(meta->tx.get()));
+        *static_cast<Eip1559Transaction*>(meta->tx.get()));
   } else {
     tx = std::make_unique<EthTransaction>(*meta->tx);
   }
