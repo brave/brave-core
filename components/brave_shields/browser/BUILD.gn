@@ -56,6 +56,8 @@ static_library("browser") {
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
+    "reduce_language_navigation_throttle.cc",
+    "reduce_language_navigation_throttle.h",
   ]
 
   deps = [

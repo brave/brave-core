@@ -113,7 +113,7 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
 
   void SetAcceptLanguages(const std::string& accept_languages) {
     content::BrowserContext* context =
-      static_cast<content::BrowserContext*>(browser()->profile());
+        static_cast<content::BrowserContext*>(browser()->profile());
     PrefService* prefs = user_prefs::UserPrefs::Get(context);
     prefs->Set(language::prefs::kSelectedLanguages,
                base::Value(accept_languages));

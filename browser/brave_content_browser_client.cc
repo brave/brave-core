@@ -47,6 +47,7 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
+#include "brave/components/brave_shields/browser/reduce_language_navigation_throttle.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
@@ -911,6 +912,13 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
                   Profile::FromBrowserContext(context)),
               g_browser_process->GetApplicationLocale()))
     throttles.push_back(std::move(domain_block_navigation_throttle));
+
+  if (std::unique_ptr<content::NavigationThrottle>
+          reduce_language_navigation_throttle = brave_shields::
+              ReduceLanguageNavigationThrottle::MaybeCreateThrottleFor(
+                  handle, HostContentSettingsMapFactory::GetForProfile(
+                              Profile::FromBrowserContext(context))))
+    throttles.push_back(std::move(reduce_language_navigation_throttle));
 
   return throttles;
 }
