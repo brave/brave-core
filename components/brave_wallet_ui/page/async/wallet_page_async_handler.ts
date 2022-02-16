@@ -153,7 +153,7 @@ handler.on(WalletPageActions.updateAccountName.getType(), async (store: Store, p
   const keyringService = getWalletPageApiProxy().keyringService
   const hardwareAccount = await findHardwareAccountInfo(payload.address)
   if (hardwareAccount && hardwareAccount.hardware) {
-    const result = await keyringService.setDefaultKeyringHardwareAccountName(payload.address, payload.name)
+    const result = await keyringService.setHardwareAccountName(payload.address, payload.name, hardwareAccount.coin)
     return result.success
   }
   const keyringId = await getKeyringIdFromAddress(payload.address)

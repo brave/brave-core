@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/password_encryptor.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -52,8 +53,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   static const base::Value* GetPrefForKeyring(PrefService* prefs,
                                               const std::string& key,
                                               const std::string& id);
-  static base::Value* GetPrefForHardwareKeyringUpdate(PrefService* prefs,
-                                                      const std::string& id);
   static base::Value* GetPrefForKeyringUpdate(PrefService* prefs,
                                               const std::string& key,
                                               const std::string& id);
@@ -164,10 +163,10 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                        GetKeyringsInfoCallback callback) override;
   void GetKeyringInfo(const std::string& keyring_id,
                       GetKeyringInfoCallback callback) override;
-  void SetDefaultKeyringHardwareAccountName(
-      const std::string& address,
-      const std::string& name,
-      SetDefaultKeyringHardwareAccountNameCallback callback) override;
+  void SetHardwareAccountName(const std::string& address,
+                              const std::string& name,
+                              mojom::CoinType coin,
+                              SetHardwareAccountNameCallback callback) override;
   void SetKeyringDerivedAccountName(
       const std::string& keyring_id,
       const std::string& address,
@@ -182,8 +181,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void Reset(bool notify_observer = true);
   bool IsKeyringCreated(const std::string& keyring_id) const;
   bool IsHardwareAccount(const std::string& account) const;
-  std::string GetKeyringIdForHardwareAccount(const std::string& account) const;
-  std::string GetKeyringIdForAccount(const std::string& address) const;
   void SignTransactionByDefaultKeyring(const std::string& address,
                                        EthTransaction* tx,
                                        uint256_t chain_id);
@@ -222,6 +219,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   void NotifyUserInteraction() override;
   void GetSelectedAccount(GetSelectedAccountCallback callback) override;
   void SetSelectedAccount(const std::string& address,
+                          mojom::CoinType coin,
                           SetSelectedAccountCallback callback) override;
   void GetAutoLockMinutes(GetAutoLockMinutesCallback callback) override;
   void SetAutoLockMinutes(int32_t minutes,
@@ -260,6 +258,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetSelectedAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportFilecoinAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateEncryptors);
+
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxManagerUnitTest;
 
@@ -307,6 +306,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool CreateKeyringInternal(const std::string& keyring_id,
                              const std::string& mnemonic,
                              bool is_legacy_brave_wallet);
+  std::string GetKeyringIdForHardwareAccount(const std::string& account) const;
 
   // Currently only support one default keyring, `CreateDefaultKeyring` and
   // `RestoreDefaultKeyring` will overwrite existing one if success

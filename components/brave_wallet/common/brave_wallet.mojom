@@ -452,7 +452,7 @@ interface KeyringService {
   SetKeyringImportedAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for a hardware account
-  SetDefaultKeyringHardwareAccountName(string address, string name) => (bool success);
+  SetHardwareAccountName(string address, string name, CoinType coin) => (bool success);
 
   // Adds hardware accounts
   AddHardwareAccounts(array<HardwareWalletAccount> info);
@@ -467,7 +467,7 @@ interface KeyringService {
   GetSelectedAccount() => (string? address);
 
   // Sets the selected account
-  SetSelectedAccount(string address) => (bool success);
+  SetSelectedAccount(string address, CoinType coin) => (bool success);
 
   // Obtains the number of minutes that the keyring will auto-lock in
   GetAutoLockMinutes() => (int32 minutes);
