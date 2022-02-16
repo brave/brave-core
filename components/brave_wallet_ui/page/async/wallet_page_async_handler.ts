@@ -171,7 +171,7 @@ handler.on(WalletPageActions.addHardwareAccounts.getType(), async (store: Store,
 
 handler.on(WalletPageActions.removeHardwareAccount.getType(), async (store: Store, payload: RemoveHardwareAccountPayloadType) => {
   const keyringService = getWalletPageApiProxy().keyringService
-  keyringService.removeHardwareAccount(payload.address)
+  keyringService.removeHardwareAccount(payload.address, payload.coin)
   store.dispatch(WalletPageActions.setShowAddModal(false))
 })
 

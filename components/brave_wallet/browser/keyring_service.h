@@ -149,7 +149,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       ImportFilecoinBLSAccountCallback callback) override;
   void AddHardwareAccounts(
       std::vector<mojom::HardwareWalletAccountPtr> info) override;
-  void RemoveHardwareAccount(const std::string& address) override;
+  void RemoveHardwareAccount(const std::string& address,
+                             mojom::CoinType coin) override;
   void GetPrivateKeyForImportedAccount(
       const std::string& address,
       mojom::CoinType coin,
@@ -258,6 +259,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, SetSelectedAccount);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, ImportFilecoinAccounts);
   FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, PreCreateEncryptors);
+  FRIEND_TEST_ALL_PREFIXES(KeyringServiceUnitTest, HardwareAccounts);
 
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxManagerUnitTest;
@@ -291,7 +293,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   std::vector<mojom::AccountInfoPtr> GetAccountInfosForKeyring(
       const std::string& id) const;
   bool UpdateNameForHardwareAccountSync(const std::string& address,
-                                        const std::string& name);
+                                        const std::string& name,
+                                        mojom::CoinType coin);
   const std::string GetMnemonicForKeyringImpl(const std::string& keyring_id);
 
   bool GetPrefInBytesForKeyring(const std::string& key,
@@ -306,7 +309,6 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
   bool CreateKeyringInternal(const std::string& keyring_id,
                              const std::string& mnemonic,
                              bool is_legacy_brave_wallet);
-  std::string GetKeyringIdForHardwareAccount(const std::string& account) const;
 
   // Currently only support one default keyring, `CreateDefaultKeyring` and
   // `RestoreDefaultKeyring` will overwrite existing one if success

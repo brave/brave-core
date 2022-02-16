@@ -1967,7 +1967,10 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
   service.AddObserver(observer.GetReceiver());
 
   ASSERT_TRUE(CreateWallet(&service, "brave"));
-
+  auto* default_keyring =
+      service.GetHDKeyringById(brave_wallet::mojom::kDefaultKeyringId);
+  std::string first_account = default_keyring->GetAddress(0);
+  EXPECT_FALSE(service.IsHardwareAccount(first_account));
   std::vector<mojom::HardwareWalletAccountPtr> new_accounts;
   new_accounts.push_back(mojom::HardwareWalletAccount::New(
       "0x111", "m/44'/60'/1'/0/0", "name 1", "Ledger", "device1",
@@ -1987,6 +1990,8 @@ TEST_F(KeyringServiceUnitTest, HardwareAccounts) {
 
   EXPECT_FALSE(observer.AccountsChangedFired());
   service.AddHardwareAccounts(std::move(new_accounts));
+  EXPECT_TRUE(service.IsHardwareAccount("0x111"));
+  EXPECT_TRUE(service.IsHardwareAccount("0x264"));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.AccountsChangedFired());
   observer.Reset();

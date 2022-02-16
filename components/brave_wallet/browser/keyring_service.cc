@@ -1280,10 +1280,9 @@ void KeyringService::AddHardwareAccounts(
   NotifyAccountsChanged();
 }
 
-void KeyringService::RemoveHardwareAccount(const std::string& address) {
-  auto keyring_id = GetKeyringIdForHardwareAccount(address);
-  if (keyring_id.empty())
-    return;
+void KeyringService::RemoveHardwareAccount(const std::string& address,
+                                           mojom::CoinType coin) {
+  auto keyring_id = GetKeyringIdForCoin(coin);
   base::Value* hardware_keyrings =
       GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
   for (auto devices : hardware_keyrings->DictItems()) {
@@ -1415,22 +1414,17 @@ void KeyringService::Lock() {
   StopAutoLockTimer();
 }
 
-std::string KeyringService::GetKeyringIdForHardwareAccount(
-    const std::string& address) const {
+bool KeyringService::IsHardwareAccount(const std::string& address) const {
   auto keyrings = GetAvailableKeyringsFromPrefs(prefs_);
   for (const auto& keyring : keyrings) {
     for (const auto& hardware_account_info : GetHardwareAccountsSync(keyring)) {
       if (base::EqualsCaseInsensitiveASCII(hardware_account_info->address,
                                            address)) {
-        return keyring;
+        return true;
       }
     }
   }
-  return std::string();
-}
-
-bool KeyringService::IsHardwareAccount(const std::string& account) const {
-  return !GetKeyringIdForHardwareAccount(account).empty();
+  return false;
 }
 
 void KeyringService::Unlock(const std::string& password,
@@ -1699,10 +1693,9 @@ void KeyringService::SetKeyringDerivedAccountName(
 
 bool KeyringService::UpdateNameForHardwareAccountSync(
     const std::string& address,
-    const std::string& name) {
-  auto keyring_id = GetKeyringIdForHardwareAccount(address);
-  if (keyring_id.empty())
-    return false;
+    const std::string& name,
+    mojom::CoinType coin) {
+  auto keyring_id = GetKeyringIdForCoin(coin);
   base::Value* hardware_keyrings =
       GetPrefForKeyringUpdate(prefs_, kHardwareAccounts, keyring_id);
   for (auto devices : hardware_keyrings->DictItems()) {
@@ -1729,7 +1722,8 @@ void KeyringService::SetHardwareAccountName(
     return;
   }
 
-  std::move(callback).Run(UpdateNameForHardwareAccountSync(address, name));
+  std::move(callback).Run(
+      UpdateNameForHardwareAccountSync(address, name, coin));
 }
 
 void KeyringService::SetKeyringImportedAccountName(

@@ -43,6 +43,7 @@ export type RemoveImportedAccountPayloadType = {
 
 export type RemoveHardwareAccountPayloadType = {
   address: string
+  coin: BraveWallet.CoinType
 }
 
 export type RestoreWalletPayloadType = {
