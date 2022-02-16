@@ -30,6 +30,13 @@ const createLedgerKeyring = () => {
   return ledgerHardwareKeyring
 }
 
+const unlockedLedgerKeyring = () => {
+  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
+  ledgerHardwareKeyring.app = new MockApp()
+  ledgerHardwareKeyring.deviceId = 'device1'
+  return ledgerHardwareKeyring
+}
+
 test('Extracting accounts from device', () => {
   return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.LedgerLive))
     .resolves.toStrictEqual({
@@ -85,10 +92,18 @@ test('Check ledger bridge type', () => {
   return expect(ledgerHardwareKeyring.type()).toStrictEqual(BraveWallet.LEDGER_HARDWARE_VENDOR)
 })
 
-test('Check locks for device', () => {
+test('Check locks for device app only', () => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
   expect(ledgerHardwareKeyring.isUnlocked()).toStrictEqual(false)
   ledgerHardwareKeyring.app = new MockApp()
+  expect(ledgerHardwareKeyring.isUnlocked()).toStrictEqual(false)
+})
+
+test('Check locks for device app and device id', () => {
+  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
+  expect(ledgerHardwareKeyring.isUnlocked()).toStrictEqual(false)
+  ledgerHardwareKeyring.app = new MockApp()
+  ledgerHardwareKeyring.deviceId = 'test'
   expect(ledgerHardwareKeyring.isUnlocked()).toStrictEqual(true)
 })
 
@@ -102,15 +117,13 @@ test('Extract accounts from locked device', () => {
 })
 
 test('Extract accounts from unknown device', () => {
-  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  ledgerHardwareKeyring.app = new MockApp()
+  const ledgerHardwareKeyring = unlockedLedgerKeyring()
   return expect(ledgerHardwareKeyring.getAccounts(-2, 1, 'unknown'))
     .rejects.toThrow()
 })
 
 test('Sign personal message successfully with padding v<27', () => {
-  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  ledgerHardwareKeyring.app = new MockApp()
+  const ledgerHardwareKeyring = unlockedLedgerKeyring()
   ledgerHardwareKeyring.app.signature = { v: 0, r: 'b68983', s: 'r68983' }
   return expect(ledgerHardwareKeyring.signPersonalMessage(
     'm/44\'/60\'/0\'/0/0', 'message'))
@@ -118,8 +131,7 @@ test('Sign personal message successfully with padding v<27', () => {
 })
 
 test('Sign personal message successfully with padding v>=27', () => {
-  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  ledgerHardwareKeyring.app = new MockApp()
+  const ledgerHardwareKeyring = unlockedLedgerKeyring()
   ledgerHardwareKeyring.app.signature = { v: 28, r: 'b68983', s: 'r68983' }
   return expect(ledgerHardwareKeyring.signPersonalMessage(
     'm/44\'/60\'/0\'/0/0', 'message'))
@@ -127,8 +139,7 @@ test('Sign personal message successfully with padding v>=27', () => {
 })
 
 test('Sign personal message successfully without padding v>=27', () => {
-  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  ledgerHardwareKeyring.app = new MockApp()
+  const ledgerHardwareKeyring = unlockedLedgerKeyring()
   ledgerHardwareKeyring.app.signature = { v: 44, r: 'b68983', s: 'r68983' }
   return expect(ledgerHardwareKeyring.signPersonalMessage(
     'm/44\'/60\'/0\'/0/0', 'message'))
@@ -136,8 +147,7 @@ test('Sign personal message successfully without padding v>=27', () => {
 })
 
 test('Sign personal message successfully without padding v<27', () => {
-  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
-  ledgerHardwareKeyring.app = new MockApp()
+  const ledgerHardwareKeyring = unlockedLedgerKeyring()
   ledgerHardwareKeyring.app.signature = { v: 17, r: 'b68983', s: 'r68983' }
   return expect(ledgerHardwareKeyring.signPersonalMessage(
     'm/44\'/60\'/0\'/0/0', 'message'))
@@ -146,7 +156,6 @@ test('Sign personal message successfully without padding v<27', () => {
 
 test('Sign personal message failed', () => {
   const ledgerHardwareKeyring = createLedgerKeyring()
-  ledgerHardwareKeyring.app = new MockApp()
   return expect(ledgerHardwareKeyring.signPersonalMessage(
     'm/44\'/60\'/0\'/0/0', 'message'))
     .resolves.toMatchObject({ success: false })
