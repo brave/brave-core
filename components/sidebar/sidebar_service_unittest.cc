@@ -171,7 +171,7 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
 
   // Check service has updated built-in item. Previously url was deprecated.xxx.
   EXPECT_EQ(1UL, service_->items().size());
-  EXPECT_EQ("https://talk.brave.com/widget", service_->items()[0].url);
+  EXPECT_EQ(GURL(kBraveTalkURL), service_->items()[0].url);
 
   // Simulate re-launch and check service has still updated items.
   service_->RemoveObserver(this);
@@ -181,7 +181,7 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
 
   // Check service has updated built-in item. Previously url was deprecated.xxx.
   EXPECT_EQ(1UL, service_->items().size());
-  EXPECT_EQ("https://talk.brave.com/widget", service_->items()[0].url);
+  EXPECT_EQ(GURL(kBraveTalkURL), service_->items()[0].url);
 }
 
 TEST_F(SidebarServiceTest, BuiltInItemDoesntHaveHistoryItem) {

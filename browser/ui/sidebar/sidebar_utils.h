@@ -7,11 +7,19 @@
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
 
 class Browser;
+class GURL;
 
 namespace sidebar {
 
+class SidebarService;
+
 bool CanUseSidebar(Browser* browser);
 bool CanAddCurrentActiveTabToSidebar(Browser* browser);
+
+// Exported for testing.
+bool CanUseNotAddedBuiltInItemInsteadOf(SidebarService* service,
+                                        const GURL& url);
+GURL ConvertURLToBuiltInItemURL(const GURL& url);
 
 }  // namespace sidebar
 

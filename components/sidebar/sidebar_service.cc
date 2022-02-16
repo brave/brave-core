@@ -27,7 +27,7 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
   switch (type) {
     case SidebarItem::BuiltInItemType::kBraveTalk:
       return SidebarItem::Create(
-          GURL("https://talk.brave.com/widget"),
+          GURL(kBraveTalkURL),
           l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
           SidebarItem::BuiltInItemType::kBraveTalk, false);

@@ -9,12 +9,17 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/common/webui_url_constants.h"
+#include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/sidebar_service.h"
+#include "chrome/common/url_constants.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace sidebar {
 
@@ -116,6 +121,34 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
   EXPECT_TRUE(on_item_moved_called_);
   EXPECT_TRUE(on_active_index_changed_called_);
   EXPECT_EQ(3, model()->active_index());
+}
+
+TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {
+  GURL talk("https://talk.brave.com/1Ar1vHfLBWX2sAdi");
+  // False because builtin talk item is already added.
+  EXPECT_FALSE(CanUseNotAddedBuiltInItemInsteadOf(service(), talk));
+
+  // Remove builtin talk item and check builtin talk item will be used
+  // instead of adding |talk| url.
+  service()->RemoveItemAt(0);
+  EXPECT_TRUE(CanUseNotAddedBuiltInItemInsteadOf(service(), talk));
+}
+
+TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {
+  EXPECT_EQ(GURL(kBraveTalkURL),
+            ConvertURLToBuiltInItemURL(GURL("https://talk.brave.com")));
+  EXPECT_EQ(GURL(kBraveTalkURL),
+            ConvertURLToBuiltInItemURL(
+                GURL("https://talk.brave.com/1Ar1vHfLBWX2sAdi")));
+  EXPECT_EQ(GURL(kSidebarBookmarksURL),
+            ConvertURLToBuiltInItemURL(GURL(chrome::kChromeUIBookmarksURL)));
+  EXPECT_EQ(
+      GURL(kBraveUIWalletPageURL),
+      ConvertURLToBuiltInItemURL(GURL("chrome://wallet/crypto/onboarding")));
+
+  // Not converted for url that doesn't relavant builtin item.
+  GURL brave_com("https://www.brave.com/");
+  EXPECT_EQ(brave_com, ConvertURLToBuiltInItemURL(brave_com));
 }
 
 }  // namespace sidebar
