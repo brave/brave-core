@@ -173,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, RewardsDisabled) {
 
   WaitForRewardsInitialization();
 
-  histogram_tester_->ExpectBucketCount("Brave.Rewards.WalletBalance.2", 1, 1);
+  histogram_tester_->ExpectBucketCount("Brave.Rewards.WalletBalance.3", 1, 1);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.AutoContributionsState.2",
                                        1, 1);
   histogram_tester_->ExpectBucketCount("Brave.Rewards.TipsState.2", 1, 1);
@@ -338,6 +338,23 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest,
   histogram_tester_->ExpectBucketCount("Brave.Rewards.WalletState", 5, 1);
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, WalletBalanceZeroBAT) {
+  response_->SetUserFundsBalance(0.0);
+
+  rewards_browsertest_util::StartProcess(rewards_service_);
+  rewards_browsertest_util::CreateWallet(rewards_service_);
+
+  context_helper_->LoadURL(rewards_browsertest_util::GetRewardsUrl());
+
+  rewards_service_->SetAutoContributeEnabled(true);
+  rewards_service_->SetAdsEnabled(true);
+
+  FetchBalance();
+
+  EXPECT_GT(
+      histogram_tester_->GetBucketCount("Brave.Rewards.WalletBalance.3", 2), 0);
+}
+
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, WalletBalanceLessThan10BAT) {
   response_->SetUserFundsBalance(9.0);
 
@@ -352,7 +369,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, WalletBalanceLessThan10BAT) {
   FetchBalance();
 
   EXPECT_GT(
-      histogram_tester_->GetBucketCount("Brave.Rewards.WalletBalance.2", 2), 0);
+      histogram_tester_->GetBucketCount("Brave.Rewards.WalletBalance.3", 3), 0);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, WalletBalanceLessThan50BAT) {
@@ -369,7 +386,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, WalletBalanceLessThan50BAT) {
   FetchBalance();
 
   EXPECT_GT(
-      histogram_tester_->GetBucketCount("Brave.Rewards.WalletBalance.2", 3), 0);
+      histogram_tester_->GetBucketCount("Brave.Rewards.WalletBalance.3", 4), 0);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, WalletBalanceMoreThan50BAT) {
@@ -386,7 +403,7 @@ IN_PROC_BROWSER_TEST_F(RewardsP3ABrowserTest, WalletBalanceMoreThan50BAT) {
   FetchBalance();
 
   EXPECT_GT(
-      histogram_tester_->GetBucketCount("Brave.Rewards.WalletBalance.2", 4), 0);
+      histogram_tester_->GetBucketCount("Brave.Rewards.WalletBalance.3", 5), 0);
 }
 
 }  // namespace rewards_browsertest
