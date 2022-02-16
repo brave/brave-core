@@ -39,6 +39,7 @@ import Amount from '../../utils/amount'
 const defaultState: WalletState = {
   hasInitialized: false,
   isFilecoinEnabled: false,
+  isSolanaEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
   favoriteApps: [],
@@ -110,6 +111,7 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
     hasInitialized: true,
     isWalletCreated: payload.isWalletCreated,
     isFilecoinEnabled: payload.isFilecoinEnabled,
+    isSolanaEnabled: payload.isSolanaEnabled,
     isWalletLocked: payload.isWalletLocked,
     favoriteApps: payload.favoriteApps,
     accounts,
@@ -180,7 +182,7 @@ reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: WalletState, payloa
 
   // Refresh selectedAccount object
   const selectedAccount = accounts.find(
-      account => account === state.selectedAccount
+    account => account === state.selectedAccount
   ) ?? state.selectedAccount
 
   return {
