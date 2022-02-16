@@ -44,6 +44,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
 
     private JsonRpcService mJsonRpcService;
     private String mChainId;
+    private EditText mChainIdEditText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +77,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
             btAdd.setVisibility(View.GONE);
         }
         mChainId = getActivity().getIntent().getStringExtra("chainId");
+        mChainIdEditText = view.findViewById(R.id.chain_id);
         if (!mChainId.isEmpty()) {
             btAdd.setText(R.string.brave_wallet_add_network_submit);
             assert mJsonRpcService != null;
@@ -108,7 +110,6 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
     }
 
     private void fillControls(EthereumChain chain, View view) {
-        EditText chainIdEditText = view.findViewById(R.id.chain_id);
         EditText chainCurrencyDecimals = view.findViewById(R.id.chain_currency_decimals);
         String strChainId = chain.chainId;
         if (strChainId.startsWith("0x")) {
@@ -116,7 +117,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         }
         try {
             int chainId = Integer.parseInt(strChainId, 16);
-            chainIdEditText.setText(String.valueOf(chainId));
+            mChainIdEditText.setText(String.valueOf(chainId));
             chainCurrencyDecimals.setText(String.valueOf(chain.decimals));
         } catch (NumberFormatException exc) {
         }
@@ -148,19 +149,18 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
 
     private boolean validateInputsAddChain(View view) {
         EthereumChain chain = new EthereumChain();
-        EditText chainIdEditText = view.findViewById(R.id.chain_id);
-        String strChainId = chainIdEditText.getText().toString().trim();
+        String strChainId = mChainIdEditText.getText().toString().trim();
         try {
             int iChainId = Integer.valueOf(strChainId);
             if (iChainId <= 0) {
-                chainIdEditText.setError(
+                mChainIdEditText.setError(
                         getString(R.string.brave_wallet_add_network_chain_id_error));
 
                 return false;
             }
             strChainId = "0x" + Integer.toHexString(iChainId);
         } catch (NumberFormatException exc) {
-            chainIdEditText.setError(getString(R.string.brave_wallet_add_network_chain_id_error));
+            mChainIdEditText.setError(getString(R.string.brave_wallet_add_network_chain_id_error));
 
             return false;
         }
@@ -273,28 +273,50 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
 
         assert mJsonRpcService != null;
         if (!mChainId.isEmpty()) {
-            mJsonRpcService.removeEthereumChain(mChainId, success -> {
-                if (!success) {
-                    return;
-                }
-                addEthereumChain(chain);
-            });
+            if (mChainId.equals(chain.chainId)) {
+                mJsonRpcService.removeEthereumChain(mChainId, success -> {
+                    if (!success) {
+                        return;
+                    }
+                    addEthereumChain(chain, false);
+                });
+            } else {
+                addEthereumChain(chain, true);
+            }
         } else {
-            addEthereumChain(chain);
+            addEthereumChain(chain, false);
         }
 
         return true;
     }
 
-    private void addEthereumChain(EthereumChain chain) {
+    private void addEthereumChain(EthereumChain chain, boolean remove) {
         assert mJsonRpcService != null;
         mJsonRpcService.addEthereumChain(chain, (chainId, error, errorMessage) -> {
             if (error != ProviderError.SUCCESS) {
+                // (sergz): Perhaps we will need to add more errors in the future.
+                // We support only that one for now from backend
+                if (errorMessage.contains("eth_chainId")) {
+                    mChainIdEditText.setError(errorMessage);
+                }
                 return;
             }
-            Intent intent = new Intent();
-            getActivity().setResult(Activity.RESULT_OK, intent);
-            getActivity().finish();
+            if (remove) {
+                mJsonRpcService.removeEthereumChain(mChainId, success -> {
+                    // We just do nothing here as we added a chain with a diff
+                    // chainId already
+                    finishFragment();
+                });
+            }
+            finishFragment();
+
+            return;
         });
+    }
+
+    private void finishFragment() {
+        Intent intent = new Intent();
+        getActivity().setResult(Activity.RESULT_OK, intent);
+        getActivity().finish();
     }
 }
