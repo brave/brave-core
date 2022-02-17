@@ -113,10 +113,21 @@ struct DisplayAd {
   string? cta_text;
 };
 
+struct FeedSearchResultItem {
+  url.mojom.Url feed_url;
+  string feed_title;
+};
+
 // Browser-side handler
 interface BraveNewsController {
   GetFeed() => (Feed feed);
   GetPublishers() => (map<string, Publisher> publishers);
+  // Look at the incoming url and return results
+  //  - if it's a feed url then return the feed item
+  //  - if it's an html document url, then search for related feed items in the html
+  //    then validate and  parse the title from the url and return the details
+  FindFeeds(url.mojom.Url possible_feed_or_site_url)
+    => (array<FeedSearchResultItem> results);
   // When feed_url is a valid parsable feed, it will be added to the user's
   // preferences and this function will return the new list of Publisher items.
   // When it is not valid, or it is a duplicate, then the list of Publisher

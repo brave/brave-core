@@ -12,6 +12,7 @@ source_set("brave_news_unit_tests") {
     "//brave/components/brave_today/browser/brave_news_p3a_unittest.cc",
     "//brave/components/brave_today/browser/direct_feed_controller_unittest.cc",
     "//brave/components/brave_today/browser/feed_building_unittest.cc",
+    "//brave/components/brave_today/browser/html_parsing_unittest.cc",
     "//brave/components/brave_today/browser/publishers_parsing_unittest.cc",
   ]
 
