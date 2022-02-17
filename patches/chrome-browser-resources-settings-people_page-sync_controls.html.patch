@@ -1,12 +1,11 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.html b/chrome/browser/resources/settings/people_page/sync_controls.html
-index eae309d779bd703675a6e20d73bce2f019afb815..53ec3f8ec0a4a7965e46d7c9807f04649940495d 100644
+index eae309d779bd703675a6e20d73bce2f019afb815..efbe261021100c99033ea307948c0e253fb4cfc3 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.html
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.html
-@@ -141,6 +141,17 @@
-             aria-labelledby="passwordsCheckboxLabel">
+@@ -142,6 +142,39 @@
          </cr-toggle>
        </div>
-+	  
+ 
 +      <div class="list-item" hidden="[[!syncPrefs.pairsRegistered]]">
 +        <div id="pairsCheckboxLabel">
 +          $i18n{pairsCheckboxLabel}
@@ -17,6 +16,29 @@ index eae309d779bd703675a6e20d73bce2f019afb815..53ec3f8ec0a4a7965e46d7c9807f0464
 +            aria-labelledby="pairsCheckboxLabel">
 +        </cr-toggle>
 +      </div>
- 
++
++      <div class="list-item" hidden="[[!syncPrefs.vgBodiesRegistered]]">
++        <div id="vgBodiesCheckboxLabel">
++          $i18n{vgBodiesCheckboxLabel}
++        </div>
++        <cr-toggle checked="{{syncPrefs.vgBodiesSynced}}"
++            on-change="onSingleSyncDataTypeChanged_"
++            disabled="[[syncPrefs.syncAllDataTypes]]"
++            aria-labelledby="vgBodiesCheckboxLabel">
++        </cr-toggle>
++      </div>
++
++      <div class="list-item" hidden="[[!syncPrefs.vgSpendStatusesRegistered]]">
++        <div id="vgSpendStatusesCheckboxLabel">
++          $i18n{vgSpendStatusesCheckboxLabel}
++        </div>
++        <cr-toggle checked="{{syncPrefs.vgSpendStatusesSynced}}"
++            on-change="onSingleSyncDataTypeChanged_"
++            disabled="[[syncPrefs.syncAllDataTypes]]"
++            aria-labelledby="vgSpendStatusesCheckboxLabel">
++        </cr-toggle>
++      </div>
++
        <div class="list-item" hidden="[[!syncPrefs.autofillRegistered]]">
          <div id="autofillCheckboxLabel">
+           $i18n{autofillCheckboxLabel}
