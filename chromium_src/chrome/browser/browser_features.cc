@@ -13,6 +13,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 #if !defined(OS_ANDROID)
     {kCopyLinkToText, base::FEATURE_DISABLED_BY_DEFAULT},
 #endif
+    {kDestroyProfileOnBrowserClose, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features
