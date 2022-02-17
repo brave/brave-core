@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_PASSWORD_API_H_
-#define BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_PASSWORD_API_H_
+#ifndef BRAVE_IOS_BROWSER_API_PASSWORD_BRAVE_PASSWORD_API_H_
+#define BRAVE_IOS_BROWSER_API_PASSWORD_BRAVE_PASSWORD_API_H_
 
 #import <Foundation/Foundation.h>
 
@@ -38,11 +38,13 @@ OBJC_EXPORT
 
 /// Password Form Constructor used with BravePasswordAPI
 /// @param url - Primary data used by the PasswordManager to decide (in longest
-///        matching prefix fashion) whether or not a given PasswordForm result from
-///        the database is a good fit for a particular form on a page
-/// @param signOnRealm - The "Realm" for the sign-on. This is scheme, host, port for SCHEME_HTML
+///        matching prefix fashion) whether or not a given PasswordForm
+///        result from the database is a good fit for a particular
+///        form on a page
+/// @param signOnRealm - The "Realm" for the sign-on. This is scheme, host,
+///        port for SCHEME_HTML
 ///        The signon_realm is effectively the primary key used for retrieving
-///        data from the database, so it must not be empty                         
+///        data from the database, so it must not be empty
 /// @param usernameValue - The string represantation of the username
 /// @param passwordValue - The string represantation of the password
 - (instancetype)initWithURL:(NSURL*)url
@@ -77,14 +79,18 @@ OBJC_EXPORT
 /// Update List of Password Form
 /// @param newPasswordForm - Updated Password Form including primary keys
 /// @param oldPasswordForm - Old PasswordForm to be updated
-- (void)updateLogin:(IOSPasswordForm*)newPasswordForm oldPasswordForm:(IOSPasswordForm*)oldPasswordForm;
+- (void)updateLogin:(IOSPasswordForm*)newPasswordForm
+    oldPasswordForm:(IOSPasswordForm*)oldPasswordForm;
 
-/// Fetch Function that will return list of Password Forms from saved password presenter
+/// Fetch Function that will return list of Password Forms
+/// from saved password presenter
 - (NSArray<IOSPasswordForm*>*)getSavedLogins;
 
-- (NSArray<IOSPasswordForm*>*)getSavedLoginsForURL:(NSURL*)url formScheme:(PasswordFormScheme)formScheme;
+- (NSArray<IOSPasswordForm*>*)getSavedLoginsForURL:(NSURL*)url
+                                        formScheme:
+                                            (PasswordFormScheme)formScheme;
 @end
 
 NS_ASSUME_NONNULL_END
 
-#endif  // BRAVE_IOS_BROWSER_API_HISTORY_BRAVE_HISTORY_API_H_
+#endif  // BRAVE_IOS_BROWSER_API_PASSWORD_BRAVE_PASSWORD_API_H_

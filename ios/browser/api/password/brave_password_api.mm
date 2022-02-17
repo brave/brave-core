@@ -13,10 +13,9 @@
 
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/password_manager/core/browser/password_form.h"
+#include "components/password_manager/core/browser/password_form_digest.h"
 #include "components/password_manager/core/browser/password_store.h"
 #include "components/password_manager/core/browser/password_store_consumer.h"
-
-#include "ios/chrome/browser/passwords/ios_chrome_password_store_factory.h"
 
 #include "ios/web/public/thread/web_thread.h"
 #include "net/base/mac/url_conversions.h"
@@ -32,7 +31,7 @@
 
 namespace brave {
 namespace ios {
-password_manager::PasswordForm::Scheme PasswordFormSchemeForPasswordFormDigest (
+password_manager::PasswordForm::Scheme PasswordFormSchemeForPasswordFormDigest(
     PasswordFormScheme scheme) {
   switch (scheme) {
     case PasswordFormSchemeTypeHtml:
@@ -50,7 +49,7 @@ password_manager::PasswordForm::Scheme PasswordFormSchemeForPasswordFormDigest (
   }
 }
 
-PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme (
+PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
     password_manager::PasswordForm::Scheme scheme) {
   switch (scheme) {
     case password_manager::PasswordForm::Scheme::kHtml:
@@ -105,14 +104,15 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme (
     if (usernameValue) {
       [self setUsernameValue:usernameValue];
     }
-    
+
     if (passwordValue) {
       [self setPasswordValue:passwordValue];
     }
 
     self.isBlockedByUser = isBlockedByUser;
 
-    password_form_scheme_ = brave::ios::PasswordFormSchemeForPasswordFormDigest(scheme);
+    password_form_scheme_ =
+        brave::ios::PasswordFormSchemeForPasswordFormDigest(scheme);
   }
 
   return self;
@@ -158,11 +158,13 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme (
   return base::SysUTF16ToNSString(password_value_);
 }
 - (void)setPasswordFormScheme:(PasswordFormScheme)passwordFormScheme {
-  password_form_scheme_ = brave::ios::PasswordFormSchemeForPasswordFormDigest(passwordFormScheme);
+  password_form_scheme_ =
+      brave::ios::PasswordFormSchemeForPasswordFormDigest(passwordFormScheme);
 }
 
 - (PasswordFormScheme)passwordFormScheme {
-  return brave::ios::PasswordFormSchemeFromPasswordManagerScheme(password_form_scheme_);
+  return brave::ios::PasswordFormSchemeFromPasswordManagerScheme(
+      password_form_scheme_);
 }
 @end
 
@@ -174,7 +176,8 @@ class PasswordStoreConsumerHelper
   PasswordStoreConsumerHelper() {}
 
   void OnGetPasswordStoreResults(
-      std::vector<std::unique_ptr<password_manager::PasswordForm>> results) override {
+      std::vector<std::unique_ptr<password_manager::PasswordForm>> results)
+      override {
     result_.swap(results);
     run_loop_.Quit();
   }
@@ -195,23 +198,18 @@ class PasswordStoreConsumerHelper
 #pragma mark - BravePasswordAPI
 
 @interface BravePasswordAPI () {
-  scoped_refptr<password_manager::PasswordStore> password_store_;  
+  scoped_refptr<password_manager::PasswordStore> password_store_;
 }
 @end
 
 @implementation BravePasswordAPI
 
-- (instancetype)initWithBrowserState:(scoped_refptr<password_manager::PasswordStore>)passwordStore {
+- (instancetype)initWithPasswordStore:
+    (scoped_refptr<password_manager::PasswordStore>)passwordStore {
   if ((self = [super init])) {
     DCHECK_CURRENTLY_ON(web::WebThread::UI);
 
     password_store_ = passwordStore;
-
-    // password_store_ = IOSChromePasswordStoreFactory::GetForBrowserState(
-    //   browserState),
-    //   ServiceAccessType::EXPLICIT_ACCESS)
-    //     .get();
-
   }
   return self;
 }
@@ -220,7 +218,8 @@ class PasswordStoreConsumerHelper
   password_store_ = nil;
 }
 
-// - (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer {
+// - (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer
+// {
 //   return [[PasswordStoreListenerImpl alloc] init:observer];
 // }
 
@@ -232,43 +231,50 @@ class PasswordStoreConsumerHelper
   password_store_->AddLogin([self createCredentialForm:passwordForm]);
 }
 
--(password_manager::PasswordForm)createCredentialForm:(IOSPasswordForm*)passwordForm {
+- (password_manager::PasswordForm)createCredentialForm:
+    (IOSPasswordForm*)passwordForm {
   // Store a PasswordForm representing a PasswordCredential.
   password_manager::PasswordForm passwordCredentialForm;
 
   if (passwordForm.usernameValue) {
-    passwordCredentialForm.username_value = base::SysNSStringToUTF16(passwordForm.usernameValue);
+    passwordCredentialForm.username_value =
+        base::SysNSStringToUTF16(passwordForm.usernameValue);
   }
 
   if (passwordForm.passwordValue) {
-    passwordCredentialForm.password_value = base::SysNSStringToUTF16(passwordForm.passwordValue);
+    passwordCredentialForm.password_value =
+        base::SysNSStringToUTF16(passwordForm.passwordValue);
   }
 
   passwordCredentialForm.url = net::GURLWithNSURL(passwordForm.url).GetOrigin();
 
   if (passwordForm.signOnRealm) {
-    passwordCredentialForm.signon_realm = base::SysNSStringToUTF8(passwordForm.signOnRealm);
+    passwordCredentialForm.signon_realm =
+        base::SysNSStringToUTF8(passwordForm.signOnRealm);
   } else {
     passwordCredentialForm.signon_realm = passwordCredentialForm.url.spec();
-  } 
+  }
 
   if (passwordForm.usernameValue && !passwordForm.passwordValue) {
-      passwordCredentialForm.scheme = password_manager::PasswordForm::Scheme::kUsernameOnly;
+    passwordCredentialForm.scheme =
+        password_manager::PasswordForm::Scheme::kUsernameOnly;
   } else {
-    passwordCredentialForm.scheme = password_manager::PasswordForm::Scheme::kHtml;
+    passwordCredentialForm.scheme =
+        password_manager::PasswordForm::Scheme::kHtml;
   }
 
   return passwordCredentialForm;
 }
 
 - (void)removeLogin:(IOSPasswordForm*)passwordForm {
-    password_store_->RemoveLogin([self createCredentialForm:passwordForm]);
+  password_store_->RemoveLogin([self createCredentialForm:passwordForm]);
 }
 
-- (void)updateLogin:(IOSPasswordForm*)newPasswordForm oldPasswordForm:(IOSPasswordForm*)oldPasswordForm {
+- (void)updateLogin:(IOSPasswordForm*)newPasswordForm
+    oldPasswordForm:(IOSPasswordForm*)oldPasswordForm {
   password_store_->UpdateLoginWithPrimaryKey(
-    [self createCredentialForm:newPasswordForm],
-    [self createCredentialForm:oldPasswordForm]);
+      [self createCredentialForm:newPasswordForm],
+      [self createCredentialForm:oldPasswordForm]);
 }
 
 - (NSArray<IOSPasswordForm*>*)getSavedLogins {
@@ -281,34 +287,40 @@ class PasswordStoreConsumerHelper
   return [self onLoginsResult:std::move(credentials)];
 }
 
-- (NSArray<IOSPasswordForm*>*)getSavedLoginsForURL:(NSURL*)url formScheme:(PasswordFormScheme)formScheme {
+- (NSArray<IOSPasswordForm*>*)getSavedLoginsForURL:(NSURL*)url
+                                        formScheme:
+                                            (PasswordFormScheme)formScheme {
   PasswordStoreConsumerHelper password_consumer;
 
-  password_manager::PasswordStore::FormDigest form_digest_args = password_manager::PasswordStore::FormDigest(
-      /*scheme*/ brave::ios::PasswordFormSchemeForPasswordFormDigest(formScheme),
-      /*signon_realm*/ net::GURLWithNSURL(url).spec(),
-      /*url*/ net::GURLWithNSURL(url));
+  password_manager::PasswordFormDigest form_digest_args =
+      password_manager::PasswordFormDigest(
+          /*scheme*/ brave::ios::PasswordFormSchemeForPasswordFormDigest(
+              formScheme),
+          /*signon_realm*/ net::GURLWithNSURL(url).spec(),
+          /*url*/ net::GURLWithNSURL(url));
 
   password_store_->GetLogins(form_digest_args, &password_consumer);
 
   std::vector<std::unique_ptr<password_manager::PasswordForm>> credentials =
-    password_consumer.WaitForResult();
+      password_consumer.WaitForResult();
 
   return [self onLoginsResult:std::move(credentials)];
 }
 
-- (NSArray<IOSPasswordForm*>*)onLoginsResult:(std::vector<std::unique_ptr<password_manager::PasswordForm>>)results {
+- (NSArray<IOSPasswordForm*>*)onLoginsResult:
+    (std::vector<std::unique_ptr<password_manager::PasswordForm>>)results {
   NSMutableArray<IOSPasswordForm*>* loginForms = [[NSMutableArray alloc] init];
 
   for (const auto& result : results) {
     IOSPasswordForm* passwordForm = [[IOSPasswordForm alloc]
-        initWithURL:net::NSURLWithGURL(result->url)
-        signOnRealm:base::SysUTF8ToNSString(result->signon_realm)
-        dateCreated:result->date_created.ToNSDate()
-      usernameValue:base::SysUTF16ToNSString(result->username_value)
-      passwordValue:base::SysUTF16ToNSString(result->password_value)
-    isBlockedByUser:result->blocked_by_user
-             scheme:brave::ios::PasswordFormSchemeFromPasswordManagerScheme(result->scheme)];
+            initWithURL:net::NSURLWithGURL(result->url)
+            signOnRealm:base::SysUTF8ToNSString(result->signon_realm)
+            dateCreated:result->date_created.ToNSDate()
+          usernameValue:base::SysUTF16ToNSString(result->username_value)
+          passwordValue:base::SysUTF16ToNSString(result->password_value)
+        isBlockedByUser:result->blocked_by_user
+                 scheme:brave::ios::PasswordFormSchemeFromPasswordManagerScheme(
+                            result->scheme)];
 
     [loginForms addObject:passwordForm];
   }

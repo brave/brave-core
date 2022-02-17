@@ -38,7 +38,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios.h",
   "//brave/ios/browser/api/brave_wallet/token_registry_utils.h",
   "//brave/ios/browser/api/history/brave_history_api.h",
-  #"//brave/ios/browser/api/history/brave_history_observer.h",
+  "//brave/ios/browser/api/history/brave_history_observer.h",
   "//brave/ios/browser/api/password/brave_password_api.h",
   "//brave/ios/browser/api/password/brave_password_observer.h",
   "//brave/ios/browser/api/sync/brave_sync_api.h",

@@ -20,8 +20,8 @@ source_set("password") {
 
   deps = [
     "//base",
-    "//components/password_manager/core/browser/",
     "//components/keyed_service/ios:ios",
+    "//components/password_manager/core/browser/",
     "//ios/chrome/browser",
     "//ios/chrome/browser/passwords",
     "//ios/web/public/thread",
