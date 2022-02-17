@@ -66,7 +66,7 @@ struct NetworkPicker: View {
     .accessibilityValue(selectedNetwork.shortChainName)
     .sheet(isPresented: $isPresentingAddNetwork) {
       NavigationView {
-        CustomNetworkDetailsView(networkStore: networkStore, network: nil)
+        CustomNetworkDetailsView(networkStore: networkStore, model: .init())
       }
     }
   }

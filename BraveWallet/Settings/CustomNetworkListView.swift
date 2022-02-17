@@ -24,7 +24,7 @@ private struct SwipeActionsViewModifier_FB9812596: ViewModifier {
 
 struct CustomNetworkListView: View {
   @ObservedObject var networkStore: NetworkStore
-  @State private var isPresentingNetworkDetails: CustomNetworkDetails?
+  @State private var isPresentingNetworkDetails: CustomNetworkModel?
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.sizeCategory) private var sizeCategory
   
@@ -46,7 +46,8 @@ struct CustomNetworkListView: View {
         let customNetworks = networkStore.ethereumChains.filter({ $0.isCustom })
         ForEach(customNetworks) { network in
           Button(action: {
-            isPresentingNetworkDetails = .init(isEditMode: true, network: network)
+            isPresentingNetworkDetails = .init()
+            isPresentingNetworkDetails?.populateDetails(from: network)
           }) {
             HStack {
               VStack(alignment: .leading, spacing: 2) {
@@ -116,18 +117,18 @@ struct CustomNetworkListView: View {
     .toolbar {
       ToolbarItemGroup(placement: .confirmationAction) {
         Button(action: {
-          isPresentingNetworkDetails = .init(isEditMode: false)
+          isPresentingNetworkDetails = .init()
         }) {
           Label(Strings.Wallet.addCustomNetworkBarItemTitle, systemImage: "plus")
             .foregroundColor(Color(.braveOrange))
         }
       }
     }
-    .sheet(item: $isPresentingNetworkDetails) { details in
+    .sheet(item: $isPresentingNetworkDetails) { detailsModel in
       NavigationView {
         CustomNetworkDetailsView(
           networkStore: networkStore,
-          network: details.network
+          model: detailsModel
         )
       }
       .navigationViewStyle(StackNavigationViewStyle())
