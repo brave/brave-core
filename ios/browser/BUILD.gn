@@ -23,6 +23,7 @@ source_set("browser") {
     "api/brave_wallet:wallet_mojom_wrappers",
     "api/certificate",
     "api/history",
+    "api/password",
     "api/sync",
     "api/version_info",
     "brave_wallet",

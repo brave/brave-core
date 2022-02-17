@@ -15,7 +15,8 @@ syncer::DataTypeController::TypeVector
 IOSChromeSyncClient::CreateDataTypeControllers(
     syncer::SyncService* sync_service) {
   syncer::ModelTypeSet disabled_types = {// syncer::PASSWORDS,
-                                         syncer::PROXY_TABS, syncer::AUTOFILL,
+                                         syncer::PROXY_TABS,
+                                         // syncer::AUTOFILL,
                                          // syncer::PREFERENCES,
                                          syncer::READING_LIST,
                                          syncer::USER_CONSENTS};

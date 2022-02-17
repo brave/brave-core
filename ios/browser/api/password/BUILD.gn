@@ -1,0 +1,30 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("password") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "brave_password_api+private.h",
+    "brave_password_api.h",
+    "brave_password_api.mm",
+    "brave_password_observer.h",
+    "password_service_listener_ios.h",
+    "password_service_listener_ios.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//ios/chrome/browser",
+    "//net",
+    "//ui/base",
+    "//url",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}
