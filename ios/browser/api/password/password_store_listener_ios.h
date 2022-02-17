@@ -27,7 +27,8 @@ namespace ios {
 class PasswordStoreListenerIOS
     : public password_manager::PasswordStoreInterface::Observer {
  public:
-  explicit PasswordStoreListenerIOS(id<PasswordStoreObserver> observer,
+  explicit PasswordStoreListenerIOS(
+      id<PasswordStoreObserver> observer,
       scoped_refptr<password_manager::PasswordStoreInterface> store);
   ~PasswordStoreListenerIOS() override;
 
@@ -48,4 +49,3 @@ class PasswordStoreListenerIOS
 }  // namespace brave
 
 #endif  // BRAVE_IOS_BROWSER_API_PASSWORD_PASSWORD_STORE_LISTENER_IOS_H_
-

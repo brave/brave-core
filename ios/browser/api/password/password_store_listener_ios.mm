@@ -32,7 +32,7 @@
             passwordElement:(NSString*)passwordElement
               passwordValue:(NSString*)passwordValue
             isBlockedByUser:(bool)isBlockedByUser
-                     scheme:(PasswordFormScheme)scheme; 
+                     scheme:(PasswordFormScheme)scheme;
 @end
 
 namespace brave {
@@ -49,7 +49,7 @@ PasswordStoreListenerIOS::PasswordStoreListenerIOS(
 }
 
 PasswordStoreListenerIOS::~PasswordStoreListenerIOS() {
-DCHECK(store_);
+  DCHECK(store_);
   if (store_)
     store_->RemoveObserver(this);
 }
@@ -62,18 +62,18 @@ void PasswordStoreListenerIOS::OnLoginsChanged(
   for (const password_manager::PasswordStoreChange& change : changes) {
     auto& result = change.form();
     IOSPasswordForm* passwordForm = [[IOSPasswordForm alloc]
-            initWithURL:net::NSURLWithGURL(result.url)
-            signOnRealm:base::SysUTF8ToNSString(result.signon_realm)
-            dateCreated:result.date_created.ToNSDate()
-            dateLastUsed:result.date_last_used.ToNSDate()
-            datePasswordChanged:result.date_password_modified.ToNSDate()
-        usernameElement:base::SysUTF16ToNSString(result.username_element)
-          usernameValue:base::SysUTF16ToNSString(result.username_value)
-        passwordElement:base::SysUTF16ToNSString(result.password_element)
-          passwordValue:base::SysUTF16ToNSString(result.password_value)
-        isBlockedByUser:result.blocked_by_user
-                 scheme:PasswordFormSchemeTypeHtml];
-    [forms addObject:passwordForm];        
+                initWithURL:net::NSURLWithGURL(result.url)
+                signOnRealm:base::SysUTF8ToNSString(result.signon_realm)
+                dateCreated:result.date_created.ToNSDate()
+               dateLastUsed:result.date_last_used.ToNSDate()
+        datePasswordChanged:result.date_password_modified.ToNSDate()
+            usernameElement:base::SysUTF16ToNSString(result.username_element)
+              usernameValue:base::SysUTF16ToNSString(result.username_value)
+            passwordElement:base::SysUTF16ToNSString(result.password_element)
+              passwordValue:base::SysUTF16ToNSString(result.password_value)
+            isBlockedByUser:result.blocked_by_user
+                     scheme:PasswordFormSchemeTypeHtml];
+    [forms addObject:passwordForm];
   }
 
   if ([observer_ respondsToSelector:@selector(passwordFormsChanged:)]) {
@@ -88,17 +88,17 @@ void PasswordStoreListenerIOS::OnLoginsRetained(
 
   for (const password_manager::PasswordForm& form : retained_forms) {
     IOSPasswordForm* passwordForm = [[IOSPasswordForm alloc]
-            initWithURL:net::NSURLWithGURL(form.url)
-            signOnRealm:base::SysUTF8ToNSString(form.signon_realm)
-            dateCreated:form.date_created.ToNSDate()
-            dateLastUsed:form.date_last_used.ToNSDate()
-            datePasswordChanged:form.date_password_modified.ToNSDate()
-        usernameElement:base::SysUTF16ToNSString(form.username_element)
-          usernameValue:base::SysUTF16ToNSString(form.username_value)
-        passwordElement:base::SysUTF16ToNSString(form.password_element)
-          passwordValue:base::SysUTF16ToNSString(form.password_value)
-        isBlockedByUser:form.blocked_by_user
-                 scheme:PasswordFormSchemeTypeHtml];
+                initWithURL:net::NSURLWithGURL(form.url)
+                signOnRealm:base::SysUTF8ToNSString(form.signon_realm)
+                dateCreated:form.date_created.ToNSDate()
+               dateLastUsed:form.date_last_used.ToNSDate()
+        datePasswordChanged:form.date_password_modified.ToNSDate()
+            usernameElement:base::SysUTF16ToNSString(form.username_element)
+              usernameValue:base::SysUTF16ToNSString(form.username_value)
+            passwordElement:base::SysUTF16ToNSString(form.password_element)
+              passwordValue:base::SysUTF16ToNSString(form.password_value)
+            isBlockedByUser:form.blocked_by_user
+                     scheme:PasswordFormSchemeTypeHtml];
 
     [forms addObject:passwordForm];
   }
@@ -121,8 +121,8 @@ void PasswordStoreListenerIOS::OnLoginsRetained(
        passwordStore:
            (scoped_refptr<password_manager::PasswordStoreInterface>)store {
   if ((self = [super init])) {
-    observer_ = std::make_unique<brave::ios::PasswordStoreListenerIOS>(
-        observer, store);
+    observer_ =
+        std::make_unique<brave::ios::PasswordStoreListenerIOS>(observer, store);
   }
   return self;
 }

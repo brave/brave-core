@@ -26,10 +26,10 @@ typedef NS_ENUM(NSUInteger, PasswordFormScheme) {
 
 NS_SWIFT_NAME(PasswordForm)
 OBJC_EXPORT
-@interface IOSPasswordForm : NSObject<NSCopying> 
+@interface IOSPasswordForm : NSObject <NSCopying>
 
 @property(nonatomic, strong) NSURL* url;
-@property(nonatomic, nullable, copy) NSString* signOnRealm;
+@property(nonatomic, strong) NSString* signOnRealm;
 @property(nonatomic, nullable, copy) NSDate* dateCreated;
 @property(nonatomic, nullable, copy) NSDate* dateLastUsed;
 @property(nonatomic, nullable, copy) NSDate* datePasswordChanged;
@@ -60,7 +60,7 @@ OBJC_EXPORT
 /// password input element
 /// @param passwordValue - The string represantation of the password
 - (instancetype)initWithURL:(NSURL*)url
-                signOnRealm:(nullable NSString*)signOnRealm
+                signOnRealm:(NSString*)signOnRealm
                 dateCreated:(nullable NSDate*)dateCreated
                dateLastUsed:(nullable NSDate*)dateLastUsed
         datePasswordChanged:(nullable NSDate*)datePasswordChanged
@@ -71,8 +71,8 @@ OBJC_EXPORT
             isBlockedByUser:(bool)isBlockedByUser
                      scheme:(PasswordFormScheme)scheme;
 
-  - (void)updatePasswordForm:(nullable NSString*)usernameValue
-               passwordValue:(nullable NSString*)passwordValue;
+- (void)updatePasswordForm:(nullable NSString*)usernameValue
+             passwordValue:(nullable NSString*)passwordValue;
 
 @end
 
@@ -105,7 +105,7 @@ OBJC_EXPORT
 /// from saved password presenter
 /// @param completion - Block that notifies querying is finished with list of
 /// credentials
-- (void)getSavedLogins:(void (^)(NSArray<IOSPasswordForm*>*)) completion;
+- (void)getSavedLogins:(void (^)(NSArray<IOSPasswordForm*>*))completion;
 
 /// Fetch Function that will return list of all Password Forms
 /// from saved password presenter
@@ -115,8 +115,7 @@ OBJC_EXPORT
 /// credentials
 - (void)getSavedLoginsForURL:(NSURL*)url
                   formScheme:(PasswordFormScheme)formScheme
-                  completion:
-                      (void (^)(NSArray<IOSPasswordForm*>*))completion;
+                  completion:(void (^)(NSArray<IOSPasswordForm*>*))completion;
 @end
 
 NS_ASSUME_NONNULL_END

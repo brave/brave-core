@@ -96,9 +96,7 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
   if ((self = [super init])) {
     [self setUrl:url];
 
-    if (signOnRealm) {
-      [self setSignOnRealm:signOnRealm];
-    }
+    [self setSignOnRealm:signOnRealm];
 
     if (dateCreated) {
       [self setDateCreated:dateCreated];
@@ -137,33 +135,32 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 }
 
 - (id)copyWithZone:(NSZone*)zone {
-    IOSPasswordForm* passwordFormCopy = [[[self class] allocWithZone:zone] init];
+  IOSPasswordForm* passwordFormCopy = [[[self class] allocWithZone:zone] init];
 
-    if (passwordFormCopy) {
-        passwordFormCopy.url = self.url;
-        passwordFormCopy.signOnRealm = self.signOnRealm;
-        passwordFormCopy.dateCreated = self.dateCreated;
-        passwordFormCopy.dateLastUsed = self.dateLastUsed;
-        passwordFormCopy.datePasswordChanged = self.datePasswordChanged;
-        passwordFormCopy.usernameElement = self.usernameElement;
-        passwordFormCopy.usernameValue = self.usernameValue;
-        passwordFormCopy.passwordElement = self.passwordElement;
-        passwordFormCopy.passwordValue = self.passwordValue;
-        passwordFormCopy.isBlockedByUser = self.isBlockedByUser;
-        passwordFormCopy.scheme = self.scheme;
-    }
+  if (passwordFormCopy) {
+    passwordFormCopy.url = self.url;
+    passwordFormCopy.signOnRealm = self.signOnRealm;
+    passwordFormCopy.dateCreated = self.dateCreated;
+    passwordFormCopy.dateLastUsed = self.dateLastUsed;
+    passwordFormCopy.datePasswordChanged = self.datePasswordChanged;
+    passwordFormCopy.usernameElement = self.usernameElement;
+    passwordFormCopy.usernameValue = self.usernameValue;
+    passwordFormCopy.passwordElement = self.passwordElement;
+    passwordFormCopy.passwordValue = self.passwordValue;
+    passwordFormCopy.isBlockedByUser = self.isBlockedByUser;
+    passwordFormCopy.scheme = self.scheme;
+  }
 
-    return passwordFormCopy;
+  return passwordFormCopy;
 }
 
-- (void)updatePasswordForm:(NSString*)usernameValue 
-              passwordValue:(NSString*)passwordValue {
-
+- (void)updatePasswordForm:(NSString*)usernameValue
+             passwordValue:(NSString*)passwordValue {
   if ([usernameValue length] != 0) {
     [self setUsernameValue:usernameValue];
   }
 
-  if([passwordValue length] != 0) {
+  if ([passwordValue length] != 0) {
     [self setPasswordValue:passwordValue];
   }
 }
@@ -177,7 +174,11 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 }
 
 - (void)setSignOnRealm:(NSString*)signOnRealm {
-  signon_realm_ = base::SysNSStringToUTF8(signOnRealm);
+  if ([signOnRealm length] != 0) {
+    signon_realm_ = base::SysNSStringToUTF8(signOnRealm);
+  } else {
+    signon_realm_ = gurl_.spec();
+  }
 }
 
 - (NSString*)signOnRealm {
@@ -314,8 +315,7 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
   return password_store_->IsAbleToSavePasswords();
 }
 
-- (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer
-{
+- (id<PasswordStoreListener>)addObserver:(id<PasswordStoreObserver>)observer {
   return [[PasswordStoreListenerImpl alloc] init:observer
                                    passwordStore:password_store_];
 }
@@ -353,8 +353,7 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
         base::SysNSStringToUTF16(passwordForm.passwordValue);
   }
 
-  passwordCredentialForm.url =
-      net::GURLWithNSURL(passwordForm.url);
+  passwordCredentialForm.url = net::GURLWithNSURL(passwordForm.url);
 
   if ([passwordForm.signOnRealm length] != 0) {
     passwordCredentialForm.signon_realm =
@@ -406,11 +405,14 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
       [self createCredentialForm:oldPasswordForm]);
 }
 
-- (void)getSavedLogins:(void (^)(NSArray<IOSPasswordForm*>* results))completion {
-  auto fetchCredentialsCallback = ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
-    NSArray<IOSPasswordForm*>* credentials = [self onLoginsResult:std::move(logins)];
-    completion(credentials);
-  };
+- (void)getSavedLogins:
+    (void (^)(NSArray<IOSPasswordForm*>* results))completion {
+  auto fetchCredentialsCallback =
+      ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
+        NSArray<IOSPasswordForm*>* credentials =
+            [self onLoginsResult:std::move(logins)];
+        completion(credentials);
+      };
 
   auto* password_consumer =
       new PasswordStoreConsumerIOS(base::BindOnce(fetchCredentialsCallback));
@@ -420,11 +422,13 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
 - (void)getSavedLoginsForURL:(NSURL*)url
                   formScheme:(PasswordFormScheme)formScheme
                   completion:
-                      (void (^)(NSArray<IOSPasswordForm*>* results))completion {               
-  auto fetchCredentialsCallback = ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
-    NSArray<IOSPasswordForm*>* credentials = [self onLoginsResult:std::move(logins)];
-    completion(credentials);
-  };
+                      (void (^)(NSArray<IOSPasswordForm*>* results))completion {
+  auto fetchCredentialsCallback =
+      ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
+        NSArray<IOSPasswordForm*>* credentials =
+            [self onLoginsResult:std::move(logins)];
+        completion(credentials);
+      };
 
   auto* password_consumer =
       new PasswordStoreConsumerIOS(base::BindOnce(fetchCredentialsCallback));
@@ -445,18 +449,19 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
 
   for (const auto& result : results) {
     IOSPasswordForm* passwordForm = [[IOSPasswordForm alloc]
-            initWithURL:net::NSURLWithGURL(result->url)
-            signOnRealm:base::SysUTF8ToNSString(result->signon_realm)
-            dateCreated:result->date_created.ToNSDate()
-            dateLastUsed:result->date_last_used.ToNSDate()
-            datePasswordChanged:result->date_password_modified.ToNSDate()
-        usernameElement:base::SysUTF16ToNSString(result->username_element)
-          usernameValue:base::SysUTF16ToNSString(result->username_value)
-        passwordElement:base::SysUTF16ToNSString(result->password_element)
-          passwordValue:base::SysUTF16ToNSString(result->password_value)
-        isBlockedByUser:result->blocked_by_user
-                 scheme:brave::ios::PasswordFormSchemeFromPasswordManagerScheme(
-                            result->scheme)];
+                initWithURL:net::NSURLWithGURL(result->url)
+                signOnRealm:base::SysUTF8ToNSString(result->signon_realm)
+                dateCreated:result->date_created.ToNSDate()
+               dateLastUsed:result->date_last_used.ToNSDate()
+        datePasswordChanged:result->date_password_modified.ToNSDate()
+            usernameElement:base::SysUTF16ToNSString(result->username_element)
+              usernameValue:base::SysUTF16ToNSString(result->username_value)
+            passwordElement:base::SysUTF16ToNSString(result->password_element)
+              passwordValue:base::SysUTF16ToNSString(result->password_value)
+            isBlockedByUser:result->blocked_by_user
+                     scheme:brave::ios::
+                                PasswordFormSchemeFromPasswordManagerScheme(
+                                    result->scheme)];
 
     [loginForms addObject:passwordForm];
   }
