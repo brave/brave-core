@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/frame/dom_window.h b/third_party/blink/renderer/core/frame/dom_window.h
-index 6cf28c350dcf89ac212afba54dff261959848c31..51b8cef343ce17ab58c6b19441b0f86dccb339ab 100644
+index 6cf28c350dcf89ac212afba54dff261959848c31..7ef0dfd55ecff6e813355f5694b043752b7ffe5a 100644
 --- a/third_party/blink/renderer/core/frame/dom_window.h
 +++ b/third_party/blink/renderer/core/frame/dom_window.h
-@@ -162,6 +162,7 @@ class CORE_EXPORT DOMWindow : public EventTargetWithInlineData {
-       mojom::blink::WebFeature property_access,
-       mojom::blink::WebFeature property_access_from_other_page) const;
+@@ -181,6 +181,7 @@ class CORE_EXPORT DOMWindow : public EventTargetWithInlineData {
+ 
+   void DisconnectFromFrame() { frame_ = nullptr; }
  
 +  BRAVE_DOM_WINDOW_H
-  protected:
-   explicit DOMWindow(Frame&);
- 
+  private:
+   void DoPostMessage(scoped_refptr<SerializedScriptValue> message,
+                      const MessagePortArray&,
