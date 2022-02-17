@@ -7,18 +7,26 @@
 
 #include <utility>
 
+#include "brave/browser/brave_vpn/brave_vpn_service_factory.h"
+#include "brave/components/brave_vpn/brave_vpn_service.h"
+
 VPNPanelHandler::VPNPanelHandler(
     mojo::PendingReceiver<brave_vpn::mojom::PanelHandler> receiver,
-    ui::MojoBubbleWebUIController* webui_controller)
+    ui::MojoBubbleWebUIController* webui_controller,
+    Profile* profile)
     : receiver_(this, std::move(receiver)),
-      webui_controller_(webui_controller) {}
+      webui_controller_(webui_controller),
+      profile_(profile) {}
 
 VPNPanelHandler::~VPNPanelHandler() = default;
 
 void VPNPanelHandler::ShowUI() {
   auto embedder = webui_controller_->embedder();
+  BraveVpnService* vpn_service_desktop =
+      BraveVpnServiceFactory::GetForProfile(profile_);
   if (embedder) {
     embedder->ShowUI();
+    vpn_service_desktop->OnPanelVisible();
   }
 }
 
