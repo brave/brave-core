@@ -52,7 +52,7 @@ bool IsTrialDisabledInBrave(base::StringPiece trial_name) {
 bool IsTrialDisabledInBrave(OriginTrialFeature feature) {
   // When updating also update the array in the overload above.
   // clang-format off
-  static const std::array<OriginTrialFeature, 12> kBraveDisabledTrialFeatures =
+  static const OriginTrialFeature kBraveDisabledTrialFeatures[] =
       {   // NOLINT
           OriginTrialFeature::kAdInterestGroupAPI,
           OriginTrialFeature::kConversionMeasurement,
