@@ -12,14 +12,14 @@
                       pref="{{prefs.browser.clear_data.browsing_history_on_exit}}"
                       label="$i18n{clearBrowsingHistory}"
                       sub-label="[[counters.browsing_history]]"
-                      hidden="[[isSupervised_]]"
+                      hidden="[[isChildAccount_]]"
                       no-set-pref>
   </settings-checkbox>
   <settings-checkbox id="downloadCheckboxOnExit"
                       pref="{{prefs.browser.clear_data.download_history_on_exit}}"
                       label="$i18n{clearDownloadHistory}"
                       sub-label="[[counters.download_history]]"
-                      hidden="[[isSupervised_]]"
+                      hidden="[[isChildAccount_]]"
                       no-set-pref>
   </settings-checkbox>
   <settings-checkbox id="cookiesCheckboxOnExit"
