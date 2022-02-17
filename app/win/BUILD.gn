@@ -1,26 +1,24 @@
-import("//build/util/branding.gni")
 import("//brave/build/config.gni")
+import("//build/util/branding.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
 
 action("generate_breakpad_symbols") {
   symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
-  outputs = [
-    symbols_dir
-  ]
+  outputs = [ symbols_dir ]
 
   args = [
     "--symbols-dir=" + rebase_path(symbols_dir),
     "--build-dir=" + rebase_path(root_out_dir),
     "--verbose",
     "--clear",
-    rebase_path(root_out_dir)
+    rebase_path(root_out_dir),
   ]
 
   script = "//brave/tools/win/generate_breakpad_symbols.py"
 
   deps = [
-    "//third_party/breakpad:dump_syms",
     "//brave/build/win:copy_pdb",
+    "//third_party/breakpad:dump_syms",
   ]
 }
 
@@ -29,13 +27,9 @@ group("symbol_dist_resources") {
 }
 
 copy("dist_resources") {
-  sources = [
-    "$root_out_dir/chrome_elf.dll",
-  ]
+  sources = [ "$root_out_dir/chrome_elf.dll" ]
 
-  outputs = [
-    "$brave_dist_dir/{{source_file_part}}",
-  ]
+  outputs = [ "$brave_dist_dir/{{source_file_part}}" ]
 
   public_deps = [
     "//chrome/chrome_elf",
