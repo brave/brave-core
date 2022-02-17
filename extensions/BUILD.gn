@@ -1,4 +1,4 @@
-if (is_android) {
+if (is_android || is_ios) {
   source_set("common") {
     sources = [
       "//extensions/common/error_utils.cc",
@@ -12,11 +12,19 @@ if (is_android) {
     deps = [
       "//base",
       "//components/url_pattern_index",
-      "//content/public/common",
       "//extensions/buildflags",
       "//net:net",
       "//url",
     ]
+
+    if (is_ios) {
+      sources += [
+        "//content/public/common/url_constants.cc",
+        "//content/public/common/url_constants.h",
+      ]
+    } else {
+      deps += [ "//content/public/common" ]
+    }
 
     public_deps = [
       "//extensions/common:common_constants",
@@ -29,8 +37,6 @@ if (is_android) {
   }
 } else {
   group("common") {
-    if (!is_ios) {
-      public_deps = [ "//extensions/common" ]
-    }
+    public_deps = [ "//extensions/common" ]
   }
 }

@@ -8,6 +8,7 @@
 #include "brave/browser/net/brave_block_safebrowsing_urls.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
 #include "brave/browser/net/brave_static_redirect_network_delegate_helper.h"
+#include "brave/common/brave_service_key_helper.h"
 #include "brave/common/network_constants.h"
 #include "extensions/common/url_pattern.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -20,12 +21,7 @@ std::string BraveServicesKeyForTesting() {
 }
 
 void AddBraveServicesKeyHeader(network::ResourceRequest* url_request) {
-  static URLPattern brave_proxy_pattern(URLPattern::SCHEME_HTTPS,
-                                        kBraveProxyPattern);
-  static URLPattern bravesoftware_proxy_pattern(URLPattern::SCHEME_HTTPS,
-                                                kBraveSoftwareProxyPattern);
-  if (brave_proxy_pattern.MatchesURL(url_request->url) ||
-      bravesoftware_proxy_pattern.MatchesURL(url_request->url)) {
+  if (brave::ShouldAddBraveServicesKeyHeader(url_request->url)) {
     url_request->headers.SetHeaderIfMissing(kBraveServicesKeyHeader,
                                             BRAVE_SERVICES_KEY);
   }

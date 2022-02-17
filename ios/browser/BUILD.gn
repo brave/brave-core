@@ -47,3 +47,7 @@ source_set("browser") {
     "//ui/base",
   ]
 }
+
+group("chromium_src") {
+  deps = [ "//brave/common" ]
+}
