@@ -193,7 +193,7 @@ export const SelectRow = styled.div`
 `
 
 export const SelectWrapper = styled.div`
-  width: 250px;
+  width: 300px;
 `
 
 export const ErrorText = styled.span`
