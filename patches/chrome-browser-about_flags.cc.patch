@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index fddb668a340443c66f51db921e56bbfdc3e04446..8ddb8abcdd7b5d98097ce019fbde70558aa347be 100644
+index fddb668a340443c66f51db921e56bbfdc3e04446..d7a43a7e7917d00f86fb18f4220eee944cdb0016 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -7719,6 +7719,7 @@ const FeatureEntry kFeatureEntries[] = {
-      FEATURE_VALUE_TYPE(chrome::android::kDragAndDropAndroid)},
- #endif  // BUILDFLAG(IS_ANDROID)
- 
-+     BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
-     {"autofill-enable-update-virtual-card-enrollment",
-      flag_descriptions::kAutofillEnableUpdateVirtualCardEnrollmentName,
-      flag_descriptions::kAutofillEnableUpdateVirtualCardEnrollmentDescription,
+@@ -2679,6 +2679,7 @@ const FeatureEntry::FeatureVariation kUseMultipleOverlaysVariations[] = {
+ //
+ // When adding a new choice, add it to the end of the list.
+ const FeatureEntry kFeatureEntries[] = {
++    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
+ // Include generated flags for flag unexpiry; see //docs/flag_expiry.md and
+ // //tools/flags/generate_unexpire_flags.py.
+ #include "build/chromeos_buildflags.h"
