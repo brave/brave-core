@@ -56,7 +56,7 @@ async def ProcessBinary(semaphore, options, binary):
         move(sym_temp_output, symbol_file)
         if options.verbose:
             elapsed = datetime.utcnow() - start_time
-            print(f'Completed generating symbols for {binary}: elapsed time'
+            print(f'Completed generating symbols for {binary}: elapsed time '
                   f'{elapsed.total_seconds()} seconds')
         return True, error
 
