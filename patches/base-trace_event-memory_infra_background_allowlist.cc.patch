@@ -1,5 +1,5 @@
 diff --git a/base/trace_event/memory_infra_background_allowlist.cc b/base/trace_event/memory_infra_background_allowlist.cc
-index e13528d403d27c47fd17dff91b098c72bb3a0ebf..bb1d85f30251b87e9e75360b5ace60c793f9cc36 100644
+index e13528d403d27c47fd17dff91b098c72bb3a0ebf..f032b58ecfbd8df511d9dca6ea6f798569bf59af 100644
 --- a/base/trace_event/memory_infra_background_allowlist.cc
 +++ b/base/trace_event/memory_infra_background_allowlist.cc
 @@ -272,6 +272,7 @@ const char* const kAllocatorDumpNameAllowlist[] = {
@@ -10,3 +10,12 @@ index e13528d403d27c47fd17dff91b098c72bb3a0ebf..bb1d85f30251b87e9e75360b5ace60c7
      "sync/0x?/model_type/PASSWORD",
      "sync/0x?/model_type/PREFERENCE",
      "sync/0x?/model_type/PRINTER",
+@@ -286,6 +287,8 @@ const char* const kAllocatorDumpNameAllowlist[] = {
+     "sync/0x?/model_type/TYPED_URL",
+     "sync/0x?/model_type/USER_CONSENT",
+     "sync/0x?/model_type/USER_EVENT",
++    "sync/0x?/model_type/VG_BODY",
++    "sync/0x?/model_type/VG_SPEND_STATUS",
+     "sync/0x?/model_type/WALLET_METADATA",
+     "sync/0x?/model_type/WEB_APP",
+     "sync/0x?/model_type/WIFI_CONFIGURATION",

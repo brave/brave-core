@@ -1,8 +1,16 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..b86677dc0d7d6463cfa1ba0dfac865fa58b86dda 100644
+index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..9b79e2828eba173550dae317203f1a33063d7277 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
-@@ -27,6 +27,7 @@
+@@ -5,6 +5,7 @@
+ #ifndef COMPONENTS_SYNC_PROTOCOL_PROTO_VISITORS_H_
+ #define COMPONENTS_SYNC_PROTOCOL_PROTO_VISITORS_H_
+ 
++#include "brave/components/sync/protocol/vg_specifics.pb.h"
+ #include "components/sync/base/model_type.h"
+ #include "components/sync/protocol/app_list_specifics.pb.h"
+ #include "components/sync/protocol/app_setting_specifics.pb.h"
+@@ -27,6 +28,7 @@
  #include "components/sync/protocol/nigori_specifics.pb.h"
  #include "components/sync/protocol/os_preference_specifics.pb.h"
  #include "components/sync/protocol/os_priority_preference_specifics.pb.h"
@@ -10,7 +18,7 @@ index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..b86677dc0d7d6463cfa1ba0dfac865fa
  #include "components/sync/protocol/password_specifics.pb.h"
  #include "components/sync/protocol/password_with_local_data.pb.h"
  #include "components/sync/protocol/persisted_entity_data.pb.h"
-@@ -392,6 +393,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
+@@ -392,6 +394,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
    VISIT(manufacturer);
    VISIT(last_updated_timestamp);
    VISIT(feature_fields);
@@ -18,7 +26,7 @@ index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..b86677dc0d7d6463cfa1ba0dfac865fa
    VISIT(sharing_fields);
    VISIT(invalidation_fields);
    VISIT(paask_fields);
-@@ -404,6 +406,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+@@ -404,6 +407,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
    VISIT(send_tab_to_self_receiving_enabled);
  }
  
@@ -26,16 +34,16 @@ index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..b86677dc0d7d6463cfa1ba0dfac865fa
  VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
    VISIT(vapid_fcm_token);
    VISIT_BYTES(vapid_p256dh);
-@@ -455,7 +458,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntityMetadata& proto) {
+@@ -455,7 +459,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntityMetadata& proto) {
  }
  
  VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
 -  static_assert(38 == GetNumModelTypes(),
-+  static_assert(39 == GetNumModelTypes(),
++  static_assert(41 == GetNumModelTypes(),
                  "When adding a new protocol type, you will likely need to add "
                  "it here as well.");
    VISIT(encrypted);
-@@ -477,6 +480,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+@@ -477,6 +481,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
    VISIT(nigori);
    VISIT(os_preference);
    VISIT(os_priority_preference);
@@ -43,15 +51,26 @@ index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..b86677dc0d7d6463cfa1ba0dfac865fa
    VISIT(password);
    VISIT(preference);
    VISIT(printer);
-@@ -663,6 +667,7 @@ VISIT_PROTO_FIELDS(const sync_pb::NigoriSpecifics& proto) {
+@@ -491,6 +496,8 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+   VISIT(typed_url);
+   VISIT(user_consent);
+   VISIT(user_event);
++  VISIT(vg_body);
++  VISIT(vg_spend_status);
+   VISIT(wallet_metadata);
+   VISIT(web_app);
+   VISIT(wifi_configuration);
+@@ -663,6 +670,9 @@ VISIT_PROTO_FIELDS(const sync_pb::NigoriSpecifics& proto) {
    VISIT(custom_passphrase_key_derivation_method);
    VISIT(custom_passphrase_key_derivation_salt);
    VISIT(trusted_vault_debug_info);
 +  VISIT(encrypt_pairs);
++  VISIT(encrypt_vg_bodies);
++  VISIT(encrypt_vg_spend_statuses);
  }
  
  VISIT_PROTO_FIELDS(const sync_pb::WebauthnCredentialSpecifics& proto) {
-@@ -1268,6 +1273,11 @@ VISIT_PROTO_FIELDS(const sync_pb::WorkspaceDeskSpecifics::Desk& proto) {
+@@ -1268,6 +1278,11 @@ VISIT_PROTO_FIELDS(const sync_pb::WorkspaceDeskSpecifics::Desk& proto) {
    VISIT_REP(apps);
  }
  
@@ -63,3 +82,35 @@ index c129c1e8d9bbbcdbd3b26b57eabfab848f8ff1b6..b86677dc0d7d6463cfa1ba0dfac865fa
  VISIT_PROTO_FIELDS(
      const sync_pb::WorkspaceDeskSpecifics::ProgressiveWebApp& proto) {
    VISIT(app_id);
+@@ -1280,6 +1295,31 @@ VISIT_PROTO_FIELDS(const sync_pb::WorkspaceDeskSpecifics::WindowBound& proto) {
+   VISIT(height);
+ }
+ 
++VISIT_PROTO_FIELDS(const sync_pb::VgBodySpecifics::Token& proto) {
++  VISIT(token_id);
++  VISIT(token_value);
++  VISIT(value);
++  VISIT(expires_at);
++}
++
++VISIT_PROTO_FIELDS(const sync_pb::VgBodySpecifics& proto) {
++  VISIT(creds_id);
++  VISIT(trigger_type);
++  VISIT(creds);
++  VISIT(blinded_creds);
++  VISIT(signed_creds);
++  VISIT(public_key);
++  VISIT(batch_proof);
++  VISIT(status);
++  VISIT_REP(tokens);
++}
++
++VISIT_PROTO_FIELDS(const sync_pb::VgSpendStatusSpecifics& proto) {
++  VISIT(token_id);
++  VISIT(redeemed_at);
++  VISIT(redeem_type);
++}
++
+ }  // namespace syncer
+ 
+ #undef VISIT_

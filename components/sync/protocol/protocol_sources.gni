@@ -6,6 +6,7 @@
 brave_sync_protocol_bases = [
   "brave_device_info_specifics",
   "pair_specifics",
+  "vg_specifics",
 ]
 
 brave_sync_protocol_sources = []

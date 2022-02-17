@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/pref_names.h b/components/sync/base/pref_names.h
-index 9538b7765ae5e5cb5ec3acc75838a277545f4e0c..25482414083d6ce8c1aef0ae3f904be2fea683ed 100644
+index 9538b7765ae5e5cb5ec3acc75838a277545f4e0c..825726ab685f4056fa767ce34a7974b918c69d69 100644
 --- a/components/sync/base/pref_names.h
 +++ b/components/sync/base/pref_names.h
-@@ -27,6 +27,7 @@ extern const char kSyncApps[];
+@@ -27,12 +27,15 @@ extern const char kSyncApps[];
  extern const char kSyncAutofill[];
  extern const char kSyncBookmarks[];
  extern const char kSyncExtensions[];
@@ -10,3 +10,11 @@ index 9538b7765ae5e5cb5ec3acc75838a277545f4e0c..25482414083d6ce8c1aef0ae3f904be2
  extern const char kSyncPasswords[];
  extern const char kSyncPreferences[];
  extern const char kSyncReadingList[];
+ extern const char kSyncTabs[];
+ extern const char kSyncThemes[];
+ extern const char kSyncTypedUrls[];
++extern const char kSyncVgBodies[];
++extern const char kSyncVgSpendStatuses[];
+ extern const char kSyncWifiConfigurations[];
+ 
+ extern const char kSyncManaged[];

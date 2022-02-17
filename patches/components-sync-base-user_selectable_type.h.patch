@@ -1,14 +1,16 @@
 diff --git a/components/sync/base/user_selectable_type.h b/components/sync/base/user_selectable_type.h
-index af6c500730825aae9e4bc9f73a37afc25ecd0114..7cce488db424d6cb10992c241793aee0be4b582d 100644
+index af6c500730825aae9e4bc9f73a37afc25ecd0114..ceeb4a6a93d1d6d8c5ead2ff0ca1e149c1b96edc 100644
 --- a/components/sync/base/user_selectable_type.h
 +++ b/components/sync/base/user_selectable_type.h
-@@ -28,7 +28,8 @@ enum class UserSelectableType {
+@@ -28,7 +28,10 @@ enum class UserSelectableType {
    kReadingList,
    kTabs,
    kWifiConfigurations,
 -  kLastType = kWifiConfigurations
 +  kPairs,
-+  kLastType = kPairs
++  kVgBodies,
++  kVgSpendStatuses,
++  kLastType = kVgSpendStatuses
  };
  
  using UserSelectableTypeSet = base::EnumSet<UserSelectableType,

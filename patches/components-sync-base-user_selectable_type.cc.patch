@@ -1,21 +1,27 @@
 diff --git a/components/sync/base/user_selectable_type.cc b/components/sync/base/user_selectable_type.cc
-index ffb367d200ee3fdecc354ff0d2d574b5f1c8e010..e1c73293f69dd2b0f98077e2744b144e40aa1006 100644
+index ffb367d200ee3fdecc354ff0d2d574b5f1c8e010..c454a58e064997a5ffc9c2c22970373624286fce 100644
 --- a/components/sync/base/user_selectable_type.cc
 +++ b/components/sync/base/user_selectable_type.cc
-@@ -37,6 +37,7 @@ constexpr char kAppsTypeName[] = "apps";
+@@ -37,6 +37,9 @@ constexpr char kAppsTypeName[] = "apps";
  constexpr char kReadingListTypeName[] = "readingList";
  constexpr char kTabsTypeName[] = "tabs";
  constexpr char kWifiConfigurationsTypeName[] = "wifiConfigurations";
 +constexpr char kPairsTypeName[] = "pairs";
++constexpr char kVgBodiesTypeName[] = "vgBodies";
++constexpr char kVgSpendStatusesTypeName[] = "vgSpendStatuses";
  
  UserSelectableTypeInfo GetUserSelectableTypeInfo(UserSelectableType type) {
    // UserSelectableTypeInfo::type_name is used in js code and shouldn't be
-@@ -106,6 +107,8 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(UserSelectableType type) {
+@@ -106,6 +109,12 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(UserSelectableType type) {
        return {kWifiConfigurationsTypeName,
                WIFI_CONFIGURATIONS,
                {WIFI_CONFIGURATIONS}};
 +    case UserSelectableType::kPairs:
 +      return {kPairsTypeName, PAIRS, {PAIRS}};
++    case UserSelectableType::kVgBodies:
++      return {kVgBodiesTypeName, VG_BODIES, {VG_BODIES}};
++    case UserSelectableType::kVgSpendStatuses:
++      return {kVgSpendStatusesTypeName, VG_SPEND_STATUSES, {VG_SPEND_STATUSES}};
      }
    }
    NOTREACHED();
