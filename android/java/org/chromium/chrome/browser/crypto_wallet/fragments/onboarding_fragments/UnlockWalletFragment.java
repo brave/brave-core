@@ -96,7 +96,8 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         });
 
         mBiometricUnlockWalletImage.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+                    && Utils.isBiometricAvailable(getContext())) {
                 createBiometricPrompt();
             }
         });
@@ -111,7 +112,8 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
 
     private void checkOnBiometric() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
-                || !KeystoreHelper.shouldUseBiometricOnUnlock()) {
+                || !KeystoreHelper.shouldUseBiometricOnUnlock()
+                || !Utils.isBiometricAvailable(getContext())) {
             showPasswordRelatedControls();
 
             return;
@@ -192,6 +194,7 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
         mUnlockWalletRestoreButton.setVisibility(View.VISIBLE);
         mUnlockWalletTitle.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+                && Utils.isBiometricAvailable(getContext())
                 && KeystoreHelper.shouldUseBiometricOnUnlock()) {
             mBiometricUnlockWalletImage.setVisibility(View.VISIBLE);
         }

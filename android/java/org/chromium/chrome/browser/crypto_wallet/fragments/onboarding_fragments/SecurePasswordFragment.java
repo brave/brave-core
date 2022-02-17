@@ -104,7 +104,8 @@ public class SecurePasswordFragment extends CryptoOnboardingFragment {
                     getResources().getString(R.string.retype_password_error));
             mCreateWalletClicked = false;
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
+                    && Utils.isBiometricAvailable(getContext())) {
                 final BiometricPrompt.AuthenticationCallback authenticationCallback =
                         new BiometricPrompt.AuthenticationCallback() {
                             private void onNextPage() {
