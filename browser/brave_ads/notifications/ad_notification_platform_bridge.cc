@@ -9,6 +9,7 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/ui/brave_ads/ad_notification_delegate.h"
 #include "brave/browser/ui/brave_ads/ad_notification_popup_handler.h"
+#include "chrome/browser/platform_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -86,8 +87,10 @@ void AdNotificationPlatformBridge::ShowAdNotification(
       base::WrapRefCounted(new PassThroughDelegate(profile_, ad_notification)));
 
   const gfx::NativeWindow browser_native_window = GetBrowserNativeWindow();
+  const gfx::NativeView browser_native_view =
+      platform_util::GetViewForWindow(browser_native_window);
   AdNotificationPopupHandler::Show(profile_, ad_notification,
-                                   browser_native_window);
+                                   browser_native_window, browser_native_view);
 }
 
 void AdNotificationPlatformBridge::CloseAdNotification(

@@ -59,6 +59,10 @@ const char kFieldTrialParameterAdNotificationDarkModeBackgroundColor[] =
 // Default color value is SkColorSetRGB(0x20, 0x23, 0x27);
 const char kDefaultAdNotificationDarkModeBackgroundColor[] = "202327";
 
+const char kFieldTrialParameterShouldAttachAdNotificationToBrowserWindow[] =
+    "should_attached_ad_notification_to_browser_window";
+const bool kDefaultShouldAttachAdNotificationToBrowserWindow = false;
+
 // Ad notification normalized display coordinate for the x component should be
 // between 0.0 and 1.0; coordinates outside this range will be adjusted to fit
 // the work area. Set to 0.0 for left, 0.5 for center or 1.0 for right
@@ -158,6 +162,13 @@ std::string AdNotificationDarkModeBackgroundColor() {
   }
 
   return param_value;
+}
+
+bool ShouldAttachAdNotificationToBrowserWindow() {
+  return GetFieldTrialParamByFeatureAsBool(
+      kCustomAdNotifications,
+      kFieldTrialParameterShouldAttachAdNotificationToBrowserWindow,
+      kDefaultShouldAttachAdNotificationToBrowserWindow);
 }
 
 double AdNotificationNormalizedDisplayCoordinateX() {

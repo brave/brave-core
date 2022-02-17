@@ -20,14 +20,15 @@ AdNotificationPopupHandler::~AdNotificationPopupHandler() = default;
 // static
 void AdNotificationPopupHandler::Show(Profile* profile,
                                       const AdNotification& ad_notification,
-                                      gfx::NativeWindow browser_native_window) {
+                                      gfx::NativeWindow browser_native_window,
+                                      gfx::NativeView browser_native_view) {
   DCHECK(profile);
 
   const std::string& id = ad_notification.id();
   DCHECK(!id.empty());
 
-  AdNotificationPopup* popup =
-      new AdNotificationPopup(profile, ad_notification, browser_native_window);
+  AdNotificationPopup* popup = new AdNotificationPopup(
+      profile, ad_notification, browser_native_window, browser_native_view);
   AdNotificationPopupCollection::Add(popup, id);
 
   AdNotificationDelegate* delegate = ad_notification.delegate();

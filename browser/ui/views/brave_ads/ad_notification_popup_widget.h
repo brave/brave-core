@@ -31,7 +31,8 @@ class AdNotificationPopupWidget : public views::Widget {
 
   void InitWidget(views::WidgetDelegate* delegate,
                   const gfx::Rect& bounds,
-                  gfx::NativeWindow browser_native_window);
+                  gfx::NativeWindow browser_native_window,
+                  gfx::NativeView browser_native_view);
 };
 
 }  // namespace brave_ads

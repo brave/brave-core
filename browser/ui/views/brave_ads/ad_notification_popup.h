@@ -51,7 +51,8 @@ class AdNotificationPopup : public views::WidgetDelegateView,
 
   AdNotificationPopup(Profile* profile,
                       const AdNotification& ad_notification,
-                      gfx::NativeWindow browser_native_window);
+                      gfx::NativeWindow browser_native_window,
+                      gfx::NativeView browser_native_view);
   ~AdNotificationPopup() override;
 
   // Disables fade in animation for snapshot tests.
@@ -97,7 +98,8 @@ class AdNotificationPopup : public views::WidgetDelegateView,
 
   raw_ptr<Profile> profile_ = nullptr;  // NOT OWNED
 
-  void CreatePopup(gfx::NativeWindow browser_native_window);
+  void CreatePopup(gfx::NativeWindow browser_native_window,
+                   gfx::NativeView browser_native_view);
 
   AdNotification ad_notification_;
 
@@ -113,7 +115,8 @@ class AdNotificationPopup : public views::WidgetDelegateView,
   const gfx::ShadowDetails& GetShadowDetails() const;
   gfx::Insets GetShadowMargin() const;
 
-  void CreateWidgetView(gfx::NativeWindow browser_native_window);
+  void CreateWidgetView(gfx::NativeWindow browser_native_window,
+                        gfx::NativeView browser_native_view);
   void CloseWidgetView();
 
   AdNotificationView* ad_notification_view_ = nullptr;  // NOT OWNED

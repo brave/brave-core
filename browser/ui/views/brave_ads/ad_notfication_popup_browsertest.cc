@@ -13,6 +13,7 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/test/views/snapshot/widget_snapshot_checker.h"
+#include "chrome/browser/platform_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -62,8 +63,12 @@ IN_PROC_BROWSER_TEST_F(AdNotificationPopupBrowserTest, CheckThemeChanged) {
   gfx::NativeWindow browser_native_window =
       browser()->window()->GetNativeWindow();
   EXPECT_TRUE(browser_native_window);
+  gfx::NativeView browser_native_view =
+      platform_util::GetViewForWindow(browser_native_window);
+  EXPECT_TRUE(browser_native_view);
+
   AdNotificationPopupHandler::Show(browser()->profile(), notification,
-                                   browser_native_window);
+                                   browser_native_window, browser_native_view);
   AdNotificationPopup* popup =
       AdNotificationPopupCollection::Get(notification_id);
   ASSERT_TRUE(popup);
