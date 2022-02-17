@@ -87,7 +87,7 @@ mod ffi {
         fn verify(
             self: &Ed25519DalekExtendedSecretKey,
             msg: &[u8],
-            sig: [u8; 64],
+            sig: &[u8],
         ) -> Box<Ed25519DalekVerificationResult>;
 
         fn to_bytes(self: &Ed25519DalekSignature) -> [u8; 64];
@@ -219,12 +219,12 @@ impl Ed25519DalekExtendedSecretKey {
     fn verify(
         self: &Ed25519DalekExtendedSecretKey,
         msg: &[u8],
-        sig: [u8; 64],
+        sig: &[u8],
     ) -> Box<Ed25519DalekVerificationResult> {
         Box::new(Ed25519DalekVerificationResult::from(
             Keypair::from_bytes(&self.keypair_raw())
                 .map_err(|err| Error::from(err))
-                .and_then(|keypair| Ok(keypair.verify(msg, &Signature::new(sig))?)),
+                .and_then(|keypair| Ok(keypair.verify(msg, &Signature::from_bytes(sig)?)?)),
         ))
     }
 }

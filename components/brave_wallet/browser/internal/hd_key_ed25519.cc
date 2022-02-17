@@ -78,12 +78,9 @@ std::vector<uint8_t> HDKeyEd25519::Sign(const std::vector<uint8_t>& msg,
 
 bool HDKeyEd25519::Verify(const std::vector<uint8_t>& msg,
                           const std::vector<uint8_t>& sig) {
-  if (sig.size() != 64)
-    return false;
-  std::array<uint8_t, 64> signature;
-  std::copy_n(sig.begin(), 64, signature.begin());
   auto verification_result = private_key_->unwrap().verify(
-      rust::Slice<const uint8_t>{msg.data(), msg.size()}, std::move(signature));
+      rust::Slice<const uint8_t>{msg.data(), msg.size()},
+      rust::Slice<const uint8_t>{sig.data(), sig.size()});
   if (!verification_result->is_ok()) {
     VLOG(0) << std::string(verification_result->error_message());
     return false;
