@@ -6,9 +6,9 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PRIORITY_AD_PRIORITY_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_AD_PRIORITY_AD_PRIORITY_H_
 
-#include <map>
 #include <utility>
 
+#include "base/containers/flat_map.h"
 #include "bat/ads/internal/ad_priority/ad_priority_util.h"
 
 namespace ads {
@@ -19,7 +19,8 @@ T PrioritizeAds(const T& ads) {
     return {};
   }
 
-  const std::map<unsigned int, T> buckets = SortAdsIntoPrioritizedBuckets(ads);
+  const base::flat_map<unsigned int, T> buckets =
+      SortAdsIntoPrioritizedBuckets(ads);
   if (buckets.empty()) {
     return {};
   }

@@ -8,6 +8,7 @@
 #include <cstdint>
 
 #include "base/base64.h"
+#include "base/containers/flat_map.h"
 #include "bat/ads/internal/security/key_pair_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "tweetnacl.h"  // NOLINT
@@ -24,7 +25,7 @@ const size_t kCryptoBoxSecretKeyBytes = crypto_box_SECRETKEYBYTES;
 
 TEST(BatAdsSecurityCryptoUtilsTest, Sign) {
   // Arrange
-  const std::map<std::string, std::string> headers = {
+  const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
   const std::string key_id = "primary";
@@ -45,7 +46,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, Sign) {
 
 TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidheaders) {
   // Arrange
-  const std::map<std::string, std::string> headers = {};
+  const base::flat_map<std::string, std::string> headers = {};
 
   const std::string key_id = "primary";
 
@@ -64,7 +65,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidheaders) {
 
 TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidKeyId) {
   // Arrange
-  const std::map<std::string, std::string> headers = {
+  const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
   const std::string key_id = "";
@@ -84,7 +85,7 @@ TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidKeyId) {
 
 TEST(BatAdsSecurityCryptoUtilsTest, SignWithInvalidSecretKey) {
   // Arrange
-  const std::map<std::string, std::string> headers = {
+  const base::flat_map<std::string, std::string> headers = {
       {"digest", "SHA-256=qj7EBzMRSsGh4Rfu8Zha6MvPB2WftfJNeF8gt7hE9AY="}};
 
   const std::string key_id = "primary";

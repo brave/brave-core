@@ -10,6 +10,7 @@
 #include <map>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/internal/ad_targeting/data_types/behavioral/purchase_intent/purchase_intent_aliases.h"
@@ -28,8 +29,8 @@ struct ClientInfo final {
 
   AdPreferencesInfo ad_preferences;
   std::deque<AdHistoryInfo> ads_shown_history;
-  std::map<std::string, std::map<std::string, bool>> seen_ads;
-  std::map<std::string, std::map<std::string, bool>> seen_advertisers;
+  base::flat_map<std::string, std::map<std::string, bool>> seen_ads;
+  base::flat_map<std::string, std::map<std::string, bool>> seen_advertisers;
   base::Time serve_ad_at;
   ad_targeting::TextClassificationProbabilitiesList
       text_classification_probabilities;

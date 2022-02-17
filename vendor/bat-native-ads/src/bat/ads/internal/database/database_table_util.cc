@@ -21,20 +21,15 @@ namespace {
 
 std::string BuildInsertQuery(const std::string& from,
                              const std::string& to,
-                             const std::map<std::string, std::string>& columns,
+                             const std::vector<std::string>& from_columns,
+                             const std::vector<std::string>& to_columns,
                              const std::string& group_by) {
   DCHECK(!from.empty());
   DCHECK(!to.empty());
   DCHECK_NE(from, to);
-  DCHECK(!columns.empty());
-
-  std::vector<std::string> from_columns;
-  std::vector<std::string> to_columns;
-
-  for (const auto& column : columns) {
-    from_columns.push_back(column.first);
-    to_columns.push_back(column.second);
-  }
+  DCHECK(!from_columns.empty());
+  DCHECK(!to_columns.empty());
+  DCHECK_EQ(from_columns.size(), to_columns.size());
 
   const std::string comma_separated_from_columns =
       base::JoinString(from_columns, ", ");
@@ -102,19 +97,22 @@ void Delete(mojom::DBTransaction* transaction, const std::string& table_name) {
 void CopyColumns(mojom::DBTransaction* transaction,
                  const std::string& from,
                  const std::string& to,
-                 const std::map<std::string, std::string>& columns,
+                 const std::vector<std::string>& from_columns,
+                 const std::vector<std::string>& to_columns,
                  const bool should_drop,
                  const std::string& group_by) {
   DCHECK(transaction);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
   DCHECK_NE(from, to);
-  DCHECK(!columns.empty());
+  DCHECK(!from_columns.empty());
+  DCHECK(!to_columns.empty());
+  DCHECK_EQ(from_columns.size(), to_columns.size());
 
   std::string query = "PRAGMA foreign_keys = off;";
 
   const std::string insert_query =
-      BuildInsertQuery(from, to, columns, group_by);
+      BuildInsertQuery(from, to, from_columns, to_columns, group_by);
   query.append(insert_query);
 
   if (should_drop) {
@@ -142,12 +140,8 @@ void CopyColumns(mojom::DBTransaction* transaction,
   DCHECK_NE(from, to);
   DCHECK(!columns.empty());
 
-  std::map<std::string, std::string> new_columns;
-  for (const auto& column : columns) {
-    new_columns[column] = column;
-  }
-
-  return CopyColumns(transaction, from, to, new_columns, should_drop, group_by);
+  return CopyColumns(transaction, from, to, columns, columns, should_drop,
+                     group_by);
 }
 
 void Rename(mojom::DBTransaction* transaction,

@@ -6,12 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_UNITTEST_UTIL_H_
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_map.h"
 #include "base/files/scoped_temp_dir.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
@@ -71,7 +71,7 @@ namespace ads {
 
 using URLEndpointResponse = std::pair<int, std::string>;
 using URLEndpointResponses = std::vector<URLEndpointResponse>;
-using URLEndpoints = std::map<std::string, URLEndpointResponses>;
+using URLEndpoints = base::flat_map<std::string, URLEndpointResponses>;
 
 class AdsClientMock;
 class Database;

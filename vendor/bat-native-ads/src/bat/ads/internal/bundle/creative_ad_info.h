@@ -6,10 +6,10 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_INFO_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_BUNDLE_CREATIVE_AD_INFO_H_
 
-#include <set>
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/bundle/creative_daypart_info.h"
 
@@ -41,7 +41,7 @@ struct CreativeAdInfo {
   std::string segment;
   std::string split_test_group;
   std::vector<CreativeDaypartInfo> dayparts;
-  std::set<std::string> geo_targets;
+  base::flat_set<std::string> geo_targets;
   std::string target_url;
 };
 

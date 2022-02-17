@@ -6,7 +6,6 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_TABLE_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_DATABASE_DATABASE_TABLE_UTIL_H_
 
-#include <map>
 #include <string>
 #include <vector>
 
@@ -28,7 +27,8 @@ void Delete(mojom::DBTransaction* transaction, const std::string& table_name);
 void CopyColumns(mojom::DBTransaction* transaction,
                  const std::string& from,
                  const std::string& to,
-                 const std::map<std::string, std::string>& columns,
+                 const std::vector<std::string>& from_columns,
+                 const std::vector<std::string>& to_columns,
                  const bool should_drop,
                  const std::string& group_by = "");
 

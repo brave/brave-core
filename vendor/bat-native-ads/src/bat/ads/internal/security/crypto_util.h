@@ -7,16 +7,17 @@
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_SECURITY_CRYPTO_UTIL_H_
 
 #include <cstdint>
-#include <map>
 #include <string>
 #include <vector>
+
+#include "base/containers/flat_map.h"
 
 namespace ads {
 namespace security {
 
 struct KeyPairInfo;
 
-std::string Sign(const std::map<std::string, std::string>& headers,
+std::string Sign(const base::flat_map<std::string, std::string>& headers,
                  const std::string& key_id,
                  const std::string& secret_key);
 

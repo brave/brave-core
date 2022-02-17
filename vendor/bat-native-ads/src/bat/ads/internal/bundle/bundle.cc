@@ -92,7 +92,7 @@ BundleInfo Bundle::FromCatalog(const Catalog& catalog) const {
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
     // Geo Targets
-    std::set<std::string> geo_targets;
+    base::flat_set<std::string> geo_targets;
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 

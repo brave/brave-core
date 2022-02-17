@@ -11,7 +11,7 @@
 
 namespace ads {
 
-const std::set<std::string> kOtherCountryCodes = {
+const base::flat_set<std::string> kOtherCountryCodes = {
     "AS",  // American Samoa
     "AI",  // Anguilla
     "AQ",  // Antarctica
