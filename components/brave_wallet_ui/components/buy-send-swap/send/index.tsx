@@ -11,6 +11,8 @@ import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
 import { getLocale } from '../../../../common/locale'
 import { ButtonRow, ErrorText, ResetButton } from '../shared-styles'
+import { toWei } from '../../../utils/format-balances'
+
 // Styled Components
 import {
   StyledWrapper
@@ -72,8 +74,8 @@ function Send (props: Props) {
     if (parseFloat(selectedAssetAmount) === 0) {
       return false
     }
-    return Number(selectedAssetAmount) > Number(selectedAssetBalance)
-  }, [selectedAssetBalance, selectedAssetAmount])
+    return Number(toWei(selectedAssetAmount, selectedAsset.decimals)) > Number(selectedAssetBalance)
+  }, [selectedAssetBalance, selectedAssetAmount, selectedAsset])
 
   return (
     <StyledWrapper>
