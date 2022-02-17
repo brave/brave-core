@@ -58,7 +58,9 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
 
 BackgroundVideoPlaybackTabHelper::BackgroundVideoPlaybackTabHelper(
     content::WebContents* contents)
-    : WebContentsObserver(contents) {}
+    : WebContentsObserver(contents),
+      content::WebContentsUserData<BackgroundVideoPlaybackTabHelper>(
+          *contents) {}
 
 BackgroundVideoPlaybackTabHelper::~BackgroundVideoPlaybackTabHelper() {}
 

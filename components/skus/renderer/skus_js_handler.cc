@@ -165,7 +165,8 @@ void SkusJSHandler::OnRefreshOrder(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          response, base::JSONParserOptions::JSON_PARSE_RFC);
+          response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                        base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     v8::Local<v8::String> result =
@@ -322,7 +323,8 @@ void SkusJSHandler::OnCredentialSummary(
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          response, base::JSONParserOptions::JSON_PARSE_RFC);
+          response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                        base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     v8::Local<v8::String> result =

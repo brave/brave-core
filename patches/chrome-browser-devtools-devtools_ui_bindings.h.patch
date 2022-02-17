@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/devtools/devtools_ui_bindings.h b/chrome/browser/devtools/devtools_ui_bindings.h
-index 815a9dacb4ac4a591339d49f3848adf72a475a84..9831bc586d7ac62fefdee1b61dd1b110ed8c152e 100644
+index f32e33f4da0c8f6ecb8fa9a04cc0e7535dfa0e7d..93244fa307a801efa98fcc7f059494436117c0d9 100644
 --- a/chrome/browser/devtools/devtools_ui_bindings.h
 +++ b/chrome/browser/devtools/devtools_ui_bindings.h
-@@ -104,6 +104,8 @@ class DevToolsUIBindings : public DevToolsEmbedderMessageDispatcher::Delegate,
+@@ -106,6 +106,8 @@ class DevToolsUIBindings : public DevToolsEmbedderMessageDispatcher::Delegate,
  
   private:
    using DevToolsUIBindingsList = std::vector<DevToolsUIBindings*>;

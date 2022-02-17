@@ -16,10 +16,13 @@ class NET_EXPORT CookieMonster : public ChromiumCookieMonster {
  public:
   // These constructors and destructors must be kept in sync with those in
   // Chromium's CookieMonster.
-  CookieMonster(scoped_refptr<PersistentCookieStore> store, NetLog* net_log);
+  CookieMonster(scoped_refptr<PersistentCookieStore> store,
+                NetLog* net_log,
+                bool first_party_sets_enabled);
   CookieMonster(scoped_refptr<PersistentCookieStore> store,
                 base::TimeDelta last_access_threshold,
-                NetLog* net_log);
+                NetLog* net_log,
+                bool first_party_sets_enabled);
   ~CookieMonster() override;
 
   // CookieStore implementation.

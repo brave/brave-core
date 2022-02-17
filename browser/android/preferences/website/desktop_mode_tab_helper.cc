@@ -24,8 +24,8 @@ bool IsDesktopModeEnabled(content::WebContents* contents) {
 }  // namespace
 
 DesktopModeTabHelper::DesktopModeTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents) {
-}
+    : WebContentsObserver(contents),
+      content::WebContentsUserData<DesktopModeTabHelper>(*contents) {}
 
 DesktopModeTabHelper::~DesktopModeTabHelper() {
 }

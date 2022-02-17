@@ -98,7 +98,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
         Publishers publisher_list;
         ParseCombinedPublisherList(body, &publisher_list);
         // Add user enabled statuses
-        const base::DictionaryValue* publisher_prefs =
+        const base::Value* publisher_prefs =
             controller->prefs_->GetDictionary(prefs::kBraveTodaySources);
         for (auto kv : publisher_prefs->DictItems()) {
           auto publisher_id = kv.first;

@@ -6,6 +6,7 @@
 #include "brave/browser/brave_shields/ad_block_service_browsertest.h"
 
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -945,12 +946,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   auto inner_resolver = std::make_unique<net::MockHostResolver>();
 
-  const std::vector<std::string> kDnsAliasesDirect(
+  const std::set<std::string> kDnsAliasesDirect(
       {"cname-cloak-endpoint.tracking.com"});
-  const std::vector<std::string> kDnsAliasesChain(
+  const std::set<std::string> kDnsAliasesChain(
       {"cname-cloak-endpoint.tracking.com",
        "cname-cloak-endpoint.tracking.com.redirectservice.net", "cname.a.com"});
-  const std::vector<std::string> kDnsAliasesSafe({"assets.cdn.net"});
+  const std::set<std::string> kDnsAliasesSafe({"assets.cdn.net"});
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "a83idbka2e.a.com", "127.0.0.1", kDnsAliasesDirect);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
@@ -958,7 +959,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases("a.com", "127.0.0.1",
                                                           kDnsAliasesSafe);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
-      "cname-cloak-endpoint.tracking.com", "127.0.0.1", {});
+      "cname-cloak-endpoint.tracking.com", "127.0.0.1",
+      /*dns_aliases=*/std::set<std::string>());
 
   network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
 
@@ -1031,12 +1033,12 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   auto inner_resolver = std::make_unique<net::MockHostResolver>();
 
-  const std::vector<std::string> kDnsAliasesDirect(
+  const std::set<std::string> kDnsAliasesDirect(
       {"cname-cloak-endpoint.tracking.com"});
-  const std::vector<std::string> kDnsAliasesChain(
+  const std::set<std::string> kDnsAliasesChain(
       {"cname-cloak-endpoint.tracking.com",
        "cname-cloak-endpoint.tracking.com.redirectservice.net", "cname.a.com"});
-  const std::vector<std::string> kDnsAliasesSafe({"assets.cdn.net"});
+  const std::set<std::string> kDnsAliasesSafe({"assets.cdn.net"});
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "a83idbka2e.a.com", "127.0.0.1", kDnsAliasesDirect);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
@@ -1044,7 +1046,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases("a.com", "127.0.0.1",
                                                           kDnsAliasesSafe);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
-      "cname-cloak-endpoint.tracking.com", "127.0.0.1", {});
+      "cname-cloak-endpoint.tracking.com", "127.0.0.1",
+      /*dns_aliases=*/std::set<std::string>());
 
   network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
 
@@ -1124,12 +1127,12 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
 
   auto inner_resolver = std::make_unique<net::MockHostResolver>();
 
-  const std::vector<std::string> kDnsAliasesDirect(
+  const std::set<std::string> kDnsAliasesDirect(
       {"cname-cloak-endpoint.tracking.com"});
-  const std::vector<std::string> kDnsAliasesChain(
+  const std::set<std::string> kDnsAliasesChain(
       {"cname-cloak-endpoint.tracking.com",
        "cname-cloak-endpoint.tracking.com.redirectservice.net", "cname.a.com"});
-  const std::vector<std::string> kDnsAliasesSafe({"assets.cdn.net"});
+  const std::set<std::string> kDnsAliasesSafe({"assets.cdn.net"});
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
       "a83idbka2e.a.com", "127.0.0.1", kDnsAliasesDirect);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
@@ -1137,7 +1140,8 @@ IN_PROC_BROWSER_TEST_F(CnameUncloakingFlagDisabledTest, NoDnsQueriesIssued) {
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases("a.com", "127.0.0.1",
                                                           kDnsAliasesSafe);
   inner_resolver->rules()->AddIPLiteralRuleWithDnsAliases(
-      "cname-cloak-endpoint.tracking.com", "127.0.0.1", {});
+      "cname-cloak-endpoint.tracking.com", "127.0.0.1",
+      /*dns_aliases=*/std::set<std::string>());
 
   network::HostResolver resolver(inner_resolver.get(), net::NetLog::Get());
 

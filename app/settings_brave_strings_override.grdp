@@ -2,9 +2,8 @@
 <!-- Settings-specific Brave strings (included from chromium_strings.grd). -->
 <grit-part>
   <if expr="not chromeos">
-    <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated Brave">
-      Nearly up to date! Relaunch Brave to finish updating. Private windows won't reopen.
-    </message>
+    </if>
+  <if expr="not chromeos">
     </if>
   <if expr="chromeos">
     </if>
@@ -12,15 +11,12 @@
   <if expr="not chromeos">
     </if>
 
-  <if expr="chromeos or lacros">
+  <if expr="chromeos_ash or chromeos_lacros">
     </if>
 
   <if expr="not chromeos and not lacros">
     </if>
 
-  <message name="IDS_SETTINGS_PRIVACY_REVIEW_WELCOME_CARD_SUB_HEADER" desc="A subheader shown at on the welcome card in the privacy review, explaining to users that Brave has default settings but they can customize them if they like.">
-    The default settings work for most profiles, but you can customize them to fit how you like to use Brave
-  </message>
   <if expr="not chromeos">
   </if>
   <if expr="chromeos">

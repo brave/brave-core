@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
+index 7c380a9e2856b8f777c14eae78172e2ea7131f86..a35883b0f158bc199a9a35e219d4038d3f87bd19 100644
+--- a/chrome/browser/resources/bookmarks/BUILD.gn
++++ b/chrome/browser/resources/bookmarks/BUILD.gn
+@@ -49,6 +49,7 @@ generate_grd("build_grd") {
+   }
+   grd_prefix = "bookmarks"
+   out_grd = "$target_gen_dir/${grd_prefix}_resources.grd"
++  deps += [ "//brave/browser/resources/bookmarks:resources" ]
+ }
+ 
+ preprocess_if_expr("preprocess") {
+@@ -108,4 +109,5 @@ ts_library("build_ts") {
+     ":preprocess",
+     ":preprocess_generated",
+   ]
++  in_files += brave_deps_chrome_browser_resources_bookmarks_in_files extra_deps += brave_deps_chrome_browser_resources_bookmarks_extra_deps
+ }

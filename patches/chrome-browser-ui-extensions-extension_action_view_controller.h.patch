@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.h b/chrome/browser/ui/extensions/extension_action_view_controller.h
-index 955199e3c1cae34a506e2079b5b65c564aabcf9a..5b68217acc8ffdba5ed31ff7bb25178967f564d6 100644
+index 1459dc0c31775f84983c2f90acd56eddd7e2fd7f..94ffa8dd6190b7d56ed6e97711f5f880774167d6 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.h
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.h
 @@ -17,6 +17,7 @@
@@ -18,7 +18,7 @@ index 955199e3c1cae34a506e2079b5b65c564aabcf9a..5b68217acc8ffdba5ed31ff7bb251789
    // The different options for showing a popup.
    enum PopupShowAction { SHOW_POPUP, SHOW_POPUP_AND_INSPECT };
  
-@@ -135,6 +137,7 @@ class ExtensionActionViewController
+@@ -137,6 +139,7 @@ class ExtensionActionViewController
    // In some cases (such as when an action is shown in a menu), a substitute
    // ToolbarActionViewController should be used for showing popups. This
    // returns the preferred controller.
@@ -26,7 +26,7 @@ index 955199e3c1cae34a506e2079b5b65c564aabcf9a..5b68217acc8ffdba5ed31ff7bb251789
    ExtensionActionViewController* GetPreferredPopupViewController();
  
    // Executes the extension action with |show_action|. If
-@@ -150,6 +153,7 @@ class ExtensionActionViewController
+@@ -152,6 +155,7 @@ class ExtensionActionViewController
    // The popup may not be shown synchronously if the extension is hidden and
    // first needs to slide itself out.
    // Returns true if a popup will be shown.
@@ -34,7 +34,7 @@ index 955199e3c1cae34a506e2079b5b65c564aabcf9a..5b68217acc8ffdba5ed31ff7bb251789
    bool TriggerPopupWithUrl(PopupShowAction show_action,
                             const GURL& popup_url,
                             bool grant_tab_permissions);
-@@ -160,6 +164,7 @@ class ExtensionActionViewController
+@@ -162,6 +166,7 @@ class ExtensionActionViewController
                   PopupShowAction show_action);
  
    // Handles cleanup after the popup closes.

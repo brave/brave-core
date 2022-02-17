@@ -75,7 +75,7 @@ void WeeklyEventStorage::FilterToWeek() {
 
 void WeeklyEventStorage::Load() {
   DCHECK(events_.empty());
-  const base::ListValue* list = prefs_->GetList(pref_name_);
+  const base::Value* list = prefs_->GetList(pref_name_);
   if (!list) {
     return;
   }
@@ -91,7 +91,7 @@ void WeeklyEventStorage::Load() {
 
 void WeeklyEventStorage::Save() {
   ListPrefUpdate update(prefs_, pref_name_);
-  base::ListValue* list = update.Get();
+  base::Value* list = update.Get();
   list->ClearList();
   for (const auto& u : events_) {
     base::Value value(base::Value::Type::DICTIONARY);

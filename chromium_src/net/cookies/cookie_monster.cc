@@ -15,15 +15,20 @@
 namespace net {
 
 CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
-                             NetLog* net_log)
-    : ChromiumCookieMonster(store, net_log),
+                             NetLog* net_log,
+                             bool first_party_sets_enabled)
+    : ChromiumCookieMonster(store, net_log, first_party_sets_enabled),
       net_log_(
           NetLogWithSource::Make(net_log, NetLogSourceType::COOKIE_STORE)) {}
 
 CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
                              base::TimeDelta last_access_threshold,
-                             NetLog* net_log)
-    : ChromiumCookieMonster(store, last_access_threshold, net_log),
+                             NetLog* net_log,
+                             bool first_party_sets_enabled)
+    : ChromiumCookieMonster(store,
+                            last_access_threshold,
+                            net_log,
+                            first_party_sets_enabled),
       net_log_(
           NetLogWithSource::Make(net_log, NetLogSourceType::COOKIE_STORE)) {}
 
@@ -38,8 +43,9 @@ CookieMonster::GetOrCreateEphemeralCookieStoreForTopFrameURL(
     return it->second.get();
 
   return ephemeral_cookie_stores_
-      .emplace(domain, new ChromiumCookieMonster(nullptr /* store */,
-                                                 net_log_.net_log()))
+      .emplace(domain, new ChromiumCookieMonster(
+                           nullptr /* store */, net_log_.net_log(),
+                           /*first_party_sets_enabled=*/false))
       .first->second.get();
 }
 

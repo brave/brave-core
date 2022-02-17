@@ -51,6 +51,7 @@
 
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
+    <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
 
     <!-- Brave news colors -->
     <!-- <color name="card_background">#DC353535</color> -->
@@ -68,10 +69,7 @@
     <!-- Incognito background and branding colors -->
     <color name="incognito_modern_primary_color">#210950</color>
 
-    <color name="toolbar_background_primary_incognito">#1B0C32</color>
     <color name="toolbar_text_box_background_incognito">#3D2742</color>
-
-    <color name="tab_back_incognito">@color/toolbar_background_primary_incognito</color>
 
     <color name="compositor_tab_title_bar_text_incognito">@android:color/white</color>
 

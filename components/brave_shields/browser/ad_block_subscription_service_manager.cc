@@ -319,7 +319,7 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
     return;
 
   DictionaryPrefUpdate update(local_state, prefs::kAdBlockListSubscriptions);
-  base::DictionaryValue* subscriptions_dict = update.Get();
+  base::Value* subscriptions_dict = update.Get();
   auto subscription_dict = base::Value(base::Value::Type::DICTIONARY);
   subscription_dict.SetBoolKey("enabled", info.enabled);
   subscription_dict.SetKey("last_update_attempt",
@@ -345,7 +345,7 @@ void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
     return;
 
   DictionaryPrefUpdate update(local_state, prefs::kAdBlockListSubscriptions);
-  base::DictionaryValue* subscriptions_dict = update.Get();
+  base::Value* subscriptions_dict = update.Get();
   subscriptions_dict->RemoveKey(sub_url.spec());
 
   // TODO(bridiver) - change to pref registrar

@@ -5,6 +5,7 @@
 
 #include <vector>
 
+#include "base/callback_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
@@ -153,7 +154,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileManagerTest,
       profile->GetPrimaryOTRProfile(/*create_if_needed=*/true);
 
 #if !defined(OS_ANDROID)
-  profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
+  profiles::SwitchToGuestProfile(base::DoNothing());
   ui_test_utils::WaitForBrowserToOpen();
 
   Profile* guest_profile =

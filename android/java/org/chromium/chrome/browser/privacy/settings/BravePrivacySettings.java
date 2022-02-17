@@ -49,6 +49,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_PRIVACY_SANDBOX = "privacy_sandbox";
     private static final String PREF_HTTPS_FIRST_MODE = "https_first_mode";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
+    private static final String PREF_PHONE_AS_A_SECURITY_KEY = "phone_as_a_security_key";
 
     // brave Prefs
     private static final String PREF_BRAVE_SHIELDS_GLOBALS_SECTION =
@@ -101,10 +102,11 @@ public class BravePrivacySettings extends PrivacySettings {
             PREF_OTHER_PRIVACY_SETTINGS_SECTION, // other section
             PREF_WEBRTC_POLICY, PREF_SAFE_BROWSING, PREF_INCOGNITO_LOCK, PREF_CAN_MAKE_PAYMENT,
             PREF_UNSTOPPABLE_DOMAINS, PREF_ETH_NAMED_SERVICE, PREF_IPFS_GATEWAY, PREF_SECURE_DNS,
-            PREF_DO_NOT_TRACK, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A, PREF_SEND_CRASH_REPORTS,
-            PREF_BRAVE_STATS_USAGE_PING, PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR,
-            PREF_SEARCH_SUGGESTIONS, PREF_AUTOCOMPLETE_TOP_SITES,
-            PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS, PREF_PRIVACY_SANDBOX};
+            PREF_DO_NOT_TRACK, PREF_PHONE_AS_A_SECURITY_KEY, PREF_CLOSE_TABS_ON_EXIT, PREF_SEND_P3A,
+            PREF_SEND_CRASH_REPORTS, PREF_BRAVE_STATS_USAGE_PING,
+            PREF_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR, PREF_SEARCH_SUGGESTIONS,
+            PREF_AUTOCOMPLETE_TOP_SITES, PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES, PREF_USAGE_STATS,
+            PREF_PRIVACY_SANDBOX};
 
     private final int STRICT = 0;
     private final int STANDARD = 1;

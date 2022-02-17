@@ -26,10 +26,10 @@ namespace {
 DnsConfig CreateDnsConfig() {
   DnsConfig config;
 
-  config.dns_over_https_servers.push_back(DnsOverHttpsServerConfig(
-      decentralized_dns::kUnstoppableDomainsDoHResolver, true /* is_post */));
-  config.dns_over_https_servers.push_back(DnsOverHttpsServerConfig(
-      decentralized_dns::kENSDoHResolver, true /* is_post */));
+  config.dns_over_https_servers.push_back(*DnsOverHttpsServerConfig::FromString(
+      decentralized_dns::kUnstoppableDomainsDoHResolver));
+  config.dns_over_https_servers.push_back(*DnsOverHttpsServerConfig::FromString(
+      decentralized_dns::kENSDoHResolver));
 
   return config;
 }

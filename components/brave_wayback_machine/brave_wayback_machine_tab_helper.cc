@@ -25,6 +25,7 @@
 BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
     content::WebContents* contents)
     : WebContentsObserver(contents),
+      content::WebContentsUserData<BraveWaybackMachineTabHelper>(*contents),
       weak_factory_(this) {
   pref_service_ = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
 }

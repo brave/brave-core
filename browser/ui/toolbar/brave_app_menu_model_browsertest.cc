@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "base/callback_helpers.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
@@ -172,7 +173,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 
   ui_test_utils::BrowserChangeObserver browser_creation_observer(
       nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
-  profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
+  profiles::SwitchToGuestProfile(base::DoNothing());
 
   Browser* guest_browser = browser_creation_observer.Wait();
   DCHECK(guest_browser);

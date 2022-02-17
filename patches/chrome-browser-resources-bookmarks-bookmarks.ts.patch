@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/bookmarks/bookmarks.ts b/chrome/browser/resources/bookmarks/bookmarks.ts
+index c37aa314fba3be1e10193c17b56cafac66d19832..ae558b66f986ddccfae8ef18174b2e1c8f052c9c 100644
+--- a/chrome/browser/resources/bookmarks/bookmarks.ts
++++ b/chrome/browser/resources/bookmarks/bookmarks.ts
+@@ -3,6 +3,7 @@
+ // found in the LICENSE file.
+ 
+ import './app.js';
++import './brave_overrides/index.js';
+ 
+ export {changeFolderOpen, clearSearch, createBookmark, deselectItems, editBookmark, moveBookmark, removeBookmark, reorderChildren, selectFolder, SelectFolderAction, selectItem, SelectItemsAction, setSearchResults, setSearchTerm, updateAnchor} from './actions.js';
+ export {BookmarksAppElement} from './app.js';

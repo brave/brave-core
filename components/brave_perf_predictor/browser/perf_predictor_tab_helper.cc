@@ -25,6 +25,7 @@ namespace brave_perf_predictor {
 PerfPredictorTabHelper::PerfPredictorTabHelper(
     content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
+      content::WebContentsUserData<PerfPredictorTabHelper>(*web_contents),
       bandwidth_predictor_(std::make_unique<BandwidthSavingsPredictor>(
           NamedThirdPartyRegistryFactory::GetForBrowserContext(
               web_contents->GetBrowserContext()))) {
@@ -88,7 +89,7 @@ void PerfPredictorTabHelper::RecordSavings() {
       if (bandwidth_tracker_)
         bandwidth_tracker_->RecordSavings(savings);
 #if defined(OS_ANDROID)
-        chrome::android::BraveShieldsContentSettings::DispatchSavedBandwidth(
+      chrome::android::BraveShieldsContentSettings::DispatchSavedBandwidth(
           savings);
 #endif
     }

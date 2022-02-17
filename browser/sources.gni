@@ -153,6 +153,7 @@ brave_chrome_browser_deps = [
   "//brave/components/ntp_tiles",
   "//brave/components/p3a",
   "//brave/components/p3a:buildflags",
+  "//brave/components/privacy_sandbox",
   "//brave/components/resources",
   "//brave/components/sidebar/buildflags",
   "//brave/components/skus/browser",

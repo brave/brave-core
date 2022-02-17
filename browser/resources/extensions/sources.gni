@@ -3,7 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # you can obtain one at http://mozilla.org/MPL/2.0/.
 
-brave_deps_chrome_browser_resources_extensions_build = [
+brave_deps_chrome_browser_resources_extensions_in_files = [
+  "brave_item_list_more_items.js",
+  "brave_overrides/extensions_detail_view.js",
+  "brave_overrides/index.js",
+]
+
+brave_deps_chrome_browser_resources_extensions_extra_deps = [
   "//brave/browser/resources/extensions:preprocess",
   "//brave/browser/resources/extensions:preprocess_generated",
 ]

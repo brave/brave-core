@@ -33,6 +33,9 @@ import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider
 import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
 import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.content.TabContentManager;
+import org.chromium.chrome.browser.feed.FeedActionDelegate;
+import org.chromium.chrome.browser.feed.FeedSurfaceCoordinator;
+import org.chromium.chrome.browser.feed.SnapScrollHelper;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedBridge;
 import org.chromium.chrome.browser.feed.webfeed.WebFeedSnackbarController;
 import org.chromium.chrome.browser.findinpage.FindToolbarManager;
@@ -113,6 +116,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceMediator"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/BraveNewTabPage"));
         Assert.assertTrue(classExists(
@@ -134,9 +139,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator"));
         Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinatorPhone"));
+                "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator"));
         Assert.assertTrue(
-                classExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone"));
+                classExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/customtabs/features/toolbar/CustomTabToolbar"));
         Assert.assertTrue(
@@ -193,14 +198,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists("org/chromium/components/permissions/BravePermissionDialogModel"));
         Assert.assertTrue(classExists("org/chromium/components/permissions/PermissionDialogModel"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/compositor/layouts/LayoutManagerChromePhone"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/tasks/tab_management/TabUiFeatureUtilities"));
-        Assert.assertTrue(classExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/omnibox/status/StatusMediator"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/omnibox/status/BraveStatusMediator"));
@@ -250,9 +247,6 @@ public class BytecodeTest {
                         "getMaxRowsForMostVisitedTiles", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
-                "getPermissionsLinkMessage", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
                 "getSearchEngineSourceType", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
@@ -270,13 +264,13 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/toolbar/ToolbarManager",
                 "updateReloadState", false, null));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
+                methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "updateNewTabButtonVisibility", false, null));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
+                methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "getToolbarColorForCurrentState", false, null));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
+                methodExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "shouldShowIncognitoToggle", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/download/MimeUtils",
                 "canAutoOpenMimeType", false, null));
@@ -294,28 +288,13 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineSettings",
                 "createAdapterIfNecessary", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/TabUiFeatureUtilities",
-                "isGridTabSwitcherEnabled", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/TabUiFeatureUtilities",
-                "isTabGroupsAndroidEnabled", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities",
-                "isGridTabSwitcherEnabled", false, null));
-        Assert.assertTrue(methodExists(
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities",
-                "isTabGroupsAndroidEnabled", false, null));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator",
-                "isEnhancedProtectionPromoEnabled", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator",
                 "isReliabilityLoggingEnabled", false, null));
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
-                        "isEnhancedProtectionPromoEnabled", false, null));
-        Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/feed/BraveFeedSurfaceCoordinator",
                         "isReliabilityLoggingEnabled", false, null));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
+                "destroyPropertiesForStream", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/theme/ThemeUtils",
                 "getTextBoxColorForToolbarBackgroundInNonNativePage", false, null));
         Assert.assertTrue(methodExists(
@@ -350,6 +329,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
                         "getActionButtonTintList", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/chrome/browser/tasks/tab_management/TabUiThemeProvider",
+                        "getCardViewBackgroundColor", false, null));
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
                 "getTitleTextColor", false, null));
@@ -358,6 +340,9 @@ public class BytecodeTest {
                 "getActionButtonTintList", false, null));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPage",
                 "updateSearchProviderHasLogo", false, null));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
+                "getCardViewBackgroundColor", false, null));
     }
 
     @Test
@@ -528,6 +513,10 @@ public class BytecodeTest {
                 PropertyModel.class, Handler.class, Supplier.class, Supplier.class, Supplier.class,
                 LocationBarDataProvider.class, Callback.class, Supplier.class, BookmarkState.class,
                 JankTracker.class, ExploreIconProvider.class));
+        Assert.assertTrue(constructorsMatch("org/chromium/chrome/browser/feed/FeedSurfaceMediator",
+                "org/chromium/chrome/browser/feed/BraveFeedSurfaceMediator",
+                FeedSurfaceCoordinator.class, Context.class, SnapScrollHelper.class,
+                PropertyModel.class, int.class, FeedActionDelegate.class));
     }
 
     @Test
@@ -544,11 +533,13 @@ public class BytecodeTest {
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mTileGroup"));
         Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mScrollViewForPolicy"));
-        Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mNtpHeader"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mRootView"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/feed/FeedSurfaceMediator", "mCoordinator"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/feed/FeedSurfaceMediator", "mSnapScrollHelper"));
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/ntp/NewTabPage", "mBrowserControlsStateProvider"));
         Assert.assertTrue(
@@ -633,27 +624,28 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/ToolbarManager", "mSnackbarManager"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
-                        "mTabSwitcherModeCoordinatorPhone"));
+                        "mTabSwitcherModeCoordinator"));
         Assert.assertTrue(
                 fieldExists("org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                         "mOptionalButtonController"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinatorPhone",
-                "mTabSwitcherModeToolbar"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
+                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTCoordinator",
+                        "mTabSwitcherModeToolbar"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "mNewTabViewButton"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
+                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "mNewTabImageButton"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
+                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "mToggleTabStackButton"));
         Assert.assertTrue(
-                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone",
+                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
                         "mShouldShowNewTabVariation"));
-        Assert.assertTrue(fieldExists(
-                "org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone", "mIsIncognito"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTopToolbar",
+                        "mIsIncognito"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/app/ChromeActivity",
                 "mBrowserControlsManagerSupplier"));
         Assert.assertTrue(
@@ -715,9 +707,6 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl"));
         Assert.assertTrue(checkSuperName("org/chromium/chrome/browser/toolbar/top/ToolbarTablet",
                 "org/chromium/chrome/browser/toolbar/top/BraveToolbarLayoutImpl"));
-        Assert.assertTrue(checkSuperName(
-                "org/chromium/chrome/browser/compositor/layouts/LayoutManagerChromePhone",
-                "org/chromium/chrome/browser/compositor/layouts/BraveLayoutManagerChrome"));
         Assert.assertTrue(checkSuperName(
                 "org/chromium/components/browser_ui/site_settings/SingleCategorySettings",
                 "org/chromium/components/browser_ui/site_settings/BraveSingleCategorySettings"));

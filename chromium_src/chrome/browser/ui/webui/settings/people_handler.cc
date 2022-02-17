@@ -6,7 +6,7 @@
 // IsSetupInProgress isn't accurate in brave sync flow especially for the first
 // time setup, we rely on it to display setup dialog
 #define BRAVE_GET_SYNC_STATUS_DICTIONARY  \
-  sync_status->SetBoolean(                \
+  sync_status.SetBoolPath(                \
       "firstSetupInProgress",             \
       service && !disallowed_by_policy && \
           !service->GetUserSettings()->IsFirstSetupComplete());

@@ -30,6 +30,7 @@ namespace brave_ads {
 
 AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
+      content::WebContentsUserData<AdsTabHelper>(*web_contents),
       tab_id_(sessions::SessionTabHelper::IdForTab(web_contents)),
       weak_factory_(this) {
   if (!tab_id_.is_valid()) {
@@ -147,13 +148,12 @@ void AdsTabHelper::DidFinishNavigation(
   RunIsolatedJavaScript(render_frame_host);
 }
 
-void AdsTabHelper::DocumentOnLoadCompletedInMainFrame(
-    content::RenderFrameHost* render_frame_host) {
+void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   if (!should_process_) {
     return;
   }
 
-  RunIsolatedJavaScript(render_frame_host);
+  RunIsolatedJavaScript(web_contents()->GetMainFrame());
 }
 
 void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,

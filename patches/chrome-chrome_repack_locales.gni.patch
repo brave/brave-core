@@ -1,8 +1,8 @@
 diff --git a/chrome/chrome_repack_locales.gni b/chrome/chrome_repack_locales.gni
-index 7e6722603df999687916387b689fe84420daf58a..25d9d485c68a64ad38d22310f0146dd80c8c6ef6 100644
+index d969da6550bcb27d4e2e3dc4e31d6734214f75a8..802769372a651e8bec97cf66b96d6d5e5353f43f 100644
 --- a/chrome/chrome_repack_locales.gni
 +++ b/chrome/chrome_repack_locales.gni
-@@ -38,6 +38,7 @@ template("chrome_repack_locales") {
+@@ -41,6 +41,7 @@ template("chrome_repack_locales") {
        "${root_gen_dir}/ui/strings/ax_strings_",
        "${root_gen_dir}/ui/strings/ui_strings_",
      ]
@@ -10,7 +10,7 @@ index 7e6722603df999687916387b689fe84420daf58a..25d9d485c68a64ad38d22310f0146dd8
      if (!defined(deps)) {
        deps = []
      }
-@@ -56,6 +57,7 @@ template("chrome_repack_locales") {
+@@ -62,6 +63,7 @@ template("chrome_repack_locales") {
        "//ui/strings:ax_strings",
        "//ui/strings:ui_strings",
      ]

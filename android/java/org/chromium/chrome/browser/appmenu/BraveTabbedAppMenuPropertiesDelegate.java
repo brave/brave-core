@@ -164,7 +164,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         MenuItem bookmarkItem = menu.findItem(R.id.bookmark_this_page_id);
         Tab currentTab = mActivityTabProvider.get();
         if (bookmarkItem != null && currentTab != null) {
-            updateBookmarkMenuItemShortcut(bookmarkItem, currentTab);
+            updateBookmarkMenuItemShortcut(bookmarkItem, currentTab, /*fromCCT=*/false);
         }
     }
 

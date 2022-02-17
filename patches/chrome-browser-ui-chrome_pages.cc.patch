@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/chrome_pages.cc b/chrome/browser/ui/chrome_pages.cc
-index 2ef9f7a1610194ab3983d80f819d4c0251608ae6..ba58b88c8009650bafdfe5a3fcb6c99d876e369d 100644
+index 37232472c26194ce5103577629e7e1042298fa17..539ee2a07fc6d12597875f7ee5ea4b6355b1c099 100644
 --- a/chrome/browser/ui/chrome_pages.cc
 +++ b/chrome/browser/ui/chrome_pages.cc
-@@ -305,7 +305,7 @@ void ShowSlow(Browser* browser) {
+@@ -317,7 +317,7 @@ void ShowSlow(Browser* browser) {
  #endif
  }
  

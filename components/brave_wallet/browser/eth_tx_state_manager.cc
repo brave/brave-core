@@ -224,7 +224,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::ValueToTxMeta(
 
 void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
-  base::DictionaryValue* dict = update.Get();
+  base::Value* dict = update.Get();
   const std::string path = GetNetworkId(prefs_, chain_id_) + "." + meta.id;
   bool is_add = dict->FindPath(path) == nullptr;
   dict->SetPath(path, TxMetaToValue(meta));
@@ -244,8 +244,7 @@ void EthTxStateManager::AddOrUpdateTx(const TxMeta& meta) {
 
 std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
     const std::string& id) {
-  const base::DictionaryValue* dict =
-      prefs_->GetDictionary(kBraveWalletTransactions);
+  const base::Value* dict = prefs_->GetDictionary(kBraveWalletTransactions);
   if (!dict)
     return nullptr;
   const base::Value* value =
@@ -258,7 +257,7 @@ std::unique_ptr<EthTxStateManager::TxMeta> EthTxStateManager::GetTx(
 
 void EthTxStateManager::DeleteTx(const std::string& id) {
   DictionaryPrefUpdate update(prefs_, kBraveWalletTransactions);
-  base::DictionaryValue* dict = update.Get();
+  base::Value* dict = update.Get();
   dict->RemovePath(GetNetworkId(prefs_, chain_id_) + "." + id);
 }
 
@@ -271,8 +270,7 @@ EthTxStateManager::GetTransactionsByStatus(
     absl::optional<mojom::TransactionStatus> status,
     absl::optional<EthAddress> from) {
   std::vector<std::unique_ptr<EthTxStateManager::TxMeta>> result;
-  const base::DictionaryValue* dict =
-      prefs_->GetDictionary(kBraveWalletTransactions);
+  const base::Value* dict = prefs_->GetDictionary(kBraveWalletTransactions);
   const base::Value* network_dict =
       dict->FindKey(GetNetworkId(prefs_, chain_id_));
   if (!network_dict)

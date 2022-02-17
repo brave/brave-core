@@ -3,7 +3,7 @@
      Use of this source code is governed by a BSD-style license that can be
      found in the LICENSE file. -->
 
-<org.chromium.chrome.browser.toolbar.top.BraveTabSwitcherModeTTPhone
+<org.chromium.chrome.browser.toolbar.top.BraveTabSwitcherModeTopToolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,6 +21,7 @@
         android:orientation="horizontal"
         android:visibility="gone">
         <ImageView
+            android:id="@+id/new_tab_view_button"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:layout_gravity="start|top"
@@ -31,6 +32,7 @@
             app:srcCompat="@drawable/new_tab_icon"
             android:contentDescription="@string/accessibility_toolbar_btn_new_tab"/>
         <TextView
+            android:id="@+id/new_tab_view_desc"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingEnd="16dp"
@@ -98,4 +100,4 @@
 
     </LinearLayout>
 
-</org.chromium.chrome.browser.toolbar.top.BraveTabSwitcherModeTTPhone>
+</org.chromium.chrome.browser.toolbar.top.BraveTabSwitcherModeTopToolbar>

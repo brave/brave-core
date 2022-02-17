@@ -31,7 +31,7 @@ namespace {
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value>* values) {
   ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::ListValue* list = update.Get();
+  base::Value* list = update.Get();
   list->ClearList();
   for (auto& it : *values) {
     list->Append(std::move(it));
@@ -876,8 +876,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
 
   // Asset list of new custom chains should have native asset in
   // kBraveWalletUserAssets.
-  const base::DictionaryValue* assets_pref =
-      prefs.GetDictionary(kBraveWalletUserAssets);
+  const base::Value* assets_pref = prefs.GetDictionary(kBraveWalletUserAssets);
   const base::Value* list1 = assets_pref->FindKey("chain_id");
   ASSERT_TRUE(list1->is_list());
   base::Value::ConstListView asset_list1 = list1->GetList();
