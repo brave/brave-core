@@ -37,7 +37,7 @@ async def ProcessBinary(semaphore, options, binary):
             # pylint: disable=fixme
             # TODO: investigate why dump_syms.exe fails and replace to
             # return False
-            if process.returncode != 0 and not error:
+            if process.returncode != 0:
                 decoded_stderr = stderr.decode('utf-8')
                 error = f'dump_syms return {process.returncode} for {binary}. '\
                         f'stderr:\n{decoded_stderr}'
@@ -81,13 +81,13 @@ async def GenerateSymbols(options, binaries):
         task_list.append(
             asyncio.ensure_future(ProcessBinary(semaphore, options, binary)))
     result_list = await asyncio.gather(*task_list)
-    first_waring_printed = False
+    first_warning_printed = False
     for success, error_message in result_list:
         if not success:
             print(error_message, file=sys.stderr)
             return False
-        if error_message and not first_waring_printed:
-            first_waring_printed = True
+        if error_message and not first_warning_printed:
+            first_warning_printed = True
             print(
                 f'Warning: symbol generation failed for some binaries, '
                 f'the first error is:\n{error_message}',
