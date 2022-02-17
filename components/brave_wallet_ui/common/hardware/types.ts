@@ -45,14 +45,15 @@ export interface TrezorBridgeAccountsPayload {
 
 export enum LedgerDerivationPaths {
   LedgerLive = 'ledger-live',
-  Legacy = 'legacy'
+  Legacy = 'legacy',
+  Deprecated = 'deprecated'
 }
 
 export enum TrezorDerivationPaths {
   Default = 'trezor'
 }
 
-const DerivationSchemeTypes = [LedgerDerivationPaths.LedgerLive, LedgerDerivationPaths.Legacy, TrezorDerivationPaths.Default] as const
+const DerivationSchemeTypes = [LedgerDerivationPaths.LedgerLive, LedgerDerivationPaths.Legacy, LedgerDerivationPaths.Deprecated, TrezorDerivationPaths.Default] as const
 export type HardwareDerivationScheme = typeof DerivationSchemeTypes[number]
 
 export type GetAccountsHardwareOperationResult = HardwareOperationResult & {
