@@ -13,23 +13,20 @@ import os
 import re
 import sys
 import asyncio
-import shutil
 
 from datetime import datetime
-from shutil import rmtree
-
-BRAVE_ROOT = os.path.abspath(
-    os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+from shutil import rmtree, move
 
 
 async def ProcessBinary(semaphore, options, binary):
     dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
     sym_temp_output = binary + '.sym'
+    error = None
     async with semaphore:
         start_time = datetime.utcnow()
         if options.verbose:
-            print("Generating symbols for {0}".format(binary))
-        with open(sym_temp_output, 'w') as output:
+            print(f'Generating symbols for {binary}')
+        with open(sym_temp_output, 'w', encoding='utf-8') as output:
             process = await asyncio.create_subprocess_exec(
                 dump_syms,
                 binary,
@@ -37,32 +34,31 @@ async def ProcessBinary(semaphore, options, binary):
                 stderr=asyncio.subprocess.PIPE)
             _, stderr = await process.communicate()
 
-            # TODO(atuchin): investigate why dump_syms.exe fails
-            # and replace to False
-            # if process.returncode != 0:
-            #     decoded_stderr = stderr.decode('utf-8')
-            #     return False, \
-            #            f"dump_syms failed for {binary} \n {decoded_stderr}"
+            # TODO: investigate why dump_syms.exe fails
+            # and replace to return False
+            if process.returncode != 0:
+                decoded_stderr = stderr.decode('utf-8')
+                error = f'dump_syms return {process.returncode} for {binary}. '\
+                        f'stderr:\n{decoded_stderr}'
 
         module_line = None
-        with open(sym_temp_output) as f:
-            MODULE_PATTERN = r"MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)"
+        with open(sym_temp_output, encoding='utf-8') as f:
+            MODULE_PATTERN = r'MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)'
             module_line = re.match(MODULE_PATTERN, f.readline())
             if not module_line:
-                return False, "No module name found for " + binary
+                return False, f'No module name found for {binary}'
 
         output_path = os.path.join(options.symbols_dir, module_line.group(2),
                                    module_line.group(1))
         mkdir_p(output_path)
 
-        symbol_file = "%s.sym" % module_line.group(2)[:-4]  # strip .pdb
-        shutil.move(sym_temp_output, symbol_file)
+        symbol_file = '%s.sym' % module_line.group(2)[:-4]  # strip .pdb
+        move(sym_temp_output, symbol_file)
         if options.verbose:
             elapsed = datetime.utcnow() - start_time
-            print(
-                "Completed generating symbols for {}: elapsed time {} seconds".
-                format(binary, elapsed.total_seconds()))
-        return True, None
+            print(f'Completed generating symbols for {binary}: elapsed time'
+                  f'{elapsed.total_seconds()} seconds')
+        return True, error
 
 
 def mkdir_p(path):
@@ -79,15 +75,22 @@ def mkdir_p(path):
 async def GenerateSymbols(options, binaries):
     """Dumps the symbols of binary and places them in the given directory."""
     semaphore = asyncio.Semaphore(os.cpu_count())
-    list = []
+    task_list = []
     for binary in binaries:
-        list.append(
+        task_list.append(
             asyncio.ensure_future(ProcessBinary(semaphore, options, binary)))
-    result_list = await asyncio.gather(*list)
+    result_list = await asyncio.gather(*task_list)
+    first_waring_printed = False
     for success, error_message in result_list:
         if not success:
             print(error_message, file=sys.stderr)
             return False
+        if error_message != None and not first_waring_printed:
+            first_waring_printed = True
+            print(
+                f'Warning: symbol generation failed for some binaries, '
+                f'the first error is:\n{error_message}',
+                file=sys.stderr)
 
     return True
 
