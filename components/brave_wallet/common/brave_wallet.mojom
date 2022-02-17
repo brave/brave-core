@@ -805,6 +805,8 @@ struct SignMessageRequest {
   string address;
   string message;
   bool is_eip712;
+  // These fields are for hardware eip712 signing and
+  // Should be used only if is_eip712 is true
   string? domain_hash;
   string? primary_hash;
 };

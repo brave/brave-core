@@ -1317,7 +1317,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
       1, address, std::string(message.begin(), message.end()), false,
-      std::string(), std::string());
+      absl::nullopt, absl::nullopt);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
       std::move(request1), base::BindLambdaForTesting(
@@ -1340,7 +1340,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
       2, address, std::string(message.begin(), message.end()), false,
-      std::string(), std::string());
+      absl::nullopt, absl::nullopt);
   service_->AddSignMessageRequest(
       std::move(request2), base::BindLambdaForTesting(
                                [&](bool approved, const std::string& signature,
@@ -1363,7 +1363,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
       1, address, std::string(message.begin(), message.end()), false,
-      std::string(), std::string());
+      absl::nullopt, absl::nullopt);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
       std::move(request1), base::BindLambdaForTesting(
@@ -1382,7 +1382,7 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
       2, address, std::string(message.begin(), message.end()), false,
-      std::string(), std::string());
+      absl::nullopt, absl::nullopt);
   service_->AddSignMessageRequest(
       std::move(request2), base::BindLambdaForTesting(
                                [&](bool approved, const std::string& signature,
@@ -1575,7 +1575,7 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
       1, address, std::string(message.begin(), message.end()), false,
-      std::string(), std::string());
+      absl::nullopt, absl::nullopt);
   service_->AddSignMessageRequest(
       std::move(request1),
       base::BindLambdaForTesting(
