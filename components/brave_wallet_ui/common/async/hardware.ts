@@ -110,10 +110,16 @@ export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, pa
   const deviceKeyring = getHardwareKeyring(vendor)
   if (deviceKeyring instanceof LedgerBridgeKeyring) {
     if (messageData.isEip712) {
-      return deviceKeyring.signEip712Message(path, messageData.domainHash, messageData.primaryHash)
+      if (!messageData.domainHash || !messageData.primaryHash) {
+        return { success: false, error: getLocale('braveWalletUnknownInternalError') }
+      }
+      return deviceKeyring.signEip712Message(path, messageData.domainHash, messageData?.primaryHash)
     } else return deviceKeyring.signPersonalMessage(path, messageData.message)
   } else if (deviceKeyring instanceof TrezorBridgeKeyring) {
     if (messageData.isEip712) {
+      if (!messageData.domainHash || !messageData.primaryHash) {
+        return { success: false, error: getLocale('braveWalletUnknownInternalError') }
+      }
       return deviceKeyring.signEip712Message(path, messageData.domainHash, messageData.primaryHash)
     } else return deviceKeyring.signPersonalMessage(path, messageData.message)
   }

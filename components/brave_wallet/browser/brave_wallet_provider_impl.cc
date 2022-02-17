@@ -22,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/eth_sign_typed_data_helper.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
@@ -369,8 +370,8 @@ void BraveWalletProviderImpl::SignMessage(const std::string& address,
       false, base::BindOnce(&BraveWalletProviderImpl::ContinueSignMessage,
                             weak_factory_.GetWeakPtr(),
                             checksum_address.ToChecksumAddress(), message_str,
-                            std::move(message_bytes), std::move(callback),
-                            false, std::string(), std::string()));
+                            std::move(message_bytes), absl::nullopt,
+                            absl::nullopt, false, std::move(callback)));
 }
 
 void BraveWalletProviderImpl::RecoverAddress(const std::string& message,
@@ -415,22 +416,17 @@ void BraveWalletProviderImpl::RecoverAddress(const std::string& message,
 void BraveWalletProviderImpl::SignTypedMessage(
     const std::string& address,
     const std::string& message,
-    const std::string& message_to_sign,
+    const std::vector<uint8_t>& domain_hash,
+    const std::vector<uint8_t>& primary_hash,
     base::Value domain,
-    const std::string& domain_hash,
-    const std::string& primary_hash,
     SignTypedMessageCallback callback) {
-  std::vector<uint8_t> eip712_hash;
-  if (!EthAddress::IsValidAddress(address) ||
-      !base::HexStringToBytes(message_to_sign, &eip712_hash) ||
-      eip712_hash.size() != 32 || !domain.is_dict() || domain_hash.empty() ||
-      primary_hash.empty()) {
+  if (!EthAddress::IsValidAddress(address) || !domain.is_dict() ||
+      domain_hash.empty() || primary_hash.empty()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
-
   auto chain_id = domain.FindDoubleKey("chainId");
   if (chain_id) {
     const std::string chain_id_hex =
@@ -445,24 +441,40 @@ void BraveWalletProviderImpl::SignTypedMessage(
     }
   }
 
+  if (domain_hash.empty() || primary_hash.empty()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+  auto message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
+      domain_hash, primary_hash);
+  if (!message_to_sign || message_to_sign->size() != 32) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+
   // Convert to checksum address
   auto checksum_address = EthAddress::FromHex(address);
   GetAllowedAccounts(
-      false, base::BindOnce(&BraveWalletProviderImpl::ContinueSignMessage,
-                            weak_factory_.GetWeakPtr(),
-                            checksum_address.ToChecksumAddress(), message,
-                            std::move(eip712_hash), std::move(callback), true,
-                            domain_hash, primary_hash));
+      false,
+      base::BindOnce(&BraveWalletProviderImpl::ContinueSignMessage,
+                     weak_factory_.GetWeakPtr(),
+                     checksum_address.ToChecksumAddress(), message,
+                     std::move(*message_to_sign), base::HexEncode(domain_hash),
+                     base::HexEncode(primary_hash), true, std::move(callback)));
 }
 
 void BraveWalletProviderImpl::ContinueSignMessage(
     const std::string& address,
     const std::string& message,
-    std::vector<uint8_t>&& message_to_sign,
-    SignMessageCallback callback,
+    const std::vector<uint8_t>& message_to_sign,
+    const absl::optional<std::string>& domain_hash,
+    const absl::optional<std::string>& primary_hash,
     bool is_eip712,
-    const std::string& domain_hash,
-    const std::string& primary_hash,
+    SignMessageCallback callback,
     const std::vector<std::string>& allowed_accounts,
     mojom::ProviderError error,
     const std::string& error_message) {
@@ -479,10 +491,11 @@ void BraveWalletProviderImpl::ContinueSignMessage(
     return;
   }
 
+  auto request =
+      mojom::SignMessageRequest::New(sign_message_id_++, address, message,
+                                     is_eip712, domain_hash, primary_hash);
+
   if (keyring_service_->IsHardwareAccount(address)) {
-    auto request =
-        mojom::SignMessageRequest::New(sign_message_id_++, address, message,
-                                       is_eip712, domain_hash, primary_hash);
     brave_wallet_service_->AddSignMessageRequest(
         std::move(request),
         base::BindOnce(
@@ -490,10 +503,6 @@ void BraveWalletProviderImpl::ContinueSignMessage(
             weak_factory_.GetWeakPtr(), std::move(callback), address,
             std::move(message_to_sign), is_eip712));
   } else {
-    auto request =
-        mojom::SignMessageRequest::New(sign_message_id_++, address, message,
-                                       is_eip712, std::string(), std::string());
-
     brave_wallet_service_->AddSignMessageRequest(
         std::move(request),
         base::BindOnce(&BraveWalletProviderImpl::OnSignMessageRequestProcessed,

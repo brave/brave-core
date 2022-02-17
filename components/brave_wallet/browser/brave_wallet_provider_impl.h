@@ -81,10 +81,9 @@ class BraveWalletProviderImpl final
                       RecoverAddressCallback callback) override;
   void SignTypedMessage(const std::string& address,
                         const std::string& message,
-                        const std::string& message_to_sign,
+                        const std::vector<uint8_t>& domain_hash,
+                        const std::vector<uint8_t>& primary_hash,
                         base::Value domain,
-                        const std::string& domain_hash,
-                        const std::string& primary_hash,
                         SignTypedMessageCallback callback) override;
   void OnGetAllowedAccounts(GetAllowedAccountsCallback callback,
                             const std::vector<std::string>& accounts,
@@ -163,11 +162,11 @@ class BraveWalletProviderImpl final
       const std::string& error_message);
   void ContinueSignMessage(const std::string& address,
                            const std::string& message,
-                           std::vector<uint8_t>&& message_to_sign,
-                           SignMessageCallback callback,
+                           const std::vector<uint8_t>& message_to_sign,
+                           const absl::optional<std::string>& domain_hash,
+                           const absl::optional<std::string>& primary_hash,
                            bool is_eip712,
-                           const std::string& domain_hash,
-                           const std::string& primary_hash,
+                           SignMessageCallback callback,
                            const std::vector<std::string>& allowed_accounts,
                            mojom::ProviderError error,
                            const std::string& error_message);

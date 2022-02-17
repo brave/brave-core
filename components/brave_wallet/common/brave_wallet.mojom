@@ -111,9 +111,9 @@ interface BraveWalletProvider {
   // message is for displaying the sign request to users
   // message_to_sign is the hex representation without 0x for eip712 hash
   // domain is the domain separator defined in eip712
-  SignTypedMessage(string address, string message, string message_to_sign,
-                   mojo_base.mojom.DictionaryValue domain,
-                   string domain_hash, string primary_hash)
+  SignTypedMessage(string address, string message,
+                   array<uint8> domain_hash, array<uint8> primary_hash,
+                   mojo_base.mojom.DictionaryValue domain)
     => (string signature, ProviderError error, string error_message);
 
   // Used for the connect event
@@ -805,8 +805,8 @@ struct SignMessageRequest {
   string address;
   string message;
   bool is_eip712;
-  string domain_hash;
-  string primary_hash;
+  string? domain_hash;
+  string? primary_hash;
 };
 
 enum ExternalWalletType {

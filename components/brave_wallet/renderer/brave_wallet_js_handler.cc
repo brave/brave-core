@@ -746,21 +746,20 @@ bool BraveWalletJSHandler::CommonRequestOrSendAsync(
     std::vector<uint8_t> primary_hash_out;
     if (method == kEthSignTypedDataV4) {
       if (!ParseEthSignTypedDataParams(normalized_json_request, &address,
-                                       &message, &message_to_sign, &domain,
+                                       &message, &domain,
                                        EthSignTypedDataHelper::Version::kV4,
                                        &domain_hash_out, &primary_hash_out))
         return false;
     } else {
       if (!ParseEthSignTypedDataParams(normalized_json_request, &address,
-                                       &message, &message_to_sign, &domain,
+                                       &message, &domain,
                                        EthSignTypedDataHelper::Version::kV3,
                                        &domain_hash_out, &primary_hash_out))
         return false;
     }
 
     brave_wallet_provider_->SignTypedMessage(
-        address, message, base::HexEncode(message_to_sign), std::move(domain),
-        base::HexEncode(domain_hash_out), base::HexEncode(primary_hash_out),
+        address, message, domain_hash_out, primary_hash_out, std::move(domain),
         base::BindOnce(&BraveWalletJSHandler::OnSignRecoverMessage,
                        weak_ptr_factory_.GetWeakPtr(), std::move(id),
                        std::move(global_context), std::move(global_callback),

@@ -664,13 +664,12 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
   std::string address;
   std::string message;
   base::Value domain;
-  std::vector<uint8_t> message_to_sign;
   std::vector<uint8_t> domain_hash;
   std::vector<uint8_t> primary_hash;
 
-  EXPECT_TRUE(ParseEthSignTypedDataParams(
-      json, &address, &message, &message_to_sign, &domain,
-      EthSignTypedDataHelper::Version::kV4, &domain_hash, &primary_hash));
+  EXPECT_TRUE(ParseEthSignTypedDataParams(json, &address, &message, &domain,
+                                          EthSignTypedDataHelper::Version::kV4,
+                                          &domain_hash, &primary_hash));
 
   EXPECT_EQ(address, "0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826");
   EXPECT_EQ(
@@ -699,8 +698,10 @@ TEST(EthRequestHelperUnitTest, ParseEthSignTypedDataParams) {
             "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f");
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(primary_hash)),
             "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
-
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(message_to_sign)),
+  auto message_to_sign = EthSignTypedDataHelper::GetTypedDataMessageToSign(
+      domain_hash, primary_hash);
+  ASSERT_TRUE(message_to_sign);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
             "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");
 }
 

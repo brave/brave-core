@@ -30,6 +30,10 @@ class EthSignTypedDataHelper {
   EthSignTypedDataHelper(const EthSignTypedDataHelper&) = delete;
   EthSignTypedDataHelper& operator=(const EthSignTypedDataHelper&) = delete;
 
+  static absl::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
+      std::vector<uint8_t> domain_hash,
+      std::vector<uint8_t> primary_hash);
+
   bool SetTypes(const base::Value& types);
   void SetVersion(Version version);
 
@@ -40,9 +44,6 @@ class EthSignTypedDataHelper {
   absl::optional<std::vector<uint8_t>> EncodeData(
       const std::string& primary_type_name,
       const base::Value& data) const;
-  absl::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
-      std::vector<uint8_t> domain_hash,
-      std::vector<uint8_t> primary_hash) const;
   absl::optional<std::vector<uint8_t>> GetTypedDataPrimaryHash(
       const std::string& primary_type_name,
       const base::Value& message) const;
