@@ -143,6 +143,6 @@ export default class LedgerBridgeKeyring extends LedgerKeyring {
       return `m/44'/60'/${index}'/0/0`
     }
     assert(scheme === LedgerDerivationPaths.Legacy)
-    return `m/44'/60'/${index}'/0`
+    return `m/44'/60'/0'/${index}`
   }
 }
