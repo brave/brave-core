@@ -9,7 +9,6 @@ assert(current_toolchain == default_toolchain)
 java_binary("java_bytecode_rewriter") {
   sources = [
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveActivityClassAdapter.java",
-    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAndroidSyncSettingsClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAppMenuClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAutocompleteMediatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveAutofillPopupBridgeClassAdapter.java",
