@@ -257,6 +257,7 @@ public class BraveNewTabPageLayout
     private int mTouchX;
     private int mTouchY;
     private boolean mTouchWidget;
+    private boolean mTouchScroll;
     private boolean mComesFromNewTab;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
@@ -279,6 +280,7 @@ public class BraveNewTabPageLayout
         ntpWidgetAdapter.setNTPWidgetListener(ntpWidgetListener);
         ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
         mComesFromNewTab = false;
+        mTouchScroll = false;
 
         ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -675,10 +677,14 @@ public class BraveNewTabPageLayout
                     BraveActivity.getBraveActivity().setNewsItemsFeedCards(mNewsItemsFeedCard);
                 }
             }
+            mTouchScroll = false;
 
             if (mSettingsBar != null) {
                 mSettingsBar.setVisibility(View.INVISIBLE);
                 mSettingsBar.setAlpha(0f);
+                if (BraveActivity.getBraveActivity() != null) {
+                    BraveActivity.getBraveActivity().removeSettingsBar();
+                }
             }
 
             if (mNewContentButton != null) {
@@ -898,6 +904,7 @@ public class BraveNewTabPageLayout
         mParentLayout = (LinearLayout) findViewById(R.id.parent_layout);
         mNtpContent = (BraveNewTabPageLayout) findViewById(R.id.ntp_content);
         mTouchX = -200;
+        mTouchScroll = false;
 
         SharedPreferencesManager.getInstance().writeBoolean(
                 BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE, false);
@@ -1083,7 +1090,7 @@ public class BraveNewTabPageLayout
                                                 mSettingsBar.setVisibility(View.INVISIBLE);
                                             }
                                         } else {
-                                            if (scrollY > 200) {
+                                            if (scrollY > 200 && mTouchScroll) {
                                                 mSettingsBar.setVisibility(View.VISIBLE);
                                                 mSettingsBar.setAlpha(1);
                                             }
@@ -1107,6 +1114,7 @@ public class BraveNewTabPageLayout
                 ntpWidgetLayout.getLocationOnScreen(location);
                 int widgetTopLeftX = location[0];
                 int widgetTopLeftY = location[1];
+                mTouchScroll = true;
 
                 if (mTouchX > widgetTopLeftX
                         && mTouchX < widgetTopLeftX + ntpWidgetLayout.getWidth()
@@ -1338,6 +1346,7 @@ public class BraveNewTabPageLayout
 
                     try {
                         int offset = recyclerView.computeVerticalScrollOffset();
+                        mTouchScroll = true;
                         mFirstVisibleCard = linearLayoutManager.findFirstVisibleItemPosition();
                         if (!mTouchWidget) {
                             mParentScrollView.scrollBy(0, offset + 2);
