@@ -756,6 +756,15 @@ class FeedDataSource {
                     generatedCards.append(contentsOf: elementCards)
                 }
             }
+            if generatedCards.count < 10, generatedCards.allSatisfy({
+                if case .ad = $0 {
+                    return true
+                }
+                return false
+            }) {
+                // If there are less than 10 cards and they all are ads, show nothing
+                generatedCards.removeAll()
+            }
             DispatchQueue.main.async {
                 completion(generatedCards)
             }
