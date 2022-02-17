@@ -381,6 +381,7 @@ provideStrings({
   braveWalletTransactionReceived: 'received',
   braveWalletTransactionExplorerMissing: 'Block explorer URL is not available.',
   braveWalletTransactionExplorer: 'View on block explorer',
+  braveWalletTransactionCopyHash: 'Copy transaction hash',
   braveWalletTransactionSpeedup: 'Speedup transaction',
   braveWalletTransactionCancel: 'Cancel transaction',
   braveWalletTransactionRetry: 'Retry transaction',
