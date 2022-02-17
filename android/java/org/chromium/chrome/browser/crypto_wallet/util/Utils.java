@@ -23,7 +23,9 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.hardware.biometrics.BiometricManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.text.SpannableString;
 import android.text.style.ClickableSpan;
@@ -33,9 +35,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -1382,5 +1386,40 @@ public class Utils {
         }
 
         return new Pair<Integer, String>(decimals, address);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private static boolean canAuthenticate(BiometricManager biometricManager) {
+        assert biometricManager != null;
+
+        return biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK)
+                == BiometricManager.BIOMETRIC_SUCCESS;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.P)
+    public static boolean isBiometricAvailable(Context context) {
+        // Only Android versions 9 and above are supported.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return false;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            BiometricManager biometricManager = context.getSystemService(BiometricManager.class);
+            if (biometricManager == null) {
+                return false;
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                return Utils.canAuthenticate(biometricManager);
+            }
+
+            return biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS;
+        } else {
+            // For API level < Q, we will use FingerprintManagerCompat to check enrolled
+            // fingerprints. Note that for API level lower than 23, FingerprintManagerCompat behaves
+            // like no fingerprint hardware and no enrolled fingerprints.
+            FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(context);
+            return fingerprintManager != null && fingerprintManager.isHardwareDetected()
+                    && fingerprintManager.hasEnrolledFingerprints();
+        }
     }
 }
