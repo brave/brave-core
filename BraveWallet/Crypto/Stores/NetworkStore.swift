@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 import SwiftUI
+import Shared
 
 /// An interface that helps you interact with a json-rpc service
 ///
@@ -54,14 +55,14 @@ public class NetworkStore: ObservableObject {
   @Published var isAddingNewNetwork: Bool = false
   
   public func addCustomNetwork(_ network: BraveWallet.EthereumChain,
-                               completion: @escaping (_ accepted: Bool) -> Void) {
-    func add(network: BraveWallet.EthereumChain, completion: @escaping (_ accepted: Bool) -> Void) {
+                               completion: @escaping (_ accepted: Bool, _ errMsg: String) -> Void) {
+    func add(network: BraveWallet.EthereumChain, completion: @escaping (_ accepted: Bool, _ errMsg: String) -> Void) {
       rpcService.add(network) { [self] chainId, status, message in
         if status == .success {
           // Update `ethereumChains` by api calling
           updateChainList()
           isAddingNewNetwork = false
-          completion(true)
+          completion(true, "")
         } else {
           // meaning add custom network failed for some reason.
           // Also add the the old network back on rpc service
@@ -70,11 +71,11 @@ public class NetworkStore: ObservableObject {
               // Update `ethereumChains` by api calling
               self.updateChainList()
               self.isAddingNewNetwork = false
-              completion(false)
+              completion(false, message)
             }
           } else {
             isAddingNewNetwork = false
-            completion(false)
+            completion(false, message)
           }
         }
       }
@@ -85,7 +86,7 @@ public class NetworkStore: ObservableObject {
       removeNetworkForNewAddition(network) { [self] success in
         guard success else {
           isAddingNewNetwork = false
-          completion(false)
+          completion(false, Strings.Wallet.failedToRemoveCustomNetworkErrorMessage)
           return
         }
         add(network: network, completion: completion)

@@ -1730,12 +1730,12 @@ extension Strings {
       value: "Failed to add this network.",
       comment: "The title of an alert when the custom network the user attempted to add fails for some reason"
     )
-    public static let failedToAddCustomNetworkErrorMessage = NSLocalizedString(
-      "wallet.failedToAddCustomNetworkErrorMessage",
+    public static let failedToRemoveCustomNetworkErrorMessage = NSLocalizedString(
+      "wallet.failedToRemoveCustomNetworkErrorMessage",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Please try again.",
-      comment: "The message of an alert when the custom network the user attempted to add fails for some reason"
+      value: "Failed to remove network.\nPlease try again.",
+      comment: "The message of an alert when the user attempted to remove custom network and it fails for some reason"
     )
     public static let customNetworksTitle = NSLocalizedString(
       "wallet.customNetworksTitle",

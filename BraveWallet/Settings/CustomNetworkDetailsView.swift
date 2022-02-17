@@ -43,7 +43,12 @@ struct NetworkTextField: View {
   }
 }
 
-class CustomNetworkModel: ObservableObject {
+class CustomNetworkModel: ObservableObject, Identifiable {
+  var isEditMode: Bool = false
+  var id: String {
+    "\(isEditMode)"
+  }
+  
   @Published var networkId = NetworkInputItem(input: "") {
     didSet {
       if networkId.input != oldValue.input {
@@ -177,6 +182,8 @@ class CustomNetworkModel: ObservableObject {
   
   /// Updates the details of this class based on a custom network
   func populateDetails(from network: BraveWallet.EthereumChain) {
+    self.isEditMode = true
+    
     let chainIdInDecimal: String
     if let intValue = Int(network.chainId.removingHexPrefix, radix: 16) { // BraveWallet.EthereumChain.chainId should always in hex
       chainIdInDecimal = "\(intValue)"
@@ -202,16 +209,14 @@ class CustomNetworkModel: ObservableObject {
 
 struct CustomNetworkDetailsView: View {
   @ObservedObject var networkStore: NetworkStore
-  @ObservedObject var model: CustomNetworkModel = .init()
-  
-  var isEditMode: Bool
+  @ObservedObject var model: CustomNetworkModel
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   
   @State private var customNetworkError: CustomNetworkError?
   
   enum CustomNetworkError: LocalizedError, Identifiable {
-    case generic
+    case failed(errMsg: String)
     case duplicateId
     
     var id: String {
@@ -220,7 +225,7 @@ struct CustomNetworkDetailsView: View {
     
     var errorTitle: String {
       switch self {
-      case .generic:
+      case .failed:
         return Strings.Wallet.failedToAddCustomNetworkErrorTitle
       case .duplicateId:
         return ""
@@ -229,8 +234,8 @@ struct CustomNetworkDetailsView: View {
     
     var errorDescription: String {
       switch self {
-      case .generic:
-        return Strings.Wallet.failedToAddCustomNetworkErrorMessage
+      case .failed(let errMsg):
+        return errMsg
       case .duplicateId:
         return Strings.Wallet.networkIdDuplicationErrMsg
       }
@@ -239,15 +244,10 @@ struct CustomNetworkDetailsView: View {
   
   init(
     networkStore: NetworkStore,
-    network: BraveWallet.EthereumChain?
+    model: CustomNetworkModel
   ) {
     self.networkStore = networkStore
-    if let network = network {
-      self.isEditMode = true
-      self.model.populateDetails(from: network)
-    } else {
-      self.isEditMode = false
-    }
+    self.model = model
   }
   
   var body: some View {
@@ -267,7 +267,7 @@ struct CustomNetworkDetailsView: View {
           item: $model.networkId
         )
           .keyboardType(.numberPad)
-          .disabled(isEditMode)
+          .disabled(model.isEditMode)
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section(
@@ -341,7 +341,7 @@ struct CustomNetworkDetailsView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
-    .navigationBarTitle(isEditMode ? Strings.Wallet.editfCustomNetworkTitle : Strings.Wallet.customNetworkDetailsTitle)
+    .navigationBarTitle(model.isEditMode ? Strings.Wallet.editfCustomNetworkTitle : Strings.Wallet.customNetworkDetailsTitle)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItemGroup(placement: .confirmationAction) {
@@ -410,10 +410,10 @@ struct CustomNetworkDetailsView: View {
     
     var chainIdInHex = ""
     if let idValue = Int(model.networkId.input) {
-      chainIdInHex = "0x\(String(format: "%02X", idValue))"
+      chainIdInHex = "0x\(String(format: "%02x", idValue))"
     }
     // Check if input chain id already existed for non-edit mode
-    if !isEditMode,
+    if !model.isEditMode,
         networkStore.ethereumChains.contains(where: { $0.id == chainIdInHex }) {
       customNetworkError = .duplicateId
       return
@@ -449,9 +449,9 @@ struct CustomNetworkDetailsView: View {
                                                    symbolName: model.networkSymbol.input,
                                                    decimals: Int32(model.networkDecimals.input) ?? 18,
                                                    isEip1559: false)
-    networkStore.addCustomNetwork(network) { accepted in
+    networkStore.addCustomNetwork(network) { accepted, errMsg in
       guard accepted else {
-        customNetworkError = .generic
+        customNetworkError = .failed(errMsg: errMsg)
         return
       }
       
@@ -466,7 +466,7 @@ struct CustomNetworkDetailsView_Previews: PreviewProvider {
       NavigationView {
         CustomNetworkDetailsView(
           networkStore: .previewStore,
-          network: nil
+          model: .init()
         )
       }
     }
