@@ -10,7 +10,6 @@ import org.objectweb.asm.ClassVisitor;
 public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
         chain = new BraveActivityClassAdapter(chain);
-        chain = new BraveAndroidSyncSettingsClassAdapter(chain);
         chain = new BraveAppMenuClassAdapter(chain);
         chain = new BraveAutocompleteMediatorClassAdapter(chain);
         chain = new BraveAutofillPopupBridgeClassAdapter(chain);
