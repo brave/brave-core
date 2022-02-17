@@ -36,7 +36,7 @@ async def ProcessBinary(semaphore, options, binary):
 
             # TODO: investigate why dump_syms.exe fails
             # and replace to return False
-            if process.returncode != 0:
+            if process.returncode != 0 and not error:
                 decoded_stderr = stderr.decode('utf-8')
                 error = f'dump_syms return {process.returncode} for {binary}. '\
                         f'stderr:\n{decoded_stderr}'
