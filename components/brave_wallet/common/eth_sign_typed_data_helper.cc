@@ -376,8 +376,8 @@ EthSignTypedDataHelper::GetTypedDataPrimaryHash(
 // static
 absl::optional<std::vector<uint8_t>>
 EthSignTypedDataHelper::GetTypedDataMessageToSign(
-    std::vector<uint8_t> domain_hash,
-    std::vector<uint8_t> primary_hash) {
+    const std::vector<uint8_t>& domain_hash,
+    const std::vector<uint8_t>& primary_hash) {
   if (domain_hash.empty() || primary_hash.empty())
     return absl::nullopt;
   std::vector<uint8_t> encoded_data({0x19, 0x01});

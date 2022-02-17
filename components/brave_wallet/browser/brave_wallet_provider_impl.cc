@@ -470,7 +470,7 @@ void BraveWalletProviderImpl::SignTypedMessage(
 void BraveWalletProviderImpl::ContinueSignMessage(
     const std::string& address,
     const std::string& message,
-    const std::vector<uint8_t>& message_to_sign,
+    std::vector<uint8_t>&& message_to_sign,
     const absl::optional<std::string>& domain_hash,
     const absl::optional<std::string>& primary_hash,
     bool is_eip712,
