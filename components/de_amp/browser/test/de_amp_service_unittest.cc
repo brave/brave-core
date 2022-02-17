@@ -33,70 +33,104 @@ void CheckCheckCanonicalLinkResult(const std::string canonical_link,
 /** De AMP Service Tests */
 TEST(DeAmpServiceUnitTest, DetectAmpWithEmoji) {
   const std::string body =
-      "<html ⚡><head><link rel=\"canonical\" "
-      "href=\"abc\"/></head><body></body></html>";
+      "<html ⚡>"
+      "<head>"
+      "<link rel=\"canonical\" href=\"abc\"/>"
+      "</head>"
+      "<body></body>"
+      "</html>";
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 
 TEST(DeAmpServiceUnitTest, DetectAmpWithWordAmp) {
   const std::string body =
-      "<html amp>\n<head><link rel=\"author\" href=\"xyz\"/>\n<link "
-      "rel=\"canonical\" href=\"abc\"/></head><body></body></html>";
+      "<html amp>"
+      "<head>"
+      "<link rel=\"author\" href=\"xyz\"/>"
+      "<link rel=\"canonical\" href=\"abc\"/>"
+      "</head>"
+      "<body></body>"
+      "</html>";
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 
 TEST(DeAmpServiceUnitTest, DetectAmpWithWordAmpNotAtEnd) {
   const std::string body =
-      "<html amp xyzzy>\n<head><link rel=\"author\" href=\"xyz\"/>\n<link "
-      "rel=\"canonical\" href=\"abc\"/></head><body></body></html>";
+      "<html amp xyzzy>"
+      "<head>"
+      "<link rel=\"author\" href=\"xyz\"/>"
+      "<link rel=\"canonical\" href=\"abc\"/>"
+      "</head>"
+      "<body></body>"
+      "</html>";
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 
 TEST(DeAmpServiceUnitTest, DetectAmpMixedCase) {
   const std::string body =
-      "<DOCTYPE! html><html AmP xyzzy>\n<head><link rel=\"author\" "
-      "href=\"xyz\"/>\n<link rel=\"canonical\" "
-      "href=\"abc\"/></head><body></body></html>";
+      "<DOCTYPE! html>\n"
+      "<html AmP xyzzy>\n"
+      "<head>\n"
+      "<link rel=\"author\" href=\"xyz\"/>\n"
+      "<link rel=\"canonical\" href=\"abc\"/></head><body></body></html>";
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 
 TEST(DeAmpServiceUnitTest, NegativeDetectAmp) {
   // Put AMP attribute in a different tag than html
   const std::string body =
-      "<html xyzzy>\n<head><link amp rel=\"author\" href=\"xyz\"/>\n<link "
-      "rel=\"canonical\" href=\"abc\"/></head><body></body></html>";
+      "<html xyzzy>\n"
+      "<head>\n"
+      "<link amp rel=\"author\" href=\"xyz\"/>\n"
+      "<link rel=\"canonical\" href=\"abc\"/>\n"
+      "</head>\n"
+      "<body></body>\n"
+      "</html>";
   CheckFindCanonicalLinkResult("", body, false);
 }
 
 TEST(DeAmpServiceUnitTest, DetectAmpButNoCanonicalLink) {
   // Put AMP attribute in a different tag than html
   const std::string body =
-      "<html xyzzy>\n<head><link amp rel=\"author\" href=\"xyz\"/>\n<link "
-      "rel=\"canonical\" href=\"abc\"/></head><body></body></html>";
+      "<html xyzzy>"
+      "<head>"
+      "<link amp rel=\"author\" href=\"xyz\"/>\n"
+      "<link rel=\"canonical\" href=\"abc\"/>"
+      "</head>"
+      "<body></body>"
+      "</html>";
   CheckFindCanonicalLinkResult("", body, false);
 }
 
 TEST(DeAmpServiceUnitTest, MalformedHtmlDoc) {
   const std::string body =
-      "<xyz html amp xyzzy>\n<head><link amp rel=\"author\" "
-      "href=\"xyz\"/>\n<link rel=\"canonical\" "
-      "href=\"abc\"/></head><body></body></html>";
+      "<xyz html amp xyzzy>\n"
+      "<head>"
+      "<link amp rel=\"author\" href=\"xyz\"/>\n"
+      "<link rel=\"canonical\" href=\"abc\"/>"
+      "</head><body></body></html>";
   CheckFindCanonicalLinkResult("", body, false);
 }
 
 TEST(DeAmpServiceUnitTest, LinkRelNotInSameTag) {
   // Checking to make sure a random "canonical" does not confused parser
   const std::string body =
-      "<html amp>\n<head><link rel=\"author\" href=\"xyz\"/>\n<body> "
-      "\"canonical\"> href=\"abc\"/></head><body></body></html>";
+      "<html amp>\n"
+      "<head>"
+      "<link rel=\"author\" href=\"xyz\"/>\n"
+      "<body>"
+      "\"canonical\"> href=\"abc\"/>"
+      "</head><body></body></html>";
   CheckFindCanonicalLinkResult("", body, false);
 }
 
 TEST(DeAmpServiceUnitTest, SingleQuotes) {
   const std::string body =
-      "<DOCTYPE! html><html AMP xyzzy>\n<head><link rel='author' "
-      "href='xyz'/>\n<link rel='canonical' "
-      "href='abc'></head><body></body></html>";
+      "<DOCTYPE! html>"
+      "<html AMP xyzzy>\n"
+      "<head><link rel='author' href='xyz'/>\n"
+      "<link rel='canonical' href='abc'>"
+      "</head><body></body></html>";
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 

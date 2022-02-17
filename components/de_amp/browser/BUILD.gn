@@ -12,11 +12,8 @@ source_set("browser") {
 
   deps = [
     "//base",
-    "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_shields/browser",
     "//brave/components/de_amp/common",
     "//brave/extensions:common",
-    "//components/content_settings/core/browser",
     "//components/prefs:prefs",
     "//content/public/browser",
     "//content/public/common",

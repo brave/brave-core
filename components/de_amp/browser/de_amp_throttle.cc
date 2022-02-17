@@ -11,7 +11,6 @@
 #include "brave/components/de_amp/browser/de_amp_service.h"
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 #include "brave/components/de_amp/common/features.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
@@ -24,7 +23,7 @@ namespace de_amp {
 
 // static
 std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
-    scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
     content::WebContents* contents) {
   if (!service->IsEnabled()) {
@@ -34,7 +33,7 @@ std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
 }
 
 DeAmpThrottle::DeAmpThrottle(
-    scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+    scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
     content::WebContents* contents)
     : task_runner_(std::move(task_runner)),

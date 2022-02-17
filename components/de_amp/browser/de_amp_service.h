@@ -24,7 +24,7 @@ class DeAmpService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  void ToggleDeAmp();
+  void ToggleDeAmp(const bool on = true);
   void DisableDeAmpForTest();
   bool IsEnabled();
   static bool FindCanonicalLinkIfAMP(const std::string& body,

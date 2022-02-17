@@ -9,8 +9,8 @@
 
 #include "base/feature_list.h"
 #include "base/no_destructor.h"
-#include "brave/components/de_amp/browser/de_amp_pref_names.h"
 #include "brave/components/de_amp/common/features.h"
+#include "brave/components/de_amp/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -19,12 +19,12 @@ namespace de_amp {
 
 // Check for "amp" or "⚡" in <html> tag
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#ampd
-static const char kGetHtmlTagPattern[] = "(<\\s*html\\s.*>)";
+static const char kGetHtmlTagPattern[] = "(<\\s*?html\\s.*?>)";
 static const char kDetectAmpPattern[] = "(?:<.*\\s.*(amp|⚡)(?:\\s.*>|>|/>))";
 // Look for canonical link tag and get href
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
 static const char kFindCanonicalLinkTagPattern[] =
-    "(<\\s*link\\s.*rel=(?:\"|')canonical(?:\"|')(?:\\s.*>|>|/>))";
+    "(<\\s*link\\s[^>]*rel=(?:\"|')canonical(?:\"|')(?:\\s[^>]*>|>|/>))";
 static const char kFindCanonicalHrefInTagPattern[] =
     "href=(?:\"|')(.*?)(?:\"|')";
 
@@ -37,13 +37,8 @@ void DeAmpService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kDeAmpPrefEnabled, false);
 }
 
-void DeAmpService::ToggleDeAmp() {
-  const bool enabled = prefs_->GetBoolean(kDeAmpPrefEnabled);
-  prefs_->SetBoolean(kDeAmpPrefEnabled, !enabled);
-}
-
-void DeAmpService::DisableDeAmpForTest() {
-  prefs_->SetBoolean(kDeAmpPrefEnabled, false);
+void DeAmpService::ToggleDeAmp(const bool on) {
+  prefs_->SetBoolean(kDeAmpPrefEnabled, on);
 }
 
 bool DeAmpService::IsEnabled() {
@@ -51,8 +46,7 @@ bool DeAmpService::IsEnabled() {
     return false;
   }
 
-  const bool enabled = prefs_->GetBoolean(kDeAmpPrefEnabled);
-  return enabled;
+  return prefs_->GetBoolean(kDeAmpPrefEnabled);
 }
 
 // static
@@ -71,6 +65,7 @@ bool DeAmpService::FindCanonicalLinkIfAMP(const std::string& body,
                                           std::string* canonical_link) {
   RE2::Options opt;
   opt.set_case_sensitive(false);
+  opt.set_dot_nl(true);
   // The order of running these regexes is important:
   // we first get the relevant HTML tag and then find the info.
   static const base::NoDestructor<re2::RE2> kGetHtmlTagRegex(kGetHtmlTagPattern,

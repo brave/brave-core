@@ -23,14 +23,13 @@ namespace de_amp {
 // If AMP page, redirect request to non-AMP canonical link.
 class DeAmpThrottle : public blink::URLLoaderThrottle {
  public:
-  explicit DeAmpThrottle(
-      scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-      DeAmpService* service,
-      content::WebContents* contents);
+  explicit DeAmpThrottle(scoped_refptr<base::SequencedTaskRunner> task_runner,
+                         DeAmpService* service,
+                         content::WebContents* contents);
   ~DeAmpThrottle() override;
 
   static std::unique_ptr<DeAmpThrottle> MaybeCreateThrottleFor(
-      scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+      scoped_refptr<base::SequencedTaskRunner> task_runner,
       DeAmpService* service,
       content::WebContents* contents);
 
@@ -42,7 +41,7 @@ class DeAmpThrottle : public blink::URLLoaderThrottle {
   void Resume();
 
  private:
-  scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
   DeAmpService* service_;
   content::WebContents* contents_;  // not owned
   base::WeakPtrFactory<DeAmpThrottle> weak_factory_{this};

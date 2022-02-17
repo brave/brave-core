@@ -1,0 +1,50 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("//brave/build/config.gni")
+import("//testing/test.gni")
+
+import("//brave/build/config.gni")
+
+source_set("de_amp") {
+  sources = [
+    "de_amp_service_factory.cc",
+    "de_amp_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/components/de_amp/browser",
+    "//brave/components/de_amp/common",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/profiles:profiles",
+    "//chrome/common",
+    "//components/keyed_service/content",
+  ]
+}  # source_set("de_amp")
+
+source_set("browser_tests") {
+  testonly = true
+  sources = [ "de_amp_browsertest.cc" ]
+
+  deps = [
+    "///brave/components/de_amp/browser",
+    "///brave/components/de_amp/common",
+    "//brave/browser/de_amp",
+    "//brave/common",
+    "//chrome/browser:browser",
+    "//chrome/browser/ui:ui",
+    "//chrome/test:test_support_ui",
+    "//components/content_settings/core/browser:browser",
+    "//components/keep_alive_registry:keep_alive_registry",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//testing/gtest",
+    "//third_party/re2:re2",
+  ]
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}  # source_set("browser_tests")
