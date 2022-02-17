@@ -10,15 +10,8 @@
 namespace brave_today {
 namespace features {
 
-const base::Feature kBraveNewsFeature {
-  "BraveNews",
-
-#if (!defined(OS_ANDROID) || (defined(OS_ANDROID) && !defined(OFFICIAL_BUILD)))
-      base::FEATURE_ENABLED_BY_DEFAULT
-#else
-      base::FEATURE_DISABLED_BY_DEFAULT
-#endif
-};
+const base::Feature kBraveNewsFeature{"BraveNews",
+                                      base::FEATURE_ENABLED_BY_DEFAULT};
 
 }  // namespace features
 }  // namespace brave_today
