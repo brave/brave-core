@@ -68,8 +68,8 @@ test('Extracting accounts from legacy device', () => {
           'coin': BraveWallet.CoinType.ETH
         },
         {
-          'address': 'address for m/44\'/60\'/1\'/0',
-          'derivationPath': 'm/44\'/60\'/1\'/0',
+          'address': 'address for m/44\'/60\'/0\'/1',
+          'derivationPath': 'm/44\'/60\'/0\'/1',
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
           'deviceId': 'device1',
