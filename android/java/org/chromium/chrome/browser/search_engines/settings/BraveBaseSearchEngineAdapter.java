@@ -45,11 +45,6 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
         return 0;
     }
 
-    @StringRes
-    protected int getPermissionsLinkMessage(String url) {
-    	return 0;
-    }
-
     public static void sortAndFilterUnnecessaryTemplateUrl(
             List<TemplateUrl> templateUrls, TemplateUrl defaultSearchEngine) {
         int recentEngineNum = 0;

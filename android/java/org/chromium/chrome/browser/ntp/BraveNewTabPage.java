@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
+import android.view.LayoutInflater;
 
 import androidx.annotation.Nullable;
 
@@ -67,10 +68,11 @@ public class BraveNewTabPage extends NewTabPage {
             SnackbarManager snackbarManager, NewTabPageUma uma, boolean isInNightMode,
             BottomSheetController bottomSheetController,
             Supplier<ShareDelegate> shareDelegateSupplier, String url) {
-        super.initializeMainView(activity, windowAndroid, snackbarManager, uma, isInNightMode,
-                bottomSheetController, shareDelegateSupplier, url);
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
+
+        LayoutInflater inflater = LayoutInflater.from(activity);
+        mNewTabPageLayout = (NewTabPageLayout) inflater.inflate(R.layout.new_tab_page_layout, null);
 
         assert !FeedFeatures.isFeedEnabled();
         mFeedSurfaceProvider = new BraveFeedSurfaceCoordinator(activity, snackbarManager,

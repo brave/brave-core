@@ -17,6 +17,8 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.net.ChromiumNetworkAdapter;
+import org.chromium.net.NetworkTrafficAnnotationTag;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -121,7 +123,8 @@ public class BraveShieldsUtils {
             HttpURLConnection urlConnection = null;
             try {
                 URL url = new URL(httpUrl);
-                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection = (HttpURLConnection) ChromiumNetworkAdapter.openConnection(
+                        url, NetworkTrafficAnnotationTag.MISSING_TRAFFIC_ANNOTATION);
                 urlConnection.setDoOutput(true);
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setUseCaches(false);

@@ -25,7 +25,7 @@ void OriginTrialContext::AddFeature(OriginTrialFeature feature) {
 void OriginTrialContext::AddForceEnabledTrials(
     const Vector<String>& trial_names) {
   for (const String& trial_name : trial_names) {
-    if (origin_trials::IsTrialDisabledInBrave(trial_name))
+    if (origin_trials::IsTrialDisabledInBrave(trial_name.Utf8()))
       return;
   }
 

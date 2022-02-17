@@ -12,6 +12,7 @@
 #include "base/memory/ptr_util.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "chrome/browser/extensions/extension_context_menu_model.h"
 #include "chrome/browser/extensions/extension_view_host.h"
 #include "chrome/browser/extensions/extension_view_host_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -79,7 +80,9 @@ bool BraveActionViewController::IsEnabled(
   return is_enabled;
 }
 
-ui::MenuModel* BraveActionViewController::GetContextMenu() {
+ui::MenuModel* BraveActionViewController::GetContextMenu(
+    extensions::ExtensionContextMenuModel::ContextMenuSource
+        context_menu_source) {
   // no context menu for brave actions button
   return nullptr;
 }

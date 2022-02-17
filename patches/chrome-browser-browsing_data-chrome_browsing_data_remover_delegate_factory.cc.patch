@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-index 1f002e515e388b14777ad489ea986d7b83ab696e..caf26e9a89a5667d989c4e7d140251fa3ff7cac2 100644
+index b6e8fc43af92a92836060616d9851aabda2ce631..c0a7932adb7c961c4ae0fa47e17a5bdd936dcc44 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
 @@ -100,5 +100,5 @@ ChromeBrowsingDataRemoverDelegateFactory::GetBrowserContextToUse(

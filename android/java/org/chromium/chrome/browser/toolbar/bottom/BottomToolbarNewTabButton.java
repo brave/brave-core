@@ -95,7 +95,7 @@ class BottomToolbarNewTabButton extends ChromeImageButton
     }
 
     @Override
-    public void onTintChanged(ColorStateList tint, boolean useLight) {
+    public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
         ApiCompatibilityUtils.setImageTintList(this, tint);
         updateBackground();
     }
@@ -104,11 +104,9 @@ class BottomToolbarNewTabButton extends ChromeImageButton
         if (mThemeColorProvider == null || mIncognitoStateProvider == null || mBackground == null) {
             return;
         }
-        mBackground.setColorFilter(
-                ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(mContext,
-                        mThemeColorProvider.getThemeColor(),
-                        mThemeColorProvider.useLight()
-                                && mIncognitoStateProvider.isIncognitoSelected()),
+        mBackground.setColorFilter(ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
+                                           mContext, mThemeColorProvider.getThemeColor(),
+                                           mIncognitoStateProvider.isIncognitoSelected()),
                 PorterDuff.Mode.SRC_IN);
     }
 }

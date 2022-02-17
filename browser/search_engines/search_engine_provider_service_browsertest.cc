@@ -43,11 +43,8 @@ namespace {
 
 // An observer that returns back to test code after a new profile is
 // initialized.
-void OnProfileCreation(base::RunLoop* run_loop,
-                       Profile* profile,
-                       Profile::CreateStatus status) {
-  if (status == Profile::CREATE_STATUS_INITIALIZED)
-    run_loop->Quit();
+void OnProfileCreation(base::RunLoop* run_loop, Profile* profile) {
+  run_loop->Quit();
 }
 
 TemplateURLData CreateTestSearchEngine() {
@@ -164,7 +161,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_CheckDefaultTorProfileSearchProviderTest) {
   base::RunLoop run_loop;
   TorProfileManager::SwitchToTorProfile(
-      browser()->profile(), base::BindRepeating(&OnProfileCreation, &run_loop));
+      browser()->profile(), base::BindOnce(&OnProfileCreation, &run_loop));
   run_loop.Run();
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
   EXPECT_TRUE(tor_profile->IsTor());
@@ -193,7 +190,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        CheckDefaultTorProfileSearchProviderTest) {
   base::RunLoop run_loop;
   TorProfileManager::SwitchToTorProfile(
-      browser()->profile(), base::BindRepeating(&OnProfileCreation, &run_loop));
+      browser()->profile(), base::BindOnce(&OnProfileCreation, &run_loop));
   run_loop.Run();
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
   EXPECT_TRUE(tor_profile->IsTor());
@@ -212,8 +209,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        GuestWindowControllerTest) {
   base::RunLoop run_loop;
-  profiles::SwitchToGuestProfile(
-      base::BindRepeating(&OnProfileCreation, &run_loop));
+  profiles::SwitchToGuestProfile(base::BindOnce(&OnProfileCreation, &run_loop));
   run_loop.Run();
 
   Profile* guest_profile =

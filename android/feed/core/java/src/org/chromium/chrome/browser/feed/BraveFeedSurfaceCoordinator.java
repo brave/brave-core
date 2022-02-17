@@ -37,9 +37,11 @@ import org.chromium.ui.base.WindowAndroid;
 
 public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
     // To delete in bytecode, members from parent class will be used instead.
-    private @Nullable ScrollView mScrollViewForPolicy;
     private View mNtpHeader;
     private FrameLayout mRootView;
+
+    // Own members.
+    private @Nullable ScrollView mScrollViewForPolicy;
 
     public BraveFeedSurfaceCoordinator(Activity activity, SnackbarManager snackbarManager,
             WindowAndroid windowAndroid, @Nullable SnapScrollHelper snapScrollHelper,
@@ -63,13 +65,12 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 actionDelegate, helpAndFeedbackLauncher);
     }
 
-    @Override
-    void createScrollViewForPolicy() {
-        super.createScrollViewForPolicy();
+    public void createScrollViewForPolicy() {
+        assert mScrollViewForPolicy == null : "mScrollViewForPolicy should be created only once!";
 
-        // Remove previous view to recreate it a way we need for our NTP.
-        UiUtils.removeViewFromParent(mScrollViewForPolicy);
-        // Here we need to get rid of resizer and call setFillViewport.
+        // Remove all previously added views.
+        mRootView.removeAllViews();
+
         mScrollViewForPolicy = new ScrollView(mActivity);
         mScrollViewForPolicy.setBackgroundColor(
                 ApiCompatibilityUtils.getColor(mActivity.getResources(), R.color.default_bg_color));
@@ -91,8 +92,8 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
         mScrollViewForPolicy.requestFocus();
     }
 
-    public boolean isEnhancedProtectionPromoEnabled() {
-        return false;
+    public ScrollView getScrollViewForPolicy() {
+        return mScrollViewForPolicy;
     }
 
     public boolean isReliabilityLoggingEnabled() {

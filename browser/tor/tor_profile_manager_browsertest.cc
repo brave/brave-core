@@ -55,14 +55,11 @@ namespace {
 // initialized.
 void OnUnblockOnProfileCreation(base::RunLoop* run_loop,
                                 TorLauncherFactory* factory,
-                                Profile* profile,
-                                Profile::CreateStatus status) {
-  if (status == Profile::CREATE_STATUS_INITIALIZED) {
-    tor::TorProfileService* service =
-        TorProfileServiceFactory::GetForContext(profile);
-    service->SetTorLauncherFactoryForTest(factory);
-    run_loop->Quit();
-  }
+                                Profile* profile) {
+  tor::TorProfileService* service =
+      TorProfileServiceFactory::GetForContext(profile);
+  service->SetTorLauncherFactoryForTest(factory);
+  run_loop->Quit();
 }
 
 Profile* SwitchToTorProfile(Profile* parent_profile,
@@ -71,7 +68,7 @@ Profile* SwitchToTorProfile(Profile* parent_profile,
   base::RunLoop run_loop;
   TorProfileManager::SwitchToTorProfile(
       parent_profile,
-      base::BindRepeating(&OnUnblockOnProfileCreation, &run_loop, factory));
+      base::BindOnce(&OnUnblockOnProfileCreation, &run_loop, factory));
   run_loop.Run();
 
   BrowserList* browser_list = BrowserList::GetInstance();

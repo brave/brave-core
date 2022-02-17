@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/android/jni_weak_ref.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 
 // namespace binance {
@@ -98,7 +99,7 @@ class BinanceNativeWorker {
                      std::vector<std::map<std::string, std::string>>>& args);
 
   JavaObjectWeakGlobalRef weak_java_binance_native_worker_;
-  BinanceService* binance_service_;
+  raw_ptr<BinanceService> binance_service_ = nullptr;
   base::WeakPtrFactory<BinanceNativeWorker> weak_factory_;
 };
 }  // namespace android

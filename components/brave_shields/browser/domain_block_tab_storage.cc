@@ -20,6 +20,7 @@ const void* const kDomainBlockTabStorageKey = &kDomainBlockTabStorageKey;
 
 DomainBlockTabStorage::DomainBlockTabStorage(content::WebContents* contents)
     : content::WebContentsUserData<DomainBlockTabStorage>(*contents) {}
+
 DomainBlockTabStorage::~DomainBlockTabStorage() = default;
 
 // static

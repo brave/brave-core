@@ -41,7 +41,8 @@ void WebDiscoveryTabHelper::MaybeCreateForWebContents(
 }
 
 WebDiscoveryTabHelper::WebDiscoveryTabHelper(content::WebContents* contents)
-    : content::WebContentsObserver(contents) {}
+    : content::WebContentsObserver(contents),
+      content::WebContentsUserData<WebDiscoveryTabHelper>(*contents) {}
 
 WebDiscoveryTabHelper::~WebDiscoveryTabHelper() = default;
 

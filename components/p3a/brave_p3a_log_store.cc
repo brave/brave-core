@@ -207,7 +207,7 @@ void BraveP3ALogStore::LoadPersistedUnsentLogs() {
   DCHECK(unsent_entries_.empty());
 
   DictionaryPrefUpdate update(local_state_, kPrefName);
-  base::DictionaryValue* list = update.Get();
+  base::Value* list = update.Get();
   for (auto dict_item : list->DictItems()) {
     LogEntry entry;
     const std::string name = dict_item.first;

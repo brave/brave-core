@@ -118,8 +118,7 @@ bool IsActive(const Rule& cookie_rule,
     if (primary_compare == ContentSettingsPattern::IDENTITY ||
         primary_compare == ContentSettingsPattern::SUCCESSOR) {
       // TODO(bridiver) - move this logic into shields_util for allow/block
-      return
-          ValueToContentSetting(&shield_rule.value) != CONTENT_SETTING_BLOCK;
+      return ValueToContentSetting(shield_rule.value) != CONTENT_SETTING_BLOCK;
     }
   }
 
@@ -212,8 +211,9 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
 void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
   BravePrefProvider::CopyPluginSettingsForMigration(prefs_);
 
-  const base::DictionaryValue* plugins_dictionary = prefs_->GetDictionary(
-      "brave.migrate.content_settings.exceptions.plugins");
+  const base::DictionaryValue* plugins_dictionary =
+      &base::Value::AsDictionaryValue(*prefs_->GetDictionary(
+          "brave.migrate.content_settings.exceptions.plugins"));
   if (!plugins_dictionary)
     return;
 
@@ -366,7 +366,7 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
     SetWebsiteSettingInternal(
         new_rules[i].primary_pattern, new_rules[i].secondary_pattern,
         content_type,
-        ContentSettingToValue(ValueToContentSetting(&(new_rules[i].value))),
+        ContentSettingToValue(ValueToContentSetting(new_rules[i].value)),
         {new_rules[i].expiration, new_rules[i].session_model});
   }
 }
@@ -375,7 +375,7 @@ bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    std::unique_ptr<base::Value>&& in_value,
+    base::Value&& in_value,
     const ContentSettingConstraints& constraints) {
   // TODO(bridiver) - this is currently broken in ways that can cause real
   // problems if people try to use it so disable completely until we migrate
@@ -384,15 +384,15 @@ bool BravePrefProvider::SetWebsiteSetting(
   //
   // handle changes to brave cookie settings from chromium cookie settings UI
   // if (content_type == ContentSettingsType::COOKIES) {
-  //   auto* value = in_value.get();
+  //   base::Value value = in_value.Clone();
   //   auto match = std::find_if(
   //       brave_cookie_rules_[off_the_record_].begin(),
   //       brave_cookie_rules_[off_the_record_].end(),
-  //       [primary_pattern, secondary_pattern, value](const auto& rule) {
+  //       [primary_pattern, secondary_pattern, &value](const auto& rule) {
   //         return rule.primary_pattern == primary_pattern &&
   //                rule.secondary_pattern == secondary_pattern &&
-  //                ValueToContentSetting(&rule.value) !=
-  //                   ValueToContentSetting(value); });
+  //                ValueToContentSetting(rule.value) !=
+  //                    ValueToContentSetting(value); });
   //   if (match != brave_cookie_rules_[off_the_record_].end()) {
   //     // swap primary/secondary pattern - see CloneRule
   //     auto plugin_primary_pattern = secondary_pattern;
@@ -421,7 +421,7 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
-    std::unique_ptr<base::Value>&& in_value,
+    base::Value&& in_value,
     const ContentSettingConstraints& constraints) {
   // PrefProvider ignores default settings so handle them here for shields
   if (content_settings::IsShieldsContentSettingsType(content_type) &&
@@ -430,9 +430,10 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
     base::Time modified_time =
         store_last_modified_ ? base::Time::Now() : base::Time();
 
-    return GetPref(content_type)
+    GetPref(content_type)
         ->SetWebsiteSetting(primary_pattern, secondary_pattern, modified_time,
                             std::move(in_value), constraints);
+    return true;
   }
 
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
@@ -470,22 +471,23 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // We also create the same exception for firebase apps, since they
   // are tightly bound to google, and require google auth to work.
   // See: #5075, #9852, #10367
-  if (prefs_->GetBoolean(kGoogleLoginControlType)) {
-    const auto google_auth_rule = Rule(
-        ContentSettingsPattern::FromString(kGoogleAuthPattern),
-        ContentSettingsPattern::Wildcard(),
-        base::Value::FromUniquePtrValue(
-                         ContentSettingToValue(CONTENT_SETTING_ALLOW)),
-                     base::Time(), SessionModel::Durable);
+  //
+  // PS: kGoogleLoginControlType preference might not be registered for tests.
+  if (prefs_->FindPreference(kGoogleLoginControlType) &&
+      prefs_->GetBoolean(kGoogleLoginControlType)) {
+    const auto google_auth_rule =
+        Rule(ContentSettingsPattern::FromString(kGoogleAuthPattern),
+             ContentSettingsPattern::Wildcard(),
+             ContentSettingToValue(CONTENT_SETTING_ALLOW), base::Time(),
+             SessionModel::Durable);
     rules.emplace_back(CloneRule(google_auth_rule));
     brave_cookie_rules_[incognito].emplace_back(CloneRule(google_auth_rule));
 
-    const auto firebase_rule = Rule(
-        ContentSettingsPattern::FromString(kFirebasePattern),
-        ContentSettingsPattern::Wildcard(),
-        base::Value::FromUniquePtrValue(
-            ContentSettingToValue(CONTENT_SETTING_ALLOW)),
-        base::Time(), SessionModel::Durable);
+    const auto firebase_rule =
+        Rule(ContentSettingsPattern::FromString(kFirebasePattern),
+             ContentSettingsPattern::Wildcard(),
+             ContentSettingToValue(CONTENT_SETTING_ALLOW), base::Time(),
+             SessionModel::Durable);
     rules.emplace_back(CloneRule(firebase_rule));
     brave_cookie_rules_[incognito].emplace_back(CloneRule(firebase_rule));
   }
@@ -532,19 +534,15 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       NOTREACHED();
 
     // Shields down.
-    if (ValueToContentSetting(&shield_rule.value) == CONTENT_SETTING_BLOCK) {
-      rules.emplace_back(
-          Rule(ContentSettingsPattern::Wildcard(),
-               shield_rule.primary_pattern,
-               base::Value::FromUniquePtrValue(
-                   ContentSettingToValue(CONTENT_SETTING_ALLOW)),
-               base::Time(), SessionModel::Durable));
+    if (ValueToContentSetting(shield_rule.value) == CONTENT_SETTING_BLOCK) {
+      rules.emplace_back(Rule(ContentSettingsPattern::Wildcard(),
+                              shield_rule.primary_pattern,
+                              ContentSettingToValue(CONTENT_SETTING_ALLOW),
+                              base::Time(), SessionModel::Durable));
       brave_cookie_rules_[incognito].emplace_back(
-          Rule(ContentSettingsPattern::Wildcard(),
-               shield_rule.primary_pattern,
-               base::Value::FromUniquePtrValue(
-                   ContentSettingToValue(CONTENT_SETTING_ALLOW)),
-               base::Time(), SessionModel::Durable));
+          Rule(ContentSettingsPattern::Wildcard(), shield_rule.primary_pattern,
+               ContentSettingToValue(CONTENT_SETTING_ALLOW), base::Time(),
+               SessionModel::Durable));
     }
   }
 
@@ -559,8 +557,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
           // is an update
           return new_rule.primary_pattern == old_rule.primary_pattern &&
                  new_rule.secondary_pattern == old_rule.secondary_pattern &&
-                 ValueToContentSetting(&new_rule.value) ==
-                    ValueToContentSetting(&old_rule.value);
+                 ValueToContentSetting(new_rule.value) ==
+                     ValueToContentSetting(old_rule.value);
         });
     if (match == old_rules.end()) {
       brave_cookie_updates.emplace_back(CloneRule(new_rule));

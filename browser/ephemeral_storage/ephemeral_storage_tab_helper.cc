@@ -75,7 +75,8 @@ class BraveTLDEphemeralLifetimeDelegate
 // design document at:
 // https://github.com/brave/brave-browser/wiki/Ephemeral-Storage-Design
 EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
-    : WebContentsObserver(web_contents) {
+    : WebContentsObserver(web_contents),
+      content::WebContentsUserData<EphemeralStorageTabHelper>(*web_contents) {
   DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 
   // The URL might not be empty if this is a restored WebContents, for instance.

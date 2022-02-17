@@ -100,7 +100,7 @@ class ShareButton extends ChromeImageButton implements TintObserver {
     }
 
     @Override
-    public void onTintChanged(ColorStateList tint, boolean useLight) {
+    public void onTintChanged(ColorStateList tint, int brandedColorScheme) {
         ApiCompatibilityUtils.setImageTintList(this, tint);
     }
 }

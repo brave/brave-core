@@ -41,13 +41,6 @@
     *** updateTileGridPlaceholderVisibility(...);
 }
 
--keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
-    *** mActivity;
-    *** mScrollViewForPolicy;
-    *** mNtpHeader;
-    *** mRootView;
-}
-
 -keep class org.chromium.chrome.browser.ntp.NewTabPage {
     public <init>(...);
     *** mBrowserControlsStateProvider;
@@ -79,7 +72,6 @@
 }
 
 -keep class org.chromium.chrome.browser.search_engines.settings.SearchEngineAdapter {
-    *** getPermissionsLinkMessage(...);
     *** getSearchEngineSourceType(...);
     *** sortAndFilterUnnecessaryTemplateUrl(...);
 }
@@ -144,7 +136,7 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator {
-    *** mTabSwitcherModeCoordinatorPhone;
+    *** mTabSwitcherModeCoordinator;
     *** mOptionalButtonController;
     public <init>(...);
 }
@@ -153,11 +145,11 @@
     public <init>(...);
 }
 
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinatorPhone {
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTCoordinator {
     *** mTabSwitcherModeToolbar;
 }
 
--keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTTPhone {
+-keep class org.chromium.chrome.browser.toolbar.top.TabSwitcherModeTopToolbar {
     *** mNewTabViewButton;
     *** mNewTabImageButton;
     *** mToggleTabStackButton;
@@ -313,20 +305,6 @@
     *** getModel(...);
 }
 
--keep class org.chromium.chrome.browser.compositor.layouts.LayoutManagerChromePhone
-
--keep class org.chromium.chrome.browser.compositor.layouts.BraveLayoutManagerChrome
-
--keep class org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities {
-    *** isGridTabSwitcherEnabled(...);
-    *** isTabGroupsAndroidEnabled(...);
-}
-
--keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities {
-    *** isGridTabSwitcherEnabled(...);
-    *** isTabGroupsAndroidEnabled(...);
-}
-
 -keep class org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl {
     public <init>(...);
 }
@@ -344,10 +322,9 @@
 }
 
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceCoordinator {
-    *** mScrollViewForPolicy;
+    *** mActivity;
     *** mNtpHeader;
     *** mRootView;
-    *** isEnhancedProtectionPromoEnabled(...);
     *** isReliabilityLoggingEnabled(...);
 }
 
@@ -355,8 +332,20 @@
     *** mScrollViewForPolicy;
     *** mNtpHeader;
     *** mRootView;
-    *** isEnhancedProtectionPromoEnabled(...);
     *** isReliabilityLoggingEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.FeedSurfaceMediator {
+    public <init>(...);
+    *** mCoordinator;
+    *** mSnapScrollHelper;
+    *** destroyPropertiesForStream(...);
+}
+
+-keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceMediator {
+    public <init>(...);
+    *** mCoordinator;
+    *** mSnapScrollHelper;
 }
 
 -keep class org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator {
@@ -426,11 +415,13 @@
 -keep class org.chromium.chrome.browser.tasks.tab_management.TabUiThemeProvider {
     *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
+    *** getCardViewBackgroundColor(...);
 }
 
 -keep class org.chromium.chrome.browser.tasks.tab_management.BraveTabUiThemeProvider {
     *** getTitleTextColor(...);
     *** getActionButtonTintList(...);
+    *** getCardViewBackgroundColor(...);
 }
 
 -keep class org.chromium.chrome.browser.autofill.AutofillPopupBridge {

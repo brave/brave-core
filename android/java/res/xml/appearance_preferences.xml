@@ -24,12 +24,6 @@
         android:summaryOff="@string/text_off" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="brave_enable_tab_groups"
-        android:title="@string/enable_tab_groups_title"
-        android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
-
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_disable_sharing_hub"
         android:title="@string/disable_sharing_hub"
         android:summaryOn="@string/text_on"

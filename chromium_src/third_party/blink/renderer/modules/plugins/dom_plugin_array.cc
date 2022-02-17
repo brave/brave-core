@@ -64,7 +64,7 @@ void FarblePlugins(DOMPluginArray* owner,
       dom_plugins->clear();
       // "Maximum" behavior is clear existing plugins + "balanced" behavior,
       // so fall through here.
-      FALLTHROUGH;
+      [[fallthrough]];
     }
     case BraveFarblingLevel::BALANCED: {
       LocalFrame* frame = owner->DomWindow()->GetFrame();

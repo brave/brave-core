@@ -42,7 +42,7 @@ bool BraveResolveContext::GetDohServerAvailability(
   // opt-in from the interstitial page.
   if (IsDecentralizedDNSResolver(session->config()
                                      .dns_over_https_servers[doh_server_index]
-                                     .server_template) &&
+                                     .server_template()) &&
       !IsFirstProbeCompleted(doh_server_stats_[doh_server_index]))
     return true;
 
@@ -57,7 +57,7 @@ size_t BraveResolveContext::NumAvailableDohServers(
   // completed.
   for (size_t i = 0; i < doh_server_stats_.size(); i++) {
     if (IsDecentralizedDNSResolver(
-            session->config().dns_over_https_servers[i].server_template) &&
+            session->config().dns_over_https_servers[i].server_template()) &&
         !IsFirstProbeCompleted(doh_server_stats_[i]))
       num++;
   }

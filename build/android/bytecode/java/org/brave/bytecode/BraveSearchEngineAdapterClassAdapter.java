@@ -20,8 +20,6 @@ public class BraveSearchEngineAdapterClassAdapter extends BraveClassVisitor {
     static String sBraveSearchEnginePreferenceClassName =
             "org/chromium/chrome/browser/search_engines/settings/BraveSearchEnginePreference";
 
-    static String sMethodGetPermissionsLinkMessage = "getPermissionsLinkMessage";
-
     static String sMethodGetSearchEngineSourceType = "getSearchEngineSourceType";
 
     static String sMethodSortAndFilterUnnecessaryTemplateUrl =
@@ -30,10 +28,10 @@ public class BraveSearchEngineAdapterClassAdapter extends BraveClassVisitor {
     public BraveSearchEngineAdapterClassAdapter(ClassVisitor visitor) {
         super(visitor);
         changeSuperName(sSearchEngineAdapterClassName, sBraveSearchEngineAdapterBaseClassName);
+
         changeMethodOwner(sSearchEngineAdapterClassName, sMethodGetSearchEngineSourceType,
                 sBraveSearchEngineAdapterBaseClassName);
-        changeMethodOwner(sSearchEngineAdapterClassName, sMethodGetPermissionsLinkMessage,
-                sBraveSearchEngineAdapterBaseClassName);
+
         changeMethodOwner(sSearchEngineAdapterClassName, sMethodSortAndFilterUnnecessaryTemplateUrl,
                 sBraveSearchEngineAdapterBaseClassName);
 

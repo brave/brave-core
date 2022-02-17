@@ -35,30 +35,30 @@ bool IsNTP(content::WebContents* web_contents) {
 
 BraveBookmarkTabHelper::BraveBookmarkTabHelper(
     content::WebContents* web_contents)
-    : web_contents_(web_contents) {
-}
+    : content::WebContentsUserData<BraveBookmarkTabHelper>(*web_contents) {}
 
 BraveBookmarkTabHelper::~BraveBookmarkTabHelper() {
 }
 
 void BraveBookmarkTabHelper::AddObserver(BookmarkTabHelperObserver* observer) {
-  BookmarkTabHelper::FromWebContents(web_contents_)->AddObserver(observer);
+  BookmarkTabHelper::FromWebContents(&GetWebContents())->AddObserver(observer);
 }
 
 void BraveBookmarkTabHelper::RemoveObserver(
     BookmarkTabHelperObserver* observer) {
-  BookmarkTabHelper::FromWebContents(web_contents_)->RemoveObserver(observer);
+  BookmarkTabHelper::FromWebContents(&GetWebContents())
+      ->RemoveObserver(observer);
 }
 
 bool BraveBookmarkTabHelper::ShouldShowBookmarkBar() {
   BookmarkTabHelper* helper =
-      BookmarkTabHelper::FromWebContents(web_contents_);
+      BookmarkTabHelper::FromWebContents(&GetWebContents());
   if (!helper)
     return false;
 
-  if (IsNTP(web_contents_)) {
+  if (IsNTP(&GetWebContents())) {
     Profile* profile =
-        Profile::FromBrowserContext(web_contents_->GetBrowserContext());
+        Profile::FromBrowserContext(GetWebContents().GetBrowserContext());
 
     if (profile->IsGuestSession())
       return false;

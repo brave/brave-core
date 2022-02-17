@@ -36,7 +36,8 @@ std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(
   *reject = true;
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          service_response, base::JSONParserOptions::JSON_PARSE_RFC);
+          service_response, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& response = value_with_error.value;
 
   if (http_code != 200) {

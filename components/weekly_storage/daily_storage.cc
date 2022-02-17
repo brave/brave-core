@@ -61,7 +61,7 @@ void DailyStorage::FilterToDay() {
 
 void DailyStorage::Load() {
   DCHECK(daily_values_.empty());
-  const base::ListValue* list = prefs_->GetList(pref_name_);
+  const base::Value* list = prefs_->GetList(pref_name_);
   if (!list) {
     return;
   }
@@ -85,7 +85,7 @@ void DailyStorage::Load() {
 void DailyStorage::Save() {
   FilterToDay();
   ListPrefUpdate update(prefs_, pref_name_);
-  base::ListValue* list = update.Get();
+  base::Value* list = update.Get();
   list->ClearList();
   for (const auto& u : daily_values_) {
     base::DictionaryValue value;

@@ -33,7 +33,8 @@ base::WeakPtr<SpeedreaderTabHelper> SpeedreaderTabHelper::GetWeakPtr() {
 }
 
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {}
+    : content::WebContentsObserver(web_contents),
+      content::WebContentsUserData<SpeedreaderTabHelper>(*web_contents) {}
 
 bool SpeedreaderTabHelper::IsSpeedreaderEnabled() const {
   Profile* profile =

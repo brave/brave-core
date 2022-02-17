@@ -14,7 +14,10 @@
 
 class HatsService : public HatsService_ChromiumImpl {
  public:
-  using HatsService_ChromiumImpl::HatsService_ChromiumImpl;
+  explicit HatsService(Profile* profile);
+  HatsService(const HatsService&) = delete;
+  HatsService& operator=(const HatsService&) = delete;
+
   ~HatsService() override;
 
   bool CanShowSurvey(const std::string& trigger) const override;

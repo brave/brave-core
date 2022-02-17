@@ -705,7 +705,7 @@ void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain) {
 
   {  // Update needs to be done before GetNetworkId below.
     ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-    base::ListValue* list = update.Get();
+    base::Value* list = update.Get();
     list->Append(std::move(value.value()));
   }
 
@@ -713,7 +713,7 @@ void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain) {
   DCHECK(!network_id.empty());  // Not possible for a custom network.
 
   DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);
-  base::DictionaryValue* user_assets_pref = update.Get();
+  base::Value* user_assets_pref = update.Get();
   base::Value* asset_list = user_assets_pref->SetKey(
       network_id, base::Value(base::Value::Type::LIST));
 
@@ -736,7 +736,7 @@ void RemoveCustomNetwork(PrefService* prefs,
   DCHECK(prefs);
 
   ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::ListValue* list = update.Get();
+  base::Value* list = update.Get();
   list->EraseListValueIf([&](const base::Value& v) {
     auto* chain_id_value = v.FindStringKey("chainId");
     if (!chain_id_value)

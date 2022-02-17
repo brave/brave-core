@@ -23,7 +23,7 @@
 namespace brave_wallet {
 
 BraveWalletTabHelper::BraveWalletTabHelper(content::WebContents* web_contents)
-    : web_contents_(web_contents) {}
+    : content::WebContentsUserData<BraveWalletTabHelper>(*web_contents) {}
 
 BraveWalletTabHelper::~BraveWalletTabHelper() {
 #if !defined(OS_ANDROID) && !defined(OS_IOS)
@@ -45,7 +45,7 @@ void BraveWalletTabHelper::ShowBubble() {
     return;
   }
   wallet_bubble_manager_delegate_ =
-      WalletBubbleManagerDelegate::Create(web_contents_, GetBubbleURL());
+      WalletBubbleManagerDelegate::Create(&GetWebContents(), GetBubbleURL());
   wallet_bubble_manager_delegate_->ShowBubble();
   if (show_bubble_callback_for_testing_)
     std::move(show_bubble_callback_for_testing_).Run();
@@ -57,8 +57,8 @@ void BraveWalletTabHelper::ShowApproveWalletBubble() {
   // We want to avoid a hiding / showing of the panel in that case.
   if (IsShowingBubble())
     return;
-  wallet_bubble_manager_delegate_ =
-      WalletBubbleManagerDelegate::Create(web_contents_, GetApproveBubbleURL());
+  wallet_bubble_manager_delegate_ = WalletBubbleManagerDelegate::Create(
+      &GetWebContents(), GetApproveBubbleURL());
   wallet_bubble_manager_delegate_->ShowBubble();
 }
 
@@ -86,7 +86,7 @@ bool BraveWalletTabHelper::IsBubbleClosedForTesting() {
 
 GURL BraveWalletTabHelper::GetBubbleURL() {
   auto* manager =
-      permissions::PermissionRequestManager::FromWebContents(web_contents_);
+      permissions::PermissionRequestManager::FromWebContents(&GetWebContents());
   DCHECK(manager);
 
   GURL webui_url = GURL(kBraveUIWalletPanelURL);

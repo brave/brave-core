@@ -37,7 +37,6 @@ public class AppearancePreferences extends BravePreferenceFragment
             "hide_brave_rewards_icon_migration";
     public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
     public static final String PREF_BRAVE_NIGHT_MODE_ENABLED = "brave_night_mode_enabled_key";
-    public static final String PREF_BRAVE_ENABLE_TAB_GROUPS = "brave_enable_tab_groups";
     public static final String PREF_BRAVE_DISABLE_SHARING_HUB = "brave_disable_sharing_hub";
 
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
@@ -51,7 +50,6 @@ public class AppearancePreferences extends BravePreferenceFragment
                 ContextUtils.getApplicationContext());
         if (isTablet) {
             removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
-            removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
         }
 
         if (!NightModeUtils.isNightModeSupported()) {
@@ -105,15 +103,6 @@ public class AppearancePreferences extends BravePreferenceFragment
             }
         }
 
-        Preference enableTabGroups = findPreference(PREF_BRAVE_ENABLE_TAB_GROUPS);
-        if (enableTabGroups != null) {
-            enableTabGroups.setOnPreferenceChangeListener(this);
-            if (enableTabGroups instanceof ChromeSwitchPreference) {
-                ((ChromeSwitchPreference) enableTabGroups)
-                        .setChecked(TabUiFeatureUtilities.isTabGroupsAndroidEnabled(getActivity()));
-            }
-        }
-
         Preference disableSharingHub = findPreference(PREF_BRAVE_DISABLE_SHARING_HUB);
         if (disableSharingHub != null) {
             disableSharingHub.setOnPreferenceChangeListener(this);
@@ -162,16 +151,6 @@ public class AppearancePreferences extends BravePreferenceFragment
         } else if (PREF_BRAVE_NIGHT_MODE_ENABLED.equals(key)) {
             BraveFeatureList.enableFeature(
                     BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
-            BraveRelaunchUtils.askForRelaunch(getActivity());
-        } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
-            if ((boolean) newValue) {
-                // Revert these features to default values, we will not rely on them anymore.
-                BraveFeatureList.enableFeature(BraveFeatureList.ENABLE_TAB_GROUPS, false, true);
-                BraveFeatureList.enableFeature(BraveFeatureList.ENABLE_TAB_GRID, false, true);
-                ChromeCachedFlags.getInstance().cacheNativeFlags();
-            }
-            SharedPreferencesManager.getInstance().writeBoolean(
-                    BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_BRAVE_DISABLE_SHARING_HUB.equals(key)) {
             SharedPreferencesManager.getInstance().writeBoolean(

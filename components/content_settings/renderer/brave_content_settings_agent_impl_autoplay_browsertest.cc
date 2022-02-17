@@ -121,8 +121,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       content_setting_rules.autoplay_rules;
   autoplay_setting_rules.push_back(ContentSettingPatternSource(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      base::Value::FromUniquePtrValue(
-          content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
+      content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
       std::string(), false));
 
   MockContentSettingsAgentImpl agent(GetMainRenderFrame());
@@ -138,8 +137,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       ContentSettingPatternSource(
           ContentSettingsPattern::Wildcard(),
           ContentSettingsPattern::FromString("https://example.com"),
-          base::Value::FromUniquePtrValue(
-              content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+          content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),
           std::string(), false));
   EXPECT_TRUE(agent.AllowAutoplay(true));
 }
@@ -154,8 +152,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       content_setting_rules.autoplay_rules;
   autoplay_setting_rules.push_back(ContentSettingPatternSource(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      base::Value::FromUniquePtrValue(
-          content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+      content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW),
       std::string(), false));
 
   MockContentSettingsAgentImpl agent(GetMainRenderFrame());
@@ -168,8 +165,7 @@ TEST_F(BraveContentSettingsAgentImplAutoplayBrowserTest,
       ContentSettingPatternSource(
           ContentSettingsPattern::Wildcard(),
           ContentSettingsPattern::FromString("https://example.com"),
-          base::Value::FromUniquePtrValue(
-              content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
+          content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK),
           std::string(), false));
   EXPECT_FALSE(agent.AllowAutoplay(true));
   base::RunLoop().RunUntilIdle();

@@ -25,6 +25,8 @@ const size_t kProductPathNameLength = _countof(kProductPathName) - 1;
 
 const char kSafeBrowsingName[] = "chromium";
 
+const char kDeviceManagementServerHostName[] = "";
+
 #if defined(OFFICIAL_BUILD)
 // Regarding to install switch, use same value in
 // chrome/installer/mini_installer/configuration.cc

@@ -98,7 +98,7 @@ void BraveBrowsingDataRemoverDelegate::ClearShieldsSettings(
           (last_modified < end_time || end_time.is_null())) {
         provider->SetWebsiteSetting(setting.primary_pattern,
                                     setting.secondary_pattern, content_type,
-                                    nullptr, {});
+                                    base::Value(), {});
       }
     }
   }

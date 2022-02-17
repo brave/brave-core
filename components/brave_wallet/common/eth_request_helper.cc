@@ -23,7 +23,8 @@ namespace {
 absl::optional<base::Value::ListStorage> GetParamsList(
     const std::string& json) {
   auto json_value =
-      base::JSONReader::Read(json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value || !json_value->is_dict())
     return absl::nullopt;
 
@@ -44,7 +45,8 @@ absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
 
 absl::optional<base::Value> GetParamsDict(const std::string& json) {
   auto json_value =
-      base::JSONReader::Read(json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSON_ALLOW_TRAILING_COMMAS);
   if (!json_value || !json_value->is_dict()) {
     return absl::nullopt;
   }
@@ -188,7 +190,8 @@ bool GetEthJsonRequestInfo(const std::string& json,
                            std::string* params) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          json, base::JSONParserOptions::JSON_PARSE_RFC);
+          json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                    base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v) {
     return false;
@@ -229,7 +232,8 @@ bool NormalizeEthRequest(const std::string& input_json,
   CHECK(output_json);
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          input_json, base::JSONParserOptions::JSON_PARSE_RFC);
+          input_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                          base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
   if (!records_v)
     return false;
@@ -358,8 +362,9 @@ bool ParseEthSignTypedDataParams(const std::string& json,
   if (!address_str || !typed_data_str)
     return false;
 
-  auto typed_data =
-      base::JSONReader::Read(*typed_data_str, base::JSON_ALLOW_TRAILING_COMMAS);
+  auto typed_data = base::JSONReader::Read(
+      *typed_data_str,
+      base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   if (!typed_data || !typed_data->is_dict())
     return false;
 

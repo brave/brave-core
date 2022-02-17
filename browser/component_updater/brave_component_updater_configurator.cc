@@ -192,4 +192,8 @@ BraveConfigurator::GetProtocolHandlerFactory() const {
   return configurator_impl_.GetProtocolHandlerFactory();
 }
 
+absl::optional<bool> BraveConfigurator::IsMachineExternallyManaged() const {
+  return absl::nullopt;
+}
+
 }  // namespace component_updater
