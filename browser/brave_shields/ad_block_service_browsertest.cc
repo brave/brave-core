@@ -300,14 +300,6 @@ void AdBlockServiceTest::WaitForAdBlockServiceThreads() {
   ASSERT_TRUE(tr_helper->Run());
 }
 
-void AdBlockServiceTest::WaitForBraveExtensionShieldsDataReady() {
-  // Sometimes, the page can start loading before the Shields panel has
-  // received information about the window and tab it's loaded in.
-  ExtensionTestMessageListener extension_listener(
-      "brave-extension-shields-data-ready", false);
-  ASSERT_TRUE(extension_listener.WaitUntilSatisfied());
-}
-
 void AdBlockServiceTest::ShieldsDown(const GURL& url) {
   brave_shields::SetBraveShieldsEnabled(content_settings(), false, url);
 }
@@ -1751,7 +1743,6 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringFlagDisabledTest,
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
-  WaitForBraveExtensionShieldsDataReady();
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -1778,8 +1769,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDisabled) {
       "b.com###ad-banner\n"
       "##.ad");
 
-  WaitForBraveExtensionShieldsDataReady();
-
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
@@ -1802,8 +1791,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
-
-  WaitForBraveExtensionShieldsDataReady();
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -1862,8 +1849,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringProtect1p) {
       "appspot.com##.fpsponsored3\n"
       "appspot.com##.fpsponsored4\n");
 
-  WaitForBraveExtensionShieldsDataReady();
-
   // *.appspot.com is used here to check the eTLD logic.
   // It's a private suffix from https://publicsuffix.org/list/
   GURL tab_url = embedded_test_server()->GetURL("test.lion.appspot.com",
@@ -1895,8 +1880,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
       content_settings(), brave_shields::ControlType::BLOCK, GURL());
   UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
 
-  WaitForBraveExtensionShieldsDataReady();
-
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
@@ -1922,8 +1905,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringHide1pContent) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("##.blockme");
-
-  WaitForBraveExtensionShieldsDataReady();
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -1967,8 +1948,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamicCustom) {
   ASSERT_TRUE(g_brave_browser_process->ad_block_service()
                   ->custom_filters_provider()
                   ->UpdateCustomFilters("##.blockme"));
-
-  WaitForBraveExtensionShieldsDataReady();
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2015,8 +1994,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringGenerichide) {
       "##img[src=\"https://example.com/logo.png\"]\n"
       "@@||b.com$generichide");
 
-  WaitForBraveExtensionShieldsDataReady();
-
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
@@ -2038,8 +2015,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringGenerichide) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringCustomStyle) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("b.com##.ad:style(padding-bottom: 10px)");
-
-  WaitForBraveExtensionShieldsDataReady();
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2070,8 +2045,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
       "b.com#@#.ad\n"
       "###ad-banner\n"
       "a.com#@##ad-banner");
-
-  WaitForBraveExtensionShieldsDataReady();
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2131,8 +2104,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringWindowScriptlet) {
       "uKHNlbGVjdG9yKSB7CiAgICByZXR1cm4geyAnY29sb3InOiAnSW1wb3NzaWJsZSB2YW"
       "x1ZScgfTsKICB9Cn0pKCk7Cg==\"}]");
 
-  WaitForBraveExtensionShieldsDataReady();
-
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
@@ -2172,8 +2143,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringIframeScriptlet) {
       "\"content\": \"" +
           scriptlet_base64 + "\"}]");
 
-  WaitForBraveExtensionShieldsDataReady();
-
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/iframe_messenger.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), tab_url));
@@ -2190,8 +2159,6 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CosmeticFilteringOverridesImportant) {
   ASSERT_TRUE(InstallDefaultAdBlockExtension());
   UpdateAdBlockInstanceWithRules("###inline-block-important");
-
-  WaitForBraveExtensionShieldsDataReady();
 
   GURL tab_url =
       embedded_test_server()->GetURL("b.com", "/cosmetic_filtering.html");
@@ -2247,8 +2214,6 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
   g_brave_browser_process->ad_block_service()
       ->regional_service_manager()
       ->EnableFilterList(brave_shields::kCookieListUuid, false);
-
-  WaitForBraveExtensionShieldsDataReady();
 
   {
     const auto lists = g_brave_browser_process->ad_block_service()

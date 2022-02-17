@@ -53,7 +53,6 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
                                        bool enable_list = true);
   void SetSubscriptionIntervals();
   void WaitForAdBlockServiceThreads();
-  void WaitForBraveExtensionShieldsDataReady();
   void ShieldsDown(const GURL& url);
   void LoadDAT(base::FilePath path);
   void EnableRedirectUrlParsing();
