@@ -8,14 +8,6 @@
 # needed for checking of existence for bytecode manipulation
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
--keep class org.chromium.chrome.browser.sync.AndroidSyncSettings {
-    *** updateCachedSettings(...);
-    *** setChromeSyncEnabled(...);
-    *** mIsSyncable;
-    *** mChromeSyncEnabled;
-    *** mMasterSyncEnabled;
-}
-
 -keep class org.chromium.chrome.browser.bookmarks.BookmarkBridge {
     *** extensiveBookmarkChangesBeginning(...);
     *** extensiveBookmarkChangesEnded(...);
