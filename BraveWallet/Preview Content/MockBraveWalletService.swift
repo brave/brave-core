@@ -6,6 +6,7 @@
 import Foundation
 import BraveCore
 
+#if DEBUG
 /// A test wallet service that implements some basic functionality for the use of SwiftUI Previews.
 ///
 /// - note: Do not use this directly, use ``NetworkStore.previewStore``
@@ -111,3 +112,4 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func reset() {
   }
 }
+#endif
