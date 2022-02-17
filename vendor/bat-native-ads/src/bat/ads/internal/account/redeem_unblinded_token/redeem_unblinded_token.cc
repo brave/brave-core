@@ -16,6 +16,7 @@
 #include "base/values.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
 #include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
@@ -54,7 +55,8 @@ void RedeemUnblindedToken::Redeem(const ConfirmationInfo& confirmation) {
 
   BLOG(1, "Redeem unblinded token");
 
-  if (!IssuerExistsForType(IssuerType::kPayments)) {
+  if (ShouldRewardUser() && !IssuerExistsForType(IssuerType::kPayments)) {
+    BLOG(1, "Failed to redeem unblinded token due to missing payments issuer");
     OnFailedToRedeemUnblindedToken(confirmation, /* should_retry */ true);
     return;
   }
