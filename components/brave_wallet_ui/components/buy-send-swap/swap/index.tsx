@@ -148,12 +148,20 @@ function Swap (props: Props) {
     onSelectPresetAmount(percent)
   }
 
+  const handleOnInputChange = (value: string, name: string) => {
+    if (name === 'from' && selectedPreset) {
+      // Clear preset
+      setSelectedPreset(undefined)
+    }
+    onInputChange(value, name)
+  }
+
   return (
     <StyledWrapper>
       <SwapInputComponent
         componentType='fromAmount'
         onSelectPresetAmount={setPresetAmountValue}
-        onInputChange={onInputChange}
+        onInputChange={handleOnInputChange}
         selectedAssetInputAmount={fromAmount}
         inputName='from'
         selectedAssetBalance={fromAssetBalance}
