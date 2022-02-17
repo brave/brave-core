@@ -8,12 +8,10 @@
 
 #define BRAVE_CHROME_UPDATE_CLIENT_CONFIG_H_ \
  private:                                    \
-  friend class BraveUpdateClientConfig;      \
-                                             \
- public:
-// #define BRAVE_CHROME_UPDATE_CLIENT_CONFIG_H_
+  friend class BraveUpdateClientConfig;
 
 #include "src/chrome/browser/extensions/updater/chrome_update_client_config.h"
+
 #undef BRAVE_CHROME_UPDATE_CLIENT_CONFIG_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_EXTENSIONS_UPDATER_CHROME_UPDATE_CLIENT_CONFIG_H_
