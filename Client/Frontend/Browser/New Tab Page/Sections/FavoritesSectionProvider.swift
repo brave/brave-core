@@ -87,11 +87,22 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        // swiftlint:disable:next force_cast
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteCell.identifier, for: indexPath) as! FavoriteCell
+        return collectionView.dequeueReusableCell(withReuseIdentifier: FavoriteCell.identifier, for: indexPath)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        guard let cell = cell as? FavoriteCell else {
+            return
+        }
+        
         let fav = frc.object(at: IndexPath(item: indexPath.item, section: 0))
         cell.textLabel.textColor = .white
         cell.textLabel.text = fav.displayTitle ?? fav.url
+        
+        // Reset Fav-icon loading and image-view to default
+        cell.imageView.cancelLoading()
+        
         if let url = fav.url?.asURL {
             // All favorites should have domain's, but it was noticed at one
             // point that this wasn't the case, so for future bug-tracking
@@ -104,7 +115,6 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
             cell.imageView.loadFavicon(siteURL: url, domain: domain, monogramFallbackCharacter: fav.title?.first)
         }
         cell.accessibilityLabel = cell.textLabel.text
-        return cell
     }
     
     private func itemSize(collectionView: UICollectionView, section: Int) -> CGSize {
