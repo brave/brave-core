@@ -109,11 +109,6 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
     if (!sidebar::IsBuiltInType(item))
       continue;
 
-    if (item.open_in_panel) {
-      UpdateItemViewStateAt(item_index, item_index == active_index);
-      continue;
-    }
-
     // If browser window has tab that loads brave talk, brave talk panel icon
     // will use colored one for normal state also.
     if (item.built_in_item_type ==
@@ -122,7 +117,10 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
           item_index,
           browser_->sidebar_controller()->DoesBrowserHaveOpenedTabForItem(
               item));
+      continue;
     }
+
+    UpdateItemViewStateAt(item_index, item_index == active_index);
   }
 }
 
