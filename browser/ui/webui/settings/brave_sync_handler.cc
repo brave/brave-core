@@ -15,6 +15,7 @@
 #include "brave/components/brave_sync/crypto/crypto.h"
 #include "brave/components/brave_sync/qr_code_data.h"
 #include "brave/components/brave_sync/sync_service_impl_helper.h"
+#include "brave/components/brave_sync/time_limited_words.h"
 #include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync_device_info/brave_device_info.h"
 #include "chrome/browser/profiles/profile.h"
@@ -91,7 +92,11 @@ void BraveSyncHandler::HandleGetSyncCode(const base::Value::List& args) {
   if (sync_service)
     sync_code = sync_service->GetOrCreateSyncCode();
 
-  ResolveJavascriptCallback(args[0].Clone(), base::Value(sync_code));
+  std::string time_limited_sync_code =
+      brave_sync::TimeLimitedWords::GenerateForNow(sync_code);
+
+  ResolveJavascriptCallback(args[0].Clone(),
+                            base::Value(time_limited_sync_code));
 }
 
 void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
@@ -144,16 +149,28 @@ void BraveSyncHandler::HandleSetSyncCode(const base::Value::List& args) {
   AllowJavascript();
   CHECK_EQ(2U, args.size());
   CHECK(args[1].is_string());
-  const std::string sync_code = args[1].GetString();
-
-  if (sync_code.empty()) {
+  const std::string time_limited_sync_code = args[1].GetString();
+  if (time_limited_sync_code.empty()) {
     LOG(ERROR) << "No sync code parameter provided!";
     RejectJavascriptCallback(args[0].Clone(), base::Value(false));
     return;
   }
 
+  std::string pure_sync_code;
+  brave_sync::WordsValidationResult validation_result =
+      brave_sync::TimeLimitedWords::Validate(time_limited_sync_code,
+                                             &pure_sync_code);
+  if (validation_result != brave_sync::WordsValidationResult::kValid) {
+    LOG(ERROR) << "Could not validate a sync code, validation_result="
+               << static_cast<int>(validation_result);
+    RejectJavascriptCallback(args[0].Clone(), base::Value(false));
+    return;
+  }
+
+  CHECK(!pure_sync_code.empty());
+
   auto* sync_service = GetSyncService();
-  if (!sync_service || !sync_service->SetSyncCode(sync_code)) {
+  if (!sync_service || !sync_service->SetSyncCode(pure_sync_code)) {
     RejectJavascriptCallback(args[0].Clone(), base::Value(false));
     return;
   }
