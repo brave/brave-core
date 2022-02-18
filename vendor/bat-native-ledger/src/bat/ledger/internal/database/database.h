@@ -432,13 +432,14 @@ class Database {
   /**
    * VIRTUAL GRANT BACKUP & RESTORE
    */
-  void BackUpVGBody(type::CredsBatchType trigger_type,
-                    const std::string& trigger_id,
-                    BackUpVGBodyCallback callback);
+  void BackUpVgBodies(BackUpVgBodiesCallback callback);
 
-  void BackUpVGSpendStatus(BackUpVGSpendStatusCallback callback);
+  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback);
 
-  void RestoreVGs(type::VirtualGrants&& vgs, RestoreVGsCallback callback);
+  void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback);
 
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;

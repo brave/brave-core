@@ -299,7 +299,14 @@ class LedgerImpl : public Ledger {
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
-  void RestoreVGs(RestoreVGsCallback callback) override;
+  void BackUpVgBodies(BackUpVgBodiesCallback callback) override;
+
+  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) override;
+
+  void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback) override;
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 

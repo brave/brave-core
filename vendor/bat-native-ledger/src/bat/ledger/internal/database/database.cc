@@ -652,20 +652,20 @@ void Database::GetSpendableUnblindedTokensByBatchTypes(
 /**
  * VIRTUAL GRANT BACKUP & RESTORE
  */
-void Database::BackUpVGBody(type::CredsBatchType trigger_type,
-                            const std::string& trigger_id,
-                            BackUpVGBodyCallback callback) {
-  vg_backup_restore_->BackUpVGBody(trigger_type, trigger_id,
-                                   std::move(callback));
+void Database::BackUpVgBodies(BackUpVgBodiesCallback callback) {
+  vg_backup_restore_->BackUpVgBodies(std::move(callback));
 }
 
-void Database::BackUpVGSpendStatus(BackUpVGSpendStatusCallback callback) {
-  vg_backup_restore_->BackUpVGSpendStatus(std::move(callback));
+void Database::BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) {
+  vg_backup_restore_->BackUpVgSpendStatuses(std::move(callback));
 }
 
-void Database::RestoreVGs(type::VirtualGrants&& vgs,
-                          RestoreVGsCallback callback) {
-  vg_backup_restore_->RestoreVGs(std::move(vgs), std::move(callback));
+void Database::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+    RestoreVgsCallback callback) {
+  vg_backup_restore_->RestoreVgs(
+      std::move(vg_bodies), std::move(vg_spend_statuses), std::move(callback));
 }
 
 }  // namespace database

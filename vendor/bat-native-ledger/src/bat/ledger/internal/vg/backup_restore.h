@@ -6,7 +6,6 @@
 #ifndef BRAVELEDGER_BACKUP_BACKUP_H_
 #define BRAVELEDGER_BACKUP_BACKUP_H_
 
-#include "base/timer/timer.h"
 #include "bat/ledger/mojom_structs.h"
 
 namespace ledger {
@@ -20,45 +19,18 @@ class BackupRestore {
 
   ~BackupRestore();
 
-  void StartBackUpVGSpendStatus();
+  void BackUpVgBodies(ledger::BackUpVgBodiesCallback callback) const;
 
-  void BackUpVGBody(type::CredsBatchType trigger_type,
-                    const std::string& trigger_id) const;
+  void BackUpVgSpendStatuses(
+      ledger::BackUpVgSpendStatusesCallback callback) const;
 
-  void RestoreVGs(const std::string& vg_bodies,
-                  const std::string& vg_spend_statuses,
-                  ledger::RestoreVGsCallback callback) const;
+  void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      ledger::RestoreVgsCallback callback) const;
 
  private:
-  void BackUpVGSpendStatus();
-
-  void OnBackUpVGSpendStatus(
-      type::Result result,
-      type::VirtualGrantSpendStatusPtr&& spend_status_ptr) const;
-
-  std::string ExtractVGSpendStatus(
-      const type::VirtualGrantSpendStatusPtr& spend_status_ptr) const;
-
-  void OnBackUpVGBody(type::VirtualGrantBodyPtr&& body_ptr) const;
-
-  std::string ExtractVGBody(const type::VirtualGrantBodyPtr& body_ptr) const;
-
-  bool ParseVirtualGrantBodies(const std::string& json,
-                               type::VirtualGrants& vgs) const;
-
-  bool ParseVirtualGrantSpendStatuses(const std::string& json,
-                                      type::VirtualGrants& vgs) const;
-
-  void OnRestoreVGs(ledger::RestoreVGsCallback callback,
-                    type::Result result) const;
-
-  std::string GetVirtualGrantBodies(const type::VirtualGrants& vgs) const;
-
-  std::string GetVirtualGrantSpendStatuses(
-      const type::VirtualGrants& vgs) const;
-
   LedgerImpl* ledger_;  // NOT OWNED
-  base::RepeatingTimer timer_;
 };
 
 }  // namespace vg

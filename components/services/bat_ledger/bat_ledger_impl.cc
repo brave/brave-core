@@ -1129,7 +1129,50 @@ void BatLedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
 }
 
 // static
-void BatLedgerImpl::OnRestoreVGs(CallbackHolder<RestoreVGsCallback>* holder,
+void BatLedgerImpl::OnBackUpVgBodies(
+    CallbackHolder<BackUpVgBodiesCallback>* holder,
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(vg_bodies));
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::BackUpVgBodies(BackUpVgBodiesCallback callback) {
+  auto* holder = new CallbackHolder<BackUpVgBodiesCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->BackUpVgBodies(
+      base::BindOnce(BatLedgerImpl::OnBackUpVgBodies, holder));
+}
+
+// static
+void BatLedgerImpl::OnBackUpVgSpendStatuses(
+    CallbackHolder<BackUpVgSpendStatusesCallback>* holder,
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(vg_spend_statuses));
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::BackUpVgSpendStatuses(
+    BackUpVgSpendStatusesCallback callback) {
+  auto* holder = new CallbackHolder<BackUpVgSpendStatusesCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->BackUpVgSpendStatuses(
+      base::BindOnce(BatLedgerImpl::OnBackUpVgSpendStatuses, holder));
+}
+
+// static
+void BatLedgerImpl::OnRestoreVgs(CallbackHolder<RestoreVgsCallback>* holder,
                                  ledger::type::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
@@ -1139,11 +1182,15 @@ void BatLedgerImpl::OnRestoreVGs(CallbackHolder<RestoreVGsCallback>* holder,
   delete holder;
 }
 
-void BatLedgerImpl::RestoreVGs(RestoreVGsCallback callback) {
+void BatLedgerImpl::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+    RestoreVgsCallback callback) {
   auto* holder =
-      new CallbackHolder<RestoreVGsCallback>(AsWeakPtr(), std::move(callback));
+      new CallbackHolder<RestoreVgsCallback>(AsWeakPtr(), std::move(callback));
 
-  ledger_->RestoreVGs(base::BindOnce(BatLedgerImpl::OnRestoreVGs, holder));
+  ledger_->RestoreVgs(std::move(vg_bodies), std::move(vg_spend_statuses),
+                      base::BindOnce(BatLedgerImpl::OnRestoreVgs, holder));
 }
 
 // static

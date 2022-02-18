@@ -406,4 +406,12 @@ absl::optional<std::string> BatLedgerClientMojoBridge::DecryptString(
   return result;
 }
 
+void BatLedgerClientMojoBridge::BackUpVgBodies() {
+  bat_ledger_client_->BackUpVgBodies();
+}
+
+void BatLedgerClientMojoBridge::BackUpVgSpendStatuses() {
+  bat_ledger_client_->BackUpVgSpendStatuses();
+}
+
 }  // namespace bat_ledger

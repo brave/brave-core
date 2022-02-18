@@ -346,6 +346,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     greaselion_service_->AddObserver(this);
   }
 #endif
+
+  vg_sync_service_->SetObserver(this);
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -356,6 +358,8 @@ RewardsServiceImpl::~RewardsServiceImpl() {
     greaselion_service_->RemoveObserver(this);
   }
 #endif
+
+  vg_sync_service_->SetObserver(nullptr);
 
   if (ledger_database_) {
     file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
@@ -3384,35 +3388,6 @@ void RewardsServiceImpl::OnGetEventLogs(
   std::move(callback).Run(std::move(logs));
 }
 
-void RewardsServiceImpl::RestoreVGs(RestoreVGsCallback callback) {
-  if (Connected()) {
-    bat_ledger_->RestoreVGs(base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
-                                           AsWeakPtr(), std::move(callback)));
-  }
-  // pair_sync_service_->GetPairs(
-  //    base::BindOnce(&RewardsServiceImpl::OnGetPairs, AsWeakPtr(),
-  //    std::move(callback)));
-}
-
-//void RewardsServiceImpl::OnGetPairs(
-//    RestoreVGsCallback callback,
-//    std::vector<bat_ledger::mojom::PairPtr> pairs) {
-//  if (Connected()) {
-//    for (const auto& p : pairs) {
-//      VLOG(0) << "Pair: " << p->key << ", " << p->value;
-//    }
-//
-//    bat_ledger_->RestoreVGs(std::move(pairs),
-//                            base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
-//                                           AsWeakPtr(), std::move(callback)));
-//  }
-//}
-
-void RewardsServiceImpl::OnRestoreVGs(RestoreVGsCallback callback,
-                                      ledger::type::Result result) {
-  std::move(callback).Run(result);
-}
-
 absl::optional<std::string> RewardsServiceImpl::EncryptString(
     const std::string& value) {
   std::string encrypted;
@@ -3564,14 +3539,56 @@ void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
   }
 }
 
-//void RewardsServiceImpl::AddPair() {
-//  std::string value(8, 0);
-//  for (auto& c : value) {
-//    c = base::RandInt('a', 'z');
-//  }
-//
-//  pair_sync_service_->AddPair(clock_->Now().since_origin().InMicroseconds(),
-//                              std::move(value));
-//}
+void RewardsServiceImpl::BackUpVgBodies() {
+  if (Connected()) {
+    bat_ledger_->BackUpVgBodies(
+        base::BindOnce(&RewardsServiceImpl::OnBackUpVgBodies, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnBackUpVgBodies(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    vg_sync_service_->BackUpVgBodies(std::move(vg_bodies));
+  } else {
+    VLOG(0) << "RewardsServiceImpl::OnBackUpVgBodies failed";
+  }
+}
+
+void RewardsServiceImpl::BackUpVgSpendStatuses() {
+  if (Connected()) {
+    bat_ledger_->BackUpVgSpendStatuses(base::BindOnce(
+        &RewardsServiceImpl::OnBackUpVgSpendStatuses, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnBackUpVgSpendStatuses(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    vg_sync_service_->BackUpVgSpendStatuses(std::move(vg_spend_statuses));
+  } else {
+    VLOG(0) << "OnBackUpVgSpendStatuses failed";
+  }
+}
+
+void RewardsServiceImpl::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  if (Connected()) {
+    bat_ledger_->RestoreVgs(
+        std::move(vg_bodies), std::move(vg_spend_statuses),
+        base::BindOnce(&RewardsServiceImpl::OnRestoreVgs, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnRestoreVgs(ledger::type::Result result) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    VLOG(0) << "RestoreVgs was successful";
+  } else {
+    VLOG(0) << "RestoreVgs failed";
+  }
+}
 
 }  // namespace brave_rewards
