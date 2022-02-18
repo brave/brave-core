@@ -6,7 +6,6 @@
 #ifndef BRAVELEDGER_BACKUP_BACKUP_H_
 #define BRAVELEDGER_BACKUP_BACKUP_H_
 
-#include "base/timer/timer.h"
 #include "bat/ledger/mojom_structs.h"
 
 namespace ledger {
@@ -20,24 +19,18 @@ class BackupRestore {
 
   ~BackupRestore();
 
-  void StartBackUpVGSpendStatus();
-
   void BackUpVGBody(type::CredsBatchType trigger_type,
                     const std::string& trigger_id) const;
+
+  void BackUpVGSpendStatuses(ledger::BackUpVGSpendStatusesCallback callback);
 
   void RestoreVGs(const std::string& vg_bodies,
                   const std::string& vg_spend_statuses,
                   ledger::RestoreVGsCallback callback) const;
 
  private:
-  void BackUpVGSpendStatus();
-
-  void OnBackUpVGSpendStatus(
-      type::Result result,
-      type::VirtualGrantSpendStatusPtr&& spend_status_ptr) const;
-
-  std::string ExtractVGSpendStatus(
-      const type::VirtualGrantSpendStatusPtr& spend_status_ptr) const;
+  // std::string ExtractVGSpendStatus(
+  //    const type::VirtualGrantSpendStatusPtr& spend_status_ptr) const;
 
   void OnBackUpVGBody(type::VirtualGrantBodyPtr&& body_ptr) const;
 
@@ -58,7 +51,6 @@ class BackupRestore {
       const type::VirtualGrants& vgs) const;
 
   LedgerImpl* ledger_;  // NOT OWNED
-  base::RepeatingTimer timer_;
 };
 
 }  // namespace vg

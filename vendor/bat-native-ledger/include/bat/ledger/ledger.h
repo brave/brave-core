@@ -75,6 +75,10 @@ using GetEventLogsCallback = std::function<void(type::EventLogs)>;
 
 using RestoreVGsCallback = base::OnceCallback<void(type::Result)>;
 
+using BackUpVGSpendStatusesCallback =
+    base::OnceCallback<void(type::Result,
+                            std::vector<type::VirtualGrantSpendStatusPtr>)>;
+
 using SKUOrderCallback = std::function<void(type::Result, const std::string&)>;
 
 using GetContributionReportCallback =
@@ -366,6 +370,9 @@ class LEDGER_EXPORT Ledger {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void RestoreVGs(RestoreVGsCallback callback) = 0;
+
+  virtual void BackUpVGSpendStatuses(
+      BackUpVGSpendStatusesCallback callback) = 0;
 
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 

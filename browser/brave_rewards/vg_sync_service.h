@@ -12,7 +12,7 @@
 
 #include "brave/browser/brave_rewards/vg_body_sync_bridge.h"
 #include "brave/browser/brave_rewards/vg_spend_status_sync_bridge.h"
-#include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sync/model/data_batch.h"
 #include "components/sync/model/model_type_controller_delegate.h"
@@ -39,7 +39,8 @@ class VgSyncService : public KeyedService {
 
   void Shutdown() override;
 
-  // void AddPair(std::int64_t key, const std::string& value);
+  void UpdateVgSpendStatuses(
+      std::vector<ledger::type::VirtualGrantSpendStatusPtr> vg_spend_statuses);
 
   // void GetPairs(GetPairsCallback callback);
 

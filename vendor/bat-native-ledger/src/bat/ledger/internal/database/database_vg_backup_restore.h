@@ -14,8 +14,9 @@ namespace database {
 using BackUpVGBodyCallback =
     base::OnceCallback<void(type::VirtualGrantBodyPtr&&)>;
 
-using BackUpVGSpendStatusCallback =
-    base::OnceCallback<void(type::Result, type::VirtualGrantSpendStatusPtr&&)>;
+using BackUpVGSpendStatusesCallback =
+    base::OnceCallback<void(type::Result,
+                            std::vector<type::VirtualGrantSpendStatusPtr>)>;
 
 using RestoreVGsCallback = base::OnceCallback<void(type::Result)>;
 
@@ -29,7 +30,7 @@ class DatabaseVGBackupRestore : public DatabaseTable {
                     const std::string& trigger_id,
                     BackUpVGBodyCallback callback) const;
 
-  void BackUpVGSpendStatus(BackUpVGSpendStatusCallback callback) const;
+  void BackUpVGSpendStatuses(BackUpVGSpendStatusesCallback callback) const;
 
   void RestoreVGs(type::VirtualGrants&& vgs, RestoreVGsCallback callback) const;
 
@@ -43,8 +44,8 @@ class DatabaseVGBackupRestore : public DatabaseTable {
   void OnBackUpVGBody(BackUpVGBodyCallback callback,
                       type::DBCommandResponsePtr response) const;
 
-  void OnBackUpVGSpendStatus(BackUpVGSpendStatusCallback callback,
-                             type::DBCommandResponsePtr response) const;
+  void OnBackUpVGSpendStatuses(BackUpVGSpendStatusesCallback callback,
+                               type::DBCommandResponsePtr response) const;
 
   bool AllNULLRecord(const type::DBRecordPtr& record) const;
 

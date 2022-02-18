@@ -159,6 +159,8 @@ interface BatLedger {
   
   RestoreVGs() => (ledger.mojom.Result result);
 
+  BackUpVGSpendStatuses() => (ledger.mojom.Result result, array<ledger.mojom.VirtualGrantSpendStatus> vg_spend_statuses);
+
   GetBraveWallet() => (ledger.mojom.BraveWallet? wallet);
 
   GetWalletPassphrase() => (string passphrase);

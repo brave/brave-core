@@ -301,6 +301,8 @@ class LedgerImpl : public Ledger {
 
   void RestoreVGs(RestoreVGsCallback callback) override;
 
+  void BackUpVGSpendStatuses(BackUpVGSpendStatusesCallback callback) override;
+
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
   std::string GetWalletPassphrase() override;

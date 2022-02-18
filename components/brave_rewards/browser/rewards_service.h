@@ -127,6 +127,10 @@ using GetEventLogsCallback =
 
 using RestoreVGsCallback = base::OnceCallback<void(ledger::type::Result)>;
 
+using BackUpVGSpendStatusesCallback = base::OnceCallback<void(
+    ledger::type::Result,
+    std::vector<ledger::type::VirtualGrantSpendStatusPtr>)>;
+
 using GetBraveWalletCallback =
     base::OnceCallback<void(ledger::type::BraveWalletPtr wallet)>;
 

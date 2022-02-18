@@ -246,6 +246,8 @@ class BatLedgerImpl :
 
   void RestoreVGs(RestoreVGsCallback callback) override;
 
+  void BackUpVGSpendStatuses(BackUpVGSpendStatusesCallback callback) override;
+
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
@@ -452,6 +454,11 @@ class BatLedgerImpl :
 
   static void OnRestoreVGs(CallbackHolder<RestoreVGsCallback>* holder,
                            ledger::type::Result result);
+
+  static void OnBackUpVGSpendStatuses(
+      CallbackHolder<BackUpVGSpendStatusesCallback>* holder,
+      ledger::type::Result result,
+      std::vector<ledger::type::VirtualGrantSpendStatusPtr> vg_spend_statuses);
 
   static void OnGetBraveWallet(
       CallbackHolder<GetBraveWalletCallback>* holder,

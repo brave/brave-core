@@ -51,8 +51,8 @@ VgSpendStatusSyncBridge::GetControllerDelegate() {
   return change_processor()->GetControllerDelegate();
 }
 
-void VgSpendStatusSyncBridge::AddVgSpendStatus(
-    sync_pb::VgSpendStatusSpecifics vg_spend_status) {
+void VgSpendStatusSyncBridge::UpdateVgSpendStatuses(
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
   if (!store_) {
     return;
   }
@@ -61,15 +61,16 @@ void VgSpendStatusSyncBridge::AddVgSpendStatus(
     return;
   }
 
-  //  LOG(INFO) << "Adding pair { " << pair.key() << ", " << pair.value()
-  //            << " } ...";
+    auto write_batch = store_->CreateWriteBatch();
 
-  const std::string storage_key = GetStorageKeyFromSpecifics(vg_spend_status);
+  for (auto&& vg_spend_status : vg_spend_statuses) {
+    const std::string storage_key = GetStorageKeyFromSpecifics(vg_spend_status);
 
-  auto write_batch = store_->CreateWriteBatch();
-  write_batch->WriteData(storage_key, vg_spend_status.SerializeAsString());
-  change_processor()->Put(storage_key, ToEntityData(std::move(vg_spend_status)),
-                          write_batch->GetMetadataChangeList());
+    write_batch->WriteData(storage_key, vg_spend_status.SerializeAsString());
+    change_processor()->Put(storage_key,
+                            ToEntityData(std::move(vg_spend_status)),
+                            write_batch->GetMetadataChangeList());
+  }
 
   store_->CommitWriteBatch(
       std::move(write_batch),

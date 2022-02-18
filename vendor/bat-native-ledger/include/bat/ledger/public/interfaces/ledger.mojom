@@ -585,14 +585,10 @@ struct VirtualGrantBody {
   array<VirtualGrantBodyTokenInfo> tokens;
 };
 
-struct VirtualGrantSpendStatusTokenInfo {
+struct VirtualGrantSpendStatus {
   uint64 token_id;
   uint64 redeemed_at;
   RewardsType redeem_type;
-};
-
-struct VirtualGrantSpendStatus {
-  array<VirtualGrantSpendStatusTokenInfo> tokens;
 };
 
 struct VirtualGrant {

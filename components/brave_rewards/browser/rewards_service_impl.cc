@@ -394,6 +394,9 @@ void RewardsServiceImpl::Init(
 
   CheckPreferences();
   InitPrefChangeRegistrar();
+
+  vg_spend_status_timer_.Start(FROM_HERE, base::Seconds(5), this,
+                               &RewardsServiceImpl::BackUpVGSpendStatuses);
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
@@ -3564,14 +3567,18 @@ void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
   }
 }
 
-//void RewardsServiceImpl::AddPair() {
-//  std::string value(8, 0);
-//  for (auto& c : value) {
-//    c = base::RandInt('a', 'z');
-//  }
-//
-//  pair_sync_service_->AddPair(clock_->Now().since_origin().InMicroseconds(),
-//                              std::move(value));
-//}
+void RewardsServiceImpl::BackUpVGSpendStatuses() {
+  if (Connected()) {
+    bat_ledger_->BackUpVGSpendStatuses(base::BindOnce(
+        &RewardsServiceImpl::OnBackUpVGSpendStatuses, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnBackUpVGSpendStatuses(
+    ledger::type::Result result,
+    std::vector<ledger::type::VirtualGrantSpendStatusPtr> vg_spend_statuses) {
+  VLOG(0) << "OnBackUpVGSpendStatuses";
+  vg_sync_service_->UpdateVgSpendStatuses(std::move(vg_spend_statuses));
+}
 
 }  // namespace brave_rewards

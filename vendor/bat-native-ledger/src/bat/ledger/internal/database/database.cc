@@ -659,8 +659,8 @@ void Database::BackUpVGBody(type::CredsBatchType trigger_type,
                                    std::move(callback));
 }
 
-void Database::BackUpVGSpendStatus(BackUpVGSpendStatusCallback callback) {
-  vg_backup_restore_->BackUpVGSpendStatus(std::move(callback));
+void Database::BackUpVGSpendStatuses(BackUpVGSpendStatusesCallback callback) {
+  vg_backup_restore_->BackUpVGSpendStatuses(std::move(callback));
 }
 
 void Database::RestoreVGs(type::VirtualGrants&& vgs,

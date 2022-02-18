@@ -22,6 +22,7 @@
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
 #include "base/sequence_checker.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
@@ -777,7 +778,11 @@ class RewardsServiceImpl : public RewardsService,
 
   bool IsValidWalletType(const std::string& wallet_type) const;
 
-  //void AddPair();
+  void BackUpVGSpendStatuses();
+
+  void OnBackUpVGSpendStatuses(
+      ledger::type::Result result,
+      std::vector<ledger::type::VirtualGrantSpendStatusPtr> vg_spend_statuses);
 
   //void OnGetPairs(RestoreVGsCallback callback,
   //                std::vector<bat_ledger::mojom::PairPtr> pairs);
@@ -796,6 +801,7 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
 #endif
   raw_ptr<VgSyncService> vg_sync_service_ = nullptr;  // NOT OWNED
+  base::RepeatingTimer vg_spend_status_timer_;
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;
   mojo::AssociatedRemote<bat_ledger::mojom::BatLedger> bat_ledger_;

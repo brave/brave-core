@@ -18,48 +18,33 @@ BackupRestore::BackupRestore(LedgerImpl* ledger) : ledger_(ledger) {}
 
 BackupRestore::~BackupRestore() = default;
 
-void BackupRestore::StartBackUpVGSpendStatus() {
-  timer_.Start(FROM_HERE, base::Seconds(30), this,
-               &BackupRestore::BackUpVGSpendStatus);
+void BackupRestore::BackUpVGSpendStatuses(
+    ledger::BackUpVGSpendStatusesCallback callback) {
+  ledger_->database()->BackUpVGSpendStatuses(std::move(callback));
 }
 
-void BackupRestore::BackUpVGSpendStatus() {
-  ledger_->database()->BackUpVGSpendStatus(base::BindOnce(
-      &BackupRestore::OnBackUpVGSpendStatus, base::Unretained(this)));
-}
-
-void BackupRestore::OnBackUpVGSpendStatus(
-    type::Result result,
-    type::VirtualGrantSpendStatusPtr&& spend_status_ptr) const {
-  if (result == type::Result::LEDGER_OK) {
-    BLOG(1, "VG spend status: " << ExtractVGSpendStatus(spend_status_ptr));
-  } else {
-    BLOG(0, "BackupRestore::BackUpVGSpendStatus() failed!");
-  }
-}
-
-std::string BackupRestore::ExtractVGSpendStatus(
-    const type::VirtualGrantSpendStatusPtr& spend_status_ptr) const {
-  DCHECK(spend_status_ptr);
-
-  base::Value vg_spend_status{base::Value::Type::LIST};
-  for (const auto& token_ptr : spend_status_ptr->tokens) {
-    base::Value token{base::Value::Type::DICTIONARY};
-    token.SetIntKey("token_id", token_ptr->token_id);
-    token.SetIntKey("redeemed_at", token_ptr->redeemed_at);
-    token.SetIntKey("redeem_type", static_cast<int>(token_ptr->redeem_type));
-    vg_spend_status.Append(std::move(token));
-  }
-
-  base::Value root{base::Value::Type::DICTIONARY};
-  root.SetKey("vg_spend_status", std::move(vg_spend_status));
-  root.SetIntKey("backed_up_at", util::GetCurrentTimeStamp());
-
-  std::string result{};
-  base::JSONWriter::Write(root, &result);
-
-  return result;
-}
+// std::string BackupRestore::ExtractVGSpendStatus(
+//    const type::VirtualGrantSpendStatusPtr& spend_status_ptr) const {
+//  DCHECK(spend_status_ptr);
+//
+//  base::Value vg_spend_status{base::Value::Type::LIST};
+//  for (const auto& token_ptr : spend_status_ptr->tokens) {
+//    base::Value token{base::Value::Type::DICTIONARY};
+//    token.SetIntKey("token_id", token_ptr->token_id);
+//    token.SetIntKey("redeemed_at", token_ptr->redeemed_at);
+//    token.SetIntKey("redeem_type", static_cast<int>(token_ptr->redeem_type));
+//    vg_spend_status.Append(std::move(token));
+//  }
+//
+//  base::Value root{base::Value::Type::DICTIONARY};
+//  root.SetKey("vg_spend_status", std::move(vg_spend_status));
+//  root.SetIntKey("backed_up_at", util::GetCurrentTimeStamp());
+//
+//  std::string result{};
+//  base::JSONWriter::Write(root, &result);
+//
+//  return result;
+//}
 
 void BackupRestore::BackUpVGBody(type::CredsBatchType trigger_type,
                                  const std::string& trigger_id) const {

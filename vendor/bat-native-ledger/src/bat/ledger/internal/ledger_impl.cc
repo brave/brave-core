@@ -137,7 +137,6 @@ void LedgerImpl::StartServices() {
   promotion()->Initialize();
   api()->Initialize();
   recovery_->Check();
-  backup_restore()->StartBackUpVGSpendStatus();
 }
 
 void LedgerImpl::Initialize(bool execute_create_script,
@@ -2248,6 +2247,12 @@ void LedgerImpl::RestoreVGs(RestoreVGsCallback callback) {
 }
         )",
         std::move(callback));
+  });
+}
+
+void LedgerImpl::BackUpVGSpendStatuses(BackUpVGSpendStatusesCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    backup_restore()->BackUpVGSpendStatuses(std::move(callback));
   });
 }
 

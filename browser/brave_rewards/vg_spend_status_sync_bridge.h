@@ -30,7 +30,7 @@ class VgSpendStatusSyncBridge : public syncer::ModelTypeSyncBridge {
 
   base::WeakPtr<syncer::ModelTypeControllerDelegate> GetControllerDelegate();
 
-  void AddVgSpendStatus(sync_pb::VgSpendStatusSpecifics vg_spend_status);
+  void UpdateVgSpendStatuses(std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
 
   void GetVgSpendStatuses(DataCallback callback);
 
