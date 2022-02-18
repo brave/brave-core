@@ -30,16 +30,17 @@ public class BraveVariationsSeedFetcher extends VariationsSeedFetcher {
     protected String getConnectionString(@VariationsPlatform int platform, String restrictMode,
             String milestone, String channel) {
         if (!CommandLine.getInstance().hasSwitch(VariationsSwitches.VARIATIONS_SERVER_URL)) {
-            // If there is no alternative variations server specified, we still don't want to connet
-            // to Google's server.
+            // If there is no alternative variations server specified, we still don't want to
+            // connect to Google's server.
             return "";
         }
 
         String urlString = super.getConnectionString(platform, restrictMode, milestone, channel);
         // Relacing Google's variations server with ours, but keep parameters.
+        int paramsPosition = urlString.indexOf("?", 0);
         urlString =
                 CommandLine.getInstance().getSwitchValue(VariationsSwitches.VARIATIONS_SERVER_URL)
-                + urlString.substring(urlString.indexOf("?", 0));
+                + (paramsPosition > 0 ? urlString.substring(paramsPosition) : "");
         return urlString;
     }
 }
