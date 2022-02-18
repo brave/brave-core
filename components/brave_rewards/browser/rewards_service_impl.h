@@ -31,6 +31,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "brave/components/sync/protocol/vg_specifics.pb.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/browser_thread.h"
@@ -100,6 +101,7 @@ class RewardsServiceImpl : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
                            public greaselion::GreaselionService::Observer,
 #endif
+                           public VgSyncService::Observer,
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -378,6 +380,12 @@ class RewardsServiceImpl : public RewardsService,
   // GreaselionService::Observer:
   void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
 #endif
+
+  void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
+
+  void OnRestoreVgs(ledger::type::Result result);
 
   void OnConnectionClosed(const ledger::type::Result result);
 
@@ -777,7 +785,11 @@ class RewardsServiceImpl : public RewardsService,
 
   bool IsValidWalletType(const std::string& wallet_type) const;
 
-  //void AddPair();
+  void BackUpVgSpendStatuses() override;
+
+  void OnBackUpVgSpendStatuses(
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
 
   //void OnGetPairs(RestoreVGsCallback callback,
   //                std::vector<bat_ledger::mojom::PairPtr> pairs);

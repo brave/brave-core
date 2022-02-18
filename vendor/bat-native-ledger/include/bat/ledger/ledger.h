@@ -16,6 +16,7 @@
 #include "bat/ledger/export.h"
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/ledger_client.h"
+#include "brave/components/sync/protocol/vg_specifics.pb.h"
 
 namespace ledger {
 
@@ -74,6 +75,10 @@ using GetAllMonthlyReportIdsCallback =
 using GetEventLogsCallback = std::function<void(type::EventLogs)>;
 
 using RestoreVGsCallback = base::OnceCallback<void(type::Result)>;
+
+using BackUpVgSpendStatusesCallback =
+    base::OnceCallback<void(type::Result,
+                            std::vector<sync_pb::VgSpendStatusSpecifics>)>;
 
 using SKUOrderCallback = std::function<void(type::Result, const std::string&)>;
 
@@ -366,6 +371,9 @@ class LEDGER_EXPORT Ledger {
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
   virtual void RestoreVGs(RestoreVGsCallback callback) = 0;
+
+  virtual void BackUpVgSpendStatuses(
+      BackUpVgSpendStatusesCallback callback) = 0;
 
   virtual void GetBraveWallet(GetBraveWalletCallback callback) = 0;
 

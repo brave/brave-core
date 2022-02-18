@@ -7,6 +7,7 @@
 #define BRAVELEDGER_DATABASE_DATABASE_REWARDS_BACKUP_H_
 
 #include "bat/ledger/internal/database/database_table.h"
+#include "brave/components/sync/protocol/vg_specifics.pb.h"
 
 namespace ledger {
 namespace database {
@@ -14,8 +15,9 @@ namespace database {
 using BackUpVGBodyCallback =
     base::OnceCallback<void(type::VirtualGrantBodyPtr&&)>;
 
-using BackUpVGSpendStatusCallback =
-    base::OnceCallback<void(type::Result, type::VirtualGrantSpendStatusPtr&&)>;
+using BackUpVgSpendStatusesCallback =
+    base::OnceCallback<void(type::Result,
+                            std::vector<sync_pb::VgSpendStatusSpecifics>)>;
 
 using RestoreVGsCallback = base::OnceCallback<void(type::Result)>;
 
@@ -29,7 +31,7 @@ class DatabaseVGBackupRestore : public DatabaseTable {
                     const std::string& trigger_id,
                     BackUpVGBodyCallback callback) const;
 
-  void BackUpVGSpendStatus(BackUpVGSpendStatusCallback callback) const;
+  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) const;
 
   void RestoreVGs(type::VirtualGrants&& vgs, RestoreVGsCallback callback) const;
 
@@ -43,8 +45,8 @@ class DatabaseVGBackupRestore : public DatabaseTable {
   void OnBackUpVGBody(BackUpVGBodyCallback callback,
                       type::DBCommandResponsePtr response) const;
 
-  void OnBackUpVGSpendStatus(BackUpVGSpendStatusCallback callback,
-                             type::DBCommandResponsePtr response) const;
+  void OnBackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback,
+                               type::DBCommandResponsePtr response) const;
 
   bool AllNULLRecord(const type::DBRecordPtr& record) const;
 

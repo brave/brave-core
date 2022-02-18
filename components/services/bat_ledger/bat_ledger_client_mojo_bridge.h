@@ -126,6 +126,8 @@ class BatLedgerClientMojoBridge :
 
   absl::optional<std::string> DecryptString(const std::string& name) override;
 
+  void BackUpVgSpendStatuses() override;
+
  private:
   bool Connected() const;
 

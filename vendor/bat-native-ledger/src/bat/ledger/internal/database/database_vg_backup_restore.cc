@@ -128,8 +128,8 @@ void DatabaseVGBackupRestore::OnBackUpVGBody(
   std::move(callback).Run(std::move(vg_body));
 }
 
-void DatabaseVGBackupRestore::BackUpVGSpendStatus(
-    BackUpVGSpendStatusCallback callback) const {
+void DatabaseVGBackupRestore::BackUpVgSpendStatuses(
+    BackUpVgSpendStatusesCallback callback) const {
   auto command = type::DBCommand::New();
   command->type = type::DBCommand::Type::READ;
   command->command = R"(
@@ -168,12 +168,12 @@ void DatabaseVGBackupRestore::BackUpVGSpendStatus(
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
-      base::BindOnce(&DatabaseVGBackupRestore::OnBackUpVGSpendStatus,
+      base::BindOnce(&DatabaseVGBackupRestore::OnBackUpVgSpendStatuses,
                      base::Unretained(this), std::move(callback)));
 }
 
-void DatabaseVGBackupRestore::OnBackUpVGSpendStatus(
-    BackUpVGSpendStatusCallback callback,
+void DatabaseVGBackupRestore::OnBackUpVgSpendStatuses(
+    BackUpVgSpendStatusesCallback callback,
     type::DBCommandResponsePtr response) const {
   if (!response ||
       response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
@@ -189,21 +189,21 @@ void DatabaseVGBackupRestore::OnBackUpVGSpendStatus(
     return std::move(callback).Run(type::Result::IN_PROGRESS, {});
   }
 
-  auto vg_spend_status = type::VirtualGrantSpendStatus::New();
+  std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses;
 
   for (const auto& record : records) {
     auto* record_pointer = record.get();
 
-    auto token = type::VirtualGrantSpendStatusTokenInfo::New();
-    token->token_id = GetInt64Column(record_pointer, 0);
-    token->redeemed_at = GetInt64Column(record_pointer, 1);
-    token->redeem_type =
-        static_cast<type::RewardsType>(GetInt64Column(record_pointer, 2));
+    sync_pb::VgSpendStatusSpecifics vg_spend_status;
+    vg_spend_status.set_token_id(GetInt64Column(record_pointer, 0));
+    vg_spend_status.set_redeemed_at(GetInt64Column(record_pointer, 1));
+    vg_spend_status.set_redeem_type(GetInt64Column(record_pointer, 2));
 
-    vg_spend_status->tokens.emplace_back(std::move(token));
+    vg_spend_statuses.emplace_back(std::move(vg_spend_status));
   }
 
-  std::move(callback).Run(type::Result::LEDGER_OK, std::move(vg_spend_status));
+  std::move(callback).Run(type::Result::LEDGER_OK,
+                          std::move(vg_spend_statuses));
 }
 
 bool DatabaseVGBackupRestore::AllNULLRecord(

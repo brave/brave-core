@@ -1147,6 +1147,28 @@ void BatLedgerImpl::RestoreVGs(RestoreVGsCallback callback) {
 }
 
 // static
+void BatLedgerImpl::OnBackUpVgSpendStatuses(
+    CallbackHolder<BackUpVgSpendStatusesCallback>* holder,
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(vg_spend_statuses));
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::BackUpVgSpendStatuses(
+    BackUpVgSpendStatusesCallback callback) {
+  auto* holder = new CallbackHolder<BackUpVgSpendStatusesCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->BackUpVgSpendStatuses(
+      base::BindOnce(BatLedgerImpl::OnBackUpVgSpendStatuses, holder));
+}
+
+// static
 void BatLedgerImpl::OnGetBraveWallet(
     CallbackHolder<GetBraveWalletCallback>* holder,
     ledger::type::BraveWalletPtr wallet) {

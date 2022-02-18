@@ -346,6 +346,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
     greaselion_service_->AddObserver(this);
   }
 #endif
+
+  vg_sync_service_->SetObserver(this);
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
@@ -356,6 +358,8 @@ RewardsServiceImpl::~RewardsServiceImpl() {
     greaselion_service_->RemoveObserver(this);
   }
 #endif
+
+  vg_sync_service_->SetObserver(nullptr);
 
   if (ledger_database_) {
     file_task_runner_->DeleteSoon(FROM_HERE, ledger_database_.release());
@@ -1415,6 +1419,17 @@ void RewardsServiceImpl::OnRulesReady(
   EnableGreaseLion();
 }
 #endif
+
+void RewardsServiceImpl::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  //if (Connected()) {
+  //  bat_ledger_->RestoreVGs(base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
+  //                                         AsWeakPtr(), std::move(callback)));
+  //}
+}
+
+void RewardsServiceImpl::OnRestoreVgs(ledger::type::Result result) {}
 
 void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
@@ -3564,14 +3579,18 @@ void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
   }
 }
 
-//void RewardsServiceImpl::AddPair() {
-//  std::string value(8, 0);
-//  for (auto& c : value) {
-//    c = base::RandInt('a', 'z');
-//  }
-//
-//  pair_sync_service_->AddPair(clock_->Now().since_origin().InMicroseconds(),
-//                              std::move(value));
-//}
+void RewardsServiceImpl::BackUpVgSpendStatuses() {
+  if (Connected()) {
+    bat_ledger_->BackUpVgSpendStatuses(base::BindOnce(
+        &RewardsServiceImpl::OnBackUpVgSpendStatuses, AsWeakPtr()));
+  }
+}
+
+void RewardsServiceImpl::OnBackUpVgSpendStatuses(
+    ledger::type::Result result,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  VLOG(0) << "OnBackUpVgSpendStatuses";
+  vg_sync_service_->BackUpVgSpendStatuses(std::move(vg_spend_statuses));
+}
 
 }  // namespace brave_rewards
