@@ -20,7 +20,8 @@ import {
   TrezorErrorsCodes,
   SignTransactionResponse,
   SignMessageResponse,
-  TrezorGetAccountsResponse
+  TrezorGetAccountsResponse,
+  SignTypedMessageResponsePayload
 } from './trezor-messages'
 import { sendTrezorCommand, closeTrezorBridge } from './trezor-bridge-transport'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
@@ -142,6 +143,39 @@ export default class TrezorBridgeKeyring implements TrezorKeyring {
       return { success: false, error: unsuccess.error, code: unsuccess.code }
     }
     return { success: true, payload: '0x' + response.payload.signature }
+  }
+
+  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareMessageOperationResult> => {
+    if (!this.isUnlocked()) {
+      const unlocked = await this.unlock()
+      if (!unlocked.success) {
+        return unlocked
+      }
+    }
+    const data = await this.sendTrezorCommand<SignTypedMessageResponsePayload>({
+      command: TrezorCommand.SignTypedMessage,
+      id: path,
+      payload: {
+        path: path,
+        domain_separator_hash: domainSeparatorHex,
+        message_hash: hashStructMessageHex
+      },
+      origin: window.origin
+    })
+
+    if (data === TrezorErrorsCodes.BridgeNotReady ||
+        data === TrezorErrorsCodes.CommandInProgress) {
+      return this.createErrorFromCode(data)
+    }
+    const response: SignMessageResponse = data.payload
+    if (!response.success) {
+      const unsuccess = response.payload
+      if (unsuccess.code && unsuccess.code === 'Method_InvalidParameter') {
+        return { success: false, error: getLocale('braveWalletTrezorSignTypedDataError') }
+      }
+      return { success: false, error: unsuccess.error, code: unsuccess.code }
+    }
+    return { success: true, payload: response.payload.signature }
   }
 
   private async sendTrezorCommand<T> (command: TrezorFrameCommand): Promise<T | TrezorErrorsCodes> {

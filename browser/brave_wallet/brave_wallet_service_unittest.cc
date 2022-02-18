@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include <string>
 
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
@@ -1315,7 +1316,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      1, address, std::string(message.begin(), message.end()));
+      1, address, std::string(message.begin(), message.end()), false,
+      absl::nullopt, absl::nullopt);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
       std::move(request1), base::BindLambdaForTesting(
@@ -1337,7 +1339,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessageHardware) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      2, address, std::string(message.begin(), message.end()));
+      2, address, std::string(message.begin(), message.end()), false,
+      absl::nullopt, absl::nullopt);
   service_->AddSignMessageRequest(
       std::move(request2), base::BindLambdaForTesting(
                                [&](bool approved, const std::string& signature,
@@ -1359,7 +1362,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      1, address, std::string(message.begin(), message.end()));
+      1, address, std::string(message.begin(), message.end()), false,
+      absl::nullopt, absl::nullopt);
   bool callback_is_called = false;
   service_->AddSignMessageRequest(
       std::move(request1), base::BindLambdaForTesting(
@@ -1377,7 +1381,8 @@ TEST_F(BraveWalletServiceUnitTest, SignMessage) {
   callback_is_called = false;
   std::string expected_error = "error";
   auto request2 = mojom::SignMessageRequest::New(
-      2, address, std::string(message.begin(), message.end()));
+      2, address, std::string(message.begin(), message.end()), false,
+      absl::nullopt, absl::nullopt);
   service_->AddSignMessageRequest(
       std::move(request2), base::BindLambdaForTesting(
                                [&](bool approved, const std::string& signature,
@@ -1569,7 +1574,8 @@ TEST_F(BraveWalletServiceUnitTest, Reset) {
   std::string address = "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c";
   std::string message = "0xAB";
   auto request1 = mojom::SignMessageRequest::New(
-      1, address, std::string(message.begin(), message.end()));
+      1, address, std::string(message.begin(), message.end()), false,
+      absl::nullopt, absl::nullopt);
   service_->AddSignMessageRequest(
       std::move(request1),
       base::BindLambdaForTesting(

@@ -18,12 +18,16 @@ class MockApp {
   async signPersonalMessage (path: string, message: Buffer) {
     return Promise.resolve(this.signature)
   }
+
+  async signEIP712HashedMessage (path: string, domainSeparatorHex: string, hashStructMessageHex: string) {
+    return Promise.resolve(this.signature)
+  }
 }
 
-const createLedgerKeyring = () => {
+const createLedgerKeyring = (app: MockApp = new MockApp()) => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
   ledgerHardwareKeyring.unlock = async () => {
-    ledgerHardwareKeyring.app = new MockApp()
+    ledgerHardwareKeyring.app = app
     ledgerHardwareKeyring.deviceId = 'device1'
     return { success: true }
   }
@@ -184,4 +188,36 @@ test('Sign personal message failed', () => {
   return expect(ledgerHardwareKeyring.signPersonalMessage(
     'm/44\'/60\'/0\'/0/0', 'message'))
     .resolves.toMatchObject({ success: false })
+})
+
+test('Sign typed message success', () => {
+  const app = new MockApp()
+  app.signature = { v: 28, r: 'b68983', s: 'r68983' }
+  const ledgerHardwareKeyring = createLedgerKeyring(app)
+  return expect(ledgerHardwareKeyring.signEip712Message(
+    'm/44\'/60\'/0\'/0/0', 'domainSeparatorHex', 'hashStructMessageHex'))
+    .resolves.toStrictEqual({ payload: '0xb68983r6898301', success: true })
+})
+
+test('Sign typed message locked', () => {
+  const ledgerHardwareKeyring = new LedgerBridgeKeyring()
+  ledgerHardwareKeyring.unlock = async () => {
+    return { success: false }
+  }
+  return expect(ledgerHardwareKeyring.signEip712Message(
+    'm/44\'/60\'/0\'/0/0', 'domainSeparatorHex', 'hashStructMessageHex'))
+    .resolves.toStrictEqual({ success: false })
+})
+
+test('Sign typed message error', () => {
+  const app = new MockApp()
+  app.signEIP712HashedMessage = async (path: string,
+    domainSeparatorHex: string,
+    hashStructMessageHex: string) => {
+      throw Error('some error')
+  }
+  const ledgerHardwareKeyring = createLedgerKeyring(app)
+  return expect(ledgerHardwareKeyring.signEip712Message(
+    'm/44\'/60\'/0\'/0/0', 'domainSeparatorHex', 'hashStructMessageHex'))
+    .resolves.toStrictEqual({ success: false, error: 'some error', code: 'Error' })
 })

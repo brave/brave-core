@@ -637,11 +637,16 @@ TEST(EthSignedTypedDataHelperUnitTest, GetTypedDataMessageToSign) {
 
   auto ds_hash = helper->HashStruct("EIP712Domain", *ds_value);
   ASSERT_TRUE(ds_hash);
-  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*ds_hash)),
+  auto domain_hash = helper->GetTypedDataDomainHash(*ds_value);
+  ASSERT_TRUE(domain_hash);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*domain_hash)),
             "f2cee375fa42b42143804025fc449deafd50cc031ca257e0b194a650a912090f");
-
+  auto primary_hash = helper->GetTypedDataPrimaryHash("Mail", *data_value);
+  ASSERT_TRUE(primary_hash);
+  EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*primary_hash)),
+            "c52c0ee5d84264471806290a3f2c4cecfc5490626bf912d01f240d7a274b371e");
   auto message_to_sign =
-      helper->GetTypedDataMessageToSign("Mail", *data_value, *ds_value);
+      helper->GetTypedDataMessageToSign(*domain_hash, *primary_hash);
   ASSERT_TRUE(message_to_sign);
   EXPECT_EQ(base::ToLowerASCII(base::HexEncode(*message_to_sign)),
             "be609aee343fb3c4b28e1df9e632fca64fcfaede20f02e86244efddf30957bd2");

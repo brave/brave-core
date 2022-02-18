@@ -106,12 +106,22 @@ export async function signLedgerTransaction (
   return { success: result.status }
 }
 
-export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, path: string, message: string): Promise<SignHardwareMessageOperationResult> {
+export async function signMessageWithHardwareKeyring (vendor: HardwareVendor, path: string, messageData: BraveWallet.SignMessageRequest): Promise<SignHardwareMessageOperationResult> {
   const deviceKeyring = getHardwareKeyring(vendor)
   if (deviceKeyring instanceof LedgerBridgeKeyring) {
-    return deviceKeyring.signPersonalMessage(path, message)
+    if (messageData.isEip712) {
+      if (!messageData.domainHash || !messageData.primaryHash) {
+        return { success: false, error: getLocale('braveWalletUnknownInternalError') }
+      }
+      return deviceKeyring.signEip712Message(path, messageData.domainHash, messageData?.primaryHash)
+    } else return deviceKeyring.signPersonalMessage(path, messageData.message)
   } else if (deviceKeyring instanceof TrezorBridgeKeyring) {
-    return deviceKeyring.signPersonalMessage(path, message)
+    if (messageData.isEip712) {
+      if (!messageData.domainHash || !messageData.primaryHash) {
+        return { success: false, error: getLocale('braveWalletUnknownInternalError') }
+      }
+      return deviceKeyring.signEip712Message(path, messageData.domainHash, messageData.primaryHash)
+    } else return deviceKeyring.signPersonalMessage(path, messageData.message)
   }
   return { success: false, error: getLocale('braveWalletUnknownKeyringError') }
 }

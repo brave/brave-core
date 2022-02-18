@@ -361,21 +361,30 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
 }
 
 absl::optional<std::vector<uint8_t>>
-EthSignTypedDataHelper::GetTypedDataMessageToSign(
-    const std::string& primary_type_name,
-    const base::Value& message,
+EthSignTypedDataHelper::GetTypedDataDomainHash(
     const base::Value& domain_separator) const {
+  return HashStruct("EIP712Domain", domain_separator);
+}
+
+absl::optional<std::vector<uint8_t>>
+EthSignTypedDataHelper::GetTypedDataPrimaryHash(
+    const std::string& primary_type_name,
+    const base::Value& message) const {
+  return HashStruct(primary_type_name, message);
+}
+
+// static
+absl::optional<std::vector<uint8_t>>
+EthSignTypedDataHelper::GetTypedDataMessageToSign(
+    const std::vector<uint8_t>& domain_hash,
+    const std::vector<uint8_t>& primary_hash) {
+  if (domain_hash.empty() || primary_hash.empty())
+    return absl::nullopt;
   std::vector<uint8_t> encoded_data({0x19, 0x01});
-  auto domain_hash = HashStruct("EIP712Domain", domain_separator);
-  if (!domain_hash)
-    return absl::nullopt;
-  encoded_data.insert(encoded_data.end(), domain_hash->begin(),
-                      domain_hash->end());
-  auto primary_hash = HashStruct(primary_type_name, message);
-  if (!primary_hash)
-    return absl::nullopt;
-  encoded_data.insert(encoded_data.end(), primary_hash->begin(),
-                      primary_hash->end());
+  encoded_data.insert(encoded_data.end(), domain_hash.begin(),
+                      domain_hash.end());
+  encoded_data.insert(encoded_data.end(), primary_hash.begin(),
+                      primary_hash.end());
   return KeccakHash(encoded_data);
 }
 
