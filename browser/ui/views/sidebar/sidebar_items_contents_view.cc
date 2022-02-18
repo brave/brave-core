@@ -25,12 +25,15 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/views/event_utils.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/default_style.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
+#include "ui/base/window_open_disposition.h"
 #include "ui/compositor/compositor.h"
+#include "ui/events/event.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -383,7 +386,8 @@ void SidebarItemsContentsView::UpdateItemViewStateAt(int index, bool active) {
   }
 }
 
-void SidebarItemsContentsView::OnItemPressed(const views::View* item) {
+void SidebarItemsContentsView::OnItemPressed(const views::View* item,
+                                             const ui::Event& event) {
   auto* controller = browser_->sidebar_controller();
   const int index = GetIndexOf(item);
   if (controller->IsActiveIndex(index)) {
@@ -393,7 +397,11 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item) {
     return;
   }
 
-  controller->ActivateItemAt(index);
+  WindowOpenDisposition open_disposition = WindowOpenDisposition::UNKNOWN;
+  if (event_utils::IsPossibleDispositionEvent(event))
+    open_disposition = ui::DispositionFromEventFlags(event.flags());
+
+  controller->ActivateItemAt(index, open_disposition);
 }
 
 gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(

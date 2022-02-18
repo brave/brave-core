@@ -90,8 +90,7 @@ class SidebarItemsContentsView : public views::View,
   bool IsBuiltInTypeItemView(views::View* view) const;
 
   // Called when each item is pressed.
-  void OnItemPressed(const views::View* item);
-
+  void OnItemPressed(const views::View* item, const ui::Event& event);
   void OnContextMenuClosed();
 
   gfx::ImageSkia GetImageForBuiltInItems(

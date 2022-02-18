@@ -7,6 +7,7 @@
 
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/ui/views/event_utils.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
@@ -58,6 +59,12 @@ void SidebarItemView::OnPaintBorder(gfx::Canvas* canvas) {
         theme_provider->GetColor(
             BraveThemeProperties::COLOR_SIDEBAR_ITEM_DRAG_INDICATOR_COLOR));
   }
+}
+
+bool SidebarItemView::IsTriggerableEvent(const ui::Event& e) {
+  return e.type() == ui::ET_GESTURE_TAP ||
+         e.type() == ui::ET_GESTURE_TAP_DOWN ||
+         event_utils::IsPossibleDispositionEvent(e);
 }
 
 void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
