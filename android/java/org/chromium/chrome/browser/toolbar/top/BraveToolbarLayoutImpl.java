@@ -134,7 +134,6 @@ import java.util.Locale;
 public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         implements BraveToolbarLayout, OnClickListener, View.OnLongClickListener,
                    BraveRewardsObserver, BraveRewardsNativeWorker.PublisherObserver {
-    public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
     private static final String JAPAN_COUNTRY_CODE = "JP";
     private static final List<String> mBraveSearchEngineDefaultRegions =
             Arrays.asList("CA", "DE", "FR", "GB", "US");
@@ -300,10 +299,24 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        // On update check for hide rewards icon pref and update it with new show rewards icon pref
+        if (!PackageUtils.isFirstInstall(getContext())
+                && !sharedPreferences.getBoolean(
+                        AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION, false)) {
+            boolean value = sharedPreferences.getBoolean(
+                    AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false);
+            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+            sharedPreferencesEditor.putBoolean(
+                    AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, !value);
+            sharedPreferencesEditor.putBoolean(
+                    AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION, true);
+            sharedPreferencesEditor.apply();
+        }
+
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-                && !sharedPreferences.getBoolean(
-                        AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)
+                && sharedPreferences.getBoolean(
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)
                 && mRewardsLayout != null) {
             mRewardsLayout.setVisibility(View.VISIBLE);
         }
@@ -1050,8 +1063,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         } else if (isNativeLibraryReady()
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-                && !sharedPreferences.getBoolean(
-                        AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
+                && sharedPreferences.getBoolean(
+                        AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)) {
             mRewardsLayout.setVisibility(View.VISIBLE);
             updateShieldsLayoutBackground(false);
         }
