@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/notreached.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
@@ -22,6 +23,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/simple_menu_model.h"
 #include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/skia_util.h"
@@ -50,11 +52,63 @@ class BraveVPNButtonHighlightPathGenerator
   }
 };
 
+class VPNButtonMenuModel : public ui::SimpleMenuModel,
+                           public ui::SimpleMenuModel::Delegate,
+                           public BraveVPNServiceObserver {
+ public:
+  explicit VPNButtonMenuModel(Browser* browser)
+      : SimpleMenuModel(this),
+        browser_(browser),
+        service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
+    DCHECK(service_);
+    Observe(service_);
+    Build(service_->is_purchased_user());
+  }
+
+  ~VPNButtonMenuModel() override = default;
+  VPNButtonMenuModel(const VPNButtonMenuModel&) = delete;
+  VPNButtonMenuModel& operator=(const VPNButtonMenuModel&) = delete;
+
+ private:
+  // ui::SimpleMenuModel::Delegate override:
+  void ExecuteCommand(int command_id, int event_flags) override {
+    chrome::ExecuteCommand(browser_, command_id);
+  }
+
+  // BraveVPNServiceObserver overrides:
+  void OnPurchasedStateChanged(
+      brave_vpn::mojom::PurchasedState state) override {
+    // Rebuild menu items based on purchased state change.
+    Build(service_->is_purchased_user());
+  }
+
+  void Build(bool purchased) {
+    // Clear all menu items and re-build as purchased state can be updated
+    // during the runtime.
+    Clear();
+    AddItemWithStringId(IDC_TOGGLE_BRAVE_VPN_TOOLBAR_BUTTON,
+                        IDS_BRAVE_VPN_HIDE_VPN_BUTTON_MENU_ITEM);
+    if (purchased) {
+      AddItemWithStringId(IDC_SEND_BRAVE_VPN_FEEDBACK,
+                          IDS_BRAVE_VPN_SHOW_FEEDBACK_MENU_ITEM);
+      AddItemWithStringId(IDC_ABOUT_BRAVE_VPN,
+                          IDS_BRAVE_VPN_ABOUT_VPN_MENU_ITEM);
+      AddItemWithStringId(IDC_MANAGE_BRAVE_VPN_PLAN,
+                          IDS_BRAVE_VPN_MANAGE_MY_PLAN_MENU_ITEM);
+    }
+  }
+
+  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BraveVpnServiceDesktop> service_ = nullptr;
+};
+
 }  // namespace
 
 BraveVPNButton::BraveVPNButton(Browser* browser)
     : ToolbarButton(base::BindRepeating(&BraveVPNButton::OnButtonPressed,
-                                        base::Unretained(this))),
+                                        base::Unretained(this)),
+                    std::make_unique<VPNButtonMenuModel>(browser),
+                    nullptr),
       browser_(browser),
       service_(BraveVpnServiceFactory::GetForProfile(browser_->profile())) {
   DCHECK(service_);
