@@ -1237,12 +1237,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             } else if (!data.gasPrice.isEmpty()) {
                 // We have hardcoded legacy tx gas fields.
                 isEIP1559 = false;
-            }
-            for (NetworkInfo network : networks) {
-                if (!mCurrentChainId.equals(network.chainId)) {
-                    continue;
-                }
-                isEIP1559 = network.data.getEthData().isEip1559;
+            } else {
+                for (NetworkInfo network : networks) {
+                    if (!mCurrentChainId.equals(network.chainId)) {
+                        continue;
+                    }
+                    isEIP1559 = network.data.getEthData().isEip1559;
             }
 
             assert mTxService != null;
