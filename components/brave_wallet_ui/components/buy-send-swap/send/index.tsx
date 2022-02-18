@@ -11,6 +11,7 @@ import { NavButton } from '../../extension'
 import SwapInputComponent from '../swap-input-component'
 import { getLocale } from '../../../../common/locale'
 import { ErrorText, ResetButton } from '../shared-styles'
+import { Tooltip } from '../../shared'
 
 // Utils
 import Amount from '../../../utils/amount'
@@ -83,6 +84,17 @@ function Send (props: Props) {
     return amountWei.gt(selectedAssetBalance)
   }, [selectedAssetBalance, selectedAssetAmount, selectedAsset])
 
+  const tooltipMessage = React.useMemo((): string => {
+    const amountWrapped = new Amount(selectedAssetAmount)
+    if (amountWrapped.isUndefined() || amountWrapped.isZero()) {
+      return getLocale('braveWalletZeroBalanceError')
+    }
+    if (toAddressOrUrl === '') {
+      return getLocale('braveWalletAddressRequiredError')
+    }
+    return ''
+  }, [toAddressOrUrl, selectedAssetAmount])
+
   return (
     <StyledWrapper>
       <SwapInputComponent
@@ -111,19 +123,27 @@ function Send (props: Props) {
       {insufficientFundsError &&
         <ErrorText>{getLocale('braveWalletSwapInsufficientBalance')}</ErrorText>
       }
-      <NavButton
-        disabled={addressError !== '' ||
-          toAddressOrUrl === '' ||
+      <Tooltip
+        text={tooltipMessage}
+        isVisible={
           parseFloat(selectedAssetAmount) === 0 ||
           selectedAssetAmount === '' ||
-          insufficientFundsError ||
-          amountValidationError !== undefined
+          toAddressOrUrl === ''
         }
-        buttonType='primary'
-        text={getLocale('braveWalletSend')}
-        onSubmit={onSubmit}
-      />
-
+      >
+        <NavButton
+          disabled={addressError !== '' ||
+            toAddressOrUrl === '' ||
+            parseFloat(selectedAssetAmount) === 0 ||
+            selectedAssetAmount === '' ||
+            insufficientFundsError ||
+            amountValidationError !== undefined
+          }
+          buttonType='primary'
+          text={getLocale('braveWalletSend')}
+          onSubmit={onSubmit}
+        />
+      </Tooltip>
       <ResetButton
         onClick={onReset}
       >

@@ -34,6 +34,7 @@ export const StyledButton = styled(WalletButton) <Partial<StyleProps>>`
     p.buttonType === 'primary' ||
       p.buttonType === 'confirm' ||
       p.buttonType === 'sign' ? '0px' : '8px'};
+  pointer-events: ${(p) => p.disabled ? 'none' : 'auto'};
 `
 
 export const ButtonText = styled.span<Partial<StyleProps>>`

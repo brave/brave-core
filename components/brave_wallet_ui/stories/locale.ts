@@ -424,9 +424,11 @@ provideStrings({
   braveWalletNotDomain: 'Domain is not registered',
   braveWalletSameAddressError: 'The receiving address is your own address',
   braveWalletContractAddressError: 'The receiving address is a tokens contract address',
-  braveWalletAddressMissingChecksumInfoWarning: 'Missing checksum information',
-  braveWalletNotValidChecksumAddressError: 'Invalid checksum information',
+  braveWalletAddressMissingChecksumInfoWarning: 'This address cannot be verified (missing checksum). Proceed?',
+  braveWalletNotValidChecksumAddressError: 'Address did not pass verification (invalid checksum). Please try again, replacing lowercase letters with uppercase.',
   braveWalletMissingGasLimitError: 'Missing gas limit',
+  braveWalletZeroBalanceError: 'Amount must be greater than 0',
+  braveWalletAddressRequiredError: 'To address is required',
 
   // Transaction Queue Strings
   braveWalletQueueOf: 'of',
