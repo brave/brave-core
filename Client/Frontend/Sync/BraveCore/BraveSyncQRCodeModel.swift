@@ -14,7 +14,6 @@ enum BraveSyncQRCodeError {
     case none
     case insecure
     case newerVersion
-    case olderVersion
     case invalidFormat
     case expired
     case futureDate
