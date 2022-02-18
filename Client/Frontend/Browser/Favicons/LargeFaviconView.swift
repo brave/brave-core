@@ -30,6 +30,15 @@ class LargeFaviconView: UIView {
         }
     }
     
+    func cancelLoading() {
+        fetcher = nil
+        imageView.image = nil
+        imageView.contentMode = .scaleAspectFit
+        backgroundColor = .clear
+        layoutMargins = .zero
+        backgroundView.isHidden = false
+    }
+    
     private var fetcher: FaviconFetcher?
     
     private let imageView = UIImageView().then {
