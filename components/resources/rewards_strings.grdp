@@ -44,7 +44,7 @@
     Monthly Tips
   </message>
   <message name="IDS_REWARDS_WALLET_MY_WALLET" desc="">
-    My Wallet
+    Verified
   </message>
   <message name="IDS_REWARDS_WALLET_ONE_TIME_TIPS" desc="">
     One-Time Tips
@@ -71,7 +71,7 @@
     Verified
   </message>
   <message name="IDS_REWARDS_WALLET_VERIFY" desc="">
-    Verify Wallet
+    Verify
   </message>
   <message name="IDS_REWARDS_WALLET_YOUR_BALANCE" desc="">
     Your Balance

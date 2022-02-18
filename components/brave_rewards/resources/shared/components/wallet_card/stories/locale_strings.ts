@@ -13,7 +13,7 @@ export const localeStrings = {
   walletEstimatedEarnings: 'Estimated Earnings',
   walletLogIntoYourAccount: 'Log into your $1 account',
   walletMonthlyTips: 'Monthly Tips',
-  walletMyWallet: 'My Wallet',
+  walletMyWallet: 'Verified',
   walletOneTimeTips: 'One-Time Tips',
   walletPending: 'Pending',
   walletPendingContributions: 'Pending contributions',
@@ -22,6 +22,6 @@ export const localeStrings = {
   walletSeeAll: 'See all',
   walletViewStatement: 'View statement',
   walletVerified: 'Verified',
-  walletVerify: 'Verify Wallet',
+  walletVerify: 'Verify',
   walletYourBalance: 'Your Balance'
 }
