@@ -7,11 +7,6 @@
 
 #include <utility>
 
-#include "brave/components/sync/protocol/vg_specifics.pb.h"
-
-// using bat_ledger::mojom::Pair;
-// using bat_ledger::mojom::PairPtr;
-
 VgSyncService::VgSyncService(
     std::unique_ptr<VgBodySyncBridge> vg_body_sync_bridge,
     std::unique_ptr<VgSpendStatusSyncBridge> vg_spend_status_sync_bridge)
@@ -24,12 +19,14 @@ VgSyncService::~VgSyncService() = default;
 
 base::WeakPtr<syncer::ModelTypeControllerDelegate>
 VgSyncService::GetControllerDelegateForVgBodies() {
+  DCHECK(vg_body_sync_bridge_);
   return vg_body_sync_bridge_ ? vg_body_sync_bridge_->GetControllerDelegate()
                               : nullptr;
 }
 
 base::WeakPtr<syncer::ModelTypeControllerDelegate>
 VgSyncService::GetControllerDelegateForVgSpendStatuses() {
+  DCHECK(vg_spend_status_sync_bridge_);
   return vg_spend_status_sync_bridge_
              ? vg_spend_status_sync_bridge_->GetControllerDelegate()
              : nullptr;
@@ -37,13 +34,23 @@ VgSyncService::GetControllerDelegateForVgSpendStatuses() {
 
 void VgSyncService::Shutdown() {}
 
-// void VgSyncService::AddPair(std::int64_t key, const std::string& value) {
-//   sync_pb::PairSpecifics pair;
-//   pair.set_key(key);
-//   pair.set_value(value);
-//
-//   pair_sync_bridge_->AddPair(std::move(pair));
-// }
+void VgSyncService::BackUpVgSpendStatuses(
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  vg_spend_status_sync_bridge_->BackUpVgSpendStatuses(
+      std::move(vg_spend_statuses));
+}
+
+void VgSyncService::RestoreVgSpendStatuses(
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
+  if (observer_) {
+    observer_->RestoreVgs({}, std::move(vg_spend_statuses));
+  }
+}
+
+void VgSyncService::SetObserver(Observer* observer) {
+  vg_spend_status_sync_bridge_->SetObserver((observer_ = observer) ? this
+                                                                   : nullptr);
+}
 
 // void VgSyncService::GetPairs(GetPairsCallback callback) {
 //   pair_sync_bridge_->GetPairs(base::BindOnce(&VgSyncService::OnGetPairs,

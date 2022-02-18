@@ -17,6 +17,7 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "brave/components/sync/protocol/vg_specifics.pb.h"
 
 namespace bat_ledger {
 
@@ -246,6 +247,8 @@ class BatLedgerImpl :
 
   void RestoreVGs(RestoreVGsCallback callback) override;
 
+  void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) override;
+
   void GetBraveWallet(GetBraveWalletCallback callback) override;
 
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
@@ -452,6 +455,11 @@ class BatLedgerImpl :
 
   static void OnRestoreVGs(CallbackHolder<RestoreVGsCallback>* holder,
                            ledger::type::Result result);
+
+  static void OnBackUpVgSpendStatuses(
+      CallbackHolder<BackUpVgSpendStatusesCallback>* holder,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
 
   static void OnGetBraveWallet(
       CallbackHolder<GetBraveWalletCallback>* holder,

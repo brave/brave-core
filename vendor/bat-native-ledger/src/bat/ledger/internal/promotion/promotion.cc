@@ -453,6 +453,7 @@ void Promotion::OnComplete(
 
     ledger_->backup_restore()->BackUpVGBody(type::CredsBatchType::PROMOTION,
                                             promotion->id);
+    ledger_->ledger_client()->BackUpVgSpendStatuses();
   }
 
   callback(result, std::move(promotion));

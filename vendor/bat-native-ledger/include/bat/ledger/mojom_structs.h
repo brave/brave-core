@@ -190,9 +190,6 @@ using VirtualGrantBodyTokenInfoPtr = mojom::VirtualGrantBodyTokenInfoPtr;
 using VirtualGrantBody = mojom::VirtualGrantBody;
 using VirtualGrantBodyPtr = mojom::VirtualGrantBodyPtr;
 
-using VirtualGrantSpendStatusTokenInfo = mojom::VirtualGrantSpendStatusTokenInfo;
-using VirtualGrantSpendStatusTokenInfoPtr = mojom::VirtualGrantSpendStatusTokenInfoPtr;
-
 using VirtualGrantSpendStatus = mojom::VirtualGrantSpendStatus;
 using VirtualGrantSpendStatusPtr = mojom::VirtualGrantSpendStatusPtr;
 
