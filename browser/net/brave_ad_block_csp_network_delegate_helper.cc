@@ -77,9 +77,6 @@ int OnHeadersReceived_AdBlockCspWork(
           new net::HttpResponseHeaders(response_headers->raw_headers());
     }
 
-    scoped_refptr<base::SequencedTaskRunner> task_runner =
-        g_brave_browser_process->ad_block_service()->GetTaskRunner();
-
     std::string original_csp_string;
     absl::optional<std::string> original_csp = absl::nullopt;
     if ((*override_response_headers)
@@ -90,11 +87,13 @@ int OnHeadersReceived_AdBlockCspWork(
 
     (*override_response_headers)->RemoveHeader("Content-Security-Policy");
 
-    task_runner->PostTaskAndReplyWithResult(
-        FROM_HERE,
-        base::BindOnce(&GetCspDirectivesOnTaskRunner, ctx, original_csp),
-        base::BindOnce(&OnReceiveCspDirectives, next_callback, ctx,
-                       *override_response_headers));
+    g_brave_browser_process->ad_block_service()
+        ->GetTaskRunner()
+        ->PostTaskAndReplyWithResult(
+            FROM_HERE,
+            base::BindOnce(&GetCspDirectivesOnTaskRunner, ctx, original_csp),
+            base::BindOnce(&OnReceiveCspDirectives, next_callback, ctx,
+                           *override_response_headers));
     return net::ERR_IO_PENDING;
   }
 

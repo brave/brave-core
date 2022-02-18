@@ -34,8 +34,6 @@ class LocalDataFilesService;
 
 namespace brave_shields {
 class AdBlockService;
-class AdBlockCustomFiltersService;
-class AdBlockRegionalServiceManager;
 class HTTPSEverywhereService;
 }  // namespace brave_shields
 
@@ -90,10 +88,6 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 
   void StartBraveServices() override;
   brave_shields::AdBlockService* ad_block_service() override;
-  brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service()
-      override;
-  brave_shields::AdBlockRegionalServiceManager*
-  ad_block_regional_service_manager() override;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   brave_component_updater::ExtensionWhitelistService*
   extension_whitelist_service() override;
@@ -155,6 +149,7 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
 #endif
   std::unique_ptr<debounce::DebounceComponentInstaller>
       debounce_component_installer_;
+  bool created_https_everywhere_service_ = false;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
   std::unique_ptr<brave_stats::BraveStatsUpdater> brave_stats_updater_;

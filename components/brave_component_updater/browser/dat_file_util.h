@@ -17,8 +17,9 @@ namespace brave_component_updater {
 
 using DATFileDataBuffer = std::vector<unsigned char>;
 
-void GetDATFileData(const base::FilePath& file_path, DATFileDataBuffer* buffer);
 std::string GetDATFileAsString(const base::FilePath& file_path);
+
+DATFileDataBuffer ReadDATFileData(const base::FilePath& dat_file_path);
 
 template <typename T>
 using LoadDATFileDataResult =
@@ -26,8 +27,7 @@ using LoadDATFileDataResult =
 
 template <typename T>
 LoadDATFileDataResult<T> LoadDATFileData(const base::FilePath& dat_file_path) {
-  DATFileDataBuffer buffer;
-  GetDATFileData(dat_file_path, &buffer);
+  DATFileDataBuffer buffer = ReadDATFileData(dat_file_path);
   std::unique_ptr<T> client;
   client = std::make_unique<T>();
   if (buffer.empty() ||
@@ -39,8 +39,7 @@ LoadDATFileDataResult<T> LoadDATFileData(const base::FilePath& dat_file_path) {
 
 template <typename T>
 LoadDATFileDataResult<T> LoadRawFileData(const base::FilePath& dat_file_path) {
-  DATFileDataBuffer buffer;
-  GetDATFileData(dat_file_path, &buffer);
+  DATFileDataBuffer buffer = ReadDATFileData(dat_file_path);
   std::unique_ptr<T> client;
 
   if (!buffer.empty())

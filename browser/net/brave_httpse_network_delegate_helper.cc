@@ -23,12 +23,15 @@ using content::BrowserThread;
 
 namespace brave {
 
-void OnBeforeURLRequest_HttpseFileWork(std::shared_ptr<BraveRequestInfo> ctx) {
+void OnBeforeURLRequest_HttpseFileWork(
+    base::WeakPtr<brave_shields::HTTPSEverywhereService::Engine> engine,
+    std::shared_ptr<BraveRequestInfo> ctx) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_NE(ctx->request_identifier, 0U);
-  g_brave_browser_process->https_everywhere_service()->GetHTTPSURL(
-      &ctx->request_url, ctx->request_identifier, &ctx->new_url_spec);
+  if (engine)
+    engine->GetHTTPSURL(&ctx->request_url, ctx->request_identifier,
+                        &ctx->new_url_spec);
 }
 
 void OnBeforeURLRequest_HttpsePostFileWork(
@@ -79,7 +82,11 @@ int OnBeforeURLRequest_HttpsePreFileWork(
       g_brave_browser_process->https_everywhere_service()
           ->GetTaskRunner()
           ->PostTaskAndReply(
-              FROM_HERE, base::BindOnce(OnBeforeURLRequest_HttpseFileWork, ctx),
+              FROM_HERE,
+              base::BindOnce(
+                  OnBeforeURLRequest_HttpseFileWork,
+                  g_brave_browser_process->https_everywhere_service()->engine(),
+                  ctx),
               base::BindOnce(
                   base::IgnoreResult(&OnBeforeURLRequest_HttpsePostFileWork),
                   next_callback, ctx));

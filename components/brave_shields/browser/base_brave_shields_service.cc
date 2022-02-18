@@ -15,15 +15,11 @@
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 
-using brave_component_updater::BraveComponent;
-
 namespace brave_shields {
 
 BaseBraveShieldsService::BaseBraveShieldsService(
-    BraveComponent::Delegate* delegate)
-    : BraveComponent(delegate),
-      initialized_(false) {
-}
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    : initialized_(false), task_runner_(task_runner) {}
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {
 }
@@ -57,5 +53,10 @@ void BaseBraveShieldsService::ShouldStartRequest(
     bool* did_match_exception,
     bool* did_match_important,
     std::string* mock_data_url) {}
+
+scoped_refptr<base::SequencedTaskRunner>
+BaseBraveShieldsService::GetTaskRunner() {
+  return task_runner_;
+}
 
 }  // namespace brave_shields
