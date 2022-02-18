@@ -343,10 +343,12 @@ bool ParsePersonalEcRecoverParams(const std::string& json,
 bool ParseEthSignTypedDataParams(const std::string& json,
                                  std::string* address,
                                  std::string* message_out,
-                                 std::vector<uint8_t>* message_to_sign_out,
                                  base::Value* domain_out,
-                                 EthSignTypedDataHelper::Version version) {
-  if (!address || !message_out || !domain_out || !message_to_sign_out)
+                                 EthSignTypedDataHelper::Version version,
+                                 std::vector<uint8_t>* domain_hash_out,
+                                 std::vector<uint8_t>* primary_hash_out) {
+  if (!address || !message_out || !domain_out || !domain_hash_out ||
+      !primary_hash_out)
     return false;
 
   auto list = GetParamsList(json);
@@ -386,12 +388,14 @@ bool ParseEthSignTypedDataParams(const std::string& json,
       EthSignTypedDataHelper::Create(*types, version);
   if (!helper)
     return false;
-
-  auto message_to_sign =
-      helper->GetTypedDataMessageToSign(*primary_type, *message, *domain);
-  if (!message_to_sign)
+  auto domain_hash = helper->GetTypedDataDomainHash(*domain);
+  if (!domain_hash)
     return false;
-  *message_to_sign_out = *message_to_sign;
+  auto primary_hash = helper->GetTypedDataPrimaryHash(*primary_type, *message);
+  if (!primary_hash)
+    return false;
+  *domain_hash_out = *domain_hash;
+  *primary_hash_out = *primary_hash;
 
   *domain_out = domain->Clone();
 

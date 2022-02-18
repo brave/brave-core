@@ -6,7 +6,6 @@
 import { assert } from 'chrome://resources/js/assert.m.js'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Eth from '@ledgerhq/hw-app-eth'
-
 import { BraveWallet } from '../../../constants/types'
 import { getLocale } from '../../../../common/locale'
 import { hardwareDeviceIdFromAddress } from '../hardwareDeviceIdFromAddress'
@@ -14,8 +13,8 @@ import {
   GetAccountsHardwareOperationResult,
   SignatureVRS,
   SignHardwareMessageOperationResult,
-  SignHardwareTransactionOperationResult
-, HardwareOperationResult, LedgerDerivationPaths
+  SignHardwareTransactionOperationResult,
+  HardwareOperationResult, LedgerDerivationPaths
 } from '../types'
 import { LedgerEthereumKeyring } from '../interfaces'
 import { HardwareVendor } from '../../api/hardware_keyrings'
@@ -98,6 +97,21 @@ export default class LedgerBridgeKeyring extends LedgerEthereumKeyring {
       const eth: Eth = this.app
       const signed = await eth.signTransaction(path, rawTxHex)
       return { success: true, payload: signed }
+    } catch (e) {
+      return { success: false, error: e.message, code: e.statusCode || e.id || e.name }
+    }
+  }
+
+  signEip712Message = async (path: string, domainSeparatorHex: string, hashStructMessageHex: string): Promise<SignHardwareMessageOperationResult> => {
+    try {
+      const unlocked = await this.unlock()
+      if (!unlocked.success || !this.app) {
+        return unlocked
+      }
+      const eth: Eth = this.app
+      const data = await eth.signEIP712HashedMessage(path, domainSeparatorHex, hashStructMessageHex)
+      const signature = this.createMessageSignature(data)
+      return { success: true, payload: signature }
     } catch (e) {
       return { success: false, error: e.message, code: e.statusCode || e.id || e.name }
     }
