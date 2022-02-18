@@ -79,7 +79,7 @@ async def GenerateSymbols(options, binaries):
     task_list = []
     for binary in binaries:
         task_list.append(
-            asyncio.ensure_future(ProcessBinary(semaphore, options, binary)))
+            asyncio.create_task(ProcessBinary(semaphore, options, binary)))
     result_list = await asyncio.gather(*task_list)
     first_warning_printed = False
     for success, error_message in result_list:
