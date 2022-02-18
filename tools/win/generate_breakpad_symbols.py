@@ -4,38 +4,62 @@
 # Copyright (c) 2013 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
-
 """Convert pdb to sym for given directories"""
 
 import errno
 import glob
 import argparse
 import os
-import queue
 import re
-import subprocess
 import sys
-import threading
+import asyncio
 
 from datetime import datetime
-from shutil import rmtree
-
-CONCURRENT_TASKS=1
-BRAVE_ROOT=os.path.abspath(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+from shutil import rmtree, move
 
 
-def GetCommandOutput(command):
-    """Runs the command list, returning its output.
+async def ProcessBinary(semaphore, options, binary):
+    dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
+    sym_temp_output = binary + '.sym'
+    error = None
+    async with semaphore:
+        start_time = datetime.utcnow()
+        if options.verbose:
+            print(f'Generating symbols for {binary}')
+        with open(sym_temp_output, 'w', encoding='utf-8') as output:
+            process = await asyncio.create_subprocess_exec(
+                dump_syms,
+                binary,
+                stdout=output,
+                stderr=asyncio.subprocess.PIPE)
+            _, stderr = await process.communicate()
 
-    Prints the given command (which should be a list of one or more strings),
-    then runs it and returns its output (stdout) as a string.
+            # pylint: disable=fixme
+            # TODO: investigate why dump_syms.exe fails and replace to
+            # return False
+            if process.returncode != 0:
+                decoded_stderr = stderr.decode('utf-8')
+                error = f'dump_syms return {process.returncode} for {binary}. '\
+                        f'stderr:\n{decoded_stderr}'
 
-    From chromium_utils.
-    """
-    devnull = open(os.devnull, 'w') # pylint: disable=consider-using-with
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=devnull) # pylint: disable=consider-using-with
-    output = proc.communicate()[0]
-    return output.decode('utf-8')
+        module_line = None
+        with open(sym_temp_output, encoding='utf-8') as f:
+            MODULE_PATTERN = r'MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)'
+            module_line = re.match(MODULE_PATTERN, f.readline())
+            if not module_line:
+                return False, f'No module name found for {binary}'
+
+        output_path = os.path.join(options.symbols_dir, module_line.group(2),
+                                   module_line.group(1))
+        mkdir_p(output_path)
+
+        symbol_file = f'{module_line.group(2)[:-4]}.sym'  # strip .pdb
+        move(sym_temp_output, symbol_file)
+        if options.verbose:
+            elapsed = datetime.utcnow() - start_time
+            print(f'Completed generating symbols for {binary}: elapsed time '
+                  f'{elapsed.total_seconds()} seconds')
+        return True, error
 
 
 def mkdir_p(path):
@@ -45,75 +69,52 @@ def mkdir_p(path):
     except OSError as e:
         if e.errno == errno.EEXIST and os.path.isdir(path):
             pass
-        else: raise
+        else:
+            raise
 
 
-def GenerateSymbols(options, binaries):
+async def GenerateSymbols(options, binaries):
     """Dumps the symbols of binary and places them in the given directory."""
-
-    q = queue.Queue()
-    print_lock = threading.Lock()
-
-    def _Worker():
-        while True:
-            binary = q.get()
-
-            if options.verbose:
-                with print_lock:
-                    print("Generating symbols for {0}".format(binary), flush=True)
-                    thread_start = datetime.utcnow()
-
-            dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
-            syms = GetCommandOutput([dump_syms, binary])
-            module_line = re.match(r"MODULE [^ ]+ [^ ]+ ([0-9A-Fa-f]+) (.*)\r\n", syms)
-            if module_line is None:
-                with print_lock:
-                    print("Failed to get symbols for {0}".format(binary), flush=True)
-                q.task_done()
-                continue
-
-            output_path = os.path.join(options.symbols_dir, module_line.group(2),
-                                       module_line.group(1))
-            mkdir_p(output_path)
-            symbol_file = "%s.sym" % module_line.group(2)[:-4]  # strip .pdb
-            f = open(os.path.join(output_path, symbol_file), 'w') # pylint: disable=consider-using-with
-            f.write(syms)
-            f.close()
-
-            if options.verbose:
-                with print_lock:
-                    thread_end = datetime.utcnow()
-                    elapsed = thread_end - thread_start
-                    print("Completed generating symbols for {}: elapsed time {} seconds".format(
-                        binary, elapsed.total_seconds()), flush=True)
-
-            q.task_done()
-
+    semaphore = asyncio.Semaphore(os.cpu_count())
+    task_list = []
     for binary in binaries:
-        q.put(binary)
+        task_list.append(
+            asyncio.create_task(ProcessBinary(semaphore, options, binary)))
+    result_list = await asyncio.gather(*task_list)
+    first_warning_printed = False
+    for success, error_message in result_list:
+        if not success:
+            print(error_message, file=sys.stderr)
+            return False
+        if error_message and not first_warning_printed:
+            first_warning_printed = True
+            print(
+                f'Warning: symbol generation failed for some binaries, '
+                f'the first error is:\n{error_message}',
+                file=sys.stderr)
 
-    for _ in range(options.jobs):
-        t = threading.Thread(target=_Worker)
-        t.daemon = True
-        t.start()
-
-    q.join()
+    return True
 
 
-def main():
+async def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('directories', nargs='+',
+    parser.add_argument('directories',
+                        nargs='+',
                         help='Directories in which to look for pdbs.')
-    parser.add_argument('--build-dir', required=True,
+    parser.add_argument('--build-dir',
+                        required=True,
                         help='The build output directory.')
-    parser.add_argument('--symbols-dir', required=True,
+    parser.add_argument('--symbols-dir',
+                        required=True,
                         help='The directory where to write the symbols file.')
-    parser.add_argument('--clear', default=False, action='store_true',
+    parser.add_argument('--clear',
+                        default=False,
+                        action='store_true',
                         help='Clear the symbols directory before writing new '
-                            'symbols.')
-    parser.add_argument('-j', '--jobs', default=CONCURRENT_TASKS, action='store',
-                        type=int, help='Number of parallel tasks to run.')
-    parser.add_argument('-v', '--verbose', action='store_true',
+                        'symbols.')
+    parser.add_argument('-v',
+                        '--verbose',
+                        action='store_true',
                         help='Print verbose status output.')
 
     args = parser.parse_intermixed_args()
@@ -121,7 +122,7 @@ def main():
     if args.clear:
         try:
             rmtree(args.symbols_dir)
-        except: # pylint: disable=bare-except
+        except:  # pylint: disable=bare-except
             pass
 
     pdbs = []
@@ -129,10 +130,9 @@ def main():
         pdbs += glob.glob(os.path.join(directory, '*.exe.pdb'))
         pdbs += glob.glob(os.path.join(directory, '*.dll.pdb'))
 
-    GenerateSymbols(args, pdbs)
-
-    return 0
+    result = await GenerateSymbols(args, pdbs)
+    sys.exit(0 if result else 1)
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    asyncio.run(main())
