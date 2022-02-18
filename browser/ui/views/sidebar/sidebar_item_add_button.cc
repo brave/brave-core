@@ -47,6 +47,12 @@ void SidebarItemAddButton::OnGestureEvent(ui::GestureEvent* event) {
   }
 }
 
+void SidebarItemAddButton::OnThemeChanged() {
+  View::OnThemeChanged();
+
+  UpdateButtonImages();
+}
+
 void SidebarItemAddButton::AddedToWidget() {
   UpdateButtonImages();
 }
