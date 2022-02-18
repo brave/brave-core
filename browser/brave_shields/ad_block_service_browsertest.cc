@@ -39,6 +39,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/test/browser_test.h"
@@ -2191,6 +2192,30 @@ class DefaultCookieListFlagEnabledTest : public AdBlockServiceTest {
   base::test::ScopedFeatureList feature_list_;
 };
 
+class CookieListPrefObserver {
+ public:
+  explicit CookieListPrefObserver(PrefService* local_state) {
+    pref_change_registrar_.Init(local_state);
+    pref_change_registrar_.Add(
+        brave_shields::prefs::kAdBlockRegionalFilters,
+        base::BindRepeating(&CookieListPrefObserver::OnUpdated,
+                            base::Unretained(this)));
+  }
+  ~CookieListPrefObserver() {}
+
+  CookieListPrefObserver(const CookieListPrefObserver& other) = delete;
+  CookieListPrefObserver& operator=(const CookieListPrefObserver& other) =
+      delete;
+
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  void OnUpdated() { run_loop_.Quit(); }
+
+  base::RunLoop run_loop_;
+  PrefChangeRegistrar pref_change_registrar_;
+};
+
 // Test that the `brave-adblock-default-1p-blocking` flag forces the Cookie
 // List UUID to be enabled, until manually enabled and then disabled again.
 IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
@@ -2208,12 +2233,20 @@ IN_PROC_BROWSER_TEST_F(DefaultCookieListFlagEnabledTest, ListEnabled) {
   }
 
   // Enable the filter list, and then disable it again.
-  g_brave_browser_process->ad_block_service()
-      ->regional_service_manager()
-      ->EnableFilterList(brave_shields::kCookieListUuid, true);
-  g_brave_browser_process->ad_block_service()
-      ->regional_service_manager()
-      ->EnableFilterList(brave_shields::kCookieListUuid, false);
+  {
+    g_brave_browser_process->ad_block_service()
+        ->regional_service_manager()
+        ->EnableFilterList(brave_shields::kCookieListUuid, true);
+    CookieListPrefObserver pref_observer(g_browser_process->local_state());
+    pref_observer.Wait();
+  }
+  {
+    g_brave_browser_process->ad_block_service()
+        ->regional_service_manager()
+        ->EnableFilterList(brave_shields::kCookieListUuid, false);
+    CookieListPrefObserver pref_observer(g_browser_process->local_state());
+    pref_observer.Wait();
+  }
 
   {
     const auto lists = g_brave_browser_process->ad_block_service()
