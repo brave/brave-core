@@ -24,10 +24,9 @@ namespace ntp_background_images {
 
 namespace {
 
-absl::optional<std::string> ReadFileToString(const base::FilePath& path) {
+std::string ReadFileToString(const base::FilePath& path) {
   std::string contents;
-  if (!base::ReadFileToString(path, &contents))
-    return absl::optional<std::string>();
+  base::ReadFileToString(path, &contents);
   return contents;
 }
 
@@ -71,17 +70,10 @@ void NTPCustomImagesSource::GetImageFile(const base::FilePath& image_file_path,
 }
 
 void NTPCustomImagesSource::OnGotImageFile(GotDataCallback callback,
-                                           absl::optional<std::string> input) {
-  if (!input) {
-    content::GetUIThreadTaskRunner({})->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback),
-                                  scoped_refptr<base::RefCountedMemory>()));
-    return;
-  }
-
+                                           const std::string& input) {
   scoped_refptr<base::RefCountedMemory> bytes;
   bytes = new base::RefCountedBytes(
-      reinterpret_cast<const unsigned char*>(input->c_str()), input->length());
+      reinterpret_cast<const unsigned char*>(input.c_str()), input.length());
   std::move(callback).Run(std::move(bytes));
   return;
 }

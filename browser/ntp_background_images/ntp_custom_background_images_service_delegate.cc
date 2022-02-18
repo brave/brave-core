@@ -36,8 +36,6 @@ base::FilePath NTPCustomBackgroundImagesServiceDelegate::
   if (!IsCustomBackgroundEnabled())
     return base::FilePath();
   return profile_->GetPath().AppendASCII(kSanitizedImageFileName);
-
-  return base::FilePath();
 }
 
 }  // namespace ntp_background_images
