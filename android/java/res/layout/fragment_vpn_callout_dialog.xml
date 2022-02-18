@@ -96,7 +96,7 @@
             android:layout_marginBottom="24dp"
             android:textColor="@color/brave_stats_text_color"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_enable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

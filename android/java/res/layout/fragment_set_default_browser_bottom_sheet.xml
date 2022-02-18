@@ -43,7 +43,7 @@
         android:layout_marginTop="28dp"
         android:orientation="horizontal">
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             android:textColor="@color/onboarding_gray" 
             style="?android:attr/borderlessButtonStyle"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
