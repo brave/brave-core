@@ -4,12 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import BigNumber from 'bignumber.js'
 
+// Constants
 import {
   BraveWallet,
   TimeDelta,
   WalletAccountType
 } from '../../constants/types'
+import { MAX_UINT256 } from '../constants/magics'
 
 // Utils
 import {
@@ -69,6 +72,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   // Token approvals
   approvalTarget?: string
   approvalTargetLabel?: string
+  isApprovalUnlimited?: boolean
 }
 
 export function useTransactionFeesParser (selectedNetwork: BraveWallet.EthereumChain, networkSpotPrice: string) {
@@ -251,13 +255,8 @@ export function useTransactionParser (
         const { gasFeeFiat, gasFee } = feeDetails
         const totalAmountFiat = Number(gasFeeFiat).toFixed(2)
         const insufficientNativeFunds = isNumericValueGreaterThan(gasFee, accountNativeBalance)
-        const formattedAllowanceValue = isNumericValueGreaterThan(amount, accountTokenBalance)
-          ? getLocale('braveWalletTransactionApproveUnlimited')
-          : formatBalance(amount, token?.decimals ?? 18)
-
-        const formattedAllowanceValueExact = isNumericValueGreaterThan(amount, accountTokenBalance)
-          ? getLocale('braveWalletTransactionApproveUnlimited')
-          : formatBalance(amount, token?.decimals ?? 18, false)
+        const formattedAllowanceValue = formatBalance(amount, token?.decimals ?? 18)
+        const formattedAllowanceValueExact = formatBalance(amount, token?.decimals ?? 18, false)
 
         return {
           hash: transactionInfo.txHash,
@@ -277,6 +276,7 @@ export function useTransactionParser (
           decimals: token?.decimals ?? 18,
           approvalTarget: address,
           approvalTargetLabel: getAddressLabel(address),
+          isApprovalUnlimited: new BigNumber(amount).eq(MAX_UINT256),
           insufficientFundsError: insufficientNativeFunds,
           sameAddressError: checkForSameAddressError(address, fromAddress),
           ...feeDetails

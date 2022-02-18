@@ -291,6 +291,7 @@ provideStrings({
   braveWalletAllowSpendDetailsButton: 'View details',
   braveWalletAllowSpendRejectButton: 'Reject',
   braveWalletAllowSpendConfirmButton: 'Confirm',
+  braveWalletAllowSpendUnlimitedWarningTitle: 'Unlimited approval requested',
 
   // Allow Add or Change Network Panel
   braveWalletAllowAddNetworkTitle: 'Allow this site to add a network?',
