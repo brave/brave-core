@@ -362,6 +362,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ALLOW_SPEND_CURRENT_ALLOWANCE},
     {"braveWalletAllowSpendProposedAllowance",
      IDS_BRAVE_WALLET_ALLOW_SPEND_PROPOSED_ALLOWANCE},
+    {"braveWalletAllowSpendUnlimitedWarningTitle",
+     IDS_BRAVE_WALLET_ALLOW_SPEND_UNLIMITED_WARNING_TITLE},
     {"braveWalletAllowAddNetworkTitle",
      IDS_BRAVE_WALLET_ALLOW_ADD_NETWORK_TITLE},
     {"braveWalletAllowChangeNetworkTitle",
