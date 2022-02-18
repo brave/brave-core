@@ -217,6 +217,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/autofill/AutofillPopupBridge"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/autofill/BraveAutofillPopupBridge"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher"));
     }
 
     @Test
@@ -349,6 +351,9 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/tasks/tab_management/BraveTabUiThemeProvider",
                 "getCardViewBackgroundColor", false, null));
+        Assert.assertTrue(
+                methodExists("org/chromium/components/variations/firstrun/VariationsSeedFetcher",
+                        "get", false, null));
     }
 
     @Test
