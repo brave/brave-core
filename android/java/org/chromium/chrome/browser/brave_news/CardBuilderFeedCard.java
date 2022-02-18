@@ -256,7 +256,9 @@ public class CardBuilderFeedCard {
                                 tableLayoutTopNews.addView(rowTop);
 
                                 adLayoutParams.width = TableRow.LayoutParams.MATCH_PARENT;
-                                adLayoutParams.height = TableRow.LayoutParams.WRAP_CONTENT;
+                                adLayoutParams.height = ConfigurationUtils.isTablet(mActivity)
+                                        ? (int) (mDeviceWidth * 0.45)
+                                        : (int) (mDeviceWidth * 0.6);
                                 adLayoutParams.bottomMargin = 2 * MARGIN_VERTICAL;
                                 adLayoutUp.setLayoutParams(adLayoutParams);
                                 rowTop.addView(adLayoutUp);
