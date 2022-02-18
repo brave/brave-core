@@ -1,4 +1,15 @@
 import { BraveWallet } from '../constants/types'
+export const emptyNetwork = {
+  chainId: '',
+  chainName: '',
+  rpcUrls: [],
+  blockExplorerUrls: [],
+  iconUrls: [],
+  symbol: '',
+  symbolName: '',
+  decimals: 0,
+  isEip1559: false
+}
 
 export const GetNetworkInfo = (chainId: string, list: BraveWallet.EthereumChain[]) => {
   for (let it of list) {
@@ -6,17 +17,7 @@ export const GetNetworkInfo = (chainId: string, list: BraveWallet.EthereumChain[
       return it
     }
   }
-  return {
-    chainId: '',
-    chainName: '',
-    rpcUrls: [],
-    blockExplorerUrls: [],
-    iconUrls: [],
-    symbol: '',
-    symbolName: '',
-    decimals: 0,
-    isEip1559: false
-  }
+  return emptyNetwork
 }
 
 export const reduceNetworkDisplayName = (name: string) => {
