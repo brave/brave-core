@@ -1,13 +1,12 @@
 diff --git a/components/sync/base/user_selectable_type.h b/components/sync/base/user_selectable_type.h
-index af6c500730825aae9e4bc9f73a37afc25ecd0114..ceeb4a6a93d1d6d8c5ead2ff0ca1e149c1b96edc 100644
+index af6c500730825aae9e4bc9f73a37afc25ecd0114..3c6617a40a411171e3dc5b9625679404ff9f9574 100644
 --- a/components/sync/base/user_selectable_type.h
 +++ b/components/sync/base/user_selectable_type.h
-@@ -28,7 +28,10 @@ enum class UserSelectableType {
+@@ -28,7 +28,9 @@ enum class UserSelectableType {
    kReadingList,
    kTabs,
    kWifiConfigurations,
 -  kLastType = kWifiConfigurations
-+  kPairs,
 +  kVgBodies,
 +  kVgSpendStatuses,
 +  kLastType = kVgSpendStatuses

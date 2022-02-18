@@ -1,17 +1,16 @@
 diff --git a/chrome/browser/sync/sync_service_factory.cc b/chrome/browser/sync/sync_service_factory.cc
-index 8d918de9f3dd82623114d908dad529e0cff799db..b38fd3165f628322a8fad31e195f10d86a8945e8 100644
+index 8d918de9f3dd82623114d908dad529e0cff799db..744a4ce111ceb6d852a07d626847f853d5ac01cf 100644
 --- a/chrome/browser/sync/sync_service_factory.cc
 +++ b/chrome/browser/sync/sync_service_factory.cc
-@@ -12,6 +12,8 @@
+@@ -12,6 +12,7 @@
  #include "base/memory/singleton.h"
  #include "base/metrics/histogram_macros.h"
  #include "base/time/time.h"
 +#include "brave/browser/brave_rewards/vg_sync_service_factory.h"
-+#include "brave/browser/sync_pairs/pair_sync_service_factory.h"
  #include "build/build_config.h"
  #include "build/chromeos_buildflags.h"
  #include "chrome/browser/autofill/personal_data_manager_factory.h"
-@@ -164,7 +166,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
+@@ -164,7 +165,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
    }
  
    auto sync_service =
@@ -20,15 +19,7 @@ index 8d918de9f3dd82623114d908dad529e0cff799db..b38fd3165f628322a8fad31e195f10d8
    sync_service->Initialize();
  
    // Hook |sync_service| into PersonalDataManager (a circular dependency).
-@@ -228,6 +230,7 @@ SyncServiceFactory::SyncServiceFactory()
-   DependsOn(IdentityManagerFactory::GetInstance());
-   DependsOn(SyncInvalidationsServiceFactory::GetInstance());
-   DependsOn(ModelTypeStoreServiceFactory::GetInstance());
-+  DependsOn(PairSyncServiceFactory::GetInstance());
-   DependsOn(PasswordStoreFactory::GetInstance());
-   DependsOn(SecurityEventRecorderFactory::GetInstance());
-   DependsOn(SendTabToSelfSyncServiceFactory::GetInstance());
-@@ -242,6 +245,7 @@ SyncServiceFactory::SyncServiceFactory()
+@@ -242,6 +243,7 @@ SyncServiceFactory::SyncServiceFactory()
  #if !defined(OS_ANDROID)
    DependsOn(ThemeServiceFactory::GetInstance());
  #endif  // !defined(OS_ANDROID)

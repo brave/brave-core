@@ -1,22 +1,11 @@
 diff --git a/chrome/browser/resources/settings/people_page/sync_controls.html b/chrome/browser/resources/settings/people_page/sync_controls.html
-index eae309d779bd703675a6e20d73bce2f019afb815..efbe261021100c99033ea307948c0e253fb4cfc3 100644
+index eae309d779bd703675a6e20d73bce2f019afb815..6a14d8b2bdc2cb9bae659ff046d8e2813582e072 100644
 --- a/chrome/browser/resources/settings/people_page/sync_controls.html
 +++ b/chrome/browser/resources/settings/people_page/sync_controls.html
-@@ -142,6 +142,39 @@
+@@ -142,6 +142,28 @@
          </cr-toggle>
        </div>
  
-+      <div class="list-item" hidden="[[!syncPrefs.pairsRegistered]]">
-+        <div id="pairsCheckboxLabel">
-+          $i18n{pairsCheckboxLabel}
-+        </div>
-+        <cr-toggle checked="{{syncPrefs.pairsSynced}}"
-+            on-change="onSingleSyncDataTypeChanged_"
-+            disabled="[[syncPrefs.syncAllDataTypes]]"
-+            aria-labelledby="pairsCheckboxLabel">
-+        </cr-toggle>
-+      </div>
-+
 +      <div class="list-item" hidden="[[!syncPrefs.vgBodiesRegistered]]">
 +        <div id="vgBodiesCheckboxLabel">
 +          $i18n{vgBodiesCheckboxLabel}

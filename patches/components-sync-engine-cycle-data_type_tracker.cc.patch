@@ -1,12 +1,11 @@
 diff --git a/components/sync/engine/cycle/data_type_tracker.cc b/components/sync/engine/cycle/data_type_tracker.cc
-index 6dc8a5143468d499adcda99d8466086862afccf8..e93639ccf30ef387bbfcc68b639caff161321e73 100644
+index 6dc8a5143468d499adcda99d8466086862afccf8..12b9a884c7ed26805735b66d544db3513f2b3455 100644
 --- a/components/sync/engine/cycle/data_type_tracker.cc
 +++ b/components/sync/engine/cycle/data_type_tracker.cc
-@@ -78,6 +78,9 @@ base::TimeDelta GetDefaultLocalChangeNudgeDelay(ModelType model_type) {
+@@ -78,6 +78,8 @@ base::TimeDelta GetDefaultLocalChangeNudgeDelay(ModelType model_type) {
      case OS_PREFERENCES:
      case OS_PRIORITY_PREFERENCES:
      case WORKSPACE_DESK:
-+    case PAIRS:
 +    case VG_BODIES:
 +    case VG_SPEND_STATUSES:
      case NIGORI:
