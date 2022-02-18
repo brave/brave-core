@@ -146,14 +146,14 @@ void BraveNewTabPageHandler::OnImageDecoded(const gfx::Image& image) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(
-          [](const SkBitmap& bitmap, const base::FilePath& temp_file_path) {
+          [](const SkBitmap& bitmap, const base::FilePath& target_file_path) {
             auto encoded = base::MakeRefCounted<base::RefCountedBytes>();
             if (!gfx::PNGCodec::EncodeBGRASkBitmap(
                     bitmap, /*discard_transparency=*/false, &encoded->data())) {
               return false;
             }
             return base::WriteFile(
-                temp_file_path,
+                target_file_path,
                 base::span<const uint8_t>(encoded->front(), encoded->size()));
           },
           image.AsBitmap(), GetSanitizedImageFilePath()),
