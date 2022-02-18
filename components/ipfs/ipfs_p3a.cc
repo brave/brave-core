@@ -46,7 +46,7 @@ int GetDaemonUsageBucket(base::TimeDelta elapsed_time) {
 void RecordIPFSDetectionPromptCount(PrefService* prefs) {
   const int max_bucket = 4;
   int bucket = GetIPFSDetectionPromptBucket(prefs);
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.IPFS.DetectionPromptCount", bucket,
+  UMA_HISTOGRAM_EXACT_LINEAR(kDetectionPromptCountHistogramName, bucket,
                              max_bucket);
 }
 
@@ -54,34 +54,77 @@ void RecordIPFSDetectionPromptCount(PrefService* prefs) {
 // Ask (0), Gateway (1), Local Node (2), Disabled (3)
 void RecordIPFSGatewaySetting(PrefService* prefs) {
   auto resolve_method = prefs->GetInteger(kIPFSResolveMethod);
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.IPFS.GatewaySetting", resolve_method, 4);
+  UMA_HISTOGRAM_EXACT_LINEAR(kGatewaySettingHistogramName, resolve_method, 4);
+}
+
+// Was the IPFS local node installed? If so, is it still used?
+// https://github.com/brave/brave-browser/wiki/P3A#q44-was-the-ipfs-local-node-installed-if-so-is-it-still-used
+void RecordIPFSLocalNodeRetention(PrefService* prefs) {
+  auto resolve_method = static_cast<IPFSResolveMethodTypes>(
+      prefs->GetInteger(kIPFSResolveMethod));
+  auto local_node_used = prefs->GetBoolean(kIPFSLocalNodeUsed);
+  int bucket = 0;
+  switch (resolve_method) {
+    case IPFSResolveMethodTypes::IPFS_ASK:
+      bucket = local_node_used;
+      break;
+    case IPFSResolveMethodTypes::IPFS_LOCAL:
+      if (!local_node_used)
+        prefs->SetBoolean(kIPFSLocalNodeUsed, true);
+      bucket = 1;
+      break;
+    case IPFSResolveMethodTypes::IPFS_GATEWAY:
+    case IPFSResolveMethodTypes::IPFS_DISABLED:
+      if (local_node_used)
+        bucket = 2;
+      break;
+    default:
+      break;
+  }
+  UMA_HISTOGRAM_EXACT_LINEAR(kLocalNodeRetentionHistogramName, bucket, 3);
 }
 
 // How long did the daemon run?
 // i) 0-5min, ii) 5-60min, iii) 1h-24h, iv) 24h+?
 void RecordIPFSDaemonRunTime(base::TimeDelta elapsed_time) {
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.IPFS.DaemonRunTime",
+  UMA_HISTOGRAM_EXACT_LINEAR(kDaemonRunTimeHistogramName,
                              GetDaemonUsageBucket(elapsed_time), 4);
 }
 
 IpfsP3A::IpfsP3A(IpfsService* service, PrefService* pref_service)
     : service_(service), pref_service_(pref_service) {
-  RecordInitialIPFSP3AState();
-  service->AddObserver(this);
+  // service/pref_service may be null for unit/browser tests
+  if (service != nullptr)
+    service->AddObserver(this);
+  if (pref_service != nullptr) {
+    RecordInitialIPFSP3AState();
+    pref_change_registrar_.Init(pref_service);
+    pref_change_registrar_.Add(
+        kIPFSResolveMethod,
+        base::BindRepeating(&IpfsP3A::OnIPFSResolveMethodChanged,
+                            base::Unretained(this)));
+  }
 }
 
 IpfsP3A::~IpfsP3A() {
-  service_->RemoveObserver(this);
+  if (service_ != nullptr)
+    service_->RemoveObserver(this);
 }
 
 void IpfsP3A::RecordInitialIPFSP3AState() {
   RecordIPFSDetectionPromptCount(pref_service_);
   RecordIPFSGatewaySetting(pref_service_);
+  RecordIPFSLocalNodeRetention(pref_service_);
 }
 
 void IpfsP3A::RecordDaemonUsage() {
   FlushTimeDelta();
   RecordIPFSDaemonRunTime(elapsed_time_);
+}
+
+void IpfsP3A::OnIPFSResolveMethodChanged() {
+  RecordIPFSGatewaySetting(pref_service_);
+  RecordIPFSLocalNodeRetention(pref_service_);
 }
 
 void IpfsP3A::OnIpfsLaunched(bool result, int64_t pid) {
