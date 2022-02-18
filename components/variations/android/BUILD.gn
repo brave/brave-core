@@ -8,8 +8,8 @@ android_library("java") {
   sources = [ "java/src/org/chromium/components/variations/firstrun/BraveVariationsSeedFetcher.java" ]
   deps = [
     "//base:base_java",
-    "//components/variations/android:variations_java",
     "//components/variations:variations_java",
+    "//components/variations/android:variations_java",
     "//third_party/androidx:androidx_annotation_annotation_java",
   ]
 }
