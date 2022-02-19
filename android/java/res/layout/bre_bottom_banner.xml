@@ -58,7 +58,7 @@
             android:text="@string/bre_banner_text"
             android:textColor="@android:color/white"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_take_tour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -77,7 +77,7 @@
                 android:textColor="@android:color/white"
                 android:layout_marginEnd="8dp" />
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/btn_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

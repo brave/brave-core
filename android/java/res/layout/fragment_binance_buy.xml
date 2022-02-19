@@ -129,7 +129,7 @@
                 android:popupBackground="@color/spinner_bg_color"
                 android:spinnerMode="dropdown"/>
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/btn_buy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

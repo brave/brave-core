@@ -40,7 +40,7 @@
             android:textColor="@android:color/black"
             android:layout_marginBottom="16dp"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_turn_on_ads"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -65,7 +65,7 @@
             android:textSize="14sp"
             android:textColor="@color/onboarding_text_color"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
