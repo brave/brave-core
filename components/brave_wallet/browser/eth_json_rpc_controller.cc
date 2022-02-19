@@ -915,9 +915,9 @@ void EthJsonRpcController::GetEstimateGas(const std::string& from_address,
   auto internal_callback =
       base::BindOnce(&EthJsonRpcController::OnGetEstimateGas,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  return Request(eth_estimateGas(from_address, to_address, gas, gas_price,
-                                 value, data, "latest"),
-                 true, std::move(internal_callback));
+  return Request(
+      eth_estimateGas(from_address, to_address, gas, gas_price, value, data),
+      true, std::move(internal_callback));
 }
 
 void EthJsonRpcController::OnGetEstimateGas(
