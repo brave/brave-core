@@ -79,7 +79,7 @@
         android:background="@color/onboarding_bg_color"
         android:visibility="gone">
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_start_browsing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
             android:textSize="@dimen/onboarding_text_size"
             style="?android:attr/borderlessButtonStyle"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_didnt_see_ad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

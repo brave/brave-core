@@ -43,7 +43,7 @@
             android:textColor="@color/onboarding_text_color"
             android:textSize="@dimen/onboarding_text_size" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_continue_to_wallet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
