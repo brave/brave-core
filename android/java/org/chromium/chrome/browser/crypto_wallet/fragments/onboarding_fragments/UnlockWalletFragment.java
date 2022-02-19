@@ -100,7 +100,8 @@ public class UnlockWalletFragment extends CryptoOnboardingFragment {
 
     private void checkOnBiometric() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P
-                || !KeystoreHelper.shouldUseBiometricOnUnlock()) {
+                || !KeystoreHelper.shouldUseBiometricOnUnlock()
+                || !Utils.isBiometricAvailable(getContext())) {
             showPasswordRelatedControls();
 
             return;
