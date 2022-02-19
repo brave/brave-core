@@ -22,7 +22,8 @@ export const enum types {
   SET_MOST_VISITED_SITES = '@@newtab/SET_MOST_VISITED_SITES',
   TOP_SITES_STATE_UPDATED = '@@newtab/TOP_SITES_STATE_UPDATED',
   CUSTOMIZE_CLICKED = '@@newtab/CUSTOMIZE_CLICKED',
-  UPDATE_CLOCK_WIDGET = '@@newtab/UPDATE_CLOCK_WIDGET'
+  UPDATE_CLOCK_WIDGET = '@@newtab/UPDATE_CLOCK_WIDGET',
+  CUSTOM_BACKGROUND_UPDATED = '@@newtab/CUSTOM_BACKGROUND_UPDATED',
 }
 
 export type DismissBrandedWallpaperNotificationPayload = {

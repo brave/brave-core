@@ -28,6 +28,7 @@ import BraveTodayHint from '../../components/default/braveToday/hint'
 import BraveToday, { GetDisplayAdContent } from '../../components/default/braveToday'
 import { SponsoredImageTooltip } from '../../components/default/rewards'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
+import getNTPBrowserAPI from '../../api/background'
 
 // Helpers
 import VisibilityTimer from '../../helpers/visibilityTimer'
@@ -404,6 +405,14 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveBrandedWallpaperOptIn(
       !this.props.newTabData.brandedWallpaperOptIn
     )
+  }
+
+  useCustomBackgroundImage = (useCustom: boolean) => {
+    if (useCustom) {
+      getNTPBrowserAPI().pageHandler.chooseLocalCustomBackground()
+    } else {
+      getNTPBrowserAPI().pageHandler.useBraveBackground()
+    }
   }
 
   startRewards = () => {
@@ -1073,6 +1082,8 @@ class NewTabPage extends React.Component<Props, State> {
 
     const hasImage = this.imageSource !== undefined
     const isShowingBrandedWallpaper = !!newTabData.brandedWallpaper
+    // Custom background that user uploaded doesn't display its info in footer.
+    const hasWallpaperInfo = !!newTabData.backgroundWallpaper && !!newTabData.backgroundWallpaper.author && !!newTabData.backgroundWallpaper.link
     const cryptoContent = this.renderCryptoContent()
     const showAddNewSiteMenuItem = newTabData.customLinksNum < MAX_GRID_SIZE
 
@@ -1175,7 +1186,7 @@ class NewTabPage extends React.Component<Props, State> {
               supportsBraveTalk={newTabData.braveTalkSupported}
               showBraveTalkPrompt={newTabData.braveTalkPromptAllowed && !newTabData.braveTalkPromptDismissed}
               backgroundImageInfo={newTabData.backgroundWallpaper}
-              showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
+              showPhotoInfo={!isShowingBrandedWallpaper && hasWallpaperInfo && newTabData.showBackgroundImage}
               onClickSettings={this.openSettings}
               onDismissBraveTalkPrompt={this.props.actions.dismissBraveTalkPrompt}
             />
@@ -1219,6 +1230,7 @@ class NewTabPage extends React.Component<Props, State> {
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
           featureFlagBraveNewsEnabled={newTabData.featureFlagBraveNewsEnabled}
+          featureCustomBackgroundEnabled={newTabData.featureCustomBackgroundEnabled}
           onClose={this.closeSettings}
           setActiveTab={this.state.activeSettingsTab || undefined}
           onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
@@ -1230,6 +1242,7 @@ class NewTabPage extends React.Component<Props, State> {
           toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
           toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
+          useCustomBackgroundImage={this.useCustomBackgroundImage}
           showBackgroundImage={newTabData.showBackgroundImage}
           showClock={newTabData.showClock}
           clockFormat={newTabData.clockFormat}

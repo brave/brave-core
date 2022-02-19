@@ -4,10 +4,12 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 declare namespace NewTab {
+  // Type for custom background and brave background.
+  // Custom background uses only image url prop.
   export type BackgroundWallpaper = {
     wallpaperImageUrl: string
-    author: string
-    link: string
+    author?: string
+    link?: string
     originalUrl?: string
     license?: string
   }
@@ -124,6 +126,7 @@ declare namespace NewTab {
     textDirection: string
     featureFlagBraveNTPSponsoredImagesWallpaper: boolean
     featureFlagBraveNewsEnabled: boolean
+    featureCustomBackgroundEnabled: boolean
     isIncognito: boolean
     useAlternativePrivateSearchEngine: boolean
     showAlternativePrivateSearchEngineToggle: boolean

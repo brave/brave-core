@@ -190,6 +190,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_page_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
+#include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_today/common/brave_news.mojom.h"
 #include "brave/components/brave_today/common/features.h"
@@ -508,6 +509,11 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
     chrome::internal::RegisterWebUIControllerInterfaceBinder<
         brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
   }
+#endif
+
+#if !defined(OS_ANDROID)
+  chrome::internal::RegisterWebUIControllerInterfaceBinder<
+      brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
 }
 

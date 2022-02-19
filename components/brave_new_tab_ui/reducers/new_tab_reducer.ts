@@ -103,6 +103,22 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.CUSTOM_BACKGROUND_UPDATED:
+      // While customizing background, background has
+      // custom or brave default background. Branded wallpaper will
+      // be visible after reloading or new NTP after changing custom
+      // background option.
+      state = {
+        ...state,
+        brandedWallpaper: undefined
+      }
+      // Empty custom bg url means using brave background.
+      const url = payload.customBackground.url.url
+      state.backgroundWallpaper =
+          url === '' ? backgroundAPI.randomBackgroundImage()
+                     : { wallpaperImageUrl: url }
+      break
+
     case types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED:
       const privateTabData = payload as PrivateTabData
       state = {

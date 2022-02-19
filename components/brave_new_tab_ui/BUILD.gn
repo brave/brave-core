@@ -1,11 +1,15 @@
 import("//brave/components/common/typescript.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 
 transpile_web_ui("brave_new_tab_ui") {
   entry_points = [ [
         "brave_new_tab",
         rebase_path("brave_new_tab.tsx"),
       ] ]
-  deps = [ "//brave/components/brave_today/common:mojom_js" ]
+  deps = [
+    ":mojom_js",
+    "//brave/components/brave_today/common:mojom_js",
+  ]
   resource_name = "brave_new_tab"
 }
 
@@ -13,4 +17,9 @@ pack_web_resources("generated_resources") {
   resource_name = "brave_new_tab"
   output_dir = "$root_gen_dir/brave/components/brave_new_tab/resources"
   deps = [ ":brave_new_tab_ui" ]
+}
+
+mojom("mojom") {
+  sources = [ "brave_new_tab_page.mojom" ]
+  public_deps = [ "//url/mojom:url_mojom_gurl" ]
 }

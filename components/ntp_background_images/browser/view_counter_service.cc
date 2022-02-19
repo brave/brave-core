@@ -30,6 +30,10 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+#include "brave/components/ntp_background_images/browser/ntp_custom_background_images_service.h"
+#endif
+
 namespace {
 
 constexpr char kNewTabsCreated[] = "brave.new_tab_page.p3a_new_tabs_created";
@@ -60,15 +64,18 @@ void ViewCounterService::RegisterProfilePrefs(
       prefs::kNewTabPageShowBackgroundImage, true);
 }
 
-ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
-                                       brave_ads::AdsService* ads_service,
-                                       PrefService* prefs,
-                                       PrefService* local_state,
-                                       bool is_supported_locale)
+ViewCounterService::ViewCounterService(
+    NTPBackgroundImagesService* service,
+    NTPCustomBackgroundImagesService* custom_service,
+    brave_ads::AdsService* ads_service,
+    PrefService* prefs,
+    PrefService* local_state,
+    bool is_supported_locale)
     : service_(service),
       ads_service_(ads_service),
       prefs_(prefs),
-      is_supported_locale_(is_supported_locale) {
+      is_supported_locale_(is_supported_locale),
+      custom_bi_service_(custom_service) {
   DCHECK(service_);
   service_->AddObserver(this);
 
@@ -140,12 +147,16 @@ base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
 }
 
 base::Value ViewCounterService::GetCurrentWallpaper() const {
-  if (IsBackgroundWallpaperActive()) {
-    return GetCurrentWallpaperData()->GetBackgroundAt(
-        model_.current_wallpaper_image_index());
-  }
+  if (!IsBackgroundWallpaperActive())
+    return base::Value();
 
-  return base::Value();
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+  if (custom_bi_service_ && custom_bi_service_->ShouldShowCustomBackground())
+    return custom_bi_service_->GetBackground();
+#endif
+
+  return GetCurrentWallpaperData()->GetBackgroundAt(
+      model_.current_wallpaper_image_index());
 }
 
 base::Value ViewCounterService::GetCurrentBrandedWallpaper() const {

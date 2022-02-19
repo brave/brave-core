@@ -16,7 +16,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
+#include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
@@ -25,6 +25,10 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/url_data_source.h"
+
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+#include "brave/browser/ntp_background_images/ntp_custom_background_images_service_factory.h"
+#endif
 
 namespace ntp_background_images {
 
@@ -44,9 +48,12 @@ ViewCounterServiceFactory::ViewCounterServiceFactory()
           "ViewCounterService",
           BrowserContextDependencyManager::GetInstance()) {
   DependsOn(brave_ads::AdsServiceFactory::GetInstance());
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+  DependsOn(NTPCustomBackgroundImagesServiceFactory::GetInstance());
+#endif
 }
 
-ViewCounterServiceFactory::~ViewCounterServiceFactory() {}
+ViewCounterServiceFactory::~ViewCounterServiceFactory() = default;
 
 KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* browser_context) const {
@@ -68,9 +75,15 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPSponsoredImagesSource>(service));
 
-    return new ViewCounterService(service, ads_service, profile->GetPrefs(),
-                                  g_browser_process->local_state(),
-                                  is_supported_locale);
+    return new ViewCounterService(
+        service,
+#if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
+        NTPCustomBackgroundImagesServiceFactory::GetForContext(profile),
+#else
+        nullptr,
+#endif
+        ads_service, profile->GetPrefs(), g_browser_process->local_state(),
+        is_supported_locale);
   }
 
   return nullptr;

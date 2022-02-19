@@ -7,8 +7,16 @@ import * as React from 'react'
 
 import {
   SettingsRow,
-  SettingsText
+  SettingsText,
+  StyledCustomBackgroundSettings,
+  StyledCustomBackgroundOption,
+  StyledCustomBackgroundOptionImage,
+  StyledCustomBackgroundOptionLabel,
+  StyledUploadIconContainer,
+  StyledUploadLabel
 } from '../../../components/default'
+import braveBackground from './assets/brave-background.png'
+import UploadIcon from './assets/upload-icon'
 import { Toggle } from '../../../components/toggle'
 
 import { getLocale } from '../../../../common/locale'
@@ -16,17 +24,28 @@ import { getLocale } from '../../../../common/locale'
 interface Props {
   toggleBrandedWallpaperOptIn: () => void
   toggleShowBackgroundImage: () => void
+  useCustomBackgroundImage: (useCustom: boolean) => void
   brandedWallpaperOptIn: boolean
   showBackgroundImage: boolean
+  featureCustomBackgroundEnabled: boolean
 }
 
 class BackgroundImageSettings extends React.PureComponent<Props, {}> {
+  onClickCustomBackground = () => {
+    this.props.useCustomBackgroundImage(true)
+  }
+
+  onClickBraveBackground = () => {
+    this.props.useCustomBackgroundImage(false)
+  }
+
   render () {
     const {
       toggleShowBackgroundImage,
       toggleBrandedWallpaperOptIn,
       brandedWallpaperOptIn,
-      showBackgroundImage
+      showBackgroundImage,
+      featureCustomBackgroundEnabled
     } = this.props
 
     return (
@@ -50,6 +69,33 @@ class BackgroundImageSettings extends React.PureComponent<Props, {}> {
             size='small'
           />
         </SettingsRow>
+        {
+          showBackgroundImage &&
+          featureCustomBackgroundEnabled &&
+          <StyledCustomBackgroundSettings>
+            <StyledCustomBackgroundOption
+              onClick={this.onClickCustomBackground}
+            >
+              <StyledUploadIconContainer>
+                <UploadIcon />
+                <StyledUploadLabel>
+                  {getLocale('customBackgroundImageOptionUploadLabel')}
+                </StyledUploadLabel>
+              </StyledUploadIconContainer>
+              <StyledCustomBackgroundOptionLabel>
+                {getLocale('customBackgroundImageOptionTitle')}
+              </StyledCustomBackgroundOptionLabel>
+            </StyledCustomBackgroundOption>
+            <StyledCustomBackgroundOption
+              onClick={this.onClickBraveBackground}
+            >
+              <StyledCustomBackgroundOptionImage src={braveBackground} />
+              <StyledCustomBackgroundOptionLabel>
+                {getLocale('braveBackgroundImageOptionTitle')}
+              </StyledCustomBackgroundOptionLabel>
+            </StyledCustomBackgroundOption>
+          </StyledCustomBackgroundSettings>
+        }
       </div>
     )
   }

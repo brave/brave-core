@@ -193,6 +193,9 @@
       <message name="IDS_BRAVE_NEW_TAB_DASHBOARD_SETTINGS_TITLE" desc="Title for dashboard settings">Customize Dashboard</message>
       <message name="IDS_BRAVE_NEW_TAB_CUSTOMIZE" desc="Title for dashboard settings">Customize</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show Background Images</message>
+      <message name="IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND_IMAGE_OPTION_TITLE" desc="Text for brave background option">Brave backgrounds</message>
+      <message name="IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_TITLE" desc="Text for custom background option">Use your own</message>
+      <message name="IDS_BRAVE_NEW_TAB_CUSTOM_BACKGROUND_IMAGE_OPTION_UPLOAD_LABEL" desc="Text for custom background option upload">Upload from device</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS" desc="Text for settings show stats option">Show Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CLOCK" desc="Text describing 'Show Clock' setting">Show Clock</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOCK_FORMAT" desc="Text describing 'Format' setting under Clock">Format</message>
