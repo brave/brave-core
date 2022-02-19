@@ -439,3 +439,8 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediator {
     public <init>(...);
 }
+
+
+-keep class org.chromium.components.variations.firstrun.VariationsSeedFetcher {
+    *** get(...);
+}
