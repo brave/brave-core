@@ -8,7 +8,7 @@ import {
   RecoveryBubbleText,
   RecoveryPhraseContainer,
   SelectedPhraseContainer,
-  SelectedBubble, 
+  SelectedBubble,
   SelectedBubbleText,
   ErrorText,
   ErrorContainer

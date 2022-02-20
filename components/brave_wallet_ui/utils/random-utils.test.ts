@@ -1,4 +1,4 @@
-import { randomFloat } from './random-utils';
+import { randomFloat } from './random-utils'
 
 describe('randomFloat()', () => {
     test('generates a random float between 0 and 1', () => {
