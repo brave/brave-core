@@ -8,7 +8,7 @@ import {
   RecoveryBubbleText,
   RecoveryPhraseContainer,
   SelectedPhraseContainer,
-  SelectedBubble,
+  SelectedBubble, 
   SelectedBubbleText,
   ErrorText,
   ErrorContainer
@@ -17,6 +17,7 @@ import { NavButton } from '../../../extension'
 import { RecoveryObject } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 import { DropBoundary } from '../../../shared/drop-boundary'
+import { randomFloat } from '../../../../utils/random-utils'
 
 export interface Props {
   recoveryPhrase: string[]
@@ -36,8 +37,9 @@ export function OnboardingVerify ({
 
   const shuffledPhrase = React.useMemo(() => {
     const array = recoveryPhrase.slice().sort()
+
     for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1))
+      let j = Math.floor(randomFloat() * (i + 1))
       let temp = array[i]
       array[i] = array[j]
       array[j] = temp
