@@ -11,7 +11,7 @@ import {
   SelectedBubble,
   SelectedBubbleText,
   ErrorText,
-  ErrorContainer,
+  ErrorContainer
 } from './style'
 import { NavButton } from '../../../extension'
 import { RecoveryObject } from '../../../../constants/types'
@@ -20,20 +20,19 @@ import { DropBoundary } from '../../../shared/drop-boundary'
 
 export interface Props {
   recoveryPhrase: string[]
-  onNextStep: () => void;
+  onNextStep: () => void
 }
 
-export function OnboardingVerify({
+export function OnboardingVerify ({
   onNextStep,
   recoveryPhrase
 }: Props) {
-
   // state
   const [hasVerifyError, setVerifyError] = React.useState<boolean>(false)
   const [sortedPhrase, setSortedPhrase] = React.useState<RecoveryObject[]>([])
   const phraseSlots = React.useMemo(() => new Array<RecoveryObject>(
     recoveryPhrase?.slice()?.length || 0
-  ).fill({ id: 1, value: '' }).map((_, index) => ({ id: index + 1, value: '' })), [recoveryPhrase]);
+  ).fill({ id: 1, value: '' }).map((_, index) => ({ id: index + 1, value: '' })), [recoveryPhrase])
 
   const shuffledPhrase = React.useMemo(() => {
     const array = recoveryPhrase.slice().sort()
@@ -55,10 +54,9 @@ export function OnboardingVerify({
     return Math.ceil(shuffledPhrase.length / numberOfWordColumns)
   }, [shuffledPhrase])
 
-
   // methods
   const isWordSelected = (word: RecoveryObject) => {
-    const searchable = sortedPhrase.map(phraseWord => `${phraseWord.id}-${phraseWord.value}`);
+    const searchable = sortedPhrase.map(phraseWord => `${phraseWord.id}-${phraseWord.value}`)
     const wordIndex = searchable.findIndex((sorted) => sorted === `${word.id}-${word.value}`)
     return {
       isSelected: wordIndex > -1,
@@ -67,22 +65,21 @@ export function OnboardingVerify({
   }
 
   const selectWord = (word: RecoveryObject, positionIndex?: number) => {
-
-    const wasPositionProvided = (positionIndex === 0 || positionIndex);
+    const wasPositionProvided = (positionIndex === 0 || positionIndex)
 
     console.log({ positionIndex, wasPositionProvided })
 
-    let tempList = [...sortedPhrase];
+    let tempList = [...sortedPhrase]
 
     if (wasPositionProvided) {
       if (isWordSelected(word).isSelected) {
-        tempList = tempList.filter((listWord) => listWord.id !== word.id); // remove word for it's current position
+        tempList = tempList.filter((listWord) => listWord.id !== word.id) // remove word for it's current position
       }
-      tempList.splice(positionIndex, 0, word);
+      tempList.splice(positionIndex, 0, word)
     }
 
-    setSortedPhrase(wasPositionProvided ? tempList : [...sortedPhrase, word]);
-    setVerifyError(false);
+    setSortedPhrase(wasPositionProvided ? tempList : [...sortedPhrase, word])
+    setVerifyError(false)
   }
 
   const unSelectWord = (word: RecoveryObject) => {
@@ -113,19 +110,19 @@ export function OnboardingVerify({
   }
 
   const onWordDragStart = (word: RecoveryObject) => (event: React.DragEvent) => {
-    event.dataTransfer.setData('text', JSON.stringify(word));
+    event.dataTransfer.setData('text', JSON.stringify(word))
   }
 
   const onDrop = (event: React.DragEvent<HTMLDivElement>, index: number): void => {
-    event.preventDefault();
-    const data = event.dataTransfer.getData("text");
-    const word = data ? JSON.parse(data) as RecoveryObject : undefined;
+    event.preventDefault()
+    const data = event.dataTransfer.getData('text')
+    const word = data ? JSON.parse(data) as RecoveryObject : undefined
     if (word) {
-      selectWord(word, index);
+      selectWord(word, index)
     }
   }
 
-  // render 
+  // render
   return (
     <StyledWrapper>
       <Title>{getLocale('braveWalletVerifyRecoveryTitle')}</Title>
@@ -135,14 +132,14 @@ export function OnboardingVerify({
 
         {/* SLOTS */}
         {phraseSlots.map((_word, index) => {
-          const wordInSlot = sortedPhrase?.[index];
+          const wordInSlot = sortedPhrase?.[index]
           return (
             <DropBoundary
               key={index}
               onDrop={(event) => onDrop(event, index)}
             >
-              {(isDraggedOver) => wordInSlot ?
-                <SelectedBubble
+              {(isDraggedOver) => wordInSlot
+                ? <SelectedBubble
                   key={index}
                   isDraggedOver={isDraggedOver}
                   draggable={true}
@@ -150,7 +147,7 @@ export function OnboardingVerify({
                   onDragStart={wordInSlot ? onWordDragStart(wordInSlot) : undefined}
                   onClick={() => {
                     if (wordInSlot?.value) {
-                      removeWord(wordInSlot)();
+                      removeWord(wordInSlot)()
                     }
                   }}
                 >
@@ -160,7 +157,7 @@ export function OnboardingVerify({
                     {index + 1}. {wordInSlot.value}
                   </SelectedBubbleText>
                 </SelectedBubble>
-                : <div style={{ width: 106, height: "2rem" }} />
+                : <div style={{ width: 106, height: '2rem' }} />
               }
             </DropBoundary>
           )
@@ -173,10 +170,9 @@ export function OnboardingVerify({
         }
       </SelectedPhraseContainer>
 
-
       <RecoveryPhraseContainer>
         {shuffledPhrase.map((word) => {
-          const { isSelected } = isWordSelected(word);
+          const { isSelected } = isWordSelected(word)
           return (
             <RecoveryBubble
               id={`${word.id}-${word.value}`}
@@ -194,7 +190,6 @@ export function OnboardingVerify({
                 {word.value}
               </RecoveryBubbleText>
             </RecoveryBubble>)
-
         })}
       </RecoveryPhraseContainer>
 

@@ -1,22 +1,22 @@
-import * as React from 'react';
-import styled from "styled-components";
+import * as React from 'react'
+import styled from 'styled-components'
 
 interface Props {
-    onDrop?: React.DragEventHandler<HTMLDivElement>;
-    children: (isDraggedOver: boolean) => React.ReactNode; 
+    onDrop?: React.DragEventHandler<HTMLDivElement>
+    children: (isDraggedOver: boolean) => React.ReactNode
 }
 
-export function DropBoundary({ children, onDrop }: Props) {
-    const [isDraggedOver, setIsDraggedOver] = React.useState(false);
+export function DropBoundary ({ children, onDrop }: Props) {
+    const [isDraggedOver, setIsDraggedOver] = React.useState(false)
 
     return (
         <Wrapper
             onDragOver={(event) => {
-                event.preventDefault();
+                event.preventDefault()
                 setIsDraggedOver(true)
             }}
             onDragLeave={(event) => {
-                event.preventDefault();
+                event.preventDefault()
                 setIsDraggedOver(false)
             }}
             onDrop={(event) => {
@@ -35,4 +35,4 @@ const Wrapper = styled.div`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-`;
+`

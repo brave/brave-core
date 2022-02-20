@@ -132,7 +132,6 @@ _Onboarding.story = {
 }
 
 export const _BackupWallet = () => {
-
   const complete = () => {
     alert('Wallet Setup Complete!!!')
   }
@@ -159,4 +158,3 @@ export const _OnboardingVerify = () => {
 _OnboardingVerify.story = {
   name: 'Onboarding Verify'
 }
-
