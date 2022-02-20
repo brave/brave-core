@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { PropsWithChildren } from "react";
 import styled from "styled-components";
 
-interface Props extends PropsWithChildren<{}> {
+interface Props {
     onDrop?: React.DragEventHandler<HTMLDivElement>;
-    // onDropAfter?: React.DragEventHandler<HTMLDivElement>;
+    children: (isDraggedOver: boolean) => React.ReactNode; 
 }
 
 export function DropBoundary({ children, onDrop }: Props) {
-    const [_isDraggedOver, setIsDraggedOver] = React.useState(false);
+    const [isDraggedOver, setIsDraggedOver] = React.useState(false);
 
     return (
         <Wrapper
@@ -20,28 +19,20 @@ export function DropBoundary({ children, onDrop }: Props) {
                 event.preventDefault();
                 setIsDraggedOver(false)
             }}
-            onDrop={onDrop}
+            onDrop={(event) => {
+                setIsDraggedOver(false)
+                onDrop?.(event)
+            }}
         >
-            {/* {isDraggedOver ? <ShadowSlot /> : null} */}
-            {children}
+            {children?.(isDraggedOver)}
         </Wrapper>
     )
 }
 
-const Wrapper = styled.div<{
-    isDraggedOver?: boolean;
-}>`
+const Wrapper = styled.div`
     display: flex;
+    flex: 1;
     flex-direction: row;
     align-items: center;
-    justify-content: center;    
+    justify-content: center;
 `;
-
-// const ShadowSlot = styled.div<{
-//     isDraggedOver?: boolean;
-// }>`
-//     width: 110px;
-//     height: 100%;
-//     background: ${(p) => p.theme.color.divider01}; 
-//     content: " ";   
-// `;

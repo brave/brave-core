@@ -136,15 +136,15 @@ export function OnboardingVerify({
         {/* SLOTS */}
         {phraseSlots.map((_word, index) => {
           const wordInSlot = sortedPhrase?.[index];
-
           return (
             <DropBoundary
               key={index}
               onDrop={(event) => onDrop(event, index)}
             >
-              {wordInSlot ?
+              {(isDraggedOver) => wordInSlot ?
                 <SelectedBubble
                   key={index}
+                  isDraggedOver={isDraggedOver}
                   draggable={true}
                   onDrag={wordInSlot ? onWordDragStart(wordInSlot) : undefined}
                   onDragStart={wordInSlot ? onWordDragStart(wordInSlot) : undefined}
@@ -160,31 +160,11 @@ export function OnboardingVerify({
                     {index + 1}. {wordInSlot.value}
                   </SelectedBubbleText>
                 </SelectedBubble>
-                : (
-                  <SelectedBubble key={index}>
-                    <SelectedBubbleText isSelected={false} isInCorrectPosition={true}>
-                      {` - `}
-                    </SelectedBubbleText>
-                  </SelectedBubble>
-                )
+                : <div style={{ width: 106, height: "2rem" }} />
               }
             </DropBoundary>
           )
         })}
-
-        {/* og */}
-        {/* {sortedPhrase.map((word, index) =>
-          <SelectedBubble
-            key={word.id}
-            onClick={removeWord(word)}
-          >
-            <SelectedBubbleText
-              isInCorrectPosition={recoveryPhrase[index] === word.value}
-            >
-              {index + 1}. {word.value}
-            </SelectedBubbleText>
-          </SelectedBubble>
-        )} */}
 
         {hasVerifyError &&
           <ErrorContainer>

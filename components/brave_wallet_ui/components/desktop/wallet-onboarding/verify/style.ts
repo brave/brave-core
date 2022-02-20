@@ -6,6 +6,7 @@ interface StyleProps {
   error: boolean
   numberOfRows: number
   isInCorrectPosition: boolean
+  isDraggedOver?: boolean
 }
 
 const selectedBubbleHeight = 34
@@ -107,7 +108,10 @@ export const SelectedBubble = styled(WalletButton)`
   width: 106px;
   margin-right: 8px;
   margin-bottom: 8px;
-  border: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border: ${(p) => p.isDraggedOver
+    ? `1px solid ${p.theme.color.focusBorder}`
+    : `1px solid ${p.theme.color.divider01}`
+  };
   box-sizing: border-box;
   border-radius: 4px;
 `
