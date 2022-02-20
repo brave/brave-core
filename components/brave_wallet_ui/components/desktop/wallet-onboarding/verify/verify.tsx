@@ -1,0 +1,224 @@
+import * as React from 'react'
+
+import {
+  StyledWrapper,
+  Title,
+  Description,
+  RecoveryBubble,
+  RecoveryBubbleText,
+  RecoveryPhraseContainer,
+  SelectedPhraseContainer,
+  SelectedBubble,
+  SelectedBubbleText,
+  ErrorText,
+  ErrorContainer,
+} from './style'
+import { NavButton } from '../../../extension'
+import { RecoveryObject } from '../../../../constants/types'
+import { getLocale } from '../../../../../common/locale'
+import { DropBoundary } from '../../../shared/drop-boundary'
+
+export interface Props {
+  recoveryPhrase: string[]
+  onNextStep: () => void;
+}
+
+export function OnboardingVerify({
+  onNextStep,
+  recoveryPhrase
+}: Props) {
+
+  // state
+  const [hasVerifyError, setVerifyError] = React.useState<boolean>(false)
+  const [sortedPhrase, setSortedPhrase] = React.useState<RecoveryObject[]>([])
+  const phraseSlots = React.useMemo(() => new Array<RecoveryObject>(
+    recoveryPhrase?.slice()?.length || 0
+  ).fill({ id: 1, value: '' }).map((_, index) => ({ id: index + 1, value: '' })), [recoveryPhrase]);
+
+  const shuffledPhrase = React.useMemo(() => {
+    const array = recoveryPhrase.slice().sort()
+    for (let i = array.length - 1; i > 0; i--) {
+      let j = Math.floor(Math.random() * (i + 1))
+      let temp = array[i]
+      array[i] = array[j]
+      array[j] = temp
+    }
+    return array.map((str, index) => ({ value: str, id: index + 1 }))
+  }, [recoveryPhrase])
+
+  const isDisabled = React.useMemo((): boolean => {
+    return sortedPhrase.length !== shuffledPhrase.length
+  }, [sortedPhrase, shuffledPhrase])
+
+  const numberOfWordRows = React.useMemo((): number => {
+    const numberOfWordColumns = 4
+    return Math.ceil(shuffledPhrase.length / numberOfWordColumns)
+  }, [shuffledPhrase])
+
+
+  // methods
+  const isWordSelected = (word: RecoveryObject) => {
+    const searchable = sortedPhrase.map(phraseWord => `${phraseWord.id}-${phraseWord.value}`);
+    const wordIndex = searchable.findIndex((sorted) => sorted === `${word.id}-${word.value}`)
+    return {
+      isSelected: wordIndex > -1,
+      index: wordIndex
+    }
+  }
+
+  const selectWord = (word: RecoveryObject, positionIndex?: number) => {
+
+    const wasPositionProvided = (positionIndex === 0 || positionIndex);
+
+    console.log({ positionIndex, wasPositionProvided })
+
+    let tempList = [...sortedPhrase];
+
+    if (wasPositionProvided) {
+      if (isWordSelected(word).isSelected) {
+        tempList = tempList.filter((listWord) => listWord.id !== word.id); // remove word for it's current position
+      }
+      tempList.splice(positionIndex, 0, word);
+    }
+
+    setSortedPhrase(wasPositionProvided ? tempList : [...sortedPhrase, word]);
+    setVerifyError(false);
+  }
+
+  const unSelectWord = (word: RecoveryObject) => {
+    const newList = sortedPhrase.filter((key) => key !== word)
+    setSortedPhrase(newList)
+  }
+
+  const addWord = (word: RecoveryObject, positionIndex?: number) => () => {
+    selectWord(word, positionIndex)
+  }
+
+  const removeWord = (word: RecoveryObject) => () => {
+    unSelectWord(word)
+  }
+
+  const showError = () => {
+    setVerifyError(true)
+    setTimeout(function () { setVerifyError(false) }, 3000)
+  }
+
+  const checkPhrase = () => {
+    if (sortedPhrase.length === recoveryPhrase.length && sortedPhrase.every((v, i) => v.value === recoveryPhrase[i])) {
+      onNextStep()
+    } else {
+      setSortedPhrase([])
+      showError()
+    }
+  }
+
+  const onWordDragStart = (word: RecoveryObject) => (event: React.DragEvent) => {
+    event.dataTransfer.setData('text', JSON.stringify(word));
+  }
+
+  const onDrop = (event: React.DragEvent<HTMLDivElement>, index: number): void => {
+    event.preventDefault();
+    const data = event.dataTransfer.getData("text");
+    const word = data ? JSON.parse(data) as RecoveryObject : undefined;
+    if (word) {
+      selectWord(word, index);
+    }
+  }
+
+  // render 
+  return (
+    <StyledWrapper>
+      <Title>{getLocale('braveWalletVerifyRecoveryTitle')}</Title>
+      <Description>{getLocale('braveWalletVerifyRecoveryDescription')}</Description>
+
+      <SelectedPhraseContainer error={hasVerifyError} numberOfRows={numberOfWordRows}>
+
+        {/* SLOTS */}
+        {phraseSlots.map((_word, index) => {
+          const wordInSlot = sortedPhrase?.[index];
+
+          return (
+            <DropBoundary
+              key={index}
+              onDrop={(event) => onDrop(event, index)}
+            >
+              {wordInSlot ?
+                <SelectedBubble
+                  key={index}
+                  draggable={true}
+                  onDrag={wordInSlot ? onWordDragStart(wordInSlot) : undefined}
+                  onDragStart={wordInSlot ? onWordDragStart(wordInSlot) : undefined}
+                  onClick={() => {
+                    if (wordInSlot?.value) {
+                      removeWord(wordInSlot)();
+                    }
+                  }}
+                >
+                  <SelectedBubbleText
+                    isInCorrectPosition={recoveryPhrase[index] === wordInSlot?.value}
+                  >
+                    {index + 1}. {wordInSlot.value}
+                  </SelectedBubbleText>
+                </SelectedBubble>
+                : (
+                  <SelectedBubble key={index}>
+                    <SelectedBubbleText isSelected={false} isInCorrectPosition={true}>
+                      {` - `}
+                    </SelectedBubbleText>
+                  </SelectedBubble>
+                )
+              }
+            </DropBoundary>
+          )
+        })}
+
+        {/* og */}
+        {/* {sortedPhrase.map((word, index) =>
+          <SelectedBubble
+            key={word.id}
+            onClick={removeWord(word)}
+          >
+            <SelectedBubbleText
+              isInCorrectPosition={recoveryPhrase[index] === word.value}
+            >
+              {index + 1}. {word.value}
+            </SelectedBubbleText>
+          </SelectedBubble>
+        )} */}
+
+        {hasVerifyError &&
+          <ErrorContainer>
+            <ErrorText>{getLocale('braveWalletVerifyError')}</ErrorText>
+          </ErrorContainer>
+        }
+      </SelectedPhraseContainer>
+
+
+      <RecoveryPhraseContainer>
+        {shuffledPhrase.map((word) => {
+          const { isSelected } = isWordSelected(word);
+          return (
+            <RecoveryBubble
+              id={`${word.id}-${word.value}`}
+              key={word.id}
+              onClick={addWord(word)}
+              disabled={isSelected}
+              isSelected={isSelected}
+              draggable={true}
+              onDragStart={onWordDragStart(word)}
+            >
+              <RecoveryBubbleText
+                id={`text-${word.id}-${word.value}`}
+                isSelected={isSelected}
+              >
+                {word.value}
+              </RecoveryBubbleText>
+            </RecoveryBubble>)
+
+        })}
+      </RecoveryPhraseContainer>
+
+      <NavButton disabled={isDisabled} buttonType='primary' text={getLocale('braveWalletButtonVerify')} onSubmit={checkPhrase} />
+    </StyledWrapper>
+  )
+}

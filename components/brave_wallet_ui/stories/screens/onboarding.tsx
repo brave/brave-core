@@ -9,7 +9,7 @@ import {
   ImportWalletError
 } from '../../constants/types'
 import { BackButton } from '../../components/shared'
-import BackupWallet from './backup-wallet'
+import { BackupWallet } from './backup-wallet'
 import { OnboardingWrapper } from '../style'
 
 export interface Props {

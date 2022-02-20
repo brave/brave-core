@@ -32,7 +32,7 @@ import {
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
 import Onboarding from '../stories/screens/onboarding'
-import BackupWallet from '../stories/screens/backup-wallet'
+import { BackupWallet } from '../stories/screens/backup-wallet'
 
 // Utils
 import Amount from '../utils/amount'

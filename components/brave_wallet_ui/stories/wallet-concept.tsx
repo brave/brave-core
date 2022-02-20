@@ -23,7 +23,7 @@ import {
   ImportWalletError
 } from '../constants/types'
 import Onboarding from './screens/onboarding'
-import BackupWallet from './screens/backup-wallet'
+import {BackupWallet} from './screens/backup-wallet'
 import CryptoStoryView from './screens/crypto-story-view'
 import './locale'
 // import { NavOptions } from '../options/side-nav-options'
