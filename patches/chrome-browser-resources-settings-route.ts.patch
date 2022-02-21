@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index e5d13c8e53c3094ee234b2a5e8dcc9a87130871a..b6b792dedb2c6da8e8f45c625dfdb798ab0d6b2b 100644
+index c220813f53d27669dfb48e698926cb385a10c5ca..1d29d059e3b85d82529782a83b6ebb9f9b750fb1 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
 @@ -8,6 +8,7 @@ import {pageVisibility} from './page_visibility.js';

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.ts b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
-index 2d0066ff3a78560c17e29f0b592e8ba1ef57332d..09505bffe493fa721c1f897b98c40c7ca16c327f 100644
+index fef6c68658c4de5b9ac7d2bfb1802af1c5b3faa9..6d0f279e5c19f67f4f62db6bf35df37c914083e7 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.ts
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.ts
 @@ -175,6 +175,7 @@ class CategoryDefaultSettingElement extends CategoryDefaultSettingElementBase {
