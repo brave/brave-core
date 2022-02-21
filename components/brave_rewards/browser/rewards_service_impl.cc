@@ -1423,13 +1423,21 @@ void RewardsServiceImpl::OnRulesReady(
 void RewardsServiceImpl::RestoreVgs(
     std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
-  //if (Connected()) {
-  //  bat_ledger_->RestoreVGs(base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
-  //                                         AsWeakPtr(), std::move(callback)));
-  //}
+  if (Connected()) {
+    VLOG(0) << "RestoreVgs is in progress";
+    bat_ledger_->RestoreVgs(
+        std::move(vg_spend_statuses),
+        base::BindOnce(&RewardsServiceImpl::OnRestoreVgs, AsWeakPtr()));
+  }
 }
 
-void RewardsServiceImpl::OnRestoreVgs(ledger::type::Result result) {}
+void RewardsServiceImpl::OnRestoreVgs(ledger::type::Result result) {
+  if (result == ledger::type::Result::LEDGER_OK) {
+    VLOG(0) << "RestoreVgs was successful";
+  } else {
+    VLOG(0) << "RestoreVgs failed";
+  }
+}
 
 void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
@@ -3399,34 +3407,23 @@ void RewardsServiceImpl::OnGetEventLogs(
   std::move(callback).Run(std::move(logs));
 }
 
-void RewardsServiceImpl::RestoreVGs(RestoreVGsCallback callback) {
-  if (Connected()) {
-    bat_ledger_->RestoreVGs(base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
-                                           AsWeakPtr(), std::move(callback)));
-  }
   // pair_sync_service_->GetPairs(
   //    base::BindOnce(&RewardsServiceImpl::OnGetPairs, AsWeakPtr(),
   //    std::move(callback)));
-}
 
 //void RewardsServiceImpl::OnGetPairs(
-//    RestoreVGsCallback callback,
+//    RestoreVgsCallback callback,
 //    std::vector<bat_ledger::mojom::PairPtr> pairs) {
 //  if (Connected()) {
 //    for (const auto& p : pairs) {
 //      VLOG(0) << "Pair: " << p->key << ", " << p->value;
 //    }
 //
-//    bat_ledger_->RestoreVGs(std::move(pairs),
-//                            base::BindOnce(&RewardsServiceImpl::OnRestoreVGs,
+//    bat_ledger_->RestoreVgs(std::move(pairs),
+//                            base::BindOnce(&RewardsServiceImpl::OnRestoreVgs,
 //                                           AsWeakPtr(), std::move(callback)));
 //  }
 //}
-
-void RewardsServiceImpl::OnRestoreVGs(RestoreVGsCallback callback,
-                                      ledger::type::Result result) {
-  std::move(callback).Run(result);
-}
 
 absl::optional<std::string> RewardsServiceImpl::EncryptString(
     const std::string& value) {

@@ -66,8 +66,6 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
                            ledger::type::ExternalWalletPtr wallet);
   void GetEventLogs(base::Value::ConstListView args);
   void OnGetEventLogs(ledger::type::EventLogs logs);
-  void RestoreVGs(base::Value::ConstListView args);
-  void OnRestoreVGs(ledger::type::Result result);
   void GetAdDiagnostics(base::Value::ConstListView args);
   void OnGetAdDiagnostics(const bool success, const std::string& json);
 
@@ -120,10 +118,6 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getEventLogs",
       base::BindRepeating(&RewardsInternalsDOMHandler::GetEventLogs,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards_internals.restoreVGs",
-      base::BindRepeating(&RewardsInternalsDOMHandler::RestoreVGs,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getAdDiagnostics",
@@ -425,24 +419,6 @@ void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::type::EventLogs logs) {
   }
 
   CallJavascriptFunction("brave_rewards_internals.eventLogs", std::move(data));
-}
-
-void RewardsInternalsDOMHandler::RestoreVGs(base::Value::ConstListView) {
-  if (rewards_service_) {
-    AllowJavascript();
-
-    rewards_service_->RestoreVGs(
-        base::BindOnce(&RewardsInternalsDOMHandler::OnRestoreVGs,
-                       weak_ptr_factory_.GetWeakPtr()));
-  }
-}
-
-void RewardsInternalsDOMHandler::OnRestoreVGs(ledger::type::Result result) {
-  if (result == ledger::type::Result::LEDGER_OK) {
-    rewards_service_->FetchBalance(
-        base::BindOnce(&RewardsInternalsDOMHandler::OnGetBalance,
-                       weak_ptr_factory_.GetWeakPtr()));
-  }
 }
 
 void RewardsInternalsDOMHandler::GetAdDiagnostics(

@@ -663,9 +663,11 @@ void Database::BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) {
   vg_backup_restore_->BackUpVgSpendStatuses(std::move(callback));
 }
 
-void Database::RestoreVGs(type::VirtualGrants&& vgs,
-                          RestoreVGsCallback callback) {
-  vg_backup_restore_->RestoreVGs(std::move(vgs), std::move(callback));
+void Database::RestoreVgs(
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+    RestoreVgsCallback callback) {
+  vg_backup_restore_->RestoreVgs(std::move(vg_spend_statuses),
+                                 std::move(callback));
 }
 
 }  // namespace database
