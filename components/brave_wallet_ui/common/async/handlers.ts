@@ -46,7 +46,9 @@ import {
   refreshTransactionHistory,
   refreshBalances,
   refreshVisibleTokenInfo,
-  refreshPrices
+  refreshPrices,
+  sendEthTransaction,
+  sendFilTransaction
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
@@ -279,87 +281,19 @@ handler.on(WalletActions.selectPortfolioTimeline.getType(), async (store: Store,
 })
 
 handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload: SendTransactionParams) => {
-  const apiProxy = getAPIProxy()
-  /***
-   * Determine whether to create a legacy or EIP-1559 transaction.
-   *
-   * isEIP1559 is true IFF:
-   *   - network supports EIP-1559
-   *   - keyring supports EIP-1559 (ex: certain hardware wallets vendors)
-   *   - payload: SendTransactionParams has specified EIP-1559 gas-pricing
-   *     fields.
-   *
-   * In all other cases, fallback to legacy gas-pricing fields.
-   */
-  let isEIP1559
-  switch (true) {
-    // Transaction payload has hardcoded EIP-1559 gas fields.
-    case payload.maxPriorityFeePerGas !== undefined && payload.maxFeePerGas !== undefined:
-      isEIP1559 = true
-      break
-
-    // Transaction payload has hardcoded legacy gas fields.
-    case payload.gasPrice !== undefined:
-      isEIP1559 = false
-      break
-
-    // Check if network and keyring support EIP-1559.
-    default:
-      const { selectedAccount, selectedNetwork } = getWalletState(store)
-      let keyringSupportsEIP1559
-      switch (selectedAccount.accountType) {
-        case 'Primary':
-        case 'Secondary':
-        case 'Ledger':
-        case 'Trezor':
-          keyringSupportsEIP1559 = true
-          break
-        default:
-          keyringSupportsEIP1559 = false
-      }
-
-      isEIP1559 = keyringSupportsEIP1559 && (selectedNetwork.data?.ethData?.isEip1559 ?? false)
-  }
-
-  const { chainId } = await apiProxy.jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
-
   let addResult
-  const txData: BraveWallet.TxData = {
-    nonce: '',
-    // Estimated by eth_tx_service if value is '' for legacy transactions
-    gasPrice: isEIP1559 ? '' : payload.gasPrice || '',
-    // Estimated by eth_tx_service if value is ''
-    gasLimit: payload.gas || '',
-    to: payload.to,
-    value: payload.value,
-    data: payload.data || []
-  }
-
-  if (isEIP1559) {
-    const txData1559: BraveWallet.TxData1559 = {
-      baseData: txData,
-      chainId,
-      // Estimated by eth_tx_service if value is ''
-      maxPriorityFeePerGas: payload.maxPriorityFeePerGas || '',
-      // Estimated by eth_tx_service if value is ''
-      maxFeePerGas: payload.maxFeePerGas || '',
-      gasEstimation: undefined
-    }
-    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-    addResult = await apiProxy.txService.addUnapprovedTransaction({ ethTxData1559: txData1559 }, payload.from)
+  if (payload.coin === BraveWallet.CoinType.FIL) {
+    addResult = await sendFilTransaction(payload)
   } else {
-    // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
-    addResult = await apiProxy.txService.addUnapprovedTransaction({ ethTxData: txData }, payload.from)
+    addResult = await sendEthTransaction(store, payload)
   }
-
   if (!addResult.success) {
     console.log(
       'Sending unapproved transaction failed: ' +
-      `from=${payload.from} err=${addResult.errorMessage} txData=`, txData
+      `from=${payload.from} err=${addResult.errorMessage}`
     )
     return
   }
-
   // Refresh the transaction history of the origin account.
   await store.dispatch(refreshTransactionHistory(payload.from))
 })
@@ -380,7 +314,8 @@ handler.on(WalletActions.sendERC20Transfer.getType(), async (store: Store, paylo
     gasPrice: payload.gasPrice,
     maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
     maxFeePerGas: payload.maxFeePerGas,
-    data
+    data,
+    coin: BraveWallet.CoinType.ETH
   }))
 })
 
@@ -400,7 +335,8 @@ handler.on(WalletActions.sendERC721TransferFrom.getType(), async (store: Store, 
     gasPrice: payload.gasPrice,
     maxPriorityFeePerGas: payload.maxPriorityFeePerGas,
     maxFeePerGas: payload.maxFeePerGas,
-    data
+    data,
+    coin: BraveWallet.CoinType.ETH
   }))
 })
 
@@ -421,7 +357,8 @@ handler.on(WalletActions.approveERC20Allowance.getType(), async (store: Store, p
     from: payload.from,
     to: payload.contractAddress,
     value: '0x0',
-    data
+    data,
+    coin: BraveWallet.CoinType.ETH
   }))
 })
 
@@ -520,7 +457,8 @@ export const fetchSwapQuoteFactory = (
         gas: new Amount(estimatedGas).toHex(),
         data: hexStrToNumberArray(data),
         maxPriorityFeePerGas,
-        maxFeePerGas
+        maxFeePerGas,
+        coin: BraveWallet.CoinType.ETH
       }
 
       store.dispatch(WalletActions.sendTransaction(params))

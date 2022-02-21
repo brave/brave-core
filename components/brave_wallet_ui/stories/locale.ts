@@ -429,6 +429,7 @@ provideStrings({
   braveWalletEditPermissionsCustomAllowance: 'Custom allowance',
 
   // Send Input Errors
+  braveWalletNotValidFilAddress: 'Not a valid FIL address',
   braveWalletNotValidEthAddress: 'Not a valid ETH address',
   braveWalletNotValidAddress: 'Not a valid address',
   braveWalletNotDomain: 'Domain is not registered',

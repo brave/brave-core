@@ -94,6 +94,25 @@ export const mockAddresses: string[] = [
   '0xcee177039c99d03a6f74e95bbba2923ceea43ea2'
 ]
 
+export const mockFilAddresses: string[] = [
+  't1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
+  'f1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
+  't3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a',
+  'f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a'
+]
+
+export const mockFilInvalilAddresses: string[] = [
+  '',
+  't1lqarsh4nkg545ilaoqdsbtj4uofplt6sto2ziy',
+  'f1lqarsh4nkg545ilaoqdsbtj4uofplt6sto2f6ziy',
+  't3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3ju3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a',
+  'f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jfpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a',
+  'a1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
+  'b1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
+  'c3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a',
+  'd3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a'
+]
+
 export const mockAppsList: AppsListType[] = [
   {
     category: 'category1',
