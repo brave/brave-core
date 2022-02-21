@@ -341,8 +341,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
-  void RestoreVGs(RestoreVGsCallback callback) override;
-
   void StopLedger(StopLedgerCallback callback);
 
   absl::optional<std::string> EncryptString(const std::string& value) override;
@@ -775,8 +773,6 @@ class RewardsServiceImpl : public RewardsService,
       GetEventLogsCallback callback,
       ledger::type::EventLogs logs);
 
-  void OnRestoreVGs(RestoreVGsCallback callback, ledger::type::Result result);
-
   void OnGetBraveWallet(
       GetBraveWalletCallback callback,
       ledger::type::BraveWalletPtr wallet);
@@ -791,7 +787,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::type::Result result,
       std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
 
-  //void OnGetPairs(RestoreVGsCallback callback,
+  //void OnGetPairs(RestoreVgsCallback callback,
   //                std::vector<bat_ledger::mojom::PairPtr> pairs);
 
 #if defined(OS_ANDROID)

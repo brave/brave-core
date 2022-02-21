@@ -199,7 +199,9 @@ void VgSpendStatusSyncBridge::OnRestoreVgSpendStatuses(
     change_processor()->ReportError(*error);
   } else {
     if (observer_) {
-      observer_->RestoreVgSpendStatuses(std::move(vg_spend_statuses));
+      if (!vg_spend_statuses.empty()) {
+        observer_->RestoreVgSpendStatuses(std::move(vg_spend_statuses));
+      }
     }
   }
 }

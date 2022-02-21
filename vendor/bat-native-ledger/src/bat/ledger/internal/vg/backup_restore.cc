@@ -96,17 +96,24 @@ std::string BackupRestore::ExtractVGBody(
   return result;
 }
 
-void BackupRestore::RestoreVGs(const std::string& vg_bodies,
-                               const std::string& vg_spend_statuses,
-                               ledger::RestoreVGsCallback callback) const {
-  type::VirtualGrants vgs{};
-  if (ParseVirtualGrantBodies(vg_bodies, vgs) &&
-      ParseVirtualGrantSpendStatuses(vg_spend_statuses, vgs)) {
-    ledger_->database()->RestoreVGs(
-        std::move(vgs),
-        base::BindOnce(&BackupRestore::OnRestoreVGs, base::Unretained(this),
-                       std::move(callback)));
-  }
+//void BackupRestore::RestoreVGs(const std::string& vg_bodies,
+//                               const std::string& vg_spend_statuses,
+//                               ledger::RestoreVGsCallback callback) const {
+//  type::VirtualGrants vgs{};
+//  if (ParseVirtualGrantBodies(vg_bodies, vgs) &&
+//      ParseVirtualGrantSpendStatuses(vg_spend_statuses, vgs)) {
+//    ledger_->database()->RestoreVGs(
+//        std::move(vgs),
+//        base::BindOnce(&BackupRestore::OnRestoreVGs, base::Unretained(this),
+//                       std::move(callback)));
+//  }
+//}
+
+void BackupRestore::RestoreVgs(
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+    ledger::RestoreVgsCallback callback) const {
+  ledger_->database()->RestoreVgs(
+      std::move(vg_spend_statuses), std::move(callback));
 }
 
 bool BackupRestore::ParseVirtualGrantBodies(const std::string& json,
@@ -238,11 +245,11 @@ bool BackupRestore::ParseVirtualGrantSpendStatuses(
   return true;
 }
 
-void BackupRestore::OnRestoreVGs(ledger::RestoreVGsCallback callback,
-                                 type::Result result) const {
-  BLOG(1, "BackupRestore::RestoreVGs(): " << result);
-  std::move(callback).Run(result);
-}
+//void BackupRestore::OnRestoreVGs(ledger::RestoreVGsCallback callback,
+//                                 type::Result result) const {
+//  BLOG(1, "BackupRestore::RestoreVGs(): " << result);
+//  std::move(callback).Run(result);
+//}
 
 std::string BackupRestore::GetVirtualGrantBodies(
     const type::VirtualGrants& vgs) const {

@@ -24,9 +24,13 @@ class BackupRestore {
 
   void BackUpVgSpendStatuses(ledger::BackUpVgSpendStatusesCallback callback);
 
-  void RestoreVGs(const std::string& vg_bodies,
-                  const std::string& vg_spend_statuses,
-                  ledger::RestoreVGsCallback callback) const;
+  //void RestoreVGs(const std::string& vg_bodies,
+  //                const std::string& vg_spend_statuses,
+  //                ledger::RestoreVGsCallback callback) const;
+
+  void RestoreVgs(
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      ledger::RestoreVgsCallback callback) const;
 
  private:
   // std::string ExtractVGSpendStatus(
@@ -42,8 +46,8 @@ class BackupRestore {
   bool ParseVirtualGrantSpendStatuses(const std::string& json,
                                       type::VirtualGrants& vgs) const;
 
-  void OnRestoreVGs(ledger::RestoreVGsCallback callback,
-                    type::Result result) const;
+  //void OnRestoreVGs(ledger::RestoreVGsCallback callback,
+  //                  type::Result result) const;
 
   std::string GetVirtualGrantBodies(const type::VirtualGrants& vgs) const;
 

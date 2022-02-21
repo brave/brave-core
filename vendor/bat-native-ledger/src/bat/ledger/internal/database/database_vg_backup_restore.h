@@ -19,7 +19,7 @@ using BackUpVgSpendStatusesCallback =
     base::OnceCallback<void(type::Result,
                             std::vector<sync_pb::VgSpendStatusSpecifics>)>;
 
-using RestoreVGsCallback = base::OnceCallback<void(type::Result)>;
+using RestoreVgsCallback = base::OnceCallback<void(type::Result)>;
 
 class DatabaseVGBackupRestore : public DatabaseTable {
  public:
@@ -33,7 +33,9 @@ class DatabaseVGBackupRestore : public DatabaseTable {
 
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) const;
 
-  void RestoreVGs(type::VirtualGrants&& vgs, RestoreVGsCallback callback) const;
+  void RestoreVgs(
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback) const;
 
  private:
   using Tables =
@@ -50,23 +52,27 @@ class DatabaseVGBackupRestore : public DatabaseTable {
 
   bool AllNULLRecord(const type::DBRecordPtr& record) const;
 
-  void GetCreateTableStatements(Tables&& tables,
-                                type::VirtualGrants&& vgs,
-                                RestoreVGsCallback callback) const;
+  void GetCreateTableStatements(
+      Tables&& tables,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback) const;
 
-  void OnGetCreateTableStatements(Tables&& tables,
-                                  type::VirtualGrants&& vgs,
-                                  RestoreVGsCallback callback,
-                                  type::DBCommandResponsePtr response) const;
+  void OnGetCreateTableStatements(
+      Tables&& tables,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback,
+      type::DBCommandResponsePtr response) const;
 
-  void GetCreateIndexStatements(Tables&& tables,
-                                type::VirtualGrants&& vgs,
-                                RestoreVGsCallback callback) const;
+  void GetCreateIndexStatements(
+      Tables&& tables,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback) const;
 
-  void OnGetCreateIndexStatements(Tables&& tables,
-                                  const type::VirtualGrants& vgs,
-                                  RestoreVGsCallback callback,
-                                  type::DBCommandResponsePtr response) const;
+  void OnGetCreateIndexStatements(
+      Tables&& tables,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback,
+      type::DBCommandResponsePtr response) const;
 
   void AlterTables(const Tables& tables,
                    type::DBTransaction& transaction) const;
@@ -80,12 +86,13 @@ class DatabaseVGBackupRestore : public DatabaseTable {
   void CreateIndices(const Indices& indices,
                      type::DBTransaction& transaction) const;
 
-  void RestoreVGs(const Tables& tables,
-                  const Indices& indices,
-                  const type::VirtualGrants& vgs,
-                  RestoreVGsCallback callback) const;
+  void RestoreVgs(
+      const Tables& tables,
+      const Indices& indices,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      RestoreVgsCallback callback) const;
 
-  void OnRestoreVGs(RestoreVGsCallback callback,
+  void OnRestoreVgs(RestoreVgsCallback callback,
                     type::DBCommandResponsePtr response) const;
 };
 
