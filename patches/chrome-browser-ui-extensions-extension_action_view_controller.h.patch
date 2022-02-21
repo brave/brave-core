@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.h b/chrome/browser/ui/extensions/extension_action_view_controller.h
-index 15b3603d61d4844f7661fc29cff5290fef6dc287..a4e5d4f3399cdfcba9b32972003a3221fc1f095f 100644
+index 487d6599a658a326dbcb6583b80f6b47534cd478..c80e72fc6b8432f41000de361e42c642f42de358 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.h
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.h
 @@ -18,6 +18,7 @@
@@ -31,11 +31,11 @@ index 15b3603d61d4844f7661fc29cff5290fef6dc287..a4e5d4f3399cdfcba9b32972003a3221
    // The popup may not be shown synchronously if the extension is hidden and
    // first needs to slide itself out.
 +  virtual
-   void TriggerPopup(PopupShowAction show_action, bool by_user);
- 
-   // Shows the popup with the given |host|.
-@@ -152,6 +156,7 @@ class ExtensionActionViewController
-                  PopupShowAction show_action);
+   void TriggerPopup(PopupShowAction show_action,
+                     bool by_user,
+                     ShowPopupCallback callback);
+@@ -155,6 +159,7 @@ class ExtensionActionViewController
+                  ShowPopupCallback callback);
  
    // Handles cleanup after the popup closes.
 +  virtual
