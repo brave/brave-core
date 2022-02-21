@@ -19,7 +19,8 @@ from shutil import rmtree, move
 
 
 async def ProcessBinary(semaphore, options, binary):
-    dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
+    dump_syms = os.path.join(options.build_dir, options.dump_syms_path)
+
     sym_temp_output = binary + '.sym'
     error = None
     async with semaphore:
@@ -54,7 +55,7 @@ async def ProcessBinary(semaphore, options, binary):
         mkdir_p(output_path)
 
         symbol_file = f'{module_line.group(2)[:-4]}.sym'  # strip .pdb
-        move(sym_temp_output, symbol_file)
+        move(sym_temp_output, os.path.join(output_path, symbol_file))
         if options.verbose:
             elapsed = datetime.utcnow() - start_time
             print(f'Completed generating symbols for {binary}: elapsed time '
@@ -104,6 +105,9 @@ async def main():
     parser.add_argument('--build-dir',
                         required=True,
                         help='The build output directory.')
+    parser.add_argument('--dump-syms-path',
+                        required=True,
+                        help='The path to dump_syms.exe')
     parser.add_argument('--symbols-dir',
                         required=True,
                         help='The directory where to write the symbols file.')
