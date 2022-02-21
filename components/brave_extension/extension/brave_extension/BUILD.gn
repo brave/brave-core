@@ -46,12 +46,12 @@ transpile_web_ui("brave_extension") {
 if (is_mac) {
   group("brave_extension_framework_bundle_data") {
     deps = []
-    foreach(locale, locales) {
+    foreach(locale, platform_pak_locales) {
       deps += [ ":brave_extension_framework_bundle_data_${locale}" ]
     }
   }
 
-  foreach(locale, locales) {
+  foreach(locale, platform_pak_locales) {
     bundle_data("brave_extension_framework_bundle_data_${locale}") {
       locale = string_replace(locale, "-", "_")
       source_locale = string_replace(locale, "nb", "no")
@@ -62,11 +62,11 @@ if (is_mac) {
 } else {
   group("locales") {
     deps = []
-    foreach(locale, locales) {
+    foreach(locale, platform_pak_locales) {
       deps += [ ":locales_${locale}" ]
     }
   }
-  foreach(locale, locales) {
+  foreach(locale, platform_pak_locales) {
     copy("locales_${locale}") {
       locale = string_replace(locale, "-", "_")
       source_locale = string_replace(locale, "nb", "no")
