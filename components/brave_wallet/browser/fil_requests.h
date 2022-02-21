@@ -13,6 +13,15 @@ namespace brave_wallet {
 
 // Returns the balance of the account of given address.
 std::string fil_getBalance(const std::string& address);
+std::string fil_getTransactionCount(const std::string& address);
+std::string fil_estimateGas(const std::string& from_address,
+                            const std::string& to_address,
+                            const std::string& gas_premium,
+                            const std::string& gas_fee_cap,
+                            uint64_t gas_limit,
+                            uint64_t nonce,
+                            const std::string& max_fee,
+                            const std::string& value);
 
 }  // namespace brave_wallet
 

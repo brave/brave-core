@@ -4,13 +4,26 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
+#include <stdint.h>
+#include <string>
 
 #include <memory>
 
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
+#include "brave/components/brave_wallet/browser/fil_transaction.h"
+#include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
+#include "brave/components/brave_wallet/common/hex_utils.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_wallet {
 
@@ -125,13 +138,48 @@ void FilTxManager::AddUnapprovedTransaction(
 }
 
 void FilTxManager::ApproveTransaction(const std::string& tx_meta_id,
-                                      ApproveTransactionCallback) {
-  NOTIMPLEMENTED();
+                                      ApproveTransactionCallback callback) {
+  std::unique_ptr<FilTxMeta> meta =
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
+  if (!meta) {
+    LOG(ERROR) << "No transaction found";
+    std::move(callback).Run(
+        false, mojom::ProviderError::kResourceNotFound,
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+  if (!meta->tx()->nonce()) {
+    auto from = meta->from();
+    nonce_tracker_->GetNextNonce(
+        from, base::BindOnce(&FilTxManager::OnGetNextNonce,
+                             weak_factory_.GetWeakPtr(), std::move(meta),
+                             std::move(callback)));
+  } else {
+    uint64_t nonce = meta->tx()->nonce().value();
+    OnGetNextNonce(std::move(meta), std::move(callback), true, nonce);
+  }
 }
 
-void FilTxManager::RejectTransaction(const std::string& tx_meta_id,
-                                     RejectTransactionCallback) {
-  NOTIMPLEMENTED();
+void FilTxManager::OnGetNextNonce(std::unique_ptr<FilTxMeta> meta,
+                                  ApproveTransactionCallback callback,
+                                  bool success,
+                                  uint256_t nonce) {
+  if (!success) {
+    meta->set_status(mojom::TransactionStatus::Error);
+    GetFilTxStateManager()->AddOrUpdateTx(*meta);
+    LOG(ERROR) << "GetNextNonce failed";
+    std::move(callback).Run(
+        false, mojom::ProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_GET_NONCE_ERROR));
+    return;
+  }
+  meta->tx()->set_nonce(nonce);
+  DCHECK(!keyring_service_->IsLocked());
+  meta->set_status(mojom::TransactionStatus::Approved);
+  GetFilTxStateManager()->AddOrUpdateTx(*meta);
+
+  // TODO(spylogsster): Publish transaction
+  std::move(callback).Run(true, mojom::ProviderError::kSuccess, std::string());
 }
 
 void FilTxManager::GetAllTransactionInfo(
@@ -161,16 +209,31 @@ void FilTxManager::RetryTransaction(const std::string& tx_meta_id,
 void FilTxManager::GetTransactionMessageToSign(
     const std::string& tx_meta_id,
     GetTransactionMessageToSignCallback callback) {
-  NOTIMPLEMENTED();
+  std::unique_ptr<FilTxMeta> meta =
+      GetFilTxStateManager()->GetFilTx(tx_meta_id);
+  if (!meta) {
+    VLOG(1) << __FUNCTION__ << "No transaction found with id:" << tx_meta_id;
+    std::move(callback).Run(absl::nullopt);
+    return;
+  }
+  auto message = meta->tx()->GetMessageToSign();
+  auto encoded = brave_wallet::ToHex(message);
+  std::move(callback).Run(encoded);
 }
 
 void FilTxManager::Reset() {
   TxManager::Reset();
-  // TODO(spylogsster): reset members as necessary.
 }
 
-void FilTxManager::UpdatePendingTransactions() {
-  NOTIMPLEMENTED();
+std::unique_ptr<FilTxMeta> FilTxManager::GetTxForTesting(
+    const std::string& tx_meta_id) {
+  return GetFilTxStateManager()->GetFilTx(tx_meta_id);
 }
+
+FilTxStateManager* FilTxManager::GetFilTxStateManager() {
+  return static_cast<FilTxStateManager*>(tx_state_manager_.get());
+}
+
+void FilTxManager::UpdatePendingTransactions() {}
 
 }  // namespace brave_wallet

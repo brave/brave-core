@@ -193,9 +193,9 @@ export default function useSend (
   React.useEffect(() => {
     const valueToLowerCase = toAddressOrUrl.toLowerCase()
     processAddress(valueToLowerCase)
-    if (selectedAccount.coin === BraveWallet.CoinType.ETH) {
+    if (selectedAccount?.coin === BraveWallet.CoinType.ETH) {
       processEthereumAddress(valueToLowerCase)
-    } else if (selectedAccount.coin === BraveWallet.CoinType.FIL) {
+    } else if (selectedAccount?.coin === BraveWallet.CoinType.FIL) {
       processFilecoinAddress(valueToLowerCase)
     }
   }, [toAddressOrUrl, selectedAccount])

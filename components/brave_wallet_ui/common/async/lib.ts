@@ -316,7 +316,7 @@ export function refreshTransactionHistory (address?: string) {
 
     const freshTransactions: AccountTransactions = await accountsToUpdate.reduce(
       async (acc, account) => acc.then(async (obj) => {
-        const { transactionInfos } = await txService.getAllTransactionInfo(BraveWallet.CoinType.ETH, account.address)
+        const { transactionInfos } = await txService.getAllTransactionInfo(BraveWallet.CoinType.FIL, account.address)
         obj[account.address] = transactionInfos
         return obj
       }), Promise.resolve({}))
@@ -357,7 +357,7 @@ export function refreshKeyringInfo () {
     }
 
     // Get selectedAccountAddress
-    const getSelectedAccount = await keyringService.getSelectedAccount(BraveWallet.CoinType.ETH)
+    const getSelectedAccount = await keyringService.getSelectedAccount(BraveWallet.CoinType.FIL)
     const selectedAddress = getSelectedAccount.address
 
     // Fallback account address if selectedAccount returns null
@@ -485,8 +485,14 @@ export async function sendEthTransaction (store: Store, payload: SendTransaction
 export async function sendFilTransaction (payload: SendTransactionParams) {
   const apiProxy = getAPIProxy()
   const filTxData: BraveWallet.FilTxData = {
+    nonce: '',
+    gasPremium: '',
+    gasFeeCap: '',
+    gasLimit: payload.gas || '',
+    maxFee: '0',
     to: payload.to,
-    value: payload.value
+    value: payload.value,
+    cid: ''
   }
   // @ts-expect-error google closure is ok with undefined for other fields but mojom runtime is not
   return await apiProxy.txService.addUnapprovedTransaction({ filTxData: filTxData }, payload.from)

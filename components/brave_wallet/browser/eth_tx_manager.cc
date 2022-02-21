@@ -66,8 +66,7 @@ bool EthTxManager::ValidateTxData(const mojom::TxDataPtr& tx_data,
   }
   // to must be a valid address if specified
   if (!tx_data->to.empty() && EthAddress::FromHex(tx_data->to).IsEmpty()) {
-    *error =
-        l10n_util::GetStringUTF8(IDS_WALLET_ETH_SEND_TRANSACTION_TO_INVALID);
+    *error = l10n_util::GetStringUTF8(IDS_WALLET_SEND_TRANSACTION_TO_INVALID);
     return false;
   }
   return true;
@@ -499,7 +498,7 @@ void EthTxManager::OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
     LOG(ERROR) << "GetNextNonce failed";
     std::move(callback).Run(
         false, mojom::ProviderError::kInternalError,
-        l10n_util::GetStringUTF8(IDS_WALLET_ETH_GET_NONCE_ERROR));
+        l10n_util::GetStringUTF8(IDS_WALLET_GET_NONCE_ERROR));
     return;
   }
   meta->tx()->set_nonce(nonce);
