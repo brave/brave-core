@@ -54,8 +54,8 @@ constexpr char kRunAtDocumentStart[] = "document_start";
 
 bool ShouldComputeHashesForResource(
     const base::FilePath& relative_resource_path) {
-  std::vector<base::FilePath::StringType> components;
-  relative_resource_path.GetComponents(&components);
+  std::vector<base::FilePath::StringType> components =
+      relative_resource_path.GetComponents();
   return !components.empty() && components[0] != extensions::kMetadataFolder;
 }
 
