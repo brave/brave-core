@@ -31,7 +31,7 @@
 #include "components/component_updater/component_updater_switches.h"
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #include "components/embedder_support/switches.h"
-#include "components/sync/base/sync_base_switches.h"
+#include "components/sync/base/command_line_switches.h"
 #include "components/variations/variations_switches.h"
 #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
@@ -51,7 +51,7 @@ const char kBraveOriginTrialsPublicKey[] =
     "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
 
 // staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
-// switches::kSyncServiceURL manually
+// syncer::kSyncServiceURL manually
 const char kBraveSyncServiceStagingURL[] =
     "https://sync-v2.bravesoftware.com/v2";
 
@@ -178,7 +178,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #endif  // defined(OS_ANDROID)
 
   // Brave's sync protocol does not use the sync service url
-  command_line.AppendSwitchASCII(switches::kSyncServiceURL,
+  command_line.AppendSwitchASCII(syncer::kSyncServiceURL,
                                  brave_sync_service_url.c_str());
 
   command_line.AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
