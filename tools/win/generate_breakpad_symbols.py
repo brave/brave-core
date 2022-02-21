@@ -55,7 +55,7 @@ async def ProcessBinary(semaphore, options, binary):
         mkdir_p(output_path)
 
         symbol_file = f'{module_line.group(2)[:-4]}.sym'  # strip .pdb
-        move(sym_temp_output, symbol_file)
+        move(sym_temp_output, os.path.join(output_path, symbol_file))
         if options.verbose:
             elapsed = datetime.utcnow() - start_time
             print(f'Completed generating symbols for {binary}: elapsed time '
