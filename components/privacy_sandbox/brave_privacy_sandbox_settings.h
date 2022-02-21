@@ -21,7 +21,8 @@ class BravePrivacySandboxSettings : public PrivacySandboxSettings {
  public:
   BravePrivacySandboxSettings(HostContentSettingsMap* host_content_settings_map,
                               content_settings::CookieSettings* cookie_settings,
-                              PrefService* pref_service);
+                              PrefService* pref_service,
+                              bool incognito_profile);
   ~BravePrivacySandboxSettings() override;
 
  private:
