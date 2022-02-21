@@ -17,9 +17,11 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 
-BraveTabStripModel::BraveTabStripModel(TabStripModelDelegate* delegate,
-                                       Profile* profile)
-    : TabStripModel(delegate, profile) {}
+BraveTabStripModel::BraveTabStripModel(
+    TabStripModelDelegate* delegate,
+    Profile* profile,
+    TabGroupModelFactory* group_model_factory)
+    : TabStripModel(delegate, profile, group_model_factory) {}
 BraveTabStripModel::~BraveTabStripModel() {}
 
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
