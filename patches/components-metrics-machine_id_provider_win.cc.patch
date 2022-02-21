@@ -1,5 +1,5 @@
 diff --git a/components/metrics/machine_id_provider_win.cc b/components/metrics/machine_id_provider_win.cc
-index 31fe9b46f1fd26db5fbc04b18fb7ae60abf22b66..3df68e8de74d1fd94e73df322bb232e3f45e036b 100644
+index 028b882afc20aaa747d56fd36c1b74967fa4fb38..7c87728bd032c8b5614541ffbd0bd984a46ac2c3 100644
 --- a/components/metrics/machine_id_provider_win.cc
 +++ b/components/metrics/machine_id_provider_win.cc
 @@ -18,7 +18,7 @@ namespace metrics {
