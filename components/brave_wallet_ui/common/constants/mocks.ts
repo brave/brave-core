@@ -74,7 +74,8 @@ export const mockAccount: WalletAccountType = {
   },
   coin: BraveWallet.CoinType.ETH,
   accountType: 'Primary',
-  tokenBalanceRegistry: {}
+  tokenBalanceRegistry: {},
+  coin: BraveWallet.CoinType.ETH
 }
 
 export const mockAssetPrices: BraveWallet.AssetPrice[] = [
@@ -96,6 +97,25 @@ export const mockAddresses: string[] = [
   '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
   '0xdbf41e98f541f19bb044e604d2520f3893eefc79',
   '0xcee177039c99d03a6f74e95bbba2923ceea43ea2'
+]
+
+export const mockFilAddresses: string[] = [
+  't1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
+  'f1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
+  't3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a',
+  'f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a'
+]
+
+export const mockFilInvalilAddresses: string[] = [
+  '',
+  't1lqarsh4nkg545ilaoqdsbtj4uofplt6sto2ziy',
+  'f1lqarsh4nkg545ilaoqdsbtj4uofplt6sto2f6ziy',
+  't3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3ju3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a',
+  'f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jfpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a',
+  'a1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
+  'b1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy',
+  'c3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a',
+  'd3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4tpa4mvigcrayh4a'
 ]
 
 export const mockAppsList: AppsListType[] = [

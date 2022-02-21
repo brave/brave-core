@@ -45,7 +45,7 @@ export interface Props {
   onImportAccountFromJson: (accountName: string, password: string, json: string) => void
   onConnectHardwareWallet: (opts: HardwareWalletConnectOpts) => Promise<BraveWallet.HardwareWalletAccount[]>
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
-  getBalance: (address: string) => Promise<string>
+  getBalance: (address: string, coin: BraveWallet.CoinType) => Promise<string>
   onSetImportError: (hasError: boolean) => void
   hasImportError: boolean
   accounts: WalletAccountType[]

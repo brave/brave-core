@@ -1,5 +1,5 @@
-import { isHardwareAccount, isValidAddress } from './address-utils'
-import { mockAddresses, mockAccount } from '../common/constants/mocks'
+import { isHardwareAccount, isValidAddress, isValidFilAddress } from './address-utils'
+import { mockAddresses, mockAccount, mockFilAddresses, mockFilInvalilAddresses } from '../common/constants/mocks'
 import { WalletAccountType } from '../constants/types'
 
 const validAdresses = mockAddresses.map((addr: string) => [addr, true])
@@ -8,6 +8,9 @@ const invalidAddresses = [
   '0xdbf41e98f541f19bb044e604d2520f3893e',
   '0xcee177039c99d03a6f74e95bb23ceea43ea2'
 ].map(addr => [addr, false])
+
+const validFilAdresses = mockFilAddresses.map((addr: string) => [addr, true])
+const validFilInvalidAdresses = mockFilInvalilAddresses.map((addr: string) => [addr, false])
 
 describe('Address Utils', () => {
   describe('isValidAddress', () => {
@@ -45,6 +48,16 @@ describe('Address Utils', () => {
         }
       ]
       expect(isHardwareAccount(accounts, mockAccount.address)).toBe(true)
+    })
+  })
+
+  describe('isValidFilAddress', () => {
+    it.each(validFilAdresses)('should return true if address is valid', (address: string, isValid: boolean) => {
+      expect(isValid).toBe(isValidFilAddress(address))
+    })
+
+    it.each(validFilInvalidAdresses)('should return false if address is invalid', (address: string, isValid: boolean) => {
+      expect(isValid).toBe(isValidFilAddress(address))
     })
   })
 })
