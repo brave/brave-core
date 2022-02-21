@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index d5d4b566b41baaa65bcb3136dc52ee6da74e7951..90800d37db661076fe89da5cbb63f157d26c0840 100644
+index 04e327d970b872f0a9c505a0b99c6273900930f9..456b700ea63151a9b0a608021a9af17f717ee295 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -445,6 +445,7 @@ Browser* Browser::Create(const CreateParams& params) {
@@ -10,12 +10,12 @@ index d5d4b566b41baaa65bcb3136dc52ee6da74e7951..90800d37db661076fe89da5cbb63f157
    return new Browser(params);
  }
  
-@@ -456,7 +457,7 @@ Browser::Browser(const CreateParams& params)
+@@ -455,7 +456,7 @@ Browser::Browser(const CreateParams& params)
+       window_(nullptr),
        tab_strip_model_delegate_(
            std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
-       tab_strip_model_(
--          std::make_unique<TabStripModel>(tab_strip_model_delegate_.get(),
-+          std::make_unique<BraveTabStripModel>(tab_strip_model_delegate_.get(),
-                                           params.profile)),
-       tab_menu_model_delegate_(
-           std::make_unique<chrome::BrowserTabMenuModelDelegate>(this)),
+-      tab_strip_model_(std::make_unique<TabStripModel>(
++      tab_strip_model_(std::make_unique<BraveTabStripModel>(
+           tab_strip_model_delegate_.get(),
+           params.profile,
+           params.are_tab_groups_enabled ? TabGroupModelFactory::GetInstance()
