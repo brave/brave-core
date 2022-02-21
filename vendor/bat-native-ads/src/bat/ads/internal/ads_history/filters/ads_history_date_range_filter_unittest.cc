@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/ads_history/filters/ads_history_date_range_filter.h"
 
+#include "base/time/time.h"
 #include "bat/ads/ad_history_info.h"
 #include "bat/ads/ads_history_info.h"
 #include "bat/ads/internal/unittest_time_util.h"
