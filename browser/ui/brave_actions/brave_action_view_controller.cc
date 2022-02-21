@@ -92,7 +92,7 @@ void BraveActionViewController::ExecuteActionUI(
     const std::string& relative_path) {
   TriggerPopupWithUrl(PopupShowAction::kShow,
                       extension()->GetResourceURL(relative_path),
-                      /*grant_tab_permissions=*/true);
+                      /*grant_tab_permissions=*/true, ShowPopupCallback());
 }
 
 ExtensionActionViewController*
@@ -101,13 +101,14 @@ BraveActionViewController::GetPreferredPopupViewController() {
 }
 
 void BraveActionViewController::TriggerPopup(PopupShowAction show_action,
-                                             bool grant_tab_permissions) {
+                                             bool grant_tab_permissions,
+                                             ShowPopupCallback callback) {
   content::WebContents* const web_contents =
       view_delegate_->GetCurrentWebContents();
   const int tab_id = sessions::SessionTabHelper::IdForTab(web_contents).id();
 
   TriggerPopupWithUrl(show_action, extension_action_->GetPopupUrl(tab_id),
-                      grant_tab_permissions);
+                      grant_tab_permissions, std::move(callback));
 }
 
 void BraveActionViewController::OnPopupClosed() {
@@ -128,7 +129,8 @@ gfx::Image BraveActionViewController::GetIcon(
 void BraveActionViewController::TriggerPopupWithUrl(
     PopupShowAction show_action,
     const GURL& popup_url,
-    bool grant_tab_permissions) {
+    bool grant_tab_permissions,
+    ShowPopupCallback callback) {
   // If this extension is currently showing a popup, hide it. This behavior is
   // a bit different than ExtensionActionViewController, which will hide any
   // popup, regardless of extension. Consider duplicating the original behavior.
@@ -143,7 +145,8 @@ void BraveActionViewController::TriggerPopupWithUrl(
   popup_host_ = host.get();
   popup_host_observation_.Observe(popup_host_);
   extensions_container_->SetPopupOwner(this);
-  ShowPopup(std::move(host), grant_tab_permissions, show_action);
+  ShowPopup(std::move(host), grant_tab_permissions, show_action,
+            std::move(callback));
 }
 
 std::unique_ptr<BraveActionIconWithBadgeImageSource>
