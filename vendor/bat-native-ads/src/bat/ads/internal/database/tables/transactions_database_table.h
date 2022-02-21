@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/time/time.h"
 #include "bat/ads/ads_client_aliases.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/internal/database/tables/transactions_database_table_aliases.h"
