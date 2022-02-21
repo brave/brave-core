@@ -1234,6 +1234,62 @@ GURL JsonRpcService::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
   return GURL();
 }
 
+void JsonRpcService::GetFilEstimateGas(const std::string& from_address,
+                                       const std::string& to_address,
+                                       const std::string& gas_premium,
+                                       const std::string& gas_fee_cap,
+                                       int64_t gas_limit,
+                                       uint64_t nonce,
+                                       const std::string& max_fee,
+                                       const std::string& value,
+                                       GetFilEstimateGasCallback callback) {
+  if (from_address.empty() || to_address.empty()) {
+    std::move(callback).Run(
+        "", "", 0, "", mojom::FilecoinProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetFilEstimateGas,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  RequestInternal(
+      fil::getEstimateGas(from_address, to_address, gas_premium, gas_fee_cap,
+                          gas_limit, nonce, max_fee, value),
+      true, network_urls_[mojom::CoinType::FIL], std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetFilEstimateGas(
+    GetFilEstimateGasCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    mojom::FilecoinProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
+                                                   &error_message);
+    std::move(callback).Run("", "", 0, "", error, error_message);
+    return;
+  }
+
+  std::string gas_fee_cap;
+  int64_t gas_limit = 0;
+  std::string gas_premium;
+  std::string cid;
+  if (!ParseFilEstimateGas(body, &gas_premium, &gas_fee_cap, &gas_limit,
+                           &cid)) {
+    mojom::FilecoinProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::FilecoinProviderError>(body, &error,
+                                                   &error_message);
+    std::move(callback).Run("", "", gas_limit, "", error, error_message);
+    return;
+  }
+
+  std::move(callback).Run(gas_premium, gas_fee_cap, gas_limit, cid,
+                          mojom::FilecoinProviderError::kSuccess, "");
+}
+
 void JsonRpcService::GetEstimateGas(const std::string& from_address,
                                     const std::string& to_address,
                                     const std::string& gas,

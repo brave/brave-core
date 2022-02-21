@@ -28,6 +28,7 @@ class KeyringService;
 class TxManager;
 class EthTxManager;
 class SolanaTxManager;
+class FilTxManager;
 
 class TxService : public KeyedService,
                   public mojom::TxService,
@@ -155,10 +156,12 @@ class TxService : public KeyedService,
  private:
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
+  friend class FilTxManagerUnitTest;
 
   TxManager* GetTxManager(mojom::CoinType coin_type);
   EthTxManager* GetEthTxManager();
   SolanaTxManager* GetSolanaTxManager();
+  FilTxManager* GetFilTxManager();
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   base::flat_map<mojom::CoinType, std::unique_ptr<TxManager>> tx_manager_map_;

@@ -10,6 +10,7 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/json/rs/src/lib.rs.h"
 
 namespace brave_wallet {
 
@@ -27,6 +28,48 @@ bool ParseFilGetTransactionCount(const std::string& raw_json, uint64_t* count) {
       value.empty())
     return false;
   return base::StringToUint64(value, count);
+}
+
+bool ParseFilEstimateGas(const std::string& raw_json,
+                         std::string* gas_premium,
+                         std::string* gas_fee_cap,
+                         int64_t* gas_limit,
+                         std::string* cid) {
+  if (raw_json.empty())
+    return false;
+  std::string converted_json(
+      json::convert_int64_value_to_string("/result/GasLimit", raw_json.c_str())
+          .c_str());
+  if (converted_json.empty())
+    return false;
+  base::Value result;
+  if (!ParseResult(converted_json, &result))
+    return false;
+  const base::DictionaryValue* result_dict = nullptr;
+  if (!result.GetAsDictionary(&result_dict))
+    return false;
+  auto* limit = result_dict->FindStringKey("GasLimit");
+  if (!limit)
+    return false;
+  auto* premium = result_dict->FindStringKey("GasPremium");
+  if (!premium)
+    return false;
+  auto* fee_cap = result_dict->FindStringKey("GasFeeCap");
+  if (!fee_cap)
+    return false;
+  auto* cid_value = result_dict->FindKey("CID");
+  if (!cid_value)
+    return false;
+  auto* cid_root = cid_value->FindStringKey("/");
+  if (!cid_root)
+    return false;
+
+  if (!base::StringToInt64(*limit, gas_limit))
+    return false;
+  *gas_fee_cap = *fee_cap;
+  *gas_premium = *premium;
+  *cid = *cid_root;
+  return true;
 }
 
 }  // namespace brave_wallet

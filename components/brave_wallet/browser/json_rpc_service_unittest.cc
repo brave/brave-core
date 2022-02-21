@@ -642,6 +642,36 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void GetFilEstimateGas(const std::string& from,
+                         const std::string& to,
+                         const std::string& value,
+                         const std::string& expected_gas_premium,
+                         const std::string& expected_gas_fee_cap,
+                         int64_t expected_gas_limit,
+                         const std::string& expected_cid,
+                         mojom::FilecoinProviderError expected_error) {
+    bool callback_called = false;
+    json_rpc_service_->GetFilEstimateGas(
+        from, to, "", "", 0, 0, "", value,
+        base::BindLambdaForTesting(
+            [&](const std::string& gas_premium, const std::string& gas_fee_cap,
+                int64_t gas_limit, const std::string& cid,
+                mojom::FilecoinProviderError error,
+                const std::string& error_message) {
+              callback_called = true;
+              EXPECT_EQ(gas_premium, expected_gas_premium);
+              EXPECT_EQ(gas_fee_cap, expected_gas_fee_cap);
+              EXPECT_EQ(gas_limit, expected_gas_limit);
+              EXPECT_EQ(cid, expected_cid);
+              EXPECT_EQ(error, expected_error);
+              bool success =
+                  mojom::FilecoinProviderError::kSuccess == expected_error;
+              EXPECT_EQ(error_message.empty(), success);
+            }));
+    base::RunLoop().RunUntilIdle();
+    EXPECT_TRUE(callback_called);
+  }
+
  protected:
   std::unique_ptr<JsonRpcService> json_rpc_service_;
 
@@ -2725,6 +2755,41 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
                      "resolution lookup failed", 0));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetFilEstimateGas) {
+  SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL);
+  std::string response =
+      "{\"jsonrpc\":\"2.0\",\"result\":{\"Version\":0,\"To\":"
+      "\"t1tquwkjo6qvweah2g2yikewr7y5dyjds42pnrn3a\",\"From\":"
+      "\"t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq\",\"Nonce\":1,\"Value\":"
+      "\"1000000000000000000\",\"GasLimit\":2187060,\"GasFeeCap\":\"101520\","
+      "\"GasPremium\":\"100466\",\"Method\":0,\"Params\":\"\",\"CID\":{\"/"
+      "\":\"bafy2bzacebefvj6623fkmfwazpvg7qxgomhicefeb6tunc7wbvd2ee4uppfkw\"}},"
+      "\"id\":1}";
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.GasEstimateMessageGas", "", response);
+
+  GetFilEstimateGas(
+      "t1tquwkjo6qvweah2g2yikewr7y5dyjds42pnrn3a",
+      "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq", "1000000000000000000",
+      "100466", "101520", 2187060,
+      "bafy2bzacebefvj6623fkmfwazpvg7qxgomhicefeb6tunc7wbvd2ee4uppfkw",
+      mojom::FilecoinProviderError::kSuccess);
+
+  GetFilEstimateGas("", "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
+                    "1000000000000000000", "", "", 0, "",
+                    mojom::FilecoinProviderError::kInvalidParams);
+  GetFilEstimateGas("t1tquwkjo6qvweah2g2yikewr7y5dyjds42pnrn3a", "",
+                    "1000000000000000000", "", "", 0, "",
+                    mojom::FilecoinProviderError::kInvalidParams);
+
+  SetInterceptor(GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::FIL),
+                 "Filecoin.GasEstimateMessageGas", "", "");
+  GetFilEstimateGas("t1tquwkjo6qvweah2g2yikewr7y5dyjds42pnrn3a",
+                    "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq",
+                    "1000000000000000000", "", "", 0, "",
+                    mojom::FilecoinProviderError::kParsingError);
 }
 
 }  // namespace brave_wallet

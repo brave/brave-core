@@ -18,8 +18,6 @@
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NONCE_INVALID" desc="Transaction data is not validated">Transaction data 'nonce' is not valid</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICE_INVALID" desc="Transaction data is not validated">Transaction data 'gasPrice' is not valid</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_LIMIT_INVALID" desc="Transaction data is not validated">Transaction data 'gas' is not valid</message>
-  <message name="IDS_WALLET_ETH_SEND_TRANSACTION_VALUE_INVALID" desc="Transaction data is not validated">Transaction data 'value' is not valid</message>
-  <message name="IDS_WALLET_ETH_SEND_TRANSACTION_TO_INVALID" desc="Transaction data is not validated">Transaction data 'to' must be a valid address when specified</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_GAS_PRICING_EXISTS" desc="Transaction data is not validated">Transaction data 'gasPrice' or 'maxFeePerGas' must be specified</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_CHAIN_ID_INVALID" desc="Transaction data is not validated">Transaction data 'chainId' is not valid</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_MAX_FEE_PER_GAS_INVALID" desc="Transaction data is not validated">Transaction data 'maxFeePerGas' is not valid</message>
@@ -32,9 +30,12 @@
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_USER_REJECTED" desc="The text of the response for eth_sendTransaction">User rejected the transaction</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_ERROR" desc="The text of the response for eth_sendTransaction">Error processing the transaction</message>
   <message name="IDS_WALLET_ETH_SIGN_NOT_AUTHED" desc="The text of the response for eth_sign">'<ph name="VALUE">$1<ex>1</ex></ph>' is not authorized to sign message</message>
-  <message name="IDS_WALLET_ETH_SIGN_TRANSACTION_ERROR" desc="Failed to sign transaction">Failed to sign transaction</message>
-  <message name="IDS_WALLET_ETH_GET_NONCE_ERROR" desc="Failed to get nonce">Failed to get next nonce value</message>
+  <message name="IDS_WALLET_GET_NONCE_ERROR" desc="Failed to get nonce">Failed to get next nonce value</message>
   <message name="IDS_WALLET_ETH_INVALID_CHAIN_ID_RPC" desc="Invalid Chain ID response">Invalid chain ID response from RPC service</message>
+  <message name="IDS_WALLET_ETH_SIGN_TRANSACTION_ERROR" desc="Failed to sign transaction">Failed to sign transaction</message>
+  <message name="IDS_WALLET_ETH_SEND_TRANSACTION_FROM_EMPTY" desc="Transaction data is not validated">Transaction data 'from' must be specified</message>
+  <message name="IDS_WALLET_ETH_SEND_TRANSACTION_VALUE_INVALID" desc="Transaction data is not validated">Transaction data 'value' is not valid</message>
+  <message name="IDS_WALLET_SEND_TRANSACTION_TO_INVALID" desc="Transaction data is not validated">Transaction data 'to' must be a valid address when specified</message>
   <message name="IDS_BRAVE_WALLET_DEFI_CATEGORY" desc="Defi apps title">Defi apps</message>
   <message name="IDS_BRAVE_WALLET_NFT_CATEGORY" desc="NFT marketplace title">NFT marketplaces</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_CATEGORY" desc="Filter apps placeholder">Search results</message>
@@ -441,4 +442,6 @@
   <message name="IDS_BRAVE_WALLET_NOT_VALID_FIL_ADDRESS" desc="Send input not valid FIL address error">Not a valid FIL address</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_ALL" desc="Network Filter Selector All Networks">All Networks</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary Networks</message>
+  <message name="IDS_WALLET_FIL_SEND_TRANSACTION_TO" desc="Error message if transaction 'to' is empty">Transaction data 'to' must be specified</message>
+  <message name="IDS_WALLET_FIL_SEND_TRANSACTION_FROM_INVALID" desc="Transaction data is not validated">Transaction data 'from' must be a valid Filecoin address</message>
 </grit-part>

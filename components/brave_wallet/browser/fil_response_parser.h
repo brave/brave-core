@@ -18,6 +18,12 @@ namespace brave_wallet {
 bool ParseFilGetBalance(const std::string& json, std::string* hex_balance);
 // Returns the transaction count of given address.
 bool ParseFilGetTransactionCount(const std::string& json, uint64_t* count);
+// Returns Gas estimation values.
+bool ParseFilEstimateGas(const std::string& json,
+                         std::string* gas_premium,
+                         std::string* gas_fee_cap,
+                         int64_t* gas_limit,
+                         std::string* cid);
 
 }  // namespace brave_wallet
 

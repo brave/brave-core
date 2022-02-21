@@ -58,6 +58,10 @@ SolanaTxManager* TxService::GetSolanaTxManager() {
   return static_cast<SolanaTxManager*>(GetTxManager(mojom::CoinType::SOL));
 }
 
+FilTxManager* TxService::GetFilTxManager() {
+  return static_cast<FilTxManager*>(GetTxManager(mojom::CoinType::FIL));
+}
+
 mojo::PendingRemote<mojom::TxService> TxService::MakeRemote() {
   mojo::PendingRemote<mojom::TxService> remote;
   tx_service_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());

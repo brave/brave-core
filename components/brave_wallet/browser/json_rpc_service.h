@@ -187,6 +187,22 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       ::mojo::PendingRemote<mojom::JsonRpcServiceObserver> observer) override;
 
   GURL GetBlockTrackerUrlFromNetwork(std::string chain_id);
+  using GetFilEstimateGasCallback =
+      base::OnceCallback<void(const std::string& gas_premium,
+                              const std::string& gas_fee_cap,
+                              int64_t gas_limit,
+                              const std::string& cid,
+                              mojom::FilecoinProviderError error,
+                              const std::string& error_message)>;
+  void GetFilEstimateGas(const std::string& from_address,
+                         const std::string& to_address,
+                         const std::string& gas_premium,
+                         const std::string& gas_fee_cap,
+                         int64_t gas_limit,
+                         uint64_t nonce,
+                         const std::string& max_fee,
+                         const std::string& value,
+                         GetFilEstimateGasCallback callback);
 
   using GetEstimateGasCallback =
       base::OnceCallback<void(const std::string& result,
@@ -387,6 +403,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        int status,
                        const std::string& body,
                        const base::flat_map<std::string, std::string>& headers);
+  void OnGetFilEstimateGas(
+      GetFilEstimateGasCallback callback,
+      int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
 
   void OnGetEstimateGas(
       GetEstimateGasCallback callback,

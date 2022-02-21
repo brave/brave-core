@@ -118,6 +118,7 @@ enum SolanaProviderError {
 union ProviderErrorUnion {
   ProviderError provider_error;
   SolanaProviderError solana_provider_error;
+  FilecoinProviderError filecoin_provider_error;
 };
 
 // There is one BraveWalletProvider per renderer, the renderer communicates
