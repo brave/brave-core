@@ -1,0 +1,19 @@
+diff --git a/tools/binary_size/libsupersize/native.py b/tools/binary_size/libsupersize/native.py
+index 5e0aa86cdb43fde7744ce26ccaf3bc82a239fafc..65b4f252730983c21e67de8a12a13ad529ccc2d1 100644
+--- a/tools/binary_size/libsupersize/native.py
++++ b/tools/binary_size/libsupersize/native.py
+@@ -736,11 +736,10 @@ def _ElfInfoFromApk(apk_path, apk_so_path):
+ 
+ 
+ def _CountRelocationsFromElf(elf_path):
+-  args = [path_util.GetReadElfPath(), '-r', elf_path]
++  args = [path_util.GetObjDumpPath(), '--private-headers', elf_path]
+   stdout = subprocess.check_output(args).decode('ascii')
+-  relocations = re.findall(
+-      'Relocation section .* at offset .* contains (\d+) entries', stdout)
+-  return sum([int(i) for i in relocations])
++  relocations = re.search('REL[AR]?COUNT\s*(.+)', stdout).group(1)
++  return int(relocations, 16)
+ 
+ 
+ def AddMetadata(*, metadata, native_spec, shorten_path):

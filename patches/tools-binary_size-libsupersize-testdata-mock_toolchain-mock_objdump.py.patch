@@ -1,0 +1,12 @@
+diff --git a/tools/binary_size/libsupersize/testdata/mock_toolchain/mock_objdump.py b/tools/binary_size/libsupersize/testdata/mock_toolchain/mock_objdump.py
+index 23375a04029ee5acfcd58634f4233b4a7569d4fb..964b27bbfb4905a7a875b6124f42c3817a4bad8e 100644
+--- a/tools/binary_size/libsupersize/testdata/mock_toolchain/mock_objdump.py
++++ b/tools/binary_size/libsupersize/testdata/mock_toolchain/mock_objdump.py
+@@ -45,6 +45,7 @@ Dynamic Section:
+   ANDROID_REL          0x00021de8
+   ANDROID_RELSZ        0x00030b95
+   RELENT               0x00000008
++  RELCOUNT             0x00060367
+   JMPREL               0x00052980
+   PLTRELSZ             0x00000c48
+   PLTGOT               0x0308e42c
