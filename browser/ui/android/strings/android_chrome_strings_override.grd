@@ -246,6 +246,9 @@ CHAR_LIMIT guidelines:
         To share with profiles nearby, let them scan this QR Code
       </message>
 
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
+        You’ll be able to easily manage media controls, private sessions, downloads and more
+      </message>
       </messages>
   </release>
 </grit>

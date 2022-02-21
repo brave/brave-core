@@ -3,9 +3,20 @@
 <grit-part>
 <if expr="chromeos">
 
+  <if expr="reven">
+    </if>
+  <if expr="not reven">
+    </if>
   <message name="IDS_SETTINGS_PEOPLE_MANAGE_OTHER_PEOPLE" desc="Label for the button that opens the multi-profile user manager.">
     Manage other profiles
   </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_APPS_ITEM_SUMMARY" desc="The summary of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Apps' setup button. Explains to the user that they need to grant phone permission to stream apps.">
+    View conversations, react to messages, and add profiles to group chats
+  </message>
+  <if expr="reven">
+    </if>
+  <if expr="not reven">
+    </if>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_DESC" desc="The text explaining to the user the manner in which their presence is sensed and data usage policy.">
     Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> uses a built-in sensor to detect profiles in front of your device. All data is processed on your device immediately and then deleted. Sensor data is never sent to Brave. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
