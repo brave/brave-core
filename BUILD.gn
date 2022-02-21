@@ -364,7 +364,7 @@ template("create_dist_template") {
 create_dist_template("create_native_symbols_dist") {
   output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.zip"
   dir_inputs = [ "$brave_product_name.pdb.syms" ]
-  deps = ["app/$current_os:symbol_dist_resources" ]
+  deps = [ "app/$current_os:symbol_dist_resources" ]
 }
 
 create_dist_template("create_symbols_dist") {
@@ -374,7 +374,7 @@ create_dist_template("create_symbols_dist") {
     output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
   }
 
-  deps = ["app/$current_os:symbol_dist_resources" ]
+  deps = [ "app/$current_os:symbol_dist_resources" ]
   if (brave_debug_symbol_level == 2 && is_win) {
     deps += [ ":create_native_symbols_dist" ]
   }
