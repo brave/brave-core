@@ -61,13 +61,15 @@ class BraveActionViewController : public ExtensionActionViewController {
   // ExtensionActionViewController overrides
   ExtensionActionViewController* GetPreferredPopupViewController() override;
   void TriggerPopup(PopupShowAction show_action,
-                    bool grant_tab_permissions) override;
+                    bool grant_tab_permissions,
+                    ShowPopupCallback callback) override;
   void OnPopupClosed() override;
 
   // Shared logic for ExecuteActionUI() and TriggerPopup().
   void TriggerPopupWithUrl(PopupShowAction show_action,
                            const GURL& popup_url,
-                           bool grant_tab_permissions);
+                           bool grant_tab_permissions,
+                           ShowPopupCallback callback);
 
   // Returns the image source for the icon.
   std::unique_ptr<BraveActionIconWithBadgeImageSource> GetIconImageSource(

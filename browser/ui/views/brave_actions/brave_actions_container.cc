@@ -472,7 +472,8 @@ void BraveActionsContainer::PopOutAction(ToolbarActionViewController* action,
                                          base::OnceClosure closure) {}
 
 bool BraveActionsContainer::ShowToolbarActionPopupForAPICall(
-    const std::string& action_id) {
+    const std::string& action_id,
+    ShowPopupCallback callback) {
   return false;
 }
 
