@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "brave/components/brave_vpn/brave_vpn_connection_info.h"
 
 namespace brave_vpn {

@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list_types.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
