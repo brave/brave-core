@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/observer_list.h"
+#include "base/observer_list_types.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "content/public/browser/navigation_entry.h"
