@@ -117,7 +117,7 @@ const char kFlashDeprecationLearnMoreURL[] =
 const char kGoogleAccountActivityControlsURL[] =
     "https://support.brave.com/";
 
-const char kGoogleAccountActivityControlsURLInPrivacyReview[] =
+const char kGoogleAccountActivityControlsURLInPrivacyGuide[] =
     "https://support.brave.com/";
 
 const char kGoogleAccountURL[] = "https://support.brave.com/";
