@@ -221,7 +221,7 @@ if (!is_mac && !is_android && !is_ios) {
     deps = [ "//chrome:packed_resources" ]
 
     sources = []
-    foreach(locale, locales) {
+    foreach(locale, platform_pak_locales) {
       sources += [ "$root_out_dir/locales/$locale.pak" ]
     }
     outputs = [ "$brave_dist_dir/locales/{{source_file_part}}" ]
@@ -235,7 +235,7 @@ if (!is_mac && !is_android && !is_ios) {
       ]
 
       public_deps = []
-      foreach(locale, locales) {
+      foreach(locale, platform_pak_locales) {
         # public_deps is used intentionaly because ":create_dist_zip" needs the all dependency
         # of all locale files.
         public_deps += [
@@ -245,7 +245,7 @@ if (!is_mac && !is_android && !is_ios) {
       }
     }
 
-    foreach(locale, locales) {
+    foreach(locale, platform_pak_locales) {
       copy("brave_rewards_locales_${locale}") {
         deps = [ "//brave/components/brave_rewards/resources/extension:locales_$locale" ]
 
@@ -410,7 +410,7 @@ action("create_dist_zips") {
       inputs += get_target_outputs(":brave_dist_resources")
       inputs += get_target_outputs(":brave_locale_dist_resources")
       if (enable_extensions) {
-        foreach(locale, locales) {
+        foreach(locale, platform_pak_locales) {
           inputs += get_target_outputs(":brave_shields_locales_${locale}")
           inputs += get_target_outputs(":brave_rewards_locales_${locale}")
         }
