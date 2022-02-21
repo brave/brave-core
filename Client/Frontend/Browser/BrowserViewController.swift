@@ -2381,18 +2381,6 @@ extension BrowserViewController: TabManagerDelegate {
         
         var closeTabMenuChildren: [UIAction] = []
         
-        if tabManager.tabsForCurrentMode.count > 1 {
-            let closeAllTabs = UIAction(
-                title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count),
-                image: UIImage(systemName: "xmark"),
-                attributes: .destructive,
-                handler: UIAction.deferredActionHandler { _ in
-                tabManager.removeAll()
-            })
-            
-            closeTabMenuChildren.append(closeAllTabs)
-        }
-        
         let closeActiveTab = UIAction(
             title: String(format: Strings.closeTabTitle),
             image: UIImage(systemName: "xmark"),
@@ -2405,6 +2393,35 @@ extension BrowserViewController: TabManagerDelegate {
         
         closeTabMenuChildren.append(closeActiveTab)
         
+        if tabManager.tabsForCurrentMode.count > 1 {
+            let closeAllTabs = UIAction(
+                title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count),
+                image: UIImage(systemName: "xmark"),
+                attributes: .destructive,
+                handler: UIAction.deferredActionHandler { [unowned self] _ in
+                    
+                    let alert = UIAlertController(title: nil, message: Strings.closeAllTabsPrompt, preferredStyle: .actionSheet)
+                    let cancelAction = UIAlertAction(title: Strings.CancelString, style: .cancel)
+                    let closedTabsTitle = String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count)
+                    let closeAllAction = UIAlertAction(title: closedTabsTitle, style: .destructive) { _ in
+                        tabManager.removeAll()
+                    }
+                    alert.addAction(closeAllAction)
+                    alert.addAction(cancelAction)
+                    
+                    if let popoverPresentation = alert.popoverPresentationController {
+                        let tabsButton = toolbar?.tabsButton ?? topToolbar.tabsButton
+                        popoverPresentation.sourceView = tabsButton
+                        popoverPresentation.sourceRect =
+                            .init(x: tabsButton.frame.width / 2, y: tabsButton.frame.height, width: 1, height: 1)
+                    }
+                    
+                    self.present(alert, animated: true)
+            })
+            
+            closeTabMenuChildren.append(closeAllTabs)
+        }
+        
         let newTabMenu = UIMenu(title: "", options: .displayInline, children: newTabMenuChildren)
         let addTabMenu = UIMenu(title: "", options: .displayInline, children: addTabMenuChildren)
         let bookmarkMenu = UIMenu(title: "", options: .displayInline, children: bookmarkMenuChildren)
@@ -2413,7 +2430,7 @@ extension BrowserViewController: TabManagerDelegate {
         toolbar?.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, bookmarkMenu, newTabMenu])
         topToolbar.tabsButton.menu = UIMenu(title: "", identifier: nil, children: [closeTabMenu, bookmarkMenu, newTabMenu])
         
-        //Update Actions for Add-Tab Button
+        // Update Actions for Add-Tab Button
         toolbar?.addTabButton.menu = UIMenu(title: "", identifier: nil, children: [addTabMenu])
     }
 }

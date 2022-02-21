@@ -80,4 +80,8 @@ class TabsButton: UIButton {
         self.countLabel.text = countToBe
         self.accessibilityValue = countToBe
     }
+    
+    override func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willDisplayMenuFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+        UIImpactFeedbackGenerator(style: .medium).bzzt()
+    }
 }
