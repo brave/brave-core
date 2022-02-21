@@ -122,8 +122,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_win">
         </if>
-      <if expr="chromeos">
-        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">

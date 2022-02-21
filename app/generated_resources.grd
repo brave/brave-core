@@ -2015,8 +2015,6 @@ are declared in tools/grit/grit_rule.gni.
           Show in Finder
         </message>
       </if>
-      <if expr="chromeos">
-      </if>
       <message name="IDS_DOWNLOAD_TAB_CANCELLED" desc="Text that appears next to the downloaded files that have been canceled">
         Canceled
       </message>
@@ -2329,6 +2327,14 @@ are declared in tools/grit/grit_rule.gni.
           Quit
         </message>
       </if>
+
+      <!-- Download Bubble -->
+      <message name="IDS_DOWNLOAD_BUBBLE_HEADER_TEXT" desc="Header text in the Download Bubble">
+        Recent Downloads
+      </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_FOOTER_LINK" desc="Footer link in the Download Bubble">
+        Show all downloads
+      </message>
 
       <!-- Desktop omnibox PWA install icon -->
       <if expr="not is_android">
@@ -3747,9 +3753,16 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
       <if expr="enable_extensions">
-        <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing Chrome OS system images.">
-          Chrome OS System Image Writer
-        </message>
+        <if expr="reven">
+          <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing CouldReady 2.0 system images.">
+            CouldReady 2.0 System Image Writer
+          </message>
+        </if>
+        <if expr="not reven">
+          <message name="IDS_UTILITY_PROCESS_IMAGE_WRITER_NAME" desc="The name of the utility process used for writing Chrome OS system images.">
+            Chrome OS System Image Writer
+          </message>
+        </if>
       </if>
       <if expr="enable_extensions or is_android">
         <message name="IDS_UTILITY_PROCESS_MEDIA_GALLERY_UTILITY_NAME" desc="The name of the utility process used for checking media files.">
@@ -4297,15 +4310,28 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_REPORTING_PRIVATE" desc="Permission string for enterprise private reporting permission.">
           Read information about your browser, OS, and device
         </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
-          Run Chrome OS diagnostic tests.
-        </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
-          Read Chrome OS device information and device data.
-        </message>
-        <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
-          Read Chrome OS device and component serial numbers.
-        </message>
+        <if expr="reven">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
+            Run CloudReady 2.0 diagnostic tests.
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
+            Read CloudReady 2.0 device information and device data.
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
+            Read CloudReady 2.0 device and component serial numbers.
+          </message>
+        </if>
+        <if expr="not reven">
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_DIAGNOSTICS" desc="Permission string for chrome.os.diagnostcs API.">
+            Run Chrome OS diagnostic tests.
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY" desc="Permission string for chrome.os.telemetry API.">
+            Read Chrome OS device information and device data.
+          </message>
+          <message name="IDS_EXTENSION_PROMPT_WARNING_CHROMEOS_TELEMETRY_SERIAL_NUMBER" desc="Permission string for serial number permission.">
+            Read Chrome OS device and component serial numbers.
+          </message>
+        </if>
       </if>
 
       <!-- Extension/App error messages -->
@@ -4356,9 +4382,16 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_EXTENSION_INSTALL_GALLERY_ONLY" desc="Error displayed when an app or extension that has an update URL used by the gallery is installed when not directly downloaded from the gallery.">
         This can only be added from the <ph name="CHROME_WEB_STORE">$1<ex>Web Store</ex></ph>
       </message>
-      <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in Chrome OS kiosk mode.">
-        App with 'kiosk_only' manifest attribute must be installed in Chrome OS kiosk mode
-      </message>
+      <if expr="reven">
+        <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in CloudReady 2.0 kiosk mode.">
+          App with 'kiosk_only' manifest attribute must be installed in CloudReady 2.0 kiosk mode
+        </message>
+      </if>
+      <if expr="not reven">
+        <message name="IDS_EXTENSION_INSTALL_KIOSK_MODE_ONLY" desc="Error displayed during installation of an app with 'kiosk_only' attribute but user is not in Chrome OS kiosk mode.">
+          App with 'kiosk_only' manifest attribute must be installed in Chrome OS kiosk mode
+        </message>
+      </if>
       <message name="IDS_EXTENSION_OVERLAPPING_WEB_EXTENT" desc="Error message when a user tries to install an app with a web extent that overlaps another installed app.">
         Could not add application "<ph name="TO_INSTALL_APP_NAME">$1<ex>Brave Mail</ex></ph>" because it conflicts with "<ph name="INSTALLED_APP_NAME">$2<ex>Brave Calendar</ex></ph>".
       </message>
@@ -6294,6 +6327,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_INTENT_PICKER_BUBBLE_VIEW_INITIATING_ORIGIN" desc="The label for the initiating origin of the intent picker.">
           From <ph name="ORIGIN">$1<ex>https://google.com</ex></ph>
         </message>
+        <message name="IDS_INTENT_CHIP_LABEL" desc="The label of a button to open the current webpage in an installed app.">
+          Open in app
+        </message>
 
         <if expr="chromeos_ash">
           <message name="IDR_INTENT_PICKER_SUPPORTED_LINKS_INFOBAR_MESSAGE" desc="The text of an infobar asking if the user wants to open web links supported by a particular app (e.g. https://www.youtube.com) in that app.">
@@ -6491,7 +6527,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Your reading list has moved to the new side panel. Try it here.
       </message>
       <message name="IDS_TAB_GROUPS_NEW_GROUP_PROMO" desc="Text shown on promotional UI encouraging users to create a tab group in their tab strip">
-        To group tabs together, right-click a tab
+        Organize your tabs with tab groups
       </message>
       <message name="IDS_TAB_GROUPS_UNNAMED_GROUP_TOOLTIP" desc="Static tooltip to display on hover over unnamed tab group.">
         Unnamed group - <ph name="GROUP_CONTENT_STRING">$1<ex>"New Tab" and one other</ex></ph>
@@ -10616,6 +10652,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_A11Y_ALERT_WINDOW_OVERVIEW_MODE_ENTERED" desc="The accessible text read when the user enters window overview mode in Ash.">
           Entered window overview mode. Swipe to navigate, or press tab if using a keyboard.
         </message>
+        <message name="IDS_A11Y_ALERT_DESK_TEMPLATES_MODE_ENTERED" desc="The accessible text read when the user enters desk templates mode in Ash.">
+          Viewing templates. Press tab to navigate.
+        </message>
         <message name="IDS_A11Y_ALERT_WORKSPACE_FULLSCREEN_STATE_ENTERED" desc="The accessible text read when the current workspace state changes to fullscreen, which means the window in current workspace is fullcreen.">
           Entered full screen
         </message>
@@ -10910,30 +10949,49 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEB_APP_FILE_HANDLING_LIST_SEPARATOR" desc="Text/punctuation that separates items in a lists. For example, this is used in a list of files, such as 'todo_list.txt, shopping_list.txt', and file types/extensions, such as '.txt, .csv.'" meaning="List separator for files.">
          , '''
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DESCRIPTION" desc="Descriptive text in permission request dialog that is shown when the user is opening a file using a PWA.">
-        <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph> wants to open this file:
+      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_QUESTION" desc="Descriptive text in permission request dialog that is shown when the user is opening a file using a PWA.">
+        Open and edit <ph name="FILE_NAME">$1<ex>todo.txt</ex></ph> in this web app?
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DESCRIPTION_MULTIPLE" desc="Descriptive text in permission request dialog that is shown when the user is opening multiple files using a PWA.">
-        <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph> wants to open these files:
+      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_QUESTION_MULTIPLE" desc="Descriptive text in permission request dialog that is shown when the user is opening multiple files using a PWA. [ICU_Syntax]">
+        {NUM_FILES, plural,
+          other {Open and edit # files in this web app?}
+        }
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_STICKY_CHOICE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (single file format).">
-        Don't ask again when opening this file format in this app:
-<ph name="FILE_FORMAT">$1<ex>TXT</ex></ph>
+      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_STICKY_CHOICE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (single file format).">
+        Remember my choice for this file type: <ph name="FILE_FORMAT">$1<ex>TXT</ex></ph>
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_STICKY_CHOICE_MULTIPLE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (multiple file formats).">
-        Don't ask again when opening these file formats in this app:
-<ph name="FILE_FORMATS">$1<ex>TXT, CSV, DOC</ex></ph>
+      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_STICKY_CHOICE_MULTIPLE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (multiple file formats).">
+        Remember my choice for these file types: <ph name="FILE_FORMATS">$1<ex>TXT, CSV, DOC</ex></ph>
       </message>
       <if expr="use_titlecase">
-      <message name="IDS_WEB_APP_PERMISSION_DONT_ALLOW" desc="Label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
-        Don't Allow
-      </message>
+        <message name="IDS_WEB_APP_FILE_HANDLING_POSITIVE_BUTTON" desc="In title case: label for the button in the file handler permission dialog that opens a file in the app.">
+          Open
+        </message>
+        <message name="IDS_WEB_APP_FILE_HANDLING_NEGATIVE_BUTTON" desc="In title case: label for the button in the file handler permission dialog that dismisses the dialog and does not open a file.">
+          Don’t Open
+        </message>
+        <message name="IDS_WEB_APP_PERMISSION_NEGATIVE_BUTTON" desc="In title case: label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
+          Don’t Allow
+        </message>
       </if>
       <if expr="not use_titlecase">
-      <message name="IDS_WEB_APP_PERMISSION_DONT_ALLOW" desc="Label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
-        Don't allow
-      </message>
+        <message name="IDS_WEB_APP_FILE_HANDLING_POSITIVE_BUTTON" desc="In sentence case: label for the button in the file handler permission dialog that opens a file in the app.">
+          Open
+        </message>
+        <message name="IDS_WEB_APP_FILE_HANDLING_NEGATIVE_BUTTON" desc="In sentence case: label for the button in the file handler permission dialog that dismisses the dialog and does not open a file.">
+          Don’t open
+        </message>
+        <message name="IDS_WEB_APP_PERMISSION_NEGATIVE_BUTTON" desc="In sentence case: label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
+          Don’t allow
+        </message>
       </if>
+    </if>
+
+    <!-- Protocol Handling launch prompt -->
+    <if expr="not is_android">
+      <message name="IDS_PROTOCOL_HANDLER_INTENT_PICKER_QUESTION" desc="Label on the protocol handler intent picker.">
+        Allow app to open <ph name="PROTOCOL_SCHEME">$1<ex>mailto</ex></ph> links?
+      </message>
     </if>
 
     <!-- Font Access chooser -->
@@ -12002,7 +12060,104 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_INPUT_OVERLAY_MENU_ENTRY_BUTTON" desc="Button to access Input Overlay's settings menu.">
         Game Control
       </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_GAME_CONTROL" desc="Toggle to enable input overlay feature for arc games.">
+        Game Control
+      </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_KEY_MAPPING" desc="Text shown next to the customize button to engage in modifying key bindings for games.">
+        Key mapping
+      </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_CUSTOMIZE_BUTTON" desc="Text displayed to engage in key binding edition.">
+        Customize
+      </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_SHOW_HINT_OVERLAY" desc="Text shown next to the toggle to enable/disable the display overlay to the user.">
+        Show hint overlay
+      </message>
+      <message name="IDS_INPUT_OVERLAY_MENU_SEND_FEEDBACK" desc="Entry point to send feedback regarding input-overlay.">
+        Send feedback
+      </message>
     </if>
+
+    <!-- Privacy Sandbox Dialog strings -->
+    <!-- TODO(crbug.com/1286276) These strings are not final yet and therefore marked as translateable="false" -->
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_TITLE" translateable="false" desc="Title of the Privacy Sandbox Dialog.">
+      Nullam mollis, enim pellentesque
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_SUBTITLE" translateable="false" desc="Subtitle of the Privacy Sandbox Dialog.">
+      Integer tristique vitae dolor quis imperdiet. Nunc facilisis dolor id
+      tempus sollicitudin. Cras interdum eros tincidunt ornare mattis.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_HEADER_1" translateable="false" desc="Header of the first section in the body of the Privacy Sandbox Dialog.">
+      Sub subtitle 1
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_DESCRIPTION_1" translateable="false" desc="Description of the first section in the body of the Privacy Sandbox Dialog.">
+      Nunc a odio sodales, tincidunt purus tempus,
+    sodales mauris. Aliquam ultricies lorem
+    sed auctor tristique.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_HEADER_2" translateable="false" desc="Header of the second section in the body of the Privacy Sandbox Dialog.">
+      Sub subtitle 2
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BODY_DESCRIPTION_2" translateable="false" desc="Description of the second section in the body of the Privacy Sandbox Dialog.">
+      Suspendisse suscipit pulvinar varius.
+      Vestibulum bibendum, nisi non facilisis euismod, dui urna viverra diam,
+      euismod interdum ipsum nulla id felis. Cras suscipit dolor justo, id
+      pellentesque ipsum finibus in. Ut accumsan
+      suscipit.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_LABEL" translateable="false" desc="Learn more label of the collapsable section in the body of the Privacy Sandbox Dialog.">
+      Learn more nisi non facilisis euismod
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_BOTTOM_SUMMARY" translateable="false" desc="Summary text in the bottom of the Privacy Sandbox Dialog.">
+      Donec consectetur id eros sed
+      placerat. Maecenas tincidunt diam eros, a tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+      turpis egestas. Sed gravida vitae mauris non vulputate.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_HEADER" translateable="false" desc="Header of the first section in the collapsable section of the Privacy Sandbox Dialog.">
+      Pellentesque habitant morbi tr
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_BULLET_POINT_1" translateable="false" desc="First bullet point of the first section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Maecenas tincidunt diam eros:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_BULLET_POINT_2" translateable="false" desc="Second bullet point of the first section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Donec consectetur eros:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+      turpis egestas. Sed gravida vitae mauris non vulputate.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_1_BULLET_POINT_3" translateable="false" desc="Third bullet point of the first section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph> Acturpis egestas sed gravida:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_HEADER" translateable="false" desc="Header of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      Cras suscipit dolor justo, id pellentesque ipsum
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_BULLET_POINT_1" translateable="false" desc="First bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Senectus et netus et malesuada:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_BULLET_POINT_2" translateable="false" desc="Second bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Pellentesque habitant morbi tristique:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+      turpis egestas. Sed gravida vitae mauris non vulputate. Pellentesque habitant morbi tristique senectus. Acturpis egestas sed gravida Donec consectetur eros.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_LEARN_MORE_SECTION_2_BULLET_POINT_3" translateable="false" desc="Third bullet point of the second section in the collapsable section of the Privacy Sandbox Dialog.">
+      <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Morbi tristique senectus et netus:<ph name="END_BOLD">&lt;/b&gt;</ph> A tempus lectus consequat ac.
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+      turpis egestas. Sed gravida vitae mauris non vulputate.
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_ACCEPT_BUTTON" translateable="false" desc="Label of the button that accepts the consent in the Privacy Sandbox Dialog.">
+      Accept
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_CONSENT_DECLINE_BUTTON" translateable="false" desc="Label of the button that declines the consent in the Privacy Sandbox Dialog.">
+      Decline
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_ACKNOWLEDGE_BUTTON" translateable="false" desc="Label of the button that acknowledges the notice in the Privacy Sandbox Dialog.">
+      Ack
+    </message>
+    <message name="IDS_PRIVACY_SANDBOX_DIALOG_NOTICE_OPEN_SETTINGS_BUTTON" translateable="false" desc="Label of the button that opens settings in the Privacy Sandbox Dialog.">
+      Settings
+    </message>
   </messages>
 </release>
 </grit>
