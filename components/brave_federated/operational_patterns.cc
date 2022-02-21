@@ -30,6 +30,7 @@ constexpr char kLastCheckedSlotPrefName[] = "brave.federated.last_checked_slot";
 constexpr char kCollectionIdPrefName[] = "brave.federated.collection_id";
 constexpr char kCollectionIdExpirationPrefName[] =
     "brave.federated.collection_id_expiration";
+constexpr int kMinutesBeforeRetry = 5;
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("operational_pattern", R"(
@@ -99,6 +100,8 @@ void OperationalPatterns::Start() {
 void OperationalPatterns::Stop() {
   simulate_local_training_step_timer_.reset();
   collection_slot_periodic_timer_.reset();
+
+  SendDelete();
 }
 
 void OperationalPatterns::LoadPrefs() {
@@ -123,6 +126,14 @@ void OperationalPatterns::OnSimulateLocalTrainingStepTimerFired() {
   SendCollectionSlot();
 }
 
+void OperationalPatterns::PrepareSend(
+    std::unique_ptr<network::ResourceRequest> resource_request,
+    std::string payload) {
+  url_loader_ = network::SimpleURLLoader::Create(
+      std::move(resource_request), GetNetworkTrafficAnnotationTag());
+  url_loader_->AttachStringForUpload(payload, "application/json");
+}
+
 void OperationalPatterns::SendCollectionSlot() {
   current_collected_slot_ = GetCurrentCollectionSlot();
   if (current_collected_slot_ == last_checked_slot_) {
@@ -134,21 +145,33 @@ void OperationalPatterns::SendCollectionSlot() {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   resource_request->url = GURL(federatedLearningUrl);
   resource_request->headers.SetHeader("X-Brave-FL-Operational-Patterns", "?1");
-
   resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   resource_request->method = "POST";
 
-  url_loader_ = network::SimpleURLLoader::Create(
-      std::move(resource_request), GetNetworkTrafficAnnotationTag());
-  url_loader_->AttachStringForUpload(BuildPayload(), "application/json");
+  PrepareSend(std::move(resource_request), BuildPayload());
 
   url_loader_->DownloadHeadersOnly(
       url_loader_factory_.get(),
-      base::BindOnce(&OperationalPatterns::OnUploadComplete,
+      base::BindOnce(&OperationalPatterns::OnCollectionSlotUploadComplete,
                      base::Unretained(this)));
 }
 
-void OperationalPatterns::OnUploadComplete(
+void OperationalPatterns::SendDelete() {
+  auto resource_request = std::make_unique<network::ResourceRequest>();
+  resource_request->url = GURL(federatedLearningUrl);
+  resource_request->headers.SetHeader("X-Brave-FL-Operational-Patterns", "?1");
+  resource_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+  resource_request->method = "DELETE";
+
+  PrepareSend(std::move(resource_request), BuildDeletePayload());
+
+  url_loader_->DownloadHeadersOnly(
+      url_loader_factory_.get(),
+      base::BindOnce(&OperationalPatterns::OnDeleteUploadComplete,
+                     base::Unretained(this)));
+}
+
+void OperationalPatterns::OnCollectionSlotUploadComplete(
     scoped_refptr<net::HttpResponseHeaders> headers) {
   int response_code = -1;
   if (headers)
@@ -159,12 +182,39 @@ void OperationalPatterns::OnUploadComplete(
   }
 }
 
+void OperationalPatterns::OnDeleteUploadComplete(
+    scoped_refptr<net::HttpResponseHeaders> headers) {
+  int response_code = -1;
+  if (headers)
+    response_code = headers->response_code();
+  if (response_code == 200) {
+    ResetCollectionId();
+  } else {
+    auto retry_timer = std::make_unique<base::RetainingOneShotTimer>();
+    retry_timer->Start(FROM_HERE, base::Seconds(kMinutesBeforeRetry * 60), this,
+                       &OperationalPatterns::SendDelete);
+  }
+}
+
 std::string OperationalPatterns::BuildPayload() const {
   base::Value root(base::Value::Type::DICTIONARY);
 
   root.SetKey("collection_id", base::Value(collection_id_));
   root.SetKey("platform", base::Value(brave_stats::GetPlatformIdentifier()));
   root.SetKey("collection_slot", base::Value(current_collected_slot_));
+  root.SetKey("wiki-link", base::Value("https://github.com/brave/brave-browser/"
+                                       "wiki/Operational-Patterns"));
+
+  std::string result;
+  base::JSONWriter::Write(root, &result);
+
+  return result;
+}
+
+std::string OperationalPatterns::BuildDeletePayload() const {
+  base::Value root(base::Value::Type::DICTIONARY);
+
+  root.SetKey("collection_id", base::Value(collection_id_));
   root.SetKey("wiki-link", base::Value("https://github.com/brave/brave-browser/"
                                        "wiki/Operational-Patterns"));
 
@@ -186,14 +236,18 @@ void OperationalPatterns::MaybeResetCollectionId() {
   const base::Time now = base::Time::Now();
   if (collection_id_.empty() || (!collection_id_expiration_time_.is_null() &&
                                  now > collection_id_expiration_time_)) {
-    collection_id_ =
-        base::ToUpperASCII(base::UnguessableToken::Create().ToString());
-    collection_id_expiration_time_ =
-        now +
-        base::Seconds(brave_federated::features::GetCollectionIdLifetime() *
-                      24 * 60 * 60);
-    SavePrefs();
+    ResetCollectionId();
   }
+}
+
+void OperationalPatterns::ResetCollectionId() {
+  const base::Time now = base::Time::Now();
+  collection_id_ =
+      base::ToUpperASCII(base::UnguessableToken::Create().ToString());
+  collection_id_expiration_time_ =
+      now + base::Seconds(brave_federated::features::GetCollectionIdLifetime() *
+                          24 * 60 * 60);
+  SavePrefs();
 }
 
 }  // namespace brave_federated

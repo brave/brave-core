@@ -41,6 +41,7 @@ namespace network {
 
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
+struct ResourceRequest;
 
 }  // namespace network
 
@@ -63,16 +64,23 @@ class OperationalPatterns final {
  private:
   void OnCollectionSlotStartTimerFired();
   void OnSimulateLocalTrainingStepTimerFired();
-  void OnUploadComplete(scoped_refptr<net::HttpResponseHeaders> headers);
+  void OnCollectionSlotUploadComplete(
+      scoped_refptr<net::HttpResponseHeaders> headers);
+  void OnDeleteUploadComplete(scoped_refptr<net::HttpResponseHeaders> headers);
 
+  void PrepareSend(std::unique_ptr<network::ResourceRequest> resource_request,
+                   std::string payload);
   void SendCollectionSlot();
+  void SendDelete();
 
   void SavePrefs();
   void LoadPrefs();
 
   std::string BuildPayload() const;
+  std::string BuildDeletePayload() const;
   int GetCurrentCollectionSlot() const;
 
+  void ResetCollectionId();
   void MaybeResetCollectionId();
 
   raw_ptr<PrefService> pref_service_ = nullptr;
