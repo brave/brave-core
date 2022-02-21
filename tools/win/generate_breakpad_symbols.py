@@ -19,7 +19,8 @@ from shutil import rmtree, move
 
 
 async def ProcessBinary(semaphore, options, binary):
-    dump_syms = os.path.join(options.build_dir, 'dump_syms.exe')
+    dump_syms = os.path.join(options.build_dir, options.dump_syms_path)
+
     sym_temp_output = binary + '.sym'
     error = None
     async with semaphore:
@@ -104,6 +105,9 @@ async def main():
     parser.add_argument('--build-dir',
                         required=True,
                         help='The build output directory.')
+    parser.add_argument('--dump-syms-path',
+                        required=True,
+                        help='The path to dump_syms.exe')
     parser.add_argument('--symbols-dir',
                         required=True,
                         help='The directory where to write the symbols file.')
