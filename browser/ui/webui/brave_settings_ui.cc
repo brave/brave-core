@@ -26,7 +26,7 @@
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/metrics_reporting_handler.h"
-#include "components/sync/driver/sync_driver_switches.h"
+#include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/content_features.h"
 
@@ -71,7 +71,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                  kBraveSettingsResources[i].id);
   }
 
-  html_source->AddBoolean("isSyncDisabled", !switches::IsSyncAllowedByFlag());
+  html_source->AddBoolean("isSyncDisabled", !syncer::IsSyncAllowedByFlag());
   html_source->AddString(
       "braveProductVersion",
       version_info::GetBraveVersionWithoutChromiumMajorVersion());

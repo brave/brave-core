@@ -27,7 +27,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/sync/driver/sync_driver_switches.h"
+#include "components/sync/base/command_line_switches.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
@@ -163,7 +163,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   std::vector<int> commands_disabled_for_normal_profile = {
       IDC_NEW_TOR_CONNECTION_FOR_SITE,
   };
-  if (!switches::IsSyncAllowedByFlag()) {
+  if (!syncer::IsSyncAllowedByFlag()) {
     commands_in_order_for_normal_profile.erase(
         std::remove(commands_in_order_for_normal_profile.begin(),
                     commands_in_order_for_normal_profile.end(),
@@ -202,7 +202,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
       IDC_NEW_TOR_CONNECTION_FOR_SITE,
       IDC_RECENT_TABS_MENU,
   };
-  if (!switches::IsSyncAllowedByFlag()) {
+  if (!syncer::IsSyncAllowedByFlag()) {
     commands_in_order_for_private_profile.erase(
         std::remove(commands_in_order_for_private_profile.begin(),
                     commands_in_order_for_private_profile.end(),
@@ -279,7 +279,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   std::vector<int> commands_disabled_for_tor_profile = {
       IDC_RECENT_TABS_MENU,
   };
-  if (!switches::IsSyncAllowedByFlag()) {
+  if (!syncer::IsSyncAllowedByFlag()) {
     commands_in_order_for_tor_profile.erase(
         std::remove(commands_in_order_for_tor_profile.begin(),
                     commands_in_order_for_tor_profile.end(),

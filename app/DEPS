@@ -24,7 +24,7 @@ include_rules = [
   "+components/safe_browsing/core/common/features.h",
   "+components/security_state/core/features.h",
   "+components/signin/public/base",
-  "+components/sync/base/sync_base_switches.h",
+  "+components/sync/base/command_line_switches.h",
   "+components/translate/core/browser/translate_prefs.h",
   "+components/variations/variations_switches.h",
   "+components/dom_distiller/core/dom_distiller_switches.h",
