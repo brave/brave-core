@@ -18,7 +18,7 @@
 #include "brave/components/translate/core/common/brave_translate_features.h"
 #include "chrome/common/chrome_features.h"
 #include "components/prefs/pref_service.h"
-#include "components/sync/driver/sync_driver_switches.h"
+#include "components/sync/base/command_line_switches.h"
 #include "components/translate/core/browser/translate_language_list.h"
 #include "content/public/browser/render_frame_host.h"
 #include "extensions/buildflags/buildflags.h"
@@ -159,12 +159,12 @@ void BraveBrowserMainParts::PreProfileInit() {
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (!base::FeatureList::IsEnabled(brave_sync::features::kBraveSync)) {
     // Disable sync temporarily
-    if (!command_line->HasSwitch(switches::kDisableSync))
-      command_line->AppendSwitch(switches::kDisableSync);
+    if (!command_line->HasSwitch(syncer::kDisableSync))
+      command_line->AppendSwitch(syncer::kDisableSync);
   } else {
     // Relaunch after flag changes will still have the switch
     // when switching from disabled to enabled
-    command_line->RemoveSwitch(switches::kDisableSync);
+    command_line->RemoveSwitch(syncer::kDisableSync);
   }
 #endif
 
