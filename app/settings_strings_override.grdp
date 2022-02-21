@@ -63,18 +63,26 @@
       </if>
   </if>
   <if expr="chromeos">
+    <if expr="reven">
+      </if>
+    <if expr="not reven">
+      </if>
     </if>
 
   <if expr="chromeos_ash or chromeos_lacros">
-    </if>
+    <if expr="reven">
+      </if>
+    <if expr="not reven">
+      </if>
+  </if>
 
-  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_SUBHEADER" desc="A subheader for the cookies card of the privacy review, for blocking third party cookies in private.">
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_SUBHEADER" desc="A subheader for the cookies card of the privacy guide, for blocking third party cookies in private.">
     Block third-party cookies in Private
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_FEATURE_DESCRIPTION2" desc="A part of the feature description of the third party cookie blocking in private section of the cookies card in the privacy review.">
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_FEATURE_DESCRIPTION2" desc="A part of the feature description of the third party cookie blocking in private section of the cookies card in the privacy guide.">
     Features on some sites may not work in Private
   </message>
-  <message name="IDS_SETTINGS_PRIVACY_REVIEW_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the privacy review.">
+  <message name="IDS_SETTINGS_PRIVACY_GUIDE_COOKIES_CARD_BLOCK_TPC_INCOGNITO_PRIVACY_DESCRIPTION2" desc="A part of the privacy description of the third party cookie blocking in private section of the cookies card in the privacy guide.">
     When you’re in Private mode, sites can only use cookies to see your browsing activity on their own site. Cookies are deleted at the end of the Private session.
   </message>
   <if expr="is_win and _google_chrome">
