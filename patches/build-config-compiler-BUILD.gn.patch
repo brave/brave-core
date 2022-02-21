@@ -1,5 +1,5 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 3959b154976c658e3609f578d695964369c8776c..71d363c14aae45a1b357b66b6a23fdd790095fb5 100644
+index 3083225a7d5403c76b4746f9bb76db059cac8ddb..5bbee292f78638f7628e11e0b16be161a5820954 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
 @@ -1676,6 +1676,7 @@ config("chromium_code") {

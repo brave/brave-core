@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-index a4ae394c5f69a789617d2918f1e99c508d5d83f2..8312676c40ac3d9c7259bddf933db795f123137a 100644
+index 95b1b81c96044ef29d16df46c7a09eede52b79b9..17d6b3ce51a6986a72dc8a5876dda9d63959088f 100644
 --- a/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
 +++ b/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model_unittest.cc
-@@ -765,7 +765,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
+@@ -767,7 +767,7 @@ TEST_F(RecentTabsSubMenuModelTest, MaxTabsPerSessionAndRecency) {
    // 5-8         <4 most-recent tabs of session>
  
    TestRecentTabsSubMenuModel model(nullptr, browser());

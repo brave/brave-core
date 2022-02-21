@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index 14cc095bde128038b5a68c994bf01bbe550dcc11..94c8701360c1f915d0ac9ac4eead04e859341d3d 100644
+index c7fb0edd5202914565c858af07049acecb14b24f..4971f0aaa4855d2d60c4a3a7a63f0333942a8129 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
 @@ -118,6 +118,7 @@ generate_grd("build_grd") {
@@ -10,7 +10,7 @@ index 14cc095bde128038b5a68c994bf01bbe550dcc11..94c8701360c1f915d0ac9ac4eead04e8
  }
  
  preprocess_if_expr("preprocess") {
-@@ -275,4 +276,6 @@ ts_library("build_ts") {
+@@ -276,4 +277,6 @@ ts_library("build_ts") {
      ":preprocess",
      ":preprocess_generated",
    ]
