@@ -35,10 +35,10 @@ Polymer({
       value: false,
     },
 
-    isSupervised_: {
+    isChildAccount_: {
       type: Boolean,
       value: function() {
-        return loadTimeData.getBoolean('isSupervised');
+        return loadTimeData.getBoolean('isChildAccount');
       },
     },
 
