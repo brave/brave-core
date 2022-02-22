@@ -52,7 +52,7 @@ var packageConfigBraveCore = function (key) {
   return packageConfig(key, path.join(rootDir, 'src', 'brave'))
 }
 
-const getNPMConfig = (key) => {
+const getNPMConfig = (key, default_value = undefined) => {
   if (!NpmConfig) {
     const list = run(npmCommand, ['config', 'list', '--json'], { cwd: rootDir })
     NpmConfig = JSON.parse(list.stdout.toString())
@@ -64,10 +64,16 @@ const getNPMConfig = (key) => {
   const npmConfigValue = NpmConfig[key.join('_')]
   if (npmConfigValue !== undefined)
     return npmConfigValue
+
   const packageConfigBraveCoreValue = packageConfigBraveCore(key)
   if (packageConfigBraveCoreValue !== undefined)
     return packageConfigBraveCoreValue
-  return packageConfig(key)
+
+  const packageConfigValue = packageConfig(key)
+  if (packageConfigValue !== undefined)
+    return packageConfigValue
+
+  return default_value
 }
 
 const parseExtraInputs = (inputs, accumulator, callback) => {
