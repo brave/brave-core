@@ -94,18 +94,19 @@ void RedeemUnblindedToken::OnCreateConfirmation(
   BLOG(6, UrlResponseToString(url_response));
   BLOG(7, UrlResponseHeadersToString(url_response));
 
-  if (url_response.status_code == net::HTTP_BAD_REQUEST) {
-    // OnFetchPaymentToken handles HTTP response status codes for duplicate/bad
-    // confirmations as we cannot guarantee if the confirmation was created or
-    // not, i.e. after an internal server error 500
-    BLOG(1, "Duplicate/bad confirmation");
-  }
-
-  if (url_response.status_code == 418) {  // I'm a teapot
-    if (delegate_) {
-      delegate_->OnDidSendConfirmation(confirmation);
+  if (confirmation.credential.empty()) {
+    if (url_response.status_code == 418) {  // I'm a teapot
+      OnDidSendConfirmation(confirmation);
+      return;
     }
 
+    if (url_response.status_code == net::HTTP_CONFLICT ||
+        url_response.status_code == net::HTTP_BAD_REQUEST) {
+      OnFailedToSendConfirmation(confirmation, /* should_retry */ false);
+      return;
+    }
+
+    OnFailedToSendConfirmation(confirmation, /* should_retry */ true);
     return;
   }
 
@@ -303,6 +304,25 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   unblinded_payment_token.ad_type = confirmation.ad_type;
 
   OnDidRedeemUnblindedToken(confirmation, unblinded_payment_token);
+}
+
+void RedeemUnblindedToken::OnDidSendConfirmation(
+    const ConfirmationInfo& confirmation) {
+  if (!delegate_) {
+    return;
+  }
+
+  delegate_->OnDidSendConfirmation(confirmation);
+}
+
+void RedeemUnblindedToken::OnFailedToSendConfirmation(
+    const ConfirmationInfo& confirmation,
+    const bool should_retry) {
+  if (!delegate_) {
+    return;
+  }
+
+  delegate_->OnFailedToSendConfirmation(confirmation, should_retry);
 }
 
 void RedeemUnblindedToken::OnDidRedeemUnblindedToken(

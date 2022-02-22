@@ -72,6 +72,8 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
 
   // RedeemUnblindedTokenDelegate:
   void OnDidSendConfirmation(const ConfirmationInfo& confirmation) override;
+  void OnFailedToSendConfirmation(const ConfirmationInfo& confirmation,
+                                  const bool should_retry) override;
   void OnDidRedeemUnblindedToken(const ConfirmationInfo& confirmation,
                                  const privacy::UnblindedPaymentTokenInfo&
                                      unblinded_payment_token) override;

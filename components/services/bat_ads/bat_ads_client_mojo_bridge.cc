@@ -122,7 +122,7 @@ void OnUrlRequest(const ads::UrlRequestCallback& callback,
   ads::mojom::UrlResponse url_response;
 
   if (!url_response_ptr) {
-    url_response.status_code = 418;  // I'm a teapot
+    url_response.status_code = -1;
     callback(url_response);
     return;
   }
@@ -139,7 +139,7 @@ void BatAdsClientMojoBridge::UrlRequest(ads::mojom::UrlRequestPtr url_request,
   if (!connected()) {
     ads::mojom::UrlResponse response;
     response.url = url_request->url;
-    response.status_code = 418;  // I'm a teapot
+    response.status_code = -1;
     callback(response);
     return;
   }

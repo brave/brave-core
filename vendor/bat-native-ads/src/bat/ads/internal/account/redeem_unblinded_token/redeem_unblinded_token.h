@@ -43,10 +43,12 @@ class RedeemUnblindedToken final {
   void OnFetchPaymentToken(const mojom::UrlResponse& url_response,
                            const ConfirmationInfo& confirmation);
 
+  void OnDidSendConfirmation(const ConfirmationInfo& confirmation);
+  void OnFailedToSendConfirmation(const ConfirmationInfo& confirmation,
+                                  const bool should_retry);
   void OnDidRedeemUnblindedToken(
       const ConfirmationInfo& confirmation,
       const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token);
-
   void OnFailedToRedeemUnblindedToken(const ConfirmationInfo& confirmation,
                                       const bool should_retry);
 

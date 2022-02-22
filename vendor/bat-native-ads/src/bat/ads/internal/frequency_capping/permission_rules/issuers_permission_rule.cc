@@ -16,7 +16,12 @@ IssuersPermissionRule::IssuersPermissionRule() = default;
 IssuersPermissionRule::~IssuersPermissionRule() = default;
 
 bool IssuersPermissionRule::ShouldAllow() {
-  return DoesRespectCap();
+  if (!DoesRespectCap()) {
+    last_message_ = "Missing issuers";
+    return false;
+  }
+
+  return true;
 }
 
 std::string IssuersPermissionRule::GetLastMessage() const {
@@ -30,7 +35,6 @@ bool IssuersPermissionRule::DoesRespectCap() {
 
   if (!IssuerExistsForType(IssuerType::kConfirmations) ||
       !IssuerExistsForType(IssuerType::kPayments)) {
-    last_message_ = "Missing issuers";
     return false;
   }
 
