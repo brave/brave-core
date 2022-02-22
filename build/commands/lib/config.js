@@ -144,7 +144,10 @@ const Config = function () {
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
   // this.buildProjects()
-  this.braveVersion = getNPMConfig(['version']) || '0.0.0'
+
+  // version should be taken from package.json, not from npm config
+  this.braveVersion = packageConfig(['version']) || '0.0.0'
+
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
