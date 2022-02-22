@@ -652,13 +652,6 @@ void Database::GetSpendableUnblindedTokensByBatchTypes(
 /**
  * VIRTUAL GRANT BACKUP & RESTORE
  */
-void Database::BackUpVGBody(type::CredsBatchType trigger_type,
-                            const std::string& trigger_id,
-                            BackUpVGBodyCallback callback) {
-  vg_backup_restore_->BackUpVGBody(trigger_type, trigger_id,
-                                   std::move(callback));
-}
-
 void Database::BackUpVgBodies(BackUpVgBodiesCallback callback) {
   vg_backup_restore_->BackUpVgBodies(std::move(callback));
 }

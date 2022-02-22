@@ -12,9 +12,6 @@
 namespace ledger {
 namespace database {
 
-using BackUpVGBodyCallback =
-    base::OnceCallback<void(type::VirtualGrantBodyPtr&&)>;
-
 using BackUpVgBodiesCallback =
     base::OnceCallback<void(type::Result,
                             std::vector<sync_pb::VgBodySpecifics>)>;
@@ -31,10 +28,6 @@ class DatabaseVGBackupRestore : public DatabaseTable {
 
   ~DatabaseVGBackupRestore() override;
 
-  void BackUpVGBody(type::CredsBatchType trigger_type,
-                    const std::string& trigger_id,
-                    BackUpVGBodyCallback callback) const;
-
   void BackUpVgBodies(BackUpVgBodiesCallback callback) const;
 
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) const;
@@ -49,9 +42,6 @@ class DatabaseVGBackupRestore : public DatabaseTable {
 
   using Indices =
       std::map<std::string, std::string>;  // name -> create statement
-
-  void OnBackUpVGBody(BackUpVGBodyCallback callback,
-                      type::DBCommandResponsePtr response) const;
 
   void OnBackUpVgBodies(BackUpVgBodiesCallback callback,
                         type::DBCommandResponsePtr response) const;
