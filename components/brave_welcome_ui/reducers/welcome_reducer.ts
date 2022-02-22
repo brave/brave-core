@@ -57,12 +57,16 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
       state = { ...state, browserProfiles: payload }
       break
     case types.RECORD_P3A:
-      let details = payload.details || {}
+      const details = payload.details || {}
       chrome.send('recordP3A', [
         details.currentScreen,
         details.finished,
-        details.skipped
+        details.skipped,
+        state.P3AEnable
       ])
+      break
+    case types.SET_P3A_ENABLE:
+      state = { ...state, P3AEnable: payload.enable }
       break
   }
 

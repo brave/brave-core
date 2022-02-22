@@ -11,7 +11,8 @@ export const defaultState = {
   searchProviders: [],
   browserProfiles: [],
   showSearchCard: true,
-  showRewardsCard: false
+  showRewardsCard: false,
+  P3AEnable: false
 }
 
 const cleanData = (state: Welcome.State) => {

@@ -30,6 +30,7 @@ export default class ShieldsBox extends React.PureComponent<Props> {
       >
         <WelcomeShieldsImage />
         <Title>{locale.p3aHead}</Title>
+        <Paragraph>{locale.shieldsBody}.</Paragraph>
         <Paragraph>{locale.p3aBody}<Link>{locale.p3aSettings}</Link>.</Paragraph>
       </Content>
     )

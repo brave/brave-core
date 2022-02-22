@@ -407,9 +407,9 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON" desc="Button to move to the next slide of the welcome tour">Next</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_PRIVACY_TITLE" desc="Title for the P3A panel">Browse safe and sound</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_PRIVACY_DESC" desc="Description for the P3A panel">
-        Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to &#8220;down&#8221; if a site doesn’t seem to be working. Brave uses <ph name="BEGIN_LINK_P3A">$1</ph>completely private product analytics<ph name="END_LINK_P3A">$1</ph> to estimate the overall usage of certain features. You can turn this off in <ph name="BEGIN_LINK_P3A_SETTINGS">$1</ph>Settings<ph name="END_LINK_P3A_SETTINGS">$1</ph>.
-      </message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC" desc="Welcome message for shields">Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to &#8220;down&#8221; if a site doesn’t seem to be working.</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_P3A_DESC" desc="Welcome message the P3A panel">Brave uses <ph name="BEGIN_LINK_P3A">$1</ph>completely private product analytics<ph name="END_LINK_P3A">$1</ph> to estimate the overall usage of certain features. You can change this later in <ph name="BEGIN_LINK_P3A_SETTINGS">$1</ph>Settings<ph name="END_LINK_P3A_SETTINGS">$1</ph>.</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_P3A_CHECKBOX" desc="Label for the P3A enable checkbox on the privacy welcome panel">Opt-in to our anonymized analytics</message>
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Brave Private Ads</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn [[currency]] by viewing Brave Private Ads. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>

@@ -43,6 +43,7 @@ declare namespace Welcome {
     searchProviders: Array<SearchEngineEntry>
     browserProfiles: Array<BrowserProfile>,
     showSearchCard: boolean,
-    showRewardsCard: boolean
+    showRewardsCard: boolean,
+    P3AEnable: boolean
   }
 }

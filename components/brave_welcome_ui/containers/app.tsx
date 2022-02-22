@@ -14,7 +14,7 @@ import WelcomeBox from './screens/welcomeBox'
 import ImportBox from './screens/importBox'
 import RewardsBox from './screens/rewardsBox'
 import SearchBox from './screens/searchBox'
-import ShieldsBox from './screens/shieldsBox'
+import { ShieldsBox } from './screens/shieldsBox'
 import FooterBox from './screens/footerBox'
 
 // Images

@@ -16,6 +16,9 @@ namespace features {
 // If enabled, this will show the Brave Rewards card in onboarding
 extern const base::Feature kShowRewardsCard;
 
+// If enabled, this will show the prompt for P3A opt-in.
+extern const base::Feature kP3AOptIn;
+
 }  // namespace features
 }  // namespace brave_welcome
 

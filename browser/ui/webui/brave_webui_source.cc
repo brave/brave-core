@@ -52,6 +52,12 @@ void AddResourcePaths(content::WebUIDataSource* html_source,
   }
 }
 
+bool IsP3AOptInEnabled() {
+  // check P3AOptIn feature flag.
+  // Always return true for testing...
+  return true;
+}
+
 void CustomizeWebUIHTMLSource(const std::string &name,
     content::WebUIDataSource* source) {
 #if !BUILDFLAG(IS_ANDROID)
@@ -59,6 +65,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     NavigationBarDataProvider::Initialize(source);
   }
 #endif
+
+  // Feature flags
+  source->AddBoolean("featureFlagP3AOptIn", IsP3AOptInEnabled());
 
   // clang-format off
   static std::map<std::string, std::vector<WebUISimpleItem> > resources = {
@@ -448,7 +457,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "next", IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON },
         { "done", IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON },
         { "privacyTitle", IDS_BRAVE_WELCOME_PAGE_PRIVACY_TITLE },
-        { "privacyDesc", IDS_BRAVE_WELCOME_PAGE_PRIVACY_DESC }
+        { "shieldsDesc", IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC },
+        { "p3aDesc", IDS_BRAVE_WELCOME_PAGE_P3A_DESC },
+        { "p3aCheckbox", IDS_BRAVE_WELCOME_PAGE_P3A_CHECKBOX },
       }
     }, {
       std::string("rewards"), {

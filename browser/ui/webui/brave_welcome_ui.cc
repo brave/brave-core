@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
@@ -18,6 +19,8 @@
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/p3a/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -48,15 +51,52 @@ void OpenJapanWelcomePage(Profile* profile) {
   }
 }
 
+// Returns whether the P3A opt-in prompt should be shown.
+bool IsP3AOptInEnabled() {
+  bool enabled =
+      base::FeatureList::IsEnabled(brave_welcome::features::kP3AOptIn);
+  VLOG(1) << "IsP3AOptInEnabled: " << enabled;
+  return enabled;
+}
+
 void RecordP3AHistogram(int screen_number, bool finished) {
-  int answer = 0; // Did not click within the welcome screen
+  int answer = 0;  // Did not click within the welcome screen
   if (finished) {
-    answer = 3; // Made it to the end of the on-boarding flow
+    answer = 3;  // Made it to the end of the on-boarding flow
   } else {
     // clicked once, or more, but didn't finish
     answer = std::min(screen_number, 2);
   }
+  VLOG(1) << "RecordP3AHistogram value " << answer;
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Welcome.InteractionStatus", answer, 3);
+}
+
+void MaybeRecordP3AOptIn(int screen_number, bool finished, bool opt_in) {
+  // Screen number (zero-indexed) where we show the prompt.
+  // Currently the same as shieldsBox.
+  constexpr int p3a_screen = 2;
+
+  // Record nothing if the feature is disabled.
+  if (!IsP3AOptInEnabled()) {
+    return;
+  }
+  VLOG(2) << "MaybeRecordP3aOptIn screen_number " << screen_number << " opt_in "
+          << opt_in;
+
+  int answer = 0;  // Did not see prompt.
+  if (screen_number >= p3a_screen) {
+    answer = 1 + opt_in;  // Saw prompt, didn't or did opt in.
+  }
+  VLOG(2) << "MaybeRecordP3AOptIn histogram value " << answer;
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Welcome.P3AOptIn", answer, 2);
+
+  // Record the user's preference if they clicked 'Done'
+  if (finished) {
+    VLOG(1) << "Recording user P3A preference: "
+            << (opt_in ? "enable" : "disable");
+    PrefService* local_state = g_browser_process->local_state();
+    local_state->SetBoolean(brave::kP3AEnabled, opt_in);
+  }
 }
 
 // The handler for Javascript messages for the chrome://welcome page
@@ -73,15 +113,19 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
  private:
   void HandleImportNowRequested(const base::Value::List& args);
   void HandleRecordP3A(const base::Value::List& args);
+  void HandleSetP3AEnable(const base::Value::List& args);
   Browser* GetBrowser();
 
   int screen_number_ = 0;
   bool finished_ = false;
   bool skipped_ = false;
+  bool p3a_opt_in_ = false;
 };
 
 WelcomeDOMHandler::~WelcomeDOMHandler() {
+  VLOG(1) << "WelcomeDOMHandler dtor: recording p3a values";
   RecordP3AHistogram(screen_number_, finished_);
+  MaybeRecordP3AOptIn(screen_number_, finished_, p3a_opt_in_);
 }
 
 Browser* WelcomeDOMHandler::GetBrowser() {
@@ -105,17 +149,27 @@ void WelcomeDOMHandler::HandleImportNowRequested(
 }
 
 void WelcomeDOMHandler::HandleRecordP3A(const base::Value::List& args) {
-  if (!args[0].is_int() || !args[1].is_bool() || !args[2].is_bool())
+  if (!args[0].is_int() || !args[1].is_bool() || !args[2].is_bool() ||
+      !args[3].is_bool()) {
     return;
+  }
   screen_number_ = args[0].GetInt();
   finished_ = args[1].GetBool();
   skipped_ = args[2].GetBool();
+  p3a_opt_in_ = args[3].GetBool();
+
+  VLOG(1) << "HandleRecordP3A "
+          << "screen_number: " << screen_number_ << ", "
+          << "finished: " << finished_ << ", "
+          << "skipped: " << skipped_ << ", "
+          << "p3a_opt_in: " << p3a_opt_in_;
 
   if (screen_number_) {
     // It is 1-based on JS side, we want 0-based.
     screen_number_--;
   }
   RecordP3AHistogram(screen_number_, finished_);
+  MaybeRecordP3AOptIn(screen_number_, finished_, p3a_opt_in_);
 }
 
 // Converts Chromium country ID to 2 digit country string
@@ -163,6 +217,29 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean(
       "showRewardsCard",
       base::FeatureList::IsEnabled(brave_welcome::features::kShowRewardsCard));
+  source->AddBoolean("showP3AOptIn", IsP3AOptInEnabled());
+
+  // Prepare for P3A opt-in study
+  if (IsP3AOptInEnabled()) {
+    DLOG(INFO) << "pref check";
+    PrefService* local_state = g_browser_process->local_state();
+    bool enabled = local_state->GetBoolean(brave::kP3AEnabled);
+    auto* p3a_pref = local_state->FindPreference(brave::kP3AEnabled);
+    DCHECK(p3a_pref);
+    DLOG(INFO) << "kP3AEnabled: " << enabled
+               << (p3a_pref->IsDefaultValue() ? " default" : " modified");
+    // Opt-in means we should disable P3A without user action.
+    // FeatureList isn't available at the time brave_p3a_service
+    // registers the enable pref, so check whether it's ever been
+    // changed here and turn it off if there's been no prior modification.
+    if (p3a_pref->IsDefaultValue()) {
+      DLOG(INFO) << "Opt-in study, disabling P3A";
+      local_state->SetBoolean(brave::kP3AEnabled, false);
+      // verify we've modified the value and won't clobber the user
+      // choice later...
+      DCHECK(!p3a_pref->IsDefaultValue());
+    }
+  }
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 }

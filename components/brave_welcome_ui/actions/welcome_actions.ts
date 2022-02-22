@@ -32,3 +32,7 @@ export const getBrowserProfiles = () => welcomeUtils.getBrowserProfiles()
 export const recordP3A = (details: any) => action(types.RECORD_P3A, {
   details
 })
+
+export const setP3AEnable = (enable: boolean) => action(types.SET_P3A_ENABLE, {
+  enable
+})

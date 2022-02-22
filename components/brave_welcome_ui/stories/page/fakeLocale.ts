@@ -25,7 +25,8 @@ const locale = {
   fakeSearchProvider2: 'Google (default)',
   // fourth screen
   p3aHead: 'Browse safe and sound',
-  p3aBody: 'Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Brave uses completely private product analytics to estimate the overall usage of certain features. Turn this off in ',
+  shieldsBody: 'Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to &#8220;down&#8221; if a site doesn’t seem to be working.',
+  p3aBody: 'Brave can use completely private product analytics to estimate the overall usage of certain features. Turn this off in ',
   p3aSettings: 'Settings',
   p3aLink1: '#',
   p3aLink2: '#',
