@@ -16,10 +16,6 @@ UserActivityFrequencyCap::UserActivityFrequencyCap() = default;
 UserActivityFrequencyCap::~UserActivityFrequencyCap() = default;
 
 bool UserActivityFrequencyCap::ShouldAllow() {
-  if (!ShouldRewardUser()) {
-    return true;
-  }
-
   if (!DoesRespectCap()) {
     last_message_ = "User was inactive";
     return false;
@@ -33,6 +29,10 @@ std::string UserActivityFrequencyCap::GetLastMessage() const {
 }
 
 bool UserActivityFrequencyCap::DoesRespectCap() {
+  if (!ShouldRewardUser()) {
+    return true;
+  }
+
   if (PlatformHelper::GetInstance()->GetPlatform() == PlatformType::kIOS) {
     return true;
   }
