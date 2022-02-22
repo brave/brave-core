@@ -307,7 +307,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false);
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
             sharedPreferencesEditor.putBoolean(
-                    AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, !value);
+                    AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, value);
             sharedPreferencesEditor.putBoolean(
                     AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION, true);
             sharedPreferencesEditor.apply();
