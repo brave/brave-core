@@ -415,8 +415,8 @@ function Container (props: Props) {
     props.walletPageActions.importAccount({ accountName, privateKey, coin })
   }
 
-  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => {
-    props.walletPageActions.importFilecoinAccount({ accountName, privateKey, network, protocol })
+  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string) => {
+    props.walletPageActions.importFilecoinAccount({ accountName, privateKey, network })
   }
 
   const onImportAccountFromJson = (accountName: string, password: string, json: string) => {

@@ -497,7 +497,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
   const onImportAccount = (name: string, key: string, coin: BraveWallet.CoinType) => {
     // doesnt do anything in storybook
   }
-  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string, protocol: BraveWallet.FilecoinAddressProtocol) => {
+  const onImportFilecoinAccount = (accountName: string, privateKey: string, network: string) => {
     // doesnt do anything in storybook
   }
 

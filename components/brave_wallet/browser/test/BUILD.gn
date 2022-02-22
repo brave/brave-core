@@ -29,6 +29,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/eth_tx_state_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/ethereum_keyring_unittest.cc",
     "//brave/components/brave_wallet/browser/ethereum_permission_utils_unittest.cc",
+    "//brave/components/brave_wallet/browser/fil_address_unittest.cc",
     "//brave/components/brave_wallet/browser/fil_requests_unittest.cc",
     "//brave/components/brave_wallet/browser/fil_response_parser_unittest.cc",
     "//brave/components/brave_wallet/browser/internal/hd_key_ed25519_unittest.cc",

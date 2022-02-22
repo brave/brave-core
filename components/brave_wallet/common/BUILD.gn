@@ -20,6 +20,8 @@ static_library("common") {
     "eth_sign_typed_data_helper.h",
     "features.cc",
     "features.h",
+    "fil_address.cc",
+    "fil_address.h",
     "hash_utils.cc",
     "hash_utils.h",
     "hex_utils.cc",
@@ -35,7 +37,9 @@ static_library("common") {
     ":common_constants",
     ":mojom__generator",
     "//base",
+    "//brave/third_party/argon2",
     "//brave/third_party/ethash",
+    "//components/base32",
     "//url",
   ]
 }

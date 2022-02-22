@@ -12,44 +12,90 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/bls/buildflags.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/third_party/argon2/src/src/blake2/blake2.h"
-#include "components/base32/base32.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 #if BUILDFLAG(ENABLE_RUST_BLS)
 #include "brave/components/bls/rs/src/lib.rs.h"
 #endif
 
-namespace {
+namespace brave_wallet {
 
-std::vector<uint8_t> BlakeHash(const std::vector<uint8_t>& payload,
-                               size_t length) {
-  blake2b_state blakeState;
-  if (blake2b_init(&blakeState, length) != 0) {
-    VLOG(0) << __func__ << ": blake2b_init failed";
-    return std::vector<uint8_t>();
-  }
-  if (blake2b_update(&blakeState, payload.data(), payload.size()) != 0) {
-    VLOG(0) << __func__ << ": blake2b_update failed";
-    return std::vector<uint8_t>();
-  }
-  std::vector<uint8_t> result;
-  result.resize(length);
-  if (blake2b_final(&blakeState, result.data(), length) != 0) {
-    VLOG(0) << __func__ << ": blake2b_final failed";
-    return result;
-  }
-  return result;
+namespace {
+bool GetBLSPublicKey(const std::vector<uint8_t>& private_key,
+                     std::vector<uint8_t>* public_key_out) {
+  if (private_key.size() != 32 || !public_key_out)
+    return false;
+#if BUILDFLAG(ENABLE_RUST_BLS)
+  std::array<uint8_t, 32> payload;
+  std::copy_n(private_key.begin(), 32, payload.begin());
+  auto result = bls::fil_private_key_public_key(payload);
+  std::vector<uint8_t> public_key(result.begin(), result.end());
+  if (std::all_of(public_key.begin(), public_key.end(),
+                  [](int i) { return i == 0; }))
+    return false;
+  *public_key_out = public_key;
+  return true;
+#else
+  return false;
+#endif
 }
 }  // namespace
-
-namespace brave_wallet {
 
 FilecoinKeyring::FilecoinKeyring() = default;
 FilecoinKeyring::~FilecoinKeyring() = default;
 
-std::string FilecoinKeyring::ImportFilecoinBLSAccount(
+// static
+bool FilecoinKeyring::DecodeImportPayload(
+    const std::string& payload_hex,
+    std::vector<uint8_t>* private_key_out,
+    mojom::FilecoinAddressProtocol* protocol_out) {
+  if (!private_key_out || !protocol_out || payload_hex.empty())
+    return false;
+  std::string key_payload;
+  if (!base::HexStringToString(payload_hex, &key_payload)) {
+    return false;
+  }
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          key_payload, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                           base::JSONParserOptions::JSON_PARSE_RFC);
+  absl::optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    VLOG(1) << "Invalid payload, could not parse JSON, JSON is: "
+            << key_payload;
+    return false;
+  }
+
+  const base::DictionaryValue* dict = nullptr;
+  if (!records_v->GetAsDictionary(&dict)) {
+    return false;
+  }
+  const std::string* type = dict->FindStringKey("Type");
+  if (!type || (*type != "secp256k1" && *type != "bls")) {
+    return false;
+  }
+
+  *protocol_out = *type == "secp256k1"
+                      ? mojom::FilecoinAddressProtocol::SECP256K1
+                      : mojom::FilecoinAddressProtocol::BLS;
+
+  const std::string* private_key_encoded = dict->FindStringKey("PrivateKey");
+  if (!private_key_encoded || private_key_encoded->empty()) {
+    return false;
+  }
+  std::string private_key_decoded;
+  if (!base::Base64Decode(*private_key_encoded, &private_key_decoded)) {
+    return false;
+  }
+  std::vector<uint8_t> private_key(private_key_decoded.begin(),
+                                   private_key_decoded.end());
+  *private_key_out = private_key;
+  return true;
+}
+
+std::string FilecoinKeyring::ImportFilecoinAccount(
     const std::vector<uint8_t>& private_key,
-    const std::string& network) {
-#if BUILDFLAG(ENABLE_RUST_BLS)
+    const std::string& network,
+    mojom::FilecoinAddressProtocol protocol) {
   if (private_key.empty()) {
     return std::string();
   }
@@ -57,48 +103,28 @@ std::string FilecoinKeyring::ImportFilecoinBLSAccount(
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(private_key);
   if (!hd_key)
     return std::string();
+  FilAddress address;
+  if (protocol == mojom::FilecoinAddressProtocol::BLS) {
+    std::vector<uint8_t> public_key;
+    if (!GetBLSPublicKey(private_key, &public_key)) {
+      return std::string();
+    }
+    address = FilAddress::FromPublicKey(public_key, protocol, network);
+  } else if (protocol == mojom::FilecoinAddressProtocol::SECP256K1) {
+    auto uncompressed_public_key = hd_key->GetUncompressedPublicKey();
+    address = FilAddress::FromUncompressedPublicKey(
+        uncompressed_public_key, mojom::FilecoinAddressProtocol::SECP256K1,
+        network);
+  }
 
-  int protocol = static_cast<int>(mojom::FilecoinAddressProtocol::BLS);
-  std::array<uint8_t, 32> payload;
-  std::copy_n(private_key.begin(), 32, payload.begin());
-  auto result = bls::fil_private_key_public_key(payload);
-  std::vector<uint8_t> public_key(result.begin(), result.end());
-  if (std::all_of(public_key.begin(), public_key.end(),
-                  [](int i) { return i == 0; }))
-    return std::string();
-  std::string address = network + std::to_string(protocol) +
-                        CreateAddressWithProtocol(public_key, protocol);
-  if (!AddImportedAddress(address, std::move(hd_key))) {
+  if (address.IsEmpty() ||
+      !AddImportedAddress(address.ToChecksumAddress(), std::move(hd_key))) {
     return std::string();
   }
-  return address;
-#else
-  return std::string();
-#endif
+  return address.ToChecksumAddress();
 }
 
-std::string FilecoinKeyring::ImportFilecoinSECP256K1Account(
-    const std::vector<uint8_t>& input_key,
-    const std::string& network) {
-  if (input_key.empty()) {
-    return std::string();
-  }
-  std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(input_key);
-  if (!hd_key)
-    return std::string();
-  auto uncompressed_public_key = hd_key->GetUncompressedPublicKey();
-  auto payload = BlakeHash(uncompressed_public_key, 20);
-  int protocol = static_cast<int>(mojom::FilecoinAddressProtocol::SECP256K1);
-  std::string address = network + std::to_string(protocol) +
-                        CreateAddressWithProtocol(payload, protocol);
-
-  if (!AddImportedAddress(address, std::move(hd_key))) {
-    return std::string();
-  }
-  return address;
-}
-
-void FilecoinKeyring::ImportFilecoinAccount(
+void FilecoinKeyring::RestoreFilecoinAccount(
     const std::vector<uint8_t>& input_key,
     const std::string& address) {
   std::unique_ptr<HDKey> hd_key = HDKey::GenerateFromPrivateKey(input_key);
@@ -113,27 +139,11 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   if (!hd_key_base)
     return std::string();
   HDKey* hd_key = static_cast<HDKey*>(hd_key_base);
-  auto uncompressed_public_key = hd_key->GetUncompressedPublicKey();
-  auto payload = BlakeHash(uncompressed_public_key, 20);
-  int protocol = static_cast<int>(mojom::FilecoinAddressProtocol::SECP256K1);
   // TODO(spylogsster): Get network from settings.
-  std::string network = "t";
-  return network + std::to_string(protocol) +
-         CreateAddressWithProtocol(payload, protocol);
-}
-
-std::string FilecoinKeyring::CreateAddressWithProtocol(
-    const std::vector<uint8_t>& payload,
-    int protocol_index) const {
-  std::vector<uint8_t> checksumPayload(payload);
-  checksumPayload.insert(checksumPayload.begin(), protocol_index);
-  auto checksum = BlakeHash(checksumPayload, 4);
-  std::vector<uint8_t> final(payload);
-  final.insert(final.end(), checksum.begin(), checksum.end());
-  std::string input(final.begin(), final.end());
-  std::string encoded_output = base::ToLowerASCII(
-      base32::Base32Encode(input, base32::Base32EncodePolicy::OMIT_PADDING));
-  return encoded_output;
+  return FilAddress::FromUncompressedPublicKey(
+             hd_key->GetUncompressedPublicKey(),
+             mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinTestnet)
+      .ToChecksumAddress();
 }
 
 }  // namespace brave_wallet
