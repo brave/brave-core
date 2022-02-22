@@ -404,4 +404,7 @@
   <message name="IDS_SETTINGS_WALLET_NETWORKS_EXISTS" desc="The error text of the wallet network dialog for existing network">
     This network is already added.
   </message>
+  <message name="IDS_BRAVE_WALLET_TREZOR_SIGN_TYPED_DATA_ERROR" desc="The error text for unsupported API on Trezor device">
+    Signing typed data is supported only on Trezor Model One with Firmware 1.10.5 or higher
+  </message>
 </grit-part>

@@ -370,7 +370,7 @@ handler.on(PanelActions.signMessageHardware.getType(), async (store, messageData
   }
   await navigateToConnectHardwareWallet(store)
   const info = hardwareAccount.hardware
-  const signed = await signMessageWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData.message)
+  const signed = await signMessageWithHardwareKeyring(info.vendor as HardwareVendor, info.path, messageData)
   if (!signed.success && signed.code) {
     const deviceError = (info.vendor === BraveWallet.TREZOR_HARDWARE_VENDOR)
       ? dialogErrorFromTrezorErrorCode(signed.code) : dialogErrorFromLedgerErrorCode(signed.code)

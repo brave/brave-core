@@ -40,9 +40,13 @@ class EthSignTypedDataHelper {
   absl::optional<std::vector<uint8_t>> EncodeData(
       const std::string& primary_type_name,
       const base::Value& data) const;
-  absl::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
+  static absl::optional<std::vector<uint8_t>> GetTypedDataMessageToSign(
+      const std::vector<uint8_t>& domain_hash,
+      const std::vector<uint8_t>& primary_hash);
+  absl::optional<std::vector<uint8_t>> GetTypedDataPrimaryHash(
       const std::string& primary_type_name,
-      const base::Value& message,
+      const base::Value& message) const;
+  absl::optional<std::vector<uint8_t>> GetTypedDataDomainHash(
       const base::Value& domain_separator) const;
 
  private:
