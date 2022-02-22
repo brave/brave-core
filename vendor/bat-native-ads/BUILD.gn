@@ -874,8 +874,6 @@ source_set("ads") {
     "src/bat/ads/internal/segments/segments_json_writer.h",
     "src/bat/ads/internal/segments/segments_util.cc",
     "src/bat/ads/internal/segments/segments_util.h",
-    "src/bat/ads/internal/server/ads_serve_server_util.cc",
-    "src/bat/ads/internal/server/ads_serve_server_util.h",
     "src/bat/ads/internal/server/ads_server_util.cc",
     "src/bat/ads/internal/server/ads_server_util.h",
     "src/bat/ads/internal/server/confirmations_server_util.cc",
