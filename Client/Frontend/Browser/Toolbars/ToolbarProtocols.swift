@@ -50,10 +50,8 @@ protocol ToolbarDelegate: AnyObject {
     func tabToolbarDidLongPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol)
-    func tabToolbarDidLongPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidPressShare()
     func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidPressSearch(_ tabToolbar: ToolbarProtocol, button: UIButton)
-    func tabToolbarDidLongPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidSwipeToChangeTabs(_ tabToolbar: ToolbarProtocol, direction: UISwipeGestureRecognizer.Direction)
 }
