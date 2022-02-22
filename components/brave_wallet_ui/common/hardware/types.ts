@@ -67,14 +67,3 @@ export const FilecoinNetworkLocaleMapping = {
   [BraveWallet.FILECOIN_MAINNET]: 'Filecoin Mainnet',
   [BraveWallet.FILECOIN_TESTNET]: 'Filecoin Testnet'
 }
-
-export const FilecoinAddressProtocolTypes = [
-  BraveWallet.FilecoinAddressProtocol.BLS, BraveWallet.FilecoinAddressProtocol.SECP256K1
-] as const
-
-// These Protocols do not need to be localized but are used
-// as a value in a locale string.
-export const FilecoinAddressProtocolLocaleMapping = {
-  [BraveWallet.FilecoinAddressProtocol.BLS]: 'BLS12-381',
-  [BraveWallet.FilecoinAddressProtocol.SECP256K1]: 'secp256k1'
-}

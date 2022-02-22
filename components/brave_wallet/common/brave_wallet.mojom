@@ -411,12 +411,10 @@ interface KeyringService {
   ImportAccount(string accountName, string privateKey, CoinType coin)
     => (bool success, string address);
 
-  ImportFilecoinSECP256K1Account(string accountName, string privateKey, string network)
-    => (bool success, string address);
-
-  ImportFilecoinBLSAccount(string accountName, string privateKey, string network)
-    => (bool success, string address);
-
+  // Imports a filecoin account with a specific private key and network
+  ImportFilecoinAccount(string accountName, string privateKey, string network)
+      => (bool success, string address);
+  
   // Imports an account via JSON
   ImportAccountFromJson(string accountName, string password, string json)
     => (bool success, string address);

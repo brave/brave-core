@@ -330,39 +330,20 @@ class KeyringServiceUnitTest : public testing::Test {
     return private_key;
   }
 
-  static absl::optional<std::string> ImportFilecoinSECP256K1Account(
+  static absl::optional<std::string> ImportFilecoinAccount(
       KeyringService* service,
       const std::string& account_name,
-      const std::string& private_key_base64,
+      const std::string& private_key_hex,
       const std::string& network) {
     absl::optional<std::string> account;
     base::RunLoop run_loop;
-    service->ImportFilecoinSECP256K1Account(
-        account_name, private_key_base64, network,
+    service->ImportFilecoinAccount(
+        account_name, private_key_hex, network,
         base::BindLambdaForTesting(
             [&](bool success, const std::string& address) {
               if (success) {
                 account = address;
               }
-              run_loop.Quit();
-            }));
-    run_loop.Run();
-    return account;
-  }
-
-  static absl::optional<std::string> ImportFilecoinBLSAccount(
-      KeyringService* service,
-      const std::string& account_name,
-      const std::string& private_key,
-      const std::string& network) {
-    absl::optional<std::string> account;
-    base::RunLoop run_loop;
-    service->ImportFilecoinBLSAccount(
-        account_name, private_key, network,
-        base::BindLambdaForTesting(
-            [&](bool success, const std::string& address) {
-              if (success)
-                account = address;
               run_loop.Quit();
             }));
     run_loop.Run();
@@ -2300,14 +2281,15 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   EXPECT_TRUE(Unlock(&service, "brave"));
   // Can set Filecoin account
   {
-    absl::optional<std::string> imported_account =
-        ImportFilecoinSECP256K1Account(
-            &service, "Imported Filecoin account 1",
-            // t1gcfbv323mpexk2pumtkgibtvrulxarnafxryyly
-            "8446511b93bb1c63d3ebab9f25aa62939f78dcc062c853000b068bc7468ad134",
-            mojom::kFilecoinTestnet);
+    absl::optional<std::string> imported_account = ImportFilecoinAccount(
+        &service, "Imported Filecoin account 1",
+        // t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q
+        "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a2257"
+        "6b4545645a45794235364b5168512b453338786a7663464c2b545a4842464e732b696a"
+        "58533535794b383d227d",
+        mojom::kFilecoinTestnet);
     ASSERT_TRUE(imported_account.has_value());
-    EXPECT_EQ(*imported_account, "t1gcfbv323mpexk2pumtkgibtvrulxarnafxryyly");
+    EXPECT_EQ(*imported_account, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q");
     EXPECT_TRUE(SetSelectedAccount(
         &service, &observer, imported_account.value(), mojom::CoinType::FIL));
     EXPECT_EQ(imported_account.value(),
@@ -2332,12 +2314,12 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount) {
   }
   EXPECT_EQ(hardware_account,
             GetSelectedAccount(&service, mojom::CoinType::ETH));
-  EXPECT_EQ("t1gcfbv323mpexk2pumtkgibtvrulxarnafxryyly",
+  EXPECT_EQ("t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
             GetSelectedAccount(&service, mojom::CoinType::FIL));
   EXPECT_EQ("C5ukMV73nk32h52MjxtnZXTrrr7rupD9CTDDRnYYDRYQ",
             GetSelectedAccount(&service, mojom::CoinType::SOL));
 
-  RemoveImportedAccount(&service, "t1gcfbv323mpexk2pumtkgibtvrulxarnafxryyly",
+  RemoveImportedAccount(&service, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
                         mojom::CoinType::FIL);
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(observer.SelectedAccountChangedFired(mojom::CoinType::FIL));
@@ -2670,46 +2652,45 @@ TEST_F(KeyringServiceUnitTest, ImportFilecoinAccounts) {
   EXPECT_FALSE(service.IsKeyringCreated(mojom::kFilecoinKeyringId));
   const struct {
     const char* name;
-    const char* private_key;
+    const char* import_payload;
     const char* address;
-    const char* type;
-    const char* public_key;
+    const char* private_key;
+    // const char* public_key;
   } imported_accounts[] = {
     {"Imported Filecoin account 1",
-     /*"rQG5jnbc+y64fckG+T0EHVwpLBmW9IgAT7U990HXcGk=",*/
-     "ad01b98e76dcfb2eb87dc906f93d041d5c292c1996f488004fb53df741d77069",
-     "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy", "secp256k1", ""},
+     "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a22576b4"
+     "545645a45794235364b5168512b453338786a7663464c2b545a4842464e732b696a585335"
+     "35794b383d227d",
+     "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+     "WkEEdZEyB56KQhQ+E38xjvcFL+TZHBFNs+ijXS55yK8="},
     {"Imported Filecoin account 2",
-     /*"9zGm0c5xNCYIKKE/QyvumrUDC9vnpaF4GtaOdlr4YQM=",*/
-     "f731a6d1ce7134260828a13f432bee9ab5030bdbe7a5a1781ad68e765af86103",
-     "t1gfpgfwrxdntcmcfqm7epsxrmsxlmsryvjkgat3i", "secp256k1", ""},
+     "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a22774d5"
+     "267766730734d6a764657356e32515472705a5658414c596a744d7036725156714d52535a"
+     "6a482f513d227d",
+     "t1par4kjqybnejlyuvpa3rodmluidq34ba6muafda",
+     "wMRgvg0sMjvFW5n2QTrpZVXALYjtMp6rQVqMRSZjH/Q="},
     {"Imported Filecoin account 3",
-     /*"hEZRG5O7HGPT66ufJapik5943MBiyFMACwaLx0aK0TQ=",*/
-     "8446511b93bb1c63d3ebab9f25aa62939f78dcc062c853000b068bc7468ad134",
-     "t1gcfbv323mpexk2pumtkgibtvrulxarnafxryyly", "secp256k1", ""}
+     "7b2254797065223a22736563703235366b31222c22507269766174654b6579223a22774e5"
+     "3667774514d2f466b665334423334496a475750343553546b2f737434304c724379433955"
+     "6a7761773d227d",
+     "t1zvggbhs5sxyeifzcrmik5oljbley7lvo57ovusy",
+     "wNSfwtQM/FkfS4B34IjGWP45STk/st40LrCyC9Ujwaw="}
 #if BUILDFLAG(ENABLE_RUST_BLS)
     ,
     {"Imported Filecoin account 4",
-     "fbf541635f70a7919efe024235a0d669760938619263c38b8773e398bee91234",
-     "t3wilvmgf76qxkd3aj6inzeilz7gghu5w46zgmu4m5jte752xxgbkjifg2o35w7fky42jzq"
-     "ge7wkrhuobdjg2a",
-     "bls",
-     "b2175618bff42ea1ec09f21b922179f98c7a76dcf64cca719d4cc9feeaf730549414da7"
-     "6fb6f9558e69398189fb2a27a"}
+     "7b2254797065223a22626c73222c22507269766174654b6579223a2270536e7752332f385"
+     "5616b53516f777858742b345a75393257586d424d526e74716d6448696136724853453d22"
+     "7d",
+     "t3wwtato54ee5aod7j5uv2n75jpyn4hpwx3f2kx5cijtoxgytiul2dczrak3ghlbt5zjnj574"
+     "y3snhcb5bthva",
+     "pSnwR3/8UakSQowxXt+4Zu92WXmBMRntqmdHia6rHSE="}
 #endif
   };
   auto amount = sizeof(imported_accounts) / sizeof(imported_accounts[0]);
   for (size_t i = 0; i < amount; ++i) {
-    absl::optional<std::string> address;
-    if (imported_accounts[i].type == std::string("secp256k1")) {
-      address = ImportFilecoinSECP256K1Account(
-          &service, imported_accounts[i].name, imported_accounts[i].private_key,
-          mojom::kFilecoinTestnet);
-    } else {
-      address = ImportFilecoinBLSAccount(&service, imported_accounts[i].name,
-                                         imported_accounts[i].private_key,
-                                         mojom::kFilecoinTestnet);
-    }
+    absl::optional<std::string> address = ImportFilecoinAccount(
+        &service, imported_accounts[i].name,
+        imported_accounts[i].import_payload, mojom::kFilecoinTestnet);
     ASSERT_TRUE(address.has_value());
     EXPECT_EQ(address, imported_accounts[i].address);
 
