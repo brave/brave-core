@@ -259,7 +259,6 @@ test("brave_unit_tests") {
     "//components/version_info",
     "//content/public/common",
     "//content/test:test_support",
-    "//extensions/common:common_constants",
     "//google_apis/gcm",
     "//google_apis/gcm:test_support",
     "//mojo/core/embedder",
@@ -268,6 +267,10 @@ test("brave_unit_tests") {
     "//services/network/public/cpp",
     "//services/preferences/public/cpp",
   ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/common:common_constants" ]
+  }
 
   if (enable_brave_vpn) {
     deps += [ "//brave/components/brave_vpn:unit_tests" ]
