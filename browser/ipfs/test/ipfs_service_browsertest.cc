@@ -102,8 +102,8 @@ class IpfsServiceBrowserTest : public InProcessBrowserTest {
     auto context_getter =
         std::make_unique<IpfsBlobContextGetterFactory>(browser()->profile());
     fake_service_ = std::make_unique<FakeIpfsService>(
-        browser()->profile()->GetPrefs(), nullptr, std::move(context_getter),
-        nullptr, user_dir, chrome::GetChannel());
+        nullptr, nullptr, std::move(context_getter), nullptr, user_dir,
+        chrome::GetChannel());
   }
 
   void ResetTestServer(

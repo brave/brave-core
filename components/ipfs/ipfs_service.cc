@@ -150,6 +150,7 @@ void IpfsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kIPFSAutoFallbackToGateway, false);
   registry->RegisterBooleanPref(kIPFSAutoRedirectGateway, false);
   registry->RegisterBooleanPref(kIPFSAutoRedirectDNSLink, false);
+  registry->RegisterBooleanPref(kIPFSLocalNodeUsed, false);
   registry->RegisterIntegerPref(kIPFSInfobarCount, 0);
   registry->RegisterIntegerPref(kIpfsStorageMax, 1);
   registry->RegisterStringPref(kIPFSPublicGatewayAddress, kDefaultIPFSGateway);

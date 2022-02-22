@@ -112,6 +112,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.IPFS.DetectionPromptCount",
     "Brave.IPFS.GatewaySetting",
     "Brave.IPFS.DaemonRunTime",
+    "Brave.IPFS.LocalNodeRetention",
 
     // P2A
     // Ad Opportunities

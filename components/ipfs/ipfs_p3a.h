@@ -9,10 +9,18 @@
 #include "base/memory/raw_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/ipfs/ipfs_service_observer.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 
 namespace ipfs {
+
+constexpr char kDetectionPromptCountHistogramName[] =
+    "Brave.IPFS.DetectionPromptCount";
+constexpr char kGatewaySettingHistogramName[] = "Brave.IPFS.GatewaySetting";
+constexpr char kLocalNodeRetentionHistogramName[] =
+    "Brave.IPFS.LocalNodeRetention";
+constexpr char kDaemonRunTimeHistogramName[] = "Brave.IPFS.DaemonRunTime";
 
 class BraveIpfsClientUpdater;
 class IpfsService;
@@ -39,11 +47,15 @@ class IpfsP3A : public IpfsServiceObserver {
   void RecordDaemonUsage();
   void RecordInitialIPFSP3AState();
   void FlushTimeDelta();
+
+  void OnIPFSResolveMethodChanged();
+
   base::RepeatingTimer timer_;
   raw_ptr<IpfsService> service_ = nullptr;
   base::TimeTicks daemon_start_time_;
   base::TimeDelta elapsed_time_;
   PrefService* pref_service_ = nullptr;
+  PrefChangeRegistrar pref_change_registrar_;
 };
 
 }  // namespace ipfs

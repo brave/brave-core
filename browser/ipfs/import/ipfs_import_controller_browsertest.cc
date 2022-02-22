@@ -107,8 +107,8 @@ class IpfsImportControllerBrowserTest : public InProcessBrowserTest {
     auto context_getter = std::make_unique<IpfsBlobContextGetterFactory>(
         active_contents()->GetBrowserContext());
     fake_service_ = std::make_unique<FakeIpfsService>(
-        browser()->profile()->GetPrefs(), nullptr, std::move(context_getter),
-        nullptr, user_dir, chrome::GetChannel());
+        nullptr, nullptr, std::move(context_getter), nullptr, user_dir,
+        chrome::GetChannel());
   }
 
   content::WebContents* active_contents() {

@@ -12,7 +12,6 @@
 // Local: Uses a local node.
 // Disabled: Disables all IPFS handling.
 const char kIPFSResolveMethod[] = "brave.ipfs.resolve_method";
-
 // Stores the location of the IPFS binary
 const char kIPFSBinaryPath[] = "brave.ipfs.binary_path";
 
@@ -35,6 +34,9 @@ const char kIpfsStorageMax[] = "brave.ipfs.storage_max";
 
 // Used to enable/disable IPFS via admin policy.
 const char kIPFSEnabled[] = "brave.ipfs.enabled";
+
+// Used to determine if local node was ever used.
+const char kIPFSLocalNodeUsed[] = "brave.ipfs.local_node_used";
 
 // Stores IPFS public gateway address to be used when translating IPFS URLs.
 const char kIPFSPublicGatewayAddress[] = "brave.ipfs.public_gateway_address";
