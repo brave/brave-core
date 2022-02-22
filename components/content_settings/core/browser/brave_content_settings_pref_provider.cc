@@ -43,10 +43,10 @@ const char kPerResourcePath[] = "per_resource";
 
 Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
   // brave plugin rules incorrectly use first party url as primary
-  auto primary_pattern = reverse_patterns ? rule.secondary_pattern
-                                          : rule.primary_pattern;
-  auto secondary_pattern = reverse_patterns ? rule.primary_pattern
-                                            : rule.secondary_pattern;
+  auto primary_pattern =
+      reverse_patterns ? rule.secondary_pattern : rule.primary_pattern;
+  auto secondary_pattern =
+      reverse_patterns ? rule.primary_pattern : rule.secondary_pattern;
 
   if (primary_pattern ==
       ContentSettingsPattern::FromString("https://firstParty/*")) {
@@ -78,27 +78,21 @@ class BraveShieldsRuleIterator : public RuleIterator {
 
   BraveShieldsRuleIterator& operator=(const BraveShieldsRuleIterator&) = delete;
 
-  bool HasNext() const override {
-    return iterator_ != rules_.end();
-  }
+  bool HasNext() const override { return iterator_ != rules_.end(); }
 
-  Rule Next() override {
-    return CloneRule(*(iterator_++));
-  }
+  Rule Next() override { return CloneRule(*(iterator_++)); }
 
  private:
   std::vector<Rule> rules_;
   std::vector<Rule>::const_iterator iterator_;
 };
 
-
-bool IsActive(const Rule& cookie_rule,
-              const std::vector<Rule>& shield_rules) {
+bool IsActive(const Rule& cookie_rule, const std::vector<Rule>& shield_rules) {
   // don't include default rules in the iterator
   if (cookie_rule.primary_pattern == ContentSettingsPattern::Wildcard() &&
       (cookie_rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
        cookie_rule.secondary_pattern ==
-          ContentSettingsPattern::FromString("https://firstParty/*"))) {
+           ContentSettingsPattern::FromString("https://firstParty/*"))) {
     return false;
   }
 
@@ -379,7 +373,8 @@ bool BravePrefProvider::SetWebsiteSetting(
           return rule.primary_pattern == primary_pattern &&
                  rule.secondary_pattern == secondary_pattern &&
                  ValueToContentSetting(rule.value) !=
-                    ValueToContentSetting(value); });
+                     ValueToContentSetting(value);
+        });
     if (match != brave_cookie_rules_[off_the_record_].end()) {
       // swap primary/secondary pattern - see CloneRule
       auto plugin_primary_pattern = secondary_pattern;
@@ -428,13 +423,12 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
 }
 
 std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
-      ContentSettingsType content_type,
-      bool incognito) const {
+    ContentSettingsType content_type,
+    bool incognito) const {
   if (content_type == ContentSettingsType::COOKIES) {
     std::vector<Rule> rules;
     for (auto i = cookie_rules_.at(incognito).begin();
-         i != cookie_rules_.at(incognito).end();
-         ++i) {
+         i != cookie_rules_.at(incognito).end(); ++i) {
       rules.emplace_back(CloneRule(*i));
     }
 
@@ -486,9 +480,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // chromium_src override
 
   // add chromium cookies
-  auto chromium_cookies_iterator = PrefProvider::GetRuleIterator(
-      ContentSettingsType::COOKIES,
-      incognito);
+  auto chromium_cookies_iterator =
+      PrefProvider::GetRuleIterator(ContentSettingsType::COOKIES, incognito);
   while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
     rules.emplace_back(CloneRule(chromium_cookies_iterator->Next()));
   }
@@ -541,9 +534,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   std::vector<Rule> brave_cookie_updates;
   for (const auto& new_rule : brave_cookie_rules_[incognito]) {
     auto match = std::find_if(
-        old_rules.begin(),
-        old_rules.end(),
-        [&new_rule](const auto& old_rule) {
+        old_rules.begin(), old_rules.end(), [&new_rule](const auto& old_rule) {
           // we want an exact match here because any change to the rule
           // is an update
           return new_rule.primary_pattern == old_rule.primary_pattern &&
@@ -595,8 +586,7 @@ void BravePrefProvider::NotifyChanges(const std::vector<Rule>& rules,
   }
 }
 
-void BravePrefProvider::OnCookiePrefsChanged(
-    const std::string& pref) {
+void BravePrefProvider::OnCookiePrefsChanged(const std::string& pref) {
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
 }
 
