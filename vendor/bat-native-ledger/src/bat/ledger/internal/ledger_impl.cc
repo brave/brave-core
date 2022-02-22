@@ -896,6 +896,12 @@ void LedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
   WhenReady([this, callback]() { database()->GetLastEventLogs(callback); });
 }
 
+void LedgerImpl::BackUpVgBodies(BackUpVgBodiesCallback callback) {
+  WhenReady([this, callback = std::move(callback)]() mutable {
+    backup_restore()->BackUpVgBodies(std::move(callback));
+  });
+}
+
 void LedgerImpl::BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     backup_restore()->BackUpVgSpendStatuses(std::move(callback));

@@ -245,6 +245,8 @@ class BatLedgerImpl :
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
+  void BackUpVgBodies(BackUpVgBodiesCallback callback) override;
+
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) override;
 
   void RestoreVgs(
@@ -454,6 +456,11 @@ class BatLedgerImpl :
   static void OnGetEventLogs(
       CallbackHolder<GetEventLogsCallback>* holder,
       ledger::type::EventLogs logs);
+
+  static void OnBackUpVgBodies(
+      CallbackHolder<BackUpVgBodiesCallback>* holder,
+      ledger::type::Result result,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies);
 
   static void OnBackUpVgSpendStatuses(
       CallbackHolder<BackUpVgSpendStatusesCallback>* holder,

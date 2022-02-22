@@ -436,6 +436,8 @@ class Database {
                     const std::string& trigger_id,
                     BackUpVGBodyCallback callback);
 
+  void BackUpVgBodies(BackUpVgBodiesCallback callback);
+
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback);
 
   void RestoreVgs(

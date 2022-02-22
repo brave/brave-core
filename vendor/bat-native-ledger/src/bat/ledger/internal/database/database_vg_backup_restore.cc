@@ -128,6 +128,116 @@ void DatabaseVGBackupRestore::OnBackUpVGBody(
   std::move(callback).Run(std::move(vg_body));
 }
 
+void DatabaseVGBackupRestore::BackUpVgBodies(
+    BackUpVgBodiesCallback callback) const {
+  VLOG(0) << "DatabaseVGBackupRestore::BackUpVgBodies()";
+
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
+  command->command = R"(
+    SELECT   cb.creds_id,
+             cb.trigger_type,
+             cb.creds,
+             cb.blinded_creds,
+             cb.signed_creds,
+             cb.public_key,
+             cb.batch_proof,
+             cb.status,
+             ut.token_id,
+             ut.token_value,
+             ut.value,
+             ut.expires_at
+    FROM     creds_batch AS cb
+    JOIN     unblinded_tokens AS ut
+    ON       ut.creds_id = cb.creds_id
+    ORDER BY ut.token_id
+  )";
+
+  command->record_bindings = {
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // creds_id
+      type::DBCommand::RecordBindingType::INT_TYPE,     // trigger_type
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // creds
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // blinded_creds
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // signed_creds
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // public_key
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // batch_proof
+      type::DBCommand::RecordBindingType::INT_TYPE,     // status
+      type::DBCommand::RecordBindingType::INT64_TYPE,   // token_id
+      type::DBCommand::RecordBindingType::STRING_TYPE,  // token_value
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,  // value
+      type::DBCommand::RecordBindingType::INT64_TYPE};  // expires_at
+
+  auto transaction = type::DBTransaction::New();
+  transaction->commands.push_back(std::move(command));
+
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&DatabaseVGBackupRestore::OnBackUpVgBodies,
+                     base::Unretained(this), std::move(callback)));
+}
+
+void DatabaseVGBackupRestore::OnBackUpVgBodies(
+    BackUpVgBodiesCallback callback,
+    type::DBCommandResponsePtr response) const {
+  VLOG(0) << "DatabaseVGBackupRestore::OnBackUpVgBodies()";
+
+  if (!response ||
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "BackUpVgBodies failed: bad response!");
+    return std::move(callback).Run(type::Result::LEDGER_ERROR, {});
+  }
+
+  std::vector<sync_pb::VgBodySpecifics> vg_bodies;
+
+  const auto& records = response->result->get_records();
+  auto cit1 = records.cbegin();
+  auto const cend = records.cend();
+
+  while (cit1 != cend) {
+    auto cit2 = std::adjacent_find(
+        cit1, cend,
+        [](const ledger::mojom::DBRecordPtr& r1,
+           const ledger::mojom::DBRecordPtr& r2) {
+          return GetStringColumn(r1.get(), 0) !=  // r1.creds_id
+                 GetStringColumn(r2.get(), 0);    // r2.creds_id
+        });
+
+    if (cit2 != cend) {
+      ++cit2;
+    }
+
+    auto* record_pointer = cit1->get();
+
+    sync_pb::VgBodySpecifics vg_body;
+    vg_body.set_creds_id(GetStringColumn(record_pointer, 0));
+    vg_body.set_trigger_type(GetIntColumn(record_pointer, 1));
+    vg_body.set_creds(GetStringColumn(record_pointer, 2));
+    vg_body.set_blinded_creds(GetStringColumn(record_pointer, 3));
+    vg_body.set_signed_creds(GetStringColumn(record_pointer, 4));
+    vg_body.set_public_key(GetStringColumn(record_pointer, 5));
+    vg_body.set_batch_proof(GetStringColumn(record_pointer, 6));
+    vg_body.set_status(GetIntColumn(record_pointer, 7));
+
+    while (cit1 != cit2) {
+      record_pointer = cit1->get();
+
+      sync_pb::VgBodySpecifics::Token token;
+      token.set_token_id(GetInt64Column(record_pointer, 8));
+      token.set_token_value(GetStringColumn(record_pointer, 9));
+      token.set_value(GetDoubleColumn(record_pointer, 10));
+      token.set_expires_at(GetInt64Column(record_pointer, 11));
+
+      vg_body.mutable_tokens()->Add(std::move(token));
+
+      ++cit1;
+    }
+
+    vg_bodies.push_back(std::move(vg_body));
+  }
+
+  std::move(callback).Run(type::Result::LEDGER_OK, std::move(vg_bodies));
+}
+
 void DatabaseVGBackupRestore::BackUpVgSpendStatuses(
     BackUpVgSpendStatusesCallback callback) const {
   auto command = type::DBCommand::New();

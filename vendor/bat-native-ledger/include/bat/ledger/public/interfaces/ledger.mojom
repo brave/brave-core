@@ -592,6 +592,25 @@ struct VirtualGrantSpendStatus {
   RewardsType redeem_type;
 };
 
+struct VgBodyToken {
+  uint64 token_id;
+  string token_value;
+  double value;
+  uint64 expires_at;
+};
+
+struct VgBody {
+  string creds_id;
+  CredsBatchType trigger_type;
+  string creds;
+  string blinded_creds;
+  string signed_creds;
+  string public_key;
+  string batch_proof;
+  CredsBatchStatus status;
+  array<VgBodyToken> tokens;
+};
+
 struct VgSpendStatus {
   uint64 token_id;
   uint64 redeemed_at;

@@ -22,6 +22,8 @@ class BackupRestore {
   void BackUpVGBody(type::CredsBatchType trigger_type,
                     const std::string& trigger_id) const;
 
+  void BackUpVgBodies(ledger::BackUpVgBodiesCallback callback);
+
   void BackUpVgSpendStatuses(ledger::BackUpVgSpendStatusesCallback callback);
 
   //void RestoreVGs(const std::string& vg_bodies,

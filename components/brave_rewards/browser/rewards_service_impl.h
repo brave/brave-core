@@ -781,6 +781,11 @@ class RewardsServiceImpl : public RewardsService,
 
   bool IsValidWalletType(const std::string& wallet_type) const;
 
+  void BackUpVgBodies() override;
+
+  void OnBackUpVgBodies(ledger::type::Result result,
+                        std::vector<sync_pb::VgBodySpecifics> vg_bodies);
+
   void BackUpVgSpendStatuses() override;
 
   void OnBackUpVgSpendStatuses(

@@ -34,6 +34,25 @@ VgSyncService::GetControllerDelegateForVgSpendStatuses() {
 
 void VgSyncService::Shutdown() {}
 
+void VgSyncService::BackUpVgBodies(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  vg_body_sync_bridge_->BackUpVgBodies(std::move(vg_bodies));
+}
+
+void VgSyncService::RestoreVgBodies(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  if (observer_) {
+    if (vg_spend_statuses_) {
+      observer_->RestoreVgs(std::move(vg_bodies),
+                            std::move(*vg_spend_statuses_));
+      vg_spend_statuses_ = absl::nullopt;
+    } else {
+      DCHECK(!vg_bodies_);
+      vg_bodies_ = std::move(vg_bodies);
+    }
+  }
+}
+
 void VgSyncService::BackUpVgSpendStatuses(
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
   vg_spend_status_sync_bridge_->BackUpVgSpendStatuses(
@@ -43,13 +62,21 @@ void VgSyncService::BackUpVgSpendStatuses(
 void VgSyncService::RestoreVgSpendStatuses(
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
   if (observer_) {
-    observer_->RestoreVgs({}, std::move(vg_spend_statuses));
+    if (vg_bodies_) {
+      observer_->RestoreVgs(std::move(*vg_bodies_),
+                            std::move(vg_spend_statuses));
+      vg_bodies_ = absl::nullopt;
+    } else {
+      DCHECK(!vg_spend_statuses_);
+      vg_spend_statuses_ = std::move(vg_spend_statuses);
+    }
   }
 }
 
 void VgSyncService::SetObserver(Observer* observer) {
-  vg_spend_status_sync_bridge_->SetObserver((observer_ = observer) ? this
-                                                                   : nullptr);
+  observer_ = observer;
+  vg_body_sync_bridge_->SetObserver(observer_ ? this : nullptr);
+  vg_spend_status_sync_bridge_->SetObserver(observer_ ? this : nullptr);
 }
 
 // void VgSyncService::GetPairs(GetPairsCallback callback) {
