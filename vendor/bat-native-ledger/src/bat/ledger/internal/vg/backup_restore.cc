@@ -29,10 +29,11 @@ void BackupRestore::BackUpVgSpendStatuses(
 }
 
 void BackupRestore::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     ledger::RestoreVgsCallback callback) const {
-  ledger_->database()->RestoreVgs(std::move(vg_spend_statuses),
-                                  std::move(callback));
+  ledger_->database()->RestoreVgs(
+      std::move(vg_bodies), std::move(vg_spend_statuses), std::move(callback));
 }
 
 }  // namespace vg

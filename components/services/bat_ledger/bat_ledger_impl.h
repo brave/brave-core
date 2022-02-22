@@ -250,7 +250,8 @@ class BatLedgerImpl :
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) override;
 
   void RestoreVgs(
-      std::vector<::sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
       RestoreVgsCallback callback) override;
 
   void GetBraveWallet(GetBraveWalletCallback callback) override;

@@ -437,6 +437,7 @@ class Database {
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback);
 
   void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
       std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
       RestoreVgsCallback callback);
 

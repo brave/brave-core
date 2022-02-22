@@ -1183,12 +1183,13 @@ void BatLedgerImpl::OnRestoreVgs(CallbackHolder<RestoreVgsCallback>* holder,
 }
 
 void BatLedgerImpl::RestoreVgs(
-    std::vector<::sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     RestoreVgsCallback callback) {
   auto* holder =
       new CallbackHolder<RestoreVgsCallback>(AsWeakPtr(), std::move(callback));
 
-  ledger_->RestoreVgs(std::move(vg_spend_statuses),
+  ledger_->RestoreVgs(std::move(vg_bodies), std::move(vg_spend_statuses),
                       base::BindOnce(BatLedgerImpl::OnRestoreVgs, holder));
 }
 

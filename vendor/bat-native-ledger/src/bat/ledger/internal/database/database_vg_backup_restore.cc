@@ -231,18 +231,20 @@ bool DatabaseVGBackupRestore::AllNULLRecord(
 }
 
 void DatabaseVGBackupRestore::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     RestoreVgsCallback callback) const {
   Tables tables{};
   tables["creds_batch"];
   tables["unblinded_tokens"];
 
-  GetCreateTableStatements(std::move(tables), std::move(vg_spend_statuses),
-                           std::move(callback));
+  GetCreateTableStatements(std::move(tables), std::move(vg_bodies),
+                           std::move(vg_spend_statuses), std::move(callback));
 }
 
 void DatabaseVGBackupRestore::GetCreateTableStatements(
     Tables&& tables,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     RestoreVgsCallback callback) const {
   DCHECK(!tables.empty());
@@ -265,11 +267,13 @@ void DatabaseVGBackupRestore::GetCreateTableStatements(
       std::move(transaction),
       base::BindOnce(&DatabaseVGBackupRestore::OnGetCreateTableStatements,
                      base::Unretained(this), std::move(tables),
-                     std::move(vg_spend_statuses), std::move(callback)));
+                     std::move(vg_bodies), std::move(vg_spend_statuses),
+                     std::move(callback)));
 }
 
 void DatabaseVGBackupRestore::OnGetCreateTableStatements(
     Tables&& tables,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     RestoreVgsCallback callback,
     type::DBCommandResponsePtr response) const {
@@ -283,12 +287,13 @@ void DatabaseVGBackupRestore::OnGetCreateTableStatements(
     tables[GetStringColumn(record.get(), 0)] = GetStringColumn(record.get(), 1);
   }
 
-  GetCreateIndexStatements(std::move(tables), std::move(vg_spend_statuses),
-                           std::move(callback));
+  GetCreateIndexStatements(std::move(tables), std::move(vg_bodies),
+                           std::move(vg_spend_statuses), std::move(callback));
 }
 
 void DatabaseVGBackupRestore::GetCreateIndexStatements(
     Tables&& tables,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     RestoreVgsCallback callback) const {
   auto command = type::DBCommand::New();
@@ -310,11 +315,13 @@ void DatabaseVGBackupRestore::GetCreateIndexStatements(
       std::move(transaction),
       base::BindOnce(&DatabaseVGBackupRestore::OnGetCreateIndexStatements,
                      base::Unretained(this), std::move(tables),
-                     std::move(vg_spend_statuses), std::move(callback)));
+                     std::move(vg_bodies), std::move(vg_spend_statuses),
+                     std::move(callback)));
 }
 
 void DatabaseVGBackupRestore::OnGetCreateIndexStatements(
     Tables&& tables,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     RestoreVgsCallback callback,
     type::DBCommandResponsePtr response) const {
@@ -330,8 +337,8 @@ void DatabaseVGBackupRestore::OnGetCreateIndexStatements(
         GetStringColumn(record.get(), 1);
   }
 
-  RestoreVgs(tables, indices, std::move(vg_spend_statuses),
-             std::move(callback));
+  RestoreVgs(tables, indices, std::move(vg_bodies),
+             std::move(vg_spend_statuses), std::move(callback));
 }
 
 void DatabaseVGBackupRestore::AlterTables(
@@ -384,6 +391,7 @@ void DatabaseVGBackupRestore::CreateIndices(
 void DatabaseVGBackupRestore::RestoreVgs(
     const Tables& tables,
     const Indices& indices,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     RestoreVgsCallback callback) const {
   auto transaction = type::DBTransaction::New();
@@ -391,6 +399,91 @@ void DatabaseVGBackupRestore::RestoreVgs(
   DropIndices(indices, *transaction);
   CreateTables(tables, *transaction);
   CreateIndices(indices, *transaction);
+
+  std::sort(vg_spend_statuses.begin(), vg_spend_statuses.end(),
+            [](const sync_pb::VgSpendStatusSpecifics vg_spend_status_1,
+               const sync_pb::VgSpendStatusSpecifics vg_spend_status_2) {
+              return vg_spend_status_1.token_id() <
+                     vg_spend_status_2.token_id();
+            });
+
+  for (auto& vg_body : vg_bodies) {
+    auto command = type::DBCommand::New();
+    command->type = type::DBCommand::Type::RUN;
+    command->command = R"(
+        INSERT INTO creds_batch (
+          creds_id,
+          trigger_id,
+          trigger_type,
+          creds,
+          blinded_creds,
+          signed_creds,
+          public_key,
+          batch_proof,
+          status
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      )";
+    BindString(command.get(), 0, vg_body.creds_id());
+    BindString(command.get(), 1, "");  // trigger_id
+    BindInt(command.get(), 2, vg_body.trigger_type());
+    BindString(command.get(), 3, vg_body.creds());
+    BindString(command.get(), 4, vg_body.blinded_creds());
+    BindString(command.get(), 5, vg_body.signed_creds());
+    BindString(command.get(), 6, vg_body.public_key());
+    BindString(command.get(), 7, vg_body.batch_proof());
+    BindInt(command.get(), 8, vg_body.status());
+
+    transaction->commands.push_back(std::move(command));
+
+    std::sort(vg_body.mutable_tokens()->begin(),
+              vg_body.mutable_tokens()->end(),
+              [](const sync_pb::VgBodySpecifics::Token& token_1,
+                 const sync_pb::VgBodySpecifics::Token& token_2) {
+                return token_1.token_id() < token_2.token_id();
+              });
+
+    for (const auto& token : vg_body.tokens()) {
+      if (token.token_id() - 1 >= vg_spend_statuses.size() ||
+          vg_spend_statuses[token.token_id() - 1].token_id() !=
+              token.token_id()) {
+        BLOG(0, "VG bodies and VG spend statuses are out of sync!");
+        return std::move(callback).Run(type::Result::LEDGER_ERROR);
+      }
+
+      auto vg_spend_status = vg_spend_statuses[token.token_id() - 1];
+
+      command = type::DBCommand::New();
+      command->type = type::DBCommand::Type::RUN;
+      command->command = R"(
+            INSERT INTO unblinded_tokens (
+              token_id,
+              token_value,
+              public_key,
+              value,
+              creds_id,
+              expires_at,
+              redeemed_at,
+              redeem_id,
+              redeem_type,
+              reserved_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          )";
+      BindInt64(command.get(), 0, vg_spend_status.token_id());
+      BindString(command.get(), 1, token.token_value());
+      BindString(command.get(), 2, vg_body.public_key());
+      BindDouble(command.get(), 3, token.value());
+      BindString(command.get(), 4, vg_body.creds_id());
+      BindInt64(command.get(), 5, token.expires_at());
+      BindInt64(command.get(), 6, vg_spend_status.redeemed_at());
+      BindString(command.get(), 7, "");  // redeem_id
+      BindInt64(command.get(), 8, vg_spend_status.redeem_type());
+      BindInt64(command.get(), 9, 0);  // reserved_at
+
+      transaction->commands.push_back(std::move(command));
+    }
+  }
 
   // for (auto creds_id_cit = vgs.cbegin(); creds_id_cit != vgs.cend();
   //     creds_id_cit = vgs.upper_bound(creds_id_cit->first)) {
@@ -461,41 +554,41 @@ void DatabaseVGBackupRestore::RestoreVgs(
   //  } while (++creds_id_range.first != creds_id_range.second);
   //}
 
-  std::size_t counter = 0;
-  for (const auto& vg_spend_status : vg_spend_statuses) {
-    auto command = type::DBCommand::New();
-    command->type = type::DBCommand::Type::RUN;
-    command->command = R"(
-        INSERT INTO unblinded_tokens (
-          token_id,
-          token_value,
-          public_key,
-          value,
-          creds_id,
-          expires_at,
-          redeemed_at,
-          redeem_id,
-          redeem_type,
-          reserved_at
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      )";
-    BindInt64(command.get(), 0, vg_spend_status.token_id());
-    BindString(command.get(), 1, std::to_string(counter));
-    BindString(command.get(), 2, std::to_string(counter));
-    BindDouble(command.get(), 3, 0.0);
-    BindString(command.get(), 4, "");
-    BindInt64(command.get(), 5, 0);
-    BindInt64(command.get(), 6, vg_spend_status.redeemed_at());
-    BindString(command.get(), 7, "");  // redeem_id
-    BindInt64(command.get(), 8,
-              static_cast<int>(vg_spend_status.redeem_type()));
-    BindInt64(command.get(), 9, 0);  // reserved_at
+  //std::size_t counter = 0;
+  //for (const auto& vg_spend_status : vg_spend_statuses) {
+  //  auto command = type::DBCommand::New();
+  //  command->type = type::DBCommand::Type::RUN;
+  //  command->command = R"(
+  //      INSERT INTO unblinded_tokens (
+  //        token_id,
+  //        token_value,
+  //        public_key,
+  //        value,
+  //        creds_id,
+  //        expires_at,
+  //        redeemed_at,
+  //        redeem_id,
+  //        redeem_type,
+  //        reserved_at
+  //      )
+  //      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  //    )";
+  //  BindInt64(command.get(), 0, vg_spend_status.token_id());
+  //  BindString(command.get(), 1, std::to_string(counter));
+  //  BindString(command.get(), 2, std::to_string(counter));
+  //  BindDouble(command.get(), 3, 0.0);
+  //  BindString(command.get(), 4, "");
+  //  BindInt64(command.get(), 5, 0);
+  //  BindInt64(command.get(), 6, vg_spend_status.redeemed_at());
+  //  BindString(command.get(), 7, "");  // redeem_id
+  //  BindInt64(command.get(), 8,
+  //            static_cast<int>(vg_spend_status.redeem_type()));
+  //  BindInt64(command.get(), 9, 0);  // reserved_at
 
-    transaction->commands.push_back(std::move(command));
+  //  transaction->commands.push_back(std::move(command));
 
-    ++counter;
-  }
+  //  ++counter;
+  //}
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),

@@ -1426,6 +1426,7 @@ void RewardsServiceImpl::RestoreVgs(
   if (Connected()) {
     VLOG(0) << "RestoreVgs is in progress";
     bat_ledger_->RestoreVgs(
+        std::move(vg_bodies),
         std::move(vg_spend_statuses),
         base::BindOnce(&RewardsServiceImpl::OnRestoreVgs, AsWeakPtr()));
   }
@@ -3578,7 +3579,6 @@ void RewardsServiceImpl::SetExternalWalletType(const std::string& wallet_type) {
 
 void RewardsServiceImpl::BackUpVgBodies() {
   if (Connected()) {
-    VLOG(0) << "RewardsServiceImpl::BackUpVgBodies()";
     bat_ledger_->BackUpVgBodies(
         base::BindOnce(&RewardsServiceImpl::OnBackUpVgBodies, AsWeakPtr()));
   }
@@ -3587,7 +3587,6 @@ void RewardsServiceImpl::BackUpVgBodies() {
 void RewardsServiceImpl::OnBackUpVgBodies(
     ledger::type::Result result,
     std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
-  VLOG(0) << "RewardsServiceImpl::OnBackUpVgBodies()";
   if (result == ledger::type::Result::LEDGER_OK) {
     vg_sync_service_->BackUpVgBodies(std::move(vg_bodies));
   } else {
@@ -3597,7 +3596,6 @@ void RewardsServiceImpl::OnBackUpVgBodies(
 
 void RewardsServiceImpl::BackUpVgSpendStatuses() {
   if (Connected()) {
-    VLOG(0) << "RewardsServiceImpl::BackUpVgSpendStatuses()";
     bat_ledger_->BackUpVgSpendStatuses(base::BindOnce(
         &RewardsServiceImpl::OnBackUpVgSpendStatuses, AsWeakPtr()));
   }
@@ -3606,7 +3604,6 @@ void RewardsServiceImpl::BackUpVgSpendStatuses() {
 void RewardsServiceImpl::OnBackUpVgSpendStatuses(
     ledger::type::Result result,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) {
-  VLOG(0) << "RewardsServiceImpl::OnBackUpVgSpendStatuses()";
   if (result == ledger::type::Result::LEDGER_OK) {
     vg_sync_service_->BackUpVgSpendStatuses(std::move(vg_spend_statuses));
   } else {

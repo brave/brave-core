@@ -661,10 +661,11 @@ void Database::BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) {
 }
 
 void Database::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     RestoreVgsCallback callback) {
-  vg_backup_restore_->RestoreVgs(std::move(vg_spend_statuses),
-                                 std::move(callback));
+  vg_backup_restore_->RestoreVgs(
+      std::move(vg_bodies), std::move(vg_spend_statuses), std::move(callback));
 }
 
 }  // namespace database
