@@ -299,6 +299,8 @@ class LedgerImpl : public Ledger {
 
   void GetEventLogs(GetEventLogsCallback callback) override;
 
+  void BackUpVgBodies(BackUpVgBodiesCallback callback) override;
+
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) override;
 
   void RestoreVgs(

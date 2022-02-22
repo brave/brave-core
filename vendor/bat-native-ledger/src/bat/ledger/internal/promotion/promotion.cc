@@ -451,8 +451,9 @@ void Promotion::OnComplete(
         promotion->approximate_value,
         [](const type::Result){});
 
-    ledger_->backup_restore()->BackUpVGBody(type::CredsBatchType::PROMOTION,
-                                            promotion->id);
+    //ledger_->backup_restore()->BackUpVGBody(type::CredsBatchType::PROMOTION,
+    //                                        promotion->id);
+    ledger_->ledger_client()->BackUpVgBodies();
     ledger_->ledger_client()->BackUpVgSpendStatuses();
   }
 

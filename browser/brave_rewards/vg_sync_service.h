@@ -18,6 +18,7 @@
 #include "components/sync/model/model_type_controller_delegate.h"
 
 class VgSyncService : public KeyedService,
+                      public VgBodySyncBridge::Observer,
                       public VgSpendStatusSyncBridge::Observer {
  public:
   // using GetPairsCallback =
@@ -39,6 +40,12 @@ class VgSyncService : public KeyedService,
   GetControllerDelegateForVgSpendStatuses();
 
   void Shutdown() override;
+
+  void BackUpVgBodies(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies);
+
+  void RestoreVgBodies(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies) override;
 
   void BackUpVgSpendStatuses(
       std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);

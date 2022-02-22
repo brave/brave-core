@@ -167,6 +167,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual absl::optional<std::string> DecryptString(
       const std::string& value) = 0;
 
+  virtual void BackUpVgBodies() = 0;
+
   virtual void BackUpVgSpendStatuses() = 0;
 };
 

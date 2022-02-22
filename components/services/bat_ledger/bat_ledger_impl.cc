@@ -1129,6 +1129,27 @@ void BatLedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
 }
 
 // static
+void BatLedgerImpl::OnBackUpVgBodies(
+    CallbackHolder<BackUpVgBodiesCallback>* holder,
+    ledger::type::Result result,
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(vg_bodies));
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::BackUpVgBodies(BackUpVgBodiesCallback callback) {
+  auto* holder = new CallbackHolder<BackUpVgBodiesCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->BackUpVgBodies(
+      base::BindOnce(BatLedgerImpl::OnBackUpVgBodies, holder));
+}
+
+// static
 void BatLedgerImpl::OnBackUpVgSpendStatuses(
     CallbackHolder<BackUpVgSpendStatusesCallback>* holder,
     ledger::type::Result result,

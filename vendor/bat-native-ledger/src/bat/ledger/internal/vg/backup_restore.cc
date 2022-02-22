@@ -18,6 +18,11 @@ BackupRestore::BackupRestore(LedgerImpl* ledger) : ledger_(ledger) {}
 
 BackupRestore::~BackupRestore() = default;
 
+void BackupRestore::BackUpVgBodies(
+    ledger::BackUpVgBodiesCallback callback) {
+  ledger_->database()->BackUpVgBodies(std::move(callback));
+}
+
 void BackupRestore::BackUpVgSpendStatuses(
     ledger::BackUpVgSpendStatusesCallback callback) {
   ledger_->database()->BackUpVgSpendStatuses(std::move(callback));

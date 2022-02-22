@@ -10,6 +10,15 @@ mojom("interfaces") {
     {
       types = [
         {
+          mojom = "ledger.mojom.VgBodyToken"
+          cpp = "::sync_pb::VgBodySpecifics::Token"
+        },
+        {
+          mojom = "ledger.mojom.VgBody"
+          cpp = "::sync_pb::VgBodySpecifics"
+          move_only = true
+        },
+        {
           mojom = "ledger.mojom.VgSpendStatus"
           cpp = "::sync_pb::VgSpendStatusSpecifics"
           move_only = true
@@ -18,7 +27,7 @@ mojom("interfaces") {
 
       traits_headers = [ "ledger_mojom_traits.h" ]
       traits_sources = [ "ledger_mojom_traits.cc" ]
-      traits_public_deps = [ "//components/sync/protocol" ]
+      traits_public_deps = [ "//components/sync/protocol", "//mojo/public/cpp/bindings" ]
     },
   ]
 

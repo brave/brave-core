@@ -74,6 +74,10 @@ using GetAllMonthlyReportIdsCallback =
 
 using GetEventLogsCallback = std::function<void(type::EventLogs)>;
 
+using BackUpVgBodiesCallback =
+    base::OnceCallback<void(type::Result,
+                            std::vector<sync_pb::VgBodySpecifics>)>;
+
 using BackUpVgSpendStatusesCallback =
     base::OnceCallback<void(type::Result,
                             std::vector<sync_pb::VgSpendStatusSpecifics>)>;
@@ -369,6 +373,8 @@ class LEDGER_EXPORT Ledger {
   virtual void Shutdown(ResultCallback callback) = 0;
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
+
+  virtual void BackUpVgBodies(BackUpVgBodiesCallback callback) = 0;
 
   virtual void BackUpVgSpendStatuses(
       BackUpVgSpendStatusesCallback callback) = 0;

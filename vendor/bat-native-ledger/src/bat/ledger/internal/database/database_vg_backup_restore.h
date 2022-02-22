@@ -15,6 +15,10 @@ namespace database {
 using BackUpVGBodyCallback =
     base::OnceCallback<void(type::VirtualGrantBodyPtr&&)>;
 
+using BackUpVgBodiesCallback =
+    base::OnceCallback<void(type::Result,
+                            std::vector<sync_pb::VgBodySpecifics>)>;
+
 using BackUpVgSpendStatusesCallback =
     base::OnceCallback<void(type::Result,
                             std::vector<sync_pb::VgSpendStatusSpecifics>)>;
@@ -31,6 +35,8 @@ class DatabaseVGBackupRestore : public DatabaseTable {
                     const std::string& trigger_id,
                     BackUpVGBodyCallback callback) const;
 
+  void BackUpVgBodies(BackUpVgBodiesCallback callback) const;
+
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) const;
 
   void RestoreVgs(
@@ -46,6 +52,9 @@ class DatabaseVGBackupRestore : public DatabaseTable {
 
   void OnBackUpVGBody(BackUpVGBodyCallback callback,
                       type::DBCommandResponsePtr response) const;
+
+  void OnBackUpVgBodies(BackUpVgBodiesCallback callback,
+                        type::DBCommandResponsePtr response) const;
 
   void OnBackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback,
                                type::DBCommandResponsePtr response) const;

@@ -140,6 +140,8 @@ class LedgerClientMojoBridge :
   void DecryptString(const std::string& value,
                      DecryptStringCallback callback) override;
 
+  void BackUpVgBodies() override;
+
   void BackUpVgSpendStatuses() override;
 
  private:
