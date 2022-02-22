@@ -106,6 +106,7 @@ extension SwapTokenStore {
       assetRatioService: MockAssetRatioService(),
       swapService: MockSwapService(),
       txService: MockEthTxService(),
+      walletService: MockBraveWalletService(),
       prefilledToken: nil
     )
   }

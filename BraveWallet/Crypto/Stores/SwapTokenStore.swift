@@ -101,6 +101,7 @@ public class SwapTokenStore: ObservableObject {
   private let assetRatioService: BraveWalletAssetRatioService
   private let swapService: BraveWalletSwapService
   private let txService: BraveWalletEthTxService
+  private let walletService: BraveWalletBraveWalletService
   private var accountInfo: BraveWallet.AccountInfo?
   private var slippage = 0.005 {
     didSet {
@@ -142,6 +143,7 @@ public class SwapTokenStore: ObservableObject {
     assetRatioService: BraveWalletAssetRatioService,
     swapService: BraveWalletSwapService,
     txService: BraveWalletEthTxService,
+    walletService: BraveWalletBraveWalletService,
     prefilledToken: BraveWallet.BlockchainToken?
   ) {
     self.keyringService = keyringService
@@ -150,6 +152,7 @@ public class SwapTokenStore: ObservableObject {
     self.assetRatioService = assetRatioService
     self.swapService = swapService
     self.txService = txService
+    self.walletService = walletService
     self.selectedFromToken = prefilledToken
     
     self.keyringService.add(self)
@@ -589,18 +592,36 @@ public class SwapTokenStore: ObservableObject {
       }
     }
     
+    // All tokens from token registry
     blockchainRegistry.allTokens(BraveWallet.MainnetChainId) { [weak self] tokens in
       guard let self = self else { return }
-      
       self.rpcService.network { network in
+        // Native token on the current selected network
         let nativeAsset = network.nativeToken
-        if network.chainId == BraveWallet.RopstenChainId {
-          let supportedAssets = tokens.filter { BraveWallet.assetsSwapInRopsten.contains($0.symbol) } + [nativeAsset]
-          self.allTokens = supportedAssets.sorted(by: { $0.symbol < $1.symbol })
-          updateSelectedTokens(in: network)
-        } else {
-          let fullList = tokens + [nativeAsset]
-          self.allTokens = fullList.sorted(by: { $0.symbol < $1.symbol })
+        // Custom tokens added by users
+        self.walletService.userAssets(network.chainId) { userAssets in
+          let customTokens = userAssets.filter { asset in
+            !tokens.contains(where: { $0.contractAddress == asset.contractAddress })
+          }
+          let sortedCustomTokens = customTokens.sorted {
+            if $0.contractAddress == nativeAsset.contractAddress {
+              return true
+            } else {
+              return $0.symbol < $1.symbol
+            }
+          }
+          if network.chainId == BraveWallet.RopstenChainId {
+            self.allTokens = sortedCustomTokens + tokens.filter {
+              BraveWallet.assetsSwapInRopsten.contains($0.symbol)
+            }.sorted(by: { $0.symbol < $1.symbol })
+          } else {
+            self.allTokens = sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })
+          }
+          // Seems like user assets always include the selected network's native asset
+          // But let's make sure all token list includes the native asset
+          if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {
+            self.allTokens.insert(nativeAsset, at: 0)
+          }
           updateSelectedTokens(in: network)
         }
       }

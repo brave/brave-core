@@ -109,6 +109,7 @@ public class CryptoStore: ObservableObject {
       assetRatioService: assetRatioService,
       swapService: swapService,
       txService: txService,
+      walletService: walletService,
       prefilledToken: prefilledToken
     )
     swapTokenStore = store
