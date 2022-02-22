@@ -20,6 +20,7 @@ constexpr char kSidebarBookmarksURL[] =
     "chrome://sidebar-bookmarks.top-chrome/";
 
 constexpr char kBraveTalkURL[] = "https://talk.brave.com/widget";
+constexpr char kBraveTalkHost[] = "talk.brave.com";
 
 }  // namespace sidebar
 
