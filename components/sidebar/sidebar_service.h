@@ -55,7 +55,7 @@ class SidebarService : public KeyedService {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  std::vector<SidebarItem> GetNotAddedDefaultSidebarItems() const;
+  std::vector<SidebarItem> GetHiddenDefaultSidebarItems() const;
   ShowSidebarOption GetSidebarShowOption() const;
   void SetSidebarShowOption(ShowSidebarOption show_options);
 

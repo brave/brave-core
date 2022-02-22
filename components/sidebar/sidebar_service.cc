@@ -27,7 +27,7 @@ SidebarItem GetBuiltInItemForType(SidebarItem::BuiltInItemType type) {
   switch (type) {
     case SidebarItem::BuiltInItemType::kBraveTalk:
       return SidebarItem::Create(
-          GURL("https://talk.brave.com/widget"),
+          GURL(kBraveTalkURL),
           l10n_util::GetStringUTF16(IDS_SIDEBAR_BRAVE_TALK_ITEM_TITLE),
           SidebarItem::Type::kTypeBuiltIn,
           SidebarItem::BuiltInItemType::kBraveTalk, false);
@@ -187,8 +187,7 @@ void SidebarService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-std::vector<SidebarItem> SidebarService::GetNotAddedDefaultSidebarItems()
-    const {
+std::vector<SidebarItem> SidebarService::GetHiddenDefaultSidebarItems() const {
   auto default_items = GetDefaultSidebarItems();
   const auto added_default_items = GetDefaultSidebarItemsFromCurrentItems();
   for (const auto& added_item : added_default_items) {

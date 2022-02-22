@@ -19,6 +19,9 @@ constexpr char kSidebarItemOpenInPanelKey[] = "open_in_panel";
 constexpr char kSidebarBookmarksURL[] =
     "chrome://sidebar-bookmarks.top-chrome/";
 
+constexpr char kBraveTalkURL[] = "https://talk.brave.com/widget";
+constexpr char kBraveTalkHost[] = "talk.brave.com";
+
 }  // namespace sidebar
 
 #endif  // BRAVE_COMPONENTS_SIDEBAR_CONSTANTS_H_

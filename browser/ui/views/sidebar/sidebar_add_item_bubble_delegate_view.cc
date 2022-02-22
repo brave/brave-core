@@ -175,7 +175,7 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
   }
 
   const auto not_added_default_items =
-      GetSidebarService(browser_)->GetNotAddedDefaultSidebarItems();
+      GetSidebarService(browser_)->GetHiddenDefaultSidebarItems();
   if (not_added_default_items.empty())
     return;
 

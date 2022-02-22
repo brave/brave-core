@@ -89,6 +89,7 @@ source_set("unit_tests") {
       "//base",
       "//brave/browser/ui",
       "//brave/browser/ui/sidebar",
+      "//brave/common",
       "//brave/components/sidebar",
       "//chrome/test:test_support",
       "//components/prefs",
