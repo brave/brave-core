@@ -5,11 +5,13 @@
 
 import * as React from 'react'
 
+// Constants
 import {
   BraveWallet,
   TimeDelta,
   WalletAccountType
 } from '../../constants/types'
+import { MAX_UINT256 } from '../constants/magics'
 
 // Utils
 import Amount from '../../utils/amount'
@@ -59,6 +61,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   // Token approvals
   approvalTarget?: string
   approvalTargetLabel?: string
+  isApprovalUnlimited?: boolean
 }
 
 export function useTransactionFeesParser (selectedNetwork: BraveWallet.EthereumChain, networkSpotPrice: string) {
@@ -285,13 +288,8 @@ export function useTransactionParser (
         const totalAmountFiat = new Amount(gasFeeFiat)
         const insufficientNativeFunds = new Amount(gasFee)
           .gt(accountNativeBalance)
-        const formattedAllowanceValue = new Amount(amount).gt(accountTokenBalance)
-          ? getLocale('braveWalletTransactionApproveUnlimited')
-          : new Amount(amount).divideByDecimals(token?.decimals ?? 18).format(6)
 
-        const formattedAllowanceValueExact = new Amount(amount).gt(accountTokenBalance)
-          ? getLocale('braveWalletTransactionApproveUnlimited')
-          : new Amount(amount).divideByDecimals(token?.decimals ?? 18).format()
+        const amountWrapped = new Amount(amount)
 
         return {
           hash: transactionInfo.txHash,
@@ -306,12 +304,17 @@ export function useTransactionParser (
           fiatTotal: totalAmountFiat,
           formattedNativeCurrencyTotal: Amount.zero()
             .formatAsAsset(2, selectedNetwork.symbol),
-          value: formattedAllowanceValue,
-          valueExact: formattedAllowanceValueExact,
+          value: amountWrapped
+            .divideByDecimals(token?.decimals ?? 18)
+            .format(6),
+          valueExact: amountWrapped
+            .divideByDecimals(token?.decimals ?? 18)
+            .format(),
           symbol: token?.symbol ?? '',
           decimals: token?.decimals ?? 18,
           approvalTarget: address,
           approvalTargetLabel: getAddressLabel(address),
+          isApprovalUnlimited: amountWrapped.eq(MAX_UINT256),
           insufficientFundsError: insufficientNativeFunds,
           sameAddressError: checkForSameAddressError(address, fromAddress),
           ...feeDetails
