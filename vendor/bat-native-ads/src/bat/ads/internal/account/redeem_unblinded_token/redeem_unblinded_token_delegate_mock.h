@@ -25,6 +25,10 @@ class RedeemUnblindedTokenDelegateMock : public RedeemUnblindedTokenDelegate {
               OnDidSendConfirmation,
               (const ConfirmationInfo& confirmation));
 
+  MOCK_METHOD(void,
+              OnFailedToSendConfirmation,
+              (const ConfirmationInfo& confirmation, const bool should_retry));
+
   MOCK_METHOD(
       void,
       OnDidRedeemUnblindedToken,

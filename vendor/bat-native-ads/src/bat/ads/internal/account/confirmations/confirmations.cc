@@ -240,7 +240,32 @@ void Confirmations::OnDidSendConfirmation(
               << confirmation.transaction_id << " and creative instance id "
               << confirmation.creative_instance_id);
 
+  if (delegate_) {
+    delegate_->OnDidConfirm(confirmation);
+  }
+
   StopRetrying();
+
+  ProcessRetryQueue();
+}
+
+void Confirmations::OnFailedToSendConfirmation(
+    const ConfirmationInfo& confirmation,
+    const bool should_retry) {
+  BLOG(1, "Failed to send "
+              << std::string(confirmation.type) << " confirmation for "
+              << std::string(confirmation.ad_type) << " with id "
+              << confirmation.id << ", transaction id "
+              << confirmation.transaction_id << " and creative instance id "
+              << confirmation.creative_instance_id);
+
+  if (should_retry) {
+    AppendToRetryQueue(confirmation);
+  }
+
+  if (delegate_) {
+    delegate_->OnFailedToConfirm(confirmation);
+  }
 
   ProcessRetryQueue();
 }

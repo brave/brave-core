@@ -20,10 +20,6 @@ UnblindedTokensPermissionRule::UnblindedTokensPermissionRule() = default;
 UnblindedTokensPermissionRule::~UnblindedTokensPermissionRule() = default;
 
 bool UnblindedTokensPermissionRule::ShouldAllow() {
-  if (!ShouldRewardUser()) {
-    return true;
-  }
-
   if (!DoesRespectCap()) {
     last_message_ = "You do not have enough unblinded tokens";
     return false;
@@ -37,6 +33,10 @@ std::string UnblindedTokensPermissionRule::GetLastMessage() const {
 }
 
 bool UnblindedTokensPermissionRule::DoesRespectCap() {
+  if (!ShouldRewardUser()) {
+    return true;
+  }
+
   const int count = ConfirmationsState::Get()->get_unblinded_tokens()->Count();
   if (count < kUnblindedTokensMinimumThreshold) {
     return false;

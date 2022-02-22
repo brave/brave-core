@@ -16,10 +16,6 @@ UserActivityPermissionRule::UserActivityPermissionRule() = default;
 UserActivityPermissionRule::~UserActivityPermissionRule() = default;
 
 bool UserActivityPermissionRule::ShouldAllow() {
-  if (!ShouldRewardUser()) {
-    return true;
-  }
-
   if (!DoesRespectCap()) {
     last_message_ = "User was inactive";
     return false;
@@ -33,6 +29,10 @@ std::string UserActivityPermissionRule::GetLastMessage() const {
 }
 
 bool UserActivityPermissionRule::DoesRespectCap() {
+  if (!ShouldRewardUser()) {
+    return true;
+  }
+
   if (PlatformHelper::GetInstance()->GetPlatform() == PlatformType::kIOS) {
     return true;
   }
