@@ -10,11 +10,9 @@
 namespace send_tab_to_self {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-#if defined(OS_ANDROID)
     // This feature requires Google account at the moment, which causes crash on
     // trying to create 'Manage Devices' link.
     {kSendTabToSelfManageDevicesLink, base::FEATURE_DISABLED_BY_DEFAULT},
-#endif
 }});
 
 }  // namespace send_tab_to_self
