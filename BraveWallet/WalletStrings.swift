@@ -1009,6 +1009,13 @@ extension Strings {
       value: "Refresh market price",
       comment: "A description for a refresh icon that when pressed receives a new snap quote for the currently swap assets"
     )
+    public static let swapSelectedTokens = NSLocalizedString(
+      "wallet.swapSelectedTokens",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Swap selected tokens",
+      comment: "An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens."
+    )
     public static let transactionCount = NSLocalizedString(
       "wallet.transactionCount",
       tableName: "BraveWallet",
