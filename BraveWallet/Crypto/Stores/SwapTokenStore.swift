@@ -510,6 +510,19 @@ public class SwapTokenStore: ObservableObject {
   
   // MARK: Public
   
+  func swapSelectedTokens() {
+    guard let oldFromToken = selectedFromToken,
+          let oldToToken = selectedToToken
+    else { return }
+    
+    selectedFromToken = oldToToken
+    selectedToToken = oldFromToken
+    
+    if !sellAmount.isEmpty {
+      fetchPriceQuote(base: .perSellAsset)
+    }
+  }
+  
   func prepareSwap() {
     switch state {
     case .error(_), .idle:
