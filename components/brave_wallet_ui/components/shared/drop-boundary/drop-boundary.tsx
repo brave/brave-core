@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import { Wrapper } from './styles'
 
 interface Props {
     onDrop?: React.DragEventHandler<HTMLDivElement>
@@ -29,10 +29,4 @@ export function DropBoundary ({ children, onDrop }: Props) {
     )
 }
 
-const Wrapper = styled.div`
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-`
+

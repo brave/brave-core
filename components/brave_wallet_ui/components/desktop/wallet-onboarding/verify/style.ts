@@ -141,3 +141,8 @@ export const ErrorText = styled.span`
   font-size: 14px;
   color: ${(p) => p.theme.color.errorText};
 `
+
+export const PlaceholderBubble = styled.div`
+  width: 106px;
+  height: 2rem;
+`;
