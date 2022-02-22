@@ -105,10 +105,8 @@ std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
 }
 
 std::string BraveStatsUpdaterParams::GetWalletEnabledParam() const {
-  base::Time wallet_last_unlocked =
-      profile_pref_service_->GetTime(kBraveWalletLastUnlockTime);
-  uint8_t usage_bitset =
-      UsageBitstringFromTimestamp(wallet_last_unlocked, GetReferenceTime());
+  uint8_t usage_bitset = UsageBitfieldFromTimestamp(
+      wallet_last_unlocked_, last_reported_wallet_unlock_);
   return std::to_string(usage_bitset);
 }
 
@@ -118,6 +116,10 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   last_check_month_ = stats_pref_service_->GetInteger(kLastCheckMonth);
   first_check_made_ = stats_pref_service_->GetBoolean(kFirstCheckMade);
   week_of_installation_ = stats_pref_service_->GetString(kWeekOfInstallation);
+  wallet_last_unlocked_ =
+      profile_pref_service_->GetTime(kBraveWalletLastUnlockTime);
+  last_reported_wallet_unlock_ =
+      stats_pref_service_->GetTime(kBraveWalletPingReportedUnlockTime);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
 
@@ -143,6 +145,10 @@ void BraveStatsUpdaterParams::SavePrefs() {
   stats_pref_service_->SetInteger(kLastCheckMonth, month_);
   stats_pref_service_->SetBoolean(kFirstCheckMade, true);
   stats_pref_service_->SetString(kWeekOfInstallation, week_of_installation_);
+
+  last_reported_wallet_unlock_ = wallet_last_unlocked_;
+  stats_pref_service_->SetTime(kBraveWalletPingReportedUnlockTime,
+                               last_reported_wallet_unlock_);
 }
 
 std::string BraveStatsUpdaterParams::BooleanToString(bool bool_value) const {
@@ -212,8 +218,8 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
       net::AppendQueryParameter(update_url, "adsEnabled", GetAdsEnabledParam());
   update_url =
       net::AppendQueryParameter(update_url, "arch", GetProcessArchParam());
-  update_url = net::AppendQueryParameter(update_url, "walletActive",
-                                         GetWalletEnabledParam());
+  update_url =
+      net::AppendQueryParameter(update_url, "wallet", GetWalletEnabledParam());
   return update_url;
 }
 

@@ -12,6 +12,7 @@ extern const char kDefaultBaseCryptocurrency[];
 extern const char kBraveWalletTransactions[];
 extern const char kShowWalletIconOnToolbar[];
 extern const char kBraveWalletLastUnlockTime[];
+extern const char kBraveWalletPingReportedUnlockTime[];
 extern const char kBraveWalletKeyrings[];
 extern const char kBraveWalletCustomNetworks[];
 extern const char kBraveWalletCurrentChainId[];

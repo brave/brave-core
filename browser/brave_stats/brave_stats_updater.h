@@ -14,6 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "chrome/browser/profiles/profile_manager_observer.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
 class BraveStatsUpdaterBrowserTest;
@@ -56,6 +57,10 @@ class BraveStatsUpdater : public ProfileManagerObserver {
       StatsUpdatedCallback* stats_updated_callback);
   static void SetStatsThresholdCallbackForTesting(
       StatsUpdatedCallback* stats_threshold_callback);
+  void SetURLLoaderFactoryForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  void SetUsageServerForTesting(const std::string& usage_server);
+  void SetProfilePrefsForTesting(raw_ptr<PrefService> prefs);
 
  private:
   // ProfileManagerObserver
@@ -89,6 +94,9 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   bool HasDoneThresholdPing();
   void DisableThresholdPing();
 
+  network::mojom::URLLoaderFactory* GetURLLoaderFactory();
+  PrefService* GetProfilePrefs();
+
   friend class ::BraveStatsUpdaterBrowserTest;
 
   int threshold_score_ = 0;
@@ -101,6 +109,9 @@ class BraveStatsUpdater : public ProfileManagerObserver {
   std::unique_ptr<base::RepeatingTimer> server_ping_periodic_timer_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
   base::RepeatingClosure stats_preconditions_barrier_;
+
+  scoped_refptr<network::SharedURLLoaderFactory> testing_url_loader_factory_;
+  raw_ptr<PrefService> testing_profile_prefs_;
 };
 
 // Registers the preferences used by BraveStatsUpdater

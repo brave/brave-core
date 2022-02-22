@@ -18,6 +18,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/rpill/common/rpill.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/browser_process.h"
@@ -93,7 +94,9 @@ net::NetworkTrafficAnnotationTag AnonymousStatsAnnotation() {
 }  // anonymous namespace
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
-    : pref_service_(pref_service) {
+    : pref_service_(pref_service),
+      testing_url_loader_factory_(nullptr),
+      testing_profile_prefs_(nullptr) {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kBraveStatsUpdaterServer)) {
@@ -174,6 +177,21 @@ bool BraveStatsUpdater::MaybeDoThresholdPing(int score) {
   return false;
 }
 
+network::mojom::URLLoaderFactory* BraveStatsUpdater::GetURLLoaderFactory() {
+  if (testing_url_loader_factory_ != nullptr) {
+    return testing_url_loader_factory_.get();
+  }
+  return g_browser_process->system_network_context_manager()
+      ->GetURLLoaderFactory();
+}
+
+PrefService* BraveStatsUpdater::GetProfilePrefs() {
+  if (testing_profile_prefs_ != nullptr) {
+    return testing_profile_prefs_;
+  }
+  return ProfileManager::GetPrimaryUserProfile()->GetPrefs();
+}
+
 // static
 void BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(
     StatsUpdatedCallback* stats_updated_callback) {
@@ -184,6 +202,20 @@ void BraveStatsUpdater::SetStatsUpdatedCallbackForTesting(
 void BraveStatsUpdater::SetStatsThresholdCallbackForTesting(
     StatsUpdatedCallback* stats_threshold_callback) {
   g_testing_stats_threshold_callback = stats_threshold_callback;
+}
+
+void BraveStatsUpdater::SetURLLoaderFactoryForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  testing_url_loader_factory_ = url_loader_factory;
+}
+
+void BraveStatsUpdater::SetUsageServerForTesting(
+    const std::string& usage_server) {
+  usage_server_ = usage_server;
+}
+
+void BraveStatsUpdater::SetProfilePrefsForTesting(raw_ptr<PrefService> prefs) {
+  testing_profile_prefs_ = prefs;
 }
 
 GURL BraveStatsUpdater::BuildStatsEndpoint(const std::string& path) {
@@ -287,8 +319,7 @@ bool BraveStatsUpdater::IsReferralInitialized() {
 }
 
 bool BraveStatsUpdater::IsAdsEnabled() {
-  return ProfileManager::GetPrimaryUserProfile()->GetPrefs()->GetBoolean(
-      ads::prefs::kEnabled);
+  return GetProfilePrefs()->GetBoolean(ads::prefs::kEnabled);
 }
 
 bool BraveStatsUpdater::HasDoneThresholdPing() {
@@ -365,8 +396,7 @@ void BraveStatsUpdater::SendServerPing() {
   auto traffic_annotation = AnonymousStatsAnnotation();
   auto resource_request = std::make_unique<network::ResourceRequest>();
 
-  auto* profile_pref_service =
-      ProfileManager::GetPrimaryUserProfile()->GetPrefs();
+  auto* profile_pref_service = GetProfilePrefs();
   auto stats_updater_params =
       std::make_unique<brave_stats::BraveStatsUpdaterParams>(
           pref_service_, profile_pref_service, arch_);
@@ -379,9 +409,7 @@ void BraveStatsUpdater::SendServerPing() {
                                  net::LOAD_DISABLE_CACHE;
   resource_request->headers.SetHeader("X-Brave-API-Key",
                                       brave_stats::GetAPIKey());
-  network::mojom::URLLoaderFactory* loader_factory =
-      g_browser_process->system_network_context_manager()
-          ->GetURLLoaderFactory();
+  network::mojom::URLLoaderFactory* loader_factory = GetURLLoaderFactory();
   simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
   simple_url_loader_->SetRetryOptions(
@@ -413,9 +441,7 @@ void BraveStatsUpdater::SendUserTriggeredPing() {
                                  net::LOAD_DISABLE_CACHE;
   resource_request->headers.SetHeader("X-Brave-API-Key",
                                       brave_stats::GetAPIKey());
-  network::mojom::URLLoaderFactory* loader_factory =
-      g_browser_process->system_network_context_manager()
-          ->GetURLLoaderFactory();
+  network::mojom::URLLoaderFactory* loader_factory = GetURLLoaderFactory();
   simple_url_loader_ = network::SimpleURLLoader::Create(
       std::move(resource_request), traffic_annotation);
   simple_url_loader_->SetRetryOptions(
@@ -437,6 +463,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kLastCheckMonth, 0);
   registry->RegisterStringPref(kLastCheckYMD, std::string());
   registry->RegisterStringPref(kWeekOfInstallation, std::string());
+  registry->RegisterTimePref(kBraveWalletPingReportedUnlockTime, base::Time());
 }
 
 }  // namespace brave_stats
