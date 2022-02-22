@@ -20,10 +20,10 @@ extern const char kBraveWalletUserAssets[];
 // Added 10/2021 to migrate contract address to an empty string for ETH.
 extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
 extern const char kBraveWalletAutoLockMinutes[];
-extern const char kBraveWalletSelectedAccount[];
 extern const char kSupportEip1559OnLocalhostChain[];
 
 // DEPRECATED
+extern const char kBraveWalletSelectedAccount[];
 extern const char kBraveWalletWeb3ProviderDeprecated[];
 extern const char kDefaultWalletDeprecated[];
 extern const char kBraveWalletPasswordEncryptorSalt[];

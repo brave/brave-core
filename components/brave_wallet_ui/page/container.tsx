@@ -432,7 +432,7 @@ function Container (props: Props) {
 
   const onRemoveAccount = (address: string, hardware: boolean, coin: BraveWallet.CoinType) => {
     if (hardware) {
-      props.walletPageActions.removeHardwareAccount({ address })
+      props.walletPageActions.removeHardwareAccount({ address, coin })
       return
     }
     props.walletPageActions.removeImportedAccount({ address, coin })

@@ -185,7 +185,7 @@ void BraveWalletProviderDelegateImpl::
   permissions::BraveEthereumPermissionContext::RequestPermissions(
       content::RenderFrameHost::FromID(host_id_), addresses,
       base::BindOnce(&OnRequestEthereumPermissions, addresses,
-                     keyring_service_->GetSelectedAccount(),
+                     keyring_service_->GetSelectedAccount(mojom::CoinType::ETH),
                      std::move(callback)));
 }
 
@@ -193,7 +193,7 @@ void BraveWalletProviderDelegateImpl::GetAllowedAccounts(
     bool include_accounts_when_locked,
     GetAllowedAccountsCallback callback) {
   absl::optional<std::string> selected_account =
-      keyring_service_->GetSelectedAccount();
+      keyring_service_->GetSelectedAccount(mojom::CoinType::ETH);
   keyring_service_->GetKeyringInfo(
       brave_wallet::mojom::kDefaultKeyringId,
       base::BindOnce(

@@ -350,16 +350,16 @@ export function refreshKeyringInfo () {
     }
 
     // Get selectedAccountAddress
-    const getSelectedAccount = await keyringService.getSelectedAccount()
+    const getSelectedAccount = await keyringService.getSelectedAccount(BraveWallet.CoinType.ETH)
     const selectedAddress = getSelectedAccount.address
 
     // Fallback account address if selectedAccount returns null
-    const fallbackAddress = walletInfo.accountInfos[0].address
+    const fallbackAccount = walletInfo.accountInfos[0]
 
     // If selectedAccount is null will setSelectedAccount to fallback address
     if (!selectedAddress) {
-      await keyringService.setSelectedAccount(fallbackAddress)
-      walletInfo.selectedAccount = fallbackAddress
+      await keyringService.setSelectedAccount(fallbackAccount.address, fallbackAccount.coin)
+      walletInfo.selectedAccount = fallbackAccount.address
     } else {
       // If a user has already created an wallet but then chooses to restore
       // a different wallet, getSelectedAccount still returns the previous wallets
@@ -367,8 +367,8 @@ export function refreshKeyringInfo () {
       // This check looks to see if the returned selectedAccount exist in the accountInfos
       // payload, if not it will setSelectedAccount to the fallback address
       if (!walletInfo.accountInfos.find((account) => account.address.toLowerCase() === selectedAddress?.toLowerCase())) {
-        walletInfo.selectedAccount = fallbackAddress
-        await keyringService.setSelectedAccount(fallbackAddress)
+        walletInfo.selectedAccount = fallbackAccount.address
+        await keyringService.setSelectedAccount(fallbackAccount.address, fallbackAccount.coin)
       } else {
         walletInfo.selectedAccount = selectedAddress
       }

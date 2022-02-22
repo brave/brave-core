@@ -251,10 +251,10 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     browser_task_environment_.RunUntilIdle();
   }
 
-  void SetSelectedAccount(const std::string& address) {
+  void SetSelectedAccount(const std::string& address, mojom::CoinType coin) {
     base::RunLoop run_loop;
     keyring_service_->SetSelectedAccount(
-        address, base::BindLambdaForTesting([&](bool success) {
+        address, coin, base::BindLambdaForTesting([&](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));
@@ -1051,11 +1051,11 @@ TEST_F(BraveWalletProviderImplUnitTest,
 
   // Selected account should filter the accounts returned
   AddEthereumPermission(url, 1);
-  SetSelectedAccount(from(0));
+  SetSelectedAccount(from(0), mojom::CoinType::ETH);
   EXPECT_EQ(RequestEthereumPermissions(), std::vector<std::string>{from(0)});
-  SetSelectedAccount(from(1));
+  SetSelectedAccount(from(1), mojom::CoinType::ETH);
   EXPECT_EQ(RequestEthereumPermissions(), std::vector<std::string>{from(1)});
-  SetSelectedAccount(from(2));
+  SetSelectedAccount(from(2), mojom::CoinType::ETH);
   EXPECT_EQ(RequestEthereumPermissions(),
             (std::vector<std::string>{from(0), from(1)}));
 }
@@ -1481,7 +1481,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEvent) {
   // Does not fire for a different origin that has no permissions
   Navigate(GURL("https://bravesoftware.com"));
   AddEthereumPermission(url, 1);
-  SetSelectedAccount(from(0));
+  SetSelectedAccount(from(0), mojom::CoinType::ETH);
   EXPECT_FALSE(observer_->AccountsChangedFired());
 }
 
@@ -1501,19 +1501,19 @@ TEST_F(BraveWalletProviderImplUnitTest, AccountsChangedEventSelectedAccount) {
   observer_->Reset();
 
   // Changing the selected account only returns that account
-  SetSelectedAccount(from(0));
+  SetSelectedAccount(from(0), mojom::CoinType::ETH);
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from(0)}), observer_->GetAccounts());
   observer_->Reset();
 
   // Changing to a different allowed account only returns that account
-  SetSelectedAccount(from(1));
+  SetSelectedAccount(from(1), mojom::CoinType::ETH);
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from(1)}), observer_->GetAccounts());
   observer_->Reset();
 
   // Changing gto a not allowed account returns all allowed accounts
-  SetSelectedAccount(from(2));
+  SetSelectedAccount(from(2), mojom::CoinType::ETH);
   EXPECT_TRUE(observer_->AccountsChangedFired());
   EXPECT_EQ((std::vector<std::string>{from(0), from(1)}),
             observer_->GetAccounts());
@@ -1569,13 +1569,13 @@ TEST_F(BraveWalletProviderImplUnitTest, GetAllowedAccounts) {
 
   // Selected account should filter the accounts returned
   AddEthereumPermission(url, 1);
-  SetSelectedAccount(from(0));
+  SetSelectedAccount(from(0), mojom::CoinType::ETH);
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account0});
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account0});
-  SetSelectedAccount(from(1));
+  SetSelectedAccount(from(1), mojom::CoinType::ETH);
   EXPECT_EQ(GetAllowedAccounts(false), std::vector<std::string>{account1});
   EXPECT_EQ(GetAllowedAccounts(true), std::vector<std::string>{account1});
-  SetSelectedAccount(from(2));
+  SetSelectedAccount(from(2), mojom::CoinType::ETH);
   EXPECT_EQ(GetAllowedAccounts(false),
             (std::vector<std::string>{account0, account1}));
   EXPECT_EQ(GetAllowedAccounts(true),

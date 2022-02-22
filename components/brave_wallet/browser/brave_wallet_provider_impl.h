@@ -214,7 +214,7 @@ class BraveWalletProviderImpl final
   void BackedUp() override {}
   void AccountsChanged() override {}
   void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged() override;
+  void SelectedAccountChanged(mojom::CoinType coin) override;
 
   int sign_message_id_ = 0;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;

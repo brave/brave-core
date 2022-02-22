@@ -194,7 +194,7 @@ handler.on(WalletActions.selectNetwork.getType(), async (store: Store, payload: 
 handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: WalletAccountType) => {
   const { keyringService } = getAPIProxy()
 
-  await keyringService.setSelectedAccount(payload.address)
+  await keyringService.setSelectedAccount(payload.address, payload.coin)
   store.dispatch(WalletActions.setSelectedAccount(payload))
   await store.dispatch(refreshTransactionHistory(payload.address))
 })

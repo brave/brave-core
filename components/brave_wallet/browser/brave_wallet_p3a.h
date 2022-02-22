@@ -40,7 +40,7 @@ class BraveWalletP3A : public mojom::BraveWalletServiceObserver,
   void BackedUp() override {}
   void AccountsChanged() override {}
   void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged() override {}
+  void SelectedAccountChanged(mojom::CoinType coin) override {}
 
   // BraveWalletServiceObserver
   void OnActiveOriginChanged(const std::string& origin) override {}

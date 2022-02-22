@@ -355,7 +355,7 @@ interface KeyringServiceObserver {
   AutoLockMinutesChanged();
 
   // Fired when the selected account setting changes
-  SelectedAccountChanged();
+  SelectedAccountChanged(CoinType coin);
 };
 
 // List of tokens and coins that are supported.
@@ -452,22 +452,22 @@ interface KeyringService {
   SetKeyringImportedAccountName(string keyring_id, string address, string name) => (bool success);
 
   // Sets the account name for a hardware account
-  SetDefaultKeyringHardwareAccountName(string address, string name) => (bool success);
+  SetHardwareAccountName(string address, string name, CoinType coin) => (bool success);
 
   // Adds hardware accounts
   AddHardwareAccounts(array<HardwareWalletAccount> info);
 
   // Removes a hardware account
-  RemoveHardwareAccount(string address);
+  RemoveHardwareAccount(string address, CoinType coin);
 
   // Informs the user that user interaction occurred so auto-lock doesn't occur
   NotifyUserInteraction();
 
   // Obtains the selected account
-  GetSelectedAccount() => (string? address);
+  GetSelectedAccount(CoinType coin) => (string? address);
 
   // Sets the selected account
-  SetSelectedAccount(string address) => (bool success);
+  SetSelectedAccount(string address, CoinType coin) => (bool success);
 
   // Obtains the number of minutes that the keyring will auto-lock in
   GetAutoLockMinutes() => (int32 minutes);
