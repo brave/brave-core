@@ -29,6 +29,7 @@ import android.util.Pair;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnFocusChangeListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -697,6 +698,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             toSendValueText.setHint(getText(R.string.to_address_edit));
             mFilterTextWatcherToSend = new FilterTextWatcherToSend();
             toSendValueText.addTextChangedListener(mFilterTextWatcherToSend);
+            mOnFocusChangeListenerToSend = new OnFocusChangeListenerToSend();
+            toSendValueText.setOnFocusChangeListener(mOnFocusChangeListenerToSend);
 
             mFilterTextWatcherFromSendValue = new FilterTextWatcherFromSendValue();
             mFromValueText.addTextChangedListener(mFilterTextWatcherFromSendValue);
@@ -1147,6 +1150,35 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         public void afterTextChanged(Editable s) {}
     }
     private FilterTextWatcherToSend mFilterTextWatcherToSend;
+
+    private class OnFocusChangeListenerToSend implements OnFocusChangeListener {
+        Validations.SendToAccountAddress mValidator;
+
+        public OnFocusChangeListenerToSend() {
+            mValidator = new Validations.SendToAccountAddress();
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus) {
+                String fromAccountAddress = mCustomAccountAdapter.getTitleAtPosition(
+                        mAccountSpinner.getSelectedItemPosition());
+                String receiverAccountAddress = ((EditText) v).getText().toString();
+
+                mValidator.validate(mCurrentChainId, getKeyringService(), getBlockchainRegistry(),
+                        getBraveWalletService(), fromAccountAddress, receiverAccountAddress,
+                        (String validationResult, Boolean disableButton) -> {
+                            setSendToFromValueValidationResult(
+                                    validationResult, disableButton, true);
+                        });
+            } else {
+                // Do not touch button
+                mSendToValidation.setText("");
+                mSendToValidation.setVisibility(View.GONE);
+            }
+        }
+    }
+    private OnFocusChangeListenerToSend mOnFocusChangeListenerToSend;
 
     private class FilterTextWatcherFromSendValue implements TextWatcher {
         public FilterTextWatcherFromSendValue() {}

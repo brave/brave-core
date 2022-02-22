@@ -49,7 +49,8 @@ public class Validations {
             Resources resources = ContextUtils.getApplicationContext().getResources();
 
             byte[] bytesReceiverAccountAddress = Utils.hexStrToNumberArray(receiverAccountAddress);
-            if (bytesReceiverAccountAddress.length != VALID_ACCOUNT_ADDRESS_BYTE_LENGTH) {
+            if (!receiverAccountAddress.isEmpty()
+                    && bytesReceiverAccountAddress.length != VALID_ACCOUNT_ADDRESS_BYTE_LENGTH) {
                 callback.call(resources.getString(R.string.wallet_not_valid_eth_address), true);
                 return;
             }
@@ -77,7 +78,8 @@ public class Validations {
             if (mIsKnowContracts) return;
 
             keyringService.getChecksumEthAddress(receiverAccountAddress, checksum_address -> {
-                if (receiverAccountAddress.equals(checksum_address)) {
+                if (receiverAccountAddress.equals(checksum_address)
+                        || receiverAccountAddress.isEmpty()) {
                     callback.call("", false);
                 } else if (receiverAccountAddressLower.equals(receiverAccountAddress)
                         || receiverAccountAddressUpper.equals(receiverAccountAddress)) {
