@@ -101,6 +101,7 @@ import org.chromium.chrome.browser.compositor.layouts.Layout;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
@@ -802,6 +803,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
         Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(braveWalletIntent);
+    }
+
+    // should only be called if the wallet is setup and unlocked
+    public void openNetworkSelection() {
+        Intent braveNetworkSelectionIntent = new Intent(this, NetworkSelectorActivity.class);
+        braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(braveNetworkSelectionIntent);
     }
 
     private void checkForYandexSE() {
