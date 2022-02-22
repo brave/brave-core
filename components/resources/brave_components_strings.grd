@@ -398,9 +398,6 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC" desc="Explainer text about importing from another browser">Set up your usual browsing environment by importing bookmarks and settings from your old browser. Advanced import options can be found in Settings.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON" desc="Button to import from another browser">Import</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_FROM_DESC" desc="Default option message for selecting import sources">Import from...</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE" desc="Welcome message title for shields">Manage your shields</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC" desc="Explainer text about shields">Protect against privacy-invading ads and trackers while browsing with Brave Shields. Set Shields to "down" if a site doesn’t seem to be working properly.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON" desc="Button to open shield settings">Shield Settings</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_DEFAULT_TEXT" desc="Indicator text to show current default">default</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SET_DEFAULT_SEARCH_BUTTON" desc="Button to confirm default search engine">Set default</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_SELECT" desc="Default option message for selecting search engines">Select a search engine</message>
