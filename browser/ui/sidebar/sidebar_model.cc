@@ -221,7 +221,7 @@ bool SidebarModel::IsLoadedAt(int index) const {
 }
 
 bool SidebarModel::IsSidebarHasAllBuiltiInItems() const {
-  return GetSidebarService(profile_)->GetNotAddedDefaultSidebarItems().empty();
+  return GetSidebarService(profile_)->GetHiddenDefaultSidebarItems().empty();
 }
 
 int SidebarModel::GetIndexOf(const SidebarItem& item) const {

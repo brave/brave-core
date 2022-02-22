@@ -187,8 +187,7 @@ void SidebarService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
-std::vector<SidebarItem> SidebarService::GetNotAddedDefaultSidebarItems()
-    const {
+std::vector<SidebarItem> SidebarService::GetHiddenDefaultSidebarItems() const {
   auto default_items = GetDefaultSidebarItems();
   const auto added_default_items = GetDefaultSidebarItemsFromCurrentItems();
   for (const auto& added_item : added_default_items) {

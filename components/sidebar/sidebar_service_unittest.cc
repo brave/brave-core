@@ -78,7 +78,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
 
   // Check the default items count.
   EXPECT_EQ(3UL, service_->items().size());
-  EXPECT_EQ(0UL, service_->GetNotAddedDefaultSidebarItems().size());
+  EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
 
   // Cache 1st item to compare after removing.
   const SidebarItem item = service_->items()[0];
@@ -90,7 +90,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
 
   service_->RemoveItemAt(0);
   EXPECT_EQ(2UL, service_->items().size());
-  EXPECT_EQ(1UL, service_->GetNotAddedDefaultSidebarItems().size());
+  EXPECT_EQ(1UL, service_->GetHiddenDefaultSidebarItems().size());
   EXPECT_EQ(0, item_index_on_called_);
   EXPECT_TRUE(on_will_remove_item_called_);
   EXPECT_TRUE(on_item_removed_called_);
@@ -102,7 +102,7 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
   // New item will be added at last.
   EXPECT_EQ(2, item_index_on_called_);
   EXPECT_EQ(3UL, service_->items().size());
-  EXPECT_EQ(0UL, service_->GetNotAddedDefaultSidebarItems().size());
+  EXPECT_EQ(0UL, service_->GetHiddenDefaultSidebarItems().size());
   EXPECT_TRUE(on_item_added_called_);
   ClearState();
 
@@ -208,7 +208,7 @@ TEST_F(SidebarServiceTest, BuiltInItemDoesntHaveHistoryItem) {
   EXPECT_EQ(0UL, service_->items().size());
 
   // Make sure history is not included in the not added default items list.
-  auto not_added_default_items = service_->GetNotAddedDefaultSidebarItems();
+  auto not_added_default_items = service_->GetHiddenDefaultSidebarItems();
   EXPECT_EQ(3UL, not_added_default_items.size());
   for (const auto& item : not_added_default_items) {
     EXPECT_NE(SidebarItem::BuiltInItemType::kHistory, item.built_in_item_type);

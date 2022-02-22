@@ -126,12 +126,12 @@ TEST_F(SidebarModelTest, ItemsChangedTest) {
 TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {
   GURL talk("https://talk.brave.com/1Ar1vHfLBWX2sAdi");
   // False because builtin talk item is already added.
-  EXPECT_FALSE(CanUseNotAddedBuiltInItemInsteadOf(service(), talk));
+  EXPECT_FALSE(HiddenDefaultSidebarItemsContains(service(), talk));
 
   // Remove builtin talk item and check builtin talk item will be used
   // instead of adding |talk| url.
   service()->RemoveItemAt(0);
-  EXPECT_TRUE(CanUseNotAddedBuiltInItemInsteadOf(service(), talk));
+  EXPECT_TRUE(HiddenDefaultSidebarItemsContains(service(), talk));
 }
 
 TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {

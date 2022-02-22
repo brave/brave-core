@@ -52,10 +52,9 @@ bool IsURLAlreadyAddedToSidebar(SidebarService* service, const GURL& url) {
 
 }  // namespace
 
-bool CanUseNotAddedBuiltInItemInsteadOf(SidebarService* service,
-                                        const GURL& url) {
-  const auto not_added_default_items =
-      service->GetNotAddedDefaultSidebarItems();
+bool HiddenDefaultSidebarItemsContains(SidebarService* service,
+                                       const GURL& url) {
+  const auto not_added_default_items = service->GetHiddenDefaultSidebarItems();
   if (not_added_default_items.empty())
     return false;
   const GURL converted_url = ConvertURLToBuiltInItemURL(url);
@@ -104,7 +103,7 @@ bool CanAddCurrentActiveTabToSidebar(Browser* browser) {
   if (IsURLAlreadyAddedToSidebar(service, url))
     return false;
 
-  if (CanUseNotAddedBuiltInItemInsteadOf(service, url))
+  if (HiddenDefaultSidebarItemsContains(service, url))
     return false;
 
   return true;
