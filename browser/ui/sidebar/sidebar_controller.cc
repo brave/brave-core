@@ -61,7 +61,8 @@ bool SidebarController::DoesBrowserHaveOpenedTabForItem(
   return !GetAllExistingTabIndexForHost(browser_, item.url.host()).empty();
 }
 
-void SidebarController::ActivateItemAt(int index) {
+void SidebarController::ActivateItemAt(int index,
+                                       WindowOpenDisposition disposition) {
   // -1 means there is no active item.
   DCHECK_GE(index, -1);
   if (index == -1) {
@@ -73,6 +74,15 @@ void SidebarController::ActivateItemAt(int index) {
   // Only an item for panel can get activated.
   if (item.open_in_panel) {
     sidebar_model_->SetActiveIndex(index);
+    return;
+  }
+
+  if (disposition != WindowOpenDisposition::UNKNOWN) {
+    NavigateParams params(browser_->profile(), item.url,
+                          ui::PAGE_TRANSITION_AUTO_BOOKMARK);
+    params.disposition = disposition;
+    params.browser = browser_;
+    Navigate(&params);
     return;
   }
 
