@@ -8,14 +8,15 @@
 #include <memory>
 #include <string>
 
+#include "bat/ads/ads_client.h"
 #include "bat/ads/internal/account/confirmations/confirmations_unittest_util.h"
+#include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens_unittest_util.h"
 #include "bat/ads/internal/tokens/issuers/issuers_unittest_util.h"
-#include "bat/ads/internal/tokens/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/tokens/redeem_unblinded_token/redeem_unblinded_token_delegate_mock.h"
 #include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "bat/ads/pref_names.h"
 #include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -42,8 +43,10 @@ class BatAdsRedeemUnblindedTokenTest : public UnitTestBase {
       redeem_unblinded_token_delegate_mock_;
 };
 
-TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedToken) {
+TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsAreEnabled) {
   // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
   const URLEndpoints& endpoints = {
       {// Create confirmation request
        R"(/v2/confirmation/9fd71bc4-1b8e-4c1e-8ddc-443193a09f91/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
@@ -100,13 +103,20 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedToken) {
               OnFailedToRedeemUnblindedToken(_, _))
       .Times(0);
 
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnDidSendConfirmation(expected_confirmation))
+      .Times(0);
+
   redeem_unblinded_token_->Redeem(confirmation);
 
   // Assert
 }
 
-TEST_F(BatAdsRedeemUnblindedTokenTest, RetryRedeemingUnblindedToken) {
+TEST_F(BatAdsRedeemUnblindedTokenTest,
+       RetryRedeemingUnblindedTokenIfAdsAreEnabled) {
   // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
   const URLEndpoints& endpoints = {
       {// Fetch payment token request
        R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/paymentToken)",
@@ -151,6 +161,10 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RetryRedeemingUnblindedToken) {
               OnFailedToRedeemUnblindedToken(_, _))
       .Times(0);
 
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnDidSendConfirmation(expected_confirmation))
+      .Times(0);
+
   redeem_unblinded_token_->Redeem(confirmation);
 
   // Assert
@@ -158,8 +172,10 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RetryRedeemingUnblindedToken) {
 
 TEST_F(
     BatAdsRedeemUnblindedTokenTest,
-    FailedToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWith404NotFound) {  // NOLINT
+    FailedToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWith404NotFoundIfAdsAreEnabled) {  // NOLINT
   // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
   const URLEndpoints& endpoints = {
       {// Create confirmation request
        R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
@@ -192,6 +208,10 @@ TEST_F(
               OnFailedToRedeemUnblindedToken(expected_confirmation, true))
       .Times(1);
 
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnDidSendConfirmation(expected_confirmation))
+      .Times(0);
+
   redeem_unblinded_token_->Redeem(confirmation);
 
   // Assert
@@ -199,8 +219,10 @@ TEST_F(
 
 TEST_F(
     BatAdsRedeemUnblindedTokenTest,
-    FailedToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWith500InternalServerError) {  // NOLINT
+    FailedToRedeemUnblindedTokenDueToFetchPaymentTokenRespondingWith500InternalServerErrorIfAdsAreEnabled) {  // NOLINT
   // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, true);
+
   const URLEndpoints& endpoints = {
       {// Create confirmation request
        R"(/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiRXY1SkU0LzlUWkkvNVRxeU45SldmSjFUbzBIQndRdzJyV2VBUGNkalgzUT1cIixcImJ1aWxkQ2hhbm5lbFwiOlwidGVzdFwiLFwiY3JlYXRpdmVJbnN0YW5jZUlkXCI6XCI3MDgyOWQ3MS1jZTJlLTQ0ODMtYTRjMC1lMWUyYmVlOTY1MjBcIixcInBheWxvYWRcIjp7fSxcInBsYXRmb3JtXCI6XCJ0ZXN0XCIsXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoiRkhiczQxY1h5eUF2SnkxUE9HVURyR1FoeUtjRkVMSXVJNU5yT3NzT2VLbUV6N1p5azZ5aDhweDQ0WmFpQjZFZkVRc0pWMEpQYmJmWjVUMGt2QmhEM0E9PSIsInQiOiJWV0tFZEliOG5Nd21UMWVMdE5MR3VmVmU2TlFCRS9TWGpCcHlsTFlUVk1KVFQrZk5ISTJWQmQyenRZcUlwRVdsZWF6TiswYk5jNGF2S2ZrY3YyRkw3Zz09In0=)",
@@ -233,6 +255,10 @@ TEST_F(
               OnFailedToRedeemUnblindedToken(expected_confirmation, true))
       .Times(1);
 
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnDidSendConfirmation(expected_confirmation))
+      .Times(0);
+
   redeem_unblinded_token_->Redeem(confirmation);
 
   // Assert
@@ -240,6 +266,8 @@ TEST_F(
 
 TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsIsDisabled) {
   // Arrange
+  AdsClientHelper::Get()->SetBooleanPref(prefs::kEnabled, false);
+
   const URLEndpoints& endpoints = {
       {// Create confirmation request
        "/v2/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60",
@@ -256,8 +284,6 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsIsDisabled) {
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
-  BuildAndSetIssuers();
-
   const ConfirmationInfo& confirmation =
       BuildConfirmation("d990ed8d-d739-49fb-811b-c2e02158fb60",
                         "8b742869-6e4a-490c-ac31-31b49130098a",
@@ -266,6 +292,14 @@ TEST_F(BatAdsRedeemUnblindedTokenTest, RedeemUnblindedTokenIfAdsIsDisabled) {
 
   // Act
   const ConfirmationInfo& expected_confirmation = confirmation;
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnDidRedeemUnblindedToken(_, _))
+      .Times(0);
+
+  EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
+              OnFailedToRedeemUnblindedToken(expected_confirmation, true))
+      .Times(0);
 
   EXPECT_CALL(*redeem_unblinded_token_delegate_mock_,
               OnDidSendConfirmation(expected_confirmation))
