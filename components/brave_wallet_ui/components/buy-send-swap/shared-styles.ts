@@ -80,10 +80,6 @@ export const DividerText = styled.span`
 `
 
 export const ResetButton = styled(WalletButton)`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
   outline: none;
   border: none;
@@ -95,10 +91,9 @@ export const ResetButton = styled(WalletButton)`
   padding: 2px 0px;
   width: 48px;
   margin: 12px 0px;
-  background-color: ${(p) => p.theme.palette.white};
+  background: none;
   color: ${(p) => p.theme.color.interactive05};
   @media (prefers-color-scheme: dark) {
-    background-color: transparent;
     color: ${(p) => p.theme.palette.blurple300};
   }
 `
