@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 
+#include "base/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "base/time/time.h"
 #include "brave/app/vector_icons/vector_icons.h"
@@ -405,21 +406,33 @@ void SidebarItemsScrollView::OnDragExited() {
   drag_context_->set_drag_indicator_index(-1);
 }
 
+views::View::DropCallback SidebarItemsScrollView::GetDropCallback(
+    const ui::DropTargetEvent& event) {
+  return base::BindOnce(&SidebarItemsScrollView::PerformDrop,
+                        weak_ptr_.GetWeakPtr());
+}
+
 ui::mojom::DragOperation SidebarItemsScrollView::OnPerformDrop(
     const ui::DropTargetEvent& event) {
-  auto ret = ui::mojom::DragOperation::kNone;
+  ui::mojom::DragOperation drag_op;
+  PerformDrop(event, drag_op);
+  return drag_op;
+}
 
+void SidebarItemsScrollView::PerformDrop(
+    const ui::DropTargetEvent& event,
+    ui::mojom::DragOperation& output_drag_op) {
+  output_drag_op = ui::mojom::DragOperation::kNone;
   if (drag_context_->ShouldMoveItem()) {
+    output_drag_op = ui::mojom::DragOperation::kMove;
     auto* service =
         sidebar::SidebarServiceFactory::GetForProfile(browser_->profile());
     service->MoveItem(drag_context_->source_index(),
                       drag_context_->GetTargetIndex());
-    ret = ui::mojom::DragOperation::kMove;
   }
 
   contents_view_->ClearDragIndicator();
   drag_context_->Reset();
-  return ret;
 }
 
 void SidebarItemsScrollView::WriteDragDataForView(views::View* sender,
