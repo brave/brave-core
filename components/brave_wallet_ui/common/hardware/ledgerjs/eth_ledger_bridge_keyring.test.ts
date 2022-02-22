@@ -85,16 +85,14 @@ test('Extracting accounts with deprecated derivation paths', () => {
           'derivationPath': 'm/44\'/60\'/0\'/0',
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
-          'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.ETH
+          'deviceId': 'device1'
         },
         {
           'address': 'address for m/44\'/60\'/1\'/0',
           'derivationPath': 'm/44\'/60\'/1\'/0',
           'hardwareVendor': 'Ledger',
           'name': 'Ledger',
-          'deviceId': 'device1',
-          'coin': BraveWallet.CoinType.ETH
+          'deviceId': 'device1'
         }],
       success: true
     }
