@@ -431,8 +431,8 @@ public class BytecodeTest {
                 ObservableSupplier.class, Supplier.class, OneshotSupplier.class,
                 OneshotSupplier.class, boolean.class, ObservableSupplier.class,
                 OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                OneshotSupplier.class, WindowAndroid.class, Supplier.class, boolean.class,
-                Supplier.class, StatusBarColorController.class, AppMenuDelegate.class,
+                OneshotSupplier.class, WindowAndroid.class, Supplier.class, Supplier.class,
+                StatusBarColorController.class, AppMenuDelegate.class,
                 ActivityLifecycleDispatcher.class, Supplier.class, BottomSheetController.class,
                 Supplier.class, TabContentManager.class, TabCreatorManager.class,
                 OneshotSupplier.class, SnackbarManager.class, JankTracker.class, Supplier.class,
@@ -498,7 +498,7 @@ public class BytecodeTest {
                 ObservableSupplier.class, ObservableSupplier.class, Callback.class, Supplier.class,
                 Supplier.class, ObservableSupplier.class, BooleanSupplier.class, boolean.class,
                 boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class, boolean.class,
+                BooleanSupplier.class, OfflineDownloader.class, boolean.class,
                 ObservableSupplier.class, Callback.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",

@@ -146,7 +146,7 @@ public class BraveToolbarManager extends ToolbarManager {
             ObservableSupplier<Boolean> omniboxFocusStateSupplier,
             OneshotSupplier<ToolbarIntentMetadata> intentMetadataOneshotSupplier,
             OneshotSupplier<Boolean> promoShownOneshotSupplier, WindowAndroid windowAndroid,
-            Supplier<Boolean> isInOverviewModeSupplier, boolean shouldShowOverviewPageOnStart,
+            Supplier<Boolean> isInOverviewModeSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
             StatusBarColorController statusBarColorController, AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
@@ -170,13 +170,12 @@ public class BraveToolbarManager extends ToolbarManager {
                 layoutStateProviderSupplier, appMenuCoordinatorSupplier, shouldShowUpdateBadge,
                 tabModelSelectorSupplier, startSurfaceSupplier, omniboxFocusStateSupplier,
                 intentMetadataOneshotSupplier, promoShownOneshotSupplier, windowAndroid,
-                isInOverviewModeSupplier, shouldShowOverviewPageOnStart, modalDialogManagerSupplier,
-                statusBarColorController, appMenuDelegate, activityLifecycleDispatcher,
-                startSurfaceParentTabSupplier, bottomSheetController, isWarmOnResumeSupplier,
-                tabContentManager, tabCreatorManager, overviewModeBehaviorSupplier, snackbarManager,
-                jankTracker, merchantTrustSignalsCoordinatorSupplier,
-                tabReparentingControllerSupplier, omniboxPedalDelegate,
-                initializeWithIncognitoColors);
+                isInOverviewModeSupplier, modalDialogManagerSupplier, statusBarColorController,
+                appMenuDelegate, activityLifecycleDispatcher, startSurfaceParentTabSupplier,
+                bottomSheetController, isWarmOnResumeSupplier, tabContentManager, tabCreatorManager,
+                overviewModeBehaviorSupplier, snackbarManager, jankTracker,
+                merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
+                omniboxPedalDelegate, initializeWithIncognitoColors);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
