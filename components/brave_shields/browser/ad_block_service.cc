@@ -314,6 +314,9 @@ AdBlockService::AdBlockService(
       custom_filters_service_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
       default_service_(nullptr, base::OnTaskRunnerDeleter(task_runner_)),
       subscription_service_manager_(std::move(subscription_service_manager)) {
+  // Initializes adblock-rust's domain resolution implementation
+  adblock::SetDomainResolver(AdBlockServiceDomainResolver);
+
   default_filters_provider_ =
       std::make_unique<brave_shields::AdBlockDefaultFiltersProvider>(
           component_update_service_);
@@ -326,8 +329,6 @@ AdBlockService::~AdBlockService() {}
 
 bool AdBlockService::Start() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  // Initializes adblock-rust's domain resolution implementation
-  adblock::SetDomainResolver(AdBlockServiceDomainResolver);
 
   // Initialize each service:
   default_service();
