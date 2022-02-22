@@ -432,10 +432,6 @@ class Database {
   /**
    * VIRTUAL GRANT BACKUP & RESTORE
    */
-  void BackUpVGBody(type::CredsBatchType trigger_type,
-                    const std::string& trigger_id,
-                    BackUpVGBodyCallback callback);
-
   void BackUpVgBodies(BackUpVgBodiesCallback callback);
 
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback);
