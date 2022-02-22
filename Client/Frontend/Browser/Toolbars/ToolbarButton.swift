@@ -49,4 +49,7 @@ class ToolbarButton: UIButton {
         }
     }
     
+    override func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willDisplayMenuFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+        UIImpactFeedbackGenerator(style: .medium).bzzt()
+    }
 }

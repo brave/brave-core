@@ -519,11 +519,6 @@ extension BrowserViewController: ToolbarDelegate {
         self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
     
-    func tabToolbarDidLongPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        // The actions are carried to menu actions for Tab-Tray Button
-        UIImpactFeedbackGenerator(style: .heavy).bzzt()
-    }
-    
     func tabToolbarDidLongPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         UIImpactFeedbackGenerator(style: .heavy).bzzt()
         showBackForwardList()
@@ -531,11 +526,6 @@ extension BrowserViewController: ToolbarDelegate {
     
     func tabToolbarDidPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         showTabTray()
-    }
-    
-    func tabToolbarDidLongPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        // The actions are carried to menu actions for Tab-Tray Button
-        UIImpactFeedbackGenerator(style: .heavy).bzzt()
     }
     
     func showBackForwardList() {
