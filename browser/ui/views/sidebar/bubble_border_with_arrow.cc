@@ -16,9 +16,10 @@
 gfx::RectF BubbleBorderWithArrow::GetArrowRect(
     const gfx::RectF& contents_bounds,
     views::BubbleBorder::Arrow arrow) {
-  // sidebar bubble border only support these two arrow types now.
+  // sidebar bubble border only support left-side arrow types now.
   DCHECK(arrow == views::BubbleBorder::LEFT_TOP ||
-         arrow == views::BubbleBorder::LEFT_CENTER);
+         arrow == views::BubbleBorder::LEFT_CENTER ||
+         arrow == views::BubbleBorder::LEFT_BOTTOM);
 
   gfx::RectF arrow_rect(
       gfx::SizeF(kBubbleArrowBoundsWidth, kBubbleArrowBoundsHeight));
@@ -27,12 +28,29 @@ gfx::RectF BubbleBorderWithArrow::GetArrowRect(
     arrow_rect.set_origin(
         gfx::PointF(contents_bounds.x() - kBubbleArrowBoundsWidth,
                     contents_bounds.y() + kBubbleArrowOffsetFromTop));
-  } else {
+    return arrow_rect;
+  }
+
+  if (arrow == views::BubbleBorder::LEFT_CENTER) {
     arrow_rect.set_origin(gfx::PointF(
         contents_bounds.x() - kBubbleArrowBoundsWidth,
         contents_bounds.y() +
             (contents_bounds.height() - kBubbleArrowBoundsHeight) / 2));
+    return arrow_rect;
   }
+
+  // On some platform, arrow is changed from TOP to BOTTOM implicitely
+  // when browser window doesn't have enought space to show bubble
+  // at top left anchor.
+  if (arrow == views::BubbleBorder::LEFT_BOTTOM) {
+    constexpr int kBubbleArrowOffsetFromBottom = 11;
+    arrow_rect.set_origin(gfx::PointF(
+        contents_bounds.x() - kBubbleArrowBoundsWidth,
+        contents_bounds.bottom_left().y() - kBubbleArrowBoundsHeight -
+            kBubbleArrowOffsetFromBottom));
+    return arrow_rect;
+  }
+
   return arrow_rect;
 }
 

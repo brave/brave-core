@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_palette.h"
 #include "ui/views/controls/focus_ring.h"
 
@@ -33,3 +34,6 @@ std::u16string SidebarButtonView::GetTooltipText(const gfx::Point& p) const {
 
   return delegate_->GetTooltipTextFor(this);
 }
+
+BEGIN_METADATA(SidebarButtonView, views::ImageButton)
+END_METADATA

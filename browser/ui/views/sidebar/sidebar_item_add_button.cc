@@ -11,6 +11,7 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -112,3 +113,6 @@ void SidebarItemAddButton::UpdateButtonImages() {
              gfx::CreateVectorIcon(kSidebarAddItemIcon, button_disabled_color));
   }
 }
+
+BEGIN_METADATA(SidebarItemAddButton, SidebarButtonView)
+END_METADATA

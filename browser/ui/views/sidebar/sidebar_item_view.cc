@@ -8,6 +8,7 @@
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/ui/views/event_utils.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
@@ -79,3 +80,6 @@ void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
     }
   }
 }
+
+BEGIN_METADATA(SidebarItemView, SidebarButtonView)
+END_METADATA

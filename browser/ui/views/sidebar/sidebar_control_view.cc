@@ -18,6 +18,7 @@
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/common/webui_url_constants.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -256,3 +257,6 @@ bool SidebarControlView::IsBubbleWidgetVisible() const {
 
   return false;
 }
+
+BEGIN_METADATA(SidebarControlView, views::View)
+END_METADATA

@@ -12,6 +12,7 @@
 
 class SidebarItemView : public SidebarButtonView {
  public:
+  METADATA_HEADER(SidebarItemView);
   explicit SidebarItemView(Delegate* delegate,
                            const std::u16string& accessible_name);
   ~SidebarItemView() override;

@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
@@ -42,6 +43,7 @@ sidebar::SidebarService* GetSidebarService(Browser* browser) {
 
 class SidebarAddItemButton : public views::LabelButton {
  public:
+  METADATA_HEADER(SidebarAddItemButton);
   // Get theme provider to use browser's theme color in this dialog.
   SidebarAddItemButton(bool bold, const ui::ThemeProvider* theme_provider)
       : theme_provider_(theme_provider) {
@@ -94,6 +96,9 @@ class SidebarAddItemButton : public views::LabelButton {
  private:
   const ui::ThemeProvider* theme_provider_;
 };
+
+BEGIN_METADATA(SidebarAddItemButton, views::LabelButton)
+END_METADATA
 
 }  // namespace
 
@@ -216,3 +221,7 @@ void SidebarAddItemBubbleDelegateView::OnCurrentItemButtonPressed() {
   if (children().size() == 1)
     GetWidget()->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
 }
+
+BEGIN_METADATA(SidebarAddItemBubbleDelegateView,
+               views::BubbleDialogDelegateView)
+END_METADATA

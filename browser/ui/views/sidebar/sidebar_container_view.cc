@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/menu_model.h"
 #include "ui/base/theme_provider.h"
 #include "ui/events/event_observer.h"
@@ -314,3 +315,6 @@ void SidebarContainerView::StartBrowserWindowEventMonitoring() {
 void SidebarContainerView::StopBrowserWindowEventMonitoring() {
   browser_window_event_monitor_.reset();
 }
+
+BEGIN_METADATA(SidebarContainerView, views::View)
+END_METADATA

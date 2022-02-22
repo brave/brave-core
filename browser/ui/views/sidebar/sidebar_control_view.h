@@ -33,6 +33,7 @@ class SidebarControlView : public views::View,
                            public SidebarButtonView::Delegate,
                            public sidebar::SidebarModel::Observer {
  public:
+  METADATA_HEADER(SidebarControlView);
   explicit SidebarControlView(BraveBrowser* browser);
   ~SidebarControlView() override;
 
