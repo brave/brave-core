@@ -909,11 +909,14 @@ void LedgerImpl::BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) {
 }
 
 void LedgerImpl::RestoreVgs(
+    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
     std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
     RestoreVgsCallback callback) {
-  WhenReady([this, vg_spend_statuses = std::move(vg_spend_statuses),
+  WhenReady([this, vg_bodies = std::move(vg_bodies),
+             vg_spend_statuses = std::move(vg_spend_statuses),
              callback = std::move(callback)]() mutable {
-    backup_restore()->RestoreVgs(std::move(vg_spend_statuses),
+    backup_restore()->RestoreVgs(std::move(vg_bodies),
+                                 std::move(vg_spend_statuses),
                                  std::move(callback));
   });
 }

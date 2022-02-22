@@ -380,6 +380,7 @@ class LEDGER_EXPORT Ledger {
       BackUpVgSpendStatusesCallback callback) = 0;
 
   virtual void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
       std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
       RestoreVgsCallback callback) = 0;
 

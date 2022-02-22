@@ -379,12 +379,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
 #endif
 
-  void RestoreVgs(
-      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
-      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
-
-  void OnRestoreVgs(ledger::type::Result result);
-
   void OnConnectionClosed(const ledger::type::Result result);
 
   void InitPrefChangeRegistrar();
@@ -792,8 +786,11 @@ class RewardsServiceImpl : public RewardsService,
       ledger::type::Result result,
       std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses);
 
-  //void OnGetPairs(RestoreVgsCallback callback,
-  //                std::vector<bat_ledger::mojom::PairPtr> pairs);
+  void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses) override;
+
+  void OnRestoreVgs(ledger::type::Result result);
 
 #if defined(OS_ANDROID)
   ledger::type::Environment GetServerEnvironmentForAndroid();

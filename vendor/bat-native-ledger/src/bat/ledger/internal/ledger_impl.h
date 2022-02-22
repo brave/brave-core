@@ -304,6 +304,7 @@ class LedgerImpl : public Ledger {
   void BackUpVgSpendStatuses(BackUpVgSpendStatusesCallback callback) override;
 
   void RestoreVgs(
+      std::vector<sync_pb::VgBodySpecifics> vg_bodies,
       std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
       RestoreVgsCallback callback) override;
 
