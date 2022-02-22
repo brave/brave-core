@@ -17,6 +17,7 @@ class SendSwapStoreTests: XCTestCase {
             assetRatioService: MockAssetRatioService(),
             swapService: MockSwapService(),
             txService: MockEthTxService(),
+            walletService: MockBraveWalletService(),
             prefilledToken: nil
         )
         let ex = expectation(description: "default-sell-buy-token-on-main")
@@ -42,6 +43,7 @@ class SendSwapStoreTests: XCTestCase {
             assetRatioService: MockAssetRatioService(),
             swapService: MockSwapService(),
             txService: MockEthTxService(),
+            walletService: MockBraveWalletService(),
             prefilledToken: batToken
         )
         let ex = expectation(description: "default-sell-buy-token-on-main")
@@ -68,6 +70,7 @@ class SendSwapStoreTests: XCTestCase {
             assetRatioService: MockAssetRatioService(),
             swapService: MockSwapService(),
             txService: MockEthTxService(),
+            walletService: MockBraveWalletService(),
             prefilledToken: nil
         )
         let ex = expectation(description: "default-sell-buy-token-on-ropsten")
@@ -98,6 +101,7 @@ class SendSwapStoreTests: XCTestCase {
             assetRatioService: MockAssetRatioService(),
             swapService: MockSwapService(),
             txService: MockEthTxService(),
+            walletService: MockBraveWalletService(),
             prefilledToken: daiToken
         )
         let ex = expectation(description: "default-sell-buy-token-on-ropsten")
@@ -127,6 +131,7 @@ class SendSwapStoreTests: XCTestCase {
             assetRatioService: MockAssetRatioService(),
             swapService: MockSwapService(),
             txService: MockEthTxService(),
+            walletService: MockBraveWalletService(),
             prefilledToken: nil
         )
         let ex = expectation(description: "fetch-price-quote")
@@ -149,6 +154,7 @@ class SendSwapStoreTests: XCTestCase {
             assetRatioService: MockAssetRatioService(),
             swapService: MockSwapService(),
             txService: MockEthTxService(),
+            walletService: MockBraveWalletService(),
             prefilledToken: nil
         )
         let ex = expectation(description: "make-erc20-eip1559-swap-transaction")
@@ -174,6 +180,7 @@ class SendSwapStoreTests: XCTestCase {
             assetRatioService: MockAssetRatioService(),
             swapService: MockSwapService(),
             txService: MockEthTxService(),
+            walletService: MockBraveWalletService(),
             prefilledToken: nil
         )
         let ex = expectation(description: "make-erc20-swap-transaction")
@@ -202,6 +209,7 @@ class SendSwapStoreTests: XCTestCase {
             assetRatioService: MockAssetRatioService(),
             swapService: MockSwapService(),
             txService: MockEthTxService(),
+            walletService: MockBraveWalletService(),
             prefilledToken: nil
         )
         let ex = expectation(description: "make-eth-swap-eip1559-transaction")
@@ -227,6 +235,7 @@ class SendSwapStoreTests: XCTestCase {
             assetRatioService: MockAssetRatioService(),
             swapService: MockSwapService(),
             txService: MockEthTxService(),
+            walletService: MockBraveWalletService(),
             prefilledToken: nil
         )
         let ex = expectation(description: "make-eth-swap-eip1559-transaction")
