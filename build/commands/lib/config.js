@@ -19,8 +19,8 @@ if (process.platform === 'win32') {
 }
 const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
 
-const run = (cmd, args = []) => {
-  const prog = spawnSync(cmd, args)
+const run = (cmd, args = [], options) => {
+  const prog = spawnSync(cmd, args, options)
   if (prog.status !== 0) {
     console.log(prog.stdout && prog.stdout.toString())
     console.error(prog.stderr && prog.stderr.toString())
@@ -54,7 +54,7 @@ var packageConfigBraveCore = function (key) {
 
 const getNPMConfig = (key) => {
   if (!NpmConfig) {
-    const list = run(npmCommand, ['config', 'list', '--json'], {cwd: rootDir})
+    const list = run(npmCommand, ['config', 'list', '--json'], { cwd: rootDir })
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
