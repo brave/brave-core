@@ -16,7 +16,12 @@ IssuersFrequencyCap::IssuersFrequencyCap() = default;
 IssuersFrequencyCap::~IssuersFrequencyCap() = default;
 
 bool IssuersFrequencyCap::ShouldAllow() {
-  return DoesRespectCap();
+  if (!DoesRespectCap()) {
+    last_message_ = "Missing issuers";
+    return false;
+  }
+
+  return true;
 }
 
 std::string IssuersFrequencyCap::GetLastMessage() const {
@@ -30,7 +35,6 @@ bool IssuersFrequencyCap::DoesRespectCap() {
 
   if (!IssuerExistsForType(IssuerType::kConfirmations) ||
       !IssuerExistsForType(IssuerType::kPayments)) {
-    last_message_ = "Missing issuers";
     return false;
   }
 

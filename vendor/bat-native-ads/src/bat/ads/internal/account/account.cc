@@ -131,13 +131,11 @@ void Account::GetStatement(StatementCallback callback) const {
 }
 
 void Account::ProcessClearingCycle() {
-  if (!ShouldRewardUser()) {
-    return;
-  }
-
   confirmations_->ProcessRetryQueue();
 
-  ProcessUnclearedTransactions();
+  if (ShouldRewardUser()) {
+    ProcessUnclearedTransactions();
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
