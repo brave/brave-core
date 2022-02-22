@@ -194,6 +194,8 @@ class TabTrayController: LoadingViewController {
     @objc func newTabAction() {
         tabTraySearchController.isActive = false
                 
+        
+        let wasPrivateModeInfoShowing = tabTrayView.isPrivateModeInfoShowing
         if privateMode {
             tabTrayView.hidePrivateModeInfo()
             navigationController?.setNavigationBarHidden(false, animated: false)
@@ -201,7 +203,7 @@ class TabTrayController: LoadingViewController {
         
         // If private mode info is showing it means we already added one tab.
         // So when user taps on the 'new tab' button we do nothing, only dismiss the view.
-        if tabTrayView.isPrivateModeInfoShowing {
+        if wasPrivateModeInfoShowing {
             dismiss(animated: true)
         } else {
             tabManager.addTabAndSelect(isPrivate: privateMode)
