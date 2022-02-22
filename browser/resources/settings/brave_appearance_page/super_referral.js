@@ -112,7 +112,7 @@ Polymer({
    */
   showUseSystem_(themeId, useSystemTheme) {
     return (!!themeId || !useSystemTheme) &&
-        !this.appearanceBrowserProxy_.isSupervised();
+        !this.appearanceBrowserProxy_.isChildAccount();
   },
 
   /**
@@ -211,7 +211,7 @@ Polymer({
    */
   showUseSystem_(themeId, useSystemTheme) {
     return (!!themeId || !useSystemTheme) &&
-        !this.appearanceBrowserProxy_.isSupervised();
+        !this.appearanceBrowserProxy_.isChildAccount();
   },
 
   /**
