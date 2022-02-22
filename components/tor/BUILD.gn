@@ -1,4 +1,5 @@
 import("//brave/components/tor/buildflags/buildflags.gni")
+import("//chrome/common/features.gni")
 
 static_library("tor") {
   public_deps = [ "//brave/components/tor/buildflags" ]
@@ -52,12 +53,15 @@ static_library("tor") {
     "//components/prefs",
     "//components/user_prefs",
     "//content/public/browser",
-    "//extensions/common:common_constants",
     "//net",
     "//services/service_manager",
     "//third_party/re2",
     "//url",
   ]
+
+  if (enable_extensions) {
+    deps += [ "//extensions/common:common_constants" ]
+  }
 }
 
 source_set("utils") {

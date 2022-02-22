@@ -10,9 +10,12 @@
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(ENABLE_EXTENSIONS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+#include "extensions/common/constants.h"
+#endif
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/browser/extension_registry.h"
-#include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_builder.h"
 #endif
