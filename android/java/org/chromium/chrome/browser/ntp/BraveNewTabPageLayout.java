@@ -625,23 +625,10 @@ public class BraveNewTabPageLayout
                     }
                 }
             }
-
-            mPreferenceObserver = (key) -> {
-                if (TextUtils.equals(key, BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE)) {
-                    if (mNewContentButton != null) {
-                        mNewContentButton.setVisibility(View.VISIBLE);
-                    } else {
-                        mNewContentButton =
-                                mCompositorView.findViewById(R.id.new_content_layout_id);
-                        if (mNewContentButton != null) {
-                            mNewContentButton.setVisibility(View.VISIBLE);
-                        }
-                    }
-                } else if (TextUtils.equals(key, BravePreferenceKeys.BRAVE_NEWS_PREF_SHOW_NEWS)) {
-                    refreshFeed();
-                }
-            };
-            SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
+            initPreferenceObserver();
+            if (mPreferenceObserver != null) {
+                SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
+            }
         }
         showWidgets();
         if (BinanceWidgetManager.getInstance().isUserAuthenticatedForBinance()) {
@@ -652,6 +639,28 @@ public class BraveNewTabPageLayout
         }
         mBinanceNativeWorker.AddObserver(mBinanaceObserver);
         startTimer();
+    }
+
+    private void initPreferenceObserver() {
+        mPreferenceObserver = (key) -> {
+            if (TextUtils.equals(key, BravePreferenceKeys.BRAVE_NEWS_CHANGE_SOURCE)) {
+                if (mNewContentButton != null) {
+                    mNewContentButton.setVisibility(View.VISIBLE);
+                } else {
+                    mNewContentButton = mCompositorView.findViewById(R.id.new_content_layout_id);
+                    if (mNewContentButton != null) {
+                        mNewContentButton.setVisibility(View.VISIBLE);
+                    }
+                }
+            } else if (TextUtils.equals(key, BravePreferenceKeys.BRAVE_NEWS_PREF_SHOW_NEWS)) {
+                if (BravePrefServiceBridge.getInstance().getShowNews()) {
+                    if (BraveActivity.getBraveActivity() != null) {
+                        BraveActivity.getBraveActivity().inflateNewsSettingsBar();
+                    }
+                }
+                refreshFeed();
+            }
+        };
     }
 
     @Override
@@ -876,8 +885,17 @@ public class BraveNewTabPageLayout
             if (mRecyclerView != null) {
                 mRecyclerView.setVisibility(View.GONE);
             }
+            if (mNewContentButton != null) {
+                mNewContentButton.setVisibility(View.INVISIBLE);
+            }
             mImageCreditLayout.setAlpha(1.0f);
             return;
+        } else {
+            SharedPreferencesManager.getInstance().removeObserver(mPreferenceObserver);
+            initPreferenceObserver();
+            if (mPreferenceObserver != null) {
+                SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
+            }
         }
         getFeed();
     }
