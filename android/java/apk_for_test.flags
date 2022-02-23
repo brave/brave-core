@@ -58,7 +58,7 @@
 -keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
     *** mGoogleActivityControls;
     *** mSyncEncryption;
-    *** mManageSyncData;
+    *** mReviewSyncData;
     *** mSyncPaymentsIntegration;
     *** mTurnOffSync;
 }
