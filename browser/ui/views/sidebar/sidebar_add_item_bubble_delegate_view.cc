@@ -179,9 +179,9 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
         base::Unretained(this)));
   }
 
-  const auto not_added_default_items =
+  const auto hidden_default_items =
       GetSidebarService(browser_)->GetHiddenDefaultSidebarItems();
-  if (not_added_default_items.empty())
+  if (hidden_default_items.empty())
     return;
 
   auto* separator = AddChildView(std::make_unique<views::Separator>());
@@ -190,12 +190,12 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
         BraveThemeProperties::COLOR_SIDEBAR_SEPARATOR));
   }
 
-  // |default_part| includes not added default items.
+  // |default_part| includes hidden default items.
   views::View* default_part = AddChildView(std::make_unique<views::View>());
   default_part->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(6, 4, 8, 4), 8));
 
-  for (const auto& item : not_added_default_items) {
+  for (const auto& item : hidden_default_items) {
     auto* button = default_part->AddChildView(
         std::make_unique<SidebarAddItemButton>(false, theme_provider));
     button->SetText(item.title);
@@ -208,18 +208,26 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
 void SidebarAddItemBubbleDelegateView::OnDefaultItemsButtonPressed(
     const sidebar::SidebarItem& item) {
   GetSidebarService(browser_)->AddItem(item);
-  RemoveAllChildViews();
-  AddChildViews();
-  if (children().size() == 1)
-    GetWidget()->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+  CloseOrReLayoutAfterAddingItem();
 }
 
 void SidebarAddItemBubbleDelegateView::OnCurrentItemButtonPressed() {
   browser_->sidebar_controller()->AddItemWithCurrentTab();
+  CloseOrReLayoutAfterAddingItem();
+}
+
+void SidebarAddItemBubbleDelegateView::CloseOrReLayoutAfterAddingItem() {
+  // Close this bubble when there is no item candidate for adding.
+  if (GetSidebarService(browser_)->GetHiddenDefaultSidebarItems().empty() &&
+      !sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
+    GetWidget()->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+    return;
+  }
+
+  // Otherwise, relayout with candidates for adding.
   RemoveAllChildViews();
   AddChildViews();
-  if (children().size() == 1)
-    GetWidget()->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+  GetWidget()->SetSize(GetWidget()->non_client_view()->GetPreferredSize());
 }
 
 BEGIN_METADATA(SidebarAddItemBubbleDelegateView,
