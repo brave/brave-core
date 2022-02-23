@@ -102,9 +102,8 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Uptime.BrowserOpenMinutes",
     "Brave.Wallet.DefaultWalletSetting",
     "Brave.Wallet.KeyringCreated",
-    "Brave.Wallet.UsageDaily",
-    "Brave.Wallet.UsageWeekly",
-    "Brave.Wallet.UsageMonthly",
+    "Brave.Wallet.UsageDaysInWeek",
+    "Brave.Wallet.UsageMonthly.2",
     "Brave.Welcome.InteractionStatus",
 
     // IPFS
