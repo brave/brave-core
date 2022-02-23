@@ -204,7 +204,7 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-device-limit-reached'}
-            errorText={getLocale('redirectModalDeviceLimitReachedText')}
+            errorText={[getLocale('redirectModalDeviceLimitReachedText')]}
             titleText={getLocale('redirectModalDeviceLimitReachedTitle')}
             learnMore={'https://support.brave.com/hc/en-us/articles/360056508071'}
             buttonText={getLocale('redirectModalClose')}
@@ -217,7 +217,7 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-error'}
-            errorText={getLocale('redirectModalError')}
+            errorText={[getLocale('redirectModalError')]}
             buttonText={getLocale('processingRequestButton')}
             titleText={getLocale('processingRequest')}
             walletType={walletType}
@@ -227,12 +227,29 @@ class SettingsPage extends React.Component<Props, State> {
             onClose={this.actions.hideRedirectModal}
           />
         )
+      case 'flaggedWalletModal':
+        return (
+          <ModalRedirect
+            id={'redirect-modal-flagged-wallet'}
+            errorText={[
+              getLocale('redirectModalFlaggedWalletText1'),
+              getLocale('redirectModalFlaggedWalletText2'),
+              getLocale('redirectModalFlaggedWalletText3'),
+              getLocale('redirectModalFlaggedWalletText4')]}
+            errorTextLink={'https://support.brave.com/hc/en-us/articles/4494596374925'}
+            titleText={getLocale('redirectModalFlaggedWalletTitle')}
+            buttonText={getLocale('redirectModalClose')}
+            walletType={walletType}
+            isMobile={true}
+            onClick={this.actions.hideRedirectModal}
+          />
+        )
       case 'kycRequiredModal':
         return (
           <ModalRedirect
             id={'redirect-modal-id-verification-required'}
             titleText={getLocale('redirectModalKYCRequiredTitle')}
-            errorText={getLocale('redirectModalKYCRequiredText').replace('$1', getWalletProviderName(externalWallet))}
+            errorText={[getLocale('redirectModalKYCRequiredText').replace('$1', getWalletProviderName(externalWallet))]}
             buttonText={getLocale('redirectModalClose')}
             walletType={walletType}
             isMobile={true}
@@ -243,7 +260,7 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-mismatched-provider-accounts'}
-            errorText={getLocale('redirectModalMismatchedProviderAccountsText').replace('$1', getWalletProviderName(externalWallet))}
+            errorText={[getLocale('redirectModalMismatchedProviderAccountsText').replace('$1', getWalletProviderName(externalWallet))]}
             titleText={getLocale('redirectModalMismatchedProviderAccountsTitle')}
             learnMore={'https://support.brave.com/hc/en-us/articles/360034841711-What-is-a-verified-wallet-'}
             buttonText={getLocale('redirectModalClose')}
@@ -265,7 +282,7 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-uphold-bat-not-allowed'}
-            errorText={getLocale('redirectModalUpholdBATNotAllowedText')}
+            errorText={[getLocale('redirectModalUpholdBATNotAllowedText')]}
             titleText={getLocale('redirectModalUpholdBATNotAllowedTitle')}
             learnMore={'https://support.uphold.com/hc/en-us/articles/360033020351-Brave-BAT-and-US-availability'}
             buttonText={getLocale('redirectModalClose')}
@@ -278,7 +295,7 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-uphold-blocked-user'}
-            errorText={getLocale('redirectModalUpholdBlockedUserText')}
+            errorText={[getLocale('redirectModalUpholdBlockedUserText')]}
             titleText={getLocale('redirectModalUpholdBlockedUserTitle')}
             learnMore={'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'}
             buttonText={getLocale('redirectModalClose')}
@@ -291,7 +308,7 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-uphold-customer-due-diligence-required'}
-            errorText={getLocale('redirectModalUpholdCustomerDueDiligenceRequiredText')}
+            errorText={[getLocale('redirectModalUpholdCustomerDueDiligenceRequiredText')]}
             titleText={getLocale('redirectModalUpholdCustomerDueDiligenceRequiredTitle')}
             learnMore={'https://wallet.uphold.com/customer-due-diligence'}
             buttonText={getLocale('redirectModalClose')}
@@ -304,7 +321,7 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-uphold-pending-user'}
-            errorText={getLocale('redirectModalUpholdPendingUserText')}
+            errorText={[getLocale('redirectModalUpholdPendingUserText')]}
             titleText={getLocale('redirectModalUpholdPendingUserTitle')}
             learnMore={'https://support.uphold.com/hc/en-us/articles/206695986-How-do-I-sign-up-for-Uphold-Web-'}
             buttonText={getLocale('redirectModalClose')}
@@ -317,7 +334,7 @@ class SettingsPage extends React.Component<Props, State> {
         return (
           <ModalRedirect
             id={'redirect-modal-uphold-restricted-user'}
-            errorText={getLocale('redirectModalUpholdRestrictedUserText')}
+            errorText={[getLocale('redirectModalUpholdRestrictedUserText')]}
             titleText={getLocale('redirectModalUpholdRestrictedUserTitle')}
             learnMore={'https://support.uphold.com/hc/en-us/articles/360045765351-Why-we-block-or-restrict-accounts-and-how-to-reduce-the-risk'}
             buttonText={getLocale('redirectModalClose')}
