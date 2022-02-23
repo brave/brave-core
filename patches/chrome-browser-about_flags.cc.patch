@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index fddb668a340443c66f51db921e56bbfdc3e04446..d7a43a7e7917d00f86fb18f4220eee944cdb0016 100644
+index 2825190b68c3c729ccda055c0fadabbcf489f110..d2368af843f9d3eca08ee1ba5b84d3995485363a 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -2679,6 +2679,7 @@ const FeatureEntry::FeatureVariation kUseMultipleOverlaysVariations[] = {
