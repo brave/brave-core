@@ -123,7 +123,6 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
-    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
@@ -142,6 +141,10 @@ static_library("browser") {
     "//ui/base:base",
     "//url",
   ]
+
+  # Need to add this to public_deps so that the public_deps in
+  # //brave/components/brave_wallet/common gets propagated too.
+  public_deps = [ "//brave/components/brave_wallet/common" ]
 }
 
 config("infura_config") {

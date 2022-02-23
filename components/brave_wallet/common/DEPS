@@ -1,3 +1,9 @@
 include_rules = [
   "+brave/third_party/argon2",
 ]
+
+specific_include_rules = {
+  "brave_wallet_types.h": [
+    "+boost/multiprecision/cpp_int.hpp",
+  ],
+}
