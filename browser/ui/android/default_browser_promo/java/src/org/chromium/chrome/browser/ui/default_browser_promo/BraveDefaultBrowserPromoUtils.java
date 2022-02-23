@@ -14,7 +14,7 @@ import org.chromium.ui.base.WindowAndroid;
  */
 public class BraveDefaultBrowserPromoUtils {
     public static boolean prepareLaunchPromoIfNeeded(
-            Activity activity, WindowAndroid windowAndroid) {
+            Activity activity, WindowAndroid windowAndroid, boolean ignoreMaxCount) {
         return false;
     }
 }
