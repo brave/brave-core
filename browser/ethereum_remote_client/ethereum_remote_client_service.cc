@@ -228,6 +228,8 @@ bool EthereumRemoteClientService::IsCryptoWalletsReady() const {
 
 void EthereumRemoteClientService::MaybeLoadCryptoWalletsExtension(
     LoadUICallback callback) {
+  if (load_ui_callback_)
+    std::move(load_ui_callback_).Run();
   load_ui_callback_ = std::move(callback);
   ethereum_remote_client_delegate_->MaybeLoadCryptoWalletsExtension(context_);
 }
