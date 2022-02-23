@@ -66,20 +66,6 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 
 #pragma mark - IOSPasswordForm
 
-@interface IOSPasswordForm () {
-  GURL gurl_;
-  std::string signon_realm_;
-  base::Time date_created_;
-  base::Time date_last_used_;
-  base::Time date_password_changed_;
-  std::u16string username_element_;
-  std::u16string username_value_;
-  std::u16string password_element_;
-  std::u16string password_value_;
-  password_manager::PasswordForm::Scheme password_form_scheme_;
-}
-@end
-
 @implementation IOSPasswordForm
 
 - (instancetype)initWithURL:(NSURL*)url
@@ -94,27 +80,19 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
             isBlockedByUser:(bool)isBlockedByUser
                      scheme:(PasswordFormScheme)scheme {
   if ((self = [super init])) {
-    [self setUrl:url];
-
-    [self setSignOnRealm:signOnRealm];
-
-    [self setDateCreated:dateCreated];
-
-    [self setDateLastUsed:dateLastUsed];
-
-    [self setDatePasswordChanged:datePasswordChanged];
-
-    [self setUsernameElement:usernameElement];
-
-    [self setUsernameValue:usernameValue];
-
-    [self setPasswordElement:passwordElement];
-
-    [self setPasswordValue:passwordValue];
-
+    self.url = self.url;
+    self.signOnRealm = signOnRealm;
+    self.dateCreated = dateCreated;
+    self.dateLastUsed = dateLastUsed;
+    self.datePasswordChanged = datePasswordChanged;
+    self.usernameElement = usernameElement;
+    self.usernameValue = usernameValue;
+    self.passwordElement = passwordElement;
+    self.passwordValue = passwordValue;
     self.isBlockedByUser = isBlockedByUser;
-
-    [self setPasswordFormScheme:scheme];
+    self.scheme = scheme;
+    self.isBlockedByUser = isBlockedByUser;
+    self.scheme = scheme;
   }
 
   return self;
@@ -151,106 +129,6 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
   }
 }
 
-- (void)setUrl:(NSURL*)url {
-  gurl_ = net::GURLWithNSURL(url);
-}
-
-- (NSURL*)url {
-  return net::NSURLWithGURL(gurl_);
-}
-
-- (void)setSignOnRealm:(NSString*)signOnRealm {
-  if ([signOnRealm length] != 0) {
-    signon_realm_ = base::SysNSStringToUTF8(signOnRealm);
-  } else {
-    signon_realm_ = gurl_.spec();
-  }
-}
-
-- (NSString*)signOnRealm {
-  return base::SysUTF8ToNSString(signon_realm_);
-}
-
-- (void)setDateCreated:(NSDate*)dateCreated {
-  if (dateCreated) {
-    date_created_ = base::Time::FromNSDate(dateCreated);
-  }
-}
-
-- (void)setDateLastUsed:(NSDate*)dateLastUsed {
-  if (dateLastUsed) {
-    date_last_used_ = base::Time::FromNSDate(dateLastUsed);
-  }
-}
-
-- (void)setDatePasswordChanged:(NSDate*)datePasswordChanged {
-  if (datePasswordChanged) {
-    date_created_ = base::Time::FromNSDate(datePasswordChanged);
-  }
-}
-
-- (NSDate*)dateCreated {
-  return date_created_.ToNSDate();
-}
-
-- (NSDate*)dateLastUsed {
-  return date_last_used_.ToNSDate();
-}
-
-- (NSDate*)datePasswordChanged {
-  return date_password_changed_.ToNSDate();
-}
-
-- (void)setUsernameElement:(NSString*)usernameElement {
-  if (usernameElement) {
-    username_element_ = base::SysNSStringToUTF16(usernameElement);
-  }
-}
-
-- (void)setUsernameValue:(NSString*)usernameValue {
-  if (usernameValue) {
-    username_value_ = base::SysNSStringToUTF16(usernameValue);
-  }
-}
-
-- (NSString*)usernameElement {
-  return base::SysUTF16ToNSString(username_element_);
-}
-
-- (NSString*)usernameValue {
-  return base::SysUTF16ToNSString(username_value_);
-}
-
-- (void)setPasswordElement:(NSString*)passwordElement {
-  if (passwordElement) {
-    password_element_ = base::SysNSStringToUTF16(passwordElement);
-  }
-}
-
-- (void)setPasswordValue:(NSString*)passwordValue {
-  if (passwordValue) {
-    password_value_ = base::SysNSStringToUTF16(passwordValue);
-  }
-}
-
-- (NSString*)passwordElement {
-  return base::SysUTF16ToNSString(password_element_);
-}
-
-- (NSString*)passwordValue {
-  return base::SysUTF16ToNSString(password_value_);
-}
-
-- (void)setPasswordFormScheme:(PasswordFormScheme)passwordFormScheme {
-  password_form_scheme_ =
-      brave::ios::PasswordManagerSchemeFromPasswordFormScheme(
-          passwordFormScheme);
-}
-
-- (PasswordFormScheme)passwordFormScheme {
-  return brave::ios::PasswordFormSchemeFromPasswordManagerScheme(
-      password_form_scheme_);
-}
 @end
 
 #pragma mark - PasswordStoreConsumerIOS
@@ -334,6 +212,15 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
   // Store a PasswordForm representing a PasswordCredential.
   password_manager::PasswordForm passwordCredentialForm;
 
+  passwordCredentialForm.url = net::GURLWithNSURL(passwordForm.url);
+
+  if ([passwordForm.signOnRealm length] != 0) {
+    passwordCredentialForm.signon_realm =
+        base::SysNSStringToUTF8(passwordForm.signOnRealm);
+  } else {
+    passwordCredentialForm.signon_realm = passwordCredentialForm.url.spec();
+  }
+
   if (passwordForm.usernameElement) {
     passwordCredentialForm.username_element =
         base::SysNSStringToUTF16(passwordForm.usernameElement);
@@ -352,15 +239,6 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
   if (passwordForm.passwordValue) {
     passwordCredentialForm.password_value =
         base::SysNSStringToUTF16(passwordForm.passwordValue);
-  }
-
-  passwordCredentialForm.url = net::GURLWithNSURL(passwordForm.url);
-
-  if ([passwordForm.signOnRealm length] != 0) {
-    passwordCredentialForm.signon_realm =
-        base::SysNSStringToUTF8(passwordForm.signOnRealm);
-  } else {
-    passwordCredentialForm.signon_realm = passwordCredentialForm.url.spec();
   }
 
   if (passwordForm.dateCreated) {
