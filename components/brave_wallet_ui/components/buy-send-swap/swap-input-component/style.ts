@@ -12,6 +12,7 @@ interface StyleProps {
   isSelected: boolean
   isSlippage: boolean
   isERC721: boolean
+  isWarning: boolean
 }
 
 export const Row = styled.div<Partial<StyleProps>>`
@@ -275,11 +276,11 @@ export const PasteIcon = styled.div`
   mask-size: 100%;
 `
 
-export const WarningText = styled.span`
+export const WarningText = styled.span<Partial<StyleProps>>`
   font-family: Poppins;
   letter-spacing: 0.01em;
   font-size: 12px;
-  color: ${(p) => p.theme.color.errorText};
+  color: ${(p) => p.isWarning ? p.theme.color.warningBorder : p.theme.color.errorText};
   word-break: break-word;
 `
 
@@ -288,4 +289,27 @@ export const AddressConfirmationText = styled.span`
   letter-spacing: 0.01em;
   font-size: 12px;
   color: ${(p) => p.theme.color.text02};
+`
+
+export const LearnMoreButton = styled(WalletButton)`
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.01em;
+  color: ${(p) => p.theme.color.interactive05};
+  margin: 0px;
+  padding: 0px;
+`
+
+export const WarningRow = styled.div<Partial<StyleProps>>`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 `
