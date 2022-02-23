@@ -20,7 +20,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
     private Preference mTurnOffSync;
     private Preference mGoogleActivityControls;
     private Preference mSyncEncryption;
-    private Preference mManageSyncData;
+    private Preference mReviewSyncData;
 
     private CheckBoxPreference mSyncPaymentsIntegration;
 
@@ -31,7 +31,7 @@ public class BraveManageSyncSettings extends ManageSyncSettings {
         getPreferenceScreen().removePreference(mTurnOffSync);
         getPreferenceScreen().removePreference(mGoogleActivityControls);
         getPreferenceScreen().removePreference(mSyncEncryption);
-        getPreferenceScreen().removePreference(mManageSyncData);
+        getPreferenceScreen().removePreference(mReviewSyncData);
 
         findPreference(PREF_ADVANCED_CATEGORY).setVisible(false);
 
