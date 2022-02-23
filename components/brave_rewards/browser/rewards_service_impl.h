@@ -709,6 +709,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void RecordBackendP3AStats();
 
+  bool IsAdsEnabled() const;
+
   void OnRecordBackendP3AStatsRecurring(ledger::type::PublisherInfoList list);
 
   void OnRecordBackendP3AStatsContributions(

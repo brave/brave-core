@@ -182,61 +182,55 @@ double CalcWalletBalance(base::flat_map<std::string, double> wallets,
   return balance_minus_grant;
 }
 
-void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled) {
-  base::Time enabled_timestamp = prefs->GetTime(prefs::kEnabledTimestamp);
-  auto enabled_duration = RewardsEnabledDuration::kNever;
+void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled) {
+  base::Time enabled_timestamp = prefs->GetTime(prefs::kAdsEnabledTimestamp);
+  base::TimeDelta enabled_time_delta =
+      prefs->GetTimeDelta(prefs::kAdsEnabledTimeDelta);
+  AdsEnabledDuration enabled_duration;
 
   if (enabled_timestamp.is_null()) {
     // No previous timestamp, so record one of the non-duration states.
-    if (!rewards_enabled) {
-      // Rewards have been disabled with no previous timestamp.
-      // Probably they've been on since we started measuring.
-      // Ignore this interval since we can't measure it and treat it
-      // the same as never having enabled.
-      enabled_duration = RewardsEnabledDuration::kNever;
-    } else {
-      // Rewards have been enabled.
+    if (ads_enabled) {
+      // Ads have been enabled.
       // Remember when so we can measure the duration on later changes.
-      prefs->SetTime(prefs::kEnabledTimestamp, base::Time::Now());
-      enabled_duration = RewardsEnabledDuration::kStillEnabled;
+      prefs->SetTime(prefs::kAdsEnabledTimestamp, base::Time::Now());
     }
   } else {
     // Previous timestamp available.
-    if (!rewards_enabled) {
-      // Rewards have been disabled. Record the duration they were on.
-      // Set the threshold at three units so each bin represents the
-      // nominal value as an order-of-magnitude: more than three days
-      // is a week, more than three weeks is a month, and so on.
-      constexpr int threshold = 3;
-      constexpr int days_per_week = 7;
-      constexpr double days_per_month = 30.44;  // average length
-      base::TimeDelta duration = base::Time::Now() - enabled_timestamp;
-      VLOG(1) << "Rewards disabled after " << duration;
-      if (duration < base::Hours(threshold)) {
-        enabled_duration = RewardsEnabledDuration::kHours;
-      } else if (duration < base::Days(threshold)) {
-        enabled_duration = RewardsEnabledDuration::kDays;
-      } else if (duration < base::Days(threshold * days_per_week)) {
-        enabled_duration = RewardsEnabledDuration::kWeeks;
-      } else if (duration < base::Days(threshold * days_per_month)) {
-        enabled_duration = RewardsEnabledDuration::kMonths;
-      } else {
-        enabled_duration = RewardsEnabledDuration::kQuarters;
-      }
+    if (!ads_enabled) {
+      // Ads have been disabled. Record the duration they were on.
+      enabled_time_delta = base::Time::Now() - enabled_timestamp;
+      VLOG(1) << "Rewards disabled after " << enabled_time_delta;
       // Null the timestamp so we're ready for a fresh measurement.
-      prefs->SetTime(prefs::kEnabledTimestamp, base::Time());
-    } else {
-      // Rewards have been enabled. Overwrite the previous timestamp.
-      // Normally we null the timestamp when rewards are disabled,
-      // so typically we'll take the other `else` branch above instead.
-      // We nevertheless mark a new timestamp here to maintain consistent
-      // measurement even if our prefs change through some other path.
-      prefs->SetTime(prefs::kEnabledTimestamp, base::Time::Now());
-      enabled_duration = RewardsEnabledDuration::kStillEnabled;
+      // Store the enabled time delta so we can keep reporting the duration.
+      prefs->SetTime(prefs::kAdsEnabledTimestamp, base::Time());
+      prefs->SetTimeDelta(prefs::kAdsEnabledTimeDelta, enabled_time_delta);
     }
   }
+  // Set the threshold at three units so each bin represents the
+  // nominal value as an order-of-magnitude: more than three days
+  // is a week, more than three weeks is a month, and so on.
+  constexpr int threshold = 3;
+  constexpr int days_per_week = 7;
+  constexpr double days_per_month = 30.44;  // average length
+  if (ads_enabled) {
+    enabled_duration = AdsEnabledDuration::kStillEnabled;
+  } else if (enabled_time_delta.is_zero()) {
+    enabled_duration = AdsEnabledDuration::kNever;
+  } else if (enabled_time_delta < base::Hours(threshold)) {
+    enabled_duration = AdsEnabledDuration::kHours;
+  } else if (enabled_time_delta < base::Days(threshold)) {
+    enabled_duration = AdsEnabledDuration::kDays;
+  } else if (enabled_time_delta < base::Days(threshold * days_per_week)) {
+    enabled_duration = AdsEnabledDuration::kWeeks;
+  } else if (enabled_time_delta < base::Days(threshold * days_per_month)) {
+    enabled_duration = AdsEnabledDuration::kMonths;
+  } else {
+    enabled_duration = AdsEnabledDuration::kQuarters;
+  }
 
-  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.EnabledDuration", enabled_duration);
+  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsEnabledDuration",
+                            enabled_duration);
 }
 
 void ExtractAndLogStats(const base::DictionaryValue& dict) {
