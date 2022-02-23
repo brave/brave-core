@@ -408,11 +408,6 @@ Config.prototype.buildArgs = function () {
     args.enable_widevine = false
     args.safe_browsing_mode = 2
 
-    if (this.buildConfig !== 'Release') {
-      // treat non-release builds like Debug builds
-      args.treat_warnings_as_errors = false
-    }
-
     // Feed is not used in Brave
     args.enable_feed_v2 = false
 
