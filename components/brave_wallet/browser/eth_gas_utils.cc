@@ -70,7 +70,7 @@ bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
   *suggested_base_fee_per_gas =
       (uint256_t)(uint64_t)pending_base_fee_per_gas_dbl;
 
-  const uint256_t fallback_priority_fee = 2e9;
+  const uint256_t fallback_priority_fee = uint256_t(2e9);
   *low_priority_fee = fallback_priority_fee;
   *avg_priority_fee = fallback_priority_fee;
   *high_priority_fee = fallback_priority_fee;
@@ -89,7 +89,7 @@ bool GetSuggested1559Fees(const std::vector<std::string>& base_fee_per_gas,
     // Convert the string priority fees to uints
     std::transform(reward.begin(), reward.end(),
                    std::back_inserter(current_priority_fee_uints),
-                   [&](const std::vector<std::string>& v) -> std::size_t {
+                   [&](const std::vector<std::string>& v) -> uint256_t {
                      uint256_t val = fallback_priority_fee;
                      if (v.size() != 3) {
                        invalid_data = true;

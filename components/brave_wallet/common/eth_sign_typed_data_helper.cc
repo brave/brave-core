@@ -209,7 +209,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       return absl::nullopt;
     uint256_t encoded_value = (uint256_t)*value_bool;
     for (int i = 256 - 8; i >= 0; i -= 8) {
-      result.push_back((encoded_value >> i) & 0xFF);
+      result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));
     }
   } else if (type == "address") {
     const std::string* value_str = value.GetIfString();
@@ -289,7 +289,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
         return absl::nullopt;
     }
     for (int i = 256 - 8; i >= 0; i -= 8) {
-      result.push_back((encoded_value >> i) & 0xFF);
+      result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));
     }
   } else if (base::StartsWith(type, "int", base::CompareCase::SENSITIVE)) {
     // int8 to int256 in steps of 8
@@ -349,7 +349,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
         return absl::nullopt;
     }
     for (int i = 256 - 8; i >= 0; i -= 8) {
-      result.push_back((encoded_value >> i) & 0xFF);
+      result.push_back(static_cast<uint8_t>((encoded_value >> i) & 0xFF));
     }
   } else {
     auto encoded_data = EncodeData(type, value);

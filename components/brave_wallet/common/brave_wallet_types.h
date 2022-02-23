@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "boost/multiprecision/cpp_int.hpp"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {
@@ -17,10 +18,11 @@ class Value;
 
 namespace brave_wallet {
 
-typedef unsigned _BitInt(256) uint256_t;
-typedef _BitInt(256) int256_t;
+typedef boost::multiprecision::uint256_t uint256_t;
+typedef boost::multiprecision::int256_t int256_t;
 typedef unsigned _BitInt(128) uint128_t;
 typedef _BitInt(128) int128_t;
+
 constexpr uint64_t kMaxSafeIntegerUint64 = 9007199254740991;  // 2^53-1
 
 struct TransactionReceipt {
