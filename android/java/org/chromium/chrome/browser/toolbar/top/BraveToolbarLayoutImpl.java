@@ -299,20 +299,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        // On update check for hide rewards icon pref and update it with new show rewards icon pref
-        if (!PackageUtils.isFirstInstall(getContext())
-                && !sharedPreferences.getBoolean(
-                        AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION, false)) {
-            boolean value = sharedPreferences.getBoolean(
-                    AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false);
-            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-            sharedPreferencesEditor.putBoolean(
-                    AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, value);
-            sharedPreferencesEditor.putBoolean(
-                    AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON_MIGRATION, true);
-            sharedPreferencesEditor.apply();
-        }
-
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
                 && sharedPreferences.getBoolean(
