@@ -14,7 +14,7 @@ export function GetBuyOrFaucetUrl (networkChainId: string, asset: BraveWallet.Bl
           .catch(reject)
         break
       case BraveWallet.ROPSTEN_CHAIN_ID:
-        resolve('https://faucet.ropsten.be/')
+        resolve('https://faucet.dimensions.network/')
         break
       case BraveWallet.KOVAN_CHAIN_ID:
         resolve('https://github.com/kovan-testnet/faucet')
