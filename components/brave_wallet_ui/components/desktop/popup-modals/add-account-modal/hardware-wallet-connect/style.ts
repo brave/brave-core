@@ -184,7 +184,7 @@ export const DisclaimerWrapper = styled(DisclaimerWrapperBase)`
 export const SelectWrapper = styled.div`
   margin-bottom: 10px;
   margin-left: -300px;
-  width: 250px;
+  width: 300px;
 `
 
 export const ErrorText = styled.span`
