@@ -285,6 +285,14 @@ provideStrings({
   braveWalletSignTransactionMessageTitle: 'Message',
   braveWalletSignTransactionButton: 'Sign',
 
+  // Encryption Key Panel
+  braveWalletProvideEncryptionKeyTitle: 'A DApp is requesting your public encryption key',
+  braveWalletProvideEncryptionKeyDescription: '$1 is requesting your wallets public encryption key. If you consent to providing this key, the site will be able to compose encrypted messages to you.',
+  braveWalletProvideEncryptionKeyButton: 'Provide',
+  braveWalletReadEncryptedMessageTitle: '$1 would like to read this message to complete your request',
+  braveWalletReadEncryptedMessageDecryptButton: 'Decrypt message',
+  braveWalletReadEncryptedMessageButton: 'Allow',
+
   // Allow Spend ERC20 Panel
   braveWalletAllowSpendTitle: 'Allow this app to spend your $1?',
   braveWalletAllowSpendDescription: 'By granting this permission, you are allowing this app to withdraw your $1 and automate transactions for you.',
