@@ -11,8 +11,11 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "brave/components/brave_wallet/browser/eth_transaction.h"
+#include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 
@@ -21,22 +24,26 @@ namespace brave_wallet {
 namespace {
 
 uint256_t GetHighestLocallyConfirmed(
-    const std::vector<std::unique_ptr<EthTxStateManager::TxMeta>>& metas) {
+    const std::vector<std::unique_ptr<TxMeta>>& metas) {
   uint256_t highest = 0;
   for (auto& meta : metas) {
-    DCHECK(meta->tx->nonce());  // Not supposed to happen for a confirmed tx.
-    highest = std::max(highest, meta->tx->nonce().value() + (uint256_t)1);
+    auto* eth_meta = static_cast<EthTxMeta*>(meta.get());
+    DCHECK(
+        eth_meta->tx()->nonce());  // Not supposed to happen for a confirmed tx.
+    highest = std::max(highest, eth_meta->tx()->nonce().value() + (uint256_t)1);
   }
   return highest;
 }
 
 uint256_t GetHighestContinuousFrom(
-    const std::vector<std::unique_ptr<EthTxStateManager::TxMeta>>& metas,
+    const std::vector<std::unique_ptr<TxMeta>>& metas,
     uint256_t start) {
   uint256_t highest = start;
   for (auto& meta : metas) {
-    DCHECK(meta->tx->nonce());  // Not supposed to happen for a submitted tx.
-    if (meta->tx->nonce().value() == highest)
+    auto* eth_meta = static_cast<EthTxMeta*>(meta.get());
+    DCHECK(
+        eth_meta->tx()->nonce());  // Not supposed to happen for a submitted tx.
+    if (eth_meta->tx()->nonce().value() == highest)
       highest++;
   }
   return highest;

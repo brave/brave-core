@@ -26,6 +26,7 @@ namespace brave_wallet {
 
 class EthTxManagerUnitTest;
 
+class EthTxMeta;
 class TxService;
 class JsonRpcService;
 class KeyringService;
@@ -137,8 +138,7 @@ class EthTxManager : public TxManager,
                              std::string* error);
   static bool ValidateTxData1559(const mojom::TxData1559Ptr& tx_data,
                                  std::string* error);
-  std::unique_ptr<EthTxStateManager::TxMeta> GetTxForTesting(
-      const std::string& tx_meta_id);
+  std::unique_ptr<EthTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(EthTxManagerUnitTest, TestSubmittedToConfirmed);
@@ -153,15 +153,15 @@ class EthTxManager : public TxManager,
                                     const std::string& from,
                                     AddUnapprovedTransactionCallback);
 
-  void NotifyUnapprovedTxUpdated(EthTxStateManager::TxMeta* meta);
+  void NotifyUnapprovedTxUpdated(TxMeta* meta);
   void OnConnectionError();
-  void OnGetNextNonce(std::unique_ptr<EthTxStateManager::TxMeta> meta,
+  void OnGetNextNonce(std::unique_ptr<EthTxMeta> meta,
                       uint256_t chain_id,
                       ApproveTransactionCallback callback,
                       bool success,
                       uint256_t nonce);
   void OnGetNextNonceForHardware(
-      std::unique_ptr<EthTxStateManager::TxMeta> meta,
+      std::unique_ptr<EthTxMeta> meta,
       GetNonceForHardwareTransactionCallback callback,
       bool success,
       uint256_t nonce);

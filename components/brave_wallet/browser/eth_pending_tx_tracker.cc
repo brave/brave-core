@@ -11,7 +11,9 @@
 #include "base/logging.h"
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
+#include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -34,13 +36,13 @@ bool EthPendingTxTracker::UpdatePendingTransactions(size_t* num_pending) {
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       mojom::TransactionStatus::Submitted, absl::nullopt);
   for (const auto& pending_transaction : pending_transactions) {
-    if (IsNonceTaken(*pending_transaction)) {
+    if (IsNonceTaken(static_cast<const EthTxMeta&>(*pending_transaction))) {
       DropTransaction(pending_transaction.get());
       continue;
     }
-    std::string id = pending_transaction->id;
+    std::string id = pending_transaction->id();
     json_rpc_service_->GetTransactionReceipt(
-        pending_transaction->tx_hash,
+        pending_transaction->tx_hash(),
         base::BindOnce(&EthPendingTxTracker::OnGetTxReceipt,
                        weak_factory_.GetWeakPtr(), std::move(id)));
   }
@@ -55,11 +57,13 @@ void EthPendingTxTracker::ResubmitPendingTransactions() {
   auto pending_transactions = tx_state_manager_->GetTransactionsByStatus(
       mojom::TransactionStatus::Submitted, absl::nullopt);
   for (const auto& pending_transaction : pending_transactions) {
-    if (!pending_transaction->tx->IsSigned()) {
+    auto* pending_eth_transaction =
+        static_cast<EthTxMeta*>(pending_transaction.get());
+    if (!pending_eth_transaction->tx()->IsSigned()) {
       continue;
     }
     json_rpc_service_->SendRawTransaction(
-        pending_transaction->tx->GetSignedTransaction(),
+        pending_eth_transaction->tx()->GetSignedTransaction(),
         base::BindOnce(&EthPendingTxTracker::OnSendRawTransaction,
                        weak_factory_.GetWeakPtr()));
   }
@@ -80,16 +84,15 @@ void EthPendingTxTracker::OnGetTxReceipt(std::string id,
   if (!nonce_lock->Try())
     return;
 
-  std::unique_ptr<EthTxStateManager::TxMeta> meta =
-      tx_state_manager_->GetTx(id);
+  std::unique_ptr<EthTxMeta> meta = tx_state_manager_->GetEthTx(id);
   if (!meta) {
     nonce_lock->Release();
     return;
   }
   if (receipt.status) {
-    meta->tx_receipt = receipt;
-    meta->status = mojom::TransactionStatus::Confirmed;
-    meta->confirmed_time = base::Time::Now();
+    meta->set_tx_receipt(receipt);
+    meta->set_status(mojom::TransactionStatus::Confirmed);
+    meta->set_confirmed_time(base::Time::Now());
     tx_state_manager_->AddOrUpdateTx(*meta);
   } else if (ShouldTxDropped(*meta)) {
     DropTransaction(meta.get());
@@ -113,20 +116,21 @@ void EthPendingTxTracker::OnSendRawTransaction(
     mojom::ProviderError error,
     const std::string& error_message) {}
 
-bool EthPendingTxTracker::IsNonceTaken(const EthTxStateManager::TxMeta& meta) {
+bool EthPendingTxTracker::IsNonceTaken(const EthTxMeta& meta) {
   auto confirmed_transactions = tx_state_manager_->GetTransactionsByStatus(
       mojom::TransactionStatus::Confirmed, absl::nullopt);
   for (const auto& confirmed_transaction : confirmed_transactions) {
-    if (confirmed_transaction->tx->nonce() == meta.tx->nonce() &&
-        confirmed_transaction->id != meta.id)
+    auto* eth_confirmed_transaction =
+        static_cast<EthTxMeta*>(confirmed_transaction.get());
+    if (eth_confirmed_transaction->tx()->nonce() == meta.tx()->nonce() &&
+        eth_confirmed_transaction->id() != meta.id())
       return true;
   }
   return false;
 }
 
-bool EthPendingTxTracker::ShouldTxDropped(
-    const EthTxStateManager::TxMeta& meta) {
-  const std::string hex_address = meta.from.ToChecksumAddress();
+bool EthPendingTxTracker::ShouldTxDropped(const EthTxMeta& meta) {
+  const std::string hex_address = meta.from();
   if (network_nonce_map_.find(hex_address) == network_nonce_map_.end()) {
     json_rpc_service_->GetTransactionCount(
         hex_address,
@@ -135,11 +139,11 @@ bool EthPendingTxTracker::ShouldTxDropped(
   } else {
     uint256_t network_nonce = network_nonce_map_[hex_address];
     network_nonce_map_.erase(hex_address);
-    if (meta.tx->nonce() < network_nonce)
+    if (meta.tx()->nonce() < network_nonce)
       return true;
   }
 
-  const std::string tx_hash = meta.tx_hash;
+  const std::string tx_hash = meta.tx_hash();
   if (dropped_blocks_counter_.find(tx_hash) == dropped_blocks_counter_.end()) {
     dropped_blocks_counter_[tx_hash] = 0;
   }
@@ -153,10 +157,10 @@ bool EthPendingTxTracker::ShouldTxDropped(
   return false;
 }
 
-void EthPendingTxTracker::DropTransaction(EthTxStateManager::TxMeta* meta) {
+void EthPendingTxTracker::DropTransaction(TxMeta* meta) {
   if (!meta)
     return;
-  tx_state_manager_->DeleteTx(meta->id);
+  tx_state_manager_->DeleteTx(meta->id());
 }
 
 }  // namespace brave_wallet

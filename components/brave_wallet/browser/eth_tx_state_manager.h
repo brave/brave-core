@@ -13,9 +13,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
-#include "base/time/time.h"
-#include "brave/components/brave_wallet/browser/eth_transaction.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -28,38 +26,19 @@ class Value;
 
 namespace brave_wallet {
 
+class TxMeta;
+class EthTxMeta;
 class JsonRpcService;
 
 class EthTxStateManager {
  public:
-  struct TxMeta {
-    TxMeta();
-    explicit TxMeta(std::unique_ptr<EthTransaction> tx);
-    TxMeta(const TxMeta&) = delete;
-    ~TxMeta();
-    bool operator==(const TxMeta&) const;
-
-    std::string id;
-    mojom::TransactionStatus status = mojom::TransactionStatus::Unapproved;
-    EthAddress from;
-    base::Time created_time;
-    base::Time submitted_time;
-    base::Time confirmed_time;
-    TransactionReceipt tx_receipt;
-    std::string tx_hash;
-    std::unique_ptr<EthTransaction> tx;
-  };
-
   explicit EthTxStateManager(PrefService* prefs,
                              JsonRpcService* json_rpc_service);
   ~EthTxStateManager();
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
 
-  static std::string GenerateMetaID();
-  static base::Value TxMetaToValue(const TxMeta& meta);
-  static mojom::TransactionInfoPtr TxMetaToTransactionInfo(const TxMeta& meta);
-  static std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value);
+  static std::unique_ptr<EthTxMeta> ValueToTxMeta(const base::Value& value);
 
   void AddOrUpdateTx(const TxMeta& meta);
   std::unique_ptr<TxMeta> GetTx(const std::string& id);
@@ -79,9 +58,15 @@ class EthTxStateManager {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  std::unique_ptr<EthTxMeta> GetEthTx(const std::string& id);
+
  private:
   // only support REJECTED and CONFIRMED
   void RetireTxByStatus(mojom::TransactionStatus status, size_t max_num);
+
+  std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
+      absl::optional<mojom::TransactionStatus> status,
+      const std::string& from);
 
   base::ObserverList<Observer> observers_;
   raw_ptr<PrefService> prefs_ = nullptr;

@@ -17,6 +17,8 @@
 
 namespace brave_wallet {
 
+class TxMeta;
+class EthTxMeta;
 class EthNonceTracker;
 class JsonRpcService;
 
@@ -50,10 +52,10 @@ class EthPendingTxTracker {
                             mojom::ProviderError error,
                             const std::string& error_message);
 
-  bool IsNonceTaken(const EthTxStateManager::TxMeta&);
-  bool ShouldTxDropped(const EthTxStateManager::TxMeta&);
+  bool IsNonceTaken(const EthTxMeta&);
+  bool ShouldTxDropped(const EthTxMeta&);
 
-  void DropTransaction(EthTxStateManager::TxMeta*);
+  void DropTransaction(TxMeta*);
 
   // (address, nonce)
   base::flat_map<std::string, uint256_t> network_nonce_map_;
