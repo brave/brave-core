@@ -146,6 +146,11 @@ class AdBlockService {
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
+  std::unique_ptr<brave_shields::AdBlockCustomFiltersProvider>
+      custom_filters_provider_;
+  std::unique_ptr<brave_shields::AdBlockDefaultFiltersProvider>
+      default_filters_provider_;
+
   std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
       regional_service_manager_;
   std::unique_ptr<brave_shields::AdBlockEngine, base::OnTaskRunnerDeleter>
@@ -154,11 +159,6 @@ class AdBlockService {
       default_service_;
   std::unique_ptr<brave_shields::AdBlockSubscriptionServiceManager>
       subscription_service_manager_;
-
-  std::unique_ptr<brave_shields::AdBlockCustomFiltersProvider>
-      custom_filters_provider_;
-  std::unique_ptr<brave_shields::AdBlockDefaultFiltersProvider>
-      default_filters_provider_;
 
   std::unique_ptr<SourceProviderObserver> default_service_observer_;
   std::unique_ptr<SourceProviderObserver> custom_filters_service_observer_;
