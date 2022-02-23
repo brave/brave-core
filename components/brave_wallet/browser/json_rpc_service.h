@@ -43,6 +43,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       PrefService* prefs);
   ~JsonRpcService() override;
 
+  static void MigrateMultichainNetworks(PrefService* prefs);
+
   struct EthereumChainRequest {
     EthereumChainRequest() {}
     EthereumChainRequest(const GURL& origin, mojom::EthereumChain request)

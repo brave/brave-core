@@ -18,6 +18,7 @@
 #include "base/values.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/ui/webui/settings/brave_wallet_handler.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -43,8 +44,15 @@ namespace {
 
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value>* values) {
-  ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value* list = update.Get();
+  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value* dict = update.Get();
+  ASSERT_TRUE(dict);
+  base::Value* list = dict->FindKey(brave_wallet::kEthereumPrefKey);
+  if (!list) {
+    list = dict->SetKey(brave_wallet::kEthereumPrefKey,
+                        base::Value(base::Value::Type::LIST));
+  }
+  ASSERT_TRUE(list);
   list->ClearList();
   for (auto& it : *values) {
     list->Append(std::move(it));
@@ -372,7 +380,10 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
     brave_wallet::GetAllCustomChains(handler.prefs(), &result);
     EXPECT_EQ(result.size(), 2u);
   }
-  handler.prefs()->SetString(kBraveWalletCurrentChainId, "chain_id");
+  DictionaryPrefUpdate update(handler.prefs(), kBraveWalletSelectedNetworks);
+  base::Value* dict = update.Get();
+  DCHECK(dict);
+  dict->SetStringKey(brave_wallet::kEthereumPrefKey, "chain_id");
   {
     auto args = base::ListValue();
     args.Append(base::Value("id"));
@@ -383,8 +394,7 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), true);
 
-    EXPECT_EQ(handler.prefs()->GetString(kBraveWalletCurrentChainId),
-              "chain_id2");
+    EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs()), "chain_id2");
   }
   {
     auto args = base::ListValue();
@@ -396,7 +406,6 @@ TEST(TestBraveWalletHandler, SetActiveNetwork) {
     ASSERT_TRUE(data.arg3()->is_bool());
     EXPECT_EQ(data.arg3()->GetBool(), false);
 
-    EXPECT_EQ(handler.prefs()->GetString(kBraveWalletCurrentChainId),
-              "chain_id2");
+    EXPECT_EQ(brave_wallet::GetCurrentChainId(handler.prefs()), "chain_id2");
   }
 }

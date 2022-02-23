@@ -149,7 +149,7 @@ BraveWalletService::BraveWalletService(
       base::BindRepeating(&BraveWalletService::OnNetworkListChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kBraveWalletCurrentChainId,
+      kBraveWalletSelectedNetworks,
       base::BindRepeating(&BraveWalletService::OnNetworkChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 

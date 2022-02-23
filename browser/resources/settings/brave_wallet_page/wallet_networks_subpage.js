@@ -77,7 +77,7 @@ class SettingsWalletNetworksSubpage extends SettingsWalletNetworksSubpageBase {
 
   isDefaultNetwork(chainId) {
     return (chainId ===
-        this.getPref('brave.wallet.wallet_current_chain_id').value)
+        this.getPref('brave.wallet.selected_networks').value['ethereum'])
   }
 
   hideNativeCurrencyInfo(item) {

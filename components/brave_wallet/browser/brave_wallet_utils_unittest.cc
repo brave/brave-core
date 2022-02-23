@@ -16,6 +16,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -26,12 +27,20 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
+namespace brave_wallet {
+
 namespace {
 
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value>* values) {
-  ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value* list = update.Get();
+  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value* dict = update.Get();
+  ASSERT_TRUE(dict);
+  base::Value* list = dict->FindKey(kEthereumPrefKey);
+  if (!list) {
+    list = dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
+  }
+  ASSERT_TRUE(list);
   list->ClearList();
   for (auto& it : *values) {
     list->Append(std::move(it));
@@ -39,8 +48,6 @@ void UpdateCustomNetworks(PrefService* prefs,
 }
 
 }  // namespace
-
-namespace brave_wallet {
 
 TEST(BraveWalletUtilsUnitTest, Mnemonic) {
   const struct {
@@ -643,7 +650,7 @@ TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
 
 TEST(BraveWalletUtilsUnitTest, GetAllCustomChainsTest) {
   TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   std::vector<mojom::EthereumChainPtr> result;
   GetAllCustomChains(&prefs, &result);
   ASSERT_TRUE(result.empty());
@@ -670,7 +677,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllCustomChainsTest) {
 
 TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
   std::vector<base::Value> values;
@@ -703,7 +710,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
 
 TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
   TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
   std::vector<base::Value> values;
@@ -733,7 +740,7 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
 
 TEST(BraveWalletUtilsUnitTest, GetInfuraSubdomainForKnownChainId) {
   TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
   std::vector<mojom::EthereumChainPtr> known_chains;
@@ -747,7 +754,7 @@ TEST(BraveWalletUtilsUnitTest, GetInfuraSubdomainForKnownChainId) {
 
 TEST(BraveWalletUtilsUnitTest, GetKnownChain) {
   TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
   auto known_chains = brave_wallet::GetAllKnownNetworksForTesting();
@@ -774,7 +781,7 @@ TEST(BraveWalletUtilsUnitTest, GetKnownChain) {
 
 TEST(BraveWalletUtilsUnitTest, GetChain) {
   TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
 
   std::vector<base::Value> values;
@@ -809,7 +816,7 @@ TEST(BraveWalletUtilsUnitTest, GetKnownNetworkId) {
 
 TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
   TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
   std::vector<mojom::EthereumChainPtr> result;
   GetAllCustomChains(&prefs, &result);
@@ -838,7 +845,7 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
 
 TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   TestingPrefServiceSimple prefs;
-  prefs.registry()->RegisterListPref(kBraveWalletCustomNetworks);
+  prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
   prefs.registry()->RegisterDictionaryPref(kBraveWalletUserAssets);
 

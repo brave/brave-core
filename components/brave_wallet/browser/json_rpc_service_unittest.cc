@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/callback.h"
+#include "base/json/json_reader.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -36,12 +37,20 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 
+namespace brave_wallet {
+
 namespace {
 
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value>* values) {
-  ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value* list = update.Get();
+  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value* dict = update.Get();
+  ASSERT_TRUE(dict);
+  base::Value* list = dict->FindKey(kEthereumPrefKey);
+  if (!list) {
+    list = dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
+  }
+  ASSERT_TRUE(list);
   list->ClearList();
   for (auto& it : *values) {
     list->Append(std::move(it));
@@ -170,8 +179,6 @@ class TestJsonRpcServiceObserver
 
 }  // namespace
 
-namespace brave_wallet {
-
 class JsonRpcServiceUnitTest : public testing::Test {
  public:
   JsonRpcServiceUnitTest()
@@ -193,6 +200,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
         }));
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
+    brave_wallet::RegisterProfilePrefsForMigration(prefs_.registry());
 
     json_rpc_service_.reset(
         new JsonRpcService(shared_url_loader_factory_, &prefs_));
@@ -211,7 +219,9 @@ class JsonRpcServiceUnitTest : public testing::Test {
     if (chain_id == mojom::kLocalhostChainId)
       return prefs()->GetBoolean(kSupportEip1559OnLocalhostChain);
     const base::Value* custom_networks =
-        prefs()->GetList(kBraveWalletCustomNetworks);
+        prefs()
+            ->GetDictionary(kBraveWalletCustomNetworks)
+            ->FindKey(kEthereumPrefKey);
     if (!custom_networks)
       return false;
 
@@ -382,7 +392,10 @@ class JsonRpcServiceUnitTest : public testing::Test {
 
   void ValidateStartWithNetwork(const std::string& chain_id,
                                 const std::string& expected_id) {
-    prefs()->SetString(kBraveWalletCurrentChainId, chain_id);
+    DictionaryPrefUpdate update(prefs(), kBraveWalletSelectedNetworks);
+    base::Value* dict = update.Get();
+    DCHECK(dict);
+    dict->SetStringKey(kEthereumPrefKey, chain_id);
     JsonRpcService service(shared_url_loader_factory(), prefs());
     bool callback_is_called = false;
     service.GetChainId(base::BindLambdaForTesting(
@@ -493,8 +506,7 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
     bool callback_is_called = false;
     SetNetwork(network->chain_id);
 
-    EXPECT_EQ(network->chain_id,
-              prefs()->GetString(kBraveWalletCurrentChainId));
+    EXPECT_EQ(network->chain_id, GetCurrentChainId(prefs()));
     const std::string& expected_id = network->chain_id;
     json_rpc_service_->GetChainId(base::BindLambdaForTesting(
         [&callback_is_called, &expected_id](const std::string& chain_id) {
@@ -1874,8 +1886,7 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
   SetNetwork(mojom::kLocalhostChainId);
   prefs()->SetBoolean(kSupportEip1559OnLocalhostChain, true);
   EXPECT_TRUE(prefs()->HasPrefPath(kBraveWalletCustomNetworks));
-  EXPECT_EQ(prefs()->GetString(kBraveWalletCurrentChainId),
-            mojom::kLocalhostChainId);
+  EXPECT_EQ(GetCurrentChainId(prefs()), mojom::kLocalhostChainId);
   // This isn't valid data for these maps but we are just checking to make sure
   // it gets cleared
   json_rpc_service_->add_chain_pending_requests_["1"] =
@@ -1890,8 +1901,7 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
   GetAllCustomChains(prefs(), &custom_chains);
   ASSERT_TRUE(custom_chains.empty());
   EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCustomNetworks));
-  EXPECT_EQ(prefs()->GetString(kBraveWalletCurrentChainId),
-            mojom::kMainnetChainId);
+  EXPECT_EQ(GetCurrentChainId(prefs()), mojom::kMainnetChainId);
   EXPECT_FALSE(prefs()->HasPrefPath(kSupportEip1559OnLocalhostChain));
   EXPECT_TRUE(json_rpc_service_->add_chain_pending_requests_.empty());
   EXPECT_TRUE(json_rpc_service_->switch_chain_requests_.empty());
@@ -2016,6 +2026,72 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaLatestBlockhash) {
   TestGetSolanaLatestBlockhash(
       "", mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, MigrateMultichainNetworks) {
+  prefs()->ClearPref(kBraveWalletCustomNetworks);
+  prefs()->ClearPref(kBraveWalletSelectedNetworks);
+
+  absl::optional<base::Value> old_custom_networks = base::JSONReader::Read(R"([
+    {
+        "blockExplorerUrls": [
+            "https://thaichain.io"
+        ],
+        "chainId": "0x7",
+        "chainName": "ThaiChain",
+        "iconUrls": [],
+        "is_eip1559": false,
+        "nativeCurrency": {
+            "decimals": 18,
+            "name": "ThaiChain Ether",
+            "symbol": "TCH"
+        },
+        "rpcUrls": [
+            "https://rpc.dome.cloud"
+        ]
+    },
+    {
+        "blockExplorerUrls": [
+            "https://ubiqscan.io"
+        ],
+        "chainId": "0x8",
+        "chainName": "Ubiq",
+        "iconUrls": [],
+        "is_eip1559": false,
+        "nativeCurrency": {
+            "decimals": 18,
+            "name": "Ubiq Ether",
+            "symbol": "UBQ"
+        },
+        "rpcUrls": [
+            "https://rpc.octano.dev",
+            "https://pyrus2.ubiqscan.io"
+        ]
+    }
+  ])");
+  prefs()->Set(kBraveWalletCustomNetworksDeprecated, *old_custom_networks);
+  prefs()->SetString(kBraveWalletCurrentChainId, "0x3");
+
+  JsonRpcService::MigrateMultichainNetworks(prefs());
+
+  const base::Value* new_custom_networks =
+      prefs()->GetDictionary(kBraveWalletCustomNetworks);
+  ASSERT_TRUE(new_custom_networks);
+  const base::Value* eth_custom_networks =
+      new_custom_networks->FindKey(kEthereumPrefKey);
+  ASSERT_TRUE(eth_custom_networks);
+  EXPECT_EQ(*eth_custom_networks, *old_custom_networks);
+
+  const base::Value* selected_networks =
+      prefs()->GetDictionary(kBraveWalletSelectedNetworks);
+  ASSERT_TRUE(selected_networks);
+  const std::string* eth_selected_networks =
+      selected_networks->FindStringKey(kEthereumPrefKey);
+  ASSERT_TRUE(eth_selected_networks);
+  EXPECT_EQ(*eth_selected_networks, "0x3");
+
+  EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCustomNetworksDeprecated));
+  EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCurrentChainId));
 }
 
 }  // namespace brave_wallet

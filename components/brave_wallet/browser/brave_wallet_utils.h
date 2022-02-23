@@ -90,7 +90,7 @@ std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id);
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);
 
-// Append chain value to kBraveWalletCustomNetworks list pref.
+// Append chain value to kBraveWalletCustomNetworks dictionary pref.
 void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain);
 
 void RemoveCustomNetwork(PrefService* prefs,
@@ -100,7 +100,7 @@ void RemoveCustomNetwork(PrefService* prefs,
 mojom::EthereumChainPtr GetChain(PrefService* prefs,
                                  const std::string& chain_id);
 
-// Get the current chain ID from kBraveWalletCurrentChainId pref.
+// Get the current eth chain ID from kBraveWalletSelectedNetworks pref.
 std::string GetCurrentChainId(PrefService* prefs);
 
 // Returns the first URL to use that:

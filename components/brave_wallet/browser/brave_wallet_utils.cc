@@ -19,6 +19,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -215,11 +216,15 @@ std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
 
 void GetAllCustomChains(PrefService* prefs,
                         std::vector<mojom::EthereumChainPtr>* result) {
-  const base::Value* custom_networks_list =
-      prefs->GetList(kBraveWalletCustomNetworks);
-  if (!custom_networks_list)
+  const base::Value* custom_networks =
+      prefs->GetDictionary(kBraveWalletCustomNetworks);
+  if (!custom_networks)
     return;
-  for (const auto& it : custom_networks_list->GetList()) {
+  const base::Value* eth_custom_networks_list =
+      custom_networks->FindKey(kEthereumPrefKey);
+  if (!eth_custom_networks_list)
+    return;
+  for (const auto& it : eth_custom_networks_list->GetList()) {
     absl::optional<mojom::EthereumChain> chain =
         brave_wallet::ValueToEthereumChain(it);
     if (chain)
@@ -704,8 +709,15 @@ void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain) {
     return;
 
   {  // Update needs to be done before GetNetworkId below.
-    ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-    base::Value* list = update.Get();
+    DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+    base::Value* dict = update.Get();
+    CHECK(dict);
+    base::Value* list = dict->FindKey(kEthereumPrefKey);
+    if (!list) {
+      list =
+          dict->SetKey(kEthereumPrefKey, base::Value(base::Value::Type::LIST));
+    }
+    CHECK(list);
     list->Append(std::move(value.value()));
   }
 
@@ -735,8 +747,10 @@ void RemoveCustomNetwork(PrefService* prefs,
                          const std::string& chain_id_to_remove) {
   DCHECK(prefs);
 
-  ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::Value* list = update.Get();
+  DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
+  base::Value* dict = update.Get();
+  CHECK(dict);
+  base::Value* list = dict->FindKey(kEthereumPrefKey);
   list->EraseListValueIf([&](const base::Value& v) {
     auto* chain_id_value = v.FindStringKey("chainId");
     if (!chain_id_value)
@@ -746,7 +760,15 @@ void RemoveCustomNetwork(PrefService* prefs,
 }
 
 std::string GetCurrentChainId(PrefService* prefs) {
-  return prefs->GetString(kBraveWalletCurrentChainId);
+  const base::Value* selected_networks =
+      prefs->GetDictionary(kBraveWalletSelectedNetworks);
+  DCHECK(selected_networks);
+  const std::string* eth_chain_id =
+      selected_networks->FindStringKey(kEthereumPrefKey);
+  if (!eth_chain_id)
+    return std::string();
+
+  return *eth_chain_id;
 }
 
 }  // namespace brave_wallet

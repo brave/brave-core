@@ -103,8 +103,7 @@ JsonRpcService::JsonRpcService(
           url_loader_factory)),
       prefs_(prefs),
       weak_ptr_factory_(this) {
-  SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId),
-             base::BindOnce([](bool success) {
+  SetNetwork(GetCurrentChainId(prefs_), base::BindOnce([](bool success) {
                if (!success)
                  LOG(ERROR) << "Could not set netowrk from JsonRpcService()";
              }));
@@ -117,6 +116,36 @@ void JsonRpcService::SetAPIRequestHelperForTesting(
 }
 
 JsonRpcService::~JsonRpcService() {}
+
+// static
+void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
+  {  // custom networks
+    if (!prefs->HasPrefPath(kBraveWalletCustomNetworksDeprecated))
+      return;
+    const base::Value* custom_networks =
+        prefs->GetList(kBraveWalletCustomNetworksDeprecated);
+    if (!custom_networks)
+      return;
+
+    base::Value new_custom_networks(base::Value::Type::DICTIONARY);
+    new_custom_networks.SetKey(kEthereumPrefKey, custom_networks->Clone());
+
+    prefs->Set(kBraveWalletCustomNetworks, new_custom_networks);
+
+    prefs->ClearPref(kBraveWalletCustomNetworksDeprecated);
+  }
+  {  // selected networks
+    if (!prefs->HasPrefPath(kBraveWalletCurrentChainId))
+      return;
+    const std::string chain_id = prefs->GetString(kBraveWalletCurrentChainId);
+    base::Value selected_networks(base::Value::Type::DICTIONARY);
+    selected_networks.SetStringKey(kEthereumPrefKey, chain_id);
+
+    prefs->Set(kBraveWalletSelectedNetworks, selected_networks);
+
+    prefs->ClearPref(kBraveWalletCurrentChainId);
+  }
+}
 
 mojo::PendingRemote<mojom::JsonRpcService> JsonRpcService::MakeRemote() {
   mojo::PendingRemote<mojom::JsonRpcService> remote;
@@ -329,7 +358,10 @@ bool JsonRpcService::SetNetwork(const std::string& chain_id) {
 
   chain_id_ = chain_id;
   network_url_ = network_url;
-  prefs_->SetString(kBraveWalletCurrentChainId, chain_id);
+  DictionaryPrefUpdate update(prefs_, kBraveWalletSelectedNetworks);
+  base::Value* dict = update.Get();
+  DCHECK(dict);
+  dict->SetStringKey(kEthereumPrefKey, chain_id);
 
   FireNetworkChanged();
   MaybeUpdateIsEip1559(chain_id);
@@ -370,8 +402,9 @@ void JsonRpcService::UpdateIsEip1559(const std::string& chain_id,
     changed = prefs_->GetBoolean(kSupportEip1559OnLocalhostChain) != is_eip1559;
     prefs_->SetBoolean(kSupportEip1559OnLocalhostChain, is_eip1559);
   } else {
-    ListPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
-    for (base::Value& custom_network : update.Get()->GetList()) {
+    DictionaryPrefUpdate update(prefs_, kBraveWalletCustomNetworks);
+    for (base::Value& custom_network :
+         update.Get()->FindKey(kEthereumPrefKey)->GetList()) {
       if (!custom_network.is_dict())
         continue;
 
@@ -1402,7 +1435,7 @@ bool JsonRpcService::AddSwitchEthereumChainRequest(
 
 void JsonRpcService::Reset() {
   ClearJsonRpcServiceProfilePrefs(prefs_);
-  SetNetwork(prefs_->GetString(kBraveWalletCurrentChainId));
+  SetNetwork(GetCurrentChainId(prefs_));
 
   add_chain_pending_requests_.clear();
   switch_chain_requests_.clear();

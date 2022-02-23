@@ -513,7 +513,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     EXPECT_EQ(requests[0]->token, expected_token);
 
     if (run_switch_network) {
-      GetPrefs()->SetString(kBraveWalletCurrentChainId, mojom::kRopstenChainId);
+      json_rpc_service_->SetNetwork(mojom::kRopstenChainId);
     } else {
       service_->NotifyAddSuggestTokenRequestsProcessed(
           approve, {suggested_token->contract_address});
@@ -1046,8 +1046,8 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
   // Remove network.
   observer_->Reset();
   {
-    ListPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
-    base::Value* list = update.Get();
+    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
+    base::Value* list = update.Get()->FindKey(kEthereumPrefKey);
     list->EraseListValueIf([&](const base::Value& v) {
       auto* chain_id_value = v.FindStringKey("chainId");
       if (!chain_id_value)
