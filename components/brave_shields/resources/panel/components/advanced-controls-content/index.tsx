@@ -2,6 +2,7 @@ import * as React from 'react'
 
 import * as S from './style'
 import Toggle from '../../../../../web-components/toggle'
+import Select from '../../../../../web-components/select'
 import { getLocale } from '../../../../../common/locale'
 import getPanelBrowserAPI, { AdBlockMode, CookieBlockMode, FingerprintMode } from '../../api/panel_browser_api'
 import DataContext from '../../state/context'
@@ -52,21 +53,18 @@ function GlobalSettings () {
 function AdvancedControlsContent () {
   const { siteBlockInfo, siteSettings, getSiteSettings, setViewType } = React.useContext(DataContext)
 
-  const handleAdBlockModeChange = (e: React.FormEvent<HTMLSelectElement>) => {
-    const target = e.target as HTMLSelectElement
-    getPanelBrowserAPI().dataHandler.setAdBlockMode(parseInt(target.value))
+  const handleAdBlockModeChange = (value: string) => {
+    getPanelBrowserAPI().dataHandler.setAdBlockMode(parseInt(value))
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleFingerprintModeChange = (e: React.FormEvent<HTMLSelectElement>) => {
-    const target = e.target as HTMLSelectElement
-    getPanelBrowserAPI().dataHandler.setFingerprintMode(parseInt(target.value))
+  const handleFingerprintModeChange = (value: string) => {
+    getPanelBrowserAPI().dataHandler.setFingerprintMode(parseInt(value))
     if (getSiteSettings) getSiteSettings()
   }
 
-  const handleCookieBlockModeChange = (e: React.FormEvent<HTMLSelectElement>) => {
-    const target = e.target as HTMLSelectElement
-    getPanelBrowserAPI().dataHandler.setCookieBlockMode(parseInt(target.value))
+  const handleCookieBlockModeChange = (value: string) => {
+    getPanelBrowserAPI().dataHandler.setCookieBlockMode(parseInt(value))
     if (getSiteSettings) getSiteSettings()
   }
 
@@ -91,19 +89,19 @@ function AdvancedControlsContent () {
     >
       <S.SettingsBox>
         <S.ControlGroup>
-          <select
-            value={siteSettings?.adBlockMode}
-            onChange={handleAdBlockModeChange}
-            aria-label={getLocale('braveShieldsTrackersAndAds')}
-          >
-            {adBlockModeOptions.map((entry, i) => {
-              return (
-                <option value={entry.value} key={i}>
-                  {entry.text}
-                </option>
-              )
-            })}
-          </select>
+          <div className="col-2">
+            <Select
+              value={siteSettings?.adBlockMode}
+              ariaLabel={getLocale('braveShieldsTrackersAndAds')}
+              onChange={handleAdBlockModeChange}
+            >
+              {adBlockModeOptions.map(entry => {
+                return (
+                  <option key={entry.value }value={entry.value}>{entry.text}</option>
+                )
+              })}
+            </Select>
+          </div>
           <S.CountButton
             aria-label={getLocale('braveShieldsTrackersAndAds')}
             onClick={() => setViewType?.(ViewType.AdsList)}
@@ -146,34 +144,34 @@ function AdvancedControlsContent () {
           </S.CountButton>
         </S.ControlGroup>
         <S.ControlGroup>
-          <select
-            onChange={handleFingerprintModeChange}
-            value={siteSettings?.fingerprintMode}
-            aria-label={getLocale('braveShieldsFingerprintingBlocked')}
-          >
-            {fingerprintModeOptions.map((entry, i) => {
+          <div className="col-2">
+            <Select
+              value={siteSettings?.fingerprintMode}
+              ariaLabel={getLocale('braveShieldsFingerprintingBlocked')}
+              onChange={handleFingerprintModeChange}
+            >
+            {fingerprintModeOptions.map(entry => {
                 return (
-                  <option value={entry.value} key={i}>
-                    {entry.text}
-                  </option>
+                  <option key={entry.value} value={entry.value}>{entry.text}</option>
                 )
               })}
-          </select>
+            </Select>
+          </div>
         </S.ControlGroup>
         <S.ControlGroup>
-          <select
-            onChange={handleCookieBlockModeChange}
-            value={siteSettings?.cookieBlockMode}
-            aria-label={getLocale('braveShieldsCookiesBlocked')}
-          >
-              {cookieBlockModeOptions.map((entry, i) => {
+          <div className="col-2">
+            <Select
+              value={siteSettings?.cookieBlockMode}
+              ariaLabel={getLocale('braveShieldsCookiesBlocked')}
+              onChange={handleCookieBlockModeChange}
+            >
+              {cookieBlockModeOptions.map(entry => {
                 return (
-                  <option value={entry.value} key={i}>
-                    {entry.text}
-                  </option>
+                  <option key={entry.value} value={entry.value}>{entry.text}</option>
                 )
               })}
-          </select>
+            </Select>
+            </div>
         </S.ControlGroup>
         <S.SettingsDesc>
           <p>*{getLocale('braveShieldSettingsDescription')}</p>

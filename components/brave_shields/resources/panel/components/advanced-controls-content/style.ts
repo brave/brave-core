@@ -42,6 +42,7 @@ export const SettingsDesc = styled.section`
   display: grid;
   grid-template-columns: 24px 1fr 24px;
   grid-gap: 10px;
+  padding: 14px 0 0 0;
 
   p {
     grid-column: 2;
@@ -64,7 +65,7 @@ export const ControlGroup = styled.div`
     grid-column: 2;
     width: 100%;
   }
-  
+
   button {
     grid-column: 3;
   }
