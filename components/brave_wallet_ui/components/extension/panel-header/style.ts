@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import CloseIcon from '../assets/close.svg'
+import CloseIcon from '../../../assets/svg-icons/close.svg'
 import { WalletButton } from '../../shared/style'
 
 interface StyleProps {

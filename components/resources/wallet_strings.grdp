@@ -426,4 +426,10 @@
   <message name="IDS_BRAVE_WALLET_TREZOR_SIGN_TYPED_DATA_ERROR" desc="The error text for unsupported API on Trezor device">
     Signing typed data is supported only on Trezor Model One with Firmware 1.10.5 or higher
   </message>
+  <message name="IDS_BRAVE_WALLET_SWEEPSTAKES_TITLE" desc="The title for the swap sweepstakes banner">
+    Swap Sweepstakes
+  </message>
+  <message name="IDS_BRAVE_WALLET_SWEEPSTAKES_DESCRIPTION" desc="A short description of the swap sweepstakes">
+    Chance to win a bored ape and other cool prizes
+  </message>
 </grit-part>

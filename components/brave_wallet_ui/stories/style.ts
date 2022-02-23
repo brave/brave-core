@@ -121,7 +121,7 @@ export const DesktopComponentWrapperRow = styled.div`
 
 export const WalletWidgetStandIn = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 285px;

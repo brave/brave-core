@@ -470,5 +470,9 @@ provideStrings({
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',
   braveWalletNFTDetailTokenStandard: 'Token standard',
-  braveWalletNFTDetailTokenID: 'Token ID'
+  braveWalletNFTDetailTokenID: 'Token ID',
+
+  // Sweepstakes
+  braveWalletSweepstakesTitle: 'Swap Sweepstakes',
+  braveWalletSweepstakesDescription: 'Chance to win a bored ape and other cool prizes'
 })

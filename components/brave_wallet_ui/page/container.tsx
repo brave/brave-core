@@ -63,6 +63,7 @@ import {
   useTokenInfo,
   useAssetManagement
 } from '../common/hooks'
+import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 
 type Props = {
   wallet: WalletState
@@ -752,6 +753,11 @@ function Container (props: Props) {
             onSelectSendAsset={onSelectSendAsset}
             onAddNetwork={onAddNetwork}
             onAddAsset={onShowVisibleAssetsModal}
+          />
+          <br />
+          <SweepstakesBanner
+            startDate={new Date(Date.now())}
+            endDate={new Date(Date.now() + Date.now())}
           />
         </WalletWidgetStandIn>
       }
