@@ -11,10 +11,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
-#include "base/observer_list.h"
+#include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -30,49 +28,26 @@ class TxMeta;
 class EthTxMeta;
 class JsonRpcService;
 
-class EthTxStateManager {
+class EthTxStateManager : public TxStateManager {
  public:
   explicit EthTxStateManager(PrefService* prefs,
                              JsonRpcService* json_rpc_service);
-  ~EthTxStateManager();
+  ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
-
-  static std::unique_ptr<EthTxMeta> ValueToTxMeta(const base::Value& value);
-
-  void AddOrUpdateTx(const TxMeta& meta);
-  std::unique_ptr<TxMeta> GetTx(const std::string& id);
-  void DeleteTx(const std::string& id);
-  void WipeTxs();
 
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
       absl::optional<mojom::TransactionStatus> status,
       absl::optional<EthAddress> from);
 
-  class Observer : public base::CheckedObserver {
-   public:
-    virtual void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) {
-    }
-    virtual void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) {}
-  };
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
-
   std::unique_ptr<EthTxMeta> GetEthTx(const std::string& id);
+  std::unique_ptr<EthTxMeta> ValueToEthTxMeta(const base::Value& value);
 
  private:
-  // only support REJECTED and CONFIRMED
-  void RetireTxByStatus(mojom::TransactionStatus status, size_t max_num);
+  // Create EthTxMeta from value.
+  std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value) override;
 
-  std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
-      absl::optional<mojom::TransactionStatus> status,
-      const std::string& from);
-
-  base::ObserverList<Observer> observers_;
-  raw_ptr<PrefService> prefs_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-
-  base::WeakPtrFactory<EthTxStateManager> weak_factory_;
+  std::string GetTxPrefPathPrefix() override;
 };
 
 }  // namespace brave_wallet

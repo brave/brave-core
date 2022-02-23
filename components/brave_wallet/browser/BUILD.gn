@@ -94,6 +94,8 @@ static_library("browser") {
     "tx_meta.h",
     "tx_service.cc",
     "tx_service.h",
+    "tx_state_manager.cc",
+    "tx_state_manager.h",
     "wallet_data_files_installer.cc",
     "wallet_data_files_installer.h",
   ]
