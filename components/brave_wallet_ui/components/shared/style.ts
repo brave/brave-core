@@ -22,7 +22,9 @@ export const AssetIconFactory = styled.img.attrs<AssetIconProps>(props => ({
   loading: 'lazy'
 }))
 
-export const WalletButton = styled.button`
+export const WalletButton = styled.button<{
+  isDraggedOver?: boolean
+}>`
   &:focus-visible {
     outline-style: solid;
     outline-color: ${p => p.theme.palette.blurple300};

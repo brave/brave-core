@@ -107,7 +107,10 @@ export const SelectedBubble = styled(WalletButton)`
   width: 106px;
   margin-right: 8px;
   margin-bottom: 8px;
-  border: ${(p) => `1px solid ${p.theme.color.divider01}`};
+  border: ${(p) => p.isDraggedOver
+    ? `1px solid ${p.theme.color.focusBorder}`
+    : `1px solid ${p.theme.color.divider01}`
+  };
   box-sizing: border-box;
   border-radius: 4px;
 `
@@ -136,4 +139,9 @@ export const ErrorText = styled.span`
   font-family: Poppins;
   font-size: 14px;
   color: ${(p) => p.theme.color.errorText};
+`
+
+export const PlaceholderBubble = styled.div`
+  width: 106px;
+  height: 2rem;
 `

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { DesktopComponentWrapper, DesktopComponentWrapperRow } from './style'
-import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout, WalletSubViewLayout } from '../components/desktop'
+import { SideNav, TopTabNav, ChartControlBar, WalletPageLayout, WalletSubViewLayout, OnboardingVerify } from '../components/desktop'
 import { NavTypes, TopTabNavTypes, BraveWallet } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
@@ -11,6 +11,7 @@ import {
   recoveryPhrase
 } from './mock-data/user-accounts'
 import { isStrongPassword } from '../utils/password-utils'
+import BackupWallet from './screens/backup-wallet'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -128,4 +129,32 @@ export const _Onboarding = () => {
 
 _Onboarding.story = {
   name: 'Onboarding'
+}
+
+export const _BackupWallet = () => {
+  const complete = () => {
+    alert('Wallet Setup Complete!!!')
+  }
+
+  return <BackupWallet
+    recoveryPhrase={recoveryPhrase}
+    onSubmit={complete}
+    onCancel={complete}
+    isOnboarding={true}
+  />
+}
+
+_BackupWallet.story = {
+  name: 'BackupWallet'
+}
+
+export const _OnboardingVerify = () => {
+  return <OnboardingVerify
+    recoveryPhrase={recoveryPhrase}
+    onNextStep={() => console.log('done')}
+  />
+}
+
+_OnboardingVerify.story = {
+  name: 'Onboarding Verify'
 }

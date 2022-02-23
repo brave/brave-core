@@ -4,7 +4,7 @@ import {
   OnboardingRecovery,
   OnboardingVerify
 } from '../../components/desktop'
-import { RecoveryObject } from '../../constants/types'
+
 import { BackButton } from '../../components/shared'
 import { copyToClipboard } from '../../utils/copy-to-clipboard'
 
@@ -18,13 +18,12 @@ export interface Props {
 
 const recoverPhraseCopiedTimeout = 5000 // 5s
 
-function BackupWallet (props: Props) {
+export function BackupWallet (props: Props) {
   const { recoveryPhrase, isOnboarding, onSubmit, onCancel, onBack } = props
   const [backupStep, setBackupStep] = React.useState<number>(0)
   const [backupTerms, setBackupTerms] = React.useState<boolean>(false)
   const [backedUp, setBackedUp] = React.useState<boolean>(false)
-  const [sortedPhrase, setSortedPhrase] = React.useState<RecoveryObject[]>([])
-  const [verifyError, setVerifyError] = React.useState<boolean>(false)
+
   const [isRecoverPhraseCopied, setIsRecoverPhraseCopied] = React.useState(false)
 
   const nextStep = () => {
@@ -49,42 +48,6 @@ function BackupWallet (props: Props) {
     }
     if (key === 'backedUp') {
       setBackedUp(selected)
-    }
-  }
-
-  const selectWord = (word: RecoveryObject) => {
-    const newList = [...sortedPhrase, word]
-    setSortedPhrase(newList)
-    setVerifyError(false)
-  }
-
-  const unSelectWord = (word: RecoveryObject) => {
-    const newList = sortedPhrase.filter((key) => key !== word)
-    setSortedPhrase(newList)
-  }
-
-  const shuffledPhrase = React.useMemo(() => {
-    const array = recoveryPhrase.slice().sort()
-    for (let i = array.length - 1; i > 0; i--) {
-      let j = Math.floor(Math.random() * (i + 1))
-      let temp = array[i]
-      array[i] = array[j]
-      array[j] = temp
-    }
-    return array.map((str, index) => ({ value: str, id: index + 1 }))
-  }, [recoveryPhrase])
-
-  const showError = () => {
-    setVerifyError(true)
-    setTimeout(function () { setVerifyError(false) }, 3000)
-  }
-
-  const checkPhrase = () => {
-    if (sortedPhrase.length === recoveryPhrase.length && sortedPhrase.every((v, i) => v.value === recoveryPhrase[i])) {
-      nextStep()
-    } else {
-      setSortedPhrase([])
-      showError()
     }
   }
 
@@ -129,15 +92,7 @@ function BackupWallet (props: Props) {
         />
       }
       {backupStep === 2 &&
-        <OnboardingVerify
-          onSubmit={checkPhrase}
-          shuffledPhrase={shuffledPhrase}
-          recoveryPhrase={recoveryPhrase}
-          sortedPhrase={sortedPhrase}
-          selectWord={selectWord}
-          unSelectWord={unSelectWord}
-          hasVerifyError={verifyError}
-        />
+        <OnboardingVerify recoveryPhrase={recoveryPhrase} onNextStep={nextStep} />
       }
     </>
   )
