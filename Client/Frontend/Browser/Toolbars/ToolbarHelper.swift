@@ -23,6 +23,8 @@ class ToolbarHelper: NSObject {
         toolbar.shareButton.accessibilityLabel = Strings.tabToolbarShareButtonAccessibilityLabel
         toolbar.shareButton.addTarget(self, action: #selector(didClickShare), for: UIControl.Event.touchUpInside)
         
+        toolbar.tabsButton.addTarget(self, action: #selector(didClickTabs), for: .touchUpInside)
+        
         toolbar.addTabButton.setImage(#imageLiteral(resourceName: "add_tab").template, for: .normal)
         toolbar.addTabButton.accessibilityLabel = Strings.tabToolbarAddTabButtonAccessibilityLabel
         toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControl.Event.touchUpInside)
