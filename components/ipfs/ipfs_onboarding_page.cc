@@ -27,8 +27,10 @@
 
 namespace {
 const char16_t kResponseScript[] =
+    u"if (window.location.href === 'chrome-error://chromewebdata/') { "
     u"window.postMessage({command: 'ipfs', value: {value}, text: '{text}'}, "
-    u"'*')";
+    u"'*') }";
+
 constexpr int kOnboardingIsolatedWorldId =
     content::ISOLATED_WORLD_ID_CONTENT_END + 1;
 

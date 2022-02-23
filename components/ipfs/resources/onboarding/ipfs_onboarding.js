@@ -80,10 +80,22 @@ function handleCommand(code, text) {
     $('local-node-button').textContent = '$i18n{tryAgainText}'
     $('local-node-button').className = 'button button-retry'
   }
+  return true
 }
 
-window.addEventListener("message", function(event) {
-  if (!event.data || event.data.command != "ipfs")
-    return
-  handleCommand(event.data.value, event.data.text);
-}, false);
+function messageHandler (event) {
+  if (event.type !== 'message' || event.origin !== document.location.origin) {
+    return false
+  }
+  if (!event.data || event.data.command !== 'ipfs')
+    return false
+
+  return handleCommand(event.data.value, event.data.text);
+}
+
+window.addEventListener("message", messageHandler, false);
+
+// for testing purposes
+if (typeof module !== 'undefined') {
+  module.exports = messageHandler
+}
