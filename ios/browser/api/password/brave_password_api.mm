@@ -80,7 +80,7 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
             isBlockedByUser:(bool)isBlockedByUser
                      scheme:(PasswordFormScheme)scheme {
   if ((self = [super init])) {
-    self.url = self.url;
+    self.url = url;
     self.signOnRealm = signOnRealm;
     self.dateCreated = dateCreated;
     self.dateLastUsed = dateLastUsed;
