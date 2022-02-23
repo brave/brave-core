@@ -19,8 +19,8 @@ export interface Props {
   accounts: UserAccountType[]
   networkList: BraveWallet.EthereumChain[]
   orderType: OrderTypes
-  swapToAsset: BraveWallet.BlockchainToken
-  swapFromAsset: BraveWallet.BlockchainToken
+  swapToAsset: BraveWallet.BlockchainToken | undefined
+  swapFromAsset: BraveWallet.BlockchainToken | undefined
   selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   exchangeRate: string
@@ -33,7 +33,7 @@ export interface Props {
   assetOptions: BraveWallet.BlockchainToken[]
   isFetchingQuote: boolean
   isSubmitDisabled: boolean
-  validationError?: SwapValidationErrorType
+  validationError: SwapValidationErrorType | undefined
   customSlippageTolerance: string
   onCustomSlippageToleranceChange: (value: string) => void
   onSubmitSwap: () => void
@@ -119,7 +119,11 @@ function SwapTab (props: Props) {
     setSwapView('swap')
   }
 
-  const onFilterAssetList = (asset: BraveWallet.BlockchainToken) => {
+  const onFilterAssetList = (asset?: BraveWallet.BlockchainToken) => {
+    if (!asset) {
+      return
+    }
+
     const newList = assetOptions.filter((assets) => assets !== asset)
     setFilteredAssetList(newList)
   }
@@ -150,6 +154,7 @@ function SwapTab (props: Props) {
             onChangeSwapView={onChangeSwapView}
           />
           <Swap
+            selectedNetwork={selectedNetwork}
             toAsset={swapToAsset}
             fromAsset={swapFromAsset}
             toAmount={toAmount}

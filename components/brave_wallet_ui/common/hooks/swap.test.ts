@@ -393,10 +393,10 @@ describe('useSwap hook', () => {
       // in the middle of a future update.
       await waitForValueToChange(() => result.current.isSwapSupported)
 
-      // OK: Assert for swapValidationError to be 'insufficientEthBalance'.
+      // OK: Assert for swapValidationError to be 'insufficientFundsForGas'.
       // KO: Test case times out.
       await waitFor(() => {
-        expect(result.current.swapValidationError).toBe('insufficientEthBalance')
+        expect(result.current.swapValidationError).toBe('insufficientFundsForGas')
       })
     })
 
@@ -436,10 +436,10 @@ describe('useSwap hook', () => {
         jest.advanceTimersByTime(1001)
       })
 
-      // OK: Assert for swapValidationError to be 'insufficientEthBalance'.
+      // OK: Assert for swapValidationError to be 'insufficientFundsForGas'.
       // KO: Test case times out.
       await waitFor(() => {
-        expect(result.current.swapValidationError).toBe('insufficientEthBalance')
+        expect(result.current.swapValidationError).toBe('insufficientFundsForGas')
       })
 
       // OK: Assert for fromAmount to be '0.000000000000234561'.

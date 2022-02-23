@@ -15,13 +15,15 @@ import { MAX_UINT256 } from '../constants/magics'
 
 // Utils
 import Amount from '../../utils/amount'
+import { getLocale } from '../../../common/locale'
 
 // Hooks
 import usePricing from './pricing'
 import useAddressLabels, { SwapExchangeProxy } from './address-labels'
 import useBalance from './balance'
 
-import { getLocale } from '../../../common/locale'
+// Options
+import { makeNetworkAsset } from '../../options/asset-options'
 
 interface ParsedTransactionFees {
   gasLimit: string
@@ -121,6 +123,10 @@ export function useTransactionParser (
   visibleTokens: BraveWallet.BlockchainToken[],
   fullTokenList?: BraveWallet.BlockchainToken[]
 ) {
+  const nativeAsset = React.useMemo(
+    () => makeNetworkAsset(selectedNetwork),
+    [selectedNetwork]
+  )
   const { findAssetPrice, computeFiatAmount } = usePricing(spotPrices)
   const getBalance = useBalance(selectedNetwork)
   const getAddressLabel = useAddressLabels(accounts)
@@ -186,7 +192,7 @@ export function useTransactionParser (
     const nonce = txData?.baseData.nonce || ''
     const account = accounts.find((account) => account.address.toLowerCase() === fromAddress.toLowerCase())
     const token = findToken(to)
-    const accountNativeBalance = getBalance(account)
+    const accountNativeBalance = getBalance(account, nativeAsset)
     const accountTokenBalance = getBalance(account, token)
 
     switch (true) {

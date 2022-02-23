@@ -16,6 +16,7 @@ import {
 
 export interface Props {
   assets: BraveWallet.BlockchainToken[]
+  selectedNetwork: BraveWallet.EthereumChain
   onAddAsset: () => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken) => () => void
   onBack: () => void
@@ -24,6 +25,7 @@ export interface Props {
 function SelectAsset (props: Props) {
   const {
     assets,
+    selectedNetwork,
     onAddAsset,
     onBack,
     onSelectAsset
@@ -71,6 +73,7 @@ function SelectAsset (props: Props) {
             <SelectAssetItem
               key={asset.contractAddress}
               asset={asset}
+              selectedNetwork={selectedNetwork}
               onSelectAsset={onSelectAsset(asset)}
             />
           )
@@ -84,6 +87,7 @@ function SelectAsset (props: Props) {
               <SelectAssetItem
                 key={asset.contractAddress}
                 asset={asset}
+                selectedNetwork={selectedNetwork}
                 onSelectAsset={onSelectAsset(asset)}
               />
             )

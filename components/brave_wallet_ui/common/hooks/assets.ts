@@ -5,11 +5,14 @@
 
 import * as React from 'react'
 
+// Constants
 import {
   BraveWallet,
   WalletAccountType
 } from '../../constants/types'
-import { BAT, ETH } from '../../options/asset-options'
+
+// Options
+import { makeNetworkAsset } from '../../options/asset-options'
 
 // Hooks
 import usePricing from './pricing'
@@ -26,23 +29,25 @@ export default function useAssets (
 ) {
   const { computeFiatAmount } = usePricing(spotPrices)
   const getBalance = useBalance(selectedNetwork)
+  const nativeAsset = React.useMemo(
+    () => makeNetworkAsset(selectedNetwork),
+    [selectedNetwork]
+  )
 
   const swapAssetOptions: BraveWallet.BlockchainToken[] = React.useMemo(() => {
     return [
-      ETH,
-
-      ...fullTokenList.filter((asset) => asset.symbol === 'BAT'),
-
+      nativeAsset,
+      ...fullTokenList.filter((asset) => asset.symbol.toUpperCase() === 'BAT'),
       ...userVisibleTokensInfo
-        .filter(asset => !['BAT', 'ETH'].includes(asset.symbol)),
-
+        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase())),
       ...fullTokenList
-        .filter(asset => !['BAT', 'ETH'].includes(asset.symbol))
-        .filter(asset => !userVisibleTokensInfo.some(token => token.symbol === asset.symbol))
+        .filter(asset => !['BAT', nativeAsset.symbol.toUpperCase()].includes(asset.symbol.toUpperCase()))
+        .filter(asset => !userVisibleTokensInfo
+          .some(token => token.symbol.toUpperCase() === asset.symbol.toUpperCase()))
     ]
-  }, [fullTokenList, userVisibleTokensInfo])
+  }, [fullTokenList, userVisibleTokensInfo, nativeAsset])
 
-  const [buyAssetOptions, setBuyAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([BAT, ETH])
+  const [buyAssetOptions, setBuyAssetOptions] = React.useState<BraveWallet.BlockchainToken[]>([nativeAsset])
 
   React.useEffect(() => {
     getBuyAssets().then(tokens => {

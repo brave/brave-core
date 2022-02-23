@@ -92,7 +92,7 @@ export interface Props {
   onSpeedupTransaction: (transaction: BraveWallet.TransactionInfo) => void
   onCancelTransaction: (transaction: BraveWallet.TransactionInfo) => void
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
+  foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
 }
 
 const Portfolio = (props: Props) => {
@@ -295,7 +295,7 @@ const Portfolio = (props: Props) => {
           {!selectedAsset.isErc721 &&
             <InfoColumn>
               <AssetRow>
-                <AssetIconWithPlaceholder selectedAsset={selectedAsset} />
+                <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork} />
                 <AssetNameText>{selectedAsset.name}</AssetNameText>
               </AssetRow>
               <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText>

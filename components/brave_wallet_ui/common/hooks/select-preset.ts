@@ -16,21 +16,23 @@ export default function usePreset (
   selectedNetwork: BraveWallet.EthereumChain,
   onSetFromAmount: (value: string) => void,
   onSetSendAmount: (value: string) => void,
-  swapAsset: BraveWallet.BlockchainToken,
+  swapAsset?: BraveWallet.BlockchainToken,
   sendAsset?: BraveWallet.BlockchainToken
 ) {
   const getBalance = useBalance(selectedNetwork)
 
   return (sendOrSwap: 'send' | 'swap') => (percent: number) => {
     const selectedAsset = sendOrSwap === 'send' ? sendAsset : swapAsset
-    const decimals = selectedAsset?.decimals ?? 18
+    if (!selectedAsset) {
+      return
+    }
 
     const assetBalance = getBalance(selectedAccount, selectedAsset) || '0'
     const amountWrapped = new Amount(assetBalance).times(percent)
 
     const formattedAmount = (percent === 1)
-      ? amountWrapped.divideByDecimals(decimals).format()
-      : amountWrapped.divideByDecimals(decimals).format(6)
+      ? amountWrapped.divideByDecimals(selectedAsset.decimals).format()
+      : amountWrapped.divideByDecimals(selectedAsset.decimals).format(6)
 
     if (sendOrSwap === 'send') {
       onSetSendAmount(formattedAmount)

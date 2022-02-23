@@ -90,7 +90,7 @@ export interface Props {
   transactionInfo: BraveWallet.TransactionInfo
   selectedNetwork: BraveWallet.EthereumChain
   transactionSpotPrices: BraveWallet.AssetPrice[]
-  gasEstimates?: BraveWallet.GasEstimation1559
+  gasEstimates: BraveWallet.GasEstimation1559 | undefined
   transactionsQueueLength: number
   transactionQueueNumber: number
   defaultCurrencies: DefaultCurrencies
@@ -361,7 +361,7 @@ function ConfirmTransactionPanel (props: Props) {
           <TransactionTypeText>{transactionTitle}</TransactionTypeText>
           {(transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
             transactionInfo.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom) &&
-            <AssetIconWithPlaceholder selectedAsset={transactionDetails.erc721BlockchainToken} />
+            <AssetIconWithPlaceholder asset={transactionDetails.erc721BlockchainToken} network={selectedNetwork} />
           }
           <TransactionAmountBig>
             {transactionInfo.txType === BraveWallet.TransactionType.ERC721TransferFrom ||

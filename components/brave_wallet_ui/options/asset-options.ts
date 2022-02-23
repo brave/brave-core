@@ -10,9 +10,39 @@ import {
   BNBIconUrl,
   BTCIconUrl,
   ETHIconUrl,
+  MATICIconUrl,
   ZRXIconUrl
 } from '../assets/asset-icons'
 import MoonCatIcon from '../assets/png-icons/mooncat.png'
+
+export function makeNetworkAsset (network: BraveWallet.EthereumChain) {
+  let logo
+  switch (true) {
+    case network.symbol.toUpperCase() === 'ETH':
+      logo = ETHIconUrl
+      break
+
+    case network.chainId === BraveWallet.POLYGON_MAINNET_CHAIN_ID:
+      logo = MATICIconUrl
+      break
+
+    default:
+      logo = ''
+  }
+
+  return {
+    contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+    name: network.symbolName,
+    symbol: network.symbol,
+    logo: logo,
+    isErc20: false,
+    isErc721: false,
+    decimals: network.decimals,
+    visible: true,
+    tokenId: '',
+    coingeckoId: ''
+  } as BraveWallet.BlockchainToken
+}
 
 export const ETH = {
   contractAddress: '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',

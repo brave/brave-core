@@ -276,17 +276,29 @@ describe('useTransactionParser hook', () => {
          *   - gasLimit: 21000
          */
 
+        const mockTransactionInfo = getMockedTransactionInfo()
+        const mockTxData = mockTransactionInfo.txDataUnion.ethTxData1559
+
         const { result: { current: transactionParser } } = renderHook(() => useTransactionParser(
           mockNetwork,
           [{
             ...mockAccount,
             address: '0xdeadbeef',
-            balance: '1000000000000000000' // 1 ETH
+            balance: '1000000000000000000', // 1 ETH
+            tokenBalanceRegistry: {
+              [mockTxData.baseData.to.toLowerCase()]: '0'
+            }
           }],
-          mockAssetPrices, [], []
+          mockAssetPrices,
+          [
+            {
+              ...mockERC20Token,
+              contractAddress: mockTxData.baseData.to.toLowerCase()
+            }
+          ],
+          []
         ))
 
-        const mockTransactionInfo = getMockedTransactionInfo()
         const parsedTransaction = transactionParser({
           ...mockTransactionInfo,
           fromAddress: '0xdeadbeef',
@@ -295,9 +307,9 @@ describe('useTransactionParser hook', () => {
             : ['mockOwner', 'mockRecipient', 'mockTokenID'],
           txType,
           txData: {
-            ...mockTransactionInfo.txDataUnion.ethTxData1559,
+            ...mockTxData,
             baseData: {
-              ...mockTransactionInfo.txDataUnion.ethTxData1559.baseData,
+              ...mockTxData.baseData,
               value: '0x0',
               gasLimit: '0x5208', // 21000
               gasPrice: '0x22ecb25c00' // 150 Gwei
