@@ -151,8 +151,9 @@ const Config = function () {
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
   // this.buildProjects()
 
-  // version should be taken from package.json, not from npm config
-  this.braveVersion = packageConfig(['version']) || '0.0.0'
+  // version should be taken from b-c package.json,  not from brave-browser
+  // or npm config.
+  this.braveVersion = packageConfigBraveCore(['version']) || '0.0.0'
 
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
@@ -264,8 +265,8 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild() && !this.isAsan(),
     is_debug: this.isDebug(),
-    dcheck_always_on: getNPMConfig(['dcheck_always_on'],
-      this.isComponentBuild()),
+    dcheck_always_on:
+      getNPMConfig(['dcheck_always_on'], this.isComponentBuild()),
     brave_channel: this.channel,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,
