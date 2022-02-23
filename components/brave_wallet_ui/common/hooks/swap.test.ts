@@ -13,6 +13,8 @@ import * as WalletActions from '../actions/wallet_actions'
 
 // Hooks
 import useSwap from './swap'
+import Amount from '../../utils/amount'
+
 
 jest.useFakeTimers()
 
@@ -593,6 +595,108 @@ describe('useSwap hook', () => {
       // KO: Test case times out.
       await waitFor(() => {
         expect(result.current.swapValidationError).toBe('unknownError')
+      })
+    })
+  })
+
+  describe('swap qoute', () => {
+    it('should reset fromAmount, toAmount and exchange rate when quote is falsy', async () => {
+      const { result, rerender, waitForValueToChange } = renderHook(({ quote }) => useSwap(
+        mockAccount,
+        mockNetwork,
+        AccountAssetOptions,
+        WalletPageActions.fetchPageSwapQuote,
+        mockGetERC20Allowance,
+        WalletActions.approveERC20Allowance,
+        mockIsSwapSupportedFactory(true),
+        quote
+      ),
+      {
+        initialProps: {
+          quote: mockQuote
+        }
+      })
+
+      rerender({ quote: {} as BraveWallet.SwapResponse })
+      await waitForValueToChange(() => result.current.isSwapSupported)
+
+      act(() => {
+        expect(result.current.fromAmount).toEqual('')
+        expect(result.current.toAmount).toEqual('')
+        expect(result.current.exchangeRate).toEqual('')
+      })
+    })
+
+    it('should set fromAmount and toAmount using swap qoute buyAmount and sellAmount fields', async () => {
+      const { result, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccount,
+        mockNetwork,
+        AccountAssetOptions,
+        WalletPageActions.fetchPageSwapQuote,
+        mockGetERC20Allowance,
+        WalletActions.approveERC20Allowance,
+        mockIsSwapSupportedFactory(true),
+        {
+          ...mockQuote,
+          sellAmount: '10', // 0.00000000000000001,
+          buyAmount: '8' // '0.000000000000000008',
+        }
+      ))
+      await waitForValueToChange(() => result.current.isSwapSupported)
+
+      act(() => {
+        expect(result.current.fromAmount).toEqual('0.00000000000000001')
+        expect(result.current.toAmount).toEqual('0.000000000000000008')
+      })
+    })
+
+    it('should set exchangeRate to quoted price if approximate price is close to quoted price', async () => {
+      const quote = {
+        ...mockQuote,
+        price: '2',
+        buyTokenToEthRate: '1000',
+        sellTokenToEthRate: '500'
+      }
+
+      const { result, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccount,
+        mockNetwork,
+        AccountAssetOptions,
+        WalletPageActions.fetchPageSwapQuote,
+        mockGetERC20Allowance,
+        WalletActions.approveERC20Allowance,
+        mockIsSwapSupportedFactory(true),
+        quote
+      ))
+      await waitForValueToChange(() => result.current.isSwapSupported)
+
+      expect(result.current.exchangeRate).toEqual(quote.price)
+    })
+
+    it('should set exchangeRate to approximate price if approximate price and quoted price are not numerically close', async () => {
+      const quote = {
+        ...mockQuote,
+        price: '3',
+        buyTokenToEthRate: '1000',
+        sellTokenToEthRate: '500'
+      }
+      const approximatePrice = new Amount(quote.buyTokenToEthRate).div(new Amount(quote.sellTokenToEthRate)).format(6)
+
+      const { result, waitForValueToChange } = renderHook(() => useSwap(
+        mockAccount,
+        mockNetwork,
+        AccountAssetOptions,
+        WalletPageActions.fetchPageSwapQuote,
+        mockGetERC20Allowance,
+        WalletActions.approveERC20Allowance,
+        mockIsSwapSupportedFactory(true),
+        quote
+      ))
+
+      await waitForValueToChange(() => result.current.isSwapSupported)
+
+      act(() => {
+        expect(result.current.exchangeRate).toEqual(approximatePrice)
       })
     })
   })
