@@ -26,8 +26,8 @@
 
 namespace brave {
 namespace ios {
-password_manager::PasswordForm::Scheme PasswordFormSchemeForPasswordFormDigest(
-    PasswordFormScheme scheme) {
+password_manager::PasswordForm::Scheme
+PasswordManagerSchemeFromPasswordFormScheme(PasswordFormScheme scheme) {
   switch (scheme) {
     case PasswordFormSchemeTypeHtml:
       return password_manager::PasswordForm::Scheme::kHtml;
@@ -98,37 +98,23 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 
     [self setSignOnRealm:signOnRealm];
 
-    if (dateCreated) {
-      [self setDateCreated:dateCreated];
-    }
+    [self setDateCreated:dateCreated];
 
-    if (dateLastUsed) {
-      [self setDateLastUsed:dateLastUsed];
-    }
+    [self setDateLastUsed:dateLastUsed];
 
-    if (datePasswordChanged) {
-      [self setDatePasswordChanged:datePasswordChanged];
-    }
-    if (usernameElement) {
-      [self setUsernameElement:usernameElement];
-    }
+    [self setDatePasswordChanged:datePasswordChanged];
 
-    if (usernameValue) {
-      [self setUsernameValue:usernameValue];
-    }
+    [self setUsernameElement:usernameElement];
 
-    if (passwordElement) {
-      [self setPasswordElement:passwordElement];
-    }
+    [self setUsernameValue:usernameValue];
 
-    if (passwordValue) {
-      [self setPasswordValue:passwordValue];
-    }
+    [self setPasswordElement:passwordElement];
+
+    [self setPasswordValue:passwordValue];
 
     self.isBlockedByUser = isBlockedByUser;
 
-    password_form_scheme_ =
-        brave::ios::PasswordFormSchemeForPasswordFormDigest(scheme);
+    [self setPasswordFormScheme:scheme];
   }
 
   return self;
@@ -186,15 +172,21 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 }
 
 - (void)setDateCreated:(NSDate*)dateCreated {
-  date_created_ = base::Time::FromNSDate(dateCreated);
+  if (dateCreated) {
+    date_created_ = base::Time::FromNSDate(dateCreated);
+  }
 }
 
 - (void)setDateLastUsed:(NSDate*)dateLastUsed {
-  date_last_used_ = base::Time::FromNSDate(dateLastUsed);
+  if (dateLastUsed) {
+    date_last_used_ = base::Time::FromNSDate(dateLastUsed);
+  }
 }
 
 - (void)setDatePasswordChanged:(NSDate*)datePasswordChanged {
-  date_created_ = base::Time::FromNSDate(datePasswordChanged);
+  if (datePasswordChanged) {
+    date_created_ = base::Time::FromNSDate(datePasswordChanged);
+  }
 }
 
 - (NSDate*)dateCreated {
@@ -210,11 +202,15 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 }
 
 - (void)setUsernameElement:(NSString*)usernameElement {
-  username_element_ = base::SysNSStringToUTF16(usernameElement);
+  if (usernameElement) {
+    username_element_ = base::SysNSStringToUTF16(usernameElement);
+  }
 }
 
 - (void)setUsernameValue:(NSString*)usernameValue {
-  username_value_ = base::SysNSStringToUTF16(usernameValue);
+  if (usernameValue) {
+    username_value_ = base::SysNSStringToUTF16(usernameValue);
+  }
 }
 
 - (NSString*)usernameElement {
@@ -226,11 +222,15 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 }
 
 - (void)setPasswordElement:(NSString*)passwordElement {
-  password_element_ = base::SysNSStringToUTF16(passwordElement);
+  if (passwordElement) {
+    password_element_ = base::SysNSStringToUTF16(passwordElement);
+  }
 }
 
 - (void)setPasswordValue:(NSString*)passwordValue {
-  password_value_ = base::SysNSStringToUTF16(passwordValue);
+  if (passwordValue) {
+    password_value_ = base::SysNSStringToUTF16(passwordValue);
+  }
 }
 
 - (NSString*)passwordElement {
@@ -243,7 +243,8 @@ PasswordFormScheme PasswordFormSchemeFromPasswordManagerScheme(
 
 - (void)setPasswordFormScheme:(PasswordFormScheme)passwordFormScheme {
   password_form_scheme_ =
-      brave::ios::PasswordFormSchemeForPasswordFormDigest(passwordFormScheme);
+      brave::ios::PasswordManagerSchemeFromPasswordFormScheme(
+          passwordFormScheme);
 }
 
 - (PasswordFormScheme)passwordFormScheme {
@@ -435,7 +436,7 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
 
   password_manager::PasswordFormDigest form_digest_args =
       password_manager::PasswordFormDigest(
-          /*scheme*/ brave::ios::PasswordFormSchemeForPasswordFormDigest(
+          /*scheme*/ brave::ios::PasswordManagerSchemeFromPasswordFormScheme(
               formScheme),
           /*signon_realm*/ net::GURLWithNSURL(url).spec(),
           /*url*/ net::GURLWithNSURL(url));

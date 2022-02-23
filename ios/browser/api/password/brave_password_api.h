@@ -22,8 +22,6 @@ typedef NS_ENUM(NSUInteger, PasswordFormScheme) {
 @protocol PasswordStoreObserver;
 @protocol PasswordStoreListener;
 
-@class IOSPasswordForm;
-
 NS_SWIFT_NAME(PasswordForm)
 OBJC_EXPORT
 @interface IOSPasswordForm : NSObject <NSCopying>
@@ -53,12 +51,12 @@ OBJC_EXPORT
 /// @param dateLastUsed - The date when the login was last used by the user
 /// to login to the site
 /// @param datePasswordChanged - Date when the password value was last changed
-/// @param usernameElement - The string represantation of the name of the
+/// @param usernameElement - The string representation of the name of the
 /// username input element
-/// @param usernameValue - The string represantation of the username
-/// @param passwordElement - The string represantation of the name of the
+/// @param usernameValue - The string representation of the username
+/// @param passwordElement - The string representation of the name of the
 /// password input element
-/// @param passwordValue - The string represantation of the password
+/// @param passwordValue - The string representation of the password
 - (instancetype)initWithURL:(NSURL*)url
                 signOnRealm:(NSString*)signOnRealm
                 dateCreated:(nullable NSDate*)dateCreated
