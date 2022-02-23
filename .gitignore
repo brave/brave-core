@@ -16,6 +16,8 @@ patches/**/*.patchinfo
 /third_party/argon2/src
 /third_party/ethash/src
 /third_party/bitcoin-core/src
+/third_party/boost/config
+/third_party/boost/multiprecision
 /third_party/rust/cxx
 *.xcodeproj
 *.swp
