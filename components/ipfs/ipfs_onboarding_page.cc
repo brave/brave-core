@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_onboarding_page.h"
 
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -28,7 +29,7 @@
 namespace {
 const char16_t kResponseScript[] =
     u"if (window.location.href === 'chrome-error://chromewebdata/') { "
-    u"window.postMessage({command: 'ipfs', value: {value}, text: '{text}'}, "
+    u"window.postMessage({command: 'ipfs', code: {code}, value: '{value}'}, "
     u"'*') }";
 
 constexpr int kOnboardingIsolatedWorldId =
@@ -96,9 +97,7 @@ void IPFSOnboardingPage::OnIpfsShutdown() {
 void IPFSOnboardingPage::OnInstallationEvent(
     ipfs::ComponentUpdaterEvents event) {
   if (event == ipfs::ComponentUpdaterEvents::COMPONENT_UPDATE_ERROR) {
-    RespondToPage(
-        INSTALLATION_ERROR,
-        l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_INSTALLATION_ERROR));
+    RespondToPage(INSTALLATION_ERROR, std::u16string());
   }
 }
 
@@ -111,9 +110,7 @@ void IPFSOnboardingPage::OnGetConnectedPeers(
       if (delta.InSeconds() > kConnectedPeersAlertTimeoutSec) {
         int retries = (kConnectedPeersRetryLimitSec - delta.InSeconds()) /
                       kConnectedPeersRetryStepSec;
-        RespondToPage(NO_PEERS_AVAILABLE, l10n_util::GetStringFUTF16(
-                                              IDS_IPFS_ONBOARDING_PEERS_ERROR,
-                                              base::NumberToString16(retries)));
+        RespondToPage(NO_PEERS_AVAILABLE, base::NumberToString16(retries));
       }
       base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
           FROM_HERE,
@@ -121,8 +118,7 @@ void IPFSOnboardingPage::OnGetConnectedPeers(
                          weak_ptr_factory_.GetWeakPtr()),
           base::Seconds(kConnectedPeersRetryStepSec));
     } else {
-      RespondToPage(NO_PEERS_LIMIT, l10n_util::GetStringUTF16(
-                                        IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR));
+      RespondToPage(NO_PEERS_LIMIT, std::u16string());
     }
     return;
   }
@@ -132,8 +128,7 @@ void IPFSOnboardingPage::OnGetConnectedPeers(
 }
 
 void IPFSOnboardingPage::ReportDaemonStopped() {
-  RespondToPage(LOCAL_NODE_ERROR,
-                l10n_util::GetStringUTF16(IDS_IPFS_SERVICE_LAUNCH_ERROR));
+  RespondToPage(LOCAL_NODE_ERROR, std::u16string());
 }
 
 void IPFSOnboardingPage::GetConnectedPeers() {
@@ -162,15 +157,15 @@ void IPFSOnboardingPage::Proceed() {
   controller()->OpenUrlInCurrentTab(request_url());
 }
 
-void IPFSOnboardingPage::RespondToPage(IPFSOnboardingResponse value,
-                                       const std::u16string& text) {
+void IPFSOnboardingPage::RespondToPage(IPFSOnboardingResponse code,
+                                       const std::u16string& value) {
   auto* main_frame = web_contents()->GetMainFrame();
   DCHECK(main_frame);
 
   std::u16string script(kResponseScript);
-  base::ReplaceSubstringsAfterOffset(&script, 0, u"{value}",
-                                     base::NumberToString16(value));
-  base::ReplaceSubstringsAfterOffset(&script, 0, u"{text}", text);
+  base::ReplaceSubstringsAfterOffset(&script, 0, u"{code}",
+                                     base::NumberToString16(code));
+  base::ReplaceSubstringsAfterOffset(&script, 0, u"{value}", value);
   main_frame->ExecuteJavaScriptInIsolatedWorld(script, {},
                                                kOnboardingIsolatedWorldId);
 }
@@ -244,10 +239,22 @@ void IPFSOnboardingPage::PopulateInterstitialStrings(
       l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_PEERS_LIMIT_ERROR));
   load_time_data->SetStringKey(
       "tryAgainText", l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_TRY_AGAIN));
+  load_time_data->SetStringKey(
+      "localNodeError",
+      l10n_util::GetStringUTF16(IDS_IPFS_SERVICE_LAUNCH_ERROR));
+  load_time_data->SetStringKey(
+      "installationError",
+      l10n_util::GetStringUTF16(IDS_IPFS_ONBOARDING_INSTALLATION_ERROR));
+  load_time_data->SetStringKey(
+      "peersError",
+      l10n_util::GetStringFUTF16(IDS_IPFS_ONBOARDING_PEERS_ERROR, u"{value}"));
 
 #if !defined(OS_ANDROID)
-  load_time_data->SetStringKey(
-      "braveTheme", GetThemeType(ui::NativeTheme::GetInstanceForNativeUi()));
+  std::u16string theme_type =
+      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
+          ? u"dark"
+          : u"light";
+  load_time_data->SetStringKey("braveTheme", theme_type);
   load_time_data->SetStringKey("os", "");
 #else
   load_time_data->SetStringKey("braveTheme", "light");
@@ -264,12 +271,10 @@ IPFSOnboardingPage::GetTypeForTesting() {
   return IPFSOnboardingPage::kTypeForTesting;
 }
 
-std::string IPFSOnboardingPage::GetThemeType(ui::NativeTheme* theme) const {
-  return theme->ShouldUseDarkColors() ? "dark" : "light";
-}
-
 void IPFSOnboardingPage::OnNativeThemeUpdated(ui::NativeTheme* observed_theme) {
-  RespondToPage(THEME_CHANGED, base::UTF8ToUTF16(GetThemeType(observed_theme)));
+  auto command = observed_theme->ShouldUseDarkColors() ? THEME_CHANGED_DARK
+                                                       : THEME_CHANGED_LIGHT;
+  RespondToPage(command, std::u16string());
 }
 
 }  // namespace ipfs

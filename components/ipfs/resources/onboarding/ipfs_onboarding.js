@@ -16,11 +16,12 @@ const IPFSOnboardingCommandId = {
 /** @enum {number} */
 const IPFSOnboardingResponse = {
   LOCAL_NODE_ERROR: 0,
-  THEME_CHANGED: 1,
-  LOCAL_NODE_LAUNCHED: 2,
-  NO_PEERS_AVAILABLE: 3,
-  NO_PEERS_LIMIT: 4,
-  INSTALLATION_ERROR: 5
+  LOCAL_NODE_LAUNCHED: 1,
+  NO_PEERS_AVAILABLE: 2,
+  NO_PEERS_LIMIT: 3,
+  INSTALLATION_ERROR: 4,
+  THEME_CHANGED_DARK: 5,
+  THEME_CHANGED_LIGHT: 6
 };
 
 const setTheme = (theme) => {
@@ -63,20 +64,22 @@ function showErrorMessage(text) {
 
 function handleCommand(code, text) {
   if (code == IPFSOnboardingResponse.LOCAL_NODE_ERROR) {
-    showErrorMessage(text)
+    showErrorMessage('$i18n{localNodeError}')
     $('local-node-button').textContent = '$i18n{retryText}'
-  } else if (code == IPFSOnboardingResponse.THEME_CHANGED) {
-    setTheme(text)
+  } else if (code == IPFSOnboardingResponse.THEME_CHANGED_DARK) {
+    setTheme("dark")
+  } else if (code == IPFSOnboardingResponse.THEME_CHANGED_LIGHT) {
+    setTheme("light")
   } else if (code == IPFSOnboardingResponse.LOCAL_NODE_LAUNCHED) {
     $('local-node-button').textContent = '$i18n{watingPeersText}'
   } else if (code == IPFSOnboardingResponse.NO_PEERS_AVAILABLE) {
-    showErrorMessage(text)
+    showErrorMessage('$i18n{peersError}'.replace('{value}', text))
   } else if (code == IPFSOnboardingResponse.NO_PEERS_LIMIT) {
-    showErrorMessage('$i18nRaw{retryLimitPeersText}')
+    showErrorMessage('$i18n{retryLimitPeersText}')
     $('local-node-button').textContent = '$i18n{tryAgainText}'
     $('local-node-button').className = 'button button-retry'
   } else if (code == IPFSOnboardingResponse.INSTALLATION_ERROR) {
-    showErrorMessage(text)
+    showErrorMessage('$i18n{installationError}')
     $('local-node-button').textContent = '$i18n{tryAgainText}'
     $('local-node-button').className = 'button button-retry'
   }
@@ -87,10 +90,15 @@ function messageHandler (event) {
   if (event.type !== 'message' || event.origin !== document.location.origin) {
     return false
   }
+  
   if (!event.data || event.data.command !== 'ipfs')
     return false
-
-  return handleCommand(event.data.value, event.data.text);
+    
+  if (isNaN(parseInt(event.data.code)) ||
+      (event.data.value !== '' && isNaN(parseInt(event.data.value)))) {
+    return false;
+  }
+  return handleCommand(event.data.code, event.data.value);
 }
 
 window.addEventListener("message", messageHandler, false);
