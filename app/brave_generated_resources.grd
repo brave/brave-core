@@ -950,6 +950,9 @@ Are you sure you want to do this?
       <message name="IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for showing the Brave wallet panel icon on the toolbar">
         Show Brave Wallet icon on toolbar
       </message>
+      <message name="IDS_SETTINGS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR" desc="The description for hiding the Brave wallet panel icon on the toolbar">
+        Hide Brave Wallet icon on toolbar
+      </message>
       <message name="IDS_SETTINGS_AUTO_LOCK_MINUTES" desc="The title for the amount of minutes it takes for the Brave Wallet to automatically lock">
         Automatically lock Brave Wallet
       </message>

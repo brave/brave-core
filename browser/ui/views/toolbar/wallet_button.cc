@@ -13,6 +13,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -23,6 +24,7 @@
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/simple_menu_model.h"
 #include "ui/gfx/paint_vector_icon.h"
 
 namespace {
@@ -34,11 +36,44 @@ content::WebContents* GetActiveWebContents() {
       ->GetActiveWebContents();
 }
 
+class WalletButtonMenuModel : public ui::SimpleMenuModel,
+                              public ui::SimpleMenuModel::Delegate {
+ public:
+  explicit WalletButtonMenuModel(PrefService* prefs)
+      : SimpleMenuModel(this), prefs_(prefs) {
+    Build();
+  }
+
+  ~WalletButtonMenuModel() override = default;
+  WalletButtonMenuModel(const WalletButtonMenuModel&) = delete;
+  WalletButtonMenuModel& operator=(const WalletButtonMenuModel&) = delete;
+
+ private:
+  enum ContextMenuCommand {
+    HideBraveWalletIcon,
+  };
+
+  // ui::SimpleMenuModel::Delegate override:
+  void ExecuteCommand(int command_id, int event_flags) override {
+    if (command_id == HideBraveWalletIcon)
+      prefs_->SetBoolean(kShowWalletIconOnToolbar, false);
+  }
+
+  void Build() {
+    AddItemWithStringId(HideBraveWalletIcon,
+                        IDS_SETTINGS_HIDE_BRAVE_WALLET_ICON_ON_TOOLBAR);
+  }
+
+  raw_ptr<PrefService> prefs_ = nullptr;
+};
+
 }  // namespace
 
 WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
     : ToolbarButton(base::BindRepeating(&WalletButton::OnWalletPressed,
-                                        base::Unretained(this))),
+                                        base::Unretained(this)),
+                    std::make_unique<WalletButtonMenuModel>(prefs),
+                    nullptr),
       prefs_(prefs),
       backup_anchor_view_(backup_anchor_view) {
   pref_change_registrar_.Init(prefs_);
@@ -47,14 +82,6 @@ WalletButton::WalletButton(View* backup_anchor_view, PrefService* prefs)
       base::BindRepeating(&WalletButton::OnPreferenceChanged,
                           base::Unretained(this)));
   UpdateVisibility();
-
-  auto menu_button_controller = std::make_unique<views::MenuButtonController>(
-      this,
-      base::BindRepeating(&WalletButton::OnWalletPressed,
-                          base::Unretained(this)),
-      std::make_unique<views::Button::DefaultButtonControllerDelegate>(this));
-  menu_button_controller_ = menu_button_controller.get();
-  SetButtonController(std::move(menu_button_controller));
 }
 
 WalletButton::~WalletButton() = default;
