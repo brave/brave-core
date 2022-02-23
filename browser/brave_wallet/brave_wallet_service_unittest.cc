@@ -168,10 +168,10 @@ class BraveWalletServiceUnitTest : public testing::Test {
     scoped_feature_list_.InitAndEnableFeature(
         features::kNativeBraveWalletFeature);
 
-    base::Time future_mock_time;
 #if defined(OS_ANDROID)
     task_environment_.AdvanceClock(base::Days(2));
 #else
+    base::Time future_mock_time;
     if (base::Time::FromString("3000-01-04", &future_mock_time)) {
       task_environment_.AdvanceClock(future_mock_time - base::Time::Now());
     }
