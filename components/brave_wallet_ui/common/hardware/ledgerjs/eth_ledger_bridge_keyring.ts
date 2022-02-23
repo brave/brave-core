@@ -165,6 +165,10 @@ export default class LedgerBridgeKeyring extends LedgerEthereumKeyring {
     if (scheme === LedgerDerivationPaths.LedgerLive) {
       return `m/44'/60'/${index}'/0/0`
     }
+    if (scheme === LedgerDerivationPaths.Deprecated) {
+      return `m/44'/60'/${index}'/0`
+    }
+
     assert(scheme === LedgerDerivationPaths.Legacy)
     return `m/44'/60'/0'/${index}`
   }

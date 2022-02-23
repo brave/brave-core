@@ -10,6 +10,7 @@ import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 export const HardwareWalletDerivationPathLocaleMapping = {
   [LedgerDerivationPaths.LedgerLive]: 'Ledger Live',
   [LedgerDerivationPaths.Legacy]: 'Legacy (MEW/MyCrypto)',
+  [LedgerDerivationPaths.Deprecated]: 'Deprecated (Not recommended)',
   [TrezorDerivationPaths.Default]: 'Default'
 }
 

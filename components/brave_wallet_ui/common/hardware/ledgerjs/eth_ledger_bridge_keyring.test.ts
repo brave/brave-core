@@ -84,6 +84,31 @@ test('Extracting accounts from legacy device', () => {
     )
 })
 
+test('Extracting accounts with deprecated derivation paths', () => {
+  return expect(createLedgerKeyring().getAccounts(-2, 1, LedgerDerivationPaths.Deprecated))
+    .resolves.toStrictEqual({
+      payload: [
+        {
+          'address': 'address for m/44\'/60\'/0\'/0',
+          'derivationPath': 'm/44\'/60\'/0\'/0',
+          'hardwareVendor': 'Ledger',
+          'name': 'Ledger',
+          'deviceId': 'device1',
+          'coin': BraveWallet.CoinType.ETH
+        },
+        {
+          'address': 'address for m/44\'/60\'/1\'/0',
+          'derivationPath': 'm/44\'/60\'/1\'/0',
+          'hardwareVendor': 'Ledger',
+          'name': 'Ledger',
+          'deviceId': 'device1',
+          'coin': BraveWallet.CoinType.ETH
+        }],
+      success: true
+    }
+    )
+})
+
 test('Check ledger bridge type', () => {
   const ledgerHardwareKeyring = new LedgerBridgeKeyring()
   return expect(ledgerHardwareKeyring.type()).toStrictEqual(BraveWallet.LEDGER_HARDWARE_VENDOR)
