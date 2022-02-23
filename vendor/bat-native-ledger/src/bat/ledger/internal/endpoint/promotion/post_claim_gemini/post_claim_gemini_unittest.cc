@@ -67,18 +67,44 @@ TEST_F(PostClaimGeminiTest, ServerOK) {
   });
 }
 
-TEST_F(PostClaimGeminiTest, ServerError400) {
+TEST_F(PostClaimGeminiTest, ServerError400FlaggedWallet) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
           [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = net::HTTP_BAD_REQUEST;
             response.url = request->url;
-            response.body = "";
+            response.body = R"(
+{
+    "message": "unable to link - unusual activity",
+    "code": 400
+}
+            )";
             callback(response);
           }));
 
-  claim_->Request("mock_linking_info", "id", [](const type::Result result) {
+  claim_->Request("mock_linking_info", "id", [](type::Result result) {
+    EXPECT_EQ(result, type::Result::FLAGGED_WALLET);
+  });
+}
+
+TEST_F(PostClaimGeminiTest, ServerError400UnknownMessage) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = net::HTTP_BAD_REQUEST;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "unknown message",
+    "code": 400
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request("mock_linking_info", "id", [](type::Result result) {
     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }

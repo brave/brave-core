@@ -20,6 +20,8 @@ std::string GetEventLogKeyForLinkingResult(type::Result result) {
       return log::kRequestSignatureVerificationFailure;
     case type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE:
       return log::kTransactionVerificationFailure;
+    case type::Result::FLAGGED_WALLET:
+      return log::kFlaggedWallet;
     default:
       NOTREACHED();
       return "";
