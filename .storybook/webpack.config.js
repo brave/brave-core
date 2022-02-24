@@ -105,6 +105,14 @@ module.exports = async ({ config, mode }) => {
             ...getBuildOuptutPathList('gen')
           ]
         },
+        {
+          name: '$web-common',
+          alias: [path.resolve(__dirname, '../components/common')]
+        },
+        {
+          name: '$web-components',
+          alias: [path.resolve(__dirname, '../components/web-components')]
+        }
       ], 'resolve'
     )
   ]
