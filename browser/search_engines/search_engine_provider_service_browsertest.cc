@@ -168,9 +168,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
 
-  int default_provider_id = brave::IsRegionForQwant(tor_profile) ?
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT :
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
+  const int default_provider_id =
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
 
   // Check tor profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
@@ -195,10 +194,8 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   Profile* tor_profile = BrowserList::GetInstance()->GetLastActive()->profile();
   EXPECT_TRUE(tor_profile->IsTor());
 
-  int default_provider_id =
-      brave::IsRegionForQwant(tor_profile)
-          ? TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT
-          : TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
+  const int default_provider_id =
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_BRAVE_TOR;
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             default_provider_id);
