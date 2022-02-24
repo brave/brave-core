@@ -1412,7 +1412,7 @@ extension Strings {
       "wallet.addCustomTokenErrorMessage",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Please verify the custom token information, check your internet connection, and try again.",
+      value: "Failed to add custom token, please try again.",
       comment: "The message of the error pop up when there is an error occurs during the process of adding a custom token."
     )
     public static let removeCustomTokenErrorTitle = NSLocalizedString(
