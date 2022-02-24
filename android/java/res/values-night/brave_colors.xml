@@ -28,6 +28,10 @@
 
     <color name="onboarding_progressbar_secondary_bg">#212529</color>
 
+    <!-- Day/Night colors -->
+    <color name="brave_wallet_day_night_text_color">@android:color/white</color>
+    <color name="brave_wallet_day_night_icon_color">@android:color/white</color>
+
     <!-- Text colors -->
     <color name="brave_theme_hint_text">#84889C</color>
 

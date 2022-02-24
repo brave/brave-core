@@ -21,6 +21,10 @@
     <color name="modern_blue_700">#C22700</color>
     <color name="dialog_bg_color_dark">@color/toolbar_background_primary_dark</color>
 
+    <!-- Day/Night colors -->
+    <color name="brave_wallet_day_night_text_color">@android:color/black</color>
+    <color name="brave_wallet_day_night_icon_color">@android:color/black</color>
+
     <!-- Text colors -->
     <color name="brave_theme_hint_text">#868E96</color>
 

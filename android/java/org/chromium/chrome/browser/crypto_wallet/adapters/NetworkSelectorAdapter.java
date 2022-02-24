@@ -48,9 +48,7 @@ public class NetworkSelectorAdapter
     }
 
     @Override
-    public @NonNull
-    ViewHolder onCreateViewHolder(
-            ViewGroup parent, int viewType) {
+    public @NonNull ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         View view = inflater.inflate(R.layout.item_network_selector, parent, false);
         return new ViewHolder(view);
@@ -58,8 +56,7 @@ public class NetworkSelectorAdapter
 
     @SuppressLint("NotifyDataSetChanged")
     @Override
-    public void onBindViewHolder(
-            @NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final NetworkSelectorItem network = networks.get(position);
 
         holder.tvName.setText(network.getNetworkShortName());
@@ -70,7 +67,7 @@ public class NetworkSelectorAdapter
         holder.itemView.setOnClickListener(v -> {
             updateSelectedNetwork(holder.getAdapterPosition());
             if (networkClickListener != null) {
-                networkClickListener.onNetworkItemSelecd(network);
+                networkClickListener.onNetworkItemSelected(network);
             }
         });
     }
@@ -80,10 +77,10 @@ public class NetworkSelectorAdapter
         return networks.size();
     }
 
-    public void setSelectedNetwork(String network){
+    public void setSelectedNetwork(String network) {
         for (int i = 0; i < networks.size(); i++) {
             NetworkSelectorItem networkSelectorItem = networks.get(i);
-            if (networkSelectorItem.getNetworkName().equalsIgnoreCase(network)){
+            if (networkSelectorItem.getNetworkName().equalsIgnoreCase(network)) {
                 updateSelectedNetwork(i);
                 break;
             }
@@ -94,7 +91,7 @@ public class NetworkSelectorAdapter
         this.networkClickListener = networkClickListener;
     }
 
-    private void updateSelectedNetwork(int selectedNetworkPosition){
+    private void updateSelectedNetwork(int selectedNetworkPosition) {
         networks.get(previousSelectedPos).setIsSelected(false);
         notifyItemChanged(previousSelectedPos);
 
@@ -158,6 +155,6 @@ public class NetworkSelectorAdapter
     }
 
     public interface NetworkClickListener {
-        void onNetworkItemSelecd(NetworkSelectorItem networkSelectorItem);
+        void onNetworkItemSelected(NetworkSelectorItem networkSelectorItem);
     }
 }

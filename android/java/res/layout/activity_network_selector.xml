@@ -13,13 +13,14 @@
     android:orientation="vertical"
     tools:context=".browser.crypto_wallet.activities.NetworkSelectorActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginBottom="8dp"
         android:background="@color/wallet_toolbar_bg_color"
         android:gravity="center_vertical"
+        app:titleCentered="true"
         android:translationZ="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
