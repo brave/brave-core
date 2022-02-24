@@ -19,14 +19,22 @@ public class PlaylistThumbnailRenderer {
     private var favIconGenerator: FavIconImageRenderer?
     private var thumbnailGenerator = Set<AnyCancellable>()
     
-    func loadThumbnail(assetUrl: URL, favIconUrl: URL, completion: @escaping (UIImage?) -> Void) {
-        if let cachedImage = SDImageCache.shared.imageFromCache(forKey: assetUrl.absoluteString) {
+    func loadThumbnail(assetUrl: URL?, favIconUrl: URL?, completion: @escaping (UIImage?) -> Void) {
+        if let assetUrl = assetUrl, let cachedImage = SDImageCache.shared.imageFromCache(forKey: assetUrl.absoluteString) {
             self.destroy()
             completion(cachedImage)
         } else {
-            var generators = [bind(loadHLSThumbnail, url: assetUrl),
-                              bind(loadAssetThumbnail, url: assetUrl),
-                              bind(loadFavIconThumbnail, url: favIconUrl)]
+            var generators = [Future<UIImage, Error>]()
+            if let assetUrl = assetUrl {
+                generators.append(contentsOf: [
+                    bind(loadHLSThumbnail, url: assetUrl),
+                    bind(loadAssetThumbnail, url: assetUrl)
+                ])
+            }
+            
+            if let favIconUrl = favIconUrl {
+                generators.append(bind(loadFavIconThumbnail, url: favIconUrl))
+            }
             
             var chainedGenerator = generators.removeFirst().eraseToAnyPublisher()
             for generator in generators {
@@ -257,8 +265,10 @@ private class FavIconImageRenderer {
     func loadIcon(siteURL: URL, completion: ((UIImage?) -> Void)?) {
         task?.cancel()
         task = DispatchWorkItem {
-            let faviconFetcher: FaviconFetcher? = FaviconFetcher(siteURL: siteURL, kind: .favicon, domain: nil)
+            var faviconFetcher: FaviconFetcher? = FaviconFetcher(siteURL: siteURL, kind: .favicon, domain: nil)
             faviconFetcher?.load() { [weak self] _, attributes in
+                faviconFetcher = nil
+                
                 guard let self = self,
                       let cancellable = self.task,
                       !cancellable.isCancelled  else {
@@ -267,17 +277,16 @@ private class FavIconImageRenderer {
                 }
                 
                 if let image = attributes.image {
-                    let finalImage = self.renderOnImageContext { context, rect in
-                        if let backgroundColor = attributes.backgroundColor {
+                    if let backgroundColor = attributes.backgroundColor,
+                       let image = image.cgImage {
+                        let finalImage = self.renderOnImageContext { context, rect in
                             context.setFillColor(backgroundColor.cgColor)
-                        }
-                        
-                        if let image = image.cgImage {
                             context.draw(image, in: rect)
                         }
+                        completion?(finalImage)
+                    } else {
+                        completion?(image)
                     }
-                    
-                    completion?(finalImage)
                 } else {
                     // Monogram favicon attributes
                     let label = UILabel().then {
@@ -298,6 +307,10 @@ private class FavIconImageRenderer {
                     completion?(finalImage)
                 }
             }
+        }
+        
+        if let task = task {
+            DispatchQueue.main.async(execute: task)
         }
     }
     

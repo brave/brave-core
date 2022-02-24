@@ -10,7 +10,7 @@ import Shared
 private let log = Logger.browserLogger
 
 @objc(PlaylistItem)
-final public class PlaylistItem: NSManagedObject, CRUD {
+final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
     @NSManaged public var cachedData: Data?
     @NSManaged public var dateAdded: Date?
     @NSManaged public var duration: TimeInterval
@@ -20,8 +20,47 @@ final public class PlaylistItem: NSManagedObject, CRUD {
     @NSManaged public var order: Int32
     @NSManaged public var pageSrc: String?
     @NSManaged public var pageTitle: String?
+    @NSManaged public var playlistFolder: PlaylistFolder?
+    
+    public var id: String {
+        objectID.uriRepresentation().absoluteString
+    }
     
     public class func frc() -> NSFetchedResultsController<PlaylistItem> {
+        let context = DataController.viewContext
+        let fetchRequest = NSFetchRequest<PlaylistItem>()
+        fetchRequest.entity = PlaylistItem.entity(context)
+        fetchRequest.fetchBatchSize = 20
+        
+        let orderSort = NSSortDescriptor(key: "order", ascending: true)
+        let createdSort = NSSortDescriptor(key: "dateAdded", ascending: false)
+        fetchRequest.sortDescriptors = [orderSort, createdSort]
+        
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context,
+                                          sectionNameKeyPath: nil, cacheName: nil)
+    }
+    
+    public class func frc(parentFolder: PlaylistFolder?) -> NSFetchedResultsController<PlaylistItem> {
+        let context = DataController.viewContext
+        let fetchRequest = NSFetchRequest<PlaylistItem>()
+        fetchRequest.entity = PlaylistItem.entity(context)
+        fetchRequest.fetchBatchSize = 20
+        
+        if let parentFolder = parentFolder {
+            fetchRequest.predicate = NSPredicate(format: "playlistFolder.uuid == %@", parentFolder.uuid!)
+        } else {
+            fetchRequest.predicate = NSPredicate(format: "playlistFolder == nil")
+        }
+        
+        let orderSort = NSSortDescriptor(key: "order", ascending: true)
+        let createdSort = NSSortDescriptor(key: "dateAdded", ascending: false)
+        fetchRequest.sortDescriptors = [orderSort, createdSort]
+        
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context,
+                                          sectionNameKeyPath: nil, cacheName: nil)
+    }
+    
+    public class func allFoldersFRC() -> NSFetchedResultsController<PlaylistItem> {
         let context = DataController.viewContext
         let fetchRequest = NSFetchRequest<PlaylistItem>()
         fetchRequest.entity = PlaylistItem.entity(context)
@@ -46,9 +85,9 @@ final public class PlaylistItem: NSManagedObject, CRUD {
             playlistItem.duration = item.duration
             playlistItem.mimeType = item.mimeType
             playlistItem.mediaSrc = item.src
-            playlistItem.order = -9999
+            playlistItem.order = Int32.min
+            playlistItem.playlistFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID, context: context)
             
-            PlaylistItem.saveContext(context)
             PlaylistItem.reorderItems(context: context)
             PlaylistItem.saveContext(context)
             
@@ -56,6 +95,21 @@ final public class PlaylistItem: NSManagedObject, CRUD {
                 completion?()
             }
         }
+    }
+    
+    public static func getItems(parentFolder: PlaylistFolder?) -> [PlaylistItem] {
+        let predicate: NSPredicate
+        if let parentFolder = parentFolder {
+            predicate = NSPredicate(format: "playlistFolder.uuid == %@", parentFolder.uuid!)
+        } else {
+            predicate = NSPredicate(format: "playlistFolder == nil")
+        }
+        
+        let orderSort = NSSortDescriptor(key: "order", ascending: true)
+        let createdSort = NSSortDescriptor(key: "dateAdded", ascending: false)
+        return PlaylistItem.all(where: predicate,
+                                     sortDescriptors: [orderSort, createdSort],
+                                     fetchLimit: 20) ?? []
     }
     
     public static func getItem(pageSrc: String) -> PlaylistItem? {
@@ -117,7 +171,29 @@ final public class PlaylistItem: NSManagedObject, CRUD {
     }
     
     public static func removeItem(_ item: PlaylistInfo) {
-        PlaylistItem.deleteAll(predicate: NSPredicate(format: "mediaSrc == %@", item.src), context: .new(inMemory: false), includesPropertyValues: false)
+        PlaylistItem.deleteAll(predicate: NSPredicate(format: "pageSrc == %@ OR mediaSrc == %@", item.pageSrc, item.src), context: .new(inMemory: false), includesPropertyValues: false)
+    }
+    
+    public static func removeItems(_ items: [PlaylistInfo]) {
+        let pageSrcs = items.map({ $0.pageSrc })
+        let mediaSrcs = items.map({ $0.src })
+        
+        PlaylistItem.deleteAll(predicate: NSPredicate(format: "pageSrc IN %@ OR mediaSrc IN %@", pageSrcs, mediaSrcs), context: .new(inMemory: false), includesPropertyValues: false)
+    }
+    
+    public static func moveItems(items: [NSManagedObjectID], to folderUUID: String?) {
+        DataController.perform { context in
+            var folder: PlaylistFolder?
+            if let folderUUID = folderUUID {
+                folder = PlaylistFolder.getFolder(uuid: folderUUID, context: context)
+            }
+            
+            let playlistItems = items.compactMap { try? context.existingObject(with: $0) as? PlaylistItem }
+            playlistItems.forEach {
+                $0.playlistFolder = folder
+                folder?.playlistItems?.insert($0)
+            }
+        }
     }
     
     // MARK: - Internal

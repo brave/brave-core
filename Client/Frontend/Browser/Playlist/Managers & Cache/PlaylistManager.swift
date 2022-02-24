@@ -14,21 +14,12 @@ import BraveShared
 
 private let log = Logger.browserLogger
 
-protocol PlaylistManagerDelegate: AnyObject {
-    func onDownloadProgressUpdate(id: String, percentComplete: Double)
-    func onDownloadStateChanged(id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?, error: Error?)
-    
-    func controllerDidChange(_ anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?)
-    func controllerDidChangeContent()
-    func controllerWillChangeContent()
-}
-
 class PlaylistManager: NSObject {
     static let shared = PlaylistManager()
     
     private var assetInformation = [PlaylistAssetFetcher]()
     private let downloadManager = PlaylistDownloadManager()
-    private let frc = PlaylistItem.frc()
+    private var frc = PlaylistItem.frc()
     private var didRestoreSession = false
     
     // Observers
@@ -45,6 +36,7 @@ class PlaylistManager: NSObject {
                                                              state: PlaylistDownloadManager.DownloadState,
                                                              displayName: String?,
                                                              error: Error?), Never>()
+    private let onCurrentFolderChanged = PassthroughSubject<(), Never>()
     
     private override init() {
         super.init()
@@ -54,6 +46,25 @@ class PlaylistManager: NSObject {
         
         // Delete system cache always on startup.
         deleteUserManagedAssets()
+    }
+    
+    var currentFolder: PlaylistFolder? {
+        didSet {
+            frc.delegate = nil
+            
+            if let currentFolder = currentFolder {
+                // Only return an FRC for the specified folder
+                frc = PlaylistItem.frc(parentFolder: currentFolder)
+            } else {
+                // Return every folder, including the "Saved" folder
+                frc = PlaylistItem.allFoldersFRC()
+            }
+            
+            frc.delegate = self
+            reloadData()
+            
+            onCurrentFolderChanged.send()
+        }
     }
     
     var contentWillChange: AnyPublisher<Void, Never> {
@@ -76,12 +87,20 @@ class PlaylistManager: NSObject {
         onDownloadStateChanged.eraseToAnyPublisher()
     }
     
+    var onCurrentFolderDidChange: AnyPublisher<(), Never> {
+        onCurrentFolderChanged.eraseToAnyPublisher()
+    }
+    
     var allItems: [PlaylistInfo] {
         frc.fetchedObjects?.map({ PlaylistInfo(item: $0) }) ?? []
     }
     
     var numberOfAssets: Int {
         frc.fetchedObjects?.count ?? 0
+    }
+    
+    var fetchedObjects: [PlaylistItem] {
+        frc.fetchedObjects ?? []
     }
     
     func itemAtIndex(_ index: Int) -> PlaylistInfo? {
@@ -222,6 +241,51 @@ class PlaylistManager: NSObject {
     
     func cancelDownload(item: PlaylistInfo) {
         downloadManager.cancelDownload(item: item)
+    }
+    
+    @discardableResult
+    func delete(folder: PlaylistFolder) -> Bool {
+        var success = true
+        var itemsToDelete = [PlaylistInfo]()
+        
+        folder.playlistItems?.forEach({
+            let item = PlaylistInfo(item: $0)
+            cancelDownload(item: item)
+            
+            if let index = assetInformation.firstIndex(where: { $0.itemId == item.pageSrc }) {
+                let assetFetcher = self.assetInformation.remove(at: index)
+                assetFetcher.cancelLoading()
+            }
+            
+            if let cacheItem = PlaylistItem.getItem(pageSrc: item.pageSrc),
+               cacheItem.cachedData != nil {
+                if !deleteCache(item: item) {
+                    // If we cannot delete an item's cache for any given reason,
+                    // Do NOT delete the folder containing the item.
+                    // Delete all other items.
+                    success = false
+                } else {
+                    itemsToDelete.append(item)
+                }
+            }
+        })
+        
+        if success, currentFolder?.objectID == folder.objectID {
+            currentFolder = nil
+        }
+        
+        if success, folder.uuid != PlaylistFolder.savedFolderUUID {
+            PlaylistFolder.removeFolder(folder)
+        } else {
+            PlaylistItem.removeItems(itemsToDelete)
+        }
+        
+        if currentFolder?.isDeleted == true {
+            currentFolder = nil
+        }
+        
+        reloadData()
+        return success
     }
     
     @discardableResult

@@ -13,11 +13,8 @@ import MediaPlayer
 
 private let log = Logger.browserLogger
 
-// MARK: UITableViewDelegate
-
-extension PlaylistListViewController: UITableViewDelegate {
-    
-    private func shareItem(_ item: PlaylistInfo, anchorView: UIView?) {
+private extension PlaylistListViewController {
+    func shareItem(_ item: PlaylistInfo, anchorView: UIView?) {
         guard let url = URL(string: item.pageSrc) else {
             return
         }
@@ -32,12 +29,89 @@ extension PlaylistListViewController: UITableViewDelegate {
         self.present(activityViewController, animated: true, completion: nil)
     }
     
+    func cacheItem(_ item: PlaylistInfo, indexPath: IndexPath, cacheState: PlaylistDownloadManager.DownloadState) {
+        switch cacheState {
+            case .inProgress:
+                PlaylistManager.shared.cancelDownload(item: item)
+                tableView.reloadRows(at: [indexPath], with: .automatic)
+            case .invalid:
+                if PlaylistManager.shared.isDiskSpaceEncumbered() {
+                    let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
+                    let alert = UIAlertController(
+                        title: Strings.PlayList.playlistDiskSpaceWarningTitle, message: Strings.PlayList.playlistDiskSpaceWarningMessage, preferredStyle: style)
+                    
+                    alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: { [unowned self] _ in
+                        PlaylistManager.shared.download(item: item)
+                        self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                    }))
+                    
+                    alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    PlaylistManager.shared.download(item: item)
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
+            case .downloaded:
+                let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
+                let alert = UIAlertController(
+                    title: Strings.PlayList.removePlaylistOfflineDataAlertTitle, message: Strings.PlayList.removePlaylistOfflineDataAlertMessage, preferredStyle: style)
+                
+                alert.addAction(UIAlertAction(title: Strings.PlayList.removeActionButtonTitle, style: .destructive, handler: { [unowned self] _ in
+                    _ = PlaylistManager.shared.deleteCache(item: item)
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
+                }))
+                
+                alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func deleteItem(_ item: PlaylistInfo, indexPath: IndexPath) {
+        let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
+        let alert = UIAlertController(
+            title: Strings.PlayList.removePlaylistVideoAlertTitle, message: Strings.PlayList.removePlaylistVideoAlertMessage, preferredStyle: style)
+        
+        alert.addAction(UIAlertAction(title: Strings.PlayList.removeActionButtonTitle, style: .destructive, handler: { [weak self] _ in
+            guard let self = self else { return }
+            
+            self.delegate?.deleteItem(item: item, at: indexPath.row)
+            
+            if self.delegate?.currentPlaylistItem == nil {
+                self.updateTableBackgroundView()
+                self.activityIndicator.stopAnimating()
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func openInNewTab(_ item: PlaylistInfo, isPrivate: Bool) {
+        if let browser = PlaylistCarplayManager.shared.browserController,
+           let pageURL = URL(string: item.pageSrc) {
+            
+            self.dismiss(animated: true) {
+                browser.tabManager.addTabAndSelect(URLRequest(url: pageURL),
+                                                   isPrivate: isPrivate)
+            }
+        }
+    }
+}
+
+// MARK: UITableViewDelegate
+
+extension PlaylistListViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .none
+    }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        false
+    }
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        if indexPath.row < 0 || indexPath.row >= PlaylistManager.shared.numberOfAssets {
-            return nil
-        }
-
         guard let currentItem = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
             return nil
         }
@@ -45,67 +119,12 @@ extension PlaylistListViewController: UITableViewDelegate {
         let cacheState = PlaylistManager.shared.state(for: currentItem.pageSrc)
         
         let cacheAction = UIContextualAction(style: .normal, title: nil, handler: { [weak self] (action, view, completionHandler) in
-            guard let self = self else { return }
-            
-            switch cacheState {
-                case .inProgress:
-                    PlaylistManager.shared.cancelDownload(item: currentItem)
-                    tableView.reloadRows(at: [indexPath], with: .automatic)
-                case .invalid:
-                    if PlaylistManager.shared.isDiskSpaceEncumbered() {
-                        let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
-                        let alert = UIAlertController(
-                            title: Strings.PlayList.playlistDiskSpaceWarningTitle, message: Strings.PlayList.playlistDiskSpaceWarningMessage, preferredStyle: style)
-                        
-                        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: { _ in
-                            PlaylistManager.shared.download(item: currentItem)
-                            tableView.reloadRows(at: [indexPath], with: .automatic)
-                        }))
-                        
-                        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
-                        self.present(alert, animated: true, completion: nil)
-                    } else {
-                        PlaylistManager.shared.download(item: currentItem)
-                        tableView.reloadRows(at: [indexPath], with: .automatic)
-                    }
-                case .downloaded:
-                    let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
-                    let alert = UIAlertController(
-                        title: Strings.PlayList.removePlaylistOfflineDataAlertTitle, message: Strings.PlayList.removePlaylistOfflineDataAlertMessage, preferredStyle: style)
-                    
-                    alert.addAction(UIAlertAction(title: Strings.PlayList.removeActionButtonTitle, style: .destructive, handler: { _ in
-                        _ = PlaylistManager.shared.deleteCache(item: currentItem)
-                        tableView.reloadRows(at: [indexPath], with: .automatic)
-                    }))
-                    
-                    alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
-            }
-            
+            self?.cacheItem(currentItem, indexPath: indexPath, cacheState: cacheState)
             completionHandler(true)
         })
         
         let deleteAction = UIContextualAction(style: .normal, title: nil, handler: { [weak self] (action, view, completionHandler) in
-            guard let self = self else { return }
-            
-            let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
-            let alert = UIAlertController(
-                title: Strings.PlayList.removePlaylistVideoAlertTitle, message: Strings.PlayList.removePlaylistVideoAlertMessage, preferredStyle: style)
-            
-            alert.addAction(UIAlertAction(title: Strings.PlayList.removeActionButtonTitle, style: .destructive, handler: { [weak self] _ in
-                guard let self = self else { return }
-                
-                self.delegate?.deleteItem(item: currentItem, at: indexPath.row)
-                
-                if self.delegate?.currentPlaylistItem == nil {
-                    self.updateTableBackgroundView()
-                    self.activityIndicator.stopAnimating()
-                }
-            }))
-            
-            alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            
+            self?.deleteItem(currentItem, indexPath: indexPath)
             completionHandler(true)
         })
         
@@ -124,31 +143,17 @@ extension PlaylistListViewController: UITableViewDelegate {
             // Option to open in regular tab
             if !isPrivateBrowsing {
                 alert.addAction(UIAlertAction(title: Strings.PlayList.sharePlaylistOpenInNewTabTitle, style: .default, handler: { [weak self] _ in
-                    guard let self = self else { return }
-                                
-                    if let browser = PlaylistCarplayManager.shared.browserController,
-                       let pageURL = URL(string: currentItem.pageSrc) {
-                        
-                        self.dismiss(animated: true) {
-                            browser.tabManager.addTabAndSelect(URLRequest(url: pageURL),
-                                                               isPrivate: false)
-                        }
-                    }
+                    self?.openInNewTab(currentItem, isPrivate: false)
                 }))
             }
             
             // Option to open in private browsing tab
             alert.addAction(UIAlertAction(title: Strings.PlayList.sharePlaylistOpenInNewPrivateTabTitle, style: .default, handler: { [weak self] _ in
-                guard let self = self else { return }
-                            
-                if let browser = PlaylistCarplayManager.shared.browserController,
-                   let pageURL = URL(string: currentItem.pageSrc) {
-                    
-                    self.dismiss(animated: true) {
-                        browser.tabManager.addTabAndSelect(URLRequest(url: pageURL),
-                                                           isPrivate: true)
-                    }
-                }
+                self?.openInNewTab(currentItem, isPrivate: true)
+            }))
+            
+            alert.addAction(UIAlertAction(title: Strings.PlayList.sharePlaylistMoveActionMenuTitle, style: .default, handler: { [weak self] _ in
+                self?.moveItems(indexPaths: [indexPath])
             }))
             
             alert.addAction(UIAlertAction(title: Strings.PlayList.sharePlaylistShareActionMenuTitle, style: .default, handler: { [weak self] _ in
@@ -173,9 +178,103 @@ extension PlaylistListViewController: UITableViewDelegate {
         return UISwipeActionsConfiguration(actions: [deleteAction, shareAction, cacheAction])
     }
     
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+
+        guard let currentItem = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
+            return nil
+        }
+        
+        let actionProvider: UIContextMenuActionProvider = { _ in
+            let cacheState = PlaylistManager.shared.state(for: currentItem.pageSrc)
+            let cacheTitle = cacheState == .invalid ? Strings.PlayList.playlistSaveForOfflineButtonTitle : Strings.PlayList.playlistDeleteForOfflineButtonTitle
+            let cacheIcon = cacheState == .invalid ? UIImage(systemName: "icloud.and.arrow.down") : UIImage(systemName: "icloud.slash")
+            
+            return UIMenu(children: [
+                UIMenu(options: .displayInline, children: [
+                    UIAction(title: cacheTitle, image: cacheIcon, handler: { [weak self] _ in
+                        self?.cacheItem(currentItem, indexPath: indexPath, cacheState: cacheState)
+                    })
+                ]),
+                
+                UIMenu(options: .displayInline, children: {
+                    var actions = [UIMenuElement]()
+                    
+                    // In Private-Browsing, we do not show "Open in New Tab",
+                    // we only show "Open in Private Tab"
+                    let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
+                    if !isPrivateBrowsing {
+                        actions.append(UIAction(title: Strings.PlayList.sharePlaylistOpenInNewTabTitle, image: UIImage(systemName: "plus.square.on.square"), handler: { [weak self] _ in
+                            self?.openInNewTab(currentItem, isPrivate: false)
+                        }))
+                    }
+                    
+                    actions.append(UIAction(title: Strings.PlayList.sharePlaylistOpenInNewPrivateTabTitle, image: UIImage(systemName: "plus.square.fill.on.square.fill"), handler: { [weak self] _ in
+                        self?.openInNewTab(currentItem, isPrivate: true)
+                    }))
+                    
+                    return actions
+                }()),
+                
+                UIMenu(options: .displayInline, children: {
+                    var actions = [UIMenuElement]()
+                    if PlaylistFolder.getOtherFoldersCount() > 0 {
+                        actions.append(UIAction(title: Strings.PlayList.sharePlaylistMoveActionMenuTitle, image: UIImage(systemName: "folder"), handler: { [weak self] _ in
+                            self?.moveItems(indexPaths: [indexPath])
+                        }))
+                    }
+                    
+                    actions.append(UIAction(title: Strings.PlayList.sharePlaylistShareActionMenuTitle, image: UIImage(systemName: "square.and.arrow.up"), handler: { [weak self] _ in
+                        self?.shareItem(currentItem, anchorView: tableView.cellForRow(at: indexPath))
+                    }))
+                    
+                    return actions
+                }()),
+                
+                UIAction(title: Strings.delete, image: UIImage(systemName: "trash"), attributes: .destructive, handler: { [weak self] _ in
+                    self?.deleteItem(currentItem, indexPath: indexPath)
+                })
+            ])
+        }
+
+        let identifier = NSDictionary(dictionary: ["itemID": currentItem.pageSrc,
+                                                   "row": indexPath.row])
+        return UIContextMenuConfiguration(identifier: identifier, previewProvider: nil, actionProvider: actionProvider)
+    }
+    
+    func tableView(_ tableView: UITableView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let identifier = configuration.identifier as? NSDictionary else {
+            return nil
+        }
+        
+        guard let itemID = identifier["itemID"] as? String,
+              let row = identifier["row"] as? Int else {
+            return nil
+        }
+        
+        guard row >= 0 || row < PlaylistManager.shared.numberOfAssets,
+              let currentItem = PlaylistManager.shared.itemAtIndex(row),
+              currentItem.pageSrc == itemID else {
+            return nil
+        }
+        
+        guard let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) else {
+            return nil
+        }
+
+        let parameters = UIPreviewParameters()
+        parameters.visiblePath = UIBezierPath(roundedRect: cell.contentView.frame, cornerRadius: 12.0)
+        parameters.backgroundColor = .clear  // If we set this to any other colour, UIKit renders white lol
+        
+        return UITargetedPreview(view: cell, parameters: parameters)
+    }
+    
+    func tableView(_ tableView: UITableView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        self.tableView(tableView, previewForHighlightingContextMenuWithConfiguration: configuration)
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView.isEditing {
-            tableView.setEditing(false, animated: true)
+            updateToolbar(editing: true)
             return
         }
         
@@ -213,6 +312,12 @@ extension PlaylistListViewController: UITableViewDelegate {
                     log.debug("User cancelled Playlist Playback")
                 }
             }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView.isEditing {
+            updateToolbar(editing: true)
         }
     }
 }

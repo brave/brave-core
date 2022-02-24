@@ -10,6 +10,7 @@ import MediaPlayer
 import Data
 import BraveShared
 import Shared
+import CoreData
 
 private let log = Logger.browserLogger
 
@@ -17,11 +18,13 @@ class PlaylistCarplayController: NSObject {
     private let player: MediaPlayer
     private let mediaStreamer: PlaylistMediaStreamer
     private let interfaceController: CPInterfaceController
+    private var folderObserver: AnyCancellable?
     private var playerStateObservers = Set<AnyCancellable>()
     private var assetStateObservers = Set<AnyCancellable>()
     private var assetLoadingStateObservers = Set<AnyCancellable>()
     private var playlistObservers = Set<AnyCancellable>()
-    private var playlistItemIds = [String]()
+    private let savedFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID)
+    private let frc = PlaylistFolder.frc(savedFolderContentsOnly: false)
     
     // For now, I have absolutely ZERO idea why the API says:
     // CPAllowedTemplates = CPAlertTemplate, invalid object CPActionSheetTemplate
@@ -35,14 +38,14 @@ class PlaylistCarplayController: NSObject {
         self.mediaStreamer = mediaStreamer
         super.init()
         
+        frc.delegate = self
         interfaceController.delegate = self
         
+        observeFolderStates()
         observePlayerStates()
         observePlaylistStates()
         PlaylistManager.shared.reloadData()
-        
-        playlistItemIds = PlaylistManager.shared.allItems.map { $0.pageSrc }
-        self.doLayout()
+        doLayout()
         
         DispatchQueue.main.async {
             // Workaround to see carplay NowPlaying on the simulator
@@ -50,6 +53,41 @@ class PlaylistCarplayController: NSObject {
             UIApplication.shared.endReceivingRemoteControlEvents()
             UIApplication.shared.beginReceivingRemoteControlEvents()
             #endif
+        }
+    }
+    
+    func observeFolderStates() {
+        folderObserver = PlaylistManager.shared.onCurrentFolderDidChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                
+                if self.interfaceController.rootTemplate == self.interfaceController.topTemplate {
+                    // Nothing to Pop
+                    // Push the Folder Template
+                    let listTemplate = self.generatePlaylistListTemplate()
+                    self.interfaceController.pushTemplate(listTemplate, animated: true) { [weak self] success, error in
+                        if !success, let error = error {
+                            self?.displayErrorAlert(error: error)
+                        }
+                    }
+                    return
+                }
+                
+                // Pop to Root Template
+                self.interfaceController.popToRootTemplate(animated: false) { success, error in
+                    if !success, let error = error {
+                        self.displayErrorAlert(error: error)
+                    } else {
+                        // Push the Folder Template
+                        let listTemplate = self.generatePlaylistListTemplate()
+                        self.interfaceController.pushTemplate(listTemplate, animated: true) { [weak self] success, error in
+                            if !success, let error = error {
+                                self?.displayErrorAlert(error: error)
+                            }
+                        }
+                    }
+                }
         }
     }
     
@@ -66,7 +104,7 @@ class PlaylistCarplayController: NSObject {
             }
             
             let playlistTabTemplate = tabTemplate.templates.compactMap({ $0 as? CPListTemplate }).first(where: {
-                ($0.userInfo as? [String: String])?["id"] == "Playlist.Tab"
+                ($0.userInfo as? [String: String])?["id"] == "Playlist.Folder.List.Tab"
             })
             
             if let playlistTabTemplate = playlistTabTemplate {
@@ -152,67 +190,31 @@ class PlaylistCarplayController: NSObject {
     }
     
     private func doLayout() {
-        playlistItemIds = PlaylistManager.shared.allItems.map { $0.pageSrc }
+        do {
+            try frc.performFetch()
+        } catch {
+            log.error(error)
+            displayErrorAlert(error: error)
+        }
         
-        // PLAYLIST TEMPLATE
-        let playlistTemplate = generatePlaylistListTemplate()
+        // FOLDERS TEMPLATE
+        let foldersTemplate = generatePlaylistFolderListTemplate()
         
         // SETTINGS TEMPLATE
         let settingsTemplate = generateSettingsTemplate()
         
         // ALL TEMPLATES
         let tabTemplates: [CPTemplate] = [
-            playlistTemplate,
+            foldersTemplate,
             settingsTemplate
         ]
         
         self.interfaceController.delegate = self
         self.interfaceController.setRootTemplate(CPTabBarTemplate(templates: tabTemplates),
                                                  animated: true,
-                                                 completion: { success, error in
+                                                 completion: { [weak self] success, error in
             if !success, let error = error {
-                // Some cars do NOT support CPActionSheetTemplate
-                // So we MUST use CPAlertTemplate
-                if PlaylistCarplayController.mustUseCPAlertTemplate {
-                    let alert = CPAlertTemplate(titleVariants: [error.localizedDescription], actions: [
-                        CPAlertAction(title: Strings.PlayList.okayButtonTitle, style: .default, handler: { [weak self] _ in
-                            self?.interfaceController.dismissTemplate(animated: true, completion: { success, error in
-                                if !success, let error = error {
-                                    log.error(error)
-                                }
-                            })
-                        })
-                    ])
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        self.interfaceController.presentTemplate(alert, animated: true, completion: { success, error in
-                            if !success, let error = error {
-                                log.error(error)
-                            }
-                        })
-                    }
-                } else {
-                    // Can also use CPAlertTemplate, but it doesn't have a "Message" parameter.
-                    let alert = CPActionSheetTemplate(title: Strings.PlayList.sorryAlertTitle,
-                                                      message: error.localizedDescription,
-                                                      actions: [
-                        CPAlertAction(title: Strings.PlayList.okayButtonTitle, style: .default, handler: { [weak self] _ in
-                            self?.interfaceController.dismissTemplate(animated: true, completion: { success, error in
-                                if !success, let error = error {
-                                    log.error(error)
-                                }
-                            })
-                        })
-                    ])
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        self.interfaceController.presentTemplate(alert, animated: true, completion: { success, error in
-                            if !success, let error = error {
-                                log.error(error)
-                            }
-                        })
-                    }
-                }
+                self?.displayErrorAlert(error: error)
             }
          })
     }
@@ -232,18 +234,21 @@ class PlaylistCarplayController: NSObject {
             PlaylistCarplayManager.shared.currentlyPlayingItemIndex = PlaylistManager.shared.index(of: pageSrc) ?? -1
         }
         
-        // Map all items to their IDs
-        playlistItemIds = PlaylistManager.shared.allItems.map { $0.pageSrc }
+        do {
+            try frc.performFetch()
+        } catch {
+            log.error(error)
+        }
         
-        // PLAYLIST TEMPLATE
-        let playlistTemplate = generatePlaylistListTemplate()
+        // FOLDERS TEMPLATE
+        let foldersTemplate = generatePlaylistFolderListTemplate()
         
         // SETTINGS TEMPLATE
         let settingsTemplate = generateSettingsTemplate()
         
         // ALL TEMPLATES
         let tabTemplates: [CPTemplate] = [
-            playlistTemplate,
+            foldersTemplate,
             settingsTemplate
         ]
         
@@ -258,7 +263,61 @@ class PlaylistCarplayController: NSObject {
         tabBarTemplate.updateTemplates(tabTemplates)
     }
     
+    private func generatePlaylistFolderListTemplate() -> CPTemplate {
+        // Fetch all Playlist Folders
+        let folders = frc.fetchedObjects ?? []
+
+        // Construct Folders UI
+        let itemCount = savedFolder?.playlistItems?.count ?? 0
+        let savedFolder = CPListItem(text: savedFolder?.title ?? Strings.PlaylistFolders.playlistUntitledFolderTitle,
+                                     detailText: "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
+                                     image: nil,
+                                     accessoryImage: nil,
+                                     accessoryType: .disclosureIndicator).then {
+            $0.handler = { [unowned self] _, completion in
+                // Display items in this folder
+                PlaylistManager.shared.currentFolder = self.savedFolder
+                completion()
+            }
+            
+            $0.userInfo = ["uuid": self.savedFolder?.uuid]
+        }
+        
+        let otherFolders = folders.compactMap { folder -> CPListItem? in
+            let itemCount = folder.playlistItems?.count ?? 0
+            return CPListItem(text: folder.title ?? Strings.PlaylistFolders.playlistUntitledFolderTitle,
+                                      detailText: "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
+                                      image: nil,
+                                      accessoryImage: nil,
+                                      accessoryType: .disclosureIndicator).then {
+                $0.handler = { _, completion in
+                    // Display items in this folder
+                    PlaylistManager.shared.currentFolder = folder
+                    completion()
+                }
+                
+                $0.userInfo = ["uuid": folder.uuid]
+            }
+        }
+        
+        // Template
+        let foldersTemplate = CPListTemplate(
+            title: Strings.PlayList.playlistCarplayTitle,
+            sections: [CPListSection(items: [savedFolder]),
+                       CPListSection(items: otherFolders)]
+        ).then {
+            $0.tabImage = UIImage(systemName: "list.star")
+            $0.emptyViewTitleVariants = [Strings.PlayList.noItemLabelTitle]
+            $0.emptyViewSubtitleVariants = [Strings.PlayList.noItemLabelDetailLabel]
+            $0.userInfo = ["id": "Playlist.Folders.Tab"]
+        }
+        return foldersTemplate
+    }
+    
     private func generatePlaylistListTemplate() -> CPTemplate {
+        // Map all items to their IDs
+        let playlistItemIds = PlaylistManager.shared.allItems.map { $0.pageSrc }
+        
         // Fetch all Playlist Items
         var listItems = [CPListItem]()
         listItems = playlistItemIds.compactMap { itemId -> CPListItem? in
@@ -347,24 +406,24 @@ class PlaylistCarplayController: NSObject {
         
         // Template
         let playlistTemplate = CPListTemplate(
-            title: "Playlist",
+            title: PlaylistManager.shared.currentFolder?.title ?? "",
             sections: [CPListSection(items: listItems)]
         ).then {
             $0.tabImage = UIImage(systemName: "list.star")
             $0.emptyViewTitleVariants = [Strings.PlayList.noItemLabelTitle]
             $0.emptyViewSubtitleVariants = [Strings.PlayList.noItemLabelDetailLabel]
-            $0.userInfo = ["id": "Playlist.Tab"]
+            $0.userInfo = ["id": "Playlist.Folder.List.Tab"]
         }
         return playlistTemplate
     }
     
     private func generateSettingsTemplate() -> CPTemplate {
         // Playback Options
-        let restartPlaybackOption = CPListItem(text: "Restart Playback",
-                                   detailText: "Decide whether or not selecting an already playing item will restart playback, or continue playing where last left off").then {
+        let restartPlaybackOption = CPListItem(text: Strings.PlayList.playlistCarplayRestartPlaybackOptionTitle,
+                                               detailText: Strings.PlayList.playlistCarplayRestartPlaybackOptionDetailsTitle).then {
             $0.handler = { [unowned self] listItem, completion in
                 let enableGridView = Preferences.Playlist.enableCarPlayRestartPlayback.value
-                let title = enableGridView ? "Enabled. Tap to disable playback restarting." : "Disabled. Tap to enable playback restarting"
+                let title = enableGridView ? Strings.PlayList.playlistCarplayRestartPlaybackButtonStateEnabled : Strings.PlayList.playlistCarplayRestartPlaybackButtonStateDisabled
                 let icon = enableGridView ? #imageLiteral(resourceName: "checkbox_on") : #imageLiteral(resourceName: "loginUnselected")
                 let button = CPGridButton(titleVariants: [title], image: icon) { [unowned self] button in
                     Preferences.Playlist.enableCarPlayRestartPlayback.value = !enableGridView
@@ -376,7 +435,7 @@ class PlaylistCarplayController: NSObject {
                 }
                 
                 self.interfaceController.pushTemplate(
-                    CPGridTemplate(title: "Playback Options", gridButtons: [button]),
+                    CPGridTemplate(title: Strings.PlayList.playlistCarplayOptionsScreenTitle, gridButtons: [button]),
                     animated: true,
                     completion: { success, error in
                         if !success, let error = error {
@@ -391,11 +450,11 @@ class PlaylistCarplayController: NSObject {
         
         // Sections
         let playbackSection = CPListSection(items: [restartPlaybackOption],
-                                            header: "Playback Options",
-                                            sectionIndexTitle: "Playback Options")
+                                            header: Strings.PlayList.playlistCarplayOptionsScreenTitle,
+                                            sectionIndexTitle: Strings.PlayList.playlistCarplayOptionsScreenTitle)
         
         // Template
-        let settingsTemplate = CPListTemplate(title: "Settings",
+        let settingsTemplate = CPListTemplate(title: Strings.PlayList.playlistCarplaySettingsSectionTitle,
                                               sections: [playbackSection]).then {
             $0.tabImage = UIImage(systemName: "gear")
         }
@@ -418,6 +477,17 @@ extension PlaylistCarplayController: CPInterfaceControllerDelegate {
 
     func templateDidDisappear(_ aTemplate: CPTemplate, animated: Bool) {
         log.debug("Template \(aTemplate.classForCoder) did disappear.")
+    }
+}
+
+extension PlaylistCarplayController: NSFetchedResultsControllerDelegate {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+        
+        reloadData()
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        reloadData()
     }
 }
 
@@ -911,6 +981,51 @@ extension PlaylistCarplayController {
                     log.error(error)
                 }
             })
+        }
+    }
+    
+    private func displayErrorAlert(error: Error) {
+        // Some cars do NOT support CPActionSheetTemplate
+        // So we MUST use CPAlertTemplate
+        if PlaylistCarplayController.mustUseCPAlertTemplate {
+            let alert = CPAlertTemplate(titleVariants: [error.localizedDescription], actions: [
+                CPAlertAction(title: Strings.PlayList.okayButtonTitle, style: .default, handler: { [weak self] _ in
+                    self?.interfaceController.dismissTemplate(animated: true, completion: { success, error in
+                        if !success, let error = error {
+                            log.error(error)
+                        }
+                    })
+                })
+            ])
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.interfaceController.presentTemplate(alert, animated: true, completion: { success, error in
+                    if !success, let error = error {
+                        log.error(error)
+                    }
+                })
+            }
+        } else {
+            // Can also use CPAlertTemplate, but it doesn't have a "Message" parameter.
+            let alert = CPActionSheetTemplate(title: Strings.PlayList.sorryAlertTitle,
+                                              message: error.localizedDescription,
+                                              actions: [
+                CPAlertAction(title: Strings.PlayList.okayButtonTitle, style: .default, handler: { [weak self] _ in
+                    self?.interfaceController.dismissTemplate(animated: true, completion: { success, error in
+                        if !success, let error = error {
+                            log.error(error)
+                        }
+                    })
+                })
+            ])
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                self.interfaceController.presentTemplate(alert, animated: true, completion: { success, error in
+                    if !success, let error = error {
+                        log.error(error)
+                    }
+                })
+            }
         }
     }
 }

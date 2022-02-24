@@ -27,6 +27,8 @@ protocol PlaylistViewControllerDelegate: AnyObject {
     func onFullscreen()
     func onExitFullscreen()
     func playItem(item: PlaylistInfo, completion: ((PlaylistMediaStreamer.PlaybackError) -> Void)?)
+    func pausePlaying()
+    func stopPlaying()
     func deleteItem(item: PlaylistInfo, at index: Int)
     func updateLastPlayedItem(item: PlaylistInfo)
     func displayLoadingResourceError()
@@ -49,9 +51,11 @@ class PlaylistViewController: UIViewController {
     private let mediaStreamer: PlaylistMediaStreamer
     
     private let splitController = UISplitViewController()
+    private let folderController = PlaylistFolderController()
     private lazy var listController = PlaylistListViewController(playerView: playerView)
     private let detailController = PlaylistDetailViewController()
     
+    private var folderObserver: AnyCancellable?
     private var playerStateObservers = Set<AnyCancellable>()
     private var assetStateObservers = Set<AnyCancellable>()
     private var assetLoadingStateObservers = Set<AnyCancellable>()
@@ -100,6 +104,10 @@ class PlaylistViewController: UIViewController {
             stop(playerView)
             PlaylistCarplayManager.shared.currentPlaylistItem = nil
             PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+            
+            // Destroy folder observers
+            folderObserver = nil
+            PlaylistManager.shared.currentFolder = nil
         }
         
         // Cancel all loading.
@@ -125,17 +133,32 @@ class PlaylistViewController: UIViewController {
         attachPlayerView()
         updatePlayerUI()
         observePlayerStates()
+        observeFolderStates()
         listController.delegate = self
         
         // Layout
         splitController.do {
-            $0.viewControllers = [SettingsNavigationController(rootViewController: listController),
+            $0.viewControllers = [SettingsNavigationController(rootViewController: folderController),
                                   SettingsNavigationController(rootViewController: detailController)]
             $0.delegate = self
             $0.primaryEdge = PlayListSide(rawValue: Preferences.Playlist.listViewSide.value) == .left ? .leading : .trailing
             $0.presentsWithGesture = false
             $0.maximumPrimaryColumnWidth = 400
             $0.minimumPrimaryColumnWidth = 400
+        }
+        
+        if let initialItem = listController.initialItem,
+           let item = PlaylistItem.getItem(pageSrc: initialItem.pageSrc) {
+            PlaylistManager.shared.currentFolder = item.playlistFolder
+        } else if let url = Preferences.Playlist.lastPlayedItemUrl.value,
+                  let item = PlaylistItem.getItem(pageSrc: url) {
+            PlaylistManager.shared.currentFolder = item.playlistFolder
+        } else {
+            PlaylistManager.shared.currentFolder = nil
+        }
+        
+        if PlaylistManager.shared.currentFolder != nil {
+            folderController.navigationController?.pushViewController(listController, animated: false)
         }
         
         addChild(splitController)
@@ -153,6 +176,42 @@ class PlaylistViewController: UIViewController {
         updateLayoutForOrientationChange()
         
         detailController.setVideoPlayer(playerView)
+        updateLayoutForOrientationMode()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        folderObserver = PlaylistManager.shared.onCurrentFolderDidChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self,
+                      self.listController.parent == nil,
+                      PlaylistManager.shared.currentFolder != nil
+                else { return }
+                
+                self.updateLayoutForOrientationMode()
+                self.folderController.navigationController?.pushViewController(self.listController, animated: true)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        folderObserver = nil
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        updateLayoutForOrientationChange()
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    private func updateLayoutForOrientationMode() {
         detailController.navigationController?.setNavigationBarHidden(splitController.isCollapsed || traitCollection.horizontalSizeClass == .regular, animated: false)
         
         if UIDevice.isPhone {
@@ -172,16 +231,6 @@ class PlaylistViewController: UIViewController {
             listController.updateLayoutForMode(.pad)
             detailController.updateLayoutForMode(.pad)
         }
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        
-        updateLayoutForOrientationChange()
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
     }
     
     private func updateLayoutForOrientationChange() {
@@ -356,6 +405,12 @@ class PlaylistViewController: UIViewController {
                 event.mediaPlayer.pictureInPictureController?.isPictureInPicturePossible == true
         }.store(in: &playerStateObservers)
     }
+    
+    private func observeFolderStates() {
+        folderController.onFolderSelected = { folder in
+            PlaylistManager.shared.currentFolder = folder
+        }
+    }
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate
@@ -369,6 +424,7 @@ extension PlaylistViewController: UIAdaptivePresentationControllerDelegate {
 // MARK: - UISplitViewControllerDelegate
 
 extension PlaylistViewController: UISplitViewControllerDelegate {
+    
     func splitViewControllerSupportedInterfaceOrientations(_ splitViewController: UISplitViewController) -> UIInterfaceOrientationMask {
         return .allButUpsideDown
     }
@@ -417,7 +473,7 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     }
     
     func onFullscreen() {
-        if !UIDevice.isIpad || splitViewController?.isCollapsed == true {
+        if !UIDevice.isIpad || splitController.isCollapsed {
             listController.onFullscreen()
         } else {
             detailController.onFullscreen()
@@ -425,22 +481,39 @@ extension PlaylistViewController: PlaylistViewControllerDelegate {
     }
     
     func onExitFullscreen() {
-        listController.onExitFullscreen()
+        if !UIDevice.isIpad || splitController.isCollapsed {
+            listController.onExitFullscreen()
+        } else {
+            if playerView.isFullscreen {
+                detailController.onExitFullscreen()
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func pausePlaying() {
+        playerView.pause()
+    }
+    
+    func stopPlaying() {
+        PlaylistMediaStreamer.clearNowPlayingInfo()
+        
+        PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+        PlaylistCarplayManager.shared.currentPlaylistItem = nil
+        playerView.resetVideoInfo()
+        stop(playerView)
+        
+        // Cancel all loading.
+        assetLoadingStateObservers.removeAll()
+        assetStateObservers.removeAll()
     }
     
     func deleteItem(item: PlaylistInfo, at index: Int) {
         PlaylistManager.shared.delete(item: item)
         
         if PlaylistCarplayManager.shared.currentlyPlayingItemIndex == index || PlaylistManager.shared.numberOfAssets == 0 {
-            PlaylistMediaStreamer.clearNowPlayingInfo()
-            
-            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
-            playerView.resetVideoInfo()
-            stop(playerView)
-            
-            // Cancel all loading.
-            assetLoadingStateObservers.removeAll()
-            assetStateObservers.removeAll()
+            stopPlaying()
         }
     }
     

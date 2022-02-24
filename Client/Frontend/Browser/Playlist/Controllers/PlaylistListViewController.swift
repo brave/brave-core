@@ -16,6 +16,7 @@ import SDWebImage
 import BraveShared
 import Shared
 import Data
+import SwiftUI
 
 private let log = Logger.browserLogger
 
@@ -36,8 +37,8 @@ class PlaylistListViewController: UIViewController {
     
     weak var delegate: PlaylistViewControllerDelegate?
     private let playerView: VideoView
-    private let contentManager = MPPlayableContentManager.shared()
     private var observers = Set<AnyCancellable>()
+    private var folderObserver: AnyCancellable?
     private(set) var autoPlayEnabled = Preferences.Playlist.firstLoadAutoPlay.value
     var playerController: AVPlayerViewController?
     
@@ -120,12 +121,56 @@ class PlaylistListViewController: UIViewController {
             $0.dragDelegate = self
             $0.dropDelegate = self
             $0.dragInteractionEnabled = true
+            $0.allowsMultipleSelectionDuringEditing = true
         }
-
+        
+        toolbarItems = [
+            UIBarButtonItem(title: Strings.PlaylistFolders.playlistFolderEditButtonTitle, style: .plain, target: self, action: #selector(onEditItems)),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        ]
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        title = PlaylistManager.shared.currentFolder?.title
+        
         // Update
         DispatchQueue.main.async {
             self.fetchResults()
         }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        folderObserver = PlaylistManager.shared.onCurrentFolderDidChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self = self else { return }
+                self.title = PlaylistManager.shared.currentFolder?.title
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        onCancelEditingItems()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        folderObserver = nil
+        if isMovingFromParent || isBeingDismissed {
+            delegate?.stopPlaying()
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        updateTableBackgroundView()
     }
     
     // MARK: Internal
@@ -134,6 +179,11 @@ class PlaylistListViewController: UIViewController {
         updateTableBackgroundView()
         playerView.setControlsEnabled(false)
         
+        if let initialItem = initialItem,
+            let item = PlaylistItem.getItem(pageSrc: initialItem.pageSrc) {
+            PlaylistManager.shared.currentFolder = item.playlistFolder
+        }
+        
         let initialItem = self.initialItem
         let initialItemOffset = self.initialItemPlaybackOffset
         self.initialItem = nil
@@ -141,7 +191,6 @@ class PlaylistListViewController: UIViewController {
         
         PlaylistManager.shared.reloadData()
         tableView.reloadData()
-        contentManager.reloadData()
         
         // After reloading all data, update the background
         guard PlaylistManager.shared.numberOfAssets > 0 else {
@@ -172,6 +221,12 @@ class PlaylistListViewController: UIViewController {
             
             tableView.delegate?.tableView?(tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
             autoPlayEnabled = true
+            return
+        }
+        
+        // If the current item is already playing, do nothing.
+        if let currentItemSrc = PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc,
+           PlaylistManager.shared.index(of: currentItemSrc) != nil {
             return
         }
         
@@ -248,9 +303,114 @@ class PlaylistListViewController: UIViewController {
     
     // MARK: Actions
     
+    func updateToolbar(editing: Bool) {
+        if editing {
+            if PlaylistFolder.getOtherFoldersCount() == 0 {
+                toolbarItems = [
+                    UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(onCancelEditingItems)),
+                    UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                    UIBarButtonItem(title: Strings.delete, style: .plain, target: self, action: #selector(onDeleteEditingItems))
+                ]
+            } else {
+                toolbarItems = [
+                    UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(onCancelEditingItems)),
+                    UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                    UIBarButtonItem(title: Strings.PlaylistFolders.playlistFolderMoveFolderButtonTitle, style: .plain, target: self, action: #selector(onMoveEditingItems)).then {
+                        $0.isEnabled = !(tableView.indexPathsForSelectedRows?.isEmpty ?? true)
+                    },
+                    UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                    UIBarButtonItem(title: Strings.delete, style: .plain, target: self, action: #selector(onDeleteEditingItems))
+                ]
+            }
+        } else {
+            toolbarItems = [
+                UIBarButtonItem(title: Strings.PlaylistFolders.playlistFolderEditButtonTitle, style: .plain, target: self, action: #selector(onEditItems)),
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+            ]
+        }
+    }
+    
+    func moveItems(indexPaths: [IndexPath]) {
+        delegate?.pausePlaying()
+        onCancelEditingItems()
+        
+        let selectedItems = indexPaths.compactMap({
+            PlaylistManager.shared.fetchedObjects[safe: $0.row]
+        })
+        
+        var moveController = PlaylistMoveFolderView(selectedItems: selectedItems)
+        moveController.onCancelButtonPressed = { [weak self] in
+            self?.presentedViewController?.dismiss(animated: true, completion: nil)
+        }
+        
+        moveController.onDoneButtonPressed = { [weak self] items, folder in
+            guard let self = self else { return }
+            self.presentedViewController?.dismiss(animated: true, completion: nil)
+            
+            // We moved an item that was playing
+            if items.firstIndex(where: { PlaylistInfo(item: $0).pageSrc == PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc }) != nil {
+                self.delegate?.stopPlaying()
+            }
+            
+            // We moved all items in this folder
+            if items.count == selectedItems.count {
+                self.navigationController?.popViewController(animated: true)
+            }
+            
+            PlaylistItem.moveItems(items: items.map({ $0.objectID }), to: folder?.uuid)
+        }
+        
+        let hostingController = UIHostingController(rootView: moveController.environment(\.managedObjectContext, DataController.swiftUIContext)).then {
+            $0.modalPresentationStyle = .formSheet
+        }
+        
+        present(hostingController, animated: true, completion: nil)
+    }
+    
     @objc
     private func onExit(_ button: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc
+    private func onEditItems() {
+        if tableView.isEditing {
+            // If already editing, such as when swiping on a cell,
+            // dismiss the trailing swipe and show the selections instead.
+            tableView.setEditing(false, animated: false)
+            tableView.setEditing(true, animated: false)
+        } else {
+            tableView.setEditing(true, animated: true)
+        }
+        
+        updateToolbar(editing: true)
+    }
+    
+    @objc
+    private func onCancelEditingItems() {
+        tableView.setEditing(false, animated: true)
+        updateToolbar(editing: false)
+    }
+    
+    @objc
+    private func onMoveEditingItems() {
+        moveItems(indexPaths: tableView.indexPathsForSelectedRows ?? [])
+    }
+    
+    @objc
+    private func onDeleteEditingItems() {
+        let selection = tableView.indexPathsForSelectedRows ?? []
+        onCancelEditingItems()
+        
+        let rows = selection.map({
+            (index: $0.row, item: PlaylistManager.shared.itemAtIndex($0.row))
+        })
+        
+        for row in rows {
+            if let item = row.item {
+                delegate?.deleteItem(item: item, at: row.index)
+            }
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -305,12 +465,6 @@ class PlaylistListViewController: UIViewController {
                     
                     tableView.snp.remakeConstraints {
                         $0.edges.equalToSuperview()
-                    }
-                    
-                    // On iPhone-8, 14.4, I need to scroll the tableView after setting its contentOffset and contentInset
-                    // Otherwise the layout is broken when exiting fullscreen in portrait mode.
-                    if PlaylistManager.shared.numberOfAssets > 0 {
-                        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
                     }
                 }
             } else {
@@ -370,6 +524,12 @@ extension PlaylistListViewController {
         if PlaylistManager.shared.numberOfAssets > 0 {
             tableView.backgroundView = nil
             tableView.separatorStyle = .singleLine
+            
+            if !playerView.isFullscreen, UIDevice.current.orientation.isLandscape && UIDevice.isPhone {
+                navigationController?.setToolbarHidden(true, animated: true)
+            } else {
+                navigationController?.setToolbarHidden(false, animated: true)
+            }
         } else {
             let messageLabel = UILabel(frame: view.bounds).then {
                 $0.text = Strings.PlayList.noItemLabelTitle
@@ -378,10 +538,17 @@ extension PlaylistListViewController {
                 $0.textAlignment = .center
                 $0.font = .systemFont(ofSize: 18.0, weight: .medium)
                 $0.sizeToFit()
+                
+                let offset = abs(tableView.contentOffset.y)
+                $0.frame.center.x = tableView.bounds.center.x
+                $0.frame.origin.y = offset + ((tableView.bounds.height - offset) / 2.0)
             }
             
-            tableView.backgroundView = messageLabel
+            tableView.backgroundView = UIView().then {
+                $0.addSubview(messageLabel)
+            }
             tableView.separatorStyle = .none
+            navigationController?.setToolbarHidden(true, animated: true)
         }
     }
     
@@ -505,7 +672,7 @@ extension PlaylistListViewController {
 
 // MARK: - PlaylistManagerDelegate
 
-extension PlaylistListViewController: PlaylistManagerDelegate {
+extension PlaylistListViewController {
     func updateCellDownloadStatus(indexPath: IndexPath, cell: PlaylistCell?, state: PlaylistDownloadManager.DownloadState, percentComplete: Double?) {
         
         guard let cell = cell ?? tableView.cellForRow(at: indexPath) as? PlaylistCell else {

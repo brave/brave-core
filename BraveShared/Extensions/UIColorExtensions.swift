@@ -25,4 +25,22 @@ extension UIColor {
         getWhite(&white, alpha: nil)
         return white > 0.5
     }
+    
+    public var slightlyDesaturated: UIColor {
+        desaturated(0.5)
+    }
+    
+    public func desaturated(_ desaturation: CGFloat) -> UIColor {
+        var h: CGFloat = 0, s: CGFloat = 0
+        var b: CGFloat = 0, a: CGFloat = 0
+
+        guard self.getHue(&h, saturation: &s, brightness: &b, alpha: &a) else {
+            return self
+        }
+
+        return UIColor(hue: h,
+                       saturation: max(s - desaturation, 0.0),
+                       brightness: b,
+                       alpha: a)
+    }
 }

@@ -258,7 +258,7 @@ extension PlaylistHelper {
         let token = UserScriptManager.securityTokenString
         let javascript = String(format: "window.__firefox__.stopMediaPlayback_%@()", token)
 
-        tab.webView?.evaluateSafeJavaScript(functionName: javascript, args: [], contentWorld: .page, completion: { value, error in
+        tab.webView?.evaluateSafeJavaScript(functionName: javascript, contentWorld: .page, completion: { value, error in
             if let error = error {
                 log.error("Error Retrieving Stopping Media Playback: \(error)")
             }

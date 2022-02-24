@@ -5,22 +5,11 @@
 
 import Foundation
 import UIKit
+import BraveUI
 
 // MARK: - Reordering of cells
 
 extension PlaylistListViewController: UITableViewDragDelegate, UITableViewDropDelegate {
-    func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        true
-    }
-    
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        .none
-    }
-    
-    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        false
-    }
-    
     func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         PlaylistManager.shared.reorderItems(from: sourceIndexPath, to: destinationIndexPath) {
             PlaylistManager.shared.reloadData()
@@ -68,7 +57,7 @@ extension PlaylistListViewController: UITableViewDragDelegate, UITableViewDropDe
         
         let preview = UIDragPreviewParameters()
         preview.visiblePath = UIBezierPath(roundedRect: cell.contentView.frame, cornerRadius: 12.0)
-        preview.backgroundColor = slightlyLighterColour(color: UIColor.braveBackground)
+        preview.backgroundColor = .tertiaryBraveBackground
         return preview
     }
 
@@ -77,24 +66,11 @@ extension PlaylistListViewController: UITableViewDragDelegate, UITableViewDropDe
         
         let preview = UIDragPreviewParameters()
         preview.visiblePath = UIBezierPath(roundedRect: cell.contentView.frame, cornerRadius: 12.0)
-        preview.backgroundColor = slightlyLighterColour(color: UIColor.braveBackground)
+        preview.backgroundColor = .tertiaryBraveBackground
         return preview
     }
     
     func tableView(_ tableView: UITableView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
         true
-    }
-    
-    private func slightlyLighterColour(color: UIColor) -> UIColor {
-        let desaturation: CGFloat = 0.5
-        var h: CGFloat = 0, s: CGFloat = 0
-        var b: CGFloat = 0, a: CGFloat = 0
-
-        guard color.getHue(&h, saturation: &s, brightness: &b, alpha: &a) else {return color}
-
-        return UIColor(hue: h,
-                       saturation: max(s - desaturation, 0.0),
-                       brightness: b,
-                       alpha: a)
     }
 }

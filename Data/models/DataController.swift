@@ -239,6 +239,10 @@ public class DataController {
         self.perform(context: .existing(self.viewContext), save: save, task: task)
     }
     
+    public static var swiftUIContext: NSManagedObjectContext {
+        return DataController.shared.container.viewContext
+    }
+    
     // Context object also allows us access to all persistent container data if needed.
     static var viewContext: NSManagedObjectContext {
         return DataController.shared.container.viewContext
