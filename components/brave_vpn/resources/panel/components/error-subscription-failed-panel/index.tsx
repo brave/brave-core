@@ -5,16 +5,23 @@ import * as S from './style'
 import { AlertCircleIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
 import { useSelector } from '../../state/hooks'
+import ContactSupport from '../contact-support'
 
 function ErrorSubscriptionFailed () {
   const productUrls = useSelector(state => state.productUrls)
+  const [isContactSupportVisible, setContactSupportVisible] = React.useState(false)
 
   const handleEditPayment = () => {
     chrome.tabs.create({ url: productUrls?.manage })
   }
 
-  const handleContactSupport = () => {
-    // TODO (nullhook): Add another ViewType state
+  const handleContactSupport = () => setContactSupportVisible(true)
+  const closeContactSupport = () => setContactSupportVisible(false)
+
+  if (isContactSupportVisible) {
+    return (<ContactSupport
+      closeContactSupport={closeContactSupport}
+    />)
   }
 
   return (

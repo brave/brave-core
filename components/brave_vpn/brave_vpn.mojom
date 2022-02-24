@@ -68,6 +68,12 @@ interface ServiceHandler {
 
   [EnableIfNot=is_android]
   GetProductUrls() => (ProductUrls urls);
+
+  [EnableIfNot=is_android]
+  GetSupportData() => (string app_version, string os_version, string hostname);
+
+  [EnableIfNot = is_android]
+  CreateSupportTicket(string email, string subject, string body) => (string response);
 };
 
 // WebUI-side handler for requests from the browser.

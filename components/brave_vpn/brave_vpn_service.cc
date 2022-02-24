@@ -109,6 +109,7 @@ constexpr char kProfileCredential[] = "api/v1.1/register-and-create";
 constexpr char kVerifyPurchaseToken[] = "api/v1.1/verify-purchase-token";
 constexpr char kCreateSubscriberCredentialV12[] =
     "api/v1.2/subscriber-credential/create";
+constexpr char kCreateSupportTicket[] = "api/v1.2/partners/support-ticket";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("brave_vpn_service", R"(
@@ -220,9 +221,9 @@ void BraveVpnService::ScheduleFetchRegionDataIfNeeded() {
   // Try to update region list every 5h.
   FetchRegionData();
   constexpr int kRegionDataUpdateIntervalInHours = 5;
-  region_data_update_timer_.Start(
-      FROM_HERE, base::Hours(kRegionDataUpdateIntervalInHours), this,
-      &BraveVpnService::FetchRegionData);
+  region_data_update_timer_.Start(FROM_HERE,
+                                  base::Hours(kRegionDataUpdateIntervalInHours),
+                                  this, &BraveVpnService::FetchRegionData);
 }
 
 void BraveVpnService::OnCreated() {
@@ -447,8 +448,7 @@ void BraveVpnService::OnPanelVisible() {
   LoadPurchasedState();
 }
 
-void BraveVpnService::GetConnectionState(
-    GetConnectionStateCallback callback) {
+void BraveVpnService::GetConnectionState(GetConnectionStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " : " << connection_state_;
   std::move(callback).Run(connection_state_);
@@ -493,7 +493,6 @@ void BraveVpnService::LoadCachedRegionData() {
   }
 }
 
-
 void BraveVpnService::LoadSelectedRegion() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   auto* preference =
@@ -519,7 +518,7 @@ void BraveVpnService::LoadSelectedRegion() {
 }
 
 void BraveVpnService::OnFetchRegionList(const std::string& region_list,
-                                               bool success) {
+                                        bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!success) {
     // TODO(simonhong): Re-try?
@@ -533,8 +532,8 @@ void BraveVpnService::OnFetchRegionList(const std::string& region_list,
 
     if (ParseAndCacheRegionList(std::move(*value))) {
       // Fetch timezones list to determine default region of this device.
-      GetTimezonesForRegions(base::BindOnce(
-          &BraveVpnService::OnFetchTimezones, base::Unretained(this)));
+      GetTimezonesForRegions(base::BindOnce(&BraveVpnService::OnFetchTimezones,
+                                            base::Unretained(this)));
       return;
     }
   }
@@ -582,7 +581,7 @@ bool BraveVpnService::ParseAndCacheRegionList(base::Value region_value) {
 }
 
 void BraveVpnService::OnFetchTimezones(const std::string& timezones_list,
-                                              bool success) {
+                                       bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!success) {
     VLOG(2) << "Failed to get timezones list";
@@ -663,8 +662,7 @@ void BraveVpnService::SetFallbackDeviceRegion() {
   SetDeviceRegion(regions_[0]);
 }
 
-void BraveVpnService::SetDeviceRegion(
-    const brave_vpn::mojom::Region& region) {
+void BraveVpnService::SetDeviceRegion(const brave_vpn::mojom::Region& region) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   device_region_ = region;
 
@@ -704,8 +702,7 @@ void BraveVpnService::GetDeviceRegion(GetDeviceRegionCallback callback) {
   std::move(callback).Run(device_region_.Clone());
 }
 
-void BraveVpnService::GetSelectedRegion(
-    GetSelectedRegionCallback callback) {
+void BraveVpnService::GetSelectedRegion(GetSelectedRegionCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
 
@@ -758,6 +755,39 @@ void BraveVpnService::GetProductUrls(GetProductUrlsCallback callback) {
   std::move(callback).Run(urls.Clone());
 }
 
+void BraveVpnService::CreateSupportTicket(
+    const std::string& email,
+    const std::string& subject,
+    const std::string& body,
+    CreateSupportTicketCallback callback) {
+  // TODO(bsclifton): finish me
+  auto internal_callback =
+      base::BindOnce(&BraveVpnService::OnCreateSupportTicket,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+
+  const GURL base_url = GetURLWithPath(kVpnHost, kCreateSupportTicket);
+  base::Value dict(base::Value::Type::DICTIONARY);
+  // required fields
+  // TODO: trim
+  dict.SetStringKey("email", email);
+  dict.SetStringKey("subject", subject);
+  dict.SetStringKey("support-ticket", body);
+  dict.SetStringKey("partner-client-id", "com.brave.browser");
+
+  // optional (but encouraged) fields
+  dict.SetStringKey("subscriber-credential", "");
+  dict.SetStringKey("payment-validation-method", "brave-premium");
+  dict.SetStringKey("payment-validation-data", "");
+
+  std::string request_body = CreateJSONRequestBody(dict);
+  LOG(ERROR) << " : sending " << request_body;
+  OAuthRequest(base_url, "POST", request_body, std::move(internal_callback));
+}
+
+void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
+  // TODO(bsclifton): finish me
+}
+
 void BraveVpnService::FetchHostnamesForRegion(const std::string& name) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
@@ -765,15 +795,14 @@ void BraveVpnService::FetchHostnamesForRegion(const std::string& name) {
   hostname_.reset();
 
   // Unretained is safe here becasue this class owns request helper.
-  GetHostnamesForRegion(
-      base::BindOnce(&BraveVpnService::OnFetchHostnames,
-                     base::Unretained(this), name),
-      name);
+  GetHostnamesForRegion(base::BindOnce(&BraveVpnService::OnFetchHostnames,
+                                       base::Unretained(this), name),
+                        name);
 }
 
 void BraveVpnService::OnFetchHostnames(const std::string& region,
-                                              const std::string& hostnames,
-                                              bool success) {
+                                       const std::string& hostnames,
+                                       bool success) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__;
   if (cancel_connecting_) {
@@ -798,9 +827,8 @@ void BraveVpnService::OnFetchHostnames(const std::string& region,
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECT_FAILED);
 }
 
-void BraveVpnService::ParseAndCacheHostnames(
-    const std::string& region,
-    base::Value hostnames_value) {
+void BraveVpnService::ParseAndCacheHostnames(const std::string& region,
+                                             base::Value hostnames_value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(hostnames_value.is_list());
   if (!hostnames_value.is_list()) {
@@ -967,8 +995,7 @@ void BraveVpnService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void BraveVpnService::GetPurchasedState(
-    GetPurchasedStateCallback callback) {
+void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(2) << __func__ << " : " << static_cast<int>(purchased_state_);
   std::move(callback).Run(purchased_state_);
@@ -994,8 +1021,7 @@ void BraveVpnService::LoadPurchasedState() {
                      base::Unretained(this)));
 }
 
-void BraveVpnService::OnCredentialSummary(
-    const std::string& summary_string) {
+void BraveVpnService::OnCredentialSummary(const std::string& summary_string) {
   std::string summary_string_trimmed;
   base::TrimWhitespaceASCII(summary_string, base::TrimPositions::TRIM_ALL,
                             &summary_string_trimmed);
@@ -1021,9 +1047,8 @@ void BraveVpnService::OnCredentialSummary(
       EnsureMojoConnected();
       skus_service_->PrepareCredentialsPresentation(
           skus::GetDomain("vpn"), "*",
-          base::BindOnce(
-              &BraveVpnService::OnPrepareCredentialsPresentation,
-              base::Unretained(this)));
+          base::BindOnce(&BraveVpnService::OnPrepareCredentialsPresentation,
+                         base::Unretained(this)));
     } else {
       LOG(ERROR) << "Credential appears to be expired.";
       SetPurchasedState(PurchasedState::EXPIRED);
@@ -1267,4 +1292,17 @@ void BraveVpnService::GetSubscriberCredentialV12(
   std::string request_body = CreateJSONRequestBody(dict);
   OAuthRequest(base_url, "POST", request_body, std::move(internal_callback),
                {{"Brave-Payments-Environment", payments_environment}});
+}
+
+void BraveVpnService::OnCreateSupportTicket(
+    CreateSupportTicketCallback callback,
+    int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  bool success = status == 200;
+  LOG(ERROR) << "BSC]] OnCreateSupportTicket =" << success;
+
+  // TODO: hide the contact form
+  // maybe callback can do that behavior and we can just run callback
+  // ..
 }

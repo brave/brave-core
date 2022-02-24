@@ -54,10 +54,10 @@ using PurchasedState = brave_vpn::mojom::PurchasedState;
 // by OS_ANDROID ifdef.
 class BraveVpnService :
 #if !defined(OS_ANDROID)
-      public brave_vpn::BraveVPNOSConnectionAPI::Observer,
+    public brave_vpn::BraveVPNOSConnectionAPI::Observer,
 #endif
-      public brave_vpn::mojom::ServiceHandler,
-      public KeyedService {
+    public brave_vpn::mojom::ServiceHandler,
+    public KeyedService {
  public:
 #if defined(OS_ANDROID)
   BraveVpnService(
@@ -102,6 +102,11 @@ class BraveVpnService :
   void GetSelectedRegion(GetSelectedRegionCallback callback) override;
   void SetSelectedRegion(brave_vpn::mojom::RegionPtr region) override;
   void GetProductUrls(GetProductUrlsCallback callback) override;
+  void CreateSupportTicket(const std::string& email,
+                           const std::string& subject,
+                           const std::string& body,
+                           CreateSupportTicketCallback callback) override;
+  void GetSupportData(GetSupportDataCallback callback) override;
 #endif  // !defined(OS_ANDROID)
 
   using ResponseCallback =
@@ -185,7 +190,6 @@ class BraveVpnService :
                                     bool success);
   void OnGetProfileCredentials(const std::string& profile_credential,
                                bool success);
-
   brave_vpn::BraveVPNOSConnectionAPI* GetBraveVPNConnectionAPI();
 
   void set_test_timezone(const std::string& timezone) {
@@ -215,6 +219,12 @@ class BraveVpnService :
 
   void OnGetSubscriberCredential(
       ResponseCallback callback,
+      int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+
+  void OnCreateSupportTicket(
+      CreateSupportTicketCallback callback,
       int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);

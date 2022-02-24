@@ -7,6 +7,7 @@ import { CaratStrongLeftIcon } from 'brave-ui/components/icons'
 
 interface Props {
   closeSettingsPanel: React.MouseEventHandler<HTMLButtonElement>
+  showContactSupport: React.MouseEventHandler<HTMLAnchorElement>
 }
 
 function SettingsPanel (props: Props) {
@@ -37,7 +38,7 @@ function SettingsPanel (props: Props) {
             </a>
           </li>
           <li>
-            <a href="#" onClick={handleClick.bind(this, 'feedback')}>
+            <a href="#" onClick={props.showContactSupport}>
               {getLocale('braveVpnContactSupport')}
             </a>
           </li>

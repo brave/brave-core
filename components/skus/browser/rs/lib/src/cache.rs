@@ -50,7 +50,7 @@ impl<T> CacheNode<T> {
                 .expect("we already checked and created an entry if it was needed");
         }
         node.data = Some(ExpiringValue {
-            expires_at: Utc::now() + chrono::Duration::seconds(ttl.as_millis() as i64),
+            expires_at: Utc::now() + chrono::Duration::milliseconds(ttl.as_millis() as i64),
             value,
         });
     }
