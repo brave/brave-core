@@ -27,6 +27,9 @@ RegisterStyleOverride(
         background: transparent !important;
       }
 
+      .cr-nav-menu-item iron-icon {
+        display: none !important;
+      }
     </style>
   `
 )
