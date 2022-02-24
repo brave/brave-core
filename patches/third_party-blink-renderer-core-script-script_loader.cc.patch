@@ -43,6 +43,30 @@ index 211d52589e86f5563254a3db50c6b710509336c6..1101a08631e411808c815341dfef87eb
      auto aquiring_state = modulator->GetAcquiringImportMapsState();
      switch (aquiring_state) {
        case Modulator::AcquiringImportMapsState::kAfterModuleScriptLoad:
+@@ -588,6 +657,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+         // script CORS setting, and encoding.</spec>
+         FetchClassicScript(url, element_document, options, cross_origin,
+                            encoding);
++        {
++          ::brave_page_graph::PageGraph* page_graph = context_window
++            ->GetFrame()->GetDocument()->GetPageGraph();
++          if (page_graph != nullptr) {
++            HTMLScriptElement* script_elm_html = GetHTMLScriptElement();
++            SVGScriptElement* script_elm_svg = GetSVGScriptElement();
++            if (script_elm_html != nullptr) {
++              page_graph->RegisterElmForRemoteScript(
++                DOMNodeIds::IdForNode(script_elm_html),
++                url);
++            } else if (script_elm_svg != nullptr) {
++              page_graph->RegisterElmForRemoteScript(
++                DOMNodeIds::IdForNode(script_elm_svg),
++                url);
++            }
++          }
++        }
+         break;
+       }
+       case ScriptTypeAtPrepare::kModule: {
 @@ -601,10 +613,27 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // Fetch an external module script graph given url, settings object, and
          // options.</spec>
