@@ -1247,14 +1247,15 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   [self.notificationsHandler clearNotificationWithIdentifier:bridgedId];
 }
 
-- (void)recordAdEvent:(const std::string&)ad_type
-     confirmationType:(const std::string&)confirmation_type
-            timestamp:(const double)timestamp {
+- (void)recordAdEventForId:(const std::string&)id
+                    adType:(const std::string&)ad_type
+          confirmationType:(const std::string&)confirmation_type
+                 timestamp:(const double)timestamp {
   if (!adEventHistory) {
     return;
   }
 
-  adEventHistory->Record(ad_type, confirmation_type, timestamp);
+  adEventHistory->RecordForId(id, ad_type, confirmation_type, timestamp);
 }
 
 - (std::vector<double>)getAdEvents:(const std::string&)ad_type
@@ -1266,12 +1267,12 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
   return adEventHistory->Get(ad_type, confirmation_type);
 }
 
-- (void)resetAdEvents {
+- (void)resetAdEventsForId:(const std::string&)id {
   if (!adEventHistory) {
     return;
   }
 
-  return adEventHistory->Reset();
+  return adEventHistory->ResetForId(id);
 }
 
 - (bool)shouldAllowAdsSubdivisionTargeting {

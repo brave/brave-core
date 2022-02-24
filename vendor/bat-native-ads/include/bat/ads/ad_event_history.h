@@ -19,17 +19,19 @@ class ADS_EXPORT AdEventHistory final {
   AdEventHistory();
   ~AdEventHistory();
 
-  void Record(const std::string& ad_type,
-              const std::string& confirmation_type,
-              const double timestamp);
+  void RecordForId(const std::string& id,
+                   const std::string& ad_type,
+                   const std::string& confirmation_type,
+                   const double timestamp);
 
   std::vector<double> Get(const std::string& ad_type,
                           const std::string& confirmation_type) const;
 
-  void Reset();
+  void ResetForId(const std::string& id);
 
  private:
-  base::flat_map<std::string, std::vector<double>> history_;
+  base::flat_map<std::string, base::flat_map<std::string, std::vector<double>>>
+      history_;
 };
 
 }  // namespace ads

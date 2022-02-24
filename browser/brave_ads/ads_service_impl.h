@@ -362,15 +362,16 @@ class AdsServiceImpl : public AdsService,
 
   void CloseNotification(const std::string& uuid) override;
 
-  void RecordAdEvent(const std::string& type,
-                     const std::string& confirmation_type,
-                     const double timestamp) const override;
+  void RecordAdEventForId(const std::string& id,
+                          const std::string& type,
+                          const std::string& confirmation_type,
+                          const double timestamp) const override;
 
   std::vector<double> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const override;
 
-  void ResetAdEvents() const override;
+  void ResetAdEventsForId(const std::string& id) const override;
 
   void UrlRequest(ads::mojom::UrlRequestPtr url_request,
                   ads::UrlRequestCallback callback) override;

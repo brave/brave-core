@@ -45,12 +45,14 @@ void AdsClientIOS::CloseNotification(const std::string& uuid) {
   [bridge_ closeNotification:uuid];
 }
 
-void AdsClientIOS::RecordAdEvent(const std::string& ad_type,
-                                 const std::string& confirmation_type,
-                                 const double timestamp) const {
-  [bridge_ recordAdEvent:ad_type
-        confirmationType:confirmation_type
-               timestamp:timestamp];
+void AdsClientIOS::RecordAdEventForId(const std::string& id,
+                                      const std::string& ad_type,
+                                      const std::string& confirmation_type,
+                                      const double timestamp) const {
+  [bridge_ recordAdEventForId:id
+                       adType:ad_type
+             confirmationType:confirmation_type
+                    timestamp:timestamp];
 }
 
 std::vector<double> AdsClientIOS::GetAdEvents(
@@ -59,8 +61,8 @@ std::vector<double> AdsClientIOS::GetAdEvents(
   return [bridge_ getAdEvents:ad_type confirmationType:confirmation_type];
 }
 
-void AdsClientIOS::ResetAdEvents() const {
-  [bridge_ resetAdEvents];
+void AdsClientIOS::ResetAdEventsForId(const std::string& id) const {
+  [bridge_ resetAdEventsForId:id];
 }
 
 void AdsClientIOS::UrlRequest(ads::mojom::UrlRequestPtr url_request,
