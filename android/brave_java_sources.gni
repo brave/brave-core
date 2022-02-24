@@ -211,7 +211,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/set_default_browser/SetDefaultBrowserBottomSheetFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundImagesPreferences.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveAddNewsSources.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveCustomTabsPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveDialogPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreference.java",

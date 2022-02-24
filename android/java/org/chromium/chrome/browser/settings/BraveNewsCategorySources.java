@@ -16,10 +16,8 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
-import androidx.preference.SwitchPreferenceCompat;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.base.Log;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_news.mojom.Publisher;
 import org.chromium.brave_news.mojom.UserEnabled;
@@ -72,7 +70,9 @@ public class BraveNewsCategorySources
                 Publisher publisher = entry.getValue();
                 if (publisher.categoryName.toLowerCase(Locale.ROOT)
                                 .equals(mCategoryArg.toLowerCase(Locale.ROOT))) {
-                    categoryPublishers.add(publisher);
+                    if (!publisher.categoryName.equals("")) {
+                        categoryPublishers.add(publisher);
+                    }
                 }
 
                 mCategsPublishers.put(publisher.categoryName, categoryPublishers);

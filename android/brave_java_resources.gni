@@ -892,6 +892,7 @@ brave_java_resources = [
   "java/res/layout/ntp_non_disruptive_banner.xml",
   "java/res/layout/ntp_widget_list_item_layout.xml",
   "java/res/layout/optin_layout.xml",
+  "java/res/layout/pref_edittext_dialog.xml",
   "java/res/layout/qa_code_check.xml",
   "java/res/layout/qa_command_line.xml",
   "java/res/layout/radio_button_group_ens_resolve_method_preference.xml",

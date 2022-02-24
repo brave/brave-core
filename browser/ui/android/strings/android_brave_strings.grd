@@ -273,17 +273,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_NEWS_TURN_ON_BUTTON" desc="Text for turn on button">
         Show Brave News
       </message>
-<!--   // for RSS
       <message name="IDS_NEWS_YOUR_SOURCES_SECTION" desc="Text for custom sources section">
-        Your sources
-      </message>
-      <message name="IDS_NEWS_SOURCES" desc="Text for show brave news toggle">
         Your sources
       </message>
       <message name="IDS_NEWS_FEED_SITE_URL" desc="Text for news feed input">
         Feed or Site URL
       </message>
--->
       <message name="IDS_NEWS_DEFAULT_SOURCES_SECTION" desc="Text for the default sources section">
         Default sources
       </message>

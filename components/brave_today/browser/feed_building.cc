@@ -266,8 +266,19 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
     if (!ShouldDisplayFeedItem(item, publishers)) {
       continue;
     }
-    // Adjust score to consider profile's browsing history
     auto& metadata = MetadataFromFeedItem(item);
+    const auto& publisher = publishers->at(metadata->publisher_id);
+    // ShouldDisplayFeedItem should already have returned false
+    // if publishers doesn't have this publisher_id.
+    DCHECK(publisher);
+    // Verify publisher_name field, this is still required for android.
+    // TODO(petemill): Have android use publisher_id field and lookup publisher
+    // name from its publisher list, so that we can avoid sending this
+    // repetitive data over IPC.
+    if (metadata->publisher_name.empty()) {
+      metadata->publisher_name = publisher->publisher_name;
+    }
+    // Adjust score to consider profile's browsing history
     if (history_hosts.find(metadata->url.host()) != history_hosts.end()) {
       metadata->score -= 5;
     }
