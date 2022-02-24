@@ -73,6 +73,14 @@ function Send (props: Props) {
     onSelectPresetAmount(percent)
   }
 
+  const handleOnInputChange = (value: string, name: string) => {
+    if (name === 'from' && selectedPreset) {
+      // Clear preset
+      setSelectedPreset(undefined)
+    }
+    onInputChange(value, name)
+  }
+
   const insufficientFundsError = React.useMemo((): boolean => {
     if (!selectedAsset) {
       return false
@@ -104,7 +112,7 @@ function Send (props: Props) {
       <SwapInputComponent
         componentType='fromAmount'
         onSelectPresetAmount={setPresetAmountValue}
-        onInputChange={onInputChange}
+        onInputChange={handleOnInputChange}
         selectedAssetInputAmount={selectedAssetAmount}
         inputName='from'
         selectedAssetBalance={selectedAssetBalance}
