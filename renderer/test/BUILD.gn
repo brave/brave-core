@@ -23,6 +23,7 @@ source_set("browser_tests") {
     "//base/test:test_support",
     "//brave/common",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/browser:utils",
     "//chrome/browser/ui",
     "//chrome/common",
     "//chrome/test:test_support_ui",

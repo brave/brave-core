@@ -201,6 +201,7 @@ test("brave_unit_tests") {
     "//brave/components/brave_today/browser/test:brave_news_unit_tests",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
+    "//brave/components/brave_wallet/browser:pref_names",
     "//brave/components/brave_wallet/browser/test:brave_wallet_unit_tests",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
@@ -342,6 +343,8 @@ test("brave_unit_tests") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/components/brave_shields/common:mojom",
+      "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/browser:utils",
     ]
   }
 
@@ -769,6 +772,8 @@ if (!is_android) {
       "//brave/components/brave_wallet/browser",
       "//brave/components/brave_wallet/browser:constants",
       "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+      "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/browser:utils",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/debounce/browser",
@@ -833,6 +838,8 @@ if (!is_android) {
         "//brave/browser/ethereum_remote_client",
         "//brave/browser/infobars",
         "//brave/components/brave_wallet/browser",
+        "//brave/components/brave_wallet/browser:pref_names",
+        "//brave/components/brave_wallet/browser:utils",
         "//brave/components/brave_wallet/common",
         "//brave/components/brave_wallet/common:mojom",
         "//components/infobars/content",
@@ -1054,6 +1061,8 @@ if (!is_android) {
       "//brave/components/brave_sync:prefs",
       "//brave/components/brave_vpn/buildflags",
       "//brave/components/brave_wallet/browser",
+      "//brave/components/brave_wallet/browser:pref_names",
+      "//brave/components/brave_wallet/browser:utils",
       "//brave/components/brave_wallet/common",
       "//brave/components/brave_wallet/common:mojom",
       "//brave/components/brave_wayback_machine",
