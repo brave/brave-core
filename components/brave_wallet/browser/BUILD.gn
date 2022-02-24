@@ -4,8 +4,6 @@ import("//brave/components/brave_wallet/browser/config.gni")
 import("//build/config/features.gni")
 
 static_library("browser") {
-  configs += [ ":infura_config" ]
-
   sources = [
     "asset_ratio_response_parser.cc",
     "asset_ratio_response_parser.h",
@@ -28,8 +26,6 @@ static_library("browser") {
     "brave_wallet_service.h",
     "brave_wallet_service_delegate.cc",
     "brave_wallet_service_delegate.h",
-    "brave_wallet_utils.cc",
-    "brave_wallet_utils.h",
     "eth_block_tracker.cc",
     "eth_block_tracker.h",
     "eth_data_builder.cc",
@@ -72,8 +68,6 @@ static_library("browser") {
     "keyring_service.h",
     "password_encryptor.cc",
     "password_encryptor.h",
-    "pref_names.cc",
-    "pref_names.h",
     "solana_account_meta.cc",
     "solana_account_meta.h",
     "solana_block_tracker.cc",
@@ -114,8 +108,10 @@ static_library("browser") {
   deps = [
     ":constants",
     ":hd_keyring",
+    ":pref_names",
     ":solana_utils",
     ":transaction",
+    ":utils",
     "//base",
     "//brave/components/api_request_helper",
     "//brave/components/bls:buildflags",
@@ -123,11 +119,11 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_stats/browser",
     "//brave/components/brave_wallet/browser:ethereum_permission_utils",
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
     "//brave/components/weekly_storage:weekly_storage",
-    "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
@@ -141,10 +137,6 @@ static_library("browser") {
     "//ui/base:base",
     "//url",
   ]
-
-  # Need to add this to public_deps so that the public_deps in
-  # //brave/components/brave_wallet/common gets propagated too.
-  public_deps = [ "//brave/components/brave_wallet/common" ]
 }
 
 config("infura_config") {
@@ -172,11 +164,43 @@ source_set("constants") {
 
   deps = [
     "//base",
-    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/resources:strings_grit",
     "//ui/base:base",
   ]
+
+  public_deps = [ "//brave/components/brave_wallet/common" ]
+}
+
+source_set("pref_names") {
+  sources = [
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+}
+
+source_set("utils") {
+  configs += [ ":infura_config" ]
+
+  sources = [
+    "brave_wallet_utils.cc",
+    "brave_wallet_utils.h",
+  ]
+
+  deps = [
+    ":constants",
+    ":pref_names",
+    "//base",
+    "//brave/components/brave_wallet/common:mojom",
+    "//brave/vendor/bip39wally-core-native:bip39wally-core",
+    "//components/prefs",
+    "//crypto",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/boringssl",
+    "//url",
+  ]
+
+  public_deps = [ "//brave/components/brave_wallet/common" ]
 }
 
 source_set("solana_utils") {
