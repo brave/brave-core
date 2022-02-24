@@ -19,6 +19,8 @@ class Value;
 namespace brave_wallet {
 
 typedef boost::multiprecision::uint256_t uint256_t;
+// Note that boost's int256_t has 256 precision bits and it uses an extra
+// sign bit so its max and min value differs from 2's complement types
 typedef boost::multiprecision::int256_t int256_t;
 typedef unsigned _BitInt(128) uint128_t;
 typedef _BitInt(128) int128_t;
