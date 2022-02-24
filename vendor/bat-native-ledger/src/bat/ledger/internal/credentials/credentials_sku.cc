@@ -444,10 +444,14 @@ void CredentialsSKU::OnRedeemTokens(
   }
 
   ledger_->database()->MarkUnblindedTokensAsSpent(
-      token_id_list,
-      redeem.type,
-      id,
-      callback);
+      token_id_list, redeem.type, id,
+      [&, callback = std::move(callback)](type::Result result) {
+        if (result == type::Result::LEDGER_OK) {
+          ledger_->ledger_client()->BackUpVgSpendStatuses();
+        }
+
+        callback(result);
+      });
 }
 
 }  // namespace credential
