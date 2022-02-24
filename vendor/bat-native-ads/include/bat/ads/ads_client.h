@@ -46,19 +46,20 @@ class ADS_EXPORT AdsClient {
   // Close notification
   virtual void CloseNotification(const std::string& uuid) = 0;
 
-  // Record an ad event for the specified |ad_type|, |confirmation_type| and
-  // specified |timestamp|
-  virtual void RecordAdEvent(const std::string& ad_type,
-                             const std::string& confirmation_type,
-                             const double timestamp) const = 0;
+  // Record an ad event for the specified |id|, |ad_type|, |confirmation_type|
+  // and specified |timestamp|
+  virtual void RecordAdEventForId(const std::string& id,
+                                  const std::string& ad_type,
+                                  const std::string& confirmation_type,
+                                  const double timestamp) const = 0;
 
   // Get a list of ad events for the specified |ad_type| and |confirmation_type|
   virtual std::vector<double> GetAdEvents(
       const std::string& ad_type,
       const std::string& confirmation_type) const = 0;
 
-  // Reset list of ad events
-  virtual void ResetAdEvents() const = 0;
+  // Reset list of ad events for the specified |id|
+  virtual void ResetAdEventsForId(const std::string& id) const = 0;
 
   // Get |max_count| browsing history results for past |days_ago| days from
   // |HistoryService| and return as list of strings

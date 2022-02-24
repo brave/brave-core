@@ -42,12 +42,13 @@
     callback:(ads::ResultCallback)callback;
 - (void)showNotification:(const ads::AdNotificationInfo&)info;
 - (void)closeNotification:(const std::string&)id;
-- (void)recordAdEvent:(const std::string&)ad_type
-     confirmationType:(const std::string&)confirmation_type
-            timestamp:(const double)timestamp;
+- (void)recordAdEventForId:(const std::string&)id
+                    adType:(const std::string&)ad_type
+          confirmationType:(const std::string&)confirmation_type
+                 timestamp:(const double)timestamp;
 - (std::vector<double>)getAdEvents:(const std::string&)ad_type
                   confirmationType:(const std::string&)confirmation_type;
-- (void)resetAdEvents;
+- (void)resetAdEventsForId:(const std::string&)id;
 - (void)UrlRequest:(ads::mojom::UrlRequestPtr)url_request
           callback:(ads::UrlRequestCallback)callback;
 - (void)runDBTransaction:(ads::mojom::DBTransactionPtr)transaction

@@ -46,8 +46,8 @@ interface BatAdsClient {
 
   ShowNotification(string json);
   CloseNotification(string uuid);
-  RecordAdEvent(string ad_type, string confirmation_type, double timestamp);
-  ResetAdEvents();
+  RecordAdEventForId(string id, string ad_type, string confirmation_type, double timestamp);
+  ResetAdEventsForId(string id);
   UrlRequest(ads.mojom.UrlRequest request) => (ads.mojom.UrlResponse response);
   Save(string name, string value) => (bool success);
   Load(string name) => (bool success, string value);
