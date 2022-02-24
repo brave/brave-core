@@ -79,6 +79,10 @@ RegisterStyleOverride(
         background: transparent !important;
       }
 
+      .cr-nav-menu-item paper-ripple {
+        display: none !important;
+      }
+
       @media (prefers-color-scheme: dark) {
         :host {
           --settings-nav-item-color: #F4F4F4 !important;
