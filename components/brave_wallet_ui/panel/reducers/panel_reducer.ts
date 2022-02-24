@@ -45,6 +45,11 @@ const defaultState: PanelState = {
     domainHash: '',
     primaryHash: ''
   }],
+  publicEncryptionKeyData: {
+    address: '',
+    message: '',
+    origin: ''
+  },
   switchChainRequest: {
     origin: {
       url: ''

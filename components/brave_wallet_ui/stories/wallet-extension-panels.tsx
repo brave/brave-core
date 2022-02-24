@@ -14,7 +14,8 @@ import {
   AddSuggestedTokenPanel,
   TransactionsPanel,
   TransactionDetailPanel,
-  AssetsPanel
+  AssetsPanel,
+  EncryptionKeyPanel
 } from '../components/extension'
 import { AppList } from '../components/shared'
 import {
@@ -273,6 +274,66 @@ export const _SignData = () => {
 
 _SignData.story = {
   name: 'Sign Transaction'
+}
+
+const encryptionKeyMockPayload = {
+  address: '0x3f29A1da97149722eB09c526E4eAd698895b426',
+  message: 'This is a test message.',
+  origin: 'https://app.skiff.org'
+}
+
+export const _ProvideEncryptionKey = () => {
+  const onProvide = () => {
+    alert('Will Provide Encryption Key')
+  }
+
+  const onCancel = () => {
+    alert('Will Cancel Providing Encryption Key')
+  }
+
+  return (
+    <StyledExtensionWrapperLonger>
+      <EncryptionKeyPanel
+        panelType='request'
+        encryptionKeyPayload={encryptionKeyMockPayload}
+        accounts={accounts}
+        selectedNetwork={mockNetworks[0]}
+        onCancel={onCancel}
+        onProvideOrAllow={onProvide}
+      />
+    </StyledExtensionWrapperLonger>
+  )
+}
+
+_ProvideEncryptionKey.story = {
+  name: 'Provide Encryption Key'
+}
+
+export const _ReadEncryptedMessage = () => {
+  const onAllow = () => {
+    alert('Will Allow Reading Encrypted Message')
+  }
+
+  const onCancel = () => {
+    alert('Will Not Allow Reading Encrypted Message')
+  }
+
+  return (
+    <StyledExtensionWrapperLonger>
+      <EncryptionKeyPanel
+        panelType='read'
+        encryptionKeyPayload={encryptionKeyMockPayload}
+        accounts={accounts}
+        selectedNetwork={mockNetworks[0]}
+        onCancel={onCancel}
+        onProvideOrAllow={onAllow}
+      />
+    </StyledExtensionWrapperLonger>
+  )
+}
+
+_ReadEncryptedMessage.story = {
+  name: 'Read Encrypted Message'
 }
 
 export const _ConnectWithSite = () => {

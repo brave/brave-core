@@ -103,6 +103,8 @@ export type PanelTypes =
   | 'transactions'
   | 'transactionDetails'
   | 'assets'
+  | 'provideEncryptionKey'
+  | 'allowReadingEncryptedMessage'
 
 export type NavTypes =
   | 'crypto'
@@ -225,6 +227,7 @@ export interface PanelState {
   swapQuote?: BraveWallet.SwapResponse
   swapError?: SwapErrorResponse
   signMessageData: BraveWallet.SignMessageRequest[]
+  publicEncryptionKeyData: BraveWallet.EncryptionKeyRequest
   switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   suggestedToken?: BraveWallet.BlockchainToken
