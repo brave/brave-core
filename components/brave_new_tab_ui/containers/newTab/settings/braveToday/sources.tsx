@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { CaratRightIcon, LoaderIcon } from 'brave-ui/components/icons'
+import { CaratRightIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../../common/locale'
 import { Publisher } from '../../../../api/brave_news'
 import {
@@ -12,6 +12,7 @@ import {
   SettingsText,
   SettingsSectionTitle
 } from '../../../../components/default'
+import Button from '$web-components/button'
 import NavigateBack from '../../../../components/default/settings/navigateBack'
 import DirectFeedItemMenu from './directFeedMenu'
 import { Props } from './'
@@ -133,12 +134,12 @@ export default function Sources (props: SourcesProps) {
     return (
       <>
         <Styled.YourSources>
-          <SettingsSectionTitle>
+          <SettingsSectionTitle isLayoutControlled={true}>
             {/* getLocale('braveTodayYourSourcesTitle') */}
             Your Sources
           </SettingsSectionTitle>
           {userFeeds && userFeeds.map(publisher => (
-            <SettingsRow key={publisher.publisherId} isInteractive={false}>
+            <SettingsRow key={publisher.publisherId} isInteractive={false} isLayoutControlled={true}>
               <SettingsText title={publisher.feedSource.url}>{publisher.publisherName}</SettingsText>
               <DirectFeedItemMenu key={publisher.publisherId} onRemove={onRemoveDirectFeed.bind(undefined, publisher)} />
             </SettingsRow>
@@ -150,15 +151,17 @@ export default function Sources (props: SourcesProps) {
           {(feedInputIsValid === FeedInputValidity.NotValid) &&
             <Styled.FeedUrlError>Sorry, we couldn't find a feed at that address.</Styled.FeedUrlError>
           }
-          <Styled.TemporaryFixedButton
-            disabled={feedInputIsValid !== FeedInputValidity.Valid}
-            brand='rewards'
-            level='primary'
-            type='default'
-            text={(feedInputIsValid !== FeedInputValidity.Pending) ? 'Add source' : ''}
-            icon={(feedInputIsValid !== FeedInputValidity.Pending) ? undefined : { image: <LoaderIcon />, position: 'before' }}
-            onClick={onAddSource}
-          />
+          <Styled.YourSourcesAction>
+            <Button
+              isPrimary
+              scale='small'
+              isDisabled={feedInputIsValid !== FeedInputValidity.Valid}
+              isLoading={feedInputIsValid === FeedInputValidity.Pending}
+              onClick={onAddSource}
+            >
+              Add source
+            </Button>
+          </Styled.YourSourcesAction>
         </Styled.YourSources>
         <CategoryList
           categories={[...publishersByCategory.keys()]}
