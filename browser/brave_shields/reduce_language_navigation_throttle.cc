@@ -3,22 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/reduce_language_navigation_throttle.h"
+#include "brave/browser/brave_shields/reduce_language_navigation_throttle.h"
 
 #include <memory>
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/threading/thread_task_runner_handle.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/common/features.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/language/core/browser/language_prefs.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_util.h"
@@ -65,9 +66,10 @@ ReduceLanguageNavigationThrottle::WillRedirectRequest() {
 
 void ReduceLanguageNavigationThrottle::UpdateHeaders() {
   content::NavigationHandle* handle = navigation_handle();
+  GURL visible_url = handle->GetWebContents()->GetVisibleURL();
   ControlType fingerprinting_control_type =
-      brave_shields::GetFingerprintingControlType(
-          content_settings_, handle->GetWebContents()->GetVisibleURL());
+      brave_shields::GetFingerprintingControlType(content_settings_,
+                                                  visible_url);
   if (fingerprinting_control_type == ControlType::ALLOW)
     return;
 
@@ -83,9 +85,16 @@ void ReduceLanguageNavigationThrottle::UpdateHeaders() {
   std::string languages =
       pref_service->Get(language::prefs::kAcceptLanguages)->GetString();
   std::string first_language = language::GetFirstLanguage(languages);
-  handle->SetRequestHeader(
-      net::HttpRequestHeaders::kAcceptLanguage,
-      net::HttpUtil::GenerateAcceptLanguageHeader(first_language));
+  std::vector<std::string> q_values = {";q=0.5", ";q=0.6", ";q=0.7",
+                                       ";q=0.8", ";q=0.9", ""};
+  std::mt19937_64 prng;
+  auto* profile = Profile::FromBrowserContext(context);
+  if (g_brave_browser_process->MakePseudoRandomGenerator(
+          visible_url, profile && !profile->IsOffTheRecord(), &prng)) {
+    first_language += q_values[prng() % q_values.size()];
+  }
+  handle->SetRequestHeader(net::HttpRequestHeaders::kAcceptLanguage,
+                           first_language);
 }
 
 const char* ReduceLanguageNavigationThrottle::GetNameForLogging() {

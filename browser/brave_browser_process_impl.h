@@ -115,8 +115,16 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   speedreader::SpeedreaderRewriterService* speedreader_rewriter_service()
       override;
 #endif
+  uint64_t session_token(bool is_off_the_record) override;
+  void set_session_tokens_for_testing() override;
+  bool MakePseudoRandomGenerator(const GURL& url,
+                                 bool is_off_the_record,
+                                 std::mt19937_64* prng) override;
 
  private:
+  uint64_t session_token_;
+  uint64_t incognito_session_token_;
+
   // BrowserProcessImpl overrides:
   void Init() override;
 

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_REDUCE_LANGUAGE_NAVIGATION_THROTTLE_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_REDUCE_LANGUAGE_NAVIGATION_THROTTLE_H_
+#ifndef BRAVE_BROWSER_BRAVE_SHIELDS_REDUCE_LANGUAGE_NAVIGATION_THROTTLE_H_
+#define BRAVE_BROWSER_BRAVE_SHIELDS_REDUCE_LANGUAGE_NAVIGATION_THROTTLE_H_
 
 #include <memory>
 #include <string>
@@ -57,4 +57,4 @@ class ReduceLanguageNavigationThrottle : public content::NavigationThrottle {
 
 }  // namespace brave_shields
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_REDUCE_LANGUAGE_NAVIGATION_THROTTLE_H_
+#endif  // BRAVE_BROWSER_BRAVE_SHIELDS_REDUCE_LANGUAGE_NAVIGATION_THROTTLE_H_

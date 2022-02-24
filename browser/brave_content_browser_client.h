@@ -143,9 +143,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                            blink::web_pref::WebPreferences* prefs) override;
 
  private:
-  uint64_t session_token_;
-  uint64_t incognito_session_token_;
-
   void OnAllowGoogleAuthChanged();
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>

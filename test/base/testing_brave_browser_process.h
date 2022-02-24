@@ -69,6 +69,11 @@ class TestingBraveBrowserProcess : public BraveBrowserProcess {
       override;
 #endif
   brave_ads::ResourceComponent* resource_component() override;
+  uint64_t session_token(bool is_off_the_record) override;
+  void set_session_tokens_for_testing() override;
+  bool MakePseudoRandomGenerator(const GURL& url,
+                                 bool is_off_the_record,
+                                 std::mt19937_64* prng) override;
 
   // Populate the mock process with services. Consumer is responsible for
   // cleaning these up after completion of a test.

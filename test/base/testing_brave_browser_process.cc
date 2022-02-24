@@ -132,6 +132,23 @@ brave_ads::ResourceComponent* TestingBraveBrowserProcess::resource_component() {
   return nullptr;
 }
 
+uint64_t TestingBraveBrowserProcess::session_token(bool is_off_the_record) {
+  NOTREACHED();
+  return 0;
+}
+
+void TestingBraveBrowserProcess::set_session_tokens_for_testing() {
+  NOTREACHED();
+}
+
+bool TestingBraveBrowserProcess::MakePseudoRandomGenerator(
+    const GURL& url,
+    bool is_off_the_record,
+    std::mt19937_64* prng) {
+  NOTREACHED();
+  return false;
+}
+
 void TestingBraveBrowserProcess::SetAdBlockService(
     std::unique_ptr<brave_shields::AdBlockService> service) {
   ad_block_service_ = std::move(service);

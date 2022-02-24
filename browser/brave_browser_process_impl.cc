@@ -5,10 +5,12 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 
+#include <string>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/path_service.h"
+#include "base/rand_util.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/browser/brave_shields/ad_block_subscription_download_manager_getter.h"
@@ -45,8 +47,11 @@
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/child_process_security_policy.h"
+#include "crypto/hmac.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -107,6 +112,10 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
     : BrowserProcessImpl(startup_data) {
   g_browser_process = this;
   g_brave_browser_process = this;
+
+  // initialize random seeds for farbling
+  session_token_ = base::RandUint64();
+  incognito_session_token_ = base::RandUint64();
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // early initialize referrals
@@ -340,6 +349,35 @@ brave_ads::ResourceComponent* BraveBrowserProcessImpl::resource_component() {
         new brave_ads::ResourceComponent(brave_component_updater_delegate()));
   }
   return resource_component_.get();
+}
+
+uint64_t BraveBrowserProcessImpl::session_token(bool is_off_the_record) {
+  if (is_off_the_record)
+    return incognito_session_token_;
+  return session_token_;
+}
+
+void BraveBrowserProcessImpl::set_session_tokens_for_testing() {
+  session_token_ = incognito_session_token_ = 12345;
+}
+
+bool BraveBrowserProcessImpl::MakePseudoRandomGenerator(const GURL& url,
+                                                        bool is_off_the_record,
+                                                        std::mt19937_64* prng) {
+  const std::string domain =
+      net::registry_controlled_domains::GetDomainAndRegistry(
+          url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (domain.empty())
+    return false;
+  uint8_t domain_key[32];
+  uint64_t session_key = session_token(is_off_the_record);
+  crypto::HMAC h(crypto::HMAC::SHA256);
+  CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key),
+               sizeof session_key));
+  CHECK(h.Sign(domain, domain_key, sizeof domain_key));
+  uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key);
+  *prng = std::mt19937_64(seed);
+  return true;
 }
 
 void BraveBrowserProcessImpl::CreateProfileManager() {
