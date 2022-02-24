@@ -47,7 +47,7 @@ public struct PlaylistInfo: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
-        self.src = try container.decode(String.self, forKey: .src)
+        let src = try container.decode(String.self, forKey: .src)
         self.pageSrc = try container.decode(String.self, forKey: .pageSrc)
         self.pageTitle = try container.decode(String.self, forKey: .pageTitle)
         self.mimeType = try container.decodeIfPresent(String.self, forKey: .mimeType) ?? ""
@@ -55,6 +55,7 @@ public struct PlaylistInfo: Codable {
         self.detected = try container.decodeIfPresent(Bool.self, forKey: .detected) ?? false
         self.tagId = try container.decodeIfPresent(String.self, forKey: .tagId) ?? ""
         self.dateAdded = Date()
+        self.src = PlaylistInfo.fixSchemelessURLs(src: src, pageSrc: pageSrc)
     }
     
     public static func from(message: WKScriptMessage) -> PlaylistInfo? {
@@ -70,6 +71,15 @@ public struct PlaylistInfo: Codable {
         }
         
         return nil
+    }
+    
+    public static func fixSchemelessURLs(src: String, pageSrc: String) -> String {
+        if src.hasPrefix("//") {
+            return "\(URL(string: pageSrc)?.scheme ?? ""):\(src)"
+        } else if src.hasPrefix("/"), let url = URL(string: src, relativeTo: URL(string: pageSrc))?.absoluteString {
+            return url
+        }
+        return src
     }
     
     private enum CodingKeys: String, CodingKey {

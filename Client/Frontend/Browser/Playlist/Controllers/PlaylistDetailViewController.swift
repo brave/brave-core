@@ -79,7 +79,7 @@ class PlaylistDetailViewController: UIViewController, UIGestureRecognizerDelegat
         navigationController?.setNavigationBarHidden(false, animated: true)
         
         if navigationController?.isNavigationBarHidden == true {
-            splitViewController?.preferredDisplayMode = .primaryOverlay
+            splitViewController?.preferredDisplayMode = .oneOverSecondary
         }
     }
         
@@ -102,7 +102,7 @@ class PlaylistDetailViewController: UIViewController, UIGestureRecognizerDelegat
     @objc
     private func onDisplayModeChange() {
         updateSplitViewDisplayMode(
-            to: splitViewController?.displayMode == .primaryOverlay ? .secondaryOnly : .primaryOverlay)
+            to: splitViewController?.displayMode == .oneOverSecondary ? .secondaryOnly : .oneOverSecondary)
     }
     
     public func setVideoPlayer(_ videoPlayer: VideoView?) {

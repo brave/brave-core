@@ -4,8 +4,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import XCTest
-@testable import Client
 import CoreMedia
+@testable import Client
+@testable import Data
 
 class PlaylistTests: XCTestCase {
     func testVideoPlayerTrackBarTimeFormatter() throws {
@@ -24,5 +25,17 @@ class PlaylistTests: XCTestCase {
         XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(60.0, preferredTimescale: 1)) == "01:00") //mm:ss
         XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(60 * 60, preferredTimescale: 1)) == "01:00:00") //hh:mm:ss
         XCTAssert(VideoTrackerBar.timeToString(CMTimeMakeWithSeconds(60 * 60 * 24, preferredTimescale: 1)) == "01:00:00:00") //dd:hh:mm:ss
+    }
+    
+    func testSchemelessURLNormalization() throws {
+        let info = ["https://brave.com": "https://brave.com/test.mp4",
+                    "https://brave.com/": "https://brave.com/test.mp4",
+                    "http://brave.com": "http://brave.com/test.mp4",
+                    "http://brave.com/": "http://brave.com/test.mp4"]
+        
+        info.forEach {
+            XCTAssertEqual(PlaylistInfo.fixSchemelessURLs(src: "//brave.com/test.mp4", pageSrc: $0.key), $0.value)
+            XCTAssertEqual(PlaylistInfo.fixSchemelessURLs(src: "/test.mp4", pageSrc: $0.key), $0.value)
+        }
     }
 }

@@ -105,7 +105,6 @@ class PlaylistCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         preservesSuperviewLayoutMargins = false
-        selectionStyle = .none
         
         contentView.addSubview(iconStackView)
         contentView.addSubview(infoStackView)

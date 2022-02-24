@@ -295,9 +295,12 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     
     @objc
     private func onExitFullscreen(_ button: UIButton) {
-        isFullscreen = false
-        infoView.fullscreenButton.isHidden = false
-        infoView.exitButton.isHidden = true
+        if isFullscreen {
+            isFullscreen = false
+            infoView.fullscreenButton.isHidden = false
+            infoView.exitButton.isHidden = true
+        }
+        
         self.delegate?.onExitFullscreen(self)
     }
     
