@@ -13,13 +13,13 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/components/de_amp/common",
+    "//brave/components/sniffer",
     "//brave/extensions:common",
     "//components/prefs:prefs",
     "//content/public/browser",
     "//content/public/common",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
-    "//third_party/blink/public/common",
     "//third_party/re2",
     "//url",
   ]

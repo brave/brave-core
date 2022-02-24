@@ -39,7 +39,6 @@ source_set("browser_tests") {
     "//chrome/browser/ui:ui",
     "//chrome/test:test_support_ui",
     "//components/content_settings/core/browser:browser",
-    "//components/keep_alive_registry:keep_alive_registry",
     "//components/prefs:test_support",
     "//content/test:test_support",
     "//net:test_support",

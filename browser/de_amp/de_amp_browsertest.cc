@@ -9,15 +9,11 @@
 #include "brave/common/brave_paths.h"
 #include "brave/components/de_amp/browser/de_amp_service.h"
 #include "brave/components/de_amp/common/features.h"
-#include "chrome/browser/profiles/profile_keep_alive_types.h"
-#include "chrome/browser/profiles/scoped_profile_keep_alive.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/keep_alive_registry/keep_alive_types.h"
-#include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -193,10 +189,6 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, RestorePage) {
 
   Profile* profile = browser()->profile();
 
-  ScopedKeepAlive test_keep_alive(KeepAliveOrigin::PANEL_VIEW,
-                                  KeepAliveRestartOption::DISABLED);
-  ScopedProfileKeepAlive test_profile_keep_alive(
-      profile, ProfileKeepAliveOrigin::kBrowserWindow);
   CloseBrowserSynchronously(browser());
 
   EXPECT_EQ(0u, BrowserList::GetInstance()->size());

@@ -11,9 +11,9 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/de_amp/browser/de_amp_service.h"
+#include "brave/components/sniffer/sniffer_throttle.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
-#include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 class HostContentSettingsMap;
 
@@ -21,7 +21,7 @@ namespace de_amp {
 
 // Throttle for AMP HTML detection.
 // If AMP page, redirect request to non-AMP canonical link.
-class DeAmpThrottle : public blink::URLLoaderThrottle {
+class DeAmpThrottle : public sniffer::SnifferThrottle {
  public:
   explicit DeAmpThrottle(scoped_refptr<base::SequencedTaskRunner> task_runner,
                          DeAmpService* service,
@@ -37,14 +37,11 @@ class DeAmpThrottle : public blink::URLLoaderThrottle {
   void WillProcessResponse(const GURL& response_url,
                            network::mojom::URLResponseHead* response_head,
                            bool* defer) override;
-  // Called from DeAmpURLLoader.
-  void Resume();
 
  private:
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   DeAmpService* service_;
   content::WebContents* contents_;  // not owned
-  base::WeakPtrFactory<DeAmpThrottle> weak_factory_{this};
 };
 
 }  // namespace de_amp

@@ -11,6 +11,7 @@
 #include "brave/components/de_amp/browser/de_amp_service.h"
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 #include "brave/components/de_amp/common/features.h"
+#include "brave/components/sniffer/sniffer_url_loader.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
@@ -36,9 +37,7 @@ DeAmpThrottle::DeAmpThrottle(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
     content::WebContents* contents)
-    : task_runner_(std::move(task_runner)),
-      service_(service),
-      contents_(contents) {}
+    : task_runner_(task_runner), service_(service), contents_(contents) {}
 
 DeAmpThrottle::~DeAmpThrottle() = default;
 
@@ -47,7 +46,6 @@ void DeAmpThrottle::WillProcessResponse(
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
   VLOG(2) << "deamp throttling: " << response_url;
-  *defer = true;
 
   mojo::PendingRemote<network::mojom::URLLoader> new_remote;
   mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver;
@@ -57,14 +55,9 @@ void DeAmpThrottle::WillProcessResponse(
   std::tie(new_remote, new_receiver, de_amp_loader) =
       DeAmpURLLoader::CreateLoader(weak_factory_.GetWeakPtr(), response_url,
                                    task_runner_, service_, contents_);
-  delegate_->InterceptResponse(std::move(new_remote), std::move(new_receiver),
-                               &source_loader, &source_client_receiver);
-  de_amp_loader->Start(std::move(source_loader),
-                       std::move(source_client_receiver));
-}
-
-void DeAmpThrottle::Resume() {
-  delegate_->Resume();
+  SnifferThrottle::InterceptAndStartLoader(
+      std::move(source_loader), std::move(source_client_receiver),
+      std::move(new_remote), std::move(new_receiver), de_amp_loader, defer);
 }
 
 }  // namespace de_amp

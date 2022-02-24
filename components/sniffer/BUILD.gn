@@ -1,0 +1,17 @@
+import("//brave/build/config.gni")
+
+source_set("sniffer") {
+  sources = [
+    "sniffer_throttle.cc",
+    "sniffer_throttle.h",
+    "sniffer_url_loader.cc",
+    "sniffer_url_loader.h",
+  ]
+
+  deps = [
+    "//base",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+  ]
+}

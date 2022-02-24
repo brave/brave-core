@@ -16,6 +16,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/de_amp/browser/de_amp_service.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
+#include "brave/components/sniffer/sniffer_url_loader.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -35,7 +36,7 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
            mojo::PendingReceiver<network::mojom::URLLoaderClient>,
            DeAmpURLLoader*>
 DeAmpURLLoader::CreateLoader(
-    base::WeakPtr<DeAmpThrottle> throttle,
+    base::WeakPtr<sniffer::SnifferThrottle> throttle,
     const GURL& response_url,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
@@ -57,142 +58,21 @@ DeAmpURLLoader::CreateLoader(
 }
 
 DeAmpURLLoader::DeAmpURLLoader(
-    base::WeakPtr<DeAmpThrottle> throttle,
+    base::WeakPtr<sniffer::SnifferThrottle> throttle,
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
     content::WebContents* contents)
-    : throttle_(throttle),
-      destination_url_loader_client_(std::move(destination_url_loader_client)),
-      response_url_(response_url),
+    : sniffer::SnifferURLLoader(throttle,
+                                response_url,
+                                std::move(destination_url_loader_client),
+                                task_runner),
       contents_(contents),
-      de_amp_service(service),
-      task_runner_(task_runner),
-      body_consumer_watcher_(FROM_HERE,
-                             mojo::SimpleWatcher::ArmingPolicy::MANUAL,
-                             task_runner),
-      body_producer_watcher_(FROM_HERE,
-                             mojo::SimpleWatcher::ArmingPolicy::MANUAL,
-                             std::move(task_runner)) {}
+      de_amp_service(service) {}
 
 DeAmpURLLoader::~DeAmpURLLoader() = default;
-
-void DeAmpURLLoader::Start(
-    mojo::PendingRemote<network::mojom::URLLoader> source_url_loader_remote,
-    mojo::PendingReceiver<network::mojom::URLLoaderClient>
-        source_url_client_receiver) {
-  source_url_loader_.Bind(std::move(source_url_loader_remote));
-  source_url_client_receiver_.Bind(std::move(source_url_client_receiver),
-                                   task_runner_);
-}
-
-void DeAmpURLLoader::OnReceiveEarlyHints(
-    network::mojom::EarlyHintsPtr early_hints) {}
-
-void DeAmpURLLoader::OnReceiveResponse(
-    network::mojom::URLResponseHeadPtr response_head) {
-  // OnReceiveResponse() shouldn't be called because DeAmpURLLoader is
-  // created by DeAmpThrottle::WillProcessResponse(), which is equivalent
-  // to OnReceiveResponse().
-  NOTREACHED();
-}
-
-void DeAmpURLLoader::OnReceiveRedirect(
-    const net::RedirectInfo& redirect_info,
-    network::mojom::URLResponseHeadPtr response_head) {
-  // OnReceiveRedirect() shouldn't be called because DeAmpURLLoader is
-  // created by DeAmpThrottle::WillProcessResponse(), which is equivalent
-  // to OnReceiveResponse().
-  NOTREACHED();
-}
-
-void DeAmpURLLoader::OnUploadProgress(int64_t current_position,
-                                      int64_t total_size,
-                                      OnUploadProgressCallback ack_callback) {
-  destination_url_loader_client_->OnUploadProgress(current_position, total_size,
-                                                   std::move(ack_callback));
-}
-
-void DeAmpURLLoader::OnReceiveCachedMetadata(mojo_base::BigBuffer data) {
-  destination_url_loader_client_->OnReceiveCachedMetadata(std::move(data));
-}
-
-void DeAmpURLLoader::OnTransferSizeUpdated(int32_t transfer_size_diff) {
-  destination_url_loader_client_->OnTransferSizeUpdated(transfer_size_diff);
-}
-
-void DeAmpURLLoader::OnStartLoadingResponseBody(
-    mojo::ScopedDataPipeConsumerHandle body) {
-  VLOG(2) << __func__ << " " << response_url_;
-  state_ = State::kLoading;
-  body_consumer_handle_ = std::move(body);
-  body_consumer_watcher_.Watch(
-      body_consumer_handle_.get(),
-      MOJO_HANDLE_SIGNAL_READABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
-      base::BindRepeating(&DeAmpURLLoader::OnBodyReadable,
-                          base::Unretained(this)));
-  body_consumer_watcher_.ArmOrNotify();
-}
-
-void DeAmpURLLoader::OnComplete(
-    const network::URLLoaderCompletionStatus& status) {
-  DCHECK(!complete_status_.has_value());
-  switch (state_) {
-    case State::kWaitForBody:
-      // An error occured before receiving any data.
-      DCHECK_NE(net::OK, status.error_code);
-      state_ = State::kCompleted;
-      if (!throttle_) {
-        Abort();
-        return;
-      }
-      throttle_->Resume();
-      destination_url_loader_client_->OnComplete(status);
-      return;
-    case State::kLoading:
-    case State::kSending:
-      complete_status_ = status;
-      return;
-    case State::kCompleted:
-      destination_url_loader_client_->OnComplete(status);
-      return;
-    case State::kAborted:
-      NOTREACHED();
-      return;
-  }
-  NOTREACHED();
-}
-
-void DeAmpURLLoader::FollowRedirect(
-    const std::vector<std::string>& removed_headers,
-    const net::HttpRequestHeaders& modified_headers,
-    const net::HttpRequestHeaders& modified_cors_exempt_headers,
-    const absl::optional<GURL>& new_url) {
-  // DeAmpURLLoader starts handling the request after
-  // OnReceivedResponse(). A redirect response is not expected.
-  NOTREACHED();
-}
-
-void DeAmpURLLoader::SetPriority(net::RequestPriority priority,
-                                 int32_t intra_priority_value) {
-  if (state_ == State::kAborted)
-    return;
-  source_url_loader_->SetPriority(priority, intra_priority_value);
-}
-
-void DeAmpURLLoader::PauseReadingBodyFromNet() {
-  if (state_ == State::kAborted)
-    return;
-  source_url_loader_->PauseReadingBodyFromNet();
-}
-
-void DeAmpURLLoader::ResumeReadingBodyFromNet() {
-  if (state_ == State::kAborted)
-    return;
-  source_url_loader_->ResumeReadingBodyFromNet();
-}
 
 void DeAmpURLLoader::OnBodyReadable(MojoResult) {
   if (state_ == State::kSending) {
@@ -256,46 +136,6 @@ void DeAmpURLLoader::OnBodyWritable(MojoResult r) {
   }
 }
 
-void DeAmpURLLoader::CompleteLoading(std::string body) {
-  DCHECK_EQ(State::kLoading, state_);
-  state_ = State::kSending;
-
-  if (!throttle_) {
-    Abort();
-    return;
-  }
-
-  buffered_body_ = std::move(body);
-  bytes_remaining_in_buffer_ = buffered_body_.size();
-
-  throttle_->Resume();
-  mojo::ScopedDataPipeConsumerHandle body_to_send;
-  MojoResult result =
-      mojo::CreateDataPipe(nullptr, body_producer_handle_, body_to_send);
-  if (result != MOJO_RESULT_OK) {
-    Abort();
-    return;
-  }
-  // Set up the watcher for the producer handle.
-  body_producer_watcher_.Watch(
-      body_producer_handle_.get(),
-      MOJO_HANDLE_SIGNAL_WRITABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
-      base::BindRepeating(&DeAmpURLLoader::OnBodyWritable,
-                          base::Unretained(this)));
-
-  // Send deferred message.
-  destination_url_loader_client_->OnStartLoadingResponseBody(
-      std::move(body_to_send));
-
-  DCHECK(bytes_remaining_in_buffer_);
-  if (bytes_remaining_in_buffer_) {
-    SendReceivedBodyToClient();
-    return;
-  }
-
-  CompleteSending();
-}
-
 void DeAmpURLLoader::ForwardBodyToClient() {
   DCHECK_EQ(0u, bytes_remaining_in_buffer_);
   // Send the body from the consumer to the producer.
@@ -326,7 +166,7 @@ void DeAmpURLLoader::ForwardBodyToClient() {
     case MOJO_RESULT_FAILED_PRECONDITION:
       // The pipe is closed unexpectedly. |this| should be deleted once
       // URLLoader on the destination is released.
-      Abort();
+      SnifferURLLoader::Abort();
       return;
     case MOJO_RESULT_SHOULD_WAIT:
       body_consumer_handle_->EndReadData(0);
@@ -354,46 +194,6 @@ void DeAmpURLLoader::CompleteSending() {
   body_producer_watcher_.Cancel();
   body_consumer_handle_.reset();
   body_producer_handle_.reset();
-}
-
-void DeAmpURLLoader::SendReceivedBodyToClient() {
-  DCHECK_EQ(State::kSending, state_);
-  // Send the buffered data first.
-  DCHECK_GT(bytes_remaining_in_buffer_, 0u);
-  size_t start_position = buffered_body_.size() - bytes_remaining_in_buffer_;
-  uint32_t bytes_sent = bytes_remaining_in_buffer_;
-  MojoResult result =
-      body_producer_handle_->WriteData(buffered_body_.data() + start_position,
-                                       &bytes_sent, MOJO_WRITE_DATA_FLAG_NONE);
-  switch (result) {
-    case MOJO_RESULT_OK:
-      break;
-    case MOJO_RESULT_FAILED_PRECONDITION:
-      // The pipe is closed unexpectedly. |this| should be deleted once
-      // URLLoaderPtr on the destination is released.
-      Abort();
-      return;
-    case MOJO_RESULT_SHOULD_WAIT:
-      body_producer_watcher_.ArmOrNotify();
-      return;
-    default:
-      NOTREACHED();
-      return;
-  }
-  bytes_remaining_in_buffer_ -= bytes_sent;
-  body_producer_watcher_.ArmOrNotify();
-}
-
-void DeAmpURLLoader::Abort() {
-  VLOG(2) << __func__ << " " << response_url_;
-  state_ = State::kAborted;
-  body_consumer_watcher_.Cancel();
-  body_producer_watcher_.Cancel();
-  source_url_loader_.reset();
-  source_url_client_receiver_.reset();
-  destination_url_loader_client_.reset();
-  // |this| should be removed since the owner will destroy |this| or the owner
-  // has already been destroyed by some reason.
 }
 
 }  // namespace de_amp
