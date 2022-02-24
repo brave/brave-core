@@ -15,21 +15,52 @@ function getBuildOuptutPathList(buildOutputRelativePath) {
 
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
+  const isDevMode = mode === 'development'
   // Make whatever fine-grained changes you need
-  config.module.rules.push({
-    test: /\.(ts|tsx)$/,
-    loader: require.resolve('ts-loader'),
-    exclude: /node_modules\/(?!brave-ui)/,
-    options: {
-      // TODO(petemill): point to the tsconfig in gen/[target] that
-      // is made during build-time, or generate a new one. For both those
-      // options, use a cli arg or environment variable to obtain the correct
-      // build target.
-      configFile: path.resolve(__dirname, '..', 'tsconfig-storybook.json'),
-      allowTsInNodeModules: true,
-      getCustomTransformers: path.join(__dirname, '../components/webpack/webpack-ts-transformers.js'),
+  config.module.rules.push(
+    {
+      test: /\.scss$/,
+      include: [/\.global\./],
+      use: [
+        { loader: "style-loader" },
+        { loader: "css-loader" },
+      ],
+    },
+    {
+      test: /\.scss$/,
+      exclude: [/\.global\./, /node_modules/],
+      use: [
+        { loader: "style-loader" },
+        {
+          loader: "css-loader",
+          options: {
+            importLoaders: 3,
+            sourceMap: false,
+            modules: {
+              localIdentName: isDevMode
+                ? "[path][name]__[local]--[hash:base64:5]"
+                : "[hash:base64]",
+            },
+          },
+        },
+        { loader: "sass-loader" },
+      ],
+    },
+    {
+      test: /\.(ts|tsx)$/,
+      loader: require.resolve('ts-loader'),
+      exclude: /node_modules\/(?!brave-ui)/,
+      options: {
+        // TODO(petemill): point to the tsconfig in gen/[target] that
+        // is made during build-time, or generate a new one. For both those
+        // options, use a cli arg or environment variable to obtain the correct
+        // build target.
+        configFile: path.resolve(__dirname, '..', 'tsconfig-storybook.json'),
+        allowTsInNodeModules: true,
+        getCustomTransformers: path.join(__dirname, '../components/webpack/webpack-ts-transformers.js'),
+      }
     }
-  })
+  )
   config.module.rules.push({
     test: /\.avif$/,
     loader: 'file-loader'
@@ -77,6 +108,6 @@ module.exports = async ({ config, mode }) => {
       ], 'resolve'
     )
   ]
-  config.resolve.extensions.push('.ts', '.tsx')
+  config.resolve.extensions.push('.ts', '.tsx', '.scss')
   return config
 }
