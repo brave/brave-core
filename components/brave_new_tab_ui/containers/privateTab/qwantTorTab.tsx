@@ -6,25 +6,21 @@ import * as React from 'react'
 
 // Feature-specific components
 import {
-  Grid,
-  HeaderGrid,
-  ButtonGroup,
+  Grid2Columns,
   Box,
   Content,
   HeaderBox,
   Title,
   SubTitle,
   Text,
-  PrivateImage,
-  DuckDuckGoImage,
+  TorImage,
   TorLockImage,
   Separator,
-  FakeButton,
-  Link
+  FakeButton
 } from '../../components/private'
 
 // Helpers
-import { getLocale, getLocaleWithTag } from '../../../common/locale'
+import { getLocale } from '../../../common/locale'
 
 // Assets
 const privateWindowImg = require('../../../img/newtab/private-window-tor.svg')
@@ -34,7 +30,7 @@ interface Props {
   newTabData: NewTab.State
 }
 
-export default class TorTab extends React.PureComponent<Props, {}> {
+export default class QwantTorTab extends React.PureComponent<Props, {}> {
   get torStatus () {
     if (this.props.newTabData &&
         this.props.newTabData.torCircuitEstablished) {
@@ -48,59 +44,23 @@ export default class TorTab extends React.PureComponent<Props, {}> {
     return getLocale('torStatusDisconnected')
   }
 
-  renderTorTip () {
-    const { beforeTag, duringTag, afterTag } = getLocaleWithTag('torTip')
-    if (this.props.newTabData && !this.props.newTabData.torCircuitEstablished) {
-      return (
-        <Text>
-          {beforeTag}
-            <Link
-              href='chrome://settings/extensions'
-              style={{ margin: 0 }}
-            >
-            {duringTag}
-            </Link>
-          {afterTag}
-        </Text>
-      )
-    }
-    return ''
-  }
-
   render () {
     return (
-      <Grid>
+      <Grid2Columns>
         <HeaderBox>
-          <HeaderGrid>
-            <PrivateImage src={privateWindowImg} />
+          <div>
+            <TorImage src={privateWindowImg} />
             <div>
               <SubTitle>{getLocale('headerLabel')}</SubTitle>
               <Title>{getLocale('headerTorTitle')}</Title>
               <Text>{getLocale('headerTorText')}</Text>
             </div>
-          </HeaderGrid>
+          </div>
         </HeaderBox>
-        <Box style={{ minHeight: '471px' }}>
-          <Content>
-            <DuckDuckGoImage />
-            <SubTitle>{getLocale('boxDdgLabel')}</SubTitle>
-            <Title>{getLocale('boxDdgTitle')}</Title>
-            <Text>{getLocale('boxDdgText2')}</Text>
-          </Content>
-          <Separator />
-          <ButtonGroup>
-            <Link
-              href='https://support.brave.com/hc/en-us/articles/360018266171'
-              target='_blank'
-            >
-              {getLocale('learnMore')}
-            </Link>
-          </ButtonGroup>
-        </Box>
         <Box>
           <Content>
             <TorLockImage />
-            <SubTitle>{getLocale('boxTorLabel2')}</SubTitle>
+            <SubTitle>{getLocale('boxTorLabel')}</SubTitle>
             <Title>{getLocale('boxTorTitle')}</Title>
             <Text>{getLocale('boxTorText')}</Text>
           </Content>
@@ -115,9 +75,8 @@ export default class TorTab extends React.PureComponent<Props, {}> {
         <Box>
           <Title>{getLocale('torStatus')}</Title>
           <Text>{this.torStatus}</Text>
-          {this.renderTorTip()}
         </Box>
-      </Grid>
+      </Grid2Columns>
     )
   }
 }
