@@ -12,8 +12,10 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
+#include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -109,11 +111,11 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   EXPECT_EQ(nonce_result, uint256_t(2));
 
   // tx count: 2, confirmed: [2], pending: null
-  EthTxStateManager::TxMeta meta;
-  meta.id = EthTxStateManager::GenerateMetaID();
-  meta.from = EthAddress::FromHex(addr);
-  meta.status = mojom::TransactionStatus::Confirmed;
-  meta.tx->set_nonce(uint256_t(2));
+  EthTxMeta meta;
+  meta.set_id(TxMeta::GenerateMetaID());
+  meta.set_from(EthAddress::FromHex(addr).ToChecksumAddress());
+  meta.set_status(mojom::TransactionStatus::Confirmed);
+  meta.tx()->set_nonce(uint256_t(2));
   tx_state_manager.AddOrUpdateTx(meta);
 
   nonce_result = 0;
@@ -130,9 +132,9 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   EXPECT_EQ(nonce_result, uint256_t(3));
 
   // tx count: 2, confirmed: [2, 3], pending: null
-  meta.id = EthTxStateManager::GenerateMetaID();
-  meta.status = mojom::TransactionStatus::Confirmed;
-  meta.tx->set_nonce(uint256_t(3));
+  meta.set_id(TxMeta::GenerateMetaID());
+  meta.set_status(mojom::TransactionStatus::Confirmed);
+  meta.tx()->set_nonce(uint256_t(3));
   tx_state_manager.AddOrUpdateTx(meta);
 
   nonce_result = 0;
@@ -149,11 +151,11 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   EXPECT_EQ(nonce_result, uint256_t(4));
 
   // tx count: 2, confirmed: [2, 3], pending: [4, 4]
-  meta.status = mojom::TransactionStatus::Submitted;
-  meta.tx->set_nonce(uint256_t(4));
-  meta.id = EthTxStateManager::GenerateMetaID();
+  meta.set_status(mojom::TransactionStatus::Submitted);
+  meta.tx()->set_nonce(uint256_t(4));
+  meta.set_id(TxMeta::GenerateMetaID());
   tx_state_manager.AddOrUpdateTx(meta);
-  meta.id = EthTxStateManager::GenerateMetaID();
+  meta.set_id(TxMeta::GenerateMetaID());
   tx_state_manager.AddOrUpdateTx(meta);
 
   nonce_result = 0;

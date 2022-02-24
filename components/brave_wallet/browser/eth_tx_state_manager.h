@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
@@ -44,9 +45,9 @@ class EthTxStateManager : public TxStateManager {
   std::unique_ptr<EthTxMeta> ValueToEthTxMeta(const base::Value& value);
 
  private:
-  // Create EthTxMeta from value.
-  std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value) override;
+  FRIEND_TEST_ALL_PREFIXES(EthTxStateManagerUnitTest, GetTxPrefPathPrefix);
 
+  std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value) override;
   std::string GetTxPrefPathPrefix() override;
 };
 

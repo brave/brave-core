@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/eth_data_parser.h"
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_transaction.h"
+#include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/hd_keyring.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -305,12 +306,13 @@ class EthTxManagerUnitTest : public testing::Test {
     auto tx = EthTransaction::FromTxData(tx_data, false);
     ASSERT_TRUE(tx);
 
-    EthTxStateManager::TxMeta meta;
-    meta.id = orig_meta_id;
-    meta.from =
-        EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a");
-    meta.status = status;
-    meta.tx = std::make_unique<EthTransaction>(*tx);
+    EthTxMeta meta;
+    meta.set_id(orig_meta_id);
+    meta.set_from(
+        EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a")
+            .ToChecksumAddress());
+    meta.set_status(status);
+    meta.set_tx(std::make_unique<EthTransaction>(*tx));
     eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
 
     bool callback_called = false;
@@ -340,12 +342,13 @@ class EthTxManagerUnitTest : public testing::Test {
     auto tx1559 = Eip1559Transaction::FromTxData(tx_data1559, false);
     ASSERT_TRUE(tx1559);
 
-    EthTxStateManager::TxMeta meta;
-    meta.id = orig_meta_id;
-    meta.from =
-        EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a");
-    meta.status = status;
-    meta.tx = std::make_unique<Eip1559Transaction>(*tx1559);
+    EthTxMeta meta;
+    meta.set_id(orig_meta_id);
+    meta.set_from(
+        EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a")
+            .ToChecksumAddress());
+    meta.set_status(status);
+    meta.set_tx(std::make_unique<Eip1559Transaction>(*tx1559));
     eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
 
     bool callback_called = false;
@@ -421,8 +424,8 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithGasPriceAndGasLimit) {
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_price, &gas_price_value));
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  EXPECT_EQ(tx_meta->tx()->gas_price(), gas_price_value);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
 }
 
 TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
@@ -449,8 +452,8 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
   EXPECT_TRUE(HexValueToUint256(gas_price, &gas_price_value));
   // Gas limit should be filled by requesting eth_estimateGas.
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  EXPECT_EQ(tx_meta->tx()->gas_price(), gas_price_value);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
 
   // Check gas limit for estimation errors of different tx data types
   std::map<std::string, uint256_t> data_to_default_gas = {
@@ -494,7 +497,7 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasLimit) {
     EXPECT_TRUE(HexValueToUint256(gas_price, &gas_price_value));
     EXPECT_TRUE(
         HexValueToUint256(Uint256ValueToHex(kv.second), &gas_limit_value));
-    EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+    EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
   }
 }
 
@@ -522,8 +525,8 @@ TEST_F(EthTxManagerUnitTest, AddUnapprovedTransactionWithoutGasPrice) {
   // Gas price should be filled by requesting eth_gasPrice.
   EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  EXPECT_EQ(tx_meta->tx()->gas_price(), gas_price_value);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
 
   SetErrorInterceptor();
   callback_called = false;
@@ -558,8 +561,8 @@ TEST_F(EthTxManagerUnitTest,
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  EXPECT_EQ(tx_meta->tx()->gas_price(), gas_price_value);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
 
   SetErrorInterceptor();
   callback_called = false;
@@ -592,10 +595,10 @@ TEST_F(EthTxManagerUnitTest,
 
   uint256_t gas_price_value;
   EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
-  EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
+  EXPECT_EQ(tx_meta->tx()->gas_price(), gas_price_value);
 
   // Gas limit obtained by querying eth_estimateGas.
-  EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), 38404ULL);
 }
 
 TEST_F(EthTxManagerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
@@ -618,10 +621,10 @@ TEST_F(EthTxManagerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
 
   uint256_t gas_price_value;
   EXPECT_TRUE(HexValueToUint256("0x17fcf18321", &gas_price_value));
-  EXPECT_EQ(tx_meta->tx->gas_price(), gas_price_value);
+  EXPECT_EQ(tx_meta->tx()->gas_price(), gas_price_value);
 
   // Gas limit obtained by querying eth_estimateGas.
-  EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), 38404ULL);
 
   // Fail if transaction is not found.
   callback_called = false;
@@ -683,8 +686,8 @@ TEST_F(EthTxManagerUnitTest, SetGasPriceAndLimitForUnapprovedTransaction) {
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->tx->gas_price(), update_gas_price);
-  EXPECT_EQ(tx_meta->tx->gas_limit(), update_gas_limit);
+  EXPECT_EQ(tx_meta->tx()->gas_price(), update_gas_price);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), update_gas_limit);
 }
 
 TEST_F(EthTxManagerUnitTest, SetDataForUnapprovedTransaction) {
@@ -705,7 +708,7 @@ TEST_F(EthTxManagerUnitTest, SetDataForUnapprovedTransaction) {
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
 
-  EXPECT_EQ(tx_meta->tx->data(), initial_data);
+  EXPECT_EQ(tx_meta->tx()->data(), initial_data);
 
   // Invalid tx_meta id should fail
   std::vector<uint8_t> new_data1;
@@ -736,7 +739,7 @@ TEST_F(EthTxManagerUnitTest, SetDataForUnapprovedTransaction) {
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->tx->data(), new_data2);
+  EXPECT_EQ(tx_meta->tx()->data(), new_data2);
 }
 
 TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
@@ -756,7 +759,7 @@ TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
 
-  EXPECT_EQ(tx_meta->tx->nonce(), 6ULL);
+  EXPECT_EQ(tx_meta->tx()->nonce(), 6ULL);
 
   // Invalid tx_meta id should fail
   base::RunLoop run_loop;
@@ -766,7 +769,7 @@ TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
         run_loop.Quit();
       }));
   run_loop.Run();
-  EXPECT_EQ(tx_meta->tx->nonce(), 6ULL);
+  EXPECT_EQ(tx_meta->tx()->nonce(), 6ULL);
 
   // Invalid nonce value should fail
   base::RunLoop run_loop2;
@@ -777,7 +780,7 @@ TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
         run_loop2.Quit();
       }));
   run_loop2.Run();
-  EXPECT_EQ(tx_meta->tx->nonce(), 6ULL);
+  EXPECT_EQ(tx_meta->tx()->nonce(), 6ULL);
 
   TestTxServiceObserver observer("0x3", "0x11", "0x22");
   tx_service_->AddObserver(observer.GetReceiver());
@@ -797,7 +800,7 @@ TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->tx->nonce(), 3ULL);
+  EXPECT_EQ(tx_meta->tx()->nonce(), 3ULL);
 
   // Change the nonce back to blank
   observer.SetExpectedNonce("");
@@ -815,7 +818,7 @@ TEST_F(EthTxManagerUnitTest, SetNonceForUnapprovedTransaction) {
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->tx->nonce(), absl::nullopt);
+  EXPECT_EQ(tx_meta->tx()->nonce(), absl::nullopt);
 }
 
 TEST_F(EthTxManagerUnitTest, ValidateTxData) {
@@ -920,7 +923,7 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignature) {
         EXPECT_TRUE(error_message_out.empty());
         auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
         EXPECT_TRUE(tx_meta);
-        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Submitted);
+        EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Submitted);
         run_loop.Quit();
       }));
   run_loop.Run();
@@ -957,7 +960,7 @@ TEST_F(EthTxManagerUnitTest, ProcessHardwareSignatureFail) {
                       IDS_BRAVE_WALLET_HARDWARE_PROCESS_TRANSACTION_ERROR));
         auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
         EXPECT_TRUE(tx_meta);
-        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Error);
+        EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Error);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
@@ -1008,8 +1011,8 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
         EXPECT_FALSE(nonce->empty());
         auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
         EXPECT_TRUE(tx_meta);
-        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Unapproved);
-        EXPECT_EQ(Uint256ValueToHex(tx_meta->tx->nonce().value()), nonce);
+        EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+        EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), nonce);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
@@ -1061,8 +1064,8 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction1559) {
         EXPECT_FALSE(nonce->empty());
         auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
         EXPECT_TRUE(tx_meta);
-        EXPECT_EQ(tx_meta->status, mojom::TransactionStatus::Unapproved);
-        EXPECT_EQ(Uint256ValueToHex(tx_meta->tx->nonce().value()), nonce);
+        EXPECT_EQ(tx_meta->status(), mojom::TransactionStatus::Unapproved);
+        EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), nonce);
         callback_called = true;
       }));
   base::RunLoop().RunUntilIdle();
@@ -1132,8 +1135,8 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithGasFeeAndLimit) {
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
@@ -1161,8 +1164,8 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithoutGasLimit) {
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
@@ -1191,8 +1194,8 @@ TEST_F(EthTxManagerUnitTest, AddUnapproved1559TransactionWithoutGasFee) {
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1223,8 +1226,8 @@ TEST_F(EthTxManagerUnitTest,
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1254,10 +1257,10 @@ TEST_F(EthTxManagerUnitTest,
   EXPECT_TRUE(tx_meta);
 
   // Gas limit obtained by querying eth_estimateGas.
-  EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), 38404ULL);
 
   // Gas fee and estimation should be filled by gas oracle.
-  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1290,8 +1293,8 @@ TEST_F(EthTxManagerUnitTest,
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
-  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
@@ -1318,9 +1321,9 @@ TEST_F(EthTxManagerUnitTest,
   EXPECT_TRUE(tx_meta);
 
   // Gas limit obtained by querying eth_estimateGas.
-  EXPECT_EQ(tx_meta->tx->gas_limit(), 38404ULL);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), 38404ULL);
 
-  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(), Eip1559Transaction::GasEstimation());
@@ -1350,10 +1353,10 @@ TEST_F(EthTxManagerUnitTest,
 
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256(gas_limit, &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
 
   // Gas fee and estimation should be filled by gas oracle.
-  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1383,10 +1386,10 @@ TEST_F(EthTxManagerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   // Gas limit should be filled by requesting eth_estimateGas.
   uint256_t gas_limit_value;
   EXPECT_TRUE(HexValueToUint256("0x9604", &gas_limit_value));
-  EXPECT_EQ(tx_meta->tx->gas_limit(), gas_limit_value);
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), gas_limit_value);
 
   // Gas fee and estimation should be filled by gas oracle.
-  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(), uint256_t(2) * uint256_t(1e9));
   EXPECT_EQ(tx1559->max_fee_per_gas(), uint256_t(48) * uint256_t(1e9));
   EXPECT_EQ(tx1559->gas_estimation(),
@@ -1471,8 +1474,8 @@ TEST_F(EthTxManagerUnitTest, SetGasFeeAndLimitForUnapprovedTransaction) {
   // Get the updated TX.
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   EXPECT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->tx->gas_limit(), update_gas_limit);
-  tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  EXPECT_EQ(tx_meta->tx()->gas_limit(), update_gas_limit);
+  tx1559 = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559->max_priority_fee_per_gas(),
             update_max_priority_fee_per_gas);
   EXPECT_EQ(tx1559->max_fee_per_gas(), update_max_fee_per_gas);
@@ -1514,15 +1517,15 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   EthAddress addr2 =
       EthAddress::FromHex("0x2f015c60e0be116b1f0cd534704db9c92118fb6b");
   base::RunLoop().RunUntilIdle();
-  EthTxStateManager::TxMeta meta;
-  meta.id = "001";
-  meta.from = addr1;
-  meta.status = mojom::TransactionStatus::Submitted;
+  EthTxMeta meta;
+  meta.set_id("001");
+  meta.set_from(addr1.ToChecksumAddress());
+  meta.set_status(mojom::TransactionStatus::Submitted);
   eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
-  meta.id = "002";
-  meta.from = addr2;
-  meta.tx->set_nonce(uint256_t(4));
-  meta.status = mojom::TransactionStatus::Submitted;
+  meta.set_id("002");
+  meta.set_from(addr2.ToChecksumAddress());
+  meta.tx()->set_nonce(uint256_t(4));
+  meta.set_status(mojom::TransactionStatus::Submitted);
   eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
 
   url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -1563,33 +1566,33 @@ TEST_F(EthTxManagerUnitTest, TestSubmittedToConfirmed) {
   task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds - 1));
   auto tx_meta1 = eth_tx_manager()->GetTxForTesting("001");
-  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status());
   auto tx_meta2 = eth_tx_manager()->GetTxForTesting("002");
-  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status());
 
   task_environment_.FastForwardBy(base::Seconds(1));
   tx_meta1 = eth_tx_manager()->GetTxForTesting("001");
-  EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta1->status);
+  EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta1->status());
   tx_meta2 = eth_tx_manager()->GetTxForTesting("002");
-  EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta1->status);
+  EXPECT_EQ(mojom::TransactionStatus::Confirmed, tx_meta1->status());
 
   // If the keyring is locked, nothing should update
-  meta.id = "001";
-  meta.from = addr1;
-  meta.status = mojom::TransactionStatus::Submitted;
+  meta.set_id("001");
+  meta.set_from(addr1.ToChecksumAddress());
+  meta.set_status(mojom::TransactionStatus::Submitted);
   eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
-  meta.id = "002";
-  meta.from = addr2;
-  meta.tx->set_nonce(uint256_t(4));
-  meta.status = mojom::TransactionStatus::Submitted;
+  meta.set_id("002");
+  meta.set_from(addr2.ToChecksumAddress());
+  meta.tx()->set_nonce(uint256_t(4));
+  meta.set_status(mojom::TransactionStatus::Submitted);
   eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
   keyring_service_->Lock();
   task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds + 1));
   tx_meta1 = eth_tx_manager()->GetTxForTesting("001");
-  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status());
   tx_meta2 = eth_tx_manager()->GetTxForTesting("002");
-  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status);
+  EXPECT_EQ(mojom::TransactionStatus::Submitted, tx_meta1->status());
 }
 
 TEST_F(EthTxManagerUnitTest, SpeedupTransaction) {
@@ -1607,10 +1610,10 @@ TEST_F(EthTxManagerUnitTest, SpeedupTransaction) {
 
   auto expected_tx_meta = eth_tx_manager()->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
-  expected_tx_meta->tx->set_gas_price(103027933985ULL);  // 0x17fcf18321
+  expected_tx_meta->tx()->set_gas_price(103027933985ULL);  // 0x17fcf18321
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(*expected_tx_meta->tx, *tx_meta->tx);
+  EXPECT_EQ(*expected_tx_meta->tx(), *tx_meta->tx());
 
   // Speedup with gas price + 10% < eth_getGasPrice, new gas_price should be
   // from eth_getGasPrice
@@ -1625,10 +1628,10 @@ TEST_F(EthTxManagerUnitTest, SpeedupTransaction) {
 
   expected_tx_meta = eth_tx_manager()->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
-  expected_tx_meta->tx->set_gas_price(103027933985ULL);  // 0x17fcf18321
+  expected_tx_meta->tx()->set_gas_price(103027933985ULL);  // 0x17fcf18321
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(*expected_tx_meta->tx, *tx_meta->tx);
+  EXPECT_EQ(*expected_tx_meta->tx(), *tx_meta->tx());
 
   // Speedup with original gas price + 10% > eth_getGasPrice should use
   // original gas price + 10% as the new gas price.
@@ -1643,10 +1646,10 @@ TEST_F(EthTxManagerUnitTest, SpeedupTransaction) {
 
   expected_tx_meta = eth_tx_manager()->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
-  expected_tx_meta->tx->set_gas_price(110000000000ULL);  // 0x174876e800 * 1.1
+  expected_tx_meta->tx()->set_gas_price(110000000000ULL);  // 0x174876e800 * 1.1
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(*expected_tx_meta->tx, *tx_meta->tx);
+  EXPECT_EQ(*expected_tx_meta->tx(), *tx_meta->tx());
 
   // Non-exist transaction should fail.
   DoSpeedupOrCancelTransactionFailure("123", false);
@@ -1670,13 +1673,13 @@ TEST_F(EthTxManagerUnitTest, Speedup1559Transaction) {
   auto expected_tx_meta = eth_tx_manager()->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
   auto* expected_tx1559_ptr =
-      static_cast<Eip1559Transaction*>(expected_tx_meta->tx.get());
+      static_cast<Eip1559Transaction*>(expected_tx_meta->tx());
   expected_tx1559_ptr->set_max_priority_fee_per_gas(
       2200000000ULL);                                        // 2 * 1.1 gwei
   expected_tx1559_ptr->set_max_fee_per_gas(52800000000ULL);  // 48 * 1.1 gwei
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(*expected_tx1559_ptr, *tx1559_ptr);
 
   // Speedup with original gas fees + 10% < avg gas fees should use avg
@@ -1689,12 +1692,12 @@ TEST_F(EthTxManagerUnitTest, Speedup1559Transaction) {
   expected_tx_meta = eth_tx_manager()->GetTxForTesting(orig_meta_id);
   ASSERT_TRUE(expected_tx_meta);
   expected_tx1559_ptr =
-      static_cast<Eip1559Transaction*>(expected_tx_meta->tx.get());
+      static_cast<Eip1559Transaction*>(expected_tx_meta->tx());
   expected_tx1559_ptr->set_max_priority_fee_per_gas(2000000000ULL);  // 2 Gwei
   expected_tx1559_ptr->set_max_fee_per_gas(48000000000ULL);          // 48 Gwei
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(*expected_tx1559_ptr, *tx1559_ptr);
 
   // Non-exist transaction should fail.
@@ -1724,12 +1727,12 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   ASSERT_TRUE(orig_tx_meta);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->tx->nonce(), orig_tx_meta->tx->nonce());
-  EXPECT_EQ(Uint256ValueToHex(tx_meta->tx->nonce().value()), "0x6");
-  EXPECT_EQ(tx_meta->tx->gas_price(), 176000000000ULL);  // 160*1.1 gwei
-  EXPECT_EQ(tx_meta->tx->to(), orig_tx_meta->from);
-  EXPECT_EQ(tx_meta->tx->value(), 0u);
-  EXPECT_TRUE(tx_meta->tx->data().empty());
+  EXPECT_EQ(tx_meta->tx()->nonce(), orig_tx_meta->tx()->nonce());
+  EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), "0x6");
+  EXPECT_EQ(tx_meta->tx()->gas_price(), 176000000000ULL);  // 160*1.1 gwei
+  EXPECT_EQ(tx_meta->tx()->to().ToChecksumAddress(), orig_tx_meta->from());
+  EXPECT_EQ(tx_meta->tx()->value(), 0u);
+  EXPECT_TRUE(tx_meta->tx()->data().empty());
 
   // Cancel with original gas price + 10% < eth_getGasPrice should use
   // eth_getGasPrice as the new gas price.
@@ -1746,12 +1749,12 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   ASSERT_TRUE(orig_tx_meta);
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(tx_meta->tx->nonce(), orig_tx_meta->tx->nonce());
-  EXPECT_EQ(Uint256ValueToHex(tx_meta->tx->nonce().value()), "0x7");
-  EXPECT_EQ(tx_meta->tx->gas_price(), 0x17fcf18321ULL);  // 0x17fcf18321
-  EXPECT_EQ(tx_meta->tx->to(), orig_tx_meta->from);
-  EXPECT_EQ(tx_meta->tx->value(), 0u);
-  EXPECT_TRUE(tx_meta->tx->data().empty());
+  EXPECT_EQ(tx_meta->tx()->nonce(), orig_tx_meta->tx()->nonce());
+  EXPECT_EQ(Uint256ValueToHex(tx_meta->tx()->nonce().value()), "0x7");
+  EXPECT_EQ(tx_meta->tx()->gas_price(), 0x17fcf18321ULL);  // 0x17fcf18321
+  EXPECT_EQ(tx_meta->tx()->to().ToChecksumAddress(), orig_tx_meta->from());
+  EXPECT_EQ(tx_meta->tx()->value(), 0u);
+  EXPECT_TRUE(tx_meta->tx()->data().empty());
 
   // EIP1559
   // Cancel with original gas fees + 10% > avg gas fees should use
@@ -1765,17 +1768,16 @@ TEST_F(EthTxManagerUnitTest, CancelTransaction) {
   ASSERT_TRUE(orig_tx_meta);
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  auto* orig_tx1559_ptr =
-      static_cast<Eip1559Transaction*>(orig_tx_meta->tx.get());
-  auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* orig_tx1559_ptr = static_cast<Eip1559Transaction*>(orig_tx_meta->tx());
+  auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(tx1559_ptr->nonce(), orig_tx1559_ptr->nonce());
   EXPECT_EQ(Uint256ValueToHex(tx1559_ptr->nonce().value()), "0x8");
   EXPECT_EQ(tx1559_ptr->max_priority_fee_per_gas(),
             2200000000ULL);                                  // 2*1.1 gwei
   EXPECT_EQ(tx1559_ptr->max_fee_per_gas(), 52800000000ULL);  // 48*1.1 gwei
-  EXPECT_EQ(tx_meta->tx->to(), orig_tx_meta->from);
-  EXPECT_EQ(tx_meta->tx->value(), 0u);
-  EXPECT_TRUE(tx_meta->tx->data().empty());
+  EXPECT_EQ(tx_meta->tx()->to().ToChecksumAddress(), orig_tx_meta->from());
+  EXPECT_EQ(tx_meta->tx()->value(), 0u);
+  EXPECT_TRUE(tx_meta->tx()->data().empty());
 
   // Non-exist transaction should fail.
   DoSpeedupOrCancelTransactionFailure("123", true);
@@ -1795,11 +1797,13 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   auto tx = EthTransaction::FromTxData(tx_data, false);
   ASSERT_TRUE(tx);
 
-  EthTxStateManager::TxMeta meta;
-  meta.id = "001";
-  meta.from = EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a");
-  meta.status = mojom::TransactionStatus::Error;
-  meta.tx = std::make_unique<EthTransaction>(*tx);
+  EthTxMeta meta;
+  meta.set_id("001");
+  meta.set_from(
+      EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a")
+          .ToChecksumAddress());
+  meta.set_status(mojom::TransactionStatus::Error);
+  meta.set_tx(std::make_unique<EthTransaction>(*tx));
   eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
 
   bool callback_called = false;
@@ -1813,7 +1817,7 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   EXPECT_TRUE(callback_called);
   auto tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  EXPECT_EQ(*tx_meta->tx, tx.value());
+  EXPECT_EQ(*tx_meta->tx(), tx.value());
 
   // EIP1559
   callback_called = false;
@@ -1826,9 +1830,9 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   auto tx1559 = Eip1559Transaction::FromTxData(tx_data1559, false);
   ASSERT_TRUE(tx1559);
 
-  meta.id = "002";
-  meta.status = mojom::TransactionStatus::Error;
-  meta.tx = std::make_unique<Eip1559Transaction>(*tx1559);
+  meta.set_id("002");
+  meta.set_status(mojom::TransactionStatus::Error);
+  meta.set_tx(std::make_unique<Eip1559Transaction>(*tx1559));
   eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
 
   eth_tx_manager()->RetryTransaction(
@@ -1839,7 +1843,7 @@ TEST_F(EthTxManagerUnitTest, RetryTransaction) {
   EXPECT_TRUE(callback_called);
   tx_meta = eth_tx_manager()->GetTxForTesting(tx_meta_id);
   ASSERT_TRUE(tx_meta);
-  auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx.get());
+  auto* tx1559_ptr = static_cast<Eip1559Transaction*>(tx_meta->tx());
   EXPECT_EQ(*tx1559_ptr, tx1559.value());
 
   // Non-exist transaction should fail.
@@ -1921,15 +1925,17 @@ TEST_F(EthTxManagerUnitTest, Reset) {
   eth_tx_manager()->known_no_pending_tx = true;
   eth_tx_manager()->eth_block_tracker_->Start(base::Seconds(10));
   EXPECT_TRUE(eth_tx_manager()->eth_block_tracker_->IsRunning());
-  EthTxStateManager::TxMeta meta;
-  meta.id = "001";
-  meta.from = EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a");
-  meta.status = mojom::TransactionStatus::Unapproved;
+  EthTxMeta meta;
+  meta.set_id("001");
+  meta.set_from(
+      EthAddress::FromHex("0xbe862ad9abfe6f22bcb087716c7d89a26051f74a")
+          .ToChecksumAddress());
+  meta.set_status(mojom::TransactionStatus::Unapproved);
   auto tx_data = mojom::TxData::New(
       "0x1", "0x1", "0x0974", "0xbe862ad9abfe6f22bcb087716c7d89a26051f74c",
       "0x016345785d8a0000", std::vector<uint8_t>());
   auto tx = EthTransaction::FromTxData(tx_data, false);
-  meta.tx = std::make_unique<EthTransaction>(*tx);
+  meta.set_tx(std::make_unique<EthTransaction>(*tx));
   eth_tx_manager()->tx_state_manager_->AddOrUpdateTx(meta);
   EXPECT_TRUE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
 
