@@ -69,10 +69,11 @@ void VgBodySyncBridge::BackUpVgBodies(
     change_processor()->Put(storage_key, ToEntityData(std::move(vg_body)),
                             write_batch->GetMetadataChangeList());
   }
-  
-  store_->CommitWriteBatch(std::move(write_batch),
-                           base::BindOnce(&VgBodySyncBridge::OnBackUpVgBodies,
-                                          weak_ptr_factory_.GetWeakPtr()));
+
+  store_->CommitWriteBatch(
+      std::move(write_batch),
+      base::BindOnce(&VgBodySyncBridge::OnCommitWriteBatch,
+                     weak_ptr_factory_.GetWeakPtr(), absl::nullopt));
 }
 
 void VgBodySyncBridge::GetVgBodies(DataCallback callback) {
@@ -88,18 +89,12 @@ absl::optional<syncer::ModelError> VgBodySyncBridge::MergeSyncData(
     std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
     syncer::EntityChangeList entity_data) {
   DCHECK(change_processor()->IsTrackingMetadata());
-  return ApplySyncChanges(std::move(metadata_change_list),
-                          std::move(entity_data));
-}
 
-absl::optional<syncer::ModelError> VgBodySyncBridge::ApplySyncChanges(
-    std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
-    syncer::EntityChangeList entity_changes) {
   auto write_batch = store_->CreateWriteBatch();
 
   std::vector<sync_pb::VgBodySpecifics> vg_bodies;
 
-  for (const auto& change : entity_changes) {
+  for (const auto& change : entity_data) {
     if (change->type() ==
         syncer::EntityChange::ACTION_DELETE) {  // do we even need this?
       write_batch->DeleteData(change->storage_key());
@@ -114,8 +109,34 @@ absl::optional<syncer::ModelError> VgBodySyncBridge::ApplySyncChanges(
 
   store_->CommitWriteBatch(
       std::move(write_batch),
-      base::BindOnce(&VgBodySyncBridge::OnRestoreVgBodies,
+      base::BindOnce(&VgBodySyncBridge::OnCommitWriteBatch,
                      weak_ptr_factory_.GetWeakPtr(), std::move(vg_bodies)));
+
+  return {};
+}
+
+absl::optional<syncer::ModelError> VgBodySyncBridge::ApplySyncChanges(
+    std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
+    syncer::EntityChangeList entity_changes) {
+  auto write_batch = store_->CreateWriteBatch();
+
+  for (const auto& change : entity_changes) {
+    if (change->type() ==
+        syncer::EntityChange::ACTION_DELETE) {  // do we even need this?
+      write_batch->DeleteData(change->storage_key());
+    } else {
+      write_batch->WriteData(
+          change->storage_key(),
+          change->data().specifics.vg_body().SerializeAsString());
+    }
+  }
+
+  write_batch->TakeMetadataChangesFrom(std::move(metadata_change_list));
+
+  store_->CommitWriteBatch(
+      std::move(write_batch),
+      base::BindOnce(&VgBodySyncBridge::OnCommitWriteBatch,
+                     weak_ptr_factory_.GetWeakPtr(), absl::nullopt));
 
   return {};
 }
@@ -178,23 +199,15 @@ void VgBodySyncBridge::OnReadAllMetadata(
   }
 }
 
-void VgBodySyncBridge::OnBackUpVgBodies(
-    const absl::optional<syncer::ModelError>& error) {
-  if (error) {
-    change_processor()->ReportError(*error);
-  }
-}
-
-void VgBodySyncBridge::OnRestoreVgBodies(
-    std::vector<sync_pb::VgBodySpecifics> vg_bodies,
+void VgBodySyncBridge::OnCommitWriteBatch(
+    absl::optional<std::vector<sync_pb::VgBodySpecifics>> vg_bodies,
     const absl::optional<syncer::ModelError>& error) {
   if (error) {
     change_processor()->ReportError(*error);
   } else {
-    if (observer_) {
-      if (!vg_bodies.empty()) {
-        observer_->RestoreVgBodies(std::move(vg_bodies));
-      }
+    if (vg_bodies && !vg_bodies->empty() /* this might be removed */ &&
+        observer_) {
+      observer_->RestoreVgBodies(std::move(*vg_bodies));
     }
   }
 }

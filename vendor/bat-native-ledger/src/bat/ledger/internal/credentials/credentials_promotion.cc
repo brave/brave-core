@@ -490,8 +490,15 @@ void CredentialsPromotion::OnRedeemTokens(
     id = redeem.contribution_id;
   }
 
-  ledger_->database()->MarkUnblindedTokensAsSpent(token_id_list, redeem.type,
-                                                  id, callback);
+  ledger_->database()->MarkUnblindedTokensAsSpent(
+      token_id_list, redeem.type, id,
+      [&, callback = std::move(callback)](type::Result result) {
+        if (result == type::Result::LEDGER_OK) {
+          ledger_->ledger_client()->BackUpVgSpendStatuses();
+        }
+
+        callback(result);
+      });
 }
 
 void CredentialsPromotion::DrainTokens(
