@@ -130,7 +130,12 @@ bool HexValueToInt256(const std::string& hex_input, int256_t* out) {
   // This is the same as ~val + 1
   // To convert a positive number into a negative number, using the two’s
   // complement representation, invert all of the bits of the number + 1
+  if (val >> 255) {
+    *out = ~val + 1;
+    *out = -*out;
+  } else {
   *out = static_cast<int256_t>(val);
+  }
   return true;
 }
 
