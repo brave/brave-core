@@ -1,0 +1,23 @@
+:root {
+  font-family: Poppins;
+  --background1: white;
+  --text1: #212529;
+  --interactive4: #353DAB;
+  --interactive5: #4C54D2;
+  --interactive6: #737ADE;
+  --interactive7: #212529;
+  --interactive8: #AEB1C2;
+  --focus-border: #A0A5EB;
+  --disabled: #DADCE8;
+  --blurple300: #A0A5EB;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background1: #1E2029;
+    --text1: #F0F2FF;
+    --interactive7: #F0F2FF;
+    --interactive8: #5E6175;
+    --disabled: #343A40;
+  }
+}
