@@ -286,10 +286,14 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
 
 - (void)getSavedLogins:
     (void (^)(NSArray<IOSPasswordForm*>* results))completion {
+  __weak BravePasswordAPI* weakSelf = self;
+
   auto fetchCredentialsCallback =
       ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
+        const auto strongSelf = weakSelf;
+
         NSArray<IOSPasswordForm*>* credentials =
-            [self onLoginsResult:std::move(logins)];
+            [strongSelf onLoginsResult:std::move(logins)];
         completion(credentials);
       };
 
@@ -302,10 +306,14 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResults(
                   formScheme:(PasswordFormScheme)formScheme
                   completion:
                       (void (^)(NSArray<IOSPasswordForm*>* results))completion {
+  __weak BravePasswordAPI* weakSelf = self;
+
   auto fetchCredentialsCallback =
       ^(std::vector<std::unique_ptr<password_manager::PasswordForm>> logins) {
+        const auto strongSelf = weakSelf;
+
         NSArray<IOSPasswordForm*>* credentials =
-            [self onLoginsResult:std::move(logins)];
+            [strongSelf onLoginsResult:std::move(logins)];
         completion(credentials);
       };
 

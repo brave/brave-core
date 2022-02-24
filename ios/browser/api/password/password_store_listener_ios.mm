@@ -20,21 +20,6 @@
 #error "This file requires ARC support."
 #endif
 
-@interface IOSPasswordForm (Private)
-
-- (instancetype)initWithURL:(NSURL*)url
-                signOnRealm:(NSString*)signOnRealm
-                dateCreated:(NSDate*)dateCreated
-               dateLastUsed:(NSDate*)dateLastUsed
-        datePasswordChanged:(NSDate*)datePasswordChanged
-            usernameElement:(NSString*)usernameElement
-              usernameValue:(NSString*)usernameValue
-            passwordElement:(NSString*)passwordElement
-              passwordValue:(NSString*)passwordValue
-            isBlockedByUser:(bool)isBlockedByUser
-                     scheme:(PasswordFormScheme)scheme;
-@end
-
 namespace brave {
 namespace ios {
 
