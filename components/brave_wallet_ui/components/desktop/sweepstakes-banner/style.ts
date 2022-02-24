@@ -1,46 +1,51 @@
 import styled from 'styled-components'
+export { CloseButton } from '../popup-modals/style'
 
-export const SweepstakesBannerWrapper = styled.div`
+export const Card = styled.div`
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
     background: ${(p) => p.theme.color.background01};
     border-radius: 8px;
     /* Light Theme/Dividers and outlines/divider01 */
     border: 2px solid ${(p) => p.theme.color.divider01};
-`
-
-export const SweepstakesBannerLeftColumn = styled.div`
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    padding-top: 16px;
     padding-left: 16px;
+    padding-right: 8px;
 `
 
-export const SweepstakesBannerRightColumn = styled.div`
+const Row = styled.div`
     display: flex;
     flex: 1;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding-top: 12px;
-    padding-right: 12px;
+    flex-direction: row;
 `
 
-export const SweepstakesBannerTitle = styled.h2`
+export const TitleAndCloseRow = styled(Row)`
+    width: 100%;
+    justify-content: space-between;
+    padding-top: 8px;
+`
+
+export const Title = styled.h2`
     font-family: Poppins;
     font-style: normal;
     font-weight: 600;
     font-size: 18px;
     line-height: 26px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    word-wrap: no-wrap;
     /* Light Theme/Text/text01 */
     color: ${(p) => p.theme.color.text01};
 `
 
-export const SweepstakesBannerText = styled.span`
+export const Footer = Row
+
+const Column = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+export const BodyText = styled.span`
     font-family: Poppins;
     font-style: normal;
     font-weight: normal;
@@ -49,6 +54,17 @@ export const SweepstakesBannerText = styled.span`
     letter-spacing: 0.01em;
     /* Light Theme/Text/text01 */
     color: ${(p) => p.theme.color.text01};
+`
+
+export const FooterLeftColumn = styled(Column)`
+    flex: 1;
+`
+
+export const FooterRightColumn = styled(Column)`
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-right: 24px;
+    padding-left: 16px;
 `
 
 export const LearnMoreLink = styled.a`
@@ -70,6 +86,5 @@ export const LearnMoreLink = styled.a`
 export const SweepStakesBannerIllustration = styled.img`
     width: 60px;
     height: 36px;
-    position: relative;
-    right: 26px;
+    align-self: flex-end;
 `

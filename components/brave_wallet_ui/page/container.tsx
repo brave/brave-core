@@ -755,10 +755,7 @@ function Container (props: Props) {
             onAddAsset={onShowVisibleAssetsModal}
           />
           <br />
-          <SweepstakesBanner
-            startDate={new Date(Date.now())}
-            endDate={new Date(Date.now() + Date.now())}
-          />
+          <SweepstakesBanner />
         </WalletWidgetStandIn>
       }
     </WalletPageLayout>
