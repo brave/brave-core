@@ -42,6 +42,10 @@ RegisterStyleOverride(
           color: var(--cr-link-color) !important;
         }
       }
+
+      .cr-nav-menu-item paper-ripple {
+        display: none !important;
+      }
     </style>
   `
 )
