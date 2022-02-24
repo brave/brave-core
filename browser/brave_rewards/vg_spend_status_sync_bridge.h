@@ -74,10 +74,9 @@ class VgSpendStatusSyncBridge : public syncer::ModelTypeSyncBridge {
   void OnReadAllMetadata(const absl::optional<syncer::ModelError>& error,
                          std::unique_ptr<syncer::MetadataBatch> metadata_batch);
 
-  void OnBackUpVgSpendStatuses(const absl::optional<syncer::ModelError>& error);
-
-  void OnRestoreVgSpendStatuses(
-      std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+  void OnCommitWriteBatch(
+      absl::optional<std::vector<sync_pb::VgSpendStatusSpecifics>>
+          vg_spend_statuses,
       const absl::optional<syncer::ModelError>& error);
 
   void OnReadData(
