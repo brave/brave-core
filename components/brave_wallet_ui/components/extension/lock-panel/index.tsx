@@ -12,6 +12,7 @@ import { NavButton } from '../'
 import { getLocale } from '../../../../common/locale'
 
 export interface Props {
+  value?: string
   onSubmit: () => void
   onPasswordChanged: (value: string) => void
   onClickRestore: () => void
@@ -20,7 +21,7 @@ export interface Props {
 }
 
 function LockPanel (props: Props) {
-  const { onSubmit, onPasswordChanged, onClickRestore, disabled, hasPasswordError } = props
+  const { value, onSubmit, onPasswordChanged, onClickRestore, disabled, hasPasswordError } = props
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter' && !disabled) {
@@ -40,6 +41,7 @@ function LockPanel (props: Props) {
           error={getLocale('braveWalletLockScreenError')}
           hasError={hasPasswordError}
           autoFocus={true}
+          value={value}
         />
       </Column>
       <NavButton
