@@ -1,5 +1,5 @@
 :root {
-  font-family: Poppins;
+  --brave-font-family-default: Poppins, sans-serif;
   --background1: white;
   --text1: #212529;
   --interactive4: #353DAB;
@@ -10,6 +10,7 @@
   --focus-border: #A0A5EB;
   --disabled: #DADCE8;
   --blurple300: #A0A5EB;
+  font-family: var(--brave-font-family-default);
 }
 
 @media (prefers-color-scheme: dark) {
