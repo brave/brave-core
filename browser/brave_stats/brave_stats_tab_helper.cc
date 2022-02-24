@@ -14,8 +14,9 @@
 
 namespace brave_stats {
 
-BraveStatsTabHelper::BraveStatsTabHelper(content::WebContents *web_contents)
-    : content::WebContentsObserver(web_contents) {}
+BraveStatsTabHelper::BraveStatsTabHelper(content::WebContents* web_contents)
+    : content::WebContentsObserver(web_contents),
+      content::WebContentsUserData<BraveStatsTabHelper>(*web_contents) {}
 
 BraveStatsTabHelper::~BraveStatsTabHelper() = default;
 

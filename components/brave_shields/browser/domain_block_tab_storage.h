@@ -33,7 +33,7 @@ class DomainBlockTabStorage
   bool IsProceeding() const { return is_proceeding_; }
 
  private:
-  explicit DomainBlockTabStorage(content::WebContents* contents) {}
+  explicit DomainBlockTabStorage(content::WebContents* contents);
   friend class content::WebContentsUserData<DomainBlockTabStorage>;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 

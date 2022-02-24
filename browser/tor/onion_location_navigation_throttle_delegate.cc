@@ -17,11 +17,7 @@ namespace tor {
 
 namespace {
 
-void OnTorProfileCreated(GURL onion_location,
-                         Profile* profile,
-                         Profile::CreateStatus status) {
-  if (status != Profile::CreateStatus::CREATE_STATUS_INITIALIZED)
-    return;
+void OnTorProfileCreated(GURL onion_location, Profile* profile) {
   Browser* browser = chrome::FindTabbedBrowser(profile, false);
   if (!browser)
     return;

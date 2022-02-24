@@ -134,7 +134,8 @@ void SkusServiceImpl::OnCredentialSummary(
     const std::string& summary_string) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
-          summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
+          summary_string, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                              base::JSONParserOptions::JSON_PARSE_RFC);
   absl::optional<base::Value>& records_v = value_with_error.value;
 
   // TODO(bsclifton): pull out to a separate method

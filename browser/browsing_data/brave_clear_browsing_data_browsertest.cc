@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/callback_helpers.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/ignore_result.h"
@@ -245,7 +246,7 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
   Browser* NewGuestBrowserWindow() {
     BrowserChangeObserver bco(nullptr,
                               BrowserChangeObserver::ChangeType::kAdded);
-    profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
+    profiles::SwitchToGuestProfile(base::DoNothing());
     Browser* browser = bco.Wait();
     DCHECK(browser);
     // When a guest |browser| closes a BrowsingDataRemover will be created and

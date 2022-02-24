@@ -5,13 +5,7 @@ import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/generate_grd.gni")
 
-# Due to the JavaScript -> TypeScript migration happening upstream, we can no
-# longer use 'preprocessed' as the dirname below since generated files will be
-# now placed under gen/chrome/browser/resources/extensions/tsc instead. Thus,
-# let's adjust the preprocessed directory to match that expectation while our
-# Brave-specific JavaScript files are not migrated to TypeScript.
-# See https://github.com/brave/brave-browser/issues/16553
-preprocess_folder = "tsc"
+preprocess_folder = "preprocessed"
 preprocess_manifest = "brave_preprocessed_manifest.json"
 preprocess_gen_manifest = "brave_preprocessed_gen_manifest.json"
 

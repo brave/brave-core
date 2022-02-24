@@ -88,7 +88,7 @@
 
         </LinearLayout>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_turn_on_privacy_stats"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
             android:textColor="@android:color/white"
             style="?android:attr/borderlessButtonStyle"/>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_learn_more"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

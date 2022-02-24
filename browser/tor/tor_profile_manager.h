@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/callback.h"
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -18,7 +19,7 @@ class TorProfileManager : public BrowserListObserver, public ProfileObserver {
  public:
   static TorProfileManager& GetInstance();
   static void SwitchToTorProfile(Profile* original_profile,
-                                 ProfileManager::CreateCallback callback);
+                                 base::OnceCallback<void(Profile*)> callback);
   static void CloseTorProfileWindows(Profile* tor_profile);
   Profile* GetTorProfile(Profile* original_profile);
 

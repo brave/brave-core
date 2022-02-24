@@ -23,6 +23,7 @@ include_rules = [
   "+brave/components/ntp_tiles",
   "+brave/components/omnibox",
   "+brave/components/permissions",
+  "+brave/components/privacy_sandbox",
   "+brave/components/sidebar",
   "+brave/components/sync",
   "+brave/components/tor",

@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/website_settings_registry.h b/components/content_settings/core/browser/website_settings_registry.h
-index 6805e291c19f8e84c0cb0a6fd5a29f13ac61a0bb..18c23057573614bf8c51ceda6bff06ad1cee991e 100644
+index cac992b45b1e782170c229ad9a129a96308b5cd7..c95a7311876b3802866f92aa2fcfffe82406cefb 100644
 --- a/components/content_settings/core/browser/website_settings_registry.h
 +++ b/components/content_settings/core/browser/website_settings_registry.h
 @@ -77,6 +77,7 @@ class WebsiteSettingsRegistry {

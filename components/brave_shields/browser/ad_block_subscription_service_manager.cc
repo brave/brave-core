@@ -319,7 +319,7 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
     return;
 
   DictionaryPrefUpdate update(local_state, prefs::kAdBlockListSubscriptions);
-  base::DictionaryValue* subscriptions_dict = update.Get();
+  base::Value* subscriptions_dict = update.Get();
   auto subscription_dict = base::Value(base::Value::Type::DICTIONARY);
   subscription_dict.SetBoolKey("enabled", info.enabled);
   subscription_dict.SetKey("last_update_attempt",
@@ -345,7 +345,7 @@ void AdBlockSubscriptionServiceManager::ClearSubscriptionPrefs(
     return;
 
   DictionaryPrefUpdate update(local_state, prefs::kAdBlockListSubscriptions);
-  base::DictionaryValue* subscriptions_dict = update.Get();
+  base::Value* subscriptions_dict = update.Get();
   subscriptions_dict->RemoveKey(sub_url.spec());
 
   // TODO(bridiver) - change to pref registrar
@@ -370,14 +370,14 @@ void AdBlockSubscriptionServiceManager::ShouldStartRequest(
     bool* did_match_rule,
     bool* did_match_exception,
     bool* did_match_important,
-    std::string* adblock_replacement_url) {
+    std::string* mock_data_url) {
   base::AutoLock lock(subscription_services_lock_);
   for (const auto& subscription_service : subscription_services_) {
     auto info = GetInfo(subscription_service.first);
     if (info && info->enabled) {
       subscription_service.second->ShouldStartRequest(
           url, resource_type, tab_host, aggressive_blocking, did_match_rule,
-          did_match_exception, did_match_important, adblock_replacement_url);
+          did_match_exception, did_match_important, mock_data_url);
       if (did_match_important && *did_match_important) {
         return;
       }

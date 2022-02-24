@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/themes/theme_service_factory.cc b/chrome/browser/themes/theme_service_factory.cc
-index dc2350f0b2443c44a684db90a3b92ecfcc5fa00a..3d3c595058b5b0c132e052572aae081ce5e74240 100644
+index db3162c7ef1940aa7deca1791955b87d2fe70111..46886571102dfe882771ebdb170d6118d16c3fdc 100644
 --- a/chrome/browser/themes/theme_service_factory.cc
 +++ b/chrome/browser/themes/theme_service_factory.cc
 @@ -80,6 +80,7 @@ ThemeServiceFactory::~ThemeServiceFactory() {}
@@ -9,4 +9,4 @@ index dc2350f0b2443c44a684db90a3b92ecfcc5fa00a..3d3c595058b5b0c132e052572aae081c
 +  BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR
  // TODO(crbug.com/1052397): Revisit the macro expression once build flag switch
  // of lacros-chrome is complete.
- #if defined(OS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)
+ #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS_LACROS)

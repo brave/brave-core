@@ -65,7 +65,8 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   void Start(
       mojo::PendingRemote<network::mojom::URLLoader> source_url_loader_remote,
       mojo::PendingReceiver<network::mojom::URLLoaderClient>
-          source_url_client_receiver);
+          source_url_client_receiver,
+      mojo::ScopedDataPipeConsumerHandle body);
 
   // mojo::PendingRemote<network::mojom::URLLoader> controls the lifetime of the
   // loader.
@@ -90,8 +91,8 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   // network::mojom::URLLoaderClient implementation (called from the source of
   // the response):
   void OnReceiveEarlyHints(network::mojom::EarlyHintsPtr early_hints) override;
-  void OnReceiveResponse(
-      network::mojom::URLResponseHeadPtr response_head) override;
+  void OnReceiveResponse(network::mojom::URLResponseHeadPtr response_head,
+                         mojo::ScopedDataPipeConsumerHandle body) override;
   void OnReceiveRedirect(
       const net::RedirectInfo& redirect_info,
       network::mojom::URLResponseHeadPtr response_head) override;

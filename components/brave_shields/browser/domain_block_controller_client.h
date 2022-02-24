@@ -62,7 +62,8 @@ class DomainBlockControllerClient
   const GURL request_url_;
   raw_ptr<AdBlockCustomFiltersService> ad_block_custom_filters_service_ =
       nullptr;
-  ephemeral_storage::EphemeralStorageService* ephemeral_storage_service_;
+  raw_ptr<ephemeral_storage::EphemeralStorageService>
+      ephemeral_storage_service_ = nullptr;
   bool dont_warn_again_;
 
   base::WeakPtrFactory<DomainBlockControllerClient> weak_ptr_factory_{this};

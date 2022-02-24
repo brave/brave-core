@@ -100,7 +100,8 @@ IPFSTabHelper::~IPFSTabHelper() = default;
 
 IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      IpfsImportController(web_contents) {
+      IpfsImportController(web_contents),
+      content::WebContentsUserData<IPFSTabHelper>(*web_contents) {
   pref_service_ = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   auto* storage_partition =
       web_contents->GetBrowserContext()->GetDefaultStoragePartition();

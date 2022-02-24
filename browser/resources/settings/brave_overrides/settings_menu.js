@@ -16,11 +16,13 @@ function createMenuElement (title, href, iconName, pageVisibilitySection) {
   menuEl.href = href
   menuEl.setAttribute('role', 'menuitem')
   menuEl.setAttribute('class', 'cr-nav-menu-item')
-  const child = document.createElement('iron-icon')
-  child.setAttribute('icon', iconName)
-  menuEl.appendChild(child)
+  const iconChild = document.createElement('iron-icon')
+  iconChild.setAttribute('icon', iconName)
+  menuEl.appendChild(iconChild)
   const text = document.createTextNode(title)
   menuEl.appendChild(text)
+  const paperRippleChild = document.createElement('paper-ripple')
+  menuEl.appendChild(paperRippleChild)
   return menuEl
 }
 
@@ -57,6 +59,24 @@ RegisterStyleOverride(
         background-color: #fff;
         overflow-y: auto;
         padding: 30px !important;
+      }
+
+      .cr-nav-menu-item {
+        min-height: 20px !important;
+        border-end-end-radius: 0px !important;
+        border-start-end-radius: 0px !important;
+        box-sizing: content-box !important;
+        overflow: visible !important;
+      }
+
+      .cr-nav-menu-item:hover {
+        background: transparent !important;
+      }
+
+      .cr-nav-menu-item[selected] {
+        --iron-icon-fill-color: var(--cr-link-color) !important;
+        color: var(--cr-link-color) !important;
+        background: transparent !important;
       }
 
       @media (prefers-color-scheme: dark) {
@@ -114,7 +134,7 @@ RegisterStyleOverride(
         width: 4px;
         background: linear-gradient(122.53deg, #4C54D2 0%, #BF14A2 56.25%, #F73A1C 100%);
         border-radius: 0px 2px 2px 0px;
-    }
+      }
 
       @media (prefers-color-scheme: dark) {
         a[href].iron-selected iron-icon {

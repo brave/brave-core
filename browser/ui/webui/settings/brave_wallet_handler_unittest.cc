@@ -44,7 +44,7 @@ namespace {
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value>* values) {
   ListPrefUpdate update(prefs, kBraveWalletCustomNetworks);
-  base::ListValue* list = update.Get();
+  base::Value* list = update.Get();
   list->ClearList();
   for (auto& it : *values) {
     list->Append(std::move(it));
@@ -194,7 +194,7 @@ TEST(TestBraveWalletHandler, AddEthereumChain) {
     EXPECT_EQ(result[0], chain1.Clone());
   }
 
-  const base::DictionaryValue* assets_pref =
+  const base::Value* assets_pref =
       handler.prefs()->GetDictionary(kBraveWalletUserAssets);
   const base::Value* list = assets_pref->FindKey("0x999");
   ASSERT_TRUE(list->is_list());

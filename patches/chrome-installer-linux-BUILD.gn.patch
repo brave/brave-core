@@ -1,17 +1,16 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 4ab8f6b60d02139c54fd67231c36c720ae306927..0a9a6660875f2bc6d6cafe4935950b12007f38b6 100644
+index 4a810bf012595d275cd1e3fdc02e68e27535a3ae..ca4f3a870368c53e0879b85df36d0fd67be463c4 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -79,6 +79,8 @@ if (enable_swiftshader) {
-   ]
+@@ -85,6 +85,7 @@ if (build_with_internal_optimization_guide) {
+       [ "$root_out_dir/liboptimization_guide_internal.so" ]
  }
  
 +packaging_files_executables -= excluded_packaging_files_executables packaging_files_executables += brave_packaging_files_executables
-+
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
  copy("swiftshader_libs") {
-@@ -179,6 +181,7 @@ action("merge_rpm_dependencies") {
+@@ -185,6 +186,7 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -19,7 +18,7 @@ index 4ab8f6b60d02139c54fd67231c36c720ae306927..0a9a6660875f2bc6d6cafe4935950b12
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -189,6 +192,7 @@ strip_binary("strip_chrome_crashpad_handler") {
+@@ -195,6 +197,7 @@ strip_binary("strip_chrome_crashpad_handler") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
@@ -27,7 +26,7 @@ index 4ab8f6b60d02139c54fd67231c36c720ae306927..0a9a6660875f2bc6d6cafe4935950b12
  }
  
  strip_binary("strip_libEGL_shlib") {
-@@ -280,6 +284,7 @@ copy("common_packaging_files") {
+@@ -295,6 +298,7 @@ copy("common_packaging_files") {
    }
  
    sources += [ "//buildtools/third_party/eu-strip/bin/eu-strip" ]
@@ -35,7 +34,7 @@ index 4ab8f6b60d02139c54fd67231c36c720ae306927..0a9a6660875f2bc6d6cafe4935950b12
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
  }
-@@ -378,6 +383,7 @@ group("installer_deps") {
+@@ -393,6 +397,7 @@ group("installer_deps") {
      "//components/crash/core/app:chrome_crashpad_handler",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -43,7 +42,7 @@ index 4ab8f6b60d02139c54fd67231c36c720ae306927..0a9a6660875f2bc6d6cafe4935950b12
    if (enable_nacl) {
      public_deps += [
        ":strip_nacl_helper",
-@@ -429,6 +435,9 @@ group("installer_deps") {
+@@ -450,6 +455,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -53,7 +52,7 @@ index 4ab8f6b60d02139c54fd67231c36c720ae306927..0a9a6660875f2bc6d6cafe4935950b12
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -592,3 +601,6 @@ linux_package("beta") {
+@@ -613,3 +621,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

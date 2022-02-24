@@ -1,0 +1,13 @@
+source_set("privacy_sandbox") {
+  sources = [
+    "brave_privacy_sandbox_settings.cc",
+    "brave_privacy_sandbox_settings.h",
+  ]
+
+  deps = [
+    "//components/content_settings/core/browser",
+    "//components/prefs",
+    "//components/privacy_sandbox",
+    "//components/privacy_sandbox:privacy_sandbox_prefs",
+  ]
+}

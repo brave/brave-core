@@ -90,8 +90,10 @@
 #include "content/public/browser/browser_url_handler.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/weak_document_ptr.h"
 #include "content/public/common/content_client.h"
 #include "content/public/common/content_switches.h"
+#include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
@@ -374,34 +376,31 @@ void BraveContentBrowserClient::RenderProcessWillLaunch(
   ChromeContentBrowserClient::RenderProcessWillLaunch(host);
 }
 
-bool BraveContentBrowserClient::BindAssociatedReceiverFromFrame(
-    content::RenderFrameHost* render_frame_host,
-    const std::string& interface_name,
-    mojo::ScopedInterfaceEndpointHandle* handle) {
-  if (ChromeContentBrowserClient::BindAssociatedReceiverFromFrame(
-          render_frame_host, interface_name, handle)) {
-    return true;
-  }
-
+void BraveContentBrowserClient::
+    RegisterAssociatedInterfaceBindersForRenderFrameHost(
+        content::RenderFrameHost& render_frame_host,                // NOLINT
+        blink::AssociatedInterfaceRegistry& associated_registry) {  // NOLINT
 #if BUILDFLAG(ENABLE_WIDEVINE)
-  if (interface_name == brave_drm::mojom::BraveDRM::Name_) {
-    BraveDrmTabHelper::BindBraveDRM(
-        mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM>(
-            std::move(*handle)),
-        render_frame_host);
-    return true;
-  }
+  associated_registry.AddInterface(base::BindRepeating(
+      [](content::RenderFrameHost* render_frame_host,
+         mojo::PendingAssociatedReceiver<brave_drm::mojom::BraveDRM> receiver) {
+        BraveDrmTabHelper::BindBraveDRM(std::move(receiver), render_frame_host);
+      },
+      &render_frame_host));
 #endif  // BUILDFLAG(ENABLE_WIDEVINE)
 
-  if (interface_name == brave_shields::mojom::BraveShieldsHost::Name_) {
-    brave_shields::BraveShieldsWebContentsObserver::BindBraveShieldsHost(
-        mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>(
-            std::move(*handle)),
-        render_frame_host);
-    return true;
-  }
+  associated_registry.AddInterface(base::BindRepeating(
+      [](content::RenderFrameHost* render_frame_host,
+         mojo::PendingAssociatedReceiver<brave_shields::mojom::BraveShieldsHost>
+             receiver) {
+        brave_shields::BraveShieldsWebContentsObserver::BindBraveShieldsHost(
+            std::move(receiver), render_frame_host);
+      },
+      &render_frame_host));
 
-  return false;
+  ChromeContentBrowserClient::
+      RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
+                                                           associated_registry);
 }
 
 bool BraveContentBrowserClient::AllowWorkerFingerprinting(
@@ -513,11 +512,17 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const absl::optional<url::Origin>& initiating_origin,
+    content::RenderFrameHost* initiator_document,
     mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::IsMagnetProtocol(url)) {
+    auto weak_initiator_document =
+        initiator_document ? initiator_document->GetWeakDocumentPtr()
+                           : content::WeakDocumentPtr();
+
     webtorrent::HandleMagnetProtocol(url, web_contents_getter, page_transition,
-                                     has_user_gesture, initiating_origin);
+                                     has_user_gesture, initiating_origin,
+                                     std::move(weak_initiator_document));
     return true;
   }
 #endif
@@ -555,7 +560,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, frame_tree_node_id, navigation_data,
       is_main_frame, sandbox_flags, page_transition, has_user_gesture,
-      initiating_origin, out_factory);
+      initiating_origin, initiator_document, out_factory);
 }
 
 void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
@@ -759,6 +764,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(
     content::BrowserContext* browser_context) {
   if (url->host() == chrome::kChromeUISyncHost) {
     GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
     replacements.SetHostStr(chrome::kChromeUISettingsHost);
     replacements.SetPathStr(kBraveSyncPath);
     *url = url->ReplaceComponents(replacements);

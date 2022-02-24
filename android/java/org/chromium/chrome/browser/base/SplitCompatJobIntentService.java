@@ -36,7 +36,7 @@ public class SplitCompatJobIntentService extends JobIntentService {
         if (mSplitName != null && BundleUtils.isIsolatedSplitInstalled(context, mSplitName)) {
             context = BundleUtils.createIsolatedSplitContext(context, mSplitName);
         } else {
-            context = SplitCompatUtils.createChromeContext(context);
+            context = SplitCompatApplication.createChromeContext(context);
         }
         mImpl = (Impl) SplitCompatUtils.newInstance(context, mServiceClassName);
         mImpl.setService(this);

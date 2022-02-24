@@ -13,6 +13,7 @@
 #include "base/base64url.h"
 #include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/no_destructor.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
@@ -48,20 +49,20 @@
 
 namespace brave {
 
+namespace {
+
+const std::string& GetCanonicalName(
+    const std::vector<std::string>& dns_aliases) {
+  return dns_aliases.size() >= 1 ? dns_aliases.front() : base::EmptyString();
+}
+
+}  // namespace
+
 network::HostResolver* g_testing_host_resolver;
 
 void SetAdblockCnameHostResolverForTesting(
     network::HostResolver* host_resolver) {
   g_testing_host_resolver = host_resolver;
-}
-
-// These strings are duplicated in subresource_redirect_util.cc and
-// private_cdn_util.cc.
-std::array<std::string, 4> pcdn_domains{
-    "pcdn.brave.com", "pcdn.bravesoftware.com", "pcdn.brave.software"};
-
-void SetRedirectUrlAllowedDomainForTesting(std::string domain) {
-  pcdn_domains[0] = domain;
 }
 
 // Used to keep track of state between a primary adblock engine query and one
@@ -149,8 +150,8 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
                         base::TimeTicks::Now() - start_time_);
     if (result == net::OK && resolved_addresses) {
       DCHECK(resolved_addresses.has_value() && !resolved_addresses->empty());
-      std::move(cb_).Run(
-          absl::optional<std::string>(resolved_addresses->GetCanonicalName()));
+      std::move(cb_).Run(absl::optional<std::string>(
+          GetCanonicalName(resolved_addresses.value().dns_aliases())));
     } else {
       std::move(cb_).Run(absl::nullopt);
     }
@@ -168,14 +169,6 @@ class AdblockCnameResolveHostClient : public network::mojom::ResolveHostClient {
     NOTREACHED();
   }
 };
-
-bool IsValidPrivateCDNDomain(GURL url) {
-  for (const base::StringPiece domain : pcdn_domains) {
-    if (url.DomainIs(domain))
-      return true;
-  }
-  return false;
-}
 
 // If `canonical_url` is specified, this will only check if the CNAME-uncloaked
 // response should be blocked. Otherwise, it will run the check for the
@@ -206,33 +199,12 @@ EngineFlags ShouldBlockRequestOnTaskRunner(
       url_to_check, ctx->resource_type, source_host,
       ctx->aggressive_blocking || force_aggressive,
       &previous_result.did_match_rule, &previous_result.did_match_exception,
-      &previous_result.did_match_important, &ctx->adblock_replacement_url);
+      &previous_result.did_match_important, &ctx->mock_data_url);
 
   if (previous_result.did_match_important ||
       (previous_result.did_match_rule &&
        !previous_result.did_match_exception)) {
     ctx->blocked_by = kAdBlocked;
-  }
-
-  // Check what type of adblock redirect to do, if any
-  const GURL adblock_replacement_gurl(ctx->adblock_replacement_url);
-  if (ctx->blocked_by == kAdBlocked && adblock_replacement_gurl.is_valid()) {
-    // Check if it's a valid redirect URL match
-    const auto should_redirect_url =
-        base::FeatureList::IsEnabled(net::features::kAdblockRedirectUrl) &&
-        adblock_replacement_gurl.SchemeIs(url::kHttpsScheme) &&
-        IsValidPrivateCDNDomain(adblock_replacement_gurl);
-    if (should_redirect_url) {
-      ctx->new_url_spec = ctx->adblock_replacement_url;
-      ctx->adblock_redirect_type = AdblockRedirectType::kRemote;  // UNUSED
-    } else if (adblock_replacement_gurl.SchemeIs(url::kDataScheme)) {
-      ctx->adblock_redirect_type = AdblockRedirectType::kLocal;
-    } else {
-      // To avoid breakage, if we can't do the adblock redirect, don't block
-      // the resource. Note that this is only reached if there was a
-      // Redirection::Resource or Redirection::Url set in lib.rs
-      ctx->blocked_by = kNotBlocked;
-    }
   }
 
   return previous_result;

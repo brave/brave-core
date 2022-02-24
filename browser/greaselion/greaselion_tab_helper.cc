@@ -21,7 +21,8 @@
 namespace greaselion {
 
 GreaselionTabHelper::GreaselionTabHelper(content::WebContents* web_contents)
-    : WebContentsObserver(web_contents) {
+    : WebContentsObserver(web_contents),
+      content::WebContentsUserData<GreaselionTabHelper>(*web_contents) {
   download_service_ = g_brave_browser_process->greaselion_download_service();
   download_service_->AddObserver(this);
 }

@@ -24,7 +24,7 @@ std::string GetDevToolsUIThemeValue() {
 }
 
 void BraveDevToolsUIBindings::GetPreferences(DispatchCallback callback) {
-  const base::DictionaryValue* prefs =
+  const base::Value* prefs =
       profile_->GetPrefs()->GetDictionary(prefs::kDevToolsPreferences);
 
   if (prefs->FindKey("uiTheme"))

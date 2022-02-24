@@ -1,12 +1,12 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index f4056c6e6caf265375469c6389ec1f87b616c5c3..1511318c960de4f5030817e975b4da2fe3b715d3 100644
+index 76c08c5b01b0ce9ba867dfc02fba35373986e1c8..affb3925c19b6a8694af4cc989b547c58e85b910 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
-@@ -542,6 +542,7 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
+@@ -551,6 +551,7 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
    // Get the port, this will get a default value if a port isn't provided.
    int source_port = url.EffectiveIntPort();
  
 +  BRAVE_CREATE
-   // TODO(crbug.com/987177) Add partition key if Partitioned is present in the
-   // cookie line.
    std::unique_ptr<CanonicalCookie> cc = base::WrapUnique(new CanonicalCookie(
+       parsed_cookie.Name(), parsed_cookie.Value(), cookie_domain, cookie_path,
+       creation_time, cookie_expires, creation_time, parsed_cookie.IsSecure(),

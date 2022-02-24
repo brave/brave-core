@@ -9,6 +9,9 @@
 #include "src/chrome/browser/ui/hats/hats_service.cc"
 #undef HatsService
 
+HatsService::HatsService(Profile* profile)
+    : HatsService_ChromiumImpl(profile) {}
+
 HatsService::~HatsService() = default;
 
 bool HatsService::CanShowSurvey(const std::string& trigger) const {

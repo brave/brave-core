@@ -27,7 +27,7 @@ class BraveStartupBrowserCreatorImpl final : public StartupBrowserCreatorImpl {
                                  StartupBrowserCreator* browser_creator,
                                  chrome::startup::IsFirstRun is_first_run);
 
-  bool Launch(Profile* profile,
+  void Launch(Profile* profile,
               chrome::startup::IsProcessStartup process_startup,
               std::unique_ptr<LaunchModeRecorder> launch_mode_recorder);
 };
@@ -53,7 +53,7 @@ BraveStartupBrowserCreatorImpl::BraveStartupBrowserCreatorImpl(
 //
 // Note that if the --tor switch is used together with --silent-launch, Tor
 // won't be launched.
-bool BraveStartupBrowserCreatorImpl::Launch(
+void BraveStartupBrowserCreatorImpl::Launch(
     Profile* profile,
     chrome::startup::IsProcessStartup process_startup,
     std::unique_ptr<LaunchModeRecorder> launch_mode_recorder) {
@@ -65,13 +65,13 @@ bool BraveStartupBrowserCreatorImpl::Launch(
     // Call StartupBrowserCreatorImpl::Launch() with the Tor profile so that if
     // one runs brave-browser --tor "? search query" the search query is not
     // passed to the default search engine of the regular profile.
-    return StartupBrowserCreatorImpl::Launch(profile, process_startup,
-                                             std::move(launch_mode_recorder));
+    StartupBrowserCreatorImpl::Launch(profile, process_startup,
+                                      std::move(launch_mode_recorder));
   }
 #endif
 
-  return StartupBrowserCreatorImpl::Launch(profile, process_startup,
-                                           std::move(launch_mode_recorder));
+  StartupBrowserCreatorImpl::Launch(profile, process_startup,
+                                    std::move(launch_mode_recorder));
 }
 
 #define StartupBrowserCreatorImpl BraveStartupBrowserCreatorImpl

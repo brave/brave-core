@@ -15,7 +15,7 @@ bool GetNextIndex(const std::string& hostname,
                   net::DnsServerIterator* dns_server_iterator,
                   size_t* doh_server_index) {
   base::StringPiece server =
-      config.dns_over_https_servers[*doh_server_index].server_template;
+      config.dns_over_https_servers[*doh_server_index].server_template();
 
   // Skip decentralized DNS resolvers if it is not target TLDs.
   while ((server == decentralized_dns::kUnstoppableDomainsDoHResolver &&
@@ -28,7 +28,7 @@ bool GetNextIndex(const std::string& hostname,
     }
 
     *doh_server_index = dns_server_iterator->GetNextAttemptIndex();
-    server = config.dns_over_https_servers[*doh_server_index].server_template;
+    server = config.dns_over_https_servers[*doh_server_index].server_template();
   }
 
   return true;

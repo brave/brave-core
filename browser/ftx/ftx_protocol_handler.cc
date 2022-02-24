@@ -59,7 +59,7 @@ void LoadNewTabURL(const GURL& url,
 
   std::map<std::string, std::string> parts;
   for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
-    parts[it.GetKey()] = it.GetUnescapedValue();
+    parts[std::string(it.GetKey())] = it.GetUnescapedValue();
   }
   if (parts.find("code") != parts.end()) {
     std::string auth_token = parts["code"];

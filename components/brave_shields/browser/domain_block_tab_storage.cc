@@ -14,6 +14,9 @@ namespace brave_shields {
 // Upstream does this too.
 const void* const kDomainBlockTabStorageKey = &kDomainBlockTabStorageKey;
 
+DomainBlockTabStorage::DomainBlockTabStorage(content::WebContents* contents)
+    : content::WebContentsUserData<DomainBlockTabStorage>(*contents) {}
+
 DomainBlockTabStorage::~DomainBlockTabStorage() = default;
 
 // static

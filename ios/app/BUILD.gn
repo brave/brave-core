@@ -55,11 +55,13 @@ source_set("app") {
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/content_settings",
     "//ios/chrome/browser/history",
+    "//ios/chrome/browser/providers/ui_utils:chromium_ui_utils",
     "//ios/chrome/browser/sync",
     "//ios/chrome/browser/ui/webui:webui_internal",
     "//ios/chrome/browser/undo",
     "//ios/chrome/common",
     "//ios/public/provider/chrome/browser",
+    "//ios/public/provider/chrome/browser/ui_utils:ui_utils_api",
     "//ios/web/public/init",
     "//ios/web/public/webui",
 

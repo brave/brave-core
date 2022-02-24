@@ -14,6 +14,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     // Enable NIK-partitioning by default.
     {kPartitionConnectionsByNetworkIsolationKey,
      base::FEATURE_ENABLED_BY_DEFAULT},
+    {kPartitionedCookies, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPartitionExpectCTStateByNetworkIsolationKey,
      base::FEATURE_ENABLED_BY_DEFAULT},
     {kPartitionHttpServerPropertiesByNetworkIsolationKey,
@@ -21,18 +22,13 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPartitionSSLSessionsByNetworkIsolationKey,
      base::FEATURE_ENABLED_BY_DEFAULT},
     {kSplitHostCacheByNetworkIsolationKey, base::FEATURE_ENABLED_BY_DEFAULT},
-
-    {kFirstPartySets, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 const base::Feature kBraveEphemeralStorage{"EphemeralStorage",
                                            base::FEATURE_ENABLED_BY_DEFAULT};
 const base::Feature kBraveEphemeralStorageKeepAlive{
     "BraveEphemeralStorageKeepAlive", base::FEATURE_ENABLED_BY_DEFAULT};
-// When enabled, Brave will use SugarCoat filter list to load replacement
-// resources via Private CDN using the $redirect-url filter option
-const base::Feature kAdblockRedirectUrl{"BraveAdblockRedirectUrl",
-                                        base::FEATURE_ENABLED_BY_DEFAULT};
+
 const base::FeatureParam<int> kBraveEphemeralStorageKeepAliveTimeInSeconds = {
     &kBraveEphemeralStorageKeepAlive,
     "BraveEphemeralStorageKeepAliveTimeInSeconds", 30};

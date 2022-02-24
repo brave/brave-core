@@ -48,6 +48,7 @@
 #include "ios/chrome/browser/ui/webui/chrome_web_ui_ios_controller_factory.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
+#include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
 
 // Chromium logging is global, therefore we cannot link this to the instance in
@@ -135,7 +136,7 @@ const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
     params.argv = argv;
     _webMain = std::make_unique<web::WebMain>(std::move(params));
 
-    ios::GetChromeBrowserProvider().Initialize();
+    ios::provider::InitializeUI();
 
     web::WebUIIOSControllerFactory::RegisterFactory(
         ChromeWebUIIOSControllerFactory::GetInstance());

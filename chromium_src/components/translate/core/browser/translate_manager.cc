@@ -23,13 +23,11 @@ class BraveIsSupportedTargetLanguageProxy : public TranslateDownloadManager {
 };
 
 }  // namespace translate
-#define ASSERT_INSIDE_FUNCTION(fname)                     \
-  static_assert(base::StringPiece(__FUNCTION__) == fname, \
-                "should work only within " fname " function");
 
 #define GetRecentTargetLanguage                                         \
   GetRecentTargetLanguage();                                            \
-  ASSERT_INSIDE_FUNCTION("GetTargetLanguage")                           \
+  static_assert(base::StringPiece(__FUNCTION__) == "GetTargetLanguage", \
+                "should work only within GetTargetLanguage function");  \
   using TranslateDownloadManager = BraveIsSupportedTargetLanguageProxy; \
   void
 #define HasAPIKeyConfigured BraveHasAPIKeyConfigured
@@ -37,7 +35,6 @@ class BraveIsSupportedTargetLanguageProxy : public TranslateDownloadManager {
 #include "src/components/translate/core/browser/translate_manager.cc"
 #undef HasAPIKeyConfigured
 #undef TranslateManager
-#undef ASSERT_INSIDE_FUNCTION
 
 namespace translate {
 

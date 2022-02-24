@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_DOM_WINDOW_H_
 
 #define BRAVE_DOM_WINDOW_H \
+ public:                   \
   LocalFrame* GetDisconnectedFrame() const;
 
 #include "src/third_party/blink/renderer/core/frame/dom_window.h"

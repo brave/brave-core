@@ -17,6 +17,7 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/optimization_guide/core/optimization_guide_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/permissions/features.h"
 #include "components/reading_list/features/reading_list_switches.h"
 #include "components/security_state/core/features.h"
 #include "content/public/browser/render_view_host.h"
@@ -33,7 +34,6 @@
 #if defined(OS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
 #else
-#include "chrome/browser/apps/app_discovery_service/app_discovery_features.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/ui/profile_picker.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -85,7 +85,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, OriginTrialsTest) {
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
 #if !defined(OS_ANDROID)
-    &apps::kAppDiscoveryRemoteUrlSearch,
     &translate::kTFLiteLanguageDetectionEnabled,
 #endif
     &autofill::features::kAutofillEnableAccountWalletStorage,
@@ -109,8 +108,11 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &features::kCopyLinkToText,
 #endif
     &features::kDirectSockets,
+    &features::kFedCm,
+    &features::kFirstPartySets,
     &features::kIdleDetection,
     &features::kNotificationTriggers,
+    &features::kPrivacySandboxSettings3,
     &features::kOmniboxTriggerForNoStatePrefetch,
     &features::kSignedExchangeSubresourcePrefetch,
     &features::kSubresourceWebBundles,
@@ -118,13 +120,14 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &federated_learning::kFederatedLearningOfCohorts,
     &federated_learning::kFlocIdComputedEventLogging,
     &media::kLiveCaption,
-    &net::features::kFirstPartySets,
+    &net::features::kPartitionedCookies,
     &network::features::kTrustTokens,
     &network_time::kNetworkTimeServiceQuerying,
     &optimization_guide::features::kOptimizationHints,
     &optimization_guide::features::kRemoteOptimizationGuideFetching,
     &optimization_guide::features::
         kRemoteOptimizationGuideFetchingAnonymousDataConsent,
+    &permissions::features::kPermissionOnDeviceNotificationPredictions,
     &reading_list::switches::kReadLater,
   };
 

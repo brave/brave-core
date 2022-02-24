@@ -20,7 +20,8 @@ BraveShieldsDataController::~BraveShieldsDataController() = default;
 
 BraveShieldsDataController::BraveShieldsDataController(
     content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {}
+    : content::WebContentsObserver(web_contents),
+      content::WebContentsUserData<BraveShieldsDataController>(*web_contents) {}
 
 void BraveShieldsDataController::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {

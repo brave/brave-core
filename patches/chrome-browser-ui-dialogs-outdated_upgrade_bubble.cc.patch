@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
-index 1500f222b9c14bd73f766500316f641402d9d129..e4f946559ce9d9bfc27638ab29c90a923dff3b20 100644
+index ad150da330c7ca5ad490bd7606a82a188ee24e3a..822e712999861b30733f9d3aafdf76ae2c2969fd 100644
 --- a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
 +++ b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
 @@ -43,6 +43,8 @@ constexpr int kNumIgnoredBuckets = 5;

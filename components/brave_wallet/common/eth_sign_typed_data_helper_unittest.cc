@@ -28,7 +28,8 @@ TEST(EthSignedTypedDataHelperUnitTest, Types) {
     ]})");
 
   auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(types_value);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
@@ -68,10 +69,12 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodedData) {
     "contents":"Hello, Bob!"
     })");
   auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(types_value);
   auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                            base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(data_value);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
@@ -132,10 +135,12 @@ TEST(EthSignedTypedDataHelperUnitTest, RecursiveCustomTypes) {
      }
     })");
   auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(types_value);
   auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                            base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(data_value);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
@@ -181,10 +186,12 @@ TEST(EthSignedTypedDataHelperUnitTest, MissingFieldInData) {
     })");
 
   auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(types_value);
   auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                            base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(data_value);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
@@ -231,10 +238,12 @@ TEST(EthSignedTypedDataHelperUnitTest, ArrayTypes) {
     })");
 
   auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(types_value);
   auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                            base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(data_value);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
@@ -609,13 +618,16 @@ TEST(EthSignedTypedDataHelperUnitTest, GetTypedDataMessageToSign) {
   })");
 
   auto types_value =
-      base::JSONReader::Read(types_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(types_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                             base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(types_value);
   auto data_value =
-      base::JSONReader::Read(data_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(data_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                            base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(data_value);
   auto ds_value =
-      base::JSONReader::Read(ds_json, base::JSON_ALLOW_TRAILING_COMMAS);
+      base::JSONReader::Read(ds_json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                          base::JSON_ALLOW_TRAILING_COMMAS);
   ASSERT_TRUE(ds_value);
 
   std::unique_ptr<EthSignTypedDataHelper> helper =
