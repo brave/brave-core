@@ -37,9 +37,11 @@ class TorWindowSearchEngineProviderService : public SearchEngineProviderService,
   void OnTemplateURLServiceChanged() override;
 
  private:
+  std::unique_ptr<TemplateURLData> GetInitialSearchEngineProvider(
+      PrefService* prefs) const;
   void ConfigureSearchEngineProvider();
 
-  std::unique_ptr<TemplateURL> default_template_url_for_tor_;
+  std::unique_ptr<TemplateURL> alternative_search_engine_url_for_tor_;
   base::ScopedObservation<TemplateURLService, TemplateURLServiceObserver>
       observation_{this};
 };
