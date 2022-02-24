@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import {
+  AppsListType,
   BraveWallet,
   WalletAccountType
 } from '../../constants/types'
@@ -84,5 +85,34 @@ export const mockAssetPrices: BraveWallet.AssetPrice[] = [
     price: '100',
     toAsset: 'mockValue',
     assetTimeframeChange: 'mockValue'
+  }
+]
+
+export const mockAddresses: string[] = [
+  '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+  '0xdbf41e98f541f19bb044e604d2520f3893eefc79',
+  '0xcee177039c99d03a6f74e95bbba2923ceea43ea2'
+]
+
+export const mockAppsList: AppsListType[] = [
+  {
+    category: 'category1',
+    categoryButtonText: 'categoryButtonText1',
+    appList: [
+      {
+        name: 'foo',
+        description: 'description1'
+      }
+    ] as BraveWallet.AppItem[]
+  },
+  {
+    category: 'category2',
+    categoryButtonText: 'categoryButtonText2',
+    appList: [
+      {
+        name: 'bar',
+        description: 'description2'
+      }
+    ] as BraveWallet.AppItem[]
   }
 ]

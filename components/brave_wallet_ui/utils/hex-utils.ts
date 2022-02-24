@@ -4,6 +4,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 export const hexStrToNumberArray = (value: string): number[] => {
+  if (!value) {
+    return []
+  }
+
   const hexStr = value.startsWith('0x') ? value.slice(2) : value
   const array = []
   for (let n = 0; n < hexStr.length; n += 2) {
