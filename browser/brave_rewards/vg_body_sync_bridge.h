@@ -73,10 +73,9 @@ class VgBodySyncBridge : public syncer::ModelTypeSyncBridge {
   void OnReadAllMetadata(const absl::optional<syncer::ModelError>& error,
                          std::unique_ptr<syncer::MetadataBatch> metadata_batch);
 
-  void OnBackUpVgBodies(const absl::optional<syncer::ModelError>& error);
-
-  void OnRestoreVgBodies(std::vector<sync_pb::VgBodySpecifics> vg_bodies,
-                         const absl::optional<syncer::ModelError>& error);
+  void OnCommitWriteBatch(
+      absl::optional<std::vector<sync_pb::VgBodySpecifics>> vg_bodies,
+      const absl::optional<syncer::ModelError>& error);
 
   void OnReadData(
       DataCallback callback,

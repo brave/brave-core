@@ -74,8 +74,8 @@ void VgSpendStatusSyncBridge::BackUpVgSpendStatuses(
 
   store_->CommitWriteBatch(
       std::move(write_batch),
-      base::BindOnce(&VgSpendStatusSyncBridge::OnBackUpVgSpendStatuses,
-                     weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&VgSpendStatusSyncBridge::OnCommitWriteBatch,
+                     weak_ptr_factory_.GetWeakPtr(), absl::nullopt));
 }
 
 void VgSpendStatusSyncBridge::GetVgSpendStatuses(DataCallback callback) {
@@ -91,35 +91,38 @@ absl::optional<syncer::ModelError> VgSpendStatusSyncBridge::MergeSyncData(
     std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
     syncer::EntityChangeList entity_data) {
   DCHECK(change_processor()->IsTrackingMetadata());
-  return ApplySyncChanges(std::move(metadata_change_list),
-                          std::move(entity_data));
-}
-
-absl::optional<syncer::ModelError> VgSpendStatusSyncBridge::ApplySyncChanges(
-    std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
-    syncer::EntityChangeList entity_changes) {
-  auto write_batch = store_->CreateWriteBatch();
 
   std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses;
 
-  for (const auto& change : entity_changes) {
-    if (change->type() ==
-        syncer::EntityChange::ACTION_DELETE) {  // do we even need this?
-      write_batch->DeleteData(change->storage_key());
-    } else {
-      vg_spend_statuses.push_back(change->data().specifics.vg_spend_status());
-      write_batch->WriteData(change->storage_key(),
-                             vg_spend_statuses.back().SerializeAsString());
-    }
+  auto write_batch = store_->CreateWriteBatch();
+
+  for (const auto& change : entity_data) {
+    vg_spend_statuses.push_back(change->data().specifics.vg_spend_status());
+    write_batch->WriteData(change->storage_key(),
+                           vg_spend_statuses.back().SerializeAsString());
   }
 
   write_batch->TakeMetadataChangesFrom(std::move(metadata_change_list));
 
   store_->CommitWriteBatch(
       std::move(write_batch),
-      base::BindOnce(&VgSpendStatusSyncBridge::OnRestoreVgSpendStatuses,
+      base::BindOnce(&VgSpendStatusSyncBridge::OnCommitWriteBatch,
                      weak_ptr_factory_.GetWeakPtr(),
                      std::move(vg_spend_statuses)));
+
+  return {};
+}
+
+absl::optional<syncer::ModelError> VgSpendStatusSyncBridge::ApplySyncChanges(
+    std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
+    syncer::EntityChangeList entity_changes) {
+  // We intentionally don't implement the handling of incremental changes coming
+  // from the sync server. Also, if the browser detects that another device has
+  // joined the same `Rewards Sync` chain, it removes itself from the
+  // chain/turns off `Rewards Sync` on its end, therefore it wouldn't be able to
+  // receive any incremental changes anyway. We only implement the initial merge
+  // of remote and local data (see MergeSyncData above), since this is what
+  // `Rewards Restore` requires.
 
   return {};
 }
@@ -184,23 +187,16 @@ void VgSpendStatusSyncBridge::OnReadAllMetadata(
   }
 }
 
-void VgSpendStatusSyncBridge::OnBackUpVgSpendStatuses(
-    const absl::optional<syncer::ModelError>& error) {
-  if (error) {
-    change_processor()->ReportError(*error);
-  }
-}
-
-void VgSpendStatusSyncBridge::OnRestoreVgSpendStatuses(
-    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+void VgSpendStatusSyncBridge::OnCommitWriteBatch(
+    absl::optional<std::vector<sync_pb::VgSpendStatusSpecifics>>
+        vg_spend_statuses,
     const absl::optional<syncer::ModelError>& error) {
   if (error) {
     change_processor()->ReportError(*error);
   } else {
-    if (observer_) {
-      if (!vg_spend_statuses.empty()) {
-        observer_->RestoreVgSpendStatuses(std::move(vg_spend_statuses));
-      }
+    if (vg_spend_statuses &&
+        !vg_spend_statuses->empty() /* this might be removed */ && observer_) {
+      observer_->RestoreVgSpendStatuses(std::move(*vg_spend_statuses));
     }
   }
 }
