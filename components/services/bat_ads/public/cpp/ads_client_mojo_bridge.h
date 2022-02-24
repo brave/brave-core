@@ -94,10 +94,11 @@ class AdsClientMojoBridge
   void CloseNotification(
       const std::string& uuid) override;
 
-  void RecordAdEvent(const std::string& ad_type,
-                     const std::string& confirmation_type,
-                     const double timestamp) override;
-  void ResetAdEvents() override;
+  void RecordAdEventForId(const std::string& id,
+                          const std::string& ad_type,
+                          const std::string& confirmation_type,
+                          const double timestamp) override;
+  void ResetAdEventsForId(const std::string& id) override;
 
   void RunDBTransaction(ads::mojom::DBTransactionPtr transaction,
                         RunDBTransactionCallback callback) override;

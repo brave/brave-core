@@ -17,6 +17,7 @@
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table_unittest_util.h"
+#include "bat/ads/internal/instance_id_util.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -61,16 +62,15 @@ void RecordAdEvents(const AdType& type,
                     const int count) {
   DCHECK_GT(count, 0);
 
-  const std::string ad_type_as_string = std::string(type);
-
-  const std::string confirmation_type_as_string =
+  const std::string& id = GetInstanceId();
+  const std::string& ad_type_as_string = type.ToString();
+  const std::string& confirmation_type_as_string =
       std::string(confirmation_type);
-
   const double timestamp = NowAsTimestamp();
 
   for (int i = 0; i < count; i++) {
-    AdsClientHelper::Get()->RecordAdEvent(
-        ad_type_as_string, confirmation_type_as_string, timestamp);
+    AdsClientHelper::Get()->RecordAdEventForId(
+        id, ad_type_as_string, confirmation_type_as_string, timestamp);
   }
 }
 
