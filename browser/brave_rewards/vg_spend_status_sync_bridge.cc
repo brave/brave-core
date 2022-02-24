@@ -75,8 +75,8 @@ void VgSpendStatusSyncBridge::BackUpVgSpendStatuses(
 
   store_->CommitWriteBatch(
       std::move(write_batch),
-      base::BindOnce(&VgSpendStatusSyncBridge::OnBackUpVgSpendStatuses,
-                     weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&VgSpendStatusSyncBridge::OnCommitWriteBatch,
+                     weak_ptr_factory_.GetWeakPtr(), absl::nullopt));
 }
 
 void VgSpendStatusSyncBridge::GetVgSpendStatuses(DataCallback callback) {
@@ -92,18 +92,12 @@ absl::optional<syncer::ModelError> VgSpendStatusSyncBridge::MergeSyncData(
     std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
     syncer::EntityChangeList entity_data) {
   DCHECK(change_processor()->IsTrackingMetadata());
-  return ApplySyncChanges(std::move(metadata_change_list),
-                          std::move(entity_data));
-}
 
-absl::optional<syncer::ModelError> VgSpendStatusSyncBridge::ApplySyncChanges(
-    std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
-    syncer::EntityChangeList entity_changes) {
   auto write_batch = store_->CreateWriteBatch();
 
   std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses;
 
-  for (const auto& change : entity_changes) {
+  for (const auto& change : entity_data) {
     if (change->type() ==
         syncer::EntityChange::ACTION_DELETE) {  // do we even need this?
       write_batch->DeleteData(change->storage_key());
@@ -118,9 +112,35 @@ absl::optional<syncer::ModelError> VgSpendStatusSyncBridge::ApplySyncChanges(
 
   store_->CommitWriteBatch(
       std::move(write_batch),
-      base::BindOnce(&VgSpendStatusSyncBridge::OnRestoreVgSpendStatuses,
+      base::BindOnce(&VgSpendStatusSyncBridge::OnCommitWriteBatch,
                      weak_ptr_factory_.GetWeakPtr(),
                      std::move(vg_spend_statuses)));
+
+  return {};
+}
+
+absl::optional<syncer::ModelError> VgSpendStatusSyncBridge::ApplySyncChanges(
+    std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
+    syncer::EntityChangeList entity_changes) {
+  auto write_batch = store_->CreateWriteBatch();
+
+  for (const auto& change : entity_changes) {
+    if (change->type() ==
+        syncer::EntityChange::ACTION_DELETE) {  // do we even need this?
+      write_batch->DeleteData(change->storage_key());
+    } else {
+      write_batch->WriteData(
+          change->storage_key(),
+          change->data().specifics.vg_spend_status().SerializeAsString());
+    }
+  }
+
+  write_batch->TakeMetadataChangesFrom(std::move(metadata_change_list));
+
+  store_->CommitWriteBatch(
+      std::move(write_batch),
+      base::BindOnce(&VgSpendStatusSyncBridge::OnCommitWriteBatch,
+                     weak_ptr_factory_.GetWeakPtr(), absl::nullopt));
 
   return {};
 }
@@ -185,23 +205,16 @@ void VgSpendStatusSyncBridge::OnReadAllMetadata(
   }
 }
 
-void VgSpendStatusSyncBridge::OnBackUpVgSpendStatuses(
-    const absl::optional<syncer::ModelError>& error) {
-  if (error) {
-    change_processor()->ReportError(*error);
-  }
-}
-
-void VgSpendStatusSyncBridge::OnRestoreVgSpendStatuses(
-    std::vector<sync_pb::VgSpendStatusSpecifics> vg_spend_statuses,
+void VgSpendStatusSyncBridge::OnCommitWriteBatch(
+    absl::optional<std::vector<sync_pb::VgSpendStatusSpecifics>>
+        vg_spend_statuses,
     const absl::optional<syncer::ModelError>& error) {
   if (error) {
     change_processor()->ReportError(*error);
   } else {
-    if (observer_) {
-      if (!vg_spend_statuses.empty()) {
-        observer_->RestoreVgSpendStatuses(std::move(vg_spend_statuses));
-      }
+    if (vg_spend_statuses &&
+        !vg_spend_statuses->empty() /* this might be removed */ && observer_) {
+      observer_->RestoreVgSpendStatuses(std::move(*vg_spend_statuses));
     }
   }
 }
