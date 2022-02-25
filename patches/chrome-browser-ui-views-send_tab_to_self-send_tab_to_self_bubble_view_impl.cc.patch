@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc
+index 3b36090c4cd6772e81094d0b447b28eafe53cc0a..3473f90b8526c6a7a981d703dbe45898786a5018 100644
+--- a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc
++++ b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc
+@@ -140,6 +140,8 @@ void SendTabToSelfBubbleViewImpl::Init() {
+   CreateHintTextLabel();
+   CreateDevicesScrollView();
+ 
++  // CreateManageDevicesLink requires Google account, which causes a crash.
++  if (true) return;
+   AddChildView(std::make_unique<views::Separator>());
+   CreateManageDevicesLink();
+ }
