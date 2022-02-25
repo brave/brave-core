@@ -361,6 +361,7 @@ template("create_dist_template") {
     ]
   }
 }
+
 create_dist_template("create_native_symbols_dist") {
   output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.zip"
   dir_inputs = [ "$brave_product_name.pdb.syms" ]

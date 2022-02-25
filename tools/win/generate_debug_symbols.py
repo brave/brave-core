@@ -61,6 +61,8 @@ async def ProcessBinary(semaphore, options, binary):
             print(f'Completed generating symbols for {binary}: elapsed time '
                   f'{elapsed.total_seconds()} seconds')
 
+        # Copy all pdb files to the provided directory to create a standalone
+        # native symbols archive later (see create_native_symbols_dist target).
         if options.platform_symbols_dir:
             pdb_output_path = os.path.join(options.platform_symbols_dir,
                                            module_line.group(2),
