@@ -201,6 +201,10 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
       GetDefaultAllowFromControlType(type));
 
   RecordShieldsSettingChanged(local_state);
+  if (url.is_empty()) {
+    // If global setting changed, report to P3A
+    RecordShieldsAdsSetting(type);
+  }
 }
 
 ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
@@ -359,6 +363,10 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
       ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
 
   RecordShieldsSettingChanged(local_state);
+  if (url.is_empty()) {
+    // If global setting changed, report to P3A
+    RecordShieldsFingerprintSetting(type);
+  }
 }
 
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
