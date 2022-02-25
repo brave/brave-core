@@ -137,7 +137,7 @@ provideStrings({
   braveWalletWalletPopupConnectedSites: 'Connected sites',
 
   // Backup Warning
-  braveWalletBackupWarningText: 'Back up your wallet now to protect your crypto assets and ensure you never lose access.',
+  braveWalletBackupWarningText: 'Back up your wallet now to protect your assets and ensure you never lose access.',
   braveWalletBackupButton: 'Back up now',
   braveWalletDismissButton: 'Dismiss',
 
