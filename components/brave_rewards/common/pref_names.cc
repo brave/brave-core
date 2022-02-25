@@ -11,7 +11,8 @@ namespace prefs {
 const char kHideButton[] = "brave.hide_brave_rewards_button";
 const char kShowButton[] = "brave.show_brave_rewards_button";
 const char kEnabled[] = "brave.rewards.enabled";
-const char kEnabledTimestamp[] = "brave.rewards.enabled_timestamp";
+const char kAdsEnabledTimeDelta[] = "brave.rewards.ads_enabled_time_delta";
+const char kAdsEnabledTimestamp[] = "brave.rewards.ads_enabled_timestamp";
 const char kNotifications[] = "brave.rewards.notifications";
 const char kNotificationTimerInterval[]=
     "brave.rewards.notification_timer_interval";

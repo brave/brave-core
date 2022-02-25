@@ -73,7 +73,7 @@ void RecordNoWalletCreatedForAllMetrics();
 
 void RecordRewardsDisabledForSomeMetrics();
 
-enum class RewardsEnabledDuration {
+enum class AdsEnabledDuration {
   kNever,
   kStillEnabled,
   kHours,
@@ -84,7 +84,7 @@ enum class RewardsEnabledDuration {
   kMaxValue = kQuarters,
 };
 
-void RecordRewardsEnabledDuration(PrefService* prefs, bool rewards_enabled);
+void RecordAdsEnabledDuration(PrefService* prefs, bool ads_enabled);
 
 double CalcWalletBalance(base::flat_map<std::string, double> wallets,
                          double user_funds);

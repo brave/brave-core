@@ -392,6 +392,7 @@ void RewardsServiceImpl::Init(
 
   CheckPreferences();
   InitPrefChangeRegistrar();
+  p3a::RecordAdsEnabledDuration(profile_->GetPrefs(), IsAdsEnabled());
 }
 
 void RewardsServiceImpl::InitPrefChangeRegistrar() {
@@ -441,7 +442,7 @@ void RewardsServiceImpl::OnPreferenceChanged(const std::string& key) {
       p3a::RecordRewardsDisabledForSomeMetrics();
       p3a::RecordWalletState({.wallet_created = true});
     }
-    p3a::RecordRewardsEnabledDuration(profile_->GetPrefs(), rewards_enabled);
+    p3a::RecordAdsEnabledDuration(profile_->GetPrefs(), IsAdsEnabled());
   }
 }
 
@@ -860,7 +861,6 @@ void RewardsServiceImpl::OnLedgerInitialized(ledger::type::Result result) {
   } else {
     p3a::RecordRewardsDisabledForSomeMetrics();
   }
-  p3a::RecordRewardsEnabledDuration(profile_->GetPrefs(), IsRewardsEnabled());
 
   GetBraveWallet(
       base::BindOnce(&RewardsServiceImpl::OnGetBraveWalletForP3A, AsWeakPtr()));
@@ -3428,6 +3428,10 @@ void RewardsServiceImpl::SetAdsEnabled(const bool is_enabled) {
       AsWeakPtr()));
 }
 
+bool RewardsServiceImpl::IsAdsEnabled() const {
+  return profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled);
+}
+
 bool RewardsServiceImpl::IsRewardsEnabled() const {
   // This method will return true if either Ads or AC are enabled. We do not
   // currently check the value of the "enabled" pref because users do not have
@@ -3435,7 +3439,7 @@ bool RewardsServiceImpl::IsRewardsEnabled() const {
   if (profile_->GetPrefs()->GetBoolean(prefs::kAutoContributeEnabled))
     return true;
 
-  if (profile_->GetPrefs()->GetBoolean(ads::prefs::kEnabled))
+  if (IsAdsEnabled())
     return true;
 
   return false;

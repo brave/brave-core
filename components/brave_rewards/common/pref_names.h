@@ -12,7 +12,8 @@ namespace prefs {
 extern const char kHideButton[];  // DEPRECATED
 extern const char kShowButton[];
 extern const char kEnabled[];  // DEPRECATED
-extern const char kEnabledTimestamp[];
+extern const char kAdsEnabledTimeDelta[];
+extern const char kAdsEnabledTimestamp[];
 extern const char kNotifications[];
 extern const char kNotificationTimerInterval[];
 extern const char kBackupNotificationInterval[];
