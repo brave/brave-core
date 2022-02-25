@@ -185,6 +185,7 @@ brave_chrome_browser_deps = [
   "//components/ntp_tiles",
   "//components/password_manager/core/common",
   "//components/permissions",
+  "//components/policy/core/common:common_constants",
   "//components/pref_registry",
   "//components/prefs",
   "//components/privacy_sandbox:privacy_sandbox_prefs",
