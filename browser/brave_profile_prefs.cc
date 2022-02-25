@@ -51,6 +51,7 @@
 #include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
+#include "components/policy/core/common/policy_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/privacy_sandbox/privacy_sandbox_prefs.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -425,6 +426,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
 
   registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, false);
+
+  // Disable Raw sockets API (see github.com/brave/brave-browser/issues/11546).
+  registry->SetDefaultPrefValue(policy::policy_prefs::kEnableDirectSockets,
+                                base::Value(false));
 
   RegisterProfilePrefsForMigration(registry);
 }
