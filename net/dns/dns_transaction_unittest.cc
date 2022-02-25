@@ -40,6 +40,7 @@
 #include "net/dns/dns_socket_allocator.h"
 #include "net/dns/dns_test_util.h"
 #include "net/dns/dns_util.h"
+#include "net/dns/public/dns_over_https_config.h"
 #include "net/dns/public/dns_over_https_server_config.h"
 #include "net/dns/public/dns_protocol.h"
 #include "net/dns/resolve_context.h"
@@ -606,13 +607,15 @@ class DnsTransactionTestBase : public testing::Test {
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
     CHECK_LE(num_doh_servers, 255u);
+    std::vector<string> templates;
+    templates.reserve(num_doh_servers);
+
     for (size_t i = 0; i < num_doh_servers; ++i) {
-      std::string server_template(URLRequestMockDohJob::GetMockHttpsUrl(
-                                      base::StringPrintf("doh_test_%zu", i)) +
-                                  "{?dns}");
-      config_.dns_over_https_servers.push_back(
-          *DnsOverHttpsServerConfig::FromString(server_template));
+      templates.push_back(URLRequestMockDohJob::GetMockHttpsUrl(
+                              base::StringPrintf("doh_test_%zu", i)) +
+                          "{?dns}");
     }
+    config_.doh_config = *DnsOverHttpsConfig::FromStrings(std::move(templates));
     ConfigureFactory();
 
     if (make_available) {
@@ -768,7 +771,7 @@ class DnsTransactionTestBase : public testing::Test {
         EXPECT_EQ(
             socket_factory_->remote_endpoints_[i].secure_nameserver.value(),
             session_->config()
-                .dns_over_https_servers[servers[i] - num_insecure_nameservers]);
+                .doh_config.servers()[servers[i] - num_insecure_nameservers]);
       }
     }
   }
@@ -778,7 +781,7 @@ class DnsTransactionTestBase : public testing::Test {
     // configured servers, because it won't be there and we still want
     // to handle it.
     bool server_found = request->url().path() == "/redirect-destination";
-    for (auto server : config_.dns_over_https_servers) {
+    for (auto server : config_.doh_config.servers()) {
       if (server_found)
         break;
       std::string url_base =
@@ -960,28 +963,25 @@ class BraveDnsTransactionTest : public DnsTransactionTestBase,
     URLRequestFilter* filter = URLRequestFilter::GetInstance();
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
-    config_.dns_over_https_servers.push_back(
-        *DnsOverHttpsServerConfig::FromString(
-            decentralized_dns::kUnstoppableDomainsDoHResolver));
+    std::vector<string> templates;
+    templates.push_back(decentralized_dns::kUnstoppableDomainsDoHResolver);
 
     url = GURL(decentralized_dns::kENSDoHResolver);
     filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                    std::make_unique<DohJobInterceptor>(this));
-    config_.dns_over_https_servers.push_back(
-        *DnsOverHttpsServerConfig::FromString(
-            decentralized_dns::kENSDoHResolver));
+    templates.push_back(decentralized_dns::kENSDoHResolver);
 
     if (user_doh_server) {
       url = GURL("https://test.com/dns-query");
       filter->AddHostnameInterceptor(url.scheme(), url.host(),
                                      std::make_unique<DohJobInterceptor>(this));
-      config_.dns_over_https_servers.push_back(
-          *DnsOverHttpsServerConfig::FromString(url.spec()));
+      templates.push_back(url.spec());
     }
 
+    config_.doh_config = *DnsOverHttpsConfig::FromStrings(std::move(templates));
     ConfigureFactory();
     for (size_t server_index = 0;
-         server_index < config_.dns_over_https_servers.size(); ++server_index) {
+         server_index < config_.doh_config.servers().size(); ++server_index) {
       resolve_context_->RecordServerSuccess(
           server_index, true /* is_doh_server */, session_.get());
     }
