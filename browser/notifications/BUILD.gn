@@ -60,6 +60,7 @@ if (is_android) {
     deps = [
       ":java_resources",
       "//components/browser_ui/notifications/android:java",
+      "//third_party/androidx:androidx_annotation_annotation_java",
     ]
 
     resources_package = "org.chromium.chrome.browser.notifications"
