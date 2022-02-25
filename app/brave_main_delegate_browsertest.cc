@@ -105,7 +105,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if !defined(OS_ANDROID)
     &features::kCopyLinkToText,
 #endif
-    &features::kDirectSockets,
     &features::kFedCm,
     &features::kFirstPartySets,
     &features::kIdleDetection,
