@@ -197,11 +197,11 @@ std::string HTTPSEverywhereService::Engine::ApplyHTTPSRule(
           if (!pDictionary->Get("p", &patternValue)) {
             continue;
           }
-          std::string pattern;
-          if (!patternValue->GetAsString(&pattern)) {
+          if (!patternValue->is_string()) {
             continue;
           }
-          pattern = CorrecttoRuleToRE2Engine(pattern);
+          std::string pattern =
+              CorrecttoRuleToRE2Engine(patternValue->GetString());
           if (RE2::FullMatch(originalUrl, pattern)) {
             return "";
           }
@@ -241,15 +241,13 @@ std::string HTTPSEverywhereService::Engine::ApplyHTTPSRule(
           !pDictionary->Get("t", &to_value)) {
         continue;
       }
-      std::string from, to;
-      if (!from_value->GetAsString(&from) ||
-          !to_value->GetAsString(&to)) {
+      if (!from_value->is_string() || !to_value->is_string()) {
         continue;
       }
 
-      to = CorrecttoRuleToRE2Engine(to);
+      std::string to = CorrecttoRuleToRE2Engine(to_value->GetString());
       std::string newUrl(originalUrl);
-      RE2 regExp(from);
+      RE2 regExp(from_value->GetString());
 
       if (RE2::Replace(&newUrl, regExp, to) && newUrl != originalUrl) {
         return newUrl;
