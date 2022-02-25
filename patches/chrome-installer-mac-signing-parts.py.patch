@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/parts.py b/chrome/installer/mac/signing/parts.py
-index c53aff055076024f2e477ad92ede8169711c2720..943b6672a3c753a40a89e67144331dace663cd62 100644
+index cc8dd044dc5ea6a328b8d044be647acab830ca62..8128eaa89859f4a937340fb7f31f2e45143aae44 100644
 --- a/chrome/installer/mac/signing/parts.py
 +++ b/chrome/installer/mac/signing/parts.py
 @@ -10,6 +10,7 @@ import os.path
@@ -10,7 +10,7 @@ index c53aff055076024f2e477ad92ede8169711c2720..943b6672a3c753a40a89e67144331dac
  
  _PROVISIONPROFILE_EXT = '.provisionprofile'
  _PROVISIONPROFILE_DEST = 'embedded.provisionprofile'
-@@ -143,6 +144,7 @@ def get_parts(config):
+@@ -134,6 +135,7 @@ def get_parts(config):
              library_basename.replace('.dylib', ''),
              verify_options=verify_options)
  
@@ -18,7 +18,7 @@ index c53aff055076024f2e477ad92ede8169711c2720..943b6672a3c753a40a89e67144331dac
      return parts
  
  
-@@ -206,6 +208,7 @@ def sign_chrome(paths, config, sign_framework=False):
+@@ -197,6 +199,7 @@ def sign_chrome(paths, config, sign_framework=False):
                  continue
              signing.sign_part(paths, config, part)
  
