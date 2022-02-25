@@ -17,6 +17,7 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_impl.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/components/skus/browser/switches.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #include "brave/ios/browser/api/bookmarks/brave_bookmarks_api+private.h"
@@ -54,6 +55,7 @@
 #include "ios/public/provider/chrome/browser/chrome_browser_provider.h"
 #include "ios/public/provider/chrome/browser/ui_utils/ui_utils_api.h"
 #include "ios/web/public/init/web_main.h"
+#include "ui/base/resource/resource_bundle.h"
 
 // Chromium logging is global, therefore we cannot link this to the instance in
 // question
@@ -73,6 +75,7 @@ const BraveCoreSwitch BraveCoreSwitchSkusEnvironment =
   std::unique_ptr<BraveMainDelegate> _delegate;
   std::unique_ptr<web::WebMain> _webMain;
   ChromeBrowserState* _mainBrowserState;
+  NSString* _walletProviderJS;
 }
 @property(nonatomic) BraveBookmarksAPI* bookmarksAPI;
 @property(nonatomic) BraveHistoryAPI* historyAPI;
@@ -329,6 +332,24 @@ static bool CustomLogHandler(int severity,
       browserState->GetPrefs());
   return [[BraveWalletBraveWalletProviderImpl alloc]
       initWithBraveWalletProvider:provider];
+}
+
+- (NSString*)walletProviderJS {
+  if (!_walletProviderJS) {
+    auto resource_id = IDR_BRAVE_WALLET_SCRIPT_BRAVE_WALLET_SCRIPT_BUNDLE_JS;
+    // The resource bundle is not available until after WebMainParts is setup
+    auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+    std::string resource_string = "";
+    if (resource_bundle.IsGzipped(resource_id)) {
+      resource_string =
+          std::string(resource_bundle.LoadDataResourceString(resource_id));
+    } else {
+      resource_string =
+          std::string(resource_bundle.GetRawDataResource(resource_id));
+    }
+    _walletProviderJS = base::SysUTF8ToNSString(resource_string);
+  }
+  return _walletProviderJS;
 }
 
 @end

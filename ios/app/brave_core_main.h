@@ -75,6 +75,8 @@ OBJC_EXPORT
     walletProviderWithDelegate:(id<BraveWalletProviderDelegate>)delegate
              isPrivateBrowsing:(bool)isPrivateBrowsing;
 
+@property(readonly) NSString* walletProviderJS;
+
 @end
 
 NS_ASSUME_NONNULL_END

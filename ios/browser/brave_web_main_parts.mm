@@ -37,15 +37,21 @@ BraveWebMainParts::~BraveWebMainParts() {}
 void BraveWebMainParts::PreCreateMainMessageLoop() {
   l10n_util::OverrideLocaleWithCocoaLocale();
 
-   const std::string loaded_locale =
-       ui::ResourceBundle::InitSharedInstanceWithLocale(
-           std::string(), nullptr, ui::ResourceBundle::LOAD_COMMON_RESOURCES);
-   CHECK(!loaded_locale.empty());
+  const std::string loaded_locale =
+      ui::ResourceBundle::InitSharedInstanceWithLocale(
+          std::string(), nullptr, ui::ResourceBundle::LOAD_COMMON_RESOURCES);
+  CHECK(!loaded_locale.empty());
 
-   base::FilePath resources_pack_path;
-   base::PathService::Get(ios::FILE_RESOURCES_PACK, &resources_pack_path);
-   ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
-       resources_pack_path, ui::k100Percent);
+  base::FilePath resources_pack_path;
+  base::PathService::Get(ios::FILE_RESOURCES_PACK, &resources_pack_path);
+  ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
+      resources_pack_path, ui::k100Percent);
+
+  base::FilePath brave_pack_path;
+  base::PathService::Get(base::DIR_MODULE, &brave_pack_path);
+  brave_pack_path = brave_pack_path.AppendASCII("brave_resources.pak");
+  ui::ResourceBundle::GetSharedInstance().AddDataPackFromPath(
+      brave_pack_path, ui::kScaleFactorNone);
 }
 
 void BraveWebMainParts::PreCreateThreads() {

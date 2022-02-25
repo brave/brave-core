@@ -56,19 +56,22 @@ grit("static_resources") {
 }
 
 repack("resources") {
-  deps = [
-    ":static_resources",
-    "//brave/components/brave_adblock_ui:generated_resources",
-    "//brave/components/cosmetic_filters/resources/data:generated_resources",
-  ]
+  deps = [ ":static_resources" ]
+  sources = [ "$root_gen_dir/components/brave_components_static.pak" ]
 
-  sources = [
-    "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
-    "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
-    "$root_gen_dir/components/brave_components_static.pak",
-  ]
+  if (!is_ios) {
+    deps += [
+      "//brave/components/brave_adblock_ui:generated_resources",
+      "//brave/components/cosmetic_filters/resources/data:generated_resources",
+    ]
 
-  if (!is_android) {
+    sources += [
+      "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
+      "$root_gen_dir/brave/components/cosmetic_filters/resources/cosmetic_filters_generated.pak",
+    ]
+  }
+
+  if (!is_android && !is_ios) {
     deps += [
       "//brave/components/brave_new_tab_ui:generated_resources",
       "//brave/components/brave_shields/resources/panel:brave_shields_panel_generated",
@@ -91,15 +94,15 @@ repack("resources") {
     ]
   }
 
-  if (!is_ios) {
-    if (!is_android) {
-      deps += [ "//brave/components/brave_wallet_ui:resources" ]
-      sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak" ]
-    }
-
-    deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
-    sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
+  if (!is_android && !is_ios) {
+    deps += [ "//brave/components/brave_wallet_ui:resources" ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet.pak",
+    ]
   }
+
+  deps += [ "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources" ]
+  sources += [ "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_script_generated.pak" ]
 
   if (enable_brave_vpn) {
     deps += [
