@@ -125,6 +125,13 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_SUMMARY" desc="Summary of the settings page to configure spam and fraud reduction." translateable="false">
         Help sites fight fraud and distinguish bots from profiles
       </message>
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION" desc="Description of the settings page to configure spam and fraud reduction." translateable="false">
+        Spam &amp; fraud reduction relies on trust tokens to help sites fight fraud and distinguish bots from profiles.
+
+Based on your interaction with a site, like regularly signing in to an account, that site can issue a trust token to your browser. Later, if other sites you visit check for and find a valid trust token, they’re more likely to treat you like a profile and not a bot.
+
+Trust tokens improve privacy on the web and can’t be used to find out who you are.
+      </message>
       <message name="IDS_PRIVACY_REVIEW_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
         Block while using private
       </message>
@@ -173,7 +180,7 @@ CHAR_LIMIT guidelines:
         New Private tab
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_INCOGNITO_TAB" desc="Notification body text educating user about private tab in chrome.">
-        To browse without saving activity to your device, try out Private
+        To browse privately on this device, try out Private
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_TOOLTIP_MESSAGE_INCOGNITO_TAB" desc="Tooltip text educating user about using private tab in chrome.">
         To open a new Private tab, open the menu
