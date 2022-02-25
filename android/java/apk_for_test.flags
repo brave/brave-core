@@ -195,14 +195,14 @@
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BottomControlsMediator {
-    public <init>(...);
+    <init>(...);
     *** mBottomControlsHeight;
     *** mModel;
     *** mBrowserControlsSizer;
 }
 
 -keep class org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsMediator {
-    public <init>(...);
+    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.query_tiles.QueryTileSection {
@@ -328,14 +328,14 @@
 }
 
 -keep class org.chromium.chrome.browser.feed.FeedSurfaceMediator {
-    public <init>(...);
+    <init>(...);
     *** mCoordinator;
     *** mSnapScrollHelper;
     *** destroyPropertiesForStream(...);
 }
 
 -keep class org.chromium.chrome.browser.feed.BraveFeedSurfaceMediator {
-    public <init>(...);
+    <init>(...);
     *** mCoordinator;
     *** mSnapScrollHelper;
 }
