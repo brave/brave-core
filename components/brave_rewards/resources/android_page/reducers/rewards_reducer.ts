@@ -392,6 +392,23 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.disconnectWallet')
       break
     }
+    case types.DISMISS_PROMO_PROMPT: {
+      const ui = state.ui
+      const promoKey = action.payload.promo
+
+      if (!ui.promosDismissed) {
+        ui.promosDismissed = {}
+      }
+
+      ui.promosDismissed[promoKey] = true
+
+      state = {
+        ...state,
+        ui
+      }
+
+      break
+    }
     case types.GET_EXTERNAL_WALLET: {
       chrome.send('brave_rewards.getExternalWallet')
       break
