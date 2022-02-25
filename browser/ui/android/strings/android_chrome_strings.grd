@@ -547,6 +547,15 @@ CHAR_LIMIT guidelines:
       <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_VIRTUAL_CARD_UNENROLL_DIALOG_POSITIVE_BUTTON_LABEL" desc="Positive button label for the dialog where the user confirms that they wish to unenroll a card from Virtual Cards.">
         Remove
       </message>
+      <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_EDUCATION_TEXT" desc="Text explaining the benefit of enrolling a credit card as a virtual card. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
+        A virtual card disguises your actual card to help protect you from potential fraud. <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Learn more about virtual cards<ph name="END_LINK1">&lt;/link1&gt;</ph>
+      </message>
+      <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CARD_CONTAINER_TITLE" desc="Text describing how the virtual card will be shown to the user in autofill suggestions.">
+        Virtual card
+      </message>
+      <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_INFOBAR_CARD_PREFIX" desc="Notifies the user that their virtual card card is linked with a card on their account.">
+        linked with
+      </message>
 
        <!-- Payment Request section preview strings -->
        <message name="IDS_PAYMENT_REQUEST_PAYMENT_METHODS_PREVIEW" desc="This is a snippet of a payment method a user has saved to Brave, plus an indication of the number of additional payment methods the user has saved.         Its function is to show the user has payment methods that can be used to complete a payment, and thus doesn't have to type the entire payment method. [ICU Syntax]">
@@ -885,14 +894,25 @@ Privacy Sandbox trials are still in active development and are available in sele
       <message name="IDS_PRIVACY_SANDBOX_TRIALS_TITLE" desc="Title shown at the top of privacy sandbox settings." translateable="false">
         Trials
       </message>
+      <message name="IDS_PRIVACY_SANDBOX_DESCRIPTION" desc="Description shown at the top of privacy sandbox settings." translateable="false">
+       With Privacy Sandbox trials, sites can deliver the same browsing experience using less of your data. That means more privacy for you and less cross-site tracking. We’ll add new trials as they’re ready to test.
+      </message>
       <message name="IDS_PRIVACY_SANDBOX_AD_PERSONALIZATION_TITLE" desc="Title of the settings page to configure ad personalization." translateable="false">
         Ad personalization
       </message>
       <message name="IDS_PRIVACY_SANDBOX_AD_PERSONALIZATION_SUMMARY" desc="Summary of the settings page to configure ad personalization." translateable="false">
         Your browsing history affects the ads you see
       </message>
-      <message name="IDS_PRIVACY_SANDBOX_AD_MEASUREMENT_TITLE" desc="Title of the settings apge to explain ad measurement." translateable="false">
+      <message name="IDS_PRIVACY_SANDBOX_AD_PERSONALIZATION_DESCRIPTION" desc="Description of the settings page to configure ad personalization" translateable="false">
+       Your browsing history affects the ads you see and the interests as estimated below. Brave auto-deletes your interests every few weeks to protect your privacy. Interests refresh unless you remove them.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_AD_MEASUREMENT_TITLE" desc="Title of the settings page to explain ad measurement." translateable="false">
         Ad measurement
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_AD_MEASUREMENT_DESCRIPTION" desc="Description of the settings page to explain ad measurement" translateable="false">
+        Ad measurement allows sites you visit to request information from Brave that helps the site measure the performance of their ads. Ad measurement restricts cross-site tracking by transferring as little information as possible between sites.
+
+You can control measurement information associated with you by accessing <ph name="BEGIN_LINK">&lt;link&gt;</ph>your browsing history.<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_PRIVACY_SANDBOX_AD_MEASUREMENT_SUMMARY" desc="Summary of the settings page to explain ad measurement." translateable="false">
         Advertisers can understand how ads perform
@@ -903,14 +923,27 @@ Privacy Sandbox trials are still in active development and are available in sele
       <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_SUMMARY" desc="Summary of the settings page to configure spam and fraud reduction." translateable="false">
         Help sites fight fraud and distinguish bots from profiles
       </message>
+      <message name="IDS_PRIVACY_SANDBOX_SPAM_FRAUD_DESCRIPTION" desc="Description of the settings page to configure spam and fraud reduction." translateable="false">
+        Spam &amp; fraud reduction relies on trust tokens to help sites fight fraud and distinguish bots from profiles.
+
+Based on your interaction with a site, like regularly signing in to an account, that site can issue a trust token to your browser. Later, if other sites you visit check for and find a valid trust token, they’re more likely to treat you like a profile and not a bot.
+
+Trust tokens improve privacy on the web and can’t be used to find out who you are.
+      </message>
       <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_LINK" desc="Text of a link to explain ad personalization." translateable="false">
        <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more about browser-based ad personalization<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_TITLE_1" desc="Title of the page to learn more about the Topics API for the privacy sandbox." translateable="false">
-       Your interests as estimated by Brave
+        Your interests as estimated by Brave
       </message>
       <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_DESCRIPTION_1" desc="Description of the page to learn more about the Topics API for the privacy sandbox." translateable="false">
-        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>Lorem ipsum dolor sit amet:<ph name="END_BOLD1">&lt;/b&gt;</ph> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>What data is used:<ph name="END_BOLD1">&lt;/b&gt;</ph> Your browsing history, a record of sites you’ve visited using Brave on this device.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_DESCRIPTION_2" desc="Description of the page to learn more about the Topics API for the privacy sandbox." translateable="false">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How we use this data:<ph name="END_BOLD1">&lt;/b&gt;</ph> Brave can estimate your interests. Later, a site you visit can ask Brave to see your interests in order to personalize the ads you see.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_DESCRIPTION_3" desc="Description of the page to learn more about the Topics API for the privacy sandbox." translateable="false">
+        <ph name="BEGIN_BOLD">&lt;b&gt;</ph>How you can manage your data:<ph name="END_BOLD1">&lt;/b&gt;</ph> Your interests are deleted and refreshed each week. You can also block an interest anytime.
       </message>
       <message name="IDS_PRIVACY_SANDBOX_LEARN_MORE_TITLE" desc="Title of the settings page to explain ad personalization." translateable="false">
         About personalized ads
@@ -930,6 +963,9 @@ Privacy Sandbox trials are still in active development and are available in sele
        <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_TITLE" desc="Title of the settings page to configure interests that were removed from ad personalization." translateable="false">
         Interests you removed
       </message>
+      <message name="IDS_PRIVACY_SANDBOX_REMOVE_INTEREST_DESCRIPTION" desc="Description of the settings page to configure interests that were removed from ad personalization." translateable="false">
+        Add an interest if you think ads related to that interest would be useful to you
+      </message>
        <message name="IDS_PRIVACY_SANDBOX_TOPIC_INTERESTS_CATEGORY" desc="Title of a section of the settings page to configure ad personalization." translateable="false">
         Your interests as estimated by Brave
       </message>
@@ -944,9 +980,6 @@ Privacy Sandbox trials are still in active development and are available in sele
       </message>
        <message name="IDS_PRIVACY_SANDBOX_FLEDGE_UNDER_DEVELOPMENT_NOTICE" desc="Text to explain that a feature for ad personalization is not implemented yet." translateable="false">
         This feature is currently under development
-      </message>
-      <message name="IDS_PRIVACY_SANDBOX_DESCRIPTION_PLACEHOLDER" desc="This is only used until final strings are approved and should never be translated." translateable="false">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
       </message>
 
       <!-- Privacy Sandbox dialog. The strings are preliminary. -->
@@ -966,22 +999,43 @@ Privacy Sandbox trials are still in active development and are available in sele
         Help us build a more private web
       </message>
       <message name="IDS_PRIVACY_SANDBOX_CONSENT_SUBTITLE" desc="Subtitle for the Privacy Sandbox consent dialog." translateable="false">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna.
+        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your info
       </message>
       <message name="IDS_PRIVACY_SANDBOX_CONSENT_HEADING_ONE" desc="First heading for the Privacy Sandbox consent dialog text." translateable="false">
-        Lorem ipsum dolor sit
+        Limit sharing between sites
       </message>
       <message name="IDS_PRIVACY_SANDBOX_CONSENT_DESCRIPTION_ONE" desc="First paragraph for the Privacy Sandbox consent dialog text." translateable="false">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+        We’re exploring ways to restrict cross-site tracking while enabling sites to stop ad spam and fraud.
       </message>
       <message name="IDS_PRIVACY_SANDBOX_CONSENT_HEADING_TWO" desc="Second heading for the Privacy Sandbox consent dialog text." translateable="false">
-        Lorem ipsum dolor sit
+        Try more transparent ads
       </message>
       <message name="IDS_PRIVACY_SANDBOX_CONSENT_DESCRIPTION_TWO" desc="Second paragraph for the Privacy Sandbox consent dialog text." translateable="false">
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.
+        During the experiment, Brave will estimate topics you may be interested in, based on your recent browsing history. Then, without learning who you are, some sites you visit will use this info to show you relevant ads.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_BUTTON" desc="Text on the button for the dropdown element in the the Privacy Sandbox consent dialog" translateable="false">
+        Learn more about Browser-based ad personalization
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_HEADING" desc="Heading for the dropdown element in the the Privacy Sandbox consent dialog" translateable="false">
+        Your interests as estimated by Brave
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_ONE" desc="First element of the dropdown in the the Privacy Sandbox consent dialog" translateable="false">
+        What data is used: Your browsing history, a record of sites you’ve visited using Brave on this device.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_TWO" desc="Second element of the dropdown in the the Privacy Sandbox consent dialog" translateable="false">
+        How we use this data: Brave can estimate your interests. Later, a site you visit can ask Brave to see your interests in order to personalize the ads you see.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DROPDOWN_THREE" desc="Third element of the dropdown in the the Privacy Sandbox consent dialog" translateable="false">
+        How you can manage your data: Your interests are deleted and refreshed each week. You can also block an interest anytime.
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_CONSENT_DESCRIPTION_THREE" desc="Third paragraph for the Privacy Sandbox consent dialog text." translateable="false">
+        You can change your mind at any time in Brave settings. During trials, your interaction with sites may not be more private than it is without these new features.
       </message>
       <message name="IDS_PRIVACY_SANDBOX_NOTICE_TITLE" desc="Title for the Privacy Sandbox notice dialog." translateable="false">
-        Brave is exploring new features that allow sites to deliver the same browsing experience using less of your data
+        We’re exploring new features that allow sites to deliver the same browsing experience using less of your info
+      </message>
+      <message name="IDS_PRIVACY_SANDBOX_NOTICE_DESCRIPTION" desc="Last paragraph of the Privacy Sandbox consent dialog text" translateable="false">
+        You can learn more about these features in Brave settings. During trials, your interaction with sites may not be more private than it is without these new features.
       </message>
 
       <!-- Secure DNS Settings.  Used by //chrome/browser/privacy. -->
@@ -1451,38 +1505,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SAFE_BROWSING_NO_PROTECTION_CONFIRMATION_DIALOG_CONFIRM" desc="Message for Safe Browsing no protection confirmation button.">
         Turn off
-      </message>
-
-      <!-- Accessibility preferences -->
-      <message name="IDS_PREFS_ACCESSIBILITY" desc="Title of Accessibility settings, which allows the user to change webpage font sizes. [CHAR_LIMIT=32]">
-        Accessibility
-      </message>
-      <message name="IDS_FONT_SIZE" desc="Title for font size preference.">
-        Text scaling
-      </message>
-      <message name="IDS_FONT_SIZE_PREVIEW_TEXT" desc="Preview text for font-size slider.">
-        Drag the slider until you can read this comfortably. Text should look at least this big after double-tapping on a paragraph.
-      </message>
-      <message name="IDS_FORCE_ENABLE_ZOOM_TITLE" desc="Title of preference that allows the user to zoom in on any webpage, even if the page tries to disable zooming.">
-        Force enable zoom
-      </message>
-      <message name="IDS_FORCE_ENABLE_ZOOM_SUMMARY" desc="Summary of preference that allows the user to zoom in on any webpage, even if the page tries to disable zooming.">
-        Override a website’s request to prevent zooming in
-      </message>
-      <message name="IDS_READER_FOR_ACCESSIBILITY_TITLE" desc="Title of preference that allows the user to use simplified view on any articles, even if the page is mobile-friendly. Simplified view is the new user-facing name for Reader Mode, which extracts the content of an article and removes clutter from a web page and puts the result in a easier-to-read format.">
-        Simplified view for web pages
-      </message>
-      <message name="IDS_READER_FOR_ACCESSIBILITY_SUMMARY" desc="Summary of preference that allows the user to use simplified view on any supported articles, even if the page is mobile-friendly.">
-        Offer to show articles in simplified view, when supported
-      </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_TITLE" desc="Title of preference that allows the user to use a simplified tab switcher that is accessibility friendly. The words 'Open tabs' should match translation in TC ID 3108541343994525384, provided that 'open' is correctly used as an adjective and not a verb.">
-        Simplified view for open tabs
-      </message>
-      <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_SUMMARY" desc="Summary of the preference that allows the user to use a simplified tab switcher. The simplified tab switcher is recommended for use with TalkBack and Switch Access which are accessibility services provided by Android. TalkBack does not need to be translated. 'Switch Access' translation should match TC ID 382005103867249841.">
-       Recommended when TalkBack or Switch Access are on
-      </message>
-      <message name="IDS_ACCESSIBILITY_CAPTIONS_TITLE" desc="Title of the preference that allows the user to update caption settings.">
-        Captions
       </message>
 
       <!-- Language Settings -->
@@ -3156,7 +3178,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         To get your Brave stuff across devices, sign in
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_INCOGNITO_TAB" desc="Notification body text educating user about private tab in chrome.">
-        To browse without saving activity to your device, try out Private
+        To browse privately on this device, try out Private
       </message>
       <message name="IDS_FEATURE_NOTIFICATION_GUIDE_NOTIFICATION_MESSAGE_NTP_SUGGESTION_CARD" desc="Notification body text educating user about discovering suggested articles in chrome new tab page.">
         Discover new content on Brave’s homepage

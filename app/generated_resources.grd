@@ -2335,6 +2335,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_DOWNLOAD_BUBBLE_FOOTER_LINK" desc="Footer link in the Download Bubble">
         Show all downloads
       </message>
+      <message name="IDS_DOWNLOAD_BUBBLE_DOWNLOAD_SEPERATOR" desc="A separator to place between download size and download time. A symbol, in this case a bullet •, with a white space before it and a white space after it, is used to separate them. If the bullet • resembles another symbol in the language, please translate the bullet • as a symbol (A) that is not easily mistaken for a number or letter in the language and (B) that is typically used to separate elements.">
+        ''' • '''
+      </message>
 
       <!-- Desktop omnibox PWA install icon -->
       <if expr="not is_android">
@@ -4908,6 +4911,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_REQUESTS_ACCESS_SECTION_TITLE" desc="Header for section of extensions that request access to the current site's data. $1 is replaced with the current site.">
         Requested to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
       </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_USER_SETTINGS_TITLE" desc="Title of the button in the site access tab used to show/hide the user settings options.">
+        Choose your default setting
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_USER_SETTINGS_ALLOW_ALL_TEXT" desc="Text of the allow all extensions option in the user settings options inside the site access tab.">
+        Allow all extensions to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_USER_SETTINGS_BLOCK_ALL_TEXT" desc="Text of the allow all extensions option in the user settings options inside the site access tab.">
+        Don't allow any extensions to read and change <ph name="SITE_NAME">$1<ex>google.com</ex></ph>
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_SITE_ACCESS_TAB_USER_SETTINGS_CUSTOMIZE_EACH_TEXT" desc="Text of the allow all extensions option in the user settings options inside the site access tab.">
+        Customize permissions for each extension
+      </message>
       <message name="IDS_EXTENSIONS_MENU_EXTENSIONS_TAB_TITLE" desc="Title of the installed extensions tab in the Extensions Menu">
         Installed
       </message>
@@ -6007,6 +6022,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TITLE" desc="Title of the opt-in UI for Brave Photos in the new tab page.">
         See your memories here
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_PERSONALIZED_WELCOME_TITLE_TEMPLATE" desc="Personalized title of the opt-in UI for Brave Photos in the new tab page.">
+        See "<ph name="PERSONALIZED_MEMORY_TITLE">$1<ex>Recent Highlights</ex></ph>" and other memories here
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_RH_WELCOME_TITLE" desc="Title of the opt-in UI for Brave Photos in the new tab page emphasizing on recent highlights.">
+        See "Recent Highlights" and other memories here
+      </message>
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Brave Photos in the new tab page emphasizing on favorite profiles.">
+        See memories of your favorite profiles and more
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TEXT" desc="Text for the opt-in UI for Brave Photos in the new tab page.">
         Start exploring your memories from Brave Photos, whenever you’re signed in.
@@ -7233,9 +7257,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_LOAD_STATE_WAITING_FOR_CACHE">
         Waiting for cache...
       </message>
-      <message name="IDS_LOAD_STATE_WAITING_FOR_APPCACHE">
-        Waiting for AppCache...
-      </message>
       <message name="IDS_LOAD_STATE_ESTABLISHING_PROXY_TUNNEL">
         Waiting for proxy tunnel...
       </message>
@@ -8108,19 +8129,83 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Share link to <ph name="SHARE_TARGET">$1<ex>Facebook</ex></ph>
       </message>
 
-      <!-- Desktop screenshot -->
-      <message name="IDS_BROWSER_SHARING_SCREENSHOT_POST_CAPTURE_TITLE" desc="Title for the dialog shown after a screenshot is captured.">
-       Screenshot copied to clipboard
-      </message>
-      <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_DOWNLOAD_BUTTON_LABEL" desc="Button text for the Screenshot dialog download button.">
-        Download
-      </message>
-      <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_EDIT_BUTTON_LABEL" desc="Button text for the Screenshot dialog edit button.">
-        Edit
-      </message>
-      <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_SHARE_BUTTON_LABEL" desc="Button text for the Screenshot dialog share button.">
-        Share
-      </message>
+      <!-- Desktop Screenshots feature within the share hub; desktop-only. -->
+      <if expr="not is_android">
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_POST_CAPTURE_TITLE" desc="Title for the dialog shown after a screenshot is captured.">
+        Screenshot copied to clipboard
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_DOWNLOAD_BUTTON_LABEL" desc="Button text for the Screenshot dialog download button.">
+          Download
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_EDIT_BUTTON_LABEL" desc="Button text for the Screenshot dialog edit button.">
+          Edit
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_DIALOG_SHARE_BUTTON_LABEL" desc="Button text for the Screenshot dialog share button.">
+          Share
+        </message>
+        <!-- Desktop Screenshots Image Editor app strings; filled in to component webui
+            loaded into chrome-untrusted://image-editor -->
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_SELECTION" desc="The tooltip for the image editor's selection tool button.">
+          Selection Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_CROP" desc="The tooltip for the image editor's crop tool button.">
+          Crop Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_TEXT" desc="The tooltip for the image editor's text tool button.">
+          Text Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_ELLIPSE" desc="The tooltip for the image editor's ellipse tool button.">
+          Ellipse Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_RECTANGLE" desc="The tooltip for the image editor's rectangle tool button.">
+          Rectangle Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_LINE" desc="The tooltip for the image editor's line tool button.">
+          Line Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_ARROW" desc="The tooltip for the image editor's arrow tool button.">
+          Arrow Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_BRUSH" desc="The tooltip for the image editor's brush tool button.">
+          Brush Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_EMOJI" desc="The tooltip for the image editor's emoji tool button.">
+          Emoji Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_HIGHLIGHTER" desc="The tooltip for the image editor's highlither tool button.">
+          Highlighter Tool
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_UNDO" desc="The tooltip for the image editor's undo button.">
+          Undo
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_REDO" desc="The tooltip for the image editor's redo button.">
+          Redo
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_ZOOM_IN" desc="The tooltip for the image editor's zoom in button.">
+          Zoom In
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_ZOOM_OUT" desc="The tooltip for the image editor's zoom out button.">
+          Zoom Out
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_COMMIT_CROP" desc="The button text for the image editor's confirm crop button.">
+          Crop
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_COMMIT_CROP" desc="The tooltip for the image editor's confirm crop button.">
+          Confirm Crop
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_CANCEL_CROP" desc="The button text for the image editor's cancel crop button.">
+          Cancel
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_TOOLTIP_CANCEL_CROP" desc="The tooltip for the image editor's cancel crop button.">
+          Cancel Crop
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_BUTTON_DOWNLOAD_IMAGE" desc="The tooltip for the image editor's download image button that saves the image.">
+          Download Image
+        </message>
+        <message name="IDS_BROWSER_SHARING_SCREENSHOT_IMAGE_EDITOR_BUTTON_COPY" desc="The button text for the image editor's copy to clipboard button.">
+          Copy to Clipboard
+        </message>
+      </if>
 
       <!-- Clipboard History Menu feature. -->
       <message name="IDS_CONTEXT_MENU_SHOW_CLIPBOARD_HISTORY_MENU" desc="Show the clipboard history menu.">
@@ -10949,49 +11034,30 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEB_APP_FILE_HANDLING_LIST_SEPARATOR" desc="Text/punctuation that separates items in a lists. For example, this is used in a list of files, such as 'todo_list.txt, shopping_list.txt', and file types/extensions, such as '.txt, .csv.'" meaning="List separator for files.">
          , '''
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_QUESTION" desc="Descriptive text in permission request dialog that is shown when the user is opening a file using a PWA.">
-        Open and edit <ph name="FILE_NAME">$1<ex>todo.txt</ex></ph> in this web app?
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DESCRIPTION" desc="Descriptive text in permission request dialog that is shown when the user is opening a file using a PWA.">
+        <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph> wants to open this file:
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_QUESTION_MULTIPLE" desc="Descriptive text in permission request dialog that is shown when the user is opening multiple files using a PWA. [ICU_Syntax]">
-        {NUM_FILES, plural,
-          other {Open and edit # files in this web app?}
-        }
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DESCRIPTION_MULTIPLE" desc="Descriptive text in permission request dialog that is shown when the user is opening multiple files using a PWA.">
+        <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph> wants to open these files:
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_STICKY_CHOICE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (single file format).">
-        Remember my choice for this file type: <ph name="FILE_FORMAT">$1<ex>TXT</ex></ph>
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_STICKY_CHOICE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (single file format).">
+        Don't ask again when opening this file format in this app:
+<ph name="FILE_FORMAT">$1<ex>TXT</ex></ph>
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_STICKY_CHOICE_MULTIPLE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (multiple file formats).">
-        Remember my choice for these file types: <ph name="FILE_FORMATS">$1<ex>TXT, CSV, DOC</ex></ph>
+      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_STICKY_CHOICE_MULTIPLE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (multiple file formats).">
+        Don't ask again when opening these file formats in this app:
+<ph name="FILE_FORMATS">$1<ex>TXT, CSV, DOC</ex></ph>
       </message>
       <if expr="use_titlecase">
-        <message name="IDS_WEB_APP_FILE_HANDLING_POSITIVE_BUTTON" desc="In title case: label for the button in the file handler permission dialog that opens a file in the app.">
-          Open
-        </message>
-        <message name="IDS_WEB_APP_FILE_HANDLING_NEGATIVE_BUTTON" desc="In title case: label for the button in the file handler permission dialog that dismisses the dialog and does not open a file.">
-          Don’t Open
-        </message>
-        <message name="IDS_WEB_APP_PERMISSION_NEGATIVE_BUTTON" desc="In title case: label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
-          Don’t Allow
-        </message>
+      <message name="IDS_WEB_APP_PERMISSION_DONT_ALLOW" desc="Label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
+        Don't Allow
+      </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_WEB_APP_FILE_HANDLING_POSITIVE_BUTTON" desc="In sentence case: label for the button in the file handler permission dialog that opens a file in the app.">
-          Open
-        </message>
-        <message name="IDS_WEB_APP_FILE_HANDLING_NEGATIVE_BUTTON" desc="In sentence case: label for the button in the file handler permission dialog that dismisses the dialog and does not open a file.">
-          Don’t open
-        </message>
-        <message name="IDS_WEB_APP_PERMISSION_NEGATIVE_BUTTON" desc="In sentence case: label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
-          Don’t allow
-        </message>
-      </if>
-    </if>
-
-    <!-- Protocol Handling launch prompt -->
-    <if expr="not is_android">
-      <message name="IDS_PROTOCOL_HANDLER_INTENT_PICKER_QUESTION" desc="Label on the protocol handler intent picker.">
-        Allow app to open <ph name="PROTOCOL_SCHEME">$1<ex>mailto</ex></ph> links?
+      <message name="IDS_WEB_APP_PERMISSION_DONT_ALLOW" desc="Label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
+        Don't allow
       </message>
+      </if>
     </if>
 
     <!-- Font Access chooser -->

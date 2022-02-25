@@ -3082,7 +3082,7 @@ Press an assigned switch or key to remove assignment.
     Phone Hub, Learn More
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_SECTION_TITLE" desc="The title of the Phone Hub Recent Photo section on the settings page.">
-    Recent Photos
+    Recent photos
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SECTION_TITLE" desc="The title of the Phone Hub Notifications section on the settings page.">
     Notifications
@@ -3090,32 +3090,47 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SECTION_TITLE" desc="The title of the Phone Hub Task Continuation section on the settings page.">
     Recent Brave tabs
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Apps section on the settings page.">
-    Apps
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_SECTION_TITLE" desc="The title of the Phone Hub Apps section on the settings page.">
+    Messaging apps
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_AND_NOTIFICATIONS_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Apps and Notifications section on the settings page.">
-    App streaming and notifications
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_AND_NOTIFICATIONS_SECTION_TITLE" desc="The title of the Phone Hub Apps and Notifications combined section on the settings page.">
+    Notifications and messaging apps
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_NOTIFICATIONS_SECTION_TITLE" desc="The title of the Phone Hub Camera Roll and Notifications combined section on the settings page.">
+    Recent photos and notifications
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_APPS_SECTION_TITLE" desc="The title of the Phone Hub Camera Roll and Apps combined section on the settings page.">
+    Recent photos and messaging apps
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_NOTIFICATIONS_AND_APPS_SECTION_TITLE" desc="The title of the Phone Hub Camera Roll, Notifications and Apps combined section on the settings page.">
+    Recent photos, notifications, and messaging apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SUMMARY" desc="Description of for the 'Phone Hub' setting. This feature lets the user stay productive on Chrome OS by ensuring that their phones' apps, content, and connectivity are available on their Chrome OS device.">
     Access your phone's capabilities from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll' setting. This feature populates most recent photos from a connected Android phone to Chrome OS devices.">
-    View photos from your phone's camera roll on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
-  </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_DISABLED_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll' setting when the feature is disabled due to missing file access permissions.">
-    View photos from your phone's camera roll on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    View your phone's recent photos and media on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Notifications' setting. This feature mirrors notifications from a connected Android phone to Chrome OS devices.">
-    View notifications from your chat apps on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+    View, dismiss, and reply to your phone’s notifications
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SUMMARY" desc="Description of for the 'Phone Hub Task Continuation' setting. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from Chrome OS devices.">
     View recent Brave tabs from your phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Apps' setting. This feature lets users streaming apps from a Android phone to Chrome OS device.">
-    Temporarily use your phone apps right from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_SUMMARY" desc="Description of for the 'Phone Hub Apps' setting. This feature lets users streaming apps from a Android phone to Chrome OS device.">
+    Stream your phone’s messaging apps
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_AND_NOTIFICATIONS_SUMMARY" translateable="false" desc="Description of for the 'Phone Hub Apps and Notifications' setting. This feature mirrors notifications and lets users streaming apps from a Android phone to Chrome OS device.">
-    View your phones notifications and open apps on the <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_APPS_AND_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Apps and Notifications' setting. This feature mirrors notifications and lets users streaming apps from a Android phone to Chrome OS device.">
+    View, dismiss, and reply to your phone’s notifications. Stream your phone’s messaging apps.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll and Notifications' combined setting.">
+    View your phone's recent photos, media, and notifications on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_APPS_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll and Apps' combined setting.">
+    View your phone's recent photos and media. Stream your phone’s messaging apps.
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_NOTIFICATIONS_AND_APPS_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll, Notifications and Apps' combined setting.">
+    View your phone's recent photos, media, and notifications. Stream your phone’s messaging apps.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_DISABLED_SUMMARY" desc="Description of for the 'Phone Hub Task Continuation' setting when Brave sync is not enabled. This feature lets users resume in-app actions and chrome tabs that are open on a connected Android phone from Chrome OS devices.">
     Turn on <ph name="LINK1_BEGIN">&lt;a id="chromeSyncLink"&gt;</ph>Brave Sync<ph name="LINK1_END">&lt;/a&gt;</ph> to view recent Brave tabs. <ph name="LINK2_BEGIN">&lt;a target="_blank" id="learnMoreLink" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn More<ph name="LINK2_END">&lt;/a&gt;</ph>
@@ -3176,6 +3191,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with work profiles cannot opt into this feature.">
     Notification syncing is not supported for phones in a work profile
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_PROHIBITED_DISABLED_BY_ADMIN_TOOLTIP" desc="Tooltip shown to users when hovering the help icon in settings next to the Phone Hub notification syncing feature. The tooltip describes how users with notification access disabled by their phones' administrator cannot opt into this feature.">
+    Notification syncing is disabled by your phone's administrator
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_GET_STARTED_BUTTON_LABEL" desc="The label to a button in the Phone Hub notification opt-in flow that appears when the dialog first opens. Clicking the button will allow the user to try enabling the feature.">
     Get started
@@ -4161,7 +4179,10 @@ Press an assigned switch or key to remove assignment.
       Help improve Chrome OS features and performance
     </message>
   </if>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging in Chrome OS.">
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_OWNER_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging in Chrome OS for the owner of the device.">
+    Automatically sends crash reports as well as diagnostic and usage data to Brave
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_USER_DESC" desc="The description of the checkbox to enable/disable user metrics logging in Chrome OS for non-owners of the device.">
     Automatically sends diagnostic and usage data to Brave
   </message>
   <message name="IDS_SETTINGS_ENABLE_SUGGESTED_CONTENT_TITLE" desc="The label of the checkbox to enable/disable Suggested Content in Chrome OS settings. Suggested Content includes app search recommendations and website recommendations which can show up in places such as the launcher search and suggestion chips.">
