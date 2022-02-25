@@ -30,6 +30,10 @@ RegisterStyleOverride(
       .cr-nav-menu-item iron-icon {
         display: none !important;
       }
+
+      .cr-nav-menu-item paper-ripple {
+        display: none !important;
+      }
     </style>
   `
 )
