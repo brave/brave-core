@@ -7,16 +7,17 @@ package org.chromium.chrome.browser.language.settings;
 
 import android.os.Bundle;
 
-import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import androidx.preference.PreferenceCategory;
 
 public class BraveLanguageSettings extends LanguageSettings {
-    static final String TRANSLATE_SWITCH_KEY = "translate_switch";
+    static final String TRANSLATION_SETTINGS_SECTION = "translation_settings_section";
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         super.onCreatePreferences(savedInstanceState, rootKey);
-        ChromeSwitchPreference translateSwitch =
-                (ChromeSwitchPreference) findPreference(TRANSLATE_SWITCH_KEY);
+
+        PreferenceCategory translateSwitch =
+                (PreferenceCategory) findPreference(TRANSLATION_SETTINGS_SECTION);
         if (translateSwitch != null) {
             getPreferenceScreen().removePreference(translateSwitch);
         }
