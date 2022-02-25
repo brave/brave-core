@@ -47,7 +47,7 @@ import { getLocale } from '../../../../common/locale'
 export interface Props {
   spotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   isConnected: boolean
   activeOrigin: string
   isSwapSupported: boolean

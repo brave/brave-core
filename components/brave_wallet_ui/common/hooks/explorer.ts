@@ -9,7 +9,7 @@ import { getLocale } from '../../../common/locale'
 import { BraveWallet, BlockExplorerUrlTypes } from '../../constants/types'
 import Amount from '../../utils/amount'
 
-export default function useExplorer (network: BraveWallet.EthereumChain) {
+export default function useExplorer (network: BraveWallet.NetworkInfo) {
   return React.useCallback(
     (type: BlockExplorerUrlTypes, value?: string, id?: string) => () => {
       const explorerURL = network.blockExplorerUrls[0]

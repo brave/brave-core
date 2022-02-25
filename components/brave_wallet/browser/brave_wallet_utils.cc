@@ -76,7 +76,7 @@ bool GetUseStagingInfuraEndpoint() {
 const char kGanacheLocalhostURL[] = "http://localhost:7545/";
 
 // Precompiled networks available in native wallet.
-const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
+const brave_wallet::mojom::NetworkInfo kKnownEthNetworks[] = {
     {brave_wallet::mojom::kMainnetChainId,
      "Ethereum Mainnet",
      {"https://etherscan.io"},
@@ -85,7 +85,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18,
-     true},
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
     {brave_wallet::mojom::kRinkebyChainId,
      "Rinkeby Test Network",
      {"https://rinkeby.etherscan.io"},
@@ -94,7 +95,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18,
-     true},
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
     {brave_wallet::mojom::kRopstenChainId,
      "Ropsten Test Network",
      {"https://ropsten.etherscan.io"},
@@ -103,7 +105,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18,
-     true},
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
     {brave_wallet::mojom::kGoerliChainId,
      "Goerli Test Network",
      {"https://goerli.etherscan.io"},
@@ -112,7 +115,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18,
-     true},
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
     {brave_wallet::mojom::kKovanChainId,
      "Kovan Test Network",
      {"https://kovan.etherscan.io"},
@@ -121,7 +125,8 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18,
-     true},
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true))},
     {brave_wallet::mojom::kLocalhostChainId,
      "Localhost",
      {kGanacheLocalhostURL},
@@ -130,7 +135,9 @@ const brave_wallet::mojom::EthereumChain kKnownNetworks[] = {
      "ETH",
      "Ethereum",
      18,
-     false}};
+     brave_wallet::mojom::CoinType::ETH,
+     mojom::NetworkInfoData::NewEthData(
+         mojom::NetworkInfoDataETH::New(false))}};
 
 const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kMainnetChainId, "mainnet"},
@@ -168,7 +175,7 @@ std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
 }
 
 GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
-  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> custom_chains;
   brave_wallet::GetAllCustomChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
     if (it->chain_id != chain_id)
@@ -180,15 +187,16 @@ GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
 
 }  // namespace
 
-mojom::EthereumChainPtr GetKnownChain(PrefService* prefs,
-                                      const std::string& chain_id) {
-  for (const auto& network : kKnownNetworks) {
+mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
+                                       const std::string& chain_id) {
+  for (const auto& network : kKnownEthNetworks) {
     if (network.chain_id != chain_id)
       continue;
 
     auto result = network.Clone();
     if (chain_id == brave_wallet::mojom::kLocalhostChainId)
-      result->is_eip1559 = prefs->GetBoolean(kSupportEip1559OnLocalhostChain);
+      result->data->set_eth_data(mojom::NetworkInfoDataETH::New(
+          prefs->GetBoolean(kSupportEip1559OnLocalhostChain)));
     if (result->rpc_urls.empty())
       result->rpc_urls.push_back(GetInfuraURLForKnownChainId(chain_id));
     return result;
@@ -196,10 +204,10 @@ mojom::EthereumChainPtr GetKnownChain(PrefService* prefs,
   return nullptr;
 }
 
-mojom::EthereumChainPtr GetChain(PrefService* prefs,
-                                 const std::string& chain_id) {
-  std::vector<mojom::EthereumChainPtr> chains;
-  GetAllChains(prefs, &chains);
+mojom::NetworkInfoPtr GetChain(PrefService* prefs,
+                               const std::string& chain_id) {
+  std::vector<mojom::NetworkInfoPtr> chains;
+  GetAllEthChains(prefs, &chains);
   for (const auto& chain : chains) {
     if (chain->chain_id == chain_id)
       return chain.Clone();
@@ -215,7 +223,7 @@ std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
 }
 
 void GetAllCustomChains(PrefService* prefs,
-                        std::vector<mojom::EthereumChainPtr>* result) {
+                        std::vector<mojom::NetworkInfoPtr>* result) {
   const base::Value* custom_networks =
       prefs->GetDictionary(kBraveWalletCustomNetworks);
   if (!custom_networks)
@@ -225,8 +233,7 @@ void GetAllCustomChains(PrefService* prefs,
   if (!eth_custom_networks_list)
     return;
   for (const auto& it : eth_custom_networks_list->GetList()) {
-    absl::optional<mojom::EthereumChain> chain =
-        brave_wallet::ValueToEthereumChain(it);
+    mojom::NetworkInfoPtr chain = brave_wallet::ValueToEthereumChain(it);
     if (chain)
       result->push_back(chain->Clone());
   }
@@ -263,10 +270,11 @@ bool IsSolanaEnabled() {
       brave_wallet::features::kBraveWalletSolanaFeature);
 }
 
-const std::vector<brave_wallet::mojom::EthereumChain>
+const std::vector<brave_wallet::mojom::NetworkInfoPtr>
 GetAllKnownNetworksForTesting() {
-  std::vector<brave_wallet::mojom::EthereumChain> result;
-  result.assign(kKnownNetworks, std::end(kKnownNetworks));
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
+  for (const auto& network : kKnownEthNetworks)
+    result.push_back(network.Clone());
   return result;
 }
 
@@ -589,15 +597,15 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
   return tx_receipt;
 }
 
-void GetAllKnownChains(PrefService* prefs,
-                       std::vector<mojom::EthereumChainPtr>* chains) {
-  for (const auto& network : kKnownNetworks) {
-    chains->push_back(GetKnownChain(prefs, network.chain_id));
+void GetAllKnownEthChains(PrefService* prefs,
+                          std::vector<mojom::NetworkInfoPtr>* chains) {
+  for (const auto& network : kKnownEthNetworks) {
+    chains->push_back(GetKnownEthChain(prefs, network.chain_id));
   }
 }
 
 GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
-  mojom::EthereumChainPtr known_network = GetKnownChain(prefs, chain_id);
+  mojom::NetworkInfoPtr known_network = GetKnownEthChain(prefs, chain_id);
   if (!known_network)
     return GetCustomChainURL(prefs, chain_id);
 
@@ -607,23 +615,23 @@ GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
   return GURL();
 }
 
-void GetAllChains(PrefService* prefs,
-                  std::vector<mojom::EthereumChainPtr>* result) {
-  GetAllKnownChains(prefs, result);
+void GetAllEthChains(PrefService* prefs,
+                     std::vector<mojom::NetworkInfoPtr>* result) {
+  GetAllKnownEthChains(prefs, result);
   GetAllCustomChains(prefs, result);
 }
 
-std::vector<std::string> GetAllKnownNetworkIds() {
+std::vector<std::string> GetAllKnownEthNetworkIds() {
   std::vector<std::string> network_ids;
-  for (const auto& network : kKnownNetworks) {
-    std::string network_id = GetKnownNetworkId(network.chain_id);
+  for (const auto& network : kKnownEthNetworks) {
+    std::string network_id = GetKnownEthNetworkId(network.chain_id);
     if (!network_id.empty())
       network_ids.push_back(network_id);
   }
   return network_ids;
 }
 
-std::string GetKnownNetworkId(const std::string& chain_id) {
+std::string GetKnownEthNetworkId(const std::string& chain_id) {
   auto subdomain = GetInfuraSubdomainForKnownChainId(chain_id);
   if (!subdomain.empty())
     return subdomain;
@@ -631,7 +639,7 @@ std::string GetKnownNetworkId(const std::string& chain_id) {
   // Separate check for localhost in known networks as it is predefined but
   // does not have infura subdomain.
   if (chain_id == mojom::kLocalhostChainId) {
-    for (const auto& network : kKnownNetworks) {
+    for (const auto& network : kKnownEthNetworks) {
       if (network.chain_id == chain_id) {
         return GURL(network.rpc_urls.front()).spec();
       }
@@ -644,11 +652,11 @@ std::string GetKnownNetworkId(const std::string& chain_id) {
 std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
   DCHECK(prefs);
 
-  std::string id = GetKnownNetworkId(chain_id);
+  std::string id = GetKnownEthNetworkId(chain_id);
   if (!id.empty())
     return id;
 
-  std::vector<mojom::EthereumChainPtr> custom_chains;
+  std::vector<mojom::NetworkInfoPtr> custom_chains;
   GetAllCustomChains(prefs, &custom_chains);
   for (const auto& network : custom_chains) {
     if (network->chain_id != chain_id)
@@ -701,7 +709,7 @@ std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
   return "";
 }
 
-void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain) {
+void AddCustomNetwork(PrefService* prefs, mojom::NetworkInfoPtr chain) {
   DCHECK(prefs);
 
   absl::optional<base::Value> value = brave_wallet::EthereumChainToValue(chain);

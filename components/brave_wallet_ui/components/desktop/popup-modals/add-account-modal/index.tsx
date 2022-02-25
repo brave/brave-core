@@ -53,7 +53,7 @@ export interface Props {
   hasImportError: boolean
   accounts: WalletAccountType[]
   tab: AddAccountNavTypes
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
 }
 
 const AddAccountModal = (props: Props) => {

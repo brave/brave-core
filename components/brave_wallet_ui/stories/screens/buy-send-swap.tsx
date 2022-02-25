@@ -21,13 +21,13 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  networkList: BraveWallet.EthereumChain[]
+  networkList: BraveWallet.NetworkInfo[]
   orderType: OrderTypes
   selectedSendAsset: BraveWallet.BlockchainToken | undefined
   sendAssetBalance: string
   swapToAsset: BraveWallet.BlockchainToken | undefined
   swapFromAsset: BraveWallet.BlockchainToken | undefined
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   selectedAccount: UserAccountType
   selectedTab: BuySendSwapTypes
   exchangeRate: string
@@ -58,7 +58,7 @@ export interface Props {
   onSubmitSend: () => void
   onSubmitSwap: () => void
   flipSwapAssets: () => void
-  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onSelectAccount: (account: UserAccountType) => void
   onToggleOrderType: () => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void

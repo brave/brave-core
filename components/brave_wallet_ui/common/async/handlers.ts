@@ -191,7 +191,7 @@ handler.on(WalletActions.removeFavoriteApp.getType(), async (store: Store, appIt
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.selectNetwork.getType(), async (store: Store, payload: BraveWallet.EthereumChain) => {
+handler.on(WalletActions.selectNetwork.getType(), async (store: Store, payload: BraveWallet.NetworkInfo) => {
   const jsonRpcService = getAPIProxy().jsonRpcService
   await jsonRpcService.setNetwork(payload.chainId)
   await refreshWalletInfo(store)
@@ -318,7 +318,7 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
           keyringSupportsEIP1559 = false
       }
 
-      isEIP1559 = keyringSupportsEIP1559 && selectedNetwork.isEip1559
+      isEIP1559 = keyringSupportsEIP1559 && (selectedNetwork.data?.ethData?.isEip1559 ?? false)
   }
 
   const { chainId } = await apiProxy.jsonRpcService.getChainId()

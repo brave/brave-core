@@ -1,6 +1,6 @@
 import { BraveWallet, WalletAccountType, GetFlattenedAccountBalancesReturnInfo } from '../constants/types'
 
-export const GetTokenParam = (selectedNetwork: BraveWallet.EthereumChain, token: BraveWallet.BlockchainToken): string => {
+export const GetTokenParam = (selectedNetwork: BraveWallet.NetworkInfo, token: BraveWallet.BlockchainToken): string => {
   if (token.coingeckoId) {
     return token.coingeckoId
   }

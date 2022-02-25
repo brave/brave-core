@@ -31,7 +31,7 @@ export interface Props {
   onChangeFilecoinNetwork: (network: FilecoinNetwork) => void
   preAddedHardwareWalletAccounts: WalletAccountType[]
   selectedAccountType: CreateAccountOptionsType
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   filecoinNetwork: FilecoinNetwork
 }
 

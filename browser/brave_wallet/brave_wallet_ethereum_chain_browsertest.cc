@@ -181,7 +181,7 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
-  std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
   auto* prefs = browser()->profile()->GetPrefs();
   brave_wallet::GetAllCustomChains(prefs, &result);
   ASSERT_TRUE(result.empty());
@@ -289,7 +289,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
                        AddDifferentChainsNoSwitch) {
-  std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
   auto* prefs = browser()->profile()->GetPrefs();
   brave_wallet::GetAllCustomChains(prefs, &result);
   ASSERT_TRUE(result.empty());
@@ -343,7 +343,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
-  std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
   auto* prefs = browser()->profile()->GetPrefs();
   brave_wallet::GetAllCustomChains(prefs, &result);
   ASSERT_TRUE(result.empty());
@@ -424,7 +424,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddChainAndCloseTab) {
 
   ASSERT_TRUE(tab_helperB->IsShowingBubble());
   browser()->tab_strip_model()->CloseSelectedTabs();
-  std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
   auto* prefs = browser()->profile()->GetPrefs();
   brave_wallet::GetAllCustomChains(prefs, &result);
   ASSERT_TRUE(result.empty());

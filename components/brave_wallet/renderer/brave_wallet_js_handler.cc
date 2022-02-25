@@ -589,7 +589,7 @@ void BraveWalletJSHandler::ContinueEthSendTransaction(
     v8::Global<v8::Promise::Resolver> promise_resolver,
     v8::Isolate* isolate,
     bool force_json_response,
-    mojom::EthereumChainPtr chain,
+    mojom::NetworkInfoPtr chain,
     mojom::KeyringInfoPtr keyring_info) {
   if (!chain || !keyring_info) {
     mojom::ProviderError code = mojom::ProviderError::kInternalError;
@@ -618,7 +618,11 @@ void BraveWalletJSHandler::ContinueEthSendTransaction(
     return;
   }
 
-  if (ShouldCreate1559Tx(tx_data_1559.Clone(), chain->is_eip1559,
+  bool is_eip1559 = false;
+  if (chain->data && chain->data->is_eth_data()) {
+    is_eip1559 = chain->data->get_eth_data()->is_eip1559;
+  }
+  if (ShouldCreate1559Tx(tx_data_1559.Clone(), is_eip1559,
                          keyring_info->account_infos, from)) {
     // Set chain_id to current chain_id.
     tx_data_1559->chain_id = chain->chain_id;

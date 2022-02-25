@@ -25,7 +25,7 @@ export interface Props {
   isCustom: boolean
   isSelected: boolean
   token: BraveWallet.BlockchainToken
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
 }
 
 const AssetWatchlistItem = (props: Props) => {

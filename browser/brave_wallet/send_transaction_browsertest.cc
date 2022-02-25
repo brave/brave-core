@@ -736,9 +736,11 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
   observer()->SetExpectEip1559Tx(false);
   RestoreWallet();
 
-  mojom::EthereumChain chain(
-      "0x5566", "Test Custom Chain", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "TC", "Test Coin", 11, false);
+  mojom::NetworkInfo chain("0x5566", "Test Custom Chain", {"https://url1.com"},
+                           {"https://url1.com"}, {"https://url1.com"}, "TC",
+                           "Test Coin", 11, mojom::CoinType::ETH,
+                           mojom::NetworkInfoData::NewEthData(
+                               mojom::NetworkInfoDataETH::New(false)));
   AddCustomNetwork(browser()->profile()->GetPrefs(), chain.Clone());
 
   TestUserApproved("request", "", true /* skip_restore */);

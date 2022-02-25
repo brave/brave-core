@@ -120,7 +120,7 @@ interface BraveWalletProvider {
   GetChainId() => (string chain_id);
 
   // Used for getting current network and keyring information.
-  GetNetworkAndDefaultKeyringInfo() => (EthereumChain network,
+  GetNetworkAndDefaultKeyringInfo() => (NetworkInfo network,
                                         KeyringInfo keyring_info);
 
   // Used for eth_accounts method requests and as part of RequestEthereumPermissions
@@ -583,7 +583,16 @@ enum CoinType {
   SOL = 501
 };
 
-struct EthereumChain {
+struct NetworkInfoDataETH {
+  bool is_eip1559;
+};
+
+
+union NetworkInfoData {
+  NetworkInfoDataETH eth_data;
+};
+
+struct NetworkInfo {
   string chain_id;
   string chain_name;
   array<string> block_explorer_urls;
@@ -592,7 +601,8 @@ struct EthereumChain {
   string symbol;
   string symbol_name;
   int32 decimals;
-  bool is_eip1559;
+  CoinType coin;
+  NetworkInfoData? data;
 };
 
 struct SwitchChainRequest {
@@ -604,11 +614,11 @@ struct SwitchChainRequest {
 // network.
 interface JsonRpcService {
   // Checks the chain ID for an ethereum chain that should be added
-  AddEthereumChain(EthereumChain chain) => (string chain_id, ProviderError error, string error_message);
-  AddEthereumChainForOrigin(EthereumChain chain, url.mojom.Url origin) => (string chain_id, ProviderError error, string error_message);
+  AddEthereumChain(NetworkInfo chain) => (string chain_id, ProviderError error, string error_message);
+  AddEthereumChainForOrigin(NetworkInfo chain, url.mojom.Url origin) => (string chain_id, ProviderError error, string error_message);
   AddEthereumChainRequestCompleted(string chain_id, bool approved);
   RemoveEthereumChain(string chain_id) => (bool success);
-  GetPendingChainRequests() => (array<EthereumChain> networks);
+  GetPendingChainRequests() => (array<NetworkInfo> networks);
 
   // This is used for UI notifying native when the user approves or
   // rejects SwitchChainRequest
@@ -616,8 +626,8 @@ interface JsonRpcService {
   GetPendingSwitchChainRequests() => (array<SwitchChainRequest> requests);
 
   SetNetwork(string chain_id) => (bool success);
-  GetNetwork() => (EthereumChain network);
-  GetAllNetworks() => (array<EthereumChain> networks);
+  GetNetwork() => (NetworkInfo network);
+  GetAllNetworks() => (array<NetworkInfo> networks);
 
   // Obtains the current network's chain ID
   GetChainId() => (string chain_id);

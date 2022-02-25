@@ -45,14 +45,6 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   static void MigrateMultichainNetworks(PrefService* prefs);
 
-  struct EthereumChainRequest {
-    EthereumChainRequest() {}
-    EthereumChainRequest(const GURL& origin, mojom::EthereumChain request)
-        : origin(origin), request(std::move(request)) {}
-    GURL origin;
-    mojom::EthereumChain request;
-  };
-
   mojo::PendingRemote<mojom::JsonRpcService> MakeRemote();
   void Bind(mojo::PendingReceiver<mojom::JsonRpcService> receiver);
 
@@ -137,10 +129,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void SetNetwork(const std::string& chain_id,
                   SetNetworkCallback callback) override;
   void GetNetwork(GetNetworkCallback callback) override;
-  void AddEthereumChain(mojom::EthereumChainPtr chain,
+  void AddEthereumChain(mojom::NetworkInfoPtr chain,
                         AddEthereumChainCallback callback) override;
   void AddEthereumChainForOrigin(
-      mojom::EthereumChainPtr chain,
+      mojom::NetworkInfoPtr chain,
       const GURL& origin,
       AddEthereumChainForOriginCallback callback) override;
   void AddEthereumChainRequestCompleted(const std::string& chain_id,
@@ -368,12 +360,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                        const GURL& network_url,
                        RequestCallback callback);
   void OnEthChainIdValidatedForOrigin(
-      mojom::EthereumChainPtr chain,
+      mojom::NetworkInfoPtr chain,
       const GURL& origin,
       AddEthereumChainForOriginCallback callback,
       bool success);
 
-  void OnEthChainIdValidated(mojom::EthereumChainPtr chain,
+  void OnEthChainIdValidated(mojom::NetworkInfoPtr chain,
                              AddEthereumChainCallback callback,
                              bool success);
 
@@ -425,8 +417,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   GURL network_url_;
   std::string chain_id_;
-  // <chain_id, EthereumChainRequest>
-  base::flat_map<std::string, EthereumChainRequest> add_chain_pending_requests_;
+  // <chain_id, mojom::NetworkInfoPtr>
+  base::flat_map<std::string, mojom::NetworkInfoPtr>
+      add_chain_pending_requests_;
+  // <chain_id, origin>
+  base::flat_map<std::string, GURL> add_chain_pending_requests_origins_;
   // <origin, chain_id>
   base::flat_map<GURL, std::string> switch_chain_requests_;
   base::flat_map<GURL, SwitchEthereumChainRequestCallback>

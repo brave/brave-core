@@ -41,7 +41,7 @@ export interface Props {
   onCancel: () => void
   networkSpotPrice: string
   transactionInfo: BraveWallet.TransactionInfo
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   baseFeePerGas: string
   suggestedMaxPriorityFeeChoices: string[]
   suggestedSliderStep: string

@@ -10,8 +10,8 @@ import {
 } from './style'
 
 export interface Props {
-  selectedNetwork: BraveWallet.EthereumChain
-  network: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
+  network: BraveWallet.NetworkInfo
   onSelectNetwork: () => void
 }
 

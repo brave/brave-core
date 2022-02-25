@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter;
@@ -45,7 +45,7 @@ public class NetworkSelectorActivity
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
         jsonRpcService.getAllNetworks(chains -> {
-            EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+            NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
             networkSelectorAdapter =
                     new NetworkSelectorAdapter(this, Utils.getNetworksList(this, customNetworks),
                             Utils.getNetworksAbbrevList(this, customNetworks));
@@ -60,7 +60,7 @@ public class NetworkSelectorActivity
         assert jsonRpcService != null;
         jsonRpcService.getChainId(chainId -> {
             jsonRpcService.getAllNetworks(chains -> {
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 String strNetwork = Utils.getNetworkText(this, chainId, customNetworks).toString();
                 networkSelectorAdapter.setSelectedNetwork(strNetwork);
             });
@@ -72,7 +72,7 @@ public class NetworkSelectorActivity
         JsonRpcService jsonRpcService = getJsonRpcService();
         if (jsonRpcService != null) {
             jsonRpcService.getAllNetworks(chains -> {
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 jsonRpcService.setNetwork(
                         Utils.getNetworkConst(
                                 this, networkSelectorItem.getNetworkName(), customNetworks),

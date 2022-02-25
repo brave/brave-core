@@ -19,7 +19,7 @@ import {
 
 export interface Props {
   selectedAccount: UserAccountType
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   onChangeSwapView: (view: BuySendSwapViewTypes) => void
 }
 

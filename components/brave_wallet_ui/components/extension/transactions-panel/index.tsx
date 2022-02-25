@@ -16,7 +16,7 @@ import { TransactionsListItem } from '../'
 import { sortTransactionByDate } from '../../../utils/tx-utils'
 
 export interface Props {
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   selectedAccount: WalletAccountType
   transactions: AccountTransactions
   accounts: WalletAccountType[]

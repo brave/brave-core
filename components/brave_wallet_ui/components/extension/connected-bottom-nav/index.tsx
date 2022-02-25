@@ -20,7 +20,7 @@ export interface Props {
   onNavigate: (path: PanelTypes) => void
   isSwapDisabled: boolean
   isBuyDisabled: boolean
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
 }
 
 function ConnectedBottomNav (props: Props) {

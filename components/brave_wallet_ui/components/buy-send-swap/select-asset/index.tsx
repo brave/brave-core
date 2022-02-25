@@ -16,7 +16,7 @@ import {
 
 export interface Props {
   assets: BraveWallet.BlockchainToken[]
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   onAddAsset: () => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken) => () => void
   onBack: () => void

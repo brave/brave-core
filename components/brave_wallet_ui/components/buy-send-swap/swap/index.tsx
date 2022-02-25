@@ -33,7 +33,7 @@ import { LoaderIcon } from 'brave-ui/components/icons'
 import { ResetButton } from '../shared-styles'
 
 export interface Props {
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   toAsset: BraveWallet.BlockchainToken | undefined
   fromAsset: BraveWallet.BlockchainToken | undefined
   fromAmount: string

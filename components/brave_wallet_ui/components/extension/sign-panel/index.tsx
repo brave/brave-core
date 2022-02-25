@@ -34,7 +34,7 @@ import { TabRow } from '../shared-panel-styles'
 
 export interface Props {
   accounts: WalletAccountType[]
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   signMessageData: SignMessagePayload[]
   onSign: () => void
   onCancel: () => void

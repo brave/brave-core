@@ -8,10 +8,15 @@ export const emptyNetwork = {
   symbol: '',
   symbolName: '',
   decimals: 0,
-  isEip1559: false
+  coin: BraveWallet.CoinType.ETH,
+  data: {
+     ethData: {
+      isEip1559: true
+     }
+  }
 }
 
-export const GetNetworkInfo = (chainId: string, list: BraveWallet.EthereumChain[]) => {
+export const GetNetworkInfo = (chainId: string, list: BraveWallet.NetworkInfo[]) => {
   for (let it of list) {
     if (it.chainId === chainId) {
       return it

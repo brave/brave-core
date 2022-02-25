@@ -32,7 +32,7 @@ import {
 export interface Props {
   defaultCurrencies: DefaultCurrencies
   isFetchingPortfolioPriceHistory: boolean
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   showAddModal: boolean
   isLoading: boolean
   userAssetList: UserAssetInfoType[]
@@ -45,7 +45,7 @@ export interface Props {
   portfolioPriceHistory: PriceDataObjectType[]
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   selectedTimeline: BraveWallet.AssetPriceTimeframe
-  networkList: BraveWallet.EthereumChain[]
+  networkList: BraveWallet.NetworkInfo[]
   accounts: WalletAccountType[]
   needsBackup: boolean
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
@@ -63,7 +63,7 @@ export interface Props {
   onDoneViewingPrivateKey: () => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
-  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onToggleAddModal: () => void
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   getBalance: (address: string) => Promise<string>

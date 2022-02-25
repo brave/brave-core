@@ -37,12 +37,12 @@ const SWAP_VALIDATION_ERROR_CODE = 100
 
 export default function useSwap (
   selectedAccount: WalletAccountType,
-  selectedNetwork: BraveWallet.EthereumChain,
+  selectedNetwork: BraveWallet.NetworkInfo,
   swapAssetOptions: BraveWallet.BlockchainToken[],
   fetchSwapQuote: SimpleActionCreator<SwapParamsPayloadType>,
   getERC20Allowance: (contractAddress: string, ownerAddress: string, spenderAddress: string) => Promise<string>,
   approveERC20Allowance: SimpleActionCreator<ApproveERC20Params>,
-  isSwapSupported: (network: BraveWallet.EthereumChain) => Promise<boolean>,
+  isSwapSupported: (network: BraveWallet.NetworkInfo) => Promise<boolean>,
   quote?: BraveWallet.SwapResponse,
   rawError?: SwapErrorResponse
 ) {

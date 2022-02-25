@@ -195,7 +195,7 @@ export interface WalletState {
   isWalletBackedUp: boolean
   hasIncorrectPassword: boolean
   selectedAccount: WalletAccountType
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   accounts: WalletAccountType[]
   transactions: AccountTransactions
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
@@ -206,7 +206,7 @@ export interface WalletState {
   selectedPendingTransaction: BraveWallet.TransactionInfo | undefined
   isFetchingPortfolioPriceHistory: boolean
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
-  networkList: BraveWallet.EthereumChain[]
+  networkList: BraveWallet.NetworkInfo[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   addUserAssetError: boolean
   defaultWallet: BraveWallet.DefaultWallet
@@ -223,7 +223,7 @@ export interface PanelState {
   selectedPanel: PanelTypes
   panelTitle: string
   connectingAccounts: string[]
-  networkPayload: BraveWallet.EthereumChain
+  networkPayload: BraveWallet.NetworkInfo
   swapQuote?: BraveWallet.SwapResponse
   swapError?: SwapErrorResponse
   signMessageData: BraveWallet.SignMessageRequest[]
@@ -482,7 +482,7 @@ export const BuySupportedChains = [
 ]
 
 export interface GetAllNetworksList {
-  networks: BraveWallet.EthereumChain[]
+  networks: BraveWallet.NetworkInfo[]
 }
 
 export interface SwitchChainRequestsList {

@@ -15,7 +15,7 @@ import {
 export interface Props {
   accounts: UserAccountType[]
   selectedAsset: BraveWallet.BlockchainToken | undefined
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   selectedAccount: UserAccountType
   selectedAssetAmount: string
   selectedAssetBalance: string
@@ -27,13 +27,13 @@ export interface Props {
   addressWarning: string
   amountValidationError: AmountValidationErrorType | undefined
   onSubmit: () => void
-  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onSelectAccount: (account: UserAccountType) => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => void
   onSetSendAmount: (value: string) => void
   onSetToAddressOrUrl: (value: string) => void
   onSelectPresetAmount: (percent: number) => void
-  networkList: BraveWallet.EthereumChain[]
+  networkList: BraveWallet.NetworkInfo[]
   onAddNetwork: () => void
   onAddAsset: () => void
 }
@@ -70,7 +70,7 @@ function SendTab (props: Props) {
     setSendView(view)
   }
 
-  const onClickSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
+  const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
     onSelectNetwork(network)
     setSendView('send')
 

@@ -88,7 +88,7 @@ export interface Props {
   visibleTokens: BraveWallet.BlockchainToken[]
   fullTokenList: BraveWallet.BlockchainToken[]
   transactionInfo: BraveWallet.TransactionInfo
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   transactionSpotPrices: BraveWallet.AssetPrice[]
   gasEstimates: BraveWallet.GasEstimation1559 | undefined
   transactionsQueueLength: number

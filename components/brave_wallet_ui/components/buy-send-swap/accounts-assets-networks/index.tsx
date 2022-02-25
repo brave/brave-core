@@ -19,13 +19,13 @@ import {
 export interface Props {
   selectedView: BuySendSwapViewTypes
   accounts: UserAccountType[]
-  networkList: BraveWallet.EthereumChain[]
+  networkList: BraveWallet.NetworkInfo[]
   assetOptions: BraveWallet.BlockchainToken[]
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   selectedAccount: UserAccountType
   onAddAsset: () => void
   onClickSelectAccount: (account: UserAccountType) => () => void
-  onClickSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
+  onClickSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
   onSelectedAsset: (account: BraveWallet.BlockchainToken) => () => void
   goBack: () => void
   onAddNetwork: () => void

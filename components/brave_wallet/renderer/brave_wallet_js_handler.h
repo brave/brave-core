@@ -197,7 +197,7 @@ class BraveWalletJSHandler : public mojom::EventsListener {
       v8::Global<v8::Promise::Resolver> promise_resolver,
       v8::Isolate* isolate,
       bool force_json_response,
-      mojom::EthereumChainPtr chain,
+      mojom::NetworkInfoPtr chain,
       mojom::KeyringInfoPtr keyring_info);
 
   void OnAddSuggestToken(

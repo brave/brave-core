@@ -13,7 +13,7 @@ import Amount from '../../utils/amount'
 
 export default function usePreset (
   selectedAccount: WalletAccountType,
-  selectedNetwork: BraveWallet.EthereumChain,
+  selectedNetwork: BraveWallet.NetworkInfo,
   onSetFromAmount: (value: string) => void,
   onSetSendAmount: (value: string) => void,
   swapAsset?: BraveWallet.BlockchainToken,

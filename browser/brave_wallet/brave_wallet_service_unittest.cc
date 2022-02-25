@@ -1035,9 +1035,11 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
-  mojom::EthereumChain chain(
-      "0x5566", "Test Custom Chain", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "TC", "Test Coin", 11, false);
+  mojom::NetworkInfo chain("0x5566", "Test Custom Chain", {"https://url1.com"},
+                           {"https://url1.com"}, {"https://url1.com"}, "TC",
+                           "Test Coin", 11, mojom::CoinType::ETH,
+                           mojom::NetworkInfoData::NewEthData(
+                               mojom::NetworkInfoDataETH::New(false)));
 
   AddCustomNetwork(GetPrefs(), chain.Clone());
   base::RunLoop().RunUntilIdle();
@@ -1061,9 +1063,11 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
 
 TEST_F(BraveWalletServiceUnitTest,
        CustomChainNativeAssetAddRemoveSetUserAssetVisible) {
-  brave_wallet::mojom::EthereumChain chain(
-      "0x5566", "Test Custom Chain", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "TC", "Test Coin", 11, false);
+  mojom::NetworkInfo chain("0x5566", "Test Custom Chain", {"https://url1.com"},
+                           {"https://url1.com"}, {"https://url1.com"}, "TC",
+                           "Test Coin", 11, mojom::CoinType::ETH,
+                           mojom::NetworkInfoData::NewEthData(
+                               mojom::NetworkInfoDataETH::New(false)));
   AddCustomNetwork(GetPrefs(), chain.Clone());
 
   auto native_asset =

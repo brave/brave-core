@@ -7,7 +7,7 @@ import * as React from 'react'
 
 import { BraveWallet, WalletAccountType } from '../../constants/types'
 
-export default function useBalance (network: BraveWallet.EthereumChain) {
+export default function useBalance (network: BraveWallet.NetworkInfo) {
   return React.useCallback((account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
     if (!account || !token) {
       return ''

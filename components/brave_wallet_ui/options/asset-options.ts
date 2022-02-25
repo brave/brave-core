@@ -15,7 +15,7 @@ import {
 } from '../assets/asset-icons'
 import MoonCatIcon from '../assets/png-icons/mooncat.png'
 
-export function makeNetworkAsset (network: BraveWallet.EthereumChain) {
+export function makeNetworkAsset (network: BraveWallet.NetworkInfo) {
   let logo
   switch (true) {
     case network.symbol.toUpperCase() === 'ETH':

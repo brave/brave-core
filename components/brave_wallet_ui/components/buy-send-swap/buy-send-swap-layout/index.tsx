@@ -22,7 +22,7 @@ export interface Props {
   onChangeTab: (tab: BuySendSwapTypes) => () => void
   isBuyDisabled: boolean
   isSwapDisabled: boolean
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
 }
 
 function BuySendSwapLayout (props: Props) {

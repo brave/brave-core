@@ -45,7 +45,8 @@ base::Value GetDefaultUserAssets() {
   // Show ETH and BAT by default for mainnet, and ETH for other known networks.
   base::Value user_assets_pref(base::Value::Type::DICTIONARY);
 
-  std::vector<std::string> network_ids = brave_wallet::GetAllKnownNetworkIds();
+  std::vector<std::string> network_ids =
+      brave_wallet::GetAllKnownEthNetworkIds();
   for (const auto& network_id : network_ids) {
     base::Value* user_assets_list = user_assets_pref.SetKey(
         network_id, base::Value(base::Value::Type::LIST));

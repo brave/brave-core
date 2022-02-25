@@ -389,7 +389,7 @@ function Container (props: Props) {
     props.walletPanelActions.navigateTo('main')
   }
 
-  const onSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
+  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
     props.walletActions.selectNetwork(network)
     props.walletPanelActions.navigateTo('main')
   }

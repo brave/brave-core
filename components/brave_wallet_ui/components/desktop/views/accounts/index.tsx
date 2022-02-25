@@ -60,7 +60,7 @@ export interface Props {
   accounts: WalletAccountType[]
   transactions: AccountTransactions
   privateKey: string
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]
   selectedAccount: WalletAccountType | undefined

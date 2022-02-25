@@ -66,7 +66,7 @@ interface ParsedTransaction extends ParsedTransactionFees {
   isApprovalUnlimited?: boolean
 }
 
-export function useTransactionFeesParser (selectedNetwork: BraveWallet.EthereumChain, networkSpotPrice: string) {
+export function useTransactionFeesParser (selectedNetwork: BraveWallet.NetworkInfo, networkSpotPrice: string) {
   /**
    * Checks if a given gasLimit is empty or zero-value, and returns an
    * appropriate localized error string.
@@ -117,7 +117,7 @@ export function useTransactionFeesParser (selectedNetwork: BraveWallet.EthereumC
 }
 
 export function useTransactionParser (
-  selectedNetwork: BraveWallet.EthereumChain,
+  selectedNetwork: BraveWallet.NetworkInfo,
   accounts: WalletAccountType[],
   spotPrices: BraveWallet.AssetPrice[],
   visibleTokens: BraveWallet.BlockchainToken[],

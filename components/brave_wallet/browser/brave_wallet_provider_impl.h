@@ -179,10 +179,10 @@ class BraveWalletProviderImpl final
 
   void ContinueGetDefaultKeyringInfo(
       GetNetworkAndDefaultKeyringInfoCallback callback,
-      mojom::EthereumChainPtr chain);
+      mojom::NetworkInfoPtr chain);
   void OnGetNetworkAndDefaultKeyringInfo(
       GetNetworkAndDefaultKeyringInfoCallback callback,
-      mojom::EthereumChainPtr chain,
+      mojom::NetworkInfoPtr chain,
       mojom::KeyringInfoPtr keyring_info);
 
   // content_settings::Observer:

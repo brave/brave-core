@@ -14,7 +14,7 @@ import { IconWrapper, Placeholder, NetworkIcon } from './style'
 import { makeNetworkAsset } from '../../../options/asset-options'
 
 interface Props {
-  network: BraveWallet.EthereumChain
+  network: BraveWallet.NetworkInfo
   marginRight: number
 }
 
