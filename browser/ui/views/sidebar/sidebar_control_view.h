@@ -25,6 +25,10 @@ namespace views {
 class MenuRunner;
 }  // namespace views
 
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
+
 // This view includes all sidebar buttons such as sidebar item buttons, add and
 // settings button.
 class SidebarControlView : public views::View,
@@ -69,6 +73,8 @@ class SidebarControlView : public views::View,
   bool IsBubbleWidgetVisible() const;
 
  private:
+  friend class sidebar::SidebarBrowserTest;
+
   void AddChildViews();
 
   void OnButtonPressed(views::View* view);
