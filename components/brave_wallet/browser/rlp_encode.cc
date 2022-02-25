@@ -60,8 +60,7 @@ std::string RLPEncode(base::Value val) {
     }
     return RLPEncodeLength(blob.size(), 0x80) + s;
   } else if (val.is_string()) {
-    std::string s;
-    val.GetAsString(&s);
+    std::string s = val.GetString();
     return RLPEncode(base::Value(base::Value::BlobStorage(s.begin(), s.end())));
   } else if (val.is_list()) {
     std::string output;
