@@ -32,8 +32,7 @@ class BraveThemeHelper : public ThemeHelper {
   absl::optional<SkColor> GetOmniboxColor(
       int id,
       bool incognito,
-      const CustomThemeSupplier* theme_supplier,
-      bool* has_custom_color) const override;
+      const CustomThemeSupplier* theme_supplier) const override;
 
  private:
   bool is_tor_ = false;
