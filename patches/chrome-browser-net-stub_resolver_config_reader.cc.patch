@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/net/stub_resolver_config_reader.cc b/chrome/browser/net/stub_resolver_config_reader.cc
-index 63035047782e814bb31acc18c610b61c91f740be..fcee3e09f4692ea368f187c507c50036878fb981 100644
+index afb28697d0aabca0acce4ee2f4beee63f5ffd78d..76abd721666d918b3dec29308ae806132c5ff5e7 100644
 --- a/chrome/browser/net/stub_resolver_config_reader.cc
 +++ b/chrome/browser/net/stub_resolver_config_reader.cc
 @@ -369,7 +369,9 @@ SecureDnsConfig StubResolverConfigReader::GetAndUpdateConfiguration(
@@ -11,4 +11,4 @@ index 63035047782e814bb31acc18c610b61c91f740be..fcee3e09f4692ea368f187c507c50036
 +
    if (update_network_service) {
      content::GetNetworkService()->ConfigureStubHostResolver(
-         GetInsecureStubResolverEnabled(), secure_dns_mode, doh_config.servers(),
+         GetInsecureStubResolverEnabled(), secure_dns_mode, doh_config,

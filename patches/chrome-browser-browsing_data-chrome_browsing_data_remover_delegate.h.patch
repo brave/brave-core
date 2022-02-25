@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-index e6161fc519508c98cc594a2bc79d5b7f59a6bbce..5ff97270180d0894c769e42d947c2f1e9f6884ca 100644
+index 613b9a6c78090691c37909e70849a7d7aa17f02b..f4a74a9f8bf5968dac7e058f7aeb2df14dadb67e 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 @@ -89,6 +89,7 @@ class ChromeBrowsingDataRemoverDelegate
@@ -10,12 +10,12 @@ index e6161fc519508c98cc594a2bc79d5b7f59a6bbce..5ff97270180d0894c769e42d947c2f1e
   private:
    using WebRtcEventLogManager = webrtc_event_logging::WebRtcEventLogManager;
  
-@@ -138,7 +139,7 @@ class ChromeBrowsingDataRemoverDelegate
-     kFaviconCacheExpiration = 40,
+@@ -139,7 +140,7 @@ class ChromeBrowsingDataRemoverDelegate
      kSecurePaymentConfirmationCredentials = 41,
      kWebAppHistory = 42,
--    kMaxValue = kWebAppHistory,
-+    kIPFSCache = 43, kMaxValue = kIPFSCache,
+     kWebAuthnCredentials = 43,
+-    kMaxValue = kWebAuthnCredentials,
++    kIPFSCache = 44, kMaxValue = kIPFSCache,
    };
  
    // Called by CreateTaskCompletionClosure().

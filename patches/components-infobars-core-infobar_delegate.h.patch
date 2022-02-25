@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 386bf947337c2ea92f5f00d29fa7235b886ce12c..72152b33e4cbf1663e878a01b4fccc190489bd60 100644
+index 8e73df461365c26ea4e9b1fe86da0eaa0095ec08..20e1177dfdffd05da280b5b135a3079fb90f4bfb 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -178,6 +178,7 @@ class InfoBarDelegate {
-     ADD_TO_READING_LIST_IOS = 107,
+@@ -179,6 +179,7 @@ class InfoBarDelegate {
      IOS_PERMISSIONS_INFOBAR_DELEGATE = 108,
      SUPPORTED_LINKS_INFOBAR_DELEGATE_CHROMEOS = 109,
+     AUTOFILL_VIRTUAL_CARD_ENROLLMENT_INFOBAR_DELEGATE_MOBILE = 110,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  
