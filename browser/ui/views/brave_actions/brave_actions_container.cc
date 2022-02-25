@@ -471,7 +471,6 @@ bool BraveActionsContainer::CloseOverflowMenuIfOpen() {
 }
 
 void BraveActionsContainer::PopOutAction(ToolbarActionViewController* action,
-                                         bool is_sticky,
                                          base::OnceClosure closure) {}
 
 bool BraveActionsContainer::ShowToolbarActionPopupForAPICall(
