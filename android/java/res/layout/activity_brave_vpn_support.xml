@@ -99,7 +99,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="48dp"
             android:layout_marginBottom="8dp"
             android:padding="16dp"
             android:textSize="16sp"
@@ -111,68 +111,60 @@
             android:id="@+id/other_issues_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="48dp"
             android:visibility="gone"
             android:orientation="vertical">
 
-        <android.widget.CheckBox
-            android:id="@+id/other_issue_checkbox_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/cannot_connect_to_vpn"
-            android:layoutDirection="rtl"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"/>
+            <android.widget.CheckBox
+                android:id="@+id/other_issue_checkbox_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cannot_connect_to_vpn"
+                android:layoutDirection="rtl"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"/>
 
-        <android.widget.CheckBox
-            android:id="@+id/other_issue_checkbox_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/no_internet"
-            android:layoutDirection="rtl"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"/>
+            <android.widget.CheckBox
+                android:id="@+id/other_issue_checkbox_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_internet"
+                android:layoutDirection="rtl"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"/>
 
-        <android.widget.CheckBox
-            android:id="@+id/other_issue_checkbox_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/slow_connection"
-            android:layoutDirection="rtl"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"/>
+            <android.widget.CheckBox
+                android:id="@+id/other_issue_checkbox_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/slow_connection"
+                android:layoutDirection="rtl"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"/>
 
-        <android.widget.CheckBox
-            android:id="@+id/other_issue_checkbox_4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/website_doesnt_work"
-            android:layoutDirection="rtl"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"/>
+            <android.widget.CheckBox
+                android:id="@+id/other_issue_checkbox_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/website_doesnt_work"
+                android:layoutDirection="rtl"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"/>
 
-        <android.widget.CheckBox
-            android:id="@+id/other_issue_checkbox_5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/other"
-            android:layoutDirection="rtl"
-            android:padding="16dp"
-            android:textSize="16sp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"/>
+            <android.widget.CheckBox
+                android:id="@+id/other_issue_checkbox_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/other"
+                android:layoutDirection="rtl"
+                android:padding="16dp"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp"/>
 
         </LinearLayout>
 

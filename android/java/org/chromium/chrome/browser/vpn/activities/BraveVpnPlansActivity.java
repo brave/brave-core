@@ -46,7 +46,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
     public void onResumeWithNative() {
         super.onResumeWithNative();
         BraveVpnNativeWorker.getInstance().addObserver(this);
-        hideProgress();
+        // hideProgress();
+        BraveVpnUtils.dismissProgressDialog();
     }
 
     @Override
@@ -87,7 +88,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         mMonthlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgress();
+                // showProgress();
+                BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
+                        getResources().getString(R.string.vpn_connect_text));
                 InAppPurchaseWrapper.getInstance().purchase(
                         BraveVpnPlansActivity.this, monthlySkuDetails);
             }
@@ -106,7 +109,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         mYearlySelectorLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showProgress();
+                // showProgress();
+                BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
+                        getResources().getString(R.string.vpn_connect_text));
                 InAppPurchaseWrapper.getInstance().purchase(
                         BraveVpnPlansActivity.this, yearlySkuDetails);
             }
@@ -116,6 +121,9 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         yearlySubscriptionAmountText.setText(
                 String.format(getResources().getString(R.string.yearly_subscription_amount),
                         yearlySkuDetails.getPrice()));
+        // showProgress();
+        BraveVpnUtils.showProgressDialog(
+                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
         mIsVerification = true;
         verifySubscription();
     }
@@ -175,14 +183,17 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
         invalidateOptionsMenu();
     }
 
-    @Override
-    public void showProgress() {
-        BraveVpnUtils.showProgressDialog(
-                BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
-    }
+    // @Override
+    // public void showProgress() {
+    //     BraveVpnUtils.showProgressDialog(
+    //             BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
+    // }
+
+    // @Override
+    // public void hideProgress() {
+    //     BraveVpnUtils.dismissProgressDialog();
+    // }
 
     @Override
-    public void hideProgress() {
-        BraveVpnUtils.dismissProgressDialog();
-    }
+    public void updateProfileView() {}
 }

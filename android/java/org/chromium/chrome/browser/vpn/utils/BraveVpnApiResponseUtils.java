@@ -16,6 +16,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.vpn.BraveVpnNativeWorker;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.chrome.browser.vpn.models.BraveVpnProfileCredentials;
+import org.chromium.chrome.browser.vpn.models.BraveVpnWireguardProfileCredentials;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
@@ -32,10 +33,10 @@ public class BraveVpnApiResponseUtils {
         BraveVpnPrefUtils.setProductId("");
         BraveVpnPrefUtils.setPurchaseExpiry(0L);
         BraveVpnPrefUtils.setSubscriptionPurchase(false);
-        if (BraveVpnProfileUtils.getInstance().isVPNConnected(activity)) {
+        if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(activity)) {
             BraveVpnProfileUtils.getInstance().stopVpn(activity);
         }
-        BraveVpnProfileUtils.getInstance().deleteVpnProfile(activity);
+        // BraveVpnProfileUtils.getInstance().deleteVpnProfile(activity);
         Toast.makeText(activity, R.string.purchase_token_verification_failed, Toast.LENGTH_LONG)
                 .show();
         BraveVpnUtils.dismissProgressDialog();
@@ -97,8 +98,14 @@ public class BraveVpnApiResponseUtils {
         if (isSuccess && braveVpnPrefModel != null) {
             Log.e("BraveVPN", "handleOnGetHostnamesForRegion : 1");
             host = BraveVpnUtils.getHostnameForRegion(jsonHostNames);
-            BraveVpnNativeWorker.getInstance().getProfileCredentials(
-                    braveVpnPrefModel.getSubscriberCredential(), host.first);
+            Log.e("BraveVPN", "handleOnGetHostnamesForRegion : " + host);
+            BraveVpnNativeWorker.getInstance().getWireguardProfileCredentials(
+                    braveVpnPrefModel.getSubscriberCredential(),
+                    braveVpnPrefModel.getClientPublicKey(), host.first);
+            // BraveVpnNativeWorker.getInstance().getWireguardProfileCredentials(
+            //         "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWJzY3JpcHRpb24tdHlwZSI6ImdyZF9wcm9feWVhcmx5Iiwic3Vic2NyaXB0aW9uLXR5cGUtcHJldHR5IjoiUHJvIiwic3Vic2NyaXB0aW9uLWV4cGlyYXRpb24tZGF0ZSI6MTczMjY1NDM1MywiZXhwIjoxNjQ1NDU4MjMxLCJpYXQiOjE2NDQ4NTM0MzF9.uwCmDwuuyfVuPhNG2Q0--h7WIU8wf_I-tgzrF4ercQ8thTrR4BeFJzVn_-moe8at05YimmjiUKay8NFxISdv1A",
+            //         "1ibTph0fVcEaMmIBYFabLeR82sm3Vydyp/gQ87tJ9kA=",
+            //         "wg-testing-1-yyz.guardianapp.com");
         } else {
             Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
                     .show();
@@ -110,29 +117,62 @@ public class BraveVpnApiResponseUtils {
 
     public static void handleOnGetProfileCredentials(Activity activity,
             BraveVpnPrefModel braveVpnPrefModel, String jsonProfileCredentials, boolean isSuccess) {
-        if (isSuccess && braveVpnPrefModel != null) {
-            Log.e("BraveVPN", "handleOnGetProfileCredentials : 1");
-            BraveVpnProfileCredentials braveVpnProfileCredentials =
-                    BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
-            if (BraveVpnProfileUtils.getInstance().isVPNConnected(activity)) {
-                BraveVpnProfileUtils.getInstance().stopVpn(activity);
-            }
-            Log.e("BraveVPN", "handleOnGetProfileCredentials : 2");
-            BraveVpnPrefUtils.setPrefModel(braveVpnPrefModel);
-            try {
-                Log.e("BraveVPN", "handleOnGetProfileCredentials : 3");
-                BraveVpnProfileUtils.getInstance().createVpnProfile(activity,
-                        braveVpnPrefModel.getHostname(), braveVpnProfileCredentials.getUsername(),
-                        braveVpnProfileCredentials.getPassword());
-            } catch (Exception securityException) {
-                Log.e("BraveVPN", "handleOnGetProfileCredentials : 4");
-                BraveVpnProfileUtils.getInstance().startVpn(activity);
-            }
-        } else {
-            Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
-                    .show();
-            Log.e("BraveVPN", "handleOnGetProfileCredentials : failed");
-            BraveVpnUtils.dismissProgressDialog();
-        }
+        // if (isSuccess && braveVpnPrefModel != null) {
+        //     Log.e("BraveVPN", "handleOnGetProfileCredentials : 1");
+        //     BraveVpnProfileCredentials braveVpnProfileCredentials =
+        //             BraveVpnUtils.getProfileCredentials(jsonProfileCredentials);
+        //     if (BraveVpnProfileUtils.getInstance().isVPNConnected(activity)) {
+        //         BraveVpnProfileUtils.getInstance().stopVpn(activity);
+        //     }
+        //     Log.e("BraveVPN", "handleOnGetProfileCredentials : 2");
+        //     BraveVpnPrefUtils.setPrefModel(braveVpnPrefModel);
+        //     try {
+        //         Log.e("BraveVPN", "handleOnGetProfileCredentials : 3");
+        //         // BraveVpnProfileUtils.getInstance().createVpnProfile(activity,
+        //         //         braveVpnPrefModel.getHostname(),
+        //         braveVpnProfileCredentials.getUsername(),
+        //         //         braveVpnProfileCredentials.getPassword());
+        //     } catch (Exception securityException) {
+        //         Log.e("BraveVPN", "handleOnGetProfileCredentials : 4");
+        //         BraveVpnProfileUtils.getInstance().startVpn(activity);
+        //     }
+        // } else {
+        //     Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
+        //             .show();
+        //     Log.e("BraveVPN", "handleOnGetProfileCredentials : failed");
+        //     BraveVpnUtils.dismissProgressDialog();
+        // }
     }
+
+    // public static void handleOnGetWireguardProfileCredentials(Activity activity,
+    //         BraveVpnPrefModel braveVpnPrefModel, String jsonWireguardProfileCredentials, boolean
+    //         isSuccess) {
+    //     Log.e("BraveVPN", "handleOnGetWireguardProfileCredentials : 0");
+    //     if (isSuccess && braveVpnPrefModel != null) {
+    //         Log.e("BraveVPN", "handleOnGetWireguardProfileCredentials : 1");
+    //         BraveVpnWireguardProfileCredentials braveVpnWireguardProfileCredentials =
+    //                 BraveVpnUtils.getWireguardProfileCredentials(jsonWireguardProfileCredentials);
+    //         if (BraveVpnProfileUtils.getInstance().isBraveVPNConnected(activity)) {
+    //             BraveVpnProfileUtils.getInstance().stopVpn(activity);
+    //         }
+    //         Log.e("BraveVPN", "handleOnGetWireguardProfileCredentials : 2");
+    //         BraveVpnPrefUtils.setPrefModel(braveVpnPrefModel);
+    //         BraveVpnProfileUtils.getInstance().startVpn(activity);
+    //         // try {
+    //         //     Log.e("BraveVPN", "handleOnGetWireguardProfileCredentials : 3");
+    //         //     // BraveVpnProfileUtils.getInstance().createVpnProfile(activity,
+    //         //     //         braveVpnPrefModel.getHostname(),
+    //         braveVpnProfileCredentials.getUsername(),
+    //         //     //         braveVpnProfileCredentials.getPassword());
+    //         // } catch (Exception securityException) {
+    //         //     Log.e("BraveVPN", "handleOnGetWireguardProfileCredentials : 4");
+    //         //     BraveVpnProfileUtils.getInstance().startVpn(activity);
+    //         // }
+    //     } else {
+    //         Toast.makeText(activity, R.string.vpn_profile_creation_failed, Toast.LENGTH_LONG)
+    //                 .show();
+    //         Log.e("BraveVPN", "handleOnGetWireguardProfileCredentials : failed");
+    //         BraveVpnUtils.dismissProgressDialog();
+    //     }
+    // }
 }

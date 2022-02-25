@@ -22,6 +22,7 @@ public class BraveChannelDefinitions {
         public static final String BRAVE_ADS = "com.brave.browser.ads";
         public static final String BRAVE_ADS_BACKGROUND = "com.brave.browser.ads.background";
         public static final String BRAVE_BROWSER = "com.brave.browser";
+        public static final int BRAVE_BROWSER_CHANNEL_INT = 1;
     }
 
     public class ChannelGroupId {

@@ -9,9 +9,13 @@ public class BraveVpnPrefModel {
     private String mPurchaseToken;
     private String mProductId;
     private String mSubscriberCredential;
+    private String mClientId;
+    private String mApiAuthToken;
     private String mHostname;
     private String mHostnameDisplay;
     private String mServerRegion;
+    private String mClientPrivateKey;
+    private String mClientPublicKey;
 
     public void setPurchaseToken(String purchaseToken) {
         mPurchaseToken = purchaseToken;
@@ -23,6 +27,14 @@ public class BraveVpnPrefModel {
 
     public void setSubscriberCredential(String subscriberCredential) {
         mSubscriberCredential = subscriberCredential;
+    }
+
+    public void setClientId(String clientId) {
+        mClientId = clientId;
+    }
+
+    public void setApiAuthToken(String apiAuthToken) {
+        mApiAuthToken = apiAuthToken;
     }
 
     public void setHostname(String hostname) {
@@ -37,6 +49,14 @@ public class BraveVpnPrefModel {
         mServerRegion = serverRegion;
     }
 
+    public void setClientPrivateKey(String clientPrivateKey) {
+        mClientPrivateKey = clientPrivateKey;
+    }
+
+    public void setClientPublicKey(String clientPublicKey) {
+        mClientPublicKey = clientPublicKey;
+    }
+
     public String getPurchaseToken() {
         return mPurchaseToken;
     }
@@ -49,6 +69,14 @@ public class BraveVpnPrefModel {
         return mSubscriberCredential;
     }
 
+    public String getClientId() {
+        return mClientId;
+    }
+
+    public String getApiAuthToken() {
+        return mApiAuthToken;
+    }
+
     public String getHostname() {
         return mHostname;
     }
@@ -59,5 +87,13 @@ public class BraveVpnPrefModel {
 
     public String getServerRegion() {
         return mServerRegion;
+    }
+
+    public String getClientPrivateKey() {
+        return mClientPrivateKey;
+    }
+
+    public String getClientPublicKey() {
+        return mClientPublicKey;
     }
 }

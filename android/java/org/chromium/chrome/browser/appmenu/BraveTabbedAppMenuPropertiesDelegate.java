@@ -72,24 +72,23 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     public void prepareMenu(Menu menu, AppMenuHandler handler) {
         super.prepareMenu(menu, handler);
 
+        mMenu = menu;
+
         if (BraveVpnUtils.isBraveVpnFeatureEnable()) {
-            menu.addSubMenu(Menu.NONE, R.id.request_brave_vpn_row_menu_id, 0, null);
             SubMenu vpnSubMenu = menu.findItem(R.id.request_brave_vpn_row_menu_id).getSubMenu();
-            vpnSubMenu.clear();
-            MenuItem braveVpnSubMenuItem =
-                    vpnSubMenu.add(Menu.NONE, R.id.request_brave_vpn_id, 0, R.string.brave_vpn);
+            MenuItem braveVpnSubMenuItem = vpnSubMenu.findItem(R.id.request_brave_vpn_id);
             if (shouldShowIconBeforeItem()) {
                 braveVpnSubMenuItem.setIcon(
                         AppCompatResources.getDrawable(mContext, R.drawable.ic_vpn));
             }
             MenuItem braveVpnCheckedSubMenuItem =
-                    vpnSubMenu.add(Menu.NONE, R.id.request_brave_vpn_check_id, 0, null);
-            braveVpnCheckedSubMenuItem.setCheckable(true);
-            braveVpnCheckedSubMenuItem.setChecked(
-                    BraveVpnProfileUtils.getInstance().isVPNConnected(mContext));
+                    vpnSubMenu.findItem(R.id.request_brave_vpn_check_id);
+            if (braveVpnCheckedSubMenuItem != null) {
+                braveVpnCheckedSubMenuItem.setCheckable(true);
+                braveVpnCheckedSubMenuItem.setChecked(
+                        BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mContext));
+            }
         }
-
-        mMenu = menu;
 
         // Brave's items are only visible for page menu.
         // To make logic simple, below three items are added whenever menu gets visible

@@ -77,7 +77,7 @@ public class InAppPurchaseWrapper {
         return mBillingClient;
     }
 
-    public void querySkuDetailsAsync(List<String> skuList) {
+    private void querySkuDetailsAsync(List<String> skuList) {
         SkuDetailsParams params = SkuDetailsParams.newBuilder()
                                           .setSkusList(skuList)
                                           .setType(BillingClient.SkuType.SUBS)
@@ -91,6 +91,7 @@ public class InAppPurchaseWrapper {
         });
     }
 
+    // TODO change this function to async function
     public List<Purchase> queryPurchases() {
         return mBillingClient.queryPurchases(SUBS).getPurchasesList();
     }
