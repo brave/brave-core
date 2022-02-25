@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/pref_service_syncable.h"
 
 namespace {
@@ -104,6 +105,10 @@ void RegisterProfilePrefsForMigration(
   registry->RegisterIntegerPref(
       kDefaultWalletDeprecated,
       static_cast<int>(mojom::DefaultWallet::BraveWalletPreferExtension));
+
+  // Added 02/2022
+  registry->RegisterBooleanPref(
+      kBraveWalletEthereumTransactionsCoinTypeMigrated, false);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
@@ -156,6 +161,23 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
       default_wallet = mojom::DefaultWallet::None;
     prefs->SetInteger(kDefaultWallet2, static_cast<int>(default_wallet));
     prefs->ClearPref(kDefaultWalletDeprecated);
+  }
+
+  // Added 02/2022.
+  // Migrate kBraveWalletTransactions to have coin_type as the top level.
+  // Ethereum transactions were at kBraveWalletTransactions.network_id.tx_id,
+  // migrate it to be at kBraveWalletTransactions.ethereum.network_id.tx_id.
+  if (!prefs->GetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated)) {
+    base::Value transactions =
+        prefs->GetDictionary(kBraveWalletTransactions)->Clone();
+    prefs->ClearPref(kBraveWalletTransactions);
+    if (!transactions.DictEmpty()) {
+      DictionaryPrefUpdate update(prefs, kBraveWalletTransactions);
+      base::Value* dict = update.Get();
+      const std::string path = "ethereum";
+      dict->SetPath(path, std::move(transactions));
+    }
+    prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
   }
 }
 

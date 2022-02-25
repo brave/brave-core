@@ -32,6 +32,8 @@ const char kBraveWalletUserAssetEthContractAddressMigrated[] =
 const char kBraveWalletAutoLockMinutes[] = "brave.wallet.auto_lock_minutes";
 const char kSupportEip1559OnLocalhostChain[] =
     "brave.wallet.support_eip1559_on_localhost_chain";
+const char kBraveWalletEthereumTransactionsCoinTypeMigrated[] =
+    "brave.wallet.ethereum_transactions.coin_type_migrated";
 
 // DEPRECATED
 const char kBraveWalletSelectedAccount[] = "brave.wallet.selected_account";
