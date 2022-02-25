@@ -198,8 +198,8 @@ export function PublisherCard () {
               </div>
             </style.autoContribution>
         }
-        <style.monthlyContribution>
-          <div>{getString('monthlyContribution')}</div>
+        <style.monthlyTip>
+          <div>{getString('monthlyTip')}</div>
           <div>
             <MonthlyTipView
               publisherInfo={publisherInfo}
@@ -207,7 +207,7 @@ export function PublisherCard () {
               onCancelClick={monthlyTipHandler('cancel')}
             />
           </div>
-        </style.monthlyContribution>
+        </style.monthlyTip>
       </style.contribution>
       <style.tipAction>
         <button data-test-id='tip-button' onClick={host.sendTip}>

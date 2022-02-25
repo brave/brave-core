@@ -72,7 +72,7 @@ function createHost (): Host {
       registered: true,
       attentionScore: 0.17,
       autoContributeEnabled: true,
-      monthlyContribution: 5,
+      monthlyTip: 5,
       supportedWalletProviders: []
     },
     publisherRefreshing: false,
@@ -171,7 +171,7 @@ function createHost (): Host {
             stateManager.update({
               publisherInfo: {
                 ...publisherInfo,
-                monthlyContribution: 0
+                monthlyTip: 0
               }
             })
           }

@@ -53,11 +53,11 @@ export function TipComplete (props: Props) {
         <table>
           <tbody>
             <tr>
-              <td>{getString('contributionAmount')}</td>
+              <td>{getString('tipAmount')}</td>
               <td><TokenAmount amount={props.tipAmount} /></td>
             </tr>
             <tr>
-              <td>{getString('nextContributionDate')}</td>
+              <td>{getString('nextTipDate')}</td>
               <td>{nextContribution}</td>
             </tr>
           </tbody>
@@ -84,7 +84,7 @@ export function TipComplete (props: Props) {
             {getString('sorryToSeeYouGo')}
           </style.cancelHeader>
           <style.cancelText>
-            {getString('contributionCanceled')}
+            {getString('tipCanceled')}
           </style.cancelText>
         </style.main>
       </style.root>
@@ -101,7 +101,7 @@ export function TipComplete (props: Props) {
           <style.message>
             {
               getString(props.tipKind === 'monthly'
-                ? 'monthlyContributionSet'
+                ? 'monthlyTipSet'
                 : 'tipHasBeenSent')
             }
           </style.message>

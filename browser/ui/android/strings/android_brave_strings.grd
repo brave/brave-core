@@ -2776,8 +2776,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_UNVERIFIED_CREATOR" desc="Brave rewards panel text">
       Unverified Creator
     </message>
-    <message name="IDS_MONTHLY_CONTRIBUTION" desc="Title text for `Monthly contribution` section in Brave rewards panel">
-      Monthly contribution
+    <message name="IDS_MONTHLY_TIP" desc="Title text for `Monthly tip` section in Brave rewards panel">
+      Monthly tip
     </message>
     <message name="IDS_BAT_TEXT" desc="Brave rewards panel text" translateable="false">
       BAT
@@ -2866,7 +2866,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_NETWORK_ACTIVITY_TITLE" desc="Network activity toolbar title">
       Select Network
     </message>
-    <message name="IDS_CHANGE_AMOUNT" desc="Brave rewards monthly contribution text">
+    <message name="IDS_CHANGE_AMOUNT" desc="Brave rewards monthly tip text">
       Change amount
     </message>
     <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">

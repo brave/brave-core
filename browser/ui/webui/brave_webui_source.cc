@@ -506,16 +506,16 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "donationDesc",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC },
         { "donationDescLearnMore",  IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC_LEARN_MORE },             // NOLINT
         { "donationTotalDonations",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_DONATIONS },            // NOLINT
-        { "donationTotalMonthlyContribution",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_MONTHLY_CONTRIBUTION },       // NOLINT
+        { "donationTotalMonthlyTips",  IDS_BRAVE_REWARDS_LOCAL_DONAT_TOTAL_MONTHLY_TIPS },       // NOLINT
         { "donationVisitSome",  IDS_BRAVE_REWARDS_LOCAL_DONAT_VISIT_SOME },
         { "donationAbility",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY },
         { "donationAbilityReddit", IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_REDT},
         { "donationAbilityTwitter",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW },
         { "donationAbilityGitHub",  IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_GH },
         { "donationNextDate",  IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE },
-        { "monthlyContributionTitle",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_TITLE },     // NOLINT
-        { "monthlyContributionDesc",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_DESC },       // NOLINT
-        { "monthlyContributionEmpty", IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_EMPTY },      // NOLINT
+        { "monthlyTipsTitle",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_TITLE },
+        { "monthlyTipsDesc",  IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_DESC },
+        { "monthlyTipsEmpty", IDS_BRAVE_REWARDS_LOCAL_MONTHLY_TIPS_EMPTY },
         { "walletRecoveryFail",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL },                 // NOLINT
         { "walletRecoveryOutdated",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_OUTDATED },                 // NOLINT
         { "redirectModalError", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR },
@@ -591,8 +591,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "manageWallet", IDS_BRAVE_UI_MANAGE_WALLET },
         { "markAsInappropriate", IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE },
         { "markAsInappropriateChecked", IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE_CHECKED },        // NOLINT
+        { "monthlyTipsBang", IDS_BRAVE_UI_MONTHLY_TIPS_BANG },
         { "monthlyTips", IDS_BRAVE_UI_MONTHLY_TIPS },
-        { "monthlyContributions", IDS_BRAVE_UI_MONTHLY_CONTRIBUTIONS },
         { "noActivity", IDS_BRAVE_UI_NO_ACTIVITY },
         { "noAdsHistory", IDS_BRAVE_UI_ADS_NO_ADS_HISTORY },
         { "off", IDS_BRAVE_UI_OFF },
@@ -848,14 +848,14 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "batFunds", IDS_BRAVE_REWARDS_TIP_BAT_FUNDS },
         { "cancel", IDS_BRAVE_REWARDS_TIP_CANCEL },
         { "cancelConfirmationText", IDS_BRAVE_REWARDS_TIP_CANCEL_CONFIRMATION_TEXT },  // NOLINT
-        { "cancelMonthlyContribution", IDS_BRAVE_REWARDS_TIP_CANCEL_MONTHLY_CONTRIBUTION },  // NOLINT
+        { "cancelMonthlyTip", IDS_BRAVE_REWARDS_TIP_CANCEL_MONTHLY_TIP },
         { "changeAmount", IDS_BRAVE_REWARDS_TIP_CHANGE_AMOUNT },
         { "confirmCancel", IDS_BRAVE_REWARDS_TIP_CONFIRM_CANCEL },
         { "continue", IDS_BRAVE_REWARDS_TIP_CONTINUE },
-        { "contributionAmount", IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_AMOUNT },  // NOLINT
-        { "contributionCanceled", IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_CANCELED },  // NOLINT
+        { "tipAmount", IDS_BRAVE_REWARDS_TIP_TIP_AMOUNT },
+        { "tipCanceled", IDS_BRAVE_REWARDS_TIP_TIP_CANCELED },
         { "currentlySupporting", IDS_BRAVE_REWARDS_TIP_CURRENTLY_SUPPORTING },
-        { "currentMonthlyContribution", IDS_BRAVE_REWARDS_TIP_CURRENT_MONTHLY_CONTRIBUTION },  // NOLINT
+        { "currentMonthlyTip", IDS_BRAVE_REWARDS_TIP_CURRENT_MONTHLY_TIP },
         { "customAmount", IDS_BRAVE_REWARDS_TIP_CUSTOM_AMOUNT },
         { "customMonthlyTipText", IDS_BRAVE_REWARDS_TIP_CUSTOM_MONTHLY_TIP_TEXT },  // NOLINT
         { "customTipAmount", IDS_BRAVE_REWARDS_TIP_CUSTOM_TIP_AMOUNT },
@@ -867,10 +867,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "errorTryAgain", IDS_BRAVE_REWARDS_TIP_ERROR_TRY_AGAIN },
         { "exampleTipAmount", IDS_BRAVE_REWARDS_TIP_EXAMPLE_TIP_AMOUNT },
         { "minimumTipAmount", IDS_BRAVE_REWARDS_TIP_MINIMUM_TIP_AMOUNT },
-        { "monthlyContribution", IDS_BRAVE_UI_MONTHLY_CONTRIBUTION },
-        { "monthlyContributionSet", IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET },  // NOLINT
+        { "monthlyTip", IDS_BRAVE_UI_MONTHLY_TIP },
+        { "monthlyTipSet", IDS_BRAVE_REWARDS_TIP_MONTHLY_TIP_SET },
         { "monthlyText", IDS_BRAVE_UI_MONTHLY_TEXT },
-        { "nextContributionDate", IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE },  // NOLINT
+        { "nextTipDate", IDS_BRAVE_REWARDS_TIP_NEXT_TIP_DATE },
         { "notEnoughTokens", IDS_BRAVE_REWARDS_TIP_NOT_ENOUGH_TOKENS },
         { "tippingFeeNote", IDS_BRAVE_REWARDS_TIPPING_FEE_NOTE },
         { "on", IDS_BRAVE_UI_ON },

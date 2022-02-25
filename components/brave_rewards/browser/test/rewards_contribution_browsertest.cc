@@ -923,8 +923,7 @@ IN_PROC_BROWSER_TEST_F(
       rewards_browsertest_util::TipAction::ChangeMonthly);
 
   rewards_browsertest_util::WaitForElementToContain(
-      banner.get(), "[data-test-id=form-submit-button]",
-      "Set monthly contribution");
+      banner.get(), "[data-test-id=form-submit-button]", "Set monthly tip");
 
   // Verify "Cancel" opens cancel confirmation form
   banner = context_helper_->OpenSiteBanner(

@@ -96,7 +96,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_regular"
-                android:text="@string/monthly_contribution"
+                android:text="@string/monthly_tip"
                 android:textColor="@color/rewards_panel_secondary_text_color"
                 android:textSize="16sp" />
 

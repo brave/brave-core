@@ -7,23 +7,19 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 import {
+  Box,
   TableDonation,
   List,
   Tokens,
   ModalDonation,
   NextContribution
 } from '../../ui/components'
-import { BoxMobile } from '../../ui/components/mobile'
 import { Provider } from '../../ui/components/profile'
 
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import { DetailRow } from '../../ui/components/tableDonation'
-import {
-  StyledListContent,
-  StyledTotalContent
-} from './style'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -32,7 +28,7 @@ interface State {
   modalShowAll: boolean
 }
 
-class MonthlyContributionBox extends React.Component<Props, State> {
+class MonthlyTipsBox extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -98,45 +94,39 @@ class MonthlyContributionBox extends React.Component<Props, State> {
     const converted = utils.convertBalance(total, parameters.rate)
 
     return (
-      <BoxMobile
-        checked={true}
+      <Box
         type={'donation'}
-        title={getLocale('monthlyContributionTitle')}
-        description={getLocale('monthlyContributionDesc')}
+        title={getLocale('monthlyTipsTitle')}
+        description={getLocale('monthlyTipsDesc')}
       >
         {
           this.state.modalShowAll
           ? <ModalDonation
             rows={tipRows}
             onClose={this.onModalToggle}
-            title={getLocale('monthlyContributionTitle')}
+            title={getLocale('monthlyTipsTitle')}
           />
           : null
         }
-        <List title={<StyledListContent>{getLocale('donationTotalMonthlyContribution')}</StyledListContent>}>
-          <StyledTotalContent>
-            <Tokens value={total.toFixed(3)} converted={converted} />
-          </StyledTotalContent>
+        <List title={getLocale('donationTotalMonthlyTips')}>
+          <Tokens value={total.toFixed(3)} converted={converted} />
         </List>
-        <List title={<StyledListContent>{getLocale('donationNextDate')}</StyledListContent>}>
-          <StyledListContent>
-            <NextContribution>
-              {new Intl.DateTimeFormat('default', { month: 'short', day: 'numeric' }).format(reconcileStamp * 1000)}
-            </NextContribution>
-          </StyledListContent>
+        <List title={getLocale('donationNextDate')}>
+          <NextContribution>
+            {new Intl.DateTimeFormat('default', { month: 'short', day: 'numeric' }).format(reconcileStamp * 1000)}
+          </NextContribution>
         </List>
-        <StyledListContent>
-          <TableDonation
-            rows={topRows}
-            allItems={allSites}
-            numItems={numRows}
-            headerColor={true}
-            onShowAll={this.onModalToggle}
-          >
-            {getLocale('monthlyContributionEmpty')}
-          </TableDonation>
-        </StyledListContent>
-      </BoxMobile>
+
+        <TableDonation
+          rows={topRows}
+          allItems={allSites}
+          numItems={numRows}
+          headerColor={true}
+          onShowAll={this.onModalToggle}
+        >
+          {getLocale('monthlyTipsEmpty')}
+        </TableDonation>
+      </Box>
     )
   }
 }
@@ -152,4 +142,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(MonthlyContributionBox)
+)(MonthlyTipsBox)

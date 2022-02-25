@@ -41,7 +41,7 @@ export function CurrentMonthlyForm (props: Props) {
     return (
       <style.root>
         <style.header>
-          {getString('cancelMonthlyContribution')}
+          {getString('cancelMonthlyTip')}
         </style.header>
         <style.cancelText>
           {getString('cancelConfirmationText')}
@@ -59,16 +59,16 @@ export function CurrentMonthlyForm (props: Props) {
 
   return (
     <style.root>
-      <style.header>{getString('currentMonthlyContribution')}</style.header>
+      <style.header>{getString('currentMonthlyTip')}</style.header>
       <style.contributionTable>
         <table>
           <tbody>
             <tr>
-              <td>{getString('contributionAmount')}</td>
+              <td>{getString('tipAmount')}</td>
               <td><TokenAmount amount={props.currentMonthlyTip} /></td>
             </tr>
             <tr>
-              <td>{getString('nextContributionDate')}</td>
+              <td>{getString('nextTipDate')}</td>
               <td>{getDateString(props.nextReconcileDate)}</td>
             </tr>
           </tbody>
