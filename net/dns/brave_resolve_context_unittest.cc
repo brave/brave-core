@@ -6,6 +6,9 @@
 #include "brave/net/dns/brave_resolve_context.h"
 
 #include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/test/task_environment.h"
@@ -25,11 +28,11 @@ namespace {
 
 DnsConfig CreateDnsConfig() {
   DnsConfig config;
-
-  config.dns_over_https_servers.push_back(*DnsOverHttpsServerConfig::FromString(
-      decentralized_dns::kUnstoppableDomainsDoHResolver));
-  config.dns_over_https_servers.push_back(*DnsOverHttpsServerConfig::FromString(
-      decentralized_dns::kENSDoHResolver));
+  std::vector<std::string> templates = {
+      decentralized_dns::kUnstoppableDomainsDoHResolver,
+      decentralized_dns::kENSDoHResolver,
+  };
+  config.doh_config = *DnsOverHttpsConfig::FromStrings(std::move(templates));
 
   return config;
 }
