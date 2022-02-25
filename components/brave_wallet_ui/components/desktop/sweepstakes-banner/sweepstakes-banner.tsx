@@ -28,12 +28,7 @@ interface Props {
 const STORAGE_KEY_SWAP_SWEEPSTAKES_CLOSED = 'BRAVE_WALLET_SWAP_SWEEPSTAKES_BANNER_IS_CLOSED'
 
 const START_DATE = new Date('2022-03-07T00:01:00-0800') // 12:01am PST on March 7, 2022 (1 day before event)
-
-const END_DATE = new Date()
-END_DATE.setTime(START_DATE.getTime() + (
-    7 * // 7 days from START_DATE
-    24 * 60 * 60 * 1000 // day in milliseconds
-))
+const END_DATE = new Date('2022-03-15T00:00:00-0800') // 12:00am PST March 8, 2022
 
 const LEARN_MORE_LINK = 'http://brave.com/sweepstakes/'
 
