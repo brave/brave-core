@@ -473,6 +473,7 @@ provideStrings({
   braveWalletNFTDetailTokenID: 'Token ID',
 
   // Sweepstakes
-  braveWalletSweepstakesTitle: 'Swap Sweepstakes',
-  braveWalletSweepstakesDescription: 'Chance to win a bored ape and other cool prizes'
+  braveWalletSweepstakesTitle: 'Brave Swap-stakes',
+  braveWalletSweepstakesDescription: '7 days of crypto giveaways, ~$500k in prizes.',
+  braveWalletSweepstakesCallToAction: 'Enter now!'
 })

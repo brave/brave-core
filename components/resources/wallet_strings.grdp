@@ -427,9 +427,12 @@
     Signing typed data is supported only on Trezor Model One with Firmware 1.10.5 or higher
   </message>
   <message name="IDS_BRAVE_WALLET_SWEEPSTAKES_TITLE" desc="The title for the swap sweepstakes banner">
-    Swap Sweepstakes
+    Brave Swap-stakes
   </message>
   <message name="IDS_BRAVE_WALLET_SWEEPSTAKES_DESCRIPTION" desc="A short description of the swap sweepstakes">
-    Chance to win a bored ape and other cool prizes
+    7 days of crypto giveaways, ~&#36;500k in prizes.
+  </message>
+  <message name="IDS_BRAVE_WALLET_SWEEPSTAKES_CALL_TO_ACTION" desc="A short description of the swap sweepstakes">
+    Enter now!
   </message>
 </grit-part>
