@@ -15,6 +15,7 @@ import {
 import GiftsIllustration from '../../../assets/svg-illustrations/gifts.svg'
 import { getLocale } from '../../../../common/locale'
 import { VisibleOnlyDuringTimeFrame } from '../../shared/visible-only-during-timeframe'
+import { LocaleRestricted } from '../../shared/locale-restricted'
 
 interface Props {
     // for testing + storybook
@@ -46,39 +47,41 @@ export const SweepstakesBanner = ({
     }
 
     return isVisible ? (
-        <VisibleOnlyDuringTimeFrame startDate={startDate} endDate={endDate}>
-            <Card>
+        <LocaleRestricted allowedLocales={['en-US']}>
+            <VisibleOnlyDuringTimeFrame startDate={startDate} endDate={endDate}>
+                <Card>
 
-                <TitleAndCloseRow>
-                    <Title>
-                        {/* Swap Sweepstakes */}
-                        {getLocale('braveWalletSweepstakesTitle')}
-                    </Title>
+                    <TitleAndCloseRow>
+                        <Title>
+                            {/* Swap Sweepstakes */}
+                            {getLocale('braveWalletSweepstakesTitle')}
+                        </Title>
 
-                    <CloseButton onClick={() => {
-                        onCloseBanner()
-                        setIsVisible(false)
-                    }} />
-                </TitleAndCloseRow>
+                        <CloseButton onClick={() => {
+                            onCloseBanner()
+                            setIsVisible(false)
+                        }} />
+                    </TitleAndCloseRow>
 
-                <Footer>
-                    <FooterLeftColumn>
-                    <BodyText>
-                        {/* Chance to win a bored ape and other cool prizes */}
-                        {getLocale('braveWalletSweepstakesDescription')}
-                    </BodyText>
-                        <LearnMoreLink href={LEARN_MORE_LINK}>
-                            {/* Learn more (braveWalletWelcomePanelButton) */}
-                            {getLocale('braveWalletWelcomePanelButton')}
-                        </LearnMoreLink>
-                    </FooterLeftColumn>
+                    <Footer>
+                        <FooterLeftColumn>
+                            <BodyText>
+                                {/* Chance to win a bored ape and other cool prizes */}
+                                {getLocale('braveWalletSweepstakesDescription')}
+                            </BodyText>
+                            <LearnMoreLink href={LEARN_MORE_LINK}>
+                                {/* Learn more (braveWalletWelcomePanelButton) */}
+                                {getLocale('braveWalletWelcomePanelButton')}
+                            </LearnMoreLink>
+                        </FooterLeftColumn>
 
-                    <FooterRightColumn>
-                        <SweepStakesBannerIllustration src={GiftsIllustration} />
-                    </FooterRightColumn>
-                </Footer>
+                        <FooterRightColumn>
+                            <SweepStakesBannerIllustration src={GiftsIllustration} />
+                        </FooterRightColumn>
+                    </Footer>
 
-            </Card>
-        </VisibleOnlyDuringTimeFrame>
+                </Card>
+            </VisibleOnlyDuringTimeFrame>
+        </LocaleRestricted>
     ) : null
 }
