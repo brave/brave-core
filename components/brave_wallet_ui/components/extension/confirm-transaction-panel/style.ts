@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import { ArrowRightIcon } from 'brave-ui/components/icons'
+
 import { AssetIconProps, AssetIconFactory, WalletButton } from '../../shared/style'
+import WaringTriangle from '../../../assets/svg-icons/warning-triangle.svg'
 
 interface StyleProps {
   orb: string
@@ -319,3 +321,43 @@ export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',
   height: 'auto'
 })
+
+// [FIXME]: Duplicated from components/brave_wallet_ui/components/extension/sign-panel/style.ts
+export const WarningBox = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 255px;
+  padding: 10px;
+  margin-bottom: 14px;
+  background-color: ${(p) => p.theme.color.errorBackground};
+`
+
+export const WarningTitleRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+`
+
+export const WarningTitle = styled.span`
+  font-family: Poppins;
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: ${(p) => p.theme.color.errorText};
+`
+
+export const WarningIcon = styled.div`
+  width: 14px;
+  height: 14px;
+  mask-size: 100%;
+  background-color: ${(p) => p.theme.color.errorIcon};
+  -webkit-mask-image: url(${WaringTriangle});
+  mask-image: url(${WaringTriangle});
+  margin-right: 6px;
+`

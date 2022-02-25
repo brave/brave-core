@@ -20,10 +20,15 @@ import {
 } from '../../constants/types'
 import { SlippagePresetOptions } from '../../options/slippage-preset-options'
 import { ExpirationPresetOptions } from '../../options/expiration-preset-options'
-import { formatInputValue, toHex, toWei, toWeiHex } from '../../utils/format-balances'
 import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
+import { MAX_UINT256 } from '../constants/magics'
+
+// Hooks
 import useBalance from './balance'
+
+// Utils
+import { formatInputValue, toWei } from '../../utils/format-balances'
 
 const SWAP_VALIDATION_ERROR_CODE = 100
 
@@ -440,15 +445,22 @@ export default function useSwap (
     }
 
     if (swapValidationError === 'insufficientAllowance' && allowance) {
-      const allowanceHex = !fromAssetBalance
-        ? toWeiHex(fromAmount, fromAsset.decimals)
-        : toHex(fromAssetBalance)
-
+      // IMPORTANT SECURITY NOTICE
+      //
+      // The token allowance suggested by Swap is always unlimited,
+      // i.e., max(uint256). While unlimited approvals are not safe from a
+      // security standpoint, and this puts the entire token balance at risk
+      // if 0x contracts are ever exploited, we still opted for this to give
+      // users a frictionless UX and save on gas fees.
+      //
+      // The transaction confirmation screen for ERC20 approve() shows a loud
+      // security notice, and still allows users to edit the default approval
+      // amount.
       approveERC20Allowance({
         from: selectedAccount.address,
         contractAddress: fromAsset.contractAddress,
         spenderAddress: quote.allowanceTarget,
-        allowance: allowanceHex
+        allowance: MAX_UINT256
       })
 
       return

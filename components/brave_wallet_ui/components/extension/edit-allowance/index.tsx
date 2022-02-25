@@ -1,4 +1,5 @@
 import * as React from 'react'
+import BigNumber from 'bignumber.js'
 import Radio from 'brave-ui/components/formControls/radio'
 
 import { getLocale } from '../../../../common/locale'
@@ -15,6 +16,8 @@ import {
   AllowanceContent,
   AllowanceOption
 } from './style'
+import { toWei } from '../../../utils/format-balances'
+import { MAX_UINT256 } from '../../../common/constants/magics'
 
 export enum MaxPriorityPanels {
   setSuggested = 0,
@@ -30,6 +33,7 @@ export interface Props {
   onSave: (allowance: string) => void
   proposedAllowance: string
   symbol: string
+  decimals: number
   approvalTarget: string
 }
 
@@ -42,7 +46,8 @@ const EditAllowance = (props: Props) => {
     onSave,
     proposedAllowance,
     approvalTarget,
-    symbol
+    symbol,
+    decimals
   } = props
 
   const toggleAllowanceRadio = (key: AllowanceTypes) => {
@@ -61,6 +66,13 @@ const EditAllowance = (props: Props) => {
   const isSaveButtonDisabled = React.useMemo(() => {
     return allowanceType === 'custom' && customAllowance === ''
   }, [allowanceType, customAllowance])
+
+  const formattedProposedAllowance = React.useMemo(() => {
+    const proposedAllowanceWei = toWei(proposedAllowance, decimals)
+    return new BigNumber(proposedAllowanceWei).eq(MAX_UINT256)
+      ? getLocale('braveWalletTransactionApproveUnlimited')
+      : proposedAllowance
+  }, [proposedAllowance, decimals])
 
   return (
     <Panel
@@ -85,7 +97,7 @@ const EditAllowance = (props: Props) => {
                   {getLocale('braveWalletEditPermissionsProposedAllowance')}
                 </AllowanceTitle>
                 <AllowanceContent>
-                  {proposedAllowance} {symbol}
+                  {formattedProposedAllowance} {symbol}
                 </AllowanceContent>
               </AllowanceOption>
             </div>

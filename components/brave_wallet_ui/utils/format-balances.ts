@@ -42,7 +42,7 @@ export const formatBalance = (balance: string, decimals: number, round: boolean 
 
   return round
     ? result.toFixed(4, BigNumber.ROUND_UP)
-    : result.toFormat()
+    : result.toFixed()
 }
 
 export const formatGasFee = (gasPrice: string, gasLimit: string, decimals: number) => {

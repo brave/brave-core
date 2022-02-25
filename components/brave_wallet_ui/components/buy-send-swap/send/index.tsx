@@ -74,7 +74,7 @@ function Send (props: Props) {
     if (parseFloat(selectedAssetAmount) === 0) {
       return false
     }
-    return Number(toWei(selectedAssetAmount, selectedAsset.decimals)) > Number(selectedAssetBalance)
+    return Number(toWei(selectedAssetAmount, selectedAsset?.decimals ?? 18)) > Number(selectedAssetBalance)
   }, [selectedAssetBalance, selectedAssetAmount, selectedAsset])
 
   return (

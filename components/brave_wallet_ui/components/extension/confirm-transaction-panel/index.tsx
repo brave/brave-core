@@ -67,7 +67,11 @@ import {
   AssetIcon,
   ErrorText,
   SectionColumn,
-  SingleRow
+  SingleRow,
+  WarningBox,
+  WarningIcon,
+  WarningTitle,
+  WarningTitleRow
 } from './style'
 
 import {
@@ -280,8 +284,9 @@ function ConfirmTransactionPanel (props: Props) {
       <EditAllowance
         onCancel={onToggleEditAllowance}
         onSave={onEditAllowanceSave}
-        proposedAllowance={transactionDetails.value}
+        proposedAllowance={transactionDetails.valueExact}
         symbol={transactionDetails.symbol}
+        decimals={transactionDetails.decimals}
         approvalTarget={transactionDetails.approvalTargetLabel || ''}
       />
     )
@@ -328,6 +333,18 @@ function ConfirmTransactionPanel (props: Props) {
           <URLText>{siteURL}</URLText>
           <PanelTitle>{getLocale('braveWalletAllowSpendTitle').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</PanelTitle>
           <Description>{getLocale('braveWalletAllowSpendDescription').replace('$1', foundTokenInfoByContractAddress?.symbol ?? '')}</Description>
+
+          {transactionDetails.isApprovalUnlimited &&
+            <WarningBox>
+              <WarningTitleRow>
+                <WarningIcon/>
+                <WarningTitle>
+                  {getLocale('braveWalletAllowSpendUnlimitedWarningTitle')}
+                </WarningTitle>
+              </WarningTitleRow>
+            </WarningBox>
+          }
+
           <EditButton onClick={onToggleEditAllowance}>{getLocale('braveWalletEditPermissionsButton')}</EditButton>
         </>
       ) : (
@@ -405,7 +422,13 @@ function ConfirmTransactionPanel (props: Props) {
                 <SectionRow>
                   <TransactionTitle>{getLocale('braveWalletAllowSpendProposedAllowance')}</TransactionTitle>
                   <SectionRightColumn>
-                    <TransactionTypeText>{formatTokenAmountWithCommasAndDecimals(transactionDetails.valueExact, transactionDetails.symbol)}</TransactionTypeText>
+                    <TransactionTypeText>
+                      {
+                        transactionDetails.isApprovalUnlimited
+                          ? getLocale('braveWalletTransactionApproveUnlimited')
+                          : formatTokenAmountWithCommasAndDecimals(transactionDetails.valueExact, transactionDetails.symbol)
+                      }
+                    </TransactionTypeText>
                     <TransactionText />
                   </SectionRightColumn>
                 </SectionRow>
