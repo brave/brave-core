@@ -24,10 +24,7 @@
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/storage_partition.h"
-#include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -178,8 +175,7 @@ namespace brave_wallet {
 class JsonRpcServiceUnitTest : public testing::Test {
  public:
   JsonRpcServiceUnitTest()
-      : browser_context_(new content::TestBrowserContext()),
-        shared_url_loader_factory_(
+      : shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
@@ -196,7 +192,6 @@ class JsonRpcServiceUnitTest : public testing::Test {
               "0000\"}");
         }));
 
-    user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
 
     json_rpc_service_.reset(
@@ -485,8 +480,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
   std::unique_ptr<JsonRpcService> json_rpc_service_;
 
  private:
-  content::BrowserTaskEnvironment browser_task_environment_;
-  std::unique_ptr<content::TestBrowserContext> browser_context_;
+  base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;

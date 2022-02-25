@@ -12,8 +12,8 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "brave/browser/ipfs/ipfs_blob_context_getter_factory.h"
+#include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
 #include "services/network/public/cpp/data_element.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "storage/browser/blob/blob_data_builder.h"
@@ -28,9 +28,8 @@ class IpfsNetwrokUtilsUnitTest : public testing::Test {
   ~IpfsNetwrokUtilsUnitTest() override = default;
 
   void SetUp() override {
-    browser_context_ = std::make_unique<content::TestBrowserContext>();
     blob_getter_factory_ =
-        std::make_unique<IpfsBlobContextGetterFactory>(browser_context_.get());
+        std::make_unique<IpfsBlobContextGetterFactory>(&profile_);
   }
 
   base::FilePath CreateCustomTestFile(const base::FilePath& dir,
@@ -58,7 +57,7 @@ class IpfsNetwrokUtilsUnitTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<content::BrowserContext> browser_context_;
+  TestingProfile profile_;
   std::unique_ptr<IpfsBlobContextGetterFactory> blob_getter_factory_;
 };
 

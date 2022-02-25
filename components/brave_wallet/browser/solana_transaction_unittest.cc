@@ -10,17 +10,14 @@
 #include "base/base64.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -35,9 +32,7 @@ const char kMnemonic[] =
 
 class SolanaTransactionUnitTest : public testing::Test {
  public:
-  SolanaTransactionUnitTest()
-      : browser_context_(new content::TestBrowserContext()) {
-    user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
+  SolanaTransactionUnitTest() {
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     keyring_service_.reset(new KeyringService(&prefs_));
   }
@@ -76,8 +71,7 @@ class SolanaTransactionUnitTest : public testing::Test {
   }
 
  private:
-  content::BrowserTaskEnvironment browser_task_environment_;
-  std::unique_ptr<content::TestBrowserContext> browser_context_;
+  base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<KeyringService> keyring_service_;
 };

@@ -9,22 +9,20 @@
 #include <vector>
 
 #include "base/strings/string_number_conversions.h"
+#include "base/test/task_environment.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_ports.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
-#include "components/user_prefs/user_prefs.h"
 #include "components/version_info/channel.h"
-#include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
 #include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 class IpfsUtilsUnitTest : public testing::Test {
  public:
-  IpfsUtilsUnitTest() : browser_context_(new content::TestBrowserContext()) {}
+  IpfsUtilsUnitTest() {}
   ~IpfsUtilsUnitTest() override = default;
 
   void SetUp() override {
@@ -33,7 +31,7 @@ class IpfsUtilsUnitTest : public testing::Test {
     prefs_.registry()->RegisterIntegerPref(
         kIPFSResolveMethod,
         static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
-    user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
+
     public_gateway_ = GURL(ipfs::kDefaultIPFSGateway);
     local_gateway_ = GURL("http://localhost:48080");
   }
@@ -58,8 +56,7 @@ class IpfsUtilsUnitTest : public testing::Test {
   }
 
  private:
-  content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<content::TestBrowserContext> browser_context_;
+  base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple prefs_;
   GURL local_gateway_;
   GURL public_gateway_;

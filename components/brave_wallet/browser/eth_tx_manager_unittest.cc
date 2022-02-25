@@ -14,6 +14,7 @@
 #include "base/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/test/bind.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
@@ -29,11 +30,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
-#include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/test/browser_task_environment.h"
-#include "content/public/test/test_browser_context.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -171,7 +168,6 @@ class EthTxManagerUnitTest : public testing::Test {
  public:
   EthTxManagerUnitTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
-        browser_context_(new content::TestBrowserContext()),
         shared_url_loader_factory_(
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                 &url_loader_factory_)) {}
@@ -238,7 +234,6 @@ class EthTxManagerUnitTest : public testing::Test {
           }
         }));
 
-    user_prefs::UserPrefs::Set(browser_context_.get(), &prefs_);
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     json_rpc_service_.reset(
         new JsonRpcService(shared_url_loader_factory_, &prefs_));
@@ -388,8 +383,7 @@ class EthTxManagerUnitTest : public testing::Test {
   }
 
  protected:
-  content::BrowserTaskEnvironment task_environment_;
-  std::unique_ptr<content::TestBrowserContext> browser_context_;
+  base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;

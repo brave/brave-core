@@ -8,9 +8,9 @@
 #include <vector>
 
 #include "base/test/bind.h"
+#include "base/test/task_environment.h"
 #include "brave/components/brave_wallet/browser/blockchain_list_parser.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
-#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -51,7 +51,7 @@ const char token_list_json[] = R"(
 }  // namespace
 
 TEST(BlockchainRegistryUnitTest, GetAllTokens) {
-  content::BrowserTaskEnvironment task_environment;
+  base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
   ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
@@ -122,7 +122,7 @@ TEST(BlockchainRegistryUnitTest, GetAllTokens) {
 }
 
 TEST(BlockchainRegistryUnitTest, GetTokenByContract) {
-  content::BrowserTaskEnvironment task_environment;
+  base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
   ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
@@ -168,7 +168,7 @@ TEST(BlockchainRegistryUnitTest, GetTokenByContract) {
 }
 
 TEST(BlockchainRegistryUnitTest, GetTokenBySymbol) {
-  content::BrowserTaskEnvironment task_environment;
+  base::test::TaskEnvironment task_environment;
   auto* registry = BlockchainRegistry::GetInstance();
   TokenListMap token_list_map;
   ASSERT_TRUE(ParseTokenList(token_list_json, &token_list_map));
