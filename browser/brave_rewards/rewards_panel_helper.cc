@@ -9,10 +9,14 @@
 #include <string>
 #include <utility>
 
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
+#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "extensions/browser/extension_system.h"
 
 namespace {
 constexpr char kAdaptiveCaptchaPanelUrl[] = "adaptive_captcha_panel.html";
@@ -25,6 +29,26 @@ bool ShowPanel(content::BrowserContext* context,
   if (!browser) {
     return false;
   }
+
+  // Start the rewards ledger process if it is not already started
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return false;
+  }
+
+  rewards_service->StartProcess(base::DoNothing());
+
+  // Load the rewards extension if it is not already loaded
+  auto* extension_service =
+      extensions::ExtensionSystem::Get(profile)->extension_service();
+  if (!extension_service) {
+    return false;
+  }
+
+  static_cast<extensions::BraveComponentLoader*>(
+      extension_service->component_loader())
+      ->AddRewardsExtension();
 
   if (browser->window()->IsMinimized()) {
     browser->window()->Restore();
