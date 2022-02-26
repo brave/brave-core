@@ -1,9 +1,17 @@
 import * as React from 'react'
-import { BraveWallet } from '../../../constants/types'
-import { IconWrapper, PlaceholderText } from './style'
-import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension } from '../../../utils/string-utils'
 import { background } from 'ethereum-blockies'
-import { ETH } from '../../../options/asset-options'
+
+// Constants
+import { BraveWallet } from '../../../constants/types'
+
+// Utils
+import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension } from '../../../utils/string-utils'
+
+// Styled components
+import { IconWrapper, PlaceholderText } from './style'
+
+// Options
+import { makeNetworkAsset } from '../../../options/asset-options'
 
 interface Config {
   size: 'big' | 'small'
@@ -12,7 +20,8 @@ interface Config {
 }
 
 interface Props {
-  selectedAsset?: BraveWallet.BlockchainToken
+  asset: BraveWallet.BlockchainToken | undefined
+  network: BraveWallet.EthereumChain | undefined
 }
 
 function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config: Config) {
@@ -23,19 +32,30 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
   } = config
 
   return function (props: Props) {
-    const { selectedAsset } = props
+    const { asset, network } = props
 
-    if (!selectedAsset) {
+    if (!asset || !network) {
       return null
     }
-    const tokenImageURL = stripERC20TokenImageURL(selectedAsset?.logo)
+
+    const nativeAsset = React.useMemo(
+      () => makeNetworkAsset(network),
+      [network]
+    )
+
+    const isNativeAsset = React.useMemo(() =>
+      asset.symbol.toLowerCase() === nativeAsset.symbol.toLowerCase(),
+      [nativeAsset, asset]
+    )
+
+    const tokenImageURL = stripERC20TokenImageURL(asset.logo)
     const isRemoteURL = isRemoteImageURL(tokenImageURL)
-    const isDataURL = selectedAsset?.logo.startsWith('chrome://erc-token-images/')
-    const isStorybook = selectedAsset?.logo.startsWith('static/media/components/brave_wallet_ui/')
+    const isDataURL = asset.logo.startsWith('chrome://erc-token-images/')
+    const isStorybook = asset.logo.startsWith('static/media/components/brave_wallet_ui/')
 
     const isValidIcon = React.useMemo(() => {
       if (isRemoteURL || isDataURL) {
-        const url = new URL(selectedAsset?.logo)
+        const url = new URL(asset.logo)
         return isValidIconExtension(url.pathname)
       }
       if (isStorybook) {
@@ -44,13 +64,15 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
       return false
     }, [isRemoteURL, isDataURL, tokenImageURL])
 
-    const needsPlaceholder = selectedAsset?.symbol !== 'ETH' && (tokenImageURL === '' || !isValidIcon)
+    const needsPlaceholder = isNativeAsset
+      ? (tokenImageURL === '' || !isValidIcon) && nativeAsset.logo === ''
+      : tokenImageURL === '' || !isValidIcon
 
     const bg = React.useMemo(() => {
       if (needsPlaceholder) {
-        return background({ seed: selectedAsset.contractAddress ? selectedAsset?.contractAddress.toLowerCase() : selectedAsset.name })
+        return background({ seed: asset.contractAddress ? asset.contractAddress.toLowerCase() : asset.name })
       }
-    }, [selectedAsset])
+    }, [asset])
 
     const remoteImage = React.useMemo(() => {
       if (isRemoteURL) {
@@ -68,10 +90,11 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
           marginLeft={marginLeft ?? 0}
           marginRight={marginRight ?? 0}
         >
-          <PlaceholderText size={size}>{selectedAsset?.symbol.charAt(0)}</PlaceholderText>
+          <PlaceholderText size={size}>{asset.symbol.charAt(0)}</PlaceholderText>
         </IconWrapper>
       )
     }
+
     return (
       <IconWrapper
         isPlaceholder={false}
@@ -79,7 +102,13 @@ function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config
         marginLeft={marginLeft ?? 0}
         marginRight={marginRight ?? 0}
       >
-        <WrappedComponent icon={selectedAsset?.symbol === 'ETH' ? ETH.logo : isRemoteURL ? remoteImage : selectedAsset?.logo} />
+        <WrappedComponent
+          icon={
+            isNativeAsset && nativeAsset.logo
+              ? nativeAsset.logo
+              : isRemoteURL ? remoteImage : asset.logo
+          }
+        />
       </IconWrapper>
     )
   }

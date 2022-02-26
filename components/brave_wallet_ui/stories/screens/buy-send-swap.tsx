@@ -23,17 +23,17 @@ export interface Props {
   accounts: UserAccountType[]
   networkList: BraveWallet.EthereumChain[]
   orderType: OrderTypes
-  selectedSendAsset?: BraveWallet.BlockchainToken
+  selectedSendAsset: BraveWallet.BlockchainToken | undefined
   sendAssetBalance: string
-  swapToAsset: BraveWallet.BlockchainToken
-  swapFromAsset: BraveWallet.BlockchainToken
+  swapToAsset: BraveWallet.BlockchainToken | undefined
+  swapFromAsset: BraveWallet.BlockchainToken | undefined
   selectedNetwork: BraveWallet.EthereumChain
   selectedAccount: UserAccountType
   selectedTab: BuySendSwapTypes
   exchangeRate: string
   slippageTolerance: SlippagePresetObjectType
-  swapValidationError?: SwapValidationErrorType
-  sendAmountValidationError?: AmountValidationErrorType
+  swapValidationError: SwapValidationErrorType | undefined
+  sendAmountValidationError: AmountValidationErrorType | undefined
   orderExpiration: ExpirationPresetObjectType
   buyAmount: string
   sendAmount: string

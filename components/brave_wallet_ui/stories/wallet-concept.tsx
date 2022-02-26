@@ -878,6 +878,8 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onSelectSendAsset={onSelectTransactAsset}
             onAddNetwork={onAddNetwork}
             onAddAsset={onShowVisibleAssetsModal}
+            swapValidationError={undefined}
+            sendAmountValidationError={undefined}
           />
         </WalletWidgetStandIn>
       }

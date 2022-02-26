@@ -18,7 +18,7 @@ import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
 export interface Props {
   onCancel: () => void
   walletName: string
-  hardwareWalletCode?: HardwareWalletResponseCodeType
+  hardwareWalletCode: HardwareWalletResponseCodeType | undefined
   retryCallable: () => void
   onClickInstructions: () => void
 }

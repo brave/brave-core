@@ -202,6 +202,7 @@ export const _ConfirmTransaction = () => {
         updateUnapprovedTransactionNonce={updateUnapprovedTransactionNonce}
         getERC20Allowance={getERC20Allowance}
         fullTokenList={NewAssetOptions}
+        gasEstimates={undefined}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -620,6 +621,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                 <SelectContainer>
                   <SelectAsset
                     assets={AccountAssetOptions}
+                    selectedNetwork={selectedNetwork}
                     onSelectAsset={onSelectAsset}
                     onBack={onHideSelectAsset}
                     onAddAsset={onAddAsset}
@@ -696,6 +698,8 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
                         selectedAssetBalance={selectedAccount.balance.toString()}
                         toAddressOrUrl={toAddress}
                         toAddress={toAddress}
+                        amountValidationError={undefined}
+                        selectedNetwork={selectedNetwork}
                       />
                     }
                     {selectedPanel === 'buy' &&
@@ -802,6 +806,7 @@ export const _ConnectHardwareWallet = () => {
         onCancel={onCancel}
         retryCallable={onConfirmTransaction}
         onClickInstructions={onClickInstructions}
+        hardwareWalletCode={undefined}
       />
     </StyledExtensionWrapper>
   )

@@ -61,6 +61,7 @@ function SelectHeader (props: Props) {
         <SelectAsset
           onAddAsset={onAddAsset}
           assets={assetOptions}
+          selectedNetwork={selectedNetwork}
           onSelectAsset={onSelectedAsset}
           onBack={goBack}
         />

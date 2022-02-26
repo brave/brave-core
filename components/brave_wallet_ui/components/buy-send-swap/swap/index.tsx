@@ -33,8 +33,9 @@ import { LoaderIcon } from 'brave-ui/components/icons'
 import { ResetButton } from '../shared-styles'
 
 export interface Props {
-  toAsset: BraveWallet.BlockchainToken
-  fromAsset: BraveWallet.BlockchainToken
+  selectedNetwork: BraveWallet.EthereumChain
+  toAsset: BraveWallet.BlockchainToken | undefined
+  fromAsset: BraveWallet.BlockchainToken | undefined
   fromAmount: string
   toAmount: string
   exchangeRate: string
@@ -45,7 +46,7 @@ export interface Props {
   toAssetBalance: string
   isFetchingQuote: boolean
   isSubmitDisabled: boolean
-  validationError?: SwapValidationErrorType
+  validationError: SwapValidationErrorType | undefined
   customSlippageTolerance: string
   onCustomSlippageToleranceChange: (value: string) => void
   onToggleOrderType: () => void
@@ -56,12 +57,13 @@ export interface Props {
   onSelectPresetAmount: (percent: number) => void
   onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
   onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
-  onFilterAssetList: (asset: BraveWallet.BlockchainToken) => void
+  onFilterAssetList: (asset?: BraveWallet.BlockchainToken) => void
   onQuoteRefresh: () => void
 }
 
 function Swap (props: Props) {
   const {
+    selectedNetwork,
     toAsset,
     fromAsset,
     fromAmount,
@@ -105,11 +107,11 @@ function Swap (props: Props) {
       return getLocale('braveWalletSwapInsufficientBalance')
     }
 
-    if (validationError === 'insufficientEthBalance') {
-      return getLocale('braveWalletSwapInsufficientEthBalance')
+    if (validationError === 'insufficientFundsForGas') {
+      return getLocale('braveWalletSwapInsufficientFundsForGas')
     }
 
-    if (validationError === 'insufficientAllowance') {
+    if (validationError === 'insufficientAllowance' && fromAsset) {
       return getLocale('braveWalletSwapInsufficientAllowance')
         .replace('$1', fromAsset.symbol)
     }
@@ -123,7 +125,7 @@ function Swap (props: Props) {
     }
 
     return getLocale('braveWalletSwap')
-  }, [validationError])
+  }, [validationError, fromAsset])
 
   const disclaimerText = getLocale('braveWalletSwapDisclaimer')
   const { beforeTag, duringTag, afterTag } = splitStringForTag(disclaimerText)
@@ -158,6 +160,7 @@ function Swap (props: Props) {
         inputName='from'
         selectedAssetBalance={fromAssetBalance}
         selectedAsset={fromAsset}
+        selectedNetwork={selectedNetwork}
         onShowSelection={onShowAssetFrom}
         validationError={validationError}
         autoFocus={true}
@@ -174,6 +177,7 @@ function Swap (props: Props) {
         inputName='to'
         selectedAssetBalance={toAssetBalance}
         selectedAsset={toAsset}
+        selectedNetwork={selectedNetwork}
         onShowSelection={onShowAssetTo}
         validationError={validationError}
       />
