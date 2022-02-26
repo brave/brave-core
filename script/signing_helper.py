@@ -137,7 +137,7 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
 
         @property
         def codesign_requirements_outer_app(self):
-            return 'designated => anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists / and certificate leaf[field.1.2.840.113635.100.6.1.13] / exists */ and certificate leaf[subject.OU] = ' + os.environ['MAC_SIGNING_IDENTIFIER']
+            return 'designated => identifier "' + self.base_bundle_id + '" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists / and certificate leaf[field.1.2.840.113635.100.6.1.13] / exists */'
 
     config_class = ConfigNonChromeBranded
 

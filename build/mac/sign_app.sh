@@ -66,7 +66,6 @@ trap check_exit EXIT
 # brave/scripts/signing_helper.py will retrieve this value when called from
 # sign_chrome.py
 export MAC_PROVISIONING_PROFILE
-export MAC_SIGNING_IDENTIFIER
 
 # Clear output directory. It seems GN auto-creates directory path to the
 # expected outputs. However, the signing script doesn't expect the path to
