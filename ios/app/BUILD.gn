@@ -27,7 +27,9 @@ source_set("app") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_sync:constants",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//brave/components/skus/browser",
+    "//brave/ios/app/resources",
     "//brave/ios/browser",
     "//brave/ios/browser/api/ads",
     "//brave/ios/browser/api/bookmarks",
@@ -67,6 +69,7 @@ source_set("app") {
     "//ios/public/provider/chrome/browser/ui_utils:ui_utils_api",
     "//ios/web/public/init",
     "//ios/web/public/webui",
+    "//ui/base",
 
     # Use the provider API controlled by args.gn.
     ios_provider_target,
