@@ -23,6 +23,7 @@ constexpr size_t kMaxRejectedTxNum = 10;
 
 }  // namespace
 
+// static
 bool TxStateManager::ValueToTxMeta(const base::Value& value, TxMeta* meta) {
   const std::string* id = value.FindStringKey("id");
   if (!id)

@@ -21,7 +21,6 @@ class TxMeta {
  public:
   TxMeta();
   virtual ~TxMeta() = default;
-  TxMeta(const TxMeta&) = delete;
 
   static std::string GenerateMetaID();
 

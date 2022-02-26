@@ -55,8 +55,8 @@ class TxStateManager {
   void RemoveObserver(Observer* observer);
 
  protected:
-  // For derived class to call to fill TxMeta properties.
-  bool ValueToTxMeta(const base::Value& value, TxMeta* tx_meta);
+  // For derived classes to call to fill TxMeta properties.
+  static bool ValueToTxMeta(const base::Value& value, TxMeta* tx_meta);
 
   raw_ptr<PrefService> prefs_ = nullptr;
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
@@ -67,7 +67,7 @@ class TxStateManager {
 
   // Each derived class should implement its own ValueToTxMeta to create a
   // specific type of tx meta (ex: EthTxMeta) from a value. TxMeta
-  // properties can be filled via the protected ValueToTxMeta function below.
+  // properties can be filled via the protected ValueToTxMeta function above.
   virtual std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value) = 0;
 
   // Each derived class should provide transaction pref path prefix as

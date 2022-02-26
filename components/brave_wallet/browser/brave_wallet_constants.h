@@ -647,6 +647,10 @@ constexpr int kSolanaBlockhashSize = 32;
 constexpr size_t kSolanaMaxTxSize = 1232;
 constexpr char kSolanaSystemProgramId[] = "11111111111111111111111111111111";
 
+constexpr char kEthereumPrefKey[] = "ethereum";
+constexpr char kFilecoinPrefKey[] = "filecoin";
+constexpr char kSolanaPrefKey[] = "solana";
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_BRAVE_WALLET_CONSTANTS_H_

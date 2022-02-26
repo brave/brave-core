@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -174,8 +175,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
     if (!transactions.DictEmpty()) {
       DictionaryPrefUpdate update(prefs, kBraveWalletTransactions);
       base::Value* dict = update.Get();
-      const std::string path = "ethereum";
-      dict->SetPath(path, std::move(transactions));
+      dict->SetPath(kEthereumPrefKey, std::move(transactions));
     }
     prefs->SetBoolean(kBraveWalletEthereumTransactionsCoinTypeMigrated, true);
   }

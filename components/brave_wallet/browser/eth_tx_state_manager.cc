@@ -8,7 +8,9 @@
 #include <utility>
 
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eip1559_transaction.h"
 #include "brave/components/brave_wallet/browser/eip2930_transaction.h"
@@ -101,7 +103,8 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
 }
 
 std::string EthTxStateManager::GetTxPrefPathPrefix() {
-  return "ethereum." + GetNetworkId(prefs_, json_rpc_service_->GetChainId());
+  return base::StrCat({kEthereumPrefKey, ".",
+                       GetNetworkId(prefs_, json_rpc_service_->GetChainId())});
 }
 
 }  // namespace brave_wallet

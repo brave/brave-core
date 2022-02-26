@@ -20,15 +20,15 @@ class Value;
 
 namespace brave_wallet {
 
-class EthTransaction;
 struct TransactionReceipt;
 
 class EthTxMeta : public TxMeta {
  public:
   EthTxMeta();
   explicit EthTxMeta(std::unique_ptr<EthTransaction> tx);
-  EthTxMeta(const EthTxMeta&) = delete;
   ~EthTxMeta() override;
+  EthTxMeta(const EthTxMeta&) = delete;
+  EthTxMeta operator=(const EthTxMeta&) = delete;
   bool operator==(const EthTxMeta&) const;
 
   // TxMeta
