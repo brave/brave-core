@@ -1779,5 +1779,33 @@ extension Strings {
       value: "No Networks Added",
       comment: "The empty state displayed when the user has not yet added any custom networks."
     )
+    public static let transactionBacklogTitle = NSLocalizedString(
+      "wallet.transactionBacklogTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Transaction backlog",
+      comment: "Title of confirmation prompt when there's a backlog of wallet transactions"
+    )
+    public static let transactionBacklogBody = NSLocalizedString(
+      "wallet.transactionBacklogBody",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "You're attempting to start a new transaction while you have previously submitted transactions that have not been confirmed. This will block any new ones from being submitted.",
+      comment: "Text body of confirmation prompt when there's a backlog of wallet transactions"
+    )
+    public static let transactionBacklogAcknowledgement = NSLocalizedString(
+      "wallet.transactionBacklogAcknowledgement",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Clear & replace the incomplete transaction(s)",
+      comment: "Text of toggle for a confirmation prompt when there's a backlog of wallet transactions"
+    )
+    public static let transactionBacklogLearnMoreButton = NSLocalizedString(
+      "wallet.transactionBacklogLearnMoreButton",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Learn More",
+      comment: "Button to learn more about incomplete/pending wallet transactions."
+    )
   }
 }
