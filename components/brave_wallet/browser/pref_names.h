@@ -24,6 +24,9 @@ extern const char kBraveWalletUserAssets[];
 extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
 extern const char kBraveWalletAutoLockMinutes[];
 extern const char kSupportEip1559OnLocalhostChain[];
+// Added 02/2022 to migrate ethereum transactions to be under ethereum coin
+// type.
+extern const char kBraveWalletEthereumTransactionsCoinTypeMigrated[];
 
 // DEPRECATED
 extern const char kBraveWalletSelectedAccount[];

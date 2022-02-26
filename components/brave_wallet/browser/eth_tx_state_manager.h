@@ -11,12 +11,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/memory/raw_ptr.h"
-#include "base/observer_list.h"
-#include "base/time/time.h"
-#include "brave/components/brave_wallet/browser/eth_transaction.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "base/gtest_prod_util.h"
+#include "brave/components/brave_wallet/browser/tx_state_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -28,75 +25,30 @@ class Value;
 
 namespace brave_wallet {
 
+class TxMeta;
+class EthTxMeta;
 class JsonRpcService;
 
-class EthTxStateManager : public mojom::JsonRpcServiceObserver {
+class EthTxStateManager : public TxStateManager {
  public:
-  struct TxMeta {
-    TxMeta();
-    explicit TxMeta(std::unique_ptr<EthTransaction> tx);
-    TxMeta(const TxMeta&) = delete;
-    ~TxMeta();
-    bool operator==(const TxMeta&) const;
-
-    std::string id;
-    mojom::TransactionStatus status = mojom::TransactionStatus::Unapproved;
-    EthAddress from;
-    base::Time created_time;
-    base::Time submitted_time;
-    base::Time confirmed_time;
-    TransactionReceipt tx_receipt;
-    std::string tx_hash;
-    std::unique_ptr<EthTransaction> tx;
-  };
-
   explicit EthTxStateManager(PrefService* prefs,
                              JsonRpcService* json_rpc_service);
   ~EthTxStateManager() override;
   EthTxStateManager(const EthTxStateManager&) = delete;
   EthTxStateManager operator=(const EthTxStateManager&) = delete;
 
-  static std::string GenerateMetaID();
-  static base::Value TxMetaToValue(const TxMeta& meta);
-  static mojom::TransactionInfoPtr TxMetaToTransactionInfo(const TxMeta& meta);
-  static std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value);
-
-  void AddOrUpdateTx(const TxMeta& meta);
-  std::unique_ptr<TxMeta> GetTx(const std::string& id);
-  void DeleteTx(const std::string& id);
-  void WipeTxs();
-
   std::vector<std::unique_ptr<TxMeta>> GetTransactionsByStatus(
       absl::optional<mojom::TransactionStatus> status,
       absl::optional<EthAddress> from);
 
-  // mojom::JsonRpcServiceObserver
-  void ChainChangedEvent(const std::string& chain_id) override;
-  void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
-                                          const std::string& error) override;
-  void OnIsEip1559Changed(const std::string& chain_id,
-                          bool is_eip1559) override {}
-
-  class Observer : public base::CheckedObserver {
-   public:
-    virtual void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) {
-    }
-    virtual void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) {}
-  };
-  void AddObserver(Observer* observer);
-  void RemoveObserver(Observer* observer);
+  std::unique_ptr<EthTxMeta> GetEthTx(const std::string& id);
+  std::unique_ptr<EthTxMeta> ValueToEthTxMeta(const base::Value& value);
 
  private:
-  // only support REJECTED and CONFIRMED
-  void RetireTxByStatus(mojom::TransactionStatus status, size_t max_num);
+  FRIEND_TEST_ALL_PREFIXES(EthTxStateManagerUnitTest, GetTxPrefPathPrefix);
 
-  base::ObserverList<Observer> observers_;
-  raw_ptr<PrefService> prefs_ = nullptr;
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
-  mojo::Receiver<mojom::JsonRpcServiceObserver> observer_receiver_{this};
-  std::string chain_id_;
-  std::string network_url_;
-  base::WeakPtrFactory<EthTxStateManager> weak_factory_;
+  std::unique_ptr<TxMeta> ValueToTxMeta(const base::Value& value) override;
+  std::string GetTxPrefPathPrefix() override;
 };
 
 }  // namespace brave_wallet
