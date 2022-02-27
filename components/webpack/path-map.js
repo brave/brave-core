@@ -19,4 +19,8 @@ module.exports = {
 // Force same styled-components module for brave-core and brave-ui
 // which ensure both repos code use the same singletons, e.g. ThemeContext.
 'styled-components': path.resolve(__dirname, '../../node_modules/styled-components'),
+// More helpful path for local web-components
+'$web-components': path.resolve(__dirname, '../web-components'),
+// TODO(petemill): Rename 'brave/components/common' dir to 'brave/components/web-common'
+'$web-common': path.resolve(__dirname, '../common'),
 }
