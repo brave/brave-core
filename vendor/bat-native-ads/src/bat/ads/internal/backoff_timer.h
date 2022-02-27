@@ -9,7 +9,6 @@
 #include <cstdint>
 #include <memory>
 
-#include "base/callback_forward.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/timer.h"
 

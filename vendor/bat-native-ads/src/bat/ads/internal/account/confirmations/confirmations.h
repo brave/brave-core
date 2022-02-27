@@ -10,7 +10,6 @@
 #include <string>
 
 #include "base/memory/raw_ptr.h"
-#include "base/observer_list.h"
 #include "bat/ads/internal/account/confirmations/confirmations_delegate.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token_delegate.h"
 #include "bat/ads/internal/backoff_timer.h"
