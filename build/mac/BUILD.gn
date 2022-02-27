@@ -290,6 +290,7 @@ action("sign_app") {
     unsigned_app_path,
     provisioning_profile,
     "$packaging_dir/app-entitlements.plist",
+    "//brave/script/signing_helper.py",
   ]
 
   outputs = [ signed_app_path ]
