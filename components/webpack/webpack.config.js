@@ -12,6 +12,7 @@ const pathMap = require('./path-map')
 const tsConfigPath = path.join(process.env.ROOT_GEN_DIR, 'tsconfig-webpack.json')
 
 module.exports = async function (env, argv) {
+  const isDevMode = argv.mode === 'development'
   // Webpack config object
   const resolve = {
     extensions: ['.js', '.tsx', '.ts', '.json'],
@@ -34,7 +35,7 @@ module.exports = async function (env, argv) {
     resolve.aliasFields = Array.isArray(argv.webpack_alias) ? argv.webpack_alias : [ argv.webpack_alias ]
   }
   return {
-    devtool: argv.mode === 'development' ? '#inline-source-map' : false,
+    devtool: isDevMode ? '#inline-source-map' : false,
     output: {
       path: process.env.TARGET_GEN_DIR,
       filename: '[name].bundle.js',
@@ -54,6 +55,43 @@ module.exports = async function (env, argv) {
     module: {
       rules: [
         {
+          // CSS imported from node_modules or in a x.global.css file
+          // is just regular css converted to JS and injected to style elements
+          test: /\.s?css$/,
+          include: [/\.global\./, /node_modules/],
+          use: [
+            { loader: "style-loader" },
+            { loader: "css-loader" },
+          ],
+        },
+        {
+          // CSS imported in the source tree can use sass and css modules
+          // syntax.
+          test: /\.s?css$/,
+          exclude: [/\.global\./, /node_modules/],
+          use: [
+            // Injects the result into the DOM as a style block
+            { loader: "style-loader" },
+            // Converts the resulting CSS to Javascript to be bundled
+            // (modules:true to rename CSS classes in output to cryptic identifiers,
+            // except if wrapped in a :global(...) pseudo class).
+            {
+              loader: "css-loader",
+              options: {
+                importLoaders: 3,
+                sourceMap: false,
+                modules: {
+                  localIdentName: isDevMode
+                    ? "[path][name]__[local]--[hash:base64:5]"
+                    : "[hash:base64]",
+                },
+              },
+            },
+             // First, convert SASS to CSS
+            { loader: "sass-loader" },
+          ],
+        },
+        {
           test: /\.tsx?$/,
           loader: 'ts-loader',
           exclude: /node_modules\/(?!brave-ui)/,
@@ -64,10 +102,6 @@ module.exports = async function (env, argv) {
             // correct build configuration output directory.
             configFile: tsConfigPath
           }
-        },
-        {
-          test: /\.css$/,
-          loader: ['style-loader', 'css-loader']
         },
         // Loads font files for Font Awesome
         {

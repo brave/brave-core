@@ -3,6 +3,7 @@ import * as React from 'react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
 import { addParameters } from '@storybook/react'
 import { initLocale } from 'brave-ui/helpers'
+import '../components/web-components/app.global.scss'
 import { getString } from './locale'
 import ThemeProvider from '../components/common/StorybookThemeProvider'
 
@@ -12,8 +13,9 @@ import '../ui/webui/resources/fonts/poppins.css'
 
 export const parameters = {
   backgrounds: {
-    default: 'Neutral300',
+    default: 'Dynamic',
     values: [
+      { name: 'Dynamic', value: 'var(--background1)' },
       { name: 'Neutral300', value: '#DEE2E6' },
       { name: 'Grey700', value: '#5E6175' },
       { name: 'White', value: '#FFF' },
