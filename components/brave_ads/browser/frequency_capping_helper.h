@@ -18,14 +18,15 @@ class FrequencyCappingHelper {
  public:
   static FrequencyCappingHelper* GetInstance();
 
-  void RecordAdEvent(const std::string& ad_type,
-                     const std::string& confirmation_type,
-                     const double timestamp);
+  void RecordAdEventForId(const std::string& id,
+                          const std::string& ad_type,
+                          const std::string& confirmation_type,
+                          const double timestamp);
 
   std::vector<double> GetAdEvents(const std::string& ad_type,
                                   const std::string& confirmation_type) const;
 
-  void ResetAdEvents();
+  void ResetAdEventsForId(const std::string& id);
 
  private:
   friend struct base::DefaultSingletonTraits<FrequencyCappingHelper>;

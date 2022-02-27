@@ -87,14 +87,17 @@ void BatAdsClientMojoBridge::CloseNotification(
   bat_ads_client_->CloseNotification(uuid);
 }
 
-void BatAdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
-                                           const std::string& confirmation_type,
-                                           const double timestamp) const {
+void BatAdsClientMojoBridge::RecordAdEventForId(
+    const std::string& id,
+    const std::string& ad_type,
+    const std::string& confirmation_type,
+    const double timestamp) const {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
+  bat_ads_client_->RecordAdEventForId(id, ad_type, confirmation_type,
+                                      timestamp);
 }
 
 std::vector<double> BatAdsClientMojoBridge::GetAdEvents(
@@ -109,12 +112,12 @@ std::vector<double> BatAdsClientMojoBridge::GetAdEvents(
   return ad_events;
 }
 
-void BatAdsClientMojoBridge::ResetAdEvents() const {
+void BatAdsClientMojoBridge::ResetAdEventsForId(const std::string& id) const {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ResetAdEvents();
+  bat_ads_client_->ResetAdEventsForId(id);
 }
 
 void OnUrlRequest(const ads::UrlRequestCallback& callback,

@@ -36,8 +36,9 @@ class AdsClientMock : public AdsClient {
 
   MOCK_METHOD1(CloseNotification, void(const std::string& uuid));
 
-  MOCK_CONST_METHOD3(RecordAdEvent,
-                     void(const std::string& type,
+  MOCK_CONST_METHOD4(RecordAdEventForId,
+                     void(const std::string& id,
+                          const std::string& type,
                           const std::string& confirmation_type,
                           const double timestamp));
 
@@ -45,7 +46,7 @@ class AdsClientMock : public AdsClient {
                      std::vector<double>(const std::string& ad_type,
                                          const std::string& confirmation_type));
 
-  MOCK_CONST_METHOD0(ResetAdEvents, void());
+  MOCK_CONST_METHOD1(ResetAdEventsForId, void(const std::string& id));
 
   MOCK_METHOD2(UrlRequest,
                void(mojom::UrlRequestPtr url_request,
