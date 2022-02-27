@@ -117,8 +117,6 @@ def AddBravePartsForSigning(parts, config):
                                    + CodeSignOptions.KILL
                                    + CodeSignOptions.HARDENED_RUNTIME)
 
-    # Make sure framework has anchor added to codesign requirements to match upstream
-    parts['framework'].requirements = config.codesign_requirements
     return parts
 
 
@@ -138,12 +136,8 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
             return [model.Distribution(channel=brave_channel)]
 
         @property
-        def codesign_requirements_outer_app(self):
-            return 'designated => identifier "' + self.base_bundle_id + '" ' + self.codesign_requirements
-
-        @property
-        def codesign_requirements(self):
-            return 'and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists / and certificate leaf[field.1.2.840.113635.100.6.1.13] / exists */'
+        def codesign_requirements_basic(self):
+            return 'and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists / and certificate leaf[field.1.2.840.113635.100.6.1.13] / exists */'            
 
     config_class = ConfigNonChromeBranded
 
