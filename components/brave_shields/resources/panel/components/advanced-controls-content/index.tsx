@@ -83,6 +83,13 @@ function AdvancedControlsContent () {
     if (getSiteSettings) getSiteSettings()
   }
 
+  const mapOptions = (entry: { value: any; text: string }, i: number): any => {
+    return (
+      <option value={entry.value} key={i}>
+        {entry.text}
+      </option>
+    )
+  }
   return (
     <section
       id='advanced-controls-content'
@@ -162,13 +169,7 @@ function AdvancedControlsContent () {
             value={siteSettings?.fingerprintMode}
             aria-label={getLocale('braveShieldsFingerprintingBlocked')}
           >
-            {fingerprintModeOptions.map((entry, i) => {
-                return (
-                  <option value={entry.value} key={i}>
-                    {entry.text}
-                  </option>
-                )
-              })}
+            {fingerprintModeOptions.map(mapOptions)}
           </select>
         </S.ControlGroup>
         <S.ControlGroup>
@@ -178,13 +179,7 @@ function AdvancedControlsContent () {
             value={siteSettings?.cookieBlockMode}
             aria-label={getLocale('braveShieldsCookiesBlocked')}
           >
-              {cookieBlockModeOptions.map((entry, i) => {
-                return (
-                  <option value={entry.value} key={i}>
-                    {entry.text}
-                  </option>
-                )
-              })}
+              {cookieBlockModeOptions.map(mapOptions)}
           </select>
         </S.ControlGroup>
       </S.SettingsBox>

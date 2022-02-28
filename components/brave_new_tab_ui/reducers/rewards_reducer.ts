@@ -9,7 +9,7 @@ import { InitialRewardsData, PreInitialRewardsData } from '../api/initialData'
 
 const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, action) => {
   const payload = action.payload
-
+  var dismissedNotifications: string[];
   switch (action.type) {
     case types.ON_ADS_ENABLED:
       state = { ...state }
@@ -29,7 +29,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
 
     case types.DISMISS_NOTIFICATION:
       state = { ...state }
-      const dismissedNotifications = state.rewardsState.dismissedNotifications
+      dismissedNotifications = state.rewardsState.dismissedNotifications
       dismissedNotifications.push(payload.id)
       state.rewardsState.dismissedNotifications = dismissedNotifications
 
@@ -43,7 +43,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
 
       state = { ...state }
       const { rewardsState } = state
-      const dismissedNotifications = rewardsState.dismissedNotifications || []
+      dismissedNotifications = rewardsState.dismissedNotifications || []
 
       rewardsState.promotions = payload.promotions.filter((promotion: any) => !dismissedNotifications.includes(promotion.promotionId))
 
@@ -65,9 +65,8 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       oldNotifications.push(payload.promotion.promotionId)
       state.rewardsState.dismissedNotifications = oldNotifications
 
-      state.rewardsState.promotions = state.rewardsState.promotions.filter((promotion: NewTab.Promotion) => {
-        return promotion.promotionId !== payload.promotion.promotionId
-      })
+      state.rewardsState.promotions = state.rewardsState.promotions.filter(
+        (promotion: NewTab.Promotion) => promotion.promotionId !== payload.promotion.promotionId)
       break
 
     case types.ON_BALANCE:
