@@ -126,7 +126,7 @@
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_LOCK" desc="Wallet popup lock crypto button">Lock Wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_BACKUP" desc="Wallet popup backup wallet button">Backup Wallet</message>
   <message name="IDS_BRAVE_WALLET_WALLET_POPUP_CONNECTED_SITES" desc="Wallet popup connected sites button">Connected sites</message>
-  <message name="IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT" desc="Backup warning banner description">Back up your wallet now to protect your crypto assets and ensure you never lose access.</message>
+  <message name="IDS_BRAVE_WALLET_BACKUP_WARNING_TEXT" desc="Backup warning banner description">Back up your wallet now to protect your assets and ensure you never lose access.</message>
   <message name="IDS_BRAVE_WALLET_BACKUP_BUTTON" desc="Backup warning banner back up button">Back up now</message>
   <message name="IDS_BRAVE_WALLET_DISMISS_BUTTON" desc="Backup warning banner dismiss button">Dismiss</message>
   <message name="IDS_BRAVE_WALLET_DEFAULT_WALLET_BANNER" desc="Default wallet banner description">Brave Wallet is not set as your default wallet and will not respond to web3 DApps. Visit settings to change your default wallet.</message>
