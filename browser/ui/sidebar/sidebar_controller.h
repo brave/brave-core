@@ -39,11 +39,11 @@ class SidebarController : public SidebarService::Observer {
   SidebarController(const SidebarController&) = delete;
   SidebarController& operator=(const SidebarController&) = delete;
 
-  // |disposition| is only valid for shortcut type.
-  // If it's unknown, it's activated at active tab.
+  // |disposition| is only valid for shortcut type. If |disposition| is not
+  // CURRENT_TAB, item at |index| is handled based on |disposition|.
   void ActivateItemAt(
       int index,
-      WindowOpenDisposition disposition = WindowOpenDisposition::UNKNOWN);
+      WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
   void AddItemWithCurrentTab();
   // If current browser doesn't have a tab for |url|, active tab will load
   // |url|. Otherwise, existing tab will be activated.

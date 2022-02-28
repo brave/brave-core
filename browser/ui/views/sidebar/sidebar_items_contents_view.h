@@ -22,6 +22,10 @@ namespace views {
 class MenuRunner;
 }  // namespace views
 
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
+
 class BraveBrowser;
 class SidebarItemView;
 
@@ -79,6 +83,8 @@ class SidebarItemsContentsView : public views::View,
   void Update();
 
  private:
+  friend class sidebar::SidebarBrowserTest;
+
   enum ContextMenuIDs {
     kItemRemove,
   };

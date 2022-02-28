@@ -30,6 +30,10 @@ namespace views {
 class MenuRunner;
 }  // namespace views
 
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
+
 class BraveBrowser;
 class SidebarControlView;
 
@@ -74,6 +78,8 @@ class SidebarContainerView
   void OnActiveIndexChanged(int old_index, int new_index) override;
 
  private:
+  friend class sidebar::SidebarBrowserTest;
+
   class BrowserWindowEventObserver;
 
   void AddChildViews();

@@ -24,6 +24,10 @@ class BoundsAnimator;
 class ImageButton;
 }  // namespace views
 
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
+
 class BraveBrowser;
 class SidebarItemDragContext;
 class SidebarItemsContentsView;
@@ -88,6 +92,8 @@ class SidebarItemsScrollView : public views::View,
   void Update();
 
  private:
+  friend class sidebar::SidebarBrowserTest;
+
   void UpdateArrowViewsTheme();
   void UpdateArrowViewsEnabledState();
   // Return true if scroll view's area doesn't have enough bounds to show whole
