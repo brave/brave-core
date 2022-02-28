@@ -754,7 +754,6 @@ function Container (props: Props) {
             onAddNetwork={onAddNetwork}
             onAddAsset={onShowVisibleAssetsModal}
           />
-          <br />
           <SweepstakesBanner />
         </WalletWidgetStandIn>
       }

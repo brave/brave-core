@@ -620,8 +620,10 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletTrezorSignTypedDataError",
      IDS_BRAVE_WALLET_TREZOR_SIGN_TYPED_DATA_ERROR},
     {"braveWalletSweepstakesTitle", IDS_BRAVE_WALLET_SWEEPSTAKES_TITLE},
-    {"braveWalletSweepstakesDescription", IDS_BRAVE_WALLET_SWEEPSTAKES_DESCRIPTION},
-    {"braveWalletSweepstakesCallToAction", IDS_BRAVE_WALLET_SWEEPSTAKES_CALL_TO_ACTION},
+    {"braveWalletSweepstakesDescription",
+     IDS_BRAVE_WALLET_SWEEPSTAKES_DESCRIPTION},
+    {"braveWalletSweepstakesCallToAction",
+     IDS_BRAVE_WALLET_SWEEPSTAKES_CALL_TO_ACTION},
 };
 
 // Swap constants

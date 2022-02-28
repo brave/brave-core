@@ -7,10 +7,10 @@ export const Card = styled.div`
     width: 100%;
     background: ${(p) => p.theme.color.background01};
     border-radius: 8px;
-    /* Light Theme/Dividers and outlines/divider01 */
     border: 2px solid ${(p) => p.theme.color.divider01};
     padding-left: 16px;
     padding-right: 8px;
+    margin-top: 16px;
 `
 
 const Row = styled.div`
@@ -34,7 +34,6 @@ export const Title = styled.h2`
     margin-top: 4px;
     margin-bottom: 4px;
     word-wrap: no-wrap;
-    /* Light Theme/Text/text01 */
     color: ${(p) => p.theme.color.text01};
 `
 
@@ -52,7 +51,6 @@ export const BodyText = styled.span`
     font-size: 12px;
     line-height: 18px;
     letter-spacing: 0.01em;
-    /* Light Theme/Text/text01 */
     color: ${(p) => p.theme.color.text01};
 `
 
@@ -74,9 +72,7 @@ export const LearnMoreLink = styled.a`
     font-size: 12px;
     line-height: 20px;
     text-decoration: none;
-    /* Light Theme/Brand/interactive05 */
     color: ${(p) => p.theme.color.interactive05};
-    
     display: flex;
     flex-direction: column;
     justify-content: center;

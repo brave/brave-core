@@ -882,7 +882,6 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             swapValidationError={undefined}
             sendAmountValidationError={undefined}
           />
-          <br />
           <SweepstakesBanner />
         </WalletWidgetStandIn>
       }
