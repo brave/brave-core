@@ -18,6 +18,12 @@ class SidebarWebContentsDelegate : public content::WebContentsDelegate {
   SidebarWebContentsDelegate(const SidebarWebContentsDelegate&) = delete;
   SidebarWebContentsDelegate& operator=(const SidebarWebContentsDelegate&) =
       delete;
+
+ private:
+  // content::WebContentsDelegate overrides:
+  bool HandleKeyboardEvent(
+      content::WebContents* source,
+      const content::NativeWebKeyboardEvent& event) override;
 };
 
 }  // namespace sidebar

@@ -15,6 +15,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_show_options_event_detect_widget.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "ui/events/event_observer.h"
+#include "ui/views/controls/webview/unhandled_keyboard_event_handler.h"
 #include "ui/views/view.h"
 
 namespace views {
@@ -63,6 +64,9 @@ class SidebarContainerView
       const gfx::Point& point,
       std::unique_ptr<ui::MenuModel> menu_model) override;
   void HideCustomContextMenu() override;
+  bool HandleKeyboardEvent(
+      content::WebContents* source,
+      const content::NativeWebKeyboardEvent& event) override;
 
   // views::View overrides:
   void Layout() override;
@@ -120,6 +124,7 @@ class SidebarContainerView
       observed_{this};
   std::unique_ptr<views::MenuRunner> context_menu_runner_;
   std::unique_ptr<ui::MenuModel> context_menu_model_;
+  views::UnhandledKeyboardEventHandler unhandled_keyboard_event_handler_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_CONTAINER_VIEW_H_

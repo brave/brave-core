@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/native_web_keyboard_event.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/menu_model.h"
@@ -157,6 +158,13 @@ void SidebarContainerView::HideCustomContextMenu() {
     context_menu_runner_->Cancel();
 }
 
+bool SidebarContainerView::HandleKeyboardEvent(
+    content::WebContents* source,
+    const content::NativeWebKeyboardEvent& event) {
+  return unhandled_keyboard_event_handler_.HandleKeyboardEvent(
+      event, GetFocusManager());
+}
+
 void SidebarContainerView::UpdateBackgroundAndBorder() {
   if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
     constexpr int kBorderThickness = 1;
@@ -182,6 +190,7 @@ void SidebarContainerView::AddChildViews() {
       AddChildView(std::make_unique<views::WebView>(browser_->profile()));
   // |sidebar_panel_view_| will be visible when user opens sidebar panel.
   sidebar_panel_view_->SetVisible(false);
+  sidebar_panel_view_->set_allow_accelerators(true);
 }
 
 void SidebarContainerView::UpdateChildViewVisibility() {}
