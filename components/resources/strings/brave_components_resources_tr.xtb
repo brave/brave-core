@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">Mevcut token'lar</translation>
 <translation id="4970164249406565575">0x hesabını ara</translation>
 <translation id="7855168553463825937">Tüm çerezler engellendi</translation>
+<translation id="6248988683584659830">Arama ayarları</translation>
+<translation id="778096729652828897">Tor ile Özel Pencere hakkında daha fazla bilgi edin</translation>
+<translation id="3149306599361260465">%[[percentage]] başlatılıyor</translation>
+<translation id="3258793718986637767">Tor ile sorun mu yaşıyorsunuz? <ph name="BEGIN_LINK"/>Tor ile gizli pencereyi devre dışı bırakıp<ph name="END_LINK"/> tekrar açmayı deneyin.</translation>
+<translation id="654711254769318398">Görüntülenen reklam sayfaları</translation>
+<translation id="6239274080752256452">Para Çek</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Cüzdan anahtarınız başarıyla doğrulandı ve yüklendi.</translation>
+<translation id="1083279119532577005">Cüzdan geri yüklendi!</translation>
+<translation id="5254740304961202261">İnsan olduğunuzu ispatlayın!</translation>
+<translation id="7510166204621526816">Brave Rewards sunucusu yanıt vermiyor. Bunu mümkün olan en kısa sürede düzelteceğiz.</translation>
+<translation id="2323069945529668668">Uh oh!</translation>
+<translation id="717952606991220586">Eyvah, bir şeyler yanlış. Lütfen daha sonra tekrar deneyin.</translation>
+<translation id="6965382102122355670">Tamam</translation>
+<translation id="7210234701206674260">Brave Rewards bir sorun yaşıyor. Lütfen daha sonra tekrar deneyiniz.</translation>
+<translation id="4014166694178311757">Cüzdanınız doğrulanamaz çünkü en fazla doğrulanmış cihaz limitine ulaştınız.</translation>
+<translation id="8832187864682447273">Hata: Giriş yapabilmek için doğrulanmış bir cüzdana ihtiyacınız var</translation>
+<translation id="1501075228659004450">Brave Rewards cüzdanınız halihazırda başka bir <ph name="PROVIDER"/> hesabıyla doğrulanmış gibi görünüyor. Lütfen önceki hesabınızı kullanarak tekrar doğrulamayı deneyin.</translation>
+<translation id="7147519373526655987">Tarayıcınızın Brave Rewards cüzdanınızı <ph name="PROVIDER"/> hesabınıza bağlama talebi doğrulanırken bir sorun oluştu. Daha fazla yardım için <ph name="BEGIN_LINK"/>destekle iletişime geçebilirsiniz.<ph name="END_LINK"/></translation>
+<translation id="448371102125124442">Ancak mevcut cüzdanınız sınırlıdır. Bir korumalı cüzdan ortağıyla doğrulama yaparsanız şu olanaklara sahip olursunuz:</translation>
+<translation id="1438426246237704604">Ödülleriniz doğrudan cüzdanınıza gelir</translation>
+<translation id="9146355483497231818">Cüzdanınızı doğrulayın</translation>
+<translation id="8913591412117692523">Reklam görüntüleyerek kazandığınız tokenleri çekmek için cüzdanınızı doğrulamanız gerekecektir.</translation>
+<translation id="5468234114288973517">Cüzdanımı doğrula</translation>
+<translation id="7258399883616914635">Cüzdanınızı doğrulayarak ve bir bitFlyer hesabına bağlayarak, Brave Rewards aracılığıyla kazandığınız tokenleri daha kolay depolayabilecek ve yönetebileceksiniz</translation>
+<translation id="5094577350232361255">hakkında</translation>
+<translation id="1036277985068412734">para ekle</translation>
+<translation id="1555514580945108302">Hmm… Pek Sayılmaz. Tekrar Deneyin.</translation>
+<translation id="2157162992285072267">Bu logoyu şunun üzerine sürükleyip bırakın</translation>
+<translation id="4805054577224376281">hedef</translation>
+<translation id="2266556115441975588">Reklamlardan gelen ödülleriniz burada!</translation>
+<translation id="8764029012618014430">Bahşişlere İzin Ver</translation>
+<translation id="6149218349077925111">için</translation>
+<translation id="6476729769006815569">Merhaba, [[name]]!</translation>
+<translation id="606865182719489911">Ücretsiz bir belirteç izni kullanılabilir.</translation>
+<translation id="6803187280799213426">Brave cüzdanınızdaki meblağlar sanaldır ve yedeklenmesi gerekmez. Özellikle bu tarayıcıda harcama yapmanız mümkündür.</translation>
+<translation id="5904352893156917813">Tarayıcının temiz kurulumu veya yeni bir cihaza geçme durumunda tüm paranızı güvence altına almak ve para ekleme, çekme ve transfer etme gibi imkanlardan faydalanmak istiyorsanız, şunu öneriyoruz: <ph name="LINK_BEGIN"/>cüzdanınızı doğrulama<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Tarayıcınıza veya bilgisayarınıza bir şey olursa, cüzdanınızı geri almak için her zaman bu anahtarı kullanabilirsiniz. Ama onu koruduğunuzdan emin olun — bu anahtarı ele geçiren herhangi biri cüzdanınızı çalabilir. Muhtemelen en güvenilir olanı#8217; bir kağıda ya da önemli bilgileri sakladığınız herhangi bir yere yazmak olacaktır.</translation>
+<translation id="5830306739231399614">Üzgünüz. Henüz jeton yok.</translation>
+<translation id="7359258898775969374">Cüzdanınızı doldurmanın 3 yolu:</translation>
+<translation id="8087614920008846901">Para ekleyebilirsiniz.</translation>
+<translation id="996024295464837691">Reklamları izleyerek jeton kazanabilirsiniz.</translation>
+<translation id="8014425282125849700">Bazen Brave'den size ücretsiz yardım jetonları sunulacaktır. Uyarılara karşı dikkatli olmayı unutmayın!</translation>
+<translation id="4919888432594361029"><ph name="PROVIDER"/>  ile para yatırın, çekin ve yönetin.</translation>
+<translation id="6401272292123354754">Brave Ödülleri Basic Attention Token üzerine kurulmuştur. BAT hakkında daha fazlasını öğrenin</translation>
+<translation id="7823359893981882407">burada</translation>
+<translation id="4600052736217630789">Kurtarma anahtarı ile yenileme şu anki cüzdanınızın yerini alacaktır. Bu nedenle, yenileme öncesi şu anki cüzdanınızı boşalttığınızdan veya yedeklediğinizden emin olun.</translation>
+<translation id="5423214929210538027">Kazanç Cüzdanını sıfırlamak istediğinize emin misiniz?</translation>
+<translation id="4749947664556704604">Cüzdanınızı sıfırlarsanız <ph name="BAT_AMOUNT"/> ve diğer Ödüller verileriniz kalıcı olarak kaybolacaktır. BAT'nizi elinizde tutmak için lütfen <ph name="LINK_BEGIN"/>cüzdanınızı doğruladığınızdan<ph name="LINK_END"/> emin olun.</translation>
+<translation id="2028613172174411919">Cüzdanınızı sıfırlarsanız Kazanç verileriniz kalıcı olarak kaybedilecektir.</translation>
+<translation id="5944430251223015324">siteler</translation>
+<translation id="1726566769229204312">Token Bağışları</translation>
+<translation id="8615803647903750175">Cüzdan Etkinliği</translation>
+<translation id="4989277977420164514">cüzdan bakiyesi</translation>
+<translation id="3780605330121608425">Cüzdanınız</translation>
+<translation id="7530570094705720669">Cüzdan oluşturmak</translation>
+<translation id="7979350009208995417">Bu içerik oluşturucusu şu anda cüzdanınızdan bahşiş almak için yapılandırılmadı. Gönderdiğiniz bütün bahşişler cüzdanınızda beklemede kalacak ve 90 gün boyunca otomatik olarak yeniden denenecektir.</translation>
+<translation id="6521772344816912550">Bu oluşturucu henüz kaydolmamış. Göndereceğiniz her bahşiş hesabınızda bekliyor olarak kalacak ve 90 gün boyunca otomatik olarak yeniden denenecek.</translation>
+<translation id="8267327690882073581">Cüzdanı Doğrula</translation>
+<translation id="543510923939676996">Cüzdan Onaylandı</translation>
+<translation id="2445110450361135194"><ph name="PROVIDER"/> hesabınıza gidin</translation>
+<translation id="3699674790322420653">Tam cüzdan onayı</translation>
+<translation id="9200453331904391567">Brave Ödüllerden Ayrıl</translation>
+<translation id="5894023780213944778">Cüzdanım</translation>
+<translation id="3329841454317342083">Solana blok zincirindeki SLP uyumlu varlıkları destekler</translation>
 </translationbundle>

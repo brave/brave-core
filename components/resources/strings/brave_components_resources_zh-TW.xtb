@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">可用代幣</translation>
 <translation id="4970164249406565575">搜尋帳戶 0x</translation>
 <translation id="7855168553463825937">已封鎖所有 cookie</translation>
+<translation id="6248988683584659830">搜尋設定</translation>
+<translation id="778096729652828897">更多關於使用 Tor 的隱私視窗的資訊</translation>
+<translation id="3149306599361260465">正在初始化 [[percentage]]%</translation>
+<translation id="3258793718986637767">有 Tor 方面的問題嗎？試試看 <ph name="BEGIN_LINK"/> 停用使用 Tor 的隱私視窗 <ph name="END_LINK"/>，然後重新開啟吧。</translation>
+<translation id="654711254769318398">檢視過的廣告頁面</translation>
+<translation id="6239274080752256452">提款</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">您的錢包金鑰已被驗證並成功地載入。</translation>
+<translation id="1083279119532577005">錢包已復原！</translation>
+<translation id="5254740304961202261">證明您是人類！</translation>
+<translation id="7510166204621526816">Brave Rewards 伺服器沒有回應。我們將會盡快修復。</translation>
+<translation id="2323069945529668668">哦哦！</translation>
+<translation id="717952606991220586">唉呀，發生問題了。請待會再試一次。</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">「Brave 報酬」發生問題了。請待會再試一次。</translation>
+<translation id="4014166694178311757">無法驗證您的錢包，因為您的驗證裝置數已達上限。</translation>
+<translation id="8832187864682447273">錯誤：您需要先驗證錢包才能登入</translation>
+<translation id="1501075228659004450">嗯，看來您的 Brave Rewards 錢包已使用其他 <ph name="PROVIDER"/> 帳號驗證。請嘗試使用您先前的帳號驗證。</translation>
+<translation id="7147519373526655987">驗證瀏覽器請求以將您的 Brave Rewards 錢包連結到 <ph name="PROVIDER"/> 帳戶時出現錯誤。您可以<ph name="BEGIN_LINK"/>聯絡支援團隊<ph name="END_LINK"/>以獲得更多協助。</translation>
+<translation id="448371102125124442">然而，您目前的錢包是有限制的。透過錢包保管合作夥伴進行驗證，您可以：</translation>
+<translation id="1438426246237704604">直接在錢包中接收您的獎勵</translation>
+<translation id="9146355483497231818">驗證您的錢包</translation>
+<translation id="8913591412117692523">若要提領觀看廣告所賺取的代幣，您必須驗證您的錢包。</translation>
+<translation id="5468234114288973517">驗證我的錢包</translation>
+<translation id="7258399883616914635">驗證您的錢包並將其連結至 bitFlyer 帳戶，您將能更輕鬆地儲存並管理透過 Brave Rewards 賺取的代幣</translation>
+<translation id="5094577350232361255">關於</translation>
+<translation id="1036277985068412734">增加資金</translation>
+<translation id="1555514580945108302">嗯… 不太對。再試一次。</translation>
+<translation id="2157162992285072267">將此標誌拖放到</translation>
+<translation id="4805054577224376281">目標</translation>
+<translation id="2266556115441975588">您從廣告獲得的獎勵就在這裡！</translation>
+<translation id="8764029012618014430">啟用小費功能</translation>
+<translation id="6149218349077925111">給</translation>
+<translation id="6476729769006815569">[[name]]，您好！</translation>
+<translation id="606865182719489911">有一個可用的免費代幣。</translation>
+<translation id="6803187280799213426">您在 Brave 錢包中的資金是虛擬的所以不需要備份。您可以專門在此瀏覽器上使用。</translation>
+<translation id="5904352893156917813">如果您想在安裝全新瀏覽器或切換至新裝置時確保您所有資金的安全，同時擁有其他優勢，例如存款、提款與轉帳，我們建議<ph name="LINK_BEGIN"/>驗證您的錢包<ph name="LINK_END"/>。</translation>
+<translation id="4699702339303280827">如果瀏覽器或電腦發生狀況，您隨時都可以使用此金鑰來取回錢包。但務必加以保護 — 任何拿到這個金鑰的人都可以竊取您的錢包。最安全的方式可能’就是寫在一張紙上，或任何其它您記錄重要資料的地方。</translation>
+<translation id="5830306739231399614">很遺憾，尚無代幣。</translation>
+<translation id="7359258898775969374">填滿您錢包的 3 種方式：</translation>
+<translation id="8087614920008846901">您可以增加資金。</translation>
+<translation id="996024295464837691">您可以透過檢視廣告來賺取代幣。</translation>
+<translation id="8014425282125849700">偶爾您也可以取得 Brave 的免費代幣。注意警報！</translation>
+<translation id="4919888432594361029">在<ph name="PROVIDER"/>投入、領出並管理資金。</translation>
+<translation id="6401272292123354754">Brave 獎勵是建立在基本注意力代幣之上的。瞭解更多關於基本注意力代幣 (BAT) 的資訊</translation>
+<translation id="7823359893981882407">此處</translation>
+<translation id="4600052736217630789">若使用復原金鑰進行還原，此動作將會取代您目前的錢包。所以務必清空或備份目前的錢包再還原。</translation>
+<translation id="5423214929210538027">您確定要重置您的 Rewards Wallet 嗎？</translation>
+<translation id="4749947664556704604">如重設錢包，您的 <ph name="BAT_AMOUNT"/> 與其他獎勵資料將會永遠消失。請確認您已與 <ph name="LINK_BEGIN"/> 認證過您的錢包 <ph name="LINK_END"/>；如此才可保留您的 BAT。</translation>
+<translation id="2028613172174411919">如果您重設您的錢包，您的 Rewards 資料將永遠遺失。</translation>
+<translation id="5944430251223015324">網站</translation>
+<translation id="1726566769229204312">代幣授予</translation>
+<translation id="8615803647903750175">錢包動態</translation>
+<translation id="4989277977420164514">錢包餘額</translation>
+<translation id="3780605330121608425">您的錢包</translation>
+<translation id="7530570094705720669">創造錢包</translation>
+<translation id="7979350009208995417">這個創作者還沒設定好從您的錢包中接收小費。任何您提供的小費都會先在您的錢包中處於擱置狀態，並在 90 天內重試。</translation>
+<translation id="6521772344816912550">這個創作者尚未簽名。任何您提供的小費都會先在您的錢包中處於擱置狀態，並在 90 天內重試。</translation>
+<translation id="8267327690882073581">驗證錢包</translation>
+<translation id="543510923939676996">電子錢包已驗證</translation>
+<translation id="2445110450361135194">前往您的 <ph name="PROVIDER"/> 帳戶</translation>
+<translation id="3699674790322420653">完成電子錢包驗證</translation>
+<translation id="9200453331904391567">從 Brave Rewards 取消連結</translation>
+<translation id="5894023780213944778">我的錢包</translation>
+<translation id="3329841454317342083">支援 Solana 區塊鏈上相容 SLP 的資產</translation>
 </translationbundle>

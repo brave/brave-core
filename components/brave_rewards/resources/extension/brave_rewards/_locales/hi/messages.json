@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "आपके द्वारा दी गई कोई भी टिप आपके वॉलेट में पेंडिंग रहेगी और 90 दिनों के लिए अपने आप दोबारा कोशिश करती रहेगी.$link_begin$और अधिक जानें$link_end$",
+    "message": "आपके द्वारा दी गई कोई भी टिप आपके वॉलेट में पेंडिंग रहेगी और 90 दिनों के लिएअपने आप डॉबर कोशिश करती रहेगी.$link_begin$और अधिक जानें$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "यह क्रिएटर इस समय आपके रिवॉर्ड से टिप्स प्राप्त करने के लिए कॉन्फ़िगर नहीं किया गया है कस्टोडियल वॉलेट सेवा.",
+    "message": "यह क्रिएटर इस समय आपके वॉलेट से टिप्स प्राप्त करने के लिए कॉन्फ़िगर नहीं किया गया है.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "आपका रिवार्ड जल्द आएगा.",
+    "message": "आपका रिवार्ड आपके ब्रेव रिवार्ड्स वॉलेट में आएगा है।",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "सत्यापित है",
+    "message": "मेरा वॉलेट",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "सत्यापित करें",
+    "message": "वॉलेट सत्यापित करें",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "रिकनेक्ट",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "रिवार्ड्स क्लेम करें",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "टोकन क्लेम करें",
+  "notificationClaim": {
+    "message": "दावा",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,11 +301,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Brave Rewards का बैकअप लें",
+    "message": "बैकअप वॉलेट",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "कृपया अपने Brave Reward का बैकअप लें.",
+    "message": "कृपया अपने Brave बटुए को बैकअप करें।",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -317,7 +313,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "आप लॉग आउट हो गए हैं",
+    "message": "आपका वॉलेट लॉग आउट हो गया है",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "आपका Brave Rewards वेरीफ़ाई किया गया है!",
+    "message": "आपका वॉलेट सत्यापित है!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "आपके Brave Rewards को $provider$ द्वारा सफ़लतापूर्वक वेरीफ़ाई किया गया है.",
+    "message": "आपका $provider$ वॉलेट सफलतापूर्वक वेरिफ़ाई हो गया है और धनराशि जमा करने और निकालने के लिए तैयार है.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "टोकन ग्रांट्स उपलब्ध है!",
+    "message": "टोकन ग्रांट्स",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ रिवॉर्ड: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "आपके पास एक अनुदान है जो आपकी प्रतीक्षा कर रहा है।",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "यह रहे आपके $month$ विज्ञापन रिवॉर्ड!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "विज्ञापनों से हुई कमाई",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "आपके पास क्लेम करने के लिए $days$ बचे हैं",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "यह रहे आपके Brave Private Ads रिवॉर्ड!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "मासिक योगदान नहीं हो पाया",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "अपर्याप्त धनराशि के कारण आपका ऑटो-कॉन्ट्रिब्यूट और मासिक कॉन्ट्रिब्यूशन के लिए निर्धारित मासिक भुगतान  पूरा नहीं हो सका। हम 30 दिनों में पुनः प्रयास करेंगे।",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "आपके योगदान को प्रोसैस करने में एक समस्या थी।",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "मासिक योगदान नहीं हो पाया",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "सत्यापित करें",
+    "message": "अपना वॉलेट सत्यापित करें",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "विज्ञापन देखने के लिए अर्जित BAT का इस्तेमाल करने के लिए, आपको अपने Brave Rewards को वेरिफ़ाइ करना होगा.",
+    "message": "विज्ञापन देखने के लिए आपके द्वारा अर्जित टोकन को वापस लेने के लिए, आपको अपने वॉलेट को सत्यापित करना होगा।",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": " Brave Rewards वेरीफ़ाई करें",
+    "message": "मेरा वॉलेट सत्यापित करें",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "अपने Brave Rewards को वेरीफ़ाई करके और इसे एक  bitFlyer अकाउंट से जोड़कर, आप Brave Rewards के माध्यम से अर्जित BAT को अधिक आसानी से स्टोर और मैनेज कर सकेंगे",
+    "message": "अपने वॉलेट की पुष्टि करके और इसे एक बिटफ़ायर खाते से लिंक करके, आप Brave  पुरस्कार के माध्यम से अर्जित टोकन को स्टोर और प्रबंधित कर पाएंगे।",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

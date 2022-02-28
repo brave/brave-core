@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "هر انعامی که می‌دهید دست نخورده باقی می‌ماند و 90 روز دیگر به‌طور خودکار دوباره انجام می‌شود.$link_begin$بیشتر بدانید$link_end$",
+    "message": "هر انعامی که می‌دهید در کیف پول شما دست نخورده باقی می‌ماند و 90 روز دیگر به‌طور خودکار دوباره انجام می‌شود.$link_begin$بیشتر بدانید$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "این پدیدآورنده در حال حاضر پیکربندی نشده است که از سرویس کیف پول پاداش‌های تحت تصدی شما انعام دریافت کند.",
+    "message": "این ایجادکننده درحال‌حاضر پیکربندی نشده است که از کیف پول شما انعام دریافت کند.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "پاداش شما در راه است.",
+    "message": "پاداش شما در حال انتقال به کیف پول «پاداش‌های Brave» شما است.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "تأیید شد",
+    "message": "کیف پول من",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "تأیید",
+    "message": "تأیید کیف پول",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "اتصال مجدد",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "مطالبه پاداش‌ها",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "مطالبه توکن‌ها",
+  "notificationClaim": {
+    "message": "مطالبه",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "پشتیبان‌گیری از پاداش‌های Brave",
+    "message": "کیف پول پشتیبان",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "لطفاً از پاداش‌های Brave‌ خود پشتیبان‌گیری کنید.",
+    "message": "لطفاً از کیف پول Brave‌ خود پشتیبان‌گیری کنید.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "همین حالا پشتیبان بگیرید",
+    "message": "حالا پشتیبان بگیرید",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "از سیستم خارج شدید",
+    "message": "کیف پول شما از سیستم خارج شده است",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "پاداش Brave شما تأیید شد!",
+    "message": "کیف پول شما تأیید شد!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "پاداش‌های Brave شما با موفقیت با $provider$ تأیید شدند.",
+    "message": "کیف پول $provider$ با موفقیت تأیید شد و آماده افزودن و برداشت وجوه است.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "امتیار توکن در دسترس است!",
+    "message": "امتیازهای توکن",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ پاداش‌ها: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "امتیازی در انتظار شما است.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "پاداش‌های تبلیغات $month$ شما آماده هستند!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "درآمدهای حاصل از آگهی‌ها دریافت شد",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "$days$ باقیمانده برای مطالبه دارید",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "پاداش‌های شما از «آگهی‌های خصوصی Brave» از راه رسیدند!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "کمک ماهانه انجام نشد",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "به‌دلیل کافی نبودن وجه، انجام دادن پرداخت ماهیانه زمان‌بندی‌شده شما برای کمک خودکار و کمک‌های ماهانه امکان‌پذیر نبود. 30 روز دیگر دوباره تلاش خواهیم کرد.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "مشکلی در پردازش کمکتان وجود داشت.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "کمک ماهانه انجام نشد",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "تأیید",
+    "message": "تأیید کیف پول",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "برای برداشت کردن BAT که بابت تماشای آگهی کسب می‌کنید، باید پاداش‌های Brave خود را تأیید کنید.",
+    "message": "برای برداشت کردن توکن‌هایی که بابت تماشای آگهی کسب می‌کنید، باید کیف پول خود را تأیید کنید.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "تأیید پاداش‌های Brave",
+    "message": "تأیید کیف پول",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "با تأیید پاداش‌های Brave خود و پیوند دادن آن به حساب bitFlyer، می‌توانید BAT را که از طریق «پاداش‌های Brave» کسب کرده‌اید آسان‌تر ذخیره و مدیریت کنید.",
+    "message": "با تأیید کیف پول و پیوند دادن آن به حساب bitFlyer، می‌توانید توکن‌هایی را که ازطریق «پاداش‌های Brave» کسب کرده‌اید آسان‌تر ذخیره و مدیریت کنید.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

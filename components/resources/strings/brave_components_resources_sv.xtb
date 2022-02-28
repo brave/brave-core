@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">Tokens tillgängliga</translation>
 <translation id="4970164249406565575">Sök konto 0x</translation>
 <translation id="7855168553463825937">Alla cookies godkända</translation>
+<translation id="6248988683584659830">Sök i inställningar</translation>
+<translation id="778096729652828897">Läs mer om privata fönster med Tor</translation>
+<translation id="3149306599361260465">Initierar [[percentage]] %</translation>
+<translation id="3258793718986637767">Har du problem med Tor? Prova att <ph name="BEGIN_LINK"/>inaktivera privata fönster med Tor<ph name="END_LINK"/> och starta det igen.</translation>
+<translation id="654711254769318398">Visade annonssidor</translation>
+<translation id="6239274080752256452">Ta ut tillgångar</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Din plånboksnyckel har verifierats och laddats.</translation>
+<translation id="1083279119532577005">Plånbok återställd!</translation>
+<translation id="5254740304961202261">Bevisa att du är en människa!</translation>
+<translation id="7510166204621526816">Brave Rewards server svarar inte. Vi kommer att åtgärda detta så snart som möjligt.</translation>
+<translation id="2323069945529668668">Hoppsan!</translation>
+<translation id="717952606991220586">Oj, något gick fel. Försök igen senare.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Brave Rewards har problem. Försök igen senare.</translation>
+<translation id="4014166694178311757">Din plånbok kan inte verifieras eftersom du har nått maxgränsen för verifierade enheter.</translation>
+<translation id="8832187864682447273">Fel: Du behöver en verifierad plånbok för att logga in</translation>
+<translation id="1501075228659004450">Hmm, det ser ut som att din Brave Rewards-plånbok redan har verifierats med ett annat <ph name="PROVIDER"/>-konto. Försök verifiera igen med ditt tidigare konto.</translation>
+<translation id="7147519373526655987">Ett problem uppstod när webbläsarens begäran om att koppla din Brave Rewards-plånbok till<ph name="PROVIDER"/>-kontot skulle verifieras. Du kan <ph name="BEGIN_LINK"/>kontakta supporten<ph name="END_LINK"/> för mer hjälp.</translation>
+<translation id="448371102125124442">Din nuvarande plånbok är dock begränsad. Genom att verifiera med en plånbokspartner kan du:</translation>
+<translation id="1438426246237704604">Ta emot belöningar direkt i din plånbok</translation>
+<translation id="9146355483497231818">Verifiera plånboken</translation>
+<translation id="8913591412117692523">För att ta ut de tokens du tjänar för att visa annonser måste du verifiera din plånbok.</translation>
+<translation id="5468234114288973517">Verifiera min plånbok</translation>
+<translation id="7258399883616914635">Genom att verifiera din plånbok och länka den till ett bitFlyer-konto kan du enklare lagra och hantera de tokens du har tjänat ihop genom Bravebelöningar</translation>
+<translation id="5094577350232361255">om</translation>
+<translation id="1036277985068412734">Sätt in pengar</translation>
+<translation id="1555514580945108302">Hmm… Inte direkt. Försök igen.</translation>
+<translation id="2157162992285072267">Drag och släpp den här logotypen på</translation>
+<translation id="4805054577224376281">mål</translation>
+<translation id="2266556115441975588">Dina belöningar från annonser har kommit!</translation>
+<translation id="8764029012618014430">Aktivera dricks</translation>
+<translation id="6149218349077925111">för</translation>
+<translation id="6476729769006815569">Hej [[name]]!</translation>
+<translation id="606865182719489911">En tilldelning av gratis token är tillgänglig.</translation>
+<translation id="6803187280799213426">Medlen i din Brave-plånbok är virtuella och behöver inte säkerhetskopieras. De medlen kan du spendera enbart på denna webbläsare.</translation>
+<translation id="5904352893156917813">Om du vill säkra alla dina medel i samband med rensning av webbläsaren eller byte av enhet, och få andra förmåner som tillägg, uttag och överföring av medel, rekommenderar vi att du <ph name="LINK_BEGIN"/>verifierar din plånbok<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Du kan alltid använda denna nyckel för att få tillbaka din plånbok om något händer din webbläsare eller dator. Se dock till att skydda den #8212; den som kommer åt denna nyckel kan stjäla din plånbok. Det är troligen säkrast att skriva ner den på ett papper eller spara den på ett annat ställe där du förvarar viktig information.</translation>
+<translation id="5830306739231399614">Tyvärr, inga token ännu.</translation>
+<translation id="7359258898775969374">3 sätt att fylla din plånbok:</translation>
+<translation id="8087614920008846901">Du kan sätta in pengar.</translation>
+<translation id="996024295464837691">Du kan tjäna token genom att titta på annonser.</translation>
+<translation id="8014425282125849700">Då och då kommer du att erbjudas tilldelning av token från Brave. Så håll utkik efter erbjudandet!</translation>
+<translation id="4919888432594361029">Lägg till, ta ut och hantera pengar på <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Brave Rewards bygger på Basic Attention Token. Läs mer om BAT</translation>
+<translation id="7823359893981882407">här</translation>
+<translation id="4600052736217630789">Om du använder en återställningsnyckel så ersätts din aktuella plånbok. Se därför till att tömma eller ha en säkerhetskopia av din aktuella plånbok innan du återställer.</translation>
+<translation id="5423214929210538027">Är du säker på att du vill nollställa din Rewards-plånbok?</translation>
+<translation id="4749947664556704604">Dina <ph name="BAT_AMOUNT"/> och andra rewardsdata förloras permanent om du återställer din plånbok. Se till att du har <ph name="LINK_BEGIN"/>verifierat din plånbok<ph name="LINK_END"/> så att du kan behålla din BAT.</translation>
+<translation id="2028613172174411919">Dina Rewards-data kommer att gå förlorade permanent om du nollställer plånboken.</translation>
+<translation id="5944430251223015324">webbplatser</translation>
+<translation id="1726566769229204312">Tilldelning av token</translation>
+<translation id="8615803647903750175">Plånboksaktivitet</translation>
+<translation id="4989277977420164514">Plånbokssaldo</translation>
+<translation id="3780605330121608425">Din plånbok</translation>
+<translation id="7530570094705720669">Skapar plånbok.</translation>
+<translation id="7979350009208995417">Den här innehållsskaparen har inte ställt in att kunna ta emot dricks från din plånbok. Om du dricksar reserveras beloppet som väntande och nya försök görs i 90 dagar.</translation>
+<translation id="6521772344816912550">Denna skapare har inte registrerat sig ännu. All dricks som du lämnar kommer att förbli väntande i din plånbok och försöka igen automatiskt i 90 dagar.</translation>
+<translation id="8267327690882073581">Verifiera plånbok</translation>
+<translation id="543510923939676996">Plånbok verifierad</translation>
+<translation id="2445110450361135194">Gå till ditt <ph name="PROVIDER"/>-konto</translation>
+<translation id="3699674790322420653">Slutför verifiering av plånbok</translation>
+<translation id="9200453331904391567">Frånkoppla Brave Rewards</translation>
+<translation id="5894023780213944778">Min plånbok</translation>
+<translation id="3329841454317342083">Stödjer SLP-kompatibla tillgångar på Solana-blockkedjan</translation>
 </translationbundle>

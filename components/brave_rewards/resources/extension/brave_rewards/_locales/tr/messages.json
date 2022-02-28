@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Verdiğiniz her bahşiş beklemede kalır ve 90 gün boyunca otomatik olarak tekrar denenir. $link_begin$Daha fazla bilgi edinin$link_end$",
+    "message": "Verdiğiniz her bahşiş cüzdanınızda beklemede kalır ve 90 gün boyunca otomatik olarak tekrar denenir. $link_begin$Daha fazla bilgi edinin$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Bu içerik oluşturucusu henüz Ödüller korumalı cüzdan hizmetinizden bahşiş alabilmek üzere yapılandırılmamış.",
+    "message": "Bu oluşturucu henüz cüzdanınızdan bahşiş alabilmek üzere yapılandırılmamış.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Ödülünüz yolda.",
+    "message": "Ödülünüz, Brave Ödülleri cüzdanınıza geliyor.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Doğrulandı",
+    "message": "Cüzdanım",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Doğrula",
+    "message": "Cüzdanı Doğrula",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Tekrar bağlan",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Ödülleri Al",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Tokenleri Al",
+  "notificationClaim": {
+    "message": "Talep et",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Brave Ödülllerini Yedekle",
+    "message": "Cüzdanı yedekle",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Lütfen Brave Ödüllerinizi yedekleyin.",
+    "message": "Lütfen Brave cüzdanınızı yedekleyin.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Şimdi yedekleyin",
+    "message": "Şimdi yedekle",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Oturumunuz kapatıldı",
+    "message": "Cüzdan oturumunuz kapatıldı",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Brave Ödülleriniz doğrulandı!",
+    "message": "Cüzdanınız doğrulandı!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Brave Ödülleriniz $provider$ ile başarıyla doğrulandı.",
+    "message": "$provider$ cüzdanınız başarıyla doğrulandı ve para eklemek veya çekmek için hazır.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Bir token yardımı kullanılabilir!",
+    "message": "Ücretsiz verilen belirteçler",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ Ayı Ödülleri: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "Sizin için bekleyen bir yardım var.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "$month$ ayı Reklam Ödülleriniz burada!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Alınan Ads kazançları",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "Almak için $days$ süreniz kaldı",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Brave Private Ads ödülleriniz geldi!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Aylık katkı başarısız oldu",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Auto-Contribute ve aylık bağışlar için planlı aylık ödemeniz, yetersiz para nedeniyle tamamlanamadı. 30 gün içinde tekrar deneyeceğiz. ",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Katkınızın işleme sokulması esnasında bir sorunla karşılaşıldı.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Aylık katkı başarısız oldu",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Doğrula",
+    "message": "Cüzdanınızı doğrulayın",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Reklam görüntüleyerek kazandığınız BAT'yi çekmek için Brave Ödüllerini doğrulamanız gerekecektir.",
+    "message": "Reklam görüntüleyerek kazandığınız tokenleri çekmek için cüzdanınızı doğrulamanız gerekecektir.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Brave Ödüllerini Doğrula",
+    "message": "Cüzdanımı doğrula",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Brave Ödüllerinizi doğrulayarak ve bir bitFlyer hesabına bağlayarak, Brave Ödülleri aracılığıyla kazandığınız tokenleri daha kolay depolayabilecek ve yönetebileceksiniz",
+    "message": "Cüzdanınızı doğrulayarak ve bir bitFlyer hesabına bağlayarak, Brave Rewards aracılığıyla kazandığınız tokenleri daha kolay depolayabilecek ve yönetebileceksiniz",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Bahshishi yoyote unayotoa itaendelea kusubiri na kujaribu upya kiotomatiki kwa siku 90. $link_begin$Jifunze zaidi$link_end$",
+    "message": "Bahshishi yoyote unayotoa itasalia katika pochi yako na kujaribu tena kiotomatiki kwa siku 90. $link_begin$Pata maelezo zaidi$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Muundaji huyu kwa sasa hajasanidiwa ili kupokea bahshishi kutoka kwenye huduma yako ya usimamizi wa pochi ya Zawadi.",
+    "message": "Muundaji hutu kwa sasa hajawekwa ili kupokea bahshishi kutoka kwenye pochi yako.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Zawadi yako iko njiani.",
+    "message": "Tuzo yako iko njiani kuelekea katika waleti yako ya Tuzo za Brave.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Imethibitishwa",
+    "message": "Pochi Yangu",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Thibitisha",
+    "message": "Thibitisha Waleti",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Unganisha upya",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Dai Zawadi",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Dai Tokeni",
+  "notificationClaim": {
+    "message": "Dai",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Hifadhi Nakala ya Zawadi za Brave",
+    "message": "Pochi mbadala",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Tafadhali hifadhi nakala ya Zawadi zako za Brave.",
+    "message": "Tafadhali hifadhi kwa njia mbadala waleti yako ya Brave.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Hifadhi nakala sasa",
+    "message": "Hifadhi sasa",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Umeondoka kwenye akaunti",
+    "message": "Pochi yako imetoka",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Zawadi zako za Brave zimethibitishwa!",
+    "message": "Pochi yako imethibitishwa!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Zawadi zako za Brave zimethibitishwa kwa ufanisi na $provider$.",
+    "message": "Pochi yako ya $provider$ ilithibitishwa vizuri na tayari kuongeza na kutoa pesa.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Ruzuku ya tokeni inapatikana!",
+    "message": "Ruzuku za kianzio",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "Zawadi za $month$: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "Una ruzuku inayokusubiri.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Zawadi zako za Matangazo za $month$ zimefika!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Mapato ya matangazo yaliyopokewa",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "Una $days$ zinazosalia ili kudai",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Zawadi zako kutoka Brave Private Ads hapa!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Mchango wa kila mwezi haujafaulu",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Uliratibu malipo ya kila mwezi ya Auto-Contribute na michango ya kila mwezi haikukamilishwa kutokana na kutokuwepo fedha za kutosha. Tutajaribu tena baada ya siku 30.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Kulikuwa na tatizo kuchakatata mchango wako.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Mchango wa kila mwezi haujafaulu",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Thibitisha",
+    "message": "Thibitisha pochi yako",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Ili kutoa BAT unazopata kwa kutazama matangazo, utahitaji kuthibitisha Zawadi za Brave.",
+    "message": "Ili kutoa tokeni unazopata kwa kutazama matangazo, utahitaji kuthibitisha pochi yako.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Thibitisha Zawadi za Brave",
+    "message": "Thibitisha pochi yangu",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Kwa kuthibitisha Zawadi zako za Brave na kuziunganisha kwenye akaunti ya bitFlyer, utaweza kuhifadhi na kudhibiti BAT ulizopata kupitia kwa Zawadi za Brave kwa urahisi zaidi",
+    "message": "Kwa kuthibitisha pochi yako na kuiunganisha kwenye akaunti ya bitFlyer, utaweza kuhifadhi na kudhibiti tokeni ulizopata kupitia Brave Rewards kwa urahisi zaidi",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

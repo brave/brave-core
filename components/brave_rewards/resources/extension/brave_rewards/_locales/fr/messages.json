@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Toutes les contributions que vous envoyez resteront en attente, et de nouvelles tentatives seront effectuées automatiquement pendant 90 jours. $link_begin$En savoir plus$link_end$",
+    "message": "Toutes les contributions que vous envoyez resteront en attente dans votre portefeuille, et de nouvelles tentatives seront effectuées automatiquement pendant 90 jours. $link_begin$En savoir plus$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Ce créateur n'a pas encore configuré son compte pour recevoir des contributions de votre service de portefeuille de garde Récompenses.",
+    "message": "Ce créateur n'a pas encore configuré son compte pour recevoir des contributions de votre portefeuille.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Votre récompense est en route.",
+    "message": "Votre récompense va être créditée sur votre portefeuille de récompenses Brave.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Vérifié",
+    "message": "Mon portefeuille",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Valider",
+    "message": "Vérifier le portefeuille",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Reconnecter",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Réclamer mes récompenses",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Réclamer des jetons",
+  "notificationClaim": {
+    "message": "Réclamer",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,11 +301,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Sauvegarder les récompenses Brave",
+    "message": "Sauvegarder le portefeuille",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Veuillez sauvegarder vos récompenses Brave.",
+    "message": "Veuillez sauvegarder votre portefeuille Brave.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -317,7 +313,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Vous êtes déconnecté",
+    "message": "Votre portefeuille est déconnecté",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Vos récompenses Brave sont validées !",
+    "message": "Votre portefeuille est vérifié !",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Vos récompenses Brave ont bien été validées avec $provider$.",
+    "message": "Votre portefeuille $provider$ a été vérifié avec succès et est disponible pour ajouter et retirer des fonds.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Un don de jeton est disponible !",
+    "message": "Octrois de jetons",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "Récompenses de $month$ : $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "Un don de jetons vous attend.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Vos récompenses publicitaires de $month$ sont là !",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Revenus Ads reçus",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "Il vous reste $days$ jours pour les réclamer",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Vos récompenses Brave Private Ads sont ici !",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Échec de la contribution mensuelle",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Votre versement mensuel programmé pour l'Auto-contribution et les contributions mensuelles n'ont pas pu être effectués en raison de fonds insuffisants. Nous réessayerons dans 30 jours.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Un problème s'est produit lors du traitement de votre contribution.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Échec de la contribution mensuelle",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Valider",
+    "message": "Vérifier votre portefeuille",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Afin de retirer les BAT gagnés en visionnant des publicités, vous devrez valider les récompenses Brave.",
+    "message": "Afin de retirer les jetons gagnés en visionnant des publicités, vous devrez vérifier votre portefeuille.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Valider les récompenses Brave",
+    "message": "Vérifier mon portefeuille",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "En vérifiant vos récompenses Brave et en les associant à un compte bitFlyer, vous pourrez conserver et gérer plus facilement les BAT gagnés via les récompenses Brave",
+    "message": "En vérifiant votre portefeuille et en l'associant à un compte bitFlyer, vous pourrez conserver et gérer plus facilement les jetons gagnés via Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

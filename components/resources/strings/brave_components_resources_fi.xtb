@@ -1166,4 +1166,71 @@
 <translation id="2426048501007152001">Käytettävissä olevat tokenit</translation>
 <translation id="4970164249406565575">Hae tili 0x</translation>
 <translation id="7855168553463825937">Kaikki evästeet sallittu</translation>
+<translation id="6248988683584659830">Hakuasetukset</translation>
+<translation id="778096729652828897">Lisätietoa yksityisistä ikkunoista Tor-verkossa</translation>
+<translation id="3149306599361260465">Alustetaan [[percentage]]%</translation>
+<translation id="3258793718986637767">Onko sinulla ongelmia Torin kanssa? Kokeile <ph name="BEGIN_LINK"/>poistaa yksityinen ikkuna käytöstä Torin avulla<ph name="END_LINK"/> ja ottaa se uudelleen käyttöön.</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="654711254769318398">Mainossivuja tarkasteltu</translation>
+<translation id="5810507495128831593">Anna sisällönluojille tippi suoraan selatessasi käyttämällä palkintopaneelia tai käyttämällä tekstiin sidottua tippipainiketta tietyillä sivustoilla, esimerkkeinä Twitter, Reddit ja GitHub.</translation>
+<translation id="6239274080752256452">Nosta rahaa</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Lompakkoavaimesi on todennettu ja ladattu onnistuneesti.</translation>
+<translation id="1083279119532577005">Lompakko palautettu!</translation>
+<translation id="5254740304961202261">Todista olevasi ihminen!</translation>
+<translation id="7510166204621526816">Brave Rewards -palvelin ei vastaa. Korjaamme ongelman mahdollisimman pian.</translation>
+<translation id="2323069945529668668">Voi ei!</translation>
+<translation id="717952606991220586">Oho, jokin meni vikaan. Yritä myöhemmin uudelleen.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Brave Rewards on kohdannut ongelmia. Ole hyvä ja yritä myöhemmin uudelleen.</translation>
+<translation id="4014166694178311757">Lompakkoasi ei voida vahvistaa, sillä olet saavuttanut sallitun vahvistettujen laitteiden ylärajan.</translation>
+<translation id="8832187864682447273">Virhe: tarvitset vahvistetun lompakon kirjautuaksesi sisään</translation>
+<translation id="1501075228659004450">Hmm, näyttää siltä, että Brave Rewards -lompakkosi on jo vahvistettu toisella <ph name="PROVIDER"/> tilillä. Vahvista uudelleen käyttämällä edellistä tiliäsi.</translation>
+<translation id="7147519373526655987">Ilmeni ongelma, kun selaimesi pyyntöä liittää Brave Rewards -lompakko <ph name="PROVIDER"/>-tiliisi vahvistettiin. Voit <ph name="BEGIN_LINK"/>ottaa yhteyttä tukeen<ph name="END_LINK"/> saadaksesi apua.</translation>
+<translation id="448371102125124442">Nykyinen lompakkosi on kuitenkin rajoitettu. Kun vahvistat lompakon säilytyskumppanin kanssa, voit tehdä seuraavaa:</translation>
+<translation id="1438426246237704604">Saada palkintosi suoraan tilillesi</translation>
+<translation id="9146355483497231818">Vahvista lompakkosi</translation>
+<translation id="8913591412117692523">Jos haluat nostaa mainosten katsomisesta ansaittuja poletteja, tulee sinun vahvistaa lompakkosi.</translation>
+<translation id="5468234114288973517">Vahvista lompakkoni</translation>
+<translation id="7258399883616914635">Kun vahvistat lompakkosi ja linkität sen bitFlyer-tiliin, voit helpommin tallentaa ja hallita Brave Rewardsin kautta ansaitsemiasi poletteja</translation>
+<translation id="5094577350232361255">tietoa</translation>
+<translation id="1036277985068412734">lisää varoja</translation>
+<translation id="1555514580945108302">Hmm… ei aivan. Yritä uudelleen.</translation>
+<translation id="2157162992285072267">Vedä ja pudota tämä logo paikkaan</translation>
+<translation id="4805054577224376281">kohde</translation>
+<translation id="2266556115441975588">Mainospalkkiosi ovat saapuneet!</translation>
+<translation id="8764029012618014430">Salli vinkit</translation>
+<translation id="6149218349077925111">kohteelle</translation>
+<translation id="6476729769006815569">Hei [[name]]!</translation>
+<translation id="606865182719489911">Ilmainen lahjoituspoletti on saatavilla</translation>
+<translation id="6803187280799213426">Brave-lompakkosi varat ovat virtuaalisia, eivätkä ne vaadi varmuuskopiota. Niitä voi käyttää ainoastaan tässä selaimessa.</translation>
+<translation id="5904352893156917813">Jos haluat turvata rahasi, kun aloitat selaimen puhtaalla asennuksella tai vaihdat uuteen laitteeseen, ja saada muita etuja, kuten rahojen lisäämisen, noston ja siirron, suosittelemme seuraavaa: <ph name="LINK_BEGIN"/>lompakkosi vahvistaminen<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Voit aina käyttää tätä avainta lompakkosi palauttamiseen, jos jotain käy selaimellesi tai tietokoneellesi. Muista kuitenkin pitää se turvassa — kuka tahansa avaimen omaava voi nimittäin varastaa lompakkosi. On todennäköisesti turvallisinta kirjoittaa se muistiin paperille tai muulle tärkeälle muistiinpanovälineellesi.</translation>
+<translation id="5830306739231399614">Harmi, ei vielä tokeneita.</translation>
+<translation id="7359258898775969374">3 tapaa täyttää lompakkosi:</translation>
+<translation id="8087614920008846901">Voit lisätä varoja.</translation>
+<translation id="996024295464837691">Voit ansaita poletteja katselemalla mainoksia.</translation>
+<translation id="8014425282125849700">Toisinaan Brave tarjoaa sinulle ilmaisia lahjoituspoletteja. Seuraa ilmoituksiasi!</translation>
+<translation id="4919888432594361029">Lisää, nosta ja hallinnoi varoja <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Brave Rewards perustuu Basic Attention Token-poletteihin. Lue lisää BAT-poleteista</translation>
+<translation id="7823359893981882407">tässä</translation>
+<translation id="4600052736217630789">Kun palautat pakautusavaimella, nykyinen lompakkosi vaihdetaan. Varmista siis, että tyhjennät tai varmuuskopioit nylyisen lompakkosi ennen palautusta.</translation>
+<translation id="5423214929210538027">Tahdotko varmasti palauttaa palkintolompakkosi alkutilaan?</translation>
+<translation id="4749947664556704604">Menetät summan <ph name="BAT_AMOUNT"/> ja muut palkinnot pysyvästi, jos lompakkosi nollataan. Varmista, että olet <ph name="LINK_BEGIN"/>vahvistanut lompakkos<ph name="LINK_END"/>, jotta voit pitää BAT:si.</translation>
+<translation id="2028613172174411919">Palkintotietosi menetetään pysyvästi, jos palautat lompakkosi alkutilaan.</translation>
+<translation id="5944430251223015324">sivustot</translation>
+<translation id="1726566769229204312">Token-tuet</translation>
+<translation id="8615803647903750175">Lompakon tapahtumat</translation>
+<translation id="4989277977420164514">lompakon tase</translation>
+<translation id="3780605330121608425">Lompakkosi</translation>
+<translation id="7530570094705720669">Luodaan lompakkoa</translation>
+<translation id="7979350009208995417">Tätä tekijää ei ole tällä hetkellä määritetty saamaan tippejä lompakostasi. Kaikki antamasi tipit pysyvät lompakossasi, ja niitä yritetään antaa automaattisesti 90 päivän ajan.</translation>
+<translation id="6521772344816912550">Tämä luoja ei ole vielä rekisteröitynyt. Kaikki antamasi tipit jäävät lompakkoosi odottamaan. Niiden lähettämistä yritetään automaattisesti uudelleen 90 päivän ajan.</translation>
+<translation id="8267327690882073581">Vahvista kukkaro</translation>
+<translation id="543510923939676996">Lompakko vahvistettu</translation>
+<translation id="2445110450361135194">Siirry <ph name="PROVIDER"/> tilillesi</translation>
+<translation id="3699674790322420653">Viimeistele lompakon vahvistus</translation>
+<translation id="9200453331904391567">Katkaise yhteys Brave-palkinnoista</translation>
+<translation id="5894023780213944778">Oma lompakkoni</translation>
+<translation id="3329841454317342083">Tukee SLP-yhteensopivia omaisuuseriä Solana-lohkoketjussa</translation>
 </translationbundle>

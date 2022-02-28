@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "ನೀವು ಮಾಡುವ ಯಾವುದೇ ಟಿಪ್ ಬಾಕಿ ಆಗಿಯೇ ಇರುತ್ತದೆ ಮತ್ತು 90 ದಿನಗಳವರೆಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಪ್ರಯತ್ನಿಸಿ. $link_begin$ಹೆಚ್ಚು ತಿಳಿಯಿರಿ$link_end$",
+    "message": "ನೀವು ಮಾಡುವ ಯಾವುದೇ ಟಿಪ್ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿ ಬಾಕಿ ಆಗಿಯೇ ಇರುತ್ತದೆ ಮತ್ತು 90 ದಿನಗಳವರೆಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಪ್ರಯತ್ನಿಸಿ. $link_begin$ಹೆಚ್ಚು ತಿಳಿಯಿರಿ$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್‌ಗಳ ಕಸ್ಟೋಡಿಯಲ್ ವ್ಯಾಲೆಟ್ ಸೇವೆಯಿಂದ ಟಿಪ್ಸ್ ಸ್ವೀಕರಿಸಲು ಈ ರಚನೆಕಾರರನ್ನು ಪ್ರಸ್ತುತ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿಲ್ಲ.",
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಿಂದ ಟಿಪ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ರಚನೆಕಾರರನ್ನು ಪ್ರಸ್ತುತ ಕಾನ್ಫಿಗರ್ ಮಾಡಲಾಗಿಲ್ಲ.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ಇನ್ನೇನು ದೊರೆಯಲಿದೆ.",
+    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿ ಇನ್ನೇನು ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "ಪರಿಶೀಲಿಸಲಾಗಿದೆ",
+    "message": "ನನ್ನ ವಾಲೆಟ್",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "ಪರಿಶೀಲಿಸಿ",
+    "message": "ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "ಮರುಸಂಪರ್ಕಿಸಿ",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಕ್ಲೇಮ್ ಮಾಡಿ",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "ಟೋಕನ್‌ಗಳನ್ನು ಕ್ಲೇಮ್ ಮಾಡಿ",
+  "notificationClaim": {
+    "message": "ಕ್ಲೈಮ್ ಮಾಡಿ",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,11 +301,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಬ್ಯಾಕ್ ಅಪ್ ಮಾಡಿ",
+    "message": "ಬ್ಯಾಕಪ್ ವಾಲೆಟ್",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "ದಯವಿಟ್ಟು ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ.",
+    "message": "ದಯವಿಟ್ಟು ನಿಮ್ಮ Brave ವ್ಯಾಲೆಟ್ ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -317,7 +313,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "ನೀವು ಲಾಗ್ ಔಟ್ ಆಗಿರುವಿರಿ",
+    "message": "ನಿಮ್ಮ ವಾಲೆಟ್ ಲಾಗ್ ಔಟ್ ಮಾಡಲಾಗಿದೆ",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ!",
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸಲಾಗಿದೆ!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್ಗಳನ್ನು ಈ ಮೂಲಕ ಯಶಸ್ವಿಯಾಗಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ $provider$.",
+    "message": "ನಿಮ್ಮ $provider$ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಪರಿಶೀಲಿಸಲಾಗಿದೆ ಮತ್ತು ಅದು ಫಂಡ್‌ಗಳನ್ನು ಸೇರಿಸಲು ಮತ್ತು ಹಿಂಪಡೆಯಲು ಸಿದ್ಧವಾಗಿದೆ.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "ಟೋಕನ್ ಅನುದಾನ ಲಭ್ಯವಿದೆ!",
+    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ ರಿವಾರ್ಡ್‌ಗಳು: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "ನಿಮಗಾಗಿ ಒಂದು ಅನುದಾನ ಕಾಯುತ್ತಿದೆ.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "ನಿಮ್ಮ $month$ ಜಾಹೀರಾತು ರಿವಾರ್ಡ್‌ಗಳು ಇಲ್ಲಿವೆ!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "ಜಾಹೀರಾತುಗಳ ಗಳಿಕೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲಾಗಿದೆ",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "ಕ್ಲೇಮ್ ಮಾಡುವುದಕ್ಕಾಗಿ ನಿಮ್ಮ ಬಳಿ $days$ ಬಾಕಿ ಉಳಿದಿವೆ",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Brave Private Ads ನಿಮ್ಮ ರಿವಾರ್ಡ್ಗಳು ಇಲ್ಲಿವೆ!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "ಮಾಸಿಕ ಕೊಡುಗೆ ವಿಫಲಗೊಂಡಿದೆ",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "ಸ್ವಯಂ ಕೊಡುಗೆಗಾಗಿ ನಿಮ್ಮ ನಿಗದಿತ ಮಾಸಿಕ ಪಾವತಿಯನ್ನು ಮತ್ತು ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಸಾಕಷ್ಟು ಹಣವಿಲ್ಲದ ಕಾರಣದಿಂದಾಗಿ ಪೂರ್ಣಗೊಳಿಸಲಾಗಲಿಲ್ಲ. ನಾವು 30 ದಿನಗಳಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸುತ್ತೇವೆ.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "ನಿಮ್ಮ ಕೊಡುಗೆಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಲ್ಲಿ ಸಮಸ್ಯೆ ಎದುರಾಗಿದೆ.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "ಮಾಸಿಕ ಕೊಡುಗೆ ವಿಫಲಗೊಂಡಿದೆ",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "ಪರಿಶೀಲಿಸಿ",
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಿದ್ದಕ್ಕಾಗಿ ನೀವು ಗಳಿಸಿದ BAT ಅನ್ನು ಹಿಂಪಡೆಯುವುದಕ್ಕಾಗಿ, Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ನೀವು ಪರಿಶೀಲಿಸಬೇಕಾಗುತ್ತದೆ.",
+    "message": "ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸಿದ್ದಕ್ಕಾಗಿ ನೀವು ಗಳಿಸಿದ ಟೋಕನ್‌ಗಳನ್ನು ಹಿಂಪಡೆಯುವುದಕ್ಕಾಗಿ, ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ನೀವು ಪರಿಶೀಲಿಸಬೇಕಾಗುತ್ತದೆ.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ",
+    "message": "ನನ್ನ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲಿಸಿ",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸುವ ಮೂಲಕ ಮತ್ತು ಅದನ್ನು bitFlyer ಖಾತೆಗೆ ಲಿಂಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು ಹೆಚ್ಚು ಸುಲಭವಾಗಿ Brave ರಿವಾರ್ಡ್‌ಗಳ ಮೂಲಕ ಗಳಿಸಿದ BAT ಅನ್ನು ಸಂಗ್ರಹಿಸಲು ಮತ್ತು ನಿರ್ವಹಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ",
+    "message": "ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವ ಮೂಲಕ ಮತ್ತು ಅದನ್ನು bitFlyer ಖಾತೆಗೆ ಲಿಂಕ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು ಹೆಚ್ಚು ಸುಲಭವಾಗಿ Brave Rewards ಮೂಲಕ ಗಳಿಸಿದ ಟೋಕನ್ಗಳನ್ನು ಸಂಗ್ರಹಿಸಲು ಮತ್ತು ನಿರ್ವಹಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

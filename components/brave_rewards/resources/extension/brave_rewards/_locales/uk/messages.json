@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "message": "Усі зроблені чайові залишаться у вашому гаманці, а спробу оплати буде автоматично повторено через 90 днів. $link_begin$Дізнайтеся більше$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
+    "message": "Наразі налаштування цього автора не дають моєливості отримувати чайові з вашого гаманця.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Your Reward is on its way.",
+    "message": "Ваша Нагорода прямує до вашого гаманця Brave Rewards.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Верифіковано",
+    "message": "Мій гаманець",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Підтвердити",
+    "message": "Верифікувати гаманець",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Відновити з’єднання",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Claim Rewards",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Claim Tokens",
+  "notificationClaim": {
+    "message": "Запитати",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
+    "message": "Створити резервну копію гаманця",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
+    "message": "Будь ласка, зробіть резервну копію гаманця Brave.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Створити резервну копію",
+    "message": "Створити резервну копію зараз",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "You are logged out",
+    "message": "Ви вийшли зі свого гаманця",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Your Brave Rewards is verified!",
+    "message": "Ваш гаманець верифіковано!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Your Brave Rewards was successfully verified with $provider$.",
+    "message": "Ваш гаманець $provider$ було успішно верифіковано, тож у нього можна додавати й виводити з нього кошти.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "A token grant is available!",
+    "message": "Подарункові токени",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ Rewards: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "На вас очікує грант.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Your $month$ Ad Rewards are here!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Отримано надходження від реклами",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "You have $days$ left to claim",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Ваші винагороди від Brave Private Ads уже тут!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Не вдалося зробити щомісячні внески",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Ваш плановий щомісячний платіж для автоматичних та щомісячних внесків неможливо виконати через недостатню кількість коштів. Ми спробуємо знову через 30 днів.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Під час обробки вашого внеску виникла проблема. ",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Не вдалося зробити щомісячні внески",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Підтвердити",
+    "message": "Верифікуйте свій гаманець",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
+    "message": "Щоб зняти токени, зароблені за перегляд реклами, вам потрібно верифікувати гаманець.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verify Brave Rewards",
+    "message": "Верифікувати мій гаманець",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
+    "message": "Виконавши верифікацію гаманця та прив’язавши його до облікового запису bitFlyer, ви зможете зберігати зароблені за допомогою Винагород Brave токени і керувати ними в більш простий спосіб.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

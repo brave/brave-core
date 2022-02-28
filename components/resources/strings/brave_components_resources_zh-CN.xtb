@@ -1225,4 +1225,69 @@
 <translation id="2426048501007152001">可用代币</translation>
 <translation id="4970164249406565575">搜索账户 0x</translation>
 <translation id="7855168553463825937">已拦截所有 cookie</translation>
+<translation id="6248988683584659830">搜索设置</translation>
+<translation id="778096729652828897">了解有关用 Tor 打开私人窗口的更多信息</translation>
+<translation id="3149306599361260465">初始化完成比例为 [[percentage]]%</translation>
+<translation id="3258793718986637767">使用 Tor 遇到问题？请尝试<ph name="BEGIN_LINK"/> 禁用 Tor 私密窗口<ph name="END_LINK"/>，然后再次开启。</translation>
+<translation id="654711254769318398">广告页面已查看</translation>
+<translation id="6239274080752256452">资金提现</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">您的钱包密钥已通过验证并已成功加载。</translation>
+<translation id="1083279119532577005">钱包已恢复！</translation>
+<translation id="5254740304961202261">证明您是真人！</translation>
+<translation id="7510166204621526816">Brave Rewards 服务器未响应。我们将尽快修复这个问题。</translation>
+<translation id="2323069945529668668">糟糕！</translation>
+<translation id="717952606991220586">哎呀，有些不对劲。请稍后再试。</translation>
+<translation id="6965382102122355670">确定</translation>
+<translation id="7210234701206674260">Brave 奖励出现了问题。请稍后再试。</translation>
+<translation id="4014166694178311757">无法验证您的钱包，因为您已达到验证设备的最大限量。</translation>
+<translation id="8832187864682447273">错误：您需要有一个经过验证的钱包才能登录</translation>
+<translation id="1501075228659004450">哎呀，看来您的 Brave Rewards 钱包已使用其他 <ph name="PROVIDER"/> 账号验证。请尝试使用您先前的账户验证。</translation>
+<translation id="7147519373526655987">验证浏览器请求以将 Brave 奖励钱包与 <ph name="PROVIDER"/> 账户关联时出错。您可以<ph name="BEGIN_LINK"/>联系支持团队<ph name="END_LINK"/>获得更多帮助。</translation>
+<translation id="448371102125124442">但是，您当前的钱包已被限制。使用托管钱包合作伙伴进行验证，即可：</translation>
+<translation id="1438426246237704604">直接在钱包中接收奖励</translation>
+<translation id="9146355483497231818">验证您的钱包</translation>
+<translation id="8913591412117692523">要提取您通过观看广告赚到的代币，您需要验证您的钱包</translation>
+<translation id="5468234114288973517">验证我的钱包</translation>
+<translation id="7258399883616914635">通过验证您的钱包并将其连接到 bitFlyer 帐户，您将能够更容易地存储和管理您通过 Brave Rewards 赚到的代币</translation>
+<translation id="5094577350232361255">关于</translation>
+<translation id="1036277985068412734">添加资金</translation>
+<translation id="1555514580945108302">呃，还差一点。请重试。</translation>
+<translation id="2157162992285072267">将此标识拖放至</translation>
+<translation id="4805054577224376281">目标</translation>
+<translation id="2266556115441975588">您的广告奖励到了！</translation>
+<translation id="8764029012618014430">启用打赏</translation>
+<translation id="6149218349077925111">给</translation>
+<translation id="6476729769006815569">您好，[[name]]！</translation>
+<translation id="606865182719489911">有可用的免费令牌授权。</translation>
+<translation id="6803187280799213426">在您的 Brave 钱包中的资金为虚拟资金，无需进行备份。它仅能供您在本浏览器中使用。</translation>
+<translation id="5904352893156917813">如果您想在全新安装浏览器或是切换到新设备上时确保你所有资金的安全，并拥有其他权益（比如入资、提取和资金转账等等），我们建议<ph name="LINK_BEGIN"/>验证您的钱包<ph name="LINK_END"/>。</translation>
+<translation id="4699702339303280827">如果您的浏览器或电脑出现问题，您可以随时使用此密钥找回您的钱包。请妥善保管，取得密钥的人可盗窃您的钱包。最安全的办法是把它记在纸上，或保存在您保管重要信息的地方。</translation>
+<translation id="5830306739231399614">抱歉，暂无代币。</translation>
+<translation id="7359258898775969374">装满钱包的3种方法：</translation>
+<translation id="8087614920008846901">您可以添加资金。</translation>
+<translation id="996024295464837691">您可以通过浏览广告赚取代币。</translation>
+<translation id="8014425282125849700">偶尔，您将获得 Brave 的免费代币补助金。请务必注意提醒！</translation>
+<translation id="4919888432594361029">以 <ph name="PROVIDER"/>来添加、提取和管理资金。</translation>
+<translation id="6401272292123354754">Brave 奖励建立在注意力币基础上。了解更多有关BAT的信息</translation>
+<translation id="7823359893981882407">此处</translation>
+<translation id="4600052736217630789">使用恢复密钥进行还原将取代您当前的钱包。因此，在您恢复前确保您清空或备份了当前的钱包。</translation>
+<translation id="5423214929210538027">您确定要重置您的奖励钱包吗？</translation>
+<translation id="4749947664556704604">如果重置您的钱包，您的 <ph name="BAT_AMOUNT"/> 和其他奖励数据会永久丢失。请确保您已<ph name="LINK_BEGIN"/>验证了您的钱包<ph name="LINK_END"/>，这样您就可以保留您的 BAT 了。</translation>
+<translation id="2028613172174411919">如果您重置钱包，则将永久失去您的奖励数据。</translation>
+<translation id="5944430251223015324">站点</translation>
+<translation id="1726566769229204312">代币发放</translation>
+<translation id="8615803647903750175">钱包活动</translation>
+<translation id="4989277977420164514">钱包余额</translation>
+<translation id="3780605330121608425">您的钱包</translation>
+<translation id="7530570094705720669">正在创建钱包</translation>
+<translation id="7979350009208995417">此创建者当前尚未配置为接收来自您的钱包的赏金。您发送的任何赏金都将保留在您的钱包中，并每 90 天自动重试一次。</translation>
+<translation id="6521772344816912550">此创作者尚未注册。您打赏的赏金会保留在您的钱包，将在 90 天内自动重试。</translation>
+<translation id="8267327690882073581">验证钱包</translation>
+<translation id="543510923939676996">钱包已验证</translation>
+<translation id="2445110450361135194">转到您的 <ph name="PROVIDER"/> 帐户</translation>
+<translation id="3699674790322420653">完成钱包验证</translation>
+<translation id="9200453331904391567">与 Brave 奖励断开连接</translation>
+<translation id="5894023780213944778">我的钱包</translation>
+<translation id="3329841454317342083">支持 Solana 区块链中兼容 SLP 的资产</translation>
 </translationbundle>

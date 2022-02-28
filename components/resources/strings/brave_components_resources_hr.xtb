@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">Dostupni tokeni</translation>
 <translation id="4970164249406565575">Pretraži račun 0x</translation>
 <translation id="7855168553463825937">Svi kolačići blokirani</translation>
+<translation id="6248988683584659830">Pretraživanje postavki</translation>
+<translation id="778096729652828897">Saznajte više o privatnim prozorima s funkcijom Tor</translation>
+<translation id="3149306599361260465">Inicijaliziranje [[percentage]]%</translation>
+<translation id="3258793718986637767">Imate problema s uslugom Tor? Pokušajte <ph name="BEGIN_LINK"/>onemogućiti privatni prozor s uslugom Tor<ph name="END_LINK"/> i ponovno ga omogućiti.</translation>
+<translation id="654711254769318398">Pregledane stranice oglasa</translation>
+<translation id="6239274080752256452">Povuci sredstva</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Ključ vašeg novčanika je provjeren i uspješno učitan.</translation>
+<translation id="1083279119532577005">Novčanik je vraćen!</translation>
+<translation id="5254740304961202261">Potvrdite da ste živa osoba!</translation>
+<translation id="7510166204621526816">Poslužitelj za Brave Rewards ne reagira. Trudimo se to popraviti što prije.</translation>
+<translation id="2323069945529668668">Joj, ne!</translation>
+<translation id="717952606991220586">Ups, nešto je pošlo po zlu. Pokušajte kasnije.</translation>
+<translation id="6965382102122355670">U REDU</translation>
+<translation id="7210234701206674260">Imamo poteškoća sa značajkom Brave Rewards. Pokušajte kasnije.</translation>
+<translation id="4014166694178311757">Nije moguće potvrditi vaš novčanik jer ste dosegnuli najveće potvrđeno ograničenje uređaja.</translation>
+<translation id="8832187864682447273">Pogreška: Za prijavu treba potvrđen novčanik</translation>
+<translation id="1501075228659004450">Hmm, čini se da se vaš novčanik za uslugu Brave Rewards već potvrdio za drugi račun <ph name="PROVIDER"/>. Pokušajte ponovno potvrditi upotrebom svog prethodnog računa.</translation>
+<translation id="7147519373526655987">Nastao je problem pri potvrđivanju zahtjeva vašeg preglednika za povezivanje novčanika za nagrade Brave s računom <ph name="PROVIDER"/> . Možete se <ph name="BEGIN_LINK"/>obratiti službi za korisničku podršku<ph name="END_LINK"/> za više informacija.</translation>
+<translation id="448371102125124442">Međutim, vaš je trenutačni novčanik ograničen. Potvrđivanjem s partnerom za skrbnički novčanik omogućuje se:</translation>
+<translation id="1438426246237704604">Primi Brave Rewards izravno u svoj novčanik</translation>
+<translation id="9146355483497231818">Provjeri svoj novčanik</translation>
+<translation id="8913591412117692523">Za povlačenje tokena zarađenih za pregledavanje oglasa trebate potvrditi svoj novčanik.</translation>
+<translation id="5468234114288973517">Potvrdi moj novčanik</translation>
+<translation id="7258399883616914635">Potvrđivanjem svojeg novčanika i njegovim povezivanjem s računom usluge bitFlyer možete jednostavnije pohranjivati i upravljati tokenima zarađenim putem usluge Brave Rewards</translation>
+<translation id="5094577350232361255">opis</translation>
+<translation id="1036277985068412734">dodaj sredstva</translation>
+<translation id="1555514580945108302">Hmm… Ne baš. Pokušajte ponovno.</translation>
+<translation id="2157162992285072267">Povucite i ispustite ovaj logotip na</translation>
+<translation id="4805054577224376281">cilj</translation>
+<translation id="2266556115441975588">Ovdje su vaše nagrade od oglasa!</translation>
+<translation id="8764029012618014430">Omogući napojnice</translation>
+<translation id="6149218349077925111">za</translation>
+<translation id="6476729769006815569">Pozdrav, [[name]]!</translation>
+<translation id="606865182719489911">Dostupna je besplatna dodjela tokena</translation>
+<translation id="6803187280799213426">Raspoloživa su sredstva u vašem novčaniku Brave virtualna i ne trebaju se sigurnosno kopirati. Navedena sredstva možete trošiti isključivo u ovom pregledniku.</translation>
+<translation id="5904352893156917813">Ako želite osigurati sva svoja sredstva kada ponovno instalirate preglednik ili prebacite se na drugi uređaj da biste uživali u drugim prednostima kao što su dodavanje, povlačenje i prenošenje sredstava, preporučujemo vam <ph name="LINK_BEGIN"/>provjeravanje novčanika<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Ovaj ključ uvijek možete upotrijebiti kako biste vratili svoj novčanik ako se nešto dogodi vašem pregledniku ili računalu. No pobrinite se da bude zaštićen — svatko tko dobije taj ključ može ukrasti vaš novčanik. Vjerojatno je najsigurnije zapisati ga na komad papira ili gdje god čuvate važne informacije.</translation>
+<translation id="5830306739231399614">Nažalost, još nema tokena.</translation>
+<translation id="7359258898775969374">Tri načina za punjenje novčanika:</translation>
+<translation id="8087614920008846901">Možete dodati sredstva.</translation>
+<translation id="996024295464837691">Tokene možete zaraditi gledanjem oglasa.</translation>
+<translation id="8014425282125849700">Društvo Brave će vam povremeno nuditi besplatne dodjele tokena. Pratite obavijesti o tome!</translation>
+<translation id="4919888432594361029">Dodajte, podignite i upravljajte sredstvima na <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Brave Rewards temelji se na valuti Basic Attention Token. Saznajte više o valuti BAT</translation>
+<translation id="7823359893981882407">ovdje</translation>
+<translation id="4600052736217630789">Vraćanjem pomoću ključa za oporavak vaš će se postojeći novčanik zamijeniti. Stoga prije vraćanja ispraznite postojeći novčanik ili izradite njegovu sigurnosnu kopiju.</translation>
+<translation id="5423214929210538027">Sigurno želite poništiti svoj novčanik za nagrade?</translation>
+<translation id="4749947664556704604">Vaši <ph name="BAT_AMOUNT"/> i ostali podatci o nagradama trajno nestaju ako ponovno postavite svoj novčanik. Pobrinite se da <ph name="LINK_BEGIN"/>potvrdite svoj novčanik<ph name="LINK_END"/> da biste mogli zadržati svoje BAT-ove.</translation>
+<translation id="2028613172174411919">Vaši se podatci o nagradama trajno gube ako poništite svoj novčanik.</translation>
+<translation id="5944430251223015324">mrežna mjesta</translation>
+<translation id="1726566769229204312">Dodjele tokena</translation>
+<translation id="8615803647903750175">Aktivnost novčanika</translation>
+<translation id="4989277977420164514">stanje novčanika</translation>
+<translation id="3780605330121608425">Vaš novčanik</translation>
+<translation id="7530570094705720669">Izrada novčanika</translation>
+<translation id="7979350009208995417">Ovaj autor trenutačno ne može primati napojnice iz vašeg novčanika. Sve napojnice koje mu pošaljete ostat će na čekanju u vašem novčaniku i automatski će se pokušavati poslati 90 dana.</translation>
+<translation id="6521772344816912550">Taj autor još nije prijavljen. Svaka vaša napojnica ostaje na čekanju u novčaniku i automatski se vraća za 90 dana.</translation>
+<translation id="8267327690882073581">Provjeri Novčanik</translation>
+<translation id="543510923939676996">Provjeren novčanik</translation>
+<translation id="2445110450361135194">Idite u svoj račun za <ph name="PROVIDER"/></translation>
+<translation id="3699674790322420653">Završi provjeru novčanika</translation>
+<translation id="9200453331904391567">Poništi vezu s nagradama Brave</translation>
+<translation id="5894023780213944778">Moj novčanik</translation>
+<translation id="3329841454317342083">Podržava imovinu kompatibilnu s SLP-om na lancu podatkovnih blokova platforme Solana</translation>
 </translationbundle>

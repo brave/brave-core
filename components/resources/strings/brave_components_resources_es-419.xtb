@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">Tokens disponibles</translation>
 <translation id="4970164249406565575">Buscar cuenta 0x</translation>
 <translation id="7855168553463825937">Se han bloqueado todas las cookies</translation>
+<translation id="6248988683584659830">Buscar en configuración</translation>
+<translation id="778096729652828897">Obtenga más información sobre las ventanas privadas con Tor</translation>
+<translation id="3149306599361260465">Iniciando [[percentage]] %</translation>
+<translation id="3258793718986637767">¿Tienes problemas con Tor? Intenta <ph name="BEGIN_LINK"/>desactivar la ventana privada con Tor<ph name="END_LINK"/> y luego actívala de nuevo.</translation>
+<translation id="654711254769318398">Páginas de anuncios vistas</translation>
+<translation id="6239274080752256452">Retirar fondos</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">La clave de tu billetera se ha verificado y cargado correctamente.</translation>
+<translation id="1083279119532577005">¡Billetera restaurada!</translation>
+<translation id="5254740304961202261">¡Demuestra que eres humano!</translation>
+<translation id="7510166204621526816">El servidor de Brave Rewards no responde. Solucionaremos este inconveniente lo antes posible.</translation>
+<translation id="2323069945529668668">¡Uy!</translation>
+<translation id="717952606991220586">Ups, ha ocurrido un error. Vuelve a intentarlo más tarde.</translation>
+<translation id="6965382102122355670">Aceptar</translation>
+<translation id="7210234701206674260">Ha ocurrido un error en Brave Rewards. Vuelve a intentarlo más tarde.</translation>
+<translation id="4014166694178311757">No se pudo verificar tu billetera porque has llegado al límite máximo de dispositivos verificados.</translation>
+<translation id="8832187864682447273">Error: Necesita una billetera verificada para iniciar sesión</translation>
+<translation id="1501075228659004450">Parece que tu billetera de Brave Rewards ya se ha verificado con otra cuenta de <ph name="PROVIDER"/>. Prueba a verificar una vez más usando tu cuenta anterior.</translation>
+<translation id="7147519373526655987">Hubo un problema al validar la solicitud del navegador para conectar la billetera de Recompensas de Brave a tu cuenta <ph name="PROVIDER"/>. Puedes <ph name="BEGIN_LINK"/>contactarte con el servicio de asistencia<ph name="END_LINK"/> para obtener ayuda.</translation>
+<translation id="448371102125124442">Sin embargo, tu billetera actual es limitada. La verificación con un socio de billetera de custodia te permite:</translation>
+<translation id="1438426246237704604">Recibir tus recompensas directamente en tu billetera</translation>
+<translation id="9146355483497231818">Verifica tu billetera</translation>
+<translation id="8913591412117692523">Para retirar los tokens que ganas por ver anuncios, deberás verificar tu billetera.</translation>
+<translation id="5468234114288973517">Verificar mi billetera</translation>
+<translation id="7258399883616914635">Al verificar tu billetera y vincularla con una cuenta de bitFlyer, podrás almacenar y administrar los tokens que has ganado a través de Brave Rewards más fácilmente.</translation>
+<translation id="5094577350232361255">acerca de</translation>
+<translation id="1036277985068412734">agregar fondos</translation>
+<translation id="1555514580945108302">Mmmm, no salió del todo bien. Vuelve a intentarlo.</translation>
+<translation id="2157162992285072267">Arrastra y suelta este logo en el</translation>
+<translation id="4805054577224376281">objetivo</translation>
+<translation id="2266556115441975588">¡Aquí están tus recompensas por los anuncios!</translation>
+<translation id="8764029012618014430">Activar las propinas</translation>
+<translation id="6149218349077925111">para</translation>
+<translation id="6476729769006815569">¡Hola, [[name]]!</translation>
+<translation id="606865182719489911">Hay una donación de tokens gratis disponible.</translation>
+<translation id="6803187280799213426">Los fondos en tu billetera Brave son virtuales y no requieren una copia de seguridad. Está disponible para usar exclusivamente en este navegador.</translation>
+<translation id="5904352893156917813">Si quieres asegurar todos tus fondos en caso de instalar por completo un navegador o de cambiar a un nuevo dispositivo y tener otros beneficios como agregar, retirar y transferir fondos, te recomendamos <ph name="LINK_BEGIN"/>verificar la billetera<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Siempre puedes usar esta clave para recuperar tu billetera si algo le sucede a tu navegador o a tu computadora. Pero asegúrate de protegerla; cualquier persona que sepa esta clave podría robar tu billetera. Probablemente, lo más seguro sea escribirla en un papel o donde guardes información importante.</translation>
+<translation id="5830306739231399614">Lamentablemente, aún no tienes tokens.</translation>
+<translation id="7359258898775969374">Tres formas de llenar tu billetera:</translation>
+<translation id="8087614920008846901">Puedes agregar fondos.</translation>
+<translation id="996024295464837691">Puedes obtener tokens por mirar publicidades.</translation>
+<translation id="8014425282125849700">A veces, te ofrecerán donaciones gratis de tokens de Brave. ¡Asegúrate de estar atento a la alerta!</translation>
+<translation id="4919888432594361029">Agrega, retira y administra fondos en <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Las Recompensas Brave están creadas en función del Basic Attention Token. Obtén más información sobre el BAT</translation>
+<translation id="7823359893981882407">aquí</translation>
+<translation id="4600052736217630789">La restauración con una clave de recuperación reemplazará su billetera actual. Por lo tanto, asegúrese de vaciarla o de hacer una copia de seguridad de la billetera antes de restaurarla.</translation>
+<translation id="5423214929210538027">¿Estás seguro de que deseas restablecer tu billetera de Recompensas?</translation>
+<translation id="4749947664556704604">Sus <ph name="BAT_AMOUNT"/> y los datos de otras recompensas se perderán de forma permanente si restablece su billetera. Asegúrese de que <ph name="LINK_BEGIN"/>ha verificado su billetera<ph name="LINK_END"/> para conservar sus BAT.</translation>
+<translation id="2028613172174411919">Tus datos de Recompensas se perderán de forma permanente si restableces tu billetera.</translation>
+<translation id="5944430251223015324">sitios</translation>
+<translation id="1726566769229204312">Donación de tokens</translation>
+<translation id="8615803647903750175">Actividad de la Billetera</translation>
+<translation id="4989277977420164514">saldo de la billetera</translation>
+<translation id="3780605330121608425">Tu billetera</translation>
+<translation id="7530570094705720669">Cómo crear una billetera</translation>
+<translation id="7979350009208995417">Este creador no está configurado actualmente para recibir propinas de tu billetera. Cualquier propina que hagas se mantendrá pendiente en tu billetera y se reintentará automáticamente durante 90 días.</translation>
+<translation id="6521772344816912550">Este creador aún no está registrado. Cualquier propina que envíe se mantendrá pendiente en su billetera y se reintentará automáticamente durante 90 días.</translation>
+<translation id="8267327690882073581">Verificar billetera</translation>
+<translation id="543510923939676996">Billetera verificada</translation>
+<translation id="2445110450361135194">Ve a tu cuenta de <ph name="PROVIDER"/></translation>
+<translation id="3699674790322420653">Completar verificación de billetera</translation>
+<translation id="9200453331904391567">Desconectar de Recompensas Brave</translation>
+<translation id="5894023780213944778">Mi billetera</translation>
+<translation id="3329841454317342083">Admite activos compatibles con SLP en la cadena de bloques de Solana</translation>
 </translationbundle>

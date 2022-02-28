@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">Token khả dụng</translation>
 <translation id="4970164249406565575">Tìm kiếm tài khoản 0x</translation>
 <translation id="7855168553463825937">Tất cả cookie bị chặn</translation>
+<translation id="6248988683584659830">Cài đặt tìm kiếm</translation>
+<translation id="778096729652828897">Tìm hiểu thêm về Cửa sổ Riêng tư với Tor</translation>
+<translation id="3149306599361260465">Đang khởi tạo [[percentage]]%</translation>
+<translation id="3258793718986637767">Gặp sự cố với Tor? Thử <ph name="BEGIN_LINK"/>tắt cửa sổ riêng với Tor<ph name="END_LINK"/> và bật lại lần nữa.</translation>
+<translation id="654711254769318398">Trang quảng cáo đã xem</translation>
+<translation id="6239274080752256452">Rút Tiền</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Khóa ví của bạn đã được xác minh và tải thành công.</translation>
+<translation id="1083279119532577005">Ví đã phục hồi!</translation>
+<translation id="5254740304961202261">Chứng minh rằng bạn là con người!</translation>
+<translation id="7510166204621526816">Máy chủ Phần Thưởng Brave không phản hồi. Chúng tôi sẽ khắc phục vấn đề này càng sớm càng tốt.</translation>
+<translation id="2323069945529668668">Ối trời!</translation>
+<translation id="717952606991220586">Rất tiếc, đã xảy ra lỗi. Vui lòng thử lại sau.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Phần thưởng Brave đang gặp sự cố. Vui lòng thử lại sau.</translation>
+<translation id="4014166694178311757">Không thể xác thực ví của bạn vì bạn đã dùng hết giới hạn tối đa thiết bị được xác thực.</translation>
+<translation id="8832187864682447273">Lỗi: Bạn cần ví được xác thực để đăng nhập</translation>
+<translation id="1501075228659004450">Rất tiếc, có vẻ như ví Brave Rewards của bạn đã được xác minh với tài khoản <ph name="PROVIDER"/> khác. Vui lòng thử xác minh lại bằng tài khoản trước của bạn.</translation>
+<translation id="7147519373526655987">Đã xảy ra vấn đề khi xác thực yêu cầu của trình duyệt kết nối ví Phần thưởng Brave với tài khoản <ph name="PROVIDER"/> của bạn. Bạn có thể <ph name="BEGIN_LINK"/>liên hệ hỗ trợ<ph name="END_LINK"/> để được trợ giúp thêm.</translation>
+<translation id="448371102125124442">Tuy nhiên, ví hiện tại của bạn bị giới hạn. Xác thực với một đối tác ví giám hộ cho phép bạn:</translation>
+<translation id="1438426246237704604">Nhận Phần thưởng trực tiếp trong ví của bạn</translation>
+<translation id="9146355483497231818">Xác thực ví của bạn</translation>
+<translation id="8913591412117692523">Để rút các token mà bạn kiếm được khi xem quảng cáo, bạn sẽ cần phải xác thực ví của mình.</translation>
+<translation id="5468234114288973517">Xác thực ví của tôi</translation>
+<translation id="7258399883616914635">Với việc xác thực ví của bạn và liên kết ví với một tài khoản bitFlyer, bạn sẽ có thể lưu trữ và quản lý các token mà bạn đã kiếm được thông qua Brave Rewards dễ dàng hơn</translation>
+<translation id="5094577350232361255">về</translation>
+<translation id="1036277985068412734">thêm tiền</translation>
+<translation id="1555514580945108302">Hmm… Không hẳn. Thử lại.</translation>
+<translation id="2157162992285072267">Kéo và thả biểu tượng này lên</translation>
+<translation id="4805054577224376281">mục tiêu</translation>
+<translation id="2266556115441975588">Phần thưởng cho bạn từ Quảng cáo đều có tại đây!</translation>
+<translation id="8764029012618014430">Kcish hoạt tiền boa</translation>
+<translation id="6149218349077925111">dành cho</translation>
+<translation id="6476729769006815569">Xin chào [[name]]!</translation>
+<translation id="606865182719489911">Một khoản thưởng token miễn phí đang khả dụng.</translation>
+<translation id="6803187280799213426">Tiền trong ví Brave của bạn là ảo và không bắt buộc phải sao lưu. Số tiền đó có sẵn để bạn chi tiêu riêng trên trình duyệt này.</translation>
+<translation id="5904352893156917813">Nếu bạn muốn bảo vệ tất cả số tiền của mình trong trường hợp cài đặt mới trình duyệt hoặc chuyển sang thiết bị mới, và có các lợi ích khác như thêm, rút và chuyển tiền, chúng tôi khuyên bạn nên <ph name="LINK_BEGIN"/>xác minh ví của bạn<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Bạn luôn có thể sử dụng khóa này để lấy lại ví nếu có chuyện gì xảy ra với trình duyệt hoặc máy tính của bạn. Nhưng hãy đảm bảo bảo vệ khóa này — bất kỳ ai có được khóa này đều có thể đánh cắp ví của bạn. Có lẽ an toàn nhất là viết khóa này ra một tờ giấy, hoặc bất cứ nơi nào mà bạn giữ thông tin quan trọng.</translation>
+<translation id="5830306739231399614">Tiếc thay, chưa có token.</translation>
+<translation id="7359258898775969374">3 cách để làm đầy ví của bạn:</translation>
+<translation id="8087614920008846901">Bạn có thể thêm tiền đóng góp.</translation>
+<translation id="996024295464837691">Bạn có thể kiếm được token từ việc xem quảng cáo.</translation>
+<translation id="8014425282125849700">Thỉnh thoảng, Brave sẽ cho bạn các khoản thưởng token miễn phí. Bạn hãy chú ý các thông báo nhé!</translation>
+<translation id="4919888432594361029">Thêm, rút ​​và quản lý tiền tại <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Phần thưởng Brave được dựng trên Basic Attention Token. Tìm hiểu thêm về BAT</translation>
+<translation id="7823359893981882407">ở đây</translation>
+<translation id="4600052736217630789">Khôi phục bằng khóa khôi phục sẽ thay thế ví hiện tại của bạn. Vì vậy hãy bảo đảm bạn đã làm trống hoặc sao lưu ví hiện tại của mình trước khi khôi phục.</translation>
+<translation id="5423214929210538027">Bạn có chắc chắn muốn đặt lại Ví Phần thưởng của mình không?</translation>
+<translation id="4749947664556704604">Khoản <ph name="BAT_AMOUNT"/> và các dữ liệu Phần thưởng khác sẽ bị mất vĩnh viễn nếu bạn đặt lại ví của mình. Vui lòng bảo đảm rằng bạn đã <ph name="LINK_BEGIN"/>xác thực ví của mình<ph name="LINK_END"/> để bạn có thể giữ lại BAT của mình.</translation>
+<translation id="2028613172174411919">Dữ liệu Phần thưởng của bạn sẽ bị mất vĩnh viễn nếu bạn đặt lại ví của mình.</translation>
+<translation id="5944430251223015324">trang web</translation>
+<translation id="1726566769229204312">Tặng Token</translation>
+<translation id="8615803647903750175">Hoạt động của Ví</translation>
+<translation id="4989277977420164514">số dư ví</translation>
+<translation id="3780605330121608425">Ví của bạn</translation>
+<translation id="7530570094705720669">Tạo ví</translation>
+<translation id="7979350009208995417">Người sáng tạo này hiện không được định cấu hình để nhận tiền thưởng từ ví của bạn. Mọi tiền thưởng bạn trả sẽ vẫn chờ xử lý trong ví của bạn và tự động thử lại trong vòng 90 ngày.</translation>
+<translation id="6521772344816912550">Nhà sáng tạo này chưa đăng ký. Mọi khoản tiền mà bạn thưởng sẽ vẫn nằm chờ trong ví của bạn và sẽ tự động thử lại trong 90 ngày.</translation>
+<translation id="8267327690882073581">Xác thực Ví</translation>
+<translation id="543510923939676996">Ví đã được xác thực.</translation>
+<translation id="2445110450361135194">Đi đến tài khoản <ph name="PROVIDER"/> của bạn</translation>
+<translation id="3699674790322420653">Hoàn thành xác thực ví</translation>
+<translation id="9200453331904391567">Ngắt kết nối với Brave Rewards</translation>
+<translation id="5894023780213944778">Ví của tôi</translation>
+<translation id="3329841454317342083">Hỗ trợ các tài sản tương thích SLP trên blockchain Solana</translation>
 </translationbundle>

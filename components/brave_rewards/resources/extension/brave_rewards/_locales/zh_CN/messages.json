@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "您打赏的赏金会保留，将在 90 天内自动重试。$link_begin$了解更多$link_end$",
+    "message": "您打赏的赏金会保留在您的钱包，将在 90 天内自动重试。$link_begin$了解更多$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "此创作者尚未配置，无法接收来自您的奖励托管钱包服务的打赏。",
+    "message": "此创作者尚未配置，无法接收来自您的钱包的打赏。",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "您的奖励已发出。",
+    "message": "您的 Reward 即将汇入您的 Brave Rewards 钱包。",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "已验证",
+    "message": "我的钱包",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "验证",
+    "message": "验证钱包",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "重新连接",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "领取奖励",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "领取代币",
+  "notificationClaim": {
+    "message": "领取",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,11 +301,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "备份 Brave 奖励",
+    "message": "对钱包进行备份",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "请备份您的 Brave 奖励。",
+    "message": "请备份您的 Brave 钱包。",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -317,7 +313,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "您已注销",
+    "message": "您的钱包已注销",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "您的 Brave 奖励已验证！",
+    "message": "您的钱包已经过验证！",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "您的 Brave 奖励已成功向 $provider$ 验证。",
+    "message": "您的 $provider$ 钱包已成功验证，现在可以添加和提取资金了。",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "有可用的代币津贴。",
+    "message": "代币授予",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ 奖励：$amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "您有一笔资助金在等您使用。",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "您的 $month$广告奖励已到账！",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "广告收入已收到",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "您可在 $days$内领取 ",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "您从 Brave Private Ads 获得的奖励到了！",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "发送月供时失败",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "由于资金不足，您安排的对自动捐赠和每月捐赠的每月支付无法完成。我们将会在30天后重试。",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "处理您的贡献时出现问题。",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "发送月供时失败",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "验证",
+    "message": "验证您的钱包",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "要提取您通过观看广告赚到的 BAT，您需要验证 Brave 奖励。",
+    "message": "要提取您通过观看广告赚到的代币，您需要验证您的钱包。",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "验证 Brave 奖励",
+    "message": "验证我的钱包",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "通过验证 Brave 奖励并将其连接到 bitFlyer 帐户，您将能够更轻松地存储和管理您通过 Brave 奖励赚到的 BAT",
+    "message": "通过验证您的钱包并将其连接到 bitFlyer 帐户，您将能够更容易地存储和管理您通过 Brave Rewards 赚到的代币",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

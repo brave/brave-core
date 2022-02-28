@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Vsak prispevek, ki ga daste, bo ostal na čakanju in samodejno znova poskusil 90 dni. $link_begin$Več o tem$link_end$",
+    "message": "Vsak prispevek, ki ga boste dali, bo ostal v čakanju v denarnici in bo samodejno ponovno poskusil čez 90 dni. $link_begin$Več o tem$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Ta ustvarjalec trenutno ni konfiguriran za prejemanje orispevkov iz vaše storitve skrbniške denarnice Rewards.",
+    "message": "Ta ustvarjalec trenutno ni nastavljen za prejemanje prispevkov iz vaše denarnice.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Vaša nagrada je na poti.",
+    "message": "Vaša nagrada je na poti v vašo v denarnico z nagradami Brave Rewards.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Preverjeno",
+    "message": "Moja denarnica",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Preveri",
+    "message": "Preveri denarnico",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Ponovna povezava",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Zahtevajte nagrado",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Zahtevajte žetone",
+  "notificationClaim": {
+    "message": "Zahtevek",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Varnostno kopirajte nagrade Brave Rewards",
+    "message": "Varnostna kopija denarnice",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Prosimo, varnostno kopirajte svoje nagrade Brave Rewards.",
+    "message": "Prosimo, da varnostno kopirate svojo denarnico Brave.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Varnostno kopijo naredite zdaj",
+    "message": "Varnostno kopiraj zdaj",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Odjavljeni ste",
+    "message": "Vaša denarnica je odjavljena",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Vaše nagrade Brave Rewards so verificirane!",
+    "message": "Vaša denarnica je preverjena!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Vaše Brave Rewards so bile uspešno verificirane s pomočjo $provider$.",
+    "message": "Vaša denarnica $provider$ je bila uspešno preverjena in je pripravljena za dodajanje in dvigovanje sredstev.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Na voljo je donacija za žeton!",
+    "message": "Sredstva v žetonih",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ Nagrada: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "Čakajo vas sredstva.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Vaša nagrada z oglasov $month$ Ad Rewards je tukaj!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Prejeti zaslužek od oglasov",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "Za zahtevo imate še $days$",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Vaše nagrade iz oglasov Brave Private Ads so tukaj!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Mesečni prispevek ni uspel",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Vaše načrtovano mesečno plačilo za samodejni prispevek in mesečne prispevke ni bilo mogoče izvesti zaradi nezadostnih sredstev. Poskusili bomo znova čez 30 dni.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Pri obdelavi vaše donacije je prišlo do težave.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Mesečni prispevek ni uspel",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Preveri",
+    "message": "Preverite svojo denarnico",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Če želite dvigniti BAT, ki ga zaslužite za ogledovanje oglasov, boste morali nagrade Brave Rewards verificirati.",
+    "message": "Če želite dvigniti žetone, ki ste jih zaslužili za ogled oglasov, morate preveriti svojo denarnico.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Potrdite Brave Rewards",
+    "message": "Preverite mojo denarnico",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Če svoje nagrade Brave Rewards verificirate in jih povežete z računom bitFlyer, boste lahko lažje shranili in upravljali BAT, ki ste ga zaslužili z nagradami Brave Rewards.",
+    "message": "Če preverite svojo denarnico in jo povežete z računom bitFlyer, boste lažje shranili in upravljali žetone, ki ste jih zaslužili z Brave Rewards.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

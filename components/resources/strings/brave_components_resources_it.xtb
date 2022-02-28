@@ -1167,4 +1167,70 @@
 <translation id="2426048501007152001">Token disponibili</translation>
 <translation id="4970164249406565575">Cerca account 0x</translation>
 <translation id="7855168553463825937">Tutti i cookie bloccati</translation>
+<translation id="6248988683584659830">Impostazioni di ricerca</translation>
+<translation id="778096729652828897">Scopri di più sulle finestre private con Tor</translation>
+<translation id="3149306599361260465">Inizializzazione [[percentage]]%</translation>
+<translation id="3258793718986637767">Hai dei problemi con Tor? Prova a <ph name="BEGIN_LINK"/>disattivare la finestra privata con Tor<ph name="END_LINK"/> e poi riattivala.</translation>
+<translation id="654711254769318398">Pagine pubblicitarie visualizzate</translation>
+<translation id="5810507495128831593">Contribuisci direttamente mentre navighi usando il Pannello Premi, o usando il tasto TIP su vari siti inclusi Twitter, Reddit e GitHub.</translation>
+<translation id="6239274080752256452">Preleva i Fondi</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">La tua chiave d'accesso al portafoglio è stata verificata e caricata con successo.</translation>
+<translation id="1083279119532577005">Portafoglio ripristinato!</translation>
+<translation id="5254740304961202261">Dimostra di essere umano!</translation>
+<translation id="7510166204621526816">Il server di Brave Rewards non risponde. Sistemeremo il problema il prima possibile.</translation>
+<translation id="2323069945529668668">Uh oh!</translation>
+<translation id="717952606991220586">Ops, qualcosa è andato storto. Per favore, riprova più tardi.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Ricompense Brave sta riscontrando un problema. Per favore, riprova più tardi.</translation>
+<translation id="4014166694178311757">Il tuo portafoglio non può essere verificato perché hai raggiunto il limite massimo di dispositivi verificati.</translation>
+<translation id="8832187864682447273">Errore: hai bisogno di un portafoglio verificato per accedere</translation>
+<translation id="1501075228659004450">A quanto pare il tuo portafoglio Brave Rewards è già stato verificato con un altro account <ph name="PROVIDER"/>. Prova a verificarlo di nuovo utilizzando il tuo account precedente.</translation>
+<translation id="7147519373526655987">Si è verificato un problema e non è stata approvata la richiesta effettuata dal browser di collegare il portafoglio delle Ricompense di Brave al tuo account <ph name="PROVIDER"/>. Se hai bisogno di aiuto <ph name="BEGIN_LINK"/>contatta l’assistenza<ph name="END_LINK"/>.</translation>
+<translation id="448371102125124442">Tuttavia, il tuo attuale portafoglio è limitato. La verifica con un partner del custodial wallet ti permette di:</translation>
+<translation id="1438426246237704604">Ricevi le tue ricompense direttamente nel tuo portafoglio</translation>
+<translation id="9146355483497231818">Verifica il tuo portafoglio</translation>
+<translation id="8913591412117692523">Per incassare i token guadagnati visualizzando gli annunci pubblicitari, devi verificare il tuo portafoglio.</translation>
+<translation id="5468234114288973517">Verifica il mio portafoglio</translation>
+<translation id="7258399883616914635">Verificando il portafoglio e collegandolo a un account bitFlyer, è più facile conservare e gestire i token guadagnati con Brave Rewards</translation>
+<translation id="5094577350232361255">su</translation>
+<translation id="1036277985068412734">aggiungi fondi</translation>
+<translation id="1555514580945108302">Mmh… Quasi. Prova di nuovo.</translation>
+<translation id="2157162992285072267">Trascina e rilascia questo logo sul</translation>
+<translation id="4805054577224376281">obiettivo</translation>
+<translation id="2266556115441975588">Le tue ricompense dagli Ads sono qui!</translation>
+<translation id="8764029012618014430">Attiva le Mance</translation>
+<translation id="6149218349077925111">per</translation>
+<translation id="6476729769006815569">Ciao, [[name]]!</translation>
+<translation id="606865182719489911">È disponibile un contributo di gettoni gratuiti.</translation>
+<translation id="6803187280799213426">I fondi nel tuo portafoglio Brave sono virtuali e non devi farne il backup. Li puoi spendere esclusivamente su questo browser.</translation>
+<translation id="5904352893156917813">Se vuoi tenere al sicuro tutto il tuo denaro in caso di re-installazione del browser o passaggio a un nuovo dispositivo, e se vuoi dei vantaggi in più come la possibilità di aggiungere, prelevare e trasferire il denaro, ti consigliamo di <ph name="LINK_BEGIN"/>verificare il tuo portafoglio<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Puoi sempre usare questa chiave per riottenere il controllo del tuo portafoglio se accade qualcosa al tuo browser o al tuo computer. Assicurati però di proteggerla; chiunque ottiene questa chiave potrebbe rubare il tuo portafoglio. Probabilmente è più sicuro scriverla su un foglio di carta o dovunque tieni le informazioni importanti.</translation>
+<translation id="5830306739231399614">Purtroppo, ancora nessun token.</translation>
+<translation id="7359258898775969374">3 modi per ricaricare il tuo portafoglio:</translation>
+<translation id="8087614920008846901">Puoi aggiungere fondi.</translation>
+<translation id="996024295464837691">Puoi guadagnare dei token visualizzando le pubblicità</translation>
+<translation id="8014425282125849700">Occasionalmente, Brave ti offrirà delle donazioni di gettoni gratuiti. Assicurati di tenere d'occhio gli avvisi!</translation>
+<translation id="4919888432594361029">Aggiungi, preleva e gestisci fondi su <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Le Ricompense di Brave si basano sui Token di Attenzione  di Base. Scopri di più sui BAT</translation>
+<translation id="7823359893981882407">qui</translation>
+<translation id="4600052736217630789">Il ripristino con una chiave apposita sostituirà il tuo portafoglio corrente. Assicurati di svuotare o eseguire il backup del tuo portafoglio corrente prima del ripristino.</translation>
+<translation id="5423214929210538027">Sei sicuro di voler resettare il tuo portafoglio delle ricompense?</translation>
+<translation id="4749947664556704604">I tuoi <ph name="BAT_AMOUNT"/> e altri dati relativi alle ricompense verranno definitivamente persi se ripristini il portafoglio. Assicurati di aver <ph name="LINK_BEGIN"/>verificato il tuo portafoglio<ph name="LINK_END"/> in modo da poter conservare i tuoi BAT.</translation>
+<translation id="2028613172174411919">Se ripristini il tuo portafoglio, i dati delle tue ricompense verranno persi in modo permanente.</translation>
+<translation id="5944430251223015324">siti</translation>
+<translation id="1726566769229204312">Contributi in token</translation>
+<translation id="8615803647903750175">Attività del Portafoglio</translation>
+<translation id="4989277977420164514">bilancio del portafoglio</translation>
+<translation id="3780605330121608425">Il tuo portafoglio</translation>
+<translation id="7530570094705720669">Creazione del wallet</translation>
+<translation id="7979350009208995417">Questo creatore non si è ancora configurato per poter ricevere mance dal tuo portafoglio. Ogni mancia che invierai rimarrà in sospeso nel tuo portafoglio e l’invio verrà ritentato in automatico per 90 giorni.</translation>
+<translation id="6521772344816912550">Questo creatore non si è ancora iscritto. Ogni donazione che effettuerai resterà in sospeso nel tuo portafoglio e l'invio verrà ritentato automaticamente per 90 giorni.</translation>
+<translation id="8267327690882073581">Verifica il Portafoglio</translation>
+<translation id="543510923939676996">Portafoglio verificato</translation>
+<translation id="2445110450361135194">Andare all’account <ph name="PROVIDER"/></translation>
+<translation id="3699674790322420653">Completa verifica del portafoglio</translation>
+<translation id="9200453331904391567">Scollegati da Brave Rewards</translation>
+<translation id="5894023780213944778">Il mio portafoglio</translation>
+<translation id="3329841454317342083">Supporta gli asset compatibili con SLP nella blockchain di Solana</translation>
 </translationbundle>

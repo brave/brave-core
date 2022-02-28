@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "message": "Všechno spropitné, které vložíte, zůstane čekat ve vaší peněžence a bude se automaticky opakovat po dobu 90 dnů. $link_begin$Zjistěte více$link_end$ ",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
+    "message": "Tento nástroj není v současné době nakonfigurován tak, aby přijímal spropitné z vaší peněženky. ",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Your Reward is on its way.",
+    "message": "Vaše odměna je na cestě do vaší peněženky s odměnami Brave.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Ověřeno",
+    "message": "Moje peněženka",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Ověřit",
+    "message": "Ověřit peněženku",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Znovu připojit",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Claim Rewards",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Claim Tokens",
+  "notificationClaim": {
+    "message": "Nárokovat",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
+    "message": "Záložní peněženka",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
+    "message": "Zálohujte, prosím, svoji Brave peněženku.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Záloha je nyní k dispozici",
+    "message": "Backup now",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "You are logged out",
+    "message": "Vaše peněženka je odhlášena",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Your Brave Rewards is verified!",
+    "message": "Vaše peněženka je ověřená!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Your Brave Rewards was successfully verified with $provider$.",
+    "message": "Vaše peněženka $provider$ byla úspěšně ověřena a je připravena k ukládání i vybírání prostředků.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "A token grant is available!",
+    "message": "Udělování tokenů",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ Rewards: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "Čeká na vás grant. ",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Your $month$ Ad Rewards are here!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Výdělky z reklam byly přijaty",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "You have $days$ left to claim",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Vaše odměny ze soukromých reklam jsou tady!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Měsíční příspěvek selhal",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Vaše naplánovaná měsíční platba za automatický příspěvek a měsíční příspěvky nemohla být dokončena z důvodu nedostatečných prostředků. Zkusíme to znovu za 30 dní.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Při zpracování vašeho příspěvku došlo k problému. ",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Měsíční příspěvek selhal",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Ověřit",
+    "message": "Ověřit peněženku",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
+    "message": "Abyste mohli vybrat tokeny, které získáte za prohlížení reklam, je potřeba ověřit vaši peněženku.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verify Brave Rewards",
+    "message": "Ověřit peněženku",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
+    "message": "Ověření peněženky a její propojení s účtem bitFlyer vám umožní snáze ukládat a spravovat tokeny, které jste získali prostřednictvím Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

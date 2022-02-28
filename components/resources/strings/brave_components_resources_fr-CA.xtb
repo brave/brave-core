@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">Jetons disponibles</translation>
 <translation id="4970164249406565575">Rechercher un compte 0x</translation>
 <translation id="7855168553463825937">Tous les témoins autorisés</translation>
+<translation id="6248988683584659830">Paramètres de recherche</translation>
+<translation id="778096729652828897">En savoir plus sur les fenêtres privées avec Tor</translation>
+<translation id="3149306599361260465">Initialisation [[percentage]] %</translation>
+<translation id="3258793718986637767">Vous rencontrez un problème avec Tor? Essayez de <ph name="BEGIN_LINK"/>désactiver la fenêtre de navigation privée avec Tor<ph name="END_LINK"/>, puis de la réactiver.</translation>
+<translation id="654711254769318398">Pages d'annonces consultées</translation>
+<translation id="6239274080752256452">Retirer des fonds</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Votre clé de portefeuille a été vérifiée et chargée avec succès.</translation>
+<translation id="1083279119532577005">Portefeuille rétabli !</translation>
+<translation id="5254740304961202261">Prouvez que vous êtes humain!</translation>
+<translation id="7510166204621526816">Le serveur Brave Rewards ne répond pas. Nous ferons notre possible pour le régler au plus vite.</translation>
+<translation id="2323069945529668668">Euh oh !</translation>
+<translation id="717952606991220586">Oups, quelque chose ne va pas. Veuillez réessayer plus tard.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Brave Rewards a un problème. Veuillez réessayer plus tard.</translation>
+<translation id="4014166694178311757">Votre portefeuille ne peut pas être vérifié, car vous avez atteint la limite maximale d'appareils vérifiés.</translation>
+<translation id="8832187864682447273">Erreur : il vous faut un portefeuille validé pour vous connecter</translation>
+<translation id="1501075228659004450">Hmm, votre portefeuille Brave Rewards semble avoir déjà été vérifié par un autre compte <ph name="PROVIDER"/>. Essayez de le vérifier à nouveau avec votre ancien compte.</translation>
+<translation id="7147519373526655987">Impossible de valider la demande de connexion de votre portefeuille Brave Rewards à votre compte <ph name="PROVIDER"/> par votre navigateur. <ph name="BEGIN_LINK"/>Contactez l'assistance<ph name="END_LINK"/> pour obtenir de l'aide.</translation>
+<translation id="448371102125124442">Néanmoins, votre portefeuille actuel est limité. Si vous vérifiez votre identité auprès d'un partenaire de portefeuille de garde, vous pourrez :</translation>
+<translation id="1438426246237704604">Recevoir vos récompenses directement dans votre portefeuille</translation>
+<translation id="9146355483497231818">Vérifier votre portefeuille</translation>
+<translation id="8913591412117692523">Afin de retirer les jetons gagnés en visionnant des publicités, vous devrez vérifier votre portefeuille.</translation>
+<translation id="5468234114288973517">Vérifier mon portefeuille</translation>
+<translation id="7258399883616914635">En vérifiant votre portefeuille et en l'associant à un compte bitFlyer, vous pourrez conserver et gérer plus facilement les jetons gagnés via Brave Rewards</translation>
+<translation id="5094577350232361255">à propos de</translation>
+<translation id="1036277985068412734">ajouter des fonds</translation>
+<translation id="1555514580945108302">Hum… Pas tout à fait. Essayez encore.</translation>
+<translation id="2157162992285072267">Glissez-déposez ce logo sur le</translation>
+<translation id="4805054577224376281">cible</translation>
+<translation id="2266556115441975588">Vos récompenses Ads sont ici!</translation>
+<translation id="8764029012618014430">Activer les pourboires</translation>
+<translation id="6149218349077925111">pour</translation>
+<translation id="6476729769006815569">Bonjour, [[name]]!</translation>
+<translation id="606865182719489911">Une subvention symbolique gratuite est disponible.</translation>
+<translation id="6803187280799213426">Les fonds dans votre portefeuille Brave sont virtuels et ne nécessitent pas de sauvegarde. Vous pouvez les dépenser exclusivement sur ce navigateur.</translation>
+<translation id="5904352893156917813">Si vous souhaitez sécuriser tous vos fonds en cas d'une nouvelle installation de navigateur ou d'un nouvel appareil, et bénéficier d'autres avantages tels que l'ajout, le retrait et le transfert de fonds, nous vous recommandons de <ph name="LINK_BEGIN"/>vérifier votre portefeuille<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Vous pouvez toujours utiliser cette clé pour récupérer votre porte-monnaie si un problème survient avec votre navigateur ou votre ordinateur. Mais veillez à bien la protéger — toute personne qui parvient à obtenir cette clé pourrait vous voler votre porte-monnaie. Il est probablement plus sûr de l’écrire sur un morceau de papier, ou à tout autre endroit où vous conservez des informations importantes.</translation>
+<translation id="5830306739231399614">Vous n'avez malheureusement pas encore de jeton</translation>
+<translation id="7359258898775969374">Trois façons de remplir votre portefeuille :</translation>
+<translation id="8087614920008846901">Vous pouvez ajouter des fonds.</translation>
+<translation id="996024295464837691">Vous pouvez gagner des jetons en regardant des publicités.</translation>
+<translation id="8014425282125849700">De temps en temps, Brave vous attribuera gratuitement des jetons. Assurez-vous de garder un œil sur l'alerte !</translation>
+<translation id="4919888432594361029">Ajouter, retirer et gérer des fonds sur <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Brave Récompenses est construit sur le jeton d'attention de base. En savoir plus sur le BAT (sigle en anglais)</translation>
+<translation id="7823359893981882407">ici</translation>
+<translation id="4600052736217630789">La restauration avec une clé de récupération remplacera votre portefeuille actuel. Assurez-vous donc de vider ou de sauvegarder votre portefeuille actuel avant de le restaurer.</translation>
+<translation id="5423214929210538027">Êtes-vous sûr de vouloir réinitialiser votre portefeuille de récompense?</translation>
+<translation id="4749947664556704604">Si vous réinitialisez votre portefeuille, vos <ph name="BAT_AMOUNT"/> et d'autres données de Récompenses seront perdues à jamais. Assurez-vous de <ph name="LINK_BEGIN"/>vérifier votre portefeuille<ph name="LINK_END"/> pour conserver vos BAT.</translation>
+<translation id="2028613172174411919">Vos données de récompenses seront perdues de manière permanentes si vous réinitialisez votre portefeuille.</translation>
+<translation id="5944430251223015324">sites</translation>
+<translation id="1726566769229204312">Subventions de jetons</translation>
+<translation id="8615803647903750175">Activité du portefeuille</translation>
+<translation id="4989277977420164514">Balance du portefeuille</translation>
+<translation id="3780605330121608425">Votre portefeuille</translation>
+<translation id="7530570094705720669">Création de portefeuille</translation>
+<translation id="7979350009208995417">Ce créateur n'a pas encore configuré son compte pour recevoir des pourboires de votre portefeuille. Tous les pourboires que vous envoyez resteront en attente dans votre portefeuille, et de nouvelles tentatives seront effectuées automatiquement pendant 90 jours.</translation>
+<translation id="6521772344816912550">Ce créateur n'est pas encore inscrit. Toutes les contributions que vous envoyez resteront en attente dans votre portefeuille, et de nouvelles tentatives seront effectuées automatiquement pendant 90 jours.</translation>
+<translation id="8267327690882073581">Vérifier le porte-monnaie</translation>
+<translation id="543510923939676996">Porte-monnaie vérifié</translation>
+<translation id="2445110450361135194">Accédez à votre compte <ph name="PROVIDER"/></translation>
+<translation id="3699674790322420653">Vérification complète du portefeuille</translation>
+<translation id="9200453331904391567">Se déconnecter des Récompenses de Brave</translation>
+<translation id="5894023780213944778">Mon portefeuille</translation>
+<translation id="3329841454317342083">Prend en charge les actifs compatibles avec SLP sur la chaîne de blocs Solana</translation>
 </translationbundle>

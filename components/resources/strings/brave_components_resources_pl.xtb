@@ -1167,4 +1167,70 @@
 <translation id="2426048501007152001">Dostępne tokeny</translation>
 <translation id="4970164249406565575">Wyszukaj konto 0x</translation>
 <translation id="7855168553463825937">Wszystkie pliki cookie zablokowane</translation>
+<translation id="6248988683584659830">Przeszukaj ustawienia</translation>
+<translation id="778096729652828897">Dowiedz się więcej na temat korzystania z okna prywatnego z obsługą sieci Tor</translation>
+<translation id="3149306599361260465">Inicjowanie [[percentage]]%</translation>
+<translation id="3258793718986637767">Masz problemy z Tor? Spróbuj <ph name="BEGIN_LINK"/>wyłączyć prywatne okno z Tor<ph name="END_LINK"/> i włączyć je ponownie.</translation>
+<translation id="654711254769318398">Dodaj obejrzane strony</translation>
+<translation id="5810507495128831593">Przekazuj napiwki twórcom treści bezpośrednio podczas przeglądania, korzystając z panelu nagród lub wbudowanego przycisku napiwku w różnych witrynach, jak Twitter, Reddit czy GitHub.</translation>
+<translation id="6239274080752256452">Wypłata środków</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Zweryfikowanie i wczytanie Twojego klucza portfela powiodło się.</translation>
+<translation id="1083279119532577005">Portfel przywrócony!</translation>
+<translation id="5254740304961202261">Dowiedź, że jesteś człowiekiem!</translation>
+<translation id="7510166204621526816">Serwer Nagród Brave nie odpowiada. Naprawimy to tak szybko, jak to możliwe.</translation>
+<translation id="2323069945529668668">O nie!</translation>
+<translation id="717952606991220586">Ups, coś poszło nie tak. Spróbuj ponownie później.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Wystąpił problem z nagrodami przeglądarki Brave. Spróbuj ponownie później.</translation>
+<translation id="4014166694178311757">Nie można zweryfikować portfela, ponieważ osiągnięto limit zweryfikowanych urządzeń.</translation>
+<translation id="8832187864682447273">Błąd: do zalogowania się potrzebny jest zweryfikowany portfel</translation>
+<translation id="1501075228659004450">Hmm, wygląda na to, że Twój portfel Brave Rewards został już zweryfikowany przy użyciu innego konta <ph name="PROVIDER"/>. Spróbuj ponownie przeprowadzić weryfikację przy użyciu poprzedniego konta.</translation>
+<translation id="7147519373526655987">Wystąpił problem z potwierdzeniem żądania przeglądarki dotyczącym połączenia portfela Brave Rewards z kontem <ph name="PROVIDER"/>. Możesz <ph name="BEGIN_LINK"/>skontaktować się z pomocą techniczną<ph name="END_LINK"/>, aby uzyskać pomoc.</translation>
+<translation id="448371102125124442">Twój obecny portfel jest jednak ograniczony. Weryfikacja z partnerem portfela powierniczego Custodial pozwala na:</translation>
+<translation id="1438426246237704604">Otrzymuj swoje nagrody bezpośrednio do portfela</translation>
+<translation id="9146355483497231818">Zweryfikuj portfel</translation>
+<translation id="8913591412117692523">Aby wypłacić tokeny zarobione za wyświetlanie reklam, musisz zweryfikować portfel.</translation>
+<translation id="5468234114288973517">Zweryfikuj mój portfel</translation>
+<translation id="7258399883616914635">Weryfikując swój portfel i łącząc go z kontem bitFlyer, możesz łatwiej przechowywać i zarządzać tokenami zdobytymi dzięki Brave Rewards</translation>
+<translation id="5094577350232361255">informacje</translation>
+<translation id="1036277985068412734">dodaj środki</translation>
+<translation id="1555514580945108302">Hmm… Niezupełnie. Spróbuj jeszcze raz.</translation>
+<translation id="2157162992285072267">Przeciągnij i upuść to logo na</translation>
+<translation id="4805054577224376281">cel</translation>
+<translation id="2266556115441975588">Twoje nagrody z reklam są tutaj!</translation>
+<translation id="8764029012618014430">Włącz napiwki</translation>
+<translation id="6149218349077925111">dla</translation>
+<translation id="6476729769006815569">Cześć [[name]]!</translation>
+<translation id="606865182719489911">Dostępne są darmowe tokeny.</translation>
+<translation id="6803187280799213426">Środki w Twoim portfelu Brave są wirtualne i nie wymagają backupu. Możesz je wydać wyłącznie w tej przeglądarce.</translation>
+<translation id="5904352893156917813">Jeśli chcesz zabezpieczyć wszystkie swoje środki na wypadek czystej instalacji przeglądarki lub zmiany urządzenia na nowe oraz zachować inne korzyści, takie jak dodawanie, wypłacanie i przekazywanie środków, zalecamy <ph name="LINK_BEGIN"/>weryfikację portfela<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Zawsze możesz skorzystać z tego klucza, aby odzyskać portfel, jeśli coś przytrafi się Twojej przeglądarce lub komputerowi. Pamiętaj, aby ochronić go przed osobami, które mogłyby go użyć, by ukraść Twój portfel. Prawdopodobnie najbezpieczniej będzie zapisać klucz na kartce lub w innymi miejscu, w którym przechowujesz ważne informacje.</translation>
+<translation id="5830306739231399614">Niestety, nie ma jeszcze żadnych tokenów.</translation>
+<translation id="7359258898775969374">3 sposoby na wypełnienie portfela:</translation>
+<translation id="8087614920008846901">Możesz dodać środki.</translation>
+<translation id="996024295464837691">Możesz zarabiać tokeny oglądając reklamy.</translation>
+<translation id="8014425282125849700">Od czasu do czasu będziesz otrzymywać od Brave darmowe tokeny. Bądź zawsze czujny i uważny!</translation>
+<translation id="4919888432594361029">Dodawaj i wypłacaj środki, a także zarządzaj nimi w <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Nagrody Brave opierają się na Basic Attention Token. Dowiedz się więcej o BAT</translation>
+<translation id="7823359893981882407">tutaj</translation>
+<translation id="4600052736217630789">Przywracanie za pomocą klucza odzyskiwania zastąpi obecny portfel. Przed przywróceniem upewnij się, że aktualny portfel został opróżniony lub wykonano jego kopię.</translation>
+<translation id="5423214929210538027">Czy na pewno chcesz zresetować swój portfel nagród?</translation>
+<translation id="4749947664556704604">Twoje <ph name="BAT_AMOUNT"/> i inne dane nagród zostaną trwale utracone, jeśli zresetujesz portfel. Pamiętaj, żeby <ph name="LINK_BEGIN"/>zweryfikować portfel<ph name="LINK_END"/>, aby zachować swoje BAT.</translation>
+<translation id="2028613172174411919">Jeśli zresetujesz swój portfel, dane dotyczące Twoich nagród zostaną trwale utracone.</translation>
+<translation id="5944430251223015324">strony</translation>
+<translation id="1726566769229204312">Przyznane tokeny</translation>
+<translation id="8615803647903750175">Aktywność dotycząca portfela</translation>
+<translation id="4989277977420164514">saldo portfela</translation>
+<translation id="3780605330121608425">Twój portfel</translation>
+<translation id="7530570094705720669">Tworzenie portfela</translation>
+<translation id="7979350009208995417">Ten kreator nie jest obecnie skonfigurowany do otrzymywania napiwków z portfela. Wszelkie napiwki, które zarobisz pozostaną w portfelu jako oczekujące i będą automatycznie ponawiane przez 90 dni.</translation>
+<translation id="6521772344816912550">Ten twórca nie jest obecnie zarejestrowany. Wszystkie napiwki pozostaną w Twoim portfelu jako oczekujące i próby ich udzielenia będą automatycznie ponawiane przez 90 dni.</translation>
+<translation id="8267327690882073581">Weryfikuj portfel</translation>
+<translation id="543510923939676996">Portfel zweryfikowany</translation>
+<translation id="2445110450361135194">Przejdź do swojego konta <ph name="PROVIDER"/></translation>
+<translation id="3699674790322420653">Zakończ weryfikację portfela</translation>
+<translation id="9200453331904391567">Rozłącz Nagrody Brave</translation>
+<translation id="5894023780213944778">Mój portfel</translation>
+<translation id="3329841454317342083">Wspiera zasoby kompatybilne z SLP w blockchainie Solana</translation>
 </translationbundle>

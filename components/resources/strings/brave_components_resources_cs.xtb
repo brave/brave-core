@@ -1167,4 +1167,70 @@
 <translation id="2426048501007152001">Dostupné tokeny</translation>
 <translation id="4970164249406565575">Vyhledávání účtu 0x</translation>
 <translation id="7855168553463825937">Všechny soubory cookie blokovány</translation>
+<translation id="6248988683584659830">Nastavení vyhledávání</translation>
+<translation id="778096729652828897">Zjistěte více o soukromých oknech s vyhledávačem Tor</translation>
+<translation id="3149306599361260465">Inicializace [[percentage]] %</translation>
+<translation id="3258793718986637767">Máte problém s Tor? Zkuste <ph name="BEGIN_LINK"/>zakázat soukromé okno s Tor<ph name="END_LINK"/> a opět jej znovu zapnout.</translation>
+<translation id="654711254769318398">Zobrazených stránek s reklamami</translation>
+<translation id="5810507495128831593">Posílejte tvůrcům příspěvky přímo při prohlížení. Stačí použít panel odměn nebo tlačítko pro zaslání příspěvku uvedené přímo na různých stránkách, mezi které patří Twitter, Reddit a GitHub.</translation>
+<translation id="6239274080752256452">Výběr prostředků</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Klíč vaší peněženky byl úspěšně ověřen a načten.</translation>
+<translation id="1083279119532577005">Peněženka byla obnovena!</translation>
+<translation id="5254740304961202261">Potvrďte, že jste člověk!</translation>
+<translation id="7510166204621526816">Server Brave Rewards neodpovídá. Opravíme to co nejdříve.</translation>
+<translation id="2323069945529668668">Jejda!</translation>
+<translation id="717952606991220586">Jejda, něco se pokazilo. Zkuste to prosím později.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Odměny Brave se setkaly s problémem. Zkuste to prosím později znovu.</translation>
+<translation id="4014166694178311757">Vaši peněženku nelze ověřit, protože jste dosáhli maximálního počtu ověřených zařízení.</translation>
+<translation id="8832187864682447273">Chyba: Pro přihlášení potřebujete ověřenou peněženku</translation>
+<translation id="1501075228659004450">Hmm, zdá se, že vaše peněženka odměn Brave Rewards už byla ověřená jiným účtem <ph name="PROVIDER"/>. Zkuste ověření provést znova pomocí předchozího účtu.</translation>
+<translation id="7147519373526655987">Při ověřování požadavku prohlížeče na připojení peněženky odměn Brave k vašemu účtu <ph name="PROVIDER"/> došlo k problému. Pro další pomoc můžete <ph name="BEGIN_LINK"/>kontaktovat podporu<ph name="END_LINK"/>.</translation>
+<translation id="448371102125124442">Vaše současná peněženka je však omezená. Ověření pomocí partnera pro úschovu peněženky vám umožní:</translation>
+<translation id="1438426246237704604">Získávat své odměny přímo do své peněženky</translation>
+<translation id="9146355483497231818">Ověřit peněženku</translation>
+<translation id="8913591412117692523">Abyste mohli vybrat tokeny, které získáte prohlížením reklam, je potřeba ověřit vaši peněženku.</translation>
+<translation id="5468234114288973517">Ověřit peněženku</translation>
+<translation id="7258399883616914635">Ověření peněženky a její propojení s účtem bitFlyer vám umožní snáze ukládat a spravovat tokeny, které jste získali prostřednictvím Brave Rewards</translation>
+<translation id="5094577350232361255">o nás</translation>
+<translation id="1036277985068412734">přidat prostředky</translation>
+<translation id="1555514580945108302">Hmm… To nesedí. Zkuste to znovu.</translation>
+<translation id="2157162992285072267">Přetáhněte toto logo na</translation>
+<translation id="4805054577224376281">cíl</translation>
+<translation id="2266556115441975588">Vaše odměny z Reklam jsou tady!</translation>
+<translation id="8764029012618014430">Povolit dary</translation>
+<translation id="6149218349077925111">pro</translation>
+<translation id="6476729769006815569">Dobrý den, [[name]]!</translation>
+<translation id="606865182719489911">Je dostupný bezplatný žetonový grant.</translation>
+<translation id="6803187280799213426">Finance ve vaší peněžence Brave jsou virtuální a není nutno je zálohovat. Můžete je použít výlučně v tomto prohlížeči.</translation>
+<translation id="5904352893156917813">Pokud si přejete zabezpečit veškeré finance pro případ čisté instalace prohlížeče nebo přechodu na nové zařízení a získat další výhody, například přidávání, odebírání a převody financí, pak doporučujeme <ph name="LINK_BEGIN"/>ověřit si peněženku<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Tento klíč můžete kdykoli využít k tomu, abyste svou peněženku získali zpět, pokud se něco stane s vaším prohlížečem nebo počítačem. Držte jej však v diskrétnosti — kdokoliv se k tomuto klíči dostane, mohl by vám vaši peněženku ukrást. Je zřejmě nejbezpečnější zapsat si jej na kus papíru nebo kamkoliv, kde uchováváte důležité informace.</translation>
+<translation id="5830306739231399614">Zatím bohužel žádné žetony</translation>
+<translation id="7359258898775969374">Peněženku lze dobíjet třemi způsoby:</translation>
+<translation id="8087614920008846901">Můžete přidávat prostředky.</translation>
+<translation id="996024295464837691">Můžete získávat žetony za sledování reklam.</translation>
+<translation id="8014425282125849700">Čas od času vám Brave nabídne bezplatné žetonové granty. Nezapomeňte tedy sledovat upozornění!</translation>
+<translation id="4919888432594361029">Finanční prostředky můžete přidávat, vybírat a spravovat prostřednictvím služby <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Odměny Brave staví na základním žetonu Basic Attention Token (BAT). Zjistěte si o něm více</translation>
+<translation id="7823359893981882407">zde</translation>
+<translation id="4600052736217630789">Obnova pomocí klíče pro obnovení nahradí vaši aktuální peněženku. Ujistěte se, že jste vaši aktuální peněženku před obnovením vyprázdnili nebo zálohovali.</translation>
+<translation id="5423214929210538027">Opravdu si chcete resetovat peněženku s odměnami Rewadrs Wallet?</translation>
+<translation id="4749947664556704604">Vaše <ph name="BAT_AMOUNT"/> a další údaje o odměnách budou při resetování peněženky trvale ztraceny. Ujistěte se prosím, že máte <ph name="LINK_BEGIN"/>ověřenou peněženku<ph name="LINK_END"/>, aby vám vaše BAT zůstaly.</translation>
+<translation id="2028613172174411919">Pokud si resetujete peněženku, data vašich Odměn se nenávratně ztratí.</translation>
+<translation id="5944430251223015324">stránky</translation>
+<translation id="1726566769229204312">Žetonové granty</translation>
+<translation id="8615803647903750175">Činnost v peněžence</translation>
+<translation id="4989277977420164514">zůstatek v peněžence</translation>
+<translation id="3780605330121608425">Vaše peněženka</translation>
+<translation id="7530570094705720669">Vytváření peněženky</translation>
+<translation id="7979350009208995417">Tento program není v současné době nakonfigurován tak, aby přijímal spropitné z vaší peněženky. Veškeré spropitné, které vytvoříte, zůstane ve vaší peněžence nevyřízené a bude se automaticky opakovat po dobu 90 dnů.</translation>
+<translation id="6521772344816912550">Tento nástroj ještě není přihlášen. Všechno spropitné, které vytvoříte, zůstane v peněžence nevyřízené a bude se automaticky opakovat po dobu 90 dnů.</translation>
+<translation id="8267327690882073581">Ověřit peněženku</translation>
+<translation id="543510923939676996">Ověřená peněženka</translation>
+<translation id="2445110450361135194">Přejděte do svého účtu <ph name="PROVIDER"/></translation>
+<translation id="3699674790322420653">Dokončit ověření peněženky</translation>
+<translation id="9200453331904391567">Odpojit od Brave Rewards</translation>
+<translation id="5894023780213944778">Moje peněženka</translation>
+<translation id="3329841454317342083">Podporuje aktiva kompatibilní s SLP na blockchainu Solana</translation>
 </translationbundle>

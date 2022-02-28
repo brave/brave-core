@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">사용 가능한 토큰</translation>
 <translation id="4970164249406565575">계정 검색 0x</translation>
 <translation id="7855168553463825937">모든 쿠키 차단됨</translation>
+<translation id="6248988683584659830">검색 설정</translation>
+<translation id="778096729652828897">Tor를 이용한 비공개 창에 관하여 자세히 알아보십시오</translation>
+<translation id="3149306599361260465">초기화 중 [[percentage]]%</translation>
+<translation id="3258793718986637767">Tor에 문제가 있습니까? Try <ph name="BEGIN_LINK"/>Tor를 사용한 시크릿 창을 비활성화<ph name="END_LINK"/>한 다음 다시 활성화해 보세요.</translation>
+<translation id="654711254769318398">조회한 광고 페이지</translation>
+<translation id="6239274080752256452">자금 인출</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">지갑 키가 성공적으로 인증되고 로드되었습니다.</translation>
+<translation id="1083279119532577005">지갑을 복구했습니다!</translation>
+<translation id="5254740304961202261">귀하가 인간임을 증명하세요!</translation>
+<translation id="7510166204621526816">Brave 보상 서버가 응답하지 않습니다. 가능한 한 신속히 이 문제를 해결하겠습니다.</translation>
+<translation id="2323069945529668668">이런!</translation>
+<translation id="717952606991220586">이런, 뭔가 잘못되었습니다. 나중에 다시 시도해 주세요.</translation>
+<translation id="6965382102122355670">오케이</translation>
+<translation id="7210234701206674260">브레이브 리워드에 문제가 있습니다. 나중에 다시 시도해 주세요.</translation>
+<translation id="4014166694178311757">승인 기기 최대한도에 도달하였으므로, 귀하의 월렛은 승인될 수 없습니다.</translation>
+<translation id="8832187864682447273">오류: 로그인하려면 월렛을 확인해야 합니다.</translation>
+<translation id="1501075228659004450">다른 <ph name="PROVIDER"/> 계정에서 이미 확인을 완료한 Brave Rewards 월렛인 것 같습니다. 이전 계정으로 확인을 다시 시도해보세요.</translation>
+<translation id="7147519373526655987">브라우저가 Brave Rewards 월렛을 <ph name="PROVIDER"/> 계정에 연결하는 요청을 보냈으나 유효성 검증에 문제가 있습니다. <ph name="BEGIN_LINK"/>지원팀에 문의<ph name="END_LINK"/>하여 도움을 받으세요.</translation>
+<translation id="448371102125124442">하지만 현재 월렛에 한도가 있습니다. 보호관리 월렛 파트너로 검증할 경우 다음이 가능합니다.</translation>
+<translation id="1438426246237704604">월렛에 바로 리워드 적립</translation>
+<translation id="9146355483497231818">월렛 검증하기</translation>
+<translation id="8913591412117692523">광고를 보고 적립된 토큰을 인출하려면 월렛을 검증해야 합니다.</translation>
+<translation id="5468234114288973517">내 월렛 검증하기</translation>
+<translation id="7258399883616914635">월렛을 검증하여 bitFlyer 계정에 연결하면 Brave Rewards를 통해 적립된 토큰을 더욱 쉽게 저장하고 관리할 수 있습니다.</translation>
+<translation id="5094577350232361255">대하여</translation>
+<translation id="1036277985068412734">자금 추가히기</translation>
+<translation id="1555514580945108302">음… 잘 모르겠네요. 다시 시도하세요.</translation>
+<translation id="2157162992285072267">[  ]에 이 로고를 끌어다 놓으세요</translation>
+<translation id="4805054577224376281">대상</translation>
+<translation id="2266556115441975588">귀하의 광고 보상금이 도착했습니다!</translation>
+<translation id="8764029012618014430">팁 활성화</translation>
+<translation id="6149218349077925111">위해서</translation>
+<translation id="6476729769006815569">안녕하세요, [[name]] 님!</translation>
+<translation id="606865182719489911">무료 토큰 지급이 가능합니다.</translation>
+<translation id="6803187280799213426">귀하의 Brave 월릿에 있는 자금은 가상이며 백업이 필요하지 않습니다. 이 브라우저에서만 사용이 가능합니다.</translation>
+<translation id="5904352893156917813">브라우저를 새로 설치하거나 새 장치로 전환하는 경우 자금을 모두 확보하고 추가, 인출, 송금 등의 기타 혜택을 받으려면 다음 방법을 추천합니다: <ph name="LINK_BEGIN"/>지갑 확인<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">귀하께서는 브라우저나 컴퓨터에 이상 발생 시 항상 이 열쇠를 사용하여 귀하의 지갑을 돌려받으실 수 있습니다. 하지만 안전하게 보호하셔서 — 이 키를 가진 사람이 귀하의 지갑을 훔치지 못하도록 주의하세요. 아마도’ 종이에 적어두시거나, 혹은 중요한 정보를 보관하는 곳에 적어 두시는 것이 가장 안전할 것입니다.</translation>
+<translation id="5830306739231399614">토큰이 아직 없습니다.</translation>
+<translation id="7359258898775969374">지갑을 채울 3가지 방법:</translation>
+<translation id="8087614920008846901">자금을 추가할 수 있습니다.</translation>
+<translation id="996024295464837691">광고 보기로 토큰을 벌 수 있습니다.</translation>
+<translation id="8014425282125849700">가끔 Brave에서 무료 토큰 보조금이 제공됩니다. 그 알림을 눈여겨보세요!</translation>
+<translation id="4919888432594361029">자금을 추가, 인출하고 관리하세요 <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Brave Rewards는 Basic Attention Token을 바탕으로 설계되었습니다. BAT에 관해 자세히 알아보세요</translation>
+<translation id="7823359893981882407">여기</translation>
+<translation id="4600052736217630789">복구 키로 복구하면 기존 월렛을 교체합니다. 복구 전에 기존 월렛을 비우거나 백업하셔야 합니다.</translation>
+<translation id="5423214929210538027">리워드 월릿을 정말 재설정할까요?</translation>
+<translation id="4749947664556704604">귀하의 <ph name="BAT_AMOUNT"/> 및 기타 리워드 데이터는 월릿을 재설정하면 영구적으로 유실됩니다. BAT를 보관할 수 있도록 <ph name="LINK_BEGIN"/>월릿을 인증했는지 확인하세요<ph name="LINK_END"/>.</translation>
+<translation id="2028613172174411919">월릿을 재설정하면 리워드 데이터가 영구적으로 유실됩니다.</translation>
+<translation id="5944430251223015324">사이트</translation>
+<translation id="1726566769229204312">토큰 보조금</translation>
+<translation id="8615803647903750175">지갑 활동</translation>
+<translation id="4989277977420164514">지갑 잔고</translation>
+<translation id="3780605330121608425">귀하의 월렛</translation>
+<translation id="7530570094705720669">월렛 생성 중</translation>
+<translation id="7979350009208995417">아직 구성되지 않아 회원님의 월렛에서 팁을 받을 수 없는 제작자입니다. 만든 팁은 회원님의 월렛에서 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.</translation>
+<translation id="6521772344816912550">아직 가입하지 않은 제작자입니다. 만든 팁은 회원님의 월렛에서 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다.</translation>
+<translation id="8267327690882073581">월렛 검증하기</translation>
+<translation id="543510923939676996">지갑 인증됨</translation>
+<translation id="2445110450361135194"><ph name="PROVIDER"/> 계정으로 이동</translation>
+<translation id="3699674790322420653">지갑 인증 완료</translation>
+<translation id="9200453331904391567">Brave Rewards에서 접속 해제됨.</translation>
+<translation id="5894023780213944778">내 월렛</translation>
+<translation id="3329841454317342083">솔라나 블록체인에 SLP 호환 자산 지원</translation>
 </translationbundle>

@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Вознаграждения останутся в вашем кошельке, но попытки отправить платеж будут выполняться автоматически в течение 90 дней. $link_begin$Узнать больше$link_end$",
+    "message": "Вознаграждения останутся в вашем кошельке, но попытки отправить платеж будут выполняться автоматически в течение 90 дней. $link_begin$Подробнее…$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Вознаграждение отправлено.",
+    "message": "Ваша награда уже на пути к вашему кошельку наград Brave.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Верифицирован",
+    "message": "Мой кошелек",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Подтвердить",
+    "message": "Верифицировать кошелек",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Переподключиться",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Получить вознаграждения",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Получить токены",
+  "notificationClaim": {
+    "message": "Утвердить",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Резервная копия Brave Наград",
+    "message": "Копия данных кошелька",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Создайте резервную копию Brave Наград.",
+    "message": "Пожалуйста, создайте резервную копию вашего кошелька Brave.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Создать резервную копию",
+    "message": "Backup now",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Выполнен выход.",
+    "message": "Вы вышли из аккаунта кошелька.",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Ваш профиль Brave Наград подтвержден!",
+    "message": "Ваш кошелек проверен!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Вы подтвердили профиль Brave Наград с помощью провайдера $provider$.",
+    "message": "Ваш кошелек ($provider$) был успешно подтвержден и может использоваться для пополнения и вывода средств.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Вы можете получить токены бесплатно!",
+    "message": "Полученные токены",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "Вознаграждения за $month$: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "Вас ожидает грант.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Вам начислены вознаграждения за рекламу, которую вы посмотрели в следующем месяце: $month$.",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Получен доход от рекламы",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "Вы можете запросить вознаграждение в течение $days$ дн.",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Вы получили вознаграждение за Brave Private Ads!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Не удалось списать ежемесячный взнос.",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Запланированные вами ежемесячные взносы не могут быть обработаны из-за недостатка средств. Мы попробуем снова через 30 дней.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Возникла проблема при обработке вашего взноса.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Не удалось списать ежемесячный взнос.",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Подтвердить",
+    "message": "Подтвердите свой кошелек",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Чтобы вывести BAT, полученные за просмотр рекламы, подтвердите свой профиль Brave Наград.",
+    "message": "Чтобы вывести баллы, полученные за просмотр рекламы, подтвердите ваш кошелек.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Подтвердить профиль Brave Наград",
+    "message": "Подтверждаю",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Чтобы вам было удобнее хранить и использовать полученные BAT, подтвердите профиль Brave Наград и свяжите его с аккаунтом bitFlyer.",
+    "message": "Подтвердите ваш кошелек и свяжите его с аккаунтом bitFlyer. Хранить баллы Brave Rewards и управлять ими станет еще удобнее.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

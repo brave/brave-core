@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Всяко дарение, което направите, ще остане в състояние на изчакване и ще се извършва повторен опит автоматично в продължение на 90 дни. $link_begin$Научете повече$link_end$",
+    "message": "Всяко дарение, което направите, ще остане в състояние на изчакване във вашия портфейл и ще се извършва повторен опит автоматично в продължение на 90 дни. $link_begin$Научете повече$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Този създател в момента не е конфигуриран да получава дарения от вашия портфейл с попечителски услуги в „Награди“.",
+    "message": "Този създател в момента не е конфигуриран да получава от вашия портфейл.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Вашата награда е на път.",
+    "message": "Вашата награда е на път към портфейла ви Brave Rewards.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -132,7 +132,7 @@
     "description": ""
   },
   "grantCaptchaErrorText": {
-    "message": "Brave награди има проблеми. Опитайте отново по-късно.",
+    "message": "Brave Rewards има проблеми. Опитайте отново по-късно.",
     "description": ""
   },
   "rewardsPaymentCheckStatus": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Потвърдено",
+    "message": "Моят портфейл",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Потвърждаване",
+    "message": "Потвърди портфейла",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Повторно свързване",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Заявяване на награди",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Заявяване на токени",
+  "notificationClaim": {
+    "message": "Поискай",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -288,7 +284,7 @@
     "description": ""
   },
   "notificationAddFundsText": {
-    "message": "Вашият акаунт за Brave награди очаква депозит.",
+    "message": "Вашият акаунт за Brave Rewards очаква депозит.",
     "description": ""
   },
   "notificationAutoContributeCompletedTitle": {
@@ -305,11 +301,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Архивиране на Brave награди",
+    "message": "Архивен портфейл",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Архивирайте Brave наградите си.",
+    "message": "Направете архивно копие на вашия Brave портфейл.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -317,7 +313,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Не сте влезли",
+    "message": "Не сте влезли в портфейла си",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Вашите Brave награди са потвърдени!",
+    "message": "Вашият портфейл е потвърден!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Вашите Brave награди са потвърдени успешно с $provider$.",
+    "message": "Вашият $provider$ портфейл беше потвърден успешно и е готов за внасяне и теглене на пари.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Наличен е безвъзмезден токен!",
+    "message": "Субсидии за жетони",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "Награди за $month$: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "Очаква Ви дарение.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Вашите награди от реклами за $month$ са тук!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Получени награди за реклами",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "Остават ви $days$ за заявяване",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Вашите награди от Brave Private Ads са тук!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Неуспешна месечна вноска",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Планираното ви месечно плащане за Auto-Contribute и месечните приноси не може да бъде извършено поради недостатъчни средства. Ще опитаме отново след 30 дни.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Възникна проблем при обработката на дарението ви.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Неуспешна месечна вноска",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -441,7 +419,7 @@
     "description": ""
   },
   "onboardingStartUsingRewards": {
-    "message": "Започнете да използвате Brave награди",
+    "message": "Започнете да използвате Brave Rewards",
     "description": ""
   },
   "onboardingTakeTour": {
@@ -491,7 +469,7 @@
     "description": ""
   },
   "onboardingPanelWelcomeHeader": {
-    "message": "Добре дошли в Brave награди!",
+    "message": "Добре дошли в Brave Rewards!",
     "description": ""
   },
   "onboardingPanelWelcomeText": {
@@ -551,15 +529,15 @@
     "description": ""
   },
   "onboardingPanelCompleteText": {
-    "message": "Използвайки Brave награди, вие помагате да направим мрежата по-добро място за всички. И това е страхотно!",
+    "message": "Използвайки Brave Rewards, вие помагате да направим мрежата по-добро място за всички. И това е страхотно!",
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Потвърждаване",
+    "message": "Потвърдете вашия портфейл",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "За да изтеглите BAT, които сте спечелили за гледане на реклами, е необходимо да потвърдите Brave награди.",
+    "message": "За да изтеглите жетоните, които сте спечелили за гледане на реклами, е необходимо да потвърдите портфейла си.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Потвърждаване на Brave награди",
+    "message": "Потвърди моя портфейл",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Чрез потвърждаване на вашите Brave награди и свързването им към акаунт в bitFlyer ще можете по-лесно да съхранявате и управлявате BAT, които сте спечелили чрез Brave награди.",
+    "message": "Чрез потвърждаване на вашия портфейл и свързването му към bitFlyer акаунта, вие ще можете по-лесно да съхранявате и управлявате вашите жетони, които сте спечелили през Brave Rewards.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
@@ -603,7 +581,7 @@
     "description": ""
   },
   "captchaSolvedText": {
-    "message": "Рекламите и печалбите вече ще се възобновят. Благодарим ви, че ни помогнахте да защитим Brave награди и поверителните реклами.",
+    "message": "Рекламите и печалбите вече ще се възобновят. Благодарим ви, че ни помогнахте да защитим Brave Rewards и поверителните реклами.",
     "description": ""
   },
   "captchaContactSupport": {
@@ -615,11 +593,11 @@
     "description": ""
   },
   "braveTalkTurnOnRewardsToStartCall": {
-    "message": "За да започнете безплатно обаждане, активирайте Brave награди",
+    "message": "За да започнете безплатно обаждане, активирайте Brave Rewards",
     "description": ""
   },
   "braveTalkBraveRewardsDescription": {
-    "message": "С Brave награди можете да спечелите токени от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.",
+    "message": "С Brave Rewards можете да спечелите жетони от гледането на поверителни реклами (вашите данни са в безопасност). Превърнете жетоните в пари в брой, карти за подаръци…или дори дарение за уебсайтовете, които харесвате. Без проследяване. Без забавяния.",
     "description": ""
   },
   "braveTalkTurnOnRewards": {
@@ -665,7 +643,7 @@
     "description": ""
   },
   "braveTalkWantLearnMore": {
-    "message": "Искате ли да научите повече за Brave награди? $tour_link_begin$Направете кратка обиколка$tour_link_end$.",
+    "message": "Искате ли да научите повече за Brave Rewards? $tour_link_begin$Направете кратка обиколка$tour_link_end$.",
     "description": "",
     "placeholders": {
       "tour_link_begin": {

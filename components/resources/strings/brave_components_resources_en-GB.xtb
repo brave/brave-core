@@ -1167,4 +1167,70 @@
 <translation id="2426048501007152001">Tokens available</translation>
 <translation id="4970164249406565575">Search account 0x</translation>
 <translation id="7855168553463825937">All cookies blocked</translation>
+<translation id="6248988683584659830">Search settings</translation>
+<translation id="778096729652828897">Learn more about Private Windows with Tor</translation>
+<translation id="3149306599361260465">Initialising [[percentage]]%</translation>
+<translation id="3258793718986637767">Having problems with Tor? Try <ph name="BEGIN_LINK"/>disabling private window with Tor<ph name="END_LINK"/> and turning it back on again.</translation>
+<translation id="654711254769318398">Ad pages viewed</translation>
+<translation id="5810507495128831593">Tip content creators directly as you browse by using the Rewards Panel, or by using the inline tip button on various sites including Twitter, Reddit and GitHub.</translation>
+<translation id="6239274080752256452">Withdraw Funds</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Your wallet key has been verified and loaded successfully.</translation>
+<translation id="1083279119532577005">Wallet restored!</translation>
+<translation id="5254740304961202261">Prove that you are human!</translation>
+<translation id="7510166204621526816">The Brave Rewards server is not responding. We will fix this as soon as possible.</translation>
+<translation id="2323069945529668668">Uh oh!</translation>
+<translation id="717952606991220586">Oops, something is wrong. Please try again later.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Brave Rewards is having an issue. Please try again later.</translation>
+<translation id="4014166694178311757">Your wallet cannot be verified because you've reached the maximum verified device limit.</translation>
+<translation id="8832187864682447273">Error: you need a verified wallet to log in</translation>
+<translation id="1501075228659004450">Hmm, it looks like your Brave Rewards wallet has already been verified with another <ph name="PROVIDER"/> account. Please try verifying again using your previous account.</translation>
+<translation id="7147519373526655987">There was a problem validating your browser's request to connect your Brave Rewards wallet to your <ph name="PROVIDER"/> account. You can <ph name="BEGIN_LINK"/>contact support<ph name="END_LINK"/> for more help.</translation>
+<translation id="448371102125124442">However, your current wallet is limited. Verifying with a custodial wallet partner allows you to:</translation>
+<translation id="1438426246237704604">Receive your Rewards directly in your wallet</translation>
+<translation id="9146355483497231818">Verify your wallet</translation>
+<translation id="8913591412117692523">In order to withdraw the tokens you earn for viewing ads, you’ll need to verify your wallet.</translation>
+<translation id="5468234114288973517">Verify my wallet</translation>
+<translation id="7258399883616914635">By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily</translation>
+<translation id="5094577350232361255">about</translation>
+<translation id="1036277985068412734">add funds</translation>
+<translation id="1555514580945108302">Hmm… Not Quite. Try Again.</translation>
+<translation id="2157162992285072267">Drag and drop this logo onto the</translation>
+<translation id="4805054577224376281">target</translation>
+<translation id="2266556115441975588">Your rewards from Ads are here!</translation>
+<translation id="8764029012618014430">Enable Tips</translation>
+<translation id="6149218349077925111">for</translation>
+<translation id="6476729769006815569">Hello, [[name]]!</translation>
+<translation id="606865182719489911">A free token grant is available.</translation>
+<translation id="6803187280799213426">The funds in your Brave wallet are virtual and not required to backup. It's available for you to spend exclusively on this browser.</translation>
+<translation id="5904352893156917813">If you'd like to secure all of your funds in the case of clean installing the browser or switching to a new device, and have other benefits such as adding, withdrawing and transferring funds, we recommend <ph name="LINK_BEGIN"/>verifying your wallet<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">You can always use this key to get your wallet back if something happens to your browser or computer. But make sure to protect it — anyone who gets this key could steal your wallet. It’s probably safest to write it down on a piece of paper, or wherever else you keep important info.</translation>
+<translation id="5830306739231399614">Sadly, no tokens yet.</translation>
+<translation id="7359258898775969374">3 ways to fill your wallet:</translation>
+<translation id="8087614920008846901">You can add funds.</translation>
+<translation id="996024295464837691">You can earn tokens from viewing ads.</translation>
+<translation id="8014425282125849700">Occasionally, you'll be offered free token grants from Brave. Be sure to keep an eye out for the alert!</translation>
+<translation id="4919888432594361029">Add, withdraw and manage funds at <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Brave Rewards is built on the Basic Attention Token. Learn more about BAT</translation>
+<translation id="7823359893981882407">here</translation>
+<translation id="4600052736217630789">Restoring with a recovery key will replace your current wallet. So make sure you empty or back up your current wallet before restoring.</translation>
+<translation id="5423214929210538027">Are you sure you want to reset your Rewards Wallet?</translation>
+<translation id="4749947664556704604">Your <ph name="BAT_AMOUNT"/> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have <ph name="LINK_BEGIN"/>verified your wallet<ph name="LINK_END"/> so you can keep your BAT.</translation>
+<translation id="2028613172174411919">Your Rewards data will be permanently lost if you reset your wallet.</translation>
+<translation id="5944430251223015324">sites</translation>
+<translation id="1726566769229204312">Token Grants</translation>
+<translation id="8615803647903750175">Wallet Activity</translation>
+<translation id="4989277977420164514">wallet balance</translation>
+<translation id="3780605330121608425">Your wallet</translation>
+<translation id="7530570094705720669">Creating wallet</translation>
+<translation id="7979350009208995417">This creator is currently not configured to receive tips from your wallet. Any tip you make will remain pending in your wallet and retry automatically for 90 days.</translation>
+<translation id="6521772344816912550">This creator is not signed up yet. Any tip you make will remain pending in your wallet and retry automatically for 90 days.</translation>
+<translation id="8267327690882073581">Verify Wallet</translation>
+<translation id="543510923939676996">Wallet verified</translation>
+<translation id="2445110450361135194">Go to your <ph name="PROVIDER"/> account</translation>
+<translation id="3699674790322420653">Complete wallet verification</translation>
+<translation id="9200453331904391567">Disconnect from Brave Rewards</translation>
+<translation id="5894023780213944778">My Wallet</translation>
+<translation id="3329841454317342083">Supports SLP compatible assets on the Solana blockchain</translation>
 </translationbundle>

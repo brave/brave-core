@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Οποιοδήποτε φιλοδώρημα στείλετε θα παραμείνει σε εκκρεμότητα και η αποστολή θα επαναλαμβάνεται αυτόματα για 90 ημέρες. $link_begin$Μάθετε περισσότερα$link_end$",
+    "message": "Αν στείλετε κάποιο φιλοδώρημα, αυτό θα παραμείνει στο πορτοφόλι σας και η αποστολή θα επαναλαμβάνεται αυτόματα επί 90 ημέρες. $link_begin$Μάθε περισσότερα$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Αυτός ο δημιουργός δεν διαθέτει ακόμα κατάλληλη διαμόρφωση για να λαμβάνει φιλοδωρήματα από την υπηρεσία κηδεμονίας πορτοφολιού Ανταμοιβών.",
+    "message": "Αυτός ο δημιουργός δεν έχει ρυθμιστεί προς το παρόν για να λαμβάνει φιλοδωρήματα από το πορτοφόλι σας.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Η Ανταμοιβή σας είναι καθ' οδόν.",
+    "message": "Η Ανταμοιβή σας βρίσκεται καθ' οδόν για το πορτοφόλι σας Ανταμοιβών Brave.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Επαληθεύτηκε",
+    "message": "Το πορτοφόλι μου",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Επαλήθευση",
+    "message": "Επαλήθευση Πορτοφολιού",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Επανάληψη σύνδεσης",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Διεκδικήστε Ανταμοιβές",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Διεκδικήστε Token",
+  "notificationClaim": {
+    "message": "Αποκτήστε",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Δημιουργήστε αντίγραφο ασφαλείας των Ανταμοιβών Brave",
+    "message": "Δημιουργία αντιγράφου ασφαλείας πορτοφολιού",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Παρακαλώ δημιουργήστε αντίγραφο ασφαλείας των Ανταμοιβών Brave σας.",
+    "message": "Παρακαλώ κρατήστε αντίγραφο ασφαλείας του Brave πορτοφολιού σας.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Δημιουργία αντιγράφων ασφαλείας τώρα",
+    "message": "Δημιουργήστε αντίγραφο ασφαλείας τώρα",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Έχετε αποσυνδεθεί",
+    "message": "Το πορτοφόλι σας έχει αποσυνδεθεί",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Οι Ανταμοιβές Brave σας επαληθεύτηκαν!",
+    "message": "Το πορτοφόλι σας επαληθεύτηκε!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Οι Ανταμοιβές Brave σας επαληθεύτηκαν επιτυχώς μέσω $provider$.",
+    "message": "Το πορτοφόλι σας $provider$ επαληθεύτηκε με επιτυχία και είναι έτοιμο για προσθήκη και ανάληψη κεφαλαίων.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Είναι διαθέσιμη μια επιβράβευση σε token!",
+    "message": "Επιχορηγήσεις διακριτικών (Token)",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ Ανταμοιβές: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "Μία χορηγία σε περιμένει.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Οι Ανταμοιβές Διαφήμισης για τον $month$ είναι εδώ!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Έγινε παραλαβή των κερδών από διαφημίσεις Brave Ads",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "Έχετε $days$ ακόμα για να διεκδικήσετε",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Τα Rewards από τις διαφημίσεις Brave Private Ads είναι εδώ!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Η μηνιαία συνεισφορά απέτυχε",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Η προγραμματισμένη μηνιαία πληρωμή σας για την Αυτόματη-Συνεισφορά και οι μηνιαίες συνεισφορές δεν ήταν δυνατόν να ολοκληρωθούν λόγω ανεπαρκών κεφαλαίων. Θα προσπαθήσουμε ξανά σε 30 ημέρες.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Παρουσιάστηκε σφάλμα κατά την επεξεργασία της εισφοράς σου.",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Η μηνιαία συνεισφορά απέτυχε",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Επαλήθευση",
+    "message": "Επαληθεύστε το πορτοφόλι σας",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Για να κάνετε ανάληψη των BAT που κερδίζετε για την προβολή διαφημίσεων, θα πρέπει να επαληθεύσετε τις Ανταμοιβές Brave.",
+    "message": "Για να κάνετε ανάληψη των μαρκών που κερδίσατε από την προβολή διαφημίσεων, θα πρέπει να επαληθεύσετε το πορτοφόλι σας.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Κάντε επαλήθευση των Ανταμοιβών Brave",
+    "message": "Επαλήθευση πορτοφολιού",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Επαληθεύοντας τις Ανταμοιβές Brave και συνδέοντάς τες με έναν λογαριασμό bitFlyer, θα μπορείτε να αποθηκεύετε και να διαχειρίζεστε τα BAT που έχετε κερδίσει μέσω των Ανταμοιβών Brave πιο εύκολα",
+    "message": "Με την επαλήθευση και σύνδεση του πορτοφολιού σας με έναν λογαριασμό bitFlyer, θα έχετε τη δυνατότητα να αποθηκεύετε και να διαχειρίζεστε πιο εύκολα τις μάρκες που έχετε κερδίσει μέσω Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

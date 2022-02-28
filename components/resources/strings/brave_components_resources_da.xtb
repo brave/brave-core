@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">Tokens tilgængelige</translation>
 <translation id="4970164249406565575">Søg konto 0x</translation>
 <translation id="7855168553463825937">Alle cookies blokeret</translation>
+<translation id="6248988683584659830">Søgeindstillinger</translation>
+<translation id="778096729652828897">Få mere at vide om private vinduer med Tor</translation>
+<translation id="3149306599361260465">Initialiserer [[percentage]] %</translation>
+<translation id="3258793718986637767">Har du problemer med Tor? Prøv <ph name="BEGIN_LINK"/>at slå privat vindue fra med Tor<ph name="END_LINK"/>, og slå det til igen.</translation>
+<translation id="654711254769318398">Annoncesider set</translation>
+<translation id="6239274080752256452">Hæv Penge</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Din wallet-nøgle er blevet bekræftet og indlæst.</translation>
+<translation id="1083279119532577005">Tegnebog gendannet!</translation>
+<translation id="5254740304961202261">Bevis at du er et menneske!</translation>
+<translation id="7510166204621526816">Brave Rewards-serveren svarer ikke. Vi vil rette dette så snart som muligt.</translation>
+<translation id="2323069945529668668">Åh åh!</translation>
+<translation id="717952606991220586">Ups, noget er galt. Prøv venligst igen senere.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Brave Rewards har et problem. Prøv venligst igen senere.</translation>
+<translation id="4014166694178311757">Din wallet kunne ikke verificeres, da du har nået den maksimalt verificerede enhedsgrænse.</translation>
+<translation id="8832187864682447273">Fejl: Du skal have en bekræftet wallet, før du kan logge ind</translation>
+<translation id="1501075228659004450">Hmm, det ser ud til, at din Brave Rewards-wallet allerede er blevet verificeret med en anden <ph name="PROVIDER"/>-konto. Prøv at validere igen ved at bruge din forrige konto.</translation>
+<translation id="7147519373526655987">Der opstod et problem med godkendelse a din browsers anmodning om at tilslutte din Brave Rewards-wallet til din <ph name="PROVIDER"/>-konto. Du kan <ph name="BEGIN_LINK"/>kontakte support<ph name="END_LINK"/> for at få hjælp.</translation>
+<translation id="448371102125124442">Din nuværende tegnebog er dog begrænset. Hvis du bekræfter med en sikret tegnebogspartner, kan du:</translation>
+<translation id="1438426246237704604">Modtag dine belønninger direkte i din tegnebog</translation>
+<translation id="9146355483497231818">Bekræft din tegnebog</translation>
+<translation id="8913591412117692523">For at hæve de polletter, du har tjent ved at se reklamer, skal du bekræfte din tegnebog.</translation>
+<translation id="5468234114288973517">Bekræft min tegnebog</translation>
+<translation id="7258399883616914635">Ved at bekræfte din tegnebog og knytte den til en bitFlyer-konto kan du nemmere opbevare og administrere de polletter, du har tjent gennem Brave Rewards.</translation>
+<translation id="5094577350232361255">om</translation>
+<translation id="1036277985068412734">tilføj midler</translation>
+<translation id="1555514580945108302">Hmm… Ikke Helt. Prøv Igen.</translation>
+<translation id="2157162992285072267">Træk og slip dette logo over på</translation>
+<translation id="4805054577224376281">mål</translation>
+<translation id="2266556115441975588">Dine bonusser fra annoncer er kommet!</translation>
+<translation id="8764029012618014430">Aktiver Tips</translation>
+<translation id="6149218349077925111">til</translation>
+<translation id="6476729769006815569">Hej [[name]]!</translation>
+<translation id="606865182719489911">En gratis token-uddeling er tilgængelig.</translation>
+<translation id="6803187280799213426">Saldoen i din Brave-tegnebog er virtuel og behøver ikke sikkerhedskopieres. Den står til din rådighed til brug eksklusivt på denne browser.</translation>
+<translation id="5904352893156917813">Hvis du ønsker at sikre hele din saldo i tilfælde af, at du geninstallerer browseren eller skifter til en ny enhed, og at have andre fordele såsom at kunne tilføje, hæve og overføre beløb, anbefaler vi, <ph name="LINK_BEGIN"/>at du bekræfter din tegnebog<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Du kan altid bruge denne nøgle til at få din tegnebog tilbage, hvis der sker noget med din browser eller computer. Men sørg for at beskytte den — enhver, som finder denne nøgle, kan stjæle din tegnebog. Det’er nok sikrest at skrive den ned på et stykke papir, eller et andet sted hvor du opbevarer vigtige oplysninger.</translation>
+<translation id="5830306739231399614">Desværre er der endnu ingen poletter</translation>
+<translation id="7359258898775969374">3 måder at fylde din pung op på:</translation>
+<translation id="8087614920008846901">Du kan tilføje penge.</translation>
+<translation id="996024295464837691">Du kan nu tjene tokens ved at se reklamer.</translation>
+<translation id="8014425282125849700">Indimellem vil du få tilbudt gratis token-uddelinger fra Brave. Sørg for at holde udkig efter notifikationen!</translation>
+<translation id="4919888432594361029">Tilføj, udbetal og administrér midler på <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Brave Belønninger er bygget på den Basale Opmærksomhedspolet. Lær mere om BOP</translation>
+<translation id="7823359893981882407">her</translation>
+<translation id="4600052736217630789">Du erstatter din aktuelle tegnebog, når du gendanner ved hjælp af en gendannelsesnøgle, så sørg for, at du først tømmer eller sikkerhedskopierer din aktuelle tegnebog.</translation>
+<translation id="5423214929210538027">Er du sikker på, at du vil nulstille din Belønnings-tegnebog?</translation>
+<translation id="4749947664556704604">Dine <ph name="BAT_AMOUNT"/> og andre belønningsdata vil gå tabt permanent, hvis du nulstiller din wallet. Sørg for, at du har <ph name="LINK_BEGIN"/>verificeret din wallet<ph name="LINK_END"/>, så du kan beholde dine BAT.</translation>
+<translation id="2028613172174411919">Dine Belønnings-data bliver mistet permanent, hvis du nulstiller din tegnebog.</translation>
+<translation id="5944430251223015324">sider</translation>
+<translation id="1726566769229204312">Mønttilskud</translation>
+<translation id="8615803647903750175">Tegnebogsaktivitet</translation>
+<translation id="4989277977420164514">Saldo i pung</translation>
+<translation id="3780605330121608425">Din tegnebog</translation>
+<translation id="7530570094705720669">Opretter tegnebog</translation>
+<translation id="7979350009208995417">Denne indholdsskaber er i øjeblikket ikke konfigureret til at modtage drikkepenge fra din tegnebog. Dine drikkepenge vi forblive i din tegnebog, og de vil forsøge at blive overført automatisk i 90 dage.</translation>
+<translation id="6521772344816912550">Denne skaber er ikke tilmeldt endnu. Det beløb, du giver i drikkepenge, vil beløbet stå reserveret i din wallet, som vil forsøge at aflevere det igen i 90 dage.</translation>
+<translation id="8267327690882073581">Bekræft Tegnebog</translation>
+<translation id="543510923939676996">Tegnebog verificeret</translation>
+<translation id="2445110450361135194">Gå til din <ph name="PROVIDER"/>-konto</translation>
+<translation id="3699674790322420653">Gennemfør tegnebogsverificering</translation>
+<translation id="9200453331904391567">Afbryd forbindelsen fra Brave Belønninger</translation>
+<translation id="5894023780213944778">Min tegnebog</translation>
+<translation id="3329841454317342083">Understøtter SLP-kompatible aktiver på Solanas blockchain</translation>
 </translationbundle>

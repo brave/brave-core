@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">Fitxes disponibles</translation>
 <translation id="4970164249406565575">Cerca compte 0x</translation>
 <translation id="7855168553463825937">Totes les galetes bloquejades</translation>
+<translation id="6248988683584659830">Configuració de la cerca</translation>
+<translation id="778096729652828897">Saber més sobre Finestres Privades amb Tor</translation>
+<translation id="3149306599361260465">S'està inicialitzant [[percentage]]%</translation>
+<translation id="3258793718986637767">Tens problemes amb Tor? Prova de <ph name="BEGIN_LINK"/>deshabilitar la finestra privada amb Tor<ph name="END_LINK"/> i tornar-la a obrir.</translation>
+<translation id="654711254769318398">Pàgines d'anunci visualitzades</translation>
+<translation id="6239274080752256452">Retirar Fons</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">La clau de la seva cartera ha estat verificada i carregada amb èxit.</translation>
+<translation id="1083279119532577005">S'ha restablert la cartera!</translation>
+<translation id="5254740304961202261">Demostra que ets un humà!</translation>
+<translation id="7510166204621526816">El servidor Brave Rewards no respon. Ho arreglarem tan aviat com sigui possible.</translation>
+<translation id="2323069945529668668">Ah oh!</translation>
+<translation id="717952606991220586">Ui, alguna cosa no va bé. Torna a provar-ho més tard.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Brave Rewards està experimentant un problema. Torna a provar-ho més tard.</translation>
+<translation id="4014166694178311757">La teva cartera no es pot verificar perquè has assolit el límit màxim de dispositius verificats.</translation>
+<translation id="8832187864682447273">Error: Necessites una cartera verificada per iniciar la sessió</translation>
+<translation id="1501075228659004450">Mmm, sembla que la teva cartera de Brave Rewards ja s'ha verificat amb un altre compte <ph name="PROVIDER"/>. Prova de verificar-la novament utilizant el teu compte anterior.</translation>
+<translation id="7147519373526655987">Hi ha hagut un problema en validar la sol·licitud del teu navegador per connectar la cartera de recompenses de Brave al teu <ph name="PROVIDER"/>. Pots<ph name="BEGIN_LINK"/>contactar amb l'assistència<ph name="END_LINK"/> per obtenir més ajuda.</translation>
+<translation id="448371102125124442">Tanmateix, la teva cartera actual està limitada. La verificació amb un soci de cartera amb custòdia et permet:</translation>
+<translation id="1438426246237704604">Rep el Premis directament a la teva cartera</translation>
+<translation id="9146355483497231818">Verifica la teva cartera</translation>
+<translation id="8913591412117692523">Per tal de retirar els tokens que hagis guanyat visualitzant anuncis, hauràs de verificar la teva cartera.</translation>
+<translation id="5468234114288973517">Verifica la meva cartera</translation>
+<translation id="7258399883616914635">En verificar la teva cartera i vincular-la a un compte de bitFlyer, pots emmagatzemar i gestionar els tokens que hagis guanyat amb Brave Rewards més fàcilment</translation>
+<translation id="5094577350232361255">quant a</translation>
+<translation id="1036277985068412734">afegeix fons</translation>
+<translation id="1555514580945108302">Mmm… Em sembla que no. Torna-ho a provar.</translation>
+<translation id="2157162992285072267">Arrossega i deixa anar aquest logotip al</translation>
+<translation id="4805054577224376281">objectiu</translation>
+<translation id="2266556115441975588">Aquí tens els teus premis per anuncis.</translation>
+<translation id="8764029012618014430">Activa propines</translation>
+<translation id="6149218349077925111">per a</translation>
+<translation id="6476729769006815569">Hola, [[name]]!</translation>
+<translation id="606865182719489911">Està disponible la concessió d'un token gratuït</translation>
+<translation id="6803187280799213426">Els fons a la cartera de Brave són virtuals i no cal incloure'ls a la còpia de seguretat. Els Podeu gastar exclusivament en aquest navegador.</translation>
+<translation id="5904352893156917813">Si vols assegurar tots els fons en cas d'instal·lar net el navegador o canviar a un dispositiu nou, i obtenir altres beneficis com afegir, retirar i transferir fons, et recomanem <ph name="LINK_BEGIN"/>verificar la teva cartera<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Sempre pots fer servir aquesta clau d'accés per recuperar el teu moneder si li passa res al teu navegador o al teu ordinador. Però assegura't que no la perds — qualsevol persona que tingui aquesta clau d'accés podria robar-te el moneder. El més segur és’ que l'escriguis en un paper o on sigui que guardes la informació important.</translation>
+<translation id="5830306739231399614">Per desgràcia encara no hi ha tokens.</translation>
+<translation id="7359258898775969374">3 maneres d'omplir la teva cartera:</translation>
+<translation id="8087614920008846901">Pots afegir fons.</translation>
+<translation id="996024295464837691">Pots guanyar tokens per mirar anuncis.</translation>
+<translation id="8014425282125849700">Ocasionalment t'oferirem ajuts de tokens des de Brave. Estigués atent a l'alerta!</translation>
+<translation id="4919888432594361029">Afegeix, retira i gestiona fons a <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Els Premis de Brave són creats per Basic Attention Token. Saber més de BAT</translation>
+<translation id="7823359893981882407">aquí</translation>
+<translation id="4600052736217630789">Si restaures amb una clau de recuperació, se substituirà la teva cartera actual. Per tant, assegura't de buidar la cartera actual o fer-ne una còpia de seguretat abans de restaurar.</translation>
+<translation id="5423214929210538027">Esteu segurs que voleu restablir la Cartera de Recompenses?</translation>
+<translation id="4749947664556704604">Les <ph name="BAT_AMOUNT"/> i les altres recompenses es perdran per sempre si restableixes la teva cartera. Assegura't d'haver <ph name="LINK_BEGIN"/> verificat la teva cartera <ph name="LINK_END"/> per poder conservar els teus BAT.</translation>
+<translation id="2028613172174411919">Les dades de Recompenses es perdran permanentment si restabliu la cartera.</translation>
+<translation id="5944430251223015324">llocs</translation>
+<translation id="1726566769229204312">Fitxes de recompensa</translation>
+<translation id="8615803647903750175">Activitat de la Cartera</translation>
+<translation id="4989277977420164514">saldo de la cartera</translation>
+<translation id="3780605330121608425">La teva cartera</translation>
+<translation id="7530570094705720669">S'està creant la cartera</translation>
+<translation id="7979350009208995417">Aquest creador actualment no està configurat per rebre propines de la vostra cartera. Qualsevol propina que doneu quedarà pendent a la vostra cartera i es reintentarà automàticament durant 90 dies.</translation>
+<translation id="6521772344816912550">Aquest creador encara no està registrat. Qualsevol propina que doneu quedarà pendent a la vostra cartera i es reintentarà automàticament durant 90 dies.</translation>
+<translation id="8267327690882073581">Verificar el moneder</translation>
+<translation id="543510923939676996">Moneder Verificat</translation>
+<translation id="2445110450361135194">Aneu al vostre compte <ph name="PROVIDER"/></translation>
+<translation id="3699674790322420653">Completeu la verificació del moneder</translation>
+<translation id="9200453331904391567">Desconnectar de Gratificacions Brave</translation>
+<translation id="5894023780213944778">La meva cartera</translation>
+<translation id="3329841454317342083">Permet els actius compatibles amb SLP a la cadena de blocs Solana</translation>
 </translationbundle>

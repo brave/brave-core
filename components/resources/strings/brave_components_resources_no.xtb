@@ -1224,4 +1224,69 @@
 <translation id="2426048501007152001">Tilgjengelige tokener</translation>
 <translation id="4970164249406565575">Søk i kontoen 0x</translation>
 <translation id="7855168553463825937">Alle informasjonskapsler blokkert</translation>
+<translation id="6248988683584659830">Søkeinnstillinger</translation>
+<translation id="778096729652828897">Lær mer om private vinduer med Tor</translation>
+<translation id="3149306599361260465">Starter [[percentage]]%</translation>
+<translation id="3258793718986637767">Har du problemer med Tor? Prøv å <ph name="BEGIN_LINK"/>deaktivere et privat vindu med Tor<ph name="END_LINK"/> og skru det på igjen.</translation>
+<translation id="654711254769318398">Annonsesider vist</translation>
+<translation id="6239274080752256452">Ta ut penger</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">Verifiseringen og lastingen av lommeboknøkkelen din var vellykket.</translation>
+<translation id="1083279119532577005">Lommebok gjenopprettet!</translation>
+<translation id="5254740304961202261">Bevis at du er et menneske!</translation>
+<translation id="7510166204621526816">Brave-serveren svarer ikke. Vi vil rette opp i dette så raskt som mulig.</translation>
+<translation id="2323069945529668668">Oisann!</translation>
+<translation id="717952606991220586">Opp sann, noe er galt. Prøv igjen senere.</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="7210234701206674260">Brave Rewards har et problem. Prøv igjen senere.</translation>
+<translation id="4014166694178311757">Lommeboken kan ikke verifiseres, ettersom du har nådd den øvre enhetsgrensen for verifisering.</translation>
+<translation id="8832187864682447273">Feil: Du trenger en verifisert lommebok for å logge inn</translation>
+<translation id="1501075228659004450">Hmm, det ser ut som at Brave Rewards-lommeboken din allerede er verifisert for en annen <ph name="PROVIDER"/>-konto. Prøv å verifisere igjen med den forrige kontoen din.</translation>
+<translation id="7147519373526655987">Det oppsto et problem under validering av nettleserens forespørsel om å koble Brave Rewards-lommeboken til <ph name="PROVIDER"/>-kontoen din. Du kan <ph name="BEGIN_LINK"/>ta kontakt med støtteteamet<ph name="END_LINK"/> for å få ytterligere assistanse</translation>
+<translation id="448371102125124442">Den nåværende lommeboken din er imidlertid begrenset. Ved verifisering med en partner innen lommebøker for foresatte kan du:</translation>
+<translation id="1438426246237704604">Motta belønningene dine direkte i lommeboken</translation>
+<translation id="9146355483497231818">Bekreft lommeboken din</translation>
+<translation id="8913591412117692523">For å gjøre uttak av tokenene du tjener på å se annonser, må du bekrefte lommeboken din.</translation>
+<translation id="5468234114288973517">Bekreft lommeboken min</translation>
+<translation id="7258399883616914635">Ved å bekrefte lommeboken din og knytte den til en bitFlyer-konto, vil du lettere kunne lagre og administrere tokener du har tjent gjennom Brave Rewards.</translation>
+<translation id="5094577350232361255">om</translation>
+<translation id="1036277985068412734">legg til midler</translation>
+<translation id="1555514580945108302">Hmm… det stemmer ikke helt. Prøv på nytt.</translation>
+<translation id="2157162992285072267">Dra og slipp denne logoen på</translation>
+<translation id="4805054577224376281">mål</translation>
+<translation id="2266556115441975588">Dine annonsebelønninger er her!</translation>
+<translation id="8764029012618014430">Aktiver Tips</translation>
+<translation id="6149218349077925111">for</translation>
+<translation id="6476729769006815569">Hei, [[name]]!</translation>
+<translation id="606865182719489911">En gratis token tildeling er tilgjengelig</translation>
+<translation id="6803187280799213426">Midlene i Brave-lommeboken din er virtuelle og backup er ikke nødvendig. Den kan brukes eksklusivt på denne nettleseren.</translation>
+<translation id="5904352893156917813">Hvis du vil sikre alle midlene din i tilfelle du vil innstallere nettleseren på nytt, eller du skifter enhet, og få andre fordeler som å sette inn, ta ut eller overføre midler, anbefaler vi <ph name="LINK_BEGIN"/>å verifisere lommeboken din<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Du kan alltid bruke denne nøkkelen til å få lommeboken din tilbake hvis det skjer noe med nettleseren eller datamaskinen din. Men sørg for å beskytte den – hvis noen får tak i denne nøkkelen, kan de stjele lommeboken din. Det er sannsynligvis tryggest å skrive den ned på et stykke papir eller et annet sted hvor du oppbevarer viktig informasjon.</translation>
+<translation id="5830306739231399614">Desverre, ingen tokens enda.</translation>
+<translation id="7359258898775969374">3 måter å fylle lommeboken din på:</translation>
+<translation id="8087614920008846901">Du kan legge til penger.</translation>
+<translation id="996024295464837691">Du kan tjene polletter ved å se annonser.</translation>
+<translation id="8014425282125849700">Nå og da vil du få tilbud om tildeling av gratis tokens fra Brave. Pass på at du får med deg beskjeden!</translation>
+<translation id="4919888432594361029">Sett inn, ta ut og administrer midler hos <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">Brave Rewards er bygget på Basic Attention Token. Lær mer om BAT</translation>
+<translation id="7823359893981882407">her</translation>
+<translation id="4600052736217630789">Gjenopprettelse med en gjenopprettingsnøkkel vil erstatte din nåværende lommebok. Sørg for at du tømmer eller sikkerhetskopierer din nåværende lommebok før du gjenoppretter.</translation>
+<translation id="5423214929210538027">Er du sikker på at du vil tilbakestille Belønningslommeboken?</translation>
+<translation id="4749947664556704604">Din <ph name="BAT_AMOUNT"/> and other Belønningsdata vil tapes permanent hvis du tilbakestiller lommeboken. Forsikre deg om at du har <ph name="LINK_BEGIN"/>bekreftet lommeboken<ph name="LINK_END"/> så du får din BAT.</translation>
+<translation id="2028613172174411919">Din belønningsinformasjon blir slettet om du nullstiller lommeboka di.</translation>
+<translation id="5944430251223015324">nettsteder</translation>
+<translation id="1726566769229204312">Tilskudd til polletter</translation>
+<translation id="8615803647903750175">Lommebokaktivitet</translation>
+<translation id="4989277977420164514">saldo i lommebok</translation>
+<translation id="3780605330121608425">Lommeboken din</translation>
+<translation id="7530570094705720669">Opprett lommebok</translation>
+<translation id="7979350009208995417">Denne skaperen har ikke registrert seg for å motta bidrag fra lommeboken din. All driks du mottar vil vises som ventende i lommeboken din og vil bli forsøkt overført på nytt i løpet av 90 dager.</translation>
+<translation id="6521772344816912550">Denne skaperen er ikke registrert ennå. Alt du tjener av tips, ligger inne i lommeboken din med ventestatus og prøver på nytt i 90 dager.</translation>
+<translation id="8267327690882073581">Verifiser lommeboken</translation>
+<translation id="543510923939676996">Lommeboken er verifisert</translation>
+<translation id="2445110450361135194">Gå til din <ph name="PROVIDER"/>-konto</translation>
+<translation id="3699674790322420653">Fullfør lommebokverifiseringen</translation>
+<translation id="9200453331904391567">Koble fra Brave Rewards</translation>
+<translation id="5894023780213944778">Min lommebok</translation>
+<translation id="3329841454317342083">Støtter SLP-kompatible verdier på Solana-blockchainen</translation>
 </translationbundle>

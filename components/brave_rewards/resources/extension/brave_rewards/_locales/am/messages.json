@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "ያቀረቡት ጉርሻ በራሱ ደጋግሞ እየሞከረ ለ90 ቀናት ይቆያል።$link_begin$ ተጨማሪ ይማሩ$link_end$",
+    "message": "የሚያካሄዱት የጉርሻ ክፍያ በዋሌትዎ ውስጥ ይቆያል እናም በ90 ቀናት ውስጥ በራስ ሰር ዳግም ይሞክራል። $link_begin$ ተጨማሪ ይወቁ $link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "ይህ ፈጣሪ ከእርስዎ የሽልማቶች ከስቶድያል ዋሌት አገልግሎት ጉርሻዎችን እንዲቀበል አልተዋቀረም። ",
+    "message": "ይህ የፈጠራ ባለቤት አሁን ከእርስዎ ዋሌት ጉርሻ ለመቀበል አልተዋቀረም።",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "ሽልማቶችዎ በመንገድ ላይ ናቸው።",
+    "message": "ሽልማትዎ ወደ ከ Brave የሽልማቶች ዋሌትዎ የመጣ ነው።",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "ተረጋግጧል",
+    "message": "የእኔ ዋሌት",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "አረጋግጥ",
+    "message": "የዋሌትን ትክክለኛነት አጣራ",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "በድጋሚ ያገናኙ",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "ሽልማቶችን ይጠይቁ",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "ቶክኖችን ይጠይቁ",
+  "notificationClaim": {
+    "message": "አቤቱታ ",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "የብሬቭ ሽልማቶችን መጠባበቂያ ይያዙ",
+    "message": "የዋሌት ምትኬ",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "እባክዎ የብሬቭ ሽልማቶች መጠባበቂያ ይያዙ።",
+    "message": "እባክዎትን ለBrave walletዎ ምትኬ ያድርጉ።",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "አሁን ምትኬ ያስቀምጡ",
+    "message": "አሁን ምትክ አዘጋጅ",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "ወጥተዋል",
+    "message": "ዋሌትዎ ወጥቷል",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "የብሬቭ ሽልማቶችዎ ተረጋግጠዋል!",
+    "message": "ዋሌትዎ ተረጋግጧል!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "የብሬቭ ሽልማቶችዎ በተሳካ ሁኔታ በ$provider$ተረጋግጧል።",
+    "message": "የ$provider$ ዋሌትዎ በተሳካ ሁኔታ ተረጋግጦ ገንዘቦችን ለማስገባት እና ለማውጣት ዝግጁ ነው።",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "የቶክን ሽልማት አለ!",
+    "message": "የቶከን እርዳታዎች",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ ሽልማቶች$amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": " እርሶን የሚጠብቅ ስጦታ አሎት",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "የእርስዎ $month$የማስታወቂያ ሽልማቶች እዚህ ናቸው!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "የማስታወቂያ ክፍያዎችን አግኝተዋል",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "ለመጠየቅ $days$ይቀራሉ",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "ከ Brave Private Ads  ሽልማቶችዎ እዚህ ይገኛሉ!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "ወርሀዊ መዋጮዎ አልተሳካም",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "በቂ ገንዘብ ባለመኖሩ ምክንያት የእርስዎ መርሃ ግብር ለራስ-አስተዋፅኦ እና ለወርሃዊ መዋጮዎች ወርሃዊ ክፍያዎ መጠናቀቅ አልቻለም። በ 30 ቀናት ውስጥ እንደገና እንሞክራለን።",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "አስተዋፅ contributionዎን በማካሄድ ላይ ችግር ነበር",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "ወርሀዊ መዋጮዎ አልተሳካም",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "አረጋግጥ",
+    "message": "ዋለትዎን ያረጋግጡ",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "ማስታዎቂያዎችን በመመልከት ያገኙትን BAT ለማውጣት የብሬቭ ሽልማቶችን ያረጋግጡ።",
+    "message": "ማስታወቂያዎችን በመመልከት ያገኙዋቸውን ቶክኖች ወጪ ለማድረግ ዋለትዎን ማረጋገጥ ያስፈልግዎታል።",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "የብሬቭ ሽልማቶችን ያረጋግጡ",
+    "message": "ዋለቴን አረጋግጥ",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "ማስታወቂያዎችን ለመመልከት ያገኙትን BAT ለማውጣት ብሬቭ ሽልማቶችን ማረጋገጥ ይገባዎታል።",
+    "message": "ዋለትዎን በማረጋገጥ እና ከ bitFlyer መለያ ጋር በማገናኘት በ Brave Rewards ያገኙዋቸውን ቶከንዎችን የበለጠ በቀላሉ ለማከማቸት እና ለማስተዳደር ይችላሉ።",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

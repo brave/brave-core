@@ -1169,4 +1169,71 @@
 <translation id="2426048501007152001">טוקנים זמינים</translation>
 <translation id="4970164249406565575">חיפוש בחשבון 0x</translation>
 <translation id="7855168553463825937">כל העוגיות חסומות</translation>
+<translation id="6248988683584659830">הגדרות חיפוש</translation>
+<translation id="778096729652828897">למד עוד על חלונות גלישה פרטית של Tor</translation>
+<translation id="3149306599361260465">מאתחל [[percentage]]%</translation>
+<translation id="3258793718986637767">נתקלים בתקלות עם Tor? נסו <ph name="BEGIN_LINK"/>השבתת חלון פרטי עם Tor Tor<ph name="END_LINK"/> והפעילו אותו חזרה.</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="654711254769318398">דפי מודעות שנצפו</translation>
+<translation id="5810507495128831593">תן/י ליוצרי התוכן טיפ ישירות תוך כדי גלישה באמצעות פנל התגמולים, או לחצן הטיפים שמופיע באתרים שונים, בהם טוויטר, Reddit ו-GitHub.</translation>
+<translation id="6239274080752256452">משיכת כספים</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">מפתח הארנק שלכם אומת ונטען בהצלחה.</translation>
+<translation id="1083279119532577005">הארנק שוחזר!</translation>
+<translation id="5254740304961202261">הוכיחו שהנכם בני אדם!</translation>
+<translation id="7510166204621526816">שרת Brave Rewards אינו מגיב. אנו נתקן זאת בהקדם האפשרי.</translation>
+<translation id="2323069945529668668">אוי לא!</translation>
+<translation id="717952606991220586">אופס, משהו לא בסדר. אנא נסו שוב מאוחר יותר.</translation>
+<translation id="6965382102122355670">אוקיי</translation>
+<translation id="7210234701206674260">Brave Rewards נתקל בבעיה. אנא נסו שוב מאוחר יותר.</translation>
+<translation id="4014166694178311757">לא ניתן לאמת את הארנק שלך משום שהגעת לגבול האימות המרבי למכשיר.</translation>
+<translation id="8832187864682447273">שגיאה: אתה זקוק לארנק מאומת על מנת להיכנס</translation>
+<translation id="1501075228659004450">הממ, נראה שארנק ה- Brave Rewards שלך כבר מאומת עם חשבון <ph name="PROVIDER"/> אחר. נא לנסות לאמת שוב בעזרת החשבון הקודם שלך.</translation>
+<translation id="7147519373526655987">התרכשה בעיה באימות בקשת הדפדפן לחבר את ארנק Brave Rewards לחשבון.<ph name="PROVIDER"/>. ניתן <ph name="BEGIN_LINK"/>ליצור קשר עם התמיכה<ph name="END_LINK"/> לקבלת סיוע נוסף.</translation>
+<translation id="448371102125124442">יחד עם זאת, הארנק הנוכחי שלך מוגבל. אימות באמצעות שותף ארנק ממונה מאפשר לך:</translation>
+<translation id="1438426246237704604">לקבל את התגמולים שלך ישירות לארנק</translation>
+<translation id="9146355483497231818">אמתו את הארנק שלכם</translation>
+<translation id="8913591412117692523">על מנת למשוך את האסימונים שהרווחתם מצפיית פרסומות, תצטרכו לאמת את הארנק שלכם.</translation>
+<translation id="5468234114288973517">אמתו את הארנק שלי</translation>
+<translation id="7258399883616914635">על ידי אימות הארנק שלכם וקישורו לחשבון bitFlyer, תוכלו לאחסן ולנהל את האסימונים שהרווחתם באמצעות  Brave Rewards ביתר קלות.</translation>
+<translation id="5094577350232361255">אודות</translation>
+<translation id="1036277985068412734">הוסיפו כסף</translation>
+<translation id="1555514580945108302">מממ … לא ממש. נסו שוב.</translation>
+<translation id="2157162992285072267">גררו ושחררו את הלוגו הזה לתוך ה-</translation>
+<translation id="4805054577224376281">מטרה</translation>
+<translation id="2266556115441975588">התגמולים שלכם מ-Ads הגיעו!</translation>
+<translation id="8764029012618014430">הפעל טיפים</translation>
+<translation id="6149218349077925111">עבור</translation>
+<translation id="6476729769006815569">שלום, [[name]]!</translation>
+<translation id="606865182719489911">יש לכם קופון חינמי.</translation>
+<translation id="6803187280799213426">הכספים בארנק Brave שלך הם וירטואליים ולא נדרש לגבות אותם. הם זמינים לשימושך באופן בלעדי בדפדפן זה.</translation>
+<translation id="5904352893156917813">אם ברצונך לאבטח את כל הכספים שלך במקרה של התקנה נקייה של הדפדפן או מעבר למכשיר חדש, ולקבל יתרונות נוספים כגון הוספה, משיכה והעברת  כספים, אנו ממליצים לך <ph name="LINK_BEGIN"/>לאמת את הארנק שלך<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">תמיד תוכלו להשתמש במפתח זה כדי לקבל את הארנק שלכם בחזרה אם משהו קורה לדפדפן או למחשב. אך הקפידו להגן עליו — כל מי שמקבל את המפתח הזה יכול לגנוב את הארנק שלכם. כנראה הכי בטוח לכתוב אותו על פיסת נייר, או בכל מקום אחר בו אתם שומרים מידע חשוב.</translation>
+<translation id="5830306739231399614">למרבה הצער, עדיין אין Tokens.</translation>
+<translation id="7359258898775969374">3 דרכים למלא את הארנק שלכם:</translation>
+<translation id="8087614920008846901">באפשרותכם להוסיף כספים.</translation>
+<translation id="996024295464837691">תוכלו לצבור קופונים ע"י צפייה בפרסומות</translation>
+<translation id="8014425282125849700">מדי פעם, יוצעו לכם קופונים חינם על ידי Brave. שימו עין על ההתראות!</translation>
+<translation id="4919888432594361029">הוספה,משיכה וניהול כספים ב-<ph name="PROVIDER"/></translation>
+<translation id="6401272292123354754">Brave Rewards מבוסס על טכנולוגית Basic Attention Token. למדו עוד על BAT</translation>
+<translation id="7823359893981882407">כאן</translation>
+<translation id="4600052736217630789">שחזור באמצעות מפתח שחזור יחליף את הארנק הנוכחי שלכם. וודאו שרוקנתם או גיביתם את הארנק הנוכחי שלכם לפני השחזור.</translation>
+<translation id="5423214929210538027">האם הנך בטוח/ה שברצונך לאפס את ארנק Rewards שלך?</translation>
+<translation id="4749947664556704604">ה-<ph name="BAT_AMOUNT"/> שלך ונתוני זכיות אחרות יאבדו לצמיתות אם תאפס את הארנק שלך. נא לוודא שאימתת את הארנק שלך מול <ph name="LINK_BEGIN"/><ph name="LINK_END"/> כדי שתוכל לשמור את ה-BAT שלך.</translation>
+<translation id="2028613172174411919">נתוני Rewards שלך יאבדו לצמיתות אם תאפס/י את הארנק שלך.</translation>
+<translation id="5944430251223015324">אתרים</translation>
+<translation id="1726566769229204312">מענק אסימונים</translation>
+<translation id="8615803647903750175">פעילות ארנק</translation>
+<translation id="4989277977420164514">יתרת ארנק</translation>
+<translation id="3780605330121608425">הארנק שלך</translation>
+<translation id="7530570094705720669">יצירת ארנק</translation>
+<translation id="7979350009208995417">יוצר זה עדיין לא הוגדר לקבלת טיפים מהארנק שלך. כל טיפ שתיתן יישאר בהמתנה בארנק שלך ויתבצע ניסיון חוזר אוטומטית במשך 90 יום.</translation>
+<translation id="6521772344816912550">היוצר הזה עדיין לא נרשם. כל טיפ שתיתן יישאר במצב המתנה בארנק שלך וינסה שוב באופן אוטומטי למשך 90 יום.</translation>
+<translation id="8267327690882073581">אימות ארנק</translation>
+<translation id="543510923939676996">הארנק מאומת</translation>
+<translation id="2445110450361135194">עבור אל חשבון <ph name="PROVIDER"/> שלך</translation>
+<translation id="3699674790322420653">השלמת אימות הארנק</translation>
+<translation id="9200453331904391567">התנתקות מתגמולי Brave</translation>
+<translation id="5894023780213944778">הארנק שלי</translation>
+<translation id="3329841454317342083">תומך בנכסים תואמי SLP על בלוקצ'יין Solana</translation>
 </translationbundle>

@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "message": "Kaikki antamasi tipit jäävät lompakkoosi odottamaan. Niiden lähettämistä yritetään automaattisesti uudelleen 90 päivän ajan. $link_begin$Lue lisää$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
+    "message": "Tämä luoja ei ole määrittänyt mahdollisuutta vastaanottaa tippejä lompakostasi.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Your Reward is on its way.",
+    "message": "Palkintosi on matkalla Brave-palkintokukkaroosi.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Vahvistettu",
+    "message": "Oma lompakkoni",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Vahvista",
+    "message": "Vahvista kukkaro",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,12 +275,8 @@
     "message": "Yhdistä uudelleen",
     "description": ""
   },
-  "notificationClaimRewards": {
-    "message": "Claim Rewards",
-    "description": ""
-  },
-  "notificationClaimTokens": {
-    "message": "Claim Tokens",
+  "notificationClaim": {
+    "message": "Lunasta",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -305,19 +301,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back up Brave Rewards",
+    "message": "Varmuuskopioi lompakko",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please back up your Brave Rewards.",
+    "message": "Ole hyvä ja tee Brave-lompakostasi varmuuskopio.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Varmuuskopioi nyt",
+    "message": "Tee varmuuskopio nyt",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "You are logged out",
+    "message": "Lompakkosi on kirjautunut ulos",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -329,11 +325,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Your Brave Rewards is verified!",
+    "message": "Kukkarosi on vahvistettu!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Your Brave Rewards was successfully verified with $provider$.",
+    "message": "Palveluntarjoajasi $provider$ lompakon vahvistus onnistui, ja siihen voi lisätä ja sieltä nostaa rahaa.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -342,38 +338,24 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "A token grant is available!",
+    "message": "Lahjoitetut tokenit",
     "description": ""
   },
-  "notificationAdGrantAmount": {
-    "message": "$month$ Rewards: $amount$",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      },
-      "amount": {
-        "content": "$2"
-      }
-    }
+  "notificationTokenGrantText": {
+    "message": "Sinua odottaa avustus.",
+    "description": ""
   },
   "notificationAdGrantTitle": {
-    "message": "Your $month$ Ad Rewards are here!",
-    "description": "",
-    "placeholders": {
-      "month": {
-        "content": "$1"
-      }
-    }
+    "message": "Saadut Ads-tulot",
+    "description": ""
   },
-  "notificationGrantDaysRemaining": {
-    "message": "You have $days$ left to claim",
-    "description": "",
-    "placeholders": {
-      "days": {
-        "content": "$1"
-      }
-    }
+  "notificationAdGrantText": {
+    "message": "Palkintosi Brave Private Ads -mainoksista ovat täällä!",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Kuukausittainen avustus epäonnistui",
+    "description": ""
   },
   "notificationInsufficientFundsText": {
     "message": "Ajoitettua kuukausittaista Auto-Contribute-maksuasi  ja kuukausittaisia tukimaksujasi ei voitu suorittaa riittämättömien varojen vuoksi. Kokeilemme uudelleen 30 päivän päästä.",
@@ -381,10 +363,6 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Osallistumisesi käsittelyssä tapahtui virhe",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Kuukausittainen avustus epäonnistui",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -555,11 +533,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Vahvista",
+    "message": "Vahvista lompakkosi",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
+    "message": "Jos haluat nostaa mainosten katsomisesta ansaittuja poletteja, tulee sinun vahvistaa lompakkosi.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -567,7 +545,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verify Brave Rewards",
+    "message": "Vahvista lompakkoni",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -575,7 +553,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
+    "message": "Kun vahvistat lompakkosi ja linkität sen bitFlyer-tiliin, voit helpommin tallentaa ja hallita Brave Rewardsin kautta ansaitsemiasi poletteja",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
