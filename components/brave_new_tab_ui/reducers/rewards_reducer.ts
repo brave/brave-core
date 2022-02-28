@@ -33,9 +33,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       dismissedNotifications.push(payload.id)
       state.rewardsState.dismissedNotifications = dismissedNotifications
 
-      state.rewardsState.promotions = state.rewardsState.promotions.filter((promotion) => {
-        return promotion.promotionId !== payload.id
-      })
+      state.rewardsState.promotions = state.rewardsState.promotions.filter((promotion) => promotion.promotionId !== payload.id)
       break
 
     case types.ON_PROMOTIONS: {
@@ -47,9 +45,7 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       const { rewardsState } = state
       const dismissedNotifications = rewardsState.dismissedNotifications || []
 
-      rewardsState.promotions = payload.promotions.filter((promotion: any) => {
-        return !dismissedNotifications.includes(promotion.promotionId)
-      })
+      rewardsState.promotions = payload.promotions.filter((promotion: any) => !dismissedNotifications.includes(promotion.promotionId))
 
       break
     }

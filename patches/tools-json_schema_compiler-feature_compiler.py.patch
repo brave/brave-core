@@ -6,7 +6,7 @@ index b23dca5689042e1e6f0742ea79c3dcfcc65d168c..026b32fa299ddf69f91fe5fb1020239d
                    abs_source_file)
          raise
        dupes = set(f_json) & set(self._json)
-+      from tools.json_schema_compiler import feature_compiler_helper; feature_compiler_helper.DiscardBraveOverridesFromDupes(dupes)
++      from tools.json_schema_compiler import feature_compiler_helper; feature_compiler_helper.discard_brave_overrides_from_dupes(dupes)
        assert not dupes, 'Duplicate keys found: %s' % list(dupes)
        self._json.update(f_json)
  

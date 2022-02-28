@@ -7,7 +7,7 @@
 # feature_compiler.py run. json_feature target doesn't have this in its
 # dependency.
 # below discard list comes from common/extensions/api/_api_features.json.
-def DiscardBraveOverridesFromDupes(dupes):
+def discard_brave_overrides_from_dupes(dupes):
     dupes.discard('topSites')
     dupes.discard('extension.inIncognitoContext')
     dupes.discard('bookmarkManagerPrivate')

@@ -212,10 +212,7 @@ Config.prototype.enableCDMHostVerification = function () {
 }
 
 Config.prototype.isAsan = function () {
-  if (this.is_asan) {
-    return true
-  }
-  return false
+    return this.is_asan;
 }
 
 Config.prototype.buildArgs = function () {
