@@ -86,9 +86,8 @@ const touchOverriddenVectorIconFiles = () => {
   // Return true when original file of |file| should be touched.
   const applyFileFilter = (file) => {
     // Only includes icon files.
-    const ext = path.extname(file)
-    if (ext !== '.icon') { return false }
-    return true
+    const ext = path.extname(file);
+    return ext === '.icon'
   }
 
   const braveVectorIconsDir = path.join(config.srcDir, 'brave', 'vector_icons')
