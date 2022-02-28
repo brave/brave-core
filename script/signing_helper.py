@@ -137,7 +137,7 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
 
         @property
         def codesign_requirements_outer_app(self):
-            return 'designated => identifier "' + self.base_bundle_id
+            return 'designated => identifier "' + self.base_bundle_id + '"'
 
         @property
         def codesign_requirements_basic(self):
