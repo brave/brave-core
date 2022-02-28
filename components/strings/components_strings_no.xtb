@@ -109,7 +109,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1307966114820526988">Avviklede funksjoner</translation>
 <translation id="1308113895091915999">Et tilbud er tilgjengelig</translation>
 <translation id="1312803275555673949">Hvilke beviser finnes?</translation>
-<translation id="131405271941274527"><ph name="URL"/> vil sende og motta info når du berører NFC-enheter med telefonen</translation>
+<translation id="1314311879718644478">Se utvidet virkelighet-innhold</translation>
 <translation id="1314509827145471431">Innbinding høyre</translation>
 <translation id="1318023360584041678">Lagret i fanegruppe</translation>
 <translation id="1319245136674974084">Ikke spør igjen for denne appen</translation>
@@ -205,6 +205,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1559572115229829303">&lt;p&gt;Vi kan ikke opprette noen privat tilkobling til <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/>, fordi datoen og klokkeslettet (<ph name="DATE_AND_TIME"/>) på enheten din er feil.&lt;/p&gt;
 
       &lt;p&gt;Juster datoen og klokkeslettet under &lt;strong&gt;Generelt&lt;/strong&gt; i &lt;strong&gt;Innstillinger&lt;/strong&gt;-appen.&lt;/p&gt;</translation>
+<translation id="156703335097561114">Nettverksinformasjon som adresser, grensesnittkonfigurasjon og tilkoblingskvalitet</translation>
 <translation id="1567040042588613346">Denne regelen fungerer som den skal, men den samme verdien er angitt et annet sted og overstyres av denne regelen.</translation>
 <translation id="1569487616857761740">Oppgi utløpsdato</translation>
 <translation id="1581080074034554886">CVC</translation>
@@ -212,6 +213,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1583429793053364125">Noe gikk galt da denne nettsiden skulle åpnes.</translation>
 <translation id="1586541204584340881">hvilke utvidelser du har installert</translation>
 <translation id="1588438908519853928">Normal</translation>
+<translation id="1589050138437146318">Vil du installere ARCore?</translation>
 <translation id="1592005682883173041">Tilgang til lokale data</translation>
 <translation id="1594030484168838125">Velg</translation>
 <translation id="8523167061098356223">Spill Dino Run-spillet i Brave</translation>
@@ -472,6 +474,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2465655957518002998">Velg leveringsmåte</translation>
 <translation id="2465688316154986572">Stift</translation>
 <translation id="4058615531773510267">Administrer filer du har lastet ned i Brave</translation>
+<translation id="2466004615675155314">Vis informasjon fra nettet</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Kjør Nettverksdiagnose<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">1-til-N-rekkefølge</translation>
 <translation id="2470767536994572628">Når du redigerer annoteringer, går dette dokumentet tilbake til enkeltsidevisning og den opprinnelige rotasjonen</translation>
@@ -516,6 +519,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="2609632851001447353">Varianter</translation>
 <translation id="2610561535971892504">Klikk for å kopiere</translation>
 <translation id="2618023639789766142">C10 (konvolutt)</translation>
+<translation id="2623663032199728144">kan be om å få bruke informasjon om skjermene dine</translation>
 <translation id="2625385379895617796">Klokken går for fort</translation>
 <translation id="262745152991669301">Kan be om å få koble til USB-enheter</translation>
 <translation id="2915787201097107005">For å få det høyeste sikkerhetsnivået som Brave tilbyr, <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>slå på økt beskyttelse<ph name="END_ENHANCED_PROTECTION_LINK"/>.</translation>
@@ -631,6 +635,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3037605927509011580">Æsj!</translation>
 <translation id="3041612393474885105">Sertifikatinformasjon</translation>
 <translation id="3044034790304486808">Fortsett undersøkelsene</translation>
+<translation id="8418829431154568330">loggen for Brave Eksternt skrivebord, inkludert tidsstempler, verter og klientøkt-ID-er</translation>
 <translation id="3060227939791841287">C9 (konvolutt)</translation>
 <translation id="3061707000357573562">Feilrettingstjeneste</translation>
 <translation id="306573536155379004">Spillet er startet.</translation>
@@ -671,6 +676,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3197136577151645743">Kan be om å få vite når du bruker denne enheten aktivt</translation>
 <translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/> – trykk på Tab og deretter på Enter for å administrere hvilken informasjon du synkroniserer, i Brave-innstillingene</translation>
 <translation id="320323717674993345">Avbryt betalingen</translation>
+<translation id="3203366800380907218">Fra nettet</translation>
 <translation id="3207960819495026254">Bokmerket</translation>
 <translation id="3209034400446768650">Siden kan belaste deg for penger</translation>
 <translation id="3212581601480735796">Aktiviteten din på <ph name="HOSTNAME"/> overvåkes</translation>
@@ -687,6 +693,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3234666976984236645">Oppdag alltid viktig innhold på dette nettstedet</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/> – trykk på Tab og deretter på Enter for å tilpasse nettleserens utseende</translation>
 <translation id="3240791268468473923">Ark for sikker betalingslegitimasjon uten samsvarende legitimasjon er åpnet</translation>
+<translation id="324180406144491771">«<ph name="HOST_NAME"/>»-linker er blokkert</translation>
 <translation id="3249845759089040423">Groovy</translation>
 <translation id="3252266817569339921">Fransk</translation>
 <translation id="3257954757204451555">Hvem står bak denne informasjonen?</translation>
@@ -717,12 +724,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="3345782426586609320">Øyne</translation>
 <translation id="3355823806454867987">Endre innstillinger for proxy-tjener</translation>
 <translation id="3360103848165129075">Ark for betalingsbehandling</translation>
-<translation id="669410734497476819">Brave <ph name="BEGIN_EMPHASIS"/>lagrer ikke<ph name="END_EMPHASIS"/>
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>nettleserloggen din
-          <ph name="LIST_ITEM"/>informasjonskapsler og nettstedsdata
-          <ph name="LIST_ITEM"/>informasjon du skriver inn i skjemaer
-        <ph name="END_LIST"/></translation>
 <translation id="3362968246557010467">Denne regelen ble automatisk kopiert fra den avviklede regelen <ph name="OLD_POLICY"/>. Du bør bruke denne regelen i stedet.</translation>
 <translation id="3364869320075768271"><ph name="URL"/> vil bruke virtuell virkelighet-enheten din og -dataene dine</translation>
 <translation id="3366477098757335611">Vis kort</translation>
@@ -1132,6 +1133,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4708268264240856090">Tilkoblingen ble avbrutt</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Kjør Windows Nettverksdiagnose<ph name="END_LINK"/></translation>
+<translation id="4722735765955348426">Passord for <ph name="USERNAME"/></translation>
 <translation id="4724144314178270921">Kan be om å få se tekst og bilder på utklippstavlen din</translation>
 <translation id="4726672564094551039">Last inn retningslinjer på nytt</translation>
 <translation id="4728558894243024398">Plattform</translation>
@@ -1171,6 +1173,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4819347708020428563">Vil du redigere annoteringer i standardvisningen?</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/> – trykk på Tab og deretter på Enter for å opprette et nytt Brave-regneark raskt</translation>
 <translation id="4825507807291741242">Kraftfull</translation>
+<translation id="4829962028570902310">Ignorert fordi regelen kun kan angis via brukerinnstillinger i nettskyen.</translation>
 <translation id="483241715238664915">Slå på varsler</translation>
 <translation id="4838327282952368871">Drømmende</translation>
 <translation id="246176083348620700">Se Brave-loggen din</translation>
@@ -1187,7 +1190,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4877083676943085827">{COUNT,plural, =0{Ingen}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/> <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831"><ph name="TEXT"/>-søk</translation>
 <translation id="4879491255372875719">Automatisk (standard)</translation>
-<translation id="4879725228911483934">åpne og plassere vinduer på skjermene dine</translation>
 <translation id="4880827082731008257">Søk i loggen</translation>
 <translation id="4881695831933465202">Åpne</translation>
 <translation id="4885256590493466218">Betal med <ph name="CARD_DETAIL"/> i kassen</translation>
@@ -1212,6 +1214,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4968522289500246572">Denne appen er designet for mobil, så det fungerer kanskje ikke så bra å endre størrelse på den. Det kan hende appen støter på problemer eller startes på nytt.</translation>
 <translation id="4969341057194253438">Slett opptak</translation>
 <translation id="4973922308112707173">To hull topp</translation>
+<translation id="4976702386844183910">Sist besøkt <ph name="DATE"/></translation>
 <translation id="4984088539114770594">Vil du bruke mikrofonen?</translation>
 <translation id="4984339528288761049">Prc5 (konvolutt)</translation>
 <translation id="4989163558385430922">Se alle</translation>
@@ -1273,6 +1276,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5138227688689900538">Vis færre</translation>
 <translation id="5145883236150621069">Feilkode i responsen for enhetsinnstillinger</translation>
 <translation id="5146995429444047494">Varsler for <ph name="ORIGIN"/> er blokkert</translation>
+<translation id="514704532284964975"><ph name="URL"/> vil se og endre informasjon på NFC-enheter du tæpper med telefonen</translation>
 <translation id="5148809049217731050">Forsiden opp</translation>
 <translation id="515292512908731282">C4 (konvolutt)</translation>
 <translation id="5158275234811857234">Omslag</translation>
@@ -1295,6 +1299,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="1051285409463218679">Betalingsmåter og adresser som bruker Brave Pay</translation>
 <translation id="5215363486134917902">Folio-Sp</translation>
 <translation id="521659676233207110">Skuff 13</translation>
+<translation id="5216942107514965959">Sist besøkt i dag</translation>
 <translation id="5222812217790122047">E-post er obligatorisk</translation>
 <translation id="5230733896359313003">Leveringsadresse</translation>
 <translation id="5230815978613972521">B8</translation>
@@ -1315,7 +1320,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5283044957620376778">B1</translation>
 <translation id="5284295735376057059">Dokumentegenskaper</translation>
 <translation id="528468243742722775">Avslutt</translation>
-<translation id="5284909709419567258">nettverksadresser</translation>
 <translation id="5285570108065881030">Vis alle lagrede passord</translation>
 <translation id="5287240709317226393">Vis informasjonskapsler</translation>
 <translation id="5287456746628258573">Dette nettstedet bruker en utdatert sikkerhetskonfigurasjon, som betyr at informasjonen din (for eksempel passord eller kredittkortnumre) kan bli avslørt når den sendes til dette nettstedet.</translation>
@@ -1481,6 +1485,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5869522115854928033">Lagrede passord</translation>
 <translation id="5873013647450402046">Banken din vil bekrefte at det er deg.</translation>
 <translation id="5887400589839399685">Kortet er lagret</translation>
+<translation id="5887687176710214216">Sist besøkt i går</translation>
 <translation id="5895138241574237353">Start på nytt</translation>
 <translation id="5895187275912066135">Utstedt</translation>
 <translation id="5901630391730855834">Gul</translation>
@@ -1569,7 +1574,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6165508094623778733">Finn ut mer</translation>
 <translation id="6177128806592000436">Tilkoblingen til dette nettstedet er ikke sikker</translation>
 <translation id="6180316780098470077">Forsøksintervall</translation>
-<translation id="619448280891863779">Kan be om å få åpne og plassere vinduer på skjermene dine</translation>
 <translation id="6196640612572343990">Blokkér informasjonskapsler fra tredjeparter</translation>
 <translation id="6203231073485539293">Kontrollér Internett-tilkoblingen</translation>
 <translation id="8385639954311581596">Vil du fjerne adressen fra Brave?</translation>
@@ -1671,6 +1675,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="6529602333819889595">&amp;Slett likevel</translation>
 <translation id="6545864417968258051">Bluetooth-skanning</translation>
 <translation id="6547208576736763147">To hull venstre</translation>
+<translation id="6554732001434021288">Sist besøkt for <ph name="NUM_DAYS"/> dager siden</translation>
 <translation id="6556866813142980365">Gjør om</translation>
 <translation id="6569060085658103619">Du ser på en utvidelsesside</translation>
 <translation id="6573200754375280815">To hull høyre</translation>
@@ -1813,7 +1818,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="5320462991730735481">Legg til og administrer adresser i Brave-innstillingene</translation>
 <translation id="7064851114919012435">Kontaktinformasjon</translation>
 <translation id="7068733155164172741">Skriv inn den <ph name="OTP_LENGTH"/>-sifrede koden</translation>
-<translation id="7070090581017165256">Om dette nettstedet</translation>
 <translation id="70705239631109039">Tilkoblingen er ikke helt sikker</translation>
 <translation id="7075452647191940183">Forespørselen er for stor</translation>
 <translation id="7079718277001814089">Dette nettstedet inneholder skadelig programvare</translation>
@@ -1944,6 +1948,12 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7485870689360869515">Ingen data ble funnet.</translation>
 <translation id="7495528107193238112">Dette innholdet er blokkert. Kontakt nettstedseieren for å løse problemet.</translation>
 <translation id="7812541223399526596">Knappen «Opprett dokument» – trykk på Enter for å opprette et nytt Brave-dokument raskt</translation>
+<translation id="2957285558977211818">Brave <ph name="BEGIN_EMPHASIS"/>lagrer ikke<ph name="END_EMPHASIS"/> følgende informasjon:
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Nettleserloggen din
+          <ph name="LIST_ITEM"/>Informasjonskapsler og nettstedsdata
+          <ph name="LIST_ITEM"/>Informasjon du legger inn i skjemaer
+        <ph name="END_LIST"/></translation>
 <translation id="7508255263130623398">Den returnerte enhets-ID-en for regelen er tom eller samsvarer ikke med den faktiske enhets-ID-en</translation>
 <translation id="7508870219247277067">Avokadogrønn</translation>
 <translation id="7511955381719512146">Det kan hende at Wi-Fi-nettverket du bruker, krever at du besøker <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
@@ -2054,7 +2064,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="4670564340385807132">Vil du fjerne skjemaforslaget fra Brave?</translation>
 <translation id="781440967107097262">Vil du dele utklippstavlen din?</translation>
 <translation id="7815407501681723534">Fant <ph name="NUMBER_OF_RESULTS"/> <ph name="SEARCH_RESULTS"/> for «<ph name="SEARCH_STRING"/>»</translation>
-<translation id="782125616001965242">Vis informasjon om dette nettstedet</translation>
 <translation id="782886543891417279">Det kan hende at Wi-Fi-nettverket du bruker (<ph name="WIFI_NAME"/>), krever at du besøker en påloggingsside.</translation>
 <translation id="7836231406687464395">Postfix (konvolutt)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Ingen}=1{1 app (<ph name="EXAMPLE_APP_1"/>)}=2{2 apper (<ph name="EXAMPLE_APP_1"/> og <ph name="EXAMPLE_APP_2"/>)}other{# apper (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}}</translation>
@@ -2098,7 +2107,6 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">Kan be om å få bruke virtuell virkelighet-enheter og -data</translation>
 <translation id="8896585555528145662">Du kan ikke gå til <ph name="SITE"/> akkurat nå fordi nettstedet sendte kryptert legitimasjon som Brave ikke kan behandle. Nettverksfeil og -angrep er som regel kortvarige, så denne siden fungerer nok igjen senere.</translation>
-<translation id="79859296434321399">Du må installere ARCore for å se innhold med utvidet virkelighet</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">Innbinding</translation>
 <translation id="7992044431894087211">Skjermdeling med <ph name="APPLICATION_TITLE"/> er gjenopptatt</translation>
@@ -2162,6 +2170,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="8202370299023114387">Konflikt</translation>
 <translation id="8206978196348664717">Prc4 (konvolutt)</translation>
 <translation id="8211406090763984747">Tilkoblingen er sikker</translation>
+<translation id="8217240300496046857">Nettsteder kan ikke bruke informasjonskapsler som sporer deg på nettet. Det kan hende at funksjoner på enkelte nettsteder slutter å fungere.</translation>
 <translation id="8218327578424803826">Tilordnet posisjon:</translation>
 <translation id="8220146938470311105">C7/C6 (konvolutt)</translation>
 <translation id="8228419419708659934">Visning med to sider</translation>
@@ -2200,6 +2209,7 @@ I motsatt fall blir dette blokkert av personverninnstillingene. Dette gjør at i
 <translation id="830498451218851433">Halvfals</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">hvilke apper som er installert, og hvor ofte de brukes</translation>
+<translation id="8317207217658302555">Vil du oppdatere ARCore?</translation>
 <translation id="831997045666694187">Kveld</translation>
 <translation id="8321476692217554900">varsler</translation>
 <translation id="8332188693563227489">Forsøket på å koble til <ph name="HOST_NAME"/> ble avvist</translation>
@@ -2263,7 +2273,6 @@ Mer informasjon:
 <translation id="8554912124839363479">{NUM_PERMISSIONS,plural, =1{Tilbakestill tillatelse}other{Tilbakestill tillatelser}}</translation>
 <translation id="8555010941760982128">Bruk denne koden i kassen</translation>
 <translation id="8557066899867184262">CVC-koden finner du på baksiden av kortet.</translation>
-<translation id="8558485628462305855">Du må oppdatere ARCore for å se innhold med utvidet virkelighet</translation>
 <translation id="8559762987265718583">En privat tilkobling til <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> kunne ikke etableres fordi datoen og klokkeslettet (<ph name="DATE_AND_TIME"/>) er feil på enheten.</translation>
 <translation id="8564182942834072828">Separate dokumenter / ukollaterte eksemplarer</translation>
 <translation id="8574899947864779331">Bruk Touch ID til å bekrefte kort raskere</translation>
@@ -2281,6 +2290,7 @@ Mer informasjon:
 <translation id="865032292777205197">bevegelsessensorer</translation>
 <translation id="8663226718884576429">Bestillingssammendrag, <ph name="TOTAL_LABEL"/>, mer informasjon</translation>
 <translation id="8666678546361132282">Engelsk</translation>
+<translation id="8669306706049782872">bruke informasjon om skjermene dine for å åpne og plassere vinduer</translation>
 <translation id="867224526087042813">Signatur</translation>
 <translation id="8676424191133491403">Uten forsinkelse</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, svar, <ph name="ANSWER"/></translation>
@@ -2330,6 +2340,7 @@ Mer informasjon:
 <translation id="883848425547221593">Andre bokmerker</translation>
 <translation id="884264119367021077">Leveringsadresse</translation>
 <translation id="884923133447025588">Finner ingen tilbakekallingsmekanisme.</translation>
+<translation id="8849262850971482943">Bruk det virtuelle kortet ditt for ekstra sikkerhet</translation>
 <translation id="7487066225574140895">Deling med Brave</translation>
 <translation id="4764754838347156633">Brave anbefaler at du tilbakestiller passordet ditt for <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> hvis du også har brukt det på andre nettsteder.</translation>
 <translation id="885906927438988819">Hvis stavemåten er korrekt, kan du <ph name="BEGIN_LINK"/>prøve å kjøre Windows Nettverksdiagnose<ph name="END_LINK"/>.</translation>
@@ -2495,22 +2506,23 @@ Mer informasjon:
 <translation id="8794378783472961468">Men, du er ikke usynlig. Å gå privat betyr ikke at du skjuler søket fra din arbeidsgiver, internettleverandør eller nettsider du besøker.</translation>
 <translation id="5673623523506565506">Nå kan du bruke nettleseren uten innsyn fra andre. Andre profiler som bruker denne enheten vil ikke se aktiviteten din. Nedlastinger og bokmerker vil uansett bli lagret.</translation>
 <translation id="3812568169637430422">Nå kan du bruke nettleseren uten innsyn fra andre. Andre profiler som bruker denne enheten vil ikke se aktiviteten din. Nedlastinger, bokmerker og oppføringer på leselisten vil uansett bli lagret.</translation>
-<translation id="5186185447130319458">Privat</translation>
+<translation id="6085043210649933880">Privat modus i Brave</translation>
 <translation id="3683567996395248272">Dette gjør Privat modus</translation>
-<translation id="4912243263991194586">Når alle Private faner er lukket, sletter Brave følgende informasjon:
-<ph name="BEGIN_LIST"/>
-<ph name="LIST_ITEM"/>nettleseraktiviteten din på enheten<ph name="END_LIST_ITEM"/>
-<ph name="LIST_ITEM"/>søkehistorikken på enheten<ph name="END_LIST_ITEM"/>
-<ph name="LIST_ITEM"/>skjemainformasjon<ph name="END_LIST_ITEM"/>
-<ph name="END_LIST"/></translation>
+<translation id="8817208096236092047">Når du lukker alle private Brave-faner, fjernes aktiviteten i fanene fra denne enheten:
+          <ph name="BEGIN_LIST"/>
+            <ph name="LIST_ITEM"/>Nettleseraktivitet<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>Søkehistorikk<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>Informasjon skrevet inn i skjemaer<ph name="END_LIST_ITEM"/>
+          <ph name="END_LIST"/></translation>
 <translation id="137199123615682137">Dette gjør IKKE privat modus</translation>
-<translation id="6101678912379763265">Private nettleservinduer gjør deg ikke usynlig på nettet:
+<translation id="7653199919907357627">Privat modus gjør deg ikke usynlig på nettet:
 <ph name="BEGIN_LIST"/>
-<ph name="LIST_ITEM"/>Nettstedene vet når du besøker dem<ph name="END_LIST_ITEM"/>
+<ph name="LIST_ITEM"/>Nettstedene og tjenestene de bruker, kan se når du besøker dem<ph name="END_LIST_ITEM"/>
 <ph name="LIST_ITEM"/>Arbeidsgivere og utdanningsinstitusjoner kan spore nettleseraktiviteten<ph name="END_LIST_ITEM"/>
 <ph name="LIST_ITEM"/>Internettleverandører kan overvåke nettrafikken<ph name="END_LIST_ITEM"/>
 <ph name="END_LIST"/></translation>
-<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/> om Privat modus</translation>
+<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Finn ut mer om Privat modus i Brave<ph name="END_LINK"/></translation>
+<translation id="9153679102508470540">Blokker informasjonskapsler fra tredjeparter i Privat modus</translation>
 <translation id="5549245478906381817">Åpne privat vindu</translation>
 <translation id="5497977785983089120">Åpne et nytt privat vindu for å surfe privat</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/> – trykk på Tab og deretter på Enter for å åpne et nytt privat vindu, slik at du kan surfe privat</translation>

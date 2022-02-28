@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">升級連線至 HTTPS</translation>
 <translation id="2278950434998763147">使用安全的 HTTPS 連線而非普通的 HTTP 開啟某些網站。</translation>
 <translation id="94154759592465111">阻擋指令稿</translation>
-<translation id="3518266709656143462">阻止 Javascript（可能會破壞網站）</translation>
+<translation id="7714773920987474116">封鎖 JavaScript (可能會使網站無法正常運作)</translation>
 <translation id="6052725679982758334">阻擋社群媒體</translation>
 <translation id="7498695072878479744">在第三方網站上允許 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">在完全私密的動態中查看今日熱門報導，內容專為您打造。</translation>
 <translation id="7266075701303521777">Brave 新聞有廣告支援，能提供完全私密和匿名的廣告，與您的裝置相符。</translation>
 <translation id="4541978218358617681">廣告</translation>
-<translation id="7823038307453615214">開啟 Brave 新聞</translation>
+<translation id="7823038307453615214">顯示 Brave News</translation>
 <translation id="6527303717912515753">分享</translation>
 <translation id="1654539412343893324">進一步瞭解您的資料</translation>
 <translation id="2989805286512600854">在新的分頁中開啟</translation>
@@ -97,6 +97,7 @@
 <translation id="6511854390690723657">這是你的首則 Brave 廣告。點按了解詳情。</translation>
 <translation id="2070991379950719711">開始使用 Brave Rewards</translation>
 <translation id="48520986898237073">繼續到錢包</translation>
+<translation id="3570367516044491911">設為預設瀏覽器</translation>
 <translation id="6800338374677644736">設為預設瀏覽器</translation>
 <translation id="19715420010996093">選取 Brave 瀏覽器並點擊「一律使用」</translation>
 <translation id="3546439402724649282">Brave 已設為預設瀏覽器。</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">錢包餘額：</translation>
 <translation id="2573313946367623146">發送打賞</translation>
 <translation id="3250511771491660127">成為每月一次</translation>
+<translation id="7658239707568436148">取消</translation>
+<translation id="1201402288615127009">繼續</translation>
+<translation id="8481779960444041069">若要享有隱私程度更高的瀏覽體驗，請將 Brave 設為您的預設瀏覽器</translation>
+<translation id="1938402585819943124">在下一個畫面中選擇 Brave。</translation>
+<translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="6639570430554986719">一月</translation>
 <translation id="1807352595146144483">二月</translation>
 <translation id="2021828608097804771">三月</translation>
@@ -325,8 +331,8 @@
 <translation id="876424292214881779">已封鎖廣告與其他令人毛骨悚然的東西</translation>
 <translation id="6930134873084561197">網站時常包含 cookies 和 scripts，它們會試著辨認你和你的裝置。它們想要知道你是誰，並追蹤您在每個網站做什麼。\n\n Brave 會封鎖這些東西，讓您在不被跟蹤的狀態下進行瀏覽。</translation>
 <translation id="8553998445606452168">關於 Brave Shields</translation>
-<translation id="8912304686498704084">上</translation>
-<translation id="4963218453264888510">下</translation>
+<translation id="8912304686498704084">开启</translation>
+<translation id="4963218453264888510">关闭</translation>
 <translation id="7474113515179313724">您正在沒有受到 Brave 的隱私保護下瀏覽此網站。是因為 Shields up 功能哪裡出錯了嗎？</translation>
 <translation id="9055546041146396417">如果此網站顯示為損壞，請試試 Shields down</translation>
 <translation id="1209739344687072997">回報壞掉的網站</translation>
@@ -395,12 +401,12 @@
 <translation id="7427567994475794038">開啟隱私權報告來觀看在過去 3 小時已經封鎖多少追蹤裝置 &amp; 廣告。</translation>
 <translation id="2053891538879944400">您以 Brave 瀏覽器節省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 資料。</translation>
 <translation id="8640064498452534195">開啟隱私權報告來觀看您已節省多少資料。</translation>
-<translation id="2252497442547961651">Brave 瀏覽器使用的電量平均減少 40%。🔋</translation>
+<translation id="2252497442547961651">Brave 瀏覽器使用的電量平均減少 40%。&#128267;</translation>
 <translation id="1945330434665345785">您上週以 Brave 瀏覽器封鎖了 <ph name="COUNT"/> 追蹤裝置 &amp; 廣告。</translation>
 <translation id="2883868922264431515">藉檢視尊重隱私權廣告來賺取代幣並且支持您最喜愛的網站。</translation>
-<translation id="5678925890616256956">不錯！您已經以 Brave 瀏覽器封鎖 250 個追蹤程式和廣告。🔥</translation>
-<translation id="9199047775708635708">不錯！您已經以 Brave 瀏覽器節省 10MB。🔋</translation>
-<translation id="1880168210969863408">不錯！您已經以 Brave 瀏覽器節省 10 分鐘的載入時間。💨💨</translation>
+<translation id="5678925890616256956">不錯！您已經以 Brave 瀏覽器封鎖 250 個追蹤程式和廣告。&#128293;</translation>
+<translation id="9199047775708635708">不錯！您已經以 Brave 瀏覽器節省 10MB。&#128267;</translation>
+<translation id="1880168210969863408">不錯！您已經以 Brave 瀏覽器節省 10 分鐘的載入時間。&#128168;&#128168;</translation>
 <translation id="7408493389591475748">開始瀏覽來觀看隱私權報告</translation>
 <translation id="9080777565335515917">將 Brave 設定為您的預設瀏覽器供私密和穩妥的瀏覽。</translation>
 <translation id="1390943217516275883">容許 Brave 來顯示您的隱私權統計數字</translation>
@@ -518,9 +524,9 @@
 <translation id="6478996494082389936">私人產品分析。</translation>
 <translation id="5187052478998910855">需要複習一下獎勵嗎？</translation>
 <translation id="8622329973403382303">快速瀏覽，以溫習它如何以獎勵搖滾明星的身分名垂千古！</translation>
-<translation id="7625138338483121345">使用 Brave 開啟所有連結以保護您的隱私</translation>
-<translation id="4511485286950743564">Brave Shields 封鎖追蹤器與廣告，節省流量，並節省您造訪每個網站的時間。</translation>
-<translation id="9218430445555521422">將 Brave 設為預設值</translation>
+<translation id="7625138338483121345">將 Brave 設為預設瀏覽器</translation>
+<translation id="4511485286950743564">將 Brave 設為預設瀏覽器後，您點選的每個連結都會在 Brave 的隱私保護下開啟。</translation>
+<translation id="9218430445555521422">設定為預設瀏覽器</translation>
 <translation id="3479552764303398839">現在不要</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -539,7 +545,6 @@
 <translation id="1822560017823072927">預設公共和隱私介面</translation>
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
-<translation id="3171931580569169744">啟用分頁群組</translation>
 <translation id="5587305863196367357">驗證錢包讓您能更有簡單地管理資金、存款與提款</translation>
 <translation id="5760671211380791582">您沒有足夠的 BAT。</translation>
 <translation id="442469478596827903">您必須至少有 2 BAT 才能建立驗證過得 Uphold 錢包。請稍後再試。</translation>
@@ -562,7 +567,8 @@
 <translation id="375882617301124395">備份您的加密錢包</translation>
 <translation id="8289942708804097960">使用信用卡或簽帳金融卡購買加密貨幣。</translation>
 <translation id="841880029259839903">將加密貨幣從一個帳號傳送到另一個帳號。</translation>
-<translation id="8226778393040773102">使用 Brave DEX 聚合器交換加密資產。</translation>
+<translation id="8226778393040773102">交換代幣和資產</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> 將會處理以太坊位址和 IP 位址以履行交易 (包括取得報價)。<ph name="DEX_PROVIDER"/> 只會將此資料用於處理交易的用途。</translation>
 <translation id="1783600039044302171">使用密碼保護您的加密貨幣</translation>
 <translation id="3726490322412361740">輸入密碼</translation>
 <translation id="3038243139480464605">驗證密碼</translation>
@@ -590,7 +596,7 @@
 <translation id="283071225285270357">輸入您的備援短語</translation>
 <translation id="3943857333388298514">貼上</translation>
 <translation id="3331452756822160641">新密碼</translation>
-<translation id="4359319875297001084">我正從舊 Brave 加密錢包還原</translation>
+<translation id="4359319875297001084">從舊 Brave 加密幣錢包匯入？</translation>
 <translation id="2339124864228588937">驗證備援短語</translation>
 <translation id="3747079125031086337">依正確順序選取還原片語中的字。</translation>
 <translation id="6518133107902771759">驗證</translation>
@@ -788,7 +794,6 @@
 <translation id="1254969878422524947">每 GAS 小費限制 (Gwei)</translation>
 <translation id="7373308452149471621">每 GAS 價格限制 (Gwei)</translation>
 <translation id="5891811606602061966">匯入帳戶失敗，請再試一次。</translation>
-<translation id="1822506443689803572">Brave 使用 0x 作為 DEX 聚合器。</translation>
 <translation id="5061574358754621254">價格資料由 CoinGecko 提供</translation>
 <translation id="4626407663177532837">報價已含 0.875% Brave 手續費。</translation>
 <translation id="8574289650879708853">新增自訂資產</translation>
@@ -840,14 +845,5 @@
 <translation id="6889920539620318793">設定為啟用</translation>
 <translation id="2653659639078652383">提交</translation>
 <translation id="8853725596990766789">變更金額</translation>
-<translation id="3570367516044491911">設為預設瀏覽器</translation>
-<translation id="7091885296442320770">Brave 如閃電般快速</translation>
-<translation id="2171928016777725844">將 Brave 設為預設瀏覽器</translation>
-<translation id="7136694880210472378">設為預設</translation>
-<translation id="8401711613788729448">使用 Brave 開啟所有連結以保護您的隱私</translation>
-<translation id="3184805785843994538">Brave Shields 封鎖追蹤器與廣告，節省流量，並節省您造訪每個網站的時間。</translation>
-<translation id="8722651357687610395">將 Brave 設為預設值</translation>
-<translation id="4854035885012188958">我正從舊 Brave 加密錢包還原</translation>
-<translation id="3047726704186619366">圖示 URL</translation>
-<translation id="2487558607408469181">區塊瀏覽器 URL</translation>
+<translation id="5233638681132016545">新增分頁</translation>
 </translationbundle>

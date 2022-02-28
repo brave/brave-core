@@ -11,6 +11,7 @@
 <translation id="958971637207126733">लिंक्डइन एम्बेड केलेल्या पोस्टना परवानगी द्या</translation>
 <translation id="6302422639282249274">Brave (ब्रेव्ह) पुरस्कार व्यवस्थापित करा</translation>
 <translation id="1468415711258933398">मानक टॅब</translation>
+<translation id="3377025655491224618">गुप्त टॅब</translation>
 <translation id="9148058034647219655">निर्गमन</translation>
 <translation id="2356070529366658676">विचारा</translation>
 <translation id="4176463684765177261">अक्षम</translation>
@@ -32,6 +33,9 @@
 <translation id="4150201353443180367">डिस्प्ले करा</translation>
 <translation id="2433507940547922241">स्वरूप</translation>
 <translation id="8281886186245836920">वगळा</translation>
+<translation id="7658239707568436148">रद्द करा</translation>
+<translation id="1201402288615127009">पुढील</translation>
+<translation id="8926389886865778422">पुन्हा विचारू नका</translation>
 <translation id="8428213095426709021">सेटिंग्ज</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="5817918615728894473">जोडा</translation>
@@ -56,6 +60,8 @@
 <translation id="4804818685124855865">‍डिस्कनेक्ट</translation>
 <translation id="7144878232160441200">पुन्हा प्रयत्न करा</translation>
 <translation id="8688672835843460752">उपलब्ध</translation>
+<translation id="7625138338483121345">Brave ला डीफॉल्‍ट ब्राउझर बनवा</translation>
+<translation id="9218430445555521422">डीफॉल्ट म्हणून सेट करा</translation>
 <translation id="3479552764303398839">सध्या नाही</translation>
 <translation id="8798099450830957504">डीफॉल्ट</translation>
 <translation id="1483493594462132177">पाठवा</translation>
@@ -91,5 +97,5 @@
 <translation id="7791543448312431591">जोडा</translation>
 <translation id="4250680216510889253">नाही</translation>
 <translation id="2653659639078652383">सबमिट करा</translation>
-<translation id="7136694880210472378">डीफॉल्ट बनवा</translation>
+<translation id="5233638681132016545">नवीन टॅब</translation>
 </translationbundle>

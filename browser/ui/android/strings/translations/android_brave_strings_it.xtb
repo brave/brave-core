@@ -5,7 +5,6 @@
 <translation id="3570081523466826008">Aggiorna le connessioni a HTTPS</translation>
 <translation id="2278950434998763147">Apre alcuni siti usando una connessione sicura HTTPS invece che HTTP.</translation>
 <translation id="94154759592465111">Blocca gli Script</translation>
-<translation id="3518266709656143462">Blocca JavaScript (potrebbe non far funzionare alcuni siti)</translation>
 <translation id="6052725679982758334">Blocco dei social media</translation>
 <translation id="7498695072878479744">Permetti pulsante di accesso Google su siti di terze parti</translation>
 <translation id="863171915776379000">Consenti accessi a Facebook e post incorporati</translation>
@@ -33,7 +32,7 @@
 <translation id="6252490671914511928">Le migliori storie di oggi in un feed totalmente privato, solo per te.</translation>
 <translation id="7266075701303521777">Il servizio News di Brave si sostiene con la pubblicità e propone annunci assolutamente privati e anonimi, abbinati al dispositivo.</translation>
 <translation id="4541978218358617681">Annuncio pubblicitario</translation>
-<translation id="7823038307453615214">Attiva le News di Brave</translation>
+<translation id="7823038307453615214">Mostra Brave News</translation>
 <translation id="6527303717912515753">Condividi</translation>
 <translation id="1654539412343893324">Scopri di più sui dati</translation>
 <translation id="2989805286512600854">Apri in una nuova scheda</translation>
@@ -97,7 +96,7 @@
 <translation id="6511854390690723657">Questo è il tuo primo annuncio di Brave. Tocca per saperne di più.</translation>
 <translation id="2070991379950719711">Inizia a usare Brave Rewards</translation>
 <translation id="48520986898237073">Prosegui per il portafoglio</translation>
-<translation id="6800338374677644736">Imposta come browser predefinito</translation>
+<translation id="3570367516044491911">Imposta come browser predefinito</translation>
 <translation id="19715420010996093">Scegli il browser Brave e premi su 'Sempre'</translation>
 <translation id="3546439402724649282">Brave è già impostato come browser predefinito.</translation>
 <translation id="8389661903259423907">Hai già impostato un browser predefinito. Puoi cambiare il browser predefinito nelle impostazioni della tua applicazione.</translation>
@@ -115,6 +114,9 @@
 <translation id="3370968821559864204">saldo del portafoglio:</translation>
 <translation id="2573313946367623146">manda la mia mancia</translation>
 <translation id="3250511771491660127">Rendilo mensile</translation>
+<translation id="7658239707568436148">Annulla</translation>
+<translation id="1201402288615127009">Avanti</translation>
+<translation id="8926389886865778422">Non visualizzare più questo avviso</translation>
 <translation id="6639570430554986719">GENNAIO</translation>
 <translation id="1807352595146144483">FEBBRAIO</translation>
 <translation id="2021828608097804771">MARZO</translation>
@@ -397,12 +399,12 @@ Confermi di voler procedere?</translation>
 <translation id="7427567994475794038">Attiva il Report Privacy per vedere quanti tracker &amp;ad sono state bloccate nelle ultime 3 ore.</translation>
 <translation id="2053891538879944400">Hai risparmiato <ph name="DATA"/> <ph name="DATA_TEXT"/> dati con Brave browser.</translation>
 <translation id="8640064498452534195">Attiva il Report Privacy per vedere quanti dati hai risparmiato.</translation>
-<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.🔋</translation>
+<translation id="2252497442547961651">Il browser Brave usa 40% in meno di batteria in media.&#128267;</translation>
 <translation id="1945330434665345785">Hai bloccato <ph name="COUNT"/> tracker &amp; ad con Brave browser la scorsa settimana.</translation>
 <translation id="2883868922264431515">Guadagna token guardando ad tutela-privacy e supporta i tuoi siti preferiti.</translation>
-<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.🔥</translation>
-<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.🔋</translation>
-<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.💨💨</translation>
+<translation id="5678925890616256956">Ottimo! Hai bloccato 250 localizzatori &amp; pubblicità con il browser Brave.&#128293;</translation>
+<translation id="9199047775708635708">Ottimo! Hai risparmiato 10MB con il browser Brave.&#128267;</translation>
+<translation id="1880168210969863408">Ottimo! Hai risparmiato 10 minuti di tempo di carimento con il browser Brave.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Comincia a navigare per visualizzare il report sulla privacy</translation>
 <translation id="9080777565335515917">Imposta Brave come browser di default per una navigazione privata e sicura.</translation>
 <translation id="1390943217516275883">Permette a Brave di mostrare le tue statistiche in tema di privacy</translation>
@@ -520,9 +522,8 @@ Confermi di voler procedere?</translation>
 <translation id="6478996494082389936">analisi dei prodotti privati.</translation>
 <translation id="5187052478998910855">Serve un ripasso su Rewards?</translation>
 <translation id="8622329973403382303">Fai un breve tour per rinfrescare la memoria su come funziona per passare alla storia come una rockstar di Rewards!</translation>
-<translation id="7625138338483121345">Apri tutti i link con Brave per proteggere la tua privacy</translation>
-<translation id="4511485286950743564">Brave Shields blocca tracciatori e pubblicità, risparmia il consumo di dati e ti fa risparmiare tempo su ogni sito che visiti.</translation>
-<translation id="9218430445555521422">Imposta Brave come default</translation>
+<translation id="7625138338483121345">Imposta Brave come browser predefinito</translation>
+<translation id="9218430445555521422">Imposta di defult</translation>
 <translation id="3479552764303398839">Non adesso</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -541,7 +542,6 @@ Confermi di voler procedere?</translation>
 <translation id="1822560017823072927">Interfacce pubbliche e private predefinite</translation>
 <translation id="5825943197137337319">Solamente l'interfaccia pubblica predefinita</translation>
 <translation id="1689062823386843231">Disabilita UDP senza proxy</translation>
-<translation id="3171931580569169744">Attiva schede gruppi</translation>
 <translation id="5587305863196367357">Se verifichi il portafoglio puoi gestire il tuo denaro più agevolmente, facendo depositi e prelievi</translation>
 <translation id="5760671211380791582">Non hai abbastanza BAT.</translation>
 <translation id="442469478596827903">Per creare un portafoglio Uphold verificato devi avere almeno 2 BAT. Riprova in seguito.</translation>
@@ -564,7 +564,6 @@ Confermi di voler procedere?</translation>
 <translation id="375882617301124395">Esegui il backup al tuo portafoglio di criptovalute</translation>
 <translation id="8289942708804097960">Acquista delle criptovalute con carta di credito e debito.</translation>
 <translation id="841880029259839903">Invia cripto o trasferiscile da un account a un altro.</translation>
-<translation id="8226778393040773102">Scambia beni cripto con l’aggregatore DEX di Brave.</translation>
 <translation id="1783600039044302171">Metti al sicuro le tue cripto con una password</translation>
 <translation id="3726490322412361740">Inserisci password</translation>
 <translation id="3038243139480464605">Verifica la password</translation>
@@ -592,7 +591,7 @@ Confermi di voler procedere?</translation>
 <translation id="283071225285270357">Inserisci la frase di recupero</translation>
 <translation id="3943857333388298514">Incolla</translation>
 <translation id="3331452756822160641">Nuova password</translation>
-<translation id="4359319875297001084">Sto eseguendo il ripristino dal precedente portafoglio Brave di criptovalute</translation>
+<translation id="4359319875297001084">Importare dai portafogli di criptovalute Brave legacy?</translation>
 <translation id="2339124864228588937">Verifica la frase di recupero</translation>
 <translation id="3747079125031086337">Seleziona le parole nella tua frase di recupero nell'ordine corretto.</translation>
 <translation id="6518133107902771759">Verifica</translation>
@@ -790,7 +789,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="1254969878422524947">Limite della donazione per gas (Gwei)</translation>
 <translation id="7373308452149471621">Limite di prezzo per gas (Gwei)</translation>
 <translation id="5891811606602061966">Impossibile importare l'account. Riprova.</translation>
-<translation id="1822506443689803572">Brave usa 0x come aggregatore DEX.</translation>
 <translation id="5061574358754621254">I prezzi sono forniti da CoinGecko</translation>
 <translation id="4626407663177532837">La quotazione include una commissione dello 0,875% per Brave.</translation>
 <translation id="8574289650879708853">Aggiungi asset personalizzato</translation>
@@ -835,21 +833,11 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="665660671251623018">Decimali della valuta della catena</translation>
 <translation id="182619028057179895">Formato non valido, i decimali della valuta sono un numero positivo</translation>
 <translation id="2978054488731497946">Inserisci i decimali della valuta</translation>
-<translation id="7642841516562576649">URL delle icone</translation>
-<translation id="4693057234255364395">URL dell’esploratore di blocchi</translation>
+<translation id="4693057234255364395">URL dell'esploratore di blocchi</translation>
 <translation id="7059127752542505809">Inserisci l’URL</translation>
 <translation id="2156993118928861787">Indirizzo non valido</translation>
 <translation id="6889920539620318793">Imposta come attivo</translation>
 <translation id="2653659639078652383">Invia</translation>
 <translation id="8853725596990766789">Modifica l’importo</translation>
-<translation id="3570367516044491911">Imposta come browser predefinito</translation>
-<translation id="7091885296442320770">Brave è veloce come un fulmine</translation>
-<translation id="2171928016777725844">Fai di Brave il tuo browser predefinito!</translation>
-<translation id="7136694880210472378">Imposta come predefinito</translation>
-<translation id="8401711613788729448">Apri tutti i link con Brave per proteggere la tua privacy</translation>
-<translation id="3184805785843994538">Brave Shields blocca tracciatori e pubblicità, risparmia il consumo di dati e ti fa risparmiare tempo su ogni sito che visiti.</translation>
-<translation id="8722651357687610395">Imposta Brave come default</translation>
-<translation id="4854035885012188958">Sto eseguendo il ripristino dal precedente portafoglio Brave di criptovalute</translation>
-<translation id="3047726704186619366">URL delle icone</translation>
-<translation id="2487558607408469181">URL dell’esploratore di blocchi</translation>
+<translation id="5233638681132016545">Nuova scheda</translation>
 </translationbundle>

@@ -2,6 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="ml">
 <translation id="4692623383562244444">സെര്‍ച് എഞ്ചിനുകള്‍</translation>
+<translation id="3377025655491224618">അദൃശ്യ ടാബ്</translation>
 <translation id="9148058034647219655">പുറത്തുകടക്കുക</translation>
 <translation id="2356070529366658676">ചോദിക്കുക</translation>
 <translation id="4176463684765177261">അപ്രാപ്‌തമാക്കി</translation>
@@ -14,6 +15,9 @@
 <translation id="4150201353443180367">ഡിസ്‌പ്ലേ</translation>
 <translation id="2433507940547922241">കാഴ്ച്ച</translation>
 <translation id="8281886186245836920">ഉപേക്ഷിക്കുക</translation>
+<translation id="7658239707568436148">റദ്ദാക്കൂ</translation>
+<translation id="1201402288615127009">അടുത്തത്</translation>
+<translation id="8926389886865778422">എന്നോട് വീണ്ടും ചോദിക്കരുത്</translation>
 <translation id="8428213095426709021">ക്രമീകരണങ്ങള്‍</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="5817918615728894473">ജോടിയാക്കുക</translation>
@@ -38,6 +42,8 @@
 <translation id="4804818685124855865">വിച്ഛേദിക്കുക</translation>
 <translation id="7144878232160441200">വീണ്ടും ശ്രമിക്കുക</translation>
 <translation id="8688672835843460752">ലഭ്യമാണ്</translation>
+<translation id="7625138338483121345">Brave-ത്തെ നിങ്ങളുടെ ഡിഫോൾട്ട് ബ്രൗസറാക്കുക</translation>
+<translation id="9218430445555521422">സ്ഥിരസ്ഥിതിയാക്കുക</translation>
 <translation id="3479552764303398839">ഇപ്പോഴല്ല</translation>
 <translation id="8798099450830957504">സ്ഥിരസ്ഥിതി</translation>
 <translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
@@ -75,5 +81,5 @@
 <translation id="7791543448312431591">ചേര്‍ക്കൂ</translation>
 <translation id="4250680216510889253">ഇല്ല</translation>
 <translation id="2653659639078652383">സമര്‍പ്പിക്കൂ</translation>
-<translation id="7136694880210472378">സ്ഥിരസ്ഥിതിയാക്കുക</translation>
+<translation id="5233638681132016545">പുതിയ ടാബ്</translation>
 </translationbundle>

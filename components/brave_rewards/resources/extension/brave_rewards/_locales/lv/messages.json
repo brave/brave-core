@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Šis satura veidotājs šobrīd nav iestatījis dzeramnaudas saņemšanu no jūsu maka.",
+    "message": "Šis satura veidotājs šobrīd nav konfigurēts Rewards saņemšanai no jūsu maka pakalpojuma.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Jūsu atlīdzība ir ceļā uz Brave Rewards maku.",
+    "message": "Jūsu balva ir ceļā.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Mans maks",
+    "message": "Pārbaudīts",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verificēt maku",
+    "message": "Pārbaudīt",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Atkārtoti izveidot savienojumu",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Pieprasīt",
+  "notificationClaimRewards": {
+    "message": "Pieprasīt balvas",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Pieprasīt marķierus",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,11 +305,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Maka dublēšana",
+    "message": "Saglabāt Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Lūdzu, izveidojiet sava Brave maka dublējumkopiju.",
+    "message": "Lūdzu, saglabājiet savas Brave Rewards.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -313,7 +317,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Jūsu maks ir izrakstīts",
+    "message": "Jūs esat izrakstījies",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Jūsu maks ir verificēts!",
+    "message": "Jūsu Brave Rewards ir verificētas!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Jūsu $provider$ maks tika sekmīgi verificēts un ir gatavs līdzekļu pievienošanai un izņemšanai.",
+    "message": "Jūsu Brave Rewards tika veiksmīgi verificētas $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Marķieru piešķīrumi",
+    "message": "Ir pieejams marķiera piešķīrums!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Jums pieejams viens piešķīrums.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Rewards: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Saņemtā peļņa no reklāmām",
-    "description": ""
+    "message": "Jūsu $month$ Ad Rewards ir pieejamas!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Jūsu peļņa no Brave privātajām reklāmām ir klāt!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Ikmēneša ziedojumu veikt neizdevās",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Jums palikušas $days$ dienas, lai pieprasītu",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Jūsu ieplānotais ikmēneša maksājums automātiskai ziedošanai un ikmēneša ziedojums nevarēja tikt izpildīts nepietiekamu līdzekļu dēļ. Mēs mēģināsim vēlreiz pēc 30 dienām. ",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Apstrādājot jūsu ieguldījumu, radās kļūda.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Ikmēneša ziedojumu veikt neizdevās",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verificējiet savu maku",
+    "message": "Pārbaudīt",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Lai izņemtu žetonus, ko nopelnījāt, skatoties reklāmas, jums būs jāveic sava maka verifikācija.",
+    "message": "Lai izņemtu BAT, ko jūs pelnāt no reklāmu skatīšanās, jums jāverificē Brave Rewards.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verificēt maku",
+    "message": "Verificēt Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Pēc jūsu maka verifikācijas un savienošanas ar bitFlyer kontu jūs varēsit vienkāršāk uzglabāt un pārvaldīt tokenus, izmantojot Brave Rewards",
+    "message": "Verificējot savas Brave Rewards un saistot tās ar bitFlyer kontu, jūs varēsiet vieglāk glabāt un pārvaldīt BAT, ko esat nopelnījis ar Brave Rewards starpniecību",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

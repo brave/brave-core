@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Visi siųsti arbatpinigiai bus sulaikyti jūsų piniginėje automatiškai kartojant arbatpinigių siuntimą 90 dienų. $link_begin$Sužinokite daugiau$link_end$",
+    "message": "Visi jūsų arbatpinigiai liks laukti ir bus automatiškai kartojami 90 dienų. $link_begin$Sužinokite daugiau $link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Šis kūrėjas dar nėra sukonfigūruotas gauti arbatpinigių iš jūsų piniginės.",
+    "message": "Šis kūrėjas dar nėra sukonfigūruotas gauti arbatpinigių iš jūsų „Rewards“ saugomos piniginės paslaugos.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Jūsų atlygis yra pakeliui į jūsų „Brave Rewards“ piniginę.",
+    "message": "Jūsų „Reward“ jau pakeliui.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Mano piniginė",
+    "message": "Jūsų piniginė patvirtinta",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Patvirtinti piniginę",
+    "message": "Patvirtinti",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Prisijungti iš naujo",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Atsiimti",
+  "notificationClaimRewards": {
+    "message": "Atsiimti „Rewards“",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Atsiimti žetonus",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Atsarginė piniginė",
+    "message": "Atsarginė „Brave Rewards“ kopija",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Sukurkite savo „Brave“ piniginės atsarginę kopiją.",
+    "message": "Padarykite atsarginę „Brave Rewards“ kopiją.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Daryti atsarginę kopiją dabar",
+    "message": "Kurti atsarginę kopiją dabar",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Atsijungėte nuo savo piniginės",
+    "message": "Jūs esate atsijungę",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Jūsų piniginė patvirtinta!",
+    "message": "Jūsų „Brave Rewards“ patvirtintas!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Jūsų $provider$ piniginė sėkmingai patvirtinta, jau galite pridėti ir išsiimti pinigų.",
+    "message": "Jūsų „Brave Rewards“ sėkmingai patikrinti su $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Atpažinimo ženklo suteikimas",
+    "message": "Galima gauti simbolinę dotaciją!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Jūsų laukia išmoka.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ „Rewards“: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Gautas uždarbis už reklamas",
-    "description": ""
+    "message": "Jūsų $month$ skelbimų „Rewards“ yra čia!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Jūsų atlygis už privatumo nepažeidžiančių „Brave“ reklamų peržiūrą jau čia!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Mėnesinis indėlis nepavyko",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Jums liko$days$ atsiėmimui",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Jūsų suplanuotas automatinio indėlio mėnesinis mokėjimas ir mėnesiniai indėliai nesumokėti, nes nepakako lėšų. Bandysime dar kartą po 30 dienų.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Apdorojant jūsų indėlį iškilo problema.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Mėnesinis indėlis nepavyko",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Patvirtinkite savo piniginę",
+    "message": "Patvirtinti",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Norėdami išsiimti žetonus, pelnytus už reklamų peržiūrą, turėsite patvirtinti savo piniginę.",
+    "message": "Norėdami atsiimti už skelbimų peržiūrą uždirbtus BAT, turite patikrinti „Brave Rewards“.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Patvirtinti mano piniginę",
+    "message": "Patvirtinti „Brave Rewards“",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Patvirtindami savo piniginę ir susiedami ją su „bitFlyer“ paskyra, galėsite lengviau laikyti ir tvarkyti žetonus, pelnytus per „Brave Rewards“",
+    "message": "Patikrinę savo „Brave Rewards“ ir susieję jį su „bitFlyer“ paskyra, galėsite lengviau saugoti ir tvarkyti „Brave Rewards“ uždirbtus GPM",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

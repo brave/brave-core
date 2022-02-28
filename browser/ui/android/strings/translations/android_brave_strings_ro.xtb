@@ -5,7 +5,6 @@
 <translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
 <translation id="2278950434998763147">Deschide anumite site-uri folosind o conexiune securizată HTTPS, în loc de HTTP simplu.</translation>
 <translation id="94154759592465111">Blocare script</translation>
-<translation id="3518266709656143462">Blochează Javascript (poate afecta site-urile)</translation>
 <translation id="6052725679982758334">Blocare social media</translation>
 <translation id="7498695072878479744">Permite butoane de conectare Google pe site-uri terțe</translation>
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
@@ -33,7 +32,7 @@
 <translation id="6252490671914511928">Principalele informații ale zilei într-un flux complet privat pentru dvs.</translation>
 <translation id="7266075701303521777">Știrile Brave sunt susținute prin anunțuri furnizate întru totul confidențial și anonim pe dispozitivul dvs.</translation>
 <translation id="4541978218358617681">Reclamă</translation>
-<translation id="7823038307453615214">Activați știrile Brave</translation>
+<translation id="7823038307453615214">Afișați Brave News</translation>
 <translation id="6527303717912515753">Trimite</translation>
 <translation id="1654539412343893324">Aflați mai multe despre datele dvs.</translation>
 <translation id="2989805286512600854">Deschideți în filă nouă</translation>
@@ -97,7 +96,7 @@
 <translation id="6511854390690723657">Aceasta este prima reclamă Brave. Apăsați pentru a afla mai multe.</translation>
 <translation id="2070991379950719711">Începeți să folosiți Recompensele Brave</translation>
 <translation id="48520986898237073">Continuați spre portofel</translation>
-<translation id="6800338374677644736">Setați ca browser implicit</translation>
+<translation id="3570367516044491911">Setați ca browser implicit</translation>
 <translation id="19715420010996093">Selectați Brave Browser și atingeți „Întotdeauna”</translation>
 <translation id="3546439402724649282">Brave este setat deja ca browser implicit.</translation>
 <translation id="8389661903259423907">Ați setat deja un browser implicit. Puteți să schimbați browserul implicit din setările aplicației.</translation>
@@ -115,6 +114,9 @@
 <translation id="3370968821559864204">sold portofel:</translation>
 <translation id="2573313946367623146">trimite plata</translation>
 <translation id="3250511771491660127">Faceți asta lunar</translation>
+<translation id="7658239707568436148">Anulează</translation>
+<translation id="1201402288615127009">Înainte</translation>
+<translation id="8926389886865778422">Nu mai întreba</translation>
 <translation id="6639570430554986719">IANUARIE</translation>
 <translation id="1807352595146144483">FEBRUARIE</translation>
 <translation id="2021828608097804771">MARTIE</translation>
@@ -396,12 +398,12 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="7427567994475794038">Activați Rapoartele de confidențialitate pentru a vedea câte urmăriri și reclame au fost blocate în ultimele 3 ore.</translation>
 <translation id="2053891538879944400">Ați economisit <ph name="DATA"/> <ph name="DATA_TEXT"/> date cu browserul Brave.</translation>
 <translation id="8640064498452534195">Activați Rapoartele de confidențialitate pentru a vedea câte date ați economisit.</translation>
-<translation id="2252497442547961651">Browserul Brave folosește în medie cu 40% mai puțină baterie.🔋</translation>
+<translation id="2252497442547961651">Browserul Brave folosește în medie cu 40% mai puțină baterie.&#128267;</translation>
 <translation id="1945330434665345785">Ați blocat <ph name="COUNT"/> (de) urmăriri și reclame cu browserul Brave săptămâna trecută.</translation>
 <translation id="2883868922264431515">Câștigați tokenuri vizualizând reclame care respectă confidențialitate și susțineți website-urile favorite.</translation>
-<translation id="5678925890616256956">Bravo! Ai blocat 250 de reclame &amp; cu browserul Brave.🔥</translation>
-<translation id="9199047775708635708">Bravo! Ai economisit 10MB cu browserul Brave.🔋</translation>
-<translation id="1880168210969863408">Bravo! Ai economisit 10 minute din timpul de încărcare cu browserul Brave.💨💨</translation>
+<translation id="5678925890616256956">Bravo! Ai blocat 250 de reclame &amp; cu browserul Brave.&#128293;</translation>
+<translation id="9199047775708635708">Bravo! Ai economisit 10MB cu browserul Brave.&#128267;</translation>
+<translation id="1880168210969863408">Bravo! Ai economisit 10 minute din timpul de încărcare cu browserul Brave.&#128168;&#128168;</translation>
 <translation id="7408493389591475748">Începeți să navigați pentru a vedea rapoartele de confidențialitate</translation>
 <translation id="9080777565335515917">Setați Brave ca browser prestabilit pentru o navigare privată și sigură.</translation>
 <translation id="1390943217516275883">Permite browserului Brave să afișeze statisticile privind confidențialitatea</translation>
@@ -519,9 +521,8 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="6478996494082389936">date de analiză produs privat.</translation>
 <translation id="5187052478998910855">Ai nevoie de o actualizare a Recompenselor?</translation>
 <translation id="8622329973403382303">Fă un tur rapid pentru a vedea cum funcționează, pentru a intra în istorie ca un campion al Recompenselor!</translation>
-<translation id="7625138338483121345">Deschideți toate linkurile cu Brave pentru a vă proteja confidențialitatea</translation>
-<translation id="4511485286950743564">Brave Shield blochează programele de urmărire și reclamele, economisește date și timp pe fiecare website pe care îl accesați.</translation>
-<translation id="9218430445555521422">Setați Brave ca browser prestabilit</translation>
+<translation id="7625138338483121345">Setează Brave ca browser prestabilit</translation>
+<translation id="9218430445555521422">Setează ca prestabilit</translation>
 <translation id="3479552764303398839">Nu acum</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -540,7 +541,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1822560017823072927">Interfețe implicite publice și private</translation>
 <translation id="5825943197137337319">Doar interfața publică implicită</translation>
 <translation id="1689062823386843231">Dezactivează UDP fără proxy</translation>
-<translation id="3171931580569169744">Activați grupurile de file</translation>
 <translation id="5587305863196367357">După ce confirmați portofelul, puteți gestiona fondurile mai eficient, având posibilitatea de a efectua depuneri și retrageri</translation>
 <translation id="5760671211380791582">Nu aveți suficiente token-uri BAT.</translation>
 <translation id="442469478596827903">Trebuie să aveți minimum 2 BAT pentru a crea un portofel Uphold verificat. Încercați din nou mai târziu.</translation>
@@ -563,7 +563,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="375882617301124395">Realizați o copie de rezervă după portofel</translation>
 <translation id="8289942708804097960">Cumpărați criptomonede folosind un card de credit ori un card de debit.</translation>
 <translation id="841880029259839903">Trimiteți criptomonede sau transferați dintr-un cont în altul!</translation>
-<translation id="8226778393040773102">Tranzacționați criptomonede cu agregatorul de schimb descentralizat Brave!</translation>
 <translation id="1783600039044302171">Securizați contul dvs. pentru criptomonede cu o parolă</translation>
 <translation id="3726490322412361740">Introduceți parola</translation>
 <translation id="3038243139480464605">Confirmați parola</translation>
@@ -591,7 +590,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="283071225285270357">Introduceți expresia de recuperare</translation>
 <translation id="3943857333388298514">Inserați</translation>
 <translation id="3331452756822160641">Parolă nouă</translation>
-<translation id="4359319875297001084">Efectuez restabilirea din vechiul portofel de criptomonede Brave</translation>
+<translation id="4359319875297001084">Importați din vechile portofele de criptomonede Brave?</translation>
 <translation id="2339124864228588937">Confirmați expresia de recuperare</translation>
 <translation id="3747079125031086337">Selectați cuvintele din expresia de recuperare în ordinea corectă</translation>
 <translation id="6518133107902771759">Confirmați</translation>
@@ -789,7 +788,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1254969878422524947">Limita contribuției pentru gas (Gwei)</translation>
 <translation id="7373308452149471621">Limita prețului pentru gas (Gwei)</translation>
 <translation id="5891811606602061966">Nu s-a reușit importarea contului. Încercați din nou!</translation>
-<translation id="1822506443689803572">Brave utilizează 0x ca agregator de schimb descentralizat.</translation>
 <translation id="5061574358754621254">Date privind prețurile, oferite de CoinGecko</translation>
 <translation id="4626407663177532837">Oferta include o taxă Brave de 0,875%.</translation>
 <translation id="8574289650879708853">Adăugați activ personalizat</translation>
@@ -834,21 +832,11 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="665660671251623018">Zecimalele monedei lanțului</translation>
 <translation id="182619028057179895">Format incorect, zecimalele monedei sunt un număr pozitiv</translation>
 <translation id="2978054488731497946">Introduceți zecimalele monedei</translation>
-<translation id="7642841516562576649">Adrese URL pictograme</translation>
-<translation id="4693057234255364395">Adrese URL explorator de blocuri</translation>
+<translation id="4693057234255364395">URL explorator blocuri</translation>
 <translation id="7059127752542505809">Introduceți URL</translation>
 <translation id="2156993118928861787">Adresă incorectă</translation>
 <translation id="6889920539620318793">Setați ca activă</translation>
 <translation id="2653659639078652383">Trimiteți</translation>
 <translation id="8853725596990766789">Modificați suma</translation>
-<translation id="3570367516044491911">Setați ca browser implicit</translation>
-<translation id="7091885296442320770">Brave este foarte rapid</translation>
-<translation id="2171928016777725844">Setați Brave ca browser implicit!</translation>
-<translation id="7136694880210472378">Setează ca prestabilit</translation>
-<translation id="8401711613788729448">Deschideți toate linkurile cu Brave pentru a vă proteja confidențialitatea</translation>
-<translation id="3184805785843994538">Brave Shield blochează programele de urmărire și reclamele, economisește date și timp pe fiecare website pe care îl accesați.</translation>
-<translation id="8722651357687610395">Setați Brave ca browser prestabilit</translation>
-<translation id="4854035885012188958">Efectuez restabilirea din vechiul portofel de criptomonede Brave</translation>
-<translation id="3047726704186619366">Adrese URL pictograme</translation>
-<translation id="2487558607408469181">Adrese URL explorator de blocuri</translation>
+<translation id="5233638681132016545">Filă nouă</translation>
 </translationbundle>

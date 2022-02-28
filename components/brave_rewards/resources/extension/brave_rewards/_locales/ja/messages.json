@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "送ったチップはあなたのウォレット内で保留されたままになり、90 日間の間自動的に再試行されます。$link_begin$詳しく見る$link_end$",
+    "message": "送ったチップは保留されたままになり、90 日間の間自動的に再試行されます。$link_begin$詳しく見る$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "このクリエイターは現在、あなたのウォレットからチップを受け取るように設定を行っていません。",
+    "message": "このクリエイターは現在、あなたのリワード管理ウォレットサービスからチップを受け取るように設定を行っていません。",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "報酬をあなたのBrave Rewardsウォレットに入金中です。",
+    "message": "あなたのリワードは処理中です。",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "マイウォレット",
+    "message": "認証済み",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "ウォレットを認証",
+    "message": "認証する",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "再接続",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "取得",
+  "notificationClaimRewards": {
+    "message": "リワードを受け取る",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "トークンの獲得",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "ウォレットのバックアップ",
+    "message": "Braveリワードのバックアップ",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "ウォレットをバックアップしてください。",
+    "message": "Braveリワードをバックアップしてください。",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Backup now",
+    "message": "今すぐバックアップ",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "ウォレットはログアウトしています",
+    "message": "ログアウトしています",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "ウォレットの認証が完了しました！",
+    "message": "Braveリワードの認証が完了しました！",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "$provider$ウォレットの認証が無事完了し、資金の追加と引き出しの準備が整いました。",
+    "message": "Braveリワードが$provider$で認証されました。",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "トークンの付与",
+    "message": "トークンの付与が可能です！",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "新しい付与トークンがあります。",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$のリワード: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Adsの報酬を受け取りました",
-    "description": ""
+    "message": "$month$の広告リワードが届きました！",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Brave Private Adsによる報酬が届きました！",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "毎月の支援ができませんでした",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "獲得まであと$days$",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "資金が不足しているため、予定されていた月次の自動支援の支払いと毎月の支援が完了できませんでした。30日以内に再試行します。",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "支援の実行中に問題が発生しました。",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "毎月の支援ができませんでした",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "ウォレットを認証する",
+    "message": "認証する",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "広告を表示して獲得したトークンを引き出すには、ウォレットを認証する必要があります。",
+    "message": "広告を表示して獲得したBATを引き出すには、Braveリワードを認証する必要があります。",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "ウォレットを認証する",
+    "message": "Braveリワードを認証",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "ウォレットを認証しbitFlyerアカウントにリンクすると、Brave Rewardsで獲得したトークンを簡単に保管し管理することができます",
+    "message": "Braveリワードを認証してbitFlyerアカウントと連携することで、Brave Rewardsによって獲得したBATを保管・管理することができるようになります",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

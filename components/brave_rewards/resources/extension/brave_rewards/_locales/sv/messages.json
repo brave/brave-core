@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "All dricks som du lämnar kommer att förbli väntande i din plånbok och försökas igen automatiskt inom 90 dagar. $link_begin$Läs mer$link_end$",
+    "message": "All dricks som du lämnar kommer att förbli väntande och försöker igen automatiskt under 90 dagar. $link_begin$Läs mer$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Denna skapare är för närvarande inte konfigurerad för att ta emot dricks från din plånbok.",
+    "message": "Den här skaparen är för närvarande inte konfigurerad för att ta emot tips från din Rewards-plånbokstjänst.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Din belöning är på väg till din Brave Rewards-plånbok.",
+    "message": "Din belöning är på väg",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Min plånbok",
+    "message": "Verifierad",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verifiera plånbok",
+    "message": "Verifiera",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Återanslut",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Hämta",
+  "notificationClaimRewards": {
+    "message": "Hämta belöning",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Hämta tokens",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,11 +305,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Säkerhetskopiera plånbok",
+    "message": "Säkerhetskopiera Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Säkerhetskopiera din Brave-plånbok.",
+    "message": "Säkerhetskopiera Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -313,7 +317,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Din plånbok är utloggad",
+    "message": "Du är utloggad",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Plånboken har verifierats!",
+    "message": "Din Brave Rewards är verifierad!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "$provider$-plånboken har verifierats. Du kan nu sätta in och ta ut tillgångar från den.",
+    "message": "Dina Brave Rewards har verifierats med $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Tilldelning av token",
+    "message": "En \"token grant\" är tillgänglig!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Du har ett bidrag som väntar på dig.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Rewards: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Ads-intäkter erhållna",
-    "description": ""
+    "message": "Din $month$ Ad Rewards är här!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Dina belöningar från Brave Private Ads har kommit!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Månatligt bidrag misslyckades",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Du har $days$ kvar att göra anspråk",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Din planerade månatliga betalning för Autobidrag och månatliga bidrag kan inte genomföras på grund av otillräckliga medel. Vi försöker på nytt om 30 dagar.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Det gick inte att behandla ditt bidrag.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Månatligt bidrag misslyckades",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verifiera plånboken",
+    "message": "Verifiera",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "För att ta ut de tokens du tjänar för att visa annonser måste du verifiera din plånbok.",
+    "message": "För att ta ut de BAT du tjänar för att visa annonser måste du verifiera Brave Rewards.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verifiera min plånbok",
+    "message": "Verifiera Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Genom att verifiera din plånbok och länka den till ett bitFlyer-konto kan du enklare lagra och hantera de tokens du har tjänat ihop genom Bravebelöningar",
+    "message": "Genom att verifiera dina Brave Rewards och länka dem till ett bitFlyer-konto kommer du enklare att kunna lagra och hantera BAT som du har tjänat genom Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
