@@ -135,6 +135,7 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
             """ Brave distribution """
             return [model.Distribution(channel=brave_channel)]
 
+        @property
         def codesign_requirements_outer_app(self):
             return 'designated => identifier "' + self.base_bundle_id
 
