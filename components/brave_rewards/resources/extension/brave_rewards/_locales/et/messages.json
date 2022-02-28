@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Kõik saadetud preemiad jäävad teie rahakotti ootele ja neid proovitakse 90 päeva jooksul automaatselt uuesti saata. $link_begin$Lisateave$link_end$",
+    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "See looja ei ole praegu konfigureeritud teie rahakotist preemiaid saama.",
+    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Preemia saadetakse teie Brave Rewardsi rahakotti.",
+    "message": "Your Reward is on its way.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Minu rahakott",
+    "message": "Kinnitatud",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Kinnita rahakott",
+    "message": "Kinnita",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Ühenda uuesti",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Hangi",
+  "notificationClaimRewards": {
+    "message": "Claim Rewards",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Claim Tokens",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,11 +305,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Varunda rahakott",
+    "message": "Back up Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Varundage oma Brave'i rahakott.",
+    "message": "Please back up your Brave Rewards.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -313,7 +317,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Teie rahakott on välja logitud",
+    "message": "You are logged out",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Teie rahakott on kinnitatud!",
+    "message": "Your Brave Rewards is verified!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Teie teenusepakkuja $provider$ rahakott on edukalt kinnitatud ning valmis rahaliste vahendite lisamiseks ja väljavõtmiseks.",
+    "message": "Your Brave Rewards was successfully verified with $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Tokenivõimalused",
+    "message": "A token grant is available!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Teid ootab preemia.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Rewards: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Laekunud Adsi tulu",
-    "description": ""
+    "message": "Your $month$ Ad Rewards are here!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Teie Brave Private Adsi preemiad on kohal!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Igakuine panustamine nurjus",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "You have $days$ left to claim",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Automaatse panustamise ja igakuise panuse plaanilist makset ei saanud teha ebapiisavate vahendite tõttu. Proovime uuesti 30 päeva pärast.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Panustamise töötlemisel tekkis tõrge.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Igakuine panustamine nurjus",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Kinnitage oma rahakott",
+    "message": "Kinnita",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Et võtta välja reklaamide vaatamise eest teenitud tokeneid, peate kinnitama oma rahakoti.",
+    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Kinnita minu rahakott",
+    "message": "Verify Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Kui kinnitate oma rahakoti ja seote selle bitFlyeri kontoga, saate Brave Rewardsi kaudu teenitud tokeneid lihtsamalt säilitada ja hallata.",
+    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

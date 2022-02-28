@@ -15,6 +15,7 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="7419046106786626209">Chrome OS nuk mund të sinkronizonte të dhënat e tua sepse Sinkronizimi nuk mundësohet për domenin tënd.</translation>
 <translation id="5147525139567260139">Ndaj një skedë të Brave</translation>
 <translation id="1530633922026945685">Brave ka nevojë për leje për t'u qasur te kamera jote për të krijuar një hartë 3D të ambientit tënd rrethues</translation>
+<translation id="4449148723378534338">Shqyrto kontrollet kryesore të sigurisë dhe privatësisë në Brave</translation>
 <translation id="5616153642055197778">Ofrohet një version i ri më i sigurt i Brave.</translation>
 <translation id="6797402139308059782">Lejo që Brave të ekzekutohet në sfond</translation>
 <translation id="5875673934455379806">Instalo përsëri Brave</translation>
@@ -39,13 +40,11 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="1248225940185478633">Brave ka nevojë për lejet e kamerës dhe të mikrofonit për këtë sajt</translation>
 <translation id="6078442581074612226">Në Brave</translation>
 <translation id="2485422356828889247">Çinstalo</translation>
-<translation id="2372700594671864890">Shiko se si planifikon Brave të të mbrojë nga gjurmimi nëpër sajtet e uebit, ndërkohë që vazhdon të ruajë uebin e hapur</translation>
 <translation id="9026991721384951619">Chrome OS nuk mundi të sinkronizonte të dhënat e tua, sepse detajet e llogarisë tënde të identifikimit janë të vjetruara.</translation>
 <translation id="7798069806040634998">Brave ka nevojë për qasje te hapësira ruajtëse për të shkarkuar skedarë</translation>
 <translation id="8447483940522230788">Ndihmuesi i Brave</translation>
 <translation id="7291143854620707672">Çdo e dhënë e Brave që krijohet gjatë përdorimit të këtij profili (si p.sh. krijimi i faqeshënuesve, historikut, fjalëkalimeve dhe cilësimeve të tjera) mund të hiqet nga administratori i profilit të punës. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Chrome OS ka nevojë të riniset për të zbatuar përditësimin.</translation>
-<translation id="4703432949110765917">Cilësimet e parazgjedhura funksionojnë për shumicën e njerëzve, por mund t'i personalizosh ato për t'u përshtatur me mënyrën që dëshiron të përdorësh Brave</translation>
 <translation id="7387051847644272380">Ndodhi një gabim në sistemin operativ gjatë instalimit. Shkarko përsëri Brave.</translation>
 <translation id="2648689842065142443">Nëse e ndan një pajisje, miqtë dhe familja mund të shfletojnë veçmas dhe ta konfigurojnë Brave pikërisht ashtu si dëshirojnë</translation>
 <translation id="6791166902140255175">Skeda Brave</translation>
@@ -113,7 +112,9 @@ Disa funksione mund të mos ofrohen dhe ndryshimet në preferenca nuk do të ruh
 <translation id="3679799810790990472">Të vazhdohet te një profil i ri i Brave?</translation>
 <translation id="4567424176335768812">Je identifikuar si <ph name="USER_EMAIL_ADDRESS"/>. Tani mund të qasesh te faqeshënuesit, historiku dhe cilësime të tjera në të gjitha pajisjet ku je identifikuar.</translation>
 <translation id="300669147395456190">Aplikacionet Brave</translation>
+<translation id="2182657378556811785">Pothuajse i përditësuar! Hape përsëri Brave për të përfunduar përditësimin.</translation>
 <translation id="1299765473362724475">Paralajmërim: Brave nuk mund të parandalojë regjistrimin e historikut të shfletimit nga shtesat. Për të çaktivizuar këtë shtesë në modalitetin "e fshehtë", anulo zgjedhjen e këtij opsioni.</translation>
+<translation id="7402642357351265733">Nëse ndan edhe raportet e përdorimit të Brave, ato raporte përfshijnë URL-të që ti viziton</translation>
 <translation id="8142245354207161805">Profili duket të jetë në përdorim nga një tjetër proces i Brave (<ph name="PROCESS_ID"/>) në një tjetër kompjuter (<ph name="HOST_NAME"/>). Brave ka kyçur profilin që të mos dëmtohet. Nëse je i sigurt që asnjë proces tjetër nuk po e përdor këtë profil, mund të shkyçësh profilin dhe ta rinisësh Brave.</translation>
 <translation id="3395323229510056640">Merr ndihmë me Chrome OS</translation>
 <translation id="847561904663814268">Dikush është identifikuar më parë në Brave në këtë kompjuter si <ph name="ACCOUNT_EMAIL_LAST"/>. Krijo një përdorues të ri të Brave për t'i mbajtur të ndara informacionet e tua.</translation>
@@ -206,7 +207,6 @@ Disa funksione mund të mos ofrohen. Specifiko një direktori tjetër profili os
 <translation id="3335606533094650083">Brave ka nevojë për leje për t'u qasur te mikrofoni yt për këtë sajt</translation>
 <translation id="1705567146636171298">Përditëso Brave</translation>
 <translation id="5499063270485366718">Nëse një imazh nuk ka një përshkrim të dobishëm, Brave do të përpiqet të të japë një përshkrim. Për të krijuar përshkrime, imazhet dërgohen te Brave.</translation>
-<translation id="151916274998710826">Personalizo disa nga zgjedhjet më të rëndësishme të privatësisë të Brave</translation>
 <translation id="1008530050039597147">Brave ka nevojë për lejen e kamerës për këtë sajt</translation>
 <translation id="1197672524850678392">Brave nuk mund të hapej. Provo përsëri.</translation>
 <translation id="3405035915691517126">Brave nuk mund t'i kontrollojë fjalëkalimet e tua. Provo përsëri pas 24 orësh.</translation>
@@ -224,6 +224,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="5062123544085870375">Rinis Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">Brave ka nevojë për leje për t'u qasur te kamera jote për këtë sajt</translation>
+<translation id="3962395975456095331">Të niset sërish Brave?</translation>
 <translation id="2619516027171717873">Nuk mund të instalohet i njëjti version i Brave që po ekzekutohet aktualisht. Mbylle Brave dhe provo përsëri.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave do të hapet përsëri për 1 minutë}other{Brave do të hapet përsëri për # minuta}}</translation>
 <translation id="573759479754913123">Rreth sistemit operativ Brave</translation>
@@ -233,6 +234,7 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="155309785154426906">Ke aktivizuar "Shfletimin e sigurt të përmirësuar" në llogarinë tënde. Tani merre për Brave.</translation>
 <translation id="3293668930608086049">Brave po përdor kamerën dhe mikrofonin tënd.</translation>
 <translation id="2827121003398607864">Brave sapo është përmirësuar</translation>
+<translation id="8678991866891573053">Brave po eksploron veçori të reja që u lejojnë sajteve të ofrojnë të njëjtën përvojë shfletimi duke përdorur më pak nga të dhënat e tua</translation>
 <translation id="3343095737966473035">Brave nuk është shfletuesi i parazgjedhur</translation>
 <translation id="5477319665405831211">Sinkronizo dhe personalizo Brave nëpër pajisjet e tua</translation>
 <translation id="5419189641394808652">Brave nuk mundi të sinkronizonte të dhënat e tua, sepse "Sinkronizimi" nuk ofrohet për domenin tënd.</translation>
@@ -299,5 +301,4 @@ Brave nuk është në gjendje të rikuperojë cilësimet e tua.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Ka një përditësim të ri për Brave dhe do të zbatohet sapo ta rinisësh.}=1{Ka një përditësim të ri për Brave dhe do të zbatohet sapo ta rinisësh. Dritarja jote "e fshehtë" nuk do të rihapet.}other{Ka një përditësim të ri për Brave dhe do të zbatohet sapo ta rinisësh. # dritaret e tua "të fshehta" nuk do të rihapen.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratori yt kërkon që të hapësh përsëri Brave për të zbatuar këtë përditësim}=1{Administratori yt kërkon që të hapësh përsëri Brave për të zbatuar këtë përditësim Dritarja jote "e fshehtë" nuk do të rihapet.}other{Administratori yt kërkon që të hapësh përsëri Brave për të zbatuar këtë përditësim # dritaret e tua "të fshehta" nuk do të rihapen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratori yt kërkon që të hapësh përsëri Brave për të zbatuar këtë përditësim}=1{Administratori yt kërkon që të hapësh përsëri Brave për të zbatuar këtë përditësim Dritarja jote "e fshehtë" nuk do të rihapet.}other{Administratori yt kërkon që të hapësh përsëri Brave për të zbatuar këtë përditësim # dritaret e tua "të fshehta" nuk do të rihapen.}}</translation>
-<translation id="7914115000169617076">Pothuajse u përditësua! Hap përsëri Brave për të përfunduar përditësimin. Dritaret "e fshehta" nuk do të hapen.</translation>
 </translationbundle>

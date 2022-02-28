@@ -29,6 +29,9 @@
 <translation id="985862351129593673">Panel personalizado</translation>
 <translation id="7180865173735832675">Personalizar</translation>
 <translation id="8522669544471808198">Mostrar imágenes de fondo</translation>
+<translation id="5801450813341024983">Fondos de Brave</translation>
+<translation id="1416884769823233410">Usa el tuyo</translation>
+<translation id="6246790815526961700">Subir uno del dispositivo</translation>
 <translation id="7275773481201277457">Mostrar estadísticas de Brave</translation>
 <translation id="6836061097810262923">Mostrar reloj</translation>
 <translation id="5912396950572065471">Formato</translation>
@@ -94,7 +97,6 @@
 <translation id="1644574205037202324">Historial</translation>
 <translation id="6165508094623778733">Más información</translation>
 <translation id="8730621377337864115">Listo</translation>
-<translation id="6248988683584659830">Buscar en configuración</translation>
 <translation id="730042046912793465">Esto es un(a)</translation>
 <translation id="2055363275850890030">Ventana privada</translation>
 <translation id="9133213713928851646">Brave no registra su actividad en una ventana privada. Los sitios que visite en ella no aparecerán en el historial, y las cookies desaparecerán cuando finalice la navegación. A pesar de ello,  las ventanas privadas no garantizan su completo anonimato durante su actividad en línea.</translation>
@@ -103,7 +105,8 @@
 <translation id="8759753423332885148">Más información.</translation>
 <translation id="3546750666732517156">Ventana de incógnito con conectividad Tor</translation>
 <translation id="5383068818957293256">Brave nunca registra lo que haces en una ventana de incógnito. Con conectividad Tor, tu dirección IP también se mantiene oculta cuando visitas sitios. Sin embargo, si tu seguridad personal depende de mantener el anonimato, directamente deberías usar el navegador Tor.</translation>
-<translation id="778096729652828897">Obtenga más información sobre las ventanas privadas con Tor</translation>
+<translation id="3338507774653218581">Brave nunca registra lo que haces en una ventana de incógnito. Con la conectividad Tor, tienes dos ventajas más: los sitios web que visitas no pueden ver tu dirección IP, y los observadores de red pasivos no pueden ver estos sitios web. Ten en cuenta que es posible que Tor ralentice la navegación o tenga problemas para funcionar correctamente en algunos sitios web.</translation>
+<translation id="8666930656222843375">Si tienes una ventana de incógnito con Tor, a tu proveedor de servicios de Internet o empresa (en caso de que uses una red u ordenador del trabajo) les resultará más difícil, aunque no imposible, saber qué sitios web visitas. Sin embargo, ni siquiera una ventana privada con Tor podrá protegerte completamente frente a los rastreos. Si tu seguridad personal depende de la permanencia en el anonimato, lo mejor será que uses el navegador Tor.</translation>
 <translation id="7919374705736538787">Realice una búsqueda privada con</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Para la búsqueda privada, Brave usará DuckDuckGo para realizar las búsquedas en las ventanas privadas. DuckDuckGo no registra su historial de búsqueda, por lo que le permite mantener la privacidad de sus búsquedas.</translation>
@@ -116,10 +119,12 @@
 <translation id="8897548669448660973">Usar ventanas de incógnito solo cambia lo que Brave hace en tu dispositivo. No cambia el comportamiento de nadie más. Tor le oculta tu dirección IP a los sitios que visitas y hace que sea más difícil, pero no imposible, que tu proveedor de Internet o empleador vea los sitios que visitas. Abre una ventana de incógnito con Tor desde el menú o con [[ key ]].</translation>
 <translation id="6975708438781948564">Obtenga más información sobre Tor en Brave</translation>
 <translation id="4712050378540986986">Estado de Tor</translation>
-<translation id="3368922792935385530">Conectado</translation>
+<translation id="1939334281379458295">Tor se ha conectado correctamente</translation>
 <translation id="8030169304546394654">Desconectada</translation>
-<translation id="3149306599361260465">Iniciando [[percentage]] %</translation>
-<translation id="3258793718986637767">¿Tienes problemas con Tor? Intenta <ph name="BEGIN_LINK"/>desactivar la ventana privada con Tor<ph name="END_LINK"/> y luego actívala de nuevo.</translation>
+<translation id="1149108864689950951">Tor se está conectando… [[percentage]] %</translation>
+<translation id="3651192084771403430">¿Tienes problemas de conexión? Prueba a <ph name="BEGIN_LINK"/>desactivar<ph name="END_LINK"/> la ventana de incógnito con Tor y, luego, vuelve a activarla en los ajustes.</translation>
+<translation id="9190084253595768053">¿Problemas de conexión? Abre <ph name="BEGIN_LINK"/>Ajustes de Brave<ph name="END_LINK"/>, deshabilita Ventana de incógnito con Tor y, luego, vuelve a habilitarla. ¿Sigues teniendo problemas?</translation>
+<translation id="8388043004918289671">Contacta con el servicio de asistencia.</translation>
 <translation id="4272382368346338917">Filtros Adicionales</translation>
 <translation id="8949292968394988358">Advertencia: Activar demasiados filtros puede disminuir el rendimiento</translation>
 <translation id="8686201964111147748">Anuncios y rastreadores bloqueados en total:</translation>
@@ -138,7 +143,10 @@
 <translation id="4720556299488643018">Cancelar suscripción</translation>
 <translation id="1209739344687072997">Informar sobre un sitio roto</translation>
 <translation id="8510478288840333677">Informa a los desarrolladores de Brave de que los escudos no funcionan como es debido.</translation>
-<translation id="4105411033440701818">Nota: La dirección de este sitio se enviará junto con el número de la versión de Brave que usas y tu dirección IP (que no quedará almacenada).</translation>
+<translation id="4105411033440701818">Nota: Si haces clic en "Enviar", compartirás la dirección del sitio web, el número de la versión de Brave que usas y tu dirección IP con los desarrolladores de Brave. (La dirección IP no quedará almacenada).</translation>
+<translation id="6476216365964140603">Detalles adicionales (opcional)</translation>
+<translation id="6145852496180774737">Contacto: (opcional)</translation>
+<translation id="7616645803364270729">Correo electrónico, Twitter, etc.</translation>
 <translation id="5299848999918506028">¡Gracias!</translation>
 <translation id="76550953340008122">Gracias por informar a los desarrolladores de Brave de que hay un problema en este sitio. Haremos todo lo posible por solucionarlo.</translation>
 <translation id="2974339193389078578">Disfrute de una nueva Internet con Brave</translation>
@@ -173,8 +181,6 @@
 <translation id="4428871418618312983">Anuncios recibidos este mes</translation>
 <translation id="4229016885653790965">Lo sentimos. Todavía no hay anuncios disponibles en tu región.</translation>
 <translation id="2539279826042558064">Brave Rewards y Brave Ads no están disponibles en este momento en tu dispositivo.</translation>
-<translation id="5421369907811917952">Otros ajustes</translation>
-<translation id="654711254769318398">Páginas de anuncios vistas</translation>
 <translation id="2532127066761785857">Cantidad máxima de anuncios mostrados</translation>
 <translation id="6177749339095882127">0 anuncios por hora</translation>
 <translation id="5171071066587880677">1 anuncio por hora</translation>
@@ -196,7 +202,8 @@
 <translation id="2846354907189538">Próxima fecha de contribución</translation>
 <translation id="1397381065858030856">Sitios visitados</translation>
 <translation id="2365740070488517695">Propinas</translation>
-<translation id="5810507495128831593">Envía propinas directamente a los creadores mientras navegas usando el panel de recompensas o el botón de propina en diferentes sitios, como Twitter, Reddit y GitHub.</translation>
+<translation id="5810507495128831593">Consulta los consejos puntuales que has dado a sitios web y creadores.</translation>
+<translation id="9147550766164257963">Obtén más información sobre las propinas.</translation>
 <translation id="5012991400231464322">Contribuciones mensuales</translation>
 <translation id="2084351799622920487">Configura contribuciones mensuales recurrentes para ayudar a los sitios que más te gustan de forma constante.</translation>
 <translation id="8150772404570015166">Aún no hay ninguna contribución mensual configurada.</translation>
@@ -209,11 +216,9 @@
 <translation id="3024485967181749006">Total de propinas de este mes</translation>
 <translation id="5055577484189948413">Contribuciones totales este mes</translation>
 <translation id="4153752809523809915">¿Ya le ha enviado una propina a su creador preferido el día de hoy?</translation>
-<translation id="1165667598801520610">Agregar fondos</translation>
-<translation id="6239274080752256452">Retirar fondos</translation>
-<translation id="2726674968268546964">tokens</translation>
 <translation id="7286722244752781970">Tiempo mínimo en una página antes de registrar una visita</translation>
 <translation id="4424486208397124985">Visitas mínimas para la relevancia de un publicador</translation>
+<translation id="5421369907811917952">Otros ajustes</translation>
 <translation id="6248554379744796526">Mostrar sitios no verificados en la lista</translation>
 <translation id="5510618543889994434">Permitir contribuciones para videos</translation>
 <translation id="8933202740471878108">1 visita</translation>
@@ -224,32 +229,23 @@
 <translation id="8610523985422563960">1 minuto</translation>
 <translation id="2807328214759298515">Hasta</translation>
 <translation id="9031738692126722094">Habilita consejos de contenido en estos sitios</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="4875485795191140618">La clave de tu billetera se ha verificado y cargado correctamente.</translation>
-<translation id="1083279119532577005">¡Billetera restaurada!</translation>
 <translation id="7841456038054167122">Vuelve a ingresar las claves o prueba claves diferentes.</translation>
 <translation id="1911900517212490188">La clave de recuperación ingresada ya no es compatible. Visita <ph name="BEGIN_LINK"/>esta página<ph name="END_LINK"/> para obtener una nueva.</translation>
-<translation id="5254740304961202261">¡Demuestra que eres humano!</translation>
-<translation id="7510166204621526816">El servidor de Brave Rewards no responde. Solucionaremos este inconveniente lo antes posible.</translation>
-<translation id="2323069945529668668">¡Uy!</translation>
-<translation id="717952606991220586">Ups, ha ocurrido un error. Vuelve a intentarlo más tarde.</translation>
-<translation id="6965382102122355670">Aceptar</translation>
-<translation id="7210234701206674260">Ha ocurrido un error en Brave Rewards. Vuelve a intentarlo más tarde.</translation>
 <translation id="5549059668721746831">Próxima fecha de contribución mensual</translation>
 <translation id="6231182869178328516">Recién le di una propina a <ph name="NAME"/> usando el navegador Brave. Aquí hay más información: https://brave.com/tips.</translation>
 <translation id="8404935570206006581">PropinaconBrave</translation>
 <translation id="3082557070674409251">Cliqueado</translation>
 <translation id="7119308337584989771">Descartado</translation>
 <translation id="6805660603861526473">Visto</translation>
-<translation id="4014166694178311757">No se pudo verificar tu billetera porque has llegado al límite máximo de dispositivos verificados.</translation>
+<translation id="8826352442759228526">Tu perfil de Recompensas de Brave no se puede verificar porque has llegado al límite máximo de dispositivos verificados.</translation>
 <translation id="1221593978088944142">Error: Se ha alcanzado el límite de dispositivos</translation>
 <translation id="3113653894794167793">Lo sentimos, pero hubo un problema al procesar tu solicitud. Vuelve a intentarlo.</translation>
 <translation id="2607420597216860026">Vuelva a intentarlo cuando haya terminado de verificar su ID en <ph name="PROVIDER"/>.</translation>
-<translation id="8832187864682447273">Error: Necesita una billetera verificada para iniciar sesión</translation>
-<translation id="1501075228659004450">Parece que tu billetera de Brave Rewards ya se ha verificado con otra cuenta de <ph name="PROVIDER"/>. Prueba a verificar una vez más usando tu cuenta anterior.</translation>
+<translation id="3183954159462541696">Error: Necesitas una cuenta verificada para iniciar sesión</translation>
+<translation id="5260522591743022748">Parece que tu perfil de Recompensas de Brave ya se ha verificado con otra cuenta de <ph name="PROVIDER"/>. Prueba a verificar una vez más usando tu cuenta anterior.</translation>
 <translation id="5111921830714291902">Error: cuenta diferente</translation>
 <translation id="5382684862562314222">Uphold aún no admite BAT en tu región.</translation>
 <translation id="9074594632540931067">Error: no hay BAT</translation>
@@ -261,7 +257,7 @@
 <translation id="4530453398914580957">Error: cuenta pendiente</translation>
 <translation id="2388470740942086608">Actualmente, tu cuenta de Uphold está restringida.</translation>
 <translation id="3605236342612716051">Error: cuenta restringida</translation>
-<translation id="7147519373526655987">Hubo un problema al validar la solicitud del navegador para conectar la billetera de Recompensas de Brave a tu cuenta <ph name="PROVIDER"/>. Puedes <ph name="BEGIN_LINK"/>contactarte con el servicio de asistencia<ph name="END_LINK"/> para obtener ayuda.</translation>
+<translation id="3274650021044762770">Hubo un problema al validar la solicitud del navegador para vincular Recompensas de Brave con tu cuenta de <ph name="PROVIDER"/>. Si necesitas ayuda, puedes <ph name="BEGIN_LINK"/>contactar con el servicio de asistencia<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Error: no se pudo validar la solicitud</translation>
 <translation id="1737873393693460829">Al activar [[title]], aceptas las <ph name="BEGIN_LINK1"/>condiciones del servicio<ph name="END_LINK1"/> y la <ph name="BEGIN_LINK2"/>política de privacidad<ph name="END_LINK2"/>.</translation>
 <translation id="4672975606583962967">Elige un servicio de billetera</translation>
@@ -270,9 +266,9 @@
 <translation id="2147158325758481862">La verificación es opcional</translation>
 <translation id="8228649055483250005">Los proveedores de billeteras de custodia deben verificar la identidad de cualquier persona que cree una billetera, incluido el uso de una identificación con foto.</translation>
 <translation id="2672513643520959619"><ph name="BOLD_BEGIN"/>Brave Software Inc.<ph name="BOLD_END"/> no procesa información personal, no la almacena ni accede a esta cuando estableces una cuenta con nuestros socios de billetera de custodia.</translation>
-<translation id="448371102125124442">Sin embargo, tu billetera actual es limitada. La verificación con un socio de billetera de custodia te permite:</translation>
+<translation id="6682919029276027868">Tus funciones actuales de Recompensas de Brave, sin embargo, están limitadas. La verificación con un socio de billetera con custodia te permite:</translation>
 <translation id="9064931634458501855">Retirar y depositar fondos libremente</translation>
-<translation id="1438426246237704604">Recibir tus recompensas directamente en tu billetera</translation>
+<translation id="3222002542796906461">Recibe las recompensas directamente en tu cuenta</translation>
 <translation id="8304979233901023264">He leído y acepto las <ph name="TOS_LINK_BEGIN"/>Condiciones del servicio<ph name="TOS_LINK_END"/> y la <ph name="PP_LINK_BEGIN"/>Política de privacidad<ph name="PP_LINK_END"/> de Brave.</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="5112354605357157725">Continúa para iniciar sesión</translation>
@@ -353,6 +349,7 @@
 <translation id="3506182299017414175">Aún no se ha creado la billetera</translation>
 <translation id="8559420016582377654">Id. de pago de billetera:</translation>
 <translation id="438586487791444158">Estado de la billetera:</translation>
+<translation id="3368922792935385530">Conectado</translation>
 <translation id="8874184842967597500">No conectado</translation>
 <translation id="4569155249847375786">Verificada</translation>
 <translation id="922103963921062336">Desconectado (sin verificar)</translation>
@@ -428,17 +425,15 @@
 <translation id="3494356595346329740">Puedes cambiar esto más tarde.</translation>
 <translation id="827315274423079662">¡Felicitaciones, has terminado!</translation>
 <translation id="8268038362451312235">Al utilizar Brave Rewards, estás ayudando a hacer de la web un lugar mejor para todas las personas. ¡Y eso es genial!</translation>
-<translation id="9146355483497231818">Verifica tu billetera</translation>
-<translation id="8913591412117692523">Para retirar los tokens que ganas por ver anuncios, deberás verificar tu billetera.</translation>
+<translation id="6518133107902771759">Verificar</translation>
+<translation id="2318949593486441832">Si quieres retirar los BAT que ganes por ver anuncios, debes verificar Recompensas de Brave.</translation>
 <translation id="9168436347345867845">Hacerlo más tarde</translation>
-<translation id="5468234114288973517">Verificar mi billetera</translation>
+<translation id="7193761697942491145">Verificar Recompensas de Brave</translation>
 <translation id="6609621505400013054">La billetera bitFlyer es un servicio administrado por bitFlyer, Inc.</translation>
-<translation id="7258399883616914635">Al verificar tu billetera y vincularla con una cuenta de bitFlyer, podrás almacenar y administrar los tokens que has ganado a través de Brave Rewards más fácilmente.</translation>
+<translation id="4361456403643555676">Si verificas tu perfil de Recompensas de Brave y lo vinculas a una cuenta de bitFlyer, podrás almacenar y gestionar con mayor facilidad los tokens que hayas ganado a través de Recompensas de Brave</translation>
 <translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Obtén más información<ph name="LINK_END"/> acerca de cómo vincular tu navegador Brave con tu cuenta de bitFlyer.</translation>
-<translation id="5094577350232361255">acerca de</translation>
 <translation id="5916290544882167205">Brave Software. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas de los propietarios de los sitios.</translation>
 <translation id="9026369588205476247">Para proteger tu privacidad, esta declaración de las Recompensas Brave no se guarda, graba ni registra en ningún lado más que en tu dispositivo (esta computadora). No se puede recuperar de Brave en caso de que pierdas los datos de tu dispositivo.</translation>
-<translation id="1036277985068412734">agregar fondos</translation>
 <translation id="3587482841069643663">Todos</translation>
 <translation id="4241224519481557898">Categoría</translation>
 <translation id="3080423471207781945">Cantidad máxima de anuncios recibidos por hora:</translation>
@@ -456,7 +451,6 @@
 <translation id="8804164990146287819">Política de privacidad</translation>
 <translation id="7262285991915892790">Arrastra el ícono de BAT hacia la</translation>
 <translation id="7656781188259414093">figura.</translation>
-<translation id="1555514580945108302">Mmmm, no salió del todo bien. Vuelve a intentarlo.</translation>
 <translation id="13853865024308201">Reclamar</translation>
 <translation id="1767561995429774671">Contribuir</translation>
 <translation id="6896758677409633944">Copiar</translation>
@@ -464,24 +458,17 @@
 <translation id="3552003743293281224">Depósitos</translation>
 <translation id="3866249974567520381">Descripción</translation>
 <translation id="8605272644314973683">Las Recompensas Brave están</translation>
-<translation id="2157162992285072267">Arrastra y suelta este logo en el</translation>
-<translation id="4805054577224376281">objetivo</translation>
 <translation id="1346059596910821859">Propina</translation>
 <translation id="6045860799501892362">Establecer contribución mensual</translation>
 <translation id="298067735430872465">Ingresos de las publicidades</translation>
-<translation id="2266556115441975588">¡Aquí están tus recompensas por los anuncios!</translation>
 <translation id="1418534671788496616">Ver historial de depósitos</translation>
-<translation id="8764029012618014430">Activar las propinas</translation>
 <translation id="3412655388715513818">Excluir este sitio</translation>
 <translation id="418343137736963579">Cantidad total de sitios que excluiste de Autocontribuir:</translation>
-<translation id="6149218349077925111">para</translation>
 <translation id="8802504113265057166">Los [[currency]] que no se usen antes de su fecha de vencimiento volverán automáticamente al Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Fecha de vencimiento de la donación</translation>
-<translation id="6476729769006815569">¡Hola, [[name]]!</translation>
 <translation id="1389143276807887637">importar</translation>
 <translation id="1038407494348068191">Administra tu billetera</translation>
 <translation id="5737831580668469027">¡Contribuciones mensuales!</translation>
-<translation id="606865182719489911">Hay una donación de tokens gratis disponible.</translation>
 <translation id="2487641031722095938">¡Es tu día de suerte!</translation>
 <translation id="6255773350565723852">Tu donación de tokens está en camino.</translation>
 <translation id="3453206261112715431">Donación gratuita de tokens</translation>
@@ -523,30 +510,22 @@
 <translation id="5939518447894949180">Restablecer</translation>
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="1797334173232638045">Sus sitios anclados se han trasladado a</translation>
-<translation id="6803187280799213426">Los fondos en tu billetera Brave son virtuales y no requieren una copia de seguridad. Está disponible para usar exclusivamente en este navegador.</translation>
-<translation id="5904352893156917813">Si quieres asegurar todos tus fondos en caso de instalar por completo un navegador o de cambiar a un nuevo dispositivo y tener otros beneficios como agregar, retirar y transferir fondos, te recomendamos <ph name="LINK_BEGIN"/>verificar la billetera<ph name="LINK_END"/>.</translation>
+<translation id="542042553430131913">Si no verificas Recompensas de Brave, tu saldo de BAT se almacenará en los archivos locales de tu dispositivo.</translation>
+<translation id="2142973554991645476">Si quieres asegurar tus BAT por si necesitas reinstalar por completo el navegador o reformatear tu dispositivo, y tener otros beneficios como agregar o retirar tus BAT, te recomendamos que te<ph name="LINK_BEGIN"/>verifiques<ph name="LINK_END"/>.</translation>
 <translation id="5717619667204259673">Guarde esta clave de recuperación en un lugar seguro.</translation>
-<translation id="4699702339303280827">Siempre puedes usar esta clave para recuperar tu billetera si algo le sucede a tu navegador o a tu computadora. Pero asegúrate de protegerla; cualquier persona que sepa esta clave podría robar tu billetera. Probablemente, lo más seguro sea escribirla en un papel o donde guardes información importante.</translation>
+<translation id="7018390569051511373">Puedes usar esta clave en todo momento para recuperar tu perfil de Recompensas de Brave si algo le sucede a tu navegador o computadora. Pero asegúrate de que está protegida, ya que cualquiera que consiga esta clave podría robar tu perfil de Recompensas de Brave. Probablemente, lo más seguro sea escribirla en un papel o en cualquier otro lugar donde guardes información importante.</translation>
 <translation id="8979401359137062629">Nota:</translation>
 <translation id="7934806082615382155">Es posible que parte de los fondos provengan de Brave y no estén incluidos en la copia de seguridad, ya que no es necesario. Está disponible para usar exclusivamente en este navegador.</translation>
 <translation id="7354412786785889047">Puedes colaborar con este creador de contenido enviando una propina. De esa manera, podrás agradecerle por haber creado contenido excelente. Los creadores verificados reciben el pago de sus propinas durante la primera semana de cada mes calendario.</translation>
 <translation id="3074127054582480056">Atención</translation>
-<translation id="5830306739231399614">Lamentablemente, aún no tienes tokens.</translation>
-<translation id="7359258898775969374">Tres formas de llenar tu billetera:</translation>
-<translation id="8087614920008846901">Puedes agregar fondos.</translation>
-<translation id="996024295464837691">Puedes obtener tokens por mirar publicidades.</translation>
-<translation id="8014425282125849700">A veces, te ofrecerán donaciones gratis de tokens de Brave. ¡Asegúrate de estar atento a la alerta!</translation>
-<translation id="4919888432594361029">Agrega, retira y administra fondos en <ph name="PROVIDER"/>.</translation>
-<translation id="6401272292123354754">Las Recompensas Brave están creadas en función del Basic Attention Token. Obtén más información sobre el BAT</translation>
-<translation id="7823359893981882407">aquí</translation>
 <translation id="3034163433136515805">Ver código QR</translation>
 <translation id="1640793619390890218">para usuarios de Brave Rewards de iOS que hagan transferencias de BAT.</translation>
-<translation id="4600052736217630789">La restauración con una clave de recuperación reemplazará su billetera actual. Por lo tanto, asegúrese de vaciarla o de hacer una copia de seguridad de la billetera antes de restaurarla.</translation>
+<translation id="5462747026114176246">Restaurar con una clave de recuperación reemplazará tu perfil actual de Recompensas de Brave. Procura vaciar o guardar en una copia de seguridad lo que tienes actualmente en Recompensas de Brave antes de restaurar.</translation>
 <translation id="3267911153934785912">Ingrese su clave de recuperación o</translation>
 <translation id="1209382772199769572">Realiza una copia de seguridad de tu billetera antes de reemplazar o perderás los fondos, [[funds]], en tu billetera actual.</translation>
-<translation id="5423214929210538027">¿Estás seguro de que deseas restablecer tu billetera de Recompensas?</translation>
-<translation id="4749947664556704604">Sus <ph name="BAT_AMOUNT"/> y los datos de otras recompensas se perderán de forma permanente si restablece su billetera. Asegúrese de que <ph name="LINK_BEGIN"/>ha verificado su billetera<ph name="LINK_END"/> para conservar sus BAT.</translation>
-<translation id="2028613172174411919">Tus datos de Recompensas se perderán de forma permanente si restableces tu billetera.</translation>
+<translation id="3659457123782988823">¿Seguro que quieres restablecer Recompensas de Brave?</translation>
+<translation id="4048187103708861555">Tus <ph name="BAT_AMOUNT"/> y los datos de otras recompensas se perderán de forma permanente si restableces Recompensas de Brave. No olvides <ph name="LINK_BEGIN"/>verificarte<ph name="LINK_END"/> para conservar tus BAT.</translation>
+<translation id="3548849774726860833">Los datos de tus recompensas se perderán de forma permanente si restableces Recompensas de Brave.</translation>
 <translation id="4914597931214386232">Donaciones de tokens reclamadas</translation>
 <translation id="3494964159182650590">Resumen de recompensas</translation>
 <translation id="1738658589626889850">Guardar como archivo</translation>
@@ -555,25 +534,24 @@
 <translation id="3536298624341433814">Enviar mi propina</translation>
 <translation id="8428213095426709021">Configuración</translation>
 <translation id="1792148354504719133">sitio</translation>
-<translation id="5944430251223015324">sitios</translation>
 <translation id="6432779622695508363">Dar propina como</translation>
 <translation id="6367285596431004439">Donación de token recibida</translation>
+<translation id="2726674968268546964">tokens</translation>
 <translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Total</translation>
-<translation id="1726566769229204312">Donación de tokens</translation>
 <translation id="4395099108822007284">Cargando imagen...</translation>
 <translation id="3535654229833214438">Transacciones</translation>
 <translation id="8772672608371898774">Publicador verificado de Brave</translation>
 <translation id="5050370287908180130">Ver el estado mensual para conocer los detalles</translation>
-<translation id="8615803647903750175">Actividad de la Billetera</translation>
-<translation id="4989277977420164514">saldo de la billetera</translation>
+<translation id="348711787499592128">Actividad de Recompensas de Brave</translation>
+<translation id="7232682712743566408">Saldo de recompensas</translation>
 <translation id="1910721550319506122">¡Bienvenido!</translation>
-<translation id="3780605330121608425">Tu billetera</translation>
+<translation id="4258022280942725182">Tus recompensas de Brave</translation>
 <translation id="6727483290601442544">Ver detalles</translation>
-<translation id="7530570094705720669">Cómo crear una billetera</translation>
+<translation id="4206899127409458763">Cómo crear tu perfil de Recompensas de Brave</translation>
 <translation id="1988679729106502285">NOTA:</translation>
-<translation id="7979350009208995417">Este creador no está configurado actualmente para recibir propinas de tu billetera. Cualquier propina que hagas se mantendrá pendiente en tu billetera y se reintentará automáticamente durante 90 días.</translation>
-<translation id="6521772344816912550">Este creador aún no está registrado. Cualquier propina que envíe se mantendrá pendiente en su billetera y se reintentará automáticamente durante 90 días.</translation>
+<translation id="4047340292178074200">Este creador aún no ha configurado la recepción de propinas del servicio de billetera con custodia de Recompensas de Brave. Cualquier propina que envíes quedará pendiente, y se volverá a intentar el pago durante 90 días.</translation>
+<translation id="5530734056858418442">Este creador aún no está registrado. Cualquier propina que envíes se quedará pendiente, y se volverá a intentar el pago automáticamente durante 90 días.</translation>
 <translation id="3197752845651180812">Contribuciones pendientes</translation>
 <translation id="6964891561514920613">Mostrar todas las contribuciones pendientes</translation>
 <translation id="4346944508027912677">Pendiente hasta el</translation>
@@ -585,12 +563,6 @@
 <translation id="4862817811647633830">sitios de Autocontribuir.</translation>
 <translation id="923467487918828349">Mostrar todo</translation>
 <translation id="5113531205597573951">Sitios visitados</translation>
-<translation id="8267327690882073581">Verificar billetera</translation>
-<translation id="543510923939676996">Billetera verificada</translation>
-<translation id="2445110450361135194">Ve a tu cuenta de <ph name="PROVIDER"/></translation>
-<translation id="4244985009709452836">Inicia sesión en tu cuenta de <ph name="PROVIDER"/></translation>
-<translation id="3699674790322420653">Completar verificación de billetera</translation>
-<translation id="9200453331904391567">Desconectar de Recompensas Brave</translation>
 <translation id="3656941797339037856">¡Asocia Rewards con Gemini!</translation>
 <translation id="31532096120351460">Intercambia más de 50 criptomonedas, como BAT, en Gemini. Esta plataforma segura te permite almacenar tus criptomonedas y, además, ganar intereses en dólares estadounidenses, de Hong Kong y de Singapur.</translation>
 <translation id="7404779623219601861">Canjea BAT por tarjetas de regalo</translation>
@@ -780,23 +752,28 @@
 <translation id="3007207731685398329">Recibirás tus recompensas de <ph name="MONTH"/> por un valor de <ph name="AMOUNT"/> en <ph name="DAYS"/></translation>
 <translation id="5878420576943709750">Tus recompensas de <ph name="MONTH"/> por un valor de <ph name="AMOUNT"/> pronto estarán disponibles. ¡Estate atento!</translation>
 <translation id="2659764755126740206">Ir a mi cuenta de <ph name="PROVIDER"/></translation>
+<translation id="1165667598801520610">Agregar fondos</translation>
 <translation id="2389181429986654814">Ir a <ph name="PROVIDER"/> para completar la verificación</translation>
 <translation id="7793632266654336758">Completa la verificación de identidad para empezar a recibir recompensas.</translation>
 <translation id="2394961582378297792">Sesión cerrada</translation>
 <translation id="6080167751812750226">Desconectar de <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ganancias estimadas</translation>
+<translation id="4244985009709452836">Inicia sesión en tu cuenta de <ph name="PROVIDER"/></translation>
 <translation id="7577100371127227294">Propinas mensuales</translation>
-<translation id="5894023780213944778">Mi billetera</translation>
 <translation id="2613359062756190460">Propinas por única vez</translation>
 <translation id="590733288489975971">Recompensas de anuncios</translation>
 <translation id="4989163558385430922">Ver todo</translation>
 <translation id="3026978804849658576">Ver estado</translation>
 <translation id="8494748383523030337">Tu saldo</translation>
+<translation id="1187367336925051518">Recompensas de <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
+<translation id="3274366539954332481">¡Ya están aquí tus recompensas por los anuncios de <ph name="MONTH"/>!</translation>
+<translation id="7861645265922445992">Reclamar recompensas</translation>
 <translation id="9013419433042554094">Reclamar tokens</translation>
 <translation id="5544777623605368410">Ingresos</translation>
 <translation id="3273637494083639780">Los tokens que gane este mes empezarán a procesarse el <ph name="DATE"/>.</translation>
 <translation id="1029300693989825319">Podría variar debido a la inestabilidad del mercado.</translation>
 <translation id="8334559352278209120">Entrega</translation>
+<translation id="4782365133987903299">Te quedan <ph name="DAYS"/> para reclamar</translation>
 <translation id="3903419925307046908">Gana tokens y retribuye</translation>
 <translation id="244362569344671266">Gana tokens por ver anuncios privados de Brave y apoya a creadores de contenido de forma automática.</translation>
 <translation id="5095252080770652994">Progreso</translation>
@@ -804,7 +781,7 @@
 <translation id="6777169449483742979">Está ganando tokens por ver esta imagen promocionada.</translation>
 <translation id="5486114327664215175">Gane tokens por ver esta imagen y apoyar a creadores de contenido.</translation>
 <translation id="2940863921746574646">Saldo de tokens</translation>
-<translation id="2221902203895354376">Tokens disponibles</translation>
+<translation id="2221902203895354376">¡Hay una donación de tokens disponible!</translation>
 <translation id="7701466644604753106">Activar Speedreader</translation>
 <translation id="763042262431778831">Desactivar Speedreader</translation>
 <translation id="8488282162676695335">Billetera de Brave</translation>
@@ -837,6 +814,9 @@
 <translation id="4843814354611030845">El usuario ha rechazado la transacción</translation>
 <translation id="1462494615260983714">Se ha producido un error al procesar la transacción</translation>
 <translation id="4886059598718763020">"<ph name="VALUE"/>" no cuenta con autorización para firmar el mensaje</translation>
+<translation id="8719220598078667817">No se ha podido firmar la transacción</translation>
+<translation id="5486744676117070166">No se ha podido obtener el siguiente valor nonce</translation>
+<translation id="875506212625074179">Respuesta de identificador de cadena no válida del servicio RPC</translation>
 <translation id="4958950550253325418">Aplicaciones de finanzas descentralizadas</translation>
 <translation id="735961408871282410">Mercados de tokens no fungibles</translation>
 <translation id="7740287852186792672">Buscar resultados</translation>
@@ -866,6 +846,7 @@
 <translation id="6366007539108097840">3 M</translation>
 <translation id="6977728312178289892">1 A</translation>
 <translation id="6598532182053592167">Agregar moneda</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> en <ph name="NETWORK"/></translation>
 <translation id="629730747756840877">Cuenta</translation>
 <translation id="3959969108528118741">Titular</translation>
 <translation id="3891414008432200754">Precio</translation>
@@ -884,7 +865,6 @@
 <translation id="4626407663177532837">La cotización incluye una tarifa de Brave del 0,875 %</translation>
 <translation id="8368540604723748428">Demasiados decimales</translation>
 <translation id="2704606927547763573">Copiado</translation>
-<translation id="6518133107902771759">Verificar</translation>
 <translation id="1420318137760245955">Le damos la bienvenida a la nueva billetera Brave</translation>
 <translation id="8303434745767477417">Conserve criptoactivos bajo su custodia. Realice un seguimiento del rendimiento de la cartera e interactúe con aplicaciones descentralizadas de Web 3. Gracias a las finanzas descentralizadas, podrá intercambiar criptoactivos, invertirlos, tomarlos prestados y prestarlos. Todo desde el navegador de Brave para proteger su privacidad. No se requieren extensiones ni descargas.</translation>
 <translation id="6972754398087986839">Comenzar</translation>
@@ -936,8 +916,9 @@
 <translation id="1073129495320255278">Importar cuenta de <ph name="BLOCKCHAIN_NETWORK"/></translation>
 <translation id="6780482003945159712">Elige uno de los siguientes tipos de cuenta</translation>
 <translation id="7080614857771109950">Admite activos compatibles con EVM en la cadena de bloques de Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
-<translation id="3329841454317342083">Admite activos compatibles con SLP en la cadena de bloques de Solana</translation>
+<translation id="6577166808959668729">Admite activos compatibles con SPL en la cadena de bloques de Solana</translation>
 <translation id="4541295941776129088">Almacenar activo FIL</translation>
+<translation id="8500387257977999003">Clave privada <ph name="PROTOCOL"/></translation>
 <translation id="232925166623833246">Importar de una billetera física</translation>
 <translation id="4324198334837993695">Hardware</translation>
 <translation id="3067168166931605141">Nombre de la cuenta</translation>
@@ -957,7 +938,7 @@
 <translation id="1943188256166395881">Agregar cuentas marcadas</translation>
 <translation id="8554010658308662631">Cargar más</translation>
 <translation id="6998738230710304743">Cargando más...</translation>
-<translation id="5592304751234049046">Buscar cuenta 0x</translation>
+<translation id="5592304751234049046">Buscar cuenta</translation>
 <translation id="6151024411349343484">Intente cambiar la ruta de HD (arriba) si no puede encontrar la cuenta que está buscando.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legacy (MEW/MyCrypto)</translation>
@@ -977,6 +958,8 @@
 <translation id="547122651977318828">ID de token (solo para ERC721)</translation>
 <translation id="7544552854944350190">ID de token obligatorio</translation>
 <translation id="3842236145820483340">ID de CoinGecko</translation>
+<translation id="7642841516562576649">URL del ícono</translation>
+<translation id="2144247757675997850">Agregar activo</translation>
 <translation id="2708402071160162126">ADVERTENCIA: Nunca comparta la frase de recuperación. Cualquier persona que tenga esta frase puede llevarse sus activos de forma permanente.</translation>
 <translation id="2902856457593699108">Mostrar clave</translation>
 <translation id="8033497299373164724">Ocultar clave</translation>
@@ -1022,6 +1005,7 @@
 <translation id="6452181791372256707">Rechazar</translation>
 <translation id="8904889345035514635">Asignación actual</translation>
 <translation id="7073918978411974168">Asignación propuesta</translation>
+<translation id="9019403281000653275">Se han solicitado aprobaciones ilimitadas</translation>
 <translation id="4717431746210146708">¿Permitir que este sitio agregue una red?</translation>
 <translation id="2521480044079508357">Esto permitirá que esta red se utilice en la billetera Brave.</translation>
 <translation id="1982257600591932657">Nombre de la red</translation>
@@ -1047,6 +1031,7 @@
 <translation id="3890989020011724401">Cuenta nueva</translation>
 <translation id="7257603403519636638">Ver activos de la cuenta</translation>
 <translation id="2092132085082887098">Activos de la cuenta</translation>
+<translation id="5723696625900399845">Usa este panel para acceder de forma segura a Web3 y a todos tus criptoactivos.</translation>
 <translation id="4460220693591349571">TIPO DE FUNCIÓN</translation>
 <translation id="838933475572692615">DATOS HEX</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1077,6 +1062,7 @@
 <translation id="5013754027092416509">recibida</translation>
 <translation id="5867988533873716616">La URL del explorador de bloques no está disponible.</translation>
 <translation id="4255623233927788178">Ver en explorador de bloques</translation>
+<translation id="563386395023152633">Copiar hash de la transacción</translation>
 <translation id="7148658188569580292">Acelerar la transacción</translation>
 <translation id="1198263951134066686">Cancelar transacción</translation>
 <translation id="3562548974839822204">Reintentar la transacción</translation>
@@ -1123,6 +1109,7 @@
 <translation id="3506416339268164412">La dirección de recepción es la dirección de contrato del token</translation>
 <translation id="5517732667776806421">Falta información de suma de comprobación</translation>
 <translation id="4006711930669471508">Información de suma de comprobación no válida</translation>
+<translation id="4667144295226514387">Falta el límite de gas</translation>
 <translation id="862585889767884824">de</translation>
 <translation id="9106265941552476098">Rechazar <ph name="TRANSACTION_LENGTH"/> transacciones</translation>
 <translation id="1118876217803190221">Saldo insuficiente</translation>
@@ -1159,6 +1146,7 @@
 <translation id="9033453977881595182">ID de token</translation>
 <translation id="2962388922926051374">Error al solicitar el método "eth_chainId" en <ph name="URL"/></translation>
 <translation id="8325036459845654666">Ya se ha agregado esta red.</translation>
+<translation id="554350381160981853">Solo Trezor Model One con Firmware 1.10.5 (o una versión posterior) admite la firma de datos escritos</translation>
 <translation id="3155170474926428993">Selector de Tor</translation>
 <translation id="3745016858329272300">Información general</translation>
 <translation id="4045404575593562245">Eventos de control de Tor</translation>
@@ -1186,7 +1174,7 @@
 <translation id="5544888475837817215">Permitir todos los rastreadores y anuncios</translation>
 <translation id="6203697265754637264">Bloquear cookies entres sitios</translation>
 <translation id="4627427111733173920">Cookies bloqueadas</translation>
-<translation id="3972324600756617403">Se han bloqueado todas las cookies</translation>
+<translation id="3972324600756617403">Todas las cookies han sido permitidas</translation>
 <translation id="8366221601425141146">Creación de huella digital del dispositivo bloqueada</translation>
 <translation id="5582686930349810484">Huellas digitales bloqueadas (estándar)</translation>
 <translation id="6696441392507885865">Huellas digitales bloqueadas (estricto, los sitios podrían dejar de funcionar)</translation>

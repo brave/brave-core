@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">Brave-käyttöjärjestelmä ei voi synkronoida tietoja, koska synkronointi ei ole käytettävissä verkkotunnuksessasi.</translation>
 <translation id="5147525139567260139">Jaa Brave-välilehti</translation>
 <translation id="1530633922026945685">Brave tarvitsee luvan käyttää kameraasi ympäristön 3D-kartoittamiseen</translation>
+<translation id="4449148723378534338">Tarkista Bravein tärkeimmät yksityisyys‑ ja turvallisuusasetukset</translation>
 <translation id="5616153642055197778">Braveista on saatavilla uusi, turvallisempi versio.</translation>
 <translation id="6797402139308059782">Jätä Brave käyntiin taustalle</translation>
 <translation id="5875673934455379806">Asenna Brave uudelleen</translation>
@@ -36,7 +37,6 @@
 <translation id="1248225940185478633">Brave tarvitsee kameran ja mikrofonin luvan tällä sivustolla</translation>
 <translation id="6078442581074612226">Braveissa</translation>
 <translation id="2485422356828889247">Poista</translation>
-<translation id="2372700594671864890">Katso, miten Brave suojaa sinua sivustojen väliseltä seurannalta verkon pysyessä avoimena.</translation>
 <translation id="9026991721384951619">Brave-käyttöjärjestelmä ei voi synkronoida tietoja, sillä tilin kirjautumistiedot ovat vanhentuneet.</translation>
 <translation id="7798069806040634998">Brave tarvitsee tallennustilan käyttöoikeuden tiedostojen lataamiseen.</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
@@ -109,6 +109,8 @@
 <translation id="3679799810790990472">Jatketaanko uudessa Brave-profiilissa?</translation>
 <translation id="4567424176335768812">Olet kirjautunut Braveen tilillä <ph name="USER_EMAIL_ADDRESS"/>. Nyt voit käyttää kirjanmerkkejäsi, historiaa ja muita asetuksia kaikilla laitteilla, joihin olet kirjautunut.</translation>
 <translation id="300669147395456190">Brave-sovellukset</translation>
+<translation id="2182657378556811785">Melkein valmista. Viimeistele päivitys käynnistämällä Brave uudelleen.</translation>
+<translation id="7402642357351265733">Jos jaat myös Bravein käyttöraportteja, avaamasi URL-osoitteet näkyvät niissä</translation>
 <translation id="8142245354207161805">Profiili näyttäisi olevan toisen Brave-prosessin (<ph name="PROCESS_ID"/>) käytössä toisella tietokoneella (<ph name="HOST_NAME"/>). Brave on lukinnut profiilin, jotta se ei vioitu. Jos olet varma, että mikään toinen prosessi ei käytä tätä profiilia, voit poistaa profiilin lukituksen ja käynnistää Bravein uudelleen.</translation>
 <translation id="3395323229510056640">Ohjeita Brave-käyttöjärjestelmän käyttöön</translation>
 <translation id="847561904663814268">Joku on jo kirjautunut tällä tietokoneella Braveiin käyttäjätilillä <ph name="ACCOUNT_EMAIL_LAST"/>. Luo uusi Brave-käyttäjä, jos haluat pitää tiedot erillään.</translation>
@@ -202,7 +204,6 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 <translation id="3335606533094650083">Brave tarvitsee oikeuden käyttää mikrofoniasi tällä sivustolla.</translation>
 <translation id="1705567146636171298">Päivitä Brave</translation>
 <translation id="5499063270485366718">Jos kuvalla ei ole hyödyllistä kuvausta, Brave yrittää luoda sellaisen. Kuvat lähetetään Bravelle kuvausten luomista varten.</translation>
-<translation id="151916274998710826">Muuta Bravein tärkeimpiä yksityisyysvalintoja</translation>
 <translation id="1008530050039597147">Brave tarvitsee kameran luvan tällä sivustolla</translation>
 <translation id="1197672524850678392">Bravein käynnistäminen epäonnistui. Yritä uudelleen.</translation>
 <translation id="3405035915691517126">Brave ei voi tarkistaa salasanojasi. Yritä uudelleen 24 tunnin päästä.</translation>
@@ -220,6 +221,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="5062123544085870375">Käynnistä Chrome OS uudelleen</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave tarvitsee oikeuden käyttää kameraasi tällä sivustolla.</translation>
+<translation id="3962395975456095331">Käynnistä Brave uudelleen?</translation>
 <translation id="2619516027171717873">Braveista ei voi asentaa versiota, joka on tällä hetkellä käynnissä. Sulje Brave ja yritä uudelleen.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave käynnistetään uudelleen 1 minuutin kuluttua}other{Brave käynnistetään uudelleen # minuutin kuluttua}}</translation>
 <translation id="573759479754913123">Tietoja Brave-käyttöjärjestelmästä</translation>
@@ -229,6 +231,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="155309785154426906">Olet laittanut Parannetun selaussuojan päälle tililläsi. Käytä selaussuojaa myös Braveilla.</translation>
 <translation id="3293668930608086049">Brave käyttää kameraasi ja mikrofoniasi.</translation>
 <translation id="2827121003398607864">Brave on nyt entistä parempi</translation>
+<translation id="8678991866891573053">Brave kokeilee uusia ominaisuuksia, joiden avulla sivustot voivat tarjota saman selauskokemuksen vähemmällä datalla</translation>
 <translation id="3343095737966473035">Brave ei ole oletusselain.</translation>
 <translation id="5477319665405831211">Voit synkronoida Bravein ja tehdä siitä yksilöllisemmän kaikilla laitteilla.</translation>
 <translation id="5419189641394808652">Brave ei voinut synkronoida tietoja, koska synkronointi ei ole käytettävissä verkkotunnuksessasi.</translation>
@@ -296,7 +299,5 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen.}=1{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen. Incognito-ikkunaasi ei avata uudelleen.}other{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
-<translation id="7914115000169617076">Melkein ajan tasalla. Viimeistele päivitys käynnistämällä Brave uudelleen. Yksityiset ikkunat ei avata uudelleen.</translation>
-<translation id="4703432949110765917">Oletusasetukset toimivat useimmissa profiileissa, mutta voit mukauttaa ne Braven käyttötapaasi sopivaksi</translation>
 <translation id="2176087127109773485">Voit hallita sisäänkirjautuneita Brave-synkronointiketjujasi. Brave-synkronointiketjujasi käytetään Brave-selaimelle, Play-kaupalle, Gmailille ja muille. Jos haluat lisätä tilin toiselle käyttäjälle, esim. perheenjäsenelle, lisää uusi profiili kohteeseen <ph name="DEVICE_TYPE"/> sen sijaan. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 </translationbundle>

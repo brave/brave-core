@@ -5,7 +5,6 @@
 <translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="2278950434998763147">Opens some sites using a secure HTTPS connection instead of plain HTTP.</translation>
 <translation id="94154759592465111">Block Scripts</translation>
-<translation id="3518266709656143462">Blocks Javascript (may break sites)</translation>
 <translation id="6052725679982758334">Social Media Blocking</translation>
 <translation id="7498695072878479744">Allow Google login buttons on third-party sites</translation>
 <translation id="863171915776379000">Allow Facebook logins and embedded posts</translation>
@@ -33,7 +32,7 @@
 <translation id="6252490671914511928">Today’s top stories in a completely private feed, just for you.</translation>
 <translation id="7266075701303521777">Brave News is ad-supported with completely private and anonymised ads matched on your device.</translation>
 <translation id="4541978218358617681">Ad</translation>
-<translation id="7823038307453615214">Turn on Brave News</translation>
+<translation id="7823038307453615214">Show Brave News</translation>
 <translation id="6527303717912515753">Share</translation>
 <translation id="1654539412343893324">Learn more about your data</translation>
 <translation id="2989805286512600854">Open in New Tab</translation>
@@ -97,7 +96,7 @@
 <translation id="6511854390690723657">This is your first Brave ad. Tap to learn more.</translation>
 <translation id="2070991379950719711">Start using Brave Rewards</translation>
 <translation id="48520986898237073">Continue to wallet</translation>
-<translation id="6800338374677644736">Set as default browser</translation>
+<translation id="3570367516044491911">Set as default browser</translation>
 <translation id="19715420010996093">Select Brave Browser and tap 'Always'</translation>
 <translation id="3546439402724649282">Brave is already set as your default browser.</translation>
 <translation id="8389661903259423907">You've already set a default browser. You can change the default browser in your app settings.</translation>
@@ -115,6 +114,9 @@
 <translation id="3370968821559864204">wallet balance:</translation>
 <translation id="2573313946367623146">send my tip</translation>
 <translation id="3250511771491660127">Make this monthly</translation>
+<translation id="7658239707568436148">Cancel</translation>
+<translation id="1201402288615127009">Next</translation>
+<translation id="8926389886865778422">Don't ask again</translation>
 <translation id="6639570430554986719">JANUARY</translation>
 <translation id="1807352595146144483">FEBRUARY</translation>
 <translation id="2021828608097804771">MARCH</translation>
@@ -521,9 +523,8 @@ Are you sure you want to do this?</translation>
 <translation id="6478996494082389936">private product analytics.</translation>
 <translation id="5187052478998910855">Need a refresher on Rewards?</translation>
 <translation id="8622329973403382303">Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!</translation>
-<translation id="7625138338483121345">Open all links with Brave to protect your privacy</translation>
-<translation id="4511485286950743564">Brave Shields blocks trackers &amp; ads, saves data and saves you time on every site you visit.</translation>
-<translation id="9218430445555521422">Set Brave as default</translation>
+<translation id="7625138338483121345">Make Brave your default browser</translation>
+<translation id="9218430445555521422">Set as default</translation>
 <translation id="3479552764303398839">Not now</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -542,7 +543,6 @@ Are you sure you want to do this?</translation>
 <translation id="1822560017823072927">Default public and private interfaces</translation>
 <translation id="5825943197137337319">Default public interface only</translation>
 <translation id="1689062823386843231">Disable non-proxied UDP</translation>
-<translation id="3171931580569169744">Enable Tab Groups</translation>
 <translation id="5587305863196367357">Verifying wallet allows you to manage your funds easily, adding &amp; withdrawing</translation>
 <translation id="5760671211380791582">You don't have enough BAT.</translation>
 <translation id="442469478596827903">You need to have minimum 2 BAT to create a verified Uphold wallet. Please try again later.</translation>
@@ -565,7 +565,6 @@ Are you sure you want to do this?</translation>
 <translation id="375882617301124395">Back up your crypto wallet</translation>
 <translation id="8289942708804097960">Buy crypto with credit or debit card.</translation>
 <translation id="841880029259839903">Send crypto or transfer from one account to another.</translation>
-<translation id="8226778393040773102">Swap crypto assets with Brave DEX aggregator.</translation>
 <translation id="1783600039044302171">Secure your crypto with a password</translation>
 <translation id="3726490322412361740">Enter password</translation>
 <translation id="3038243139480464605">Verify password</translation>
@@ -593,7 +592,7 @@ Are you sure you want to do this?</translation>
 <translation id="283071225285270357">Enter your recovery phrase</translation>
 <translation id="3943857333388298514">Paste</translation>
 <translation id="3331452756822160641">New password</translation>
-<translation id="4359319875297001084">I'm restoring from legacy Brave Crypto Wallet</translation>
+<translation id="4359319875297001084">Import from legacy Brave crypto wallets?</translation>
 <translation id="2339124864228588937">Verify recovery phrase</translation>
 <translation id="3747079125031086337">Select the words in your recovery phrase in their correct order.</translation>
 <translation id="6518133107902771759">Verify</translation>
@@ -835,11 +834,11 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="665660671251623018">Chain's currency decimals</translation>
 <translation id="182619028057179895">Invalid format, the currency decimals is a positive number</translation>
 <translation id="2978054488731497946">Enter currency decimals</translation>
-<translation id="7642841516562576649">Icon URLs</translation>
-<translation id="4693057234255364395">Block explorer URLs</translation>
+<translation id="4693057234255364395">Block explorer URL</translation>
 <translation id="7059127752542505809">Enter URL</translation>
 <translation id="2156993118928861787">Invalid address</translation>
 <translation id="6889920539620318793">Set as active</translation>
 <translation id="2653659639078652383">Submit</translation>
 <translation id="8853725596990766789">Change amount</translation>
+<translation id="5233638681132016545">New tab</translation>
 </translationbundle>

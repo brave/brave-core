@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "보내신 모든 팁은 월렛 내에 보류 중 상태로 남게 되며 90일간 자동으로 다시 시도합니다. $link_begin$자세히 알아보기$link_end$",
+    "message": "보내신 모든 팁은 보류 중인 상태로 남고, 90일간 자동으로 재시도합니다. $link_begin$자세히 알아보기$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "이 제작자는 현재 귀하의 월렛에서 팁을 받을 수 있도록 구성되어 있지 않습니다.",
+    "message": "아직 구성되지 않아 회원님의 Rewards 보호관리 월렛에서 팁을 받을 수 없는 제작자입니다.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "귀하의 리워드는 귀하의 Brave 리워드 월렛으로 이동하는 중입니다.",
+    "message": "리워드가 지급되고 있습니다.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "내 월렛",
+    "message": "검증 완료됨",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "월렛 검증하기",
+    "message": "확인",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "재연결",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "건의",
+  "notificationClaimRewards": {
+    "message": "리워드 받기",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "토큰 받기",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,11 +305,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "월렛 백업",
+    "message": "Brave Rewards 백업",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "귀하의 브레이브 지갑을 백업해 주세요.",
+    "message": "Brave Rewards를 백업하세요.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -313,7 +317,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "월렛 로그아웃 상태",
+    "message": "로그아웃 상태",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "귀하의 월렛이 검증 완료되었습니다!",
+    "message": "Brave Rewards가 검증되었습니다!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "$provider$ 월렛이 성공적으로 확인되어 자금을 추가하고 인출할 준비가 되었습니다.",
+    "message": "귀하의 Brave Rewards가 $provider$로 검증되었습니다.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "토큰 보조금",
+    "message": "토큰 보조금을 받을 수 있습니다!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "사용할 수 있는 보조금이 있습니다.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ 보상: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "광고 수익 받음",
-    "description": ""
+    "message": "귀하의 $month$ 광고 리워드입니다!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Brave Private Ads로 받은 리워드가 표시됩니다!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "월 기부 실패",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "받을 수 있는 기한 $days$ 남음",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "자금이 부족하여 자동 기부 및 월 기부금을 위해 예정된 월간 결제를 완료하지 못했습니다. 30일 후에 다시 시도합니다.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "기부금 처리 중 문제가 생겼습니다.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "월 기부 실패",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "월렛 검증하기",
+    "message": "확인",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "광고를 보고 적립된 토큰을 인출하려면 월렛을 검증해야 합니다.",
+    "message": "광고를 보고 적립된 BAT를 인출하려면 Brave Rewards를 검증해야 합니다.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "내 월렛 검증하기",
+    "message": "Brave Rewards 검증",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "월렛을 검증하여 bitFlyer 계정에 연결하면 Brave Rewards를 통해 적립된 토큰을 더욱 쉽게 저장하고 관리할 수 있습니다.",
+    "message": "Brave Rewards를 검증하여 bitFlyer 계정에 연결하면 Brave Rewards를 통해 적립된 토큰을 더욱 쉽게 저장하고 관리할 수 있습니다.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

@@ -109,7 +109,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="1307966114820526988">Fonctionnalités obsolètes</translation>
 <translation id="1308113895091915999">Offre disponible</translation>
 <translation id="1312803275555673949">Quelle est la preuve à l'appui ?</translation>
-<translation id="131405271941274527"><ph name="URL"/> souhaite envoyer et recevoir des informations lorsque votre téléphone entre en contact avec un appareil NFC</translation>
+<translation id="1314311879718644478">Afficher les contenus en réalité augmentée</translation>
 <translation id="1314509827145471431">Reliure à droite</translation>
 <translation id="1318023360584041678">Enregistré dans le groupe d'onglets</translation>
 <translation id="1319245136674974084">Ne plus me demander pour cette appli</translation>
@@ -205,6 +205,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="1559572115229829303">&lt;p&gt;Impossible d'établir une connexion privée à <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> : la date et l'heure de votre appareil (<ph name="DATE_AND_TIME"/>) sont incorrectes.&lt;/p&gt;
 
       &lt;p&gt;Veuillez ajuster la date et l'heure dans la section &lt;strong&gt;Général&lt;/strong&gt; de l'application &lt;strong&gt;Réglages&lt;/strong&gt;.&lt;/p&gt;</translation>
+<translation id="156703335097561114">Les informations de réseau, comme les adresses, la configuration d'interface et la qualité de la connexion</translation>
 <translation id="1567040042588613346">Cette règle fonctionne comme prévu, mais notez que la même valeur a été définie ailleurs et que cette règle la remplace.</translation>
 <translation id="1569487616857761740">Saisir la date d'expiration</translation>
 <translation id="1581080074034554886">Code CVC :</translation>
@@ -212,6 +213,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="1583429793053364125">Une erreur s'est produite lors de l'affichage de la page Web.</translation>
 <translation id="1586541204584340881">Les extensions que vous avez installées</translation>
 <translation id="1588438908519853928">Standard</translation>
+<translation id="1589050138437146318">Installer ARCore ?</translation>
 <translation id="1592005682883173041">Accès aux données locales</translation>
 <translation id="1594030484168838125">Sélectionner</translation>
 <translation id="8523167061098356223">Jouer au jeu du dino dans Brave</translation>
@@ -472,6 +474,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="2465655957518002998">Sélectionner un mode d'expédition</translation>
 <translation id="2465688316154986572">Agrafer</translation>
 <translation id="4058615531773510267">Gérez les fichiers que vous avez téléchargés dans Brave</translation>
+<translation id="2466004615675155314">Afficher les informations du Web</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Exécuter les diagnostics du réseau<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">Ordre 1 à N</translation>
 <translation id="2470767536994572628">Si vous modifiez des annotations, ce document s'affichera en mode "Vue par page", dans son orientation d'origine</translation>
@@ -516,6 +519,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="2609632851001447353">Variantes</translation>
 <translation id="2610561535971892504">Cliquer pour copier</translation>
 <translation id="2618023639789766142">C10 (enveloppe)</translation>
+<translation id="2623663032199728144">Peut demander d'utiliser les infos au sujet de vos écrans</translation>
 <translation id="2625385379895617796">Votre horloge est en avance.</translation>
 <translation id="262745152991669301">Peut demander à se connecter à des appareils USB</translation>
 <translation id="2915787201097107005">Pour bénéficier du niveau de sécurité le plus élevé de Brave, <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>activez la protection renforcée<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
@@ -631,6 +635,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="3037605927509011580">Aïe aïe aïe</translation>
 <translation id="3041612393474885105">Informations relatives au certificat</translation>
 <translation id="3044034790304486808">Reprendre votre recherche</translation>
+<translation id="8418829431154568330">Historique du Bureau à distance Brave, y compris les horodatages, les hôtes et les ID de sessions client</translation>
 <translation id="3060227939791841287">C9 (enveloppe)</translation>
 <translation id="3061707000357573562">Service d'application de correctifs</translation>
 <translation id="306573536155379004">Le jeu a commencé.</translation>
@@ -671,6 +676,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="3197136577151645743">Peut demander à savoir quand vous utilisez activement cet appareil</translation>
 <translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/> : appuyez sur Tabulation, puis sur Entrée pour gérer les infos que vous synchronisez dans les paramètres Brave</translation>
 <translation id="320323717674993345">Annuler le paiement</translation>
+<translation id="3203366800380907218">Sur le Web</translation>
 <translation id="3207960819495026254">Favori</translation>
 <translation id="3209034400446768650">Cette page peut vous facturer de l'argent</translation>
 <translation id="3212581601480735796">Votre activité sur <ph name="HOSTNAME"/> est surveillée</translation>
@@ -687,6 +693,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="3234666976984236645">Toujours détecter du contenu important sur ce site</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, puis Tabulation, puis Entrée pour personnaliser l'apparence de votre navigateur</translation>
 <translation id="3240791268468473923">La bottom sheet indiquant qu'aucun identifiant ne correspond pour le paiement sécurisé est ouverte</translation>
+<translation id="324180406144491771">Les liens de "<ph name="HOST_NAME"/>" sont bloqués</translation>
 <translation id="3249845759089040423">Tendance</translation>
 <translation id="3252266817569339921">Français</translation>
 <translation id="3257954757204451555">Qui est à l'origine de ces infos ?</translation>
@@ -717,12 +724,6 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="3345782426586609320">Yeux</translation>
 <translation id="3355823806454867987">Modifier les paramètres du proxy...</translation>
 <translation id="3360103848165129075">Feuille du gestionnaire de paiement</translation>
-<translation id="669410734497476819">Les informations suivantes <ph name="BEGIN_EMPHASIS"/>ne seront pas enregistrées<ph name="END_EMPHASIS"/> dans Brave :
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>Votre historique de navigation
-          <ph name="LIST_ITEM"/>Les cookies et les données des sites
-          <ph name="LIST_ITEM"/>Les informations saisies dans les formulaires
-        <ph name="END_LIST"/></translation>
 <translation id="3362968246557010467">Cette règle a été copiée automatiquement depuis la règle obsolète "<ph name="OLD_POLICY"/>". Vous devez utiliser cette nouvelle règle à la place.</translation>
 <translation id="3364869320075768271">Le site <ph name="URL"/> souhaite utiliser vos données et votre appareil de réalité virtuelle</translation>
 <translation id="3366477098757335611">Afficher les cartes</translation>
@@ -1132,6 +1133,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="4708268264240856090">Votre connexion a été interrompue</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Exécutez les diagnostics réseau de Windows<ph name="END_LINK"/></translation>
+<translation id="4722735765955348426">Mot de passe associé à <ph name="USERNAME"/></translation>
 <translation id="4724144314178270921">Peut demander à voir le texte et les images du presse-papiers</translation>
 <translation id="4726672564094551039">Actualiser les règles</translation>
 <translation id="4728558894243024398">Plate-forme</translation>
@@ -1171,6 +1173,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="4819347708020428563">Modifier les annotations dans la vue par défaut ?</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, appuyez sur Tabulation, puis sur Entrée pour créer rapidement une feuille de calcul Brave Sheets</translation>
 <translation id="4825507807291741242">Puissant</translation>
+<translation id="4829962028570902310">Règle ignorée, car elle ne peut être définie que par la règle relative aux utilisateurs du cloud.</translation>
 <translation id="483241715238664915">Activer les avertissements</translation>
 <translation id="4838327282952368871">Rêveur</translation>
 <translation id="246176083348620700">Afficher votre historique Brave</translation>
@@ -1187,7 +1190,6 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="4877083676943085827">{COUNT,plural, =0{Aucun}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}one{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/> <ph name="AND_MORE"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/> <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831">Recherche sur "<ph name="TEXT"/>"</translation>
 <translation id="4879491255372875719">Automatique (par défaut)</translation>
-<translation id="4879725228911483934">Ouvrir et positionner des fenêtres sur vos écrans</translation>
 <translation id="4880827082731008257">Rechercher dans l'historique</translation>
 <translation id="4881695831933465202">Ouvrir</translation>
 <translation id="4885256590493466218">Vous paierez avec "<ph name="CARD_DETAIL"/>".</translation>
@@ -1212,6 +1214,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="4968522289500246572">Cette appli est conçue pour les mobiles et ne sera peut-être pas bien redimensionnée. Elle pourrait rencontrer des problèmes ou redémarrer.</translation>
 <translation id="4969341057194253438">Supprimer l'enregistrement</translation>
 <translation id="4973922308112707173">Double perforation en haut</translation>
+<translation id="4976702386844183910">Dernière visite : <ph name="DATE"/></translation>
 <translation id="4984088539114770594">Utiliser le micro ?</translation>
 <translation id="4984339528288761049">Prc5 (enveloppe)</translation>
 <translation id="4989163558385430922">Tout afficher</translation>
@@ -1273,6 +1276,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="5138227688689900538">Afficher moins</translation>
 <translation id="5145883236150621069">Code d'erreur présent dans la réponse de la règle.</translation>
 <translation id="5146995429444047494">Les notifications sont bloquées pour <ph name="ORIGIN"/></translation>
+<translation id="514704532284964975"><ph name="URL"/> souhaite consulter et modifier des informations sur les appareils NFC que vous touchez avec votre téléphone</translation>
 <translation id="5148809049217731050">Vers le haut</translation>
 <translation id="515292512908731282">C4 (enveloppe)</translation>
 <translation id="5158275234811857234">Couverture</translation>
@@ -1295,6 +1299,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="1051285409463218679">Modes de paiement et adresses utilisés dans Brave Pay</translation>
 <translation id="5215363486134917902">Folio-Sp</translation>
 <translation id="521659676233207110">Bac 13</translation>
+<translation id="5216942107514965959">Dernière visite : aujourd'hui</translation>
 <translation id="5222812217790122047">Veuillez saisir une adresse e-mail</translation>
 <translation id="5230733896359313003">Adresse de livraison</translation>
 <translation id="5230815978613972521">B8</translation>
@@ -1315,7 +1320,6 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="5283044957620376778">B1</translation>
 <translation id="5284295735376057059">Propriétés du document</translation>
 <translation id="528468243742722775">Fin</translation>
-<translation id="5284909709419567258">Adresses réseau</translation>
 <translation id="5285570108065881030">Afficher tous les mots de passe enregistrés</translation>
 <translation id="5287240709317226393">Afficher les cookies</translation>
 <translation id="5287456746628258573">La configuration de sécurité obsolète de ce site peut exposer vos informations, comme vos mots de passe ou vos numéros de carte de crédit, lorsqu'elles lui sont transmises.</translation>
@@ -1481,6 +1485,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="5869522115854928033">Mots de passe enregistrés</translation>
 <translation id="5873013647450402046">Vous devez confirmer votre identité auprès de votre banque.</translation>
 <translation id="5887400589839399685">Carte enregistrée</translation>
+<translation id="5887687176710214216">Dernière visite : hier</translation>
 <translation id="5895138241574237353">Redémarrer</translation>
 <translation id="5895187275912066135">Émis le</translation>
 <translation id="5901630391730855834">Jaune</translation>
@@ -1569,7 +1574,6 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="6177128806592000436">Votre connexion à ce site n'est pas sécurisée</translation>
 <translation id="6180316780098470077">Intervalle entre les tentatives</translation>
-<translation id="619448280891863779">Peut demander à ouvrir et placer des fenêtres sur vos écrans</translation>
 <translation id="6196640612572343990">Bloquer les cookies tiers</translation>
 <translation id="6203231073485539293">Vérifiez votre connexion Internet</translation>
 <translation id="8385639954311581596">Supprimer l'adresse de Brave ?</translation>
@@ -1671,6 +1675,7 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="6529602333819889595">&amp;Rétablir la suppression</translation>
 <translation id="6545864417968258051">Recherche Bluetooth</translation>
 <translation id="6547208576736763147">Double perforation à gauche</translation>
+<translation id="6554732001434021288">Dernière visite : il y a <ph name="NUM_DAYS"/> jours</translation>
 <translation id="6556866813142980365">Rétablir</translation>
 <translation id="6569060085658103619">Vous consultez actuellement une page d'extension</translation>
 <translation id="6573200754375280815">Double perforation à droite</translation>
@@ -1813,7 +1818,6 @@ Par défaut, ce type d'accès est bloqué par vos paramètres de confidentialit�
 <translation id="5320462991730735481">Gérez les adresses et ajoutez-en dans les paramètres Brave</translation>
 <translation id="7064851114919012435">Coordonnées</translation>
 <translation id="7068733155164172741">Saisissez le code à <ph name="OTP_LENGTH"/> chiffres</translation>
-<translation id="7070090581017165256">À propos de ce site</translation>
 <translation id="70705239631109039">Votre connexion n'est pas totalement sécurisée</translation>
 <translation id="7075452647191940183">Requête trop volumineuse</translation>
 <translation id="7079718277001814089">Ce site contient des logiciels malveillants</translation>
@@ -1945,6 +1949,12 @@ Informations supplémentaires :
 <translation id="7485870689360869515">Aucune donnée n'a été trouvée.</translation>
 <translation id="7495528107193238112">Ce contenu est bloqué. Pour résoudre le problème, contactez le propriétaire du site.</translation>
 <translation id="7812541223399526596">Bouton "Créer un document", appuyez sur Entrée pour créer rapidement un document Brave Docs</translation>
+<translation id="2957285558977211818">Les informations suivantes <ph name="BEGIN_EMPHASIS"/>ne seront pas enregistrées<ph name="END_EMPHASIS"/> dans Brave :
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Votre historique de navigation
+          <ph name="LIST_ITEM"/>Les cookies et les données des sites
+          <ph name="LIST_ITEM"/>Les informations saisies dans les formulaires
+        <ph name="END_LIST"/></translation>
 <translation id="7508255263130623398">L'ID d'appareil de la règle renvoyé est vide ou ne correspond pas à l'ID d'appareil actuel.</translation>
 <translation id="7508870219247277067">Vert avocat</translation>
 <translation id="7511955381719512146">Pour utiliser ce réseau Wi-Fi, il est possible que vous deviez vous rendre sur la page <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
@@ -2055,7 +2065,6 @@ Informations supplémentaires :
 <translation id="4670564340385807132">Supprimer la suggestion de saisie de formulaire de Brave ?</translation>
 <translation id="781440967107097262">Partager le presse-papiers ?</translation>
 <translation id="7815407501681723534"><ph name="NUMBER_OF_RESULTS"/> <ph name="SEARCH_RESULTS"/> trouvé(s) pour "<ph name="SEARCH_STRING"/>"</translation>
-<translation id="782125616001965242">Afficher des informations sur ce site</translation>
 <translation id="782886543891417279">Pour utiliser ce réseau Wi-Fi (<ph name="WIFI_NAME"/>), il est possible que vous deviez vous rendre sur la page de connexion correspondante.</translation>
 <translation id="7836231406687464395">Postfix (enveloppe)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Aucune}=1{1 application (<ph name="EXAMPLE_APP_1"/>)}=2{2 applications (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}one{# application (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}other{# applications (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
@@ -2099,7 +2108,6 @@ Informations supplémentaires :
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">Peut demander à utiliser des données et des appareils de réalité virtuelle</translation>
 <translation id="8896585555528145662">Vous ne pouvez pas consulter le site <ph name="SITE"/> pour le moment, car il a envoyé des identifiants brouillés qui ne peuvent être traités par Brave. Les erreurs réseau et les attaques sont généralement temporaires. Vous devriez donc pouvoir accéder à cette page ultérieurement.</translation>
-<translation id="79859296434321399">Pour afficher des contenus en réalité augmentée, installez ARCore</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">Reliure</translation>
 <translation id="7992044431894087211">Le partage d'écran avec <ph name="APPLICATION_TITLE"/> a repris</translation>
@@ -2163,6 +2171,7 @@ Informations supplémentaires :
 <translation id="8202370299023114387">Conflit</translation>
 <translation id="8206978196348664717">Prc4 (enveloppe)</translation>
 <translation id="8211406090763984747">La connexion est sécurisée</translation>
+<translation id="8217240300496046857">Les sites ne peuvent pas utiliser de cookies pour suivre votre activité sur le Web. Les fonctionnalités de certains sites peuvent être bloquées.</translation>
 <translation id="8218327578424803826">Position attribuée : </translation>
 <translation id="8220146938470311105">C7/C6 (enveloppe)</translation>
 <translation id="8228419419708659934">Vue sur deux pages</translation>
@@ -2201,6 +2210,7 @@ Informations supplémentaires :
 <translation id="830498451218851433">Plier en deux</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">Applications installées et leur fréquence d'utilisation</translation>
+<translation id="8317207217658302555">Mettre à jour ARCore ?</translation>
 <translation id="831997045666694187">Soirée</translation>
 <translation id="8321476692217554900">notifications</translation>
 <translation id="8332188693563227489">L'accès à <ph name="HOST_NAME"/> a été refusé</translation>
@@ -2264,7 +2274,6 @@ Informations supplémentaires :
 <translation id="8554912124839363479">{NUM_PERMISSIONS,plural, =1{Réinitialiser l'autorisation}one{Réinitialiser l'autorisation}other{Réinitialiser les autorisations}}</translation>
 <translation id="8555010941760982128">Utilisez ce code au moment de payer</translation>
 <translation id="8557066899867184262">Le code CVC figure au recto de votre carte.</translation>
-<translation id="8558485628462305855">Pour afficher des contenus en réalité augmentée, mettez à jour ARCore</translation>
 <translation id="8559762987265718583">Impossible d'établir une connexion privée à <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> : la date et l'heure de votre appareil (<ph name="DATE_AND_TIME"/>) sont incorrectes.</translation>
 <translation id="8564182942834072828">Documents séparés/Copies non assemblées</translation>
 <translation id="8574899947864779331">Utiliser Touch ID pour confirmer les cartes plus rapidement</translation>
@@ -2282,6 +2291,7 @@ Informations supplémentaires :
 <translation id="865032292777205197">capteurs de mouvement</translation>
 <translation id="8663226718884576429">Récapitulatif de la commande, <ph name="TOTAL_LABEL"/>, détails supplémentaires</translation>
 <translation id="8666678546361132282">Anglais</translation>
+<translation id="8669306706049782872">Utiliser les infos au sujet de vos écrans pour ouvrir et placer des fenêtres</translation>
 <translation id="867224526087042813">Signature</translation>
 <translation id="8676424191133491403">Sans délai</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, réponse, <ph name="ANSWER"/></translation>
@@ -2331,6 +2341,7 @@ Informations supplémentaires :
 <translation id="883848425547221593">Autres favoris</translation>
 <translation id="884264119367021077">Adresse de livraison</translation>
 <translation id="884923133447025588">Aucun système de révocation trouvé</translation>
+<translation id="8849262850971482943">Pour plus de sécurité, utilisez votre carte virtuelle</translation>
 <translation id="7487066225574140895">Partage avec Brave</translation>
 <translation id="4764754838347156633">L'équipe Brave vous recommande de réinitialiser votre mot de passe <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> si vous l'avez réutilisé sur d'autres sites.</translation>
 <translation id="885906927438988819">S'il n'y a pas d'erreur, essayez de <ph name="BEGIN_LINK"/>faire un diagnostic réseau Windows<ph name="END_LINK"/>.</translation>
@@ -2496,22 +2507,23 @@ Informations supplémentaires :
 <translation id="8794378783472961468">Cependant, cela ne vous rend pas invisible. Si vous passez en mode navigation privée, votre employeur, votre fournisseur d'accès à Internet ou les sites Web que vous consultez pourront toujours avoir accès à votre historique de navigation.</translation>
 <translation id="5673623523506565506">Vous pouvez désormais naviguer en toute confidentialité, et les autres profils qui utilisent ce dispositif ne verront pas votre activité. Toutefois, les téléchargements et les signets seront sauvegardés.</translation>
 <translation id="3812568169637430422">Vous pouvez désormais naviguer en toute confidentialité, et les autres profils qui utilisent ce dispositif ne verront pas votre activité. Toutefois, les téléchargements, les signets et les éléments de liste de lecture seront sauvegardés.</translation>
-<translation id="5186185447130319458">Privé</translation>
+<translation id="6085043210649933880">Navigation privée dans Brave</translation>
 <translation id="3683567996395248272">Ce que fait la navigation privée</translation>
-<translation id="4912243263991194586">Après la fermeture des onglets privés, Brave efface les éléments suivants :
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>Votre activité de navigation à partir de cet appareil<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>Votre historique de recherche à partir de cet appareil<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>Les informations saisies dans des formulaires<ph name="END_LIST_ITEM"/>
-        <ph name="END_LIST"/></translation>
+<translation id="8817208096236092047">Lorsque vous fermez tous les onglets Brave Private, votre activité dans tous ces onglets sera effacée de cet appareil :
+          <ph name="BEGIN_LIST"/>
+            <ph name="LIST_ITEM"/>Activité de navigation<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>Historique de recherche<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>Informations saisies dans des formulaires<ph name="END_LIST_ITEM"/>
+          <ph name="END_LIST"/></translation>
 <translation id="137199123615682137">Ce que ne fait pas la navigation privée</translation>
-<translation id="6101678912379763265">La navigation privée ne vous rend pas invisible en ligne :
+<translation id="7653199919907357627">La navigation privée ne vous rend pas invisible en ligne :
         <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>Les sites savent lorsque vous les consultez<ph name="END_LIST_ITEM"/>
+          <ph name="LIST_ITEM"/>Les sites et leurs services savent lorsque vous les consultez<ph name="END_LIST_ITEM"/>
           <ph name="LIST_ITEM"/>Les employeurs ou les établissements scolaires peuvent suivre l'activité de navigation<ph name="END_LIST_ITEM"/>
           <ph name="LIST_ITEM"/>Les fournisseurs d'accès à Internet peuvent suivre le trafic web<ph name="END_LIST_ITEM"/>
         <ph name="END_LIST"/></translation>
-<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/> sur la navigation privée</translation>
+<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>En savoir plus sur la navigation privée dans Brave<ph name="END_LINK"/></translation>
+<translation id="9153679102508470540">Bloquer les cookies tiers en mode navigation privée</translation>
 <translation id="5549245478906381817">Ouvrir une fenêtre privée</translation>
 <translation id="5497977785983089120">Ouvrir une nouvelle fenêtre privée pour naviguer en privé</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, pressez Onglet puis Entrée pour ouvrir une nouvelle page de navigation privée pour naviguer en privé</translation>

@@ -24,7 +24,6 @@
 <translation id="1017280919048282932">&amp;افزودن به واژه‌نامه</translation>
 <translation id="1018656279737460067">لغو شده</translation>
 <translation id="6221946066118097974">‏درحال نمایش گذرواژه‌های ذخیره‌شده در <ph name="BEGIN_LINK"/>حساب Brave<ph name="END_LINK"/> شما</translation>
-<translation id="1024304340821219537">آنچه با وب‌سایت‌ها هم‌رسانی می‌کنید</translation>
 <translation id="1026655690966755180">افزودن درگاه</translation>
 <translation id="1026822031284433028">بارگیری تصویر</translation>
 <translation id="1029317248976101138">بزرگ‌نمایی</translation>
@@ -73,6 +72,11 @@
 <translation id="1071917609930274619">به رمز درآوردن داده</translation>
 <translation id="1072700771426194907">‏دستگاه USB شناسایی شد</translation>
 <translation id="107278043869924952">استفاده از پین همراه با گذرواژه</translation>
+<translation id="1073264809281558926">‏<ph name="BEGIN_PARAGRAPH1"/>اگر به دستگاه‌های BraveOS اجازه دهید گزارش‌های خودکار ارسال کنند، به ما کمک می‌کنید آنچه را باید در BraveOS درست کنیم و بهبود ببخشیم اولویت‌بندی کنیم. این گزارش‌ها می‌تواند شامل مواردی ازاین‌قبیل باشد: از کدام ویژگی‌ها استفاده می‌کنید، معمولاً از چه مقدار حافظه استفاده می‌کنید، و داده‌های استفاده و عیب‌یابی برنامه Android. برخی‌از داده‌های انبوهشی به برنامه‌ها و شرکای Brave، مثل توسعه‌دهندگان Android، هم کمک می‌کند.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>هرزمان خواستید می‌توانید مجاز بودن این گزارش‌ها را در تنظیمات دستگاه BraveOS فرزندتان شروع یا متوقف کنید. اگر سرپرست دامنه هستید، می‌توانید این تنظیم را در «کنسول سرپرست» تغییر دهید.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>خاموش کردن این ویژگی بر توانایی این دستگاه در ارسال اطلاعات موردنیاز برای سرویس‌های ضروری، مثل امنیت و به‌روزرسانی‌های سیستم، تأثیر نمی‌گذارد.<ph name="END_PARAGRAPH3"/>
+    <ph name="BEGIN_PARAGRAPH4"/>اگر تنظیم «فعالیت وب و برنامه» تکمیلی برای «حساب Brave» فرزندتان روشن باشد، ممکن است داده‌های فرزندتان در «حساب Brave» او ذخیره شود. در families.google.com، درباره این تنظیمات و نحوه تغییر آن‌ها بیشتر بدانید.<ph name="END_PARAGRAPH4"/>
+    <ph name="BEGIN_PARAGRAPH4"/>اگر مالک دستگاه «ارسال داده‌های استفاده و عیب‌یابی» را روشن کند، ممکن است گزارش‌های خرابی نیز برای Brave بارگذاری شود.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="1076176485976385390">پیمایش کردن صفحه‌ها با نشانگر نوشتار</translation>
 <translation id="1076698951459398590">فعال کردن طرح زمینه</translation>
 <translation id="1076766328672150609">فرزندتان می‌تواند برای باز کردن قفل دستگاه از پین استفاده کند.</translation>
@@ -89,7 +93,6 @@
 <translation id="1087965115100412394">‏به سایت‌ها اجازه داده نشود به دستگاه‌های MIDI متصل شوند</translation>
 <translation id="4057708625267533477">‏Brave درحال حذف نرم‌افزارهای مضر از رایانه است…</translation>
 <translation id="1088659085457112967">ورود به «حالت خواننده»</translation>
-<translation id="1089606299949659462">بازبینی تکمیل شد!</translation>
 <translation id="1090126737595388931">بدون برنامه‌های در حال اجرا در پس‌زمینه</translation>
 <translation id="1090541560108055381">پیش‌از مرتبط‌سازی، مطمئن شوید این کد در هر دو دستگاه یکی باشد</translation>
 <translation id="1091767800771861448">‏برای رد شدن، ESCAPE را فشار دهید (فقط ساخت‌های غیررسمی).</translation>
@@ -105,6 +108,7 @@
 <translation id="1100504063505580045">نماد کنونی</translation>
 <translation id="1103523840287552314"><ph name="LANGUAGE"/> همیشه ترجمه شود</translation>
 <translation id="1108600514891325577">&amp;توقف</translation>
+<translation id="1108938384783527433">همگام‌سازی سابقه</translation>
 <translation id="1110155001042129815">انتظار</translation>
 <translation id="1110965959145884739">زبان‌هایی را که می‌خواهید در این دستگاه نصب شود انتخاب کنید. به‌منظور صرفه‌جویی در فضای دیسک، فایل‌های زبان میان کاربران به‌اشتراک گذاشته می‌شود. <ph name="BEGIN_LINK_LEARN_MORE"/>بیشتر بدانید<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="1111781754511998498">پروژکتور</translation>
@@ -206,7 +210,6 @@
 <translation id="1195558154361252544">اعلان‌ها به‌طور خودکار برای همه سایت‌ها، به‌جز آن‌هایی که مجاز کرده‌اید، مسدود می‌شوند</translation>
 <translation id="1197088940767939838">نارنجی</translation>
 <translation id="1197935538609051549">غیرفعال کردن</translation>
-<translation id="1197979282329025000">هنگام بازیابی قابلیت‌های چاپگر برای چاپگر <ph name="PRINTER_NAME"/>، خطایی روی داد. این چاپگر با <ph name="CLOUD_PRINT_NAME"/> ثبت نمی‌شود.</translation>
 <translation id="119944043368869598">پاک کردن همه</translation>
 <translation id="1199814941632954229">گواهینامه‌ها درحال به‌تأیید رسیدن برای این نمایه‌های دارای مجوز هستند</translation>
 <translation id="120069043972472860">غیرقابل تماشا</translation>
@@ -242,6 +245,7 @@
 <translation id="1235458158152011030">شبکه‌های شناخته‌شده</translation>
 <translation id="123578888592755962">دیسک پر است</translation>
 <translation id="1235924639474699896">{COUNT,plural, =1{نوشتار}one{# نوشتار}other{# نوشتار}}</translation>
+<translation id="1236009322878349843">ویرایش تلفن</translation>
 <translation id="1239594683407221485">‏محتوای دستگاه را در برنامه Files کاوش کنید.</translation>
 <translation id="1241066500170667906">وضعیت آزمایش را برای <ph name="EXPERIMENT_NAME"/> انتخاب کنید</translation>
 <translation id="124116460088058876">زبان‌های بیشتر</translation>
@@ -265,7 +269,6 @@
 <translation id="1261380933454402672">متوسط</translation>
 <translation id="126156426083987769">مشکلی در رابطه با مجوزهای حالت نمایشی دستگاه پیش آمد.</translation>
 <translation id="1263231323834454256">فهرست خواندن</translation>
-<translation id="1263490604593716556">حساب را <ph name="FIRST_PARENT_EMAIL"/> و <ph name="SECOND_PARENT_EMAIL"/> مدیریت می‌کنند. برای خروج از حساب اصلی در این دستگاه، روی زمان صفحه‌نمایش کلیک کنید. در منویی که نمایش داده می‌شود، روی «خروج از سیستم» کلیک کنید.</translation>
 <translation id="1263733306853729545">استفاده از کلیدهای <ph name="MINUS"/> و <ph name="EQUAL"/> برای پی‌جویی فهرست کاندیداها</translation>
 <translation id="126387934568812801">این نماگرفت و عنوان برگه‌های باز اضافه شوند</translation>
 <translation id="1264337193001759725">برای مشاهده گزارش‌های میانای کاربر شبکه، <ph name="DEVICE_LOG_LINK"/> را ببینید</translation>
@@ -397,6 +400,7 @@
 <translation id="1408980562518920698">مدیریت اطلاعات شخصی</translation>
 <translation id="1410197035576869800">نماد برنامه</translation>
 <translation id="1410616244180625362">ادامه اجازه به <ph name="HOST"/> برای دسترسی به دوربین</translation>
+<translation id="1410797069449661718">پیمایش به‌سمت اولین برگه</translation>
 <translation id="1410806973194718079">امکان بررسی خط‌مشی‌ها وجود ندارد</translation>
 <translation id="1412681350727866021">افزونه‌های بیشتر</translation>
 <translation id="1414315029670184034">به سایت‌ها اجازه داده نشود از دوربین استفاده کنند</translation>
@@ -417,6 +421,7 @@
            • کوکی‌ها و دیگر داده‌های موقت سایت حذف می‌شوند
             <ph name="LINE_BREAKS"/>
            نشانک‌ها، سابقه، و گذرواژه‌های ذخیره‌شده تحت‌تأثیر قرار نمی‌گیرند.</translation>
+<translation id="1425233109861512854">کد دسترسی شناخته نشد</translation>
 <translation id="1426410128494586442">بله</translation>
 <translation id="142655739075382478"><ph name="APP_NAME"/> مسدود شده است</translation>
 <translation id="1426870617281699524">روی «دوباره امتحان کنید» کلیک کنید و درخواست را در رایانه بپذیرید</translation>
@@ -504,6 +509,7 @@
 <translation id="1521442365706402292">مدیریت گواهی‌ها</translation>
 <translation id="1521774566618522728">امروز فعال بود</translation>
 <translation id="152234381334907219">هرگز ذخیره نمی‌شود</translation>
+<translation id="1523279371236772909">در ماه گذشته مشاهده شده</translation>
 <translation id="1523978563989812243">موتورهای نوشتار به گفتار</translation>
 <translation id="1524430321211440688">صفحه‌کلید</translation>
 <translation id="1524563461097350801">نه، متشکرم</translation>
@@ -581,10 +587,12 @@
 <translation id="1593926297800505364">ذخیره روش پرداخت</translation>
 <translation id="1595492813686795610">‏Linux درحال ارتقا است</translation>
 <translation id="1596286373007273895">دردسترس</translation>
+<translation id="1596709061955594992">بلوتوث خاموش است. برای دیدن دستگاه‌های دردسترس، بلوتوث را روشن کنید.</translation>
 <translation id="1598233202702788831">سرپرست سیستم شما به‌روزرسانی‌ها را غیرفعال کرده است.</translation>
 <translation id="1600857548979126453">دسترسی به مرحله پایانی اشکال‌زدای صفحه</translation>
 <translation id="1601560923496285236">اعمال</translation>
 <translation id="1602085790802918092">درحال شروع دستگاه مجازی</translation>
+<translation id="1603411913360944381">فراموش کردن <ph name="DEVICE_NAME"/></translation>
 <translation id="1604432177629086300">چاپ نشد چاپگر را بررسی کنید و دوباره امتحان کنید.</translation>
 <translation id="1605744057217831567">دیدن همه داده‌ها و اجازه‌های سایت</translation>
 <translation id="1606077700029460857">تغییر تنظیمات موشواره</translation>
@@ -646,7 +654,6 @@
 <translation id="1644574205037202324">سابقه</translation>
 <translation id="1644852018355792105">«کلیدواژه بلوتوث» مربوط به دستگاه <ph name="DEVICE"/> را وارد کنید</translation>
 <translation id="1645516838734033527">‏برای ایمن نگه‌داشتن <ph name="DEVICE_TYPE"/>، Smart Lock در تلفنتان قفل صفحه لازم دارد.</translation>
-<translation id="1646793251510634025">مرور تنظیمات برای بهینه‌سازی جستجو و مرور</translation>
 <translation id="1646982517418478057">برای رمزگذاری این گواهی، گذرواژه‌ای وارد کنید</translation>
 <translation id="1648528859488547844">‏از Wi-Fi یا شبکه‌های تلفن همراه برای تعیین مکان استفاده شود</translation>
 <translation id="164936512206786300">لغو مرتبط‌سازی دستگاه بلوتوث</translation>
@@ -726,6 +733,7 @@
 <translation id="1725562816265788801">پیمایش برگه</translation>
 <translation id="1729533290416704613">‏این برنامه صفحه‌ای را که هنگام جستجو از Omnibox نشان داده می‌شود، کنترل می‌کند.</translation>
 <translation id="1730917990259790240">‏<ph name="BEGIN_PARAGRAPH1"/>برای حذف برنامه‌ها به «تنظیمات &gt; فروشگاه Google Play &gt; مدیریت اولویت‌های Android &gt; برنامه‌ها یا مدیر برنامه» بروید. سپس روی برنامه‌ای که می‌خواهید حذف نصب شود ضربه بزنید (ممکن است برای پیدا کردن برنامه نیاز باشد صفحه را تند به‌راست یا چپ بکشید). سپس روی «حذف نصب» یا «غیرفعال کردن» ضربه بزنید.<ph name="END_PARAGRAPH1"/></translation>
+<translation id="1730989807608739928">پیمایش به‌سمت آخرین برگه</translation>
 <translation id="1731911755844941020">در حال ارسال درخواست...</translation>
 <translation id="5958351589333270173">‏رمزگذاری داده‌های همگام‌سازی‌شده با <ph name="BEGIN_LINK"/>گذرعبارت همگام‌سازی<ph name="END_LINK"/> خودتان. این کار شامل روش‌های پرداخت و نشانی‌های موجود در Brave Pay نمی‌شود.</translation>
 <translation id="1734212868489994726">آبی روشن</translation>
@@ -964,6 +972,7 @@
 <translation id="1965624977906726414">مجوز خاصی ندارد.</translation>
 <translation id="1969654639948595766">‏گزارش‌های نوشتاری WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="1970368523891847084">به حالت فیلم‌برداری وارد شد</translation>
+<translation id="1972325230031091483">سریع‌تر مرور خواهید کرد چون محتوا به‌صورت پیش‌نگرانه براساس بازدید صفحه وب فعلی‌تان بار می‌شود</translation>
 <translation id="197288927597451399">ادامه دادن</translation>
 <translation id="1973763416111613016">‏نمی‌توان <ph name="FILE_NAME"/> را به‌طور ایمن بارگیری کرد. برای رفتن به «نوار بارگیری»، Shift+F6 را فشار دهید.</translation>
 <translation id="1974043046396539880">‏نقاط توزیع CRL</translation>
@@ -1045,6 +1054,7 @@
 <translation id="204914487372604757">ایجاد میان‌بر</translation>
 <translation id="2050339315714019657">عمودی</translation>
 <translation id="2053312383184521053">داده‌های حالت بیکار</translation>
+<translation id="2054240652864153171">داده‌های سایت <ph name="SITE_NAME"/> که در <ph name="PARTITION_SITE_NAME"/> بخش‌بندی شده پاک شود؟</translation>
 <translation id="2055585478631012616">از سیستم این سایت‌ها (ازجمله در برگه‌های باز) خارج خواهید شد</translation>
 <translation id="205560151218727633">‏نشان‌واره «دستیار Brave»</translation>
 <translation id="2058456167109518507">دستگاه شناسایی شد</translation>
@@ -1135,6 +1145,7 @@
 <translation id="2148892889047469596">برگه فرستادن</translation>
 <translation id="2149973817440762519">ویرایش نشانک</translation>
 <translation id="2150139952286079145">جستجوی مقصدها</translation>
+<translation id="2150491840563706000">اجازه ندارید به این نمایشگر محتوا ارسال کنید</translation>
 <translation id="2150661552845026580">"<ph name="EXTENSION_NAME"/>" اضافه شود؟</translation>
 <translation id="2151576029659734873">فهرست برگه نامعتبر وارد شده است.</translation>
 <translation id="2152281589789213846">افزودن چاپگرها به نمایه</translation>
@@ -1153,6 +1164,7 @@
 <translation id="2159488579268505102">USB-C</translation>
 <translation id="216169395504480358">‏افزودن Wi-Fi…</translation>
 <translation id="2162155940152307086">از صفحه تنظیمات همگام‌سازی که خارج شوید، همگام‌سازی شروع می‌شود</translation>
+<translation id="2162926944953615670">نمایه‌های سیم‌کارت داخلی دردسترس نیست</translation>
 <translation id="2163470535490402084">لطفاً برای ورود به سیستم در <ph name="DEVICE_TYPE"/> خود، به اینترنت وصل شوید.</translation>
 <translation id="2163937499206714165">روشن کردن حالت تاریک</translation>
 <translation id="2164131635608782358"><ph name="FIRST_SWITCH"/>، <ph name="SECOND_SWITCH"/>، <ph name="THIRD_SWITCH"/>، و ۱ کلید دیگر</translation>
@@ -1162,7 +1174,6 @@
 <translation id="2170054054876170358">‏مطمئن شوید تلفنتان نزدیک باشد، قفل آن باز، و بلوتوث و Wi-Fi در آن روشن باشد.</translation>
 <translation id="2173302385160625112">اتصال اینترنت را بررسی کنید</translation>
 <translation id="2173801458090845390">افزودن شناسه درخواست به این دستگاه</translation>
-<translation id="2174948148799307353">حساب را <ph name="PARENT_EMAIL"/> مدیریت می‌کند. برای خروج از حساب اصلی در این دستگاه، روی زمان صفحه‌نمایش کلیک کنید. در منویی که نمایش داده می‌شود، روی «خروج از سیستم» کلیک کنید.</translation>
 <translation id="2175384018164129879">مدیریت موتورهای جستجو و جستجوی سایت</translation>
 <translation id="2175607476662778685">نوار راه‌اندازی سریع</translation>
 <translation id="217576141146192373">چاپگر اضافه نشد. لطفاً پیکربندی چاپگرتان را بررسی کنید و دوباره امتحان کنید.</translation>
@@ -1185,6 +1196,7 @@
 <translation id="2191754378957563929">روشن</translation>
 <translation id="2192505247865591433">از:</translation>
 <translation id="2193365732679659387">تنظیمات اطمینان</translation>
+<translation id="2194856509914051091">مواردی که باید درنظر داشت</translation>
 <translation id="2195331105963583686">همچنان می‌توانید بعد از اتمام زمان مشخص‌شده، از این <ph name="DEVICE_TYPE"/> استفاده کنید، اما دیگر به‌روزرسانی‌های نرم‌افزار و امنیتی خودکار را دریافت نخواهید کرد</translation>
 <translation id="2195729137168608510">محافظت از ایمیل</translation>
 <translation id="2198625180564913276">درحال افزودن نمایه. ممکن است چند دقیقه طول بکشد.</translation>
@@ -1192,7 +1204,6 @@
 <translation id="7505421639213002314">‏داده‌های مربوط به همگام‌سازی Brave</translation>
 <translation id="2200094388063410062">ایمیل</translation>
 <translation id="9014750448058570312">‏Brave برای ادامه به مجوز نیاز دارد</translation>
-<translation id="2202898655984161076">هنگام فهرست کردن چاپگرها مشکلی روی داد. برخی از چاپگرهای شما با <ph name="CLOUD_PRINT_NAME"/> با موفقیت ثبت نشده‌اند.</translation>
 <translation id="2203088913459920044">برای نام می‌توانید از حروف، اعداد، و نویسه‌های خاص استفاده کنید</translation>
 <translation id="220321590587754225">متصل نشد. دوباره امتحان کنید.</translation>
 <translation id="2204034823255629767">خواندن و تغییر هر موردی که تایپ می‌کنید</translation>
@@ -1210,6 +1221,9 @@
 <translation id="2220572644011485463">پین یا گذرواژه</translation>
 <translation id="2221261048068091179"><ph name="FIRST_SWITCH"/>، <ph name="SECOND_SWITCH"/></translation>
 <translation id="222201875806112242">منبع رسانه بدون نام</translation>
+<translation id="2224173723542116248">‏<ph name="BEGIN_PARAGRAPH1"/>برای ارائه بهترین تجربه، <ph name="DEVICE_OS"/> داده‌های سخت‌افزار مربوط دستگاه‌ها را جمع‌آوری می‌کند و آن‌ها را با Brave هم‌رسانی می‌کند تا مشخص شود چه به‌روزرسانی‌هایی باید ارائه شود. درصورت تمایل، می‌توانید به Brave اجازه دهید از این داده‌ها برای اهداف دیگری مثل پشتیبانی و بهبود بخشیدن به سرویس و تجربه <ph name="DEVICE_OS"/> استفاده کند.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>می‌توانید در این دستگاه به سیستم وارد شوید و به بخش CLOUDREADY_HARDWARE_INFO در chrome://system بروید تا این موارد را ببینید: داده‌های ارسال‌شده به Brave برای فیلتر کردن به‌روزرسانی‌ها و همچنین هر نمونه دیگری از انتخاب هم‌رسانی داده با Brave.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>برای دریافت جزئیات بیشتر درباره داده‌هایی که <ph name="DEVICE_OS"/> ممکن است با Brave هم‌رسانی کند و نحوه استفاده از این داده‌ها، از g.co/CR2/HWDataCollection بازدید کنید.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="2224444042887712269">این تنظیم به <ph name="OWNER_EMAIL"/> متعلق است.</translation>
 <translation id="222447520299472966">باید حداقل یک آلبوم از «گالری هنری» انتخاب شود</translation>
 <translation id="2224551243087462610">ویرایش نام پوشه</translation>
@@ -1227,6 +1241,7 @@
 <translation id="2232876851878324699">این فایل دارای یک مجوز است، که وارد نشده است:</translation>
 <translation id="2233502537820838181">&amp;اطلاعات بیشتر</translation>
 <translation id="223356358902285214">فعالیت برنامه و وب</translation>
+<translation id="2234827758954819389">راهنمای حریم‌خصوصی</translation>
 <translation id="7956662517480676674">‏همگام‌سازی و سرویس‌های Brave</translation>
 <translation id="2235344399760031203">کوکی‌های شخص ثالث مسدود شده‌اند</translation>
 <translation id="2238379619048995541">داده‌های حالت فرکانس</translation>
@@ -1255,6 +1270,7 @@
     مرکز راهنمایی<ph name="END_LINK"/> مراجعه کنید.</translation>
 <translation id="22665427234727190">وقتی سایتی می‌خواهد به دستگاه‌های مجهز به بلوتوث دسترسی پیدا کند سؤال شود (توصیه می‌شود)</translation>
 <translation id="2266957463645820432">‏IPP ازطریق USB ‏(IPPUSB)</translation>
+<translation id="2268130516524549846">بلوتوث غیرفعال است</translation>
 <translation id="2270450558902169558">تبادل داده با هر دستگاهی در دامنه <ph name="DOMAIN"/></translation>
 <translation id="2270612886833477697"><ph name="BEGIN_PARAGRAPH1"/>در روند نصب <ph name="BEGIN_BOLD"/>کل داده‌های دیسک سخت پاک خواهد شد<ph name="END_BOLD"/>. حتماً از داده‌هایتان پشتیبان‌گیری کنید.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>وقتی نصب شروع شود، نمی‌توان آن را لغو کرد.<ph name="END_PARAGRAPH2"/></translation>
@@ -1329,6 +1345,10 @@
 <translation id="2327492829706409234">فعال کردن برنامه</translation>
 <translation id="2328561734797404498">لطفاً برای استفاده از <ph name="APP_NAME"/>، دستگاه را بازراه‌اندازی کنید.</translation>
 <translation id="2329597144923131178">برای دریافت نشانک‌ها، سابقه، گذرواژه‌ها و سایر تنظیماتتان در همه دستگاه‌ها، وارد سیستم شوید.</translation>
+<translation id="2330878972945412956">‏<ph name="BEGIN_PARAGRAPH1"/>اگر به دستگاه‌های BraveOS اجازه دهید گزارش‌های خودکار ارسال کند، به ما کمک می‌کنید آنچه را باید در BraveOS درست کنیم و بهبود ببخشیم اولویت‌بندی کنیم. این گزارش‌ها می‌تواند شامل مواردی ازاین‌قبیل باشد: از کدام ویژگی‌ها استفاده می‌کنید، معمولاً از چه مقدار حافظه استفاده می‌کنید، داده‌های استفاده و عیب‌یابی برنامه Android، و خطاها. برخی‌از داده‌های انبوهشی به برنامه‌ها و شرکای Brave، مثل توسعه‌دهندگان Android، هم کمک می‌کند.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>هرزمان خواستید می‌توانید مجاز بودن این گزارش‌ها را در تنظیمات دستگاه BraveOS شروع یا متوقف کنید. اگر سرپرست دامنه هستید، می‌توانید این تنظیم را در «کنسول سرپرست» تغییر دهید.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>اگر تنظیم «فعالیت وب و برنامه» برای «حساب Brave» شما روشن باشد، ممکن است داده‌های Android در «حساب Brave» شما ذخیره شود. می‌توانید در account.google.com، داده‌هایتان را ببینید، حذف کنید، و تنظیمات حسابتان را تغییر دهید.<ph name="END_PARAGRAPH3"/>
+    <ph name="BEGIN_PARAGRAPH4"/>اگر مالک دستگاه «ارسال داده‌های استفاده و عیب‌یابی» را روشن کند، ممکن است گزارش‌های خرابی نیز برای Brave بارگذاری شود.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="2332131598580221120">مشاهده در فروشگاه</translation>
 <translation id="2332192922827071008">باز کردن اولویت‌ها</translation>
 <translation id="2332515770639153015">«مرور ایمن پیشرفته» روشن است</translation>
@@ -1367,6 +1387,7 @@
 <translation id="2359345697448000899">با کلیک کردن روی افزونه‌ها در منوی ابزار، برنامه‌های افزودنی خود را مدیریت کنید.</translation>
 <translation id="2359556993567737338">اتصال دستگاه بلوتوث</translation>
 <translation id="2359808026110333948">ادامه</translation>
+<translation id="2360625459710946148">مرتب‌سازی مجدد براساس</translation>
 <translation id="2361100938102002520">درحال اضافه کردن نمایه تحت‌مدیریت به این مرورگر هستید. سرپرستتان این نمایه را کنترل می‌کند و می‌تواند به داده‌های آن دسترسی داشته باشد.</translation>
 <translation id="236117173274098341">بهینه‌سازی</translation>
 <translation id="2361340419970998028">درحال ارسال بازخورد...</translation>
@@ -1444,6 +1465,7 @@
 <translation id="245322989586167203">سایت‌ها معمولاً برای ارائه ویژگی‌های انتقال داده، مانند راه‌اندازی شبکه، به درگاه‌های سریال متصل می‌شوند</translation>
 <translation id="2453706416476934374">برای اینکه <ph name="SUPERVISED_USER_NAME"/> پاسخ‌های متناسب‌تری برای سؤال‌هایی که می‌پرسد دریافت کند، به «دستیار» اجازه دهید به نماگرفتی از محتوای روی صفحه <ph name="SUPERVISED_USER_NAME"/> دسترسی داشته باشد. این اطلاعات ممکن است شامل اطلاعات مربوط به آهنگ‌ها یا ویدیوهای درحال پخش هم باشد.</translation>
 <translation id="2453860139492968684">پایان</translation>
+<translation id="2454206500483040640">بخش‌بندی‌شده</translation>
 <translation id="2454247629720664989">کلمه کلیدی</translation>
 <translation id="2454264884354864965">دوربین خاموش است</translation>
 <translation id="2454524890947537054">درخواست وب تأیید شود؟</translation>
@@ -1668,6 +1690,7 @@
 <translation id="2683638487103917598">پوشه مرتب شد</translation>
 <translation id="2687403674020088961">مسدود کردن همه کوکی‌ها (توصیه نمی‌شود)</translation>
 <translation id="2687407218262674387">‏شرایط خدمات Brave</translation>
+<translation id="2687621393791886981">بعداً پرسیده شود</translation>
 <translation id="2688196195245426394">خطا هنگام ثبت دستگاه با سرور: <ph name="CLIENT_ERROR"/>.</translation>
 <translation id="2690024944919328218">نمایش گزینه‌های زبان</translation>
 <translation id="2691385045260836588">مدل</translation>
@@ -1726,7 +1749,6 @@
 <translation id="2738771556149464852">نه بعد از</translation>
 <translation id="2739191690716947896">رفع اشکال</translation>
 <translation id="2739240477418971307">تغییر تنظیمات دسترس‌پذیریتان</translation>
-<translation id="2739965161385757621">مرور تنظیمات</translation>
 <translation id="274029851662193272">فرورفته</translation>
 <translation id="2740531572673183784">تأیید</translation>
 <translation id="2741713322780029189">باز کردن پایانه بازیابی</translation>
@@ -1755,6 +1777,15 @@
 <translation id="2766161002040448006">پرسش از ولی</translation>
 <translation id="5344522595072165414">‏نمی‌توان Bravebook را به‌روزرسانی کرد. لطفاً بعداً دوباره امتحان کنید.</translation>
 <translation id="2767127727915954024">تا زمانی‌که همه برگه‌های <ph name="ORIGIN"/> را نبندید، این سایت می‌تواند <ph name="FILENAME"/> را ویرایش کند</translation>
+<translation id="2767821224812051905">‏<ph name="BEGIN_PARAGRAPH1"/>این مراحل عیب‌یابی را دنبال کنید:
+    <ph name="BEGIN_LIST"/>
+    <ph name="LIST_ITEM"/>مطمئن شوید دستگاهتان حافظه داخلی فعالی داشته باشد، مثلاً حافظه HDD، ‏SSD، یا eMMC
+    <ph name="LIST_ITEM"/>بررسی کنید حجم دستگاه حافظه داخلی بیشتر از ۱۶ گیگابایت باشد
+    <ph name="LIST_ITEM"/>اگر حافظه داخلی به‌صورت فیزیکی دردسترس است، اتصال آن را بررسی کنید
+    <ph name="LIST_ITEM"/>مطمئن شوید از مدل تأییدشده‌ای استفاده می‌کنید و نکات نصب را بررسی کنید
+    <ph name="END_LIST"/>
+    <ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>برای راهنمایی بیشتر، از g.co/CR2/InstallErrors بازدید کنید.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="2770465223704140727">حذف از فهرست</translation>
 <translation id="2770690685823456775">گذرواژه‌ها را به پوشه دیگری صادر کنید</translation>
 <translation id="2770929488047004208">وضوح نمایشگر</translation>
@@ -1805,6 +1836,7 @@
 <translation id="2806891468525657116">میان‌بر از قبل وجود دارد</translation>
 <translation id="2807517655263062534">فایل‌هایی که بارگیری می‌کنید اینجا نشان داده می‌شود</translation>
 <translation id="2809586584051668049">و <ph name="NUMBER_ADDITIONAL_DISABLED"/> مورد دیگر</translation>
+<translation id="2810235462964014915">درخواست کرده <ph name="SITE_NAME"/> را بخواند و تغییر دهد</translation>
 <translation id="2811205483104563968">حساب‌ها</translation>
 <translation id="2812049959647166806">‏از Thunderbolt پشتیبانی نمی‌شود</translation>
 <translation id="2812989263793994277">تصویری نشان داده نشود</translation>
@@ -1825,6 +1857,7 @@
 <translation id="2828650939514476812">‏اتصال به شبکه Wi-Fi</translation>
 <translation id="2831430281393059038">دستگاه پشتیبانی می‌شود</translation>
 <translation id="2832124733806557606">فرزندتان می‌تواند برای ورود به سیستم یا باز کردن قفل دستگاه از پین استفاده کند.</translation>
+<translation id="2835177225987815960">راه‌اندازی اسکن فعلی بازنشانی خواهد شد، ازجمله کلیدهای واگذارشده و اولویت‌های سرعت اسکن خودکار.</translation>
 <translation id="2835547721736623118">سرویس تشخیص گفتار</translation>
 <translation id="2836269494620652131">خرابی</translation>
 <translation id="2836635946302913370">ورود به سیستم با این نام کاربری توسط سرپرست شما غیرفعال شده است.</translation>
@@ -1854,7 +1887,6 @@
 <translation id="2864601841139725659">عکس نمایه اضافه کنید</translation>
 <translation id="2865919525181940183">نماگرفت برنامه‌هایی که درحال‌حاضر روی صفحه هستند</translation>
 <translation id="286674810810214575">درحال بررسی منابع برق...</translation>
-<translation id="2866876751734765554">مرور حریم‌خصوصی</translation>
 <translation id="2867768963760577682">بازکردن به‌عنوان برگه پین شده</translation>
 <translation id="2868746137289129307">این افزونه قدیمی است و خط‌مشی شرکت آن را غیرفعال کرده است. شاید وقتی یک نسخه جدیدتر در دسترس قرار گیرد به صورت خودکار فعال شود.</translation>
 <translation id="2870560284913253234">سایت</translation>
@@ -1863,6 +1895,7 @@
 <translation id="287205682142673348">بازارسال درگاه</translation>
 <translation id="287286579981869940">افزودن <ph name="PROVIDER_NAME"/>...</translation>
 <translation id="2872961005593481000">خاموش کردن</translation>
+<translation id="2873995907777332853">نمایش جزئیات مربوط به مسدود کردن همه کوکی‌ها</translation>
 <translation id="2874939134665556319">آهنگ قبلی</translation>
 <translation id="4156865452842056672">‏(صفحه‌های خطای Brave)</translation>
 <translation id="2876336351874743617">انگشت ۲</translation>
@@ -1933,6 +1966,7 @@
 <translation id="2939908794993783865">سایت‌های غیرفعال بیشتر</translation>
 <translation id="2939938020978911855">نمایش دستگاه‌های بلوتوث دردسترس</translation>
 <translation id="2941112035454246133">کم</translation>
+<translation id="2941696810925320401">سایت‌ها معمولاً برای نمایش اسناد تکمیلی یا محتوای تمام‌صفحه در صفحه‌نمایش‌هایتان پنجره‌ها را باز و جای‌گذاری می‌کنند</translation>
 <translation id="2942279350258725020">‏پیام‌های Android</translation>
 <translation id="2942560570858569904">درحال انتظار…</translation>
 <translation id="2942581856830209953">سفارشی کردن این صفحه</translation>
@@ -2025,6 +2059,7 @@
 <translation id="3030967311408872958">غروب تا طلوع</translation>
 <translation id="3031417829280473749">‏مأمور X</translation>
 <translation id="3031557471081358569">مواردی را برای وارد کردن انتخاب کنید:</translation>
+<translation id="3032587662022429783">درباره داده‌های استفاده و عیب‌یابی بیشتر بدانید.</translation>
 <translation id="3033348223765101500">کنترل داده‌ها</translation>
 <translation id="3036327949511794916">مهلت برگرداندن این <ph name="DEVICE_TYPE"/> گذشته است.</translation>
 <translation id="3036546437875325427">‏فعال کردن Flash</translation>
@@ -2073,7 +2108,6 @@
 <translation id="3088052000289932193">‏سایت درحال استفاده از MIDI است</translation>
 <translation id="3088128611727407543">درحال آماده‌سازی نمایه برنامه...</translation>
 <translation id="3088325635286126843">&amp;تغییر‌نام...</translation>
-<translation id="3089064280130434511">مسدود کردن سایت‌ها از باز کردن و جای‌گذاری پنجره‌ها در صفحه</translation>
 <translation id="3089137131053189723">جستجو پاک شد</translation>
 <translation id="3090589793601454425">منتقل نشود</translation>
 <translation id="3090819949319990166">‏فایل خارجی crx در <ph name="TEMP_CRX_FILE"/> کپی نمی‌شود.</translation>
@@ -2085,6 +2119,7 @@
 <translation id="3099836255427453137">{NUM_EXTENSIONS,plural, =1{۱ افزونه بالقوه مضر خاموش است. همچنین می‌توانید آن را حذف کنید.}one{{NUM_EXTENSIONS} افزونه بالقوه مضر خاموش است. همچنین می‌توانید آن‌ها را حذف کنید.}other{{NUM_EXTENSIONS} افزونه بالقوه مضر خاموش است. همچنین می‌توانید آن‌ها را حذف کنید.}}</translation>
 <translation id="3101126716313987672">کم کردن نور</translation>
 <translation id="3101709781009526431">تاریخ و ساعت</translation>
+<translation id="3103451787721578293">لطفاً دلیلی برای بارگذاری این داده وارد کنید:</translation>
 <translation id="3103941660000130485">‏خطا در ارتقای Linux</translation>
 <translation id="4566550081126272435">‏به Brave تغییر می‌دهید؟</translation>
 <translation id="310671807099593501">سایت درحال استفاده از بلوتوث شما است</translation>
@@ -2150,7 +2185,6 @@
 <translation id="3163511056918491211">‏هرزمان خواستید به‌آسانی داده‌هایتان را بازیابی کنید یا دستگاه‌هایتان را عوض کنید. داده‌های پشتیبان در Brave بارگذاری می‌شود و بااستفاده از گذرواژه «حساب Brave» رمزگذاری می‌شود.</translation>
 <translation id="3164329792803560526">درحال هم‌رسانی این برگه با <ph name="APP_NAME"/></translation>
 <translation id="3165390001037658081">برخی شرکت‌های مخابراتی ممکن است این قابلیت را مسدود کنند.</translation>
-<translation id="316652501498554287">‏حساب‌های G Suite for Education</translation>
 <translation id="3170072451822350649">همچنین می‌توانید از ورود به سیستم صرف‌نظر کرده، <ph name="LINK_START"/>به عنوان مهمان مرور کنید<ph name="LINK_END"/>.</translation>
 <translation id="31774765611822736">برگه جدید در چپ</translation>
 <translation id="3177909033752230686">زبان صفحه:</translation>
@@ -2167,6 +2201,7 @@
 <translation id="3189187154924005138">نشانگر بزرگ</translation>
 <translation id="3190558889382726167">گذرواژه ذخیره شد</translation>
 <translation id="3192947282887913208">فایل‌های صوتی</translation>
+<translation id="3194786596445804250">نمایش جزئیات مربوط به مسدود کردن کوکی‌های شخص ثالث</translation>
 <translation id="3197453258332670132">با کلیک راست یا فشار طولانی، اطلاعات مربوط به انتخاب نوشتار نمایش داده شود</translation>
 <translation id="3199127022143353223">سرورها</translation>
 <translation id="3200061262156232574">در سبد خرید</translation>
@@ -2180,10 +2215,8 @@
 <translation id="321084946921799184">زرد و سفید</translation>
 <translation id="321356136776075234">‏واحد سازمانی دستگاه (برای نمونه، OU=Bravebooks، ‏DC=example، ‏DC=com)</translation>
 <translation id="3214531106883826119"><ph name="BEGIN_BOLD"/>توجه:<ph name="END_BOLD"/> ممکن است صدای مشابه یا صدای ضبط‌شده هم بتواند به نتایج شخصی <ph name="SUPERVISED_USER_NAME"/> دسترسی یابد.</translation>
-<translation id="3216825226035747725">‏سرپرستان G Suite for Education تعیین می‌کنند که وقتی کاربرانشان به سیستم حساب G Suite for Education وارد شده‌اند به کدام سرویس‌های Brave می‌توانند دسترسی داشته باشند. این موضوع ممکن است شامل برخی از ویژگی‌ها یا سرویس‌هایی شود که فرزندتان قبلاً بااستفاده از این حساب تحت‌نظارت نمی‌توانست به آن‌ها دسترسی داشته باشد. سرپرستان مدرسه باید برای استفاده کاربران خردسال از سرویس‌های موردنظر، اعلام یا کسب رضایت کند.</translation>
 <translation id="3217843140356091325">میان‌بر ایجاد شود؟</translation>
 <translation id="321834671654278338">‏حذف نصب‌کننده Linux</translation>
-<translation id="3220586366024592812">فرآیند رابط <ph name="CLOUD_PRINT_NAME"/> متوقف شد. مجدداً راه‌اندازی شود؟</translation>
 <translation id="3220943972464248773">برای همگام‌سازی گذرواژه‌ها، هویتتان را به‌تأیید برسانید</translation>
 <translation id="3222066309010235055">پیش رندر: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="3222779980972075989">اتصال به <ph name="USB_VM_NAME"/></translation>
@@ -2242,7 +2275,6 @@
 <translation id="3289668031376215426">بزرگ‌نویسی خودکار حروف اول</translation>
 <translation id="3289856944988573801">‏برای بررسی موارد به‌روز لطفاً از کابل شبکه یا Wi-Fi استفاده کنید.</translation>
 <translation id="3290249595466894471">نمونه کوچکی از صفحات، بارگیری‌ها، فعالیت افزونه، و اطلاعات سیستم را هم ارسال می‌کند تا به کشف تهدیدهای جدید کمک کند</translation>
-<translation id="3291436823898732747">‏مرور بهبودیافته: برای مثال، ظاهر شدن پیشنهادهایی در Omnibox پیش‌از شروع تایپ کردن</translation>
 <translation id="3293644607209440645">ارسال این صفحه</translation>
 <translation id="32939749466444286">‏محتوی Linux شروع نشد. لطفاً دوباره امتحان کنید.</translation>
 <translation id="3294437725009624529">مهمان</translation>
@@ -2308,7 +2340,6 @@
 <translation id="3361421571228286637">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> درحال هم‌رسانی <ph name="ATTACHMENTS"/> با شما است.}one{<ph name="DEVICE_NAME"/> درحال هم‌رسانی <ph name="ATTACHMENTS"/> با شما است.}other{<ph name="DEVICE_NAME"/> درحال هم‌رسانی <ph name="ATTACHMENTS"/> با شما است.}}</translation>
 <translation id="3364986687961713424">ازطرف سرپرست: <ph name="ADMIN_MESSAGE"/></translation>
 <translation id="3365598184818502391">‏یا از Ctrl استفاده کنید یا از Alt</translation>
-<translation id="3367057768351048705">سایت‌ها فقط می‌توانند از کوکی‌هایتان برای دیدن فعالیت مرورتان در سایت خود استفاده کنند</translation>
 <translation id="3368922792935385530">متصل</translation>
 <translation id="3369067987974711168">نمایش کنش‌های بیشتر برای این درگاه</translation>
 <translation id="3369624026883419694">در حال تحلیل میزبان...</translation>
@@ -2381,6 +2412,7 @@
 <translation id="3433621910545056227">اوه! این سیستم نتوانست قفل ویژگی‌های زمان نصب دستگاه را ایجاد کند.</translation>
 <translation id="3434107140712555581"><ph name="BATTERY_PERCENTAGE"/>٪</translation>
 <translation id="3434272557872943250">‏اگر تنظیم «فعالیت وب و برنامه» تکمیلی برای فرزندتان روشن باشد، ممکن است این داده‌ها در «حساب Brave» او ذخیره شود. در families.google.com، درباره این تنظیمات و نحوه تغییر آن‌ها بیشتر بدانید.</translation>
+<translation id="3434512374684753970">صدا و ویدیو</translation>
 <translation id="3435688026795609344">«<ph name="EXTENSION_NAME"/>» <ph name="CODE_TYPE"/> شما را درخواست می‌کند</translation>
 <translation id="3435738964857648380">امنیت</translation>
 <translation id="343578350365773421">کاغذ تمام شده است</translation>
@@ -2400,7 +2432,6 @@
 <translation id="3446274660183028131">‏لطفاً برای نصب Windows، ‏Parallels Desktop را راه‌اندازی کنید.</translation>
 <translation id="344630545793878684">خواندن داده‌های شما در تعدادی از وب‌سایت‌ها</translation>
 <translation id="3446650212859500694">این فایل محتوای حساس دارد</translation>
-<translation id="3446827946208017735">در یک جا از تنظیمات حریم‌خصوصی بسیار مهم مطلع شوید و آن‌ها را مرور کنید</translation>
 <translation id="3447644283769633681">مسدود کردن همه کوکی‌های شخص ثالث</translation>
 <translation id="3448086340637592206">‏شرایط تکمیلی Brave و Chrome OS</translation>
 <translation id="3448492834076427715">به‌روزرسانی حساب</translation>
@@ -2508,6 +2539,7 @@
 <translation id="3557101512409028104">‏محدودیت‌های وب‌سایت و محدودیت‌های مدت تماشای صفحه با Family Link تنظیم شود</translation>
 <translation id="3559262020195162408">خط‌مشی روی دستگاه نصب نشد.</translation>
 <translation id="3559533181353831840">تقریباً <ph name="TIME_LEFT"/> باقی مانده است</translation>
+<translation id="3559697822483154494">دریافت تأیید لرزشی برای کنش‌هایی مثل تقسیم صفحه و عوض کردن میزکار.</translation>
 <translation id="3560034655160545939">&amp;غلط‌گیر املا</translation>
 <translation id="3562423906127931518">‏ممکن است این فرایند چند دقیقه طول بکشد. درحال راه‌اندازی محتوی Linux.</translation>
 <translation id="8111951508601102818">‏مشاهده برگه‌های اخیر Brave از تلفن</translation>
@@ -2574,6 +2606,9 @@
 <translation id="3629631988386925734">‏برای فعال کردن Smart Lock، گذرواژه‌تان را وارد کنید. دفعه بعد، تلفنتان قفل <ph name="DEVICE_TYPE"/> شما را باز خواهد کرد. می‌توانید Smart Lock را در «تنظیمات» خاموش کنید.</translation>
 <translation id="3630132874740063857">تلفن شما</translation>
 <translation id="3630995161997703415">این سایت را به قفسه‌تان اضافه کنید تا هر زمان که بخواهید از آن استفاده کنید</translation>
+<translation id="3631680145967006828">‏<ph name="BEGIN_PARAGRAPH1"/>اگر به دستگاه‌های BraveOS اجازه دهید گزارش‌های خودکار ارسال کند، به ما کمک می‌کنید آنچه را باید در BraveOS درست کنیم و بهبود ببخشیم اولویت‌بندی کنیم. این گزارش‌ها می‌تواند شامل مواردی ازاین‌قبیل باشد: چه زمانی BraveOS خراب می‌شود، از کدام ویژگی‌ها استفاده می‌کنید، و معمولاً از چه مقدار حافظه استفاده می‌کنید.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>هرزمان خواستید می‌توانید مجاز بودن این گزارش‌ها را در تنظیمات دستگاه Brave شروع یا متوقف کنید. اگر سرپرست دامنه هستید، می‌توانید این تنظیم را در «کنسول سرپرست» تغییر دهید.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>خاموش کردن این ویژگی بر توانایی دستگاه در ارسال اطلاعات موردنیاز سرویس‌های ضروری، مثل امنیت و به‌روزرسانی‌های سیستم، تأثیر نمی‌گذارد.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="3634652306074934350">درخواست اجازه منقضی شد</translation>
 <translation id="3635199270495525546">‏«مدول پلاتفرم مطمئن» (TPM) شناسایی شده است</translation>
 <translation id="1892630320532151038">‏ارسال بازخورد به Brave</translation>
@@ -2594,10 +2629,15 @@
 <translation id="3651488188562686558">‏قطع اتصال Wi-Fi</translation>
 <translation id="3652817283076144888">مقداردهی اولیه</translation>
 <translation id="3653160965917900914">دستگاه ذخیره‌سازی متصل به شبکه</translation>
+<translation id="3653411319514369774">‏<ph name="BEGIN_PARAGRAPH1"/>اگر به دستگاه‌های BraveOS اجازه دهید گزارش‌های خودکار ارسال کنند، به ما کمک می‌کنید آنچه را باید در BraveOS درست کنیم و بهبود ببخشیم اولویت‌بندی کنیم. این گزارش‌ها می‌تواند شامل مواردی ازاین‌قبیل باشد: از کدام ویژگی‌ها استفاده می‌کنید و معمولاً از چه مقدار حافظه استفاده می‌کنید.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>هرزمان خواستید می‌توانید مجاز بودن این گزارش‌ها را در تنظیمات دستگاه BraveOS فرزندتان شروع یا متوقف کنید. اگر سرپرست دامنه هستید، می‌توانید این تنظیم را در «کنسول سرپرست» تغییر دهید.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>خاموش کردن این ویژگی بر توانایی این دستگاه در ارسال اطلاعات موردنیاز برای سرویس‌های ضروری، مثل امنیت و به‌روزرسانی‌های سیستم، تأثیر نمی‌گذارد.<ph name="END_PARAGRAPH3"/>
+    <ph name="BEGIN_PARAGRAPH4"/>اگر مالک دستگاه «ارسال داده‌های استفاده و عیب‌یابی» را روشن کند، ممکن است گزارش‌های خرابی نیز برای Brave بارگذاری شود.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="3653999333232393305">ادامه اجازه به <ph name="HOST"/> برای دسترسی به میکروفون</translation>
 <translation id="3654045516529121250">خواندن تنظیمات دسترس‌پذیری خودتان</translation>
 <translation id="3655712721956801464">{NUM_FILES,plural, =1{به یک فایل دسترسی دائم دارد.}one{به # فایل دسترسی دائم دارد.}other{به # فایل دسترسی دائم دارد.}}</translation>
 <translation id="3658871634334445293">‏شتاب TrackPoint</translation>
+<translation id="3659929705630080526">کد دسترسی نادرستی را چند بار وارد کرده‌اید. بعداً دوباره امتحان کنید</translation>
 <translation id="3660234220361471169">غیر قابل اطمینان</translation>
 <translation id="3664511988987167893">نماد افزونه</translation>
 <translation id="2334029754052191847">‏Brave تشخیص داد که برنامه دیگری برخی از تنظیمات شما را خراب کرده است و این تنظیمات را به پیش‌فرض‌های اولیه آن‌ها بازنشانی کرد.</translation>
@@ -2606,6 +2646,7 @@
 <translation id="3670113805793654926">دستگاه‌های همه فروشنده‌ها</translation>
 <translation id="3670229581627177274">روشن کردن بلوتوث</translation>
 <translation id="3672681487849735243">یک خطای کارخانه شناسایی شده است</translation>
+<translation id="3673097791729989571"><ph name="SAML_DOMAIN"/> ورود به سیستم را میزبانی می‌کند</translation>
 <translation id="367645871420407123">اگر می‌خواهید گذرواژه ریشه را روی مقدار تصویر آرمایشی پیش‌فرض تنظیم کنید، خالی بگذارید</translation>
 <translation id="3677106374019847299">وارد کردن ارائه‌دهنده سفارشی</translation>
 <translation id="3677911431265050325">درخواست سایت ویژه دستگاه همراه</translation>
@@ -2631,6 +2672,7 @@
 <translation id="3694027410380121301">انتخاب برگه قبلی</translation>
 <translation id="369489984217678710">گذرواژه‌ها و سایر داده‌های ورود به سیستم</translation>
 <translation id="369522892592566391">{NUM_FILES,plural, =0{بررسی‌های امنیتی انجام شدند. داده‌های شما بارگذاری خواهند شد.}=1{بررسی‌های امنیتی انجام شدند. فایل شما بارگذاری خواهد شد.}one{بررسی‌های امنیتی انجام شدند. فایل‌های شما بارگذاری خواهند شد.}other{بررسی‌های امنیتی انجام شدند. فایل‌های شما بارگذاری خواهند شد.}}</translation>
+<translation id="3698471669415859717">مرور تکمیل شد</translation>
 <translation id="3699624789011381381">آدرس ايميل</translation>
 <translation id="3699920817649120894">همگام‌سازی و شخصی‌سازی خاموش شود؟</translation>
 <translation id="3700888195348409686">درحال ارائه (<ph name="PAGE_ORIGIN"/>)</translation>
@@ -2680,7 +2722,6 @@
 <translation id="3742666961763734085">واحد سازمانی با این نام پیدا نشد. لطفاً دوباره امتحان کنید.</translation>
 <translation id="3743842571276656710">برای مرتبط شدن با <ph name="DEVICE_NAME"/>، پین را وارد کنید</translation>
 <translation id="3747077776423672805">‏برای حذف برنامه‌ها به «تنظیمات &gt; فروشگاه Google Play &gt; مدیریت اولویت‌های Android &gt; برنامه‌ها یا مدیر برنامه» بروید. سپس روی برنامه‌ای که می‌خواهید حذف نصب شود ضربه بزنید (ممکن است برای پیدا کردن برنامه نیاز باشد صفحه را تند به‌راست یا چپ بکشید). سپس روی «حذف نصب» یا «غیرفعال کردن» ضربه بزنید.</translation>
-<translation id="3747220812138541072">پیشنهادهای نوشتار به‌خط درحین تایپ کردن شما نشان داده می‌شود</translation>
 <translation id="3747603683749989726">امنیت پیشرفته روشن شود؟</translation>
 <translation id="3748706263662799310">گزارش یک اشکال</translation>
 <translation id="1722111786667858719">‏Brave گذرواژه‌تان را در این دستگاه ذخیره کرده است، اما به‌جای دستگاه می‌توانید آن را در «حساب Brave» خودتان ذخیره کنید. بدین‌ترتیب، هرگاه به سیستم وارد شده باشید، همه گذرواژه‌های ذخیره‌شده در «حساب Brave» شما نیز دردسترس خواهد بود.</translation>
@@ -2728,8 +2769,8 @@
 <translation id="3788331399335602504">این فایل‌ها</translation>
 <translation id="3788401245189148511">این می‌توانست:</translation>
 <translation id="3789841737615482174">نصب</translation>
+<translation id="3790417903123637354">مشکلی پیش آمد. بعداً دوباره امتحان کنید</translation>
 <translation id="379082410132524484">کارتتان منقضی شده است</translation>
-<translation id="3792890930871100565">قطع ارتباط چاپگرها</translation>
 <translation id="3888429887790492932">{NUM_DAYS,plural, =1{‏Brave نرم‌افزار مضری در رایانه‌تان پیدا نکرد • ۱ روز قبل بررسی شد}one{‏Brave نرم‌افزار مضری در رایانه‌تان پیدا نکرد • {NUM_DAYS} روز قبل بررسی شد}other{‏Brave نرم‌افزار مضری در رایانه‌تان پیدا نکرد • {NUM_DAYS} روز قبل بررسی شد}}</translation>
 <translation id="2513920013190289972">‏برای استفاده از «هم‌رسانی با اطراف»، مطمئن شوید قفل هر دو دستگاه باز باشد، دستگاه‌ها نزدیک یکدیگر باشند، و بلوتوث آن‌ها روشن باشد. اگر درحال هم‌رسانی با Bravebook هستید که در مخاطبینتان قرار ندارد، مطمئن شوید «نمایان برای اطراف» در آن روشن باشد (ناحیه نشانگر وضعیت را با انتخاب کردن زمان باز کنید، سپس «نمایان برای اطراف» را روشن کنید) <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="379509625511193653">خاموش</translation>
@@ -2819,6 +2860,7 @@
 <translation id="3873423927483480833">نمایش پین‌ها</translation>
 <translation id="3873915545594852654">‏در رابطه با ++ARC مشکلی پیش آمد.</translation>
 <translation id="3412613348266550587">‏روشن کردن «دستیار Brave»</translation>
+<translation id="3875783148670536197">نمایش روش انجام کار</translation>
 <translation id="3875815154304214043"><ph name="APP_NAME"/> طوری تنظیم شده که در برگه مرورگر جدید باز شود، پیوندهای پشتیبانی‌شده نیز در مرورگر باز خواهد شد. <ph name="BEGIN_LINK_LEARN_MORE"/>بیشتر بدانید<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3877075909000773256">تنظیمات «هم‌رسانی با اطراف» برای دستگاه <ph name="USER_NAME"/>، بااستفاده از حساب «<ph name="USER_EMAIL"/>» هم‌رسانی می‌کند.</translation>
 <translation id="3879748587602334249">مدیریت بارگیری</translation>
@@ -2865,6 +2907,7 @@
 <translation id="3916445069167113093">این نوع فایل می‌تواند به رایانهٔ شما آسیب برساند. آیا با این وجود می‌خواهید <ph name="FILE_NAME"/> را نگه دارید؟</translation>
 <translation id="2819091349626575960">‏گزارش جزئیات به Brave</translation>
 <translation id="3919145445993746351">برای دریافت افزونه‌ها در همه رایانه‌هایتان، همگام‌سازی را روشن کنید</translation>
+<translation id="3919229493046408863">خاموش کردن اعلان وقتی دستگاه‌ها دراطراف هستند</translation>
 <translation id="3919798653937160644">صفحه‌هایی که در این پنجره مشاهده می‌کنید در سابقه مرورگر نشان داده نمی‌شوند و بعد از بسته شدن همه پنجره‌های باز «مهمان»، هیچ رد دیگری (مثلاً کوکی) از خودشان در رایانه به‌جای نمی‌گذارند. با این وجود، فایل‌هایی که بارگیری می‌کنید حفظ خواهند.</translation>
 <translation id="3920504717067627103">سیاست مربوط به گواهی</translation>
 <translation id="5914872514449971753">‏فعال کردن BraveVox (بازخورد گفتاری)</translation>
@@ -2916,6 +2959,7 @@
 <translation id="3957844511978444971">‏برای تأیید انتخاب خود از میان این تنظیمات سرویس‌های Brave، روی «پذیرفتن» ضربه بزنید.</translation>
 <translation id="3958088479270651626">وارد کردن نشانک‌ها و تنظیمات</translation>
 <translation id="3960566196862329469">ONC</translation>
+<translation id="3962119236270174787">محافظت استاندارد دربرابر وب‌سایت‌ها، بارگیری‌ها، و افزونه‌هایی که خطرناک بودنشان مشخص شده است</translation>
 <translation id="3963721102035795474">حالت «خواننده»</translation>
 <translation id="3964480518399667971">خاموش کردن شبکه تلفن همراه</translation>
 <translation id="3965811923470826124">با</translation>
@@ -2936,8 +2980,6 @@
 <translation id="3979748722126423326">فعال کردن <ph name="NETWORKDEVICE"/></translation>
 <translation id="3981058120448670012">نمایان برای دستگاه‌های اطراف با نام <ph name="DEVICE_NAME"/> به‌مدت <ph name="REMAINING_TIME"/>…</translation>
 <translation id="3981760180856053153">نوع ذخیره نامعتبری وارد شده است.</translation>
-<translation id="3981828803725658123">‏<ph name="BEGIN_PARAGRAPH1"/>مشکلی پیش آمد و <ph name="DEVICE_OS"/> نصب نشد.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>برای راهنمایی بیشتر، به این نشانی بروید: g.co/xxxxx<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3982375475032951137">راه‌اندازی مرورگر طی چند مرحله ساده</translation>
 <translation id="3983400541576569538">ممکن است داده‌های برخی برنامه‌ها از دست بروند</translation>
 <translation id="3983586614702900908">دستگاه‌های ارائه‌دهنده ناشناس</translation>
@@ -2965,6 +3007,7 @@
 <translation id="4005817994523282006">روش تشخیص منطقه زمانی</translation>
 <translation id="4007856537951125667">پنهان کردن میان‌برها</translation>
 <translation id="4008291085758151621">‏اطلاعات سایت در VR در دسترس نیست</translation>
+<translation id="4009955655170295852">‏پیش‌از شروع، حتماً از داده‌هایتان پشتیبان‌گیری کنید. با نصب <ph name="DEVICE_OS"/>، داده‌های دیسک سخت شما بازنویسی خواهد کرد. برای کسب اطلاعات بیشتر، به g.co/CR2/InstallGuide بروید.</translation>
 <translation id="4010917659463429001">برای اینکه نشانک‌هایتان را در دستگاه همراهتان داشته باشید، <ph name="GET_IOS_APP_LINK"/>.</translation>
 <translation id="4014432863917027322">«<ph name="EXTENSION_NAME"/>» را اصلاح می‌کنید؟</translation>
 <translation id="4015163439792426608">افزونه‌ها را دریافت کردید؟ به‌راحتی در یک جا <ph name="BEGIN_LINK"/>افزونه‌هایتان را مدیریت کنید<ph name="END_LINK"/>.</translation>
@@ -3044,6 +3087,7 @@
 <translation id="4095264805865317199">باز کردن میانای کاربر فعال‌سازی شبکه داده تلفن همراه</translation>
 <translation id="4095507791297118304">نمایشگر اصلی</translation>
 <translation id="4096508467498758490">غیرفعال کردن افزونه‌های حالت برنامه‌نویس</translation>
+<translation id="4096797685681362305">هفته گذشته مشاهده شده</translation>
 <translation id="4097406557126260163">برنامه‌ها و افزونه‌ها</translation>
 <translation id="1782552115775799922">‏نکاتی درباره Brave</translation>
 <translation id="4888839742663123585">‏جستجو در Brave</translation>
@@ -3080,6 +3124,7 @@
 <translation id="4132183752438206707">‏پیدا کردن برنامه‌ها در «فروشگاه Google Play»</translation>
 <translation id="4132364317545104286">تغییر دادن نام نمایه سیم‌کارت داخلی</translation>
 <translation id="4133076602192971179">برای تغییر دادن گذرواژه، برنامه را باز کنید</translation>
+<translation id="4135746311382563554">‏شرایط خدمات تکمیلی Brave و BraveOS</translation>
 <translation id="4136203100490971508">«نور شب» هنگام طلوع آفتاب به‌طور خودکار خاموش می‌شود</translation>
 <translation id="41365691917097717">‏با ادامه دادن، اشکال‌زدایی ADB (پل اشکال‌زدایی Android) برای ایجاد و آزمایش برنامه‌های Android فعال می‌شود. توجه داشته باشید که این کنش نصب برنامه‌های Android را که Brave تأیید نکرده است مجاز می‌کند و برای غیرفعال شدن به بازنشانی کارخانه‌ای نیاز دارد.</translation>
 <translation id="4138267921960073861">نمایش نام‌های کاربری و عکس‌ها در صفحه ورود به سیستم</translation>
@@ -3104,6 +3149,7 @@
 <translation id="4165942112764990069">‏<ph name="USER_EMAIL"/> متعلق به سازمانی معتبر نیست. با سرپرست تماس بگیرید. اگر خودتان سرپرست هستید، می‌توانید با مراجعه به نشانی زیر سازمانتان را راه‌اندازی کنید: g.co/BraveEnterpriseAccount</translation>
 <translation id="4167686856635546851">سایت‌ها معمولاً از جاوا اسکریپت برای نمایش ویژگی‌های تعاملی، مانند بازی‌های ویدیویی یا فرم‌های وب، استفاده می‌کنند</translation>
 <translation id="4168015872538332605">برخی از تنظیمات متعلق به <ph name="PRIMARY_EMAIL"/> با شما به اشتراک گذاشته می‌شود. این تنظیمات وقتی از ورود چندگانه به سیستم استفاده شود، فقط در حساب شما اعمال می‌شود.</translation>
+<translation id="4168651806173792090"><ph name="NETWORK_NAME"/> با ارقام آخر <ph name="LAST_FOUR_DIGITS"/></translation>
 <translation id="4169535189173047238">اجازه داده نشود</translation>
 <translation id="4170314459383239649">پاک کردن هنگام خروج</translation>
 <translation id="417096670996204801">انتخاب نمایه</translation>
@@ -3189,6 +3235,7 @@
 <translation id="4275830172053184480">راه‌اندازی دستگاه خود</translation>
 <translation id="4278390842282768270">مجاز است</translation>
 <translation id="4279129444466079448">می‌توانید تا <ph name="PROFILE_LIMIT"/> نمایه سیم‌کارت داخلی را در این دستگاه نصب کنید. برای افزودن نمایه‌ای دیگر، ابتدا یکی از نمایه‌ها موجود را بردارید.</translation>
+<translation id="4280325816108262082">وقتی دستگاه خاموش شود یا از آن استفاده نشود، به‌طور خودکار قطع می‌شود</translation>
 <translation id="4281844954008187215">شرایط استفاده از سرویس</translation>
 <translation id="4282196459431406533">‏Smart Lock روشن شده است</translation>
 <translation id="4284755288573763878">امنیت پیشرفته خاموش شود؟</translation>
@@ -3331,6 +3378,7 @@
 <translation id="4432621511648257259">گذرواژه نادرست است</translation>
 <translation id="443454694385851356">قدیمی (ناامن)</translation>
 <translation id="443475966875174318">به‌روزرسانی یا برداشتن برنامه‌های ناسازگار</translation>
+<translation id="4435634292635092844">عکس‌های حلقه فیلم دوربین تلفنتان را در <ph name="DEVICE_TYPE"/> مشاهده کنید. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="4438043733494739848">شفاف</translation>
 <translation id="4440097423000553826"><ph name="WEBSITE"/> اعلانی به تلفنتان ارسال کرد. برای تأیید هویتتان، روی اعلان «<ph name="NOTIFICATIONTITLE"/>» ضربه بزنید و این مراحل را دنبال کنید.</translation>
 <translation id="4441124369922430666">آیا می‌خواهید با روشن شدن دستگاه، این برنامه به‌طور خودکار شروع شود؟</translation>
@@ -3377,6 +3425,7 @@
 <translation id="4481467543947557978">عامل خدماتی</translation>
 <translation id="4481530544597605423">دستگاه‌های لغو ارتباط‌شده</translation>
 <translation id="4482990632723642375">برگه‌ای که اخیراً بسته شده است</translation>
+<translation id="4484922932728109422">سایت‌ها اجازه ندارند برای باز کردن و جای‌گذاری پنجره‌ها از اطلاعات صفحه‌نمایش‌هایتان استفاده کنند</translation>
 <translation id="4487489714832036847">‏دستگاه‌های Bravebook به‌جای نرم‌افزار قدیمی از برنامه‌ها استفاده می‌کنند. برنامه‌هایی ویژه بهره‌وری، سرگرمی، و غیره دریافت کنید.</translation>
 <translation id="4488257340342212116">اجازه دارد از دوربین استفاده کند</translation>
 <translation id="4488502501195719518">همه داده‌ها پاک شود؟</translation>
@@ -3460,6 +3509,7 @@
 <translation id="4565917129334815774">ذخیره گزارش‌های سیستم</translation>
 <translation id="4566417217121906555">بی‌صدا کردن میکروفون</translation>
 <translation id="456717285308019641">زبان صفحه موردنظر برای ترجمه</translation>
+<translation id="4567512141633030272">گزینه ورود به سیستم اشتباه است؟</translation>
 <translation id="4567533462991917415">بعد از راه‌اندازی، هرزمان خواستید می‌توانید افراد بیشتری را اضافه کنید. هر فرد می‌تواند حسابش را شخصی‌سازی کند و داده‌ها را خصوصی نگه دارد.</translation>
 <translation id="4567772783389002344">افزودن واژه</translation>
 <translation id="4568025708905928793">کلید امنیتی درخواست شده است</translation>
@@ -3471,9 +3521,6 @@
 <translation id="4573515936045019911">‏برای ارتقای Linux، اتصال شبکه ضروری است. لطفاً به اینترنت متصل شوید و دوباره امتحان کنید.</translation>
 <translation id="457386861538956877">بیشتر...</translation>
 <translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
-<translation id="457564749856982089">‏با افزودن حساب محل تحصیل به نمایه، دانش‌آموز به‌راحتی می‌تواند به سیستم وب‌سایت‌ها، افزونه‌ها، و برنامه‌ها وارد شود و همچنان تحت کنترل‌های والدین عمل کند. این کار به کودک اجازه نمی‌دهد به نشانک‌ها، گذرواژه‌ها یا دیگر داده‌های مرورگر همگام‌سازی‌شده با حساب محل تحصیل دسترسی داشته باشد.&lt;br&gt;&lt;br&gt;
-    اگر کودکتان از Bravebook در محل تحصیل استفاده کند و می‌خواهید همان تجربه مدرسه را در خانه داشته باشید تا مطمئن شوید کودکتان به همه تکالیف ضروری مدرسه دسترسی دارد، لطفاً از سیستم این حساب Family Link خارج شوید و از صفحه حساب‌های سیستم‌عامل Brave به سیستم حساب محل تحصیل وارد شوید (توجه: کنترل‌های والدین Family Link اعمال نخواهد شد).&lt;br&gt;&lt;br&gt;
-    اگر کودکتان از Bravebook در مدرسه استفاده نمی‌کند یا اگر ترجیح می‌دهید تجربه کودکتان را بااستفاده از Family Link در خانه مدیریت کنید، لطفاً برای افزودن حساب محل تحصیل به این نمایه، روی دکمه «بعدی» کلیک کنید.</translation>
 <translation id="4576541033847873020">مرتبط‌سازی دستگاه بلوتوث</translation>
 <translation id="5069510062541082828">‏برای ادامه ذخیره کردن گذرواژه‌ها در «حساب Brave» خود، هویتتان را به‌تأیید برسانید</translation>
 <translation id="4579453506923101210">فراموش کردن تلفن متصل</translation>
@@ -3548,7 +3595,6 @@
 <translation id="92485231987887895">‏هم‌رسانی فایل با دستگاه‌های Bravebook و Android در اطراف شما</translation>
 <translation id="4657914796247705218">‏سرعت TrackPoint</translation>
 <translation id="465878909996028221">‏فقط پروتکل‌های فایل، http و https برای ویژگی هدایت کردن مرورگر پشتیبانی می‌شوند.</translation>
-<translation id="4659077111144409915">حساب اصلی</translation>
 <translation id="8690837126057549270">‏وقتی به «حساب Brave» خود وارد می‌شوید، این ویژگی روشن می‌شود.</translation>
 <translation id="4660465405448977105">{COUNT,plural, =1{تصویر}one{# تصویر}other{# تصویر}}</translation>
 <translation id="4660476621274971848">نسخه موردانتظار «<ph name="EXPECTED_VERSION"/>» است، اما نسخه «<ph name="NEW_ID"/>» بود</translation>
@@ -3594,6 +3640,7 @@
 <translation id="4699172675775169585">تصاویر و فایل‌های قرار گرفته در حافظه پنهان</translation>
 <translation id="4699357559218762027">(اجرای خودکار)</translation>
 <translation id="4701025263201366865">ورود ولی به سیستم</translation>
+<translation id="4701335814944566468">دیروز مشاهده شده</translation>
 <translation id="4708794300267213770">نمایش صفحه قفل هنگام بیدار شدن از حالت خواب</translation>
 <translation id="4708849949179781599">خروج از <ph name="PRODUCT_NAME"/></translation>
 <translation id="4711638718396952945">بازیابی تنظیمات</translation>
@@ -3652,6 +3699,7 @@
 <translation id="4785719467058219317">شما از کلید امنیتی استفاده می‌کنید که در این وب‌سایت ثبت نشده است</translation>
 <translation id="478708757211772586">استفاده از «بعدی» برای پیشروی در صفحه</translation>
 <translation id="4788092183367008521">لطفاً اتصال شبکه‌تان را بررسی کنید و دوباره امتحان کنید.</translation>
+<translation id="4789550509729954245">نمایش اعلان هنگامی‌که دستگاه‌های اطراف درحال هم‌رسانی هستند</translation>
 <translation id="4791000909649665275"><ph name="NUMBER"/> عکس</translation>
 <translation id="4791037424585594169">(UDP)</translation>
 <translation id="4792290259143007505">‏فعال کردن شتاب TrackPoint</translation>
@@ -3660,6 +3708,7 @@
 <translation id="479536056609751218">‏صفحهٔ وب، فقط HTML</translation>
 <translation id="4796142525425001238">همیشه بازیابی شود</translation>
 <translation id="5526928694260255286">‏پیوست <ph name="BEGIN_LINK"/>گزارش‌های بلوتوث<ph name="END_LINK"/> (داخلی Brave)</translation>
+<translation id="479863874072008121">مدیریت دستگاه‌ها</translation>
 <translation id="4800839971935185386">مرور به‌روزرسانی‌های نام و نماد</translation>
 <translation id="4801448226354548035">پنهان‌سازی حساب‌ها</translation>
 <translation id="4801512016965057443">اجازه دادن فراگردی داده تلفن همراه</translation>
@@ -3677,10 +3726,14 @@
 <translation id="4813136279048157860">تصاویر من</translation>
 <translation id="4813512666221746211">خطای شبکه</translation>
 <translation id="4814378367953456825">نامی برای این اثرانگشت وارد کنید</translation>
+<translation id="481574578487123132">دستگاه‌های پیوندشده</translation>
 <translation id="4816097470512964351"><ph name="DEVICE"/>، جزئیات</translation>
 <translation id="4816336393325437908">{COUNT,plural, =1{۱ نشانک حذف شد}one{{COUNT} نشانک حذف شد}other{{COUNT} نشانک حذف شد}}</translation>
 <translation id="8655084398729487585">‏اعلان‌های «دستیار Brave»</translation>
 <translation id="4820236583224459650">تنظیم به‌عنوان بلیت فعال</translation>
+<translation id="4820771945393916447">‏<ph name="BEGIN_PARAGRAPH1"/>پیش‌از ثبت‌نام، باید «ماژول پلاتفرم مورداعتماد» (TPM) را پاک کنید تا <ph name="DEVICE_OS"/> بتواند مالک این دستگاه شود.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>همچنین می‌توانید دستگاه TPM را به‌طور کامل خاموش کنید. داده‌های شما همچنان بااستفاده از رمزگذاری نرم‌افزار به‌طور ایمن ذخیره می‌شود، اما برخی‌از ویژگی‌های امنیتی مثل گواهینامه‌های دارای پشتیبان سخت‌افزاری غیرفعال می‌شوند.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>می‌توانید با راه‌اندازی مجدد سیستم و وارد شدن به تنظیمات BIOS/UEFI، تنظیمات «ماژول پلاتفرم مورداعتماد» را تغییر دهید. مراحل بسته به مدل دستگاه متفاوت است. برای کسب اطلاعات بیشتر، پیش‌از راه‌اندازی مجدد، اسناد <ph name="DEVICE_OS"/> را در دستگاه دیگری باز کنید: g.co/CR2/TPMHelp<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4821935166599369261">&amp;ایجاد نمایه فعال شد</translation>
 <translation id="4823484602432206655">تغییر و خواندن تنظیمات کاربر و دستگاه</translation>
 <translation id="4824037980212326045">‏پشتیبان‌گیری و بازیابی Linux</translation>
@@ -3691,7 +3744,6 @@
 <translation id="482952334869563894">‏دستگاه‌های USB از فروشنده <ph name="VENDOR_ID"/></translation>
 <translation id="4829768588131278040">تنظیم پین</translation>
 <translation id="4830026649400230050">همه بارگیری‌های واجدشرایط به حساب <ph name="WEB_DRIVE"/> سازمانتان ارسال می‌شود.</translation>
-<translation id="4830121310592638841">وقتی سایتی می‌خواهد پنجره‌ها را باز کند و در صفحه جای‌گذاری کند درخواست شود</translation>
 <translation id="4830502475412647084">درحال نصب به‌روزرسانی سیستم‌عامل</translation>
 <translation id="4830573902900904548">دستگاه <ph name="DEVICE_TYPE"/> شما نمی‌تواند با استفاده از <ph name="NETWORK_NAME"/> به اینترنت متصل شود. لطفاً شبکه دیگری انتخاب کنید. <ph name="LEARN_MORE_LINK_START"/>بیشتر بدانید<ph name="LEARN_MORE_LINK_END"/></translation>
 <translation id="4833683849865011483">۱ چاپگر از این سرور چاپ پیدا شد</translation>
@@ -3706,6 +3758,7 @@
 <translation id="4841741146571978176">یکی از ماشین‌های مجازی ضروری موجود نیست. برای ادامه، لطفاً <ph name="VM_TYPE"/> را راه‌اندازی کنید</translation>
 <translation id="4842976633412754305">این صفحه در تلاش است اسکریپت‌هایی از منابع تأیید نشده بارگیری کند.</translation>
 <translation id="4844333629810439236">صفحه‌کلیدهای دیگر</translation>
+<translation id="6195403640086187022">‏برای افزایش ایمنی، گذرواژه‌ها را قبل‌از ذخیره شدن در «مدیر گذرواژه Brave» در دستگاهتان رمزگذاری می‌کند</translation>
 <translation id="4846680374085650406">شما از توصیه‌های سرپرست سیستم برای این تنظیم پیروی می‌کنید.</translation>
 <translation id="4847902821209177679">‏<ph name="TOPIC_SOURCE"/> <ph name="TOPIC_SOURCE_DESC"/> انتخاب شد، برای انتخاب کردن آلبوم‌های <ph name="TOPIC_SOURCE"/>،‏ Enter را فشار دهید</translation>
 <translation id="9059376008425695864">‏دستیار Brave «‏Ok Brave»</translation>
@@ -3768,6 +3821,7 @@
 <translation id="4900652253009739885">نمی‌توان تنها کلید اختصاص‌یافته به کنش «انتخاب» را برداشت. برای <ph name="RESPONSE"/>، کلیدی را فشار دهید.</translation>
 <translation id="4901309472892185668">وضعیت آزمایش را برای آزمایش <ph name="EXPERIMENT_NAME"/> انتخاب کنید.</translation>
 <translation id="49027928311173603">خط‌مشی بارگیری‌شده از سرور نامعتبر است: <ph name="VALIDATION_ERROR"/>.</translation>
+<translation id="4904511036057277323">‏با ارسال خودکار داده‌های استفاده و عیب‌یابی برای Brave، به بهبود ویژگی‌ها و عملکرد Brave و BraveOS کمک کنید. برخی‌از داده‌های انبوهشی به شرکای Brave و برنامه‌های Android هم کمک خواهند کرد. اگر تنظیم «فعالیت وب و برنامه» برای «حساب Brave» فرزندتان روشن باشد، ممکن است داده‌های Android فرزندتان در «حساب Brave» او ذخیره شود.</translation>
 <translation id="4906490889887219338">راه‌اندازی یا مدیریت دستگاه‌های ذخیره‌سازی متصل به شبکه. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="4907129260985716018">انتخاب کنید این افزونه چه زمانی می‌توانید داده‌های سایتتان را بخواند و تغییر دهد</translation>
 <translation id="4907161631261076876">این فایل معمولاً بارگیری نمی‌شود و ممکن است خطرناک باشد.</translation>
@@ -3781,7 +3835,6 @@
 <translation id="4917385247580444890">قوی</translation>
 <translation id="4918021164741308375"><ph name="ORIGIN"/> می‌خواهد با افزونه «<ph name="EXTENSION_NAME"/>» ارتباط برقرار کند</translation>
 <translation id="4918086044614829423">می‌پذیرم</translation>
-<translation id="4921290200821452703">اطلاعات حساب محل تحصیل ویژه والدین</translation>
 <translation id="4921348630401250116">نوشتار به گفتار</translation>
 <translation id="4921809350408880559">‏اسناد اخیر و پیشنهادی که می‌بینید براساس فعالیت قبلی شما هنگام استفاده از Google Drive است.
         <ph name="BREAK"/>
@@ -3832,7 +3885,6 @@
 <translation id="4972129977812092092">ویرایش چاپگر</translation>
 <translation id="4972164225939028131">گذرواژه اشتباه است</translation>
 <translation id="4972737347717125191">سایت‌ها می‌توانند استفاده از داده‌ها و دستگاه‌های واقعیت مجازی را درخواست کنند</translation>
-<translation id="4973307593867026061">افزودن چاپگرها</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{بی‌صدا کردن سایت}one{بی‌صدا کردن سایت‌ها}other{بی‌صدا کردن سایت‌ها}}</translation>
 <translation id="4977942889532008999">تأیید دسترسی</translation>
 <translation id="4980805016576257426">این افزونه بدافزار دارد.</translation>
@@ -3846,11 +3898,9 @@
 <translation id="499165176004408815">استفاده از حالت کنتراست بالا</translation>
 <translation id="4992458225095111526">‏تأیید Powerwash</translation>
 <translation id="4992473555164495036">سرپرست سیستم روش‌های ورودی دردسترس را محدود کرده است.</translation>
+<translation id="4992984395680162305">این دستگاه‌ها با اسکن کردن رمزینه پاسخ‌سریع پیوند شده‌اند.</translation>
 <translation id="4994474651455208930">سایت‌ها اجازه دارند درخواست کنند کنترل کننده پیش‌فرض برای پروتکل ها شوند</translation>
 <translation id="4994754230098574403">درحال راه‌اندازی</translation>
-<translation id="4995131849631312693">‏<ph name="BEGIN_PARAGRAPH1"/>پیش‌از ثبت‌نام، باید TPM را پاک کنید تا <ph name="DEVICE_OS"/> بتواند مالک این دستگاه شود.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>همچنین می‌توانید دستگاه TPM را به‌طور کامل خاموش کنید. داده‌های شما همچنان بااستفاده از رمزگذاری نرم‌افزار به‌طور ایمن ذخیره می‌شود، اما برخی‌از ویژگی‌های امنیتی مثل گواهینامه‌های دارای پشتیبان سخت‌افزاری غیرفعال می‌شود.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>می‌توانید با راه‌اندازی مجدد سیستم و وارد شدن به تنظیمات BIOS/UEFI سیستم، تنظیمات TPM را تغییر دهید. مراحل بسته به مدل دستگاه متفاوت است. برای اطلاعات بیشتر، پیش‌از راه‌اندازی مجدد، اسناد <ph name="DEVICE_OS"/> را در دستگاه دیگری باز کنید: [URL link]<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4996851818599058005">{NUM_VMS,plural, =0{هیچ ماشین مجازی <ph name="VM_TYPE"/> پیدا نشد}=1{‏۱ ماشین مجازی <ph name="VM_TYPE"/> پیدا شد: <ph name="VM_NAME_LIST"/>}one{‏{NUM_VMS} ماشین مجازی <ph name="VM_TYPE"/> پیدا شد: <ph name="VM_NAME_LIST"/>}other{‏{NUM_VMS} ماشین مجازی <ph name="VM_TYPE"/> پیدا شد: <ph name="VM_NAME_LIST"/>}}</translation>
 <translation id="4997086284911172121">اتصال اینترنت ندارید.</translation>
 <translation id="4998430619171209993">روشن</translation>
@@ -3871,6 +3921,7 @@
 <translation id="5018207570537526145">باز کردن وب‌سایت افزونه</translation>
 <translation id="5018526990965779848">‏داده‌های استفاده و عیب‌یابی را ارسال کنید. با ارسال خودکار داده‌های تشخیص عیب و داده‌های استفاده از دستگاه و برنامه به Brave، به بهبود تجربه استفاده از Android کمک کنید. این داده‌ها به بهبود پایداری سیستم و برنامه و موارد دیگر کمک خواهد کرد. بعضی داده‌های انبوهشی نیز به برنامه‌ها و شرکای Brave (مانند «برنامه‌نویس‌های Android») کمک می‌کند. اگر تنظیم «فعالیت وب و برنامه» تکمیلی روشن باشد، ممکن است این داده‌ها در «حساب Brave» شما ذخیره شود.</translation>
 <translation id="5021750053540820849">هنوز به‌روزرسانی نشده است</translation>
+<translation id="5024511550058813796">سابقه‌تان در همه دستگاه‌های همگام‌سازی‌شده دردسترس خواهد بود تا بتوانید آنچه را انجام می‌دادید ادامه دهید</translation>
 <translation id="5026492829171796515">‏برای افزودن حساب Brave، به سیستم وارد شوید</translation>
 <translation id="5026806129670917316">‏روشن کردن Wi-Fi</translation>
 <translation id="5026874946691314267">این مورد دیگر نشان داده نشود.</translation>
@@ -3885,13 +3936,11 @@
 <translation id="5036662165765606524">به هیچ سایتی اجازه داده نشود چند فایل را به‌طور خودکار بارگیری کند</translation>
 <translation id="5037676449506322593">انتخاب همه</translation>
 <translation id="5038022729081036555">می‌توانید فردا <ph name="TIME_LIMIT"/> از آن استفاده کنید.</translation>
-<translation id="5038863510258510803">در حال فعال‌سازی...</translation>
 <translation id="1246634473640425087">‏در «حساب Brave» خود گذرواژه‌های ذخیره‌شده را مشاهده و مدیریت کنید</translation>
 <translation id="5039804452771397117">اجازه دادن</translation>
 <translation id="5040823038948176460">تنظیمات محتوای دیگر</translation>
 <translation id="5043440033854483429">نام می‌تواند از حرف، عدد، و خط تیره (-) تشکیل شود و باید بین ۱ تا ۱۵ نویسه داشته باشد.</translation>
 <translation id="5043913660911154449">‏یا PPD چاپگرتان را تعیین کنید <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
-<translation id="5044527779574548527">این مرحله دیگر نشان داده نشود</translation>
 <translation id="5045550434625856497">گذرواژه نادرست</translation>
 <translation id="504561833207953641">درحال باز شدن در جلسه مرورگر کنونی.</translation>
 <translation id="5047421709274785093">استفاده از حسگرهای نوری و حرکتی توسط سایت‌ها مسدود شود</translation>
@@ -3940,6 +3989,7 @@
 <translation id="5090637338841444533">اجازه ندارد موقعیت دوربین را ردیابی کند</translation>
 <translation id="5094721898978802975">ارتباط با برنامه‌های بومی همکار</translation>
 <translation id="5097002363526479830">اتصال ناموفق به شبکه "<ph name="NAME"/>":<ph name="DETAILS"/></translation>
+<translation id="5097306410549350357">درباره استفاده از مکان بیشتر بدانید</translation>
 <translation id="5097874180538493929">کلیک کردن خودکار هنگام متوقف شدن نشانگر</translation>
 <translation id="5101839224773798795">کلیک خودکار با توقف مرورگر</translation>
 <translation id="510695978163689362">‏<ph name="USER_EMAIL"/> تحت نظارت Family Link است. برای دسترسی به منابع مدرسه با نظارت والدین، می‌توانید حساب‌های محل تحصیل اضافه کنید.</translation>
@@ -3963,10 +4013,10 @@
 <translation id="5123433949759960244">بسکتبال</translation>
 <translation id="5125751979347152379">نشانی وب نامعتبر است.</translation>
 <translation id="5126611267288187364">مشاهده تغییرات</translation>
+<translation id="5127242257756472928">اجازه ندارد برای باز کردن و جای‌گذاری پنجره‌ها از اطلاعات صفحه‌نمایش‌هایتان استفاده کند</translation>
 <translation id="5127620150973591153">شناسه اتصال امن: <ph name="TOKEN"/></translation>
 <translation id="5127805178023152808">همگام‌سازی خاموش است</translation>
 <translation id="5127881134400491887">مدیریت اتصالات شبکه</translation>
-<translation id="5128774403617662387">‏پیش‌از شروع، حتماً از داده‌هایتان پشتیبان‌گیری کنید. نصب <ph name="DEVICE_OS"/> داده‌های دیسک سخت را بازنویسی خواهد کرد. برای اطلاعات بیشتر، به g.co/TBD بروید.</translation>
 <translation id="512903556749061217">متصل</translation>
 <translation id="5130080518784460891">Eten</translation>
 <translation id="5130675701626084557">نمایه را نمی‌توان بارگیری کرد. لطفاً بعداً دوباره امتحان کنید یا برای راهنمایی با شرکت مخابراتی تماس بگیرید.</translation>
@@ -4008,6 +4058,7 @@
 <translation id="5171343362375269016">حافظه جابجاشده</translation>
 <translation id="5172855596271336236">۱ چاپگر مدیریت‌شده وجود دارد.</translation>
 <translation id="5173668317844998239">اثرانگشت به کلید امنیتی اضافه کنید یا اثرهای انگشت ذخیره‌شده در آن را حذف کنید</translation>
+<translation id="5174169235862638850">گذرواژه در بریده‌دان کپی شد</translation>
 <translation id="5175379009094579629">نام دستگاه نامعتبر است. برای امتحان مجدد نام دستگاه معتبری وارد کنید.</translation>
 <translation id="5177479852722101802">ادامه مسدود کردن دسترسی به دوربین و میکروفن</translation>
 <translation id="5177549709747445269">از داده تلفن همراه استفاده می‌کنید</translation>
@@ -4073,6 +4124,7 @@
 <translation id="5243522832766285132">چند لحظه دیگر دوباره امتحان کنید</translation>
 <translation id="5244474230056479698">درحال همگام‌سازی در <ph name="EMAIL"/></translation>
 <translation id="5245610266855777041">شروع‌به‌کار با حساب مدرسه</translation>
+<translation id="3945354317033538684">‏از این دستگاه‌ها می‌توان به‌عنوان کلید امنیتی استفاده کرد زیرا در آن‌ها به سیستم Brave وارد شده‌اید.</translation>
 <translation id="5246282308050205996"><ph name="APP_NAME"/> خراب شده است. برای راه‌اندازی مجدد برنامه بر روی این بالون کلیک کنید.</translation>
 <translation id="5247051749037287028">نام نمایشی (اختیاری)</translation>
 <translation id="5249624017678798539">مرورگر پیش از تکمیل بارگیری ناگهان خارج شد.</translation>
@@ -4222,6 +4274,7 @@
 <translation id="5407167491482639988">نامفهوم</translation>
 <translation id="5408750356094797285">بزرگ‌نمایی: <ph name="PERCENT"/></translation>
 <translation id="8701791090100080864">‏از «حساب Brave» شما.</translation>
+<translation id="5413640305322530561">درباره داده‌های استفاده و عیب‌یابی بیشتر بدانید</translation>
 <translation id="5414198321558177633">درحال بازخوانی فهرست نمایه. ممکن است چند دقیقه طول بکشد.</translation>
 <translation id="5414566801737831689">خواندن نمادهای وب‌سایت‌هایی که بازدید می‌کنید</translation>
 <translation id="5417312524372586921">طرح‌های زمینه مرورگر</translation>
@@ -4299,6 +4352,7 @@
 <translation id="5490721031479690399">قطع اتصال دستگاه بلوتوث</translation>
 <translation id="5490798133083738649">‏اجازه دادن به Linux برای دسترسی به میکروفون</translation>
 <translation id="549211519852037402">بژ و سفید</translation>
+<translation id="5492637351392383067">رمزگذاری درون‌دستگاهی</translation>
 <translation id="5493792505296048976">صفحه روشن است</translation>
 <translation id="5494016731375030300">برگه‌هایی که اخیراً بسته شده‌اند</translation>
 <translation id="5494362494988149300">پس از &amp;تکمیل باز شود</translation>
@@ -4323,12 +4377,10 @@
 <translation id="5502915260472117187">کودک</translation>
 <translation id="5503356662318814623">ارسال پیام</translation>
 <translation id="5503982651688210506">ادامه دهید به <ph name="HOST"/> اجازه دهید از دوربینتان استفاده کند و آن را حرکت دهد، و از میکروفونتان استفاده کند</translation>
-<translation id="5504909642107847870">مرور امنیتی و حریم‌خصوصی</translation>
 <translation id="5505264765875738116">سایت‌ها نمی‌توانند برای ارسال اعلان درخواست دهند</translation>
 <translation id="5505307013568720083">جوهر تمام شده است</translation>
 <translation id="5505794066310932198">روشن/خاموش کردن «فرمانده»</translation>
 <translation id="5507756662695126555">انکارناپذیری</translation>
-<translation id="5507795078844206688">‏نشانی وب صفحه‌هایی که بازدید می‌کنید، مثلاً https://www.google.com</translation>
 <translation id="5509693895992845810">ذخیره &amp;به‌عنوان...</translation>
 <translation id="5509914365760201064">صادرکننده: <ph name="CERTIFICATE_AUTHORITY"/></translation>
 <translation id="6849870115130610913">‏دریافت توضیحات تصویر از Brave</translation>
@@ -4383,8 +4435,10 @@
 <translation id="6363797201514053536">‏جستجوی Brave یا تایپ نشانی وب</translation>
 <translation id="5565735124758917034">فعال</translation>
 <translation id="5568069709869097550">ورود به سیستم ممکن نیست</translation>
+<translation id="5571066253365925590">بلوتوث فعال شد</translation>
 <translation id="5571092938913434726">کنترل‌های رسانه جهانی</translation>
 <translation id="5571832155627049070">سفارشی کردن نمایه</translation>
+<translation id="5572648434713976849">پیشنهادهای بهبودیافته‌ای در نوار نشانی دریافت خواهید کرد</translation>
 <translation id="1254756632288991504">‏لطفاً Brave را باز کنید و به سیستم آن وارد شوید تا Brave بتواند بررسی کند آیا مجاز به دسترسی به این سایت هستید یا خیر.</translation>
 <translation id="5575528586625653441">مشکلی در رابطه با درخواست ثبت حالت نمایشی پیش آمد.</translation>
 <translation id="557722062034137776">‏بازنشانی دستگاهتان بر حساب‌های Brave شما یا هر گونه داده همگام‌سازی شده با این حساب‌ها تأثیری نمی‌گذارد. اگرچه، همه فایل‌هایی که به‌صورت محلی در دستگاهتان ذخیره شده‌اند، حذف خواهند شد.</translation>
@@ -4445,6 +4499,7 @@
 <translation id="562935524653278697">سرپرست شما همگام‌سازی نشانک‌ها، سابقه، گذرواژه‌ها و سایر تنظیماتتان را غیرفعال کرده است.</translation>
 <translation id="5631017369956619646">‏میزان مصرف CPU</translation>
 <translation id="5632059346822207074">درخواست اجازه ارائه شده است؛ برای پاسخ دادن، کلید «مهار + جلو» را فشار دهید</translation>
+<translation id="5632485077360054581">نمایش روش انجام کار</translation>
 <translation id="5632566673632479864">حسابتان (<ph name="EMAIL"/>) دیگر به‌عنوان حساب اصلی مجاز نیست. از آن‌جایی‌که این حساب توسط <ph name="DOMAIN"/> مدیریت می‌شود، نشانک‌ها، سابقه، گذرواژه‌ها و دیگر تنظیماتتان از این دستگاه پاک می‌شوند.</translation>
 <translation id="5632592977009207922">درحال بارگیری، <ph name="PERCENT_REMAINING"/>% باقی‌مانده است</translation>
 <translation id="563371367637259496">دستگاه همراه</translation>
@@ -4457,10 +4512,6 @@
 <translation id="5642508497713047">‏امضاکننده CRL</translation>
 <translation id="5643321261065707929">شبکه محدود</translation>
 <translation id="5643620609347735571">پاک کردن و ادامه دادن</translation>
-<translation id="5644722238761632789">‏<ph name="BEGIN_PARAGRAPH1"/>با ارسال خودکار گزارش‌های خرابی و همچنین داده‌های استفاده و عیب‌یابی به Brave، به بهبود ویژگی‌ها و عملکرد سیستم‌عامل Brave و BraveOS کمک کنید.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>هرزمان خواستید می‌توانید اجازه دادن به این گزارش‌ها را در تنظیمات دستگاه BraveOS، شروع یا متوقف کنید. اگر سرپرست دامنه هستید، می‌توانید این تنظیم را در «کنسول سرپرست» تغییر دهید.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>خاموش کردن این ویژگی بر توانایی دستگاه در ارسال اطلاعات موردنیاز سرویس‌های ضروری (مانند امنیت و به‌روزرسانی‌های سیستم) تأثیر نمی‌گذارد.<ph name="END_PARAGRAPH3"/>
-    <ph name="BEGIN_PARAGRAPH4"/>اگر تنظیم «فعالیت وب و برنامه» برای «حساب Brave» شما روشن باشد، ممکن است داده‌های Android در حسابتان ذخیره شود. می‌توانید در account.google.com، داده‌هایتان را ببینید، حذف کنید، و تنظیمات حسابتان را تغییر دهید.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="5646376287012673985">مکان</translation>
 <translation id="5646558797914161501">تاجر</translation>
 <translation id="5648166631817621825">۷ روز گذشته</translation>
@@ -4474,7 +4525,6 @@
 <translation id="5659593005791499971">ایمیل</translation>
 <translation id="5659833766619490117">ترجمه این صفحه امکان‌پذیر نیست</translation>
 <translation id="5662513737565158057">‏نحوه کارکرد برنامه‌های Linux را تغییر دهید.</translation>
-<translation id="5667490069342183561">‏Brave هیچ مسئولیتی درقبال ازدست رفتن داده ندارد، و <ph name="DEVICE_OS"/> ممکن است در مدل‌های تأییدنشده کار نکند. برای اطلاعات بیشتر، به g.co/TBD بروید.</translation>
 <translation id="5667546120811588575">‏درحال راه‌اندازی Google Play...</translation>
 <translation id="5668351004957198136">ناموفق</translation>
 <translation id="5671641761787789573">تصویرها مسدود شدند</translation>
@@ -4553,6 +4603,7 @@
 <translation id="5757375109985023827">برگه‌ای برای پیش‌نمایش انتخاب کنید</translation>
 <translation id="5758631781033351321">فهرست مطالعه را اینجا خواهید دید</translation>
 <translation id="5759728514498647443">اسنادی که از طریق <ph name="APP_NAME"/> برای چاپ ارسال می‌کنید، می‌توانند توسط <ph name="APP_NAME"/> خوانده شوند.</translation>
+<translation id="5762787084360227629">‏وارد کردن اطلاعات «حساب Brave»</translation>
 <translation id="5763751966069581670">‏هیچ دستگاه USB پیدا نشد</translation>
 <translation id="5764483294734785780">ذ&amp;خیره فایل صوتی به‌عنوان...</translation>
 <translation id="57646104491463491">تاریخ تغییر</translation>
@@ -4582,6 +4633,7 @@
 <translation id="5789643057113097023">.</translation>
 <translation id="5790085346892983794">موفق شدید</translation>
 <translation id="5790651917470750848">بازارسال درگاه ازقبل موجود است</translation>
+<translation id="5792295754950501287">کنش‌های بیشتر برای <ph name="CARD_DESCRIPTION"/></translation>
 <translation id="5792728279623964091">لطفاً روی دکمه روشن/خاموش ضربه بزنید</translation>
 <translation id="5793339252089865437">بارگیری به‌روزرسانی ازطریق شبکه تلفن می‌تواند به کسر هزینه‌های مازاد منجر شود.</translation>
 <translation id="5794034487966529952">در میزکار <ph name="DESK_TITLE"/>، <ph name="NUM_BROWSERS"/> پنجره مرورگر باز است</translation>
@@ -4653,6 +4705,7 @@
 <translation id="5865508026715185451"><ph name="APP_NAME"/> به‌زودی متوقف می‌شود</translation>
 <translation id="586567932979200359">شما <ph name="PRODUCT_NAME"/> را از تصویر دیسک آن اجرا می‌کنید. با نصب آن روی رایانه می‌توانید آن را بدون تصویر دیسک اجرا کنید، و مطمئن شوید که به روز نگه داشته خواهد شد.</translation>
 <translation id="6538479075382111079">‏به‌طور خودکار آمار کاربرد و گزارش‌های خرابی را به Brave ارسال می‌کند</translation>
+<translation id="5865848066829891215">مشکلاتی در ارتباطات شبکه وجود دارد</translation>
 <translation id="5867841422488265304">نشانی وب را جستجو یا تایپ کنید</translation>
 <translation id="5869029295770560994">بله متوجه شدم</translation>
 <translation id="5869522115854928033">گذرواژه‌های ذخیره‌شده</translation>
@@ -4768,6 +4821,7 @@
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{برای اطمینان از اینکه همچنان می‌توانید به مرور وب بپردازید، از سرپرستتان بخواهید این برنامه را بردارد.}one{برای اطمینان از اینکه همچنان می‌توانید به مرور وب بپردازید، از سرپرستتان بخواهید این برنامه‌ها را بردارد.}other{برای اطمینان از اینکه همچنان می‌توانید به مرور وب بپردازید، از سرپرستتان بخواهید این برنامه‌ها را بردارد.}}</translation>
 <translation id="5997337190805127100">درباره دسترسی به سایت بیشتر بدانید</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> نتیجه برای «<ph name="SEARCH_TEXT"/>»</translation>
+<translation id="6002122790816966947">دستگاه‌های شما</translation>
 <translation id="6002210667729577411">انتقال گروه به پنجره‌ای جدید</translation>
 <translation id="4448813628683709282">‏گذرواژه از «حساب Brave» حذف شده است</translation>
 <translation id="6002458620803359783">صداهای برگزیده</translation>
@@ -4886,6 +4940,7 @@
 <translation id="6112931163620622315">تلفن را بررسی کنید</translation>
 <translation id="8589850327914845460">‏تنظیم موتور جستجوی پیش‌فرض برای مرورگر Brave و «راه‌انداز <ph name="DEVICE_TYPE"/>»</translation>
 <translation id="6113942107547980621">‏برای استفاده از Smart Lock، به نمایه کاربر اصلی در تلفن جابه‌جا شوید</translation>
+<translation id="611684075852771314">این گزارش‌ها با این عنوان در «فایل‌های من» ذخیره شده است:</translation>
 <translation id="6116921718742659598">تغییر تنظیمات زبان و ورودی</translation>
 <translation id="6119927814891883061">تغییر نام دستگاه به <ph name="DEVICE_NAME"/></translation>
 <translation id="6120205520491252677">سنجاق کردن این صفحه به صفحه شروع…</translation>
@@ -5130,12 +5185,17 @@
 <translation id="6374469231428023295">دوباره امتحان کنید</translation>
 <translation id="6377268785556383139">۱ نتیجه برای «<ph name="SEARCH_TEXT"/>»</translation>
 <translation id="6380143666419481200">پذیرش و ادامه</translation>
+<translation id="6382616130475191723">اجازه دارد <ph name="SITE_NAME"/> را بخواند و تغییر دهد</translation>
 <translation id="6382958439467370461">میان‌بر فعالی وجود ندارد</translation>
 <translation id="638418309848716977">پیوندهای پشتیبانی‌شده</translation>
 <translation id="6384275966486438344">تغییر تنظیمات جستجویتان به: <ph name="SEARCH_HOST"/></translation>
 <translation id="63849924261838903">{NUM_TABS,plural, =1{گروه بدون نام - ۱ برگه}one{گروه بدون نام - # برگه}other{گروه بدون نام - # برگه}}</translation>
 <translation id="6385149369087767061">به اینترنت متصل شوید و دوباره امتحان کنید</translation>
 <translation id="6385543213911723544">سایت‌ها می‌توانند داده‌های کوکی را ذخیره کرده و بخوانند</translation>
+<translation id="6385599849914981574">‏<ph name="BEGIN_PARAGRAPH1"/>اگر به دستگاه‌های BraveOS اجازه دهید گزارش‌های خودکار ارسال کند، به ما کمک می‌کنید آنچه را باید در BraveOS درست کنیم و بهبود ببخشیم اولویت‌بندی کنیم. این گزارش‌ها می‌تواند شامل مواردی ازاین‌قبیل باشد: از کدام ویژگی‌ها استفاده می‌کنید و معمولاً از چه مقدار حافظه استفاده می‌کنید.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>هرزمان خواستید می‌توانید مجاز بودن این گزارش‌ها را در تنظیمات دستگاه Brave شروع یا متوقف کنید. اگر سرپرست دامنه هستید، می‌توانید این تنظیم را در «کنسول سرپرست» تغییر دهید.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>خاموش کردن این ویژگی بر توانایی دستگاه در ارسال اطلاعات موردنیاز سرویس‌های ضروری، مثل امنیت و به‌روزرسانی‌های سیستم، تأثیر نمی‌گذارد.<ph name="END_PARAGRAPH3"/>
+    <ph name="BEGIN_PARAGRAPH4"/>اگر مالک دستگاه «ارسال داده‌های استفاده و عیب‌یابی» را روشن کند، ممکن است گزارش‌های خرابی نیز برای Brave بارگذاری شود.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="6385994920693662133">هشدار - گزارش‌گیری با جزئیات فعال است؛ ممکن است گزارش‌های زیر شامل نشانی‌های وب یا اطلاعات حساس دیگر باشند. لطفاً این اطلاعات را مرور کنید و مطمئن شوید مشکلی برای ارسال آن‌ها ندارید.</translation>
 <translation id="6387674443318562538">تقسیم عمودی</translation>
 <translation id="6388429472088318283">زبان‌های جستجو</translation>
@@ -5192,7 +5252,6 @@
 <translation id="6444909401984215022"><ph name="WINDOW_TITLE"/> - اسکن بلوتوث فعال است</translation>
 <translation id="6445450263907939268">اگر این تغییرات مدنظر شما نبود، می‌توانید تنظیمات قبلی‌تان را بازیابی کنید.</translation>
 <translation id="6446213738085045933">ایجاد میان‌بر دسک تاپ</translation>
-<translation id="6447210166804596538">مهم‌ترین کنترل‌های امنیتی و حریم‌خصوصی را در یک‌جا مرور کنید</translation>
 <translation id="6447842834002726250">کوکی‌ها</translation>
 <translation id="6450876761651513209">تغییر تنظیمات مربوط به حریم‌خصوصی شما</translation>
 <translation id="6451344358166983408">سایت یا صفحه</translation>
@@ -5206,6 +5265,7 @@
 <translation id="6455264371803474013">در سایت‌هایی خاص</translation>
 <translation id="6455894534188563617">پوشه &amp;جدید</translation>
 <translation id="645705751491738698">ادامه مسدودکردن جاوا اسکریپت</translation>
+<translation id="6458347417133445570">نمایش جزئیات مربوط به مجاز کردن همه کوکی‌ها</translation>
 <translation id="6458701200018867744">بارگذاری انجام نشد (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="6459488832681039634">استفاده از انتخاب برای یافتن</translation>
 <translation id="6459799433792303855">پنجره فعال به نمایشگر دیگری منتقل شد.</translation>
@@ -5252,6 +5312,7 @@
 <translation id="6504601948739128893">اجازه ندارد از قلم‌های نصب‌شده در دستگاه استفاده کند</translation>
 <translation id="6504611359718185067">برای اضافه کردن چاپگر به اینترنت متصل شوید</translation>
 <translation id="6506374932220792071">‏امضای X9.62 ECDSA با SHA-256</translation>
+<translation id="6507936476364432879">‏با ارسال خودکار داده‌های استفاده و عیب‌یابی برای Brave، به بهبود ویژگی‌ها و عملکرد Brave و BraveOS کمک کنید.</translation>
 <translation id="6508248480704296122">مرتبط با <ph name="NAME_PH"/></translation>
 <translation id="6508261954199872201">برنامه: <ph name="APP_NAME"/></translation>
 <translation id="6509207748479174212">گواهینامه رسانه</translation>
@@ -5272,9 +5333,6 @@
 <translation id="6528179044667508675">مزاحم نشوید</translation>
 <translation id="3700405816184340252">‏سابقه Brave</translation>
 <translation id="6530186581263215931">این تنظیمات توسط سرپرست سیستم شما اعمال شده است</translation>
-<translation id="653031671361866334">‏<ph name="BEGIN_PARAGRAPH1"/>برای ارائه بهترین تجربه، <ph name="DEVICE_OS"/> داده‌های سخت‌افزار مربوط دستگاه‌ها را جمع‌آوری می‌کند و آن‌ها را با Brave هم‌رسانی می‌کند تا مشخص شود چه به‌روزرسانی‌هایی باید ارائه شود. درصورت تمایل، می‌توانید به Brave اجازه دهید از این داده‌ها برای اهداف تکمیلی مثل پشتیبانی و بهبود بخشیدن به سرویس و تجربه <ph name="DEVICE_OS"/> استفاده کند.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>می‌توانید به سیستم این دستگاه وارد شوید و به بخش CLOUDREADY_HARDWARE_INFO در Brave بروید تا این موارد را ببینید: داده‌های ارسال‌شده به Brave برای فیلتر کردن به‌روزرسانی و همچنین موارد دیگری که هم‌رسانی داده با Brave را انتخاب می‌کنید.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>برای اطلاع جزئیات بیشتر درخصوص داده‌هایی ممکن است <ph name="DEVICE_OS"/> با Brave هم‌رسانی کند و نحوه استفاده از آن‌ها، به g.co/xxxxx بروید<ph name="END_PARAGRAPH3"/></translation>
 <translation id="6531282281159901044">حفظ فایل خطرناک</translation>
 <translation id="6532101170117367231">‏‫ذخیره در Google Drive</translation>
 <translation id="6532106788206463496">ذخیره تغییرات</translation>
@@ -5344,13 +5402,13 @@
 <translation id="6596325263575161958">گزینه‌های رمزگذاری</translation>
 <translation id="6596816719288285829">‏نشانی IP</translation>
 <translation id="6597017209724497268">نمونه‌ها</translation>
-<translation id="6597148444736186483">برای خروج از حساب اصلی در این دستگاه، روی زمان صفحه‌نمایش کلیک کنید. در منویی که نمایش داده می‌شود، روی «خروج از سیستم» کلیک کنید.</translation>
 <translation id="6597331566371766302">سرپرستتان افزونه‌های زیر را مسدود کرده است:</translation>
 <translation id="6601395831301182804">‏مایلید BraveVox (صفحه خوان داخلی Chrome OS) را فعال کنید؟ اگر مایلید، کلید فاصله را فشار دهید.</translation>
 <translation id="6601612474695404578">برخی سایت‌ها برای بارگیری صفحاتشان از کوکی‌های شخص ثالث استفاده می‌کنند. اگر سایتی کار نمی‌کند، می‌توانید کوکی‌ها را مجاز کنید.</translation>
 <translation id="6602937173026466876">دسترسی به چاپگرها</translation>
 <translation id="6602956230557165253">از کلیدهای پیکان سمت راست و چپ برای پیمایش استفاده کنید.</translation>
 <translation id="6602998402703530379">دستگاه <ph name="DEVICE_INDEX"/> از <ph name="DEVICE_COUNT"/>، <ph name="DEVICE_NAME"/>، دوربین فیلم‌برداری.</translation>
+<translation id="6603185457265641428">انتخاب کنید سابقه همگام‌سازی شود یا نه</translation>
 <translation id="6605847144724004692">قبلاً هیچ کاربری رده‌بندی نکرده است.</translation>
 <translation id="6606671997164410857">به‌نظر می‌رسد قبلاً «دستیار» را در دستگاه دیگری راه‌اندازی کرده‌اید. با روشن کردن «اطلاعات روی صفحه» در این دستگاه، بهره بیشتری از «دستیار» ببرید.</translation>
 <translation id="6607831829715835317">ا&amp;بزارهای بیشتر</translation>
@@ -5388,6 +5446,7 @@
 <translation id="6644846457769259194">درحال به‌روزرسانی دستگاه شما (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="6645437135153136856">‏دستگاه Google Cloud Print انتخاب‌شده دیگر پشتیبانی نمی‌شود. <ph name="BR"/> چاپگر را در تنظیمات سیستم رایانه‌تان راه‌اندازی کنید.</translation>
 <translation id="6647228709620733774">‏نشانی وب ابطال ارائه دهنده مجوز Netscape</translation>
+<translation id="7556503430569358637">‏نشانی‌های وبی که بازدید می‌کنید به Brave ارسال می‌شود تا پیش‌بینی شود ممکن است بعداً از چه سایت‌هایی بازدید کنید</translation>
 <translation id="6648911618876616409">به‌روزرسانی مهمی برای نصب آماده است. برای شروع به کار، به سیستم وارد شوید.</translation>
 <translation id="6649018507441623493">یک لحظه…</translation>
 <translation id="3733807065376082271">‏گذرواژه شما برای <ph name="WEBSITE"/> در این دستگاه و «حساب Brave» شما ذخیره شده است. می‌خواهید کدام یک را حذف کنید؟</translation>
@@ -5547,7 +5606,6 @@
 <translation id="6812349420832218321"><ph name="PRODUCT_NAME"/> را نمی‌توان به‌عنوان ریشه اجرا کرد.</translation>
 <translation id="6812841287760418429">حفظ تغییرات</translation>
 <translation id="6813907279658683733">تمام صفحه</translation>
-<translation id="8345824141715130645">‏آنچه با Brave هم‌رسانی می‌کنید</translation>
 <translation id="6817174620439930047">‏اگر سایتی می‌خواهد از پیام‌های انحصاری سیستم برای دسترسی به دستگاه‌های MIDI استفاده کند سؤال شود (توصیه می‌شود)</translation>
 <translation id="6818198425579322765">زبان صفحه موردنظر برای ترجمه</translation>
 <translation id="6818802132960437751">مجهز به محافظ دربرابر ویروس</translation>
@@ -5568,8 +5626,8 @@
 <translation id="6833996806551876956">دوره آزمایشی «جعبه ایمنی حریم‌خصوصی»</translation>
 <translation id="6834652994408928492">«حالت تاریک» هنگام غروب آفتاب به‌طور خودکار روشن خواهد شد</translation>
 <translation id="6835762382653651563">برای به‌روزرسانی <ph name="DEVICE_TYPE"/>، لطفاً به اینترنت وصل شوید.</translation>
-<translation id="6838034009068684089">وقتی سایتی می‌خواهد پنجره‌ها را باز کند و در صفحه جای‌گذاری کند سؤال شود (توصیه می‌شود)</translation>
 <translation id="6839225236531462745">خطای حذف مجوز</translation>
+<translation id="6839882458129755986">‏Brave مسئولیتی درقبال ازدست رفتن داده ندارد، و <ph name="DEVICE_OS"/> ممکن است در مدل‌های تأییدنشده کار نکند. برای کسب اطلاعات بیشتر، به g.co/CR2/InstallGuide بروید.</translation>
 <translation id="6839916869147598086">ورود به سیستم تغییر کرده است</translation>
 <translation id="6840155290835956714">پیش از ارسال سؤال شود</translation>
 <translation id="6840184929775541289">یک ارائه دهنده مجوز نیست</translation>
@@ -5611,7 +5669,6 @@
 <translation id="6876469544038980967">مفید نبودند</translation>
 <translation id="6878422606530379992">دسترسی به حسگرها مجاز شده است</translation>
 <translation id="6880587130513028875">تصاویر این صفحه مسدود شده‌اند.</translation>
-<translation id="6882836635272038266">محافظت استاندارد دربرابر وب‌سایت‌ها، بارگیری‌ها، و افزونه‌هایی که خطرناک بودنشان مشخص شده است.</translation>
 <translation id="6883319974225028188">وای! سیستم نتوانست پیکربندی دستگاه را ذخیره کند.</translation>
 <translation id="6884474387073389421">مطمئنید می‌خواهید داده‌های ورود به سیستم انتخاب‌شده را حذف کنید؟</translation>
 <translation id="6885771755599377173">پیش‌نمایش اطلاعات سیستم</translation>
@@ -5656,6 +5713,7 @@
 <translation id="6930036377490597025">کلید امنیتی خارجی یا حسگر داخلی</translation>
 <translation id="6930161297841867798">{NUM_EXTENSIONS,plural, =1{یک افزونه رد شد}one{# افزونه رد شد}other{# افزونه رد شد}}</translation>
 <translation id="6930321203306643451">ارتقا انجام شد</translation>
+<translation id="6931690462168617033">قدرت کلیک</translation>
 <translation id="6935286146439255109">سینی کاغذ موجود نیست</translation>
 <translation id="693807610556624488">عملیات نوشتن از حداکثر طول مجاز ویژگی برای این دستگاه بیشتر می‌شود: «<ph name="DEVICE_NAME"/>».</translation>
 <translation id="6938386202199793006">۱ چاپگر ذخیره‌نشده دارید.</translation>
@@ -5683,6 +5741,7 @@
 <translation id="6965382102122355670">قبول</translation>
 <translation id="6965648386495488594">درگاه</translation>
 <translation id="6965978654500191972">دستگاه</translation>
+<translation id="6966370001499648704">تلفن‌هایی را که به‌عنوان کلید امنیتی استفاده می‌کنید کنترل کنید</translation>
 <translation id="6967430741871315905">امکان بررسی مجاز بودن یا نبودن دستگاه وجود ندارد</translation>
 <translation id="696780070563539690">سایت‌ها نمی‌توانند بااستفاده از کوکی‌ها فعالیت مرور شما را (مثلاً برای شخصی‌سازی آگهی‌ها) در سایت‌های مختلف ببینند</translation>
 <translation id="6968288415730398122">برای پیکربندی قفل صفحه، گذرواژه‌تان را وارد کنید</translation>
@@ -5695,6 +5754,7 @@
 <translation id="6972887130317925583">گذرواژه لورفته باموفقیت تغییر کرد. هرزمان خواستید گذواژه‌هایتان را در <ph name="SETTINGS"/> بررسی کنید.</translation>
 <translation id="697312151395002334">اجازه دارد بالاپر ارسال کند و از هدایت‌ها استفاده کند</translation>
 <translation id="6973611239564315524">‏ارتقا به Debian 10‏ (Buster) در دسترس است</translation>
+<translation id="5351075736722780148">‏اگر موتور جستجوی پیش‌فرضتان هم Brave باشد، پیشنهادهای بهتر و مرتبط‌تری درباره موضوع خواهید دید</translation>
 <translation id="6974609594866392343">حالت نمایشی آفلاین</translation>
 <translation id="697508444536771064">‏خاموش کردن Linux</translation>
 <translation id="6977739184256564679">دستگاه <ph name="DEVICE_INDEX"/> از <ph name="DEVICE_COUNT"/>، <ph name="DEVICE_NAME"/>، رایانه لوحی.</translation>
@@ -5854,6 +5914,7 @@
 <translation id="7135729336746831607">بلوتوث روشن شود؟</translation>
 <translation id="7136694880210472378">پیش‌فرض قرار دادن</translation>
 <translation id="7136993520339022828">خطایی روی داده است. لطفاً با انتخاب تصاویر دیگر دوباره امتحان کنید.</translation>
+<translation id="7137472406312798422">سایت‌ها می‌توانند درخواست کنند تا از اطلاعات مربوط به  صفحه‌نمایش‌هایتان برای باز کردن و جای‌گذاری پنجره‌ها استفاده کنند</translation>
 <translation id="7138515695467025690">خاموش / هنگام غروب آفتاب به‌طور خودکار روشن خواهد شد</translation>
 <translation id="7138678301420049075">دیگر</translation>
 <translation id="7139627972753429585"><ph name="APP_NAME"/> درحال استفاده از میکروفون است</translation>
@@ -5868,6 +5929,7 @@
 <translation id="7167486101654761064">&amp;همیشه این نوع فایل‌ها باز شوند</translation>
 <translation id="716810439572026343">در حال بارگیری <ph name="FILE_NAME"/></translation>
 <translation id="7168109975831002660">حداقل اندازه قلم</translation>
+<translation id="7169122689956315694">روشن کردن اعلان وقتی دستگاه‌ها دراطراف هستند</translation>
 <translation id="7170236477717446850">عکس نمایه</translation>
 <translation id="7171259390164035663">ثبت‌نام نشود</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{افزودن برگه به گروه جدید}one{افزودن برگه‌ها به گروه جدید}other{افزودن برگه‌ها به گروه جدید}}</translation>
@@ -5878,6 +5940,7 @@
 <translation id="7180611975245234373">بازخوانی</translation>
 <translation id="7180865173735832675">سفارشی کردن</translation>
 <translation id="7182791023900310535">انتقال گذرواژه</translation>
+<translation id="7183193772170782394">‏به Brave اجازه دهید از داده‌های سخت‌افزار برای کمک به بهبود <ph name="DEVICE_OS"/> استفاده کند. اگر نپذیرید، این داده‌ها همچنان برای تعیین به‌روزرسانی‌های مناسب به Brave ارسال می‌شوند اما ذخیره نمی‌شوند یا به‌نحو دیگری از آن‌ها استفاده نمی‌شود. برای کسب اطلاعات بیشتر، به g.co/CR2/HWDataCollection بروید.</translation>
 <translation id="7183420126213758623">فعال/ غیرفعال کردن جستجوی جانبی. جستجوی جانبی فعال نیست.</translation>
 <translation id="7186088072322679094">نگه داشتن در نوار ابزار</translation>
 <translation id="7186303001964993981"><ph name="ORIGIN"/> نمی‌تواند این پوشه را باز کند زیرا فایل‌های سیستم در آن وجود دارد</translation>
@@ -5930,10 +5993,12 @@
 <translation id="7239108166256782787"><ph name="DEVICE_NAME"/> انتقال را لغو کرد</translation>
 <translation id="7240339475467890413">به نقطه اتصال جدید متصل شود؟</translation>
 <translation id="7241389281993241388">لطفاً جهت ورود به مجوز سرویس گیرنده، به <ph name="TOKEN_NAME"/> وارد شوید.</translation>
+<translation id="7241763419756062043">کیفیت مرور و جستجو را انتخاب کنید</translation>
 <translation id="7243632151880336635">پاک کردن و خروج از سیستم</translation>
 <translation id="7243784282103630670">‏هنگام ارتقای Linux، خطایی روی داد. محتوی را با‌استفاده از نسخه پشتیبان شما بازیابی می‌کنیم.</translation>
 <translation id="7245628041916450754"><ph name="WIDTH"/> × <ph name="HEIGHT"/> (بهترین)</translation>
 <translation id="7246230585855757313">کلید امنیتی را مجدداً وارد کنید و دوباره امتحان کنید</translation>
+<translation id="7249197363678284330">این تنظیم را در نوار نشانی تغییر دهید.</translation>
 <translation id="7250616558727237648">دستگاهی که درحال هم‌رسانی با آن هستید پاسخی نداد. لطفاً دوباره امتحان کنید.</translation>
 <translation id="725109152065019550">متأسفیم، سرپرست سیستم، حافظه خارجی را برای حساب شما غیرفعال کرده است.</translation>
 <translation id="7251346854160851420">کاغذدیواری پیش‌فرض</translation>
@@ -5953,15 +6018,6 @@
 <translation id="7258192266780953209">تبدیل‌ها</translation>
 <translation id="7258225044283673131">برنامه پاسخ نمی‌دهد. برای بستن برنامه، «بستن اجباری» را انتخاب کنید.</translation>
 <translation id="7262004276116528033">این خدمات ورود به سیستم توسط <ph name="SAML_DOMAIN"/> میزبانی شده است</translation>
-<translation id="7264564921322372728">‏<ph name="BEGIN_PARAGRAPH1"/>این مراحل عیب‌یابی را دنبال کنید:
-    <ph name="BEGIN_LIST"/>
-    <ph name="LIST_ITEM"/>مطمئن شوید دستگاهتان حاوی حافظه داخلی فعالی باشد، مانند حافظه HDD، ‏SSD، یا eMMC
-    <ph name="LIST_ITEM"/>بررسی کنید حجم دستگاه حافظه داخلی بیشتر از ۱۶ گیگابایت باشد 
-    <ph name="LIST_ITEM"/>اگر حافظه داخلی به‌صورت فیزیکی دردسترس است، اتصال به آن را بررسی کنید
-    <ph name="LIST_ITEM"/>مطمئن شوید از مدل تأییدشده‌ای استفاده می‌کنید و نکات نصب را بررسی کنید
-    <ph name="END_LIST"/>
-    <ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>برای اطلاعات بیشتر، به این نشانی بروید: g.co/xxxxx<ph name="END_PARAGRAPH2"/></translation>
 <translation id="7267044199012331848">دستگاه مجازی نصب نشد. لطفاً دوباره امتحان کنید، یا با سرپرست تماس بگیرید. کد خطا: <ph name="ERROR_CODE"/>.</translation>
 <translation id="7267875682732693301">مدام انگشتتان را جابه‌جا کنید تا بخش‌های مختلف اثر انگشتتان را اضافه کنید</translation>
 <translation id="7268127947535186412">این تنظیم توسط مالک دستگاه مدیریت می‌شود.</translation>
@@ -6002,6 +6058,7 @@
 <translation id="7307129035224081534">موقتاً متوقف شد</translation>
 <translation id="7308643132139167865">زبان‌های وب‌سایت</translation>
 <translation id="7310598146671372464">‏ورود به سیستم انجام نشد. این سرور از رمزگذاری‌های Kerberos مشخص‌شده پشتیبانی نمی‌کند. لطفاً با سرپرست سیستم تماس بگیرید.</translation>
+<translation id="7312210124139670355">سرپرستتان درحال بازنشاندن سیم‌کارت داخلی شما است. ممکن است چند دقیقه طول بکشد.</translation>
 <translation id="7320213904474460808">شبکه پیش‌فرض</translation>
 <translation id="7321545336522791733">سرور غیرقابل دسترسی است</translation>
 <translation id="7324297612904500502">تالار گفتمان بتا</translation>
@@ -6042,6 +6099,7 @@
 <translation id="7360233684753165754"><ph name="PAGE_NUMBER"/> صفحه در <ph name="PRINTER_NAME"/></translation>
 <translation id="7361297102842600584">برای اجرای <ph name="PLUGIN_NAME"/> کلیک راست کنید</translation>
 <translation id="7362387053578559123">سایت‌ها می‌توانند برای اتصال به دستگاه‌های بلوتوث درخواست دهند</translation>
+<translation id="7363349185727752629">راهنمای گزینه‌های حریم‌خصوصی</translation>
 <translation id="7364591875953874521">دسترسی درخواست شده</translation>
 <translation id="7364745943115323529">ارسال محتوا…</translation>
 <translation id="7364796246159120393">انتخاب فایل</translation>
@@ -6050,13 +6108,11 @@
 <translation id="7366415735885268578">افزودن سایت</translation>
 <translation id="7366909168761621528">داده‌های مرور</translation>
 <translation id="7367714965999718019">سازنده رمزینه پاسخ‌سریع</translation>
-<translation id="9146750283370108038">‏سابقه Brave خود را در همه دستگاه‌های همگام‌سازی‌شده‌تان خواهید دید</translation>
 <translation id="736877393389250337"><ph name="URL"/> در <ph name="ALTERNATIVE_BROWSER_NAME"/> باز نشد. لطفاً با سرپرست سیستم تماس بگیرید.</translation>
 <translation id="7370592524170198497">‏EAP مربوط به اترنت:</translation>
 <translation id="7371490947952970241">‏می‌توانید با خاموش کردن تنظیم اصلی «مکان» در این دستگاه، «مکان» را خاموش کنید. می‌توانید در تنظیمات مکان، استفاده از Wi-Fi، شبکه تلفن همراه، و حسگر را هم برای مکان خاموش کنید.</translation>
 <translation id="7371917887111892735">برگه‌ها تا عرض برگه سنجاق‌شده کوچک می‌شوند</translation>
 <translation id="7374376573160927383">‏مدیریت دستگاه‌های USB</translation>
-<translation id="7376543451826039186">مرور سریع‌تر: برای مثال، بارگیری پیش‌نگرانه محتوای خاص بیشتر براساس صفحه کنونی</translation>
 <translation id="7376553024552204454">برجسته کردن نشانگر موشواره هنگامی که حرکت می‌کند</translation>
 <translation id="737728204345822099">ممکن است سابقه بازدیدتان از این سایت در کلید امنیتی‌تان نگه‌داری شود.</translation>
 <translation id="7377451353532943397">دسترسی به حسگر همچنان مسدود شود</translation>
@@ -6342,6 +6398,7 @@
 <translation id="2895428495278639694">‏وقتی به سیستم وارد شده باشید، ممکن است <ph name="BEGIN_LINK_GOOGLE"/>انواع دیگر فعالیت<ph name="END_LINK_GOOGLE"/> در «حساب Brave» شما ذخیره شوند. هر زمان خواستید می‌توانید آن‌ها را حذف کنید.</translation>
 <translation id="7658239707568436148">لغو</translation>
 <translation id="7659297516559011665">فقط گذرواژه‌های ذخیره‌شده در این دستگاه</translation>
+<translation id="7659336857671800422">مشاهده «راهنمای حریم‌خصوصی»</translation>
 <translation id="7659584679870740384">مجاز به استفاده از این دستگاه نیستید. لطفاً برای دریافت اجازه ورود به سیستم با سرپرست تماس بگیرید.</translation>
 <translation id="7661259717474717992">اجازه به سایت‌ها برای ذخیره کردن و خواندن داده‌های کوکی</translation>
 <translation id="7661451191293163002">گواهینامه ثبت بدست نیامد.</translation>
@@ -6499,6 +6556,7 @@
 <translation id="7807711621188256451">دسترسی <ph name="HOST"/> به دوربین شما همیشه مجاز باشد</translation>
 <translation id="7810202088502699111">پنجره‌های بازشو در این صفحه مسدود شده‌اند.</translation>
 <translation id="781167124805380294">ارسال محتوای <ph name="FILE_NAME"/></translation>
+<translation id="7811886112806886172">‏با ارسال خودکار داده‌های استفاده و عیب‌یابی برای Brave، به بهبود ویژگی‌ها و عملکرد Brave و BraveOS کمک کنید. برخی‌از داده‌های انبوهشی به شرکای Brave و برنامه‌های Android هم کمک خواهند کرد. اگر تنظیم «فعالیت وب و برنامه» برای «حساب Brave» شما روشن باشد، ممکن است داده‌های Android در «حساب Brave» شما ذخیره شود.</translation>
 <translation id="7814277578404816512">ویژگی‌های جدید <ph name="DEVICE_TYPE"/> را ببینید</translation>
 <translation id="7814458197256864873">&amp;کپی</translation>
 <translation id="7815680994978050279">بارگیری خطرناک مسدود شد</translation>
@@ -6552,6 +6610,9 @@
 <translation id="7847212883280406910">‏برای رفتن به <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> کلیدهای Ctrl + Alt + S را فشار دهید.</translation>
 <translation id="7849264908733290972">باز کردن &amp;تصویر در برگهٔ جدید</translation>
 <translation id="784934925303690534">محدوده زمانی</translation>
+<translation id="7850717413915978159">‏<ph name="BEGIN_PARAGRAPH1"/>اگر به دستگاه‌های BraveOS اجازه دهید گزارش‌های خودکار ارسال کند، به ما کمک می‌کنید آنچه را باید در BraveOS درست کنیم و بهبود ببخشیم اولویت‌بندی کنیم. این گزارش‌ها می‌تواند شامل مواردی ازاین‌قبیل باشد: چه زمانی BraveOS خراب می‌شود، از کدام ویژگی‌ها استفاده می‌کنید، معمولاً از چه مقدار حافظه استفاده می‌کنید، و داده‌های استفاده و عیب‌یابی برنامه Android. برخی‌از داده‌های انبوهشی به برنامه‌ها و شرکای Brave، مثل توسعه‌دهندگان Android، هم کمک می‌کند.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>هرزمان خواستید می‌توانید مجاز بودن این گزارش‌ها را در تنظیمات دستگاه BraveOS شروع یا متوقف کنید. اگر سرپرست دامنه هستید، می‌توانید این تنظیم را در «کنسول سرپرست» تغییر دهید.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>اگر تنظیم «فعالیت وب و برنامه» برای «حساب Brave» شما روشن باشد، ممکن است داده‌های Android در «حساب Brave» شما ذخیره شود. می‌توانید در account.google.com، داده‌هایتان را ببینید، حذف کنید، و تنظیمات حسابتان را تغییر دهید.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="7851021205959621355">‏<ph name="BEGIN_BOLD"/>توجه:<ph name="END_BOLD"/> ممکن است صدای مشابه یا صدای ضبط‌شده هم بتواند به نتایج شخصی یا «دستیار» شما دسترسی یابد. برای صرفه‌جویی در مصرف باتری، می‌توانید در «تنظیمات دستیار» گزینه‌ای را انتخاب کنید تا فقط زمانی که این دستگاه به منبع نیرو متصل است، «Ok Brave» روشن شود.</translation>
 <translation id="7851457902707056880">ورود به سیستم فقط محدود به حساب مالک است. لطفاً سیستم را دوباره راه‌اندازی کنید و با حساب مالک به سیستم وارد شوید. دستگاه به صورت خودکار بعد از ۳۰ ثانیه دوباره راه‌اندازی می‌شود.</translation>
 <translation id="7851716364080026749">همیشه دسترسی به دوربین و میکروفون مسدود شود</translation>
@@ -6589,6 +6650,7 @@
 <translation id="7885253890047913815">مقصدهای اخیر</translation>
 <translation id="7886279613512920452">{COUNT,plural, =1{یک مورد}one{# مورد}other{# مورد}}</translation>
 <translation id="7886605625338676841">سیم‌کارت داخلی</translation>
+<translation id="7887174313503389866">در گشت با راهنمای مربوط به کنترل‌های اصلی امنیت و حریم‌خصوصی شرکت کنید. برای گزینه‌های بیشتر، به‌طور جداگانه به هر تنظیم بروید.</translation>
 <translation id="7887334752153342268">کپی‌برداری</translation>
 <translation id="7887864092952184874">موشواره بلوتوث مرتبط شد</translation>
 <translation id="7889371445710865055">تغییر زبان تایپ صوتی</translation>
@@ -6601,7 +6663,6 @@
 <translation id="7897900149154324287">‏در آینده، مطمئن شوید که قبل از جدا کردن دستگاه قابل حملتان، آن را در برنامه Files خارج کنید. در غیر این صورت ممکن است داده‌هایتان را از دست بدهید.</translation>
 <translation id="7898725031477653577">همیشه ترجمه شود</translation>
 <translation id="7901405293566323524">مرکز تلفن</translation>
-<translation id="8111575430604432614">‏Brave بهبودیافته بااستفاده از سنجه‌های صفحه</translation>
 <translation id="7903290522161827520">به‌دنبال مؤلفه‌های مرورگر هستید؟ از این پیوند استفاده کنید:</translation>
 <translation id="7903345046358933331">صفحه پاسخ نمی‌دهد. می‌توانید صبر کنید تا پاسخ بدهد یا آن را ببندید.</translation>
 <translation id="7903742244674067440">گواهی‌هایی برای فایل دارید که اعتبارهای این گواهی را شناسایی می‌کنند</translation>
@@ -6727,6 +6788,7 @@
 <translation id="8028803902702117856">درحال بارگیری <ph name="SIZE"/>، <ph name="FILE_NAME"/></translation>
 <translation id="8028993641010258682">اندازه</translation>
 <translation id="8029492516535178472"><ph name="WINDOW_TITLE"/> - درخواست اجازه ارائه شده است؛ برای پاسخ دادن، کلید «⌘ + گزینه + پیکان روبه‌بالا» را فشار دهید</translation>
+<translation id="8029539783236818164">اجازه دارد برای باز کردن و جای‌گذاری پنجره‌ها از اطلاعات صفحه‌نمایش‌هایتان استفاده کند</translation>
 <translation id="8030169304546394654">اتصال قطع شد</translation>
 <translation id="8030852056903932865">تأیید</translation>
 <translation id="8032244173881942855">ارسال محتوای برگه امکان‌پذیر نیست.</translation>
@@ -6738,6 +6800,7 @@
 <translation id="8038399858950372766">دستگاه <ph name="DEVICE_INDEX"/> از <ph name="DEVICE_COUNT"/>، صفحه‌کلید <ph name="DEVICE_NAME"/> نام‌گذاری شد</translation>
 <translation id="8041089156583427627">ارسال بازخورد</translation>
 <translation id="8042142357103597104">ماتی نوشتار</translation>
+<translation id="3111556746481227182">‏گذرواژه‌هایتان قبل‌از ذخیره شدن در «مدیر گذرواژه Brave» در دستگاهتان رمزگذاری می‌شوند</translation>
 <translation id="8044262338717486897"><ph name="LINUX_APP_NAME"/> پاسخ نمی‌دهد</translation>
 <translation id="8044899503464538266">آهسته</translation>
 <translation id="5462539695964427820">‏همگام‌سازی از طریق «داشبورد Brave» متوقف شده است.</translation>
@@ -6764,7 +6827,6 @@
 <translation id="8058986560951482265">جریان نامنظم</translation>
 <translation id="8059417245945632445">&amp;بازرسی دستگاه‌ها</translation>
 <translation id="8059456211585183827">هیچ چاپگری برای ذخیره در دسترس نیست.</translation>
-<translation id="8059756367095071170">بررسی اینکه سابقه همگام‌سازی شود یا نه</translation>
 <translation id="8061091456562007989">تغییر را لغو کنید</translation>
 <translation id="8061970399284390013">بررسی املا و دستور زبان</translation>
 <translation id="8061991877177392872">‏به‌نظر می‌رسد ازقبل Voice Match را با «دستیار» در دستگاه دیگری راه‌اندازی کرده‌اید. از این قطعه‌های قبلاً ضبط‌شده می‌توان برای ایجاد مدل صوتی در این دستگاه استفاده کرد.</translation>
@@ -6773,7 +6835,7 @@
 <translation id="8063535366119089408">مشاهده فایل</translation>
 <translation id="8064279191081105977">گروه <ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENTS"/> - <ph name="COLLAPSED_STATE"/></translation>
 <translation id="8066444921260601116">کادر گفتگوی اتصال</translation>
-<translation id="8069615408251337349">Google Cloud Print</translation>
+<translation id="8070662218171013510">بازخورد لمسی</translation>
 <translation id="8071432093239591881">چاپ کردن به‌‌عنوان تصویر</translation>
 <translation id="8073499153683482226">‏<ph name="BEGIN_PARAGRAPH1"/>داده‌های برنامه می‌توانند هر داده‌ای باشند که برنامه (براساس تنظیمات برنامه‌نویس) ذخیره کرده است، ازجمله داده‌هایی مانند مخاطبین، پیام‌ها و عکس‌ها.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>داده‌های پشتیبان‌گیری‌شده جزو سهمیه فضای ذخیره‌سازی Drive فرزندتان حساب نمی‌شوند.<ph name="END_PARAGRAPH2"/>
@@ -6830,7 +6892,6 @@
 <translation id="811994229154425014">دوفاصله برای تایپ نقطه</translation>
 <translation id="8120505434908124087">نصب نمایه سیم‌کارت داخلی</translation>
 <translation id="812260729110117038">تبلیغ‌کنندگان و ناشران می‌توانند اثربخشی آگهی‌ها را به‌گونه‌ای بررسی کنند که شما را در سایت‌ها ردیابی نکند.</translation>
-<translation id="81231173274944570">فعال کردن بازخورد لمسی. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="81238879832906896">گل زرد و سفید</translation>
 <translation id="8124313775439841391">‏ONC مدیریت شده</translation>
 <translation id="813082847718468539">مشاهدهٔ اطلاعات سایت</translation>
@@ -6864,7 +6925,6 @@
 <translation id="8155676038687609779">{COUNT,plural, =0{گذرواژه لورفته‌ای پیدا نشد}=1{{COUNT} گذرواژه لورفته}one{{COUNT} گذرواژه لورفته}other{{COUNT} گذرواژه لورفته}}</translation>
 <translation id="8157248655669507702">برای نصب نمایه سیم‌کارت داخلی، داده تلفن همراه را فعال کنید</translation>
 <translation id="8157704005178149728">درحال راه‌اندازی نظارت</translation>
-<translation id="8157954703669743215"><ph name="RELATIVE_TIME"/> مشاهده شد</translation>
 <translation id="8158117992543756526">این دستگاه در <ph name="MONTH_AND_YEAR"/> دیگر به‌روزرسانی خودکار نرم‌افزار و امنیتی را دریافت نکرد. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="816055135686411707">خطا در تنظیم اعتماد مجوز</translation>
 <translation id="8160775796528709999">با فعال کردن «زیرنویس ناشنوایان زنده» در تنظیمات، برای صدا و ویدیو زیرنویس ناشنوایان دریافت کنید</translation>
@@ -6945,6 +7005,7 @@
 <translation id="8244514732452879619">به‌زودی وقت خواب است</translation>
 <translation id="8246776524656196770">محافظت از کلید امنیتی بااستفاده از پین (شماره شناسایی شخصی)</translation>
 <translation id="8248050856337841185">&amp;جای‌گذاری</translation>
+<translation id="8248381369318572865">دسترسی به میکروفون شما و تجزیه‌وتحلیل گفتار شما</translation>
 <translation id="3105590366897772437">‏نکات Brave</translation>
 <translation id="8249048954461686687">‏پوشه OEM</translation>
 <translation id="8249615410597138718">ارسال به دستگاه‌هایتان</translation>
@@ -6960,6 +7021,8 @@
 <translation id="8259239505248583312">بیایید شروع کنیم</translation>
 <translation id="8260864402787962391">ماوس</translation>
 <translation id="8261506727792406068">حذف</translation>
+<translation id="8262443362616648274">‏<ph name="BEGIN_PARAGRAPH1"/>مشکلی پیش آمد و <ph name="DEVICE_OS"/> نصب نشد.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>برای راهنمایی بیشتر، از g.co/CR2/InstallErrors بازدید کنید.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8263336784344783289">نامی برای گروه وارد کنید</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> مکان‌نمای ماوس شما را غیرفعال کرد.</translation>
 <translation id="8264024885325823677">این تنظیم را سرپرست شما مدیریت می‌کند.</translation>
@@ -7087,6 +7150,7 @@
 <translation id="8410775397654368139">Google Play</translation>
 <translation id="8412136526970428322"><ph name="PERMISSION"/> و <ph name="COUNT"/> اجازه دیگر مجاز شده‌اند</translation>
 <translation id="8413385045638830869">ابتدا سؤال شود (توصیه می‌شود)</translation>
+<translation id="8414249071344507766">خاطرات برای دو روز پنهان شد</translation>
 <translation id="8416730306157376817"><ph name="BATTERY_PERCENTAGE"/>٪ (قاب)</translation>
 <translation id="8417548266957501132">گذرواژه ولی</translation>
 <translation id="8418445294933751433">&amp;نمایش به‌صورت برگه</translation>
@@ -7125,6 +7189,7 @@
 <translation id="8457451314607652708">وارد کردن نشانک‌ها</translation>
 <translation id="8458341576712814616">میان‌بر</translation>
 <translation id="8458627787104127436">باز کردن همه (<ph name="URL_COUNT"/> مورد) در پنجره جدید</translation>
+<translation id="8460448946170646641">مرور کنترل‌های اصلی امنیت و حریم‌خصوصی</translation>
 <translation id="2380462972976700566">‏برای صرفه‌جویی در حافظه، Brave برخی محتوا را پاک کرد</translation>
 <translation id="8460932807646981183">مدیریت موتورهای جستجو و جستجوی سایت</translation>
 <translation id="84613761564611563">میانای کاربر پیکربندی شبکه درخواست شد، لطفاً صبر کنید…</translation>
@@ -7330,7 +7395,6 @@
 <translation id="504499211143662559">‏Brave نرم‌افزار مضری در رایانه‌تان پیدا کرده است</translation>
 <translation id="8682730193597992579"><ph name="PRINTER_NAME"/> متصل و آماده است</translation>
 <translation id="8683081248374354009">بازنشانی گروه</translation>
-<translation id="8683526617475118045">مزایایی که دریافت می‌کنید</translation>
 <translation id="8688672835843460752">دردسترس</translation>
 <translation id="8690129572193755009">سایت‌ها می‌توانند برای کنترل پروتکل‌ها درخواست دهند</translation>
 <translation id="8695139659682234808">افزودن کنترل‌های والدین بعد از راه‌اندازی</translation>
@@ -7384,7 +7448,6 @@
 <translation id="8737685506611670901">باز کردن پیوندهای <ph name="PROTOCOL"/> به‌جای <ph name="REPLACED_HANDLER_TITLE"/></translation>
 <translation id="8737709691285775803">Shill</translation>
 <translation id="8737914367566358838">انتخاب کنید صفحه به چه زبانی ترجمه شود</translation>
-<translation id="1164245454225383184">‏نشانی‌های وب با Brave هم‌رسانی می‌شود تا رفتار مرور بهتر درک شود</translation>
 <translation id="8740247629089392745">‏می‌توانید این Bravebook را به <ph name="SUPERVISED_USER_NAME"/> بدهید. راه‌اندازی به‌زودی تمام می‌شود و زمان کاوش دستگاه می‌رسد.</translation>
 <translation id="8741944563400125534">راهنمای راه‌اندازی «دسترسی کلیدی»</translation>
 <translation id="8742998548129056176">‏این اطلاعاتی عمومی درباره دستگاه شما و نحوه استفاده شما از آن (مانند سطح باتری، فعالیت سیستم و برنامه، و خطاها) است. از این داده‌ها برای بهبود Android استفاده می‌شود و بعضی اطلاعات انبوهشی نیز به برنامه‌ها و شرکای Brave (مانند «برنامه‌نویس‌های Android») کمک می‌کند برنامه‌ها و محصولاتشان را بهتر کنند.</translation>
@@ -7427,7 +7490,7 @@
 برای اینکه از سیستم <ph name="DOMAIN"/> خارج نشوید، باید کارت هوشمندتان را در دستگاه نگه دارید.}}</translation>
 <translation id="8777259617149177596">سطح باتری قاب <ph name="BATTERY_PERCENTAGE"/>٪.</translation>
 <translation id="8777628254805677039">گذرواژه کاربر ریشه</translation>
-<translation id="8778328560035799409">کلیدهایی که قبلاً اختصاص داده‌اید پاک خواهند شد</translation>
+<translation id="8779944680596936487">سایت‌ها فقط برای دیدن فعالیت مرور شما در سایت خودشان می‌توانند از کوکی‌ها استفاده کنند</translation>
 <translation id="1732768497619250086">‏دریافت توضیحات تصویر از Brave</translation>
 <translation id="8780443667474968681">جستجوی گفتاری خاموش شده است.</translation>
 <translation id="8781834595282316166">برگه جدید در گروه</translation>
@@ -7444,6 +7507,7 @@
 <translation id="8798099450830957504">پیش‌فرض</translation>
 <translation id="8800004011501252845">نمایش مقصدها برای</translation>
 <translation id="8800034312320686233">سایت کار نمی‌کند؟</translation>
+<translation id="8803526663383843427">وقتی روشن است</translation>
 <translation id="8803953437405899238">با یک کلیک، برگه جدیدی باز کنید</translation>
 <translation id="8804999695258552249">{NUM_TABS,plural, =1{انتقال برگه به پنجره‌ای دیگر}one{انتقال برگه‌ها به پنجره‌ای دیگر}other{انتقال برگه‌ها به پنجره‌ای دیگر}}</translation>
 <translation id="8805140816472474147">برای شروع همگام‌سازی، تنظیمات همگام‌سازی را تأیید کنید.</translation>
@@ -7487,6 +7551,7 @@
 <translation id="8838234842677265403"><ph name="WEB_DRIVE_MESSAGE"/> <ph name="SUPPORT_INFO"/></translation>
 <translation id="8838601485495657486">مات</translation>
 <translation id="8838770651474809439">همبرگر</translation>
+<translation id="8838778928843281408">مدیریت تلفن‌ها</translation>
 <translation id="883911313571074303">حاشیه‌نویسی تصویر</translation>
 <translation id="8841843049738266382">خواندن و تغییر دادن کاربران فهرست مجازها</translation>
 <translation id="8842594465773264717">حذف این اثر انگشت</translation>
@@ -7618,7 +7683,6 @@
 <translation id="897525204902889653">سرویس قرنطینه</translation>
 <translation id="8975396729541388937">با کلیک کردن روی پیوند درج‌شده در ایمیل‌هایی که دریافت می‌کنید، هرزمان خواستید لغو اشتراک کنید.</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{«<ph name="TAB_TITLE"/>»}=1{«<ph name="TAB_TITLE"/>» و ۱ برگه دیگر}one{«<ph name="TAB_TITLE"/>» و # برگه دیگر}other{«<ph name="TAB_TITLE"/>» و # برگه دیگر}}</translation>
-<translation id="897659847306974642">می‌توانید جلسه مرورتان را در هریک از دستگاه‌های همگام‌سازی‌شده ادامه دهید</translation>
 <translation id="8977811652087512276">گذرواژه نادرست یا فایل خراب است</translation>
 <translation id="8978154919215542464">‏On (روشن) - همگام‌سازی همه‌چیز</translation>
 <translation id="897939795688207351">روشن <ph name="ORIGIN"/></translation>
@@ -7636,7 +7700,6 @@
 <translation id="8991520179165052608">سایت می‌تواند از میکروفن شما استفاده کند</translation>
 <translation id="899384117894244799">برداشتن کاربر محدودشده</translation>
 <translation id="899403249577094719">‏نشانی وب گواهی Netscape</translation>
-<translation id="8995603266996330174">مدیریت شده توسط <ph name="DOMAIN"/></translation>
 <translation id="8996526648899750015">افزودن حساب...</translation>
 <translation id="7113572760575285642">‏Brave شما، در همه‌جا</translation>
 <translation id="899676909165543803">حسگر اثر انگشت، پایین‌ترین کلید سمت چپ در صفحه‌کلید است. با یکی از انگشت‌هایتان آن را به‌آرامی لمس کنید.</translation>
@@ -7644,7 +7707,6 @@
 <translation id="9003647077635673607">در همه وب‌سایت‌ها مجاز باشد</translation>
 <translation id="9003677638446136377">بررسی مجدد</translation>
 <translation id="9004754973617721124">داده‌ها و اجازه‌های سایت <ph name="SITE_NAME"/>، همه سایت‌های تحت آن، و برنامه‌های نصب‌شده‌اش پاک شود؟</translation>
-<translation id="9004952710076978168">یک اعلان برای یک چاپگر ناشناس دریافت شد.</translation>
 <translation id="9008201768610948239">نادیده گرفتن</translation>
 <translation id="9008201858626224558">دکمه برگشت صفحه جزئیات <ph name="SUBPAGE_TITLE"/></translation>
 <translation id="9009369504041480176">در حال بارگذاری کردن (%<ph name="PROGRESS_PERCENT"/>)</translation>
@@ -7695,7 +7757,6 @@
 <translation id="4534361985432360439">‏نشانی وب صفحه‌ای را که باز می‌کنید به Brave ارسال می‌کند</translation>
 <translation id="9048745018038487540">انتخاب همه قلم‌ها</translation>
 <translation id="9050666287014529139">گذرعبارت</translation>
-<translation id="9052208328806230490">شما ثبت چاپگرهای خود را با <ph name="CLOUD_PRINT_NAME"/> از طریق حساب <ph name="EMAIL"/> انجام داده‌اید</translation>
 <translation id="9052404922357793350">ادامه مسدود کردن</translation>
 <translation id="9053563360605707198">چاپ دورو</translation>
 <translation id="9053893665344928494">انتخاب من به خاطر سپرده شود</translation>
@@ -7749,7 +7810,6 @@
 <translation id="9103868373786083162">برای دیدن سابقه، دکمه را فشار دهید تا به عقب، و به منوی بافت برگردید</translation>
 <translation id="9108035152087032312">نام‌گذاری پنجره…</translation>
 <translation id="9108072915170399168">تنظیم کنونی مصرف داده روی «بدون اینترنت» است</translation>
-<translation id="9108692355621501797">‏<ph name="LINK_BEGIN"/>اعلان حریم‌خصوصی G Suite for Education<ph name="LINK_END"/> برای این درنظر گرفته شده است تا به کاربران و والدین کمک کند متوجه شوند محصول موردنظر چه داده‌هایی را جمع‌آوری می‌کند، چرا این داده‌ها را جمع‌آوری می‌کند، و چه کاری با آن‌ها انجام می‌شود.</translation>
 <translation id="9108808586816295166">‏ممکن است DNS ایمن همیشه در دسترس نباشد</translation>
 <translation id="9109122242323516435">برای آزاد کردن فضا، فایل‌ها را در حافظه دستگاه حذف کنید.</translation>
 <translation id="9109283579179481106">اتصال به شبکه تلفن همراه</translation>
@@ -7839,10 +7899,12 @@
 <translation id="9186963452600581158">‏ورود به سیستم با «حساب Brave» فرزند</translation>
 <translation id="9187967020623675250">کلیدها مطابقت ندارند. برای <ph name="RESPONSE"/>، یکی از کلیدها را فشار دهید.</translation>
 <translation id="9188732951356337132">‏داده‌های استفاده و عیب‌یابی را ارسال کنید. این دستگاه درحال‌حاضر به‌صورت‌ خودکار داده‌های عیب‌یابی و داده‌های استفاده از دستگاه و برنامه را برای Brave ارسال می‌کند. این داده‌ها برای شناسایی فرزندتان استفاده نخواهند شد و به بهبود پایداری سیستم و برنامه و موارد دیگر کمک خواهد کرد. بعضی داده‌های انبوهشی نیز به برنامه‌ها و شرکای Brave (مانند برنامه‌نویس‌های Android) کمک می‌کند. اگر تنظیم «فعالیت وب و برنامه» تکمیلی برای فرزندتان روشن باشد، ممکن است این داده‌ها در حساب Brave او ذخیره شود. <ph name="BEGIN_LINK2"/>بیشتر بدانید<ph name="END_LINK2"/></translation>
+<translation id="919686179725692564">درباره پشتیبان‌گیری از برنامه‌ها بیشتر بدانید</translation>
 <translation id="9198090666959937775">‏استفاده از تلفن Android به‌عنوان کلید امنیتی</translation>
 <translation id="9200339982498053969"><ph name="ORIGIN"/> خواهد توانست فایل‌های <ph name="FOLDERNAME"/> را ویرایش کند</translation>
 <translation id="920045321358709304">جستجوی <ph name="SEARCH_ENGINE"/></translation>
 <translation id="9201023452444595544">هرنوع داده آفلاینی حذف خواهد شد</translation>
+<translation id="9201117361710210082">قبلاً مشاهده شده</translation>
 <translation id="9201220332032049474">گزینه‌های قفل صفحه</translation>
 <translation id="9201842707396338580">مشکلی پیش آمد. لطفاً با مالک یا سرپرست دستگاه تماس بگیرید. کد خطا: <ph name="ERROR_CODE"/>.</translation>
 <translation id="9203398526606335860">&amp;نمایه سازی فعال شد</translation>
@@ -7888,6 +7950,7 @@
 <translation id="947667444780368238"><ph name="ORIGIN"/> نمی‌تواند فایل‌های این پوشه را باز کند زیرا فایل‌های سیستم در آن وجود دارد</translation>
 <translation id="950307215746360464">راهنمای راه‌اندازی</translation>
 <translation id="951991426597076286">رد کردن</translation>
+<translation id="952471655966876828">وقتی دستگاه روشن شود و از آن استفاده شود، به‌طور خودکار وصل می‌شود</translation>
 <translation id="953434574221655299">اجازه دارد وقتی شما به‌طور فعال از دستگاه استفاده می‌کنید مطلع شود</translation>
 <translation id="956500788634395331">در برابر افزونه‌های بالقوه مضر محافظت می‌شوید</translation>
 <translation id="957960681186851048">این سایت تلاش کرده است چند فایل را به‌طور خودکار بارگیری کند</translation>
@@ -8005,10 +8068,15 @@ other {# پنجره خصوصی باز}
 <translation id="1725743343613175327">برای ادامه، روی «تأیید» کلیک کنید و سپس برای ایجاد نمایه‌ای جدید برای نشانی ایمیل‌ <ph name="DOMAIN"/> خود، روی «افزودن شخص» کلیک کنید.</translation>
 <translation id="3707212204259470604">مدیریت سایر نمایه‌ها</translation>
 <translation id="5832813618714645810">نمایه‌ها</translation>
+<translation id="3216703137209942563">{COUNT, plural,
+      =1 {پنجره خصوصی شما پس از راه‌اندازی مجدد باز نخواهد شد}
+      other {{COUNT} پنجره خصوصی شما پس از راه‌اندازی مجدد دوباره باز نخواهد شد}}</translation>
 <translation id="5840822070878669614">باز کردن فروشگاه وب</translation>
 <translation id="383007806262310953">نمایش نوار نشانک‌ها</translation>
 <translation id="8648684608605749476">مسدود کردن کوکی‌های شخص ثالث در «حالت ناشناس»</translation>
-<translation id="8000244240371532481">وقتی در حالت «خصوصی» نیستید، سایت‌ها می‌توانند از کوکی‌ها برای دیدن فعالیت شما حین مرور سایت‌های مختلف و مثلاً برای شخصی‌سازی آگهی‌ها استفاده کنند،</translation>
+<translation id="3293179957233653243">ویژگی‌های بعضی از سایت‌ها ممکن است در حالت خصوصی درست کار نکنند</translation>
+<translation id="6304377454418270508">وقتی در حالت خصوصی هستید، سایت‌ها فقط می‌توانند از کوکی‌ها برای مشاهده فعالیت مرور شما در سایت خودشان استفاده کنند. کوکی‌ها در پایان جلسه خصوصی حذف می‌شوند.</translation>
+<translation id="7447787726493910888">نمایش جزئیات درباره مسدود کردن کوکی‌های شخص ثالث در حالت خصوصی</translation>
 <translation id="255999604394332437">در حالت خصوصی، سایت‌ها نمی‌توانند از کوکی‌های شما برای مشاهده فعالیت مرور در سایت‌های مختلف به‌عنوان مثال، برای شخصی‌سازی تبلیغات استفاده کنند. ممکن است برخی از سایت‌ها کار نکنند.</translation>
 <translation id="6105125042109106861">کوکی‌های شخص ثالث در «حالت ناشناس» مسدود شده‌اند</translation>
 <translation id="6710473112951410470">فقط جلسه خصوصی کنونی</translation>

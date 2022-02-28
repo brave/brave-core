@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
 <translation id="2278950434998763147">কিছু সাইটকে সাধারণ HTTP এর পরিবর্তে একটি সুরক্ষিত HTTPS সংযোগ ব্যবহার করে খুলুন।</translation>
 <translation id="94154759592465111">স্ক্রিপ্টগুলি অবরুদ্ধ করুন</translation>
-<translation id="3518266709656143462">জাভাস্ক্রিপ্ট অবরুদ্ধ করে (সাইটগুলিকে ব্রেক করতে পারে)</translation>
+<translation id="7714773920987474116">JavaScript ব্লক করা (সাইটগুলিকে ব্রেক করা)</translation>
 <translation id="6052725679982758334">সামাজিক মিডিয়া রোধক</translation>
 <translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে গুগল লগইন বোতামগুলিকে মঞ্জুর করুন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">আজকের শীর্ষস্থানীয় গল্পগুলি পুরোপুরি ব্যক্তিগত ফিডে,কেবলমাত্র আপনার জন্য।</translation>
 <translation id="7266075701303521777">Brave নিউজ আপনার ডিভাইসে মিলিত সম্পূর্ণ ব্যক্তিগত এবং বেনামী বিজ্ঞাপনগুলির সাথে বিজ্ঞাপন-সমর্থিত।</translation>
 <translation id="4541978218358617681">বিজ্ঞাপন</translation>
-<translation id="7823038307453615214">Brave নিউজ চালু করুন</translation>
+<translation id="7823038307453615214">Brave নিউজ দেখান</translation>
 <translation id="6527303717912515753">শেয়ার করুন</translation>
 <translation id="1654539412343893324">আপনার ডেটার বিষয়ে আরও জানুন</translation>
 <translation id="2989805286512600854">নতুন ট্যাবে খুলুন</translation>
@@ -97,6 +97,7 @@
 <translation id="6511854390690723657">এটি হল আপনার প্রথম Brave বিজ্ঞাপন। আরও জানতে আলতো চাপুন।</translation>
 <translation id="2070991379950719711">Brave Rewards ব্যবহার শুরু করা হল</translation>
 <translation id="48520986898237073">ওয়ালেটে চালিয়ে যান</translation>
+<translation id="3570367516044491911">ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
 <translation id="6800338374677644736">ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
 <translation id="19715420010996093">Brave ব্রাউজার নির্বাচন করুন এবং 'সর্বদা' ট্যাপ করুন</translation>
 <translation id="3546439402724649282">ইতিমধ্যেই আপনার ডিফল্ট ব্রাউজার হিসাবে Brave সেট করা হয়েছে।</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">ওয়ালেট ব্যালেন্স</translation>
 <translation id="2573313946367623146">আমার পরামর্শ পাঠান</translation>
 <translation id="3250511771491660127">এটি মাসিক করে দিন</translation>
+<translation id="7658239707568436148">বাতিল করুন</translation>
+<translation id="1201402288615127009">পরবর্তী</translation>
+<translation id="8481779960444041069">আপনার গোপনীয়তা আরও উন্নত করতে, Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
+<translation id="1938402585819943124">পররবর্তী স্ক্রিনে Brave নির্বাচন করুন।</translation>
+<translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
 <translation id="6639570430554986719">জানুয়ারি</translation>
 <translation id="1807352595146144483">ফেব্রুয়ারি</translation>
 <translation id="2021828608097804771">মার্চ</translation>
@@ -521,9 +527,9 @@
 <translation id="6478996494082389936">ব্যক্তিগত পণ্য বিশ্লেষণ।</translation>
 <translation id="5187052478998910855">পুরষ্কারে একটি রিফ্রেশার দরকার?</translation>
 <translation id="8622329973403382303">পুরষ্কার রকস্টার হিসাবে ইতিহাসে এটি কীভাবে নামতে সাহায্য করে তা ব্রাশ আপ করার জন্য দ্রুত ভ্রমণ করুন!</translation>
-<translation id="7625138338483121345">আপনার গোপনীয়তা রক্ষা করতে Brave এর সাথে সমস্ত লিঙ্ক খুলুন</translation>
-<translation id="4511485286950743564">Brave Shields ট্র্যাকারদের &amp;  বিজ্ঞাপন টি ব্লক করে, ডেটা সাশ্রয় করে এবং আপনি যে কোনও সাইটে যান আপনার সময় সাশ্রয় করে।</translation>
-<translation id="9218430445555521422">Brave কে ডিফল্ট হিসাবে সেট করুন</translation>
+<translation id="7625138338483121345">Brave-কে আপনার ডিফল্ট ব্রাউজার হিসাবে তৈরি করুন</translation>
+<translation id="4511485286950743564">ডিফল্ট হিসাবে Brave-এর মাধ্যমে, আপনি যে লিঙ্কেই ক্লিক করবেন সেটি Brave-এর গোপনীয়তা সুরক্ষার মাধ্যমে খুলবে।</translation>
+<translation id="9218430445555521422">ডিফল্ট হিসেবে সেট করুন</translation>
 <translation id="3479552764303398839">এখনই নয়</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -542,7 +548,6 @@
 <translation id="1822560017823072927">ডিফল্ট সর্বজনীন এবং ব্যক্তিগত ইন্টারফেসগুলি</translation>
 <translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
 <translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
-<translation id="3171931580569169744">ট্যাব গ্রুপগুলি সক্রিয় করুন</translation>
 <translation id="5587305863196367357">যাচাই করা ওয়ালেট থাকলে সেটি আপনাকে আপনার ফান্ড সহজে নিয়ন্ত্রন করতে, যেমন যোগ করার বা তুলে নেওয়ার অনুমতি দেয়</translation>
 <translation id="5760671211380791582">আপনার যথেষ্ট BAT নেই।</translation>
 <translation id="442469478596827903">একটি যাচাইকৃত আপহোল্ড ওয়ালেট তৈরি করতে আপনার ন্যুনতম 2 BAT চাই। অনুগ্রহ করে পরে চেষ্টা করুন।</translation>
@@ -565,7 +570,8 @@
 <translation id="375882617301124395">আপনার ক্রিপ্টো ওয়ালেটের ব্যাক আপ নিন</translation>
 <translation id="8289942708804097960">ক্রেডিট বা ডেবিট কার্ড দিয়ে ক্রিপ্টো ক্রয় করুন।</translation>
 <translation id="841880029259839903">ক্রিপ্টো পাঠান বা একটি অ্যাকাউন্ট থেকে অন্য অ্যাকাউন্টে ট্রান্সফার করুন।</translation>
-<translation id="8226778393040773102">Brave DEX অ্যাগ্রিগেটর দিয়ে ক্রিপ্টো সম্পদগুলি সোয়াপ করুন।</translation>
+<translation id="8226778393040773102">টোকেন এবং অ্যাসেটগুলিকে সোয়াপ করা</translation>
+<translation id="5841646075632490135">লেনদেন প্রক্রিয়াটি সম্পন্ন করতে <ph name="DEX_PROVIDER"/>গুলি Ethereum অ্যাড্রেস এবং IP অ্যাড্রেসটির প্রক্রিয়া করবে (কোট লাভ করা সহ)। শুধুমাত্র লেনদেন প্রক্রিয়াটি সম্পন্ন করার জন্য <ph name="DEX_PROVIDER"/>গুলি এই তথ্যটি ব্যবহার করবে।</translation>
 <translation id="1783600039044302171">আপনার ক্রিপ্টো একটি পাসওয়ার্ড দিয়ে নিরাপদ করুন</translation>
 <translation id="3726490322412361740">পাসওয়ার্ড লিখুন</translation>
 <translation id="3038243139480464605">পাসওয়ার্ড যাচাই করুন</translation>
@@ -593,7 +599,7 @@
 <translation id="283071225285270357">আপনার রিকভারি বাক্যাংশ লিখুন</translation>
 <translation id="3943857333388298514">পেস্ট করুন</translation>
 <translation id="3331452756822160641">নতুন পাসওয়ার্ড</translation>
-<translation id="4359319875297001084">আমি লিগেসি Brave ক্রিপ্টো ওয়ালেট থেকে রিস্টোর করছি</translation>
+<translation id="4359319875297001084">লিগ্যাসী Brave ক্রিপ্টো ওয়ালেটগুলো থেকে আমদানি করবেন?</translation>
 <translation id="2339124864228588937">রিকভারি বাক্যাংশ যাচাই করুন</translation>
 <translation id="3747079125031086337">আপনার পুনরুদ্ধারের পদবন্ধটির শব্দগুলি তাদের সঠিক ক্রমে নির্বাচন করুন।</translation>
 <translation id="6518133107902771759">যাচাই করুন</translation>
@@ -835,11 +841,12 @@
 <translation id="665660671251623018">চেইনের মুদ্রার দশমিক</translation>
 <translation id="182619028057179895">অকার্যকর ফরম্যাট, মুদ্রার দশমিক সংখ্যাটি হলো একটি ধনাত্মক সংখ্যা</translation>
 <translation id="2978054488731497946">মুদ্রার দশমিক লিখুন</translation>
-<translation id="7642841516562576649">আইকন URLগুলো</translation>
-<translation id="4693057234255364395">এক্সপ্লোরার URLগুলো ব্লক করুন</translation>
+<translation id="7642841516562576649">আইকন URL</translation>
+<translation id="4693057234255364395">এক্সপ্লোরার URL অবরুদ্ধ করুন</translation>
 <translation id="7059127752542505809">URL লিখুন</translation>
 <translation id="2156993118928861787">অবৈধ ঠিকানা</translation>
 <translation id="6889920539620318793">অ্যাক্টিভ হিসেবে সেট করুন</translation>
 <translation id="2653659639078652383">জমা দিন</translation>
 <translation id="8853725596990766789">অর্থরাশি পরিবর্তন করুন</translation>
+<translation id="5233638681132016545">নতুন ট্যাব</translation>
 </translationbundle>

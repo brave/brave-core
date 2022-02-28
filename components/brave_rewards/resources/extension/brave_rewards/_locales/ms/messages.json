@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Sebarang tip yang anda berikan akan kekal di dalam dompet anda dan akan dicuba semula selama 90 hari secara automatik. $link_begin$Ketahui lebih lanjut$link_end$",
+    "message": "Sebarang tip yang anda berikan akan kekal di dalam dompet anda dan cuba semula secara automatik selama  90 hari. $link_begin$Ketahui lebih lanjut$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Pencipta ini tidak dikonfigurasi untuk menerima tip daripada dompet anda pada masa ini.",
+    "message": "Pencipta ini pada masa ini tidak dikonfigurasi untuk menerima tip daripada perkhidmatan dompet penjagaan Rewards anda.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Ganjaran anda dalam perjalanan ke dompet Ganjaran Brave anda.",
+    "message": "Reward anda sedang dihantar.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Dompet Saya",
+    "message": "Disahkan",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Sahkan Dompet",
+    "message": "Sahkan",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Sambung semula",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Tuntut",
+  "notificationClaimRewards": {
+    "message": "Tuntut Rewards",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Tuntut Token",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,11 +305,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Dompet sandaran",
+    "message": "Sandarkan Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Sila sandarkan dompet Brave anda.",
+    "message": "Sila sandarkan Brave Rewards anda.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -313,7 +317,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Dompet anda dilog keluar",
+    "message": "Anda telah log keluar",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Dompet anda telah disahkan!",
+    "message": "Brave Rewards anda sudah disahkan!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Dompet$provider$ anda telah berjaya disahkan dan sedia untuk menambah dan mengeluarkan dana.",
+    "message": "Brave Rewards anda berjaya disahkan dengan $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Geran token",
+    "message": "Geran token sudah tersedia!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Anda mempunyai pemberian menanti anda.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Rewards: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Pendapatan iklan diterima",
-    "description": ""
+    "message": "$month$ Ad Rewards anda ada di sini!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Ganjaran anda untuk Brave Private Ads sudah tiba!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Sumbangan bulanan gagal",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Anda mempunyai baki $days$ untuk dituntut",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Bayaran bulanan anda yang dijadualkan untuk Auto-Contribute dan sumbangan bulanan tidak dapat dilakukan kerana dana tidak mencukupi. Kami akan cuba lagi dalam masa 30 hari.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Terdapat beberapa masalah memproses sumbangan anda.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Sumbangan bulanan gagal",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Sahkan dompet anda",
+    "message": "Sahkan",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Untuk mengeluarkan token yang anda peroleh kerana menonton iklan, anda akan perlu mengesahkan dompet anda.",
+    "message": "Untuk mengeluarkan BAT yang anda peroleh kerana melihat iklan, anda perlu mengesahkan Brave Rewards.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Sahkan dompet saya",
+    "message": "Sahkan Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Dengan mengesahkan dompet anda dan memautkannya ke akaun bitFlyer, anda akan dapat menyimpan dan menguruskan token yang anda peroleh melalui Brave Rewards dengan lebih mudah",
+    "message": "Dengan mengesahkan Brave Rewards anda dan mengaitkannya dengan akaun bitFlyer, anda boleh menyimpan dan mengurus BAT yang anda peroleh melalui Brave Rewards dengan lebih mudah",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

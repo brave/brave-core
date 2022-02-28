@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">升级连接为 HTTPS</translation>
 <translation id="2278950434998763147">使用安全的 HTTPS 连接而不是明文的 HTTP 打开一些站点。</translation>
 <translation id="94154759592465111">拦截脚本</translation>
-<translation id="3518266709656143462">拦截 Javascript (可能导致一些网站无法正常运作)</translation>
+<translation id="7714773920987474116">拦截 JavaScript（可能导致一些网站无法正常运作）</translation>
 <translation id="6052725679982758334">社交媒体屏蔽</translation>
 <translation id="7498695072878479744">第三方网站上的 Google 登录按钮可用</translation>
 <translation id="863171915776379000">Facebook 登录和嵌入式帖子可用</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">完全私密的今日热门新闻，专为您打造。</translation>
 <translation id="7266075701303521777">Brave 新闻有广告支持，为您的设备匹配完全私密的匿名广告。</translation>
 <translation id="4541978218358617681">广告</translation>
-<translation id="7823038307453615214">开启 Brave 新闻</translation>
+<translation id="7823038307453615214">显示 Brave News</translation>
 <translation id="6527303717912515753">分享</translation>
 <translation id="1654539412343893324">了解有关数据的更多信息</translation>
 <translation id="2989805286512600854">在新标签页中打开</translation>
@@ -97,6 +97,7 @@
 <translation id="6511854390690723657">这是您的第一个 Brave 广告。点按以了解更多信息。</translation>
 <translation id="2070991379950719711">开始使用 Brave Rewards</translation>
 <translation id="48520986898237073">继续进入钱包</translation>
+<translation id="3570367516044491911">设置为默认浏览器</translation>
 <translation id="6800338374677644736">设置为默认浏览器</translation>
 <translation id="19715420010996093">选择 Brave 浏览器并轻按 "始终"</translation>
 <translation id="3546439402724649282">Brave 已被设置为您的默认浏览器。</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">钱包余额：</translation>
 <translation id="2573313946367623146">发送我的酬谢金</translation>
 <translation id="3250511771491660127">每月一次</translation>
+<translation id="7658239707568436148">取消</translation>
+<translation id="1201402288615127009">下一步</translation>
+<translation id="8481779960444041069">要改善隐私，将 Brave 设为默认浏览器</translation>
+<translation id="1938402585819943124">在下个屏幕中选中 Brave。</translation>
+<translation id="8926389886865778422">不再询问</translation>
 <translation id="6639570430554986719">一月</translation>
 <translation id="1807352595146144483">二月</translation>
 <translation id="2021828608097804771">三月</translation>
@@ -327,8 +333,8 @@
 <translation id="876424292214881779">拦截了广告和其他令人毛骨悚然的东西</translation>
 <translation id="6930134873084561197">网站通常包括 cookie 和脚本，它们试图识别您和您的设备。它们想找出您是谁，然后在网上跟踪您在每个网站上做的事情。\n\nBrave 阻止这些事情，使得您可以在不被跟踪的情况下浏览。</translation>
 <translation id="8553998445606452168">关于 Brave Shields</translation>
-<translation id="8912304686498704084">向上</translation>
-<translation id="4963218453264888510">向下</translation>
+<translation id="8912304686498704084">开启</translation>
+<translation id="4963218453264888510">关闭</translation>
 <translation id="7474113515179313724">您在浏览这个网站时没有 Brave 的隐私保护。它是否与 Shields 无法正常配合使用？</translation>
 <translation id="9055546041146396417">如果这个站点出现故障，请尝试关闭 Shields。</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
@@ -520,9 +526,9 @@
 <translation id="6478996494082389936">私人产品分析。</translation>
 <translation id="5187052478998910855">需要重新了解一下 Rewards？</translation>
 <translation id="8622329973403382303">赶快来快速浏览一下它是如何成为 Rewards 摇滚明星的历史记录吧！</translation>
-<translation id="7625138338483121345">用 Brave 打开所有链接保护您的隐私</translation>
-<translation id="4511485286950743564">Brave Shields 可阻止追踪器和广告、保存数据，从而节省您访问每个网站的时间。</translation>
-<translation id="9218430445555521422">将 Brave 设置为默认</translation>
+<translation id="7625138338483121345">将 Brave 设置为您的默认浏览器</translation>
+<translation id="4511485286950743564">将 Brave 设为默认浏览器后，您所打开的每个连接都受 Brave 的隐私保护。</translation>
+<translation id="9218430445555521422">设为默认浏览器</translation>
 <translation id="3479552764303398839">以后再说</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -541,7 +547,6 @@
 <translation id="1822560017823072927">默认公共和私人接口</translation>
 <translation id="5825943197137337319">仅限默认公共接口</translation>
 <translation id="1689062823386843231">禁用无代理的 UDP</translation>
-<translation id="3171931580569169744">启用标签组</translation>
 <translation id="5587305863196367357">验证钱包让您能够轻松充值和提现</translation>
 <translation id="5760671211380791582">您的 BAT 不足。</translation>
 <translation id="442469478596827903">您需要至少有 2 个 BAT 才能创建验证过的 Uphold 钱包。请稍后重试。</translation>
@@ -564,7 +569,8 @@
 <translation id="375882617301124395">备份加密钱包</translation>
 <translation id="8289942708804097960">用信用卡或借记卡购买加密货币。</translation>
 <translation id="841880029259839903">发送加密货币，或将加密货币从一个账户转入另一个账户。</translation>
-<translation id="8226778393040773102">使用 Brave DEX 聚合器交易加密资产。</translation>
+<translation id="8226778393040773102">兑换代币和资产</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/>会处理以太坊地址和 IP 地址以完成交易（包括获得报价）。 <ph name="DEX_PROVIDER"/>仅会将此数据用于处理交易目的。</translation>
 <translation id="1783600039044302171">使用密码保护您的加密货币</translation>
 <translation id="3726490322412361740">输入密码</translation>
 <translation id="3038243139480464605">验证密码</translation>
@@ -592,7 +598,7 @@
 <translation id="283071225285270357">输入您的恢复密语</translation>
 <translation id="3943857333388298514">粘贴</translation>
 <translation id="3331452756822160641">新密码</translation>
-<translation id="4359319875297001084">我正在从旧版 Brave 加密钱包恢复</translation>
+<translation id="4359319875297001084">从旧的 Brave 加密钱包导入？</translation>
 <translation id="2339124864228588937">验证恢复密语</translation>
 <translation id="3747079125031086337">按照正确的顺序选择恢复短语中的单词。</translation>
 <translation id="6518133107902771759">验证</translation>
@@ -790,6 +796,7 @@
 <translation id="1254969878422524947">每 gas 小费限制 (Gwei)</translation>
 <translation id="7373308452149471621">每 GAS 價格限制 (Gwei)</translation>
 <translation id="5891811606602061966">导入账户失败，请重试。</translation>
+<translation id="1822506443689803572">Brave 使用 <ph name="DEX_PROVIDER"/> 作为 DEX 聚合器。</translation>
 <translation id="5061574358754621254">价格数据由 CoinGecko 提供技术支持</translation>
 <translation id="4626407663177532837">报价包含 0.875% 的 Brave 费用</translation>
 <translation id="8574289650879708853">添加定制资产</translation>
@@ -835,10 +842,11 @@
 <translation id="182619028057179895">格式无效，货币小数是正数</translation>
 <translation id="2978054488731497946">输入货币小数</translation>
 <translation id="7642841516562576649">图标 URL</translation>
-<translation id="4693057234255364395">拦截浏览器 URL</translation>
+<translation id="4693057234255364395">区块探索者 URL</translation>
 <translation id="7059127752542505809">输入 URL</translation>
 <translation id="2156993118928861787">无效地址</translation>
 <translation id="6889920539620318793">设为活动</translation>
 <translation id="2653659639078652383">提交</translation>
 <translation id="8853725596990766789">更改金额</translation>
+<translation id="5233638681132016545">打开新的标签页</translation>
 </translationbundle>

@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">Chrome OS ei saanud teie andmeid sünkroonida, sest teie domeenil pole sünkroonimine saadaval.</translation>
 <translation id="5147525139567260139">Bravei vahekaardi jagamine</translation>
 <translation id="1530633922026945685">Brave vajab luba teie kaamerale juurdepääsemiseks, et luua teid ümbritsevast 3D-kaart</translation>
+<translation id="4449148723378534338">Vaadake üle Bravei peamised privaatsus- ja turvaseaded</translation>
 <translation id="5616153642055197778">Saadaval on Bravei uus, turvalisem versioon.</translation>
 <translation id="6797402139308059782">Luba Braveil taustal töötada</translation>
 <translation id="5875673934455379806">Installi Brave uuesti</translation>
@@ -36,7 +37,6 @@
 <translation id="1248225940185478633">Brave vajab selle saidi puhul kaamera ja mikrofoni kasutamise luba</translation>
 <translation id="6078442581074612226">Braveis</translation>
 <translation id="2485422356828889247">Desinstalli</translation>
-<translation id="2372700594671864890">Vaadake, kuidas Brave plaanib teid kaitsta saidiülese jälgimise eest, säilitades siiski juurdepääsu avatud veebile</translation>
 <translation id="9026991721384951619">Chrome OS ei saanud andmeid sünkroonida, sest teie konto sisselogimisandmed on aegunud.</translation>
 <translation id="7798069806040634998">Brave vajab failide allalaadimiseks juurdepääsu salvestusruumile</translation>
 <translation id="8447483940522230788">Bravei abiline</translation>
@@ -109,6 +109,8 @@
 <translation id="3679799810790990472">Kas jätkata uuel Bravei profiilil?</translation>
 <translation id="4567424176335768812">Olete sisse logitud aadressiga <ph name="USER_EMAIL_ADDRESS"/>. Nüüd on teil juurdepääs oma järjehoidjatele, ajaloole ja muudele seadetele kõigis seadmetes, kuhu olete sisse logitud.</translation>
 <translation id="300669147395456190">Bravei rakendused</translation>
+<translation id="2182657378556811785">Rakendus on peaaegu ajakohane! Värskenduse lõpuleviimiseks taaskäivitage Brave.</translation>
+<translation id="7402642357351265733">Kui jagate ka Bravei kasutusaruandeid, hõlmavad need teie külastatavaid URL-e</translation>
 <translation id="8142245354207161805">Näib, et profiili kasutab Bravei muu protsess (<ph name="PROCESS_ID"/>) mingis muus arvutis (<ph name="HOST_NAME"/>). Brave on profiili lukustanud, et seda ei saaks rikkuda. Kui olete kindel, et ükski muu protsess seda profiili ei kasuta, saate profiili avada ja Bravei taaskäivitada.</translation>
 <translation id="3395323229510056640">Chrome OS-i puhul abi hankimine</translation>
 <translation id="847561904663814268">Keegi on varem selles arvutis Bravei sisse loginud kasutajana <ph name="ACCOUNT_EMAIL_LAST"/>. Looge uus Bravei kasutaja, et oma teave eraldi hoida.</translation>
@@ -201,7 +203,6 @@ On võimalik, et mõni funktsioon ei ole saadaval. Määrake muu profiilikataloo
 <translation id="3335606533094650083">Brave vajab selle saidi puhul luba, et teie mikrofonile juurde pääseda</translation>
 <translation id="1705567146636171298">Värskenda Bravei</translation>
 <translation id="5499063270485366718">Kui pildil puudub kasulik kirjeldus, üritab Brave selle ise luua. Kirjelduste loomiseks saadetakse pildid Brave'ile.</translation>
-<translation id="151916274998710826">Kohandage Bravei kõige olulisemaid privaatsusvalikuid</translation>
 <translation id="1008530050039597147">Brave vajab selle saidi puhul kaamera kasutamise luba</translation>
 <translation id="1197672524850678392">Bravei ei õnnestunud käivitada. Proovige uuesti.</translation>
 <translation id="3405035915691517126">Brave ei saa teie paroole kontrollida. Proovige uuesti 24 tunni pärast.</translation>
@@ -219,6 +220,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="5062123544085870375">Chrome OS-i taaskäivitamine</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave vajab selle saidi puhul luba, et teie kaamerale juurde pääseda</translation>
+<translation id="3962395975456095331">Kas käivitada Brave uuesti?</translation>
 <translation id="2619516027171717873">Ei saa installida sama Bravei versiooni, mis praegu töötab. Sulgege Brave ja proovige uuesti.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave käivitatakse uuesti 1 minuti pärast}other{Brave käivitatakse uuesti # minuti pärast}}</translation>
 <translation id="573759479754913123">Teave Chrome OS-i kohta</translation>
@@ -228,6 +230,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="155309785154426906">Lülitasite oma kontol täiustatud ohutu sirvimise sisse. Kasutage seda ka Braveis.</translation>
 <translation id="3293668930608086049">Brave kasutab kaamerat ja mikrofoni.</translation>
 <translation id="2827121003398607864">Brave muutus just paremaks</translation>
+<translation id="8678991866891573053">Brave katsetab uusi funktsioone, mis võimaldaksid saitidel pakkuda väiksema andmemahu juures samasugust sirvimiskogemust</translation>
 <translation id="3343095737966473035">Brave ei ole teie vaikebrauser</translation>
 <translation id="5477319665405831211">Sünkroonige ja isikupärastage Brave kõigis oma seadmetes</translation>
 <translation id="5419189641394808652">Brave ei saa teie andmeid sünkroonida, sest teie domeenil pole sünkroonimine saadaval.</translation>
@@ -295,7 +298,5 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Saadaval on uus Bravei värskendus, mis rakendatakse taaskäivitamisel.}=1{Saadaval on uus Bravei värskendus, mis rakendatakse taaskäivitamisel. Teie inkognito akent ei avata uuesti.}other{Saadaval on uus Bravei värskendus, mis rakendatakse taaskäivitamisel. Teie # inkognito akent ei avata uuesti.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada}=1{Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada. Teie inkognito akent ei avata uuesti.}other{Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada. Teie # inkognito akent ei avata uuesti.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti}=1{Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti. Teie inkognito akent ei avata uuesti.}other{Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti. Teie # inkognito akent ei avata uuesti.}}</translation>
-<translation id="7914115000169617076">Peaaegu värskendatud! Värskendamise lõpuleviimiseks taaskäivitage Brave. Privaatsed aknad ei avata uuesti.</translation>
-<translation id="4703432949110765917">Vaikeseaded sobivad enamikule profiilidest, kuid saate neid kohandada vastavalt sellele, kuidas soovite Brave'i kasutada</translation>
 <translation id="2176087127109773485">Saate hallata oma Brave'i sünkroonimisahelaid, kuhu olete sisse loginud. Brave'i sünkroonimisahelaid kasutatakse Brave'i brauseri, Play Store'i, Gmaili ja muu jaoks. Kui soovite lisada konto kellelegi teisele, näiteks pereliikmele, lisage oma <ph name="DEVICE_TYPE"/> hoopis uus profiil. <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/></translation>
 </translationbundle>

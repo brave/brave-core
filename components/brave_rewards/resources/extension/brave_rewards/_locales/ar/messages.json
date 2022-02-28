@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "ستبقى أي نصيحة تقدمها معلقة في محفظتك وستعيد المحاولة تلقائيًا لمدة 90 يومًا.$link_begin$معرفة المزيد$link_end$",
+    "message": "أي إكرامية تمنحها سوف تبقى معلقة وستعيد المحاولة تلقائيًا لمدة 90 يومًا. $link_begin$معرفة المزيد$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "لم يتم تكوين هذا المنشئ حاليًا لتلقي نصائح من محفظتك.",
+    "message": "لم يتم تكوين هذا المنشئ حاليًا لتلقي إكراميات من خدمة المحفظة المستضافة للمكافآت الخاصة بك.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "المكافأة الخاصة بك في طريقها إلى محفظة مكافآت Brave الخاصة بك.",
+    "message": "مكافأتك في طريقها إليك.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "محفظتي",
+    "message": "محقَّق",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "التحقق من المحفظة",
+    "message": "تحقق",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "إعادة الاتصال",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "الحصول عليها",
+  "notificationClaimRewards": {
+    "message": "المطالبة بالمكافآت",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "المطالبة بالرموز المميزة",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "نسخ احتياطي للمحفظة",
+    "message": "النسخة الاحتياطية لمكافآت Brave",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "يرجى عمل نسخة احتياطية عن محفظة Brave الخاصة بك.",
+    "message": "يرجى إجراء نسخة احتياطية لمكافآت Brave الخاصة بك.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "قم بالنسخ الاحتياطي الآن",
+    "message": "اعمل نسخة احتياطية الآن",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "تم تسجيل خروج محفظتك!",
+    "message": "تم تسجيل خروجك",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "تم التحقق من محفظتك!",
+    "message": "تم التحقق من مكافآت Brave الخاصة بك!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "تم التحقق من محفظة $provider$ الخاصة بك بنجاح وتجهيزها لإضافة وسحب الأموال.",
+    "message": "تم التحقق بنجاح من مكافآت Brave الخاصة بك عن طريق $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "منح العملة الرمزية",
+    "message": "منحة الرموز المميزة متاحة!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "لديك منحة في انتظارك.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "مكافآت $month$: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "تم استلام مكاسب الإعلانات",
-    "description": ""
+    "message": "لقد وصلت مكافآت إعلانات $month$ الخاصة بك!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "لقد وصلتك مكافآتك من Brave Private Ads!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "فشل الإسهام الشهري",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "لديك $days$ متبقية قبل المطالبة",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "تعذّر إتمام دفعتك الشهرية المجدولة للاشتراك التلقائي والاشتراكات الشهرية نظراً لعدم كفاية المبلغ. سنحاول مرة أخرى خلال 30 يوماً.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "كانت هناك مشكلة في معالجة مساهمتك.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "فشل الإسهام الشهري",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "تحقق من محفظتك",
+    "message": "تحقق",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "من أجل سحب الرموز المميزة التي تربحها مقابل عرض الإعلانات، ستحتاج إلى التحقق من محفظتك.",
+    "message": "لكي تسحب BAT التي تكتسبها من عرض الإعلانات، سوف يتعين عليك التحقق من مكافآت Brave.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "التحقق من محفظتي",
+    "message": "التحقق من مكافآت Brave",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "من خلال التحقق من محفظتك وربطها بحساب bitFlyer، ستتمكن من تخزين الرموز المميزة التي اكتسبتها من خلال مكآفات Brave وإدارتها بسهولة أكبر",
+    "message": "عن طريق التحقق من مكافآت Brave الخاصة بك، وربطها بحساب bitFlyer، سوف تتمكن من تخزين الرموز المميزة التي كسبتها عبر مكافآت Brave الخاصة بك وإدارتها بسهولة أكبر",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

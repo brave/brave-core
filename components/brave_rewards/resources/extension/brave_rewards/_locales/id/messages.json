@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Setiap tip yang Anda berikan akan tetap tertunda di dompet Anda dan coba lagi secara otomatis selama 90 hari. $link_begin$Pelajari lebih lanjut$link_end$",
+    "message": "Setiap tip yang Anda berikan akan tetap tertunda di dompet Anda dan dicoba lagi secara otomatis selama 90 hari. $link_begin$Pelajari lebih lanjut$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Kreator ini saat ini tidak terkonfigurasi untuk menerima tip dari dompet Anda.",
+    "message": "Kreator ini saat ini tidak terkonfigurasi untuk menerima tip dari layanan dompet kustodian Reward Anda.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Reward sedang dikirim ke dompet Brave Rewards Anda.",
+    "message": "Reward Anda sedang dikirim.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Dompet Saya",
+    "message": "Terverifikasi",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verifikasi Dompet",
+    "message": "Verifikasi",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Hubungkan kembali",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Klaim",
+  "notificationClaimRewards": {
+    "message": "Klaim Reward",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Klaim Token",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,11 +305,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Cadangkan dompet",
+    "message": "Cadangkan Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Harap buat cadangan dompet Brave Anda.",
+    "message": "Silakan cadangkan Brave Rewards Anda.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -313,7 +317,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Dompet Anda telah keluar",
+    "message": "Anda telah keluar",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Dompet Anda terverifikasi!",
+    "message": "Brave Rewards Anda terverifikasi",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Dompet $provider$ Anda telah berhasil diverifikasi dan Anda siap untuk menambah dan menarik dana.",
+    "message": "Brave Rewards Anda telah berhasil diverifikasi dengan $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Hibah token",
+    "message": "Hibah token tersedia!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Ada hibah yang menanti Anda.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Reward: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Pendapatan dari Ads telah diterima",
-    "description": ""
+    "message": "Ad Rewards $month$ bulanan Anda telah tiba!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Imbalan untuk Anda dari Brave Private Ads telah masuk!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Kontribusi bulanan gagal",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Anda memiliki $days$ lagi untuk mengklaim",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Pembayaran bulanan berjadwal Anda untuk Kontribusi Otomatis dan kontribusi bulanan tidak dapat diselesaikan karena dana tidak mencukupi. Kami akan mencoba lagi dalam 30 hari.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Terdapat masalah dalam memproses kontribusi Anda.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Kontribusi bulanan gagal",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verifikasikan dompet Anda",
+    "message": "Verifikasi",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Agar dapat menarik token yang Anda dapatkan dari menonton iklan, Anda perlu memverifikasi dompet Anda.",
+    "message": "Agar dapat menarik BAT yang Anda dapatkan dari menonton iklan, Anda perlu memverifikasi Brave Rewards Anda.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verifikasi dompet saya",
+    "message": "Memverifikasikan Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Dengan memverifikasi dompet Anda dan menautkannya ke akun bitFlyer, Anda akan dapat dengan lebih mudah menyimpan dan mengelola token yang telah Anda dapatkan melalui program Brave Rewards.",
+    "message": "Dengan memverifikasi Brave Rewards Anda dan menautkannya ke akun bitFlyer, Anda akan dapat dengan lebih mudah menyimpan dan mengelola BAT yang telah Anda dapatkan melalui Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
 <translation id="2278950434998763147">เปิดบางเว็บไซต์โดยใช้การเชื่อมต่อ HTTPS ที่ปลอดภัยแทน HTTP ธรรมดา</translation>
 <translation id="94154759592465111">สคริปต์บล็อก</translation>
-<translation id="3518266709656143462">บล็อก Javascript (ที่อาจทำเว็บเสียหาย)</translation>
+<translation id="7714773920987474116">บล็อก JavaScript (อาจทำเว็บเสียหาย)</translation>
 <translation id="6052725679982758334">การบล็อกโซเชียลมีเดีย</translation>
 <translation id="7498695072878479744">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">เรื่องเด่นประจำวันนี้ในฟีดส่วนตัว สำหรับคุณโดยเฉพาะ</translation>
 <translation id="7266075701303521777">ข่าว Brave เป็นโฆษณาที่ได้รับการสนับสนุนความส่วนตัวโดยสมบูรณ์และเป็นโฆษณาที่ไม่ระบุชื่อ ซึ่งเหมาะกับอุปกรณ์ของคุณ</translation>
 <translation id="4541978218358617681">โฆษณา</translation>
-<translation id="7823038307453615214">เปิดข่าว Brave</translation>
+<translation id="7823038307453615214">แสดง Brave News</translation>
 <translation id="6527303717912515753">แชร์</translation>
 <translation id="1654539412343893324">เรียนรู้เพิ่มเติมเกี่ยวกับข้อมูลของคุณ</translation>
 <translation id="2989805286512600854">เปิดในแท็บใหม่</translation>
@@ -97,6 +97,7 @@
 <translation id="6511854390690723657">นี่เป็นโฆษณา Brave อันแรกของคุณ แตะเพื่อเรียนรู้เพิ่มเติม</translation>
 <translation id="2070991379950719711">เริ่มต้นใช้ Brave Reward</translation>
 <translation id="48520986898237073">ไปยังกระเป๋าเงิน</translation>
+<translation id="3570367516044491911">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="6800338374677644736">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
 <translation id="19715420010996093">เลือกเบราว์เซอร์ Brave แล้วแตะ 'เสมอ'</translation>
 <translation id="3546439402724649282">Brave ถูกตั้งเป็นเบราว์เซอร์เริ่มต้นของคุณอยู่แล้ว</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">ยอดเงินในวอลเล็ท:</translation>
 <translation id="2573313946367623146">ส่งทิปของฉัน</translation>
 <translation id="3250511771491660127">ทำให้เป็นรายเดือน</translation>
+<translation id="7658239707568436148">ยกเลิก</translation>
+<translation id="1201402288615127009">ถัดไป</translation>
+<translation id="8481779960444041069">เพื่อการปรับปรุงความเป็นส่วนตัวของคุณ โปรดตั้งค่า Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ</translation>
+<translation id="1938402585819943124">เลือก Brave ในหน้าจอถัดไป</translation>
+<translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
 <translation id="6639570430554986719">มกราคม</translation>
 <translation id="1807352595146144483">กุมภาพันธ์</translation>
 <translation id="2021828608097804771">มีนาคม</translation>
@@ -521,9 +527,9 @@
 <translation id="6478996494082389936">ระบบวิเคราะห์ผลิตภัณฑ์แบบส่วนตัว</translation>
 <translation id="5187052478998910855">อยากฟื้นวิชาเก็บ Reward รึเปล่า</translation>
 <translation id="8622329973403382303">ดูบทแนะนำฉบับย่อเพื่อเติมเกร็ดความรู้ว่าคุณต้องทำอย่างไรเพื่อให้ถูกจารึกเป็นดาวเด่นแห่งวงการ Reward</translation>
-<translation id="7625138338483121345">เปิดลิงก์ทั้งหมดด้วย Brave เพื่อปกป้องความเป็นส่วนตัวของคุณ</translation>
-<translation id="4511485286950743564">Brave Shields บล็อกเครื่องมือติดตามและโฆษณา บันทึกข้อมูล และช่วยให้คุณประหยัดเวลาในทุกเว็บไซต์ที่คุณเยี่ยมชม</translation>
-<translation id="9218430445555521422">ตั้งค่า Brave เป็นค่าเริ่มต้น</translation>
+<translation id="7625138338483121345">กำหนดให้ Brave เป็นเบราว์เซอร์เริ่มต้น</translation>
+<translation id="4511485286950743564">เมื่อ Brave เป็นค่าเริ่มต้น ทุกลิงก์ที่คุณคลิกจะเปิดด้วยการป้องกันความเป็นส่วนตัวของ Brave</translation>
+<translation id="9218430445555521422">ตั้งเป็นค่าเริ่มต้น</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -542,7 +548,6 @@
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
 <translation id="5825943197137337319">เฉพาะหน้าอินเตอร์เฟซสาธารณะค่าเดิมเท่านั้น</translation>
 <translation id="1689062823386843231">ปิดการใช้งาน UDP ที่ไม่ใช่พร็อกซี่</translation>
-<translation id="3171931580569169744">เปิดใช้งาน Tab Groups</translation>
 <translation id="5587305863196367357">การยืนยันกระเป๋าเงินจะทำให้คุณจัดการเงินของคุณได้อย่างง่ายดายในส่วนของการเติมเงินและการถอนเงิน</translation>
 <translation id="5760671211380791582">คุณมี BAT ไม่เพียงพอ</translation>
 <translation id="442469478596827903">คุณต้องมีอย่างน้อย 2 BAT เพื่อสร้างกระเป๋าเงิน Uphold ที่ได้รับการยืนยันแล้ว โปรดลองใหม่อีกครั้งในภายหลัง</translation>
@@ -565,7 +570,8 @@
 <translation id="375882617301124395">เก็บสำรองคริปโตวอลเล็ตของคุณ</translation>
 <translation id="8289942708804097960">ซื้อคริปโตด้วยบัตรเครดิตหรือบัตรเดบิต</translation>
 <translation id="841880029259839903">ส่งคริปโตหรือโอนจากบัญชีหนึ่งไปยังอีกบัญชีหนึ่ง</translation>
-<translation id="8226778393040773102">แลกเปลี่ยนสินทรัพย์คริปโตด้วย DEX Aggregator ของ Brave</translation>
+<translation id="8226778393040773102">แลกเปลี่ยนโทเค็นและสินทรัพย์</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> จะประมวลผลที่อยู่ Ethereum และที่อยู่ IP เพื่อดำเนินธุรกรรมให้สำเร็จ (รวมถึงการขอรับใบเสนอราคา) โดย <ph name="DEX_PROVIDER"/> จะจะใช้ข้อมูลนี้เพื่อวัตถุประสงค์ในการประมวลผลธุรกรรมเท่านั้น</translation>
 <translation id="1783600039044302171">รักษาความปลอดภัยคริปโตของคุณด้วยรหัสผ่าน</translation>
 <translation id="3726490322412361740">ป้อนรหัสผ่าน</translation>
 <translation id="3038243139480464605">ยืนยันรหัสผ่าน</translation>
@@ -593,7 +599,7 @@
 <translation id="283071225285270357">ป้อนวลีกู้คืนของคุณ</translation>
 <translation id="3943857333388298514">วาง</translation>
 <translation id="3331452756822160641">รหัสผ่านใหม่</translation>
-<translation id="4359319875297001084">ฉันกำลังกู้คืนจากกระเป๋าเงินคริปโต Brave ที่มีอยู่เดิม</translation>
+<translation id="4359319875297001084">นำเข้าจากคริปโตวอลเล็ตของ Brave ที่มีอยู่เดิมหรือไม่</translation>
 <translation id="2339124864228588937">ยืนยันวลีกู้คืน</translation>
 <translation id="3747079125031086337">เลือกคำในกลุ่มคำสำหรับการกู้คืนของคุณตามลำดับที่ถูกต้อง</translation>
 <translation id="6518133107902771759">ยืนยัน</translation>
@@ -842,4 +848,5 @@
 <translation id="6889920539620318793">ตั้งค่าเป็นใช้งาน</translation>
 <translation id="2653659639078652383">ส่ง</translation>
 <translation id="8853725596990766789">เปลี่ยนจำนวน</translation>
+<translation id="5233638681132016545">แท็บใหม่</translation>
 </translationbundle>

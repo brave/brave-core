@@ -15,6 +15,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="7419046106786626209">„Brave“ OS negali sinchronizuoti duomenų, nes jūsų domene sinchronizavimas nepasiekiamas.</translation>
 <translation id="5147525139567260139">„Brave“ skirtuko bendrinimas</translation>
 <translation id="1530633922026945685">„Brave“ reikia leidimo naudoti fotoaparatą jūsų aplinkos 3D žemėlapiui kurti</translation>
+<translation id="4449148723378534338">Peržiūrėkite pagrindinius privatumo ir saugos valdiklius naršyklėje „Brave“</translation>
 <translation id="5616153642055197778">Pasiekiama nauja, saugesnė „Brave“ versija.</translation>
 <translation id="6797402139308059782">Paleisti „Brave“ fone</translation>
 <translation id="5875673934455379806">Iš naujo įdiegti „Brave“</translation>
@@ -38,7 +39,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="1248225940185478633">„Brave“ reikalingi fotoaparato ir mikrofono leidimai šioje svetainėje</translation>
 <translation id="6078442581074612226">Naudojant „Brave“</translation>
 <translation id="2485422356828889247">Pašalinti</translation>
-<translation id="2372700594671864890">Sužinokite, kaip „Brave“ ketina apsaugoti jus nuo veiklos skirtingose svetainėse stebėjimo, išlaikydama atvirą žiniatinklį</translation>
 <translation id="9026991721384951619">„Brave“ OS negali sinchronizuoti duomenų, nes paskyros išsami prisijungimo informacija yra pasenusi.</translation>
 <translation id="7798069806040634998">„Brave“ reikia prieigos prie saugyklos, kad būtų galima atsisiųsti failus</translation>
 <translation id="8447483940522230788">„Brave“ pagalbos priemonė</translation>
@@ -111,6 +111,8 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="3679799810790990472">Tęsti naudojant naują „Brave“ profilį?</translation>
 <translation id="4567424176335768812">Esate prisijungę kaip <ph name="USER_EMAIL_ADDRESS"/>. Dabar galite pasiekti savo žymes, istoriją ir kitus nustatymus visuose įrenginiuose, kuriuose esate prisijungę.</translation>
 <translation id="300669147395456190">„Brave“ programos</translation>
+<translation id="2182657378556811785">Beveik atnaujinta! Paleiskite „Brave“ iš naujo, kad būtų užbaigtas naujinimas.</translation>
+<translation id="7402642357351265733">Jei taip pat bendrinate „Brave“ naudojimo ataskaitas, į tas ataskaitas įtraukiami URL, kuriais lankėtės</translation>
 <translation id="8142245354207161805">Atrodo, kad profilį naudoja kitas „Brave“ procesas (<ph name="PROCESS_ID"/>) kitame kompiuteryje (<ph name="HOST_NAME"/>). „Brave“ užrakino profilį, kad jis nebūtų sugadintas. Jei esate tikri, kad jokie kiti procesai nenaudoja šio profilio, galite atrakinti profilį ir iš naujo paleisti „Brave“.</translation>
 <translation id="3395323229510056640">Gaukite pagalbos dėl „Brave“ OS</translation>
 <translation id="847561904663814268">Kažkas anksčiau prisijungė prie „Brave“ šiame kompiuteryje kaip <ph name="ACCOUNT_EMAIL_LAST"/>. Sukurkite naują „Brave“ naudotoją, kad apsaugotumėte savo informaciją.</translation>
@@ -204,7 +206,6 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="3335606533094650083">„Brave“ reikia leidimo, kad galėtų naudoti mikrofoną šioje svetainėje</translation>
 <translation id="1705567146636171298">Atnaujinti „Brave“</translation>
 <translation id="5499063270485366718">Jei nebus naudingo vaizdo aprašo, „Brave“ bandys jums jį pateikti. Kad būtų galima kurti aprašus, vaizdai siunčiami į sistemą „Brave“.</translation>
-<translation id="151916274998710826">Tinkinkite svarbiausias „Brave“ privatumo parinktis</translation>
 <translation id="1008530050039597147">„Brave“ reikalingas fotoaparato leidimas šioje svetainėje</translation>
 <translation id="1197672524850678392">Nepavyko paleisti „Brave“. Bandykite dar kartą.</translation>
 <translation id="3405035915691517126">„Brave“ negali patikrinti jūsų slaptažodžių. Bandykite dar kartą po 24 val.</translation>
@@ -222,6 +223,7 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="5062123544085870375">„Brave“ OS paleidimas iš naujo</translation>
 <translation id="3943696263619956191">„<ph name="PAGE_TITLE"/>“ – „Brave Dev“</translation>
 <translation id="2034072705932785495">„Brave“ reikia leidimo, kad galėtų naudoti fotoaparatą šioje svetainėje</translation>
+<translation id="3962395975456095331">Iš naujo paleisti „Brave“?</translation>
 <translation id="2619516027171717873">Negalima įdiegti tos pačios „Brave“ versijos, kuri šiuo metu paleista. Uždarykite „Brave“ ir bandykite dar kartą.</translation>
 <translation id="3186363903915641692">{0,plural, =1{„Brave“ bus paleista iš naujo po 1 minutės}one{„Brave“ bus paleista iš naujo po # minutės}few{„Brave“ bus paleista iš naujo po # minučių}many{„Brave“ bus paleista iš naujo po # minutės}other{„Brave“ bus paleista iš naujo po # minučių}}</translation>
 <translation id="573759479754913123">Apie „Brave“ OS</translation>
@@ -231,6 +233,7 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="155309785154426906">Įjungėte Sustiprinto saugaus naršymo funkciją paskyroje. Dabar įjunkite ją sistemoje „Brave“.</translation>
 <translation id="3293668930608086049">„Brave“ naudoja jūsų fotoaparatą ir mikrofoną.</translation>
 <translation id="2827121003398607864">„Brave“ dabar dar tobulesnė</translation>
+<translation id="8678991866891573053">„Brave“ tyrinėja naujas funkcijas, leidžiančias svetainėms teikti tas pačias naršymo funkcijas, naudojant mažiau jūsų duomenų</translation>
 <translation id="3343095737966473035">„Brave“ nėra numatytoji naršyklė</translation>
 <translation id="5477319665405831211">Sinchronizuokite ir suasmeninkite „Brave“ skirtinguose įrenginiuose</translation>
 <translation id="5419189641394808652">„Brave“ negali sinchronizuoti duomenų, nes jūsų domene sinchronizavimas nepasiekiamas.</translation>
@@ -298,7 +301,5 @@ Kai kurios funkcijos gali būti nepasiekiamos. Nurodykite kitą profilio katalog
 <translation id="8274659559228306809">{COUNT,plural, =0{Pasiekiamas naujas „Brave“ naujinys. Jis bus pritaikytas, kai paleisite „Brave“ iš naujo.}=1{Pasiekiamas naujas „Brave“ naujinys. Jis bus pritaikytas, kai paleisite „Brave“ iš naujo. Inkognito langas nebus atidarytas iš naujo.}one{Pasiekiamas naujas „Brave“ naujinys. Jis bus pritaikytas, kai paleisite „Brave“ iš naujo. # inkognito langas nebus atidarytas iš naujo.}few{Pasiekiamas naujas „Brave“ naujinys. Jis bus pritaikytas, kai paleisite „Brave“ iš naujo. # inkognito langai nebus atidaryti iš naujo.}many{Pasiekiamas naujas „Brave“ naujinys. Jis bus pritaikytas, kai paleisite „Brave“ iš naujo. # inkognito lango nebus atidaryta iš naujo.}other{Pasiekiamas naujas „Brave“ naujinys. Jis bus pritaikytas, kai paleisite „Brave“ iš naujo. # inkognito langų nebus atidaryta iš naujo.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratorius prašo paleisti „Brave“ iš naujo, kad būtų galima pritaikyti šį naujinį}=1{Administratorius prašo paleisti „Brave“ iš naujo, kad būtų galima pritaikyti šį naujinį. Inkognito langas nebus atidarytas iš naujo.}one{Administratorius prašo paleisti „Brave“ iš naujo, kad būtų galima pritaikyti šį naujinį. # inkognito langas nebus atidarytas iš naujo.}few{Administratorius prašo paleisti „Brave“ iš naujo, kad būtų galima pritaikyti šį naujinį. # inkognito langai nebus atidaryti iš naujo.}many{Administratorius prašo paleisti „Brave“ iš naujo, kad būtų galima pritaikyti šį naujinį. # inkognito lango nebus atidaryta iš naujo.}other{Administratorius prašo paleisti „Brave“ iš naujo, kad būtų galima pritaikyti šį naujinį. # inkognito langų nebus atidaryta iš naujo.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratorius reikalauja paleisti „Brave“ iš naujo, kad būtų galima pritaikyti naujinį}=1{Administratorius reikalauja paleisti „Brave“ iš naujo, kad būtų galima pritaikyti naujinį. Inkognito langas nebus atidarytas iš naujo.}one{Administratorius reikalauja paleisti „Brave“ iš naujo, kad būtų galima pritaikyti naujinį. # inkognito langas nebus atidarytas iš naujo.}few{Administratorius reikalauja paleisti „Brave“ iš naujo, kad būtų galima pritaikyti naujinį. # inkognito langai nebus atidaryti iš naujo.}many{Administratorius reikalauja paleisti „Brave“ iš naujo, kad būtų galima pritaikyti naujinį. # inkognito lango nebus atidaryta iš naujo.}other{Administratorius reikalauja paleisti „Brave“ iš naujo, kad būtų galima pritaikyti naujinį. # inkognito langų nebus atidaryta iš naujo.}}</translation>
-<translation id="7914115000169617076">Beveik atnaujinta! Paleiskite „Brave“ iš naujo, kad būtų užbaigtas naujinimas. Privatūs langai nebus atidaryti iš naujo.</translation>
-<translation id="4703432949110765917">Numatytosios nuostatos tinkamos daugeliui profilių, tačiau galite jas pritaikyti taip, kaip jums patogiausia naudoti „Brave“.</translation>
 <translation id="2176087127109773485">Galite tvarkyti savo registruotas „Brave“ sinchronizavimo grandines. Jūsų „Brave“ sinchronizavimo grandinės naudojamos „Brave“ naršyklei, „Play Store“, „Gmail“ ir kt. Jei norite pridėti paskyrą kam nors kitam, pavyzdžiui, šeimos nariui, vietoj to įtraukite naują profilį į savo <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Sužinoti daugiau<ph name="LINK_END"/></translation>
 </translationbundle>

@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "ทิปใดๆ ที่คุณให้จะยังคงรอดำเนินการอยู่ในวอลเล็ตของคุณและระบบจะลองดำเนินการใหม่โดยอัตโนมัติเป็นเวลา 90 วัน $link_begin$ดูเพิ่มเติม$link_end$",
+    "message": "ทิปใดๆ ที่คุณให้จะยังคงรอดำเนินการอยู่และระบบจะลองดำเนินการใหม่โดยอัตโนมัติเป็นเวลา 90 วัน $link_begin$ดูเพิ่มเติม$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "ครีเอเตอร์รายนี้ยังไม่ได้รับการกำหนดค่าให้รับทิปจากวอลเล็ตของคุณ",
+    "message": "ผู้สร้างรายนี้ยังไม่ได้รับการกำหนดค่าให้รับทิปจากบริการกระเป๋าเงินเพื่อจัดเก็บข้อมูลของลูกค้า Rewards ของคุณ",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "รางวัลของคุณกำลังอยู่ระหว่างทางไปสู่กระเป๋าสตางค์ Brave Rewards ของคุณ",
+    "message": "Reward กำลังจะไปถึงคุณแล้ว",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "กระเป๋าเงินของฉัน",
+    "message": "ยืนยันแล้ว",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "ยืนยันวอลเล็ท",
+    "message": "ยืนยัน",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "เชื่อมต่ออีกครั้ง",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "รับ",
+  "notificationClaimRewards": {
+    "message": "รับ Rewards",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "รับโทเค็น",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "สำรองกระเป๋าเงิน",
+    "message": "สำรองข้อมูล Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "โปรดสำรองข้อมูล Brave วอลเล็ทของคุณ",
+    "message": "โปรดสำรองข้อมูล Brave Rewards ของคุณ",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Backup now",
+    "message": "เก็บสำรองเลยตอนนี้",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "กระเป๋าเงินของคุณออกจากระบบแล้ว",
+    "message": "คุณออกจากระบบแล้ว",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "วอลเล็ทของคุณได้รับการยืนยันแล้ว!",
+    "message": "Brave Rewards ของคุณได้รับการยืนยันแล้ว!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "กระเป๋าเงิน $provider$ ของคุณได้รับการยืนยันเรียบร้อยแล้วและสามารถเพิ่มและถอนเงินได้แล้ว",
+    "message": "Brave Rewards ผ่านการยืนยันสำเร็จกับ $provider$",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "ได้รับโทเค็น",
+    "message": "มีโทเค็นพร้อมมอบให้!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "มีรางวัลรอคุณอยู่",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Rewards: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "รายได้จาก Ads ที่ได้รับ",
-    "description": ""
+    "message": "Ad Rewards $month$ ของคุณอยู่นี่แล้ว!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "รางวัลของคุณจาก Brave Private Ads อยู่นี่แล้ว!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "การสนับสนุนรายเดือนล้มเหลว",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "คุณมีเวลาเหลืออีก $days$ ในการรับ",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "การชำระเงินรายเดือนตามกำหนดของคุณสำหรับการให้เงินสนับสนุนอัตโนมัติและเงินสนับสนุนรายเดือนนั้นดำเนินการไม่สำเร็จเนื่องจากมีเงินไม่เพียงพอ เราจะทำรายการอีกครั้งในอีก 30 วัน",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "มีปัญหาในการประมวลผลการบริจาคของคุณ",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "การสนับสนุนรายเดือนล้มเหลว",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "ยืนยันกระเป๋าเงินของคุณ",
+    "message": "ยืนยัน",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "ในการถอนโทเค็นที่คุณได้รับจากการดูโฆษณา คุณจะต้องยืนยันกระเป๋าเงินของคุณ",
+    "message": "ในการถอน BAT ที่คุณได้รับจากการดูโฆษณา คุณจะต้องยืนยัน Brave Rewards",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "ยืนยันกระเป๋าเงินของฉัน",
+    "message": "ยืนยัน Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "เมื่อยืนยันกระเป๋าเงินของคุณและเชื่อมโยงกับบัญชี bitFlyer คุณจะสามารถจัดเก็บและจัดการโทเค็นที่คุณได้รับผ่าน Brave Rewards ได้ง่ายขึ้น",
+    "message": "เมื่อยืนยัน Brave Rewards ของคุณและเชื่อมโยงกับบัญชี bitFlyer คุณจะสามารถจัดเก็บและจัดการ BAT ที่คุณได้รับผ่าน Brave Rewards ได้ง่ายขึ้น",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

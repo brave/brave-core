@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Ogni donazione che effettuerai resterà in sospeso nel tuo portafoglio e l'invio verrà ritentato automaticamente per 90 giorni. $link_begin$Scopri di più$link_end$",
+    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Questo creatore non è attualmente configurato per ricevere donazioni dal tuo portafoglio.",
+    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Il tuo premio è sulla via verso il tuo portafoglio Premi Brave ",
+    "message": "Your Reward is on its way.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Il mio portafoglio",
+    "message": "Verificato",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verifica il Portafoglio",
+    "message": "Verifica",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Ricollegati",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Riscuoti",
+  "notificationClaimRewards": {
+    "message": "Claim Rewards",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Claim Tokens",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Esegui il backup del portafoglio",
+    "message": "Back up Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Per favore, effettua il backup del tuo portafoglio Brave.",
+    "message": "Please back up your Brave Rewards.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Esegui il backup ora",
+    "message": "Esegui subito il backup",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Il portafoglio è disconnesso",
+    "message": "You are logged out",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Il tuo portafoglio è verificato!",
+    "message": "Your Brave Rewards is verified!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Il tuo portafoglio $provider$ è stato verificato ed è disponibile per l’aggiunta e il prelievo di denaro.",
+    "message": "Your Brave Rewards was successfully verified with $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Token concessi",
+    "message": "A token grant is available!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "C'è una donazione in attesa per te.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Rewards: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Guadagni ottenuti con Brave Ads",
-    "description": ""
+    "message": "Your $month$ Ad Rewards are here!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "I premi di Brave Private Ads sono qui!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Il contributo mensile non è riuscito",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "You have $days$ left to claim",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Non è stato possibile completare il tuo pagamento mensile pianificato dei contributi automatici e di quelli mensili a causa di fondi insufficienti. Riproveremo tra 30 giorni. ",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Si è verificato un problema nell'elaborazione del tuo contributo.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Il contributo mensile non è riuscito",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verifica il tuo portafoglio",
+    "message": "Verifica",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Per incassare i token guadagnati visualizzando gli annunci pubblicitari, devi verificare il tuo portafoglio.",
+    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verifica il mio portafoglio",
+    "message": "Verify Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Verificando il portafoglio e collegandolo a un account bitFlyer, è più facile conservare e gestire i token guadagnati con Brave Rewards",
+    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

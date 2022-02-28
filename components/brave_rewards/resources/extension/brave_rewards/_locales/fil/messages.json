@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Ang anumang tip na gagawin mo ay mananatiling nakabinbin sa iyong wallet at awtomatiko itong susubukan ulit sa loob ng 90 araw. $link_begin$Matuto pa$link_end$",
+    "message": "Mananatiling nakabinbin ang anumang tip na gagawin mo at awtomatikong susubukan ulit sa loob ng 90 araw. $link_begin$Matuto pa$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Kasalukuyang hindi pa na-configure ang creator na ito para tumanggap ng mga tip mula sa iyong wallet.",
+    "message": "Kasalukuyang hindi pa na-configure ang creator na ito para tumanggap ng mga tip mula sa iyong serbisyo sa custodial wallet ng Mga Reward.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Paparating na ang iyong Reward sa iyong Brave Rewards wallet.",
+    "message": "Parating na ang iyong Reward.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Wallet Ko",
+    "message": "Na-verify",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "I-verify ang Wallet",
+    "message": "I-verify",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Kumonekta ulit",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "I-claim",
+  "notificationClaimRewards": {
+    "message": "I-claim ang Mga Reward",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "I-claim ang Mga Token",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Backup na wallet",
+    "message": "I-back up ang Mga Reward ng Brave",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Paki-back up ang iyong wallet sa Brave.",
+    "message": "Paki-back up ang iyong Mga Reward ng Brave.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "I-back up ngayon",
+    "message": "Mag-back up na ngayon",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Naka-log out ang iyong wallet",
+    "message": "Naka-log out ka",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Na-verify ang iyong wallet!",
+    "message": "Na-verify na ang iyong Mga Reward ng Brave!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Na-verify na ang $provider$ wallet mo at magagamit na ito para magdagdag at mag-withdraw ng pondo.",
+    "message": "Na-verify na ang iyong Mga Reward ng Brave sa $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Mga token grant",
+    "message": "May available na token grant!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "May grant na naghihintay sa iyo.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "Mga  Reward sa $month$: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Natanggap na kita sa Ads",
-    "description": ""
+    "message": "Narito na ang iyong Mga Reward ng Ad sa $month$!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Narito na ang iyong mga reward mula sa Brave Private Ads!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Hindi naiproseso ang buwanang kontribusyon",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Mayroon kang $days$ na natitira para mag-claim",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Hindi makukumpleto ang iyong nakaiskedyul na buwanang pagbabayad para sa Awtomatikong Pag-ambag at mga buwanang kontribusyon dahil hindi sapat ang pondo. Susubukan namin ulit pagkalipas ng 30 araw.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Nagkaroon ng problema sa pagproseso sa iyong pag-ambag.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Hindi naiproseso ang buwanang kontribusyon",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "I-verify ang iyong wallet",
+    "message": "I-verify",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Para ma-withdraw ang mga token na nakuha mo para sa panonood ng mga ad, kakailanganin mong i-verify ang iyong wallet.",
+    "message": "Para i-withdraw ang BAT na kinikita mo para sa panonood ng mga ad, kakailanganin mong i-verify ang Mga Reward ng Brave.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "I-verify ang aking wallet",
+    "message": "I-verify ang Mga Reward ng Brave",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Sa pamamagitan ng pag-verify sa iyong wallet at pag-link nito sa isang bitFlyer account, madali mong maso-store at mapapamahalaan ang mga token na nakuha mo sa pamamagitan ng Brave Rewards",
+    "message": "Sa pamamagitan ng pag-verify sa Mga Reward ng Brave at pag-link nito sa isang bitFlyer account, mas madali mong maso-strore at mapapamahalaan ang BAT na kinita mo sa pamamagitan ng Mga Reward ng Brave",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

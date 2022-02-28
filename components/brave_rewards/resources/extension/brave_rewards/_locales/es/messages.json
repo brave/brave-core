@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Cualquier propina que envíes se quedará pendiente en tu monedero y se volverá a intentar el pago automáticamente durante 90 días. $link_begin$Más información$link_end$",
+    "message": "Cualquier propina que envíes se quedará pendiente, y se volverá a intentar el pago automáticamente durante 90 días. $link_begin$Más información$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Este creador no está configurado para recibir propinas de tu monedero.",
+    "message": "Este creador aún no ha configurado la recepción de propinas del servicio de cartera con custodia de Recompensas de Brave.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Su recompensa está de camino a la cartera de recompensas de Brave.",
+    "message": "Tu recompensa está de camino.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Mi cartera",
+    "message": "Verificado",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verificar la cartera",
+    "message": "Verificar",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Reconectar",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Reclamar",
+  "notificationClaimRewards": {
+    "message": "Reclamar recompensas",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Reclamar tokens",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Realizar una copia de seguridad de la cartera",
+    "message": "Haz una copia de seguridad de Recompensas de Brave",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Haga una copia de seguridad de su cartera de Brave.",
+    "message": "Haz una copia de seguridad de Recompensas de Brave.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Hacer una copia de seguridad ahora",
+    "message": "Hacer copia de seguridad ahora",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Se ha cerrado sesión en tu cartera",
+    "message": "Has cerrado sesión",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "¡Se ha verificado su cartera!",
+    "message": "¡Se ha verificado tu perfil de Recompensas de Brave!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Tu cartera $provider$ se ha verificado correctamente y ya está lista para añadir y retirar fondos.",
+    "message": "Tu perfil de Recompensas de Brave se ha verificado correctamente con $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Concesiones de tokens",
+    "message": "¡Hay una concesión de tokens disponible!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Tiene una gratificación esperándole.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "Recompensas de $month$: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Ganancias recibidas de Brave Ads",
-    "description": ""
+    "message": "¡Ya están aquí tus recompensas por los anuncios de $month$!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "¡Aquí están tus recompensas de Brave Private Ads!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Error en la contribución mensual",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Te quedan $days$ para reclamar",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "No se han podido completar su pago mensual programado para la contribución automática y las contribuciones mensuales por falta de fondos. Se intentará de nuevo en 30 días.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Se ha producido un error al procesar su contribución.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Error en la contribución mensual",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verificar tu cartera",
+    "message": "Verificar",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Si quieres retirar los tokens que ganes por ver anuncios, debes verificar tu cartera.",
+    "message": "Si quieres retirar los BAT que ganes por ver anuncios, debes verificar Recompensas de Brave.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verificar mi cartera",
+    "message": "Verificar Recompensas de Brave",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Si verificas tu cartera y la vinculas a una cuenta de bitFlyer, podrás almacenar y gestionar con mayor facilidad los tokens que hayas ganado a través de Brave Rewards.",
+    "message": "Si verificas tu perfil de Recompensas de Brave y lo vinculas a una cuenta de bitFlyer, podrás almacenar y gestionar con mayor facilidad los BAT que hayas ganado a través de Recompensas de Brave",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {
