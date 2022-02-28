@@ -64,6 +64,19 @@ const mockGetChecksumEthAddress = async () => {
   return {} as GetChecksumEthAddressReturnInfo
 }
 
+const checkEnsAddress = async () => {
+  const { result, waitForNextUpdate } = renderHook(() => useSend(
+    mockFindENSAddress,
+    mockFindUnstoppableDomainAddress,
+    mockGetChecksumEthAddress,
+    mockSendAssetOptions,
+    mockAccount,
+    WalletActions.sendERC20Transfer,
+    WalletActions.sendTransaction,
+    WalletActions.sendERC721TransferFrom,
+    mockSendAssetOptions
+  )
+
 describe('useSend hook', () => {
   let sendERC20TransferSpy: jest.SpyInstance
   let sendTransactionSpy: jest.SpyInstance
@@ -73,18 +86,7 @@ describe('useSend hook', () => {
   sendTransactionSpy = jest.spyOn(WalletActions, 'sendTransaction')
   sendERC721TransferFromSpy = jest.spyOn(WalletActions, 'sendERC721TransferFrom')
 
-  it('Should find a ens address for bravey.eth and do a normal sendTransaction', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useSend(
-      mockFindENSAddress,
-      mockFindUnstoppableDomainAddress,
-      mockGetChecksumEthAddress,
-      mockSendAssetOptions,
-      mockAccount,
-      WalletActions.sendERC20Transfer,
-      WalletActions.sendTransaction,
-      WalletActions.sendERC721TransferFrom,
-      mockSendAssetOptions
-    ))
+  it('Should find a ens address for bravey.eth and do a normal sendTransaction', checkEnsAddress)
 
     // Sets values here
     act(() => {
@@ -166,18 +168,7 @@ describe('useSend hook', () => {
     expect(sendERC721TransferFromSpy).toBeCalledTimes(0)
   })
 
-  it('Should find a ens address for brave.eth and do a sendERC721TransferFrom', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useSend(
-      mockFindENSAddress,
-      mockFindUnstoppableDomainAddress,
-      mockGetChecksumEthAddress,
-      mockSendAssetOptions,
-      mockAccount,
-      WalletActions.sendERC20Transfer,
-      WalletActions.sendTransaction,
-      WalletActions.sendERC721TransferFrom,
-      mockSendAssetOptions
-    ))
+  it('Should find a ens address for brave.eth and do a sendERC721TransferFrom', checkEnsAddress)
 
     // Sets values here
     act(() => {
