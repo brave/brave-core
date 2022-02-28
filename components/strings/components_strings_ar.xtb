@@ -109,7 +109,7 @@
 <translation id="1307966114820526988">الميزات المتوقفة</translation>
 <translation id="1308113895091915999">العرض متاح</translation>
 <translation id="1312803275555673949">ما الدليل الذي يؤيد ذلك؟</translation>
-<translation id="131405271941274527">‏يريد <ph name="URL"/> إرسال المعلومات وتلقّيها عند النقر على جهاز NFC الظاهر على هاتفك.</translation>
+<translation id="1314311879718644478">يمكنك عرض محتوى الواقع المعزّز.</translation>
 <translation id="1314509827145471431">التجليد من الناحية اليمنى</translation>
 <translation id="1318023360584041678">تم حفظ نتيجة البحث في مجموعة علامات تبويب</translation>
 <translation id="1319245136674974084">عدم السؤال مرة أخرى عند استخدام هذا التطبيق</translation>
@@ -205,6 +205,7 @@
 <translation id="1559572115229829303">‏&lt;p&gt;تعذر إنشاء اتصال خاص بـ <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> نظرًا لأن تاريخ ووقت جهازك (<ph name="DATE_AND_TIME"/>) غير صحيحين.&lt;/p&gt;
 
           &lt;p&gt;يُرجى تعديل التاريخ والوقت من القسم &lt;strong&gt;عام&lt;/strong&gt; في تطبيق &lt;strong&gt;الإعدادات&lt;/strong&gt; .&lt;/p&gt;</translation>
+<translation id="156703335097561114">معلومات الشبكة، مثل العناوين وإعدادات الواجهة وجودة الاتصال</translation>
 <translation id="1567040042588613346">تعمل هذه السياسة على النحو المنشود، غير أنّ القيمة نفسها مُحدّدة في مكان آخر ومن ثمَّ تم استبدالها بموجب هذه السياسة.</translation>
 <translation id="1569487616857761740">إدخال تاريخ انتهاء الصلاحية</translation>
 <translation id="1581080074034554886">‏رمز التحقق من البطاقة (CVC)</translation>
@@ -212,6 +213,7 @@
 <translation id="1583429793053364125">حدث خطأ ما أثناء عرض صفحة الويب هذه.</translation>
 <translation id="1586541204584340881">الإضافات التي ثبّتها</translation>
 <translation id="1588438908519853928">عادي</translation>
+<translation id="1589050138437146318">‏هل تريد تثبيت ARCore؟</translation>
 <translation id="1592005682883173041">الوصول إلى البيانات المحلية</translation>
 <translation id="1594030484168838125">اختيار</translation>
 <translation id="8523167061098356223">‏تشغيل لعبة الديناصور في Brave</translation>
@@ -472,6 +474,7 @@
 <translation id="2465655957518002998">اختيار طريقة التسليم للمستخدم</translation>
 <translation id="2465688316154986572">وضع دبوس واحد</translation>
 <translation id="4058615531773510267">‏إدارة الملفات التي تم تنزيلها في Brave</translation>
+<translation id="2466004615675155314">عرض معلومات من الويب</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>تشغيل بيانات تشخيص الشبكة<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">طباعة الصفحات بالترتيب الأساسي</translation>
 <translation id="2470767536994572628">عند تعديل التعليقات التوضيحية، سيعود هذا المستند إلى اتجاه تدويره الأصلي وإلى عرض صفحة واحدة.</translation>
@@ -516,6 +519,7 @@
 <translation id="2609632851001447353">الاختلافات</translation>
 <translation id="2610561535971892504">النقر لنسخ النص</translation>
 <translation id="2618023639789766142">‏C10 (مغلف)</translation>
+<translation id="2623663032199728144">يمكن للموقع الإلكتروني أن يطلب استخدام المعلومات المتعلقة بشاشاتك.</translation>
 <translation id="2625385379895617796">توقيت ساعتك متقدم عن الوقت الحالي</translation>
 <translation id="262745152991669301">‏السماح للموقع الإلكتروني بطلب الاتصال بأجهزة USB</translation>
 <translation id="2915787201097107005">‏للحصول على أعلى مستوى من الحماية في متصفِّح Brave، يمكنك <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>تفعيل "الحماية المُحسَّنة"<ph name="END_ENHANCED_PROTECTION_LINK"/>.</translation>
@@ -631,6 +635,7 @@
 <translation id="3037605927509011580">عذرًا!</translation>
 <translation id="3041612393474885105">معلومات الشهادة</translation>
 <translation id="3044034790304486808">استئناف عملية البحث</translation>
+<translation id="8418829431154568330">‏سجلّ الوصول إلى الكمبيوتر المكتبي عن بُعد من Brave، بما في ذلك الطوابع الزمنية والمضيفين وأرقام تعريف جلسات العملاء</translation>
 <translation id="3060227939791841287">‏C9 (مغلف)</translation>
 <translation id="3061707000357573562">خدمة رمز التصحيح</translation>
 <translation id="306573536155379004">بدأت اللعبة.</translation>
@@ -671,6 +676,7 @@
 <translation id="3197136577151645743">السماح للموقع الإلكتروني بطلب إذن لمعرفة الأوقات التي تستخدم فيها هذا الجهاز بشكل نشط</translation>
 <translation id="6629751330289763215">‏<ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/>، اضغط على مفتاح التبويب (Tab) ثم مفتاح Enter لإدارة نوع المعلومات التي تريد مزامنتها من خلال إعدادات متصفّح Brave.</translation>
 <translation id="320323717674993345">إلغاء الدفع</translation>
+<translation id="3203366800380907218">من الويب</translation>
 <translation id="3207960819495026254">تمت إضافتها إلى الإشارات المرجعية.</translation>
 <translation id="3209034400446768650">إمكانية تحصيل الصفحة للرسوم</translation>
 <translation id="3212581601480735796">تتم مراقبة نشاطك على <ph name="HOSTNAME"/></translation>
@@ -687,6 +693,7 @@
 <translation id="3234666976984236645">الكشف دائمًا عن المحتوى المهم على هذا الموقع</translation>
 <translation id="3240683217920639535">‏<ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>، اضغط على مفتاح Tab ثم مفتاح Enter لتخصيص مظهر المتصفِّح</translation>
 <translation id="3240791268468473923">تم فتح صفحة عدم تطابق بيانات اعتماد الدفع الآمن.</translation>
+<translation id="324180406144491771">تم حظر روابط "<ph name="HOST_NAME"/>"</translation>
 <translation id="3249845759089040423">أنيق</translation>
 <translation id="3252266817569339921">الفرنسية</translation>
 <translation id="3257954757204451555">ما الجهة التي توفّر هذه المعلومات؟</translation>
@@ -717,12 +724,6 @@
 <translation id="3345782426586609320">عينان</translation>
 <translation id="3355823806454867987">تغيير إعدادات الخادم الوكيل...</translation>
 <translation id="3360103848165129075">جدول بيانات معالج الدفع</translation>
-<translation id="669410734497476819">‏لن يحفظ <ph name="BEGIN_EMPHASIS"/>Brave<ph name="END_EMPHASIS"/> المعلومات التالية:
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>سجل التصفّح لديك
-          <ph name="LIST_ITEM"/>ملفات تعريف الارتباط وبيانات الموقع
-          <ph name="LIST_ITEM"/>المعلومات التي تم إدخالها في النماذج
-        <ph name="END_LIST"/></translation>
 <translation id="3362968246557010467">تم نسخ هذه السياسة تلقائيًا من السياسة المتوقفة <ph name="OLD_POLICY"/>. يمكنك استخدام هذه السياسة بدلاً من ذلك.</translation>
 <translation id="3364869320075768271">يريد <ph name="URL"/> استخدام جهاز الواقع الافتراضي وبياناته.</translation>
 <translation id="3366477098757335611">عرض البطاقات</translation>
@@ -1132,6 +1133,7 @@
 <translation id="4708268264240856090">تم قطع اتصالك</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="4722547256916164131">‏<ph name="BEGIN_LINK"/>تشغيل بيانات تشخيص شبكة Windows<ph name="END_LINK"/></translation>
+<translation id="4722735765955348426">كلمة مرور <ph name="USERNAME"/></translation>
 <translation id="4724144314178270921">السماح للموقع الإلكتروني بطلب الاطّلاع على النصوص والصور التي تم نسخها إلى الحافظة</translation>
 <translation id="4726672564094551039">إعادة تحميل السياسات</translation>
 <translation id="4728558894243024398">النظام الأساسي</translation>
@@ -1171,6 +1173,7 @@
 <translation id="4819347708020428563">هل تريد تعديل التعليقات التوضيحية في العرض التلقائي؟</translation>
 <translation id="551961240839010112">‏<ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>: اضغط على مفتاح التبويب (Tab) ثم Enter لإنشاء "جدول بيانات Brave" جديد بسرعة.</translation>
 <translation id="4825507807291741242">قوي</translation>
+<translation id="4829962028570902310">تم التجاهل لأن السياسة لا يمكن ضبطها إلا من خلال سياسات المستخدم على السحابة الإلكترونية.</translation>
 <translation id="483241715238664915">تفعيل التحذيرات</translation>
 <translation id="4838327282952368871">جذّاب</translation>
 <translation id="246176083348620700">‏عرض سجلّ Brave</translation>
@@ -1187,7 +1190,6 @@
 <translation id="4877083676943085827">{COUNT,plural, =0{ما من أسماء نطاقات.}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/> و<ph name="EXAMPLE_DOMAIN_2"/>}few{<ph name="EXAMPLE_DOMAIN_1"/> و<ph name="EXAMPLE_DOMAIN_2"/> و<ph name="AND_MORE"/> نطاقات أخرى}many{<ph name="EXAMPLE_DOMAIN_1"/> و<ph name="EXAMPLE_DOMAIN_2"/> و<ph name="AND_MORE"/> نطاقًا آخر}other{<ph name="EXAMPLE_DOMAIN_1"/> و<ph name="EXAMPLE_DOMAIN_2"/> و<ph name="AND_MORE"/> نطاق آخر}}</translation>
 <translation id="4877422487531841831">البحث عن <ph name="TEXT"/></translation>
 <translation id="4879491255372875719">الإعداد التلقائي (تلقائي)</translation>
-<translation id="4879725228911483934">يمكنك فتح النوافذ ووضعها على شاشتك.</translation>
 <translation id="4880827082731008257">سجلّ البحث</translation>
 <translation id="4881695831933465202">فتح</translation>
 <translation id="4885256590493466218">الدفع باستخدام <ph name="CARD_DETAIL"/>.</translation>
@@ -1212,6 +1214,7 @@
 <translation id="4968522289500246572">هذا التطبيق مصمّم للعمل مع الأجهزة الجوّالة وقد يتعذّر تغيير حجمه بشكل مناسب. من الممكن أن يواجه التطبيق بعض المشاكل أو يتعرّض لإعادة التشغيل.</translation>
 <translation id="4969341057194253438">حذف التسجيل</translation>
 <translation id="4973922308112707173">عمل ثقبَين بالأعلى</translation>
+<translation id="4976702386844183910">تاريخ آخر زيارة للموقع الإلكتروني: <ph name="DATE"/></translation>
 <translation id="4984088539114770594">هل تريد استخدام الميكروفون؟</translation>
 <translation id="4984339528288761049">‏Prc5 (مغلف)</translation>
 <translation id="4989163558385430922">عرض الكل</translation>
@@ -1273,6 +1276,7 @@
 <translation id="5138227688689900538">عرض أقل</translation>
 <translation id="5145883236150621069">يوجد رمز خطأ في استجابة السياسة</translation>
 <translation id="5146995429444047494">يتم حظر الإشعارات للنطاق <ph name="ORIGIN"/></translation>
+<translation id="514704532284964975">‏هناك طلب من <ph name="URL"/> بالاطّلاع على المعلومات وتعديلها على الأجهزة المزوَّدة بتقنية NFC التي نقرت عليها باستخدام هاتفك.</translation>
 <translation id="5148809049217731050">الوجه للأعلى</translation>
 <translation id="515292512908731282">‏C4 (مغلف)</translation>
 <translation id="5158275234811857234">غلاف</translation>
@@ -1295,6 +1299,7 @@
 <translation id="1051285409463218679">‏طرق الدفع والعناوين باستخدام Brave Pay</translation>
 <translation id="5215363486134917902">Folio-Sp</translation>
 <translation id="521659676233207110">الدُرج 13</translation>
+<translation id="5216942107514965959">تمّت زيارة الموقع الإلكتروني آخر مرّة اليوم.</translation>
 <translation id="5222812217790122047">البريد الإلكتروني مطلوب</translation>
 <translation id="5230733896359313003">عنوان الشحن</translation>
 <translation id="5230815978613972521">B8</translation>
@@ -1315,7 +1320,6 @@
 <translation id="5283044957620376778">B1</translation>
 <translation id="5284295735376057059">خصائص المستند</translation>
 <translation id="528468243742722775">‏مفتاح End</translation>
-<translation id="5284909709419567258">عناوين الشبكة</translation>
 <translation id="5285570108065881030">عرض جميع كلمات المرور المحفوظة</translation>
 <translation id="5287240709317226393">عرض ملفات تعريف الارتباط</translation>
 <translation id="5287456746628258573">يستخدم هذا الموقع الإلكتروني ضبط الأمان القديم الذي قد يكشف عن معلوماتك (مثل كلمات المرور أو أرقام بطاقة الائتمان) عند إرسالها إلى هذا الموقع الإلكتروني.</translation>
@@ -1481,6 +1485,7 @@
 <translation id="5869522115854928033">كلمات المرور المحفوظة</translation>
 <translation id="5873013647450402046">يجب تأكيد هويتك للمصرف.</translation>
 <translation id="5887400589839399685">تم حفظ البطاقة</translation>
+<translation id="5887687176710214216">تمّت زيارة الموقع الإلكتروني آخر مرة أمس.</translation>
 <translation id="5895138241574237353">إعادة التشغيل</translation>
 <translation id="5895187275912066135">تاريخ الإصدار</translation>
 <translation id="5901630391730855834">أصفر</translation>
@@ -1569,7 +1574,6 @@
 <translation id="6165508094623778733">مزيد من المعلومات</translation>
 <translation id="6177128806592000436">إن اتصالك بهذا الموقع غير آمن</translation>
 <translation id="6180316780098470077">الفاصل الزمني لإعادة المحاولة</translation>
-<translation id="619448280891863779">السماح للموقع الإلكتروني بطلب فتح النوافذ ووضعها على شاشاتك</translation>
 <translation id="6196640612572343990">حظر ملفات تعريف الارتباط للجهات الخارجية</translation>
 <translation id="6203231073485539293">التحقق من اتصالك بالإنترنت</translation>
 <translation id="8385639954311581596">‏هل تريد إزالة العنوان من Brave؟</translation>
@@ -1671,6 +1675,7 @@
 <translation id="6529602333819889595">إعادة الح&amp;ذف</translation>
 <translation id="6545864417968258051">البحث عن بلوتوث</translation>
 <translation id="6547208576736763147">عمل ثقبَين يسارًا</translation>
+<translation id="6554732001434021288">تمّت زيارة الموقع الإلكتروني آخر مرّة قبل <ph name="NUM_DAYS"/> يوم.</translation>
 <translation id="6556866813142980365">إعادة</translation>
 <translation id="6569060085658103619">أنت تعرض صفحة إضافة</translation>
 <translation id="6573200754375280815">عمل ثقبَين يمينًا</translation>
@@ -1813,7 +1818,6 @@
 <translation id="5320462991730735481">‏إضافة عناوين وإدارتها في إعدادات متصفّح Brave</translation>
 <translation id="7064851114919012435">معلومات الاتصال</translation>
 <translation id="7068733155164172741">أدخِل الرمز المكوَّن من <ph name="OTP_LENGTH"/> رقم.</translation>
-<translation id="7070090581017165256">لمحة عن هذا الموقع الإلكتروني</translation>
 <translation id="70705239631109039">اتصالك بهذا الموقع تتخلله ثغرات أمنية.</translation>
 <translation id="7075452647191940183">الطلب كبير جدًا</translation>
 <translation id="7079718277001814089">يحتوي هذا الموقع على برامج ضارة</translation>
@@ -1945,6 +1949,12 @@
 <translation id="7485870689360869515">لم يتم العثور على بيانات.</translation>
 <translation id="7495528107193238112">هذا المحتوى محظور. يمكنك التواصل مع مالك الموقع الإلكتروني لحلّ المشكلة.</translation>
 <translation id="7812541223399526596">‏زرّ إنشاء مستند: اضغط على مفتاح Enter لإنشاء "مستند Brave" جديد بسرعة.</translation>
+<translation id="2957285558977211818">‏<ph name="BEGIN_EMPHASIS"/>لن يحفظ<ph name="END_EMPHASIS"/> Brave المعلومات التالية:
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>سجلّ التصفُّح
+          <ph name="LIST_ITEM"/>ملفات تعريف الارتباط وبيانات المواقع الإلكترونية
+          <ph name="LIST_ITEM"/>المعلومات التي تم إدخالها في النماذج
+        <ph name="END_LIST"/></translation>
 <translation id="7508255263130623398">رقم تعريف الجهاز المعروض للسياسة فارغ أو لا يتطابق مع رقم تعريف الجهاز الحالي</translation>
 <translation id="7508870219247277067">أخضر مصفر</translation>
 <translation id="7511955381719512146">‏قد يتتطلب Wi-Fi الذي تستخدمه زيارة <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
@@ -2055,7 +2065,6 @@
 <translation id="4670564340385807132">‏هل تريد إزالة اقتراح النموذج من Brave؟</translation>
 <translation id="781440967107097262">هل تريد مشاركة الحافظة؟</translation>
 <translation id="7815407501681723534">تم العثور على <ph name="NUMBER_OF_RESULTS"/> <ph name="SEARCH_RESULTS"/> لـ "<ph name="SEARCH_STRING"/>"</translation>
-<translation id="782125616001965242">عرض معلومات حول هذا الموقع الإلكتروني</translation>
 <translation id="782886543891417279">‏قد يتطلب Wi-Fi الذي تستخدمه (<ph name="WIFI_NAME"/>) زيارة صفحة تسجيل الدخول.</translation>
 <translation id="7836231406687464395">‏Postfix (مغلف)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{لا تتوفَّر تطبيقات}=1{تطبيق واحد (<ph name="EXAMPLE_APP_1"/>)}=2{تطبيقان (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>)}few{# تطبيقات (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>، و<ph name="AND_MORE"/> من التطبيقات الأخرى)}many{# تطبيقات (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>، و<ph name="AND_MORE"/> من التطبيقات الأخرى)}other{# تطبيقات (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>، و<ph name="AND_MORE"/> من التطبيقات الأخرى)}}</translation>
@@ -2099,7 +2108,6 @@
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">السماح للموقع الإلكتروني بطلب استخدام أجهزة الواقع الافتراضي وبياناتها</translation>
 <translation id="8896585555528145662">‏لا يمكنك زيارة <ph name="SITE"/> الآن لأن الموقع الإلكتروني أرسل بيانات اعتماد مختلطة يتعذر على Brave معالجتها. أخطاء الشبكة والهجمات عليها عادةً ما تكون مؤقتة، لذا ستعمل هذه الصفحة لاحقًا على الأرجح.</translation>
-<translation id="79859296434321399">‏لعرض محتوى الواقع المُعزَّز، يُرجى تثبيت ARCore</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">التجليد</translation>
 <translation id="7992044431894087211">تم استئناف "مشاركة الشاشة" مع <ph name="APPLICATION_TITLE"/>.</translation>
@@ -2163,6 +2171,7 @@
 <translation id="8202370299023114387">تعارض</translation>
 <translation id="8206978196348664717">‏Prc4 (مغلف)</translation>
 <translation id="8211406090763984747">الاتصال بموقع الويب هذا آمن</translation>
+<translation id="8217240300496046857">لا يمكن للمواقع الإلكترونية استخدام ملفات تعريف الارتباط لتتبّع نشاط تصفحّك على الإنترنت. وقد تتعطّل بعض الميزات على بعض المواقع الإلكترونية.</translation>
 <translation id="8218327578424803826">الموقع الذي تم تعيينه:</translation>
 <translation id="8220146938470311105">‏C7/C6 (مغلف)</translation>
 <translation id="8228419419708659934">عرض صفحتين</translation>
@@ -2201,6 +2210,7 @@
 <translation id="830498451218851433">الطي إلى نصفَين</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">التطبيقات المثبَّتة وعدد مرات استخدامها</translation>
+<translation id="8317207217658302555">‏هل تريد تحديث ARCore؟</translation>
 <translation id="831997045666694187">مساءً</translation>
 <translation id="8321476692217554900">الإشعارات</translation>
 <translation id="8332188693563227489">تم رفض الدخول إلى <ph name="HOST_NAME"/>.</translation>
@@ -2211,7 +2221,8 @@
 <translation id="8351131234907093545">إنشاء ملاحظة</translation>
 <translation id="8355270400102541638">سياق التعطّل على جهاز المستخدِم:</translation>
 <translation id="8363502534493474904">إيقاف "وضع الطيران"</translation>
-<translation id="8364627913115013041">لم يتم تعيينها.</translation>
+<translation id="8364627913115013041">لم يتم ضبطها.
+</translation>
 <translation id="8368027906805972958">جهاز غير معروف أو غير متوافق (<ph name="DEVICE_ID"/>)</translation>
 <translation id="8368476060205742148">‏خدمات Google Play</translation>
 <translation id="8369073279043109617">الحصول على رمز جديد</translation>
@@ -2264,7 +2275,6 @@
 <translation id="8554912124839363479">{NUM_PERMISSIONS,plural, =1{إعادة ضبط الإذن}zero{إعادة ضبط الأذونات}two{إعادة ضبط الإذنَين}few{إعادة ضبط الأذونات}many{إعادة ضبط الأذونات}other{إعادة ضبط الأذونات}}</translation>
 <translation id="8555010941760982128">استخدام هذا الرمز عند الدفع</translation>
 <translation id="8557066899867184262">‏رمز التحقق من البطاقة (CVC) موجود خلف بطاقتك.</translation>
-<translation id="8558485628462305855">‏لعرض محتوى الواقع المُعزَّز، يُرجى تحديث ARCore</translation>
 <translation id="8559762987265718583">تعذر إنشاء اتصال خاص بـ <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> نظرًا لأن التاريخ والوقت للجهاز (<ph name="DATE_AND_TIME"/>) غير صحيحين.</translation>
 <translation id="8564182942834072828">مستندات مفصولة/نُسخ مفصولة</translation>
 <translation id="8574899947864779331">‏استخدام ميزة Touch ID للتأكد من البطاقات بشكلٍ أسرع</translation>
@@ -2283,6 +2293,7 @@
 <translation id="865032292777205197">أجهزة استشعار الحركة</translation>
 <translation id="8663226718884576429">ملخّص الطلب و<ph name="TOTAL_LABEL"/> وتفاصيل إضافية</translation>
 <translation id="8666678546361132282">الإنجليزية</translation>
+<translation id="8669306706049782872">استخدام المعلومات المتعلقة بشاشاتك لفتح النوافذ ووضعها عليها</translation>
 <translation id="867224526087042813">التوقيع</translation>
 <translation id="8676424191133491403">بلا تأخير</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>، إجابة، <ph name="ANSWER"/></translation>
@@ -2332,6 +2343,7 @@
 <translation id="883848425547221593">إشارات أخرى</translation>
 <translation id="884264119367021077">عنوان الشحن</translation>
 <translation id="884923133447025588">لم يتمّ العثور على أي آلبة إبطال.</translation>
+<translation id="8849262850971482943">يمكنك استخدام بطاقتك الافتراضية للحصول على مستوى أعلى من الأمان.</translation>
 <translation id="7487066225574140895">‏مشاركة مع Brave</translation>
 <translation id="4764754838347156633">‏يُوصي Brave بإعادة تحديد كلمة المرور <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> في حال إعادة استخدامها في مواقع إلكترونية أخرى.</translation>
 <translation id="885906927438988819">‏إذا تم التأكُد من عدم ورود أخطاء إملائية، يُرجى <ph name="BEGIN_LINK"/>محاولة تشغيل بيانات التشخيص لشبكة Windows<ph name="END_LINK"/>.</translation>
@@ -2497,22 +2509,23 @@
 <translation id="8794378783472961468">ومع ذلك، أنت غير مرئي. لا يخفي الانتقال إلى وضع التخفي التصفح من صاحب العمل أو مزود خدمة الإنترنت أو المواقع التي تزورها.</translation>
 <translation id="5673623523506565506">يمكنك الآن التصفح بشكل خاص، ولن ترى ’ الملفات الشخصية الأخرى التي تستخدم هذا الجهاز نشاطك. ومع ذلك، سيتم حفظ التنزيلات والإشارات المرجعية.</translation>
 <translation id="3812568169637430422">يمكنك الآن التصفح بشكل خاص، ولن ’ يرى أصحاب الملفات التعريفية الأخرى الذين يستخدمون هذا الجهاز نشاطك. ومع ذلك، سيتم حفظ التنزيلات والإشارات المرجعية وعناصر قائمة القراءة.</translation>
-<translation id="5186185447130319458">خاص</translation>
+<translation id="6085043210649933880">وضع الخاص في Brave</translation>
 <translation id="3683567996395248272">ماذا يقدم "Private":</translation>
-<translation id="4912243263991194586">عقب إغلاق جميع علامات التبويب في "Private"، يقوم Brave بمسح:
-       <ph name="BEGIN_LIST"/>
-         <ph name="LIST_ITEM"/>Your browsing activity from this device<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>Your search history from this device<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>Information entered in forms<ph name="END_LIST_ITEM"/>
-       <ph name="END_LIST"/></translation>
+<translation id="8817208096236092047">عندما تغلق جميع علامات التبويب الخاصة في Brave، يتم مسح نشاط علامات التبويب تلك من هذا الجهاز:
+<ph name="BEGIN_LIST"/>
+<ph name="LIST_ITEM"/>نشاط التصفح<ph name="END_LIST_ITEM"/>
+<ph name="LIST_ITEM"/>تاريخ البحث<ph name="END_LIST_ITEM"/>
+<ph name="LIST_ITEM"/>المعلومات التي تم إدخالها في النماذج<ph name="END_LIST_ITEM"/>
+<ph name="END_LIST"/></translation>
 <translation id="137199123615682137">ما لا يقدمه "Private"’t do</translation>
-<translation id="6101678912379763265">يجعلك "Private" غير مرئيًا على الإنترنت:
-       <ph name="BEGIN_LIST"/>
-         <ph name="LIST_ITEM"/>Sites know when you visit them<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>Employers or schools can track browsing activity<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>Internet service providers may monitor web traffic<ph name="END_LIST_ITEM"/>
-       <ph name="END_LIST"/></translation>
-<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/> نبذة عن "Private"</translation>
+<translation id="7653199919907357627">وضع الخاص لا يجعلك مخفيًا على الإنترنت:
+<ph name="BEGIN_LIST"/>
+<ph name="LIST_ITEM"/>تستطيع المواقع والخدمات التي تستخدمها رؤية الزيارات<ph name="END_LIST_ITEM"/>
+<ph name="LIST_ITEM"/>يستطيع أصحاب العمل أو المدارس تتبع نشاط التصفح<ph name="END_LIST_ITEM"/>
+<ph name="LIST_ITEM"/>يستطيع مقدمو خدمات الإنترنت مراقبة حركة الويب<ph name="END_LIST_ITEM"/>
+<ph name="END_LIST"/></translation>
+<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>معرفة المزيد عن وضع الخاص في Brave<ph name="END_LINK"/></translation>
+<translation id="9153679102508470540">حظر ملفات الارتباط الخاصة بالأطراف الخارجية في وضع الخاص</translation>
 <translation id="5549245478906381817">افتح نافذة تصفّح خفيّ</translation>
 <translation id="5497977785983089120">افتح نافذة خاصة جديدة للتصفح بشكل خفيّ</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>، اضغط على زر Tab ثم Enter لفتح نافذة تصفّح خفيّ جديدة للتصفح بشكلٍ خفيّ</translation>

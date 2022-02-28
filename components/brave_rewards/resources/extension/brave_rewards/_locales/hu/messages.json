@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Minden borravaló, amit ad, a pénztárcájában marad függő állapotban, és feldolgozását 90 napot át automatikusan mindig újra megkíséreljük. $link_begin$Tudjon meg többet$link_end$",
+    "message": "Minden borravaló, amit ad, függő állapotban marad, és feldolgozását 90 napot át automatikusan mindig újra megkíséreljük. $link_begin$Tudjon meg többet$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Ennél az alkotónál még nincs beállítva, hogy borravalókat fogadhasson az Ön tárcájából.",
+    "message": "Ennél az alkotónál még nincs beállítva, hogy borravalókat fogadhasson az Ön Brave Jutalmak letétkezelő pénztárca-szolgáltatójától.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Jutalma úton van Brave Rewards pénztárcájához.",
+    "message": "Jutalma már úton van.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Saját pénztárcám",
+    "message": "Ellenőrzött",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Ellenőrizd a pénztárcát",
+    "message": "Ellenőrzés",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Újracsatlakozás",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Igénylés",
+  "notificationClaimRewards": {
+    "message": "Jutalmak igénylése",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Tokenek igénylése",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Pénztárca biztonsági mentése",
+    "message": "Brave Jutalmak biztonsági másolat készítése",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Készíts biztonsági másolatot Brave pénztárcádról.",
+    "message": "Készítsen biztonsági másolatot a Brave Jutalmakról.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Biztonsági mentés",
+    "message": "Készítsen biztonsági mentést most",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "A pénztárcája ki van jelentkezve",
+    "message": "Ön kijelentkezett",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Pénztárcád ellenőrizve lett!",
+    "message": "A Brave Jutalmak ellenőrzése sikeresen megtörtént!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "A(z) $provider$ pénztárca ellenőrzése sikerült, és készen áll a pénz feltöltésére és kivételére.",
+    "message": "A Brave Jutalmak ellenőrzése sikeresen megtörtént a következővel: $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Tokenadományok",
+    "message": "Tokenadomány elérhető!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Egy adomány vár rád.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ havi jutalmak: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Kapott bevételek az Ads-ből",
-    "description": ""
+    "message": "$month$ hónapra vonatkozó hirdetési jutalmai megérkeztek!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "A Brave Private Ads jutalmaid megérkeztek!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Havi hozzájárulás sikertelen",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Még $days$ napig van lehetősége igényelni",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "A tervezett havi fizetését és az automatikus hozzájárulást nem lehet kifizetni fedezethiány miatt. 30 nap múlva újrapróbáljuk.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Hiba történt a hozzájárulásod feldolgozása során.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Havi hozzájárulás sikertelen",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Pénztárca megerősítése",
+    "message": "Ellenőrzés",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "A hirdetések megtekintése után járó tokenek kivonásához erősítse meg a pénztárcáját.",
+    "message": "A hirdetések megtekintése után járó BAT kivonásához hitelesítenie kell a Brave Jutalmakat.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "A pénztárcám megerősítése",
+    "message": "Brave Jutalmak hitelesítése",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "A pénztárcája megerősítésével, valamint annak a bitFlyer-fiókjához kapcsolásával könnyebben tudja tárolni és kezelni a Brave Rewardson keresztül megszerzett tokenjeit.",
+    "message": "A Brave Jutalmak hitelesítésével, valamint annak a bitFlyer-fiókjához történő kapcsolásával könnyebben tudja tárolni és kezelni a Brave Jutalmakon keresztül megszerzett BAT-jait.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

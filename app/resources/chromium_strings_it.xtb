@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">Impossibile sincronizzare i dati in Chrome OS perché la sincronizzazione non è disponibile per il tuo dominio.</translation>
 <translation id="5147525139567260139">Condividi una scheda di Brave</translation>
 <translation id="1530633922026945685">Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera per creare una mappa 3D dell'ambiente circostante</translation>
+<translation id="4449148723378534338">Esamina i controlli per la privacy e la sicurezza più importanti in Brave</translation>
 <translation id="5616153642055197778">È disponibile una nuova versione più sicura di Brave.</translation>
 <translation id="6797402139308059782">Lascia Brave in esecuzione in background</translation>
 <translation id="5875673934455379806">Reinstalla Brave</translation>
@@ -36,7 +37,6 @@
 <translation id="1248225940185478633">Brave deve avere le autorizzazioni di accesso al microfono e alla fotocamera per questo sito</translation>
 <translation id="6078442581074612226">In Brave</translation>
 <translation id="2485422356828889247">Disinstalla</translation>
-<translation id="2372700594671864890">Scopri come Brave ti protegge dal tracciamento tra siti salvaguardando al contempo il Web aperto</translation>
 <translation id="9026991721384951619">Impossibile sincronizzare i dati in Chrome OS perché i dati di accesso dell'account sono obsoleti.</translation>
 <translation id="7798069806040634998">Brave deve avere accesso allo spazio di archiviazione per poter scaricare file</translation>
 <translation id="8447483940522230788">Supporto Brave</translation>
@@ -109,6 +109,8 @@
 <translation id="3679799810790990472">Vuoi continuare con un nuovo profilo Brave?</translation>
 <translation id="4567424176335768812">Hai eseguito l'accesso come <ph name="USER_EMAIL_ADDRESS"/>. Ora puoi accedere ai tuoi Preferiti, alla tua cronologia e ad altre impostazioni su tutti i tuoi dispositivi su cui esegui l'accesso.</translation>
 <translation id="300669147395456190">Applicazioni Brave</translation>
+<translation id="2182657378556811785">Aggiornamento quasi completato. Riavvia Brave per terminare l'aggiornamento.</translation>
+<translation id="7402642357351265733">Se condividi anche report sull'utilizzo di Brave, questi report includono gli URL visitati</translation>
 <translation id="8142245354207161805">Sembra che il profilo sia in uso in un altro processo Brave (<ph name="PROCESS_ID"/>) su un altro computer (<ph name="HOST_NAME"/>). Brave ha bloccato il profilo affinché non venga danneggiato. Se sei sicuro che nessun altro processo stia utilizzando questo profilo, puoi sbloccare il profilo e riavviare Brave.</translation>
 <translation id="3395323229510056640">Ricevi assistenza per Chrome OS</translation>
 <translation id="847561904663814268">Qualcuno ha già eseguito l'accesso a Brave su questo computer come <ph name="ACCOUNT_EMAIL_LAST"/>. Crea un nuovo utente Brave per tenere separate le tue informazioni.</translation>
@@ -201,7 +203,6 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 <translation id="3335606533094650083">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere al microfono</translation>
 <translation id="1705567146636171298">Aggiorna Brave</translation>
 <translation id="5499063270485366718">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave.</translation>
-<translation id="151916274998710826">Personalizza alcune delle opzioni relative alla privacy più importanti di Brave</translation>
 <translation id="1008530050039597147">Brave deve avere l'autorizzazione di accesso alla fotocamera per questo sito</translation>
 <translation id="1197672524850678392">Impossibile avviare Brave. Riprova.</translation>
 <translation id="3405035915691517126">Brave non può controllare le tue password. Riprova tra 24 ore.</translation>
@@ -219,6 +220,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="5062123544085870375">Riavvia Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave per gli sviluppatori</translation>
 <translation id="2034072705932785495">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera</translation>
+<translation id="3962395975456095331">Vuoi riavviare Brave?</translation>
 <translation id="2619516027171717873">Impossibile installare una versione di Brave uguale a quella in esecuzione. Chiudi Brave e riprova.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave verrà riavviato tra 1 minuto}one{Brave verrà riavviato tra # minuti}other{Brave verrà riavviato tra # minuti}}</translation>
 <translation id="573759479754913123">Informazioni su Chrome OS</translation>
@@ -227,6 +229,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="155309785154426906">Hai attivato la Navigazione sicura avanzata nel tuo account. Ora attivala per Brave.</translation>
 <translation id="3293668930608086049">Brave sta utilizzando videocamera e microfono.</translation>
 <translation id="2827121003398607864">Da oggi Brave è ancora meglio</translation>
+<translation id="8678991866891573053">Brave sta esplorando nuove funzionalità che consentono ai siti di offrire la stessa esperienza di navigazione utilizzando meno dati di tua proprietà</translation>
 <translation id="3343095737966473035">Brave non è il browser predefinito</translation>
 <translation id="5477319665405831211">Sincronizza e personalizza Brave sui tuoi dispositivi</translation>
 <translation id="5419189641394808652">Impossibile sincronizzare i dati in Brave perché la sincronizzazione non è disponibile per il tuo dominio.</translation>
@@ -294,7 +297,5 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio.}=1{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio. La finestra di navigazione in incognito non verrà riaperta.}other{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare questo aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{L'amministratore richiede il riavvio di Brave per installare un aggiornamento}=1{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. La finestra di navigazione in incognito non verrà riaperta.}other{L'amministratore richiede il riavvio di Brave per installare un aggiornamento. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
-<translation id="7914115000169617076">Aggiornamento quasi terminato. Riavvia Brave per terminare l'aggiornamento. Le finestre private non verranno riaperte.</translation>
-<translation id="4703432949110765917">Le impostazioni predefinite vanno bene per la maggior parte dei profili, ma puoi personalizzarle in base a come preferisci usare Brave</translation>
 <translation id="2176087127109773485">Puoi gestire le catene di sincronizzazione di Brave per cui hai eseguito l’accesso. Le catene di sincronizzazione di Brave sono utilizzate per il browser di Brave, per Play Store, per Gmail e altro ancora. Se invece vuoi aggiungere un account per un’altra persona, per esempio per un familiare, aggiungi un nuovo profilo al tuo <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
 </translationbundle>

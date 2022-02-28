@@ -24,7 +24,6 @@
 <translation id="1017280919048282932">&amp;Lisää sanakirjaan</translation>
 <translation id="1018656279737460067">Peruutettu</translation>
 <translation id="6221946066118097974">Näytetään salasanat <ph name="BEGIN_LINK"/>Brave-tililtäsi<ph name="END_LINK"/></translation>
-<translation id="1024304340821219537">Mitä jaat sivustoille</translation>
 <translation id="1026655690966755180">Lisää portti</translation>
 <translation id="1026822031284433028">Lataa kuva</translation>
 <translation id="1029317248976101138">Lähennä</translation>
@@ -73,6 +72,11 @@
 <translation id="1071917609930274619">Tiedon salakoodaus</translation>
 <translation id="1072700771426194907">USB-laite havaittu</translation>
 <translation id="107278043869924952">Käytä PIN-koodia salasanan lisäksi</translation>
+<translation id="1073264809281558926"><ph name="BEGIN_PARAGRAPH1"/>Antamalla BraveOS-laitteiden lähettää raportteja automaattisesti voit auttaa meitä korjaamaan ja kehittämään BraveOS:n ominaisuuksia. Raportteihin voi sisältyä esimerkiksi tietoja käytetyistä ominaisuuksista ja tyypillisestä muistin käytöstä sekä Android-sovellusten diagnostiikka- ja käyttödataa. Kootusta datasta on hyötyä myös Braven sovelluksille ja kumppaneille, esim. Android-kehittäjille.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Voit sallia tai estää raporttien lähettämisen milloin tahansa lapsesi BraveOS-laitteen asetuksista. Jos olet verkkotunnuksen järjestelmänvalvoja, voit muuttaa asetusta hallintakonsolissa.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>Jos ominaisuus laitetaan pois päältä, laite voi edelleen lähettää järjestelmäpäivitysten, tietoturvan ja muiden tärkeiden palvelujen edellyttämiä tietoja.<ph name="END_PARAGRAPH3"/>
+    <ph name="BEGIN_PARAGRAPH4"/>Jos Verkko- ja sovellustoiminta ‑asetus on päällä lapsen Brave-tilillä, dataa voidaan tallentaa hänen tililleen. Lue lisää näistä asetuksista ja niiden muuttamisesta osoitteesta families.google.com.<ph name="END_PARAGRAPH4"/>
+    <ph name="BEGIN_PARAGRAPH4"/>Jos laitteen omistaja laittaa Lähetä käyttö- ja diagnostiikkatadaa ‑asetuksen päälle, Bravelle voidaan lähettää myös virheraportteja.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="1076176485976385390">Navigoi sivuilla tekstiosoittimen avulla</translation>
 <translation id="1076698951459398590">Ota teema käyttöön</translation>
 <translation id="1076766328672150609">Lapsi voi avata tämän laitteen PIN-koodilla.</translation>
@@ -89,7 +93,6 @@
 <translation id="1087965115100412394">Älä salli sivustojen yhdistää MIDI-laitteisiin</translation>
 <translation id="4057708625267533477">Brave poistaa haittaohjelmia tietokoneeltasi…</translation>
 <translation id="1088659085457112967">Siirry lukijatilaan</translation>
-<translation id="1089606299949659462">Tarkastus valmis</translation>
 <translation id="1090126737595388931">Ei käynnissä olevia taustasovelluksia</translation>
 <translation id="1090541560108055381">Varmista ennen laiteparin muodostamista, että tämä koodi on sama molemmissa laitteissa</translation>
 <translation id="1091767800771861448">Ohita painamalla ESCAPE (vain epävirallisissa ohjelmistoversioissa).</translation>
@@ -105,6 +108,7 @@
 <translation id="1100504063505580045">Nykyinen kuvake</translation>
 <translation id="1103523840287552314">Käännä <ph name="LANGUAGE"/> aina</translation>
 <translation id="1108600514891325577">Py&amp;säytä</translation>
+<translation id="1108938384783527433">Historian synkronointi</translation>
 <translation id="1110155001042129815">Odota</translation>
 <translation id="1110965959145884739">Valitse, mitkä kielet asennetaan laitteelle. Kielitiedostot jaetaan käyttäjien kesken levytilan säästämiseksi. <ph name="BEGIN_LINK_LEARN_MORE"/>Lue lisää<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="1111781754511998498">Projektori</translation>
@@ -205,7 +209,6 @@
 <translation id="1195558154361252544">Ilmoitukset estetään automaattisesti kaikilla muilla paitsi sallituilla sivustoilla</translation>
 <translation id="1197088940767939838">Oranssi</translation>
 <translation id="1197935538609051549">Poista käytöstä</translation>
-<translation id="1197979282329025000">Tapahtui virhe noudettaessa tulostimen <ph name="PRINTER_NAME"/> asetuksia. Tulostinta ei välttämättä ole rekisteröity palveluun <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="119944043368869598">Tyhjennä kaikki</translation>
 <translation id="1199814941632954229">Näille varmenneprofiileille tarjotaan varmenteita</translation>
 <translation id="120069043972472860">Mahdoton katsoa</translation>
@@ -241,6 +244,7 @@
 <translation id="1235458158152011030">Tunnetut verkot</translation>
 <translation id="123578888592755962">Levy on täynnä</translation>
 <translation id="1235924639474699896">{COUNT,plural, =1{teksti}other{# tekstiä}}</translation>
+<translation id="1236009322878349843">Muuta puhelimen tietoja</translation>
 <translation id="1239594683407221485">Tutustu laitteen sisältöön Tiedostot-sovelluksen kautta.</translation>
 <translation id="1241066500170667906">Valitse kokeilun tila: <ph name="EXPERIMENT_NAME"/></translation>
 <translation id="124116460088058876">Lisää kieliä</translation>
@@ -264,7 +268,6 @@
 <translation id="1261380933454402672">Osittainen</translation>
 <translation id="126156426083987769">Esittelytilan laitelisenssien kanssa tapahtui ongelma.</translation>
 <translation id="1263231323834454256">Lukulista</translation>
-<translation id="1263490604593716556"><ph name="FIRST_PARENT_EMAIL"/> ja <ph name="SECOND_PARENT_EMAIL"/> hallinnoivat tiliä. Jos haluat kirjautua ulos laitteen ensisijaiselta tililtä, klikkaa aikaa näytöllä. Valitse avautuvasta valikosta Kirjaudu ulos.</translation>
 <translation id="1263733306853729545">Selaa vaihtoehtolistaa näppäimillä <ph name="MINUS"/> ja <ph name="EQUAL"/></translation>
 <translation id="126387934568812801">Liitä mukaan tämä kuvakaappaus ja avoimien välilehtien nimet</translation>
 <translation id="1264337193001759725">Voit katsoa verkon UI-lokit täältä: <ph name="DEVICE_LOG_LINK"/></translation>
@@ -396,6 +399,7 @@
 <translation id="1408980562518920698">Muokkaa henkilötietoja</translation>
 <translation id="1410197035576869800">Sovelluskuvake</translation>
 <translation id="1410616244180625362">Anna sivuston <ph name="HOST"/> käyttää edelleen kameraasi</translation>
+<translation id="1410797069449661718">Vieritä kohti ensimmäistä välilehteä</translation>
 <translation id="1410806973194718079">Käytäntöjen tarkistaminen ei onnistu</translation>
 <translation id="1412681350727866021">Lisälaajennukset</translation>
 <translation id="1414315029670184034">Älä salli sivustojen käyttää kameraasi</translation>
@@ -416,6 +420,7 @@
            • poistaa evästeet ja muun tilapäisen sivustodatan.
             <ph name="LINE_BREAKS"/>
            Tämä ei vaikuta kirjanmerkkeihin, historiaan eikä tallennettuihin salasanoihin.</translation>
+<translation id="1425233109861512854">Käyttökoodia ei tunnistettu</translation>
 <translation id="1426410128494586442">Kyllä</translation>
 <translation id="142655739075382478"><ph name="APP_NAME"/> on estetty</translation>
 <translation id="1426870617281699524">Valitse Yritä uudelleen, ja hyväksy tietokoneen kehote.</translation>
@@ -506,6 +511,7 @@
 <translation id="1521442365706402292">Hallinnoi varmenteita</translation>
 <translation id="1521774566618522728">Aktiivinen tänään</translation>
 <translation id="152234381334907219">Tallentamattomat</translation>
+<translation id="1523279371236772909">Nähty viimeisen kuukauden aikana</translation>
 <translation id="1523978563989812243">Tekstistä puheeksi ‑moottorit</translation>
 <translation id="1524430321211440688">Näppäimistö</translation>
 <translation id="1524563461097350801">Ei kiitos</translation>
@@ -583,10 +589,12 @@
 <translation id="1593926297800505364">Tallenna maksutapa</translation>
 <translation id="1595492813686795610">Linuxia päivitetään</translation>
 <translation id="1596286373007273895">Saatavilla</translation>
+<translation id="1596709061955594992">Bluetooth ei ole päällä. Voit nähdä saatavilla olevat laitteet laittamalla Bluetoothin päälle.</translation>
 <translation id="1598233202702788831">Järjestelmänvalvoja on estänyt päivitykset.</translation>
 <translation id="1600857548979126453">Käyttää sivun viankorjausta</translation>
 <translation id="1601560923496285236">Käytä</translation>
 <translation id="1602085790802918092">Käynnistetään virtuaalikonetta</translation>
+<translation id="1603411913360944381">Unohda <ph name="DEVICE_NAME"/></translation>
 <translation id="1604432177629086300">Tulostus epäonnistui. Tarkista tulostin ja yritä uudelleen.</translation>
 <translation id="1605744057217831567">Katso kaikki sivustojen data ja luvat</translation>
 <translation id="1606077700029460857">Muuta hiiren asetuksia</translation>
@@ -648,7 +656,6 @@
 <translation id="1644574205037202324">Historia</translation>
 <translation id="1644852018355792105">Lisää Bluetooth-avainkoodi laitteelle <ph name="DEVICE"/></translation>
 <translation id="1645516838734033527">Jotta <ph name="DEVICE_TYPE"/> pysyy turvassa, Smart Lock edellyttää näytön lukitusta puhelimessa.</translation>
-<translation id="1646793251510634025">Tarkista haun ja selauksen optimoinnin asetukset</translation>
 <translation id="1646982517418478057">Salaa tämä varmenne antamalla salasana.</translation>
 <translation id="1648528859488547844">Käytä Wi-Fi- ja mobiiliverkkoja sijainnin määrittämiseen</translation>
 <translation id="164936512206786300">Poista Bluetooth-laitteen pari</translation>
@@ -727,6 +734,7 @@
 <translation id="1725562816265788801">Välilehden vieritys</translation>
 <translation id="1729533290416704613">Määrittää myös omnibox-hakujen aloitussivun.</translation>
 <translation id="1730917990259790240"><ph name="BEGIN_PARAGRAPH1"/>Jos haluat poistaa sovelluksia, valitse Asetukset &gt; Google Play Kauppa &gt; Hallitse Android-asetuksia &gt; Sovellukset tai Sovellusten hallinta. Valitse sitten sovellus, jonka haluat poistaa (jos sovellusta ei näy, pyyhkäise oikealle tai vasemmalle). Valitse sitten Poista tai Poista käytöstä.<ph name="END_PARAGRAPH1"/></translation>
+<translation id="1730989807608739928">Vieritä kohti viimeistä välilehteä</translation>
 <translation id="1731911755844941020">Lähetetään pyyntöä...</translation>
 <translation id="5958351589333270173">Salaa synkronoitu data omalla <ph name="BEGIN_LINK"/>synkronoinnin tunnuslauseella<ph name="END_LINK"/>. Tämä ei koske Brave Payhin tallennettuja maksutapoja tai osoitteita.</translation>
 <translation id="1734212868489994726">Vaaleansininen</translation>
@@ -966,6 +974,7 @@
 <translation id="1965624977906726414">Ei erityiskäyttöoikeuksia.</translation>
 <translation id="1969654639948595766">WebRTC-tekstilokit (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
 <translation id="1970368523891847084">Videotilaan siirrytty</translation>
+<translation id="1972325230031091483">Selaaminen sujuu nopeammin, koska sisältö ladataan proaktiivisesti tällä hetkellä auki olevan verkkosivun perusteella</translation>
 <translation id="197288927597451399">Säilytä</translation>
 <translation id="1973763416111613016">Tiedostoa (<ph name="FILE_NAME"/>) ei voi ladata turvallisesti. Paina Shift + F6 siirtyäksesi latauspalkkialueelle.</translation>
 <translation id="1974043046396539880">CRL:n jakelupisteet</translation>
@@ -1047,6 +1056,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="204914487372604757">Luo pikakuvake</translation>
 <translation id="2050339315714019657">Pystysuunta</translation>
 <translation id="2053312383184521053">Tiedot käyttämätön-tilassa</translation>
+<translation id="2054240652864153171">Tyhjennetäänkö sivustodata (<ph name="SITE_NAME"/>), joka on rajoitettu tälle sivustolle: <ph name="PARTITION_SITE_NAME"/>?</translation>
 <translation id="2055585478631012616">Sinut kirjataan ulos näiltä sivustoilta, myös avoimilta välilehdiltä.</translation>
 <translation id="205560151218727633">Brave Assistantin logo</translation>
 <translation id="2058456167109518507">Laite havaittu</translation>
@@ -1137,6 +1147,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2148892889047469596">Suoratoista välilehti</translation>
 <translation id="2149973817440762519">Muokkaa kirjanmerkkiä</translation>
 <translation id="2150139952286079145">Hae kohteita</translation>
+<translation id="2150491840563706000">Sinulla ei ole lupaa striimata tälle näytölle</translation>
 <translation id="2150661552845026580">Lisätäänkö <ph name="EXTENSION_NAME"/>?</translation>
 <translation id="2151576029659734873">Annoit virheellisen välilehden numeron.</translation>
 <translation id="2152281589789213846">Lisää profiiliisi tulostimia</translation>
@@ -1155,6 +1166,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2159488579268505102">USB-C</translation>
 <translation id="216169395504480358">Lisää Wi-Fi-yhteys...</translation>
 <translation id="2162155940152307086">Synkronointi alkaa, kun poistut synkronointiasetuksista</translation>
+<translation id="2162926944953615670">Ei eSIM-profiileja saatavilla</translation>
 <translation id="2163470535490402084">Kirjaudu laitteelle <ph name="DEVICE_TYPE"/> muodostamalla verkkoyhteys.</translation>
 <translation id="2163937499206714165">Ota tumma tila käyttöön</translation>
 <translation id="2164131635608782358"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/>, <ph name="THIRD_SWITCH"/> ja 1 muu kytkin</translation>
@@ -1164,7 +1176,6 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2170054054876170358">Varmista, että puhelin on lähellä, sen lukitus on avattu ja Bluetooth ja Wi-Fi ovat päällä.</translation>
 <translation id="2173302385160625112">Tarkista internetyhteytesi</translation>
 <translation id="2173801458090845390">Lisää pyynnön tunnus tähän laitteeseen</translation>
-<translation id="2174948148799307353"><ph name="PARENT_EMAIL"/> hallinnoi tiliä. Jos haluat kirjautua ulos laitteen ensisijaiselta tililtä, klikkaa aikaa näytöllä. Valitse avautuvasta valikosta Kirjaudu ulos.</translation>
 <translation id="2175384018164129879">&amp;Hallitse hakukoneita ja sivustojen hakua</translation>
 <translation id="2175607476662778685">Pikakäynnistysvalikko</translation>
 <translation id="217576141146192373">Tulostimen lisääminen ei onnistu. Tarkista tulostimen määritykset ja yritä uudelleen.</translation>
@@ -1187,6 +1198,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2191754378957563929">Päällä</translation>
 <translation id="2192505247865591433">Lähettäjä:</translation>
 <translation id="2193365732679659387">Luottamusasetukset</translation>
+<translation id="2194856509914051091">Huomioitavaa</translation>
 <translation id="2195331105963583686"><ph name="DEVICE_TYPE"/> on käytettävissä jatkossakin, mutta se ei enää saa automaattisia ohjelmisto- ja tietoturvapäivityksiä</translation>
 <translation id="2195729137168608510">Sähköpostin suojaus</translation>
 <translation id="2198625180564913276">Lisätään profiilia… Tämä voi kestää muutaman minuutin.</translation>
@@ -1194,7 +1206,6 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="7505421639213002314">Braven synkronoinnista saatu data</translation>
 <translation id="2200094388063410062">Sähköposti</translation>
 <translation id="9014750448058570312">Brave tarvitsee luvan jatkamiseen</translation>
-<translation id="2202898655984161076">Tulostimien luetteloinnissa tapahtui virhe. Kaikkia tulostimiasi ei ole välttämättä rekisteröity palveluun <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="2203088913459920044">Nimessä voi olla kirjaimia, numeroita ja erikoismerkkejä</translation>
 <translation id="220321590587754225">Yhdistäminen ei onnistunut. Yritä uudelleen.</translation>
 <translation id="2204034823255629767">Lukea ja muuttaa kaikkea kirjoittamaasi</translation>
@@ -1212,6 +1223,9 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2220572644011485463">PIN-koodi tai salasana</translation>
 <translation id="2221261048068091179"><ph name="FIRST_SWITCH"/>, <ph name="SECOND_SWITCH"/></translation>
 <translation id="222201875806112242">Nimetön medialähde</translation>
+<translation id="2224173723542116248"><ph name="BEGIN_PARAGRAPH1"/><ph name="DEVICE_OS"/> kerää laitedataa ja jakaa sen Bravelle parhaan mahdollisen käyttökokemuksen tarjoamiseksi. Tämä auttaa selvittämään, millaisia päivityksiä tarvitaan. Voit halutessasi antaa Bravelle luvan käyttää dataa myös muihin tarkoituksiin, esim. käyttökokemuksen ja palvelun (<ph name="DEVICE_OS"/>) tukemiseen ja kehittämiseen.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Näet Bravelle päivitysten suodattamista varten lähetetyn datan (ja kaiken muun Bravelle jakamasi datan) kirjautumalla laitteelle ja siirtymällä Braven diagnostiikkatietojen (chrome://system) CLOUDREADY_HARDWARE_INFO-osioon.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>Lisätietoja datasta, jota <ph name="DEVICE_OS"/> voi jakaa Bravelle, ja sen käytöstä saat osoitteesta g.co/CR2/HWDataCollection<ph name="END_PARAGRAPH3"/></translation>
 <translation id="2224444042887712269">Tämä asetus kuuluu käyttäjälle <ph name="OWNER_EMAIL"/>.</translation>
 <translation id="222447520299472966">Ainakin yksi Taidegalleria-albumi on valittava</translation>
 <translation id="2224551243087462610">Muokkaa kansion nimeä</translation>
@@ -1229,6 +1243,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2232876851878324699">Tiedosto sisälsi yhden varmenteen, jota ei tuotu:</translation>
 <translation id="2233502537820838181">&amp;Lisätietoja</translation>
 <translation id="223356358902285214">Verkko- ja sovellustoiminta</translation>
+<translation id="2234827758954819389">Yksityisyysopas</translation>
 <translation id="7956662517480676674">Synkronointi ja Brave-palvelut</translation>
 <translation id="2235344399760031203">Kolmannen osapuolen evästeet on estetty</translation>
 <translation id="2238379619048995541">Kellotaajuuden tilan tiedot</translation>
@@ -1257,6 +1272,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
     <ph name="END_LINK"/>.</translation>
 <translation id="22665427234727190">Kysy aina, jos sivusto pyytää pääsyä Bluetooth-laitteelle (suositus)</translation>
 <translation id="2266957463645820432">IPP–USB-yhteys (IPPUSB)</translation>
+<translation id="2268130516524549846">Bluetooth pois käytöstä</translation>
 <translation id="2270450558902169558">Vaihtaa tietoja minkä tahansa verkkotunnusta <ph name="DOMAIN"/> käyttävän laitteen kanssa.</translation>
 <translation id="2270612886833477697"><ph name="BEGIN_PARAGRAPH1"/>Asennus <ph name="BEGIN_BOLD"/>tyhjentää koko kiintolevysi<ph name="END_BOLD"/>. Varmista, että datasi on varmuuskopioitu.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Kun asennus on alkanut, sitä ei voi perua.<ph name="END_PARAGRAPH2"/></translation>
@@ -1331,6 +1347,10 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2327492829706409234">Ota sovellus käyttöön</translation>
 <translation id="2328561734797404498">Käynnistä laite uudelleen käyttääksesi <ph name="APP_NAME"/>:ää.</translation>
 <translation id="2329597144923131178">Kirjaudu ja käytä kirjanm., historiaa, salasan. ja muita asetuksia kaikissa laitteissasi.</translation>
+<translation id="2330878972945412956"><ph name="BEGIN_PARAGRAPH1"/>Antamalla BraveOS-laitteiden lähettää raportteja automaattisesti voit auttaa meitä korjaamaan ja kehittämään BraveOS:n ominaisuuksia. Raportteihin voi sisältyä esimerkiksi tietoja käytetyistä ominaisuuksista, tyypillisestä muistin käytöstä sekä Android-sovellusten diagnostiikka- ja käyttödataa ja virheitä. Kootusta datasta on hyötyä myös Braven sovelluksille ja kumppaneille, esim. Android-kehittäjille.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Voit sallia tai estää raporttien lähettämisen milloin tahansa BraveOS-laitteen asetuksissa. Jos olet verkkotunnuksen järjestelmänvalvoja, voit muuttaa asetusta hallintakonsolissa.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>Jos Verkko‑ ja sovellustoiminta ‑asetus on päällä Brave-tililläsi, Android-dataa voidaan tallentaa tilillesi. Voit nähdä dataa, poistaa sitä ja muuttaa tiliasetuksia osoitteessa account.google.com.<ph name="END_PARAGRAPH3"/>
+    <ph name="BEGIN_PARAGRAPH4"/>Jos laitteen omistaja laittaa Lähetä käyttö- ja diagnostiikkatadaa ‑asetuksen päälle, Bravelle voidaan lähettää myös virheraportteja.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="2332131598580221120">Näytä Web Storessa</translation>
 <translation id="2332192922827071008">Siirry valintoihin</translation>
 <translation id="2332515770639153015">Parannettu selaussuoja on päällä</translation>
@@ -1369,6 +1389,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2359345697448000899">Hallinnoi laajennuksiasi valitsemalla Työkalut-valikosta Laajennukset.</translation>
 <translation id="2359556993567737338">Yhdistä Bluetooth-laite</translation>
 <translation id="2359808026110333948">Jatka</translation>
+<translation id="2360625459710946148">Järjestä uudelleen:</translation>
 <translation id="2361100938102002520">Olet lisäämässä ylläpidettyä profiilia tähän selaimeen. Järjestelmänvalvoja hallitsee profiilia ja pääsee sen dataan.</translation>
 <translation id="236117173274098341">Optimoi</translation>
 <translation id="2361340419970998028">Lähetetään palautetta…</translation>
@@ -1446,6 +1467,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="245322989586167203">Sivustot yhdistävät yleensä sarjaportteihin datansiirto-ominaisuuksia, esimerkiksi verkon luomista, varten</translation>
 <translation id="2453706416476934374">Jos <ph name="SUPERVISED_USER_NAME"/> haluaa saada räätälöityjä vastauksia kysymyksiin, anna Assistantin käyttää käyttäjän (<ph name="SUPERVISED_USER_NAME"/>) näytön kuvakaappausta. Tämä saattaa sisältää tietoja toistettavista kappaleista tai videoista.</translation>
 <translation id="2453860139492968684">Valmis</translation>
+<translation id="2454206500483040640">Rajoitettu tietylle sivustolle</translation>
 <translation id="2454247629720664989">Avainsana</translation>
 <translation id="2454264884354864965">Kamera on poissa päältä</translation>
 <translation id="2454524890947537054">Hyväksytäänkö sivustopyyntö?</translation>
@@ -1670,6 +1692,7 @@ Voit ylläpitää tilin asetuksia asentamalla laitteellesi Family Link ‑sovell
 <translation id="2683638487103917598">Kansio lajiteltu</translation>
 <translation id="2687403674020088961">Estä kaikki evästeet (ei suositella)</translation>
 <translation id="2687407218262674387">Braven käyttöehdot</translation>
+<translation id="2687621393791886981">Kysy myöhemmin</translation>
 <translation id="2688196195245426394">Virhe rekisteröitäessä laitetta palvelimelle: <ph name="CLIENT_ERROR"/>.</translation>
 <translation id="2690024944919328218">Näytä kieliasetukset</translation>
 <translation id="2691385045260836588">Malli</translation>
@@ -1728,7 +1751,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="2738771556149464852">Ei tämän jälkeen</translation>
 <translation id="2739191690716947896">Vianetsintä</translation>
 <translation id="2739240477418971307">Muokata esteettömyysasetuksia</translation>
-<translation id="2739965161385757621">Tarkista asetukset</translation>
 <translation id="274029851662193272">Laskettu</translation>
 <translation id="2740531572673183784">OK</translation>
 <translation id="2741713322780029189">Avaa palautusterminaali</translation>
@@ -1757,6 +1779,15 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="2766161002040448006">Pyydä lupaa vanhemmilta</translation>
 <translation id="5344522595072165414">Bravebookia ei voitu päivittää. Yritä myöhemmin uudelleen.</translation>
 <translation id="2767127727915954024"><ph name="ORIGIN"/> voi muokata tiedostoa <ph name="FILENAME"/>, kunnes suljet sivuston kaikki välilehdet</translation>
+<translation id="2767821224812051905"><ph name="BEGIN_PARAGRAPH1"/>Kokeile näitä ratkaisuja:
+    <ph name="BEGIN_LIST"/>
+    <ph name="LIST_ITEM"/>Varmista, että laitteesi sisältää toimivan sisäisen tallennustilan, esim. HDD:n, SSD:n tai eMMC:n
+    <ph name="LIST_ITEM"/>Tarkista, että sisäisen tallennuslaitteen tila on yli 16 Gt
+    <ph name="LIST_ITEM"/>Tarkista yhteys sisäiseen tallennustilaan, jos pääset siihen fyysisesti käsiksi
+    <ph name="LIST_ITEM"/>Varmista, että käytät sertifioitua mallia, ja tarkista asennusohjeet
+    <ph name="END_LIST"/>
+    <ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Katso lisäohjeita osoitteesta g.co/CR2/InstallErrors<ph name="END_PARAGRAPH2"/></translation>
 <translation id="2770465223704140727">Poista luettelosta</translation>
 <translation id="2770690685823456775">Vie salasanasi toiseen kansioon</translation>
 <translation id="2770929488047004208">Näytön resoluutio</translation>
@@ -1807,6 +1838,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="2806891468525657116">Pikakuvake on jo olemassa</translation>
 <translation id="2807517655263062534">Lataamasi tiedostot näytetään tässä.</translation>
 <translation id="2809586584051668049">ja <ph name="NUMBER_ADDITIONAL_DISABLED"/> muuta</translation>
+<translation id="2810235462964014915">Pyydetty lupaa lukea ja muuttaa tätä: <ph name="SITE_NAME"/></translation>
 <translation id="2811205483104563968">Tilit</translation>
 <translation id="2812049959647166806">Thunderboltia ei tueta</translation>
 <translation id="2812989263793994277">Älä näytä kuvia</translation>
@@ -1827,6 +1859,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="2828650939514476812">Yhdistä Wi-Fi-verkkoon</translation>
 <translation id="2831430281393059038">Laitetta tuetaan</translation>
 <translation id="2832124733806557606">Lapsi voi avata tämän laitteen tai kirjautua sille PIN-koodilla.</translation>
+<translation id="2835177225987815960">Nykyiset skannausmääritykset nollataan, mukaan lukien kaikki määritetyt kytkimet ja automaattisen skannauksen nopeusasetukset.</translation>
 <translation id="2835547721736623118">Puheentunnistuspalvelu</translation>
 <translation id="2836269494620652131">Kaatuminen</translation>
 <translation id="2836635946302913370">Järjestelmänvalvoja on estänyt tällä käyttäjänimellä kirjautumisen.</translation>
@@ -1856,7 +1889,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="2864601841139725659">Määritä profiilikuvasi</translation>
 <translation id="2865919525181940183">Kuvakaappaus ohjelmista, jotka ovat näytöllä tällä hetkellä</translation>
 <translation id="286674810810214575">Tarkistetaan virtalähteitä…</translation>
-<translation id="2866876751734765554">Yksityisyystarkistus</translation>
 <translation id="2867768963760577682">Avaa kiinnitetyllä välilehdellä</translation>
 <translation id="2868746137289129307">Tämä laajennus on vanhentunut ja poistettu käytöstä yrityksen käytännön mukaisesti. Se voidaan ottaa käyttöön uudelleen automaattisesti, kun uusi versio on saatavilla.</translation>
 <translation id="2870560284913253234">Sivusto</translation>
@@ -1865,6 +1897,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="287205682142673348">Porttiohjaus</translation>
 <translation id="287286579981869940">Lisää <ph name="PROVIDER_NAME"/>…</translation>
 <translation id="2872961005593481000">Sammuta</translation>
+<translation id="2873995907777332853">Näytä tietoa kaikkien evästeiden estämisestä</translation>
 <translation id="2874939134665556319">Edellinen kappale</translation>
 <translation id="4156865452842056672">(Braven virhesivut)</translation>
 <translation id="2876336351874743617">Sormi 2</translation>
@@ -1935,6 +1968,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="2939908794993783865">Lisää ei-aktiivisia sivustoja</translation>
 <translation id="2939938020978911855">Näytä käytettävissä olevat Bluetooth-laitteet</translation>
 <translation id="2941112035454246133">Matala</translation>
+<translation id="2941696810925320401">Sivustot usein avaavat ja sijoittavat ikkunoita näyttääkseen lisädokumentteja tai koko ruudun sisältöä näytöillä</translation>
 <translation id="2942279350258725020">Android Messages</translation>
 <translation id="2942560570858569904">Odotetaan…</translation>
 <translation id="2942581856830209953">Muokkaa sivua</translation>
@@ -2027,6 +2061,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3030967311408872958">Auringonlaskusta sen nousuun</translation>
 <translation id="3031417829280473749">Agentti X</translation>
 <translation id="3031557471081358569">Valitse tuotavat kohteet:</translation>
+<translation id="3032587662022429783">Lue lisää diagnostiikka- ja käyttödatasta.</translation>
 <translation id="3033348223765101500">Hallitse dataasi</translation>
 <translation id="3036327949511794916">Laitteen (<ph name="DEVICE_TYPE"/>) palauttamisen määräaika on mennyt umpeen.</translation>
 <translation id="3036546437875325427">Ota Flash käyttöön</translation>
@@ -2075,7 +2110,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3088052000289932193">Sivusto käyttää MIDIä</translation>
 <translation id="3088128611727407543">Sovellusprofiilia valmistellaan…</translation>
 <translation id="3088325635286126843">Nimeä uudelleen...</translation>
-<translation id="3089064280130434511">Estä sivustoja avaamasta ikkunoita ja sijoittamasta niitä näytöillesi</translation>
 <translation id="3089137131053189723">Haku tyhjennetty</translation>
 <translation id="3090589793601454425">Älä siirrä</translation>
 <translation id="3090819949319990166">Ulkoista crx-tiedostoa ei voi kopioida kohteeseen <ph name="TEMP_CRX_FILE"/>.</translation>
@@ -2087,6 +2121,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3099836255427453137">{NUM_EXTENSIONS,plural, =1{1 mahdollisesti haitallinen laajennus ei ole päällä. Voit myös poistaa sen.}other{{NUM_EXTENSIONS} mahdollisesti haitallista laajennusta ei ole päällä. Voit myös poistaa ne.}}</translation>
 <translation id="3101126716313987672">Himmennä valoa</translation>
 <translation id="3101709781009526431">Aika ja päivämäärä</translation>
+<translation id="3103451787721578293">Kerro, miksi lataat tätä dataa:</translation>
 <translation id="3103941660000130485">Virhe päivitettäessä Linuxia</translation>
 <translation id="4566550081126272435">Vaihdetaanko takaisin Braveen?</translation>
 <translation id="310671807099593501">Sivusto käyttää Bluetoothia</translation>
@@ -2152,7 +2187,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3163511056918491211">Palauta dataa tai vaihda laitetta helposti milloin tahansa. Varmuuskopiot ladataan Braveen ja salataan Brave-tilisi salasanalla.</translation>
 <translation id="3164329792803560526">Välilehti jaetaan, <ph name="APP_NAME"/> saa sen</translation>
 <translation id="3165390001037658081">Jotkin operaattorit saattavat estää tämän ominaisuuden.</translation>
-<translation id="316652501498554287">G Suite for Education ‑tilit</translation>
 <translation id="3170072451822350649">Voit myös ohittaa sisäänkirjautumisen ja <ph name="LINK_START"/>selata vierailijana<ph name="LINK_END"/>.</translation>
 <translation id="31774765611822736">Uusi välilehti vasemmalle</translation>
 <translation id="3177909033752230686">Sivun kieli:</translation>
@@ -2169,6 +2203,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3189187154924005138">Suuri kohdistin</translation>
 <translation id="3190558889382726167">Salasana on tallennettu</translation>
 <translation id="3192947282887913208">Äänitiedostot</translation>
+<translation id="3194786596445804250">Näytä tietoa kolmansien osapuolten evästeiden estämisestä</translation>
 <translation id="3197453258332670132">Näytä valittuun tekstiin liittyviä tietoja klikkaamalla kakkospainikkeella tai painamalla pitkään</translation>
 <translation id="3199127022143353223">Palvelimet</translation>
 <translation id="3200061262156232574">Ostoskorissa</translation>
@@ -2182,10 +2217,8 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="321084946921799184">Keltainen ja valkoinen</translation>
 <translation id="321356136776075234">Laitteen organisaatioyksikkö eli OU (esim. OU=Bravebookit,DC=esimerkki,DC=com)</translation>
 <translation id="3214531106883826119"><ph name="BEGIN_BOLD"/>Huom.<ph name="END_BOLD"/> Käyttäjän (<ph name="SUPERVISED_USER_NAME"/>) henkilökohtaisiin tuloksiin voi olla mahdollista päästä käsiksi myös, jos hänen ääntään on nauhoitettu tai jonkun toisen ääni muistuttaa hänen ääntään.</translation>
-<translation id="3216825226035747725">G Suite for Educationissa järjestelmänvalvojat päättävät, mihin Braven palveluihin käyttäjät pääsevät G Suite for Education ‑tilillään. Mukana voi olla ominaisuuksia tai palveluja, joita lapsi ei aiemmin päässyt käyttämään valvotulla tilillään. Koulun henkilökunnan on saatava suostumus palvelujen käyttöön, jos käyttäjä on alaikäinen.</translation>
 <translation id="3217843140356091325">Luodaanko pikakuvake?</translation>
 <translation id="321834671654278338">Linux-sovelluksen poisto-ohjelma</translation>
-<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/>-yhteysohjelman prosessi keskeytyi. Käynnistetäänkö uudelleen?</translation>
 <translation id="3220943972464248773">Synkronoi salasanasi todentamalla henkilöllisyytesi</translation>
 <translation id="3222066309010235055">Esihahmonna: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="3222779980972075989">Yhdistä <ph name="USB_VM_NAME"/></translation>
@@ -2244,7 +2277,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3289668031376215426">Automaattiset isot kirjaimet</translation>
 <translation id="3289856944988573801">Tarkista päivitykset Ethernetin tai Wi-Fin kautta.</translation>
 <translation id="3290249595466894471">Lähettää myös pienen näytteen sivuista, latauksista, laajennustoiminnasta ja järjestelmätiedoista auttaakseen löytämään uusia uhkia</translation>
-<translation id="3291436823898732747">Parempi selaus, esimerkiksi ennen kirjoittamista näytettäviä ehdotuksia omniboxissa</translation>
 <translation id="3293644607209440645">Lähetä tämä sivu</translation>
 <translation id="32939749466444286">Linux-säilö ei käynnistynyt. Yritä uudelleen.</translation>
 <translation id="3294437725009624529">Vierailja</translation>
@@ -2310,7 +2342,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3361421571228286637">{COUNT,plural, =1{<ph name="DEVICE_NAME"/> jakaa <ph name="ATTACHMENTS"/> kanssasi.}other{<ph name="DEVICE_NAME"/> jakaa <ph name="ATTACHMENTS"/> kanssasi.}}</translation>
 <translation id="3364986687961713424">Järjestelmänvalvojalta: <ph name="ADMIN_MESSAGE"/></translation>
 <translation id="3365598184818502391">Käytä joko Ctrl- tai Alt-näppäintä</translation>
-<translation id="3367057768351048705">Sivustot voivat nähdä selaustoimintaasi evästeiden kautta vain omalla sivustollaan</translation>
 <translation id="3368922792935385530">Yhdistetty</translation>
 <translation id="3369067987974711168">Näytä lisää tämän portin toimintoja</translation>
 <translation id="3369624026883419694">Jäsennetään palvelinta...</translation>
@@ -2383,6 +2414,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3433621910545056227">Hups! Järjestelmä ei voi lukita laitteen asennuksen aikaisia attribuutteja.</translation>
 <translation id="3434107140712555581"><ph name="BATTERY_PERCENTAGE"/> %</translation>
 <translation id="3434272557872943250">Jos muun verkko- ja sovellustoiminnan asetus on lapsella päällä, tätä dataa voidaan tallentaa hänen Brave-tililleen. Lue lisää näistä asetuksista ja niiden muokkaamisesta osoitteesta families.google.com.</translation>
+<translation id="3434512374684753970">Audio ja video</translation>
 <translation id="3435688026795609344"><ph name="EXTENSION_NAME"/> pyytää kohdetta <ph name="CODE_TYPE"/>.</translation>
 <translation id="3435738964857648380">Suojaus</translation>
 <translation id="343578350365773421">Paperi lopussa</translation>
@@ -2402,7 +2434,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3446274660183028131">Käynnistä Parallels Desktop Windowsin asentamista varten.</translation>
 <translation id="344630545793878684">Lukea tietojasi useissa sivustoissa</translation>
 <translation id="3446650212859500694">Tämä tiedosto sisältää arkaluontoista sisältöä</translation>
-<translation id="3446827946208017735">Tutustu tärkeimpiin yksityisyysasetuksiin yhdestä paikasta</translation>
 <translation id="3447644283769633681">Estä kaikki kolmannen osapuolen evästeet</translation>
 <translation id="3448086340637592206">Braven ja Brave-käyttöjärjestelmän lisäehdot</translation>
 <translation id="3448492834076427715">Päivitä tili</translation>
@@ -2510,6 +2541,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3557101512409028104">Aseta verkkosivustojen ja käyttöajan rajoituksia Family Linkillä</translation>
 <translation id="3559262020195162408">Käytännön asentaminen laitteelle epäonnistui.</translation>
 <translation id="3559533181353831840">Noin <ph name="TIME_LEFT"/> jäljellä</translation>
+<translation id="3559697822483154494">Saat värinävahvistuksen näytön jakamisesta, työpöydän vaihtamisesta ja muista tapahtumista.</translation>
 <translation id="3560034655160545939">Oikoluku (&amp;S)</translation>
 <translation id="3562423906127931518">Tämä voi kestää muutaman minuutin. Linux-säilöä käynnistetään.</translation>
 <translation id="8111951508601102818">Katso viimeaikaiset Brave-välilehdet puhelimeltasi</translation>
@@ -2576,6 +2608,9 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3629631988386925734">Ota Smart Lock käyttöön kirjoittamalla salasanasi. Seuraavalla kerralla <ph name="DEVICE_TYPE"/> voidaan avata puhelimellasi. Voit poistaa Smart Lockin käytöstä asetuksissa.</translation>
 <translation id="3630132874740063857">Oma puhelin</translation>
 <translation id="3630995161997703415">Lisää tämä sivusto hyllyysi, niin voit käyttää sitä milloin tahansa.</translation>
+<translation id="3631680145967006828"><ph name="BEGIN_PARAGRAPH1"/>Antamalla BraveOS-laitteiden lähettää raportteja automaattisesti voit auttaa meitä korjaamaan ja kehittämään BraveOS:n ominaisuuksia. Raportteihin voi sisältyä esimerkiksi tietoja BraveOS:n kaatumisista ja käytetyistä ominaisuuksista sekä tyypillisestä muistin käytöstä.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Voit sallia tai estää raporttien lähettämisen milloin tahansa BraveOS-laitteen asetuksissa. Jos olet verkkotunnuksen järjestelmänvalvoja, voit muuttaa asetusta hallintakonsolissa.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>Jos ominaisuus laitetaan pois päältä, laite voi edelleen lähettää järjestelmäpäivitysten, tietoturvan ja muiden tärkeiden palvelujen edellyttämiä tietoja.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="3634652306074934350">Lupapyyntö vanhentunut</translation>
 <translation id="3635199270495525546">Trusted Platform ‑moduuli (TPM) havaittu</translation>
 <translation id="1892630320532151038">Lähetä palautetta Bravelle</translation>
@@ -2596,10 +2631,15 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3651488188562686558">Katkaise Wi-Fi-yhteys</translation>
 <translation id="3652817283076144888">Alustetaan</translation>
 <translation id="3653160965917900914">Verkkotiedostojen jakaminen</translation>
+<translation id="3653411319514369774"><ph name="BEGIN_PARAGRAPH1"/>Antamalla BraveOS-laitteiden lähettää raportteja automaattisesti voit auttaa meitä korjaamaan ja kehittämään BraveOS:n ominaisuuksia. Raportteihin voi sisältyä esimerkiksi tietoja käytetyistä ominaisuuksista ja tyypillisestä muistin käytöstä.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Voit sallia tai estää raporttien lähettämisen milloin tahansa lapsesi BraveOS-laitteen asetuksista. Jos olet verkkotunnuksen järjestelmänvalvoja, voit muuttaa asetusta hallintakonsolissa.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>Jos ominaisuus laitetaan pois päältä, laite voi edelleen lähettää järjestelmäpäivitysten, tietoturvan ja muiden tärkeiden palvelujen edellyttämiä tietoja.<ph name="END_PARAGRAPH3"/>
+    <ph name="BEGIN_PARAGRAPH4"/>Jos laitteen omistaja laittaa Lähetä käyttö- ja diagnostiikkatadaa ‑asetuksen päälle, Bravelle voidaan lähettää myös virheraportteja.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="3653999333232393305">Anna sivuston <ph name="HOST"/> käyttää edelleen mikrofoniasi</translation>
 <translation id="3654045516529121250">Lukea esteettömyysasetuksia.</translation>
 <translation id="3655712721956801464">{NUM_FILES,plural, =1{Sillä on yhden tiedoston pysyvä käyttöoikeus.}other{Sillä on # tiedoston pysyvä käyttöoikeus.}}</translation>
 <translation id="3658871634334445293">TrackPoint-nopeuttaminen</translation>
+<translation id="3659929705630080526">Olet lisännyt virheellisen käyttökoodin liian monta kertaa. Yritä myöhemmin uudelleen</translation>
 <translation id="3660234220361471169">Ei-luotettu</translation>
 <translation id="3664511988987167893">Laajennuskuvake</translation>
 <translation id="2334029754052191847">Brave havaitsi, että toinen ohjelma oli muokannut joitakin selainasetuksia, ja palautti asetukset alkuperäisiksi.</translation>
@@ -2608,6 +2648,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3670113805793654926">Kaikkien toimittajien laitteet</translation>
 <translation id="3670229581627177274">Ota Bluetooth käyttöön</translation>
 <translation id="3672681487849735243">Tehdasvirhe on havaittu</translation>
+<translation id="3673097791729989571">Sisäänkirjautuminen tapahtuu täällä: <ph name="SAML_DOMAIN"/></translation>
 <translation id="367645871420407123">Jätä tyhjäksi, jos haluat asettaa pääkäyttäjän salasanaksi oletustestikuvan arvon.</translation>
 <translation id="3677106374019847299">Lisää oma palveluntarjoaja</translation>
 <translation id="3677911431265050325">Pyydä mobiilisivustoa</translation>
@@ -2633,6 +2674,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3694027410380121301">Valitse edellinen välilehti</translation>
 <translation id="369489984217678710">Salasanat ja muut kirjautumistiedot</translation>
 <translation id="369522892592566391">{NUM_FILES,plural, =0{Turvatarkistukset on tehty. Datasi ladataan.}=1{Turvatarkistukset on tehty. Tiedostosi ladataan.}other{Turvatarkistukset on tehty. Tiedostosi ladataan.}}</translation>
+<translation id="3698471669415859717">Tarkistus on valmis</translation>
 <translation id="3699624789011381381">Sähköpostiosoite</translation>
 <translation id="3699920817649120894">Poistetaanko synkronointi ja personointi käytöstä?</translation>
 <translation id="3700888195348409686">Näytetään (<ph name="PAGE_ORIGIN"/>)</translation>
@@ -2682,7 +2724,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3742666961763734085">Tämännimistä organisaatioyksikköä ei löydy. Yritä uudelleen.</translation>
 <translation id="3743842571276656710">Lisää PIN-koodi, niin voit muodostaa laiteparin: <ph name="DEVICE_NAME"/></translation>
 <translation id="3747077776423672805">Jos haluat poistaa sovelluksia, valitse Asetukset &gt; Google Play Kauppa &gt; Hallitse Android-asetuksia &gt; Sovellukset tai Sovellusten hallinta. Valitse sitten sovellus, jonka haluat poistaa (jos sovellusta ei näy, pyyhkäise oikealle tai vasemmalle). Valitse sitten Poista tai Poista käytöstä.</translation>
-<translation id="3747220812138541072">Näytä tekstirivillä kirjoitusehdotuksia samalla kun kirjoitat</translation>
 <translation id="3747603683749989726">Laitetaanko parannettu suojaus päälle?</translation>
 <translation id="3748706263662799310">Ilmoita virheestä</translation>
 <translation id="1722111786667858719">Brave tallensi salasanasi tälle laitteelle, mutta voit halutessasi tallentaa sen Brave-tilillesi. Kaikki Brave-tilillä olevat salasanat ovat käytettävissä, kun olet sisäänkirjautuneena.</translation>
@@ -2730,8 +2771,8 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3788331399335602504">nämä tiedostot</translation>
 <translation id="3788401245189148511">Se voisi:</translation>
 <translation id="3789841737615482174">Asenna</translation>
+<translation id="3790417903123637354">Jotain meni pieleen. Yritä myöhemmin uudelleen.</translation>
 <translation id="379082410132524484">Korttisi on vanhentunut.</translation>
-<translation id="3792890930871100565">Irrota tulostimet</translation>
 <translation id="3888429887790492932">{NUM_DAYS,plural, =1{Brave ei löytänyt tietokoneeltasi haittaohjelmia • Tarkistettu 1 päivä sitten}other{Brave ei löytänyt tietokoneeltasi haittaohjelmia • Tarkistettu {NUM_DAYS} päivää sitten}}</translation>
 <translation id="2513920013190289972">Jos haluat käyttää lähijakamista, varmista, että kumpikaan laite ei ole lukittuna, että ne ovat lähekkäin ja että Bluetooth on päällä. Jos jaat Bravebookille, joka ei ole yhteystiedoissasi, varmista, että lähinäkyvyys on päällä (avaa tila-alue valitsemalla aika ja laita sitten lähinäkyvyys päälle) <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 <translation id="379509625511193653">Pois päältä</translation>
@@ -2821,6 +2862,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3873423927483480833">Näytä PIN-koodit</translation>
 <translation id="3873915545594852654">ARC++:n kanssa tapahtui ongelma.</translation>
 <translation id="3412613348266550587">Laita Brave Assistant päälle</translation>
+<translation id="3875783148670536197">Näytä miten</translation>
 <translation id="3875815154304214043"><ph name="APP_NAME"/> on asetettu avautumaan uuteen selainvälilehteen. Myös tuetut linkit avautuvat selaimessa. <ph name="BEGIN_LINK_LEARN_MORE"/>Lue lisää<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3877075909000773256">Käyttäjän <ph name="USER_NAME"/> laitteen lähijakamisasetukset, jaetaan tilillä <ph name="USER_EMAIL"/>.</translation>
 <translation id="3879748587602334249">Latausten hallinta</translation>
@@ -2867,6 +2909,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3916445069167113093">Tämäntyyppinen tiedosto voi vahingoittaa tietokonettasi. Haluatko säilyttää tiedoston <ph name="FILE_NAME"/>?</translation>
 <translation id="2819091349626575960">Raportoi tiedot Bravelle</translation>
 <translation id="3919145445993746351">Ota synkronointi käyttöön, niin voit käyttää laajennuksia kaikilla tietokoneilla</translation>
+<translation id="3919229493046408863">Laita ilmoitukset lähellä olevista laitteista pois päältä</translation>
 <translation id="3919798653937160644">Tässä ikkunassa katsomasi sivut eivät näy selaushistoriassa, eikä niistä jää tietokoneelle muita jälkiä (esim. evästeitä) suljettuasi kaikki vierasikkunat. Kaikki lataamasi tiedostot kuitenkin säilytetään.</translation>
 <translation id="3920504717067627103">Varmennekäytännöt</translation>
 <translation id="5914872514449971753">Ota BraveVox käyttöön (äänipalaute)</translation>
@@ -2915,6 +2958,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3957844511978444971">Kosketa "Hyväksy" vahvistaaksesi, että valitset nämä asetukset Brave-palveluille.</translation>
 <translation id="3958088479270651626">Kirjanmerkkien ja asetusten tuominen</translation>
 <translation id="3960566196862329469">ONC</translation>
+<translation id="3962119236270174787">Perustason suojaus vaaralliseksi tiedettyjä sivustoja, latauksia ja laajennuksia vastaan</translation>
 <translation id="3963721102035795474">Lukijatila</translation>
 <translation id="3964480518399667971">Laita mobiiliverkko pois päältä</translation>
 <translation id="3965811923470826124">Palveluntarjoaja:</translation>
@@ -2935,8 +2979,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="3979748722126423326">Ota käyttöön <ph name="NETWORKDEVICE"/></translation>
 <translation id="3981058120448670012">Näkyy lähellä oleville laitteille nimellä <ph name="DEVICE_NAME"/> <ph name="REMAINING_TIME"/> ajan…</translation>
 <translation id="3981760180856053153">Annoit virheellisen tallennustyypin.</translation>
-<translation id="3981828803725658123"><ph name="BEGIN_PARAGRAPH1"/>Jotain meni pieleen, ja asennus ei onnistunut: <ph name="DEVICE_OS"/>.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>Katso lisäohjeita osoitteesta g.co/xxxxx<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3982375475032951137">Asenna selain parilla yksinkertaisella vaiheella</translation>
 <translation id="3983400541576569538">Joidenkin sovellusten data voi kadota</translation>
 <translation id="3983586614702900908">tuntemattoman myyjän laitteet</translation>
@@ -2964,6 +3006,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4005817994523282006">Aikavyöhykkeen tunnistusmenetelmä</translation>
 <translation id="4007856537951125667">Piilota pikakuvakkeet</translation>
 <translation id="4008291085758151621">Sivuston tiedot eivät ole saatavilla VR:ssä</translation>
+<translation id="4009955655170295852">Varmista ennen aloittamista, että sinulla on varmuuskopio datastasi. Asentaminen (<ph name="DEVICE_OS"/>) korvaa kiintolevysi sisällön. Lue lisää osoitteesta g.co/CR2/InstallGuide</translation>
 <translation id="4010917659463429001"><ph name="GET_IOS_APP_LINK"/>, niin voit käyttää kirjanmerkkejäsi mobiililaitteella.</translation>
 <translation id="4014432863917027322">Korjataanko <ph name="EXTENSION_NAME"/>?</translation>
 <translation id="4015163439792426608">Onko sinulla laajennuksia? <ph name="BEGIN_LINK"/>Ylläpidä laajennuksiasi<ph name="END_LINK"/> helposti yhdestä paikasta.</translation>
@@ -3043,6 +3086,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4095264805865317199">Avaa mobiiliyhteyden aktivoinnin käyttöliittymä</translation>
 <translation id="4095507791297118304">Ensisijainen näyttö</translation>
 <translation id="4096508467498758490">Poista kehittäjätilassa olevat laajennukset käytöstä</translation>
+<translation id="4096797685681362305">Nähty viimeisen viikon aikana</translation>
 <translation id="4097406557126260163">Sovellukset ja laajennukset</translation>
 <translation id="1782552115775799922">Vinkkejä Braven käyttöön</translation>
 <translation id="4888839742663123585">Hae Bravesta</translation>
@@ -3079,6 +3123,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4132183752438206707">Etsi sovelluksia Google Play Kaupasta</translation>
 <translation id="4132364317545104286">Nimeä eSIM-profiili uudelleen</translation>
 <translation id="4133076602192971179">Avaa sovellus muuttaaksesi salasanan</translation>
+<translation id="4135746311382563554">Braven ja BraveOS:n lisäkäyttöehdot</translation>
 <translation id="4136203100490971508">Yövalo sammuu automaattisesti, kun aurinko nousee.</translation>
 <translation id="41365691917097717">Jatkamalla otat ADB-virheenkorjauksen käyttöön Android-sovellusten luomista ja testausta varten. Huomaa, että tämä sallii sellaisten Android-sovellusten asentamisen, joita Brave ei ole vahvistanut. Ominaisuuden käytöstä poistaminen edellyttää tehdasasetusten palautusta.</translation>
 <translation id="4138267921960073861">Näytä käyttäjänimet ja kuvat kirjautumisruudulla</translation>
@@ -3103,6 +3148,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4165942112764990069"><ph name="USER_EMAIL"/> ei kuulu hyväksyttävälle organisaatiolle. Ota yhteyttä järjestelmänvalvojaan. Jos olet järjestelmänvalvoja, voit ottaa organisaation käyttöön osoitteessa g.co/BraveEnterpriseAccount</translation>
 <translation id="4167686856635546851">Sivustot käyttävät JavaScriptiä yleensä videopelien, verkkolomakkeiden tai muiden interaktiivisten ominaisuuksien näyttämiseen</translation>
 <translation id="4168015872538332605">Jotkin käyttäjälle <ph name="PRIMARY_EMAIL"/> kuuluvat asetukset on jaettu kanssasi. Nämä asetukset koskevat tiliäsi vain silloin, kun useisiin tileihin kirjautuminen on käytössä.</translation>
+<translation id="4168651806173792090"><ph name="NETWORK_NAME"/>, jonka lopussa on <ph name="LAST_FOUR_DIGITS"/></translation>
 <translation id="4169535189173047238">Älä salli</translation>
 <translation id="4170314459383239649">Tyhjennä poistuttaessa</translation>
 <translation id="417096670996204801">Valitse profiili</translation>
@@ -3188,6 +3234,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4275830172053184480">Käynnistä laite uudelleen</translation>
 <translation id="4278390842282768270">Sallittu</translation>
 <translation id="4279129444466079448">Voit asentaa tälle laitteelle enintään <ph name="PROFILE_LIMIT"/> eSIM-profiilia. Poista ensin jokin profiileista, niin voit lisätä uuden.</translation>
+<translation id="4280325816108262082">Laitteen yhteys katkeaa automaattisesti, kun laite sammutetaan tai sitä ei käytetä</translation>
 <translation id="4281844954008187215">Käyttöehdot</translation>
 <translation id="4282196459431406533">Smart Lock on käytössä.</translation>
 <translation id="4284755288573763878">Laitetaanko parannettu suojaus pois päältä?</translation>
@@ -3330,6 +3377,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4432621511648257259">Väärä salasana</translation>
 <translation id="443454694385851356">Vanha (suojaamaton)</translation>
 <translation id="443475966875174318">Päivitä yhteensopimattomat sovellukset tai poista ne</translation>
+<translation id="4435634292635092844">Avaa <ph name="DEVICE_TYPE"/> ja katsele puhelimella otettuja kuvia. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 <translation id="4438043733494739848">Läpinäkyvä</translation>
 <translation id="4440097423000553826"><ph name="WEBSITE"/> lähetti ilmoituksen puhelimeesi. Todista henkilöllisyytesi napauttamalla ilmoitusta (<ph name="NOTIFICATIONTITLE"/>) ja seuraamalla ohjeita.</translation>
 <translation id="4441124369922430666">Haluatko käynnistää tämän sovelluksen automaattisesti koneen käynnistyessä?</translation>
@@ -3376,6 +3424,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4481467543947557978">service worker</translation>
 <translation id="4481530544597605423">Laitteet ilman paria</translation>
 <translation id="4482990632723642375">Viimeksi suljettu välilehti</translation>
+<translation id="4484922932728109422">Älä anna sivustojen käyttää tietoja näytöistäsi ikkunoiden avaamiseksi ja sijoittamiseksi</translation>
 <translation id="4487489714832036847">Bravebookit käyttävät sovelluksia perinteisten ohjelmistojen sijaan. Lataa sovelluksia esim. tuottavuuden parantamista ja viihdettä varten.</translation>
 <translation id="4488257340342212116">Kameran käyttö sallittu</translation>
 <translation id="4488502501195719518">Poistetaanko kaikki data?</translation>
@@ -3459,6 +3508,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4565917129334815774">Tallenna järjestelmälokit</translation>
 <translation id="4566417217121906555">Mykistä mikrofoni</translation>
 <translation id="456717285308019641">Käännettävän sivun kieli</translation>
+<translation id="4567512141633030272">Onko sisäänkirjautumisvaihtoehto väärä?</translation>
 <translation id="4567533462991917415">Voit lisätä käyttöönoton jälkeen muita henkilöitä. Jokainen henkilö voi tehdä tilistään omannäköisen ja pitää datansa yksityisenä.</translation>
 <translation id="4567772783389002344">Lisää sana</translation>
 <translation id="4568025708905928793">Suojausavainta pyydetään</translation>
@@ -3470,9 +3520,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4573515936045019911">Linuxin päivittämiseen tarvitaan verkkoyhteys. Muodosta internetyhteys ja yritä uudelleen.</translation>
 <translation id="457386861538956877">Lisää...</translation>
 <translation id="4574741712540401491">• <ph name="LIST_ITEM_TEXT"/></translation>
-<translation id="457564749856982089">Jos oppilaitostili lisätään, oppilaiden on helppo kirjautua sivustoille, laajennuksiin ja sovelluksiin lapsilukon asettamissa rajoissa. Lapsi ei pääse oppilaitostilille synkronoituun selausdataan, kuten kirjanmerkkeihin tai salasanoihin.&lt;br&gt;&lt;br&gt;
-    Jos lapsesi käyttää koulussa Bravebookia ja haluat käyttökokemusten olevan samanlaiset koulussa ja kotona, jolloin lapsi saa kaikki tarvittavat oppimateriaalit, kirjaudu ulos tältä Family Link ‑tililtä ja kirjaudu oppilaitostilille Brave-käyttöjärjestelmän tilisivulta (Family Linkin lapsilukko ei silloin toimi).&lt;br&gt;&lt;br&gt;
-    Jos lapsi ei käytä koulussa Bravebookia tai päätät mieluummin lapsen käyttökokemuksesta kotona Family Linkin avulla, valitse alta Seuraava lisätäksesi tähän profiiliin oppilaitostilin.</translation>
 <translation id="4576541033847873020">Parin muodostus Bluetooth-laitteen kanssa</translation>
 <translation id="5069510062541082828">Jos haluat jatkossakin tallentaa salasanoja Brave-tilillesi, vahvista henkilöllisyytesi</translation>
 <translation id="4579453506923101210">Unohda yhdistetty puhelin</translation>
@@ -3547,7 +3594,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="92485231987887895">Jaa tiedostoja lähellä olevien Bravebookien ja Android-laitteiden kanssa</translation>
 <translation id="4657914796247705218">TrackPoint-nopeus</translation>
 <translation id="465878909996028221">Selainten uudelleenohjaukset tukevat vain http-, https- ja tiedostoprotokollia.</translation>
-<translation id="4659077111144409915">Ensisijainen tili</translation>
 <translation id="8690837126057549270">Tämä ominaisuus otetaan käyttöön, kun kirjaudut Brave-tilillesi.</translation>
 <translation id="4660465405448977105">{COUNT,plural, =1{Kuva}other{# kuvaa}}</translation>
 <translation id="4660476621274971848">Versiota <ph name="EXPECTED_VERSION"/> odotettiin, mutta versio oli <ph name="NEW_ID"/>.</translation>
@@ -3593,6 +3639,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4699172675775169585">Välimuistissa olevat kuvat ja tiedostot</translation>
 <translation id="4699357559218762027">(käynnistyy automaattisesti)</translation>
 <translation id="4701025263201366865">Vanhemman sisäänkirjautuminen</translation>
+<translation id="4701335814944566468">Nähty eilen</translation>
 <translation id="4708794300267213770">Näytä lukitusnäyttö, kun laite poistuu virransäästötilasta</translation>
 <translation id="4708849949179781599">Sulje <ph name="PRODUCT_NAME"/></translation>
 <translation id="4711638718396952945">Palauta asetukset</translation>
@@ -3651,6 +3698,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4785719467058219317">Käytät suojausavainta, jota ei ole rekisteröity tällä sivustolla.</translation>
 <translation id="478708757211772586">Siirry näytöllä eteenpäin valitsemalla Seuraava</translation>
 <translation id="4788092183367008521">Tarkista verkkoyhteys ja yritä uudelleen.</translation>
+<translation id="4789550509729954245">Näytä ilmoitus, kun lähistöllä olevat laitteet jakavat sisältöä</translation>
 <translation id="4791000909649665275"><ph name="NUMBER"/> kuva</translation>
 <translation id="4791037424585594169">(UDP)</translation>
 <translation id="4792290259143007505">Ota TrackPoint-nopeuttaminen käyttöön</translation>
@@ -3659,6 +3707,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="479536056609751218">Verkkosivu, vain HTML</translation>
 <translation id="4796142525425001238">Palauta aina</translation>
 <translation id="5526928694260255286">Liitä <ph name="BEGIN_LINK"/>Bluetooth-lokit<ph name="END_LINK"/> (Braven sisäinen)</translation>
+<translation id="479863874072008121">Laitevalinnat</translation>
 <translation id="4800839971935185386">Katso nimen ja kuvakkeen muutokset</translation>
 <translation id="4801448226354548035">Piilota tilit</translation>
 <translation id="4801512016965057443">Salli mobiilitiedonsiirto roaming-tilassa</translation>
@@ -3676,10 +3725,14 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4813136279048157860">Omat kuvat</translation>
 <translation id="4813512666221746211">Verkkovirhe</translation>
 <translation id="4814378367953456825">Anna sormenjäljelle nimi</translation>
+<translation id="481574578487123132">Linkitetyt laitteet</translation>
 <translation id="4816097470512964351"><ph name="DEVICE"/>, tiedot</translation>
 <translation id="4816336393325437908">{COUNT,plural, =1{1 kirjanmerkki poistettiin}other{{COUNT} kirjanmerkkiä poistettiin}}</translation>
 <translation id="8655084398729487585">Brave Assistant ‑ilmoitukset</translation>
 <translation id="4820236583224459650">Määritä aktiiviseksi tukipyynnöksi</translation>
+<translation id="4820771945393916447"><ph name="BEGIN_PARAGRAPH1"/>Ennen rekisteröitymistä sinun on tyhjennettävä TPM, jotta <ph name="DEVICE_OS"/> voi aloittaa laitteen omistajana.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Voit myös laittaa TPM-laitteen kokonaan pois päältä. Datasi tallennetaan turvallisesti ohjelmistosalauksella, mutta jotkin suojausominaisuudet, esim. laitteelle varmuuskopioidut varmenteet, poistetaan käytöstä.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>Voit muuttaa TPM-asetuksiasi käynnistämällä laitteen uudestaan ja lisäämällä järjestelmän BIOS/UEFI-asetukset. Ohjeet riippuvat laitteen mallista. Jos haluat lisätietoja, avaa dokumentaatio (<ph name="DEVICE_OS"/>) eri laitteella ennen uudelleenkäynnistystä: g.co/CR2/TPMHelp<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4821935166599369261">&amp;Profilointi on käytössä</translation>
 <translation id="4823484602432206655">Lukea ja muokata käyttäjän ja laitteen asetuksia.</translation>
 <translation id="4824037980212326045">Linuxin varmuuskopiointi ja palautus</translation>
@@ -3690,7 +3743,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="482952334869563894">USB-laitteet (myyjä: <ph name="VENDOR_ID"/>)</translation>
 <translation id="4829768588131278040">Määritä PIN-koodi</translation>
 <translation id="4830026649400230050">Kaikki kelvolliset lataukset ohjataan organisaatiosi tilille: <ph name="WEB_DRIVE"/>.</translation>
-<translation id="4830121310592638841">Kysy, kun sivusto haluaa avata ikkunoita ja sijoittaa niitä näytöillesi</translation>
 <translation id="4830502475412647084">Asennetaan käyttöjärjestelmäpäivitystä</translation>
 <translation id="4830573902900904548"><ph name="DEVICE_TYPE"/> ei voi muodostaa internetyhteyttä verkon <ph name="NETWORK_NAME"/> kautta. Valitse toinen verkko. <ph name="LEARN_MORE_LINK_START"/>Lisätietoja<ph name="LEARN_MORE_LINK_END"/></translation>
 <translation id="4833683849865011483">Tulostuspalvelimelta löytyi yksi tulostin</translation>
@@ -3705,6 +3757,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4841741146571978176">Tarvittavaa virtuaalikonetta ei ole olemassa. Jatka ottamalla <ph name="VM_TYPE"/> käyttöön</translation>
 <translation id="4842976633412754305">Tämä sivu yrittää ladata koodia todentamattomista lähteistä.</translation>
 <translation id="4844333629810439236">Muut näppäimistöt</translation>
+<translation id="6195403640086187022">Salasanat kannattaa salata turvallisuussyistä laitteella ennen niiden tallentamista Braven Salasanojen ylläpitoon</translation>
 <translation id="4846680374085650406">Noudatat järjestelmänvalvojan tätä asetusta koskevaa suositusta.</translation>
 <translation id="4847902821209177679"><ph name="TOPIC_SOURCE"/> <ph name="TOPIC_SOURCE_DESC"/> valittu, valitse albumeita (<ph name="TOPIC_SOURCE"/>) painamalla Enter</translation>
 <translation id="9059376008425695864">Brave Assistantin Ok Brave</translation>
@@ -3767,6 +3820,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4900652253009739885">Ainoaa Valinta-toiminnolle määritettyä kytkintä ei voi poistaa. <ph name="RESPONSE"/> painamalla mitä tahansa näppäintä.</translation>
 <translation id="4901309472892185668">Valitse kokeilutila tälle kokeilulle: <ph name="EXPERIMENT_NAME"/>.</translation>
 <translation id="49027928311173603">Palvelimelta ladattu käytäntö on virheellinen: <ph name="VALIDATION_ERROR"/>.</translation>
+<translation id="4904511036057277323">Auta parantamaan Braven ja BraveOS:n ominaisuuksia ja suorituskykyä lähettämällä diagnostiikka- ja käyttödataa Bravelle automaattisesti. Kootusta datasta on hyötyä myös Android-sovelluksille ja Braven kumppaneille. Jos Verkko- ja sovellustoiminta ‑asetus on päällä lapsen Brave-tilillä, Android-dataa voidaan tallentaa hänen tililleen.</translation>
 <translation id="4906490889887219338">Aloita verkkotiedostojen jakaminen tai muuta sitä. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 <translation id="4907129260985716018">Valitse, kun tämä laajennus voi lukea ja muuttaa sivustodataasi</translation>
 <translation id="4907161631261076876">Tätä tiedostoa ei ladata usein ja se saattaa olla haitallinen.</translation>
@@ -3780,7 +3834,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4917385247580444890">Vahva</translation>
 <translation id="4918021164741308375"><ph name="ORIGIN"/> haluaa viestiä laajennuksen <ph name="EXTENSION_NAME"/> kanssa.</translation>
 <translation id="4918086044614829423">Hyväksy</translation>
-<translation id="4921290200821452703">Tietoa oppilaitostilistä vanhemmille</translation>
 <translation id="4921348630401250116">Teksti puheeksi</translation>
 <translation id="4921809350408880559">Näkemäsi viimeaikaiset ja ehdotetut dokumentit perustuvat aiempaan toimintaasi Google Drivessa.
         <ph name="BREAK"/>
@@ -3831,7 +3884,6 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="4972129977812092092">Muokkaa tulostinta</translation>
 <translation id="4972164225939028131">Väärä salasana</translation>
 <translation id="4972737347717125191">Sivustot saavat pyytää virtuaalitodellisuuslaitteiden ja ‑datan käyttölupaa</translation>
-<translation id="4973307593867026061">Lisää tulostimia</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Mykistä sivusto}other{Mykistä sivustot}}</translation>
 <translation id="4977942889532008999">Vahvista osoite</translation>
 <translation id="4980805016576257426">Tämä laajennus sisältää haittaohjelmia.</translation>
@@ -3845,11 +3897,9 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="499165176004408815">Käytä suuri kontrasti -tilaa</translation>
 <translation id="4992458225095111526">Vahvista powerwash</translation>
 <translation id="4992473555164495036">Järjestelmänvalvoja on rajoittanut syöttötapoja.</translation>
+<translation id="4992984395680162305">Laitteet on linkitetty skannaamalla QR-koodi.</translation>
 <translation id="4994474651455208930">Anna sivustojen ehdottaa protokollien oletuskäsittelypalveluiden määrittämistä</translation>
 <translation id="4994754230098574403">Määritetään</translation>
-<translation id="4995131849631312693"><ph name="BEGIN_PARAGRAPH1"/>Ennen rekisteröitymistä sinun on tyhjennettävä TPM, jotta <ph name="DEVICE_OS"/> voi aloittaa laitteen omistajana.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>Voit myös laittaa TPM-laitteen kokonaan pois päältä. Datasi tallennetaan turvallisesti ohjelmistosalauksella, mutta jotkin suojausominaisuudet, esim. laitteelle varmuuskopioidut varmenteet, poistetaan käytöstä.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>Voit muuttaa TPM-asetuksiasi käynnistämällä laitteen uudestaan ja lisäämällä järjestelmän BIOS/UEFI-asetukset. Ohjeet riippuvat laitteen mallista. Jos haluat lisätietoja, avaa dokumentaatio (<ph name="DEVICE_OS"/>) eri laitteella ennen uudelleenkäynnistystä: [URL link]<ph name="END_PARAGRAPH3"/></translation>
 <translation id="4996851818599058005">{NUM_VMS,plural, =0{VM:iä (<ph name="VM_TYPE"/>) ei löytynyt}=1{1 VM (<ph name="VM_TYPE"/>) löytyi: <ph name="VM_NAME_LIST"/>}other{{NUM_VMS} VM:ää (<ph name="VM_TYPE"/>) löytyi: <ph name="VM_NAME_LIST"/>}}</translation>
 <translation id="4997086284911172121">Ei internetyhteyttä.</translation>
 <translation id="4998430619171209993">Päällä</translation>
@@ -3870,6 +3920,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="5018207570537526145">Avaa laajennussivusto</translation>
 <translation id="5018526990965779848">Lähetä käyttö- ja diagnostiikkadataa. Auta parantamaan Android-käyttökokemusta lähettämällä diagnostiikkadataa sekä laitteen ja sovellusten käyttödataa automaattisesti Bravelle. Datan avulla parannetaan esimerkiksi järjestelmän ja sovellusten vakautta. Kootusta datasta on hyötyä myös Braven sovelluksille ja kumppaneille, kuten Android-kehittäjille. Jos olet laittanut päälle muun verkko- ja sovellustoiminnan asetuksen, tätä dataa voidaan tallentaa Brave-tilillesi.</translation>
 <translation id="5021750053540820849">Ei vielä päivitetty</translation>
+<translation id="5024511550058813796">Historia löytyy kaikilta synkronoiduilta laitteilta, joten voit jatkaa samasta kohdasta</translation>
 <translation id="5026492829171796515">Kirjaudu sisään lisätäksesi Brave-tilin</translation>
 <translation id="5026806129670917316">Ota Wi-Fi käyttöön</translation>
 <translation id="5026874946691314267">Älä näytä tätä uudelleen</translation>
@@ -3884,13 +3935,11 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="5036662165765606524">Älä anna sivustojen ladata useita tiedostoja automaattisesti</translation>
 <translation id="5037676449506322593">Valitse kaikki</translation>
 <translation id="5038022729081036555">Huomenna voit käyttää sovellusta <ph name="TIME_LIMIT"/>.</translation>
-<translation id="5038863510258510803">Otetaan käyttöön...</translation>
 <translation id="1246634473640425087">Katso ja ylläpidä Brave-tilille tallennettuja salasanoja</translation>
 <translation id="5039804452771397117">Salli</translation>
 <translation id="5040823038948176460">Muut sisältöasetukset</translation>
 <translation id="5043440033854483429">Nimessä voi olla kirjaimia, numeroita ja yhdysmerkkejä (-). Merkkimäärän on oltava 1–15 (sisältäen molemmat arvot).</translation>
 <translation id="5043913660911154449">Tai kerro tulostimen PPD <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
-<translation id="5044527779574548527">Älä näytä tätä vaihetta uudelleen</translation>
 <translation id="5045550434625856497">Väärä salasana</translation>
 <translation id="504561833207953641">Avataan nykyisessä selainistunnossa</translation>
 <translation id="5047421709274785093">Estä sivustoja käyttämästä liike- ja valotunnistimia.</translation>
@@ -3939,6 +3988,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="5090637338841444533">Kameran asennon seuraaminen kielletty</translation>
 <translation id="5094721898978802975">Kommunikoida yhteistyötä tekevien natiivisovellusten kanssa</translation>
 <translation id="5097002363526479830">Yhteyden muodostaminen verkkoon "<ph name="NAME"/>" epäonnistui: <ph name="DETAILS"/></translation>
+<translation id="5097306410549350357">Lue lisää sijainnin käytöstä</translation>
 <translation id="5097874180538493929">Klikkaa automaattisesti, kun kohdistin pysähtyy</translation>
 <translation id="5101839224773798795">Klikkaa automaattisesti, kun osoitin pysähtyy</translation>
 <translation id="510695978163689362"><ph name="USER_EMAIL"/> on valvottu Family Linkillä. Voit lisätä koulutilejä, jotka pääsevät oppimateriaaleihin vanhemman valvonnassa.</translation>
@@ -3962,10 +4012,10 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="5123433949759960244">Koripallo</translation>
 <translation id="5125751979347152379">Virheellinen URL-osoite.</translation>
 <translation id="5126611267288187364">Näytä muutokset</translation>
+<translation id="5127242257756472928">Tietoja näytöistäsi ei saa käyttää ikkunoiden avaamiseksi ja sijoittamiseksi</translation>
 <translation id="5127620150973591153">Suojatun yhteyden tunnus: <ph name="TOKEN"/></translation>
 <translation id="5127805178023152808">Synkronointi on pois päältä</translation>
 <translation id="5127881134400491887">hallinnoida verkkoyhteyksiä</translation>
-<translation id="5128774403617662387">Varmista ennen aloittamista, että sinulla on varmuuskopio datastasi. Asentaminen (<ph name="DEVICE_OS"/>) korvaa kiintolevysi sisällön. Lue lisää osoitteesta g.co/TBD.</translation>
 <translation id="512903556749061217">liitetty</translation>
 <translation id="5130080518784460891">Eten</translation>
 <translation id="5130675701626084557">Profiilia ei voitu ladata. Yritä uudelleen tai pyydä apua operaattorilta.</translation>
@@ -4007,6 +4057,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="5171343362375269016">Vaihdettu muisti</translation>
 <translation id="5172855596271336236">Hallinnoituja tulostimia on 1.</translation>
 <translation id="5173668317844998239">Lisää ja poista suojausavaimelle tallennettuja sormenjälkiä</translation>
+<translation id="5174169235862638850">Salasana kopioitu leikepöydälle</translation>
 <translation id="5175379009094579629">Laitteen nimi on virheellinen. Syötä kelvollinen nimi ja yritä uudelleen.</translation>
 <translation id="5177479852722101802">Estä kameran ja mikrofonin käyttö edelleen</translation>
 <translation id="5177549709747445269">Käytät mobiilitiedonsiirtoa</translation>
@@ -4072,6 +4123,7 @@ ja loitonna painamalla Ctrl + Alt + kirkkauden vähennys.</translation>
 <translation id="5243522832766285132">Yritä uudelleen hetken kuluttua</translation>
 <translation id="5244474230056479698">Synkronoidaan osoitteeseen <ph name="EMAIL"/></translation>
 <translation id="5245610266855777041">Aloita oppilaitoksen tilin käyttö</translation>
+<translation id="3945354317033538684">Näitä laitteita voi käyttää suojausavaimina, koska olet kirjautuneena niillä Braveen.</translation>
 <translation id="5246282308050205996"><ph name="APP_NAME"/> on kaatunut. Käynnistä sovellus uudelleen klikkaamalla tätä kuplaa.</translation>
 <translation id="5247051749037287028">Näyttönimi (valinnainen)</translation>
 <translation id="5249624017678798539">Selain kaatui ennen latauksen päättymistä.</translation>
@@ -4221,6 +4273,7 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="5407167491482639988">Mahdoton kuulla</translation>
 <translation id="5408750356094797285">Zoomaus: <ph name="PERCENT"/></translation>
 <translation id="8701791090100080864">Brave-tililtäsi</translation>
+<translation id="5413640305322530561">Lue lisää diagnostiikka- ja käyttödatasta</translation>
 <translation id="5414198321558177633">Päivitetään profiililistaa. Tämä voi kestää muutaman minuutin.</translation>
 <translation id="5414566801737831689">Käyttää selaamiesi sivustojen kuvakkeita</translation>
 <translation id="5417312524372586921">Selainteemat</translation>
@@ -4298,6 +4351,7 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="5490721031479690399">Katkaise Bluetooth-laitteen yhteys</translation>
 <translation id="5490798133083738649">Anna Linuxin käyttää mikrofoniasi</translation>
 <translation id="549211519852037402">Beige ja valkoinen</translation>
+<translation id="5492637351392383067">Laitteen salaus</translation>
 <translation id="5493792505296048976">näyttö päällä</translation>
 <translation id="5494016731375030300">Viimeksi suljetut välilehdet</translation>
 <translation id="5494362494988149300">Avaa, kun val&amp;mis</translation>
@@ -4322,12 +4376,10 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="5502915260472117187">Lapsi</translation>
 <translation id="5503356662318814623">Lähetä viesti</translation>
 <translation id="5503982651688210506">Hyväksy edelleen, että <ph name="HOST"/> voi käyttää ja liikuttaa kameraasi ja käyttää mikrofoniasi</translation>
-<translation id="5504909642107847870">Yksityisyys- ja suojausasetusten tarkistus</translation>
 <translation id="5505264765875738116">Sivustot eivät saa pyytää lupaa ilmoitusten lähettämiseen</translation>
 <translation id="5505307013568720083">Muste lopussa</translation>
 <translation id="5505794066310932198">Commander päälle/pois</translation>
 <translation id="5507756662695126555">Kiistämättömyys</translation>
-<translation id="5507795078844206688">Avaamiesi sivujen URL-osoitteet, esim. https://www.google.com</translation>
 <translation id="5509693895992845810">T&amp;allenna nimellä...</translation>
 <translation id="5509914365760201064">Myöntäjä: <ph name="CERTIFICATE_AUTHORITY"/></translation>
 <translation id="6849870115130610913">Käytä Braven kuvaselityksiä</translation>
@@ -4382,8 +4434,10 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="6363797201514053536">Hae Bravesta tai kirjoita URL-osoite</translation>
 <translation id="5565735124758917034">Aktiivinen</translation>
 <translation id="5568069709869097550">Ei voi kirjautua sisään</translation>
+<translation id="5571066253365925590">Bluetooth käytössä</translation>
 <translation id="5571092938913434726">Yleiset mediaohjaimet</translation>
 <translation id="5571832155627049070">Muokkaa profiiliasi</translation>
+<translation id="5572648434713976849">Näet parempia ehdotuksia osoitepalkissa</translation>
 <translation id="1254756632288991504">Aloita ja kirjaudu sisään, jotta Brave voi tarkistaa, onko sinulla oikeus käyttää tätä sivustoa.</translation>
 <translation id="5575528586625653441">Esittelyn rekisteröintipyynnön kanssa tapahtui ongelma.</translation>
 <translation id="557722062034137776">Laitteen nollaus ei vaikuta Brave-tileihisi tai mihinkään näihin tileihin synkronoituihin tietoihin. Kaikki paikallisesti laitteellesi tallennetut tiedostot kuitenkin poistetaan.</translation>
@@ -4444,6 +4498,7 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="562935524653278697">Järjestelmänvalvoja on poistanut käytöstä kirjanmerkkien, historian, salasanojen ja muiden asetusten synkronoinnin.</translation>
 <translation id="5631017369956619646">Suorittimen käyttö</translation>
 <translation id="5632059346822207074">Lupaa pyydetty, vastaa painamalla Ctrl + seuraava</translation>
+<translation id="5632485077360054581">Näytä miten</translation>
 <translation id="5632566673632479864">Tilisi <ph name="EMAIL"/> ei ole enää sallittu ensisijaisena tilinä. Koska <ph name="DOMAIN"/> ylläpitää tätä tiliä, kirjanmerkit, historia, salasanat ja muut asetukset tyhjennetään tältä laitteelta.</translation>
 <translation id="5632592977009207922">Ladataan, <ph name="PERCENT_REMAINING"/> % jäljellä</translation>
 <translation id="563371367637259496">Mobiili</translation>
@@ -4456,10 +4511,6 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="5642508497713047">CRL-allekirjoittaja</translation>
 <translation id="5643321261065707929">Maksullinen verkko</translation>
 <translation id="5643620609347735571">Poista ja jatka</translation>
-<translation id="5644722238761632789"><ph name="BEGIN_PARAGRAPH1"/>Auta parantamaan Braven ja BraveOS:n ominaisuuksia ja suorituskykyä lähettämällä automaattisesti virheraportteja sekä diagnostiikka- ja käyttödataa Bravelle.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>Voit sallia tai estää raporttien lähettämisen milloin tahansa BraveOS-laitteen asetuksissa. Jos olet verkkotunnuksen järjestelmänvalvoja, voit muuttaa asetusta hallintakonsolissa.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>Jos ominaisuus laitetaan pois päältä, laite voi edelleen lähettää järjestelmäpäivitysten, tietoturvan ja muiden tärkeiden palvelujen edellyttämiä tietoja.<ph name="END_PARAGRAPH3"/>
-    <ph name="BEGIN_PARAGRAPH4"/>Jos Verkko‑ ja sovellustoiminta ‑asetus on päällä Brave-tililläsi, Android-dataa voidaan tallentaa tilillesi. Voit nähdä dataa, poistaa sitä ja muuttaa tiliasetuksia osoitteessa account.google.com.<ph name="END_PARAGRAPH4"/></translation>
 <translation id="5646376287012673985">Sijainti</translation>
 <translation id="5646558797914161501">Liikemies</translation>
 <translation id="5648166631817621825">Viimeiset seitsemän päivää</translation>
@@ -4473,7 +4524,6 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="5659593005791499971">Sähköposti</translation>
 <translation id="5659833766619490117">Sivua ei voi kääntää</translation>
 <translation id="5662513737565158057">Muuta Linux-sovellusten toimintatapaa.</translation>
-<translation id="5667490069342183561">Brave ei vastaa menetetystä datasta, ja <ph name="DEVICE_OS"/> ei välttämättä toimi sertifioimattomilla malleilla. Lue lisää osoitteesta g.co/TBD.</translation>
 <translation id="5667546120811588575">Määritetään Google Playta…</translation>
 <translation id="5668351004957198136">Hylätty</translation>
 <translation id="5671641761787789573">Kuvat estetty</translation>
@@ -4552,6 +4602,7 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="5757375109985023827">Valitse esikatseltava välilehti</translation>
 <translation id="5758631781033351321">Näet lukulistasi täällä</translation>
 <translation id="5759728514498647443"><ph name="APP_NAME"/> voi lukea dokumentteja, jotka lähetät tulostettavaksi sovelluksen <ph name="APP_NAME"/> kautta.</translation>
+<translation id="5762787084360227629">Lisää Brave-tilin tiedot</translation>
 <translation id="5763751966069581670">USB-laitteita ei löytynyt.</translation>
 <translation id="5764483294734785780">T&amp;allenna audiotiedosto nimellä...</translation>
 <translation id="57646104491463491">Muokkauspäivämäärä</translation>
@@ -4581,6 +4632,7 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="5789643057113097023">,</translation>
 <translation id="5790085346892983794">Onnistui</translation>
 <translation id="5790651917470750848">Porttiohjaus on jo olemassa</translation>
+<translation id="5792295754950501287"><ph name="CARD_DESCRIPTION"/>: lisää toimintoja</translation>
 <translation id="5792728279623964091">Paina virtapainiketta</translation>
 <translation id="5793339252089865437">Lisämaksuja voidaan periä, jos lataat päivityksen mobiiliverkossa.</translation>
 <translation id="5794034487966529952">Työpöydällä <ph name="DESK_TITLE"/> on <ph name="NUM_BROWSERS"/> avointa selainikkunaa</translation>
@@ -4652,6 +4704,7 @@ Voit määrittää samalle toiminnolle useita kytkimiä.</translation>
 <translation id="5865508026715185451"><ph name="APP_NAME"/> keskeytetään pian</translation>
 <translation id="586567932979200359">Käytät tuotetta <ph name="PRODUCT_NAME"/> sen levyvedoksen kautta. Asentamalla tuotteen tietokoneellesi voit käyttää sitä ilman levyvedosta ja varmistat, että tuote pysyy päivitettynä.</translation>
 <translation id="6538479075382111079">Lähettää automaattisesti käyttötilastoja ja virheraportteja Bravelle</translation>
+<translation id="5865848066829891215">Verkon yhteysongelmat</translation>
 <translation id="5867841422488265304">Hae tai kirjoita verkko-osoite</translation>
 <translation id="5869029295770560994">Selvä</translation>
 <translation id="5869522115854928033">Tallennetut salasanat</translation>
@@ -4767,6 +4820,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Pyydä järjestelmänvalvojaasi poistamaan tämä sovellus, jotta voit varmasti jatkaa verkon selaamista.}other{Pyydä järjestelmänvalvojaasi poistamaan nämä sovellukset, jotta voit varmasti jatkaa verkon selaamista.}}</translation>
 <translation id="5997337190805127100">Lisätietoja sivustojen käyttöoikeuksista</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> tulosta: <ph name="SEARCH_TEXT"/></translation>
+<translation id="6002122790816966947">Omat laitteet</translation>
 <translation id="6002210667729577411">Siirrä ryhmä uuteen ikkunaan</translation>
 <translation id="4448813628683709282">Salasana poistettu Brave-tililtäsi</translation>
 <translation id="6002458620803359783">Ensisijaiset äänet</translation>
@@ -4885,6 +4939,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6112931163620622315">Tarkista puhelimesi</translation>
 <translation id="8589850327914845460">Valitse oletushakukone Brave-selainta ja käynnistysohjelmaa (<ph name="DEVICE_TYPE"/>) varten</translation>
 <translation id="6113942107547980621">Jos haluat käyttää Smart Lockia, vaihda ensisijaiseen käyttäjäprofiiliin puhelimellasi</translation>
+<translation id="611684075852771314">Lokit on tallennettu Omiin tiedostoihin:</translation>
 <translation id="6116921718742659598">Vaihda kielen ja syöttötavan asetuksia</translation>
 <translation id="6119927814891883061">Valitse laitteen nimeksi <ph name="DEVICE_NAME"/></translation>
 <translation id="6120205520491252677">Kiinnitä tämä sivu aloitusruutuun...</translation>
@@ -5129,12 +5184,17 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6374469231428023295">Yritä uudelleen</translation>
 <translation id="6377268785556383139">1 tulos: <ph name="SEARCH_TEXT"/></translation>
 <translation id="6380143666419481200">Hyväksy ja jatka</translation>
+<translation id="6382616130475191723">Saa lukea ja muuttaa tätä: <ph name="SITE_NAME"/></translation>
 <translation id="6382958439467370461">Ei epäaktiivisia pikakomentoja</translation>
 <translation id="638418309848716977">Tuetut linkit</translation>
 <translation id="6384275966486438344">Ota käyttöön seuraava hakukone: <ph name="SEARCH_HOST"/></translation>
 <translation id="63849924261838903">{NUM_TABS,plural, =1{Nimetön ryhmä – 1 välilehti}other{Nimetön ryhmä – # välilehteä}}</translation>
 <translation id="6385149369087767061">Muodosta internetyhteys ja yritä uudelleen</translation>
 <translation id="6385543213911723544">Sivustot voivat lukea ja tallentaa evästetietoja.</translation>
+<translation id="6385599849914981574"><ph name="BEGIN_PARAGRAPH1"/>Antamalla BraveOS-laitteiden lähettää raportteja automaattisesti voit auttaa meitä korjaamaan ja kehittämään BraveOS:n ominaisuuksia. Raportteihin voi sisältyä esimerkiksi tietoja käytetyistä ominaisuuksista ja tyypillisestä muistin käytöstä.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Voit sallia tai estää raporttien lähettämisen milloin tahansa BraveOS-laitteen asetuksissa. Jos olet verkkotunnuksen järjestelmänvalvoja, voit muuttaa asetusta hallintakonsolissa.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>Jos ominaisuus laitetaan pois päältä, laite voi edelleen lähettää järjestelmäpäivitysten, tietoturvan ja muiden tärkeiden palvelujen edellyttämiä tietoja.<ph name="END_PARAGRAPH3"/>
+    <ph name="BEGIN_PARAGRAPH4"/>Jos laitteen omistaja laittaa Lähetä käyttö- ja diagnostiikkatadaa ‑asetuksen päälle, Bravelle voidaan lähettää myös virheraportteja.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="6385994920693662133">Varoitus: Yksityiskohtaiset lokit ovat käytössä. Alla olevat lokit voivat sisältää URL-osoitteita tai muita arkaluontoisia tietoja. Tarkista tiedot ja varmista, että haluat lähettää ne.</translation>
 <translation id="6387674443318562538">Pystysuuntainen jako</translation>
 <translation id="6388429472088318283">Hae kieliä</translation>
@@ -5191,7 +5251,6 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6444909401984215022"><ph name="WINDOW_TITLE"/> – Bluetooth-haku aktiivinen</translation>
 <translation id="6445450263907939268">Jos et pidä muutoksista, voit palauttaa aiemmat asetuksesi.</translation>
 <translation id="6446213738085045933">Luo työpöydän pikakuvake</translation>
-<translation id="6447210166804596538">Löydät tärkeimmät yksityisyys- ja suojausasetukset yhdestä paikasta</translation>
 <translation id="6447842834002726250">Evästeet</translation>
 <translation id="6450876761651513209">Muuta tietosuoja-asetuksia</translation>
 <translation id="6451344358166983408">Sivusto tai sivu</translation>
@@ -5205,6 +5264,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6455264371803474013">Tietyillä sivustoilla</translation>
 <translation id="6455894534188563617">Uusi ka&amp;nsio</translation>
 <translation id="645705751491738698">Estä JavaScript edelleen</translation>
+<translation id="6458347417133445570">Näytä tietoa kaikkien evästeiden sallimisesta</translation>
 <translation id="6458701200018867744">Lataus epäonnistui (<ph name="WEBRTC_LOG_UPLOAD_TIME"/>).</translation>
 <translation id="6459488832681039634">Hae valinnan avulla</translation>
 <translation id="6459799433792303855">Aktiivinen ikkuna siirrettiin toiselle näytölle.</translation>
@@ -5251,6 +5311,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6504601948739128893">Laitteellesi asennettujen fonttien käyttäminen kielletty</translation>
 <translation id="6504611359718185067">Muodosta yhteys internetiin, niin voit lisätä tulostimen.</translation>
 <translation id="6506374932220792071">X9.62 ECDSA ‑allekirjoitus, jossa on SHA-256</translation>
+<translation id="6507936476364432879">Auta parantamaan Braven ja BraveOS:n ominaisuuksia ja suorituskykyä lähettämällä diagnostiikka- ja käyttödataa Bravelle automaattisesti.</translation>
 <translation id="6508248480704296122">Liittyy kohteeseen <ph name="NAME_PH"/></translation>
 <translation id="6508261954199872201">Sovellus: <ph name="APP_NAME"/></translation>
 <translation id="6509207748479174212">Medialisenssi</translation>
@@ -5271,9 +5332,6 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6528179044667508675">Älä häiritse</translation>
 <translation id="3700405816184340252">Braven historia</translation>
 <translation id="6530186581263215931">Järjestelmänvalvojasi on ottanut nämä asetukset käyttöön</translation>
-<translation id="653031671361866334"><ph name="BEGIN_PARAGRAPH1"/><ph name="DEVICE_OS"/> kerää laitedataa ja jakaa sen Bravelle parhaan mahdollisen käyttökokemuksen tarjoamiseksi. Tämä auttaa selvittämään, millaisia päivityksiä tarvitaan. Voit halutessasi antaa Bravelle luvan käyttää dataa myös muihin tarkoituksiin, esim. käyttökokemuksen ja palvelun (<ph name="DEVICE_OS"/>) tukemiseen ja kehittämiseen.<ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>Näet Bravelle päivitysten suodattamista varten lähetetyn datan (ja kaiken muun Bravelle jakamasi datan) kirjautumalla laitteelle ja siirtymällä Braven diagnostiikkatietojen (chrome://system) CLOUDREADY_HARDWARE_INFO-osioon.<ph name="END_PARAGRAPH2"/>
-    <ph name="BEGIN_PARAGRAPH3"/>Lisätietoja datasta, jota <ph name="DEVICE_OS"/> voi jakaa Bravelle, ja sen käytöstä saat osoitteesta g.co/xxxxx<ph name="END_PARAGRAPH3"/></translation>
 <translation id="6531282281159901044">Pidä haitallinen tiedosto</translation>
 <translation id="6532101170117367231">Tallenna Google Driveen</translation>
 <translation id="6532106788206463496">Tallenna muutokset</translation>
@@ -5343,13 +5401,13 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6596325263575161958">Salausasetukset</translation>
 <translation id="6596816719288285829">IP-osoite</translation>
 <translation id="6597017209724497268">Esimerkit</translation>
-<translation id="6597148444736186483">Jos haluat kirjautua ulos laitteen ensisijaiselta tililtä, klikkaa aikaa näytöllä. Valitse avautuvasta valikosta Kirjaudu ulos.</translation>
 <translation id="6597331566371766302">Järjestelmänvalvojasi on estänyt seuraavat laajennukset:</translation>
 <translation id="6601395831301182804">Haluatko aktivoida BraveVoxin, Brave-käyttöjärjestelmän sisäänrakennetun näytönlukijan? Jos haluat, paina välilyöntiä.</translation>
 <translation id="6601612474695404578">Jotkut sivustot käyttävät sivujensa lataamiseen kolmannen osapuolen evästeitä. Jos sivusto ei toimi, voit kokeilla evästeiden sallimista.</translation>
 <translation id="6602937173026466876">käyttää tulostimia</translation>
 <translation id="6602956230557165253">Siirry vasemmalla ja oikealla nuolinäppäimellä.</translation>
 <translation id="6602998402703530379">Laite <ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, videokamera.</translation>
+<translation id="6603185457265641428">Valitse, synkronoidaanko historia</translation>
 <translation id="6605847144724004692">Ei vielä käyttäjien arvioita</translation>
 <translation id="6606671997164410857">Näyttää siltä, että olet jo ottanut Brave Assistantin käyttöön toisella laitteella. Assistantista on vielä enemmän hyötyä, jos laitat näyttökontekstin päälle.</translation>
 <translation id="6607831829715835317">&amp;Lisää työkaluja</translation>
@@ -5387,6 +5445,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6644846457769259194">Päivitetään laitetta (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="6645437135153136856">Valittua Google Cloud Print ‑laitetta ei enää tueta. <ph name="BR"/> Yritä määrittää tulostin tietokoneen järjestelmäasetuksista.</translation>
 <translation id="6647228709620733774">Netscape-varmenteen myöntäjän kumoamis-URL</translation>
+<translation id="7556503430569358637">Avaamasi URL-osoitteet lähetetään Bravelle, jotta seuraavaksi mahdollisesti avaamasi sivustot voidaan ennakoida</translation>
 <translation id="6648911618876616409">Tärkeä päivitys on valmis asennettavaksi. Aloita kirjautumalla sisään.</translation>
 <translation id="6649018507441623493">Hetki vain…</translation>
 <translation id="3733807065376082271">Salasanasi (<ph name="WEBSITE"/>) säilytetään tällä laitteella ja Brave-tililläsi. Kumman haluat poistaa?</translation>
@@ -5546,7 +5605,6 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6812349420832218321">Tuotetta <ph name="PRODUCT_NAME"/> ei voi käynnistää pääkäyttäjätilassa.</translation>
 <translation id="6812841287760418429">Säilytä muutokset</translation>
 <translation id="6813907279658683733">Koko näyttö</translation>
-<translation id="8345824141715130645">Mitä jaat Braven kanssa</translation>
 <translation id="6817174620439930047">Kysy, kun sivusto haluaa käyttää MIDI-laitteita järjestelmän omien viestien avulla (suositus)</translation>
 <translation id="6818198425579322765">Käännettävän sivun kieli</translation>
 <translation id="6818802132960437751">Sisäänrakennettu virustorjunta</translation>
@@ -5567,8 +5625,8 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6833996806551876956">Tietosuojan hiekkalaatikko ‑kokeilu</translation>
 <translation id="6834652994408928492">Tumma tila menee automaattisesti päälle, kun aurinko laskee</translation>
 <translation id="6835762382653651563">Muodosta internetyhteys, niin voit päivittää laitteen <ph name="DEVICE_TYPE"/>.</translation>
-<translation id="6838034009068684089">Kysy, kun sivusto haluaa avata ikkunoita ja sijoittaa niitä näytöillesi (suositus)</translation>
 <translation id="6839225236531462745">Varmenteen poistovirhe</translation>
+<translation id="6839882458129755986">Brave ei vastaa menetetystä datasta, ja <ph name="DEVICE_OS"/> ei välttämättä toimi sertifioimattomilla malleilla. Lue lisää osoitteesta g.co/CR2/InstallGuide</translation>
 <translation id="6839916869147598086">Kirjautuminen on muuttunut</translation>
 <translation id="6840155290835956714">Kysy ennen lähettämistä</translation>
 <translation id="6840184929775541289">Ei ole varmenteen myöntäjä</translation>
@@ -5610,7 +5668,6 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6876469544038980967">Ei hyödyllinen</translation>
 <translation id="6878422606530379992">Tunnistimet sallittu</translation>
 <translation id="6880587130513028875">Kuvat estettiin tällä sivulla.</translation>
-<translation id="6882836635272038266">Perustason suojaus vaaralliseksi tiedettyjä sivustoja, latauksia ja laajennuksia vastaan.</translation>
 <translation id="6883319974225028188">Hups – laitteen kokoonpanon tallentaminen epäonnistui.</translation>
 <translation id="6884474387073389421">Haluatko varmasti poistaa valitun kirjautumisdatan?</translation>
 <translation id="6885771755599377173">Järjestelmätietojen esikatselu</translation>
@@ -5655,6 +5712,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6930036377490597025">Ulkoinen suojausavain tai sisäänrakennettu anturi</translation>
 <translation id="6930161297841867798">{NUM_EXTENSIONS,plural, =1{Laajennus on hylätty}other{# laajennusta on hylätty}}</translation>
 <translation id="6930321203306643451">Päivitys valmis</translation>
+<translation id="6931690462168617033">Klikkausherkkyys</translation>
 <translation id="6935286146439255109">Paperilokero puuttuu</translation>
 <translation id="693807610556624488">Kirjoitustoiminto ylittää attribuutin enimmäispituuden laitteella <ph name="DEVICE_NAME"/>.</translation>
 <translation id="6938386202199793006">Olet tallentanut yhden tulostimen.</translation>
@@ -5682,6 +5740,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6965382102122355670">OK</translation>
 <translation id="6965648386495488594">Portti</translation>
 <translation id="6965978654500191972">Laite</translation>
+<translation id="6966370001499648704">Valitse, mitä puhelimia käytät suojausavaimina</translation>
 <translation id="6967430741871315905">Ei voi tarkistaa, onko laite sallittu</translation>
 <translation id="696780070563539690">Sivustot eivät voi nähdä evästeiden kautta selaustoimintaasi eri sivustoilla esim. personoidakseen mainoksia</translation>
 <translation id="6968288415730398122">Määritä näytön lukitus antamalla salasanasi.</translation>
@@ -5694,6 +5753,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="6972887130317925583">Vaarantunut salasana vaihdettu onnistuneesti. Tarkista salasanasi koska tahansa <ph name="SETTINGS"/>.</translation>
 <translation id="697312151395002334">Ponnahdusikkunat tai uudelleenohjaukset sallittu</translation>
 <translation id="6973611239564315524">Päivitys Debian 10:een (Buster) saatavilla</translation>
+<translation id="5351075736722780148">Jos Brave on lisäksi oletushakukone, näet parempia ja asiayhteyteen sopivampia ehdotuksia</translation>
 <translation id="6974609594866392343">Offline-esittelytila</translation>
 <translation id="697508444536771064">Sammuta Linux</translation>
 <translation id="6977739184256564679">Laite <ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/>, <ph name="DEVICE_NAME"/>, tabletti.</translation>
@@ -5853,6 +5913,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="7135729336746831607">Otetaanko Bluetooth käyttöön?</translation>
 <translation id="7136694880210472378">Aseta oletukseksi</translation>
 <translation id="7136993520339022828">Tapahtui virhe. Valitse muita kuvia ja yritä uudelleen.</translation>
+<translation id="7137472406312798422">Sivustot voivat pyytää lupaa käyttää tietoja näytöistäsi ikkunoiden avaamiseksi ja sijoittamiseksi</translation>
 <translation id="7138515695467025690">Poissa päältä / Käynnistyy automaattisesti, kun aurinko laskee</translation>
 <translation id="7138678301420049075">Muu</translation>
 <translation id="7139627972753429585"><ph name="APP_NAME"/> käyttää mikrofonia</translation>
@@ -5867,6 +5928,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="7167486101654761064">&amp;Avaa aina tämäntyyppiset tiedostot</translation>
 <translation id="716810439572026343">Ladataan tiedostoa <ph name="FILE_NAME"/>.</translation>
 <translation id="7168109975831002660">Fontin vähimmäiskoko</translation>
+<translation id="7169122689956315694">Laita ilmoitukset lähellä olevista laitteista päälle</translation>
 <translation id="7170236477717446850">Profiilikuva</translation>
 <translation id="7171259390164035663">Älä rekisteröi</translation>
 <translation id="7172470549472604877">{NUM_TABS,plural, =1{Lisää välilehti uuteen ryhmään}other{Lisää välilehtiä uuteen ryhmään}}</translation>
@@ -5877,6 +5939,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="7180611975245234373">Päivitä</translation>
 <translation id="7180865173735832675">Muokkaa</translation>
 <translation id="7182791023900310535">Siirrä salasana</translation>
+<translation id="7183193772170782394">Salli Braven käyttää laitedataasi palvelun (<ph name="DEVICE_OS"/>) kehittämiseksi. Jos kieltäydyt, dataa lähetetään Bravelle tarvittavien päivitysten selvittämiseksi, mutta sitä ei tallenneta tai käytetä muihin tarkoituksiin. Lue lisää osoitteesta g.co/CR2/HWDataCollection</translation>
 <translation id="7183420126213758623">Laita reunan hakuikkuna päälle tai pois päältä. Reunan hakuikkunaa ei aktivoitu.</translation>
 <translation id="7186088072322679094">Pidä yläpalkissa</translation>
 <translation id="7186303001964993981"><ph name="ORIGIN"/> ei saa avata tätä kansiota, koska se sisältää järjestelmätiedostoja</translation>
@@ -5929,10 +5992,12 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="7239108166256782787"><ph name="DEVICE_NAME"/> perui siirron</translation>
 <translation id="7240339475467890413">Yhdistetäänkö uuteen hotspotiin?</translation>
 <translation id="7241389281993241388">Kirjaudu sisään laitteeseen <ph name="TOKEN_NAME"/> ja tuo asiakkaan varmenne.</translation>
+<translation id="7241763419756062043">Haku‑ ja selauslaadun valitseminen</translation>
 <translation id="7243632151880336635">Tyhjennä ja kirjaudu ulos</translation>
 <translation id="7243784282103630670">Linuxin upgreidauksessa tapahtui virhe. Palautamme säilön varmuuskopiosi avulla.</translation>
 <translation id="7245628041916450754"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (paras)</translation>
 <translation id="7246230585855757313">Aseta suojausavain takaisin ja yritä uudelleen</translation>
+<translation id="7249197363678284330">Voit muuttaa asetusta osoitepalkista.</translation>
 <translation id="7250616558727237648">Laite, jolle jaat, ei vastannut. Yritä uudelleen.</translation>
 <translation id="725109152065019550">Järjestelmänvalvoja on poistanut ulkoisen tallennustilan käytöstä tilistäsi.</translation>
 <translation id="7251346854160851420">Oletustausta</translation>
@@ -5952,15 +6017,6 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="7258192266780953209">Muunnokset</translation>
 <translation id="7258225044283673131">Sovellus ei vastaa. Sulje sovellus valitsemalla Pakota sulkeutumaan.</translation>
 <translation id="7262004276116528033">Tätä kirjautumispalvelua ylläpitää <ph name="SAML_DOMAIN"/>.</translation>
-<translation id="7264564921322372728"><ph name="BEGIN_PARAGRAPH1"/>Kokeile näitä ratkaisuja:
-    <ph name="BEGIN_LIST"/>
-    <ph name="LIST_ITEM"/>Varmista, että laitteesi sisältää toimivan sisäisen tallennustilan, esim. HDD:n, SSD:n tai eMMC:n
-    <ph name="LIST_ITEM"/>Tarkista, että sisäisen tallennuslaitteen tila on yli 16 Gt
-    <ph name="LIST_ITEM"/>Tarkista yhteys sisäiseen tallennustilaan, jos pääset siihen fyysisesti käsiksi
-    <ph name="LIST_ITEM"/>Varmista, että käytät sertifioitua mallia, ja tarkista asennusohjeet
-    <ph name="END_LIST"/>
-    <ph name="END_PARAGRAPH1"/>
-    <ph name="BEGIN_PARAGRAPH2"/>Katso lisäohjeita osoitteesta g.co/xxxxx<ph name="END_PARAGRAPH2"/></translation>
 <translation id="7267044199012331848">Virtuaalikoneen asentaminen ei onnistunut. Yritä uudelleen tai ota yhteyttä järjestelmänvalvojaan. Virhekoodi: <ph name="ERROR_CODE"/>.</translation>
 <translation id="7267875682732693301">Kosketa tunnistinta toistuvasti, niin sormenjäljen eri osat lisätään</translation>
 <translation id="7268127947535186412">Laitteen omistaja ylläpitää tätä asetusta.</translation>
@@ -6001,6 +6057,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="7307129035224081534">Keskeytetty</translation>
 <translation id="7308643132139167865">Verkkosivustojen kielet</translation>
 <translation id="7310598146671372464">Kirjautuminen epäonnistui. Palvelin ei tue määritettyjä Kerberos-salaustyyppejä. Ota yhteyttä järjestelmänvalvojaan.</translation>
+<translation id="7312210124139670355">Järjestelmänvalvoja nollaa eSIMiäsi. Tämä voi kestää muutaman minuutin.</translation>
 <translation id="7320213904474460808">Aseta oletusverkko</translation>
 <translation id="7321545336522791733">Palvelimeen ei saada yhteyttä.</translation>
 <translation id="7324297612904500502">Beta-keskusteluryhmä</translation>
@@ -6041,6 +6098,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="7360233684753165754"><ph name="PAGE_NUMBER"/> sivua tulostimeen <ph name="PRINTER_NAME"/></translation>
 <translation id="7361297102842600584">Suorita <ph name="PLUGIN_NAME"/> klikkaamalla tätä kakkospainikkeella.</translation>
 <translation id="7362387053578559123">Sivustot saavat pyytää lupaa yhdistää Bluetooth-laitteisiin</translation>
+<translation id="7363349185727752629">Ohje yksityisyysvalintoihin</translation>
 <translation id="7364591875953874521">Käyttöoikeutta pyydetty</translation>
 <translation id="7364745943115323529">Suoratoista…</translation>
 <translation id="7364796246159120393">Valitse tiedosto</translation>
@@ -6049,13 +6107,11 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="7366415735885268578">Lisää sivusto</translation>
 <translation id="7366909168761621528">Selailutiedot</translation>
 <translation id="7367714965999718019">QR-koodigeneraattori</translation>
-<translation id="9146750283370108038">Näet Brave-historiasi kaikilla synkronoiduilla laitteillasi</translation>
 <translation id="736877393389250337">Osoitteen <ph name="URL"/> avaaminen ei onnistunut selaimessa <ph name="ALTERNATIVE_BROWSER_NAME"/>. Ota yhteyttä järjestelmänvalvojaasi.</translation>
 <translation id="7370592524170198497">Ethernet EAP:</translation>
 <translation id="7371490947952970241">Voit laittaa sijainnin pois päältä laittamalla tämän laitteen sijaintiasetuksen pois päältä. Voit myös avata sijaintiasetukset ja laittaa pois päältä Wi-Fi- ja mobiiliverkkojen käytön sijainnin määrityksessä sekä Wi-Fi- ja Bluetooth-hakemisen.</translation>
 <translation id="7371917887111892735">Välilehdet kutistuvat kiinnitetyn välilehden leveyteen</translation>
 <translation id="7374376573160927383">USB-laitteiden valinnat</translation>
-<translation id="7376543451826039186">Nopeampaa selausta, esimerkiksi tietyn jatkosisällön oma-aloitteinen lataus nykyisen sivun perusteella</translation>
 <translation id="7376553024552204454">Korosta hiiren osoitinta, kun se liikkuu</translation>
 <translation id="737728204345822099">Tieto käynnistäsi tällä sivustolla voi tallentua suojausavaimeesi.</translation>
 <translation id="7377451353532943397">Estä edelleen tunnistimien käyttö</translation>
@@ -6341,6 +6397,7 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <translation id="2895428495278639694"><ph name="BEGIN_LINK_GOOGLE"/>Muita toimintoja<ph name="END_LINK_GOOGLE"/> voidaan tallentaa Brave-tilillesi, kun olet kirjautuneena sisään. Voit poistaa niitä koska vain.</translation>
 <translation id="7658239707568436148">Peru</translation>
 <translation id="7659297516559011665">Vain tämän laitteen salasanat</translation>
+<translation id="7659336857671800422">Tutustu yksityisyysoppaaseen</translation>
 <translation id="7659584679870740384">Sinulla ei ole tämän laitteen käyttölupaa. Pyydä järjestelmänvalvojalta kirjautumislupa.</translation>
 <translation id="7661259717474717992">Salli sivustojen tallentaa ja lukea evästetietoja</translation>
 <translation id="7661451191293163002">Rekisteröintivarmenteen noutaminen epäonnistui.</translation>
@@ -6498,6 +6555,7 @@ Poista määritys painamalla määritettyä kytkintä tai näppäintä.</transla
 <translation id="7807711621188256451">Anna aina sivuston <ph name="HOST"/> käyttää kameraasi</translation>
 <translation id="7810202088502699111">Ponnahdusikkunat estettiin tällä sivulla.</translation>
 <translation id="781167124805380294">Suoratoista <ph name="FILE_NAME"/></translation>
+<translation id="7811886112806886172">Auta parantamaan Braven ja BraveOS:n ominaisuuksia ja suorituskykyä lähettämällä diagnostiikka- ja käyttödataa Bravelle automaattisesti. Kootusta datasta on hyötyä myös Android-sovelluksille ja Braven kumppaneille. Jos Verkko‑ ja sovellustoiminta ‑asetus on päällä Brave-tililläsi, Android-dataa voidaan tallentaa tilillesi.</translation>
 <translation id="7814277578404816512">Katso uudet ominaisuudet: <ph name="DEVICE_TYPE"/></translation>
 <translation id="7814458197256864873">K&amp;opioi</translation>
 <translation id="7815680994978050279">Vaarallinen lataus estettiin</translation>
@@ -6550,6 +6608,9 @@ Poista määritys painamalla määritettyä kytkintä tai näppäintä.</transla
 <translation id="7847212883280406910">Valitse <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> painamalla Ctrl + Alt + S</translation>
 <translation id="7849264908733290972">Avaa kuva uudessa väl&amp;ilehdessä</translation>
 <translation id="784934925303690534">Aikaväli</translation>
+<translation id="7850717413915978159"><ph name="BEGIN_PARAGRAPH1"/>Antamalla BraveOS-laitteiden lähettää raportteja automaattisesti voit auttaa meitä korjaamaan ja kehittämään BraveOS:n ominaisuuksia. Raportteihin voi sisältyä esimerkiksi tietoja BraveOS:n kaatumisista, käytetyistä ominaisuuksista ja tyypillisestä muistin käytöstä sekä Android-sovellusten diagnostiikka- ja käyttödataa. Kootusta datasta on hyötyä myös Braven sovelluksille ja kumppaneille, esim. Android-kehittäjille.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Voit sallia tai estää raporttien lähettämisen milloin tahansa BraveOS-laitteen asetuksissa. Jos olet verkkotunnuksen järjestelmänvalvoja, voit muuttaa asetusta hallintakonsolissa.<ph name="END_PARAGRAPH2"/>
+    <ph name="BEGIN_PARAGRAPH3"/>Jos Verkko‑ ja sovellustoiminta ‑asetus on päällä Brave-tililläsi, Android-dataa voidaan tallentaa tilillesi. Voit nähdä dataa, poistaa sitä ja muuttaa tiliasetuksia osoitteessa account.google.com.<ph name="END_PARAGRAPH3"/></translation>
 <translation id="7851021205959621355"><ph name="BEGIN_BOLD"/>Huom.<ph name="END_BOLD"/> Samanlaisella äänellä tai äänitteellä saattaa päästä henkilökohtaisiin tuloksiisi tai Assistantiisi. Jos haluat säästää virtaa, muuta Assistantin asetuksia niin, että "Ok Brave" on käytössä vain, kun laite on kytkettynä virtalähteeseen.</translation>
 <translation id="7851457902707056880">Kirjautuminen on sallittu vain omistajatilillä. Käynnistä tietokone uudelleen ja kirjaudu omistajatilillä. Tietokone käynnistetään uudelleen 30 sekunnin kuluttua.</translation>
 <translation id="7851716364080026749">Estä kameran ja mikrofonin käyttö aina</translation>
@@ -6587,6 +6648,7 @@ Poista määritys painamalla määritettyä kytkintä tai näppäintä.</transla
 <translation id="7885253890047913815">Uusimmat kohteet</translation>
 <translation id="7886279613512920452">{COUNT,plural, =1{kohde}other{# kohdetta}}</translation>
 <translation id="7886605625338676841">eSIM</translation>
+<translation id="7887174313503389866">Osallistu tärkeimpien yksityisyys‑ ja turvallisuusasetusten esittelyyn. Lisää vaihtoehtoja yksittäisissä asetuksissa.</translation>
 <translation id="7887334752153342268">Monista</translation>
 <translation id="7887864092952184874">Laitepari muodostettu Bluetooth-hiiren kanssa</translation>
 <translation id="7889371445710865055">Vaihda sanelun kieli</translation>
@@ -6599,7 +6661,6 @@ Poista määritys painamalla määritettyä kytkintä tai näppäintä.</transla
 <translation id="7897900149154324287">Muista seuraavilla kerroilla poistaa ulkoinen laitteesi käytöstä Tiedostot-sovelluksessa ennen kuin irrotat sen laitteesta. Muutoin voit menettää tietoja.</translation>
 <translation id="7898725031477653577">Käännä aina</translation>
 <translation id="7901405293566323524">Phone Hub</translation>
-<translation id="8111575430604432614">Parempi Brave sivutietoja mittaamalla</translation>
 <translation id="7903290522161827520">Etsitkö selaimen osuuksia? Avaa</translation>
 <translation id="7903345046358933331">Tämä sivu ei enää vastaa. Voit odottaa sivun vastausta tai sulkea sen.</translation>
 <translation id="7903742244674067440">Olet tallentanut seuraavat varmenteen myöntäjät tunnistavat varmenteet</translation>
@@ -6725,6 +6786,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8028803902702117856">Lataus käynnissä: <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="8028993641010258682">Koko</translation>
 <translation id="8029492516535178472"><ph name="WINDOW_TITLE"/> – Lupaa pyydetty, vastaa painamalla ⌘ + Option + ylänuoli</translation>
+<translation id="8029539783236818164">Tietoja näytöistäsi saa käyttää ikkunoiden avaamiseksi ja sijoittamiseksi</translation>
 <translation id="8030169304546394654">Yhteys katkaistu</translation>
 <translation id="8030852056903932865">Hyväksy</translation>
 <translation id="8032244173881942855">Välilehden suoratoisto ei onnistu</translation>
@@ -6736,6 +6798,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8038399858950372766">Laite <ph name="DEVICE_INDEX"/>/<ph name="DEVICE_COUNT"/>, näppäimistö nimeltä <ph name="DEVICE_NAME"/></translation>
 <translation id="8041089156583427627">Lähetä palautetta</translation>
 <translation id="8042142357103597104">Tekstin läpinäkyvyys</translation>
+<translation id="3111556746481227182">Salasanat salataan laitteella ennen niiden tallentamista Braven Salasanojen ylläpitoon</translation>
 <translation id="8044262338717486897"><ph name="LINUX_APP_NAME"/> ei vastaa.</translation>
 <translation id="8044899503464538266">Hidas</translation>
 <translation id="5462539695964427820">Synkronointi on keskeytetty Brave Hallintapaneelin kautta.</translation>
@@ -6762,7 +6825,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8058986560951482265">Nykivä</translation>
 <translation id="8059417245945632445">Tark&amp;ista laitteet</translation>
 <translation id="8059456211585183827">Tallennettavia tulostimia ei ole.</translation>
-<translation id="8059756367095071170">Valitse, synkronoidaanko historia</translation>
 <translation id="8061091456562007989">Vaihda takaisin</translation>
 <translation id="8061970399284390013">Oikeinkirjoitus ja kieliopin tarkistus</translation>
 <translation id="8061991877177392872">Näyttää siltä, että olet jo ottanut Assistantin Voice Matchin käyttöön toisella laitteella. Tämän laitteen äänimalli on luotu aiemmista tallenteista.</translation>
@@ -6771,7 +6833,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8063535366119089408">Näytä tiedosto</translation>
 <translation id="8064279191081105977">Ryhmä <ph name="GROUP_NAME"/> – <ph name="GROUP_CONTENTS"/> – <ph name="COLLAPSED_STATE"/></translation>
 <translation id="8066444921260601116">Yhteyden valintaikkuna</translation>
-<translation id="8069615408251337349">Google Cloud Print</translation>
+<translation id="8070662218171013510">Haptinen palaute</translation>
 <translation id="8071432093239591881">Tulosta kuvana</translation>
 <translation id="8073499153683482226"><ph name="BEGIN_PARAGRAPH1"/>Sovellustiedot voivat olla mitä tahansa tietoja, joita sovellus on tallentanut (kehittäjän asetusten perusteella), mukaan lukien yhteystietoja, viestejä ja kuvia.<ph name="END_PARAGRAPH1"/>
     <ph name="BEGIN_PARAGRAPH2"/>Varmuuskopioidut tiedot eivät kuluta lapsesi tallennustilaa Drivessa.<ph name="END_PARAGRAPH2"/>
@@ -6828,7 +6890,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="811994229154425014">Piste tuplavälilyönnillä</translation>
 <translation id="8120505434908124087">Asenna eSIM-profiili</translation>
 <translation id="812260729110117038">Mainostajat ja julkaisijat voivat tutkia mainosten vaikuttavuutta tavalla, joka ei seuraa sinua eri sivustoilla.</translation>
-<translation id="81231173274944570">Ota haptinen palaute käyttöön. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 <translation id="81238879832906896">Kelta-valkoinen kukka</translation>
 <translation id="8124313775439841391">Hallinnoitu ONC</translation>
 <translation id="813082847718468539">Näytä sivuston tiedot</translation>
@@ -6862,7 +6923,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8155676038687609779">{COUNT,plural, =0{Vaarantuneita salasanoja ei löytynyt}=1{{COUNT} vaarantunut salasana}other{{COUNT} vaarantunutta salasanaa}}</translation>
 <translation id="8157248655669507702">Ota mobiilidata käyttöön, niin voit asentaa eSIM-profiilin</translation>
 <translation id="8157704005178149728">Määritetään valvontaa</translation>
-<translation id="8157954703669743215">Katsottu <ph name="RELATIVE_TIME"/></translation>
 <translation id="8158117992543756526">Tämä laite ei ole saanut automaattisia ohjelmisto- ja tietoturvapäivityksiä <ph name="MONTH_AND_YEAR"/> lähtien. <ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/></translation>
 <translation id="816055135686411707">Varmenteen luottamusasetusten virhe</translation>
 <translation id="8160775796528709999">Laita Livetekstitys päälle asetuksista, jotta näet audion ja videon tekstitykset</translation>
@@ -6943,6 +7003,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8244514732452879619">Kohta nukkumaan</translation>
 <translation id="8246776524656196770">Suojaa suojausavain PIN-koodilla</translation>
 <translation id="8248050856337841185">&amp;Liitä</translation>
+<translation id="8248381369318572865">Avaa mikrofoni ja analysoi puhetta</translation>
 <translation id="3105590366897772437">Brave-vinkki</translation>
 <translation id="8249048954461686687">Alkuperäisten laitevalmistajien kansio</translation>
 <translation id="8249615410597138718">Lähetä laitteillesi</translation>
@@ -6958,6 +7019,8 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8259239505248583312">Aloita</translation>
 <translation id="8260864402787962391">Hiiri</translation>
 <translation id="8261506727792406068">Poista</translation>
+<translation id="8262443362616648274"><ph name="BEGIN_PARAGRAPH1"/>Jotain meni pieleen, ja asennus ei onnistunut: <ph name="DEVICE_OS"/>.<ph name="END_PARAGRAPH1"/>
+    <ph name="BEGIN_PARAGRAPH2"/>Katso lisäohjeita osoitteesta g.co/CR2/InstallErrors<ph name="END_PARAGRAPH2"/></translation>
 <translation id="8263336784344783289">Anna ryhmälle nimi</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> poisti hiiren osoittimen käytöstä.</translation>
 <translation id="8264024885325823677">Järjestelmänvalvojasi ylläpitää tätä asetusta.</translation>
@@ -7085,6 +7148,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8410775397654368139">Google Play</translation>
 <translation id="8412136526970428322">Sallittu: <ph name="PERMISSION"/> ja <ph name="COUNT"/> muuta</translation>
 <translation id="8413385045638830869">Kysy ensin (suositus)</translation>
+<translation id="8414249071344507766">Muistot on piilotettu kahdeksi päiväksi</translation>
 <translation id="8416730306157376817"><ph name="BATTERY_PERCENTAGE"/> % (kotelo)</translation>
 <translation id="8417548266957501132">Vanhemman salasana</translation>
 <translation id="8418445294933751433">&amp;Näytä välilehtenä</translation>
@@ -7123,6 +7187,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8457451314607652708">Tuo kirjanmerkkejä</translation>
 <translation id="8458341576712814616">Pikakomento</translation>
 <translation id="8458627787104127436">Avaa kaikki (<ph name="URL_COUNT"/>) uudessa ikkunassa</translation>
+<translation id="8460448946170646641">Tarkista tärkeimmät yksityisyys‑ ja turvallisuusasetukset</translation>
 <translation id="2380462972976700566">Brave poisti osan sisällöstä muistin säästämiseksi</translation>
 <translation id="8460932807646981183">Hallitse hakukoneita ja sivustojen hakua</translation>
 <translation id="84613761564611563">Verkon määrityksen käyttöliittymää pyydettiin, odota hetki…</translation>
@@ -7328,7 +7393,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="504499211143662559">Brave löysi tietokoneeltasi haitallisen ohjelmiston</translation>
 <translation id="8682730193597992579"><ph name="PRINTER_NAME"/> on yhdistetty ja valmiina</translation>
 <translation id="8683081248374354009">Nollaa ryhmä</translation>
-<translation id="8683526617475118045">Mitä saat käyttöösi</translation>
 <translation id="8688672835843460752">Saatavilla</translation>
 <translation id="8690129572193755009">Sivustot voivat pyytää lupaa käsitellä protokollia</translation>
 <translation id="8695139659682234808">Lisää lapsilukko käyttöönoton jälkeen</translation>
@@ -7382,7 +7446,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8737685506611670901">Avata <ph name="PROTOCOL"/>-linkit palvelun <ph name="REPLACED_HANDLER_TITLE"/> sijaan.</translation>
 <translation id="8737709691285775803">Shill</translation>
 <translation id="8737914367566358838">Valitse kieli, jolle sivu käännetään</translation>
-<translation id="1164245454225383184">URL-osoitteet jaetaan Braven kanssa ja ne auttavat ymmärtämään selaustoimintaa</translation>
 <translation id="8740247629089392745"><ph name="SUPERVISED_USER_NAME"/> voi nyt saada tämän Bravebookin. Käyttöönotto on melkein valmis, pian on aika tutkia.</translation>
 <translation id="8741944563400125534">Switch Access ‑käyttöönotto-ohjeet</translation>
 <translation id="8742998548129056176">Nämä ovat yleisiä tietoja laitteestasi ja sen käytöstä (esim. akun varaustasosta, järjestelmän ja sovellusten toiminnasta sekä virheistä). Datan avulla Androidia parannetaan, ja koottua dataa käytetään Brave-sovellusten, Android-kehittäjien tai muiden kumppanien sovellusten ja tuotteiden parantamiseen.</translation>
@@ -7424,7 +7487,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <ph name="DOMAIN"/> ei salli älykortin poistamista.}}</translation>
 <translation id="8777259617149177596">Kotelon akun varaustaso <ph name="BATTERY_PERCENTAGE"/> %.</translation>
 <translation id="8777628254805677039">pääkäyttäjän salasana</translation>
-<translation id="8778328560035799409">Tällä hetkellä määritettynä olevat kytkimet tyhjennetään</translation>
+<translation id="8779944680596936487">Sivustot voivat nähdä selaustoimintaasi evästeiden kautta vain omalla sivustollaan</translation>
 <translation id="1732768497619250086">Käytä Braven kuvaselityksiä</translation>
 <translation id="8780443667474968681">Puhehaku on poistettu käytöstä.</translation>
 <translation id="8781834595282316166">Uusi välilehti ryhmässä</translation>
@@ -7441,6 +7504,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8798099450830957504">Oletus</translation>
 <translation id="8800004011501252845">Näytetään kohteita sähköpostiosoitteelle</translation>
 <translation id="8800034312320686233">Eikö sivusto toimi?</translation>
+<translation id="8803526663383843427">Toiminnon ollessa päällä</translation>
 <translation id="8803953437405899238">Avaa uusi välilehti yhdellä klikkauksella.</translation>
 <translation id="8804999695258552249">{NUM_TABS,plural, =1{Siirrä välilehti toiseen ikkunaan}other{Siirrä välilehdet toiseen ikkunaan}}</translation>
 <translation id="8805140816472474147">Vahvista synkronointiasetukset, niin synkronointi voidaan aloittaa.</translation>
@@ -7484,6 +7548,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8838234842677265403"><ph name="WEB_DRIVE_MESSAGE"/> (<ph name="SUPPORT_INFO"/>)</translation>
 <translation id="8838601485495657486">Läpinäkymätön</translation>
 <translation id="8838770651474809439">Hampurilainen</translation>
+<translation id="8838778928843281408">Valitse puhelimet</translation>
 <translation id="883911313571074303">Lisää kuvaan muistiinpano</translation>
 <translation id="8841843049738266382">Lukea ja muokata sallittuja käyttäjiä</translation>
 <translation id="8842594465773264717">Poista tämä sormenjälki</translation>
@@ -7615,7 +7680,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="897525204902889653">Karanteenipalvelu</translation>
 <translation id="8975396729541388937">Voit perua tilauksen milloin tahansa klikkaamalla linkkiä, joka löytyy saamistasi sähköposteista.</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{<ph name="TAB_TITLE"/>}=1{<ph name="TAB_TITLE"/> ja yksi muu välilehti}other{<ph name="TAB_TITLE"/> ja # muuta välilehteä}}</translation>
-<translation id="897659847306974642">Voit jatkaa selausistuntoa millä tahansa synkronoidulla laitteellasi</translation>
 <translation id="8977811652087512276">Virheellinen salasana tai vioittunut tiedosto</translation>
 <translation id="8978154919215542464">Käytössä – synkronoi kaikki</translation>
 <translation id="897939795688207351">Osoitteessa <ph name="ORIGIN"/></translation>
@@ -7633,7 +7697,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8991520179165052608">Sivusto voi käyttää mikrofoniasi</translation>
 <translation id="899384117894244799">Poista rajoitettu käyttäjä</translation>
 <translation id="899403249577094719">Netscape-varmenteen URL-osoite</translation>
-<translation id="8995603266996330174">Ylläpitäjä: <ph name="DOMAIN"/></translation>
 <translation id="8996526648899750015">Lisää tili…</translation>
 <translation id="7113572760575285642">Tuttu Brave kaikkialla</translation>
 <translation id="899676909165543803">Sormenjälkitunnistin on näppäimistön oikeassa alakulmassa. Kosketa sitä kevyesti millä tahansa sormella.</translation>
@@ -7641,7 +7704,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="9003647077635673607">Salli kaikissa verkkosivustoissa</translation>
 <translation id="9003677638446136377">Tarkista uudelleen</translation>
 <translation id="9004754973617721124">Tyhjennetäänkö sivuston <ph name="SITE_NAME"/>, kaikkien sen alla olevien sivustojen ja sen asennetun sovelluksen sivustodata ja luvat?</translation>
-<translation id="9004952710076978168">Vastaanotti ilmoituksen tuntemattomasta tulostimesta.</translation>
 <translation id="9008201768610948239">Ohita</translation>
 <translation id="9008201858626224558"><ph name="SUBPAGE_TITLE"/>: tietosivun takaisin-painike</translation>
 <translation id="9009369504041480176">Ladataan (<ph name="PROGRESS_PERCENT"/> %)...</translation>
@@ -7692,7 +7754,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="4534361985432360439">Lähettää Bravelle etsimäsi sivun verkko-osoitteen</translation>
 <translation id="9048745018038487540">Valitse kaikki fontit</translation>
 <translation id="9050666287014529139">Tunnuslause</translation>
-<translation id="9052208328806230490">Olet rekisteröinyt tulostimesi palveluun <ph name="CLOUD_PRINT_NAME"/> tilin <ph name="EMAIL"/> avulla</translation>
 <translation id="9052404922357793350">Estä edelleen</translation>
 <translation id="9053563360605707198">Tulosta molemmille puolille</translation>
 <translation id="9053893665344928494">Muista valinta</translation>
@@ -7746,7 +7807,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="9103868373786083162">Siirry taaksepäin painamalla tai avaa historia kontekstivalikon kautta.</translation>
 <translation id="9108035152087032312">Nimeä &amp;ikkuna…</translation>
 <translation id="9108072915170399168">Nykyinen datankäyttöasetus on Ilman internetyhteyttä</translation>
-<translation id="9108692355621501797"><ph name="LINK_BEGIN"/>G Suite for Educationin tietosuojailmoituksen<ph name="LINK_END"/> tarkoitus on selventää G Suite for Educationin käyttäjille ja vanhemmille, mitä dataa tuote kerää, miksi sitä kerätään ja mitä sillä tehdään.</translation>
 <translation id="9108808586816295166">Suojattu DNS ei välttämättä ole koko ajan käytettävissä</translation>
 <translation id="9109122242323516435">Vapauta tilaa poistamalla laitteeseen tallennettuja tiedostoja.</translation>
 <translation id="9109283579179481106">Yhdistä mobiiliverkkoon</translation>
@@ -7836,10 +7896,12 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="9186963452600581158">Kirjaudu sisään lapsen Brave-tilillä</translation>
 <translation id="9187967020623675250">Näppäimet eivät täsmää. <ph name="RESPONSE"/> painamalla mitä tahansa näppäintä.</translation>
 <translation id="9188732951356337132">Lähetä käyttö- ja diagnostiikkadataa. Laite lähettää tällä hetkellä diagnostiikkadataa sekä laitteen ja sovellusten käyttödataa automaattisesti Bravelle. Dataa ei käytetä lapsesi henkilöllisyyden selvittämiseen – sen avulla parannetaan esimerkiksi järjestelmän ja sovellusten vakautta. Kootusta datasta on hyötyä myös Braven sovelluksille ja kumppaneille, kuten Android-kehittäjille. Jos muun verkko- ja sovellustoiminnan asetus on lapsella käytössä, tätä dataa voidaan tallentaa hänen Brave-tililleen. <ph name="BEGIN_LINK2"/>Lue lisää<ph name="END_LINK2"/></translation>
+<translation id="919686179725692564">Lue lisää sovellusten varmuuskopioinnista</translation>
 <translation id="9198090666959937775">Käytä Android-puhelinta suojausavaimena</translation>
 <translation id="9200339982498053969"><ph name="ORIGIN"/> voi muokata täällä olevia tiedostoja: <ph name="FOLDERNAME"/></translation>
 <translation id="920045321358709304">Hae hakukoneella <ph name="SEARCH_ENGINE"/></translation>
 <translation id="9201023452444595544">Kaikki offline-data poistetaan</translation>
+<translation id="9201117361710210082">Nähty aiemmin</translation>
 <translation id="9201220332032049474">Näytön lukitusvaihtoehdot</translation>
 <translation id="9201842707396338580">Jotain meni pieleen. Ota yhteyttä laitteen omistajaan tai ylläpitäjään. Virhekoodi: <ph name="ERROR_CODE"/>.</translation>
 <translation id="9203398526606335860">&amp;Profilointi on käytössä</translation>
@@ -7885,6 +7947,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="947667444780368238"><ph name="ORIGIN"/> ei saa avata tämän kansion tiedostoja, koska se sisältää järjestelmätiedostoja</translation>
 <translation id="950307215746360464">Käyttöönotto-opas</translation>
 <translation id="951991426597076286">Hylkää</translation>
+<translation id="952471655966876828">Laitteen yhteys muodostetaan automaattisesti, kun laite käynnistetään tai sitä käytetään</translation>
 <translation id="953434574221655299">Laitteesi aktiivisen käytön havaitseminen sallittu</translation>
 <translation id="956500788634395331">Sinut on suojattu mahdollisesti haitallisilta laajennuksilta</translation>
 <translation id="957960681186851048">Tämä sivusto yrittää ladata useita tiedostoja automaattisesti</translation>
@@ -8002,10 +8065,15 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1725743343613175327">Jos haluat jatkaa, valitse OK, Lisää henkilö ja luo sähköpostiosoitteellasi (<ph name="DOMAIN"/>) uusi profiili.</translation>
 <translation id="3707212204259470604">Hallitse muita profiileja</translation>
 <translation id="5832813618714645810">Profiilit</translation>
+<translation id="3216703137209942563">{COUNT, plural,
+      =1 {Yksityinen ikkunasi ei avaudu uudelleenkäynnistyksen jälkeen}
+      other {{COUNT} yksityistä ikkunaasi ei avaudu uudelleen uudelleenkäynnistyksen jälkeen}}</translation>
 <translation id="5840822070878669614">Avaa verkkokauppa</translation>
 <translation id="383007806262310953">Näytä kirjanmerkkipalkki</translation>
 <translation id="8648684608605749476">Kolmannen osapuolen evästeiden estäminen incognito-tilassa</translation>
-<translation id="8000244240371532481">Kun et ole yksityisessä tilassa, sivustot voivat käyttää evästeitä nähdäkseen selaustoimintasi eri sivustoilla esim. yksilöidäkseen mainoksia</translation>
+<translation id="3293179957233653243">Joidenkin sivustojen ominaisuudet eivät välttämättä toimi yksityisessä tilassa</translation>
+<translation id="6304377454418270508">Kun olet yksityisessä tilassa, sivustot voivat käyttää evästeitä vain nähdäkseen selaustoimintasi niiden omalla sivustolla. Evästeet poistetaan yksityisen istunnon lopussa.</translation>
+<translation id="7447787726493910888">Näytä tiedot kolmannen osapuolen evästeiden estämisestä yksityisessä tilassa</translation>
 <translation id="255999604394332437">Yksityisessä tilassa sivustot eivät voi käyttää evästeitäsi selaintoimintojesi tarkastelemiseen eri sivustoilla, esimerkiksi mainosten yksilöimiseksi. Joidenkin sivustojen ominaisuudet eivät ehkä toimi.</translation>
 <translation id="6105125042109106861">Kolmannen osapuolen evästeet estetään incognito-tilassa</translation>
 <translation id="6710473112951410470">Vain nykyinen Yksityinen istunto</translation>

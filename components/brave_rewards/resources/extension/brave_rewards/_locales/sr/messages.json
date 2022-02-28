@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Svaka napojnica koju date ostaće na čekanju u vašem novčaniku i automatski će biti ponovo aktivirana u toku od 90 dana. $link_begin$Saznajte više$link_end$",
+    "message": "Svaka napojnica koju date ostaće na čekanju i automatski će biti ponovo aktivirana u roku od 90 dana. $link_begin$Saznajte više$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Ovaj kreator trenutno nije konfigurisan za primanje napojnica iz vašeg novčanika.",
+    "message": "Ovaj kreator nije konfigurisan za primanje napojnica iz usluge novčanika nagrada pod vašim nadzorom.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Vaša nagrada je na putu do vašeg Brave nagrade novčanika.",
+    "message": "Uskoro stiže vaša nagrada.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Moj novčanik",
+    "message": "Verifikovano",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verifikuj novčanik",
+    "message": "Верификуј",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Ponovo uspostavi vezu",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Zahtevaj",
+  "notificationClaimRewards": {
+    "message": "Potraživanje nagrada",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Potraživanje tokena",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Rezervna kopija novčanika",
+    "message": "Napravite rezervnu kopiju Brave nagrada",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Molim vas napravite rezervnu kopiju svog Brave novčanika.",
+    "message": "Napravite rezervnu kopiju vaših Brave nagrada.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Napravite rezervu sad",
+    "message": "Napravi rezervnu kopiju sada",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Vaš novčanik je odjavljen",
+    "message": "Odjavljeni ste",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Vaš novčanik je verifikovan!",
+    "message": "Vaše Brave nagrade su verifikovane!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Vaš $provider$ novčanik je uspešno verifikovan i spreman za dodavanje i povlačenje sredstava.",
+    "message": "Vaše Brave nagrade je uspešno verifikovao $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Nagradni tokeni",
+    "message": "Dodela tokena je dostupna!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Imate grant koji vas čeka.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Nagrade: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Zarade za oglase su primljene",
-    "description": ""
+    "message": "Vaše $month$ nagrade za oglase su ovde!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Vaše nagrade od Brave Private Ads su ovde!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Mesečni doprinos nije uspeo",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Preostalo vam je $days$ za zahtev",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Vaša zakazana mesečna uplata za Automatski doprinos i mesečne doprinose nije mogla biti dovršena zbog nedovoljnih sredstava. Pokušaćemo opet za 30 dana.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Došlo je do problema tokom obrade vašeg doprinosa.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Mesečni doprinos nije uspeo",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verifikujte svoj novčanik",
+    "message": "Верификуј",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Da biste preuzeli tokene i zaradili gledajući oglase, moraćete da verifikujete svoj novčanik.",
+    "message": "Da biste preuzeli BAT-ove koje ste zaradili gledajući oglase, moraćete da verifikujete Brave nagrade.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verifikuj moj novčanik",
+    "message": "Potvrdite Brave nagrade",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Verifikovanjem vašeg novčanika i njegovim povezivanjem sa bitFlyer nalogom, lakše ćete moći da čuvate i održavate tokene koje ste zaradili kroz Brave Rewards",
+    "message": "Verifikovanjem vaših Brave nagrada i njihovim povezivanjem sa bitFlyer nalogom, lakše ćete moći da čuvate i održavate BAT-ove koje ste zaradili kroz Brave nagrade",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

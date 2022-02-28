@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "All tipsen du tjener opp, blir liggende i lommeboken din, og prøver på nytt i 90 dager. $link_begin$Finn ut mer$link_end$",
+    "message": "All tipsen du tjener opp, settes på vent og prøver på nytt i 90 dager. $link_begin$Finn ut mer$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Denne skaperen er per nå ikke satt opp for å motta tips fra lommeboken din.",
+    "message": "Denne skaperen er ikke satt opp til å motta tips fra Rewards-lommeboktjenesten din.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Belønningen er på vei til Brave-belønningslommeboken din.",
+    "message": "Belønningen din er på vei.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Min lommebok",
+    "message": "Verifisert",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verifiser lommeboken",
+    "message": "Bekreft",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Tilkoble på nytt",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Gjør krav på",
+  "notificationClaimRewards": {
+    "message": "Hent Belønninger",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Hent Tokener",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,11 +305,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Reservelommebok",
+    "message": "Sikkerhetskopier Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Sikkerhetskopier Brave-lommeboken din.",
+    "message": "Sikkerhetskopier Brave Rewards-kontoen din.",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -313,7 +317,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Lommeboken din er logget ut.",
+    "message": "Du er logget ut.",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Lommeboken din er verifisert!",
+    "message": "Brave Rewards er bekreftet!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "$provider$-lommeboken din er bekreftet, og er klar til bruk!",
+    "message": "Brave Rewards ble bekreftet hos $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Tilskudd til tokener",
+    "message": "En tokenopptjening er tilgjengelig!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Du har en tildeling som venter på deg.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "Belønninger for $month$: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Annonseinntekt mottatt",
-    "description": ""
+    "message": "Annonsebelønningene dine for $month$ er her!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Belønningene dine fra Brave Private Ads har kommet!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Det månedlige bidraget mislyktes",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Du har $days$ på deg",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Den planlagte månedlige betalingen din for autobidrag og månedlige bidrag kunne ikke fullføres på grunn av utilstrekkelige midler. Vi prøver igjen om 30 dager.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Det oppstod et problem under behandlingen av bidraget ditt.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Det månedlige bidraget mislyktes",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Bekreft lommeboken din",
+    "message": "Bekreft",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "For å gjøre uttak av tokenene du tjener på å se annonser, må du bekrefte lommeboken din.",
+    "message": "For å gjøre uttak av tokenene du tjener på å se annonser, må du bekrefte Brave Rewards.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Bekreft lommeboken min",
+    "message": "Bekreft Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Ved å bekrefte lommeboken din og knytte den til en bitFlyer-konto, vil du lettere kunne lagre og administrere tokener du har tjent gjennom Brave Rewards.",
+    "message": "Ved å bekrefte Brave Rewards og knytte den til en bitFlyer-konto vil du lettere kunne lagre og administrere tokener du har tjent gjennom Brave Rewards.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

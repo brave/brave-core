@@ -13,6 +13,12 @@
 <translation id="1028781062521375153">Kuva üksikasjad</translation>
 <translation id="1030706264415084469"><ph name="URL"/> soovib suure koguse andmeid alaliselt teie seadmesse salvestada</translation>
 <translation id="1032854598605920125">Pööra päripäeva</translation>
+<translation id="7653199919907357627">Inkognito režiim ei muuda teid veebis nähtamatuks.
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Külastatavad saidid ja teenused näevad külastusi.<ph name="END_LIST_ITEM"/>
+          <ph name="LIST_ITEM"/>Tööandjad ja koolid võivad sirvimistegevusi jälgida.<ph name="END_LIST_ITEM"/>
+          <ph name="LIST_ITEM"/>Internetiteenuse pakkujad võivad veebiliiklust jälgida.<ph name="END_LIST_ITEM"/>
+        <ph name="END_LIST"/></translation>
 <translation id="1036348656032585052">Lülita välja</translation>
 <translation id="1036982837258183574">Täisekraanilt väljumiseks vajutage klahvi |<ph name="ACCELERATOR"/>|</translation>
 <translation id="1038106730571050514">Kuva soovitused</translation>
@@ -46,6 +52,7 @@
 <translation id="112840717907525620">Reegli vahemälu töötab probleemideta</translation>
 <translation id="3186248837008742887">Nupp Tõlgi leht, selle lehe tõlkimiseks rakendusega Brave'i tõlge vajutage sisestusklahvi</translation>
 <translation id="1131264053432022307">Teie kopeeritud pilt</translation>
+<translation id="9153679102508470540">Blokeeri kolmanda osapoole küpsisefailid inkognito režiimis</translation>
 <translation id="1150979032973867961">Server ei suutnud tõestada, et see on domeen <ph name="DOMAIN"/>, arvuti operatsioonisüsteem ei usalda selle turvasertifikaati. Selle põhjuseks võib olla vale seadistus või ründaja, kes on sekkunud teie ühendusse.</translation>
 <translation id="1151972924205500581">Parool on nõutav</translation>
 <translation id="1156303062776767266">Vaatate kohalikku või jagatud faili</translation>
@@ -109,7 +116,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="1307966114820526988">Katkestatud toega funktsioonid</translation>
 <translation id="1308113895091915999">Pakkumine on saadaval</translation>
 <translation id="1312803275555673949">Millised tõendid seda toetavad?</translation>
-<translation id="131405271941274527"><ph name="URL"/> soovib andmeid saata ja vastu võtta, kui puudutate telefoniga NFC-seadet</translation>
+<translation id="1314311879718644478">Liitreaalse sisu vaatamine</translation>
 <translation id="1314509827145471431">Köide paremal</translation>
 <translation id="1318023360584041678">Salvestati vahelehtede gruppi</translation>
 <translation id="1319245136674974084">Ära enam selle rakenduse kohta küsi</translation>
@@ -205,6 +212,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="1559572115229829303">&lt;p&gt;Domeeniga <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> ei saa privaatset ühendust luua, kuna seadme kuupäev ja kellaaeg (<ph name="DATE_AND_TIME"/>DATE_AND_TIME) on valed.&lt;/p&gt;
 
           &lt;p&gt;Kohandage kuupäeva ja kellaaega rakenduse &lt;strong&gt;Seaded&lt;/strong&gt; jaotises &lt;strong&gt;Üldine&lt;/strong&gt;.&lt;/p&gt;</translation>
+<translation id="156703335097561114">Võrguteave, nagu aadressid, liidese seadistus ja ühenduse kvaliteet</translation>
 <translation id="1567040042588613346">See reegel töötab eesmärgipäraselt, kuid mujal on seadistatud sama väärtus, mis on selle reegliga asendatud.</translation>
 <translation id="1569487616857761740">Sisestage aegumiskuupäev</translation>
 <translation id="1581080074034554886">CVC</translation>
@@ -212,6 +220,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="1583429793053364125">Veebilehe kuvamisel läks midagi valesti.</translation>
 <translation id="1586541204584340881">Millised laiendused olete installinud</translation>
 <translation id="1588438908519853928">Tavaline</translation>
+<translation id="1589050138437146318">Kas installida ARCore?</translation>
 <translation id="1592005682883173041">Juurdepääs kohalikele andmetele</translation>
 <translation id="1594030484168838125">Vali</translation>
 <translation id="8523167061098356223">Brave'is mängu Dino Run mängimine</translation>
@@ -471,6 +480,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="2465655957518002998">Valige kohaletoimetamisviis</translation>
 <translation id="2465688316154986572">Kirjaklamber</translation>
 <translation id="4058615531773510267">Brave'is allalaaditud failide haldamine</translation>
+<translation id="2466004615675155314">Teabe kuvamine veebist</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>Võrgudiagnostika käitamine<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">Järjestus 1–N</translation>
 <translation id="2470767536994572628">Märkuste muutmisel naaseb see dokument ühe lehe vaatele ja algsesse asendisse</translation>
@@ -515,6 +525,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="2609632851001447353">Variatsioonid</translation>
 <translation id="2610561535971892504">Klõpsake kopeerimiseks</translation>
 <translation id="2618023639789766142">C10 (ümbrik)</translation>
+<translation id="2623663032199728144">Saab küsida luba teabe kasutamiseks teie ekraanikuvade kohta</translation>
 <translation id="2625385379895617796">Teie kell on ees</translation>
 <translation id="262745152991669301">Saab küsida luba USB-seadmetega ühenduse loomiseks</translation>
 <translation id="2915787201097107005">Brave'i kõrgeima taseme turvalisuse saavutamiseks <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>lülitage sisse täiustatud kaitse<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
@@ -630,6 +641,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="3037605927509011580">Ups, ebaõnn!</translation>
 <translation id="3041612393474885105">Sertifikaadi andmed</translation>
 <translation id="3044034790304486808">Jätkake uurimist</translation>
+<translation id="8418829431154568330">Brave Remote Desktopi ajalugu, sh ajatemplid, hostid ja kliendiseansside ID-d</translation>
 <translation id="3060227939791841287">C9 (ümbrik)</translation>
 <translation id="3061707000357573562">Teenuse paikamine</translation>
 <translation id="306573536155379004">Mäng algas.</translation>
@@ -670,6 +682,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="3197136577151645743">Saab küsida luba selle teadmiseks, millal seadet aktiivselt kasutate</translation>
 <translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, vajutage Brave'i seadetes sünkroonitava teabe haldamiseks tabulaatorit ja seejärel sisestusklahvi</translation>
 <translation id="320323717674993345">Tühista makse</translation>
+<translation id="3203366800380907218">Veebist</translation>
 <translation id="3207960819495026254">Järjehoidjatesse lisatud</translation>
 <translation id="3209034400446768650">Leht võib võtta tasu</translation>
 <translation id="3212581601480735796">Teie tegevust seadmes <ph name="HOSTNAME"/> jälgitakse</translation>
@@ -686,6 +699,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="3234666976984236645">Sellel saidil olulise sisu alati tuvastamine</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, oma brauseri ilme kohandamiseks vajutage tabulaatorit ja siis sisestusklahvi</translation>
 <translation id="3240791268468473923">Turvalise maksemandaadi leht selle kohta, et pole ühtegi sobivat mandaati, on avatud</translation>
+<translation id="324180406144491771">Hosti „<ph name="HOST_NAME"/>“ lingid on blokeeritud</translation>
 <translation id="3249845759089040423">Särtsakas</translation>
 <translation id="3252266817569339921">prantsuse keel</translation>
 <translation id="3257954757204451555">Kelle selle teabe taga on?</translation>
@@ -716,12 +730,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="3345782426586609320">Silmad</translation>
 <translation id="3355823806454867987">Muuda puhverserveri seadeid ...</translation>
 <translation id="3360103848165129075">Maksetöötleja leht</translation>
-<translation id="669410734497476819">Brave <ph name="BEGIN_EMPHASIS"/>ei salvesta<ph name="END_EMPHASIS"/> järgmist teavet:
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>teie sirvimisajalugu;
-          <ph name="LIST_ITEM"/>küpsisefailid ja saidi andmed;
-          <ph name="LIST_ITEM"/>vormidesse sisestatud teave.
-        <ph name="END_LIST"/></translation>
 <translation id="3362968246557010467">See reegel kopeeriti automaatselt katkestatud toega reeglist <ph name="OLD_POLICY"/>. Peaksite selle asemel kasutama seda reeglit.</translation>
 <translation id="3364869320075768271"><ph name="URL"/> soovib kasutada teie virtuaalreaalsuse seadet ja andmeid</translation>
 <translation id="3366477098757335611">Kuva kaardid</translation>
@@ -1131,6 +1139,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="4708268264240856090">Teie ühendus katkes</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Windowsi võrgudiagnostika käitamine<ph name="END_LINK"/></translation>
+<translation id="4722735765955348426">Kasutaja <ph name="USERNAME"/> parool</translation>
 <translation id="4724144314178270921">Saab küsida luba lõikelaual oleva teksti ja piltide nägemiseks</translation>
 <translation id="4726672564094551039">Laadi reeglid uuesti</translation>
 <translation id="4728558894243024398">Platvorm</translation>
@@ -1170,6 +1179,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="4819347708020428563">Kas muuta märkusi vaikekuval?</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, kiirelt uue Brave'i arvutustabeli loomiseks vajutage tabulaatorit ja seejärel sisestusklahvi</translation>
 <translation id="4825507807291741242">Võimas</translation>
+<translation id="4829962028570902310">Eiratakse, kuna reegli saab seadistada ainult pilves olev kasutaja.</translation>
 <translation id="483241715238664915">Lülita hoiatused sisse</translation>
 <translation id="4838327282952368871">Unistav</translation>
 <translation id="246176083348620700">Brave’i ajaloo vaatamine</translation>
@@ -1186,7 +1196,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="4877083676943085827">{COUNT,plural, =0{Puudub}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/> <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831">Otsing <ph name="TEXT"/></translation>
 <translation id="4879491255372875719">Automaatne (vaikimisi)</translation>
-<translation id="4879725228911483934">Avada ja paigutada aknaid teie ekraanikuvadel</translation>
 <translation id="4880827082731008257">Otsi ajaloost</translation>
 <translation id="4881695831933465202">Ava</translation>
 <translation id="4885256590493466218">Makske kassas kaardiga <ph name="CARD_DETAIL"/></translation>
@@ -1202,6 +1211,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="4926340098269537727"><ph name="ACTIVE_MATCH"/>/<ph name="TOTAL_MATCHCOUNT"/></translation>
 <translation id="4929871932072157101"><ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, vajutage otsimiseks tabulaatorit ja siis sisestusklahvi</translation>
 <translation id="4930153903256238152">Suur mahutavus</translation>
+<translation id="6085043210649933880">Inkognito režiim Brave'is</translation>
 <translation id="4943872375798546930">Tulemusi pole</translation>
 <translation id="4950898438188848926">Vahelehe vahetamise nupp, vajutage sisestusklahvi avatud vahelehe aktiveerimiseks, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="495170559598752135">Toimingud</translation>
@@ -1211,6 +1221,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="4968522289500246572">Rakendus on loodud mobiilseadmetele ja selle suuruse muutmine võib rakendusele halvasti mõjuda. Rakenduse töös võib esineda probleeme või rakendus võib taaskäivituda.</translation>
 <translation id="4969341057194253438">Kustuta salvestis</translation>
 <translation id="4973922308112707173">Kaks auku ülal</translation>
+<translation id="4976702386844183910">Viimati külastati <ph name="DATE"/></translation>
 <translation id="4984088539114770594">Kas kasutada mikrofoni?</translation>
 <translation id="4984339528288761049">Prc5 (ümbrik)</translation>
 <translation id="4989163558385430922">Kuva kõik</translation>
@@ -1272,6 +1283,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="5138227688689900538">Kuva vähem</translation>
 <translation id="5145883236150621069">Reegli vastuses sisaldus veakood</translation>
 <translation id="5146995429444047494">Saidi <ph name="ORIGIN"/> märguanded on blokeeritud</translation>
+<translation id="514704532284964975"><ph name="URL"/> soovib vaadata ja muuta teavet NFC-seadmes, mida oma telefoniga puudutate</translation>
 <translation id="5148809049217731050">Esikülg ülespoole</translation>
 <translation id="515292512908731282">C4 (ümbrik)</translation>
 <translation id="5158275234811857234">Kaas</translation>
@@ -1294,6 +1306,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="1051285409463218679">Makseviisid ja aadressid, mis kasutavad teenust Brave Pay.</translation>
 <translation id="5215363486134917902">Folio-Sp</translation>
 <translation id="521659676233207110">Salv 13</translation>
+<translation id="5216942107514965959">Viimati külastati täna</translation>
 <translation id="5222812217790122047">E-posti aadress on nõutav</translation>
 <translation id="5230733896359313003">Tarneaadress</translation>
 <translation id="5230815978613972521">B8</translation>
@@ -1314,7 +1327,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="5283044957620376778">B1</translation>
 <translation id="5284295735376057059">Dokumendi atribuudid</translation>
 <translation id="528468243742722775">Lõpeta</translation>
-<translation id="5284909709419567258">Võrguaadressid</translation>
 <translation id="5285570108065881030">Kuva kõik salvestatud paroolid</translation>
 <translation id="5287240709317226393">Kuva küpsised</translation>
 <translation id="5287456746628258573">See sait kasutab vananenud turvaseadistust, mis võib paljastada teie teabe (näiteks paroolid või krediitkaardinumbrid), kui see saadetakse sellele saidile.</translation>
@@ -1480,6 +1492,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="5869522115854928033">Salvestatud paroolid</translation>
 <translation id="5873013647450402046">Teie pank soovib teie isikut kinnitada.</translation>
 <translation id="5887400589839399685">Kaart on salvestatud</translation>
+<translation id="5887687176710214216">Viimati külastati eile</translation>
 <translation id="5895138241574237353">Taaskäivitamine</translation>
 <translation id="5895187275912066135">Väljastamiskuupäev</translation>
 <translation id="5901630391730855834">Kollane</translation>
@@ -1557,6 +1570,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6120179357481664955">Kas jätta teie UPI ID meelde?</translation>
 <translation id="5972135347314259717">Brave Enterprise'i liidesed</translation>
 <translation id="6127379762771434464">Üksus eemaldati</translation>
+<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>Lisateave inkognito režiimi kohta Brave'is<ph name="END_LINK"/></translation>
 <translation id="6146055958333702838">Kontrollige kaableid ning taaskäivitage kõik ruuterid, modemid ja muud
     kasutuses olevad võrguseadmed.</translation>
 <translation id="614940544461990577">Proovige järgmist.</translation>
@@ -1568,7 +1582,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6165508094623778733">Lisateave</translation>
 <translation id="6177128806592000436">Teie ühendus selle saidiga pole turvaline</translation>
 <translation id="6180316780098470077">Uuesti proovimise intervall</translation>
-<translation id="619448280891863779">Saab küsida luba aknaid teie ekraanikuvadel avada ja paigutada</translation>
 <translation id="6196640612572343990">Blokeeri kolmanda osapoole küpsisefailid</translation>
 <translation id="6203231073485539293">Kontrollige Interneti-ühendust</translation>
 <translation id="8385639954311581596">Kas eemaldada Braveist aadress?</translation>
@@ -1670,6 +1683,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6529602333819889595">&amp;Kustuta uuesti</translation>
 <translation id="6545864417968258051">Bluetoothi otsimine</translation>
 <translation id="6547208576736763147">Kaks auku vasakul</translation>
+<translation id="6554732001434021288">Viimati külastati <ph name="NUM_DAYS"/> päeva tagasi</translation>
 <translation id="6556866813142980365">Tee uuesti</translation>
 <translation id="6569060085658103619">Vaatate laienduse lehte</translation>
 <translation id="6573200754375280815">Kaks auku paremal</translation>
@@ -1812,7 +1826,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="5320462991730735481">Lisage ja hallake Brave'i seadetes aadresse</translation>
 <translation id="7064851114919012435">Kontaktteave</translation>
 <translation id="7068733155164172741">Sisestage <ph name="OTP_LENGTH"/>-kohaline kood</translation>
-<translation id="7070090581017165256">Teave selle saidi kohta</translation>
 <translation id="70705239631109039">Teie ühendus ei ole täielikult turvaline</translation>
 <translation id="7075452647191940183">Taotlus on liiga suur</translation>
 <translation id="7079718277001814089">See sait sisaldab pahavara</translation>
@@ -1829,6 +1842,12 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="7111012039238467737">(Kehtiv)</translation>
 <translation id="7118618213916969306">Lõikelaua URL-i otsimine, <ph name="SHORT_URL"/></translation>
 <translation id="7119414471315195487">Sulgege muud vahelehed või programmid</translation>
+<translation id="8817208096236092047">Kui sulgete kõik Bravei inkognito vahelehed, kustutatakse järgmised nendel vahelehtedel tehtud toimingud sellest seadmest.
+          <ph name="BEGIN_LIST"/>
+            <ph name="LIST_ITEM"/>Sirvimistegevused.<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>Otsinguajalugu.<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>Vormidesse sisestatud teave.<ph name="END_LIST_ITEM"/>
+          <ph name="END_LIST"/></translation>
 <translation id="7129409597930077180">Sellele aadressile ei saa tarnida. Valige mõni teine aadress.</translation>
 <translation id="7132939140423847331">Teie administraator on keelanud nende andmete kopeerimise.</translation>
 <translation id="7135130955892390533">Kuva olek</translation>
@@ -1944,6 +1963,12 @@ Lisateave:
 <translation id="7485870689360869515">Andmeid ei leitud.</translation>
 <translation id="7495528107193238112">See sisu on blokeeritud. Probleemi lahendamiseks võtke ühendust saidi omanikuga.</translation>
 <translation id="7812541223399526596">Nupp Loo dokument, kiirelt uue Brave'i dokumendi loomiseks vajutage sisestusklahvi</translation>
+<translation id="2957285558977211818">Brave <ph name="BEGIN_EMPHASIS"/>ei salvesta<ph name="END_EMPHASIS"/> järgmist teavet.
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>Teie sirvimisajalugu.
+          <ph name="LIST_ITEM"/>Küpsisefailid ja saidi andmed.
+          <ph name="LIST_ITEM"/>Vormidesse sisestatud teave.
+        <ph name="END_LIST"/></translation>
 <translation id="7508255263130623398">Tagastatud reegli seadme-ID on tühi või ei kattu praeguse seadme-ID-ga</translation>
 <translation id="7508870219247277067">Avokaadoroheline</translation>
 <translation id="7511955381719512146">WiFi-võrk, mida kasutate, võib nõuda veebilehe <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> külastamist.</translation>
@@ -2054,7 +2079,6 @@ Lisateave:
 <translation id="4670564340385807132">Kas eemaldada Brave'ist vormi soovitus?</translation>
 <translation id="781440967107097262">Kas jagada lõikelauda?</translation>
 <translation id="7815407501681723534">Otsingule „<ph name="SEARCH_STRING"/>” leiti <ph name="NUMBER_OF_RESULTS"/> <ph name="SEARCH_RESULTS"/>.</translation>
-<translation id="782125616001965242">Kuva teave selle saidi kohta</translation>
 <translation id="782886543891417279">WiFi-võrk, mida kasutate (<ph name="WIFI_NAME"/>), võib nõuda sisselogimislehe külastamist.</translation>
 <translation id="7836231406687464395">Postfix (ümbrik)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Puudub}=1{1 rakendus (<ph name="EXAMPLE_APP_1"/>)}=2{2 rakendust (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# rakendust (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
@@ -2098,7 +2122,6 @@ Lisateave:
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">Saab küsida luba VR-seadmete ja -andmete kasutamiseks</translation>
 <translation id="8896585555528145662">Te ei saa saiti <ph name="SITE"/> praegu külastada, sest veebisait saatis tagasi arusaamatud mandaadid, mida Brave ei saa töödelda. Võrguvead ja -rünnakud on tavaliselt ajutised, nii et leht tõenäoliselt hiljem töötab.</translation>
-<translation id="79859296434321399">Liitreaalsuse sisu vaatamiseks installige ARCore</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">Köide</translation>
 <translation id="7992044431894087211">Ekraanikuva jagamist rakendusega <ph name="APPLICATION_TITLE"/> jätkati</translation>
@@ -2162,6 +2185,7 @@ Lisateave:
 <translation id="8202370299023114387">Konflikt</translation>
 <translation id="8206978196348664717">Prc4 (ümbrik)</translation>
 <translation id="8211406090763984747">Ühendus on turvaline</translation>
+<translation id="8217240300496046857">Saidid ei saa veebis teie jälgimiseks kasutada küpsisefaile. Mõne saidi funktsioonid ei pruugi töötada.</translation>
 <translation id="8218327578424803826">Määratud asukoht:</translation>
 <translation id="8220146938470311105">C7/C6 (ümbrik)</translation>
 <translation id="8228419419708659934">Kahe lehe vaade</translation>
@@ -2200,6 +2224,7 @@ Lisateave:
 <translation id="830498451218851433">Pooleks volditud</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">Installitud rakendused ja nende kasutussagedus</translation>
+<translation id="8317207217658302555">Kas värskendada ARCore'i?</translation>
 <translation id="831997045666694187">Õhtu</translation>
 <translation id="8321476692217554900">märguanded</translation>
 <translation id="8332188693563227489">Juurdepääs hostile <ph name="HOST_NAME"/> blokeeriti</translation>
@@ -2263,7 +2288,6 @@ Lisateave:
 <translation id="8554912124839363479">{NUM_PERMISSIONS,plural, =1{Lähtesta luba}other{Lähtesta load}}</translation>
 <translation id="8555010941760982128">Kasutage seda koodi kassas</translation>
 <translation id="8557066899867184262">CVC asub kaardi tagaküljel.</translation>
-<translation id="8558485628462305855">Liitreaalsuse sisu vaatamiseks värskendage ARCore'i</translation>
 <translation id="8559762987265718583">Privaatset ühendust ei saa domeeniga <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> luua, kuna seadme kuupäev ja kellaaeg (<ph name="DATE_AND_TIME"/>) on valed.</translation>
 <translation id="8564182942834072828">Eraldi dokumendid / järjestamata koopiad</translation>
 <translation id="8574899947864779331">Kasutage kaartide kiiremaks kinnitamiseks Touch ID-d</translation>
@@ -2281,6 +2305,7 @@ Lisateave:
 <translation id="865032292777205197">liikumisandurid</translation>
 <translation id="8663226718884576429">Tellimuse kokkuvõte, <ph name="TOTAL_LABEL"/>, rohkem üksikasju</translation>
 <translation id="8666678546361132282">inglise keel</translation>
+<translation id="8669306706049782872">Kasutada teavet teie ekraanikuvade kohta, et avada ja paigutada aknaid</translation>
 <translation id="867224526087042813">Allkiri</translation>
 <translation id="8676424191133491403">Viivituseta</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, vastus, <ph name="ANSWER"/></translation>
@@ -2330,6 +2355,7 @@ Lisateave:
 <translation id="883848425547221593">Muud järjehoidjad</translation>
 <translation id="884264119367021077">Tarneaadress</translation>
 <translation id="884923133447025588">Tühistusmehhanismi ei leitud.</translation>
+<translation id="8849262850971482943">Suurendage virtuaalse kaardi abil turvalisust</translation>
 <translation id="7487066225574140895">Jagamine Brave'iga</translation>
 <translation id="4764754838347156633">Brave soovitab teil organisatsiooni <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> parooli lähtestada, kui kasutasite seda ka muudel saitidel.</translation>
 <translation id="885906927438988819">Kui õigekirjavigu pole, <ph name="BEGIN_LINK"/>käitage Windowsi võrgudiagnostika<ph name="END_LINK"/>.</translation>
@@ -2495,22 +2521,8 @@ Lisateave:
 <translation id="8794378783472961468">Kuid te ei ole nähtamatu. Inkognito režiimis kasutamine ei peida teie sirvimist tööandja, internetiteenuse pakkuja ega külastatavate veebisaitide eest.</translation>
 <translation id="5673623523506565506">Nüüd saate sirvida privaatselt ja teised kasutajaprofiilid ei näe teie tegevusi. Allalaaditud failid ja järjehoidjad siiski salvestatakse.</translation>
 <translation id="3812568169637430422">Nüüd saate sirvida privaatselt ja teised seadme kasutajad ei näe teie tegevusi. Allalaaditud failid, järjehoidjad ja lugemisloendi osad siiski salvestatakse.</translation>
-<translation id="5186185447130319458">Privaatne</translation>
 <translation id="3683567996395248272">Kuidas toimib privaatrežiim?</translation>
-<translation id="4912243263991194586">Pärast kõigi privaatsete vahelehtede sulgemist kustutab Brave:
-       <ph name="BEGIN_LIST"/>
-         <ph name="LIST_ITEM"/>teie sirvimistegevuse sellest seadmest;<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>teie otsinguajaloo sellest seadmest;<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>vormidele sisestatud teabe.<ph name="END_LIST_ITEM"/>
-       <ph name="END_LIST"/></translation>
 <translation id="137199123615682137">Mida privaatrežiim ei tee?</translation>
-<translation id="6101678912379763265">Privaatrežiim ei muuda teid võrgus nähtamatuks:
-       <ph name="BEGIN_LIST"/>
-         <ph name="LIST_ITEM"/>veebisaidid teavad, kui neid külastate;<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>tööandjad või koolid saavad jälgida sirvimistegevust;<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>internetiteenuse pakkujad võivad jälgida veebiliiklust.<ph name="END_LIST_ITEM"/>
-       <ph name="END_LIST"/></translation>
-<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/> privaatrežiimi kohta</translation>
 <translation id="5549245478906381817">Ava inkognito-aken</translation>
 <translation id="5497977785983089120">Ava inkognito-aken, et privaatselt sirvida.</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, vajuta Tab, seejärel Enter, et avada privaatseks sirvimiseks inkognito-aken</translation>
