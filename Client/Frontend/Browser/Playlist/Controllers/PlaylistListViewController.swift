@@ -67,6 +67,11 @@ class PlaylistListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        PlaylistManager.shared.onFolderRemovedOrUpdated
+        .sink { [weak self] in
+            self?.tableView.reloadData()
+        }.store(in: &observers)
+        
         PlaylistManager.shared.contentWillChange
         .sink { [weak self] in
             self?.controllerWillChangeContent()

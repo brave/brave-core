@@ -37,6 +37,7 @@ class PlaylistManager: NSObject {
                                                              displayName: String?,
                                                              error: Error?), Never>()
     private let onCurrentFolderChanged = PassthroughSubject<(), Never>()
+    private let onFolderDeleted = PassthroughSubject<(), Never>()
     
     private override init() {
         super.init()
@@ -65,6 +66,10 @@ class PlaylistManager: NSObject {
             
             onCurrentFolderChanged.send()
         }
+    }
+    
+    var onFolderRemovedOrUpdated: AnyPublisher<Void, Never> {
+        onFolderDeleted.eraseToAnyPublisher()
     }
     
     var contentWillChange: AnyPublisher<Void, Never> {
@@ -284,6 +289,7 @@ class PlaylistManager: NSObject {
             currentFolder = nil
         }
         
+        onFolderDeleted.send()
         reloadData()
         return success
     }
