@@ -109,7 +109,7 @@
 <translation id="1307966114820526988">지원 중단 기능</translation>
 <translation id="1308113895091915999">이용 가능한 혜택</translation>
 <translation id="1312803275555673949">어떤 근거가 있나요?</translation>
-<translation id="131405271941274527">NFC 기기에 휴대전화를 갖다 댈 때 <ph name="URL"/>에서 정보를 보내고 받으려고 합니다.</translation>
+<translation id="1314311879718644478">증강 현실 콘텐츠 보기</translation>
 <translation id="1314509827145471431">오른쪽 바인드</translation>
 <translation id="1318023360584041678">탭 그룹에 저장됨</translation>
 <translation id="1319245136674974084">이 앱에 대해 다시 묻지 않음</translation>
@@ -205,6 +205,7 @@
 <translation id="1559572115229829303">&lt;p&gt;기기의 날짜와 시간(<ph name="DATE_AND_TIME"/>)이 잘못되어 <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/>에 비공개로 연결할 수 없습니다.&lt;/p&gt;
 
       &lt;p&gt;&lt;strong&gt;설정&lt;/strong&gt; 앱의 &lt;strong&gt;일반&lt;/strong&gt; 섹션에서 날짜와 시간을 맞추세요.&lt;/p&gt;</translation>
+<translation id="156703335097561114">주소, 인터페이스 구성, 연결 품질 등의 네트워킹 정보</translation>
 <translation id="1567040042588613346">이 정책은 정상 작동 중이나 다른 위치에 같은 값이 설정되었으므로 이 정책에 의해 대체되었습니다.</translation>
 <translation id="1569487616857761740">만료일 입력</translation>
 <translation id="1581080074034554886">CVC</translation>
@@ -212,6 +213,7 @@
 <translation id="1583429793053364125">이 웹페이지를 표시하는 도중 문제가 발생했습니다.</translation>
 <translation id="1586541204584340881">내가 설치한 확장 프로그램</translation>
 <translation id="1588438908519853928">일반</translation>
+<translation id="1589050138437146318">ARCore를 설치하시겠습니까?</translation>
 <translation id="1592005682883173041">로컬 데이터 액세스</translation>
 <translation id="1594030484168838125">선택</translation>
 <translation id="8523167061098356223">Brave 공룡 게임 플레이</translation>
@@ -468,6 +470,7 @@
 <translation id="2465655957518002998">배달 방법 선택</translation>
 <translation id="2465688316154986572">스테이플</translation>
 <translation id="4058615531773510267">Brave에서 다운로드한 파일 관리</translation>
+<translation id="2466004615675155314">웹에서 찾은 정보 표시</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>네트워크 진단 프로그램 실행<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">1-to-N 순서</translation>
 <translation id="2470767536994572628">주석을 수정하면 문서가 원래 방향의 단일 페이지 뷰로 돌아갑니다.</translation>
@@ -512,6 +515,7 @@
 <translation id="2609632851001447353">유사 버전</translation>
 <translation id="2610561535971892504">클릭하여 복사</translation>
 <translation id="2618023639789766142">C10(봉투)</translation>
+<translation id="2623663032199728144">화면에 관한 정보 사용을 요청할 수 있음</translation>
 <translation id="2625385379895617796">시간이 너무 먼 미래로 설정되어 있습니다.</translation>
 <translation id="262745152991669301">USB 기기에 연결하도록 요청할 수 있음</translation>
 <translation id="2915787201097107005">Brave에서 가장 강력한 보안 기능을 사용하려면 <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>향상된 보호 모드를 사용 설정<ph name="END_ENHANCED_PROTECTION_LINK"/>하세요.</translation>
@@ -627,6 +631,7 @@
 <translation id="3037605927509011580">앗, 이런!</translation>
 <translation id="3041612393474885105">인증서 정보</translation>
 <translation id="3044034790304486808">검색 계속</translation>
+<translation id="8418829431154568330">타임스탬프, 호스트, 클라이언트 세션 ID를 포함한 Brave 원격 데스크톱 기록</translation>
 <translation id="3060227939791841287">C9(봉투)</translation>
 <translation id="3061707000357573562">서비스 패치</translation>
 <translation id="306573536155379004">게임이 시작되었습니다.</translation>
@@ -667,6 +672,7 @@
 <translation id="3197136577151645743">사용자가 현재 이 기기를 사용 중인지 확인을 요청할 수 있음</translation>
 <translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab을 누른 다음 Enter를 눌러 Brave 설정에서 내가 동기화하는 정보 관리</translation>
 <translation id="320323717674993345">결제 취소</translation>
+<translation id="3203366800380907218">웹에서 찾은 정보</translation>
 <translation id="3207960819495026254">북마크에 추가됨</translation>
 <translation id="3209034400446768650">페이지에서 요금을 청구할 수 있음</translation>
 <translation id="3212581601480735796"><ph name="HOSTNAME"/>에서의 활동이 모니터링되고 있음</translation>
@@ -683,6 +689,7 @@
 <translation id="3234666976984236645">이 사이트에서 중요한 콘텐츠 항상 감지</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, 브라우저 테마를 맞춤설정하려면 Tab과 Enter를 차례로 누르세요</translation>
 <translation id="3240791268468473923">일치하는 결제 사용자 인증 정보 시트가 없는 보안 결제 사용자 인증 정보 열림</translation>
+<translation id="324180406144491771">“<ph name="HOST_NAME"/>” 링크가 차단되었습니다</translation>
 <translation id="3249845759089040423">그루브</translation>
 <translation id="3252266817569339921">프랑스어</translation>
 <translation id="3257954757204451555">이 정보는 누가 제공했나요?</translation>
@@ -713,12 +720,6 @@
 <translation id="3345782426586609320">눈</translation>
 <translation id="3355823806454867987">프록시 설정 변경...</translation>
 <translation id="3360103848165129075">결제 핸들러 시트</translation>
-<translation id="669410734497476819">Brave에 다음 정보가 <ph name="BEGIN_EMPHASIS"/>저장되지 않습니다<ph name="END_EMPHASIS"/>.
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>방문 기록
-          <ph name="LIST_ITEM"/>쿠키 및 사이트 데이터
-          <ph name="LIST_ITEM"/>양식에 입력한 정보
-        <ph name="END_LIST"/></translation>
 <translation id="3362968246557010467">이 정책은 지원 중단된 <ph name="OLD_POLICY"/> 정책에서 자동으로 복사되었습니다. 이 정책을 대신 사용해야 합니다.</translation>
 <translation id="3364869320075768271"><ph name="URL"/>에서 가상 현실 기기 및 데이터를 사용하려고 합니다.</translation>
 <translation id="3366477098757335611">카드 보기</translation>
@@ -1123,6 +1124,7 @@
 <translation id="4708268264240856090">연결이 끊김</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Windows 네트워크 진단 프로그램 실행<ph name="END_LINK"/></translation>
+<translation id="4722735765955348426"><ph name="USERNAME"/>의 비밀번호</translation>
 <translation id="4724144314178270921">클립보드의 텍스트와 이미지 확인을 요청할 수 있음</translation>
 <translation id="4726672564094551039">정책 새로고침</translation>
 <translation id="4728558894243024398">플랫폼</translation>
@@ -1162,6 +1164,7 @@
 <translation id="4819347708020428563">기본 뷰에서 주석을 수정할까요?</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab을 누른 다음 Enter를 눌러 빠르게 새 Brave 시트 만들기</translation>
 <translation id="4825507807291741242">강력함</translation>
+<translation id="4829962028570902310">클라우드 사용자 정책으로만 설정할 수 있는 정책이므로 무시되었습니다.</translation>
 <translation id="483241715238664915">경고 켜기</translation>
 <translation id="4838327282952368871">꿈</translation>
 <translation id="246176083348620700">Brave 방문 기록 보기</translation>
@@ -1178,7 +1181,6 @@
 <translation id="4877083676943085827">{COUNT,plural, =0{없음}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831"><ph name="TEXT"/> 검색</translation>
 <translation id="4879491255372875719">자동(기본값)</translation>
-<translation id="4879725228911483934">화면에서 창을 열고 배치합니다.</translation>
 <translation id="4880827082731008257">기록 검색</translation>
 <translation id="4881695831933465202">열기</translation>
 <translation id="4885256590493466218">결제 시 <ph name="CARD_DETAIL"/> 사용</translation>
@@ -1203,6 +1205,7 @@
 <translation id="4968522289500246572">모바일용 앱이므로 크기가 제대로 조절되지 않을 수도 있습니다. 문제가 발생하거나 앱이 다시 시작될 수 있습니다.</translation>
 <translation id="4969341057194253438">녹음 파일 삭제</translation>
 <translation id="4973922308112707173">상단 2공 펀칭</translation>
+<translation id="4976702386844183910">최근 방문: <ph name="DATE"/></translation>
 <translation id="4984088539114770594">마이크를 사용하시겠습니까?</translation>
 <translation id="4984339528288761049">Prc5(봉투)</translation>
 <translation id="4989163558385430922">모두 보기</translation>
@@ -1264,6 +1267,7 @@
 <translation id="5138227688689900538">간략히</translation>
 <translation id="5145883236150621069">정책 응답에 오류 코드가 포함되어 있음</translation>
 <translation id="5146995429444047494"><ph name="ORIGIN"/> 알림이 차단됨</translation>
+<translation id="514704532284964975"><ph name="URL"/>에서 휴대전화로 탭하는 NFC 기기의 정보를 보고 변경하려고 합니다.</translation>
 <translation id="5148809049217731050">인쇄면이 위로</translation>
 <translation id="515292512908731282">C4(봉투)</translation>
 <translation id="5158275234811857234">표지</translation>
@@ -1286,6 +1290,7 @@
 <translation id="1051285409463218679">Brave Pay에 사용되는 결제 수단 및 주소</translation>
 <translation id="5215363486134917902">Folio-Sp</translation>
 <translation id="521659676233207110">트레이 13</translation>
+<translation id="5216942107514965959">최근 방문: 오늘</translation>
 <translation id="5222812217790122047">이메일은 필수입니다.</translation>
 <translation id="5230733896359313003">배송지 주소</translation>
 <translation id="5230815978613972521">B8</translation>
@@ -1306,7 +1311,6 @@
 <translation id="5283044957620376778">B1</translation>
 <translation id="5284295735376057059">문서 속성</translation>
 <translation id="528468243742722775">종료</translation>
-<translation id="5284909709419567258">네트워크 주소</translation>
 <translation id="5285570108065881030">저장된 비밀번호 모두 표시</translation>
 <translation id="5287240709317226393">쿠키 표시</translation>
 <translation id="5287456746628258573">이 사이트에서는 오래된 보안 구성을 사용하므로 정보(예: 비밀번호나 신용카드 번호)를 이 사이트로 전송할 경우 정보가 유출될 수도 있습니다.</translation>
@@ -1472,6 +1476,7 @@
 <translation id="5869522115854928033">저장된 비밀번호</translation>
 <translation id="5873013647450402046">은행에서 본인 확인을 요청합니다.</translation>
 <translation id="5887400589839399685">저장된 카드</translation>
+<translation id="5887687176710214216">최근 방문: 어제</translation>
 <translation id="5895138241574237353">다시 시작</translation>
 <translation id="5895187275912066135">발급일:</translation>
 <translation id="5901630391730855834">노란색</translation>
@@ -1560,7 +1565,6 @@
 <translation id="6165508094623778733">자세히 알아보기</translation>
 <translation id="6177128806592000436">이 사이트는 보안 연결(HTTPS)이 사용되지 않았습니다.</translation>
 <translation id="6180316780098470077">재시도 간격</translation>
-<translation id="619448280891863779">화면에서 창을 열어 화면에 배치하도록 요청할 수 있음</translation>
 <translation id="6196640612572343990">타사 쿠키 차단</translation>
 <translation id="6203231073485539293">인터넷 연결을 확인하세요.</translation>
 <translation id="8385639954311581596">Brave에서 주소를 삭제하시겠습니까?</translation>
@@ -1662,6 +1666,7 @@
 <translation id="6529602333819889595">삭제 다시 실행(&amp;R)</translation>
 <translation id="6545864417968258051">블루투스 검색</translation>
 <translation id="6547208576736763147">왼쪽 2공 펀칭</translation>
+<translation id="6554732001434021288">최근 방문: <ph name="NUM_DAYS"/>일 전</translation>
 <translation id="6556866813142980365">다시실행</translation>
 <translation id="6569060085658103619">확장 프로그램 페이지를 보는 중</translation>
 <translation id="6573200754375280815">오른쪽 2공 펀칭</translation>
@@ -1804,7 +1809,6 @@
 <translation id="5320462991730735481">Brave 설정에서 주소 추가 및 관리</translation>
 <translation id="7064851114919012435">연락처 정보</translation>
 <translation id="7068733155164172741"><ph name="OTP_LENGTH"/>자리 코드 입력</translation>
-<translation id="7070090581017165256">사이트 정보</translation>
 <translation id="70705239631109039">연결의 보안이 완벽하지 않음</translation>
 <translation id="7075452647191940183">요청이 너무 큼</translation>
 <translation id="7079718277001814089">이 사이트에 멀웨어가 있습니다.</translation>
@@ -1935,6 +1939,12 @@
 <translation id="7485870689360869515">데이터 없음</translation>
 <translation id="7495528107193238112">이 콘텐츠는 차단되어 있습니다. 문제를 해결하려면 사이트 소유자에게 문의하세요.</translation>
 <translation id="7812541223399526596">문서 만들기 버튼, Enter를 눌러 빠르게 새 Brave 문서 만들기</translation>
+<translation id="2957285558977211818">Brave에서는 다음 정보를 <ph name="BEGIN_EMPHASIS"/>저장하지 않습니다<ph name="END_EMPHASIS"/>.
+          <ph name="BEGIN_LIST"/>
+            <ph name="LIST_ITEM"/>방문 기록
+            <ph name="LIST_ITEM"/>쿠키 및 사이트 데이터
+            <ph name="LIST_ITEM"/>양식에 입력된 정보
+          <ph name="END_LIST"/></translation>
 <translation id="7508255263130623398">반환된 정책 기기 ID가 비었거나 현재 기기 ID와 일치하지 않음</translation>
 <translation id="7508870219247277067">아보카도 녹색</translation>
 <translation id="7511955381719512146">사용 중인 Wi-Fi에서 <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> 방문을 요청할 수 있습니다.</translation>
@@ -2045,7 +2055,6 @@
 <translation id="4670564340385807132">Brave에서 추천검색어를 삭제하시겠습니까?</translation>
 <translation id="781440967107097262">클립보드를 공유하시겠습니까?</translation>
 <translation id="7815407501681723534">'<ph name="SEARCH_STRING"/>'에 대해 <ph name="SEARCH_RESULTS"/> <ph name="NUMBER_OF_RESULTS"/>개의 검색 결과를 찾았습니다.</translation>
-<translation id="782125616001965242">이 사이트에 관한 정보 표시</translation>
 <translation id="782886543891417279">사용 중인 Wi-Fi(<ph name="WIFI_NAME"/>)에서 로그인 페이지 방문을 요청할 수 있습니다.</translation>
 <translation id="7836231406687464395">Postfix(봉투)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{없음}=1{앱 1개(<ph name="EXAMPLE_APP_1"/>)}=2{앱 2개(<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{앱 #개(<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
@@ -2089,7 +2098,6 @@
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">가상 현실 기기 및 데이터의 사용을 요청할 수 있음</translation>
 <translation id="8896585555528145662">현재 <ph name="SITE"/>에서 Brave이 처리할 수 없는 암호화된 자격증명 정보를 전송했기 때문에 방문할 수 없습니다. 네트워크 오류와 공격은 대부분 일시적이므로 잠시 후 페이지가 정상화될 것입니다.</translation>
-<translation id="79859296434321399">증강 현실 콘텐츠를 보려면 ARCore를 설치하세요.</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">바인드</translation>
 <translation id="7992044431894087211"><ph name="APPLICATION_TITLE"/>과(와)의 화면 공유가 재개되었습니다.</translation>
@@ -2153,6 +2161,7 @@
 <translation id="8202370299023114387">충돌</translation>
 <translation id="8206978196348664717">Prc4(봉투)</translation>
 <translation id="8211406090763984747">이 사이트는 보안 연결(HTTPS)이 사용되었습니다.</translation>
+<translation id="8217240300496046857">사이트에서 웹 전반에 걸쳐 사용자를 추적하는 쿠키를 사용할 수 없습니다. 일부 사이트에서는 기능이 작동하지 않을 수 있습니다.</translation>
 <translation id="8218327578424803826">지정된 위치:</translation>
 <translation id="8220146938470311105">C7/C6(봉투)</translation>
 <translation id="8228419419708659934">두 페이지씩 보기</translation>
@@ -2191,6 +2200,7 @@
 <translation id="830498451218851433">폴드 하프</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">설치된 앱 및 앱의 사용 빈도</translation>
+<translation id="8317207217658302555">ARCore를 업데이트하시겠습니까?</translation>
 <translation id="831997045666694187">저녁</translation>
 <translation id="8321476692217554900">알림</translation>
 <translation id="8332188693563227489"><ph name="HOST_NAME"/>에 대한 액세스가 거부됨</translation>
@@ -2254,7 +2264,6 @@
 <translation id="8554912124839363479">{NUM_PERMISSIONS,plural, =1{권한 재설정}other{권한 재설정}}</translation>
 <translation id="8555010941760982128">결제 시 다음 코드를 사용하세요</translation>
 <translation id="8557066899867184262">CVC는 카드 뒷면에 있습니다.</translation>
-<translation id="8558485628462305855">증강 현실 콘텐츠를 보려면 ARCore를 업데이트하세요.</translation>
 <translation id="8559762987265718583">기기의 날짜와 시간(<ph name="DATE_AND_TIME"/>)이 잘못되어 <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/>에 대한 비공개 연결을 설정할 수 없습니다.</translation>
 <translation id="8564182942834072828">별도 문서/모으지 않은 사본</translation>
 <translation id="8574899947864779331">Touch ID를 사용하여 빠르게 카드 확인</translation>
@@ -2272,6 +2281,7 @@
 <translation id="865032292777205197">움직임 감지 센서</translation>
 <translation id="8663226718884576429">주문 요약, <ph name="TOTAL_LABEL"/>, 세부정보 더보기</translation>
 <translation id="8666678546361132282">영어</translation>
+<translation id="8669306706049782872">화면에 관한 정보를 사용하여 창을 열고 배치합니다.</translation>
 <translation id="867224526087042813">서명</translation>
 <translation id="8676424191133491403">지연 없음</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, 답변, <ph name="ANSWER"/></translation>
@@ -2321,6 +2331,7 @@
 <translation id="883848425547221593">기타 북마크</translation>
 <translation id="884264119367021077">배송지 주소</translation>
 <translation id="884923133447025588">폐기 매커니즘을 찾을 수 없습니다.</translation>
+<translation id="8849262850971482943">보안 강화를 위해 가상 카드 사용하기</translation>
 <translation id="7487066225574140895">Brave과 공유</translation>
 <translation id="4764754838347156633">다른 사이트에서 비밀번호를 재사용했다면 <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> 비밀번호를 재설정하는 것이 좋습니다.</translation>
 <translation id="885906927438988819">철자가 올바르다면 <ph name="BEGIN_LINK"/>Windows 네트워크 진단을 실행<ph name="END_LINK"/>해 보세요.</translation>
@@ -2486,22 +2497,23 @@
 <translation id="8794378783472961468">하지만 흔적이 아예 남지 않는 것은 아닙니다. 시크릿 모드로 탐색해도 회사, 인터넷 서비스 제공업체 또는 방문한 웹사이트에 저장된 흔적까지 없앨 수는 없습니다.</translation>
 <translation id="5673623523506565506">이제 비공개로 탐색할 수 있으며, 이 장치를 사용하는 다른 프로필은 사용자의 활동을 볼 수 없습니다. 하지만 다운로드 및 북마크는 저장됩니다.</translation>
 <translation id="3812568169637430422">이제 비공개로 탐색할 수 있으며, 이 장치를 사용하는 다른 프로필은 사용자의 활동을 볼 수 없습니다. 하지만 다운로드, 북마크 및 읽기 목록 항목은 저장됩니다.</translation>
-<translation id="5186185447130319458">시크릿 모드</translation>
+<translation id="6085043210649933880">프라이버시를 보호하는 Brave</translation>
 <translation id="3683567996395248272">시크릿 모드의 기능</translation>
-<translation id="4912243263991194586">시크릿 탭을 닫으면 Brave가 다음 기록을 지웁니다.
-       <ph name="BEGIN_LIST"/>
-         <ph name="LIST_ITEM"/>이 디바이스에서의 인터넷 사용 기록<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>이 디바이스에서의 검색 기록<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>양식에 입력한 정보<ph name="END_LIST_ITEM"/>
-       <ph name="END_LIST"/></translation>
+<translation id="8817208096236092047">Brave 비공개 탭을 모두 닫으면 해당 탭에서의 다음 활동 내역이 디바이스에서 삭제됩니다.
+          <ph name="BEGIN_LIST"/>
+            <ph name="LIST_ITEM"/>인터넷 사용 기록<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>검색 기록<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>양식에 입력한 정보<ph name="END_LIST_ITEM"/>
+          <ph name="END_LIST"/></translation>
 <translation id="137199123615682137">시크릿 모드 사용 시 남지 않는 기록</translation>
-<translation id="6101678912379763265">시크릿 모드에서도 다음과 같은 정보는 완전히 숨길 수 없습니다.
-       <ph name="BEGIN_LIST"/>
-         <ph name="LIST_ITEM"/>사이트는 방문자가 방문한 시점을 알 수 있음<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>회사나 학교에서는 인터넷 사용 기록을 추적할 수 있음<ph name="END_LIST_ITEM"/>
-         <ph name="LIST_ITEM"/>인터넷 서비스 제공자는 웹 트래픽을 추적할 수 있음<ph name="END_LIST_ITEM"/>
-       <ph name="END_LIST"/></translation>
-<translation id="9062351672326756130">시크릿 모드 <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="7653199919907357627">비공개 모드에서도 다음과 같은 정보는 완전히 숨길 수 없습니다.
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>사이트 및 서비스는 방문자가 방문한 사실을 알 수 있음<ph name="END_LIST_ITEM"/>
+          <ph name="LIST_ITEM"/>회사나 학교에서는 인터넷 사용 기록을 추적할 수 있음<ph name="END_LIST_ITEM"/>
+          <ph name="LIST_ITEM"/>인터넷 서비스 제공자는 웹 트래픽을 모니터링할 수 있음<ph name="END_LIST_ITEM"/>
+        <ph name="END_LIST"/></translation>
+<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>프라이버시를 보호하는 Brave 자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="9153679102508470540">비공개 모드에서 타사 쿠키 차단</translation>
 <translation id="5549245478906381817">비공개 창 열기</translation>
 <translation id="5497977785983089120">비공개로 탐색하려면 새 비공개 창을 여세요</translation>
 <translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, Tab 키를 누른 다음 Enter 키를 눌러 비공개로 탐색할 새 비공개 창을 여세요</translation>

@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
 <translation id="2278950434998763147">Öffnet manche Seiten über eine sichere HTTPS-Verbindung anstelle einer gewöhnlichen HTTP-Verbindung.</translation>
 <translation id="94154759592465111">Skripte blockieren</translation>
-<translation id="3518266709656143462">Blockiert Javascript (kann zu Fehlfunktionen auf Websites führen)</translation>
+<translation id="7714773920987474116">Blockiert JavaScript (kann zu Fehlfunktionen auf Websites führen)</translation>
 <translation id="6052725679982758334">Social Media Blocking</translation>
 <translation id="7498695072878479744">Google-Anmelde-Buttons auf Drittwebsites erlauben</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Die wichtigsten Themen des Tages in einem absolut privaten Feed, nur für Sie zusammengestellt.</translation>
 <translation id="7266075701303521777">Brave-Nachrichten werden werbefinanziert mit vollständig privaten und anonymisierten Anzeigen, die auf Ihrem Gerät abgeglichen werden.</translation>
 <translation id="4541978218358617681">Werbung</translation>
-<translation id="7823038307453615214">Brave News aktivieren</translation>
+<translation id="7823038307453615214">Brave News anzeigen</translation>
 <translation id="6527303717912515753">Teilen</translation>
 <translation id="1654539412343893324">Mehr über Ihre Daten erfahren</translation>
 <translation id="2989805286512600854">In neuem Tab öffnen</translation>
@@ -97,7 +97,8 @@
 <translation id="6511854390690723657">Dies ist Ihre erste Brave-Anzeige. Tippen Sie, um mehr zu erfahren.</translation>
 <translation id="2070991379950719711">Brave Rewards jetzt nutzen</translation>
 <translation id="48520986898237073">Weiter zur Wallet:</translation>
-<translation id="6800338374677644736">Als Standardbrowser setzen</translation>
+<translation id="3570367516044491911">Als Standardbrowser setzen</translation>
+<translation id="6800338374677644736">Als Standardbrowser festlegen</translation>
 <translation id="19715420010996093">Wählen Sie Brave-Browser und tippen Sie auf „Immer“</translation>
 <translation id="3546439402724649282">Brave ist bereits aus Ihr Standardbrowser gesetzt.</translation>
 <translation id="8389661903259423907">Sie haben bereits einen Standardbrowser festgelegt. Sie können den Standardbrowser in Ihren App-Einstellungen ändern.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">Wallet-Guthaben:</translation>
 <translation id="2573313946367623146">meine Spende senden</translation>
 <translation id="3250511771491660127">Monatlich wiederholen</translation>
+<translation id="7658239707568436148">Abbrechen</translation>
+<translation id="1201402288615127009">Weiter</translation>
+<translation id="8481779960444041069">Um Ihre Privatsphäre zu verbessern, legen Sie Brave als Ihren Standardbrowser fest</translation>
+<translation id="1938402585819943124">Wählen Sie auf dem nächsten Bildschirm Brave.</translation>
+<translation id="8926389886865778422">Nicht mehr fragen</translation>
 <translation id="6639570430554986719">JANUAR</translation>
 <translation id="1807352595146144483">FEBRUAR</translation>
 <translation id="2021828608097804771">MÄRZ</translation>
@@ -518,9 +524,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="6478996494082389936">private Produktanalytik.</translation>
 <translation id="5187052478998910855">Brauchen Sie eine kleine Erinnerung über Rewards?</translation>
 <translation id="8622329973403382303">Machen Sie eine schnelle Tour, um Ihre Kenntnisse darüber, wie es funktioniert, aufzufrischen und als Rewards-Rockstar in die Geschichte einzugehen!</translation>
-<translation id="7625138338483121345">Öffnen Sie zum Schutz Ihrer Privatsphäre alle Links in Brave</translation>
-<translation id="4511485286950743564">Brave Shields blockiert Trackers &amp; Werbung, spart Datenvolumen und spart dir bei jedem Websitebesuch Zeit.</translation>
-<translation id="9218430445555521422">Brave als Standard einrichten</translation>
+<translation id="7625138338483121345">Brave als Standardbrowser festlegen</translation>
+<translation id="4511485286950743564">Mit Brave als Standard öffnet sich jeder Link, auf den Sie klicken, mit Braves Datenschutzbestimmungen.</translation>
+<translation id="9218430445555521422">Als Standardbrowser festlegen</translation>
 <translation id="3479552764303398839">Jetzt nicht</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -539,7 +545,6 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1822560017823072927">Voreingestellte öffentliche und private Benutzerschnittstellen</translation>
 <translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
 <translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
-<translation id="3171931580569169744">Tabgruppen aktivieren</translation>
 <translation id="5587305863196367357">Wenn Sie ihre Wallet verifizieren, können Sie Ihr Guthaben ganz leicht verwalten, einzahlen und abheben.</translation>
 <translation id="5760671211380791582">Sie haben nicht genügend BAT.</translation>
 <translation id="442469478596827903">Sie brauchen mindestens 2 BAT für eine verifizierte Uphold-Wallet. Bitte versuchen Sie es später erneut.</translation>
@@ -562,7 +567,8 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="375882617301124395">Sichern Sie Ihre Krypto-Wallet</translation>
 <translation id="8289942708804097960">Kryptowährung mit Kredit- oder Debitkarte kaufen.</translation>
 <translation id="841880029259839903">Kryptowährungen senden oder zwischen Konten überweisen.</translation>
-<translation id="8226778393040773102">Krypto-Vermögenswerte mit dem Brave DEX-Aggregator tauschen.</translation>
+<translation id="8226778393040773102">Token und Assets tauschen</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> verarbeitet die Ethereum-Adresse und IP-Adresse, um eine Transaktion durchzuführen (einschließlich des Einholens von Angeboten). <ph name="DEX_PROVIDER"/> wird diese Daten NUR zur Abwicklung von Transaktionen verwenden.</translation>
 <translation id="1783600039044302171">Schütze deine Kryptowährung mit einem Passwort</translation>
 <translation id="3726490322412361740">Passwort eingeben</translation>
 <translation id="3038243139480464605">Passwort verifizieren</translation>
@@ -590,7 +596,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="283071225285270357">Formulierung zur Wiederherstellung eingeben</translation>
 <translation id="3943857333388298514">Einfügen</translation>
 <translation id="3331452756822160641">Neues Passwort</translation>
-<translation id="4359319875297001084">Ich stelle die alte Brave-Krypto-Wallet wieder her</translation>
+<translation id="4359319875297001084">Import aus alten Brave-Krypto-Wallets?</translation>
 <translation id="2339124864228588937">Formulierung zur Wiederherstellung bestätigen</translation>
 <translation id="3747079125031086337">Wählen Sie die Wörter in Ihrer Wiederherstellungsphrase in der richtigen Reihenfolge aus.</translation>
 <translation id="6518133107902771759">Überprüfen</translation>
@@ -832,11 +838,12 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="665660671251623018">Währungsdezimalstellen der Kette</translation>
 <translation id="182619028057179895">Ungültiges Format, die Dezimalstellen der Währung sind eine positive Zahl</translation>
 <translation id="2978054488731497946">Währungsdezimalstellen eingeben</translation>
-<translation id="7642841516562576649">Symbol-URLs</translation>
-<translation id="4693057234255364395">Explorer-URLs blockieren</translation>
+<translation id="7642841516562576649">Symbol-URL</translation>
+<translation id="4693057234255364395">Block-Explorer-URL</translation>
 <translation id="7059127752542505809">URL eingeben</translation>
 <translation id="2156993118928861787">Ungültige Adresse</translation>
 <translation id="6889920539620318793">Als aktiv setzen</translation>
 <translation id="2653659639078652383">Senden</translation>
 <translation id="8853725596990766789">Betrag ändern</translation>
+<translation id="5233638681132016545">Neuer Tab</translation>
 </translationbundle>

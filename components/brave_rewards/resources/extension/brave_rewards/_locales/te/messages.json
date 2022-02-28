@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Any tip you make will remain pending in your wallet and retry automatically for 90 days. $link_begin$Learn more$link_end$",
+    "message": "Any tip you make will remain pending and retry automatically for 90 days. $link_begin$Learn more$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "This creator is currently not configured to receive tips from your wallet.",
+    "message": "This creator is currently not configured to receive tips from your Rewards custodial wallet service.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Your Reward is on its way to your Brave Rewards wallet.",
+    "message": "Your Reward is on its way.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "My Wallet",
+    "message": "Verified",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verify Wallet",
+    "message": "ధృవీకరించు",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Reconnect",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Claim",
+  "notificationClaimRewards": {
+    "message": "Claim Rewards",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Claim Tokens",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Backup wallet",
+    "message": "Back up Brave Rewards",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Please backup your Brave wallet.",
+    "message": "Please back up your Brave Rewards.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Backup now",
+    "message": "Back up now",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Your wallet is logged out",
+    "message": "You are logged out",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Your wallet is verified!",
+    "message": "Your Brave Rewards is verified!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Your $provider$ wallet was successfully verified and is ready to add and withdraw funds.",
+    "message": "Your Brave Rewards was successfully verified with $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Token grants",
+    "message": "A token grant is available!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "You have a grant waiting for you.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ Rewards: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Ads earnings received",
-    "description": ""
+    "message": "Your $month$ Ad Rewards are here!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Your rewards from Brave Private Ads are here!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Monthly contribution failed",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "You have $days$ left to claim",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "There was a problem processing your contribution.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Monthly contribution failed",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verify your wallet",
+    "message": "ధృవీకరించు",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "In order to withdraw the tokens you earn for viewing ads, you’ll need to verify your wallet.",
+    "message": "In order to withdraw the BAT you earn for viewing ads, you’ll need to verify Brave Rewards.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Verify my wallet",
+    "message": "Verify Brave Rewards",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "By verifying your wallet and linking it to a bitFlyer account, you will be able to store and manage the tokens you have earned through Brave Rewards more easily",
+    "message": "By verifying your Brave Rewards and linking it to a bitFlyer account, you will be able to store and manage the BAT you have earned through Brave Rewards more easily",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

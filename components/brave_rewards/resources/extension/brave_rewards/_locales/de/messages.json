@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Jedes Trinkgeld, das Sie vergeben, bleibt in Ihrer Wallet ausstehend und der Vorgang wird 90 Tage lang automatisch erneut versucht. $link_begin$Mehr erfahren$link_end$",
+    "message": "Jedes Trinkgeld, das Sie vergeben, bleibt ausstehend und der Vorgang wird 90 Tage lang automatisch erneut versucht. $link_begin$Mehr erfahren$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Dieser Urheber ist derzeit nicht so konfiguriert, dass er Trinkgelder aus Ihrer Wallet erhalten kann.",
+    "message": "Dieser Ersteller ist derzeit nicht dafür konfiguriert, Trinkgelder von Ihrem Belohnungs-Guthabenservice zu erhalten.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Ihre Belohnung ist auf dem Weg zu Ihrer \"Brave Rewards\"-Wallet.",
+    "message": "Ihre Belohnung ist unterwegs.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Meine Wallet",
+    "message": "Verifiziert",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Wallet verifizieren",
+    "message": "Überprüfen",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Verbindung wiederherstellen",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Öffnen",
+  "notificationClaimRewards": {
+    "message": "Belohnungen in Anspruch nehmen",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Token in Anspruch nehmen",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,11 +305,11 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Wallet sichern",
+    "message": "Brave Belohnungen sichern",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Bitte erstellen Sie ein Backup Ihrer Brave-Wallet.",
+    "message": "Bitte sichern Sie Ihre Brave Belohnungen",
     "description": ""
   },
   "notificationBackupWalletAction": {
@@ -313,7 +317,7 @@
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Ihre Wallet wurde abgemeldet.",
+    "message": "Sie sind abgemeldet",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Ihre Wallet ist verifiziert!",
+    "message": "Ihre Brave Belohnungen sind verifiziert!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Ihre $provider$-Wallet wurde erfolgreich verifiziert und kann jetzt für Einzahlungen und Abhebungen genutzt werden.",
+    "message": "Ihre Brave Belohnungen wurden erfolgreich mit $provider$ verifiziert.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Gratis Token",
+    "message": "Kostenlose Token sind verfügbar!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Es warten ein paar gratis Token auf Sie.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$-Belohnungen: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Ads-Verdienst erhalten",
-    "description": ""
+    "message": "Ihre Belohnungen für Anzeigen im $month$ sind da!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Ihre Belohnungen aus Brave Private Ads sind da!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Monatlicher Beitrag fehlgeschlagen",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Sie haben noch $days$ Tage Zeit, um dies in Anspruch zu nehmen",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Ihr Guthaben reicht nicht aus, um Ihre geplanten monatliche Zahlungen und Spenden zu verarbeiten. Deshalb werden wir es in 30 Tagen erneut versuchen.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Bei der Verarbeitung Ihres Beitrags ist ein Fehler aufgetreten.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Monatlicher Beitrag fehlgeschlagen",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Verifizieren Sie Ihre Wallet",
+    "message": "Überprüfen",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Um die Token abheben zu können, die Sie für das Anzeigen von Werbung verdienen, müssen Sie Ihre Wallet verifizieren.",
+    "message": "Um die TFA, die Sie für das Anzeigen von Anzeigen verdienen, abzuheben, müssen Sie Brave Belohnungen verifizieren.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Meine Wallet verifizieren",
+    "message": "Brave Belohnungen verifizieren",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Nach der Verifizierung Ihrer Wallet und ihrer Verknüpfung mit einem bitFlyer-Konto können Sie die durch Brave Rewards verdienten Token leichter speichern und verwalten.",
+    "message": "Nach der Verifizierung Ihrer Brave Belohnungen und ihrer Verknüpfung mit einem bitFlyer-Konto können Sie die durch Brave Belohnungen verdienten TFA leichter speichern und verwalten.",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

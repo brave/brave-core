@@ -5,7 +5,6 @@
 <translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="2278950434998763147">פותח אתרים נתמכים בצורה מאובטחת באמצעות HTTPS במקום HTTP</translation>
 <translation id="94154759592465111">חסום תסריטים</translation>
-<translation id="3518266709656143462">‏חוסם JavaScript (עשוי לשבור אתרים)</translation>
 <translation id="6052725679982758334">חסימת מדיה חברתית</translation>
 <translation id="7498695072878479744">אפשר לחצני כניסה של Google באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
@@ -33,7 +32,7 @@
 <translation id="6252490671914511928">הסיפורים החמים של היום בפיד פרטי לחלוטין, במיוחד בשבילך.</translation>
 <translation id="7266075701303521777">חדשות Brave נתמכות באמצעות פרסומות אנונימיות ופרטיות לחלוטין שהותאמו למכשירך.</translation>
 <translation id="4541978218358617681">פרסומת</translation>
-<translation id="7823038307453615214">הפעל את חדשות Brave</translation>
+<translation id="7823038307453615214">הצג את Brave News</translation>
 <translation id="6527303717912515753">שיתוף</translation>
 <translation id="1654539412343893324">מידע נוסף אודות נתוניך</translation>
 <translation id="2989805286512600854">פתח בלשונית חדשה</translation>
@@ -97,7 +96,7 @@
 <translation id="6511854390690723657">זה פרסומת Brave הראשון שלך. נא להקיש כדי ללמוד עוד.</translation>
 <translation id="2070991379950719711">התחל להשתמש ב-Brave Rewards</translation>
 <translation id="48520986898237073">המשך לארנק</translation>
-<translation id="6800338374677644736">הגדר כדפדפן ברירת המחדל</translation>
+<translation id="3570367516044491911">הגדר כדפדפן ברירת המחדל</translation>
 <translation id="19715420010996093">בחר/י בדפדפן Brave והקש/י על "תמיד"</translation>
 <translation id="3546439402724649282">Brave כבר מוגדר כדפדפן ברירת המחדל שלך.</translation>
 <translation id="8389661903259423907">כבר הגדרת דפדפן ברירת מחדל. באפשרותך לשנות את דפדפן ברירת המחדל בהגדרות האפליקציה שלך.</translation>
@@ -115,6 +114,9 @@
 <translation id="3370968821559864204">יתרה בארנק:</translation>
 <translation id="2573313946367623146">שלח את הטיפ שלי</translation>
 <translation id="3250511771491660127">הפוך את זה חודשי</translation>
+<translation id="7658239707568436148">ביטול</translation>
+<translation id="1201402288615127009">הבא</translation>
+<translation id="8926389886865778422">אל תשאל שוב</translation>
 <translation id="6639570430554986719">ינואר</translation>
 <translation id="1807352595146144483">פברואר</translation>
 <translation id="2021828608097804771">מרץ</translation>
@@ -521,9 +523,8 @@
 <translation id="6478996494082389936">אנליטיקס מוצר פרטי.</translation>
 <translation id="5187052478998910855">זקוקים לרענון לגבי Rewards?</translation>
 <translation id="8622329973403382303">ערכו סיור מהיר כדי לרענן ידיעתכם לגבי איך זה עובד להיכנס להיסטוריה בתור כוכב רוק של Rewards!</translation>
-<translation id="7625138338483121345">פתיחת קישורים באמצעות Brave תשמור על פרטיותך</translation>
-<translation id="4511485286950743564">Brave Shields חוסם כלי מעקב וamp;amp; פרסומות, חוסך בנתונים וחוסך לך זמן בכל אתר שתבקר/י בו.</translation>
-<translation id="9218430445555521422">הגדר/י את Brave כברירת מחדל</translation>
+<translation id="7625138338483121345">‏הגדר את Brave בתור דפדפן ברירת המחדל</translation>
+<translation id="9218430445555521422">הגדר כברירת מחדל</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -542,7 +543,6 @@
 <translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
-<translation id="3171931580569169744">הפיכת קבוצות של כרטיסיות לזמינה</translation>
 <translation id="5587305863196367357">אימות הארנק מאפשר לכם לנהל את הכספים שלכם בצורה יעילה יותר ולהוסיף ולמשוך כספים.</translation>
 <translation id="5760671211380791582">אין לכם מספיק BAT.</translation>
 <translation id="442469478596827903">עליך לפתוח לפחות 2 BAT כדי ליצור ארנק Uphold מאומת. בבקשה נסה שוב בשלב מאוחר יותר.</translation>
@@ -565,7 +565,6 @@
 <translation id="375882617301124395">גבה את ארנק הקריפטו שלך</translation>
 <translation id="8289942708804097960">קנה קריפטו עם כרטיס אשראי או חיוב.</translation>
 <translation id="841880029259839903">שלח מטבע קריפטו או העבר מחשבון אחד לשני.</translation>
-<translation id="8226778393040773102">החלף נכסי קריפטו עם אגרגטור Brave DEX.</translation>
 <translation id="1783600039044302171">אבטח את מטבע הקריפטו שלך עם סיסמה</translation>
 <translation id="3726490322412361740">יש להזין ססמה</translation>
 <translation id="3038243139480464605">אמת סיסמה</translation>
@@ -593,7 +592,7 @@
 <translation id="283071225285270357">יש להזין את ביטוי השחזור שלך</translation>
 <translation id="3943857333388298514">הדבק</translation>
 <translation id="3331452756822160641">סיסמה חדשה</translation>
-<translation id="4359319875297001084">ביצוע שחזור ארנק קריפטו של Brave מהדור הקודם</translation>
+<translation id="4359319875297001084">לייבא מארנקי קריפטו Brave מדור קודם?</translation>
 <translation id="2339124864228588937">אמת ביטוי שחזור</translation>
 <translation id="3747079125031086337">בחר את המילים בביטוי השחזור שלך בסדר הנכון שלהן.</translation>
 <translation id="6518133107902771759">אימות</translation>
@@ -836,11 +835,11 @@
 <translation id="665660671251623018">עשרוני מטבע השרשרת</translation>
 <translation id="182619028057179895">פורמט לא חוקי, מזהה השרשרת הינו מספר חיובי</translation>
 <translation id="2978054488731497946">הזן את עשרוני המטבע</translation>
-<translation id="7642841516562576649">כתובות URL של הסמל</translation>
-<translation id="4693057234255364395">חסימת כתובות URL של סייר</translation>
+<translation id="4693057234255364395">חסימת כתובת URL של סייר</translation>
 <translation id="7059127752542505809">הזן כתובת URL</translation>
 <translation id="2156993118928861787">כתובת לא חוקית</translation>
 <translation id="6889920539620318793">הגדר כפעיל</translation>
 <translation id="2653659639078652383">שלח</translation>
 <translation id="8853725596990766789">שנה סכום</translation>
+<translation id="5233638681132016545">כרטיסייה חדשה</translation>
 </translationbundle>

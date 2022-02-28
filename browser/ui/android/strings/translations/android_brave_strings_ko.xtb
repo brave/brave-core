@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">연결을 HTTPS로 업그레이드</translation>
 <translation id="2278950434998763147">일부 웹사이트를 일반 HTTP 대신 보안 HTTPS를 사용하여 엽니다.</translation>
 <translation id="94154759592465111">스크립트 차단</translation>
-<translation id="3518266709656143462">자바스크립트 차단(사이트가 깨질 수 있음)</translation>
+<translation id="7714773920987474116">자바스크립트 차단(사이트가 깨질 수 있음)</translation>
 <translation id="6052725679982758334">소셜 미디어 차단</translation>
 <translation id="7498695072878479744">타사 사이트에서 Google 로그인 버튼 허용</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">오늘의 주요 스토리가 완전 맞춤형 비공개 피드에 제공됩니다.</translation>
 <translation id="7266075701303521777">Brave News는 광고의 도움으로 제공되는 서비스로, 기기에 맞춘 비공개 익명 광고를 표시합니다.</translation>
 <translation id="4541978218358617681">광고</translation>
-<translation id="7823038307453615214">Brave News 켜기</translation>
+<translation id="7823038307453615214">Brave News 표시</translation>
 <translation id="6527303717912515753">공유</translation>
 <translation id="1654539412343893324">데이터에 대해 자세히 알아보기</translation>
 <translation id="2989805286512600854">새 탭에서 열기</translation>
@@ -97,6 +97,7 @@
 <translation id="6511854390690723657">귀하의 첫 Brave 광고입니다. 탭해서 더 알아보세요.</translation>
 <translation id="2070991379950719711">획득 &amp; 기부</translation>
 <translation id="48520986898237073">월릿으로 계속</translation>
+<translation id="3570367516044491911">기본 브라우저로 설정</translation>
 <translation id="6800338374677644736">기본 브라우저로 설정</translation>
 <translation id="19715420010996093">Brave Browser를 선택하고 "항상"을 탭하세요</translation>
 <translation id="3546439402724649282">Brave가 이미 기본 브라우저로 설정되어 있습니다.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">지갑 잔액:</translation>
 <translation id="2573313946367623146">내 팁 보내</translation>
 <translation id="3250511771491660127">이것을 매달 하기</translation>
+<translation id="7658239707568436148">취소</translation>
+<translation id="1201402288615127009">다음</translation>
+<translation id="8481779960444041069">프라이버시를 강화하려면 Brave를 기본 브라우저로</translation>
+<translation id="1938402585819943124">다음 화면에서 Brave를 선택하세요.</translation>
+<translation id="8926389886865778422">이 메시지 그만 보기</translation>
 <translation id="6639570430554986719">1월</translation>
 <translation id="1807352595146144483">2월</translation>
 <translation id="2021828608097804771">3월</translation>
@@ -519,9 +525,9 @@
 <translation id="6478996494082389936">프라이빗 상품 분석.</translation>
 <translation id="5187052478998910855">리워드에 대해 복습이 필요하신가요?</translation>
 <translation id="8622329973403382303">역사에 리워드 락스타로 남을 수 있도록 어떻게 작동하는지에 대해 간단히 복습해 봅시다!</translation>
-<translation id="7625138338483121345">나의 프라이버시 보호를 위해 모든 링크를 Brave로 여세요</translation>
-<translation id="4511485286950743564">Brave Shields는 트래커 &amp; 광고를 차단하고, 데이터를 절약하고, 방문하는 모든 사이트에서 시간을 아껴줍니다.</translation>
-<translation id="9218430445555521422">Brave를 기본으로 설정</translation>
+<translation id="7625138338483121345">Brave을 기본 브라우저로 사용</translation>
+<translation id="4511485286950743564">Brave를 기본 브라우저로 설정하면 클릭하는 모든 링크가 프라이버시를 보호하는 Brave로 열립니다.</translation>
+<translation id="9218430445555521422">기본 브라우저로 설정</translation>
 <translation id="3479552764303398839">나중에</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -540,7 +546,6 @@
 <translation id="1822560017823072927">기본 공개 및 비공개 인터페이스</translation>
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
-<translation id="3171931580569169744">탭 그룹 활성화</translation>
 <translation id="5587305863196367357">지갑을 확인하면 자금 관리, 추가, 인출이 쉬워집니다.</translation>
 <translation id="5760671211380791582">BAT가 충분하지 않습니다.</translation>
 <translation id="442469478596827903">확인된 Uphold 지갑을 만들려면 최소 2BAT가 필요합니다. 다시 시도하세요.</translation>
@@ -563,7 +568,8 @@
 <translation id="375882617301124395">암호화폐 월렛 백업</translation>
 <translation id="8289942708804097960">신용/직불카드로 암호화폐를 구입할 수 있습니다.</translation>
 <translation id="841880029259839903">한 계정에서 다른 계정으로 암호화폐를 보내거나 이전합니다.</translation>
-<translation id="8226778393040773102">Brave DEX 애그리게이터로 암호화폐 자산을 스왑합니다.</translation>
+<translation id="8226778393040773102">토큰 및 자산 스왑</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/>가 이더리움 주소와 IP 주소를 처리하여 트랜잭션을 수행합니다(견적 받기 포함). <ph name="DEX_PROVIDER"/>는 거래 처리 목적으로만 이 데이터를 사용합니다.</translation>
 <translation id="1783600039044302171">비밀번호로 암호화폐 안전하게 보호</translation>
 <translation id="3726490322412361740">비밀번호 입력</translation>
 <translation id="3038243139480464605">검증 비밀번호</translation>
@@ -591,7 +597,7 @@
 <translation id="283071225285270357">복구 문구 입력</translation>
 <translation id="3943857333388298514">붙여넣기</translation>
 <translation id="3331452756822160641">새 비밀번호</translation>
-<translation id="4359319875297001084">레거시 Brave 암호화폐 월렛에서 복구 중</translation>
+<translation id="4359319875297001084">레거시 Brave 암호화폐 월렛에서 가져오시겠습니까?</translation>
 <translation id="2339124864228588937">복구 문구 확인</translation>
 <translation id="3747079125031086337">복구 문구 내의 단어를 올바른 순서대로 선택하세요.</translation>
 <translation id="6518133107902771759">확인</translation>
@@ -840,4 +846,5 @@
 <translation id="6889920539620318793">활성으로 설정</translation>
 <translation id="2653659639078652383">제출</translation>
 <translation id="8853725596990766789">금액 변경</translation>
+<translation id="5233638681132016545">새 탭</translation>
 </translationbundle>

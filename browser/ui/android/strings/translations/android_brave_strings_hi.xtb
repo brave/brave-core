@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
 <translation id="2278950434998763147">सामान्य HTTP के बजाय सुरक्षित HTTPS कनेक्शन का उपयोग करके कुछ साइटें खोलता है.</translation>
 <translation id="94154759592465111">स्क्रिप्ट्स को अवरुद्ध करें</translation>
-<translation id="3518266709656143462">जावास्क्रिप्ट को ब्लॉक करता है (साइटों को ब्रेक कर सकता है)</translation>
+<translation id="7714773920987474116">जावास्क्रिप्ट को ब्लॉक करता है (साइटों को ब्रेक कर सकता है)</translation>
 <translation id="6052725679982758334">सोशल मीडिया ब्लॉकिंग</translation>
 <translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">आज की शीर्ष कहानियाँ पूरी तरह से प्राइवेट फ़ीड में, सिर्फ आपके लिए.</translation>
 <translation id="7266075701303521777">Brave न्यूज़ आपके डिवाइस पर मेल खाने वाले पूरी तरह से प्राइवेट और अनजान ऐड से ऐड सपोर्टेड है.</translation>
 <translation id="4541978218358617681">विज्ञापन</translation>
-<translation id="7823038307453615214">Brave न्यूज़ शुरू करें</translation>
+<translation id="7823038307453615214">Brave न्यूज़ दिखाएँ</translation>
 <translation id="6527303717912515753">शेयर करें</translation>
 <translation id="1654539412343893324">डेटा के बारे में अधिक जानें</translation>
 <translation id="2989805286512600854">नए टैब में खोलें</translation>
@@ -97,7 +97,8 @@
 <translation id="6511854390690723657">यह आपका पहला Brave विज्ञापन है। और जानने के लिए टैप करें।</translation>
 <translation id="2070991379950719711">ब्रेव रिवार्ड्स का उपयोग करना शुरू करें</translation>
 <translation id="48520986898237073">वॉलेट में योगदान करें</translation>
-<translation id="6800338374677644736">डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
+<translation id="3570367516044491911">डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
+<translation id="6800338374677644736">डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें</translation>
 <translation id="19715420010996093">Brave ब्राउज़र का चयन करें और 'हमेशा' टैप करें</translation>
 <translation id="3546439402724649282">Brave पहले से ही आपके डिफ़ॉल्ट ब्राउज़र के रूप में सेट है।</translation>
 <translation id="8389661903259423907">आपने पहले ही एक डिफ़ॉल्ट ब्राउज़र सेट कर लिया है। आप अपनी ऐप सेटिंग में डिफ़ॉल्ट ब्राउज़र को बदल सकते हैं।</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">वॉलेट बैलेंस:</translation>
 <translation id="2573313946367623146">मेरी टिप भेजें</translation>
 <translation id="3250511771491660127">इसे मासिक बनाएं</translation>
+<translation id="7658239707568436148">रद्द करना</translation>
+<translation id="1201402288615127009">अगला</translation>
+<translation id="8481779960444041069">अपनी गोपनीयता में सुधार करने के लिए, Brave को अपने डिफ़ॉल्ट ब्राउज़र के तौर पर सेट करें</translation>
+<translation id="1938402585819943124">अगली स्क्रीन पर Brave चुनें.</translation>
+<translation id="8926389886865778422">दोबारा न पूछें</translation>
 <translation id="6639570430554986719">जनवरी</translation>
 <translation id="1807352595146144483">फ़रवरी</translation>
 <translation id="2021828608097804771">मार्च</translation>
@@ -517,9 +523,9 @@
 <translation id="6478996494082389936">निजी उत्पाद का विश्लेषण।</translation>
 <translation id="5187052478998910855">पुरस्कारों के बारे में नई जानकारी चाहिए?</translation>
 <translation id="8622329973403382303">पुरस्कार रॉकस्टार के रूप में इतिहास दर्ज होने के लिए यह कैसे काम करता है, यह जानने के लिए एक त्वरित टूर करें!</translation>
-<translation id="7625138338483121345">अपनी गोपनीयता की रक्षा के लिए सभी लिंक को Brave के साथ खोलें</translation>
-<translation id="4511485286950743564">Brave Shields ट्रैकर्स &amp; विज्ञापनों को ब्लॉक करता है, डेटा सेव करता है और प्रत्येक साइट पर आपका समय बचाता है।</translation>
-<translation id="9218430445555521422">Brave को डिफ़ॉल्ट के रूप में सेट करें</translation>
+<translation id="7625138338483121345">क्रोमियम को अपना डिफ़ॉल्ट ब्राउज़र बनाएं</translation>
+<translation id="4511485286950743564">Brave डिफ़ॉल्ट के तौर पर, आपके द्वारा क्लिक किया जाने वाला प्रत्येक लिंक Brave की गोपनीयता सुरक्षा के साथ खुलती है.</translation>
+<translation id="9218430445555521422">डिफ़ॉल्ट के रूप में सेट करें</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -538,7 +544,6 @@
 <translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
 <translation id="5825943197137337319">केवल डिफ़ॉल्ट सार्वजनिक इंटरफ़ेस</translation>
 <translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
-<translation id="3171931580569169744">टैब ग्रूप इनेबल करें</translation>
 <translation id="5587305863196367357">वॉलेट वेरिफ़ाई करने के बाद आप अपने फंड को आसानी से मैनेज कर सकते हैं, जैसे पैसे डालना और निकालना</translation>
 <translation id="5760671211380791582">आपके पास पर्याप्त BAT नहीं हैं.</translation>
 <translation id="442469478596827903">एक वेरिफ़ाईड Uphold वॉलेट बनाने के लिए आपको कम से कम 2 BAT की ज़रूरत होती है. कृपया बाद में दोबारा कोशिश करें.</translation>
@@ -561,7 +566,8 @@
 <translation id="375882617301124395">अपने क्रिप्टो वॉलेट का बैकअप लें</translation>
 <translation id="8289942708804097960">क्रेडिट या डेबिट कार्ड से क्रिप्टो खरीदें.</translation>
 <translation id="841880029259839903">क्रिप्टो भेजें या एक अकाउंट से दूसरे अकॉउंट में ट्रांसफर करें.</translation>
-<translation id="8226778393040773102">Brave DEX एग्रीगेटर से क्रिप्टो एसेट को स्वैप करें.</translation>
+<translation id="8226778393040773102">टोकन और एसेट को स्वैप करें</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> लेनदेन को पूरा करने के लिए एथेरियम पते और आईपी पते को संसाधित करेगा (उद्धरण प्राप्त करने सहित). <ph name="DEX_PROVIDER"/> इस डेटा का उपयोग केवल लेन-देन संसाधित करने के प्रयोजनों के लिए करेगा.</translation>
 <translation id="1783600039044302171">पासवर्ड से अपना क्रिप्टो सुरक्षित करें</translation>
 <translation id="3726490322412361740">पासवर्ड एंटर करें</translation>
 <translation id="3038243139480464605">पासवर्ड वेरीफ़ाई करें</translation>
@@ -589,7 +595,7 @@
 <translation id="283071225285270357">रिकवरी फ्रेज़ एंटर करें</translation>
 <translation id="3943857333388298514">चिपकाएं</translation>
 <translation id="3331452756822160641">नया पासवर्ड</translation>
-<translation id="4359319875297001084">मैं लिगेसी Brave Crypto वॉलेट से रस्टोर कर रहा हूँ</translation>
+<translation id="4359319875297001084">लिगेसी Brave क्रिप्टो वॉलेट से इम्पोर्ट करें?</translation>
 <translation id="2339124864228588937">रिकवरी वाक्यांश वेरीफ़ाई करें</translation>
 <translation id="3747079125031086337">अपने रिकवरी फ़्रेज़ में शब्दों को उनके सही क्रम में चुनें.</translation>
 <translation id="6518133107902771759">सत्यापित करें</translation>
@@ -832,10 +838,11 @@
 <translation id="182619028057179895">अमान्य फ़ॉर्मेट, करेंसी डेसीमल एक धनात्मक संख्या है</translation>
 <translation id="2978054488731497946">करेंसी के डेसिमल डालें</translation>
 <translation id="7642841516562576649">आइकन के URL</translation>
-<translation id="4693057234255364395">Explorer के URL ब्लॉक करें</translation>
+<translation id="4693057234255364395">एक्सप्लोरर को ब्लॉक करें</translation>
 <translation id="7059127752542505809">URL डालें</translation>
 <translation id="2156993118928861787">अमान्य पता</translation>
 <translation id="6889920539620318793">एक्टिव के तौर पर सेट करें</translation>
 <translation id="2653659639078652383">सबमिट करें</translation>
 <translation id="8853725596990766789">राशि बदलें</translation>
+<translation id="5233638681132016545">नया टैब</translation>
 </translationbundle>

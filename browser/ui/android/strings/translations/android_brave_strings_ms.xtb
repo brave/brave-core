@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
 <translation id="2278950434998763147">Membuka sesetengah tapak menggunakan sambungan HTTPS yang selamat dan bukannya HTTP biasa.</translation>
 <translation id="94154759592465111">Sekat Skrip</translation>
-<translation id="3518266709656143462">Menyekat Javascript (mungkin memecahkan tapak)</translation>
+<translation id="7714773920987474116">Menyekat JavaScript (boleh merosakkan laman)</translation>
 <translation id="6052725679982758334">Sekatan Media Sosial</translation>
 <translation id="7498695072878479744">Membenarkan butang log masuk Google di tapak pihak ketiga</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Cerita popular hari ini dalam suapan peribadi sepenuhnya, hanya untuk anda.</translation>
 <translation id="7266075701303521777">Berita Brave disokong iklan dengan iklan peribadi dan tanpa nama sepenuhnya yang dipadankan pada peranti anda.</translation>
 <translation id="4541978218358617681">Iklan</translation>
-<translation id="7823038307453615214">Hidupkan Berita Brave</translation>
+<translation id="7823038307453615214">Tunjukkan Brave News</translation>
 <translation id="6527303717912515753">Kongsi</translation>
 <translation id="1654539412343893324">Ketahui lebih lanjut tentang data anda</translation>
 <translation id="2989805286512600854">Buka dalam Tab Baharu</translation>
@@ -97,7 +97,8 @@
 <translation id="6511854390690723657">Ini iklan Brave pertama anda. Ketik untuk mengetahui lebih lanjut.</translation>
 <translation id="2070991379950719711">Mula menggunakan Ganjaran Brave</translation>
 <translation id="48520986898237073">Teruskan ke dompet</translation>
-<translation id="6800338374677644736">Tetapkan sebagai pelayar lalai</translation>
+<translation id="3570367516044491911">Tetapkan sebagai pelayar lalai</translation>
+<translation id="6800338374677644736">Tetapkan sebagai Penyemak Imbas Lalai</translation>
 <translation id="19715420010996093">Pilih Pelayar Brave dan ketik 'Sentiasa'</translation>
 <translation id="3546439402724649282">Brave sudah pun ditetapkan sebagai pelayar lalai anda.</translation>
 <translation id="8389661903259423907">Anda telah pun menetapkan pelayar lalai. Anda boleh mengubah pelayar lalai melalui tetapan aplikasi anda.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">baki dompet:</translation>
 <translation id="2573313946367623146">hantar tip saya</translation>
 <translation id="3250511771491660127">Jadikan ini setiap bulan</translation>
+<translation id="7658239707568436148">Batal</translation>
+<translation id="1201402288615127009">Seterusnya</translation>
+<translation id="8481779960444041069">Untuk menambah baik privasi anda, tetapkan Brave sebagai Penyemak Imbas lalai anda</translation>
+<translation id="1938402585819943124">Pilih Brave pada skrin berikutnya.</translation>
+<translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="6639570430554986719">JANUARI</translation>
 <translation id="1807352595146144483">FEBRUARI</translation>
 <translation id="2021828608097804771">MAC</translation>
@@ -520,9 +526,9 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="6478996494082389936">analitik produk peribadi.</translation>
 <translation id="5187052478998910855">Perlukan penerangan semula tentang Ganjaran?</translation>
 <translation id="8622329973403382303">Teroka untuk mempelajari bagaimana caranya untuk mencatat nama dalam sejarah sebagai bintang rock Ganjaran!</translation>
-<translation id="7625138338483121345">Buka semua pautan dengan Brave untuk melindungi privasi anda</translation>
-<translation id="4511485286950743564">Perisai Brave menyekat penjejak &amp; ads, menyimpan data, dan menjimatkan masa anda di setiap tapak web yang anda layari.</translation>
-<translation id="9218430445555521422">Tetapkan Brave sebagai lalai</translation>
+<translation id="7625138338483121345">Jadikan Brave penyemak imbas lalai anda</translation>
+<translation id="4511485286950743564">Apabila Brave ditetapkan sebagai lalai, setiap pautan yang anda klik akan dibuka dengan perlindungan privasi Brave.</translation>
+<translation id="9218430445555521422">Tetapkan sebagai lalai</translation>
 <translation id="3479552764303398839">Bukan sekarang</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -541,7 +547,6 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="1822560017823072927">Antara muka awam dan peribadi yang asal</translation>
 <translation id="5825943197137337319">Antara muka awam asal sahaja</translation>
 <translation id="1689062823386843231">Lumpuhkan UDP bukan proksi</translation>
-<translation id="3171931580569169744">Dayakan Kumpulan Tab</translation>
 <translation id="5587305863196367357">Menentusahkan dompet membolehkan anda menguruskan dana anda dengan mudah, menambah.&amp; mengeluarkan.</translation>
 <translation id="5760671211380791582">Anda tidak mempunyai BAT yang mencukupi.</translation>
 <translation id="442469478596827903">Anda perlu mempunyai minimum 2 BAT untuk mencipta dompet Uphold yang ditentusahkan. Sila cuba lagi kemudian.</translation>
@@ -564,7 +569,8 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="375882617301124395">Sandarkan dompet kripto anda</translation>
 <translation id="8289942708804097960">Beli kripto dengan kad kredit atau debit.</translation>
 <translation id="841880029259839903">Hantar kripto atau pindahkan dari satu akaun ke akaun lain.</translation>
-<translation id="8226778393040773102">Tukar aset kripto dengan pengagregat Brave DEX.</translation>
+<translation id="8226778393040773102">Tukar token dan aset</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> akan memproses alamat Ethereum dan alamat IP untuk memenuhi transaksi (termasuk mendapatkan sebut harga). <ph name="DEX_PROVIDER"/> HANYA akan menggunakan data ini untuk tujuan memproses transaksi.</translation>
 <translation id="1783600039044302171">Lindungi keselamatan kripto anda dengan kata laluan</translation>
 <translation id="3726490322412361740">Masukkan Kata Laluan</translation>
 <translation id="3038243139480464605">Sahkan kata laluan</translation>
@@ -592,7 +598,7 @@ Anda pasti anda ingin melakukan tindakan ini?</translation>
 <translation id="283071225285270357">Masukkan frasa pemulihan anda</translation>
 <translation id="3943857333388298514">Tampal</translation>
 <translation id="3331452756822160641">Kata Laluan Baharu</translation>
-<translation id="4359319875297001084">Saya sedang memulihkan daripada legasi Dompet Kripto Brave</translation>
+<translation id="4359319875297001084">Import daripada legasi dompet kripto Brave?</translation>
 <translation id="2339124864228588937">Sahkan frasa pemulihan</translation>
 <translation id="3747079125031086337">Pilih perkataan dalam frasa pemulihan anda mengikut urutan yang betul.</translation>
 <translation id="6518133107902771759">Sahkan</translation>
@@ -841,4 +847,5 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="6889920539620318793">Tetapkan sebagai aktif</translation>
 <translation id="2653659639078652383">Serah</translation>
 <translation id="8853725596990766789">Tukar jumlah</translation>
+<translation id="5233638681132016545">Tab baharu</translation>
 </translationbundle>

@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "আপনার করা যে কোনও টিপ আপনার ওয়ালেটে জমা থাকবে এবং 90 দিন ধরে স্বয়ংক্রিয়ভাবে পুনঃপ্রয়াস হবে। $link_begin$আরও জানুন$link_end$",
+    "message": "আপনার দ্বারা প্রেরণ করা যে কোনও টিপ আপনার ওয়ালেটে পড়ে থাকবে এবং 90 দিন পরে স্বয়ংক্রিয়ভাবে পুনরায় চেষ্টা করবে। $link_begin$আরও জানুন$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "এই নির্মাতাটি বর্তমানে আপনার ওয়ালেট থেকে কোনও টিপ পাওয়ার জন্য কনফিগার করা নেই।",
+    "message": "এই নির্মাতাটিকে বর্তমানে আপনার রিওয়ার্ডসের কাস্টোডিয়াল ওয়ালেট পরিষেবা থেকে টিপসগুলি গ্রহণ করার মতো কনফিগার করা নেই।",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "আপনার পুরস্কারগুলি আপনার Brave পুরস্কারের ওয়ালেটে আসছে।",
+    "message": "আপনার রিওয়ার্ডটি আপনার কাছে পৌঁছচ্ছে।",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "আমার ওয়ালেট",
+    "message": "যাচাইকৃত",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "ওয়ালেট যাচাই করুন",
+    "message": "যাচাই করুন",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "পুনঃসংযোগ করুন",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "দাবি",
+  "notificationClaimRewards": {
+    "message": "রিওয়ার্ডগুলি দাবি করুন",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "টোকেন দাবি করুন",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "ওয়ালেটের ব্যাকআপ নিন",
+    "message": "Brave রিওয়ার্ডস-এর ব্যাক আপ নিন",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "অনুগ্রহ করে আপনার Brave ওয়ালেটটিতে ব্যাকআপ নিন।",
+    "message": "অনুগ্রহ করে আপনার Brave রিওয়ার্ডস-এর ব্যাকআপ নিন।",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "এখনওই ব্যাকআপ নিন ",
+    "message": "এখন ব্যাক আপ নিন",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "আপনি ওয়ালেট থেকে লগআউট করেছেন",
+    "message": "আপনি লগ আউট করেছেন",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "আপনার ওয়লেট যাচাইকরণ করা হয়েছে!",
+    "message": "আপনার Brave রিওয়ার্ডস যাচাই করা হয়েছে!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "আপনার $provider$ ওয়ালেট সফলভাবে যাচাই করা হয়েছে এবং এটি ফান্ড যোগ করতে ও তোলার জন্য প্রস্তুত।",
+    "message": "আপনার Brave রিওয়ার্ডস $provider$-এর মাধ্যমে যাচাই করা হয়েছে।",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "টোকেন মঞ্জুর হয়েছে",
+    "message": "একটি টোকেন গ্র্যান্ট উপলব্ধ রয়েছে!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "একটি অনুদান আপনার জন্য অপেক্ষা করছে।",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "$month$ রিওয়ার্ডগুলি: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "বিজ্ঞাপনের উপার্জন গৃহীত হয়েছে",
-    "description": ""
+    "message": "আপনার $month$ মাসের বিজ্ঞাপনের রিওয়ার্ডগুলি এখানে রয়েছে!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Brave Private Ads থেকে পাওয়া আপনার পুরস্কারগুলো রইল এখানে!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "মাসিক অনুদান ব্যর্থ হয়েছে",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "দাবি করার জন্য আপনার কাছে $days$ বাকি রয়েছে",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "পর্যাপ্ত ফান্ড না থাকার কারণে আপনার স্বতঃ-প্রদান এবং মাসিক অবদানগুলির জন্য আপনার নির্ধারিত মাসিক অর্থপ্রদান সম্পূর্ণ করা যায়নি৷ আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "আপনার অনুদান প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে।",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "মাসিক অনুদান ব্যর্থ হয়েছে",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "আপনার ওয়ালেট যাচাই করুন",
+    "message": "যাচাই করুন",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "বিজ্ঞাপনগুলো দেখার জন্য আপনার উপার্জিত টোকেনগুলো উইথড্র করতে, আপনাকে আপনার ওয়ালেট যাচাই করতে হবে।",
+    "message": "বিজ্ঞাপনগুলি দেখার জন্য আপনার উপার্জিত BAT প্রত্যাহার করতে, আপনাকে আপনার Brave রিওয়ার্ডস যাচাই করতে হবে।",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "আমার ওয়ালেট যাচাই করুন",
+    "message": "Brave রিওয়ার্ডস যাচাই করুন",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "আপনার ওয়ালেট ভেরিফাই করে এবং সেটি একটি bitFlyer অ্যাকাউন্টের সাথে লিঙ্ক করে, Brave Rewards এর মাধ্যমে আপনার উপার্জিত টোকেনগুলো আপনি আরও সহজে সংরক্ষণ ও পরিচালনা করতে পারবেন",
+    "message": "আপনার Brave রিওয়ার্ডস যাচাই করার মাধ্যমে এবং এটিকে একটি bitFlyer অ্যাকাউন্টের সঙ্গে লিঙ্ক করার মাধ্যমে, আপনি Brave রিওয়ার্ডস-এর মাধ্যমে যে BAT উপার্জন করেছেন সেগুলি আরও সহজে সংরক্ষণ ও পরিচালনা করতে পারবেন",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

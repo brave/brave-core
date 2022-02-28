@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Mọi khoản tiền mà bạn thưởng sẽ vẫn nằm chờ trong ví của bạn và sẽ tự động thử lại trong 90 ngày. $link_begin$Tìm hiểu thêm$link_end$",
+    "message": "Mọi tiền thưởng bạn thực hiện sẽ vẫn đang chờ xử lý và tự động thử lại trong 90 ngày. $link_begin$Tìm hiểu thêm$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Nhà sáng tạo này hiện chưa được cấu hình để nhận tiền thưởng từ ví của bạn.",
+    "message": "Người tạo nội dung này hiện không được cấu hình để nhận tiền thưởng từ dịch vụ ví lưu ký Phần thưởng của bạn.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Điểm thưởng của bạn đang được gửi đến ví Brave Rewards.",
+    "message": "Phần thưởng của bạn đang đến.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Ví của tôi",
+    "message": "Đã xác thực",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Xác thực Ví",
+    "message": "Xác minh",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Kết nối lại",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Nhận",
+  "notificationClaimRewards": {
+    "message": "Nhận Phần thưởng",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Nhận token",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Sao lưu ví",
+    "message": "Sao lưu Phần thưởng Brave",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Vui lòng sao lưu ví Brave của bạn.",
+    "message": "Vui lòng sao lưu Phần thưởng Brave của bạn.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Backup now",
+    "message": "Sao lưu ngay",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Ví của bạn đã đăng xuất",
+    "message": "Bạn đã đăng xuất",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Ví của bạn đã được xác thực!",
+    "message": "Phần thưởng Brave của bạn đã được xác thực!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Ví $provider$ của bạn đã được xác minh thành công và đã sẵn sàng để thêm và rút tiền.",
+    "message": "Phần thưởng Brave đã được xác thực thành công với $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Cấp token",
+    "message": "Khoản thưởng token đang khả dụng!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Bạn có một khoản thưởng đang chờ.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "Phần thưởng $month$: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Thu nhập Ads đã nhận được",
-    "description": ""
+    "message": "Phần thưởng Quảng cáo $month$ của bạn ở đây!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Phần thưởng của bạn từ Brave Private Ads có ở đây!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Đóng góp hàng tháng không thành công",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "Bạn còn $days$ để nhận",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Không thể hoàn tất khoản thanh toán hàng tháng theo lịch cho Tự động đóng góp và các khoản đóng góp hàng tháng của bạn do không đủ tiền. Chúng tôi sẽ thử lại sau 30 ngày.",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Đã xảy ra lỗi khi xử lý khoản đóng góp của bạn.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Đóng góp hàng tháng không thành công",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Xác thực ví của bạn",
+    "message": "Xác minh",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Để rút các token mà bạn kiếm được khi xem quảng cáo, bạn sẽ cần phải xác thực ví của mình.",
+    "message": "Để rút BAT bạn kiếm được khi xem quảng cáo, bạn cần xác minh Phần thưởng Brave.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Xác thực ví của tôi",
+    "message": "Xác minh Phần thưởng Brave",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Với việc xác thực ví của bạn và liên kết ví với một tài khoản bitFlyer, bạn sẽ có thể lưu trữ và quản lý các token mà bạn đã kiếm được thông qua Brave Rewards dễ dàng hơn",
+    "message": "Bằng cách xác minh Phần thưởng Brave của bạn và liên kết nó với tài khoản bitFlyer, bạn sẽ có thể lưu trữ và quản lý BAT mà bạn đã kiếm được thông qua Phần thưởng Brave dễ dàng hơn",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">OS Brave tidak dapat menyegerakkan data anda kerana Segerak tidak tersedia untuk domain anda.</translation>
 <translation id="5147525139567260139">Kongsi tab Brave</translation>
 <translation id="1530633922026945685">Brave memerlukan kebenaran untuk mengakses kamera anda untuk membuat peta 3D persekitaran anda</translation>
+<translation id="4449148723378534338">Semak privasi dan kawalan keselamatan utama dalam Brave</translation>
 <translation id="5616153642055197778">Terdapat versi Brave baharu yang lebih selamat tersedia.</translation>
 <translation id="6797402139308059782">Benarkan Brave dijalankan dalam latar belakang</translation>
 <translation id="5875673934455379806">Pasang semula Brave</translation>
@@ -36,7 +37,6 @@
 <translation id="1248225940185478633">Brave memerlukan kebenaran kamera dan mikrofon untuk laman ini</translation>
 <translation id="6078442581074612226">Dalam Brave</translation>
 <translation id="2485422356828889247">Nyahpasang</translation>
-<translation id="2372700594671864890">Lihat perancangan Brave untuk melindungi anda daripada penjejakan rentas laman sambil memelihara web terbuka</translation>
 <translation id="9026991721384951619">OS Brave tidak dapat menyegerakkan data anda kerana butiran log masuk akaun anda sudah lapuk.</translation>
 <translation id="7798069806040634998">Brave memerlukan akses storan untuk memuat turun fail</translation>
 <translation id="8447483940522230788">Pembantu Brave</translation>
@@ -109,6 +109,8 @@
 <translation id="3679799810790990472">Teruskan dalam profil Brave baharu?</translation>
 <translation id="4567424176335768812">Anda telah log masuk sebagai <ph name="USER_EMAIL_ADDRESS"/>. Sekarang anda boleh mengakses penanda halaman, sejarah dan tetapan anda yang lain pada semua peranti yang anda gunakan untuk log masuk.</translation>
 <translation id="300669147395456190">Apl Brave</translation>
+<translation id="2182657378556811785">Hampir terkini! Lancarkan semula Brave untuk menyelesaikan kemas kini.</translation>
+<translation id="7402642357351265733">Jika anda turut berkongsi laporan penggunaan Brave, laporan tersebut menyertakan URL yang anda lawati</translation>
 <translation id="8142245354207161805">Nampaknya profil digunakan oleh proses Brave lain (<ph name="PROCESS_ID"/>) pada komputer lain (<ph name="HOST_NAME"/>). Brave telah mengunci profil supaya profil tidak rosak. Jika anda pasti tiada proses lain yang menggunakan profil ini, anda boleh membuka profil dan melancarkan semula Brave.</translation>
 <translation id="3395323229510056640">Dapatkan bantuan berkenaan Chrome OS</translation>
 <translation id="847561904663814268">Sebelum ini, seseorang telah log masuk ke Brave pada komputer ini sebagai <ph name="ACCOUNT_EMAIL_LAST"/>. Sila buat pengguna Brave baharu untuk mengasingkan maklumat anda.</translation>
@@ -202,7 +204,6 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 <translation id="3335606533094650083">Brave memerlukan kebenaran untuk mengakses mikrofon anda bagi tapak ini</translation>
 <translation id="1705567146636171298">Kemas kini Brave</translation>
 <translation id="5499063270485366718">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave.</translation>
-<translation id="151916274998710826">Sesuaikan beberapa pilihan privasi Brave yang paling penting</translation>
 <translation id="1008530050039597147">Brave memerlukan kebenaran kamera untuk laman ini</translation>
 <translation id="1197672524850678392">Tidak dapat melancarkan Brave. Cuba lagi.</translation>
 <translation id="3405035915691517126">Brave tidak dapat menyemak kata laluan anda. Cuba lagi selepas 24 jam.</translation>
@@ -220,6 +221,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="5062123544085870375">Mulakan semula OS Brave</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">Brave memerlukan kebenaran untuk mengakses kamera anda bagi tapak ini</translation>
+<translation id="3962395975456095331">Lancarkan Semula Brave?</translation>
 <translation id="2619516027171717873">Tidak boleh memasang versi Brave yang sama dengan yang sedang dijalankan. Sila tutup Brave dan cuba lagi.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave akan dilancarkan semula dalam masa seminit}other{Brave akan dilancarkan semula dalam masa # minit}}</translation>
 <translation id="573759479754913123">Mengenai Chrome OS</translation>
@@ -229,6 +231,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="155309785154426906">Anda menghidupkan Penyemakan Imbas Selamat Dipertingkat dalam akaun anda. Sekarang dapatkan ciri ini untuk Brave.</translation>
 <translation id="3293668930608086049">Brave menggunakan kamera dan mikrofon anda.</translation>
 <translation id="2827121003398607864">Brave kini lebih baik</translation>
+<translation id="8678991866891573053">Brave sedang meneroka ciri baharu yang membolehkan laman menyampaikan pengalaman penyemakan imbas yang sama menggunakan kurang data anda</translation>
 <translation id="3343095737966473035">Brave bukan penyemak imbas lalai anda</translation>
 <translation id="5477319665405831211">Segerakkan dan peribadikan Brave pada semua peranti anda</translation>
 <translation id="5419189641394808652">Brave tidak dapat menyegerakkan data anda kerana Segerak tidak tersedia untuk domain anda.</translation>
@@ -296,7 +299,5 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Kemas kini baharu tersedia untuk Brave dan akan digunakan sebaik sahaja anda melancarkan semula Brave.}=1{Kemas kini baharu tersedia untuk Brave dan akan digunakan sebaik sahaja anda melancarkan semula Brave. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Kemas kini baharu tersedia untuk Brave dan akan digunakan sebaik sahaja anda melancarkan semula Brave. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini}=1{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini}=1{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
-<translation id="7914115000169617076">Kemas kini hampir selesai! Lancarkan semula Brave untuk menyelesaikan kemas kini. Tetingkap Peribadi tidak dapat dibuka semula.</translation>
-<translation id="4703432949110765917">Tetapan lalai berfungsi untuk kebanyakan profil, tetapi anda boleh menyesuaikan tetapan supaya sesuai dengan cara anda ingin menggunakan Brave</translation>
 <translation id="2176087127109773485">Anda boleh menguruskan rantaian penyegerakan Brave yang anda daftar masuk. Rantaian penyegerakan Brave anda digunakan untuk pelayar Brave, Play Store, Gmail dan banyak lagi. Sekiranya anda ingin menambah akaun untuk orang lain, seperti ahli keluarga, tambahkan profil baharu ke <ph name="DEVICE_TYPE"/> anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 </translationbundle>

@@ -20,7 +20,7 @@
     "description": ""
   },
   "pendingTipText": {
-    "message": "Alle fooien die je stuurt, blijven in je wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden. $link_begin$Meer informatie$link_end$",
+    "message": "Alle fooien die u stuurt, blijven in uw wallet in behandeling. Na 90 dagen wordt automatisch opnieuw geprobeerd om de fooi te verzenden. $link_begin$Meer informatie$link_end$",
     "description": "",
     "placeholders": {
       "link_begin": {
@@ -36,7 +36,7 @@
     "description": ""
   },
   "pendingTipTitleRegistered": {
-    "message": "Deze ontwikkelaar is momenteel niet geconfigureerd om fooien te ontvangen van je wallet.",
+    "message": "Deze maker is momenteel niet geconfigureerd om fooien te ontvangen uit uw beheerde Beloningen-wallet.",
     "description": ""
   },
   "platformPublisherTitle": {
@@ -116,7 +116,7 @@
     "description": ""
   },
   "grantCaptchaPassedTextAds": {
-    "message": "Je Reward is onderweg naar je Brave Rewards-wallet.",
+    "message": "Uw beloning komt eraan.",
     "description": ""
   },
   "grantCaptchaAmountAds": {
@@ -236,7 +236,7 @@
     "description": ""
   },
   "walletMyWallet": {
-    "message": "Mijn wallet",
+    "message": "Geverifieerd",
     "description": ""
   },
   "walletOneTimeTips": {
@@ -260,7 +260,7 @@
     "description": ""
   },
   "walletVerify": {
-    "message": "Verifieer Wallet",
+    "message": "Verifieer",
     "description": ""
   },
   "walletYourBalance": {
@@ -275,8 +275,12 @@
     "message": "Opnieuw verbinding maken",
     "description": ""
   },
-  "notificationClaim": {
-    "message": "Claimen",
+  "notificationClaimRewards": {
+    "message": "Beloningen claimen",
+    "description": ""
+  },
+  "notificationClaimTokens": {
+    "message": "Tokens claimen",
     "description": ""
   },
   "notificationAddFundsTitle": {
@@ -301,19 +305,19 @@
     }
   },
   "notificationBackupWalletTitle": {
-    "message": "Back-up maken van wallet",
+    "message": "Back-up maken van Brave Beloningen",
     "description": ""
   },
   "notificationBackupWalletText": {
-    "message": "Maak een back-up van je Brave-wallet.",
+    "message": "Maak een back-up van Brave Beloningen.",
     "description": ""
   },
   "notificationBackupWalletAction": {
-    "message": "Backup nu",
+    "message": "Nu een back-up maken",
     "description": ""
   },
   "notificationWalletDisconnectedTitle": {
-    "message": "Je wallet is uitgelogd",
+    "message": "U bent uitgelogd",
     "description": ""
   },
   "notificationWalletDisconnectedText": {
@@ -325,11 +329,11 @@
     "description": ""
   },
   "notificationWalletVerifiedTitle": {
-    "message": "Je wallet is geverifieerd!",
+    "message": "Brave Beloningen is geverifieerd!",
     "description": ""
   },
   "notificationWalletVerifiedText": {
-    "message": "Je $provider$-wallet is geverifieerd en je kunt er nu geld aan toevoegen en er geld uithalen.",
+    "message": "Brave Beloningen is geverifieerd met $provider$.",
     "description": "",
     "placeholders": {
       "provider": {
@@ -338,24 +342,38 @@
     }
   },
   "notificationTokenGrantTitle": {
-    "message": "Tokentoewijzingen",
+    "message": "Er is een tokentoewijzing beschikbaar!",
     "description": ""
   },
-  "notificationTokenGrantText": {
-    "message": "Er staat een geschenk voor je klaar.",
-    "description": ""
+  "notificationAdGrantAmount": {
+    "message": "Beloningen van $month$: $amount$",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      },
+      "amount": {
+        "content": "$2"
+      }
+    }
   },
   "notificationAdGrantTitle": {
-    "message": "Advertentie-verdiensten ontvangen",
-    "description": ""
+    "message": "Uw advertentiebeloningen van $month$ zijn binnen!",
+    "description": "",
+    "placeholders": {
+      "month": {
+        "content": "$1"
+      }
+    }
   },
-  "notificationAdGrantText": {
-    "message": "Je beloningen van de Brave-privébrowseradvertenties zijn er!",
-    "description": ""
-  },
-  "notificationMonthlyContributionFailedTitle": {
-    "message": "Maandelijkse bijdrage mislukt",
-    "description": ""
+  "notificationGrantDaysRemaining": {
+    "message": "U hebt nog $days$ om te claimen",
+    "description": "",
+    "placeholders": {
+      "days": {
+        "content": "$1"
+      }
+    }
   },
   "notificationInsufficientFundsText": {
     "message": "Je geplande maandelijkse betaling voor Auto-Contribute en maandelijkse bijdragen kan niet worden verwerkt dankzij een te laag saldo. We proberen het opnieuw over 30 dagen. ",
@@ -363,6 +381,10 @@
   },
   "notificationMonthlyContributionFailedText": {
     "message": "Er is een probleem opgetreden bij het verwerken van je bijdrage.",
+    "description": ""
+  },
+  "notificationMonthlyContributionFailedTitle": {
+    "message": "Maandelijkse bijdrage mislukt",
     "description": ""
   },
   "notificationMonthlyTipCompletedTitle": {
@@ -533,11 +555,11 @@
     "description": ""
   },
   "onboardingPanelVerifyHeader": {
-    "message": "Je wallet verifiëren",
+    "message": "Verifieer",
     "description": ""
   },
   "onboardingPanelVerifySubtext": {
-    "message": "Om de tokens die je verdient voor het bekijken van advertenties op te nemen, moet je je wallet verifiëren.",
+    "message": "Om de BAT die u verdient voor het bekijken van advertenties op te nemen, moet u Brave Beloningen verifiëren.",
     "description": ""
   },
   "onboardingPanelVerifyLater": {
@@ -545,7 +567,7 @@
     "description": ""
   },
   "onboardingPanelVerifyNow": {
-    "message": "Mijn wallet verifiëren",
+    "message": "Brave Beloningen verifiëren",
     "description": ""
   },
   "onboardingPanelBitflyerNote": {
@@ -553,7 +575,7 @@
     "description": ""
   },
   "onboardingPanelBitflyerText": {
-    "message": "Door je wallet te verifiëren en deze te koppelen aan een bitFlyer-account, kun je de tokens die je hebt verdiend via Brave Rewards eenvoudig opslaan en beheren",
+    "message": "Door Brave Beloningen te verifiëren en dit te koppelen aan een bitFlyer-account, kunt u de tokens die u hebt verdiend eenvoudig via Brave Beloningen opslaan en beheren",
     "description": ""
   },
   "onboardingPanelBitflyerLearnMore": {

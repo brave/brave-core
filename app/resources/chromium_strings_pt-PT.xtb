@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">O SO Brave não conseguiu sincronizar os dados porque a sincronização não está disponível para o seu domínio.</translation>
 <translation id="5147525139567260139">Partilhe um separador do Brave</translation>
 <translation id="1530633922026945685">O Brave necessita de autorização de acesso à câmara para criar um mapa 3D do ambiente à sua volta.</translation>
+<translation id="4449148723378534338">Reveja os principais controlos de privacidade e segurança no Brave</translation>
 <translation id="5616153642055197778">Está disponível uma versão nova e mais segura do Brave.</translation>
 <translation id="6797402139308059782">Permitir que o Brave seja executado em segundo plano</translation>
 <translation id="5875673934455379806">Reinstalar Brave</translation>
@@ -36,7 +37,6 @@
 <translation id="1248225940185478633">O Brave necessita de autorizações da câmara e do microfone para este site</translation>
 <translation id="6078442581074612226">No Brave</translation>
 <translation id="2485422356828889247">Desinstalar</translation>
-<translation id="2372700594671864890">Veja como o Brave planeia proteger o utilizador contra a monitorização entre sites, ao mesmo tempo que preserva a Web aberta</translation>
 <translation id="9026991721384951619">O SO Brave não conseguiu sincronizar os dados porque os detalhes de início de sessão da sua conta estão desatualizados.</translation>
 <translation id="7798069806040634998">O Brave necessita de acesso ao armazenamento para transferir ficheiros.</translation>
 <translation id="8447483940522230788">Ajuda do Brave</translation>
@@ -109,6 +109,8 @@
 <translation id="3679799810790990472">Pretende continuar num novo perfil do Brave?</translation>
 <translation id="4567424176335768812">Tem sessão iniciada como <ph name="USER_EMAIL_ADDRESS"/>. Agora, pode aceder aos seus marcadores, ao histórico e a outras definições em todos os dispositivos com sessão iniciada.</translation>
 <translation id="300669147395456190">Apps do Brave</translation>
+<translation id="2182657378556811785">Quase atualizado! Reinicie o Brave para concluir a atualização.</translation>
+<translation id="7402642357351265733">Se também partilhar relatórios de utilização do Brave, esses relatórios incluem os URLs que visita</translation>
 <translation id="8142245354207161805">O perfil parece estar a ser utilizado por outro processo do Brave (<ph name="PROCESS_ID"/>) noutro computador (<ph name="HOST_NAME"/>). O Brave bloqueou o perfil para que não seja danificado. Se tiver a certeza de que não existem outros processos a utilizar este perfil, pode desbloqueá-lo e reiniciar o Brave.</translation>
 <translation id="3395323229510056640">Obter ajuda relacionada com o SO Brave</translation>
 <translation id="847561904663814268">Alguém iniciou sessão no Brave neste computador anteriormente com a conta <ph name="ACCOUNT_EMAIL_LAST"/>. Crie um novo utilizador do Brave para manter as informações em separado.</translation>
@@ -202,7 +204,6 @@ a sincronização. <ph name="IDS_BLUETOOTH_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LI
 <translation id="3335606533094650083">O Brave necessita de autorização de acesso ao microfone para este site.</translation>
 <translation id="1705567146636171298">Atualizar o Brave</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave.</translation>
-<translation id="151916274998710826">Personalize algumas das opções de privacidade mais importantes do Brave</translation>
 <translation id="1008530050039597147">O Brave necessita da autorização da câmara para este site</translation>
 <translation id="1197672524850678392">Não foi possível iniciar o Brave. Tente novamente.</translation>
 <translation id="3405035915691517126">O Brave não consegue verificar as suas palavras-passe. Tente novamente após 24 horas.</translation>
@@ -220,6 +221,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="5062123544085870375">Reiniciar o Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">O Brave necessita de autorização de acesso à câmara para este site.</translation>
+<translation id="3962395975456095331">Reiniciar o Brave?</translation>
 <translation id="2619516027171717873">Não é possível instalar a mesma versão do Brave que está atualmente em execução. Feche o Brave e tente novamente.</translation>
 <translation id="3186363903915641692">{0,plural, =1{O Brave será reiniciado dentro de 1 minuto}one{O Brave será reiniciado dentro de # minuto(s)}other{O Brave será reiniciado dentro de # minutos}}</translation>
 <translation id="573759479754913123">Acerca do SO Brave</translation>
@@ -229,6 +231,7 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="155309785154426906">Ativou a Navegação segura melhorada na sua conta. Agora, ative-a para o Brave.</translation>
 <translation id="3293668930608086049">O Brave está a utilizar a câmara e o microfone.</translation>
 <translation id="2827121003398607864">O Brave está ainda melhor</translation>
+<translation id="8678991866891573053">O Brave está a explorar novas funcionalidades que permitem que os sites forneçam a mesma experiência de navegação com uma menor utilização dos seus dados</translation>
 <translation id="3343095737966473035">O Brave não é o seu navegador predefinido.</translation>
 <translation id="5477319665405831211">Sincronizar e personalizar o Brave em todos os dispositivos</translation>
 <translation id="5419189641394808652">O Brave não conseguiu sincronizar os dados porque a Sincronização não está disponível para o seu domínio.</translation>
@@ -296,7 +299,5 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Está disponível uma atualização para o Brave que será aplicada logo que o reinicie.}=1{Está disponível uma atualização para o Brave que será aplicada logo que o reinicie. Não é possível reabrir a sua janela de Navegação Privada.}other{Está disponível uma atualização para o Brave que será aplicada logo que o reinicie. Não é possível reabrir as suas # janelas de Navegação Privada.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização.}=1{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização. Não é possível reabrir a sua janela de Navegação Privada.}other{O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização. Não é possível reabrir as suas # janelas de Navegação Privada.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{O seu administrador necessita que reinicie o Brave para aplicar uma atualização.}=1{O seu administrador necessita que reinicie o Brave para aplicar uma atualização. Não é possível reabrir a sua janela de Navegação Privada.}other{O seu administrador necessita que reinicie o Brave para aplicar uma atualização. Não é possível reabrir as suas # janelas de Navegação Privada.}}</translation>
-<translation id="7914115000169617076">Quase atualizado! Reinicie o Brave para concluir a atualização. Não é possível reabrir as suas janelas de navegação privada.</translation>
-<translation id="4703432949110765917">As predefinições funcionam na maior parte dos perfis. Contudo, pode personalizá-las para se adaptarem melhor à sua utilização do Brave.</translation>
 <translation id="2176087127109773485">Pode gerir as suas cadeias de sincronização Brave com sessão iniciada. Estas são utilizadas no navegador Brave, na Play Store e no Gmail, entre outros. Caso pretenda adicionar uma conta para outra pessoa, como um familiar, adicione um novo perfil a <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 </translationbundle>

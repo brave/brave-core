@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">Ma’lumotlarni sinxronlab bo‘lmadi, chunki domeningizda Sync xizmati mavjud emas.</translation>
 <translation id="5147525139567260139">Brave sahifasini namoyish qilish</translation>
 <translation id="1530633922026945685">Brave atrofingiz 3D xaritasini yaratishi uchun unga kamera ruxsati zarur</translation>
+<translation id="4449148723378534338">Brave ichida asosiy maxfiylik va xavfsizlik boshqaruvini tekshiring</translation>
 <translation id="5616153642055197778">Brave brauzerining yangi, yanada xavfsiz versiyasi chiqdi.</translation>
 <translation id="6797402139308059782">Brave fonda ishlashiga ruxsat</translation>
 <translation id="5875673934455379806">Brave brauzerini qayta o‘rnatish</translation>
@@ -37,13 +38,11 @@
 <translation id="1248225940185478633">Brave bu saytda kamera va mikrofondan foydalanishiga ruxsat kerak</translation>
 <translation id="6078442581074612226">Brave brauzerida</translation>
 <translation id="2485422356828889247">O‘chirib tashlash</translation>
-<translation id="2372700594671864890">Ochiq internet rivojida Brave foydalanuvchilarni kuzatuv mexanizmlaridan qanday himoya qilishi haqida batafsil</translation>
 <translation id="9026991721384951619">Chrome OS ma’lumotlaringizni sinxronlay olmadi, chunki hisobingiz haqidagi ma’lumotlar eskirgan.</translation>
 <translation id="7798069806040634998">Yuklab olish uchun Brave brauzerida omborga saqlash ruxsati bo‘lishi zarur</translation>
 <translation id="8447483940522230788">Brave yordamchisi</translation>
 <translation id="7291143854620707672">Bu profil ishlatilganda yaratilgan har qanday Brave maʼlumotlari (bukmarklar, tarix, parollar va boshqa sozlamalar kabi) ish profili administratori tomonidan tozalanishi mumkin. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">Yangilovni o‘rnatish uchun Chrome OS qaytadan ishga tushirilishi kerak.</translation>
-<translation id="4703432949110765917">Standart sozlamalar koʻplab odamlarga mos keladi, lekin siz Brave brauzeridan qanday foydalanishni istasangiz, shunday sozlashingiz mumkin</translation>
 <translation id="7387051847644272380">O‘rnatish vaqtida operatsion tizim xatoligi yuz berdi. Brave‘ni qaytadan yuklab oling.</translation>
 <translation id="2648689842065142443">Agar qurilmangizdan yaqinlaringiz va doʻstlaringiz ham foydalansa, ular Brave brauzerini oʻzlari xohlagancha sozlab olishlari mumkin.</translation>
 <translation id="6791166902140255175">Brave sahifasi</translation>
@@ -109,7 +108,9 @@
 <translation id="3679799810790990472">Yangi Brave profilida davom etasizmi?</translation>
 <translation id="4567424176335768812">Siz <ph name="USER_EMAIL_ADDRESS"/> hisobidan kirtingiz. Barcha xatcho‘plar, brauzer tarixi va boshqa sozlamalaringiz endi bu hisobdan foydalanadigan barcha qurilmalaringizda mavjud.</translation>
 <translation id="300669147395456190">Brave ilovalari</translation>
+<translation id="2182657378556811785">Yangilashni yakunlash uchun Brave brauzerini qayta ishga tushiring.</translation>
 <translation id="1299765473362724475">Diqqat! Brave kengaytmalarga brauzer tarixini yozib olishni taqiqlay olmaydi. Kengaytmani inkognito rejimida faolsizlantirish uchun bayroqchani olib tashlang.</translation>
+<translation id="7402642357351265733">Shuningdek, Brave foydalanish statistikasini ham ulashsangiz, bu hisobotlarga siz tashrif qilgan URL manzillar ham kiradi</translation>
 <translation id="8142245354207161805">Profil boshqa kompyuterdagi (<ph name="HOST_NAME"/>) boshqa Brave jarayonida (<ph name="PROCESS_ID"/>) foydalanilayotgan ko‘rinadi. Ishdan chiqishlarni oldini olish maqsadida profil qulflandi. Agar aniq o‘zingiz foydalanayotgan bo‘lsangiz, qulfdan yeching va Brave‘ni qaytadan ishga tushiring.</translation>
 <translation id="3395323229510056640">Chrome OS yordam markazi</translation>
 <translation id="847561904663814268">Oldinroq Brave profiliga kimdir bu kompyuterdan <ph name="ACCOUNT_EMAIL_LAST"/> sifatida kirgan. Ma’lumotlaringizni alohida saqlash uchun yangi Brave profilini yarating.</translation>
@@ -203,7 +204,6 @@ Ba’zi imkoniyatlar ishlamasligi mumkin. Profilni saqlash uchun boshqa jild tay
 <translation id="3335606533094650083">Bu sayt mikrofoningizdan foydalanishi uchun Brave brauzeriga ruxsat berishingiz lozim</translation>
 <translation id="1705567146636171298">Brave‘ni yangilash</translation>
 <translation id="5499063270485366718">Agar rasmga foydali tavsif berilmagan boʻlsa, Brave uni sizga tavsiflaydi. Tavsif yaratish uchun rasmlar Bravega yuboriladi.</translation>
-<translation id="151916274998710826">Brave brauzerining eng muhim maxfiylik sozlamalarini sozlang</translation>
 <translation id="1008530050039597147">Brave bu saytda kameradan foydalanishiga ruxsat kerak</translation>
 <translation id="1197672524850678392">Brave ishga tushmadi. Qayta urining.</translation>
 <translation id="3405035915691517126">Brave parollaringizni tekshira olmadi. 24 soatdan keyin qayta urining.</translation>
@@ -221,6 +221,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="5062123544085870375">Chrome OS tizimini ishga tushirish</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">Bu sayt kamerangizdan foydalanishi uchun Brave brauzeriga ruxsat berishingiz lozim</translation>
+<translation id="3962395975456095331">Brave qayta ishga tushirilsinmi?</translation>
 <translation id="2619516027171717873">Tizimdagi joriy versiyadagi Brave‘ni o‘rnatib bo‘lmaydi. Brave‘ni yoping va qaytadan urinib ko‘ring.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave 1 daqiqadan keyin qayta ishga tushadi}other{Brave # daqiqadan keyin qayta ishga tushadi}}</translation>
 <translation id="573759479754913123">Chrome OS haqida</translation>
@@ -230,6 +231,7 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="155309785154426906">Hisobingizda Saytlarni kuchaytirilgan rejimda xavfsiz kezish yoqilgan. Endi uni Brave brauzerida sinab koʻrishingiz mumkin.</translation>
 <translation id="3293668930608086049">Brave kamera va mikrofoningizdan foydalanmoqda.</translation>
 <translation id="2827121003398607864">Brave ancha yaxshilanmoqda</translation>
+<translation id="8678991866891573053">Brave saytlarga kamroq maʼlumotlaringiz bilan bir xil brauzer xizmatlarini taqdim etishiga imkon beruvchi yangi funksiyalarni oʻrganib chiqmoqda</translation>
 <translation id="3343095737966473035">Brave standart brauzer sifatida tayinlanmagan</translation>
 <translation id="5477319665405831211">Braveni barcha qurilmalaringizda sinxronlang va o‘zingizga moslab oling</translation>
 <translation id="5419189641394808652">Brave domeningizda Sync xizmati yo‘qligi sababli ma’lumotlaringizni sinxronlay olmadi.</translation>
@@ -296,5 +298,4 @@ Brave sozlamalaringizni qaytadan tiklay olmadi.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi.}=1{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi. Inkognito oynalar qayta ochilmaydi.}other{Brave uchun yangilanish mavjud va brauzer qayta ishga tushirilganda oʻrnatiladi. # ta inkognito oyna qayta ochilmaydi.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda}=1{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda Inkognito oynalar qayta ochilmaydi.}other{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni soʻramoqda # ta inkognito oyna qayta ochilmaydi.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda}=1{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda Inkognito oynalar qayta ochilmaydi.}other{Administrator yangilishlarni oʻrnatish uchun Brave brauzerini qayta ishga tushirishni talab qilmoqda # ta inkognito oyna qayta ochilmaydi.}}</translation>
-<translation id="7914115000169617076">Deyarli yangilandi! Yangilash tugashi uchun Brave brauzerini qayta ishga tushiring. Inkognito oynalar qayta ochilmaydi.</translation>
 </translationbundle>

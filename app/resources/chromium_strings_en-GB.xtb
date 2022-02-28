@@ -15,6 +15,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7419046106786626209">Chrome OS could not sync your data because Sync is not available for your domain.</translation>
 <translation id="5147525139567260139">Share a Brave tab</translation>
 <translation id="1530633922026945685">Brave needs permission to access your camera to create a 3D map of your surroundings</translation>
+<translation id="4449148723378534338">Review key privacy and security controls in Brave</translation>
 <translation id="5616153642055197778">There's a new, safer version of Brave available.</translation>
 <translation id="6797402139308059782">Let Brave run in the background</translation>
 <translation id="5875673934455379806">Reinstall Brave</translation>
@@ -38,7 +39,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="1248225940185478633">Brave needs camera and microphone permissions for this site</translation>
 <translation id="6078442581074612226">In Brave</translation>
 <translation id="2485422356828889247">Uninstall</translation>
-<translation id="2372700594671864890">See how Brave plans to safeguard you from cross-site tracking while preserving the open web</translation>
 <translation id="9026991721384951619">Chrome OS could not sync your data because your account sign-in details are out of date.</translation>
 <translation id="7798069806040634998">Brave needs storage access to download files</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
@@ -111,6 +111,8 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="3679799810790990472">Continue in a new Brave profile?</translation>
 <translation id="4567424176335768812">You're signed in as <ph name="USER_EMAIL_ADDRESS"/>. Now you can access your bookmarks, history and other settings on all your signed in devices.</translation>
 <translation id="300669147395456190">Brave Apps</translation>
+<translation id="2182657378556811785">Nearly up to date! Relaunch Brave to finish updating.</translation>
+<translation id="7402642357351265733">If you also share Brave usage reports, those reports include the URLs that you visit</translation>
 <translation id="8142245354207161805">The profile appears to be in use by another Brave process (<ph name="PROCESS_ID"/>) on another computer (<ph name="HOST_NAME"/>). Brave has locked the profile so that it doesn't get corrupted. If you are sure that no other processes are using this profile, you can unlock the profile and relaunch Brave.</translation>
 <translation id="3395323229510056640">Get help with Chrome OS</translation>
 <translation id="847561904663814268">Someone previously signed in to Brave on this computer as <ph name="ACCOUNT_EMAIL_LAST"/>. Please create a new Brave user to keep your information separate.</translation>
@@ -203,7 +205,6 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="3335606533094650083">Brave needs permission to access your microphone for this site</translation>
 <translation id="1705567146636171298">Update Brave</translation>
 <translation id="5499063270485366718">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.</translation>
-<translation id="151916274998710826">Customise some of Brave’s most important privacy choices</translation>
 <translation id="1008530050039597147">Brave needs camera permission for this site</translation>
 <translation id="1197672524850678392">Couldn't launch Brave. Try again.</translation>
 <translation id="3405035915691517126">Brave can't check your passwords. Try again after 24 hours.</translation>
@@ -221,6 +222,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="5062123544085870375">Restart Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="2034072705932785495">Brave needs permission to access your camera for this site</translation>
+<translation id="3962395975456095331">Relaunch Brave?</translation>
 <translation id="2619516027171717873">Cannot install the same Brave version that is currently running. Please close Brave and try again.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave will relaunch in 1 minute}other{Brave will relaunch in # minutes}}</translation>
 <translation id="573759479754913123">About Chrome OS</translation>
@@ -230,6 +232,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="155309785154426906">You turned on Enhanced Safe Browsing in your account. Now get it for Brave.</translation>
 <translation id="3293668930608086049">Brave is using your camera and microphone.</translation>
 <translation id="2827121003398607864">Brave just got better</translation>
+<translation id="8678991866891573053">Brave is exploring new features that allow sites to deliver the same browsing experience using less of your data</translation>
 <translation id="3343095737966473035">Brave isn't your default browser</translation>
 <translation id="5477319665405831211">Sync and personalise Brave across your devices</translation>
 <translation id="5419189641394808652">Brave could not sync your data because Sync is not available for your domain.</translation>
@@ -297,7 +300,5 @@ Brave is unable to recover your settings.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{A new update for Brave is available and will be applied as soon as you relaunch.}=1{A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}other{A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Your administrator asks that you relaunch Brave to apply this update}=1{Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}other{Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Your administrator requires that you relaunch Brave to apply an update}=1{Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}other{Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}</translation>
-<translation id="7914115000169617076">Nearly up to date! Relaunch Brave to finish updating. Private windows won't reopen.</translation>
-<translation id="4703432949110765917">The default settings work for most profiles, but you can customise them to fit how you like to use Brave</translation>
 <translation id="2176087127109773485">You can manage your signed-in Brave sync chains. Your Brave sync chains are used for Brave browser, Play Store, Gmail and more. If you want to add an account for someone else, like a family member, add a new profile to your <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 </translationbundle>

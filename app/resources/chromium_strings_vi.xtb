@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">Chrome OS không thể đồng bộ hóa dữ liệu của bạn vì Đồng bộ hóa không khả dụng với miền của bạn.</translation>
 <translation id="5147525139567260139">Chia sẻ một thẻ Brave</translation>
 <translation id="1530633922026945685">Brave cần có quyền sử dụng máy ảnh của bạn để tạo bản đồ 3D về các khu vực xung quanh bạn</translation>
+<translation id="4449148723378534338">Xem các chế độ kiểm soát quan trọng đối với quyền riêng tư và tính bảo mật trong Brave</translation>
 <translation id="5616153642055197778">Hiện đã có phiên bản Brave mới an toàn hơn.</translation>
 <translation id="6797402139308059782">Cho phép Brave chạy dưới nền</translation>
 <translation id="5875673934455379806">Cài đặt lại Brave</translation>
@@ -36,7 +37,6 @@
 <translation id="1248225940185478633">Brave cần có quyền truy cập máy ảnh và micrô đối với trang web này</translation>
 <translation id="6078442581074612226">Trong Brave</translation>
 <translation id="2485422356828889247">Gỡ cài đặt</translation>
-<translation id="2372700594671864890">Xem cách Brave giúp bạn không bị theo dõi trên nhiều trang web trong khi vẫn duy trì môi trường web mở</translation>
 <translation id="9026991721384951619">Chrome OS không thể đồng bộ hóa dữ liệu của bạn vì chi tiết đăng nhập tài khoản của bạn đã lỗi thời.</translation>
 <translation id="7798069806040634998">Brave cần quyền truy cập vào bộ nhớ để tải tệp xuống</translation>
 <translation id="8447483940522230788">Trình trợ giúp của Brave</translation>
@@ -109,6 +109,8 @@
 <translation id="3679799810790990472">Tiếp tục đăng nhập vào hồ sơ mới trên Brave?</translation>
 <translation id="4567424176335768812">Bạn đã đăng nhập với tên <ph name="USER_EMAIL_ADDRESS"/>. Bây giờ, bạn có thể truy cập dấu trang, lịch sử và các cài đặt khác trên tất cả những thiết bị đã đăng nhập của bạn.</translation>
 <translation id="300669147395456190">Ứng dụng Brave</translation>
+<translation id="2182657378556811785">Gần được cập nhật! Hãy khởi chạy lại Brave để hoàn tất cập nhật.</translation>
+<translation id="7402642357351265733">Nếu bạn cũng chia sẻ báo cáo sử dụng của Brave, thì các báo cáo đó sẽ bao gồm cả những URL bạn truy cập</translation>
 <translation id="8142245354207161805">Dường như cấu hình này đang được quy trình Brave khác (<ph name="PROCESS_ID"/>) trên máy tính khác (<ph name="HOST_NAME"/>) sử dụng. Brave đã khóa cấu hình này để cấu hình không bị lỗi. Nếu bạn chắc chắn không có quy trình nào khác đang sử dụng cấu hình này, bạn có thể mở khóa cấu hình và chạy lại Brave.</translation>
 <translation id="3395323229510056640">Nhận trợ giúp về Chrome OS</translation>
 <translation id="847561904663814268">Ai đó trước đây đã đăng nhập vào Brave trên máy tính này bằng <ph name="ACCOUNT_EMAIL_LAST"/>. Vui lòng tạo người dùng Brave mới để giữ riêng biệt thông tin của bạn.</translation>
@@ -202,7 +204,6 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 <translation id="3335606533094650083">Brave cần có quyền truy cập vào micrô của bạn cho trang web này</translation>
 <translation id="1705567146636171298">Cập nhật Brave</translation>
 <translation id="5499063270485366718">Brave sẽ cố gắng mô tả cho bạn những hình ảnh không có nội dung mô tả hữu ích. Để tạo nội dung mô tả, các hình ảnh sẽ được gửi đến Brave.</translation>
-<translation id="151916274998710826">Tuỳ chỉnh một số lựa chọn quan trọng nhất về quyền riêng tư của Brave</translation>
 <translation id="1008530050039597147">Brave cần có quyền truy cập máy ảnh đối với trang web này</translation>
 <translation id="1197672524850678392">Không thể mở Brave. Hãy thử lại.</translation>
 <translation id="3405035915691517126">Brave không thể kiểm tra mật khẩu của bạn. Hãy thử lại sau 24 giờ.</translation>
@@ -220,6 +221,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="5062123544085870375">Khởi động lại Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave dành cho nhà phát triển</translation>
 <translation id="2034072705932785495">Brave cần có quyền truy cập vào máy ảnh của bạn cho trang web này</translation>
+<translation id="3962395975456095331">Chạy lại Brave?</translation>
 <translation id="2619516027171717873">Không thể cài đặt phiên bản Brave giống với phiên bản hiện đang chạy. Hãy đóng Brave và thử lại.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave sẽ khởi động lại sau 1 phút}other{Brave sẽ khởi động lại sau # phút}}</translation>
 <translation id="573759479754913123">Giới thiệu về Chrome OS</translation>
@@ -229,6 +231,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="155309785154426906">Bạn đã bật tính năng Duyệt web an toàn có tăng cường bảo vệ trong tài khoản. Giờ hãy sử dụng tính năng này trên Brave.</translation>
 <translation id="3293668930608086049">Brave đang sử dụng máy ảnh và micrô của bạn.</translation>
 <translation id="2827121003398607864">Brave được cải tiến hơn</translation>
+<translation id="8678991866891573053">Brave đang khám phá các tính năng mới cho phép các trang web mang lại trải nghiệm duyệt web như nhau nhưng tiêu tốn ít dữ liệu hơn</translation>
 <translation id="3343095737966473035">Brave không phải là trình duyệt mặc định của bạn</translation>
 <translation id="5477319665405831211">Đồng bộ hóa và cá nhân hóa Brave trên các thiết bị của bạn</translation>
 <translation id="5419189641394808652">Brave không thể đồng bộ hóa dữ liệu của bạn vì Đồng bộ hóa không khả dụng cho miền của bạn.</translation>
@@ -296,7 +299,5 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Đã có bản cập nhật Brave mới và bản cập nhật này sẽ áp dụng ngay khi bạn chạy lại Brave.}=1{Đã có bản cập nhật Brave mới và bản cập nhật này sẽ áp dụng ngay khi bạn chạy lại Brave. Cửa sổ ẩn danh của bạn sẽ không mở lại.}other{Đã có bản cập nhật Brave mới và bản cập nhật này sẽ áp dụng ngay khi bạn chạy lại Brave. # cửa sổ ẩn danh của bạn sẽ không mở lại.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này}=1{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này. Cửa sổ ẩn danh của bạn sẽ không mở lại.}other{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này. # cửa sổ ẩn danh của bạn sẽ không mở lại.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật}=1{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật. Cửa sổ ẩn danh của bạn sẽ không mở lại.}other{Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật. # cửa sổ ẩn danh của bạn sẽ không mở lại.}}</translation>
-<translation id="7914115000169617076">Sắp cập nhật xong rồi! Hãy chạy lại Brave để hoàn tất quá trình cập nhật. Các cửa sổ riêng tư sẽ không mở lại.</translation>
-<translation id="4703432949110765917">Cài đặt mặc định sẽ hoạt động với hầu hết các cấu hình, nhưng bạn có thể tùy biến theo ý thích sử dụng Brave của mình</translation>
 <translation id="2176087127109773485">Bạn có thể quản lý chuỗi đồng bộ hóa Brave đã đăng nhập của mình. Chuỗi đồng bộ hóa Brave của bạn được sử dụng cho trình duyệt Brave, Cửa hàng Play, Gmail, v.v. Nếu bạn muốn thêm tài khoản cho người khác, chẳng hạn như một thành viên trong gia đình, hãy thêm hồ sơ mới vào <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/></translation>
 </translationbundle>

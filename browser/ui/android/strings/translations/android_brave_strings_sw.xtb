@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">Boresha miunganisho kuwa HTTPS</translation>
 <translation id="2278950434998763147">Hufungua tovuti kwa kutumia muunganisho salama wa HTTPS badala ya HTTP ikiwezekana.</translation>
 <translation id="94154759592465111">Zuia Maandishi</translation>
-<translation id="3518266709656143462">Huzuia JavaScript (inaweza kuvunja tovuti)</translation>
+<translation id="7714773920987474116">Huzuia JavaScript (inaweza kuharibu utendakazi wa tovuti)</translation>
 <translation id="6052725679982758334">Uzuiaji wa Mitandao ya Jamii</translation>
 <translation id="7498695072878479744">Ruhusu vitufe vya kuingia kwenye Google kwenye tovuti za washirika wengine</translation>
 <translation id="863171915776379000">Ruhusu kuingia kwenye akaunti kupitia Facebook na makala zilizoshikizwa</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Hadithi bora zaidi za leo za ’ katika mlisho wa faragha kabisa, kwa ajili yako tu.</translation>
 <translation id="7266075701303521777">Huduma ya Taarifa za Brave hufadhiliwa na matangazo kwa matangazo ya faragha kabisa na yasiyobainisha utambulisho yanayolinganishwa na kifaa chako.</translation>
 <translation id="4541978218358617681">Tangazo</translation>
-<translation id="7823038307453615214">Washa Taarifa za Brave</translation>
+<translation id="7823038307453615214">Onyesha Brave News</translation>
 <translation id="6527303717912515753">Shiriki</translation>
 <translation id="1654539412343893324">Jifunze zaidi kuhusu data yako</translation>
 <translation id="2989805286512600854">Fungua kwenye Kichupo Kipya</translation>
@@ -97,7 +97,8 @@
 <translation id="6511854390690723657">Hili ni tangazo lako la kwanza la Brave. Gusa upate maelezo zaidi.</translation>
 <translation id="2070991379950719711">Anza kutumia Zawadi za Brave</translation>
 <translation id="48520986898237073">Nenda kwenye kipochi</translation>
-<translation id="6800338374677644736">Weka kiwe kivinjari chaguo msingi</translation>
+<translation id="3570367516044491911">Weka kiwe kivinjari chaguo msingi</translation>
+<translation id="6800338374677644736">Weka kuwa Kivinjari Chaguo Msingi</translation>
 <translation id="19715420010996093">Chagua Brave Browser na ubofye 'Daima'</translation>
 <translation id="3546439402724649282">Brave tayari imewekwa kuwa kivinjari chako chaguo msingi.</translation>
 <translation id="8389661903259423907">Tayari umeweka kivinjari chaguo msingi. Unaweza kubadilisha kivinjari chaguo msingi katika mipangilio ya programu yako.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">salio kwenye mkoba:</translation>
 <translation id="2573313946367623146">tuma bakshishi yangu</translation>
 <translation id="3250511771491660127">Fanya hii kila mwezi</translation>
+<translation id="7658239707568436148">Ghairi</translation>
+<translation id="1201402288615127009">Endelea</translation>
+<translation id="8481779960444041069">Ili kuboresha faragha yako, weka Brave kuwa Kivinjari chako chaguo msingi</translation>
+<translation id="1938402585819943124">Chagua Brave kwenye skrini inayofuata.</translation>
+<translation id="8926389886865778422">Nisiulizwe tena</translation>
 <translation id="6639570430554986719">JANUARI</translation>
 <translation id="1807352595146144483">FEBRUARI</translation>
 <translation id="2021828608097804771">MACHI</translation>
@@ -521,9 +527,9 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="6478996494082389936">changanuzi za bidhaa za faragha.</translation>
 <translation id="5187052478998910855">Unahitaji msasa kuhusu Zawadi?</translation>
 <translation id="8622329973403382303">Tazama onyesho la haraka ili ufahamu jinsi inavyofanya kazi ili ukumbukwe kama bingwa wa Zawadi!</translation>
-<translation id="7625138338483121345">Fungua viungo vyote kwa Brave ili ulinde faragha yako</translation>
-<translation id="4511485286950743564">Brave Shields huzuia vifuatiliaji na matangazo, huokoa data na kukuokolea muda kwenye kila tovuti unayotembelea.</translation>
-<translation id="9218430445555521422">Weka Brave kuwa chaguomsingi</translation>
+<translation id="7625138338483121345">Fanya Brave iwe kivinjari chako chaguomsingi</translation>
+<translation id="4511485286950743564">Ukiwa na Brave kama chaguo msingi, kila kiungo unachobofya hufunguka kikiwa na ulinzi wa faragha wa Brave.</translation>
+<translation id="9218430445555521422">Weka iwe chaguomsingi</translation>
 <translation id="3479552764303398839">Si sasa</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -542,7 +548,6 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="1822560017823072927">Violesura chaguo-msingi vya umma na binafsi</translation>
 <translation id="5825943197137337319">Kiolesura cha umma chaguo-msingi pekee</translation>
 <translation id="1689062823386843231">Zima UDP zisizo na usalama</translation>
-<translation id="3171931580569169744">Wezesha Vikundi vya Vichupo</translation>
 <translation id="5587305863196367357">Kuthibitisha pochi hukuruhusu kudhibiti fedha zako vizuri zaidi, kuongeza na kutoa</translation>
 <translation id="5760671211380791582">Huna BAT ya kutosha.</translation>
 <translation id="442469478596827903">Unahitaji kuwa 2 BAT ya chini zaidi ili kuunda pochi ya Uphold iliyothibitishwa. Tafadhali jaribu tena baadaye.</translation>
@@ -565,7 +570,8 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="375882617301124395">Cheleza pochi yako ya crypto</translation>
 <translation id="8289942708804097960">Nunua crypo kwa kadi ya mikopo au kadi ya malipo.</translation>
 <translation id="841880029259839903">Tuma crypto au hamisha kutoka kwenye akaunti moja hadi nyingine.</translation>
-<translation id="8226778393040773102">Badilisha rasilimali za crypto na kijumuishaji cha Brave DEX.</translation>
+<translation id="8226778393040773102">Badilisha tokeni na rasilimali</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> itachakata anwani ya Ethereum na anwani ya IP ili kukamilisha muamala (ikiwa ni pamoja na kupata makadirio ya gharama). <ph name="DEX_PROVIDER"/> itatumia data hii kwa madhumuni ya kuchakata miamala TU.</translation>
 <translation id="1783600039044302171">Linda crypto yako kwa nenosiri</translation>
 <translation id="3726490322412361740">Weka Nenosiri</translation>
 <translation id="3038243139480464605">Thibitisha nenosiri</translation>
@@ -593,7 +599,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="283071225285270357">Weka kaulisiri yako ya urejeshaji</translation>
 <translation id="3943857333388298514">Bandika</translation>
 <translation id="3331452756822160641">Nenosiri Jipya</translation>
-<translation id="4359319875297001084">Ninarejesha kutoka kwa Pochi ya urithi ya Brave Crypto</translation>
+<translation id="4359319875297001084">Leta kutoka kwenye pochi za jadi za crypto ya Brave?</translation>
 <translation id="2339124864228588937">Thibitisha kaulisiri ya urejeshaji</translation>
 <translation id="3747079125031086337">Teua maneno katika kauli yako ya urejeshaji katika mpangilio wayo sahihi.</translation>
 <translation id="6518133107902771759">Thibitisha</translation>
@@ -791,6 +797,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="1254969878422524947">Kikomo cha bahshishi kwa kila gesi (Gwei)</translation>
 <translation id="7373308452149471621">Kikomo cha bei kwa kila gesi (Gwei)</translation>
 <translation id="5891811606602061966">Imeshindwa kuleta akaunti, tafadhali jaribu tena.</translation>
+<translation id="1822506443689803572">Brave hutumia <ph name="DEX_PROVIDER"/> kama kijumlishaji cha DEX.</translation>
 <translation id="5061574358754621254">Data ya bei inawezeshwa na CoinGecko</translation>
 <translation id="4626407663177532837">Ukadiriaji wa gharama unajumuisha ada ya Brave ya 0.875%.</translation>
 <translation id="8574289650879708853">Ongeza rasilimali maalum</translation>
@@ -835,11 +842,12 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="665660671251623018">Desimali za sarafu ya mnyororo</translation>
 <translation id="182619028057179895">Umbizo batili, desimali za sarafu ni nambari chanya</translation>
 <translation id="2978054488731497946">Weka desimali za sarafu</translation>
-<translation id="7642841516562576649">URL za Ikoni</translation>
-<translation id="4693057234255364395">Zuia URL za explorer</translation>
+<translation id="7642841516562576649">URL ya Ikoni</translation>
+<translation id="4693057234255364395">Zuia URL ya explorer</translation>
 <translation id="7059127752542505809">Weka URL</translation>
 <translation id="2156993118928861787">Awani si halali</translation>
 <translation id="6889920539620318793">Weka iwe amilifu</translation>
 <translation id="2653659639078652383">Wasilisha</translation>
 <translation id="8853725596990766789">Badilisha kiasi</translation>
+<translation id="5233638681132016545">Kichupo kipya</translation>
 </translationbundle>
