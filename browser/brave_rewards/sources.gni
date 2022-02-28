@@ -49,8 +49,10 @@ if (enable_extensions) {
   ]
 
   brave_browser_brave_rewards_deps += [
+    "//brave/browser/extensions",
     "//brave/browser/ui",
     "//brave/common/extensions/api",
+    "//chrome/browser/extensions",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//extensions/browser",
