@@ -46,13 +46,13 @@ const touchOverriddenFiles = () => {
   // Return true when original file of |file| should be touched.
   const applyFileFilter = (file) => {
     // Exclude test files
-    if (file.indexOf('browsertest') > -1 || file.indexOf('unittest') > -1) { return false }
+    const isTestFile = file.indexOf('browsertest') > -1 || file.indexOf('unittest') > -1;
 
     // Only include overridable files.
-    const ext = path.extname(file)
-    if (ext !== '.cc' && ext !== '.h' && ext !== '.mm' && ext !== '.mojom') { return false }
+    const ext = path.extname(file);
+    const isNotOverridable = ext !== '.cc' && ext !== '.h' && ext !== '.mm' && ext !== '.mojom';    
 
-    return true
+    return isTestFile ? false : isNotOverridable ? false : true;
   }
 
   const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
