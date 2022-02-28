@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">Masquer vos soldes</translation>
 <translation id="4548946945059463969">Afficher vos soldes à l'écran</translation>
 <translation id="242959166945779492">Le solde de votre compte est nul. Accédez à FTX pour acheter des devises.</translation>
+<translation id="6248988683584659830">Paramètres de recherche</translation>
+<translation id="778096729652828897">En savoir plus sur les fenêtres privées avec Tor</translation>
+<translation id="3149306599361260465">Initialisation [[percentage]] %</translation>
+<translation id="3258793718986637767">Vous rencontrez un problème avec Tor? Essayez de <ph name="BEGIN_LINK"/>désactiver la fenêtre de navigation privée avec Tor<ph name="END_LINK"/>, puis de la réactiver.</translation>
 </translationbundle>

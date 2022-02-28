@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">Oculta tus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Muestra tus saldos en la pantalla</translation>
 <translation id="242959166945779492">No tienes ningún saldo en tu cuenta. Visita FTX para adquirir un poco.</translation>
+<translation id="6248988683584659830">Buscar en configuración</translation>
+<translation id="778096729652828897">Obtenga más información sobre las ventanas privadas con Tor</translation>
+<translation id="3149306599361260465">Iniciando [[percentage]] %</translation>
+<translation id="3258793718986637767">¿Tienes problemas con Tor? Intenta <ph name="BEGIN_LINK"/>desactivar la ventana privada con Tor<ph name="END_LINK"/> y luego actívala de nuevo.</translation>
 </translationbundle>

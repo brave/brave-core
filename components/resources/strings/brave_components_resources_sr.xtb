@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">Sakriti saldo sa ekrana</translation>
 <translation id="4548946945059463969">Prikazati saldo na ekranu</translation>
 <translation id="242959166945779492">Nemate ništa na stanju na vašem računu. Posetite FTX da biste nešto imali.</translation>
+<translation id="6248988683584659830">Podešavanja pretrage</translation>
+<translation id="778096729652828897">Saznajte više o privatnom Vindousu sa Torom</translation>
+<translation id="3149306599361260465">Pokretanje [[percentage]]%</translation>
+<translation id="3258793718986637767">Imate problema s Tor-om? Pokušajte <ph name="BEGIN_LINK"/>da onemogućite privatni prozor s Tor-om<ph name="END_LINK"/> i da ga ponovo omogućite.</translation>
 </translationbundle>

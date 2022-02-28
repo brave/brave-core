@@ -1157,4 +1157,13 @@
 <translation id="6973157709854838218">Ukryj swoje salda na ekranie</translation>
 <translation id="4548946945059463969">Pokaż swoje salda na ekranie</translation>
 <translation id="242959166945779492">Nie masz żadnych środków na swoim koncie. Odwiedź FTX, aby je nabyć.</translation>
+<translation id="6248988683584659830">Przeszukaj ustawienia</translation>
+<translation id="778096729652828897">Dowiedz się więcej na temat korzystania z okna prywatnego z obsługą sieci Tor</translation>
+<translation id="3149306599361260465">Inicjowanie [[percentage]]%</translation>
+<translation id="3258793718986637767">Masz problemy z Tor? Spróbuj <ph name="BEGIN_LINK"/>wyłączyć prywatne okno z Tor<ph name="END_LINK"/> i włączyć je ponownie.</translation>
+<translation id="4105411033440701818">Uwaga: przesłany zostanie adres niniejszej witryny wraz z numerem wersji Brave i Twoim adresem IP (który nie zostanie zapisany).</translation>
+<translation id="5810507495128831593">Przekazuj napiwki twórcom treści bezpośrednio podczas przeglądania, korzystając z panelu nagród lub wbudowanego przycisku napiwku w różnych witrynach, jak Twitter, Reddit czy GitHub.</translation>
+<translation id="9013419433042554094">Wypłać tokeny</translation>
+<translation id="2221902203895354376">Dostępne tokeny</translation>
+<translation id="5592304751234049046">Wyszukaj konto 0x</translation>
 </translationbundle>

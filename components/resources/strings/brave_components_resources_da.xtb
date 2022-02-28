@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">Skjul dine saldoer fra visning</translation>
 <translation id="4548946945059463969">Vis dine balancer på skærmen</translation>
 <translation id="242959166945779492">Du har intet tilgodehavende på din konto. Besøg FTX for at købe midler.</translation>
+<translation id="6248988683584659830">Søgeindstillinger</translation>
+<translation id="778096729652828897">Få mere at vide om private vinduer med Tor</translation>
+<translation id="3149306599361260465">Initialiserer [[percentage]] %</translation>
+<translation id="3258793718986637767">Har du problemer med Tor? Prøv <ph name="BEGIN_LINK"/>at slå privat vindue fra med Tor<ph name="END_LINK"/>, og slå det til igen.</translation>
 </translationbundle>

@@ -1217,4 +1217,8 @@
 <translation id="6973157709854838218">残高を非表示</translation>
 <translation id="4548946945059463969">画面に残高を表示</translation>
 <translation id="242959166945779492">アカウントに残高がありません。購入するにはFTXへ移動します。</translation>
+<translation id="6248988683584659830">設定の検索</translation>
+<translation id="778096729652828897">プライベートウィンドウ+Tor の詳細について</translation>
+<translation id="3149306599361260465">[[percentage]]%初期化中</translation>
+<translation id="3258793718986637767">Torに問題がある場合は、<ph name="BEGIN_LINK"/>Torを使用したプライベートウィンドウを無効に<ph name="END_LINK"/>してからもう一度開きます。</translation>
 </translationbundle>

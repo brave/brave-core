@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">Sakrij svoje raspoložive iznose sa zaslona</translation>
 <translation id="4548946945059463969">Otkrij svoje raspoložive iznose na ekranu</translation>
 <translation id="242959166945779492">Nemate raspoloživih iznosa na svom računu. Posjetite FTX da biste ih kupili.</translation>
+<translation id="6248988683584659830">Pretraživanje postavki</translation>
+<translation id="778096729652828897">Saznajte više o privatnim prozorima s funkcijom Tor</translation>
+<translation id="3149306599361260465">Inicijaliziranje [[percentage]]%</translation>
+<translation id="3258793718986637767">Imate problema s uslugom Tor? Pokušajte <ph name="BEGIN_LINK"/>onemogućiti privatni prozor s uslugom Tor<ph name="END_LINK"/> i ponovno ga omogućiti.</translation>
 </translationbundle>

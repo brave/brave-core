@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">Itago ang iyong mga balanse sa display</translation>
 <translation id="4548946945059463969">Ipakita ang iyong mga balanse sa screen</translation>
 <translation id="242959166945779492">Wala kang anumang balanse sa iyong account. Bisitahin ang FTX para bumili ng ganito.</translation>
+<translation id="6248988683584659830">Mga setting ng paghahanap</translation>
+<translation id="778096729652828897">Matuto pa tungkol sa mga Pribadong Window na may Tor</translation>
+<translation id="3149306599361260465">Sinisimulan [[percentage]]%</translation>
+<translation id="3258793718986637767">Nagkakaproblema sa Tor? Subukang <ph name="BEGIN_LINK"/>i-disable ang pribadong window sa Tor<ph name="END_LINK"/> at i-on ulit ito.</translation>
 </translationbundle>

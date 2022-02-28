@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">Sembunyikan saldo Anda agar tidak ditampilkan</translation>
 <translation id="4548946945059463969">Tampilkan saldo Anda pada layar</translation>
 <translation id="242959166945779492">Anda tidak memiliki saldo apa pun di akun Anda. Kunjungi FTX untuk membelinya.</translation>
+<translation id="6248988683584659830">Setelan pencarian</translation>
+<translation id="778096729652828897">Pelajari lebih lanjut tentang Jendela Pribadi dengan Tor</translation>
+<translation id="3149306599361260465">Menginisialisasi [[percentage]]%</translation>
+<translation id="3258793718986637767">Bermasalah dengan Tor? Silakan <ph name="BEGIN_LINK"/>nonaktifkan jendela privat dengan Tor<ph name="END_LINK"/> dan kemudian aktifkan kembali.</translation>
 </translationbundle>

@@ -1156,4 +1156,14 @@
 <translation id="6973157709854838218">Piilota saldosi näytöltä</translation>
 <translation id="4548946945059463969">Näytä saldosi näytöllä</translation>
 <translation id="242959166945779492">Sinulla ei ole yhtään saldoa tililläsi. Käy FTX:ssä ostaaksesi valuuttoja.</translation>
+<translation id="6248988683584659830">Hakuasetukset</translation>
+<translation id="778096729652828897">Lisätietoa yksityisistä ikkunoista Tor-verkossa</translation>
+<translation id="3149306599361260465">Alustetaan [[percentage]]%</translation>
+<translation id="3258793718986637767">Onko sinulla ongelmia Torin kanssa? Kokeile <ph name="BEGIN_LINK"/>poistaa yksityinen ikkuna käytöstä Torin avulla<ph name="END_LINK"/> ja ottaa se uudelleen käyttöön.</translation>
+<translation id="4105411033440701818">Huom. Tämän sivuston osoite lähetetään yhdessä Brave-versiosi numeron ja IP-osoitteesi (jota ei tallenneta) kanssa.</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="5810507495128831593">Anna sisällönluojille tippi suoraan selatessasi käyttämällä palkintopaneelia tai käyttämällä tekstiin sidottua tippipainiketta tietyillä sivustoilla, esimerkkeinä Twitter, Reddit ja GitHub.</translation>
+<translation id="9013419433042554094">Lunasta tokenit</translation>
+<translation id="2221902203895354376">Käytettävissä olevat tokenit</translation>
+<translation id="5592304751234049046">Hae tili 0x</translation>
 </translationbundle>

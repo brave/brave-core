@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">Oculta els teus saldos de la pantalla</translation>
 <translation id="4548946945059463969">Mostra els teus saldos a la pantalla</translation>
 <translation id="242959166945779492">No tens cap balanç al teu compte. Visita FTX per comprar-ne algunes.</translation>
+<translation id="6248988683584659830">Configuració de la cerca</translation>
+<translation id="778096729652828897">Saber més sobre Finestres Privades amb Tor</translation>
+<translation id="3149306599361260465">S'està inicialitzant [[percentage]]%</translation>
+<translation id="3258793718986637767">Tens problemes amb Tor? Prova de <ph name="BEGIN_LINK"/>deshabilitar la finestra privada amb Tor<ph name="END_LINK"/> i tornar-la a obrir.</translation>
 </translationbundle>

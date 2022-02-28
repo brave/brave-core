@@ -1215,4 +1215,8 @@
 <translation id="6973157709854838218">Κρύψτε τα υπόλοιπά σας από την οθόνη</translation>
 <translation id="4548946945059463969">Εμφανίστε τα υπόλοιπά σας στην οθόνη</translation>
 <translation id="242959166945779492">Δεν έχετε υπόλοιπο στον λογαριασμό σας. Επισκεφτείτε το FTX για να αγοράσετε.</translation>
+<translation id="6248988683584659830">Ρυθμίσεις αναζήτησης</translation>
+<translation id="778096729652828897">Μάθε περισσότερα σχετικά με τα Ιδιωτικά Παράθυρα στο Tor</translation>
+<translation id="3149306599361260465">Προετοιμασία [[percentage]]%</translation>
+<translation id="3258793718986637767">Αντιμετωπίζετε πρόβλημα με το Tor; Δοκιμάστε να <ph name="BEGIN_LINK"/>απενεργοποιήσετε το ιδιωτικό παράθυρο με το Tor<ph name="END_LINK"/> και να το επανενεργοποιήσετε.</translation>
 </translationbundle>

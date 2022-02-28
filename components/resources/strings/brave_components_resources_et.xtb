@@ -1157,4 +1157,13 @@
 <translation id="6973157709854838218">Varja oma saldod kuval</translation>
 <translation id="4548946945059463969">Näita kuval oma saldosid</translation>
 <translation id="242959166945779492">Teie konto saldo on tühi. Külastage FTXi, et vahendeid osta.</translation>
+<translation id="6248988683584659830">Otsi seadeid</translation>
+<translation id="778096729652828897">Lisateave Tor'iga privaatsete akende kohta</translation>
+<translation id="3149306599361260465">Lähtestamine, [[percentage]]%</translation>
+<translation id="3258793718986637767">Kas on probleemid Tor-iga? Proovi <ph name="BEGIN_LINK"/>Tor-i privaataken välja<ph name="END_LINK"/> ning uuesti sisse lülitada.</translation>
+<translation id="4105411033440701818">Märkus. Selle veebisaidi aadress esitatakse koos teie Brave’i versiooninumbri ja teie IP-aadressiga (mida ei salvestata).</translation>
+<translation id="5810507495128831593">Toetage sisuloojaid otse lehitsemise ajal preemiate paneelist või kasutades reasisest toetamise nuppu erinevatel veebilehtedel, sealhulgas Twitteris, Redditis ja GitHubis.</translation>
+<translation id="9013419433042554094">Võta tokenid vastu</translation>
+<translation id="2221902203895354376">Saadaolevad tokenid</translation>
+<translation id="5592304751234049046">Otsi kontot 0x</translation>
 </translationbundle>

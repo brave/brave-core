@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">Az egyenlegek elrejtése a megjelenítésből</translation>
 <translation id="4548946945059463969">Az egyenlegek mutatása a képernyőn</translation>
 <translation id="242959166945779492">Fiókja nem rendelkezik egyenleggel. A beszerzéshez látogasson el az FTX-re.</translation>
+<translation id="6248988683584659830">Keresés a beállításokban</translation>
+<translation id="778096729652828897">Tudj meg többet a Tor Privát ablakokról</translation>
+<translation id="3149306599361260465">Betöltés [[percentage]]%</translation>
+<translation id="3258793718986637767">Problémákba ütközik a Torral? Próbálja meg <ph name="BEGIN_LINK"/>a privát ablak letiltását a Torral<ph name="END_LINK"/>, majd kapcsolja be újra.</translation>
 </translationbundle>

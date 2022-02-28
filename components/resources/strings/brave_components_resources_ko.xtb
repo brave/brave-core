@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">화면에서 잔액 숨김</translation>
 <translation id="4548946945059463969">화면에 잔액 표시</translation>
 <translation id="242959166945779492">계정 내에 잔액이 없습니다. FTX를 방문하여 구매하세요.</translation>
+<translation id="6248988683584659830">검색 설정</translation>
+<translation id="778096729652828897">Tor를 이용한 비공개 창에 관하여 자세히 알아보십시오</translation>
+<translation id="3149306599361260465">초기화 중 [[percentage]]%</translation>
+<translation id="3258793718986637767">Tor에 문제가 있습니까? Try <ph name="BEGIN_LINK"/>Tor를 사용한 시크릿 창을 비활성화<ph name="END_LINK"/>한 다음 다시 활성화해 보세요.</translation>
 </translationbundle>

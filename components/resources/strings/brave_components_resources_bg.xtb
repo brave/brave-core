@@ -1215,4 +1215,8 @@
 <translation id="6973157709854838218">Скриване на салдата от дисплея</translation>
 <translation id="4548946945059463969">Показване на салдата на екрана</translation>
 <translation id="242959166945779492">Нямате салда по сметката си. Посетете FTX, за да закупите такива.</translation>
+<translation id="6248988683584659830">Настройки на търсенето</translation>
+<translation id="778096729652828897">Научете повече за поверителни прозорци с Tor</translation>
+<translation id="3149306599361260465">Инициализиране  [[percentage]]%</translation>
+<translation id="3258793718986637767">Имате проблеми с Tor? Опитайте <ph name="BEGIN_LINK"/>деактивиране на поверителен прозорец с Tor<ph name="END_LINK"/>и отново го активирайте.</translation>
 </translationbundle>

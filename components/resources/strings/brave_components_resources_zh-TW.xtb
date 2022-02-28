@@ -1214,4 +1214,8 @@
 <translation id="6973157709854838218">隱藏顯示餘額</translation>
 <translation id="4548946945059463969">在螢幕上顯示您的餘額</translation>
 <translation id="242959166945779492">您的帳戶中沒有任何餘額。請造訪 FTX 購買。</translation>
+<translation id="6248988683584659830">搜尋設定</translation>
+<translation id="778096729652828897">更多關於使用 Tor 的隱私視窗的資訊</translation>
+<translation id="3149306599361260465">正在初始化 [[percentage]]%</translation>
+<translation id="3258793718986637767">有 Tor 方面的問題嗎？試試看 <ph name="BEGIN_LINK"/> 停用使用 Tor 的隱私視窗 <ph name="END_LINK"/>，然後重新開啟吧。</translation>
 </translationbundle>

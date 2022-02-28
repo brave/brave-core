@@ -1157,4 +1157,13 @@
 <translation id="6973157709854838218">Skrýt vaše zůstatky ze zobrazení</translation>
 <translation id="4548946945059463969">Odhalit vaše zůstatky na obrazovce</translation>
 <translation id="242959166945779492">Na účtu nemáte žádný zůstatek. Navštivte FTX a proveďte nákup.</translation>
+<translation id="6248988683584659830">Nastavení vyhledávání</translation>
+<translation id="778096729652828897">Zjistěte více o soukromých oknech s vyhledávačem Tor</translation>
+<translation id="3149306599361260465">Inicializace [[percentage]] %</translation>
+<translation id="3258793718986637767">Máte problém s Tor? Zkuste <ph name="BEGIN_LINK"/>zakázat soukromé okno s Tor<ph name="END_LINK"/> a opět jej znovu zapnout.</translation>
+<translation id="4105411033440701818">Poznámka: adresa těchto stránek bude odeslána s číslem verze vašeho Brave a vaší IP adresou (tento údaj se neukládá).</translation>
+<translation id="5810507495128831593">Posílejte tvůrcům příspěvky přímo při prohlížení. Stačí použít panel odměn nebo tlačítko pro zaslání příspěvku uvedené přímo na různých stránkách, mezi které patří Twitter, Reddit a GitHub.</translation>
+<translation id="9013419433042554094">Vybrat tokeny</translation>
+<translation id="2221902203895354376">Dostupné tokeny</translation>
+<translation id="5592304751234049046">Vyhledávání účtu 0x</translation>
 </translationbundle>

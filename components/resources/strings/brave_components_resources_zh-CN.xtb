@@ -1215,4 +1215,8 @@
 <translation id="6973157709854838218">隐藏余额</translation>
 <translation id="4548946945059463969">在屏幕上显示余额</translation>
 <translation id="242959166945779492">账户中没有任何余额。访问 FTX 购买资产。</translation>
+<translation id="6248988683584659830">搜索设置</translation>
+<translation id="778096729652828897">了解有关用 Tor 打开私人窗口的更多信息</translation>
+<translation id="3149306599361260465">初始化完成比例为 [[percentage]]%</translation>
+<translation id="3258793718986637767">使用 Tor 遇到问题？请尝试<ph name="BEGIN_LINK"/> 禁用 Tor 私密窗口<ph name="END_LINK"/>，然后再次开启。</translation>
 </translationbundle>

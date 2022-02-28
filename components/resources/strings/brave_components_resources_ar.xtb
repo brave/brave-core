@@ -1215,4 +1215,8 @@
 <translation id="6973157709854838218">إخفاء أرصدتك من العرض</translation>
 <translation id="4548946945059463969">الكشف عن أرصدتك على الشاشة</translation>
 <translation id="242959166945779492">ليس لديك أي أرصدة في حسابك. تفضل بزيارة FTX لشراء بعضها.</translation>
+<translation id="6248988683584659830">إعدادات البحث</translation>
+<translation id="778096729652828897">تعرف على المزيد حول النوافذ الخاصة مع Tor</translation>
+<translation id="3149306599361260465">جارِ التهيئة [[percentage]]%</translation>
+<translation id="3258793718986637767">هل تواجه مشكلة مع ميزة Tor؟ حاول <ph name="BEGIN_LINK"/>تعطيل نافذة التصفح الخاصة المفعلة فيها ميزة Tor<ph name="END_LINK"/> وإعادة تشغيل هذه النافذة مرة أخرى.</translation>
 </translationbundle>

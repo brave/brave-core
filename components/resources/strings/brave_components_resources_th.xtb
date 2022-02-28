@@ -1215,4 +1215,8 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="6973157709854838218">ซ่อนยอดคงเหลือของคุณจากจอแสดงผล</translation>
 <translation id="4548946945059463969">เปิดเผยยอดคงเหลือของคุณบนหน้าจอ</translation>
 <translation id="242959166945779492">คุณไม่มียอดคงเหลือในบัญชีของคุณ โปรดไปยัง FTX เพื่อซื้อเพิ่ม</translation>
+<translation id="6248988683584659830">ตั้งค่าการค้นหา</translation>
+<translation id="778096729652828897">เรียนรู้เพิ่มเติมเกี่ยวกับวินโดว์ส่วนบุคคลกับทอร์</translation>
+<translation id="3149306599361260465">กำลังเริ่มต้น [[percentage]]%</translation>
+<translation id="3258793718986637767">พบปัญหากับ Tor ใช่หรือไม่ โปรดลอง<ph name="BEGIN_LINK"/>ปิดใช้งานหน้าต่างส่วนตัวด้วย Tor<ph name="END_LINK"/> และเปิดใช้งานอีกครั้ง</translation>
 </translationbundle>

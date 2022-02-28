@@ -1157,4 +1157,13 @@
 <translation id="6973157709854838218">Hide your balances from display</translation>
 <translation id="4548946945059463969">Reveal your balances on screen</translation>
 <translation id="242959166945779492">You do not have any balances in your account. Visit FTX to purchase some.</translation>
+<translation id="6248988683584659830">Search settings</translation>
+<translation id="778096729652828897">Learn more about Private Windows with Tor</translation>
+<translation id="3149306599361260465">Initialising [[percentage]]%</translation>
+<translation id="3258793718986637767">Having problems with Tor? Try <ph name="BEGIN_LINK"/>disabling private window with Tor<ph name="END_LINK"/> and turning it back on again.</translation>
+<translation id="4105411033440701818">Note: This site address will be submitted with your Brave version number and your IP address (which will not be stored).</translation>
+<translation id="5810507495128831593">Tip content creators directly as you browse by using the Rewards Panel, or by using the inline tip button on various sites including Twitter, Reddit and GitHub.</translation>
+<translation id="9013419433042554094">Claim tokens</translation>
+<translation id="2221902203895354376">Tokens available</translation>
+<translation id="5592304751234049046">Search account 0x</translation>
 </translationbundle>
