@@ -329,6 +329,14 @@ provideStrings({
   braveWalletConfirmTransactionFrist: 'first',
   braveWalletConfirmTransactions: 'transactions',
 
+  // Backed up Transactions Warning
+  braveWalletBackedUpTransactionsTitle: 'Transaction backlog',
+  braveWalletBackedUpTransactionsDescription: 'Youre attempting to start a new transaction while you have previously submitted transactions that have not been confirmed. This will block any new ones from being submitted.',
+  braveWalletBackedUpTransactionsCheckbox: 'Clear & replace the incomplete transaction(s)',
+  braveWalletBackedUpTransactionsClearButton: 'Clear and continue',
+  braveWalletBackedUpTransactionsClearingButton: 'Clearing transactions',
+  braveWalletBackedUpTransactionsOKButton: 'OK',
+
   // Wallet Main Panel
   braveWalletPanelTitle: 'Brave Wallet',
   braveWalletPanelConnected: 'Connected',

@@ -661,6 +661,8 @@ function Container (props: Props) {
             updateUnapprovedTransactionNonce={props.walletActions.updateUnapprovedTransactionNonce}
             gasEstimates={gasEstimates}
             fullTokenList={props.wallet.fullTokenList}
+            transactions={transactions}
+            selectedAccount={selectedAccount}
           />
         </LongWrapper>
       </PanelWrapper>

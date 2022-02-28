@@ -627,6 +627,7 @@ handler.on(WalletActions.addSitePermission.getType(), async (store: Store, paylo
 
 handler.on(WalletActions.transactionStatusChanged.getType(), async (store: Store, payload: TransactionStatusChanged) => {
   const status = payload.txInfo.txStatus
+  await store.dispatch(refreshTransactionHistory(payload.txInfo.fromAddress))
   if (status === BraveWallet.TransactionStatus.Confirmed || status === BraveWallet.TransactionStatus.Error) {
     await refreshBalancesPricesAndHistory(store)
   }

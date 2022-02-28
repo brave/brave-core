@@ -16,9 +16,13 @@ export function mojoTimeDeltaToJSDate (mojoTime: TimeDelta) {
 
 const monthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
+export function calculatedTimeDiffInMilliseconds (date: Date, now: Date = new Date()) {
+  return now.getTime() - date.getTime()
+}
+
 export function formatDateAsRelative (date: Date, now: Date = new Date()) {
   // the difference in milliseconds
-  const diff = now.getTime() - date.getTime()
+  const diff = calculatedTimeDiffInMilliseconds(date, now)
 
   // convert diff to seconds
   const sec = Math.floor(diff / 1000)

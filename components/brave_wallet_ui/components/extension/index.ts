@@ -24,6 +24,7 @@ import TransactionsListItem from './transaction-list-item'
 import TransactionDetailPanel from './transaction-detail-panel'
 import AssetsPanel from './assets-panel'
 import EncryptionKeyPanel from './encryption-key-panel'
+import TransactionsBackedUpWarning from './transactions-backed-up-warning'
 import { NavButton } from './buttons'
 
 export {
@@ -53,5 +54,6 @@ export {
   TransactionsListItem,
   TransactionDetailPanel,
   AssetsPanel,
-  EncryptionKeyPanel
+  EncryptionKeyPanel,
+  TransactionsBackedUpWarning
 }

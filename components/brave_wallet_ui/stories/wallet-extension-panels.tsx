@@ -97,6 +97,22 @@ const mockDefaultCurrencies = {
   crypto: 'BTC'
 }
 
+const transactionDummyAccounts: WalletAccountType[] = [
+  {
+    id: '1',
+    name: 'Account 1',
+    address: '1',
+    balance: '0.31178',
+    accountType: 'Primary',
+    tokenBalanceRegistry: {},
+    coin: BraveWallet.CoinType.ETH
+  }
+]
+
+const transactionList = {
+  [transactionDummyAccounts[0].address]: [...transactionDummyData[1]].concat(...transactionDummyData[2])
+}
+
 export const _ConfirmTransaction = () => {
   const transactionInfo: BraveWallet.TransactionInfo = {
     fromAddress: '0x7d66c9ddAED3115d93Bd1790332f3Cd06Cf52B14',
@@ -203,6 +219,8 @@ export const _ConfirmTransaction = () => {
         getERC20Allowance={getERC20Allowance}
         fullTokenList={NewAssetOptions}
         gasEstimates={undefined}
+        selectedAccount={accounts[0]}
+        transactions={transactionList}
       />
     </StyledExtensionWrapperLonger>
   )
@@ -391,20 +409,6 @@ _ConnectWithSite.story = {
 }
 
 export const _ConnectedPanel = (args: { locked: boolean }) => {
-  const transactionDummyAccounts: WalletAccountType[] = [
-    {
-      id: '1',
-      name: 'Account 1',
-      address: '1',
-      balance: '0.31178',
-      accountType: 'Primary',
-      tokenBalanceRegistry: {},
-      coin: BraveWallet.CoinType.ETH
-    }
-  ]
-  const transactionList = {
-    [transactionDummyAccounts[0].address]: [...transactionDummyData[1]].concat(...transactionDummyData[2])
-  }
   const { locked } = args
   const [inputValue, setInputValue] = React.useState<string>('')
   const [walletLocked, setWalletLocked] = React.useState<boolean>(locked)
