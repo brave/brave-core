@@ -161,12 +161,9 @@ export async function getIsSwapSupported (network: BraveWallet.EthereumChain): P
   return (await swapService.isSwapSupported(network.chainId)).result
 }
 
-export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const { braveWalletService, jsonRpcService } = getAPIProxy()
-    const { wallet: { accounts } } = getState()
-
-    const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
+export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.EthereumChain) {
+  return async (dispatch: Dispatch) => {
+    const { braveWalletService } = getAPIProxy()
 
     // Selected Network's Native Asset
     const nativeAsset: BraveWallet.BlockchainToken = {
@@ -182,6 +179,17 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
       coingeckoId: ''
     }
 
+    const visibleTokensInfo = await braveWalletService.getUserAssets(currentNetwork.chainId)
+    const visibleAssets: BraveWallet.BlockchainToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
+    await dispatch(WalletActions.setVisibleTokensInfo(visibleAssets))
+  }
+}
+
+export function refreshBalances () {
+  return async (dispatch: Dispatch, getState: () => State) => {
+    const { jsonRpcService } = getAPIProxy()
+    const { wallet: { accounts, userVisibleTokensInfo } } = getState()
+
     const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
       const balanceInfo = await jsonRpcService.getBalance(account.address, account.coin)
       return balanceInfo
@@ -190,9 +198,7 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
       balances: getBalanceReturnInfos
     }))
 
-    const visibleAssets: BraveWallet.BlockchainToken[] = visibleTokensInfo.tokens.length === 0 ? [nativeAsset] : visibleTokensInfo.tokens
-    await dispatch(WalletActions.setVisibleTokensInfo(visibleAssets))
-    const visibleTokens = visibleAssets.filter(asset => asset.contractAddress !== '')
+    const visibleTokens = userVisibleTokensInfo.filter(asset => asset.contractAddress !== '')
 
     const getBlockchainTokenBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
       return Promise.all(visibleTokens.map(async (token) => {
@@ -284,12 +290,12 @@ export function refreshTokenPriceHistory (selectedPortfolioTimeline: BraveWallet
           const balance = token.contractAddress
             ? account.tokenBalanceRegistry[token.contractAddress.toLowerCase()]
             : account.balance
-        return {
-          token,
-          balance: balance || '0',
-          history: priceHistory.find((t) => token.contractAddress === t.contractAddress)?.history ?? { success: true, values: [] }
-        }
-      })
+          return {
+            token,
+            balance: balance || '0',
+            history: priceHistory.find((t) => token.contractAddress === t.contractAddress)?.history ?? { success: true, values: [] }
+          }
+        })
     })
 
     dispatch(WalletActions.portfolioPriceHistoryUpdated(priceHistoryWithBalances))
