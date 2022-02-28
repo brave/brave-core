@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/solana_tx_manager.h"
 
+#include <memory>
+
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 
 namespace brave_wallet {
 
@@ -13,7 +16,11 @@ SolanaTxManager::SolanaTxManager(TxService* tx_service,
                                  JsonRpcService* json_rpc_service,
                                  KeyringService* keyring_service,
                                  PrefService* prefs)
-    : TxManager(tx_service, json_rpc_service, keyring_service, prefs) {}
+    : TxManager(std::make_unique<SolanaTxStateManager>(prefs, json_rpc_service),
+                tx_service,
+                json_rpc_service,
+                keyring_service,
+                prefs) {}
 
 void SolanaTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,

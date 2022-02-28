@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_TX_MANAGER_H_
 
+#include <memory>
 #include <string>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -17,14 +18,16 @@ namespace brave_wallet {
 class TxService;
 class JsonRpcService;
 class KeyringService;
+class TxStateManager;
 
 class TxManager {
  public:
-  TxManager(TxService* tx_service,
+  TxManager(std::unique_ptr<TxStateManager> tx_state_manager,
+            TxService* tx_service,
             JsonRpcService* json_rpc_service,
             KeyringService* keyring_service,
             PrefService* prefs);
-  virtual ~TxManager() = default;
+  virtual ~TxManager();
 
   using AddUnapprovedTransactionCallback =
       mojom::TxService::AddUnapprovedTransactionCallback;
@@ -45,9 +48,9 @@ class TxManager {
   virtual void ApproveTransaction(const std::string& tx_meta_id,
                                   ApproveTransactionCallback) = 0;
   virtual void RejectTransaction(const std::string& tx_meta_id,
-                                 RejectTransactionCallback) = 0;
+                                 RejectTransactionCallback);
   virtual void GetAllTransactionInfo(const std::string& from,
-                                     GetAllTransactionInfoCallback) = 0;
+                                     GetAllTransactionInfoCallback);
 
   virtual void SpeedupOrCancelTransaction(
       const std::string& tx_meta_id,
@@ -63,6 +66,7 @@ class TxManager {
   virtual void Reset() = 0;
 
  protected:
+  std::unique_ptr<TxStateManager> tx_state_manager_;
   raw_ptr<TxService> tx_service_ = nullptr;             // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;  // NOT OWNED
   raw_ptr<KeyringService> keyring_service_ = nullptr;   // NOT OWNED
