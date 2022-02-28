@@ -150,19 +150,17 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
                                 const history::URLRow& row,
                                 const history::RedirectList& redirects,
                                 base::Time visit_time) {
-  const int item_count = GetAllSidebarItems().size();
-  const auto items = GetAllSidebarItems();
-  for (int i = 0; i < item_count; ++i) {
+  for (const auto& item : GetAllSidebarItems()) {
     // If same url is added to history service, try to fetch favicon to update
     // for item.
-    if (items[i].url == row.url() && data_[i]->need_favicon_update()) {
+    if (item.url.host() == row.url().host()) {
       // Favicon seems cached after this callback.
       // TODO(simonhong): Find more deterministic method instead of using
       // delayed task.
       base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
           FROM_HERE,
           base::BindOnce(&SidebarModel::FetchFavicon,
-                         weak_ptr_factory_.GetWeakPtr(), items[i]),
+                         weak_ptr_factory_.GetWeakPtr(), item),
           base::Seconds(2));
     }
   }
@@ -280,8 +278,6 @@ void SidebarModel::OnGetLocalFaviconImage(
                     .AsImageSkia());
     }
   } else {
-    // Flaging to try to update favicon again.
-    data_[index]->set_need_favicon_update(true);
     FetchFaviconFromNetwork(item);
   }
 }
