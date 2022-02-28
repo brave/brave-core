@@ -10,12 +10,19 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "ui/events/base_event_utils.h"
+#include "ui/events/event.h"
+#include "ui/gfx/geometry/point.h"
 
 namespace sidebar {
 
@@ -34,6 +41,23 @@ class SidebarBrowserTest : public InProcessBrowserTest,
 
   SidebarController* controller() {
     return brave_browser()->sidebar_controller();
+  }
+
+  void SimulateSidebarItemClickAt(int index) {
+    auto* sidebar_container_view =
+        static_cast<SidebarContainerView*>(controller()->sidebar());
+    auto* sidebar_control_view = sidebar_container_view->sidebar_control_view_;
+    auto* sidebar_scroll_view = sidebar_control_view->sidebar_items_view_;
+    auto* sidebar_items_contents_view = sidebar_scroll_view->contents_view_;
+    DCHECK(sidebar_items_contents_view);
+
+    auto* item = sidebar_items_contents_view->children()[index];
+    DCHECK(item);
+
+    const gfx::Point origin(0, 0);
+    ui::MouseEvent event(ui::ET_MOUSE_PRESSED, origin, origin,
+                         ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
+    sidebar_items_contents_view->OnItemPressed(item, event);
   }
 };
 
@@ -147,7 +171,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   // Click builtin wallet item and it's loaded at current active tab.
   auto item = model()->GetAllSidebarItems()[1];
   EXPECT_FALSE(controller()->DoesBrowserHaveOpenedTabForItem(item));
-  controller()->ActivateItemAt(1);
+  SimulateSidebarItemClickAt(1);
   EXPECT_TRUE(controller()->DoesBrowserHaveOpenedTabForItem(item));
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL().host(),
@@ -160,7 +184,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   // NTP is active tab.
   EXPECT_EQ(1, tab_model()->active_index());
-  controller()->ActivateItemAt(1);
+  SimulateSidebarItemClickAt(1);
   // Wallet tab is active tab.
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL().host(),
@@ -176,15 +200,15 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), item.url));
 
   // Click wallet item and then first wallet tab(tab index 0) is activated.
-  controller()->ActivateItemAt(1);
+  SimulateSidebarItemClickAt(1);
   EXPECT_EQ(0, tab_model()->active_index());
 
   // Click wallet item and then second wallet tab(index 2) is activated.
-  controller()->ActivateItemAt(1);
+  SimulateSidebarItemClickAt(1);
   EXPECT_EQ(2, tab_model()->active_index());
 
   // Click wallet item and then first wallet tab(index 0) is activated.
-  controller()->ActivateItemAt(1);
+  SimulateSidebarItemClickAt(1);
   EXPECT_EQ(0, tab_model()->active_index());
 }
 
