@@ -152,6 +152,16 @@ const EditVisibleAssetsModal = (props: Props) => {
     setIconURL(event.target.value)
   }
 
+  const resetInputFields = () => {
+    setTokenName('')
+    setTokenContractAddress('')
+    setTokenSymbol('')
+    setTokenDecimals('')
+    setTokenID('')
+    setCoingeckoID('')
+    setIconURL('')
+  }
+
   const nativeAsset = {
     contractAddress: '',
     decimals: selectedNetwork.decimals,
@@ -189,6 +199,7 @@ const EditVisibleAssetsModal = (props: Props) => {
     }, 500)
     if (!addUserAssetError) {
       setShowAddCustomToken(false)
+      resetInputFields()
     }
     setHasError(addUserAssetError)
     setIsLoading(false)
@@ -309,7 +320,7 @@ const EditVisibleAssetsModal = (props: Props) => {
   }
 
   const onClickCancel = () => {
-    setTokenContractAddress('')
+    resetInputFields()
     toggleShowAddCustomToken()
   }
 
@@ -326,12 +337,7 @@ const EditVisibleAssetsModal = (props: Props) => {
 
   React.useEffect(() => {
     if (tokenContractAddress === '') {
-      setTokenName('')
-      setTokenSymbol('')
-      setTokenDecimals('')
-      setTokenID('')
-      setCoingeckoID('')
-      setIconURL('')
+      resetInputFields()
       return
     }
     onFindTokenInfoByContractAddress(tokenContractAddress)
@@ -359,9 +365,14 @@ const EditVisibleAssetsModal = (props: Props) => {
       !tokenContractAddress.toLowerCase().startsWith('0x')
   }, [tokenName, tokenSymbol, tokenDecimals, tokenID, tokenContractAddress])
 
+  const onCloseModal = () => {
+    resetInputFields()
+    onClose()
+  }
+
   const onClickDone = () => {
     onUpdateVisibleAssets(updatedTokensList)
-    onClose()
+    onCloseModal()
   }
 
   const onToggleShowAdvancedFields = () => {
@@ -369,7 +380,13 @@ const EditVisibleAssetsModal = (props: Props) => {
   }
 
   return (
-    <PopupModal title={showAddCustomToken ? getLocale('braveWalletWatchlistAddCustomAsset') : getLocale('braveWalletAccountsEditVisibleAssets')} onClose={onClose}>
+    <PopupModal
+      title={showAddCustomToken
+        ? getLocale('braveWalletWatchlistAddCustomAsset')
+        : getLocale('braveWalletAccountsEditVisibleAssets')
+      }
+      onClose={onCloseModal}
+    >
       {showAddCustomToken &&
         <Divider />
       }
