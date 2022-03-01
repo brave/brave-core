@@ -14,7 +14,7 @@ import os
 import subprocess
 import sys
 
-from signing import model  # pylint: disable=import-error
+from signing import model  # pylint: disable=import-error, reimported
 
 # Construct path to signing modules in chrome/installer/mac/signing
 signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
@@ -43,13 +43,14 @@ def file_exists(path):
 def run_command(args, **kwargs):
     """ Runs the given executable with the given arguments """
     print('Running command: {}'.format(args)
-          )  # pylint: disable=superfluous-parens
+         )  # pylint: disable=superfluous-parens
     subprocess.check_call(args, **kwargs)
 
 
 def GenerateBraveWidevineSigFile(paths, config, part):
     """ Generates Widevine .sig file """
-    if sign_widevine_key and sign_widevine_passwd and file_exists(sig_generator_path):
+    if sign_widevine_key and sign_widevine_passwd and file_exists(
+            sig_generator_path):
         # Framework needs to be signed before generating Widevine signature
         # file. The calling script will re-sign it after Widevine signature
         # file has been added (see signing.py from where this function is
@@ -62,12 +63,14 @@ def GenerateBraveWidevineSigFile(paths, config, part):
                                                      'Versions', config.version)
         sig_source_file = os.path.join(
             chrome_framework_version_path, chrome_framework_name)
-        sig_target_file = os.path.join(chrome_framework_version_path, 'Resources',
+        sig_target_file = os.path.join(chrome_framework_version_path,
+                                       'Resources',
                                        chrome_framework_name + '.sig')
         assert file_exists(
             sig_source_file), 'Wrong source path for sig generation'
 
-        command = ['python', sig_generator_path, '--input_file', sig_source_file,
+        command = ['python', sig_generator_path, '--input_file',
+                   sig_source_file,
                    '--output_file', sig_target_file, '--flags', '1',
                    '--certificate', sign_widevine_cert,
                    '--private_key', sign_widevine_key,
@@ -82,7 +85,9 @@ def AddBravePartsForSigning(parts, config):
     parts = collections.OrderedDict(parts)
     from signing.model import CodeSignedProduct, VerifyOptions, CodeSignOptions  # pylint: disable=import-error
 
-    development = True if config.provisioning_profile_basename is None else False
+    development = (
+        True if config.provisioning_profile_basename is None else False
+    )
 
     full_hardened_runtime_options = (
         CodeSignOptions.HARDENED_RUNTIME + CodeSignOptions.RESTRICT +
@@ -96,14 +101,18 @@ def AddBravePartsForSigning(parts, config):
             .format(config, config),
             'fileop',
             verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
-        parts['sparkle-framework-fileop'].options = full_hardened_runtime_options
+        parts['sparkle-framework-fileop'].options = (
+            full_hardened_runtime_options
+        )
 
         parts['sparkle-framework-autoupdate'] = CodeSignedProduct(
             '{0.framework_dir}/Versions/{1.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate'  # pylint: disable=line-too-long
             .format(config, config),
             'org.sparkle-project.Sparkle.Autoupdate',
             verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
-        parts['sparkle-framework-autoupdate'].options = full_hardened_runtime_options
+        parts['sparkle-framework-autoupdate'].options = (
+            full_hardened_runtime_options
+        )
 
         parts['sparkle-framework'] = CodeSignedProduct(
             '{.framework_dir}/Frameworks/Sparkle.framework'.format(config),
@@ -141,7 +150,7 @@ def GetBraveSigningConfig(config_class, mac_provisioning_profile=None):
 
         @property
         def codesign_requirements_basic(self):
-            return 'and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists / and certificate leaf[field.1.2.840.113635.100.6.1.13] / exists */'            
+            return 'and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists / and certificate leaf[field.1.2.840.113635.100.6.1.13] / exists */' # pylint: disable=line-too-long
 
     config_class = ConfigNonChromeBranded
 
