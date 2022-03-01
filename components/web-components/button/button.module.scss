@@ -28,10 +28,6 @@
     outline: none;
   }
 
-  &:focus-visible {
-    outline: none;
-  }
-
   &:active,
   &.isLoading {
     opacity: .7;
@@ -103,6 +99,7 @@
     }
   }
   &:focus-visible {
+    outline: none;
     --outer-border-size: 3px;
     --outer-border-color: var(--focus-border);
   }
