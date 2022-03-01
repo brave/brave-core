@@ -151,6 +151,10 @@ void SidebarModel::OnURLVisited(history::HistoryService* history_service,
                                 const history::RedirectList& redirects,
                                 base::Time visit_time) {
   for (const auto& item : GetAllSidebarItems()) {
+    // Don't try to update builtin items image. It uses bundled one.
+    if (IsBuiltInType(item))
+      continue;
+
     // If same url is added to history service, try to fetch favicon to update
     // for item.
     if (item.url.host() == row.url().host()) {
