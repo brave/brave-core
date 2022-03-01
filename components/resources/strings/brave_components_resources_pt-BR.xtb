@@ -29,6 +29,9 @@
 <translation id="985862351129593673">Personalizar painel</translation>
 <translation id="7180865173735832675">Personalizar</translation>
 <translation id="8522669544471808198">Mostrar imagens de plano de fundo</translation>
+<translation id="5801450813341024983">Planos de fundo do Brave</translation>
+<translation id="1416884769823233410">Usar seu próprio</translation>
+<translation id="6246790815526961700">Carregar do dispositivo</translation>
 <translation id="7275773481201277457">Mostrar Estatísticas do Brave</translation>
 <translation id="6836061097810262923">Mostrar Relógio</translation>
 <translation id="5912396950572065471">Formato</translation>
@@ -94,7 +97,6 @@
 <translation id="1644574205037202324">Histórico</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="8730621377337864115">Concluído</translation>
-<translation id="6248988683584659830">Configurações de pesquisa</translation>
 <translation id="730042046912793465">Isto é um</translation>
 <translation id="2055363275850890030">Janela Privada</translation>
 <translation id="9133213713928851646">O Brave não’ registra o que você faz em uma Janela Privada. Os sites que você visita não aparecem em seu histórico, e os cookies desaparecem quando você’ termina. No entanto, as Janelas Privadas não tornam você completamente anônimo online.</translation>
@@ -103,7 +105,8 @@
 <translation id="8759753423332885148">Saiba mais.</translation>
 <translation id="3546750666732517156">Janela Privada com conectividade Tor</translation>
 <translation id="5383068818957293256">O Brave nunca lembra o que você faz em uma Janela Privada. Com a conectividade Tor, seu endereço de IP também fica oculto dos sites que você acessa. No entanto, se sua segurança pessoal depende do anonimato, use o navegador Tor.</translation>
-<translation id="778096729652828897">Saiba mais sobre as Janelas Privadas com Tor</translation>
+<translation id="3338507774653218581">O Brave nunca memoriza o que você faz em uma janela privada. Com a conectividade ao Tor, você tem dois benefícios adicionais: seu endereço IP fica oculto dos sites que você acessa, e os sites que você acessa ficam ocultos dos observadores passivos da rede. Tenha em mente que o Tor pode tornar a navegação mais lenta ou fazer com que alguns sites não funcionem corretamente.</translation>
+<translation id="8666930656222843375">Uma janela privada com o Tor torna mais difícil, mas não impossível, que seu provedor de internet ou empregador (caso você esteja usando uma máquina ou rede de trabalho) veja os sites que você acessa. No entanto, nem mesmo uma janela privada com o Tor pode garantir totalmente que não ocorra rastreamento. Se você precisa manter a anonimidade para garantir sua segurança pessoal, use o navegador Tor em vez disso.</translation>
 <translation id="7919374705736538787">Pesquise Privadamente com</translation>
 <translation id="3135655280958284640">DuckDuckGo</translation>
 <translation id="218839872518145456">Com a pesquisa privada, o Brave usará o DuckDuckGo para pesquisas em Janelas Privadas. O DuckDuckGo não’ rastreia o seu histórico de pesquisas para que você possa pesquisar de modo privado.</translation>
@@ -116,10 +119,12 @@
 <translation id="8897548669448660973">O uso de Janelas Privadas só muda o que o Brave faz no seu dispositivo, não alterando o comportamento de mais ninguém. O Tor oculta seu endereço IP dos sites que você acessa e dificulta um pouco, mas não impossibilita, que seu provedor de internet ou empregador veja quais sites você acessa. Abra uma Janela Privada com o Tor por meio do menu ou com [[ key ]].</translation>
 <translation id="6975708438781948564">Saiba mais sobre o Tor no Brave</translation>
 <translation id="4712050378540986986">Situação do Tor</translation>
-<translation id="3368922792935385530">Conectado</translation>
+<translation id="1939334281379458295">O Tor foi conectado</translation>
 <translation id="8030169304546394654">Desconectado</translation>
-<translation id="3149306599361260465">Inicializando [[percentage]]%</translation>
-<translation id="3258793718986637767">Está tendo problemas com o Tor? Tente <ph name="BEGIN_LINK"/>desativar a janela privada com o Tor<ph name="END_LINK"/> e ativá-la novamente.</translation>
+<translation id="1149108864689950951">O Tor está se conectando... [[percentage]]%</translation>
+<translation id="3651192084771403430">Está tendo dificuldades para se conectar? Tente <ph name="BEGIN_LINK"/>desativar<ph name="END_LINK"/> e ativar novamente a Janela privada com o Tor nas configurações.</translation>
+<translation id="9190084253595768053">Está tendo dificuldades para se conectar? Abra as <ph name="BEGIN_LINK"/>configurações do Brave<ph name="END_LINK"/>, desative a Janela privada com o Tor e, em seguida, ative-a novamente. Ainda está com dificuldades?</translation>
+<translation id="8388043004918289671">Entre em contato com o suporte.</translation>
 <translation id="4272382368346338917">Filtros Adicionais</translation>
 <translation id="8949292968394988358">Aviso: Ativar muitos filtros pode prejudicar o desempenho</translation>
 <translation id="8686201964111147748">Total de anúncios e rastreadores bloqueados:</translation>
@@ -138,7 +143,10 @@
 <translation id="4720556299488643018">Cancelar inscrição</translation>
 <translation id="1209739344687072997">Relate um site quebrado</translation>
 <translation id="8510478288840333677">Informe aos desenvolvedores do Brave que este site não funciona corretamente com o Shields:</translation>
-<translation id="4105411033440701818">Observação: O endereço deste site será enviado com o número de sua versão do Brave e seu endereço IP (que não será armazenado).</translation>
+<translation id="4105411033440701818">Observação: ao clicar em "Enviar", você compartilhará o endereço do site, o número da sua versão do Brave e seu endereço IP com os desenvolvedores do Brave (o endereço IP não será armazenado).</translation>
+<translation id="6476216365964140603">Detalhes adicionais (opcional)</translation>
+<translation id="6145852496180774737">Entre em contato comigo: (opcional)</translation>
+<translation id="7616645803364270729">E-mail, Twitter etc.</translation>
 <translation id="5299848999918506028">Obrigado!</translation>
 <translation id="76550953340008122">Agradecemos por informar aos desenvolvedores do Brave que há algo errado com este site. Faremos nosso melhor para corrigir isso!</translation>
 <translation id="2974339193389078578">Desbrave a nova internet com o Brave</translation>
@@ -173,8 +181,6 @@
 <translation id="4428871418618312983">Anúncios recebidos este mês</translation>
 <translation id="4229016885653790965">Desculpe! Os anúncios ainda não estão disponíveis em sua região.</translation>
 <translation id="2539279826042558064">Recompensas Brave and Propagandas não estão disponíveis para o seu dispositivo neste momento</translation>
-<translation id="5421369907811917952">Outras configurações</translation>
-<translation id="654711254769318398">Páginas de anúncios visualizadas</translation>
 <translation id="2532127066761785857">Número máximo de anúncios exibidos</translation>
 <translation id="6177749339095882127">Nenhum anúncio por hora</translation>
 <translation id="5171071066587880677">1 anúncio por hora</translation>
@@ -196,7 +202,8 @@
 <translation id="2846354907189538">Próxima data de contribuição</translation>
 <translation id="1397381065858030856">Sites acessados</translation>
 <translation id="2365740070488517695">Doações</translation>
-<translation id="5810507495128831593">Dê gorjetas aos criadores diretamente ao navegar através do Painel de Recompensas ou ao usar o botão de dica embutida em diversos sites, como Twitter, Reddit e GitHub.</translation>
+<translation id="5810507495128831593">Veja as doações individuais que você fez para sites e criadores.</translation>
+<translation id="9147550766164257963">Saiba mais sobre as doações.</translation>
 <translation id="5012991400231464322">Contribuições mensais</translation>
 <translation id="2084351799622920487">Configure contribuições mensais recorrentes para que você possa oferecer suporte a sites continuamente.</translation>
 <translation id="8150772404570015166">Nenhuma contribuição mensal definida.</translation>
@@ -209,11 +216,9 @@
 <translation id="3024485967181749006">Total de doações este mês</translation>
 <translation id="5055577484189948413">Contribuições totais este mês</translation>
 <translation id="4153752809523809915">Você já fez uma doação ao seu criador de conteúdo favorito hoje?</translation>
-<translation id="1165667598801520610">Adicionar Fundos</translation>
-<translation id="6239274080752256452">Retirar Fundos</translation>
-<translation id="2726674968268546964">tokens</translation>
 <translation id="7286722244752781970">Tempo mínimo na página antes de fazer login</translation>
 <translation id="4424486208397124985">Visitas mínimas para relevância do editor</translation>
+<translation id="5421369907811917952">Outras configurações</translation>
 <translation id="6248554379744796526">Mostrar sites não verificados na lista</translation>
 <translation id="5510618543889994434">Permitir contribuições para vídeos</translation>
 <translation id="8933202740471878108">1 visita</translation>
@@ -224,32 +229,23 @@
 <translation id="8610523985422563960">1 minuto</translation>
 <translation id="2807328214759298515">Até</translation>
 <translation id="9031738692126722094">Ativar gorjetas mínimas nestes sites</translation>
-<translation id="995782501881226248">YouTube</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="4875485795191140618">A chave da sua carteira foi confirmada e carregada com sucesso.</translation>
-<translation id="1083279119532577005">Carteira restaurada!</translation>
 <translation id="7841456038054167122">Digite a senha novamente ou tente senhas diferentes.</translation>
 <translation id="1911900517212490188">A chave de restauração inserida não é mais compatível. Visite <ph name="BEGIN_LINK"/>here<ph name="END_LINK"/> para obter uma nova chave.</translation>
-<translation id="5254740304961202261">Prove que você é humano!</translation>
-<translation id="7510166204621526816">O servidor do Brave Rewards não está respondendo. Iremos corrigir isso o mais rápido possível.</translation>
-<translation id="2323069945529668668">Uh oh!</translation>
-<translation id="717952606991220586">Opa, algo está errado. Tente novamente mais tarde.</translation>
-<translation id="6965382102122355670">Tudo Bem</translation>
-<translation id="7210234701206674260">O Brave Rewards está enfrentando um problema. Tente novamente mais tarde.</translation>
 <translation id="5549059668721746831">Data da próxima contribuição mensal</translation>
 <translation id="6231182869178328516">Acabei de dar uma gorjeta para <ph name="NAME"/> usando o Brave Browser. Confira em https://brave.com/tips.</translation>
 <translation id="8404935570206006581">DêGorjetasComBrave</translation>
 <translation id="3082557070674409251">Clicado</translation>
 <translation id="7119308337584989771">Dispensado</translation>
 <translation id="6805660603861526473">Visualizado</translation>
-<translation id="4014166694178311757">Sua carteira não pode ser verificada porque você alcançou o limite máximo de dispositivos verificados.</translation>
+<translation id="8826352442759228526">Não é possível verificar sua conta das Recompensas Brave, pois você atingiu o número máximo de dispositivos verificados.</translation>
 <translation id="1221593978088944142">Erro: limite de dispositivos atingido</translation>
 <translation id="3113653894794167793">Sinto muito, ocorreu um problema ao processar sua solicitação. Tente novamente.</translation>
 <translation id="2607420597216860026">Tente novamente depois de concluir a verificação de ID no <ph name="PROVIDER"/>.</translation>
-<translation id="8832187864682447273">Erro: é necessário ter uma carteira verificada para fazer login</translation>
-<translation id="1501075228659004450">Parece que sua carteira do Brave Rewards já foi verificada com outra conta do <ph name="PROVIDER"/>. Tente verificar novamente usando sua conta anterior.</translation>
+<translation id="3183954159462541696">Erro: é necessário ter uma conta verificada para fazer login</translation>
+<translation id="5260522591743022748">Parece que sua conta das Recompensas Brave já foi verificada com outra conta do <ph name="PROVIDER"/>. Tente verificar novamente usando sua conta anterior.</translation>
 <translation id="5111921830714291902">Erro: conta diferente</translation>
 <translation id="5382684862562314222">O uso de BAT ainda não é aceito na sua região no Uphold.</translation>
 <translation id="9074594632540931067">Erro: BAT indisponível</translation>
@@ -261,7 +257,7 @@
 <translation id="4530453398914580957">Erro: conta pendente</translation>
 <translation id="2388470740942086608">Sua conta do Uphold está restrita no momento.</translation>
 <translation id="3605236342612716051">Erro: conta restrita</translation>
-<translation id="7147519373526655987">Houve um problema ao validar a solicitação do seu navegador para conectar sua carteira de Recompensas Brave à sua conta do <ph name="PROVIDER"/>. Você pode <ph name="BEGIN_LINK"/>entrar em contato com o suporte<ph name="END_LINK"/> para obter ajuda.</translation>
+<translation id="3274650021044762770">Houve um problema ao validar a solicitação do seu navegador para conectar sua conta das Recompensas Brave à sua conta do <ph name="PROVIDER"/>. Você pode <ph name="BEGIN_LINK"/>entrar em contato com o suporte<ph name="END_LINK"/> para obter ajuda.</translation>
 <translation id="1316066811927496401">Erro: não foi possível validar a solicitação</translation>
 <translation id="1737873393693460829">Ao ativar [[title]], você concorda com os <ph name="BEGIN_LINK1"/>Termos de Serviço<ph name="END_LINK1"/> e com a <ph name="BEGIN_LINK2"/>Política de Privacidade<ph name="END_LINK2"/>.</translation>
 <translation id="4672975606583962967">Escolha um serviço de carteira</translation>
@@ -270,9 +266,9 @@
 <translation id="2147158325758481862">A verificação é opcional</translation>
 <translation id="8228649055483250005">Os provedores de carteira custodial precisam verificar a identidade de qualquer pessoa que esteja criando uma carteira, o que inclui o uso de um documento de identificação com foto.</translation>
 <translation id="2672513643520959619"><ph name="BOLD_BEGIN"/>A Brave Software Inc.<ph name="BOLD_END"/> não processa, armazena nem acessa nenhuma informação pessoal quando você cria uma conta com nossos parceiros de carteira custodial.</translation>
-<translation id="448371102125124442">No entanto, sua carteira atual é limitada. A verificação com um parceiro de carteira custodial permite que você:</translation>
+<translation id="6682919029276027868">No entanto, seus recursos atuais das Recompensas Brave são limitados. A verificação com um parceiro de carteira custodial permite que você:</translation>
 <translation id="9064931634458501855">Saque e deposite fundos livremente</translation>
-<translation id="1438426246237704604">Receba suas recompensas diretamente na sua carteira</translation>
+<translation id="3222002542796906461">Receba suas Recompensas diretamente na sua conta</translation>
 <translation id="8304979233901023264">Li e concordo com os <ph name="TOS_LINK_BEGIN"/>Termos de Serviço<ph name="TOS_LINK_END"/> e a <ph name="PP_LINK_BEGIN"/>Política de Privacidade<ph name="PP_LINK_END"/> do Brave.</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="5112354605357157725">continue para fazer login</translation>
@@ -353,6 +349,7 @@
 <translation id="3506182299017414175">A carteira ainda não foi criada</translation>
 <translation id="8559420016582377654">ID de pagamento da carteira:</translation>
 <translation id="438586487791444158">Status da carteira:</translation>
+<translation id="3368922792935385530">Conectado</translation>
 <translation id="8874184842967597500">Não conectado</translation>
 <translation id="4569155249847375786">Verificado</translation>
 <translation id="922103963921062336">Desconectado (não confirmado)</translation>
@@ -428,17 +425,15 @@
 <translation id="3494356595346329740">Você pode alterar isto mais tarde.</translation>
 <translation id="827315274423079662">Uhuuu! Está tudo pronto!</translation>
 <translation id="8268038362451312235">Utilizando as Recompensas Brave, você está ajudando a transformar a web em um lugar melhor para todos. E isso é incrível!</translation>
-<translation id="9146355483497231818">Verificar sua carteira</translation>
-<translation id="8913591412117692523">Para sacar os tokens que ganha com a visualização de anúncios, você precisará verificar sua carteira.</translation>
+<translation id="6518133107902771759">Confirmar</translation>
+<translation id="2318949593486441832">Para sacar os BATs que ganha com a visualização de anúncios, você precisará verificar sua conta das Recompensas Brave.</translation>
 <translation id="9168436347345867845">Fazer isso depois</translation>
-<translation id="5468234114288973517">Verificar minha carteira</translation>
+<translation id="7193761697942491145">Verificar conta das Recompensas Brave</translation>
 <translation id="6609621505400013054">A carteira bitFlyer é um serviço gerenciado pela bitFlyer, Inc.</translation>
-<translation id="7258399883616914635">Ao verificar sua carteira e vinculá-la a uma conta da bitFlyer, você poderá armazenar e gerenciar com mais facilidade os tokens que ganhou por meio do Brave Rewards</translation>
+<translation id="4361456403643555676">Ao verificar sua conta das Recompensas Brave e vinculá-la a uma conta da bitFlyer, você poderá armazenar e gerenciar com mais facilidade os tokens que ganhou por meio das Recompensas Brave.</translation>
 <translation id="1411121707906693782"><ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/> sobre como vincular seu navegador Brave à sua conta do bitFlyer.</translation>
-<translation id="5094577350232361255">sobre</translation>
 <translation id="5916290544882167205">Brave Software. Brave é uma marca registrada da Brave Software. Os nomes dos sites podem ser marcas comerciais ou marcas comerciais registradas do proprietário do site.</translation>
 <translation id="9026369588205476247">Para proteger sua privacidade, esta declaração de Recompensas da Brave  não é salva, gravada ou conectada em nenhum lugar, exceto em seu dispositivo (este computador). Não poderá ser recuperada da Brave em caso de perda de dados do seu dispositivo.</translation>
-<translation id="1036277985068412734">adicionar fundos</translation>
 <translation id="3587482841069643663">Tudo</translation>
 <translation id="4241224519481557898">Categoria</translation>
 <translation id="3080423471207781945">Máximo de anúncios recebidos por dia:</translation>
@@ -456,7 +451,6 @@
 <translation id="8804164990146287819">Política de Privacidade</translation>
 <translation id="7262285991915892790">Arraste o Ícone BAT para o</translation>
 <translation id="7656781188259414093">alvo.</translation>
-<translation id="1555514580945108302">Hmm… Ainda Não. Tente Novamente.</translation>
 <translation id="13853865024308201">Reivindicar</translation>
 <translation id="1767561995429774671">Contribua</translation>
 <translation id="6896758677409633944">Copiar</translation>
@@ -464,24 +458,17 @@
 <translation id="3552003743293281224">Depósitos</translation>
 <translation id="3866249974567520381">Descrição</translation>
 <translation id="8605272644314973683">O Brave Rewards é</translation>
-<translation id="2157162992285072267">Arraste e solte esse logotipo em</translation>
-<translation id="4805054577224376281">meta</translation>
 <translation id="1346059596910821859">Doar</translation>
 <translation id="6045860799501892362">Definir contribuição mensal</translation>
 <translation id="298067735430872465">Ganhos de Anúncios</translation>
-<translation id="2266556115441975588">Suas recompensas do Ads estão aqui!</translation>
 <translation id="1418534671788496616">Ver histórico de depósitos</translation>
-<translation id="8764029012618014430">Habilitar Dicas</translation>
 <translation id="3412655388715513818">Excluir este site</translation>
 <translation id="418343137736963579">Número total de sites que você excluiu do Auto-Contribute:</translation>
-<translation id="6149218349077925111">para</translation>
 <translation id="8802504113265057166">Os [[currency]] não usados ​​até a data de validade serão automaticamente devolvidos ao Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Data de Validade do Auxílio</translation>
-<translation id="6476729769006815569">Olá, [[name]]!</translation>
 <translation id="1389143276807887637">importar</translation>
 <translation id="1038407494348068191">Gerenciar sua carteira</translation>
 <translation id="5737831580668469027">Contribuições Mensais!</translation>
-<translation id="606865182719489911">Uma concessão gratuita de token está disponível.</translation>
 <translation id="2487641031722095938">Hoje é seu dia de sorte!</translation>
 <translation id="6255773350565723852">Seu auxílio token está a caminho.</translation>
 <translation id="3453206261112715431">Auxílio Token Gratuito</translation>
@@ -523,30 +510,22 @@
 <translation id="5939518447894949180">Redefinir</translation>
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="1797334173232638045">Seus sites fixados foram movidos para</translation>
-<translation id="6803187280799213426">Os fundos na sua carteira da Brave são virtuais, e não é necessário fazer backup deles. É disponível a você gastar exclusivamente neste navegador.</translation>
-<translation id="5904352893156917813">Se você vai fazer uma instalação limpa do navegador ou mudar para um novo dispositivo e quer manter todos os seus fundos seguros, além de ter outros benefícios, como adição, saque e transferência de fundos, recomendamos a <ph name="LINK_BEGIN"/>verificação da sua carteira<ph name="LINK_END"/>.</translation>
+<translation id="542042553430131913">Se sua conta das Recompensas Brave não for verificada, seu saldo de BAT será armazenado em arquivos locais no seu dispositivo.</translation>
+<translation id="2142973554991645476">Se você deseja fazer uma reinstalação limpa do navegador ou reformatar seu dispositivo e quer manter seus BATs seguros, além de ter outros benefícios, como a adição ou o saque de seus BATs, recomendamos a <ph name="LINK_BEGIN"/>verificação<ph name="LINK_END"/>.</translation>
 <translation id="5717619667204259673">Armazene esta chave de recuperação com segurança.</translation>
-<translation id="4699702339303280827">Você sempre pode usar essa chave para recuperar sua carteira se algo acontecer com seu navegador ou computador. Mas a mantenha sob absoluta confidencialidade — qualquer pessoa que conseguir essa chave pode roubar sua carteira. ÉIt’ provavelmente mais seguro anotá-la e guardá-la em algum lugar onde você mantenha informações importantes.</translation>
+<translation id="7018390569051511373">Você pode utilizar essa chave a qualquer momento para recuperar seu perfil das Recompensas caso algo aconteça com seu navegador ou computador. Mas certifique-se de protegê-la, pois qualquer pessoa que tiver essa chave poderá roubar seu perfil das Recompensas. A medida mais segura é, provavelmente, anotá-la e guardá-la em algum lugar onde você mantenha informações importantes.</translation>
 <translation id="8979401359137062629">Observação:</translation>
 <translation id="7934806082615382155">Parte dos fundos podem ser recebidos da Brave e não estão incluídos no backup, pois não é exigido. É disponível a você gastar exclusivamente neste navegador.</translation>
 <translation id="7354412786785889047">Você pode ajudar este criador de conteúdo enviando uma gorjeta. É uma maneira de agradecê-lo por criar um ótimo conteúdo. Os criadores verificados recebem suas gorjetas durante a primeira semana de cada mês.</translation>
 <translation id="3074127054582480056">Atenção</translation>
-<translation id="5830306739231399614">Infelizmente, ainda não há tokens.</translation>
-<translation id="7359258898775969374">3 maneiras de preencher sua carteira:</translation>
-<translation id="8087614920008846901">Você pode adicionar fundos.</translation>
-<translation id="996024295464837691">Você pode ganhar tokens pela visualização de anúncios.</translation>
-<translation id="8014425282125849700">Ocasionalmente, você receberá concessões gratuitas de token do Brave. Certifique-se de ficar de olho no alerta!</translation>
-<translation id="4919888432594361029">Adicionar, sacar e gerenciar fundos no <ph name="PROVIDER"/>.</translation>
-<translation id="6401272292123354754">As Recompensas Brave são construídas no Basic Attention Token. Saiba mais sobre BAT</translation>
-<translation id="7823359893981882407">aqui</translation>
 <translation id="3034163433136515805">Visualizar Código QR</translation>
 <translation id="1640793619390890218">para usuários do Rewards no iOS que estão transferindo BAT.</translation>
-<translation id="4600052736217630789">Restaurar com uma chave de recuperação substituirá sua carteira atual. Certifique-se de esvaziar ou fazer o backup da sua carteira atual antes de restaurá-la.</translation>
+<translation id="5462747026114176246">Restaurar com uma chave de recuperação substituirá seu perfil atual das Recompensas Brave. Certifique-se de esvaziar ou fazer o backup das suas Recompensas Brave atuais antes de restaurar.</translation>
 <translation id="3267911153934785912">Insira sua chave de recuperação ou</translation>
 <translation id="1209382772199769572">Faça backup da sua carteira antes de substituir. Caso contrário, você perderá os fundos ([[funds]]) da sua carteira atual.</translation>
-<translation id="5423214929210538027">Tem certeza de que deseja redefinir a sua Carteira de recompensas?</translation>
-<translation id="4749947664556704604">Seus <ph name="BAT_AMOUNT"/> e outros dados de Recompensas serão permanentemente perdidos se você redefinir sua carteira. Certifique-se de ter <ph name="LINK_BEGIN"/>verificado sua carteira<ph name="LINK_END"/> para poder manter seus BATs.</translation>
-<translation id="2028613172174411919">Os seus dados de Recompensa serão permanentemente perdidos se você redefinir a sua carteira.</translation>
+<translation id="3659457123782988823">Tem certeza de que deseja redefinir suas Recompensas Brave?</translation>
+<translation id="4048187103708861555">Seus <ph name="BAT_AMOUNT"/> e outros dados das Recompensas serão permanentemente perdidos se você redefinir suas Recompensas Brave. Certifique-se de ter <ph name="LINK_BEGIN"/>realizado a verificação<ph name="LINK_END"/> para poder manter seus BATs.</translation>
+<translation id="3548849774726860833">Seus dados das Recompensas serão permanentemente perdidos se você redefinir suas Recompensas Brave.</translation>
 <translation id="4914597931214386232">Auxílios Token Reivindicados</translation>
 <translation id="3494964159182650590">Resumo de Recompensas</translation>
 <translation id="1738658589626889850">Salvar como arquivo</translation>
@@ -555,25 +534,24 @@
 <translation id="3536298624341433814">Enviar minha Doação</translation>
 <translation id="8428213095426709021">Configurações</translation>
 <translation id="1792148354504719133">site</translation>
-<translation id="5944430251223015324">sites</translation>
 <translation id="6432779622695508363">Gorjeta ao gostar</translation>
 <translation id="6367285596431004439">Doação de token recebida</translation>
+<translation id="2726674968268546964">tokens</translation>
 <translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Total</translation>
-<translation id="1726566769229204312">Concessões de Token</translation>
 <translation id="4395099108822007284">Carregando imagem...</translation>
 <translation id="3535654229833214438">Transações</translation>
 <translation id="8772672608371898774">Autor verificado pelo Brave</translation>
 <translation id="5050370287908180130">Veja Extrato Mensal para Detalhes</translation>
-<translation id="8615803647903750175">Atividade da Carteira</translation>
-<translation id="4989277977420164514">saldo da carteira</translation>
+<translation id="348711787499592128">Atividade das Recompensas Brave</translation>
+<translation id="7232682712743566408">Saldo das Recompensas</translation>
 <translation id="1910721550319506122">Bem-vindo!</translation>
-<translation id="3780605330121608425">Sua carteira</translation>
+<translation id="4258022280942725182">Suas Recompensas Brave</translation>
 <translation id="6727483290601442544">Ver Detalhes</translation>
-<translation id="7530570094705720669">Criando carteira</translation>
+<translation id="4206899127409458763">Criando seu perfil das Recompensas Brave</translation>
 <translation id="1988679729106502285">OBSERVAÇÃO:</translation>
-<translation id="7979350009208995417">No momento, este criador não está configurado para receber doações da sua carteira. Qualquer doação que você fizer ficará pendente na sua carteira, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
-<translation id="6521772344816912550">Este criador ainda não se inscreveu. Qualquer doação que você fizer ficará pendente na sua carteira, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
+<translation id="4047340292178074200">No momento, este criador não está configurado para receber doações do serviço de carteira custodial das suas Recompensas. Qualquer doação que você fizer ficará pendente, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
+<translation id="5530734056858418442">Este criador ainda não se inscreveu. Qualquer doação que você fizer ficará pendente, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
 <translation id="3197752845651180812">Contribuições pendentes</translation>
 <translation id="6964891561514920613">Mostrar todas as contribuições pendentes</translation>
 <translation id="4346944508027912677">Pendente até</translation>
@@ -585,12 +563,6 @@
 <translation id="4862817811647633830">sites de Auto-Contribuição.</translation>
 <translation id="923467487918828349">Mostrar todas</translation>
 <translation id="5113531205597573951">Sites acessados</translation>
-<translation id="8267327690882073581">Verificar Carteira</translation>
-<translation id="543510923939676996">Carteira verificada</translation>
-<translation id="2445110450361135194">Acesse sua conta do <ph name="PROVIDER"/></translation>
-<translation id="4244985009709452836">Faça login na sua conta do <ph name="PROVIDER"/></translation>
-<translation id="3699674790322420653">Concluir verificação de carteira</translation>
-<translation id="9200453331904391567">Desconectar-se de Brave Rewards</translation>
 <translation id="3656941797339037856">Vincule o Rewards ao Gemini!</translation>
 <translation id="31532096120351460">Negocie mais de 50 criptomoedas (inclusive BAT) no Gemini, uma plataforma segura para armazenar suas criptomoedas. Além disso, você pode ganhar juros nos EUA, em Hong Kong e em Singapura.</translation>
 <translation id="7404779623219601861">Trocar BAT por vales-presente</translation>
@@ -780,23 +752,28 @@
 <translation id="3007207731685398329">Suas recompensas de <ph name="AMOUNT"/> de <ph name="MONTH"/> chegarão em <ph name="DAYS"/></translation>
 <translation id="5878420576943709750">Suas recompensas de <ph name="AMOUNT"/> de <ph name="MONTH"/> estão a caminho. Fique de olho!</translation>
 <translation id="2659764755126740206">Acessar minha conta do <ph name="PROVIDER"/></translation>
+<translation id="1165667598801520610">Adicionar Fundos</translation>
 <translation id="2389181429986654814">Acesse <ph name="PROVIDER"/> para concluir a verificação</translation>
 <translation id="7793632266654336758">Conclua a verificação de identidade para começar a receber recompensas.</translation>
 <translation id="2394961582378297792">Sessão encerrada</translation>
 <translation id="6080167751812750226">Desconectar-se do <ph name="PROVIDER"/></translation>
 <translation id="3600355176618429948">Ganhos estimados</translation>
+<translation id="4244985009709452836">Faça login na sua conta do <ph name="PROVIDER"/></translation>
 <translation id="7577100371127227294">Doações Mensais</translation>
-<translation id="5894023780213944778">Minha carteira</translation>
 <translation id="2613359062756190460">Doações Únicas</translation>
 <translation id="590733288489975971">Recompensas do Ads</translation>
 <translation id="4989163558385430922">Ver tudo</translation>
 <translation id="3026978804849658576">Ver extrato</translation>
 <translation id="8494748383523030337">Seu saldo</translation>
+<translation id="1187367336925051518">Recompensas de <ph name="MONTH"/>: <ph name="AMOUNT"/></translation>
+<translation id="3274366539954332481">Suas Recompensas de Anúncios de <ph name="MONTH"/> chegaram!</translation>
+<translation id="7861645265922445992">Reivindicar Recompensas</translation>
 <translation id="9013419433042554094">Reivindicar tokens</translation>
 <translation id="5544777623605368410">Ganhos</translation>
 <translation id="3273637494083639780">Os tokens que você ganhou neste mês começarão a ser processados em <ph name="DATE"/></translation>
 <translation id="1029300693989825319">Isso pode variar com base na volatilidade do mercado.</translation>
 <translation id="8334559352278209120">Doações</translation>
+<translation id="4782365133987903299">Você tem <ph name="DAYS"/> restante(s) para reivindicar</translation>
 <translation id="3903419925307046908">Ganhe tokens e retribua</translation>
 <translation id="244362569344671266">Ganhe tokens assistindo aos Anúncios Privados do Brave e apoie automaticamente os criadores de conteúdo.</translation>
 <translation id="5095252080770652994">Progresso</translation>
@@ -804,7 +781,7 @@
 <translation id="6777169449483742979">Você está ganhando tokens por visualizar esta imagem patrocinada.</translation>
 <translation id="5486114327664215175">Ganhe tokens ao visualizar esta imagem e apoie criadores de conteúdo.</translation>
 <translation id="2940863921746574646">Saldo de tokens</translation>
-<translation id="2221902203895354376">Tokens disponíveis</translation>
+<translation id="2221902203895354376">Uma concessão de token está disponível!</translation>
 <translation id="7701466644604753106">LIGAR Speedreader</translation>
 <translation id="763042262431778831">DESLIGAR Speedreader</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
@@ -837,6 +814,9 @@
 <translation id="4843814354611030845">O usuário rejeitou a transação</translation>
 <translation id="1462494615260983714">Erro ao processar a transação</translation>
 <translation id="4886059598718763020">"<ph name="VALUE"/>" não tem autorização para assinar a mensagem</translation>
+<translation id="8719220598078667817">Houve uma falha ao assinar a transação</translation>
+<translation id="5486744676117070166">Houve uma falha ao obter o próximo valor de nonce</translation>
+<translation id="875506212625074179">Resposta inválida de ID da cadeia do serviço de RPC</translation>
 <translation id="4958950550253325418">Apps de DeFi</translation>
 <translation id="735961408871282410">Mercados de NFTs</translation>
 <translation id="7740287852186792672">Resultados de pesquisa</translation>
@@ -866,6 +846,7 @@
 <translation id="6366007539108097840">3 meses</translation>
 <translation id="6977728312178289892">1 ano</translation>
 <translation id="6598532182053592167">Adicionar moeda</translation>
+<translation id="5062934803872044756"><ph name="SYMBOL"/> em <ph name="NETWORK"/></translation>
 <translation id="629730747756840877">Conta</translation>
 <translation id="3959969108528118741">Proprietário</translation>
 <translation id="3891414008432200754">Preço</translation>
@@ -884,7 +865,6 @@
 <translation id="4626407663177532837">A cotação inclui uma taxa de 0,875% do Brave.</translation>
 <translation id="8368540604723748428">Excesso de casas decimais</translation>
 <translation id="2704606927547763573">Copiado</translation>
-<translation id="6518133107902771759">Confirmar</translation>
 <translation id="1420318137760245955">Esta é a nova Carteira Brave</translation>
 <translation id="8303434745767477417">Guarde criptoativos em custódia. Monitore o desempenho do portfólio e interaja com dapps Web 3. Negocie, solicite e faça empréstimos e invista com DeFi. Tudo isso diretamente na privacidade do navegador Brave. Sem necessidade de extensões nem downloads.</translation>
 <translation id="6972754398087986839">Primeiros passos</translation>
@@ -936,8 +916,9 @@
 <translation id="1073129495320255278">Importar conta de<ph name="BLOCKCHAIN_NETWORK"/></translation>
 <translation id="6780482003945159712">Selecione um dos seguintes tipos de conta</translation>
 <translation id="7080614857771109950">Oferece suporte a ativos compatíveis com EVM na blockchain Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
-<translation id="3329841454317342083">Oferece suporte a ativos compatíveis com SLP na blockchain Solana</translation>
+<translation id="6577166808959668729">Oferece suporte a ativos compatíveis com SPL na blockchain Solana</translation>
 <translation id="4541295941776129088">Armazenar ativo FIL</translation>
+<translation id="8500387257977999003">Chave privada <ph name="PROTOCOL"/></translation>
 <translation id="232925166623833246">Importar de carteira de hardware</translation>
 <translation id="4324198334837993695">Hardware</translation>
 <translation id="3067168166931605141">Nome da conta</translation>
@@ -957,7 +938,7 @@
 <translation id="1943188256166395881">Adicionar contas verificadas</translation>
 <translation id="8554010658308662631">Carregar mais</translation>
 <translation id="6998738230710304743">Carregando mais...</translation>
-<translation id="5592304751234049046">Pesquisar conta 0x</translation>
+<translation id="5592304751234049046">Pesquisar conta</translation>
 <translation id="6151024411349343484">Tente alterar o caminho HD (acima) se não conseguir encontrar a conta que procura.</translation>
 <translation id="2844691569989101734">Ledger Live</translation>
 <translation id="7265732100380987017">Legada (MEW/MyCrypto)</translation>
@@ -977,6 +958,8 @@
 <translation id="547122651977318828">ID do token (somente para ERC721)</translation>
 <translation id="7544552854944350190">O ID do token é necessário</translation>
 <translation id="3842236145820483340">ID do CoinGecko</translation>
+<translation id="7642841516562576649">URL de ícone</translation>
+<translation id="2144247757675997850">Adicionar ativo</translation>
 <translation id="2708402071160162126">ATENÇÃO: nunca compartilhe sua frase de recuperação. Qualquer pessoa com essa frase pode obter seus ativos para sempre.</translation>
 <translation id="2902856457593699108">Mostrar chave</translation>
 <translation id="8033497299373164724">Ocultar chave</translation>
@@ -1022,6 +1005,7 @@
 <translation id="6452181791372256707">Rejeitar</translation>
 <translation id="8904889345035514635">Provisão atual</translation>
 <translation id="7073918978411974168">Provisão proposta</translation>
+<translation id="9019403281000653275">Aprovação ilimitada solicitada</translation>
 <translation id="4717431746210146708">Permitir que este site adicione uma rede?</translation>
 <translation id="2521480044079508357">Isso permitirá que essa rede seja usada na Carteira Brave.</translation>
 <translation id="1982257600591932657">Nome da rede</translation>
@@ -1047,6 +1031,7 @@
 <translation id="3890989020011724401">Nova conta</translation>
 <translation id="7257603403519636638">Ver ativos da conta</translation>
 <translation id="2092132085082887098">Ativos da conta</translation>
+<translation id="5723696625900399845">Use este painel para acessar com segurança o web3 e todos os seus criptoativos.</translation>
 <translation id="4460220693591349571">TIPO DE FUNÇÃO</translation>
 <translation id="838933475572692615">DADOS HEXADECIMAIS</translation>
 <translation id="2240831799756994975">BYTES</translation>
@@ -1077,6 +1062,7 @@
 <translation id="5013754027092416509">recebida</translation>
 <translation id="5867988533873716616">O URL do Block Explorer não está disponível.</translation>
 <translation id="4255623233927788178">Ver no Block Explorer</translation>
+<translation id="563386395023152633">Copiar hash de transação</translation>
 <translation id="7148658188569580292">Acelerar transação</translation>
 <translation id="1198263951134066686">Cancelar transação</translation>
 <translation id="3562548974839822204">Tentar transação novamente</translation>
@@ -1123,6 +1109,7 @@
 <translation id="3506416339268164412">O endereço de recebimento é o endereço de contrato de um token</translation>
 <translation id="5517732667776806421">Informações de soma de verificação não encontradas</translation>
 <translation id="4006711930669471508">Informações de soma de verificação inválidas</translation>
+<translation id="4667144295226514387">Limite de gás não encontrado</translation>
 <translation id="862585889767884824">de</translation>
 <translation id="9106265941552476098">Rejeitar <ph name="TRANSACTION_LENGTH"/> transações</translation>
 <translation id="1118876217803190221">Saldo insuficiente</translation>
@@ -1159,6 +1146,7 @@
 <translation id="9033453977881595182">ID do token</translation>
 <translation id="2962388922926051374">Houve uma falha na solicitação do método "eth_chainId" em <ph name="URL"/></translation>
 <translation id="8325036459845654666">Esta rede já foi adicionada.</translation>
+<translation id="554350381160981853">A assinatura de dados de tipo só está disponível no Trezor Model One com firmware 1.10.5 ou superior</translation>
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="3745016858329272300">Informação Geral</translation>
 <translation id="4045404575593562245">Eventos de Controle do Tor</translation>
@@ -1186,7 +1174,7 @@
 <translation id="5544888475837817215">Permitir todos os rastreadores e anúncios</translation>
 <translation id="6203697265754637264">Cookies cross-site bloqueados</translation>
 <translation id="4627427111733173920">Cookies bloqueados</translation>
-<translation id="3972324600756617403">Todos os cookies bloqueados</translation>
+<translation id="3972324600756617403">Todos os cookies permitidos</translation>
 <translation id="8366221601425141146">Impressão digital bloqueada.</translation>
 <translation id="5582686930349810484">Biometria bloqueada (padrão)</translation>
 <translation id="6696441392507885865">Impressão digital bloqueada (rigorosa; alguns sites podem não funcionar corretamente)</translation>
@@ -1236,4 +1224,69 @@
 <translation id="2426048501007152001">Tokens disponíveis</translation>
 <translation id="4970164249406565575">Pesquisar conta 0x</translation>
 <translation id="7855168553463825937">Todos os cookies bloqueados</translation>
+<translation id="6248988683584659830">Configurações de pesquisa</translation>
+<translation id="778096729652828897">Saiba mais sobre as Janelas Privadas com Tor</translation>
+<translation id="3149306599361260465">Inicializando [[percentage]]%</translation>
+<translation id="3258793718986637767">Está tendo problemas com o Tor? Tente <ph name="BEGIN_LINK"/>desativar a janela privada com o Tor<ph name="END_LINK"/> e ativá-la novamente.</translation>
+<translation id="654711254769318398">Páginas de anúncios visualizadas</translation>
+<translation id="6239274080752256452">Retirar Fundos</translation>
+<translation id="995782501881226248">YouTube</translation>
+<translation id="4875485795191140618">A chave da sua carteira foi confirmada e carregada com sucesso.</translation>
+<translation id="1083279119532577005">Carteira restaurada!</translation>
+<translation id="5254740304961202261">Prove que você é humano!</translation>
+<translation id="7510166204621526816">O servidor do Brave Rewards não está respondendo. Iremos corrigir isso o mais rápido possível.</translation>
+<translation id="2323069945529668668">Uh oh!</translation>
+<translation id="717952606991220586">Opa, algo está errado. Tente novamente mais tarde.</translation>
+<translation id="6965382102122355670">Tudo Bem</translation>
+<translation id="7210234701206674260">O Brave Rewards está enfrentando um problema. Tente novamente mais tarde.</translation>
+<translation id="4014166694178311757">Sua carteira não pode ser verificada porque você alcançou o limite máximo de dispositivos verificados.</translation>
+<translation id="8832187864682447273">Erro: é necessário ter uma carteira verificada para fazer login</translation>
+<translation id="1501075228659004450">Parece que sua carteira do Brave Rewards já foi verificada com outra conta do <ph name="PROVIDER"/>. Tente verificar novamente usando sua conta anterior.</translation>
+<translation id="7147519373526655987">Houve um problema ao validar a solicitação do seu navegador para conectar sua carteira de Recompensas Brave à sua conta do <ph name="PROVIDER"/>. Você pode <ph name="BEGIN_LINK"/>entrar em contato com o suporte<ph name="END_LINK"/> para obter ajuda.</translation>
+<translation id="448371102125124442">No entanto, sua carteira atual é limitada. A verificação com um parceiro de carteira custodial permite que você:</translation>
+<translation id="1438426246237704604">Receba suas recompensas diretamente na sua carteira</translation>
+<translation id="9146355483497231818">Verificar sua carteira</translation>
+<translation id="8913591412117692523">Para sacar os tokens que ganha com a visualização de anúncios, você precisará verificar sua carteira.</translation>
+<translation id="5468234114288973517">Verificar minha carteira</translation>
+<translation id="7258399883616914635">Ao verificar sua carteira e vinculá-la a uma conta da bitFlyer, você poderá armazenar e gerenciar com mais facilidade os tokens que ganhou por meio do Brave Rewards</translation>
+<translation id="5094577350232361255">sobre</translation>
+<translation id="1036277985068412734">adicionar fundos</translation>
+<translation id="1555514580945108302">Hmm… Ainda Não. Tente Novamente.</translation>
+<translation id="2157162992285072267">Arraste e solte esse logotipo em</translation>
+<translation id="4805054577224376281">meta</translation>
+<translation id="2266556115441975588">Suas recompensas do Ads estão aqui!</translation>
+<translation id="8764029012618014430">Habilitar Dicas</translation>
+<translation id="6149218349077925111">para</translation>
+<translation id="6476729769006815569">Olá, [[name]]!</translation>
+<translation id="606865182719489911">Uma concessão gratuita de token está disponível.</translation>
+<translation id="6803187280799213426">Os fundos na sua carteira da Brave são virtuais, e não é necessário fazer backup deles. É disponível a você gastar exclusivamente neste navegador.</translation>
+<translation id="5904352893156917813">Se você vai fazer uma instalação limpa do navegador ou mudar para um novo dispositivo e quer manter todos os seus fundos seguros, além de ter outros benefícios, como adição, saque e transferência de fundos, recomendamos a <ph name="LINK_BEGIN"/>verificação da sua carteira<ph name="LINK_END"/>.</translation>
+<translation id="4699702339303280827">Você sempre pode usar essa chave para recuperar sua carteira se algo acontecer com seu navegador ou computador. Mas a mantenha sob absoluta confidencialidade — qualquer pessoa que conseguir essa chave pode roubar sua carteira. ÉIt’ provavelmente mais seguro anotá-la e guardá-la em algum lugar onde você mantenha informações importantes.</translation>
+<translation id="5830306739231399614">Infelizmente, ainda não há tokens.</translation>
+<translation id="7359258898775969374">3 maneiras de preencher sua carteira:</translation>
+<translation id="8087614920008846901">Você pode adicionar fundos.</translation>
+<translation id="996024295464837691">Você pode ganhar tokens pela visualização de anúncios.</translation>
+<translation id="8014425282125849700">Ocasionalmente, você receberá concessões gratuitas de token do Brave. Certifique-se de ficar de olho no alerta!</translation>
+<translation id="4919888432594361029">Adicionar, sacar e gerenciar fundos no <ph name="PROVIDER"/>.</translation>
+<translation id="6401272292123354754">As Recompensas Brave são construídas no Basic Attention Token. Saiba mais sobre BAT</translation>
+<translation id="7823359893981882407">aqui</translation>
+<translation id="4600052736217630789">Restaurar com uma chave de recuperação substituirá sua carteira atual. Certifique-se de esvaziar ou fazer o backup da sua carteira atual antes de restaurá-la.</translation>
+<translation id="5423214929210538027">Tem certeza de que deseja redefinir a sua Carteira de recompensas?</translation>
+<translation id="4749947664556704604">Seus <ph name="BAT_AMOUNT"/> e outros dados de Recompensas serão permanentemente perdidos se você redefinir sua carteira. Certifique-se de ter <ph name="LINK_BEGIN"/>verificado sua carteira<ph name="LINK_END"/> para poder manter seus BATs.</translation>
+<translation id="2028613172174411919">Os seus dados de Recompensa serão permanentemente perdidos se você redefinir a sua carteira.</translation>
+<translation id="5944430251223015324">sites</translation>
+<translation id="1726566769229204312">Concessões de Token</translation>
+<translation id="8615803647903750175">Atividade da Carteira</translation>
+<translation id="4989277977420164514">saldo da carteira</translation>
+<translation id="3780605330121608425">Sua carteira</translation>
+<translation id="7530570094705720669">Criando carteira</translation>
+<translation id="7979350009208995417">No momento, este criador não está configurado para receber doações da sua carteira. Qualquer doação que você fizer ficará pendente na sua carteira, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
+<translation id="6521772344816912550">Este criador ainda não se inscreveu. Qualquer doação que você fizer ficará pendente na sua carteira, e novas tentativas serão realizadas automaticamente por 90 dias.</translation>
+<translation id="8267327690882073581">Verificar Carteira</translation>
+<translation id="543510923939676996">Carteira verificada</translation>
+<translation id="2445110450361135194">Acesse sua conta do <ph name="PROVIDER"/></translation>
+<translation id="3699674790322420653">Concluir verificação de carteira</translation>
+<translation id="9200453331904391567">Desconectar-se de Brave Rewards</translation>
+<translation id="5894023780213944778">Minha carteira</translation>
+<translation id="3329841454317342083">Oferece suporte a ativos compatíveis com SLP na blockchain Solana</translation>
 </translationbundle>

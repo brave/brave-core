@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">Fazer upgrade das conexões para HTTPS</translation>
 <translation id="2278950434998763147">Abre alguns sites usando uma conexão HTTPS segura em vez de HTTP simples.</translation>
 <translation id="94154759592465111">Bloquear scripts</translation>
-<translation id="3518266709656143462">Bloqueia JavaScript (alguns sites podem não funcionar corretamente)</translation>
+<translation id="7714773920987474116">Bloqueia JavaScript (alguns sites podem não funcionar corretamente)</translation>
 <translation id="6052725679982758334">Bloqueio de redes sociais</translation>
 <translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">As principais notícias de hoje em um feed totalmente privado, apenas para você.</translation>
 <translation id="7266075701303521777">Os anúncios exibidos nas Notícias Brave são totalmente privados e anonimizados, encontrando correspondências para seus interesses no seu dispositivo.</translation>
 <translation id="4541978218358617681">Anúncio</translation>
-<translation id="7823038307453615214">Ativar Notícias Brave</translation>
+<translation id="7823038307453615214">Mostrar Brave News</translation>
 <translation id="6527303717912515753">Compartilhar</translation>
 <translation id="1654539412343893324">Saiba mais sobre seus dados</translation>
 <translation id="2989805286512600854">Abrir em uma nova guia</translation>
@@ -97,6 +97,7 @@
 <translation id="6511854390690723657">Esse é o seu primeiro anúncio Brave. Toque para saber mais.</translation>
 <translation id="2070991379950719711">Ativar o Programa de Recompensas Brave</translation>
 <translation id="48520986898237073">Prosseguir para a carteira</translation>
+<translation id="3570367516044491911">Definir como navegador padrão</translation>
 <translation id="6800338374677644736">Definir como navegador padrão</translation>
 <translation id="19715420010996093">Selecione o navegador Brave e toque em "Sempre"</translation>
 <translation id="3546439402724649282">Brave já está definido como seu navegador padrão.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">saldo:</translation>
 <translation id="2573313946367623146">doar</translation>
 <translation id="3250511771491660127">Faça isso mensalmente</translation>
+<translation id="7658239707568436148">Cancelar</translation>
+<translation id="1201402288615127009">Próxima</translation>
+<translation id="8481779960444041069">Para melhorar sua privacidade, defina o Brave como seu navegador padrão</translation>
+<translation id="1938402585819943124">Escolha o Brave na próxima tela.</translation>
+<translation id="8926389886865778422">Não perguntar novamente</translation>
 <translation id="6639570430554986719">JANEIRO</translation>
 <translation id="1807352595146144483">FEVEREIRO</translation>
 <translation id="2021828608097804771">MARÇO</translation>
@@ -518,9 +524,9 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="6478996494082389936">análise privada de produtos.</translation>
 <translation id="5187052478998910855">Precisando de uma atualização sobre as Recompensas?</translation>
 <translation id="8622329973403382303">Faça um tour rápido para relembrar como isso funciona e entre para a história como um astro do rock das Recompensas!</translation>
-<translation id="7625138338483121345">Abra todos os links com o Brave para proteger a sua privacidade</translation>
-<translation id="4511485286950743564">O Brave Shields bloqueia rastreadores e anúncios, salva dados e economiza o seu tempo em todo site que você visitar.</translation>
-<translation id="9218430445555521422">Configurar o Brave como padrão</translation>
+<translation id="7625138338483121345">Tornar o Brave seu navegador padrão</translation>
+<translation id="4511485286950743564">Com o Brave como padrão, todos os links em que você clica são abertos com as proteções de segurança do Brave.</translation>
+<translation id="9218430445555521422">Definir como padrão</translation>
 <translation id="3479552764303398839">Não agora</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -539,7 +545,6 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="1822560017823072927">Interfaces públicas e privadas padrão</translation>
 <translation id="5825943197137337319">Apenas interface pública padrão</translation>
 <translation id="1689062823386843231">Desativar UDP não proxy</translation>
-<translation id="3171931580569169744">Ativar grupos de guias</translation>
 <translation id="5587305863196367357">A verificação da carteira permite que você gerencie (adicione e saque) seus fundos facilmente</translation>
 <translation id="5760671211380791582">Você não tem BATs suficientes.</translation>
 <translation id="442469478596827903">Você precisa de no mínimo 2 BATs para criar uma carteira verificada do Uphold. Tente novamente mais tarde.</translation>
@@ -562,7 +567,8 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="375882617301124395">Fazer backup da sua carteira de criptomoedas</translation>
 <translation id="8289942708804097960">Compre criptomoedas com um cartão de crédito ou débito.</translation>
 <translation id="841880029259839903">Envie criptomoedas ou as transfira de uma conta para outra.</translation>
-<translation id="8226778393040773102">Troque ativos de criptomoedas com o agregador DEX do Brave.</translation>
+<translation id="8226778393040773102">Realizar operações de swap de tokens e ativos</translation>
+<translation id="5841646075632490135">O <ph name="DEX_PROVIDER"/> processará o endereço e o endereço IP do Ethereum para realizar uma transação (incluindo a obtenção de orçamentos). O<ph name="DEX_PROVIDER"/> usará esses dados APENAS para fins de processamento de transações.</translation>
 <translation id="1783600039044302171">Proteja suas criptomoedas com uma senha</translation>
 <translation id="3726490322412361740">Inserir senha</translation>
 <translation id="3038243139480464605">Verificar senha</translation>
@@ -590,7 +596,7 @@ Tem certeza de que deseja continuar?</translation>
 <translation id="283071225285270357">Insira sua frase de recuperação</translation>
 <translation id="3943857333388298514">Colar</translation>
 <translation id="3331452756822160641">Nova senha</translation>
-<translation id="4359319875297001084">Estou restaurando da carteira de criptomoedas legada do Brave</translation>
+<translation id="4359319875297001084">Importar das carteiras de criptomoedas legadas do Brave?</translation>
 <translation id="2339124864228588937">Verificar frase de recuperação</translation>
 <translation id="3747079125031086337">Selecione as palavras da sua frase de recuperação na ordem correta.</translation>
 <translation id="6518133107902771759">Confirmar</translation>
@@ -788,7 +794,6 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1254969878422524947">Limite de contribuição por gás (Gwei)</translation>
 <translation id="7373308452149471621">Limite de preço por gás (Gwei)</translation>
 <translation id="5891811606602061966">Houve uma falha ao importar a conta. Tente novamente.</translation>
-<translation id="1822506443689803572">O Brave usa a 0x como agregador DEX.</translation>
 <translation id="5061574358754621254">Dados de preço disponibilizados pela CoinGecko</translation>
 <translation id="4626407663177532837">A cotação inclui uma taxa de 0,875% do Brave.</translation>
 <translation id="8574289650879708853">Adicionar ativo personalizado</translation>
@@ -833,14 +838,15 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="665660671251623018">Decimais da moeda da cadeia</translation>
 <translation id="182619028057179895">Formato inválido. Os decimais da moeda são um número positivo.</translation>
 <translation id="2978054488731497946">Insira os decimais da moeda</translation>
-<translation id="7642841516562576649">URLs de ícone</translation>
-<translation id="4693057234255364395">URLs de Block Explorers</translation>
+<translation id="7642841516562576649">URL de ícone</translation>
+<translation id="4693057234255364395">URL do Block Explorer</translation>
 <translation id="7059127752542505809">Insira um URL</translation>
 <translation id="2156993118928861787">Endereço inválido</translation>
 <translation id="6889920539620318793">Definir como ativa</translation>
 <translation id="2653659639078652383">Enviar</translation>
 <translation id="8853725596990766789">Alterar valor</translation>
-<translation id="3570367516044491911">Definir como navegador padrão</translation>
+<translation id="5233638681132016545">Nova guia</translation>
+<translation id="3518266709656143462">Bloqueia JavaScript (alguns sites podem não funcionar corretamente)</translation>
 <translation id="7091885296442320770">Brave é extremamente rápido</translation>
 <translation id="2171928016777725844">Tornar o Brave seu navegador padrão!</translation>
 <translation id="7136694880210472378">Tornar padrão</translation>
@@ -848,6 +854,4 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="3184805785843994538">O Brave Shields bloqueia rastreadores e anúncios, salva dados e economiza o seu tempo em todo site que você visitar.</translation>
 <translation id="8722651357687610395">Configurar o Brave como padrão</translation>
 <translation id="4854035885012188958">Estou restaurando da carteira de criptomoedas legada do Brave</translation>
-<translation id="3047726704186619366">URLs de ícone</translation>
-<translation id="2487558607408469181">URLs do Block Explorer</translation>
 </translationbundle>

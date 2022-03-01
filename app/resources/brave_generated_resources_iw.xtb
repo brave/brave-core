@@ -64,7 +64,6 @@
 <translation id="3849957491997306859">זוהה אוטומטית</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
 <translation id="4176463684765177261">מושבת</translation>
-<translation id="4851215387785619212">Brave Private Ads</translation>
 <translation id="7808122468353671181">הרוויחו tokens על ידי הצגת  Brave Ads. הפרסומות המוצגות מבוססות על תחומי העניין שלכם, כפי שניתן להסיק מהרגלי הגלישה שלכם. אף נתונים אישיים או היסטוריית גלישה לא יעזבו את הדפדפן שלכם.</translation>
 <translation id="1758947220824279023">מספר מרבי של המודעות הניתנות להצגה</translation>
 <translation id="8578912649458880781">מיקוד פרסומות ברמת המדינה</translation>
@@ -79,7 +78,7 @@
 <translation id="5733490796524078528">לחצני טיפים</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">טוויטר</translation>
-<translation id="6032511312767282174">Github</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">דף כרטיסייה חדשה</translation>
 <translation id="1988804048511540801">דף לשונית חדשה מוצג</translation>
 <translation id="2970343821770026391">דשבורד</translation>
@@ -99,7 +98,6 @@
 <translation id="1725356094208762656">פתח ב-Tor</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">פרסם והחזר קבצים מ-IPFS</translation>
-<translation id="1672270084584211506">Onion זמין</translation>
 <translation id="406832631167785034">לפתוח באמצעות כתובת onion.</translation>
 <translation id="4901618511712685702">יבוא אל IPFS</translation>
 <translation id="6794469945030154569">עמוד זה</translation>
@@ -358,11 +356,9 @@
 <translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4877147287319222750">הוסף לסרגל הצידי</translation>
-<translation id="4233010476457917696">הצג סרגל צידי</translation>
 <translation id="5404213409401164238">הצג סרגל צידי</translation>
 <translation id="7561196759112975576">תמיד</translation>
 <translation id="7060352228894039151">במעבר עם העכבר</translation>
-<translation id="407173827865827707">בזמן לחיצה</translation>
 <translation id="7961015016161918242">אף פעם</translation>
 <translation id="8981254605840444865">הצג הגדרות</translation>
 <translation id="59174027418879706">מופעל</translation>
@@ -455,4 +451,8 @@
 <translation id="2286177249736199435">שתפו תיקייה מקומית באמצעות IPFS</translation>
 <translation id="784573715436258741">שיתוף קובץ באמצעות IPFS</translation>
 <translation id="575838692088926391">שתפו תיקייה מקומית באמצעות IPFS</translation>
+<translation id="4851215387785619212">Brave Private Ads</translation>
+<translation id="1672270084584211506">Onion זמין</translation>
+<translation id="4233010476457917696">הצג סרגל צידי</translation>
+<translation id="407173827865827707">בזמן לחיצה</translation>
 </translationbundle>

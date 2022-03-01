@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="2278950434998763147">Отваря някои сайтове, използвайки защитена HTTPS връзка вместо обикновен HTTP.</translation>
 <translation id="94154759592465111">Блокиране на скриптове</translation>
-<translation id="3518266709656143462">Блокира Javascript (може да попречи на работата на сайтовете)</translation>
+<translation id="7714773920987474116">Блокира JavaScript (може да попречи на работата на сайтовете)</translation>
 <translation id="6052725679982758334">Блокиране на социални медии</translation>
 <translation id="7498695072878479744">Разрешаване на бутони за вход в Google на сайтове на трети страни</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Водещите истории от днес в напълно личен канал, само за вас.</translation>
 <translation id="7266075701303521777">Brave новини поддържа напълно поверителни и анонимни реклами, подбрани на вашето устройство.</translation>
 <translation id="4541978218358617681">Реклама</translation>
-<translation id="7823038307453615214">Включете Brave новини</translation>
+<translation id="7823038307453615214">Показване на Brave Новини</translation>
 <translation id="6527303717912515753">Споделяне</translation>
 <translation id="1654539412343893324">Научете повече за своите данни</translation>
 <translation id="2989805286512600854">Отваряне в нов раздел</translation>
@@ -97,6 +97,7 @@
 <translation id="6511854390690723657">Това е първата ви Brave реклама. Докоснете, за да научите повече.</translation>
 <translation id="2070991379950719711">Започнете да използвате Brave Rewards</translation>
 <translation id="48520986898237073">Продължаване към портфейла</translation>
+<translation id="3570367516044491911">Задаване като браузър по подразбиране</translation>
 <translation id="6800338374677644736">Задаване като браузър по подразбиране</translation>
 <translation id="19715420010996093">Изберете Brave Browser и докоснете „Винаги“</translation>
 <translation id="3546439402724649282">Brave вече е зададен като браузърът ви по подразбиране.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">баланс на портфейла:</translation>
 <translation id="2573313946367623146">изпрати моя бакшиш</translation>
 <translation id="3250511771491660127">Направи това месечно</translation>
+<translation id="7658239707568436148">Отказ</translation>
+<translation id="1201402288615127009">Напред</translation>
+<translation id="8481779960444041069">За да подобрите поверителността си, задайте Brave като браузър по подразбиране</translation>
+<translation id="1938402585819943124">Изберете Brave на следващия екран.</translation>
+<translation id="8926389886865778422">Без повторно питане</translation>
 <translation id="6639570430554986719">ЯНУАРИ</translation>
 <translation id="1807352595146144483">ФЕВРУАРИ</translation>
 <translation id="2021828608097804771">МАРТ</translation>
@@ -520,9 +526,9 @@
 <translation id="6478996494082389936">поверителен продуктов анализ.</translation>
 <translation id="5187052478998910855">Нуждаете се от опреснителен курс за Rewards?</translation>
 <translation id="8622329973403382303">Направете кратка обиколка, за да разберете как работи и да влезете в историята като рокзвезда на Rewards!</translation>
-<translation id="7625138338483121345">Отворете всички връзки с Brave, за да защитите поверителността си</translation>
-<translation id="4511485286950743564">Brave Shields блокира тракерите &amp; реклами, спестява ви данни и време на всеки сайт, който посещавате.</translation>
-<translation id="9218430445555521422">Задайте Brave по подразбиране</translation>
+<translation id="7625138338483121345">Задаване на Brave като браузър по подразбиране</translation>
+<translation id="4511485286950743564">Когато Brave е избран по подразбиране, всяка връзка, върху която щракнете, се отваря със защитите на поверителността на Brave.</translation>
+<translation id="9218430445555521422">Задаване по подразбиране</translation>
 <translation id="3479552764303398839">Не сега</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -541,7 +547,6 @@
 <translation id="1822560017823072927">Публични и поверителни интерфейси по подразбиране</translation>
 <translation id="5825943197137337319">Само публичен интерфейс пп подразбиране</translation>
 <translation id="1689062823386843231">Деактивиране на UDP без прокси</translation>
-<translation id="3171931580569169744">Разреши групи раздели</translation>
 <translation id="5587305863196367357">Потвърждаването на портфейла ви позволява да управлявате лесно средствата си, да добавяте към тях и &amp; да теглите</translation>
 <translation id="5760671211380791582">Нямате достатъчно BAT.</translation>
 <translation id="442469478596827903">Трябва да имате минимум 2 BAT, за да създадете потвърден портфейл в Uphold. Опитайте отново по-късно.</translation>
@@ -564,7 +569,8 @@
 <translation id="375882617301124395">Архивирайте своя портфейл с криптовалути</translation>
 <translation id="8289942708804097960">Купете криптовалута с кредитна или дебитна карта.</translation>
 <translation id="841880029259839903">Изпращайте или прехвърляйте криптовалути от един акаунт в друг.</translation>
-<translation id="8226778393040773102">Разменяйте криптоактиви с агрегатор DEX на Brave.</translation>
+<translation id="8226778393040773102">Размяна на токени и активи</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> ще обработи адреса на Ethereum и IP адреса, за да изпълни трансакция (включително получаване на котировки). <ph name="DEX_PROVIDER"/> ще използва тези данни САМО за целите на обработката на трансакции.</translation>
 <translation id="1783600039044302171">Защитаване на вашата криптовалута с парола</translation>
 <translation id="3726490322412361740">Въвеждане на парола</translation>
 <translation id="3038243139480464605">Потвърдете паролата</translation>
@@ -592,7 +598,7 @@
 <translation id="283071225285270357">Въвеждане на фразата за възстановяване</translation>
 <translation id="3943857333388298514">Поставяне</translation>
 <translation id="3331452756822160641">Нова парола</translation>
-<translation id="4359319875297001084">Възстановявам от наследени криптопортфейли в Brave</translation>
+<translation id="4359319875297001084">Искате ли да импортирате от наследени криптопортфейли в Brave?</translation>
 <translation id="2339124864228588937">Потвърждаване на фразата за възстановяване</translation>
 <translation id="3747079125031086337">Избeрете думите във фразата за възстановяване в правилния им ред.</translation>
 <translation id="6518133107902771759">Потвърждаване</translation>
@@ -790,7 +796,7 @@
 <translation id="1254969878422524947">Ограничение на дарението за газ (Gwei)</translation>
 <translation id="7373308452149471621">Ограничение на цената на газ (Gwei)</translation>
 <translation id="5891811606602061966">Неуспешно импортиране на акаунта, опитайте отново.</translation>
-<translation id="1822506443689803572">Brave използва 0x като DEX агрегатор.</translation>
+<translation id="1822506443689803572">Brave използва<ph name="DEX_PROVIDER"/> като DEX агрегатор.</translation>
 <translation id="5061574358754621254">Данни за цените, предоставени от CoinGecko</translation>
 <translation id="4626407663177532837">Офертата включва такса на Brave от 0,875%.</translation>
 <translation id="8574289650879708853">Добавяне на персонализиран актив</translation>
@@ -835,14 +841,15 @@
 <translation id="665660671251623018">Десетични знаци на валутата на веригата</translation>
 <translation id="182619028057179895">Невалиден формат, десетичните знаци на валутата са положително число</translation>
 <translation id="2978054488731497946">Въведете десетични знаци на валутата</translation>
-<translation id="7642841516562576649">URL адреси на икона</translation>
-<translation id="4693057234255364395">URL адреси на Block Explorer</translation>
+<translation id="7642841516562576649">URL адрес на икона</translation>
+<translation id="4693057234255364395">URL адрес на Block Explorer</translation>
 <translation id="7059127752542505809">Въвеждане на URL адрес</translation>
 <translation id="2156993118928861787">Невалиден адрес</translation>
 <translation id="6889920539620318793">Задаване като активна</translation>
 <translation id="2653659639078652383">Изпращане</translation>
 <translation id="8853725596990766789">Промяна на сумата</translation>
-<translation id="3570367516044491911">Задаване като браузър по подразбиране</translation>
+<translation id="5233638681132016545">Нов раздел</translation>
+<translation id="3518266709656143462">Блокира Javascript (може да попречи на работата на сайтовете)</translation>
 <translation id="7091885296442320770">Brave е светкавично бърз</translation>
 <translation id="2171928016777725844">Направете Brave вашия браузър по подразбиране!</translation>
 <translation id="7136694880210472378">Задаване като основна</translation>
@@ -850,6 +857,4 @@
 <translation id="3184805785843994538">Brave Shields блокира тракерите &amp; реклами, спестява ви данни и време на всеки сайт, който посещавате.</translation>
 <translation id="8722651357687610395">Задайте Brave по подразбиране</translation>
 <translation id="4854035885012188958">Възстановявам от наследени криптопортфейли в Brave</translation>
-<translation id="3047726704186619366">URL адреси на икона</translation>
-<translation id="2487558607408469181">URL адреси на Block Explorer</translation>
 </translationbundle>

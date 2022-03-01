@@ -80,7 +80,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="5733490796524078528">Preemianupud</translation>
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="6032511312767282174">Github</translation>
+<translation id="6032511312767282174">GitHub</translation>
 <translation id="7781069478569868053">Uus vaheleht</translation>
 <translation id="1988804048511540801">Kuvatakse uus vaheleht</translation>
 <translation id="2970343821770026391">Töölaud</translation>
@@ -100,7 +100,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="1725356094208762656">Ava Tor’is</translation>
 <translation id="7691598647605453992">IPFS</translation>
 <translation id="3094628781200061820">Failide avaldamine ja toomine IPFS-ist</translation>
-<translation id="1672270084584211506">Onion on saadaval</translation>
 <translation id="406832631167785034">Kasuta avamiseks .onion-i aadressi</translation>
 <translation id="4901618511712685702">Import IPFS-i</translation>
 <translation id="6794469945030154569">See leht</translation>
@@ -360,11 +359,9 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="8659271182272561965">Andke Brave'i otsingu täpsemaks muutmiseks anonüümseid otsingu- ja sirvimisandmeid.</translation>
 <translation id="1516554614404600536">Brave'i kohtspikker</translation>
 <translation id="4877147287319222750">Lisa külgribale</translation>
-<translation id="4233010476457917696">Näita külgriba</translation>
 <translation id="5404213409401164238">Näita külgriba</translation>
 <translation id="7561196759112975576">Alati</translation>
 <translation id="7060352228894039151">Hiire peale liikumisel</translation>
-<translation id="407173827865827707">Klõpsamisel</translation>
 <translation id="7961015016161918242">Mitte kunagi</translation>
 <translation id="8981254605840444865">Kuva seaded</translation>
 <translation id="59174027418879706">Lubatud</translation>
@@ -458,4 +455,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="2286177249736199435">Jaga kohalikku kausta IPFSi kaudu</translation>
 <translation id="784573715436258741">Jaga kohalikku faili IPFS-i kaudu</translation>
 <translation id="575838692088926391">Jaga kohalikku kataloogi IPFSi kaudu</translation>
+<translation id="1672270084584211506">Onion on saadaval</translation>
+<translation id="4233010476457917696">Näita külgriba</translation>
+<translation id="407173827865827707">Klõpsamisel</translation>
 </translationbundle>

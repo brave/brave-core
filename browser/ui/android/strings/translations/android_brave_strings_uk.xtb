@@ -5,7 +5,6 @@
 <translation id="3570081523466826008">Оновити зв’язки до HTTPS</translation>
 <translation id="2278950434998763147">Відкриває деякі сайти, використовуючи безпечне з’єднання HTTPS замість звичайного HTTP.</translation>
 <translation id="94154759592465111">Блокувати скрипти</translation>
-<translation id="3518266709656143462">Блокує Javascript (деякі сайти можуть не працювати)</translation>
 <translation id="6052725679982758334">Блокування соціальних мереж</translation>
 <translation id="7498695072878479744">Дозволити кнопки входу Google на сайтах третіх сторін</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
@@ -33,7 +32,7 @@
 <translation id="6252490671914511928">Найпопулярніші сьогоднішні історії в абсолютно приватній стрічці, тільки для вас.</translation>
 <translation id="7266075701303521777">Новини Brave підтримують рекламу з повністю приватними й анонімними оголошеннями, підібраними для вашого пристрою.</translation>
 <translation id="4541978218358617681">Реклама</translation>
-<translation id="7823038307453615214">Увімкнути новини Brave</translation>
+<translation id="7823038307453615214">Показати Brave News</translation>
 <translation id="6527303717912515753">Надіслати</translation>
 <translation id="1654539412343893324">Дізнайтеся більше про ваші дані</translation>
 <translation id="2989805286512600854">Відкрити в новій вкладці</translation>
@@ -97,7 +96,7 @@
 <translation id="6511854390690723657">Це ваша перша реклама Brave. Натисніть, щоб дізнатись більше.</translation>
 <translation id="2070991379950719711">Почати користуватися Brave Rewards</translation>
 <translation id="48520986898237073">Перейти до гаманця</translation>
-<translation id="6800338374677644736">Визначити типовим веб-переглядачем</translation>
+<translation id="3570367516044491911">Визначити типовим веб-переглядачем</translation>
 <translation id="19715420010996093">Оберіть браузер Brave та клацніть "Завжди"</translation>
 <translation id="3546439402724649282">Brave вже є вашим типовим веб-переглядачем.</translation>
 <translation id="8389661903259423907">Ви вже визначили типовий веб-переглядач. Його можна змінити у налаштуваннях вашого застосунку.</translation>
@@ -115,6 +114,9 @@
 <translation id="3370968821559864204">баланс гаманця:</translation>
 <translation id="2573313946367623146">надіслати мої чайові</translation>
 <translation id="3250511771491660127">Повторювати щомісяця</translation>
+<translation id="7658239707568436148">Скасувати</translation>
+<translation id="1201402288615127009">Далі</translation>
+<translation id="8926389886865778422">Не запитувати знову</translation>
 <translation id="6639570430554986719">СІЧЕНЬ</translation>
 <translation id="1807352595146144483">ЛЮТИЙ</translation>
 <translation id="2021828608097804771">БЕРЕЗЕНЬ</translation>
@@ -518,9 +520,8 @@
 <translation id="6478996494082389936">конфіденційну аналітику щодо продукту.</translation>
 <translation id="5187052478998910855">Потрібно освіжити пам'ять щодо нагород?</translation>
 <translation id="8622329973403382303">Перегляньте короткий огляд, щоб згадати, як це працює, і увійти в історію як ґуру нагород!</translation>
-<translation id="7625138338483121345">Відкривайте всі посилання через Brave, щоб захистити вашу приватність.</translation>
-<translation id="4511485286950743564">Щити Brave блокують відстежувачі та рекламу, зберігають дані та заощаджують ваш час на кожному сайті, який ви відвідуєте.</translation>
-<translation id="9218430445555521422">Встановіть Brave  за замовчуванням</translation>
+<translation id="7625138338483121345">Як зробити Brave веб-переглядачем за умовчанням</translation>
+<translation id="9218430445555521422">Установити за умовчанням</translation>
 <translation id="3479552764303398839">Не зараз</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -539,7 +540,6 @@
 <translation id="1822560017823072927">Публічний та приватний інтерфейси за замовчуванням</translation>
 <translation id="5825943197137337319">Тільки загальнодоступний інтерфейс за замовчуванням</translation>
 <translation id="1689062823386843231">Вимкнути non-proxied UDP</translation>
-<translation id="3171931580569169744">Активувати групи вкладок</translation>
 <translation id="5587305863196367357">Верифікація гаманця дозволить вам більш ефективно керувати власними коштами, класти їх до гаманця та виводити з нього.</translation>
 <translation id="5760671211380791582">У вас недостатньо BAT.</translation>
 <translation id="442469478596827903">Для створення верифікованого гаманця Uphold вам потрібно мати принаймні 2 BAT. Повторіть спробу пізніше.</translation>
@@ -562,7 +562,6 @@
 <translation id="375882617301124395">Створіть резервну копію свого криптогаманця</translation>
 <translation id="8289942708804097960">Купуйте криптовалюту за допомогою кредитної або дебетової картки.</translation>
 <translation id="841880029259839903">Надсилайте криптовалюту або перераховуйте з одного рахунку на інший.</translation>
-<translation id="8226778393040773102">Обмінюйте криптоактиви за допомогою агрегатора Brave DEX.</translation>
 <translation id="1783600039044302171">Захистіть криптовалюту паролем</translation>
 <translation id="3726490322412361740">Уведіть пароль</translation>
 <translation id="3038243139480464605">Підтвердити пароль</translation>
@@ -590,7 +589,7 @@
 <translation id="283071225285270357">Уведіть відновлювальну фразу</translation>
 <translation id="3943857333388298514">Уставити</translation>
 <translation id="3331452756822160641">Новий пароль</translation>
-<translation id="4359319875297001084">Я виконую відновлення зі старої версії криптогаманця Brave</translation>
+<translation id="4359319875297001084">Імпортування з попередніх криптогаманців Brave?</translation>
 <translation id="2339124864228588937">Підтвердьте відновлювальну фразу</translation>
 <translation id="3747079125031086337">Розташуйте слова у відновлювальній фразі в правильному порядку.</translation>
 <translation id="6518133107902771759">Підтвердити</translation>
@@ -788,7 +787,6 @@
 <translation id="1254969878422524947">Ліміт відрахування за пальне (Gwei)</translation>
 <translation id="7373308452149471621">Ліміт цін на пальне (Gwei)</translation>
 <translation id="5891811606602061966">Сталася помилка під час імпортування облікового запису. Спробуйте ще раз.</translation>
-<translation id="1822506443689803572">Brave використовує 0x як агрегатор DEX.</translation>
 <translation id="5061574358754621254">Дані про ціни надано CoinGecko</translation>
 <translation id="4626407663177532837">Розцінка включає збір Brave у розмірі 0,875 %.</translation>
 <translation id="8574289650879708853">Додати користувацькі активи</translation>
@@ -833,14 +831,15 @@
 <translation id="665660671251623018">Кількість розрядів після коми валюти ланцюга</translation>
 <translation id="182619028057179895">Недійсний формат, кількість розрядів після коми валюти є додатним числом</translation>
 <translation id="2978054488731497946">Уведіть кількість розрядів після коми валюти</translation>
-<translation id="7642841516562576649">URL-адреси значка</translation>
-<translation id="4693057234255364395">URL-адреси диспетчера блоків</translation>
+<translation id="4693057234255364395">URL-адреса диспетчера блоків</translation>
 <translation id="7059127752542505809">Увести URL-адресу</translation>
 <translation id="2156993118928861787">Недійсна адреса</translation>
 <translation id="6889920539620318793">Установити як активну</translation>
 <translation id="2653659639078652383">Надіслати</translation>
 <translation id="8853725596990766789">Змінити суму</translation>
-<translation id="3570367516044491911">Визначити типовим веб-переглядачем</translation>
+<translation id="5233638681132016545">Нова вкладка</translation>
+<translation id="3518266709656143462">Блокує Javascript (деякі сайти можуть не працювати)</translation>
+<translation id="7642841516562576649">URL-адреси значка</translation>
 <translation id="7091885296442320770">Brave надзвичайно швидкий</translation>
 <translation id="2171928016777725844">Зробіть Brave своїм браузером за вмовчанням!</translation>
 <translation id="7136694880210472378">Установити за умовчанням</translation>
@@ -848,6 +847,4 @@
 <translation id="3184805785843994538">Щити Brave блокують відстежувачі та рекламу, зберігають дані та заощаджують ваш час на кожному сайті, який ви відвідуєте.</translation>
 <translation id="8722651357687610395">Встановіть Brave  за замовчуванням</translation>
 <translation id="4854035885012188958">Я виконую відновлення зі старої версії криптогаманця Brave</translation>
-<translation id="3047726704186619366">URL-адреси значка</translation>
-<translation id="2487558607408469181">URL-адреси диспетчера блоків</translation>
 </translationbundle>

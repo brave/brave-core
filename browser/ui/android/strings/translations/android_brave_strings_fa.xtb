@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="2278950434998763147">برخی از سایت‌ها را به‌جای HTTP ساده، با اتصال HTTPS ایمن باز می‌کند.</translation>
 <translation id="94154759592465111">مسدود کردن اسکریپت</translation>
-<translation id="3518266709656143462">جاوااسکریپت را مسدود می‌کند (ممکن است منجر به خرابی سایت‌ها شود)</translation>
+<translation id="7714773920987474116">جاوااسکریپت را مسدود می‌کند (ممکن است منجر به خرابی سایت‌ها شود)</translation>
 <translation id="6052725679982758334">مسدود کردن رسانه اجتماعی</translation>
 <translation id="7498695072878479744">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">امروز’s داستان برتر در یک فید کاملاً خصوصی، فقط برای شما.</translation>
 <translation id="7266075701303521777">Brave News توسط آگهی‌های کاملاً خصوصی و بی‌نام که منطبق بادستگاه شماست، پشتیبانی می‌شود.</translation>
 <translation id="4541978218358617681">آگهی</translation>
-<translation id="7823038307453615214">روشن کردن Brave News</translation>
+<translation id="7823038307453615214">نمایش Brave News</translation>
 <translation id="6527303717912515753">اشتراک‌گذاری</translation>
 <translation id="1654539412343893324">درباره داده‌هایتان بیشتر بدانید</translation>
 <translation id="2989805286512600854">باز کردن در برگه جدید</translation>
@@ -97,6 +97,7 @@
 <translation id="6511854390690723657">این اولین تبلیغ از مرورگر Brave برای شما است. برای کسب اطلاعات بیشتر، ضربه بزنید.</translation>
 <translation id="2070991379950719711">شروع استفاده از Brave Rewards</translation>
 <translation id="48520986898237073">ادامه و رفتن به کیف پول</translation>
+<translation id="3570367516044491911">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
 <translation id="6800338374677644736">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
 <translation id="19715420010996093">مرورگر Brave را انتخاب کنید و روی «همیشه» ضربه بزنید</translation>
 <translation id="3546439402724649282">Brave در حال حاضر به‌عنوان مرورگر پیش‌فرض شما تنظیم شده است.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">موجودی کیف پول:</translation>
 <translation id="2573313946367623146">ارسال انعام من</translation>
 <translation id="3250511771491660127">ماهانه انجام شود</translation>
+<translation id="7658239707568436148">لغو</translation>
+<translation id="1201402288615127009">بعدی</translation>
+<translation id="8481779960444041069">برای بهبود حریم خصوصی خود، Brave را به‌عنوان مرورگر پیش‌فرض خود تنظیم کنید</translation>
+<translation id="1938402585819943124">Brave را در صفحه بعدی انتخاب کنید.</translation>
+<translation id="8926389886865778422">دوباره سؤال نشود</translation>
 <translation id="6639570430554986719">ژانویه</translation>
 <translation id="1807352595146144483">فوریه</translation>
 <translation id="2021828608097804771">مارس</translation>
@@ -521,9 +527,9 @@
 <translation id="6478996494082389936">تجزیه و تحلیل خصوصی محصول</translation>
 <translation id="5187052478998910855">به مرور اطلاعات مربوط به Rewards نیاز دارید؟</translation>
 <translation id="8622329973403382303">گشت سریعی بزنید تا نحوه عملکرد برای پیوستن به تاریخ به‌عنوان ستاره راک Rewards را مرور کنید!</translation>
-<translation id="7625138338483121345">برای محافظت از حریم خصوصی خود، تمام پیوندها را با Brave باز کنید</translation>
-<translation id="4511485286950743564">در هر سایتی که بازدید می‌کنید، Brave Shields ردیاب‌ها و تبلیغات را مسدود می‌کند، باعث صرفه‌جویی در مصرف داده‌ها می‌شود، و در وقت شما صرفه‌جویی می‌کند.</translation>
-<translation id="9218430445555521422">Brave را به‌عنوان پیش‌فرض تنظیم کنید</translation>
+<translation id="7625138338483121345">‏Brave مرورگر پیش‌فرض شود</translation>
+<translation id="4511485286950743564">در صورتی که Brave به‌عنوان پیش‌فرض فعال باشد، روی هر لینکی که کلیک کنید با محافظت‌های حریم خصوصی Brave باز می‌شود.</translation>
+<translation id="9218430445555521422">تنظیم به‌عنوان پیش‌فرض</translation>
 <translation id="3479552764303398839">اکنون نه</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -542,7 +548,6 @@
 <translation id="1822560017823072927">رابط‌های عمومی و خصوصی پیش‌فرض</translation>
 <translation id="5825943197137337319">فقط رابط عمومی پیش‌فرض</translation>
 <translation id="1689062823386843231">غیرفعال کردن UDP غیرپروکسی</translation>
-<translation id="3171931580569169744">فعال کردن گروه‌های برگه</translation>
 <translation id="5587305863196367357">تأیید کیف پول به شما امکان می‌دهد سرمایه‌های خود را آسان‌تر مدیریت کنید، و واریز و برداشت را انجام دهید</translation>
 <translation id="5760671211380791582">BAT کافی ندارید.</translation>
 <translation id="442469478596827903">برای ایجاد کیف پول تأییدشده Uphold، باید حداقل ‎2 BAT‎ داشته باشید. لطفاً بعداً دوباره امتحان کنید.</translation>
@@ -565,7 +570,8 @@
 <translation id="375882617301124395">از کیف پول رمزارزتان پشتیبان‌گیری کنید</translation>
 <translation id="8289942708804097960">با کارت نقدی یا کارت اعتباری‌تان رمز ارز بخرید.</translation>
 <translation id="841880029259839903">رمزارز ارسال کنید یا از یک حساب به حساب دیگری منتقل کنید.</translation>
-<translation id="8226778393040773102">دارایی‌های رمزارز را با تجمیع‌کننده DEX مرورگر Brave مبادله کنید.</translation>
+<translation id="8226778393040773102">مبادله توکن‌ها و دارایی‌ها</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> آدرس اتریوم و آدرس IP را برای انجام یک تراکنش (از جمله دریافت مظنه) پردازش می‌کند. <ph name="DEX_PROVIDER"/> از این داده‌ها فقط برای پردازش تراکنش‌ها استفاده می‌کند.</translation>
 <translation id="1783600039044302171">از رمزارزتان با گذرواژه حفاظت کنید</translation>
 <translation id="3726490322412361740">گذرواژه را وارد کنید</translation>
 <translation id="3038243139480464605">تأیید گذرواژه</translation>
@@ -593,7 +599,7 @@
 <translation id="283071225285270357">عبارت بازیابی‌تان را وارد کنید</translation>
 <translation id="3943857333388298514">جای‌گذاری</translation>
 <translation id="3331452756822160641">گذرواژه جدید</translation>
-<translation id="4359319875297001084">از کیف پول‌های رمزارز Brave قدیمی بازیابی می‌کنم</translation>
+<translation id="4359319875297001084">از کیف پول‌های رمزارز Brave قدیمی وارد شود؟</translation>
 <translation id="2339124864228588937">عبارت بازیابی را تأیید کنید</translation>
 <translation id="3747079125031086337">کلمات موجود در عبارت بازیابی خود را به ترتیب صحیح انتخاب کنید.</translation>
 <translation id="6518133107902771759">تأیید</translation>
@@ -791,7 +797,6 @@
 <translation id="1254969878422524947">محدوده انعام هر گس (Gwel)</translation>
 <translation id="7373308452149471621">محدوده قیمت هر گس (Gwel)</translation>
 <translation id="5891811606602061966">وارد کردن حساب انجام نشد، لطفاً دوباره امتحان کنید.</translation>
-<translation id="1822506443689803572">Brave از 0x برای تجمیع کننده نقدینگی DEX استفاده می‌کند.</translation>
 <translation id="5061574358754621254">داده‌های قیمت توسط CoinGecko ارائه می‌شوند</translation>
 <translation id="4626407663177532837">مظنه شامل 0.875 درصد از هزینه Brave است.</translation>
 <translation id="8574289650879708853">افزودن دارایی سفارشی</translation>
@@ -837,13 +842,14 @@
 <translation id="182619028057179895">قالب نامعتبر است، اعشار ارز یک عدد مثبت است</translation>
 <translation id="2978054488731497946">اعشار ارز را وارد کنید</translation>
 <translation id="7642841516562576649">نشانی وب نماد</translation>
-<translation id="4693057234255364395">مسدود کردن نشانی‌های وب مرورگر</translation>
+<translation id="4693057234255364395">نشانی وب کاوشگر بلوک</translation>
 <translation id="7059127752542505809">وارد کردن نشانی وب</translation>
 <translation id="2156993118928861787">آدرس نامعتبر</translation>
 <translation id="6889920539620318793">تنظیم به‌عنوان فعال</translation>
 <translation id="2653659639078652383">ارسال</translation>
 <translation id="8853725596990766789">تغییر مقدار</translation>
-<translation id="3570367516044491911">تنظیم به‌عنوان مرورگر پیش‌فرض</translation>
+<translation id="5233638681132016545">برگه جدید</translation>
+<translation id="3518266709656143462">جاوااسکریپت را مسدود می‌کند (ممکن است منجر به خرابی سایت‌ها شود)</translation>
 <translation id="7091885296442320770">مرورگر Brave سرعت برق‌آسایی دارد</translation>
 <translation id="2171928016777725844">Brave را مرورگر پیش‌فرض خود قرار دهید!</translation>
 <translation id="7136694880210472378">پیش‌فرض قرار دادن</translation>
@@ -851,6 +857,4 @@
 <translation id="3184805785843994538">در هر سایتی که بازدید می‌کنید، Brave Shields ردیاب‌ها و تبلیغات را مسدود می‌کند، باعث صرفه‌جویی در مصرف داده‌ها می‌شود، و در وقت شما صرفه‌جویی می‌کند.</translation>
 <translation id="8722651357687610395">Brave را به‌عنوان پیش‌فرض تنظیم کنید</translation>
 <translation id="4854035885012188958">از کیف پول‌های رمزارز Brave قدیمی بازیابی می‌کنم</translation>
-<translation id="3047726704186619366">نشانی وب نماد</translation>
-<translation id="2487558607408469181">مسدود کردن نشانی‌های وب مرورگر</translation>
 </translationbundle>

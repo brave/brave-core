@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="2278950434998763147">فتح بعض مواقع الويب باستحدام اتصال  HTTPS آمن بدلاً من اتصال HTTP عادي.</translation>
 <translation id="94154759592465111">حظر النصوص</translation>
-<translation id="3518266709656143462">يحظر  Javascript (قد يفصل المواقع)</translation>
+<translation id="7714773920987474116">حظر JavaScript (قد يتسبب في تعطل بعض المواقع)</translation>
 <translation id="6052725679982758334">حجب وسائل التواصل الاجتماعي</translation>
 <translation id="7498695072878479744">السماح بأزرار تسجيل الدخول إلى Google على مواقع أطراف خارجية</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">أهم’sأخبار اليوم في موجز خاص تمامًا، من أجلك فقط.</translation>
 <translation id="7266075701303521777">Brave News عبارة عن خدمة مدعومة بالإعلانات، وتتضمن إعلانات خاصة وغير مسماة ومطابقة لجهازك.</translation>
 <translation id="4541978218358617681">إعلان</translation>
-<translation id="7823038307453615214">تشغيل أخبار Brave</translation>
+<translation id="7823038307453615214">إظهار Brave News</translation>
 <translation id="6527303717912515753">مشاركة</translation>
 <translation id="1654539412343893324">اعرف المزيد عن بياناتك</translation>
 <translation id="2989805286512600854">فتح في علامة تبويب جديدة</translation>
@@ -97,7 +97,8 @@
 <translation id="6511854390690723657">هذا هو إعلانك الأول من Brave. انقر للاطلاع على المزيد.</translation>
 <translation id="2070991379950719711">ابدأ في استخدام Brave Rewards</translation>
 <translation id="48520986898237073">الاستمرار إلى المحفظة</translation>
-<translation id="6800338374677644736">تعيين كمتصفح افتراضي</translation>
+<translation id="3570367516044491911">تعيين كمتصفح افتراضي</translation>
+<translation id="6800338374677644736">التعيين كمتصفح افتراضي</translation>
 <translation id="19715420010996093">حدد متصفح Brave وانقر على "دائماً"</translation>
 <translation id="3546439402724649282">تم تعيين Brave بالفعل كمتصفح افتراضي.</translation>
 <translation id="8389661903259423907">لقد قمت بالفعل بتعيين المتصفح الافتراضي. يمكنك تغيير المتصفح الافتراضي في إعدادات التطبيق الخاصة بك.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">رصيد المحفظة:</translation>
 <translation id="2573313946367623146">أرسل نصيحتي</translation>
 <translation id="3250511771491660127">اجعل هذا شهرياً</translation>
+<translation id="7658239707568436148">إلغاء</translation>
+<translation id="1201402288615127009">التالي</translation>
+<translation id="8481779960444041069">لتحسين خصوصيتك، قم بإعداد Brave ليكون المتصفح الافتراضي الخاص بك</translation>
+<translation id="1938402585819943124">اختر Brave في الشاشة التالية.</translation>
+<translation id="8926389886865778422">عدم السؤال مرة أخرى</translation>
 <translation id="6639570430554986719">يناير/كانون الثاني</translation>
 <translation id="1807352595146144483">فبراير/شباط</translation>
 <translation id="2021828608097804771">مارس/آذار</translation>
@@ -514,9 +520,9 @@
 <translation id="6478996494082389936">تحليلات المنتج الخاص.</translation>
 <translation id="5187052478998910855">هل تحتاج إلى تذكير بـ Rewards؟</translation>
 <translation id="8622329973403382303">قم بجولة سريعة للتعرف على الطريقة التي تعمل بها لتدخل التاريخ كنجم Rewards لامع!</translation>
-<translation id="7625138338483121345">افتح جميع الروابط بواسطة متصفح Brave لحماية خصوصيتك</translation>
-<translation id="4511485286950743564">تمنع Brave Shields برامج التتبع &amp; والإعلانات، وتحفظ البيانات، وتوفر لك الوقت في كل موقع تزوره.</translation>
-<translation id="9218430445555521422">تعيين Brave كمتصفح افتراضي</translation>
+<translation id="7625138338483121345">‏جعل Brave المتصفح التلقائي</translation>
+<translation id="4511485286950743564">مع تعيين Brave كمتصفحك الافتراضي، كل رابط تنقر عليه يُفتح مع حماية الخصوصية من Brave.</translation>
+<translation id="9218430445555521422">تعيين كافتراضي</translation>
 <translation id="3479552764303398839">ليس الآن</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -535,7 +541,6 @@
 <translation id="1822560017823072927">الواجهات الافتراضية العامة والخاصة</translation>
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
-<translation id="3171931580569169744">تمكين معلومات علامات التبويب</translation>
 <translation id="5587305863196367357">يسمح لك اعتماد المحفظة بإدارة أموالك بسهولة وإضافة الأموال وسحبها</translation>
 <translation id="5760671211380791582">ليس لديك ما يكفي من BAT.</translation>
 <translation id="442469478596827903">يتعين أن يكون لديك عملتا BAT كحد أدنى لإنشاء محفظة Uphold معتمدة. يُرجى إعادة المحاولة لاحقًا.</translation>
@@ -558,7 +563,8 @@
 <translation id="375882617301124395">قم بعمل نسخة احتياطية من crypto wallet</translation>
 <translation id="8289942708804097960">شراء العملة المشفرة ببطاقة ائتمان أو بطاقة خصم.</translation>
 <translation id="841880029259839903">إرسال وحدات crypto المشفرة أو قم بتحويلها من حساب إلى آخر.</translation>
-<translation id="8226778393040773102">قم بمبادلة الأصول المشفرة باستخدام جامع البيانات Brave DEX.</translation>
+<translation id="8226778393040773102">استبدال الرموز المميزة والأصول</translation>
+<translation id="5841646075632490135">سوف يعالج <ph name="DEX_PROVIDER"/> عنوان إيثريوم وعنوان IP لاستكمال المعاملة (بما في ذلك الحصول على قوائم الأسعار). سوف يستخدم <ph name="DEX_PROVIDER"/> فقط هذه البيانات لأغراض معالجة المعاملات.</translation>
 <translation id="1783600039044302171">تأمين تشفير crypto الخاص بك بكلمة مرور</translation>
 <translation id="3726490322412361740">أدخل كلمة المرور</translation>
 <translation id="3038243139480464605">تحقق من كلمة المرور</translation>
@@ -586,7 +592,7 @@
 <translation id="283071225285270357">أدخِل عبارة الاسترداد</translation>
 <translation id="3943857333388298514">لصق</translation>
 <translation id="3331452756822160641">كلمة مرور جديدة</translation>
-<translation id="4359319875297001084">أستعيد من "محفظة العملات الرقمية من متصفح Brave" التي لا يُستغنى عنها</translation>
+<translation id="4359319875297001084">هل ترغب في توريد محافظ التفشير القديمة الخاصة بـ Brave؟</translation>
 <translation id="2339124864228588937">تحقق من عبارة الاسترداد</translation>
 <translation id="3747079125031086337">تحديد الكلمات في العبارة الاستردادية في مكانها الصحيح.</translation>
 <translation id="6518133107902771759">تحقق</translation>
@@ -784,7 +790,6 @@
 <translation id="1254969878422524947">حد طرف الغاز (Gwei)</translation>
 <translation id="7373308452149471621">حد سعر الغاز (Gwei)</translation>
 <translation id="5891811606602061966">تعذّر توريد الحساب. يُرجى المحاولة مرة أخرى.</translation>
-<translation id="1822506443689803572">يستخدم Brave بروتوكول 0x كمجمع DEX.</translation>
 <translation id="5061574358754621254">بيانات أسعار مدعومة من CoinGecko</translation>
 <translation id="4626407663177532837">يتضمن عرض الأسعار 0.875٪ كرسوم لـ Brave.</translation>
 <translation id="8574289650879708853">إضافة أصل مخصص</translation>
@@ -829,14 +834,15 @@
 <translation id="665660671251623018">الكسور العشرية لعملات السلسلة</translation>
 <translation id="182619028057179895">التنسيق غير صالح، تكون الكسور العشرية للعملة رقمًا موجبًا</translation>
 <translation id="2978054488731497946">قم بإدخال الكسور العشرية للعملات</translation>
-<translation id="7642841516562576649">عناوين محدد موقع الموارد الموحد (URL) للأيقونات</translation>
-<translation id="4693057234255364395">منع عناوين URL (محدد موقع الموارد الموحد) للمستكشف</translation>
+<translation id="7642841516562576649">URL الأيقونة</translation>
+<translation id="4693057234255364395">عنوان URL الخاص بمستكشف الحظر</translation>
 <translation id="7059127752542505809">إدخال URL</translation>
 <translation id="2156993118928861787">عنوان غير صالح</translation>
 <translation id="6889920539620318793">تعيين كنشط</translation>
 <translation id="2653659639078652383">إرسال</translation>
 <translation id="8853725596990766789">تغيير المبلغ</translation>
-<translation id="3570367516044491911">تعيين كمتصفح افتراضي</translation>
+<translation id="5233638681132016545">علامة تبويب جديدة</translation>
+<translation id="3518266709656143462">يحظر  Javascript (قد يفصل المواقع)</translation>
 <translation id="7091885296442320770">Brave بسرعة البرق</translation>
 <translation id="2171928016777725844">اجعل Brave متصفحك الافتراضي!</translation>
 <translation id="7136694880210472378">تعيين كافتراضي</translation>
@@ -844,6 +850,4 @@
 <translation id="3184805785843994538">تمنع Brave Shields برامج التتبع &amp; والإعلانات، وتحفظ البيانات، وتوفر لك الوقت في كل موقع تزوره.</translation>
 <translation id="8722651357687610395">تعيين Brave كمتصفح افتراضي</translation>
 <translation id="4854035885012188958">أستعيد من "محفظة العملات الرقمية من متصفح Brave" التي لا يُستغنى عنها</translation>
-<translation id="3047726704186619366">عناوين محدد موقع الموارد الموحد (URL) للأيقونات</translation>
-<translation id="2487558607408469181">منع عناوين URL (محدد موقع الموارد الموحد) للمستكشف</translation>
 </translationbundle>

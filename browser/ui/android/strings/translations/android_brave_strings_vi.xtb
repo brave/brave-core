@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="2278950434998763147">Mở một số trang web sử dụng kết nối HTTPS bảo mật thay vì HTTP thông thường.</translation>
 <translation id="94154759592465111">Chặn Kịch bản</translation>
-<translation id="3518266709656143462">Chặn Javascript (có thể làm hỏng một số trang web)</translation>
+<translation id="7714773920987474116">Chặn JavaScript (có thể làm hỏng một số trang web)</translation>
 <translation id="6052725679982758334">Chặn Mạng Xã hội</translation>
 <translation id="7498695072878479744">Cho phép các nút đăng nhập Google trên các website bên thứ ba</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Tin tức hàng đầu hôm nay trong một bảng tin hoàn toàn riêng tư, chỉ dành cho bạn.</translation>
 <translation id="7266075701303521777">Tin tức Brave được hỗ trợ bởi quảng cáo với quảng cáo hoàn toàn riêng tư và được ẩn danh hóa khớp với thiết bị của bạn.</translation>
 <translation id="4541978218358617681">Quảng cáo</translation>
-<translation id="7823038307453615214">Bật Tin tức Brave</translation>
+<translation id="7823038307453615214">Hiển thị Brave Tin tức</translation>
 <translation id="6527303717912515753">Chia sẻ</translation>
 <translation id="1654539412343893324">Tìm hiểu thêm về dữ liệu của bạn</translation>
 <translation id="2989805286512600854">Mở trong tab mới</translation>
@@ -97,7 +97,8 @@
 <translation id="6511854390690723657">Đây là quảng cáo Brave đầu tiên của bạn. Nhấn để tìm hiểu thêm.</translation>
 <translation id="2070991379950719711">Bắt đầu sử dụng Brave Rewards</translation>
 <translation id="48520986898237073">Tiếp tục đến ví</translation>
-<translation id="6800338374677644736">Đặt thành trình duyệt mặc định</translation>
+<translation id="3570367516044491911">Đặt thành trình duyệt mặc định</translation>
+<translation id="6800338374677644736">Đặt làm Trình duyệt mặc định</translation>
 <translation id="19715420010996093">Chọn Trình duyệt Brave rồi nhấn vào "Luôn luôn"</translation>
 <translation id="3546439402724649282">Brave đã được đặt làm trình duyệt mặc định của bạn.</translation>
 <translation id="8389661903259423907">Bạn đã đặt trình duyệt mặc định. Bạn có thể thay đổi trình duyệt mặc định trong mục cài đặt ứng dụng.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">số dư ví:</translation>
 <translation id="2573313946367623146">gửi tip của tôi</translation>
 <translation id="3250511771491660127">Làm hàng tháng</translation>
+<translation id="7658239707568436148">Hủy</translation>
+<translation id="1201402288615127009">Tiếp theo</translation>
+<translation id="8481779960444041069">Để cải thiện quyền riêng tư của bạn, hãy đặt Brave làm Trình duyệt mặc định của bạn</translation>
+<translation id="1938402585819943124">Chọn Brave trên màn hình tiếp theo.</translation>
+<translation id="8926389886865778422">Đừng hỏi lại</translation>
 <translation id="6639570430554986719">THÁNG 1</translation>
 <translation id="1807352595146144483">THÁNG 2</translation>
 <translation id="2021828608097804771">THÁNG 3</translation>
@@ -519,9 +525,9 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="6478996494082389936">phân tích sản phẩm riêng tư.</translation>
 <translation id="5187052478998910855">Cần điều gì đó mới mẻ trong Rewards?</translation>
 <translation id="8622329973403382303">Hãy tham gia một hành trình ngắn nhằm tìm hiểu cách thức hoạt động của nó để đi vào lịch sử với tư cách là một ngôi sao nhạc rock trong mục Phần thưởng!</translation>
-<translation id="7625138338483121345">Mở tất cả các đường liên kết bằng Brave để bảo vệ quyền riêng tư của bạn</translation>
-<translation id="4511485286950743564">Brave Shields chặn trình theo dõi &amp; quảng cáo, đồng thời giúp bạn tiết kiệm thời gian trên mỗi trang web mà bạn truy cập.</translation>
-<translation id="9218430445555521422">Đặt Brave làm trình duyệt mặc định</translation>
+<translation id="7625138338483121345">Đặt Brave làm trình duyệt mặc định của bạn</translation>
+<translation id="4511485286950743564">Với việc đặt Brave làm mặc định, mọi liên kết bạn nhấp vào sẽ mở ra với các biện pháp bảo vệ quyền riêng tư của Brave.</translation>
+<translation id="9218430445555521422">Đặt làm mặc định</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -540,7 +546,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1822560017823072927">Các giao diện công khai và riêng tư mặc định</translation>
 <translation id="5825943197137337319">Chỉ giao diện công khai mặc định</translation>
 <translation id="1689062823386843231">Cho phép UDP không proxy</translation>
-<translation id="3171931580569169744">Bật Nhóm tab</translation>
 <translation id="5587305863196367357">Việc xác minh ví cho phép bạn quản lý tiền của mình một cách dễ dàng, thêm &amp; rút tiền</translation>
 <translation id="5760671211380791582">Bạn không có đủ BAT.</translation>
 <translation id="442469478596827903">Bạn cần có ít nhất 2 BAT để tạo một ví Uphold được xác minh. Vui lòng thử lại sau.</translation>
@@ -563,7 +568,8 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="375882617301124395">Sao lưu ví tiền mã hóa của bạn</translation>
 <translation id="8289942708804097960">Mua tiền mã hóa bằng thẻ tín dụng hoặc ghi nợ.</translation>
 <translation id="841880029259839903">Gửi tiền điện tử hoặc chuyển từ tài khoản này sang tài khoản khác.</translation>
-<translation id="8226778393040773102">Hoán đổi tài sản tiền điện tử với công cụ tổng hợp Brave DEX.</translation>
+<translation id="8226778393040773102">Swap token và tài sản</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> sẽ xử lý địa chỉ Ethereum và địa chỉ IP để thực hiện giao dịch (bao gồm cả việc nhận báo giá). <ph name="DEX_PROVIDER"/> sẽ CHỈ sử dụng dữ liệu này cho các mục đích xử lý giao dịch.</translation>
 <translation id="1783600039044302171">Bảo mật tiền điện tử của bạn bằng mật khẩu</translation>
 <translation id="3726490322412361740">Nhập mật khẩu</translation>
 <translation id="3038243139480464605">Xác minh mật khẩu</translation>
@@ -591,7 +597,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="283071225285270357">Nhập cụm từ khôi phục của bạn</translation>
 <translation id="3943857333388298514">Dán</translation>
 <translation id="3331452756822160641">Mật khẩu mới</translation>
-<translation id="4359319875297001084">Tôi đang khôi phục từ Ví tiền điện tử Brave cũ</translation>
+<translation id="4359319875297001084">Nhập từ ví tiền mã hóa Brave cũ?</translation>
 <translation id="2339124864228588937">Xác minh cụm từ khôi phục</translation>
 <translation id="3747079125031086337">Chọn các từ trong cụm từ khôi phục của bạn theo đúng thứ tự.</translation>
 <translation id="6518133107902771759">Xác minh</translation>
@@ -789,7 +795,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="1254969878422524947">Giới hạn tiền thưởng trên xăng (Gwei)</translation>
 <translation id="7373308452149471621">Giới hạn giá trên xăng (Gwei)</translation>
 <translation id="5891811606602061966">Không nhập được tài khoản, vui lòng hãy thử lại.</translation>
-<translation id="1822506443689803572">Brave sử dụng 0x làm bộ tổng hợp DEX.</translation>
 <translation id="5061574358754621254">Dữ liệu giá được cung cấp bởi CoinGecko</translation>
 <translation id="4626407663177532837">Báo giá bao gồm một khoản phí Brave 0,875%.</translation>
 <translation id="8574289650879708853">Thêm tài sản tùy chỉnh</translation>
@@ -835,13 +840,14 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="182619028057179895">Định dạng không hợp lệ, số thập phân của loại tiền là một số dương</translation>
 <translation id="2978054488731497946">Nhập số thập phân loại tiền</translation>
 <translation id="7642841516562576649">URL biểu tượng</translation>
-<translation id="4693057234255364395">Chặn URL trình khám phá</translation>
+<translation id="4693057234255364395">URL trình khám phá khối</translation>
 <translation id="7059127752542505809">Nhập URL</translation>
 <translation id="2156993118928861787">Địa chỉ không hợp lệ</translation>
 <translation id="6889920539620318793">Đặt là đang hoạt động</translation>
 <translation id="2653659639078652383">Gửi</translation>
 <translation id="8853725596990766789">Thay đổi số lượng</translation>
-<translation id="3570367516044491911">Đặt thành trình duyệt mặc định</translation>
+<translation id="5233638681132016545">Tab mới</translation>
+<translation id="3518266709656143462">Chặn Javascript (có thể làm hỏng một số trang web)</translation>
 <translation id="7091885296442320770">Brave chạy nhanh như chớp</translation>
 <translation id="2171928016777725844">Hãy biến Brave thành trình duyệt mặc định của bạn!</translation>
 <translation id="7136694880210472378">Đặt làm mặc định</translation>
@@ -849,6 +855,4 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="3184805785843994538">Brave Shields chặn trình theo dõi &amp; quảng cáo, đồng thời giúp bạn tiết kiệm thời gian trên mỗi trang web mà bạn truy cập.</translation>
 <translation id="8722651357687610395">Đặt Brave làm trình duyệt mặc định</translation>
 <translation id="4854035885012188958">Tôi đang khôi phục từ Ví tiền điện tử Brave cũ</translation>
-<translation id="3047726704186619366">URL biểu tượng</translation>
-<translation id="2487558607408469181">Chặn URL trình khám phá</translation>
 </translationbundle>

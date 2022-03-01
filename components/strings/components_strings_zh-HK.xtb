@@ -109,7 +109,7 @@
 <translation id="1307966114820526988">這些功能已被淘汰</translation>
 <translation id="1308113895091915999">適用優惠</translation>
 <translation id="1312803275555673949">有什麼證據證明資訊屬實？</translation>
-<translation id="131405271941274527"><ph name="URL"/> 想在您以手機觸踫 NFC 裝置時傳送和接收資料</translation>
+<translation id="1314311879718644478">查看擴張實境內容</translation>
 <translation id="1314509827145471431">釘裝 (右側)</translation>
 <translation id="1318023360584041678">已儲存至分頁群組</translation>
 <translation id="1319245136674974084">使用這個應用程式時不要再問我</translation>
@@ -132,7 +132,6 @@
 <translation id="1348779747280417563">確認名稱</translation>
 <translation id="1357195169723583938">最近使用過裝置的使用者及其使用時間</translation>
 <translation id="1358187717814494928">建立試算表</translation>
-<translation id="5497977785983089120">開啟新的無痕式視窗以私下瀏覽內容</translation>
 <translation id="1363819917331173092">不要詢問是否翻譯<ph name="SOURCE_LANGUAGE"/>的網頁</translation>
 <translation id="1364822246244961190">此政策被封鎖，系統會忽略其設定值。</translation>
 <translation id="1368318639262510626">喺呢款恐龍遊戲入面，你要協助喺荒野入面奔馳嘅像素化恐龍避開仙人掌同翼手龍。當您聽到音效提示嘅時候，㩒空格鍵就可以跳過障礙物。</translation>
@@ -206,6 +205,7 @@
 <translation id="1559572115229829303">&lt;p&gt;由於您裝置的日期和時間 (<ph name="DATE_AND_TIME"/>) 不正確，因此無法與 <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> 建立私人連線。&lt;/p&gt;
 
       &lt;p&gt;請在「設定」&lt;strong&gt;&lt;/strong&gt;應用程式中，前往 [一般] &lt;strong&gt;&lt;/strong&gt;並調整日期和時間。&lt;/p&gt;</translation>
+<translation id="156703335097561114">網絡資料，例如網絡位址、介面設定，以及連線品質</translation>
 <translation id="1567040042588613346">此政策運作正常，但與其他地方設定的值相同，並已取代該值。</translation>
 <translation id="1569487616857761740">輸入到期日</translation>
 <translation id="1581080074034554886">信用卡驗證碼 (CVC)</translation>
@@ -213,6 +213,7 @@
 <translation id="1583429793053364125">顯示此網頁時發生錯誤。</translation>
 <translation id="1586541204584340881">您已安裝的擴充程式</translation>
 <translation id="1588438908519853928">一般</translation>
+<translation id="1589050138437146318">要安裝 ARCore 嗎？</translation>
 <translation id="1592005682883173041">本地資料存取</translation>
 <translation id="1594030484168838125">選擇</translation>
 <translation id="8523167061098356223">暢玩 Brave 恐龍遊戲</translation>
@@ -297,7 +298,6 @@
 <translation id="1838374766361614909">清除搜尋</translation>
 <translation id="1839551713262164453">發生錯誤，政策值驗證失敗</translation>
 <translation id="1842969606798536927">支付</translation>
-<translation id="137199123615682137">無痕模式不會做什麼</translation>
 <translation id="1863257867908022953">紙匣 12</translation>
 <translation id="1864927262126810325">來自「<ph name="SOURCE_NAME"/>」</translation>
 <translation id="1871208020102129563">Proxy 設定為使用固定的 Proxy 伺服器，而非 .pac 指令碼網址。</translation>
@@ -351,7 +351,6 @@
 <translation id="2042213636306070719">紙匣 7</translation>
 <translation id="3163988908275223348">登入即可使用儲存在 Brave 帳戶中的密碼</translation>
 <translation id="2053111141626950936">系統將不會翻譯<ph name="LANGUAGE"/>網頁。</translation>
-<translation id="7948746210201997548">{NUM_DAYS,plural, =0{如果此功能已啟用且處於有效狀態，Brave 就會判斷您最近的瀏覽活動與哪個大型使用者群組 (又稱「組別」) 最為相似。廣告客戶可以選擇要向該群組顯示的廣告，而您的瀏覽活動會保留在裝置上，絕不會外洩。系統會每日更新您所屬的群組。}=1{如果此功能已啟用且處於有效狀態，Brave 就會判斷您最近的瀏覽活動與哪個大型使用者群組 (又稱「組別」) 最為相似。廣告客戶可以選擇要向該群組顯示的廣告，而您的瀏覽活動會保留在裝置上，絕不會外洩。系統會每日更新您所屬的群組。}other{如果此功能已啟用且處於有效狀態，Brave 就會判斷您最近的瀏覽活動與哪個大型使用者群組 (又稱「組別」) 最為相似。廣告客戶可以選擇要向該群組顯示的廣告，而您的瀏覽活動會保留在裝置上，絕不會外洩。系統會每隔 {NUM_DAYS} 日更新您所屬的群組。}}</translation>
 <translation id="2053553514270667976">郵遞區號</translation>
 <translation id="2064691555167957331">{COUNT,plural, =1{1 個建議}other{# 個建議}}</translation>
 <translation id="2071156619270205202">此卡不能建立虛擬卡號。</translation>
@@ -471,6 +470,7 @@
 <translation id="2465655957518002998">選擇速遞方式</translation>
 <translation id="2465688316154986572">釘書釘</translation>
 <translation id="4058615531773510267">管理您在 Brave 中下載嘅檔案</translation>
+<translation id="2466004615675155314">顯示來自網絡的資料</translation>
 <translation id="2467694685043708798"><ph name="BEGIN_LINK"/>執行網絡診斷<ph name="END_LINK"/></translation>
 <translation id="2469153820345007638">1 至 N 的順序</translation>
 <translation id="2470767536994572628">在您編輯註解時，此文件將會返回單頁檢視模式及轉回原本的方向</translation>
@@ -495,7 +495,6 @@
 <translation id="2536110899380797252">新增地址</translation>
 <translation id="2539524384386349900">偵測</translation>
 <translation id="2540701853218677861">裝置登入/登出記錄，包括時間戳記和嘗試失敗記錄</translation>
-<translation id="375424491626359494">當您關閉所有無痕式分頁後，您在其中瀏覽的網頁都不會保留在瀏覽器記錄、Cookie 儲存庫或搜尋記錄中。不過，您下載的檔案或建立的書籤將會全部保留。</translation>
 <translation id="2544644783021658368">單一文件</translation>
 <translation id="2546283357679194313">Cookie 和網站數據</translation>
 <translation id="254947805923345898">政策值無效。</translation>
@@ -516,6 +515,7 @@
 <translation id="2609632851001447353">變化</translation>
 <translation id="2610561535971892504">點擊複製</translation>
 <translation id="2618023639789766142">C10 (信封)</translation>
+<translation id="2623663032199728144">可要求使用螢幕中的資料</translation>
 <translation id="2625385379895617796">您時鐘的時間過快</translation>
 <translation id="262745152991669301">可要求連接 USB 裝置</translation>
 <translation id="2915787201097107005">如要獲得 Brave 最高程度的安全防護，請<ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>啟用強化保護功能<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
@@ -580,7 +580,6 @@
 <translation id="2856444702002559011">攻擊者可能會試圖透過 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> 竊取您的資料 (例如密碼、訊息或信用卡資料)。<ph name="BEGIN_LEARN_MORE_LINK"/>瞭解詳情<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2859806420264540918">此網站顯示滋擾性或誤導廣告。</translation>
 <translation id="287596039013813457">友善</translation>
-<translation id="6934396344327597525">即將退出無痕模式，改用外部應用程式付款。要繼續嗎？</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>，㩒一下 Tab 鍵，然後㩒一下 Enter 鍵就可以喺 Brave 設定度管理安全瀏覽之類嘅功能</translation>
 <translation id="2878197950673342043">十字摺</translation>
 <translation id="2878424575911748999">A1</translation>
@@ -607,7 +606,6 @@
 <translation id="2948083400971632585">您可以在設定頁面停用任何為連線設定的 Proxy。</translation>
 <translation id="3955566820843143766">已忽略，因為裝置沒有註冊 Brave 瀏覽器雲端管理。</translation>
 <translation id="2951588413176968965">我的出紙槽</translation>
-<translation id="4920329334239571966">關閉所有無痕式視窗</translation>
 <translation id="295526156371527179">警告：此政策並非字典，因此未有按政策中指定的方式合併為字典。</translation>
 <translation id="2955913368246107853">關閉搜尋列</translation>
 <translation id="2972581237482394796">重做(&amp;R)</translation>
@@ -633,6 +631,7 @@
 <translation id="3037605927509011580">糟糕！</translation>
 <translation id="3041612393474885105">憑證資料</translation>
 <translation id="3044034790304486808">恢復研究</translation>
+<translation id="8418829431154568330">Brave 遠端桌面記錄，包括時間戳記、主機和用戶端工作階段 ID</translation>
 <translation id="3060227939791841287">C9 (信封)</translation>
 <translation id="3061707000357573562">修補服務</translation>
 <translation id="306573536155379004">啟動咗遊戲。</translation>
@@ -673,6 +672,7 @@
 <translation id="3197136577151645743">可要求偵測您使用裝置的時間</translation>
 <translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/>，㩒一下 Tab 鍵，然後㩒一下 Enter 鍵就可以喺 Brave 設定度管理同步邊啲資料</translation>
 <translation id="320323717674993345">取消付款</translation>
+<translation id="3203366800380907218">來自網絡</translation>
 <translation id="3207960819495026254">已加入書籤</translation>
 <translation id="3209034400446768650">網頁可能會收取費用</translation>
 <translation id="3212581601480735796">您在 <ph name="HOSTNAME"/> 上進行的活動正受監控</translation>
@@ -689,6 +689,7 @@
 <translation id="3234666976984236645">一律在這個網站上偵測重要內容</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>，㩒一下 Tab 鍵，然後㩒一下 Enter 鍵就可以自訂瀏覽器外觀</translation>
 <translation id="3240791268468473923">開咗冇相符安全付款憑證工作表</translation>
+<translation id="324180406144491771">已封鎖「<ph name="HOST_NAME"/>」連結</translation>
 <translation id="3249845759089040423">型格</translation>
 <translation id="3252266817569339921">法文</translation>
 <translation id="3257954757204451555">這項資料是由誰提供？</translation>
@@ -719,12 +720,6 @@
 <translation id="3345782426586609320">眼</translation>
 <translation id="3355823806454867987">變更 Proxy 設定…</translation>
 <translation id="3360103848165129075">付款處理常式工作表</translation>
-<translation id="669410734497476819">Brave <ph name="BEGIN_EMPHASIS"/>不會儲存<ph name="END_EMPHASIS"/>以下資料：
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>您的瀏覽記錄
-          <ph name="LIST_ITEM"/>Cookie 和網站資料
-          <ph name="LIST_ITEM"/>在表格中輸入的資料
-        <ph name="END_LIST"/></translation>
 <translation id="3362968246557010467">此政策是從已淘汰的 <ph name="OLD_POLICY"/> 政策自動複製而來，請改用此政策。</translation>
 <translation id="3364869320075768271"><ph name="URL"/> 要求使用您的虛擬實境裝置和資料</translation>
 <translation id="3366477098757335611">查看付款卡</translation>
@@ -774,7 +769,6 @@
 <translation id="3462200631372590220">隱藏詳情</translation>
 <translation id="3467763166455606212">必須輸入持卡人姓名</translation>
 <translation id="3468054117417088249">目前已開啟 <ph name="TAB_SWITCH_SUFFIX"/>，按下 Tab 鍵和 Enter 鍵即可切換至開啟的分頁</translation>
-<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>，㩒一下 Tab 鍵，然後㩒一下 Enter 鍵就可以閂晒所有宜家開咗嘅無痕式視窗</translation>
 <translation id="3479552764303398839">略過</translation>
 <translation id="3487845404393360112">紙匣 4</translation>
 <translation id="3495081129428749620">喺「<ph name="PAGE_TITLE"/>」網頁度搵</translation>
@@ -1067,7 +1061,6 @@
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>。<ph name="LEARN_MORE_TEXT"/></translation>
 <translation id="4476953670630786061">此表格不安全，自動填入功能已關閉。</translation>
 <translation id="4477350412780666475">下一首曲目</translation>
-<translation id="3683567996395248272">無痕模式會做什麼</translation>
 <translation id="4482953324121162758">系統不會翻譯此網站。</translation>
 <translation id="4490717597759821841">A7</translation>
 <translation id="3966104135245031874">使用您的 Brave 帳戶為已同步處理的密碼加密</translation>
@@ -1116,7 +1109,6 @@
 <translation id="4646534391647090355">立即前往下載中心</translation>
 <translation id="4652266463001779298">不允許</translation>
 <translation id="4658638640878098064">釘裝 (左上方)</translation>
-<translation id="3812568169637430422">現在您可私下瀏覽內容，而使用這部電腦的其他使用者將無法看到您的活動。不過，您的下載檔案、書籤和閱讀清單項目仍會保留在裝置上。</translation>
 <translation id="4668929960204016307">，</translation>
 <translation id="4670064810192446073">虛擬實境</translation>
 <translation id="4673460618347856347">恐龍遊戲，開始玩</translation>
@@ -1131,6 +1123,7 @@
 <translation id="4708268264240856090">您的連線已中斷</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>執行 Windows 網絡診斷<ph name="END_LINK"/></translation>
+<translation id="4722735765955348426"><ph name="USERNAME"/>的密碼</translation>
 <translation id="4724144314178270921">可要求查看剪貼簿上的文字和圖片</translation>
 <translation id="4726672564094551039">重新載入政策</translation>
 <translation id="4728558894243024398">平台</translation>
@@ -1143,7 +1136,6 @@
 <translation id="4742407542027196863">管理密碼…</translation>
 <translation id="4744514002166662487">建立簡報</translation>
 <translation id="4744603770635761495">可執行檔的路徑</translation>
-<translation id="6417973700199526943">您已啟用無痕模式</translation>
 <translation id="4750917950439032686">傳送資料至此網站時 (例如密碼或信用卡號碼)，您的資料將會保密。</translation>
 <translation id="4751476147751820511">動態或光線感應器</translation>
 <translation id="4754461935447132332">不允許用於不安全的網站</translation>
@@ -1171,12 +1163,7 @@
 <translation id="4819347708020428563">要在預設檢視模式中編輯註解嗎？</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>，㩒一下 Tab 鍵，然後㩒一下 Enter 鍵就可以快速建立新嘅 Brave 試算表</translation>
 <translation id="4825507807291741242">強大</translation>
-<translation id="6101678912379763265">無痕模式不會令您在網絡上隱身：
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>網站會知道您在瀏覽<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>僱主或學校可以追蹤瀏覽活動<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>互聯網服務供應商可能會監察網絡流量<ph name="END_LIST_ITEM"/>
-        <ph name="END_LIST"/></translation>
+<translation id="4829962028570902310">由於此政策只能透過雲端使用者政策設定，因此系統已忽略。</translation>
 <translation id="483241715238664915">開啟警告</translation>
 <translation id="4838327282952368871">夢幻</translation>
 <translation id="246176083348620700">查看 Brave 記錄</translation>
@@ -1193,11 +1180,9 @@
 <translation id="4877083676943085827">{COUNT,plural, =0{無}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>、<ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>、<ph name="EXAMPLE_DOMAIN_2"/> <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831">搵「<ph name="TEXT"/>」</translation>
 <translation id="4879491255372875719">自動 (預設)</translation>
-<translation id="4879725228911483934">在您的螢幕上開啟並放置視窗</translation>
 <translation id="4880827082731008257">搜尋記錄</translation>
 <translation id="4881695831933465202">開啟</translation>
 <translation id="4885256590493466218">使用 <ph name="CARD_DETAIL"/> 結帳付款</translation>
-<translation id="2418728264526266844">開啟無痕式視窗按鈕，㩒一下 Enter 鍵就可以開新嘅無痕式視窗私下瀏覽</translation>
 <translation id="4892518386797173871">後方</translation>
 <translation id="4895877746940133817"><ph name="TYPE_1"/>、<ph name="TYPE_2"/>，<ph name="TYPE_3"/></translation>
 <translation id="4900217275619098670">第九卷</translation>
@@ -1219,6 +1204,7 @@
 <translation id="4968522289500246572">此應用程式專為流動裝置而設，可能無法正常調整大小。應用程式可能會發生問題或重新啟動。</translation>
 <translation id="4969341057194253438">刪除錄影</translation>
 <translation id="4973922308112707173">雙孔 (頂端)</translation>
+<translation id="4976702386844183910">上次瀏覽日期：<ph name="DATE"/></translation>
 <translation id="4984088539114770594">要使用麥克風嗎？</translation>
 <translation id="4984339528288761049">Prc5 (信封)</translation>
 <translation id="4989163558385430922">查看全部</translation>
@@ -1280,6 +1266,7 @@
 <translation id="5138227688689900538">顯示較少</translation>
 <translation id="5145883236150621069">政策回應中存在錯誤代碼</translation>
 <translation id="5146995429444047494">已封鎖 <ph name="ORIGIN"/> 的通知</translation>
+<translation id="514704532284964975"><ph name="URL"/> 希望查看和變更您透過手機在 NFC 裝置上輕按的資料</translation>
 <translation id="5148809049217731050">正面朝上</translation>
 <translation id="515292512908731282">C4 (信封)</translation>
 <translation id="5158275234811857234">封面</translation>
@@ -1302,6 +1289,7 @@
 <translation id="1051285409463218679">使用 Brave Pay 儲存的付款方法和地址</translation>
 <translation id="5215363486134917902">Folio-Sp</translation>
 <translation id="521659676233207110">紙匣 13</translation>
+<translation id="5216942107514965959">上次瀏覽時間：今天</translation>
 <translation id="5222812217790122047">需要提供電郵</translation>
 <translation id="5230733896359313003">付運地址</translation>
 <translation id="5230815978613972521">B8</translation>
@@ -1322,7 +1310,6 @@
 <translation id="5283044957620376778">B1</translation>
 <translation id="5284295735376057059">文件屬性</translation>
 <translation id="528468243742722775">結束</translation>
-<translation id="5284909709419567258">網絡位址</translation>
 <translation id="5285570108065881030">顯示所有已儲存的密碼…</translation>
 <translation id="5287240709317226393">顯示 Cookie</translation>
 <translation id="5287456746628258573">此網站的安全性設定過舊，因此您傳送給此網站的資料 (例如密碼或信用卡號碼) 可能會外洩。</translation>
@@ -1488,6 +1475,7 @@
 <translation id="5869522115854928033">已儲存的密碼</translation>
 <translation id="5873013647450402046">銀行要確認您的身分。</translation>
 <translation id="5887400589839399685">已儲存的付款卡</translation>
+<translation id="5887687176710214216">上次瀏覽日期：昨天</translation>
 <translation id="5895138241574237353">重新啟動</translation>
 <translation id="5895187275912066135">發行日期</translation>
 <translation id="5901630391730855834">黃色</translation>
@@ -1574,10 +1562,8 @@
 <translation id="6157754950574419155">從記錄中移除全部項目</translation>
 <translation id="6157877588268064908">如要查看運送方式和要求，請選取一個地址</translation>
 <translation id="6165508094623778733">瞭解更多資料</translation>
-<translation id="5673623523506565506">現在您可私下瀏覽了。共用此裝置的其他使用者將無法看到您的活動，但您下載的檔案和加入的書籤仍會儲存在裝置上。</translation>
 <translation id="6177128806592000436">您與此網站的連線並非完全安全</translation>
 <translation id="6180316780098470077">重試間隔</translation>
-<translation id="619448280891863779">可要求在您的畫面中開啟和放置視窗</translation>
 <translation id="6196640612572343990">封鎖第三方 Cookie</translation>
 <translation id="6203231073485539293">檢查互聯網連線</translation>
 <translation id="8385639954311581596">要從 Brave 移除地址嗎？</translation>
@@ -1679,6 +1665,7 @@
 <translation id="6529602333819889595">重做刪除(&amp;R)</translation>
 <translation id="6545864417968258051">藍牙掃瞄</translation>
 <translation id="6547208576736763147">雙孔 (左側)</translation>
+<translation id="6554732001434021288">上次瀏覽日期：<ph name="NUM_DAYS"/> 天前</translation>
 <translation id="6556866813142980365">重做</translation>
 <translation id="6569060085658103619">您正在查看擴充程式頁面</translation>
 <translation id="6573200754375280815">雙孔 (右側)</translation>
@@ -1738,7 +1725,6 @@
 <translation id="6757797048963528358">您的裝置已進入休眠狀態。</translation>
 <translation id="6767985426384634228">要更新地址嗎？</translation>
 <translation id="6768213884286397650">Hagaki (明信片)</translation>
-<translation id="9062351672326756130"><ph name="BEGIN_LINK"/>進一步瞭解<ph name="END_LINK"/>「無痕模式」</translation>
 <translation id="6775759552199460396">JIS B2</translation>
 <translation id="67862343314499040">紫羅蘭色</translation>
 <translation id="6786747875388722282">擴充功能</translation>
@@ -1822,7 +1808,6 @@
 <translation id="5320462991730735481">在 Brave 設定中新增並管理地址</translation>
 <translation id="7064851114919012435">聯絡人資訊</translation>
 <translation id="7068733155164172741">請輸入 <ph name="OTP_LENGTH"/> 位數驗證碼</translation>
-<translation id="7070090581017165256">關於此網站</translation>
 <translation id="70705239631109039">您的連線並非完全安全</translation>
 <translation id="7075452647191940183">要求過大</translation>
 <translation id="7079718277001814089">此網站含有惡意軟件</translation>
@@ -1855,7 +1840,6 @@
 <translation id="7175401108899573750">{SHIPPING_OPTIONS,plural, =0{<ph name="SHIPPING_OPTION_PREVIEW"/>}=1{<ph name="SHIPPING_OPTION_PREVIEW"/> 和另外 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> 種選項}other{<ph name="SHIPPING_OPTION_PREVIEW"/> 和另外 <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> 種選項}}</translation>
 <translation id="7179323680825933600">儲存和填入付款方法</translation>
 <translation id="7180611975245234373">重新整理</translation>
-<translation id="5549245478906381817">開啟無痕式視窗</translation>
 <translation id="7182878459783632708">未設定政策</translation>
 <translation id="7186367841673660872">此網頁內容已由<ph name="ORIGINAL_LANGUAGE"/>翻譯成<ph name="LANGUAGE_LANGUAGE"/></translation>
 <translation id="7192203810768312527">釋出 <ph name="SIZE"/>。在您下次瀏覽部分網站時，載入速度可能會變慢。</translation>
@@ -1870,7 +1854,6 @@
 <translation id="7219179957768738017">這個連線使用 <ph name="SSL_VERSION"/>。</translation>
 <translation id="7220786058474068424">正在處理</translation>
 <translation id="7221855153210829124">顯示通知</translation>
-<translation id="8326104954595890674">新增無痕式分頁</translation>
 <translation id="7233592378249864828">列印確認工作表</translation>
 <translation id="7238585580608191973">SHA-256 指紋</translation>
 <translation id="7240120331469437312">憑證主體替代名稱</translation>
@@ -1908,7 +1891,6 @@
 <translation id="7352651011704765696">發生問題</translation>
 <translation id="7353601530677266744">命令列</translation>
 <translation id="7359588939039777303">已封鎖廣告。</translation>
-<translation id="8794378783472961468">然而，您並非處於隱藏狀態。使用無痕模式時，您的僱主、互聯網服務供應商或您所瀏覽的網站仍然可以追蹤您的瀏覽行為。</translation>
 <translation id="5417725730200908216"><ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT"/>，㩒一下 Tab 鍵，然後㩒一下 Enter 鍵就可以喺 Brave 設定度新增同管理地址</translation>
 <translation id="7365849542400970216">知道您的裝置使用狀態嗎？</translation>
 <translation id="7366362069757178916">付款處理常式</translation>
@@ -1957,6 +1939,12 @@
 <translation id="7485870689360869515">找不到任何數據。</translation>
 <translation id="7495528107193238112">此內容已被封鎖。如要修正問題，請聯絡網站擁有者。</translation>
 <translation id="7812541223399526596">建立文件掣，㩒一下 Enter 鍵就可以快速建立新嘅 Brave 文件</translation>
+<translation id="2957285558977211818">Brave <ph name="BEGIN_EMPHASIS"/>不會儲存<ph name="END_EMPHASIS"/>以下資料：
+          <ph name="BEGIN_LIST"/>
+            <ph name="LIST_ITEM"/>您的瀏覽記錄
+            <ph name="LIST_ITEM"/>Cookie 和網站資料
+            <ph name="LIST_ITEM"/>在表格中輸入的資料
+          <ph name="END_LIST"/></translation>
 <translation id="7508255263130623398">傳回的政策裝置識別碼為空白或與目前裝置識別碼不符</translation>
 <translation id="7508870219247277067">牛油果色</translation>
 <translation id="7511955381719512146">目前使用的 Wi-Fi 可能要求您前往 <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>。</translation>
@@ -2014,7 +2002,6 @@
 <translation id="7659878911471462949">喜極而泣</translation>
 <translation id="7662298039739062396">由擴充程式控制的設定</translation>
 <translation id="7663736086183791259">憑證 <ph name="CERTIFICATE_VALIDITY"/></translation>
-<translation id="1090109565956608696">不允許用於無痕模式</translation>
 <translation id="7667346355482952095">傳回的政策憑證為空白或與目前憑證不符</translation>
 <translation id="7668654391829183341">不明的裝置</translation>
 <translation id="7669271284792375604">攻擊者可能會經由此網站，嘗試誘使您安裝妨礙瀏覽體驗的程式 (例如變更您的首頁，或在您瀏覽的網站上顯示多餘的廣告)。</translation>
@@ -2068,7 +2055,6 @@
 <translation id="4670564340385807132">要從 Brave 中移除表格建議嗎？</translation>
 <translation id="781440967107097262">要分享剪貼簿嗎？</translation>
 <translation id="7815407501681723534">找到 <ph name="NUMBER_OF_RESULTS"/> 個與「<ph name="SEARCH_STRING"/>」相符的<ph name="SEARCH_RESULTS"/></translation>
-<translation id="782125616001965242">顯示關於此網站的資料</translation>
 <translation id="782886543891417279">目前使用的 Wi-Fi (<ph name="WIFI_NAME"/>) 可能要求您前往其登入頁面。</translation>
 <translation id="7836231406687464395">Postfix (信封)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{無}=1{1 個應用程式 (<ph name="EXAMPLE_APP_1"/>)}=2{2 個應用程式 (<ph name="EXAMPLE_APP_1"/>、<ph name="EXAMPLE_APP_2"/>)}other{# 個應用程式 (<ph name="EXAMPLE_APP_1"/>、<ph name="EXAMPLE_APP_2"/>、<ph name="AND_MORE"/>)}}</translation>
@@ -2112,7 +2098,6 @@
 <translation id="7977894662897852582">Edp</translation>
 <translation id="798134797138789862">可要求使用虛擬實境﻿裝置和資料</translation>
 <translation id="8896585555528145662">您目前無法瀏覽 <ph name="SITE"/>，因為這個網站傳送的憑證經過編碼，導致 Brave 無法處理。網絡錯誤和攻擊行為通常是暫時性的，所以這個網頁可能稍後就能正常使用。</translation>
-<translation id="79859296434321399">如要觀看擴張實境內容，請先安裝 ARCore</translation>
 <translation id="7986319120639858961"><ph name="CARD_TITLE"/> <ph name="TIME"/> <ph name="BOOKMARKED"/> <ph name="TITLE"/> <ph name="DOMAIN"/></translation>
 <translation id="799149739215780103">釘裝</translation>
 <translation id="7992044431894087211">已繼續與「<ph name="APPLICATION_TITLE"/>」分享螢幕畫面的功能</translation>
@@ -2176,6 +2161,7 @@
 <translation id="8202370299023114387">衝突</translation>
 <translation id="8206978196348664717">Prc4 (信封)</translation>
 <translation id="8211406090763984747">己建立安全連線</translation>
+<translation id="8217240300496046857">網站不能使用 Cookie 追蹤您的網絡活動。有些網站的功能可能無法正常運作。</translation>
 <translation id="8218327578424803826">已指派的位置：</translation>
 <translation id="8220146938470311105">C7/C6 (信封)</translation>
 <translation id="8228419419708659934">雙頁檢視</translation>
@@ -2214,14 +2200,9 @@
 <translation id="830498451218851433">對摺</translation>
 <translation id="8307358339886459768">Small-Photo</translation>
 <translation id="8307888238279532626">已安裝的應用程式及使用頻率</translation>
+<translation id="8317207217658302555">要更新 ARCore 嗎？</translation>
 <translation id="831997045666694187">傍晚</translation>
 <translation id="8321476692217554900">通知</translation>
-<translation id="4912243263991194586">關閉所有無痕式分頁後，Brave 就會清除以下資料：
-        <ph name="BEGIN_LIST"/>
-          <ph name="LIST_ITEM"/>您的瀏覽活動<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>您的搜尋記錄<ph name="END_LIST_ITEM"/>
-          <ph name="LIST_ITEM"/>您在表格中輸入的資料<ph name="END_LIST_ITEM"/>
-        <ph name="END_LIST"/></translation>
 <translation id="8332188693563227489"><ph name="HOST_NAME"/> 的存取被拒</translation>
 <translation id="833262891116910667">突顯嘅內容</translation>
 <translation id="8339163506404995330">系統將不會自動翻譯來源語言為<ph name="LANGUAGE"/>的網頁</translation>
@@ -2283,7 +2264,6 @@
 <translation id="8554912124839363479">{NUM_PERMISSIONS,plural, =1{重設權限}other{重設權限}}</translation>
 <translation id="8555010941760982128">結帳時請使用此宣傳代碼</translation>
 <translation id="8557066899867184262">信用卡驗證碼 (CVC) 位於信用卡背面。</translation>
-<translation id="8558485628462305855">如要觀看擴張實境內容，請先更新 ARCore</translation>
 <translation id="8559762987265718583">您裝置的日期和時間 (<ph name="DATE_AND_TIME"/>) 不正確，因此無法建立私人連線至 <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/>。</translation>
 <translation id="8564182942834072828">個別文件/未自動分頁的副本</translation>
 <translation id="8574899947864779331">使用 Touch ID 即可加快確認您的付款卡</translation>
@@ -2301,6 +2281,7 @@
 <translation id="865032292777205197">動作感應器</translation>
 <translation id="8663226718884576429">訂單摘要、<ph name="TOTAL_LABEL"/> 及更多詳情</translation>
 <translation id="8666678546361132282">英文</translation>
+<translation id="8669306706049782872">使用螢幕中的資料開啟及放置視窗</translation>
 <translation id="867224526087042813">簽名</translation>
 <translation id="8676424191133491403">不延遲</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>，答案：<ph name="ANSWER"/></translation>
@@ -2326,7 +2307,6 @@
 <translation id="8730621377337864115">完成</translation>
 <translation id="1769647018144434441">管理密碼按鈕，㩒一下 Enter 鍵就可以喺 Brave 設定度睇同管理密碼</translation>
 <translation id="8734529307927223492">您的 <ph name="DEVICE_TYPE"/> 由 <ph name="MANAGER"/> 管理</translation>
-<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>，㩒一下 Tab 鍵，然後㩒一下 Enter 鍵就可以開新嘅無痕式視窗私下瀏覽</translation>
 <translation id="6326805297893828864">如要建立安全連線，您時鐘的設定必須正確無誤；因為網站用於自我識別的憑證僅在特定時間內有效。由於您裝置的時鐘設定有誤，Brave 無法驗證這些憑證。</translation>
 <translation id="8740359287975076522">找不到 <ph name="HOST_NAME"/> 的 &lt;abbr id="dnsDefinition"&gt;網域名稱系統 (DNS) 地址&lt;/abbr&gt;。正在診斷問題。</translation>
 <translation id="8742371904523228557">您的 <ph name="ORIGIN"/> 驗證碼是 <ph name="ONE_TIME_CODE"/></translation>
@@ -2336,7 +2316,6 @@
 <translation id="87601671197631245">此網站的安全性設定過舊，因此您傳送給此網站的資料 (例如密碼、訊息或信用卡資料) 可能會外洩。</translation>
 <translation id="8761567432415473239">Brave 安全瀏覽最近在「<ph name="SITE"/>」<ph name="BEGIN_LINK"/>發現有害程式<ph name="END_LINK"/>。</translation>
 <translation id="8763927697961133303">USB 裝置</translation>
-<translation id="7736544743887840328">關閉目前開啟的所有無痕式視窗</translation>
 <translation id="8766943070169463815">開咗安全付款憑證驗證工作表</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="8790007591277257123">重做刪除(&amp;R)</translation>
@@ -2349,10 +2328,10 @@
 <translation id="8807160976559152894">完成每頁後修剪</translation>
 <translation id="7674607358106534914"><ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT"/>，㩒一下 Tab 鍵，然後㩒一下 Enter 鍵就可以透過 Brave 設定更新 Brave</translation>
 <translation id="882338992931677877">手動插槽</translation>
-<translation id="1723247378009489676">閂無痕式視窗按鈕，㩒一下 Enter 鍵就可以閂晒所有宜家開咗嘅無痕式視窗</translation>
 <translation id="883848425547221593">其他書籤</translation>
 <translation id="884264119367021077">運送地址</translation>
 <translation id="884923133447025588">未發現撤銷機制。</translation>
+<translation id="8849262850971482943">使用虛擬卡以提升安全性</translation>
 <translation id="7487066225574140895">與 Brave 分享</translation>
 <translation id="4764754838347156633">如果您已在其他網站上重用 <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> 密碼，Brave 建議您重設密碼。</translation>
 <translation id="885906927438988819">如果拼字正確，請<ph name="BEGIN_LINK"/>嘗試執行 Windows 網絡診斷<ph name="END_LINK"/>。</translation>
@@ -2512,7 +2491,43 @@
 <translation id="4075123085690634698">在新無痕式視窗中開啟網頁 (⇧⌘N)</translation>
 <translation id="2388886110302389394">在新無痕式視窗中開啟網頁 (Ctrl-Shift-N)</translation>
 <translation id="6957624206566198865">在新無痕式分頁中開啟網頁</translation>
-<translation id="5186185447130319458">無痕模式</translation>
+<translation id="8326104954595890674">新隱私分頁</translation>
+<translation id="6417973700199526943">你已進入無痕模式</translation>
+<translation id="375424491626359494">當您關閉所有無痕式分頁後，您在其中瀏覽的網頁都不會保留在瀏覽器記錄、Cookie 儲存庫或搜尋記錄中。不過，您下載的檔案或建立的書籤全部都會保留下來。</translation>
+<translation id="8794378783472961468">不過，這並不意味著您可以完全隱形。使用無痕模式時，您的雇主和網際網路服務供應商仍然可以追蹤您的瀏覽記錄，您所造訪的網站也可能會記錄您的瀏覽行為。</translation>
+<translation id="5673623523506565506">您現在可以私下瀏覽，使用此裝置的其他設定檔將看不到您的活動。但是下載和書籤將會被儲存。</translation>
+<translation id="3812568169637430422">现在，您可以私下浏览，使用此设备的其他个人资料将看不到您的活动，但将保存下载的内容、书签和阅读列表等。</translation>
+<translation id="6085043210649933880">Brave 中的无痕模式</translation>
+<translation id="3683567996395248272">無痕模式能做些什麼</translation>
+<translation id="8817208096236092047">关闭所有 Brave 无痕标签页后，您在这些标签页的活动将从此设备清除：
+          <ph name="BEGIN_LIST"/>
+            <ph name="LIST_ITEM"/>浏览活动<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>搜索历史记录<ph name="END_LIST_ITEM"/>
+            <ph name="LIST_ITEM"/>在表单中输入的信息<ph name="END_LIST_ITEM"/>
+          <ph name="END_LIST"/></translation>
+<translation id="137199123615682137">無痕模式沒辦法做什麼</translation>
+<translation id="7653199919907357627">无痕模式无法使你在网上隐身：
+        <ph name="BEGIN_LIST"/>
+          <ph name="LIST_ITEM"/>它们使用的站点和服务可以看到访问活动<ph name="END_LIST_ITEM"/>
+          <ph name="LIST_ITEM"/>雇主或学校可以跟踪浏览活动<ph name="END_LIST_ITEM"/>
+          <ph name="LIST_ITEM"/>互联网服务提供商可以监控网络流量<ph name="END_LIST_ITEM"/>
+        <ph name="END_LIST"/></translation>
+<translation id="6043883615739972429"><ph name="BEGIN_LINK"/>了解更多有关 Brave 中无痕模式的信息<ph name="END_LINK"/></translation>
+<translation id="9153679102508470540">在无痕模式中拦截第三方 cookie</translation>
+<translation id="5549245478906381817">开启私人视窗</translation>
+<translation id="5497977785983089120">打开一个新的“私人”窗口进行私密浏览</translation>
+<translation id="1819281525814582516"><ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT"/>, 按 Tab 键，然后按 Enter 打开新的私有窗口进行私密浏览</translation>
+<translation id="2418728264526266844">打开私有窗口按钮，按 Enter 键打开一个新的私有窗口进行私密浏览</translation>
+<translation id="4920329334239571966">關閉所有私密視窗</translation>
+<translation id="7736544743887840328">關閉目前開啟的所有私密視窗</translation>
+<translation id="710569555563138608"><ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT"/>，按 Tab 鍵然後按 Enter 以關閉目前開啟的所有私密視窗</translation>
+<translation id="1723247378009489676">關閉私密視窗按鈕，按 Enter 以關閉目前開啟的所有私密視窗</translation>
+<translation id="1090109565956608696">在隱私瀏覽模式中不被允許</translation>
+<translation id="6934396344327597525">即將離開無痕模式，改為使用外部應用程式付款，要繼續嗎？</translation>
+<translation id="7948746210201997548">{NUM_DAYS, plural,
+     =0 {开启此控件且其状态处于活动状态时，Brave 会确定您最近的浏览活动与哪一大组人物侧写或“人群”最相似。 广告商会针对该群组选择投放广告，您的浏览活动在您的设备上处于保密状态。 您的群组每天都会更新。}
+     =1 {开启此控件且其状态处于活动状态时，Brave 会确定您最近的浏览活动与哪一大组人物侧写或“人群”最相似。 广告商会针对该群组选择投放广告，您的浏览活动在您的设备上处于保密状态。 您的群组每天都会更新。}
+     other {开启此控件且其状态处于活动状态时，Brave 会确定您最近的浏览活动与哪一大组人物侧写或“人群”最相似。 广告商会针对该群组选择投放广告，您的浏览活动在您的设备上处于保密状态。 您的群组每 {NUM_DAYS} 天都更新一次。}}</translation>
 <translation id="1426112902089905810">&lt;h4&gt;步驟 1：從入口主頁登入&lt;/h4&gt;
     &lt;p&gt;咖啡室或機場等地點的 Wi-Fi 網絡需要先登入才能使用。如要查看登入頁面，請瀏覽使用 &lt;code&gt;http://&lt;/code&gt; 的網頁。&lt;/p&gt;
     &lt;ol&gt;
