@@ -18,6 +18,7 @@ struct EditPriorityFeeView: View {
   /// A gas estimation for the transaction
   ///
   /// This is explicitly passed in to ensure there is a valid gas estimation before attempting to edit gas.
+  /// Note: This gas estimation for eip 1559 comes from AssetRaitoService.gasOracle
   /// Use this instead of `transaction.txData.gasEstimation`
   var gasEstimation: BraveWallet.GasEstimation1559
   /// The confirmation store to update gas prices on save

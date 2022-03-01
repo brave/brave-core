@@ -21,6 +21,7 @@ public class TransactionConfirmationStore: ObservableObject {
   }
   @Published var state: State = .init()
   @Published var isLoading: Bool = false
+  @Published var gasEstimation1559: BraveWallet.GasEstimation1559?
   
   private var assetRatios: [String: Double] = [:]
   
@@ -177,6 +178,12 @@ public class TransactionConfirmationStore: ObservableObject {
         updateState()
         self.isLoading = false
       }
+    }
+  }
+  
+  func fetchGasEstimation1559() {
+    assetRatioService.gasOracle() { [weak self] gasEstimation in
+      self?.gasEstimation1559 = gasEstimation
     }
   }
   

@@ -94,7 +94,7 @@ struct TransactionConfirmationView: View {
       .foregroundColor(Color(.braveBlurpleTint))
     Group {
       if activeTransaction.isEIP1559Transaction {
-        if let gasEstimation = activeTransaction.txData.gasEstimation {
+        if let gasEstimation = confirmationStore.gasEstimation1559 {
           NavigationLink(
             destination: EditPriorityFeeView(
               transaction: activeTransaction,
@@ -312,6 +312,7 @@ struct TransactionConfirmationView: View {
       assert(!transactions.isEmpty, "TransactionConfirmationView should not be displayed if there are no transactions to approve.")
       activeTransactionId = transactions[0].id
       confirmationStore.fetchDetails(for: activeTransaction)
+      confirmationStore.fetchGasEstimation1559()
     }
   }
   
