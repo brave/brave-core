@@ -76,6 +76,8 @@ class BraveStatsUpdaterParams {
   bool first_check_made_;
   std::string week_of_installation_;
   base::Time date_of_installation_;
+  base::Time wallet_last_unlocked_;
+  base::Time last_reported_wallet_unlock_;
   std::string referral_promo_code_;
   static base::Time g_current_time;
   static bool g_force_first_run;

@@ -550,7 +550,8 @@ void BraveWalletService::OnWalletUnlockPreferenceChanged(
 }
 
 void BraveWalletService::RecordWalletUsage(base::Time wallet_last_used) {
-  uint8_t usage = brave_stats::UsageBitstringFromTimestamp(wallet_last_used);
+  uint8_t usage = brave_stats::UsageBitfieldFromTimestamp(wallet_last_used,
+                                                          base::Time::Now());
 
   bool daily = !!(usage & brave_stats::kIsDailyUser);
   UMA_HISTOGRAM_BOOLEAN(kBraveWalletDailyHistogramName, daily);
