@@ -3,18 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "base/android/jni_android.h"
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/build/android/jni_headers/BraveWalletServiceFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_android.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace chrome {
 namespace android {
 static jint JNI_BraveWalletServiceFactory_GetInterfaceToBraveWalletService(
-    JNIEnv* env) {
-  auto* profile = ProfileManager::GetActiveUserProfile();
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& profile_android) {
+  auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
   auto pending =
       brave_wallet::BraveWalletServiceFactory::GetInstance()->GetForContext(
           profile);

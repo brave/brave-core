@@ -9,6 +9,8 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -33,7 +35,8 @@ public class JsonRpcServiceFactory {
     private JsonRpcServiceFactory() {}
 
     public JsonRpcService getJsonRpcService(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = JsonRpcServiceFactoryJni.get().getInterfaceToJsonRpcService();
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        int nativeHandle = JsonRpcServiceFactoryJni.get().getInterfaceToJsonRpcService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         JsonRpcService jsonRpcService = JsonRpcService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) jsonRpcService).getProxyHandler();
@@ -48,6 +51,6 @@ public class JsonRpcServiceFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToJsonRpcService();
+        int getInterfaceToJsonRpcService(Profile profile);
     }
 }

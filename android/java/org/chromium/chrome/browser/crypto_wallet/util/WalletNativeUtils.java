@@ -7,15 +7,16 @@ package org.chromium.chrome.browser.crypto_wallet.util;
 
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
+import org.chromium.chrome.browser.profiles.Profile;
 
 @JNINamespace("chrome::android")
 public class WalletNativeUtils {
-    public static void resetWallet() {
-        WalletNativeUtilsJni.get().resetWallet();
+    public static void resetWallet(Profile profile) {
+        WalletNativeUtilsJni.get().resetWallet(profile);
     }
 
     @NativeMethods
     interface Natives {
-        void resetWallet();
+        void resetWallet(Profile profile);
     }
 }

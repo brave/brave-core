@@ -87,7 +87,7 @@ public class BraveWalletResetPreference
                     String inputText = input.getText().toString().trim();
                     if (TextUtils.equals(inputText, mConfirmationPhrase)) {
                         Log.w(TAG, "Reset");
-                        WalletNativeUtils.resetWallet();
+                        WalletNativeUtils.resetWallet(Utils.getProfile(false));
                         KeystoreHelper.resetBiometric();
                         Utils.setCryptoOnboarding(true);
                     }

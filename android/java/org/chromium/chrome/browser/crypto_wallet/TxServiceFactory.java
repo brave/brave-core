@@ -10,6 +10,8 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TxService;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -34,7 +36,8 @@ public class TxServiceFactory {
     private TxServiceFactory() {}
 
     public TxService getTxService(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToTxService();
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToTxService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         TxService txService = TxService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) txService).getProxyHandler();
@@ -44,7 +47,8 @@ public class TxServiceFactory {
     }
 
     public EthTxManagerProxy getEthTxManagerProxy(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToEthTxManagerProxy();
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        int nativeHandle = TxServiceFactoryJni.get().getInterfaceToEthTxManagerProxy(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         EthTxManagerProxy ethTxManagerProxy = EthTxManagerProxy.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) ethTxManagerProxy).getProxyHandler();
@@ -59,7 +63,7 @@ public class TxServiceFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToTxService();
-        int getInterfaceToEthTxManagerProxy();
+        int getInterfaceToTxService(Profile profile);
+        int getInterfaceToEthTxManagerProxy(Profile profile);
     }
 }

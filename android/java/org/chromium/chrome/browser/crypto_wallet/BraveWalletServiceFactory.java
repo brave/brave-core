@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -31,7 +33,9 @@ public class BraveWalletServiceFactory {
     private BraveWalletServiceFactory() {}
 
     public BraveWalletService getBraveWalletService(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = BraveWalletServiceFactoryJni.get().getInterfaceToBraveWalletService();
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        int nativeHandle =
+                BraveWalletServiceFactoryJni.get().getInterfaceToBraveWalletService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         BraveWalletService braveWalletService = BraveWalletService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) braveWalletService).getProxyHandler();
@@ -46,6 +50,6 @@ public class BraveWalletServiceFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToBraveWalletService();
+        int getInterfaceToBraveWalletService(Profile profile);
     }
 }
