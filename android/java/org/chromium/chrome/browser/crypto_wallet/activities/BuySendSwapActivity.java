@@ -58,11 +58,11 @@ import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
-import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.GasEstimation1559;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.SwapParams;
 import org.chromium.brave_wallet.mojom.SwapResponse;
@@ -284,7 +284,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         if (parent.getId() == R.id.network_spinner) {
             String item = parent.getItemAtPosition(position).toString();
             mJsonRpcService.getAllNetworks(chains -> {
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 final String chainId = Utils.getNetworkConst(this, item, customNetworks);
 
                 if (mActivityType == ActivityType.BUY) {
@@ -292,7 +292,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
 
                 if (mJsonRpcService != null) {
-                    mJsonRpcService.setNetwork(chainId, (success) -> {
+                    mJsonRpcService.setNetwork(chainId, CoinType.ETH, (success) -> {
                         if (!success) {
                             Log.e(TAG, "Could not set network");
                         }
@@ -617,7 +617,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         }
     }
 
-    private int getIndexOf(Spinner spinner, String chainId, EthereumChain[] customNetworks) {
+    private int getIndexOf(Spinner spinner, String chainId, NetworkInfo[] customNetworks) {
         String strNetwork = Utils.getNetworkText(this, chainId, customNetworks).toString();
         for (int i = 0; i < spinner.getCount(); i++) {
             if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
@@ -1237,11 +1237,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 // We have hardcoded legacy tx gas fields.
                 isEIP1559 = false;
             }
-            for (EthereumChain network : networks) {
+            for (NetworkInfo network : networks) {
                 if (!mCurrentChainId.equals(network.chainId)) {
                     continue;
                 }
-                isEIP1559 = network.isEip1559;
+                isEIP1559 = network.data.getEthData().isEip1559;
             }
 
             assert mTxService != null;
@@ -1408,12 +1408,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         InitSwapService();
 
         if (mJsonRpcService != null) {
-            mJsonRpcService.getChainId(chainId -> {
+            mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
                 mCurrentChainId = chainId;
                 Spinner spinner = findViewById(R.id.network_spinner);
                 spinner.setOnItemSelectedListener(this);
                 mJsonRpcService.getAllNetworks(chains -> {
-                    EthereumChain[] customNetworks = new EthereumChain[0];
+                    NetworkInfo[] customNetworks = new NetworkInfo[0];
                     // We want to hide custom networks for BUY and SWAP screens. We are
                     // going to add a support for SWAP at least in the near future.
                     if (mActivityType == ActivityType.SEND) {
@@ -1426,7 +1426,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     spinner.setAdapter(dataAdapter);
                     spinner.setSelection(getIndexOf(spinner, chainId, customNetworks));
 
-                    for (EthereumChain chain : chains) {
+                    for (NetworkInfo chain : chains) {
                         if (chainId.equals(chain.chainId)) {
                             TextView fromAssetText = findViewById(R.id.from_asset_text);
                             TextView marketLimitPriceText =

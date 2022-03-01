@@ -36,6 +36,7 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
@@ -131,7 +132,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
         mSwapButton.setOnClickListener(v -> {
             assert mJsonRpcService != null;
-            mJsonRpcService.getChainId(chainId -> {
+            mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
                 SwapBottomSheetDialogFragment swapBottomSheetDialogFragment =
                         SwapBottomSheetDialogFragment.newInstance();
                 swapBottomSheetDialogFragment.setChainId(chainId);
