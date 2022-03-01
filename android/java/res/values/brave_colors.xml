@@ -48,7 +48,7 @@
     <color name="set_default_bottom_sheet_button_disable_color">#DADCE8</color>
 
     <!-- Sync colors -->
-    <color name="brave_sync_bg_color">@color/modern_grey_50</color>
+    <color name="brave_sync_bg_color">@android:color/transparent</color>
     <color name="brave_sync_border_color">@color/modern_grey_50</color>
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
 

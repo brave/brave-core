@@ -9,8 +9,7 @@
     android:id="@+id/view_add_mobile_device"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@drawable/brave_sync_cover_general" >
+    android:fillViewport="true" >
 
     <LinearLayout android:orientation="vertical"
         android:layout_height="wrap_content"
@@ -83,6 +82,11 @@
                 android:contentDescription="@string/brave_sync_btn_laptop" />
 
         </LinearLayout>
+
+        <TextView android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
 
         <android.widget.Button android:id="@+id/brave_sync_btn_done"
             android:layout_width="match_parent"
