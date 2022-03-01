@@ -45,14 +45,17 @@ import {
   refreshSitePermissions,
   refreshTransactionHistory,
   refreshBalances,
+  refreshVisibleTokenInfo,
   refreshPrices
 } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
+import BalanceUpdater from './balanceUpdater'
 
 const handler = new AsyncActionHandler()
 
 const interactionNotifier = new InteractionNotifier()
+const balanceUpdater = new BalanceUpdater()
 
 function getWalletState (store: Store): WalletState {
   return store.getState().wallet
@@ -60,7 +63,8 @@ function getWalletState (store: Store): WalletState {
 
 async function refreshBalancesPricesAndHistory (store: Store) {
   const state = getWalletState(store)
-  await store.dispatch(refreshBalances(state.selectedNetwork))
+  await store.dispatch(refreshVisibleTokenInfo(state.selectedNetwork))
+  await store.dispatch(refreshBalances())
   await store.dispatch(refreshPrices())
   await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
 }
@@ -101,7 +105,8 @@ async function updateAccountInfo (store: Store) {
 
 handler.on(WalletActions.refreshBalancesAndPrices.getType(), async (store: Store) => {
   const state = getWalletState(store)
-  await store.dispatch(refreshBalances(state.selectedNetwork))
+  await store.dispatch(refreshVisibleTokenInfo(state.selectedNetwork))
+  await store.dispatch(refreshBalances())
   await store.dispatch(refreshPrices())
 })
 
@@ -131,6 +136,7 @@ handler.on(WalletActions.keyringReset.getType(), async (store) => {
 
 handler.on(WalletActions.locked.getType(), async (store) => {
   interactionNotifier.stopWatchingForInteraction()
+  balanceUpdater.stopUpdatingBalances()
   await refreshWalletInfo(store)
 })
 
@@ -219,7 +225,11 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
   // Fetch Balances and Prices
   if (!state.isWalletLocked && state.isWalletCreated) {
     const currentNetwork = await store.dispatch(refreshNetworkInfo())
-    await store.dispatch(refreshBalances(currentNetwork))
+    await store.dispatch(refreshVisibleTokenInfo(currentNetwork))
+    await store.dispatch(refreshBalances())
+    balanceUpdater.beginUpdatingBalances(15000, async () => {
+      await store.dispatch(refreshBalances())
+    })
     await store.dispatch(refreshPrices())
     await store.dispatch(refreshTokenPriceHistory(state.selectedPortfolioTimeline))
   }

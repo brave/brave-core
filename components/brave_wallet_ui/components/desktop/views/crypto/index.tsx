@@ -189,7 +189,7 @@ const CryptoView = (props: Props) => {
         setHideNav(false)
       }
     }
-  }, [id, userVisibleTokensInfo, category, accounts])
+  }, [id, userVisibleTokensInfo, category])
 
   const toggleNav = () => {
     setHideNav(!hideNav)
