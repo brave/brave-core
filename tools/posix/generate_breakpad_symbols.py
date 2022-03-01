@@ -178,7 +178,7 @@ def mkdir_p(path):
         else: raise
 
 
-def GenerateSymbols(options, binaries):
+def generate_symbols(options, binaries):
     """Dumps the symbols of binary and places them in the given directory."""
 
     q = queue.Queue()
@@ -264,7 +264,7 @@ def main():
         binaries |= new_deps
         q.extend(list(new_deps))
 
-    GenerateSymbols(options, binaries)
+    generate_symbols(options, binaries)
 
     return 0
 

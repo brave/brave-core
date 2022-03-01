@@ -18,7 +18,7 @@ from datetime import datetime
 from shutil import rmtree, move
 
 
-async def ProcessBinary(semaphore, options, binary):
+async def process_binary(semaphore, options, binary):
     dump_syms = os.path.join(options.build_dir, options.dump_syms_path)
 
     sym_temp_output = binary + '.sym'
@@ -74,13 +74,13 @@ def mkdir_p(path):
             raise
 
 
-async def GenerateSymbols(options, binaries):
+async def generate_symbols(options, binaries):
     """Dumps the symbols of binary and places them in the given directory."""
     semaphore = asyncio.Semaphore(os.cpu_count())
     task_list = []
     for binary in binaries:
         task_list.append(
-            asyncio.create_task(ProcessBinary(semaphore, options, binary)))
+            asyncio.create_task(process_binary(semaphore, options, binary)))
     result_list = await asyncio.gather(*task_list)
     first_warning_printed = False
     for success, error_message in result_list:
@@ -134,7 +134,7 @@ async def main():
         pdbs += glob.glob(os.path.join(directory, '*.exe.pdb'))
         pdbs += glob.glob(os.path.join(directory, '*.dll.pdb'))
 
-    result = await GenerateSymbols(args, pdbs)
+    result = await generate_symbols(args, pdbs)
     sys.exit(0 if result else 1)
 
 

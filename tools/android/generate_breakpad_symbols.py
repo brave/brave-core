@@ -91,7 +91,7 @@ def GetRequiredLibsPaths(args, extension):
     return libs_result
 
 
-def InvokeChromiumGenerateSymbols(args, lib_paths):
+def invoke_chromium_generate_symbols(args, lib_paths):
     """Invokes Chromium's script
     components/crash/content/tools/generate_breakpad_symbols.py for each lib
     of lib_paths."""
@@ -189,7 +189,7 @@ def main():
         except: # pylint: disable=bare-except
             pass
 
-    InvokeChromiumGenerateSymbols(args, libs_result)
+    invoke_chromium_generate_symbols(args, libs_result)
 
     return 0
 
