@@ -771,16 +771,15 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletEstimatedEarnings", IDS_REWARDS_WALLET_ESTIMATED_EARNINGS },
         { "walletLogIntoYourAccount", IDS_REWARDS_WALLET_LOG_INTO_YOUR_ACCOUNT },  // NOLINT
         { "walletMonthlyTips", IDS_REWARDS_WALLET_MONTHLY_TIPS },
-        { "walletMyWallet", IDS_REWARDS_WALLET_MY_WALLET },
         { "walletOneTimeTips", IDS_REWARDS_WALLET_ONE_TIME_TIPS },
         { "walletPending", IDS_REWARDS_WALLET_PENDING },
         { "walletPendingContributions", IDS_REWARDS_WALLET_PENDING_CONTRIBUTIONS },  // NOLINT
         { "walletRewardsFromAds", IDS_REWARDS_WALLET_REWARDS_FROM_ADS },
         { "walletRewardsSummary", IDS_REWARDS_WALLET_REWARDS_SUMMARY },
         { "walletSeeAll", IDS_REWARDS_WALLET_SEE_ALL },
+        { "walletUnverified", IDS_REWARDS_WALLET_UNVERIFIED },
         { "walletViewStatement", IDS_REWARDS_WALLET_VIEW_STATEMENT },
         { "walletVerified", IDS_REWARDS_WALLET_VERIFIED },
-        { "walletVerify", IDS_REWARDS_WALLET_VERIFY },
         { "walletYourBalance", IDS_REWARDS_WALLET_YOUR_BALANCE },
       }
     }, {

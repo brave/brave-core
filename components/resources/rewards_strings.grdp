@@ -43,9 +43,6 @@
   <message name="IDS_REWARDS_WALLET_MONTHLY_TIPS" desc="">
     Monthly Tips
   </message>
-  <message name="IDS_REWARDS_WALLET_MY_WALLET" desc="">
-    Verified
-  </message>
   <message name="IDS_REWARDS_WALLET_ONE_TIME_TIPS" desc="">
     One-Time Tips
   </message>
@@ -64,14 +61,14 @@
   <message name="IDS_REWARDS_WALLET_SEE_ALL" desc="">
     See all
   </message>
+  <message name="IDS_REWARDS_WALLET_UNVERIFIED" desc="">
+    Unverified
+  </message>
   <message name="IDS_REWARDS_WALLET_VIEW_STATEMENT" desc="">
     View statement
   </message>
   <message name="IDS_REWARDS_WALLET_VERIFIED" desc="">
     Verified
-  </message>
-  <message name="IDS_REWARDS_WALLET_VERIFY" desc="">
-    Verify
   </message>
   <message name="IDS_REWARDS_WALLET_YOUR_BALANCE" desc="">
     Your Balance
