@@ -15,7 +15,7 @@ import sys
 import asyncio
 
 from datetime import datetime
-from shutil import rmtree, move
+from shutil import rmtree, move, copy
 
 
 async def ProcessBinary(semaphore, options, binary):
@@ -60,6 +60,15 @@ async def ProcessBinary(semaphore, options, binary):
             elapsed = datetime.utcnow() - start_time
             print(f'Completed generating symbols for {binary}: elapsed time '
                   f'{elapsed.total_seconds()} seconds')
+
+        # Copy all pdb files to the provided directory to create a standalone
+        # native symbols archive later (see create_native_symbols_dist target).
+        if options.platform_symbols_dir:
+            pdb_output_path = os.path.join(options.platform_symbols_dir,
+                                           module_line.group(2),
+                                           module_line.group(1))
+            mkdir_p(pdb_output_path)
+            copy(binary, pdb_output_path)
         return True, error
 
 
@@ -111,6 +120,8 @@ async def main():
     parser.add_argument('--symbols-dir',
                         required=True,
                         help='The directory where to write the symbols file.')
+    parser.add_argument('--platform-symbols-dir',
+                        help='Directory to output pdb files')
     parser.add_argument('--clear',
                         default=False,
                         action='store_true',

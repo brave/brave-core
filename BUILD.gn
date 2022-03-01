@@ -185,7 +185,9 @@ group("create_dist") {
   if (is_android) {
     deps += [ "build/android:sign_app" ]
   } else {
-    deps += [ ":create_symbols_dist" ]
+    if (brave_debug_symbol_level != 0) {
+      deps += [ ":create_symbols_dist" ]
+    }
   }
 
   # for linux zip will be created along with installer
@@ -328,39 +330,57 @@ if (target_cpu == "x86") {
   target_arch = target_cpu
 }
 
-action("create_symbols_dist") {
+template("create_dist_template") {
+  action(target_name) {
+    inputs = get_target_outputs(":brave_license_dist_resources")
+
+    file_inputs = []
+    foreach(input, inputs) {
+      file_inputs += [ rebase_path(input, brave_dist_dir) ]
+    }
+
+    rebase_base_dir = rebase_path(brave_dist_dir)
+
+    outputs = [ invoker.output ]
+    rebase_output = rebase_path(invoker.output)
+
+    dir_inputs = invoker.dir_inputs
+
+    script = "//brave/script/create-dist.py"
+
+    deps = [ ":brave_license_dist_resources" ]
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
+
+    args = [
+      "--base-dir=$rebase_base_dir",
+      "--inputs=$file_inputs",
+      "--dir-inputs=$dir_inputs",
+      "--output=$rebase_output",
+    ]
+  }
+}
+
+create_dist_template("create_native_symbols_dist") {
+  output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-native-symbols.zip"
+  dir_inputs = [ "$brave_product_name.pdb.syms" ]
+  deps = [ "app/$current_os:symbol_dist_resources" ]
+}
+
+create_dist_template("create_symbols_dist") {
   if (is_android) {
     output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_android_base-$target_cpu-symbols-$target_android_output_format.zip"
   } else {
     output = "$brave_dist_dir/$brave_product_name-v$brave_version-$brave_platform-$target_arch-symbols.zip"
   }
 
-  script = "//brave/script/create-dist.py"
-
-  inputs = get_target_outputs(":brave_license_dist_resources")
-  dir_inputs = [ "$brave_product_name.breakpad.syms" ]
-
-  file_inputs = []
-  foreach(input, inputs) {
-    file_inputs += [ rebase_path(input, brave_dist_dir) ]
+  deps = [ "app/$current_os:symbol_dist_resources" ]
+  if (brave_debug_symbol_level == 2 && is_win) {
+    deps += [ ":create_native_symbols_dist" ]
   }
 
-  rebase_output = rebase_path(output)
-  rebase_base_dir = rebase_path(brave_dist_dir)
-
-  args = [
-    "--base-dir=$rebase_base_dir",
-    "--inputs=$file_inputs",
-    "--dir-inputs=$dir_inputs",
-    "--output=$rebase_output",
-  ]
-
-  outputs = [ output ]
-
-  deps = [
-    ":brave_license_dist_resources",
-    "app/$current_os:symbol_dist_resources",
-  ]
+  dir_inputs = [ "$brave_product_name.breakpad.syms" ]
 }
 
 action("create_dist_zips") {
