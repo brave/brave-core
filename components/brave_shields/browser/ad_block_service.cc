@@ -24,6 +24,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/ad_block_subscription_service_manager.h"
+#include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_shields/common/pref_names.h"
@@ -335,6 +336,9 @@ bool AdBlockService::Start() {
   custom_filters_service();
   regional_service_manager();
   subscription_service_manager();
+
+  MaybeRecordDefaultShieldsAdsSetting(local_state_);
+  MaybeRecordDefaultShieldsFingerprintSetting(local_state_);
 
   return true;
 }
