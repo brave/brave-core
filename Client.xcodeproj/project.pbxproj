@@ -188,6 +188,8 @@
 		270E37DB26F5177B00C73C29 /* ResetListStyleModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */; };
 		270E5F1326F29C320024C70E /* UIKitNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F1226F29C320024C70E /* UIKitNavigationView.swift */; };
 		270E5F3226F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */; };
+		2710C12A27CE876C00391304 /* BasicMarkdownParsing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2710C12927CE876C00391304 /* BasicMarkdownParsing.swift */; };
+		2710C13727CE87FF00391304 /* Markdown in Frameworks */ = {isa = PBXBuildFile; productRef = 2710C13627CE87FF00391304 /* Markdown */; };
 		27180150273ABD3A00F683E3 /* BiometricsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */; };
 		2718018E272C7DBB0047EB15 /* AssetDetailStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
@@ -1842,6 +1844,7 @@
 		270E37DA26F5177B00C73C29 /* ResetListStyleModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetListStyleModifier.swift; sourceTree = "<group>"; };
 		270E5F1226F29C320024C70E /* UIKitNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIKitNavigationView.swift; sourceTree = "<group>"; };
 		270E5F3126F3E1B40024C70E /* BraveWalletSwiftUIExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWalletSwiftUIExtensions.swift; sourceTree = "<group>"; };
+		2710C12927CE876C00391304 /* BasicMarkdownParsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicMarkdownParsing.swift; sourceTree = "<group>"; };
 		2718014F273ABD3A00F683E3 /* BiometricsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsPromptView.swift; sourceTree = "<group>"; };
 		2718018D272C7DBB0047EB15 /* AssetDetailStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailStore.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
@@ -3269,6 +3272,7 @@
 				2F5B27D72698DBA8002BF5CF /* OrderedCollections in Frameworks */,
 				277309E02721DE2E007643F6 /* BigNumber in Frameworks */,
 				277568F325ACF92400C129AF /* Fuzi in Frameworks */,
+				2710C13727CE87FF00391304 /* Markdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4568,6 +4572,7 @@
 				271F685426EBD27C00AA2A50 /* PreviewModifiers.swift */,
 				27B1041A275ECE7600728421 /* NoCaptureViewModifier.swift */,
 				27B10427275ED44900728421 /* AlertOnScreenshotViewModifier.swift */,
+				2710C12927CE876C00391304 /* BasicMarkdownParsing.swift */,
 			);
 			path = SwiftUI;
 			sourceTree = "<group>";
@@ -6880,6 +6885,7 @@
 				271F68E926EBD59F00AA2A50 /* Algorithms */,
 				271F68EF26EBDC3600AA2A50 /* Then */,
 				277309DF2721DE2E007643F6 /* BigNumber */,
+				2710C13627CE87FF00391304 /* Markdown */,
 			);
 			productName = SPMLibraries;
 			productReference = 277568D025ACF91500C129AF /* SPMLibraries.framework */;
@@ -7344,6 +7350,7 @@
 				271F68E826EBD59F00AA2A50 /* XCRemoteSwiftPackageReference "swift-algorithms" */,
 				271F68EE26EBDC3600AA2A50 /* XCRemoteSwiftPackageReference "Then" */,
 				277309DA2721DDD2007643F6 /* XCRemoteSwiftPackageReference "Swift-BigInt" */,
+				2710C13527CE87FF00391304 /* XCRemoteSwiftPackageReference "swift-markdown" */,
 			);
 			productRefGroup = F84B21BF1A090F8100AAB793 /* Products */;
 			projectDirPath = "";
@@ -8003,6 +8010,7 @@
 				271F68D226EBD35100AA2A50 /* PopupView.swift in Sources */,
 				CA752EB126CEBE52009356EF /* FontScaling.swift in Sources */,
 				279CC2B0260CEB5D009B3895 /* ActivityIndicatorView.swift in Sources */,
+				2710C12A27CE876C00391304 /* BasicMarkdownParsing.swift in Sources */,
 				278C469623F1E8620083347F /* ActionButton.swift in Sources */,
 				271F68CC26EBD2DE00AA2A50 /* BraveTextFieldStyle.swift in Sources */,
 				270E5F1326F29C320024C70E /* UIKitNavigationView.swift in Sources */,
@@ -15005,6 +15013,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		2710C13527CE87FF00391304 /* XCRemoteSwiftPackageReference "swift-markdown" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-markdown";
+			requirement = {
+				kind = revision;
+				revision = 4f0c76fcd29fea648915f41e2aa896d47608087a;
+			};
+		};
 		271F68E526EBD55D00AA2A50 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect";
@@ -15128,6 +15144,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2710C13627CE87FF00391304 /* Markdown */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2710C13527CE87FF00391304 /* XCRemoteSwiftPackageReference "swift-markdown" */;
+			productName = Markdown;
+		};
 		271F68E626EBD55D00AA2A50 /* Introspect */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 271F68E526EBD55D00AA2A50 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
