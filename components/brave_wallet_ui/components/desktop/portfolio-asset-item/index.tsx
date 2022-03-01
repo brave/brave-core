@@ -34,6 +34,7 @@ interface Props {
   defaultCurrencies: DefaultCurrencies
   hideBalances?: boolean
   selectedNetwork?: BraveWallet.EthereumChain
+  isPanel?: boolean
 }
 
 const PortfolioAssetItem = (props: Props) => {
@@ -44,7 +45,8 @@ const PortfolioAssetItem = (props: Props) => {
     token,
     defaultCurrencies,
     hideBalances,
-    selectedNetwork
+    selectedNetwork,
+    isPanel
   } = props
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
@@ -65,7 +67,7 @@ const PortfolioAssetItem = (props: Props) => {
   }, [computeFiatAmount, assetBalance, token])
 
   const NetworkDescription = React.useMemo(() => {
-    if (selectedNetwork && token.contractAddress !== '') {
+    if (selectedNetwork && token.contractAddress !== '' && !isPanel) {
       return getLocale('braveWalletPortfolioAssetNetworkDescription')
         .replace('$1', token.symbol)
         .replace('$2', selectedNetwork?.chainName ?? '')
@@ -81,7 +83,7 @@ const PortfolioAssetItem = (props: Props) => {
           <NameAndIcon>
             <IconsWrapper>
               <AssetIconWithPlaceholder asset={token} network={selectedNetwork} />
-              {selectedNetwork && token.contractAddress !== '' &&
+              {selectedNetwork && token.contractAddress !== '' && !isPanel &&
                 <NetworkIconWrapper>
                   <CreateNetworkIcon network={selectedNetwork} marginRight={0} />
                 </NetworkIconWrapper>
@@ -92,7 +94,7 @@ const PortfolioAssetItem = (props: Props) => {
                 token.isErc721 && token.tokenId
                   ? '#' + new Amount(token.tokenId).toNumber()
                   : ''
-                }
+              }
               </AssetName>
               <AssetName>{NetworkDescription}</AssetName>
             </NameColumn>

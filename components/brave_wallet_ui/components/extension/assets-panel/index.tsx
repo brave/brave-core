@@ -62,6 +62,8 @@ const AssetsPanel = (props: Props) => {
           key={asset.contractAddress}
           assetBalance={getBalance(selectedAccount, asset)}
           token={asset}
+          selectedNetwork={selectedNetwork}
+          isPanel={true}
         />
       )}
     </StyledWrapper>
