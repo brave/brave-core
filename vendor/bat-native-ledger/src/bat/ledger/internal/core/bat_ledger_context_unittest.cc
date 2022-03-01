@@ -36,11 +36,11 @@ TEST_F(BATLedgerContextTest, Get) {
 TEST_F(BATLedgerContextTest, StartJob) {
   class Job : public BATLedgerContext::Object {
    public:
-    Future<int> GetFuture() { return std::move(future_pair_.future); }
-    void Start(int n) { future_pair_.resolver.Complete(n); }
+    Future<int> GetFuture() { return promise_.GetFuture(); }
+    void Start(int n) { promise_.SetValue(n); }
 
    private:
-    FuturePair<int> future_pair_;
+    Promise<int> promise_;
   };
 
   int value = 0;

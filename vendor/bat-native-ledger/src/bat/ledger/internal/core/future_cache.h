@@ -25,7 +25,7 @@ namespace ledger {
 //   FutureCache<int> cache;
 //
 //   cache.GetFuture([]() {
-//     return Future<int>::Completed(42);
+//     return Future<int>(42);
 //   }).Then(base::BindOnce([](int value) {
 //     LOG(INFO) << "Value is: " << value;
 //   }));
@@ -46,12 +46,10 @@ class FutureCache {
   static_assert(std::is_copy_constructible<T>::value,
                 "FutureCache<T> requires that T is copy constructible");
 
-  using Resolver = typename Future<T>::Resolver;
-
   struct Entry {
     absl::optional<T> value;
     base::Time expires_at;
-    std::list<Resolver> resolvers;
+    std::list<Promise<T>> promises;
   };
 
  public:
@@ -72,7 +70,8 @@ class FutureCache {
   Future<T> GetFuture(Key key, F fn) {
     MaybePurgeStaleEntries();
 
-    FuturePair<T> future_pair;
+    Promise<T> promise;
+    Future<T> future = promise.GetFuture();
 
     auto iter = entries_.find(key);
     if (iter == entries_.end()) {
@@ -81,21 +80,21 @@ class FutureCache {
     } else {
       Entry& entry = iter->second;
       if (entry.value && !EntryIsStale(entry)) {
-        future_pair.resolver.Complete(*entry.value);
-        return std::move(future_pair.future);
+        promise.SetValue(*entry.value);
+        return future;
       }
     }
 
     Entry& entry = iter->second;
-    entry.resolvers.push_back(std::move(future_pair.resolver));
-    if (entry.resolvers.size() == 1) {
-      auto future = fn();
-      using CompleteType = typename decltype(future)::CompleteType;
-      future.Then(base::BindOnce(&FutureCache::OnComplete<CompleteType>,
-                                 weak_factory_.GetWeakPtr(), key));
+    entry.promises.push_back(std::move(promise));
+    if (entry.promises.size() == 1) {
+      auto init_future = fn();
+      using ValueType = typename decltype(init_future)::ValueType;
+      init_future.Then(base::BindOnce(&FutureCache::OnComplete<ValueType>,
+                                      weak_factory_.GetWeakPtr(), key));
     }
 
-    return std::move(future_pair.future);
+    return future;
   }
 
  private:
@@ -116,9 +115,9 @@ class FutureCache {
     entry.value = std::move(pair.first);
     entry.expires_at = base::Time::Now() + pair.second;
 
-    std::list<Resolver> resolvers = std::move(entry.resolvers);
-    for (auto& resolver : resolvers) {
-      resolver.Complete(*entry.value);
+    std::list<Promise<T>> promises = std::move(entry.promises);
+    for (auto& promise : promises) {
+      promise.SetValue(*entry.value);
     }
   }
 

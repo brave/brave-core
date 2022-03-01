@@ -185,9 +185,9 @@ class BATLedgerContext : private base::SupportsUserData {
     ptr->Start(std::forward<Args>(args)...);
     auto future = ptr->GetFuture();
 
-    using CompleteType = typename decltype(future)::CompleteType;
-    return future.Map(
-        base::BindOnce(BATLedgerContext::OnJobCompleted<CompleteType>,
+    using ValueType = typename decltype(future)::ValueType;
+    return future.Then(
+        base::BindOnce(BATLedgerContext::OnJobCompleted<ValueType>,
                        weak_factory_.GetWeakPtr(), ptr));
   }
 

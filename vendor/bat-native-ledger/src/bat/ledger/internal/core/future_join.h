@@ -19,10 +19,10 @@ namespace ledger {
 
 template <typename... Args>
 class FutureJoin : public base::RefCounted<FutureJoin<Args...>> {
- public:
-  using Resolver = typename Future<std::tuple<Args...>>::Resolver;
+  using Promise = Promise<std::tuple<Args...>>;
 
-  explicit FutureJoin(Resolver resolver) : resolver_(resolver) {}
+ public:
+  explicit FutureJoin(Promise promise) : promise_(std::move(promise)) {}
 
   void AddFutures(Future<Args>... futures) {
     DCHECK_EQ(remaining_, sizeof...(Args));
@@ -52,18 +52,18 @@ class FutureJoin : public base::RefCounted<FutureJoin<Args...>> {
     std::get<Index>(optionals_) = std::move(value);
     DCHECK_GT(remaining_, static_cast<size_t>(0));
     if (--remaining_ == 0) {
-      Complete(std::make_index_sequence<sizeof...(Args)>{});
+      SetValue(std::make_index_sequence<sizeof...(Args)>{});
     }
   }
 
   template <size_t... Indexes>
-  void Complete(std::index_sequence<Indexes...>) {
+  void SetValue(std::index_sequence<Indexes...>) {
     DCHECK_EQ(remaining_, static_cast<size_t>(0));
-    resolver_.Complete(
+    promise_.SetValue(
         std::make_tuple(std::move(*std::get<Indexes>(optionals_))...));
   }
 
-  Resolver resolver_;
+  Promise promise_;
   std::tuple<absl::optional<Args>...> optionals_;
   size_t remaining_ = sizeof...(Args);
   bool started_ = false;
@@ -71,10 +71,10 @@ class FutureJoin : public base::RefCounted<FutureJoin<Args...>> {
 
 template <typename T>
 class FutureVectorJoin : public base::RefCounted<FutureVectorJoin<T>> {
- public:
-  using Resolver = typename Future<std::vector<T>>::Resolver;
+  using Promise = Promise<std::vector<T>>;
 
-  explicit FutureVectorJoin(Resolver resolver) : resolver_(resolver) {}
+ public:
+  explicit FutureVectorJoin(Promise promise) : promise_(std::move(promise)) {}
 
   void AddFutures(std::vector<Future<T>>&& futures) {
     DCHECK(!started_);
@@ -101,11 +101,11 @@ class FutureVectorJoin : public base::RefCounted<FutureVectorJoin<T>> {
       for (auto& optional : optionals_) {
         values.push_back(std::move(*optional));
       }
-      resolver_.Complete(std::move(values));
+      promise_.SetValue(std::move(values));
     }
   }
 
-  Resolver resolver_;
+  Promise promise_;
   std::vector<absl::optional<T>> optionals_;
   size_t remaining_ = 0;
   bool started_ = false;
@@ -116,15 +116,16 @@ class FutureVectorJoin : public base::RefCounted<FutureVectorJoin<T>> {
 //
 // Example:
 //   Future<std::tuple<bool, int, std::string>> joined = JoinFutures(
-//       Future<bool>::Completed(true),
-//       Future<int>::Completed(42),
-//       Future<std::string>::Completed("hello world"));
+//       MakeFuture(true),
+//       MakeFuture(42),
+//       MakeFuture(std::string("hello world")));
 template <typename... Args>
 Future<std::tuple<Args...>> JoinFutures(Future<Args>... args) {
-  return Future<std::tuple<Args...>>::Create([&](auto resolver) {
-    auto ref = base::MakeRefCounted<FutureJoin<Args...>>(resolver);
-    ref->AddFutures(std::move(args)...);
-  });
+  Promise<std::tuple<Args...>> promise;
+  auto future = promise.GetFuture();
+  auto ref = base::MakeRefCounted<FutureJoin<Args...>>(std::move(promise));
+  ref->AddFutures(std::move(args)...);
+  return future;
 }
 
 // Returns a |Future| for an |std::vector| that contains the resolved values for
@@ -132,16 +133,17 @@ Future<std::tuple<Args...>> JoinFutures(Future<Args>... args) {
 //
 // Example:
 //   std::vector<Future<int>> futures;
-//   futures.push_back(Future<int>::Completed(1));
-//   futures.push_back(Future<int>::Completed(2));
+//   futures.push_back(MakeFuture(1));
+//   futures.push_back(MakeFuture(2));
 //
 //   Future<std::vector<int>> joined = JoinFutures(std::move(futures));
 template <typename T>
 Future<std::vector<T>> JoinFutures(std::vector<Future<T>>&& futures) {
-  return Future<std::vector<T>>::Create([&](auto resolver) {
-    auto ref = base::MakeRefCounted<FutureVectorJoin<T>>(resolver);
-    ref->AddFutures(std::move(futures));
-  });
+  Promise<std::vector<T>> promise;
+  auto future = promise.GetFuture();
+  auto ref = base::MakeRefCounted<FutureVectorJoin<T>>(std::move(promise));
+  ref->AddFutures(std::move(futures));
+  return future;
 }
 
 }  // namespace ledger

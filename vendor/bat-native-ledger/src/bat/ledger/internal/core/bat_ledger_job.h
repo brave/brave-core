@@ -30,19 +30,11 @@ class BATLedgerJob : public BATLedgerContext::Object,
                      public base::SupportsWeakPtr<BATLedgerJob<T>> {
  public:
   // Returns the Future for the job.
-  Future<T> GetFuture() { return std::move(future_pair_.future); }
+  Future<T> GetFuture() { return promise_.GetFuture(); }
 
  protected:
   // Completes the job with the specified value.
-  virtual void Complete(typename Future<T>::CompleteType value) {
-    future_pair_.resolver.Complete(std::move(value));
-  }
-
-  // Completes the job with the specified future value.
-  void CompleteWith(Future<T> future) {
-    future.Then(
-        base::BindOnce(&BATLedgerJob::OnInnerCompleted, base::AsWeakPtr(this)));
-  }
+  virtual void Complete(T value) { promise_.SetValue(std::move(value)); }
 
   // Returns a |OnceCallback| that wraps the specified member function. The
   // resulting callback is bound with a WeakPtr for the receiver. It is not
@@ -67,11 +59,7 @@ class BATLedgerJob : public BATLedgerContext::Object,
   }
 
  private:
-  void OnInnerCompleted(typename Future<T>::CompleteType value) {
-    Complete(value);
-  }
-
-  FuturePair<T> future_pair_;
+  Promise<T> promise_;
 };
 
 }  // namespace ledger

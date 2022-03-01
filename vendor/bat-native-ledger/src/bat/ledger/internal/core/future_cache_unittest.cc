@@ -18,7 +18,7 @@ class FutureCacheTest : public testing::Test {
   auto MakeValueGenerator(int* calls) {
     return [calls]() {
       ++(*calls);
-      return Future<int>::Completed(*calls);
+      return MakeFuture(*calls);
     };
   }
 
@@ -67,7 +67,7 @@ TEST_F(FutureCacheTest, ReturnsFreshResults) {
   auto generate_value = MakeValueGenerator(&generate_calls);
 
   auto generate_cache_value = [&generate_value]() {
-    return generate_value().Map(base::BindOnce(
+    return generate_value().Then(base::BindOnce(
         [](int value) { return std::make_pair(value, base::Seconds(10)); }));
   };
 

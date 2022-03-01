@@ -15,9 +15,7 @@ class BATLedgerJobTest : public BATLedgerTest {};
 TEST_F(BATLedgerJobTest, StartJob) {
   class Job : public BATLedgerJob<bool> {
    public:
-    void Start(int n) {
-      Future<int>::Completed(n).Then(ContinueWith(this, &Job::OnDone));
-    }
+    void Start(int n) { MakeFuture(n).Then(ContinueWith(this, &Job::OnDone)); }
 
    private:
     void OnDone(int n) { Complete(static_cast<bool>(n)); }
@@ -40,23 +38,9 @@ TEST_F(BATLedgerJobTest, CreateLambdaCallback) {
     void Callback(int value) { Complete(value); }
 
     static void StdFunctionApi(std::function<void(int)> callback) {
-      Future<bool>::Completed(true).Then(base::BindLambdaForTesting(
+      MakeFuture(true).Then(base::BindLambdaForTesting(
           [callback = std::move(callback)](bool) { callback(42); }));
     }
-  };
-
-  int value = 0;
-  context().StartJob<Job>().Then(
-      base::BindLambdaForTesting([&value](int v) { value = v; }));
-
-  task_environment()->RunUntilIdle();
-  EXPECT_EQ(value, 42);
-}
-
-TEST_F(BATLedgerJobTest, CompleteWith) {
-  class Job : public BATLedgerJob<int> {
-   public:
-    void Start() { CompleteWith(Future<int>::Completed(42)); }
   };
 
   int value = 0;

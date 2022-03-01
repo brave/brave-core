@@ -15,33 +15,31 @@ class FutureTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
 };
 
-TEST_F(FutureTest, CompleteResultSentInFutureTurn) {
-  auto future =
-      Future<int>::Create([](auto resolver) { resolver.Complete(10); });
+TEST_F(FutureTest, ValueSentInFutureTurn) {
   int value = 0;
-  future.Then(base::BindLambdaForTesting([&value](int v) { value = v; }));
+  MakeFuture(10).Then(
+      base::BindLambdaForTesting([&value](int v) { value = v; }));
   EXPECT_EQ(value, 0);
   task_environment_.RunUntilIdle();
   EXPECT_EQ(value, 10);
 }
 
 TEST_F(FutureTest, CompleteCallbacksExecutedInFutureTurn) {
-  FuturePair<int> pair;
+  Promise<int> promise;
   int value = 0;
-  pair.future.Then(base::BindLambdaForTesting([&value](int v) { value = v; }));
-  pair.resolver.Complete(1);
+  promise.GetFuture().Then(
+      base::BindLambdaForTesting([&value](int v) { value = v; }));
+  promise.SetValue(1);
   EXPECT_EQ(value, 0);
   task_environment_.RunUntilIdle();
   EXPECT_EQ(value, 1);
 }
 
-TEST_F(FutureTest, Map) {
-  auto future =
-      Future<int>::Create([](auto resolver) { resolver.Complete(1); });
-
+TEST_F(FutureTest, TransformingThen) {
   double value = 0;
 
-  future.Map(base::BindOnce([](int v) { return static_cast<double>(v) / 2; }))
+  MakeFuture(1)
+      .Then(base::BindOnce([](int v) { return static_cast<double>(v) / 2; }))
       .Then(base::BindLambdaForTesting([&value](double v) { value = v; }));
 
   EXPECT_EQ(value, 0);
@@ -49,12 +47,11 @@ TEST_F(FutureTest, Map) {
   EXPECT_EQ(value, 0.5);
 }
 
-TEST_F(FutureTest, FlatMap) {
+TEST_F(FutureTest, UnwrappingThen) {
   bool value = false;
 
-  Future<int>::Completed(42)
-      .FlatMap(base::BindOnce(
-          [](int value) { return Future<bool>::Completed(true); }))
+  MakeFuture(42)
+      .Then(base::BindOnce([](int value) { return MakeFuture(true); }))
       .Then(base::BindLambdaForTesting([&value](bool v) { value = v; }));
 
   EXPECT_FALSE(value);
@@ -62,22 +59,22 @@ TEST_F(FutureTest, FlatMap) {
   EXPECT_TRUE(value);
 }
 
-TEST_F(FutureTest, Completed) {
-  int value = 0;
-  Future<int>::Completed(1).Then(
-      base::BindLambdaForTesting([&value](int v) { value = v; }));
-  EXPECT_EQ(value, 0);
-  task_environment_.RunUntilIdle();
-  EXPECT_EQ(value, 1);
-}
-
 TEST_F(FutureTest, DiscardValueThen) {
   bool called = false;
-  Future<int>::Completed(1).DiscardValueThen(
+  MakeFuture(1).DiscardValueThen(
       base::BindLambdaForTesting([&called]() { called = true; }));
   EXPECT_FALSE(called);
   task_environment_.RunUntilIdle();
   EXPECT_TRUE(called);
+}
+
+TEST_F(FutureTest, MakeFuture) {
+  int value = 0;
+  MakeFuture(1).Then(
+      base::BindLambdaForTesting([&value](int v) { value = v; }));
+  EXPECT_EQ(value, 0);
+  task_environment_.RunUntilIdle();
+  EXPECT_EQ(value, 1);
 }
 
 }  // namespace ledger

@@ -20,9 +20,9 @@ class FutureJoinTest : public testing::Test {
 };
 
 TEST_F(FutureJoinTest, JoinFutures) {
-  auto future1 = Future<int>::Completed(10);
-  auto future2 = Future<std::string>::Completed("joiner");
-  auto future3 = Future<bool>::Completed(true);
+  auto future1 = MakeFuture(10);
+  auto future2 = MakeFuture<std::string>("joiner");
+  auto future3 = MakeFuture(true);
 
   std::tuple<int, std::string, bool> result;
 
@@ -39,9 +39,9 @@ TEST_F(FutureJoinTest, JoinFutures) {
 
 TEST_F(FutureJoinTest, JoinFutureVector) {
   std::vector<Future<int>> futures;
-  futures.push_back(Future<int>::Completed(10));
-  futures.push_back(Future<int>::Completed(20));
-  futures.push_back(Future<int>::Completed(30));
+  futures.push_back(MakeFuture(10));
+  futures.push_back(MakeFuture(20));
+  futures.push_back(MakeFuture(30));
 
   std::vector<int> results;
 
