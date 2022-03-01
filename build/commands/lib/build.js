@@ -51,7 +51,7 @@ const touchOverriddenFiles = () => {
     // Only include overridable files.
     const ext = path.extname(file)
     const isNotOverridable = ext !== '.cc' && ext !== '.h' && ext !== '.mm' && ext !== '.mojom'
-    return !(isTestFile || isNotOverridable) // if any of two is true, it returns false, if both false, then it returns false.
+    return !(isTestFile || isNotOverridable) // if any of two is true, it returns false, if both false, then it returns true.
   }
 
   const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
