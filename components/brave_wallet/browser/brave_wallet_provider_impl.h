@@ -108,7 +108,8 @@ class BraveWalletProviderImpl final
   friend class BraveWalletProviderImplUnitTest;
 
   // mojom::JsonRpcServiceObserver
-  void ChainChangedEvent(const std::string& chain_id) override;
+  void ChainChangedEvent(const std::string& chain_id,
+                         mojom::CoinType coin) override;
   void OnAddEthereumChainRequestCompleted(const std::string& chain_id,
                                           const std::string& error) override;
   void OnIsEip1559Changed(const std::string& chain_id,

@@ -125,10 +125,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void EnsGetEthAddr(const std::string& domain,
                      EnsGetEthAddrCallback callback) override;
 
-  bool SetNetwork(const std::string& chain_id);
+  bool SetNetwork(const std::string& chain_id, mojom::CoinType coin);
   void SetNetwork(const std::string& chain_id,
+                  mojom::CoinType coin,
                   SetNetworkCallback callback) override;
-  void GetNetwork(GetNetworkCallback callback) override;
+  void GetNetwork(mojom::CoinType coin, GetNetworkCallback callback) override;
   void AddEthereumChain(mojom::NetworkInfoPtr chain,
                         AddEthereumChainCallback callback) override;
   void AddEthereumChainForOrigin(
@@ -140,8 +141,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void RemoveEthereumChain(const std::string& chain_id,
                            RemoveEthereumChainCallback callback) override;
 
-  std::string GetChainId() const;
-  void GetChainId(mojom::JsonRpcService::GetChainIdCallback callback) override;
+  std::string GetChainId(mojom::CoinType coin) const;
+  void GetChainId(mojom::CoinType coin,
+                  mojom::JsonRpcService::GetChainIdCallback callback) override;
   void GetBlockTrackerUrl(
       mojom::JsonRpcService::GetBlockTrackerUrlCallback callback) override;
   void GetPendingChainRequests(
@@ -151,10 +153,12 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void NotifySwitchChainRequestProcessed(bool approved,
                                          const GURL& origin) override;
   void GetAllNetworks(GetAllNetworksCallback callback) override;
-  std::string GetNetworkUrl() const;
+  std::string GetNetworkUrl(mojom::CoinType coin) const;
   void GetNetworkUrl(
+      mojom::CoinType coin,
       mojom::JsonRpcService::GetNetworkUrlCallback callback) override;
   void SetCustomNetworkForTesting(const std::string& chain_id,
+                                  mojom::CoinType coin,
                                   const GURL& provider_url) override;
 
   void AddObserver(
@@ -238,7 +242,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetSolanaLatestBlockhash(GetSolanaLatestBlockhashCallback callback);
 
  private:
-  void FireNetworkChanged();
+  void FireNetworkChanged(mojom::CoinType coin);
   void FirePendingRequestCompleted(const std::string& chain_id,
                                    const std::string& error);
   bool HasRequestFromOrigin(const GURL& origin) const;
@@ -415,8 +419,9 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const base::flat_map<std::string, std::string>& headers);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
-  GURL network_url_;
-  std::string chain_id_;
+  base::flat_map<mojom::CoinType, GURL> network_urls_;
+  // <mojom::CoinType, chain_id>
+  base::flat_map<mojom::CoinType, std::string> chain_ids_;
   // <chain_id, mojom::NetworkInfoPtr>
   base::flat_map<std::string, mojom::NetworkInfoPtr>
       add_chain_pending_requests_;

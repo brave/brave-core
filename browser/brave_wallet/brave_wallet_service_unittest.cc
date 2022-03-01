@@ -513,7 +513,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
     EXPECT_EQ(requests[0]->token, expected_token);
 
     if (run_switch_network) {
-      json_rpc_service_->SetNetwork(mojom::kRopstenChainId);
+      json_rpc_service_->SetNetwork(mojom::kRopstenChainId,
+                                    mojom::CoinType::ETH);
     } else {
       service_->NotifyAddSuggestTokenRequestsProcessed(
           approve, {suggested_token->contract_address});
@@ -1473,7 +1474,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   std::vector<std::string> chain_ids = {mojom::kMainnetChainId,
                                         mojom::kKovanChainId};
   for (const std::string& chain_id : chain_ids) {
-    json_rpc_service_->SetNetwork(chain_id);
+    json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH);
     mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
         mojom::BlockchainToken::New(
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin",

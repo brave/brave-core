@@ -199,7 +199,8 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
   void SetNetwork(const std::string& chain_id) {
     base::RunLoop run_loop;
     json_rpc_service_->SetNetwork(
-        chain_id, base::BindLambdaForTesting([&run_loop](bool success) {
+        chain_id, mojom::CoinType::ETH,
+        base::BindLambdaForTesting([&run_loop](bool success) {
           EXPECT_TRUE(success);
           run_loop.Quit();
         }));
@@ -1220,7 +1221,7 @@ TEST_F(BraveWalletProviderImplUnitTest, RecoverAddress) {
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, SignTypedMessage) {
-  EXPECT_EQ(json_rpc_service()->GetChainId(), "0x1");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x1");
   CreateWallet();
   AddAccount();
   std::string signature;
@@ -1664,7 +1665,7 @@ TEST_F(BraveWalletProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
-  EXPECT_EQ(json_rpc_service()->GetChainId(), "0x4");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x4");
 
   // one request per origin
   base::RunLoop run_loop;
@@ -1681,7 +1682,7 @@ TEST_F(BraveWalletProviderImplUnitTest, SwitchEthereumChain) {
             l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
   json_rpc_service()->NotifySwitchChainRequestProcessed(true, GetOrigin());
   run_loop.Run();
-  EXPECT_EQ(json_rpc_service()->GetChainId(), "0x1");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x1");
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
@@ -1708,7 +1709,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddEthereumChainSwitchesForInnactive) {
   run_loop.Run();
   brave_wallet_tab_helper()->CloseBubble();
   EXPECT_FALSE(brave_wallet_tab_helper()->IsShowingBubble());
-  EXPECT_EQ(json_rpc_service()->GetChainId(), "0x3");
+  EXPECT_EQ(json_rpc_service()->GetChainId(mojom::CoinType::ETH), "0x3");
 }
 
 TEST_F(BraveWalletProviderImplUnitTest, AddSuggestToken) {

@@ -176,7 +176,7 @@ std::string GetInfuraURLForKnownChainId(const std::string& chain_id) {
 
 GURL GetCustomChainURL(PrefService* prefs, const std::string& chain_id) {
   std::vector<brave_wallet::mojom::NetworkInfoPtr> custom_chains;
-  brave_wallet::GetAllCustomChains(prefs, &custom_chains);
+  brave_wallet::GetAllEthCustomChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
     if (it->chain_id != chain_id)
       continue;
@@ -205,12 +205,15 @@ mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
 }
 
 mojom::NetworkInfoPtr GetChain(PrefService* prefs,
-                               const std::string& chain_id) {
-  std::vector<mojom::NetworkInfoPtr> chains;
-  GetAllEthChains(prefs, &chains);
-  for (const auto& chain : chains) {
-    if (chain->chain_id == chain_id)
-      return chain.Clone();
+                               const std::string& chain_id,
+                               mojom::CoinType coin) {
+  if (coin == mojom::CoinType::ETH) {
+    std::vector<mojom::NetworkInfoPtr> chains;
+    GetAllEthChains(prefs, &chains);
+    for (const auto& chain : chains) {
+      if (chain->chain_id == chain_id)
+        return chain.Clone();
+    }
   }
 
   return nullptr;
@@ -222,8 +225,8 @@ std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
   return std::string();
 }
 
-void GetAllCustomChains(PrefService* prefs,
-                        std::vector<mojom::NetworkInfoPtr>* result) {
+void GetAllEthCustomChains(PrefService* prefs,
+                           std::vector<mojom::NetworkInfoPtr>* result) {
   const base::Value* custom_networks =
       prefs->GetDictionary(kBraveWalletCustomNetworks);
   if (!custom_networks)
@@ -604,21 +607,24 @@ void GetAllKnownEthChains(PrefService* prefs,
   }
 }
 
-GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id) {
-  mojom::NetworkInfoPtr known_network = GetKnownEthChain(prefs, chain_id);
-  if (!known_network)
-    return GetCustomChainURL(prefs, chain_id);
+GURL GetNetworkURL(PrefService* prefs,
+                   const std::string& chain_id,
+                   mojom::CoinType coin) {
+  if (coin == mojom::CoinType::ETH) {
+    mojom::NetworkInfoPtr known_network = GetKnownEthChain(prefs, chain_id);
+    if (!known_network)
+      return GetCustomChainURL(prefs, chain_id);
 
-  if (known_network->rpc_urls.size())
-    return GURL(known_network->rpc_urls.front());
-
+    if (known_network->rpc_urls.size())
+      return GURL(known_network->rpc_urls.front());
+  }
   return GURL();
 }
 
 void GetAllEthChains(PrefService* prefs,
                      std::vector<mojom::NetworkInfoPtr>* result) {
   GetAllKnownEthChains(prefs, result);
-  GetAllCustomChains(prefs, result);
+  GetAllEthCustomChains(prefs, result);
 }
 
 std::vector<std::string> GetAllKnownEthNetworkIds() {
@@ -657,7 +663,7 @@ std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
     return id;
 
   std::vector<mojom::NetworkInfoPtr> custom_chains;
-  GetAllCustomChains(prefs, &custom_chains);
+  GetAllEthCustomChains(prefs, &custom_chains);
   for (const auto& network : custom_chains) {
     if (network->chain_id != chain_id)
       continue;
@@ -767,16 +773,30 @@ void RemoveCustomNetwork(PrefService* prefs,
   });
 }
 
-std::string GetCurrentChainId(PrefService* prefs) {
+std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin) {
   const base::Value* selected_networks =
       prefs->GetDictionary(kBraveWalletSelectedNetworks);
   DCHECK(selected_networks);
-  const std::string* eth_chain_id =
-      selected_networks->FindStringKey(kEthereumPrefKey);
-  if (!eth_chain_id)
+  auto pref_key = GetPrefKeyForCoinType(coin);
+  if (!pref_key)
+    return std::string();
+  const std::string* chain_id = selected_networks->FindStringKey(*pref_key);
+  if (!chain_id)
     return std::string();
 
-  return *eth_chain_id;
+  return *chain_id;
+}
+
+absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin) {
+  switch (coin) {
+    case mojom::CoinType::ETH:
+      return kEthereumPrefKey;
+    case mojom::CoinType::FIL:
+      return kFilecoinPrefKey;
+    case mojom::CoinType::SOL:
+      return kSolanaPrefKey;
+  }
+  return absl::nullopt;
 }
 
 }  // namespace brave_wallet

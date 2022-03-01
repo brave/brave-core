@@ -648,11 +648,11 @@ TEST(BraveWalletUtilsUnitTest, TransactionReceiptAndValue) {
   EXPECT_EQ(tx_receipt, *tx_receipt_from_value);
 }
 
-TEST(BraveWalletUtilsUnitTest, GetAllCustomChainsTest) {
+TEST(BraveWalletUtilsUnitTest, GetAllEthCustomChainsTest) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   std::vector<mojom::NetworkInfoPtr> result;
-  GetAllCustomChains(&prefs, &result);
+  GetAllEthCustomChains(&prefs, &result);
   ASSERT_TRUE(result.empty());
 
   std::vector<base::Value> values;
@@ -672,7 +672,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllCustomChainsTest) {
   values.push_back(EthereumChainToValue(chain_ptr2));
   UpdateCustomNetworks(&prefs, &values);
 
-  GetAllCustomChains(&prefs, &result);
+  GetAllEthCustomChains(&prefs, &result);
   ASSERT_FALSE(result.empty());
   ASSERT_TRUE(chain_ptr1.Equals(result.front()));
   ASSERT_TRUE(chain_ptr2.Equals(result.back()));
@@ -702,7 +702,7 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
 
   std::vector<mojom::NetworkInfoPtr> expected_chains;
   GetAllKnownEthChains(&prefs, &expected_chains);
-  GetAllCustomChains(&prefs, &expected_chains);
+  GetAllEthCustomChains(&prefs, &expected_chains);
 
   std::vector<mojom::NetworkInfoPtr> all_chains;
   GetAllEthChains(&prefs, &all_chains);
@@ -739,12 +739,12 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
   GetAllKnownEthChains(&prefs, &known_chains);
   for (const auto& chain : known_chains) {
     EXPECT_EQ(GURL(chain->rpc_urls.front()),
-              GetNetworkURL(&prefs, chain->chain_id));
+              GetNetworkURL(&prefs, chain->chain_id, mojom::CoinType::ETH));
   }
   EXPECT_EQ(GURL(chain1.rpc_urls.front()),
-            GetNetworkURL(&prefs, chain1.chain_id));
+            GetNetworkURL(&prefs, chain1.chain_id, mojom::CoinType::ETH));
   EXPECT_EQ(GURL(chain2.rpc_urls.front()),
-            GetNetworkURL(&prefs, chain2.chain_id));
+            GetNetworkURL(&prefs, chain2.chain_id, mojom::CoinType::ETH));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetInfuraSubdomainForKnownChainId) {
@@ -807,10 +807,12 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   values.push_back(EthereumChainToValue(chain_ptr1));
   UpdateCustomNetworks(&prefs, &values);
 
-  EXPECT_FALSE(GetChain(&prefs, "0x123"));
-  EXPECT_EQ(GetChain(&prefs, "0x5566"), chain1.Clone());
-  EXPECT_EQ(GetChain(&prefs, "0x1"), GetKnownEthChain(&prefs, "0x1"));
-  EXPECT_EQ(GetChain(&prefs, "0x539"), GetKnownEthChain(&prefs, "0x539"));
+  EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::ETH));
+  EXPECT_EQ(GetChain(&prefs, "0x5566", mojom::CoinType::ETH), chain1.Clone());
+  EXPECT_EQ(GetChain(&prefs, "0x1", mojom::CoinType::ETH),
+            GetKnownEthChain(&prefs, "0x1"));
+  EXPECT_EQ(GetChain(&prefs, "0x539", mojom::CoinType::ETH),
+            GetKnownEthChain(&prefs, "0x539"));
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
@@ -834,7 +836,7 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
   prefs.registry()->RegisterBooleanPref(kSupportEip1559OnLocalhostChain, false);
   std::vector<mojom::NetworkInfoPtr> result;
-  GetAllCustomChains(&prefs, &result);
+  GetAllEthCustomChains(&prefs, &result);
   ASSERT_TRUE(result.empty());
 
   std::vector<base::Value> values;
@@ -883,7 +885,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
 
   // kBraveWalletCustomNetworks should be updated with new chains.
   std::vector<mojom::NetworkInfoPtr> result;
-  GetAllCustomChains(&prefs, &result);
+  GetAllEthCustomChains(&prefs, &result);
   EXPECT_EQ(result.size(), 2u);
   EXPECT_EQ(result[0], chain1.Clone());
   EXPECT_EQ(result[1], chain2.Clone());
@@ -940,6 +942,20 @@ TEST(BraveWalletUtilsUnitTest, GetFirstValidChainURL) {
 
   // Empty URL spec list returns an empty URL
   EXPECT_EQ(GetFirstValidChainURL(std::vector<std::string>()), GURL());
+}
+
+TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
+  auto key = GetPrefKeyForCoinType(mojom::CoinType::ETH);
+  ASSERT_TRUE(key);
+  EXPECT_EQ(*key, kEthereumPrefKey);
+  key = GetPrefKeyForCoinType(mojom::CoinType::FIL);
+  ASSERT_TRUE(key);
+  EXPECT_EQ(*key, kFilecoinPrefKey);
+  key = GetPrefKeyForCoinType(mojom::CoinType::SOL);
+  ASSERT_TRUE(key);
+  EXPECT_EQ(*key, kSolanaPrefKey);
+
+  EXPECT_FALSE(GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
 }
 
 }  // namespace brave_wallet

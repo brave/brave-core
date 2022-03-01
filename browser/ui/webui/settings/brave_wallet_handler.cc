@@ -108,7 +108,7 @@ void BraveWalletHandler::GetCustomNetworksList(
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   base::Value list(base::Value::Type::LIST);
   std::vector<brave_wallet::mojom::NetworkInfoPtr> custom_chains;
-  brave_wallet::GetAllCustomChains(prefs, &custom_chains);
+  brave_wallet::GetAllEthCustomChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
     list.Append(brave_wallet::EthereumChainToValue(it));
   }
@@ -165,8 +165,9 @@ void BraveWalletHandler::SetActiveNetwork(base::Value::ConstListView args) {
   auto* json_rpc_service =
       brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           Profile::FromWebUI(web_ui()));
-  auto result = json_rpc_service
-                    ? json_rpc_service->SetNetwork(args[1].GetString())
-                    : false;
+  auto result = json_rpc_service ? json_rpc_service->SetNetwork(
+                                       args[1].GetString(),
+                                       brave_wallet::mojom::CoinType::ETH)
+                                 : false;
   ResolveJavascriptCallback(args[0], base::Value(result));
 }

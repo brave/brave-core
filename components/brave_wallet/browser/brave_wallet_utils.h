@@ -66,12 +66,14 @@ absl::optional<TransactionReceipt> ValueToTransactionReceipt(
 void GetAllKnownEthChains(PrefService* prefs,
                           std::vector<mojom::NetworkInfoPtr>* chains);
 const std::vector<mojom::NetworkInfoPtr> GetAllKnownNetworksForTesting();
-void GetAllCustomChains(PrefService* prefs,
-                        std::vector<mojom::NetworkInfoPtr>* result);
+void GetAllEthCustomChains(PrefService* prefs,
+                           std::vector<mojom::NetworkInfoPtr>* result);
 GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
 void GetAllEthChains(PrefService* prefs,
                      std::vector<mojom::NetworkInfoPtr>* result);
-GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id);
+GURL GetNetworkURL(PrefService* prefs,
+                   const std::string& chain_id,
+                   mojom::CoinType coin);
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
 mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
                                        const std::string& chain_id);
@@ -96,11 +98,13 @@ void AddCustomNetwork(PrefService* prefs, mojom::NetworkInfoPtr chain);
 void RemoveCustomNetwork(PrefService* prefs,
                          const std::string& chain_id_to_remove);
 
-// Get a specific chain from all chains.
-mojom::NetworkInfoPtr GetChain(PrefService* prefs, const std::string& chain_id);
+// Get a specific chain from all chains for certain coin.
+mojom::NetworkInfoPtr GetChain(PrefService* prefs,
+                               const std::string& chain_id,
+                               mojom::CoinType coin);
 
-// Get the current eth chain ID from kBraveWalletSelectedNetworks pref.
-std::string GetCurrentChainId(PrefService* prefs);
+// Get the current chain ID for coin from kBraveWalletSelectedNetworks pref.
+std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
 
 // Returns the first URL to use that:
 // 1. Has no variables in it like ${INFURA_API_KEY}
@@ -108,6 +112,8 @@ std::string GetCurrentChainId(PrefService* prefs);
 // Otherwise if there is a URL in the list, it returns the first one.
 // Otherwise returns an empty GURL
 GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
+
+absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin);
 
 }  // namespace brave_wallet
 

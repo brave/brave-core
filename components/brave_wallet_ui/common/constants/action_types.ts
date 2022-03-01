@@ -15,6 +15,7 @@ export type UnlockWalletPayloadType = {
 
 export type ChainChangedEventPayloadType = {
   chainId: string
+  coin: BraveWallet.CoinType
 }
 
 export type IsEip1559Changed = {

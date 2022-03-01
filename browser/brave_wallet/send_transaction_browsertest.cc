@@ -464,7 +464,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
 
   void SetNetworkForTesting(const std::string& chain_id) {
     json_rpc_service_->SetCustomNetworkForTesting(
-        chain_id, https_server_for_rpc()->base_url());
+        chain_id, mojom::CoinType::ETH, https_server_for_rpc()->base_url());
     // Needed so ChainChangedEvent observers run
     base::RunLoop().RunUntilIdle();
     chain_id_ = chain_id;

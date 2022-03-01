@@ -104,7 +104,8 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
 
 std::string EthTxStateManager::GetTxPrefPathPrefix() {
   return base::StrCat({kEthereumPrefKey, ".",
-                       GetNetworkId(prefs_, json_rpc_service_->GetChainId())});
+                       GetNetworkId(prefs_, json_rpc_service_->GetChainId(
+                                                mojom::CoinType::ETH))});
 }
 
 }  // namespace brave_wallet

@@ -393,7 +393,8 @@ void EthTxManager::GetTransactionMessageToSign(
     return;
   }
   uint256_t chain_id = 0;
-  if (!HexValueToUint256(json_rpc_service_->GetChainId(), &chain_id)) {
+  if (!HexValueToUint256(json_rpc_service_->GetChainId(mojom::CoinType::ETH),
+                         &chain_id)) {
     std::move(callback).Run(absl::nullopt);
     return;
   }
@@ -466,7 +467,8 @@ void EthTxManager::ApproveTransaction(const std::string& tx_meta_id,
   }
 
   uint256_t chain_id = 0;
-  if (!HexValueToUint256(json_rpc_service_->GetChainId(), &chain_id)) {
+  if (!HexValueToUint256(json_rpc_service_->GetChainId(mojom::CoinType::ETH),
+                         &chain_id)) {
     LOG(ERROR) << "Could not convert chain ID";
     std::move(callback).Run(
         false, mojom::ProviderError::kInternalError,
