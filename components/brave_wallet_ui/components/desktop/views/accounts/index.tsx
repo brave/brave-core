@@ -289,6 +289,7 @@ function Accounts (props: Props) {
               defaultCurrencies={defaultCurrencies}
               key={item.contractAddress}
               assetBalance={getBalance(selectedAccount, item)}
+              selectedNetwork={selectedNetwork}
               token={item}
             />
           )}
