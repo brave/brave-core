@@ -64,7 +64,7 @@ private struct SearchableViewModifier_FB9812596: ViewModifier {
     content.searchable(
       text: text,
       placement: .navigationBarDrawer(displayMode: .always),
-      prompt: prompt.map(Text.init)
+      prompt: prompt.map { Text($0) }
     )
     .onSubmit(of: .search) {
       onSubmit?()
