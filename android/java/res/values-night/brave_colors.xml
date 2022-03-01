@@ -39,7 +39,7 @@
     <color name="news_time_color">#9CD2D5CF</color>
 
     <!-- Sync colors -->
-    <color name="brave_sync_bg_color">@color/modern_grey_800</color>
+    <color name="brave_sync_bg_color">@android:color/transparent</color>
     <color name="brave_sync_border_color">@color/modern_grey_800</color>
     <color name="brave_sync_bg_secondary_color">#212529</color>
 

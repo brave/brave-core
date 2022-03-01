@@ -43,7 +43,7 @@
     <color name="onboarding_indicator_default_color">#C2C4CF</color>
 
     <!-- Sync colors -->
-    <color name="brave_sync_bg_color">@color/modern_grey_50</color>
+    <color name="brave_sync_bg_color">@android:color/transparent</color>
     <color name="brave_sync_border_color">@color/modern_grey_50</color>
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
 
