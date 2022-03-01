@@ -7,9 +7,9 @@ import { types } from '../constants/rewards_types'
 import { getTotalContributions } from '../rewards-utils'
 import { InitialRewardsData, PreInitialRewardsData } from '../api/initialData'
 
-const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, action) => {
+const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, action: any) => {
   const payload = action.payload
-  var dismissedNotifications: string[];
+  var dismissedNotifications: string[]
   switch (action.type) {
     case types.ON_ADS_ENABLED:
       state = { ...state }

@@ -212,7 +212,7 @@ Config.prototype.enableCDMHostVerification = function () {
 }
 
 Config.prototype.isAsan = function () {
-    return this.is_asan;
+    return this.is_asan
 }
 
 Config.prototype.buildArgs = function () {
@@ -642,9 +642,9 @@ Config.prototype.update = function (options) {
   }
 
   if (options.force_gn_gen) {
-    this.force_gn_gen = true;
+    this.force_gn_gen = true
   } else {
-    this.force_gn_gen = false;
+    this.force_gn_gen = false
   }
 
   if (options.C) {

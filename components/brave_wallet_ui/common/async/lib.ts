@@ -182,8 +182,9 @@ export function refreshBalances (currentNetwork: BraveWallet.EthereumChain) {
       coingeckoId: ''
     }
 
-    const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {      
-      return await jsonRpcService.getBalance(account.address, account.coin)
+    const getBalanceReturnInfos = await Promise.all(accounts.map(async (account) => {
+      const balanceInfo = await jsonRpcService.getBalance(account.address, account.coin)
+      return balanceInfo
     }))
     await dispatch(WalletActions.nativeAssetBalancesUpdated({
       balances: getBalanceReturnInfos

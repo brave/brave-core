@@ -46,13 +46,13 @@ const touchOverriddenFiles = () => {
   // Return true when original file of |file| should be touched.
   const applyFileFilter = (file) => {
     // Exclude test files
-    const isTestFile = file.indexOf('browsertest') > -1 || file.indexOf('unittest') > -1;
+    const isTestFile = file.indexOf('browsertest') > -1 || file.indexOf('unittest') > -1
 
     // Only include overridable files.
-    const ext = path.extname(file);
-    const isNotOverridable = ext !== '.cc' && ext !== '.h' && ext !== '.mm' && ext !== '.mojom';    
+    const ext = path.extname(file)
+    const isNotOverridable = ext !== '.cc' && ext !== '.h' && ext !== '.mm' && ext !== '.mojom'
 
-    return isTestFile ? false : isNotOverridable ? false : true;
+    return isTestFile ? false : isNotOverridable ? false : true
   }
 
   const chromiumSrcDir = path.join(config.srcDir, 'brave', 'chromium_src')
@@ -86,7 +86,7 @@ const touchOverriddenVectorIconFiles = () => {
   // Return true when original file of |file| should be touched.
   const applyFileFilter = (file) => {
     // Only includes icon files.
-    const ext = path.extname(file);
+    const ext = path.extname(file)
     return ext === '.icon'
   }
 
