@@ -50,8 +50,6 @@ class EthTxManager : public TxManager,
                                 AddUnapprovedTransactionCallback) override;
   void ApproveTransaction(const std::string& tx_meta_id,
                           ApproveTransactionCallback) override;
-  void RejectTransaction(const std::string& tx_meta_id,
-                         RejectTransactionCallback) override;
   void GetAllTransactionInfo(const std::string& from,
                              GetAllTransactionInfoCallback) override;
 
@@ -253,7 +251,8 @@ class EthTxManager : public TxManager,
   void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
   void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
 
-  std::unique_ptr<EthTxStateManager> tx_state_manager_;
+  EthTxStateManager* GetEthTxStateManager();
+
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
   std::unique_ptr<EthBlockTracker> eth_block_tracker_;

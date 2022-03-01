@@ -5,7 +5,10 @@
 
 #include "brave/components/brave_wallet/browser/fil_tx_manager.h"
 
+#include <memory>
+
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 
 namespace brave_wallet {
 
@@ -13,7 +16,11 @@ FilTxManager::FilTxManager(TxService* tx_service,
                            JsonRpcService* json_rpc_service,
                            KeyringService* keyring_service,
                            PrefService* prefs)
-    : TxManager(tx_service, json_rpc_service, keyring_service, prefs) {}
+    : TxManager(std::make_unique<FilTxStateManager>(prefs, json_rpc_service),
+                tx_service,
+                json_rpc_service,
+                keyring_service,
+                prefs) {}
 
 void FilTxManager::AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                             const std::string& from,
