@@ -497,7 +497,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 mCameraSourcePreview.stop();
             }
             if (null != mScrollViewSyncInitial) {
-                adjustWidth(mScrollViewSyncInitial, false);
                 mScrollViewSyncInitial.setVisibility(View.VISIBLE);
             }
             if (null != mScrollViewSyncChainCode) {
@@ -667,7 +666,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 mScrollViewSyncChainCode.setVisibility(View.GONE);
             }
             if (null != mScrollViewEnterCodeWords) {
-                adjustWidth(mScrollViewEnterCodeWords, false);
                 mScrollViewEnterCodeWords.setVisibility(View.VISIBLE);
             }
             getActivity().setTitle(R.string.brave_sync_code_words_title);
@@ -788,7 +786,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     private void showMainSyncScrypt() {
         if (null != mScrollViewSyncInitial) {
-            adjustWidth(mScrollViewSyncInitial, false);
             mScrollViewSyncInitial.setVisibility(View.VISIBLE);
         }
         if (null != mScrollViewAddMobileDevice) {
@@ -1180,7 +1177,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
       setQRCodeText();
       getActivity().setTitle(R.string.brave_sync_scan_chain_code);
       if (null != mScrollViewSyncChainCode) {
-          adjustWidth(mScrollViewSyncChainCode, false);
           mScrollViewSyncChainCode.setVisibility(View.VISIBLE);
       }
 
@@ -1260,7 +1256,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
           mScrollViewEnterCodeWords.setVisibility(View.GONE);
       }
       if (null != mScrollViewAddMobileDevice) {
-          adjustWidth(mScrollViewAddMobileDevice, false);
           mScrollViewAddMobileDevice.setVisibility(View.VISIBLE);
       }
       if (null != mScrollViewAddLaptop) {
@@ -1358,7 +1353,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
           mScrollViewAddMobileDevice.setVisibility(View.GONE);
       }
       if (null != mScrollViewAddLaptop) {
-          adjustWidth(mScrollViewAddLaptop, false);
           mScrollViewAddLaptop.setVisibility(View.VISIBLE);
       }
       if (null != mScrollViewSyncStartChain) {
@@ -1410,7 +1404,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
           mScrollViewSyncStartChain.setVisibility(View.GONE);
       }
       if (null != mScrollViewSyncDone) {
-          adjustWidth(mScrollViewSyncDone, false);
           mScrollViewSyncDone.setVisibility(View.VISIBLE);
       }
 
@@ -1422,27 +1415,20 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
       onDevicesAvailable();
   }
 
-  private void adjustWidth(View view, boolean special) {
+  private void adjustWidth(View view) {
       if (DeviceFormFactor.isTablet()) {
           DisplayMetrics metrics = new DisplayMetrics();
           getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
           LayoutParams params = view.getLayoutParams();
-          if (special) {
-              params.width = metrics.widthPixels * 3 / 5;
-              params.height = metrics.heightPixels * 3 / 5;
-          } else {
-              int width = (metrics.widthPixels > metrics.heightPixels) ? metrics.widthPixels : metrics.heightPixels;
-              width = width / 2;
-              params.width = width;
-              params.height = LayoutParams.MATCH_PARENT;
-          }
+          params.width = metrics.widthPixels / 3;
+          params.height = metrics.heightPixels / 3;
           view.setLayoutParams(params);
       }
   }
 
   private void adjustImageButtons(int orientation) {
       if ((null != mLayoutSyncStartChain) && (null != mScrollViewSyncStartChain) && (View.VISIBLE == mScrollViewSyncStartChain.getVisibility())) {
-          adjustWidth(mScrollViewSyncStartChain, true);
+          adjustWidth(mScrollViewSyncStartChain);
           LayoutParams params = mLayoutMobile.getLayoutParams();
           if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
               mLayoutSyncStartChain.setOrientation(LinearLayout.HORIZONTAL);
