@@ -45,6 +45,10 @@ Building the code
     cd brave-ios
     sh ./bootstrap.sh
     ```
+1. Add a symlink to `npm` (M1 Macs)
+    ```shell
+    sudo ln -s $(which npm) /usr/local/bin/npm
+    ```
 1. Open `Client.xcodeproj` in Xcode.
 1. Build the `Debug` scheme in Xcode.
 
