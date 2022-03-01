@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">Waardeer verbindingen op naar HTTPS</translation>
 <translation id="2278950434998763147">Hiermee worden sommige websites met gebruik van een beveiligde HTTPS-verbinding geopend in plaats van standaard HTTP.</translation>
 <translation id="94154759592465111">Blokkeer scripts</translation>
-<translation id="3518266709656143462">Hiermee wordt Javascript geblokkeerd (websites werken hierdoor mogelijk niet)</translation>
+<translation id="7714773920987474116">Hiermee wordt JavaScript geblokkeerd (websites werken hierdoor mogelijk niet)</translation>
 <translation id="6052725679982758334">Sociale media blokkeren</translation>
 <translation id="7498695072878479744">Sta Google-inlogknoppen toe op sites van externe partijen</translation>
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">De topverhalen van vandaag in een privéfeed, speciaal voor jou.</translation>
 <translation id="7266075701303521777">Het Brave-nieuws bevat advertenties; deze zijn volledig privé en anoniem, afgestemd op jouw apparaat.</translation>
 <translation id="4541978218358617681">Advertentie</translation>
-<translation id="7823038307453615214">Brave-nieuws inschakelen</translation>
+<translation id="7823038307453615214">Brave News tonen</translation>
 <translation id="6527303717912515753">Delen</translation>
 <translation id="1654539412343893324">Meer informatie over je gegevens</translation>
 <translation id="2989805286512600854">Openen op nieuw tabblad</translation>
@@ -97,7 +97,8 @@
 <translation id="6511854390690723657">Dit is je eerste Brave advertentie. Tik om meer te leren.</translation>
 <translation id="2070991379950719711">Starten met het gebruik van Brave Rewards</translation>
 <translation id="48520986898237073">Doorgaan naar wallet</translation>
-<translation id="6800338374677644736">Stel in als standaard browser</translation>
+<translation id="3570367516044491911">Stel in als standaard browser</translation>
+<translation id="6800338374677644736">Instellen als standaardbrowser</translation>
 <translation id="19715420010996093">Selecteer de Brave Browser en druk op 'Altijd'</translation>
 <translation id="3546439402724649282">Brave is al ingesteld als je standaardbrowser.</translation>
 <translation id="8389661903259423907">Je hebt al een standaardbrowser ingesteld. Je kunt de standaardbrowser wijzigen in de instellingen van je app.</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">wallet balans:</translation>
 <translation id="2573313946367623146">stuur mijn fooi</translation>
 <translation id="3250511771491660127">Laat dit maandelijks plaatsvinden</translation>
+<translation id="7658239707568436148">Annuleren</translation>
+<translation id="1201402288615127009">Volgende</translation>
+<translation id="8481779960444041069">Stel Brave in als standaardbrowser om uw privacy te verbeteren</translation>
+<translation id="1938402585819943124">Kies Brave op het volgende scherm</translation>
+<translation id="8926389886865778422">Niet meer vragen</translation>
 <translation id="6639570430554986719">JANUARI</translation>
 <translation id="1807352595146144483">FEBRUARI</translation>
 <translation id="2021828608097804771">MAART</translation>
@@ -521,9 +527,9 @@ Beschikbaar</translation>
 <translation id="6478996494082389936">privé productanalyse.</translation>
 <translation id="5187052478998910855">Heeft u een opfrisser nodig over Rewards?</translation>
 <translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>
-<translation id="7625138338483121345">Open alle links met Brave om uw privacy te beschermen</translation>
-<translation id="4511485286950743564">Brave Shields blokkeert trackers &amp; advertenties, bespaart data, en bespaart tijd op elke website die u bezoekt.</translation>
-<translation id="9218430445555521422">Stel Brave in als standaard</translation>
+<translation id="7625138338483121345">Brave instellen als je standaardbrowser</translation>
+<translation id="4511485286950743564">Met Brave als standaardbrowser worden de privacyfuncties van Brave geopend voor elke koppeling waar u op klikt.</translation>
+<translation id="9218430445555521422">Instellen als standaard</translation>
 <translation id="3479552764303398839">Niet nu</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -542,7 +548,6 @@ Beschikbaar</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
 <translation id="5825943197137337319">Alleen standaard openbare interface</translation>
 <translation id="1689062823386843231">Deactiveer non-proxied UDP</translation>
-<translation id="3171931580569169744">Tabbladgroepen inschakelen</translation>
 <translation id="5587305863196367357">Door uw wallet te verifiëren, kunt u uw geld efficiënter beheren en eenvoudiger geld toevoegen en opnemen</translation>
 <translation id="5760671211380791582">U hebt niet genoeg BAT.</translation>
 <translation id="442469478596827903">U moet minimaal 2 BAT hebben om een geverifieerde Uphold-wallet aan te maken. Probeer het later opnieuw.</translation>
@@ -565,7 +570,8 @@ Beschikbaar</translation>
 <translation id="375882617301124395">Back-up maken van je cryptowallet</translation>
 <translation id="8289942708804097960">Koop crypto met een creditcard of betaalkaart.</translation>
 <translation id="841880029259839903">Verzend of maak crypto over van het ene account naar het andere.</translation>
-<translation id="8226778393040773102">Cryptoassets met Brave DEX-aggregator wisselen.</translation>
+<translation id="8226778393040773102">Tokens en assets wisselen</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/> verwerkt het Ethereum-adres en IP-adres om een transactie uit te voeren (inclusief het ophalen van prijsindicaties). <ph name="DEX_PROVIDER"/> gebruikt deze gegevens ALLEEN voor het verwerken van transacties.</translation>
 <translation id="1783600039044302171">Je crypto met een wachtwoord beveiligen</translation>
 <translation id="3726490322412361740">Wachtwoord invoeren</translation>
 <translation id="3038243139480464605">Wachtwoord verifiëren</translation>
@@ -593,7 +599,7 @@ Beschikbaar</translation>
 <translation id="283071225285270357">Voer je herstelwoorden in</translation>
 <translation id="3943857333388298514">Plakken</translation>
 <translation id="3331452756822160641">Nieuw wachtwoord</translation>
-<translation id="4359319875297001084">Ik herstel vanuit een verouderde Brave-cryptowallet</translation>
+<translation id="4359319875297001084">Importeren vanuit verouderde Brave-cryptowallets?</translation>
 <translation id="2339124864228588937">Herstelwoorden verifiëren</translation>
 <translation id="3747079125031086337">Selecteer de woorden van je herstelzin in de juiste volgorde.</translation>
 <translation id="6518133107902771759">Verifieer</translation>
@@ -835,11 +841,12 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="665660671251623018">Decimalen ketenvaluta</translation>
 <translation id="182619028057179895">Ongeldige notatie, de valutadecimalen zijn een positief getal</translation>
 <translation id="2978054488731497946">Voer valutadecimalen in</translation>
-<translation id="7642841516562576649">Pictogram-URL's</translation>
-<translation id="4693057234255364395">URL's van blokverkenners</translation>
+<translation id="7642841516562576649">Pictogram-URL</translation>
+<translation id="4693057234255364395">Blokkeer Explorer-URL</translation>
 <translation id="7059127752542505809">Voer URL in</translation>
 <translation id="2156993118928861787">Ongeldig adres</translation>
 <translation id="6889920539620318793">Instellen als actief</translation>
 <translation id="2653659639078652383">Verzenden</translation>
 <translation id="8853725596990766789">Aantal veranderen</translation>
+<translation id="5233638681132016545">Nieuw tabblad</translation>
 </translationbundle>

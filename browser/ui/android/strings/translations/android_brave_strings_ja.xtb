@@ -5,7 +5,7 @@
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="2278950434998763147">HTTPではなく、安全なHTTPSを使用してサイトを開きます。</translation>
 <translation id="94154759592465111">スクリプトをブロックする</translation>
-<translation id="3518266709656143462">JavaScript をブロック（サイト破損の可能性あり）</translation>
+<translation id="7714773920987474116">JavaScript をブロック（サイト破損の可能性あり）</translation>
 <translation id="6052725679982758334">ソーシャルメディアのブロック</translation>
 <translation id="7498695072878479744">第三者サイトのGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
@@ -33,7 +33,7 @@
 <translation id="6252490671914511928">Brave Newsは、読みたい記事が上がってくるプライベート・ニュースリーダー。</translation>
 <translation id="7266075701303521777">Braveニュースは広告に支えられていますが、その広告はあなたのデバイス上でマッチングされており、あなたが完全に匿名化された状態でプライバシーを重視して配信されます。</translation>
 <translation id="4541978218358617681">広告</translation>
-<translation id="7823038307453615214">Brave Newsを有効にする</translation>
+<translation id="7823038307453615214">Brave Newsを表示</translation>
 <translation id="6527303717912515753">共有</translation>
 <translation id="1654539412343893324">データの詳細について</translation>
 <translation id="2989805286512600854">新しいタブで開く</translation>
@@ -97,7 +97,8 @@
 <translation id="6511854390690723657">これは初めてのBrave広告です。タップして詳細をご覧ください。</translation>
 <translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
 <translation id="48520986898237073">引き続きウォレットに進む</translation>
-<translation id="6800338374677644736">デフォルトのブラウザに設定</translation>
+<translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
+<translation id="6800338374677644736">デフォルトのブラウザとして設定</translation>
 <translation id="19715420010996093">Braveブラウザーを選択して[常に]をタップします</translation>
 <translation id="3546439402724649282">Braveは、すでにデフォルトブラウザとして設定されています。</translation>
 <translation id="8389661903259423907">すでにデフォルトブラウザが設定されています。アプリの設定でデフォルトブラウザを変更するこができます。</translation>
@@ -115,6 +116,11 @@
 <translation id="3370968821559864204">ウォレット残高</translation>
 <translation id="2573313946367623146">チップを送る</translation>
 <translation id="3250511771491660127">毎月自動的にチップを送る</translation>
+<translation id="7658239707568436148">キャンセル</translation>
+<translation id="1201402288615127009">次へ</translation>
+<translation id="8481779960444041069">Braveをデフォルトのブラウザに設定して、プライバシーを向上させましょう</translation>
+<translation id="1938402585819943124">次の画面でBraveを選択します。</translation>
+<translation id="8926389886865778422">再表示させない</translation>
 <translation id="6639570430554986719">1月</translation>
 <translation id="1807352595146144483">2月</translation>
 <translation id="2021828608097804771">3月</translation>
@@ -519,9 +525,9 @@
 <translation id="6478996494082389936">プライバシーを保護した製品分析</translation>
 <translation id="5187052478998910855">Rewardsについておさらいが必要ですか？</translation>
 <translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsの達人として歴史に名を残すための仕組みをマスターしてください！</translation>
-<translation id="7625138338483121345">あなたのプライバシーを保護するためにBraveですべてのリンクを開く</translation>
-<translation id="4511485286950743564">「Brave Shields」は、トラッカーと広告をブロックし、データ通信量を節約し、あなたが訪問するすべてのサイトで時間を節約します。</translation>
-<translation id="9218430445555521422">Braveをデフォルトに設定</translation>
+<translation id="7625138338483121345">Brave をデフォルトのブラウザにする</translation>
+<translation id="4511485286950743564">Braveをデフォルトで使用すると、クリックしたすべてのリンクがプライバシー保護モードで開かれます。</translation>
+<translation id="9218430445555521422">デフォルトとして設定</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -540,7 +546,6 @@
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
-<translation id="3171931580569169744">タブグループを有効化</translation>
 <translation id="5587305863196367357">ウォレットを認証すると、資金の追加や引き出しを簡単に管理できます</translation>
 <translation id="5760671211380791582">BATが不足しています。</translation>
 <translation id="442469478596827903">認証済みのUpholdウォレットを作成するには、2 BAT以上必要です。後ほどもう一度お試しください。</translation>
@@ -563,7 +568,8 @@
 <translation id="375882617301124395">暗号資産ウォレットをバックアップします</translation>
 <translation id="8289942708804097960">クレジットカードまたはデビットカードで暗号資産を購入しましょう。</translation>
 <translation id="841880029259839903">あるアカウントから別のアカウントへ暗号資産を送信また転送できます。</translation>
-<translation id="8226778393040773102">暗号資産アセットをBrave DEXアグリゲーターとスワップします。</translation>
+<translation id="8226778393040773102">トークンとアセットをスワップ</translation>
+<translation id="5841646075632490135"><ph name="DEX_PROVIDER"/>は、取引を遂行するためにイーサリアムアドレスとIPアドレスを処理します (見積もりの取得を含みます)。 <ph name="DEX_PROVIDER"/>は、取引を処理する目的でのみこのデータを使用します。</translation>
 <translation id="1783600039044302171">暗号資産をパスワードで保護</translation>
 <translation id="3726490322412361740">パスワードを入力してください</translation>
 <translation id="3038243139480464605">パスワードを確認</translation>
@@ -591,7 +597,7 @@
 <translation id="283071225285270357">リカバリーフレーズを入力</translation>
 <translation id="3943857333388298514">貼り付け</translation>
 <translation id="3331452756822160641">新しいパスワード</translation>
-<translation id="4359319875297001084">従来のBrave暗号資産ウォレットから復元</translation>
+<translation id="4359319875297001084">従来の Brave 暗号資産ウォレットからインポートしますか？</translation>
 <translation id="2339124864228588937">リカバリーフレーズを確認</translation>
 <translation id="3747079125031086337">あなたのリカバリフレーズに含まれている単語を正しい順序で選択します。</translation>
 <translation id="6518133107902771759">確認</translation>
@@ -840,4 +846,5 @@
 <translation id="6889920539620318793">アクティブに設定</translation>
 <translation id="2653659639078652383">送信</translation>
 <translation id="8853725596990766789">金額を変更</translation>
+<translation id="5233638681132016545">新しいタブ</translation>
 </translationbundle>

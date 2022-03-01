@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">Chrome OS kunne ikke synkronisere dine data, fordi synkronisering ikke er tilgængeligt på dit domæne.</translation>
 <translation id="5147525139567260139">Del en Brave-fane</translation>
 <translation id="1530633922026945685">Brave skal have adgangstilladelse til dit kamera for at oprette et 3D-kort over dine omgivelser</translation>
+<translation id="4449148723378534338">Gennemgå vigtige privatlivs- og sikkerhedsindstillinger i Brave</translation>
 <translation id="5616153642055197778">Der findes en ny og mere sikker version af Brave.</translation>
 <translation id="6797402139308059782">Lad Brave køre i baggrunden</translation>
 <translation id="5875673934455379806">Geninstaller Brave</translation>
@@ -36,7 +37,6 @@
 <translation id="1248225940185478633">Brave skal have adgangstilladelse til kamera og mikrofon for at bruge dette website</translation>
 <translation id="6078442581074612226">I Brave</translation>
 <translation id="2485422356828889247">Afinstaller</translation>
-<translation id="2372700594671864890">Se, hvordan Brave bestræber sig på at beskytte dig mod sporing på tværs af forskellige websites og samtidig bevarer det åbne net</translation>
 <translation id="9026991721384951619">Chrome OS kunne ikke synkronisere dine data, fordi loginoplysningerne til din konto er forældede.</translation>
 <translation id="7798069806040634998">Brave skal have lageradgang for at downloade filer</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
@@ -109,6 +109,8 @@
 <translation id="3679799810790990472">Vil du fortsætte på en ny Brave-profil?</translation>
 <translation id="4567424176335768812">Du er logget ind som <ph name="USER_EMAIL_ADDRESS"/>. Nu kan du få adgang til dine bogmærker, din historik og andre indstillinger på alle de enheder, hvor du er logget ind.</translation>
 <translation id="300669147395456190">Brave-apps</translation>
+<translation id="2182657378556811785">Næsten opdateret. Genstart Brave for at afslutte opdateringen.</translation>
+<translation id="7402642357351265733">Hvis du også deler Brave-brugsrapporter, omfatter de pågældende rapporter de webadresser, du besøger</translation>
 <translation id="8142245354207161805">Profilen ser ud til at være i brug i en anden Brave-proces (<ph name="PROCESS_ID"/>) på en anden computer (<ph name="HOST_NAME"/>). Brave har låst profilen, så den ikke bliver beskadiget. Hvis du er sikker på, at ingen andre processer anvender denne profil, kan du fjerne blokeringen af profilen og genstarte Brave.</translation>
 <translation id="3395323229510056640">Få hjælp til Chrome OS</translation>
 <translation id="847561904663814268">Nogen har tidligere logget ind på Brave på denne computer som <ph name="ACCOUNT_EMAIL_LAST"/>. Opret en ny Brave-bruger for at holde dine oplysninger adskilt.</translation>
@@ -202,7 +204,6 @@ Visse funktioner kan være utilgængelige. Angiv en anden profilmappe, eller bru
 <translation id="3335606533094650083">Brave skal have tilladelse til at bruge din mikrofon på dette website</translation>
 <translation id="1705567146636171298">Opdater Brave</translation>
 <translation id="5499063270485366718">Hvis et billede ikke har en brugbar beskrivelse, forsøger Brave at angive en for dig. Billederne sendes til Brave, så der kan oprettes beskrivelser.</translation>
-<translation id="151916274998710826">Tilpas nogle af Braves vigtigste privatlivsindstillinger</translation>
 <translation id="1008530050039597147">Brave skal have adgangstilladelse til kamera for at bruge dette website</translation>
 <translation id="1197672524850678392">Brave kunne ikke startes. Prøv igen.</translation>
 <translation id="3405035915691517126">Brave kan ikke tjekke dine adgangskoder. Prøv igen efter 24 timer.</translation>
@@ -220,6 +221,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="5062123544085870375">Genstart Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave for udviklere</translation>
 <translation id="2034072705932785495">Brave skal have tilladelse til at bruge dit kamera på dette website</translation>
+<translation id="3962395975456095331">Vil du genstarte Brave?</translation>
 <translation id="2619516027171717873">Kan ikke installere den samme version af Brave som den, der kører i øjeblikket. Luk Brave, og prøv igen.</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave genstarter om 1 minut}one{Brave genstarter om # minut}other{Brave genstarter om # minutter}}</translation>
 <translation id="573759479754913123">Om Chrome OS</translation>
@@ -229,6 +231,7 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="155309785154426906">Du har aktiveret Udvidet beskyttet browsing på din konto. Nu skal du aktivere funktionen for Brave.</translation>
 <translation id="3293668930608086049">Brave bruger dit kamera og din mikrofon.</translation>
 <translation id="2827121003398607864">Brave er blevet bedre</translation>
+<translation id="8678991866891573053">Brave afprøver nye funktioner, der giver websites mulighed for at levere den samme browseroplevelse med færre af dine data</translation>
 <translation id="3343095737966473035">Brave er ikke din standardbrowser</translation>
 <translation id="5477319665405831211">Synkroniser og tilpas Brave på alle dine enheder</translation>
 <translation id="5419189641394808652">Brave kunne ikke synkronisere dine data, fordi synkronisering ikke er tilgængelig for dit domæne.</translation>
@@ -296,7 +299,5 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Der er en ny Brave-opdatering, som anvendes, så snart du genstarter.}=1{Der er en ny Brave-opdatering, som anvendes, så snart du genstarter. Dit inkognitovindue åbnes ikke igen.}one{Der er en ny Brave-opdatering, som anvendes, så snart du genstarter. # inkognitovindue åbnes ikke igen.}other{Der er en ny Brave-opdatering, som anvendes, så snart du genstarter. Dine # inkognitovinduer åbnes ikke igen.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering}=1{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering. Dit inkognitovindue åbnes ikke igen.}one{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering. # inkognitovindue åbnes ikke igen.}other{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering. Dine # inkognitovinduer åbnes ikke igen.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Din administrator kræver, at du genstarter Brave for at anvende en opdatering}=1{Din administrator kræver, at du genstarter Brave for at anvende en opdatering. Dit inkognitovindue åbnes ikke igen.}one{Din administrator kræver, at du genstarter Brave for at anvende en opdatering. # inkognitovindue åbnes ikke igen.}other{Din administrator kræver, at du genstarter Brave for at anvende en opdatering. Dine # inkognitovinduer åbnes ikke igen.}}</translation>
-<translation id="7914115000169617076">Næsten opdateret! Genstart Brave for at fuldføre opdateringen. Private vinduer åbnes ikke igen.</translation>
-<translation id="4703432949110765917">Standardindstillingen virker på de fleste profiler, men du kan tilpasse dem, som du ønsker det.</translation>
 <translation id="2176087127109773485">Du kan tilpasse dine synkroniseringskæder, når du er logget ind i Brave. Dine Brave-synkroniseringskæder bruges til Brave-browseren, Play Store, Gmail og andet. Hvis du vil tilføje en konto for en anden, f.eks. et familiemedlem, skal du tilføje en ny profil til <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 </translationbundle>

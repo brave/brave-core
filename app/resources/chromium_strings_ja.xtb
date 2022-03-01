@@ -13,6 +13,7 @@
 <translation id="7419046106786626209">お使いのドメインでは同期を利用できないため、Chrome OS はデータを同期できませんでした。</translation>
 <translation id="5147525139567260139">Brave タブの共有</translation>
 <translation id="1530633922026945685">周囲の 3D マップを作成するには、Brave にカメラの使用を許可する必要があります</translation>
+<translation id="4449148723378534338">Brave のプライバシーとセキュリティに関する重要な設定を確認します</translation>
 <translation id="5616153642055197778">Brave がさらに安全になりました。最新バージョンをぜひお試しください。</translation>
 <translation id="6797402139308059782">Brave をバックグラウンドで実行する</translation>
 <translation id="5875673934455379806">Brave を再インストール</translation>
@@ -36,7 +37,6 @@
 <translation id="1248225940185478633">このサイトを利用するには、Brave でカメラとマイクの使用を許可する必要があります</translation>
 <translation id="6078442581074612226">Brave 内</translation>
 <translation id="2485422356828889247">アンインストール</translation>
-<translation id="2372700594671864890">オープンウェブの理念を支えつつ、クロスサイト トラッキングからユーザーを保護する Brave の取り組みについて</translation>
 <translation id="9026991721384951619">アカウントのログイン情報が最新ではないため、Chrome OS はデータを同期できませんでした。</translation>
 <translation id="7798069806040634998">ファイルをダウンロードするには、Brave でストレージへのアクセスを許可する必要があります</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
@@ -109,6 +109,8 @@
 <translation id="3679799810790990472">新しい Brave プロフィールで続行しますか？</translation>
 <translation id="4567424176335768812"><ph name="USER_EMAIL_ADDRESS"/> としてログインしています。ログインしているすべてのデバイスで、ブックマーク、履歴、その他の設定にアクセスできます。</translation>
 <translation id="300669147395456190">Brave アプリ</translation>
+<translation id="2182657378556811785">Brave を再起動して更新を完了してください。</translation>
+<translation id="7402642357351265733">Brave の使用状況レポートを送信する場合は、アクセスした URL がこのレポートに含められます</translation>
 <translation id="8142245354207161805">プロフィールは、別のコンピュータ（<ph name="HOST_NAME"/>）の別の Brave プロセス（<ph name="PROCESS_ID"/>）で使用されているようです。Brave はプロフィールが破損しないようにプロフィールをロックしています。他のプロセスがこのプロフィールを使用していないことが確実であれば、プロフィールのロックを解除して Brave を再起動できます。</translation>
 <translation id="3395323229510056640">Chrome OS のヘルプを見る</translation>
 <translation id="847561904663814268">前回このパソコンで別のユーザー（<ph name="ACCOUNT_EMAIL_LAST"/>）が Brave にログインしました。情報を個別に保持するには、新しい Brave ユーザーを作成してください。</translation>
@@ -201,7 +203,6 @@
 <translation id="3335606533094650083">このサイトを利用するには、Brave でマイクの使用を許可する必要があります</translation>
 <translation id="1705567146636171298">Brave を更新</translation>
 <translation id="5499063270485366718">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave に画像が送信されます。</translation>
-<translation id="151916274998710826">Brave の最も重要なプライバシー設定をカスタマイズできます</translation>
 <translation id="1008530050039597147">このサイトを利用するには、Brave でカメラの使用を許可する必要があります</translation>
 <translation id="1197672524850678392">Brave を起動できませんでした。もう一度お試しください。</translation>
 <translation id="3405035915691517126">Brave でパスワードを確認できません。24 時間後にもう一度お試しください。</translation>
@@ -219,6 +220,7 @@
 <translation id="5062123544085870375">Chrome OS を再起動してください</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">このサイトを利用するには、Brave でカメラの使用を許可する必要があります</translation>
+<translation id="3962395975456095331">Brave を再起動しますか？</translation>
 <translation id="2619516027171717873">実行中の Brave と同じバージョンをインストールすることはできません。Brave を閉じてからもう一度お試しください。</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave は 1 分後に再起動されます}other{Brave は # 分後に再起動されます}}</translation>
 <translation id="573759479754913123">Chrome OS について</translation>
@@ -228,6 +230,7 @@
 <translation id="155309785154426906">アカウントでセーフ ブラウジング保護強化機能がオンになっています。Brave にも適用します。</translation>
 <translation id="3293668930608086049">Brave がカメラとマイクを使用しています。</translation>
 <translation id="2827121003398607864">進化する Brave</translation>
+<translation id="8678991866891573053">Brave では、使用されるユーザーデータの量を抑えつつ、同じようにサイトをブラウジングできる新機能をテストしています</translation>
 <translation id="3343095737966473035">Brave はデフォルトのブラウザとして設定されていません</translation>
 <translation id="5477319665405831211">同期してカスタマイズした Brave をどのデバイスでも使用できます</translation>
 <translation id="5419189641394808652">お使いのドメインでは同期を利用できないため、Brave はデータを同期できませんでした。</translation>
@@ -295,7 +298,5 @@
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。}=1{Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。プライベートウィンドウは、再起動後は自動的には開きません。}other{Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{管理者が、このアップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。プライベートウィンドウは、再起動後は自動的には開きません。}other{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{管理者が、アップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、アップデートを適用するために Brave を再起動するよう求めています。プライベートウィンドウは、再起動後は自動的には開きません。}other{管理者が、アップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
-<translation id="7914115000169617076">もうすぐアップデート完了です！更新を完了するには Brave を再起動してください。再起動後、プライベート ウィンドウは自動的に開きません。</translation>
-<translation id="4703432949110765917">デフォルトの設定はほとんどの方に適していますが、Braveの使用方法に合わせてカスタマイズすることができます。</translation>
 <translation id="2176087127109773485">サインイン済みのBrave同期チェーンを管理できます。Brave同期チェーンは、Braveブラウザ、Play ストア、Gmailなどに使用されます。家族など、他のユーザー用にアカウントを追加するには、<ph name="DEVICE_TYPE"/>にプロフィールを新規追加します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 </translationbundle>

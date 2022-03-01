@@ -5,7 +5,6 @@
 <translation id="3570081523466826008">Täienda ühendused HTTPS-ile</translation>
 <translation id="2278950434998763147">Avab mõned veebisaidid, kasutades tavalise HTTP asemel turvalist HTTPS-ühendust.</translation>
 <translation id="94154759592465111">Blokeeri skriptid</translation>
-<translation id="3518266709656143462">Blokeerib Javascripti (veebisaidi funktsioonid ei pruugi enam toimida)</translation>
 <translation id="6052725679982758334">Sotsiaalmeedia blokeerimine</translation>
 <translation id="7498695072878479744">Luba Google'i sisselogimisnupud kolmanda osapoole saitidel</translation>
 <translation id="863171915776379000">Luba Facebooki sisselogimised ja manustatud postitused</translation>
@@ -33,7 +32,7 @@
 <translation id="6252490671914511928">Tänased tipplood täiesti privaatses kanalis, ainult teile.</translation>
 <translation id="7266075701303521777">Brave'i uudiseid edastatakse reklaamide toel. Selleks kasutatakse teie seadmele sobitatud täiesti privaatseid ja anonüümseid reklaame.</translation>
 <translation id="4541978218358617681">Reklaam</translation>
-<translation id="7823038307453615214">Lülita Brave'i uudised sisse</translation>
+<translation id="7823038307453615214">Näita Brave Newsi</translation>
 <translation id="6527303717912515753">Jaga</translation>
 <translation id="1654539412343893324">Lisateave teie andmete kohta</translation>
 <translation id="2989805286512600854">Ava uuel vahelehel</translation>
@@ -97,7 +96,7 @@
 <translation id="6511854390690723657">See on Teie esimene Brave’i reklaam. Lisateabe saamiseks puudutage.</translation>
 <translation id="2070991379950719711">Alusta Brave Rewardsi kasutamist</translation>
 <translation id="48520986898237073">Ava rahakott</translation>
-<translation id="6800338374677644736">Määra tavabrauseriks</translation>
+<translation id="3570367516044491911">Määra tavabrauseriks</translation>
 <translation id="19715420010996093">Valige Brave'i brauser ja puudutage valikut „Alati“</translation>
 <translation id="3546439402724649282">Brave on juba vaikebrauser.</translation>
 <translation id="8389661903259423907">Oled juba määranud vaikebrauseri. Seda saad muuda rakenduse seadetest.</translation>
@@ -115,6 +114,9 @@
 <translation id="3370968821559864204">rahakoti saldo:</translation>
 <translation id="2573313946367623146">saada minu preemia</translation>
 <translation id="3250511771491660127">Muuda see igakuiseks</translation>
+<translation id="7658239707568436148">Tühista</translation>
+<translation id="1201402288615127009">Edasi</translation>
+<translation id="8926389886865778422">Ära enam küsi</translation>
 <translation id="6639570430554986719">JAANUAR</translation>
 <translation id="1807352595146144483">VEEBRUAR</translation>
 <translation id="2021828608097804771">MÄRTS</translation>
@@ -521,9 +523,8 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="6478996494082389936">privaatset tooteanalüüsi teavet.</translation>
 <translation id="5187052478998910855">Kas vajate Rewardsi kohta mäluvärskendust?</translation>
 <translation id="8622329973403382303">Tehke kiire ringkäik, et meenutada, kuidas see toimis, ja võite ajalukku minna Rewardsi staarina!</translation>
-<translation id="7625138338483121345">Avage kõik lingid Brave'iga, et kaitsta oma privaatust</translation>
-<translation id="4511485286950743564">Brave'i kaitse blokeerib jälitajad ja reklaamid, salvestab andmed ja hoiab aega kokku igal veebisaidil, mida külastate.</translation>
-<translation id="9218430445555521422">Määra Brave vaikebrauseriks</translation>
+<translation id="7625138338483121345">Bravei vaikebrauseriks määramine</translation>
+<translation id="9218430445555521422">Seadista vaikebrauseriks</translation>
 <translation id="3479552764303398839">Mitte praegu</translation>
 <translation id="4956847150856741762">1</translation>
 <translation id="5196716972587102051">2</translation>
@@ -542,7 +543,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="1822560017823072927">Vaikimisi määratud avalikud ja privaatsed liidesed</translation>
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
-<translation id="3171931580569169744">Luba menüürühmad</translation>
 <translation id="5587305863196367357">Rahakoti kinnitamine laseb sul oma raha tõhusamalt hallata lisada ja välja võtta</translation>
 <translation id="5760671211380791582">Sul pole piisavalt BATi.</translation>
 <translation id="442469478596827903">Kinnitatud Upholdi konto loomiseks on vaja vähemalt 2 BAT-i. Proovige hiljem uuesti.</translation>
@@ -565,7 +565,6 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="375882617301124395">Varundage oma krüptorahakott</translation>
 <translation id="8289942708804097960">Ostke krüptot krediit- või deebetkaardiga.</translation>
 <translation id="841880029259839903">Saatke krüptot või tehke ülekandeid ühelt kontolt teisele.</translation>
-<translation id="8226778393040773102">Vahetage krüptovarasid Brave DEX agregaatoriga.</translation>
 <translation id="1783600039044302171">Kaitske oma krüptot parooliga</translation>
 <translation id="3726490322412361740">Sisestage parool</translation>
 <translation id="3038243139480464605">Parooli kinnitamine</translation>
@@ -593,7 +592,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="283071225285270357">Sisestage oma taastamise lause</translation>
 <translation id="3943857333388298514">Kleebi</translation>
 <translation id="3331452756822160641">Uus parool</translation>
-<translation id="4359319875297001084">Taastan Brave'i pärand-krüptorahakotist</translation>
+<translation id="4359319875297001084">Kas importida Brave'i pärand-krüptokontodelt?</translation>
 <translation id="2339124864228588937">Taastamise lause kinnitamine</translation>
 <translation id="3747079125031086337">Valige oma taastefraasi sõnad õiges järjekorras.</translation>
 <translation id="6518133107902771759">Kinnita</translation>
@@ -835,11 +834,11 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="665660671251623018">Ahela vääringu kümnendkohad</translation>
 <translation id="182619028057179895">Vigane vorming, valuuta kümnendkohtade hulk on positiivne arv</translation>
 <translation id="2978054488731497946">Sisestage ahela vääringu kümnendkohad</translation>
-<translation id="7642841516562576649">Ikoonide URL-id</translation>
-<translation id="4693057234255364395">Plokiuurijate URL-id</translation>
+<translation id="4693057234255364395">Plokiuurija URL</translation>
 <translation id="7059127752542505809">Sisestage URL</translation>
 <translation id="2156993118928861787">Kehtetu aadress</translation>
 <translation id="6889920539620318793">Määra aktiivseks</translation>
 <translation id="2653659639078652383">Esita</translation>
 <translation id="8853725596990766789">Muuda summat</translation>
+<translation id="5233638681132016545">Uus vaheleht</translation>
 </translationbundle>

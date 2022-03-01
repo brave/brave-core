@@ -15,6 +15,7 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="7419046106786626209">I-Chrome OS ayikwazanga ukuvumelanisa idatha yakho ngoba Ukuvumelanisa akutholakali kusizinda sakho.</translation>
 <translation id="5147525139567260139">Yabelana ngethebhu ye-Brave</translation>
 <translation id="1530633922026945685">I-Brave idinga imvume yokufinyelela kwikhamera yakho ukudala imephu engu-3D yendawo yakho ekuzungezile</translation>
+<translation id="4449148723378534338">Buyekeza izilawuli eziyinhloko zobumfihlo nokuvikeleka ku-Brave</translation>
 <translation id="5616153642055197778">Kukhona inguqulo entsha, ephephile ye-Brave etholakalayo.</translation>
 <translation id="6797402139308059782">Vumela i-Brave ukuthi isebenze ngemuva</translation>
 <translation id="5875673934455379806">Phinda ufake i-Brave</translation>
@@ -39,13 +40,11 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="1248225940185478633">I-Brave idinga izimvume zekhamera nemakrofoni kule sayithi</translation>
 <translation id="6078442581074612226">Ku-Brave</translation>
 <translation id="2485422356828889247">Khipha</translation>
-<translation id="2372700594671864890">Bona ukuthi i-Brave ihlela kanjani ukukuvikela ekulandeleleni amasayithi amaningi ngenkathi ilondoloza iwebhu evuliwe</translation>
 <translation id="9026991721384951619">I-Chrome OS ayikwazanga ukuvumelanisa idatha yakho ngoba imininingwane yokungena ngemvume kwi-akhawunti yakho iphelelwe isikhathi.</translation>
 <translation id="7798069806040634998">I-Brave idinga ukufinyelela kusitoreji ukuze ilande amafayela</translation>
 <translation id="8447483940522230788">Isisizi se-Brave</translation>
 <translation id="7291143854620707672">Noma iyiphi idatha ye-Brave ekhiqizwa ngesikhathi sokusetshenziswa kwale phrofayela (efana nokudalwa kwamabhukhimakhi, umlando, amaphasiwedi, namanye amasethingi) ingasuswa umlawuli wephrofayela yomsebenzi. <ph name="LEARN_MORE"/></translation>
 <translation id="2063848847527508675">I-Chrome OS idinga ukuphinda iqaliswe ukuze kusetshenziswe isibuyekezo.</translation>
-<translation id="4703432949110765917">Amasethingi wokuzenzakalelayo asebenza kubantu abaningi, kodwa ungawenza ngendlela oyifisayo ukuze afane nendlela othanda ukusebenzisa ngayo i-Brave</translation>
 <translation id="7387051847644272380">Iphutha le sistimu yokusebenza livele ngesikhathi sokufaka. Sicela uphinde ulande i-Brave.</translation>
 <translation id="2648689842065142443">Uma wabelana ngedivayisi, abangane nomndeni bangaphequlula ngokuhlukile baphinde basethe i-Brave ngendlela abafuna ngayo</translation>
 <translation id="6791166902140255175">Ithebhu le-Brave</translation>
@@ -113,7 +112,9 @@ Ezinye izici kungenzeka zingabi khona futhi izinguquko kokuncamelayo ngeke zize 
 <translation id="3679799810790990472">Qhubeka kuphrofayela entsha ye-Brave?</translation>
 <translation id="4567424176335768812">Ungene ngemvume njengo-<ph name="USER_EMAIL_ADDRESS"/>. Manje ungakwazi ukufinyelela amabhukhimakhi, umlando, nezinye izilungiselelo kuwo wonke amadivayisi wakho ongene kuwo ngemvume.</translation>
 <translation id="300669147395456190">Izinhlelo zokusebenza ze-Brave</translation>
+<translation id="2182657378556811785">Icishe isesikhathini! Qalisa kabusha i-Brave ukuze uqedele ukubuyekeza.</translation>
 <translation id="1299765473362724475">Isexwayiso: I-Brave ayikwazi ukuvimbela izandiso kusuka ekurekhodeni umlando wakho wokudlulisa amehlo. Ukuze ukhubaze lesi sandiso kumodi ye-incognito, yekisa ukukhetha le nketho.</translation>
+<translation id="7402642357351265733">Uma futhi wabelana ngemibiko yokusetshenziswa kwe-Brave, leyo mibiko ihlanganisa nama-URL owavakashelayo</translation>
 <translation id="8142245354207161805">Iphrofayela ibukeka isetshenziswa enye inqubo ye-Brave (<ph name="PROCESS_ID"/>) kwenye ikhompyutha (<ph name="HOST_NAME"/>). I-Brave ikhiye iphrofayela ukuze ingamosheki. Uma uqinisekile ukuthi azikho ezinye izinqubo ezisebenzisa le phrofayela, ungavula iphrofayela uphinde uqalise i-Brave.</translation>
 <translation id="3395323229510056640">Thola usizo nge-Chrome OS</translation>
 <translation id="847561904663814268">Umuntu othile ungene ngemvume ngaphambilini ku-Brave kule khompuyutha njengo-<ph name="ACCOUNT_EMAIL_LAST"/>. Sicela udale umsebenzisi omusha we-Brave ukuze ugcine ulwazi lwakho luhlukile.</translation>
@@ -207,7 +208,6 @@ Ezinye izici kungenzeka zingatholakali. Sicela ucacise umkhombandlela wephrofaye
 <translation id="3335606533094650083">I-Brave idinga imvume ukuze ifinyelele kumakrofoni yakho yaleli sayithi</translation>
 <translation id="1705567146636171298">Buyekeza i-Brave</translation>
 <translation id="5499063270485366718">Uma isithombe singanayo incazelo ephelele, i-Brave izozama ukukunikezela eyodwa. Ukuze udale izincazelo, izithombe zithunyelwa ku-Brave.</translation>
-<translation id="151916274998710826">Enza ngendlela oyifisayo ezinye izinqumo zobumfihlo ezibaluleke kakhulu ze-Brave</translation>
 <translation id="1008530050039597147">I-Brave idinga imvume yekhamera kule sayithi</translation>
 <translation id="1197672524850678392">Ayikwazanga ukuqalisa i-Brave. Zama futhi.</translation>
 <translation id="3405035915691517126">I-Brave ayikwazi ukuhlola iphasiwedi yakho. Zama futhi emva kwamahora angu-24.</translation>
@@ -225,6 +225,7 @@ I-Brave ayikwazi ukubuyisela izilungiselelo zakho.</translation>
 <translation id="5062123544085870375">Qalisa kabusha i-Chrome OS</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="2034072705932785495">I-Brave idinga imvume yakho ukuze ifinyelele kukhamera yakho yaleli sayithi</translation>
+<translation id="3962395975456095331">Qalisa kabusha i-Brave?</translation>
 <translation id="2619516027171717873">Ayikwazi ukufaka inguqulo ye-Brave efana nale esebenzayo okwamanje. Sicela uvale i-Brave uphinde uzame futhi.</translation>
 <translation id="3186363903915641692">{0,plural, =1{I-Brave izoqalisa kabusha kuminithi elingu-1}one{I-Brave izoqalisa kabusha emaminithini angu-#}other{I-Brave izoqalisa kabusha emaminithini angu-#}}</translation>
 <translation id="573759479754913123">Mayelana ne-Chrome OS</translation>
@@ -234,6 +235,7 @@ I-Brave ayikwazi ukubuyisela izilungiselelo zakho.</translation>
 <translation id="155309785154426906">Uvule Ukuphequlula Ngokuphepha Okugqamile ku-akhawunti yakho. Manje yitholele i-Brave.</translation>
 <translation id="3293668930608086049">I-Brave isebenzisa ikhamela yakho nemakrofoni.</translation>
 <translation id="2827121003398607864">I-Brave ibe ngcono nakakhulu</translation>
+<translation id="8678991866891573053">I-Brave ihlola izakhi ezintsha ezivumela amasayithi ukuthi alethe ukuzizwisa kokubhrawuza okufanayo kusetshenziswa idatha yakho encane</translation>
 <translation id="3343095737966473035">I-Brave akusona isiphequluli sakho esizenzakalelayo</translation>
 <translation id="5477319665405831211">Vumelanisa uphinde wenze kube ngeyakho i-Brave kumadivayisi akho wonkana</translation>
 <translation id="5419189641394808652">I-Brave ayikwazanga ukuvumelanisa idatha yakho ngoba Ukuvumelanisa akutholakaleli isizinda sakho.</translation>
@@ -300,5 +302,4 @@ I-Brave ayikwazi ukubuyisela izilungiselelo zakho.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Isibuyekezo esisha se-Brave siyatholakala futhi sizosetshenziswa maduze ngemuva kokuthi uqalise kabusha.}=1{Isibuyekezo esisha se-Brave siyatholakala futhi sizosetshenziswa maduze ngemuva kokuthi uqalise kabusha. Iwindi lakho le-Incognito ngeke liphinde livuleke.}one{Isibuyekezo esisha se-Brave siyatholakala futhi sizosetshenziswa maduze ngemuva kokuthi uqalise kabusha. Amawindi akho angu-# e-Incognito ngeke aze aphinde avuleke.}other{Isibuyekezo esisha se-Brave siyatholakala futhi sizosetshenziswa maduze ngemuva kokuthi uqalise kabusha. Amawindi akho angu-# e-Incognito ngeke aze aphinde avuleke.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Umlawuli wakho ucela ukuthi uqalise kabusha i-Brave ukuze kusetshenziswe lesi sibuyekezo}=1{Umlawuli wakho ucela ukuthi uqalise kabusha i-Brave ukuze kusetshenziswe lesi sibuyekezo. Iwindi lakho le-Incognito ngeke liphinde livuleke.}one{Umlawuli wakho ucela ukuthi uqalise kabusha i-Brave ukuze kusetshenziswe lesi sibuyekezo. Amawindi akho angu-# e-Incognito ngeke aze aphinde avuleke.}other{Umlawuli wakho ucela ukuthi uqalise kabusha i-Brave ukuze kusetshenziswe lesi sibuyekezo. Amawindi akho angu-# e-Incognito ngeke aze aphinde avuleke.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Umlawuli wakho udinga ukuthi uqalise kabusha i-Brave ukuze kusetshenziswe isibuyekezo}=1{Umlawuli wakho udinga ukuthi uqalise kabusha i-Brave ukuze kusetshenziswe isibuyekezo. Iwindi lakho le-Incognito ngeke liphinde livuleke.}one{Umlawuli wakho udinga ukuthi uqalise kabusha i-Brave ukuze kusetshenziswe isibuyekezo. Amawindi akho angu-# e-Incognito ngeke aze aphinde avuleke.}other{Umlawuli wakho udinga ukuthi uqalise kabusha i-Brave ukuze kusetshenziswe isibuyekezo. Amawindi akho angu-# e-Incognito ngeke aze aphinde avuleke.}}</translation>
-<translation id="7914115000169617076">Icishe isisesikhathini! Qalisa kabusha i-Brave ukuqeda ukubuyekeza. Ama-modi e-Incognito ngeke aze aphinde avuleke.</translation>
 </translationbundle>
