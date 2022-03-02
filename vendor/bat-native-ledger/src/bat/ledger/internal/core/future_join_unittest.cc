@@ -12,6 +12,8 @@
 #include "base/test/task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+// npm run test -- brave_unit_tests --filter=FutureJoinTest.*
+
 namespace ledger {
 
 class FutureJoinTest : public testing::Test {
@@ -24,17 +26,22 @@ TEST_F(FutureJoinTest, JoinFutures) {
   auto future2 = MakeFuture<std::string>("joiner");
   auto future3 = MakeFuture(true);
 
-  std::tuple<int, std::string, bool> result;
+  int int_result = 0;
+  std::string string_result = "";
+  bool bool_result = false;
 
   JoinFutures(std::move(future1), std::move(future2), std::move(future3))
-      .Then(base::BindLambdaForTesting(
-          [&result](decltype(result) t) { result = std::move(t); }));
+      .Then(base::BindLambdaForTesting([&](int ir, std::string sr, bool br) {
+        int_result = ir;
+        string_result = std::move(sr);
+        bool_result = br;
+      }));
 
   task_environment_.RunUntilIdle();
 
-  EXPECT_EQ(std::get<0>(result), 10);
-  EXPECT_EQ(std::get<1>(result), "joiner");
-  EXPECT_TRUE(std::get<2>(result));
+  EXPECT_EQ(int_result, 10);
+  EXPECT_EQ(string_result, "joiner");
+  EXPECT_TRUE(bool_result);
 }
 
 TEST_F(FutureJoinTest, JoinFutureVector) {

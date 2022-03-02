@@ -80,7 +80,7 @@ class FutureCache {
     } else {
       Entry& entry = iter->second;
       if (entry.value && !EntryIsStale(entry)) {
-        promise.SetValue(*entry.value);
+        promise.Set(*entry.value);
         return future;
       }
     }
@@ -117,7 +117,7 @@ class FutureCache {
 
     std::list<Promise<T>> promises = std::move(entry.promises);
     for (auto& promise : promises) {
-      promise.SetValue(*entry.value);
+      promise.Set(*entry.value);
     }
   }
 

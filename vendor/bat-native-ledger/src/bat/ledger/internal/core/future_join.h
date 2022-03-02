@@ -19,7 +19,7 @@ namespace ledger {
 
 template <typename... Args>
 class FutureJoin : public base::RefCounted<FutureJoin<Args...>> {
-  using Promise = Promise<std::tuple<Args...>>;
+  using Promise = Promise<Args...>;
 
  public:
   explicit FutureJoin(Promise promise) : promise_(std::move(promise)) {}
@@ -59,8 +59,7 @@ class FutureJoin : public base::RefCounted<FutureJoin<Args...>> {
   template <size_t... Indexes>
   void SetValue(std::index_sequence<Indexes...>) {
     DCHECK_EQ(remaining_, static_cast<size_t>(0));
-    promise_.SetValue(
-        std::make_tuple(std::move(*std::get<Indexes>(optionals_))...));
+    promise_.Set(std::move(*std::get<Indexes>(optionals_))...);
   }
 
   Promise promise_;
@@ -101,7 +100,7 @@ class FutureVectorJoin : public base::RefCounted<FutureVectorJoin<T>> {
       for (auto& optional : optionals_) {
         values.push_back(std::move(*optional));
       }
-      promise_.SetValue(std::move(values));
+      promise_.Set(std::move(values));
     }
   }
 
@@ -120,8 +119,8 @@ class FutureVectorJoin : public base::RefCounted<FutureVectorJoin<T>> {
 //       MakeFuture(42),
 //       MakeFuture(std::string("hello world")));
 template <typename... Args>
-Future<std::tuple<Args...>> JoinFutures(Future<Args>... args) {
-  Promise<std::tuple<Args...>> promise;
+Future<Args...> JoinFutures(Future<Args>... args) {
+  Promise<Args...> promise;
   auto future = promise.GetFuture();
   auto ref = base::MakeRefCounted<FutureJoin<Args...>>(std::move(promise));
   ref->AddFutures(std::move(args)...);

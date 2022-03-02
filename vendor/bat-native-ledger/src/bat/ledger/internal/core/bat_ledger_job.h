@@ -34,7 +34,7 @@ class BATLedgerJob : public BATLedgerContext::Object,
 
  protected:
   // Completes the job with the specified value.
-  virtual void Complete(T value) { promise_.SetValue(std::move(value)); }
+  virtual void Complete(T value) { promise_.Set(std::move(value)); }
 
   // Returns a |OnceCallback| that wraps the specified member function. The
   // resulting callback is bound with a WeakPtr for the receiver. It is not

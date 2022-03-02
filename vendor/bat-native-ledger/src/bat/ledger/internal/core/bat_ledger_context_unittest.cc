@@ -37,7 +37,7 @@ TEST_F(BATLedgerContextTest, StartJob) {
   class Job : public BATLedgerContext::Object {
    public:
     Future<int> GetFuture() { return promise_.GetFuture(); }
-    void Start(int n) { promise_.SetValue(n); }
+    void Start(int n) { promise_.Set(n); }
 
    private:
     Promise<int> promise_;
