@@ -422,7 +422,8 @@ class Generator(generator.Generator):
                                       is_move_only_kind(kind))
         typemap = MojoTypemapForKind(kind, False)
         typestring = typemap.ExpectedCppType()
-        if mojom.IsNullableKind(kind) and not mojom.IsStructKind(kind):
+        if mojom.IsNullableKind(kind) and not (mojom.IsStructKind(kind)
+                                               or mojom.IsUnionKind(kind)):
             typestring = "absl::optional<%s>" % typestring
         if should_pass_param_by_value:
             return typestring
@@ -510,7 +511,7 @@ class Generator(generator.Generator):
             raise Exception("No typemap found for the given kind: %s" % kind)
         cpp_assign = typemap.ObjCToCpp(accessor)
         if mojom.IsNullableKind(kind):
-            if mojom.IsStructKind(kind):
+            if mojom.IsStructKind(kind) or mojom.IsUnionKind(kind):
                 cpp_assign = "%s ? %s : nullptr" % (accessor, cpp_assign)
             else:
                 cpp_assign = "%s ? absl::make_optional(%s) : absl::nullopt" % (
@@ -523,7 +524,7 @@ class Generator(generator.Generator):
                                field.name, (suffix if suffix else ""))
         typemap = MojoTypemapForKind(kind)
         if mojom.IsNullableKind(kind):
-            if mojom.IsStructKind(kind):
+            if mojom.IsStructKind(kind) or mojom.IsUnionKind(kind):
                 value_accessor = accessor
             else:
                 value_accessor = "%s.value()" % accessor
