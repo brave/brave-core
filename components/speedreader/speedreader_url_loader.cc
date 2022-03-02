@@ -75,29 +75,10 @@ SpeedReaderURLLoader::~SpeedReaderURLLoader() = default;
 void SpeedReaderURLLoader::OnBodyReadable(MojoResult) {
   DCHECK_EQ(State::kLoading, state_);
 
-  size_t start_size = buffered_body_.size();
-  uint32_t read_bytes = kReadBufferSize;
-  buffered_body_.resize(start_size + read_bytes);
-  MojoResult result = body_consumer_handle_->ReadData(
-      &buffered_body_[0] + start_size, &read_bytes, MOJO_READ_DATA_FLAG_NONE);
-  switch (result) {
-    case MOJO_RESULT_OK:
-      break;
-    case MOJO_RESULT_FAILED_PRECONDITION:
-      // Reading is finished.
-      buffered_body_.resize(start_size);
-      MaybeLaunchSpeedreader();
-      return;
-    case MOJO_RESULT_SHOULD_WAIT:
-      body_consumer_watcher_.ArmOrNotify();
-      return;
-    default:
-      NOTREACHED();
-      return;
+  if (!SnifferURLLoader::CheckBufferedBody(kReadBufferSize)) {
+    return;
   }
 
-  DCHECK_EQ(MOJO_RESULT_OK, result);
-  buffered_body_.resize(start_size + read_bytes);
   // TODO(iefremov): We actually can partially |pumpContent| to speedreader,
   // but skipping it for now to simplify things. Pumping is not free in terms
   // of CPU ticks, so we will have to keep alive speedreader instance on another

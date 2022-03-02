@@ -32,11 +32,14 @@ const char kTestAmpPage[] = "/test.html";
 const char kTestSimpleNonAmpPage[] = "/simple.html";
 const char kTestCanonicalPage[] = "/simple_canonical.html";
 const char kTestBody[] =
-    "<html amp>\n"
-    "<head>\n"
-    "<link rel='canonical' "
-    "href='https://%s:%s%s'>\n"
-    "</head></html>";
+    R"(
+      <html amp>
+    <head>
+    <link rel='canonical'
+    href='https://%s:%s%s'>
+    </head>
+    </html>
+    )";
 class DeAmpBrowserTest : public PlatformBrowserTest {
  public:
   DeAmpBrowserTest() {
@@ -153,11 +156,13 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, NonHttpScheme) {
   TogglePref(true);
   const std::string nonHttpSchemeBody =
-      "<html amp>\n"
-      "<head>\n"
-      "<link rel='canonical' "
-      "href='brave://settings'>\n"
-      "</head></html>";
+      R"(
+        <html amp>\
+      <head>\
+      <link rel='canonical' 
+      href='brave://settings'>\
+      </head></html>
+      )";
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, kTestHost, kTestCanonicalPage, nonHttpSchemeBody));
   ASSERT_TRUE(https_server_->Start());
@@ -192,11 +197,11 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, RestorePage) {
   const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
 
-  // Close tab
+  // Close & restore tab
   browser()->tab_strip_model()->CloseSelectedTabs();
   Profile* profile = browser()->profile();
-  // Restore tab
   chrome::OpenWindowWithRestoredTabs(profile);
+
   const GURL landing_url = https_server_->GetURL(kTestHost, kTestCanonicalPage);
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
 }

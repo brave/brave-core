@@ -81,30 +81,16 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
     ForwardBodyToClient();
     return;
   }
-
-  size_t start_size = buffered_body_.size();
-  uint32_t read_bytes = kReadBufferSize;
-  buffered_body_.resize(start_size + read_bytes);
-  auto result = body_consumer_handle_->ReadData(
-      &buffered_body_[0] + start_size, &read_bytes, MOJO_READ_DATA_FLAG_NONE);
-  switch (result) {
-    case MOJO_RESULT_OK:
-      break;
-    case MOJO_RESULT_FAILED_PRECONDITION:
-      // Reading is finished.
-      buffered_body_.resize(start_size);
-      CompleteLoading(std::move(buffered_body_));
-      return;
-    case MOJO_RESULT_SHOULD_WAIT:
-      body_consumer_watcher_.ArmOrNotify();
-      return;
-    default:
-      NOTREACHED();
-      return;
+  if (!SnifferURLLoader::CheckBufferedBody(kReadBufferSize)) {
+    return;
   }
-  DCHECK_EQ(MOJO_RESULT_OK, result);
 
-  // Check for AMP-ness and find canonical link
+  DeAmp();
+
+  body_consumer_watcher_.ArmOrNotify();
+}
+
+void DeAmpURLLoader::DeAmp() {
   std::string canonical_link;
 
   if (de_amp_service->FindCanonicalLinkIfAMP(buffered_body_, &canonical_link)) {
@@ -123,8 +109,6 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
     CompleteLoading(std::move(buffered_body_));
     return;
   }
-
-  body_consumer_watcher_.ArmOrNotify();
 }
 
 void DeAmpURLLoader::OnBodyWritable(MojoResult r) {

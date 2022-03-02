@@ -81,6 +81,9 @@ class SnifferURLLoader : public network::mojom::URLLoaderClient,
   void PauseReadingBodyFromNet() override;
   void ResumeReadingBodyFromNet() override;
 
+  // static
+  bool CheckBufferedBody(uint32_t readBufferSize);
+
   virtual void OnBodyReadable(MojoResult) = 0;
   virtual void OnBodyWritable(MojoResult) = 0;
 

@@ -59,6 +59,8 @@ class DeAmpURLLoader : public sniffer::SnifferURLLoader {
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;
 
+  void DeAmp();
+
   void CompleteSending() override;
   void ForwardBodyToClient();
 

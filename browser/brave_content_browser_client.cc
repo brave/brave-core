@@ -663,12 +663,10 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 #endif  // ENABLE_SPEEDREADER
 
     // De-AMP
-    if (std::unique_ptr<blink::URLLoaderThrottle> de_amp_throttle =
-            de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
-                base::ThreadTaskRunnerHandle::Get(),
-                de_amp::DeAmpServiceFactory::GetForBrowserContext(
-                    browser_context),
-                contents))
+    if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
+            base::ThreadTaskRunnerHandle::Get(),
+            de_amp::DeAmpServiceFactory::GetForBrowserContext(browser_context),
+            contents))
       result.push_back(std::move(de_amp_throttle));
   }
 

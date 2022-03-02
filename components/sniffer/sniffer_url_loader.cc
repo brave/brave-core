@@ -160,6 +160,31 @@ void SnifferURLLoader::ResumeReadingBodyFromNet() {
   source_url_loader_->ResumeReadingBodyFromNet();
 }
 
+// static
+bool SnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
+  size_t start_size = buffered_body_.size();
+  uint32_t read_bytes = readBufferSize;
+  buffered_body_.resize(start_size + read_bytes);
+
+  auto result = body_consumer_handle_->ReadData(
+      &buffered_body_[0] + start_size, &read_bytes, MOJO_READ_DATA_FLAG_NONE);
+  switch (result) {
+    case MOJO_RESULT_OK:
+      return true;
+    case MOJO_RESULT_FAILED_PRECONDITION:
+      // Reading is finished.
+      buffered_body_.resize(start_size);
+      CompleteLoading(std::move(buffered_body_));
+      break;
+    case MOJO_RESULT_SHOULD_WAIT:
+      body_consumer_watcher_.ArmOrNotify();
+      break;
+    default:
+      NOTREACHED();
+  }
+  return false;
+}
+
 void SnifferURLLoader::CompleteLoading(std::string body) {
   DCHECK_EQ(State::kLoading, state_);
   state_ = State::kSending;
