@@ -205,7 +205,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
         jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-            jsonRpcService.getAllNetworks(chains -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 TextView networkName = view.findViewById(R.id.network_name);
                 networkName.setText(

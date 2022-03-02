@@ -58,6 +58,17 @@ base::Value GetDefaultUserAssets() {
   return user_assets_pref;
 }
 
+base::Value GetDefaultSelectedNetworks() {
+  base::Value selected_networks(base::Value::Type::DICTIONARY);
+  selected_networks.SetStringKey(brave_wallet::kEthereumPrefKey,
+                                 brave_wallet::mojom::kMainnetChainId);
+  selected_networks.SetStringKey(brave_wallet::kSolanaPrefKey,
+                                 brave_wallet::mojom::kSolanaMainnet);
+  // TODO(spylogsster): Add Filecoin
+
+  return selected_networks;
+}
+
 }  // namespace
 
 namespace brave_wallet {
@@ -77,11 +88,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
   registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
-  base::Value selected_networks(base::Value::Type::DICTIONARY);
-  selected_networks.SetStringKey(kEthereumPrefKey,
-                                 brave_wallet::mojom::kMainnetChainId);
   registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,
-                                   std::move(selected_networks));
+                                   GetDefaultSelectedNetworks());
   registry->RegisterDictionaryPref(kBraveWalletUserAssets,
                                    GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);

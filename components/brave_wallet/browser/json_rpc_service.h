@@ -152,7 +152,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       GetPendingSwitchChainRequestsCallback callback) override;
   void NotifySwitchChainRequestProcessed(bool approved,
                                          const GURL& origin) override;
-  void GetAllNetworks(GetAllNetworksCallback callback) override;
+  void GetAllNetworks(mojom::CoinType coin,
+                      GetAllNetworksCallback callback) override;
   std::string GetNetworkUrl(mojom::CoinType coin) const;
   void GetNetworkUrl(
       mojom::CoinType coin,

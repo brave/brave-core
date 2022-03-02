@@ -242,7 +242,7 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
 
 handler.on(WalletActions.getAllNetworks.getType(), async (store) => {
   const jsonRpcService = getAPIProxy().jsonRpcService
-  const fullList = await jsonRpcService.getAllNetworks()
+  const fullList = await jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
   store.dispatch(WalletActions.setAllNetworks(fullList))
 })
 

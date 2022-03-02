@@ -151,7 +151,7 @@ public class PortfolioFragment
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
         jsonRpcService.getChainId(CoinType.ETH, chain_id -> {
-            jsonRpcService.getAllNetworks(chains -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 String chainId = Utils.getNetworkConst(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
@@ -183,7 +183,7 @@ public class PortfolioFragment
         editVisibleAssets.setOnClickListener(v -> {
             JsonRpcService jsonRpcService = getJsonRpcService();
             assert jsonRpcService != null;
-            jsonRpcService.getAllNetworks(chains -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 String chainId = Utils.getNetworkConst(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
@@ -269,7 +269,7 @@ public class PortfolioFragment
     public void onAssetClick(BlockchainToken asset) {
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
-        jsonRpcService.getAllNetworks(chains -> {
+        jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
             NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
             String chainId =
                     Utils.getNetworkConst(getActivity(), mSelectedChainNetworkName, customNetworks);
@@ -372,7 +372,7 @@ public class PortfolioFragment
         keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
             JsonRpcService jsonRpcService = getJsonRpcService();
             assert jsonRpcService != null;
-            jsonRpcService.getAllNetworks(chains -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 AccountInfo[] accountInfos = new AccountInfo[] {};
                 if (keyringInfo != null) {
                     accountInfos = keyringInfo.accountInfos;

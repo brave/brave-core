@@ -69,8 +69,9 @@ const std::vector<mojom::NetworkInfoPtr> GetAllKnownNetworksForTesting();
 void GetAllEthCustomChains(PrefService* prefs,
                            std::vector<mojom::NetworkInfoPtr>* result);
 GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
-void GetAllEthChains(PrefService* prefs,
-                     std::vector<mojom::NetworkInfoPtr>* result);
+void GetAllChains(PrefService* prefs,
+                  mojom::CoinType coin,
+                  std::vector<mojom::NetworkInfoPtr>* result);
 GURL GetNetworkURL(PrefService* prefs,
                    const std::string& chain_id,
                    mojom::CoinType coin);

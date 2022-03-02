@@ -283,7 +283,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.network_spinner) {
             String item = parent.getItemAtPosition(position).toString();
-            mJsonRpcService.getAllNetworks(chains -> {
+            mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 final String chainId = Utils.getNetworkConst(this, item, customNetworks);
 
@@ -1228,7 +1228,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private void sendTransaction(
             TxData data, String from, String maxPriorityFeePerGas, String maxFeePerGas) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getAllNetworks(networks -> {
+        mJsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
             boolean isEIP1559 = false;
             // We have hardcoded EIP-1559 gas fields.
             if (!maxPriorityFeePerGas.isEmpty() && !maxFeePerGas.isEmpty()) {
@@ -1412,7 +1412,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 mCurrentChainId = chainId;
                 Spinner spinner = findViewById(R.id.network_spinner);
                 spinner.setOnItemSelectedListener(this);
-                mJsonRpcService.getAllNetworks(chains -> {
+                mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                     NetworkInfo[] customNetworks = new NetworkInfo[0];
                     // We want to hide custom networks for BUY and SWAP screens. We are
                     // going to add a support for SWAP at least in the near future.

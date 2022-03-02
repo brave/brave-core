@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
@@ -81,7 +82,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         if (!mChainId.isEmpty()) {
             btAdd.setText(R.string.brave_wallet_add_network_submit);
             assert mJsonRpcService != null;
-            mJsonRpcService.getAllNetworks(networks -> {
+            mJsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
                 for (NetworkInfo chain : networks) {
                     if (chain.chainId.equals(mChainId)) {
                         fillControls(chain, view);

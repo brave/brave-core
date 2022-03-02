@@ -332,7 +332,7 @@ export function refreshNetworkInfo () {
     const apiProxy = getAPIProxy()
     const { jsonRpcService } = apiProxy
 
-    const networkList = await jsonRpcService.getAllNetworks()
+    const networkList = await jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
     dispatch(WalletActions.setAllNetworks(networkList))
     const chainId = await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
     const currentNetwork = GetNetworkInfo(chainId.chainId, networkList.networks)

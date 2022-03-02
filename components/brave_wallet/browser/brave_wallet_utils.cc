@@ -74,6 +74,7 @@ bool GetUseStagingInfuraEndpoint() {
 }
 
 const char kGanacheLocalhostURL[] = "http://localhost:7545/";
+const char kSolanaLocalhostURL[] = "http://localhost:8899/";
 
 // Precompiled networks available in native wallet.
 const brave_wallet::mojom::NetworkInfo kKnownEthNetworks[] = {
@@ -138,6 +139,49 @@ const brave_wallet::mojom::NetworkInfo kKnownEthNetworks[] = {
      brave_wallet::mojom::CoinType::ETH,
      mojom::NetworkInfoData::NewEthData(
          mojom::NetworkInfoDataETH::New(false))}};
+
+const brave_wallet::mojom::NetworkInfo kKnownSolNetworks[] = {
+    {brave_wallet::mojom::kSolanaMainnet,
+     "Solona Mainnet Beta",
+     {"https://explorer.solana.com/"},
+     {},
+     {"https://api.mainnet-beta.solana.com"},
+     "SOL",
+     "Solana",
+     9,
+     brave_wallet::mojom::CoinType::SOL,
+     nullptr},
+    {brave_wallet::mojom::kSolanaTestnet,
+     "Solona Testnet",
+     {"https://explorer.solana.com/?cluster=testnet"},
+     {},
+     {"https://api.testnet.solana.com"},
+     "SOL",
+     "Solana",
+     9,
+     brave_wallet::mojom::CoinType::SOL,
+     nullptr},
+    {brave_wallet::mojom::kSolanaDevnet,
+     "Solona Devnet",
+     {"https://explorer.solana.com/?cluster=devnet"},
+     {},
+     {"https://api.devnet.solana.com"},
+     "SOL",
+     "Solana",
+     9,
+     brave_wallet::mojom::CoinType::SOL,
+     nullptr},
+    {brave_wallet::mojom::kLocalhostChainId,
+     "Solana Localhost",
+     {"https://explorer.solana.com/"
+      "?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899"},
+     {},
+     {kSolanaLocalhostURL},
+     "SOL",
+     "Solana",
+     9,
+     brave_wallet::mojom::CoinType::SOL,
+     nullptr}};
 
 const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kMainnetChainId, "mainnet"},
@@ -207,13 +251,11 @@ mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
 mojom::NetworkInfoPtr GetChain(PrefService* prefs,
                                const std::string& chain_id,
                                mojom::CoinType coin) {
-  if (coin == mojom::CoinType::ETH) {
-    std::vector<mojom::NetworkInfoPtr> chains;
-    GetAllEthChains(prefs, &chains);
-    for (const auto& chain : chains) {
-      if (chain->chain_id == chain_id)
-        return chain.Clone();
-    }
+  std::vector<mojom::NetworkInfoPtr> chains;
+  GetAllChains(prefs, coin, &chains);
+  for (const auto& chain : chains) {
+    if (chain->chain_id == chain_id)
+      return chain.Clone();
   }
 
   return nullptr;
@@ -617,14 +659,27 @@ GURL GetNetworkURL(PrefService* prefs,
 
     if (known_network->rpc_urls.size())
       return GURL(known_network->rpc_urls.front());
+  } else if (coin == mojom::CoinType::SOL) {
+    for (const auto& network : kKnownSolNetworks) {
+      if (network.chain_id == chain_id && network.rpc_urls.size()) {
+        return GURL(network.rpc_urls.front());
+      }
+    }
   }
   return GURL();
 }
 
-void GetAllEthChains(PrefService* prefs,
-                     std::vector<mojom::NetworkInfoPtr>* result) {
-  GetAllKnownEthChains(prefs, result);
-  GetAllEthCustomChains(prefs, result);
+void GetAllChains(PrefService* prefs,
+                  mojom::CoinType coin,
+                  std::vector<mojom::NetworkInfoPtr>* result) {
+  if (coin == mojom::CoinType::ETH) {
+    GetAllKnownEthChains(prefs, result);
+    GetAllEthCustomChains(prefs, result);
+  } else if (coin == mojom::CoinType::SOL) {
+    for (const auto& network : kKnownSolNetworks) {
+      result->push_back(network.Clone());
+    }
+  }
 }
 
 std::vector<std::string> GetAllKnownEthNetworkIds() {

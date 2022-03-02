@@ -252,9 +252,6 @@ struct SwapResponse {
 const string kLedgerHardwareVendor = "Ledger";
 const string kTrezorHardwareVendor = "Trezor";
 
-const string kFilecoinTestnet = "t";
-const string kFilecoinMainnet = "f";
-
 const string kFilecoinKeyringId = "filecoin";
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
@@ -573,9 +570,11 @@ const string kGoerliChainId = "0x5";
 const string kKovanChainId = "0x2a";
 const string kLocalhostChainId = "0x539";
 const string kPolygonMainnetChainId = "0x89";
-const string kSolanaMainnet = "solana:0x65";
-const string kSolanaTestnet = "solana:0x66";
-const string kSolanaDevnet = "solana:0x67";
+const string kSolanaMainnet = "0x65";
+const string kSolanaTestnet = "0x66";
+const string kSolanaDevnet = "0x67";
+const string kFilecoinTestnet = "t";
+const string kFilecoinMainnet = "f";
 
 enum CoinType {
   ETH = 60,
@@ -627,7 +626,7 @@ interface JsonRpcService {
 
   SetNetwork(string chain_id, CoinType coin) => (bool success);
   GetNetwork(CoinType coin) => (NetworkInfo network);
-  GetAllNetworks() => (array<NetworkInfo> networks);
+  GetAllNetworks(CoinType coin) => (array<NetworkInfo> networks);
 
   // Obtains the current network's chain ID
   GetChainId(CoinType coin) => (string chain_id);

@@ -977,7 +977,7 @@ public class Utils {
             }
             assert jsonRpcService != null;
             jsonRpcService.getChainId(CoinType.ETH, chainId -> {
-                jsonRpcService.getAllNetworks(networks -> {
+                jsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
                     for (NetworkInfo network : networks) {
                         if (!chainId.equals(network.chainId)) {
                             continue;
@@ -1014,7 +1014,7 @@ public class Utils {
             RecyclerView rvTransactions, OnWalletListItemClick callback, Context context,
             String chainId, JsonRpcService jsonRpcService, WalletCoinAdapter walletTxCoinAdapter) {
         assert jsonRpcService != null;
-        jsonRpcService.getAllNetworks(networks -> {
+        jsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
             String chainSymbol = "ETH";
             int chainDecimals = 18;
             for (NetworkInfo network : networks) {

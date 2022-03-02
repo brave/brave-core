@@ -17,6 +17,7 @@
 #include "base/strings/string_util.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -24,6 +25,7 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -705,13 +707,21 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   GetAllEthCustomChains(&prefs, &expected_chains);
 
   std::vector<mojom::NetworkInfoPtr> all_chains;
-  GetAllEthChains(&prefs, &all_chains);
+  GetAllChains(&prefs, mojom::CoinType::ETH, &all_chains);
 
   EXPECT_EQ(expected_chains.size(), all_chains.size());
 
   for (size_t i = 0; i < all_chains.size(); i++) {
     ASSERT_TRUE(all_chains.at(i).Equals(expected_chains.at(i)));
   }
+  // Solana
+  std::vector<mojom::NetworkInfoPtr> sol_chains;
+  GetAllChains(&prefs, mojom::CoinType::SOL, &sol_chains);
+  ASSERT_EQ(sol_chains.size(), 4u);
+  EXPECT_EQ(sol_chains[0]->chain_id, mojom::kSolanaMainnet);
+  EXPECT_EQ(sol_chains[1]->chain_id, mojom::kSolanaTestnet);
+  EXPECT_EQ(sol_chains[2]->chain_id, mojom::kSolanaDevnet);
+  EXPECT_EQ(sol_chains[3]->chain_id, mojom::kLocalhostChainId);
 }
 
 TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
@@ -813,6 +823,17 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
             GetKnownEthChain(&prefs, "0x1"));
   EXPECT_EQ(GetChain(&prefs, "0x539", mojom::CoinType::ETH),
             GetKnownEthChain(&prefs, "0x539"));
+
+  // Solana
+
+  mojom::NetworkInfo sol_mainnet(
+      brave_wallet::mojom::kSolanaMainnet, "Solona Mainnet Beta",
+      {"https://explorer.solana.com/"}, {},
+      {"https://api.mainnet-beta.solana.com"}, "SOL", "Solana", 9,
+      brave_wallet::mojom::CoinType::SOL, nullptr);
+  EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::SOL));
+  EXPECT_EQ(GetChain(&prefs, "0x65", mojom::CoinType::SOL),
+            sol_mainnet.Clone());
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
@@ -956,6 +977,18 @@ TEST(BraveWalletUtilsUnitTest, GetPrefKeyForCoinType) {
   EXPECT_EQ(*key, kSolanaPrefKey);
 
   EXPECT_FALSE(GetPrefKeyForCoinType(static_cast<mojom::CoinType>(2016)));
+}
+
+TEST(BraveWalletUtilsUnitTest, GetCurrentChainId) {
+  sync_preferences::TestingPrefServiceSyncable prefs;
+  RegisterProfilePrefs(prefs.registry());
+  // default value
+  EXPECT_EQ(GetCurrentChainId(&prefs, mojom::CoinType::ETH),
+            mojom::kMainnetChainId);
+  EXPECT_EQ(GetCurrentChainId(&prefs, mojom::CoinType::SOL),
+            mojom::kSolanaMainnet);
+  // TODO(spylogsster): This needs to be updated when Filecoin is added
+  EXPECT_TRUE(GetCurrentChainId(&prefs, mojom::CoinType::FIL).empty());
 }
 
 }  // namespace brave_wallet

@@ -82,7 +82,8 @@ void ChainIdValidationResponse(
 
 bool IsChainExist(PrefService* prefs, const std::string& chain_id) {
   std::vector<::brave_wallet::mojom::NetworkInfoPtr> custom_chains;
-  brave_wallet::GetAllEthChains(prefs, &custom_chains);
+  brave_wallet::GetAllChains(prefs, brave_wallet::mojom::CoinType::ETH,
+                             &custom_chains);
   for (const auto& it : custom_chains) {
     if (it->chain_id == chain_id) {
       return true;
@@ -105,7 +106,10 @@ JsonRpcService::JsonRpcService(
       weak_ptr_factory_(this) {
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::ETH),
                   mojom::CoinType::ETH))
-    LOG(ERROR) << "Could not set netowrk from JsonRpcService()";
+    LOG(ERROR) << "Could not set netowrk from JsonRpcService() for ETH";
+  if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::SOL),
+                  mojom::CoinType::SOL))
+    LOG(ERROR) << "Could not set netowrk from JsonRpcService() for SOL";
 }
 
 void JsonRpcService::SetAPIRequestHelperForTesting(
@@ -463,9 +467,10 @@ void JsonRpcService::GetBlockTrackerUrl(
       GetBlockTrackerUrlFromNetwork(GetChainId(mojom::CoinType::ETH)).spec());
 }
 
-void JsonRpcService::GetAllNetworks(GetAllNetworksCallback callback) {
+void JsonRpcService::GetAllNetworks(mojom::CoinType coin,
+                                    GetAllNetworksCallback callback) {
   std::vector<mojom::NetworkInfoPtr> all_chains;
-  brave_wallet::GetAllEthChains(prefs_, &all_chains);
+  GetAllChains(prefs_, coin, &all_chains);
   std::move(callback).Run(std::move(all_chains));
 }
 
@@ -1127,7 +1132,7 @@ void JsonRpcService::OnUnstoppableDomainsGetEthAddr(
 
 GURL JsonRpcService::GetBlockTrackerUrlFromNetwork(std::string chain_id) {
   std::vector<mojom::NetworkInfoPtr> networks;
-  brave_wallet::GetAllEthChains(prefs_, &networks);
+  brave_wallet::GetAllChains(prefs_, mojom::CoinType::ETH, &networks);
   for (const auto& network : networks) {
     if (network->chain_id != chain_id)
       continue;

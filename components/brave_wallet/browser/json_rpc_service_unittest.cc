@@ -417,14 +417,16 @@ class JsonRpcServiceUnitTest : public testing::Test {
     ASSERT_TRUE(callback_is_called);
   }
 
-  void SetNetwork(const std::string& chain_id, mojom::CoinType coin) {
+  bool SetNetwork(const std::string& chain_id, mojom::CoinType coin) {
+    bool result;
     base::RunLoop run_loop;
-    json_rpc_service_->SetNetwork(
-        chain_id, coin, base::BindLambdaForTesting([&run_loop](bool success) {
-          EXPECT_TRUE(success);
-          run_loop.Quit();
-        }));
+    json_rpc_service_->SetNetwork(chain_id, coin,
+                                  base::BindLambdaForTesting([&](bool success) {
+                                    result = success;
+                                    run_loop.Quit();
+                                  }));
     run_loop.Run();
+    return result;
   }
 
   void TestGetSolanaBalance(uint64_t expected_balance,
@@ -515,7 +517,7 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
   brave_wallet::GetAllKnownEthChains(prefs(), &networks);
   for (const auto& network : networks) {
     bool callback_is_called = false;
-    SetNetwork(network->chain_id, mojom::CoinType::ETH);
+    EXPECT_TRUE(SetNetwork(network->chain_id, mojom::CoinType::ETH));
 
     EXPECT_EQ(network->chain_id,
               GetCurrentChainId(prefs(), mojom::CoinType::ETH));
@@ -542,6 +544,31 @@ TEST_F(JsonRpcServiceUnitTest, SetNetwork) {
     ASSERT_TRUE(callback_is_called);
   }
   base::RunLoop().RunUntilIdle();
+
+  // Solana
+  ASSERT_EQ(mojom::kSolanaMainnet,
+            GetCurrentChainId(prefs(), mojom::CoinType::SOL));
+  EXPECT_FALSE(SetNetwork("0x1234", mojom::CoinType::SOL));
+  EXPECT_TRUE(SetNetwork(mojom::kSolanaTestnet, mojom::CoinType::SOL));
+
+  base::RunLoop run_loop;
+  json_rpc_service_->GetChainId(
+      mojom::CoinType::SOL,
+      base::BindLambdaForTesting([&run_loop](const std::string& chain_id) {
+        EXPECT_EQ(chain_id, mojom::kSolanaTestnet);
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+
+  base::RunLoop run_loop2;
+  json_rpc_service_->GetNetworkUrl(
+      mojom::CoinType::SOL,
+      base::BindLambdaForTesting([&run_loop2](const std::string& spec) {
+        EXPECT_EQ(url::Origin::Create(GURL(spec)),
+                  url::Origin::Create(GURL("https://api.testnet.solana.com")));
+        run_loop2.Quit();
+      }));
+  run_loop2.Run();
 }
 
 TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
@@ -563,7 +590,7 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
   UpdateCustomNetworks(prefs(), &values);
 
   bool callback_is_called = false;
-  SetNetwork(chain1.chain_id, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(chain1.chain_id, mojom::CoinType::ETH));
   const std::string& expected_id = chain1.chain_id;
   json_rpc_service_->GetChainId(
       mojom::CoinType::ETH,
@@ -606,20 +633,34 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   UpdateCustomNetworks(prefs(), &values);
 
   std::vector<mojom::NetworkInfoPtr> expected_chains;
-  GetAllEthChains(prefs(), &expected_chains);
+  GetAllChains(prefs(), mojom::CoinType::ETH, &expected_chains);
   bool callback_is_called = false;
-  json_rpc_service_->GetAllNetworks(base::BindLambdaForTesting(
-      [&callback_is_called,
-       &expected_chains](std::vector<mojom::NetworkInfoPtr> chains) {
-        EXPECT_EQ(expected_chains.size(), chains.size());
+  json_rpc_service_->GetAllNetworks(
+      mojom::CoinType::ETH,
+      base::BindLambdaForTesting(
+          [&callback_is_called,
+           &expected_chains](std::vector<mojom::NetworkInfoPtr> chains) {
+            EXPECT_EQ(expected_chains.size(), chains.size());
 
-        for (size_t i = 0; i < chains.size(); i++) {
-          ASSERT_TRUE(chains.at(i).Equals(expected_chains.at(i)));
-        }
-        callback_is_called = true;
-      }));
-  ASSERT_TRUE(callback_is_called);
+            for (size_t i = 0; i < chains.size(); i++) {
+              ASSERT_TRUE(chains.at(i).Equals(expected_chains.at(i)));
+            }
+            callback_is_called = true;
+          }));
   base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(callback_is_called);
+
+  callback_is_called = false;
+  json_rpc_service_->GetAllNetworks(
+      mojom::CoinType::SOL,
+      base::BindLambdaForTesting(
+          [&callback_is_called](std::vector<mojom::NetworkInfoPtr> chains) {
+            EXPECT_EQ(chains.size(), 4u);
+
+            callback_is_called = true;
+          }));
+  base::RunLoop().RunUntilIdle();
+  ASSERT_TRUE(callback_is_called);
 }
 
 TEST_F(JsonRpcServiceUnitTest, EnsResolverGetContentHash) {
@@ -699,7 +740,7 @@ TEST_F(JsonRpcServiceUnitTest, EnsGetEthAddr) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
   SetUDENSInterceptor(mojom::kMainnetChainId);
   json_rpc_service_->EnsGetEthAddr(
       "brantly-test.eth",
@@ -1470,7 +1511,7 @@ TEST_F(JsonRpcServiceUnitTest, UnstoppableDomainsGetEthAddr) {
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
-  SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH));
   SetUDENSInterceptor(mojom::kMainnetChainId);
   json_rpc_service_->UnstoppableDomainsGetEthAddr(
       "brad-test.crypto",
@@ -1545,7 +1586,8 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559NotCalledForKnownChains) {
   TestJsonRpcServiceObserver observer(mojom::kMainnetChainId,
                                       mojom::CoinType::ETH, false);
   json_rpc_service_->AddObserver(observer.GetReceiver());
-  SetNetwork(brave_wallet::mojom::kMainnetChainId, mojom::CoinType::ETH);
+  EXPECT_TRUE(
+      SetNetwork(brave_wallet::mojom::kMainnetChainId, mojom::CoinType::ETH));
   EXPECT_FALSE(observer.is_eip1559_changed_called());
 }
 
@@ -1558,7 +1600,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
   // true in the RPC response.
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
   SetIsEip1559Interceptor(true);
-  SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH));
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_TRUE(observer.is_eip1559_changed_called());
   EXPECT_TRUE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
@@ -1567,7 +1609,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
   // is false in the RPC response.
   observer.Reset(mojom::kLocalhostChainId, false);
   SetIsEip1559Interceptor(false);
-  SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH));
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_TRUE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
@@ -1577,7 +1619,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
   observer.Reset(mojom::kLocalhostChainId, false);
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
   SetIsEip1559Interceptor(false);
-  SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH));
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
@@ -1585,7 +1627,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
   // OnEip1559Changed will not be called if RPC fails.
   observer.Reset(mojom::kLocalhostChainId, false);
   SetHTTPRequestTimeoutInterceptor();
-  SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH));
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
@@ -1617,7 +1659,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
 
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain1.chain_id));
   SetIsEip1559Interceptor(true);
-  SetNetwork(chain1.chain_id, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(chain1.chain_id, mojom::CoinType::ETH));
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_TRUE(observer.is_eip1559_changed_called());
   EXPECT_TRUE(GetIsEip1559FromPrefs(chain1.chain_id));
@@ -1627,7 +1669,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
   observer.Reset(chain2.chain_id, false);
   EXPECT_TRUE(GetIsEip1559FromPrefs(chain2.chain_id));
   SetIsEip1559Interceptor(false);
-  SetNetwork(chain2.chain_id, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(chain2.chain_id, mojom::CoinType::ETH));
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_TRUE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
@@ -1637,7 +1679,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
   observer.Reset(chain2.chain_id, false);
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
   SetIsEip1559Interceptor(false);
-  SetNetwork(chain2.chain_id, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(chain2.chain_id, mojom::CoinType::ETH));
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
@@ -1645,7 +1687,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
   // OnEip1559Changed will not be called if RPC fails.
   observer.Reset(chain2.chain_id, false);
   SetHTTPRequestTimeoutInterceptor();
-  SetNetwork(chain2.chain_id, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(chain2.chain_id, mojom::CoinType::ETH));
   EXPECT_TRUE(observer.chain_changed_called());
   EXPECT_FALSE(observer.is_eip1559_changed_called());
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
@@ -1949,7 +1991,7 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
   ASSERT_FALSE(custom_chains.empty());
   custom_chains.clear();
   ASSERT_TRUE(custom_chains.empty());
-  SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH);
+  EXPECT_TRUE(SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH));
   prefs()->SetBoolean(kSupportEip1559OnLocalhostChain, true);
   EXPECT_TRUE(prefs()->HasPrefPath(kBraveWalletCustomNetworks));
   EXPECT_EQ(GetCurrentChainId(prefs(), mojom::CoinType::ETH),
