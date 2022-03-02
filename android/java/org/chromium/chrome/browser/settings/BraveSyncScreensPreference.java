@@ -1415,22 +1415,23 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
       onDevicesAvailable();
   }
 
-  private void adjustWidth(View view) {
-      if (DeviceFormFactor.isTablet()) {
+  private void adjustWidth(View view, int orientation) {
+      if (orientation != Configuration.ORIENTATION_LANDSCAPE && DeviceFormFactor.isTablet()) {
           DisplayMetrics metrics = new DisplayMetrics();
           getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
           LayoutParams params = view.getLayoutParams();
-          params.width = metrics.widthPixels / 3;
-          params.height = metrics.heightPixels / 3;
+          params.width = metrics.widthPixels * 3 / 5;
+          params.height = metrics.heightPixels * 3 / 5;
           view.setLayoutParams(params);
       }
   }
 
   private void adjustImageButtons(int orientation) {
-      if ((null != mLayoutSyncStartChain) && (null != mScrollViewSyncStartChain) && (View.VISIBLE == mScrollViewSyncStartChain.getVisibility())) {
-          adjustWidth(mScrollViewSyncStartChain);
+      if ((null != mLayoutSyncStartChain) && (null != mScrollViewSyncStartChain)
+              && (View.VISIBLE == mScrollViewSyncStartChain.getVisibility())) {
+          adjustWidth(mScrollViewSyncStartChain, orientation);
           LayoutParams params = mLayoutMobile.getLayoutParams();
-          if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+          if (orientation == Configuration.ORIENTATION_LANDSCAPE && !DeviceFormFactor.isTablet()) {
               mLayoutSyncStartChain.setOrientation(LinearLayout.HORIZONTAL);
               params.width = 0;
               params.height = LayoutParams.MATCH_PARENT;
