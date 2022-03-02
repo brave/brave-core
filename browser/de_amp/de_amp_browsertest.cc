@@ -12,8 +12,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -21,6 +19,13 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/re2/src/re2/re2.h"
+
+#if defined(OS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
+#endif
 
 const char kTestHost[] = "a.test.com";
 const char kTestAmpPage[] = "/test.html";
@@ -32,7 +37,7 @@ const char kTestBody[] =
     "<link rel='canonical' "
     "href='https://%s:%s%s'>\n"
     "</head></html>";
-class DeAmpBrowserTest : public InProcessBrowserTest {
+class DeAmpBrowserTest : public PlatformBrowserTest {
  public:
   DeAmpBrowserTest() {
     feature_list_.InitAndEnableFeature(de_amp::features::kBraveDeAMP);
@@ -49,21 +54,21 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
 
     https_server_->ServeFilesFromDirectory(test_data_dir);
     content::SetupCrossSiteRedirector(https_server_.get());
-    InProcessBrowserTest::SetUpOnMainThread();
+    PlatformBrowserTest::SetUpOnMainThread();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    InProcessBrowserTest::SetUpCommandLine(command_line);
+    PlatformBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
     mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
   }
 
   void TearDownInProcessBrowserTestFixture() override {
-    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
+    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
@@ -113,7 +118,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const std::string& canonical_page,
     const std::string& body,
     const net::test_server::HttpRequest& request) {
-  auto port = request.GetURL().port();
+  const auto port = request.GetURL().port();
 
   auto http_response = std::make_unique<net::test_server::BasicHttpResponse>();
   http_response->set_code(net::HTTP_OK);
@@ -130,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
   ASSERT_TRUE(https_server_->Start());
 
   // Go to any page
-  GURL simple = https_server_->GetURL(kTestHost, kTestSimpleNonAmpPage);
+  const GURL simple = https_server_->GetURL(kTestHost, kTestSimpleNonAmpPage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), simple));
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), simple);
 
@@ -140,8 +145,8 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, kTestHost, kTestCanonicalPage, kTestBody));
   ASSERT_TRUE(https_server_->Start());
-  GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
-  GURL landing_url = https_server_->GetURL(kTestHost, kTestCanonicalPage);
+  const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL landing_url = https_server_->GetURL(kTestHost, kTestCanonicalPage);
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
 }
 
@@ -156,7 +161,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, NonHttpScheme) {
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, kTestHost, kTestCanonicalPage, nonHttpSchemeBody));
   ASSERT_TRUE(https_server_->Start());
-  GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
   NavigateToURLAndWaitForRedirects(original_url, original_url);
 }
 
@@ -165,7 +170,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, CanonicalLinkSameAsAmpPage) {
   https_server_->RegisterRequestHandler(
       base::BindRepeating(HandleRequest, kTestHost, kTestAmpPage, kTestBody));
   ASSERT_TRUE(https_server_->Start());
-  GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
   NavigateToURLAndWaitForRedirects(original_url, original_url);
 }
 
@@ -174,7 +179,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, PrefOff) {
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, kTestHost, kTestCanonicalPage, kTestBody));
   ASSERT_TRUE(https_server_->Start());
-  GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
   // Doesn't get De-AMPed
   NavigateToURLAndWaitForRedirects(original_url, original_url);
 }
@@ -184,18 +189,15 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, RestorePage) {
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, kTestHost, kTestCanonicalPage, kTestBody));
   ASSERT_TRUE(https_server_->Start());
-  GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
 
+  // Close tab
+  browser()->tab_strip_model()->CloseSelectedTabs();
   Profile* profile = browser()->profile();
-
-  CloseBrowserSynchronously(browser());
-
-  EXPECT_EQ(0u, BrowserList::GetInstance()->size());
+  // Restore tab
   chrome::OpenWindowWithRestoredTabs(profile);
-  EXPECT_EQ(1u, BrowserList::GetInstance()->size());
-  SelectFirstBrowser();
-  GURL landing_url = https_server_->GetURL(kTestHost, kTestCanonicalPage);
+  const GURL landing_url = https_server_->GetURL(kTestHost, kTestCanonicalPage);
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
 }
 
@@ -204,7 +206,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, BackAndForwardNavigatesAlsoRedirect) {
   ASSERT_TRUE(https_server_->Start());
 
   // Go to any page
-  GURL simple = https_server_->GetURL(kTestHost, kTestSimpleNonAmpPage);
+  const GURL simple = https_server_->GetURL(kTestHost, kTestSimpleNonAmpPage);
   NavigateToURLAndWaitForRedirects(simple, simple);
 
   // Now go to an AMP page
@@ -214,8 +216,9 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, BackAndForwardNavigatesAlsoRedirect) {
       HandleRequest, kTestHost, kTestCanonicalPage, kTestBody));
   ASSERT_TRUE(https_server_->Start());
 
-  GURL original_url1 = https_server_->GetURL(kTestHost, kTestAmpPage);
-  GURL landing_url1 = https_server_->GetURL(kTestHost, kTestCanonicalPage);
+  const GURL original_url1 = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL landing_url1 =
+      https_server_->GetURL(kTestHost, kTestCanonicalPage);
   NavigateToURLAndWaitForRedirects(original_url1, landing_url1);
 
   // Go to another AMP page
@@ -226,8 +229,9 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, BackAndForwardNavigatesAlsoRedirect) {
       HandleRequest, kTestHost, another_canonical_page, kTestBody));
   ASSERT_TRUE(https_server_->Start());
 
-  GURL original_url2 = https_server_->GetURL(kTestHost, kTestAmpPage);
-  GURL landing_url2 = https_server_->GetURL(kTestHost, another_canonical_page);
+  const GURL original_url2 = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL landing_url2 =
+      https_server_->GetURL(kTestHost, another_canonical_page);
   NavigateToURLAndWaitForRedirects(original_url2, landing_url2);
 
   // Going back and forward in history should ignore the non-AMP page
@@ -258,7 +262,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpFeatureFlagOffBrowserTest, DoesNotDeAmp) {
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, kTestHost, kTestCanonicalPage, kTestBody));
   ASSERT_TRUE(https_server_->Start());
-  GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
+  const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
   // Doesn't get De-AMPed
   NavigateToURLAndWaitForRedirects(original_url, original_url);
 }

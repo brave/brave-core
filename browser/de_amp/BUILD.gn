@@ -36,8 +36,8 @@ source_set("browser_tests") {
     "//brave/browser/de_amp",
     "//brave/common",
     "//chrome/browser:browser",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/ui:ui",
-    "//chrome/test:test_support_ui",
     "//components/content_settings/core/browser:browser",
     "//components/prefs:test_support",
     "//content/test:test_support",
@@ -45,5 +45,12 @@ source_set("browser_tests") {
     "//testing/gtest",
     "//third_party/re2:re2",
   ]
+
+  if (is_android) {
+    deps += [ "//brave/browser/android:android_browser_process" ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui" ]
+  }
+
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }  # source_set("browser_tests")

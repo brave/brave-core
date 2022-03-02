@@ -5,6 +5,7 @@
 
 #include "brave/components/de_amp/browser/de_amp_service.h"
 
+#include <iostream>
 #include <string>
 
 #include "base/feature_list.h"
@@ -63,6 +64,8 @@ bool DeAmpService::VerifyCanonicalLink(const GURL canonical_link,
 // static
 bool DeAmpService::FindCanonicalLinkIfAMP(const std::string& body,
                                           std::string* canonical_link) {
+  std::cerr << "xyzzy in FindCanonicalLinkIfAMP"
+            << "\n";
   RE2::Options opt;
   opt.set_case_sensitive(false);
   opt.set_dot_nl(true);
@@ -80,20 +83,32 @@ bool DeAmpService::FindCanonicalLinkIfAMP(const std::string& body,
   std::string html_tag;
   if (!RE2::PartialMatch(body, *kGetHtmlTagRegex, &html_tag)) {
     // Early exit if we can't find HTML tag - malformed document (or error)
+    std::cerr << "xyzzy in FindCanonicalLinkIfAMP, cant find html tag"
+              << "\n";
+
     return false;
   }
   if (!RE2::PartialMatch(html_tag, *kDetectAmpRegex)) {
     // Not AMP
+    std::cerr << "xyzzy in FindCanonicalLinkIfAMP, not AMP"
+              << "\n";
+
     return false;
   }
   std::string link_tag;
   if (!RE2::PartialMatch(body, *kFindCanonicalLinkTagRegex, &link_tag)) {
     // Can't find link tag, exit
+    std::cerr << "xyzzy in FindCanonicalLinkIfAMP, cant find link tag"
+              << "\n";
     return false;
   }
   // Find href in canonical link tag
-  return RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex,
-                           canonical_link);
+  bool found_href = RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex,
+                                      canonical_link);
+  std::cerr << "xyzzy in FindCanonicalLinkIfAMP, found href" << *canonical_link
+            << "\n";
+
+  return found_href;
 }
 
 }  // namespace de_amp
