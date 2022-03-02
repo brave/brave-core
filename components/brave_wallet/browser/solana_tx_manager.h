@@ -24,7 +24,7 @@ class SolanaTxManager : public TxManager {
                   JsonRpcService* json_rpc_service,
                   KeyringService* keyring_service,
                   PrefService* prefs);
-  ~SolanaTxManager() override = default;
+  ~SolanaTxManager() override;
 
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,
@@ -48,6 +48,10 @@ class SolanaTxManager : public TxManager {
       GetTransactionMessageToSignCallback callback) override;
 
   void Reset() override;
+
+ private:
+  // TxManager
+  void UpdatePendingTransactions() override;
 };
 
 }  // namespace brave_wallet

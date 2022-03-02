@@ -14,23 +14,14 @@
 namespace brave_wallet {
 
 EthBlockTracker::EthBlockTracker(JsonRpcService* json_rpc_service)
-    : json_rpc_service_(json_rpc_service), weak_factory_(this) {
-  DCHECK(json_rpc_service_);
-}
+    : BlockTracker(json_rpc_service), weak_factory_(this) {}
+
 EthBlockTracker::~EthBlockTracker() = default;
 
 void EthBlockTracker::Start(base::TimeDelta interval) {
   timer_.Start(FROM_HERE, interval,
                base::BindRepeating(&EthBlockTracker::GetBlockNumber,
                                    weak_factory_.GetWeakPtr()));
-}
-
-void EthBlockTracker::Stop() {
-  timer_.Stop();
-}
-
-bool EthBlockTracker::IsRunning() const {
-  return timer_.IsRunning();
 }
 
 void EthBlockTracker::AddObserver(EthBlockTracker::Observer* observer) {

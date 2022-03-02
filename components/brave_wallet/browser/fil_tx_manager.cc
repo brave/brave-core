@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/fil_block_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 
 namespace brave_wallet {
@@ -17,6 +18,7 @@ FilTxManager::FilTxManager(TxService* tx_service,
                            KeyringService* keyring_service,
                            PrefService* prefs)
     : TxManager(std::make_unique<FilTxStateManager>(prefs, json_rpc_service),
+                std::make_unique<FilBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,
                 keyring_service,
@@ -62,7 +64,12 @@ void FilTxManager::GetTransactionMessageToSign(
 }
 
 void FilTxManager::Reset() {
+  TxManager::Reset();
   // TODO(spylogsster): reset members as necessary.
+}
+
+void FilTxManager::UpdatePendingTransactions() {
+  NOTIMPLEMENTED();
 }
 
 }  // namespace brave_wallet
