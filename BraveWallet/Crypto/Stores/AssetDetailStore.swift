@@ -44,7 +44,7 @@ class AssetDetailStore: ObservableObject {
   private let assetRatioService: BraveWalletAssetRatioService
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
-  private let txService: BraveWalletEthTxService
+  private let txService: BraveWalletTxService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   
   let token: BraveWallet.BlockchainToken
@@ -53,7 +53,7 @@ class AssetDetailStore: ObservableObject {
     assetRatioService: BraveWalletAssetRatioService,
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
-    txService: BraveWalletEthTxService,
+    txService: BraveWalletTxService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     token: BraveWallet.BlockchainToken
   ) {
@@ -158,7 +158,7 @@ class AssetDetailStore: ObservableObject {
         let group = DispatchGroup()
         for account in keyring.accountInfos {
           group.enter()
-          self.txService.allTransactionInfo(account.address) { txs in
+          self.txService.allTransactionInfo(.eth, from: account.address) { txs in
             defer { group.leave() }
             allTransactions.append(contentsOf: txs)
           }
@@ -168,7 +168,7 @@ class AssetDetailStore: ObservableObject {
             .filter { tx in
               switch tx.txType {
               case .erc20Approve, .erc20Transfer:
-                let toAddress = tx.txData.baseData.to
+                let toAddress = tx.txDataUnion.ethTxData1559?.baseData.to
                 return toAddress == self.token.contractAddress
               case .ethSend, .other, .erc721TransferFrom, .erc721SafeTransferFrom:
                 return network.symbol.caseInsensitiveCompare(self.token.symbol) == .orderedSame
@@ -197,10 +197,10 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
     }
   }
   
-  func keyringCreated() {
+  func keyringCreated(_ keyringId: String) {
   }
   
-  func keyringRestored() {
+  func keyringRestored(_ keyringId: String) {
   }
   
   func locked() {
@@ -215,7 +215,7 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
   func autoLockMinutesChanged() {
   }
   
-  func selectedAccountChanged() {
+  func selectedAccountChanged(_ coin: BraveWallet.CoinType) {
   }
 }
 
@@ -234,7 +234,7 @@ extension AssetDetailStore: BraveWalletJsonRpcServiceObserver {
   }
 }
 
-extension AssetDetailStore: BraveWalletEthTxServiceObserver {
+extension AssetDetailStore: BraveWalletTxServiceObserver {
   func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
   }
   func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {

@@ -11,7 +11,7 @@ import BraveCore
 ///
 /// - note: Do not use this directly, use ``CryptoKeyringStore.previewStore``
 class MockKeyringService: BraveWalletKeyringService {
-  private var keyrings: [BraveWallet.KeyringInfo] = [.init(id: BraveWallet.DefaultKeyringId, isDefaultKeyringCreated: true, isLocked: false, isBackedUp: true, accountInfos: [])]
+  private var keyrings: [BraveWallet.KeyringInfo] = [.init(id: BraveWallet.DefaultKeyringId, isKeyringCreated: true, isLocked: false, isBackedUp: true, accountInfos: [])]
   private var privateKeys: [String: String] = [:]
   private var password = ""
   // Not a real phrase, has a duplicated word for testing
@@ -59,7 +59,7 @@ class MockKeyringService: BraveWalletKeyringService {
     return address
   }
   
-  func addAccount(_ accountName: String, completion: @escaping (Bool) -> Void) {
+  func addAccount(_ accountName: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
     let info = BraveWallet.AccountInfo()
     info.name = accountName
     info.address = nextAddress()
@@ -71,14 +71,14 @@ class MockKeyringService: BraveWalletKeyringService {
   }
   
   func createWallet(_ password: String, completion: @escaping (String) -> Void) {
-    defaultKeyring.isDefaultKeyringCreated = true
+    defaultKeyring.isKeyringCreated = true
     defaultKeyring.isLocked = false
     self.password = password
-    addAccount("Account 1") { [self] _ in
+    addAccount("Account 1", coin: .eth) { [self] _ in
       selectedAccount = defaultKeyring.accountInfos.first
     }
     observers.allObjects.forEach {
-      $0.keyringCreated()
+      $0.keyringCreated(BraveWallet.DefaultKeyringId)
     }
     completion(mnemonic)
   }
@@ -108,7 +108,7 @@ class MockKeyringService: BraveWalletKeyringService {
   }
   
   func unlock(_ password: String, completion: @escaping (Bool) -> Void) {
-    if !defaultKeyring.isDefaultKeyringCreated {
+    if !defaultKeyring.isKeyringCreated {
       completion(false)
       return
     }
@@ -133,7 +133,7 @@ class MockKeyringService: BraveWalletKeyringService {
     self.password = password
     // Test store does not test phrase validity
     observers.allObjects.forEach {
-      $0.keyringRestored()
+      $0.keyringRestored(BraveWallet.DefaultKeyringId)
     }
     completion(true)
   }
@@ -196,11 +196,19 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(false, "")
   }
   
-  func privateKey(forDefaultKeyringAccount address: String, completion: @escaping (Bool, String) -> Void) {
+  func importAccount(_ accountName: String, privateKey: String, coin: BraveWallet.CoinType, completion: @escaping (Bool, String) -> Void) {
+    completion(false, "")
+  }
+  
+  func importFilecoinBlsAccount(_ accountName: String, privateKey: String, network: String, completion: @escaping (Bool, String) -> Void) {
+    completion(false, "")
+  }
+  
+  func privateKey(forKeyringAccount address: String, coin: BraveWallet.CoinType, completion: @escaping (Bool, String) -> Void) {
     completion(true, "807df4db569fab37cdf475a4bda779897f0f3dd9c5d90a2cb953c88ef762fd96")
   }
   
-  func privateKey(forImportedAccount address: String, completion: @escaping (Bool, String) -> Void) {
+  func privateKey(forImportedAccount address: String, coin: BraveWallet.CoinType, completion: @escaping (Bool, String) -> Void) {
     if let key = privateKeys[address] {
       completion(true, key)
     } else {
@@ -208,7 +216,7 @@ class MockKeyringService: BraveWalletKeyringService {
     }
   }
   
-  func removeImportedAccount(_ address: String, completion: @escaping (Bool) -> Void) {
+  func removeImportedAccount(_ address: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
     guard let index = defaultKeyring.accountInfos.firstIndex(where: { $0.address == address }) else {
       completion(false)
       return
@@ -230,11 +238,11 @@ class MockKeyringService: BraveWalletKeyringService {
     completion([])
   }
   
-  func selectedAccount(_ completion: @escaping (String?) -> Void) {
+  func selectedAccount(_ coin: BraveWallet.CoinType, completion: @escaping (String?) -> Void) {
     completion(selectedAccount?.address)
   }
   
-  func setSelectedAccount(_ address: String, completion: @escaping (Bool) -> Void) {
+  func setSelectedAccount(_ address: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
     guard let account = defaultKeyring.accountInfos.first(where: { $0.address == address }) else {
       completion(false)
       return
@@ -329,9 +337,14 @@ class MockKeyringService: BraveWalletKeyringService {
   func addHardwareAccounts(_ info: [BraveWallet.HardwareWalletAccount]) {
   }
   
-  func removeHardwareAccount(_ address: String) {
+  func setHardwareAccountName(_ address: String, name: String, coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+    completion(true)
+  }
+  
+  func removeHardwareAccount(_ address: String, coin: BraveWallet.CoinType) {
   }
   
   func notifyUserInteraction() {
   }
+  
 }

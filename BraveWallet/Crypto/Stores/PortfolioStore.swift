@@ -228,9 +228,9 @@ extension PortfolioStore: BraveWalletKeyringServiceObserver {
   }
   public func backedUp() {
   }
-  public func keyringCreated() {
+  public func keyringCreated(_ keyringId: String) {
   }
-  public func keyringRestored() {
+  public func keyringRestored(_ keyringId: String) {
   }
   public func locked() {
   }
@@ -241,6 +241,6 @@ extension PortfolioStore: BraveWalletKeyringServiceObserver {
   }
   public func autoLockMinutesChanged() {
   }
-  public func selectedAccountChanged() {
+  public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
   }
 }

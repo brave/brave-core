@@ -100,8 +100,9 @@ public class SwapTokenStore: ObservableObject {
   private let rpcService: BraveWalletJsonRpcService
   private let assetRatioService: BraveWalletAssetRatioService
   private let swapService: BraveWalletSwapService
-  private let txService: BraveWalletEthTxService
+  private let txService: BraveWalletTxService
   private let walletService: BraveWalletBraveWalletService
+  private let ethTxManagerProxy: BraveWalletEthTxManagerProxy
   private var accountInfo: BraveWallet.AccountInfo?
   private var slippage = 0.005 {
     didSet {
@@ -142,8 +143,9 @@ public class SwapTokenStore: ObservableObject {
     rpcService: BraveWalletJsonRpcService,
     assetRatioService: BraveWalletAssetRatioService,
     swapService: BraveWalletSwapService,
-    txService: BraveWalletEthTxService,
+    txService: BraveWalletTxService,
     walletService: BraveWalletBraveWalletService,
+    ethTxManagerProxy: BraveWalletEthTxManagerProxy,
     prefilledToken: BraveWallet.BlockchainToken?
   ) {
     self.keyringService = keyringService
@@ -153,6 +155,7 @@ public class SwapTokenStore: ObservableObject {
     self.swapService = swapService
     self.txService = txService
     self.walletService = walletService
+    self.ethTxManagerProxy = ethTxManagerProxy
     self.selectedFromToken = prefilledToken
     
     self.keyringService.add(self)
@@ -276,7 +279,8 @@ public class SwapTokenStore: ObservableObject {
             value: value,
             data: data
           )
-          self.txService.addUnapprovedTransaction(baseData, from: accountInfo.address) { success, txMetaId, error in
+          let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
+          self.txService.addUnapprovedTransaction(txDataUnion, from: accountInfo.address) { success, txMetaId, error in
             guard success else {
               self.state = .error(Strings.Wallet.unknownError)
               self.clearAllAmount()
@@ -359,7 +363,7 @@ public class SwapTokenStore: ObservableObject {
     isMakingTx = true
     rpcService.network { [weak self] network in
       guard let self = self else { return }
-      self.txService.makeErc20ApproveData(
+      self.ethTxManagerProxy.makeErc20ApproveData(
         spenderAddress,
         amount: "0x\(balanceInWeiHex)"
       ) { success, data in
@@ -384,8 +388,9 @@ public class SwapTokenStore: ObservableObject {
             self.isMakingTx = false
           }
         } else {
+          let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
           self.txService.addUnapprovedTransaction(
-              baseData,
+              txDataUnion,
               from: accountInfo.address,
               completion: { success, txMetaId, error in
                 guard success else {
@@ -409,7 +414,8 @@ public class SwapTokenStore: ObservableObject {
   ) {
     var maxPriorityFeePerGas = ""
     var maxFeePerGas = ""
-    assetRatioService.gasOracle { [weak self] gasEstimation in
+    
+    ethTxManagerProxy.gasEstimation1559 { [weak self] gasEstimation in
       guard let self = self else { return }
       if let gasEstimation = gasEstimation {
         // Bump fast priority fee and max fee by 1 GWei if same as average fees.
@@ -423,7 +429,8 @@ public class SwapTokenStore: ObservableObject {
         }
       }
       let eip1559Data = BraveWallet.TxData1559(baseData: baseData, chainId: chainId, maxPriorityFeePerGas: maxPriorityFeePerGas, maxFeePerGas: maxFeePerGas, gasEstimation: gasEstimation)
-      self.txService.addUnapproved1559Transaction(eip1559Data, from: account.address) { success, txMetaId, errorMessage in
+      let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
+      self.txService.addUnapprovedTransaction(txDataUnion, from: account.address) { success, txMetaId, errorMessage in
         completion(success)
       }
     }
@@ -656,10 +663,10 @@ extension SwapTokenStore: BraveWalletKeyringServiceObserver {
   public func keyringReset() {
   }
   
-  public func keyringCreated() {
+  public func keyringCreated(_ keyringId: String) {
   }
   
-  public func keyringRestored() {
+  public func keyringRestored(_ keyringId: String) {
   }
   
   public func locked() {
@@ -677,10 +684,10 @@ extension SwapTokenStore: BraveWalletKeyringServiceObserver {
   public func autoLockMinutesChanged() {
   }
   
-  public func selectedAccountChanged() {
+  public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
     keyringService.defaultKeyringInfo { [self] keyringInfo in
       if !keyringInfo.accountInfos.isEmpty {
-        keyringService.selectedAccount { accountAddress in
+        keyringService.selectedAccount(coinType) { accountAddress in
           let selectedAccountInfo = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ??
             keyringInfo.accountInfos.first!
           prepare(with: selectedAccountInfo) {

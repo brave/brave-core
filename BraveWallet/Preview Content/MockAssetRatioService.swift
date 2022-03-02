@@ -24,10 +24,6 @@ class MockAssetRatioService: BraveWalletAssetRatioService {
     completion(false, "")
   }
   
-  func gasOracle(_ completion: @escaping (BraveWallet.GasEstimation1559?) -> Void) {
-    completion(nil)
-  }
-  
   func tokenInfo(_ contractAddress: String, completion: @escaping (BraveWallet.BlockchainToken?) -> Void) {
     completion(nil)
   }

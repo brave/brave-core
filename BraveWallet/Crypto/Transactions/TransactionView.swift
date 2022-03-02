@@ -9,16 +9,6 @@ import BraveCore
 import Swift
 import struct Shared.Strings
 
-extension BraveWallet.TransactionInfo {
-  var isSwap: Bool {
-    txData.baseData.to
-      .caseInsensitiveCompare(NamedAddresses.swapExchangeProxyAddress) == .orderedSame
-  }
-  var isEIP1559Transaction: Bool {
-    !txData.maxPriorityFeePerGas.isEmpty && !txData.maxFeePerGas.isEmpty
-  }
-}
-
 /// Displays a summary of a given transaction
 struct TransactionView: View {
   var info: BraveWallet.TransactionInfo
@@ -44,9 +34,9 @@ struct TransactionView: View {
   
   private var gasFee: (String, fiat: String)? {
     let isEIP1559Transaction = info.isEIP1559Transaction
-    let limit = info.txData.baseData.gasLimit
+    let limit = info.ethTxGasLimit
     let formatter = WeiFormatter(decimalFormatStyle: .gasFee(limit: limit.removingHexPrefix, radix: .hex))
-    let hexFee = isEIP1559Transaction ? info.txData.maxFeePerGas : info.txData.baseData.gasPrice
+    let hexFee = isEIP1559Transaction ? (info.txDataUnion.ethTxData1559?.maxFeePerGas ?? "") : info.ethTxGasPrice
     if let value = formatter.decimalString(for: hexFee.removingHexPrefix, radix: .hex, decimals: Int(networkStore.selectedChain.decimals)) {
       return (value, {
         guard let doubleValue = Double(value), let assetRatio = assetRatios[networkStore.selectedChain.symbol.lowercased()] else {
@@ -70,7 +60,7 @@ struct TransactionView: View {
         Text(Strings.Wallet.transactionUnknownApprovalTitle)
       }
     case .ethSend, .other:
-      let amount = formatter.decimalString(for: info.txData.baseData.value.removingHexPrefix, radix: .hex, decimals: Int(networkStore.selectedChain.decimals)) ?? ""
+      let amount = formatter.decimalString(for: info.ethTxValue.removingHexPrefix, radix: .hex, decimals: Int(networkStore.selectedChain.decimals)) ?? ""
       let fiat = numberFormatter.string(from: NSNumber(value: assetRatios[networkStore.selectedChain.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
       if info.isSwap {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionSwapTitle, amount, networkStore.selectedChain.symbol, fiat))
@@ -79,7 +69,7 @@ struct TransactionView: View {
       }
     case .erc20Transfer:
       if info.txArgs.count > 1, let token = visibleTokens.first(where: {
-        $0.contractAddress.caseInsensitiveCompare(info.txData.baseData.to) == .orderedSame
+        $0.contractAddress.caseInsensitiveCompare(info.ethTxToAddress) == .orderedSame
       }) {
         let amount = formatter.decimalString(for: info.txArgs[1].removingHexPrefix, radix: .hex, decimals: Int(token.decimals)) ?? ""
         let fiat = numberFormatter.string(from: NSNumber(value: assetRatios[token.symbol.lowercased(), default: 0] * (Double(amount) ?? 0))) ?? "$0.00"
@@ -89,7 +79,7 @@ struct TransactionView: View {
       }
     case .erc721TransferFrom, .erc721SafeTransferFrom:
       if let token = visibleTokens.first(where: {
-        $0.contractAddress.caseInsensitiveCompare(info.txData.baseData.to) == .orderedSame
+        $0.contractAddress.caseInsensitiveCompare(info.ethTxToAddress) == .orderedSame
       }) {
         Text(String.localizedStringWithFormat(Strings.Wallet.transactionUnknownSendTitle, token.symbol))
       } else {
@@ -104,7 +94,7 @@ struct TransactionView: View {
     // For the time being, use the same subtitle label until we have the ability to parse
     // Swap from/to addresses
     let from = namedAddress(for: info.fromAddress)
-    let to = namedAddress(for: info.txData.baseData.to)
+    let to = namedAddress(for: info.ethTxToAddress)
     Text("\(from) \(Image(systemName: "arrow.right")) \(to)")
       .accessibilityLabel(
         String.localizedStringWithFormat(
@@ -125,7 +115,7 @@ struct TransactionView: View {
     HStack(spacing: 12) {
       BlockieGroup(
         fromAddress: info.fromAddress,
-        toAddress: info.txData.baseData.to,
+        toAddress: info.ethTxToAddress,
         alignVisuallyCentered: false
       )
       .accessibilityHidden(true)

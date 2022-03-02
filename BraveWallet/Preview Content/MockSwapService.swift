@@ -9,6 +9,10 @@ import BraveCore
 #if DEBUG
 
 class MockSwapService: BraveWalletSwapService {
+  func isSwapSupported(_ chainId: String, completion: @escaping (Bool) -> Void) {
+    completion(true)
+  }
+  
   func transactionPayload(_ params: BraveWallet.SwapParams, completion: @escaping (Bool, BraveWallet.SwapResponse?, String?) -> Void) {
     completion(true,
                 .init(price: "", guaranteedPrice: "", to: "", data: "", value: "", gas: "", estimatedGas: "", gasPrice: "", protocolFee: "", minimumProtocolFee: "", buyTokenAddress: "", sellTokenAddress: "", buyAmount: "", sellAmount: "", allowanceTarget: "", sellTokenToEthRate: "", buyTokenToEthRate: ""),

@@ -17,8 +17,9 @@ class SendTokenStoreTests: XCTestCase {
             keyringService: MockKeyringService(),
             rpcService: MockJsonRpcService(),
             walletService: MockBraveWalletService(),
-            txService: MockEthTxService(),
+            txService: MockTxService(),
             blockchainRegistry: MockBlockchainRegistry(),
+            ethTxManagerProxy: MockEthTxManagerProxy(),
             prefilledToken: nil
         )
         XCTAssertNil(store.selectedSendToken)
@@ -27,8 +28,9 @@ class SendTokenStoreTests: XCTestCase {
             keyringService: MockKeyringService(),
             rpcService: MockJsonRpcService(),
             walletService: MockBraveWalletService(),
-            txService: MockEthTxService(),
+            txService: MockTxService(),
             blockchainRegistry: MockBlockchainRegistry(),
+            ethTxManagerProxy: MockEthTxManagerProxy(),
             prefilledToken: .previewToken
         )
         XCTAssertEqual(store.selectedSendToken?.symbol.lowercased(), BraveWallet.BlockchainToken.previewToken.symbol.lowercased())
@@ -40,8 +42,9 @@ class SendTokenStoreTests: XCTestCase {
             keyringService: MockKeyringService(),
             rpcService: rpcService,
             walletService: MockBraveWalletService(),
-            txService: MockEthTxService(),
+            txService: MockTxService(),
             blockchainRegistry: MockBlockchainRegistry(),
+            ethTxManagerProxy: MockEthTxManagerProxy(),
             prefilledToken: nil
         )
         let ex = expectation(description: "fetch-assets")
@@ -67,8 +70,9 @@ class SendTokenStoreTests: XCTestCase {
             keyringService: MockKeyringService(),
             rpcService: MockJsonRpcService(),
             walletService: MockBraveWalletService(),
-            txService: MockEthTxService(),
+            txService: MockTxService(),
             blockchainRegistry: MockBlockchainRegistry(),
+            ethTxManagerProxy: MockEthTxManagerProxy(),
             prefilledToken: .previewToken
         )
         store.setUpTest()
@@ -88,8 +92,9 @@ class SendTokenStoreTests: XCTestCase {
             keyringService: MockKeyringService(),
             rpcService: rpcService,
             walletService: MockBraveWalletService(),
-            txService: MockEthTxService(),
+            txService: MockTxService(),
             blockchainRegistry: MockBlockchainRegistry(),
+            ethTxManagerProxy: MockEthTxManagerProxy(),
             prefilledToken: .previewToken
         )
         store.setUpTest()
@@ -112,8 +117,9 @@ class SendTokenStoreTests: XCTestCase {
             keyringService: MockKeyringService(),
             rpcService: MockJsonRpcService(),
             walletService: MockBraveWalletService(),
-            txService: MockEthTxService(),
+            txService: MockTxService(),
             blockchainRegistry: MockBlockchainRegistry(),
+            ethTxManagerProxy: MockEthTxManagerProxy(),
             prefilledToken: nil
         )
         let token: BraveWallet.BlockchainToken = .init(contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef", name: "Basic Attention Token", logo: "", isErc20: true, isErc721: false, symbol: batSymbol, decimals: 18, visible: true, tokenId: "", coingeckoId: "")
@@ -136,8 +142,9 @@ class SendTokenStoreTests: XCTestCase {
             keyringService: MockKeyringService(),
             rpcService: rpcService,
             walletService: MockBraveWalletService(),
-            txService: MockEthTxService(),
+            txService: MockTxService(),
             blockchainRegistry: MockBlockchainRegistry(),
+            ethTxManagerProxy: MockEthTxManagerProxy(),
             prefilledToken: .previewToken
         )
         store.setUpTest()

@@ -81,7 +81,8 @@ public class KeyringStore: ObservableObject {
   /// The users selected account when buying/sending/swapping currencies
   @Published var selectedAccount: BraveWallet.AccountInfo = .init() {
     didSet {
-      keyringService.setSelectedAccount(selectedAccount.address) { _ in }
+      if oldValue.address == selectedAccount.address { return }
+      keyringService.setSelectedAccount(selectedAccount.address, coin: .eth) { _ in }
     }
   }
   
@@ -93,7 +94,7 @@ public class KeyringStore: ObservableObject {
     self.keyringService.add(self)
     updateKeyringInfo()
     self.keyringService.defaultKeyringInfo { [self] keyringInfo in
-      isOnboardingVisible = !keyringInfo.isDefaultKeyringCreated
+      isOnboardingVisible = !keyringInfo.isKeyringCreated
       if Self.isKeychainPasswordStored && isOnboardingVisible {
         // If a user deletes the app and they had a stored user password in the past that keychain item
         // stays persisted. When we grab the keyring for the first time we should check to see if they have
@@ -120,7 +121,7 @@ public class KeyringStore: ObservableObject {
       }
       keyring = keyringInfo
       if !keyring.accountInfos.isEmpty {
-        keyringService.selectedAccount { accountAddress in
+        keyringService.selectedAccount(.eth) { accountAddress in
           selectedAccount = keyringInfo.accountInfos.first(where: { $0.address == accountAddress }) ??
             keyringInfo.accountInfos.first!
         }
@@ -142,7 +143,7 @@ public class KeyringStore: ObservableObject {
   }
   
   func unlock(password: String, completion: @escaping (Bool) -> Void) {
-    if !keyring.isDefaultKeyringCreated {
+    if !keyring.isKeyringCreated {
       return
     }
     keyringService.unlock(password) { [weak self] unlocked in
@@ -198,14 +199,14 @@ public class KeyringStore: ObservableObject {
   }
   
   func addPrimaryAccount(_ name: String, completion: ((Bool) -> Void)? = nil) {
-    keyringService.addAccount(name) { success in
+    keyringService.addAccount(name, coin: .eth) { success in
       self.updateKeyringInfo()
       completion?(success)
     }
   }
   
   func addSecondaryAccount(_ name: String, privateKey: String, completion: ((Bool, String) -> Void)? = nil) {
-    keyringService.importAccount(name, privateKey: privateKey) { success, address in
+    keyringService.importAccount(name, privateKey: privateKey, coin: .eth) { success, address in
       self.updateKeyringInfo()
       completion?(success, address)
     }
@@ -223,7 +224,7 @@ public class KeyringStore: ObservableObject {
   }
   
   func removeSecondaryAccount(forAddress address: String, completion: ((Bool) -> Void)? = nil) {
-    keyringService.removeImportedAccount(address) { success in
+    keyringService.removeImportedAccount(address, coin: .eth) { success in
       self.updateKeyringInfo()
       completion?(success)
     }
@@ -243,11 +244,11 @@ public class KeyringStore: ObservableObject {
   
   func privateKey(for account: BraveWallet.AccountInfo, completion: @escaping (String?) -> Void) {
     if account.isPrimary {
-      keyringService.privateKey(forDefaultKeyringAccount: account.address) { success, key in
+      keyringService.privateKey(forKeyringAccount: account.address, coin: .eth) { success, key in
         completion(success ? key : nil)
       }
     } else {
-      keyringService.privateKey(forImportedAccount: account.address) { success, key in
+      keyringService.privateKey(forImportedAccount: account.address, coin: .eth) { success, key in
         completion(success ? key : nil)
       }
     }
@@ -353,15 +354,15 @@ extension KeyringStore: BraveWalletKeyringServiceObserver {
   public func autoLockMinutesChanged() {
   }
   
-  public func selectedAccountChanged() {
+  public func selectedAccountChanged(_ coinType: BraveWallet.CoinType) {
     updateKeyringInfo()
   }
 
-  public func keyringCreated() {
+  public func keyringCreated(_ keyringId: String) {
     updateKeyringInfo()
   }
   
-  public func keyringRestored() {
+  public func keyringRestored(_ keyringId: String) {
     updateKeyringInfo()
   }
   
