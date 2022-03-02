@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 291e831c8b58463b05913160320e54dea0961628..30d78e88349563c6bfa98f79af75918d20917f35 100644
+index 2e3821a945dae51e64c338f37d64d16b273d4e25..7b0761e47c8d258317acef68346132fcc01f08e0 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -266,6 +266,7 @@ android_resources("chrome_app_java_resources") {
+@@ -267,6 +267,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/androidx:androidx_preference_preference_java",
      "//third_party/androidx:androidx_recyclerview_recyclerview_java",
    ]
@@ -10,7 +10,7 @@ index 291e831c8b58463b05913160320e54dea0961628..30d78e88349563c6bfa98f79af75918d
  }
  
  if (enable_vr) {
-@@ -646,6 +647,7 @@ android_library("chrome_java") {
+@@ -647,6 +648,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -18,7 +18,7 @@ index 291e831c8b58463b05913160320e54dea0961628..30d78e88349563c6bfa98f79af75918d
  
    srcjar_deps = [
      ":autofill_verification_status_generated_enum",
-@@ -677,6 +679,7 @@ android_library("chrome_java") {
+@@ -678,6 +680,7 @@ android_library("chrome_java") {
      "//components/offline_pages/core:offline_page_model_enums_java",
      "//net:effective_connection_type_java",
    ]
@@ -26,7 +26,7 @@ index 291e831c8b58463b05913160320e54dea0961628..30d78e88349563c6bfa98f79af75918d
  
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -799,6 +802,7 @@ java_group("chrome_all_java") {
+@@ -800,6 +803,7 @@ java_group("chrome_all_java") {
        "//chrome/android/features/tab_ui:module_desc_java",
      ]
    }
@@ -34,7 +34,7 @@ index 291e831c8b58463b05913160320e54dea0961628..30d78e88349563c6bfa98f79af75918d
  }
  
  # This is a list of all base module jni headers. New features should add their
-@@ -845,6 +849,7 @@ group("jni_headers") {
+@@ -846,6 +850,7 @@ group("jni_headers") {
      "//components/ukm/android:jni_headers",
      "//components/webauthn/android:jni_headers",
    ]
@@ -42,7 +42,7 @@ index 291e831c8b58463b05913160320e54dea0961628..30d78e88349563c6bfa98f79af75918d
  }
  
  action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2232,6 +2237,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2233,6 +2238,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -50,7 +50,7 @@ index 291e831c8b58463b05913160320e54dea0961628..30d78e88349563c6bfa98f79af75918d
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2630,6 +2636,7 @@ android_library("base_module_java") {
+@@ -2631,6 +2637,7 @@ android_library("base_module_java") {
      "//components/payments/content/android:service_java",
      "//third_party/androidx:androidx_browser_browser_java",
    ]
