@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_DRAG_CONTEXT_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ITEM_DRAG_CONTEXT_H_
 
+#include "base/memory/raw_ptr.h"
 #include "ui/gfx/geometry/point.h"
 
 namespace views {
@@ -36,7 +37,7 @@ class SidebarItemDragContext final {
 
  private:
   int source_index_ = -1;
-  views::View* source_ = nullptr;
+  raw_ptr<views::View> source_ = nullptr;
   int drag_indicator_index_ = -1;
 };
 
