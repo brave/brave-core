@@ -347,8 +347,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
           return absl::nullopt;
         break;
       case 256:
-        if (encoded_value > std::numeric_limits<int256_t>::max() ||
-            encoded_value < std::numeric_limits<int256_t>::min())
+        if (encoded_value > kMax256BitInt || encoded_value < kMin256BitInt)
           return absl::nullopt;
         break;
       default:

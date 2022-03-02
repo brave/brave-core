@@ -66,9 +66,9 @@ bool Base10ValueToInt256(const std::string& input, int256_t* out) {
     } else {
       (*out) += static_cast<int256_t>(base::HexDigitToInt(c));
     }
-    if (!negative && last_val > *out) {
+    if (!negative && (last_val > *out || *out > kMax256BitInt)) {
       return false;
-    } else if (negative && last_val < *out) {
+    } else if (negative && (last_val < *out || *out < kMin256BitInt)) {
       return false;
     }
     last_val = *out;

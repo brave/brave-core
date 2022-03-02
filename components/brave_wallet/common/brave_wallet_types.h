@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_TYPES_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_BRAVE_WALLET_TYPES_H_
 
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -22,6 +23,11 @@ typedef boost::multiprecision::uint256_t uint256_t;
 // Note that boost's int256_t has 256 precision bits and it uses an extra
 // sign bit so its max and min value differs from 2's complement types
 typedef boost::multiprecision::int256_t int256_t;
+// 2^255 - 1
+constexpr int256_t kMax256BitInt = std::numeric_limits<int256_t>::max() >> 1;
+// -(2^255 -1)
+constexpr int256_t kMin256BitInt = std::numeric_limits<int256_t>::min() >> 1;
+
 typedef unsigned _BitInt(128) uint128_t;
 typedef _BitInt(128) int128_t;
 

@@ -133,22 +133,18 @@ TEST(HexUtilsUnitTest, HexValueToInt256) {
   EXPECT_EQ(out, (int256_t)11);
 
   // Max int256 value can be represented
-  // int types in Boost uses extra sign bit so int256_t precision bit is 256
-  // bits.
-  // Boost's max and min value won't apply to us because we need sign bit in
-  // type to covert from hex.
-  int256_t expected_val = std::numeric_limits<int256_t>::max();
+  int256_t expected_val = kMax256BitInt;
   ASSERT_TRUE(HexValueToInt256(
       "0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF",
       &out));
-  EXPECT_EQ(out, expected_val >> 1);
+  EXPECT_EQ(out, expected_val);
 
   // Min int256 value can be represented
-  expected_val = std::numeric_limits<int256_t>::min();
+  expected_val = kMin256BitInt;
   ASSERT_TRUE(HexValueToInt256(
       "0x8000000000000000000000000000000000000000000000000000000000000000",
       &out));
-  EXPECT_EQ(out, expected_val >> 1);
+  EXPECT_EQ(out, expected_val);
 
   // Biggest int256 negative value can be represented
   expected_val = int256_t(-1);
