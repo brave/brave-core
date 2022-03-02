@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -67,21 +68,28 @@ ReduceLanguageNavigationThrottle::WillRedirectRequest() {
 void ReduceLanguageNavigationThrottle::UpdateHeaders() {
   content::NavigationHandle* handle = navigation_handle();
   GURL visible_url = handle->GetWebContents()->GetVisibleURL();
+  content::BrowserContext* context =
+      handle->GetWebContents()->GetBrowserContext();
+  PrefService* pref_service = user_prefs::UserPrefs::Get(context);
+
+  if (!brave_shields::ShouldDoReduceLanguage(content_settings_, visible_url,
+                                             pref_service))
+    return;
+
   ControlType fingerprinting_control_type =
       brave_shields::GetFingerprintingControlType(content_settings_,
                                                   visible_url);
-  if (fingerprinting_control_type == ControlType::ALLOW)
-    return;
 
+  // If fingerprint blocking is maximum, set Accept-Language header to
+  // static value regardless of other preferences.
   if (fingerprinting_control_type == ControlType::BLOCK) {
     handle->SetRequestHeader(net::HttpRequestHeaders::kAcceptLanguage,
                              "en-US,en");
     return;
   }
 
-  content::BrowserContext* context =
-      handle->GetWebContents()->GetBrowserContext();
-  PrefService* pref_service = user_prefs::UserPrefs::Get(context);
+  // If fingerprint blocking is default, compute Accept-Language header
+  // based on user preferences.
   std::string languages =
       pref_service->Get(language::prefs::kAcceptLanguages)->GetString();
   std::string first_language = language::GetFirstLanguage(languages);

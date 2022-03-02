@@ -72,6 +72,10 @@ bool IsFirstPartyCosmeticFilteringEnabled(HostContentSettingsMap* map,
 
 bool ShouldDoDebouncing(HostContentSettingsMap* map, const GURL& url);
 
+bool ShouldDoReduceLanguage(HostContentSettingsMap* map,
+                            const GURL& url,
+                            PrefService* pref_service);
+
 DomainBlockingType GetDomainBlockingType(HostContentSettingsMap* map,
                                          const GURL& url);
 

@@ -199,6 +199,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Default Brave shields
   registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
   registry->RegisterBooleanPref(kNoScriptControlType, false);
+  registry->RegisterBooleanPref(kReduceLanguageEnabled, true);
   registry->RegisterBooleanPref(kAdControlType, true);
   registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled, false);
 
