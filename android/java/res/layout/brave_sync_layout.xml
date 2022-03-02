@@ -18,8 +18,7 @@
     <ScrollView android:id="@+id/view_sync_initial"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:background="@drawable/brave_sync_cover_general" >
+        android:fillViewport="true" >
 
         <LinearLayout android:orientation="vertical"
             android:layout_height="wrap_content"
@@ -64,8 +63,7 @@
     <ScrollView android:id="@+id/view_sync_chain_code"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:background="@drawable/brave_sync_cover_general" >
+        android:fillViewport="true" >
 
         <LinearLayout android:orientation="vertical"
             android:layout_height="wrap_content"
@@ -202,8 +200,7 @@
     <ScrollView android:id="@+id/view_enter_code_words"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:background="@drawable/brave_sync_cover_general" >
+        android:fillViewport="true" >
 
         <LinearLayout android:orientation="vertical"
             android:layout_height="wrap_content"
