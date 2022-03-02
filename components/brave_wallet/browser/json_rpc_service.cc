@@ -122,31 +122,28 @@ JsonRpcService::~JsonRpcService() {}
 
 // static
 void JsonRpcService::MigrateMultichainNetworks(PrefService* prefs) {
-  {  // custom networks
-    if (!prefs->HasPrefPath(kBraveWalletCustomNetworksDeprecated))
-      return;
+  // custom networks
+  if (prefs->HasPrefPath(kBraveWalletCustomNetworksDeprecated)) {
     const base::Value* custom_networks =
         prefs->GetList(kBraveWalletCustomNetworksDeprecated);
-    if (!custom_networks)
-      return;
+    if (custom_networks) {
+      base::Value new_custom_networks(base::Value::Type::DICTIONARY);
+      new_custom_networks.SetKey(kEthereumPrefKey, custom_networks->Clone());
 
-    base::Value new_custom_networks(base::Value::Type::DICTIONARY);
-    new_custom_networks.SetKey(kEthereumPrefKey, custom_networks->Clone());
+      prefs->Set(kBraveWalletCustomNetworks, new_custom_networks);
 
-    prefs->Set(kBraveWalletCustomNetworks, new_custom_networks);
-
-    prefs->ClearPref(kBraveWalletCustomNetworksDeprecated);
+      prefs->ClearPref(kBraveWalletCustomNetworksDeprecated);
+    }
   }
-  {  // selected networks
-    if (!prefs->HasPrefPath(kBraveWalletCurrentChainId))
-      return;
+  // selected networks
+  if (prefs->HasPrefPath(kBraveWalletCurrentChainId)) {
     const std::string chain_id = prefs->GetString(kBraveWalletCurrentChainId);
-    base::Value selected_networks(base::Value::Type::DICTIONARY);
-    selected_networks.SetStringKey(kEthereumPrefKey, chain_id);
-
-    prefs->Set(kBraveWalletSelectedNetworks, selected_networks);
-
-    prefs->ClearPref(kBraveWalletCurrentChainId);
+    DictionaryPrefUpdate update(prefs, kBraveWalletSelectedNetworks);
+    base::Value* selected_networks = update.Get();
+    if (selected_networks) {
+      selected_networks->SetStringKey(kEthereumPrefKey, chain_id);
+      prefs->ClearPref(kBraveWalletCurrentChainId);
+    }
   }
 }
 

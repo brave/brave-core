@@ -2201,6 +2201,11 @@ TEST_F(JsonRpcServiceUnitTest, MigrateMultichainNetworks) {
       selected_networks->FindStringKey(kEthereumPrefKey);
   ASSERT_TRUE(eth_selected_networks);
   EXPECT_EQ(*eth_selected_networks, "0x3");
+  const std::string* sol_selected_networks =
+      selected_networks->FindStringKey(kSolanaPrefKey);
+  ASSERT_TRUE(sol_selected_networks);
+  EXPECT_EQ(*sol_selected_networks, mojom::kSolanaMainnet);
+  EXPECT_FALSE(selected_networks->FindStringKey(kFilecoinPrefKey));
 
   EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCustomNetworksDeprecated));
   EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCurrentChainId));
