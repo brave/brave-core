@@ -18,7 +18,6 @@
 #include "brave/components/brave_wallet/browser/eth_tx_state_manager.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "mojo/public/cpp/bindings/receiver_set.h"
 
 class PrefService;
 
@@ -31,10 +30,7 @@ class TxService;
 class JsonRpcService;
 class KeyringService;
 
-class EthTxManager : public TxManager,
-                     public mojom::KeyringServiceObserver,
-                     public EthBlockTracker::Observer,
-                     public EthTxStateManager::Observer {
+class EthTxManager : public TxManager, public EthBlockTracker::Observer {
  public:
   EthTxManager(TxService* tx_service,
                JsonRpcService* json_rpc_service,
@@ -205,8 +201,7 @@ class EthTxManager : public TxManager,
       std::unique_ptr<Eip1559Transaction> tx,
       AddUnapprovedTransactionCallback callback,
       mojom::GasEstimation1559Ptr gas_estimation);
-  void CheckIfBlockTrackerShouldRun();
-  void UpdatePendingTransactions();
+  void UpdatePendingTransactions() override;
 
   void ContinueSpeedupOrCancelTransaction(
       const std::string& from,
@@ -232,34 +227,15 @@ class EthTxManager : public TxManager,
       mojom::ProviderError error,
       const std::string& error_message);
 
-  // KeyringServiceObserver:
-  void KeyringCreated(const std::string& keyring_id) override;
-  void KeyringRestored(const std::string& keyring_id) override;
-  void KeyringReset() override;
-  void Locked() override;
-  void Unlocked() override;
-  void BackedUp() override {}
-  void AccountsChanged() override {}
-  void AutoLockMinutesChanged() override {}
-  void SelectedAccountChanged(mojom::CoinType coin) override {}
-
   // EthBlockTracker::Observer:
   void OnLatestBlock(uint256_t block_num) override {}
   void OnNewBlock(uint256_t block_num) override;
 
-  // EthTxStateManager::Observer
-  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
-  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
-
   EthTxStateManager* GetEthTxStateManager();
+  EthBlockTracker* GetEthBlockTracker();
 
   std::unique_ptr<EthNonceTracker> nonce_tracker_;
   std::unique_ptr<EthPendingTxTracker> pending_tx_tracker_;
-  std::unique_ptr<EthBlockTracker> eth_block_tracker_;
-  bool known_no_pending_tx = false;
-
-  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
-      keyring_observer_receiver_{this};
 
   base::WeakPtrFactory<EthTxManager> weak_factory_;
 };

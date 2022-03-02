@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/notreached.h"
+#include "brave/components/brave_wallet/browser/solana_block_tracker.h"
 #include "brave/components/brave_wallet/browser/solana_tx_state_manager.h"
 
 namespace brave_wallet {
@@ -17,10 +18,13 @@ SolanaTxManager::SolanaTxManager(TxService* tx_service,
                                  KeyringService* keyring_service,
                                  PrefService* prefs)
     : TxManager(std::make_unique<SolanaTxStateManager>(prefs, json_rpc_service),
+                std::make_unique<SolanaBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,
                 keyring_service,
                 prefs) {}
+
+SolanaTxManager::~SolanaTxManager() = default;
 
 void SolanaTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
@@ -63,7 +67,12 @@ void SolanaTxManager::GetTransactionMessageToSign(
 }
 
 void SolanaTxManager::Reset() {
+  TxManager::Reset();
   // TODO(jocelyn): reset members as necessary.
+}
+
+void SolanaTxManager::UpdatePendingTransactions() {
+  NOTIMPLEMENTED();
 }
 
 }  // namespace brave_wallet

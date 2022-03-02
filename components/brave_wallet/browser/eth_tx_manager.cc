@@ -112,6 +112,7 @@ EthTxManager::EthTxManager(TxService* tx_service,
                            KeyringService* keyring_service,
                            PrefService* prefs)
     : TxManager(std::make_unique<EthTxStateManager>(prefs, json_rpc_service),
+                std::make_unique<EthBlockTracker>(json_rpc_service),
                 tx_service,
                 json_rpc_service,
                 keyring_service,
@@ -122,18 +123,12 @@ EthTxManager::EthTxManager(TxService* tx_service,
           std::make_unique<EthPendingTxTracker>(GetEthTxStateManager(),
                                                 json_rpc_service,
                                                 nonce_tracker_.get())),
-      eth_block_tracker_(std::make_unique<EthBlockTracker>(json_rpc_service)),
       weak_factory_(this) {
-  CheckIfBlockTrackerShouldRun();
-  eth_block_tracker_->AddObserver(this);
-  tx_state_manager_->AddObserver(this);
-  keyring_service_->AddObserver(
-      keyring_observer_receiver_.BindNewPipeAndPassRemote());
+  GetEthBlockTracker()->AddObserver(this);
 }
 
 EthTxManager::~EthTxManager() {
-  eth_block_tracker_->RemoveObserver(this);
-  tx_state_manager_->RemoveObserver(this);
+  GetEthBlockTracker()->RemoveObserver(this);
 }
 
 void EthTxManager::AddUnapprovedTransaction(
@@ -665,15 +660,6 @@ void EthTxManager::ContinueMakeERC721TransferFromData(
   std::move(callback).Run(true, data_decoded);
 }
 
-void EthTxManager::OnTransactionStatusChanged(
-    mojom::TransactionInfoPtr tx_info) {
-  tx_service_->OnTransactionStatusChanged(tx_info->Clone());
-}
-
-void EthTxManager::OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) {
-  tx_service_->OnNewUnapprovedTx(tx_info->Clone());
-}
-
 void EthTxManager::NotifyUnapprovedTxUpdated(TxMeta* meta) {
   tx_service_->OnUnapprovedTxUpdated(meta->ToTransactionInfo());
 }
@@ -815,16 +801,6 @@ std::unique_ptr<EthTxMeta> EthTxManager::GetTxForTesting(
   return GetEthTxStateManager()->GetEthTx(tx_meta_id);
 }
 
-void EthTxManager::CheckIfBlockTrackerShouldRun() {
-  bool locked = keyring_service_->IsLocked();
-  bool running = eth_block_tracker_->IsRunning();
-  if (!locked && !running) {
-    eth_block_tracker_->Start(base::Seconds(kBlockTrackerDefaultTimeInSeconds));
-  } else if ((locked || known_no_pending_tx) && running) {
-    eth_block_tracker_->Stop();
-  }
-}
-
 void EthTxManager::OnNewBlock(uint256_t block_num) {
   UpdatePendingTransactions();
 }
@@ -832,32 +808,11 @@ void EthTxManager::OnNewBlock(uint256_t block_num) {
 void EthTxManager::UpdatePendingTransactions() {
   size_t num_pending;
   if (pending_tx_tracker_->UpdatePendingTransactions(&num_pending)) {
-    known_no_pending_tx = num_pending == 0;
-    if (known_no_pending_tx) {
+    known_no_pending_tx_ = num_pending == 0;
+    if (known_no_pending_tx_) {
       CheckIfBlockTrackerShouldRun();
     }
   }
-}
-
-void EthTxManager::Locked() {
-  CheckIfBlockTrackerShouldRun();
-}
-
-void EthTxManager::Unlocked() {
-  CheckIfBlockTrackerShouldRun();
-  UpdatePendingTransactions();
-}
-
-void EthTxManager::KeyringCreated(const std::string& keyring_id) {
-  UpdatePendingTransactions();
-}
-
-void EthTxManager::KeyringRestored(const std::string& keyring_id) {
-  UpdatePendingTransactions();
-}
-
-void EthTxManager::KeyringReset() {
-  UpdatePendingTransactions();
 }
 
 void EthTxManager::SpeedupOrCancelTransaction(
@@ -1071,13 +1026,16 @@ void EthTxManager::OnGetGasEstimation1559(
 }
 
 void EthTxManager::Reset() {
-  eth_block_tracker_->Stop();
+  TxManager::Reset();
   pending_tx_tracker_->Reset();
-  known_no_pending_tx = false;
 }
 
 EthTxStateManager* EthTxManager::GetEthTxStateManager() {
   return static_cast<EthTxStateManager*>(tx_state_manager_.get());
+}
+
+EthBlockTracker* EthTxManager::GetEthBlockTracker() {
+  return static_cast<EthBlockTracker*>(block_tracker_.get());
 }
 
 }  // namespace brave_wallet

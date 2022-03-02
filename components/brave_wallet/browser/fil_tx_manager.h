@@ -48,6 +48,10 @@ class FilTxManager : public TxManager {
       GetTransactionMessageToSignCallback callback) override;
 
   void Reset() override;
+
+ private:
+  // TxManager
+  void UpdatePendingTransactions() override;
 };
 
 }  // namespace brave_wallet

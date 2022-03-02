@@ -9,25 +9,29 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 
 class PrefService;
 
 namespace brave_wallet {
 
-class TxService;
+class BlockTracker;
 class JsonRpcService;
 class KeyringService;
-class TxStateManager;
+class TxService;
 
-class TxManager {
+class TxManager : public TxStateManager::Observer,
+                  public mojom::KeyringServiceObserver {
  public:
   TxManager(std::unique_ptr<TxStateManager> tx_state_manager,
+            std::unique_ptr<BlockTracker> block_tracker,
             TxService* tx_service,
             JsonRpcService* json_rpc_service,
             KeyringService* keyring_service,
             PrefService* prefs);
-  virtual ~TxManager();
+  ~TxManager() override;
 
   using AddUnapprovedTransactionCallback =
       mojom::TxService::AddUnapprovedTransactionCallback;
@@ -63,14 +67,38 @@ class TxManager {
       const std::string& tx_meta_id,
       GetTransactionMessageToSignCallback callback) = 0;
 
-  virtual void Reset() = 0;
+  virtual void Reset();
 
  protected:
+  void CheckIfBlockTrackerShouldRun();
+  virtual void UpdatePendingTransactions() = 0;
+
   std::unique_ptr<TxStateManager> tx_state_manager_;
+  std::unique_ptr<BlockTracker> block_tracker_;
   raw_ptr<TxService> tx_service_ = nullptr;             // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;  // NOT OWNED
   raw_ptr<KeyringService> keyring_service_ = nullptr;   // NOT OWNED
   raw_ptr<PrefService> prefs_ = nullptr;                // NOT OWNED
+  bool known_no_pending_tx_ = false;
+
+ private:
+  // TxStateManager::Observer
+  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
+  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override;
+
+  // mojom::KeyringServiceObserver
+  void KeyringCreated(const std::string& keyring_id) override;
+  void KeyringRestored(const std::string& keyring_id) override;
+  void KeyringReset() override;
+  void Locked() override;
+  void Unlocked() override;
+  void BackedUp() override {}
+  void AccountsChanged() override {}
+  void AutoLockMinutesChanged() override {}
+  void SelectedAccountChanged(mojom::CoinType coin) override {}
+
+  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+      keyring_observer_receiver_{this};
 };
 
 }  // namespace brave_wallet

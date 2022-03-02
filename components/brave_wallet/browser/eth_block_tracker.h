@@ -9,10 +9,9 @@
 #include <string>
 
 #include "base/callback.h"
-#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "base/timer/timer.h"
+#include "brave/components/brave_wallet/browser/block_tracker.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
@@ -20,10 +19,10 @@ namespace brave_wallet {
 
 class JsonRpcService;
 
-class EthBlockTracker {
+class EthBlockTracker : public BlockTracker {
  public:
   explicit EthBlockTracker(JsonRpcService* json_rpc_service);
-  ~EthBlockTracker();
+  ~EthBlockTracker() override;
   EthBlockTracker(const EthBlockTracker&) = delete;
   EthBlockTracker operator=(const EthBlockTracker&) = delete;
 
@@ -36,9 +35,7 @@ class EthBlockTracker {
   };
 
   // If timer is already running, it will be replaced with new interval
-  void Start(base::TimeDelta interval);
-  void Stop();
-  bool IsRunning() const;
+  void Start(base::TimeDelta interval) override;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -61,11 +58,7 @@ class EthBlockTracker {
                         const std::string& error_message);
 
   uint256_t current_block_ = 0;
-  base::RepeatingTimer timer_;
-
   base::ObserverList<Observer> observers_;
-
-  raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
 
   base::WeakPtrFactory<EthBlockTracker> weak_factory_;
 };

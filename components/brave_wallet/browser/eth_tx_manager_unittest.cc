@@ -1916,9 +1916,9 @@ TEST_F(EthTxManagerUnitTest, MakeERC721TransferFromDataTxType) {
 }
 
 TEST_F(EthTxManagerUnitTest, Reset) {
-  eth_tx_manager()->known_no_pending_tx = true;
-  eth_tx_manager()->eth_block_tracker_->Start(base::Seconds(10));
-  EXPECT_TRUE(eth_tx_manager()->eth_block_tracker_->IsRunning());
+  eth_tx_manager()->known_no_pending_tx_ = true;
+  eth_tx_manager()->block_tracker_->Start(base::Seconds(10));
+  EXPECT_TRUE(eth_tx_manager()->block_tracker_->IsRunning());
   EthTxMeta meta;
   meta.set_id("001");
   meta.set_from(
@@ -1935,8 +1935,8 @@ TEST_F(EthTxManagerUnitTest, Reset) {
 
   tx_service_->Reset();
 
-  EXPECT_FALSE(eth_tx_manager()->known_no_pending_tx);
-  EXPECT_FALSE(eth_tx_manager()->eth_block_tracker_->IsRunning());
+  EXPECT_FALSE(eth_tx_manager()->known_no_pending_tx_);
+  EXPECT_FALSE(eth_tx_manager()->block_tracker_->IsRunning());
   EXPECT_FALSE(GetPrefs()->HasPrefPath(kBraveWalletTransactions));
 }
 
