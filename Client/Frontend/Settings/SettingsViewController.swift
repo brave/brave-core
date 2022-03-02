@@ -636,15 +636,15 @@ class SettingsViewController: TableViewController {
 }
 
 extension SettingsViewController: BraveWalletKeyringServiceObserver {
-    func keyringCreated() {}
-    func keyringRestored() {}
+    func keyringCreated(_ keyringId: String) {}
+    func keyringRestored(_ keyringId: String) {}
     func locked() {}
     func unlocked() {}
     func backedUp() {}
     func accountsChanged() {}
     func autoLockMinutesChanged() {}
-    func selectedAccountChanged() {}
-    
+    func selectedAccountChanged(_ coin: BraveWallet.CoinType) {}
+        
     func keyringReset() {
         setUpSections()
         navigationController?.popViewController(animated: true)

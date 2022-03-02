@@ -36,7 +36,7 @@ public class SettingsStore: ObservableObject {
   
   public func isDefaultKeyringCreated(_ completion: @escaping (Bool) -> Void) {
     keyringService.defaultKeyringInfo { keyring in
-      completion(keyring.isDefaultKeyringCreated)
+      completion(keyring.isKeyringCreated)
     }
   }
   

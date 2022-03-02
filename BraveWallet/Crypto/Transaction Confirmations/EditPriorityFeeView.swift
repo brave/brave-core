@@ -37,12 +37,12 @@ struct EditPriorityFeeView: View {
   @State private var baseInGwei: String = ""
   
   private func setup() {
-    let selectedMaxPrice = transaction.txData.maxFeePerGas
-    let selectedMaxTip = transaction.txData.maxPriorityFeePerGas
+    let selectedMaxPrice = transaction.txDataUnion.ethTxData1559?.maxFeePerGas ?? ""
+    let selectedMaxTip = transaction.txDataUnion.ethTxData1559?.maxPriorityFeePerGas ?? ""
     
     // Gas limit is already in Gwei…
     gasLimit = {
-      guard let value = BDouble(transaction.txData.baseData.gasLimit.removingHexPrefix, radix: 16) else {
+      guard let value = BDouble(transaction.ethTxGasLimit.removingHexPrefix, radix: 16) else {
         return ""
       }
       if value.denominator == [1] {
@@ -71,7 +71,7 @@ struct EditPriorityFeeView: View {
   
   private func save() {
     // See `isSaveButtonDisabled` for validation
-    var hexGasLimit = transaction.txData.baseData.gasLimit
+    var hexGasLimit = transaction.ethTxGasLimit
     let hexGasFee: String
     let hexGasTip: String
     switch gasFeeKind {

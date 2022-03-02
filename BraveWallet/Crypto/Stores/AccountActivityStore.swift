@@ -14,14 +14,14 @@ class AccountActivityStore: ObservableObject {
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
   private let assetRatioService: BraveWalletAssetRatioService
-  private let txService: BraveWalletEthTxService
+  private let txService: BraveWalletTxService
   
   init(
     account: BraveWallet.AccountInfo,
     walletService: BraveWalletBraveWalletService,
     rpcService: BraveWalletJsonRpcService,
     assetRatioService: BraveWalletAssetRatioService,
-    txService: BraveWalletEthTxService
+    txService: BraveWalletTxService
   ) {
     self.account = account
     self.walletService = walletService
@@ -70,7 +70,7 @@ class AccountActivityStore: ObservableObject {
   }
   
   private func fetchTransactions() {
-    txService.allTransactionInfo(account.address) { transactions in
+    txService.allTransactionInfo(.eth, from: account.address) { transactions in
       self.transactions = transactions
         .sorted(by: { $0.createdTime > $1.createdTime })
     }
@@ -90,7 +90,7 @@ extension AccountActivityStore: BraveWalletJsonRpcServiceObserver {
   }
 }
 
-extension AccountActivityStore: BraveWalletEthTxServiceObserver {
+extension AccountActivityStore: BraveWalletTxServiceObserver {
   func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
   }
   func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {

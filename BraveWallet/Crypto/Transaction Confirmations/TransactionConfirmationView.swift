@@ -58,7 +58,7 @@ struct TransactionConfirmationView: View {
   }
   
   private var toAccountName: String {
-    NamedAddresses.name(for: activeTransaction.txData.baseData.to, accounts: keyringStore.keyring.accountInfos)
+    return NamedAddresses.name(for: activeTransaction.ethTxToAddress, accounts: keyringStore.keyring.accountInfos)
   }
   
   private var transactionType: String {
@@ -70,7 +70,7 @@ struct TransactionConfirmationView: View {
   
   private var transactionDetails: String {
     if activeTransaction.txArgs.isEmpty {
-      let data = activeTransaction.txData.baseData.data
+      let data = activeTransaction.ethTxData
         .map { byte in
           String(format: "%02X", byte.uint8Value)
         }
@@ -94,7 +94,7 @@ struct TransactionConfirmationView: View {
       .foregroundColor(Color(.braveBlurpleTint))
     Group {
       if activeTransaction.isEIP1559Transaction {
-        if let gasEstimation = confirmationStore.gasEstimation1559 {
+        if let gasEstimation = activeTransaction.txDataUnion.ethTxData1559?.gasEstimation {
           NavigationLink(
             destination: EditPriorityFeeView(
               transaction: activeTransaction,
@@ -141,7 +141,7 @@ struct TransactionConfirmationView: View {
             VStack {
               BlockieGroup(
                 fromAddress: activeTransaction.fromAddress,
-                toAddress: activeTransaction.txData.baseData.to,
+                toAddress: activeTransaction.ethTxToAddress,
                 size: 48
               )
               Group {

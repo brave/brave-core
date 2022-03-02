@@ -24,7 +24,8 @@ public class WalletStore {
     assetRatioService: BraveWalletAssetRatioService,
     swapService: BraveWalletSwapService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
-    txService: BraveWalletEthTxService
+    txService: BraveWalletTxService,
+    ethTxManagerProxy: BraveWalletEthTxManagerProxy
   ) {
     self.keyringStore = .init(keyringService: keyringService)
     self.setUp(
@@ -34,7 +35,8 @@ public class WalletStore {
       assetRatioService: assetRatioService,
       swapService: swapService,
       blockchainRegistry: blockchainRegistry,
-      txService: txService
+      txService: txService,
+      ethTxManagerProxy: ethTxManagerProxy
     )
   }
   
@@ -45,10 +47,11 @@ public class WalletStore {
     assetRatioService: BraveWalletAssetRatioService,
     swapService: BraveWalletSwapService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
-    txService: BraveWalletEthTxService
+    txService: BraveWalletTxService,
+    ethTxManagerProxy: BraveWalletEthTxManagerProxy
   ) {
     self.cancellable = self.keyringStore.$keyring
-      .map(\.isDefaultKeyringCreated)
+      .map(\.isKeyringCreated)
       .removeDuplicates()
       .sink { [weak self] isDefaultKeyringCreated in
         guard let self = self else { return }
@@ -62,7 +65,8 @@ public class WalletStore {
             assetRatioService: assetRatioService,
             swapService: swapService,
             blockchainRegistry: blockchainRegistry,
-            txService: txService
+            txService: txService,
+            ethTxManagerProxy: ethTxManagerProxy
           )
         }
     }
