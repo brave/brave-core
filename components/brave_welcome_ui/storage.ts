@@ -10,7 +10,8 @@ const keyName = 'welcome-data'
 export const defaultState = {
   searchProviders: [],
   browserProfiles: [],
-  hideSearchOnboarding: false
+  showSearchCard: true,
+  showRewardsCard: false
 }
 
 const cleanData = (state: Welcome.State) => {
