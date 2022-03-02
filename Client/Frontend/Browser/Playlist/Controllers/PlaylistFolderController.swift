@@ -75,6 +75,7 @@ class PlaylistFolderController: UIViewController {
         
         // Reload the table when visible
         othersFRC.delegate = self
+        navigationController?.setToolbarHidden(false, animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
