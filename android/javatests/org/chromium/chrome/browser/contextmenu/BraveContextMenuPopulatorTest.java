@@ -12,11 +12,13 @@ import androidx.test.filters.SmallTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.chromium.base.ContextUtils;
 import org.chromium.base.test.BaseJUnit4ClassRunner;
 import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.chrome.browser.flags.ChromeSwitches;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.tasks.tab_management.TabUiFeatureUtilities;
+import org.chromium.content_public.browser.test.util.TestThreadUtils;
 
 @RunWith(BaseJUnit4ClassRunner.class)
 @CommandLineFlags.Add({ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE})
@@ -24,7 +26,10 @@ public class BraveContextMenuPopulatorTest {
     @Test
     @SmallTest
     public void testTabGroupAutoCreationPreference() {
-        BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference();
-        assertFalse(TabUiFeatureUtilities.ENABLE_TAB_GROUP_AUTO_CREATION.getValue());
+        TestThreadUtils.runOnUiThreadBlocking(() -> {
+            BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference(
+                    ContextUtils.getApplicationContext());
+            assertFalse(TabUiFeatureUtilities.ENABLE_TAB_GROUP_AUTO_CREATION.getValue());
+        });
     }
 }
