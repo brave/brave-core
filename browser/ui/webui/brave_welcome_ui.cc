@@ -13,6 +13,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
+#include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_welcome/common/features.h"
@@ -21,7 +22,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
-#include "chrome/browser/ui/webui/settings/search_engines_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/country_codes/country_codes.h"
@@ -146,7 +146,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   Profile* profile = Profile::FromWebUI(web_ui);
   // added to allow front end to read/modify default search engine
   web_ui->AddMessageHandler(
-      std::make_unique<settings::SearchEnginesHandler>(profile));
+      std::make_unique<settings::BraveSearchEnginesHandler>(profile));
 
   // Open additional page in Japanese region
   int country_id = country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
