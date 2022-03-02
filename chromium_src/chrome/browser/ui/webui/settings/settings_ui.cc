@@ -4,7 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
+#include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 
 #define ImportDataHandler BraveImportDataHandler
+#define SearchEnginesHandler BraveSearchEnginesHandler
 #include "src/chrome/browser/ui/webui/settings/settings_ui.cc"
 #undef ImportDataHandler
+#undef SearchEnginesHandler
