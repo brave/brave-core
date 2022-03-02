@@ -749,7 +749,7 @@ public class BraveRewardsPanel
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(true);
 
-        mPopupWindow.setAnimationStyle(R.style.OverflowMenuAnim);
+        mPopupWindow.setAnimationStyle(R.style.EndIconMenuAnim);
 
         if (SysUtils.isLowEndDevice()) {
             mPopupWindow.setAnimationStyle(0);
