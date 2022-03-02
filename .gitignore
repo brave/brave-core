@@ -44,4 +44,3 @@ venv/
 *.exe
 .storybook-out
 test_get_pkgs
-*_override_*.xtb
