@@ -42,6 +42,7 @@ import org.chromium.brave_wallet.mojom.KeyringService;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.crypto_wallet.BlockchainRegistryFactory;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSpinnerAdapter;
@@ -60,17 +61,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class PortfolioFragment extends Fragment
-        implements OnWalletListItemClick, AdapterView.OnItemSelectedListener, ApprovedTxObserver {
+public class PortfolioFragment
+        extends Fragment implements OnWalletListItemClick, ApprovedTxObserver {
     private static String TAG = "PortfolioFragment";
-    private Spinner mSpinner;
     private TextView mBalance;
+    private Button mBtnChangeNetwork;
     private HashMap<String, TransactionInfo[]> mPendingTxInfos;
 
     private String mFiatSumString;
 
     private int mPreviousCheckedRadioId;
     private int mCurrentTimeframeType;
+    private String mSelectedChainNetworkName = "";
 
     PortfolioHelper mPortfolioHelper;
 
@@ -130,8 +132,8 @@ public class PortfolioFragment extends Fragment
             }
         });
 
-        mSpinner = view.findViewById(R.id.spinner);
-        mSpinner.setOnItemSelectedListener(this);
+        mBtnChangeNetwork = view.findViewById(R.id.fragment_portfolio_btn_change_networks);
+        mBtnChangeNetwork.setOnClickListener(v -> { openNetworkSelection(); });
 
         mBalance = view.findViewById(R.id.balance);
         mBalance.setOnClickListener(new View.OnClickListener() {
@@ -139,18 +141,6 @@ public class PortfolioFragment extends Fragment
             public void onClick(View v) {
                 updatePortfolioGetPendingTx(false);
             }
-        });
-
-        // Creating adapter for spinner
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        assert jsonRpcService != null;
-        jsonRpcService.getAllNetworks(chains -> {
-            EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
-            NetworkSpinnerAdapter dataAdapter = new NetworkSpinnerAdapter(getActivity(),
-                    Utils.getNetworksList(getActivity(), customNetworks),
-                    Utils.getNetworksAbbrevList(getActivity(), customNetworks));
-            mSpinner.setAdapter(dataAdapter);
-            updateNetwork();
         });
 
         return view;
@@ -162,12 +152,17 @@ public class PortfolioFragment extends Fragment
         jsonRpcService.getChainId(chain_id -> {
             jsonRpcService.getAllNetworks(chains -> {
                 EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
-                String chainName = mSpinner.getSelectedItem().toString();
-                String chainId = Utils.getNetworkConst(getActivity(), chainName, customNetworks);
-                if (chainId.equals(chain_id)) {
+                String chainId = Utils.getNetworkConst(
+                        getActivity(), mSelectedChainNetworkName, customNetworks);
+                if (chainId.equals(chain_id) && !mSelectedChainNetworkName.isEmpty()) {
                     return;
                 }
-                mSpinner.setSelection(getIndexOf(mSpinner, chain_id, customNetworks));
+                mSelectedChainNetworkName =
+                        Utils.getNetworkText(requireActivity(), chain_id, customNetworks)
+                                .toString();
+                String strNetworkShort =
+                        Utils.getNetworkShortText(requireActivity(), chain_id).toString();
+                updateAccount(strNetworkShort);
             });
         });
     }
@@ -177,40 +172,6 @@ public class PortfolioFragment extends Fragment
         super.onResume();
         updateNetwork();
     }
-
-    private int getIndexOf(Spinner spinner, String chain_id, EthereumChain[] customNetworks) {
-        String strNetwork =
-                Utils.getNetworkText(getActivity(), chain_id, customNetworks).toString();
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(strNetwork)) {
-                return i;
-            }
-        }
-
-        return 0;
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String item = parent.getItemAtPosition(position).toString();
-        JsonRpcService jsonRpcService = getJsonRpcService();
-        if (jsonRpcService != null) {
-            jsonRpcService.getAllNetworks(chains -> {
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
-                jsonRpcService.setNetwork(
-                        Utils.getNetworkConst(getActivity(), item, customNetworks), (success) -> {
-                            if (!success) {
-                                Log.e(TAG, "Could not set network");
-                                return;
-                            }
-                            updatePortfolioGetPendingTx(true);
-                        });
-            });
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> arg0) {}
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -222,9 +183,9 @@ public class PortfolioFragment extends Fragment
             JsonRpcService jsonRpcService = getJsonRpcService();
             assert jsonRpcService != null;
             jsonRpcService.getAllNetworks(chains -> {
-                String chainName = mSpinner.getSelectedItem().toString();
                 EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
-                String chainId = Utils.getNetworkConst(getActivity(), chainName, customNetworks);
+                String chainId = Utils.getNetworkConst(
+                        getActivity(), mSelectedChainNetworkName, customNetworks);
 
                 EditVisibleAssetsBottomSheetDialogFragment bottomSheetDialogFragment =
                         EditVisibleAssetsBottomSheetDialogFragment.newInstance(
@@ -257,6 +218,11 @@ public class PortfolioFragment extends Fragment
             mPreviousCheckedRadioId = checkedId;
             updatePortfolioGraph();
         });
+    }
+
+    private void updateAccount(String strNetwork) {
+        mBtnChangeNetwork.setText(strNetwork);
+        updatePortfolioGetPendingTx(true);
     }
 
     private void setUpCoinList(BlockchainToken[] userAssets,
@@ -304,11 +270,17 @@ public class PortfolioFragment extends Fragment
         assert jsonRpcService != null;
         jsonRpcService.getAllNetworks(chains -> {
             EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
-            String chainName = mSpinner.getSelectedItem().toString();
-            String chainId = Utils.getNetworkConst(getActivity(), chainName, customNetworks);
+            String chainId =
+                    Utils.getNetworkConst(getActivity(), mSelectedChainNetworkName, customNetworks);
             Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
                     asset.contractAddress, asset.logo, asset.decimals);
         });
+    }
+
+    private void openNetworkSelection() {
+        BraveActivity activity = BraveActivity.getBraveActivity();
+        assert activity != null;
+        activity.openNetworkSelection();
     }
 
     private AssetRatioService getAssetRatioService() {
@@ -410,8 +382,8 @@ public class PortfolioFragment extends Fragment
                             getAssetRatioService(), getJsonRpcService(), accountInfos);
                 }
                 EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
-                String chainName = mSpinner.getSelectedItem().toString();
-                String chainId = Utils.getNetworkConst(getActivity(), chainName, customNetworks);
+                String chainId = Utils.getNetworkConst(
+                        getActivity(), mSelectedChainNetworkName, customNetworks);
                 mPortfolioHelper.setChainId(chainId);
                 mPortfolioHelper.calculateBalances(() -> {
                     final String fiatSumString = String.format(
