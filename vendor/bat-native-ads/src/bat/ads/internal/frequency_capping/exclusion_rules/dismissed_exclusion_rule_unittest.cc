@@ -128,6 +128,10 @@ TEST_F(BatAdsDismissedExclusionRuleTest,
       AdType::kPromotedContentAd, creative_ad, ConfirmationType::kDismissed);
   ad_events.push_back(ad_event_3);
 
+  const AdEventInfo ad_event_4 = GenerateAdEvent(
+      AdType::kSearchResultAd, creative_ad, ConfirmationType::kDismissed);
+  ad_events.push_back(ad_event_4);
+
   // Act
   DismissedExclusionRule frequency_cap(ad_events);
   const bool should_exclude = frequency_cap.ShouldExclude(creative_ad);

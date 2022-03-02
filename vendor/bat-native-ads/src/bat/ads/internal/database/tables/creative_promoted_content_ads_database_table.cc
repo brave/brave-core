@@ -462,8 +462,8 @@ void CreativePromotedContentAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 22: {
+      MigrateToV22(transaction);
       break;
     }
 
@@ -569,7 +569,7 @@ void CreativePromotedContentAds::OnGetAll(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativePromotedContentAds::MigrateToV19(
+void CreativePromotedContentAds::MigrateToV22(
     mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 

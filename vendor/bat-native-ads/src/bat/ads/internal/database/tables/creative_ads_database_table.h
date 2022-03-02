@@ -44,7 +44,7 @@ class CreativeAds final : public Table {
                                   const std::string& creative_instance_id,
                                   GetCreativeAdCallback callback);
 
-  void MigrateToV19(mojom::DBTransaction* transaction);
+  void MigrateToV22(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

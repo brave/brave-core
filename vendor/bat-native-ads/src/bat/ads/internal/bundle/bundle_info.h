@@ -10,6 +10,7 @@
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_promoted_content_ad_info_aliases.h"
+#include "bat/ads/internal/bundle/creative_search_result_ad_info_aliases.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
 
 namespace ads {
@@ -23,6 +24,7 @@ struct BundleInfo final {
   CreativeInlineContentAdList creative_inline_content_ads;
   CreativeNewTabPageAdList creative_new_tab_page_ads;
   CreativePromotedContentAdList creative_promoted_content_ads;
+  CreativeSearchResultAdList creative_search_result_ads;
   ConversionList conversions;
 };
 

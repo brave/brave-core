@@ -10,6 +10,7 @@
 #include "bat/ads/internal/bundle/creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info_aliases.h"
 #include "bat/ads/internal/bundle/creative_promoted_content_ad_info_aliases.h"
+#include "bat/ads/internal/bundle/creative_search_result_ad_info_aliases.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
 
 namespace ads {
@@ -51,6 +52,10 @@ class Bundle final {
   void DeleteCreativePromotedContentAds();
   void SaveCreativePromotedContentAds(
       const CreativePromotedContentAdList& creative_promoted_content_ads);
+
+  void DeleteCreativeSearchResultAds();
+  void SaveCreativeSearchResultAds(
+      const CreativeSearchResultAdList& creative_search_result_ads);
 
   void PurgeExpiredConversions();
   void SaveConversions(const ConversionList& conversions);

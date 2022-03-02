@@ -298,6 +298,29 @@ bool CatalogInfo::FromJson(const std::string& json,
 
           creative_set_info.creative_promoted_content_ads.push_back(
               creative_info);
+        } else if (code == "search_result_all_v1") {
+          CatalogCreativeSearchResultAdInfo creative_info;
+
+          creative_info.creative_instance_id = creative_instance_id;
+
+          // Type
+          creative_info.type.code = code;
+          creative_info.type.name = type["name"].GetString();
+          creative_info.type.platform = type["platform"].GetString();
+          creative_info.type.version = type["version"].GetUint64();
+
+          // Payload
+          auto payload = creative["payload"].GetObject();
+          creative_info.payload.body = payload["body"].GetString();
+          creative_info.payload.title = payload["title"].GetString();
+          creative_info.payload.target_url = payload["targetUrl"].GetString();
+          if (!GURL(creative_info.payload.target_url).is_valid()) {
+            BLOG(1, "Invalid target URL for creative instance id "
+                        << creative_instance_id);
+            continue;
+          }
+
+          creative_set_info.creative_search_result_ads.push_back(creative_info);
         } else if (code == "in_page_all_v1") {
           // TODO(tmancey): https://github.com/brave/brave-browser/issues/7298
           continue;

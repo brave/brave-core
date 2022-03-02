@@ -54,7 +54,7 @@ class BatAdsAdPacingTest : public UnitTestBase {
     UnitTestBase::SetUpForTesting(/* integration_test */ true);
 
     const URLEndpoints endpoints = {
-        {"/v9/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
+        {"/v10/catalog", {{net::HTTP_OK, "/empty_catalog.json"}}},
         {// Get issuers request
          R"(/v1/issuers/)",
          {{net::HTTP_OK, R"(

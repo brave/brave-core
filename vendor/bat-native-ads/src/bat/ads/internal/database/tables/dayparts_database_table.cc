@@ -87,8 +87,8 @@ void Dayparts::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 22: {
+      MigrateToV22(transaction);
       break;
     }
 
@@ -117,7 +117,7 @@ std::string Dayparts::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(4, count).c_str());
 }
 
-void Dayparts::MigrateToV19(mojom::DBTransaction* transaction) {
+void Dayparts::MigrateToV22(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, "dayparts");

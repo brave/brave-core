@@ -12,6 +12,7 @@
 #include "bat/ads/internal/catalog/catalog_creative_inline_content_ad_info_aliases.h"
 #include "bat/ads/internal/catalog/catalog_creative_new_tab_page_ad_info_aliases.h"
 #include "bat/ads/internal/catalog/catalog_creative_promoted_content_ad_info_aliases.h"
+#include "bat/ads/internal/catalog/catalog_creative_search_result_ad_info_aliases.h"
 #include "bat/ads/internal/catalog/catalog_os_info_aliases.h"
 #include "bat/ads/internal/catalog/catalog_segment_info_aliases.h"
 #include "bat/ads/internal/conversions/conversion_info_aliases.h"
@@ -39,6 +40,7 @@ struct CatalogCreativeSetInfo final {
   CatalogCreativeInlineContentAdList creative_inline_content_ads;
   CatalogCreativeNewTabPageAdList creative_new_tab_page_ads;
   CatalogCreativePromotedContentAdList creative_promoted_content_ads;
+  CatalogCreativeSearchResultAdList creative_search_result_ads;
   ConversionList conversions;
 };
 

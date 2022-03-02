@@ -12,9 +12,9 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_events/ad_event_unittest_util.h"
 #include "bat/ads/internal/ad_serving/ad_serving_features.h"
+#include "bat/ads/internal/ads/permission_rules_unittest_util.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_builder.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_observer.h"
-#include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad_permission_rules_unittest_util.h"
 #include "bat/ads/internal/bundle/creative_promoted_content_ad_info.h"
 #include "bat/ads/internal/bundle/creative_promoted_content_ad_unittest_util.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
@@ -105,7 +105,7 @@ class BatAdsPromotedContentAdTest : public PromotedContentAdObserver,
 
 TEST_F(BatAdsPromotedContentAdTest, FireViewedEvent) {
   // Arrange
-  promoted_content_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativePromotedContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
@@ -127,7 +127,7 @@ TEST_F(BatAdsPromotedContentAdTest, FireViewedEvent) {
 
 TEST_F(BatAdsPromotedContentAdTest, FireClickedEvent) {
   // Arrange
-  promoted_content_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativePromotedContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
@@ -149,7 +149,7 @@ TEST_F(BatAdsPromotedContentAdTest, FireClickedEvent) {
 
 TEST_F(BatAdsPromotedContentAdTest, DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
-  promoted_content_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativePromotedContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
@@ -217,7 +217,7 @@ TEST_F(BatAdsPromotedContentAdTest, DoNotFireEventWhenNotPermitted) {
 TEST_F(BatAdsPromotedContentAdTest,
        DoNotFireEventIfCreativeInstanceIdWasNotFound) {
   // Arrange
-  promoted_content_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   // Act
   promoted_content_ad_->FireEvent(kUuid, kCreativeInstanceId,
@@ -234,7 +234,7 @@ TEST_F(BatAdsPromotedContentAdTest,
 
 TEST_F(BatAdsPromotedContentAdTest, FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
-  promoted_content_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativePromotedContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event =
@@ -257,7 +257,7 @@ TEST_F(BatAdsPromotedContentAdTest, FireEventIfNotExceededAdsPerHourCap) {
 
 TEST_F(BatAdsPromotedContentAdTest, DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
-  promoted_content_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativePromotedContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event =
@@ -279,7 +279,7 @@ TEST_F(BatAdsPromotedContentAdTest, DoNotFireEventIfExceededAdsPerHourCap) {
 
 TEST_F(BatAdsPromotedContentAdTest, FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
-  promoted_content_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativePromotedContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event =
@@ -304,7 +304,7 @@ TEST_F(BatAdsPromotedContentAdTest, FireEventIfNotExceededAdsPerDayCap) {
 
 TEST_F(BatAdsPromotedContentAdTest, DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
-  promoted_content_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativePromotedContentAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event =

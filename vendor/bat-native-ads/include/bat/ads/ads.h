@@ -175,6 +175,12 @@ class ADS_EXPORT Ads {
       const std::string& creative_instance_id,
       const mojom::InlineContentAdEventType event_type) = 0;
 
+  // Should be called when a user views or clicks a search result ad
+  virtual void OnSearchResultAdEvent(
+      const std::string& uuid,
+      const std::string& creative_instance_id,
+      const mojom::SearchResultAdEventType event_type) = 0;
+
   // Purge orphaned ad events for the specified |ad_type|
   virtual void PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) = 0;
 

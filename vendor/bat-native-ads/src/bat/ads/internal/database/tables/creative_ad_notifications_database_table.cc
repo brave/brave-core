@@ -379,8 +379,8 @@ void CreativeAdNotifications::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 22: {
+      MigrateToV22(transaction);
       break;
     }
 
@@ -461,7 +461,7 @@ void CreativeAdNotifications::OnGetAll(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativeAdNotifications::MigrateToV19(mojom::DBTransaction* transaction) {
+void CreativeAdNotifications::MigrateToV22(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, "creative_ad_notifications");

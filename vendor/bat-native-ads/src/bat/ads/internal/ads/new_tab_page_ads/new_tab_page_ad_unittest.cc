@@ -14,7 +14,7 @@
 #include "bat/ads/internal/ad_serving/ad_serving_features.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_builder.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_observer.h"
-#include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad_permission_rules_unittest_util.h"
+#include "bat/ads/internal/ads/permission_rules_unittest_util.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_info.h"
 #include "bat/ads/internal/bundle/creative_new_tab_page_ad_unittest_util.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
@@ -104,7 +104,7 @@ class BatAdsNewTabPageAdTest : public NewTabPageAdObserver,
 
 TEST_F(BatAdsNewTabPageAdTest, FireViewedEvent) {
   // Arrange
-  new_tab_page_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
@@ -125,7 +125,7 @@ TEST_F(BatAdsNewTabPageAdTest, FireViewedEvent) {
 
 TEST_F(BatAdsNewTabPageAdTest, FireClickedEvent) {
   // Arrange
-  new_tab_page_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
@@ -146,7 +146,7 @@ TEST_F(BatAdsNewTabPageAdTest, FireClickedEvent) {
 
 TEST_F(BatAdsNewTabPageAdTest, DoNotFireViewedEventIfAlreadyFired) {
   // Arrange
-  new_tab_page_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
 
@@ -212,7 +212,7 @@ TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventWhenNotPermitted) {
 
 TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventIfCreativeInstanceIdWasNotFound) {
   // Arrange
-  new_tab_page_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   // Act
   new_tab_page_ad_->FireEvent(kUuid, kCreativeInstanceId,
@@ -229,7 +229,7 @@ TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventIfCreativeInstanceIdWasNotFound) {
 
 TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerHourCap) {
   // Arrange
-  new_tab_page_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
@@ -251,7 +251,7 @@ TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerHourCap) {
 
 TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventIfExceededAdsPerHourCap) {
   // Arrange
-  new_tab_page_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
@@ -273,7 +273,7 @@ TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventIfExceededAdsPerHourCap) {
 
 TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerDayCap) {
   // Arrange
-  new_tab_page_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,
@@ -297,7 +297,7 @@ TEST_F(BatAdsNewTabPageAdTest, FireEventIfNotExceededAdsPerDayCap) {
 
 TEST_F(BatAdsNewTabPageAdTest, DoNotFireEventIfExceededAdsPerDayCap) {
   // Arrange
-  new_tab_page_ads::frequency_capping::ForcePermissionRules();
+  ForcePermissionRules();
 
   const CreativeNewTabPageAdInfo& creative_ad = BuildAndSaveCreativeAd();
   const AdEventInfo& ad_event = BuildAdEvent(creative_ad, AdType::kNewTabPageAd,

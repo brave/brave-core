@@ -83,8 +83,8 @@ void Segments::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 22: {
+      MigrateToV22(transaction);
       break;
     }
 
@@ -111,7 +111,7 @@ std::string Segments::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(2, count).c_str());
 }
 
-void Segments::MigrateToV19(mojom::DBTransaction* transaction) {
+void Segments::MigrateToV22(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, "segments");

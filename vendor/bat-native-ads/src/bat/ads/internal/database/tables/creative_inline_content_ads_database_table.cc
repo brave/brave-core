@@ -590,8 +590,8 @@ void CreativeInlineContentAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 22: {
+      MigrateToV22(transaction);
       break;
     }
 
@@ -716,7 +716,7 @@ void CreativeInlineContentAds::OnGetAll(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativeInlineContentAds::MigrateToV19(mojom::DBTransaction* transaction) {
+void CreativeInlineContentAds::MigrateToV22(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, GetTableName());

@@ -21,6 +21,7 @@ struct AdsHistoryInfo;
 struct InlineContentAdInfo;
 struct NewTabPageAdInfo;
 struct PromotedContentAdInfo;
+struct SearchResultAdInfo;
 
 namespace history {
 
@@ -42,6 +43,9 @@ void AddPromotedContentAd(const PromotedContentAdInfo& ad,
 
 void AddInlineContentAd(const InlineContentAdInfo& ad,
                         const ConfirmationType& confirmation_type);
+
+void AddSearchResultAd(const SearchResultAdInfo& ad,
+                       const ConfirmationType& confirmation_type);
 
 }  // namespace history
 }  // namespace ads

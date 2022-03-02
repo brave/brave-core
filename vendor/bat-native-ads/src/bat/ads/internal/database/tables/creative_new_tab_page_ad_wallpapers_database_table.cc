@@ -85,8 +85,8 @@ void CreativeNewTabPageAdWallpapers::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 22: {
+      MigrateToV22(transaction);
       break;
     }
 
@@ -115,9 +115,11 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateQuery(
       BuildBindingParameterPlaceholders(4, count).c_str());
 }
 
-void CreativeNewTabPageAdWallpapers::MigrateToV19(
+void CreativeNewTabPageAdWallpapers::MigrateToV22(
     mojom::DBTransaction* transaction) {
   DCHECK(transaction);
+
+  util::Drop(transaction, "creative_new_tab_page_ad_wallpapers");
 
   const std::string& query =
       "CREATE TABLE creative_new_tab_page_ad_wallpapers "

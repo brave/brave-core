@@ -31,7 +31,7 @@ TEST_F(BatAdsCreativeNewTabPageAdsDatabaseTableIntegrationTest,
        GetCreativeNewTabPageAdsFromCatalogEndpoint) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v10/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 

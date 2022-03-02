@@ -9,7 +9,6 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/issuers_permission_rule.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule_util.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_permission_rule.h"
-#include "bat/ads/internal/frequency_capping/permission_rules/user_activity_permission_rule.h"
 
 namespace ads {
 
@@ -30,11 +29,6 @@ bool PermissionRulesBase::HasPermission() const {
 
   UnblindedTokensPermissionRule unblinded_tokens_permission_rule;
   if (!ShouldAllow(&unblinded_tokens_permission_rule)) {
-    return false;
-  }
-
-  UserActivityPermissionRule user_activity_permission_rule;
-  if (!ShouldAllow(&user_activity_permission_rule)) {
     return false;
   }
 

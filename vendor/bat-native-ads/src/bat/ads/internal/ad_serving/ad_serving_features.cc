@@ -44,6 +44,13 @@ const char kFieldTrialParameterMaximumPromotedContentAdsPerDay[] =
     "maximum_promoted_content_ads_per_day";
 const int kDefaultMaximumPromotedContentAdsPerDay = 20;
 
+const char kFieldTrialParameterMaximumSearchResultAdsPerHour[] =
+    "maximum_search_result_ads_per_hour";
+const int kDefaultMaximumSearchResultAdsPerHour = 10;
+const char kFieldTrialParameterMaximumSearchResultAdsPerDay[] =
+    "maximum_search_result_ads_per_day";
+const int kDefaultMaximumSearchResultAdsPerDay = 40;
+
 const char kFieldTrialParameterBrowsingHistoryMaxCount[] =
     "browsing_history_max_count";
 const int kDefaultBrowsingHistoryMaxCount = 5000;
@@ -108,6 +115,18 @@ int GetMaximumPromotedContentAdsPerDay() {
   return GetFieldTrialParamByFeatureAsInt(
       kAdServing, kFieldTrialParameterMaximumPromotedContentAdsPerDay,
       kDefaultMaximumPromotedContentAdsPerDay);
+}
+
+int GetMaximumSearchResultAdsPerHour() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kAdServing, kFieldTrialParameterMaximumSearchResultAdsPerHour,
+      kDefaultMaximumSearchResultAdsPerHour);
+}
+
+int GetMaximumSearchResultAdsPerDay() {
+  return GetFieldTrialParamByFeatureAsInt(
+      kAdServing, kFieldTrialParameterMaximumSearchResultAdsPerDay,
+      kDefaultMaximumSearchResultAdsPerDay);
 }
 
 int GetBrowsingHistoryMaxCount() {

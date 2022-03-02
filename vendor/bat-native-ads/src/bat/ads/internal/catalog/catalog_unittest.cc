@@ -167,6 +167,27 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_inline_content_ads.push_back(
         catalog_creative_inline_content_ad);
 
+    // Creative Search Result Ads
+    CatalogCreativeSearchResultAdList catalog_creative_search_result_ads;
+
+    CatalogCreativeSearchResultAdInfo catalog_creative_search_result_ad;
+    catalog_creative_search_result_ad.creative_instance_id =
+        "1a251fda-3aab-4b5f-8561-54dbfaffcab2";
+    CatalogTypeInfo catalog_search_result_ad_type;
+    catalog_search_result_ad_type.code = "search_result_all_v1";
+    catalog_search_result_ad_type.name = "search_result";
+    catalog_search_result_ad_type.platform = "all";
+    catalog_search_result_ad_type.version = 1;
+    catalog_creative_search_result_ad.type = catalog_search_result_ad_type;
+    catalog_creative_search_result_ad.payload.body =
+        "Test Search Result Ad Campaign 1 Body";
+    catalog_creative_search_result_ad.payload.title =
+        "Test Search Result Ad Campaign 1 Title";
+    catalog_creative_search_result_ad.payload.target_url =
+        "https://brave.com/1/search_result_ad";
+    catalog_creative_search_result_ads.push_back(
+        catalog_creative_search_result_ad);
+
     // Conversions
     ConversionList conversions;
 
@@ -370,6 +391,27 @@ class BatAdsCatalogTest : public UnitTestBase {
     catalog_creative_inline_content_ads.push_back(
         catalog_creative_inline_content_ad);
 
+    // Creative Search Result Ads
+    CatalogCreativeSearchResultAdList catalog_creative_search_result_ads;
+
+    CatalogCreativeSearchResultAdInfo catalog_creative_search_result_ad;
+    catalog_creative_search_result_ad.creative_instance_id =
+        "708b7d4f-b736-419b-bbbc-1a642e697032";
+    CatalogTypeInfo catalog_search_result_ad_type;
+    catalog_search_result_ad_type.code = "search_result_all_v1";
+    catalog_search_result_ad_type.name = "search_result";
+    catalog_search_result_ad_type.platform = "all";
+    catalog_search_result_ad_type.version = 1;
+    catalog_creative_search_result_ad.type = catalog_search_result_ad_type;
+    catalog_creative_search_result_ad.payload.body =
+        "Test Search Result Ad Campaign 2 Body";
+    catalog_creative_search_result_ad.payload.title =
+        "Test Search Result Ad Campaign 2 Title";
+    catalog_creative_search_result_ad.payload.target_url =
+        "https://brave.com/2/search_result_ad";
+    catalog_creative_search_result_ads.push_back(
+        catalog_creative_search_result_ad);
+
     // Conversions
     ConversionList conversions;
 
@@ -554,7 +596,7 @@ TEST_F(BatAdsCatalogTest, GetVersion) {
   const int version = catalog.GetVersion();
 
   // Assert
-  EXPECT_EQ(9, version);
+  EXPECT_EQ(10, version);
 }
 
 TEST_F(BatAdsCatalogTest, GetPing) {

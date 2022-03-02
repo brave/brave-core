@@ -23,7 +23,8 @@ enum AdType {
   kAdNotification,
   kNewTabPageAd,
   kPromotedContentAd,
-  kInlineContentAd
+  kInlineContentAd,
+  kSearchResultAd
 };
 
 enum AdNotificationEventType {
@@ -47,6 +48,12 @@ enum PromotedContentAdEventType {
 };
 
 enum InlineContentAdEventType {
+  kServed = 0,
+  kViewed,
+  kClicked
+};
+
+enum SearchResultAdEventType {
   kServed = 0,
   kViewed,
   kClicked

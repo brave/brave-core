@@ -8,7 +8,7 @@
 
 namespace ads {
 
-const int kCatalogVersion = 9;
+const int kCatalogVersion = 10;
 
 }  // namespace ads
 

@@ -1,5 +1,5 @@
 {
-  "version": 9,
+  "version": 10,
   "ping": 7200000,
   "campaigns": [
     {
@@ -67,6 +67,20 @@
                 "dimensions": "200x100",
                 "ctaText": "Call to Action Text 1",
                 "targetUrl": "https://brave.com/1/inline_content_ad"
+              }
+            },
+            {
+              "creativeInstanceId": "24b31a00-e8dd-42b3-9649-13d356652bff",
+              "type": {
+                "code": "search_result_all_v1",
+                "name": "search_result",
+                "platform": "all",
+                "version": 1
+              },
+              "payload": {
+                "body": "Search Result Ad Campaign 1 Body",
+                "title": "Test Search Result Ad Campaign 1 Title",
+                "targetUrl": "https://brave.com/1/search_result_ad"
               }
             }
           ],

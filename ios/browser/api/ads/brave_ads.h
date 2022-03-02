@@ -160,6 +160,11 @@ OBJC_EXPORT
                   creativeInstanceId:(NSString*)creativeInstanceId
                            eventType:(AdsPromotedContentAdEventType)eventType;
 
+/// Report that a search result ad event type was triggered for a given id
+- (void)reportSearchResultAdEvent:(NSString*)uuid
+               creativeInstanceId:(NSString*)creativeInstanceId
+                        eventType:(AdsSearchResultAdEventType)eventType;
+
 /// Purge orphaned ad events for a given ad type
 - (void)purgeOrphanedAdEvents:(AdsAdType)adType;
 

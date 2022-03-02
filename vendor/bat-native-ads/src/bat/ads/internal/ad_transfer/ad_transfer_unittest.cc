@@ -101,7 +101,7 @@ TEST_F(BatAdsAdTransferTest, DoNotTransferAdIfTheSameAdIsAlreadyTransferring) {
 
 TEST_F(BatAdsAdTransferTest, TransferAdIfAnotherAdIsAlreadyTransferring) {
   // Arrange
-  const AdInfo ad = BuildAdForType(AdType::kPromotedContentAd);
+  const AdInfo ad = BuildAdForType(AdType::kSearchResultAd);
   ad_transfer_->set_last_clicked_ad(ad);
 
   TabManager::Get()->OnUpdated(1, "https://foobar.com", /* is_visible */ true,

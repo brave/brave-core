@@ -18,6 +18,7 @@ const char kAdNotificationType[] = "ad_notification";
 const char kNewTabPageAdType[] = "new_tab_page_ad";
 const char kPromotedContentAdType[] = "promoted_content_ad";
 const char kInlineContentAdType[] = "inline_content_ad";
+const char kSearchResultAdType[] = "search_result_ad";
 
 }  // namespace
 
@@ -32,6 +33,8 @@ AdType::AdType(const std::string& value) {
     value_ = kPromotedContentAd;
   } else if (value == kInlineContentAdType) {
     value_ = kInlineContentAd;
+  } else if (value == kSearchResultAdType) {
+    value_ = kSearchResultAd;
   } else {
     NOTREACHED();
   }
@@ -61,6 +64,11 @@ AdType::AdType(const mojom::AdType value) {
 
     case mojom::AdType::kInlineContentAd: {
       value_ = kInlineContentAd;
+      break;
+    }
+
+    case mojom::AdType::kSearchResultAd: {
+      value_ = kSearchResultAd;
       break;
     }
   }
@@ -94,6 +102,10 @@ std::string AdType::ToString() const {
 
     case kInlineContentAd: {
       return kInlineContentAdType;
+    }
+
+    case kSearchResultAd: {
+      return kSearchResultAdType;
     }
   }
 }

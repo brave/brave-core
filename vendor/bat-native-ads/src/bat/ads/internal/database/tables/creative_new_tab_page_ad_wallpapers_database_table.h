@@ -38,7 +38,7 @@ class CreativeNewTabPageAdWallpapers final : public Table {
       mojom::DBCommand* command,
       const CreativeNewTabPageAdList& creative_ads);
 
-  void MigrateToV19(mojom::DBTransaction* transaction);
+  void MigrateToV22(mojom::DBTransaction* transaction);
 };
 
 }  // namespace table

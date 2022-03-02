@@ -514,8 +514,8 @@ void CreativeNewTabPageAds::Migrate(mojom::DBTransaction* transaction,
   DCHECK(transaction);
 
   switch (to_version) {
-    case 19: {
-      MigrateToV19(transaction);
+    case 22: {
+      MigrateToV22(transaction);
       break;
     }
 
@@ -622,7 +622,7 @@ void CreativeNewTabPageAds::OnGetAll(
   callback(/* success */ true, segments, creative_ads);
 }
 
-void CreativeNewTabPageAds::MigrateToV19(mojom::DBTransaction* transaction) {
+void CreativeNewTabPageAds::MigrateToV22(mojom::DBTransaction* transaction) {
   DCHECK(transaction);
 
   util::Drop(transaction, "creative_new_tab_page_ads");

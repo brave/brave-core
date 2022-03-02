@@ -23,6 +23,7 @@
 #include "bat/ads/internal/client/client.h"
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/promoted_content_ad_info.h"
+#include "bat/ads/search_result_ad_info.h"
 
 namespace ads {
 namespace history {
@@ -84,6 +85,14 @@ void AddInlineContentAd(const InlineContentAdInfo& ad,
                         const ConfirmationType& confirmation_type) {
   const AdHistoryInfo& ad_history =
       BuildAdHistory(ad, confirmation_type, ad.title, ad.description);
+
+  Client::Get()->AppendAdHistory(ad_history);
+}
+
+void AddSearchResultAd(const SearchResultAdInfo& ad,
+                       const ConfirmationType& confirmation_type) {
+  const AdHistoryInfo& ad_history =
+      BuildAdHistory(ad, confirmation_type, ad.title, ad.body);
 
   Client::Get()->AppendAdHistory(ad_history);
 }

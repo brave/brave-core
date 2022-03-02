@@ -30,7 +30,7 @@ class BatAdsCatalogPermissionRuleTest : public UnitTestBase {
 TEST_F(BatAdsCatalogPermissionRuleTest, AllowAd) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v10/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -48,7 +48,7 @@ TEST_F(BatAdsCatalogPermissionRuleTest,
        AllowAdIfCatalogWasLastUpdated23HoursAnd59MinutesAgo) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v10/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 
@@ -68,7 +68,7 @@ TEST_F(BatAdsCatalogPermissionRuleTest,
        DoNotAllowAdIfCatalogWasLastUpdated1DayAgo) {
   // Arrange
   const URLEndpoints endpoints = {
-      {"/v9/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
+      {"/v10/catalog", {{net::HTTP_OK, "/catalog.json"}}}};
 
   MockUrlRequest(ads_client_mock_, endpoints);
 

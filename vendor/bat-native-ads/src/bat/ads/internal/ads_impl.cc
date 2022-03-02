@@ -39,6 +39,7 @@
 #include "bat/ads/internal/ads/inline_content_ads/inline_content_ad.h"
 #include "bat/ads/internal/ads/new_tab_page_ads/new_tab_page_ad.h"
 #include "bat/ads/internal/ads/promoted_content_ads/promoted_content_ad.h"
+#include "bat/ads/internal/ads/search_result_ads/search_result_ad.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/ads_history/ads_history.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
@@ -75,6 +76,7 @@
 #include "bat/ads/new_tab_page_ad_info.h"
 #include "bat/ads/pref_names.h"
 #include "bat/ads/promoted_content_ad_info.h"
+#include "bat/ads/search_result_ad_info.h"
 #include "bat/ads/statement_info.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -397,6 +399,13 @@ void AdsImpl::OnInlineContentAdEvent(
   inline_content_ad_->FireEvent(uuid, creative_instance_id, event_type);
 }
 
+void AdsImpl::OnSearchResultAdEvent(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const mojom::SearchResultAdEventType event_type) {
+  search_result_ad_->FireEvent(uuid, creative_instance_id, event_type);
+}
+
 void AdsImpl::PurgeOrphanedAdEventsForType(const mojom::AdType ad_type) {
   PurgeOrphanedAdEvents(ad_type, [ad_type](const bool success) {
     if (!success) {
@@ -564,6 +573,9 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
 
   promoted_content_ad_ = std::make_unique<PromotedContentAd>();
   promoted_content_ad_->AddObserver(this);
+
+  search_result_ad_ = std::make_unique<SearchResultAd>();
+  search_result_ad_->AddObserver(this);
 
   confirmations_state_ = std::make_unique<ConfirmationsState>();
 
@@ -927,6 +939,27 @@ void AdsImpl::OnInlineContentAdEventFailed(
     const std::string& creative_instance_id,
     const mojom::InlineContentAdEventType event_type) {
   BLOG(1, "Failed to fire inline content ad "
+              << event_type << " event for uuid " << uuid
+              << " and creative instance id " << creative_instance_id);
+}
+
+void AdsImpl::OnSearchResultAdViewed(const SearchResultAdInfo& ad) {
+  account_->Deposit(ad.creative_instance_id, ad.type,
+                    ConfirmationType::kViewed);
+}
+
+void AdsImpl::OnSearchResultAdClicked(const SearchResultAdInfo& ad) {
+  ad_transfer_->set_last_clicked_ad(ad);
+
+  account_->Deposit(ad.creative_instance_id, ad.type,
+                    ConfirmationType::kClicked);
+}
+
+void AdsImpl::OnSearchResultAdEventFailed(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const mojom::SearchResultAdEventType event_type) {
+  BLOG(1, "Failed to fire search_result ad "
               << event_type << " event for uuid " << uuid
               << " and creative instance id " << creative_instance_id);
 }
