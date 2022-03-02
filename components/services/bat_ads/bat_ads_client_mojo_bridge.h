@@ -70,6 +70,9 @@ class BatAdsClientMojoBridge
                       const ads::mojom::P2AEventType type,
                       const std::string& value) override;
 
+  void LogTrainingCovariates(
+      ads::mojom::TrainingCovariatesPtr training_covariates) override;
+
   void Load(
       const std::string& name,
       ads::LoadCallback callback) override;

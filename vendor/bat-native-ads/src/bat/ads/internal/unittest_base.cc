@@ -212,6 +212,8 @@ void UnitTestBase::Initialize() {
 
   user_activity_ = std::make_unique<UserActivity>();
 
+  covariate_logs_ = std::make_unique<CovariateLogs>();
+
   // Fast forward until no tasks remain to ensure "EnsureSqliteInitialized"
   // tasks have fired before running tests
   task_environment_.FastForwardUntilNoTasksRemain();

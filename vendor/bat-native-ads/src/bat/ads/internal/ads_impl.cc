@@ -49,6 +49,7 @@
 #include "bat/ads/internal/conversions/conversions.h"
 #include "bat/ads/internal/database/database_initialize.h"
 #include "bat/ads/internal/features/features.h"
+#include "bat/ads/internal/federated/covariate_logs.h"
 #include "bat/ads/internal/legacy_migration/conversions/legacy_conversion_migration.h"
 #include "bat/ads/internal/legacy_migration/rewards/legacy_rewards_migration.h"
 #include "bat/ads/internal/logging.h"
@@ -584,6 +585,8 @@ void AdsImpl::set(privacy::TokenGeneratorInterface* token_generator) {
   tab_manager_ = std::make_unique<TabManager>();
 
   user_activity_ = std::make_unique<UserActivity>();
+
+  covariate_logs_ = std::make_unique<CovariateLogs>();
 }
 
 void AdsImpl::InitializeBrowserManager() {
@@ -803,6 +806,9 @@ void AdsImpl::OnDidServeAdNotification(const AdNotificationInfo& ad) {
 void AdsImpl::OnAdNotificationViewed(const AdNotificationInfo& ad) {
   account_->Deposit(ad.creative_instance_id, ad.type,
                     ConfirmationType::kViewed);
+
+  const base::Time impression_served_at = base::Time::Now();
+  covariate_logs_->SetAdNotificationImpressionServedAt(impression_served_at);
 }
 
 void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
@@ -813,6 +819,9 @@ void AdsImpl::OnAdNotificationClicked(const AdNotificationInfo& ad) {
 
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::AdNotificationEventType::kClicked});
+
+  covariate_logs_->SetAdNotificationWasClicked(true);
+  covariate_logs_->LogTrainingCovariates();
 }
 
 void AdsImpl::OnAdNotificationDismissed(const AdNotificationInfo& ad) {
@@ -821,11 +830,17 @@ void AdsImpl::OnAdNotificationDismissed(const AdNotificationInfo& ad) {
 
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::AdNotificationEventType::kDismissed});
+
+  covariate_logs_->SetAdNotificationWasClicked(false);
+  covariate_logs_->LogTrainingCovariates();
 }
 
 void AdsImpl::OnAdNotificationTimedOut(const AdNotificationInfo& ad) {
   epsilon_greedy_bandit_processor_->Process(
       {ad.segment, mojom::AdNotificationEventType::kTimedOut});
+
+  covariate_logs_->SetAdNotificationWasClicked(false);
+  covariate_logs_->LogTrainingCovariates();
 }
 
 void AdsImpl::OnAdNotificationEventFailed(

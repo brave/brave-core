@@ -123,6 +123,10 @@ class ADS_EXPORT AdsClient {
                               const mojom::P2AEventType type,
                               const std::string& value) = 0;
 
+  // Add federated log
+  virtual void LogTrainingCovariates(
+      const mojom::TrainingCovariatesPtr training_covariates) = 0;
+
   // Log diagnostic information
   virtual void Log(const char* file,
                    const int line,

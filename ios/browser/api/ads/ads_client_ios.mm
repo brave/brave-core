@@ -188,3 +188,8 @@ void AdsClientIOS::RecordP2AEvent(const std::string& name,
                                   const std::string& value) {
   [bridge_ recordP2AEvent:name type:type value:value];
 }
+
+void AdsClientIOS::LogTrainingCovariates(
+    ads::mojom::TrainingCovariatesPtr training_covariates) {
+  [bridge_ logTrainingCovariates:std::move(training_covariates)];
+}

@@ -196,6 +196,11 @@ void AdsClientMojoBridge::RecordP2AEvent(const std::string& name,
   ads_client_->RecordP2AEvent(name, type, out_value);
 }
 
+void AdsClientMojoBridge::LogTrainingCovariates(
+    ads::mojom::TrainingCovariatesPtr training_covariates) {
+  ads_client_->LogTrainingCovariates(std::move(training_covariates));
+}
+
 // static
 void AdsClientMojoBridge::OnLoad(CallbackHolder<LoadCallback>* holder,
                                  const bool success,

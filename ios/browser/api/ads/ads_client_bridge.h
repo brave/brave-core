@@ -70,6 +70,8 @@
 - (void)recordP2AEvent:(const std::string&)name
                   type:(const ads::mojom::P2AEventType)type
                  value:(const std::string&)value;
+- (void)logTrainingCovariates:
+    (const ads::mojom::TrainingCovariatesPtr)training_covariates;
 
 @end
 

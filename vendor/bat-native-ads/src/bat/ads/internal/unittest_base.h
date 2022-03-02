@@ -18,6 +18,7 @@
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/browser_manager/browser_manager.h"
 #include "bat/ads/internal/database/database_initialize.h"
+#include "bat/ads/internal/federated/covariate_logs.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
 #include "bat/ads/internal/tab_manager/tab_manager.h"
 #include "bat/ads/internal/user_activity/user_activity.h"
@@ -110,6 +111,7 @@ class UnitTestBase : public testing::Test {
   std::unique_ptr<BrowserManager> browser_manager_;
   std::unique_ptr<TabManager> tab_manager_;
   std::unique_ptr<UserActivity> user_activity_;
+  std::unique_ptr<CovariateLogs> covariate_logs_;
   std::unique_ptr<AdsImpl> ads_;
 
   void Initialize();
