@@ -15,8 +15,8 @@
 
 namespace brave_wallet {
 
-base::Value EthereumChainToValue(const mojom::NetworkInfoPtr& info);
-mojom::NetworkInfoPtr ValueToEthereumChain(const base::Value& value);
+base::Value EthNetworkInfoToValue(const mojom::NetworkInfoPtr& info);
+mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value);
 base::ListValue PermissionRequestResponseToValue(
     const url::Origin& origin,
     const std::vector<std::string> accounts);

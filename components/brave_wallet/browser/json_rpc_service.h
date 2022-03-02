@@ -69,6 +69,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void Request(const std::string& json_payload,
                bool auto_retry_on_network_change,
+               mojom::CoinType coin,
                RequestCallback callback) override;
 
   void GetBalance(const std::string& address,
@@ -423,6 +424,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   base::flat_map<mojom::CoinType, GURL> network_urls_;
   // <mojom::CoinType, chain_id>
   base::flat_map<mojom::CoinType, std::string> chain_ids_;
+  // mojom::NetworkInfoPtr is move-only so we cannot use a custom struct to
+  // store NetworkInfo and origin together
   // <chain_id, mojom::NetworkInfoPtr>
   base::flat_map<std::string, mojom::NetworkInfoPtr>
       add_chain_pending_requests_;

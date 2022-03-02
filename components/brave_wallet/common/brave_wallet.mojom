@@ -586,7 +586,6 @@ struct NetworkInfoDataETH {
   bool is_eip1559;
 };
 
-
 union NetworkInfoData {
   NetworkInfoDataETH eth_data;
 };
@@ -654,8 +653,10 @@ interface JsonRpcService {
   // Unstoppable Domains lookups
   UnstoppableDomainsGetEthAddr(string domain) => (string address, ProviderError error, string error_message);
 
-  // Used for making requests to the currently selected EVM compatible node
-  Request(string json_payload, bool auto_retry_on_network_change) => (int32 http_code, string response, map<string, string> headers);
+  // Used for making requests to the currently selected EVM compatible node for
+  // coin ETH and other nodes with corresponding coin types 
+  Request(string json_payload, bool auto_retry_on_network_change, CoinType coin)
+    => (int32 http_code, string response, map<string, string> headers);
 
   // Adds an observer for the events of JsonRpcService
   AddObserver(pending_remote<JsonRpcServiceObserver> observer);

@@ -278,7 +278,7 @@ void GetAllEthCustomChains(PrefService* prefs,
   if (!eth_custom_networks_list)
     return;
   for (const auto& it : eth_custom_networks_list->GetList()) {
-    mojom::NetworkInfoPtr chain = brave_wallet::ValueToEthereumChain(it);
+    mojom::NetworkInfoPtr chain = brave_wallet::ValueToEthNetworkInfo(it);
     if (chain)
       result->push_back(chain->Clone());
   }
@@ -773,7 +773,8 @@ std::string GetEnsRegistryContractAddress(const std::string& chain_id) {
 void AddCustomNetwork(PrefService* prefs, mojom::NetworkInfoPtr chain) {
   DCHECK(prefs);
 
-  absl::optional<base::Value> value = brave_wallet::EthereumChainToValue(chain);
+  absl::optional<base::Value> value =
+      brave_wallet::EthNetworkInfoToValue(chain);
   if (!value)
     return;
 

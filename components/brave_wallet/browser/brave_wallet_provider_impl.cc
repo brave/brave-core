@@ -103,7 +103,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
         l10n_util::GetStringUTF8(IDS_WALLET_EXPECTED_SINGLE_PARAMETER));
     return;
   }
-  auto chain = brave_wallet::ValueToEthereumChain(list.front());
+  auto chain = brave_wallet::ValueToEthNetworkInfo(list.front());
   if (!chain) {
     std::move(callback).Run(
         mojom::ProviderError::kInvalidParams,
@@ -597,7 +597,8 @@ void BraveWalletProviderImpl::Request(const std::string& json_payload,
                                       bool auto_retry_on_network_change,
                                       RequestCallback callback) {
   if (json_rpc_service_) {
-    json_rpc_service_->Request(json_payload, true, std::move(callback));
+    json_rpc_service_->Request(json_payload, true, mojom::CoinType::ETH,
+                               std::move(callback));
   }
 }
 

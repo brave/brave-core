@@ -14,7 +14,7 @@
 
 namespace brave_wallet {
 
-mojom::NetworkInfoPtr ValueToEthereumChain(const base::Value& value) {
+mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
   mojom::NetworkInfo chain;
   const base::DictionaryValue* params_dict = nullptr;
   if (!value.GetAsDictionary(&params_dict) || !params_dict)
@@ -78,7 +78,7 @@ mojom::NetworkInfoPtr ValueToEthereumChain(const base::Value& value) {
   return chain.Clone();
 }
 
-base::Value EthereumChainToValue(const mojom::NetworkInfoPtr& chain) {
+base::Value EthNetworkInfoToValue(const mojom::NetworkInfoPtr& chain) {
   base::Value dict(base::Value::Type::DICTIONARY);
   DCHECK_EQ(chain->coin, mojom::CoinType::ETH);
   dict.SetStringKey("chainId", chain->chain_id);

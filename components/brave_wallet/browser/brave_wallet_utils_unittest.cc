@@ -664,14 +664,14 @@ TEST(BraveWalletUtilsUnitTest, GetAllEthCustomChainsTest) {
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain_ptr1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
   auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain_ptr2));
   UpdateCustomNetworks(&prefs, &values);
 
   GetAllEthCustomChains(&prefs, &result);
@@ -692,14 +692,14 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain_ptr1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
   auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain_ptr2));
   UpdateCustomNetworks(&prefs, &values);
 
   std::vector<mojom::NetworkInfoPtr> expected_chains;
@@ -736,14 +736,14 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain_ptr1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
   auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain_ptr2));
   UpdateCustomNetworks(&prefs, &values);
   std::vector<mojom::NetworkInfoPtr> known_chains;
   GetAllKnownEthChains(&prefs, &known_chains);
@@ -814,7 +814,7 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain_ptr1));
   UpdateCustomNetworks(&prefs, &values);
 
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::ETH));
@@ -867,14 +867,14 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain_ptr1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
   auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain_ptr2));
   UpdateCustomNetworks(&prefs, &values);
 
   EXPECT_EQ(GetNetworkId(&prefs, mojom::kMainnetChainId), "mainnet");

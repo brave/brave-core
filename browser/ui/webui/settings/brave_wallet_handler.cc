@@ -49,7 +49,7 @@ brave_wallet::mojom::NetworkInfoPtr GetEthereumChain(
   }
 
   brave_wallet::mojom::NetworkInfoPtr chain =
-      brave_wallet::ValueToEthereumChain(records_v.value());
+      brave_wallet::ValueToEthNetworkInfo(records_v.value());
   if (!chain) {
     *error_message = l10n_util::GetStringUTF8(
         IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
@@ -110,7 +110,7 @@ void BraveWalletHandler::GetCustomNetworksList(
   std::vector<brave_wallet::mojom::NetworkInfoPtr> custom_chains;
   brave_wallet::GetAllEthCustomChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
-    list.Append(brave_wallet::EthereumChainToValue(it));
+    list.Append(brave_wallet::EthNetworkInfoToValue(it));
   }
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);

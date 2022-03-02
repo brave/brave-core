@@ -579,14 +579,14 @@ TEST_F(JsonRpcServiceUnitTest, SetCustomNetwork) {
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain_ptr1));
 
   brave_wallet::mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
   auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
 
   bool callback_is_called = false;
@@ -622,14 +622,14 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   auto chain_ptr1 = chain1.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr1));
+  values.push_back(EthNetworkInfoToValue(chain_ptr1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
   auto chain_ptr2 = chain2.Clone();
-  values.push_back(EthereumChainToValue(chain_ptr2));
+  values.push_back(EthNetworkInfoToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
 
   std::vector<mojom::NetworkInfoPtr> expected_chains;
@@ -1099,7 +1099,7 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}";
   SetInterceptor("eth_blockNumber", "true", expected_response);
   json_rpc_service_->Request(
-      request, true,
+      request, true, mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
                      expected_response));
   base::RunLoop().RunUntilIdle();
@@ -1113,7 +1113,7 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   expected_response = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}";
   SetInterceptor("eth_getBlockByNumber", "0x5BAD55,true", expected_response);
   json_rpc_service_->Request(
-      request, true,
+      request, true, mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
                      expected_response));
   base::RunLoop().RunUntilIdle();
@@ -1122,7 +1122,7 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->Request(
-      request, true,
+      request, true, mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, false /* success */,
                      ""));
   base::RunLoop().RunUntilIdle();
@@ -1641,14 +1641,14 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
                             mojom::NetworkInfoData::NewEthData(
                                 mojom::NetworkInfoDataETH::New(false)));
   auto chain_ptr1 = chain1.Clone();
-  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr1));
+  values.push_back(brave_wallet::EthNetworkInfoToValue(chain_ptr1));
 
   mojom::NetworkInfo chain2(
       "chain_id2", "chain_name2", {"https://url2.com"}, {"https://url2.com"},
       {"https://url2.com"}, "symbol_name2", "symbol2", 22, mojom::CoinType::ETH,
       mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
   auto chain_ptr2 = chain2.Clone();
-  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr2));
+  values.push_back(brave_wallet::EthNetworkInfoToValue(chain_ptr2));
   UpdateCustomNetworks(prefs(), &values);
 
   // Switch to chain1 should trigger is_eip1559 being updated to true when
@@ -1983,7 +1983,7 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
                            mojom::NetworkInfoData::NewEthData(
                                mojom::NetworkInfoDataETH::New(false)));
   auto chain_ptr = chain.Clone();
-  values.push_back(brave_wallet::EthereumChainToValue(chain_ptr));
+  values.push_back(brave_wallet::EthNetworkInfoToValue(chain_ptr));
   UpdateCustomNetworks(prefs(), &values);
 
   std::vector<mojom::NetworkInfoPtr> custom_chains;
