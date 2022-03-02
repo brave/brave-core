@@ -34,7 +34,7 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
            mojo::PendingReceiver<network::mojom::URLLoaderClient>,
            SpeedReaderURLLoader*>
 SpeedReaderURLLoader::CreateLoader(
-    base::WeakPtr<sniffer::SnifferThrottle> throttle,
+    base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
     base::WeakPtr<SpeedreaderResultDelegate> delegate,
     const GURL& response_url,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
@@ -56,17 +56,18 @@ SpeedReaderURLLoader::CreateLoader(
 }
 
 SpeedReaderURLLoader::SpeedReaderURLLoader(
-    base::WeakPtr<sniffer::SnifferThrottle> throttle,
+    base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
     base::WeakPtr<SpeedreaderResultDelegate> delegate,
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner,
     SpeedreaderRewriterService* rewriter_service)
-    : sniffer::SnifferURLLoader(throttle,
-                                response_url,
-                                std::move(destination_url_loader_client),
-                                task_runner),
+    : body_sniffer::BodySnifferURLLoader(
+          throttle,
+          response_url,
+          std::move(destination_url_loader_client),
+          task_runner),
       delegate_(delegate),
       rewriter_service_(rewriter_service) {}
 
@@ -75,7 +76,7 @@ SpeedReaderURLLoader::~SpeedReaderURLLoader() = default;
 void SpeedReaderURLLoader::OnBodyReadable(MojoResult) {
   DCHECK_EQ(State::kLoading, state_);
 
-  if (!SnifferURLLoader::CheckBufferedBody(kReadBufferSize)) {
+  if (!BodySnifferURLLoader::CheckBufferedBody(kReadBufferSize)) {
     return;
   }
 

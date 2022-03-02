@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/sniffer/sniffer_url_loader.h"
+#include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 
 #include <memory>
 #include <string>
@@ -13,16 +13,16 @@
 #include "base/no_destructor.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/sniffer/sniffer_throttle.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/early_hints.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
-namespace sniffer {
+namespace body_sniffer {
 
-SnifferURLLoader::SnifferURLLoader(
-    base::WeakPtr<sniffer::SnifferThrottle> throttle,
+BodySnifferURLLoader::BodySnifferURLLoader(
+    base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
@@ -38,9 +38,9 @@ SnifferURLLoader::SnifferURLLoader(
                              mojo::SimpleWatcher::ArmingPolicy::MANUAL,
                              std::move(task_runner)) {}
 
-SnifferURLLoader::~SnifferURLLoader() = default;
+BodySnifferURLLoader::~BodySnifferURLLoader() = default;
 
-void SnifferURLLoader::Start(
+void BodySnifferURLLoader::Start(
     mojo::PendingRemote<network::mojom::URLLoader> source_url_loader_remote,
     mojo::PendingReceiver<network::mojom::URLLoaderClient>
         source_url_client_receiver,
@@ -53,43 +53,44 @@ void SnifferURLLoader::Start(
   }
 }
 
-void SnifferURLLoader::OnReceiveEarlyHints(
+void BodySnifferURLLoader::OnReceiveEarlyHints(
     network::mojom::EarlyHintsPtr early_hints) {}
 
-void SnifferURLLoader::OnReceiveResponse(
+void BodySnifferURLLoader::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr response_head,
     mojo::ScopedDataPipeConsumerHandle body) {
-  // OnReceiveResponse() shouldn't be called because SnifferURLLoader is
-  // created by SnifferThrottle::WillProcessResponse(), which is equivalent
+  // OnReceiveResponse() shouldn't be called because BodySnifferURLLoader is
+  // created by BodySnifferThrottle::WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
   NOTREACHED();
 }
 
-void SnifferURLLoader::OnReceiveRedirect(
+void BodySnifferURLLoader::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     network::mojom::URLResponseHeadPtr response_head) {
-  // OnReceiveRedirect() shouldn't be called because SnifferURLLoader is
-  // created by SnifferThrottle::WillProcessResponse(), which is equivalent
+  // OnReceiveRedirect() shouldn't be called because BodySnifferURLLoader is
+  // created by BodySnifferThrottle::WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
   NOTREACHED();
 }
 
-void SnifferURLLoader::OnUploadProgress(int64_t current_position,
-                                        int64_t total_size,
-                                        OnUploadProgressCallback ack_callback) {
+void BodySnifferURLLoader::OnUploadProgress(
+    int64_t current_position,
+    int64_t total_size,
+    OnUploadProgressCallback ack_callback) {
   destination_url_loader_client_->OnUploadProgress(current_position, total_size,
                                                    std::move(ack_callback));
 }
 
-void SnifferURLLoader::OnReceiveCachedMetadata(mojo_base::BigBuffer data) {
+void BodySnifferURLLoader::OnReceiveCachedMetadata(mojo_base::BigBuffer data) {
   destination_url_loader_client_->OnReceiveCachedMetadata(std::move(data));
 }
 
-void SnifferURLLoader::OnTransferSizeUpdated(int32_t transfer_size_diff) {
+void BodySnifferURLLoader::OnTransferSizeUpdated(int32_t transfer_size_diff) {
   destination_url_loader_client_->OnTransferSizeUpdated(transfer_size_diff);
 }
 
-void SnifferURLLoader::OnStartLoadingResponseBody(
+void BodySnifferURLLoader::OnStartLoadingResponseBody(
     mojo::ScopedDataPipeConsumerHandle body) {
   VLOG(2) << __func__ << " " << response_url_;
   state_ = State::kLoading;
@@ -97,12 +98,12 @@ void SnifferURLLoader::OnStartLoadingResponseBody(
   body_consumer_watcher_.Watch(
       body_consumer_handle_.get(),
       MOJO_HANDLE_SIGNAL_READABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
-      base::BindRepeating(&SnifferURLLoader::OnBodyReadable,
+      base::BindRepeating(&BodySnifferURLLoader::OnBodyReadable,
                           base::Unretained(this)));
   body_consumer_watcher_.ArmOrNotify();
 }
 
-void SnifferURLLoader::OnComplete(
+void BodySnifferURLLoader::OnComplete(
     const network::URLLoaderCompletionStatus& status) {
   DCHECK(!complete_status_.has_value());
   switch (state_) {
@@ -131,37 +132,36 @@ void SnifferURLLoader::OnComplete(
   NOTREACHED();
 }
 
-void SnifferURLLoader::FollowRedirect(
+void BodySnifferURLLoader::FollowRedirect(
     const std::vector<std::string>& removed_headers,
     const net::HttpRequestHeaders& modified_headers,
     const net::HttpRequestHeaders& modified_cors_exempt_headers,
     const absl::optional<GURL>& new_url) {
-  // SnifferURLLoader starts handling the request after
+  // BodySnifferURLLoader starts handling the request after
   // OnReceivedResponse(). A redirect response is not expected.
   NOTREACHED();
 }
 
-void SnifferURLLoader::SetPriority(net::RequestPriority priority,
-                                   int32_t intra_priority_value) {
+void BodySnifferURLLoader::SetPriority(net::RequestPriority priority,
+                                       int32_t intra_priority_value) {
   if (state_ == State::kAborted)
     return;
   source_url_loader_->SetPriority(priority, intra_priority_value);
 }
 
-void SnifferURLLoader::PauseReadingBodyFromNet() {
+void BodySnifferURLLoader::PauseReadingBodyFromNet() {
   if (state_ == State::kAborted)
     return;
   source_url_loader_->PauseReadingBodyFromNet();
 }
 
-void SnifferURLLoader::ResumeReadingBodyFromNet() {
+void BodySnifferURLLoader::ResumeReadingBodyFromNet() {
   if (state_ == State::kAborted)
     return;
   source_url_loader_->ResumeReadingBodyFromNet();
 }
 
-// static
-bool SnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
+bool BodySnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
   size_t start_size = buffered_body_.size();
   uint32_t read_bytes = readBufferSize;
   buffered_body_.resize(start_size + read_bytes);
@@ -185,7 +185,7 @@ bool SnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
   return false;
 }
 
-void SnifferURLLoader::CompleteLoading(std::string body) {
+void BodySnifferURLLoader::CompleteLoading(std::string body) {
   DCHECK_EQ(State::kLoading, state_);
   state_ = State::kSending;
 
@@ -209,7 +209,7 @@ void SnifferURLLoader::CompleteLoading(std::string body) {
   body_producer_watcher_.Watch(
       body_producer_handle_.get(),
       MOJO_HANDLE_SIGNAL_WRITABLE | MOJO_HANDLE_SIGNAL_PEER_CLOSED,
-      base::BindRepeating(&SnifferURLLoader::OnBodyWritable,
+      base::BindRepeating(&BodySnifferURLLoader::OnBodyWritable,
                           base::Unretained(this)));
 
   // Send deferred message.
@@ -225,7 +225,7 @@ void SnifferURLLoader::CompleteLoading(std::string body) {
   CompleteSending();
 }
 
-void SnifferURLLoader::SendReceivedBodyToClient() {
+void BodySnifferURLLoader::SendReceivedBodyToClient() {
   DCHECK_EQ(State::kSending, state_);
   // Send the buffered data first.
   DCHECK_GT(bytes_remaining_in_buffer_, 0u);
@@ -253,7 +253,7 @@ void SnifferURLLoader::SendReceivedBodyToClient() {
   body_producer_watcher_.ArmOrNotify();
 }
 
-void SnifferURLLoader::Abort() {
+void BodySnifferURLLoader::Abort() {
   VLOG(2) << __func__ << " " << response_url_;
   state_ = State::kAborted;
   body_consumer_watcher_.Cancel();
@@ -265,4 +265,4 @@ void SnifferURLLoader::Abort() {
   // has already been destroyed by some reason.
 }
 
-}  // namespace sniffer
+}  // namespace body_sniffer

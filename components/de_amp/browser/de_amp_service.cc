@@ -93,7 +93,7 @@ bool DeAmpService::FindCanonicalLinkIfAMP(const std::string& body,
   }
   // Find href in canonical link tag
   return RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex,
-                                      canonical_link);
+                           canonical_link);
 }
 
 }  // namespace de_amp

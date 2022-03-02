@@ -1,11 +1,11 @@
 import("//brave/build/config.gni")
 
-source_set("sniffer") {
+source_set("body_sniffer") {
   sources = [
-    "sniffer_throttle.cc",
-    "sniffer_throttle.h",
-    "sniffer_url_loader.cc",
-    "sniffer_url_loader.h",
+    "body_sniffer_throttle.cc",
+    "body_sniffer_throttle.h",
+    "body_sniffer_url_loader.cc",
+    "body_sniffer_url_loader.h",
   ]
 
   deps = [

@@ -14,8 +14,8 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/de_amp/browser/de_amp_service.h"
-#include "brave/components/sniffer/sniffer_url_loader.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -32,7 +32,7 @@ namespace de_amp {
 
 class DeAmpThrottle;
 
-class DeAmpURLLoader : public sniffer::SnifferURLLoader {
+class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
  public:
   ~DeAmpURLLoader() override;
 
@@ -41,14 +41,14 @@ class DeAmpURLLoader : public sniffer::SnifferURLLoader {
   static std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
                     mojo::PendingReceiver<network::mojom::URLLoaderClient>,
                     DeAmpURLLoader*>
-  CreateLoader(base::WeakPtr<sniffer::SnifferThrottle> throttle,
+  CreateLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
                const GURL& response_url,
                scoped_refptr<base::SequencedTaskRunner> task_runner,
                DeAmpService* service,
                content::WebContents* contents);
 
  private:
-  DeAmpURLLoader(base::WeakPtr<sniffer::SnifferThrottle> throttle,
+  DeAmpURLLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
                  const GURL& response_url,
                  mojo::PendingRemote<network::mojom::URLLoaderClient>
                      destination_url_loader_client,

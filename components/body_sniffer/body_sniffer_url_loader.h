@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SNIFFER_SNIFFER_URL_LOADER_H_
-#define BRAVE_COMPONENTS_SNIFFER_SNIFFER_URL_LOADER_H_
+#ifndef BRAVE_COMPONENTS_BODY_SNIFFER_BODY_SNIFFER_URL_LOADER_H_
+#define BRAVE_COMPONENTS_BODY_SNIFFER_BODY_SNIFFER_URL_LOADER_H_
 
 #include <cstddef>
 #include <string>
@@ -26,17 +26,17 @@
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
-namespace sniffer {
+namespace body_sniffer {
 
-class SnifferThrottle;
+class BodySnifferThrottle;
 
-class SnifferURLLoader : public network::mojom::URLLoaderClient,
-                         public network::mojom::URLLoader {
+class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
+                             public network::mojom::URLLoader {
  public:
-  ~SnifferURLLoader() override;
+  ~BodySnifferURLLoader() override;
 
-  SnifferURLLoader(const SnifferURLLoader&) = delete;
-  SnifferURLLoader& operator=(const SnifferURLLoader&) = delete;
+  BodySnifferURLLoader(const BodySnifferURLLoader&) = delete;
+  BodySnifferURLLoader& operator=(const BodySnifferURLLoader&) = delete;
 
   // Start waiting for the body.
   void Start(
@@ -46,11 +46,12 @@ class SnifferURLLoader : public network::mojom::URLLoaderClient,
       mojo::ScopedDataPipeConsumerHandle body);
 
  protected:
-  SnifferURLLoader(base::WeakPtr<sniffer::SnifferThrottle> throttle,
-                   const GURL& response_url,
-                   mojo::PendingRemote<network::mojom::URLLoaderClient>
-                       destination_url_loader_client,
-                   scoped_refptr<base::SequencedTaskRunner> task_runner);
+  BodySnifferURLLoader(
+      base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+      const GURL& response_url,
+      mojo::PendingRemote<network::mojom::URLLoaderClient>
+          destination_url_loader_client,
+      scoped_refptr<base::SequencedTaskRunner> task_runner);
 
   // network::mojom::URLLoaderClient implementation (called from the source of
   // the response):
@@ -81,7 +82,6 @@ class SnifferURLLoader : public network::mojom::URLLoaderClient,
   void PauseReadingBodyFromNet() override;
   void ResumeReadingBodyFromNet() override;
 
-  // static
   bool CheckBufferedBody(uint32_t readBufferSize);
 
   virtual void OnBodyReadable(MojoResult) = 0;
@@ -93,7 +93,7 @@ class SnifferURLLoader : public network::mojom::URLLoaderClient,
 
   void Abort();
 
-  base::WeakPtr<SnifferThrottle> throttle_;
+  base::WeakPtr<BodySnifferThrottle> throttle_;
   GURL response_url_;
 
   mojo::Receiver<network::mojom::URLLoaderClient> source_url_client_receiver_{
@@ -116,9 +116,9 @@ class SnifferURLLoader : public network::mojom::URLLoaderClient,
   mojo::SimpleWatcher body_consumer_watcher_;
   mojo::SimpleWatcher body_producer_watcher_;
 
-  base::WeakPtrFactory<SnifferURLLoader> weak_factory_{this};
+  base::WeakPtrFactory<BodySnifferURLLoader> weak_factory_{this};
 };
 
-}  // namespace sniffer
+}  // namespace body_sniffer
 
-#endif  // BRAVE_COMPONENTS_SNIFFER_SNIFFER_URL_LOADER_H_
+#endif  // BRAVE_COMPONENTS_BODY_SNIFFER_BODY_SNIFFER_URL_LOADER_H_

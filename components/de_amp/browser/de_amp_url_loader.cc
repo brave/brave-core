@@ -14,9 +14,9 @@
 #include "base/no_destructor.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/de_amp/browser/de_amp_service.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
-#include "brave/components/sniffer/sniffer_url_loader.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -36,7 +36,7 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
            mojo::PendingReceiver<network::mojom::URLLoaderClient>,
            DeAmpURLLoader*>
 DeAmpURLLoader::CreateLoader(
-    base::WeakPtr<sniffer::SnifferThrottle> throttle,
+    base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
     const GURL& response_url,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
@@ -58,17 +58,18 @@ DeAmpURLLoader::CreateLoader(
 }
 
 DeAmpURLLoader::DeAmpURLLoader(
-    base::WeakPtr<sniffer::SnifferThrottle> throttle,
+    base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
     content::WebContents* contents)
-    : sniffer::SnifferURLLoader(throttle,
-                                response_url,
-                                std::move(destination_url_loader_client),
-                                task_runner),
+    : body_sniffer::BodySnifferURLLoader(
+          throttle,
+          response_url,
+          std::move(destination_url_loader_client),
+          task_runner),
       contents_(contents),
       de_amp_service(service) {}
 
@@ -81,7 +82,7 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
     ForwardBodyToClient();
     return;
   }
-  if (!SnifferURLLoader::CheckBufferedBody(kReadBufferSize)) {
+  if (!BodySnifferURLLoader::CheckBufferedBody(kReadBufferSize)) {
     return;
   }
 
@@ -150,7 +151,7 @@ void DeAmpURLLoader::ForwardBodyToClient() {
     case MOJO_RESULT_FAILED_PRECONDITION:
       // The pipe is closed unexpectedly. |this| should be deleted once
       // URLLoader on the destination is released.
-      SnifferURLLoader::Abort();
+      BodySnifferURLLoader::Abort();
       return;
     case MOJO_RESULT_SHOULD_WAIT:
       body_consumer_handle_->EndReadData(0);

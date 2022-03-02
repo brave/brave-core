@@ -10,8 +10,8 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/de_amp/browser/de_amp_service.h"
-#include "brave/components/sniffer/sniffer_throttle.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 
@@ -21,7 +21,7 @@ namespace de_amp {
 
 // Throttle for AMP HTML detection.
 // If AMP page, redirect request to non-AMP canonical link.
-class DeAmpThrottle : public sniffer::SnifferThrottle {
+class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
  public:
   explicit DeAmpThrottle(scoped_refptr<base::SequencedTaskRunner> task_runner,
                          DeAmpService* service,

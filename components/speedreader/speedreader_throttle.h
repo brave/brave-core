@@ -12,8 +12,8 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/single_thread_task_runner.h"
-#include "brave/components/sniffer/sniffer_throttle.h"
-#include "brave/components/sniffer/sniffer_url_loader.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 
@@ -29,8 +29,8 @@ class SpeedreaderRewriterService;
 // blink::URLLoaderThrottle)?
 // TODO(iefremov): Check throttles order?
 // Cargoculted from |MimeSniffingThrottle| -- refactored common functionality
-// between SpeedReader urlloader / throttle into components/sniffer
-class SpeedReaderThrottle : public sniffer::SnifferThrottle {
+// between SpeedReader urlloader / throttle into components/body_sniffer
+class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
  public:
   ~SpeedReaderThrottle() override;
 

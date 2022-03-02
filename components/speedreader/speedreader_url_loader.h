@@ -15,7 +15,7 @@
 #include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_piece.h"
-#include "brave/components/sniffer/sniffer_url_loader.h"
+#include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -56,7 +56,7 @@ class SpeedreaderRewriterService;
 // kAborted: Unexpected behavior happens. Watchers, pipes and the binding from
 //           the source loader to |this| are stopped. All incoming messages from
 //           the destination (through network::mojom::URLLoader) are ignored in
-class SpeedReaderURLLoader : public sniffer::SnifferURLLoader {
+class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
  public:
   ~SpeedReaderURLLoader() override;
 
@@ -65,20 +65,21 @@ class SpeedReaderURLLoader : public sniffer::SnifferURLLoader {
   static std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
                     mojo::PendingReceiver<network::mojom::URLLoaderClient>,
                     SpeedReaderURLLoader*>
-  CreateLoader(base::WeakPtr<sniffer::SnifferThrottle> throttle,
+  CreateLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
                base::WeakPtr<SpeedreaderResultDelegate> delegate,
                const GURL& response_url,
                scoped_refptr<base::SingleThreadTaskRunner> task_runner,
                SpeedreaderRewriterService* rewriter_service);
 
  private:
-  SpeedReaderURLLoader(base::WeakPtr<sniffer::SnifferThrottle> throttle,
-                       base::WeakPtr<SpeedreaderResultDelegate> delegate,
-                       const GURL& response_url,
-                       mojo::PendingRemote<network::mojom::URLLoaderClient>
-                           destination_url_loader_client,
-                       scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-                       SpeedreaderRewriterService* rewriter_service);
+  SpeedReaderURLLoader(
+      base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+      base::WeakPtr<SpeedreaderResultDelegate> delegate,
+      const GURL& response_url,
+      mojo::PendingRemote<network::mojom::URLLoaderClient>
+          destination_url_loader_client,
+      scoped_refptr<base::SingleThreadTaskRunner> task_runner,
+      SpeedreaderRewriterService* rewriter_service);
 
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;

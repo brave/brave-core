@@ -5,26 +5,26 @@
 
 #include <utility>
 
-#include "brave/components/sniffer/sniffer_throttle.h"
-#include "brave/components/sniffer/sniffer_url_loader.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
+#include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
-namespace sniffer {
+namespace body_sniffer {
 
-SnifferThrottle::SnifferThrottle() = default;
+BodySnifferThrottle::BodySnifferThrottle() = default;
 
-SnifferThrottle::~SnifferThrottle() = default;
+BodySnifferThrottle::~BodySnifferThrottle() = default;
 
-void SnifferThrottle::InterceptAndStartLoader(
+void BodySnifferThrottle::InterceptAndStartLoader(
     mojo::PendingRemote<network::mojom::URLLoader> source_loader,
     mojo::PendingReceiver<network::mojom::URLLoaderClient>
         source_client_receiver,
     mojo::PendingRemote<network::mojom::URLLoader> new_remote,
     mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver,
-    SnifferURLLoader* loader,
+    BodySnifferURLLoader* loader,
     bool* defer) {
   // Pause the response until loader has done its job.
   *defer = true;
@@ -36,8 +36,8 @@ void SnifferThrottle::InterceptAndStartLoader(
                 std::move(body));
 }
 
-void SnifferThrottle::Resume() {
+void BodySnifferThrottle::Resume() {
   delegate_->Resume();
 }
 
-}  // namespace sniffer
+}  // namespace body_sniffer

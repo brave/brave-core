@@ -65,7 +65,7 @@ void SpeedReaderThrottle::WillProcessResponse(
       SpeedReaderURLLoader::CreateLoader(weak_factory_.GetWeakPtr(),
                                          result_delegate_, response_url,
                                          task_runner_, rewriter_service_);
-  SnifferThrottle::InterceptAndStartLoader(
+  BodySnifferThrottle::InterceptAndStartLoader(
       std::move(source_loader), std::move(source_client_receiver),
       std::move(new_remote), std::move(new_receiver), speedreader_loader,
       defer);

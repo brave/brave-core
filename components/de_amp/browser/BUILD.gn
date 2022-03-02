@@ -12,8 +12,8 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/components/body_sniffer",
     "//brave/components/de_amp/common",
-    "//brave/components/sniffer",
     "//brave/extensions:common",
     "//components/prefs:prefs",
     "//content/public/browser",
