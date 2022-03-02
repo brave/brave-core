@@ -34,19 +34,4 @@ public class BottomTabSwitcherActionMenuCoordinator extends TabSwitcherActionMen
         itemList.add(buildListItemByMenuItemType(MenuItemType.CLOSE_TAB));
         return itemList;
     }
-
-    @Override
-    protected RectProvider getRectProvider(View anchorView) {
-        ViewRectProvider rectProvider = new ViewRectProvider(anchorView);
-        rectProvider.setIncludePadding(true);
-
-        // space between the icon and the border of the wrapper
-        int toolbarHeight = anchorView.getHeight();
-        int iconHeight =
-                anchorView.getResources().getDimensionPixelSize(R.dimen.toolbar_icon_height);
-        int padding = (toolbarHeight - iconHeight) / 2;
-        rectProvider.setInsetPx(0, padding, padding / 2, 0);
-
-        return rectProvider;
-    }
 }
