@@ -1807,5 +1807,12 @@ extension Strings {
       value: "Learn More",
       comment: "Button to learn more about incomplete/pending wallet transactions."
     )
+    public static let transactionBacklogAfterReplacement = NSLocalizedString(
+      "wallet.transactionBacklogAfterReplacement",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "For now, no additional action is required. Just wait for the unconfirmed transactions to clear.",
+      comment: "Additional information, when users have previously clear and replace the incomplete transaction(s)"
+    )
   }
 }
