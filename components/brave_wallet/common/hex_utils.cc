@@ -134,7 +134,7 @@ bool HexValueToInt256(const std::string& hex_input, int256_t* out) {
     *out = ~val + 1;
     *out = -*out;
   } else {
-  *out = static_cast<int256_t>(val);
+    *out = static_cast<int256_t>(val);
   }
   return true;
 }

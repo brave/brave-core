@@ -70,36 +70,34 @@ TEST(StringUtilsUnitTest, Base10ValueToInt256) {
   ASSERT_TRUE(Base10ValueToInt256("-12345678910", &out));
   EXPECT_EQ(out, int256_t(-12345678910));
 
-  // int types in Boost uses extra sign bit so int256_t precision bit is 256
-  // bits.
   // Max int256 value can be represented
-  int256_t expected_val = std::numeric_limits<int256_t>::max();
+  int256_t expected_val = kMax256BitInt;
   ASSERT_TRUE(
-      Base10ValueToInt256("115792089237316195423570985008687907853269984665640"
-                          "564039457584007913129639935",
+      Base10ValueToInt256("5789604461865809771178549250434395392663499233282028"
+                          "2019728792003956564819967",
                           &out));
   EXPECT_EQ(out, expected_val);
 
   // Min int256 value can be represented
-  expected_val = std::numeric_limits<int256_t>::min();
-  ASSERT_TRUE(
-      Base10ValueToInt256("-115792089237316195423570985008687907853269984665640"
-                          "564039457584007913129639935",
-                          &out));
+  expected_val = kMin256BitInt;
+  ASSERT_TRUE(Base10ValueToInt256(
+      "-5789604461865809771178549250434395392663499233282028"
+      "2019728792003956564819968",
+      &out));
   EXPECT_EQ(out, expected_val);
 
   // Should return false when out of bounds
-  ASSERT_FALSE(
-      Base10ValueToInt256("115792089237316195423570985008687907853269984665640"
-                          "564039457584007913129639936",
+  EXPECT_FALSE(
+      Base10ValueToInt256("5789604461865809771178549250434395392663499233282028"
+                          "2019728792003956564819968",
                           &out));
 
-  ASSERT_FALSE(
-      Base10ValueToInt256("-115792089237316195423570985008687907853269984665640"
-                          "564039457584007913129639936",
-                          &out));
+  EXPECT_FALSE(Base10ValueToInt256(
+      "-5789604461865809771178549250434395392663499233282028"
+      "2019728792003956564819969",
+      &out));
 
-  ASSERT_FALSE(Base10ValueToInt256("0xB", &out));
+  EXPECT_FALSE(Base10ValueToInt256("0xB", &out));
 
   // Check padded values too
   ASSERT_TRUE(Base10ValueToInt256("0000000000000000000000010", &out));
