@@ -208,7 +208,7 @@ TEST_F(BraveWalletPrefsUnitTest,
     update_dict->RemovePath("mainnet");
   }
   EXPECT_TRUE(pref && !pref->IsDefaultValue());
-  EXPECT_TRUE(dict->DictEmpty());
+  EXPECT_TRUE(GetPrefs()->GetDictionary(kBraveWalletTransactions)->DictEmpty());
 
   MigrateObsoleteProfilePrefs(GetPrefs());
   EXPECT_TRUE(pref && pref->IsDefaultValue());
