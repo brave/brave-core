@@ -186,6 +186,9 @@ void BraveNewsController::SubscribeToNewDirectFeed(
                     },
                     std::move(callback)),
                 true);
+
+            p3a::RecordDirectFeedsTotal(controller->prefs_);
+            p3a::RecordWeeklyAddedDirectFeedsCount(controller->prefs_, 1);
           },
           feed_url, std::move(callback), base::Unretained(this)));
 }
@@ -196,6 +199,9 @@ void BraveNewsController::RemoveDirectFeed(const std::string& publisher_id) {
 
   // Mark feed as requiring update
   publishers_controller_.EnsurePublishersIsUpdating();
+
+  p3a::RecordDirectFeedsTotal(prefs_);
+  p3a::RecordWeeklyAddedDirectFeedsCount(prefs_, -1);
 }
 
 void BraveNewsController::GetImageData(const GURL& padded_image_url,

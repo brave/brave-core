@@ -22,6 +22,8 @@ constexpr char kBraveTodayWeeklyCardVisitsCount[] =
     "brave.today.p3a_weekly_card_visits_count";
 constexpr char kBraveTodayWeeklyDisplayAdViewedCount[] =
     "brave.today.p3a_weekly_display_ad_viewed_count";
+constexpr char kBraveTodayWeeklyAddedDirectFeedsCount[] =
+    "brave.today.p3a_weekly_added_direct_feeds_count";
 
 // Dictionary value keys
 constexpr char kBraveTodayDirectFeedsKeyTitle[] = "title";

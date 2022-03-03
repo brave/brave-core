@@ -31,6 +31,8 @@ uint64_t AddToWeeklyStorageAndGetSum(PrefService* prefs,
   WeeklyStorage storage(prefs, pref_name);
   if (change > 0)
     storage.AddDelta(1);
+  else if (change < 0)
+    storage.SubDelta(1);
   return storage.GetWeeklySum();
 }
 
@@ -95,7 +97,27 @@ void RecordWeeklyDisplayAdsViewedCount(PrefService* prefs, bool is_add) {
   RecordToHistogramBucket(kWeeklyDisplayAdsViewedHistogramName, buckets, total);
 }
 
+void RecordDirectFeedsTotal(PrefService* prefs) {
+  constexpr int buckets[] = {0, 1, 2, 3, 4, 5, 10};
+  const base::Value* direct_feeds_dict =
+      prefs->GetDictionary(prefs::kBraveTodayDirectFeeds);
+  DCHECK(direct_feeds_dict && direct_feeds_dict->is_dict());
+  std::size_t feed_count = direct_feeds_dict->DictSize();
+  RecordToHistogramBucket(kDirectFeedsTotalHistogramName, buckets, feed_count);
+}
+
+void RecordWeeklyAddedDirectFeedsCount(PrefService* prefs, int change) {
+  constexpr int buckets[] = {0, 1, 2, 3, 4, 5, 10};
+  uint64_t weekly_total = AddToWeeklyStorageAndGetSum(
+      prefs, prefs::kBraveTodayWeeklyAddedDirectFeedsCount, change);
+
+  RecordToHistogramBucket(kWeeklyAddedDirectFeedsHistogramName, buckets,
+                          weekly_total);
+}
+
 void RecordAtStart(PrefService* prefs) {
+  RecordDirectFeedsTotal(prefs);
+  RecordWeeklyAddedDirectFeedsCount(prefs, 0);
   RecordWeeklySessionCount(prefs, false);
   RecordWeeklyMaxCardVisitsCount(prefs, 0);
   RecordWeeklyMaxCardViewsCount(prefs, 0);
@@ -107,6 +129,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveTodayWeeklyCardViewsCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyCardVisitsCount);
   registry->RegisterListPref(prefs::kBraveTodayWeeklyDisplayAdViewedCount);
+  registry->RegisterListPref(prefs::kBraveTodayWeeklyAddedDirectFeedsCount);
 }
 
 }  // namespace p3a
