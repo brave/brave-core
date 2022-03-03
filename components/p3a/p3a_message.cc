@@ -89,7 +89,6 @@ base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
   result.SetStringKey("channel", meta.channel);
   result.SetIntKey("woi", meta.woi);
   result.SetIntKey("wos", meta.wos);
-  result.SetStringKey("refcode", meta.refcode);
 
   // Set the metric
   result.SetStringKey("metric_name", metric_name);
