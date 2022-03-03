@@ -25,9 +25,22 @@ SidebarItemAddButton::SidebarItemAddButton(
   on_enabled_changed_subscription_ =
       AddEnabledChangedCallback(base::BindRepeating(
           &SidebarItemAddButton::UpdateButtonImages, base::Unretained(this)));
+
+  SetCallback(base::BindRepeating(&SidebarItemAddButton::OnButtonPressed,
+                                  base::Unretained(this)));
 }
 
 SidebarItemAddButton::~SidebarItemAddButton() = default;
+
+void SidebarItemAddButton::OnButtonPressed() {
+  if (IsBubbleVisible())
+    return;
+
+  if (timer_.IsRunning())
+    timer_.Stop();
+
+  DoShowBubble();
+}
 
 void SidebarItemAddButton::OnMouseEntered(const ui::MouseEvent& event) {
   SidebarButtonView::OnMouseEntered(event);
