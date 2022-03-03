@@ -63,6 +63,19 @@ extension PlaylistViewController: AVPictureInPictureControllerDelegate {
                 attachPlayerView()
             }
             
+            // There is a case when the user can manually present the PlaylistController through 3-dot menu
+            // or URL bar. In that case, attempting to present the same controller WILL crash the application
+            // So we need to guard against it.
+            if restorationController.presentingViewController != nil ||
+                restorationController.isMovingToParent ||
+                restorationController.isBeingPresented {
+                DispatchQueue.main.async {
+                    PlaylistCarplayManager.shared.playlistController = nil
+                    completionHandler(true)
+                }
+                return
+            }
+            
             browserViewController.present(restorationController, animated: true) {
                 DispatchQueue.main.async {
                     PlaylistCarplayManager.shared.playlistController = nil
