@@ -12,6 +12,7 @@ import {
 } from './mock-data/user-accounts'
 import { isStrongPassword } from '../utils/password-utils'
 import BackupWallet from './screens/backup-wallet'
+import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -157,4 +158,15 @@ export const _OnboardingVerify = () => {
 
 _OnboardingVerify.story = {
   name: 'Onboarding Verify'
+}
+
+export const _SweepstakesBanner = () => {
+  return <SweepstakesBanner
+    startDate={new Date(Date.now())}
+    endDate={new Date(Date.now() + 1)}
+  />
+}
+
+_SweepstakesBanner.story = {
+  name: 'Sweepstakes Banner'
 }
