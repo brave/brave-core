@@ -1502,7 +1502,7 @@ Are you sure you want to do this?
         Allow privacy-preserving product analytics (P3A)
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
-        This completely anonymised info helps Brave estimate the overall usage of certain features and make them better for you.
+        This completely anonymized info helps Brave estimate the overall usage of certain features and make them better for you.
       </message>
 
       <!-- Web3 detection -->
