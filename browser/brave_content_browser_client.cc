@@ -638,6 +638,9 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       Profile::FromBrowserContext(browser_context));
 
   if (contents) {
+    const bool isMainFrame =
+        request.resource_type ==
+        static_cast<int>(blink::mojom::ResourceType::kMainFrame);
     // Speedreader
 #if BUILDFLAG(ENABLE_SPEEDREADER)
     using DistillState = speedreader::DistillState;
@@ -645,9 +648,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         speedreader::SpeedreaderTabHelper::FromWebContents(contents);
     if (tab_helper) {
       const auto state = tab_helper->PageDistillState();
-      if (speedreader::PageWantsDistill(state) &&
-          request.resource_type ==
-              static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
+      if (speedreader::PageWantsDistill(state) && isMainFrame) {
         // Only check for disabled sites if we are in Speedreader mode
         const bool check_disabled_sites =
             state == DistillState::kSpeedreaderModePending;
@@ -663,15 +664,19 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 #endif  // ENABLE_SPEEDREADER
 
     // De-AMP
-    if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
-            base::ThreadTaskRunnerHandle::Get(),
-            de_amp::DeAmpServiceFactory::GetForBrowserContext(browser_context),
-            contents))
-      result.push_back(std::move(de_amp_throttle));
+    if (isMainFrame) {
+      if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
+              base::ThreadTaskRunnerHandle::Get(),
+              de_amp::DeAmpServiceFactory::GetForBrowserContext(
+                  browser_context),
+              contents)) {
+        result.push_back(std::move(de_amp_throttle));
+      }
+    }
   }
 
   // Debounce
-  if (std::unique_ptr<blink::URLLoaderThrottle> debounce_throttle =
+  if (auto debounce_throttle =
           debounce::DebounceThrottle::MaybeCreateThrottleFor(
               debounce::DebounceServiceFactory::GetForBrowserContext(
                   browser_context),
