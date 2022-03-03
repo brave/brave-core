@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import CloseIcon from '../../assets/close.svg'
+import CloseIcon from '../../../../assets/svg-icons/close.svg'
 import KeyIcon from '../../../../assets/svg-icons/key-icon.svg'
 import CheckIcon from '../../assets/filled-checkmark.svg'
 import { PanelButtonTypes } from './index'
