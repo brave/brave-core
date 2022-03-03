@@ -46,13 +46,13 @@ public abstract class BraveWalletBaseActivity extends AsyncInitializationActivit
 
     @Override
     public void onConnectionError(MojoException e) {
-        mKeyringService.close();
-        mAssetRatioService.close();
-        mBlockchainRegistry.close();
-        mJsonRpcService.close();
-        mTxService.close();
-        mEthTxManagerProxy.close();
-        mBraveWalletService.close();
+        if (mKeyringService != null) mKeyringService.close();
+        if (mAssetRatioService != null) mAssetRatioService.close();
+        if (mBlockchainRegistry != null) mBlockchainRegistry.close();
+        if (mJsonRpcService != null) mJsonRpcService.close();
+        if (mTxService != null) mTxService.close();
+        if (mEthTxManagerProxy != null) mEthTxManagerProxy.close();
+        if (mBraveWalletService != null) mBraveWalletService.close();
 
         mKeyringService = null;
         mBlockchainRegistry = null;

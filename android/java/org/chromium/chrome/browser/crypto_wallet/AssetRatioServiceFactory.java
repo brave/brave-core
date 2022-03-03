@@ -9,6 +9,8 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -33,7 +35,9 @@ public class AssetRatioServiceFactory {
     private AssetRatioServiceFactory() {}
 
     public AssetRatioService getAssetRatioService(ConnectionErrorHandler connectionErrorHandler) {
-        int nativeHandle = AssetRatioServiceFactoryJni.get().getInterfaceToAssetRatioService();
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        int nativeHandle =
+                AssetRatioServiceFactoryJni.get().getInterfaceToAssetRatioService(profile);
         MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
         AssetRatioService assetRatioService = AssetRatioService.MANAGER.attachProxy(handle, 0);
         Handler handler = ((Interface.Proxy) assetRatioService).getProxyHandler();
@@ -48,6 +52,6 @@ public class AssetRatioServiceFactory {
 
     @NativeMethods
     interface Natives {
-        int getInterfaceToAssetRatioService();
+        int getInterfaceToAssetRatioService(Profile profile);
     }
 }

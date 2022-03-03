@@ -8,6 +8,8 @@ package org.chromium.chrome.browser.crypto_wallet;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -42,7 +44,8 @@ public class BlockchainRegistryFactory {
     }
 
     public String getTokensIconsLocation() {
-        return BlockchainRegistryFactoryJni.get().getTokensIconsLocation();
+        Profile profile = Utils.getProfile(false); // always use regular profile
+        return BlockchainRegistryFactoryJni.get().getTokensIconsLocation(profile);
     }
 
     private MessagePipeHandle wrapNativeHandle(int nativeHandle) {
@@ -52,6 +55,6 @@ public class BlockchainRegistryFactory {
     @NativeMethods
     interface Natives {
         int getInterfaceToBlockchainRegistry();
-        String getTokensIconsLocation();
+        String getTokensIconsLocation(Profile profile);
     }
 }

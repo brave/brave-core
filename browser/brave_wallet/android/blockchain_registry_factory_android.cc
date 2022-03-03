@@ -11,7 +11,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_android.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -25,8 +25,10 @@ static jint JNI_BlockchainRegistryFactory_GetInterfaceToBlockchainRegistry(
 }
 
 static base::android::ScopedJavaLocalRef<jstring>
-JNI_BlockchainRegistryFactory_GetTokensIconsLocation(JNIEnv* env) {
-  auto* profile = ProfileManager::GetActiveUserProfile();
+JNI_BlockchainRegistryFactory_GetTokensIconsLocation(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& profile_android) {
+  auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
 
   absl::optional<base::Version> version =
       brave_wallet::GetLastInstalledWalletVersion();
