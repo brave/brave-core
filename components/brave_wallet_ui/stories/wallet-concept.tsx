@@ -43,6 +43,7 @@ import {
 import { mockNetworks } from './mock-data/mock-networks'
 import { isStrongPassword } from '../utils/password-utils'
 import Amount from '../utils/amount'
+import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -881,6 +882,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             swapValidationError={undefined}
             sendAmountValidationError={undefined}
           />
+          <SweepstakesBanner />
         </WalletWidgetStandIn>
       }
     </WalletPageLayout>

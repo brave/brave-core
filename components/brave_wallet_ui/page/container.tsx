@@ -63,6 +63,7 @@ import {
   useTokenInfo,
   useAssetManagement
 } from '../common/hooks'
+import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 
 type Props = {
   wallet: WalletState
@@ -753,6 +754,7 @@ function Container (props: Props) {
             onAddNetwork={onAddNetwork}
             onAddAsset={onShowVisibleAssetsModal}
           />
+          <SweepstakesBanner />
         </WalletWidgetStandIn>
       }
     </WalletPageLayout>
