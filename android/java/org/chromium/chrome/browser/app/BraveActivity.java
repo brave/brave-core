@@ -456,6 +456,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
         if (SharedPreferencesManager.getInstance().readBoolean(
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {
             SharedPreferencesManager.getInstance().writeBoolean(
@@ -643,9 +644,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 OnboardingPrefManager.getInstance().setDormantUsersNotificationsStarted(true);
             }
         }
-
-        BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference(
-                ContextUtils.getApplicationContext());
     }
 
     public void setDormantUsersPrefs() {
@@ -1262,5 +1260,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @NativeMethods
     interface Natives {
         void restartStatsUpdater();
+    }
+
+    @Override
+    public void initializeCompositor() {
+        super.initializeCompositor();
+
+        BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference(
+                ContextUtils.getApplicationContext());
     }
 }
