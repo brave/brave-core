@@ -12,7 +12,7 @@ namespace features {
 
 namespace {
 
-const char kFeatureName[] = "BraveFederatedLearning";
+const char kFeatureName[] = "BraveFederated";
 
 const char kFieldTrialParameterOperationalPatternsEnabled[] =
     "operational_patterns_enabled";

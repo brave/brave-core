@@ -55,6 +55,9 @@
 #include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
+#include "brave/components/brave_federated/data_store_service.h"
+#include "brave/components/brave_federated/data_stores/ad_notification_timing_data_store.h"
+#include "brave/components/brave_federated/features.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -118,6 +121,8 @@ using brave_rewards::RewardsNotificationService;
 namespace brave_ads {
 
 namespace {
+
+constexpr char kTrue[] = "true";
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
@@ -218,7 +223,11 @@ AdsServiceImpl::AdsServiceImpl(
         adaptive_captcha_service,
     std::unique_ptr<AdsTooltipsDelegate> ads_tooltips_delegate,
 #endif
-    history::HistoryService* history_service)
+    history::HistoryService* history_service,
+    brave_federated::AsyncDataStore<
+        brave_federated::AdNotificationTimingDataStore,
+        brave_federated::AdNotificationTimingTaskLog>*
+        ad_notification_timing_data_store)
     : profile_(profile),
       history_service_(history_service),
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
@@ -234,6 +243,7 @@ AdsServiceImpl::AdsServiceImpl(
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
       rewards_service_(
           brave_rewards::RewardsServiceFactory::GetForProfile(profile_)),
+      ad_notification_timing_data_store_(ad_notification_timing_data_store),
       bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(profile_);
 #if BUILDFLAG(BRAVE_ADAPTIVE_CAPTCHA_ENABLED)
@@ -2097,6 +2107,85 @@ void AdsServiceImpl::RecordP2AEvent(const std::string& name,
       break;
     }
   }
+}
+
+void AdsServiceImpl::LogTrainingCovariates(
+    const ads::mojom::TrainingCovariatesPtr training_covariates) {
+  if (!ad_notification_timing_data_store_) {
+    return;
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/21189): Refactor DB to
+  // use generic key/value schema across all data stores
+  brave_federated::AdNotificationTimingTaskLog log;
+
+  for (const auto& covariate : training_covariates->covariates) {
+    switch (covariate->covariate_type) {
+      case ads::mojom::CovariateType::kAdNotificationWasClicked: {
+        DCHECK_EQ(ads::mojom::DataType::kBool, covariate->data_type)
+            << "covariate type should be a bool";
+
+        bool value_as_bool = false;
+        if (covariate->value == kTrue) {
+          value_as_bool = true;
+        }
+
+        log.label = value_as_bool;
+        break;
+      }
+
+      case ads::mojom::CovariateType::
+          kAdNotificationLocaleCountryAtTimeOfServing: {
+        DCHECK_EQ(ads::mojom::DataType::kString, covariate->data_type)
+            << "covariate type should be a string";
+
+        log.locale = covariate->value;
+        break;
+      }
+
+      case ads::mojom::CovariateType::kAdNotificationImpressionServedAt: {
+        DCHECK_EQ(ads::mojom::DataType::kDouble, covariate->data_type)
+            << "covariate type should be a double";
+
+        double value_as_double = 0.0;
+        if (!base::StringToDouble(covariate->value, &value_as_double)) {
+          NOTREACHED() << "Failed to convert covariate value to double";
+          break;
+        }
+
+        log.time = base::Time::FromDoubleT(value_as_double);
+        break;
+      }
+
+      case ads::mojom::CovariateType::
+          kAdNotificationNumberOfTabsOpenedInPast30Minutes: {
+        DCHECK_EQ(ads::mojom::DataType::kInt, covariate->data_type)
+            << "covariate type should be an int";
+
+        int value_as_int = 0;
+        if (!base::StringToInt(covariate->value, &value_as_int)) {
+          NOTREACHED() << "Failed to convert covariate value to int";
+          break;
+        }
+
+        log.number_of_tabs = value_as_int;
+        break;
+      }
+    }
+  }
+
+  auto callback =
+      base::BindOnce(&AdsServiceImpl::OnLogTrainingCovariates, AsWeakPtr());
+  ad_notification_timing_data_store_->AddLog(log, std::move(callback));
+}
+
+void AdsServiceImpl::OnLogTrainingCovariates(bool success) {
+  if (!success) {
+    VLOG(1) << "Failed to log training covariates";
+    return;
+  }
+
+  VLOG(1) << "Successfully logged training covariates";
 }
 
 void AdsServiceImpl::Load(const std::string& name, ads::LoadCallback callback) {

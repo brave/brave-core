@@ -91,6 +91,9 @@ class AdsClientMock : public AdsClient {
                     const mojom::P2AEventType type,
                     const std::string& value));
 
+  MOCK_METHOD1(LogTrainingCovariates,
+               void(const mojom::TrainingCovariatesPtr training_covariates));
+
   MOCK_METHOD4(Log,
                void(const char* file,
                     const int line,

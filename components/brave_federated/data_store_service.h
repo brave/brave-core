@@ -46,7 +46,7 @@ class AsyncDataStore {
   }
 
   void AddLog(const U& log, base::OnceCallback<void(bool)> callback) {
-    data_store_.AsyncCall(&T::Init).WithArgs(log).Then(std::move(callback));
+    data_store_.AsyncCall(&T::AddLog).WithArgs(log).Then(std::move(callback));
   }
 
   void LoadLogs(base::OnceCallback<void(std::map<int, U>)> callback) {
