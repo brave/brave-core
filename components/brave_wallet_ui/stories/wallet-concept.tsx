@@ -43,6 +43,7 @@ import {
 } from '../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { mockNetworks } from './mock-data/mock-networks'
 import { isStrongPassword } from '../utils/password-utils'
+import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 export default {
   title: 'Wallet/Desktop',
   argTypes: {
@@ -842,6 +843,7 @@ export const _DesktopWalletConcept = (args: { onboarding: boolean, locked: boole
             onAddNetwork={onAddNetwork}
             onAddAsset={onShowVisibleAssetsModal}
           />
+          <SweepstakesBanner />
         </WalletWidgetStandIn>
       }
     </WalletPageLayout>

@@ -451,5 +451,10 @@ provideStrings({
   // NFT Details Page
   braveWalletNFTDetailBlockchain: 'Blockchain',
   braveWalletNFTDetailTokenStandard: 'Token standard',
-  braveWalletNFTDetailTokenID: 'Token ID'
+  braveWalletNFTDetailTokenID: 'Token ID',
+
+  // Sweepstakes
+  braveWalletSweepstakesTitle: 'Brave Swap-stakes',
+  braveWalletSweepstakesDescription: '7 days of crypto giveaways, ~$500k in prizes.',
+  braveWalletSweepstakesCallToAction: 'Enter now!'
 })
