@@ -7,10 +7,12 @@ import * as BraveVPN from 'gen/brave/components/brave_vpn/brave_vpn.mojom.m.js'
 // Provide access to all the generated types
 export * from 'gen/brave/components/brave_vpn/brave_vpn.mojom.m.js'
 
+export type SupportData = BraveVPN.ServiceHandler_GetSupportData_ResponseParams
+
 interface API {
-  pageCallbackRouter: BraveVPN.PageCallbackRouter
-  panelHandler: BraveVPN.PanelHandlerRemote
-  serviceHandler: BraveVPN.ServiceHandlerRemote
+  pageCallbackRouter: BraveVPN.PageInterface
+  panelHandler: BraveVPN.PanelHandlerInterface
+  serviceHandler: BraveVPN.ServiceHandlerInterface
 }
 
 let panelBrowserAPIInstance: API
@@ -34,4 +36,8 @@ export default function getPanelBrowserAPI () {
     panelBrowserAPIInstance = new PanelBrowserAPI()
   }
   return panelBrowserAPIInstance
+}
+
+export function setPanelBrowserApiForTesting (api: API) {
+  panelBrowserAPIInstance = api
 }

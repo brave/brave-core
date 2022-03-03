@@ -15,6 +15,8 @@ import MainPanel from '../components/main-panel'
 import SellPanel from '../components/sell-panel'
 import SettingsPanel from '../components/settings-panel'
 import LoadingPanel from '../components/loading-panel'
+import ContactSupport from '../components/contact-support'
+import './mock-data/api'
 
 export default {
   title: 'VPN/Panels',
@@ -89,7 +91,7 @@ export const _SettingsPanel = () => {
   const closeSettingsPanel = () => {}
   return (
     <S.PanelFrame>
-      <SettingsPanel closeSettingsPanel={closeSettingsPanel} />
+      <SettingsPanel closeSettingsPanel={closeSettingsPanel} showContactSupport={() => {}} />
     </S.PanelFrame>
   )
 }
@@ -98,6 +100,14 @@ export const _LoadingPanel = () => {
   return (
     <S.PanelFrame>
       <LoadingPanel />
+    </S.PanelFrame>
+  )
+}
+
+export const _ContactSupportPanel = () => {
+  return (
+    <S.PanelFrame>
+      <ContactSupport onCloseContactSupport={() => {}} />
     </S.PanelFrame>
   )
 }

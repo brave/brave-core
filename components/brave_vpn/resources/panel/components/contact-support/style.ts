@@ -5,21 +5,16 @@ export const Box = styled.div`
   height: 100%;
   background: ${(p) => p.theme.color.panelBackground};
   overflow: hidden;
+  font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const List = styled.ul`
-  list-style-type: none;
+export const Form = styled.form`
   padding: 0;
-  margin: 0;
-  text-align: center;
-
-  li {
-    margin-bottom: 28px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
+  margin: 20px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  color: var(--text2);
 
   a {
     font-family: ${(p) => p.theme.fontFamily.heading};
@@ -30,14 +25,58 @@ export const List = styled.ul`
   }
 `
 
-export const Card = styled.li`
-  --divider-color: ${(p) => p.theme.color.divider01};
-  border: 1px solid var(--divider-color);
-  border-radius: 8px;
+export const SectionDescription = styled.p`
+  margin: 0;
+  color: var(--text2);
+  font-size: 14px;
+  line-height: 20px;
+`
+
+export const OptionalValues = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+
+export const OptionalValueLabel = styled.label`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: flex-start;
+  gap: 8px;
+
+  .optionalValueTitle {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--text1);
+
+    .optionalValueTitleKey {
+      color: var(--text3);
+    }
+  }
+`
+
+export const Notes = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 18px;
+    color: var(--text3);
+  }
 `
 
 export const PanelContent = styled.section`
-  padding: 25px 24px 25px 24px;
+  padding: 25px 24px;
   z-index: 2;
 `
 

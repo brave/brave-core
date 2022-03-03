@@ -20,7 +20,7 @@ function ErrorSubscriptionFailed () {
 
   if (isContactSupportVisible) {
     return (<ContactSupport
-      closeContactSupport={closeContactSupport}
+      onCloseContactSupport={closeContactSupport}
     />)
   }
 

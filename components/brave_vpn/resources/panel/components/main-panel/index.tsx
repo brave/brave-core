@@ -32,7 +32,7 @@ function MainPanel () {
 
   if (isContactSupportVisible) {
     return (<ContactSupport
-      closeContactSupport={closeContactSupport}
+      onCloseContactSupport={closeContactSupport}
     />)
   }
 
