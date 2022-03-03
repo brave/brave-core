@@ -42,6 +42,19 @@ sidebar::SidebarService* GetSidebarService(BraveBrowser* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->profile());
 }
 
+size_t GetPreferredPanelWidthForCurrentItem(BraveBrowser* browser) {
+  auto* controller = browser->sidebar_controller();
+  int active_index = controller->model()->active_index();
+  const auto item = GetSidebarService(browser)->items()[active_index];
+  // Shortcut type doesn't use panel.
+  if (!item.open_in_panel)
+    return 0;
+
+  constexpr size_t kPanelWidthForBuiltIn = 260;
+  constexpr size_t kPanelWidthForNonBuiltIn = 360;
+  return IsBuiltInType(item) ? kPanelWidthForBuiltIn : kPanelWidthForNonBuiltIn;
+}
+
 }  // namespace
 
 class SidebarContainerView::BrowserWindowEventObserver
@@ -147,10 +160,18 @@ void SidebarContainerView::HideCustomContextMenu() {
 void SidebarContainerView::UpdateBackgroundAndBorder() {
   if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
     constexpr int kBorderThickness = 1;
-    SetBorder(views::CreateSolidSidedBorder(
-        0, 0, 0, kBorderThickness,
-        theme_provider->GetColor(
-            BraveThemeProperties::COLOR_SIDEBAR_PANEL_BORDER)));
+    // Fill background because panel's color uses alpha value.
+    SetBackground(views::CreateSolidBackground(theme_provider->GetColor(
+        BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND)));
+    if (sidebar_panel_view_ && sidebar_panel_view_->GetVisible()) {
+      SetBorder(views::CreateSolidSidedBorder(
+          0, 0, 0, kBorderThickness,
+          theme_provider->GetColor(
+              BraveThemeProperties::COLOR_SIDEBAR_PANEL_BORDER)));
+    } else {
+      // Don't need right side border when panel is closed.
+      SetBorder(nullptr);
+    }
   }
 }
 
@@ -176,7 +197,7 @@ void SidebarContainerView::Layout() {
   if (sidebar_panel_view_->GetVisible()) {
     sidebar_panel_view_->SetBounds(
         control_view_preferred_width, 0,
-        width() - control_view_preferred_width - GetInsets().width(), height());
+        GetPreferredPanelWidthForCurrentItem(browser_), height());
   }
 }
 
@@ -185,13 +206,12 @@ gfx::Size SidebarContainerView::CalculatePreferredSize() const {
       browser_->window()->IsFullscreen())
     return View::CalculatePreferredSize();
 
-  const int control_view_preferred_width =
-      sidebar_control_view_->GetPreferredSize().width();
-
-  constexpr int kSidebarContainerViewFullWidth = 380;
-  return {sidebar_panel_view_->GetVisible() ? kSidebarContainerViewFullWidth
-                                            : control_view_preferred_width,
-          0};
+  int preferred_width =
+      sidebar_control_view_->GetPreferredSize().width() + GetInsets().width();
+  if (sidebar_panel_view_->GetVisible())
+    preferred_width += GetPreferredPanelWidthForCurrentItem(browser_);
+  // height is determined by parent.
+  return {preferred_width, 0};
 }
 
 void SidebarContainerView::OnThemeChanged() {
@@ -255,7 +275,7 @@ void SidebarContainerView::OnActiveIndexChanged(int old_index, int new_index) {
       sidebar_panel_view_->SetVisible(false);
     }
   }
-
+  UpdateBackgroundAndBorder();
   InvalidateLayout();
 }
 
