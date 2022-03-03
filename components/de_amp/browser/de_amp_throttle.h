@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
@@ -27,6 +28,7 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
                          DeAmpService* service,
                          content::WebContents* contents);
   ~DeAmpThrottle() override;
+  DeAmpThrottle& operator=(const DeAmpThrottle&);
 
   static std::unique_ptr<DeAmpThrottle> MaybeCreateThrottleFor(
       scoped_refptr<base::SequencedTaskRunner> task_runner,
@@ -40,8 +42,8 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
 
  private:
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  DeAmpService* service_;
-  content::WebContents* contents_;  // not owned
+  raw_ptr<DeAmpService> service_;
+  raw_ptr<content::WebContents> contents_;  // not owned
 };
 
 }  // namespace de_amp

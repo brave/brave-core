@@ -8,6 +8,11 @@
 
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "components/keyed_service/core/keyed_service.h"
+
+namespace content {
+class BrowserContext;
+}  // namespace content
 
 namespace de_amp {
 
@@ -23,16 +28,17 @@ class DeAmpServiceFactory : public BrowserContextKeyedServiceFactory {
 
   DeAmpServiceFactory();
   ~DeAmpServiceFactory() override;
+  DeAmpServiceFactory(const DeAmpServiceFactory&) = delete;
+  DeAmpServiceFactory& operator=(const DeAmpServiceFactory&) = delete;
 
-  // BrowserContextKeyedServiceFactory:
+  // BrowserContextKeyedServiceFactory overrides:
+  // DeAmp works in incognito mode, but shouldn't persist pref changes
+  // to the parent profile.
+  content::BrowserContext* GetBrowserContextToUse(
+      content::BrowserContext* context) const override;
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override;
-
-  DeAmpServiceFactory(const DeAmpServiceFactory&) = delete;
-  DeAmpServiceFactory& operator=(const DeAmpServiceFactory&) = delete;
 };
 
 }  // namespace de_amp

@@ -35,6 +35,7 @@ class DeAmpThrottle;
 class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
  public:
   ~DeAmpURLLoader() override;
+  DeAmpURLLoader& operator=(const DeAmpURLLoader&) = delete;
 
   // mojo::PendingRemote<network::mojom::URLLoader> controls the lifetime of the
   // loader.
@@ -64,8 +65,8 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
   void CompleteSending() override;
   void ForwardBodyToClient();
 
-  content::WebContents* contents_;
-  DeAmpService* de_amp_service;
+  raw_ptr<content::WebContents> contents_;
+  raw_ptr<DeAmpService> de_amp_service;
 };
 
 }  // namespace de_amp

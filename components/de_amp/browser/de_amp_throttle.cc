@@ -7,13 +7,9 @@
 
 #include <utility>
 
-#include "base/feature_list.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/de_amp/browser/de_amp_service.h"
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
-#include "brave/components/de_amp/common/features.h"
-#include "components/content_settings/core/common/content_settings.h"
-#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"

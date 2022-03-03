@@ -22,8 +22,8 @@ namespace body_sniffer {
 class BodySnifferThrottle : public blink::URLLoaderThrottle {
  public:
   BodySnifferThrottle();
-
   ~BodySnifferThrottle() override;
+  BodySnifferThrottle& operator=(const BodySnifferThrottle&) = delete;
 
   void Resume();
 
