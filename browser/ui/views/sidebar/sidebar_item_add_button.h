@@ -45,6 +45,7 @@ class SidebarItemAddButton : public SidebarButtonView,
   void DoShowBubble();
 
   void UpdateButtonImages();
+  void OnButtonPressed();
 
   raw_ptr<BraveBrowser> browser_ = nullptr;
   base::OneShotTimer timer_;
