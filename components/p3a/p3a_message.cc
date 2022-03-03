@@ -99,52 +99,35 @@ base::Value GenerateP3AMessageDict(base::StringPiece metric_name,
 }
 
 void MaybeStripRefcodeAndCountry(MessageMetainfo* meta) {
-  const std::string& refcode = meta->refcode;
   const std::string& country = meta->country_code;
   constexpr char kRefcodeNone[] = "none";
   constexpr char kCountryOther[] = "other";
-  constexpr char kRefcodeOther[] = "other";
 
   static base::flat_set<std::string> const kLinuxCountries(
       {"US", "FR", "DE", "GB", "IN", "BR", "PL", "NL", "ES", "CA", "IT", "AU",
        "MX", "CH", "RU", "ZA", "SE", "BE", "JP"});
-
-  static base::flat_set<std::string> const kNotableRefcodes(
-      {"BRV001", "GDB255", "APP709", "GBW423", "BRT001", "VNI569", "ICO964",
-       "ILY758"});
 
   static base::flat_set<std::string> const kNotableCountries(
       {"FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES", "NL", "MX", "AU",
        "RU", "JP", "PL", "ID", "KR", "AR"});
 
   DCHECK(meta);
+
+  // Always strip the refcode.
+  // We no longer need to partition P3A data with that key.
+  meta->refcode = kRefcodeNone;
+
   if (meta->platform == "linux-bc") {
-    // Because Linux has no refcodes, ignore, and if we have more than
-    // 3/0.05 = 60 users in a country for a week of install, we can send
-    // country.
-    meta->refcode = kRefcodeNone;
+    // If we have more than 3/0.05 = 60 users in a country for
+    // a week of install, we can send country.
     if (kLinuxCountries.count(country) == 0) {
       meta->country_code = kCountryOther;
     }
   } else {
     // Now the minimum platform is MacOS at ~3%, so cut off for a group under
     // here becomes 3/(0.05*0.03) = 2000.
-    if (country == "US" || country.empty()) {
-      const bool us_and_ref =
-          country == "US" && (refcode == kRefcodeNone || refcode == "GDB255" ||
-                              refcode == "BRV001");
-      const bool unknown_and_ref =
-          country.empty() &&
-          (kNotableRefcodes.count(refcode) > 0 || refcode == kRefcodeNone);
-
-      if (!(us_and_ref || unknown_and_ref)) {
-        meta->refcode = kRefcodeOther;
-      }
-    } else if (kNotableCountries.count(country) > 0) {
-      meta->refcode = kRefcodeOther;
-    } else {
+    if (kNotableCountries.count(country) == 0) {
       meta->country_code = kCountryOther;
-      meta->refcode = kRefcodeOther;
     }
   }
 }
