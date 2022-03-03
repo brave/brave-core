@@ -21,7 +21,7 @@ export interface Props {
   spotPrices: BraveWallet.AssetPrice[]
   userAssetList: BraveWallet.BlockchainToken[]
   defaultCurrencies: DefaultCurrencies
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   selectedAccount: WalletAccountType
   onAddAsset: () => void
 }

@@ -10,10 +10,10 @@ import {
 } from '../shared-styles'
 
 export interface Props {
-  networks: BraveWallet.EthereumChain[]
-  selectedNetwork: BraveWallet.EthereumChain
+  networks: BraveWallet.NetworkInfo[]
+  selectedNetwork: BraveWallet.NetworkInfo
   hasAddButton?: boolean
-  onSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
   onBack: () => void
   onAddNetwork?: () => void
 }

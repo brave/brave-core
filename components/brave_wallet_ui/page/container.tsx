@@ -263,7 +263,7 @@ function Container (props: Props) {
     props.walletActions.selectAccount(account)
   }
 
-  const onSelectNetwork = (network: BraveWallet.EthereumChain) => {
+  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => {
     props.walletActions.selectNetwork(network)
   }
 

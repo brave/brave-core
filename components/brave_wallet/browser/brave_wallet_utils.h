@@ -63,18 +63,21 @@ base::Value TransactionReceiptToValue(const TransactionReceipt& tx_receipt);
 absl::optional<TransactionReceipt> ValueToTransactionReceipt(
     const base::Value& value);
 
-void GetAllKnownChains(PrefService* prefs,
-                       std::vector<mojom::EthereumChainPtr>* chains);
-const std::vector<mojom::EthereumChain> GetAllKnownNetworksForTesting();
-void GetAllCustomChains(PrefService* prefs,
-                        std::vector<mojom::EthereumChainPtr>* result);
+void GetAllKnownEthChains(PrefService* prefs,
+                          std::vector<mojom::NetworkInfoPtr>* chains);
+const std::vector<mojom::NetworkInfoPtr> GetAllKnownNetworksForTesting();
+void GetAllEthCustomChains(PrefService* prefs,
+                           std::vector<mojom::NetworkInfoPtr>* result);
 GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
 void GetAllChains(PrefService* prefs,
-                  std::vector<mojom::EthereumChainPtr>* result);
-GURL GetNetworkURL(PrefService* prefs, const std::string& chain_id);
+                  mojom::CoinType coin,
+                  std::vector<mojom::NetworkInfoPtr>* result);
+GURL GetNetworkURL(PrefService* prefs,
+                   const std::string& chain_id,
+                   mojom::CoinType coin);
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
-mojom::EthereumChainPtr GetKnownChain(PrefService* prefs,
-                                      const std::string& chain_id);
+mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
+                                       const std::string& chain_id);
 std::string GetNetworkId(PrefService* prefs, const std::string& chain_id);
 void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet);
 mojom::DefaultWallet GetDefaultWallet(PrefService* prefs);
@@ -83,25 +86,26 @@ std::string GetDefaultBaseCurrency(PrefService* prefs);
 void SetDefaultBaseCryptocurrency(PrefService* prefs,
                                   const std::string& cryptocurrency);
 std::string GetDefaultBaseCryptocurrency(PrefService* prefs);
-std::vector<std::string> GetAllKnownNetworkIds();
-std::string GetKnownNetworkId(const std::string& chain_id);
+std::vector<std::string> GetAllKnownEthNetworkIds();
+std::string GetKnownEthNetworkId(const std::string& chain_id);
 
 std::string GetUnstoppableDomainsProxyReaderContractAddress(
     const std::string& chain_id);
 std::string GetEnsRegistryContractAddress(const std::string& chain_id);
 
-// Append chain value to kBraveWalletCustomNetworks list pref.
-void AddCustomNetwork(PrefService* prefs, mojom::EthereumChainPtr chain);
+// Append chain value to kBraveWalletCustomNetworks dictionary pref.
+void AddCustomNetwork(PrefService* prefs, mojom::NetworkInfoPtr chain);
 
 void RemoveCustomNetwork(PrefService* prefs,
                          const std::string& chain_id_to_remove);
 
-// Get a specific chain from all chains.
-mojom::EthereumChainPtr GetChain(PrefService* prefs,
-                                 const std::string& chain_id);
+// Get a specific chain from all chains for certain coin.
+mojom::NetworkInfoPtr GetChain(PrefService* prefs,
+                               const std::string& chain_id,
+                               mojom::CoinType coin);
 
-// Get the current chain ID from kBraveWalletCurrentChainId pref.
-std::string GetCurrentChainId(PrefService* prefs);
+// Get the current chain ID for coin from kBraveWalletSelectedNetworks pref.
+std::string GetCurrentChainId(PrefService* prefs, mojom::CoinType coin);
 
 // Returns the first URL to use that:
 // 1. Has no variables in it like ${INFURA_API_KEY}
@@ -109,6 +113,8 @@ std::string GetCurrentChainId(PrefService* prefs);
 // Otherwise if there is a URL in the list, it returns the first one.
 // Otherwise returns an empty GURL
 GURL GetFirstValidChainURL(const std::vector<std::string>& chain_urls);
+
+absl::optional<std::string> GetPrefKeyForCoinType(mojom::CoinType coin);
 
 }  // namespace brave_wallet
 

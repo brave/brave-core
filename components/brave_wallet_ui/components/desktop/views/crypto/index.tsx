@@ -40,7 +40,7 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onShowAddModal: () => void
   onHideAddModal: () => void
-  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onDoneViewingPrivateKey: () => void
@@ -58,7 +58,7 @@ export interface Props {
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   needsBackup: boolean
   accounts: WalletAccountType[]
-  networkList: BraveWallet.EthereumChain[]
+  networkList: BraveWallet.NetworkInfo[]
   selectedTimeline: BraveWallet.AssetPriceTimeframe
   selectedPortfolioTimeline: BraveWallet.AssetPriceTimeframe
   portfolioPriceHistory: PriceDataObjectType[]
@@ -73,7 +73,7 @@ export interface Props {
   isFilecoinEnabled: boolean
   isSolanaEnabled: boolean
   showAddModal: boolean
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   isFetchingPortfolioPriceHistory: boolean
   defaultWallet: BraveWallet.DefaultWallet
   isMetaMaskInstalled: boolean

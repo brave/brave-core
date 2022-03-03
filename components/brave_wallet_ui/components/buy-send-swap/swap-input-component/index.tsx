@@ -59,7 +59,7 @@ export interface Props {
   componentType: BuySendSwapInputType
   selectedAssetBalance?: string
   selectedAsset?: BraveWallet.BlockchainToken | undefined
-  selectedNetwork?: BraveWallet.EthereumChain
+  selectedNetwork?: BraveWallet.NetworkInfo
   selectedAssetInputAmount?: string
   addressError?: string
   addressWarning?: string

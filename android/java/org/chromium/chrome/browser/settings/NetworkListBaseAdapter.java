@@ -20,7 +20,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 
-import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.widget.listmenu.BasicListMenu;
 import org.chromium.components.browser_ui.widget.listmenu.ListMenu;
@@ -39,12 +39,12 @@ import java.util.List;
  */
 public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
     interface ItemClickListener {
-        void onItemClicked(EthereumChain chain, boolean activeNetwork);
-        void onItemRemove(EthereumChain chain);
-        void onItemSetAsActive(EthereumChain chain);
+        void onItemClicked(NetworkInfo chain, boolean activeNetwork);
+        void onItemRemove(NetworkInfo chain);
+        void onItemSetAsActive(NetworkInfo chain);
     }
 
-    protected List<EthereumChain> mElements;
+    protected List<NetworkInfo> mElements;
     protected String mActiveChainId;
     protected final Context mContext;
     private ItemClickListener mListener;
@@ -68,7 +68,7 @@ public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
             mListener = listener;
         }
 
-        void updateNetworkInfo(EthereumChain item, boolean activeNetwork) {
+        void updateNetworkInfo(NetworkInfo item, boolean activeNetwork) {
             mTitle.setText(item.chainName);
             String description = item.chainId;
             if (item.rpcUrls.length > 0) {
@@ -111,7 +111,7 @@ public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     @SuppressLint("NotifyDataSetChanged")
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        final EthereumChain info = mElements.get(i);
+        final NetworkInfo info = mElements.get(i);
         boolean activeNetwork = info.chainId.equals(mActiveChainId);
         ((RowViewHolder) viewHolder).updateNetworkInfo(info, activeNetwork);
 
@@ -148,7 +148,7 @@ public class NetworkListBaseAdapter extends RecyclerView.Adapter<ViewHolder> {
      * Sets the displayed networks
      */
     @SuppressLint("NotifyDataSetChanged")
-    void setDisplayedNetworks(String activeChainId, EthereumChain[] networks) {
+    void setDisplayedNetworks(String activeChainId, NetworkInfo[] networks) {
         mActiveChainId = activeChainId;
         mElements = new ArrayList<>(Arrays.asList(networks));
         notifyDataSetChanged();

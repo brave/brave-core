@@ -27,7 +27,7 @@ export type tabs = 'network' | 'details'
 
 export interface Props {
   siteOrigin: string
-  networkPayload: BraveWallet.EthereumChain
+  networkPayload: BraveWallet.NetworkInfo
   panelType: 'add' | 'change'
   onCancel: () => void
   onApproveAddNetwork: () => void

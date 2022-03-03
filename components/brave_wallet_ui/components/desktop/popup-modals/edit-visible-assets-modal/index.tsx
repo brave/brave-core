@@ -41,7 +41,7 @@ export interface Props {
   addUserAssetError: boolean
   fullAssetList: BraveWallet.BlockchainToken[]
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
 }

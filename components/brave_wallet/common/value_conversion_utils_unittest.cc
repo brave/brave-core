@@ -12,7 +12,6 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -30,10 +29,10 @@ void TestValueToBlockchainTokenFailCases(const base::Value& value,
 
 }  // namespace
 
-TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
+TEST(ValueConversionUtilsUnitTest, ValueToEthNetworkInfoTest) {
   {
-    absl::optional<brave_wallet::mojom::EthereumChain> chain =
-        brave_wallet::ValueToEthereumChain(base::JSONReader::Read(R"({
+    mojom::NetworkInfoPtr chain =
+        brave_wallet::ValueToEthNetworkInfo(base::JSONReader::Read(R"({
       "chainId": "0x5",
       "chainName": "Goerli",
       "rpcUrls": [
@@ -52,7 +51,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
       "blockExplorerUrls": ["https://goerli.etherscan.io"],
       "is_eip1559": true
     })")
-                                               .value());
+                                                .value());
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
     EXPECT_EQ("Goerli", chain->chain_name);
@@ -69,14 +68,17 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
               chain->icon_urls.front());
     EXPECT_EQ("https://xdaichain.com/fake/example/url/xdai.png",
               chain->icon_urls.back());
-    EXPECT_TRUE(chain->is_eip1559);
+    ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
+    ASSERT_TRUE(chain->data);
+    ASSERT_TRUE(chain->data->is_eth_data());
+    EXPECT_TRUE(chain->data->get_eth_data()->is_eip1559);
   }
   {
-    absl::optional<brave_wallet::mojom::EthereumChain> chain =
-        brave_wallet::ValueToEthereumChain(base::JSONReader::Read(R"({
+    mojom::NetworkInfoPtr chain =
+        brave_wallet::ValueToEthNetworkInfo(base::JSONReader::Read(R"({
       "chainId": "0x5"
     })")
-                                               .value());
+                                                .value());
     ASSERT_TRUE(chain);
     EXPECT_EQ("0x5", chain->chain_id);
     ASSERT_TRUE(chain->chain_name.empty());
@@ -85,31 +87,33 @@ TEST(ValueConversionUtilsUnitTest, ValueToEthereumChainTest) {
     ASSERT_TRUE(chain->block_explorer_urls.empty());
     ASSERT_TRUE(chain->symbol_name.empty());
     ASSERT_TRUE(chain->symbol.empty());
-    ASSERT_FALSE(chain->is_eip1559);
+    ASSERT_EQ(chain->coin, mojom::CoinType::ETH);
+    ASSERT_FALSE(chain->data);
     EXPECT_EQ(chain->decimals, 0);
   }
 
   {
-    absl::optional<brave_wallet::mojom::EthereumChain> chain =
-        brave_wallet::ValueToEthereumChain(base::JSONReader::Read(R"({
+    mojom::NetworkInfoPtr chain =
+        brave_wallet::ValueToEthNetworkInfo(base::JSONReader::Read(R"({
     })")
-                                               .value());
+                                                .value());
     ASSERT_FALSE(chain);
   }
   {
-    absl::optional<brave_wallet::mojom::EthereumChain> chain =
-        brave_wallet::ValueToEthereumChain(base::JSONReader::Read(R"([
+    mojom::NetworkInfoPtr chain =
+        brave_wallet::ValueToEthNetworkInfo(base::JSONReader::Read(R"([
           ])")
-                                               .value());
+                                                .value());
     ASSERT_FALSE(chain);
   }
 }
 
-TEST(ValueConversionUtilsUnitTest, EthereumChainToValueTest) {
-  brave_wallet::mojom::EthereumChain chain(
+TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
+  mojom::NetworkInfo chain(
       "chain_id", "chain_name", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "symbol_name", "symbol", 11, true);
-  base::Value value = brave_wallet::EthereumChainToValue(chain.Clone());
+      {"https://url1.com"}, "symbol_name", "symbol", 11, mojom::CoinType::ETH,
+      mojom::NetworkInfoData::NewEthData(mojom::NetworkInfoDataETH::New(true)));
+  base::Value value = brave_wallet::EthNetworkInfoToValue(chain.Clone());
   EXPECT_EQ(*value.FindStringKey("chainId"), chain.chain_id);
   EXPECT_EQ(*value.FindStringKey("chainName"), chain.chain_name);
   EXPECT_EQ(*value.FindStringPath("nativeCurrency.name"), chain.symbol_name);
@@ -134,7 +138,7 @@ TEST(ValueConversionUtilsUnitTest, EthereumChainToValueTest) {
               chain.block_explorer_urls.end());
   }
 
-  auto result = brave_wallet::ValueToEthereumChain(value);
+  auto result = ValueToEthNetworkInfo(value);
   ASSERT_TRUE(result->Equals(chain));
 }
 

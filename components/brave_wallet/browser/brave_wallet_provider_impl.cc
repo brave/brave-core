@@ -103,7 +103,7 @@ void BraveWalletProviderImpl::AddEthereumChain(
         l10n_util::GetStringUTF8(IDS_WALLET_EXPECTED_SINGLE_PARAMETER));
     return;
   }
-  auto chain = brave_wallet::ValueToEthereumChain(list.front());
+  auto chain = brave_wallet::ValueToEthNetworkInfo(list.front());
   if (!chain) {
     std::move(callback).Run(
         mojom::ProviderError::kInvalidParams,
@@ -112,8 +112,9 @@ void BraveWalletProviderImpl::AddEthereumChain(
   }
 
   // Check if we already have the chain
-  if (GetNetworkURL(prefs_, chain->chain_id).is_valid()) {
-    if (json_rpc_service_->GetChainId() != chain->chain_id) {
+  if (GetNetworkURL(prefs_, chain->chain_id, mojom::CoinType::ETH).is_valid()) {
+    if (json_rpc_service_->GetChainId(mojom::CoinType::ETH) !=
+        chain->chain_id) {
       SwitchEthereumChain(chain->chain_id, std::move(callback));
       return;
     }
@@ -177,13 +178,14 @@ void BraveWalletProviderImpl::SwitchEthereumChain(
 void BraveWalletProviderImpl::GetNetworkAndDefaultKeyringInfo(
     GetNetworkAndDefaultKeyringInfoCallback callback) {
   json_rpc_service_->GetNetwork(
+      mojom::CoinType::ETH,
       base::BindOnce(&BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo(
     GetNetworkAndDefaultKeyringInfoCallback callback,
-    mojom::EthereumChainPtr chain) {
+    mojom::NetworkInfoPtr chain) {
   keyring_service_->GetKeyringInfo(
       mojom::kDefaultKeyringId,
       base::BindOnce(
@@ -193,7 +195,7 @@ void BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo(
 
 void BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
     GetNetworkAndDefaultKeyringInfoCallback callback,
-    mojom::EthereumChainPtr chain,
+    mojom::NetworkInfoPtr chain,
     mojom::KeyringInfoPtr keyring_info) {
   std::move(callback).Run(std::move(chain), std::move(keyring_info));
 }
@@ -274,10 +276,12 @@ void BraveWalletProviderImpl::AddAndApprove1559Transaction(
 
   // If the chain id is not known yet, then get it and set it first
   if (tx_data->chain_id == "0x0" || tx_data->chain_id.empty()) {
-    json_rpc_service_->GetChainId(base::BindOnce(
-        &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
-        weak_factory_.GetWeakPtr(), std::move(callback), std::move(tx_data),
-        from));
+    json_rpc_service_->GetChainId(
+        mojom::CoinType::ETH,
+        base::BindOnce(
+            &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
+            weak_factory_.GetWeakPtr(), std::move(callback), std::move(tx_data),
+            from));
   } else {
     GetAllowedAccounts(
         false,
@@ -431,7 +435,7 @@ void BraveWalletProviderImpl::SignTypedMessage(
   if (chain_id) {
     const std::string chain_id_hex =
         Uint256ValueToHex((uint256_t)(uint64_t)*chain_id);
-    if (chain_id_hex != json_rpc_service_->GetChainId()) {
+    if (chain_id_hex != json_rpc_service_->GetChainId(mojom::CoinType::ETH)) {
       std::move(callback).Run(
           "", mojom::ProviderError::kInternalError,
           l10n_util::GetStringFUTF8(
@@ -593,7 +597,8 @@ void BraveWalletProviderImpl::Request(const std::string& json_payload,
                                       bool auto_retry_on_network_change,
                                       RequestCallback callback) {
   if (json_rpc_service_) {
-    json_rpc_service_->Request(json_payload, true, std::move(callback));
+    json_rpc_service_->Request(json_payload, true, mojom::CoinType::ETH,
+                               std::move(callback));
   }
 }
 
@@ -671,7 +676,7 @@ void BraveWalletProviderImpl::OnUpdateKnownAccounts(
 
 void BraveWalletProviderImpl::GetChainId(GetChainIdCallback callback) {
   if (json_rpc_service_) {
-    json_rpc_service_->GetChainId(std::move(callback));
+    json_rpc_service_->GetChainId(mojom::CoinType::ETH, std::move(callback));
   }
 }
 
@@ -682,8 +687,9 @@ void BraveWalletProviderImpl::Init(
   }
 }
 
-void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id) {
-  if (!events_listener_.is_bound())
+void BraveWalletProviderImpl::ChainChangedEvent(const std::string& chain_id,
+                                                mojom::CoinType coin) {
+  if (!events_listener_.is_bound() || coin != mojom::CoinType::ETH)
     return;
 
   events_listener_->ChainChangedEvent(chain_id);

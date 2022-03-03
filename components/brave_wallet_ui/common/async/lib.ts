@@ -156,12 +156,12 @@ export async function getKeyringIdFromAddress (address: string): Promise<string>
   return getKeyringIdFromCoin(BraveWallet.CoinType.ETH)
 }
 
-export async function getIsSwapSupported (network: BraveWallet.EthereumChain): Promise<boolean> {
+export async function getIsSwapSupported (network: BraveWallet.NetworkInfo): Promise<boolean> {
   const { swapService } = getAPIProxy()
   return (await swapService.isSwapSupported(network.chainId)).result
 }
 
-export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.EthereumChain) {
+export function refreshVisibleTokenInfo (currentNetwork: BraveWallet.NetworkInfo) {
   return async (dispatch: Dispatch) => {
     const { braveWalletService } = getAPIProxy()
 
@@ -332,9 +332,9 @@ export function refreshNetworkInfo () {
     const apiProxy = getAPIProxy()
     const { jsonRpcService } = apiProxy
 
-    const networkList = await jsonRpcService.getAllNetworks()
+    const networkList = await jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
     dispatch(WalletActions.setAllNetworks(networkList))
-    const chainId = await jsonRpcService.getChainId()
+    const chainId = await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
     const currentNetwork = GetNetworkInfo(chainId.chainId, networkList.networks)
     dispatch(WalletActions.setNetwork(currentNetwork))
     return currentNetwork

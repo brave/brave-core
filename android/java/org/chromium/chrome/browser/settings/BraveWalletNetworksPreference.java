@@ -14,8 +14,9 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
@@ -71,12 +72,12 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     @Override
-    public void onItemClicked(EthereumChain chain, boolean activeNetwork) {
+    public void onItemClicked(NetworkInfo chain, boolean activeNetwork) {
         mLauncher.launchAddNetwork(chain.chainId, activeNetwork);
     }
 
     @Override
-    public void onItemRemove(EthereumChain chain) {
+    public void onItemRemove(NetworkInfo chain) {
         assert mJsonRpcService != null;
         mJsonRpcService.removeEthereumChain(chain.chainId, success -> {
             if (!success) {
@@ -87,9 +88,9 @@ public class BraveWalletNetworksPreference extends Preference
     }
 
     @Override
-    public void onItemSetAsActive(EthereumChain chain) {
+    public void onItemSetAsActive(NetworkInfo chain) {
         assert mJsonRpcService != null;
-        mJsonRpcService.setNetwork(chain.chainId, success -> {
+        mJsonRpcService.setNetwork(chain.chainId, CoinType.ETH, success -> {
             if (!success) {
                 return;
             }
@@ -116,8 +117,8 @@ public class BraveWalletNetworksPreference extends Preference
 
     private void updateNetworksList() {
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(chainId -> {
-            mJsonRpcService.getAllNetworks(chains -> {
+        mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
+            mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 mAdapter.setDisplayedNetworks(chainId, Utils.getCustomNetworks(chains));
                 if (mRecyclerView.getAdapter() != mAdapter) {
                     mRecyclerView.setAdapter(mAdapter);

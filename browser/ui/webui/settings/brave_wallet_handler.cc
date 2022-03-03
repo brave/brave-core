@@ -32,7 +32,7 @@ void RemoveEthereumChain(PrefService* prefs,
   brave_wallet::RemoveCustomNetwork(prefs, chain_id_to_remove);
 }
 
-absl::optional<brave_wallet::mojom::EthereumChain> GetEthereumChain(
+brave_wallet::mojom::NetworkInfoPtr GetEthereumChain(
     const std::string& payload,
     std::string* error_message) {
   CHECK(error_message);
@@ -45,15 +45,15 @@ absl::optional<brave_wallet::mojom::EthereumChain> GetEthereumChain(
   if (!records_v) {
     *error_message = l10n_util::GetStringUTF8(
         IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
-    return absl::nullopt;
+    return nullptr;
   }
 
-  absl::optional<brave_wallet::mojom::EthereumChain> chain =
-      brave_wallet::ValueToEthereumChain(records_v.value());
+  brave_wallet::mojom::NetworkInfoPtr chain =
+      brave_wallet::ValueToEthNetworkInfo(records_v.value());
   if (!chain) {
     *error_message = l10n_util::GetStringUTF8(
         IDS_SETTINGS_WALLET_NETWORKS_SUMBISSION_FAILED);
-    return absl::nullopt;
+    return nullptr;
   }
   return chain;
 }
@@ -107,10 +107,10 @@ void BraveWalletHandler::GetCustomNetworksList(
   CHECK_EQ(args.size(), 1U);
   PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
   base::Value list(base::Value::Type::LIST);
-  std::vector<brave_wallet::mojom::EthereumChainPtr> custom_chains;
-  brave_wallet::GetAllCustomChains(prefs, &custom_chains);
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> custom_chains;
+  brave_wallet::GetAllEthCustomChains(prefs, &custom_chains);
   for (const auto& it : custom_chains) {
-    list.Append(brave_wallet::EthereumChainToValue(it));
+    list.Append(brave_wallet::EthNetworkInfoToValue(it));
   }
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);
@@ -165,8 +165,9 @@ void BraveWalletHandler::SetActiveNetwork(base::Value::ConstListView args) {
   auto* json_rpc_service =
       brave_wallet::JsonRpcServiceFactory::GetServiceForContext(
           Profile::FromWebUI(web_ui()));
-  auto result = json_rpc_service
-                    ? json_rpc_service->SetNetwork(args[1].GetString())
-                    : false;
+  auto result = json_rpc_service ? json_rpc_service->SetNetwork(
+                                       args[1].GetString(),
+                                       brave_wallet::mojom::CoinType::ETH)
+                                 : false;
   ResolveJavascriptCallback(args[0], base::Value(result));
 }

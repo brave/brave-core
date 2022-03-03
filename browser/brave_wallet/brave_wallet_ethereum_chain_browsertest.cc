@@ -181,9 +181,9 @@ class BraveWalletEthereumChainTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
-  std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
   auto* prefs = browser()->profile()->GetPrefs();
-  brave_wallet::GetAllCustomChains(prefs, &result);
+  brave_wallet::GetAllEthCustomChains(prefs, &result);
   ASSERT_TRUE(result.empty());
   GURL url = GetWalletEthereumChainPageURL();
   base::RunLoop loop;
@@ -206,10 +206,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainApproved) {
   auto result_first = EvalJs(contents, kScriptWaitForEvent,
                              content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), result_first.value);
-  brave_wallet::GetAllCustomChains(prefs, &result);
+  brave_wallet::GetAllEthCustomChains(prefs, &result);
   ASSERT_FALSE(result.empty());
   EXPECT_EQ(result.front()->chain_id, "0x38");
-  EXPECT_EQ(GetJsonRpcService()->GetChainId(), "0x38");
+  EXPECT_EQ(GetJsonRpcService()->GetChainId(brave_wallet::mojom::CoinType::ETH),
+            "0x38");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddEthereumChainRejected) {
@@ -289,9 +290,9 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
                        AddDifferentChainsNoSwitch) {
-  std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
   auto* prefs = browser()->profile()->GetPrefs();
-  brave_wallet::GetAllCustomChains(prefs, &result);
+  brave_wallet::GetAllEthCustomChains(prefs, &result);
   ASSERT_TRUE(result.empty());
 
   GURL urlA = GetWalletEthereumChainPageURL();
@@ -335,17 +336,18 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   EXPECT_EQ(base::Value(false), rejected_same_id.value);
   base::RunLoop().RunUntilIdle();
   // Chain should still exist though
-  brave_wallet::GetAllCustomChains(prefs, &result);
+  brave_wallet::GetAllEthCustomChains(prefs, &result);
   ASSERT_FALSE(result.empty());
   EXPECT_EQ(result.front()->chain_id, "0x11");
   // But current chain should not change
-  EXPECT_EQ(GetJsonRpcService()->GetChainId(), "0x1");
+  EXPECT_EQ(GetJsonRpcService()->GetChainId(brave_wallet::mojom::CoinType::ETH),
+            "0x1");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
-  std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
   auto* prefs = browser()->profile()->GetPrefs();
-  brave_wallet::GetAllCustomChains(prefs, &result);
+  brave_wallet::GetAllEthCustomChains(prefs, &result);
   ASSERT_TRUE(result.empty());
 
   GURL urlA = GetWalletEthereumChainPageURL();
@@ -388,10 +390,11 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
                                  content::EXECUTE_SCRIPT_USE_MANUAL_REPLY);
   EXPECT_EQ(base::Value(true), rejected_same_id.value);
   base::RunLoop().RunUntilIdle();
-  brave_wallet::GetAllCustomChains(prefs, &result);
+  brave_wallet::GetAllEthCustomChains(prefs, &result);
   ASSERT_FALSE(result.empty());
   EXPECT_EQ(result.front()->chain_id, "0x11");
-  EXPECT_EQ(GetJsonRpcService()->GetChainId(), "0x11");
+  EXPECT_EQ(GetJsonRpcService()->GetChainId(brave_wallet::mojom::CoinType::ETH),
+            "0x11");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddChainAndCloseTab) {
@@ -424,13 +427,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddChainAndCloseTab) {
 
   ASSERT_TRUE(tab_helperB->IsShowingBubble());
   browser()->tab_strip_model()->CloseSelectedTabs();
-  std::vector<brave_wallet::mojom::EthereumChainPtr> result;
+  std::vector<brave_wallet::mojom::NetworkInfoPtr> result;
   auto* prefs = browser()->profile()->GetPrefs();
-  brave_wallet::GetAllCustomChains(prefs, &result);
+  brave_wallet::GetAllEthCustomChains(prefs, &result);
   ASSERT_TRUE(result.empty());
   GetJsonRpcService()->AddEthereumChainRequestCompleted("0x11", true);
   base::RunLoop().RunUntilIdle();
-  brave_wallet::GetAllCustomChains(prefs, &result);
+  brave_wallet::GetAllEthCustomChains(prefs, &result);
   ASSERT_FALSE(result.empty());
   EXPECT_EQ(result.front()->chain_id, "0x11");
 }

@@ -39,7 +39,7 @@ import {
 } from './style'
 
 export interface Props {
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   transaction: BraveWallet.TransactionInfo
   account?: WalletAccountType
   accounts: WalletAccountType[]

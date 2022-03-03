@@ -40,7 +40,7 @@ export interface Props {
   defaultCurrencies: DefaultCurrencies
   selectedAsset: BraveWallet.BlockchainToken | undefined
   accounts: WalletAccountType[]
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   fullAssetFiatBalance: Amount
   formattedFullAssetBalance: string
   selectedAssetTransactions: BraveWallet.TransactionInfo[]

@@ -22,7 +22,7 @@ export default function useAssetManagement (
   setUserAssetVisible: SimpleActionCreator<SetUserAssetVisiblePayloadType>,
   removeUserAsset: SimpleActionCreator<RemoveUserAssetPayloadType>,
   refreshBalancesPricesAndHistory: EmptyActionCreator,
-  selectedNetwork: BraveWallet.EthereumChain,
+  selectedNetwork: BraveWallet.NetworkInfo,
   fullTokenList: BraveWallet.BlockchainToken[],
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
 ) {

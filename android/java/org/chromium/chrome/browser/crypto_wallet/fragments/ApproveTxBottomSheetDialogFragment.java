@@ -35,8 +35,8 @@ import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
-import org.chromium.brave_wallet.mojom.EthereumChain;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
@@ -204,15 +204,15 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         ((View) parent).getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
-        jsonRpcService.getChainId(chainId -> {
-            jsonRpcService.getAllNetworks(chains -> {
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 TextView networkName = view.findViewById(R.id.network_name);
                 networkName.setText(
                         Utils.getNetworkText(getActivity(), chainId, customNetworks).toString());
                 String chainSymbol = "ETH";
                 int chainDecimals = 18;
-                for (EthereumChain chain : chains) {
+                for (NetworkInfo chain : chains) {
                     if (chainId.equals(chain.chainId)) {
                         if (Utils.isCustomNetwork(chainId)) {
                             chainSymbol = chain.symbol;

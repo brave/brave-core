@@ -31,7 +31,7 @@ export interface Props {
   defaultCurrencies: DefaultCurrencies
   userAssetList: UserAssetInfoType[]
   hideBalances: boolean
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   onSetFilteredAssetList: (filteredList: UserAssetInfoType[]) => void
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => () => void
   onShowAssetModal: () => void

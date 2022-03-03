@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_service.h"
@@ -44,7 +45,8 @@ base::Value GetDefaultUserAssets() {
   // Show ETH and BAT by default for mainnet, and ETH for other known networks.
   base::Value user_assets_pref(base::Value::Type::DICTIONARY);
 
-  std::vector<std::string> network_ids = brave_wallet::GetAllKnownNetworkIds();
+  std::vector<std::string> network_ids =
+      brave_wallet::GetAllKnownEthNetworkIds();
   for (const auto& network_id : network_ids) {
     base::Value* user_assets_list = user_assets_pref.SetKey(
         network_id, base::Value(base::Value::Type::LIST));
@@ -54,6 +56,17 @@ base::Value GetDefaultUserAssets() {
   }
 
   return user_assets_pref;
+}
+
+base::Value GetDefaultSelectedNetworks() {
+  base::Value selected_networks(base::Value::Type::DICTIONARY);
+  selected_networks.SetStringKey(brave_wallet::kEthereumPrefKey,
+                                 brave_wallet::mojom::kMainnetChainId);
+  selected_networks.SetStringKey(brave_wallet::kSolanaPrefKey,
+                                 brave_wallet::mojom::kSolanaMainnet);
+  // TODO(spylogsster): Add Filecoin
+
+  return selected_networks;
 }
 
 }  // namespace
@@ -74,9 +87,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterTimePref(kBraveWalletP3AFirstReportTime, base::Time());
   registry->RegisterListPref(kBraveWalletP3AWeeklyStorage);
   registry->RegisterDictionaryPref(kBraveWalletKeyrings);
-  registry->RegisterListPref(kBraveWalletCustomNetworks);
-  registry->RegisterStringPref(kBraveWalletCurrentChainId,
-                               brave_wallet::mojom::kMainnetChainId);
+  registry->RegisterDictionaryPref(kBraveWalletCustomNetworks);
+  registry->RegisterDictionaryPref(kBraveWalletSelectedNetworks,
+                                   GetDefaultSelectedNetworks());
   registry->RegisterDictionaryPref(kBraveWalletUserAssets,
                                    GetDefaultUserAssets());
   registry->RegisterIntegerPref(kBraveWalletAutoLockMinutes, 5);
@@ -110,12 +123,17 @@ void RegisterProfilePrefsForMigration(
   // Added 02/2022
   registry->RegisterBooleanPref(
       kBraveWalletEthereumTransactionsCoinTypeMigrated, false);
+
+  // Added 22/02/2022
+  registry->RegisterListPref(kBraveWalletCustomNetworksDeprecated);
+  registry->RegisterStringPref(kBraveWalletCurrentChainId,
+                               brave_wallet::mojom::kMainnetChainId);
 }
 
 void ClearJsonRpcServiceProfilePrefs(PrefService* prefs) {
   DCHECK(prefs);
   prefs->ClearPref(kBraveWalletCustomNetworks);
-  prefs->ClearPref(kBraveWalletCurrentChainId);
+  prefs->ClearPref(kBraveWalletSelectedNetworks);
   prefs->ClearPref(kSupportEip1559OnLocalhostChain);
 }
 
@@ -142,6 +160,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 10/2021 for migrating the contract address for eth in user asset
   // list from 'eth' to an empty string.
   BraveWalletService::MigrateUserAssetEthContractAddress(prefs);
+  JsonRpcService::MigrateMultichainNetworks(prefs);
 
   if (prefs->HasPrefPath(kBraveWalletWeb3ProviderDeprecated)) {
     mojom::DefaultWallet provider = static_cast<mojom::DefaultWallet>(

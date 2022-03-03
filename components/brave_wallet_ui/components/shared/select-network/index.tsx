@@ -3,9 +3,9 @@ import SelectNetworkItem from '../select-network-item'
 import { BraveWallet } from '../../../constants/types'
 
 export interface Props {
-  networks: BraveWallet.EthereumChain[]
-  selectedNetwork: BraveWallet.EthereumChain
-  onSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
+  networks: BraveWallet.NetworkInfo[]
+  selectedNetwork: BraveWallet.NetworkInfo
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
 }
 
 function SelectNetwork (props: Props) {

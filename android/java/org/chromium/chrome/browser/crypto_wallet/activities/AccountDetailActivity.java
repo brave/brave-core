@@ -24,6 +24,7 @@ import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringInfo;
 import org.chromium.brave_wallet.mojom.KeyringService;
@@ -203,7 +204,7 @@ public class AccountDetailActivity
 
         initState();
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(chainId -> {
+        mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
             setUpAssetList(chainId);
             fetchAccountInfo(chainId);
         });
@@ -212,7 +213,7 @@ public class AccountDetailActivity
     @Override
     public void onAssetClick(BlockchainToken asset) {
         assert mJsonRpcService != null;
-        mJsonRpcService.getChainId(chainId -> {
+        mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
             Utils.openAssetDetailsActivity(AccountDetailActivity.this, chainId, asset.symbol,
                     asset.name, asset.contractAddress, asset.logo, asset.decimals);
         });

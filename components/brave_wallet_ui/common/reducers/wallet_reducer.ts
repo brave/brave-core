@@ -55,8 +55,13 @@ const defaultState: WalletState = {
     symbol: 'ETH',
     symbolName: 'Ethereum',
     decimals: 18,
-    isEip1559: true
-  } as BraveWallet.EthereumChain,
+    coin: BraveWallet.CoinType.ETH,
+    data: {
+       ethData: {
+        isEip1559: true
+       }
+    }
+  } as BraveWallet.NetworkInfo,
   accounts: [],
   userVisibleTokensInfo: [],
   transactions: {},
@@ -134,7 +139,7 @@ reducer.on(WalletActions.setSelectedAccount, (state: any, payload: WalletAccount
   }
 })
 
-reducer.on(WalletActions.setNetwork, (state: any, payload: BraveWallet.EthereumChain) => {
+reducer.on(WalletActions.setNetwork, (state: any, payload: BraveWallet.NetworkInfo) => {
   return {
     ...state,
     isFetchingPortfolioPriceHistory: true,
@@ -373,9 +378,13 @@ reducer.on(WalletActions.isEip1559Changed, (state: WalletState, payload: IsEip15
     network => network.chainId === payload.chainId
   ) || state.selectedNetwork
 
-  const updatedNetwork: BraveWallet.EthereumChain = {
+  const updatedNetwork: BraveWallet.NetworkInfo = {
     ...selectedNetwork,
-    isEip1559: payload.isEip1559
+    data: {
+      ethData: {
+        isEip1559: payload.isEip1559
+      }
+    }
   }
 
   return {

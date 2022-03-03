@@ -8,9 +8,9 @@ import {
 } from './style'
 
 export interface Props {
-  onSelectNetwork: (network: BraveWallet.EthereumChain) => () => void
-  networkList: BraveWallet.EthereumChain[]
-  selectedNetwork: BraveWallet.EthereumChain
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => () => void
+  networkList: BraveWallet.NetworkInfo[]
+  selectedNetwork: BraveWallet.NetworkInfo
   showNetworkDropDown: boolean
   onClick: () => void
 }

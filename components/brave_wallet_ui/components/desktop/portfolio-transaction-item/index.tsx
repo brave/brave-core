@@ -47,7 +47,7 @@ import TransactionPopup, { TransactionPopupItem } from '../transaction-popup'
 import TransactionTimestampTooltip from '../transaction-timestamp-tooltip'
 
 export interface Props {
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   transaction: BraveWallet.TransactionInfo
   account: WalletAccountType | undefined
   accounts: WalletAccountType[]

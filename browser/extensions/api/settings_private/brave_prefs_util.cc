@@ -245,8 +245,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // Brave Wallet pref
-  (*s_brave_allowlist)[kBraveWalletCurrentChainId] =
-      settings_api::PrefType::PREF_TYPE_STRING;
+  (*s_brave_allowlist)[kBraveWalletSelectedNetworks] =
+      settings_api::PrefType::PREF_TYPE_DICTIONARY;
   (*s_brave_allowlist)[kDefaultWallet2] =
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_allowlist)[kDefaultBaseCurrency] =

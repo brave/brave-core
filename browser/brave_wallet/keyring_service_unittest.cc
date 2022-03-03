@@ -1192,9 +1192,6 @@ TEST_F(KeyringServiceUnitTest, Reset) {
   EXPECT_TRUE(
       HasPrefForKeyring(kPasswordEncryptorNonce, mojom::kDefaultKeyringId));
   EXPECT_TRUE(HasPrefForKeyring(kEncryptedMnemonic, mojom::kDefaultKeyringId));
-  GetPrefs()->Set(kBraveWalletCustomNetworks, base::ListValue());
-  GetPrefs()->SetString(kBraveWalletCurrentChainId,
-                        brave_wallet::mojom::kMainnetChainId);
   EXPECT_TRUE(service.IsKeyringCreated(brave_wallet::mojom::kDefaultKeyringId));
   service.Reset();
   EXPECT_FALSE(

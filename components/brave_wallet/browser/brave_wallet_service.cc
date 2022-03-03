@@ -149,7 +149,7 @@ BraveWalletService::BraveWalletService(
       base::BindRepeating(&BraveWalletService::OnNetworkListChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kBraveWalletCurrentChainId,
+      kBraveWalletSelectedNetworks,
       base::BindRepeating(&BraveWalletService::OnNetworkChanged,
                           weak_ptr_factory_.GetWeakPtr()));
 
@@ -753,7 +753,7 @@ void BraveWalletService::AddSuggestTokenRequest(
   }
 
   const std::string addr = request->token->contract_address;
-  const std::string chain_id = GetCurrentChainId(prefs_);
+  const std::string chain_id = GetCurrentChainId(prefs_, mojom::CoinType::ETH);
 
   // Priority of token source:
   //     1. User asset list
@@ -786,7 +786,7 @@ void BraveWalletService::GetPendingAddSuggestTokenRequests(
 void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
     bool approved,
     const std::vector<std::string>& contract_addresses) {
-  const std::string chain_id = GetCurrentChainId(prefs_);
+  const std::string chain_id = GetCurrentChainId(prefs_, mojom::CoinType::ETH);
   for (const auto& addr : contract_addresses) {
     if (add_suggest_token_requests_.contains(addr) &&
         add_suggest_token_callbacks_.contains(addr)) {

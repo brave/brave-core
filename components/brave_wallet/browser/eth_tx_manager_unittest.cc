@@ -243,6 +243,7 @@ class EthTxManagerUnitTest : public testing::Test {
 
     base::RunLoop run_loop;
     json_rpc_service_->SetNetwork(brave_wallet::mojom::kLocalhostChainId,
+                                  mojom::CoinType::ETH,
                                   base::BindLambdaForTesting([&](bool success) {
                                     EXPECT_TRUE(success);
                                     run_loop.Quit();

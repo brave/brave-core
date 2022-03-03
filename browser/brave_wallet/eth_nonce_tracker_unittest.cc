@@ -64,7 +64,8 @@ class EthNonceTrackerUnitTest : public testing::Test {
     // See JsonRpcService::SetNetwork() to better understand where the
     // http://localhost:7545 URL used below is coming from.
     url_loader_factory_.AddResponse(
-        brave_wallet::GetNetworkURL(GetPrefs(), mojom::kLocalhostChainId)
+        brave_wallet::GetNetworkURL(GetPrefs(), mojom::kLocalhostChainId,
+                                    mojom::CoinType::ETH)
             .spec(),
         GetResultString());
   }
@@ -86,7 +87,7 @@ TEST_F(EthNonceTrackerUnitTest, GetNonce) {
   JsonRpcService service(shared_url_loader_factory(), GetPrefs());
   base::RunLoop run_loop;
   service.SetNetwork(
-      brave_wallet::mojom::kLocalhostChainId,
+      brave_wallet::mojom::kLocalhostChainId, mojom::CoinType::ETH,
       base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
   run_loop.Run();
 
@@ -176,7 +177,7 @@ TEST_F(EthNonceTrackerUnitTest, NonceLock) {
   JsonRpcService service(shared_url_loader_factory(), GetPrefs());
   base::RunLoop run_loop;
   service.SetNetwork(
-      brave_wallet::mojom::kLocalhostChainId,
+      brave_wallet::mojom::kLocalhostChainId, mojom::CoinType::ETH,
       base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
   run_loop.Run();
   EthTxStateManager tx_state_manager(GetPrefs(), &service);

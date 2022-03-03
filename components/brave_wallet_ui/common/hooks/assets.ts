@@ -21,7 +21,7 @@ import useBalance from './balance'
 export default function useAssets (
   accounts: WalletAccountType[],
   selectedAccount: WalletAccountType,
-  selectedNetwork: BraveWallet.EthereumChain,
+  selectedNetwork: BraveWallet.NetworkInfo,
   fullTokenList: BraveWallet.BlockchainToken[],
   userVisibleTokensInfo: BraveWallet.BlockchainToken[],
   spotPrices: BraveWallet.AssetPrice[],

@@ -47,7 +47,7 @@ import { StatusBubble } from '../../shared/style'
 
 export interface Props {
   transaction: BraveWallet.TransactionInfo
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   accounts: WalletAccountType[]
   visibleTokens: BraveWallet.BlockchainToken[]
   transactionSpotPrices: BraveWallet.AssetPrice[]

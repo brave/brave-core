@@ -18,7 +18,7 @@ import {
 
 export interface Props {
   onClick: () => void
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   isPanel?: boolean
 }
 

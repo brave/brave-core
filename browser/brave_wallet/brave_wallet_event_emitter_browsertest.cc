@@ -134,7 +134,8 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEventEmitterTest,
       browser()->tab_strip_model()->GetActiveWebContents();
   WaitForLoadStop(contents);
   auto service = GetJsonRpcService();
-  service->SetNetwork(brave_wallet::mojom::kGoerliChainId, base::DoNothing());
+  service->SetNetwork(brave_wallet::mojom::kGoerliChainId,
+                      brave_wallet::mojom::CoinType::ETH, base::DoNothing());
 
   auto result_first =
       EvalJs(contents, CheckForEventScript("received_chain_changed_event"),

@@ -21,7 +21,7 @@ interface Config {
 
 interface Props {
   asset: BraveWallet.BlockchainToken | undefined
-  network: BraveWallet.EthereumChain | undefined
+  network: BraveWallet.NetworkInfo | undefined
 }
 
 function withPlaceholderIcon (WrappedComponent: React.ComponentType<any>, config: Config) {

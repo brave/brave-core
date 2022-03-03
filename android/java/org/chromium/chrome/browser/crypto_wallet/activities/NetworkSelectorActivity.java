@@ -10,8 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import org.chromium.base.Log;
-import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter;
 import org.chromium.chrome.browser.crypto_wallet.adapters.NetworkSelectorAdapter.NetworkSelectorItem;
@@ -44,8 +45,8 @@ public class NetworkSelectorActivity
     private void initState() {
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
-        jsonRpcService.getAllNetworks(chains -> {
-            EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+        jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+            NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
             networkSelectorAdapter =
                     new NetworkSelectorAdapter(this, Utils.getNetworksList(this, customNetworks),
                             Utils.getNetworksAbbrevList(this, customNetworks));
@@ -58,9 +59,9 @@ public class NetworkSelectorActivity
     private void fetchSelectedNetwork() {
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
-        jsonRpcService.getChainId(chainId -> {
-            jsonRpcService.getAllNetworks(chains -> {
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+        jsonRpcService.getChainId(CoinType.ETH, chainId -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 String strNetwork = Utils.getNetworkText(this, chainId, customNetworks).toString();
                 networkSelectorAdapter.setSelectedNetwork(strNetwork);
             });
@@ -71,12 +72,12 @@ public class NetworkSelectorActivity
     public void onNetworkItemSelected(NetworkSelectorItem networkSelectorItem) {
         JsonRpcService jsonRpcService = getJsonRpcService();
         if (jsonRpcService != null) {
-            jsonRpcService.getAllNetworks(chains -> {
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 jsonRpcService.setNetwork(
                         Utils.getNetworkConst(
                                 this, networkSelectorItem.getNetworkName(), customNetworks),
-                        (success) -> {
+                        CoinType.ETH, (success) -> {
                             if (!success) {
                                 Log.e(TAG, "Could not set network");
                             }

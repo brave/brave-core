@@ -464,7 +464,7 @@ class SendTransactionBrowserTest : public InProcessBrowserTest {
 
   void SetNetworkForTesting(const std::string& chain_id) {
     json_rpc_service_->SetCustomNetworkForTesting(
-        chain_id, https_server_for_rpc()->base_url());
+        chain_id, mojom::CoinType::ETH, https_server_for_rpc()->base_url());
     // Needed so ChainChangedEvent observers run
     base::RunLoop().RunUntilIdle();
     chain_id_ = chain_id;
@@ -736,9 +736,11 @@ IN_PROC_BROWSER_TEST_F(SendTransactionBrowserTest,
   observer()->SetExpectEip1559Tx(false);
   RestoreWallet();
 
-  mojom::EthereumChain chain(
-      "0x5566", "Test Custom Chain", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "TC", "Test Coin", 11, false);
+  mojom::NetworkInfo chain("0x5566", "Test Custom Chain", {"https://url1.com"},
+                           {"https://url1.com"}, {"https://url1.com"}, "TC",
+                           "Test Coin", 11, mojom::CoinType::ETH,
+                           mojom::NetworkInfoData::NewEthData(
+                               mojom::NetworkInfoDataETH::New(false)));
   AddCustomNetwork(browser()->profile()->GetPrefs(), chain.Clone());
 
   TestUserApproved("request", "", true /* skip_restore */);

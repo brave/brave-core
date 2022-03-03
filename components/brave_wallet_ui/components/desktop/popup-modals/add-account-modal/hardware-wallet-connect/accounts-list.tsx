@@ -37,7 +37,7 @@ import Amount from '../../../../../utils/amount'
 interface Props {
   hardwareWallet: string
   accounts: BraveWallet.HardwareWalletAccount[]
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   preAddedHardwareWalletAccounts: WalletAccountType[]
   onLoadMore: () => void
   selectedDerivationPaths: string[]
@@ -207,7 +207,7 @@ export default function (props: Props) {
 
 interface AccountListItemProps {
   account: BraveWallet.HardwareWalletAccount
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   onSelect: () => void
   selected: boolean
   disabled: boolean

@@ -513,7 +513,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
     EXPECT_EQ(requests[0]->token, expected_token);
 
     if (run_switch_network) {
-      GetPrefs()->SetString(kBraveWalletCurrentChainId, mojom::kRopstenChainId);
+      json_rpc_service_->SetNetwork(mojom::kRopstenChainId,
+                                    mojom::CoinType::ETH);
     } else {
       service_->NotifyAddSuggestTokenRequestsProcessed(
           approve, {suggested_token->contract_address});
@@ -1035,9 +1036,11 @@ TEST_F(BraveWalletServiceUnitTest, EthAddRemoveSetUserAssetVisible) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
-  mojom::EthereumChain chain(
-      "0x5566", "Test Custom Chain", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "TC", "Test Coin", 11, false);
+  mojom::NetworkInfo chain("0x5566", "Test Custom Chain", {"https://url1.com"},
+                           {"https://url1.com"}, {"https://url1.com"}, "TC",
+                           "Test Coin", 11, mojom::CoinType::ETH,
+                           mojom::NetworkInfoData::NewEthData(
+                               mojom::NetworkInfoDataETH::New(false)));
 
   AddCustomNetwork(GetPrefs(), chain.Clone());
   base::RunLoop().RunUntilIdle();
@@ -1046,8 +1049,8 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
   // Remove network.
   observer_->Reset();
   {
-    ListPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
-    base::Value* list = update.Get();
+    DictionaryPrefUpdate update(GetPrefs(), kBraveWalletCustomNetworks);
+    base::Value* list = update.Get()->FindKey(kEthereumPrefKey);
     list->EraseListValueIf([&](const base::Value& v) {
       auto* chain_id_value = v.FindStringKey("chainId");
       if (!chain_id_value)
@@ -1061,9 +1064,11 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
 
 TEST_F(BraveWalletServiceUnitTest,
        CustomChainNativeAssetAddRemoveSetUserAssetVisible) {
-  brave_wallet::mojom::EthereumChain chain(
-      "0x5566", "Test Custom Chain", {"https://url1.com"}, {"https://url1.com"},
-      {"https://url1.com"}, "TC", "Test Coin", 11, false);
+  mojom::NetworkInfo chain("0x5566", "Test Custom Chain", {"https://url1.com"},
+                           {"https://url1.com"}, {"https://url1.com"}, "TC",
+                           "Test Coin", 11, mojom::CoinType::ETH,
+                           mojom::NetworkInfoData::NewEthData(
+                               mojom::NetworkInfoDataETH::New(false)));
   AddCustomNetwork(GetPrefs(), chain.Clone());
 
   auto native_asset =
@@ -1469,7 +1474,7 @@ TEST_F(BraveWalletServiceUnitTest, AddSuggestToken) {
   std::vector<std::string> chain_ids = {mojom::kMainnetChainId,
                                         mojom::kKovanChainId};
   for (const std::string& chain_id : chain_ids) {
-    json_rpc_service_->SetNetwork(chain_id);
+    json_rpc_service_->SetNetwork(chain_id, mojom::CoinType::ETH);
     mojom::BlockchainTokenPtr usdc_from_blockchain_registry =
         mojom::BlockchainToken::New(
             "0x6B175474E89094C44Da98b954EedeAC495271d0F", "USD Coin",

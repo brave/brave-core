@@ -33,7 +33,7 @@ interface Props {
   token: BraveWallet.BlockchainToken
   defaultCurrencies: DefaultCurrencies
   hideBalances?: boolean
-  selectedNetwork?: BraveWallet.EthereumChain
+  selectedNetwork?: BraveWallet.NetworkInfo
   isPanel?: boolean
 }
 

@@ -25,7 +25,7 @@ const defaultState: PanelState = {
   panelTitle: '',
   connectingAccounts: [],
   networkPayload: {
-    chainId: '0x1',
+    chainId: BraveWallet.MAINNET_CHAIN_ID,
     chainName: 'Ethereum Mainnet',
     rpcUrls: ['https://mainnet-infura.brave.com/'],
     blockExplorerUrls: [],
@@ -33,7 +33,12 @@ const defaultState: PanelState = {
     symbol: 'ETH',
     symbolName: 'Ethereum',
     decimals: 18,
-    isEip1559: true
+    coin: BraveWallet.CoinType.ETH,
+    data: {
+       ethData: {
+        isEip1559: true
+       }
+    }
   },
   swapQuote: undefined,
   swapError: undefined,

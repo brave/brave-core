@@ -13,7 +13,7 @@ export default function useTokenInfo (
   getBlockchainTokenInfo: (address: string) => Promise<GetBlockchainTokenInfoReturnInfo>,
   visibleTokens: BraveWallet.BlockchainToken[],
   fullTokenList: BraveWallet.BlockchainToken[],
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
 ) {
   const [tokenContractAddress, setTokenContractAddress] = React.useState<string>('')
   const [foundTokenInfoByContractAddress, setFoundTokenInfoByContractAddress] = React.useState<BraveWallet.BlockchainToken | undefined>()

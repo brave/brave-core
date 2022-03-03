@@ -89,10 +89,10 @@ class TxStateManagerUnitTest : public testing::Test {
         new EthTxStateManager(&prefs_, json_rpc_service_.get()));
   }
 
-  void SetNetwork(const std::string& chain_id) {
+  void SetNetwork(const std::string& chain_id, mojom::CoinType coin) {
     base::RunLoop run_loop;
     json_rpc_service_->SetNetwork(
-        chain_id,
+        chain_id, coin,
         base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
     run_loop.Run();
   }
@@ -286,13 +286,13 @@ TEST_F(TxStateManagerUnitTest, SwitchNetwork) {
   meta.set_id("001");
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  SetNetwork("0x3");
+  SetNetwork("0x3", mojom::CoinType::ETH);
   // Wait for network info
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
   tx_state_manager_->AddOrUpdateTx(meta);
 
-  SetNetwork(brave_wallet::mojom::kLocalhostChainId);
+  SetNetwork(brave_wallet::mojom::kLocalhostChainId, mojom::CoinType::ETH);
   // Wait for network info
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(tx_state_manager_->GetTx("001"), nullptr);
@@ -313,7 +313,9 @@ TEST_F(TxStateManagerUnitTest, SwitchNetwork) {
   EXPECT_EQ(ropsten_dict->DictSize(), 1u);
   EXPECT_TRUE(ropsten_dict->FindKey("001"));
   auto localhost_url_spec =
-      brave_wallet::GetNetworkURL(&prefs_, mojom::kLocalhostChainId).spec();
+      brave_wallet::GetNetworkURL(&prefs_, mojom::kLocalhostChainId,
+                                  mojom::CoinType::ETH)
+          .spec();
   const auto* localhost_dict = ethereum_dict->FindKey(localhost_url_spec);
   ASSERT_TRUE(localhost_dict);
   EXPECT_EQ(localhost_dict->DictSize(), 1u);

@@ -21,7 +21,7 @@ export type EthereumChainRequestPayload = {
 }
 
 export type EthereumChainPayload = {
-  chain: BraveWallet.EthereumChain
+  chain: BraveWallet.NetworkInfo
 }
 
 export type SignMessagePayload = {

@@ -18,9 +18,9 @@ import {
 
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   buyAmount: string
-  networkList: BraveWallet.EthereumChain[]
+  networkList: BraveWallet.NetworkInfo[]
   defaultCurrencies: DefaultCurrencies
   onSubmit: () => void
   onInputChange: (value: string, name: string) => void

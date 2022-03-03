@@ -27,7 +27,7 @@ import { useExplorer } from '../../../common/hooks'
 export interface Props {
   onCancel: () => void
   onAddToken: () => void
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   token?: BraveWallet.BlockchainToken
 }
 

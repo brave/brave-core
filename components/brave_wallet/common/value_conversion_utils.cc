@@ -14,16 +14,15 @@
 
 namespace brave_wallet {
 
-absl::optional<mojom::EthereumChain> ValueToEthereumChain(
-    const base::Value& value) {
-  mojom::EthereumChain chain;
+mojom::NetworkInfoPtr ValueToEthNetworkInfo(const base::Value& value) {
+  mojom::NetworkInfo chain;
   const base::DictionaryValue* params_dict = nullptr;
   if (!value.GetAsDictionary(&params_dict) || !params_dict)
-    return absl::nullopt;
+    return nullptr;
 
   const std::string* chain_id = params_dict->FindStringKey("chainId");
   if (!chain_id) {
-    return absl::nullopt;
+    return nullptr;
   }
   chain.chain_id = *chain_id;
 
@@ -68,15 +67,27 @@ absl::optional<mojom::EthereumChain> ValueToEthereumChain(
     }
   }
 
-  chain.is_eip1559 = params_dict->FindBoolKey("is_eip1559").value_or(false);
-  return chain;
+  chain.coin = mojom::CoinType::ETH;
+
+  absl::optional<bool> is_eip1559 = params_dict->FindBoolKey("is_eip1559");
+  if (is_eip1559) {
+    chain.data = mojom::NetworkInfoData::NewEthData(
+        mojom::NetworkInfoDataETH::New(*is_eip1559));
+  }
+
+  return chain.Clone();
 }
 
-base::Value EthereumChainToValue(const mojom::EthereumChainPtr& chain) {
+base::Value EthNetworkInfoToValue(const mojom::NetworkInfoPtr& chain) {
   base::Value dict(base::Value::Type::DICTIONARY);
+  DCHECK_EQ(chain->coin, mojom::CoinType::ETH);
   dict.SetStringKey("chainId", chain->chain_id);
   dict.SetStringKey("chainName", chain->chain_name);
-  dict.SetBoolKey("is_eip1559", chain->is_eip1559);
+  bool is_eip1559 = false;
+  if (chain->data && chain->data->is_eth_data()) {
+    is_eip1559 = chain->data->get_eth_data()->is_eip1559;
+  }
+  dict.SetBoolKey("is_eip1559", is_eip1559);
 
   base::ListValue blockExplorerUrlsValue;
   if (!chain->block_explorer_urls.empty()) {

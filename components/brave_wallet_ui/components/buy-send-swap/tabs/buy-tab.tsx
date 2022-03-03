@@ -13,15 +13,15 @@ import {
 
 export interface Props {
   accounts: UserAccountType[]
-  networkList: BraveWallet.EthereumChain[]
-  selectedNetwork: BraveWallet.EthereumChain
+  networkList: BraveWallet.NetworkInfo[]
+  selectedNetwork: BraveWallet.NetworkInfo
   selectedAccount: UserAccountType
   assetOptions: BraveWallet.BlockchainToken[]
   buyAmount: string
   showHeader?: boolean
   defaultCurrencies: DefaultCurrencies
   onSubmit: (asset: BraveWallet.BlockchainToken) => void
-  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onSelectAccount: (account: UserAccountType) => void
   onSetBuyAmount: (value: string) => void
   onAddNetwork: () => void
@@ -52,7 +52,7 @@ function BuyTab (props: Props) {
     setBuyView(view)
   }
 
-  const onClickSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
+  const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
     onSelectNetwork(network)
     setBuyView('buy')
   }

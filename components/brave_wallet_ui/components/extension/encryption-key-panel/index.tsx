@@ -30,7 +30,7 @@ import { TabRow } from '../shared-panel-styles'
 export interface Props {
   panelType: 'request' | 'read'
   accounts: WalletAccountType[]
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   encryptionKeyPayload: BraveWallet.EncryptionKeyRequest
   onProvideOrAllow: () => void
   onCancel: () => void

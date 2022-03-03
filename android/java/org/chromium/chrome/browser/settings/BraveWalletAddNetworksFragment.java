@@ -16,8 +16,9 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
-import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
@@ -81,8 +82,8 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         if (!mChainId.isEmpty()) {
             btAdd.setText(R.string.brave_wallet_add_network_submit);
             assert mJsonRpcService != null;
-            mJsonRpcService.getAllNetworks(networks -> {
-                for (EthereumChain chain : networks) {
+            mJsonRpcService.getAllNetworks(CoinType.ETH, networks -> {
+                for (NetworkInfo chain : networks) {
                     if (chain.chainId.equals(mChainId)) {
                         fillControls(chain, view);
                         break;
@@ -109,7 +110,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
     }
 
-    private void fillControls(EthereumChain chain, View view) {
+    private void fillControls(NetworkInfo chain, View view) {
         EditText chainCurrencyDecimals = view.findViewById(R.id.chain_currency_decimals);
         String strChainId = chain.chainId;
         if (strChainId.startsWith("0x")) {
@@ -148,7 +149,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
     }
 
     private boolean validateInputsAddChain(View view) {
-        EthereumChain chain = new EthereumChain();
+        NetworkInfo chain = new NetworkInfo();
         String strChainId = mChainIdEditText.getText().toString().trim();
         try {
             int iChainId = Integer.valueOf(strChainId);
@@ -290,7 +291,7 @@ public class BraveWalletAddNetworksFragment extends Fragment implements Connecti
         return true;
     }
 
-    private void addEthereumChain(EthereumChain chain, boolean remove) {
+    private void addEthereumChain(NetworkInfo chain, boolean remove) {
         assert mJsonRpcService != null;
         mJsonRpcService.addEthereumChain(chain, (chainId, error, errorMessage) -> {
             if (error != ProviderError.SUCCESS) {

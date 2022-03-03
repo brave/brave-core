@@ -418,7 +418,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
   ])
   const [filteredAppsList, setFilteredAppsList] = React.useState<AppsListType[]>(AppsList())
   const [hasPasswordError, setHasPasswordError] = React.useState<boolean>(false)
-  const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.EthereumChain>(mockNetworks[0])
+  const [selectedNetwork, setSelectedNetwork] = React.useState<BraveWallet.NetworkInfo>(mockNetworks[0])
   const [selectedWyreAsset, setSelectedWyreAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[0])
   const [selectedAsset, setSelectedAsset] = React.useState<BraveWallet.BlockchainToken>(AccountAssetOptions[0])
   const [showSelectAsset, setShowSelectAsset] = React.useState<boolean>(false)
@@ -449,7 +449,7 @@ export const _ConnectedPanel = (args: { locked: boolean }) => {
     navigateTo('transactions')
   }
 
-  const onSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
+  const onSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
     setSelectedNetwork(network)
     setSelectedPanel('main')
   }

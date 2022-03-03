@@ -38,7 +38,7 @@ export interface Props {
   assetBalance: string
   assetTicker: string
   assetDecimals: number
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   name: string
   hideBalances?: boolean
 }

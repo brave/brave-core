@@ -49,7 +49,7 @@ class EthTxStateManagerUnitTest : public testing::Test {
   void SetNetwork(const std::string& chain_id) {
     base::RunLoop run_loop;
     json_rpc_service_->SetNetwork(
-        chain_id,
+        chain_id, mojom::CoinType::ETH,
         base::BindLambdaForTesting([&](bool success) { run_loop.Quit(); }));
     run_loop.Run();
     // Wait for network info

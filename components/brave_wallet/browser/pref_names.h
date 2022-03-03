@@ -18,7 +18,7 @@ extern const char kBraveWalletP3AFirstReportTime[];
 extern const char kBraveWalletP3AWeeklyStorage[];
 extern const char kBraveWalletKeyrings[];
 extern const char kBraveWalletCustomNetworks[];
-extern const char kBraveWalletCurrentChainId[];
+extern const char kBraveWalletSelectedNetworks[];
 extern const char kBraveWalletUserAssets[];
 // Added 10/2021 to migrate contract address to an empty string for ETH.
 extern const char kBraveWalletUserAssetEthContractAddressMigrated[];
@@ -38,5 +38,7 @@ extern const char kBraveWalletEncryptedMnemonic[];
 extern const char kBraveWalletDefaultKeyringAccountNum[];
 extern const char kBraveWalletAccountNames[];
 extern const char kBraveWalletBackupComplete[];
+extern const char kBraveWalletCustomNetworksDeprecated[];
+extern const char kBraveWalletCurrentChainId[];
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_

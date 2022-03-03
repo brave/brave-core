@@ -63,15 +63,15 @@ export interface Props {
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
   onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
-  onSelectNetwork: (network: BraveWallet.EthereumChain) => void
+  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onShowVisibleAssetsModal: (showModal: boolean) => void
   onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
   showVisibleAssetsModal: boolean
   defaultCurrencies: DefaultCurrencies
   addUserAssetError: boolean
-  selectedNetwork: BraveWallet.EthereumChain
-  networkList: BraveWallet.EthereumChain[]
+  selectedNetwork: BraveWallet.NetworkInfo
+  networkList: BraveWallet.NetworkInfo[]
   userAssetList: UserAssetInfoType[]
   accounts: WalletAccountType[]
   selectedTimeline: BraveWallet.AssetPriceTimeframe
@@ -191,7 +191,7 @@ const Portfolio = (props: Props) => {
     }
   }
 
-  const onClickSelectNetwork = (network: BraveWallet.EthereumChain) => () => {
+  const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
     onSelectNetwork(network)
     toggleShowNetworkDropdown()
   }

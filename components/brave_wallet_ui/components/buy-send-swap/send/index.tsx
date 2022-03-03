@@ -23,7 +23,7 @@ import {
 
 export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
-  selectedNetwork: BraveWallet.EthereumChain
+  selectedNetwork: BraveWallet.NetworkInfo
   selectedAssetAmount: string
   selectedAssetBalance: string
   toAddressOrUrl: string

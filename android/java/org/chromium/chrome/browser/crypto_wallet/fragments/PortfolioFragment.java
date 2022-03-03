@@ -36,9 +36,10 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
-import org.chromium.brave_wallet.mojom.EthereumChain;
+import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
@@ -149,9 +150,9 @@ public class PortfolioFragment
     private void updateNetwork() {
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
-        jsonRpcService.getChainId(chain_id -> {
-            jsonRpcService.getAllNetworks(chains -> {
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+        jsonRpcService.getChainId(CoinType.ETH, chain_id -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 String chainId = Utils.getNetworkConst(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
                 if (chainId.equals(chain_id) && !mSelectedChainNetworkName.isEmpty()) {
@@ -182,8 +183,8 @@ public class PortfolioFragment
         editVisibleAssets.setOnClickListener(v -> {
             JsonRpcService jsonRpcService = getJsonRpcService();
             assert jsonRpcService != null;
-            jsonRpcService.getAllNetworks(chains -> {
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 String chainId = Utils.getNetworkConst(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
 
@@ -268,8 +269,8 @@ public class PortfolioFragment
     public void onAssetClick(BlockchainToken asset) {
         JsonRpcService jsonRpcService = getJsonRpcService();
         assert jsonRpcService != null;
-        jsonRpcService.getAllNetworks(chains -> {
-            EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+        jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+            NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
             String chainId =
                     Utils.getNetworkConst(getActivity(), mSelectedChainNetworkName, customNetworks);
             Utils.openAssetDetailsActivity(getActivity(), chainId, asset.symbol, asset.name,
@@ -371,7 +372,7 @@ public class PortfolioFragment
         keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
             JsonRpcService jsonRpcService = getJsonRpcService();
             assert jsonRpcService != null;
-            jsonRpcService.getAllNetworks(chains -> {
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 AccountInfo[] accountInfos = new AccountInfo[] {};
                 if (keyringInfo != null) {
                     accountInfos = keyringInfo.accountInfos;
@@ -381,7 +382,7 @@ public class PortfolioFragment
                     mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
                             getAssetRatioService(), getJsonRpcService(), accountInfos);
                 }
-                EthereumChain[] customNetworks = Utils.getCustomNetworks(chains);
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 String chainId = Utils.getNetworkConst(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
                 mPortfolioHelper.setChainId(chainId);

@@ -197,7 +197,8 @@ GURL SwapService::GetTransactionPayloadURL(mojom::SwapParamsPtr swap_params,
 
 void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                                 GetPriceQuoteCallback callback) {
-  if (!IsNetworkSupported(json_rpc_service_->GetChainId())) {
+  if (!IsNetworkSupported(
+          json_rpc_service_->GetChainId(mojom::CoinType::ETH))) {
     std::move(callback).Run(false, nullptr, "UNSUPPORTED_NETWORK");
     return;
   }
@@ -206,7 +207,8 @@ void SwapService::GetPriceQuote(mojom::SwapParamsPtr swap_params,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_.Request(
       "GET",
-      GetPriceQuoteURL(std::move(swap_params), json_rpc_service_->GetChainId()),
+      GetPriceQuoteURL(std::move(swap_params),
+                       json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
       "", "", true, std::move(internal_callback));
 }
 
@@ -232,7 +234,8 @@ void SwapService::OnGetPriceQuote(
 void SwapService::GetTransactionPayload(
     mojom::SwapParamsPtr swap_params,
     GetTransactionPayloadCallback callback) {
-  if (!IsNetworkSupported(json_rpc_service_->GetChainId())) {
+  if (!IsNetworkSupported(
+          json_rpc_service_->GetChainId(mojom::CoinType::ETH))) {
     std::move(callback).Run(false, nullptr, "UNSUPPORTED_NETWORK");
     return;
   }
@@ -241,8 +244,9 @@ void SwapService::GetTransactionPayload(
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   api_request_helper_.Request(
       "GET",
-      GetTransactionPayloadURL(std::move(swap_params),
-                               json_rpc_service_->GetChainId()),
+      GetTransactionPayloadURL(
+          std::move(swap_params),
+          json_rpc_service_->GetChainId(mojom::CoinType::ETH)),
       "", "", true, std::move(internal_callback));
 }
 
