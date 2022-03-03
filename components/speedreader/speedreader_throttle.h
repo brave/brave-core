@@ -29,7 +29,8 @@ class SpeedreaderRewriterService;
 // blink::URLLoaderThrottle)?
 // TODO(iefremov): Check throttles order?
 // Cargoculted from |MimeSniffingThrottle| -- refactored common functionality
-// between SpeedReader urlloader / throttle into components/body_sniffer
+// between SpeedReader and de-amp urlloader / throttle into
+// components/body_sniffer
 class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
  public:
   ~SpeedReaderThrottle() override;

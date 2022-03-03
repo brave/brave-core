@@ -54,6 +54,7 @@ void SpeedReaderThrottle::WillProcessResponse(
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
   VLOG(2) << "Speedreader throttling: " << response_url;
+  *defer = true;
 
   mojo::PendingRemote<network::mojom::URLLoader> new_remote;
   mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver;
@@ -67,8 +68,7 @@ void SpeedReaderThrottle::WillProcessResponse(
                                          task_runner_, rewriter_service_);
   BodySnifferThrottle::InterceptAndStartLoader(
       std::move(source_loader), std::move(source_client_receiver),
-      std::move(new_remote), std::move(new_receiver), speedreader_loader,
-      defer);
+      std::move(new_remote), std::move(new_receiver), speedreader_loader);
 }
 
 }  // namespace speedreader

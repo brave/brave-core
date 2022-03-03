@@ -24,11 +24,7 @@ void BodySnifferThrottle::InterceptAndStartLoader(
         source_client_receiver,
     mojo::PendingRemote<network::mojom::URLLoader> new_remote,
     mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver,
-    BodySnifferURLLoader* loader,
-    bool* defer) {
-  // Pause the response until loader has done its job.
-  *defer = true;
-
+    BodySnifferURLLoader* loader) {
   mojo::ScopedDataPipeConsumerHandle body;
   delegate_->InterceptResponse(std::move(new_remote), std::move(new_receiver),
                                &source_loader, &source_client_receiver, &body);

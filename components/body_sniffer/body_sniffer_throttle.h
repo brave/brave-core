@@ -40,8 +40,7 @@ class BodySnifferThrottle : public blink::URLLoaderThrottle {
           source_client_receiver,
       mojo::PendingRemote<network::mojom::URLLoader> new_remote,
       mojo::PendingReceiver<network::mojom::URLLoaderClient> new_receiver,
-      BodySnifferURLLoader* loader,
-      bool* defer);
+      BodySnifferURLLoader* loader);
 };
 
 }  // namespace body_sniffer
