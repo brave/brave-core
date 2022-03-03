@@ -29,6 +29,8 @@ public final class Domain: NSManagedObject, CRUD {
     @NSManaged public var historyItems: NSSet?
     @NSManaged public var bookmarks: NSSet?
     
+    @NSManaged public var wallet_permittedAccounts: String?
+    
     private var urlComponents: URLComponents? {
         return URLComponents(string: url ?? "")
     }
@@ -129,6 +131,21 @@ public final class Domain: NSManagedObject, CRUD {
     
     public static func clearInMemoryDomains() {
         Domain.deleteAll(predicate: nil, context: .new(inMemory: true))
+    }
+    
+    // MARK: Wallet
+        
+    public class func setBraveWalletDappPermission(forUrl url: URL, account: String, grant: Bool) {
+        // no dapps support in private browsing mode
+        let _context: WriteContext = .new(inMemory: false)
+        setWalletDappPermission(forUrl: url, account: account, grant: grant, context: _context)
+    }
+
+    public func permissionGranted(for account: String) -> Bool {
+        if let permittedAccount = wallet_permittedAccounts {
+            return permittedAccount.components(separatedBy: ",").contains(account)
+        }
+        return false
     }
 }
 
@@ -270,4 +287,36 @@ extension Domain {
         // Not saving here, save happens in at higher level in `perform` method.
         return Domain.getOrCreateInternal(url, context: context, saveStrategy: .delayedPersistentStore)
     }
+    
+    // MARK: Wallet
+    
+    class func setWalletDappPermission(forUrl url: URL, account: String, grant: Bool, context: WriteContext = .new(inMemory: false)) {
+        DataController.perform(context: context) { context in
+            // Not saving here, save happens in `perform` method.
+            let domain = Domain.getOrCreateInternal(url, context: context,
+                                                    saveStrategy: .persistentStore)
+            domain.setWalletDappPermission(account: account, grant: grant, context: context)
+        }
+   }
+
+   private func setWalletDappPermission(account: String, grant: Bool,
+                                        context: NSManagedObjectContext) {
+       if grant {
+           if let permittedAccounts = wallet_permittedAccounts {
+               // make sure stored `wallet_permittedAccounts` does not contain this `account`
+               // make sure this `account` is 42-char long and does not contain any comma 
+               if !permittedAccounts.contains(account), account.count == 42, !account.contains(",") {
+                   wallet_permittedAccounts = [permittedAccounts, account].joined(separator: ",")
+               }
+           } else {
+               wallet_permittedAccounts = account
+           }
+       } else {
+           if var accounts = wallet_permittedAccounts?.components(separatedBy: ","),
+              let index = accounts.firstIndex(of: account) {
+               accounts.remove(at: index)
+               wallet_permittedAccounts = accounts.joined(separator: ",")
+           }
+       }
+   }
 }

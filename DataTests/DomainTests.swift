@@ -17,6 +17,11 @@ class DomainTests: CoreDataTestCase {
     let url2 = URL(string: "http://brave.com")!
     let url2HTTPS = URL(string: "https://brave.com")!
     
+    let compound = URL(string: "https://compound.finance")!
+    let polygon = URL(string: "https://wallet.polygon.technology")!
+    let walletAccount = "0x4D60d71F411AB671f614eD0ec5B71bEedB46287d"
+    let walletAccount2 = "0x4d60d71f411ab671f614ed0ec5b71beedb46287d"
+    
     private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
         return NSEntityDescription.entity(forEntityName: String(describing: Domain.self), in: context)!
     }
@@ -113,5 +118,28 @@ class DomainTests: CoreDataTestCase {
         domain.managedObjectContext?.refreshAllObjects()
         XCTAssertTrue(domain.isShieldExpected(BraveShield.SafeBrowsing, considerAllShieldsOption: true))
         XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
+    }
+    
+    func testWalletDappPermission() {
+        let compondDomain = Domain.getOrCreate(forUrl: compound, persistent: true)
+        let polygonDomain = Domain.getOrCreate(forUrl: polygon, persistent: true)
+
+        backgroundSaveAndWaitForExpectation {
+            Domain.setBraveWalletDappPermission(forUrl: compound, account: walletAccount, grant: true)
+        }
+
+        XCTAssertTrue(compondDomain.permissionGranted(for: walletAccount))
+
+        backgroundSaveAndWaitForExpectation {
+            Domain.setBraveWalletDappPermission(forUrl: compound, account: walletAccount2, grant: true)
+        }
+        XCTAssertTrue(compondDomain.permissionGranted(for: walletAccount2))
+
+        backgroundSaveAndWaitForExpectation {
+            Domain.setBraveWalletDappPermission(forUrl: compound, account: walletAccount, grant: false)
+        }
+        XCTAssertFalse(compondDomain.permissionGranted(for: walletAccount))
+
+        XCTAssertNil(polygonDomain.wallet_permittedAccounts)
     }
 }

@@ -2899,6 +2899,7 @@
 		7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletArrayExtensionTests.swift; sourceTree = "<group>"; };
 		7DCA34D327555E96001B0555 /* CryptoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoStore.swift; sourceTree = "<group>"; };
 		7DE5B6E327BEBA86000DA8E4 /* MockEthTxManagerProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockEthTxManagerProxy.swift; sourceTree = "<group>"; };
+		7DE5B73227C994B7000DA8E4 /* Model15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model15.xcdatamodel; sourceTree = "<group>"; };
 		7DF9113C275AC86100EF0D8B /* WalletLoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletLoadingButton.swift; sourceTree = "<group>"; };
 		7DF911BF276A8D1600EF0D8B /* SwapTokenStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenStoreTests.swift; sourceTree = "<group>"; };
 		7DF911DE27726E5E00EF0D8B /* BuyTokenStoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenStoreTest.swift; sourceTree = "<group>"; };
@@ -15237,6 +15238,7 @@
 		2F29FB7E267BE06100B0AD6A /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				7DE5B73227C994B7000DA8E4 /* Model15.xcdatamodel */,
 				CAC5341727A83A1B00013056 /* Model14.xcdatamodel */,
 				2F84BCF8267BE0A100850801 /* Model13.xcdatamodel */,
 				2F29FB7F267BE06100B0AD6A /* Model7.xcdatamodel */,
@@ -15252,7 +15254,7 @@
 				2F29FB89267BE06100B0AD6A /* Model.xcdatamodel */,
 				2F29FB8A267BE06100B0AD6A /* Model9.xcdatamodel */,
 			);
-			currentVersion = CAC5341727A83A1B00013056 /* Model14.xcdatamodel */;
+			currentVersion = 7DE5B73227C994B7000DA8E4 /* Model15.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
