@@ -27,5 +27,5 @@ export const DropDown = styled.div`
   position: absolute;
   top: 30px;
   left: 0px;
-  z-index: 10;
+  z-index: 12;
  `
