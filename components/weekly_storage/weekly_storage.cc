@@ -5,6 +5,7 @@
 
 #include "brave/components/weekly_storage/weekly_storage.h"
 
+#include <algorithm>
 #include <numeric>
 #include <utility>
 
@@ -42,6 +43,19 @@ WeeklyStorage::~WeeklyStorage() = default;
 void WeeklyStorage::AddDelta(uint64_t delta) {
   FilterToWeek();
   daily_values_.front().value += delta;
+  Save();
+}
+
+void WeeklyStorage::SubDelta(uint64_t delta) {
+  FilterToWeek();
+  for (DailyValue& daily_value : daily_values_) {
+    if (delta == 0) {
+      break;
+    }
+    uint64_t day_delta = std::min(daily_value.value, delta);
+    daily_value.value -= day_delta;
+    delta -= day_delta;
+  }
   Save();
 }
 

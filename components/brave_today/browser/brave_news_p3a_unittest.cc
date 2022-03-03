@@ -167,5 +167,54 @@ TEST_F(BraveNewsP3ATest, TestWeeklyDisplayAdsViewedCount) {
                                       2);
 }
 
+TEST_F(BraveNewsP3ATest, TestWeeklyAddedDirectFeedsCount) {
+  PrefService* prefs = GetPrefs();
+  RecordAtStart(prefs);
+  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 1);
+  histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 0,
+                                      1);
+
+  RecordWeeklyAddedDirectFeedsCount(prefs, 1);
+  RecordWeeklyAddedDirectFeedsCount(prefs, 1);
+
+  task_environment_.AdvanceClock(base::Days(2));
+  RecordWeeklyAddedDirectFeedsCount(prefs, 0);
+  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 4);
+  histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 2,
+                                      2);
+
+  RecordWeeklyAddedDirectFeedsCount(prefs, 1);
+  RecordWeeklyAddedDirectFeedsCount(prefs, 1);
+  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 6);
+  histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 4,
+                                      1);
+  RecordWeeklyAddedDirectFeedsCount(prefs, -1);
+  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 7);
+  histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 3,
+                                      2);
+
+  task_environment_.AdvanceClock(base::Days(6));
+  RecordWeeklyAddedDirectFeedsCount(prefs, 0);
+  histogram_tester_.ExpectTotalCount(kWeeklyAddedDirectFeedsHistogramName, 8);
+  histogram_tester_.ExpectBucketCount(kWeeklyAddedDirectFeedsHistogramName, 1,
+                                      2);
+}
+
+TEST_F(BraveNewsP3ATest, TestDirectFeedsTotal) {
+  PrefService* prefs = GetPrefs();
+  RecordAtStart(prefs);
+  histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 1);
+  histogram_tester_.ExpectBucketCount(kDirectFeedsTotalHistogramName, 0, 1);
+
+  DictionaryPrefUpdate update1(prefs, prefs::kBraveTodayDirectFeeds);
+  update1->SetPath("id1", base::Value(base::Value::Type::DICTIONARY));
+  DictionaryPrefUpdate update2(prefs, prefs::kBraveTodayDirectFeeds);
+  update2->SetPath("id2", base::Value(base::Value::Type::DICTIONARY));
+
+  RecordDirectFeedsTotal(prefs);
+  histogram_tester_.ExpectTotalCount(kDirectFeedsTotalHistogramName, 2);
+  histogram_tester_.ExpectBucketCount(kDirectFeedsTotalHistogramName, 2, 1);
+}
+
 }  // namespace p3a
 }  // namespace brave_news
