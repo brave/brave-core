@@ -54,7 +54,7 @@ export function ExternalWalletView (props: Props) {
         <style.verifyWallet>
           <button className='connect' onClick={actionHandler('verify')} >
             <style.buttonText>
-              {getString('walletVerify')}
+              {getString('walletUnverified')}
             </style.buttonText>
             <style.buttonIcons>
               <ArrowCircleIcon />
@@ -71,7 +71,7 @@ export function ExternalWalletView (props: Props) {
             {
               getString(externalWallet.status === 'disconnected'
                 ? 'walletDisconnected'
-                : 'walletMyWallet')
+                : 'walletVerified')
             }
           </style.buttonText>
           <style.buttonIcons>

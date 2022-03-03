@@ -13,15 +13,14 @@ export const localeStrings = {
   walletEstimatedEarnings: 'Estimated Earnings',
   walletLogIntoYourAccount: 'Log into your $1 account',
   walletMonthlyTips: 'Monthly Tips',
-  walletMyWallet: 'Verified',
   walletOneTimeTips: 'One-Time Tips',
   walletPending: 'Pending',
   walletPendingContributions: 'Pending contributions',
   walletRewardsFromAds: 'Rewards from Ads',
   walletRewardsSummary: 'Rewards Summary',
   walletSeeAll: 'See all',
+  walletUnverified: 'Unverified',
   walletViewStatement: 'View statement',
   walletVerified: 'Verified',
-  walletVerify: 'Verify',
   walletYourBalance: 'Your Balance'
 }

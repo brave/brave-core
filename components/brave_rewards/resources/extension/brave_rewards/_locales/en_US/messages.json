@@ -235,10 +235,6 @@
     "message": "Monthly Tips",
     "description": ""
   },
-  "walletMyWallet": {
-    "message": "Verified",
-    "description": ""
-  },
   "walletOneTimeTips": {
     "message": "One-Time Tips",
     "description": ""
@@ -255,12 +251,12 @@
     "message": "Rewards Summary",
     "description": ""
   },
-  "walletVerified": {
-    "message": "Verified",
+  "walletUnverified": {
+    "message": "Unverified",
     "description": ""
   },
-  "walletVerify": {
-    "message": "Verify",
+  "walletVerified": {
+    "message": "Verified",
     "description": ""
   },
   "walletYourBalance": {
