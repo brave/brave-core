@@ -2622,8 +2622,7 @@ extension BrowserViewController: WKUIDelegate {
                     let shareAction = UIAction(title: Strings.shareLinkActionTitle,
                                                image: UIImage(systemName: "square.and.arrow.up")) { _ in
                         let touchPoint = braveWebView.lastHitPoint
-                        let touchSize = CGSize(width: 0, height: 16)
-                        let touchRect = CGRect(origin: touchPoint, size: touchSize)
+                        let touchRect = CGRect(origin: touchPoint, size: .zero)
 
                         // TODO: Find a way to add fixes #3323 and #2961 here:
                         // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
@@ -2636,7 +2635,7 @@ extension BrowserViewController: WKUIDelegate {
                         // Some possibile fixes include:
                         // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
                         // - Add custom "Save to file" functionality (needs investigation).
-                        self.presentActivityViewController(url, sourceView: self.view,
+                        self.presentActivityViewController(url, sourceView: braveWebView,
                                                            sourceRect: touchRect,
                                                            arrowDirection: .any)
                     }
