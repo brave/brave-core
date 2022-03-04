@@ -23,8 +23,12 @@ SolanaTxManager::SolanaTxManager(TxService* tx_service,
                 json_rpc_service,
                 keyring_service,
                 prefs) {}
+  GetSolanaBlockTracker()->AddObserver(this);
+}
 
-SolanaTxManager::~SolanaTxManager() = default;
+SolanaTxManager::~SolanaTxManager() {
+  GetSolanaBlockTracker()->RemoveObserver(this);
+}
 
 void SolanaTxManager::AddUnapprovedTransaction(
     mojom::TxDataUnionPtr tx_data_union,
@@ -71,8 +75,16 @@ void SolanaTxManager::Reset() {
   // TODO(jocelyn): reset members as necessary.
 }
 
+void SolanaTxManager::OnLatestBlockhashUpdated(const std::string& blockhash) {
+  UpdatePendingTransactions();
+}
+
 void SolanaTxManager::UpdatePendingTransactions() {
   NOTIMPLEMENTED();
+}
+
+SolanaBlockTracker* SolanaTxManager::GetSolanaBlockTracker() {
+  return static_cast<SolanaBlockTracker*>(block_tracker_.get());
 }
 
 }  // namespace brave_wallet

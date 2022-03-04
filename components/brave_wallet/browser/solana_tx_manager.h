@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "brave/components/brave_wallet/browser/solana_block_tracker.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 
 class PrefService;
@@ -18,7 +19,7 @@ class TxService;
 class JsonRpcService;
 class KeyringService;
 
-class SolanaTxManager : public TxManager {
+class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
  public:
   SolanaTxManager(TxService* tx_service,
                   JsonRpcService* json_rpc_service,
@@ -52,6 +53,11 @@ class SolanaTxManager : public TxManager {
  private:
   // TxManager
   void UpdatePendingTransactions() override;
+
+  // SolanaBlockTracker::Observer
+  void OnLatestBlockhashUpdated(const std::string& blockhash) override;
+
+  SolanaBlockTracker* GetSolanaBlockTracker();
 };
 
 }  // namespace brave_wallet
