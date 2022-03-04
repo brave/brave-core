@@ -156,7 +156,8 @@ extension SettingsStore {
   static var previewStore: SettingsStore {
     .init(
       keyringService: MockKeyringService(),
-      walletService: MockBraveWalletService()
+      walletService: MockBraveWalletService(),
+      txService: MockTxService()
     )
   }
 }

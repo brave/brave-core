@@ -16,13 +16,16 @@ public class SettingsStore: ObservableObject {
   
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
+  private let txService: BraveWalletTxService
   
   public init(
     keyringService: BraveWalletKeyringService,
-    walletService: BraveWalletBraveWalletService
+    walletService: BraveWalletBraveWalletService,
+    txService: BraveWalletTxService
   ) {
     self.keyringService = keyringService
     self.walletService = walletService
+    self.txService = txService
     
     self.keyringService.autoLockMinutes { minutes in
       self.autoLockInterval = .init(value: minutes)
@@ -32,6 +35,10 @@ public class SettingsStore: ObservableObject {
   func reset() {
     walletService.reset()
     KeyringStore.resetKeychainStoredPassword()
+  }
+  
+  func resetTransaction() {
+    txService.reset()
   }
   
   public func isDefaultKeyringCreated(_ completion: @escaping (Bool) -> Void) {

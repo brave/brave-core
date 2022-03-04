@@ -11,7 +11,8 @@ public struct WalletSettingsView: View {
   @ObservedObject var settingsStore: SettingsStore
   @ObservedObject var networkStore: NetworkStore
   
-  @State private var isShowingResetAlert = false
+  @State private var isShowingResetWalletAlert = false
+  @State private var isShowingResetTransactionAlert = false
   
   public init(
     settingsStore: SettingsStore,
@@ -60,8 +61,18 @@ public struct WalletSettingsView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
+      Section(
+        footer: Text(Strings.Wallet.settingsResetTransactionFooter)
+          .foregroundColor(Color(.secondaryBraveLabel))
+      ) {
+        Button(action: { isShowingResetTransactionAlert = true }) {
+          Text(Strings.Wallet.settingsResetTransactionTitle)
+            .foregroundColor(Color(.braveBlurpleTint))
+        }
+      }
+      .listRowBackground(Color(.secondaryBraveGroupedBackground))
       Section {
-        Button(action: { isShowingResetAlert = true }) {
+        Button(action: { isShowingResetWalletAlert = true }) {
           Text(Strings.Wallet.settingsResetButtonTitle)
             .foregroundColor(.red)
         }
@@ -72,16 +83,32 @@ public struct WalletSettingsView: View {
     .listStyle(InsetGroupedListStyle())
     .navigationTitle(Strings.Wallet.braveWallet)
     .navigationBarTitleDisplayMode(.inline)
-    .alert(isPresented: $isShowingResetAlert) {
-      Alert(
-        title: Text(Strings.Wallet.settingsResetWalletAlertTitle),
-        message: Text(Strings.Wallet.settingsResetWalletAlertMessage),
-        primaryButton: .destructive(Text(Strings.Wallet.settingsResetWalletAlertButtonTitle), action: {
-          settingsStore.reset()
-        }),
-        secondaryButton: .cancel(Text(Strings.no))
-      )
-    }
+    .background(
+      Color.clear
+        .alert(isPresented: $isShowingResetTransactionAlert) {
+          Alert(
+            title: Text(Strings.Wallet.settingsResetTransactionAlertTitle),
+            message: Text(Strings.Wallet.settingsResetTransactionAlertMessage),
+            primaryButton: .destructive(Text(Strings.Wallet.settingsResetTransactionAlertButtonTitle), action: {
+              settingsStore.resetTransaction()
+            }),
+            secondaryButton: .cancel(Text(Strings.cancelButtonTitle))
+          )
+        }
+    )
+    .background(
+      Color.clear
+        .alert(isPresented: $isShowingResetWalletAlert) {
+          Alert(
+            title: Text(Strings.Wallet.settingsResetWalletAlertTitle),
+            message: Text(Strings.Wallet.settingsResetWalletAlertMessage),
+            primaryButton: .destructive(Text(Strings.Wallet.settingsResetWalletAlertButtonTitle), action: {
+              settingsStore.reset()
+            }),
+            secondaryButton: .cancel(Text(Strings.no))
+          )
+        }
+    )
   }
 }
 
