@@ -362,7 +362,7 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
         txService.approveTransaction(CoinType.ETH, mTxInfo.id, (success, error, errorMessage) -> {
             assert success;
             Utils.warnWhenError(ApproveTxBottomSheetDialogFragment.TAG_FRAGMENT,
-                    "approveTransaction", error, errorMessage);
+                    "approveTransaction", error.getProviderError(), errorMessage);
             if (!success) {
                 return;
             }
