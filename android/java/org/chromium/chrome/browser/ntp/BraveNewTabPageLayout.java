@@ -661,6 +661,20 @@ public class BraveNewTabPageLayout
                     }
                 }
                 refreshFeed();
+            } else if (TextUtils.equals(key, BravePreferenceKeys.BRAVE_NEWS_PREF_TURN_ON_NEWS)) {
+                mIsNewsOn = BravePrefServiceBridge.getInstance().getNewsOptIn();
+                SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+                mIsShowOptin =
+                        sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
+                mIsShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
+                if ((!mIsNewsOn && mIsShowOptin) || (mIsNewsOn && !mIsShowOptin)) {
+                    SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+                    sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, true);
+                    sharedPreferencesEditor.apply();
+                    mOptinLayout.setVisibility(View.VISIBLE);
+                    mRecyclerView.setVisibility(View.GONE);
+                    initNews();
+                }
             }
         };
     }
@@ -880,12 +894,7 @@ public class BraveNewTabPageLayout
     }
 
     private void refreshFeed() {
-        mAdapterFeedCard = new BraveNewsAdapterFeedCard(
-                mActivity, Glide.with(mActivity), mNewsItemsFeedCard, mBraveNewsController);
-        mRecyclerView.setAdapter(mAdapterFeedCard);
         mIsShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
-        mImageCreditLayout.setVisibility(View.VISIBLE);
-        mImageCreditLayout.setAlpha(1.0f);
         if (!mIsShowNewsOn) {
             correctPosition(false);
             if (mRecyclerView != null) {
@@ -897,13 +906,21 @@ public class BraveNewTabPageLayout
             mImageCreditLayout.setAlpha(1.0f);
             return;
         } else {
+            mAdapterFeedCard = new BraveNewsAdapterFeedCard(
+                    mActivity, Glide.with(mActivity), mNewsItemsFeedCard, mBraveNewsController);
+            mRecyclerView.setAdapter(mAdapterFeedCard);
+
+            mImageCreditLayout.setVisibility(View.VISIBLE);
+            mImageCreditLayout.setAlpha(1.0f);
             SharedPreferencesManager.getInstance().removeObserver(mPreferenceObserver);
             initPreferenceObserver();
             if (mPreferenceObserver != null) {
                 SharedPreferencesManager.getInstance().addObserver(mPreferenceObserver);
             }
         }
-        getFeed();
+        if (mIsShowNewsOn && BravePrefServiceBridge.getInstance().getNewsOptIn()) {
+            getFeed();
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -973,10 +990,13 @@ public class BraveNewTabPageLayout
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
 
         mIsNewsOn = BravePrefServiceBridge.getInstance().getNewsOptIn();
-        mIsShowOptin = sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, true);
+        mIsShowOptin = sharedPreferences.getBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
         mIsShowNewsOn = BravePrefServiceBridge.getInstance().getShowNews();
 
-        if ((!mIsNewsOn && mIsShowOptin)) {
+        if ((!mIsNewsOn && mIsShowOptin) || (mIsNewsOn && mIsShowOptin)) {
+            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+            sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, true);
+            sharedPreferencesEditor.apply();
             mOptinLayout.setVisibility(View.VISIBLE);
         } else if (mIsShowNewsOn && mIsNewsOn) {
             if (mOptinLayout != null) {
@@ -1375,7 +1395,6 @@ public class BraveNewTabPageLayout
                 }
             });
         }
-
         if (mOptinLayout != null) {
             mOptinClose.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1393,10 +1412,7 @@ public class BraveNewTabPageLayout
             mOptinLearnMore.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent browserIntent =
-                            new Intent(Intent.ACTION_VIEW, Uri.parse(BRAVE_LEARN_MORE_URL));
-                    browserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    mActivity.startActivity(browserIntent);
+                    TabUtils.openUrlInSameTab(BRAVE_LEARN_MORE_URL);
                 }
             });
 
