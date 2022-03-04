@@ -60,6 +60,8 @@ std::unique_ptr<TxMeta> EthTxStateManager::ValueToTxMeta(
     return nullptr;
   absl::optional<TransactionReceipt> tx_receipt_from_value =
       ValueToTransactionReceipt(*tx_receipt);
+  if (!tx_receipt_from_value)
+    return nullptr;
   meta->set_tx_receipt(*tx_receipt_from_value);
 
   const base::Value* tx = value.FindKey("tx");
