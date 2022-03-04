@@ -8,22 +8,19 @@
 #include <string>
 
 #include "base/bind.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/run_loop.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/first_run/first_run.h"
 #include "chrome/browser/first_run/first_run_dialog.h"
-#include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/platform_util.h"
 #include "chrome/browser/shell_integration.h"
 #include "chrome/browser/ui/browser_dialogs.h"
 #include "chrome/browser/ui/ui_features.h"
-#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/common/url_constants.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
-#include "components/crash/core/app/breakpad_linux.h"
-#include "components/crash/core/app/crashpad.h"
 #include "components/strings/grit/components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -34,10 +31,14 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/window/dialog_delegate.h"
 
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/brave_shell_integration.h"
+#endif
+
 namespace first_run {
 
 void ShowFirstRunDialog(Profile* profile) {
-#if defined(OS_MAC)
+#if BUILDFLAG(IS_MAC)
   if (base::FeatureList::IsEnabled(features::kViewsFirstRunDialog))
     ShowFirstRunDialogViews(profile);
   else
@@ -72,7 +73,7 @@ FirstRunDialog::FirstRunDialog(base::RepeatingClosure learn_more_callback,
     : quit_runloop_(quit_runloop) {
   ALLOW_UNUSED_LOCAL(report_crashes_);
 
-  SetTitle(l10n_util::GetStringUTF16(IDS_FIRST_RUN_DIALOG_WINDOW_TITLE));
+  SetTitle(l10n_util::GetStringUTF16(IDS_FIRSTRUN_DIALOG_WINDOW_TITLE_BRAVE));
   SetButtons(ui::DIALOG_BUTTON_OK);
   SetExtraView(
       std::make_unique<views::Link>(l10n_util::GetStringUTF16(IDS_LEARN_MORE)))
@@ -117,8 +118,17 @@ void FirstRunDialog::Done() {
 bool FirstRunDialog::Accept() {
   GetWidget()->Hide();
 
-  if (make_default_->GetChecked())
+  if (make_default_->GetChecked()) {
+    // shell_integration::SetAsDefaultBrowser() doesn't work on Windows 8+.
+    // Upstream will use DefaultBrowserWorker when it's available on all OSs.
+    // See the comments of shell_integration::SetAsDefaultBrowser().
+#if BUILDFLAG(IS_WIN)
+    base::MakeRefCounted<shell_integration::BraveDefaultBrowserWorker>()
+        ->StartSetAsDefault(base::NullCallback());
+#else
     shell_integration::SetAsDefaultBrowser();
+#endif
+  }
 
   Done();
   return true;
