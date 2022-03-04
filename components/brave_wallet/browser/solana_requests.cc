@@ -39,6 +39,26 @@ std::string getLatestBlockhash() {
   return GetJsonRpcNoParams("getLatestBlockhash");
 }
 
+std::string getSignatureStatuses(
+    const std::vector<std::string>& tx_signatures) {
+  base::Value params(base::Value::Type::LIST);
+  base::Value tx_signatures_value(base::Value::Type::LIST);
+  for (const auto& tx_signature : tx_signatures)
+    tx_signatures_value.Append(tx_signature);
+  params.Append(std::move(tx_signatures_value));
+
+  // Solana node will search its ledger cache for any signatures not found in
+  // the recent status cache. Enable this since we may try to update a pending
+  // transaction sitting for a while.
+  base::Value configuration(base::Value::Type::DICTIONARY);
+  configuration.SetBoolKey("searchTransactionHistory", true);
+  params.Append(std::move(configuration));
+
+  base::Value dictionary =
+      GetJsonRpcDictionary("getSignatureStatuses", &params);
+  return GetJSON(dictionary);
+}
+
 }  // namespace solana
 
 }  // namespace brave_wallet

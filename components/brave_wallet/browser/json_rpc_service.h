@@ -245,6 +245,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
   void GetSolanaLatestBlockhash(GetSolanaLatestBlockhashCallback callback);
+  using GetSolanaSignatureStatusesCallback = base::OnceCallback<void(
+      const std::vector<absl::optional<SolanaSignatureStatus>>&
+          signature_statuses,
+      mojom::SolanaProviderError error,
+      const std::string& error_message)>;
+  void GetSolanaSignatureStatuses(const std::vector<std::string>& tx_signatures,
+                                  GetSolanaSignatureStatusesCallback callback);
 
  private:
   void FireNetworkChanged(mojom::CoinType coin);
@@ -400,18 +407,17 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
+  // Solana
   void OnGetSolanaBalance(
       GetSolanaBalanceCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
-
   void OnGetSPLTokenAccountBalance(
       GetSPLTokenAccountBalanceCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
-
   void OnSendSolanaTransaction(
       SendSolanaTransactionCallback callback,
       const int status,
@@ -419,6 +425,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const base::flat_map<std::string, std::string>& headers);
   void OnGetSolanaLatestBlockhash(
       GetSolanaLatestBlockhashCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSolanaSignatureStatuses(
+      GetSolanaSignatureStatusesCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
