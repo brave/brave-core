@@ -324,14 +324,14 @@
                     android:textSize="20sp"/>
 
                 <LinearLayout
-                    android:id="@+id/to_send_section"
+                    android:id="@+id/send_to_section"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/to_send_value_text"
+                        android:id="@+id/send_to_addr_text"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:layout_width="0dp"
