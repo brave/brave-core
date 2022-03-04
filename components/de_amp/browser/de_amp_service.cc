@@ -34,7 +34,7 @@ DeAmpService::~DeAmpService() {}
 
 // static
 void DeAmpService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kDeAmpPrefEnabled, false);
+  registry->RegisterBooleanPref(kDeAmpPrefEnabled, true);
 }
 
 void DeAmpService::ToggleDeAmp(const bool on) {
