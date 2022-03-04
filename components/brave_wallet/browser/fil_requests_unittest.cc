@@ -18,4 +18,10 @@ TEST(FilRequestUnitTest, fil_getBalance) {
       R"({"id":1,"jsonrpc":"2.0","method":"Filecoin.WalletBalance","params":["t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"]})");  // NOLINT
 }
 
+TEST(FilRequestUnitTest, fil_getTransactionCount) {
+  ASSERT_EQ(
+      fil_getTransactionCount("t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"),
+      R"({"id":1,"jsonrpc":"2.0","method":"Filecoin.MpoolGetNonce","params":["t1jdlfl73voaiblrvn2yfivvn5ifucwwv5f26nfza"]})");  // NOLINT
+}
+
 }  // namespace brave_wallet

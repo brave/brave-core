@@ -132,7 +132,7 @@ bool EthPendingTxTracker::IsNonceTaken(const EthTxMeta& meta) {
 bool EthPendingTxTracker::ShouldTxDropped(const EthTxMeta& meta) {
   const std::string hex_address = meta.from();
   if (network_nonce_map_.find(hex_address) == network_nonce_map_.end()) {
-    json_rpc_service_->GetTransactionCount(
+    json_rpc_service_->GetEthTransactionCount(
         hex_address,
         base::BindOnce(&EthPendingTxTracker::OnGetNetworkNonce,
                        weak_factory_.GetWeakPtr(), std::move(hex_address)));

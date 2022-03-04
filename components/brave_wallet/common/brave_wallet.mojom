@@ -71,6 +71,18 @@ enum ProviderError {
   kUnknown = -1                 // Unknown error
 };
 
+enum FilecoinProviderError {
+  kSuccess = 0,  // No error
+  kActorNotFound = 1, // Actor not found for given address
+  // Pre-defined error codes specified in
+  // https://www.jsonrpc.org/specification#error_object
+  kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
+  kInvalidRequest = JsonRpcError.kInvalidRequest,  // JSON is not a valid request object
+  kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
+  kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
+  kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
+};
+
 enum SolanaProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
 

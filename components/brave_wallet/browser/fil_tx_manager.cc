@@ -9,6 +9,7 @@
 
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/browser/fil_block_tracker.h"
+#include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/fil_tx_state_manager.h"
 
 namespace brave_wallet {
@@ -22,7 +23,11 @@ FilTxManager::FilTxManager(TxService* tx_service,
                 tx_service,
                 json_rpc_service,
                 keyring_service,
-                prefs) {}
+                prefs),
+      nonce_tracker_(std::make_unique<FilNonceTracker>(GetFilTxStateManager(),
+                                                       json_rpc_service)) {}
+
+FilTxManager::~FilTxManager() = default;
 
 void FilTxManager::AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                             const std::string& from,
