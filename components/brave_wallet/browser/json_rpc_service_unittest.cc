@@ -127,6 +127,33 @@ void OnBoolResponse(bool* callback_called,
   EXPECT_EQ(expected_error_message, error_message);
 }
 
+void OnEthUint256Response(bool* callback_called,
+                          brave_wallet::mojom::ProviderError expected_error,
+                          const std::string& expected_error_message,
+                          uint256_t expected_response,
+                          uint256_t response,
+                          brave_wallet::mojom::ProviderError error,
+                          const std::string& error_message) {
+  *callback_called = true;
+  EXPECT_EQ(expected_response, response);
+  EXPECT_EQ(expected_error, error);
+  EXPECT_EQ(expected_error_message, error_message);
+}
+
+void OnFilUint256Response(
+    bool* callback_called,
+    brave_wallet::mojom::FilecoinProviderError expected_error,
+    const std::string& expected_error_message,
+    uint256_t expected_response,
+    uint256_t response,
+    brave_wallet::mojom::FilecoinProviderError error,
+    const std::string& error_message) {
+  *callback_called = true;
+  EXPECT_EQ(expected_response, response);
+  EXPECT_EQ(expected_error, error);
+  EXPECT_EQ(expected_error_message, error_message);
+}
+
 void OnStringsResponse(bool* callback_called,
                        brave_wallet::mojom::ProviderError expected_error,
                        const std::string& expected_error_message,
@@ -399,6 +426,22 @@ class JsonRpcServiceUnitTest : public testing::Test {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), "",
                                           net::HTTP_REQUEST_TIMEOUT);
+        }));
+  }
+
+  void SetFilecoinActorErrorJsonErrorResponse() {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          url_loader_factory_.AddResponse(request.url.spec(),
+                                          R"({
+            "jsonrpc":"2.0",
+            "id":1,
+            "error": {
+              "code": 1,
+              "message": "resolution lookup failed"
+            }
+          })");
         }));
   }
 
@@ -2555,6 +2598,92 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaFeeForMessage) {
   TestGetSolanaFeeForMessage(
       base64_encoded_string, 0, mojom::SolanaProviderError::kInternalError,
       l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetEthTransactionCount) {
+  bool callback_called = false;
+  SetInterceptor("eth_getTransactionCount", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0x1\"}");
+
+  json_rpc_service_->GetEthTransactionCount(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnEthUint256Response, &callback_called,
+                     mojom::ProviderError::kSuccess, "", 1));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetHTTPRequestTimeoutInterceptor();
+  json_rpc_service_->GetEthTransactionCount(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnEthUint256Response, &callback_called,
+                     mojom::ProviderError::kInternalError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), 0));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInvalidJsonInterceptor();
+  json_rpc_service_->GetEthTransactionCount(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnEthUint256Response, &callback_called,
+                     mojom::ProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), 0));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetLimitExceededJsonErrorResponse();
+  json_rpc_service_->GetEthTransactionCount(
+      "0x4e02f254184E904300e0775E4b8eeCB1",
+      base::BindOnce(&OnEthUint256Response, &callback_called,
+                     mojom::ProviderError::kLimitExceeded,
+                     "Request exceeds defined limit", 0));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
+  bool callback_called = false;
+  SetInterceptor("Filecoin.MpoolGetNonce", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1}");
+
+  json_rpc_service_->GetFilTransactionCount(
+      "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+      base::BindOnce(&OnFilUint256Response, &callback_called,
+                     mojom::FilecoinProviderError::kSuccess, "", 1));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetHTTPRequestTimeoutInterceptor();
+  json_rpc_service_->GetFilTransactionCount(
+      "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+      base::BindOnce(&OnFilUint256Response, &callback_called,
+                     mojom::FilecoinProviderError::kInternalError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), 0));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetInvalidJsonInterceptor();
+  json_rpc_service_->GetFilTransactionCount(
+      "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+      base::BindOnce(&OnFilUint256Response, &callback_called,
+                     mojom::FilecoinProviderError::kParsingError,
+                     l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), 0));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
+
+  callback_called = false;
+  SetFilecoinActorErrorJsonErrorResponse();
+  json_rpc_service_->GetFilTransactionCount(
+      "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
+      base::BindOnce(&OnFilUint256Response, &callback_called,
+                     mojom::FilecoinProviderError::kActorNotFound,
+                     "resolution lookup failed", 0));
+  base::RunLoop().RunUntilIdle();
+  EXPECT_TRUE(callback_called);
 }
 
 }  // namespace brave_wallet
