@@ -62,6 +62,8 @@ static_library("browser") {
     "fil_response_parser.h",
     "fil_tx_manager.cc",
     "fil_tx_manager.h",
+    "fil_tx_meta.cc",
+    "fil_tx_meta.h",
     "fil_tx_state_manager.cc",
     "fil_tx_state_manager.h",
     "json_rpc_requests_helper.cc",

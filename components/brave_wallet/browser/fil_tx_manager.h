@@ -9,6 +9,9 @@
 #include <string>
 
 #include "brave/components/brave_wallet/browser/tx_manager.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 
 class PrefService;
 
