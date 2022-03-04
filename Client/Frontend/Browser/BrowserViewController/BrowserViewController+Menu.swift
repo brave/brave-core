@@ -143,9 +143,13 @@ extension BrowserViewController {
             MenuItemButton(icon: #imageLiteral(resourceName: "menu-settings").template, title: Strings.settingsMenuItem) { [unowned self, unowned menuController] in
                 var settingsStore: SettingsStore?
                 if let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
-                   let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing) {
-                    settingsStore = SettingsStore(keyringService: keyringService,
-                                                  walletService: walletService)
+                   let walletService = BraveWallet.ServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing),
+                   let txService = BraveWallet.TxServiceFactory.get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing) {
+                    settingsStore = SettingsStore(
+                        keyringService: keyringService,
+                        walletService: walletService,
+                        txService: txService
+                    )
                 }
                 let networkStore = BraveWallet.JsonRpcServiceFactory
                     .get(privateMode: PrivateBrowsingManager.shared.isPrivateBrowsing)

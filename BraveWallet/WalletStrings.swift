@@ -1814,5 +1814,40 @@ extension Strings {
       value: "For now, no additional action is required. Just wait for the unconfirmed transactions to clear.",
       comment: "Additional information, when users have previously clear and replace the incomplete transaction(s)"
     )
+    public static let settingsResetTransactionTitle = NSLocalizedString(
+      "wallet.settingsResetTransactionTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Clear transaction & nonce info",
+      comment: "The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
+    )
+    public static let settingsResetTransactionFooter = NSLocalizedString(
+      "wallet.settingsResetTransactionFooter",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Clearing transactions may be useful for developers or when clearing state on a local server",
+      comment: "The footer message below the button to reset transaction"
+    )
+    public static let settingsResetTransactionAlertTitle = NSLocalizedString(
+      "wallet.settingsResetTransactionAlertTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Are you sure you want to reset transacton and nonce information?",
+      comment: "The title the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
+    )
+    public static let settingsResetTransactionAlertMessage = NSLocalizedString(
+      "wallet.settingsResetTransactionAlertMessage",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "This option is mostly used by developers running a local test server",
+      comment: "The message the confirmation dialog when resetting transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
+    )
+    public static let settingsResetTransactionAlertButtonTitle = NSLocalizedString(
+      "wallet.settingsResetTransactionAlertButtonTitle",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Reset",
+      comment: "The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
+    )
   }
 }
