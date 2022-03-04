@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -19,6 +20,17 @@ namespace brave_wallet {
 
 bool ParseFilGetBalance(const std::string& json, std::string* balance) {
   return brave_wallet::ParseSingleStringResult(json, balance);
+}
+
+bool ParseFilGetTransactionCount(const std::string& json, uint64_t* count) {
+  base::Value result;
+  if (!ParseResult(json, &result))
+    return false;
+  if (result.is_int() || result.is_double()) {
+    *count = result.GetDouble();
+    return true;
+  }
+  return false;
 }
 
 }  // namespace brave_wallet

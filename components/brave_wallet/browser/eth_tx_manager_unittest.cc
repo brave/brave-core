@@ -200,7 +200,7 @@ class EthTxManagerUnitTest : public testing::Test {
             url_loader_factory_.AddResponse(
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-                "\"1\"}");
+                "\"0x1\"}");
           } else if (*method == "eth_feeHistory") {
             url_loader_factory_.AddResponse(
                 request.url.spec(),
@@ -1021,10 +1021,10 @@ TEST_F(EthTxManagerUnitTest, GetNonceForHardwareTransaction) {
           [&](const absl::optional<std::string>& result) {
             EXPECT_EQ(
                 result,
-                "0xf873808517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a2"
-                "6051f74c88016345785d8a0000b844095ea7b30000000000000000000000"
-                "00bfb30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000"
-                "0000000000000000000000000000003fffffffffffffff8205398080");
+                "0xf873018517fcf1832182960494be862ad9abfe6f22bcb087716c7d89a260"
+                "51f74c88016345785d8a0000b844095ea7b3000000000000000000000000bf"
+                "b30a082f650c2a15d0632f0e87be4f8e64460f000000000000000000000000"
+                "0000000000000000000000003fffffffffffffff8205398080");
             callback_called = true;
           }));
   base::RunLoop().RunUntilIdle();

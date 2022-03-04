@@ -40,7 +40,8 @@ class FilAddress {
                       mojom::FilecoinAddressProtocol protocol,
                       const std::string& network);
 
-  mojom::FilecoinAddressProtocol protocol_;
+  mojom::FilecoinAddressProtocol protocol_ =
+      mojom::FilecoinAddressProtocol::SECP256K1;
   std::string network_ = mojom::kFilecoinTestnet;
   std::vector<uint8_t> bytes_;
 };
