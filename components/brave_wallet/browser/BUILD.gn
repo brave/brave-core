@@ -223,6 +223,8 @@ source_set("transaction") {
     "eip2930_transaction.h",
     "eth_transaction.cc",
     "eth_transaction.h",
+    "fil_transaction.cc",
+    "fil_transaction.h",
     "rlp_decode.cc",
     "rlp_decode.h",
     "rlp_encode.cc",
