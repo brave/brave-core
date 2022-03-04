@@ -16,9 +16,13 @@
     <Preference
         android:fragment="org.chromium.chrome.browser.settings.BraveWalletNetworksPreferenceFragment"
         android:key="pref_brave_wallet_networks"
-        android:order="1"
         android:title="@string/brave_wallet_networks_title"
         android:summary="@string/brave_wallet_networks_summary" />
+
+    <org.chromium.chrome.browser.settings.BraveWalletResetTxHistoryAndNoncePreference
+        android:key="pref_brave_wallet_tx_history_and_nonce_reset"
+        android:title="@string/brave_wallet_clear_tx_and_nonce_setting_title"
+        android:summary="@string/brave_wallet_clear_tx_and_nonce_setting_desc"/>
 
     <org.chromium.chrome.browser.settings.BraveWalletResetPreference
         android:key="pref_brave_wallet_reset"
