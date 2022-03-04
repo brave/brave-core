@@ -201,7 +201,9 @@ class TabLocationView: UIView {
     }()
     
     lazy var separatorLine: UIView = CustomSeparatorView(lineSize: .init(width: 1, height: 26), cornerRadius: 2).then {
+        $0.isUserInteractionEnabled = false
         $0.backgroundColor = .braveSeparator
+        $0.layoutMargins = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: 2)
     }
     
     lazy var tabOptionsStackView = UIStackView()
@@ -222,19 +224,13 @@ class TabLocationView: UIView {
         addGestureRecognizer(longPressRecognizer)
         addGestureRecognizer(tapRecognizer)
         
-        var optionSubviews = [readerModeButton, playlistButton, reloadButton, separatorLine, shieldsButton]
-        separatorLine.isUserInteractionEnabled = false
-        
-        optionSubviews.append(rewardsButton)
-        
-        let buttonContentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        let optionSubviews = [readerModeButton, playlistButton, reloadButton, separatorLine, shieldsButton, rewardsButton]
         optionSubviews.forEach {
-            ($0 as? CustomSeparatorView)?.layoutMargins = UIEdgeInsets(top: 0, left: 2, bottom: 0, right: 2)
-            ($0 as? UIButton)?.contentEdgeInsets = buttonContentEdgeInsets
+            ($0 as? UIButton)?.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
             $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
             $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+            tabOptionsStackView.addArrangedSubview($0)
         }
-        optionSubviews.forEach(tabOptionsStackView.addArrangedSubview)
         
         urlTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
         
@@ -248,7 +244,7 @@ class TabLocationView: UIView {
         contentView.spacing = 10
         contentView.setCustomSpacing(5, after: urlTextField)
         
-        tabOptionsStackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 6)
+        tabOptionsStackView.layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3)
         tabOptionsStackView.isLayoutMarginsRelativeArrangement = true
         addSubview(contentView)
         
