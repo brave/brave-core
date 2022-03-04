@@ -46,9 +46,9 @@ class SidebarBrowserTest : public InProcessBrowserTest,
   void SimulateSidebarItemClickAt(int index) {
     auto* sidebar_container_view =
         static_cast<SidebarContainerView*>(controller()->sidebar());
-    auto* sidebar_control_view = sidebar_container_view->sidebar_control_view_;
-    auto* sidebar_scroll_view = sidebar_control_view->sidebar_items_view_;
-    auto* sidebar_items_contents_view = sidebar_scroll_view->contents_view_;
+    auto sidebar_control_view = sidebar_container_view->sidebar_control_view_;
+    auto sidebar_scroll_view = sidebar_control_view->sidebar_items_view_;
+    auto sidebar_items_contents_view = sidebar_scroll_view->contents_view_;
     DCHECK(sidebar_items_contents_view);
 
     auto* item = sidebar_items_contents_view->children()[index];

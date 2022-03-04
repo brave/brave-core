@@ -16,20 +16,19 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_panel_webview.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/native_web_keyboard_event.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/base/models/menu_model.h"
 #include "ui/base/theme_provider.h"
 #include "ui/events/event_observer.h"
 #include "ui/events/types/event_type.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/border.h"
-#include "ui/views/controls/menu/menu_runner.h"
-#include "ui/views/controls/webview/webview.h"
 #include "ui/views/event_monitor.h"
 #include "ui/views/widget/widget.h"
 #include "url/gurl.h"
@@ -106,7 +105,6 @@ void SidebarContainerView::Init() {
   observed_.Observe(sidebar_model_);
 
   AddChildViews();
-  UpdateChildViewVisibility();
   // Hide by default. Visibility will be controlled by show options later.
   DoHideSidebar(false);
 }
@@ -133,28 +131,30 @@ void SidebarContainerView::UpdateSidebar() {
 void SidebarContainerView::ShowCustomContextMenu(
     const gfx::Point& point,
     std::unique_ptr<ui::MenuModel> menu_model) {
-  // Show context menu at in screen coordinates.
-  gfx::Point screen_point = point;
-  ConvertPointToScreen(sidebar_panel_view_, &screen_point);
-  context_menu_model_ = std::move(menu_model);
-  context_menu_runner_ = std::make_unique<views::MenuRunner>(
-      context_menu_model_.get(),
-      views::MenuRunner::HAS_MNEMONICS | views::MenuRunner::CONTEXT_MENU);
-  const int active_index = sidebar_model_->active_index();
-  if (active_index == -1) {
+  if (!sidebar_panel_webview_->GetVisible()) {
     LOG(ERROR) << __func__
                << " sidebar panel UI is loaded at non sidebar panel!";
     return;
   }
-  context_menu_runner_->RunMenuAt(
-      GetWidget(), nullptr, gfx::Rect(screen_point, gfx::Size()),
-      views::MenuAnchorPosition::kTopLeft, ui::MENU_SOURCE_MOUSE,
-      sidebar_model_->GetWebContentsAt(active_index)->GetContentNativeView());
+
+  sidebar_panel_webview_->ShowCustomContextMenu(point, std::move(menu_model));
 }
 
 void SidebarContainerView::HideCustomContextMenu() {
-  if (context_menu_runner_)
-    context_menu_runner_->Cancel();
+  if (!sidebar_panel_webview_->GetVisible()) {
+    LOG(ERROR) << __func__
+               << " sidebar panel UI is loaded at non sidebar panel!";
+    return;
+  }
+
+  sidebar_panel_webview_->HideCustomContextMenu();
+}
+
+bool SidebarContainerView::HandleKeyboardEvent(
+    content::WebContents* source,
+    const content::NativeWebKeyboardEvent& event) {
+  DCHECK(sidebar_panel_webview_->GetVisible());
+  return sidebar_panel_webview_->TreatUnHandledKeyboardEvent(source, event);
 }
 
 void SidebarContainerView::UpdateBackgroundAndBorder() {
@@ -163,7 +163,7 @@ void SidebarContainerView::UpdateBackgroundAndBorder() {
     // Fill background because panel's color uses alpha value.
     SetBackground(views::CreateSolidBackground(theme_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND)));
-    if (sidebar_panel_view_ && sidebar_panel_view_->GetVisible()) {
+    if (sidebar_panel_webview_ && sidebar_panel_webview_->GetVisible()) {
       SetBorder(views::CreateSolidSidedBorder(
           0, 0, 0, kBorderThickness,
           theme_provider->GetColor(
@@ -178,13 +178,9 @@ void SidebarContainerView::UpdateBackgroundAndBorder() {
 void SidebarContainerView::AddChildViews() {
   sidebar_control_view_ =
       AddChildView(std::make_unique<SidebarControlView>(browser_));
-  sidebar_panel_view_ =
-      AddChildView(std::make_unique<views::WebView>(browser_->profile()));
-  // |sidebar_panel_view_| will be visible when user opens sidebar panel.
-  sidebar_panel_view_->SetVisible(false);
+  sidebar_panel_webview_ =
+      AddChildView(std::make_unique<SidebarPanelWebView>(browser_->profile()));
 }
-
-void SidebarContainerView::UpdateChildViewVisibility() {}
 
 void SidebarContainerView::Layout() {
   if (!initialized_)
@@ -194,8 +190,8 @@ void SidebarContainerView::Layout() {
       sidebar_control_view_->GetPreferredSize().width();
   sidebar_control_view_->SetBounds(0, 0, control_view_preferred_width,
                                    height());
-  if (sidebar_panel_view_->GetVisible()) {
-    sidebar_panel_view_->SetBounds(
+  if (sidebar_panel_webview_->GetVisible()) {
+    sidebar_panel_webview_->SetBounds(
         control_view_preferred_width, 0,
         GetPreferredPanelWidthForCurrentItem(browser_), height());
   }
@@ -208,7 +204,7 @@ gfx::Size SidebarContainerView::CalculatePreferredSize() const {
 
   int preferred_width =
       sidebar_control_view_->GetPreferredSize().width() + GetInsets().width();
-  if (sidebar_panel_view_->GetVisible())
+  if (sidebar_panel_webview_->GetVisible())
     preferred_width += GetPreferredPanelWidthForCurrentItem(browser_);
   // height is determined by parent.
   return {preferred_width, 0};
@@ -221,7 +217,7 @@ void SidebarContainerView::OnThemeChanged() {
 }
 
 bool SidebarContainerView::ShouldShowSidebar() const {
-  return sidebar_panel_view_->GetVisible() ||
+  return sidebar_panel_webview_->GetVisible() ||
          sidebar_control_view_->IsItemReorderingInProgress() ||
          sidebar_control_view_->IsBubbleWidgetVisible();
 }
@@ -264,15 +260,15 @@ void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
 
 void SidebarContainerView::OnActiveIndexChanged(int old_index, int new_index) {
   if (new_index == -1) {
-    sidebar_panel_view_->SetVisible(false);
+    sidebar_panel_webview_->SetVisible(false);
   } else {
     const auto item = sidebar_model_->GetAllSidebarItems()[new_index];
     if (item.open_in_panel) {
-      sidebar_panel_view_->SetWebContents(
+      sidebar_panel_webview_->SetWebContents(
           sidebar_model_->GetWebContentsAt(new_index));
-      sidebar_panel_view_->SetVisible(true);
+      sidebar_panel_webview_->SetVisible(true);
     } else {
-      sidebar_panel_view_->SetVisible(false);
+      sidebar_panel_webview_->SetVisible(false);
     }
   }
   UpdateBackgroundAndBorder();

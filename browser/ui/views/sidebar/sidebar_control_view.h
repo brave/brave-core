@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
@@ -84,10 +85,10 @@ class SidebarControlView : public views::View,
   void UpdateSettingsButtonState();
   void UpdateBackgroundAndBorder();
 
-  BraveBrowser* browser_ = nullptr;
-  SidebarItemsScrollView* sidebar_items_view_ = nullptr;
-  SidebarItemAddButton* sidebar_item_add_view_ = nullptr;
-  SidebarButtonView* sidebar_settings_view_ = nullptr;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<SidebarItemsScrollView> sidebar_items_view_ = nullptr;
+  raw_ptr<SidebarItemAddButton> sidebar_item_add_view_ = nullptr;
+  raw_ptr<SidebarButtonView> sidebar_settings_view_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> context_menu_model_;
   std::unique_ptr<views::MenuRunner> context_menu_runner_;
   base::ScopedObservation<sidebar::SidebarModel,

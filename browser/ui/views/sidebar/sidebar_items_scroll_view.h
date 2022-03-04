@@ -9,6 +9,7 @@
 #include <memory>
 #include <set>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
@@ -115,10 +116,10 @@ class SidebarItemsScrollView : public views::View,
   // Returns true if |position| is in visible contents area.
   bool IsInVisibleContentsViewBounds(const gfx::Point& position) const;
 
-  BraveBrowser* browser_ = nullptr;
-  views::ImageButton* up_arrow_ = nullptr;
-  views::ImageButton* down_arrow_ = nullptr;
-  SidebarItemsContentsView* contents_view_ = nullptr;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<views::ImageButton> up_arrow_ = nullptr;
+  raw_ptr<views::ImageButton> down_arrow_ = nullptr;
+  raw_ptr<SidebarItemsContentsView> contents_view_ = nullptr;
   std::unique_ptr<SidebarItemDragContext> drag_context_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_new_item_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_smooth_;
