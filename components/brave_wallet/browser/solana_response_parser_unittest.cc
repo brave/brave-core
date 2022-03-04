@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/solana_response_parser.h"
+
 #include <string>
 
-#include "brave/components/brave_wallet/browser/solana_response_parser.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
@@ -27,7 +29,6 @@ TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
   EXPECT_TRUE(ParseGetBalance(json, &balance));
   EXPECT_EQ(balance, 0ULL);
 
-  // value should be uint64
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "{\"context\":{\"slot\":1069},\"value\":\"0\"}}";
@@ -35,12 +36,17 @@ TEST(SolanaResponseParserUnitTest, ParseSolanaGetBalance) {
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
-      "{\"context\":{\"slot\":1069},\"value\":513234116063.33}}";
+      "{\"context\":{\"slot\":1069},\"value\":18446744073709551615}}";
   EXPECT_FALSE(ParseGetBalance(json, &balance));
 
   json =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "{\"context\":{\"slot\":1069},\"value\":63.33}}";
+  EXPECT_FALSE(ParseGetBalance(json, &balance));
+
+  json =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+      "{\"context\":{\"slot\":1069},\"value\":-1}}";
   EXPECT_FALSE(ParseGetBalance(json, &balance));
 }
 
@@ -95,6 +101,83 @@ TEST(SolanaResponseParserUnitTest, ParseGetLatestBlockhash) {
   std::string hash;
   EXPECT_TRUE(ParseGetLatestBlockhash(json, &hash));
   EXPECT_EQ(hash, "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N");
+}
+
+TEST(SolanaResponseParserUnitTest, ParseGetSignatureStatuses) {
+  std::string json = R"(
+      {"jsonrpc":2.0, "id":1, "result":
+        {
+          "context": {"slot": 82},
+          "value": [
+            {
+              "slot": 9007199254740991,
+              "confirmations": 10,
+              "err": null,
+              "confirmationStatus": "confirmed"
+            },
+            {
+              "slot": 72,
+              "confirmations": 9007199254740991,
+              "err": null,
+              "confirmationStatus": "confirmed"
+            },
+            {
+              "slot": 1092,
+              "confirmations": null,
+              "err": {"InstructionError":[0,{"Custom":1}]},
+              "confirmationStatus": "finalized"
+            },
+            {
+              "slot": 11,
+              "confirmations": 0,
+              "err": null,
+              "confirmationStatus": null
+            },
+            null
+          ]
+        }
+      }
+  )";
+
+  std::vector<absl::optional<SolanaSignatureStatus>> statuses;
+  ASSERT_TRUE(ParseGetSignatureStatuses(json, &statuses));
+
+  std::vector<absl::optional<SolanaSignatureStatus>> expected_statuses(
+      {SolanaSignatureStatus(kMaxSafeIntegerUint64, 10u, "", "confirmed"),
+       SolanaSignatureStatus(72u, kMaxSafeIntegerUint64, "", "confirmed"),
+       SolanaSignatureStatus(
+           1092u, 0u, R"({"InstructionError":[0,{"Custom":1}]})", "finalized"),
+       SolanaSignatureStatus(11u, 0u, "", ""), absl::nullopt});
+
+  EXPECT_EQ(statuses, expected_statuses);
+
+  std::string invalid = R"(
+      {"jsonrpc":2.0, "id":1, "result":
+        {
+          "context": {"slot": 82},
+          "value": [
+            {
+              "slot": 18446744073709551615,
+              "confirmations": 10,
+              "err": null,
+              "confirmationStatus": "confirmed"
+            },
+            {
+              "slot": 72,
+              "confirmations": 18446744073709551615,
+              "err": null,
+              "confirmationStatus": "confirmed"
+            },
+            {},
+            []
+          ]
+        }
+      }
+  )";
+  expected_statuses =
+      std::vector<absl::optional<SolanaSignatureStatus>>(4, absl::nullopt);
+  ASSERT_TRUE(ParseGetSignatureStatuses(invalid, &statuses));
+  EXPECT_EQ(expected_statuses, statuses);
 }
 
 }  // namespace solana
