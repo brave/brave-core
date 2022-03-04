@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index ac19edf254cd82df8a30afad89389de60c0a72c0..0fe987f3fe02fafb75625116c60ca9c1f6b54e94 100644
+index ac19edf254cd82df8a30afad89389de60c0a72c0..ba92db27c3a8b9dbf8a83b716db11a1b8d8b7fd8 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -59,7 +59,9 @@ by a child template that "extends" this file.
@@ -50,7 +50,7 @@ index ac19edf254cd82df8a30afad89389de60c0a72c0..0fe987f3fe02fafb75625116c60ca9c1
 -    <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
 +<!--
 +     <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
-+--> <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
++--> <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/> <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
  
      {% block extra_uses_permissions %}
      {% endblock %}
