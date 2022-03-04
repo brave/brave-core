@@ -200,6 +200,7 @@ public class BraveNewsPreferences extends BravePreferenceFragment
         if (!isNewsOn) {
             mTurnOnNews.setChecked(false);
             mShowNews.setVisible(false);
+            setSourcesVisibility(BravePrefServiceBridge.getInstance().getNewsOptIn());
         } else {
             mTurnOnNews.setChecked(true);
             mTurnOnNews.setVisible(false);
@@ -218,10 +219,10 @@ public class BraveNewsPreferences extends BravePreferenceFragment
         String key = preference.getKey();
         if (PREF_TURN_ON_NEWS.equals(key)) {
             BravePrefServiceBridge.getInstance().setNewsOptIn((boolean) newValue);
+            BravePrefServiceBridge.getInstance().setShowNews(false);
             if ((boolean) newValue) {
                 mShowNews.setVisible(true);
-                mShowNews.setChecked(true);
-                BravePrefServiceBridge.getInstance().setShowNews(true);
+                mShowNews.setChecked(false);
             } else {
                 mShowNews.setVisible(false);
             }
