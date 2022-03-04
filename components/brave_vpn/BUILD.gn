@@ -75,7 +75,9 @@ static_library("brave_vpn") {
 
     deps += [
       ":brave_vpn_internal",
+      "//brave/components/version_info",
       "//components/prefs",
+      "//components/version_info",
       "//third_party/icu",
     ]
   }

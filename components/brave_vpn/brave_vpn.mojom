@@ -73,7 +73,7 @@ interface ServiceHandler {
   GetSupportData() => (string app_version, string os_version, string hostname);
 
   [EnableIfNot = is_android]
-  CreateSupportTicket(string email, string subject, string body) => (string response);
+  CreateSupportTicket(string email, string subject, string body) => (bool success, string response);
 };
 
 // WebUI-side handler for requests from the browser.

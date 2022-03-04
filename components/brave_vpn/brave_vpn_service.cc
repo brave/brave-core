@@ -21,8 +21,10 @@
 #include "brave/components/brave_vpn/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/pref_names.h"
 #include "brave/components/brave_vpn/switches.h"
+#include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/version_info/version_info.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
 #endif  // !defined(OS_ANDROID)
 
@@ -444,7 +446,6 @@ void BraveVpnService::BindInterface(
 }
 
 void BraveVpnService::OnPanelVisible() {
-  // TODO(bsclifton): clean this up
   LoadPurchasedState();
 }
 
@@ -760,18 +761,23 @@ void BraveVpnService::CreateSupportTicket(
     const std::string& subject,
     const std::string& body,
     CreateSupportTicketCallback callback) {
-  // TODO(bsclifton): finish me
   auto internal_callback =
       base::BindOnce(&BraveVpnService::OnCreateSupportTicket,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
 
   const GURL base_url = GetURLWithPath(kVpnHost, kCreateSupportTicket);
   base::Value dict(base::Value::Type::DICTIONARY);
+
+  std::string email_trimmed, subject_trimmed, body_trimmed, body_encoded;
+  base::TrimWhitespaceASCII(email, base::TRIM_ALL, &email_trimmed);
+  base::TrimWhitespaceASCII(subject, base::TRIM_ALL, &subject_trimmed);
+  base::TrimWhitespaceASCII(body, base::TRIM_ALL, &body_trimmed);
+  base::Base64Encode(body_trimmed, &body_encoded);
+
   // required fields
-  // TODO: trim
-  dict.SetStringKey("email", email);
-  dict.SetStringKey("subject", subject);
-  dict.SetStringKey("support-ticket", body);
+  dict.SetStringKey("email", email_trimmed);
+  dict.SetStringKey("subject", subject_trimmed);
+  dict.SetStringKey("support-ticket", body_encoded);
   dict.SetStringKey("partner-client-id", "com.brave.browser");
 
   // optional (but encouraged) fields
@@ -785,7 +791,11 @@ void BraveVpnService::CreateSupportTicket(
 }
 
 void BraveVpnService::GetSupportData(GetSupportDataCallback callback) {
-  // TODO(bsclifton): finish me
+  std::string brave_version =
+      version_info::GetBraveVersionWithoutChromiumMajorVersion();
+  std::string os_version = version_info::GetOSType();
+  std::string vpn_hostname = hostname_ ? hostname_->display_name : "n/a";
+  std::move(callback).Run(brave_version, os_version, vpn_hostname);
 }
 
 void BraveVpnService::FetchHostnamesForRegion(const std::string& name) {
@@ -911,7 +921,8 @@ void BraveVpnService::OnGetSubscriberCredentialV12(
   }
 
   VLOG(2) << __func__ << " : received subscriber credential";
-
+  // TODO(bsclifton): consider storing `subscriber_credential` for
+  // support ticket use-case
   GetProfileCredentials(
       base::BindOnce(&BraveVpnService::OnGetProfileCredentials,
                      base::Unretained(this)),
@@ -1027,12 +1038,13 @@ void BraveVpnService::OnCredentialSummary(const std::string& summary_string) {
                             &summary_string_trimmed);
   if (summary_string_trimmed.length() == 0) {
     // no credential found; person needs to login
-    LOG(ERROR) << "No credential found; user needs to login!";
+    VLOG(1) << __func__ << " : No credential found; user needs to login!";
     SetPurchasedState(PurchasedState::NOT_PURCHASED);
     return;
   }
 
-  LOG(ERROR) << "credential_summary returned: `" << summary_string << "`";
+  VLOG(2) << __func__ << " credential_summary returned: `" << summary_string
+          << "`";
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           summary_string, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -1042,7 +1054,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& summary_string) {
     const base::Value* active = records_v->FindKey("active");
     bool has_credential = active && active->is_bool() && active->GetBool();
     if (has_credential) {
-      LOG(ERROR) << "Active credential found!";
+      VLOG(1) << __func__ << " : Active credential found!";
       // if a credential is ready, we can present it
       EnsureMojoConnected();
       skus_service_->PrepareCredentialsPresentation(
@@ -1050,7 +1062,7 @@ void BraveVpnService::OnCredentialSummary(const std::string& summary_string) {
           base::BindOnce(&BraveVpnService::OnPrepareCredentialsPresentation,
                          base::Unretained(this)));
     } else {
-      LOG(ERROR) << "Credential appears to be expired.";
+      VLOG(1) << __func__ << " : Credential appears to be expired.";
       SetPurchasedState(PurchasedState::EXPIRED);
     }
   }
@@ -1066,11 +1078,11 @@ void BraveVpnService::OnPrepareCredentialsPresentation(
   // should these failed states be considered NOT_PURCHASED?
   // or maybe it can be considered FAILED status?
   if (!credential_cookie.IsValid()) {
-    LOG(ERROR) << __func__ << " : FAILED credential_cookie.IsValid";
+    VLOG(1) << __func__ << " : FAILED credential_cookie.IsValid";
     return;
   }
   if (!status.IsInclude()) {
-    LOG(ERROR) << __func__ << " : FAILED status.IsInclude";
+    VLOG(1) << __func__ << " : FAILED status.IsInclude";
     return;
   }
 
@@ -1100,19 +1112,19 @@ void BraveVpnService::SetPurchasedState(PurchasedState state) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   switch (state) {
     case PurchasedState::NOT_PURCHASED:
-      LOG(ERROR) << "SetPurchasedState(NOT_PURCHASED);";
+      VLOG(1) << "SetPurchasedState(NOT_PURCHASED);";
       break;
     case PurchasedState::PURCHASED:
-      LOG(ERROR) << "SetPurchasedState(PURCHASED);";
+      VLOG(1) << "SetPurchasedState(PURCHASED);";
       break;
     case PurchasedState::EXPIRED:
-      LOG(ERROR) << "SetPurchasedState(EXPIRED);";
+      VLOG(1) << "SetPurchasedState(EXPIRED);";
       break;
     case PurchasedState::LOADING:
-      LOG(ERROR) << "SetPurchasedState(LOADING);";
+      VLOG(1) << "SetPurchasedState(LOADING);";
       break;
     case PurchasedState::FAILED:
-      LOG(ERROR) << "SetPurchasedState(FAILED);";
+      VLOG(1) << "SetPurchasedState(FAILED);";
       break;
   }
 
@@ -1300,9 +1312,7 @@ void BraveVpnService::OnCreateSupportTicket(
     const std::string& body,
     const base::flat_map<std::string, std::string>& headers) {
   bool success = status == 200;
-  LOG(ERROR) << "BSC]] OnCreateSupportTicket =" << success;
-
-  // TODO: hide the contact form
-  // maybe callback can do that behavior and we can just run callback
-  // ..
+  VLOG(2) << "OnCreateSupportTicket success=" << success
+          << "\nresponse_code=" << status << "\nbody=[[" << body << "]]";
+  std::move(callback).Run(success, body);
 }

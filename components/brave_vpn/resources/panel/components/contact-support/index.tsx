@@ -102,6 +102,7 @@ function ContactSupport (props: Props) {
       (formData.shareAppVersion ? `App version: ${supportData?.appVersion}\n` : '') +
       (formData.shareHostname ? `Hostname: ${supportData?.hostname}\n` : '')
 
+    // TODO: this will return a bool (success) and string (message)
     await getPanelBrowserAPI().serviceHandler.createSupportTicket(
       formData.contactEmail,
       formData.problemSubject,
