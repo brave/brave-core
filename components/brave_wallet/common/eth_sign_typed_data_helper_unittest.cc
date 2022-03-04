@@ -461,6 +461,27 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+    // overflow
+    EXPECT_FALSE(helper->EncodeField("uint8", base::Value("256")));
+    EXPECT_FALSE(helper->EncodeField("uint8", base::Value("0x100")));
+    EXPECT_FALSE(helper->EncodeField("uint16", base::Value("65536")));
+    EXPECT_FALSE(helper->EncodeField("uint16", base::Value("0x10000")));
+    EXPECT_FALSE(helper->EncodeField("uint32", base::Value("4294967296")));
+    EXPECT_FALSE(helper->EncodeField("uint32", base::Value("0x100000000")));
+    EXPECT_FALSE(
+        helper->EncodeField("uint64", base::Value("18446744073709551616")));
+    EXPECT_FALSE(
+        helper->EncodeField("uint64", base::Value("0x10000000000000000")));
+    EXPECT_FALSE(helper->EncodeField(
+        "uint128", base::Value("340282366920938463463374607431768211456")));
+    EXPECT_FALSE(helper->EncodeField(
+        "uint128", base::Value("0x100000000000000000000000000000000")));
+    EXPECT_FALSE(helper->EncodeField(
+        "uint256", base::Value("11579208923731619542357098500868790785326998466"
+                               "56405640394575840079131296399356")));
+    EXPECT_FALSE(helper->EncodeField(
+        "uint256", base::Value("0x100000000000000000000000000000000000000000000"
+                               "00000000000000000000")));
 
     // Can parse "0x", "0", "", and 0 as 0
     encoded_field = helper->EncodeField("uint32", base::Value("0x"));
@@ -485,7 +506,7 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
         "0000000000000000000000000000000000000000000000000000000000000000");
   }
 
-  // uint8 - uint256
+  // int8 - int256
   EXPECT_FALSE(helper->EncodeField("intA", base::Value(1)));
   EXPECT_FALSE(helper->EncodeField("int1", base::Value(1)));
   EXPECT_FALSE(helper->EncodeField("int9", base::Value(1)));
@@ -544,6 +565,38 @@ TEST(EthSignedTypedDataHelperUnitTest, EncodeField) {
     EXPECT_EQ(
         base::ToLowerASCII(base::HexEncode(*encoded_field)),
         "8000000000000000000000000000000000000000000000000000000000000000");
+
+    // overflow
+    EXPECT_FALSE(helper->EncodeField("int8", base::Value("128")));
+    EXPECT_FALSE(helper->EncodeField("int8", base::Value("-129")));
+    EXPECT_FALSE(helper->EncodeField("int8", base::Value("0x100")));
+    EXPECT_FALSE(helper->EncodeField("int16", base::Value("32768")));
+    EXPECT_FALSE(helper->EncodeField("int16", base::Value("-32769")));
+    EXPECT_FALSE(helper->EncodeField("int16", base::Value("0x10000")));
+    EXPECT_FALSE(helper->EncodeField("int32", base::Value("2147483648")));
+    EXPECT_FALSE(helper->EncodeField("int32", base::Value("-2147483649")));
+    EXPECT_FALSE(helper->EncodeField("int32", base::Value("0x100000000")));
+    EXPECT_FALSE(
+        helper->EncodeField("int64", base::Value("9223372036854775808")));
+    EXPECT_FALSE(
+        helper->EncodeField("int64", base::Value("-9223372036854775809")));
+    EXPECT_FALSE(
+        helper->EncodeField("int64", base::Value("0x10000000000000000")));
+    EXPECT_FALSE(helper->EncodeField(
+        "int128", base::Value("170141183460469231731687303715884105728")));
+    EXPECT_FALSE(helper->EncodeField(
+        "int128", base::Value("-170141183460469231731687303715884105729")));
+    EXPECT_FALSE(helper->EncodeField(
+        "int128", base::Value("0x100000000000000000000000000000000")));
+    EXPECT_FALSE(helper->EncodeField(
+        "int256", base::Value("578960446186580977117854925043439539266349923328"
+                              "20282019728792003956564819968")));
+    EXPECT_FALSE(helper->EncodeField(
+        "int256", base::Value("-57896044618658097711785492504343953926634992332"
+                              "820282019728792003956564819969")));
+    EXPECT_FALSE(helper->EncodeField(
+        "int256", base::Value("0x100000000000000000000000000000000000000000000"
+                              "00000000000000000000")));
 
     // Can parse "0x", "0", "", and 0 as 0
     encoded_field = helper->EncodeField("int32", base::Value("0x"));
