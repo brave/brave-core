@@ -48,6 +48,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/solana_requests_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_response_parser_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_transaction_unittest.cc",
+    "//brave/components/brave_wallet/browser/solana_tx_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_tx_meta_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_tx_state_manager_unittest.cc",
     "//brave/components/brave_wallet/browser/solana_utils_unittest.cc",
