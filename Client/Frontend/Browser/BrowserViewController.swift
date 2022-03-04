@@ -1575,13 +1575,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         }
     }
     
-    func shareActivities(for url: URL, tab: Tab?, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) -> [UIActivity] {
+    func makeShareActivities(for url: URL, tab: Tab?, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) -> [UIActivity] {
         let findInPageActivity = FindInPageActivity() { [unowned self] in
             self.updateFindInPageVisibility(visible: true)
-        }
-        
-        let requestDesktopSiteActivity = RequestDesktopSiteActivity(tab: tab) { [weak tab] in
-            tab?.switchUserAgent()
         }
         
         var activities: [UIActivity] = [findInPageActivity]
@@ -1590,21 +1586,20 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         if !url.isFileURL {
             // We don't allow to have 2 same favorites.
             if !FavoritesHelper.isAlreadyAdded(url) {
-                let addToFavoritesActivity = AddToFavoritesActivity() { [weak tab] in
+                activities.append(AddToFavoritesActivity() { [weak tab] in
                     FavoritesHelper.add(url: url, title: tab?.displayTitle)
-                }
-                
-                activities.append(addToFavoritesActivity)
+                })
             }
-            activities.append(requestDesktopSiteActivity)
+
+            activities.append(RequestDesktopSiteActivity(tab: tab) { [weak tab] in
+                tab?.switchUserAgent()
+            })
             
             if Preferences.BraveNews.isEnabled.value, let metadata = tab?.pageMetadata,
                !metadata.feeds.isEmpty {
                 let feeds: [RSSFeedLocation] = metadata.feeds.compactMap { feed in
-                    if let url = URL(string: feed.href) {
-                        return RSSFeedLocation(title: feed.title, url: url)
-                    }
-                    return nil
+                    guard let url = URL(string: feed.href) else { return nil }
+                    return RSSFeedLocation(title: feed.title, url: url)
                 }
                 if !feeds.isEmpty {
                     let addToBraveNews = AddFeedToBraveNewsActivity() { [weak self] in
@@ -1617,18 +1612,14 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                         )
                         let container = UINavigationController(rootViewController: controller)
                         let idiom = UIDevice.current.userInterfaceIdiom
-                        if #available(iOS 13.0, *) {
-                            container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
-                        } else {
-                            container.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
-                        }
+                        container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
                         self.present(container, animated: true)
                     }
                     activities.append(addToBraveNews)
                 }
             }
             
-            if #available(iOS 14.0, *), let webView = tab?.webView, tab?.temporaryDocument == nil {
+            if let webView = tab?.webView, tab?.temporaryDocument == nil {
                 let createPDFActivity = CreatePDFActivity(webView: webView) { [weak self] pdfData in
                     guard let self = self else { return }
                     // Create a valid filename
@@ -1655,11 +1646,13 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                 }
                 activities.append(createPDFActivity)
             }
+
         } else {
-            // Check if its a feed, url is a temp document file URL
+            // Check if it's a feed, url is a temp document file URL
             if let selectedTab = tabManager.selectedTab,
                (selectedTab.mimeType == "application/xml" || selectedTab.mimeType == "application/json"),
                let tabURL = selectedTab.url {
+
                 let parser = FeedParser(URL: url)
                 if case .success(let feed) = parser.parse() {
                     let addToBraveNews = AddFeedToBraveNewsActivity() { [weak self] in
@@ -1672,11 +1665,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                         )
                         let container = UINavigationController(rootViewController: controller)
                         let idiom = UIDevice.current.userInterfaceIdiom
-                        if #available(iOS 13.0, *) {
-                            container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
-                        } else {
-                            container.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
-                        }
+                        container.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
                         self.present(container, animated: true)
                     }
                     activities.append(addToBraveNews)
@@ -1697,24 +1686,22 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     }
 
     func presentActivityViewController(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
-        let helper = ShareExtensionHelper(url: url, tab: tab)
-        
-        let activities: [UIActivity] = shareActivities(
+        let activities: [UIActivity] = makeShareActivities(
             for: url,
             tab: tab,
             sourceView: sourceView,
             sourceRect: sourceRect,
             arrowDirection: arrowDirection
         )
-        
-        let controller = helper.createActivityViewController(items: activities) { [weak self] completed, _, documentUrl  in
-            guard let self = self else { return }
-            
-            if let url = documentUrl {
-                self.openPDFInIBooks(url)
-            }
-            
-            self.cleanUpCreateActivity()
+
+        let controller = ShareExtensionHelper.makeActivityViewController(
+            selectedURL: url,
+            selectedTab: tab,
+            applicationActivities: activities
+        )
+
+        controller.completionWithItemsHandler = { [weak self] _, _, _, _ in
+            self?.cleanUpCreateActivity()
         }
 
         if let popoverPresentationController = controller.popoverPresentationController {
@@ -1736,14 +1723,6 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         // invoked on iOS 10. See Bug 1297768 for additional details.
         displayedPopoverController = nil
         updateDisplayedPopoverProperties = nil
-    }
-    
-    private func openPDFInIBooks(_ url: URL) {
-        let iBooksURL = "itms-books://\(url.absoluteString)"
-
-        guard let url = URL(string: iBooksURL) else { return }
-        
-        UIApplication.shared.open(url, options: [:])
     }
 
     func updateFindInPageVisibility(visible: Bool, tab: Tab? = nil) {
@@ -2645,7 +2624,18 @@ extension BrowserViewController: WKUIDelegate {
                         let touchPoint = braveWebView.lastHitPoint
                         let touchSize = CGSize(width: 0, height: 16)
                         let touchRect = CGRect(origin: touchPoint, size: touchSize)
-                        
+
+                        // TODO: Find a way to add fixes #3323 and #2961 here:
+                        // Normally we use `tab.temporaryDocument` for the downloaded file on the tab.
+                        // `temporaryDocument` returns the downloaded file to disk on the current tab.
+                        // Using a downloaded file url results in having functions like "Save to files" available.
+                        // It also attaches the file (image, pdf, etc) and not the url to emails, slack, etc.
+                        // Since this is **not** a tab but a standalone web view, the downloaded temporary file is **not** available.
+                        // This results in the fixes for #3323 and #2961 not being included in this share scenario.
+                        // This is not a regression, we simply never handled this scenario in both fixes.
+                        // Some possibile fixes include:
+                        // - Detect the file type and download it if necessary and don't rely on the `tab.temporaryDocument`.
+                        // - Add custom "Save to file" functionality (needs investigation).
                         self.presentActivityViewController(url, sourceView: self.view,
                                                            sourceRect: touchRect,
                                                            arrowDirection: .any)

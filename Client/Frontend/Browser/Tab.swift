@@ -140,8 +140,8 @@ class Tab: NSObject {
         controller.view.removeFromSuperview()
     }
  
-    // When viewing a non-HTML content type in the webview (like a PDF document), this URL will
-    // point to a tempfile containing the content so it can be shared to external applications.
+    /// When viewing a non-HTML content type in the webview (like a PDF document), this URL will
+    /// point to a tempfile containing the content so it can be shared to external applications.
     var temporaryDocument: TemporaryDocument?
 
     fileprivate var _noImageMode = false
