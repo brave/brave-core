@@ -252,9 +252,6 @@ struct SwapResponse {
 const string kLedgerHardwareVendor = "Ledger";
 const string kTrezorHardwareVendor = "Trezor";
 
-const string kFilecoinTestnet = "t";
-const string kFilecoinMainnet = "f";
-
 const string kFilecoinKeyringId = "filecoin";
 const string kSolanaKeyringId = "solana";
 const string kDefaultKeyringId = "default";
@@ -573,9 +570,16 @@ const string kGoerliChainId = "0x5";
 const string kKovanChainId = "0x2a";
 const string kLocalhostChainId = "0x539";
 const string kPolygonMainnetChainId = "0x89";
+const string kBinanceSmartChainMainnetChainId = "0x38";
+const string kAvalancheMainnetChainId = "0xa86a"; // Avalanche C-Chain
+const string kFantomMainnetChainId = "0xfa"; // Fantom Opera
+const string kCeloMainnetChainId = "0xa4ec";
+const string kOptimismMainnetChainId = "0xa";
 const string kSolanaMainnet = "solana:0x65";
 const string kSolanaTestnet = "solana:0x66";
 const string kSolanaDevnet = "solana:0x67";
+const string kFilecoinTestnet = "t";
+const string kFilecoinMainnet = "f";
 
 enum CoinType {
   ETH = 60,
