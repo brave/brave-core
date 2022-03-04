@@ -261,14 +261,18 @@ void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
 void SidebarContainerView::OnActiveIndexChanged(int old_index, int new_index) {
   if (new_index == -1) {
     sidebar_panel_webview_->SetVisible(false);
+    GetFocusManager()->ClearFocus();
   } else {
     const auto item = sidebar_model_->GetAllSidebarItems()[new_index];
     if (item.open_in_panel) {
       sidebar_panel_webview_->SetWebContents(
           sidebar_model_->GetWebContentsAt(new_index));
       sidebar_panel_webview_->SetVisible(true);
+      // When panel is opened, it will get focused.
+      sidebar_panel_webview_->RequestFocus();
     } else {
       sidebar_panel_webview_->SetVisible(false);
+      GetFocusManager()->ClearFocus();
     }
   }
   UpdateBackgroundAndBorder();
