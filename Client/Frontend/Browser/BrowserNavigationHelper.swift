@@ -119,7 +119,12 @@ class BrowserNavigationHelper {
                     share(url: url)
                 }
             })
+        } else if url.isReaderModeURL, let readerSourceURL = url.decodeReaderModeURL {
+            // We want to decode the underlying url that generated the reader mode file and share that instead
+            // This way we avoid sharing a url of a local file
+            share(url: readerSourceURL)
         } else {
+            // Otherwise share the tab url
             share(url: url)
         }
     }
