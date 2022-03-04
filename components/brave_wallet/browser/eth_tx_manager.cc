@@ -370,7 +370,7 @@ void EthTxManager::GetNonceForHardwareTransaction(
     return;
   }
   if (!meta->tx()->nonce()) {
-    auto from = EthAddress::FromHex(meta->from());
+    auto from = meta->from();
     nonce_tracker_->GetNextNonce(
         from, base::BindOnce(&EthTxManager::OnGetNextNonceForHardware,
                              weak_factory_.GetWeakPtr(), std::move(meta),
@@ -477,7 +477,7 @@ void EthTxManager::ApproveTransaction(const std::string& tx_meta_id,
   }
 
   if (!meta->tx()->nonce()) {
-    auto from = EthAddress::FromHex(meta->from());
+    auto from = meta->from();
     nonce_tracker_->GetNextNonce(
         from, base::BindOnce(&EthTxManager::OnGetNextNonce,
                              weak_factory_.GetWeakPtr(), std::move(meta),

@@ -10,9 +10,9 @@
 
 #include "base/logging.h"
 #include "base/synchronization/lock.h"
-#include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
@@ -21,7 +21,7 @@ namespace brave_wallet {
 
 EthPendingTxTracker::EthPendingTxTracker(EthTxStateManager* tx_state_manager,
                                          JsonRpcService* json_rpc_service,
-                                         EthNonceTracker* nonce_tracker)
+                                         NonceTracker* nonce_tracker)
     : tx_state_manager_(tx_state_manager),
       json_rpc_service_(json_rpc_service),
       nonce_tracker_(nonce_tracker),
@@ -132,7 +132,7 @@ bool EthPendingTxTracker::IsNonceTaken(const EthTxMeta& meta) {
 bool EthPendingTxTracker::ShouldTxDropped(const EthTxMeta& meta) {
   const std::string hex_address = meta.from();
   if (network_nonce_map_.find(hex_address) == network_nonce_map_.end()) {
-    json_rpc_service_->GetTransactionCount(
+    json_rpc_service_->GetEthTransactionCount(
         hex_address,
         base::BindOnce(&EthPendingTxTracker::OnGetNetworkNonce,
                        weak_factory_.GetWeakPtr(), std::move(hex_address)));

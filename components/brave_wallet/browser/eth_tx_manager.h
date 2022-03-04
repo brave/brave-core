@@ -29,6 +29,7 @@ class EthTxMeta;
 class TxService;
 class JsonRpcService;
 class KeyringService;
+class EthNonceTracker;
 
 class EthTxManager : public TxManager, public EthBlockTracker::Observer {
  public:

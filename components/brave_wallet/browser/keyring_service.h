@@ -257,6 +257,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
 
   friend class BraveWalletProviderImplUnitTest;
   friend class EthTxManagerUnitTest;
+  friend class FilTxManagerUnitTest;
 
   void AddAccountForKeyring(const std::string& keyring_id,
                             const std::string& account_name);

@@ -5,56 +5,58 @@
 
 #include <string>
 
-#include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
-#include "brave/components/brave_wallet/browser/eth_tx_meta.h"
+#include "base/check_op.h"
+#include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
+#include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/nonce_tracker.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
-#include "brave/components/brave_wallet/common/eth_address.h"
+#include "brave/components/brave_wallet/common/fil_address.h"
 
 namespace brave_wallet {
 
-EthNonceTracker::EthNonceTracker(TxStateManager* tx_state_manager,
+FilNonceTracker::FilNonceTracker(TxStateManager* tx_state_manager,
                                  JsonRpcService* json_rpc_service)
     : NonceTracker(tx_state_manager, json_rpc_service), weak_factory_(this) {}
-EthNonceTracker::~EthNonceTracker() = default;
-
-void EthNonceTracker::GetNextNonce(const std::string& from,
+FilNonceTracker::~FilNonceTracker() = default;
+void FilNonceTracker::GetNextNonce(const std::string& from,
                                    GetNextNonceCallback callback) {
-  GetJsonRpcService()->GetEthTransactionCount(
+  GetJsonRpcService()->GetFilTransactionCount(
       from,
       base::BindOnce(&NonceTracker::OnGetNetworkNonce,
                      weak_factory_.GetWeakPtr(), from, std::move(callback)));
 }
 
-std::string EthNonceTracker::GetChecksumAddress(const std::string& address) {
-  return EthAddress::FromHex(address).ToChecksumAddress();
+std::string FilNonceTracker::GetChecksumAddress(const std::string& address) {
+  return FilAddress::FromAddress(address).ToChecksumAddress();
 }
 
-uint256_t EthNonceTracker::GetHighestLocallyConfirmed(
+uint256_t FilNonceTracker::GetHighestLocallyConfirmed(
     const std::vector<std::unique_ptr<TxMeta>>& metas) {
-  uint256_t highest = 0;
+  uint64_t highest = 0;
   for (auto& meta : metas) {
-    auto* tx_meta = static_cast<EthTxMeta*>(meta.get());
+    auto* tx_meta = static_cast<FilTxMeta*>(meta.get());
     DCHECK(
         tx_meta->tx()->nonce());  // Not supposed to happen for a confirmed tx.
-    highest = std::max(highest, tx_meta->tx()->nonce().value() + (uint256_t)1);
+    highest = std::max(highest, tx_meta->tx()->nonce().value() + (uint64_t)1);
   }
-  return highest;
+  return static_cast<uint256_t>(highest);
 }
 
-uint256_t EthNonceTracker::GetHighestContinuousFrom(
+uint256_t FilNonceTracker::GetHighestContinuousFrom(
     const std::vector<std::unique_ptr<TxMeta>>& metas,
     uint256_t start) {
-  uint256_t highest = start;
+  bool valid_range = start <= static_cast<uint256_t>(UINT64_MAX);
+  DCHECK(valid_range);
+  uint64_t highest = start;
   for (auto& meta : metas) {
-    auto* eth_meta = static_cast<EthTxMeta*>(meta.get());
+    auto* eth_meta = static_cast<FilTxMeta*>(meta.get());
     DCHECK(
         eth_meta->tx()->nonce());  // Not supposed to happen for a submitted tx.
     if (eth_meta->tx()->nonce().value() == highest)
       highest++;
   }
-  return highest;
+  return static_cast<uint256_t>(highest);
 }
 
 }  // namespace brave_wallet
