@@ -13,7 +13,7 @@ const char kBraveWalletTransactions[] = "brave.wallet.transactions";
 const char kShowWalletIconOnToolbar[] =
     "brave.wallet.show_wallet_icon_on_toolbar";
 const char kBraveWalletLastUnlockTime[] =
-    "brave.wallet.wallet_last_unlock_time";
+    "brave.wallet.wallet_last_unlock_time_v2";
 const char kBraveWalletPingReportedUnlockTime[] =
     "brave.wallet.wallet_report_unlock_time_ping";
 const char kBraveWalletP3ALastReportTime[] =
