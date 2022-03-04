@@ -6,8 +6,10 @@
 #include "brave/components/brave_wallet/browser/solana_message.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/check.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/solana_utils.h"
 
@@ -15,14 +17,20 @@ namespace brave_wallet {
 
 SolanaMessage::SolanaMessage(const std::string& recent_blockhash,
                              const std::string& fee_payer,
-                             const std::vector<SolanaInstruction>& instructions)
+                             std::vector<SolanaInstruction>&& instructions)
     : recent_blockhash_(recent_blockhash),
       fee_payer_(fee_payer),
-      instructions_(instructions) {}
+      instructions_(std::move(instructions)) {}
 
 SolanaMessage::SolanaMessage(const SolanaMessage&) = default;
 
 SolanaMessage::~SolanaMessage() = default;
+
+bool SolanaMessage::operator==(const SolanaMessage& message) const {
+  return recent_blockhash_ == message.recent_blockhash_ &&
+         fee_payer_ == message.fee_payer_ &&
+         instructions_ == message.instructions_;
+}
 
 // Process instructions to return an unique account meta array with following
 // properties.
@@ -147,6 +155,57 @@ absl::optional<std::vector<uint8_t>> SolanaMessage::Serialize(
   }
 
   return message_bytes;
+}
+
+mojom::SolanaTxDataPtr SolanaMessage::ToSolanaTxData() const {
+  std::vector<mojom::SolanaInstructionPtr> mojom_instructions;
+  for (const auto& instruction : instructions_)
+    mojom_instructions.push_back(instruction.ToMojomSolanaInstruction());
+
+  return mojom::SolanaTxData::New(recent_blockhash_, fee_payer_,
+                                  std::move(mojom_instructions));
+}
+
+base::Value SolanaMessage::ToValue() const {
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("recent_blockhash", recent_blockhash_);
+  dict.SetStringKey("fee_payer", fee_payer_);
+
+  base::Value instruction_list(base::Value::Type::LIST);
+  for (const auto& instruction : instructions_)
+    instruction_list.Append(instruction.ToValue());
+  dict.SetKey("instructions", std::move(instruction_list));
+
+  return dict;
+}
+
+// static
+absl::optional<SolanaMessage> SolanaMessage::FromValue(
+    const base::Value& value) {
+  if (!value.is_dict())
+    return absl::nullopt;
+
+  const std::string* recent_blockhash = value.FindStringKey("recent_blockhash");
+  if (!recent_blockhash)
+    return absl::nullopt;
+
+  const std::string* fee_payer = value.FindStringKey("fee_payer");
+  if (!fee_payer)
+    return absl::nullopt;
+
+  const base::Value* instruction_list = value.FindKey("instructions");
+  if (!instruction_list || !instruction_list->is_list())
+    return absl::nullopt;
+  std::vector<SolanaInstruction> instructions;
+  for (const auto& instruction_value : instruction_list->GetList()) {
+    absl::optional<SolanaInstruction> instruction =
+        SolanaInstruction::FromValue(instruction_value);
+    if (!instruction)
+      return absl::nullopt;
+    instructions.push_back(*instruction);
+  }
+
+  return SolanaMessage(*recent_blockhash, *fee_payer, std::move(instructions));
 }
 
 }  // namespace brave_wallet
