@@ -233,8 +233,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public BraveActivity() {
         // Disable key checker to avoid asserts on Brave keys in debug
         SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
-
-        BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference();
     }
 
     @Override
@@ -458,6 +456,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
         if (SharedPreferencesManager.getInstance().readBoolean(
                     BravePreferenceKeys.BRAVE_DOUBLE_RESTART, false)) {
             SharedPreferencesManager.getInstance().writeBoolean(
@@ -1261,5 +1260,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     @NativeMethods
     interface Natives {
         void restartStatsUpdater();
+    }
+
+    @Override
+    public void initializeCompositor() {
+        super.initializeCompositor();
+
+        BraveTabUiFeatureUtilities.maybeOverrideEnableTabGroupAutoCreationPreference(
+                ContextUtils.getApplicationContext());
     }
 }
