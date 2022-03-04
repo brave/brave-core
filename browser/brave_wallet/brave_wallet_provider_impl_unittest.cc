@@ -530,10 +530,12 @@ class BraveWalletProviderImplUnitTest : public testing::Test {
     base::RunLoop run_loop;
     tx_service()->ApproveTransaction(
         mojom::CoinType::ETH, tx_meta_id,
-        base::BindLambdaForTesting([&](bool v, mojom::ProviderError error,
+        base::BindLambdaForTesting([&](bool v,
+                                       mojom::ProviderErrorUnionPtr error,
                                        const std::string& error_message) {
+          ASSERT_TRUE(error->is_provider_error());
           success = v;
-          *error_out = error;
+          *error_out = error->get_provider_error();
           *error_message_out = error_message;
           run_loop.Quit();
         }));
