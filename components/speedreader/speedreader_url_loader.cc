@@ -143,24 +143,12 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
   CompleteLoading(std::move(buffered_body_));
 }
 
-void SpeedReaderURLLoader::CompleteSending() {
-  DCHECK_EQ(State::kSending, state_);
-  state_ = State::kCompleted;
-  // Call client's OnComplete() if |this|'s OnComplete() has already been
-  // called.
-  if (complete_status_.has_value()) {
-    destination_url_loader_client_->OnComplete(complete_status_.value());
+void SpeedReaderURLLoader::CallClientComplete() {
     // TODO(keur, iefremov): This API could probably be improved with an enum
     // indicating distill success, distill fail, load from cache.
     // |complete_status_| has an |exists_in_cache| field.
     if (delegate_)
       delegate_->OnDistillComplete();
-  }
-
-  body_consumer_watcher_.Cancel();
-  body_producer_watcher_.Cancel();
-  body_consumer_handle_.reset();
-  body_producer_handle_.reset();
 }
 
 }  // namespace speedreader

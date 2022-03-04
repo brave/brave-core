@@ -62,7 +62,7 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
 
   void MaybeRedirectToCanonicalLink();
 
-  void CompleteSending() override;
+  void CallClientComplete() override;
   void ForwardBodyToClient();
 
   raw_ptr<DeAmpService> de_amp_service_;

@@ -227,6 +227,24 @@ void BodySnifferURLLoader::CompleteLoading(std::string body) {
   CompleteSending();
 }
 
+void BodySnifferURLLoader::CompleteSending() {
+  DCHECK_EQ(State::kSending, state_);
+  state_ = State::kCompleted;
+  // Call client's OnComplete() if |this|'s OnComplete() has already been
+  // called.
+  if (complete_status_.has_value()) {
+    CallClientComplete();
+  }
+  CancelAndResetHandles();
+}
+
+void BodySnifferURLLoader::CancelAndResetHandles() {
+  body_consumer_watcher_.Cancel();
+  body_producer_watcher_.Cancel();
+  body_consumer_handle_.reset();
+  body_producer_handle_.reset();
+}
+
 void BodySnifferURLLoader::SendReceivedBodyToClient() {
   DCHECK_EQ(State::kSending, state_);
   // Send the buffered data first.
