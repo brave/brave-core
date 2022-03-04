@@ -1226,7 +1226,7 @@ TEST_F(BraveWalletServiceUnitTest, RecordWalletNoUse) {
   histogram_tester_->ExpectTotalCount(kBraveWalletWeeklyHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kBraveWalletMonthlyHistogramName, 0);
 
-  task_environment_.FastForwardBy(base::Days(5));
+  task_environment_.FastForwardBy(base::Days(4));
   // Just exited the "no report" period, we should have one report
   histogram_tester_->ExpectBucketCount(kBraveWalletWeeklyHistogramName, 0, 1);
   histogram_tester_->ExpectTotalCount(kBraveWalletMonthlyHistogramName, 0);

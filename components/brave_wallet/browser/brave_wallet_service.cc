@@ -601,7 +601,8 @@ void BraveWalletService::WriteStatsToHistogram(base::Time wallet_last_used,
   }
 
   bool week_passed_since_install =
-      (last_p3a_report - first_p3a_report).InDays() >= 7;
+      !first_p3a_report.is_null() &&
+      (base::Time::Now() - first_p3a_report).InDays() >= 7;
   if (week_passed_since_install) {
     VLOG(1) << "Wallet P3A: recording daily/weekly. weekly_sum: "
             << use_days_in_week;
