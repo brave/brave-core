@@ -13,6 +13,7 @@
 #include "base/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
+#include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
@@ -20,6 +21,7 @@
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#include "net/http/http_util.h"
 #include "net/url_request/redirect_info.h"
 #include "net/url_request/redirect_util.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -31,6 +33,33 @@ namespace de_amp {
 namespace {
 
 constexpr uint32_t kReadBufferSize = 65536;
+
+network::mojom::URLResponseHeadPtr CreateRedirectResponseHead(
+    const GURL& new_url,
+    const network::ResourceRequest& request) {
+  auto response_head = network::mojom::URLResponseHead::New();
+  response_head->headers = net::RedirectUtil::SynthesizeRedirectHeaders(
+        new_url,
+        net::RedirectUtil::ResponseCode::REDIRECT_307_TEMPORARY_REDIRECT,
+        "Deamp",
+        request.headers);
+  response_head->encoded_data_length = 0;
+  return response_head;
+}
+
+net::RedirectInfo CreateRedirectInfo(
+    const GURL& new_url,
+    const network::ResourceRequest& outer_request,
+    const absl::optional<std::string>& response_headers) {
+  return net::RedirectInfo::ComputeRedirectInfo(
+      "GET", outer_request.url, outer_request.site_for_cookies,
+      outer_request.update_first_party_url_on_redirect
+          ? net::RedirectInfo::FirstPartyURLPolicy::UPDATE_URL_ON_REDIRECT
+          : net::RedirectInfo::FirstPartyURLPolicy::NEVER_CHANGE_URL,
+      outer_request.referrer_policy, outer_request.referrer.spec(), 307,
+      new_url, response_headers, false /* insecure_scheme_was_upgraded */,
+      false /* copy_fragment */, false);
+}
 
 }  // namespace
 
@@ -80,7 +109,10 @@ DeAmpURLLoader::DeAmpURLLoader(
       contents_(contents),
       request_(request),
       response_(response),
-      de_amp_service(service) {}
+      de_amp_service(service) {
+  referrer_policy_ =
+      net::RedirectUtil::GetReferrerPolicyHeader(response_->headers.get());
+}
 
 DeAmpURLLoader::~DeAmpURLLoader() = default;
 
@@ -91,7 +123,7 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
     ForwardBodyToClient();
     return;
   }
-  if (!BodySnifferURLLoader::CheckBufferedBody(kReadBufferSize)) {
+  if (!CheckBufferedBody(kReadBufferSize)) {
     return;
   }
 
@@ -112,61 +144,17 @@ void DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
     }
     VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
     net::RedirectInfo redirect_info =
-        DeAmpURLLoader::CreateRedirectInfo(canonical_url, request_, *response_);
+        CreateRedirectInfo(canonical_url, request_, referrer_policy_);
     destination_url_loader_client_->OnReceiveRedirect(
-        redirect_info, DeAmpURLLoader::CreateRedirectResponseHead(*response_));
-    // Abort();
+        redirect_info, CreateRedirectResponseHead(canonical_url, request_));
+
+    CompleteLoading(std::move(buffered_body_));
     return;
-    // contents_->GetController().LoadURL(canonical_url, content::Referrer(),
-    //                                    ui::PAGE_TRANSITION_CLIENT_REDIRECT,
-    //                                    std::string());
   } else {
     // Did not find AMP page and/or canonical link, load original
     CompleteLoading(std::move(buffered_body_));
     return;
   }
-}
-
-network::mojom::URLResponseHeadPtr DeAmpURLLoader::CreateRedirectResponseHead(
-    const network::mojom::URLResponseHead& outer_response) {
-  auto response_head = network::mojom::URLResponseHead::New();
-  response_head->encoded_data_length = 0;
-  std::string buf;
-  std::string link_header;
-  outer_response.headers->GetNormalizedHeader("link", &link_header);
-  if (link_header.empty()) {
-    buf = base::StringPrintf("HTTP/1.1 %d %s\r\n", 307, "Internal Redirect");
-  } else {
-    buf = base::StringPrintf(
-        "HTTP/1.1 %d %s\r\n"
-        "link: %s\r\n",
-        307, "Internal Redirect", link_header.c_str());
-  }
-  response_head->headers = base::MakeRefCounted<net::HttpResponseHeaders>(
-      net::HttpUtil::AssembleRawHeaders(buf));
-  response_head->encoded_data_length = 0;
-  response_head->request_start = outer_response.request_start;
-  response_head->response_start = outer_response.response_start;
-  response_head->request_time = outer_response.request_time;
-  response_head->response_time = outer_response.response_time;
-  response_head->load_timing = outer_response.load_timing;
-  return response_head;
-}
-
-net::RedirectInfo DeAmpURLLoader::CreateRedirectInfo(
-    const GURL& new_url,
-    const network::ResourceRequest& outer_request,
-    const network::mojom::URLResponseHead& outer_response) {
-  return net::RedirectInfo::ComputeRedirectInfo(
-      "GET", outer_request.url, outer_request.site_for_cookies,
-      outer_request.update_first_party_url_on_redirect
-          ? net::RedirectInfo::FirstPartyURLPolicy::UPDATE_URL_ON_REDIRECT
-          : net::RedirectInfo::FirstPartyURLPolicy::NEVER_CHANGE_URL,
-      outer_request.referrer_policy, outer_request.referrer.spec(), 307,
-      new_url,
-      net::RedirectUtil::GetReferrerPolicyHeader(outer_response.headers.get()),
-      false /* insecure_scheme_was_upgraded */, true /* copy_fragment */,
-      false);
 }
 
 void DeAmpURLLoader::OnBodyWritable(MojoResult r) {

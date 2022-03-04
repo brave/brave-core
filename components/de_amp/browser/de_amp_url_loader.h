@@ -28,6 +28,7 @@
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+#include "url/gurl.h"
 
 namespace de_amp {
 
@@ -69,13 +70,8 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
 
   void CompleteSending() override;
   void ForwardBodyToClient();
-  net::RedirectInfo CreateRedirectInfo(
-      const GURL& new_url,
-      const network::ResourceRequest& outer_request,
-      const network::mojom::URLResponseHead& outer_response);
-  network::mojom::URLResponseHeadPtr CreateRedirectResponseHead(
-      const network::mojom::URLResponseHead& outer_response);
 
+  absl::optional<std::string> referrer_policy_;
   raw_ptr<content::WebContents> contents_;
   network::ResourceRequest request_;
   raw_ptr<network::mojom::URLResponseHead> response_;
