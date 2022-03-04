@@ -5,6 +5,7 @@
 
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 
+#include <iostream>
 #include <memory>
 #include <string>
 #include <utility>
@@ -60,7 +61,7 @@ void BodySnifferURLLoader::OnReceiveResponse(
     network::mojom::URLResponseHeadPtr response_head,
     mojo::ScopedDataPipeConsumerHandle body) {
   // OnReceiveResponse() shouldn't be called because BodySnifferURLLoader is
-  // created by BodySnifferThrottle::WillProcessResponse(), which is equivalent
+  // created by WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
   NOTREACHED();
 }
@@ -69,7 +70,7 @@ void BodySnifferURLLoader::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
     network::mojom::URLResponseHeadPtr response_head) {
   // OnReceiveRedirect() shouldn't be called because BodySnifferURLLoader is
-  // created by BodySnifferThrottle::WillProcessResponse(), which is equivalent
+  // created by WillProcessResponse(), which is equivalent
   // to OnReceiveResponse().
   NOTREACHED();
 }

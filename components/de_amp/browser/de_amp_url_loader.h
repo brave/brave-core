@@ -23,6 +23,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/system/data_pipe.h"
 #include "mojo/public/cpp/system/simple_watcher.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/early_hints.mojom-forward.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
@@ -46,6 +47,8 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
                const GURL& response_url,
                scoped_refptr<base::SequencedTaskRunner> task_runner,
                DeAmpService* service,
+               network::ResourceRequest request_,
+               network::mojom::URLResponseHead* response_,
                content::WebContents* contents);
 
  private:
@@ -55,17 +58,27 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
                      destination_url_loader_client,
                  scoped_refptr<base::SequencedTaskRunner> task_runner,
                  DeAmpService* service,
+                 network::ResourceRequest request,
+                 network::mojom::URLResponseHead* response,
                  content::WebContents* contents);
 
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;
 
-  void DeAmp();
+  void MaybeRedirectToCanonicalLink();
 
   void CompleteSending() override;
   void ForwardBodyToClient();
+  net::RedirectInfo CreateRedirectInfo(
+      const GURL& new_url,
+      const network::ResourceRequest& outer_request,
+      const network::mojom::URLResponseHead& outer_response);
+  network::mojom::URLResponseHeadPtr CreateRedirectResponseHead(
+      const network::mojom::URLResponseHead& outer_response);
 
   raw_ptr<content::WebContents> contents_;
+  network::ResourceRequest request_;
+  raw_ptr<network::mojom::URLResponseHead> response_;
   raw_ptr<DeAmpService> de_amp_service;
 };
 

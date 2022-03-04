@@ -22,18 +22,24 @@ namespace de_amp {
 std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
+    network::ResourceRequest request,
     content::WebContents* contents) {
   if (!service->IsEnabled()) {
     return nullptr;
   }
-  return std::make_unique<DeAmpThrottle>(task_runner, service, contents);
+  return std::make_unique<DeAmpThrottle>(task_runner, service, request,
+                                         contents);
 }
 
 DeAmpThrottle::DeAmpThrottle(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     DeAmpService* service,
+    network::ResourceRequest request,
     content::WebContents* contents)
-    : task_runner_(task_runner), service_(service), contents_(contents) {}
+    : task_runner_(task_runner),
+      service_(service),
+      request_(request),
+      contents_(contents) {}
 
 DeAmpThrottle::~DeAmpThrottle() = default;
 
@@ -51,7 +57,8 @@ void DeAmpThrottle::WillProcessResponse(
   DeAmpURLLoader* de_amp_loader;
   std::tie(new_remote, new_receiver, de_amp_loader) =
       DeAmpURLLoader::CreateLoader(weak_factory_.GetWeakPtr(), response_url,
-                                   task_runner_, service_, contents_);
+                                   task_runner_, service_, request_,
+                                   response_head, contents_);
   BodySnifferThrottle::InterceptAndStartLoader(
       std::move(source_loader), std::move(source_client_receiver),
       std::move(new_remote), std::move(new_receiver), de_amp_loader);

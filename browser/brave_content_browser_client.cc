@@ -669,7 +669,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
               base::ThreadTaskRunnerHandle::Get(),
               de_amp::DeAmpServiceFactory::GetForBrowserContext(
                   browser_context),
-              contents)) {
+              request, contents)) {
         result.push_back(std::move(de_amp_throttle));
       }
     }
