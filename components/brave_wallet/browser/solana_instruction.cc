@@ -6,10 +6,12 @@
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 
 #include <limits>
+#include <utility>
 
+#include "base/base64.h"
 #include "base/check.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/solana_utils.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_wallet {
 
@@ -33,11 +35,10 @@ absl::optional<uint8_t> GetAccountIndex(
 
 }  // namespace
 
-SolanaInstruction::SolanaInstruction(
-    const std::string& program_id,
-    const std::vector<SolanaAccountMeta>& accounts,
-    const std::vector<uint8_t>& data)
-    : program_id_(program_id), accounts_(accounts), data_(data) {}
+SolanaInstruction::SolanaInstruction(const std::string& program_id,
+                                     std::vector<SolanaAccountMeta>&& accounts,
+                                     const std::vector<uint8_t>& data)
+    : program_id_(program_id), accounts_(std::move(accounts)), data_(data) {}
 
 SolanaInstruction::SolanaInstruction(const SolanaInstruction&) = default;
 
@@ -83,6 +84,78 @@ bool SolanaInstruction::Serialize(
   CompactU16Encode(data_.size(), bytes);
   bytes->insert(bytes->end(), data_.begin(), data_.end());
   return true;
+}
+
+mojom::SolanaInstructionPtr SolanaInstruction::ToMojomSolanaInstruction()
+    const {
+  std::vector<mojom::SolanaAccountMetaPtr> mojom_account_metas;
+  for (const auto& account : accounts_)
+    mojom_account_metas.push_back(account.ToMojomSolanaAccountMeta());
+  return mojom::SolanaInstruction::New(program_id_,
+                                       std::move(mojom_account_metas), data_);
+}
+
+base::Value SolanaInstruction::ToValue() const {
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("program_id", program_id_);
+
+  base::Value account_list(base::Value::Type::LIST);
+  for (const auto& account : accounts_)
+    account_list.Append(account.ToValue());
+  dict.SetKey("accounts", std::move(account_list));
+  dict.SetStringKey("data", base::Base64Encode(data_));
+
+  return dict;
+}
+
+// static
+absl::optional<SolanaInstruction> SolanaInstruction::FromValue(
+    const base::Value& value) {
+  if (!value.is_dict())
+    return absl::nullopt;
+
+  const std::string* program_id = value.FindStringKey("program_id");
+  if (!program_id)
+    return absl::nullopt;
+
+  const base::Value* account_list = value.FindKey("accounts");
+  if (!account_list || !account_list->is_list())
+    return absl::nullopt;
+  std::vector<SolanaAccountMeta> accounts;
+  for (const auto& account_value : account_list->GetList()) {
+    absl::optional<SolanaAccountMeta> account =
+        SolanaAccountMeta::FromValue(account_value);
+    if (!account)
+      return absl::nullopt;
+    accounts.push_back(*account);
+  }
+
+  const std::string* data_base64_encoded = value.FindStringKey("data");
+  if (!data_base64_encoded)
+    return absl::nullopt;
+  std::string data_decoded;
+  if (!base::Base64Decode(*data_base64_encoded, &data_decoded))
+    return absl::nullopt;
+  std::vector<uint8_t> data(data_decoded.begin(), data_decoded.end());
+
+  return SolanaInstruction(*program_id, std::move(accounts), data);
+}
+
+// static
+void SolanaInstruction::FromMojomSolanaInstructions(
+    const std::vector<mojom::SolanaInstructionPtr>& mojom_instructions,
+    std::vector<SolanaInstruction>* instructions) {
+  if (!instructions)
+    return;
+  instructions->clear();
+  for (const auto& mojom_instruction : mojom_instructions) {
+    std::vector<SolanaAccountMeta> account_metas;
+    SolanaAccountMeta::FromMojomSolanaAccountMetas(
+        mojom_instruction->account_metas, &account_metas);
+    instructions->push_back(SolanaInstruction(mojom_instruction->program_id,
+                                              std::move(account_metas),
+                                              mojom_instruction->data));
+  }
 }
 
 }  // namespace brave_wallet

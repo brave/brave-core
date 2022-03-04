@@ -744,10 +744,6 @@ enum TransactionType {
   Other
 };
 
-// TODO(jocelyn): Fill the struct with needed fields.
-struct SolanaTxData {
-};
-
 // TODO(spylogsster): Fill the struct with needed fields.
 struct FilTxData {
 };
@@ -968,4 +964,22 @@ struct EncryptionKeyRequest {
   string origin;
   string address;
   string? message;
+};
+
+struct SolanaAccountMeta {
+  string pubkey;
+  bool is_signer;
+  bool is_writable;
+};
+
+struct SolanaInstruction {
+  string program_id;
+  array<SolanaAccountMeta> account_metas;
+  array<uint8> data;
+};
+
+struct SolanaTxData {
+  string recent_blockhash;
+  string fee_payer;
+  array<SolanaInstruction> instructions;
 };

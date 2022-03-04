@@ -92,6 +92,8 @@ static_library("browser") {
     "solana_transaction.h",
     "solana_tx_manager.cc",
     "solana_tx_manager.h",
+    "solana_tx_meta.cc",
+    "solana_tx_meta.h",
     "solana_tx_state_manager.cc",
     "solana_tx_state_manager.h",
     "swap_response_parser.cc",
