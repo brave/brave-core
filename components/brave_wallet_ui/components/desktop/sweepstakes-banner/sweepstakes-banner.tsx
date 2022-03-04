@@ -12,11 +12,10 @@ import {
     Footer
 } from './style'
 
-import GiftsIllustration from '../../../assets/svg-illustrations/gifts.svg'
 import { getLocale } from '../../../../common/locale'
 import { VisibleOnlyDuringTimeFrame } from '../../shared/visible-only-during-timeframe'
 import { LocaleRestricted } from '../../shared/locale-restricted'
-
+import SwapStakesBAYC from './SwapStakes-BAYC.png'
 interface Props {
     // for testing + storybook
     startDate?: Date
@@ -76,7 +75,7 @@ export const SweepstakesBanner = ({
                         </FooterLeftColumn>
 
                         <FooterRightColumn>
-                            <SweepStakesBannerIllustration src={GiftsIllustration} />
+                            <SweepStakesBannerIllustration src={SwapStakesBAYC} />
                         </FooterRightColumn>
                     </Footer>
 
