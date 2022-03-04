@@ -22,6 +22,7 @@ export const PopupButton = styled(WalletButton)`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  text-align: left;
   cursor: pointer;
   width: 220px;
   border-radius: 8px;
@@ -37,6 +38,7 @@ export const PopupButton = styled(WalletButton)`
 `
 
 export const PopupButtonText = styled.span`
+  flex: 1;
   font-family: Poppins;
   font-size: 13px;
   font-weight: 600;
