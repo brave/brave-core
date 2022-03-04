@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -72,7 +73,7 @@ class SidebarService : public KeyedService {
   bool IsBlockedBuiltInItem(const SidebarItem& item) const;
   void MigrateSidebarShowOptions();
 
-  PrefService* prefs_ = nullptr;
+  raw_ptr<PrefService> prefs_ = nullptr;
   std::vector<SidebarItem> items_;
   base::ObserverList<Observer> observers_;
   PrefChangeRegistrar pref_change_registrar_;
