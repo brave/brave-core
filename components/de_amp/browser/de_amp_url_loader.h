@@ -47,10 +47,7 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
   CreateLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
                const GURL& response_url,
                scoped_refptr<base::SequencedTaskRunner> task_runner,
-               DeAmpService* service,
-               network::ResourceRequest request_,
-               network::mojom::URLResponseHead* response_,
-               content::WebContents* contents);
+               DeAmpService* service);
 
  private:
   DeAmpURLLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
@@ -58,10 +55,7 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
                  mojo::PendingRemote<network::mojom::URLLoaderClient>
                      destination_url_loader_client,
                  scoped_refptr<base::SequencedTaskRunner> task_runner,
-                 DeAmpService* service,
-                 network::ResourceRequest request,
-                 network::mojom::URLResponseHead* response,
-                 content::WebContents* contents);
+                 DeAmpService* service);
 
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;
@@ -71,11 +65,7 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
   void CompleteSending() override;
   void ForwardBodyToClient();
 
-  absl::optional<std::string> referrer_policy_;
-  raw_ptr<content::WebContents> contents_;
-  network::ResourceRequest request_;
-  raw_ptr<network::mojom::URLResponseHead> response_;
-  raw_ptr<DeAmpService> de_amp_service;
+  raw_ptr<DeAmpService> de_amp_service_;
 };
 
 }  // namespace de_amp

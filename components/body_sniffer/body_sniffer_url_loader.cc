@@ -141,6 +141,7 @@ void BodySnifferURLLoader::FollowRedirect(
   // BodySnifferURLLoader starts handling the request after
   // OnReceivedResponse(). A redirect response is not expected.
   NOTREACHED();
+  source_url_loader_->FollowRedirect(removed_headers, modified_headers, modified_cors_exempt_headers, new_url);
 }
 
 void BodySnifferURLLoader::SetPriority(net::RequestPriority priority,

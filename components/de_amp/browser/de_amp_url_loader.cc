@@ -34,33 +34,6 @@ namespace {
 
 constexpr uint32_t kReadBufferSize = 65536;
 
-network::mojom::URLResponseHeadPtr CreateRedirectResponseHead(
-    const GURL& new_url,
-    const network::ResourceRequest& request) {
-  auto response_head = network::mojom::URLResponseHead::New();
-  response_head->headers = net::RedirectUtil::SynthesizeRedirectHeaders(
-        new_url,
-        net::RedirectUtil::ResponseCode::REDIRECT_307_TEMPORARY_REDIRECT,
-        "Deamp",
-        request.headers);
-  response_head->encoded_data_length = 0;
-  return response_head;
-}
-
-net::RedirectInfo CreateRedirectInfo(
-    const GURL& new_url,
-    const network::ResourceRequest& outer_request,
-    const absl::optional<std::string>& response_headers) {
-  return net::RedirectInfo::ComputeRedirectInfo(
-      "GET", outer_request.url, outer_request.site_for_cookies,
-      outer_request.update_first_party_url_on_redirect
-          ? net::RedirectInfo::FirstPartyURLPolicy::UPDATE_URL_ON_REDIRECT
-          : net::RedirectInfo::FirstPartyURLPolicy::NEVER_CHANGE_URL,
-      outer_request.referrer_policy, outer_request.referrer.spec(), 307,
-      new_url, response_headers, false /* insecure_scheme_was_upgraded */,
-      false /* copy_fragment */, false);
-}
-
 }  // namespace
 
 // static
@@ -71,10 +44,7 @@ DeAmpURLLoader::CreateLoader(
     base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
     const GURL& response_url,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
-    DeAmpService* service,
-    network::ResourceRequest request,
-    network::mojom::URLResponseHead* response,
-    content::WebContents* contents) {
+    DeAmpService* service) {
   mojo::PendingRemote<network::mojom::URLLoader> url_loader;
   mojo::PendingRemote<network::mojom::URLLoaderClient> url_loader_client;
   mojo::PendingReceiver<network::mojom::URLLoaderClient>
@@ -83,7 +53,7 @@ DeAmpURLLoader::CreateLoader(
 
   auto loader = base::WrapUnique(new DeAmpURLLoader(
       std::move(throttle), response_url, std::move(url_loader_client),
-      std::move(task_runner), service, request, response, contents));
+      std::move(task_runner), service));
   DeAmpURLLoader* loader_rawptr = loader.get();
   mojo::MakeSelfOwnedReceiver(std::move(loader),
                               url_loader.InitWithNewPipeAndPassReceiver());
@@ -97,22 +67,13 @@ DeAmpURLLoader::DeAmpURLLoader(
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
     scoped_refptr<base::SequencedTaskRunner> task_runner,
-    DeAmpService* service,
-    network::ResourceRequest request,
-    network::mojom::URLResponseHead* response,
-    content::WebContents* contents)
+    DeAmpService* service)
     : body_sniffer::BodySnifferURLLoader(
           throttle,
           response_url,
           std::move(destination_url_loader_client),
           task_runner),
-      contents_(contents),
-      request_(request),
-      response_(response),
-      de_amp_service(service) {
-  referrer_policy_ =
-      net::RedirectUtil::GetReferrerPolicyHeader(response_->headers.get());
-}
+      de_amp_service_(service) {}
 
 DeAmpURLLoader::~DeAmpURLLoader() = default;
 
@@ -135,20 +96,18 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
 void DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
   std::string canonical_link;
 
-  if (de_amp_service->FindCanonicalLinkIfAMP(buffered_body_, &canonical_link)) {
+  if (throttle_ && de_amp_service_->FindCanonicalLinkIfAMP(buffered_body_,
+                                                           &canonical_link)) {
     const GURL canonical_url(canonical_link);
-    if (!de_amp_service->VerifyCanonicalLink(canonical_url, response_url_)) {
+    if (!de_amp_service_->VerifyCanonicalLink(canonical_url, response_url_)) {
       VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
       CompleteLoading(std::move(buffered_body_));
       return;
     }
     VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
-    net::RedirectInfo redirect_info =
-        CreateRedirectInfo(canonical_url, request_, referrer_policy_);
-    destination_url_loader_client_->OnReceiveRedirect(
-        redirect_info, CreateRedirectResponseHead(canonical_url, request_));
 
-    CompleteLoading(std::move(buffered_body_));
+    Abort();
+    static_cast<DeAmpThrottle*>(throttle_.get())->Redirect(canonical_url);
     return;
   } else {
     // Did not find AMP page and/or canonical link, load original
@@ -196,7 +155,7 @@ void DeAmpURLLoader::ForwardBodyToClient() {
     case MOJO_RESULT_FAILED_PRECONDITION:
       // The pipe is closed unexpectedly. |this| should be deleted once
       // URLLoader on the destination is released.
-      BodySnifferURLLoader::Abort();
+      Abort();
       return;
     case MOJO_RESULT_SHOULD_WAIT:
       body_consumer_handle_->EndReadData(0);

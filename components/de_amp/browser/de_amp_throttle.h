@@ -28,7 +28,7 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
   explicit DeAmpThrottle(scoped_refptr<base::SequencedTaskRunner> task_runner,
                          DeAmpService* service,
                          network::ResourceRequest request,
-                         content::WebContents* contents);
+                         const content::WebContents::Getter& wc_getter);
   ~DeAmpThrottle() override;
   DeAmpThrottle& operator=(const DeAmpThrottle&);
 
@@ -36,18 +36,20 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
       scoped_refptr<base::SequencedTaskRunner> task_runner,
       DeAmpService* service,
       network::ResourceRequest request,
-      content::WebContents* contents);
+      const content::WebContents::Getter& wc_getter);
 
   // Implements blink::URLLoaderThrottle.
   void WillProcessResponse(const GURL& response_url,
                            network::mojom::URLResponseHead* response_head,
                            bool* defer) override;
 
+  void Redirect(const GURL& new_url);
+
  private:
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   raw_ptr<DeAmpService> service_;
   network::ResourceRequest request_;
-  raw_ptr<content::WebContents> contents_;  // not owned
+  content::WebContents::Getter wc_getter_;
 };
 
 }  // namespace de_amp
