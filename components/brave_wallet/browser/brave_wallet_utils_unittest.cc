@@ -722,6 +722,14 @@ TEST(BraveWalletUtilsUnitTest, GetAllChainsTest) {
   EXPECT_EQ(sol_chains[1]->chain_id, mojom::kSolanaTestnet);
   EXPECT_EQ(sol_chains[2]->chain_id, mojom::kSolanaDevnet);
   EXPECT_EQ(sol_chains[3]->chain_id, mojom::kLocalhostChainId);
+
+  // Filecoin
+  std::vector<mojom::NetworkInfoPtr> fil_chains;
+  GetAllChains(&prefs, mojom::CoinType::FIL, &fil_chains);
+  ASSERT_EQ(fil_chains.size(), 3u);
+  EXPECT_EQ(fil_chains[0]->chain_id, mojom::kFilecoinMainnet);
+  EXPECT_EQ(fil_chains[1]->chain_id, mojom::kFilecoinTestnet);
+  EXPECT_EQ(fil_chains[2]->chain_id, mojom::kLocalhostChainId);
 }
 
 TEST(BraveWalletUtilsUnitTest, GetNetworkURLTest) {
@@ -834,6 +842,15 @@ TEST(BraveWalletUtilsUnitTest, GetChain) {
   EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::SOL));
   EXPECT_EQ(GetChain(&prefs, "0x65", mojom::CoinType::SOL),
             sol_mainnet.Clone());
+
+  // Filecoin
+  mojom::NetworkInfo fil_mainnet(
+      brave_wallet::mojom::kFilecoinMainnet, "Filecoin Mainnet",
+      {"https://api.node.glif.io/rpc/v0"}, {},
+      {"https://api.node.glif.io/rpc/v0"}, "FIL", "Filecoin", 18,
+      brave_wallet::mojom::CoinType::FIL, nullptr);
+  EXPECT_FALSE(GetChain(&prefs, "0x123", mojom::CoinType::FIL));
+  EXPECT_EQ(GetChain(&prefs, "f", mojom::CoinType::FIL), fil_mainnet.Clone());
 }
 
 TEST(BraveWalletUtilsUnitTest, GetAllKnownEthNetworkIds) {
@@ -987,8 +1004,8 @@ TEST(BraveWalletUtilsUnitTest, GetCurrentChainId) {
             mojom::kMainnetChainId);
   EXPECT_EQ(GetCurrentChainId(&prefs, mojom::CoinType::SOL),
             mojom::kSolanaMainnet);
-  // TODO(spylogsster): This needs to be updated when Filecoin is added
-  EXPECT_TRUE(GetCurrentChainId(&prefs, mojom::CoinType::FIL).empty());
+  EXPECT_EQ(GetCurrentChainId(&prefs, mojom::CoinType::FIL),
+            mojom::kFilecoinMainnet);
 }
 
 }  // namespace brave_wallet
