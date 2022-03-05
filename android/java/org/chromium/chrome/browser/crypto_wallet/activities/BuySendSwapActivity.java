@@ -169,6 +169,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     private TextView mSlippageToleranceText;
     private EditText mFromValueText;
     private EditText mToValueText;
+    private EditText mSendToAddrText;
     private TextView mMarketPriceValueText;
     private TextView mFromBalanceText;
     private TextView mToBalanceText;
@@ -283,33 +284,39 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.network_spinner) {
             String item = parent.getItemAtPosition(position).toString();
-            mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
-                final String chainId = Utils.getNetworkConst(this, item, customNetworks);
 
-                if (mActivityType == ActivityType.BUY) {
-                    adjustTestFaucetControls(getPerNetworkUiInfo(chainId));
-                }
+            if (mJsonRpcService != null) {
+                mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+                    NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
+                    final String chainId = Utils.getNetworkConst(this, item, customNetworks);
 
-                if (mJsonRpcService != null) {
+                    if (mActivityType == ActivityType.BUY) {
+                        adjustTestFaucetControls(getPerNetworkUiInfo(chainId));
+                    }
+
+                    // Shall be fine regardless of activity type
+                    mFromValueText.setText("");
+                    mFromValueText.setHint("0");
+                    resetSwapFromToAssets();
+
                     mJsonRpcService.setNetwork(chainId, CoinType.ETH, (success) -> {
                         if (!success) {
                             Log.e(TAG, "Could not set network");
                         }
                         mCurrentChainId = chainId;
                     });
-                }
-                updateBalance(mCustomAccountAdapter.getTitleAtPosition(
-                                      mAccountSpinner.getSelectedItemPosition()),
-                        true);
-                // We have to call that for SWAP, to update both from and to
-                // balance
-                if (mActivityType == ActivityType.SWAP) {
                     updateBalance(mCustomAccountAdapter.getTitleAtPosition(
                                           mAccountSpinner.getSelectedItemPosition()),
-                            false);
-                }
-            });
+                            true);
+                    // We have to call that for SWAP, to update both from and to
+                    // balance
+                    if (mActivityType == ActivityType.SWAP) {
+                        updateBalance(mCustomAccountAdapter.getTitleAtPosition(
+                                              mAccountSpinner.getSelectedItemPosition()),
+                                false);
+                    }
+                });
+            }
         } else if (parent.getId() == R.id.accounts_spinner) {
             updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), true);
             // We have to call that for SWAP, to update both from and to balance
@@ -455,10 +462,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         checkBalanceShowError(response, errorResponse);
     }
 
-    private void initSwapFromToAssets() {
-        final BlockchainToken eth = Utils.createEthereumBlockchainToken();
+    private void resetSwapFromToAssets() {
+        if (mActivityType == ActivityType.BUY) return;
         if (mBlockchainRegistry != null && mCustomAccountAdapter != null
-                && mActivityType == ActivityType.SWAP && mInitialLayoutInflationComplete) {
+                && mInitialLayoutInflationComplete) {
+            final BlockchainToken eth = Utils.createEthereumBlockchainToken();
             String swapToAsset = "BAT";
 
             // Swap from
@@ -475,16 +483,18 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         });
             }
 
-            // Swap to
-            if (swapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
-                updateBuySendSwapAsset(eth.symbol, eth, false);
-            } else {
-                mBlockchainRegistry.getTokenBySymbol(
-                        BraveWalletConstants.MAINNET_CHAIN_ID, swapToAsset, token -> {
-                            if (token != null) {
-                                updateBuySendSwapAsset(token.symbol, token, false);
-                            }
-                        });
+            if (mActivityType == ActivityType.SWAP) {
+                // Swap to
+                if (swapToAsset.equals(swapFromAssetSymbol)) { // swap from BAT
+                    updateBuySendSwapAsset(eth.symbol, eth, false);
+                } else {
+                    mBlockchainRegistry.getTokenBySymbol(
+                            BraveWalletConstants.MAINNET_CHAIN_ID, swapToAsset, token -> {
+                                if (token != null) {
+                                    updateBuySendSwapAsset(token.symbol, token, false);
+                                }
+                            });
+                }
             }
         }
     }
@@ -693,16 +703,12 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             currencySign.setVisibility(View.GONE);
             toEstimateText.setText(getText(R.string.to_address));
             mToValueText.setVisibility(View.GONE);
-            EditText toSendValueText = findViewById(R.id.to_send_value_text);
-            toSendValueText.setText("");
-            toSendValueText.setHint(getText(R.string.to_address_edit));
-            mFilterTextWatcherToSend = new FilterTextWatcherToSend();
-            toSendValueText.addTextChangedListener(mFilterTextWatcherToSend);
-            mOnFocusChangeListenerToSend = new OnFocusChangeListenerToSend();
-            toSendValueText.setOnFocusChangeListener(mOnFocusChangeListenerToSend);
-
-            mFilterTextWatcherFromSendValue = new FilterTextWatcherFromSendValue();
-            mFromValueText.addTextChangedListener(mFilterTextWatcherFromSendValue);
+            mSendToAddrText = findViewById(R.id.send_to_addr_text);
+            mSendToAddrText.setText("");
+            mSendToAddrText.setHint(getText(R.string.to_address_edit));
+            mSendToAddrText.addTextChangedListener(new FilterTextWatcherSendToAddr());
+            mSendToAddrText.setOnFocusChangeListener(new OnFocusChangeListenerToSend());
+            mFromValueText.addTextChangedListener(new FilterTextWatcherFromSendValue());
 
             mBtnBuySendSwap.setText(getText(R.string.send));
             LinearLayout toBalanceSection = findViewById(R.id.to_balance_section);
@@ -722,7 +728,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
             });
         } else if (mActivityType == ActivityType.SWAP) {
-            LinearLayout toSendSection = findViewById(R.id.to_send_section);
+            LinearLayout toSendSection = findViewById(R.id.send_to_section);
             toSendSection.setVisibility(View.GONE);
             currencySign.setVisibility(View.GONE);
             mToValueText.setText("");
@@ -744,12 +750,9 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 } else {
                     toleranceSubSection.setVisibility(View.VISIBLE);
                 }
-                findViewById(R.id.slippage_per_05_radiobutton)
-                        .setEnabled(visibility != View.VISIBLE);
-                findViewById(R.id.slippage_per_1_radiobutton)
-                        .setEnabled(visibility != View.VISIBLE);
-                findViewById(R.id.slippage_per_2_radiobutton)
-                        .setEnabled(visibility != View.VISIBLE);
+                for (int i = 0; i < radioSlippageTolerance.getChildCount(); i++) {
+                    radioSlippageTolerance.getChildAt(i).setEnabled(visibility != View.VISIBLE);
+                }
                 findViewById(R.id.slippage_value_text).setEnabled(visibility != View.VISIBLE);
             });
             radioSlippageTolerance.setOnCheckedChangeListener(
@@ -806,8 +809,8 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             });
             ImageView refreshPrice = findViewById(R.id.refresh_price);
             refreshPrice.setOnClickListener(v -> { getSendSwapQuota(true, false); });
-            mFromValueText.addTextChangedListener(filterTextWatcherFrom);
-            mToValueText.addTextChangedListener(filterTextWatcherTo);
+            mFromValueText.addTextChangedListener(getTextWatcherFromToValueText(true));
+            mToValueText.addTextChangedListener(getTextWatcherFromToValueText(false));
             findViewById(R.id.brave_fee).setVisibility(View.VISIBLE);
             TextView dexAggregator = findViewById(R.id.dex_aggregator);
             dexAggregator.setVisibility(View.VISIBLE);
@@ -842,7 +845,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
                 return false;
             });
-            initSwapFromToAssets();
+            resetSwapFromToAssets();
         }
 
         mBtnBuySendSwap.setOnClickListener(v -> {
@@ -851,8 +854,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             // TODO(sergz): Some kind of validation that we have enough balance
             String value = mFromValueText.getText().toString();
             if (mActivityType == ActivityType.SEND) {
-                EditText toSendValueText = findViewById(R.id.to_send_value_text);
-                String to = toSendValueText.getText().toString();
+                String to = mSendToAddrText.getText().toString();
                 if (to.isEmpty()) {
                     return;
                 }
@@ -1073,8 +1075,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
                 RelativeLayout relativeLayout = findViewById(R.id.camera_layout);
                 relativeLayout.setVisibility(View.GONE);
-                EditText toSendText = findViewById(R.id.to_send_value_text);
-                toSendText.setText(barcodeValue);
+                mSendToAddrText.setText(barcodeValue);
             }
         });
     }
@@ -1094,6 +1095,23 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         super.onBackPressed();
     }
 
+    private TextWatcher getTextWatcherFromToValueText(boolean from) {
+        return new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mFromValueText.hasFocus()) {
+                    getSendSwapQuota(from, false);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+    }
+
     private TextWatcher filterTextWatcherFrom = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -1109,25 +1127,10 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         public void afterTextChanged(Editable s) {}
     };
 
-    private TextWatcher filterTextWatcherTo = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (mToValueText.hasFocus()) {
-                getSendSwapQuota(false, false);
-            }
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-
-    private class FilterTextWatcherToSend implements TextWatcher {
+    private class FilterTextWatcherSendToAddr implements TextWatcher {
         Validations.SendToAccountAddress mValidator;
 
-        public FilterTextWatcherToSend() {
+        public FilterTextWatcherSendToAddr() {
             mValidator = new Validations.SendToAccountAddress();
         }
 
@@ -1149,7 +1152,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         @Override
         public void afterTextChanged(Editable s) {}
     }
-    private FilterTextWatcherToSend mFilterTextWatcherToSend;
 
     private class OnFocusChangeListenerToSend implements OnFocusChangeListener {
         Validations.SendToAccountAddress mValidator;
@@ -1178,7 +1180,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             }
         }
     }
-    private OnFocusChangeListenerToSend mOnFocusChangeListenerToSend;
 
     private class FilterTextWatcherFromSendValue implements TextWatcher {
         public FilterTextWatcherFromSendValue() {}
@@ -1204,7 +1205,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         @Override
         public void afterTextChanged(Editable s) {}
     }
-    private FilterTextWatcherFromSendValue mFilterTextWatcherFromSendValue;
 
     private void activateErc20Allowance() {
         assert mAllowanceTarget != null && !mAllowanceTarget.isEmpty();
@@ -1467,7 +1467,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 }
 
                 // updateBuySendSwapAsset needs mCustomAccountAdapter to be initialized
-                initSwapFromToAssets();
+                resetSwapFromToAssets();
             });
         }
     }
