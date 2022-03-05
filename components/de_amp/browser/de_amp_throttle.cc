@@ -86,15 +86,8 @@ void DeAmpThrottle::Redirect(const GURL& new_url) {
   params.initiator_origin = request_.request_initiator;
   params.user_gesture = request_.has_user_gesture;
 
-  // NavigationHandle will include all redirects that happened on the way to the
-  // the current page in its redirect chain, including the current page itself
-  // as the last entry. However OpenURLParams's redirect chain should only
-  // include redirects that occurred before the current page. We need to remove
-  // the last entry from the redirect chain when initializing the
-  // OpenURLParams.
   auto redirect_chain = request_.navigation_redirect_chain;
   DCHECK(redirect_chain.size());
-  redirect_chain.pop_back();
   params.redirect_chain = std::move(redirect_chain);
 
   base::SequencedTaskRunnerHandle::Get()->PostTask(
