@@ -12,7 +12,7 @@ import {
     Footer
 } from './style'
 
-import GiftsIllustration from '../../../assets/svg-illustrations/gifts.svg'
+import SwapStakesBAYC from '../../../assets/png-icons/swapstakes-bayc.png'
 import { getLocale } from '../../../../common/locale'
 import { VisibleOnlyDuringTimeFrame } from '../../shared/visible-only-during-timeframe'
 import { LocaleRestricted } from '../../shared/locale-restricted'
@@ -76,7 +76,7 @@ export const SweepstakesBanner = ({
                         </FooterLeftColumn>
 
                         <FooterRightColumn>
-                            <SweepStakesBannerIllustration src={GiftsIllustration} />
+                            <SweepStakesBannerIllustration src={SwapStakesBAYC} />
                         </FooterRightColumn>
                     </Footer>
 

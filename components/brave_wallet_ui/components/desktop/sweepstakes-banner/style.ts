@@ -5,9 +5,9 @@ export const Card = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-    background: ${(p) => p.theme.color.background01};
+    background: #D8CBB2;
     border-radius: 8px;
-    border: 2px solid ${(p) => p.theme.color.divider01};
+    border: 2px solid #5B4F40;
     padding-left: 16px;
     padding-right: 8px;
     margin-top: 16px;
@@ -34,7 +34,7 @@ export const Title = styled.h2`
     margin-top: 4px;
     margin-bottom: 4px;
     word-wrap: no-wrap;
-    color: ${(p) => p.theme.color.text01};
+    color: #212529;
 `
 
 export const Footer = Row
@@ -51,7 +51,7 @@ export const BodyText = styled.span`
     font-size: 12px;
     line-height: 18px;
     letter-spacing: 0.01em;
-    color: ${(p) => p.theme.color.text01};
+    color: #212529;
 `
 
 export const FooterLeftColumn = styled(Column)`
@@ -61,8 +61,7 @@ export const FooterLeftColumn = styled(Column)`
 export const FooterRightColumn = styled(Column)`
     align-items: flex-end;
     justify-content: flex-end;
-    padding-right: 24px;
-    padding-left: 16px;
+    padding-bottom: 8px;
 `
 
 export const LearnMoreLink = styled.a`
@@ -72,7 +71,7 @@ export const LearnMoreLink = styled.a`
     font-size: 12px;
     line-height: 20px;
     text-decoration: none;
-    color: ${(p) => p.theme.color.interactive05};
+    color: #5B4F40;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -80,7 +79,8 @@ export const LearnMoreLink = styled.a`
 `
 
 export const SweepStakesBannerIllustration = styled.img`
-    width: 60px;
-    height: 36px;
+    width: 81px;
+    height: 74px;
+    margin-top: -8px;
     align-self: flex-end;
 `
