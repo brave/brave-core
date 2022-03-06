@@ -271,7 +271,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         More Brave Offers
       </message>
       <message name="IDS_NEWS_TURN_ON_BUTTON" desc="Text for turn on button">
-        Show Brave News
+        Enable Brave News
       </message>
 <!--   // for RSS
       <message name="IDS_NEWS_YOUR_SOURCES_SECTION" desc="Text for custom sources section">
