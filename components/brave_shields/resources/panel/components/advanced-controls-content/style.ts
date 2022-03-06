@@ -1,61 +1,73 @@
 import styled from 'styled-components'
-import globalIconUrl from '../../../../../web-components/icons/globe.svg'
-import listsIconUrl from '../../../../../web-components/icons/lists.svg'
-import { CaratStrongDownIcon } from 'brave-ui/components/icons'
 
 export const SettingsBox = styled.div`
-  padding: 17px 22px;
+  padding: 17px;
+`
 
-  a {
+export const FooterActionBox = styled.div`
+  padding: 17px 22px;
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  grid-gap: 10px;
+
+  div {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    grid-gap: inherit;
+  }
+
+  button {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border:0;
+    color: ${(p) => p.theme.color.interactive05};
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 500;
     text-decoration: none;
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
+  }
+  
+  i {
+    display: block;
+    width: 17px;
+    height: 17px;
+    margin: 0 6px;
   }
 `
 
-export const SettingsTitle = styled.div`
-  color: ${(p) => p.theme.color.text02};
-  font-family: ${(p) => p.theme.fontFamily.heading};
-  font-size: 12px;
-  letter-spacing: 0.01em;
-  margin-bottom: 14px;
-`
+export const SettingsDesc = styled.section`
+  display: grid;
+  grid-template-columns: 24px 1fr 24px;
+  grid-gap: 10px;
+  padding: 14px 0 0 0;
 
-export const SettingsDesc = styled(SettingsTitle)`
-  color: ${(p) => p.theme.color.text03};
-`
-
-export const GlobeIcon = styled.i`
-  display: block;
-  width: 17px;
-  height: 17px;
-  background-image: url(${globalIconUrl});
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top;
-  margin-right: 5px;
-`
-
-export const ListIcon = styled(GlobeIcon)`
-  height: 12px;
-  background-image: url(${listsIconUrl});
+  p {
+    grid-column: 2;
+    margin: 0;
+    font-size: 12px;
+    color: ${(p) => p.theme.color.text03};
+  }
 `
 
 export const ControlGroup = styled.div`
-  display: flex;
+  display: grid;
+  grid-gap: 15px;
+  grid-template-columns: 24px 1fr 30px;
+  grid-gap: 10px;
   align-items: center;
-  margin-bottom: 22px;
-
-  select,
+  margin-bottom: 8px;
+  
+  .col-2,
   label {
+    grid-column: 2;
     width: 100%;
+  }
+
+  button {
+    grid-column: 3;
   }
 
   label {
@@ -65,6 +77,7 @@ export const ControlGroup = styled.div`
     font-family: ${(p) => p.theme.fontFamily.heading};
     font-size: 12px;
     color: ${(p) => p.theme.color.text01};
+    text-indent: 8px;
 
     span {
       margin-right: 5px;
@@ -72,27 +85,31 @@ export const ControlGroup = styled.div`
   }
 `
 
-export const ControlCount = styled.button`
+export const CountButton = styled.button`
   background-color: transparent;
   border: 0;
   padding: 0;
-  display: inline-flex;
-  align-items: center;
+  text-align: right;
   font-family: ${(p) => p.theme.fontFamily.heading};
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 500;
   color: ${(p) => p.theme.color.interactive05};
-  width: 48px;
+  padding: 5px 6px;
+  max-width: 100%;
+  border-radius: 4px;
+  border: 2px solid transparent;
+
+  &:hover {
+    background-color: ${(p) => p.theme.color.disabled};
+  }
+
+  &:focus-visible {
+    border-color: ${(p) => p.theme.color.focusBorder};
+  }
 
   &:disabled,
   [disabled] {
     color: ${(p) => p.theme.color.disabled};
   }
 
-`
-
-export const CaratDown = styled(CaratStrongDownIcon)`
-  width: 18px;
-  height: auto;
-  margin-right: 5px;
 `

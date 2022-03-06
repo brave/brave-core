@@ -4,9 +4,6 @@ import { Size, Brand } from './index'
 interface ToggleProps {
   isOn: boolean
   size?: Size
-}
-
-interface FLToggleProps extends ToggleProps {
   brand?: Brand
 }
 
@@ -62,8 +59,8 @@ export const ToggleBox = styled.button.attrs<ToggleProps>({
   `}
 
   ${p => !p.isOn && css`
-      --knob-left: 2px;
-      --knob-right: initial;
+    --knob-left: 2px;
+    --knob-right: initial;
   `}
 
   // size variants
@@ -77,6 +74,41 @@ export const ToggleBox = styled.button.attrs<ToggleProps>({
         --knob-height: 16px;
         --knob-border-width: 2px;
       `
+    }
+
+    return css``
+  }}
+
+  // brand variants
+  ${({ brand, isOn }) => {
+    if (!isOn) return
+
+    if (brand === 'vpn') {
+      return css`
+        --knob-color: white;
+        --bg-color: linear-gradient(
+            135deg,
+            #381e85 0%,
+            #6845d1 30%,
+            #737ade 100%,
+            #4d56d0 75%,
+            #0e1bd1 100%
+          );
+      `
+    }
+
+    if (brand === 'shields') {
+      return css`
+        --knob-color: white;
+        --bg-color: linear-gradient(
+            305.95deg,
+            #BF14A2 0%,
+            #F73A1C 98.59%,
+            #737ade 100%,
+            #4d56d0 75%,
+            #0e1bd1 100%
+          );
+        `
     }
 
     return css``
@@ -117,45 +149,11 @@ export const ToggleBox = styled.button.attrs<ToggleProps>({
   }
 `
 
-export const FLToggleBox = styled(ToggleBox)<FLToggleProps>`
+export const FLToggleBox = styled(ToggleBox)<ToggleProps>`
   --width: 96px;
   --height: 50px;
   --border-width: 3px;
   --knob-width: 40px;
   --knob-height: 40px;
   --knob-border-width: 2px;
-
-  ${({ brand, isOn }) => {
-    if (!isOn) return
-
-    if (brand === 'vpn') {
-      return css`
-        --knob-color: white;
-        --bg-color: linear-gradient(
-            135deg,
-            #381e85 0%,
-            #6845d1 30%,
-            #737ade 100%,
-            #4d56d0 75%,
-            #0e1bd1 100%
-          );
-      `
-    }
-
-    if (brand === 'shields') {
-      return css`
-        --knob-color: white;
-        --bg-color: linear-gradient(
-            305.95deg,
-            #BF14A2 0%,
-            #F73A1C 98.59%,
-            #737ade 100%,
-            #4d56d0 75%,
-            #0e1bd1 100%
-          );
-        `
-    }
-
-    return css``
-  }}
 `

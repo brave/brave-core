@@ -41,6 +41,8 @@ class ShieldsPanelUI : public ui::MojoBubbleWebUIController,
   mojo::Receiver<brave_shields::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};
 
+  raw_ptr<Profile> profile_;
+
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 

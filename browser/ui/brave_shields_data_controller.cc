@@ -100,6 +100,14 @@ bool BraveShieldsDataController::GetBraveShieldsEnabled() {
   return brave_shields::GetBraveShieldsEnabled(map, GetCurrentSiteURL());
 }
 
+void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(
+      web_contents()->GetBrowserContext());
+
+  brave_shields::SetBraveShieldsEnabled(map, is_enabled, GetCurrentSiteURL());
+  ReloadWebContents();
+}
+
 GURL BraveShieldsDataController::GetCurrentSiteURL() {
   return web_contents()->GetLastCommittedURL();
 }

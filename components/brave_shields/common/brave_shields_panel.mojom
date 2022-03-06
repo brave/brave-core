@@ -39,6 +39,7 @@ interface DataHandler {
   SetCookieBlockMode(CookieBlockMode mode);
   SetIsNoScriptsEnabled(bool is_enabled);
   SetHTTPSEverywhereEnabled(bool is_enabled);
+  SetBraveShieldsEnabled(bool is_enabled);
 };
 
 struct SiteBlockInfo {

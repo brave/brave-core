@@ -47,6 +47,7 @@ class BraveShieldsDataController
   std::vector<GURL> GetJsList();
   std::vector<GURL> GetFingerprintsList();
   bool GetBraveShieldsEnabled();
+  void SetBraveShieldsEnabled(bool is_enabled);
   GURL GetCurrentSiteURL();
 
   AdBlockMode GetAdBlockMode();

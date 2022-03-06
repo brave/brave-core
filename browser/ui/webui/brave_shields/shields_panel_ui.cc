@@ -19,11 +19,16 @@
 #include "content/public/browser/web_ui.h"
 
 ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
-    : ui::MojoBubbleWebUIController(web_ui, true) {
+    : ui::MojoBubbleWebUIController(web_ui, true),
+      profile_(Profile::FromWebUI(web_ui)) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(kShieldsPanelHost);
 
   source->AddLocalizedStrings(brave_shields::kLocalizedStrings);
+
+  content::URLDataSource::Add(
+      profile_, std::make_unique<FaviconSource>(
+                    profile_, chrome::FaviconUrlFormat::kFavicon2));
 
   webui::SetupWebUIDataSource(source,
                               base::make_span(kBraveShieldsPanelGenerated,

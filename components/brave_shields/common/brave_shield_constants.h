@@ -46,6 +46,7 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveShields", IDS_BRAVE_SHIELDS},
     {"braveShieldsEnable", IDS_BRAVE_SHIELDS_ENABLE},
     {"braveShieldsUp", IDS_BRAVE_SHIELDS_UP},
+    {"braveShieldsDown", IDS_BRAVE_SHIELDS_DOWN},
     {"braveShieldsBroken", IDS_BRAVE_SHIELDS_BROKEN},
     {"braveShieldsBlockedNote", IDS_BRAVE_SHIELDS_BLOCKED_NOTE},
     {"braveShieldsAdvancedCtrls", IDS_BRAVE_SHIELDS_ADVANCED_CTRLS},
@@ -79,6 +80,9 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_SHIELDS_FINGERPRINTING_BLOCKED_AGG},
     {"braveShieldsFingerprintingAllowAll",
      IDS_BRAVE_SHIELDS_FINGERPRINTING_ALLOW_ALL},
+    {"braveShieldsReportSite", IDS_BRAVE_SHIELDS_REPORT_SITE},
+    {"braveShieldsReportSiteDesc", IDS_BRAVE_SHIELDS_REPORT_SITE_DESC},
+    {"braveShieldsDownDesc", IDS_BRAVE_SHIELDS_DOWN_DESC},
 };
 
 }  // namespace brave_shields
