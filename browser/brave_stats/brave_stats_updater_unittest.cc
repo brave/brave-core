@@ -656,7 +656,7 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   url = params->GetUpdateURL(base_url, "", "", "");
   EXPECT_TRUE(url.query().find("daily=true&weekly=true&monthly=true") !=
               std::string::npos);
-  EXPECT_TRUE(url.query().find("wallet=0") != std::string::npos);
+  EXPECT_TRUE(url.query().find("wallet2=0") != std::string::npos);
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(1));
@@ -666,7 +666,7 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   url = params->GetUpdateURL(base_url, "", "", "");
   EXPECT_NE(url.query().find("daily=true&weekly=false&monthly=false"),
             std::string::npos);
-  EXPECT_NE(url.query().find("wallet=7"), std::string::npos);
+  EXPECT_NE(url.query().find("wallet2=7"), std::string::npos);
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(6));
@@ -675,7 +675,7 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   url = params->GetUpdateURL(base_url, "", "", "");
   EXPECT_NE(url.query().find("daily=true&weekly=true&monthly=false"),
             std::string::npos);
-  EXPECT_NE(url.query().find("wallet=3"), std::string::npos);
+  EXPECT_NE(url.query().find("wallet2=3"), std::string::npos);
   params->SavePrefs();
 
   task_environment_.AdvanceClock(base::Days(1));
@@ -684,7 +684,7 @@ TEST_F(BraveStatsUpdaterTest, UsageURLFlags) {
   url = params->GetUpdateURL(base_url, "", "", "");
   EXPECT_NE(url.query().find("daily=true&weekly=false&monthly=false"),
             std::string::npos);
-  EXPECT_NE(url.query().find("wallet=1"), std::string::npos);
+  EXPECT_NE(url.query().find("wallet2=1"), std::string::npos);
   params->SavePrefs();
 }
 
