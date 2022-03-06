@@ -105,8 +105,11 @@ std::string BraveStatsUpdaterParams::GetProcessArchParam() const {
 }
 
 std::string BraveStatsUpdaterParams::GetWalletEnabledParam() const {
-  uint8_t usage_bitset = UsageBitfieldFromTimestamp(
-      wallet_last_unlocked_, last_reported_wallet_unlock_);
+  uint8_t usage_bitset = 0;
+  if (wallet_last_unlocked_ > last_reported_wallet_unlock_) {
+    usage_bitset = UsageBitfieldFromTimestamp(wallet_last_unlocked_,
+                                              last_reported_wallet_unlock_);
+  }
   return std::to_string(usage_bitset);
 }
 
@@ -219,7 +222,7 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
   update_url =
       net::AppendQueryParameter(update_url, "arch", GetProcessArchParam());
   update_url =
-      net::AppendQueryParameter(update_url, "wallet", GetWalletEnabledParam());
+      net::AppendQueryParameter(update_url, "wallet2", GetWalletEnabledParam());
   return update_url;
 }
 
