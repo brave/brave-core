@@ -21,9 +21,9 @@ export function MonthlyTipView (props: Props) {
   const { getString } = React.useContext(LocaleContext)
   const [showActions, setShowActions] = React.useState(false)
 
-  const { monthlyContribution } = props.publisherInfo
+  const { monthlyTip } = props.publisherInfo
 
-  if (monthlyContribution <= 0) {
+  if (monthlyTip <= 0) {
     return (
       <style.root>
         <style.setBox>
@@ -51,7 +51,7 @@ export function MonthlyTipView (props: Props) {
             data-test-id='monthly-tip-actions-button'
           >
             <TokenAmount
-              amount={monthlyContribution}
+              amount={monthlyTip}
               minimumFractionDigits={0}
             /> <CaretIcon direction='down' />
           </button>

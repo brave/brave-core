@@ -18,7 +18,7 @@ import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
-import MonthlyContributionBox from './monthlyContributionBox'
+import MonthlyTipsBox from './monthlyTipsBox'
 import { SettingsOptInForm, RewardsTourModal, RewardsTourPromo } from '../../shared/components/onboarding'
 import { TourPromoWrapper } from './style'
 
@@ -477,8 +477,8 @@ class SettingsPage extends React.Component<Props, State> {
         />
         <AdsBox />
         <ContributeBox />
-        <MonthlyContributionBox />
         <TipBox />
+        <MonthlyTipsBox />
       </>
     )
   }

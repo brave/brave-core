@@ -253,7 +253,7 @@ export const autoContribution = styled.div`
   }
 `
 
-export const monthlyContribution = styled.div`
+export const monthlyTip = styled.div`
   margin-top: 4px;
   display: flex;
 

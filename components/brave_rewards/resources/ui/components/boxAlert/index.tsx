@@ -75,7 +75,7 @@ export default class BoxAlert extends React.PureComponent<Props, State> {
               {getLocale('pinnedSitesHeader')}
             </StyledMessage>
             <StyledMonthlyTips modal={true}>
-              {getLocale('monthlyTips')}
+              {getLocale('monthlyTipsBang')}
             </StyledMonthlyTips>
             <StyledListMessage>
               {getLocale('pinnedSitesMsg')}
@@ -126,7 +126,7 @@ export default class BoxAlert extends React.PureComponent<Props, State> {
                   {getLocale('reviewSitesMsg')}
                 </StyledMessage>
                 <StyledMonthlyTips>
-                  {getLocale('monthlyTips')}
+                  {getLocale('monthlyTipsBang')}
                 </StyledMonthlyTips>
               </>
             : <StyledMessage>

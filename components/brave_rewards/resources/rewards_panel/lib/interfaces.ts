@@ -27,7 +27,7 @@ export interface PublisherInfo {
   registered: boolean
   attentionScore: number
   autoContributeEnabled: boolean
-  monthlyContribution: number
+  monthlyTip: number
   supportedWalletProviders: ExternalWalletProvider[]
 }
 

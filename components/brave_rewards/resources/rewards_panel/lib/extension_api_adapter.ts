@@ -323,7 +323,7 @@ function defaultPublisherInfo (url: string) {
     registered: false,
     attentionScore: 0,
     autoContributeEnabled: true,
-    monthlyContribution: 0,
+    monthlyTip: 0,
     supportedWalletProviders: []
   }
 }
@@ -425,7 +425,7 @@ export async function getPublisherInfo (tabId: number) {
     registered,
     attentionScore: Number(publisher.percentage) / 100 || 0,
     autoContributeEnabled: !publisher.excluded,
-    monthlyContribution: await getMonthlyTipAmount(publisherKey),
+    monthlyTip: await getMonthlyTipAmount(publisherKey),
     supportedWalletProviders
   }
 

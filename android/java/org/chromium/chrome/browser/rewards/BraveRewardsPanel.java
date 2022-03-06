@@ -1373,18 +1373,17 @@ public class BraveRewardsPanel
 
     private void updateMonthlyContributionUI() {
         String pubId = mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId);
-        TextView monthlyContributionText =
-                mPopupView.findViewById(R.id.monthly_contribution_set_text);
+        TextView monthlyTipText = mPopupView.findViewById(R.id.monthly_contribution_set_text);
         double recurrentAmount =
                 mBraveRewardsNativeWorker.GetPublisherRecurrentDonationAmount(pubId);
         if (mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId)) {
-            monthlyContributionText.setText(String.format(
+            monthlyTipText.setText(String.format(
                     mPopupView.getResources().getString(R.string.brave_rewards_bat_value_text),
                     (int) recurrentAmount));
-            monthlyContributionText.setCompoundDrawablesWithIntrinsicBounds(
+            monthlyTipText.setCompoundDrawablesWithIntrinsicBounds(
                     0, 0, R.drawable.ic_carat_down, 0);
         }
-        monthlyContributionText.setOnClickListener(new View.OnClickListener() {
+        monthlyTipText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId)) {
@@ -1401,10 +1400,9 @@ public class BraveRewardsPanel
                             if (item.getItemId() == R.id.change_amount_menu_id) {
                                 openBannerActivity();
                             } else {
-                                monthlyContributionText.setText(
+                                monthlyTipText.setText(
                                         mPopupView.getResources().getString(R.string.set));
-                                monthlyContributionText.setCompoundDrawablesWithIntrinsicBounds(
-                                        0, 0, 0, 0);
+                                monthlyTipText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                                 mBraveRewardsNativeWorker.RemoveRecurring(pubId);
                             }
                             return true;

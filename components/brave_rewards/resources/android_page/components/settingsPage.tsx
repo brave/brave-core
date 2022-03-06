@@ -18,7 +18,7 @@ import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
-import MonthlyContributionBox from './monthlyContributionBox'
+import MonthlyTipsBox from './monthlyTipsBox'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
@@ -372,8 +372,8 @@ class SettingsPage extends React.Component<Props, State> {
         <MainToggleMobile />
         <AdsBox />
         <ContributeBox />
-        <MonthlyContributionBox />
         <TipBox />
+        <MonthlyTipsBox />
       </>
     )
   }
