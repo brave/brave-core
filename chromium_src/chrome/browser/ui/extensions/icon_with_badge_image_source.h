@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_EXTENSIONS_ICON_WITH_BADGE_IMAGE_SOURCE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_EXTENSIONS_ICON_WITH_BADGE_IMAGE_SOURCE_H_
 
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
 class BraveActionIconWithBadgeImageSource;
 
 #define BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_H_            \
