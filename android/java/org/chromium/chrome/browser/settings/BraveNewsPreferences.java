@@ -6,6 +6,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
 
@@ -227,6 +228,10 @@ public class BraveNewsPreferences extends BravePreferenceFragment
                 mShowNews.setVisible(false);
             }
         } else if (PREF_SHOW_NEWS.equals(key)) {
+            SharedPreferences.Editor sharedPreferencesEditor =
+                    ContextUtils.getAppSharedPreferences().edit();
+            sharedPreferencesEditor.putBoolean(BraveNewsPreferences.PREF_SHOW_OPTIN, false);
+            sharedPreferencesEditor.apply();
             BravePrefServiceBridge.getInstance().setShowNews((boolean) newValue);
         } else if (PREF_RSS_SOURCES.equals(key)) {
             if (((String) newValue).equals("")) {
