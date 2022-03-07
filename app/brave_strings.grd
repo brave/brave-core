@@ -181,6 +181,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <output filename="java/res/values-zh-rHK/chromium_strings.xml" lang="zh-HK" type="android" context="android_java" />
       <output filename="java/res/values-zh-rTW/chromium_strings.xml" lang="zh-TW" type="android" context="android_java" />
       <output filename="java/res/values-zu/chromium_strings.xml" lang="zu" type="android" context="android_java" />
+      <!-- Pseudolocales -->
+      <output filename="java/res/values-ar-rXB/chromium_strings.xml" lang="ar-XB" type="android" context="android_java" />
+      <output filename="java/res/values-en-rXA/chromium_strings.xml" lang="en-XA" type="android" context="android_java" />
     </if>
 
     <!-- Pseudolocales -->
@@ -310,8 +313,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           Chrome OS
         </message>
       </if>
-      <!-- Brave enterprise logo won't be used in Brave -->
-      <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image." />
+      <message name="IDS_PRODUCT_LOGO_ENTERPRISE_ALT_TEXT" desc="Alt text for the Brave Enterprise logo image." formatter_data="android_java">
+        Brave Enterprise logo
+      </message>
       <if expr="is_win">
         <message name="IDS_SHORTCUT_NEW_WINDOW" desc="The text label of the New window shortcut context menu entry as of Windows 8">
           New window
@@ -1279,7 +1283,7 @@ Permissions you've already given to websites and apps may apply to this account.
         </message>
       </if>
       <!-- Brave parent extension/app install blocking dialog. -->
-      <if expr="chromeos">
+      <if expr="enable_extensions and enable_supervised_users">
         <message name="IDS_EXTENSION_INSTALL_BLOCKED_BY_PARENT_PROMPT_MESSAGE" desc="Text for the dialog indicating that a parent has blocked extensions and apps.">
          Your parent has turned off "Permissions for sites, apps and extensions" for Brave. Adding this <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph> is not allowed.
         </message>

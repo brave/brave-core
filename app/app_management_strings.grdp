@@ -52,6 +52,9 @@
   <message name="IDS_APP_MANAGEMENT_RUN_ON_OS_LOGIN" desc="Label for toggling running on OS Login mode.">
     Start app when you sign in
   </message>
+  <message name="IDS_APP_MANAGEMENT_FILE_HANDLING_HEADER" desc="Main text for toggling running on OS Login mode.">
+    Suggest app when opening files on your computer
+  </message>
   <message name="IDS_APP_MANAGEMENT_POLICY_APP_POLICY_STRING" desc="Tooltip label explaining that an app cannot be uninstalled as it has been installed by an adminstrator.">
     This app has been installed by your administrator.
   </message>
@@ -108,5 +111,17 @@
   </message>
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TITLE" desc="Title for App Details Section">
     App details
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_ANDROID" desc="Text for Android app type">
+    Android App
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_CHROME" desc="Text for Brave app type">
+    Brave App
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_WEB" desc="Text for Web app type">
+    Web App
+  </message>
+  <message name="IDS_APP_MANAGEMENT_APP_DETAILS_TYPE_SYSTEM" desc="Text for System app type">
+    System App
   </message>
 </grit-part>

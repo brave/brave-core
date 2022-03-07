@@ -2687,6 +2687,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_FORGET" desc="Settings &gt; Internet &gt; Known networks &gt; Dropdown menu item to forget a known network.">
     Forget
   </message>
+  <message name="IDS_SETTINGS_INTERNET_KNOWN_NETWORKS_MENU_BUTTON_TITLE" desc="Settings &gt; Internet &gt; Known networks &gt; Item &gt; Title for button that opens dropdown menu for the network.">
+    More actions for <ph name="NETWORK_NAME">$1<ex>Brave-A</ex></ph>
+  </message>
   <message name="IDS_SETTINGS_SETTINGS_NETWORK_ALLOW_DATA_ROAMING" desc="Settings &gt; Internet &gt; Network details: Toggle label to allow mobile data roaming.">
     Allow mobile data roaming
   </message>
@@ -2863,6 +2866,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_PRIMARY_USER_CONTROLLED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network configuration is controlled by the primary user.">
     Network configuration is controlled by <ph name="USER_EMAIL">$1<ex>joe@gmail.com</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_A11Y_MANAGED_BY_ADMINISTRATOR" desc="Settings &gt; Internet &gt; Network details: A11Y label for managed by administrator icon, indicating which network settings is being managed by an administrator">
+    <ph name="NETWORK_NAME">$1<ex>Brave-A</ex></ph> is managed by your administrator
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SECTION_ADVANCED" desc="Settings &gt; Internet &gt; Network details: Advanced section label.">
     Advanced
@@ -4066,13 +4072,11 @@ Press an assigned switch or key to remove assignment.
   </message>
 
    <!-- Apps > Manage your apps > Borealis -->
-   <!-- TODO(b/194640944): Replace "borealis" string before launch -->
-  <message name="IDS_SETTINGS_APPS_BOREALIS_MAIN_PERMISSION_TEXT" translateable="false" desc="Describes how Borealis permissions are applied on main app with learn more link.">
-    Permission settings applied here are applied across all Borealis apps. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_APPS_BOREALIS_MAIN_PERMISSION_TEXT" desc="Description in Steam (name of app, manages other apps) settings page.">
+    Permissions allowed for Steam apply to all Steam games and apps.
   </message>
-  <message name="IDS_SETTINGS_APPS_BOREALIS_APP_PERMISSION_TEXT" translateable="false" desc="Link to main Borealis app from other borealis apps.">
-    Permissions for apps installed by Borealis are managed via the <ph name="LINK_BEGIN">&lt;a&gt;</ph>Borealis app settings<ph name="LINK_END">&lt;/a&gt;</ph>.
-    Borealis permission settings are applied across all Borealis applications.
+  <message name="IDS_SETTINGS_APPS_BOREALIS_APP_PERMISSION_TEXT" desc="Description on settings page for apps that are managed by Steam (name of app). Link to Steam app settings page where permissions can be changed.">
+    Permissions for games and apps installed via Steam can be managed in the <ph name="LINK_BEGIN">&lt;a&gt;</ph>Steam app settings<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
 
   <!-- Apps > Manage your apps > Parallels -->

@@ -186,6 +186,9 @@ are declared in tools/grit/grit_rule.gni.
       <output filename="java/res/values-zh-rHK/generated_resources.xml" lang="zh-HK" type="android" context="android_java" />
       <output filename="java/res/values-zh-rTW/generated_resources.xml" lang="zh-TW" type="android" context="android_java" />
       <output filename="java/res/values-zu/generated_resources.xml" lang="zu" type="android" context="android_java" />
+      <!-- Pseudolocales -->
+      <output filename="java/res/values-ar-rXB/generated_resources.xml" lang="ar-XB" type="android" context="android_java" />
+      <output filename="java/res/values-en-rXA/generated_resources.xml" lang="en-XA" type="android" context="android_java" />
     </if>
 
     <!-- Pseudolocales -->
@@ -6613,6 +6616,26 @@ Keep your key file in a safe place. You will need it to create new versions of y
         To create a highlight like this one, select any text and right-click.
       </message>
 
+      <!-- User Education Tutorial Strings -->
+      <message name="IDS_TUTORIAL_TAB_GROUP_ADD_TAB_TO_GROUP" desc="The description of the add tab step in the tab group tutorial">
+        Right-Click on a Tab and select "Add Tab To New Group"
+      </message>
+      <message name="IDS_TUTORIAL_TAB_GROUP_EDIT_BUBBLE" desc="The description of the editor bubble step in the tab group tutorial">
+        Name your group and choose a color
+      </message>
+      <message name="IDS_TUTORIAL_TAB_GROUP_DRAG_TAB" desc="The description of the drag step in the tab group tutorial">
+        Try dragging other open tabs to your group
+      </message>
+      <message name="IDS_TUTORIAL_TAB_GROUP_COLLAPSE" desc="The description of the expand collapse step in the tab group tutorial">
+        Click the group name to expand or collapse it
+      </message>
+      <message name="IDS_TUTORIAL_TAB_GROUP_SUCCESS_TITLE" desc="The title of the success step in the tab group tutorial">
+        Nicely Done!
+      </message>
+      <message name="IDS_TUTORIAL_TAB_GROUP_SUCCESS_DESCRIPTION" desc="The description of the success step in the tab group tutorial">
+        Try using tab groups to organize tasks, for online shopping, and more
+      </message>
+
       <!-- Browser Hung Plugin Detector -->
       <if expr="is_win">
         <message name="IDS_BROWSER_HANGMONITOR" desc="A plugin on a page has hung">
@@ -7391,12 +7414,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
           New window
         </message>
+        <message name="IDS_TAB_CXMENU_FOLLOW_SITE" desc="The label of the tab context menu item  for following a site.">
+          Follow site
+        </message>
         <if expr="chromeos_ash or chromeos_lacros">
           <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_MENU_ITEM_A11Y" desc="The a11y message for menu items in 'Move tabs to another window' when grouped by desk.">
             <ph name="TAB_TITLE">$1<ex>Brave News</ex></ph> belongs to desk <ph name="DESK_TITLE">$2<ex>School</ex></ph>
           </message>
           <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_DESK_HEADING_A11Y" desc="The a11y message for desk headings in 'Move tabs to another window' when grouped by desk.">
             Desk <ph name="DESK_TITLE">$1<ex>School</ex></ph> has <ph name="NUM_BROWSERS">$2<ex>3</ex></ph> browser windows open
+          </message>
+          <message name="IDS_TAB_CXMENU_GROUPED_BY_DESK_CURRENT_DESK_LABEL" desc="The label for the current active desk in 'Move tabs to another window' when grouped by desk.">
+             <ph name="DESK_NAME">$1<ex>Desk 1</ex></ph> (Current)
           </message>
         </if>
       </if>
@@ -7476,6 +7505,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_CXMENU_MOVETOANOTHERNEWWINDOW" desc="In Title Case: The label for the Tab context item to move items to a new window from the 'Move tabs to another window' submenu.">
           New Window
+        </message>
+        <message name="IDS_TAB_CXMENU_FOLLOW_SITE" desc="In Title Case: The label of the tab context menu item for following a site.">
+          Follow Site
         </message>
       </if>
 
@@ -11059,30 +11091,50 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEB_APP_FILE_HANDLING_LIST_SEPARATOR" desc="Text/punctuation that separates items in a lists. For example, this is used in a list of files, such as 'todo_list.txt, shopping_list.txt', and file types/extensions, such as '.txt, .csv.'" meaning="List separator for files.">
          , '''
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DESCRIPTION" desc="Descriptive text in permission request dialog that is shown when the user is opening a file using a PWA.">
-        <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph> wants to open this file:
+      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_QUESTION" desc="Descriptive text in permission request dialog that is shown when the user is opening a file using a PWA.">
+        Open and edit <ph name="FILE_NAME">$1<ex>todo.txt</ex></ph> in this web app?
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_DESCRIPTION_MULTIPLE" desc="Descriptive text in permission request dialog that is shown when the user is opening multiple files using a PWA.">
-        <ph name="APP_ORIGIN">$1<ex>example.com</ex></ph> wants to open these files:
+      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_QUESTION_MULTIPLE" desc="Descriptive text in permission request dialog that is shown when the user is opening multiple files using a PWA. [ICU_Syntax]">
+        {0, plural,
+          =1 {unused plural form}
+          other {Open and edit # files in this web app?}
+        }
       </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_STICKY_CHOICE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (single file format).">
-        Don't ask again when opening this file format in this app:
-<ph name="FILE_FORMAT">$1<ex>TXT</ex></ph>
-      </message>
-      <message name="IDS_WEB_APP_FILE_HANDLING_PERMISSION_STICKY_CHOICE_MULTIPLE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent (multiple file formats).">
-        Don't ask again when opening these file formats in this app:
-<ph name="FILE_FORMATS">$1<ex>TXT, CSV, DOC</ex></ph>
+      <message name="IDS_WEB_APP_FILE_HANDLING_DIALOG_STICKY_CHOICE" desc="In permission request dialog that is shown when the user is opening files in a PWA: text for a toggle that makes the permission decision permanent. [ICU_Syntax]">
+        {FILE_TYPE_COUNT, plural,
+          =1 {Remember my choice for this file type: <ph name="FILE_TYPES">{FILE_TYPES}<ex>TXT</ex></ph>}
+          other {Remember my choice for these file types: <ph name="FILE_TYPES">{FILE_TYPES}<ex>TXT, CSV, DOC</ex></ph>}
+        }
       </message>
       <if expr="use_titlecase">
-      <message name="IDS_WEB_APP_PERMISSION_DONT_ALLOW" desc="Label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
-        Don't Allow
-      </message>
+        <message name="IDS_WEB_APP_FILE_HANDLING_POSITIVE_BUTTON" desc="In title case: label for the button in the file handler permission dialog that opens a file in the app.">
+          Open
+        </message>
+        <message name="IDS_WEB_APP_FILE_HANDLING_NEGATIVE_BUTTON" desc="In title case: label for the button in the file handler permission dialog that dismisses the dialog and does not open a file.">
+          Don’t Open
+        </message>
+        <message name="IDS_WEB_APP_PERMISSION_NEGATIVE_BUTTON" desc="In title case: label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
+          Don’t Allow
+        </message>
       </if>
       <if expr="not use_titlecase">
-      <message name="IDS_WEB_APP_PERMISSION_DONT_ALLOW" desc="Label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
-        Don't allow
-      </message>
+        <message name="IDS_WEB_APP_FILE_HANDLING_POSITIVE_BUTTON" desc="In sentence case: label for the button in the file handler permission dialog that opens a file in the app.">
+          Open
+        </message>
+        <message name="IDS_WEB_APP_FILE_HANDLING_NEGATIVE_BUTTON" desc="In sentence case: label for the button in the file handler permission dialog that dismisses the dialog and does not open a file.">
+          Don’t open
+        </message>
+        <message name="IDS_WEB_APP_PERMISSION_NEGATIVE_BUTTON" desc="In sentence case: label for the button in the protocol handler intent picker dialog that dismisses the dialog and does not launch an application.">
+          Don’t allow
+        </message>
       </if>
+    </if>
+
+    <!-- Protocol Handling launch prompt -->
+    <if expr="not is_android">
+      <message name="IDS_PROTOCOL_HANDLER_INTENT_PICKER_QUESTION" desc="Label on the protocol handler intent picker.">
+        Allow app to open <ph name="PROTOCOL_SCHEME">$1<ex>mailto</ex></ph> links?
+      </message>
     </if>
 
     <!-- Font Access chooser -->
@@ -12028,6 +12080,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION_PLACEHOLDER" desc="Placeholder text which appears inside the extension request justification textfield.">
         Enter justification...
+      </message>
+      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_JUSTIFICATION_LENGTH_LIMIT" desc="Text displaying the current number of characters in the extension request justification text box, as well as the maximum character limit. This is used to inform the user when the limit is exceeded.">
+        <ph name="ACTUAL_CHAR_COUNT">$1<ex>10</ex></ph>/<ph name="MAX_CHAR_COUNT">$2<ex>300</ex></ph>
       </message>
     </if>
 
