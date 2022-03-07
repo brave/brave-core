@@ -53,7 +53,6 @@ export const SweepstakesBanner = ({
 
                     <TitleAndCloseRow>
                         <Title>
-                            {/* Swap Sweepstakes */}
                             {getLocale('braveWalletSweepstakesTitle')}
                         </Title>
 
@@ -66,12 +65,10 @@ export const SweepstakesBanner = ({
                     <Footer>
                         <FooterLeftColumn>
                             <BodyText>
-                                {/* Chance to win a bored ape and other cool prizes */}
                                 {getLocale('braveWalletSweepstakesDescription')}
                             </BodyText>
                             <LearnMoreLink href={LEARN_MORE_LINK}>
-                                {/* Learn more (braveWalletWelcomePanelButton) */}
-                                {getLocale('braveWalletWelcomePanelButton')}
+                                {getLocale('braveWalletSweepstakesCallToAction')}
                             </LearnMoreLink>
                         </FooterLeftColumn>
 
