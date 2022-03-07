@@ -48,5 +48,7 @@ public class BraveTabbedActivityClassAdapter extends BraveClassVisitor {
         redirectConstructor(sChromeTabCreatorClassName, sBraveTabCreatorClassName);
 
         makePublicMethod(sChromeTabbedActivityClassName, "hideOverview");
+
+        deleteMethod(sChromeTabbedActivityClassName, "supportsDynamicColors");
     }
 }
