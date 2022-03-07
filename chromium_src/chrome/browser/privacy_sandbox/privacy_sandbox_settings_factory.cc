@@ -16,6 +16,7 @@ KeyedService* PrivacySandboxSettingsFactory::BuildServiceInstanceFor(
   Profile* profile = Profile::FromBrowserContext(context);
 
   return new BravePrivacySandboxSettings(
+      std::make_unique<PrivacySandboxSettingsDelegate>(profile),
       HostContentSettingsMapFactory::GetForProfile(profile),
       CookieSettingsFactory::GetForProfile(profile).get(), profile->GetPrefs(),
       profile->IsIncognitoProfile());

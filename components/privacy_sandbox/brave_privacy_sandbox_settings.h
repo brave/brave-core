@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_PRIVACY_SANDBOX_BRAVE_PRIVACY_SANDBOX_SETTINGS_H_
 #define BRAVE_COMPONENTS_PRIVACY_SANDBOX_BRAVE_PRIVACY_SANDBOX_SETTINGS_H_
 
+#include <memory>
+
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/privacy_sandbox/privacy_sandbox_settings.h"
@@ -20,7 +22,8 @@ class CookieSettings;
 class BravePrivacySandboxSettings
     : public privacy_sandbox::PrivacySandboxSettings {
  public:
-  BravePrivacySandboxSettings(HostContentSettingsMap* host_content_settings_map,
+  BravePrivacySandboxSettings(std::unique_ptr<Delegate> delegate,
+                              HostContentSettingsMap* host_content_settings_map,
                               content_settings::CookieSettings* cookie_settings,
                               PrefService* pref_service,
                               bool incognito_profile);

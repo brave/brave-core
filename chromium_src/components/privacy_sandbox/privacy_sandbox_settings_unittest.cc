@@ -20,6 +20,18 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/origin.h"
 
+namespace privacy_sandbox {
+
+class MockPrivacySandboxDelegate : public PrivacySandboxSettings::Delegate {
+ public:
+  void SetupDefaultResponse() {
+    ON_CALL(*this, IsPrivacySandboxRestricted).WillByDefault([]() {
+      return false;
+    });
+  }
+  MOCK_METHOD(bool, IsPrivacySandboxRestricted, (), (override));
+};
+
 class PrivacySandboxSettingsTest : public testing::Test {
  public:
   PrivacySandboxSettingsTest()
@@ -40,15 +52,20 @@ class PrivacySandboxSettingsTest : public testing::Test {
   }
 
   void SetUp() override {
+    auto mock_delegate = std::make_unique<MockPrivacySandboxDelegate>();
+    mock_delegate_ = mock_delegate.get();
+
     InitializePrefsBeforeStart();
 
     privacy_sandbox_settings_ = std::make_unique<BravePrivacySandboxSettings>(
-        host_content_settings_map(), cookie_settings(), prefs(),
+        std::move(mock_delegate), host_content_settings_map(),
+        cookie_settings(), prefs(),
         /*incognito_profile=*/false);
   }
 
   virtual void InitializePrefsBeforeStart() {}
 
+  MockPrivacySandboxDelegate* mock_delegate() { return mock_delegate_; }
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }
   HostContentSettingsMap* host_content_settings_map() {
     return host_content_settings_map_.get();
@@ -58,18 +75,19 @@ class PrivacySandboxSettingsTest : public testing::Test {
   }
 
   TestingProfile* profile() { return &profile_; }
-  privacy_sandbox::PrivacySandboxSettings* privacy_sandbox_settings() {
+  PrivacySandboxSettings* privacy_sandbox_settings() {
     return privacy_sandbox_settings_.get();
   }
 
  private:
   content::BrowserTaskEnvironment browser_task_environment_;
   TestingProfile profile_;
+  raw_ptr<MockPrivacySandboxDelegate> mock_delegate_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 
-  std::unique_ptr<privacy_sandbox::PrivacySandboxSettings>
+  std::unique_ptr<PrivacySandboxSettings>
       privacy_sandbox_settings_;
 };
 
@@ -580,3 +598,5 @@ TEST_F(PrivacySandboxSettingsTestCookiesClearOnExitTurnedOn,
   EXPECT_EQ(base::Time::Now(),
             privacy_sandbox_settings()->FlocDataAccessibleSince());
 }
+
+}  // namespace privacy_sandbox
