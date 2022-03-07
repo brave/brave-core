@@ -104,7 +104,7 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
       /*managed_cookie_exceptions=*/{});
 
   // All should be DISABLED: FLoC, Conversion measurement & reporting, fledge...
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
   EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
@@ -139,7 +139,7 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
       /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
       /*managed_cookie_exceptions=*/{});
 
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
 
@@ -177,7 +177,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
       /*managed_cookie_exceptions=*/{});
 
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
 
@@ -218,7 +218,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       /*managed_cookie_exceptions=*/{});
 
   // All should be DISABLED: FLoC, Conversion measurement & reporting, fledge...
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
   EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
@@ -255,10 +255,10 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
         ContentSetting::CONTENT_SETTING_BLOCK}});
 
   // It doesn't matter, everything should be DISABLED again.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://unrelated.com"),
       url::Origin::Create(GURL("https://unrelated.com"))));
 
@@ -305,7 +305,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       /*managed_cookie_exceptions=*/{});
 
   // It doesn't matter, everything should be DISABLED again.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
 
@@ -328,7 +328,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
         ContentSetting::CONTENT_SETTING_BLOCK}});
 
   // It doesn't matter, everything should be DISABLED again.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"), absl::nullopt));
 
   EXPECT_FALSE(privacy_sandbox_settings()->IsConversionMeasurementAllowed(
@@ -360,9 +360,9 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
       /*managed_cookie_exceptions=*/{});
 
   // It doesn't matter, everything should be DISABLED again.
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"), absl::nullopt));
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowedForContext(
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowedForContext(
       GURL("https://embedded.com"),
       url::Origin::Create(GURL("https://test.com"))));
 
@@ -506,7 +506,7 @@ TEST_F(PrivacySandboxSettingsTest, IsPrivacySandboxEnabled) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
 }
 
-TEST_F(PrivacySandboxSettingsTest, IsFlocAllowed) {
+TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
       /*privacy_sandbox_enabled=*/true,
@@ -518,7 +518,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFlocAllowed) {
 
   // FLoC should be disabled since the privacy sandbox APIs can't be enabled.
   prefs()->SetBoolean(prefs::kPrivacySandboxFlocEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
   // Check that even bypassing PrivacySandboxSettings::SetFlocPrefEnabled,
   // and manually updating the preferences, we still don't get this enabled.
@@ -528,7 +528,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFlocAllowed) {
       prefs::kPrivacySandboxApisEnabledV2, true);
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxFlocEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
@@ -539,7 +539,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFlocAllowed) {
       /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
       /*managed_cookie_exceptions=*/{});
   prefs()->SetBoolean(prefs::kPrivacySandboxFlocEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
@@ -550,7 +550,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFlocAllowed) {
       /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
       /*managed_cookie_exceptions=*/{});
   prefs()->SetBoolean(prefs::kPrivacySandboxFlocEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 
   privacy_sandbox_test_util::SetupTestState(
       prefs(), host_content_settings_map(),
@@ -561,22 +561,22 @@ TEST_F(PrivacySandboxSettingsTest, IsFlocAllowed) {
       /*managed_cookie_setting=*/privacy_sandbox_test_util::kNoSetting,
       /*managed_cookie_exceptions=*/{});
   prefs()->SetBoolean(prefs::kPrivacySandboxFlocEnabled, true);
-  EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
+  EXPECT_FALSE(privacy_sandbox_settings()->IsTopicsAllowed());
 }
 class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOff
     : public PrivacySandboxSettingsTest {
  public:
   void InitializePrefsBeforeStart() override {
-    prefs()->SetUserPref(prefs::kPrivacySandboxFlocDataAccessibleSince,
+    prefs()->SetUserPref(prefs::kPrivacySandboxTopicsDataAccessibleSince,
                          std::make_unique<base::Value>(::base::TimeToValue(
                              base::Time::FromTimeT(12345))));
   }
 };
 
 TEST_F(PrivacySandboxSettingsTestCookiesClearOnExitTurnedOff,
-       UseLastFlocDataAccessibleSince) {
+       UseLastTopicsDataAccessibleSince) {
   EXPECT_EQ(base::Time::FromTimeT(12345),
-            privacy_sandbox_settings()->FlocDataAccessibleSince());
+            privacy_sandbox_settings()->TopicsDataAccessibleSince());
 }
 
 class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOn
@@ -587,16 +587,16 @@ class PrivacySandboxSettingsTestCookiesClearOnExitTurnedOn
         ContentSettingsType::COOKIES,
         ContentSetting::CONTENT_SETTING_SESSION_ONLY);
 
-    prefs()->SetUserPref(prefs::kPrivacySandboxFlocDataAccessibleSince,
+    prefs()->SetUserPref(prefs::kPrivacySandboxTopicsDataAccessibleSince,
                          std::make_unique<base::Value>(::base::TimeToValue(
                              base::Time::FromTimeT(12345))));
   }
 };
 
 TEST_F(PrivacySandboxSettingsTestCookiesClearOnExitTurnedOn,
-       UpdateFlocDataAccessibleSince) {
+       UpdateTopicsDataAccessibleSince) {
   EXPECT_EQ(base::Time::Now(),
-            privacy_sandbox_settings()->FlocDataAccessibleSince());
+            privacy_sandbox_settings()->TopicsDataAccessibleSince());
 }
 
 }  // namespace privacy_sandbox
