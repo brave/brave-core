@@ -102,7 +102,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
     &blink::features::kPrerender2,
     &blink::features::kSpeculationRulesPrefetchProxy,
     &blink::features::kTextFragmentAnchor,
-    &blink::features::kWebSQLInThirdPartyContextEnabled,
 #if !BUILDFLAG(IS_ANDROID)
     &features::kCopyLinkToText,
 #endif

@@ -29,7 +29,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kPrerender2, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchProxy, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kWebSQLInThirdPartyContextEnabled, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 const base::Feature kFileSystemAccessAPI{"FileSystemAccessAPI",
