@@ -13,6 +13,7 @@ import {
 import { isStrongPassword } from '../utils/password-utils'
 import BackupWallet from './screens/backup-wallet'
 import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
+import { LoadingSkeleton } from '../components/shared'
 
 export default {
   title: 'Wallet/Desktop/Components',
@@ -169,4 +170,25 @@ export const _SweepstakesBanner = () => {
 
 _SweepstakesBanner.story = {
   name: 'Sweepstakes Banner'
+}
+
+export const _LoadingSkeleton = () => {
+  return (
+  <div
+    style={{
+      width: '600px',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+    }}>
+    <LoadingSkeleton
+      width={500}
+      height={20}
+      count={5}
+    />
+  </div>)
+}
+
+_LoadingSkeleton.story = {
+  name: 'Loading Skeleton'
 }
