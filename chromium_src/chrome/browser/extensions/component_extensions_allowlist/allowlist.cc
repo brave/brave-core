@@ -7,7 +7,6 @@
 #include "src/chrome/browser/extensions/component_extensions_allowlist/allowlist.cc"
 #undef IsComponentExtensionAllowlisted
 
-#include "base/cxx17_backports.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
@@ -31,7 +30,7 @@ namespace extensions {
       brave_webtorrent_extension_id
     };
 
-    for (size_t i = 0; i < base::size(kAllowed); ++i) {
+    for (size_t i = 0; i < std::size(kAllowed); ++i) {
       if (extension_id == kAllowed[i])
         return true;
     }

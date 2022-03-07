@@ -8,7 +8,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/cxx17_backports.h"
 #include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/memory/weak_ptr.h"

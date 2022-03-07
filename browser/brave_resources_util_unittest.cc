@@ -5,7 +5,6 @@
 
 #include <stddef.h>
 
-#include "base/cxx17_backports.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/resources_util.h"
@@ -29,7 +28,7 @@ TEST(BraveResourcesUtil, CheckIds) {
     {"IDR_PRODUCT_LOGO_32_DEVELOPMENT", IDR_PRODUCT_LOGO_32_DEVELOPMENT},
   };
 
-  for (size_t i = 0; i < base::size(kCases); ++i)
+  for (size_t i = 0; i < std::size(kCases); ++i)
     EXPECT_EQ(kCases[i].id, ResourcesUtil::GetThemeResourceId(kCases[i].name));
 }
 
