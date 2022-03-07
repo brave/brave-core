@@ -19,7 +19,7 @@ BraveSearchEnginesHandler::GetSearchEnginesList() {
   // select brave search tor entry for normal profile.
   constexpr char kDefaultsKey[] = "defaults";
   auto* defaults = search_engines_info->FindListKey(kDefaultsKey);
-  DCHECK(defaults && defaults->is_list());
+  DCHECK(defaults);
   defaults->EraseListValueIf([](const auto& val) {
     DCHECK(val.is_dict());
     constexpr char kKeywordKey[] = "keyword";
