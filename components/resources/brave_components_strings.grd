@@ -529,6 +529,9 @@
       <message name="IDS_BRAVE_REWARDS_CONTINUE" desc="">Continue</message>
       <message name="IDS_BRAVE_REWARDS_CONTINUE_TO_LOGIN" desc="">Continue to login</message>
       <message name="IDS_BRAVE_REWARDS_MINIMUM_BALANCE_WARNING" desc=""><ph name="PROVIDER">$1</ph> requires a minimum balance of <ph name="AMOUNT">$2</ph> BAT to create an account. If you connected an account previously,</message>
+      <message name="IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL" desc="A label on Pending Contributions modal showing the date until which the contribution will be pending">
+        Pending until <ph name="DATE">$1</ph>
+      </message>
 
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_ADS_NOT_INITIALIZED" desc="Ads not initialized">Ads not initialized, please refresh the page.</message>
