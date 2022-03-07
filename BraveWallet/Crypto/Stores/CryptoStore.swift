@@ -26,7 +26,7 @@ public class CryptoStore: ObservableObject {
       }
     }
   }
-  @Published private(set) var unapprovedTransactions: [BraveWallet.TransactionInfo] = []
+  @Published private(set) var hasUnapprovedTransactions: Bool = false
   
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -177,7 +177,8 @@ public class CryptoStore: ObservableObject {
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       walletService: walletService,
-      ethTxManagerProxy: ethTxManagerProxy
+      ethTxManagerProxy: ethTxManagerProxy,
+      keyringService: keyringService
     )
     confirmationStore = store
     return store
@@ -208,7 +209,7 @@ public class CryptoStore: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
           // On iPad if we set these before the send or swap screens disappear for some reason it crashes
           // within the SwiftUI runtime. Delaying it to give time for the animation to complete fixes it.
-          self.unapprovedTransactions = pendingTransactions
+          self.hasUnapprovedTransactions = !pendingTransactions.isEmpty
           self.isPresentingTransactionConfirmations = !pendingTransactions.isEmpty
         }
       }

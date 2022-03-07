@@ -18,7 +18,15 @@ class MockTxService: BraveWalletTxService {
   }
   
   func allTransactionInfo(_ coinType: BraveWallet.CoinType, from: String, completion: @escaping ([BraveWallet.TransactionInfo]) -> Void) {
-    completion([])
+    completion([
+      BraveWallet.TransactionInfo.previewConfirmedERC20Approve,
+      .previewConfirmedSend,
+      .previewConfirmedSwap
+    ].map {
+      tx in
+      tx.txStatus = .unapproved
+      return tx
+    })
   }
   
   func add(_ observer: BraveWalletTxServiceObserver) {
