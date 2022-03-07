@@ -8,7 +8,6 @@ import * as Actions from '../actions/wallet_page_actions'
 import {
   BraveWallet,
   PageState,
-  SwapErrorResponse,
   ImportWalletError
 } from '../../constants/types'
 import {
@@ -35,153 +34,141 @@ const defaultState: PageState = {
   showIsRestoring: false,
   setupStillInProgress: false,
   isCryptoWalletsInitialized: false,
-  isMetaMaskInitialized: false,
-  swapQuote: undefined,
-  swapError: undefined
+  isMetaMaskInitialized: false
 }
 
-const reducer = createReducer<PageState>({}, defaultState)
+export const createPageReducer = (initialState: PageState) => {
+  const reducer = createReducer<PageState>({}, initialState)
+  reducer.on(Actions.walletCreated, (state: PageState, payload: WalletCreatedPayloadType) => {
+    return {
+      ...state,
+      mnemonic: payload.mnemonic,
+      setupStillInProgress: true
+    }
+  })
 
-reducer.on(Actions.walletCreated, (state: PageState, payload: WalletCreatedPayloadType) => {
-  return {
-    ...state,
-    mnemonic: payload.mnemonic,
-    setupStillInProgress: true
-  }
-})
+  reducer.on(Actions.recoveryWordsAvailable, (state: PageState, payload: RecoveryWordsAvailablePayloadType) => {
+    return {
+      ...state,
+      mnemonic: payload.mnemonic
+    }
+  })
 
-reducer.on(Actions.recoveryWordsAvailable, (state: PageState, payload: RecoveryWordsAvailablePayloadType) => {
-  return {
-    ...state,
-    mnemonic: payload.mnemonic
-  }
-})
+  reducer.on(Actions.privateKeyAvailable, (state: PageState, payload: PrivateKeyAvailablePayloadType) => {
+    return {
+      ...state,
+      privateKey: payload.privateKey
+    }
+  })
 
-reducer.on(Actions.privateKeyAvailable, (state: PageState, payload: PrivateKeyAvailablePayloadType) => {
-  return {
-    ...state,
-    privateKey: payload.privateKey
-  }
-})
+  reducer.on(Actions.doneViewingPrivateKey, (state: PageState) => {
+    const newState = { ...state }
+    delete newState.privateKey
+    return newState
+  })
 
-reducer.on(Actions.doneViewingPrivateKey, (state: PageState) => {
-  const newState = { ...state }
-  delete newState.privateKey
-  return newState
-})
+  reducer.on(Actions.walletSetupComplete, (state: PageState) => {
+    const newState: PageState = {
+      ...state,
+      setupStillInProgress: false
+    }
+    delete newState.mnemonic
+    return newState
+  })
 
-reducer.on(Actions.walletSetupComplete, (state: PageState) => {
-  const newState: PageState = {
-    ...state,
-    setupStillInProgress: false
-  }
-  delete newState.mnemonic
-  return newState
-})
+  reducer.on(Actions.walletBackupComplete, (state: PageState) => {
+    const newState = {
+      ...state,
+      showRecoveryPhrase: false
+    }
+    delete newState.mnemonic
+    return newState
+  })
 
-reducer.on(Actions.walletBackupComplete, (state: PageState) => {
-  const newState = {
-    ...state,
-    showRecoveryPhrase: false
-  }
-  delete newState.mnemonic
-  return newState
-})
+  reducer.on(Actions.showRecoveryPhrase, (state: PageState, payload: boolean) => {
+    return {
+      ...state,
+      showRecoveryPhrase: payload
+    }
+  })
 
-reducer.on(Actions.showRecoveryPhrase, (state: PageState, payload: boolean) => {
-  return {
-    ...state,
-    showRecoveryPhrase: payload
-  }
-})
+  reducer.on(Actions.hasMnemonicError, (state: PageState, payload: boolean) => {
+    return {
+      ...state,
+      invalidMnemonic: payload
+    }
+  })
 
-reducer.on(Actions.hasMnemonicError, (state: PageState, payload: boolean) => {
-  return {
-    ...state,
-    invalidMnemonic: payload
-  }
-})
+  reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: BraveWallet.BlockchainToken) => {
+    return {
+      ...state,
+      selectedAsset: payload
+    }
+  })
 
-reducer.on(Actions.updateSelectedAsset, (state: PageState, payload: BraveWallet.BlockchainToken) => {
-  return {
-    ...state,
-    selectedAsset: payload
-  }
-})
+  reducer.on(Actions.updatePriceInfo, (state: PageState, payload: SelectAssetPayloadType) => {
+    const history = payload.priceHistory ? payload.priceHistory.values : []
+    return {
+      ...state,
+      selectedAssetFiatPrice: payload.defaultFiatPrice,
+      selectedAssetCryptoPrice: payload.defaultCryptoPrice,
+      selectedAssetPriceHistory: history,
+      selectedTimeline: payload.timeFrame,
+      isFetchingPriceHistory: false
+    }
+  })
 
-reducer.on(Actions.updatePriceInfo, (state: PageState, payload: SelectAssetPayloadType) => {
-  const history = payload.priceHistory ? payload.priceHistory.values : []
-  return {
-    ...state,
-    selectedAssetFiatPrice: payload.defaultFiatPrice,
-    selectedAssetCryptoPrice: payload.defaultCryptoPrice,
-    selectedAssetPriceHistory: history,
-    selectedTimeline: payload.timeFrame,
-    isFetchingPriceHistory: false
-  }
-})
+  reducer.on(Actions.setIsFetchingPriceHistory, (state: PageState, payload: boolean) => {
+    return {
+      ...state,
+      isFetchingPriceHistory: payload
+    }
+  })
 
-reducer.on(Actions.setIsFetchingPriceHistory, (state: PageState, payload: boolean) => {
-  return {
-    ...state,
-    isFetchingPriceHistory: payload
-  }
-})
+  reducer.on(Actions.setShowIsRestoring, (state: PageState, payload: boolean) => {
+    return {
+      ...state,
+      showIsRestoring: payload
+    }
+  })
 
-reducer.on(Actions.setShowIsRestoring, (state: PageState, payload: boolean) => {
-  return {
-    ...state,
-    showIsRestoring: payload
-  }
-})
+  reducer.on(Actions.setImportAccountError, (state: PageState, payload: boolean) => {
+    return {
+      ...state,
+      importAccountError: payload
+    }
+  })
 
-reducer.on(Actions.setImportAccountError, (state: PageState, payload: boolean) => {
-  return {
-    ...state,
-    importAccountError: payload
-  }
-})
+  reducer.on(Actions.setImportWalletError, (state: PageState, payload: ImportWalletError) => {
+    return {
+      ...state,
+      importWalletError: payload
+    }
+  })
 
-reducer.on(Actions.setImportWalletError, (state: PageState, payload: ImportWalletError) => {
-  return {
-    ...state,
-    importWalletError: payload
-  }
-})
+  reducer.on(Actions.setShowAddModal, (state: PageState, payload: boolean) => {
+    return {
+      ...state,
+      showAddModal: payload
+    }
+  })
 
-reducer.on(Actions.setShowAddModal, (state: PageState, payload: boolean) => {
-  return {
-    ...state,
-    showAddModal: payload
-  }
-})
+  reducer.on(Actions.setCryptoWalletsInitialized, (state: PageState, payload: boolean) => {
+    return {
+      ...state,
+      isCryptoWalletsInstalled: payload
+    }
+  })
 
-reducer.on(Actions.setCryptoWalletsInitialized, (state: PageState, payload: boolean) => {
-  return {
-    ...state,
-    isCryptoWalletsInstalled: payload
-  }
-})
+  reducer.on(Actions.setMetaMaskInitialized, (state: PageState, payload: boolean) => {
+    return {
+      ...state,
+      isMetaMaskInitialized: payload
+    }
+  })
+  return reducer
+}
 
-reducer.on(Actions.setMetaMaskInitialized, (state: PageState, payload: boolean) => {
-  return {
-    ...state,
-    isMetaMaskInitialized: payload
-  }
-})
-
-reducer.on(Actions.setPageSwapQuote, (state: PageState, payload: BraveWallet.SwapResponse | undefined) => {
-  return {
-    ...state,
-    swapQuote: payload
-  }
-})
-
-reducer.on(Actions.setPageSwapError, (state: any, payload?: SwapErrorResponse) => {
-  return {
-    ...state,
-    swapError: payload
-  }
-})
-
+const reducer = createPageReducer(defaultState)
+export const pageReducer = reducer
 export default reducer

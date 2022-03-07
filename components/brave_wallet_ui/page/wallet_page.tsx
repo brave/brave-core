@@ -16,9 +16,11 @@ import 'emptykit.css'
 import '../../../ui/webui/resources/fonts/poppins.css'
 import '../../../ui/webui/resources/fonts/muli.css'
 
+import * as Lib from '../common/async/lib'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import walletDarkTheme from '../theme/wallet-dark'
 import walletLightTheme from '../theme/wallet-light'
+import { LibContext } from '../common/context/lib.context'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
@@ -34,7 +36,9 @@ function App () {
             dark={walletDarkTheme}
             light={walletLightTheme}
           >
-            <Container />
+            <LibContext.Provider value={Lib}>
+              <Container />
+            </LibContext.Provider>
           </BraveCoreThemeProvider>
         }
       </BrowserRouter>

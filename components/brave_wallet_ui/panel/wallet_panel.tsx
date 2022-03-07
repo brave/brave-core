@@ -14,6 +14,8 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 import store from './store'
 import * as WalletActions from '../common/actions/wallet_actions'
 import Container from './container'
+import { LibContext } from '../common/context/lib.context'
+import * as Lib from '../common/async/lib'
 
 function App () {
   const [initialThemeType, setInitialThemeType] = React.useState<chrome.braveTheme.ThemeType>()
@@ -28,7 +30,9 @@ function App () {
           dark={walletDarkTheme}
           light={walletLightTheme}
         >
-          <Container />
+          <LibContext.Provider value={Lib}>
+            <Container />
+          </LibContext.Provider>
         </BraveCoreThemeProvider>
       }
     </Provider>

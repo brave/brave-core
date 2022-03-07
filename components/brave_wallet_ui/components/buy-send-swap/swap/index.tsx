@@ -1,15 +1,13 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
 
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 import {
   BraveWallet,
-  OrderTypes,
   BuySendSwapViewTypes,
-  SlippagePresetObjectType,
-  ExpirationPresetObjectType,
   ToOrFromType,
-  SwapValidationErrorType,
-  AmountPresetTypes
+  AmountPresetTypes,
+  WalletState
 } from '../../../constants/types'
 import SwapInputComponent from '../swap-input-component'
 import { SwapTooltip } from '../../desktop'
@@ -31,66 +29,72 @@ import {
 } from './style'
 import { LoaderIcon } from 'brave-ui/components/icons'
 import { ResetButton } from '../shared-styles'
-
+import { useSwap } from '../../../common/hooks'
 export interface Props {
-  selectedNetwork: BraveWallet.NetworkInfo
-  toAsset: BraveWallet.BlockchainToken | undefined
-  fromAsset: BraveWallet.BlockchainToken | undefined
-  fromAmount: string
-  toAmount: string
-  exchangeRate: string
-  slippageTolerance: SlippagePresetObjectType
-  orderExpiration: ExpirationPresetObjectType
-  orderType: OrderTypes
-  fromAssetBalance: string
-  toAssetBalance: string
-  isFetchingQuote: boolean
-  isSubmitDisabled: boolean
-  validationError: SwapValidationErrorType | undefined
-  customSlippageTolerance: string
-  onCustomSlippageToleranceChange: (value: string) => void
-  onToggleOrderType: () => void
-  onFlipAssets: () => void
-  onSubmitSwap: () => void
-  onInputChange: (value: string, name: string) => void
+  isFetchingSwapQuote: boolean
   onChangeSwapView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
-  onSelectPresetAmount: (percent: number) => void
-  onSelectExpiration: (expiration: ExpirationPresetObjectType) => void
-  onSelectSlippageTolerance: (slippage: SlippagePresetObjectType) => void
   onFilterAssetList: (asset?: BraveWallet.BlockchainToken) => void
-  onQuoteRefresh: () => void
+  fromAsset?: BraveWallet.BlockchainToken
+  toAsset?: BraveWallet.BlockchainToken
+  customSlippageTolerance: ReturnType<typeof useSwap>['customSlippageTolerance']
+  exchangeRate: ReturnType<typeof useSwap>['exchangeRate']
+  flipSwapAssets: ReturnType<typeof useSwap>['flipSwapAssets']
+  fromAmount: ReturnType<typeof useSwap>['fromAmount']
+  fromAssetBalance: ReturnType<typeof useSwap>['fromAssetBalance']
+  isSwapButtonDisabled: ReturnType<typeof useSwap>['isSwapButtonDisabled']
+  onCustomSlippageToleranceChange: ReturnType<typeof useSwap>['onCustomSlippageToleranceChange']
+  onSelectExpiration: ReturnType<typeof useSwap>['onSelectExpiration']
+  onSelectPresetAmount: ReturnType<typeof useSwap>['onSelectPresetAmount']
+  onSelectSlippageTolerance: ReturnType<typeof useSwap>['onSelectSlippageTolerance']
+  onSubmitSwap: ReturnType<typeof useSwap>['onSubmitSwap']
+  onSwapInputChange: ReturnType<typeof useSwap>['onSwapInputChange']
+  onSwapQuoteRefresh: ReturnType<typeof useSwap>['onSwapQuoteRefresh']
+  onToggleOrderType: ReturnType<typeof useSwap>['onToggleOrderType']
+  orderExpiration: ReturnType<typeof useSwap>['orderExpiration']
+  orderType: ReturnType<typeof useSwap>['orderType']
+  selectedPreset: ReturnType<typeof useSwap>['selectedPreset']
+  setSelectedPreset: ReturnType<typeof useSwap>['setSelectedPreset']
+  slippageTolerance: ReturnType<typeof useSwap>['slippageTolerance']
+  swapValidationError: ReturnType<typeof useSwap>['swapValidationError']
+  toAmount: ReturnType<typeof useSwap>['toAmount']
+  toAssetBalance: ReturnType<typeof useSwap>['toAssetBalance']
 }
 
 function Swap (props: Props) {
   const {
-    selectedNetwork,
-    toAsset,
-    fromAsset,
-    fromAmount,
-    toAmount,
-    orderType,
-    exchangeRate,
-    slippageTolerance,
-    orderExpiration,
-    fromAssetBalance,
-    toAssetBalance,
-    isFetchingQuote,
-    isSubmitDisabled,
-    validationError,
     customSlippageTolerance,
-    onCustomSlippageToleranceChange,
-    onToggleOrderType,
-    onInputChange,
-    onSelectPresetAmount,
-    onSelectExpiration,
-    onSelectSlippageTolerance,
-    onFlipAssets,
-    onSubmitSwap,
+    exchangeRate,
+    flipSwapAssets,
+    fromAmount,
+    fromAsset,
+    fromAssetBalance,
+    isFetchingSwapQuote,
+    isSwapButtonDisabled,
     onChangeSwapView,
+    onCustomSlippageToleranceChange,
     onFilterAssetList,
-    onQuoteRefresh
+    onSelectExpiration,
+    onSelectPresetAmount,
+    onSelectSlippageTolerance,
+    onSubmitSwap,
+    onSwapInputChange: onInputChange,
+    onSwapQuoteRefresh,
+    onToggleOrderType,
+    orderExpiration,
+    orderType,
+    selectedPreset,
+    setSelectedPreset,
+    slippageTolerance,
+    swapValidationError: validationError,
+    toAmount,
+    toAsset,
+    toAssetBalance
   } = props
-  const [selectedPreset, setSelectedPreset] = React.useState<AmountPresetTypes | undefined>()
+
+  // redux
+  const {
+    selectedNetwork
+  } = useSelector((state: { wallet: WalletState }) => state.wallet)
 
   const onShowAssetTo = () => {
     onChangeSwapView('assets', 'to')
@@ -150,7 +154,7 @@ function Swap (props: Props) {
     onSelectPresetAmount(percent)
   }
 
-  const handleOnInputChange = (value: string, name: string) => {
+  const handleOnInputChange = (value: string, name: 'to' | 'from' | 'rate') => {
     if (name === 'from' && selectedPreset) {
       // Clear preset
       setSelectedPreset(undefined)
@@ -174,7 +178,7 @@ function Swap (props: Props) {
         autoFocus={true}
         selectedPreset={selectedPreset}
       />
-      <ArrowButton onClick={onFlipAssets}>
+      <ArrowButton onClick={flipSwapAssets}>
         <ArrowDownIcon />
       </ArrowButton>
       <SwapInputComponent
@@ -197,7 +201,7 @@ function Swap (props: Props) {
         selectedAssetInputAmount={exchangeRate}
         inputName='rate'
         selectedAsset={fromAsset}
-        onRefresh={onQuoteRefresh}
+        onRefresh={onSwapQuoteRefresh}
       />
       <SwapInputComponent
         componentType='selector'
@@ -210,12 +214,12 @@ function Swap (props: Props) {
         onCustomSlippageToleranceChange={onCustomSlippageToleranceChange}
       />
       <SwapNavButton
-        disabled={isSubmitDisabled}
+        disabled={isSwapButtonDisabled}
         buttonType='primary'
         onClick={onSubmitSwap}
       >
         {
-          isFetchingQuote
+          isFetchingSwapQuote
             ? <SwapButtonLoader><LoaderIcon /></SwapButtonLoader>
             : <SwapButtonText>{submitText}</SwapButtonText>
         }

@@ -40,7 +40,6 @@ import {
   dialogErrorFromTrezorErrorCode
 } from '../../common/async/hardware'
 
-import { fetchSwapQuoteFactory } from '../../common/async/handlers'
 import { Store } from '../../common/async/types'
 import { getLocale } from '../../../common/locale'
 
@@ -535,10 +534,5 @@ handler.on(WalletActions.unlocked.getType(), async (store: Store) => {
     apiProxy.panelHandler.closeUI()
   }
 })
-
-handler.on(
-  PanelActions.fetchPanelSwapQuote.getType(),
-  fetchSwapQuoteFactory(PanelActions.setPanelSwapQuote, PanelActions.setPanelSwapError)
-)
 
 export default handler.middleware

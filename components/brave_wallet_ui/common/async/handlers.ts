@@ -3,9 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { SimpleActionCreator } from 'redux-act'
-import BigNumber from 'bignumber.js'
-
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
 import {
@@ -14,7 +11,6 @@ import {
   RemoveSitePermissionPayloadType,
   RemoveUserAssetPayloadType,
   SetUserAssetVisiblePayloadType,
-  SwapParamsPayloadType,
   UnlockWalletPayloadType,
   UpdateUnapprovedTransactionGasFieldsType,
   UpdateUnapprovedTransactionSpendAllowanceType,
@@ -27,7 +23,6 @@ import {
   ER20TransferParams,
   ERC721TransferFromParams,
   SendEthTransactionParams,
-  SwapErrorResponse,
   WalletAccountType,
   WalletState,
   WalletInfo,
@@ -37,8 +32,6 @@ import {
 } from '../../constants/types'
 
 // Utils
-import { hexStrToNumberArray } from '../../utils/hex-utils'
-import Amount from '../../utils/amount'
 
 import getAPIProxy from './bridge'
 import {
@@ -430,96 +423,6 @@ handler.on(WalletActions.rejectAllTransactions.getType(), async (store) => {
   })
   await refreshWalletInfo(store)
 })
-
-// fetchSwapQuoteFactory creates a handler function that can be used with
-// both panel and page actions.
-export const fetchSwapQuoteFactory = (
-  setSwapQuote: SimpleActionCreator<BraveWallet.SwapResponse | undefined>,
-  setSwapError: SimpleActionCreator<SwapErrorResponse | undefined>
-) => async (store: Store, payload: SwapParamsPayloadType) => {
-  const { swapService, ethTxManagerProxy } = getAPIProxy()
-
-  const {
-    fromAsset,
-    fromAssetAmount,
-    toAsset,
-    toAssetAmount,
-    accountAddress,
-    slippageTolerance,
-    full
-  } = payload
-
-  const swapParams = {
-    takerAddress: accountAddress,
-    sellAmount: fromAssetAmount || '',
-    buyAmount: toAssetAmount || '',
-    buyToken: toAsset.contractAddress || toAsset.symbol,
-    sellToken: fromAsset.contractAddress || fromAsset.symbol,
-    slippagePercentage: slippageTolerance.slippage / 100,
-    gasPrice: ''
-  }
-
-  const quote = await (
-    full ? swapService.getTransactionPayload(swapParams) : swapService.getPriceQuote(swapParams)
-  )
-
-  if (quote.success && quote.response) {
-    await store.dispatch(setSwapError(undefined))
-    await store.dispatch(setSwapQuote(quote.response))
-
-    if (full) {
-      const {
-        to,
-        data,
-        value,
-        estimatedGas
-      } = quote.response
-
-      // Get the latest gas estimates, since we'll force the fastest fees in
-      // order to ensure a swap with minimum slippage.
-      const { estimation: gasEstimates } = await ethTxManagerProxy.getGasEstimation1559()
-
-      let maxPriorityFeePerGas
-      let maxFeePerGas
-      if (gasEstimates && gasEstimates.fastMaxPriorityFeePerGas === gasEstimates.avgMaxPriorityFeePerGas) {
-        // Bump fast priority fee and max fee by 1 GWei if same as average fees.
-        const maxPriorityFeePerGasBN = new BigNumber(gasEstimates.fastMaxPriorityFeePerGas).plus(10 ** 9)
-        const maxFeePerGasBN = new BigNumber(gasEstimates.fastMaxFeePerGas).plus(10 ** 9)
-
-        maxPriorityFeePerGas = `0x${maxPriorityFeePerGasBN.toString(16)}`
-        maxFeePerGas = `0x${maxFeePerGasBN.toString(16)}`
-      } else if (gasEstimates) {
-        // Always suggest fast gas fees as default
-        maxPriorityFeePerGas = gasEstimates.fastMaxPriorityFeePerGas
-        maxFeePerGas = gasEstimates.fastMaxFeePerGas
-      }
-
-      const params = {
-        from: accountAddress,
-        to,
-        value: new Amount(value).toHex(),
-        gas: new Amount(estimatedGas).toHex(),
-        data: hexStrToNumberArray(data),
-        maxPriorityFeePerGas,
-        maxFeePerGas,
-        coin: BraveWallet.CoinType.ETH
-      }
-
-      store.dispatch(WalletActions.sendTransaction(params))
-      store.dispatch(setSwapError(undefined))
-      store.dispatch(setSwapQuote(undefined))
-    }
-  } else if (quote.errorResponse) {
-    try {
-      const err = JSON.parse(quote.errorResponse) as SwapErrorResponse
-      await store.dispatch(setSwapError(err))
-    } catch (e) {
-      console.error(`[swap] error parsing response: ${e}`)
-    } finally {
-      console.error(`[swap] error querying 0x API: ${quote.errorResponse}`)
-    }
-  }
-}
 
 handler.on(WalletActions.refreshGasEstimates.getType(), async (store) => {
   const { selectedAccount, selectedNetwork } = getWalletState(store)

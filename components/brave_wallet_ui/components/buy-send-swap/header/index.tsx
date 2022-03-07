@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { UserAccountType, BuySendSwapViewTypes, BraveWallet } from '../../../constants/types'
+import { useSelector } from 'react-redux'
+import { BuySendSwapViewTypes, WalletState } from '../../../constants/types'
 import { reduceAddress } from '../../../utils/reduce-address'
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { create } from 'ethereum-blockies'
@@ -18,13 +19,19 @@ import {
 } from './style'
 
 export interface Props {
-  selectedAccount: UserAccountType
-  selectedNetwork: BraveWallet.NetworkInfo
   onChangeSwapView: (view: BuySendSwapViewTypes) => void
 }
 
 function SwapHeader (props: Props) {
-  const { selectedAccount, selectedNetwork, onChangeSwapView } = props
+  // redux
+  const {
+    selectedAccount,
+    selectedNetwork
+  } = useSelector((state: {wallet: WalletState}) => {
+    return state.wallet
+  })
+
+  const { onChangeSwapView } = props
 
   const onShowAccounts = () => {
     onChangeSwapView('acounts')

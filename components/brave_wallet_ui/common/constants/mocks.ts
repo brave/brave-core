@@ -19,23 +19,28 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
         baseData: {
           to: '0x8b52c24d6e2600bdb8dbb6e8da849ed38ab7e81f',
           value: '0x01706a99bf354000',
-          data: new Uint8Array(0),
+          // data: new Uint8Array(0),
+          data: [] as number[],
           nonce: '0x03',
           gasLimit: '0x5208',
           gasPrice: '0x22ecb25c00'
         },
         chainId: '1337',
         maxPriorityFeePerGas: '',
-        maxFeePerGas: ''
-      }
+        maxFeePerGas: '',
+        gasEstimation: undefined
+      },
+      ethTxData: {} as any,
+      filTxData: {} as any,
+      solanaTxData: {} as any
     },
     txStatus: BraveWallet.TransactionStatus.Approved,
     txType: BraveWallet.TransactionType.Other,
     txParams: [],
     txArgs: [],
-    createdTime: { microseconds: 0 },
-    submittedTime: { microseconds: 0 },
-    confirmedTime: { microseconds: 0 }
+    createdTime: { microseconds: 0 as unknown as bigint },
+    submittedTime: { microseconds: 0 as unknown as bigint },
+    confirmedTime: { microseconds: 0 as unknown as bigint }
   }
 }
 
@@ -48,7 +53,8 @@ export const mockNetwork: BraveWallet.NetworkInfo = {
   symbolName: 'Ethereum',
   decimals: 18,
   iconUrls: [],
-  coin: BraveWallet.CoinType.ETH
+  coin: BraveWallet.CoinType.ETH,
+  data: undefined
 }
 
 export const mockERC20Token: BraveWallet.BlockchainToken = {

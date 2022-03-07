@@ -4,7 +4,7 @@
 
 'use strict'
 
-export const debounce = function<T>(fn: (data: T) => void, bufferInterval: number, ...args: any[]) {
+export const debounce = function <T>(fn: (data: T) => void, bufferInterval: number, ...args: any[]) {
   let timeout: any
   return (...args2: any[]) => {
     clearTimeout(timeout)

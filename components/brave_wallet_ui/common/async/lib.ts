@@ -534,7 +534,7 @@ export function refreshSitePermissions () {
 
       return undefined
     }))
-    const accountsWithPermission: Array<WalletAccountType | undefined> = getAllPermissions.filter((account) => account !== undefined)
+    const accountsWithPermission: WalletAccountType[] = getAllPermissions.filter((account): account is WalletAccountType => account !== undefined)
     dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
   }
 }
