@@ -17,7 +17,8 @@ namespace content_settings {
 class CookieSettings;
 }
 
-class BravePrivacySandboxSettings : public PrivacySandboxSettings {
+class BravePrivacySandboxSettings
+    : public privacy_sandbox::PrivacySandboxSettings {
  public:
   BravePrivacySandboxSettings(HostContentSettingsMap* host_content_settings_map,
                               content_settings::CookieSettings* cookie_settings,

@@ -58,7 +58,7 @@ class PrivacySandboxSettingsTest : public testing::Test {
   }
 
   TestingProfile* profile() { return &profile_; }
-  PrivacySandboxSettings* privacy_sandbox_settings() {
+  privacy_sandbox::PrivacySandboxSettings* privacy_sandbox_settings() {
     return privacy_sandbox_settings_.get();
   }
 
@@ -69,7 +69,8 @@ class PrivacySandboxSettingsTest : public testing::Test {
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 
-  std::unique_ptr<PrivacySandboxSettings> privacy_sandbox_settings_;
+  std::unique_ptr<privacy_sandbox::PrivacySandboxSettings>
+      privacy_sandbox_settings_;
 };
 
 TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
