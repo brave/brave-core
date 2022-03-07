@@ -107,8 +107,8 @@ void MaybeStripRefcodeAndCountry(MessageMetainfo* meta) {
        "MX", "CH", "RU", "ZA", "SE", "BE", "JP"});
 
   static base::flat_set<std::string> const kNotableCountries(
-      {"FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES", "NL", "MX", "AU",
-       "RU", "JP", "PL", "ID", "KR", "AR"});
+      {"US", "FR", "PH", "GB", "IN", "DE", "BR", "CA", "IT", "ES", "NL", "MX",
+       "AU", "RU", "JP", "PL", "ID", "KR", "AR"});
 
   DCHECK(meta);
 
