@@ -877,6 +877,9 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                 mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
                 mIsInitialNotificationPosted = false;
             }
+        } else if (mHomeButton == v) {
+            // Helps Brave News know how to behave on home button action
+            BraveActivity.getBraveActivity().setComesFromNewTab(true);
         }
     }
 
