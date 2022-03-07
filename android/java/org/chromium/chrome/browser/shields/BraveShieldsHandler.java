@@ -579,7 +579,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
             ImageView mBlockShieldsIcon = mShieldsLayout.findViewById(R.id.toggle_favicon);
             mBlockShieldsIcon.setImageResource(R.drawable.ic_chevron_right);
             mBlockShieldsIcon.setColorFilter(
-                    mContext.getResources().getColor(R.color.default_icon_color_tint_list));
+                    mContext.getResources().getColor(R.color.default_icon_color_baseline));
             TextView mBlockShieldsText = mShieldsLayout.findViewById(R.id.toggle_text);
             mBlockShieldsText.setText(titleStringId);
 
