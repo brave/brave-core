@@ -10,7 +10,6 @@ import BigNumber
 import Shared
 
 struct TransactionConfirmationView: View {
-  var transactions: [BraveWallet.TransactionInfo]
   
   @ObservedObject var confirmationStore: TransactionConfirmationStore
   @ObservedObject var networkStore: NetworkStore
@@ -25,32 +24,27 @@ struct TransactionConfirmationView: View {
   }
   
   @State private var viewMode: ViewMode = .transaction
-  @State private var activeTransactionId: BraveWallet.TransactionInfo.ID = "" {
-    didSet {
-      confirmationStore.fetchDetails(for: activeTransaction)
-    }
+  
+  private var activeTransaction: BraveWallet.TransactionInfo {
+    confirmationStore.transactions.first(where: { $0.id == confirmationStore.activeTransactionId }) ?? (confirmationStore.transactions.first ?? .init())
   }
   
   private func next() {
-    if let index = transactions.firstIndex(where: { $0.id == activeTransactionId }) {
-      var nextIndex = transactions.index(after: index)
-      if nextIndex == transactions.endIndex {
+    if let index = confirmationStore.transactions.firstIndex(where: { $0.id == confirmationStore.activeTransactionId }) {
+      var nextIndex = confirmationStore.transactions.index(after: index)
+      if nextIndex == confirmationStore.transactions.endIndex {
         nextIndex = 0
       }
-      activeTransactionId = transactions[nextIndex].id
+      confirmationStore.activeTransactionId = confirmationStore.transactions[nextIndex].id
     } else {
-      activeTransactionId = transactions.first!.id
+      confirmationStore.activeTransactionId = confirmationStore.transactions.first!.id
     }
   }
   
   private func rejectAll() {
-    for transaction in transactions {
+    for transaction in confirmationStore.transactions {
       confirmationStore.reject(transaction: transaction)
     }
-  }
-  
-  private var activeTransaction: BraveWallet.TransactionInfo {
-    transactions.first(where: { $0.id == activeTransactionId }) ?? transactions.first!
   }
   
   private var fromAccountName: String {
@@ -107,7 +101,10 @@ struct TransactionConfirmationView: View {
         }
       } else {
         NavigationLink(
-          destination: EditGasFeeView(transaction: activeTransaction, confirmationStore: confirmationStore)
+          destination: EditGasFeeView(
+            transaction: activeTransaction,
+            confirmationStore: confirmationStore
+          )
         ) {
           titleView
         }
@@ -124,9 +121,9 @@ struct TransactionConfirmationView: View {
           HStack {
             Text(networkStore.selectedChain.shortChainName)
             Spacer()
-            if transactions.count > 1 {
-              let index = transactions.firstIndex(of: activeTransaction) ?? 0
-              Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, index + 1, transactions.count))
+            if confirmationStore.transactions.count > 1 {
+              let index = confirmationStore.transactions.firstIndex(of: activeTransaction) ?? 0
+              Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, index + 1, confirmationStore.transactions.count))
                 .fontWeight(.semibold)
               Button(action: next) {
                 Text(Strings.Wallet.nextTransaction)
@@ -256,9 +253,9 @@ struct TransactionConfirmationView: View {
             )
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
           }
-          if transactions.count > 1 {
+          if confirmationStore.transactions.count > 1 {
             Button(action: rejectAll) {
-              Text(String.localizedStringWithFormat(Strings.Wallet.rejectAllTransactions, transactions.count))
+              Text(String.localizedStringWithFormat(Strings.Wallet.rejectAllTransactions, confirmationStore.transactions.count))
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(Color(.braveBlurpleTint))
             }
@@ -294,7 +291,7 @@ struct TransactionConfirmationView: View {
         },
         alignment: .bottom
       )
-      .navigationBarTitle(transactions.count > 1 ? Strings.Wallet.confirmTransactionsTitle : Strings.Wallet.confirmTransactionTitle)
+      .navigationBarTitle(confirmationStore.transactions.count > 1 ? Strings.Wallet.confirmTransactionsTitle : Strings.Wallet.confirmTransactionTitle)
       .navigationBarTitleDisplayMode(.inline)
       .foregroundColor(Color(.braveLabel))
       .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
@@ -309,10 +306,7 @@ struct TransactionConfirmationView: View {
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
-      assert(!transactions.isEmpty, "TransactionConfirmationView should not be displayed if there are no transactions to approve.")
-      activeTransactionId = transactions[0].id
-      confirmationStore.fetchDetails(for: activeTransaction)
-      confirmationStore.fetchGasEstimation1559()
+      confirmationStore.fetchTransactions()
     }
   }
   
@@ -374,15 +368,6 @@ private struct DetailsTextView: UIViewRepresentable {
 struct TransactionConfirmationView_Previews: PreviewProvider {
   static var previews: some View {
     TransactionConfirmationView(
-      transactions: [
-        BraveWallet.TransactionInfo.previewConfirmedERC20Approve,
-        .previewConfirmedSend,
-        .previewConfirmedSwap
-      ].map {
-        tx in
-        tx.txStatus = .unapproved
-        return tx
-      },
       confirmationStore: .previewStore,
       networkStore: .previewStore,
       keyringStore: .previewStoreWithWalletCreated

@@ -24,7 +24,7 @@ struct CryptoPagesView: View {
       keyringStore: keyringStore,
       cryptoStore: cryptoStore,
       isShowingTransactions: $cryptoStore.isPresentingTransactionConfirmations,
-      isConfirmationsButtonVisible: !cryptoStore.unapprovedTransactions.isEmpty
+      isConfirmationsButtonVisible: cryptoStore.hasUnapprovedTransactions
     )
       .onAppear {
         // If a user chooses not to confirm/reject their transactions we shouldn't
