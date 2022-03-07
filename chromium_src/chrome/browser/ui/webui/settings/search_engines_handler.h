@@ -8,13 +8,9 @@
 
 #include <memory>
 
-#include "base/values.h"
-
-#define GetSearchEnginesList                          \
-  GetSearchEnginesList_Empty() {                      \
-    return std::make_unique<base::DictionaryValue>(); \
-  }                                                   \
-  friend class BraveSearchEnginesHandler;             \
+#define GetSearchEnginesList                         \
+  GetSearchEnginesList_NotUsed() { return nullptr; } \
+  friend class BraveSearchEnginesHandler;            \
   virtual std::unique_ptr<base::DictionaryValue> GetSearchEnginesList
 
 #include "src/chrome/browser/ui/webui/settings/search_engines_handler.h"

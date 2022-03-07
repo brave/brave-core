@@ -13,7 +13,7 @@
 
 namespace settings {
 
-class BraveSearchEnginesHandler : public settings::SearchEnginesHandler {
+class BraveSearchEnginesHandler : public SearchEnginesHandler {
  public:
   using SearchEnginesHandler::SearchEnginesHandler;
   ~BraveSearchEnginesHandler() override;
