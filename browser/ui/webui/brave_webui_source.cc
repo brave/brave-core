@@ -769,6 +769,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "continue", IDS_BRAVE_REWARDS_CONTINUE },
         { "continueToLogin", IDS_BRAVE_REWARDS_CONTINUE_TO_LOGIN },
         { "minimumBalanceWarning", IDS_BRAVE_REWARDS_MINIMUM_BALANCE_WARNING },
+        { "contributionPendingUntil", IDS_BRAVE_REWARDS_CONTRIBUTION_PENDING_UNTIL },  // NOLINT
 
         { "walletAccountLink", IDS_REWARDS_WALLET_ACCOUNT_LINK },
         { "walletAddFunds", IDS_REWARDS_WALLET_ADD_FUNDS },
