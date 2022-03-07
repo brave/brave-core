@@ -434,7 +434,7 @@ handler.on(WalletActions.rejectAllTransactions.getType(), async (store) => {
 // fetchSwapQuoteFactory creates a handler function that can be used with
 // both panel and page actions.
 export const fetchSwapQuoteFactory = (
-  setSwapQuote: SimpleActionCreator<BraveWallet.SwapResponse>,
+  setSwapQuote: SimpleActionCreator<BraveWallet.SwapResponse | undefined>,
   setSwapError: SimpleActionCreator<SwapErrorResponse | undefined>
 ) => async (store: Store, payload: SwapParamsPayloadType) => {
   const { swapService, ethTxManagerProxy } = getAPIProxy()
@@ -506,6 +506,8 @@ export const fetchSwapQuoteFactory = (
       }
 
       store.dispatch(WalletActions.sendTransaction(params))
+      store.dispatch(setSwapError(undefined))
+      store.dispatch(setSwapQuote(undefined))
     }
   } else if (quote.errorResponse) {
     try {

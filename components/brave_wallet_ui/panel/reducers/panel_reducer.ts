@@ -109,7 +109,7 @@ reducer.on(PanelActions.getEncryptionPublicKey, (state: any, request: BraveWalle
   }
 })
 
-reducer.on(PanelActions.setPanelSwapQuote, (state: any, payload: BraveWallet.SwapResponse) => {
+reducer.on(PanelActions.setPanelSwapQuote, (state: PanelState, payload: BraveWallet.SwapResponse | undefined): PanelState => {
   return {
     ...state,
     swapQuote: payload

@@ -170,7 +170,7 @@ reducer.on(Actions.setMetaMaskInitialized, (state: PageState, payload: boolean) 
   }
 })
 
-reducer.on(Actions.setPageSwapQuote, (state: any, payload: BraveWallet.SwapResponse) => {
+reducer.on(Actions.setPageSwapQuote, (state: PageState, payload: BraveWallet.SwapResponse | undefined) => {
   return {
     ...state,
     swapQuote: payload
