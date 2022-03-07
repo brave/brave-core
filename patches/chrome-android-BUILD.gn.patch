@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 4c9affbf42d33c6c3593be43c103844ea22584b0..c9f8c637c62fb2539a15526d5c6501a5b0be27d2 100644
+index f636ee594d0bcc7e63abad7413492da1631d9d86..69005625686c1479e736c6c784da6d9c21d9281c 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -267,6 +267,7 @@ android_resources("chrome_app_java_resources") {
@@ -8,31 +8,31 @@ index 4c9affbf42d33c6c3593be43c103844ea22584b0..c9f8c637c62fb2539a15526d5c6501a5
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
  }
- 
+
  if (enable_vr) {
-@@ -647,6 +648,7 @@ android_library("chrome_java") {
+@@ -648,6 +649,7 @@ android_library("chrome_java") {
    ]
- 
+
    deps += feed_deps
 +  deps += brave_chrome_java_deps
- 
+
    srcjar_deps = [
      ":autofill_verification_status_generated_enum",
-@@ -678,6 +680,7 @@ android_library("chrome_java") {
+@@ -677,6 +679,7 @@ android_library("chrome_java") {
      "//components/offline_pages/core:offline_page_model_enums_java",
      "//net:effective_connection_type_java",
    ]
 +  srcjar_deps += brave_chrome_java_srcjar_deps
- 
+
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
-@@ -800,6 +803,7 @@ java_group("chrome_all_java") {
+@@ -799,6 +802,7 @@ java_group("chrome_all_java") {
        "//chrome/android/features/tab_ui:module_desc_java",
      ]
    }
 +  deps += brave_chrome_all_java_deps
  }
- 
+
  # This is a list of all base module jni headers. New features should add their
 @@ -846,6 +850,7 @@ group("jni_headers") {
      "//components/ukm/android:jni_headers",
@@ -40,9 +40,9 @@ index 4c9affbf42d33c6c3593be43c103844ea22584b0..c9f8c637c62fb2539a15526d5c6501a5
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
- 
+
  action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
-@@ -2234,6 +2239,7 @@ if (current_toolchain == default_toolchain) {
+@@ -2236,6 +2241,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
@@ -50,11 +50,11 @@ index 4c9affbf42d33c6c3593be43c103844ea22584b0..c9f8c637c62fb2539a15526d5c6501a5
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
          if (webview_includes_weblayer && !_is_bundle_module) {
-@@ -2632,6 +2638,7 @@ android_library("base_module_java") {
+@@ -2634,6 +2640,7 @@ android_library("base_module_java") {
      "//components/payments/content/android:service_java",
      "//third_party/androidx:androidx_browser_browser_java",
    ]
 +  sources += brave_java_base_module_sources deps += brave_java_base_module_deps
- 
+
    # More deps for DFMs.
    if (dfmify_dev_ui) {

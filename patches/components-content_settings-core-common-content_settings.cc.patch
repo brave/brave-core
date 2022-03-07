@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index 2c152515fc924f5c9240463796e0470266b25cab..95ebb89c503dc6c50f9c939613e80f3bd098659f 100644
+index 2412212b1496a19ae8bcd867da9294626fc51fb8..613b7dea7f0a7b631986d960bf9cb2acb0c7716e 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -103,6 +103,7 @@ constexpr HistogramValue kHistogramValue[] = {
+@@ -102,6 +102,7 @@ constexpr HistogramValue kHistogramValue[] = {
      {ContentSettingsType::FEDERATED_IDENTITY_ACTIVE_SESSION, 82},
      {ContentSettingsType::AUTO_DARK_WEB_CONTENT, 83},
      {ContentSettingsType::REQUEST_DESKTOP_SITE, 84},
