@@ -779,6 +779,16 @@ TEST(BraveWalletUtilsUnitTest, GetInfuraSubdomainForKnownChainId) {
   }
 }
 
+TEST(BraveWalletUtilsUnitTest, GetSolanaSubdomainForKnownChainId) {
+  std::vector<mojom::NetworkInfoPtr> known_chains;
+  GetAllKnownSolChains(&known_chains);
+  for (const auto& chain : known_chains) {
+    auto subdomain = GetSolanaSubdomainForKnownChainId(chain->chain_id);
+    bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
+    ASSERT_EQ(subdomain.empty(), expected);
+  }
+}
+
 TEST(BraveWalletUtilsUnitTest, GetKnownEthChain) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
@@ -869,6 +879,14 @@ TEST(BraveWalletUtilsUnitTest, GetKnownEthNetworkId) {
   EXPECT_EQ(GetKnownEthNetworkId(mojom::kKovanChainId), "kovan");
 }
 
+TEST(BraveWalletUtilsUnitTest, GetKnownSolNetworkId) {
+  EXPECT_EQ(GetKnownSolNetworkId(mojom::kLocalhostChainId),
+            "http://localhost:8899/");
+  EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaMainnet), "mainnet");
+  EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaTestnet), "testnet");
+  EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaDevnet), "devnet");
+}
+
 TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
@@ -894,11 +912,21 @@ TEST(BraveWalletUtilsUnitTest, GetNetworkId) {
   values.push_back(EthNetworkInfoToValue(chain_ptr2));
   UpdateCustomNetworks(&prefs, &values);
 
-  EXPECT_EQ(GetNetworkId(&prefs, mojom::kMainnetChainId), "mainnet");
-  EXPECT_EQ(GetNetworkId(&prefs, mojom::kLocalhostChainId),
-            "http://localhost:7545/");
-  EXPECT_EQ(GetNetworkId(&prefs, "chain_id"), "chain_id");
-  EXPECT_EQ(GetNetworkId(&prefs, "chain_id2"), "chain_id2");
+  EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::ETH, mojom::kMainnetChainId),
+            "mainnet");
+  EXPECT_EQ(
+      GetNetworkId(&prefs, mojom::CoinType::ETH, mojom::kLocalhostChainId),
+      "http://localhost:7545/");
+  EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::ETH, "chain_id"), "chain_id");
+  EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::ETH, "chain_id2"),
+            "chain_id2");
+
+  EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::SOL, mojom::kSolanaMainnet),
+            "mainnet");
+  EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::SOL, mojom::kSolanaTestnet),
+            "testnet");
+  EXPECT_EQ(GetNetworkId(&prefs, mojom::CoinType::SOL, mojom::kSolanaDevnet),
+            "devnet");
 }
 
 TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
