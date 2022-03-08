@@ -44,12 +44,13 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
     case types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS:
       // Regions approved for Brave Search will skip search welcome card
       // Regions not approved show the card- but without Brave Search
-      const showBraveSearch: boolean =
+      const braveSearchApprovedRegion: boolean =
           ['US', 'CA', 'DE', 'FR', 'GB'].includes(loadTimeData.getString('countryString'))
       state = {
         ...state,
         searchProviders: payload,
-        hideSearchOnboarding: showBraveSearch
+        showSearchCard: !braveSearchApprovedRegion,
+        showRewardsCard: loadTimeData.getBoolean('showRewardsCard')
       }
       break
     case types.IMPORT_BROWSER_PROFILES_SUCCESS:
