@@ -40,8 +40,6 @@ export interface State {
   shouldUpdateElementOverflow: boolean
 }
 
-let totalScreensSize = 5
-
 export class WelcomePage extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
@@ -51,8 +49,6 @@ export class WelcomePage extends React.Component<Props, State> {
       skipped: false,
       shouldUpdateElementOverflow: false
     }
-    const { welcomeData } = this.props
-    totalScreensSize = welcomeData.hideSearchOnboarding ? 4 : 5
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -113,6 +109,14 @@ export class WelcomePage extends React.Component<Props, State> {
   render () {
     const { welcomeData, actions } = this.props
     const { shouldUpdateElementOverflow } = this.state
+
+    const welcomeBoxIndex = 1
+    const importBoxIndex = 2
+    const shieldsBoxIndex = 3
+    let lastBoxIndex = shieldsBoxIndex
+    const searchBoxIndex = welcomeData.showSearchCard ? ++lastBoxIndex : -1
+    const rewardsBoxIndex = welcomeData.showRewardsCard ? ++lastBoxIndex : -1
+
     return (
       <>
         <Page
@@ -122,29 +126,29 @@ export class WelcomePage extends React.Component<Props, State> {
         >
           <Panel>
             <SlideContent>
-              <WelcomeBox index={1} currentScreen={this.currentScreen} onClick={this.onClickLetsGo} />
+              <WelcomeBox index={welcomeBoxIndex} currentScreen={this.currentScreen} onClick={this.onClickLetsGo} />
               <ImportBox
-                index={2}
+                index={importBoxIndex}
                 currentScreen={this.currentScreen}
                 onClick={this.onClickImport}
                 browserProfiles={welcomeData.browserProfiles}
               />
-              <ShieldsBox index={3} currentScreen={this.currentScreen} />
+              <ShieldsBox index={shieldsBoxIndex} currentScreen={this.currentScreen} />
               <SearchBox
-                index={welcomeData.hideSearchOnboarding ? -1 : 4}
+                index={searchBoxIndex}
                 currentScreen={this.currentScreen}
                 onClick={this.onClickNext}
                 changeDefaultSearchProvider={actions.changeDefaultSearchProvider}
                 searchProviders={welcomeData.searchProviders}
               />
               <RewardsBox
-                index={welcomeData.hideSearchOnboarding ? 4 : 5}
+                index={rewardsBoxIndex}
                 currentScreen={this.currentScreen}
                 onClick={this.onClickRewardsGetStarted}
               />
             </SlideContent>
             <FooterBox
-              totalScreensSize={totalScreensSize}
+              totalScreensSize={lastBoxIndex}
               currentScreen={this.currentScreen}
               onClickSkip={this.onClickSkip}
               onClickSlideBullet={this.onClickSlideBullet}

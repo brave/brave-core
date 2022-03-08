@@ -9,12 +9,14 @@
 #include <memory>
 #include <string>
 
+#include "base/feature_list.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_welcome/common/features.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -155,7 +157,11 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
           base::Seconds(3));
     }
   }
+  // Variables considered when determining which onboarding cards to show
   source->AddString("countryString", CountryIDToCountryString(country_id));
+  source->AddBoolean(
+      "showRewardsCard",
+      base::FeatureList::IsEnabled(brave_welcome::features::kShowRewardsCard));
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 }
