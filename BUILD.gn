@@ -171,12 +171,21 @@ if (!is_ios) {
 branding_dir = "//chrome/app/theme/$branding_path_component"
 copy("theme_files") {
   visibility = [ ":*" ]
-  sources = [
-    "$branding_dir/product_logo_128_beta.png",
-    "$branding_dir/product_logo_128_dev.png",
-    "$branding_dir/product_logo_128_development.png",
-    "$branding_dir/product_logo_128_nightly.png",
-  ]
+  if (is_linux) {
+    sources = [
+      "$branding_dir/linux/product_logo_128_beta.png",
+      "$branding_dir/linux/product_logo_128_dev.png",
+      "$branding_dir/linux/product_logo_128_development.png",
+      "$branding_dir/linux/product_logo_128_nightly.png",
+    ]
+  } else {
+    sources = [
+      "$branding_dir/product_logo_128_beta.png",
+      "$branding_dir/product_logo_128_dev.png",
+      "$branding_dir/product_logo_128_development.png",
+      "$branding_dir/product_logo_128_nightly.png",
+    ]
+  }
   outputs = [ "$root_out_dir/installer/theme/{{source_file_part}}" ]
 }
 
