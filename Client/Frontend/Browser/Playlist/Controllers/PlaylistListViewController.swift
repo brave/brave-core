@@ -154,6 +154,7 @@ class PlaylistListViewController: UIViewController {
             .sink { [weak self] in
                 guard let self = self else { return }
                 self.title = PlaylistManager.shared.currentFolder?.title
+                self.tableView.reloadData()
         }
     }
     
@@ -342,6 +343,10 @@ class PlaylistListViewController: UIViewController {
         let selectedItems = indexPaths.compactMap({
             PlaylistManager.shared.fetchedObjects[safe: $0.row]
         })
+        
+        if selectedItems.contains(where: { $0.pageSrc == PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc }) {
+            delegate?.stopPlaying()
+        }
         
         var moveController = PlaylistMoveFolderView(selectedItems: selectedItems)
         moveController.onCancelButtonPressed = { [weak self] in

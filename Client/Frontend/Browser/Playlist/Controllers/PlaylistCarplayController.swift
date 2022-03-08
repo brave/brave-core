@@ -14,6 +14,12 @@ import CoreData
 
 private let log = Logger.browserLogger
 
+private enum PlaylistCarPlayTemplateID: String {
+    case folders
+    case itemsList
+    case settings
+}
+
 class PlaylistCarplayController: NSObject {
     private let player: MediaPlayer
     private let mediaStreamer: PlaylistMediaStreamer
@@ -103,11 +109,25 @@ class PlaylistCarplayController: NSObject {
                 return
             }
             
-            let playlistTabTemplate = tabTemplate.templates.compactMap({ $0 as? CPListTemplate }).first(where: {
-                ($0.userInfo as? [String: String])?["id"] == "Playlist.Folder.List.Tab"
-            })
+            // The folder is already showing all its items
+            var currentTemplate = self.interfaceController.topTemplate as? CPListTemplate
+
+            // If the folder's items isn't showing, then we're either on the folder view or settings view
+            // Therefore we need to push the folder view onto the stack
+            if currentTemplate == nil || (currentTemplate?.userInfo as? [String: String])?["id"] != PlaylistCarPlayTemplateID.itemsList.rawValue {
+                
+                // Fetch the root playlistTabTemplate
+                currentTemplate = tabTemplate.templates.compactMap({ $0 as? CPListTemplate }).first(where: {
+                    ($0.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.itemsList.rawValue
+                })
+            }
             
-            if let playlistTabTemplate = playlistTabTemplate {
+            // We need to ensure the template that is showing is the list of playlist items
+            guard (currentTemplate?.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.itemsList.rawValue else {
+                return
+            }
+            
+            if let playlistTabTemplate = currentTemplate {
                 let items = playlistTabTemplate.sections.flatMap({ $0.items }).compactMap({ $0 as? CPListItem })
                 
                 items.forEach({
@@ -309,7 +329,7 @@ class PlaylistCarplayController: NSObject {
             $0.tabImage = UIImage(systemName: "list.star")
             $0.emptyViewTitleVariants = [Strings.PlayList.noItemLabelTitle]
             $0.emptyViewSubtitleVariants = [Strings.PlayList.noItemLabelDetailLabel]
-            $0.userInfo = ["id": "Playlist.Folders.Tab"]
+            $0.userInfo = ["id": PlaylistCarPlayTemplateID.folders.rawValue]
         }
         return foldersTemplate
     }
@@ -347,7 +367,7 @@ class PlaylistCarplayController: NSObject {
                     for item in listItems.enumerated() {
                         let userInfo = item.element.userInfo as? [String: Any] ?? [:]
                         item.element.isPlaying = isPlaying &&
-                            (PlaylistCarplayManager.shared.currentlyPlayingItemIndex == item.offset || PlaylistCarplayManager.shared.currentPlaylistItem?.src == userInfo["id"] as? String)
+                            (PlaylistCarplayManager.shared.currentPlaylistItem?.src == userInfo["id"] as? String)
                     }
                     
                     let userInfo = listItem.userInfo as? [String: Any]
@@ -369,7 +389,7 @@ class PlaylistCarplayController: NSObject {
             
             // Update the current playing status
             listItem.isPlaying = player.isPlaying &&
-                (PlaylistCarplayManager.shared.currentlyPlayingItemIndex == itemIndex || PlaylistCarplayManager.shared.currentPlaylistItem?.src == item.src)
+                (PlaylistCarplayManager.shared.currentPlaylistItem?.src == item.src)
             
             listItem.accessoryType = PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
             listItem.setImage(FaviconFetcher.defaultFaviconImage)
@@ -412,7 +432,7 @@ class PlaylistCarplayController: NSObject {
             $0.tabImage = UIImage(systemName: "list.star")
             $0.emptyViewTitleVariants = [Strings.PlayList.noItemLabelTitle]
             $0.emptyViewSubtitleVariants = [Strings.PlayList.noItemLabelDetailLabel]
-            $0.userInfo = ["id": "Playlist.Folder.List.Tab"]
+            $0.userInfo = ["id": PlaylistCarPlayTemplateID.itemsList.rawValue]
         }
         return playlistTemplate
     }
@@ -457,6 +477,7 @@ class PlaylistCarplayController: NSObject {
         let settingsTemplate = CPListTemplate(title: Strings.PlayList.playlistCarplaySettingsSectionTitle,
                                               sections: [playbackSection]).then {
             $0.tabImage = UIImage(systemName: "gear")
+            $0.userInfo = ["id": PlaylistCarPlayTemplateID.settings.rawValue]
         }
         return settingsTemplate
     }
