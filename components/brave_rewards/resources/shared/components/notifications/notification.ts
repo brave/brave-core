@@ -15,7 +15,8 @@ export type NotificationType =
   'pending-publisher-verified' |
   'pending-tip-failed' |
   'external-wallet-verified' |
-  'external-wallet-disconnected'
+  'external-wallet-disconnected' |
+  'profile-restore-detected'
 
 export interface Notification {
   type: NotificationType
