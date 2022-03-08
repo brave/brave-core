@@ -332,10 +332,9 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNotice) {
       contents(),
       "#modal");
 
-  // Ensure that verify link exists
-  rewards_browsertest_util::WaitForElementToAppear(
-      contents(),
-      "#backup-verify-link");
+  // Ensure that learn more link exists
+  rewards_browsertest_util::WaitForElementToAppear(contents(),
+                                                   "#backup-learn-more-link");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNoNotice) {
