@@ -72,6 +72,8 @@ export const localeStrings = {
   notificationMonthlyContributionFailedTitle: 'Monthly contribution failed',
   notificationMonthlyTipCompletedTitle: 'Contributions and tips',
   notificationMonthlyTipCompletedText: 'Your monthly contributions have been processed.',
+  notificationProfileRestoreDetectedTitle: 'Restore on another device detected!',
+  notificationProfileRestoreDetectedText: 'Your Brave Rewards profile on this device has been reset because it was successfully restored on another device.',
   notificationPublisherVerifiedTitle: 'Pending contribution',
   notificationPublisherVerifiedText: 'Creator $1 recently verified.',
   notificationPendingTipFailedTitle: 'Insufficient funds',
