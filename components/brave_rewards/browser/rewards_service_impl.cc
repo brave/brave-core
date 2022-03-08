@@ -3638,6 +3638,11 @@ void RewardsServiceImpl::OnCompleteResetAfterRestoreOnTargetDevice(
     bool success) {
   if (success) {
     profile_->GetPrefs()->SetBoolean(prefs::kEnabled, true);
+    RewardsNotificationService::RewardsNotificationArgs args;
+    notification_service_->AddNotification(
+        RewardsNotificationService::
+            REWARDS_NOTIFICATION_PROFILE_RESTORE_DETECTED,
+        std::move(args), "rewards_notification_profile_restore_detected");
   }
 }
 
