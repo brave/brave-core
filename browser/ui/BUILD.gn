@@ -50,6 +50,10 @@ source_set("ui") {
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
+    "webui/rewards_sync_internals/rewards_sync_internals_ui.cc",
+    "webui/rewards_sync_internals/rewards_sync_internals_ui.h",
+    "webui/rewards_sync_internals/rewards_sync_internals_message_handler.cc",
+    "webui/rewards_sync_internals/rewards_sync_internals_message_handler.h",
     "webui/webcompat_reporter_ui.cc",
     "webui/webcompat_reporter_ui.h",
   ]
