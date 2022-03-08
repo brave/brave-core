@@ -57,6 +57,7 @@ fixup_replacements = [
      r'Sends URLs of some pages you visit to Google'),
     (r'Google Google', r'Google'),
     (r'Brave Account', r'Brave sync chain'),
+    (r'Brave Lens', r'Google Lens'),
 ]
 
 
