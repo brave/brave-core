@@ -350,6 +350,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
+      if (data.result === 44) { // type::Result::FLAGGED_WALLET
+        ui.modalRedirect = 'flaggedWalletModal'
+        break
+      }
+
       if (data.result !== 0) {
         ui.modalRedirect = 'error'
         break

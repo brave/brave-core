@@ -120,7 +120,7 @@ type::Result PostClaimUphold::ProcessResponse(
 
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return type::Result::LEDGER_ERROR;
+    return ParseBody(response.body);
   }
 
   if (status_code == net::HTTP_FORBIDDEN) {
@@ -151,7 +151,6 @@ type::Result PostClaimUphold::ProcessResponse(
   return type::Result::LEDGER_OK;
 }
 
-// disambiguating on the HTTP 403 (Forbidden)
 type::Result PostClaimUphold::ParseBody(const std::string& body) const {
   base::DictionaryValue* root = nullptr;
   auto value = base::JSONReader::Read(body);
@@ -175,6 +174,9 @@ type::Result PostClaimUphold::ParseBody(const std::string& body) const {
   } else if (message->find("transaction verification failure") !=
              std::string::npos) {
     return type::Result::UPHOLD_TRANSACTION_VERIFICATION_FAILURE;
+  } else if (message->find("unable to link - unusual activity") !=
+             std::string::npos) {
+    return type::Result::FLAGGED_WALLET;
   } else {
     BLOG(0, "Unknown message!");
     return type::Result::LEDGER_ERROR;
