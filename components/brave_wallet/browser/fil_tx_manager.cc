@@ -72,4 +72,8 @@ void FilTxManager::UpdatePendingTransactions() {
   NOTIMPLEMENTED();
 }
 
+FilTxStateManager* FilTxManager::GetFilTxStateManager() {
+  return static_cast<FilTxStateManager*>(tx_state_manager_.get());
+}
+
 }  // namespace brave_wallet
