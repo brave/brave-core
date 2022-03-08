@@ -28,7 +28,7 @@ PostCredentials::~PostCredentials() = default;
 
 std::string PostCredentials::GetUrl(const std::string& order_id) {
   const std::string path = base::StringPrintf(
-      "/v1/orders/%s/credentials",
+      "/v1/orders/%s/credentials" "-invalid",
       order_id.c_str());
 
   return GetServerUrl(path);
