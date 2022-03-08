@@ -33,10 +33,12 @@ class BraveShieldsActionView
   // views::LabelButton:
   std::unique_ptr<views::LabelButtonBorder> CreateDefaultBorder()
       const override;
+  std::u16string GetTooltipText(const gfx::Point& p) const override;
   SkPath GetHighlightPath() const;
 
  private:
   void ButtonPressed();
+  bool SchemeIsLocal(GURL url);
   void UpdateIconState();
   gfx::ImageSkia GetIconImage(bool is_enabled);
   std::unique_ptr<IconWithBadgeImageSource> GetImageSource();

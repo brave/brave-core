@@ -21,7 +21,7 @@ export const TreeBox = styled.section`
   background-color: ${(p) => p.theme.color.background02};
   padding: 10px 17px 10px 17px;
   height: calc(100% - 94px - 96px); /* subtract offset top from height of footer */
-  overflow-y: scroll;
+  overflow: auto;
   position: relative;
   z-index: 2;
 `
@@ -32,6 +32,22 @@ export const Footer = styled.section`
   bottom: 0;
   width: 100%;
   z-index: 2;
+
+  button {
+    width: 100%;
+
+    div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+      margin-right: 8px;
+    }
+  }
 `
 
 export const SiteTitleBox = styled.div`
@@ -89,7 +105,7 @@ export const BackButton = styled.button`
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: 20px 2fr 1fr;
+  grid-template-columns: 20px 2fr 0.5fr;
   grid-gap: 5px;
   align-items: center;
   font-family: ${(p) => p.theme.fontFamily.heading};

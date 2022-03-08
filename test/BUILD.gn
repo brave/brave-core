@@ -343,6 +343,7 @@ test("brave_unit_tests") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/components/brave_shields/common:mojom",
+      "//components/favicon/content",
     ]
   }
 
