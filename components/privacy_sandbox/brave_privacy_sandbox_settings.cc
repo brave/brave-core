@@ -28,6 +28,11 @@ BravePrivacySandboxSettings::BravePrivacySandboxSettings(
           &BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged,
           base::Unretained(this)));
   user_prefs_registrar_.Add(
+      prefs::kPrivacySandboxApisEnabledV2,
+      base::BindRepeating(
+          &BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged,
+          base::Unretained(this)));
+  user_prefs_registrar_.Add(
       prefs::kPrivacySandboxFlocEnabled,
       base::BindRepeating(
           &BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged,
@@ -38,9 +43,12 @@ BravePrivacySandboxSettings::~BravePrivacySandboxSettings() = default;
 
 void BravePrivacySandboxSettings::OnPrivacySandboxPrefChanged() {
   // Make sure that Private Sandbox features remain disabled even if we manually
-  // access the Pref service and try to change the preference from there.
+  // access the Pref service and try to change the preferences from there.
   if (pref_service_->GetBoolean(prefs::kPrivacySandboxApisEnabled)) {
     pref_service_->SetBoolean(prefs::kPrivacySandboxApisEnabled, false);
+  }
+  if (pref_service_->GetBoolean(prefs::kPrivacySandboxApisEnabledV2)) {
+    pref_service_->SetBoolean(prefs::kPrivacySandboxApisEnabledV2, false);
   }
   if (pref_service_->GetBoolean(prefs::kPrivacySandboxFlocEnabled)) {
     pref_service_->SetBoolean(prefs::kPrivacySandboxFlocEnabled, false);
