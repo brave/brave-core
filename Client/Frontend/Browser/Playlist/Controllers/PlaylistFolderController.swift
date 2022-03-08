@@ -186,16 +186,9 @@ extension PlaylistFolderController: UITableViewDelegate {
         
         editView.onEditFolder = { [weak self] folderTitle in
             guard let self = self else { return }
-            
-            DataController.performOnMainContext { context in
-                do {
-                    let folder = try context.existingObject(with: folderID) as? PlaylistFolder
-                    folder?.title = folderTitle
-                    
-                    DispatchQueue.main.async {
-                        self.presentedViewController?.dismiss(animated: true, completion: nil)
-                    }
-                } catch {
+            PlaylistFolder.updateFolder(folderID: folderID) { result in
+                switch result {
+                case .failure(let error):
                     log.error("Error Saving Folder Title: \(error)")
                     
                     DispatchQueue.main.async {
@@ -205,6 +198,13 @@ extension PlaylistFolderController: UITableViewDelegate {
                             self.presentedViewController?.dismiss(animated: true, completion: nil)
                         }))
                         self.present(alert, animated: true, completion: nil)
+                    }
+                    
+                case .success(let folder):
+                    folder.title = folderTitle
+                    
+                    DispatchQueue.main.async {
+                        self.presentedViewController?.dismiss(animated: true, completion: nil)
                     }
                 }
             }
