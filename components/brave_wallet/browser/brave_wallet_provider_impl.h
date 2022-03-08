@@ -252,10 +252,12 @@ class BraveWalletProviderImpl final
 
   std::unique_ptr<base::Value> RequestBaseValue(base::Value input_value,
                                                 const std::string& origin,
+                                                mojom::CoinType coin,
                                                 bool* error,
                                                 RequestCallback callback);
   bool CommonRequestOrSendAsync(base::Value input_value,
                                 const std::string& origin,
+                                mojom::CoinType coin,
                                 mojom::ProviderError* error,
                                 std::string* error_message,
                                 RequestCallback callback);

@@ -148,7 +148,8 @@ void BraveWalletProviderImpl::AddEthereumChain(const std::string& json_payload,
 
   // Check if we already have the chain
   if (GetNetworkURL(prefs_, chain->chain_id, mojom::CoinType::ETH).is_valid()) {
-    if (json_rpc_service_->GetChainId(mojom::CoinType::ETH) != chain->chain_id) {
+    if (json_rpc_service_->GetChainId(mojom::CoinType::ETH) !=
+        chain->chain_id) {
       SwitchEthereumChain(chain->chain_id, std::move(callback), std::move(id));
       return;
     }
@@ -280,10 +281,12 @@ void BraveWalletProviderImpl::OnGetNetworkAndDefaultKeyringInfo(
     tx_data_1559->chain_id = chain->chain_id;
     // If the chain id is not known yet, then get it and set it first
     if (tx_data_1559->chain_id == "0x0" || tx_data_1559->chain_id.empty()) {
-      json_rpc_service_->GetChainId(base::BindOnce(
-          &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
-          weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
-          std::move(tx_data_1559), from));
+      json_rpc_service_->GetChainId(
+          mojom::CoinType::ETH,
+          base::BindOnce(
+              &BraveWalletProviderImpl::ContinueAddAndApprove1559Transaction,
+              weak_factory_.GetWeakPtr(), std::move(callback), std::move(id),
+              std::move(tx_data_1559), from));
     } else {
       GetAllowedAccounts(
           false,
@@ -772,7 +775,8 @@ void BraveWalletProviderImpl::Request(base::Value input,
                                       RequestCallback callback) {
   bool error = false;
   std::unique_ptr<base::Value> formed_response =
-      RequestBaseValue(std::move(input), origin, mojom::CoinType::ETH, &error, std::move(callback));
+      RequestBaseValue(std::move(input), origin, mojom::CoinType::ETH, &error,
+                       std::move(callback));
   if (error) {
     base::Value id;
     std::move(callback).Run(std::move(id), std::move(*formed_response), false,
@@ -783,14 +787,15 @@ void BraveWalletProviderImpl::Request(base::Value input,
 std::unique_ptr<base::Value> BraveWalletProviderImpl::RequestBaseValue(
     base::Value input_value,
     const std::string& origin,
+    mojom::CoinType coin,
     bool* error,
     RequestCallback callback) {
   DCHECK(error);
   mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
   std::string message = "Generic processing error";
   base::Value formed_response;
-  if (!CommonRequestOrSendAsync(std::move(input_value), origin, &code, &message,
-                                std::move(callback))) {
+  if (!CommonRequestOrSendAsync(std::move(input_value), origin, coin, &code,
+                                &message, std::move(callback))) {
     *error = true;
     return GetProviderErrorDictionary(code, message);
   }
@@ -801,6 +806,7 @@ std::unique_ptr<base::Value> BraveWalletProviderImpl::RequestBaseValue(
 bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
     base::Value input_value,
     const std::string& origin,
+    mojom::CoinType coin,
     mojom::ProviderError* error,
     std::string* error_message,
     RequestCallback callback) {
@@ -837,6 +843,7 @@ bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
     SwitchEthereumChain(chain_id, std::move(callback), std::move(id));
   } else if (method == kEthSendTransaction) {
     json_rpc_service_->GetNetwork(
+        coin,
         base::BindOnce(&BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id), normalized_json_request));
@@ -910,8 +917,8 @@ bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id), method, origin));
   } else {
-    json_rpc_service_->Request(normalized_json_request, true, mojom::CoinType::ETH, std::move(id),
-                               std::move(callback));
+    json_rpc_service_->Request(normalized_json_request, true, std::move(id),
+                               coin, std::move(callback));
   }
 
   return true;
@@ -926,7 +933,7 @@ void BraveWalletProviderImpl::Send(const std::string& method,
       base::Value::ToUniquePtrValue(std::move(params));
   std::unique_ptr<base::Value> formed_response = RequestBaseValue(
       std::move(*GetJsonRpcRequest(method, std::move(params_ptr))), origin,
-      &error, std::move(callback));
+      mojom::CoinType::ETH, &error, std::move(callback));
   if (error) {
     base::Value id;
     std::move(callback).Run(std::move(id), std::move(*formed_response), false,
