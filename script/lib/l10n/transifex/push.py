@@ -253,4 +253,5 @@ def braveify(string_value):
             .replace('Brave Safe', 'Google Safe')
             .replace('Sends URLs of some pages you visit to Brave',
                      'Sends URLs of some pages you visit to Google')
-            .replace('Brave Account', 'Brave sync chain'))
+            .replace('Brave Account', 'Brave sync chain')
+            .replace('Brave Lens', 'Google Lens'))
