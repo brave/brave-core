@@ -402,6 +402,14 @@
     "message": "Your monthly tips have been processed.",
     "description": ""
   },
+  "notificationProfileRestoreDetectedTitle": {
+    "message": "Restore on another device detected!",
+    "description": ""
+  },
+  "notificationProfileRestoreDetectedText": {
+    "message": "Your Brave Rewards profile on this device has been reset because it was successfully restored on another device.",
+    "description": ""
+  },
   "notificationPublisherVerifiedTitle": {
     "message": "Pending contribution",
     "description": ""
