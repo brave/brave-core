@@ -13,6 +13,7 @@ extern const char kIPFSWebUIURL[];
 extern const char kWebcompatReporterHost[];
 extern const char kRewardsPageHost[];
 extern const char kRewardsInternalsHost[];
+extern const char kRewardsSyncInternalsHost[];
 extern const char kWelcomeHost[];
 extern const char kWelcomeJS[];
 extern const char kTipHost[];
