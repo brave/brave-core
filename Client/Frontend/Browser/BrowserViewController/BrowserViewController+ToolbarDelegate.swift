@@ -232,7 +232,7 @@ extension BrowserViewController: TopToolbarDelegate {
                     profile: self.profile,
                     tabManager: self.tabManager,
                     feedDataSource: self.feedDataSource,
-                    historyAPI: self.historyAPI
+                    historyAPI: self.braveCore.historyAPI
                 )
                 let container = SettingsNavigationController(rootViewController: shieldsAndPrivacy)
                 container.isModalInPresentation = true
@@ -295,7 +295,7 @@ extension BrowserViewController: TopToolbarDelegate {
         searchController.searchDelegate = self
         searchController.profile = self.profile
 
-        searchLoader = SearchLoader(historyAPI: historyAPI, bookmarkManager: bookmarkManager)
+        searchLoader = SearchLoader(historyAPI: braveCore.historyAPI, bookmarkManager: bookmarkManager)
         searchLoader?.addListener(searchController)
         searchLoader?.autocompleteSuggestionHandler = { [weak self] completion in
             self?.topToolbar.setAutocompleteSuggestion(completion)

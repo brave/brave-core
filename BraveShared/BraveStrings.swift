@@ -637,7 +637,7 @@ extension Strings {
     public static let menuItemRevealPasswordTitle = NSLocalizedString("MenuItemRevealPasswordTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Reveal", comment: "Reveal password text selection menu item")
     public static let menuItemHidePasswordTitle = NSLocalizedString("MenuItemHidePasswordTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Hide", comment: "Hide password text selection menu item")
     public static let menuItemCopyTitle = NSLocalizedString("MenuItemCopyTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Copy", comment: "Copy password text selection menu item")
-    public static let menuItemOpenAndFillTitle = NSLocalizedString("MenuItemOpenAndFillTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Open & Fill", comment: "Open and Fill website text selection menu item")
+    public static let menuItemOpenWebsiteTitle = NSLocalizedString("MenuItemOpenTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Open Website", comment: "Open and Fill website text selection menu item")
 }
 
 // MARK: - Passcode / Browser Lock

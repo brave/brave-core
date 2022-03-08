@@ -154,7 +154,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Perform migrations
         let profilePrefix = profile.prefs.getBranchPrefix()
-        migration?.launchMigrations(keyPrefix: profilePrefix)
+        migration?.launchMigrations(keyPrefix: profilePrefix, profile: profile)
         
         // Setup GCD-WebServer
         setUpWebServer(profile)

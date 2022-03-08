@@ -81,7 +81,24 @@ class SyncSettingsTableViewController: UITableViewController {
     }
     
     private enum SyncDataTypes: Int {
-        case bookmarks = 0, history
+        case bookmarks = 0
+        case history
+        case passwords
+        
+        var title: String {
+            switch self {
+                case .bookmarks:
+                    return Strings.bookmarksMenuItem
+                case .history:
+                    return Strings.historyMenuItem
+                case .passwords:
+                    return Strings.passwordsMenuItem
+            }
+        }
+        
+        static var count: Int {
+            return SyncDataTypes.passwords.rawValue + 1
+        }
     }
     
     /// A different logic and UI is used depending on what device was selected to remove and if it is the only device
@@ -157,6 +174,8 @@ class SyncSettingsTableViewController: UITableViewController {
                 Preferences.Chromium.syncBookmarksEnabled.value = toggle.isOn
             case SyncDataTypes.history.rawValue:
                 Preferences.Chromium.syncHistoryEnabled.value = toggle.isOn
+            case SyncDataTypes.passwords.rawValue:
+                Preferences.Chromium.syncPasswordsEnabled.value = toggle.isOn
             default:
                 return
         }
@@ -234,7 +253,7 @@ extension SyncSettingsTableViewController {
             case Sections.deviceActions.rawValue:
                 return 1
             case Sections.syncTypes.rawValue:
-                return 2
+                return SyncDataTypes.count
             default:
                 return 0
         }
@@ -326,7 +345,7 @@ extension SyncSettingsTableViewController {
         }
         
         cell.do {
-            $0.textLabel?.text = syncType == .bookmarks ? Strings.bookmarks : Strings.historyMenuItem
+            $0.textLabel?.text = syncType.title
             $0.accessoryView = toggle
             $0.selectionStyle = .none
         }
@@ -339,6 +358,8 @@ extension SyncSettingsTableViewController {
                     return Preferences.Chromium.syncBookmarksEnabled.value
                 case .history:
                     return Preferences.Chromium.syncHistoryEnabled.value
+                case .passwords:
+                    return Preferences.Chromium.syncPasswordsEnabled.value
             }
         }
     }

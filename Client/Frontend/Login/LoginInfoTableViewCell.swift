@@ -15,7 +15,7 @@ protocol LoginInfoTableViewCellDelegate: AnyObject {
     func shouldReturnAfterEditingTextField(_ cell: LoginInfoTableViewCell) -> Bool
     /// Table Row Commands Related Actions (Copy - Open)
     func canPerform(action: Selector, for cell: LoginInfoTableViewCell) -> Bool
-    func didSelectOpenAndFill(_ cell: LoginInfoTableViewCell)
+    func didSelectOpenWebsite(_ cell: LoginInfoTableViewCell)
     func didSelectReveal(_ cell: LoginInfoTableViewCell) -> Bool
 }
 
@@ -181,8 +181,8 @@ extension LoginInfoTableViewCell: MenuHelperInterface {
                                       options: [UIPasteboard.OptionsKey.expirationDate: expireDate])
     }
 
-    func menuHelperOpenAndFill() {
-        delegate?.didSelectOpenAndFill(self)
+    func menuHelperOpenWebsite() {
+        delegate?.didSelectOpenWebsite(self)
     }
 }
 

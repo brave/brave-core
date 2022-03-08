@@ -9,6 +9,7 @@ import Shared
 import BraveShared
 import Data
 import CoreData
+import Storage
 
 private let log = Logger.browserLogger
 
@@ -28,6 +29,7 @@ class BraveCoreMigrator {
     enum MigrationError: LocalizedError {
         case failedBookmarksMigration
         case failedHistoryMigration
+        case failedPasswordMigration
         
         public var failureReason: String {
             return Strings.Sync.v2MigrationErrorTitle
@@ -46,18 +48,23 @@ class BraveCoreMigrator {
     
     private let bookmarksAPI: BraveBookmarksAPI
     private let historyAPI: BraveHistoryAPI
+    private let passwordAPI: BravePasswordAPI
     private let syncAPI: BraveSyncAPI
+    private let profile: Profile
     
     private let dataImportExporter = BraveCoreImportExportUtility()
     private var bookmarkObserver: BookmarkModelListener?
     private var historyObserver: HistoryServiceListener?
     
-    public init(braveCore: BraveCoreMain) {
+    public init(braveCore: BraveCoreMain, profile: Profile) {
         self.bookmarksAPI = braveCore.bookmarksAPI
         self.historyAPI = braveCore.historyAPI
+        self.passwordAPI = braveCore.passwordAPI
+
         self.syncAPI = braveCore.syncAPI
+        self.profile = profile
         
-        // Check If Chromium Sync Objects Migration is complete (Bookmarks-History)
+        // Check If Chromium Sync Objects Migration is complete (Bookmarks-History-Password)
         if Migration.isChromiumMigrationCompleted {
             migrationObserver = .completed
         }
@@ -136,6 +143,16 @@ class BraveCoreMigrator {
                     completion?(.failedHistoryMigration)
                     
                     return
+                }
+                
+                // Step 3: Check If passwords are migrate / migrate
+                migratePasswordForms { [unowned self] success in
+                    guard success else {
+                        self.migrationObserver = .failed
+                        completion?(.failedPasswordMigration)
+                        
+                        return
+                    }
                 }
                 
                 completion?(nil)
@@ -308,7 +325,7 @@ extension BraveCoreMigrator {
             var didSucceed = true
             
             for history in History.fetchMigrationHistory(context) {
-                if self.migrateChromiumHistory(context: context, history: history) {
+                if self.migrateChromiumHistory(history: history) {
                     history.delete()
                 } else {
                     didSucceed = false
@@ -321,7 +338,7 @@ extension BraveCoreMigrator {
         }
     }
     
-    private func migrateChromiumHistory(context: NSManagedObjectContext, history: History) -> Bool {
+    private func migrateChromiumHistory(history: History) -> Bool {
         guard let title = history.title,
               let absoluteUrl = history.url, let url = URL(string: absoluteUrl),
               let dateAdded = history.visitedOn else {
@@ -331,6 +348,84 @@ extension BraveCoreMigrator {
 
         let historyNode = HistoryNode(url: url, title: title, dateAdded: dateAdded)
         historyAPI.addHistory(historyNode, isURLTyped: true)
+        
+        return true
+    }
+}
+
+// MARK: - Password Migration
+
+extension BraveCoreMigrator {
+    
+    private func migratePasswordForms(_ completion: @escaping (Bool) -> Void) {
+        Preferences.Chromium.syncV2PasswordMigrationStarted.value = true
+        
+        if !Preferences.Chromium.syncV2PasswordMigrationCompleted.value {
+            performPasswordMigrationIfNeeded { success in
+                completion(success)
+            }
+        } else {
+            completion(true)
+        }
+    }
+    
+    private func performPasswordMigrationIfNeeded(_ completion: ((Bool) -> Void)?) {
+        log.info("Migrating to Chromium Password v1 - Start")
+        migratePasswords() { success in
+            Preferences.Chromium.syncV2PasswordMigrationCompleted.value = success
+            completion?(success)
+        }
+    }
+    
+    private func migratePasswords(_ completion: @escaping (_ success: Bool) -> Void) {
+        profile.logins.getAllLogins() >>== { [weak self] results in
+            guard let self = self else { return }
+
+            for login in results.asArray() {
+                if self.migrateChromiumPasswords(login: login) {
+                    self.profile.logins.removeLoginByGUID(login.guid).upon { result in
+                        DispatchQueue.main.async {
+                            if !result.isSuccess {
+                                completion(false)
+                                log.error("Error while updating a login entry. Error Reason: \(result.failureValue ?? "")")
+                            }
+                        }
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion(false)
+                    }
+                }
+            }
+            
+            completion(true)
+        }
+    }
+    
+    private func migrateChromiumPasswords(login: Login) -> Bool {
+        guard let formSubmitURLString = login.formSubmitURL,
+              let formSubmitURL = URL(string: formSubmitURLString),
+              let originURLString = formSubmitURL.origin,
+              let originURL = URL(string: originURLString) else {
+            return false
+        }
+        
+        let loginForm = PasswordForm(
+            url: originURL,
+            signOnRealm: originURLString,
+            dateCreated: login.timeCreated.toDate(),
+            dateLastUsed: login.timeLastUsed.toDate(),
+            datePasswordChanged: login.timePasswordChanged.toDate(),
+            usernameElement: login.usernameField,
+            usernameValue: login.username,
+            passwordElement: login.password,
+            passwordValue: login.password,
+            isBlockedByUser: false,
+            scheme: .typeHtml)
+        
+        DispatchQueue.main.async {
+            self.passwordAPI.addLogin(loginForm)
+        }
         
         return true
     }

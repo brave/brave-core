@@ -16,3 +16,9 @@ extension Date {
         return UInt64(self.timeIntervalSince1970 * 1000)
     }
 }
+
+extension Timestamp {
+    public func toDate() -> Date {
+        return Date(timeIntervalSince1970: TimeInterval(self / 1_000_000))
+    }
+}
