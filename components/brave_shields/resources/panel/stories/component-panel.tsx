@@ -26,7 +26,9 @@ const LIST_JS = [
   { 'url': 'https://www.redditstatic.com/desktop2x/Governance~Reddit~Subreddit~reddit-components-BlankPost~reddit-components-ClassicPost~reddit-compone~3b56c92e.14312dc2a044d45449c9.js' },
   { 'url': 'https://www.redditstatic.com/desktop2x/ModListing~PostCreation~Reddit~StandalonePostPage~Subreddit.b725e7ecf5d621c30c53.js' },
   { 'url': 'https://www.redditstatic.com/desktop2x/PostCreation~Reddit~StandalonePostPage~SubredditTopContent~TopWeekPostsDiscoveryUnit~reddit-componen~2583c786.1cc84f65074a696c0941.js' },
-  { 'url': 'https://www.redditstatic.com/desktop2x/PostCreation~Reddit~StandalonePostPage~Subreddit~reddit-components-ClassicPost~reddit-components-Com~82e48dd3.85bb0a8c6be58f085676.js' }]
+  { 'url': 'https://www.redditstatic.com/desktop2x/PostCreation~Reddit~StandalonePostPage~Subreddit~reddit-components-ClassicPost~reddit-components-Com~82e48dd3.85bb0a8c6be58f085676.js' },
+  { 'url': 'https://api.github.com/_private/browser/stats' }
+]
 
 const LIST_ADS = [
   { url: 'ads.brave.com' },
@@ -52,7 +54,8 @@ export default {
           adsList: LIST_ADS,
           jsList: LIST_JS,
           httpRedirectsList: [],
-          fingerprintsList: []
+          fingerprintsList: [],
+          faviconUrl: { url: 'https://brave.com/static-assets/images/brave-favicon.png' }
         },
         siteSettings: {
           adBlockMode: AdBlockMode.ALLOW,

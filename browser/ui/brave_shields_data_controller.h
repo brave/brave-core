@@ -12,6 +12,7 @@
 
 #include "base/observer_list.h"
 #include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
+#include "components/favicon/core/favicon_driver_observer.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -26,7 +27,8 @@ namespace brave_shields {
 // Per-tab class to manage Shields panel data
 class BraveShieldsDataController
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<BraveShieldsDataController> {
+      public content::WebContentsUserData<BraveShieldsDataController>,
+      public favicon::FaviconDriverObserver {
  public:
   BraveShieldsDataController(const BraveShieldsDataController&) = delete;
   BraveShieldsDataController& operator=(const BraveShieldsDataController&) =
@@ -36,6 +38,7 @@ class BraveShieldsDataController
   class Observer : public base::CheckedObserver {
    public:
     virtual void OnResourcesChanged() = 0;
+    virtual void OnFaviconUpdated() {}
   };
 
   void HandleItemBlocked(const std::string& block_type,
@@ -49,6 +52,7 @@ class BraveShieldsDataController
   bool GetBraveShieldsEnabled();
   void SetBraveShieldsEnabled(bool is_enabled);
   GURL GetCurrentSiteURL();
+  GURL GetFaviconURL(bool refresh);
 
   AdBlockMode GetAdBlockMode();
   FingerprintMode GetFingerprintMode();
@@ -70,8 +74,17 @@ class BraveShieldsDataController
 
   explicit BraveShieldsDataController(content::WebContents* web_contents);
 
+  // content::WebContentsObserver
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void WebContentsDestroyed() override;
+
+  // favicon::FaviconDriverObserver
+  void OnFaviconUpdated(favicon::FaviconDriver* favicon_driver,
+                        NotificationIconType notification_icon_type,
+                        const GURL& icon_url,
+                        bool icon_url_changed,
+                        const gfx::Image& image) override;
 
   void ReloadWebContents();
 

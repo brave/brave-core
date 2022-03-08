@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
+#include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -17,6 +18,8 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/common/url_constants.h"
 #include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/image_model.h"
@@ -104,8 +107,8 @@ BraveShieldsActionView::GetImageSource() {
     auto* shields_data_controller =
         brave_shields::BraveShieldsDataController::FromWebContents(
             web_contents);
-    int count = shields_data_controller->GetTotalBlockedCount();
 
+    int count = shields_data_controller->GetTotalBlockedCount();
     if (count > 0) {
       badge_text = count > 99 ? "99+" : std::to_string(count);
     }
@@ -119,7 +122,8 @@ BraveShieldsActionView::GetImageSource() {
   }
 
   image_source->SetIcon(gfx::Image(GetIconImage(is_enabled)));
-  if (is_enabled)
+
+  if (is_enabled && profile_->GetPrefs()->GetBoolean(kShieldsStatsBadgeVisible))
     image_source->SetBadge(std::move(badge));
 
   return image_source;
@@ -145,6 +149,11 @@ void BraveShieldsActionView::UpdateIconState() {
 }
 
 void BraveShieldsActionView::ButtonPressed() {
+  auto* web_content = tab_strip_model_->GetActiveWebContents();
+  if (web_content && SchemeIsLocal(web_content->GetLastCommittedURL())) {
+    return;  // Do not show bubble if it's a local scheme
+  }
+
   if (!webui_bubble_manager_) {
     webui_bubble_manager_ =
         std::make_unique<WebUIBubbleManagerT<ShieldsPanelUI>>(
@@ -159,12 +168,39 @@ void BraveShieldsActionView::ButtonPressed() {
   webui_bubble_manager_->ShowBubble();
 }
 
+bool BraveShieldsActionView::SchemeIsLocal(GURL url) {
+  return url.SchemeIs(url::kAboutScheme) || url.SchemeIs(url::kBlobScheme) ||
+         url.SchemeIs(url::kDataScheme) ||
+         url.SchemeIs(url::kFileSystemScheme) ||
+         url.SchemeIs(content::kChromeUIScheme);
+}
+
 std::unique_ptr<views::LabelButtonBorder>
 BraveShieldsActionView::CreateDefaultBorder() const {
   std::unique_ptr<views::LabelButtonBorder> border =
       LabelButton::CreateDefaultBorder();
   border->set_insets(gfx::Insets(0, 0, 0, 0));
   return border;
+}
+
+std::u16string BraveShieldsActionView::GetTooltipText(
+    const gfx::Point& p) const {
+  auto* web_contents = tab_strip_model_->GetActiveWebContents();
+
+  if (web_contents) {
+    auto* shields_data_controller =
+        brave_shields::BraveShieldsDataController::FromWebContents(
+            web_contents);
+
+    int count = shields_data_controller->GetTotalBlockedCount();
+
+    if (count > 0) {
+      return l10n_util::GetStringFUTF16Int(IDS_BRAVE_SHIELDS_ICON_TOOLTIP,
+                                           count);
+    }
+  }
+
+  return l10n_util::GetStringUTF16(IDS_BRAVE_SHIELDS);
 }
 
 void BraveShieldsActionView::Update() {
