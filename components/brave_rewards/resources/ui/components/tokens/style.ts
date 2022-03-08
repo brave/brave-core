@@ -54,11 +54,11 @@ export const StyledTokenValue = styled('span')<{}>`
   font-size: var(--tokens-tokenNum-size);
 `
 
-export const StyledContent = styled('span')<{}>`
+export const StyledContent = styled('span')<Partial<Props>>`
   color: #9E9FAB;
   font-size: var(--tokens-text-size);
   display: inline-block;
-  margin-left: 8px;
+  margin-left: ${p => p.showApproxSign ? '4px' : '8px'};
 `
 
 export const StyledTokenCurrency = styled('span')<{}>`
