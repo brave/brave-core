@@ -15,6 +15,7 @@ import { PendingPublisherVerified } from './pending_publisher_verified'
 import { PendingTipFailed } from './pending_tip_failed'
 import { ExternalWalletVerified } from './external_wallet_verified'
 import { ExternalWalletDisconnected } from './external_wallet_disconnected'
+import { ProfileRestoreDetected } from './profile_restore_detected'
 
 export * from './notification'
 export * from './notification_view'
@@ -43,5 +44,7 @@ export function getNotificationView (
       return ExternalWalletVerified
     case 'external-wallet-disconnected':
       return ExternalWalletDisconnected
+    case 'profile-restore-detected':
+      return ProfileRestoreDetected
   }
 }
