@@ -16,7 +16,7 @@ export const StyledContent = styled('div')<{}>`
   letter-spacing: 0;
   color: ${p => p.theme.color.text};
   line-height: 26px;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 `
 
 export const StyledImport = styled('label')<{}>`
