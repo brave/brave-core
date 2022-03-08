@@ -12,6 +12,7 @@ const char kIPFSWebUIURL[] = "chrome://ipfs-internals/";
 const char kWebcompatReporterHost[] = "webcompat";
 const char kRewardsPageHost[] = "rewards";
 const char kRewardsInternalsHost[] = "rewards-internals";
+const char kRewardsSyncInternalsHost[] = "rewards-sync-internals";
 const char kWelcomeHost[] = "welcome";
 const char kWelcomeJS[] = "brave_welcome.js";
 const char kTipHost[] = "tip";
