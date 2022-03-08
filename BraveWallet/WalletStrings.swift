@@ -411,7 +411,7 @@ extension Strings {
       "wallet.swapDescription",
       tableName: "BraveWallet",
       bundle: .braveWallet,
-      value: "Swap crypto assets with Brave DEX aggregator.",
+      value: "Swap tokens and assets.",
       comment: "The description of a swap button on the buy/send/swap modal"
     )
     public static let infoTitle = NSLocalizedString(
