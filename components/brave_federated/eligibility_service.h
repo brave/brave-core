@@ -11,6 +11,11 @@
 
 namespace brave_federated {
 
+// Certain classes of federated tasks might be computationally and bandwidth
+// expensive to run on the client. For these classes we require the client's
+// device to be attached to power and on a Wi-Fi connection. EligibilityService
+// monitors the device battery and power state to determine if the device is
+// eligible to run federated tasks.
 class EligibilityService
     : public base::PowerStateObserver,
       public net::NetworkChangeNotifier::NetworkChangeObserver {

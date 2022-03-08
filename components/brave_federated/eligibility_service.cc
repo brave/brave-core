@@ -5,9 +5,6 @@
 
 #include "brave/components/brave_federated/eligibility_service.h"
 
-#include "base/power_monitor/power_monitor.h"
-#include "net/base/network_change_notifier.h"
-
 namespace brave_federated {
 
 EligibilityService::EligibilityService()
@@ -18,7 +15,10 @@ EligibilityService::EligibilityService()
   net::NetworkChangeNotifier::AddNetworkChangeObserver(this);
 }
 
-EligibilityService::~EligibilityService() {}
+EligibilityService::~EligibilityService() {
+  base::PowerMonitor::RemovePowerStateObserver(this);
+  net::NetworkChangeNotifier::RemoveNetworkChangeObserver(this);
+}
 
 bool EligibilityService::IsEligibileForFederatedTask() {
   return is_on_battery_power_ && IsConnectionWifiOrEthernet();
