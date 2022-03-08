@@ -1,0 +1,13 @@
+diff --git a/chrome/common/webui_url_constants.cc b/chrome/common/webui_url_constants.cc
+index a8251ad58b1bb9e81e289302b2c0151a23c531f1..ef768f8affc1d2124c7d3a3eb66259c779336196 100644
+--- a/chrome/common/webui_url_constants.cc
++++ b/chrome/common/webui_url_constants.cc
+@@ -161,6 +161,8 @@ const char kChromeUIResetPasswordHost[] = "reset-password";
+ const char kChromeUIResetPasswordURL[] = "chrome://reset-password/";
+ const char kChromeUIRestartHost[] = "restart";
+ const char kChromeUIRestartURL[] = "chrome://restart/";
++const char kChromeUIRewardsSyncInternalsHost[] = "rewards-sync-internals";
++const char kChromeUIRewardsSyncInternalsUrl[] = "chrome://rewards-sync-internals";
+ const char kChromeUISafetyPixelbookURL[] = "https://g.co/Pixelbook/legal";
+ const char kChromeUISafetyPixelSlateURL[] = "https://g.co/PixelSlate/legal";
+ const char kChromeUISegmentationInternalsHost[] = "segmentation-internals";

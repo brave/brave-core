@@ -1,8 +1,25 @@
 diff --git a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-index cdbbbcfa2afe95faeaacc88de3dc2c8c7eff99e9..ed753799d41006a61a8f7f6a2f51e4c340ffcf91 100644
+index cdbbbcfa2afe95faeaacc88de3dc2c8c7eff99e9..95536b026bae8a353e19a90eb61d9ee2e8a7fff6 100644
 --- a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
 +++ b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-@@ -1372,6 +1372,7 @@ void ChromeWebUIControllerFactory::GetFaviconForURL(
+@@ -13,6 +13,7 @@
+ #include "base/location.h"
+ #include "base/memory/ptr_util.h"
+ #include "base/threading/thread_task_runner_handle.h"
++#include "brave/browser/ui/webui/rewards_sync_internals/rewards_sync_internals_ui.h"
+ #include "build/branding_buildflags.h"
+ #include "build/build_config.h"
+ #include "build/chromeos_buildflags.h"
+@@ -755,6 +756,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
+     return &NewWebUI<PasswordManagerInternalsUI>;
+   if (url.host_piece() == chrome::kChromeUIPredictorsHost)
+     return &NewWebUI<PredictorsUI>;
++  if (url.host_piece() == chrome::kChromeUIRewardsSyncInternalsHost)
++    return &NewWebUI<RewardsSyncInternalsUI>;
+   if (url.host_piece() == safe_browsing::kChromeUISafeBrowsingHost)
+     return &NewWebUI<safe_browsing::SafeBrowsingUI>;
+   if (url.host_piece() == chrome::kChromeUISegmentationInternalsHost)
+@@ -1372,6 +1375,7 @@ void ChromeWebUIControllerFactory::GetFaviconForURL(
  
  // static
  ChromeWebUIControllerFactory* ChromeWebUIControllerFactory::GetInstance() {
