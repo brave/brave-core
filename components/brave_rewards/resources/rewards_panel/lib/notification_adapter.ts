@@ -46,7 +46,8 @@ enum ExtensionNotificationType {
   TIPS_PROCESSED = 8,
   VERIFIED_PUBLISHER = 10,
   PENDING_NOT_ENOUGH_FUNDS = 11,
-  GENERAL_LEDGER = 12
+  GENERAL_LEDGER = 12,
+  PROFILE_RESTORE_DETECTED = 13
 }
 
 // Ensures that the specified object literal matches some type |T|
@@ -150,6 +151,11 @@ export function mapNotification (
           })
       }
       break
+    case ExtensionNotificationType.PROFILE_RESTORE_DETECTED:
+      return {
+        ...baseProps,
+        type: 'profile-restore-detected'
+      }
   }
 
   return null

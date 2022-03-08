@@ -199,6 +199,8 @@ class RewardsDOMHandler
   void OnExternalWalletTypeUpdated(const ledger::type::Result result,
                                    ledger::type::ExternalWalletPtr wallet);
 
+  void BackUpVgs(const base::Value::List&);
+
   // RewardsServiceObserver implementation
   void OnRewardsInitialized(
       brave_rewards::RewardsService* rewards_service) override;
@@ -537,6 +539,10 @@ void RewardsDOMHandler::RegisterMessages() {
       "brave_rewards.setExternalWalletType",
       base::BindRepeating(&RewardsDOMHandler::SetExternalWalletType,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.backUpVgs",
+      base::BindRepeating(&RewardsDOMHandler::BackUpVgs,
+                          base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
@@ -720,6 +726,10 @@ void RewardsDOMHandler::OnExternalWalletTypeUpdated(
     CallJavascriptFunction("brave_rewards.externalWalletLogin",
                            base::Value(wallet ? wallet->login_url : ""));
   }
+}
+
+void RewardsDOMHandler::BackUpVgs(const base::Value::List&) {
+  rewards_service_->BackUpVgs();
 }
 
 void RewardsDOMHandler::OnGetAutoContributeProperties(
