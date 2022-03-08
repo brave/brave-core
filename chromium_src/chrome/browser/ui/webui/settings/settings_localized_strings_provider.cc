@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/pref_names.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/sidebar/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/media/router/media_router_feature.h"
@@ -23,6 +24,7 @@
 #include "components/prefs/pref_service.h"
 #include "extensions/buildflags/buildflags.h"
 #include "net/base/features.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -465,8 +467,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("webRTCLearnMoreURL", kWebRTCLearnMoreURL);
   html_source->AddString("googleLoginLearnMoreURL", kGoogleLoginLearnMoreURL);
   html_source->AddString("ipfsDNSLinkLearnMoreURL", kDNSLinkLearnMoreURL);
-  auto confirmation_phrase =
-      l10n_util::GetStringUTF16(IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
+  auto confirmation_phrase = brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE);
   html_source->AddString("walletResetConfirmationPhrase", confirmation_phrase);
   auto confirmation_text = l10n_util::GetStringFUTF16(
       IDS_SETTINGS_WALLET_RESET_CONFIRMATION, confirmation_phrase);

@@ -20,6 +20,7 @@ include_rules = [
   "+brave/components/content_settings/core",
   "+brave/components/decentralized_dns",
   "+brave/components/ipfs",
+  "+brave/components/l10n/common",
   "+brave/components/ntp_tiles",
   "+brave/components/omnibox",
   "+brave/components/permissions",

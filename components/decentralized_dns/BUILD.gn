@@ -23,6 +23,7 @@ static_library("decentralized_dns") {
 
   deps = [
     "//base",
+    "//brave/components/l10n/common",
     "//brave/components/resources:static_resources",
     "//brave/components/resources:strings",
     "//components/keyed_service/core",

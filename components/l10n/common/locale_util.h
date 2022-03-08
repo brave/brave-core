@@ -16,6 +16,8 @@ std::string GetLanguageCode(
 std::string GetCountryCode(
     const std::string& locale);
 
+std::u16string GetLocalizedResourceUTF16String(int resource_id);
+
 }  // namespace brave_l10n
 
 #endif  // BRAVE_COMPONENTS_L10N_COMMON_LOCALE_UTIL_H_

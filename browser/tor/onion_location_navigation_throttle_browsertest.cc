@@ -8,6 +8,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/browser/ui/views/location_bar/onion_location_view.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/tor/onion_location_tab_helper.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -89,7 +90,8 @@ class OnionLocationNavigationThrottleBrowserTest : public InProcessBrowserTest {
         brave_location_bar_view->GetOnionLocationView()->GetButton();
     EXPECT_TRUE(onion_button->GetVisible());
     EXPECT_EQ(onion_button->GetText(),
-              l10n_util::GetStringUTF16((IDS_LOCATION_BAR_OPEN_IN_TOR)));
+              brave_l10n::GetLocalizedResourceUTF16String(
+                  (IDS_LOCATION_BAR_OPEN_IN_TOR)));
 
     ui_test_utils::BrowserChangeObserver browser_creation_observer(
         nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);

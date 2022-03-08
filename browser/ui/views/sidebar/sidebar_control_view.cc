@@ -13,6 +13,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_add_button.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -135,17 +136,20 @@ void SidebarControlView::ShowContextMenuForViewImpl(
     return;
 
   context_menu_model_ = std::make_unique<ControlViewMenuModel>(this);
-  context_menu_model_->AddTitle(
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_TITLE));
+  context_menu_model_->AddTitle(brave_l10n::GetLocalizedResourceUTF16String(
+      IDS_SIDEBAR_SHOW_OPTION_TITLE));
   context_menu_model_->AddCheckItem(
       static_cast<int>(ShowSidebarOption::kShowAlways),
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_SHOW_OPTION_ALWAYS));
   context_menu_model_->AddCheckItem(
       static_cast<int>(ShowSidebarOption::kShowOnMouseOver),
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER));
   context_menu_model_->AddCheckItem(
       static_cast<int>(ShowSidebarOption::kShowNever),
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_SHOW_OPTION_NEVER));
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_SHOW_OPTION_NEVER));
   context_menu_runner_ = std::make_unique<views::MenuRunner>(
       context_menu_model_.get(), views::MenuRunner::CONTEXT_MENU);
   context_menu_runner_->RunMenuAt(
@@ -169,7 +173,8 @@ bool SidebarControlView::IsCommandIdChecked(int command_id) const {
 std::u16string SidebarControlView::GetTooltipTextFor(
     const views::View* view) const {
   if (view == sidebar_settings_view_)
-    return l10n_util::GetStringUTF16(IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP);
+    return brave_l10n::GetLocalizedResourceUTF16String(
+        IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP);
 
   return std::u16string();
 }
@@ -189,11 +194,13 @@ void SidebarControlView::AddChildViews() {
       AddChildView(std::make_unique<SidebarItemsScrollView>(browser_));
 
   sidebar_item_add_view_ = AddChildView(std::make_unique<SidebarItemAddButton>(
-      browser_, l10n_util::GetStringUTF16(IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE)));
+      browser_, brave_l10n::GetLocalizedResourceUTF16String(
+                    IDS_SIDEBAR_ADD_ITEM_BUBBLE_TITLE)));
   sidebar_item_add_view_->set_context_menu_controller(this);
 
   sidebar_settings_view_ = AddChildView(std::make_unique<SidebarButtonView>(
-      this, l10n_util::GetStringUTF16(IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
+      this, brave_l10n::GetLocalizedResourceUTF16String(
+                IDS_SIDEBAR_SETTINGS_BUTTON_TOOLTIP)));
 
   sidebar_settings_view_->SetCallback(
       base::BindRepeating(&SidebarControlView::OnButtonPressed,

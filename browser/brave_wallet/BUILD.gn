@@ -163,6 +163,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/l10n/common",
     "//brave/components/resources:strings_grit",
     "//brave/components/version_info",
     "//chrome/browser",

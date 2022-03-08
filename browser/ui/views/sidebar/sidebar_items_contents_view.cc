@@ -18,6 +18,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_added_feedback_bubble.h"
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
@@ -28,7 +29,6 @@
 #include "chrome/browser/ui/views/event_utils.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/default_style.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
@@ -164,7 +164,8 @@ void SidebarItemsContentsView::ShowContextMenuForViewImpl(
   }
   context_menu_model_->AddItemWithIcon(
       kItemRemove,
-      l10n_util::GetStringUTF16(IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE),
+      brave_l10n::GetLocalizedResourceUTF16String(
+          IDS_SIDEBAR_ITEM_CONTEXT_MENU_REMOVE),
       ui::ImageModel::FromVectorIcon(kSidebarTrashIcon, icon_color));
   context_menu_runner_ = std::make_unique<views::MenuRunner>(
       context_menu_model_.get(), views::MenuRunner::CONTEXT_MENU,

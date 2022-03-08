@@ -109,7 +109,6 @@
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
-#include "ui/base/l10n/l10n_util.h"
 
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;

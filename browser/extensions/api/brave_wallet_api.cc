@@ -20,6 +20,7 @@
 #include "brave/common/extensions/api/brave_wallet.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
@@ -29,7 +30,6 @@
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
@@ -167,27 +167,28 @@ ExtensionFunction::ResponseAction
 BraveWalletGetWeb3ProviderListFunction::Run() {
   base::Value list(base::Value::Type::LIST);
   list.Append(MakeSelectValue(
-      l10n_util::GetStringUTF16(
+      brave_l10n::GetLocalizedResourceUTF16String(
           IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE_PREFER_EXTENSIONS),
       ::brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension));
 
-  list.Append(MakeSelectValue(
-      l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
-      ::brave_wallet::mojom::DefaultWallet::BraveWallet));
+  list.Append(
+      MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                          IDS_BRAVE_WALLET_WEB3_PROVIDER_BRAVE),
+                      ::brave_wallet::mojom::DefaultWallet::BraveWallet));
 
   if (base::FeatureList::IsEnabled(ethereum_remote_client::features::
                                        kCryptoWalletsForNewInstallsFeature) ||
       extensions::ExtensionPrefs::Get(browser_context())
           ->HasPrefForExtension(ethereum_remote_client_extension_id)) {
     list.Append(MakeSelectValue(
-        l10n_util::GetStringUTF16(
+        brave_l10n::GetLocalizedResourceUTF16String(
             IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS_DEPRECATED),
         ::brave_wallet::mojom::DefaultWallet::CryptoWallets));
   }
 
-  list.Append(MakeSelectValue(
-      l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
-      ::brave_wallet::mojom::DefaultWallet::None));
+  list.Append(MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                                  IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
+                              ::brave_wallet::mojom::DefaultWallet::None));
   std::string json_string;
   base::JSONWriter::Write(list, &json_string);
   return RespondNow(OneArgument(base::Value(json_string)));

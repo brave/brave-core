@@ -10,12 +10,12 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/brave_view_ids.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "ui/accessibility/ax_node_data.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/theme_provider.h"
 #include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
@@ -41,17 +41,17 @@ int GetViewPadding() {
 BookmarkBarInstructionsView::BookmarkBarInstructionsView(Browser* browser)
     : updated_colors_(false), browser_(browser) {
   SetID(BRAVE_VIEW_ID_BOOKMARK_IMPORT_INSTRUCTION_VIEW);
-  instructions_ =
-      new views::Label(l10n_util::GetStringUTF16(IDS_BOOKMARKS_NO_ITEMS),
-                       kBookmarkBarTextContext);
+  instructions_ = new views::Label(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_BOOKMARKS_NO_ITEMS),
+      kBookmarkBarTextContext);
   instructions_->SetAutoColorReadabilityEnabled(false);
   instructions_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
   AddChildView(instructions_.get());
 
   if (browser_defaults::kShowImportOnBookmarkBar) {
-    import_link_ =
-        new views::Link(l10n_util::GetStringUTF16(IDS_BOOKMARK_BAR_IMPORT_LINK),
-                        kBookmarkBarTextContext);
+    import_link_ = new views::Link(brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_BOOKMARK_BAR_IMPORT_LINK),
+                                   kBookmarkBarTextContext);
     // We don't want the link to alter tab navigation.
     import_link_->SetCallback(
         base::BindRepeating(&BookmarkBarInstructionsView::LinkClicked,

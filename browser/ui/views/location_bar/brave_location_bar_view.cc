@@ -13,6 +13,7 @@
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
@@ -146,7 +147,8 @@ void BraveLocationBarView::Update(content::WebContents* contents) {
   // We do not want to override this.
   if (!GetLocationBarModel()->GetSecureDisplayText().empty())
     return;
-  auto badge_text = l10n_util::GetStringUTF16(IDS_IPFS_BADGE_TITLE);
+  auto badge_text =
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_IPFS_BADGE_TITLE);
   location_icon_view()->SetLabel(badge_text);
 }
 

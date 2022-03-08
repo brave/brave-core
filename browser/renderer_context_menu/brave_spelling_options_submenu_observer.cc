@@ -1,13 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/renderer_context_menu/render_view_context_menu_proxy.h"
-#include "ui/base/l10n/l10n_util.h"
 
 BraveSpellingOptionsSubMenuObserver::BraveSpellingOptionsSubMenuObserver(
     RenderViewContextMenuProxy* proxy,
@@ -26,8 +27,9 @@ void BraveSpellingOptionsSubMenuObserver::InitMenu(
   // 2. We overrode RenderViewContextMenu::AddSpellCheckServiceItem so that the
   // spelling suggestions toggle isn't added to the menu by the base class.
   DCHECK(!use_spelling_service_.GetValue());
-  DCHECK(submenu_model_.GetIndexOfCommandId(
-             IDC_CONTENT_CONTEXT_SPELLING_TOGGLE) == -1);
+  DCHECK_EQ(
+      submenu_model_.GetIndexOfCommandId(IDC_CONTENT_CONTEXT_SPELLING_TOGGLE),
+      -1);
 
   // Check if we ended up with a separator as the last item and, if so, get rid
   // of it.
@@ -48,19 +50,19 @@ void BraveSpellingOptionsSubMenuObserver::InitMenu(
     // pointer and instead flattens the menu into a vector in AddSubmenuItem,
     // which means we need to update the proxy manually.
     proxy_->RemoveMenuItem(IDC_SPELLCHECK_MENU);
-    proxy_->AddSubMenu(
-        IDC_SPELLCHECK_MENU,
-        l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_SPELLCHECK_MENU),
-        &submenu_model_);
+    proxy_->AddSubMenu(IDC_SPELLCHECK_MENU,
+                       brave_l10n::GetLocalizedResourceUTF16String(
+                           IDS_CONTENT_CONTEXT_SPELLCHECK_MENU),
+                       &submenu_model_);
   }
 
   // If somehow we ended up with an empty submenu then disable it.
   if (!submenu_model_.GetItemCount())
-    proxy_->UpdateMenuItem(
-        IDC_SPELLCHECK_MENU,
-        false,  // enabled
-        false,  // hidden
-        l10n_util::GetStringUTF16(IDS_CONTENT_CONTEXT_SPELLCHECK_MENU));
+    proxy_->UpdateMenuItem(IDC_SPELLCHECK_MENU,
+                           false,  // enabled
+                           false,  // hidden
+                           brave_l10n::GetLocalizedResourceUTF16String(
+                               IDS_CONTENT_CONTEXT_SPELLCHECK_MENU));
 }
 
 void BraveSpellingOptionsSubMenuObserver::SetGtestMode(

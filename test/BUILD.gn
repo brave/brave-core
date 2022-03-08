@@ -790,6 +790,7 @@ if (!is_android) {
       "//brave/components/de_amp/common:common",
       "//brave/components/debounce/browser",
       "//brave/components/debounce/common",
+      "//brave/components/l10n/common",
       "//brave/components/resources:strings_grit",
       "//brave/components/skus/common",
       "//brave/components/tor",

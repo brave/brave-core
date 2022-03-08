@@ -6,6 +6,7 @@
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 
 #include "base/values.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "build/build_config.h"
@@ -195,10 +196,10 @@ base::flat_map<std::string, base::Value> GetDefaultProfileAvatarIconAndLabel(
   gfx::Image icon = profiles::GetPlaceholderAvatarIconWithColors(
       fill_color, stroke_color, kAvatarIconSize);
   size_t index = profiles::GetPlaceholderAvatarIndex();
-  return GetAvatarIconAndLabelDict(
-      webui::GetBitmapDataUrl(icon.AsBitmap()),
-      l10n_util::GetStringUTF16(IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER), index,
-      selected, /*is_gaia_avatar=*/false);
+  return GetAvatarIconAndLabelDict(webui::GetBitmapDataUrl(icon.AsBitmap()),
+                                   brave_l10n::GetLocalizedResourceUTF16String(
+                                       IDS_BRAVE_AVATAR_LABEL_PLACEHOLDER),
+                                   index, selected, /*is_gaia_avatar=*/false);
 }
 
 }  // namespace profiles
