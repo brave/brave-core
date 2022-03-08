@@ -73,7 +73,7 @@ class BrowserNavigationHelper {
     
     func openHistory() {
         guard let bvc = bvc else { return }
-        let vc = HistoryViewController(isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing, historyAPI: bvc.historyAPI)
+        let vc = HistoryViewController(isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing, historyAPI: bvc.braveCore.historyAPI)
         vc.toolbarUrlActionsDelegate = bvc
         
         open(vc, doneButton: DoneButton(style: .done, position: .right))
@@ -86,8 +86,7 @@ class BrowserNavigationHelper {
                                         feedDataSource: bvc.feedDataSource,
                                         rewards: bvc.rewards,
                                         windowProtection: bvc.windowProtection,
-                                        historyAPI: bvc.historyAPI,
-                                        syncAPI: bvc.syncAPI)
+                                        braveCore: bvc.braveCore)
         vc.settingsDelegate = bvc
         open(vc, doneButton: DoneButton(style: .done, position: .right),
              allowSwipeToDismiss: false)

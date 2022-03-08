@@ -93,8 +93,7 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
     
     let profile: Profile
     let tabManager: TabManager
-    let historyAPI: BraveHistoryAPI
-    let syncAPI: BraveSyncAPI
+    let braveCore: BraveCoreMain
     let migration: Migration?
     let bookmarkManager: BookmarkManager
     
@@ -196,9 +195,8 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
          crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
         self.profile = profile
-        self.historyAPI = braveCore.historyAPI
+        self.braveCore = braveCore
         self.bookmarkManager = BookmarkManager(bookmarksAPI: braveCore.bookmarksAPI)
-        self.syncAPI = braveCore.syncAPI
         self.migration = migration
         self.crashedLastSession = crashedLastSession
         self.safeBrowsing = safeBrowsingManager
@@ -738,6 +736,11 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
         showWalletTransferExpiryPanelIfNeeded()
         
         /// Perform migration to brave-core sync objects
+        if !Migration.isChromiumMigrationCompleted,
+           !Preferences.Chromium.syncV2PasswordMigrationStarted.value {
+            Preferences.Chromium.syncV2ObjectMigrationCount.value = 0
+        }
+        
         doSyncMigration()
         
         if #available(iOS 14, *), !Preferences.DefaultBrowserIntro.defaultBrowserNotificationScheduled.value {
@@ -1789,9 +1792,9 @@ class BrowserViewController: UIViewController, BrowserViewControllerDelegate {
                     if let visitType =
                         typedNavigation.first(where: { $0.key.typedDisplayString == url.typedDisplayString })?.value,
                        visitType == .typed {
-                        historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
+                        braveCore.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date())
                     } else {
-                        historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date(), isURLTyped: false)
+                        braveCore.historyAPI.add(url: url, title: tab.title ?? "", dateAdded: Date(), isURLTyped: false)
                     }
                 }
             }
@@ -1939,7 +1942,7 @@ extension BrowserViewController: TabDelegate {
 
         // only add the logins helper if the tab is not a private browsing tab
         if !tab.isPrivate {
-            let logins = LoginsHelper(tab: tab, profile: profile)
+            let logins = LoginsHelper(tab: tab, profile: profile, passwordAPI: braveCore.passwordAPI)
             tab.addContentScript(logins, name: LoginsHelper.name(), contentWorld: .defaultClient)
         }
 

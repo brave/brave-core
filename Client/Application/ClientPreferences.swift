@@ -245,6 +245,10 @@ extension Preferences {
         static let syncV2BookmarksMigrationCompleted = Option<Bool>(key: "chromium.migration.bookmarks", default: false)
         /// The boolean determine History Migration is finished on client side
         static let syncV2HistoryMigrationCompleted = Option<Bool>(key: "chromium.migration.history", default: false)
+        /// The boolean determine Password Migration is finished on client side
+        static let syncV2PasswordMigrationCompleted = Option<Bool>(key: "chromium.migration.password", default: false)
+        /// The boolean determine Password Migration is started on client side
+        static let syncV2PasswordMigrationStarted = Option<Bool>(key: "chromium.migration.password.started", default: false)
         /// The count of how many times migration is performed on client side - the value increases with every fail attempt and after 3 tries migration marked as successful
         static let syncV2ObjectMigrationCount = Option<Int>(key: "chromium.migration.attempt.count", default: 0)
         /// Whether the device is in sync chain
@@ -253,6 +257,8 @@ extension Preferences {
         static let syncBookmarksEnabled = Option<Bool>(key: "chromium.sync.syncBookmarksEnabled", default: true)
         /// The sync type history enabled for the device in sync chain
         static let syncHistoryEnabled = Option<Bool>(key: "chromium.sync.syncHistoryEnabled", default: false)
+        /// The sync type passwords enabled the device in sync chain
+        static let syncPasswordsEnabled = Option<Bool>(key: "chromium.sync.syncPasswordsEnabled", default: false)
         /// Node Id for last bookmark folder
         static let lastBookmarksFolderNodeId = Option<Int?>(key: "chromium.last.bookmark.folder.node.id", default: nil)
     }

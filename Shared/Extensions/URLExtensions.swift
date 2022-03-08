@@ -160,7 +160,7 @@ extension URL {
         guard isWebPage(includeDataURIs: false), let hostPort = self.hostPort, let scheme = scheme else {
             return nil
         }
-        return "\(scheme)://\(hostPort)"
+        return "\(scheme)://\(hostPort)/"
     }
 
     /**

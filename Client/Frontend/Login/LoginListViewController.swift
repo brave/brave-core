@@ -8,6 +8,7 @@ import Shared
 import BraveShared
 import Storage
 import Data
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -36,25 +37,45 @@ class LoginListViewController: LoginAuthViewController {
     
     // MARK: Private
     
-    private let profile: Profile
+    private let passwordAPI: BravePasswordAPI
     private let windowProtection: WindowProtection?
     
-    private var loginEntries = [Login]()
-    private var isFetchingLoginEntries = false
+    private var credentialList = [PasswordForm]()
+    private var passwordStoreListener: PasswordStoreListener?
+    private var isCredentialsRefreshing = false
+
     private var searchLoginTimer: Timer?
+    private var isCredentialsBeingSearched = false
     private let searchController = UISearchController(searchResultsController: nil)
     private let emptyLoginView = EmptyStateOverlayView(description: Strings.Login.loginListEmptyScreenTitle)
     
     // MARK: Lifecycle
     
-    init(profile: Profile, windowProtection: WindowProtection?) {
-        self.profile = profile
+    init(passwordAPI: BravePasswordAPI, windowProtection: WindowProtection?) {
         self.windowProtection = windowProtection
+        self.passwordAPI = passwordAPI
+        
         super.init(windowProtection: windowProtection, requiresAuthentication: true)
+        
+        // Adding the Password store observer in constructor to watch credentials changes
+        passwordStoreListener = passwordAPI.add(PasswordStoreStateObserver { [weak self] _ in
+            guard let self = self, !self.isCredentialsBeingSearched else { return }
+            
+            DispatchQueue.main.async {
+                self.fetchLoginInfo()
+            }
+        })
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        // Remove the password store observer
+        if let observer = passwordStoreListener {
+            passwordAPI.removeObserver(observer)
+        }
     }
     
     override func viewDidLoad() {
@@ -72,7 +93,7 @@ class LoginListViewController: LoginAuthViewController {
             $0.searchController = searchController
             $0.hidesSearchBarWhenScrolling = false
             $0.rightBarButtonItem = editButtonItem
-            $0.rightBarButtonItem?.isEnabled = !self.loginEntries.isEmpty
+            $0.rightBarButtonItem?.isEnabled = !self.credentialList.isEmpty
         }
         definesPresentationContext = true
 
@@ -123,29 +144,36 @@ class LoginListViewController: LoginAuthViewController {
     }
     
     private func fetchLoginInfo(_ searchQuery: String? = nil) {
-        guard !isFetchingLoginEntries else {
-            return
-        }
-        
-        isFetchingLoginEntries = true
-        
-        if let query = searchQuery {
-            profile.logins.getLoginsForQuery(query) >>== { [weak self] results in
-                self?.reloadEntries(results: results)
-            }
-        } else {
-            profile.logins.getAllLogins() >>== { [weak self] results in
-                self?.reloadEntries(results: results)
+        if !isCredentialsRefreshing {
+            isCredentialsRefreshing = true
+                    
+            passwordAPI.getSavedLogins { credentials in
+                self.reloadEntries(with: searchQuery, passwordForms: credentials)
             }
         }
     }
     
-    private func reloadEntries(results: Cursor<Login>) {
-        loginEntries = results.asArray()
+    private func reloadEntries(with query: String? = nil, passwordForms: [PasswordForm]) {
+        if let query = query, !query.isEmpty {
+            credentialList = passwordForms.filter { form in
+                if let origin = form.url.origin?.lowercased(), origin.contains(query) {
+                    return true
+                }
+                
+                if let username = form.usernameValue?.lowercased(), username.contains(query) {
+                    return true
+                }
+                
+                return false
+            }
+        } else {
+            credentialList = passwordForms
+        }
+        
         DispatchQueue.main.async {
             self.tableView.reloadData()
-            self.isFetchingLoginEntries = false
-            self.navigationItem.rightBarButtonItem?.isEnabled = !self.loginEntries.isEmpty
+            self.isCredentialsRefreshing = false
+            self.navigationItem.rightBarButtonItem?.isEnabled = !self.credentialList.isEmpty
         }
     }
 }
@@ -155,7 +183,7 @@ class LoginListViewController: LoginAuthViewController {
 extension LoginListViewController {
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        tableView.backgroundView = loginEntries.isEmpty ? emptyLoginView : nil
+        tableView.backgroundView = credentialList.isEmpty ? emptyLoginView : nil
 
         return Section.allCases.count
     }
@@ -164,7 +192,7 @@ extension LoginListViewController {
         if section == Section.options.rawValue {
             return 1
         } else {
-            return loginEntries.count
+            return credentialList.count
         }
     }
     
@@ -177,7 +205,7 @@ extension LoginListViewController {
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == Section.savedLogins.rawValue {
-            return loginEntries.isEmpty ? .zero : UX.headerHeight
+            return credentialList.isEmpty ? .zero : UX.headerHeight
         }
         
         return .zero
@@ -199,7 +227,7 @@ extension LoginListViewController {
             
             return cell
         } else {
-            guard let loginInfo = loginEntries[safe: indexPath.item] else {
+            guard let loginInfo = credentialList[safe: indexPath.item] else {
                 return UITableViewCell()
             }
             
@@ -209,7 +237,8 @@ extension LoginListViewController {
                 $0.selectionStyle = .none
                 $0.accessoryType = .disclosureIndicator
 
-                $0.setLines(loginInfo.hostname, detailText: loginInfo.username)
+                $0.setLines(loginInfo.displayURLString,
+                            detailText: loginInfo.usernameValue)
                 $0.imageView?.contentMode = .scaleAspectFit
                 $0.imageView?.image = FaviconFetcher.defaultFaviconImage
                 $0.imageView?.layer.borderColor = BraveUX.faviconBorderColor.cgColor
@@ -217,20 +246,20 @@ extension LoginListViewController {
                 $0.imageView?.layer.cornerRadius = 6
                 $0.imageView?.layer.cornerCurve = .continuous
                 $0.imageView?.layer.masksToBounds = true
-            }
-                      
-            if let loginHostnameURL = URL(string: loginInfo.hostname) {
-                let domain = Domain.getOrCreate(forUrl: loginHostnameURL, persistent: true)
                 
-                cell.imageView?.loadFavicon(
-                    for: loginHostnameURL,
-                    domain: domain,
-                    fallbackMonogramCharacter: loginHostnameURL.baseDomain?.first,
-                    shouldClearMonogramFavIcon: false,
-                    cachedOnly: true)
-            } else {
-                cell.imageView?.clearMonogramFavicon()
-                cell.imageView?.image = FaviconFetcher.defaultFaviconImage
+                if let signOnRealmURL = URL(string: loginInfo.signOnRealm) {
+                    let domain = Domain.getOrCreate(forUrl: signOnRealmURL, persistent: true)
+    
+                    cell.imageView?.loadFavicon(
+                        for: signOnRealmURL,
+                        domain: domain,
+                        fallbackMonogramCharacter: signOnRealmURL.baseDomain?.first,
+                        shouldClearMonogramFavIcon: false,
+                        cachedOnly: true)
+                } else {
+                    cell.imageView?.clearMonogramFavicon()
+                    cell.imageView?.image = FaviconFetcher.defaultFaviconImage
+                }
             }
             
             return cell
@@ -245,14 +274,14 @@ extension LoginListViewController {
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if indexPath.section == Section.savedLogins.rawValue, let loginEntry = loginEntries[safe: indexPath.row] {
+        if indexPath.section == Section.savedLogins.rawValue, let credentials = credentialList[safe: indexPath.row] {
             let loginDetailsViewController = LoginInfoViewController(
-                profile: profile,
-                loginEntry: loginEntry,
+                passwordAPI: passwordAPI,
+                credentials: credentials,
                 windowProtection: windowProtection)
             loginDetailsViewController.settingsDelegate = settingsDelegate
             navigationController?.pushViewController(loginDetailsViewController, animated: true)
-            
+
             return indexPath
         }
         
@@ -282,9 +311,9 @@ extension LoginListViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            guard let loginItem = loginEntries[safe: indexPath.row] else { return }
+            guard let credential = credentialList[safe: indexPath.row] else { return }
             
-            showDeleteLoginWarning(with: loginItem)
+            showDeleteLoginWarning(with: credential)
         }
     }
     
@@ -292,22 +321,17 @@ extension LoginListViewController {
         return indexPath.section == Section.savedLogins.rawValue
     }
     
-    private func showDeleteLoginWarning(with loginItem: Login) {
+    private func showDeleteLoginWarning(with credential: PasswordForm) {
         let alert = UIAlertController(
             title: Strings.deleteLoginAlertTitle,
             message: Strings.Login.loginEntryDeleteAlertMessage,
             preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: Strings.deleteLoginButtonTitle, style: .destructive, handler: { [weak self] _ in
-            let success = self?.profile.logins.removeLoginByGUID(loginItem.guid)
+            guard let self = self else { return }
             
-            success?.upon { result in
-                if result.isSuccess {
-                    self?.fetchLoginInfo()
-                } else {
-                    log.error("Error while deleting a login entry")
-                }
-            }
+            self.passwordAPI.removeLogin(credential)
+            self.fetchLoginInfo()
         }))
         
         alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
@@ -358,11 +382,15 @@ extension LoginListViewController: UISearchResultsUpdating {
 extension LoginListViewController: UISearchControllerDelegate {
     
     func willPresentSearchController(_ searchController: UISearchController) {
+        isCredentialsBeingSearched = true
+        
         tableView.setEditing(false, animated: true)
         tableView.reloadData()
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
+        isCredentialsBeingSearched = false
+        
         tableView.reloadData()
     }
 }

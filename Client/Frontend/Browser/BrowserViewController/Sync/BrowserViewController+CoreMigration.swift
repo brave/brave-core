@@ -34,7 +34,9 @@ extension BrowserViewController {
             // After 3 tries, we mark Migration as successful.
             // There is nothing more we can do for the user other than to let them export/import bookmarks.
             Preferences.Chromium.syncV2BookmarksMigrationCompleted.value = true
-            // Also marking the history migration completed after 3 tries
+            // Marking the history migration completed after 3 tries
+            Preferences.Chromium.syncV2HistoryMigrationCompleted.value = true
+            // Marking the password migration completed after 3 tries
             Preferences.Chromium.syncV2HistoryMigrationCompleted.value = true
         }
     }

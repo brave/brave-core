@@ -7,6 +7,7 @@ import Foundation
 import Storage
 import Shared
 import SwiftKeychainWrapper
+import BraveCore
 
 private let log = Logger.browserLogger
 
@@ -37,15 +38,16 @@ class LoginInfoViewController: LoginAuthViewController {
     }
     
     weak var settingsDelegate: SettingsDelegate?
+    private var passwordAPI: BravePasswordAPI
+    private var passwordStoreListener: PasswordStoreListener?
 
     // MARK: Private
     
-    private let profile: Profile
     private weak var websiteField: UITextField?
     private weak var usernameField: UITextField?
     private weak var passwordField: UITextField?
     
-    private var loginEntry: Login {
+    private var credentials: PasswordForm {
         didSet {
             tableView.reloadData()
         }
@@ -59,32 +61,63 @@ class LoginInfoViewController: LoginAuthViewController {
     }
     
     private var formattedCreationDate: String {
-        let date = Date(timeIntervalSince1970: TimeInterval(loginEntry.timeCreated / 1_000_000))
         let dateFormatter = DateFormatter().then {
             $0.locale = .current
             $0.dateFormat = "EEEE, MMM d, yyyy"
         }
 
-        return dateFormatter.string(from: date)
+        return dateFormatter.string(from: credentials.dateCreated ?? Date())
     }
     
     // MARK: Lifecycle
 
-    init(profile: Profile, loginEntry: Login, windowProtection: WindowProtection?) {
-        self.loginEntry = loginEntry
-        self.profile = profile
+    init(passwordAPI: BravePasswordAPI, credentials: PasswordForm, windowProtection: WindowProtection?) {
+        self.passwordAPI = passwordAPI
+        self.credentials = credentials
         super.init(windowProtection: windowProtection)
+        
+        // Adding the Password store observer in constructor to watch credential passed to info screen is updated
+        passwordStoreListener = passwordAPI.add(PasswordStoreStateObserver { [weak self] stateChange in
+            guard let self = self else { return }
+            
+            switch stateChange {
+                case .passwordFormsChanged(let formList):
+                    guard self.isEditingFieldData else {
+                        return
+                    }
+                    
+                    // Observe password changes for an form with same signOnRealm and Username
+                    let observedForm = formList.first {
+                        $0.signOnRealm == self.credentials.signOnRealm &&
+                        $0.usernameElement == self.credentials.usernameElement
+                    }
+                    
+                    if let passwordForm = observedForm {
+                        self.credentials = passwordForm
+                    }
+                    
+                default:
+                    break
+            }
+        })
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        // Remove the password store observer
+        if let observer = passwordStoreListener {
+            passwordAPI.removeObserver(observer)
+        }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.do {
-            $0.title = URL(string: loginEntry.hostname)?.baseDomain ?? ""
+            $0.title = URL(string: credentials.signOnRealm)?.baseDomain ?? ""
             $0.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(edit))
         }
 
@@ -138,7 +171,8 @@ extension LoginInfoViewController {
                         cell.do {
                             $0.delegate = self
                             $0.highlightedLabel.text = Strings.Login.loginInfoDetailsWebsiteFieldTitle
-                            $0.descriptionTextField.text = loginEntry.hostname
+                            $0.descriptionTextField.text =
+                                credentials.url.origin ?? credentials.signOnRealm
                             $0.isEditingFieldData = false
                             $0.tag = InfoItem.websiteItem.rawValue
                         }
@@ -155,7 +189,7 @@ extension LoginInfoViewController {
                         cell.do {
                             $0.delegate = self
                             $0.highlightedLabel.text = Strings.Login.loginInfoDetailsUsernameFieldTitle
-                            $0.descriptionTextField.text = loginEntry.username
+                            $0.descriptionTextField.text = credentials.usernameValue ?? ""
                             $0.descriptionTextField.keyboardType = .emailAddress
                             $0.descriptionTextField.returnKeyType = .next
                             $0.isEditingFieldData = isEditingFieldData
@@ -173,7 +207,7 @@ extension LoginInfoViewController {
                         cell.do {
                             $0.delegate = self
                             $0.highlightedLabel.text = Strings.Login.loginInfoDetailsPasswordFieldTitle
-                            $0.descriptionTextField.text = loginEntry.password
+                            $0.descriptionTextField.text = credentials.passwordValue ?? ""
                             $0.descriptionTextField.returnKeyType = .done
                             $0.displayDescriptionAsPassword = true
                             $0.isEditingFieldData = isEditingFieldData
@@ -279,32 +313,32 @@ extension LoginInfoViewController {
     }
     
     @objc private func done() {
-        updateLoginInfo { [weak self] in
+        updateLoginInfo { [weak self] success in
             guard let self = self else { return }
 
             self.isEditingFieldData = false
-            self.tableView.reloadData()
+            if success {
+                self.tableView.reloadData()
+            }
             self.navigationItem.rightBarButtonItem =
                 UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(self.edit))
         }
     }
     
-    private func updateLoginInfo(completion: @escaping () -> Void) {
+    private func updateLoginInfo(completion: @escaping (Bool) -> Void) {
         guard let username = usernameField?.text, let password = passwordField?.text,
-              username != loginEntry.username || password != loginEntry.password else {
-            completion()
+              username != credentials.usernameValue || password != credentials.passwordValue else {
+            completion(false)
             return
         }
-                
-        loginEntry.update(password: password, username: username)
         
-        profile.logins.updateLoginByGUID(loginEntry.guid, new: loginEntry, significant: true).upon { result in
-            DispatchQueue.main.async {
-                if !result.isSuccess {
-                    log.error("Error while updating a login entry. Error Reason: \(result.failureValue ?? "")")
-                }
-                completion()
-            }
+        if let oldCredentials = credentials.copy() as? PasswordForm {
+            credentials.update(username, passwordValue: password)
+            passwordAPI.updateLogin(credentials, oldPasswordForm: oldCredentials)
+            
+            completion(true)
+        } else {
+            completion(false)
         }
     }
     
@@ -314,16 +348,9 @@ extension LoginInfoViewController {
             message: Strings.Login.loginEntryDeleteAlertMessage,
             preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: Strings.deleteLoginButtonTitle, style: .destructive, handler: { [unowned self] _ in
-            self.profile.logins.removeLoginByGUID(self.loginEntry.guid).upon { result in
-                DispatchQueue.main.async {
-                    if result.isSuccess {
-                        self.navigationController?.popViewController(animated: true)
-                    } else {
-                        log.error("Error while deleting a login entry")
-                    }
-                }
-            }
+        alert.addAction(UIAlertAction(title: Strings.deleteLoginButtonTitle, style: .destructive, handler: { _ in
+            self.passwordAPI.removeLogin(self.credentials)
+            self.navigationController?.popViewController(animated: true)
         }))
         
         alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
@@ -358,7 +385,7 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
     func canPerform(action: Selector, for cell: LoginInfoTableViewCell) -> Bool {
         switch cell.tag {
             case InfoItem.websiteItem.rawValue:
-                return action == MenuHelper.selectorCopy || action == MenuHelper.selectorOpenAndFill
+                return action == MenuHelper.selectorCopy || action == MenuHelper.selectorOpenWebsite
         case InfoItem.usernameItem.rawValue:
             return action == MenuHelper.selectorCopy
         case InfoItem.passwordItem.rawValue:
@@ -371,12 +398,8 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
         }
     }
     
-    func didSelectOpenAndFill(_ cell: LoginInfoTableViewCell) {
-        guard let url = (loginEntry.formSubmitURL?.asURL ?? loginEntry.hostname.asURL) else {
-            return
-        }
-    
-        settingsDelegate?.settingsOpenURLInNewTab(url)
+    func didSelectOpenWebsite(_ cell: LoginInfoTableViewCell) {
+        settingsDelegate?.settingsOpenURLInNewTab(credentials.url)
         dismiss(animated: true, completion: nil)
     }
     
@@ -390,4 +413,3 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
         }
     }
 }
-
