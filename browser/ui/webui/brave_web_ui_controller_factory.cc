@@ -13,6 +13,7 @@
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_page_ui.h"
+#include "brave/browser/ui/webui/brave_rewards_sync_internals_ui.h"
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/brave_federated/federated_internals_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
@@ -115,6 +116,8 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
+  } else if (host == kRewardsSyncInternalsHost) {
+    return new BraveRewardsSyncInternalsUI(web_ui);
 #if !BUILDFLAG(IS_ANDROID)
   } else if (host == kTipHost) {
     return new BraveTipUI(web_ui, url.host());
@@ -178,6 +181,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kRewardsPageHost ||
       url.host_piece() == kFederatedInternalsHost ||
       url.host_piece() == kRewardsInternalsHost ||
+      url.host_piece() == kRewardsSyncInternalsHost ||
       url.host_piece() == kTipHost ||
 #if BUILDFLAG(ENABLE_TOR)
       url.host_piece() == kTorInternalsHost ||
@@ -200,7 +204,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 bool ShouldBlockRewardsWebUI(
       content::BrowserContext* browser_context, const GURL& url) {
   if (url.host_piece() != kRewardsPageHost &&
-      url.host_piece() != kRewardsInternalsHost) {
+      url.host_piece() != kRewardsInternalsHost &&
+      url.host_piece() != kRewardsSyncInternalsHost) {
     return false;
   }
   if (!base::FeatureList::IsEnabled(features::kBraveRewards)) {
