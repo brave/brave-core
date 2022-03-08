@@ -125,7 +125,7 @@ describe('welcomeReducer', () => {
       expect(result.searchProviders).toEqual(mockSearchProviders)
     })
 
-    describe('with the region', () => {
+    describe('with onboarding variables', () => {
       const mockState = {
         searchProviders: [],
         browserProfiles: []
@@ -135,11 +135,18 @@ describe('welcomeReducer', () => {
         { name: 'Brave Search beta', canBeRemoved: true }
       ]
       let countryString: string = 'US'
+      let showRewardsCard: boolean = true
       // eslint-disable-next-line no-import-assign
       loadTimeData = {
         getString: (fieldName: string) => {
           switch (fieldName) {
             case 'countryString': return countryString
+          }
+          return undefined
+        },
+        getBoolean: (fieldName: string) => {
+          switch (fieldName) {
+            case 'showRewardsCard': return showRewardsCard
           }
           return undefined
         }
@@ -175,7 +182,7 @@ describe('welcomeReducer', () => {
             type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
             payload: examplePayload
           })
-          expect(result.hideSearchOnboarding).toEqual(true)
+          expect(result.showSearchCard).toEqual(false)
         })
       })
 
@@ -195,7 +202,7 @@ describe('welcomeReducer', () => {
               { name: 'Brave Search beta', canBeRemoved: true }
             ]
           })
-          expect(result.hideSearchOnboarding).toEqual(false)
+          expect(result.showSearchCard).toEqual(true)
         })
 
         it('should leave Brave in the list', () => {
