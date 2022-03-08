@@ -151,6 +151,24 @@ class Promise {
   absl::optional<Future<Ts...>> future_;
 };
 
+template <typename... Ts>
+struct Unwrap : std::tuple<Ts...> {
+  using std::tuple<Ts...>::tuple;
+};
+
+template <typename... Ts>
+Unwrap(Ts...) -> Unwrap<Ts...>;
+
+template <typename... Ts>
+decltype(auto) deduce_tuple(std::tuple<Ts...>& t) {
+  return t;
+}
+
+template <typename... Ts>
+decltype(auto) deduce_tuple(std::tuple<Ts...>&& t) {
+  return std::move(t);
+}
+
 // Represents the result of an asynchronous operation.
 //
 // Example:
@@ -167,7 +185,7 @@ class Future {
   };
 
   template <typename... Rs>
-  struct promise_impl<std::tuple<Rs...>> {
+  struct promise_impl<Unwrap<Rs...>> {
     using type = Promise<Rs...>;
   };
 
@@ -271,12 +289,12 @@ class Future {
 
   template <typename Then, typename R = typename Then::ResultType>
   static void Transform(Then then, promise_t<R> promise, Ts... values) {
-    if constexpr (is_specialization_of_v<R, std::tuple>) {
+    if constexpr (is_specialization_of_v<R, Unwrap>) {
       std::apply(
           [&](auto&&... values) {
             promise.Set(std::forward<decltype(values)>(values)...);
           },
-          std::move(then).Run(std::move(values)...));
+          deduce_tuple(std::move(then).Run(std::move(values)...)));
     } else if constexpr (is_specialization_of_v<R, Future>) {
       std::move(then)
           .Run(std::move(values)...)

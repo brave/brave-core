@@ -104,7 +104,7 @@ TEST_F(FutureTest, TransformingThen2) {
 
   MakeFuture(1)
       .Then(base::BindOnce(
-          [](int v) { return std::make_tuple(static_cast<double>(v) / 2); }))
+          [](int v) { return Unwrap(static_cast<double>(v) / 2); }))
       .Then(base::BindLambdaForTesting([&value](double v) { value = v; }));
 
   EXPECT_EQ(value, 0);
@@ -118,8 +118,7 @@ TEST_F(FutureTest, TransformingThen3) {
 
   MakeFuture(1)
       .Then(base::BindOnce([](int v) {
-        return std::make_tuple(static_cast<double>(v) / 2,
-                               std ::to_string(v) + " / 2");
+        return Unwrap(static_cast<double>(v) / 2, std ::to_string(v) + " / 2");
       }))
       .Then(base::BindLambdaForTesting([&](double dv, std::string sv) {
         double_value = dv;
@@ -204,12 +203,11 @@ TEST_F(FutureTest, MakeFuture) {
 
 // clang-format off
 // transforming `Then` -
-// base::OnceCallback<std::tuple<std::string::const_iterator, std::string::const_iterator, std::regex>>(const std::string&)>
+// base::OnceCallback<Unwrap<std::string::const_iterator, std::string::const_iterator, std::regex>>(const std::string&)>
 // clang-format on
 auto prepare_tokenize_input = [](const std::string& s) {
-  return std::tuple(
-      s.cbegin(), s.cend(),
-      std::regex{"[A-Z]+[a-z]+"} /* regex for matching camel case */);
+  return Unwrap(s.cbegin(), s.cend(),
+                std::regex{"[A-Z]+[a-z]+"} /* regex for matching camel case */);
 };
 
 // clang-format off
@@ -225,7 +223,7 @@ auto tokenize = [](std::string::const_iterator cbegin,
 };
 
 // transforming `Then` -
-// base::OnceCallback<std::string(std::vector<std::string>)>
+// base::OnceCallback<std::tuple<std::string>(std::vector<std::string>)>
 auto join_with_underscore = [](std::vector<std::string> tokens) {
   EXPECT_TRUE(tokens.size() == 4);
   EXPECT_EQ(tokens[0], "Camel");
@@ -239,13 +237,13 @@ auto join_with_underscore = [](std::vector<std::string> tokens) {
   std::copy(tokens.cbegin(), --cend,
             std::ostream_iterator<std::string>(oss, "_"));
 
-  return oss.str() + *cend;
+  return std::tuple(oss.str() + *cend);
 };
 
 // transforming/flattening `Then` -
-// base::OnceCallback<Future<std::string>(std::string)>
-auto lower_case = [](std::string s) {
-  EXPECT_EQ(s, "Camel_Case_Is_Gone");
+// base::OnceCallback<Future<std::string>(std::tuple<std::string>)>
+auto lower_case = [](std::tuple<std::string> s) {
+  EXPECT_EQ(std::get<std::string>(s), "Camel_Case_Is_Gone");
 
   Promise<std::string> promise;
   auto future = promise.GetFuture();
@@ -261,7 +259,7 @@ auto lower_case = [](std::string s) {
 
                        promise.Set(std::move(s));
                      },
-                     std::move(promise), std::move(s)));
+                     std::move(promise), std::get<std::string>(std::move(s))));
 
   return future;
 };
