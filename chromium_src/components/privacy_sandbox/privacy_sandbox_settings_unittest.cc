@@ -479,9 +479,11 @@ TEST_F(PrivacySandboxSettingsTest, IsPrivacySandboxEnabled) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
 
   // Check that even bypassing PrivacySandboxSettings::SetPrivacySandboxEnabled,
-  // and manually updating the preference, we still don't get this enabled.
+  // and manually updating the preferences, we still don't get this enabled.
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxApisEnabled, true);
+  profile()->GetTestingPrefService()->SetBoolean(
+      prefs::kPrivacySandboxApisEnabledV2, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsPrivacySandboxEnabled());
 }
 
@@ -503,6 +505,8 @@ TEST_F(PrivacySandboxSettingsTest, IsFlocAllowed) {
   // and manually updating the preferences, we still don't get this enabled.
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxApisEnabled, true);
+  profile()->GetTestingPrefService()->SetBoolean(
+      prefs::kPrivacySandboxApisEnabledV2, true);
   profile()->GetTestingPrefService()->SetBoolean(
       prefs::kPrivacySandboxFlocEnabled, true);
   EXPECT_FALSE(privacy_sandbox_settings()->IsFlocAllowed());
