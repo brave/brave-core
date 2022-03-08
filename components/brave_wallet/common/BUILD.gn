@@ -10,6 +10,8 @@ static_library("common") {
   include_dirs = [ "//brave/third_party/ethash/src/include" ]
 
   sources = [
+    "brave_wallet_response_helpers.cc",
+    "brave_wallet_response_helpers.h",
     "brave_wallet_types.cc",
     "brave_wallet_types.h",
     "eth_address.cc",

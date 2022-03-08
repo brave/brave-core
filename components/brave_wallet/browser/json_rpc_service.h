@@ -57,6 +57,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(uint256_t result,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
+  using RequestIntermediateCallback = base::OnceCallback<void(
+      int http_code,
+      const std::string& response,
+      const base::flat_map<std::string, std::string>& headers)>;
   using GetFeeHistoryCallback = base::OnceCallback<void(
       const std::vector<std::string>& base_fee_per_gas,
       const std::vector<double>& gas_used_ratio,
@@ -69,8 +73,15 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void Request(const std::string& json_payload,
                bool auto_retry_on_network_change,
+               base::Value id,
                mojom::CoinType coin,
                RequestCallback callback) override;
+
+  void OnRequestResult(RequestCallback callback,
+                       base::Value id,
+                       const int code,
+                       const std::string& message,
+                       const base::flat_map<std::string, std::string>& headers);
 
   void GetBalance(const std::string& address,
                   mojom::CoinType coin,
@@ -220,10 +231,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(mojom::ProviderError error,
                               const std::string& error_message)>;
   // return false when there is an error before processing request
-  bool AddSwitchEthereumChainRequest(
-      const std::string& chain_id,
-      const GURL& origin,
-      SwitchEthereumChainRequestCallback callback);
+  bool AddSwitchEthereumChainRequest(const std::string& chain_id,
+                                     const GURL& origin,
+                                     RequestCallback callback,
+                                     base::Value id);
 
   void SetAPIRequestHelperForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -374,7 +385,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void RequestInternal(const std::string& json_payload,
                        bool auto_retry_on_network_change,
                        const GURL& network_url,
-                       RequestCallback callback);
+                       RequestIntermediateCallback callback);
   void OnEthChainIdValidatedForOrigin(
       mojom::NetworkInfoPtr chain,
       const GURL& origin,
@@ -415,6 +426,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const base::flat_map<std::string, std::string>& headers);
   void OnGetSPLTokenAccountBalance(
       GetSPLTokenAccountBalanceCallback callback,
+
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
@@ -447,8 +459,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   base::flat_map<std::string, GURL> add_chain_pending_requests_origins_;
   // <origin, chain_id>
   base::flat_map<GURL, std::string> switch_chain_requests_;
-  base::flat_map<GURL, SwitchEthereumChainRequestCallback>
-      switch_chain_callbacks_;
+  base::flat_map<GURL, RequestCallback> switch_chain_callbacks_;
+  base::flat_map<GURL, base::Value> switch_chain_ids_;
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;

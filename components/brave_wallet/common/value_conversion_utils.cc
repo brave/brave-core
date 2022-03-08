@@ -177,7 +177,7 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::Value& value) {
 // Creates a response object as described in:
 // https://eips.ethereum.org/EIPS/eip-2255
 base::ListValue PermissionRequestResponseToValue(
-    const url::Origin& origin,
+    const std::string& origin,
     const std::vector<std::string> accounts) {
   base::ListValue container_list;
   base::Value dict(base::Value::Type::DICTIONARY);
@@ -205,7 +205,7 @@ base::ListValue PermissionRequestResponseToValue(
   dict.SetKey("caveats", std::move(caveats_list));
 
   dict.SetDoubleKey("date", base::Time::Now().ToJsTime());
-  dict.SetStringKey("invoker", origin.Serialize());
+  dict.SetStringKey("invoker", origin);
   dict.SetStringKey("parentCapability", "eth_accounts");
   container_list.Append(std::move(dict));
   return container_list;
