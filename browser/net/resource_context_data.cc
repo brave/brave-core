@@ -30,8 +30,8 @@ void ResourceContextData::StartProxying(
     content::BrowserContext* browser_context,
     int render_process_id,
     int frame_tree_node_id,
-    network::mojom::URLLoaderFactoryRequest request,
-    network::mojom::URLLoaderFactoryPtrInfo target_factory) {
+    mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
+    mojo::PendingRemote<network::mojom::URLLoaderFactory> target_factory) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   auto* self = static_cast<ResourceContextData*>(
@@ -48,7 +48,7 @@ void ResourceContextData::StartProxying(
 
   auto proxy = std::make_unique<BraveProxyingURLLoaderFactory>(
       self->request_handler_.get(), browser_context, render_process_id,
-      frame_tree_node_id, std::move(request), std::move(target_factory),
+      frame_tree_node_id, std::move(receiver), std::move(target_factory),
       self->request_id_generator_,
       base::BindOnce(&ResourceContextData::RemoveProxy,
                      self->weak_factory_.GetWeakPtr()));
