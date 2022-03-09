@@ -564,13 +564,21 @@ void JsonRpcService::OnGetFeeHistory(
 
 void JsonRpcService::GetBalance(const std::string& address,
                                 mojom::CoinType coin,
+                                const std::string& chain_id,
                                 JsonRpcService::GetBalanceCallback callback) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, coin);
+  if (!network_url.is_valid()) {
+    std::move(callback).Run(
+        "", mojom::ProviderError::kInvalidParams,
+        l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
+    return;
+  }
   if (coin == mojom::CoinType::ETH) {
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnEthGetBalance,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-    return Request(eth::eth_getBalance(address, "latest"), true,
-                   mojom::CoinType::ETH, std::move(internal_callback));
+    return RequestInternal(eth::eth_getBalance(address, "latest"), true,
+                           network_url, std::move(internal_callback));
   } else if (coin == mojom::CoinType::FIL) {
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnFilGetBalance,
@@ -729,9 +737,11 @@ void JsonRpcService::OnSendRawTransaction(
 void JsonRpcService::GetERC20TokenBalance(
     const std::string& contract,
     const std::string& address,
+    const std::string& chain_id,
     JsonRpcService::GetERC20TokenBalanceCallback callback) {
   std::string data;
-  if (!erc20::BalanceOf(address, &data)) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (!erc20::BalanceOf(address, &data) || !network_url.is_valid()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
@@ -741,8 +751,8 @@ void JsonRpcService::GetERC20TokenBalance(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetERC20TokenBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  Request(eth::eth_call("", contract, "", "", "", data, "latest"), true,
-          mojom::CoinType::ETH, std::move(internal_callback));
+  RequestInternal(eth::eth_call("", contract, "", "", "", data, "latest"), true,
+                  network_url, std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetERC20TokenBalance(
@@ -1312,9 +1322,11 @@ void JsonRpcService::GetERC721TokenBalance(
     const std::string& contract_address,
     const std::string& token_id,
     const std::string& account_address,
+    const std::string& chain_id,
     GetERC721TokenBalanceCallback callback) {
   const auto eth_account_address = EthAddress::FromHex(account_address);
-  if (eth_account_address.IsEmpty()) {
+  auto network_url = GetNetworkURL(prefs_, chain_id, mojom::CoinType::ETH);
+  if (eth_account_address.IsEmpty() || !network_url.is_valid()) {
     std::move(callback).Run(
         "", mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));

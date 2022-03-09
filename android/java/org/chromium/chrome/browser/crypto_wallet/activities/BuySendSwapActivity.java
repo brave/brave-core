@@ -520,7 +520,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
         assert mJsonRpcService != null;
         mJsonRpcService.getBalance(
                 mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
-                CoinType.ETH, (balance, error, errorMessage) -> {
+                CoinType.ETH, mCurrentChainId, (balance, error, errorMessage) -> {
                     warnWhenError(TAG, "getBalance", error, errorMessage);
                     if (error == ProviderError.SUCCESS) {
                         double currentBalance = Utils.fromHexWei(balance, 18);
@@ -588,16 +588,17 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
             blockchainToken = mCurrentSwapToBlockchainToken;
         }
         if (blockchainToken == null || blockchainToken.contractAddress.isEmpty()) {
-            mJsonRpcService.getBalance(address, CoinType.ETH, (balance, error, errorMessage) -> {
-                warnWhenError(TAG, "getBalance", error, errorMessage);
-                if (error != ProviderError.SUCCESS) {
-                    return;
-                }
-                populateBalance(balance, from);
-            });
+            mJsonRpcService.getBalance(
+                    address, CoinType.ETH, mCurrentChainId, (balance, error, errorMessage) -> {
+                        warnWhenError(TAG, "getBalance", error, errorMessage);
+                        if (error != ProviderError.SUCCESS) {
+                            return;
+                        }
+                        populateBalance(balance, from);
+                    });
         } else {
-            mJsonRpcService.getErc20TokenBalance(
-                    blockchainToken.contractAddress, address, (balance, error, errorMessage) -> {
+            mJsonRpcService.getErc20TokenBalance(blockchainToken.contractAddress, address,
+                    mCurrentChainId, (balance, error, errorMessage) -> {
                         warnWhenError(TAG, "getErc20TokenBalance", error, errorMessage);
                         if (error != ProviderError.SUCCESS) {
                             return;

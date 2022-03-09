@@ -642,11 +642,12 @@ interface JsonRpcService {
   GetNetworkUrl(CoinType coin) => (string network_url);
 
   // Obtains the native balance (e.g. ETH for Ethereum) for the address
-  GetBalance(string address, CoinType coin) => (string balance, ProviderError error, string error_message);
+  GetBalance(string address, CoinType coin, string chain_id) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 compatible balance for an address
   GetERC20TokenBalance(string contract,
-                       string address) => (string balance, ProviderError error, string error_message);
+                       string address,
+                       string chain_id) => (string balance, ProviderError error, string error_message);
 
   // Obtains the contract's ERC20 allowance for an owner and a spender
   GetERC20TokenAllowance(string contract,
@@ -675,7 +676,7 @@ interface JsonRpcService {
   // Obtains the balance of a contract's ERC721 token ID for an address
   // Balance is 0x1 if current selected account is the same as token owner's
   // address, otherwise balance is 0x0.
-  GetERC721TokenBalance(string contract_address, string token_id, string account_address) => (string balance, ProviderError error, string error_message);
+  GetERC721TokenBalance(string contract_address, string token_id, string account_address, string chain_id) => (string balance, ProviderError error, string error_message);
 
   // Solana JSON RPCs
   // https://docs.solana.com/developing/clients/jsonrpc-api

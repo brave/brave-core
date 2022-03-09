@@ -78,7 +78,8 @@ public class SingleTokenBalanceHelper {
                                             balancesMultiResponse.singleResponseComplete);
                             context.accountAddress = accountInfo.address;
                             contexts.add(context);
-                            mJsonRpcService.getBalance(accountInfo.address, CoinType.ETH, context);
+                            mJsonRpcService.getBalance(
+                                    accountInfo.address, CoinType.ETH, chainId, context);
                         } else {
                             AsyncUtils.GetErc20TokenBalanceResponseContext context =
                                     new AsyncUtils.GetErc20TokenBalanceResponseContext(
@@ -87,7 +88,7 @@ public class SingleTokenBalanceHelper {
                             contexts.add(context);
                             mJsonRpcService.getErc20TokenBalance(
                                     Utils.getContractAddress(chainId, symbol, contractAddress),
-                                    accountInfo.address, context);
+                                    accountInfo.address, chainId, context);
                         }
                     }
 
