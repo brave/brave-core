@@ -40,7 +40,9 @@ action("generate_breakpad_symbols") {
 }
 
 group("symbol_dist_resources") {
-  public_deps = [ ":generate_breakpad_symbols" ]
+  if (brave_debug_symbol_level != 0) {
+    public_deps = [ ":generate_breakpad_symbols" ]
+  }
 }
 
 copy("dist_resources") {

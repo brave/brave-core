@@ -26,9 +26,11 @@ action("generate_breakpad_symbols") {
 
 group("symbol_dist_resources") {
   public_deps = [
-    ":generate_breakpad_symbols",
     ":strip_and_dump_symbols",
   ]
+  if (brave_debug_symbol_level != 0) {
+    public_deps += [ ":generate_breakpad_symbols" ]
+  }
 }
 
 group("dist_resources") {}
@@ -42,10 +44,12 @@ action("strip_and_dump_symbols") {
 
   deps = [
     "//brave:brave_dist_resources",
-    # TODO(bridiver) - resolve duplicate symbol generation
-    ":generate_breakpad_symbols",
     dump_syms_label,
   ]
+  if (brave_debug_symbol_level != 0) {
+    # TODO(bridiver) - resolve duplicate symbol generation
+    deps += [ ":generate_breakpad_symbols" ]
+  }
   brave_binary = "$brave_dist_dir/brave"
   if (current_cpu == "x86") {
   # Use "ia32" instead of "x86" for GYP compat.

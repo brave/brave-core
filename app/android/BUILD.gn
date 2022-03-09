@@ -26,8 +26,10 @@ action("generate_breakpad_symbols") {
 group("symbol_dist_resources") {
   public_deps = [
     ":create_symbol_archive",
-    ":generate_breakpad_symbols",
   ]
+  if (brave_debug_symbol_level != 0) {
+    public_deps += [ ":generate_breakpad_symbols" ]
+  }
 }
 
 group("dist_resources") {

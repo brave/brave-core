@@ -21,11 +21,13 @@ _brave_symbols_sources = [
 group("dist_resources") {}
 
 group("symbol_dist_resources") {
-  public_deps = [
-    "//chrome:chrome_dump_syms",
-    "//chrome:chrome_dsym_archive",
-    ":generate_breakpad_symbols",
-  ]
+  if (brave_debug_symbol_level != 0) {
+    public_deps = [
+      "//chrome:chrome_dump_syms",
+      "//chrome:chrome_dsym_archive",
+      ":generate_breakpad_symbols",
+    ]
+  }
 }
 
 action("generate_breakpad_symbols") {
