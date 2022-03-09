@@ -5,20 +5,19 @@
 
 #include "base/bind.h"
 #include "base/path_service.h"
-#include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/features.h"
+#include "brave/components/de_amp/pref_names.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "components/prefs/testing_pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/re2/src/re2/re2.h"
-#include "components/user_prefs/user_prefs.h"
-
 
 #if defined(OS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
@@ -78,7 +77,7 @@ class DeAmpBrowserTest : public PlatformBrowserTest {
   }
 
   void TogglePref(const bool on) {
-    prefs_->SetBoolean(kDeAmpPrefEnabled, on);
+    prefs_->SetBoolean(de_amp::kDeAmpPrefEnabled, on);
     web_contents()->GetController().Reload(content::ReloadType::NORMAL, false);
   }
 
@@ -103,9 +102,11 @@ class DeAmpBrowserTest : public PlatformBrowserTest {
     observer.Wait();
   }
 
+ protected:
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
+
  private:
   base::test::ScopedFeatureList feature_list_;
-  std::unique_ptr<net::EmbeddedTestServer> https_server_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   PrefService* prefs_;
 };

@@ -17,7 +17,6 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
-#include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
 #include "content/public/browser/web_contents.h"
@@ -44,27 +43,16 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
 DeAmpURLLoader::CreateLoader(
     base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
     const GURL& response_url,
-    scoped_refptr<base::SequencedTaskRunner> task_runner,
-<<<<<<< HEAD
-    DeAmpService* service) {
-=======
-    network::ResourceRequest request,
-    network::mojom::URLResponseHead* response,
-    content::WebContents* contents) {
->>>>>>> 6806c54443 (DeAmpService => DeAmpUtil)
+    scoped_refptr<base::SequencedTaskRunner> task_runner) {
   mojo::PendingRemote<network::mojom::URLLoader> url_loader;
   mojo::PendingRemote<network::mojom::URLLoaderClient> url_loader_client;
   mojo::PendingReceiver<network::mojom::URLLoaderClient>
       url_loader_client_receiver =
           url_loader_client.InitWithNewPipeAndPassReceiver();
 
-  auto loader = base::WrapUnique(new DeAmpURLLoader(
-      std::move(throttle), response_url, std::move(url_loader_client),
-<<<<<<< HEAD
-      std::move(task_runner), service));
-=======
-      std::move(task_runner), request, response, contents));
->>>>>>> 6806c54443 (DeAmpService => DeAmpUtil)
+  auto loader = base::WrapUnique(
+      new DeAmpURLLoader(std::move(throttle), response_url,
+                         std::move(url_loader_client), std::move(task_runner)));
   DeAmpURLLoader* loader_rawptr = loader.get();
   mojo::MakeSelfOwnedReceiver(std::move(loader),
                               url_loader.InitWithNewPipeAndPassReceiver());
@@ -77,26 +65,12 @@ DeAmpURLLoader::DeAmpURLLoader(
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
-    scoped_refptr<base::SequencedTaskRunner> task_runner,
-<<<<<<< HEAD
-    DeAmpService* service)
-=======
-    network::ResourceRequest request,
-    network::mojom::URLResponseHead* response,
-    content::WebContents* contents)
->>>>>>> 6806c54443 (DeAmpService => DeAmpUtil)
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
     : body_sniffer::BodySnifferURLLoader(
           throttle,
           response_url,
           std::move(destination_url_loader_client),
-          task_runner),
-<<<<<<< HEAD
-      de_amp_service_(service) {}
-=======
-      contents_(contents),
-      request_(request),
-      response_(response) {}
->>>>>>> 6806c54443 (DeAmpService => DeAmpUtil)
+          task_runner) {}
 
 DeAmpURLLoader::~DeAmpURLLoader() = default;
 
@@ -119,8 +93,8 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
 void DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
   std::string canonical_link;
 
-  if (throttle_ && DeAmpUtil::FindCanonicalLinkIfAMP(buffered_body_,
-                                                           &canonical_link)) {
+  if (throttle_ &&
+      DeAmpUtil::FindCanonicalLinkIfAMP(buffered_body_, &canonical_link)) {
     const GURL canonical_url(canonical_link);
     if (!DeAmpUtil::VerifyCanonicalLink(canonical_url, response_url_)) {
       VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
@@ -194,7 +168,6 @@ void DeAmpURLLoader::ForwardBodyToClient() {
 }
 
 void DeAmpURLLoader::CallClientComplete() {
-    destination_url_loader_client_->OnComplete(complete_status_.value());
+  destination_url_loader_client_->OnComplete(complete_status_.value());
 }
-
 }  // namespace de_amp

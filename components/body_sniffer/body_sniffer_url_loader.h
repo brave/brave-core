@@ -119,12 +119,9 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
 
   base::WeakPtrFactory<BodySnifferURLLoader> weak_factory_{this};
 
-  private:
-    void CancelAndResetHandles();
+ private:
+  void CancelAndResetHandles();
 };
-
-
-
 
 }  // namespace body_sniffer
 

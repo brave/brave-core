@@ -32,12 +32,12 @@ DeAmpUtil::~DeAmpUtil() {}
 
 // static
 void DeAmpUtil::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kDeAmpPrefEnabled, true); // default on
+  registry->RegisterBooleanPref(kDeAmpPrefEnabled, true);  // default on
 }
 
 // static
 bool DeAmpUtil::VerifyCanonicalLink(const GURL canonical_link,
-                                       const GURL original_url) {
+                                    const GURL original_url) {
   // Canonical URL should be a valid URL,
   // be HTTP(S) and not be the same as original URL
   return canonical_link.is_valid() && canonical_link.SchemeIsHTTPOrHTTPS() &&
@@ -48,7 +48,7 @@ bool DeAmpUtil::VerifyCanonicalLink(const GURL canonical_link,
 // canonical link param is populated if found
 // static
 bool DeAmpUtil::FindCanonicalLinkIfAMP(const std::string& body,
-                                          std::string* canonical_link) {
+                                       std::string* canonical_link) {
   RE2::Options opt;
   opt.set_case_sensitive(false);
   opt.set_dot_nl(true);

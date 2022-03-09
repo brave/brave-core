@@ -8,13 +8,9 @@ import("//testing/test.gni")
 
 source_set("unit_tests") {
   testonly = true
-  sources = [
-    "de_amp_pref_toggle_unittest.cc",
-    "de_amp_util_unittest.cc",
-  ]
+  sources = [ "de_amp_util_unittest.cc" ]
   deps = [
     "///brave/components/de_amp/browser",
-    "///brave/components/de_amp/common",
     "//base/test:test_support",
     "//components/prefs:test_support",
   ]
@@ -33,6 +29,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui:ui",
     "//components/content_settings/core/browser:browser",
     "//components/prefs:test_support",
+    "//components/user_prefs:user_prefs",
     "//content/test:test_support",
     "//net:test_support",
     "//testing/gtest",

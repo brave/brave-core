@@ -9,17 +9,17 @@
 
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
-#include "content/public/browser/web_contents.h"
+#include "brave/components/de_amp/common/features.h"
+#include "brave/components/de_amp/pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
-#include "brave/components/de_amp/pref_names.h"
-#include "brave/components/de_amp/common/features.h"
-#include "components/prefs/pref_service.h"
-#include "components/user_prefs/user_prefs.h"
-#include "content/public/browser/browser_context.h"
 
 namespace de_amp {
 
@@ -27,29 +27,28 @@ namespace de_amp {
 std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     network::ResourceRequest request,
-    const content::WebContents::Getter& wc_getter) {  
-      auto* contents = wc_getter.Run();
+    const content::WebContents::Getter& wc_getter) {
+  auto* contents = wc_getter.Run();
 
   if (!contents)
     return nullptr;
 
-  PrefService* prefs = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
+  PrefService* prefs =
+      user_prefs::UserPrefs::Get(contents->GetBrowserContext());
 
-  if (!base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP) || !prefs->GetBoolean(kDeAmpPrefEnabled)) {
+  if (!base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP) ||
+      !prefs->GetBoolean(kDeAmpPrefEnabled)) {
     return nullptr;
   }
 
-  return std::make_unique<DeAmpThrottle>(task_runner, request,
-                                         wc_getter);
+  return std::make_unique<DeAmpThrottle>(task_runner, request, wc_getter);
 }
 
 DeAmpThrottle::DeAmpThrottle(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
     network::ResourceRequest request,
     const content::WebContents::Getter& wc_getter)
-    : task_runner_(task_runner),
-      request_(request),
-      wc_getter_(wc_getter) {}
+    : task_runner_(task_runner), request_(request), wc_getter_(wc_getter) {}
 
 DeAmpThrottle::~DeAmpThrottle() = default;
 

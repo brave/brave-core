@@ -144,11 +144,11 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
 }
 
 void SpeedReaderURLLoader::CallClientComplete() {
-    // TODO(keur, iefremov): This API could probably be improved with an enum
-    // indicating distill success, distill fail, load from cache.
-    // |complete_status_| has an |exists_in_cache| field.
-    if (delegate_)
-      delegate_->OnDistillComplete();
+  // TODO(keur, iefremov): This API could probably be improved with an enum
+  // indicating distill success, distill fail, load from cache.
+  // |complete_status_| has an |exists_in_cache| field.
+  if (delegate_)
+    delegate_->OnDistillComplete();
 }
 
 }  // namespace speedreader

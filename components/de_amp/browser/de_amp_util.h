@@ -20,7 +20,7 @@ namespace de_amp {
 
 class DeAmpUtil {
  public:
-   DeAmpUtil(const DeAmpUtil&) = delete;
+  DeAmpUtil(const DeAmpUtil&) = delete;
   DeAmpUtil& operator=(const DeAmpUtil&) = delete;
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
@@ -32,7 +32,7 @@ class DeAmpUtil {
   static bool VerifyCanonicalLink(const GURL canonical_link,
                                   const GURL original_url);
 
-private:
+ private:
   DeAmpUtil();
   ~DeAmpUtil();
 };

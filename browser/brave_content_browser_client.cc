@@ -665,8 +665,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     // De-AMP
     if (isMainFrame) {
       if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
-              base::ThreadTaskRunnerHandle::Get(),
-              request, wc_getter)) {
+              base::ThreadTaskRunnerHandle::Get(), request, wc_getter)) {
         result.push_back(std::move(de_amp_throttle));
       }
     }

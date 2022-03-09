@@ -2,12 +2,12 @@ import("//brave/build/config.gni")
 
 static_library("browser") {
   sources = [
-    "de_amp_util.cc",
-    "de_amp_util.h",
     "de_amp_throttle.cc",
     "de_amp_throttle.h",
     "de_amp_url_loader.cc",
     "de_amp_url_loader.h",
+    "de_amp_util.cc",
+    "de_amp_util.h",
   ]
 
   deps = [
@@ -16,6 +16,7 @@ static_library("browser") {
     "//brave/components/de_amp/common",
     "//brave/extensions:common",
     "//components/prefs:prefs",
+    "//components/user_prefs:user_prefs",
     "//content/public/browser",
     "//content/public/common",
     "//services/network/public/cpp",
