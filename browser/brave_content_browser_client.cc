@@ -24,7 +24,6 @@
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/browser/brave_wallet/tx_service_factory.h"
-#include "brave/browser/de_amp/de_amp_service_factory.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
@@ -667,8 +666,6 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
     if (isMainFrame) {
       if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
               base::ThreadTaskRunnerHandle::Get(),
-              de_amp::DeAmpServiceFactory::GetForBrowserContext(
-                  browser_context),
               request, wc_getter)) {
         result.push_back(std::move(de_amp_throttle));
       }

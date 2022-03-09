@@ -5,9 +5,7 @@
 
 #include "base/bind.h"
 #include "base/path_service.h"
-#include "brave/browser/de_amp/de_amp_service_factory.h"
-#include "brave/common/brave_paths.h"
-#include "brave/components/de_amp/browser/de_amp_service.h"
+#include "brave/components/de_amp/browser/de_amp_util.h"
 #include "brave/components/de_amp/common/features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -19,6 +17,8 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "components/user_prefs/user_prefs.h"
+
 
 #if defined(OS_ANDROID)
 #include "chrome/test/base/android/android_browser_test.h"
@@ -49,13 +49,11 @@ class DeAmpBrowserTest : public PlatformBrowserTest {
   void SetUpOnMainThread() override {
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");
-    brave::RegisterPathProvider();
-    base::FilePath test_data_dir;
-    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
 
-    https_server_->ServeFilesFromDirectory(test_data_dir);
+    prefs_ = browser()->profile()->GetPrefs();
+
     content::SetupCrossSiteRedirector(https_server_.get());
     PlatformBrowserTest::SetUpOnMainThread();
   }
@@ -75,17 +73,12 @@ class DeAmpBrowserTest : public PlatformBrowserTest {
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
-  de_amp::DeAmpService* service() {
-    return de_amp::DeAmpServiceFactory::GetForBrowserContext(
-        web_contents()->GetBrowserContext());
-  }
-
   content::WebContents* web_contents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
   void TogglePref(const bool on) {
-    service()->ToggleDeAmp(on);
+    prefs_->SetBoolean(kDeAmpPrefEnabled, on);
     web_contents()->GetController().Reload(content::ReloadType::NORMAL, false);
   }
 
@@ -110,10 +103,11 @@ class DeAmpBrowserTest : public PlatformBrowserTest {
     observer.Wait();
   }
 
- protected:
+ private:
   base::test::ScopedFeatureList feature_list_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   content::ContentMockCertVerifier mock_cert_verifier_;
+  PrefService* prefs_;
 };
 
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(

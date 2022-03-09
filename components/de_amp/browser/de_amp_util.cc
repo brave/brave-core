@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/de_amp/browser/de_amp_service.h"
+#include "brave/components/de_amp/browser/de_amp_util.h"
 
 #include <string>
 
@@ -28,29 +28,15 @@ static const char kFindCanonicalLinkTagPattern[] =
 static const char kFindCanonicalHrefInTagPattern[] =
     "href=(?:\"|')(.*?)(?:\"|')";
 
-DeAmpService::DeAmpService(PrefService* prefs) : prefs_(prefs) {}
-
-DeAmpService::~DeAmpService() {}
+DeAmpUtil::~DeAmpUtil() {}
 
 // static
-void DeAmpService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
+void DeAmpUtil::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kDeAmpPrefEnabled, true); // default on
 }
 
-void DeAmpService::ToggleDeAmp(const bool on) {
-  prefs_->SetBoolean(kDeAmpPrefEnabled, on);
-}
-
-bool DeAmpService::IsEnabled() {
-  if (!base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP)) {
-    return false;
-  }
-
-  return prefs_->GetBoolean(kDeAmpPrefEnabled);
-}
-
 // static
-bool DeAmpService::VerifyCanonicalLink(const GURL canonical_link,
+bool DeAmpUtil::VerifyCanonicalLink(const GURL canonical_link,
                                        const GURL original_url) {
   // Canonical URL should be a valid URL,
   // be HTTP(S) and not be the same as original URL
@@ -61,7 +47,7 @@ bool DeAmpService::VerifyCanonicalLink(const GURL canonical_link,
 // If AMP page, find canonical link
 // canonical link param is populated if found
 // static
-bool DeAmpService::FindCanonicalLinkIfAMP(const std::string& body,
+bool DeAmpUtil::FindCanonicalLinkIfAMP(const std::string& body,
                                           std::string* canonical_link) {
   RE2::Options opt;
   opt.set_case_sensitive(false);

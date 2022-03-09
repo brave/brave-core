@@ -105,7 +105,6 @@ brave_chrome_browser_deps = [
   "//brave/browser/brave_wallet:tab_helper",
   "//brave/browser/component_updater",
   "//brave/browser/content_settings",
-  "//brave/browser/de_amp",
   "//brave/browser/gcm_driver",
   "//brave/browser/metrics/buildflags",
   "//brave/browser/net",

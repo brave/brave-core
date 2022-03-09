@@ -12,7 +12,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
-#include "brave/components/de_amp/browser/de_amp_service.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
@@ -26,7 +25,6 @@ namespace de_amp {
 class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
  public:
   explicit DeAmpThrottle(scoped_refptr<base::SequencedTaskRunner> task_runner,
-                         DeAmpService* service,
                          network::ResourceRequest request,
                          const content::WebContents::Getter& wc_getter);
   ~DeAmpThrottle() override;
@@ -34,7 +32,6 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
 
   static std::unique_ptr<DeAmpThrottle> MaybeCreateThrottleFor(
       scoped_refptr<base::SequencedTaskRunner> task_runner,
-      DeAmpService* service,
       network::ResourceRequest request,
       const content::WebContents::Getter& wc_getter);
 
@@ -47,7 +44,6 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
 
  private:
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  raw_ptr<DeAmpService> service_;
   network::ResourceRequest request_;
   content::WebContents::Getter wc_getter_;
 };

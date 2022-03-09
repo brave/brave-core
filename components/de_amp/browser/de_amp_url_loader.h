@@ -15,7 +15,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
-#include "brave/components/de_amp/browser/de_amp_service.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -46,16 +45,14 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
                     DeAmpURLLoader*>
   CreateLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
                const GURL& response_url,
-               scoped_refptr<base::SequencedTaskRunner> task_runner,
-               DeAmpService* service);
+               scoped_refptr<base::SequencedTaskRunner> task_runner);
 
  private:
   DeAmpURLLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
                  const GURL& response_url,
                  mojo::PendingRemote<network::mojom::URLLoaderClient>
                      destination_url_loader_client,
-                 scoped_refptr<base::SequencedTaskRunner> task_runner,
-                 DeAmpService* service);
+                 scoped_refptr<base::SequencedTaskRunner> task_runner);
 
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;
@@ -64,8 +61,6 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
 
   void CallClientComplete() override;
   void ForwardBodyToClient();
-
-  raw_ptr<DeAmpService> de_amp_service_;
 };
 
 }  // namespace de_amp

@@ -10,7 +10,7 @@ source_set("unit_tests") {
   testonly = true
   sources = [
     "de_amp_pref_toggle_unittest.cc",
-    "de_amp_service_unittest.cc",
+    "de_amp_util_unittest.cc",
   ]
   deps = [
     "///brave/components/de_amp/browser",
@@ -20,3 +20,33 @@ source_set("unit_tests") {
   ]
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 }  # source_set("unit_tests")
+
+source_set("browser_tests") {
+  testonly = true
+  sources = [ "de_amp_browsertest.cc" ]
+
+  deps = [
+    "///brave/components/de_amp/browser",
+    "///brave/components/de_amp/common",
+    "//chrome/browser:browser",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:ui",
+    "//components/content_settings/core/browser:browser",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//testing/gtest",
+    "//third_party/re2:re2",
+  ]
+
+  if (is_android) {
+    deps += [
+      "//brave/browser/android:android_browser_process",
+      "//chrome/test:test_support_ui_android",
+    ]
+  } else {
+    deps += [ "//chrome/test:test_support_ui" ]
+  }
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}  # source_set("browser_tests")

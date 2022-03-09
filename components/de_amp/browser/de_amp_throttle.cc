@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
-#include "brave/components/de_amp/browser/de_amp_service.h"
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/navigation_entry.h"
@@ -16,29 +15,39 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "brave/components/de_amp/pref_names.h"
+#include "brave/components/de_amp/common/features.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 
 namespace de_amp {
 
 // static
 std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
-    DeAmpService* service,
     network::ResourceRequest request,
-    const content::WebContents::Getter& wc_getter) {
-  if (!service->IsEnabled()) {
+    const content::WebContents::Getter& wc_getter) {  
+      auto* contents = wc_getter.Run();
+
+  if (!contents)
+    return nullptr;
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
+
+  if (!base::FeatureList::IsEnabled(de_amp::features::kBraveDeAMP) || !prefs->GetBoolean(kDeAmpPrefEnabled)) {
     return nullptr;
   }
-  return std::make_unique<DeAmpThrottle>(task_runner, service, request,
+
+  return std::make_unique<DeAmpThrottle>(task_runner, request,
                                          wc_getter);
 }
 
 DeAmpThrottle::DeAmpThrottle(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
-    DeAmpService* service,
     network::ResourceRequest request,
     const content::WebContents::Getter& wc_getter)
     : task_runner_(task_runner),
-      service_(service),
       request_(request),
       wc_getter_(wc_getter) {}
 
@@ -58,7 +67,7 @@ void DeAmpThrottle::WillProcessResponse(
   DeAmpURLLoader* de_amp_loader;
   std::tie(new_remote, new_receiver, de_amp_loader) =
       DeAmpURLLoader::CreateLoader(weak_factory_.GetWeakPtr(), response_url,
-                                   task_runner_, service_);
+                                   task_runner_);
   InterceptAndStartLoader(
       std::move(source_loader), std::move(source_client_receiver),
       std::move(new_remote), std::move(new_receiver), de_amp_loader);

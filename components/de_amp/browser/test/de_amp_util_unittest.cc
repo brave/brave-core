@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/de_amp/browser/de_amp_service.h"
+#include "brave/components/de_amp/browser/de_amp_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace de_amp {
 
 /** Test helpers */
 bool CheckIfAmpDetected(const std::string body, std::string* canonical_link) {
-  return DeAmpService::FindCanonicalLinkIfAMP(body, canonical_link);
+  return DeAmpUtil::FindCanonicalLinkIfAMP(body, canonical_link);
 }
 void CheckFindCanonicalLinkResult(const std::string expected_link,
                                   const std::string body,
@@ -27,11 +27,11 @@ void CheckCheckCanonicalLinkResult(const std::string canonical_link,
                                    const bool expected) {
   GURL canonical_url(canonical_link), original_url(original);
   EXPECT_EQ(expected,
-            DeAmpService::VerifyCanonicalLink(canonical_url, original_url));
+            DeAmpUtil::VerifyCanonicalLink(canonical_url, original_url));
 }
 
-/** De AMP Service Tests */
-TEST(DeAmpServiceUnitTest, DetectAmpWithEmoji) {
+/** De AMP Util Tests */
+TEST(DeAmpUtilUnitTest, DetectAmpWithEmoji) {
   const std::string body =
       "<html ⚡>"
       "<head>"
@@ -42,7 +42,7 @@ TEST(DeAmpServiceUnitTest, DetectAmpWithEmoji) {
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 
-TEST(DeAmpServiceUnitTest, DetectAmpWithWordAmp) {
+TEST(DeAmpUtilUnitTest, DetectAmpWithWordAmp) {
   const std::string body =
       "<html amp>"
       "<head>"
@@ -54,7 +54,7 @@ TEST(DeAmpServiceUnitTest, DetectAmpWithWordAmp) {
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 
-TEST(DeAmpServiceUnitTest, DetectAmpWithWordAmpNotAtEnd) {
+TEST(DeAmpUtilUnitTest, DetectAmpWithWordAmpNotAtEnd) {
   const std::string body =
       "<html amp xyzzy>"
       "<head>"
@@ -66,7 +66,7 @@ TEST(DeAmpServiceUnitTest, DetectAmpWithWordAmpNotAtEnd) {
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 
-TEST(DeAmpServiceUnitTest, DetectAmpMixedCase) {
+TEST(DeAmpUtilUnitTest, DetectAmpMixedCase) {
   const std::string body =
       "<DOCTYPE! html>\n"
       "<html AmP xyzzy>\n"
@@ -76,7 +76,7 @@ TEST(DeAmpServiceUnitTest, DetectAmpMixedCase) {
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 
-TEST(DeAmpServiceUnitTest, NegativeDetectAmp) {
+TEST(DeAmpUtilUnitTest, NegativeDetectAmp) {
   // Put AMP attribute in a different tag than html
   const std::string body =
       "<html xyzzy>\n"
@@ -89,7 +89,7 @@ TEST(DeAmpServiceUnitTest, NegativeDetectAmp) {
   CheckFindCanonicalLinkResult("", body, false);
 }
 
-TEST(DeAmpServiceUnitTest, DetectAmpButNoCanonicalLink) {
+TEST(DeAmpUtilUnitTest, DetectAmpButNoCanonicalLink) {
   // Put AMP attribute in a different tag than html
   const std::string body =
       "<html xyzzy>"
@@ -102,7 +102,7 @@ TEST(DeAmpServiceUnitTest, DetectAmpButNoCanonicalLink) {
   CheckFindCanonicalLinkResult("", body, false);
 }
 
-TEST(DeAmpServiceUnitTest, MalformedHtmlDoc) {
+TEST(DeAmpUtilUnitTest, MalformedHtmlDoc) {
   const std::string body =
       "<xyz html amp xyzzy>\n"
       "<head>"
@@ -112,7 +112,7 @@ TEST(DeAmpServiceUnitTest, MalformedHtmlDoc) {
   CheckFindCanonicalLinkResult("", body, false);
 }
 
-TEST(DeAmpServiceUnitTest, LinkRelNotInSameTag) {
+TEST(DeAmpUtilUnitTest, LinkRelNotInSameTag) {
   // Checking to make sure a random "canonical" does not confused parser
   const std::string body =
       "<html amp>\n"
@@ -124,7 +124,7 @@ TEST(DeAmpServiceUnitTest, LinkRelNotInSameTag) {
   CheckFindCanonicalLinkResult("", body, false);
 }
 
-TEST(DeAmpServiceUnitTest, SingleQuotes) {
+TEST(DeAmpUtilUnitTest, SingleQuotes) {
   const std::string body =
       "<DOCTYPE! html>"
       "<html AMP xyzzy>\n"
@@ -134,20 +134,20 @@ TEST(DeAmpServiceUnitTest, SingleQuotes) {
   CheckFindCanonicalLinkResult("abc", body, true);
 }
 
-TEST(DeAmpServiceUnitTest, CanonicalLinkMalformed) {
+TEST(DeAmpUtilUnitTest, CanonicalLinkMalformed) {
   CheckCheckCanonicalLinkResult("xyz.com", "https://amp.xyz.com", false);
 }
 
-TEST(DeAmpServiceUnitTest, CanonicalLinkCorrect) {
+TEST(DeAmpUtilUnitTest, CanonicalLinkCorrect) {
   CheckCheckCanonicalLinkResult("https://xyz.com", "https://amp.xyz.com", true);
 }
 
-TEST(DeAmpServiceUnitTest, CanonicalLinkSameAsOriginal) {
+TEST(DeAmpUtilUnitTest, CanonicalLinkSameAsOriginal) {
   CheckCheckCanonicalLinkResult("https://amp.xyz.com", "https://amp.xyz.com",
                                 false);
 }
 
-TEST(DeAmpServiceUnitTest, CanonicalLinkNotHttp) {
+TEST(DeAmpUtilUnitTest, CanonicalLinkNotHttp) {
   CheckCheckCanonicalLinkResult("ftp://xyz.com", "https://amp.xyz.com", false);
 }
 
