@@ -103,6 +103,13 @@ class PlaylistListViewController: UIViewController {
                                          displayName: $0.displayName,
                                          error: $0.error)
         }.store(in: &observers)
+        
+        PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.eraseToAnyPublisher()
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] in
+            guard let self = self else { return }
+            self.navigationController?.popToRootViewController(animated: true)
+        }.store(in: &observers)
     
         // Theme
         title = Strings.PlayList.playListSectionTitle
@@ -170,6 +177,7 @@ class PlaylistListViewController: UIViewController {
         folderObserver = nil
         if isMovingFromParent || isBeingDismissed {
             delegate?.stopPlaying()
+            PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.send()
         }
     }
     
@@ -209,8 +217,11 @@ class PlaylistListViewController: UIViewController {
         updateTableBackgroundView()
         playerView.setControlsEnabled(true)
         
-        // If car play is active or media is already playing, do nothing
-        if PlaylistCarplayManager.shared.isCarPlayAvailable && (delegate?.currentPlaylistAsset != nil || delegate?.isPlaying ?? false) {
+        // If car play is active OR media is already playing, do nothing
+        // We do nothing when CarPlay is active because the user shouldn't be using the phone anyway
+        // But also because if the driver is controlling the audio, there will be a conflict
+        // if both the driver is selecting an item, and auto-play happens.
+        if PlaylistCarplayManager.shared.isCarPlayAvailable || (delegate?.currentPlaylistAsset != nil || delegate?.isPlaying ?? false) {
             autoPlayEnabled = true
             return
         }
@@ -337,7 +348,6 @@ class PlaylistListViewController: UIViewController {
     }
     
     func moveItems(indexPaths: [IndexPath]) {
-        delegate?.pausePlaying()
         onCancelEditingItems()
         
         let selectedItems = indexPaths.compactMap({
@@ -346,6 +356,8 @@ class PlaylistListViewController: UIViewController {
         
         if selectedItems.contains(where: { $0.pageSrc == PlaylistCarplayManager.shared.currentPlaylistItem?.pageSrc }) {
             delegate?.stopPlaying()
+        } else {
+            delegate?.pausePlaying()
         }
         
         var moveController = PlaylistMoveFolderView(selectedItems: selectedItems)
