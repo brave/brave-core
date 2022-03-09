@@ -300,6 +300,7 @@ function Accounts (props: Props) {
               <SubDivider />
               {erc271Tokens?.map((item) =>
                 <PortfolioAssetItem
+                  selectedNetwork={selectedNetwork}
                   spotPrices={transactionSpotPrices}
                   defaultCurrencies={defaultCurrencies}
                   key={item.contractAddress}
