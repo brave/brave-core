@@ -715,7 +715,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
             // position bellow the control_container element (nevigation bar) with
             // compensation
             inflatedLayoutParams.setMargins(0, controlContainer.getBottom() - compensation, 0, 0);
-            newContentButtonLayoutParams.setMargins(0, 600, 0, 0);
+            newContentButtonLayoutParams.setMargins(0, dpToPx(this, 200), 0, 0);
             newContentButtonLayoutParams.gravity = Gravity.CENTER_HORIZONTAL;
             inflatedSettingsBarLayout.setLayoutParams(inflatedLayoutParams);
             newContentButtonLayout.setLayoutParams(newContentButtonLayoutParams);
