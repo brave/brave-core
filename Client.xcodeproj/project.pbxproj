@@ -951,6 +951,7 @@
 		7DC52B1F273D9D230067E237 /* WalletArrayExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC52B1E273D9D230067E237 /* WalletArrayExtensionTests.swift */; };
 		7DCA34D427555E96001B0555 /* CryptoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DCA34D327555E96001B0555 /* CryptoStore.swift */; };
 		7DE5B6E427BEBA86000DA8E4 /* MockEthTxManagerProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5B6E327BEBA86000DA8E4 /* MockEthTxManagerProxy.swift */; };
+		7DE5B78C27D4188E000DA8E4 /* EditNonceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DE5B78B27D4188E000DA8E4 /* EditNonceView.swift */; };
 		7DF9113D275AC86100EF0D8B /* WalletLoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF9113C275AC86100EF0D8B /* WalletLoadingButton.swift */; };
 		7DF911C0276A8D1600EF0D8B /* SwapTokenStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF911BF276A8D1600EF0D8B /* SwapTokenStoreTests.swift */; };
 		7DF911DF27726E5E00EF0D8B /* BuyTokenStoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF911DE27726E5E00EF0D8B /* BuyTokenStoreTest.swift */; };
@@ -2907,6 +2908,7 @@
 		7DCA34D327555E96001B0555 /* CryptoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoStore.swift; sourceTree = "<group>"; };
 		7DE5B6E327BEBA86000DA8E4 /* MockEthTxManagerProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockEthTxManagerProxy.swift; sourceTree = "<group>"; };
 		7DE5B73227C994B7000DA8E4 /* Model15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model15.xcdatamodel; sourceTree = "<group>"; };
+		7DE5B78B27D4188E000DA8E4 /* EditNonceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNonceView.swift; sourceTree = "<group>"; };
 		7DF9113C275AC86100EF0D8B /* WalletLoadingButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletLoadingButton.swift; sourceTree = "<group>"; };
 		7DF911BF276A8D1600EF0D8B /* SwapTokenStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenStoreTests.swift; sourceTree = "<group>"; };
 		7DF911DE27726E5E00EF0D8B /* BuyTokenStoreTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTokenStoreTest.swift; sourceTree = "<group>"; };
@@ -4187,6 +4189,7 @@
 				2774303127332C2F00183725 /* TransactionConfirmationView.swift */,
 				2701B14B2735B65300BE6FC6 /* EditPriorityFeeView.swift */,
 				27D91E70274D55F0009B1FA3 /* EditGasFeeView.swift */,
+				7DE5B78B27D4188E000DA8E4 /* EditNonceView.swift */,
 			);
 			path = "Transaction Confirmations";
 			sourceTree = "<group>";
@@ -7894,6 +7897,7 @@
 				7DC52B12273D99E70067E237 /* WalletArrayExtension.swift in Sources */,
 				7DAC597B2726524E00E735A2 /* AddressQRCodeScannerView.swift in Sources */,
 				271F68B226EBD27E00AA2A50 /* RestoreWalletView.swift in Sources */,
+				7DE5B78C27D4188E000DA8E4 /* EditNonceView.swift in Sources */,
 				2774300A2733126000183725 /* WalletColors.swift in Sources */,
 				27DDE88A26FE1A7700A70C3A /* MockBraveWalletService.swift in Sources */,
 				271F68F826EBE92900AA2A50 /* WalletHostingViewController.swift in Sources */,

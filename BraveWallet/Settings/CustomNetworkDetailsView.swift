@@ -351,7 +351,7 @@ struct CustomNetworkDetailsView: View {
           Button(action: {
             addCustomNetwork()
           }) {
-            Text(Strings.Wallet.saveCustomNetworkButtonTitle)
+            Text(Strings.Wallet.saveButtonTitle)
               .foregroundColor(Color(.braveOrange))
           }
         }

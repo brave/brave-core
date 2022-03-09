@@ -203,6 +203,25 @@ public class TransactionConfirmationStore: ObservableObject {
     }
   }
   
+  private func fetchTransactions(completion: @escaping (() -> Void)) {
+    keyringService.defaultKeyringInfo { [weak self] keyring in
+      guard let self = self else { return }
+      var pendingTransactions: [BraveWallet.TransactionInfo] = []
+      let group = DispatchGroup()
+      for info in keyring.accountInfos {
+        group.enter()
+        self.txService.allTransactionInfo(.eth, from: info.address) { tx in
+          defer { group.leave() }
+          pendingTransactions.append(contentsOf: tx.filter { $0.txStatus == .unapproved })
+        }
+      }
+      group.notify(queue: .main) {
+        self.transactions = pendingTransactions
+        completion()
+      }
+    }
+  }
+  
   func confirm(transaction: BraveWallet.TransactionInfo) {
     txService.approveTransaction(.eth, txMetaId: transaction.id) { success, error, message  in
     }
@@ -249,25 +268,26 @@ public class TransactionConfirmationStore: ObservableObject {
     }
   }
   
-  func fetchTransactions() {
-    keyringService.defaultKeyringInfo { [weak self] keyring in
-      guard let self = self else { return }
-      var pendingTransactions: [BraveWallet.TransactionInfo] = []
-      let group = DispatchGroup()
-      for info in keyring.accountInfos {
-        group.enter()
-        self.txService.allTransactionInfo(.eth, from: info.address) { tx in
-          defer { group.leave() }
-          pendingTransactions.append(contentsOf: tx.filter { $0.txStatus == .unapproved })
-        }
-      }
-      group.notify(queue: .main) {
-        self.transactions = pendingTransactions
-        if let firstTx = self.transactions.first { // only do additional set up if we have some unapproved tx
-          self.activeTransactionId = firstTx.id
-          self.fetchGasEstimation1559()
-        }
-      }
+  func prepare() {
+    fetchTransactions { [weak self] in
+      guard let self = self,
+            let firstTx = self.transactions.first
+      else { return }
+      self.activeTransactionId = firstTx.id
+      self.fetchGasEstimation1559()
+    }
+  }
+  
+  func editNonce(
+    for transaction: BraveWallet.TransactionInfo,
+    nonce: String,
+    completion: @escaping ((Bool) -> Void)
+  ) {
+    ethTxManagerProxy.setNonceForUnapprovedTransaction(transaction.id, nonce: nonce) { success in
+      // not going to refresh unapproved transactions since the tx observer will be
+      // notified `onTransactionStatusChanged` and `ononUnapprovedTxUpdated`
+      // `transactions` list will be refreshed there.
+      completion(success)
     }
   }
 }
@@ -277,10 +297,19 @@ extension TransactionConfirmationStore: BraveWalletTxServiceObserver {
     // won't have any new unapproved tx being added if you on tx confirmation panel
   }
   public func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
-    fetchTransactions()
+    refreshTransactions(txInfo)
   }
   public func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
     // refresh the unapproved transaction list, as well as tx details UI
-    fetchTransactions()
+    refreshTransactions(txInfo)
+  }
+  
+  private func refreshTransactions(_ txInfo: BraveWallet.TransactionInfo) {
+    fetchTransactions { [weak self] in
+      guard let self = self else { return }
+      if self.activeTransactionId == txInfo.id {
+        self.fetchDetails(for: txInfo)
+      }
+    }
   }
 }
