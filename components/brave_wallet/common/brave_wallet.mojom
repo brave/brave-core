@@ -68,6 +68,9 @@ enum ProviderError {
 enum SolanaProviderError {
   kSuccess = ProviderError.kSuccess,  // No error
 
+  kUserRejectedRequest = ProviderError.kUserRejectedRequest,
+  kUnauthorized = ProviderError.kUnauthorized,
+
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
   kParsingError = JsonRpcError.kParsingError,      // Parse error - Invalid JSON
@@ -117,6 +120,17 @@ interface BraveWalletProvider {
 
   // Determines if the keyring is locked.
   IsLocked() => (bool isLocked);
+};
+
+interface SolanaProvider {
+  Connect() => (SolanaProviderError error, string message, string public_key);
+  Disconnect();
+  // SignTransaction
+  // SignAllTransactions
+  // SignMessage, hex or utf8 encoding
+
+  // Request(string json_payload)
+
 };
 
 // Used by the WebUI page to bootstrap bidirectional communication.

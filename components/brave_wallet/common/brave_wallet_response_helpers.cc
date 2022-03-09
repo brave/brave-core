@@ -12,20 +12,33 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
+namespace brave_wallet {
+
 namespace {
 const char kRequestJsonRPC[] = "2.0";
-}  // namespace
 
-namespace brave_wallet {
+std::unique_ptr<base::Value> GetProviderErrorDictionaryIternal(
+    int code,
+    const std::string& message) {
+  std::string formed_response;
+  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
+  result->SetIntKey("code", code);
+  result->SetStringKey("message", message);
+  return std::move(result);
+}
+
+}  // namespace
 
 std::unique_ptr<base::Value> GetProviderErrorDictionary(
     mojom::ProviderError code,
     const std::string& message) {
-  std::string formed_response;
-  std::unique_ptr<base::DictionaryValue> result(new base::DictionaryValue());
-  result->SetIntKey("code", static_cast<int>(code));
-  result->SetStringKey("message", message);
-  return std::move(result);
+  return GetProviderErrorDictionaryIternal(static_cast<int>(code), message);
+}
+
+std::unique_ptr<base::Value> GetProviderErrorDictionary(
+    mojom::SolanaProviderError code,
+    const std::string& message) {
+  return GetProviderErrorDictionaryIternal(static_cast<int>(code), message);
 }
 
 std::unique_ptr<base::Value> GetProviderRequestReturnFromEthJsonResponse(

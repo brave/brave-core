@@ -52,6 +52,11 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   native_javascript_handle_->ConnectEvent();
   native_javascript_handle_->AllowOverwriteWindowEthereum(
       dynamic_params.allow_overwrite_window_ethereum);
+
+  if (!js_solana_provider_) {
+    js_solana_provider_ = JSSolanaProvider::Install(
+        dynamic_params.brave_use_native_wallet, render_frame(), context);
+  }
 }
 
 void BraveWalletRenderFrameObserver::OnDestruct() {

@@ -10,6 +10,7 @@
 
 #include "brave/common/brave_renderer_configuration.mojom.h"
 #include "brave/components/brave_wallet/renderer/brave_wallet_js_handler.h"
+#include "brave/components/brave_wallet/renderer/js_solana_provider.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/render_frame_observer.h"
 #include "third_party/blink/public/web/web_navigation_type.h"
@@ -41,6 +42,8 @@ class BraveWalletRenderFrameObserver : public content::RenderFrameObserver {
 
   // Handle to "handler" JavaScript object functionality.
   std::unique_ptr<BraveWalletJSHandler> native_javascript_handle_;
+
+  std::unique_ptr<JSSolanaProvider> js_solana_provider_ = nullptr;
 
   GURL url_;
   GetDynamicParamsCallback get_dynamic_params_callback_;
