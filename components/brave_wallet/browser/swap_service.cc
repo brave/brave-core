@@ -41,14 +41,19 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-bool IsNetworkSupported(const std::string& chain_id) {
-  if (chain_id == brave_wallet::mojom::kRopstenChainId ||
-      chain_id == brave_wallet::mojom::kMainnetChainId ||
-      chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
-    return true;
-  }
+bool IsMainnetNetworkSupported(const std::string& chain_id) {
+  return (chain_id == brave_wallet::mojom::kMainnetChainId ||
+          chain_id == brave_wallet::mojom::kPolygonMainnetChainId ||
+          chain_id == brave_wallet::mojom::kBinanceSmartChainMainnetChainId ||
+          chain_id == brave_wallet::mojom::kAvalancheMainnetChainId ||
+          chain_id == brave_wallet::mojom::kFantomMainnetChainId ||
+          chain_id == brave_wallet::mojom::kCeloMainnetChainId ||
+          chain_id == brave_wallet::mojom::kOptimismMainnetChainId);
+}
 
-  return false;
+bool IsNetworkSupported(const std::string& chain_id) {
+  return (chain_id == brave_wallet::mojom::kRopstenChainId ||
+          IsMainnetNetworkSupported(chain_id));
 }
 
 GURL AppendSwapParams(const GURL& swap_url,
@@ -134,6 +139,17 @@ std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
     url = brave_wallet::kSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
     url = brave_wallet::kPolygonSwapBaseAPIURL;
+  } else if (chain_id ==
+             brave_wallet::mojom::kBinanceSmartChainMainnetChainId) {
+    url = brave_wallet::kBinanceSmartChainSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kAvalancheMainnetChainId) {
+    url = brave_wallet::kAvalancheSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kFantomMainnetChainId) {
+    url = brave_wallet::kFantomSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kCeloMainnetChainId) {
+    url = brave_wallet::kCeloSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kOptimismMainnetChainId) {
+    url = brave_wallet::kOptimismSwapBaseAPIURL;
   }
 
   return url;
@@ -147,8 +163,7 @@ std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
   // the production multisig address.
   if (chain_id == brave_wallet::mojom::kRopstenChainId) {
     feeRecipient = brave_wallet::kRopstenFeeRecipient;
-  } else if (chain_id == brave_wallet::mojom::kMainnetChainId ||
-             chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
+  } else if (IsMainnetNetworkSupported(chain_id)) {
     feeRecipient = brave_wallet::kFeeRecipient;
   }
 
@@ -159,8 +174,7 @@ std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
 std::string SwapService::GetAffiliateAddress(const std::string& chain_id) {
   std::string affiliateAddress;
 
-  if (chain_id == brave_wallet::mojom::kMainnetChainId ||
-      chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
+  if (IsMainnetNetworkSupported(chain_id)) {
     affiliateAddress = brave_wallet::kAffiliateAddress;
   }
 

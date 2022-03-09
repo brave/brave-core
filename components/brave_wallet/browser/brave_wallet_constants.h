@@ -632,6 +632,11 @@ const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
 const char kRopstenFeeRecipient[] =
     "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
 const char kPolygonSwapBaseAPIURL[] = "https://polygon.api.0x.org/";
+const char kBinanceSmartChainSwapBaseAPIURL[] = "https://bsc.api.0x.org/";
+const char kAvalancheSwapBaseAPIURL[] = "https://avalanche.api.0x.org/";
+const char kFantomSwapBaseAPIURL[] = "https://fantom.api.0x.org/";
+const char kCeloSwapBaseAPIURL[] = "https://celo.api.0x.org/";
+const char kOptimismSwapBaseAPIURL[] = "https://optimism.api.0x.org/";
 const char kSwapBaseAPIURL[] = "https://api.0x.org/";
 const char kBuyTokenPercentageFee[] = "0.00875";
 const char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
