@@ -19,6 +19,7 @@ import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.suggestions.mostvisited.ExploreIconProvider;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabWindowManager;
@@ -49,7 +50,9 @@ class BraveAutocompleteMediator extends AutocompleteMediator {
 
     @Override
     public void onTextChanged(String textWithoutAutocomplete, String textWithAutocomplete) {
-        if (!UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(AUTOCOMPLETE_ENABLED)) {
+        if (ProfileManager.isInitialized()
+                && !UserPrefs.get(Profile.getLastUsedRegularProfile())
+                            .getBoolean(AUTOCOMPLETE_ENABLED)) {
             return;
         }
 
