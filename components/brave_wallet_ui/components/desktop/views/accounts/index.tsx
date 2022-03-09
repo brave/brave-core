@@ -293,6 +293,7 @@ function Accounts (props: Props) {
               token={item}
             />
           )}
+          <Spacer />
           {erc271Tokens?.length !== 0 &&
             <>
               <Spacer />
@@ -310,6 +311,7 @@ function Accounts (props: Props) {
               <Spacer />
             </>
           }
+          <Spacer />
           <SubviewSectionTitle>{getLocale('braveWalletTransactions')}</SubviewSectionTitle>
           <SubDivider />
           {transactionList.length !== 0 ? (
