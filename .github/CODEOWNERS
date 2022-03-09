@@ -103,7 +103,7 @@ build/android/bytecode/ @samartnik
 patches/*.java.patch @samartnik
 
 # Bitcoin-core
-third_party/bitcoin-core/BUILD.gn @orspetol
+third_party/bitcoin-core/BUILD.gn @brave/sec-team
 
 # Network auditor
 browser/net/brave_network_audit_allowed_lists.h @brave/sec-team
