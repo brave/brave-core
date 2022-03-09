@@ -47,7 +47,8 @@ class ResourceDownloadManager: TabContentScript {
         return "ResourceDownloadManager\(UserScriptManager.messageHandlerTokenString)"
     }
     
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+        defer { replyHandler(nil, nil) }
         
         do {
             let response = try DownloadedResourceResponse.from(message: message)

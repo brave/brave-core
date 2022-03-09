@@ -48,7 +48,9 @@ class BraveSearchScriptHandler: TabContentScript {
     }
     
     func userContentController(_ userContentController: WKUserContentController,
-                               didReceiveScriptMessage message: WKScriptMessage) {
+                               didReceiveScriptMessage message: WKScriptMessage,
+                               replyHandler: (Any?, String?) -> Void) {
+        defer { replyHandler(nil, nil) }
         let allowedHosts = DomainUserScript.braveSearch.associatedDomains
         
         guard let requestHost = message.frameInfo.request.url?.host,

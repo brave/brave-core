@@ -69,7 +69,8 @@ class FormPostHelper: TabContentScript {
         return "formPostHelper"
     }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+        defer { replyHandler(nil, nil) }
         guard let formPostData = FormPostData(messageBody: message.body) else {
             print("Unable to parse FormPostData from script message body.")
             return

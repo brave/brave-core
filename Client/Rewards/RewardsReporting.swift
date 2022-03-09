@@ -27,7 +27,8 @@ class RewardsReporting: TabContentScript {
         return "rewardsReporting"
     }
     
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+        defer { replyHandler(nil, nil) }
         struct Content: Decodable {
             var method: String
             var url: String

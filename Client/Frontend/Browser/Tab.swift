@@ -17,7 +17,7 @@ private let log = Logger.browserLogger
 protocol TabContentScript {
     static func name() -> String
     func scriptMessageHandlerName() -> String?
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage)
+    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void)
 }
 
 @objc
@@ -659,7 +659,7 @@ extension Tab: TabWebViewDelegate {
     }
 }
 
-private class TabContentScriptManager: NSObject, WKScriptMessageHandler {
+private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply {
     fileprivate var helpers = [String: TabContentScript]()
     
     func uninstall(from tab: Tab) {
@@ -670,11 +670,11 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandler {
         }
     }
 
-    @objc func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+    @objc func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
         for helper in helpers.values {
             if let scriptMessageHandlerName = helper.scriptMessageHandlerName() {
                 if scriptMessageHandlerName == message.name {
-                    helper.userContentController(userContentController, didReceiveScriptMessage: message)
+                    helper.userContentController(userContentController, didReceiveScriptMessage: message, replyHandler: replyHandler)
                     return
                 }
             }
@@ -692,9 +692,9 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandler {
         // receives all messages and then dispatches them to the right TabHelper.
         if let scriptMessageHandlerName = helper.scriptMessageHandlerName() {
             if #available(iOS 14.3, *) {
-                tab.webView?.configuration.userContentController.add(self, contentWorld: contentWorld, name: scriptMessageHandlerName)
+                tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: contentWorld, name: scriptMessageHandlerName)
             } else {
-                tab.webView?.configuration.userContentController.add(self, name: scriptMessageHandlerName)
+                tab.webView?.configuration.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: scriptMessageHandlerName)
             }
         }
     }

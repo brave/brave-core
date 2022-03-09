@@ -472,8 +472,8 @@ class PlaylistWebLoader: UIView {
             return "playlistCacheLoader_\(UserScriptManager.messageHandlerTokenString)"
         }
         
-        func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
-
+        func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+            defer { replyHandler(nil, nil) }
             if let info = PageInfo.from(message: message) {
                 isPageLoaded = info.pageLoad
                 
