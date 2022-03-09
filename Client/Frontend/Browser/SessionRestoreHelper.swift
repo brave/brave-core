@@ -24,7 +24,9 @@ class SessionRestoreHelper: TabContentScript {
         return "sessionRestoreHelper"
     }
 
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+        defer { replyHandler(nil, nil) }
+        
         if let tab = tab, let params = message.body as? [String: AnyObject] {
             
             if UserScriptManager.isMessageHandlerTokenMissing(in: params) {

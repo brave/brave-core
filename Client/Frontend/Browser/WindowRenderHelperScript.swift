@@ -21,7 +21,7 @@ class WindowRenderHelperScript: TabContentScript {
         return "WindowRenderHelper\(UserScriptManager.messageHandlerTokenString)"
     }
     
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
         // Do nothing with the messages received.
         // For now.. It's useful for debugging though.
     }

@@ -57,7 +57,9 @@ extension PaymentRequestExtension: TabContentScript {
         }
     }
     
-    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+    func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+        defer { replyHandler(nil, nil) }
+        
         guard message.name == Self.name(), let body = message.body as? NSDictionary else { return }
         
         do {

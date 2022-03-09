@@ -217,13 +217,12 @@ class OnboardingWebViewController: UIViewController, WKNavigationDelegate {
     }
 }
 
-extension OnboardingWebViewController: WKScriptMessageHandler {
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        
+extension OnboardingWebViewController: WKScriptMessageHandlerWithReply {
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
         for helper in helpers.values {
             if let scriptMessageHandlerName = helper.scriptMessageHandlerName(),
                 scriptMessageHandlerName == message.name {
-                return helper.userContentController(userContentController, didReceiveScriptMessage: message)
+                return helper.userContentController(userContentController, didReceiveScriptMessage: message, replyHandler: replyHandler)
             }
         }
     }
@@ -232,7 +231,7 @@ extension OnboardingWebViewController: WKScriptMessageHandler {
         helpers[name] = helper
         
         if let scriptMessageHandlerName = helper.scriptMessageHandlerName() {
-            webView.configuration.userContentController.add(self, name: scriptMessageHandlerName)
+            webView.configuration.userContentController.addScriptMessageHandler(self, contentWorld: .page, name: scriptMessageHandlerName)
         }
     }
 }
