@@ -24,7 +24,6 @@ class PlaylistCarplayController: NSObject {
     private let player: MediaPlayer
     private let mediaStreamer: PlaylistMediaStreamer
     private let interfaceController: CPInterfaceController
-    private var folderObserver: AnyCancellable?
     private var playerStateObservers = Set<AnyCancellable>()
     private var assetStateObservers = Set<AnyCancellable>()
     private var assetLoadingStateObservers = Set<AnyCancellable>()
@@ -63,13 +62,39 @@ class PlaylistCarplayController: NSObject {
     }
     
     func observeFolderStates() {
-        folderObserver = PlaylistManager.shared.onCurrentFolderDidChange
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                guard let self = self else { return }
-                
-                if self.interfaceController.rootTemplate == self.interfaceController.topTemplate {
-                    // Nothing to Pop
+        PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.eraseToAnyPublisher()
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] in
+            guard let self = self else { return }
+            self.interfaceController.popToRootTemplate(animated: true) { success, error in
+                if !success, let error = error {
+                    log.error(error)
+                }
+            }
+        }.store(in: &playlistObservers)
+        
+        PlaylistManager.shared.onCurrentFolderDidChange
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] in
+            guard let self = self else { return }
+            
+            if self.interfaceController.rootTemplate == self.interfaceController.topTemplate {
+                // Nothing to Pop
+                // Push the Folder Template
+                let listTemplate = self.generatePlaylistListTemplate()
+                self.interfaceController.pushTemplate(listTemplate, animated: true) { [weak self] success, error in
+                    if !success, let error = error {
+                        self?.displayErrorAlert(error: error)
+                    }
+                }
+                return
+            }
+            
+            // Pop to Root Template
+            self.interfaceController.popToRootTemplate(animated: false) { success, error in
+                if !success, let error = error {
+                    self.displayErrorAlert(error: error)
+                } else {
                     // Push the Folder Template
                     let listTemplate = self.generatePlaylistListTemplate()
                     self.interfaceController.pushTemplate(listTemplate, animated: true) { [weak self] success, error in
@@ -77,24 +102,9 @@ class PlaylistCarplayController: NSObject {
                             self?.displayErrorAlert(error: error)
                         }
                     }
-                    return
                 }
-                
-                // Pop to Root Template
-                self.interfaceController.popToRootTemplate(animated: false) { success, error in
-                    if !success, let error = error {
-                        self.displayErrorAlert(error: error)
-                    } else {
-                        // Push the Folder Template
-                        let listTemplate = self.generatePlaylistListTemplate()
-                        self.interfaceController.pushTemplate(listTemplate, animated: true) { [weak self] success, error in
-                            if !success, let error = error {
-                                self?.displayErrorAlert(error: error)
-                            }
-                        }
-                    }
-                }
-        }
+            }
+        }.store(in: &playlistObservers)
     }
     
     func observePlayerStates() {
@@ -163,8 +173,17 @@ class PlaylistCarplayController: NSObject {
             PlaylistMediaStreamer.updateNowPlayingInfo(event.mediaPlayer)
         }.store(in: &playerStateObservers)
         
-        player.publisher(for: .stop).sink { _ in
+        player.publisher(for: .stop).sink { [weak self] _ in
+            guard let self = self else { return }
             MPNowPlayingInfoCenter.default().playbackState = .stopped
+            
+            if self.interfaceController.topTemplate == CPNowPlayingTemplate.shared {
+                self.interfaceController.popTemplate(animated: false) { success, error in
+                    if !success, let error = error {
+                        log.error(error)
+                    }
+                }
+            }
         }.store(in: &playerStateObservers)
         
         player.publisher(for: .changePlaybackRate).sink { event in
@@ -486,6 +505,13 @@ class PlaylistCarplayController: NSObject {
 extension PlaylistCarplayController: CPInterfaceControllerDelegate {
     func templateWillAppear(_ aTemplate: CPTemplate, animated: Bool) {
         log.debug("Template \(aTemplate.classForCoder) will appear.")
+        
+        if interfaceController.topTemplate != CPNowPlayingTemplate.shared,
+            (aTemplate.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.folders.rawValue {
+            self.stop()
+            
+            PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.send()
+        }
     }
 
     func templateDidAppear(_ aTemplate: CPTemplate, animated: Bool) {
@@ -694,7 +720,15 @@ extension PlaylistCarplayController {
     }
     
     private func stop() {
+        PlaylistMediaStreamer.clearNowPlayingInfo()
+        
+        PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+        PlaylistCarplayManager.shared.currentPlaylistItem = nil
         player.stop()
+        
+        // Cancel all loading.
+        assetLoadingStateObservers.removeAll()
+        assetStateObservers.removeAll()
     }
     
     private func seekBackwards() {

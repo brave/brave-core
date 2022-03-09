@@ -309,6 +309,14 @@ class PlaylistViewController: UIViewController {
             guard let self = self else { return }
             self.playerView.controlsView.playPauseButton.setImage(#imageLiteral(resourceName: "playlist_play"), for: .normal)
             self.playerView.resetVideoInfo()
+            PlaylistMediaStreamer.clearNowPlayingInfo()
+            
+            PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
+            PlaylistCarplayManager.shared.currentPlaylistItem = nil
+            
+            // Cancel all loading.
+            self.assetLoadingStateObservers.removeAll()
+            self.assetStateObservers.removeAll()
         }.store(in: &playerStateObservers)
         
         player.publisher(for: .changePlaybackRate).sink { [weak self] event in

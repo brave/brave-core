@@ -23,6 +23,7 @@ class PlaylistCarplayManager: NSObject {
     private var carPlayController: PlaylistCarplayController?
     private var carplayInterface: CPInterfaceController?
     private var carplaySessionConfiguration: CPSessionConfiguration?
+    let onCarplayUIChangedToRoot = PassthroughSubject<Void, Never>()
     
     var browserController: BrowserViewController?
     
