@@ -848,6 +848,7 @@ brave_java_resources = [
   "java/res/layout/brave_wallet_edit_gas.xml",
   "java/res/layout/brave_wallet_network_item.xml",
   "java/res/layout/brave_wallet_networks_preference_layout.xml",
+  "java/res/layout/brave_wallet_preference_confirmation_text_layout.xml",
   "java/res/layout/brave_wallet_reset_content.xml",
   "java/res/layout/brave_webrtc_policy_preference.xml",
   "java/res/layout/bre_bottom_banner.xml",

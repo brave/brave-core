@@ -239,6 +239,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWalletNetworksPreferenceFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWalletPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWalletResetPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWalletResetTxHistoryAndNoncePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveWebrtcPolicyPreferencesFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/NetworkListBaseAdapter.java",

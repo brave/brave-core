@@ -2204,6 +2204,15 @@ Are you sure you want to do this?
     <message name="IDS_BRAVE_WALLET_RESET_SETTINGS_CONFIRMATION_PHRASE" desc="The phrase users should type to reset Brave Wallet">
       Yes
     </message>
+    <message name="IDS_BRAVE_WALLET_CLEAR_TX_AND_NONCE_SETTING_TITLE" desc="The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0">
+      Clear transaction &amp; nonce info
+    </message>
+    <message name="IDS_BRAVE_WALLET_CLEAR_TX_AND_NONCE_SETTING_DESC" desc="The footer message below the button to reset transaction and nonce">
+      Clearing transactions may be useful for developers or when clearing state on a local server
+    </message>
+    <message name="IDS_BRAVE_WALLET_CLEAR_TX_AND_NONCE_DIALOG_CONFIRMATION" desc="Confirmation dialog description for transaction and nonce reset.">
+      Are you sure you want to reset transaction and nonce information? This option is mostly used by developers running a local test server. Type "<ph name="CONFIRMATION_PHRASE">%1$s<ex>Yes</ex></ph>" to confirm.
+    </message>
     <message name="IDS_BRAVE_WALLET_CONFIRM_TEXT" desc="Text for Brave Wallet confirm button text.">
       Confirm
     </message>
