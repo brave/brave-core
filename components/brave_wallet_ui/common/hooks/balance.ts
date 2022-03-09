@@ -9,17 +9,17 @@ import { BraveWallet, WalletAccountType } from '../../constants/types'
 
 export default function useBalance (network: BraveWallet.EthereumChain) {
   return React.useCallback((account?: WalletAccountType, token?: BraveWallet.BlockchainToken) => {
-    if (!account) {
+    if (!account || !token) {
       return ''
-    }
-
-    // Return native asset balance
-    if (!token || token.symbol.toLowerCase() === network.symbol.toLowerCase()) {
-      return account.balance
     }
 
     if (!account.tokenBalanceRegistry) {
       return ''
+    }
+
+    // Return native asset balance
+    if (token.symbol.toLowerCase() === network.symbol.toLowerCase()) {
+      return account.balance
     }
 
     return (account.tokenBalanceRegistry || {})[token.contractAddress.toLowerCase()] || ''

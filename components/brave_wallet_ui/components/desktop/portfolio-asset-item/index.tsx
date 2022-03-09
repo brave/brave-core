@@ -80,7 +80,7 @@ const PortfolioAssetItem = (props: Props) => {
         <StyledWrapper disabled={token.isErc721} onClick={action}>
           <NameAndIcon>
             <IconsWrapper>
-              <AssetIconWithPlaceholder selectedAsset={token} />
+              <AssetIconWithPlaceholder asset={token} network={selectedNetwork} />
               {selectedNetwork && token.contractAddress !== '' &&
                 <NetworkIconWrapper>
                   <CreateNetworkIcon network={selectedNetwork} marginRight={0} />

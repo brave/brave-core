@@ -25,6 +25,7 @@ export interface Props {
   isCustom: boolean
   isSelected: boolean
   token: BraveWallet.BlockchainToken
+  selectedNetwork: BraveWallet.EthereumChain
 }
 
 const AssetWatchlistItem = (props: Props) => {
@@ -33,7 +34,8 @@ const AssetWatchlistItem = (props: Props) => {
     onRemoveAsset,
     isCustom,
     token,
-    isSelected
+    isSelected,
+    selectedNetwork
   } = props
 
   const onCheck = (key: string, selected: boolean) => {
@@ -55,7 +57,7 @@ const AssetWatchlistItem = (props: Props) => {
   return (
     <StyledWrapper>
       <NameAndIcon onClick={onClickAsset}>
-        <AssetIconWithPlaceholder selectedAsset={token} />
+        <AssetIconWithPlaceholder asset={token} network={selectedNetwork} />
         <NameAndSymbol>
           <AssetName>
             {token.name} {

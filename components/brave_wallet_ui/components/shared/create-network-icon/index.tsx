@@ -1,11 +1,17 @@
 import * as React from 'react'
-import { BraveWallet } from '../../../constants/types'
-import { IconWrapper, Placeholder, NetworkIcon } from './style'
-import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension } from '../../../utils/string-utils'
 import { create } from 'ethereum-blockies'
-import {
-  ETHIconUrl
-} from '../../../assets/asset-icons'
+
+// Constants
+import { BraveWallet } from '../../../constants/types'
+
+// Utils
+import { stripERC20TokenImageURL, isRemoteImageURL, isValidIconExtension } from '../../../utils/string-utils'
+
+// Styled components
+import { IconWrapper, Placeholder, NetworkIcon } from './style'
+
+// Options
+import { makeNetworkAsset } from '../../../options/asset-options'
 
 interface Props {
   network: BraveWallet.EthereumChain
@@ -17,6 +23,12 @@ function CreateNetworkIcon (props: Props) {
   if (!network) {
     return null
   }
+
+  const nativeAsset = React.useMemo(
+    () => makeNetworkAsset(network),
+    [network]
+  )
+
   const networkImageURL = stripERC20TokenImageURL(network?.iconUrls[0])
   const isRemoteURL = isRemoteImageURL(networkImageURL)
   const isDataURL = network.iconUrls[0]?.startsWith('chrome://erc-token-images/')
@@ -27,6 +39,7 @@ function CreateNetworkIcon (props: Props) {
       const url = new URL(network.iconUrls[0])
       return isValidIconExtension(url.pathname)
     }
+
     if (isStorybook) {
       return true
     }
@@ -36,8 +49,14 @@ function CreateNetworkIcon (props: Props) {
   // Will remove these hardcoded chainId's.
   // We need to return a normal Ethereum Icon URL for Ethereum Mainnet
   // and return a grayed out Ethereum Icon Url for Ethereum Test Networks from the backend.
-  const testNetworkList = ['0x4', '0x3', '0x5', '0x2a', '0x539']
-  const needsPlaceholder = !['0x1', ...testNetworkList].includes(network.chainId) && (networkImageURL === '' || !isValidIcon)
+  const testNetworkList = [
+    BraveWallet.RINKEBY_CHAIN_ID,
+    BraveWallet.ROPSTEN_CHAIN_ID,
+    BraveWallet.GOERLI_CHAIN_ID,
+    BraveWallet.KOVAN_CHAIN_ID,
+    BraveWallet.LOCALHOST_CHAIN_ID
+  ]
+  const needsPlaceholder = nativeAsset.logo === '' && (networkImageURL === '' || !isValidIcon)
 
   const orb = React.useMemo(() => {
     if (needsPlaceholder) {
@@ -69,7 +88,13 @@ function CreateNetworkIcon (props: Props) {
       marginRight={marginRight ?? 0}
       isTestnet={testNetworkList.includes(network.chainId)}
     >
-      <NetworkIcon icon={['0x1', ...testNetworkList].includes(network.chainId) ? ETHIconUrl : isRemoteURL ? remoteImage : network.iconUrls[0]} />
+      <NetworkIcon
+        icon={
+          nativeAsset.logo
+            ? nativeAsset.logo
+            : isRemoteURL ? remoteImage : network.iconUrls[0]
+        }
+      />
     </IconWrapper>
   )
 }

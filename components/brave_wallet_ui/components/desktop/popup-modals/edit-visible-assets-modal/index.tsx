@@ -476,6 +476,7 @@ const EditVisibleAssetsModal = (props: Props) => {
                         key={token.contractAddress}
                         isCustom={isCustomToken(token)}
                         token={token}
+                        selectedNetwork={selectedNetwork}
                         onRemoveAsset={onRemoveAsset}
                         isSelected={isAssetSelected(token)}
                         onSelectAsset={onCheckWatchlistItem}

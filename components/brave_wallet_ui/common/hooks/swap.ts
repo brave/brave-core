@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { SimpleActionCreator } from 'redux-act'
 
+// Constants
 import {
   BraveWallet,
   ExpirationPresetObjectType,
@@ -17,17 +18,20 @@ import {
   WalletAccountType,
   ApproveERC20Params
 } from '../../constants/types'
-import { SlippagePresetOptions } from '../../options/slippage-preset-options'
-import { ExpirationPresetOptions } from '../../options/expiration-preset-options'
-import { debounce } from '../../../common/debounce'
 import { SwapParamsPayloadType } from '../constants/action_types'
 import { MAX_UINT256 } from '../constants/magics'
 
-// Hooks
-import useBalance from './balance'
+// Options
+import { SlippagePresetOptions } from '../../options/slippage-preset-options'
+import { ExpirationPresetOptions } from '../../options/expiration-preset-options'
+import { makeNetworkAsset } from '../../options/asset-options'
 
 // Utils
 import Amount from '../../utils/amount'
+import { debounce } from '../../../common/debounce'
+
+// Hooks
+import useBalance from './balance'
 
 const SWAP_VALIDATION_ERROR_CODE = 100
 
@@ -44,18 +48,23 @@ export default function useSwap (
 ) {
   const [exchangeRate, setExchangeRate] = React.useState('')
   const [fromAmount, setFromAmount] = React.useState('')
-  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken>(swapAssetOptions[0])
+  const [fromAsset, setFromAsset] = React.useState<BraveWallet.BlockchainToken | undefined>(swapAssetOptions[0])
   const [orderExpiration, setOrderExpiration] = React.useState<ExpirationPresetObjectType>(ExpirationPresetOptions[0])
   const [orderType, setOrderType] = React.useState<OrderTypes>('market')
   const [slippageTolerance, setSlippageTolerance] = React.useState<SlippagePresetObjectType>(SlippagePresetOptions[0])
   const [customSlippageTolerance, setCustomSlippageTolerance] = React.useState<string>('')
   const [toAmount, setToAmount] = React.useState('')
-  const [toAsset, setToAsset] = React.useState<BraveWallet.BlockchainToken>(swapAssetOptions[1])
+  const [toAsset, setToAsset] = React.useState<BraveWallet.BlockchainToken | undefined>(swapAssetOptions[1])
   const [filteredAssetList, setFilteredAssetList] = React.useState<BraveWallet.BlockchainToken[]>(swapAssetOptions)
   const [swapToOrFrom, setSwapToOrFrom] = React.useState<ToOrFromType>('from')
   const [allowance, setAllowance] = React.useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [isSupported, setIsSupported] = React.useState<boolean>(false)
+
+  const nativeAsset = React.useMemo(
+    () => makeNetworkAsset(selectedNetwork),
+    [selectedNetwork]
+  )
 
   React.useEffect(() => {
     setFromAsset(swapAssetOptions[0])
@@ -69,6 +78,10 @@ export default function useSwap (
   }, [selectedNetwork])
 
   React.useEffect(() => {
+    if (!fromAsset) {
+      return
+    }
+
     if (!fromAsset.isErc20) {
       setAllowance(undefined)
       return
@@ -88,7 +101,7 @@ export default function useSwap (
 
   const getBalance = useBalance(selectedNetwork)
   const fromAssetBalance = getBalance(selectedAccount, fromAsset)
-  const ethBalance = getBalance(selectedAccount)
+  const nativeAssetBalance = getBalance(selectedAccount, nativeAsset)
 
   const feesWrapped = React.useMemo(() => {
     if (!quote) {
@@ -115,6 +128,12 @@ export default function useSwap (
   )
 
   const swapValidationError: SwapValidationErrorType | undefined = React.useMemo(() => {
+    if (!fromAsset || !toAsset) {
+      return
+    }
+
+    // No validation to perform when From and To amounts are empty, since quote
+    // is not fetched.
     if (!fromAmount && !toAmount) {
       return
     }
@@ -127,24 +146,22 @@ export default function useSwap (
       return 'toAmountDecimalsOverflow'
     }
 
-    const fromAmountWrapped = new Amount(fromAmount)
+    const fromAmountWeiWrapped = new Amount(fromAmount)
       .multiplyByDecimals(fromAsset.decimals)
-    const balanceWrapped = new Amount(fromAssetBalance)
-    const ethBalanceWrapped = new Amount(ethBalance)
 
-    if (fromAmountWrapped.gt(balanceWrapped)) {
+    if (fromAmountWeiWrapped.gt(fromAssetBalance)) {
       return 'insufficientBalance'
     }
 
-    if (feesWrapped.gt(ethBalanceWrapped)) {
-      return 'insufficientEthBalance'
+    if (feesWrapped.gt(nativeAssetBalance)) {
+      return 'insufficientFundsForGas'
     }
 
-    if (fromAsset.symbol === selectedNetwork.symbol && fromAmountWrapped.plus(feesWrapped).gt(balanceWrapped)) {
-      return 'insufficientEthBalance'
+    if (fromAsset.symbol === selectedNetwork.symbol && fromAmountWeiWrapped.plus(feesWrapped).gt(fromAssetBalance)) {
+      return 'insufficientFundsForGas'
     }
 
-    if (allowance !== undefined && new Amount(allowance).lt(fromAmountWrapped)) {
+    if (allowance !== undefined && new Amount(allowance).lt(fromAmountWeiWrapped)) {
       return 'insufficientAllowance'
     }
 
@@ -171,7 +188,7 @@ export default function useSwap (
     toAsset,
     toAmount,
     fromAssetBalance,
-    ethBalance,
+    nativeAssetBalance,
     feesWrapped,
     rawError,
     allowance
@@ -189,7 +206,20 @@ export default function useSwap (
       return
     }
 
-    const { buyAmount, sellAmount, price, buyTokenToEthRate, sellTokenToEthRate } = quote
+    if (!fromAsset || !toAsset) {
+      return
+    }
+
+    const {
+      buyAmount,
+      sellAmount,
+      price,
+
+      // The two fields below use the underlying native asset for other EVM
+      // compatible networks, even though they are  called *ToEthRate.
+      buyTokenToEthRate,
+      sellTokenToEthRate
+    } = quote
 
     setFromAmount(new Amount(sellAmount)
       .divideByDecimals(fromAsset.decimals)
@@ -252,10 +282,6 @@ export default function useSwap (
     },
     full: boolean = false
   ) => {
-    // if (selectedWidgetTab !== 'swap') {
-    //   return
-    // }
-
     /**
      * STEP 1: Get the fromAsset/toAsset pairs to actually use for fetching
      * the swap quote.
@@ -266,6 +292,10 @@ export default function useSwap (
      */
     let fromAssetNext = overrides.fromAsset ?? fromAsset
     let toAssetNext = overrides.toAsset ?? toAsset
+
+    if (!fromAssetNext || !toAssetNext) {
+      return
+    }
 
     let fromAmountWeiWrapped
     let toAmountWeiWrapped
@@ -458,6 +488,10 @@ export default function useSwap (
       return
     }
 
+    if (!fromAsset) {
+      return
+    }
+
     if (swapValidationError === 'insufficientAllowance' && allowance) {
       // IMPORTANT SECURITY NOTICE
       //
@@ -494,13 +528,23 @@ export default function useSwap (
     return (
       isLoading ||
       quote === undefined ||
+      fromAsset === undefined ||
+      toAsset === undefined ||
       (swapValidationError && swapValidationError !== 'insufficientAllowance') ||
       new Amount(toAmount).isUndefined() ||
       new Amount(toAmount).isZero() ||
       new Amount(fromAmount).isUndefined() ||
       new Amount(fromAmount).isZero()
     )
-  }, [toAmount, fromAmount, quote, swapValidationError, isLoading])
+  }, [
+    toAmount,
+    fromAmount,
+    quote,
+    swapValidationError,
+    isLoading,
+    fromAsset,
+    toAsset
+  ])
 
   const onSelectTransactAsset = (asset: BraveWallet.BlockchainToken, toOrFrom: ToOrFromType) => {
     if (toOrFrom === 'from') {

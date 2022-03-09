@@ -267,7 +267,7 @@ provideStrings({
   braveWalletSwapLimit: 'Limit',
   braveWalletSwapPriceIn: 'Price in',
   braveWalletSwapInsufficientBalance: 'Insufficient balance',
-  braveWalletSwapInsufficientEthBalance: 'Insufficient funds for gas',
+  braveWalletSwapInsufficientFundsForGas: 'Insufficient funds for gas',
   braveWalletSwapInsufficientLiquidity: 'Insufficient liquidity',
   braveWalletSwapInsufficientAllowance: 'Activate token',
   braveWalletSwapUnknownError: 'Unknown error',

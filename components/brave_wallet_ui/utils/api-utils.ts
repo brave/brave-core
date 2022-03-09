@@ -1,5 +1,4 @@
 import { BraveWallet, WalletAccountType, GetFlattenedAccountBalancesReturnInfo } from '../constants/types'
-import { ETH } from '../options/asset-options'
 
 export const GetTokenParam = (selectedNetwork: BraveWallet.EthereumChain, token: BraveWallet.BlockchainToken): string => {
   if (token.coingeckoId) {
@@ -12,7 +11,7 @@ export const GetTokenParam = (selectedNetwork: BraveWallet.EthereumChain, token:
     return token.symbol.toLowerCase()
   }
 
-  return token.symbol.toLowerCase() === ETH.symbol.toLowerCase()
+  return token.symbol.toLowerCase() === selectedNetwork.symbol.toLowerCase()
     ? token.symbol.toLowerCase()
     : token.contractAddress
 }

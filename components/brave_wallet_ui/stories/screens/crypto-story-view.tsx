@@ -78,7 +78,7 @@ export interface Props {
   onShowVisibleAssetsModal: (value: boolean) => void
   showVisibleAssetsModal: boolean
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
-  foundTokenInfoByContractAddress?: BraveWallet.BlockchainToken
+  foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
 }
 
 const CryptoStoryView = (props: Props) => {

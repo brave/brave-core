@@ -724,6 +724,7 @@ function Container (props: Props) {
         <SelectContainer>
           <SelectAsset
             assets={assets}
+            selectedNetwork={selectedNetwork}
             onSelectAsset={onSelectAsset}
             onBack={onHideSelectAsset}
             onAddAsset={onAddAsset}
@@ -830,6 +831,7 @@ function Container (props: Props) {
                 onSelectPresetAmount={onSelectPresetAmountFactory('send')}
                 onSubmit={onSubmitSend}
                 selectedAsset={selectedSendAsset}
+                selectedNetwork={selectedNetwork}
                 selectedAssetAmount={sendAmount}
                 selectedAssetBalance={sendAssetBalance}
                 addressError={addressError}
@@ -883,6 +885,7 @@ function Container (props: Props) {
           >
             <SendWrapper>
               <Swap
+                selectedNetwork={selectedNetwork}
                 fromAsset={fromAsset}
                 toAsset={toAsset}
                 fromAmount={fromAmount}

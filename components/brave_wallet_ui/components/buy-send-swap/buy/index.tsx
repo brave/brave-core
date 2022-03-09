@@ -57,6 +57,7 @@ function Buy (props: Props) {
           selectedAssetInputAmount={buyAmount}
           inputName='buy'
           selectedAsset={selectedAsset}
+          selectedNetwork={selectedNetwork}
           onShowSelection={onShowAssets}
           autoFocus={true}
         />
