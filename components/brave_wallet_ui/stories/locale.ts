@@ -418,6 +418,7 @@ provideStrings({
 
   // Advanced transaction settings
   braveWalletAdvancedTransactionSettings: 'Advanced settings',
+  braveWalletAdvancedTransactionSettingsPlaceholder: 'Enter custom nonce value',
   braveWalletEditNonce: 'Nonce',
   braveWalletEditNonceInfo: 'The nonce value will be auto-determined if this field is not specified.',
 

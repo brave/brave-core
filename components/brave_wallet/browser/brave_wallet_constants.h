@@ -541,6 +541,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_EDIT_GAS_ZERO_GAS_PRICE_WARNING},
     {"braveWalletAdvancedTransactionSettings",
      IDS_BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS},
+    {"braveWalletAdvancedTransactionSettingsPlaceholder",
+     IDS_BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS_PLACEHOLDER},
     {"braveWalletEditNonce", IDS_BRAVE_WALLET_EDIT_NONCE},
     {"braveWalletEditNonceInfo", IDS_BRAVE_WALLET_EDIT_NONCE_INFO},
     {"braveWalletEditPermissionsTitle",
