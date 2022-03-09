@@ -55,7 +55,7 @@ const AdvancedTransactionSettings = (props: Props) => {
         <FormColumn>
           <InputLabel>{getLocale('braveWalletEditNonce')}</InputLabel>
           <Input
-            placeholder='Enter custom nonce value'
+            placeholder={getLocale('braveWalletAdvancedTransactionSettingsPlaceholder')}
             type='number'
             value={customNonce}
             onChange={handleNonceInputChanged}
