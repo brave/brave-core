@@ -1198,12 +1198,12 @@ extension Strings {
       value: "Maximum fee",
       comment: "The highest the user will pay in a gas fee based on the entered gas fee details or predefined option. It is displayed above the amount"
     )
-    public static let saveGasFee = NSLocalizedString(
-      "wallet.saveGasFee",
+    public static let saveButtonTitle = NSLocalizedString(
+      "wallet.saveButtonTitle",
       tableName: "BraveWallet",
       bundle: .braveWallet,
       value: "Save",
-      comment: "A button title for saving the users selected gas fee options"
+      comment: "A button title for saving the users selected gas fee options. Or to save a custom nonce value. Or to save a custom network"
     )
     public static let maxPriorityFeeTitle = NSLocalizedString(
       "wallet.maxPriorityFeeTitle",
@@ -1758,13 +1758,6 @@ extension Strings {
       value: "Add Network",
       comment: "The title of bar item for users to add custom network screen"
     )
-    public static let saveCustomNetworkButtonTitle = NSLocalizedString(
-      "wallet.saveCustomNetworkButtonTitle",
-      tableName: "BraveWallet",
-      bundle: .braveWallet,
-      value: "Save",
-      comment: "The title of the button on top right navigation bar for the users to click to save a new custom network."
-    )
     public static let addCustomNetworkDropdownButtonTitle = NSLocalizedString(
       "wallet.addCustomNetworkDropdownButtonTitle",
       tableName: "BraveWallet",
@@ -1848,6 +1841,34 @@ extension Strings {
       bundle: .braveWallet,
       value: "Reset",
       comment: "The title of a button that will reset transaction and nonce information. As in to erase the users transaction history and reset nonce value starting from 0x0"
+    )
+    public static let advancedSettingsTransaction = NSLocalizedString(
+      "wallet.advancedSettingsTransaction",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Advanced settings",
+      comment: "The title of the button that is displayed under the total gas fee in the confirmation transaction screen. Users can click it to go to advanced settings screen."
+    )
+    public static let editNonceHeader = NSLocalizedString(
+      "wallet.editNonceHeader",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Nonce",
+      comment: "The header title for edit nonce section in advanced settings screen."
+    )
+    public static let editNonceFooter = NSLocalizedString(
+      "wallet.editNonceFooter",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Transaction may not be propagated to the network if custom nonce value is non-sequential or has other errors",
+      comment: "The footer title for edit nonce section in advanced settings screen."
+    )
+    public static let editNoncePlaceholder = NSLocalizedString(
+      "wallet.editNoncePlaceholder",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Enter custom nonce value",
+      comment: "The placeholder for custom nonce textfield."
     )
   }
 }

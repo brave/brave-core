@@ -242,7 +242,7 @@ struct EditPriorityFeeView: View {
       }
       Section {
         Button(action: save) {
-          Text(Strings.Wallet.saveGasFee)
+          Text(Strings.Wallet.saveButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))
         .frame(maxWidth: .infinity)

@@ -81,6 +81,17 @@ extension BraveWallet.TransactionInfo {
     }*/
     txDataUnion.ethTxData1559?.baseData.data ?? .init()
   }
+  
+  var ethTxNonce: String {
+    // Eth transaction are all coming as `ethTxData1559`
+    // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
+    /*if isEIP1559Transaction {
+      return txDataUnion.ethTxData1559?.baseData.nonce ?? .init()
+    } else {
+      return txDataUnion.ethTxData?.nonce ?? .init()
+    }*/
+    txDataUnion.ethTxData1559?.baseData.nonce ?? ""
+  }
 }
 
 extension BraveWallet.EthereumChain: Identifiable {

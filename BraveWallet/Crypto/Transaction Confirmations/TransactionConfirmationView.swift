@@ -235,6 +235,24 @@ struct TransactionConfirmationView: View {
                   }
                   .padding()
                   .accessibilityElement(children: .contain)
+                  Divider()
+                    .padding(.leading)
+                  NavigationLink(destination: EditNonceView(
+                    confirmationStore: confirmationStore,
+                    transaction: activeTransaction
+                  )) {
+                    HStack {
+                      Image("brave.gear")
+                        .foregroundColor(Color(.braveBlurpleTint))
+                      Text(Strings.Wallet.advancedSettingsTransaction)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(Color(.braveBlurpleTint))
+                      Spacer()
+                      Image(systemName: "chevron.right")
+                    }
+                    .padding()
+                    .font(.footnote.weight(.semibold))
+                  }
                 }
               case .details:
                 VStack(alignment: .leading) {
@@ -306,7 +324,7 @@ struct TransactionConfirmationView: View {
     }
     .navigationViewStyle(StackNavigationViewStyle())
     .onAppear {
-      confirmationStore.fetchTransactions()
+      confirmationStore.prepare()
     }
   }
   
