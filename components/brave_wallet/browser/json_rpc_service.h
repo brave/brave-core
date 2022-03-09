@@ -74,6 +74,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void GetBalance(const std::string& address,
                   mojom::CoinType coin,
+                  const std::string& chaind_id,
                   GetBalanceCallback callback) override;
 
   using GetTxCountCallback =
@@ -99,6 +100,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void GetERC20TokenBalance(const std::string& conract_address,
                             const std::string& address,
+                            const std::string& chain_id,
                             GetERC20TokenBalanceCallback callback) override;
   void GetERC20TokenAllowance(const std::string& contract_address,
                               const std::string& owner_address,
@@ -199,6 +201,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetERC721TokenBalance(const std::string& contract_address,
                              const std::string& token_id,
                              const std::string& account_address,
+                             const std::string& chain_id,
                              GetERC721TokenBalanceCallback callback) override;
 
   // Resets things back to the original state of BraveWalletService.
