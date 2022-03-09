@@ -811,9 +811,7 @@ void EthTxManager::UpdatePendingTransactions() {
   size_t num_pending;
   if (pending_tx_tracker_->UpdatePendingTransactions(&num_pending)) {
     known_no_pending_tx_ = num_pending == 0;
-    if (known_no_pending_tx_) {
-      CheckIfBlockTrackerShouldRun();
-    }
+    CheckIfBlockTrackerShouldRun();
   }
 }
 
