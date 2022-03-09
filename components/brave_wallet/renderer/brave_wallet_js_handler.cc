@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
 #include "brave/components/brave_wallet/common/web3_provider_constants.h"
+#include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
@@ -53,55 +54,6 @@ std::string LoadDataResource(const int id) {
   }
 
   return std::string(resource_bundle.GetRawDataResource(id));
-}
-
-v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
-                                      v8::Local<v8::Value> object,
-                                      const std::u16string& name) {
-  v8::Isolate* isolate = context->GetIsolate();
-  v8::Local<v8::String> name_str =
-      gin::ConvertToV8(isolate, name).As<v8::String>();
-  v8::Local<v8::Object> object_obj;
-  if (!object->ToObject(context).ToLocal(&object_obj)) {
-    return v8::MaybeLocal<v8::Value>();
-  }
-
-  return object_obj->Get(context, name_str);
-}
-
-void CallMethodOfObject(blink::WebLocalFrame* web_frame,
-                        const std::u16string& object_name,
-                        const std::u16string& method_name,
-                        base::Value arguments) {
-  if (web_frame->IsProvisional())
-    return;
-  v8::HandleScope handle_scope(v8::Isolate::GetCurrent());
-  v8::Local<v8::Context> context = web_frame->MainWorldScriptContext();
-  v8::Context::Scope context_scope(context);
-  v8::MicrotasksScope microtasks(v8::Isolate::GetCurrent(),
-                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
-  v8::Local<v8::Value> object;
-  v8::Local<v8::Value> method;
-  if (!GetProperty(context, context->Global(), object_name).ToLocal(&object) ||
-      !GetProperty(context, object, method_name).ToLocal(&method)) {
-    return;
-  }
-
-  // Without the IsFunction test here JS blocking from content settings
-  // will trigger a DCHECK crash.
-  if (method.IsEmpty() || !method->IsFunction()) {
-    return;
-  }
-
-  std::vector<v8::Local<v8::Value>> args;
-  for (auto const& argument : arguments.GetList()) {
-    args.push_back(
-        content::V8ValueConverter::Create()->ToV8Value(&argument, context));
-  }
-
-  web_frame->ExecuteMethodAndReturnValue(v8::Local<v8::Function>::Cast(method),
-                                         object, static_cast<int>(args.size()),
-                                         args.data());
 }
 
 }  // namespace
@@ -616,9 +568,18 @@ void BraveWalletJSHandler::InjectInitScript() {
 
 void BraveWalletJSHandler::FireEvent(const std::string& event,
                                      base::Value event_args) {
-  base::Value args = base::Value(base::Value::Type::LIST);
-  args.Append(event);
-  args.Append(std::move(event_args));
+  base::Value args_list = base::Value(base::Value::Type::LIST);
+  args_list.Append(event);
+  args_list.Append(std::move(event_args));
+
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context =
+      render_frame_->GetWebFrame()->MainWorldScriptContext();
+
+  std::vector<v8::Local<v8::Value>> args;
+  args.push_back(
+      content::V8ValueConverter::Create()->ToV8Value(&args_list, context));
   CallMethodOfObject(render_frame_->GetWebFrame(), u"ethereum", u"emit",
                      std::move(args));
 }

@@ -14,7 +14,9 @@ namespace brave_wallet {
 SolanaProviderImpl::SolanaProviderImpl() = default;
 SolanaProviderImpl::~SolanaProviderImpl() = default;
 
-void SolanaProviderImpl::Connect(ConnectCallback callback) {
+void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
+                                 ConnectCallback callback) {
+  // TODO(darkdh): handle onlyIfTrusted when it exists
   // NOTIMPLEMENTED();
   // std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
   // "");
@@ -24,6 +26,11 @@ void SolanaProviderImpl::Connect(ConnectCallback callback) {
 
 void SolanaProviderImpl::Disconnect() {
   NOTIMPLEMENTED();
+}
+
+void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
+  NOTIMPLEMENTED();
+  std::move(callback).Run(false);
 }
 
 }  // namespace brave_wallet

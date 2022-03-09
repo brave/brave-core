@@ -17,8 +17,10 @@ class SolanaProviderImpl final : public mojom::SolanaProvider {
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
 
-  void Connect(ConnectCallback callback) override;
+  void Connect(absl::optional<base::Value> arg,
+               ConnectCallback callback) override;
   void Disconnect() override;
+  void IsConnected(IsConnectedCallback callback) override;
 
  private:
 };

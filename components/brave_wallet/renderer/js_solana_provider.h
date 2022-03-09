@@ -8,11 +8,13 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "content/public/renderer/render_frame.h"
+#include "content/public/renderer/v8_value_converter.h"
 #include "gin/arguments.h"
 #include "gin/wrappable.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -56,6 +58,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
   v8::Local<v8::Promise> SignAllTransaction(gin::Arguments* arguments);
 
   // TODO: fire accountChanged event
+  void FireEvent(const std::string& event,
+                 std::vector<v8::Local<v8::Value>>&& event_args);
 
   void OnConnect(v8::Global<v8::Context> global_context,
                  v8::Global<v8::Promise::Resolver> promise_resolver,
@@ -72,6 +76,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
 
   bool use_native_wallet_ = false;
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
+  std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
   base::WeakPtrFactory<JSSolanaProvider> weak_ptr_factory_{this};
 };

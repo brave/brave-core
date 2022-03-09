@@ -123,8 +123,13 @@ interface BraveWalletProvider {
 };
 
 interface SolanaProvider {
-  Connect() => (SolanaProviderError error, string message, string public_key);
+  // Optional {onlyIfTrusted: true}, when that flag is enable, we will only
+  // connect and emit a connect event if the application is trusted.
+  Connect(mojo_base.mojom.DictionaryValue? arg)
+    => (SolanaProviderError error, string message, string public_key);
   Disconnect();
+  [Sync]
+  IsConnected() => (bool is_connected);
   // SignTransaction
   // SignAllTransactions
   // SignMessage, hex or utf8 encoding
