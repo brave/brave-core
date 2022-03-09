@@ -1,5 +1,10 @@
 import styled from 'styled-components'
-export { CloseButton } from '../popup-modals/style'
+import { CloseButton as OriginalCloseButton } from '../popup-modals/style'
+
+export const CloseButton = styled(OriginalCloseButton)`
+    color: #212529;
+    background-color: #212529;
+`
 
 export const Card = styled.div`
     display: flex;
