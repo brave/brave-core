@@ -934,3 +934,15 @@ void BraveContentBrowserClient::OverrideWebkitPrefs(WebContents* web_contents,
   // allow us to return our farbled data
   web_prefs->allow_non_empty_navigator_plugins = true;
 }
+
+blink::UserAgentMetadata BraveContentBrowserClient::GetUserAgentMetadata() {
+  blink::UserAgentMetadata metadata =
+      ChromeContentBrowserClient::GetUserAgentMetadata();
+  if (metadata.brand_version_list.size() == 2) {
+    blink::UserAgentBrandVersion brave_bv = {
+        "Brave Browser", metadata.brand_version_list[1].version};
+    metadata.brand_version_list.emplace_back(brave_bv);
+    metadata.brand_full_version_list.emplace_back(brave_bv);
+  }
+  return metadata;
+}

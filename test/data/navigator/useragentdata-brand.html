@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<!-- navigator.userAgentData brand test -->
+<html>
+  <head>
+    <title>fail</title>
+    <meta charset="utf-8">
+</head>
+<body>
+  <script>
+    navigator.userAgentData.getHighEntropyValues(
+      ["fullVersionList"]).then(ua => {
+        if (ua.fullVersionList.length == 3) {
+          if (ua.fullVersionList[2].brand == "Brave Browser") {
+            document.title = "pass";
+          }
+        }
+      });
+  </script>
+</body>
+</html>

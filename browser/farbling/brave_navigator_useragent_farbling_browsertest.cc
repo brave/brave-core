@@ -243,3 +243,14 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
   TitleWatcher watcher(contents(), expected_title);
   EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
 }
+
+// Tests results of user agent metadata brands
+IN_PROC_BROWSER_TEST_F(BraveNavigatorUserAgentFarblingBrowserTest,
+                       AddBraveToNavigatorUserAgentBrandList) {
+  GURL url_b =
+      https_server()->GetURL("b.com", "/navigator/useragentdata-brand.html");
+  NavigateToURLUntilLoadStop(url_b);
+  std::u16string expected_title(u"pass");
+  TitleWatcher watcher(contents(), expected_title);
+  EXPECT_EQ(expected_title, watcher.WaitAndGetTitle());
+}
