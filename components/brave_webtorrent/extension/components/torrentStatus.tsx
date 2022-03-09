@@ -133,6 +133,23 @@ export default class TorrentStatus extends React.PureComponent<Props, {}> {
       )
     }
 
+    const renderProgressBar = () => {
+      const percentage = torrent.progress < 1
+        ? (torrent.progress * 100)
+        : 100
+
+      const divStyle = {
+        height: '24px',
+        width: percentage+'%'
+      };
+      
+      return (
+        <div className='w3Border'>
+          <div className='w3Green' style={divStyle}></div>
+        </div>
+      )
+    }
+
     return (
       <div className='torrentSubhead'>
         <Heading children='Torrent Stats' level={2} className='torrentHeading' />
@@ -145,6 +162,7 @@ export default class TorrentStatus extends React.PureComponent<Props, {}> {
           {renderPeers()}
           {renderEta()}
         </div>
+        <div>{renderProgressBar()}</div>
       </div>
     )
   }

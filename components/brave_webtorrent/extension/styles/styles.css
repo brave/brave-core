@@ -103,3 +103,13 @@ a.inactive {
 a.inactive:hover {
   cursor: default;
 }
+
+.w3Border{
+  margin-top: 15px;
+  border: 1px solid #ccc!important
+}
+
+.w3Green{
+  color: #fff!important;
+  background-color: #4CAF50!important
+}
