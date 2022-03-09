@@ -626,6 +626,15 @@ BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
                                              NSString* drainID))completion {
   ledger->LinkBraveWallet(base::SysNSStringToUTF8(paymentId),
                           ^(ledger::type::Result result, std::string drain_id) {
+                            // The internal draining API now returns a success
+                            // code when there are no tokens to drain. Since
+                            // brave-ios expects a valid drain ID when the
+                            // result is LEDGER_OK, to maintain backward
+                            // compatibility convert the result to an error code
+                            // when the drain ID is empty.
+                            if (drain_id.empty()) {
+                              result = ledger::type::Result::LEDGER_ERROR;
+                            }
                             completion(static_cast<LedgerResult>(result),
                                        base::SysUTF8ToNSString(drain_id));
                           });
