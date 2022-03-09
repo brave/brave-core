@@ -14,6 +14,10 @@
 class PrefService;
 class Profile;
 
+namespace invalidation {
+class ProfileInvalidationProvider;
+}
+
 namespace sync_preferences {
 class PrefServiceSyncable;
 }  // namespace sync_preferences
@@ -36,11 +40,17 @@ class RewardsChromeSyncClient : public ChromeSyncClient {
   syncer::DataTypeController::TypeVector CreateDataTypeControllers(
       syncer::SyncService* sync_service) override;
 
+  invalidation::InvalidationService* GetInvalidationService() override;
+
+  void SetDefaultEnabledTypes(syncer::SyncService* sync_service) override;
+
  private:
   std::unique_ptr<sync_preferences::PrefServiceSyncable>
       scoped_pref_service_syncable_;
   std::unique_ptr<syncer::ModelTypeStoreServiceImpl> model_type_store_service_;
   std::unique_ptr<syncer::DeviceInfoSyncServiceImpl> device_info_sync_service_;
+  std::unique_ptr<invalidation::ProfileInvalidationProvider>
+      profile_invalidation_provider_;
 };
 }  // namespace browser_sync
 
