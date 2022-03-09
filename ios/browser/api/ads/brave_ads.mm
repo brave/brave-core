@@ -230,26 +230,26 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, g_is_debug)
 
 + (AdsSysInfo*)sysInfo {
   auto sys_info = [[AdsSysInfo alloc] init];
-  sys_info.isUncertainFuture = ads::g_sys_info.is_uncertain_future;
+  sys_info.isUncertainFuture = ads::SysInfo().is_uncertain_future;
 
   return sys_info;
 }
 
 + (void)setSysInfo:(AdsSysInfo*)sysInfo {
-  ads::g_sys_info.is_uncertain_future = sysInfo.isUncertainFuture;
+  ads::SysInfo().is_uncertain_future = sysInfo.isUncertainFuture;
 }
 
 + (AdsBuildChannel*)buildChannel {
   auto build_channel = [[AdsBuildChannel alloc] init];
-  build_channel.isRelease = ads::g_build_channel.is_release;
-  build_channel.name = base::SysUTF8ToNSString(ads::g_build_channel.name);
+  build_channel.isRelease = ads::BuildChannel().is_release;
+  build_channel.name = base::SysUTF8ToNSString(ads::BuildChannel().name);
 
   return build_channel;
 }
 
 + (void)setBuildChannel:(AdsBuildChannel*)buildChannel {
-  ads::g_build_channel.is_release = buildChannel.isRelease;
-  ads::g_build_channel.name = base::SysNSStringToUTF8(buildChannel.name);
+  ads::BuildChannel().is_release = buildChannel.isRelease;
+  ads::BuildChannel().name = base::SysNSStringToUTF8(buildChannel.name);
 }
 
 #pragma mark - Initialization / Shutdown

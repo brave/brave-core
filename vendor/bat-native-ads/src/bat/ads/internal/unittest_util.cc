@@ -296,26 +296,26 @@ void SetEnvironment(const mojom::Environment environment) {
 }
 
 void SetSysInfo(const mojom::SysInfo& sys_info) {
-  g_sys_info.is_uncertain_future = sys_info.is_uncertain_future;
+  SysInfo().is_uncertain_future = sys_info.is_uncertain_future;
 }
 
 void SetBuildChannel(const BuildChannelType type) {
   switch (type) {
     case BuildChannelType::kNightly: {
-      g_build_channel.is_release = false;
-      g_build_channel.name = "nightly";
+      BuildChannel().is_release = false;
+      BuildChannel().name = "nightly";
       break;
     }
 
     case BuildChannelType::kBeta: {
-      g_build_channel.is_release = false;
-      g_build_channel.name = "beta";
+      BuildChannel().is_release = false;
+      BuildChannel().name = "beta";
       break;
     }
 
     case BuildChannelType::kRelease: {
-      g_build_channel.is_release = true;
-      g_build_channel.name = "release";
+      BuildChannel().is_release = true;
+      BuildChannel().name = "release";
       break;
     }
   }

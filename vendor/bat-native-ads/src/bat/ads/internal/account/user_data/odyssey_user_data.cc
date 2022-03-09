@@ -24,7 +24,7 @@ constexpr char kHost[] = "host";
 base::DictionaryValue GetOdyssey() {
   base::DictionaryValue user_data;
 
-  const std::string type = g_sys_info.is_uncertain_future ? kGuest : kHost;
+  const std::string type = SysInfo().is_uncertain_future ? kGuest : kHost;
   user_data.SetStringKey(kOdysseyKey, type);
 
   return user_data;

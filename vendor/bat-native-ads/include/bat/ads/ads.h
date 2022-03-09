@@ -28,11 +28,11 @@ struct AdNotificationInfo;
 // development servers but can be overridden via command-line arguments
 extern mojom::Environment g_environment;
 
-// |g_sys_info| contains the hardware |manufacturer| and |model|
-extern mojom::SysInfo g_sys_info;
+// Returns the reference to the hardware |manufacturer| and |model|
+mojom::SysInfo& SysInfo();
 
-// |g_build_channel| indicates the build channel
-extern mojom::BuildChannel g_build_channel;
+// Returns the reference to the build channel
+mojom::BuildChannel& BuildChannel();
 
 // |g_is_debug| indicates that the next catalog download should be reduced from
 // ~1 hour to ~25 seconds. This value should be set to false on production
