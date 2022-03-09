@@ -11,6 +11,15 @@ import shutil
 CHROME_DIR = "Chrome-bin"
 
 
+def CheckDeltaUpdatePrecondition(last_chrome_installer, prev_version, curr_version):
+    if last_chrome_installer and prev_version == curr_version:
+        raise Exception("Cannot create delta update files between the same source "
+                        "and target version %s. Please increment the Chrome "
+                        "version (for instance by rebasing your changes against a "
+                        "later upstream version). Or pass files representing a "
+                        "lower version to --last_chrome_installer." % prev_version)
+
+
 def SignAndCopyPreSignedBinaries(skip_signing, output_dir, staging_dir, current_version):
     if not skip_signing:
         from sign_binaries import sign_binaries, sign_binary

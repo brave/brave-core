@@ -1,16 +1,17 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 732479bbf5975289bd251ab6d41c8dda7e808a50..d568442da2dc1a096b8f6dc7e4e59547007d942e 100755
+index 732479bbf5975289bd251ab6d41c8dda7e808a50..989e950be7450d8ae80cb2c8fc507db048392f14 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
-@@ -42,6 +42,7 @@ SETUP_PATCH_FILE_PREFIX = "setup_patch"
+@@ -42,6 +42,8 @@ SETUP_PATCH_FILE_PREFIX = "setup_patch"
  TEMP_ARCHIVE_DIR = "temp_installer_archive"
  VERSION_FILE = "VERSION"
  
-+from create_installer_archive_helper import SignAndCopyPreSignedBinaries, BraveCopyAllFilesToStagingDir
++from create_installer_archive_helper import SignAndCopyPreSignedBinaries, \
++  BraveCopyAllFilesToStagingDir, CheckDeltaUpdatePrecondition
  
  g_archive_inputs = []
  
-@@ -113,6 +114,7 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
+@@ -113,6 +115,7 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
    if enable_hidpi == '1':
      CopySectionFilesToStagingDir(config, 'HIDPI', staging_dir, build_dir,
                                   verbose)
@@ -18,7 +19,7 @@ index 732479bbf5975289bd251ab6d41c8dda7e808a50..d568442da2dc1a096b8f6dc7e4e59547
  
    if include_snapshotblob == '1':
      CopySectionFilesToStagingDir(config, 'SNAPSHOTBLOB', staging_dir, build_dir,
-@@ -184,7 +186,7 @@ def GetPrevVersion(build_dir, temp_dir, last_chrome_installer, output_name):
+@@ -184,7 +187,7 @@ def GetPrevVersion(build_dir, temp_dir, last_chrome_installer, output_name):
                                     output_name + ARCHIVE_SUFFIX)
    cmd = [lzma_exec,
           'x',
@@ -27,15 +28,16 @@ index 732479bbf5975289bd251ab6d41c8dda7e808a50..d568442da2dc1a096b8f6dc7e4e59547
           prev_archive_file,
           'Chrome-bin/*/chrome.dll',]
    RunSystemCommand(cmd, options.verbose)
-@@ -559,6 +561,7 @@ def main(options):
+@@ -559,6 +562,8 @@ def main(options):
    if prev_version:
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
++  CheckDeltaUpdatePrecondition(options.last_chrome_installer, prev_version, current_version)
 +  SignAndCopyPreSignedBinaries(options.skip_signing, options.output_dir, staging_dir, current_version)
  
    # Name of the archive file built (for example - chrome.7z or
    # patch-<old_version>-<new_version>.7z or patch-<new_version>.7z
-@@ -632,6 +635,7 @@ def _ParseOptions():
+@@ -632,6 +637,7 @@ def _ParseOptions():
             'with the installer archive {x86|x64}.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)
