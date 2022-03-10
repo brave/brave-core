@@ -10,8 +10,11 @@ source_set("body_sniffer") {
 
   deps = [
     "//base",
-    "//content/public/browser",
+    "//net",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//third_party/abseil-cpp:absl",
+    "//third_party/blink/public/common",
+    "//url",
   ]
 }
