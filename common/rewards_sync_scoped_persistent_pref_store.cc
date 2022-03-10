@@ -44,6 +44,12 @@ void RewardsSyncScopedPersistentPrefStore::RemoveValue(const std::string& key,
   ScopedPersistentPrefStore::RemoveValue(MapSync(key), flags);
 }
 
+bool RewardsSyncScopedPersistentPrefStore::GetMutableValue(
+    const std::string& key,
+    base::Value** result) {
+  return ScopedPersistentPrefStore::GetMutableValue(MapSync(key), result);
+}
+
 void RewardsSyncScopedPersistentPrefStore::ReportValueChanged(
     const std::string& key,
     uint32_t flags) {
