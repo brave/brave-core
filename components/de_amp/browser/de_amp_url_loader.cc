@@ -5,8 +5,6 @@
 
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 
-#include <memory>
-#include <string>
 #include <utility>
 
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
@@ -81,10 +79,9 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
 bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
   std::string canonical_link;
 
-  if (throttle_ &&
-      DeAmpUtil::FindCanonicalLinkIfAMP(buffered_body_, &canonical_link)) {
+  if (throttle_ && FindCanonicalLinkIfAMP(buffered_body_, &canonical_link)) {
     const GURL canonical_url(canonical_link);
-    if (!DeAmpUtil::VerifyCanonicalLink(canonical_url, response_url_)) {
+    if (!VerifyCanonicalLink(canonical_url, response_url_)) {
       VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
       return false;
     }

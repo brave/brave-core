@@ -5,8 +5,6 @@
 
 #include "brave/components/de_amp/browser/de_amp_util.h"
 
-#include <string>
-
 #include "base/no_destructor.h"
 #include "third_party/re2/src/re2/re2.h"
 
@@ -23,11 +21,7 @@ static const char kFindCanonicalLinkTagPattern[] =
 static const char kFindCanonicalHrefInTagPattern[] =
     "href=(?:\"|')(.*?)(?:\"|')";
 
-DeAmpUtil::~DeAmpUtil() {}
-
-// static
-bool DeAmpUtil::VerifyCanonicalLink(const GURL canonical_link,
-                                    const GURL original_url) {
+bool VerifyCanonicalLink(const GURL& canonical_link, const GURL& original_url) {
   // Canonical URL should be a valid URL,
   // be HTTP(S) and not be the same as original URL
   return canonical_link.is_valid() && canonical_link.SchemeIsHTTPOrHTTPS() &&
@@ -36,9 +30,8 @@ bool DeAmpUtil::VerifyCanonicalLink(const GURL canonical_link,
 
 // If AMP page, find canonical link
 // canonical link param is populated if found
-// static
-bool DeAmpUtil::FindCanonicalLinkIfAMP(const std::string& body,
-                                       std::string* canonical_link) {
+bool FindCanonicalLinkIfAMP(const std::string& body,
+                            std::string* canonical_link) {
   RE2::Options opt;
   opt.set_case_sensitive(false);
   opt.set_dot_nl(true);

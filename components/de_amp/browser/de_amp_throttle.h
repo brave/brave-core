@@ -8,15 +8,13 @@
 
 #include <memory>
 
-#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
-
-class HostContentSettingsMap;
+#include "url/gurl.h"
 
 namespace de_amp {
 
@@ -25,14 +23,14 @@ namespace de_amp {
 class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
  public:
   explicit DeAmpThrottle(scoped_refptr<base::SequencedTaskRunner> task_runner,
-                         network::ResourceRequest request,
+                         const network::ResourceRequest& request,
                          const content::WebContents::Getter& wc_getter);
   ~DeAmpThrottle() override;
   DeAmpThrottle& operator=(const DeAmpThrottle&);
 
   static std::unique_ptr<DeAmpThrottle> MaybeCreateThrottleFor(
       scoped_refptr<base::SequencedTaskRunner> task_runner,
-      network::ResourceRequest request,
+      const network::ResourceRequest& request,
       const content::WebContents::Getter& wc_getter);
 
   // Implements blink::URLLoaderThrottle.

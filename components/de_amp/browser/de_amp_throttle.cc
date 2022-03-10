@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "brave/components/body_sniffer/body_sniffer_url_loader.h"
+#include "base/feature_list.h"
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
@@ -15,18 +15,22 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "services/network/public/cpp/resource_request.h"
+#include "net/base/net_errors.h"
+#include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
 
 namespace de_amp {
 
 // static
 std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
-    network::ResourceRequest request,
+    const network::ResourceRequest& request,
     const content::WebContents::Getter& wc_getter) {
   auto* contents = wc_getter.Run();
 
@@ -46,7 +50,7 @@ std::unique_ptr<DeAmpThrottle> DeAmpThrottle::MaybeCreateThrottleFor(
 
 DeAmpThrottle::DeAmpThrottle(
     scoped_refptr<base::SequencedTaskRunner> task_runner,
-    network::ResourceRequest request,
+    const network::ResourceRequest& request,
     const content::WebContents::Getter& wc_getter)
     : task_runner_(task_runner), request_(request), wc_getter_(wc_getter) {}
 

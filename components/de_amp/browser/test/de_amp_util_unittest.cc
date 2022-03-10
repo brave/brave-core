@@ -9,11 +9,11 @@
 namespace de_amp {
 
 /** Test helpers */
-bool CheckIfAmpDetected(const std::string body, std::string* canonical_link) {
-  return DeAmpUtil::FindCanonicalLinkIfAMP(body, canonical_link);
+bool CheckIfAmpDetected(const std::string& body, std::string* canonical_link) {
+  return FindCanonicalLinkIfAMP(body, canonical_link);
 }
-void CheckFindCanonicalLinkResult(const std::string expected_link,
-                                  const std::string body,
+void CheckFindCanonicalLinkResult(const std::string& expected_link,
+                                  const std::string& body,
                                   const bool expected_detect_amp) {
   std::string actual_link;
   const bool actual_detect_amp = CheckIfAmpDetected(body, &actual_link);
@@ -22,12 +22,11 @@ void CheckFindCanonicalLinkResult(const std::string expected_link,
     EXPECT_EQ(expected_link, actual_link);
   }
 }
-void CheckCheckCanonicalLinkResult(const std::string canonical_link,
-                                   const std::string original,
+void CheckCheckCanonicalLinkResult(const std::string& canonical_link,
+                                   const std::string& original,
                                    const bool expected) {
   GURL canonical_url(canonical_link), original_url(original);
-  EXPECT_EQ(expected,
-            DeAmpUtil::VerifyCanonicalLink(canonical_url, original_url));
+  EXPECT_EQ(expected, VerifyCanonicalLink(canonical_url, original_url));
 }
 
 /** De AMP Util Tests */
