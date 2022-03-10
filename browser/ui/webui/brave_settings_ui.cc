@@ -78,7 +78,6 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isBraveVPNEnabled", brave_vpn::IsBraveVPNEnabled());
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  // TODO(keur): Remove this when Speedreader feature enabled by default.
   html_source->AddBoolean(
       "isSpeedreaderFeatureEnabled",
       base::FeatureList::IsEnabled(speedreader::kSpeedreaderFeature));
