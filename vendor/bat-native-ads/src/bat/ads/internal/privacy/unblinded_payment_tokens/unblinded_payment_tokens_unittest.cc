@@ -83,29 +83,27 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsList) {
   const base::Value& list = get_unblinded_payment_tokens()->GetTokensAsList();
 
   // Assert
-  base::ListValue list_values(list.GetListDeprecated());
+  const base::Value::List& list_values = list.GetList();
 
   const UnblindedPaymentTokenList& unblinded_payment_tokens =
       get_unblinded_payment_tokens()->GetAllTokens();
-  EXPECT_EQ(list_values.GetListDeprecated().size(),
-            unblinded_payment_tokens.size());
+  EXPECT_EQ(list_values.size(), unblinded_payment_tokens.size());
 
-  for (auto& value : list_values.GetListDeprecated()) {
-    base::DictionaryValue* dictionary = nullptr;
-    if (!value.GetAsDictionary(&dictionary)) {
+  for (auto& value : list_values) {
+    const base::Value::Dict* dictionary = value.GetIfDict();
+    if (!dictionary) {
       FAIL();
     }
 
     const std::string* unblinded_payment_token_value =
-        dictionary->FindStringKey("unblinded_token");
+        dictionary->FindString("unblinded_token");
     if (!unblinded_payment_token_value) {
       FAIL();
     }
     const std::string unblinded_payment_token_base64 =
         *unblinded_payment_token_value;
 
-    const std::string* public_key_value =
-        dictionary->FindStringKey("public_key");
+    const std::string* public_key_value = dictionary->FindString("public_key");
     if (!public_key_value) {
       FAIL();
     }
@@ -136,7 +134,7 @@ TEST_F(BatAdsUnblindedPaymentTokensTest, GetTokensAsListWithEmptyList) {
   const base::Value& list = get_unblinded_payment_tokens()->GetTokensAsList();
 
   // Assert
-  EXPECT_TRUE(list.GetListDeprecated().empty());
+  EXPECT_TRUE(list.GetList().empty());
 }
 
 TEST_F(BatAdsUnblindedPaymentTokensTest, SetTokens) {

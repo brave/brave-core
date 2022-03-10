@@ -96,14 +96,14 @@ void BraveWalletProviderImpl::AddEthereumChain(
         l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
     return;
   }
-  const auto list = params->GetListDeprecated();
+  const auto& list = params->GetList();
   if (list.empty()) {
     std::move(callback).Run(
         mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_EXPECTED_SINGLE_PARAMETER));
     return;
   }
-  auto chain = brave_wallet::ValueToEthNetworkInfo(list.front());
+  auto chain = brave_wallet::ValueToEthNetworkInfo(*list.begin());
   if (!chain) {
     std::move(callback).Run(
         mojom::ProviderError::kInvalidParams,

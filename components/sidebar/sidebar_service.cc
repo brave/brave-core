@@ -225,7 +225,7 @@ void SidebarService::LoadSidebarItems() {
     return;
   }
 
-  const auto& items = preference->GetValue()->GetListDeprecated();
+  const auto& items = preference->GetValue()->GetList();
   for (const auto& item : items) {
     SidebarItem::Type type;
     if (const auto value = item.FindIntKey(kSidebarItemTypeKey)) {

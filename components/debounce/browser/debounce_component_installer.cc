@@ -57,7 +57,7 @@ void DebounceComponentInstaller::OnDATFileDataReady(
   host_cache_.clear();
   std::vector<std::string> hosts;
   base::JSONValueConverter<DebounceRule> converter;
-  for (base::Value& it : root->GetListDeprecated()) {
+  for (base::Value& it : root->GetList()) {
     std::unique_ptr<DebounceRule> rule = std::make_unique<DebounceRule>();
     if (!converter.Convert(it, rule.get()))
       continue;

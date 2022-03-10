@@ -212,7 +212,7 @@ void CredentialsSKU::Claim(
 
   auto blinded_creds = ParseStringToBaseList(creds->blinded_creds);
 
-  if (!blinded_creds || blinded_creds->GetListDeprecated().empty()) {
+  if (!blinded_creds || blinded_creds->empty()) {
     BLOG(0, "Blinded creds are corrupted, we will try to blind again");
     auto save_callback =
         std::bind(&CredentialsSKU::RetryPreviousStepSaved,
@@ -236,12 +236,10 @@ void CredentialsSKU::Claim(
 
 
   DCHECK_EQ(trigger.data.size(), 2ul);
+  DCHECK(blinded_creds.has_value());
   payment_server_->post_credentials()->Request(
-      trigger.id,
-      trigger.data[0],
-      ConvertItemTypeToString(trigger.data[1]),
-      std::move(blinded_creds),
-      url_callback);
+      trigger.id, trigger.data[0], ConvertItemTypeToString(trigger.data[1]),
+      std::move(blinded_creds.value()), url_callback);
 }
 
 void CredentialsSKU::OnClaim(

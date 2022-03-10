@@ -69,7 +69,7 @@ absl::optional<TransactionList> GetTransactionsFromList(
 
   TransactionList transactions;
 
-  for (const auto& transaction_value : value.GetListDeprecated()) {
+  for (const auto& transaction_value : value.GetList()) {
     if (!transaction_value.is_dict()) {
       return absl::nullopt;
     }

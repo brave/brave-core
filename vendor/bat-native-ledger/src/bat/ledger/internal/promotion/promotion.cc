@@ -690,7 +690,7 @@ void Promotion::CorruptedPromotions(
     corrupted_claims.Append(base::Value(item->claim_id));
   }
 
-  if (corrupted_claims.GetListDeprecated().empty()) {
+  if (corrupted_claims.GetList().empty()) {
     BLOG(1, "No corrupted creds");
     ledger_->state()->SetPromotionCorruptedMigrated(true);
     return;

@@ -118,13 +118,13 @@ type::Result PostOrder::ParseBody(
     return type::Result::LEDGER_OK;
   }
 
-  if (items->GetListDeprecated().size() != order_items.size()) {
+  if (items->GetList().size() != order_items.size()) {
     BLOG(0, "Invalid JSON");
     return type::Result::LEDGER_ERROR;
   }
 
   int count = 0;
-  for (auto& item : items->GetListDeprecated()) {
+  for (auto& item : items->GetList()) {
     auto order_item = type::SKUOrderItem::New();
     order_item->order_id = order->order_id;
     order_item->sku = order_items[count].sku;

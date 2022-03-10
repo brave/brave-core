@@ -64,7 +64,7 @@ std::string RLPEncode(base::Value val) {
     return RLPEncode(base::Value(base::Value::BlobStorage(s.begin(), s.end())));
   } else if (val.is_list()) {
     std::string output;
-    for (auto& item : val.GetListDeprecated()) {
+    for (auto& item : val.GetList()) {
       output += RLPEncode(std::move(item));
     }
     return RLPEncodeLength(output.length(), 0xc0) + output;

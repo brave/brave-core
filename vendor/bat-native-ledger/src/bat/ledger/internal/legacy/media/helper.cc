@@ -76,7 +76,7 @@ void GetVimeoParts(
     return;
   }
 
-  for (const auto& item : data->GetListDeprecated()) {
+  for (const auto& item : data->GetList()) {
     if (item.is_dict()) {
       base::flat_map<std::string, std::string> part;
       const auto* name = item.FindStringKey("name");

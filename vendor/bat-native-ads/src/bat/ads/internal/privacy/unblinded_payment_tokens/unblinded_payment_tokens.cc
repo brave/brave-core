@@ -71,7 +71,7 @@ void UnblindedPaymentTokens::SetTokens(
 void UnblindedPaymentTokens::SetTokensFromList(const base::Value& list) {
   UnblindedPaymentTokenList unblinded_payment_tokens;
 
-  for (const auto& value : list.GetListDeprecated()) {
+  for (const auto& value : list.GetList()) {
     const base::DictionaryValue* dictionary = nullptr;
     if (!value.GetAsDictionary(&dictionary)) {
       BLOG(0, "Unblinded payment token should be a dictionary");

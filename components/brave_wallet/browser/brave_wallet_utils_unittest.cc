@@ -961,7 +961,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
   const base::Value* assets_pref = prefs.GetDictionary(kBraveWalletUserAssets);
   const base::Value* list1 = assets_pref->FindKey("chain_id");
   ASSERT_TRUE(list1->is_list());
-  base::Value::ConstListView asset_list1 = list1->GetListDeprecated();
+  const base::Value::List& asset_list1 = list1->GetList();
   ASSERT_EQ(asset_list1.size(), 1u);
 
   EXPECT_EQ(*asset_list1[0].FindStringKey("contract_address"), "");
@@ -975,7 +975,7 @@ TEST(BraveWalletUtilsUnitTest, AddCustomNetwork) {
 
   const base::Value* list2 = assets_pref->FindKey("chain_id2");
   ASSERT_TRUE(list2->is_list());
-  base::Value::ConstListView asset_list2 = list2->GetListDeprecated();
+  const base::Value::List& asset_list2 = list2->GetList();
   ASSERT_EQ(asset_list2.size(), 1u);
 
   EXPECT_EQ(*asset_list2[0].FindStringKey("contract_address"), "");

@@ -75,14 +75,14 @@ std::string GetBlindedCredsJSON(
   return json;
 }
 
-std::unique_ptr<base::ListValue> ParseStringToBaseList(
+absl::optional<base::Value::List> ParseStringToBaseList(
     const std::string& string_list) {
   absl::optional<base::Value> value = base::JSONReader::Read(string_list);
   if (!value || !value->is_list()) {
-    return std::make_unique<base::ListValue>();
+    return absl::nullopt;
   }
 
-  return std::make_unique<base::ListValue>(value->GetListDeprecated());
+  return value->GetList().Clone();
 }
 
 bool UnBlindCreds(
@@ -101,8 +101,9 @@ bool UnBlindCreds(
   }
 
   auto creds_base64 = ParseStringToBaseList(creds_batch.creds);
+  DCHECK(creds_base64.has_value());
   std::vector<Token> creds;
-  for (auto& item : creds_base64->GetListDeprecated()) {
+  for (auto& item : creds_base64.value()) {
     const auto cred = Token::decode_base64(item.GetString());
     creds.push_back(cred);
   }
@@ -115,8 +116,9 @@ bool UnBlindCreds(
   }
 
   auto blinded_creds_base64 = ParseStringToBaseList(creds_batch.blinded_creds);
+  DCHECK(blinded_creds_base64.has_value());
   std::vector<BlindedToken> blinded_creds;
-  for (auto& item : blinded_creds_base64->GetListDeprecated()) {
+  for (auto& item : blinded_creds_base64.value()) {
     const auto blinded_cred = BlindedToken::decode_base64(item.GetString());
     blinded_creds.push_back(blinded_cred);
   }
@@ -129,8 +131,9 @@ bool UnBlindCreds(
   }
 
   auto signed_creds_base64 = ParseStringToBaseList(creds_batch.signed_creds);
+  DCHECK(signed_creds_base64.has_value());
   std::vector<SignedToken> signed_creds;
-  for (auto& item : signed_creds_base64->GetListDeprecated()) {
+  for (auto& item : signed_creds_base64.value()) {
     const auto signed_cred = SignedToken::decode_base64(item.GetString());
     signed_creds.push_back(signed_cred);
   }
@@ -175,8 +178,9 @@ bool UnBlindCredsMock(
   DCHECK(unblinded_encoded_creds);
 
   auto signed_creds_base64 = ParseStringToBaseList(creds.signed_creds);
+  DCHECK(signed_creds_base64.has_value());
 
-  for (auto& item : signed_creds_base64->GetListDeprecated()) {
+  for (auto& item : signed_creds_base64.value()) {
     unblinded_encoded_creds->push_back(item.GetString());
   }
 
