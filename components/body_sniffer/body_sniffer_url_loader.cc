@@ -5,7 +5,6 @@
 
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 
-#include <iostream>
 #include <memory>
 #include <string>
 #include <utility>
@@ -175,7 +174,6 @@ bool BodySnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
     case MOJO_RESULT_OK:
       return true;
     case MOJO_RESULT_FAILED_PRECONDITION:
-      // Reading is finished.
       buffered_body_.resize(start_size);
       CompleteLoading(std::move(buffered_body_));
       break;
@@ -199,9 +197,6 @@ void BodySnifferURLLoader::CompleteLoading(std::string body) {
 
   buffered_body_ = std::move(body);
   bytes_remaining_in_buffer_ = buffered_body_.size();
-  std::cerr << "body is " << body << "\n";
-  std::cerr << "bytes remaining in buffer  " << bytes_remaining_in_buffer_
-            << "\n";
 
   throttle_->Resume();
   mojo::ScopedDataPipeConsumerHandle body_to_send;

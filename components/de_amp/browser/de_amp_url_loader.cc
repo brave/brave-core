@@ -5,7 +5,6 @@
 
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 
-#include <iostream>
 #include <memory>
 #include <string>
 #include <utility>
@@ -85,12 +84,14 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
     return;
   }
 
-  MaybeRedirectToCanonicalLink();
+  if (!MaybeRedirectToCanonicalLink()) {
+    CompleteLoading(std::move(buffered_body_));
+  }
 
   body_consumer_watcher_.ArmOrNotify();
 }
 
-void DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
+bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
   std::string canonical_link;
 
   if (throttle_ &&
@@ -98,18 +99,15 @@ void DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
     const GURL canonical_url(canonical_link);
     if (!DeAmpUtil::VerifyCanonicalLink(canonical_url, response_url_)) {
       VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
-      CompleteLoading(std::move(buffered_body_));
-      return;
+      return false;
     }
     VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
-
     Abort();
     static_cast<DeAmpThrottle*>(throttle_.get())->Redirect(canonical_url);
-    return;
+    return true;
   } else {
     // Did not find AMP page and/or canonical link, load original
-    CompleteLoading(std::move(buffered_body_));
-    return;
+    return false;
   }
 }
 

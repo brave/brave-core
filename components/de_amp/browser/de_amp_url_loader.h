@@ -57,7 +57,7 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
   void OnBodyReadable(MojoResult) override;
   void OnBodyWritable(MojoResult) override;
 
-  void MaybeRedirectToCanonicalLink();
+  bool MaybeRedirectToCanonicalLink();
 
   void CallClientComplete() override;
   void ForwardBodyToClient();
