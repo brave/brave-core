@@ -255,7 +255,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "100.0.4896.20",
+        "tag": "100.0.4896.30",
         "repository": {
           "url": "https://github.com/chromium/chromium"
         }
