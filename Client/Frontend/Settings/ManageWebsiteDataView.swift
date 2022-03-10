@@ -118,13 +118,9 @@ struct ManageWebsiteDataView: View {
                                 if #available(iOS 15.0, *) {
                                     // Better swipe gestures
                                     content
-                                        .swipeActions(edge: .trailing) {
-                                            Button(role: .destructive) {
-                                                removeRecords([record])
-                                            } label: {
-                                                Label(Strings.removeDataRecord, systemImage: "trash")
-                                            }
-                                        }
+                                        .modifier(SwipeActionsViewModifier_FB9812596 {
+                                            removeRecords([record])
+                                        })
                                 } else {
                                     content
                                 }
@@ -212,5 +208,20 @@ private func localizedStringForDataRecordType(_ type: String) -> String? {
 extension WKWebsiteDataRecord: Identifiable {
     public var id: String {
         displayName
+    }
+}
+
+// Modifier workaround for FB9812596 to avoid crashing on iOS 14 on Release builds
+@available(iOS 15.0, *)
+private struct SwipeActionsViewModifier_FB9812596: ViewModifier {
+    var action: () -> Void
+    
+    func body(content: Content) -> some View {
+        content
+            .swipeActions(edge: .trailing) {
+                Button(role: .destructive, action: action) {
+                    Label(Strings.removeDataRecord, systemImage: "trash")
+                }
+            }
     }
 }
