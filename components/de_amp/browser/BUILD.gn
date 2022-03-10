@@ -1,5 +1,3 @@
-import("//brave/build/config.gni")
-
 static_library("browser") {
   sources = [
     "de_amp_throttle.cc",
