@@ -20,9 +20,9 @@ class FilAddress {
       mojom::FilecoinAddressProtocol protocol,
       const std::string& network);
 
-  static FilAddress FromPublicKey(const std::vector<uint8_t>& public_key,
-                                  mojom::FilecoinAddressProtocol protocol,
-                                  const std::string& network);
+  static FilAddress FromPayload(const std::vector<uint8_t>& public_key,
+                                mojom::FilecoinAddressProtocol protocol,
+                                const std::string& network);
   static FilAddress FromAddress(const std::string& address);
   static bool IsValidAddress(const std::string& input);
   FilAddress();
@@ -32,7 +32,7 @@ class FilAddress {
   bool operator!=(const FilAddress& other) const;
 
   bool IsEmpty() const { return bytes_.empty(); }
-  std::string ToChecksumAddress() const;
+  std::string EncodeAsString() const;
 
  private:
   bool IsEqual(const FilAddress& other) const;

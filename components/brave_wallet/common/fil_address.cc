@@ -16,7 +16,7 @@ namespace brave_wallet {
 
 namespace {
 
-constexpr int kChecksumSize = 4;
+constexpr size_t kChecksumSize = 4;
 constexpr size_t kPublicKeySizeSecp256K = 20;
 constexpr size_t kAddressSizeSecp256K = 41;
 constexpr size_t kPublicKeySizeBLS = 48;
@@ -102,57 +102,58 @@ FilAddress FilAddress::FromAddress(const std::string& address) {
   if (!IsValidNetwork(network))
     return FilAddress();
 
-  std::string payload{
+  std::string address_hash_decoded{
       base32::Base32Decode(base::ToUpperASCII(address.substr(2)))};
-  if (payload.empty())
+  if (address_hash_decoded.empty())
     return FilAddress();
 
-  std::string key{payload.substr(0, payload.size() - kChecksumSize)};
-  std::vector<uint8_t> public_key(key.begin(), key.end());
-  return FilAddress::FromPublicKey(public_key, protocol.value(), network);
+  std::string payload_piece{address_hash_decoded.substr(
+      0, address_hash_decoded.size() - kChecksumSize)};
+  std::vector<uint8_t> payload(payload_piece.begin(), payload_piece.end());
+  return FilAddress::FromPayload(payload, protocol.value(), network);
 }
 
 // Creates FilAddress from SECP256K uncompressed public key
-// with specified protocol  and network
+// with specified protocol and network
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
 // static
 FilAddress FilAddress::FromUncompressedPublicKey(
     const std::vector<uint8_t>& uncompressed_public_key,
     mojom::FilecoinAddressProtocol protocol,
     const std::string& network) {
-  if (protocol == mojom::FilecoinAddressProtocol::BLS)
+  if (protocol != mojom::FilecoinAddressProtocol::SECP256K1)
     return FilAddress();
   if (uncompressed_public_key.empty())
     return FilAddress();
-  auto public_key = BlakeHash(uncompressed_public_key, kPublicKeySizeSecp256K);
-  if (!public_key || public_key->empty())
+  auto payload = BlakeHash(uncompressed_public_key, kPublicKeySizeSecp256K);
+  if (!payload || payload->empty())
     return FilAddress();
-  return FromPublicKey(*public_key, protocol, network);
+  return FromPayload(*payload, protocol, network);
 }
 
-// Creates FilAddress from SECP256K or BLS public key
-// with specified protocol  and network
+// Creates FilAddress from SECP256K or BLS payload
+// with specified protocol and network
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
 // static
-FilAddress FilAddress::FromPublicKey(const std::vector<uint8_t>& public_key,
-                                     mojom::FilecoinAddressProtocol protocol,
-                                     const std::string& network) {
+FilAddress FilAddress::FromPayload(const std::vector<uint8_t>& payload,
+                                   mojom::FilecoinAddressProtocol protocol,
+                                   const std::string& network) {
   if (!IsValidNetwork(network))
     return FilAddress();
   if (protocol == mojom::FilecoinAddressProtocol::SECP256K1) {
-    if (public_key.size() != kPublicKeySizeSecp256K)
+    if (payload.size() != kPublicKeySizeSecp256K)
       return FilAddress();
   } else if (protocol == mojom::FilecoinAddressProtocol::BLS) {
-    if (public_key.size() != kPublicKeySizeBLS)
+    if (payload.size() != kPublicKeySizeBLS)
       return FilAddress();
   }
-  return FilAddress(public_key, protocol, network);
+  return FilAddress(payload, protocol, network);
 }
 
 // static
 bool FilAddress::IsValidAddress(const std::string& address) {
   return !address.empty() &&
-         FilAddress::FromAddress(address).ToChecksumAddress() == address;
+         FilAddress::FromAddress(address).EncodeAsString() == address;
 }
 
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
@@ -160,17 +161,32 @@ bool FilAddress::IsValidAddress(const std::string& address) {
 // |  network   | protocol | payload | checksum |
 // |------------|----------|---------|----------|
 // | 'f' or 't' |  1 byte  | n bytes | 4 bytes  |
-std::string FilAddress::ToChecksumAddress() const {
+// Protocol value 1: addresses represent secp256k1 public encryption keys.
+// The payload field contains the Blake2b 160 hash of the uncompressed public
+// key (65 bytes).
+// Protocol value 3: addresses represent BLS public encryption keys.
+// The payload field contains 48 byte BLS PubKey public key. All payloads
+// except the payload of the ID protocol are base32 encoded using the lowercase
+// alphabet when seralized to their human readable format.
+// Filecoin checksums are calculated over the address protocol and
+// payload using blake2b-4. Checksums are base32 encoded and
+// only added to an address when encoding to a string.
+// Addresses following the ID Protocol do not have a checksum.
+std::string FilAddress::EncodeAsString() const {
   if (bytes_.empty())
     return std::string();
-  std::vector<uint8_t> payload(bytes_);
-  std::vector<uint8_t> checksumPayload(bytes_);
-  checksumPayload.insert(checksumPayload.begin(), static_cast<int>(protocol_));
-  auto checksum = BlakeHash(checksumPayload, kChecksumSize);
-  if (!checksum)
+  std::vector<uint8_t> address_hash(bytes_);
+  std::vector<uint8_t> checksum(bytes_);
+  checksum.insert(checksum.begin(), static_cast<int>(protocol_));
+  auto checksum_hash = BlakeHash(checksum, kChecksumSize);
+  if (!checksum_hash)
     return std::string();
-  payload.insert(payload.end(), checksum->begin(), checksum->end());
-  std::string input(payload.begin(), payload.end());
+  address_hash.insert(address_hash.end(), checksum_hash->begin(),
+                      checksum_hash->end());
+  std::string input(address_hash.begin(), address_hash.end());
+  // Encoding as lower case base32 without padding according to
+  // https://spec.filecoin.io/appendix/address/#section-appendix.address.payload
+  // and https://github.com/multiformats/multibase/blob/master/multibase.csv
   std::string encoded_output = base::ToLowerASCII(
       base32::Base32Encode(input, base32::Base32EncodePolicy::OMIT_PADDING));
   return network_ + std::to_string(static_cast<int>(protocol_)) +

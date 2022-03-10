@@ -15,62 +15,62 @@ namespace brave_wallet {
 
 namespace {
 
-bool ValidatePublicKey(const std::string& public_key_hex,
-                       mojom::FilecoinAddressProtocol protocol,
-                       const std::string& network,
-                       const std::string& expected_address) {
-  std::vector<uint8_t> public_key;
-  auto result = base::HexStringToBytes(public_key_hex, &public_key);
+bool ValidatePayload(const std::string& payload_hex,
+                     mojom::FilecoinAddressProtocol protocol,
+                     const std::string& network,
+                     const std::string& expected_address) {
+  std::vector<uint8_t> payload;
+  auto result = base::HexStringToBytes(payload_hex, &payload);
   EXPECT_TRUE(result);
-  auto address = FilAddress::FromPublicKey(public_key, protocol, network);
+  auto address = FilAddress::FromPayload(payload, protocol, network);
   EXPECT_FALSE(address.IsEmpty());
-  EXPECT_EQ(address.ToChecksumAddress(), expected_address);
-  return FilAddress::IsValidAddress(address.ToChecksumAddress());
+  EXPECT_EQ(address.EncodeAsString(), expected_address);
+  return FilAddress::IsValidAddress(address.EncodeAsString());
 }
 
 }  // namespace
 
 TEST(FilAddressUnitTest, From) {
   std::string address = "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
-  EXPECT_EQ(FilAddress::FromAddress(address).ToChecksumAddress(), address);
+  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
 
   // Valid BLS address
   address = "f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
-  EXPECT_EQ(FilAddress::FromAddress(address).ToChecksumAddress(), address);
+  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
   EXPECT_FALSE(FilAddress::FromAddress(address).IsEmpty());
 
   // Valid secp256k1 address
   address =
       "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2"
       "oz4o4tpa4mvigcrayh4a";
-  EXPECT_EQ(FilAddress::FromAddress(address).ToChecksumAddress(), address);
+  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
 
   address =
       "f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2"
       "oz4o4tpa4mvigcrayh4a";
-  EXPECT_EQ(FilAddress::FromAddress(address).ToChecksumAddress(), address);
+  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
 
   address =
       "t3yaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
       "aaaaaaaaaaaaby2smx7a";
-  EXPECT_EQ(FilAddress::FromAddress(address).ToChecksumAddress(), address);
+  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
 
   // wrong size for SECP256K1 account
   address =
       "f1wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2"
       "oz4o4tpa4mvigcrayh4a";
-  EXPECT_NE(FilAddress::FromAddress(address).ToChecksumAddress(), address);
+  EXPECT_NE(FilAddress::FromAddress(address).EncodeAsString(), address);
 
   // wrong size for BLS account
   address = "t3h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
-  EXPECT_NE(FilAddress::FromAddress(address).ToChecksumAddress(), address);
+  EXPECT_NE(FilAddress::FromAddress(address).EncodeAsString(), address);
 
   // broken key
   address = "t1h3n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
-  EXPECT_NE(FilAddress::FromAddress(address).ToChecksumAddress(), address);
+  EXPECT_NE(FilAddress::FromAddress(address).EncodeAsString(), address);
 
   address = "";
-  EXPECT_EQ(FilAddress::FromAddress(address).ToChecksumAddress(), address);
+  EXPECT_EQ(FilAddress::FromAddress(address).EncodeAsString(), address);
   EXPECT_TRUE(FilAddress::FromAddress(address).IsEmpty());
 }
 
@@ -95,49 +95,49 @@ TEST(FilAddressUnitTest, IsValidAddress) {
   EXPECT_FALSE(FilAddress::IsValidAddress(""));
 }
 
-TEST(FilAddressUnitTest, FromPublicKey) {
-  EXPECT_TRUE(ValidatePublicKey("3F666D84EFEC7BEA64C90135BFEF2D9A3D834380",
-                                mojom::FilecoinAddressProtocol::SECP256K1,
-                                mojom::kFilecoinTestnet,
-                                "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq"));
+TEST(FilAddressUnitTest, FromPayload) {
+  EXPECT_TRUE(ValidatePayload("3F666D84EFEC7BEA64C90135BFEF2D9A3D834380",
+                              mojom::FilecoinAddressProtocol::SECP256K1,
+                              mojom::kFilecoinTestnet,
+                              "t1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq"));
 
-  EXPECT_TRUE(ValidatePublicKey("3F666D84EFEC7BEA64C90135BFEF2D9A3D834380",
-                                mojom::FilecoinAddressProtocol::SECP256K1,
-                                mojom::kFilecoinMainnet,
-                                "f1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq"));
+  EXPECT_TRUE(ValidatePayload("3F666D84EFEC7BEA64C90135BFEF2D9A3D834380",
+                              mojom::FilecoinAddressProtocol::SECP256K1,
+                              mojom::kFilecoinMainnet,
+                              "f1h5tg3bhp5r56uzgjae2373znti6ygq4agkx4hzq"));
 
-  EXPECT_TRUE(ValidatePublicKey(
+  EXPECT_TRUE(ValidatePayload(
       "B5774F3D8546D3E797653A5423EFFA7AB06D4CD3587697D3647798D9FE739167EBEAF1EF"
       "053F957A7678EE4DE0E32A83",
       mojom::FilecoinAddressProtocol::BLS, mojom::kFilecoinTestnet,
       "t3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4t"
       "pa4mvigcrayh4a"));
 
-  EXPECT_TRUE(ValidatePublicKey(
+  EXPECT_TRUE(ValidatePayload(
       "B5774F3D8546D3E797653A5423EFFA7AB06D4CD3587697D3647798D9FE739167EBEAF1EF"
       "053F957A7678EE4DE0E32A83",
       mojom::FilecoinAddressProtocol::BLS, mojom::kFilecoinMainnet,
       "f3wv3u6pmfi3j6pf3fhjkch372pkyg2tgtlb3jpu3eo6mnt7ttsft6x2xr54ct7fl2oz4o4t"
       "pa4mvigcrayh4a"));
 
-  auto empty_address = FilAddress::FromPublicKey(
+  auto empty_address = FilAddress::FromPayload(
       {}, mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinTestnet);
-  EXPECT_EQ(empty_address.ToChecksumAddress(), "");
+  EXPECT_EQ(empty_address.EncodeAsString(), "");
   EXPECT_TRUE(empty_address.IsEmpty());
 
-  empty_address = FilAddress::FromPublicKey(
+  empty_address = FilAddress::FromPayload(
       {}, mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinMainnet);
-  EXPECT_EQ(empty_address.ToChecksumAddress(), "");
+  EXPECT_EQ(empty_address.EncodeAsString(), "");
   EXPECT_TRUE(empty_address.IsEmpty());
 
-  empty_address = FilAddress::FromPublicKey(
+  empty_address = FilAddress::FromPayload(
       {}, mojom::FilecoinAddressProtocol::BLS, mojom::kFilecoinMainnet);
-  EXPECT_EQ(empty_address.ToChecksumAddress(), "");
+  EXPECT_EQ(empty_address.EncodeAsString(), "");
   EXPECT_TRUE(empty_address.IsEmpty());
 
-  empty_address = FilAddress::FromPublicKey(
+  empty_address = FilAddress::FromPayload(
       {}, mojom::FilecoinAddressProtocol::BLS, mojom::kFilecoinTestnet);
-  EXPECT_EQ(empty_address.ToChecksumAddress(), "");
+  EXPECT_EQ(empty_address.EncodeAsString(), "");
   EXPECT_TRUE(empty_address.IsEmpty());
 
   // wrong key/protocol pair bls
@@ -148,10 +148,10 @@ TEST(FilAddressUnitTest, FromPublicKey) {
       &public_bls_key);
   EXPECT_TRUE(result);
 
-  empty_address = FilAddress::FromPublicKey(
+  empty_address = FilAddress::FromPayload(
       public_bls_key, mojom::FilecoinAddressProtocol::SECP256K1,
       mojom::kFilecoinTestnet);
-  EXPECT_EQ(empty_address.ToChecksumAddress(), "");
+  EXPECT_EQ(empty_address.EncodeAsString(), "");
   EXPECT_TRUE(empty_address.IsEmpty());
 
   // wrong key/protocol pair secp
@@ -160,10 +160,10 @@ TEST(FilAddressUnitTest, FromPublicKey) {
                                   &public_secp_key);
   EXPECT_TRUE(result);
 
-  empty_address = FilAddress::FromPublicKey(
+  empty_address = FilAddress::FromPayload(
       public_bls_key, mojom::FilecoinAddressProtocol::SECP256K1,
       mojom::kFilecoinTestnet);
-  EXPECT_EQ(empty_address.ToChecksumAddress(), "");
+  EXPECT_EQ(empty_address.EncodeAsString(), "");
   EXPECT_TRUE(empty_address.IsEmpty());
 }
 
@@ -177,23 +177,23 @@ TEST(FilAddressUnitTest, FromUncompressedPublicKey) {
   auto uncompressed_key = FilAddress::FromUncompressedPublicKey(
       public_secp_key, mojom::FilecoinAddressProtocol::SECP256K1,
       mojom::kFilecoinTestnet);
-  EXPECT_EQ(uncompressed_key.ToChecksumAddress(),
+  EXPECT_EQ(uncompressed_key.EncodeAsString(),
             "t1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
 
   uncompressed_key = FilAddress::FromUncompressedPublicKey(
       public_secp_key, mojom::FilecoinAddressProtocol::SECP256K1,
       mojom::kFilecoinMainnet);
-  EXPECT_EQ(uncompressed_key.ToChecksumAddress(),
+  EXPECT_EQ(uncompressed_key.EncodeAsString(),
             "f1lqarsh4nkg545ilaoqdsbtj4uofplt6sto26ziy");
 
   uncompressed_key = FilAddress::FromUncompressedPublicKey(
       public_secp_key, mojom::FilecoinAddressProtocol::BLS,
       mojom::kFilecoinTestnet);
-  EXPECT_EQ(uncompressed_key.ToChecksumAddress(), "");
+  EXPECT_EQ(uncompressed_key.EncodeAsString(), "");
   EXPECT_TRUE(uncompressed_key.IsEmpty());
   uncompressed_key = FilAddress::FromUncompressedPublicKey(
       {}, mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinTestnet);
-  EXPECT_EQ(uncompressed_key.ToChecksumAddress(), "");
+  EXPECT_EQ(uncompressed_key.EncodeAsString(), "");
   EXPECT_TRUE(uncompressed_key.IsEmpty());
 }
 

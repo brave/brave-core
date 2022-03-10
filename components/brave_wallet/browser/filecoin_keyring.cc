@@ -86,9 +86,9 @@ bool FilecoinKeyring::DecodeImportPayload(
   if (!base::Base64Decode(*private_key_encoded, &private_key_decoded)) {
     return false;
   }
-  std::vector<uint8_t> private_key(private_key_decoded.begin(),
-                                   private_key_decoded.end());
-  *private_key_out = private_key;
+
+  *private_key_out = std::vector<uint8_t>(private_key_decoded.begin(),
+                                          private_key_decoded.end());
   return true;
 }
 
@@ -109,7 +109,7 @@ std::string FilecoinKeyring::ImportFilecoinAccount(
     if (!GetBLSPublicKey(private_key, &public_key)) {
       return std::string();
     }
-    address = FilAddress::FromPublicKey(public_key, protocol, network);
+    address = FilAddress::FromPayload(public_key, protocol, network);
   } else if (protocol == mojom::FilecoinAddressProtocol::SECP256K1) {
     auto uncompressed_public_key = hd_key->GetUncompressedPublicKey();
     address = FilAddress::FromUncompressedPublicKey(
@@ -118,10 +118,10 @@ std::string FilecoinKeyring::ImportFilecoinAccount(
   }
 
   if (address.IsEmpty() ||
-      !AddImportedAddress(address.ToChecksumAddress(), std::move(hd_key))) {
+      !AddImportedAddress(address.EncodeAsString(), std::move(hd_key))) {
     return std::string();
   }
-  return address.ToChecksumAddress();
+  return address.EncodeAsString();
 }
 
 void FilecoinKeyring::RestoreFilecoinAccount(
@@ -143,7 +143,7 @@ std::string FilecoinKeyring::GetAddressInternal(HDKeyBase* hd_key_base) const {
   return FilAddress::FromUncompressedPublicKey(
              hd_key->GetUncompressedPublicKey(),
              mojom::FilecoinAddressProtocol::SECP256K1, mojom::kFilecoinTestnet)
-      .ToChecksumAddress();
+      .EncodeAsString();
 }
 
 }  // namespace brave_wallet
