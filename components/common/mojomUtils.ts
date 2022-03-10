@@ -23,3 +23,12 @@ export function mojoTimeToJSDate (mojoTime: mojo.Time): Date {
 
   return new Date(timeInMs - epochDeltaInMs)
 }
+
+/**
+ * Converts a mojo time to a JS time.
+ * @param {!mojoBase.mojom.TimeDelta} mojoTime
+ * @return {!Date}
+ */
+export function mojoTimeDeltaToJSDate (mojoTime: mojo.TimeDelta) {
+  return new Date(Number(mojoTime.microseconds) / 1000)
+}

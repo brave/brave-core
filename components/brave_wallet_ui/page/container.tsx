@@ -37,7 +37,7 @@ import BackupWallet from '../stories/screens/backup-wallet'
 // Utils
 import Amount from '../utils/amount'
 import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
-import { mojoTimeDeltaToJSDate } from '../utils/datetime-utils'
+import { mojoTimeDeltaToJSDate } from '../../common/mojomUtils'
 
 import {
   findENSAddress,
