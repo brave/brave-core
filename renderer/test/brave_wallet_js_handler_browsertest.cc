@@ -73,6 +73,17 @@ IN_PROC_BROWSER_TEST_F(BraveWalletJSHandlerBrowserTest, AttachOnReload) {
   EXPECT_EQ(result.error, "");
   ASSERT_TRUE(result.ExtractBool());
   EXPECT_EQ(browser()->tab_strip_model()->GetTabCount(), 1);
+  // unable to overwrite
+  std::string overwrite = "window.ethereum = ['test'];window.ethereum[0]";
+  EXPECT_EQ(content::EvalJs(main_frame(), overwrite).error, "");
+  ASSERT_TRUE(content::EvalJs(main_frame(), command).ExtractBool());
+  brave_wallet::SetDefaultWallet(
+      browser()->profile()->GetPrefs(),
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension);
+  chrome::Reload(browser(), WindowOpenDisposition::CURRENT_TAB);
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents()));
+  // overwrite successfully
+  EXPECT_EQ(content::EvalJs(main_frame(), overwrite).ExtractString(), "test");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletJSHandlerBrowserTest,
