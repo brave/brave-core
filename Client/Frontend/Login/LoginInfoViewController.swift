@@ -384,8 +384,8 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
     
     func canPerform(action: Selector, for cell: LoginInfoTableViewCell) -> Bool {
         switch cell.tag {
-            case InfoItem.websiteItem.rawValue:
-                return action == MenuHelper.selectorCopy || action == MenuHelper.selectorOpenWebsite
+        case InfoItem.websiteItem.rawValue:
+            return action == MenuHelper.selectorCopy || action == MenuHelper.selectorOpenWebsite
         case InfoItem.usernameItem.rawValue:
             return action == MenuHelper.selectorCopy
         case InfoItem.passwordItem.rawValue:
