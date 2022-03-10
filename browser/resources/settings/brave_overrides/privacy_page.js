@@ -36,8 +36,8 @@ RegisterPolymerTemplateModifications({
           </settings-subpage>
         </template>
       `)
-      const isDeAmpingEnabled = loadTimeData.getBoolean('isDeAmpingEnabled')
-      if (isDeAmpingEnabled) {
+      const isDeAmpFeatureEnabled = loadTimeData.getBoolean('isDeAmpFeatureEnabled')
+      if (isDeAmpFeatureEnabled) {
         pages.insertAdjacentHTML("afterend", `
           <settings-toggle-button
             class="hr"
