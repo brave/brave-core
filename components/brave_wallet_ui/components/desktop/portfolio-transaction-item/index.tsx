@@ -10,7 +10,8 @@ import {
 
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
-import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/datetime-utils'
+import { formatDateAsRelative } from '../../../utils/datetime-utils'
+import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 import Amount from '../../../utils/amount'
 import { copyToClipboard } from '../../../utils/copy-to-clipboard'
 
