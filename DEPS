@@ -6,7 +6,7 @@ deps = {
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/brave/python-patch@d8880110be6554686bc08261766538c2926d4e82",
-  "vendor/omaha":  "https://github.com/brave/omaha.git@a4d777f2d4a6f77d50b80ff5aa3ff9d912a078cb",
+  "vendor/omaha":  "https://github.com/brave/omaha.git@704253ab1cb6cade108cd1542d2b670599c6c28b",
   "vendor/sparkle": "https://github.com/brave/Sparkle.git@57fb153bea4c71ed10102d50e68ead89ca483b49",
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@60b7e4574cebdd79f441bdd6f0f3ab469fd7e04c",
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bat-native-bip39wally-core.git@0d3a8713a2b388d2156fe49a70ef3f7cdb44b190",
