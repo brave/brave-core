@@ -16,6 +16,7 @@
 #include "bat/ads/internal/ad_events/ad_event_info.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/database/tables/ad_events_database_table.h"
+#include "bat/ads/internal/instance_id_util.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {
@@ -47,7 +48,10 @@ void LogAdEvent(const AdEventInfo& ad_event, AdEventCallback callback) {
 void PurgeExpiredAdEvents(AdEventCallback callback) {
   database::table::AdEvents database_table;
   database_table.PurgeExpired([callback](const bool success) {
-    RebuildAdEventsFromDatabase();
+    if (success) {
+      RebuildAdEventsFromDatabase();
+    }
+
     callback(success);
   });
 }
@@ -56,7 +60,10 @@ void PurgeOrphanedAdEvents(const mojom::AdType ad_type,
                            AdEventCallback callback) {
   database::table::AdEvents database_table;
   database_table.PurgeOrphaned(ad_type, [callback](const bool success) {
-    RebuildAdEventsFromDatabase();
+    if (success) {
+      RebuildAdEventsFromDatabase();
+    }
+
     callback(success);
   });
 }
@@ -69,7 +76,9 @@ void RebuildAdEventsFromDatabase() {
       return;
     }
 
-    AdsClientHelper::Get()->ResetAdEvents();
+    const std::string& id = GetInstanceId();
+
+    AdsClientHelper::Get()->ResetAdEventsForId(id);
 
     for (const auto& ad_event : ad_events) {
       RecordAdEvent(ad_event);
@@ -85,13 +94,15 @@ void RecordAdEvent(const AdEventInfo& ad_event) {
 
   const double timestamp = ad_event.created_at.ToDoubleT();
 
-  AdsClientHelper::Get()->RecordAdEvent(ad_type_as_string,
-                                        confirmation_type_as_string, timestamp);
+  const std::string& id = GetInstanceId();
+
+  AdsClientHelper::Get()->RecordAdEventForId(
+      id, ad_type_as_string, confirmation_type_as_string, timestamp);
 }
 
 std::deque<base::Time> GetAdEvents(const AdType& ad_type,
                                    const ConfirmationType& confirmation_type) {
-  const std::vector<double> history =
+  const std::vector<double>& history =
       AdsClientHelper::Get()->GetAdEvents(ad_type, confirmation_type);
 
   std::deque<base::Time> deque;

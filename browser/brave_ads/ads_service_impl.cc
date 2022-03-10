@@ -1954,11 +1954,12 @@ void AdsServiceImpl::CloseNotification(const std::string& uuid) {
   }
 }
 
-void AdsServiceImpl::RecordAdEvent(const std::string& ad_type,
-                                   const std::string& confirmation_type,
-                                   const double timestamp) const {
-  FrequencyCappingHelper::GetInstance()->RecordAdEvent(
-      ad_type, confirmation_type, timestamp);
+void AdsServiceImpl::RecordAdEventForId(const std::string& id,
+                                        const std::string& ad_type,
+                                        const std::string& confirmation_type,
+                                        const double timestamp) const {
+  FrequencyCappingHelper::GetInstance()->RecordAdEventForId(
+      id, ad_type, confirmation_type, timestamp);
 }
 
 std::vector<double> AdsServiceImpl::GetAdEvents(
@@ -1968,8 +1969,8 @@ std::vector<double> AdsServiceImpl::GetAdEvents(
                                                             confirmation_type);
 }
 
-void AdsServiceImpl::ResetAdEvents() const {
-  return FrequencyCappingHelper::GetInstance()->ResetAdEvents();
+void AdsServiceImpl::ResetAdEventsForId(const std::string& id) const {
+  return FrequencyCappingHelper::GetInstance()->ResetAdEventsForId(id);
 }
 
 void AdsServiceImpl::UrlRequest(ads::mojom::UrlRequestPtr url_request,

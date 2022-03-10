@@ -680,6 +680,8 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/permission_rules/user_activity_frequency_cap.h",
     "src/bat/ads/internal/idle_time.cc",
     "src/bat/ads/internal/idle_time.h",
+    "src/bat/ads/internal/instance_id_util.cc",
+    "src/bat/ads/internal/instance_id_util.h",
     "src/bat/ads/internal/json_helper.cc",
     "src/bat/ads/internal/json_helper.h",
     "src/bat/ads/internal/legacy_migration/conversions/legacy_conversion_migration.cc",

@@ -104,9 +104,9 @@ void MockShouldShowNotifications(const std::unique_ptr<AdsClientMock>& mock,
 void MockShowNotification(const std::unique_ptr<AdsClientMock>& mock);
 void MockCloseNotification(const std::unique_ptr<AdsClientMock>& mock);
 
-void MockRecordAdEvent(const std::unique_ptr<AdsClientMock>& mock);
+void MockRecordAdEventForId(const std::unique_ptr<AdsClientMock>& mock);
 void MockGetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
-void MockResetAdEvents(const std::unique_ptr<AdsClientMock>& mock);
+void MockResetAdEventsForId(const std::unique_ptr<AdsClientMock>& mock);
 
 void MockGetBrowsingHistory(const std::unique_ptr<AdsClientMock>& mock);
 
