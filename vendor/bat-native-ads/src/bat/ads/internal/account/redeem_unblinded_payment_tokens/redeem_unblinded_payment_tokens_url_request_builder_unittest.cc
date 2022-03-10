@@ -139,8 +139,6 @@ TEST(BatAdsRedeemUnblindedPaymentTokensRequestTest, BuildUrlForBPill) {
   expected_url_request->content_type = "application/json";
   expected_url_request->method = mojom::UrlRequestMethod::kPut;
 
-  std::cout << url_request->content << std::endl;
-
   EXPECT_TRUE(url_request.Equals(expected_url_request));
 }
 

@@ -728,6 +728,8 @@ source_set("ads") {
     "src/bat/ads/internal/frequency_capping/permission_rules/unblinded_tokens_permission_rule.h",
     "src/bat/ads/internal/frequency_capping/permission_rules/user_activity_permission_rule.cc",
     "src/bat/ads/internal/frequency_capping/permission_rules/user_activity_permission_rule.h",
+    "src/bat/ads/internal/instance_id_util.cc",
+    "src/bat/ads/internal/instance_id_util.h",
     "src/bat/ads/internal/json_helper.cc",
     "src/bat/ads/internal/json_helper.h",
     "src/bat/ads/internal/legacy_migration/conversions/legacy_conversion_migration.cc",

@@ -280,14 +280,16 @@ void AdsClientMojoBridge::CloseNotification(
   ads_client_->CloseNotification(uuid);
 }
 
-void AdsClientMojoBridge::RecordAdEvent(const std::string& ad_type,
-                                        const std::string& confirmation_type,
-                                        const double timestamp) {
-  ads_client_->RecordAdEvent(ad_type, confirmation_type, timestamp);
+void AdsClientMojoBridge::RecordAdEventForId(
+    const std::string& id,
+    const std::string& ad_type,
+    const std::string& confirmation_type,
+    const double timestamp) {
+  ads_client_->RecordAdEventForId(id, ad_type, confirmation_type, timestamp);
 }
 
-void AdsClientMojoBridge::ResetAdEvents() {
-  ads_client_->ResetAdEvents();
+void AdsClientMojoBridge::ResetAdEventsForId(const std::string& id) {
+  ads_client_->ResetAdEventsForId(id);
 }
 
 // static
