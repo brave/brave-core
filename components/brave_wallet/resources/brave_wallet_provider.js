@@ -72,6 +72,9 @@ function solanaSetup() {
     result.publicKey = new solanaWeb3.PublicKey(base58Str)
     return result
   }
+  window.solana.createTransaction = function createTransaction(serializedTx) {
+    return solanaWeb3.Transaction.from(new Uint8Array(serializedTx))
+  }
   const EventEmitter = require('events')
   var SolanaEventEmitter = new EventEmitter()
   window.solana.on = SolanaEventEmitter.on

@@ -29,6 +29,12 @@ v8::MaybeLocal<v8::Value> CallMethodOfObject(
     const std::u16string& method_name,
     std::vector<v8::Local<v8::Value>>&& args);
 
+v8::MaybeLocal<v8::Value> CallMethodOfObject(
+    blink::WebLocalFrame* web_frame,
+    v8::Local<v8::Value> object,
+    const std::u16string& method_name,
+    std::vector<v8::Local<v8::Value>>&& args);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_RENDERER_V8_HELPER_H_

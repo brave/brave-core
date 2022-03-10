@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/notreached.h"
 
@@ -25,12 +26,40 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
 }
 
 void SolanaProviderImpl::Disconnect() {
-  NOTIMPLEMENTED();
+  // NOTIMPLEMENTED();
 }
 
 void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
-  NOTIMPLEMENTED();
+  // NOTIMPLEMENTED();
   std::move(callback).Run(false);
+}
+
+void SolanaProviderImpl::GetPublicKey(GetPublicKeyCallback callback) {
+  std::move(callback).Run("BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  // std::move(callback).Run("");
+}
+
+void SolanaProviderImpl::SignTransaction(
+    const std::string& encoded_serialized_msg,
+    SignTransactionCallback callback) {
+  std::vector<uint8_t> result = {
+      1,   231, 78,  150, 120, 219, 234, 88,  44,  144, 225, 53,  221, 88,  82,
+      59,  51,  62,  211, 225, 231, 182, 123, 231, 229, 201, 48,  30,  137, 119,
+      233, 102, 88,  31,  65,  88,  147, 197, 72,  166, 241, 126, 26,  59,  239,
+      64,  196, 116, 28,  17,  124, 0,   123, 13,  28,  65,  242, 241, 226, 46,
+      227, 55,  234, 251, 10,  1,   0,   1,   2,   161, 51,  89,  91,  115, 210,
+      217, 212, 76,  159, 171, 200, 40,  150, 157, 70,  197, 71,  24,  44,  209,
+      108, 143, 4,   58,  251, 215, 62,  201, 172, 159, 197, 0,   0,   0,   0,
+      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
+      0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   62,  84,
+      174, 253, 228, 77,  50,  164, 215, 178, 46,  88,  242, 49,  114, 246, 244,
+      48,  9,   18,  36,  41,  160, 254, 174, 6,   207, 115, 11,  58,  220, 167,
+      1,   1,   2,   0,   0,   12,  2,   0,   0,   0,   100, 0,   0,   0,   0,
+      0,   0,   0};
+  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "", result);
+  // NOTIMPLEMENTED();
+  // std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
+  // std::vector<uint8_t>());
 }
 
 }  // namespace brave_wallet

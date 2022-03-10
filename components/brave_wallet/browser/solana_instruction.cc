@@ -11,7 +11,7 @@
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/solana_utils.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
 
 namespace brave_wallet {
 

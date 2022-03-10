@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
 
+#include <string>
+
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
 namespace brave_wallet {
@@ -21,6 +23,9 @@ class SolanaProviderImpl final : public mojom::SolanaProvider {
                ConnectCallback callback) override;
   void Disconnect() override;
   void IsConnected(IsConnectedCallback callback) override;
+  void GetPublicKey(GetPublicKeyCallback callback) override;
+  void SignTransaction(const std::string& encoded_serialized_msg,
+                       SignTransactionCallback callback) override;
 
  private:
 };

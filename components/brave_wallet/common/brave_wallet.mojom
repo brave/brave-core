@@ -125,12 +125,21 @@ interface BraveWalletProvider {
 interface SolanaProvider {
   // Optional {onlyIfTrusted: true}, when that flag is enable, we will only
   // connect and emit a connect event if the application is trusted.
+  // It will returns base58 encoded public key when success
   Connect(mojo_base.mojom.DictionaryValue? arg)
-    => (SolanaProviderError error, string message, string public_key);
+    => (SolanaProviderError error, string error_message, string public_key);
   Disconnect();
   [Sync]
   IsConnected() => (bool is_connected);
-  // SignTransaction
+  // return base58 encoded public key
+  [Sync]
+  GetPublicKey() => (string public_key);
+  // It takes a base58 encoded serialized Message and return a serialized
+  // Transaction with signature in wire format.
+  SignTransaction(string encoded_serialized_msg)
+    => (SolanaProviderError error, string error_message,
+        array<uint8> serialized_tx);
+  // SignAndSendTransaction
   // SignAllTransactions
   // SignMessage, hex or utf8 encoding
 

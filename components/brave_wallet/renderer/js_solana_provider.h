@@ -29,6 +29,16 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
 
   static gin::WrapperInfo kWrapperInfo;
 
+  class V8ConverterStrategy : public content::V8ValueConverter::Strategy {
+   public:
+    V8ConverterStrategy() = default;
+    ~V8ConverterStrategy() override = default;
+
+    bool FromV8ArrayBuffer(v8::Local<v8::Object> value,
+                           std::unique_ptr<base::Value>* out,
+                           v8::Isolate* isolate) override;
+  };
+
   static std::unique_ptr<JSSolanaProvider> Install(
       bool use_native_wallet,
       content::RenderFrame* render_frame,
@@ -47,6 +57,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
 
   bool GetIsPhantom(gin::Arguments* arguments);
   bool GetIsConnected(gin::Arguments* arguments);
+  v8::Local<v8::Value> GetPublicKey(gin::Arguments* arguments);
   v8::Local<v8::Promise> Connect(gin::Arguments* arguments);
   v8::Local<v8::Promise> Disconnect(gin::Arguments* arguments);
   v8::Local<v8::Promise> SignAndSendTransaction(gin::Arguments* arguments);
@@ -68,6 +79,13 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
                  const std::string& error_message,
                  const std::string& public_key);
 
+  void OnSignTransaction(v8::Global<v8::Context> global_context,
+                         v8::Global<v8::Promise::Resolver> promise_resolver,
+                         v8::Isolate* isolate,
+                         mojom::SolanaProviderError error,
+                         const std::string& error_message,
+                         const std::vector<uint8_t>& serialized_tx);
+
   void SendResponse(v8::Global<v8::Context> global_context,
                     v8::Global<v8::Promise::Resolver> promise_resolver,
                     v8::Isolate* isolate,
@@ -77,6 +95,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
   bool use_native_wallet_ = false;
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
+  V8ConverterStrategy strategy_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
   base::WeakPtrFactory<JSSolanaProvider> weak_ptr_factory_{this};
 };

@@ -13,6 +13,7 @@ source_set("renderer") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/common:solana_utils",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
     "//content/public/renderer",
     "//gin",

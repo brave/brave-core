@@ -10,8 +10,8 @@
 
 #include "base/json/json_reader.h"
 #include "base/test/gtest_util.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
+#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
