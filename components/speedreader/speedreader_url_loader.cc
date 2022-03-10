@@ -10,16 +10,16 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/check.h"
 #include "base/metrics/histogram_macros.h"
-#include "base/task/post_task.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
-#include "services/network/public/mojom/early_hints.mojom.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace speedreader {
 

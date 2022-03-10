@@ -13,14 +13,14 @@
 #include "base/memory/weak_ptr.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
-#include "brave/components/body_sniffer/body_sniffer_url_loader.h"
-#include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
+#include "url/gurl.h"
 
 class HostContentSettingsMap;
 
 namespace speedreader {
 
+class SpeedreaderResultDelegate;
 class SpeedreaderRewriterService;
 
 // Launches the speedreader distillation pass over a response body, deferring

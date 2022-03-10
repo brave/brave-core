@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
+#include "mojo/public/cpp/system/data_pipe.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace body_sniffer {
