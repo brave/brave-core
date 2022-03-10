@@ -10,14 +10,12 @@
 
 class PrefRegistrySimple;
 class PrefService;
+class HostContentSettingsMap;
 
 namespace brave_shields {
 
 constexpr char kUsagePrefName[] = "brave_shields.p3a_usage";
-constexpr char kAdsDefaultReportedPrefName[] =
-    "brave_shields.ads_default_reported";
-constexpr char kFingerprintDefaultReportedPrefName[] =
-    "brave_shields.fingerprint_default_reported";
+constexpr char kFirstReportedPrefName[] = "brave_shields.p3a_first_reported";
 constexpr char kAdsSettingHistogramName[] = "Brave.Shields.AdBlockSetting";
 constexpr char kFingerprintSettingHistogramName[] =
     "Brave.Shields.FingerprintBlockSetting";
@@ -40,15 +38,16 @@ enum ShieldsIconUsage {
 void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
                                 PrefService* local_state);
 
-void MaybeRecordDefaultShieldsAdsSetting(PrefService* local_state);
-
-void MaybeRecordDefaultShieldsFingerprintSetting(PrefService* local_state);
-
 void RecordShieldsAdsSetting(ControlType setting);
 
 void RecordShieldsFingerprintSetting(ControlType setting);
 
-void RegisterShieldsP3APrefs(PrefRegistrySimple* local_state);
+void RegisterShieldsP3ALocalPrefs(PrefRegistrySimple* local_state);
+
+void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* local_state);
+
+void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
+                                       HostContentSettingsMap* map);
 
 }  // namespace brave_shields
 

@@ -7,22 +7,15 @@
 
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
+#include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/p3a/brave_p3a_utils.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "url/gurl.h"
 
 namespace brave_shields {
-
 namespace {
-
-void MaybeRecordDefaultShieldsLevelSetting(PrefService* local_state,
-                                           const char* histogram_name,
-                                           const char* default_reported_pref) {
-  if (local_state->GetBoolean(default_reported_pref))
-    return;
-  base::UmaHistogramExactLinear(histogram_name, 1, 3);
-  local_state->SetBoolean(default_reported_pref, true);
-}
 
 void RecordShieldsLevelSetting(const char* histogram_name,
                                ControlType setting) {
@@ -52,29 +45,31 @@ void MaybeRecordShieldsUsageP3A(ShieldsIconUsage usage,
       usage, kUsageStatusHistogramName, kUsagePrefName, local_state);
 }
 
-void MaybeRecordDefaultShieldsAdsSetting(PrefService* local_state) {
-  MaybeRecordDefaultShieldsLevelSetting(local_state, kAdsSettingHistogramName,
-                                        kAdsDefaultReportedPrefName);
-}
-
-void MaybeRecordDefaultShieldsFingerprintSetting(PrefService* local_state) {
-  MaybeRecordDefaultShieldsLevelSetting(local_state,
-                                        kFingerprintSettingHistogramName,
-                                        kFingerprintDefaultReportedPrefName);
-}
-
 void RecordShieldsAdsSetting(ControlType setting) {
   RecordShieldsLevelSetting(kAdsSettingHistogramName, setting);
+}
+
+void MaybeRecordInitialShieldsSettings(PrefService* profile_prefs,
+                                       HostContentSettingsMap* map) {
+  if (profile_prefs->GetBoolean(kFirstReportedPrefName)) {
+    return;
+  }
+  VLOG(1) << "ShieldsP3A: Initial report of profile";
+  RecordShieldsAdsSetting(GetCosmeticFilteringControlType(map, GURL()));
+  RecordShieldsFingerprintSetting(GetFingerprintingControlType(map, GURL()));
+  profile_prefs->SetBoolean(kFirstReportedPrefName, true);
 }
 
 void RecordShieldsFingerprintSetting(ControlType setting) {
   RecordShieldsLevelSetting(kFingerprintSettingHistogramName, setting);
 }
 
-void RegisterShieldsP3APrefs(PrefRegistrySimple* local_state) {
+void RegisterShieldsP3ALocalPrefs(PrefRegistrySimple* local_state) {
   local_state->RegisterIntegerPref(kUsagePrefName, -1);
-  local_state->RegisterBooleanPref(kAdsDefaultReportedPrefName, false);
-  local_state->RegisterBooleanPref(kFingerprintDefaultReportedPrefName, false);
+}
+
+void RegisterShieldsP3AProfilePrefs(PrefRegistrySimple* profile_state) {
+  profile_state->RegisterBooleanPref(kFirstReportedPrefName, false);
 }
 
 }  // namespace brave_shields
