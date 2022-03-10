@@ -6,13 +6,15 @@
 #include <iostream>
 
 #include "base/bind.h"
-#include "base/path_service.h"
 #include "base/files/file_path.h"
+#include "base/path_service.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/pref_names.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/testing_pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/test/browser_test.h"
@@ -21,12 +23,6 @@
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/re2/src/re2/re2.h"
-
-#if defined(OS_ANDROID)
-#include "chrome/test/base/android/android_browser_test.h"
-#else
-#include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/test/base/ui_test_utils.h"
 #endif
 
 const char kTestHost[] = "a.test.com";
@@ -42,7 +38,7 @@ const char kTestBody[] =
     </head>
     </html>
     )";
-class DeAmpBrowserTest : public PlatformBrowserTest {
+class DeAmpBrowserTest : public InProcessBrowserTest {
  public:
   DeAmpBrowserTest() {
     feature_list_.InitAndEnableFeature(de_amp::features::kBraveDeAMP);
@@ -53,7 +49,7 @@ class DeAmpBrowserTest : public PlatformBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
-        
+
     // Serve test files
     base::FilePath path;
     base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &path);
@@ -68,21 +64,21 @@ class DeAmpBrowserTest : public PlatformBrowserTest {
     prefs_ = browser()->profile()->GetPrefs();
 
     content::SetupCrossSiteRedirector(https_server_.get());
-    PlatformBrowserTest::SetUpOnMainThread();
+    InProcessBrowserTest::SetUpOnMainThread();
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
-    PlatformBrowserTest::SetUpCommandLine(command_line);
+    InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
   }
 
   void SetUpInProcessBrowserTestFixture() override {
-    PlatformBrowserTest::SetUpInProcessBrowserTestFixture();
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
     mock_cert_verifier_.SetUpInProcessBrowserTestFixture();
   }
 
   void TearDownInProcessBrowserTestFixture() override {
-    PlatformBrowserTest::TearDownInProcessBrowserTestFixture();
+    InProcessBrowserTest::TearDownInProcessBrowserTestFixture();
     mock_cert_verifier_.TearDownInProcessBrowserTestFixture();
   }
 
