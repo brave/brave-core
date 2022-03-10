@@ -199,6 +199,9 @@ void BodySnifferURLLoader::CompleteLoading(std::string body) {
 
   buffered_body_ = std::move(body);
   bytes_remaining_in_buffer_ = buffered_body_.size();
+  std::cerr << "body is " << body << "\n";
+  std::cerr << "bytes remaining in buffer  " << bytes_remaining_in_buffer_
+            << "\n";
 
   throttle_->Resume();
   mojo::ScopedDataPipeConsumerHandle body_to_send;
@@ -219,7 +222,6 @@ void BodySnifferURLLoader::CompleteLoading(std::string body) {
   destination_url_loader_client_->OnStartLoadingResponseBody(
       std::move(body_to_send));
 
-  DCHECK(bytes_remaining_in_buffer_);
   if (bytes_remaining_in_buffer_) {
     SendReceivedBodyToClient();
     return;

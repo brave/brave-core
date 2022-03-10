@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <iostream>
+
 #include "base/bind.h"
 #include "base/path_service.h"
+#include "base/files/file_path.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/pref_names.h"
 #include "chrome/browser/ui/browser.h"
@@ -50,6 +53,17 @@ class DeAmpBrowserTest : public PlatformBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+        
+    // Serve test files
+    base::FilePath path;
+    base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &path);
+    path = path.Append(FILE_PATH_LITERAL("brave"));
+    path = path.Append(FILE_PATH_LITERAL("components"));
+    path = path.Append(FILE_PATH_LITERAL("de_amp"));
+    path = path.Append(FILE_PATH_LITERAL("browser"));
+    path = path.Append(FILE_PATH_LITERAL("test"));
+    path = path.Append(FILE_PATH_LITERAL("data"));
+    https_server_->ServeFilesFromDirectory(path);
 
     prefs_ = browser()->profile()->GetPrefs();
 
@@ -190,14 +204,14 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, RestorePage) {
       HandleRequest, kTestHost, kTestCanonicalPage, kTestBody));
   ASSERT_TRUE(https_server_->Start());
   const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), original_url));
+  const GURL landing_url = https_server_->GetURL(kTestHost, kTestCanonicalPage);
+  NavigateToURLAndWaitForRedirects(original_url, landing_url);
 
   // Close & restore tab
   browser()->tab_strip_model()->CloseSelectedTabs();
   Profile* profile = browser()->profile();
   chrome::OpenWindowWithRestoredTabs(profile);
 
-  const GURL landing_url = https_server_->GetURL(kTestHost, kTestCanonicalPage);
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
 }
 
