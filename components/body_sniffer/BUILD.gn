@@ -1,4 +1,4 @@
-source_set("body_sniffer") {
+static_library("body_sniffer") {
   sources = [
     "body_sniffer_throttle.cc",
     "body_sniffer_throttle.h",
