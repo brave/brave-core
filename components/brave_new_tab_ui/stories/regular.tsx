@@ -12,6 +12,8 @@ import store from '../store'
 import { getNewTabData, getGridSitesData } from './default/data/storybookState'
 import getTodayState from './default/data/todayStorybookState'
 import getBraveNewsDisplayAd from './default/data/getBraveNewsDisplayAd'
+import { getDataUrl, getUnpaddedAsDataUrl } from '../../common/privateCDN'
+import getFTXStorybookState from '../widgets/ftx/ftx_storybook_state'
 
 const doNothingDispatch: Dispatch = (action: any) => action
 
@@ -19,17 +21,16 @@ function getActions () {
   return getActionsForDispatch(doNothingDispatch)
 }
 
-// TODO(petemill): privateCDN should be in /common/
-import { getUnpaddedAsDataUrl } from '../../common/privateCDN'
-import getFTXStorybookState from '../widgets/ftx/ftx_storybook_state'
-
 // @ts-expect-error
 window.braveStorybookUnpadUrl = async function UnpadUrl (paddedUrl: string, mimeType = 'image/jpg'): Promise<string> {
   const response = await fetch(paddedUrl)
   const blob = await response.blob()
   const buffer = await blob.arrayBuffer()
-  const dataUrl = await getUnpaddedAsDataUrl(buffer, mimeType)
-  return dataUrl
+  if (paddedUrl.endsWith('.pad')) {
+    return await getUnpaddedAsDataUrl(buffer, mimeType)
+  }
+  // Image is already unpadded
+  return await getDataUrl(buffer)
 }
 
 const StoreProvider: React.FunctionComponent = ({ children }) => {

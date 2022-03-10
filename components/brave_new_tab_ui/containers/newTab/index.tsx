@@ -79,6 +79,7 @@ interface State {
   targetTopSiteForEditing?: NewTab.Site
   backgroundHasLoaded: boolean
   activeSettingsTab: SettingsTabType | null
+  isPromptingBraveToday: boolean
 }
 
 function GetBackgroundImageSrc (props: Props) {
@@ -114,9 +115,11 @@ class NewTabPage extends React.Component<Props, State> {
     showSettingsMenu: false,
     showEditTopSite: false,
     backgroundHasLoaded: false,
-    activeSettingsTab: null
+    activeSettingsTab: null,
+    isPromptingBraveToday: false
   }
 
+  braveNewsPromptTimerId: number
   hasInitBraveToday: boolean = false
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
@@ -135,6 +138,25 @@ class NewTabPage extends React.Component<Props, State> {
       this.trackBrandedWallpaperNotificationAutoDismiss()
     }
     this.checkShouldOpenSettings()
+    // Only prompt for brave today if we're not scrolling down.
+    const shouldPromptBraveToday =
+      this.props.newTabData.featureFlagBraveNewsPromptEnabled &&
+      !this.props.todayData.articleScrollTo
+    if (shouldPromptBraveToday) {
+      this.braveNewsPromptTimerId = window.setTimeout(() => {
+        if (window.scrollY > 0) {
+          // Don't do anything if user has already scrolled
+          return
+        }
+        this.setState({ isPromptingBraveToday: true })
+      }, 1700)
+    }
+  }
+
+  componentWillUnmount () {
+    if (this.braveNewsPromptTimerId) {
+      window.clearTimeout(this.braveNewsPromptTimerId)
+    }
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -491,13 +513,6 @@ class NewTabPage extends React.Component<Props, State> {
 
   setUserTLDAutoSet = () => {
     this.props.actions.setUserTLDAutoSet()
-  }
-
-  onBraveTodayInteracting = () => {
-    if (!this.hasInitBraveToday) {
-      this.hasInitBraveToday = true
-      this.props.actions.today.interactionBegin()
-    }
   }
 
   learnMoreRewards = () => {
@@ -1101,6 +1116,7 @@ class NewTabPage extends React.Component<Props, State> {
         hasImage={hasImage}
         imageSrc={this.imageSource}
         imageHasLoaded={this.state.backgroundHasLoaded}
+        data-show-news-prompt={(this.state.backgroundHasLoaded && this.state.isPromptingBraveToday) ? true : undefined}
       >
         <Page.Page
             hasImage={hasImage}
@@ -1208,11 +1224,11 @@ class NewTabPage extends React.Component<Props, State> {
           publishers={this.props.todayData.publishers}
           isFetching={this.props.todayData.isFetching === true}
           hasInteracted={this.props.todayData.hasInteracted}
+          isPrompting={this.state.isPromptingBraveToday}
           isUpdateAvailable={this.props.todayData.isUpdateAvailable}
           isOptedIn={this.props.newTabData.isBraveTodayOptedIn}
           onRefresh={this.props.actions.today.refresh}
           onAnotherPageNeeded={this.props.actions.today.anotherPageNeeded}
-          onInteracting={this.onBraveTodayInteracting}
           onDisable={this.toggleShowToday}
           onFeedItemViewedCountChanged={this.props.actions.today.feedItemViewedCountChanged}
           onCustomizeBraveToday={() => { this.openSettings(SettingsTabType.BraveToday) }}

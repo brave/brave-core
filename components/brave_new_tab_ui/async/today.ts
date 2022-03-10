@@ -18,25 +18,28 @@ function storeInHistoryState (data: Object) {
 const handler = new AsyncActionHandler()
 
 handler.on(Actions.interactionBegin.getType(), async () => {
+  console.debug('Brave News: Marking actual interaction begin')
   getBraveNewsController().onInteractionSessionStarted()
 })
 
-handler.on(
-  [Actions.interactionBegin.getType(), Actions.refresh.getType()],
-  async (store) => {
-    try {
-      const [{ feed }, { publishers }] = await Promise.all([
-        getBraveNewsController().getFeed(),
-        getBraveNewsController().getPublishers()
-      ])
-
-      store.dispatch(Actions.dataReceived({ feed, publishers }))
-    } catch (e) {
-      console.error('error receiving feed', e)
-      store.dispatch(Actions.errorGettingDataFromBackground(e))
-    }
+handler.on<Actions.RefreshPayload>(Actions.refresh.getType(), async (store, payload) => {
+  if (payload && payload.isFirstInteraction) {
+    console.debug('Brave News: Marking actual interaction begin')
+    getBraveNewsController().onInteractionSessionStarted()
   }
-)
+  try {
+    console.debug('Brave News: Getting data...')
+    const [{ feed }, { publishers }] = await Promise.all([
+      getBraveNewsController().getFeed(),
+      getBraveNewsController().getPublishers()
+    ])
+    console.debug('Brave News: ...data received.')
+    store.dispatch(Actions.dataReceived({ feed, publishers }))
+  } catch (e) {
+    console.error('error receiving feed', e)
+    store.dispatch(Actions.errorGettingDataFromBackground(e))
+  }
+})
 
 handler.on(Actions.optIn.getType(), async () => {
   saveIsBraveTodayOptedIn(true)

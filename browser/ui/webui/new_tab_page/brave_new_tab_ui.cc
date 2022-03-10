@@ -59,6 +59,9 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean(
       "featureFlagBraveNewsEnabled",
       base::FeatureList::IsEnabled(brave_today::features::kBraveNewsFeature));
+  source->AddBoolean("featureFlagBraveNewsPromptEnabled",
+                     base::FeatureList::IsEnabled(
+                         brave_today::features::kBraveNewsCardPeekFeature));
   web_ui->AddMessageHandler(
       base::WrapUnique(BraveNewTabMessageHandler::Create(source, profile)));
   web_ui->AddMessageHandler(

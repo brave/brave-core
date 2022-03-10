@@ -42,6 +42,7 @@ const defaultState: BraveTodayState = {
 if (history.state && (history.state.todayArticle || history.state.todayAdPosition)) {
   // TODO(petemill): Type this history.state data and put in an API module
   // see `async/today`.
+  defaultState.hasInteracted = true
   defaultState.currentPageIndex = history.state.todayPageIndex as number || 0
   defaultState.articleScrollTo = history.state.todayArticle
   if (!defaultState.articleScrollTo) {
@@ -67,8 +68,7 @@ export default reducer
 
 reducer.on(Actions.interactionBegin, (state, payload) => ({
   ...state,
-  hasInteracted: true,
-  isFetching: true
+  hasInteracted: true
 }))
 
 reducer.on(Actions.errorGettingDataFromBackground, (state, payload) => ({
@@ -171,10 +171,14 @@ reducer.on(Actions.isUpdateAvailable, (state, payload) => {
   }
 })
 
-reducer.on(Actions.refresh, (state) => {
-  return {
+reducer.on(Actions.refresh, (state, payload) => {
+  state = {
     ...state,
     isFetching: true,
     articleScrollTo: undefined
   }
+  if (payload && payload.isFirstInteraction) {
+    state.hasInteracted = true
+  }
+  return state
 })
