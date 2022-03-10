@@ -198,6 +198,11 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
 
+      if (action.payload.result === 44) { // type::Result::FLAGGED_WALLET
+        state.ui.modalRedirect = 'flaggedWalletModal'
+        break
+      }
+
       if (action.payload.result === 0) { // type::Result::LEDGER_OK
         chrome.send('brave_rewards.fetchBalance')
       }

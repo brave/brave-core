@@ -76,6 +76,7 @@ declare namespace Rewards {
       modalRedirect:
           'deviceLimitReachedModal'
         | 'error'
+        | 'flaggedWalletModal'
         | 'hide'
         | 'kycRequiredModal'
         | 'mismatchedProviderAccountsModal'

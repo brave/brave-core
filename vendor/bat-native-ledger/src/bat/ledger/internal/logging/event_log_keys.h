@@ -14,6 +14,7 @@ namespace log {
 const char kACAddedToQueue[] = "ac_added_to_queue";
 const char kDatabaseMigrated[] = "database_migrated";
 const char kDeviceLimitReached[] = "device_limit_reached";
+const char kFlaggedWallet[] = "flagged_wallet";
 const char kKYCRequired[] = "kyc_required";
 const char kMismatchedProviderAccounts[] = "mismatched_provider_accounts";
 const char kPromotionsClaimed[] = "promotion_claimed";
