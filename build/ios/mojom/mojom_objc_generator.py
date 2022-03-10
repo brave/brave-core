@@ -393,8 +393,12 @@ class Generator(generator.Generator):
             "under_to_camel": UnderToCamel,
             "under_to_lower_camel": UnderToLowerCamel,
             "interface_remote_sets": self._GetInterfaceRemoteSets,
+            "objc_import_module_name": self._GetObjCImportModuleName,
         }
         return objc_filters
+
+    def _GetObjCImportModuleName(self, module):
+        return os.path.basename(module.path)
 
     def _GetInterfaceRemoteSets(self, interface):
         remotes = []
@@ -575,12 +579,17 @@ class Generator(generator.Generator):
                     if mojom.IsPendingRemoteKind(param.kind):
                         receivers.add(param.kind.kind)
 
+        # We handle imports from mojo base types with custom typemaps, so only
+        # other Brave imports should only be included
+        brave_imports = [i for i in self.module.imports if
+                         i.path.startswith('brave/')]
+
         for interface in self.module.interfaces:
             all_enums.extend(interface.enums)
         return {
             "all_enums": all_enums,
             "enums": self.module.enums,
-            "imports": self.module.imports,
+            "imports": brave_imports,
             "interfaces": all_interfaces,
             "interface_bridges": receivers,
             "kinds": self.module.kinds,

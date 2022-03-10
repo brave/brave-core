@@ -13,6 +13,10 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/base/mac/url_conversions.h"
 
+{% for import in imports %}
+#include "{{import|objc_import_module_name}}.objc+private.h"
+{% endfor %}
+
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
@@ -23,7 +27,7 @@
 {{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} = {{const|const_objc_assign}};
 {% endfor %}
 
-@implementation _{{class_prefix}}
+@implementation _{{class_prefix}}{{module_name|replace(".mojom","Mojom")|under_to_camel}}
 @end
 
 {%- for struct in structs %}
