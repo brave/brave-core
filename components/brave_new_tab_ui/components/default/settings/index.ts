@@ -15,6 +15,12 @@ import favoritesUnselectedDark from './assets/favorites-unselected-dark.png'
 import frecencySelectedDark from './assets/frecency-selected-dark.png'
 import frecencyUnselectedDark from './assets/frecency-unselected-dark.png'
 
+// Reverse decisions to have the controls define their margin. This helps
+// fill the gap before we remove all margins from these types of controls.
+// Usually containers will want to define spacing based on specific UI needs.
+interface ControllableLayoutProps {
+  isLayoutControlled?: boolean
+}
 interface Props {
   textDirection: string
 }
@@ -271,14 +277,14 @@ export const SettingsCloseIcon = styled('button')<{}>`
   }
 `
 
-interface SettingsRowProps {
+interface SettingsRowProps extends ControllableLayoutProps {
   isChildSetting?: boolean
   isInteractive?: boolean
 }
 
 export const SettingsRow = styled('div')<SettingsRowProps>`
   box-sizing: border-box;
-  margin-bottom: 10px;
+  margin-bottom: ${p => !p.isLayoutControlled && '10px'};
   display: grid;
   grid-template-columns: auto max-content;
   align-items: center;
@@ -318,8 +324,8 @@ export const SettingsText = styled('span')<{}>`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const SettingsSectionTitle = styled('h3')`
-  margin: 0 0 8px 0;
+export const SettingsSectionTitle = styled('h3')<ControllableLayoutProps>`
+  margin: 0 0 ${p => p.isLayoutControlled ? '0' : '8px'} 0;
   font-weight: 800;
   font-size: 13px;
   line-height: 24px;
