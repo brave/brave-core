@@ -59,16 +59,12 @@ source_set("unit_tests") {
   deps = []
 
   if (is_win) {
-    sources += [
-      "default_protocol_handler_utils_win_unittest.cc",
-      "microsoft_edge_protocol_util_unittest.cc",
-    ]
+    sources += [ "default_protocol_handler_utils_win_unittest.cc" ]
 
     deps += [
       "//base",
       "//brave/browser",
       "//testing/gtest",
-      "//url",
     ]
   }
 }
