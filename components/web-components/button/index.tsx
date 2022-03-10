@@ -33,6 +33,12 @@ function scaleToClass (scale: Scale) {
   return null
 }
 
+export function ButtonIconContainer (props: React.PropsWithChildren<{}>) {
+  return (
+    <div className={style.iconContainer}>{props.children}</div>
+  )
+}
+
 export default function Button (props: Props) {
   const { scale = 'regular' } = props
   return (

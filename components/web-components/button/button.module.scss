@@ -57,15 +57,15 @@
   // Defaults: regular size
 
   --button-icon-height: 18px; // For children to read
+  --button-line-height: 20px;
   padding: 10px 22px;
   font-size: 13px;
-  line-height: 20px;
 
   &.isTiny {
     --button-icon-height: 16px;
+    --button-line-height: 18px;
     padding: 3px 14px;
     font-size: 12px;
-    line-height: 18px;
   }
 
   &.isSmall {
@@ -139,6 +139,15 @@
   }
 }
 
+.content {
+  min-height: var(--button-line-height);
+  line-height: var(--button-line-height);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: calc(var(--button-line-height) / 3);
+}
+
 .loadingIcon {
   position: absolute;
   top: 50%;
@@ -149,4 +158,8 @@
   display: flex;
   color: inherit;
   opacity: .6;
+}
+
+.iconContainer {
+  height: var(--button-icon-height);
 }
