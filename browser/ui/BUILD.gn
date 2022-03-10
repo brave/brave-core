@@ -407,6 +407,7 @@ source_set("ui") {
       "//brave/components/brave_sync:sync_service_impl_helper",
       "//brave/components/brave_today/browser",
       "//brave/components/brave_today/common",
+      "//brave/components/brave_welcome/common",
       "//brave/components/brave_welcome_ui:generated_resources",
       "//brave/components/version_info",
       "//chrome/app:chromium_strings",

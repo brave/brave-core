@@ -42,6 +42,7 @@ declare namespace Welcome {
   export interface State {
     searchProviders: Array<SearchEngineEntry>
     browserProfiles: Array<BrowserProfile>,
-    hideSearchOnboarding: boolean
+    showSearchCard: boolean,
+    showRewardsCard: boolean
   }
 }
