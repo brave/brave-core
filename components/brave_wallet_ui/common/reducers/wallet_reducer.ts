@@ -29,10 +29,10 @@ import {
   TransactionStatusChanged,
   UnapprovedTxUpdated
 } from '../constants/action_types'
-import { mojoTimeDeltaToJSDate } from '../../utils/datetime-utils'
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
+import { mojoTimeDeltaToJSDate } from '../../../common/mojomUtils'
 import { sortTransactionByDate } from '../../utils/tx-utils'
 import Amount from '../../utils/amount'
 

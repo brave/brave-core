@@ -11,7 +11,8 @@ import {
 // Utils
 import { toProperCase } from '../../../utils/string-utils'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
-import { mojoTimeDeltaToJSDate, formatDateAsRelative } from '../../../utils/datetime-utils'
+import { formatDateAsRelative } from '../../../utils/datetime-utils'
+import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
 
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
