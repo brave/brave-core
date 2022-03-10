@@ -2045,9 +2045,26 @@ extension BrowserViewController: TabDelegate {
         removeBar(bar, animated: true)
     }
 
+    /// Triggered when "Find in Page" is selected on selected text
     func tab(_ tab: Tab, didSelectFindInPageForSelection selection: String) {
         updateFindInPageVisibility(visible: true)
         findInPageBar?.text = selection
+    }
+
+    /// Triggered when "Search with Brave" is selected on selected web text
+    func tab(_ tab: Tab, didSelectSearchWithBraveForSelection selection: String) {
+        let engine = profile.searchEngines.defaultEngine()
+
+        guard let url = engine.searchURLForQuery(selection) else {
+            assertionFailure("If this returns nil, investigate why and add proper handling or commenting")
+            return
+        }
+
+        tabManager.addTabAndSelect(
+            URLRequest(url: url),
+            afterTab: tab,
+            isPrivate: tab.isPrivate
+        )
     }
     
     func showRequestRewardsPanel(_ tab: Tab) {

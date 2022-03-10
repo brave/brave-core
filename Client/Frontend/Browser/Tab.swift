@@ -24,7 +24,10 @@ protocol TabContentScript {
 protocol TabDelegate {
     func tab(_ tab: Tab, didAddSnackbar bar: SnackBar)
     func tab(_ tab: Tab, didRemoveSnackbar bar: SnackBar)
+    /// Triggered when "Find in Page" is selected on selected web text
     func tab(_ tab: Tab, didSelectFindInPageForSelection selection: String)
+    /// Triggered when "Search with Brave" is selected on selected web text
+    func tab(_ tab: Tab, didSelectSearchWithBraveForSelection selection: String)
     @objc optional func tab(_ tab: Tab, didCreateWebView webView: WKWebView)
     @objc optional func tab(_ tab: Tab, willDeleteWebView webView: WKWebView)
     func showRequestRewardsPanel(_ tab: Tab)
@@ -654,8 +657,14 @@ class Tab: NSObject {
 }
 
 extension Tab: TabWebViewDelegate {
+    /// Triggered when "Find in Page" is selected on selected text
     fileprivate func tabWebView(_ tabWebView: TabWebView, didSelectFindInPageForSelection selection: String) {
         tabDelegate?.tab(self, didSelectFindInPageForSelection: selection)
+    }
+
+    /// Triggered when "Search with Brave" is selected on selected text
+    fileprivate func tabWebView(_ tabWebView: TabWebView, didSelectSearchWithBraveForSelection selection: String) {
+        tabDelegate?.tab(self, didSelectSearchWithBraveForSelection: selection)
     }
 }
 
@@ -705,7 +714,10 @@ private class TabContentScriptManager: NSObject, WKScriptMessageHandlerWithReply
 }
 
 private protocol TabWebViewDelegate: AnyObject {
+    /// Triggered when "Find in Page" is selected on selected text
     func tabWebView(_ tabWebView: TabWebView, didSelectFindInPageForSelection selection: String)
+    /// Triggered when "Search with Brave" is selected on selected text
+    func tabWebView(_ tabWebView: TabWebView, didSelectSearchWithBraveForSelection selection: String)
 }
 
 class TabWebView: BraveWebView, MenuHelperInterface {
@@ -716,9 +728,26 @@ class TabWebView: BraveWebView, MenuHelperInterface {
     }
 
     @objc func menuHelperFindInPage() {
-        evaluateSafeJavaScript(functionName: "getSelection().toString", contentWorld: .defaultClient) { result, _ in
-            let selection = result as? String ?? ""
-            self.delegate?.tabWebView(self, didSelectFindInPageForSelection: selection)
+        getCurrentSelectedText { [weak self] selectedText in
+            guard let self = self else { return }
+            guard let selectedText = selectedText else {
+                assertionFailure("Impossible to trigger this without selected text")
+                return
+            }
+
+            self.delegate?.tabWebView(self, didSelectFindInPageForSelection: selectedText)
+        }
+    }
+
+    @objc func menuHelperSearchWithBrave() {
+        getCurrentSelectedText { [weak self] selectedText in
+            guard let self = self else { return }
+            guard let selectedText = selectedText else {
+                assertionFailure("Impossible to trigger this without selected text")
+                return
+            }
+
+            self.delegate?.tabWebView(self, didSelectSearchWithBraveForSelection: selectedText)
         }
     }
 
@@ -736,6 +765,13 @@ class TabWebView: BraveWebView, MenuHelperInterface {
         }
 
         return super.value(forUndefinedKey: key)
+    }
+
+    private func getCurrentSelectedText(callback: @escaping (String?) -> Void) {
+        evaluateSafeJavaScript(functionName: "getSelection().toString", contentWorld: .defaultClient) { result, _ in
+            let selectedText = result as? String
+            callback(selectedText)
+        }
     }
 }
 

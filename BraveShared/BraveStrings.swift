@@ -886,6 +886,7 @@ extension Strings {
     public static let cache = NSLocalizedString("Cache", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Cache", comment: "Settings item for clearing the cache")
     public static let cookies = NSLocalizedString("Cookies", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Cookies and Site Data", comment: "Settings item for clearing cookies and site data")
     public static let findInPage = NSLocalizedString("FindInPage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Find in Page", comment: "Share action title")
+    public static let searchWithBrave = NSLocalizedString("SearchWithBrave", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Search with Brave", comment: "Title of an action that allows user to perform a one-click web search for selected text")
     public static let addToFavorites = NSLocalizedString("AddToFavorites", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Add to Favorites", comment: "Add to favorites share action.")
     public static let createPDF = NSLocalizedString("CreatePDF", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Create PDF", comment: "Create PDF share action.")
     
