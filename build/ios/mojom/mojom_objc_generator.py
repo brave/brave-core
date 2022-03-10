@@ -378,6 +378,7 @@ class Generator(generator.Generator):
         objc_filters = {
             "objc_property_modifiers": self._GetObjCPropertyModifiers,
             "objc_property_default": self._GetObjCPropertyDefaultValue,
+            "objc_union_null_return_value": self._GetObjCUnionNullReturnValue,
             "objc_property_needs_default_assignment": \
                 self._ObjcPropertyNeedsDefaultValueAssignment,
             "objc_wrapper_type": self._GetObjCWrapperType,
@@ -461,6 +462,15 @@ class Generator(generator.Generator):
         if not field.default and mojom.IsNullableKind(kind):
             return 'nil'
         return typemap.DefaultObjCValue(field.default)
+
+    def _GetObjCUnionNullReturnValue(self, kind):
+        typemap = MojoTypemapForKind(kind)
+        if mojom.IsEnumKind(kind):
+            return 'static_cast<%s>(0)' % typemap.ObjCWrappedType()
+        elif mojom.IsObjectKind(kind) or mojom.IsAnyInterfaceKind(kind):
+            return 'nil'
+        else:
+            return '0'
 
     def _GetObjCWrapperType(self, kind, objectType=False):
         typemap = MojoTypemapForKind(kind, objectType)
