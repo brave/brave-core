@@ -91,7 +91,9 @@ TEST_F(BitflyerUtilTest, GetAuthorizeUrl) {
                 "&state=my-state"
                 "&response_type=code"
                 "&code_challenge_method=S256"
-                "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w");
+                "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w"
+                "&utm_source=brave"
+                "&utm_medium=referral");
 
   // staging
   ledger::_environment = type::Environment::STAGING;
@@ -104,7 +106,9 @@ TEST_F(BitflyerUtilTest, GetAuthorizeUrl) {
             "&state=my-state"
             "&response_type=code"
             "&code_challenge_method=S256"
-            "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w");
+            "&code_challenge=5Cxs3JXozcwTeteCIu4BcTieAhEIqjn643F10PxPD_w"
+            "&utm_source=brave"
+            "&utm_medium=referral");
 }
 
 TEST_F(BitflyerUtilTest, GetAddUrl) {
@@ -209,7 +213,9 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
             "&state="
             "&response_type=code"
             "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
+            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU"
+            "&utm_source=brave"
+            "&utm_medium=referral");
   ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
 
   // Connected
@@ -225,7 +231,9 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
             "&state="
             "&response_type=code"
             "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
+            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU"
+            "&utm_source=brave"
+            "&utm_medium=referral");
   ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
 
   // Verified
@@ -241,7 +249,9 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
             "&state="
             "&response_type=code"
             "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
+            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU"
+            "&utm_source=brave"
+            "&utm_medium=referral");
   ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
 
   // Disconnected Non-Verified
@@ -257,7 +267,9 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
             "&state="
             "&response_type=code"
             "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
+            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU"
+            "&utm_source=brave"
+            "&utm_medium=referral");
   ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
 
   // Disconnected Verified
@@ -273,7 +285,9 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
             "&state="
             "&response_type=code"
             "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
+            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU"
+            "&utm_source=brave"
+            "&utm_medium=referral");
   ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
 
   // Pending
@@ -289,7 +303,9 @@ TEST_F(BitflyerUtilTest, GenerateLinks) {
             "&state="
             "&response_type=code"
             "&code_challenge_method=S256"
-            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU");
+            "&code_challenge=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU"
+            "&utm_source=brave"
+            "&utm_medium=referral");
   ASSERT_EQ(result->account_url, BITFLYER_STAGING_URL "/ex/Home?login=1");
 }
 
