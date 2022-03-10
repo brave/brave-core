@@ -35,7 +35,8 @@ class RewardsSyncScopedPersistentPrefStore : public ScopedPersistentPrefStore {
                 std::unique_ptr<base::Value> value,
                 uint32_t flags) override;
   void RemoveValue(const std::string& key, uint32_t flags) override;
-  // We cannot support GetMutableValue(), since mutating a value
+  bool GetMutableValue(const std::string& key, base::Value** result) override;
+  // We cannot fully support GetMutableValue(), since mutating a value
   // would require the usage of the key's mapped location, which we cannot
   // guarantee outside RewardsSyncScopedPersistentPrefStore, e.g.:
   // underlay_->SetValue(
