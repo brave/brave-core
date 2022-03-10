@@ -36,8 +36,8 @@ function SelectAsset (props: Props) {
     distance: 100,
     minMatchCharLength: 1,
     keys: [
-      { name: 'asset.name', weight: 0.5 },
-      { name: 'asset.symbol', weight: 0.5 }
+      { name: 'name', weight: 0.5 },
+      { name: 'symbol', weight: 0.5 }
     ]
   }), [assets])
 
