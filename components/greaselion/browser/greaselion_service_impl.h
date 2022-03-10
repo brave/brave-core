@@ -7,13 +7,11 @@
 #define BRAVE_COMPONENTS_GREASELION_BROWSER_GREASELION_SERVICE_IMPL_H_
 
 #include <map>
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/path_service.h"
@@ -71,7 +69,7 @@ class GreaselionServiceImpl : public GreaselionService,
                            extensions::UnloadedExtensionReason reason) override;
 
   using GreaselionConvertedExtension =
-      std::pair<scoped_refptr<extensions::Extension>, base::ScopedTempDir>;
+      std::pair<scoped_refptr<extensions::Extension>, base::FilePath>;
 
  private:
   void SetBrowserVersionForTesting(const base::Version& version) override;
@@ -100,8 +98,7 @@ class GreaselionServiceImpl : public GreaselionService,
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::ObserverList<GreaselionService::Observer> observers_;
   std::vector<extensions::ExtensionId> greaselion_extensions_;
-  std::unique_ptr<std::vector<base::ScopedTempDir>, base::OnTaskRunnerDeleter>
-      extension_dirs_;
+  std::vector<base::FilePath> extension_dirs_;
   base::Version browser_version_;
   base::WeakPtrFactory<GreaselionServiceImpl> weak_factory_;
 };
