@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 14224edd16c292ce77e31e189f2639a3df33895f..ff5839a48c7cd4f563299d01901cef5b8b6125e2 100644
+index 595b892c2553eff52c141f1278986efbc63508fd..b22887b9a769cf133fee8f6d4689a2cfb367b0d5 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -2864,6 +2864,7 @@ const FeatureEntry::FeatureVariation kGridTabSwitcherForTabletsVariations[] = {
+@@ -2855,6 +2855,7 @@ const FeatureEntry::FeatureVariation kGridTabSwitcherForTabletsVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
