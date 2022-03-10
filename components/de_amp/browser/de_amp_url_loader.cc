@@ -9,23 +9,10 @@
 #include <string>
 #include <utility>
 
-#include "base/bind.h"
-#include "base/metrics/histogram_macros.h"
-#include "base/no_destructor.h"
-#include "base/strings/stringprintf.h"
-#include "base/task/post_task.h"
-#include "base/task/thread_pool.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/de_amp/browser/de_amp_util.h"
-#include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
-#include "net/http/http_util.h"
-#include "net/url_request/redirect_info.h"
-#include "net/url_request/redirect_util.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/mojom/early_hints.mojom.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace de_amp {
 

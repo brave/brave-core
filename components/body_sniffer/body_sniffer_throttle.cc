@@ -9,8 +9,6 @@
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace body_sniffer {
 

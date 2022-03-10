@@ -10,23 +10,12 @@
 #include <tuple>
 #include <vector>
 
-#include "base/callback.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
-#include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
-#include "mojo/public/cpp/bindings/receiver.h"
-#include "mojo/public/cpp/bindings/remote.h"
-#include "mojo/public/cpp/system/data_pipe.h"
-#include "mojo/public/cpp/system/simple_watcher.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/mojom/early_hints.mojom-forward.h"
 #include "services/network/public/mojom/url_loader.mojom.h"
-#include "services/network/public/mojom/url_response_head.mojom-forward.h"
-#include "third_party/abseil-cpp/absl/types/optional.h"
 #include "url/gurl.h"
 
 namespace de_amp {

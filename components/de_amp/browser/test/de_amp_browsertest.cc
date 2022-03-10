@@ -19,7 +19,6 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
-#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "third_party/re2/src/re2/re2.h"
 
 const char kTestHost[] = "a.test.com";

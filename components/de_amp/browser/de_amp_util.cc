@@ -7,12 +7,9 @@
 
 #include <string>
 
-#include "base/feature_list.h"
 #include "base/no_destructor.h"
-#include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "components/prefs/pref_service.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace de_amp {

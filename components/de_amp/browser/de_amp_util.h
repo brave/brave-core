@@ -6,11 +6,7 @@
 #ifndef BRAVE_COMPONENTS_DE_AMP_BROWSER_DE_AMP_UTIL_H_
 #define BRAVE_COMPONENTS_DE_AMP_BROWSER_DE_AMP_UTIL_H_
 
-#include <memory>
 #include <string>
-
-#include "base/memory/raw_ptr.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;

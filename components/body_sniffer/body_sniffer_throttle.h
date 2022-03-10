@@ -8,10 +8,8 @@
 
 #include <memory>
 
-#include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
-#include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 class HostContentSettingsMap;
