@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "sourceMap": true,
     "noImplicitAny": true,
     // esnext modules supports import() async webpack modules
@@ -46,7 +47,9 @@
         "../out/Static/gen/ui/webui/resources/preprocessed/*",
         "../out/Release/gen/ui/webui/resources/preprocessed/*",
         "../out/Debug/gen/ui/webui/resources/preprocessed/*",
-      ]
+      ],
+      "$web-common/*": ["components/common/*"],
+      "$web-components/*": ["components/web-components/*"],
     },
     "typeRoots": [
       "./node_modules/@types",
