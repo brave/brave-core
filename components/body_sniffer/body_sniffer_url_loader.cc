@@ -8,14 +8,9 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "base/no_destructor.h"
-#include "base/task/post_task.h"
-#include "base/task/thread_pool.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
-#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/http/http_request_headers.h"
 #include "net/url_request/redirect_info.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/url_loader_completion_status.h"
 #include "services/network/public/mojom/early_hints.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
