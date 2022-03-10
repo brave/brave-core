@@ -50,8 +50,8 @@ source_set("ledger") {
   ]
 }
 
-mojom_wrappers("ledger_mojom_wrappers") {
+ios_objc_mojom_wrappers("ledger_mojom_wrappers") {
   mojom_target =
       "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces"
-  mojom_file = "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom"
+  sources = [ "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom" ]
 }

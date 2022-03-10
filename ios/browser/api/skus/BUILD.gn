@@ -15,7 +15,7 @@ config("mojom_header_config") {
   include_dirs = [ "$target_gen_dir" ]
 }
 
-mojom_wrappers("skus_mojom_wrappers") {
+ios_objc_mojom_wrappers("skus_mojom_wrappers") {
   mojom_target = "//brave/components/skus/common:mojom"
-  mojom_file = "//brave/components/skus/common/skus_sdk.mojom"
+  sources = [ "//brave/components/skus/common/skus_sdk.mojom" ]
 }
