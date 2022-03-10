@@ -10,7 +10,6 @@
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
-class PrefService;
 
 namespace de_amp {
 

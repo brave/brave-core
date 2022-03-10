@@ -14,7 +14,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/crypto_dot_com/browser/buildflags/buildflags.h"
-#include "brave/components/de_amp/pref_names.h"
+#include "brave/components/de_amp/common/pref_names.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"

@@ -8,8 +8,6 @@
 #include <string>
 
 #include "base/no_destructor.h"
-#include "brave/components/de_amp/pref_names.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace de_amp {
@@ -26,11 +24,6 @@ static const char kFindCanonicalHrefInTagPattern[] =
     "href=(?:\"|')(.*?)(?:\"|')";
 
 DeAmpUtil::~DeAmpUtil() {}
-
-// static
-void DeAmpUtil::RegisterProfilePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kDeAmpPrefEnabled, true);  // default on
-}
 
 // static
 bool DeAmpUtil::VerifyCanonicalLink(const GURL canonical_link,

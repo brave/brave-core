@@ -10,7 +10,7 @@
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "brave/components/de_amp/browser/de_amp_url_loader.h"
 #include "brave/components/de_amp/common/features.h"
-#include "brave/components/de_amp/pref_names.h"
+#include "brave/components/de_amp/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
