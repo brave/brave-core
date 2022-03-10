@@ -261,7 +261,7 @@ class JsonRpcServiceUnitTest : public testing::Test {
     if (!custom_networks)
       return false;
 
-    for (const auto& chain : custom_networks->GetListDeprecated()) {
+    for (const auto& chain : custom_networks->GetList()) {
       if (!chain.is_dict())
         continue;
 
@@ -859,7 +859,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
       prefs()->GetDictionary(kBraveWalletUserAssets);
   const base::Value* list = assets_pref->FindKey("0x111");
   ASSERT_TRUE(list->is_list());
-  base::Value::ConstListView asset_list = list->GetListDeprecated();
+  const base::Value::List& asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
 
   EXPECT_EQ(*asset_list[0].FindStringKey("contract_address"), "");
@@ -930,7 +930,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
       prefs()->GetDictionary(kBraveWalletUserAssets);
   const base::Value* list = assets_pref->FindKey("0x111");
   ASSERT_TRUE(list->is_list());
-  base::Value::ConstListView asset_list = list->GetListDeprecated();
+  const base::Value::List& asset_list = list->GetList();
   ASSERT_EQ(asset_list.size(), 1u);
 
   EXPECT_EQ(*asset_list[0].FindStringKey("contract_address"), "");

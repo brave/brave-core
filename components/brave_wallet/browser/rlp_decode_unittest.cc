@@ -25,15 +25,11 @@ std::string RLPTestValueToString(const base::Value& val) {
     std::string elems;
     const base::ListValue* list;
     val.GetAsList(&list);
-    for (size_t i = 0; i < list->GetListDeprecated().size(); i++) {
-      const auto& child = list->GetListDeprecated();
-      if (child.size() <= i) {
-        continue;
-      }
+    for (const auto& item : list->GetList()) {
       if (elems.size()) {
         elems += ", ";
       }
-      elems += RLPTestValueToString(child[i]);
+      elems += RLPTestValueToString(item);
     }
     output += elems + "]";
   }

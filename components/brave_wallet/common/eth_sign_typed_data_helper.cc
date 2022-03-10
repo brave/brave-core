@@ -60,7 +60,7 @@ void EthSignTypedDataHelper::FindAllDependencyTypes(
     return;
   known_types->emplace(anchor_type_name, anchor_type->Clone());
 
-  for (const auto& field : anchor_type->GetListDeprecated()) {
+  for (const auto& field : anchor_type->GetList()) {
     const std::string* type = field.FindStringKey("type");
     if (type && !known_types->contains(*type)) {
       FindAllDependencyTypes(known_types, *type);
@@ -75,14 +75,12 @@ std::string EthSignTypedDataHelper::EncodeType(
     return std::string();
   std::string result = base::StrCat({type_name, "("});
 
-  for (size_t i = 0; i < type.GetListDeprecated().size(); ++i) {
-    const std::string* type_str =
-        type.GetListDeprecated()[i].FindStringKey("type");
-    const std::string* name_str =
-        type.GetListDeprecated()[i].FindStringKey("name");
+  for (size_t i = 0; i < type.GetList().size(); ++i) {
+    const std::string* type_str = type.GetList()[i].FindStringKey("type");
+    const std::string* name_str = type.GetList()[i].FindStringKey("name");
     DCHECK(type_str && name_str);
     base::StrAppend(&result, {*type_str, " ", *name_str});
-    if (i != type.GetListDeprecated().size() - 1)
+    if (i != type.GetList().size() - 1)
       base::StrAppend(&result, {","});
   }
   base::StrAppend(&result, {")"});
@@ -138,7 +136,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeData(
   const std::vector<uint8_t> type_hash = GetTypeHash(primary_type_name);
   result.insert(result.end(), type_hash.begin(), type_hash.end());
 
-  for (const auto& field : primary_type->GetListDeprecated()) {
+  for (const auto& field : primary_type->GetList()) {
     const std::string* type_str = field.FindStringKey("type");
     const std::string* name_str = field.FindStringKey("name");
     DCHECK(type_str && name_str);
@@ -180,7 +178,7 @@ absl::optional<std::vector<uint8_t>> EthSignTypedDataHelper::EncodeField(
       return absl::nullopt;
     const std::string array_type = type_split[0];
     std::vector<uint8_t> array_result;
-    for (const auto& item : value.GetListDeprecated()) {
+    for (const auto& item : value.GetList()) {
       auto encoded_item = EncodeField(array_type, item);
       if (!encoded_item)
         return absl::nullopt;

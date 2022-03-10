@@ -62,7 +62,7 @@ type::Result GetCards::ParseBody(
     return type::Result::LEDGER_ERROR;
   }
 
-  for (const auto& it : list->GetListDeprecated()) {
+  for (const auto& it : list->GetList()) {
     const auto* label = it.FindStringKey("label");
     if (!label) {
       continue;

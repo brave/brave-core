@@ -64,7 +64,7 @@ absl::optional<PaymentList> GetPaymentsFromList(const base::Value& value) {
 
   PaymentList payments;
 
-  for (const auto& payment_value : value.GetListDeprecated()) {
+  for (const auto& payment_value : value.GetList()) {
     if (!payment_value.is_dict()) {
       return absl::nullopt;
     }

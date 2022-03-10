@@ -77,7 +77,7 @@ bool ParseEthGetFeeHistory(const std::string& json,
   const base::ListValue* base_fee_list = nullptr;
   if (!result_dict->GetList("baseFeePerGas", &base_fee_list))
     return false;
-  for (const base::Value& entry : base_fee_list->GetListDeprecated()) {
+  for (const base::Value& entry : base_fee_list->GetList()) {
     const std::string* v = entry.GetIfString();
     // If we have unexpected output, so just return false
     if (!v)
@@ -88,7 +88,7 @@ bool ParseEthGetFeeHistory(const std::string& json,
   if (!result_dict->GetList("gasUsedRatio", &base_fee_list))
     return false;
 
-  for (const base::Value& entry : base_fee_list->GetListDeprecated()) {
+  for (const base::Value& entry : base_fee_list->GetList()) {
     absl::optional<double> v = entry.GetIfDouble();
     // If we have unexpected output, so just return false
     if (!v)
@@ -101,15 +101,14 @@ bool ParseEthGetFeeHistory(const std::string& json,
 
   const base::ListValue* reward_list_list = nullptr;
   if (result_dict->GetList("reward", &reward_list_list)) {
-    for (const base::Value& reward_list :
-         reward_list_list->GetListDeprecated()) {
+    for (const base::Value& reward_list : reward_list_list->GetList()) {
       // If we have unexpected output, so just return false
       if (!reward_list.is_list())
         return false;
 
       reward->push_back(std::vector<std::string>());
       std::vector<std::string>& current_reward_vector = reward->back();
-      for (const auto& entry : reward_list.GetListDeprecated()) {
+      for (const auto& entry : reward_list.GetList()) {
         const std::string* v = entry.GetIfString();
         // If we have unexpected output, so just return false
         if (!v)

@@ -156,27 +156,27 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
       return;
     }
 
-    ReadRewardsNotifications(list->GetListDeprecated());
+    ReadRewardsNotifications(list->GetList());
     return;
   }
 
   base::Value* notifications =
       dictionary->FindKeyOfType("notifications", base::Value::Type::LIST);
   if (notifications) {
-    ReadRewardsNotifications(notifications->GetListDeprecated());
+    ReadRewardsNotifications(notifications->GetList());
   }
 
   base::Value* displayed =
       dictionary->FindKeyOfType("displayed", base::Value::Type::LIST);
   if (displayed) {
-    for (const auto& it : displayed->GetListDeprecated()) {
+    for (const auto& it : displayed->GetList()) {
       rewards_notifications_displayed_.push_back(it.GetString());
     }
   }
 }
 
 void RewardsNotificationServiceImpl::ReadRewardsNotifications(
-    base::Value::ConstListView root) {
+    const base::Value::List& root) {
   for (auto it = root.cbegin(); it != root.cend(); ++it) {
     if (!it->is_dict())
       continue;
@@ -204,7 +204,7 @@ void RewardsNotificationServiceImpl::ReadRewardsNotifications(
     const base::Value* args =
         it->FindKeyOfType("args", base::Value::Type::LIST);
     if (args) {
-      for (auto& arg : args->GetListDeprecated()) {
+      for (auto& arg : args->GetList()) {
         std::string arg_string = arg.GetString();
         notification_args.push_back(arg_string);
       }

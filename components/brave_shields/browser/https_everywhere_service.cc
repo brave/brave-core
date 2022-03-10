@@ -167,34 +167,27 @@ std::string HTTPSEverywhereService::Engine::ApplyHTTPSRule(
     return "";
   }
 
-  base::Value::ConstListView topValues = json_object->GetListDeprecated();
-  for (auto it = topValues.cbegin(); it != topValues.cend(); ++it) {
-    if (!it->is_dict()) {
+  const base::Value::List& topValues = json_object->GetList();
+  for (const auto& topValue : topValues) {
+    if (!topValue.is_dict()) {
       continue;
     }
-    const base::DictionaryValue* childTopDictionary = nullptr;
-    it->GetAsDictionary(&childTopDictionary);
+    const base::Value::Dict* childTopDictionary = topValue.GetIfDict();
     if (nullptr == childTopDictionary) {
       continue;
     }
 
-    const base::Value* exclusion = nullptr;
-    if (childTopDictionary->Get("e", &exclusion)) {
-      const base::ListValue* eValues = nullptr;
-      exclusion->GetAsList(&eValues);
+    const base::Value* exclusion = childTopDictionary->Find("e");
+    if (nullptr != exclusion) {
+      const base::Value::List* eValues = exclusion->GetIfList();
       if (nullptr != eValues) {
-        for (size_t j = 0; j < eValues->GetListDeprecated().size(); ++j) {
-          const auto& list = eValues->GetListDeprecated();
-          if (list.size() <= j) {
-            continue;
-          }
-          const base::DictionaryValue* pDictionary = nullptr;
-          list[j].GetAsDictionary(&pDictionary);
+        for (const auto& eValue : *eValues) {
+          const base::Value::Dict* pDictionary = eValue.GetIfDict();
           if (nullptr == pDictionary) {
             continue;
           }
-          const base::Value* patternValue = nullptr;
-          if (!pDictionary->Get("p", &patternValue)) {
+          const base::Value* patternValue = pDictionary->Find("p");
+          if (!patternValue) {
             continue;
           }
           if (!patternValue->is_string()) {
@@ -209,36 +202,29 @@ std::string HTTPSEverywhereService::Engine::ApplyHTTPSRule(
       }
     }
 
-    const base::Value* rules = nullptr;
-    if (!childTopDictionary->Get("r", &rules)) {
+    const base::Value* rules = childTopDictionary->Find("r");
+    if (!rules) {
       return "";
     }
-    const base::ListValue* rValues = nullptr;
-    rules->GetAsList(&rValues);
+    const base::Value::List* rValues = rules->GetIfList();
     if (nullptr == rValues) {
       return "";
     }
 
-    for (size_t j = 0; j < rValues->GetListDeprecated().size(); ++j) {
-      const auto& list = rValues->GetListDeprecated();
-      if (list.size() <= j) {
-        continue;
-      }
-      const base::DictionaryValue* pDictionary = nullptr;
-      list[j].GetAsDictionary(&pDictionary);
+    for (const auto& rValue : *rValues) {
+      const base::Value::Dict* pDictionary = rValue.GetIfDict();
       if (nullptr == pDictionary) {
         continue;
       }
-      const base::Value* patternValue = nullptr;
-      if (pDictionary->Get("d", &patternValue)) {
+      const base::Value* patternValue = pDictionary->Find("d");
+      if (patternValue) {
         std::string newUrl(originalUrl);
         return newUrl.insert(4, "s");
       }
 
-      const base::Value* from_value = nullptr;
-      const base::Value* to_value = nullptr;
-      if (!pDictionary->Get("f", &from_value) ||
-          !pDictionary->Get("t", &to_value)) {
+      const base::Value* from_value = pDictionary->Find("f");
+      const base::Value* to_value = pDictionary->Find("t");
+      if (!from_value || !to_value) {
         continue;
       }
       if (!from_value->is_string() || !to_value->is_string()) {

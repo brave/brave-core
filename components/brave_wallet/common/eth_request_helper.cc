@@ -21,8 +21,7 @@
 
 namespace {
 
-absl::optional<base::Value::ListStorage> GetParamsList(
-    const std::string& json) {
+absl::optional<base::Value::List> GetParamsList(const std::string& json) {
   auto json_value =
       base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
                                        base::JSON_ALLOW_TRAILING_COMMAS);
@@ -33,15 +32,15 @@ absl::optional<base::Value::ListStorage> GetParamsList(
   if (!params || !params->is_list())
     return absl::nullopt;
 
-  return std::move(*params).TakeListDeprecated();
+  return std::move(*params).GetList().Clone();
 }
 
 absl::optional<base::Value> GetObjectFromParamsList(const std::string& json) {
   auto list = GetParamsList(json);
-  if (!list || list->size() != 1 || !list->front().is_dict())
+  if (!list || list->size() != 1 || !(*list)[0].is_dict())
     return absl::nullopt;
 
-  return list->front().Clone();
+  return (*list)[0].Clone();
 }
 
 absl::optional<base::Value> GetParamsDict(const std::string& json) {

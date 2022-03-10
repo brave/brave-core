@@ -389,7 +389,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
     std::vector<ImportedBookmarkEntry>* bookmarks) {
   const base::ListValue* children;
   if (folder->GetList("children", &children)) {
-    for (const auto& value : children->GetListDeprecated()) {
+    for (const auto& value : children->GetList()) {
       const base::DictionaryValue* dict;
       if (!value.GetAsDictionary(&dict))
         continue;
@@ -405,7 +405,7 @@ void ChromeImporter::RecursiveReadBookmarksFolder(
         // explicitly add empty folders.
         const base::ListValue* children;
         if (dict->GetList("children", &children) &&
-            children->GetListDeprecated().empty()) {
+            children->GetList().empty()) {
           entry.in_toolbar = is_in_toolbar;
           entry.is_folder = true;
           entry.url = GURL();

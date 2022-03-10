@@ -90,12 +90,12 @@ type::Result GetParameters::ParseBody(
   parameters->auto_contribute_choice = *ac_choice;
 
   auto* ac_choices = dictionary->FindListPath("autocontribute.choices");
-  if (!ac_choices || ac_choices->GetListDeprecated().empty()) {
+  if (!ac_choices || ac_choices->GetList().empty()) {
     BLOG(0, "Missing auto-contribute choices");
     return type::Result::LEDGER_ERROR;
   }
 
-  for (const auto& choice : ac_choices->GetListDeprecated()) {
+  for (const auto& choice : ac_choices->GetList()) {
     if (!choice.is_double() && !choice.is_int()) {
       continue;
     }
@@ -103,12 +103,12 @@ type::Result GetParameters::ParseBody(
   }
 
   auto* tip_choices = dictionary->FindListPath("tips.defaultTipChoices");
-  if (!tip_choices || tip_choices->GetListDeprecated().empty()) {
+  if (!tip_choices || tip_choices->GetList().empty()) {
     BLOG(0, "Missing default tip choices");
     return type::Result::LEDGER_ERROR;
   }
 
-  for (const auto& choice : tip_choices->GetListDeprecated()) {
+  for (const auto& choice : tip_choices->GetList()) {
     if (!choice.is_double() && !choice.is_int()) {
       continue;
     }
@@ -117,13 +117,12 @@ type::Result GetParameters::ParseBody(
 
   auto* monthly_tip_choices =
       dictionary->FindListPath("tips.defaultMonthlyChoices");
-  if (!monthly_tip_choices ||
-      monthly_tip_choices->GetListDeprecated().empty()) {
+  if (!monthly_tip_choices || monthly_tip_choices->GetList().empty()) {
     BLOG(0, "Missing tips default monthly choices");
     return type::Result::LEDGER_ERROR;
   }
 
-  for (const auto& choice : monthly_tip_choices->GetListDeprecated()) {
+  for (const auto& choice : monthly_tip_choices->GetList()) {
     if (!choice.is_double() && !choice.is_int()) {
       continue;
     }

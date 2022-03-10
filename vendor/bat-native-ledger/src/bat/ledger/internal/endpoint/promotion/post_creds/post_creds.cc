@@ -35,8 +35,7 @@ std::string PostCreds::GetUrl(const std::string& promotion_id) {
   return GetServerUrl(path);
 }
 
-std::string PostCreds::GeneratePayload(
-    std::unique_ptr<base::ListValue> blinded_creds) {
+std::string PostCreds::GeneratePayload(base::Value::List&& blinded_creds) {
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -45,7 +44,7 @@ std::string PostCreds::GeneratePayload(
 
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetStringKey("paymentId", wallet->payment_id);
-  body.SetKey("blindedCreds", base::Value(std::move(*blinded_creds)));
+  body.SetKey("blindedCreds", base::Value(std::move(blinded_creds)));
 
   std::string json;
   base::JSONWriter::Write(body, &json);
@@ -115,16 +114,9 @@ type::Result PostCreds::ParseBody(
   return type::Result::LEDGER_OK;
 }
 
-void PostCreds::Request(
-    const std::string& promotion_id,
-    std::unique_ptr<base::ListValue> blinded_creds,
-    PostCredsCallback callback) {
-  if (!blinded_creds) {
-    BLOG(0, "Blinded creds are null");
-    callback(type::Result::LEDGER_ERROR, "");
-    return;
-  }
-
+void PostCreds::Request(const std::string& promotion_id,
+                        base::Value::List&& blinded_creds,
+                        PostCredsCallback callback) {
   const auto wallet = ledger_->wallet()->GetWallet();
   if (!wallet) {
     BLOG(0, "Wallet is null");

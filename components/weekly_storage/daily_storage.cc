@@ -66,7 +66,7 @@ void DailyStorage::Load() {
     return;
   }
   base::Time min = clock_->Now() - base::Days(1);
-  for (const auto& it : list->GetListDeprecated()) {
+  for (const auto& it : list->GetList()) {
     const base::Value* day = it.FindKey("day");
     const base::Value* value = it.FindKey("value");
     // Validate correct data format

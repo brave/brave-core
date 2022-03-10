@@ -31,7 +31,7 @@ bool FTXJSONParser::GetFuturesDataFromJSON(const std::string& json,
   if (!result || !result->is_list()) {
     return false;
   }
-  for (const base::Value& asset : result->GetListDeprecated()) {
+  for (const base::Value& asset : result->GetList()) {
     const base::Value* group = asset.FindKey("group");
     if (!(group || group->is_string())) {
       continue;
@@ -88,7 +88,7 @@ bool FTXJSONParser::GetChartDataFromJSON(const std::string& json,
 
   bool success = true;
 
-  for (const base::Value& point : result->GetListDeprecated()) {
+  for (const base::Value& point : result->GetList()) {
     std::map<std::string, double> data_point;
     const base::Value* high = point.FindKey("high");
     const base::Value* low = point.FindKey("low");
@@ -194,7 +194,7 @@ bool FTXJSONParser::GetAccountBalancesFromJSON(const std::string& json,
     return false;
   }
 
-  for (const base::Value& val : result->GetListDeprecated()) {
+  for (const base::Value& val : result->GetList()) {
     const base::Value* coin = val.FindKey("coin");
     const base::Value* free = val.FindKey("free");
 

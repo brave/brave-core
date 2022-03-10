@@ -121,19 +121,19 @@ TEST(ValueConversionUtilsUnitTest, EthNetworkInfoToValueTest) {
   EXPECT_EQ(*value.FindStringPath("nativeCurrency.symbol"), chain.symbol);
   EXPECT_EQ(*value.FindIntPath("nativeCurrency.decimals"), chain.decimals);
   EXPECT_EQ(value.FindBoolKey("is_eip1559").value(), true);
-  for (const auto& entry : value.FindListKey("rpcUrls")->GetListDeprecated()) {
+  for (const auto& entry : value.FindListKey("rpcUrls")->GetList()) {
     ASSERT_NE(std::find(chain.rpc_urls.begin(), chain.rpc_urls.end(),
                         entry.GetString()),
               chain.rpc_urls.end());
   }
 
-  for (const auto& entry : value.FindListKey("iconUrls")->GetListDeprecated()) {
+  for (const auto& entry : value.FindListKey("iconUrls")->GetList()) {
     ASSERT_NE(std::find(chain.icon_urls.begin(), chain.icon_urls.end(),
                         entry.GetString()),
               chain.icon_urls.end());
   }
   auto* blocked_urls = value.FindListKey("blockExplorerUrls");
-  for (const auto& entry : blocked_urls->GetListDeprecated()) {
+  for (const auto& entry : blocked_urls->GetList()) {
     ASSERT_NE(std::find(chain.block_explorer_urls.begin(),
                         chain.block_explorer_urls.end(), entry.GetString()),
               chain.block_explorer_urls.end());
@@ -210,14 +210,14 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
 
   base::ListValue* list_value;
   ASSERT_TRUE(value.GetAsList(&list_value));
-  ASSERT_EQ(list_value->GetListDeprecated().size(), 1UL);
+  ASSERT_EQ(list_value->GetList().size(), 1UL);
 
-  base::Value& param0 = list_value->GetListDeprecated()[0];
+  base::Value& param0 = list_value->GetList()[0];
   base::Value* caveats = param0.FindListPath("caveats");
   ASSERT_NE(caveats, nullptr);
-  ASSERT_EQ(caveats->GetListDeprecated().size(), 2UL);
+  ASSERT_EQ(caveats->GetList().size(), 2UL);
 
-  base::Value& caveats0 = caveats->GetListDeprecated()[0];
+  base::Value& caveats0 = caveats->GetList()[0];
   std::string* name = caveats0.FindStringKey("name");
   ASSERT_NE(name, nullptr);
   EXPECT_EQ(*name, "primaryAccountOnly");
@@ -229,7 +229,7 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   ASSERT_NE(primary_accounts_only_value, absl::nullopt);
   EXPECT_EQ(*primary_accounts_only_value, 1);
 
-  base::Value& caveats1 = caveats->GetListDeprecated()[1];
+  base::Value& caveats1 = caveats->GetList()[1];
   name = caveats1.FindStringKey("name");
   ASSERT_NE(name, nullptr);
   EXPECT_EQ(*name, "exposedAccounts");
@@ -238,14 +238,14 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   EXPECT_EQ(*type, "filterResponse");
   base::Value* exposed_accounts = caveats1.FindListKey("value");
   ASSERT_NE(exposed_accounts, nullptr);
-  ASSERT_EQ(exposed_accounts->GetListDeprecated().size(), 1UL);
-  EXPECT_EQ(exposed_accounts->GetListDeprecated()[0],
+  ASSERT_EQ(exposed_accounts->GetList().size(), 1UL);
+  EXPECT_EQ(exposed_accounts->GetList()[0],
             base::Value("0xA99D71De40D67394eBe68e4D0265cA6C9D421029"));
 
   base::Value* context = param0.FindListPath("context");
   ASSERT_NE(context, nullptr);
-  ASSERT_EQ(context->GetListDeprecated().size(), 1UL);
-  EXPECT_EQ(context->GetListDeprecated()[0],
+  ASSERT_EQ(context->GetList().size(), 1UL);
+  EXPECT_EQ(context->GetList()[0],
             base::Value("https://github.com/MetaMask/rpc-cap"));
 
   absl::optional<double> date = param0.FindDoubleKey("date");

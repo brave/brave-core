@@ -129,7 +129,7 @@ bool ParseFeedItems(const std::string& json,
   if (!records_v->is_list()) {
     return false;
   }
-  for (const base::Value& feed_item_raw : records_v->GetListDeprecated()) {
+  for (const base::Value& feed_item_raw : records_v->GetList()) {
     auto item = mojom::FeedItem::New();
     std::string item_hash;
     if (ParseFeedItem(feed_item_raw, &item)) {

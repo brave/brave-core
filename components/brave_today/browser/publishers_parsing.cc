@@ -32,7 +32,7 @@ bool ParseCombinedPublisherList(const std::string& json,
   if (!records_v->is_list()) {
     return false;
   }
-  for (const base::Value& publisher_raw : records_v->GetListDeprecated()) {
+  for (const base::Value& publisher_raw : records_v->GetList()) {
     auto publisher = brave_news::mojom::Publisher::New();
     publisher->publisher_id = *publisher_raw.FindStringKey("publisher_id");
     publisher->type = mojom::PublisherType::COMBINED_SOURCE;

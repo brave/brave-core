@@ -43,21 +43,21 @@ void CosmeticFiltersResources::HiddenClassIdSelectors(
   std::vector<std::string> classes;
   base::ListValue* classes_list;
   if (input_dict->GetList("classes", &classes_list)) {
-    for (size_t i = 0; i < classes_list->GetListDeprecated().size(); i++) {
-      if (!classes_list->GetListDeprecated()[i].is_string()) {
+    for (const auto& class_item : classes_list->GetList()) {
+      if (!class_item.is_string()) {
         continue;
       }
-      classes.push_back(classes_list->GetListDeprecated()[i].GetString());
+      classes.push_back(class_item.GetString());
     }
   }
   std::vector<std::string> ids;
   base::ListValue* ids_list;
   if (input_dict->GetList("ids", &ids_list)) {
-    for (size_t i = 0; i < ids_list->GetListDeprecated().size(); i++) {
-      if (!ids_list->GetListDeprecated()[i].is_string()) {
+    for (const auto& id_item : ids_list->GetList()) {
+      if (!id_item.is_string()) {
         continue;
       }
-      ids.push_back(ids_list->GetListDeprecated()[i].GetString());
+      ids.push_back(id_item.GetString());
     }
   }
 

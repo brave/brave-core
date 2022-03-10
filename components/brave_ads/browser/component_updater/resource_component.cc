@@ -175,7 +175,7 @@ void ResourceComponent::OnGetManifest(const std::string& component_id,
     return;
   }
 
-  for (const auto& resource_value : resource_values->GetListDeprecated()) {
+  for (const auto& resource_value : resource_values->GetList()) {
     ResourceInfo resource;
 
     const std::string* id = resource_value.FindStringPath(kResourceIdPath);

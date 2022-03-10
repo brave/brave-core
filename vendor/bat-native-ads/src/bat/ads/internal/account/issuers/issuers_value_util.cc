@@ -70,7 +70,7 @@ absl::optional<PublicKeyMap> ParsePublicKeys(const base::Value& value) {
   }
 
   PublicKeyMap public_keys;
-  for (const auto& public_key_value : public_keys_value->GetListDeprecated()) {
+  for (const auto& public_key_value : public_keys_value->GetList()) {
     if (!public_key_value.is_dict()) {
       return absl::nullopt;
     }
@@ -140,7 +140,7 @@ absl::optional<IssuerList> ValueToIssuerList(const base::Value& value) {
 
   IssuerList issuers;
 
-  for (const auto& issuer_value : value.GetListDeprecated()) {
+  for (const auto& issuer_value : value.GetList()) {
     if (!issuer_value.is_dict()) {
       return absl::nullopt;
     }

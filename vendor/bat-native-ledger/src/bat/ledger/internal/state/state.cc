@@ -43,7 +43,7 @@ std::vector<double> StringToVectorDouble(const std::string& items_string) {
   }
 
   std::vector<double> items;
-  for (auto& item : list_value->GetListDeprecated()) {
+  for (auto& item : list_value->GetList()) {
     if (!item.is_double()) {
       continue;
     }

@@ -60,45 +60,44 @@ std::vector<FilterList> RegionalCatalogFromJSON(
     return catalog;
   }
 
-  for (auto i = regional_lists->GetListDeprecated().begin();
-       i < regional_lists->GetListDeprecated().end(); i++) {
-    const auto* uuid = i->FindKey("uuid");
+  for (const auto& regional_list : regional_lists->GetList()) {
+    const auto* uuid = regional_list.FindKey("uuid");
     if (!uuid || !uuid->is_string()) {
       continue;
     }
-    const auto* url = i->FindKey("url");
+    const auto* url = regional_list.FindKey("url");
     if (!url || !url->is_string()) {
       continue;
     }
-    const auto* title = i->FindKey("title");
+    const auto* title = regional_list.FindKey("title");
     if (!title || !title->is_string()) {
       continue;
     }
     std::vector<std::string> langs = std::vector<std::string>();
-    const auto* langs_key = i->FindKey("langs");
+    const auto* langs_key = regional_list.FindKey("langs");
     if (!langs_key || !langs_key->is_list()) {
       continue;
     }
-    for (auto lang = langs_key->GetListDeprecated().begin();
-         lang < langs_key->GetListDeprecated().end(); lang++) {
+    for (auto lang = langs_key->GetList().begin();
+         lang < langs_key->GetList().end(); lang++) {
       if (!lang->is_string()) {
         continue;
       }
       langs.push_back(lang->GetString());
     }
-    const auto* support_url = i->FindKey("support_url");
+    const auto* support_url = regional_list.FindKey("support_url");
     if (!support_url || !support_url->is_string()) {
       continue;
     }
-    const auto* component_id = i->FindKey("component_id");
+    const auto* component_id = regional_list.FindKey("component_id");
     if (!component_id || !component_id->is_string()) {
       continue;
     }
-    const auto* base64_public_key = i->FindKey("base64_public_key");
+    const auto* base64_public_key = regional_list.FindKey("base64_public_key");
     if (!base64_public_key || !base64_public_key->is_string()) {
       continue;
     }
-    const auto* desc = i->FindKey("desc");
+    const auto* desc = regional_list.FindKey("desc");
     if (!desc || !desc->is_string()) {
       continue;
     }
@@ -159,9 +158,8 @@ void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide) {
   base::Value* from_resources_hide_selectors =
       from.FindKey("hide_selectors");
   if (resources_hide_selectors && from_resources_hide_selectors) {
-    for (auto i = from_resources_hide_selectors->GetListDeprecated().begin();
-         i < from_resources_hide_selectors->GetListDeprecated().end(); i++) {
-      resources_hide_selectors->Append(std::move(*i));
+    for (auto& selector : from_resources_hide_selectors->GetList()) {
+      resources_hide_selectors->Append(std::move(selector));
     }
   }
 
@@ -173,9 +171,8 @@ void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide) {
       base::Value* resources_entry =
           resources_style_selectors->FindKey(i.first);
       if (resources_entry) {
-        for (auto j = i.second.GetListDeprecated().begin();
-             j < i.second.GetListDeprecated().end(); j++) {
-          resources_entry->Append(std::move(*j));
+        for (auto& item : i.second.GetList()) {
+          resources_entry->Append(std::move(item));
         }
       } else {
         resources_style_selectors->SetKey(i.first, std::move(i.second));
@@ -186,9 +183,8 @@ void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide) {
   base::Value* resources_exceptions = into->FindKey("exceptions");
   base::Value* from_resources_exceptions = from.FindKey("exceptions");
   if (resources_exceptions && from_resources_exceptions) {
-    for (auto i = from_resources_exceptions->GetListDeprecated().begin();
-         i < from_resources_exceptions->GetListDeprecated().end(); i++) {
-      resources_exceptions->Append(std::move(*i));
+    for (auto& exception : from_resources_exceptions->GetList()) {
+      resources_exceptions->Append(std::move(exception));
     }
   }
 

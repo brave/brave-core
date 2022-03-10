@@ -24,7 +24,7 @@ SegmentList ReadSegments(const std::string& json) {
   }
 
   SegmentList segments;
-  for (const auto& element : list->GetListDeprecated()) {
+  for (const auto& element : list->GetList()) {
     if (!element.is_string()) {
       return {};
     }

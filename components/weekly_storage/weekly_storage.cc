@@ -120,7 +120,7 @@ void WeeklyStorage::Load() {
   if (!list) {
     return;
   }
-  for (auto& it : list->GetListDeprecated()) {
+  for (auto& it : list->GetList()) {
     const base::Value* day = it.FindKey("day");
     const base::Value* value = it.FindKey("value");
     if (!day || !value || !day->is_double() || !value->is_double()) {
