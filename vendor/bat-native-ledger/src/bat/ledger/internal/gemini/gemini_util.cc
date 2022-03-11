@@ -64,6 +64,7 @@ std::string GetAuthorizeUrl(const std::string& state) {
       "crypto:send,"
       "account:read,"
       "payments:create,"
+      "payments:send,"
       "&redirect_uri=rewards://gemini/authorization"
       "&state=%s"
       "&response_type=code",
