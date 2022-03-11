@@ -10,18 +10,19 @@
 
 namespace de_amp {
 
+namespace {
 // Check for "amp" or "⚡" in <html> tag
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#ampd
-static const char kGetHtmlTagPattern[] = "(<\\s*?html\\s.*?>)";
-static const char kDetectAmpPattern[] = "(?:<.*\\s.*(amp|⚡)(?:\\s.*>|>|/>))";
+constexpr char kGetHtmlTagPattern[] = "(<\\s*?html\\s.*?>)";
+constexpr char kDetectAmpPattern[] = "(?:<.*\\s.*(amp|⚡)(?:\\s.*>|>|/>))";
 // Look for canonical link tag and get href
 // https://amp.dev/documentation/guides-and-tutorials/learn/spec/amphtml/?format=websites#canon
-static const char kFindCanonicalLinkTagPattern[] =
+constexpr char kFindCanonicalLinkTagPattern[] =
     "(<\\s*link\\s[^>]*rel=(?:\"|')canonical(?:\"|')(?:\\s[^>]*>|>|/>))";
-static const char kFindCanonicalHrefInTagPattern[] =
-    "href=(?:\"|')(.*?)(?:\"|')";
+constexpr char kFindCanonicalHrefInTagPattern[] = "href=(?:\"|')(.*?)(?:\"|')";
+}  // namespace
 
-bool VerifyCanonicalLink(const GURL& canonical_link, const GURL& original_url) {
+bool VerifyCanonicalAmpUrl(const GURL& canonical_link, const GURL& original_url) {
   // Canonical URL should be a valid URL,
   // be HTTP(S) and not be the same as original URL
   return canonical_link.is_valid() && canonical_link.SchemeIsHTTPOrHTTPS() &&
@@ -30,8 +31,8 @@ bool VerifyCanonicalLink(const GURL& canonical_link, const GURL& original_url) {
 
 // If AMP page, find canonical link
 // canonical link param is populated if found
-bool FindCanonicalLinkIfAMP(const std::string& body,
-                            std::string* canonical_link) {
+bool MaybeFindCanonicalAmpUrl(const std::string& body,
+                              std::string* canonical_url) {
   RE2::Options opt;
   opt.set_case_sensitive(false);
   opt.set_dot_nl(true);
@@ -60,9 +61,9 @@ bool FindCanonicalLinkIfAMP(const std::string& body,
     // Can't find link tag, exit
     return false;
   }
-  // Find href in canonical link tag
+
   return RE2::PartialMatch(link_tag, *kFindCanonicalHrefInTagRegex,
-                           canonical_link);
+                           canonical_url);
 }
 
 }  // namespace de_amp

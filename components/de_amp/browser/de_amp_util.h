@@ -11,9 +11,9 @@
 #include "url/gurl.h"
 
 namespace de_amp {
-bool FindCanonicalLinkIfAMP(const std::string& body,
-                            std::string* canonical_link);
-bool VerifyCanonicalLink(const GURL& canonical_link, const GURL& original_url);
+bool MaybeFindCanonicalAmpUrl(const std::string& body,
+                              std::string* canonical_url);
+bool VerifyCanonicalAmpUrl(const GURL& canonical_url, const GURL& original_url);
 }  // namespace de_amp
 
 #endif  // BRAVE_COMPONENTS_DE_AMP_BROWSER_DE_AMP_UTIL_H_
