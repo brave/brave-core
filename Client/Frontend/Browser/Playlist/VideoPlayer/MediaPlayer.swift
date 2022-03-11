@@ -440,8 +440,10 @@ extension MediaPlayer {
 extension MediaPlayer {
     /// Registers basic notifications
     private func registerNotifications() {
-        NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
-        .receive(on: RunLoop.main)
+        Publishers.Zip(
+            NotificationCenter.default.publisher(for: UIScene.didEnterBackgroundNotification),
+            NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
+        )
         .sink { [weak self] _ in
             guard let self = self else { return }
             
@@ -453,8 +455,10 @@ extension MediaPlayer {
             self.detachLayer()
         }.store(in: &notificationObservers)
         
-        NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
-        .receive(on: RunLoop.main)
+        Publishers.Zip(
+            NotificationCenter.default.publisher(for: UIScene.didActivateNotification),
+            NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)
+        )
         .sink { [weak self] _ in
             guard let self = self else { return }
             
@@ -467,7 +471,6 @@ extension MediaPlayer {
         }.store(in: &notificationObservers)
         
         NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
-        .receive(on: RunLoop.main)
         .sink { [weak self] notification in
             
             guard let self = self,
@@ -504,7 +507,6 @@ extension MediaPlayer {
         }.store(in: &notificationObservers)
         
         NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)
-        .receive(on: RunLoop.main)
         .sink { [weak self] _ in
             guard let self = self else { return }
             
