@@ -15,7 +15,6 @@
 
 class PrefChangeRegistrar;
 class PrefService;
-class HostContentSettingsMap;
 
 namespace brave_shields {
 

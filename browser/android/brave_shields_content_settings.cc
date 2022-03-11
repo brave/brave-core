@@ -155,7 +155,8 @@ void JNI_BraveShieldsContentSettings_SetCosmeticFilteringControlType(
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)),
-      g_browser_process->local_state());
+      g_browser_process->local_state(),
+      ProfileAndroid::FromProfileAndroid(j_profile)->GetPrefs());
 }
 
 base::android::ScopedJavaLocalRef<jstring>
@@ -182,7 +183,8 @@ void JNI_BraveShieldsContentSettings_SetFingerprintingControlType(JNIEnv* env,
       brave_shields::ControlTypeFromString(
           base::android::ConvertJavaStringToUTF8(env, type)),
       GURL(base::android::ConvertJavaStringToUTF8(env, url)),
-      g_browser_process->local_state());
+      g_browser_process->local_state(),
+      ProfileAndroid::FromProfileAndroid(j_profile)->GetPrefs());
 }
 
 base::android::ScopedJavaLocalRef<jstring>

@@ -7,7 +7,6 @@
 
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/browser/ad_block_pref_service.h"
-#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"

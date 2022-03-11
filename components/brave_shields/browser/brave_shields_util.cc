@@ -184,12 +184,21 @@ ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url) {
 void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                      ControlType type,
                                      const GURL& url,
-                                     PrefService* local_state) {
+                                     PrefService* local_state,
+                                     PrefService* profile_state) {
   auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid()) {
     return;
   }
+
+  ControlType prev_setting = GetCosmeticFilteringControlType(map, url);
+  content_settings::SettingInfo setting_info;
+  base::Value web_setting = map->GetWebsiteSetting(
+      url, GURL(), ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+      &setting_info);
+  bool was_default =
+      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
@@ -202,10 +211,21 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
       ContentSettingsType::BRAVE_COSMETIC_FILTERING,
       GetDefaultAllowFromControlType(type));
 
-  RecordShieldsSettingChanged(local_state);
-  if (url.is_empty()) {
-    // If global setting changed, report to P3A
-    RecordShieldsAdsSetting(type);
+  if (!map->IsOffTheRecord()) {
+    // Only report to P3A if not a guest/incognito profile
+    RecordShieldsSettingChanged(local_state);
+    if (url.is_empty()) {
+      // If global setting changed, report global setting and recalulate
+      // domain specific setting counts
+      RecordShieldsAdsSetting(type);
+      RecordShieldsDomainSettingCounts(profile_state, false, type);
+    } else {
+      // If domain specific setting changed, recalculate counts
+      ControlType global_setting = GetCosmeticFilteringControlType(map, GURL());
+      RecordShieldsDomainSettingCountsWithChange(
+          profile_state, false, global_setting,
+          was_default ? nullptr : &prev_setting, type);
+    }
   }
 }
 
@@ -368,11 +388,20 @@ bool AllowReferrers(HostContentSettingsMap* map, const GURL& url) {
 void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   ControlType type,
                                   const GURL& url,
-                                  PrefService* local_state) {
+                                  PrefService* local_state,
+                                  PrefService* profile_state) {
   auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid())
     return;
+
+  ControlType prev_setting = GetFingerprintingControlType(map, url);
+  content_settings::SettingInfo setting_info;
+  base::Value web_setting = map->GetWebsiteSetting(
+      url, GURL("https://balanced/*"),
+      ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
+  bool was_default =
+      web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
 
   // Clear previous value to have only one rule for one pattern.
   map->SetContentSettingCustomScope(
@@ -395,10 +424,21 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
       primary_pattern, secondary_pattern,
       ContentSettingsType::BRAVE_FINGERPRINTING_V2, content_setting);
 
-  RecordShieldsSettingChanged(local_state);
-  if (url.is_empty()) {
-    // If global setting changed, report to P3A
-    RecordShieldsFingerprintSetting(type);
+  if (!map->IsOffTheRecord()) {
+    // Only report to P3A if not a guest/incognito profile
+    RecordShieldsSettingChanged(local_state);
+    if (url.is_empty()) {
+      // If global setting changed, report global setting and recalulate
+      // domain specific setting counts
+      RecordShieldsFingerprintSetting(type);
+      RecordShieldsDomainSettingCounts(profile_state, true, type);
+    } else {
+      // If domain specific setting changed, recalculate counts
+      ControlType global_setting = GetFingerprintingControlType(map, GURL());
+      RecordShieldsDomainSettingCountsWithChange(
+          profile_state, true, global_setting,
+          was_default ? nullptr : &prev_setting, type);
+    }
   }
 }
 
@@ -516,6 +556,20 @@ bool MaybeChangeReferrer(bool allow_referrers,
                network::mojom::ReferrerPolicy::kStrictOriginWhenCrossOrigin));
 
   return true;
+}
+
+ShieldsSettingCounts GetFPSettingCount(HostContentSettingsMap* map) {
+  ContentSettingsForOneType fp_rules;
+  map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+                             &fp_rules);
+  return GetFPSettingCountFromRules(fp_rules);
+}
+
+ShieldsSettingCounts GetAdsSettingCount(HostContentSettingsMap* map) {
+  ContentSettingsForOneType cosmetic_rules;
+  map->GetSettingsForOneType(ContentSettingsType::BRAVE_COSMETIC_FILTERING,
+                             &cosmetic_rules);
+  return GetAdsSettingCountFromRules(cosmetic_rules);
 }
 
 }  // namespace brave_shields

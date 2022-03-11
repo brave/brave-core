@@ -336,6 +336,7 @@ test("brave_unit_tests") {
       "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
       "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
       "//brave/chromium_src/components/translate/core/browser/translate_manager_unittest.cc",
+      "//brave/components/brave_shields/browser/brave_shields_p3a_unittest.cc",
       "//brave/components/brave_shields/browser/brave_shields_util_unittest.cc",
       "//brave/components/omnibox/browser/fake_autocomplete_provider_client.cc",
       "//brave/components/omnibox/browser/fake_autocomplete_provider_client.h",

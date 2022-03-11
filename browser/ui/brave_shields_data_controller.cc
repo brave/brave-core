@@ -246,9 +246,12 @@ void BraveShieldsDataController::SetAdBlockMode(AdBlockMode mode) {
   brave_shields::SetAdControlType(map, control_type_ad, GetCurrentSiteURL(),
                                   g_browser_process->local_state());
 
+  PrefService* profile_prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
   brave_shields::SetCosmeticFilteringControlType(
       map, control_type_cosmetic, GetCurrentSiteURL(),
-      g_browser_process->local_state());
+      g_browser_process->local_state(), profile_prefs);
 
   ReloadWebContents();
 }
@@ -267,8 +270,12 @@ void BraveShieldsDataController::SetFingerprintMode(FingerprintMode mode) {
     control_type = ControlType::DEFAULT;  // STANDARD
   }
 
+  PrefService* profile_prefs =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
+          ->GetPrefs();
   brave_shields::SetFingerprintingControlType(
-      map, control_type, GetCurrentSiteURL(), g_browser_process->local_state());
+      map, control_type, GetCurrentSiteURL(), g_browser_process->local_state(),
+      profile_prefs);
 
   ReloadWebContents();
 }

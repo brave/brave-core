@@ -5,7 +5,6 @@
 
 #include <memory>
 
-#include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
@@ -33,10 +32,7 @@ class BraveShieldsUtilTest : public testing::Test {
   BraveShieldsUtilTest& operator=(const BraveShieldsUtilTest&) = delete;
   ~BraveShieldsUtilTest() override = default;
 
-  void SetUp() override {
-    profile_ = std::make_unique<TestingProfile>();
-    histogram_tester_ = std::make_unique<base::HistogramTester>();
-  }
+  void SetUp() override { profile_ = std::make_unique<TestingProfile>(); }
 
   TestingProfile* profile() { return profile_.get(); }
 
@@ -46,9 +42,6 @@ class BraveShieldsUtilTest : public testing::Test {
     auto setting = brave_shields::GetDomainBlockingType(map, url);
     EXPECT_EQ(domain_blocking_type, setting);
   }
-
- protected:
-  std::unique_ptr<base::HistogramTester> histogram_tester_;
 
  private:
   content::BrowserTaskEnvironment task_environment_;
@@ -951,58 +944,6 @@ TEST_F(BraveShieldsUtilTest, GetDomainBlockingType_ControlTypes) {
         map, test_case.cosmetic_filtering_control_type, url);
     ExpectDomainBlockingType(url, test_case.expected_blocking_type);
   }
-}
-
-TEST_F(BraveShieldsUtilTest, RecordAdBlockSetting) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-  brave_shields::SetCosmeticFilteringControlType(map, ControlType::BLOCK,
-                                                 GURL("https://brave.com"));
-  // Should not report to histogram if not a global change
-  histogram_tester_->ExpectTotalCount(brave_shields::kAdsSettingHistogramName,
-                                      0);
-
-  brave_shields::SetCosmeticFilteringControlType(map, ControlType::BLOCK,
-                                                 GURL());
-  histogram_tester_->ExpectBucketCount(brave_shields::kAdsSettingHistogramName,
-                                       2, 1);
-
-  brave_shields::SetCosmeticFilteringControlType(
-      map, ControlType::BLOCK_THIRD_PARTY, GURL());
-  histogram_tester_->ExpectBucketCount(brave_shields::kAdsSettingHistogramName,
-                                       1, 1);
-
-  brave_shields::SetCosmeticFilteringControlType(map, ControlType::ALLOW,
-                                                 GURL());
-  histogram_tester_->ExpectBucketCount(brave_shields::kAdsSettingHistogramName,
-                                       0, 1);
-
-  histogram_tester_->ExpectTotalCount(brave_shields::kAdsSettingHistogramName,
-                                      3);
-}
-
-TEST_F(BraveShieldsUtilTest, RecordFingerprintBlockSetting) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-  brave_shields::SetFingerprintingControlType(map, ControlType::BLOCK,
-                                              GURL("https://brave.com"));
-  // Should not report to histogram if not a global change
-  histogram_tester_->ExpectTotalCount(
-      brave_shields::kFingerprintSettingHistogramName, 0);
-
-  brave_shields::SetFingerprintingControlType(map, ControlType::BLOCK, GURL());
-  histogram_tester_->ExpectBucketCount(
-      brave_shields::kFingerprintSettingHistogramName, 2, 1);
-
-  brave_shields::SetFingerprintingControlType(map, ControlType::DEFAULT,
-                                              GURL());
-  histogram_tester_->ExpectBucketCount(
-      brave_shields::kFingerprintSettingHistogramName, 1, 1);
-
-  brave_shields::SetFingerprintingControlType(map, ControlType::ALLOW, GURL());
-  histogram_tester_->ExpectBucketCount(
-      brave_shields::kFingerprintSettingHistogramName, 0, 1);
-
-  histogram_tester_->ExpectTotalCount(
-      brave_shields::kFingerprintSettingHistogramName, 3);
 }
 
 class BraveShieldsUtilDomainBlock1PESFeatureTest : public BraveShieldsUtilTest {
