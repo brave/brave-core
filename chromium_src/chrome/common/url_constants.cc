@@ -11,6 +11,8 @@
 
 namespace chrome {
 
+const char kAccessCodeCastLearnMoreURL[] = "https://support.brave.com/";
+
 const char kAccessibilityLabelsLearnMoreURL[] =
     "https://support.brave.com/";
 
