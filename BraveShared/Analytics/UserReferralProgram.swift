@@ -89,14 +89,6 @@ public class UserReferralProgram {
             }
             
             if ref.isExtendedUrp() {
-                if let headers = ref.customHeaders {
-                    do {
-                        try Preferences.URP.customHeaderData.value = NSKeyedArchiver.archivedData(withRootObject: headers, requiringSecureCoding: false)
-                    } catch {
-                        log.error("Failed to save URP custom header data \(headers) with error: \(error.localizedDescription)")
-                    }
-                }
-                
                 completion(ref.referralCode, ref.offerPage)
                 UrpLog.log("Extended referral code found, opening landing page: \(ref.offerPage ?? "404")")
                 // We do not want to persist referral data for extended URPs
@@ -219,70 +211,5 @@ public class UserReferralProgram {
             return referralCode
         }
         return nil
-    }
-    
-    /// Same as `customHeaders` only blocking on result, to gaurantee data is available
-    private func fetchNewCustomHeaders() -> Deferred<[CustomHeaderData]> {
-        let result = Deferred<[CustomHeaderData]>()
-        
-        // No early return, even if data exists, still want to flush the storage
-        service.fetchCustomHeaders() { headers, error in
-            if headers.isEmpty { return }
-            
-            do {
-                try Preferences.URP.customHeaderData.value = NSKeyedArchiver.archivedData(withRootObject: headers, requiringSecureCoding: false)
-            } catch {
-                log.error("Failed to save URP custom header data \(headers) with error: \(error.localizedDescription)")
-            }
-            result.fill(headers)
-        }
-        
-        return result
-    }
-    
-    /// Returns custom headers synchronously
-    private var customHeaders: [CustomHeaderData]? {
-        guard let customHeadersAsData = Preferences.URP.customHeaderData.value else { return nil }
-        
-        do {
-            return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(customHeadersAsData) as? [CustomHeaderData]
-        } catch {
-            log.error("Failed to unwrap custom headers with error: \(error.localizedDescription)")
-        }
-        return nil
-    }
-    
-    /// Checks if a custom header should be added to the request and returns its value and field.
-    public class func shouldAddCustomHeader(for request: URLRequest) -> (value: String, field: String)? {
-        guard let customHeaders = UserReferralProgram.shared?.customHeaders,
-            let hostUrl = request.url?.host else { return nil }
-        
-        for customHeader in customHeaders {
-            // There could be an egde case when we would have two domains withing different domain groups, that would
-            // cause to return only the first domain-header it approaches.
-            for domain in customHeader.domainList where hostUrl.contains(domain) {
-                // If `domain` is "cookie only", we exclude it from HTTP Headers, and just use cookie approach
-                let cookieOnly = urpCookieOnlyDomains.contains(domain)
-                if !cookieOnly, let allFields = request.allHTTPHeaderFields, !allFields.keys.contains(customHeader.headerField) {
-                    return (customHeader.headerValue, customHeader.headerField)
-                }
-            }
-        }
-        
-        return nil
-    }
-    
-    public func insertCookies(intoStore store: WKHTTPCookieStore) {
-        assertIsMainThread("Setting up cookies for URP, must happen on main thread")
-        
-        func attachCookies(from headers: [CustomHeaderData]?) {
-            headers?.flatMap { $0.cookies() }.forEach { store.setCookie($0) }
-        }
-        
-        // Attach all existing cookies
-        attachCookies(from: customHeaders)
-        
-        // Pull new ones and attach them async
-        fetchNewCustomHeaders().uponQueue(.main, block: attachCookies)
     }
 }

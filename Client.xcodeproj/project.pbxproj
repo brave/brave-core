@@ -309,7 +309,6 @@
 		2765825D2171263A00754B2F /* UserReferralProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2765825C2171263A00754B2F /* UserReferralProgram.swift */; };
 		276582692171266900754B2F /* ReferralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582652171266900754B2F /* ReferralData.swift */; };
 		2765826A2171266900754B2F /* UrpService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582662171266900754B2F /* UrpService.swift */; };
-		2765826B2171266900754B2F /* CustomHeaderData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582672171266900754B2F /* CustomHeaderData.swift */; };
 		2765826C2171266900754B2F /* UrpLogsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582682171266900754B2F /* UrpLogsViewController.swift */; };
 		2766847C270B76D900DF45C5 /* FilterableViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */; };
 		27668489270CD9AA00DF45C5 /* EditUserAssetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27668488270CD9AA00DF45C5 /* EditUserAssetsView.swift */; };
@@ -808,7 +807,6 @@
 		5953AAEF2226E9D800A92DE1 /* HttpCookieExtensionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5953AAEE2226E9D800A92DE1 /* HttpCookieExtensionTest.swift */; };
 		595E0EDB21CAD97C00813D49 /* CookieControl.js in Resources */ = {isa = PBXBuildFile; fileRef = 595E0EDA21CAD97C00813D49 /* CookieControl.js */; };
 		595E0EE121CAEF5B00813D49 /* FileManagerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 595E0EE021CAEF5B00813D49 /* FileManagerExtension.swift */; };
-		5965CA222215D4A0000B9EC1 /* CustomHeaderDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5965CA212215D4A0000B9EC1 /* CustomHeaderDataTests.swift */; };
 		59871C1921E4D83900316590 /* block-cookies.json in Resources */ = {isa = PBXBuildFile; fileRef = 59871C1821E4D83900316590 /* block-cookies.json */; };
 		59A681BDFC95A19F05E07223 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A68CCB63E2A565CB03F832 /* SearchViewController.swift */; };
 		59A68D66379CFA85C4EAF00B /* TwoLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59A68B1F857A8638598A63A0 /* TwoLineCell.swift */; };
@@ -1969,7 +1967,6 @@
 		2765825C2171263A00754B2F /* UserReferralProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReferralProgram.swift; sourceTree = "<group>"; };
 		276582652171266900754B2F /* ReferralData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralData.swift; sourceTree = "<group>"; };
 		276582662171266900754B2F /* UrpService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrpService.swift; sourceTree = "<group>"; };
-		276582672171266900754B2F /* CustomHeaderData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderData.swift; sourceTree = "<group>"; };
 		276582682171266900754B2F /* UrpLogsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrpLogsViewController.swift; sourceTree = "<group>"; };
 		2766847B270B76D900DF45C5 /* FilterableViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterableViewModifier.swift; sourceTree = "<group>"; };
 		27668488270CD9AA00DF45C5 /* EditUserAssetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserAssetsView.swift; sourceTree = "<group>"; };
@@ -2623,7 +2620,6 @@
 		595E0EDA21CAD97C00813D49 /* CookieControl.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = CookieControl.js; sourceTree = "<group>"; };
 		595E0EE021CAEF5B00813D49 /* FileManagerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileManagerExtension.swift; sourceTree = "<group>"; };
 		5963F0B2232681FA002672C6 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
-		5965CA212215D4A0000B9EC1 /* CustomHeaderDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomHeaderDataTests.swift; sourceTree = "<group>"; };
 		596E7928232681FD004CE72B /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5970FF6D22DCD6590095E7B6 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/BraveShared.strings; sourceTree = "<group>"; };
 		5978575E2326820000C8B365 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -5480,7 +5476,6 @@
 			children = (
 				5D6DDEE6214003A6001FF0AE /* DAU.swift */,
 				2765825C2171263A00754B2F /* UserReferralProgram.swift */,
-				276582672171266900754B2F /* CustomHeaderData.swift */,
 				276582652171266900754B2F /* ReferralData.swift */,
 				276582682171266900754B2F /* UrpLogsViewController.swift */,
 				276582662171266900754B2F /* UrpService.swift */,
@@ -5546,7 +5541,6 @@
 				27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */,
 				0A42150021AC0E8E006B8E39 /* TimeExtensionTests.swift */,
 				5DE7689520B3456E00FF5533 /* Info.plist */,
-				5965CA212215D4A0000B9EC1 /* CustomHeaderDataTests.swift */,
 				2777273F22EB44B300F0214C /* StringExtensionTests.swift */,
 				5EEB25DD234E667700279091 /* CertificatePinningTest.swift */,
 				27A1AC062485618600344503 /* PrivateCDNTests.swift */,
@@ -8244,7 +8238,6 @@
 				A1510DA120E409E9008BF1F4 /* URLCacheExtensions.swift in Sources */,
 				0AD4FEEA223A9A5500E00C05 /* BundledJSProtocol.swift in Sources */,
 				5E0FCD23234253DC00AC831E /* CertificatePinning.swift in Sources */,
-				2765826B2171266900754B2F /* CustomHeaderData.swift in Sources */,
 				5E0FCD252342544C00AC831E /* URLSession+Requests.swift in Sources */,
 				5D6DDEFE2141B6A1001FF0AE /* Preferences.swift in Sources */,
 			);
@@ -8259,7 +8252,6 @@
 				27A1AC072485618600344503 /* PrivateCDNTests.swift in Sources */,
 				2777274022EB44B300F0214C /* StringExtensionTests.swift in Sources */,
 				27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */,
-				5965CA222215D4A0000B9EC1 /* CustomHeaderDataTests.swift in Sources */,
 				0A917391231D173C0069A08B /* AppReviewTests.swift in Sources */,
 				5EEB25DE234E667700279091 /* CertificatePinningTest.swift in Sources */,
 				5D6DDF0021428CF0001FF0AE /* DAUTests.swift in Sources */,

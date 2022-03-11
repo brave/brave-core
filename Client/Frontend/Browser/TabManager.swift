@@ -202,7 +202,6 @@ class TabManager: NSObject {
             .lookupSuggestion
         ]
         
-        UserReferralProgram.shared?.insertCookies(intoStore: configuration.websiteDataStore.httpCookieStore)
         return configuration
     }
     
