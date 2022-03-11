@@ -97,7 +97,7 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
 
   void CompleteLoading(std::string body);
   void CompleteSending();
-  virtual void CallClientComplete() = 0;
+  virtual void OnCompleteSending();
   void SendReceivedBodyToClient();
 
   void Abort();

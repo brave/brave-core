@@ -227,10 +227,13 @@ void BodySnifferURLLoader::CompleteSending() {
   // Call client's OnComplete() if |this|'s OnComplete() has already been
   // called.
   if (complete_status_.has_value()) {
-    CallClientComplete();
+    destination_url_loader_client_->OnComplete(complete_status_.value());
+    OnCompleteSending();
   }
   CancelAndResetHandles();
 }
+
+void BodySnifferURLLoader::OnCompleteSending() {}
 
 void BodySnifferURLLoader::CancelAndResetHandles() {
   body_consumer_watcher_.Cancel();

@@ -152,7 +152,4 @@ void DeAmpURLLoader::ForwardBodyToClient() {
   body_consumer_watcher_.ArmOrNotify();
 }
 
-void DeAmpURLLoader::CallClientComplete() {
-  destination_url_loader_client_->OnComplete(complete_status_.value());
-}
 }  // namespace de_amp

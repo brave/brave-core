@@ -48,7 +48,6 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
 
   bool MaybeRedirectToCanonicalLink();
 
-  void CallClientComplete() override;
   void ForwardBodyToClient();
 
   base::WeakPtr<DeAmpThrottle> de_amp_throttle_;

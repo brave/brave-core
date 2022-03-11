@@ -143,7 +143,7 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
   CompleteLoading(std::move(buffered_body_));
 }
 
-void SpeedReaderURLLoader::CallClientComplete() {
+void SpeedReaderURLLoader::OnCompleteSending() {
   // TODO(keur, iefremov): This API could probably be improved with an enum
   // indicating distill success, distill fail, load from cache.
   // |complete_status_| has an |exists_in_cache| field.

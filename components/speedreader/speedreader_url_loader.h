@@ -80,7 +80,7 @@ class SpeedReaderURLLoader : public body_sniffer::BodySnifferURLLoader {
   void OnBodyWritable(MojoResult) override;
   void MaybeLaunchSpeedreader();
 
-  void CallClientComplete() override;
+  void OnCompleteSending() override;
   base::WeakPtr<SpeedreaderResultDelegate> delegate_;
 
   // Not Owned
