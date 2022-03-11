@@ -626,6 +626,12 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SWEEPSTAKES_DESCRIPTION},
     {"braveWalletSweepstakesCallToAction",
      IDS_BRAVE_WALLET_SWEEPSTAKES_CALL_TO_ACTION},
+    {"braveWalletMarketDataAllAssetsFilter", IDS_BRAVE_WALLET_MARKET_DATA_ALL_ASSETS_FILTER},
+    {"braveWalletMarketDataWatchlistFilter", IDS_BRAVE_WALLET_MARKET_DATA_WATCHLIST_FILTER},
+    {"braveWalletMarketDataTradableFilter", IDS_BRAVE_WALLET_MARKET_DATA_TRADABLE_FILTER},
+    {"braveWalletMarketDataSolanaFilter", IDS_BRAVE_WALLET_MARKET_DATA_SOLANA_FILTER},
+    {"braveWalletMarketDataEthereumFilter", IDS_BRAVE_WALLET_MARKET_DATA_ETHEREUM_FILTER},
+    {"braveWalletMarketDataBscFilter", IDS_BRAVE_WALLET_MARKET_DATA_BSC_FILTER}
 };
 
 // Swap constants

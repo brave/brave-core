@@ -115,6 +115,7 @@ export type TopTabNavTypes =
   | 'portfolio'
   | 'apps'
   | 'accounts'
+  | 'market'
 
 export type AddAccountNavTypes =
   | 'create'
@@ -519,6 +520,7 @@ export enum WalletRoutes {
   Restore = '/crypto/restore-wallet',
   Portfolio = '/crypto/portfolio',
   PortfolioSub = '/crypto/portfolio/:id?',
+  Market = '/crypto/market',
   Accounts = '/crypto/accounts',
   AddAccountModal = '/crypto/accounts/add-account',
   AddAssetModal = '/crypto/portfolio/add-asset',

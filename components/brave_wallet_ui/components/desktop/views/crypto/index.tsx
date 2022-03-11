@@ -85,8 +85,6 @@ export interface Props {
   showVisibleAssetsModal: boolean
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
-  coinsMarketData: CoinMarketMetadata[]
-  onFetchMoreMarketData: () => void
 }
 
 const CryptoView = (props: Props) => {

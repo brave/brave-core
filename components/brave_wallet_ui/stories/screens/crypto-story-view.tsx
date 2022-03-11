@@ -26,10 +26,10 @@ import { getLocale } from '../../../common/locale'
 import { AppsList } from '../../options/apps-list-options'
 import { filterAppList } from '../../utils/filter-app-list'
 import { PortfolioView, AccountsView } from '../../components/desktop/views'
+import MarketView from '../../components/desktop/views/market'
 import {
   HardwareWalletConnectOpts
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
-import { MarketDataTableHeaders } from '../../options/market-data-headers'
 
 export interface Props {
   defaultCurrencies: DefaultCurrencies
@@ -135,9 +135,7 @@ const CryptoStoryView = (props: Props) => {
     onFindTokenInfoByContractAddress,
     onUpdateVisibleAssets,
     onAddCustomAsset,
-    foundTokenInfoByContractAddress,
-    coinMarketData,
-    onFetchMoreMarketData
+    foundTokenInfoByContractAddress
   } = props
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
   const [showDefaultWalletBanner, setShowDefaultWalletBanner] = React.useState<boolean>(needsBackup)
@@ -356,9 +354,6 @@ const CryptoStoryView = (props: Props) => {
 
       {selectedTab === 'market' &&
         <MarketView
-          coinsMarketData={coinMarketData}
-          marketDataTableHeaders={MarketDataTableHeaders}
-          onFetchMoreMarketData={onFetchMoreMarketData}
         />
       }
 

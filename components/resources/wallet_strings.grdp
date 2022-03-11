@@ -436,4 +436,10 @@
   <message name="IDS_BRAVE_WALLET_SWEEPSTAKES_CALL_TO_ACTION" desc="A short description of the swap sweepstakes">
     Enter now!
   </message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_ALL_ASSETS_FILTER" desc="Label text for all assets in market data filter">All Assets</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_WATCHLIST_FILTER" desc="Label text for watchlist in market data filter"> Watchlist</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_TRADABLE_FILTER" desc="Label text for tradable in market data filter">Tradable</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_SOLANA_FILTER" desc="Label text for solana in market data filter">Solana</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_ETHEREUM_FILTER" desc="Label text for ethereum in market data filter">Ethereum</message>
+  <message name="IDS_BRAVE_WALLET_MARKET_DATA_BSC_FILTER" desc="Label text for binance smart chain in market data filter">BSC</message>
 </grit-part>
