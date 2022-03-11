@@ -16,6 +16,7 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -115,11 +116,12 @@ void SidebarControlView::OnThemeChanged() {
 void SidebarControlView::UpdateBackgroundAndBorder() {
   if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
     constexpr int kBorderThickness = 1;
-    SetBackground(views::CreateSolidBackground(theme_provider->GetColor(
-        BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND)));
+    SetBackground(views::CreateSolidBackground(
+        theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR)));
     SetBorder(views::CreateSolidSidedBorder(
         0, 0, 0, kBorderThickness,
-        theme_provider->GetColor(BraveThemeProperties::COLOR_SIDEBAR_BORDER)));
+        theme_provider->GetColor(
+            ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR)));
   }
 }
 

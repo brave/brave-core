@@ -76,7 +76,7 @@ void SidebarItemView::OnPaintBackground(gfx::Canvas* canvas) {
       canvas->FillRect(
           GetLocalBounds(),
           theme_provider->GetColor(
-              BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND));
+              BraveThemeProperties::COLOR_SIDEBAR_ITEM_BACKGROUND_HOVERED));
     }
   }
 }
