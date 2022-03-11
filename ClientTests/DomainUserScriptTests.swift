@@ -17,7 +17,7 @@ class DomainUserScriptTests: XCTestCase {
     ].compactMap { $0 }
 
     goodURLs.forEach {
-      XCTAssert(DomainUserScript.get(for: $0) == .braveSearch)
+      XCTAssertEqual(DomainUserScript(for: $0), .braveSearchHelper)
     }
 
     let badURLs = [
@@ -29,12 +29,11 @@ class DomainUserScriptTests: XCTestCase {
     ].compactMap { $0 }
 
     badURLs.forEach {
-      XCTAssertFalse(DomainUserScript.get(for: $0) == .braveSearch)
+      XCTAssertNotEqual(DomainUserScript(for: $0), .braveSearchHelper)
     }
   }
 
   func testBraveTalkAPIAvailability() throws {
-
     let goodURLs = [
       URL(string: "https://talk.brave.com"),
       URL(string: "https://beta.talk.brave.com"),
@@ -46,7 +45,7 @@ class DomainUserScriptTests: XCTestCase {
     ].compactMap { $0 }
 
     goodURLs.forEach {
-      XCTAssert(DomainUserScript.get(for: $0) == .braveTalk)
+      XCTAssertEqual(DomainUserScript(for: $0), .braveTalkHelper)
     }
 
     let badURLs = [
@@ -60,7 +59,28 @@ class DomainUserScriptTests: XCTestCase {
     ].compactMap { $0 }
 
     badURLs.forEach {
-      XCTAssertFalse(DomainUserScript.get(for: $0) == .braveTalk)
+      XCTAssertNotEqual(DomainUserScript(for: $0), .braveTalkHelper)
+    }
+  }
+
+  func testYouTubeAdBlockAvailability() throws {
+    let goodURLs = [
+      URL(string: "https://youtube.com")!,
+      URL(string: "https://www.youtube.com")!
+    ]
+
+    goodURLs.forEach {
+      XCTAssertEqual(DomainUserScript(for: $0), .youtubeAdBlock)
+    }
+
+    let badURLs = [
+      URL(string: "https://youtube.org.com")!,
+      URL(string: "https://www.youtube.org.com")!,
+      URL(string: "https://metube.com")!
+    ]
+
+    badURLs.forEach {
+      XCTAssertNotEqual(DomainUserScript(for: $0), .youtubeAdBlock)
     }
   }
 }

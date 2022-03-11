@@ -295,7 +295,6 @@ class Tab: NSObject {
       self.webView?.addObserver(self, forKeyPath: KVOConstants.URL.rawValue, options: .new, context: nil)
       self.userScriptManager = UserScriptManager(
         tab: self,
-        isFingerprintingProtectionEnabled: Preferences.Shields.fingerprintingProtection.value,
         isCookieBlockingEnabled: Preferences.Privacy.blockAllCookies.value,
         isPaymentRequestEnabled: webView.hasOnlySecureContent,
         isWebCompatibilityMediaSourceAPIEnabled: Preferences.Playlist.webMediaSourceCompatibility.value,

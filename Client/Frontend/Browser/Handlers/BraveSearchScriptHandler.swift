@@ -53,7 +53,7 @@ class BraveSearchScriptHandler: TabContentScript {
     replyHandler: (Any?, String?) -> Void
   ) {
     defer { replyHandler(nil, nil) }
-    let allowedHosts = DomainUserScript.braveSearch.associatedDomains
+    let allowedHosts = DomainUserScript.braveSearchHelper.associatedDomains
 
     guard let requestHost = message.frameInfo.request.url?.host,
       allowedHosts.contains(requestHost),

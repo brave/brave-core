@@ -623,7 +623,9 @@ extension PlaylistWebLoader: WKNavigationDelegate {
       return
     }
 
-    tab.userScriptManager?.handleDomainUserScript(for: url)
+    tab.userScriptManager?.userScriptTypes = UserScriptHelper.getUserScriptTypes(
+      for: navigationAction, options: .playlistCacheLoader
+    )
 
     // For Playlist automatic detection since the above `handleDomainUserScript` removes ALL scripts!
     if let script = playlistDetectorScript {
@@ -674,9 +676,6 @@ extension PlaylistWebLoader: WKNavigationDelegate {
         // Grab all lists that have valid rules and add/remove them as necessary
         on.compactMap { $0.rule }.forEach(controller.add)
         off.compactMap { $0.rule }.forEach(controller.remove)
-
-        tab.userScriptManager?.isFingerprintingProtectionEnabled =
-          domainForShields.isShieldExpected(.FpProtection, considerAllShieldsOption: true)
 
         webView.configuration.preferences.javaScriptEnabled = !domainForShields.isShieldExpected(.NoScript, considerAllShieldsOption: true)
       }
