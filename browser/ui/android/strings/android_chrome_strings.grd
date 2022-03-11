@@ -1718,7 +1718,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         No available download locations
       </message>
       <message name="IDS_DOWNLOAD_LOCATION_INCOGNITO_WARNING" desc="Text that indicates to the user that downloaded files in Private are still saved on the device and are visible to other users of this device.">
-        Files you download in Private mode are still visible to anyone who uses this device.
+        Anyone using this device can see files you download in Private
       </message>
       <message name="IDS_RENAME" desc="Label for the option to rename items.">
         Rename
@@ -1946,7 +1946,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Settings
       </message>
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Google Pay data for Autofill. 'Google Pay' should not be translated as it is the product name.">
-        Payment methods and addresses using Google Pay
+        Payment methods, offers, and addresses using Google Pay
       </message>
       <message name="IDS_SYNC_ENCRYPTION" desc="Preference category name for sync encryption. [CHAR_LIMIT=32]">
         Encryption
@@ -5243,6 +5243,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
         You’ll be able to easily manage media controls, private sessions, downloads and more
       </message>
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_TITLE_VARIATION_2" desc="The title of a dialog shown to users before asking for notification permission.">
+        Manage media controls, private tabs, and more with notifications
+      </message>
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE_VARIATION_2" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
+        You can disable notifications by visiting settings
+      </message>
       <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_ACCEPT_BUTTON_TEXT" desc="The text of the positive button on the notification permission prompt dialog">
         Continue
       </message>
@@ -5355,8 +5361,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCOUNT_SELECTION_SHEET_TITLE_EXPLICIT" desc="Header for sign in sheet. Sheet is shown to prompt user for sign in consent." translateable="false">
         Sign in to <ph name="SITE_ETLD_PLUS_ONE">%1$s<ex>rp.example</ex></ph> with <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%2$s<ex>idp.com</ex></ph>
       </message>
-      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_LINKS" desc="The consent text shown to the user before sign up." translateable="false">
-        To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email, address, and profile picture with this site.
+      <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT_NO_TOS" desc="The consent text shown to the user before sign up when there are no terms of service." translateable="false">
+      To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email, address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph>.
       </message>
       <message name="IDS_ACCOUNT_SELECTION_DATA_SHARING_CONSENT" desc="The consent text shown to the user before sign up." translateable="false">
         To continue, <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE">%1$s<ex>idp.com</ex></ph> will share your name, email, address, and profile picture with this site. See this site's <ph name="BEGIN_LINK1">&lt;link_privacy_policy&gt;</ph>privacy policy<ph name="END_LINK1">&lt;/link_privacy_policy&gt;</ph> and <ph name="BEGIN_LINK2">&lt;link_terms_of_service&gt;</ph>terms of service<ph name="END_LINK2">&lt;/link_terms_of_service&gt;</ph>.

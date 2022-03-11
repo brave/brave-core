@@ -139,7 +139,7 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
         While in private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
       </message>
       <message name="IDS_DOWNLOAD_LOCATION_INCOGNITO_WARNING" desc="Text that indicates to the user that downloaded files in Private are still saved on the device and are visible to other users of this device.">
-        Files you download in Private mode are still visible to anyone who uses this device.
+        Anyone using this device can see files you download in Private
       </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
@@ -255,6 +255,9 @@ Trust tokens improve privacy on the web and can’t be used to find out who you 
 
       <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_MESSAGE" desc="The body text of a dialog explaining the benefits of enabling Brave notifications.">
         You’ll be able to easily manage media controls, private sessions, downloads and more
+      </message>
+      <message name="IDS_NOTIFICATION_PERMISSION_RATIONALE_DIALOG_TITLE_VARIATION_2" desc="The title of a dialog shown to users before asking for notification permission.">
+        Manage media controls, private tabs, and more with notifications
       </message>
       </messages>
   </release>
