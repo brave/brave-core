@@ -1,0 +1,50 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FIL_ADDRESS_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FIL_ADDRESS_H_
+
+#include <string>
+#include <vector>
+
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+
+namespace brave_wallet {
+
+class FilAddress {
+ public:
+  static FilAddress FromUncompressedPublicKey(
+      const std::vector<uint8_t>& public_key,
+      mojom::FilecoinAddressProtocol protocol,
+      const std::string& network);
+
+  static FilAddress FromPayload(const std::vector<uint8_t>& payload,
+                                mojom::FilecoinAddressProtocol protocol,
+                                const std::string& network);
+  static FilAddress FromAddress(const std::string& address);
+  static bool IsValidAddress(const std::string& input);
+  FilAddress();
+  FilAddress(const FilAddress& other);
+  ~FilAddress();
+  bool operator==(const FilAddress& other) const;
+  bool operator!=(const FilAddress& other) const;
+
+  bool IsEmpty() const { return bytes_.empty(); }
+  std::string EncodeAsString() const;
+
+ private:
+  bool IsEqual(const FilAddress& other) const;
+  explicit FilAddress(const std::vector<uint8_t>& bytes,
+                      mojom::FilecoinAddressProtocol protocol,
+                      const std::string& network);
+
+  mojom::FilecoinAddressProtocol protocol_;
+  std::string network_ = mojom::kFilecoinTestnet;
+  std::vector<uint8_t> bytes_;
+};
+
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_FIL_ADDRESS_H_

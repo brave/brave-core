@@ -110,6 +110,9 @@ JsonRpcService::JsonRpcService(
   if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::SOL),
                   mojom::CoinType::SOL))
     LOG(ERROR) << "Could not set netowrk from JsonRpcService() for SOL";
+  if (!SetNetwork(GetCurrentChainId(prefs_, mojom::CoinType::FIL),
+                  mojom::CoinType::FIL))
+    LOG(ERROR) << "Could not set netowrk from JsonRpcService() for FIL";
 }
 
 void JsonRpcService::SetAPIRequestHelperForTesting(

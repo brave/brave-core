@@ -75,6 +75,7 @@ bool GetUseStagingInfuraEndpoint() {
 
 const char kGanacheLocalhostURL[] = "http://localhost:7545/";
 const char kSolanaLocalhostURL[] = "http://localhost:8899/";
+const char kFilecoinLocalhostURL[] = "http://localhost:1234/rpc/v0";
 
 // Precompiled networks available in native wallet.
 const brave_wallet::mojom::NetworkInfo kKnownEthNetworks[] = {
@@ -181,6 +182,38 @@ const brave_wallet::mojom::NetworkInfo kKnownSolNetworks[] = {
      "Solana",
      9,
      brave_wallet::mojom::CoinType::SOL,
+     nullptr}};
+
+const brave_wallet::mojom::NetworkInfo kKnownFilNetworks[] = {
+    {brave_wallet::mojom::kFilecoinMainnet,
+     "Filecoin Mainnet",
+     {"https://api.node.glif.io/rpc/v0"},
+     {},
+     {"https://api.node.glif.io/rpc/v0"},
+     "FIL",
+     "Filecoin",
+     18,
+     brave_wallet::mojom::CoinType::FIL,
+     nullptr},
+    {brave_wallet::mojom::kFilecoinTestnet,
+     "Filecoin Testnet",
+     {"https://calibration.node.glif.io/rpc/v0"},
+     {},
+     {"https://calibration.node.glif.io/rpc/v0"},
+     "FIL",
+     "Filecoin",
+     18,
+     brave_wallet::mojom::CoinType::FIL,
+     nullptr},
+    {brave_wallet::mojom::kLocalhostChainId,
+     "Filecoin Localhost",
+     {kFilecoinLocalhostURL},
+     {},
+     {kFilecoinLocalhostURL},
+     "FIL",
+     "Filecoin",
+     18,
+     brave_wallet::mojom::CoinType::FIL,
      nullptr}};
 
 const base::flat_map<std::string, std::string> kInfuraSubdomains = {
@@ -665,6 +698,12 @@ GURL GetNetworkURL(PrefService* prefs,
         return GURL(network.rpc_urls.front());
       }
     }
+  } else if (coin == mojom::CoinType::FIL) {
+    for (const auto& network : kKnownFilNetworks) {
+      if (network.chain_id == chain_id && network.rpc_urls.size()) {
+        return GURL(network.rpc_urls.front());
+      }
+    }
   }
   return GURL();
 }
@@ -677,6 +716,10 @@ void GetAllChains(PrefService* prefs,
     GetAllEthCustomChains(prefs, result);
   } else if (coin == mojom::CoinType::SOL) {
     for (const auto& network : kKnownSolNetworks) {
+      result->push_back(network.Clone());
+    }
+  } else if (coin == mojom::CoinType::FIL) {
+    for (const auto& network : kKnownFilNetworks) {
       result->push_back(network.Clone());
     }
   }
