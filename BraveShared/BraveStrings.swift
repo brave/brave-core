@@ -1855,7 +1855,7 @@ extension Strings {
                               comment: "The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'")
         
         public static let playlistFolderSelectASingleFolderTitle =
-            NSLocalizedString("playlistFolders.selectAFolderTitle",
+            NSLocalizedString("playlistFolders.selectASingleFolderTitle",
                               bundle: .braveShared,
                               value: "Select a folder to move 1 item to",
                               comment: "The title of the section indicating that the user should select a folder to move 1 item to.")
