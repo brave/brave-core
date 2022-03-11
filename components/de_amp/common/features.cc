@@ -12,7 +12,13 @@ namespace features {
 
 // When enabled, Brave will try to de-AMP a page i.e. load the canonical,
 // non-AMP version if the page is an AMP page.
-const base::Feature kBraveDeAMP{"BraveDeAMP", base::FEATURE_ENABLED_BY_DEFAULT};
+const base::Feature kBraveDeAMP{"BraveDeAMP", 
+#if BUILDFLAG(IS_ANDROID)
+  base::FEATURE_DISABLED_BY_DEFAULT
+#else
+  base::FEATURE_ENABLED_BY_DEFAULT
+#endif
+};
 
 }  // namespace features
 }  // namespace de_amp
