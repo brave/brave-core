@@ -405,3 +405,31 @@ export function refreshSitePermissions () {
     dispatch(WalletActions.setSitePermissions({ accounts: accountsWithPermission }))
   }
 }
+
+/**
+ * Check if the keyring associated with the given account AND the network
+ * support the EIP-1559 fee market for paying gas fees.
+ *
+ * This method can also be used to determine if the given parameters support
+ * EVM Type-2 transactions. The return value is always false for non-EVM
+ * networks.
+ *
+ * @param {WalletAccountType} account
+ * @param {BraveWallet.NetworkInfo} network
+ * @returns {boolean} Returns a boolean result indicating EIP-1559 support.
+ */
+export function hasEIP1559Support (account: WalletAccountType, network: BraveWallet.NetworkInfo) {
+  let keyringSupportsEIP1559
+  switch (account.accountType) {
+    case 'Primary':
+    case 'Secondary':
+    case 'Ledger':
+    case 'Trezor':
+      keyringSupportsEIP1559 = true
+      break
+    default:
+      keyringSupportsEIP1559 = false
+  }
+
+  return keyringSupportsEIP1559 && (network.data?.ethData?.isEip1559 ?? false)
+}

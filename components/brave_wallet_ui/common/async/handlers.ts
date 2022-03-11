@@ -39,6 +39,7 @@ import Amount from '../../utils/amount'
 
 import getAPIProxy from './bridge'
 import {
+  hasEIP1559Support,
   refreshKeyringInfo,
   refreshNetworkInfo,
   refreshTokenPriceHistory,
@@ -306,19 +307,7 @@ handler.on(WalletActions.sendTransaction.getType(), async (store: Store, payload
     // Check if network and keyring support EIP-1559.
     default:
       const { selectedAccount, selectedNetwork } = getWalletState(store)
-      let keyringSupportsEIP1559
-      switch (selectedAccount.accountType) {
-        case 'Primary':
-        case 'Secondary':
-        case 'Ledger':
-        case 'Trezor':
-          keyringSupportsEIP1559 = true
-          break
-        default:
-          keyringSupportsEIP1559 = false
-      }
-
-      isEIP1559 = keyringSupportsEIP1559 && (selectedNetwork.data?.ethData?.isEip1559 ?? false)
+      isEIP1559 = hasEIP1559Support(selectedAccount, selectedNetwork)
   }
 
   const { chainId } = await apiProxy.jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
@@ -538,7 +527,12 @@ export const fetchSwapQuoteFactory = (
 }
 
 handler.on(WalletActions.refreshGasEstimates.getType(), async (store) => {
-  const ethTxManagerProxy = getAPIProxy().ethTxManagerProxy
+  const { selectedAccount, selectedNetwork } = getWalletState(store)
+  if (!hasEIP1559Support(selectedAccount, selectedNetwork)) {
+    return
+  }
+
+  const { ethTxManagerProxy } = getAPIProxy()
   const basicEstimates = await ethTxManagerProxy.getGasEstimation1559()
   if (!basicEstimates.estimation) {
     console.error('Failed to fetch gas estimates')
