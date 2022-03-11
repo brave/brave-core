@@ -557,7 +557,6 @@ public class SwapTokenStore: ObservableObject {
         if success, let response = response {
           self.handlePriceQuoteResponse(response, base: base)
         } else {
-          self.clearAllAmount()
           
           // check balance first because error can cause by insufficient balance
           if let sellTokenBalance = self.selectedFromTokenBalance,
@@ -572,6 +571,7 @@ public class SwapTokenStore: ObservableObject {
             return
           }
           self.state = .error(Strings.Wallet.unknownError)
+          self.clearAllAmount()
         }
       }
     }
