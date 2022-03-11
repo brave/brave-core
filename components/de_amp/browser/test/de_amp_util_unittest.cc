@@ -31,35 +31,35 @@ TEST(DeAmpUtilUnitTest, DetectAmpWithEmoji) {
   const std::string body =
       "<html ⚡>"
       "<head>"
-      "<link rel=\"canonical\" href=\"abc\"/>"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/>"
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("abc", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpWithWordAmp) {
   const std::string body =
       "<html amp>"
       "<head>"
-      "<link rel=\"author\" href=\"xyz\"/>"
-      "<link rel=\"canonical\" href=\"abc\"/>"
+      "<link rel=\"author\" href=\"https://xyz.com\"/>"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/>"
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("abc", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpWithWordAmpNotAtEnd) {
   const std::string body =
       "<html amp xyzzy>"
       "<head>"
-      "<link rel=\"author\" href=\"xyz\"/>"
-      "<link rel=\"canonical\" href=\"abc\"/>"
+      "<link rel=\"author\" href=\"https://xyz.com\"/>"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/>"
       "</head>"
       "<body></body>"
       "</html>";
-  CheckFindCanonicalLinkResult("abc", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
 }
 
 TEST(DeAmpUtilUnitTest, DetectAmpMixedCase) {
@@ -67,9 +67,9 @@ TEST(DeAmpUtilUnitTest, DetectAmpMixedCase) {
       "<DOCTYPE! html>\n"
       "<html AmP xyzzy>\n"
       "<head>\n"
-      "<link rel=\"author\" href=\"xyz\"/>\n"
-      "<link rel=\"canonical\" href=\"abc\"/></head><body></body></html>";
-  CheckFindCanonicalLinkResult("abc", body, true);
+      "<link rel=\"author\" href=\"https://xyz.com\"/>\n"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/></head><body></body></html>";
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
 }
 
 TEST(DeAmpUtilUnitTest, NegativeDetectAmp) {
@@ -77,8 +77,8 @@ TEST(DeAmpUtilUnitTest, NegativeDetectAmp) {
   const std::string body =
       "<html xyzzy>\n"
       "<head>\n"
-      "<link amp rel=\"author\" href=\"xyz\"/>\n"
-      "<link rel=\"canonical\" href=\"abc\"/>\n"
+      "<link amp rel=\"author\" href=\"https://xyz.com\"/>\n"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/>\n"
       "</head>\n"
       "<body></body>\n"
       "</html>";
@@ -90,8 +90,8 @@ TEST(DeAmpUtilUnitTest, DetectAmpButNoCanonicalLink) {
   const std::string body =
       "<html xyzzy>"
       "<head>"
-      "<link amp rel=\"author\" href=\"xyz\"/>\n"
-      "<link rel=\"canonical\" href=\"abc\"/>"
+      "<link amp rel=\"author\" href=\"https://xyz.com\"/>\n"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/>"
       "</head>"
       "<body></body>"
       "</html>";
@@ -102,8 +102,8 @@ TEST(DeAmpUtilUnitTest, MalformedHtmlDoc) {
   const std::string body =
       "<xyz html amp xyzzy>\n"
       "<head>"
-      "<link amp rel=\"author\" href=\"xyz\"/>\n"
-      "<link rel=\"canonical\" href=\"abc\"/>"
+      "<link amp rel=\"author\" href=\"https://xyz.com\"/>\n"
+      "<link rel=\"canonical\" href=\"https://abc.com\"/>"
       "</head><body></body></html>";
   CheckFindCanonicalLinkResult("", body, false);
 }
@@ -113,9 +113,9 @@ TEST(DeAmpUtilUnitTest, LinkRelNotInSameTag) {
   const std::string body =
       "<html amp>\n"
       "<head>"
-      "<link rel=\"author\" href=\"xyz\"/>\n"
+      "<link rel=\"author\" href=\"https://xyz.com\"/>\n"
       "<body>"
-      "\"canonical\"> href=\"abc\"/>"
+      "\"canonical\"> href=\"https://abc.com\"/>"
       "</head><body></body></html>";
   CheckFindCanonicalLinkResult("", body, false);
 }
@@ -124,18 +124,22 @@ TEST(DeAmpUtilUnitTest, SingleQuotes) {
   const std::string body =
       "<DOCTYPE! html>"
       "<html AMP xyzzy>\n"
-      "<head><link rel='author' href='xyz'/>\n"
-      "<link rel='canonical' href='abc'>"
+      "<head><link rel='author' href='https://xyz.com'/>\n"
+      "<link rel='canonical' href='https://abc.com'>"
       "</head><body></body></html>";
-  CheckFindCanonicalLinkResult("abc", body, true);
+  CheckFindCanonicalLinkResult("https://abc.com", body, true);
 }
 
-TEST(DeAmpUtilUnitTest, CanonicalLinkMalformed) {
+TEST(DeAmpUtilUnitTest, CanonicalLinkMissingScheme) {
   CheckCheckCanonicalLinkResult("xyz.com", "https://amp.xyz.com", false);
 }
 
-TEST(DeAmpUtilUnitTest, CanonicalLinkCorrect) {
+TEST(DeAmpUtilUnitTest, HttpsCanonicalLinkCorrect) {
   CheckCheckCanonicalLinkResult("https://xyz.com", "https://amp.xyz.com", true);
+}
+
+TEST(DeAmpUtilUnitTest, HttpCanonicalLinkCorrect) {
+  CheckCheckCanonicalLinkResult("http://xyz.com", "http://amp.xyz.com", true);
 }
 
 TEST(DeAmpUtilUnitTest, CanonicalLinkSameAsOriginal) {
@@ -143,8 +147,12 @@ TEST(DeAmpUtilUnitTest, CanonicalLinkSameAsOriginal) {
                                 false);
 }
 
-TEST(DeAmpUtilUnitTest, CanonicalLinkNotHttp) {
+TEST(DeAmpUtilUnitTest, CanonicalLinkNotHttpOrHttps) {
   CheckCheckCanonicalLinkResult("ftp://xyz.com", "https://amp.xyz.com", false);
+}
+
+TEST(DeAmpUtilUnitTest, CanonicalLinkIsRelative) {
+  CheckCheckCanonicalLinkResult("abc", "https://amp.xyz.com", false);
 }
 
 }  // namespace de_amp
