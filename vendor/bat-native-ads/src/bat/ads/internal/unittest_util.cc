@@ -299,9 +299,26 @@ void SetSysInfo(const mojom::SysInfo& sys_info) {
   g_sys_info.is_uncertain_future = sys_info.is_uncertain_future;
 }
 
-void SetBuildChannel(const bool is_release, const std::string& name) {
-  g_build_channel.is_release = is_release;
-  g_build_channel.name = name;
+void SetBuildChannel(const BuildChannelType type) {
+  switch (type) {
+    case BuildChannelType::kNightly: {
+      g_build_channel.is_release = false;
+      g_build_channel.name = "nightly";
+      break;
+    }
+
+    case BuildChannelType::kBeta: {
+      g_build_channel.is_release = false;
+      g_build_channel.name = "beta";
+      break;
+    }
+
+    case BuildChannelType::kRelease: {
+      g_build_channel.is_release = true;
+      g_build_channel.name = "release";
+      break;
+    }
+  }
 }
 
 void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,

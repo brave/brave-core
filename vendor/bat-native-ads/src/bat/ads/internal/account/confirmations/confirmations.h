@@ -15,7 +15,7 @@
 #include "bat/ads/internal/backoff_timer.h"
 
 namespace base {
-class DictionaryValue;
+class Value;
 }  // namespace base
 
 namespace ads {
@@ -52,12 +52,11 @@ class Confirmations final : public RedeemUnblindedTokenDelegate {
 
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
 
-  ConfirmationInfo CreateConfirmation(
-      const std::string& transaction_id,
-      const std::string& creative_instance_id,
-      const ConfirmationType& confirmation_type,
-      const AdType& ad_type,
-      const base::DictionaryValue& user_data) const;
+  ConfirmationInfo CreateConfirmation(const std::string& transaction_id,
+                                      const std::string& creative_instance_id,
+                                      const ConfirmationType& confirmation_type,
+                                      const AdType& ad_type,
+                                      const base::Value& user_data) const;
 
   BackoffTimer retry_timer_;
   void Retry();

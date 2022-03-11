@@ -9,14 +9,11 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "bat/ads/internal/account/wallet/wallet_info.h"
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info_aliases.h"
 #include "bat/ads/internal/server/url_request_builder.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
-
-namespace base {
-class Value;
-}  // namespace base
 
 namespace ads {
 
@@ -28,7 +25,8 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
  public:
   RedeemUnblindedPaymentTokensUrlRequestBuilder(
       const WalletInfo& wallet,
-      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens);
+      const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+      const base::Value& user_data);
   ~RedeemUnblindedPaymentTokensUrlRequestBuilder() override;
 
   mojom::UrlRequestPtr Build() override;
@@ -36,6 +34,7 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
  private:
   WalletInfo wallet_;
   privacy::UnblindedPaymentTokenList unblinded_payment_tokens_;
+  base::Value user_data_;
 
   std::string BuildUrl() const;
 
@@ -46,8 +45,6 @@ class RedeemUnblindedPaymentTokensUrlRequestBuilder final : UrlRequestBuilder {
   std::string CreatePayload() const;
 
   base::Value CreatePaymentRequestDTO(const std::string& payload) const;
-
-  base::Value CreateTotals() const;
 
   base::Value CreateCredential(
       const privacy::UnblindedPaymentTokenInfo& unblinded_payment_token,

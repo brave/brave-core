@@ -3,28 +3,46 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/account/redeem_unblinded_token/user_data/confirmation_studies_dto_user_data.h"
+#include "bat/ads/internal/account/user_data/studies_user_data.h"
 
 #include <string>
-#include <utility>
 
+#include "base/json/json_writer.h"
 #include "base/metrics/field_trial.h"
+#include "base/values.h"
 #include "bat/ads/internal/features/features.h"
-#include "bat/ads/internal/unittest_base.h"
-#include "bat/ads/internal/unittest_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-class BatAdsConfirmationStudiesDtoUserDataTest : public UnitTestBase {
- protected:
-  BatAdsConfirmationStudiesDtoUserDataTest() = default;
+namespace {
 
-  ~BatAdsConfirmationStudiesDtoUserDataTest() override = default;
-};
+std::string GetStudiesAsJson() {
+  const base::DictionaryValue user_data = user_data::GetStudies();
 
-TEST_F(BatAdsConfirmationStudiesDtoUserDataTest, GetStudies) {
+  std::string json;
+  base::JSONWriter::Write(user_data, &json);
+
+  return json;
+}
+
+}  // namespace
+
+TEST(BatAdsStudiesUserDataTest, GetStudiesForNoFieldTrials) {
+  // Arrange
+
+  // Act
+  const std::string json = GetStudiesAsJson();
+
+  // Assert
+  const std::string expected_json = R"({"studies":[]})";
+
+  EXPECT_EQ(expected_json, json);
+}
+
+TEST(BatAdsStudiesUserDataTest, GetStudies) {
   // Arrange
   std::string trial_name_1 = "BraveAdsFooStudy";
   std::string group_name_1 = "GroupA";
@@ -47,25 +65,13 @@ TEST_F(BatAdsConfirmationStudiesDtoUserDataTest, GetStudies) {
   ASSERT_EQ(3U, base::FieldTrialList::GetFieldTrialCount());
 
   // Act
-  base::DictionaryValue studies = dto::user_data::GetStudies();
+  const std::string json = GetStudiesAsJson();
 
   // Assert
-  base::Value study_1(base::Value::Type::DICTIONARY);
-  study_1.SetKey("name", base::Value("BraveAdsFooStudy"));
-  study_1.SetKey("group", base::Value("GroupA"));
+  const std::string expected_json =
+      R"({"studies":[{"group":"GroupB","name":"BarStudyForBraveAds"},{"group":"GroupA","name":"BraveAdsFooStudy"}]})";
 
-  base::Value study_2(base::Value::Type::DICTIONARY);
-  study_2.SetKey("name", base::Value("BarStudyForBraveAds"));
-  study_2.SetKey("group", base::Value("GroupB"));
-
-  base::Value study_list(base::Value::Type::LIST);
-  study_list.Append(std::move(study_2));
-  study_list.Append(std::move(study_1));
-
-  base::DictionaryValue expected_studies;
-  expected_studies.SetKey("studies", std::move(study_list));
-
-  EXPECT_EQ(expected_studies, studies);
+  EXPECT_EQ(expected_json, json);
 }
 
 }  // namespace ads
