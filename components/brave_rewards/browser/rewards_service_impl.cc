@@ -40,6 +40,7 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/ledger_database.h"
 #include "brave/browser/brave_ads/ads_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_sync_service_factory.h"
 #include "brave/browser/brave_rewards/vg_sync_service_factory.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
@@ -69,6 +70,8 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/driver/sync_service.h"
+#include "components/sync/driver/sync_user_settings.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
@@ -318,6 +321,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 #if BUILDFLAG(ENABLE_GREASELION)
       greaselion_service_(greaselion_service),
 #endif
+      sync_service_(static_cast<syncer::BraveSyncServiceImpl*>(
+          RewardsSyncServiceFactory::GetForProfile(profile_))),
       vg_sync_service_(VgSyncServiceFactory::GetForProfile(profile_)),
       bat_ledger_client_receiver_(new bat_ledger::LedgerClientMojoBridge(this)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
@@ -347,6 +352,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
   }
 #endif
 
+  sync_service_->AddObserver(this);
   vg_sync_service_->SetObserver(this);
 }
 
@@ -1419,6 +1425,37 @@ void RewardsServiceImpl::OnRulesReady(
   EnableGreaseLion();
 }
 #endif
+
+void RewardsServiceImpl::OnStateChanged(syncer::SyncService* sync) {
+  if (auto* sync_service = static_cast<syncer::BraveSyncServiceImpl*>(sync);
+      sync_service &&
+      sync_service->IsEngineInitialized()) {  // sync engine has started up
+    if (auto [decrypt_successful, passphrase] = sync_service->GetSyncCode();
+        decrypt_successful && !passphrase.empty()) {
+      auto* sync_user_settings = sync_service->GetUserSettings();
+
+      // see PeopleHandler::HandleSetDecryptionPassphrase()
+      if (sync_user_settings->IsPassphraseRequired()) {
+        static_cast<void>(
+            sync_user_settings->SetDecryptionPassphrase(passphrase));
+      }
+
+      // see PeopleHandler::HandleSetEncryptionPassphrase()
+      if (sync_user_settings->IsCustomPassphraseAllowed() &&
+          !sync_user_settings->IsUsingExplicitPassphrase() &&
+          !sync_user_settings->IsPassphraseRequired() &&
+          !sync_user_settings->IsTrustedVaultKeyRequired()) {
+        sync_user_settings->SetEncryptionPassphrase(passphrase);
+      }
+    }
+  }
+}
+
+void RewardsServiceImpl::OnSyncShutdown(syncer::SyncService* sync) {
+  if (sync && sync->HasObserver(this)) {
+    sync->RemoveObserver(this);
+  }
+}
 
 void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
@@ -3424,6 +3461,19 @@ void RewardsServiceImpl::OnGetBraveWallet(
   std::move(callback).Run(std::move(wallet));
 }
 
+void RewardsServiceImpl::OnGetWalletPassphrase(const std::string& passphrase) {
+  if (passphrase.empty()) {
+    // !!!
+    return;
+  }
+
+  sync_service_->GetUserSettings()->SetSyncRequested(true);
+  VLOG(0) << "Sync code: " << passphrase;
+  sync_service_->SetSyncCode(passphrase);
+  sync_service_->GetUserSettings()->SetFirstSetupComplete(
+      syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
+}
+
 void RewardsServiceImpl::StartProcess(base::OnceClosure callback) {
   ready_->Post(FROM_HERE, std::move(callback));
   StartLedgerProcessIfNecessary();
@@ -3490,6 +3540,11 @@ void RewardsServiceImpl::OnWalletCreatedForSetAdsEnabled(
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
   if (ads_service) {
     ads_service->SetEnabled(ads_service->IsSupportedLocale());
+  }
+
+  if (!sync_service_->GetUserSettings()->IsFirstSetupComplete()) {
+    GetWalletPassphrase(
+        base::BindOnce(&RewardsServiceImpl::OnGetWalletPassphrase, AsWeakPtr()));
   }
 }
 
