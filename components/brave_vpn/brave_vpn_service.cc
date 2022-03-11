@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <utility>
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -26,7 +26,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/version_info/version_info.h"
 #include "third_party/icu/source/i18n/unicode/timezone.h"
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -39,7 +39,7 @@
 
 namespace {
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 constexpr char kBraveVPNEntryName[] = "BraveVPN";
 
 constexpr char kRegionContinentKey[] = "continent";
@@ -97,7 +97,7 @@ std::string GetBraveVPNPaymentsEnv() {
 #endif
 }
 
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 constexpr char kVpnHost[] = "connect-api.guardianapp.com";
 
@@ -164,7 +164,7 @@ std::string GetSubscriberCredentialFromJson(const std::string& json) {
 
 }  // namespace
 
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
 BraveVpnService::BraveVpnService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
@@ -205,12 +205,12 @@ BraveVpnService::BraveVpnService(
 #endif
 
 BraveVpnService::~BraveVpnService() {
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 void BraveVpnService::ScheduleFetchRegionDataIfNeeded() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -998,7 +998,7 @@ BraveVpnService::GetBraveVPNConnectionAPI() {
     return brave_vpn::BraveVPNOSConnectionAPI::GetInstanceForTest();
   return brave_vpn::BraveVPNOSConnectionAPI::GetInstance();
 }
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 void BraveVpnService::AddObserver(
     mojo::PendingRemote<brave_vpn::mojom::ServiceObserver> observer) {
@@ -1014,7 +1014,7 @@ void BraveVpnService::GetPurchasedState(GetPurchasedStateCallback callback) {
 
 void BraveVpnService::LoadPurchasedState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-#if !defined(OFFICIAL_BUILD) && !defined(OS_ANDROID)
+#if !defined(OFFICIAL_BUILD) && !BUILDFLAG(IS_ANDROID)
   auto* cmd = base::CommandLine::ForCurrentProcess();
   if (cmd->HasSwitch(brave_vpn::switches::kBraveVPNTestMonthlyPass)) {
     skus_credential_ =
@@ -1136,9 +1136,9 @@ void BraveVpnService::SetPurchasedState(PurchasedState state) {
   for (const auto& obs : observers_)
     obs->OnPurchasedStateChanged(purchased_state_);
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   ScheduleFetchRegionDataIfNeeded();
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void BraveVpnService::EnsureMojoConnected() {
@@ -1162,10 +1162,10 @@ void BraveVpnService::Shutdown() {
   skus_service_.reset();
   observers_.Clear();
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   observed_.Reset();
   receivers_.Clear();
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 }
 
 void BraveVpnService::OAuthRequest(

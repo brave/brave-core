@@ -8,7 +8,9 @@
 
 #include <string>
 
-#if !defined(OS_ANDROID)
+#include "build/build_config.h"
+
+#if !BUILDFLAG(IS_ANDROID)
 #include <memory>
 #include <vector>
 
@@ -18,7 +20,7 @@
 #include "brave/components/brave_vpn/brave_vpn_data_types.h"
 #include "brave/components/brave_vpn/brave_vpn_os_connection_api.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #include "base/bind.h"
 #include "base/callback_forward.h"
@@ -37,7 +39,7 @@ namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 namespace base {
 class Value;
 }  // namespace base
@@ -45,21 +47,21 @@ class Value;
 class PrefService;
 
 using ConnectionState = brave_vpn::mojom::ConnectionState;
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 using PurchasedState = brave_vpn::mojom::PurchasedState;
 
 // This class is used by desktop and android.
 // However, it includes desktop specific impls and it's hidden
-// by OS_ANDROID ifdef.
+// by IS_ANDROID ifdef.
 class BraveVpnService :
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
     public brave_vpn::BraveVPNOSConnectionAPI::Observer,
 #endif
     public brave_vpn::mojom::ServiceHandler,
     public KeyedService {
  public:
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   BraveVpnService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>
@@ -76,7 +78,7 @@ class BraveVpnService :
   BraveVpnService(const BraveVpnService&) = delete;
   BraveVpnService& operator=(const BraveVpnService&) = delete;
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   void ToggleConnection();
   void RemoveVPNConnnection();
 
@@ -107,7 +109,7 @@ class BraveVpnService :
                            const std::string& body,
                            CreateSupportTicketCallback callback) override;
   void GetSupportData(GetSupportDataCallback callback) override;
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   using ResponseCallback =
       base::OnceCallback<void(const std::string&, bool success)>;
@@ -140,7 +142,7 @@ class BraveVpnService :
                                   const std::string& monthly_pass);
 
  private:
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   friend class BraveAppMenuBrowserTest;
   friend class BraveBrowserCommandControllerTest;
   FRIEND_TEST_ALL_PREFIXES(BraveVPNServiceTest, RegionDataTest);
@@ -195,7 +197,7 @@ class BraveVpnService :
   void set_test_timezone(const std::string& timezone) {
     test_timezone_ = timezone;
   }
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   using URLRequestCallback =
       base::OnceCallback<void(int,
@@ -237,7 +239,7 @@ class BraveVpnService :
   void OnPrepareCredentialsPresentation(
       const std::string& credential_as_cookie);
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
   PrefService* prefs_ = nullptr;
   std::vector<brave_vpn::mojom::Region> regions_;
   brave_vpn::mojom::Region device_region_;
@@ -256,7 +258,7 @@ class BraveVpnService :
   // Only for testing.
   std::string test_timezone_;
   bool is_simulation_ = false;
-#endif
+#endif  // !BUILDFLAG(IS_ANDROID)
 
   SEQUENCE_CHECKER(sequence_checker_);
 

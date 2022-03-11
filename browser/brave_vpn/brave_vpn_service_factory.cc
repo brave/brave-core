@@ -9,6 +9,7 @@
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/brave_vpn/brave_vpn_service.h"
 #include "brave/components/skus/common/features.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
