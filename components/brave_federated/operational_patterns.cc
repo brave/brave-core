@@ -17,6 +17,7 @@
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -24,12 +25,15 @@
 
 namespace {
 
+constexpr int kDefaultResponseCode = -1;
+
 static constexpr char federatedLearningUrl[] = "https://fl.brave.com/";
 
 constexpr char kLastCheckedSlotPrefName[] = "brave.federated.last_checked_slot";
 constexpr char kCollectionIdPrefName[] = "brave.federated.collection_id";
 constexpr char kCollectionIdExpirationPrefName[] =
     "brave.federated.collection_id_expiration";
+
 constexpr int kMinutesBeforeRetry = 5;
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -63,12 +67,15 @@ namespace brave_federated {
 OperationalPatterns::OperationalPatterns(
     PrefService* pref_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : pref_service_(pref_service), url_loader_factory_(url_loader_factory) {}
+    : pref_service_(pref_service), url_loader_factory_(url_loader_factory) {
+  DCHECK(pref_service_);
+  DCHECK(url_loader_factory_);
+}
 
 OperationalPatterns::~OperationalPatterns() {}
 
 void OperationalPatterns::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterIntegerPref(kLastCheckedSlotPrefName, -1);
+  registry->RegisterIntegerPref(kLastCheckedSlotPrefName, kDefaultResponseCode);
   registry->RegisterStringPref(kCollectionIdPrefName, {});
   registry->RegisterTimePref(kCollectionIdExpirationPrefName, base::Time());
 }
@@ -116,6 +123,12 @@ void OperationalPatterns::SavePrefs() {
   pref_service_->SetString(kCollectionIdPrefName, collection_id_);
   pref_service_->SetTime(kCollectionIdExpirationPrefName,
                          collection_id_expiration_time_);
+}
+
+void OperationalPatterns::ClearPrefs() {
+  pref_service_->ClearPref(kLastCheckedSlotPrefName);
+  pref_service_->ClearPref(kCollectionIdPrefName);
+  pref_service_->ClearPref(kCollectionIdExpirationPrefName);
 }
 
 void OperationalPatterns::OnCollectionSlotStartTimerFired() {
@@ -173,10 +186,10 @@ void OperationalPatterns::SendDelete() {
 
 void OperationalPatterns::OnCollectionSlotUploadComplete(
     scoped_refptr<net::HttpResponseHeaders> headers) {
-  int response_code = -1;
+  int response_code = kDefaultResponseCode;
   if (headers)
     response_code = headers->response_code();
-  if (response_code == 200) {
+  if (response_code == net::HTTP_OK) {
     last_checked_slot_ = current_collected_slot_;
     SavePrefs();
   }
@@ -184,11 +197,11 @@ void OperationalPatterns::OnCollectionSlotUploadComplete(
 
 void OperationalPatterns::OnDeleteUploadComplete(
     scoped_refptr<net::HttpResponseHeaders> headers) {
-  int response_code = -1;
+  int response_code = kDefaultResponseCode;
   if (headers)
     response_code = headers->response_code();
-  if (response_code == 200) {
-    ResetCollectionId();
+  if (response_code == net::HTTP_OK) {
+    ClearPrefs();
   } else {
     auto retry_timer = std::make_unique<base::RetainingOneShotTimer>();
     retry_timer->Start(FROM_HERE, base::Seconds(kMinutesBeforeRetry * 60), this,
