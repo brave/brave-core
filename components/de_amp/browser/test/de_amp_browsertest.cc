@@ -6,11 +6,16 @@
 #include "base/bind.h"
 #include "brave/components/de_amp/common/features.h"
 #include "brave/components/de_amp/common/pref_names.h"
+#include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
+#include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/keep_alive_registry/keep_alive_types.h"
+#include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/reload_type.h"
 #include "content/public/test/browser_test.h"
@@ -199,11 +204,18 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, RestoreTab) {
   const GURL original_url = https_server_->GetURL(kTestHost, kTestAmpPage);
   const GURL landing_url = https_server_->GetURL(kTestHost, kTestCanonicalPage);
   NavigateToURLAndWaitForRedirects(original_url, landing_url);
-
-  // Close & restore tab
-  browser()->tab_strip_model()->CloseSelectedTabs();
   Profile* profile = browser()->profile();
+
+  ScopedKeepAlive test_keep_alive(KeepAliveOrigin::PANEL_VIEW,
+                                  KeepAliveRestartOption::DISABLED);
+  ScopedProfileKeepAlive test_profile_keep_alive(
+      profile, ProfileKeepAliveOrigin::kBrowserWindow);
+  CloseBrowserSynchronously(browser());
+
+  EXPECT_EQ(0u, BrowserList::GetInstance()->size());
   chrome::OpenWindowWithRestoredTabs(profile);
+  EXPECT_EQ(1u, BrowserList::GetInstance()->size());
+  SelectFirstBrowser();
 
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
 }
