@@ -24,17 +24,11 @@ if (!is_android) {
     deps = [
       "///brave/components/de_amp/browser",
       "///brave/components/de_amp/common",
-      "//chrome/browser:browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui:ui",
       "//chrome/test:test_support_ui",
-      "//components/content_settings/core/browser:browser",
-      "//components/prefs:test_support",
-      "//components/user_prefs:user_prefs",
-      "//content/test:test_support",
-      "//net:test_support",
+      "//components/prefs",
       "//testing/gtest",
-      "//third_party/re2:re2",
     ]
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }

@@ -7,19 +7,23 @@
 #include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "brave/components/de_amp/common/features.h"
-#include "brave/components/de_amp/pref_names.h"
+#include "brave/components/de_amp/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/prefs/testing_pref_service.h"
-#include "components/user_prefs/user_prefs.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/reload_type.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "net/base/net_errors.h"
 #include "net/dns/mock_host_resolver.h"
-#include "third_party/re2/src/re2/re2.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
+#include "net/test/embedded_test_server/http_response.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 const char kTestHost[] = "a.test.com";
 const char kTestAmpPage[] = "/test.html";
@@ -110,9 +114,9 @@ class DeAmpBrowserTest : public InProcessBrowserTest {
 
  protected:
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
+  base::test::ScopedFeatureList feature_list_;
 
  private:
-  base::test::ScopedFeatureList feature_list_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   PrefService* prefs_;
 };
@@ -257,11 +261,6 @@ class DeAmpFeatureFlagOffBrowserTest : public DeAmpBrowserTest {
   DeAmpFeatureFlagOffBrowserTest() {
     feature_list_.InitAndDisableFeature(de_amp::features::kBraveDeAMP);
   }
-
-  void SetUpOnMainThread() override { DeAmpBrowserTest::SetUpOnMainThread(); }
-
- private:
-  base::test::ScopedFeatureList feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(DeAmpFeatureFlagOffBrowserTest, DoesNotDeAmp) {
