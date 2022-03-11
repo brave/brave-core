@@ -22,7 +22,8 @@ constexpr char kFindCanonicalLinkTagPattern[] =
 constexpr char kFindCanonicalHrefInTagPattern[] = "href=(?:\"|')(.*?)(?:\"|')";
 }  // namespace
 
-bool VerifyCanonicalAmpUrl(const GURL& canonical_link, const GURL& original_url) {
+bool VerifyCanonicalAmpUrl(const GURL& canonical_link,
+                           const GURL& original_url) {
   // Canonical URL should be a valid URL,
   // be HTTP(S) and not be the same as original URL
   return canonical_link.is_valid() && canonical_link.SchemeIsHTTPOrHTTPS() &&

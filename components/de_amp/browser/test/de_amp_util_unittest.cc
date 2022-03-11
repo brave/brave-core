@@ -68,7 +68,8 @@ TEST(DeAmpUtilUnitTest, DetectAmpMixedCase) {
       "<html AmP xyzzy>\n"
       "<head>\n"
       "<link rel=\"author\" href=\"https://xyz.com\"/>\n"
-      "<link rel=\"canonical\" href=\"https://abc.com\"/></head><body></body></html>";
+      "<link rel=\"canonical\" "
+      "href=\"https://abc.com\"/></head><body></body></html>";
   CheckFindCanonicalLinkResult("https://abc.com", body, true);
 }
 
