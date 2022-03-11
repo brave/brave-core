@@ -32,22 +32,15 @@ import org.chromium.brave_wallet.mojom.AssetPriceTimeframe;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.BlockchainRegistry;
 import org.chromium.brave_wallet.mojom.BlockchainToken;
-import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.BraveWalletService;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.NetworkInfo;
-import org.chromium.brave_wallet.mojom.ProviderError;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
-import org.chromium.brave_wallet.mojom.TxData;
-import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.crypto_wallet.activities.AccountDetailActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.AssetDetailActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
-import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.adapters.ApproveTxFragmentPageAdapter;
 import org.chromium.chrome.browser.crypto_wallet.observers.ApprovedTxObserver;
 import org.chromium.chrome.browser.crypto_wallet.util.TokenUtils;
@@ -94,46 +87,25 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
     }
 
     private AssetRatioService getAssetRatioService() {
-        // TODO: Refactor to interface
         Activity activity = getActivity();
-        if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getAssetRatioService();
-        } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioService();
-        } else if (activity instanceof AccountDetailActivity) {
-            return ((AccountDetailActivity) activity).getAssetRatioService();
-        } else if (activity instanceof AssetDetailActivity) {
-            return ((AssetDetailActivity) activity).getAssetRatioService();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getAssetRatioService();
         }
-
         return null;
     }
 
     private TxService getTxService() {
         Activity activity = getActivity();
-        if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getTxService();
-        } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getTxService();
-        } else if (activity instanceof AccountDetailActivity) {
-            return ((AccountDetailActivity) activity).getTxService();
-        } else if (activity instanceof AssetDetailActivity) {
-            return ((AssetDetailActivity) activity).getTxService();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getTxService();
         }
-
         return null;
     }
 
     private JsonRpcService getJsonRpcService() {
         Activity activity = getActivity();
-        if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getJsonRpcService();
-        } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getJsonRpcService();
-        } else if (activity instanceof AccountDetailActivity) {
-            return ((AccountDetailActivity) activity).getJsonRpcService();
-        } else if (activity instanceof AssetDetailActivity) {
-            return ((AssetDetailActivity) activity).getJsonRpcService();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getJsonRpcService();
         }
 
         return null;
@@ -141,14 +113,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
 
     private BlockchainRegistry getBlockchainRegistry() {
         Activity activity = getActivity();
-        if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getBlockchainRegistry();
-        } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBlockchainRegistry();
-        } else if (activity instanceof AccountDetailActivity) {
-            return ((AccountDetailActivity) activity).getBlockchainRegistry();
-        } else if (activity instanceof AssetDetailActivity) {
-            return ((AssetDetailActivity) activity).getBlockchainRegistry();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getBlockchainRegistry();
         }
 
         return null;
@@ -156,14 +122,8 @@ public class ApproveTxBottomSheetDialogFragment extends BottomSheetDialogFragmen
 
     private BraveWalletService getBraveWalletService() {
         Activity activity = getActivity();
-        if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getBraveWalletService();
-        } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getBraveWalletService();
-        } else if (activity instanceof AccountDetailActivity) {
-            return ((AccountDetailActivity) activity).getBraveWalletService();
-        } else if (activity instanceof AssetDetailActivity) {
-            return ((AssetDetailActivity) activity).getBraveWalletService();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getBraveWalletService();
         }
         return null;
     }

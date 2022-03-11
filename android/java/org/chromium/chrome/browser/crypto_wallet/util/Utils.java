@@ -540,6 +540,36 @@ public class Utils {
         return "0x" + bigNumber.toString(16);
     }
 
+    public static String toHex(String number) {
+        if (number.isEmpty()) {
+            return "0x0";
+        }
+        try {
+            BigInteger bigNumber = new BigInteger(number, 10);
+            return "0x" + bigNumber.toString(16);
+        } catch (NumberFormatException e) {
+            assert false;
+        }
+        return "0x0";
+    }
+
+    public static String hexToIntString(String number) {
+        if (number.isEmpty()) {
+            return "";
+        }
+        if (number.startsWith("0x")) {
+            number = number.substring(2);
+        }
+
+        try {
+            BigInteger bigNumber = new BigInteger(number, 16);
+            return bigNumber.toString();
+        } catch (NumberFormatException e) {
+            assert false;
+        }
+        return "";
+    }
+
     public static String multiplyHexBN(String number1, String number2) {
         if (number1.startsWith("0x")) {
             number1 = number1.substring(2);
@@ -1004,11 +1034,8 @@ public class Utils {
     public static void openTransaction(TransactionInfo txInfo, JsonRpcService jsonRpcService,
             AppCompatActivity activity, AccountInfo[] accountInfos) {
         assert txInfo != null;
-        String to = txInfo.txDataUnion.getEthTxData1559().baseData.to;
-        if (txInfo.txType == TransactionType.ERC20_TRANSFER && txInfo.txArgs.length > 1) {
-            to = txInfo.txArgs[0];
-        }
-        openTransaction(txInfo, jsonRpcService, activity, getAccountName(accountInfos, to));
+        openTransaction(
+                txInfo, jsonRpcService, activity, getAccountName(accountInfos, txInfo.fromAddress));
     }
 
     public static void setUpTransactionList(AccountInfo[] accountInfos,

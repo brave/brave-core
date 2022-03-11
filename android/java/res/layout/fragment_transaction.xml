@@ -21,8 +21,8 @@
                 android:layout_marginTop="37dp"
                 android:layout_marginBottom="4dp"
                 android:paddingStart="24dp"
-                android:textColor="@color/wallet_text_color"
                 android:text="@string/gas_fee"
+                android:textColor="@color/wallet_text_color"
                 android:textSize="14sp" />
 
             <LinearLayout
@@ -36,12 +36,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:paddingStart="24dp"
-                    android:textColor="@color/brave_blue_tint_color"
-                    android:text="@string/edit"
                     android:clickable="true"
                     android:focusable="true"
-                    android:textSize="14sp" />
+                    android:paddingStart="24dp"
+                    android:text="@string/edit"
+                    android:textColor="@color/brave_blue_tint_color"
+                    android:textSize="14sp"
+                    tools:ignore="DuplicateSpeakableTextCheck" />
 
                 <TextView
                     android:id="@+id/gas_fee_amount"
@@ -67,11 +68,11 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="30dp"
-            android:background="@color/wallet_text_color"/>
+            android:layout_marginBottom="8dp"
+            android:background="@color/wallet_text_color" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -84,8 +85,8 @@
                 android:layout_marginTop="37dp"
                 android:layout_marginBottom="4dp"
                 android:paddingStart="24dp"
-                android:textColor="@color/wallet_text_color"
                 android:text="@string/total"
+                android:textColor="@color/wallet_text_color"
                 android:textSize="14sp" />
 
             <LinearLayout
@@ -99,8 +100,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
                     android:paddingStart="24dp"
-                    android:textColor="@color/wallet_text_color"
                     android:text="@string/amount_plus_gas"
+                    android:textColor="@color/wallet_text_color"
                     android:textSize="14sp" />
 
                 <TextView
@@ -123,6 +124,28 @@
             </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="30dp"
+            android:background="@color/wallet_text_color" />
+
+        <TextView
+            android:id="@+id/fragment_tx_tv_advance_setting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:drawablePadding="8dp"
+            android:padding="12dp"
+            android:text="@string/brave_wallet_advanced_settings"
+            android:textColor="@color/brave_action_color"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:drawableLeftCompat="@drawable/ic_wallet_settings"
+            app:drawableTint="@color/brave_action_color" />
 
     </LinearLayout>
 
