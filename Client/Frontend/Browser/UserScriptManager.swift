@@ -24,14 +24,6 @@ class UserScriptManager {
 
   private weak var tab: Tab?
 
-  /// Whether or not the fingerprinting protection
-  var isFingerprintingProtectionEnabled: Bool {
-    didSet {
-      if oldValue == isFingerprintingProtectionEnabled { return }
-      reloadUserScripts()
-    }
-  }
-
   /// Whether cookie blocking is enabled
   var isCookieBlockingEnabled: Bool {
     didSet {
@@ -80,35 +72,16 @@ class UserScriptManager {
     }
   }
 
-  /// Stores domain specific scriplet, usually used for webcompat workarounds.
-  var domainUserScript: DomainUserScript? {
+  // TODO: @JS Add other scripts to this list to avoid uneccesary calls to `reloadUserScripts()`
+  /// Domain script types that are currently injected into the web-view. Will reloaded scripts if this set changes.
+  ///
+  /// We only `reloadUserScripts()` if any of these have changed. A set is used to ignore order and ensure uniqueness.
+  /// This way we don't necessarily invoke `reloadUserScripts()` too often but only when necessary.
+  ///
+  var userScriptTypes: Set<UserScriptType> {
     didSet {
-      if oldValue == domainUserScript { return }
+      guard oldValue != userScriptTypes else { return }
       reloadUserScripts()
-    }
-  }
-
-  func handleDomainUserScript(for url: URL) {
-    guard let customDomainUserScript = DomainUserScript.get(for: url) else {
-      // No custom script for this domain, clearing existing user script
-      // in case the previous domain had one.
-      domainUserScript = nil
-      return
-    }
-
-    if let shieldType = customDomainUserScript.shieldType {
-      let domain = Domain.getOrCreate(
-        forUrl: url,
-        persistent: !PrivateBrowsingManager.shared.isPrivateBrowsing)
-
-      if domain.isShieldExpected(shieldType, considerAllShieldsOption: true) {
-        domainUserScript = customDomainUserScript
-      } else {
-        // Remove old user script.
-        domainUserScript = nil
-      }
-    } else {
-      domainUserScript = customDomainUserScript
     }
   }
 
@@ -121,7 +94,6 @@ class UserScriptManager {
 
   init(
     tab: Tab,
-    isFingerprintingProtectionEnabled: Bool,
     isCookieBlockingEnabled: Bool,
     isPaymentRequestEnabled: Bool,
     isWebCompatibilityMediaSourceAPIEnabled: Bool,
@@ -129,13 +101,13 @@ class UserScriptManager {
     isNightModeEnabled: Bool
   ) {
     self.tab = tab
-    self.isFingerprintingProtectionEnabled = isFingerprintingProtectionEnabled
     self.isCookieBlockingEnabled = isCookieBlockingEnabled
     self.isPaymentRequestEnabled = isPaymentRequestEnabled
     self.isWebCompatibilityMediaSourceAPIEnabled = isWebCompatibilityMediaSourceAPIEnabled
     self.isPlaylistEnabled = true
     self.isMediaBackgroundPlaybackEnabled = isMediaBackgroundPlaybackEnabled
     self.isNightModeEnabled = isNightModeEnabled
+    self.userScriptTypes = []
 
     reloadUserScripts()
   }
@@ -167,20 +139,6 @@ class UserScriptManager {
       }
       return nil
     }
-  }()
-
-  private let fingerprintingProtectionUserScript: WKUserScript? = {
-    guard let path = Bundle.main.path(forResource: "FingerprintingProtection", ofType: "js"), let source = try? String(contentsOfFile: path) else {
-      log.error("Failed to load fingerprinting protection user script")
-      return nil
-    }
-    var alteredSource = source
-    alteredSource = alteredSource.replacingOccurrences(of: "$<handler>", with: "FingerprintingProtection\(messageHandlerTokenString)", options: .literal)
-    return WKUserScript.create(
-      source: alteredSource,
-      injectionTime: .atDocumentStart,
-      forMainFrameOnly: false,
-      in: .page)
   }()
 
   private let cookieControlUserScript: WKUserScript? = {
@@ -393,10 +351,7 @@ class UserScriptManager {
     tab?.webView?.configuration.userContentController.do {
       $0.removeAllUserScripts()
       self.packedUserScripts.forEach($0.addUserScript)
-
-      if isFingerprintingProtectionEnabled, let script = fingerprintingProtectionUserScript {
-        $0.addUserScript(script)
-      }
+      
       if isCookieBlockingEnabled, let script = cookieControlUserScript {
         $0.addUserScript(script)
       }
@@ -433,8 +388,14 @@ class UserScriptManager {
         $0.addUserScript(script)
       }
 
-      if let domainUserScript = domainUserScript, let script = domainUserScript.script {
-        $0.addUserScript(script)
+      for userScriptType in userScriptTypes.sorted(by: { $0.order < $1.order }) {
+        do {
+          let script = try ScriptFactory.shared.makeScript(for: userScriptType)
+          $0.addUserScript(script)
+        } catch {
+          assertionFailure("Should never happen. The scripts are packed in the project and loading/modifying should always be possible.")
+          log.error(error)
+        }
       }
     }
   }

@@ -628,7 +628,7 @@ class TabSessionTests: XCTestCase {
     let group = DispatchGroup()
     for tab in self.tabManager.allTabs {
       // include all scripts
-      tab.userScriptManager?.isFingerprintingProtectionEnabled = true
+      tab.userScriptManager?.userScriptTypes = [.farblingProtection(etld: "fake.com")]
       tab.userScriptManager?.isCookieBlockingEnabled = true
 
       group.enter()
