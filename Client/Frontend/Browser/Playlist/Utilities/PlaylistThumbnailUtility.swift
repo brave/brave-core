@@ -9,6 +9,7 @@ import CoreImage
 import Combine
 import SDWebImage
 import Shared
+import Data
 
 private let log = Logger.browserLogger
 
@@ -265,7 +266,8 @@ private class FavIconImageRenderer {
     func loadIcon(siteURL: URL, completion: ((UIImage?) -> Void)?) {
         task?.cancel()
         task = DispatchWorkItem {
-            var faviconFetcher: FaviconFetcher? = FaviconFetcher(siteURL: siteURL, kind: .favicon, domain: nil)
+            let domain = Domain.getOrCreate(forUrl: siteURL, persistent: false)
+            var faviconFetcher: FaviconFetcher? = FaviconFetcher(siteURL: siteURL, kind: .favicon, domain: domain)
             faviconFetcher?.load() { [weak self] _, attributes in
                 faviconFetcher = nil
                 
@@ -278,10 +280,22 @@ private class FavIconImageRenderer {
                 
                 if let image = attributes.image {
                     if let backgroundColor = attributes.backgroundColor,
-                       let image = image.cgImage {
-                        let finalImage = self.renderOnImageContext { context, rect in
+                       let cgImage = image.cgImage {
+                        // attributes.includesPadding sometimes returns 0 for icons that should. It's better this way to always include the padding.
+                        let padding = 4.0
+                        let size = CGSize(width: image.size.width + padding,
+                                          height: image.size.height + padding)
+                        
+                        let finalImage = self.renderOnImageContext(size: size) { context, rect in
+                            context.saveGState()
                             context.setFillColor(backgroundColor.cgColor)
-                            context.draw(image, in: rect)
+                            context.fill(rect)
+                            
+                            context.translateBy(x: 0.0, y: rect.size.height)
+                            context.scaleBy(x: 1.0, y: -1.0)
+                            
+                            context.draw(cgImage, in: rect.insetBy(dx: padding, dy: padding))
+                            context.restoreGState()
                         }
                         completion?(finalImage)
                     } else {
@@ -295,13 +309,45 @@ private class FavIconImageRenderer {
                         $0.minimumScaleFactor = 0.5
                     }
                     
-                    label.text = FaviconFetcher.monogramLetter(
+                    let text = FaviconFetcher.monogramLetter(
                         for: siteURL,
                         fallbackCharacter: nil
-                    )
+                    ) as NSString
                     
-                    let finalImage = self.renderOnImageContext { context, _ in
-                        label.layer.render(in: context)
+                    let padding = 4.0
+                    let finalImage = self.renderOnImageContext { context, rect in
+                        guard let font = label.font else { return }
+                        var fontSize = font.pointSize
+                        
+                        // Estimate the size of the font required to fit the context's bounds + padding
+                        // Usually we can do this by iterating and calculating the size that fits
+                        // But this is a very good estimated size
+                        let newSize = text.size(withAttributes: [.font: font.withSize(fontSize)])
+                        guard newSize.width > 0.0 && newSize.height > 0.0 else { return }
+                        
+                        let ratio = min((rect.size.width - padding) / newSize.width,
+                                        (rect.size.height - padding) / newSize.height)
+                        fontSize *= ratio
+                        
+                        if fontSize < label.font.pointSize * 0.5 {
+                            fontSize = label.font.pointSize * 0.5
+                        }
+                        
+                        if let backgroundColor = attributes.backgroundColor?.cgColor {
+                            context.setFillColor(backgroundColor)
+                            context.fill(rect)
+                        }
+                        
+                        let newFont = font.withSize(fontSize)
+                        let size = text.size(withAttributes: [.font: newFont])
+                        
+                        // Center the text drawing in the CGContext
+                        let x = (rect.size.width - size.width) / 2.0
+                        let y = (rect.size.height - size.height) / 2.0
+                        
+                        text.draw(in: rect.insetBy(dx: x, dy: y),
+                                  withAttributes: [.font: newFont,
+                                                   .foregroundColor: UIColor.white])
                     }
                     
                     completion?(finalImage)
@@ -314,12 +360,16 @@ private class FavIconImageRenderer {
         }
     }
     
-    private func renderOnImageContext(_ draw: (CGContext, CGRect) -> Void) -> UIImage? {
-        let size = CGSize(width: 100.0, height: 100.0)
-        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+    private func renderOnImageContext(size: CGSize, _ draw: (CGContext, CGRect) -> Void) -> UIImage? {
+        let size = CGSize(width: size.width, height: size.height)
+        UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
         draw(UIGraphicsGetCurrentContext()!, CGRect(size: size))
         let img = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return img
+    }
+    
+    private func renderOnImageContext(_ draw: (CGContext, CGRect) -> Void) -> UIImage? {
+        renderOnImageContext(size: CGSize(width: 16.0, height: 16.0), draw)
     }
 }

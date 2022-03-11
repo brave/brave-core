@@ -67,7 +67,7 @@ window.__firefox__.includeOnce("Playlist", function() {
     function $<notify>(target, type) {
         if (target) {
             var name = target.title;
-            if (name == null || typeof name == 'undefined' || name == "") {
+            if (!name) {
                 name = document.title;
             }
             

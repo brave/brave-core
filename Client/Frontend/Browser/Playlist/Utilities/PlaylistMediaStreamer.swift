@@ -149,7 +149,7 @@ class PlaylistMediaStreamer {
     }
     
     static func updateNowPlayingInfo(_ player: MediaPlayer) {
-        let mediaType: MPNowPlayingInfoMediaType = player.currentItem?.asset.isVideoTracksAvailable() == true ? .video : .audio
+        let mediaType: MPNowPlayingInfoMediaType = player.currentItem?.isVideoTracksAvailable() == true ? .video : .audio
         let duration = player.currentItem?.asset.duration.seconds ?? 0.0
         
         var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]

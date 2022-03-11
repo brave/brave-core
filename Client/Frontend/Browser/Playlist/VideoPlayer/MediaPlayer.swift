@@ -438,7 +438,7 @@ extension MediaPlayer {
 }
 
 extension MediaPlayer {
-    // Registers basic notifications
+    /// Registers basic notifications
     private func registerNotifications() {
         NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
         .receive(on: RunLoop.main)
@@ -521,7 +521,7 @@ extension MediaPlayer {
         })
     }
     
-    // Registers playback controls notifications
+    /// Registers playback controls notifications
     private func registerControlCenterNotifications() {
         let center = MPRemoteCommandCenter.shared()
         center.publisher(for: .pauseCommand).sink { [weak self] _ in
@@ -587,7 +587,7 @@ extension MediaPlayer {
         }.store(in: &notificationObservers)
     }
     
-    // Registers picture in picture notifications
+    /// Registers picture in picture notifications
     private func registerPictureInPictureNotifications() {
         if AVPictureInPictureController.isPictureInPictureSupported() {
             pictureInPictureController = AVPictureInPictureController(playerLayer: self.playerLayer)
@@ -605,15 +605,33 @@ extension MediaPlayer {
     }
 }
 
+extension AVPlayerItem {
+    /// Returns whether or not the assetTrack has audio tracks OR the asset has audio tracks
+    func isAudioTracksAvailable() -> Bool {
+        tracks.filter({ $0.assetTrack?.mediaType == .audio }).isEmpty == false
+    }
+
+    /// Returns whether or not the assetTrack has video tracks OR the asset has video tracks
+    /// If called on optional, assume true
+    /// We do this because for m3u8 HLS streams,
+    /// tracks may not always be available and the particle effect will show even on videos..
+    /// It's best to assume this type of media is a video stream.
+    func isVideoTracksAvailable() -> Bool {
+        tracks.isEmpty || tracks.filter({ $0.assetTrack?.mediaType == .video }).isEmpty == false
+    }
+}
+
 extension AVAsset {
+    /// Returns whether or not the asset has audio tracks
     func isAudioTracksAvailable() -> Bool {
         tracks.filter({ $0.mediaType == .audio }).isEmpty == false
     }
 
-    // If called on optional, assume true
-    // We do this because for m3u8 HLS streams,
-    // tracks may not always be available and the particle effect will show even on videos..
-    // It's best to assume this type of media is a video stream.
+    /// Returns whether or not the  asset has video tracks
+    /// If called on optional, assume true
+    /// We do this because for m3u8 HLS streams,
+    /// tracks may not always be available and the particle effect will show even on videos..
+    /// It's best to assume this type of media is a video stream.
     func isVideoTracksAvailable() -> Bool {
         tracks.isEmpty || tracks.filter({ $0.mediaType == .video }).isEmpty == false
     }
