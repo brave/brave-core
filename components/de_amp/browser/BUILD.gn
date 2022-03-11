@@ -1,5 +1,3 @@
-import("//brave/build/config.gni")
-
 static_library("browser") {
   sources = [
     "de_amp_throttle.cc",
@@ -14,10 +12,9 @@ static_library("browser") {
     "//base",
     "//brave/components/body_sniffer",
     "//brave/components/de_amp/common",
-    "//components/prefs:prefs",
-    "//components/user_prefs:user_prefs",
+    "//components/prefs",
+    "//components/user_prefs",
     "//content/public/browser",
-    "//content/public/common",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//third_party/re2",
