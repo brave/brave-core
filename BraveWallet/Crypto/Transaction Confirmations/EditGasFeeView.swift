@@ -23,6 +23,7 @@ struct EditGasFeeView: View {
   
   @State private var perGasPrice: String = ""
   @State private var gasLimit: String = ""
+  @State private var isShowingAlert: Bool = false
   
   private func setup() {
     perGasPrice = WeiFormatter.weiToDecimalGwei(transaction.ethTxGasPrice.removingHexPrefix, radix: .hex) ?? "0"
@@ -55,7 +56,7 @@ struct EditGasFeeView: View {
       if success {
         presentationMode.dismiss()
       } else {
-         // Show error?
+        isShowingAlert = true
       }
     }
   }
@@ -107,6 +108,13 @@ struct EditGasFeeView: View {
     .listStyle(InsetGroupedListStyle())
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.editGasTitle)
+    .alert(isPresented: $isShowingAlert) {
+      Alert(
+        title: Text(Strings.Wallet.unknownError),
+        message: Text(Strings.Wallet.editTransactionError),
+        dismissButton: .default(Text(Strings.Wallet.editTransactionErrorCTA))
+      )
+    }
     .onAppear {
       // For some reason we need to delay this for SwiftUI to render the text properly…
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

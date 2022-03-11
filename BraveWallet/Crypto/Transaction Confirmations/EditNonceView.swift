@@ -14,6 +14,7 @@ struct EditNonceView: View {
   
   @Environment(\.presentationMode) @Binding private var presentationMode
   @State private var nonce = ""
+  @State private var isShowingAlert = false
   
   var body: some View {
     List {
@@ -35,7 +36,7 @@ struct EditNonceView: View {
                 if success {
                   presentationMode.dismiss()
                 } else {
-                  // Show error?
+                  isShowingAlert = true
                }
               }
           }
@@ -43,7 +44,7 @@ struct EditNonceView: View {
           Text(Strings.Wallet.saveButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))
-        .disabled(nonce.isEmpty)
+        .disabled(Int(nonce) == nil)
         .frame(maxWidth: .infinity)
         .listRowInsets(.zero)
         .listRowBackground(Color(.braveGroupedBackground))
@@ -52,6 +53,13 @@ struct EditNonceView: View {
     .listStyle(InsetGroupedListStyle())
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.advancedSettingsTransaction)
+    .alert(isPresented: $isShowingAlert) {
+      Alert(
+        title: Text(Strings.Wallet.unknownError),
+        message: Text(Strings.Wallet.editTransactionError),
+        dismissButton: .default(Text(Strings.Wallet.editTransactionErrorCTA))
+      )
+    }
     .onAppear {
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
         // Most likely a SwiftUI bug. Need add a delay here to render text properly

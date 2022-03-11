@@ -35,6 +35,7 @@ struct EditPriorityFeeView: View {
   @State private var maximumGasPrice: String = ""
   @State private var maximumTipPrice: String = ""
   @State private var baseInGwei: String = ""
+  @State private var isShowingAlert: Bool = false
   
   private func setup() {
     let selectedMaxPrice = transaction.txDataUnion.ethTxData1559?.maxFeePerGas ?? ""
@@ -106,7 +107,7 @@ struct EditPriorityFeeView: View {
       if success {
         presentationMode.dismiss()
       } else {
-        // Show error?
+        isShowingAlert = true
       }
     }
   }
@@ -254,6 +255,13 @@ struct EditPriorityFeeView: View {
     .listStyle(InsetGroupedListStyle())
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.maxPriorityFeeTitle)
+    .alert(isPresented: $isShowingAlert) {
+      Alert(
+        title: Text(Strings.Wallet.unknownError),
+        message: Text(Strings.Wallet.editTransactionError),
+        dismissButton: .default(Text(Strings.Wallet.editTransactionErrorCTA))
+      )
+    }
     .onAppear(perform: setup)
   }
 }
