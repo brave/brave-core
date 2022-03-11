@@ -9,6 +9,7 @@
 
 #include "base/callback.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
@@ -41,6 +42,24 @@ namespace brave_wallet {
 
 namespace {
 
+void GetErrorCodeMessage(base::Value formed_response,
+                         mojom::ProviderError* error,
+                         std::string* error_message) {
+  if (!formed_response.is_dict()) {
+    *error = mojom::ProviderError::kSuccess;
+    error_message->clear();
+    return;
+  }
+  const base::Value* code = formed_response.FindKey("code");
+  if (code) {
+    *error = static_cast<mojom::ProviderError>(code->GetInt());
+  }
+  const base::Value* message = formed_response.FindKey("message");
+  if (message) {
+    *error_message = message->GetString();
+  }
+}
+
 void UpdateCustomNetworks(PrefService* prefs,
                           std::vector<base::Value>* values) {
   DictionaryPrefUpdate update(prefs, kBraveWalletCustomNetworks);
@@ -57,17 +76,26 @@ void UpdateCustomNetworks(PrefService* prefs,
   }
 }
 
-void OnRequestResponse(
-    bool* callback_called,
-    bool expected_success,
-    const std::string& expected_response,
-    const int status,
-    const std::string& response,
-    const base::flat_map<std::string, std::string>& headers) {
+void OnRequestResponse(bool* callback_called,
+                       bool expected_success,
+                       const std::string& expected_response,
+                       base::Value id,
+                       base::Value formed_response,
+                       const bool reject,
+                       const std::string& first_allowed_account,
+                       const bool update_bind_js_properties) {
   *callback_called = true;
-  bool success = status == 200;
-  EXPECT_EQ(expected_response, response);
+  std::string response;
+  base::JSONWriter::Write(formed_response, &response);
+  mojom::ProviderError error;
+  std::string error_message;
+  GetErrorCodeMessage(std::move(formed_response), &error, &error_message);
+  bool success = error == brave_wallet::mojom::ProviderError::kSuccess;
   EXPECT_EQ(expected_success, success);
+  if (!success) {
+    response = "";
+  }
+  EXPECT_EQ(expected_response, response);
 }
 
 void OnStringResponse(bool* callback_called,
@@ -1115,13 +1143,14 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
   std::string request =
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_blockNumber\",\"params\":"
       "[]}";
+  std::string result = "\"0xb539d5\"";
   std::string expected_response =
-      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}";
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + result + "}";
   SetInterceptor("eth_blockNumber", "true", expected_response);
   json_rpc_service_->Request(
-      request, true, mojom::CoinType::ETH,
+      request, true, base::Value(), mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
-                     expected_response));
+                     result));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
@@ -1130,19 +1159,21 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"method\":\"eth_getBlockByNumber\","
       "\"params\":"
       "[\"0x5BAD55\",true]}";
-  expected_response = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0xb539d5\"}";
+  result = "\"0xb539d5\"";
+  expected_response =
+      "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":" + result + "}";
   SetInterceptor("eth_getBlockByNumber", "0x5BAD55,true", expected_response);
   json_rpc_service_->Request(
-      request, true, mojom::CoinType::ETH,
+      request, true, base::Value(), mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
-                     expected_response));
+                     result));
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
   SetHTTPRequestTimeoutInterceptor();
   json_rpc_service_->Request(
-      request, true, mojom::CoinType::ETH,
+      request, true, base::Value(), mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, false /* success */,
                      ""));
   base::RunLoop().RunUntilIdle();
@@ -2062,7 +2093,9 @@ TEST_F(JsonRpcServiceUnitTest, Reset) {
   json_rpc_service_->switch_chain_requests_[GURL()] = "";
   json_rpc_service_->switch_chain_callbacks_[GURL()] =
       base::BindLambdaForTesting(
-          [&](mojom::ProviderError error, const std::string& error_message) {});
+          [&](base::Value id, base::Value formed_response, const bool reject,
+              const std::string& first_allowed_account,
+              const bool update_bind_js_properties) {});
 
   json_rpc_service_->Reset();
 

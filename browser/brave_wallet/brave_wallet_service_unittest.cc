@@ -98,6 +98,24 @@ const char ropsten_list_json[] = R"(
 
 namespace brave_wallet {
 
+void GetErrorCodeMessage(base::Value formed_response,
+                         mojom::ProviderError* error,
+                         std::string* error_message) {
+  if (!formed_response.is_dict()) {
+    *error = mojom::ProviderError::kSuccess;
+    error_message->clear();
+    return;
+  }
+  const base::Value* code = formed_response.FindKey("code");
+  if (code) {
+    *error = static_cast<mojom::ProviderError>(code->GetInt());
+  }
+  const base::Value* message = formed_response.FindKey("message");
+  if (message) {
+    *error_message = message->GetString();
+  }
+}
+
 class TestBraveWalletServiceObserver
     : public brave_wallet::mojom::BraveWalletServiceObserver {
  public:
@@ -493,20 +511,30 @@ class BraveWalletServiceUnitTest : public testing::Test {
     base::RunLoop run_loop;
     service_->AddSuggestTokenRequest(
         request.Clone(),
-        base::BindLambdaForTesting([&](bool user_approved,
-                                       mojom::ProviderError error,
-                                       const std::string& error_message) {
-          if (run_switch_network) {
-            EXPECT_FALSE(user_approved);
-            EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
-            EXPECT_FALSE(error_message.empty());
-          } else {
-            EXPECT_EQ(approve, user_approved);
-            EXPECT_EQ(error, mojom::ProviderError::kSuccess);
-            EXPECT_TRUE(error_message.empty());
-          }
-          run_loop.Quit();
-        }));
+        base::BindLambdaForTesting(
+            [&](base::Value id, base::Value formed_response, const bool reject,
+                const std::string& first_allowed_account,
+                const bool update_bind_js_properties) {
+              bool user_approved = false;
+              if (formed_response.type() == base::Value::Type::BOOLEAN) {
+                user_approved = formed_response.GetBool();
+              }
+              mojom::ProviderError error;
+              std::string error_message;
+              GetErrorCodeMessage(std::move(formed_response), &error,
+                                  &error_message);
+              if (run_switch_network) {
+                EXPECT_FALSE(user_approved);
+                EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+                EXPECT_FALSE(error_message.empty());
+              } else {
+                EXPECT_EQ(approve, user_approved);
+                EXPECT_EQ(error, mojom::ProviderError::kSuccess);
+                EXPECT_TRUE(error_message.empty());
+              }
+              run_loop.Quit();
+            }),
+        base::Value());
 
     auto requests = GetPendingAddSuggestTokenRequests();
     ASSERT_EQ(requests.size(), 1u);
