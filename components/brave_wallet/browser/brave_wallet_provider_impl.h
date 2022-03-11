@@ -57,6 +57,10 @@ class BraveWalletProviderImpl final
   void Request(base::Value input,
                const std::string& origin,
                RequestCallback callback) override;
+  void SendErrorOnRequest(const mojom::ProviderError& error,
+                          const std::string& error_message,
+                          RequestCallback callback,
+                          base::Value id);
   void GetChainId(GetChainIdCallback callback) override;
   void GetAllowedAccounts(bool include_accounts_when_locked,
                           GetAllowedAccountsCallback callback);
@@ -129,6 +133,14 @@ class BraveWalletProviderImpl final
                            OnAddEthereumChainRequestCompletedError);
   FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
                            OnAddEthereumChainRequestCompletedSuccess);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           AddAndApproveTransaction);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           RequestEthereumPermissionsNoPermission);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           RequestEthereumPermissionsNoWallet);
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletProviderImplUnitTest,
+                           RequestEthereumPermissionsLocked);
   friend class BraveWalletProviderImplUnitTest;
 
   // mojom::JsonRpcServiceObserver
@@ -250,16 +262,9 @@ class BraveWalletProviderImpl final
   void AutoLockMinutesChanged() override {}
   void SelectedAccountChanged(mojom::CoinType coin) override;
 
-  std::unique_ptr<base::Value> RequestBaseValue(base::Value input_value,
-                                                const std::string& origin,
-                                                mojom::CoinType coin,
-                                                bool* error,
-                                                RequestCallback callback);
-  bool CommonRequestOrSendAsync(base::Value input_value,
+  void CommonRequestOrSendAsync(base::Value input_value,
                                 const std::string& origin,
                                 mojom::CoinType coin,
-                                mojom::ProviderError* error,
-                                std::string* error_message,
                                 RequestCallback callback);
 
   void RequestEthereumPermissions(RequestCallback callback,

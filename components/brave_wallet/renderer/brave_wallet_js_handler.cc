@@ -28,6 +28,7 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "third_party/blink/public/web/web_script_source.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "url/origin.h"
 
 namespace {
 

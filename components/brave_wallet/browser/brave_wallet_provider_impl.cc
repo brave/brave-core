@@ -773,56 +773,51 @@ void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
 void BraveWalletProviderImpl::Request(base::Value input,
                                       const std::string& origin,
                                       RequestCallback callback) {
-  bool error = false;
+  CommonRequestOrSendAsync(std::move(input), origin, mojom::CoinType::ETH,
+                           std::move(callback));
+}
+
+void BraveWalletProviderImpl::SendErrorOnRequest(
+    const mojom::ProviderError& error,
+    const std::string& error_message,
+    RequestCallback callback,
+    base::Value id) {
   std::unique_ptr<base::Value> formed_response =
-      RequestBaseValue(std::move(input), origin, mojom::CoinType::ETH, &error,
-                       std::move(callback));
-  if (error) {
-    base::Value id;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), false,
-                            "", false);
-  }
+      GetProviderErrorDictionary(error, error_message);
+  std::move(callback).Run(std::move(id), std::move(*formed_response), true, "",
+                          false);
 }
 
-std::unique_ptr<base::Value> BraveWalletProviderImpl::RequestBaseValue(
+void BraveWalletProviderImpl::CommonRequestOrSendAsync(
     base::Value input_value,
     const std::string& origin,
     mojom::CoinType coin,
-    bool* error,
     RequestCallback callback) {
-  DCHECK(error);
-  mojom::ProviderError code = mojom::ProviderError::kUnsupportedMethod;
-  std::string message = "Generic processing error";
-  base::Value formed_response;
-  if (!CommonRequestOrSendAsync(std::move(input_value), origin, coin, &code,
-                                &message, std::move(callback))) {
-    *error = true;
-    return GetProviderErrorDictionary(code, message);
-  }
-
-  return base::Value::ToUniquePtrValue(formed_response.Clone());
-}
-
-bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
-    base::Value input_value,
-    const std::string& origin,
-    mojom::CoinType coin,
-    mojom::ProviderError* error,
-    std::string* error_message,
-    RequestCallback callback) {
+  mojom::ProviderError error = mojom::ProviderError::kUnsupportedMethod;
+  std::string error_message = "Generic processing error";
   DCHECK(json_rpc_service_);
   std::string input_json;
-  if (!base::JSONWriter::Write(input_value, &input_json) || input_json.empty())
-    return false;
+  if (!base::JSONWriter::Write(input_value, &input_json) ||
+      input_json.empty()) {
+    SendErrorOnRequest(error, error_message, std::move(callback),
+                       base::Value());
+    return;
+  }
 
   std::string normalized_json_request;
-  if (!NormalizeEthRequest(input_json, &normalized_json_request))
-    return false;
+  if (!NormalizeEthRequest(input_json, &normalized_json_request)) {
+    SendErrorOnRequest(error, error_message, std::move(callback),
+                       base::Value());
+    return;
+  }
 
   base::Value id;
   std::string method;
-  if (!GetEthJsonRequestInfo(normalized_json_request, &id, &method, nullptr))
-    return false;
+  if (!GetEthJsonRequestInfo(normalized_json_request, &id, &method, nullptr)) {
+    SendErrorOnRequest(error, error_message, std::move(callback),
+                       base::Value());
+    return;
+  }
 
   if (method == kEthAccounts) {
     GetAllowedAccounts(
@@ -838,8 +833,11 @@ bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
                      std::move(id));
   } else if (method == kSwitchEthereumChainMethod) {
     std::string chain_id;
-    if (!ParseSwitchEthereumChainParams(normalized_json_request, &chain_id))
-      return false;
+    if (!ParseSwitchEthereumChainParams(normalized_json_request, &chain_id)) {
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
+    }
     SwitchEthereumChain(chain_id, std::move(callback), std::move(id));
   } else if (method == kEthSendTransaction) {
     json_rpc_service_->GetNetwork(
@@ -852,11 +850,15 @@ bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
     std::string message;
     if (method == kPersonalSign &&
         !ParsePersonalSignParams(normalized_json_request, &address, &message)) {
-      return false;
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
     } else if (method == kEthSign &&
                !ParseEthSignParams(normalized_json_request, &address,
                                    &message)) {
-      return false;
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
     }
     SignMessage(address, message, std::move(callback), std::move(id));
   } else if (method == kPersonalEcRecover) {
@@ -864,7 +866,9 @@ bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
     std::string signature;
     if (!ParsePersonalEcRecoverParams(normalized_json_request, &message,
                                       &signature)) {
-      return false;
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
     }
     RecoverAddress(message, signature, std::move(callback), std::move(id));
   } else if (method == kEthSignTypedDataV3 || method == kEthSignTypedDataV4) {
@@ -878,14 +882,20 @@ bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
       if (!ParseEthSignTypedDataParams(normalized_json_request, &address,
                                        &message, &domain,
                                        EthSignTypedDataHelper::Version::kV4,
-                                       &domain_hash_out, &primary_hash_out))
-        return false;
+                                       &domain_hash_out, &primary_hash_out)) {
+        SendErrorOnRequest(error, error_message, std::move(callback),
+                           std::move(id));
+        return;
+      }
     } else {
       if (!ParseEthSignTypedDataParams(normalized_json_request, &address,
                                        &message, &domain,
                                        EthSignTypedDataHelper::Version::kV3,
-                                       &domain_hash_out, &primary_hash_out))
-        return false;
+                                       &domain_hash_out, &primary_hash_out)) {
+        SendErrorOnRequest(error, error_message, std::move(callback),
+                           std::move(id));
+        return;
+      }
     }
 
     SignTypedMessage(address, message, domain_hash_out, primary_hash_out,
@@ -893,20 +903,28 @@ bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
   } else if (method == kWalletWatchAsset || method == kMetamaskWatchAsset) {
     mojom::BlockchainTokenPtr token;
     if (!ParseWalletWatchAssetParams(normalized_json_request, &token,
-                                     error_message)) {
-      if (error_message && !error_message->empty() && error)
-        *error = mojom::ProviderError::kInvalidParams;
-      return false;
+                                     &error_message)) {
+      if (!error_message.empty())
+        error = mojom::ProviderError::kInvalidParams;
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
     }
     AddSuggestToken(std::move(token), std::move(callback), std::move(id));
   } else if (method == kRequestPermissionsMethod) {
     std::vector<std::string> restricted_methods;
     if (!ParseRequestPermissionsParams(normalized_json_request,
-                                       &restricted_methods))
-      return false;
+                                       &restricted_methods)) {
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
+    }
     if (std::find(restricted_methods.begin(), restricted_methods.end(),
-                  "eth_accounts") == restricted_methods.end())
-      return false;
+                  "eth_accounts") == restricted_methods.end()) {
+      SendErrorOnRequest(error, error_message, std::move(callback),
+                         std::move(id));
+      return;
+    }
 
     RequestEthereumPermissions(std::move(callback), std::move(id), method,
                                origin);
@@ -920,25 +938,17 @@ bool BraveWalletProviderImpl::CommonRequestOrSendAsync(
     json_rpc_service_->Request(normalized_json_request, true, std::move(id),
                                coin, std::move(callback));
   }
-
-  return true;
 }
 
 void BraveWalletProviderImpl::Send(const std::string& method,
                                    base::Value params,
                                    const std::string& origin,
                                    SendCallback callback) {
-  bool error = false;
   std::unique_ptr<base::Value> params_ptr =
       base::Value::ToUniquePtrValue(std::move(params));
-  std::unique_ptr<base::Value> formed_response = RequestBaseValue(
+  CommonRequestOrSendAsync(
       std::move(*GetJsonRpcRequest(method, std::move(params_ptr))), origin,
-      mojom::CoinType::ETH, &error, std::move(callback));
-  if (error) {
-    base::Value id;
-    std::move(callback).Run(std::move(id), std::move(*formed_response), false,
-                            "", false);
-  }
+      mojom::CoinType::ETH, std::move(callback));
 }
 
 void BraveWalletProviderImpl::RequestEthereumPermissions(
@@ -987,6 +997,10 @@ void BraveWalletProviderImpl::OnRequestEthereumPermissions(
   }
 
   bool success = error == mojom::ProviderError::kSuccess;
+  std::string first_allowed_account;
+  if (accounts.size() > 0) {
+    first_allowed_account = accounts[0];
+  }
   if (success && accounts.empty()) {
     formed_response =
         GetProviderErrorDictionary(mojom::ProviderError::kUserRejectedRequest,
@@ -1005,7 +1019,7 @@ void BraveWalletProviderImpl::OnRequestEthereumPermissions(
   reject = !success || accounts.empty();
 
   std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
-                          "", true);
+                          first_allowed_account, true);
 }
 
 void BraveWalletProviderImpl::GetAllowedAccounts(

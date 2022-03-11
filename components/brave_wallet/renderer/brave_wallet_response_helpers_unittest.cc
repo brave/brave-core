@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/renderer/brave_wallet_response_helpers.h"
+#include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_wallet {
