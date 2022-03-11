@@ -307,6 +307,9 @@ public class AssetDetailActivity
     public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {}
 
     @Override
+    public void OnTxPending(String accountName, String txId) {}
+
+    @Override
     public void onTransactionStatusChanged(TransactionInfo txInfo) {
         mWalletTxCoinAdapter.onTransactionUpdate(txInfo);
     }
