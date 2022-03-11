@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index f636ee594d0bcc7e63abad7413492da1631d9d86..69005625686c1479e736c6c784da6d9c21d9281c 100644
+index 0ee309c41a60b89d63c1d9b47c5bae7917e459b0..874e0062b392dbabefc72c416bf4ebbe52c8dc77 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -267,6 +267,7 @@ android_resources("chrome_app_java_resources") {
@@ -8,14 +8,14 @@ index f636ee594d0bcc7e63abad7413492da1631d9d86..69005625686c1479e736c6c784da6d9c
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources resource_overlay = true
  }
-
+ 
  if (enable_vr) {
 @@ -648,6 +649,7 @@ android_library("chrome_java") {
    ]
-
+ 
    deps += feed_deps
 +  deps += brave_chrome_java_deps
-
+ 
    srcjar_deps = [
      ":autofill_verification_status_generated_enum",
 @@ -677,6 +679,7 @@ android_library("chrome_java") {
@@ -23,7 +23,7 @@ index f636ee594d0bcc7e63abad7413492da1631d9d86..69005625686c1479e736c6c784da6d9c
      "//net:effective_connection_type_java",
    ]
 +  srcjar_deps += brave_chrome_java_srcjar_deps
-
+ 
    # From java_sources.gni.
    sources = chrome_java_sources + [ app_hooks_impl ]
 @@ -799,6 +802,7 @@ java_group("chrome_all_java") {
@@ -32,7 +32,7 @@ index f636ee594d0bcc7e63abad7413492da1631d9d86..69005625686c1479e736c6c784da6d9c
    }
 +  deps += brave_chrome_all_java_deps
  }
-
+ 
  # This is a list of all base module jni headers. New features should add their
 @@ -846,6 +850,7 @@ group("jni_headers") {
      "//components/ukm/android:jni_headers",
@@ -40,7 +40,7 @@ index f636ee594d0bcc7e63abad7413492da1631d9d86..69005625686c1479e736c6c784da6d9c
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
-
+ 
  action_with_pydeps("chrome_android_java_google_api_keys_srcjar") {
 @@ -2236,6 +2241,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
@@ -55,6 +55,6 @@ index f636ee594d0bcc7e63abad7413492da1631d9d86..69005625686c1479e736c6c784da6d9c
      "//third_party/androidx:androidx_browser_browser_java",
    ]
 +  sources += brave_java_base_module_sources deps += brave_java_base_module_deps
-
+ 
    # More deps for DFMs.
    if (dfmify_dev_ui) {

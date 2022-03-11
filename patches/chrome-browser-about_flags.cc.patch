@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 29ca96afb505284dab74f5de18a86367093a7143..4f61f20d31cf91e57b73f7d4fc068e15c61d48cf 100644
+index e6552612669ebac289674c7fc9e2548b6f7d6323..5137401e370675b63c6a3400e90192474d54dc99 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -2856,6 +2856,7 @@ const FeatureEntry::FeatureVariation kTabStripImprovementsTabWidthVariations[] =
+@@ -2915,6 +2915,7 @@ const FeatureEntry::FeatureVariation kTabStripImprovementsTabWidthVariations[] =
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {

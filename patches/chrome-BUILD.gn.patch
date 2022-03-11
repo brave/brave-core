@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 36672a4c528efc9ef96338f502810e77867af47d..2ca63e118e0d261c7bc25e498f4212c36d80968b 100644
+index df223a7e66211a3494f08af058ac314fdca22e58..e1bd023b9a5817d5b2dd9be946734ee6e74fe200 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -170,6 +170,7 @@ if (!is_android && !is_mac) {
@@ -85,7 +85,7 @@ index 36672a4c528efc9ef96338f502810e77867af47d..2ca63e118e0d261c7bc25e498f4212c3
      "//build:branding_buildflags",
      "//build:chromeos_buildflags",
      "//chrome/browser",
-@@ -1452,7 +1461,7 @@ group("dependencies") {
+@@ -1451,7 +1460,7 @@ group("dependencies") {
  
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
@@ -94,7 +94,7 @@ index 36672a4c528efc9ef96338f502810e77867af47d..2ca63e118e0d261c7bc25e498f4212c3
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1506,6 +1515,7 @@ group("resources") {
+@@ -1505,6 +1514,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
