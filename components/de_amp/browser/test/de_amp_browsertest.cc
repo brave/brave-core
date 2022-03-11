@@ -259,6 +259,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, BackAndForwardNavigatesAlsoRedirect) {
 class DeAmpFeatureFlagOffBrowserTest : public DeAmpBrowserTest {
  public:
   DeAmpFeatureFlagOffBrowserTest() {
+    feature_list_.Reset();
     feature_list_.InitAndDisableFeature(de_amp::features::kBraveDeAMP);
   }
 };
