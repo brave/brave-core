@@ -21,13 +21,13 @@
   <!-- Subtitles of the Chrome OS version of the management page -->
  <if expr="chromeos">
     <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED" desc="Title of chrome://management page, shows when device is managed by an unknown manager">
-      Your <ph name="DEVICE_NAME">$1<ex>Bravebook</ex></ph> is managed
+      Your <ph name="DEVICE_NAME">$1<ex>Chromebook</ex></ph> is managed
     </message>
     <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED_BY" desc="Title of chrome://management page, shows when device managed by a known manager. MANAGER can be a domain or an email address.">
-      Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is managed by <ph name="MANAGER">$2<ex>example.com</ex></ph>
+      Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> is managed by <ph name="MANAGER">$2<ex>example.com</ex></ph>
     </message>
     <message name="IDS_MANAGEMENT_NOT_MANAGED_SUBTITLE" desc="Message indicating that the device is not managed">
-      Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is not managed
+      Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> is not managed
     </message>
   </if>
 
@@ -165,7 +165,7 @@
 
     <!-- Chrome OS update required end-of-life reached section -->
     <message name="IDS_MANAGEMENT_UPDATE_REQUIRED_EOL_MESSAGE" desc="Message indicating that the device needs to be returned back before the deadline because the device has reached end-of-life and an update is required as per policy.">
-      <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph>.
+      <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>.
     </message>
     <message name="IDS_MANAGEMENT_UPDATE_REQUIRED_EOL_ADMIN_MESSAGE_TITLE" desc="Message indicating return instructions from the device administrator because the device cannot be updated as it has reached its end of life.">
       Instructions from your device administrator:
@@ -265,21 +265,21 @@
     Page is visited
   </message>
   <message name="IDS_MANAGEMENT_FILE_ATTACHED_VISIBLE_DATA" desc="Description of the visible data for the file attachment scanning feature.">
-    Files you upload or attach are sent to Brave Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware.
+    Files you upload or attach are sent to Google Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware.
   </message>
   <message name="IDS_MANAGEMENT_FILE_DOWNLOADED_VISIBLE_DATA" desc="Description of the visible data for the file download scanning feature.">
-    Files you download are sent to Brave Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware.
+    Files you download are sent to Google Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware.
   </message>
   <message name="IDS_MANAGEMENT_TEXT_ENTERED_VISIBLE_DATA" desc="Description of the visible data for the text entry scanning feature.">
-    Text you paste or attach is sent to Brave Cloud or third parties for analysis. For example, it might be scanned for sensitive data.
+    Text you paste or attach is sent to Google Cloud or third parties for analysis. For example, it might be scanned for sensitive data.
   </message>
   <message name="IDS_MANAGEMENT_PAGE_PRINTED_VISIBLE_DATA" desc="Description of the visible data for the page print scanning feature.">
-    The content of pages you print is sent to Brave Cloud or third parties for analysis. For example, it might be scanned for sensitive data.
+    The content of pages you print is sent to Google Cloud or third parties for analysis. For example, it might be scanned for sensitive data.
   </message>
   <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_VISIBLE_DATA" desc="Description of the visible data for the Connectors reporting feature">
     When security events are flagged by Brave, relevant data about the events is sent to your administrator. This can include URLs of pages you visit in Brave, file names or metadata, and the username that you use to sign in to web based applications, your device and Brave.
   </message>
   <message name="IDS_MANAGEMENT_PAGE_VISITED_VISIBLE_DATA" desc="Description of the visible data for the real time URL check feature.">
-    URLs of pages you visit are sent to Brave Cloud or third parties for analysis. For example, they might be scanned to detect unsafe websites.
+    URLs of pages you visit are sent to Google Cloud or third parties for analysis. For example, they might be scanned to detect unsafe websites.
   </message>
 </grit-part>

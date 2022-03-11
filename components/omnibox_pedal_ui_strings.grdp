@@ -11,7 +11,7 @@
     Clear your browsing history, cookies, cache, and more in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CLEAR_BROWSING_DATA_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CLEAR_BROWSING_DATA.">
-    <ph name="CLEAR_BROWSING_DATA_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to Clear your browsing history, cookies, cache, and more in Brave settings
+    <ph name="CLEAR_BROWSING_DATA_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to Clear your browsing history, cookies, cache, and more in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CLEAR_BROWSING_DATA" desc="Announcement when pedal action button is focused, CLEAR_BROWSING_DATA">
     Clear browsing data button, press Enter to clear your browsing history, cookies, cache, and more in Brave settings
@@ -24,7 +24,7 @@
     View and manage your passwords in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_PASSWORDS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_PASSWORDS.">
-    <ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to view and manage your passwords in Brave settings
+    <ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to view and manage your passwords in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_PASSWORDS" desc="Announcement when pedal action button is focused, MANAGE_PASSWORDS">
     Manage passwords button, press Enter to view and manage your passwords in Brave settings
@@ -37,7 +37,7 @@
     Manage your payments and credit card info in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to UPDATE_CREDIT_CARD.">
-    <ph name="UPDATE_CREDIT_CARD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage your payments and credit card info in Brave settings
+    <ph name="UPDATE_CREDIT_CARD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage your payments and credit card info in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD" desc="Announcement when pedal action button is focused, UPDATE_CREDIT_CARD">
     Manage payment methods button, press Enter to manage your payments and credit card info in Brave settings
@@ -50,7 +50,7 @@
     Open a new Private window to browse privately
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to LAUNCH_INCOGNITO.">
-    <ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to open a new Private window to browse privately
+    <ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to open a new Private window to browse privately
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO" desc="Announcement when pedal action button is focused, LAUNCH_INCOGNITO">
     Open Private Window button, press Enter to open a new Private window to browse privately
@@ -63,7 +63,7 @@
     Translate this page with Brave Translate
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_TRANSLATE_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to TRANSLATE.">
-    <ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to translate this page with Brave Translate
+    <ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to translate this page with Brave Translate
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_TRANSLATE" desc="Announcement when pedal action button is focused, TRANSLATE">
     Translate page button, press Enter to translate this page with Brave Translate
@@ -76,7 +76,7 @@
     Update Brave from your Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_UPDATE_CHROME_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to UPDATE_CHROME.">
-    <ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to update Brave from your Brave settings
+    <ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to update Brave from your Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_UPDATE_CHROME" desc="Announcement when pedal action button is focused, UPDATE_CHROME">
     Update Brave button, press Enter to update Brave from your Brave settings
@@ -89,7 +89,7 @@
     Run a safety check in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_RUN_CHROME_SAFETY_CHECK_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to RUN_CHROME_SAFETY_CHECK.">
-    <ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to run a safety check in Brave settings
+    <ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to run a safety check in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_RUN_CHROME_SAFETY_CHECK" desc="Announcement when pedal action button is focused, RUN_CHROME_SAFETY_CHECK">
     Run Brave safety check button, press Enter to run a safety check in Brave settings
@@ -102,7 +102,7 @@
     Manage your Safe Browsing and more in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_SECURITY_SETTINGS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_SECURITY_SETTINGS.">
-    <ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage your Safe Browsing and more in Brave settings
+    <ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage your Safe Browsing and more in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_SECURITY_SETTINGS" desc="Announcement when pedal action button is focused, MANAGE_SECURITY_SETTINGS">
     Manage security settings button, press Enter to manage your Safe Browsing and more in Brave settings
@@ -115,7 +115,7 @@
     Manage your cookie preferences in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_COOKIES_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_COOKIES.">
-    <ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage your cookie preferences in Brave settings
+    <ph name="MANAGE_COOKIES_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage your cookie preferences in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_COOKIES" desc="Announcement when pedal action button is focused, MANAGE_COOKIES">
     Manage cookies button, press Enter to manage your cookie preferences in Brave settings
@@ -128,7 +128,7 @@
     Add and manage addresses in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_ADDRESSES_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_ADDRESSES.">
-    <ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to add and manage addresses in Brave settings
+    <ph name="MANAGE_ADDRESSES_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to add and manage addresses in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_ADDRESSES" desc="Announcement when pedal action button is focused, MANAGE_ADDRESSES">
     Manage addresses button, press Enter to add and manage addresses in Brave settings
@@ -141,7 +141,7 @@
     Manage what info you sync in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_SYNC_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_SYNC.">
-    <ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage what info you sync in Brave settings
+    <ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage what info you sync in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_SYNC" desc="Announcement when pedal action button is focused, MANAGE_SYNC">
     Manage sync button, press Enter to manage what info you sync in Brave settings
@@ -154,7 +154,7 @@
     Manage permissions and data stored across sites in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_SITE_SETTINGS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_SITE_SETTINGS.">
-    <ph name="MANAGE_SITE_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage permissions and data stored across sites in Brave settings
+    <ph name="MANAGE_SITE_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage permissions and data stored across sites in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_SITE_SETTINGS" desc="Announcement when pedal action button is focused, MANAGE_SITE_SETTINGS">
     Manage site settings button, press Enter to manage permissions and data stored across sites in Brave settings
@@ -167,7 +167,7 @@
     Create a new Brave Doc quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_DOC_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CREATE_GOOGLE_DOC.">
-    <ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new Brave Doc quickly
+    <ph name="CREATE_GOOGLE_DOC_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new Brave Doc quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_DOC" desc="Announcement when pedal action button is focused, CREATE_GOOGLE_DOC">
     Create doc button, press Enter to create a new Brave Doc quickly
@@ -180,7 +180,7 @@
     Create a new Brave Sheet quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_SHEET_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CREATE_GOOGLE_SHEET.">
-    <ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new Brave Sheet quickly
+    <ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new Brave Sheet quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_SHEET" desc="Announcement when pedal action button is focused, CREATE_GOOGLE_SHEET">
     Create sheet button, press Enter to create a new Brave Sheet quickly
@@ -193,7 +193,7 @@
     Create a new Brave presentation in Slides quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_SLIDE_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CREATE_GOOGLE_SLIDE.">
-    <ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new Brave presentation in Slides quickly
+    <ph name="CREATE_GOOGLE_SLIDE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new Brave presentation in Slides quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_SLIDE" desc="Announcement when pedal action button is focused, CREATE_GOOGLE_SLIDE">
     Create presentation button, press Enter to create a new Brave presentation in Slides quickly
@@ -206,7 +206,7 @@
     Create a new event in Brave Calendar quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_CALENDAR_EVENT_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CREATE_GOOGLE_CALENDAR_EVENT.">
-    <ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new event in Brave Calendar quickly
+    <ph name="CREATE_GOOGLE_CALENDAR_EVENT_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new event in Brave Calendar quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_CALENDAR_EVENT" desc="Announcement when pedal action button is focused, CREATE_GOOGLE_CALENDAR_EVENT">
     Create event button, press Enter to create a new event in Brave Calendar quickly
@@ -219,7 +219,7 @@
     Create a new site in Brave Sites quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_SITE_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CREATE_GOOGLE_SITE.">
-    <ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new site in Brave Sites quickly
+    <ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new site in Brave Sites quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_SITE" desc="Announcement when pedal action button is focused, CREATE_GOOGLE_SITE">
     Create site button, press Enter to create a new site in Brave Sites quickly
@@ -232,7 +232,7 @@
     Create a new note in Brave Keep quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_KEEP_NOTE_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CREATE_GOOGLE_KEEP_NOTE.">
-    <ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new note in Brave Keep quickly
+    <ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new note in Brave Keep quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_KEEP_NOTE" desc="Announcement when pedal action button is focused, CREATE_GOOGLE_KEEP_NOTE">
     Create note button, press Enter to create a new note in Brave Keep quickly
@@ -245,7 +245,7 @@
     Create a new form in Brave Forms quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_FORM_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CREATE_GOOGLE_FORM.">
-    <ph name="CREATE_GOOGLE_FORM_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new form in Brave Forms quickly
+    <ph name="CREATE_GOOGLE_FORM_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to create a new form in Brave Forms quickly
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CREATE_GOOGLE_FORM" desc="Announcement when pedal action button is focused, CREATE_GOOGLE_FORM">
     Create form button, press Enter to create a new form in Brave Forms quickly
@@ -258,7 +258,7 @@
     Learn about Brave features
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_SEE_CHROME_TIPS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to SEE_CHROME_TIPS.">
-    <ph name="SEE_CHROME_TIPS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to learn about Brave features
+    <ph name="SEE_CHROME_TIPS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to learn about Brave features
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_SEE_CHROME_TIPS" desc="Announcement when pedal action button is focused, SEE_CHROME_TIPS">
     See Brave tips button, press Enter to learn about Brave features
@@ -271,7 +271,7 @@
     Manage your info, privacy, and security in your Brave sync chain
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_GOOGLE_ACCOUNT_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_GOOGLE_ACCOUNT.">
-    <ph name="MANAGE_GOOGLE_ACCOUNT_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage your info, privacy, and security in your Brave sync chain
+    <ph name="MANAGE_GOOGLE_ACCOUNT_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage your info, privacy, and security in your Brave sync chain
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_GOOGLE_ACCOUNT" desc="Announcement when pedal action button is focused, MANAGE_GOOGLE_ACCOUNT">
     Manage Brave sync chain, press Enter to manage your info, privacy, and security in your Brave sync chain
@@ -284,7 +284,7 @@
     Change your Brave sync chain password
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CHANGE_GOOGLE_PASSWORD_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CHANGE_GOOGLE_PASSWORD.">
-    <ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to change your Brave sync chain password
+    <ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to change your Brave sync chain password
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CHANGE_GOOGLE_PASSWORD" desc="Announcement when pedal action button is focused, CHANGE_GOOGLE_PASSWORD">
     Change Brave password button, press Enter to change your Brave sync chain password
@@ -297,7 +297,7 @@
     Close all Private windows that are currently open
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CLOSE_INCOGNITO_WINDOWS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CLOSE_INCOGNITO_WINDOWS.">
-    <ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to close all Private windows that are currently open
+    <ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to close all Private windows that are currently open
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CLOSE_INCOGNITO_WINDOWS" desc="Announcement when pedal action button is focused, CLOSE_INCOGNITO_WINDOWS">
     Close Private windows button, press Enter to close all Private windows that are currently open
@@ -310,7 +310,7 @@
     Play the Dino Run game in Brave
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_PLAY_CHROME_DINO_GAME_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to PLAY_CHROME_DINO_GAME.">
-    <ph name="PLAY_CHROME_DINO_GAME_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to play the Dino Run game in Brave
+    <ph name="PLAY_CHROME_DINO_GAME_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to play the Dino Run game in Brave
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_PLAY_CHROME_DINO_GAME" desc="Announcement when pedal action button is focused, PLAY_CHROME_DINO_GAME">
     Play Brave Dino game button, press Enter to play the Dino Run game in Brave
@@ -323,7 +323,7 @@
     Find, secure, or erase your device
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_FIND_MY_PHONE_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to FIND_MY_PHONE.">
-    <ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press Tab then Enter to Find your device in the Brave sync chain
+    <ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press Tab then Enter to Find your device in the Brave sync chain
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_FIND_MY_PHONE" desc="Announcement when pedal action button is focused, FIND_MY_PHONE">
     Find my device button, press Enter to visit find your device in the Brave sync chain
@@ -336,7 +336,7 @@
     Manage Brave privacy settings in your Brave sync chain
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_GOOGLE_PRIVACY_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_GOOGLE_PRIVACY.">
-    <ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press Tab then Enter to manage your Brave sync chain privacy settings
+    <ph name="MANAGE_GOOGLE_PRIVACY_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press Tab then Enter to manage your Brave sync chain privacy settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_GOOGLE_PRIVACY" desc="Announcement when pedal action button is focused, MANAGE_GOOGLE_PRIVACY">
     Manage Brave Privacy settings button, press Enter to visit your Brave sync chain privacy settings
@@ -349,7 +349,7 @@
     Manage your Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROME_SETTINGS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_CHROME_SETTINGS.">
-    <ph name="MANAGE_CHROME_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press Tab then Enter to manage your Brave settings
+    <ph name="MANAGE_CHROME_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press Tab then Enter to manage your Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROME_SETTINGS" desc="Announcement when pedal action button is focused, MANAGE_CHROME_SETTINGS">
     Manage Brave settings button, press Enter to visit your Brave settings
@@ -362,7 +362,7 @@
     Manage files you have downloaded in Brave
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROME_DOWNLOADS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_CHROME_DOWNLOADS.">
-    <ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press Tab then Enter to manage files you have downloaded in Brave
+    <ph name="MANAGE_CHROME_DOWNLOADS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press Tab then Enter to manage files you have downloaded in Brave
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROME_DOWNLOADS" desc="Announcement when pedal action button is focused, MANAGE_CHROME_DOWNLOADS">
     Manage downloads in Brave button, press Enter to manage files you have downloaded in Brave
@@ -375,7 +375,7 @@
     View and manage your browsing history in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_VIEW_CHROME_HISTORY_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to VIEW_CHROME_HISTORY.">
-    <ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to view your browsing history in Brave
+    <ph name="VIEW_CHROME_HISTORY_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to view your browsing history in Brave
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_VIEW_CHROME_HISTORY" desc="Announcement when pedal action button is focused, VIEW_CHROME_HISTORY">
     View your Brave history button, press Enter to view and manage your browsing history in Brave settings
@@ -388,7 +388,7 @@
     Share this tab by sharing the link, creating a QR code, casting, and more
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_SHARE_THIS_PAGE_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to SHARE_THIS_PAGE.">
-    <ph name="SHARE_THIS_PAGE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to share this tab by sharing the link, creating a QR code, casting, and more
+    <ph name="SHARE_THIS_PAGE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to share this tab by sharing the link, creating a QR code, casting, and more
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_SHARE_THIS_PAGE" desc="Announcement when pedal action button is focused, SHARE_THIS_PAGE">
     Share this tab button, press Enter to share this tab by sharing the link, creating a QR code, casting, and more
@@ -401,7 +401,7 @@
     Personalize your accessibility tools in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROME_ACCESSIBILITY_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_CHROME_ACCESSIBILITY.">
-    <ph name="MANAGE_CHROME_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to personalize your accessibility tools in Brave settings
+    <ph name="MANAGE_CHROME_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to personalize your accessibility tools in Brave settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROME_ACCESSIBILITY" desc="Announcement when pedal action button is focused, MANAGE_CHROME_ACCESSIBILITY">
     Manage accessibility settings button, press Enter to personalize your accessibility tools in Brave settings
@@ -414,7 +414,7 @@
     Customize font sizes and typefaces in Brave
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CUSTOMIZE_CHROME_FONTS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CUSTOMIZE_CHROME_FONTS.">
-    <ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to customize font sizes and typefaces in Brave
+    <ph name="CUSTOMIZE_CHROME_FONTS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to customize font sizes and typefaces in Brave
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CUSTOMIZE_CHROME_FONTS" desc="Announcement when pedal action button is focused, CUSTOMIZE_CHROME_FONTS">
     Customize fonts in Brave button, press Enter to customize font sizes and typefaces in Brave
@@ -427,7 +427,7 @@
     Customize the look of your browser
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROME_THEMES_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_CHROME_THEMES.">
-    <ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to customize the look of your browser
+    <ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to customize the look of your browser
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROME_THEMES" desc="Announcement when pedal action button is focused, MANAGE_CHROME_THEMES">
     Customize Brave button, press Enter to customize the look of your browser
@@ -440,7 +440,7 @@
     Manage your default search engine and site search
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CUSTOMIZE_SEARCH_ENGINES_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CUSTOMIZE_SEARCH_ENGINES.">
-    <ph name="CUSTOMIZE_SEARCH_ENGINES_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to manage site search and your default search engine
+    <ph name="CUSTOMIZE_SEARCH_ENGINES_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to manage site search and your default search engine
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CUSTOMIZE_SEARCH_ENGINES" desc="Announcement when pedal action button is focused, CUSTOMIZE_SEARCH_ENGINES">
     Manage search engines button, press Enter to manage your default search engine and site search
@@ -453,7 +453,7 @@
     Personalize your accessibility tools in Chrome OS settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROMEOS_ACCESSIBILITY_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to MANAGE_CHROMEOS_ACCESSIBILITY.">
-    <ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to personalize your accessibility tools in Chrome OS settings
+    <ph name="MANAGE_CHROMEOS_ACCESSIBILITY_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to personalize your accessibility tools in Chrome OS settings
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_CHROMEOS_ACCESSIBILITY" desc="Announcement when pedal action button is focused, MANAGE_CHROMEOS_ACCESSIBILITY">
     Manage accessibility settings button, Enter to personalize your accessibility tools in Chrome OS settings

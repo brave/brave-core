@@ -29,7 +29,7 @@
   <!-- Same as IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUFFIX but
        with "window" changed to "tab". -->
   <message name="IDS_ANDROID_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to LAUNCH_INCOGNITO.">
-    <ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to open a new Private tab to browse privately
+    <ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to open a new Private tab to browse privately
   </message>
   <!-- Same as IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO but
        with "window" changed to "tab". -->
@@ -172,7 +172,7 @@
        These are parameterized on the text being completed into the omnibox.
   -->
   <message name="IDS_ACC_AUTOCOMPLETE_HISTORY" desc="Text for screenreaders describing a URL from history.">
-    <ph name="LOCATION_TITLE">$2<ex>The Brave Projects</ex></ph> <ph name="SHORT_URL">$1<ex>www.chromium.org</ex> location from history</ph>
+    <ph name="LOCATION_TITLE">$2<ex>The Chromium Projects</ex></ph> <ph name="SHORT_URL">$1<ex>www.chromium.org</ex> location from history</ph>
   </message>
   <message name="IDS_ACC_AUTOCOMPLETE_SEARCH_HISTORY" desc="Text for screenreaders describing a search from history.">
     <ph name="TEXT">$1<ex>dogs</ex></ph> search from history
@@ -190,7 +190,7 @@
     <ph name="QUERY">$1<ex>weather in los angeles</ex></ph>, answer, <ph name="ANSWER">$2<ex>sunny and 84 degrees</ex></ph>
   </message>
   <message name="IDS_ACC_AUTOCOMPLETE_BOOKMARK" desc="Text for screenreaders describing a URL from a bookmark.">
-    <ph name="LOCATION_TITLE">$2<ex>The Brave Projects</ex></ph> <ph name="SHORT_URL">$1<ex>www.chromium.org</ex> bookmark</ph>
+    <ph name="LOCATION_TITLE">$2<ex>The Chromium Projects</ex></ph> <ph name="SHORT_URL">$1<ex>www.chromium.org</ex> bookmark</ph>
   </message>
   <message name="IDS_ACC_AUTOCOMPLETE_CLIPBOARD_IMAGE" desc="Text for screenreaders describing an image from a clipboard.">
     Search for clipboard image
@@ -206,25 +206,25 @@
   </message>
   <!-- Supplement accessibility label with item position, e.g. "1 of 3" -->
   <message name="IDS_ACC_AUTOCOMPLETE_N_OF_M" desc="Text for screenreaders describing the current match's position in the list of suggestions.">
-    <ph name="FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, <ph name="MATCH_POSITION">$2<ex>2</ex></ph> of <ph name="NUM_MATCHES">$3<ex>3</ex></ph>
+    <ph name="FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, <ph name="MATCH_POSITION">$2<ex>2</ex></ph> of <ph name="NUM_MATCHES">$3<ex>3</ex></ph>
   </message>
   <!-- Accessibility suffix for suggestions with a tab switch match. Commas are important as they add pauses. -->
   <message name="IDS_ACC_TAB_SWITCH_SUFFIX" desc="Suffix for tab switch suggestions to explain keystroke used to switch.">
-    <ph name="TAB_SWITCH_SUFFIX">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, currently open, press Tab then Enter to switch to the open tab
+    <ph name="TAB_SWITCH_SUFFIX">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, currently open, press Tab then Enter to switch to the open tab
   </message>
   <!-- Accessibility prefix for suggestions where the tab switch button is focused. Commas are important as they add pauses. -->
   <message name="IDS_ACC_TAB_SWITCH_BUTTON_FOCUSED_PREFIX" desc="Announcement when tab switch button focused.">
-    Tab switch button, press Enter to switch to the open tab, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>
+    Tab switch button, press Enter to switch to the open tab, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>
   </message>
   <message name="IDS_ACC_TAB_SWITCH_BUTTON" desc="Announcement when tab switch button focused.">
     Tab switch button, press Enter to switch to this tab
   </message>
 
   <message name="IDS_ACC_MULTIPLE_ACTIONS_SUFFIX" desc="Suffix for spoken suggestion description with multiple actions available (pedals, switch tab, keyword search) to indicate that this suggestion has multiple actions available.">
-    <ph name="MULTIPLE_ACTIONS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, multiple actions are available, press Tab to cycle through them
+    <ph name="MULTIPLE_ACTIONS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, multiple actions are available, press Tab to cycle through them
   </message>
   <message name="IDS_ACC_KEYWORD_SUFFIX" desc="Suffix for spoken keyword suggestion description to explain keystroke used to search.">
-    <ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to search
+    <ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to search
   </message>
   <message name="IDS_ACC_KEYWORD_MODE" desc="Announcement when entering keyword search mode.">
     Search mode, press Enter to search <ph name="KEYWORD_SUFFIX">$1<ex>Youtube</ex></ph>
@@ -232,10 +232,10 @@
 
   <!-- Accessibility suffix for suggestions when the remove button is focused. -->
   <message name="IDS_ACC_REMOVE_SUGGESTION_SUFFIX" desc="Suffix for suggestions with remove suggestion button to explain keystroke used to remove suggestion.">
-    <ph name="REMOVE_SUGGESTION_SUFFIX">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to Remove Suggestion.
+    <ph name="REMOVE_SUGGESTION_SUFFIX">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to Remove Suggestion.
   </message>
   <message name="IDS_ACC_REMOVE_SUGGESTION_FOCUSED_PREFIX" desc="Announcement when remove suggestion button is focused.">
-    Remove Suggestion button, press Enter to remove, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>
+    Remove Suggestion button, press Enter to remove, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>
   </message>
   <message name="IDS_ACC_REMOVE_SUGGESTION_BUTTON" desc="Announcement when remove suggestion button is focused.">
     Remove Suggestion button, press Enter to remove this suggestion

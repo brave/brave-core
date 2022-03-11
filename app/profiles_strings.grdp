@@ -674,7 +674,7 @@
         Can't delete this profile
       </message>
       <message name="IDS_PROFILE_PICKER_LACROS_PRIMARY_PROFILE_DELETION_WARNING" desc="Text of a dialog which explains that the profile the user is trying to delete cannot be deleted, because it is the default profile.">
-        <ph name="ACCOUNT_EMAIL">$1<ex>Jane.Doe@gmail.com</ex></ph> is the default account on your Bravebook
+        <ph name="ACCOUNT_EMAIL">$1<ex>Jane.Doe@gmail.com</ex></ph> is the default account on your Chromebook
       </message>
       <message name="IDS_PROFILE_PICKER_LACROS_PRIMARY_PROFILE_DELETION_WARNING_CONFIRMATION" desc="Text of a button below a dialog which explains that the profile the user is trying to delete cannot be deleted, because it is the default profile. By clicking the button, the user closes the this dialog.">
         Got it
@@ -683,7 +683,7 @@
         Delete this profile and browsing data?
       </message>
       <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE_LACROS" desc="Remove warning message shown for signed in profiles shown when the user selects remove from the 3 dotted menu">
-          This will permanently delete browsing data from this device. The Brave sync chains in this profile may be used by other apps on your Bravebook. You can remove these accounts in <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph><ph name="SETTING_SECTION">$1<ex>Settings</ex></ph> &gt; <ph name="ACCOUNTS_SECTION">$2<ex>Accounts</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
+          This will permanently delete browsing data from this device. The Brave sync chains in this profile may be used by other apps on your Chromebook. You can remove these accounts in <ph name="BEGIN_LINK">&lt;a is="action-link" target="_blank"&gt;</ph><ph name="SETTING_SECTION">$1<ex>Settings</ex></ph> &gt; <ph name="ACCOUNTS_SECTION">$2<ex>Accounts</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
     </if>
 

@@ -2,8 +2,8 @@
 <!-- Access Code Cast-specific strings (included from generated_resources.grd). -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
-  <message name="IDS_ACCESS_CODE_CAST_ACCESS_CODE_MESSAGE" desc="Text shown in the access code cast dialog that describes that the access code is found on a Bravecast device">
-    Enter the access code shown on the Bravecast or TV to start casting your screen.
+  <message name="IDS_ACCESS_CODE_CAST_ACCESS_CODE_MESSAGE" desc="Text shown in the access code cast dialog that describes that the access code is found on a Chromecast device">
+    Enter the access code shown on the Chromecast or TV to start casting your screen.
   </message>
   <message name="IDS_ACCESS_CODE_CAST_BACK" desc="Label for the 'back' button to return to the previous screen">
     Back
@@ -35,7 +35,7 @@
   <message name="IDS_ACCESS_CODE_CAST_ERROR_UNKNOWN" desc="Error message for an unknown casting error">
     Something went wrong. Try again later
   </message>
-  <message name="IDS_ACCESS_CODE_CAST_INPUT_ARIA_LABEL" is_accessibility_with_no_ui="true" desc="Label for the text box where users type the access code to start casting to a Bravecast device">
+  <message name="IDS_ACCESS_CODE_CAST_INPUT_ARIA_LABEL" is_accessibility_with_no_ui="true" desc="Label for the text box where users type the access code to start casting to a Chromecast device">
     Type the access code to start casting
   </message>
   <message name="IDS_ACCESS_CODE_CAST_SUBMIT" desc="Text for the button that when pressed submits an access code to attempt to start casting">

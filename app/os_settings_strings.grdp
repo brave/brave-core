@@ -30,11 +30,11 @@
   </message>
   <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_DAYS" desc="Banner displayed in OS settings page in case update is required by policy, but the device has reached end-of-life and the number of days remaining to return the device back to the manager is less than seven. MANAGER can be a domain or an email address.">
     {NUM_DAYS, plural,
-      =1 {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> today. <ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}
-      other {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> within {NUM_DAYS} days. <ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}}
+      =1 {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Chromebook</ex></ph> today. <ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}
+      other {<ph name="MANAGER">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Chromebook</ex></ph> within {NUM_DAYS} days. <ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}}
   </message>
   <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_ONE_WEEK" desc="Banner displayed in OS settings page in case update is required by policy, but the device has reached end-of-life and the number of days remaining to return the device back to the manager is equal to seven. MANAGER can be a domain or an email address.">
-    <ph name="MANAGER">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> within 1 week. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$3<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
+    <ph name="MANAGER">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph> within 1 week. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$3<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Settings Search Box -->
@@ -95,7 +95,7 @@
     Powerwash for added security
   </message>
   <message name="IDS_SETTINGS_ABOUT_TPM_FIRMWARE_UPDATE_DESCRIPTION" desc="Descriptive text shown alongside the line item on the about page that allows the user to trigger a device hardware reset and request installation of a TPM firmware update.">
-    This upgrade resets your Bravebook and removes current user data.
+    This upgrade resets your Chromebook and removes current user data.
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CHANGE_CHANNEL" desc="Button label for channel switch.">
     Change channel
@@ -188,16 +188,16 @@
     Name device
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_DONE_BTN_A11Y_LABEL" desc="The a11y label for the done button in the edit device name dialog">
-    Name device to <ph name="DEVICE_NAME">$1<ex>MyBravebook</ex></ph>
+    Name device to <ph name="DEVICE_NAME">$1<ex>MyChromebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_EDIT_BTN_A11Y_LABEL" desc="The a11y label for the edit button for device name on the detailed build into page">
     Change device name
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_DEVICE_NAME_EDIT_BTN_A11Y_DESCRIPTION" desc="The a11y description for the edit button for device name on the detailed build into page">
-    Current device name is <ph name="DEVICE_NAME">$1<ex>MyBravebook</ex></ph>
+    Current device name is <ph name="DEVICE_NAME">$1<ex>MyChromebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_UPGRADE_TRY_AGAIN" desc="Status label: Update check error (BraveOS/BraveOS)">
-    Couldn't update your Bravebook. Please try again later.
+    Couldn't update your Chromebook. Please try again later.
   </message>
   <message name="IDS_SETTINGS_UPGRADE_DOWNLOAD_ERROR" desc="Status label: Update check download error(BraveOS/BraveOS)">
     Couldn't download the update. Please try again later.
@@ -206,7 +206,7 @@
     Updates are blocked by your administrator
   </message>
   <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (BraveOS/BraveOS)">
-    Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is up to date
+    Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> is up to date
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_MANAGED_END_OF_LIFE_SUBTITLE" desc="Subtitle used for End of Life section on the Additional details subpage of the ABout page for managed users.">
     Updates are managed by your administrator
@@ -218,7 +218,7 @@
     This device stopped getting automatic software and security updates in <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_LAST_UPDATE_MESSAGE" desc="Message shown on the top level about page to inform the user that this device will no longer receive latest software updates.">
-    This is the last automatic software and security update for this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. To get future updates, upgrade to a newer model. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    This is the last automatic software and security update for this <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. To get future updates, upgrade to a newer model. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_DIAGNOSTICS" desc="Text of the button which allows the user to diagnose their device.">
     Diagnostics
@@ -304,10 +304,10 @@
     The fingerprint sensor is the top right-hand key on your keyboard. Touch it lightly with any finger.
   </message>
   <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_RIGHT_SIDE_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the right side of the chrome device. Only visible by screen reader software.">
-    The fingerprint sensor is on the right-hand side of your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Touch it lightly with any finger.
+    The fingerprint sensor is on the right-hand side of your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. Touch it lightly with any finger.
   </message>
   <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_LEFT_SIDE_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the left side of the chrome device. Only visible by screen reader software.">
-    The fingerprint sensor is on the left-hand side of your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Touch it lightly with any finger.
+    The fingerprint sensor is on the left-hand side of your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. Touch it lightly with any finger.
   </message>
 
   <!-- Languages and Inputs (OS settings) -->
@@ -336,7 +336,7 @@
     Change device language
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_DEVICE_LANGUAGE_DIALOG_DESCRIPTION" desc="Description for the dialog to change device language.">
-    You need to restart your Bravebook to change the device language. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    You need to restart your Chromebook to change the device language. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_SELECTED_DEVICE_LANGUAGE_INSTRUCTION" desc="Instruction read by screen reader when users can unselect a language.">
     <ph name="LANGUAGE">$1<ex>English</ex></ph> selected. Press Search plus Space to unselect.
@@ -725,14 +725,14 @@
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_TITLE" desc="Label for the radio button group of ambient mode topic source, where the screen contents come from.">
     Background
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS" desc="Label for the radio button to choose the topic source from Brave Photos. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
-    Brave Photos
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS" desc="Label for the radio button to choose the topic source from Google Photos. The radio button allows the user to set Google Photos for ambient mode, which shows photos to the user when their device is idle.">
+    Google Photos
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESC" desc="Description for the radio button to choose the topic source from Brave Photos. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESC" desc="Description for the radio button to choose the topic source from Google Photos. The radio button allows the user to set Google Photos for ambient mode, which shows photos to the user when their device is idle.">
     Choose your favorite photos and albums
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESC_NO_ALBUM" desc="Description for the radio button to choose the topic source from Brave Photos when there is no album. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
-    To create albums, go to Brave Photos
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESC_NO_ALBUM" desc="Description for the radio button to choose the topic source from Google Photos when there is no album. The radio button allows the user to set Google Photos for ambient mode, which shows photos to the user when their device is idle.">
+    To create albums, go to Google Photos
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_ART_GALLERY" desc="Label for the radio button to choose the topic source from art gallery. The radio button allows the user to set Art gallery for ambient mode, which shows photos to the user when their device is idle.">
     Art gallery
@@ -741,19 +741,19 @@
     Select curated artwork and images
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_SELECTED_ROW" desc="A11y label for the selected topic source row in ambient mode.">
-    <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> <ph name="TOPIC_SOURCE_DESC">$2<ex>Select your memories</ex></ph> selected, press Enter to select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
+    <ph name="TOPIC_SOURCE">$1<ex>Google Photos</ex></ph> <ph name="TOPIC_SOURCE_DESC">$2<ex>Select your memories</ex></ph> selected, press Enter to select <ph name="TOPIC_SOURCE">$1<ex>Google Photos</ex></ph> albums
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_UNSELECTED_ROW" desc="A11y label for the unselected topic source row in ambient mode.">
-    Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> <ph name="TOPIC_SOURCE_DESC">$2<ex>Select your memories</ex></ph>
+    Select <ph name="TOPIC_SOURCE">$1<ex>Google Photos</ex></ph> <ph name="TOPIC_SOURCE_DESC">$2<ex>Select your memories</ex></ph>
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_SUBPAGE" desc="A11y label for the subpage button to select albums in ambient mode.">
-    Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
+    Select <ph name="TOPIC_SOURCE">$1<ex>Google Photos</ex></ph> albums
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_TITLE" desc="Label for the subpage to select albums of Brave Photos in ambient mode.">
-    Relive your favorite memories. To add or edit albums, go to <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_TITLE" desc="Label for the subpage to select albums of Google Photos in ambient mode.">
+    Relive your favorite memories. To add or edit albums, go to <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Google Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_NO_ALBUM" desc="Text for the subpage to select albums of Brave Photos when there is no album in ambient mode.">
-    No albums. Create an album in <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_NO_ALBUM" desc="Text for the subpage to select albums of Google Photos when there is no album in ambient mode.">
+    No albums. Create an album in <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Google Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_RECENT_DESC" desc="Description for the Recent highlights album in ambient mode.">
     Your best photos, selected automatically
@@ -847,7 +847,7 @@
     Configure
   </message>
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_DESCRIPTION" desc="Description in the search engine dialog in OS settings explaining that search engine is used in both the Brave browser and the Chrome OS app launcher.">
-    Set your default search engine for Brave browser and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> Launcher
+    Set your default search engine for Brave browser and <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> Launcher
   </message>
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT" desc="Label for the Brave Assistant button.">
     Brave Assistant
@@ -1362,7 +1362,7 @@ Press an assigned switch or key to remove assignment.
     Switch Access setup guide
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_INTRO_BODY" desc="The message displayed on the first page of the Switch Access setup guide, instructing the user to confirm that their external switch is appropriately connected to the chromebook. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
-    To get started, please make sure your USB or Bluetooth switch is connected to your Bravebook. You can also use keyboard keys.
+    To get started, please make sure your USB or Bluetooth switch is connected to your Chromebook. You can also use keyboard keys.
   </message>
   <message name="IDS_SETTINGS_SWITCH_ACCESS_SETUP_ASSIGN_SELECT_TITLE" desc="The title for the page of the Switch Access setup guide where the user assigns a switch to perform the action select, which selects the element onscreen currently surrounded by the focus ring. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
     Assign switch for “Select”
@@ -1583,7 +1583,7 @@ Press an assigned switch or key to remove assignment.
     You can add your additional accounts to access websites and apps.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_DESCRIPTION_V2" desc="List description for additional account list in Account Manager Settings page.">
-    You can add additional accounts to your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> to use with websites and Android apps. You can also control which accounts are used with Android apps.
+    You can add additional accounts to your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> to use with websites and Android apps. You can also control which accounts are used with Android apps.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_CHILD_DESCRIPTION" desc="List description for additional account List in Account Manager Settings page for Child users.">
     <ph name="USER_EMAIL">$1<ex>user@example.com</ex></ph> is supervised by Family Link. You can add school accounts to access school resources with parental supervision.
@@ -1935,16 +1935,16 @@ Press an assigned switch or key to remove assignment.
     Reserve size
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_POWERWASH_REQUIRED_SUBLABEL" desc="Sublabel notifying user of powerwash requirement before enabling ARC ADB sideloading.">
-    A factory reset of this Bravebook is required to enable ADB debugging. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    A factory reset of this Chromebook is required to enable ADB debugging. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_MESSAGE_ENABLE" desc="Describes what will happen if the user enables ADB Sideloading.">
-    To enable ADB debugging, a restart of this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is required. Disabling it requires a reset to factory settings.
+    To enable ADB debugging, a restart of this <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> is required. Disabling it requires a reset to factory settings.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_MESSAGE_DISABLE" desc="Describes what will happen if the user disables ADB Sideloading.">
-    Disabling ADB debugging will reset this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> to factory settings. All user accounts and local data will be erased.
+    Disabling ADB debugging will reset this <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> to factory settings. All user accounts and local data will be erased.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SUBTEXT" desc="Description for the section for enabling and managing Crostini.">
-    Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Run Linux tools, editors, and IDEs on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_CROSTINI_REMOVE" desc="Label for the row to open a dialog confirming removal of Crostini.">
     Remove Linux development environment
@@ -1985,7 +1985,7 @@ Press an assigned switch or key to remove assignment.
     Manage Play app links
   </message>
   <message name="IDS_SETTINGS_APPS_ARC_VM_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices. Do not translate 'ARCVM'.">
-    Let Android apps access USB devices on this Bravebook. Permission will be requested each time you plug in a USB device. Individual Android apps will ask for additional permissions.
+    Let Android apps access USB devices on this Chromebook. Permission will be requested each time you plug in a USB device. Individual Android apps will ask for additional permissions.
   </message>
 
   <!-- Device Stylus (OS settings) -->
@@ -2227,7 +2227,7 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MOUSE_TITLE" desc="In Device Settings, the title of the mouse settings subpage.">
     Mouse
   </message>
-  <message name="IDS_SETTINGS_POINTING_STICK_TITLE" desc="In Device Settings, the title of the pointing stick settings subpage. In most cases this will just be 'TrackPoint', the brand name of the pointing sticks used on Bravebooks.">
+  <message name="IDS_SETTINGS_POINTING_STICK_TITLE" desc="In Device Settings, the title of the pointing stick settings subpage. In most cases this will just be 'TrackPoint', the brand name of the pointing sticks used on Chromebooks.">
     TrackPoint
   </message>
   <message name="IDS_SETTINGS_TOUCHPAD_TITLE" desc="In Device Settings, the title of the touchpad settings subpage.">
@@ -2503,7 +2503,7 @@ Press an assigned switch or key to remove assignment.
     Unable to add printer. Please check your printer's configuration and try again.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PRINTER_UNREACHABLE_MESSAGE" desc="The message shown when the printer that is to be added is unreachable for configuration.">
-    Can’t connect to printer. Check that the printer is turned on and is connected to your Bravebook by Wi-Fi or USB.
+    Can’t connect to printer. Check that the printer is turned on and is connected to your Chromebook by Wi-Fi or USB.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PPD_TOO_LARGE_MESSAGE" desc="The message shown when the PPD provided while trying to add new printer is too large.">
     Can’t load large PPD. Maximum size is 250 kB.
@@ -2512,10 +2512,10 @@ Press an assigned switch or key to remove assignment.
     File is the wrong format. Check the PPD file and try again.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PPD_NOT_FOUND" desc="The message shown when the PPD provided while trying to add a new printer cannot be found.">
-    Can’t find PPD. Make sure your Bravebook is online and try again.
+    Can’t find PPD. Make sure your Chromebook is online and try again.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PPD_UNRETRIEVABLE" desc="The message shown when the PPD provided while trying to add a new printer is unretrievable.">
-    Can’t find PPD. Make sure your Bravebook is online and try again.
+    Can’t find PPD. Make sure your Chromebook is online and try again.
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_NATIVE_PRINTERS_NOT_ALLOWED_MESSAGE" desc="The message shown when the user is prevented from configuring printers due to an enterprise policy.">
     Printer configuration is handled by the administrator.
@@ -3042,16 +3042,16 @@ Press an assigned switch or key to remove assignment.
   </message>
 
   <!-- Multidevice Page (OS settings) -->
-  <message name="IDS_SETTINGS_MULTIDEVICE" desc="Title of a section of settings. This section describes settings for devices that are connected to the Bravebook, like phones.">
+  <message name="IDS_SETTINGS_MULTIDEVICE" desc="Title of a section of settings. This section describes settings for devices that are connected to the Chromebook, like phones.">
     Connected devices
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_BUTTON" desc="Label of the button that opens a menu to the user that allows them to set up a connection between the user's phone and their Bravebook to give them access to special features.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_BUTTON" desc="Label of the button that opens a menu to the user that allows them to set up a connection between the user's phone and their Chromebook to give them access to special features.">
     Set up
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_VERIFY_BUTTON" desc="Label for the button to get the Bravebook to verify that it can connect with their phone.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_VERIFY_BUTTON" desc="Label for the button to get the Chromebook to verify that it can connect with their phone.">
     Verify
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_ITEM_HEADING" desc="Heading for settings item that allows the user to connect their phone to their Bravebook.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_ITEM_HEADING" desc="Heading for settings item that allows the user to connect their phone to their Chromebook.">
     Android phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_ENABLED" desc="Text to tell user multidevice features are turned on">
@@ -3063,17 +3063,17 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_SUITE_TOGGLE_A11Y_LABEL" desc="Accessibility label for toggle button that enables/disables connected phone features.">
     Connected phone features enable.
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING" desc="Name of a feature. This feature automatically offers the user to tether to their phone if their Bravebook is offline and their phone supports tethering.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING" desc="Name of a feature. This feature automatically offers the user to tether to their phone if their Chromebook is offline and their phone supports tethering.">
     Instant Tethering
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING_SUMMARY" desc="Description of for the 'Instant Tethering' setting. This feature automatically offers the user to tether to their phone if their Bravebook is offline and their phone supports tethering.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_INSTANT_TETHERING_SUMMARY" desc="Description of for the 'Instant Tethering' setting. This feature automatically offers the user to tether to their phone if their Chromebook is offline and their phone supports tethering.">
     Connect to the internet through your phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES" desc="Name of a feature. This feature lets the user read and reply to text messages from their Bravebook. New text messages will appear as notifications.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES" desc="Name of a feature. This feature lets the user read and reply to text messages from their Chromebook. New text messages will appear as notifications.">
     Messages
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES_SUMMARY" desc="Description of for the 'Android Messages' setting. This feature lets the user read and reply to text messages from their Bravebook. New text messages will appear as notifications.">
-    Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES_SUMMARY" desc="Description of for the 'Android Messages' setting. This feature lets the user read and reply to text messages from their Chromebook. New text messages will appear as notifications.">
+    Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SECTION_TITLE" desc="The title of the Phone Hub section on the settings page.">
     Phone Hub
@@ -3106,10 +3106,10 @@ Press an assigned switch or key to remove assignment.
     Recent photos, notifications, and messaging apps
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SUMMARY" desc="Description of for the 'Phone Hub' setting. This feature lets the user stay productive on Chrome OS by ensuring that their phones' apps, content, and connectivity are available on their Chrome OS device.">
-    Access your phone's capabilities from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+    Access your phone's capabilities from your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll' setting. This feature populates most recent photos from a connected Android phone to Chrome OS devices.">
-    View your phone's recent photos and media on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+    View your phone's recent photos and media on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Notifications' setting. This feature mirrors notifications from a connected Android phone to Chrome OS devices.">
     View, dismiss, and reply to your phone’s notifications
@@ -3124,7 +3124,7 @@ Press an assigned switch or key to remove assignment.
     View, dismiss, and reply to your phone’s notifications. Stream your phone’s messaging apps.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_NOTIFICATIONS_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll and Notifications' combined setting.">
-    View your phone's recent photos, media, and notifications on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+    View your phone's recent photos, media, and notifications on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_CAMERA_ROLL_AND_APPS_SUMMARY" desc="Description of for the 'Phone Hub Camera Roll and Apps' combined setting.">
     View your phone's recent photos and media. Stream your phone’s messaging apps.
@@ -3139,25 +3139,25 @@ Press an assigned switch or key to remove assignment.
     Turn on Brave Sync to view recent Brave tabs from your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACK_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the Phone Hub 'Notifications' toggle is switched on.">
-    View notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+    View notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_ACK_SUMMARY" desc="The summary of the dialog containing the Phone Hub notification opt-in flow shown when the Phone Hub 'Notifications' toggle is switched on. Explains to the user that they need to grant permission to use notifications by enabling access to the Google Play Services app on their phone.">
-    To receive notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>, follow the instructions on your phone to grant notifications access to Google Play Services.
+    To receive notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>, follow the instructions on your phone to grant notifications access to Google Play Services.
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_AWAITING_RESPONSE_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the user needs to follow the setup flow instructions on their phone in order to start mirroring notifications from their phone to their Bravebook.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_AWAITING_RESPONSE_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the user needs to follow the setup flow instructions on their phone in order to start mirroring notifications from their phone to their Chromebook.">
     Complete setup on your phone
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_AWAITING_RESPONSE_SUMMARY" desc="The summary of the dialog containing the Phone Hub notification opt-in flow shown after the user has started the flow. Explains to the user that they need to grant permission to use notifications by enabling access to the Google Play Services app on their phone.">
-    To receive notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>, follow the instructions on your phone to grant notifications access to Google Play Services.
+    To receive notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>, follow the instructions on your phone to grant notifications access to Google Play Services.
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_CONNECTING_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the feature that will mirror phone notifications to their Bravebook.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_CONNECTING_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the feature that will mirror phone notifications to their Chromebook.">
     Connecting to your phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_TITLE" desc="The title of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Bravebook.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_TITLE" desc="The title of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Chromebook.">
     Set a PIN or password
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_SUBTITLE" desc="The subtitle of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Bravebook.">
-    This PIN or password protects your data on this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>, including any content you stream from your phone.
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_SUBTITLE" desc="The subtitle of the screen lock dialog containing the Phone Hub notification opt-in flow shown when the user has confirmed to enable the app stream that will stream phone to their Chromebook.">
+    This PIN or password protects your data on this <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>, including any content you stream from your phone.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_SCREEN_LOCK_INSTRUCTION" desc="The instruction message of the screen lock dialog.">
     Choose either one each time you sign in
@@ -3165,11 +3165,11 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_INSTRUCTIONS" desc="The second paragraph of text shown in the dialog containing the Phone Hub notification opt-in flow. Alerts the user that to enable notifications, they need to have their phone unlocked, nearby, and with Bluetooth/Wi-Fi on to complete setup.">
     Make sure your phone is nearby, unlocked, and has Bluetooth and Wi-Fi turned on.
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Bravebook.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Chromebook.">
     Notifications turned on
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_SUMMARY" desc="The body text of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Bravebook.">
-    You can now receive notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. Dismissing notifications on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> will also dismiss them on your phone. Make sure your phone is nearby and has Bluetooth and Wi-Fi turned on.
+  <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COMPLETED_SUMMARY" desc="The body text of the dialog containing the Phone Hub notification opt-in flow when the feature is successfully turned on and notifications on their phone will now be mirrored to their Chromebook.">
+    You can now receive notifications from your phone on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. Dismissing notifications on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> will also dismiss them on your phone. Make sure your phone is nearby and has Bluetooth and Wi-Fi turned on.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_NOTIFICATION_ACCESS_SETUP_DIALOG_COULD_NOT_ESTABLISH_CONNECTION_TITLE" desc="The title of the dialog containing the Phone Hub notification opt-in flow when the device is unable to establish a connection to the phone.">
     Could not establish connection
@@ -3217,10 +3217,10 @@ Press an assigned switch or key to remove assignment.
     Wi-Fi Sync, Learn More
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_ACK_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow shown when a user clicks the Phone Hub 'Notifications' or 'Apps' setup button.">
-    Be more productive when you connect your phone to your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+    Be more productive when you connect your phone to your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_ACK_SUBTITLE" desc="The subtitle of the dialog containing the phone permissions opt-in flow shown when a user clicks the Phone Hub 'Notifications' or 'Apps' setup button.">
-    Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> can then:
+    Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> can then:
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_NOTIFICATION_ITEM_TITLE" desc="The title of the dialog containing the phone permissions opt-in flow shown when when a user clicks the Phone Hub 'Notifications' setup button. Explains to the user that they need to grant permission to use notifications by enabling access to the Google Play Services app on their phone.">
     Get phone notifications
@@ -3244,10 +3244,10 @@ Press an assigned switch or key to remove assignment.
     Make sure your phone is nearby, unlocked, and that Bluetooth and Wi-Fi are turned on.
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COMPLETED_TITLE" desc="The title shown in the dialog containing the phone permissions opt-in flow when the feature is successfully turned on.">
-    Your phone and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> are connected
+    Your phone and <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> are connected
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COMPLETED_SUMMARY" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that dismiss notifications on the Bravebook will also dismiss them on the phone.">
-    Keep in mind, dismissing notifications on your Bravebook will also dismiss them on your phone.
+  <message name="IDS_SETTINGS_MULTIDEVICE_PERMISSIONS_SETUP_DIALOG_COMPLETED_SUMMARY" desc="The text shown in the dialog containing the phone permissions opt-in flow. Alerts the user that dismiss notifications on the Chromebook will also dismiss them on the phone.">
+    Keep in mind, dismissing notifications on your Chromebook will also dismiss them on your phone.
   </message>
 
   <!-- Lock Screen Page (OS settings) -->
@@ -3322,29 +3322,29 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_OPTIONS_LOCK" desc="Text on the lock screen which is the subheader for the screen locking options.">
     Screen lock options
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_THIS_DEVICE" desc="Header to tell the user an action will make their Bravebook forget their phone. This means they will no longer have access to multidevice features.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_THIS_DEVICE" desc="Header to tell the user an action will make their Chromebook forget their phone. This means they will no longer have access to multidevice features.">
     Forget phone
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_THIS_DEVICE_EXPLANATION" desc="Explanation on a clickable menu item that makes the Bravebook forget the user's phone. It tells the user that the menu item will cause their phone to stop acting as a partner for their Bravebook for multidevice features.">
-    Disconnect your phone from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_THIS_DEVICE_EXPLANATION" desc="Explanation on a clickable menu item that makes the Chromebook forget the user's phone. It tells the user that the menu item will cause their phone to stop acting as a partner for their Chromebook for multidevice features.">
+    Disconnect your phone from your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_DEVICE_DIALOG_MESSAGE" desc="Text of a dialog that lets the user choose if their Bravebook should forget their phone. This means they will no longer have access to multidevice features.">
-    Disconnect your phone from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. They will no longer connect automatically.
+  <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_DEVICE_DIALOG_MESSAGE" desc="Text of a dialog that lets the user choose if their Chromebook should forget their phone. This means they will no longer have access to multidevice features.">
+    Disconnect your phone from your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. They will no longer connect automatically.
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_THIS_DEVICE_DISCONNECT" desc="Text for the button that lets the user choose if their Bravebook should forget their phone. This means they will no longer have access to multidevice features.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_THIS_DEVICE_DISCONNECT" desc="Text for the button that lets the user choose if their Chromebook should forget their phone. This means they will no longer have access to multidevice features.">
     Disconnect
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_SUMMARY" desc="Tells the user to connect their Bravebook to their phone.">
-    Connect your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_SUMMARY" desc="Tells the user to connect their Chromebook to their phone.">
+    Connect your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_NO_ELIGIBLE_HOSTS" desc="Tells the user that there is no phone with their account on it that can connect to their Bravebook.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_NO_ELIGIBLE_HOSTS" desc="Tells the user that there is no phone with their account on it that can connect to their Chromebook.">
     No eligible devices. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_VERIFICATION_TEXT" desc="Text to tell user that their Bravebook needs to verify that it can connect with their phone.">
+  <message name="IDS_SETTINGS_MULTIDEVICE_VERIFICATION_TEXT" desc="Text to tell user that their Chromebook needs to verify that it can connect with their phone.">
     Waiting for verification. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_MULTIDEVICE_SMART_LOCK_SUMMARY" desc="Description of for the 'Smart Lock' setting. This feature automatically unlocks the user's Bravebook if their phone is nearby and unlocked.">
-    Unlock your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_MULTIDEVICE_SMART_LOCK_SUMMARY" desc="Description of for the 'Smart Lock' setting. This feature automatically unlocks the user's Chromebook if their phone is nearby and unlocked.">
+    Unlock your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_OPTIONS_LOGIN_LOCK" desc="Text on the lock screen which is the subheader for the screen locking options.">
     Lock screen from sleep mode
@@ -3839,10 +3839,10 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_EASY_UNLOCK_SECTION_TITLE" desc="The title of the Easy Unlock section on the settings page.">
     Smart Lock
   </message>
-  <message name="IDS_SETTINGS_EASY_UNLOCK_UNLOCK_DEVICE_ONLY" desc="This option lets the user unlock their Bravebook from their phone if they're logged in. It will unlock their Bravebook but will not sign them in.">
+  <message name="IDS_SETTINGS_EASY_UNLOCK_UNLOCK_DEVICE_ONLY" desc="This option lets the user unlock their Chromebook from their phone if they're logged in. It will unlock their Chromebook but will not sign them in.">
     Unlock device only
   </message>
-  <message name="IDS_SETTINGS_EASY_UNLOCK_UNLOCK_DEVICE_AND_ALLOW_SIGNIN" desc="This option lets the user unlock their Bravebook from their phone as well as log into their Bravebook without a password if their phone is nearby and unlocked.">
+  <message name="IDS_SETTINGS_EASY_UNLOCK_UNLOCK_DEVICE_AND_ALLOW_SIGNIN" desc="This option lets the user unlock their Chromebook from their phone as well as log into their Chromebook without a password if their phone is nearby and unlocked.">
     Unlock device and sign in to Brave sync chain
   </message>
 
@@ -3857,7 +3857,7 @@ Press an assigned switch or key to remove assignment.
     Note: Your fingerprint may be less secure than a strong password or PIN.
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_FINGERPRINT_NOTICE" desc="Tooltip text telling users that fingerprint data never leaves their device.">
-    Your fingerprint data is stored securely and never leaves your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Your fingerprint data is stored securely and never leaves your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Setup Pin dialog (OS settings) -->
@@ -4005,7 +4005,7 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_KEYBOARD_SHOW_INPUT_SETTINGS" desc="The link to navigate to input method settings.">
     Change input settings
   </message>
-  <message name="IDS_SETTINGS_KEYBOARD_KEY_LAUNCHER" desc="In Device Settings, the label and dropdown list item for the Search key on keyboard layouts of newer Bravebooks.">
+  <message name="IDS_SETTINGS_KEYBOARD_KEY_LAUNCHER" desc="In Device Settings, the label and dropdown list item for the Search key on keyboard layouts of newer Chromebooks.">
     Launcher
   </message>
   <message name="IDS_SETTINGS_KEYBOARD_KEY_SEARCH" desc="In Device Settings, the label and dropdown list item for the Search key.">
@@ -4050,12 +4050,12 @@ Press an assigned switch or key to remove assignment.
     Android settings
   </message>
   <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
-    Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <!-- TODO(jamescook): Use device type instead of "Bravebook", which may
+  <!-- TODO(jamescook): Use device type instead of "Chromebook", which may
         require changing ArcPlayTermsOfServiceConsent resource id handling. -->
   <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
-    Apps you’ve downloaded from Google Play will be deleted from this Bravebook.
+    Apps you’ve downloaded from Google Play will be deleted from this Chromebook.
     <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
     Content you’ve purchased such as movies, TV shows, music, books, or other in-app purchases may also be deleted.
     <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
@@ -4219,7 +4219,7 @@ Press an assigned switch or key to remove assignment.
     Screen privacy
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_DESC" desc="The text explaining to the user the manner in which their presence is sensed and data usage policy.">
-    Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> uses a built-in sensor to detect profiles in front of your device. All data is processed on your device immediately and then deleted. Sensor data is never sent to Brave. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    Your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> uses a built-in sensor to detect profiles in front of your device. All data is processed on your device immediately and then deleted. Sensor data is never sent to Brave. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_OS_SETTINGS_SMART_PRIVACY_QUICK_DIM_TITLE" desc="The name of the quick dim feature shown as the label of a toggle in the smart privacy subpage.">
     Lock on Leave

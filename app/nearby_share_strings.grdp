@@ -57,8 +57,8 @@
   </message>
 
   <!-- Discovery page -->
-  <message name="IDS_NEARBY_DISCOVERY_PAGE_INFO" desc="Help text on how to use the Nearby Share feature. Explains how to enable it on a nearby Bravebook to share with it.">
-    Make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Bravebook not in your contacts, make sure it has Nearby visibility turned on (open the status area, then turn on Nearby visibility). <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_NEARBY_DISCOVERY_PAGE_INFO" desc="Help text on how to use the Nearby Share feature. Explains how to enable it on a nearby Chromebook to share with it.">
+    Make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Chromebook not in your contacts, make sure it has Nearby visibility turned on (open the status area, then turn on Nearby visibility). <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_NEARBY_DISCOVERY_PAGE_SUBTITLE" desc="Subtitle of the Nearby Share device discovery page. This is where users select a device to share files with.">
     Select the device you’d like to share files with
@@ -78,7 +78,7 @@
     How your device appears to others
   </message>
   <message name="IDS_NEARBY_ONBOARDING_PAGE_SUBTITLE" desc="Subtitle of the Nearby Share onboarding page that sets up the local device for the feature which provides a way for nearby devices to share files, text, and urls.">
-    Share files with Bravebooks and Android devices around you
+    Share files with Chromebooks and Android devices around you
   </message>
   <message name="IDS_NEARBY_ONBOARDING_PAGE_TITLE" desc="Title of the Nearby Share onboarding page that sets up the local device for the feature. Nearby Share is the feature name.">
     Set up Nearby Share
@@ -130,7 +130,7 @@
     Reject
   </message>
   <message name="IDS_NEARBY_DEFAULT_DEVICE_NAME" desc="The default device name used unless a user explicitly sets the device name during onboarding or in settings. Displayed to other users during sharing.">
-    <ph name="GIVEN_NAME">$1<ex>Josh</ex></ph>'s <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph>
+    <ph name="GIVEN_NAME">$1<ex>Josh</ex></ph>'s <ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph>
   </message>
   <message name="IDS_NEARBY_ERROR_CANCELLED" desc="Notify the receiver that the sender cancelled the file share.">
     The device sharing with you cancelled the transfer
@@ -225,7 +225,7 @@
 
   <!-- High Visibility Page Strings -->
   <message name="IDS_NEARBY_HIGH_VISIBILITY_SUB_TITLE" desc="Describes to the user that their device is visible to nearby devices with a specific device name. This is used on the sub-title of the of high visibility receive dialog for the Nearby Share feature.">
-    Visible to nearby devices as <ph name="DEVICE_NAME">$1<ex>Rea’s Bravebook</ex></ph> for <ph name="REMAINING_TIME">$2<ex>5 min</ex></ph>...
+    Visible to nearby devices as <ph name="DEVICE_NAME">$1<ex>Rea’s Chromebook</ex></ph> for <ph name="REMAINING_TIME">$2<ex>5 min</ex></ph>...
   </message>
   <message name="IDS_NEARBY_HIGH_VISIBILITY_SUB_TITLE_MINUTES" desc="A short string showing the nearest number of whole minutes until Nearby Share high visibility turns off. To be used with IDS_NEARBY_HIGH_VISIBILITY_SUB_TITLE. [CHAR_LIMIT=7]">
     <ph name="MINUTES">$1<ex>2</ex></ph> min
@@ -270,7 +270,7 @@
       Nearby Share settings for <ph name="USER_NAME">$1<ex>Jane Doe</ex></ph>'s device, sharing under the account <ph name="USER_EMAIL">$2<ex>example@gmail.com</ex></ph>.
   </message>
   <message name="IDS_NEARBY_SETTINGS_HELP_CAPTION" desc="Brief explanation shown at the bottom of the settings page. Meant to give context on what conditions have to be met to use Nearby Share, and how to toggle the high visibility state in the system tray. Provides a link with more detailed information.">
-    To use Nearby Share, make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Bravebook that is not in your contacts, make sure it has Nearby visibility turned on (open the status area by selecting the time, then turn on Nearby visibility) <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+    To use Nearby Share, make sure both devices are unlocked, close together, and have Bluetooth turned on. If you’re sharing with a Chromebook that is not in your contacts, make sure it has Nearby visibility turned on (open the status area by selecting the time, then turn on Nearby visibility) <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_NEARBY_VISIBLITY_ALL_CONTACTS" desc="Describes the user preference state for the user to be visibile to all their contacts in the Nearby Share feature.">
     All contacts
