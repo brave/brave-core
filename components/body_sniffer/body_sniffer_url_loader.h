@@ -103,7 +103,7 @@ class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
   void Abort();
 
   base::WeakPtr<BodySnifferThrottle> throttle_;
-  GURL response_url_;
+  const GURL response_url_;
 
   mojo::Receiver<network::mojom::URLLoaderClient> source_url_client_receiver_{
       this};

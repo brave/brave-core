@@ -20,7 +20,7 @@
 namespace de_amp {
 
 // Throttle for AMP HTML detection.
-// If AMP page, redirect request to non-AMP canonical link.
+// If AMP page, cancel request and initiate new one to non-AMP canonical link.
 class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
  public:
   explicit DeAmpThrottle(scoped_refptr<base::SequencedTaskRunner> task_runner,
