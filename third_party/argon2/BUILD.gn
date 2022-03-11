@@ -16,7 +16,7 @@ static_library("argon2") {
 
   visibility = [
     "//brave/browser/brave_wallet:external_wallets_importer",
-    "//brave/components/brave_wallet/browser:hd_keyring",
+    "//brave/components/brave_wallet/common",
   ]
 
   defines = [ "ARGON2_NO_THREADS" ]

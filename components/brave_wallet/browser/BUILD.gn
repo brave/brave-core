@@ -208,8 +208,6 @@ source_set("hd_keyring") {
     "//brave/components/bls/rs:cxx_gen",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
-    "//brave/third_party/argon2",
-    "//components/base32",
   ]
 }
 

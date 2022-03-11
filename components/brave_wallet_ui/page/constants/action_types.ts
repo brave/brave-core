@@ -27,7 +27,6 @@ export type ImportFilecoinAccountPayloadType = {
   accountName: string
   privateKey: string
   network: string
-  protocol: BraveWallet.FilecoinAddressProtocol
 }
 
 export type ImportAccountFromJsonPayloadType = {

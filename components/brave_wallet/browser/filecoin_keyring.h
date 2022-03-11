@@ -24,19 +24,17 @@ class FilecoinKeyring : public HDKeyring {
   ~FilecoinKeyring() override;
   FilecoinKeyring(const FilecoinKeyring&) = delete;
   FilecoinKeyring& operator=(const FilecoinKeyring&) = delete;
-
-  std::string ImportFilecoinSECP256K1Account(
-      const std::vector<uint8_t>& input_key,
-      const std::string& network);
-  std::string ImportFilecoinBLSAccount(const std::vector<uint8_t>& private_key,
-                                       const std::string& network);
-  void ImportFilecoinAccount(const std::vector<uint8_t>& input_key,
-                             const std::string& address);
-  std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
+  static bool DecodeImportPayload(const std::string& payload_hex,
+                                  std::vector<uint8_t>* private_key_out,
+                                  mojom::FilecoinAddressProtocol* protocol_out);
+  std::string ImportFilecoinAccount(const std::vector<uint8_t>& private_key,
+                                    const std::string& network,
+                                    mojom::FilecoinAddressProtocol protocol);
+  void RestoreFilecoinAccount(const std::vector<uint8_t>& input_key,
+                              const std::string& address);
 
  private:
-  std::string CreateAddressWithProtocol(const std::vector<uint8_t>& payload,
-                                        int protocol) const;
+  std::string GetAddressInternal(HDKeyBase* hd_key_base) const override;
 };
 
 }  // namespace brave_wallet
