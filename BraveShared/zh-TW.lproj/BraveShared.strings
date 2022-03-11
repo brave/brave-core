@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "同步";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "同步 Internals";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "首先，您需要將 Brave 安裝在您計畫同步的所有裝置中。如要將裝置鏈接一起，請啟用一個同步鏈，用於將所有裝置安全鏈接。";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "關閉";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "確定要關閉所有開啟的分頁嗎？";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "關閉全部 %i 個分頁";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "隱藏";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "開啟並填寫";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "顯示";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "同步通訊錯誤";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "不支援的舊版";
+"syncInsecureVersionError" = "這是由其他裝置上版本過舊的 Brave 所產生的同步代碼。請在所有同步的裝置上更新 Brave，然後再試一次。";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "無效的格式";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "警告";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "不支援的版本";
+"syncNewerVersionError" = "這是由其他裝置上版本較新的 Brave 所產生的同步代碼。請在所有同步的裝置上更新 Brave，然後再試一次。";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "請檢查您的網絡連接並重試。";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "無法連接到 Sync ";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "已停止支援的版本";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "所有裝置上的本地裝置資料將會保持不變。此同步鏈上的其他裝置則會保持同步。";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "使用現有同步的裝置開啟 Brave 設定並導向至設定 -> 同步。 選擇「新增裝置」並掃描螢幕上顯示的代碼。";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "無法建立新的同步群組。";
+"SyncUnableCreateGroup" = "無法同步此裝置";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "失敗";

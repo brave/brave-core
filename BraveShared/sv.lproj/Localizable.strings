@@ -208,8 +208,29 @@
 /* Alert Title for adding videos to playlist */
 "playList.addToPlayListAlertTitle" = "Lägg till i Brave Playlist";
 
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "Uppspelningsalternativ";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "Inaktiverad. Tryck för att aktivera omstart av uppspelning.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "Aktiverad. Tryck för att inaktivera omstart av uppspelning.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Bestäm om omstart av uppspelning ska ske för ett objekt som redan spelas upp eller om det ska fortsätta spela där det slutade";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "Starta om uppspelning";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "Inställningar";
+
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Brave-spellista";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "Ta bort offline-cache";
 
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Den här videon var en livestream eller tidsgränsen nåddes. Öppna länken igen för att uppdatera.";
@@ -228,6 +249,9 @@
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Visa menyaviseringsmärke";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "Flytta ...";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "Du kan lägga till objekt i din Brave Playlist i webbläsaren";
@@ -364,6 +388,9 @@
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
 "playList.savedForOfflineLabelTitle" = "Sparad för offline";
 
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "Spara för offline";
+
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Sparat för offline ...";
 
@@ -402,6 +429,70 @@
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Aktivera snabbåtkomstknapp";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "Skapa";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "Redigera";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "Redigera mapp";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Redigera mapp";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "Tyvärr kunde vi inte spara ändringarna du har gjort i den här mappen";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "Flytta";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Aktuell mapp";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "Flytta";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ och 1 objekt till";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld objekt";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 objekt";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ och %2$lld objekt till";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Ny mapp";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Ny mapp";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "Tryck för att välja videor";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Lägg till videor i den här mappen";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "Sparat";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
+   The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectAFolderTitle" = "Markera en mapp som %lld objekt ska flyttas till";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld objekt";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 objekt";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Mapp utan titel";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Stäng kontextmenyn";

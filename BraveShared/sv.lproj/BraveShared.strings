@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "Synkronisera";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Synkronisera felsökning";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Till att börja med måste du ha installerat Brave på alla enheter du vill synkronisera. För att sammanlänka dem kan du starta en synkroniseringskedja som du använder för att koppla ihop alla dina enheter säkert.";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "Stäng";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Är du säker på att du vill stänga alla öppna flikar?";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Stäng alla %i flikar";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Dölj";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "Open & Fill";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Avslöja";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "Synkroniserings kommunikationsfel";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "Äldre version som inte stöds";
+"syncInsecureVersionError" = "Den här synkroniseringskoden genererades av en föråldrad version av Brave på en annan enhet. Uppdatera Brave på alla synkroniserade enheter och försök igen.";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "Ogiltigt format";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "Varning";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "Versionen stöds inte";
+"syncNewerVersionError" = "Den här synkroniseringskoden genererades av en nyare version av Brave på en annan enhet. Uppdatera Brave på alla synkroniserade enheter och försök igen.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Kontrollera din internetanslutning och försök igen.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Kan inte ansluta till synkronisering";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "Versionen stöds inte längre";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Lokal enhetsdata finns kvar på alla enheter. Andra enheter i synkroniseringskedjan förblir synkroniserade.";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "Använd en synkroniserad enhet för att gå till Inställningar -> Synkronisering. Lägg ”Add Device” och skanna koden som visas på skärmen.";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Det gick inte att skapa en ny synkroniseringsgrupp.";
+"SyncUnableCreateGroup" = "Det går inte att synkronisera den här enheten";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Det gick inte";

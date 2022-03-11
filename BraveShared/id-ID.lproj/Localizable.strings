@@ -208,8 +208,29 @@
 /* Alert Title for adding videos to playlist */
 "playList.addToPlayListAlertTitle" = "Tambahkan ke Brave Playlist";
 
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "Opsi Putar Kembali";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "Non-aktif. Ketuk untuk mengaktifkan mulai kembali pemutar balik.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "Aktif. Ketuk untuk menonaktifkan mulai kembali pemutar balik.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Putuskan apakah memilih hal yang telah diputar akan memulai kembali pemutar balik, atau melanjutkan pemutaran di bagian yang terakhir diputar";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "Mulai Kembali Pemutar Balik";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "Pengaturan";
+
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Daftar Putar Brave";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "Hapus Cache Luring";
 
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Video ini merupakan siaran aliran langsung atau telah mecapai batas waktunya. Silakan buka tautannya kembali untuk melakukan penyegaran. ";
@@ -228,6 +249,9 @@
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Tampilkan Emblem Notifikasi Menu";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "Pindahkan...";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "Anda dapat menambahkan media ke Brave Playlist Anda di dalam peramban";
@@ -364,6 +388,9 @@
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
 "playList.savedForOfflineLabelTitle" = "Disimpan untuk Luring";
 
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "Simpan untuk Luring";
+
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Menyimpan untuk Luring...";
 
@@ -402,6 +429,70 @@
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Aktifkan tombol akses cepat";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "Buat";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "Edit";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "Sunting Folder";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Sunting Folder";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "Maaf, kami tidak dapat menyimpan perubahan yang Anda buat di folder ini";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "Pindahkan";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Folder Saat Ini";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "Pindahkan";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ dan 1 hal lagi";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld hal";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 hal";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ dan %2$lld hal lagi";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Folder Baru";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Folder Baru";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "Tap untuk memilih video";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Tambahkan video ke folder ini";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "Disimpan";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
+   The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectAFolderTitle" = "Pilih folder untuk memindahkan %lld hal ke";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld hal";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 hal";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Folder Tanpa Nama";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Tutup Menu Konteks";
@@ -941,7 +1032,7 @@
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Buka Pengaturan";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Gunakan Jalan Pintas untuk Membuka Tab Baru & Menghapus Riwayat Peramban melalui Siri - Bantuan Suara";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Gunakan Jalan Pintas untuk membuka tab baru & menghapus riwayat peramban melalui Siri - Bantuan Suara";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Hapus Riwayat Perambanan";
@@ -953,7 +1044,7 @@
 "shortcuts.shortcutSettingsEnableVPNTitle" = "Aktifkan VPN";
 
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Gunakan Jalan Pintas untuk Membuka Tab Baru & Menampilkan Umpan Brave News melalui Siri - Bantuan Suara";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Gunakan Jalan Pintas untuk membuka tab baru & menampilkan Umpan Berita Brave melalui Siri - Bantuan Suara";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Buka Brave News";
@@ -971,7 +1062,7 @@
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "Buka Tab Baru";
 
 /* Description of Open Playlist Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Gunakan Jalan Pintas untuk Membuka Daftar Putar melalui Siri - Bantuan Suara";
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Gunakan Jalan Pintas untuk membuka Daftar Putar melalui Siri - Bantuan Suara";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Buka Daftar Putar";

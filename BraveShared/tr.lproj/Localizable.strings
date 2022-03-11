@@ -208,8 +208,29 @@
 /* Alert Title for adding videos to playlist */
 "playList.addToPlayListAlertTitle" = "Brave Oynatma Listesine Ekle";
 
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "Oynatma Seçenekleri";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "Devre dışı. Oynatmayı yeniden başlatmayı etkinleştirmek için dokunun.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "Etkin. Oynatmayı yeniden başlatmayı devre dışı bırakmak için dokunun.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Halihazırda oynatılmakta olan bir öğeyi seçmenin oynatmayı yeniden başlatıp başlatmayacağını veya en son kaldığı yerden oynatmaya devam edip etmeyeceğine karar verin";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "Oynatmayı Yeniden Başlat";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "Ayarlar";
+
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Brave Oynatma Listesi";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "Çevrimdışı Önbelleği Sil";
 
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Bu video bir canlı yayındı veya zaman sınırına ulaşıldı. Lütfen yenilemek için bağlantıyı yeniden açın.";
@@ -228,6 +249,9 @@
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Menü Bildirim Rozetini Göster";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "Taşı...";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "Tarayıcı içinde Brave Oynatma Listenize öğe ekleyebilirsiniz";
@@ -364,6 +388,9 @@
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
 "playList.savedForOfflineLabelTitle" = "Çevrimdışı kullanım için kaydedildi";
 
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "Çevrimdışı için Kaydet";
+
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Çevrimdışı kullanım için Kaydediliyor...";
 
@@ -402,6 +429,70 @@
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Hızlı erişim düğmesini etkinleştir";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "Oluştur";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "Düzenle";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "Klasörü Düzenle";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Klasörü Düzenle";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "Üzgünüz, bu klasörde yaptığınız değişiklikleri kaydedemedik";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "Taşı";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Mevcut Klasör";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "Taşı";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ ve 1 tane daha öğe";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld öğe";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 öğe";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ ve %2$lld tane daha öğe";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Yeni Klasör";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Yeni Klasör";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "Videoları seçmek için dokunun";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Bu klasöre video ekleyin";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "Kaydedilenler";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
+   The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectAFolderTitle" = "%lld öğeyi taşımak için bir klasör seçin";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld Öğe";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 Öğe";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Adsız Klasör";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Bağlam Menüsünü Kapat";
@@ -941,7 +1032,7 @@
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Ayarları Aç";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Siri - Sesli Yardımcı ile Yeni Sekme Açmak ve Tarayıcı Geçmişini Temizlemek için Kestirmeler'i kullanın";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Siri - Sesli Yardımcı ile yeni bir sekme açmak ve tarayıcı geçmişini temizlemek için Kestirmeler'i kullanın";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Tarayıcı Geçmişini Temizle";
@@ -953,7 +1044,7 @@
 "shortcuts.shortcutSettingsEnableVPNTitle" = "VPN'i Etkinleştir";
 
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Siri - Sesli Yardımcı ile Yeni Sekme Açmak ve Brave News Akışını Göstermek için Kestirmeler'i kullanın";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Siri - Sesli Yardımcı ile yeni bir sekme açmak ve Brave News Akışını göstermek için Kestirmeler'i kullanın";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Brave News'i Aç";
@@ -971,7 +1062,7 @@
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "Yeni Sekme Aç";
 
 /* Description of Open Playlist Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri - Sesli Yardımcı ile Oynatma Listesi Açmak için Kestirmeler'i kullanın";
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Siri - Sesli Yardımcı ile Oynatma Listesini açmak için Kestirmeler'i kullanın";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Oynatma Listesi Aç";

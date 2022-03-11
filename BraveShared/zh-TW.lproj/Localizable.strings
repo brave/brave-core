@@ -208,8 +208,29 @@
 /* Alert Title for adding videos to playlist */
 "playList.addToPlayListAlertTitle" = "新增至 Brave Playlist";
 
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "播放選項";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "已停用。輕觸可啟用重新開始播放功能。";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "已啟用。輕觸可停用重新開始播放功能。";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "針對已經在播放中的項目，決定選取時要重新開始播放，或是從上次中斷處繼續播放。";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "重新開始播放";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "設定";
+
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Brave 播放清單";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "刪除離線快取";
 
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "此為直播影片或已達時間限制。請重新整理並重新開啟連結。";
@@ -228,6 +249,9 @@
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "顯示選單通知標章";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "移動...";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "您可以在瀏覽器中將項目新增至 Brave 播放清單";
@@ -364,6 +388,9 @@
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
 "playList.savedForOfflineLabelTitle" = "已離線儲存";
 
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "儲存以供離線播放";
+
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "離線儲存中....";
 
@@ -402,6 +429,70 @@
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "啟用快速存取按鈕";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "建立";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "編輯";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "編輯資料夾";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "編輯資料夾";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "抱歉，無法儲存您對此資料夾所做的變更";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "移動";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "目前資料夾";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "移動";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ 和另外 1 個項目";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld 個項目";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "1 個項目";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ 和另外 %2$lld 個項目";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "新建資料夾";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "新建資料夾";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "輕觸以選取影片";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "將影片新增至此資料夾中";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "已儲存";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
+   The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectAFolderTitle" = "選取要將 %lld 個項目移至其中的資料夾";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld 個項目";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "1 個項目";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "無標題資料夾";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "關閉內容選單";
@@ -941,7 +1032,7 @@
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "開啟設定";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "使用快速鍵即可透過 Siri 語音助理開啟新的分頁及清除瀏覽記錄";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "使用快速鍵即可透過 Siri 語音助理開啟新分頁及清除瀏覽記錄";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "清除瀏覽器記錄";
@@ -953,7 +1044,7 @@
 "shortcuts.shortcutSettingsEnableVPNTitle" = "啟用 VPN";
 
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "使用快速鍵透過 Siri - Voice Assistant 開啟新標籤並顯示 Brave 新聞摘要 ";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "使用快速鍵即可透過 Siri 語音助理開啟新分頁及顯示 Brave News 摘要";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "開啟 Brave News";

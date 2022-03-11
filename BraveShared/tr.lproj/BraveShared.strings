@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "Eşitleme";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Senkronizasyon Hata Ayıklama";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Başlamak için, senkronize etmeyi planladığınız tüm cihazlarda Brave'in yüklü olması gerekir. Bunları birbirine zincirlemek için, tüm cihazlarınızı güvenli bir şekilde birbirine bağlarken kullanacağınız bir eşitleme zinciri başlatın.";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "Kapat";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Açık tüm sekmeleri kapatmak istediğinizden emin misiniz?";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tüm %i Sekmelerini Kapat";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Gizle";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "Aç ve Doldur";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Göster";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "Eşitleme iletişim hatası";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "Daha eski, desteklenmeyen sürüm";
+"syncInsecureVersionError" = "Bu eşitleme kodu, Brave'in eski bir sürümü tarafından başka bir cihazda oluşturuldu. Lütfen Brave'i eşitlenmiş tüm cihazlarda güncelleyin ve tekrar deneyin.";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "Geçersiz Biçim";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "Uyarı";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "Desteklenmeyen sürüm";
+"syncNewerVersionError" = "Bu eşitleme kodu, Brave'in yeni bir sürümü tarafından başka bir cihazda oluşturuldu. Lütfen Brave'i eşitlenmiş tüm cihazlarda güncelleyin ve tekrar deneyin.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "İnternet bağlantınızı kontrol edin ve yeniden deneyin.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Eşitlemeye bağlanılamıyor";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "Artık desteklenmeyen sürüm";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Yerel cihaz verileri tüm cihazlarda bozulmadan kalır. Bu Eşitleme Zincirindeki diğer aygıtlar eşitlenmeye devam edecek. ";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "Mevcut eşitlenmiş cihazı kullanarak Brave Ayarlarını açın ve Ayarlar -> Eşitleme'ye gidin. \"Cihaz Ekle\"yi seçin ve ekranda görüntülenen kodu tarayın.";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Yeni eşitleme grubu oluşturulamıyor.";
+"SyncUnableCreateGroup" = "Bu cihaz eşitlenemiyor";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Başarısız";

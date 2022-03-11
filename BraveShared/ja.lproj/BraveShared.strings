@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "Brave Sync";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "内部同期";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全にリンクできます。";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "閉じる";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "開いているすべてのタブを閉じますか？";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "%i 個のタブをすべて閉じる";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "非表示";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "開いて入力";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "表示";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "Syncの接続エラー";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "サポートされていない古いバージョンです";
+"syncInsecureVersionError" = "この同期コードは、別のデバイスで旧バージョンのBraveにより生成されています。すべての同期済みデバイスでBraveをアップデートしてからもう一度お試しください。";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "フォーマットが正しくありません";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "警告";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "サポートされていないバージョンです";
+"syncNewerVersionError" = "この同期コードは、別のデバイスで新バージョンのBraveにより生成されています。すべての同期済みデバイスでBraveをアップデートしてからもう一度お試しください。";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "インターネット接続をチェックしてもう一度やり直してください。";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "同期に接続できません";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "すでにサポートの終了したバージョンです";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "ローカルのデバイスデータは、すべてのデバイスでそのまま残ります。この同期チェーンに含まれるその他のデバイスは、引き続き同期されます。";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "すでに同期されている別の端末上で、Braveの設定 > Syncと選択し、\"デバイスを追加\"を選択してください。そこで以下のコードをスキャンすることで同期設定が可能です。";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "新しい同期グループを作成できません。";
+"SyncUnableCreateGroup" = "このデバイスを同期できません";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "失敗";
