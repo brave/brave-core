@@ -19,7 +19,7 @@ namespace {
 constexpr size_t kChecksumSize = 4;
 constexpr size_t kHashLengthSecp256K = 20;
 constexpr size_t kAddressSizeSecp256K = 41;
-constexpr size_t kHashLengthBLS = 48;
+constexpr size_t kPublicKeySizeBLS = 48;
 constexpr size_t kAddressSizeBLS = 86;
 
 absl::optional<std::vector<uint8_t>> BlakeHash(
@@ -144,7 +144,7 @@ FilAddress FilAddress::FromPayload(const std::vector<uint8_t>& payload,
     if (payload.size() != kHashLengthSecp256K)
       return FilAddress();
   } else if (protocol == mojom::FilecoinAddressProtocol::BLS) {
-    if (payload.size() != kHashLengthBLS)
+    if (payload.size() != kPublicKeySizeBLS)
       return FilAddress();
   }
   return FilAddress(payload, protocol, network);
