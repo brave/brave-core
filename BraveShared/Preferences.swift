@@ -41,7 +41,6 @@ extension Preferences {
     public final class URP {
         static let nextCheckDate = Option<TimeInterval?>(key: "urp.next-check-date", default: nil)
         static let retryCountdown = Option<Int?>(key: "urp.retry-countdown", default: nil)
-        static let customHeaderData = Option<Data?>(key: "urp.custom-header-data", default: nil)
         static let downloadId = Option<String?>(key: "urp.referral.download-id", default: nil)
         public static let referralCode = Option<String?>(key: "urp.referral.code", default: nil)
         static let referralCodeDeleteDate = Option<TimeInterval?>(key: "urp.referral.delete-date", default: nil)
@@ -267,7 +266,6 @@ extension Preferences {
         // URP
         migrate(keyPrefix: keyPrefix, key: "urpDateCheckPrefsKey", to: Preferences.URP.nextCheckDate)
         migrate(keyPrefix: keyPrefix, key: "urpRetryCountdownPrefsKey", to: Preferences.URP.retryCountdown)
-        migrate(keyPrefix: keyPrefix, key: "CustomHeaderDataPrefs", to: Preferences.URP.customHeaderData)
         migrate(keyPrefix: keyPrefix, key: "downloadIdPrefsKey", to: Preferences.URP.downloadId)
         migrate(keyPrefix: keyPrefix, key: "referralCodePrefsKey", to: Preferences.URP.referralCode)
         migrate(keyPrefix: keyPrefix, key: "referralCodeDeleteTimePrefsKey", to: Preferences.URP.referralCodeDeleteDate)

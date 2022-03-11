@@ -98,28 +98,6 @@ struct UrpService {
             }
         }
     }
-
-    func fetchCustomHeaders(completion: @escaping ([CustomHeaderData], UrpError?) -> Void) {
-        guard var endPoint = URL(string: host) else {
-            completion([], .endpointError)
-            return
-        }
-        endPoint.append(pathComponents: "promo", "custom-headers")
-
-        let params = [UrpService.ParamKeys.api: apiKey]
-
-        sessionManager.request(endPoint, parameters: params) { response in
-            switch response {
-            case .success(let data):
-                let json = JSON(data)
-                let customHeaders = CustomHeaderData.customHeaders(from: json)
-                completion(customHeaders, nil)
-            case .failure(let error):
-                log.error(error)
-                completion([], .endpointError)
-            }
-        }
-    }
 }
 
 extension URLSession {
