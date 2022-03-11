@@ -1007,8 +1007,8 @@ extension PlaylistViewController: VideoViewDelegate {
     }
     
     var isVideoTracksAvailable: Bool {
-        if let asset = player.currentItem?.asset {
-            return asset.isVideoTracksAvailable()
+        if let item = player.currentItem {
+            return item.isVideoTracksAvailable()
         }
         
         // We do this because for m3u8 HLS streams,
