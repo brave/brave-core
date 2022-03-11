@@ -42,6 +42,10 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
   SetBuildChannel(BuildChannelType::kRelease);
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
+  mojom::SysInfo sys_info;
+  sys_info.is_uncertain_future = false;
+  SetSysInfo(sys_info);
+
   // Act
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
 
@@ -53,7 +57,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForNonConversionConfirmationType) {
     base::JSONWriter::Write(user_data, &json);
 
     const std::string expected_json =
-        R"({"buildChannel":"release","countryCode":"US","platform":"windows","studies":[]})";
+        R"({"buildChannel":"release","countryCode":"US","odyssey":"host","platform":"windows","studies":[]})";
 
     EXPECT_EQ(expected_json, json);
   });
@@ -64,6 +68,10 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
   MockPlatformHelper(platform_helper_mock_, PlatformType::kWindows);
   SetBuildChannel(BuildChannelType::kRelease);
   MockLocaleHelper(locale_helper_mock_, "en-US");
+
+  mojom::SysInfo sys_info;
+  sys_info.is_uncertain_future = false;
+  SetSysInfo(sys_info);
 
   // Act
   BuildAndSaveConversionQueueItem(kConversionId, kAdvertiserPublicKey);
@@ -76,7 +84,7 @@ TEST_F(BatAdsConfirmationUserDataTest, BuildForConversionConfirmationType) {
     base::JSONWriter::Write(user_data, &json);
 
     const std::string pattern =
-        R"~({"buildChannel":"release","conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","platform":"windows","studies":\[]})~";
+        R"~({"buildChannel":"release","conversionEnvelope":{"alg":"crypto_box_curve25519xsalsa20poly1305","ciphertext":"(.{64})","epk":"(.{44})","nonce":"(.{32})"},"countryCode":"US","odyssey":"host","platform":"windows","studies":\[]})~";
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 }

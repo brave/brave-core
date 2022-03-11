@@ -10,6 +10,7 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_tokens_unittest_util.h"
+#include "bat/ads/internal/unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
@@ -18,6 +19,10 @@ namespace ads {
 
 TEST(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
   // Arrange
+  mojom::SysInfo sys_info;
+  sys_info.is_uncertain_future = false;
+  SetSysInfo(sys_info);
+
   const privacy::UnblindedPaymentTokenList unblinded_payment_tokens =
       privacy::GetUnblindedPaymentTokens(2);
 
@@ -30,7 +35,7 @@ TEST(BatAdsRedeemUnblindedPaymentTokensUserDataBuilderTest, BuildUserData) {
     base::JSONWriter::Write(user_data, &json);
 
     const std::string expected_json =
-        R"({"totals":[{"ad_format":"ad_notification","view":"2"}]})";
+        R"({"odyssey":"host","totals":[{"ad_format":"ad_notification","view":"2"}]})";
 
     EXPECT_EQ(expected_json, json);
   });

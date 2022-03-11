@@ -10,6 +10,7 @@
 #include "bat/ads/internal/account/user_data/build_channel_user_data.h"
 #include "bat/ads/internal/account/user_data/conversion_user_data.h"
 #include "bat/ads/internal/account/user_data/locale_user_data.h"
+#include "bat/ads/internal/account/user_data/odyssey_user_data.h"
 #include "bat/ads/internal/account/user_data/platform_user_data.h"
 #include "bat/ads/internal/account/user_data/studies_user_data.h"
 
@@ -44,6 +45,9 @@ void ConfirmationsUserDataBuilder::Build(
 
         const base::DictionaryValue studies_user_data = user_data::GetStudies();
         user_data.MergeDictionary(&studies_user_data);
+
+        const base::DictionaryValue odyssey_user_data = user_data::GetOdyssey();
+        user_data.MergeDictionary(&odyssey_user_data);
 
         callback(user_data);
       });
