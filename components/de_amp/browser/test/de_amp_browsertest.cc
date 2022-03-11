@@ -256,15 +256,15 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, BackAndForwardNavigatesAlsoRedirect) {
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url2);
 }
 
-class DeAmpFeatureFlagOffBrowserTest : public DeAmpBrowserTest {
+class DeAmpBrowserTestBaseFeatureDisabled : public DeAmpBrowserTest {
  public:
-  DeAmpFeatureFlagOffBrowserTest() {
+  DeAmpBrowserTestBaseFeatureDisabled() {
     feature_list_.Reset();
     feature_list_.InitAndDisableFeature(de_amp::features::kBraveDeAMP);
   }
 };
 
-IN_PROC_BROWSER_TEST_F(DeAmpFeatureFlagOffBrowserTest, DoesNotDeAmp) {
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTestBaseFeatureDisabled, DoesNotDeAmp) {
   https_server_->RegisterRequestHandler(base::BindRepeating(
       HandleRequest, kTestHost, kTestCanonicalPage, kTestBody));
   ASSERT_TRUE(https_server_->Start());
