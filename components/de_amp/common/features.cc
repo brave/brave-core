@@ -6,6 +6,7 @@
 #include "brave/components/de_amp/common/features.h"
 
 #include "base/feature_list.h"
+#include "build/build_config.h"
 
 namespace de_amp {
 namespace features {
