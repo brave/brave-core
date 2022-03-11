@@ -17,9 +17,9 @@ namespace brave_wallet {
 namespace {
 
 constexpr size_t kChecksumSize = 4;
-constexpr size_t kPublicKeySizeSecp256K = 20;
+constexpr size_t kHashLengthSecp256K = 20;
 constexpr size_t kAddressSizeSecp256K = 41;
-constexpr size_t kPublicKeySizeBLS = 48;
+constexpr size_t kHashLengthBLS = 48;
 constexpr size_t kAddressSizeBLS = 86;
 
 absl::optional<std::vector<uint8_t>> BlakeHash(
@@ -82,7 +82,7 @@ bool FilAddress::operator!=(const FilAddress& other) const {
   return !IsEqual(other);
 }
 
-// Decodes Filecoin BLS/SECP256K addresses within rules
+// Decodes Filecoin BLS/SECP256K addresses within rules.
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
 // |------------|----------|---------|----------|
 // |  network   | protocol | payload | checksum |
@@ -102,19 +102,19 @@ FilAddress FilAddress::FromAddress(const std::string& address) {
   if (!IsValidNetwork(network))
     return FilAddress();
 
-  std::string address_hash_decoded{
+  std::string payload_decoded{
       base32::Base32Decode(base::ToUpperASCII(address.substr(2)))};
-  if (address_hash_decoded.empty())
+  if (payload_decoded.empty())
     return FilAddress();
 
-  std::string payload_piece{address_hash_decoded.substr(
-      0, address_hash_decoded.size() - kChecksumSize)};
-  std::vector<uint8_t> payload(payload_piece.begin(), payload_piece.end());
+  std::string payload_string{
+      payload_decoded.substr(0, payload_decoded.size() - kChecksumSize)};
+  std::vector<uint8_t> payload(payload_string.begin(), payload_string.end());
   return FilAddress::FromPayload(payload, protocol.value(), network);
 }
 
 // Creates FilAddress from SECP256K uncompressed public key
-// with specified protocol and network
+// with specified protocol and network.
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
 // static
 FilAddress FilAddress::FromUncompressedPublicKey(
@@ -125,14 +125,14 @@ FilAddress FilAddress::FromUncompressedPublicKey(
     return FilAddress();
   if (uncompressed_public_key.empty())
     return FilAddress();
-  auto payload = BlakeHash(uncompressed_public_key, kPublicKeySizeSecp256K);
+  auto payload = BlakeHash(uncompressed_public_key, kHashLengthSecp256K);
   if (!payload || payload->empty())
     return FilAddress();
   return FromPayload(*payload, protocol, network);
 }
 
 // Creates FilAddress from SECP256K or BLS payload
-// with specified protocol and network
+// with specified protocol and network.
 // https://spec.filecoin.io/appendix/address/#section-appendix.address.string
 // static
 FilAddress FilAddress::FromPayload(const std::vector<uint8_t>& payload,
@@ -141,10 +141,10 @@ FilAddress FilAddress::FromPayload(const std::vector<uint8_t>& payload,
   if (!IsValidNetwork(network))
     return FilAddress();
   if (protocol == mojom::FilecoinAddressProtocol::SECP256K1) {
-    if (payload.size() != kPublicKeySizeSecp256K)
+    if (payload.size() != kHashLengthSecp256K)
       return FilAddress();
   } else if (protocol == mojom::FilecoinAddressProtocol::BLS) {
-    if (payload.size() != kPublicKeySizeBLS)
+    if (payload.size() != kHashLengthBLS)
       return FilAddress();
   }
   return FilAddress(payload, protocol, network);
@@ -175,15 +175,15 @@ bool FilAddress::IsValidAddress(const std::string& address) {
 std::string FilAddress::EncodeAsString() const {
   if (bytes_.empty())
     return std::string();
-  std::vector<uint8_t> address_hash(bytes_);
+  std::vector<uint8_t> payload_hash(bytes_);
   std::vector<uint8_t> checksum(bytes_);
   checksum.insert(checksum.begin(), static_cast<int>(protocol_));
   auto checksum_hash = BlakeHash(checksum, kChecksumSize);
   if (!checksum_hash)
     return std::string();
-  address_hash.insert(address_hash.end(), checksum_hash->begin(),
+  payload_hash.insert(payload_hash.end(), checksum_hash->begin(),
                       checksum_hash->end());
-  std::string input(address_hash.begin(), address_hash.end());
+  std::string input(payload_hash.begin(), payload_hash.end());
   // Encoding as lower case base32 without padding according to
   // https://spec.filecoin.io/appendix/address/#section-appendix.address.payload
   // and https://github.com/multiformats/multibase/blob/master/multibase.csv

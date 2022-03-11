@@ -20,7 +20,7 @@ class FilAddress {
       mojom::FilecoinAddressProtocol protocol,
       const std::string& network);
 
-  static FilAddress FromPayload(const std::vector<uint8_t>& public_key,
+  static FilAddress FromPayload(const std::vector<uint8_t>& payload,
                                 mojom::FilecoinAddressProtocol protocol,
                                 const std::string& network);
   static FilAddress FromAddress(const std::string& address);
