@@ -182,7 +182,9 @@ class PlaylistMediaStreamer {
     
     static func setNowPlayingMediaArtwork(artwork: MPMediaItemArtwork?) {
         if let artwork = artwork {
-            MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = artwork
+            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
+            nowPlayingInfo[MPMediaItemPropertyArtwork] = artwork
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
         }
     }
     
