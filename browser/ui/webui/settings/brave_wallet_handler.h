@@ -38,16 +38,6 @@ class BraveWalletHandler : public settings::SettingsPageUIHandler {
   void AddEthereumChain(const base::Value::List& args);
   void SetActiveNetwork(const base::Value::List& args);
 
-  // Temporary callbacks that we need to keep for Chromium 100 so that we can
-  // use them with RegisterMessageCallback() before that method gets migrated to
-  // expect a const base::Value::List& along with Chromium 101 (see CL 3483819).
-  // https://chromium-review.googlesource.com/c/chromium/src/+/3483819
-  void GetAutoLockMinutesDeprecated(base::Value::ConstListView args);
-  void RemoveEthereumChainDeprecated(base::Value::ConstListView args);
-  void GetCustomNetworksListDeprecated(base::Value::ConstListView args);
-  void AddEthereumChainDeprecated(base::Value::ConstListView args);
-  void SetActiveNetworkDeprecated(base::Value::ConstListView args);
-
   BraveWalletHandler(const BraveWalletHandler&) = delete;
   BraveWalletHandler& operator=(const BraveWalletHandler&) = delete;
 
