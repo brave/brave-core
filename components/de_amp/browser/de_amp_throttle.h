@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
 #include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "content/public/browser/web_contents.h"
@@ -44,6 +45,7 @@ class DeAmpThrottle : public body_sniffer::BodySnifferThrottle {
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   network::ResourceRequest request_;
   content::WebContents::Getter wc_getter_;
+  base::WeakPtrFactory<DeAmpThrottle> weak_factory_{this};
 };
 
 }  // namespace de_amp

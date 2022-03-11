@@ -32,12 +32,12 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
   static std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
                     mojo::PendingReceiver<network::mojom::URLLoaderClient>,
                     DeAmpURLLoader*>
-  CreateLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+  CreateLoader(base::WeakPtr<DeAmpThrottle> throttle,
                const GURL& response_url,
                scoped_refptr<base::SequencedTaskRunner> task_runner);
 
  private:
-  DeAmpURLLoader(base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+  DeAmpURLLoader(base::WeakPtr<DeAmpThrottle> throttle,
                  const GURL& response_url,
                  mojo::PendingRemote<network::mojom::URLLoaderClient>
                      destination_url_loader_client,
@@ -50,6 +50,8 @@ class DeAmpURLLoader : public body_sniffer::BodySnifferURLLoader {
 
   void CallClientComplete() override;
   void ForwardBodyToClient();
+
+  base::WeakPtr<DeAmpThrottle> de_amp_throttle_;
 };
 
 }  // namespace de_amp

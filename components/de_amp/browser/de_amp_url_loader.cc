@@ -26,7 +26,7 @@ std::tuple<mojo::PendingRemote<network::mojom::URLLoader>,
            mojo::PendingReceiver<network::mojom::URLLoaderClient>,
            DeAmpURLLoader*>
 DeAmpURLLoader::CreateLoader(
-    base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+    base::WeakPtr<DeAmpThrottle> throttle,
     const GURL& response_url,
     scoped_refptr<base::SequencedTaskRunner> task_runner) {
   mojo::PendingRemote<network::mojom::URLLoader> url_loader;
@@ -46,7 +46,7 @@ DeAmpURLLoader::CreateLoader(
 }
 
 DeAmpURLLoader::DeAmpURLLoader(
-    base::WeakPtr<body_sniffer::BodySnifferThrottle> throttle,
+    base::WeakPtr<DeAmpThrottle> throttle,
     const GURL& response_url,
     mojo::PendingRemote<network::mojom::URLLoaderClient>
         destination_url_loader_client,
@@ -55,7 +55,8 @@ DeAmpURLLoader::DeAmpURLLoader(
           throttle,
           response_url,
           std::move(destination_url_loader_client),
-          task_runner) {}
+          task_runner),
+      de_amp_throttle_(throttle) {}
 
 DeAmpURLLoader::~DeAmpURLLoader() = default;
 
@@ -80,7 +81,7 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
 bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
   std::string canonical_link;
 
-  if (throttle_ && MaybeFindCanonicalAmpUrl(buffered_body_, &canonical_link)) {
+  if (de_amp_throttle_ && MaybeFindCanonicalAmpUrl(buffered_body_, &canonical_link)) {
     const GURL canonical_url(canonical_link);
     if (!VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
       VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
@@ -88,7 +89,7 @@ bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
     }
     VLOG(2) << __func__ << " de-amping and loading " << canonical_url;
     Abort();
-    static_cast<DeAmpThrottle*>(throttle_.get())->Redirect(canonical_url);
+    de_amp_throttle_->Redirect(canonical_url);
     return true;
   } else {
     // Did not find AMP page and/or canonical link, load original

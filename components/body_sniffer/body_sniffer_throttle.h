@@ -19,7 +19,8 @@ namespace body_sniffer {
 class BodySnifferURLLoader;
 
 // Base throttle used for implementing sniffing functionality
-class BodySnifferThrottle : public blink::URLLoaderThrottle {
+class BodySnifferThrottle : public blink::URLLoaderThrottle,
+                            public base::SupportsWeakPtr<BodySnifferThrottle> {
  public:
   BodySnifferThrottle();
   ~BodySnifferThrottle() override;
@@ -28,8 +29,6 @@ class BodySnifferThrottle : public blink::URLLoaderThrottle {
   void Resume();
 
  protected:
-  base::WeakPtrFactory<BodySnifferThrottle> weak_factory_{this};
-
   void WillProcessResponse(const GURL& response_url,
                            network::mojom::URLResponseHead* response_head,
                            bool* defer) override = 0;

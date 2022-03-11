@@ -69,8 +69,8 @@ void DeAmpThrottle::WillProcessResponse(
   mojo::PendingReceiver<network::mojom::URLLoaderClient> source_client_receiver;
   DeAmpURLLoader* de_amp_loader;
   std::tie(new_remote, new_receiver, de_amp_loader) =
-      DeAmpURLLoader::CreateLoader(weak_factory_.GetWeakPtr(), response_url,
-                                   task_runner_);
+      DeAmpURLLoader::CreateLoader(weak_factory_.GetWeakPtr(),
+                                   response_url, task_runner_);
   InterceptAndStartLoader(
       std::move(source_loader), std::move(source_client_receiver),
       std::move(new_remote), std::move(new_receiver), de_amp_loader);
