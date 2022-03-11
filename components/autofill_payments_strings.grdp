@@ -94,7 +94,7 @@
     <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CONFIRM" desc="Text to show for the Autofill upload save credit card prompt accept button when more information (e.g., CVC) was needed in order to save the card and was entered." formatter_data="android_java">
       Confirm
     </message>
-    <message name="IDS_AUTOFILL_MOBILE_SAVE_CARD_TO_CLOUD_CONFIRMATION_DIALOG_TITLE" desc="This message appears as the title of a confirmation dialog in which the user can view/edit the information that will be saved to Brave Payments, and only appears after the user has expressed interest in uploading the card.">
+    <message name="IDS_AUTOFILL_MOBILE_SAVE_CARD_TO_CLOUD_CONFIRMATION_DIALOG_TITLE" desc="This message appears as the title of a confirmation dialog in which the user can view/edit the information that will be saved to Google Payments, and only appears after the user has expressed interest in uploading the card.">
       Save to Brave sync chain
     </message>
     <message name="IDS_AUTOFILL_MOBILE_SAVE_CARD_TO_CLOUD_PROMPT_SAVE_FOLLOW_UP" desc="Button label for a prompt to ask if user agrees to save the card to the server. This prompt will be followed by confirmation dialogs to confirm the card details, such as card label.">
@@ -121,29 +121,29 @@
   </message>
   <if expr="is_linux and not chromeos">
     <then>
-      <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments and also saved locally. The prompt can be either a bubble or an infobar.">
+      <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Google Payments and also saved locally. The prompt can be either a bubble or an infobar.">
         Do you want to save this card to your Brave sync chain?
       </message>
     </then>
     <else>
-      <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments and also saved locally. The prompt can be either a bubble or an infobar.">
+      <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Google Payments and also saved locally. The prompt can be either a bubble or an infobar.">
         Do you want to save this card to your Brave sync chain and on this device?
       </message>
     </else>
   </if>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_V3" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments, according to January 2018 UI guidelines. The prompt can be either a bubble or an infobar.">
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_V3" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Google Payments, according to January 2018 UI guidelines. The prompt can be either a bubble or an infobar.">
     Save card?
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_V4" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments, according to November 2018 UI guidelines. The prompt can be either a bubble or an infobar.">
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_V4" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Google Payments, according to November 2018 UI guidelines. The prompt can be either a bubble or an infobar.">
     Save card to Brave sync chain?
   </message>
-  <message name="IDS_AUTOFILL_CARD_SAVED" desc="Title text for the Autofill save card manager bubble when the card has been saved either locally or to Brave Payments. Also label for icon animation.">
+  <message name="IDS_AUTOFILL_CARD_SAVED" desc="Title text for the Autofill save card manager bubble when the card has been saved either locally or to Google Payments. Also label for icon animation.">
     Card saved
   </message>
-  <message name="IDS_AUTOFILL_MANAGE_CARDS" desc="Text to show for the button in the save card manager bubble when the card has been saved either locally or to Brave Payments.">
+  <message name="IDS_AUTOFILL_MANAGE_CARDS" desc="Text to show for the button in the save card manager bubble when the card has been saved either locally or to Google Payments.">
     Manage cards
   </message>
-  <message name="IDS_AUTOFILL_DONE" desc="Text to show for the button in the save card manager bubble when the card has been saved either locally or to Brave Payments.">
+  <message name="IDS_AUTOFILL_DONE" desc="Text to show for the button in the save card manager bubble when the card has been saved either locally or to Google Payments.">
     Done
   </message>
   <message name="IDS_AUTOFILL_FAILURE_BUBBLE_TITLE" desc="Title text for the Autofill credit card upload failure bubble.">
@@ -152,13 +152,13 @@
   <message name="IDS_AUTOFILL_FAILURE_BUBBLE_EXPLANATION" desc="Explanation text for the Autofill credit card upload failure bubble main content. Shown as user-facing descripion.">
     Your card can't be saved right now
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments and also saved locally. The prompt can be either a bubble or an infobar.">
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Google Payments and also saved locally. The prompt can be either a bubble or an infobar.">
     Pay quickly on sites and apps across devices using cards you have saved with Brave.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_V3" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments, according to April 2018 UI guidelines. The prompt will be shown in a bubble below the omnibox.">
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_V3" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Google Payments, according to April 2018 UI guidelines. The prompt will be shown in a bubble below the omnibox.">
     To pay faster next time, save your card and billing address to your Brave sync chain.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_V3_WITH_NAME" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments, according to April 2018 UI guidelines. The prompt will be shown in a bubble below the omnibox.">
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_V3_WITH_NAME" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Google Payments, according to April 2018 UI guidelines. The prompt will be shown in a bubble below the omnibox.">
     To pay faster next time, save your card, name, and billing address to your Brave sync chain.
   </message>
 
@@ -191,7 +191,7 @@
       Enter an expiration date in the future and try again
     </message>
   </if>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_TOOLTIP" desc="The tooltip hover text that explains why credit card upload to Brave Payments is being offered.">
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_TOOLTIP" desc="The tooltip hover text that explains why credit card upload to Google Payments is being offered.">
     Brave is offering to save your cards in your Brave sync chain because you are signed in. You can change this behavior in settings.
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_AND_CARDHOLDER_NAME_TOOLTIP" desc="The tooltip hover text that explains why credit card upload to Brave sync chain is being offered and where the suggested cardholder name came from.">
@@ -200,8 +200,8 @@
 
   <!-- Autofill Local card migration bubble or dialog -->
   <if expr="not is_ios and not is_android">
-    <message name="IDS_AUTOFILL_GOOGLE_PAY_LOGO_ACCESSIBLE_NAME" desc="The accessible name for the Brave Pay logo in the local card migration bubble or dialog.">
-      Brave Pay logo
+    <message name="IDS_AUTOFILL_GOOGLE_PAY_LOGO_ACCESSIBLE_NAME" desc="The accessible name for the Google Pay logo in the local card migration bubble or dialog.">
+      Google Pay logo
     </message>
     <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_ANIMATION_LABEL" desc="The text displayed in the migration pending animation in the omnibox. The animation will be triggered after the user consented to the migration offer.">
       Saving cards...
@@ -239,7 +239,7 @@
       =1 {This card has been saved in your Brave sync chain}
       other {These cards have been saved in your Brave sync chain}}
     </message>
-    <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_DIALOG_MESSAGE_ERROR" desc="The body text shown on a dialog when the user attempts to migrate their cards to Brave Payments, but all migrations fail. [ICU Syntax]">
+    <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_DIALOG_MESSAGE_ERROR" desc="The body text shown on a dialog when the user attempts to migrate their cards to Google Payments, but all migrations fail. [ICU Syntax]">
       {NUM_CARDS, plural,
       =1 {This card can't be saved right now}
       other {These cards can't be saved right now}}
@@ -467,8 +467,8 @@
   <message name="IDS_AUTOFILL_WALLET_MANAGEMENT_LINK_TEXT" desc="Text for link that allows users to see and edit their Wallet information." formatter_data="android_java">
     Edit
   </message>
-  <message name="IDS_AUTOFILL_FROM_GOOGLE_ACCOUNT_LONG" desc="Text that indicates an address or credit card came from Brave Pay. 'Brave Pay' should not be translated as it is the product name." formatter_data="android_java">
-    From Brave Pay
+  <message name="IDS_AUTOFILL_FROM_GOOGLE_ACCOUNT_LONG" desc="Text that indicates an address or credit card came from Google Pay. 'Google Pay' should not be translated as it is the product name." formatter_data="android_java">
+    From Google Pay
   </message>
 
   <!-- virtual cards related strings -->
@@ -652,7 +652,7 @@
     <message name="IDS_AUTOFILL_OFFERS_REMINDER_DESCRIPTION_TEXT" desc="Secondary explanatory text for the Clank infobar shown on the merchant website when an offer is available to use." formatter_data="android_java">
       Pay with <ph name="CARD_DETAIL">%1$s<ex>Visa - 1234</ex></ph> at checkout.
     </message>
-    <message name="IDS_AUTOFILL_OFFERS_REMINDER_DEEP_LINK_TEXT" desc="Text to be linked to take the user to the offer in the Brave Pay app." formatter_data="android_java">
+    <message name="IDS_AUTOFILL_OFFERS_REMINDER_DEEP_LINK_TEXT" desc="Text to be linked to take the user to the offer in the Google Pay app." formatter_data="android_java">
       See details
     </message>
   </if>

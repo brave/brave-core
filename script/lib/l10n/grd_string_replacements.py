@@ -58,6 +58,12 @@ fixup_replacements = [
     (r'Google Google', r'Google'),
     (r'Brave Account', r'Brave sync chain'),
     (r'Brave Lens', r'Google Lens'),
+    (r'Bravebook', r'Chromebook'),
+    (r'Bravecast', r'Chromecast'),
+    (r'Brave Cloud', r'Google Cloud'),
+    (r'Brave Pay', r'Google Pay'),
+    (r'Brave Photos', r'Google Photos'),
+    (r'Brave Projects', r'Chromium Projects'),
 ]
 
 

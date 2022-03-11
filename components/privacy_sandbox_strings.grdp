@@ -443,7 +443,7 @@
   <message name="IDS_PRIVACY_SANDBOX_TOPICS_TAXONOMY_V1_TOPIC_ID_134" translateable="false" desc="Taxonomy Member. Meaning: [a desktop computer is a personal computer (PC) in a hardware configuration that makes it suitable for regular use at a fixed location, as opposed to a laptop or other mobile devices (source: Wikipedia); includes mini PCs] Existing Ref: http://tc-message/message/FatCatTaxonomy_Verticals4/6925354490648875732">
     Desktop computers
   </message>
-  <message name="IDS_PRIVACY_SANDBOX_TOPICS_TAXONOMY_V1_TOPIC_ID_135" translateable="false" desc="Taxonomy Member. Meaning: [personal computers designed for mobile use such as laptops, notebooks, and ultraportable PCs; includes 2-in-1 laptops, and Bravebooks] Existing Ref: http://tc-message/message/FatCatTaxonomy_Verticals4/4367973428696769541">
+  <message name="IDS_PRIVACY_SANDBOX_TOPICS_TAXONOMY_V1_TOPIC_ID_135" translateable="false" desc="Taxonomy Member. Meaning: [personal computers designed for mobile use such as laptops, notebooks, and ultraportable PCs; includes 2-in-1 laptops, and Chromebooks] Existing Ref: http://tc-message/message/FatCatTaxonomy_Verticals4/4367973428696769541">
     Laptops &amp; notebooks
   </message>
   <message name="IDS_PRIVACY_SANDBOX_TOPICS_TAXONOMY_V1_TOPIC_ID_136" translateable="false" desc="Taxonomy Member. Meaning: [computing network security solutions, services, tools: firewalls, intrusion detection systems, denial of service prevention, etc] Existing Ref: http://tc-message/message/FatCatTaxonomy_Verticals4/1806105062543621981">

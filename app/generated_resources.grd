@@ -5991,66 +5991,66 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Learn about the data Google Drive collects and why <ph name="BEGIN_LINK">&lt;a href="https://support.google.com/drive/answer/2450387" target="_blank"&gt;</ph>here<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_TITLE" desc="Title shown in the header of the photos module.">
-        From your Brave Photos
+        From your Google Photos
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_TITLE" desc="Title shown for Brave Photos Memories in the list of available cards for the new tab page.">
-        Brave Photos memories
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_TITLE" desc="Title shown for Google Photos Memories in the list of available cards for the new tab page.">
+        Google Photos memories
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDE_TODAY" desc="Part of label (combined with IDS_NTP_MODULES_DISMISS_BUTTON_TEXT) used to hide Brave Photos Memories from the new tab page for today.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDE_TODAY" desc="Part of label (combined with IDS_NTP_MODULES_DISMISS_BUTTON_TEXT) used to hide Google Photos Memories from the new tab page for today.">
         your memories for today
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDDEN_TODAY" desc="Confirmation text shown when Brave Photos Memories were hidden from the new tab page for today.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_HIDDEN_TODAY" desc="Confirmation text shown when Google Photos Memories were hidden from the new tab page for today.">
         Memories hidden for today
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_SOFT_OPT_OUT" desc="Confirmation text shown when Brave Photos Memories is soft disabled">
+      <message name="IDS_NTP_MODULES_PHOTOS_SOFT_OPT_OUT" desc="Confirmation text shown when Google Photos Memories is soft disabled">
         Memories hidden for two days
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLE" desc="Part of label (combined with IDS_NTP_MODULES_DISABLE_BUTTON_TEXT) used to disable Brave Photos Memories from the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLE" desc="Part of label (combined with IDS_NTP_MODULES_DISABLE_BUTTON_TEXT) used to disable Google Photos Memories from the new tab page.">
         memories
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLED" desc="Part of confirmation text (combined with IDS_NTP_MODULES_DISABLE_TOAST_MESSAGE) shown when the Brave Photos Memories module is disabled from the new tab page.">
-        memories from Brave Photos
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_DISABLED" desc="Part of confirmation text (combined with IDS_NTP_MODULES_DISABLE_TOAST_MESSAGE) shown when the Google Photos Memories module is disabled from the new tab page.">
+        memories from Google Photos
       </message>
       <message name="IDS_NTP_MODULES_PHOTOS_INFO" desc="Text shown in the body of the info dialog of the Photos module.">
-        Your memories from Brave Photos are shown here. They are visible only to you, whenever you’re signed in.
+        Your memories from Google Photos are shown here. They are visible only to you, whenever you’re signed in.
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
         Manage what you see in your memories at <ph name="BEGIN_LINK">&lt;a href="https://photos.google.com/settings?referrer=CHROME_NTP" target="_blank"&gt;</ph>photos.google.com/settings<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_EXPLORE" desc="Text to encourage users to explore Brave Photos in the new tab page.">
-        Explore more of your memories in Brave Photos
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_EXPLORE" desc="Text to encourage users to explore Google Photos in the new tab page.">
+        Explore more of your memories in Google Photos
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TITLE" desc="Title of the opt-in UI for Brave Photos in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page.">
         See your memories here
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_PERSONALIZED_WELCOME_TITLE_TEMPLATE" desc="Personalized title of the opt-in UI for Brave Photos in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_PERSONALIZED_WELCOME_TITLE_TEMPLATE" desc="Personalized title of the opt-in UI for Google Photos in the new tab page.">
         See "<ph name="PERSONALIZED_MEMORY_TITLE">$1<ex>Recent Highlights</ex></ph>" and other memories here
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_RH_WELCOME_TITLE" desc="Title of the opt-in UI for Brave Photos in the new tab page emphasizing on recent highlights.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_RH_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on recent highlights.">
         See "Recent Highlights" and other memories here
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Brave Photos in the new tab page emphasizing on favorite profiles.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_FAVORITE_PEOPLE_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on favorite profiles.">
         See memories of your favorite profiles and more
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_TRIPS_WELCOME_TITLE" desc="Title of the opt-in UI for Brave Photos in the new tab page emphasizing on trips.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_TRIPS_WELCOME_TITLE" desc="Title of the opt-in UI for Google Photos in the new tab page emphasizing on trips.">
         See memories of your recent trips and more
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TEXT" desc="Text for the opt-in UI for Brave Photos in the new tab page.">
-        Start exploring your memories from Brave Photos, whenever you’re signed in.
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_TEXT" desc="Text for the opt-in UI for Google Photos in the new tab page.">
+        Start exploring your memories from Google Photos, whenever you’re signed in.
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_OPT_IN" desc="Label of the button to opt-in of Brave Photos in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_OPT_IN" desc="Label of the button to opt-in of Google Photos in the new tab page.">
         See memories
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_OPT_OUT" desc="Label of the button to opt-out of Brave Photos in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_OPT_OUT" desc="Label of the button to opt-out of Google Photos in the new tab page.">
         No thanks
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_SOFT_OPT_OUT" desc="Label of the button to soft opt-out of Brave Photos in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_BUTTON_SOFT_OPT_OUT" desc="Label of the button to soft opt-out of Google Photos in the new tab page.">
         Ask me later
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_EXAMPLE" desc="Example of a memory title for the Brave Photos module in the new tab page.">
+      <message name="IDS_NTP_MODULES_PHOTOS_MEMORIES_WELCOME_EXAMPLE" desc="Example of a memory title for the Google Photos module in the new tab page.">
         2 years ago
       </message>
-      <message name="IDS_NTP_MODULES_PHOTOS_NEW" desc="Text shown on the header chip of Brave Photos module.">
+      <message name="IDS_NTP_MODULES_PHOTOS_NEW" desc="Text shown on the header chip of Google Photos module.">
         New
       </message>
       <message name="IDS_NTP_MODULES_KALEIDOSCOPE_TITLE" desc="Title shown in the header of the Kaleidoscope module.">
@@ -6334,7 +6334,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLTIP_SAVE_CREDIT_CARD_FAILURE" desc="The tooltip for the icon that shows the credit card is not successfully uploaded">
         Can't save card right now
       </message>
-      <message name="IDS_TOOLTIP_MIGRATE_LOCAL_CARD" desc="Tooltip for the credit card icon that appears in the address bar. Icon is shown when a user has a credit card stored locally in Brave but not in Brave Pay.">
+      <message name="IDS_TOOLTIP_MIGRATE_LOCAL_CARD" desc="Tooltip for the credit card icon that appears in the address bar. Icon is shown when a user has a credit card stored locally in Brave but not in Google Pay.">
         Save payment method
       </message>
       <message name="IDS_TOOLTIP_TRANSLATE" desc="The tooltip for translate">
@@ -7998,7 +7998,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Year
       </message>
       <message name="IDS_AUTOFILL_FROM_GOOGLE_ACCOUNT" desc="The name of the Brave product that stores user addresses or credit cards in the cloud. This should not be translated." formatter_data="android_java">
-        Brave Pay
+        Google Pay
       </message>
 
       <if expr="is_linux and not chromeos and not lacros">
@@ -8442,10 +8442,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <if expr="not is_android">
         <if expr="chromeos">
           <message name="IDS_DEVICE_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
+            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
           </message>
           <message name="IDS_DEVICE_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$3<ex>example.com</ex></ph>
+            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Chromebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$3<ex>example.com</ex></ph>
           </message>
         </if>
         <message name="IDS_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
@@ -9316,10 +9316,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
         <!-- Encryption tab of the configure sync dialog -->
         <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_CUSTOM" desc="Text of the radio that when selected enables full encryption.">
-          Data is encrypted with your sync passphrase. This doesn't include payment methods and addresses from Brave Pay.
+          Data is encrypted with your sync passphrase. This doesn't include payment methods and addresses from Google Pay.
         </message>
         <message name="IDS_SYNC_FULL_ENCRYPTION_BODY_CUSTOM_WITH_DATE" desc="Text of the radio that when selected enables full encryption.">
-          Data was encrypted with your sync passphrase on <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Brave Pay.
+          Data was encrypted with your sync passphrase on <ph name="TIME">$1<ex>Sept 1, 2012</ex></ph>. This doesn't include payment methods and addresses from Google Pay.
         </message>
       </if>
 
@@ -10641,20 +10641,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_LABEL_AUDIO_MUTING_FORMAT" desc="Accessibility label text, when all tab audio output is muted. Example: 'Google Play Music - Audio muted'">
         <ph name="WINDOW_TITLE">$1<ex>Google Play Music</ex></ph> - Audio muted
       </message>
-      <message name="IDS_TAB_AX_LABEL_BLUETOOTH_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to and has access to a Bluetooth device. Example: 'Brave Photos - Bluetooth device connected'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - Bluetooth device connected
+      <message name="IDS_TAB_AX_LABEL_BLUETOOTH_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to and has access to a Bluetooth device. Example: 'Google Photos - Bluetooth device connected'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - Bluetooth device connected
       </message>
-      <message name="IDS_TAB_AX_LABEL_BLUETOOTH_SCAN_ACTIVE_FORMAT" desc="Accessibility label text, when a tab is actively scanning for Bluetooth devices. Example: 'Brave Photos - Bluetooth scan active'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - Bluetooth scan active
+      <message name="IDS_TAB_AX_LABEL_BLUETOOTH_SCAN_ACTIVE_FORMAT" desc="Accessibility label text, when a tab is actively scanning for Bluetooth devices. Example: 'Google Photos - Bluetooth scan active'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - Bluetooth scan active
       </message>
-      <message name="IDS_TAB_AX_LABEL_USB_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a USB device. Example: 'Brave Photos - USB device connected'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - USB device connected
+      <message name="IDS_TAB_AX_LABEL_USB_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a USB device. Example: 'Google Photos - USB device connected'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - USB device connected
       </message>
-      <message name="IDS_TAB_AX_LABEL_HID_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a HID device. Example: 'Brave Photos - HID device connected'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - HID device connected
+      <message name="IDS_TAB_AX_LABEL_HID_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a HID device. Example: 'Google Photos - HID device connected'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - HID device connected
       </message>
-      <message name="IDS_TAB_AX_LABEL_SERIAL_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a serial port. Example: 'Brave Photos - Serial port connected'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - Serial port connected
+      <message name="IDS_TAB_AX_LABEL_SERIAL_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to a serial port. Example: 'Google Photos - Serial port connected'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Photos</ex></ph> - Serial port connected
       </message>
       <message name="IDS_TAB_AX_LABEL_NETWORK_ERROR_FORMAT" desc="Accessibility label text, when tab has encountered a network error such as being disconnected from the internet. Example: 'www.google.com - Network error'">
         <ph name="WINDOW_TITLE">$1<ex>www.google.com</ex></ph> - Network error
@@ -11975,11 +11975,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <message name="IDS_APP_PAUSE_HEADING" desc="Tells the user the app will be paused.">
-      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph>. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
+      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Google Photos</ex></ph>. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
     </message>
 
     <message name="IDS_APP_PAUSE_HEADING_FOR_WEB_APPS" desc="Tells the user the app will be paused.">
-      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph> Brave app. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
+      You reached the time limit your parent set for <ph name="APP_NAME">$1<ex>Google Photos</ex></ph> Brave app. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
     </message>
 
     <!-- App block prompt -->
@@ -11988,11 +11988,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <message name="IDS_APP_BLOCK_HEADING_FOR_CHILD" desc="Tells the child the app is blocked.">
-      <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph> is blocked by your parent. Ask your parent for permission to use this app.
+      <ph name="APP_NAME">$1<ex>Google Photos</ex></ph> is blocked by your parent. Ask your parent for permission to use this app.
     </message>
 
     <message name="IDS_APP_BLOCK_HEADING" desc="Tells the user the app is blocked.">
-      <ph name="APP_NAME">$1<ex>Brave Photos</ex></ph> is blocked by admin. Ask admin for permission to use this app.
+      <ph name="APP_NAME">$1<ex>Google Photos</ex></ph> is blocked by admin. Ask admin for permission to use this app.
     </message>
 
     <!-- Extension request -->

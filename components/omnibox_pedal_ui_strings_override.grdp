@@ -8,7 +8,7 @@
     Open a new Private window to browse privately
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to LAUNCH_INCOGNITO.">
-    <ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to open a new Private window to browse privately
+    <ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to open a new Private window to browse privately
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO" desc="Announcement when pedal action button is focused, LAUNCH_INCOGNITO">
     Open Private Window button, press Enter to open a new Private window to browse privately
@@ -21,7 +21,7 @@
     Close all Private windows that are currently open
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CLOSE_INCOGNITO_WINDOWS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CLOSE_INCOGNITO_WINDOWS.">
-    <ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to close all Private windows that are currently open
+    <ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to close all Private windows that are currently open
   </message>
   <message name="IDS_ACC_OMNIBOX_PEDAL_CLOSE_INCOGNITO_WINDOWS" desc="Announcement when pedal action button is focused, CLOSE_INCOGNITO_WINDOWS">
     Close Private windows button, press Enter to close all Private windows that are currently open
