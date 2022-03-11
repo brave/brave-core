@@ -52,7 +52,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, RedeemUnblindedPaymentTokens) {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
-              "payload": "{\"paymentId\":\"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7\"}",
+              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
                 {
                   "credential": {
@@ -112,7 +112,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
-              "payload": "{\"paymentId\":\"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7\"}",
+              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
                 {
                   "credential": {
@@ -126,7 +126,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest,
           )"},
         {net::HTTP_OK, R"(
             {
-              "payload": "{\"paymentId\":\"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7\"}",
+              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
                 {
                   "credential": {
@@ -184,7 +184,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, ScheduleNextTokenRedemption) {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
-              "payload": "{\"paymentId\":\"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7\"}",
+              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
                 {
                   "credential": {
@@ -243,7 +243,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, InvalidWallet) {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
-              "payload": "{\"paymentId\":\"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7\"}",
+              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
                 {
                   "credential": {
@@ -304,7 +304,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, NoUnblindedPaymentTokens) {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_OK, R"(
             {
-              "payload": "{\"paymentId\":\"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7\"}",
+              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
                 {
                   "credential": {
@@ -359,7 +359,7 @@ TEST_F(BatAdsRedeemUnblindedPaymentTokensTest, Retry) {
       {R"(/v2/confirmation/payment/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)",
        {{net::HTTP_NOT_FOUND, ""}, {net::HTTP_OK, R"(
             {
-              "payload": "{\"paymentId\":\"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7\"}",
+              "payload": "{"paymentId":"27a39b2f-9b2e-4eb0-bbb2-2f84447496e7"}",
               "paymentCredentials": [
                 {
                   "credential": {

@@ -44,7 +44,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(true, "release");
+  SetBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
@@ -81,7 +81,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(true, "release");
+  SetBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
@@ -118,7 +118,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(true, "release");
+  SetBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
@@ -155,7 +155,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(false, "beta");
+  SetBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
@@ -192,7 +192,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(false, "beta");
+  SetBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
@@ -229,7 +229,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(false, "beta");
+  SetBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
@@ -266,7 +266,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(true, "release");
+  SetBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
@@ -303,7 +303,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(true, "release");
+  SetBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
@@ -340,7 +340,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(true, "release");
+  SetBuildChannel(BuildChannelType::kRelease);
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 
@@ -377,7 +377,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(false, "beta");
+  SetBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-US");
 
@@ -414,7 +414,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(false, "beta");
+  SetBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-AS");
 
@@ -451,7 +451,7 @@ TEST_F(BatAdsCreateConfirmationUrlRequestBuilderTest,
                         "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
                         ConfirmationType::kViewed, AdType::kAdNotification);
 
-  SetBuildChannel(false, "beta");
+  SetBuildChannel(BuildChannelType::kNightly);
 
   MockLocaleHelper(locale_helper_mock_, "en-KY");
 

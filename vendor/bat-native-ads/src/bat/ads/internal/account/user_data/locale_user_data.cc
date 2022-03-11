@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/account/redeem_unblinded_token/user_data/confirmation_locale_dto_user_data.h"
+#include "bat/ads/internal/account/user_data/locale_user_data.h"
 
 #include <string>
 
@@ -14,7 +14,6 @@
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
-namespace dto {
 namespace user_data {
 
 base::DictionaryValue GetLocale() {
@@ -40,5 +39,4 @@ base::DictionaryValue GetLocale() {
 }
 
 }  // namespace user_data
-}  // namespace dto
 }  // namespace ads

@@ -54,6 +54,20 @@ UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
   return unblinded_payment_token;
 }
 
+UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
+    const ConfirmationType& confirmation_type,
+    const AdType& ad_type) {
+  const std::string unblinded_payment_token_base64 =
+      R"(PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY)";
+  UnblindedPaymentTokenInfo unblinded_payment_token =
+      CreateUnblindedPaymentToken(unblinded_payment_token_base64);
+
+  unblinded_payment_token.confirmation_type = confirmation_type;
+  unblinded_payment_token.ad_type = ad_type;
+
+  return unblinded_payment_token;
+}
+
 UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
     const std::vector<std::string>& unblinded_payment_tokens_base64) {
   UnblindedPaymentTokenList unblinded_payment_tokens;

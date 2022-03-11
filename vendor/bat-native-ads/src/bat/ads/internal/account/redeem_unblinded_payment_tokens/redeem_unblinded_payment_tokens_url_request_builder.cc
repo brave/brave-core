@@ -8,12 +8,10 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/containers/flat_map.h"
 #include "base/json/json_writer.h"
 #include "base/notreached.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
-#include "base/values.h"
+#include "bat/ads/internal/account/redeem_unblinded_payment_tokens/redeem_unblinded_payment_tokens_user_data_builder.h"
 #include "bat/ads/internal/privacy/challenge_bypass_ristretto_util.h"
 #include "bat/ads/internal/privacy/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "bat/ads/internal/server/confirmations_server_util.h"
@@ -26,13 +24,14 @@ using challenge_bypass_ristretto::TokenPreimage;
 using challenge_bypass_ristretto::VerificationKey;
 using challenge_bypass_ristretto::VerificationSignature;
 
-constexpr char kAdFormatKey[] = "ad_format";
-
 RedeemUnblindedPaymentTokensUrlRequestBuilder::
     RedeemUnblindedPaymentTokensUrlRequestBuilder(
         const WalletInfo& wallet,
-        const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens)
-    : wallet_(wallet), unblinded_payment_tokens_(unblinded_payment_tokens) {
+        const privacy::UnblindedPaymentTokenList& unblinded_payment_tokens,
+        const base::Value& user_data)
+    : wallet_(wallet),
+      unblinded_payment_tokens_(unblinded_payment_tokens),
+      user_data_(user_data.Clone()) {
   DCHECK(wallet_.IsValid());
   DCHECK(!unblinded_payment_tokens_.empty());
 }
@@ -79,15 +78,14 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
     const std::string& payload) const {
   DCHECK(!payload.empty());
 
-  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::DictionaryValue dictionary;
 
   base::Value payment_request_dto = CreatePaymentRequestDTO(payload);
   dictionary.SetKey("paymentCredentials", std::move(payment_request_dto));
 
   dictionary.SetKey("payload", base::Value(payload));
 
-  base::Value totals = CreateTotals();
-  dictionary.SetKey("totals", std::move(totals));
+  dictionary.MergeDictionary(&user_data_);
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
@@ -131,38 +129,6 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
   }
 
   return payment_request_dto;
-}
-
-base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateTotals()
-    const {
-  base::flat_map<std::string, base::flat_map<std::string, int>> buckets;
-  for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
-    const std::string& ad_type = unblinded_payment_token.ad_type.ToString();
-    const std::string& confirmation_type =
-        unblinded_payment_token.confirmation_type.ToString();
-
-    buckets[ad_type][confirmation_type]++;
-  }
-
-  base::Value totals(base::Value::Type::LIST);
-  for (const auto& bucket : buckets) {
-    base::Value total(base::Value::Type::DICTIONARY);
-
-    const std::string& ad_format = bucket.first;
-    total.SetKey(kAdFormatKey, base::Value(ad_format));
-
-    const base::flat_map<std::string, int>& confirmations = bucket.second;
-    for (const auto& confirmation : confirmations) {
-      const std::string& confirmation_type = confirmation.first;
-      const std::string& count = base::NumberToString(confirmation.second);
-
-      total.SetKey(confirmation_type, base::Value(count));
-    }
-
-    totals.Append(std::move(total));
-  }
-
-  return totals;
 }
 
 base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
