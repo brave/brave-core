@@ -211,7 +211,7 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, RestorePage) {
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url);
 }
 
-IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, BackAndForwardNavigatesAlsoRedirect) {
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpURLNotStoredInHistory) {
   TogglePref(true);
   ASSERT_TRUE(https_server_->Start());
 
