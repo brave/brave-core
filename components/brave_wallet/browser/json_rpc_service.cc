@@ -596,8 +596,7 @@ void JsonRpcService::GetBalance(const std::string& address,
     auto internal_callback =
         base::BindOnce(&JsonRpcService::OnEthGetBalance,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-    RequestInternal(eth::eth_getBalance(address, "latest"), true,
-                    network_url,
+    RequestInternal(eth::eth_getBalance(address, "latest"), true, network_url,
                     std::move(internal_callback));
     return;
   } else if (coin == mojom::CoinType::FIL) {
@@ -778,8 +777,7 @@ void JsonRpcService::GetERC20TokenBalance(
       base::BindOnce(&JsonRpcService::OnGetERC20TokenBalance,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
   RequestInternal(eth::eth_call("", contract, "", "", "", data, "latest"), true,
-                  network_url,
-                  std::move(internal_callback));
+                  network_url, std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetERC20TokenBalance(
