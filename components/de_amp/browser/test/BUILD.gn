@@ -14,7 +14,7 @@ source_set("unit_tests") {
     "//components/prefs:test_support",
   ]
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-}  # source_set("unit_tests")
+}
 
 if (!is_android) {
   source_set("browser_tests") {
@@ -37,5 +37,5 @@ if (!is_android) {
       "//third_party/re2:re2",
     ]
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-  }  # source_set("browser_tests")
+  }
 }
