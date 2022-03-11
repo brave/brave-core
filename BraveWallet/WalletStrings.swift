@@ -1870,5 +1870,19 @@ extension Strings {
       value: "Enter custom nonce value",
       comment: "The placeholder for custom nonce textfield."
     )
+    public static let editTransactionError = NSLocalizedString(
+      "wallet.editTransactionError",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Please check your inputs and try again.",
+      comment: "The error alert body when something is wrong when users try to edit transaction gas fee, priority fee or nonce value."
+    )
+    public static let editTransactionErrorCTA = NSLocalizedString(
+      "wallet.editTransactionErrorCTA",
+      tableName: "BraveWallet",
+      bundle: .braveWallet,
+      value: "Go back",
+      comment: "The transaction edit error alert button which will dismiss the alert."
+    )
   }
 }
