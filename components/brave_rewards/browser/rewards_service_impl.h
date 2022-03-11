@@ -31,9 +31,11 @@
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
+#include "brave/components/sync/driver/brave_sync_service_impl.h"
 #include "brave/components/sync/protocol/vg_specifics.pb.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/sync/driver/sync_service_observer.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
@@ -101,6 +103,7 @@ class RewardsServiceImpl : public RewardsService,
 #if BUILDFLAG(ENABLE_GREASELION)
                            public greaselion::GreaselionService::Observer,
 #endif
+                           public syncer::SyncServiceObserver,
                            public VgSyncService::Observer,
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
@@ -378,6 +381,10 @@ class RewardsServiceImpl : public RewardsService,
   // GreaselionService::Observer:
   void OnRulesReady(greaselion::GreaselionService* greaselion_service) override;
 #endif
+
+  // SyncServiceObserver:
+  void OnStateChanged(syncer::SyncService* sync) override;
+  void OnSyncShutdown(syncer::SyncService* sync) override;
 
   void OnConnectionClosed(const ledger::type::Result result);
 
@@ -773,6 +780,8 @@ class RewardsServiceImpl : public RewardsService,
       GetBraveWalletCallback callback,
       ledger::type::BraveWalletPtr wallet);
 
+  void OnGetWalletPassphrase(const std::string& passphrase);
+
   bool IsBitFlyerRegion() const;
 
   bool IsValidWalletType(const std::string& wallet_type) const;
@@ -807,6 +816,7 @@ class RewardsServiceImpl : public RewardsService,
   raw_ptr<greaselion::GreaselionService> greaselion_service_ =
       nullptr;  // NOT OWNED
 #endif
+  raw_ptr<syncer::BraveSyncServiceImpl> sync_service_ = nullptr;  // NOT OWNED
   raw_ptr<VgSyncService> vg_sync_service_ = nullptr;  // NOT OWNED
   mojo::AssociatedReceiver<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_receiver_;
