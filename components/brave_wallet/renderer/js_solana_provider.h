@@ -44,6 +44,8 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
       content::RenderFrame* render_frame,
       v8::Local<v8::Context> context);
 
+  bool Init(v8::Local<v8::Context> context);
+
   // gin::WrappableBase
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
       v8::Isolate* isolate) override;
@@ -66,7 +68,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
   // Deprecated
   v8::Local<v8::Promise> SignTransaction(gin::Arguments* arguments);
   // Deprecated
-  v8::Local<v8::Promise> SignAllTransaction(gin::Arguments* arguments);
+  v8::Local<v8::Promise> SignAllTransactions(gin::Arguments* arguments);
 
   // TODO: fire accountChanged event
   void FireEvent(const std::string& event,
@@ -79,6 +81,14 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
                  const std::string& error_message,
                  const std::string& public_key);
 
+  void OnSignAndSendTransaction(
+      v8::Global<v8::Context> global_context,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      mojom::SolanaProviderError error,
+      const std::string& error_message,
+      base::Value result);
+
   void OnSignTransaction(v8::Global<v8::Context> global_context,
                          v8::Global<v8::Promise::Resolver> promise_resolver,
                          v8::Isolate* isolate,
@@ -86,11 +96,23 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
                          const std::string& error_message,
                          const std::vector<uint8_t>& serialized_tx);
 
+  void OnSignAllTransactions(
+      v8::Global<v8::Context> global_context,
+      v8::Global<v8::Promise::Resolver> promise_resolver,
+      v8::Isolate* isolate,
+      mojom::SolanaProviderError error,
+      const std::string& error_message,
+      const std::vector<std::vector<uint8_t>>& serialized_txs);
+
   void SendResponse(v8::Global<v8::Context> global_context,
                     v8::Global<v8::Promise::Resolver> promise_resolver,
                     v8::Isolate* isolate,
                     v8::Local<v8::Value> response,
                     bool success);
+
+  // Get solanaWeb3.Transaction.serializedMessage with base58 encoding
+  absl::optional<std::string> GetSerializedMessage(
+      v8::Local<v8::Value> transaction);
 
   bool use_native_wallet_ = false;
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;

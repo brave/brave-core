@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_PROVIDER_IMPL_H_
 
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -26,6 +27,11 @@ class SolanaProviderImpl final : public mojom::SolanaProvider {
   void GetPublicKey(GetPublicKeyCallback callback) override;
   void SignTransaction(const std::string& encoded_serialized_msg,
                        SignTransactionCallback callback) override;
+  void SignAllTransactions(
+      const std::vector<std::string>& encoded_serialized_msgs,
+      SignAllTransactionsCallback callback) override;
+  void SignAndSendTransaction(const std::string& encoded_serialized_msg,
+                              SignAndSendTransactionCallback callback) override;
 
  private:
 };

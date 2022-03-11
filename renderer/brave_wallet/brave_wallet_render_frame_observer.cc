@@ -40,6 +40,7 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   auto dynamic_params = get_dynamic_params_callback_.Run();
   if (!dynamic_params.brave_use_native_wallet) {
     native_javascript_handle_.reset();
+    js_solana_provider_.reset();
     return;
   }
 
@@ -56,6 +57,8 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   if (!js_solana_provider_) {
     js_solana_provider_ = JSSolanaProvider::Install(
         dynamic_params.brave_use_native_wallet, render_frame(), context);
+  } else {
+    js_solana_provider_->Init(context);
   }
 }
 
