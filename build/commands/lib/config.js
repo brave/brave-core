@@ -65,6 +65,11 @@ const getNPMConfig = (key, default_value = undefined) => {
   if (npmConfigValue !== undefined)
     return npmConfigValue
 
+  // Shouldn't be used in general but added for backward compatibilty.
+  const npmConfigDeprecatedValue = NpmConfig[key.join('-').replace(/_/g, '-')]
+  if (npmConfigDeprecatedValue !== undefined)
+    return npmConfigDeprecatedValue
+
   const packageConfigBraveCoreValue = packageConfigBraveCore(key)
   if (packageConfigBraveCoreValue !== undefined)
     return packageConfigBraveCoreValue
