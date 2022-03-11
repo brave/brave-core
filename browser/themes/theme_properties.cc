@@ -31,8 +31,10 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
-    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR:
-    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_INACTIVE:
+    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_FRAME_INACTIVE:
+    case ThemeProperties::COLOR_TAB_STROKE_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_STROKE_FRAME_INACTIVE:
     case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_ACTIVE:
     case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_INACTIVE:
       return kLightToolbar;
@@ -124,8 +126,10 @@ absl::optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
-    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR:
-    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_INACTIVE:
+    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_FRAME_INACTIVE:
+    case ThemeProperties::COLOR_TAB_STROKE_FRAME_ACTIVE:
+    case ThemeProperties::COLOR_TAB_STROKE_FRAME_INACTIVE:
     case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
     case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_ACTIVE:
     case ThemeProperties::COLOR_TAB_BACKGROUND_ACTIVE_FRAME_INACTIVE:
