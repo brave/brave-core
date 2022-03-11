@@ -61,9 +61,9 @@ void SpeedReaderThrottle::WillProcessResponse(
   raw_ptr<SpeedReaderURLLoader> speedreader_loader = nullptr;
   mojo::ScopedDataPipeConsumerHandle body;
   std::tie(new_remote, new_receiver, speedreader_loader) =
-      SpeedReaderURLLoader::CreateLoader(AsWeakPtr(),
-                                         result_delegate_, response_url,
-                                         task_runner_, rewriter_service_);
+      SpeedReaderURLLoader::CreateLoader(AsWeakPtr(), result_delegate_,
+                                         response_url, task_runner_,
+                                         rewriter_service_);
   BodySnifferThrottle::InterceptAndStartLoader(
       std::move(source_loader), std::move(source_client_receiver),
       std::move(new_remote), std::move(new_receiver), speedreader_loader);

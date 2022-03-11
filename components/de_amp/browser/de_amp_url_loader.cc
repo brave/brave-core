@@ -81,7 +81,8 @@ void DeAmpURLLoader::OnBodyReadable(MojoResult) {
 bool DeAmpURLLoader::MaybeRedirectToCanonicalLink() {
   std::string canonical_link;
 
-  if (de_amp_throttle_ && MaybeFindCanonicalAmpUrl(buffered_body_, &canonical_link)) {
+  if (de_amp_throttle_ &&
+      MaybeFindCanonicalAmpUrl(buffered_body_, &canonical_link)) {
     const GURL canonical_url(canonical_link);
     if (!VerifyCanonicalAmpUrl(canonical_url, response_url_)) {
       VLOG(2) << __func__ << " canonical link check failed " << canonical_url;
