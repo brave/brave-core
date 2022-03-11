@@ -56,6 +56,9 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                         GetEstimatedTimeCallback callback) override;
   void GetTokenInfo(const std::string& contract_address,
                     GetTokenInfoCallback callback) override;
+  void GetCoinMarkets(const std::string& vs_asset,
+                      const uint8_t limit,
+                      GetCoinMarketsCallback callback) override;
 
   static GURL GetPriceURL(const std::vector<std::string>& from_assets,
                           const std::vector<std::string>& to_assets,
@@ -66,6 +69,7 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
       brave_wallet::mojom::AssetPriceTimeframe timeframe);
   static GURL GetEstimatedTimeURL(const std::string& gas_price);
   static GURL GetTokenInfoURL(const std::string& contract_address);
+  static GURL GetCoinMarketsURL(const std::string& vs_asset, uint8_t limit);
 
   static void SetBaseURLForTest(const GURL& base_url_for_test);
   void SetAPIRequestHelperForTesting(
@@ -94,6 +98,12 @@ class AssetRatioService : public KeyedService, public mojom::AssetRatioService {
                       const int status,
                       const std::string& body,
                       const base::flat_map<std::string, std::string>& headers);
+
+  void OnGetCoinMarkets(
+      GetCoinMarketsCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
 
   mojo::ReceiverSet<mojom::AssetRatioService> receivers_;
 
