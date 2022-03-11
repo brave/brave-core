@@ -15,4 +15,4 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kDeAmpPrefEnabled, true);  // default on
 }
 
-}
+}  // namespace de_amp
