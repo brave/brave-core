@@ -40,8 +40,14 @@
 /* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
 "wallet.addCustomAsset" = "Özel varlık ekle";
 
+/* The title of bar item for users to add custom network screen */
+"wallet.addCustomNetworkBarItemTitle" = "Ağ Ekle";
+
+/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
+"wallet.addCustomNetworkDropdownButtonTitle" = "Ağ Ekle...";
+
 /* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
-"wallet.addCustomTokenErrorMessage" = "Lütfen özel token bilgilerini doğrulayın, internet bağlantınızı kontrol edin ve tekrar deneyin.";
+"wallet.addCustomTokenErrorMessage" = "Özel token eklenemedi, lütfen tekrar deneyin.";
 
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "Özel token eklenemiyor";
@@ -181,6 +187,66 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Brave Cüzdanı";
 
+/* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
+"wallet.customNetworkBlockExplorerUrlsTitle" = "Blok gezgini URL'leri";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkChainIdErrMsg" = "Geçersiz biçim—zincir kimliği pozitif bir sayı olmalıdır.";
+
+/* The placeholder for the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdPlaceholder" = "Zincir kimliğini girin";
+
+/* The title above the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdTitle" = "Zincirin kimliği";
+
+/* The placeholder for the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNamePlaceholder" = "Zincir adını girin";
+
+/* The title above the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNameTitle" = "Zincirin adı";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalErrMsg" = "Geçersiz biçim—para birimi ondalıkları pozitif bir sayı olmalıdır.";
+
+/* The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalPlaceholder" = "Para birimi ondalıklarını girin";
+
+/* The title above the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalTitle" = "Zincirin para birimi ondalıkları";
+
+/* The title for Custom Network Details Screen for user to add or edit custom network. */
+"wallet.customNetworkDetailsTitle" = "Yeni Ağ Ekle";
+
+/* The error message for the input fields cannot be empty in Custom Network Details Screen. */
+"wallet.customNetworkEmptyErrMsg" = "Bu alan boş olamaz.";
+
+/* The title above the input fields for users to input network icon urls in Custom Network Details Screen. */
+"wallet.customNetworkIconUrlsTitle" = "Simge URL'leri";
+
+/* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkInvalidAddressErrMsg" = "Geçersiz adres.";
+
+/* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
+"wallet.customNetworkRpcUrlsTitle" = "RPC URL'leri";
+
+/* The title of custom network list screen */
+"wallet.customNetworksTitle" = "Özel Ağlar";
+
+/* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNamePlaceholder" = "Para birimi adını girin";
+
+/* The title above the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNameTitle" = "Zincirin para birimi adı";
+
+/* The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolPlaceholder" = "Para birimi sembolünü girin";
+
+/* The title above the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolTitle" = "Zincirin para birimi sembolü";
+
+/* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
+"wallet.customNetworkUrlsPlaceholder" = "URL'leri girin";
+
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "Özel";
 
@@ -232,11 +298,14 @@
 /* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Account 3\") */
 "wallet.defaultSecondaryAccountName" = "İkincil Hesap %lld";
 
-/* The title of the option inside the context menu for custom asset row in edit user asset screen. */
-"wallet.deleteCustomToken" = "Sil";
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
+"wallet.delete" = "Sil";
 
 /* A button title which when pressed displays a new screen with additional details/information */
 "wallet.detailsButtonTitle" = "Detaylar";
+
+/* The title of form for users to edit an existed custom network. */
+"wallet.editfCustomNetworkTitle" = "Ağı Düzenle";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
 "wallet.editGasFeeButtonTitle" = "Düzenle";
@@ -259,11 +328,17 @@
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "Token sembolünü girin";
 
+/* The title of an alert when the custom network the user attempted to add fails for some reason */
+"wallet.failedToAddCustomNetworkErrorTitle" = "Bu ağ eklenemedi";
+
 /* The message of an alert when the account the user attempted to import fails for some reason */
 "wallet.failedToImportAccountErrorMessage" = "Lütfen tekrar deneyin.";
 
 /* The title of an alert when the account the user attempted to import fails for some reason */
 "wallet.failedToImportAccountErrorTitle" = "Hesabın içe aktarımı başarısız oldu.";
+
+/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
+"wallet.failedToRemoveCustomNetworkErrorMessage" = "Ağ kaldırılamadı.\nLütfen tekrar deneyin.";
 
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "GAS tutarı sınırı";
@@ -334,6 +409,12 @@
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Maksimum Öncelik Ücreti";
 
+/* The footer beneath the networks title in settings screen. */
+"wallet.networkFooter" = "Cüzdan ağları özelleştirme";
+
+/* An error message will pop up when the user tries to add a custom network that its id already exists. */
+"wallet.networkIdDuplicationErrMsg" = "Zincir kimliği zaten mevcut";
+
 /* A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction */
 "wallet.nextTransaction" = "Sonraki";
 
@@ -342,6 +423,9 @@
 
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "Varlık Yok";
+
+/* The empty state displayed when the user has not yet added any custom networks. */
+"wallet.noNetworks" = "Herhangi Bir Ağ Eklenmedi";
 
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "İkincil hesap yok.";
@@ -433,9 +517,6 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "Kripto Hesabınızı Geri Yükleyin";
 
-/* A button title for saving the users selected gas fee options */
-"wallet.saveGasFee" = "Kaydet";
-
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "QR kodunu tarayın";
 
@@ -495,6 +576,9 @@
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Ayarlar";
+
+/* The title of a button that will go the list of networks. */
+"wallet.settingsNetworkButtonTitle" = "Ağlar";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetButtonTitle" = "Sıfırla";
@@ -556,9 +640,6 @@
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "Desteklenmeyen zincir";
 
-/* The description of a swap button on the buy/send/swap modal */
-"wallet.swapDescription" = "Brave DEX toplayıcısıyla kripto varlıkları takas edin.";
-
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x, bir işlemi gerçekleştirmek için (teklif alımları dahil) Ethereum adresini ve IP adresini işleyecektir. 0X, bu verileri SADECE işlemi gerçekleştirmek amacıyla kullanacaktır.";
 
@@ -573,6 +654,9 @@
 
 /* The type of order you want to place. Options are: 'Market' and 'Limit' */
 "wallet.swapOrderTypeLabel" = "Sipariş Tipi";
+
+/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
+"wallet.swapSelectedTokens" = "Seçili tokenleri takas et";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "Bugün";
@@ -591,6 +675,21 @@
 
 /* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
 "wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ Onaylandı";
+
+/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogAcknowledgement" = "Tamamlanmamış işlemleri temizle ve değiştir";
+
+/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
+"wallet.transactionBacklogAfterReplacement" = "Şimdilik, ek bir işlem gerekli değildir. Sadece onaylanmamış işlemlerin temizlenmesini bekleyin.";
+
+/* Text body of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogBody" = "Daha önceden gönderilmiş ve onaylanmamış işlemleriniz varken yeni bir işlem başlatmaya çalışıyorsunuz. Bu, yenilerinin gönderilmesini engeller.";
+
+/* Button to learn more about incomplete/pending wallet transactions. */
+"wallet.transactionBacklogLearnMoreButton" = "Daha fazla bilgi edinin";
+
+/* Title of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogTitle" = "İşlem bekleme listesi";
 
 /* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
 "wallet.transactionCount" = "%2$lld işlemden %1$lld tanesi";

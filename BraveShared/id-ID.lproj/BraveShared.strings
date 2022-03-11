@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "Sinkronisasi";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Sinkronkan Internal";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Untuk memulai, Anda perlu memasang Brave di semua perangkat yang ingin disinkronisasi. Untuk menyinkronkan, mulai rantai sinkronisasi yang akan Anda gunakan untuk menghubungkan semua perangkat dengan aman.";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "Tutup";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Anda yakin ingin menutup semua tab yang terbuka?";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tutup Semua %i Tab";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Sembunyikan";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "Buka & Isi";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Tampilkan";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "Kesalahan Komunikasi Sinkronisasi";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "Versi lebih lama yang tidak didukung";
+"syncInsecureVersionError" = "Kode sinkronisasi ini dihasilkan oleh versi Brave lama di perangkat lain. Silakan perbarui Brave di semua perangkat yang tersinkronisasi dan coba lagi.";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "Format yang Tidak Valid";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "Peringatan";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "Versi yang tidak didukung";
+"syncNewerVersionError" = "Kode sinkronisasi ini dihasilkan oleh versi Brave yang lebih baru di perangkat lain. Silakan perbarui Brave di semua perangkat yang tersinkronisasi dan coba lagi.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Periksa sambungan internet Anda, lalu coba lagi.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Tidak dapat tersambung untuk sinkronisasi";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "Versi yang tidak didukung lagi";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Data perangkat lokal akan tetap tersimpan di semua perangkat. Perangkat lainnya dalam Rantai Sinkronisasi ini akan tetap disinkronisasi. ";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "Dengan menggunakan perangkat sinkronisasi yang telah ada, buka Pengaturan Brave dan navigasilah ke Pengaturan > Sinkronisasi. Pilih \"Tambahkan Perangkat\" dan pindai kode yang ditampilkan di layar.";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Tidak dapat membuat grup sinkronisasi baru.";
+"SyncUnableCreateGroup" = "Tidak dapat mensinkronkan perangkat ini";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Gagal";

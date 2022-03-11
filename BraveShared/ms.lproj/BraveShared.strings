@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "Segerak";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Segerak Dalaman";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Untuk bermula, anda perlu memasangkan Brave pada semua peranti yang anda ingin segerakkan. Untuk menghubungkan mereka bersama-sama, mulakan rantaian penyegerakan yang anda akan gunakan untuk menghubungkan semua peranti anda dengan selamat.";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "Tutup";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Betulkah anda mahu menutup semua tab yang terbuka?";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tutup Semua %i Tab";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Sembunyikan";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "Buka & Isi";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Dedah";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "Ralat Komunikasi Segerak";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "Versi lama yang tidak disokong";
+"syncInsecureVersionError" = "Kod segerak ini dijana oleh versi Brave yang sudah lapuk pada peranti lain. Sila kemas kini Brave pada semua peranti yang disegerakkan dan cuba lagi.";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "Format Tidak Sah";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "Amaran";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "Versi tidak disokong";
+"syncNewerVersionError" = "Kod segerak ini dijana oleh versi Brave yang terkini pada peranti lain. Sila kemas kini Brave pada semua peranti yang disegerakkan dan cuba lagi.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Semak sambungan internet anda dan cuba lagi.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Tidak dapat menyambung untuk penyegerakan";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "Versi tidak disokong lagi";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Data peranti tempatan akan kekal utuh pada semua peranti. Peranti lain dalam Rantaian Penyegerakan ini akan tetap disegerakkan.";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "Dengan menggunakan peranti disegerakkan yang sedia ada, buka Tetapan Brave dan navigasi kepada Tetapan -> Penyegerakan. Pilih \"Tambah Peranti\" dan imbas kod yang dipaparkan pada skrin.";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Tidak dapat mencipta kumpulan segerak baru.";
+"SyncUnableCreateGroup" = "Tidak dapat menyegerakkan peranti ini";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Tidak berjaya";

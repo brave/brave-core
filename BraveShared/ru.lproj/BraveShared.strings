@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "Синхронизация";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Данные синхронизации";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Установите Brave на всех устройствах, которые хотите синхронизировать. Чтобы безопасно связать их между собой, создайте цепочку синхронизации.";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "Закрыть";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Вы уверены, что хотите закрыть все вкладки?";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Закрыть все вкладки (%i)";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Скрыть";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "Открыть и вставить";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Показать";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "Ошибка связи";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "Старая версия больше не поддерживается.";
+"syncInsecureVersionError" = "Код синхронизации сгенерирован на устройстве с устаревшей версией браузера Brave. Обновите Brave на всех синхронизированных устройствах и повторите попытку.";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "Недопустимый формат.";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "Внимание!";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "Версия не поддерживается.";
+"syncNewerVersionError" = "Код синхронизации сгенерирован на устройстве с более новой версией браузера Brave. Обновите Brave на всех синхронизированных устройствах и повторите попытку.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Проверьте подключение к интернету и повторите попытку.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Не удалось подключиться";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "Версия больше не поддерживается.";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Все локальные данные останутся на устройствах. Удаление не повлияет на другие устройства в цепочке.";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "Запустите Brave на уже синхронизированном устройстве, откройте настройки и выберите «Синхронизация». Нажмите «Добавить устройство» и отсканируйте код на экране.";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Не удалось создать группу синхронизации.";
+"SyncUnableCreateGroup" = "Не удается синхронизировать устройства.";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Произошла ошибка";

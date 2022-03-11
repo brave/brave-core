@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "Synk";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Sync internt";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Brave må være installert på alle enhetene du vil synkronisere. Start en synkkjede for å knytte alle enhetene dine sikkert sammen.";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "Lukk";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Er du sikker på at du vil lukke alle de åpne fanene?";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Lukk alle %i fanene";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Skjul";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "Åpne og fyll inn";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Vis";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "Kommunikasjonsfeil ved synkronisering";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "Eldre versjon som ikke støttes";
+"syncInsecureVersionError" = "Denne synkroniseringskoden er generert av en utdatert versjon av Brave på en annen enhet. Oppdater Brave på alle synkroniserte enheter og prøv på nytt.";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "Ugyldig format";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "Advarsel";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "Versjonen støttes ikke";
+"syncNewerVersionError" = "Denne synkroniseringskoden er generert av en nyere versjon av Brave på en annen enhet. Oppdater Brave på alle synkroniserte enheter og prøv på nytt.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Sjekk nettforbindelsen, og prøv igjen.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Kan ikke koble til synkronisering";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "Denne versjonen støttes ikke lenger";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Data på den lokale enheten blir værende på alle enheter. Andre enheter i denne synkkjeden blir værende synkronisert. ";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "Bruk en enhet som allerede er synkronisert. Åpne innstillingene for Brave, og naviger til Innstillinger -> Synkronisering. Velg «Legg til enhet», og skann koden som vises på skjermen.";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Kunne ikke opprette ny synkgruppe.";
+"SyncUnableCreateGroup" = "Kan ikke synkronisere denne enheten";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Mislykket";

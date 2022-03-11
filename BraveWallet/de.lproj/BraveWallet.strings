@@ -40,8 +40,14 @@
 /* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
 "wallet.addCustomAsset" = "Benutzerdefiniertes Asset hinzufügen";
 
+/* The title of bar item for users to add custom network screen */
+"wallet.addCustomNetworkBarItemTitle" = "Netzwerk hinzufügen";
+
+/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
+"wallet.addCustomNetworkDropdownButtonTitle" = "Netzwerk hinzufügen …";
+
 /* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
-"wallet.addCustomTokenErrorMessage" = "Bitte überprüfen Sie die Informationen zum benutzerdefinierten Token sowie Ihre Internetverbindung und versuchen Sie es erneut.";
+"wallet.addCustomTokenErrorMessage" = "Benutzerdefiniertes Token konnte nicht hinzugefügt werden. Bitte versuchen Sie es erneut.";
 
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "Benutzerdefiniertes Token kann nicht hinzugefügt werden";
@@ -181,6 +187,66 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Brave-Wallet";
 
+/* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
+"wallet.customNetworkBlockExplorerUrlsTitle" = "Explorer-URLs blockieren";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkChainIdErrMsg" = "Ungültiges Format – Ketten-ID muss eine positive Zahl sein.";
+
+/* The placeholder for the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdPlaceholder" = "Geben Sie die Ketten-ID ein";
+
+/* The title above the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdTitle" = "Die ID der Kette";
+
+/* The placeholder for the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNamePlaceholder" = "Kettennamen eingeben";
+
+/* The title above the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNameTitle" = "Der Name der Kette";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalErrMsg" = "Ungültiges Format – Währungsdezimalstellen müssen eine positive Zahl sein.";
+
+/* The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalPlaceholder" = "Geben Sie die Dezimalstellen der Währung ein";
+
+/* The title above the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalTitle" = "Dezimalstellen der Währung der Kette";
+
+/* The title for Custom Network Details Screen for user to add or edit custom network. */
+"wallet.customNetworkDetailsTitle" = "Neues Netzwerk hinzufügen";
+
+/* The error message for the input fields cannot be empty in Custom Network Details Screen. */
+"wallet.customNetworkEmptyErrMsg" = "Dieses Feld darf nicht leer sein.";
+
+/* The title above the input fields for users to input network icon urls in Custom Network Details Screen. */
+"wallet.customNetworkIconUrlsTitle" = "Symbol-URLs";
+
+/* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkInvalidAddressErrMsg" = "Ungültige Adresse.";
+
+/* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
+"wallet.customNetworkRpcUrlsTitle" = "RPC-URLs";
+
+/* The title of custom network list screen */
+"wallet.customNetworksTitle" = "Benutzerdefinierte Netzwerke";
+
+/* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNamePlaceholder" = "Geben Sie den Währungsnamen ein";
+
+/* The title above the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNameTitle" = "Währungsname der Kette";
+
+/* The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolPlaceholder" = "Geben Sie das Währungssymbol ein";
+
+/* The title above the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolTitle" = "Währungssymbol der Kette";
+
+/* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
+"wallet.customNetworkUrlsPlaceholder" = "URL(s) eingeben";
+
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "Benutzerdefiniert";
 
@@ -232,11 +298,14 @@
 /* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Account 3\") */
 "wallet.defaultSecondaryAccountName" = "Sekundäres Konto %lld";
 
-/* The title of the option inside the context menu for custom asset row in edit user asset screen. */
-"wallet.deleteCustomToken" = "Löschen";
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
+"wallet.delete" = "Löschen";
 
 /* A button title which when pressed displays a new screen with additional details/information */
 "wallet.detailsButtonTitle" = "Details";
+
+/* The title of form for users to edit an existed custom network. */
+"wallet.editfCustomNetworkTitle" = "Netzwerk bearbeiten";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
 "wallet.editGasFeeButtonTitle" = "Bearbeiten";
@@ -259,11 +328,17 @@
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "Tokensymbol eingeben";
 
+/* The title of an alert when the custom network the user attempted to add fails for some reason */
+"wallet.failedToAddCustomNetworkErrorTitle" = "Dieses Netzwerk konnte nicht hinzugefügt werden.";
+
 /* The message of an alert when the account the user attempted to import fails for some reason */
 "wallet.failedToImportAccountErrorMessage" = "Bitte versuchen Sie es erneut.";
 
 /* The title of an alert when the account the user attempted to import fails for some reason */
 "wallet.failedToImportAccountErrorTitle" = "Konto konnte nicht importiert werden.";
+
+/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
+"wallet.failedToRemoveCustomNetworkErrorMessage" = "Netzwerk konnte nicht entfernt werden.\nBitte versuchen Sie es erneut.";
 
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "Gasbetragslimit";
@@ -334,6 +409,12 @@
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "Max. Prioritätsgebühr";
 
+/* The footer beneath the networks title in settings screen. */
+"wallet.networkFooter" = "Anpassung von Wallet-Netzwerken";
+
+/* An error message will pop up when the user tries to add a custom network that its id already exists. */
+"wallet.networkIdDuplicationErrMsg" = "Ketten-ID existiert bereits";
+
 /* A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction */
 "wallet.nextTransaction" = "Weiter";
 
@@ -342,6 +423,9 @@
 
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "Keine Assets";
+
+/* The empty state displayed when the user has not yet added any custom networks. */
+"wallet.noNetworks" = "Keine Netzwerke hinzugefügt";
 
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "Keine sekundären Konten.";
@@ -433,9 +517,6 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "Kryptowährungskonto wiederherstellen";
 
-/* A button title for saving the users selected gas fee options */
-"wallet.saveGasFee" = "Speichern";
-
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "QR-Code scannen";
 
@@ -495,6 +576,9 @@
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "Einstellungen";
+
+/* The title of a button that will go the list of networks. */
+"wallet.settingsNetworkButtonTitle" = "Netzwerke";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetButtonTitle" = "Zurücksetzen";
@@ -556,9 +640,6 @@
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "Nicht unterstützte Blockchain";
 
-/* The description of a swap button on the buy/send/swap modal */
-"wallet.swapDescription" = "Tauschen Sie Kryptowährungs-Assets mit dem Brave DEX-Aggregator.";
-
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x verarbeitet die Ethereum-Adresse und IP-Adresse, um eine Transaktion auszuführen (einschließlich der Angebotseinholung). 0x verwendet diese Daten NUR zum Zwecke der Verarbeitung von Transaktionen.";
 
@@ -573,6 +654,9 @@
 
 /* The type of order you want to place. Options are: 'Market' and 'Limit' */
 "wallet.swapOrderTypeLabel" = "Bestelltyp";
+
+/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
+"wallet.swapSelectedTokens" = "Ausgewählte Token tauschen";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "Heute";
@@ -591,6 +675,21 @@
 
 /* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
 "wallet.transactionApproveSymbolTitle" = "%1$@ %2$@ genehmigt";
+
+/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogAcknowledgement" = "Unvollständige Transaktion(en) löschen und ersetzen";
+
+/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
+"wallet.transactionBacklogAfterReplacement" = "Derzeit sind keine weiteren Maßnahmen erforderlich. Warten Sie einfach, bis die unbestätigten Transaktionen gelöscht sind.";
+
+/* Text body of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogBody" = "Sie versuchen, eine neue Transaktion zu starten, während Sie zuvor Transaktionen übermittelt haben, die noch nicht bestätigt wurden. Dadurch wird verhindert, dass neue eingereicht werden.";
+
+/* Button to learn more about incomplete/pending wallet transactions. */
+"wallet.transactionBacklogLearnMoreButton" = "Mehr erfahren";
+
+/* Title of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogTitle" = "Transaktionsrückstand";
 
 /* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
 "wallet.transactionCount" = "%1$lld von %2$lld";

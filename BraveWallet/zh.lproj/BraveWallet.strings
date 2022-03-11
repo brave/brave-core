@@ -40,8 +40,14 @@
 /* The title of the button that is located in the same area of the assets list header but on the right side. Users will click it and go to add custom asset screen. */
 "wallet.addCustomAsset" = "添加自定义资产";
 
+/* The title of bar item for users to add custom network screen */
+"wallet.addCustomNetworkBarItemTitle" = "新增网络";
+
+/* The title of last option in the network selection dropdown menu. A short-cut for user to add new custom network. */
+"wallet.addCustomNetworkDropdownButtonTitle" = "新增网络...";
+
 /* The message of the error pop up when there is an error occurs during the process of adding a custom token. */
-"wallet.addCustomTokenErrorMessage" = "请验证自定义令牌信息，检查您的网络连接，然后重试。";
+"wallet.addCustomTokenErrorMessage" = "添加自定义代币失败，请重试。";
 
 /* The title of the error pop up when there is an error occurs during the process of adding a custom token. */
 "wallet.addCustomTokenErrorTitle" = "无法添加自定义令牌";
@@ -181,6 +187,66 @@
 /* The title of the crypto tab */
 "wallet.cryptoTitle" = "Brave 钱包";
 
+/* The title above the input fields for users to input network block explorer urls in Custom Network Details Screen. */
+"wallet.customNetworkBlockExplorerUrlsTitle" = "阻止浏览器 URL";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkChainIdErrMsg" = "格式无效 - 区块链 ID 必须是正数。";
+
+/* The placeholder for the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdPlaceholder" = "输入区块链 ID";
+
+/* The title above the input field for users to input network chain ID in Custom Network Details Screen. */
+"wallet.customNetworkChainIdTitle" = "区块链 ID";
+
+/* The placeholder for the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNamePlaceholder" = "输入区块链名称";
+
+/* The title above the input field for users to input network chain name in Custom Network Details Screen. */
+"wallet.customNetworkChainNameTitle" = "区块链名称";
+
+/* The error message for the input field when users input an invalid value for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalErrMsg" = "格式无效 - 货币小数位数必须是正数。";
+
+/* The placeholder for the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalPlaceholder" = "输入货币小数";
+
+/* The title above the input field for users to input network currency decimal in Custom Network Details Screen. */
+"wallet.customNetworkCurrencyDecimalTitle" = "区块链的货币小数位数";
+
+/* The title for Custom Network Details Screen for user to add or edit custom network. */
+"wallet.customNetworkDetailsTitle" = "新增网络";
+
+/* The error message for the input fields cannot be empty in Custom Network Details Screen. */
+"wallet.customNetworkEmptyErrMsg" = "此字段不能为空。";
+
+/* The title above the input fields for users to input network icon urls in Custom Network Details Screen. */
+"wallet.customNetworkIconUrlsTitle" = "图标 URL";
+
+/* The error message for the input field when users input an invalid address for a custom network in Custom Network Details Screen. */
+"wallet.customNetworkInvalidAddressErrMsg" = "地址无效。";
+
+/* The title above the input fields for users to input network rpc urls in Custom Network Details Screen. */
+"wallet.customNetworkRpcUrlsTitle" = "RPC URL";
+
+/* The title of custom network list screen */
+"wallet.customNetworksTitle" = "自定义网络";
+
+/* The placeholder for the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNamePlaceholder" = "输入货币名称";
+
+/* The title above the input field for users to input network currency symbol name in Custom Network Details Screen. */
+"wallet.customNetworkSymbolNameTitle" = "区块链的货币名称";
+
+/* The placeholder for the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolPlaceholder" = "输入货币符号";
+
+/* The title above the input field for users to input network currency symbol in Custom Network Details Screen. */
+"wallet.customNetworkSymbolTitle" = "区块链的货币符号";
+
+/* The placeholder for the input field for users to input network rpc url in Custom Network Details Screen. */
+"wallet.customNetworkUrlsPlaceholder" = "输入 URL";
+
 /* The title displayed on the add custom token screen */
 "wallet.customTokenTitle" = "自定义";
 
@@ -232,11 +298,14 @@
 /* The default account name when adding a secondary account and not entering a custom name. '%lld' refers to a number (for example \"Secondary Account 3\") */
 "wallet.defaultSecondaryAccountName" = "次要账户 %lld";
 
-/* The title of the option inside the context menu for custom asset row in edit user asset screen. */
-"wallet.deleteCustomToken" = "删除";
+/* The title of the option inside the context menu for custom asset row in edit user asset screen. Or the title of the option inside the context menu for custom network row which is not being currently selected in networks list screen. */
+"wallet.delete" = "删除";
 
 /* A button title which when pressed displays a new screen with additional details/information */
 "wallet.detailsButtonTitle" = "详细信息";
+
+/* The title of form for users to edit an existed custom network. */
+"wallet.editfCustomNetworkTitle" = "编辑网络";
 
 /* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority */
 "wallet.editGasFeeButtonTitle" = "编辑";
@@ -259,11 +328,17 @@
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "输入代币符号";
 
+/* The title of an alert when the custom network the user attempted to add fails for some reason */
+"wallet.failedToAddCustomNetworkErrorTitle" = "无法添加此网络。";
+
 /* The message of an alert when the account the user attempted to import fails for some reason */
 "wallet.failedToImportAccountErrorMessage" = "请重试。";
 
 /* The title of an alert when the account the user attempted to import fails for some reason */
 "wallet.failedToImportAccountErrorTitle" = "导入账户失败。";
+
+/* The message of an alert when the user attempted to remove custom network and it fails for some reason */
+"wallet.failedToRemoveCustomNetworkErrorMessage" = "无法移除网络。\n请重试。";
 
 /* A title above a text field for inputting the gas amount limit */
 "wallet.gasAmountLimit" = "Gas 金额限制";
@@ -334,6 +409,12 @@
 /* The title of the edit gas fee screen for EIP-1559 transactions */
 "wallet.maxPriorityFeeTitle" = "最高优先级费用";
 
+/* The footer beneath the networks title in settings screen. */
+"wallet.networkFooter" = "钱包网络自定义";
+
+/* An error message will pop up when the user tries to add a custom network that its id already exists. */
+"wallet.networkIdDuplicationErrMsg" = "区块链 ID 已存在";
+
 /* A button title next indicating the user to go to the next transaction. Will sit next to a label such as \"1 of 4\" where tapping next would move them to the second transaction */
 "wallet.nextTransaction" = "下一笔";
 
@@ -342,6 +423,9 @@
 
 /* The empty state displayed when the user has no assets associated with an account */
 "wallet.noAssets" = "无资产";
+
+/* The empty state displayed when the user has not yet added any custom networks. */
+"wallet.noNetworks" = "未添加网络";
 
 /* The empty state shown when you have no imported accounts */
 "wallet.noSecondaryAccounts" = "无次要账户。";
@@ -433,9 +517,6 @@
 /* The title on the restore wallet screen. */
 "wallet.restoreWalletTitle" = "还原加密账户";
 
-/* A button title for saving the users selected gas fee options */
-"wallet.saveGasFee" = "保存";
-
 /* A description for a QR code icon which brings up the camera to read ETH addresses encoded as QR codes */
 "wallet.scanQRCodeAccessibilityLabel" = "扫描二维码";
 
@@ -495,6 +576,9 @@
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button. */
 "wallet.settings" = "设置";
+
+/* The title of a button that will go the list of networks. */
+"wallet.settingsNetworkButtonTitle" = "网络";
 
 /* The title of a button that will reset the wallet. As in to erase the users wallet from the device */
 "wallet.settingsResetButtonTitle" = "重置";
@@ -556,9 +640,6 @@
 /* The title below account picker when user has selected a test network to swap cryptos */
 "wallet.swapCryptoUnsupportNetworkTitle" = "不支持的区块链";
 
-/* The description of a swap button on the buy/send/swap modal */
-"wallet.swapDescription" = "使用 Brave DEX 聚合器兑换加密资产。";
-
 /* A longer disclaimer about the DEX aggrigator used by Brave for swap transactions. '0x' is a company name. 'DEX aggregator' is a type of blockchain-based service (decentralized exchange). 'ONLY' is emphasized to show importance of 0x's data usage. */
 "wallet.swapDexAggrigatorDisclaimer" = "0x 将处理 Ethereum 地址和 IP 地址以履行交易（包括获得报价）。0x 仅会将数据用于处理交易目的。";
 
@@ -573,6 +654,9 @@
 
 /* The type of order you want to place. Options are: 'Market' and 'Limit' */
 "wallet.swapOrderTypeLabel" = "订单类型";
+
+/* An accessibility message for the swap button below from amount shortcut grids for users to swap the two selected tokens. */
+"wallet.swapSelectedTokens" = "兑换选中的代币";
 
 /* A label appended after a certain dollar or percent change. Example: 'Up 1.4% Today' */
 "wallet.today" = "今天";
@@ -591,6 +675,21 @@
 
 /* The title shown for ERC20 approvals. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency. For example: \"Approved 150.0 BAT\" */
 "wallet.transactionApproveSymbolTitle" = "已批准 %1$@ %2$@";
+
+/* Text of toggle for a confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogAcknowledgement" = "清除并替换未完成的交易";
+
+/* Additional information, when users have previously clear and replace the incomplete transaction(s) */
+"wallet.transactionBacklogAfterReplacement" = "目前无需额外的操作。请等待未确认的交易清除。";
+
+/* Text body of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogBody" = "您正在尝试启动新交易，但是您先前提交的交易还未确认。因此，新交易无法提交。";
+
+/* Button to learn more about incomplete/pending wallet transactions. */
+"wallet.transactionBacklogLearnMoreButton" = "了解更多";
+
+/* Title of confirmation prompt when there's a backlog of wallet transactions */
+"wallet.transactionBacklogTitle" = "待办交易";
 
 /* Displays the number of transactions and the current transaction that you are viewing when confirming or rejecting multiple transactions. Each '%lld' will be replaced by a number, for example: '1 of 4' */
 "wallet.transactionCount" = "第 %1$lld 笔，共 %2$lld 笔";

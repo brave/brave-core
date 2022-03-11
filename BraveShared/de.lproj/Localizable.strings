@@ -208,8 +208,29 @@
 /* Alert Title for adding videos to playlist */
 "playList.addToPlayListAlertTitle" = "Zur Brave Playlist hinzufügen";
 
+/* The title of the screen in CarPlay that contains all the audio/playback options */
+"playlist.carplayOptionsScreenTitle" = "Wiedergabeoptionen";
+
+/* The already disabled button title with instructions telling the user they can tap it to enable playback. */
+"playlist.carplayRestartPlaybackButtonStateDisabled" = "Deaktiviert. Tippen Sie, um den Neustart der Wiedergabe zu aktivieren.";
+
+/* The already enabled button title with instructions telling the user they can tap it to disable playback. */
+"playlist.carplayRestartPlaybackButtonStateEnabled" = "Aktiviert. Tippen Sie, um den Neustart der Wiedergabe zu deaktivieren.";
+
+/* The description of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionDetailsTitle" = "Entscheiden Sie, ob die Auswahl eines bereits wiedergegebenen Elements die Wiedergabe neu starten oder die Wiedergabe dort fortsetzen soll, wo zuletzt aufgehört wurde";
+
+/* The title of the checkbox that allows the user to restart audio/video playback */
+"playlist.carplayRestartPlaybackOptionTitle" = "Wiedergabe erneut starten";
+
+/* The title of the section containing settings/options in CarPlay */
+"playlist.carplaySettingsSectionTitle" = "Einstellungen";
+
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Brave-Playlist";
+
+/* The title of the button indicating that the user delete the offline data. (deletes the data that allows them to play offline) */
+"playlist.deleteForOfflineButtonTitle" = "Offline-Cache löschen";
 
 /* The description for the alert that shows up when an item is expired */
 "playList.expiredAlertDescription" = "Dieses Video war ein Livestream oder das Zeitlimit wurde erreicht. Bitte öffnen Sie den Link erneut um ihn neu zu laden.";
@@ -228,6 +249,9 @@
 
 /* Title for playlist menu badge option */
 "playlist.menuBadgeOptionTitle" = "Benachrichtigungsabzeichen im Menü anzeigen";
+
+/* Button Title of the ActionSheet/Alert Button when moving a playlist item from the Swipe-Action to a new folder */
+"playlist.movePlaylistShareActionMenuTitle" = "Verschieben …";
 
 /* Detail Text when there are no items in the playlist */
 "playList.noItemLabelDetailLabel" = "Sie können Ihrer Brave-Playlist im Browser etwas hinzufügen.";
@@ -364,6 +388,9 @@
 /* Text indicator on the table cell while saving a video for offline with percentage eg: %25 Saved for Offline */
 "playList.savedForOfflineLabelTitle" = "Offline gespeichert";
 
+/* The title of the button indicating that the user can save a video for offline playback. (playing without internet) */
+"playlist.saveForOfflineButtonTitle" = "Für Offline-Wiedergabe speichern";
+
 /* Text indicator on the table cell while saving a video for offline */
 "playList.savingForOfflineLabelTitle" = "Wird offline gespeichert…";
 
@@ -402,6 +429,70 @@
 
 /* Title for option to disable URL-Bar button */
 "playlist.urlBarButtonOptionTitle" = "Schaltfläche für den Schnellzugriff aktivieren";
+
+/* The title of the button to create a new folder */
+"playlistFolders.createNewFolderButtonTitle" = "Erstellen";
+
+/* The title of the button that allows the user to edit the name of a folder */
+"playlistFolders.editButtonTitle" = "Bearbeiten";
+
+/* The title of the screen where the user edits folder names */
+"playlistFolders.editFolderScreenTitle" = "Ordner bearbeiten";
+
+/* The title of the menu option that allows the user to edit the name of a folder */
+"playlistFolders.editMenuTitle" = "Ordner bearbeiten";
+
+/* The error shown to the user when we cannot save their changes made on a folder */
+"playlistFolders.errorSavingMessage" = "Leider konnten wir die Änderungen, die Sie an diesem Ordner vorgenommen haben, nicht speichern";
+
+/* The title of the button where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderButtonTitle" = "Verschieben";
+
+/* The title of the section indicating the currently selected folder */
+"playlistFolders.moveFolderCurrentSectionTitle" = "Aktueller Ordner";
+
+/* The title of the screen where the user will move an item from one folder to another folder. */
+"playlistFolders.moveFolderScreenTitle" = "Verschieben";
+
+/* %@ Should NOT be localized. It is a placeholder. Example: Brave Folder and 1 more item. */
+"playlistFolders.moveItemDescription" = "%@ und ein weiteres Element";
+
+/* %lld is a placeholder and should not be localized. Sometimes items can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithMultipleNoNameTitle" = "%lld Elemente";
+
+/* Sometimes an item can have no name. So this is a generic title to use */
+"playlistFolders.moveItemWithNoNameTitle" = "Ein Element";
+
+/* %@ and %lld Should NOT be localized. They are placeholders. Example: Brave Folder and 3 more items. Music and 2 more items. */
+"playlistFolders.moveMultipleItemDescription" = "%1$@ und %2$lld weitere Elemente";
+
+/* The title of the button to create a new folder */
+"playlistFolders.newFolderButtonTitle" = "Neuer Ordner";
+
+/* The title of the screen to create a new folder */
+"playlistFolders.newFolderScreenTitle" = "Neuer Ordner";
+
+/* The sub-title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionSubtitle" = "Tippen, um Videos auszuwählen";
+
+/* The title of the section where the user can select videos to add to the new folder being created */
+"playlistFolders.newFolderSectionTitle" = "Videos zu diesem Ordner hinzufügen";
+
+/* The title of the default playlist folder */
+"playlistFolders.savedFolderTitle" = "Gespeichert";
+
+/* The title of the section indicating that the user should select a folder to move `%zu` items to. %lld should not be translated. It will be replaced by a number so the sentence becomes: 'Select a folder to move 10 items to.'
+   The title of the section indicating that the user should select a folder to move 1 item to. */
+"playlistFolders.selectAFolderTitle" = "Wählen Sie einen Ordner aus, in den %lld Elemente verschoben werden sollen";
+
+/* The sub-title of the folder. Example: This folder contains 10 Items. This folder contains 3 Items. */
+"playlistFolders.subtitleItemCount" = "%lld Elemente";
+
+/* The sub-title of the folder. Example: This folder contains ONE item. This folder contains 1 Item. */
+"playlistFolders.subtitleItemSingleCount" = "Ein Element";
+
+/* The title of a folder when the user enters no name (untitled) */
+"playlistFolders.untitledFolderTitle" = "Unbenannter Ordner";
 
 /* Description for closing a popover menu that is displayed. */
 "PopoverDefaultClose" = "Kontextmenü schließen";
@@ -941,7 +1032,7 @@
 "shortcuts.shortcutOpenApplicationSettingsTitle" = "Einstellungen öffnen";
 
 /* Description of Clear Browser History Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Verwenden Sie Verknüpfungen, um einen neuen Tab zu öffnen und den Browserverlauf via Siri - Sprachassistenten zu löschen";
+"shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Verwenden Sie Verknüpfungen, um einen neuen Tab zu öffnen und den Browserverlauf über Siri - Voice Assistant zu löschen";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Browserverlauf löschen";
@@ -953,7 +1044,7 @@
 "shortcuts.shortcutSettingsEnableVPNTitle" = "VPN aktivieren";
 
 /* Description of Open Brave News Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Verwenden Sie Verknüpfungen, um einen neuen Tab zu öffnen und den Brave News Feed via Siri-Sprachassistent anzuzeigen";
+"shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Verwenden Sie Verknüpfungen, um einen neuen Tab zu öffnen und Brave News Feed über Siri - Voice Assistant anzuzeigen";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Brave News öffnen";
@@ -971,7 +1062,7 @@
 "shortcuts.shortcutSettingsOpenNewTabTitle" = "Neuen Tab öffnen";
 
 /* Description of Open Playlist Siri Shortcut in Settings Screen */
-"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Verwenden Sie Verknüpfungen, um die Playlist via Siri - Sprachassistenten zu öffnen";
+"shortcuts.shortcutSettingsOpenPlaylistDescription" = "Verwenden Sie Verknüpfungen, um die Playlist über Siri - Voice Assistant zu öffnen";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenPlaylistTitle" = "Playlist öffnen";

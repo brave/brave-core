@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "동기화";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "동기화 문제 해결 필요";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "시작하려면 동기화하려는 모든 기기에 Brave가 설치되어 있어야 합니다. 모든 기기를 연결하려면 모든 기기를 안전하게 연결하는 데 사용할 동기화 체인을 시작하십시오.";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "닫기";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "열린 탭을 모두 닫으시겠습니까?";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "모든 %i 탭 닫기";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "숨기기";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "열기 및 채우기";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "공개";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "동기화 통신 오류";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "지원되지 않는 구버전";
+"syncInsecureVersionError" = "이 동기화 코드는 다른 기기에서 구버전 Brava로 생성되었습니다. 모든 동기화된 기기에서 Brave를 업데이트하고 다시 시도하세요.";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "유효하지 않은 형식";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "경고";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "지원되지 않는 버전";
+"syncNewerVersionError" = "이 동기화 코드는 다른 기기에서 더 최신 버전의 Brava로 생성되었습니다. 모든 동기화된 기기에서 Brave를 업데이트하고 다시 시도하세요.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "인터넷 연결을 확인한 후 다시 시도하십시오.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "동기화할 수 없음";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "지원 중단된 버전";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "로컬 기기 데이터는 모든 기기에서 그대로 유지됩니다. 이 동기화 체인의 다른 기기는 동기화된 상태로 유지됩니다.";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "기존에 동기화된 기기를 사용하여 Brave 설정을 열고 설정 -> 동기화로 이동하여 \"기기 추가\"를 선택한 다음, 화면에 표시되는 코드를 스캔하십시오.";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "새 동기화 그룹을 만들 수 없습니다.";
+"SyncUnableCreateGroup" = "이 기기를 동기화할 수 없음";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "실패";

@@ -157,6 +157,9 @@
 /* Sync page title */
 "BraveSync" = "Synchronisation";
 
+/* Sync-Internals screen title (Sync Internals or Sync Debugging is fine). */
+"BraveSyncInternalsTitle" = "Sync Internals";
+
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Pour pouvoir commencer, vous devez avoir installé Brave sur tous les appareils que vous souhaitez synchroniser. Pour les associer, lancez une chaîne de synchronisation que vous utiliserez pour associer tous vos appareils en toute sécurité.";
 
@@ -255,6 +258,9 @@
 
 /* Button title to close a menu. */
 "Close" = "Fermer";
+
+/* We ask users this prompt before attempting to close multiple tabs via context menu */
+"closeAllTabsPrompt" = "Voulez-vous vraiment fermer tous les onglets ouverts ?";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Fermer les %i onglets";
@@ -672,9 +678,6 @@
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Masquer";
-
-/* Open and Fill website text selection menu item */
-"MenuItemOpenAndFillTitle" = "Ouvrir et remplir";
 
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Afficher";
@@ -1313,7 +1316,7 @@
 "SyncInitErrorTitle" = "Erreur de communication avec la synchronisation";
 
 /* Sync Error Description */
-"syncInsecureVersionError" = "Version ancienne non prise en charge";
+"syncInsecureVersionError" = "Ce code de synchronisation a été généré par une ancienne version de Brave sur un autre appareil. Mettez à jour Brave sur tous les appareils synchronisés, puis réessayez.";
 
 /* Sync Error Description */
 "syncInvalidVersionError" = "Format non valide";
@@ -1328,16 +1331,13 @@
 "syncJoinChainWarningTitle" = "Avertissement";
 
 /* Sync Error Description */
-"syncNewerVersionError" = "Version non prise en charge";
+"syncNewerVersionError" = "Ce code de synchronisation a été généré par une version plus récente de Brave sur un autre appareil. Mettez à jour Brave sur tous les appareils synchronisés, puis réessayez.";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Vérifiez votre connexion Internet et réessayez.";
 
 /* No internet connection alert title. */
 "SyncNoConnectionTitle" = "Échec de la connexion à la synchronisation";
-
-/* Sync Error Description */
-"syncOlderVersionError" = "Cette version n'est plus prise en charge";
 
 /* Message for removing the current device from Sync */
 "SyncRemoveCurrentDeviceMessage" = "Les données locales des appareils resteront intactes sur tous les appareils. Les autres appareils de cette chaîne de synchronisation continueront d'être synchronisés.";
@@ -1394,7 +1394,7 @@
 "SyncToDeviceDescription" = "À l'aide de l'appareil synchronisé existant, ouvrez la section Paramètres Brave, accédez à Paramètres -> Synchronisation. Choisissez « Ajouter un appareil » et scannez le code qui s'affiche à l'écran.";
 
 /* Description on popup when setting up a sync group fails */
-"SyncUnableCreateGroup" = "Impossible de créer un nouveau groupe de synchronisation.";
+"SyncUnableCreateGroup" = "Impossible de synchroniser cet appareil";
 
 /* No comment provided by engineer. */
 "SyncUnsuccessful" = "Échec";
