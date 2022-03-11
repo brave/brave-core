@@ -55,7 +55,6 @@ export const StyledTH = styled('th')<Partial<StyleProps>>`
   color: ${(p) => p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
   padding: 0 40px 8px 10px;
   cursor: ${p => p.sortable ? 'pointer' : 'default'};
-  background: ${p => p.theme.color.background01};
 
   &:hover {
     color: ${p => p.sortable ? p.theme.color.text02 : p.theme.color.text03};
