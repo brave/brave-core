@@ -9,6 +9,7 @@
 #include <memory>
 #include <set>
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_multi_source_observation.h"
 #include "base/scoped_observation.h"
@@ -23,6 +24,10 @@ namespace views {
 class BoundsAnimator;
 class ImageButton;
 }  // namespace views
+
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
 
 class BraveBrowser;
 class SidebarItemDragContext;
@@ -88,6 +93,8 @@ class SidebarItemsScrollView : public views::View,
   void Update();
 
  private:
+  friend class sidebar::SidebarBrowserTest;
+
   void UpdateArrowViewsTheme();
   void UpdateArrowViewsEnabledState();
   // Return true if scroll view's area doesn't have enough bounds to show whole
@@ -109,10 +116,10 @@ class SidebarItemsScrollView : public views::View,
   // Returns true if |position| is in visible contents area.
   bool IsInVisibleContentsViewBounds(const gfx::Point& position) const;
 
-  BraveBrowser* browser_ = nullptr;
-  views::ImageButton* up_arrow_ = nullptr;
-  views::ImageButton* down_arrow_ = nullptr;
-  SidebarItemsContentsView* contents_view_ = nullptr;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<views::ImageButton> up_arrow_ = nullptr;
+  raw_ptr<views::ImageButton> down_arrow_ = nullptr;
+  raw_ptr<SidebarItemsContentsView> contents_view_ = nullptr;
   std::unique_ptr<SidebarItemDragContext> drag_context_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_new_item_;
   std::unique_ptr<views::BoundsAnimator> scroll_animator_for_smooth_;

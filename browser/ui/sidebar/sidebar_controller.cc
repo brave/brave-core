@@ -77,7 +77,8 @@ void SidebarController::ActivateItemAt(int index,
     return;
   }
 
-  if (disposition != WindowOpenDisposition::UNKNOWN) {
+  if (disposition != WindowOpenDisposition::CURRENT_TAB) {
+    DCHECK_NE(WindowOpenDisposition::UNKNOWN, disposition);
     NavigateParams params(browser_->profile(), item.url,
                           ui::PAGE_TRANSITION_AUTO_BOOKMARK);
     params.disposition = disposition;

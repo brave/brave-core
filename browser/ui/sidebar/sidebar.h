@@ -10,6 +10,11 @@
 
 #include "brave/components/sidebar/sidebar_service.h"
 
+namespace content {
+class WebContents;
+struct NativeWebKeyboardEvent;
+}  // namespace content
+
 namespace gfx {
 class Point;
 }  // namespace gfx
@@ -31,6 +36,9 @@ class Sidebar {
       const gfx::Point& point,
       std::unique_ptr<ui::MenuModel> menu_model) = 0;
   virtual void HideCustomContextMenu() = 0;
+  virtual bool HandleKeyboardEvent(
+      content::WebContents* source,
+      const content::NativeWebKeyboardEvent& event) = 0;
 
  protected:
   virtual ~Sidebar() {}

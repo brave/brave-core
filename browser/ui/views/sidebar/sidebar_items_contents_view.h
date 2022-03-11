@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
@@ -21,6 +22,10 @@
 namespace views {
 class MenuRunner;
 }  // namespace views
+
+namespace sidebar {
+class SidebarBrowserTest;
+}  // namespace sidebar
 
 class BraveBrowser;
 class SidebarItemView;
@@ -79,6 +84,8 @@ class SidebarItemsContentsView : public views::View,
   void Update();
 
  private:
+  friend class sidebar::SidebarBrowserTest;
+
   enum ContextMenuIDs {
     kItemRemove,
   };
@@ -107,10 +114,10 @@ class SidebarItemsContentsView : public views::View,
   int CalculateTargetDragIndicatorIndex(const gfx::Point& screen_position);
   SidebarItemView* GetItemViewAt(int index);
 
-  BraveBrowser* browser_ = nullptr;
-  views::DragController* drag_controller_ = nullptr;
-  views::View* view_for_context_menu_ = nullptr;
-  sidebar::SidebarModel* sidebar_model_ = nullptr;
+  raw_ptr<BraveBrowser> browser_ = nullptr;
+  raw_ptr<views::DragController> drag_controller_ = nullptr;
+  raw_ptr<views::View> view_for_context_menu_ = nullptr;
+  raw_ptr<sidebar::SidebarModel> sidebar_model_ = nullptr;
   std::unique_ptr<ui::SimpleMenuModel> context_menu_model_;
   std::unique_ptr<views::MenuRunner> context_menu_runner_;
   // Observe to know whether item added feedback bubble is visible or not.
