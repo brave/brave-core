@@ -24,13 +24,6 @@ export const StyledWrapper = styled(WalletButton)`
   }
 `
 
-export const DetailRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-`
-
 export const AddressText = styled.span`
   font-family: Poppins;
   font-size: 13px;
@@ -71,9 +64,8 @@ export const ToCircle = styled.div<Partial<StyleProps>>`
 
 export const DetailColumn = styled.div`
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
   flex-direction: column;
+  text-align: left;
 `
 
 export const BalanceColumn = styled.div`
@@ -88,6 +80,7 @@ export const ArrowIcon = styled(ArrowRightIcon)`
   height: 16px;
   margin-right: 6px;
   color: ${(p) => p.theme.color.text03};
+  vertical-align: middle;
 `
 
 export const TransactionDetailRow = styled.div`
@@ -98,9 +91,19 @@ export const TransactionDetailRow = styled.div`
 `
 
 export const StatusRow = styled.div`
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   flex-direction: row;
+  align-self: flex-end;
+`
+
+export const StatusAndTimeRow = styled.div`
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 8px;
 `

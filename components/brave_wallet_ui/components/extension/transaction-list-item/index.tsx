@@ -21,23 +21,22 @@ import { SwapExchangeProxy } from '../../../common/hooks/address-labels'
 // Styled Components
 import {
   DetailTextDarkBold,
-  DetailTextDark,
-  DetailTextLight
+  DetailTextDark
 } from '../shared-panel-styles'
 
 import { StatusBubble } from '../../shared/style'
 
 import {
-  ArrowIcon,
-  BalanceColumn,
   DetailColumn,
-  DetailRow,
   FromCircle,
+  StatusAndTimeRow,
   StatusRow,
   StyledWrapper,
   ToCircle,
   TransactionDetailRow
 } from './style'
+import { reduceAddress } from '../../../utils/reduce-address'
+import { TransactionIntentDescription } from './transaction-intent-description'
 
 export interface Props {
   selectedNetwork: BraveWallet.NetworkInfo
@@ -79,7 +78,7 @@ const TransactionsListItem = (props: Props) => {
     onSelectTransaction(transaction)
   }
 
-  const transactionIntentLocale = React.useMemo((): string => {
+  const transactionIntentLocale = React.useMemo((): React.ReactNode => {
     switch (true) {
       case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
         const text = getLocale('braveWalletApprovalTransactionIntent')
@@ -101,7 +100,10 @@ const TransactionsListItem = (props: Props) => {
           transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
           ? ' ' + transactionDetails.erc721TokenId
           : ''
-        return `${toProperCase(text)} ${transactionDetails.symbol}${erc721ID}`
+        return (<DetailTextDark>
+          {`${transactionDetails.senderLabel} ${text} ${transactionDetails.fiatValue
+            .formatAsFiat(defaultCurrencies.fiat)} (${transactionDetails.formattedNativeCurrencyTotal}${erc721ID})`}
+        </DetailTextDark>)
       }
     }
   }, [transaction])
@@ -110,41 +112,20 @@ const TransactionsListItem = (props: Props) => {
     switch (true) {
       case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
         return (
-          <>
-            <DetailRow>
-              <DetailTextLight>
-                {transactionDetails.value}{' '}
-                {transactionDetails.symbol}
-              </DetailTextLight>
-            </DetailRow>
-            <DetailRow>
-              <ArrowIcon />
-              <DetailTextLight>
-                {transactionDetails.approvalTargetLabel}
-              </DetailTextLight>
-            </DetailRow>
-
-          </>
+          <TransactionIntentDescription
+            from={`${transactionDetails.value} ${transactionDetails.symbol}`}
+            to={transactionDetails.approvalTargetLabel || ''}
+          />
         )
       }
 
       // FIXME: Add as new TransactionType on the service side.
       case transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy: {
         return (
-          <>
-            <DetailRow>
-              <DetailTextLight>
-                {transactionDetails.value}{' '}
-                {transactionDetails.symbol}
-              </DetailTextLight>
-            </DetailRow>
-            <DetailRow>
-              <ArrowIcon />
-              <DetailTextLight>
-                {transactionDetails.recipientLabel}
-              </DetailTextLight>
-            </DetailRow>
-          </>
+          <TransactionIntentDescription
+            from={`${transactionDetails.value} ${transactionDetails.symbol}`}
+            to={transactionDetails.recipientLabel}
+          />
         )
       }
 
@@ -154,19 +135,10 @@ const TransactionsListItem = (props: Props) => {
       case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
       default: {
         return (
-          <>
-            <DetailRow>
-              <DetailTextLight>
-                {transactionDetails.senderLabel}{' '}
-              </DetailTextLight>
-            </DetailRow>
-            <DetailRow>
-              <ArrowIcon />
-              <DetailTextLight>
-                {transactionDetails.recipientLabel}
-              </DetailTextLight>
-            </DetailRow>
-          </>
+          <TransactionIntentDescription
+            from={`${reduceAddress(transactionDetails.sender)} `}
+            to={reduceAddress(transactionDetails.recipient)}
+          />
         )
       }
     }
@@ -174,37 +146,35 @@ const TransactionsListItem = (props: Props) => {
 
   return (
     <StyledWrapper onClick={onClickTransaction}>
-      <TransactionDetailRow>
-        <FromCircle orb={fromOrb} />
-        <ToCircle orb={toOrb} />
-        <DetailColumn>
-          <DetailRow>
-            <DetailTextDark>
-              {transactionIntentLocale}
-            </DetailTextDark>&nbsp;
-            <DetailTextLight>-</DetailTextLight>&nbsp;
-            <DetailTextDarkBold>{formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}</DetailTextDarkBold>
-          </DetailRow>
-          {transactionIntentDescription}
-        </DetailColumn>
-      </TransactionDetailRow>
-      <DetailRow>
-        <BalanceColumn>
-          <DetailTextDark>
-            {
-              transactionDetails.fiatValue
-                .formatAsFiat(defaultCurrencies.fiat)
-            }
-          </DetailTextDark>
-          <DetailTextLight>{transactionDetails.formattedNativeCurrencyTotal}</DetailTextLight>
-          <StatusRow>
-            <StatusBubble status={transactionDetails.status} />
-            <DetailTextDarkBold>
-              {getTransactionStatusString(transactionDetails.status)}
-            </DetailTextDarkBold>
-          </StatusRow>
-        </BalanceColumn>
-      </DetailRow>
+      <DetailColumn>
+        <TransactionDetailRow>
+          <DetailColumn>
+            <FromCircle orb={fromOrb} />
+            <ToCircle orb={toOrb} />
+          </DetailColumn>
+
+          <DetailColumn>
+            <span>
+              <DetailTextDark>{transactionIntentLocale}</DetailTextDark>&nbsp;
+              {transactionIntentDescription}
+            </span>
+            <StatusAndTimeRow>
+              <DetailTextDarkBold>
+                {formatDateAsRelative(mojoTimeDeltaToJSDate(transactionDetails.createdTime))}
+              </DetailTextDarkBold>
+
+              <StatusRow>
+                <StatusBubble status={transactionDetails.status} />
+                <DetailTextDarkBold>
+                  {getTransactionStatusString(transactionDetails.status)}
+                </DetailTextDarkBold>
+              </StatusRow>
+            </StatusAndTimeRow>
+          </DetailColumn>
+
+        </TransactionDetailRow>
+      </DetailColumn>
+
     </StyledWrapper>
   )
 }

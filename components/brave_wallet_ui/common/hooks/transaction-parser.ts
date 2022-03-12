@@ -36,7 +36,7 @@ interface ParsedTransactionFees {
   missingGasLimitError?: string
 }
 
-interface ParsedTransaction extends ParsedTransactionFees {
+export interface ParsedTransaction extends ParsedTransactionFees {
   // Common fields
   hash: string
   nonce: string
