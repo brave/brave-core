@@ -250,6 +250,22 @@ class DictionaryMojoTypemap(MojoTypemap):
             return d;
         }()""" % args
 
+class BaseValueMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsUnionKind(kind) and
+                kind.qualified_name == 'mojo_base.mojom.Value')
+    def ObjCWrappedType(self):
+        return "MojoBaseValue*"
+    def ExpectedCppType(self):
+        return "base::Value"
+    def DefaultObjCValue(self, default):
+        return "[[MojoBaseValue alloc] init]"
+    def ObjCToCpp(self, accessor):
+        return "%s.cppObjPtr" % accessor
+    def CppToObjC(self, accessor):
+        return "[[MojoBaseValue alloc] initWithValue:%s.Clone()]" % accessor
+
 class BaseDictionaryValueMojoTypemap(MojoTypemap):
     @staticmethod
     def IsMojoType(kind):
@@ -332,6 +348,7 @@ _mojo_typemaps = [
     URLMojoTypemap,
     NumberMojoTypemap,
     EnumMojoTypemap,
+    BaseValueMojoTypemap,
     ArrayMojoTypemap,
     BaseListValueMojoTypemap,
     DictionaryMojoTypemap,

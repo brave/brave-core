@@ -86,6 +86,10 @@ template("ios_objc_mojom_wrappers") {
     ]
   }
 
+  config("base_headers") {
+    include_dirs = [ "//brave/build/ios/mojom/public/base" ]
+  }
+
   source_set(target_name) {
     forward_variables_from(invoker,
                            "*",
@@ -98,10 +102,11 @@ template("ios_objc_mojom_wrappers") {
     }
     sources = generate_wrappers_output
     configs += [ "//build/config/compiler:enable_arc" ]
+    public_configs = [ ":base_headers" ]
     public_deps += [
       ":$generate_wrappers_target",
       "//base",
-      "//brave/build/ios/mojom/util",
+      "//brave/build/ios/mojom/public/base",
       "//net",
       mojom_target,
     ]

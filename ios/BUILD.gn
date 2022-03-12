@@ -30,6 +30,7 @@ group("brave_ios_tests") {
 }
 
 brave_core_public_headers = [
+  "//brave/build/ios/mojom/public/base/base_values.h",
   "//brave/components/adblock_rust_ffi/src/lib.h",
   "//brave/ios/app/brave_core_main.h",
   "//brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h",
