@@ -105,7 +105,10 @@ void BraveActionsContainer::Init() {
   AddChildViewAt(brave_button_separator_, 0);
   AddActionViewForShields();
   // Populate actions
-  actions_[brave_extension_id].position_ = 1;
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsPanelV1)) {
+    actions_[brave_extension_id].position_ = 1;
+  }
   actions_[brave_rewards_extension_id].position_ = ACTION_ANY_POSITION;
 
   // React to Brave Rewards preferences changes.
