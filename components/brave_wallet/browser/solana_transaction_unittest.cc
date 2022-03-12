@@ -6,8 +6,10 @@
 #include "brave/components/brave_wallet/browser/solana_transaction.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/base64.h"
+#include "base/json/json_reader.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -214,6 +216,106 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
   transaction =
       SolanaTransaction(recent_blockhash, from_account, {instruction});
   EXPECT_TRUE(transaction.GetSignedTransaction(keyring_service(), "").empty());
+}
+
+TEST_F(SolanaTransactionUnitTest, FromToSolanaTxData) {
+  std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
+
+  SolanaInstruction instruction(
+      // Program ID
+      kSolanaSystemProgramId,
+      // Accounts
+      {SolanaAccountMeta(from_account, true, true),
+       SolanaAccountMeta(to_account, false, true)},
+      data);
+  SolanaTransaction transaction(recent_blockhash, from_account, {instruction});
+
+  auto solana_tx_data = transaction.ToSolanaTxData();
+  ASSERT_TRUE(solana_tx_data);
+  EXPECT_EQ(solana_tx_data->recent_blockhash, recent_blockhash);
+  EXPECT_EQ(solana_tx_data->fee_payer, from_account);
+
+  ASSERT_EQ(solana_tx_data->instructions.size(), 1u);
+  EXPECT_EQ(solana_tx_data->instructions[0]->program_id,
+            kSolanaSystemProgramId);
+  EXPECT_EQ(solana_tx_data->instructions[0]->data, data);
+
+  ASSERT_EQ(solana_tx_data->instructions[0]->account_metas.size(), 2u);
+  EXPECT_EQ(solana_tx_data->instructions[0]->account_metas[0]->pubkey,
+            from_account);
+  EXPECT_TRUE(solana_tx_data->instructions[0]->account_metas[0]->is_signer);
+  EXPECT_TRUE(solana_tx_data->instructions[0]->account_metas[0]->is_writable);
+  EXPECT_EQ(solana_tx_data->instructions[0]->account_metas[1]->pubkey,
+            to_account);
+  EXPECT_FALSE(solana_tx_data->instructions[0]->account_metas[1]->is_signer);
+  EXPECT_TRUE(solana_tx_data->instructions[0]->account_metas[1]->is_writable);
+
+  auto transaction_from_solana_tx_data =
+      SolanaTransaction::FromSolanaTxData(std::move(solana_tx_data));
+  ASSERT_TRUE(transaction_from_solana_tx_data);
+  EXPECT_EQ(*transaction_from_solana_tx_data, transaction);
+}
+
+TEST_F(SolanaTransactionUnitTest, FromToValue) {
+  std::string from_account = "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8";
+  std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  std::string recent_blockhash = "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6";
+  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
+
+  SolanaInstruction instruction(
+      // Program ID
+      kSolanaSystemProgramId,
+      // Accounts
+      {SolanaAccountMeta(from_account, true, true),
+       SolanaAccountMeta(to_account, false, true)},
+      data);
+  SolanaTransaction transaction(recent_blockhash, from_account, {instruction});
+
+  base::Value value = transaction.ToValue();
+  auto expect_tx_value = base::JSONReader::Read(R"(
+      {
+        "message": {
+          "recent_blockhash": "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6",
+          "fee_payer": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+          "instructions": [
+            {
+              "program_id": "11111111111111111111111111111111",
+              "accounts": [
+                {
+                  "pubkey": "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8",
+                  "is_signer": true,
+                  "is_writable": true
+                },
+                {
+                  "pubkey": "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV",
+                  "is_signer": false,
+                  "is_writable": true
+                }
+               ],
+               "data": "AgAAAICWmAAAAAAA"
+             }
+          ]
+        }
+      }
+  )");
+
+  ASSERT_TRUE(expect_tx_value);
+  EXPECT_EQ(value, *expect_tx_value);
+  auto tx_from_value = SolanaTransaction::FromValue(value);
+  EXPECT_EQ(tx_from_value, transaction);
+
+  std::vector<std::string> invalid_value_strings = {"{}", "[]"};
+
+  for (const auto& invalid_value_string : invalid_value_strings) {
+    absl::optional<base::Value> invalid_value =
+        base::JSONReader::Read(invalid_value_string);
+    ASSERT_TRUE(invalid_value) << ":" << invalid_value_string;
+    EXPECT_FALSE(SolanaMessage::FromValue(*invalid_value))
+        << ":" << invalid_value_string;
+  }
 }
 
 }  // namespace brave_wallet

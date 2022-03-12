@@ -42,7 +42,7 @@
   if (self.tag == {{field_tag}}) {
     return _{{property_name}};
   }
-  return 0;
+  return {{field.kind|objc_union_null_return_value}};
 }
 
 - (void)set{{function_name}}:({{type}})value {

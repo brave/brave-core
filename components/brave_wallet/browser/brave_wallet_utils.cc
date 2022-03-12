@@ -223,6 +223,11 @@ const base::flat_map<std::string, std::string> kInfuraSubdomains = {
     {brave_wallet::mojom::kGoerliChainId, "goerli"},
     {brave_wallet::mojom::kKovanChainId, "kovan"}};
 
+const base::flat_map<std::string, std::string> kSolanaSubdomains = {
+    {brave_wallet::mojom::kSolanaMainnet, "mainnet"},
+    {brave_wallet::mojom::kSolanaTestnet, "testnet"},
+    {brave_wallet::mojom::kSolanaDevnet, "devnet"}};
+
 const base::flat_map<std::string, std::string>
     kUnstoppableDomainsProxyReaderContractAddressMap = {
         {brave_wallet::mojom::kMainnetChainId,
@@ -297,6 +302,12 @@ mojom::NetworkInfoPtr GetChain(PrefService* prefs,
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
   if (kInfuraSubdomains.contains(chain_id))
     return kInfuraSubdomains.at(chain_id);
+  return std::string();
+}
+
+std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id) {
+  if (kSolanaSubdomains.contains(chain_id))
+    return kSolanaSubdomains.at(chain_id);
   return std::string();
 }
 
@@ -715,14 +726,18 @@ void GetAllChains(PrefService* prefs,
     GetAllKnownEthChains(prefs, result);
     GetAllEthCustomChains(prefs, result);
   } else if (coin == mojom::CoinType::SOL) {
-    for (const auto& network : kKnownSolNetworks) {
-      result->push_back(network.Clone());
-    }
+    GetAllKnownSolChains(result);
   } else if (coin == mojom::CoinType::FIL) {
     for (const auto& network : kKnownFilNetworks) {
       result->push_back(network.Clone());
     }
   }
+}
+
+void GetAllKnownSolChains(std::vector<mojom::NetworkInfoPtr>* result) {
+  DCHECK(result);
+  for (const auto& network : kKnownSolNetworks)
+    result->push_back(network.Clone());
 }
 
 std::vector<std::string> GetAllKnownEthNetworkIds() {
@@ -753,20 +768,54 @@ std::string GetKnownEthNetworkId(const std::string& chain_id) {
   return "";
 }
 
-std::string GetNetworkId(PrefService* prefs, const std::string& chain_id) {
+std::string GetKnownSolNetworkId(const std::string& chain_id) {
+  auto subdomain = GetSolanaSubdomainForKnownChainId(chain_id);
+  if (!subdomain.empty())
+    return subdomain;
+
+  // Separate check for localhost in known networks as it is predefined but
+  // does not have predefined subdomain.
+  if (chain_id == mojom::kLocalhostChainId) {
+    for (const auto& network : kKnownSolNetworks) {
+      if (network.chain_id == chain_id) {
+        return GURL(network.rpc_urls.front()).spec();
+      }
+    }
+  }
+
+  return "";
+}
+
+std::string GetKnownNetworkId(mojom::CoinType coin,
+                              const std::string& chain_id) {
+  if (coin == mojom::CoinType::ETH)
+    return GetKnownEthNetworkId(chain_id);
+  if (coin == mojom::CoinType::SOL)
+    return GetKnownSolNetworkId(chain_id);
+  // TODO(spylogsster): Implement this for FIL
+  //  if (coin == mojom::CoinType::FIL)
+  //    return GetKnownFilNetworkId(chain_id);
+  return "";
+}
+
+std::string GetNetworkId(PrefService* prefs,
+                         mojom::CoinType coin,
+                         const std::string& chain_id) {
   DCHECK(prefs);
 
-  std::string id = GetKnownEthNetworkId(chain_id);
+  std::string id = GetKnownNetworkId(coin, chain_id);
   if (!id.empty())
     return id;
 
-  std::vector<mojom::NetworkInfoPtr> custom_chains;
-  GetAllEthCustomChains(prefs, &custom_chains);
-  for (const auto& network : custom_chains) {
-    if (network->chain_id != chain_id)
-      continue;
-    id = chain_id;
-    break;
+  if (coin == mojom::CoinType::ETH) {
+    std::vector<mojom::NetworkInfoPtr> custom_chains;
+    GetAllEthCustomChains(prefs, &custom_chains);
+    for (const auto& network : custom_chains) {
+      if (network->chain_id != chain_id)
+        continue;
+      id = chain_id;
+      break;
+    }
   }
 
   return id;
@@ -834,7 +883,8 @@ void AddCustomNetwork(PrefService* prefs, mojom::NetworkInfoPtr chain) {
     list->Append(std::move(value.value()));
   }
 
-  const std::string network_id = GetNetworkId(prefs, chain->chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs, mojom::CoinType::ETH, chain->chain_id);
   DCHECK(!network_id.empty());  // Not possible for a custom network.
 
   DictionaryPrefUpdate update(prefs, kBraveWalletUserAssets);

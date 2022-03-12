@@ -502,6 +502,26 @@ class JsonRpcServiceUnitTest : public testing::Test {
     run_loop.Run();
   }
 
+  void TestGetSolanaSignatureStatuses(
+      const std::vector<std::string>& tx_signatures,
+      const std::vector<absl::optional<SolanaSignatureStatus>>& expected_stats,
+      mojom::SolanaProviderError expected_error,
+      const std::string& expected_error_message) {
+    base::RunLoop run_loop;
+    json_rpc_service_->GetSolanaSignatureStatuses(
+        tx_signatures,
+        base::BindLambdaForTesting(
+            [&](const std::vector<absl::optional<SolanaSignatureStatus>>& stats,
+                mojom::SolanaProviderError error,
+                const std::string& error_message) {
+              EXPECT_EQ(stats, expected_stats);
+              EXPECT_EQ(error, expected_error);
+              EXPECT_EQ(error_message, expected_error_message);
+              run_loop.Quit();
+            }));
+    run_loop.Run();
+  }
+
  protected:
   std::unique_ptr<JsonRpcService> json_rpc_service_;
 
@@ -2251,6 +2271,80 @@ TEST_F(JsonRpcServiceUnitTest, MigrateMultichainNetworks) {
 
   EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCustomNetworksDeprecated));
   EXPECT_FALSE(prefs()->HasPrefPath(kBraveWalletCurrentChainId));
+}
+
+TEST_F(JsonRpcServiceUnitTest, GetSolanaSignatureStatuses) {
+  std::string json = R"(
+      {"jsonrpc":2.0, "id":1, "result":
+        {
+          "context": {"slot": 82},
+          "value": [
+            {
+              "slot": 9007199254740991,
+              "confirmations": 10,
+              "err": null,
+              "confirmationStatus": "confirmed"
+            },
+            {
+              "slot": 72,
+              "confirmations": 9007199254740991,
+              "err": null,
+              "confirmationStatus": "confirmed"
+            },
+            {
+              "slot": 1092,
+              "confirmations": null,
+              "err": {"InstructionError":[0,{"Custom":1}]},
+              "confirmationStatus": "finalized"
+            },
+            null
+          ]
+        }
+      }
+  )";
+  SetInterceptor("getSignatureStatuses", "", json);
+
+  std::vector<std::string> tx_sigs = {
+      "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
+      "FmBV6UjKdiSZkQUW",
+      "5j7s6NiJS3JAkvgkoc18WVAsiSaci2pxB2A6ueCJP4tprA2TFg9wSyTLeYouxPBJEMzJinEN"
+      "TkpA52YStRW5Dia7",
+      "4VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpRzr"
+      "FmBV6UjKdiSZkQUW",
+      "45j7s6NiJS3JAkvgkoc18WVAsiSaci2pxB2A6ueCJP4tprA2TFg9wSyTLeYouxPBJEMzJinE"
+      "NTkpA52YStRW5Dia7"};
+
+  std::vector<absl::optional<SolanaSignatureStatus>> expected_statuses(
+      {SolanaSignatureStatus(kMaxSafeIntegerUint64, 10u, "", "confirmed"),
+       SolanaSignatureStatus(72u, kMaxSafeIntegerUint64, "", "confirmed"),
+       SolanaSignatureStatus(
+           1092u, 0u, R"({"InstructionError":[0,{"Custom":1}]})", "finalized"),
+       absl::nullopt});
+  TestGetSolanaSignatureStatuses(tx_sigs, expected_statuses,
+                                 mojom::SolanaProviderError::kSuccess, "");
+
+  // Response parsing error
+  SetInterceptor("getSignatureStatuses", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
+  TestGetSolanaSignatureStatuses(
+      tx_sigs, std::vector<absl::optional<SolanaSignatureStatus>>(),
+      mojom::SolanaProviderError::kParsingError,
+      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
+
+  // JSON RPC error
+  SetInterceptor("getSignatureStatuses", "",
+                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
+                 "{\"code\":-32601, \"message\": \"method does not exist\"}}");
+  TestGetSolanaSignatureStatuses(
+      tx_sigs, std::vector<absl::optional<SolanaSignatureStatus>>(),
+      mojom::SolanaProviderError::kMethodNotFound, "method does not exist");
+
+  // HTTP error
+  SetHTTPRequestTimeoutInterceptor();
+  TestGetSolanaSignatureStatuses(
+      tx_sigs, std::vector<absl::optional<SolanaSignatureStatus>>(),
+      mojom::SolanaProviderError::kInternalError,
+      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
 }
 
 }  // namespace brave_wallet

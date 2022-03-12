@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_REQUESTS_H_
 
 #include <string>
+#include <vector>
 
 namespace brave_wallet {
 
@@ -16,6 +17,7 @@ std::string getBalance(const std::string& pubkey);
 std::string getTokenAccountBalance(const std::string& pubkey);
 std::string sendTransaction(const std::string& signed_tx);
 std::string getLatestBlockhash();
+std::string getSignatureStatuses(const std::vector<std::string>& tx_signatures);
 
 }  // namespace solana
 

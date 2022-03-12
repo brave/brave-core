@@ -78,7 +78,15 @@ GURL GetNetworkURL(PrefService* prefs,
 std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id);
 mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
                                        const std::string& chain_id);
-std::string GetNetworkId(PrefService* prefs, const std::string& chain_id);
+
+std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
+void GetAllKnownSolChains(std::vector<mojom::NetworkInfoPtr>* result);
+std::string GetKnownSolNetworkId(const std::string& chain_id);
+std::string GetKnownNetworkId(mojom::CoinType coin,
+                              const std::string& chain_id);
+std::string GetNetworkId(PrefService* prefs,
+                         mojom::CoinType coin,
+                         const std::string& chain_id);
 void SetDefaultWallet(PrefService* prefs, mojom::DefaultWallet default_wallet);
 mojom::DefaultWallet GetDefaultWallet(PrefService* prefs);
 void SetDefaultBaseCurrency(PrefService* prefs, const std::string& currency);

@@ -66,7 +66,7 @@ enum ProviderError {
 };
 
 enum SolanaProviderError {
-  kSuccess = 0,  // No error
+  kSuccess = ProviderError.kSuccess,  // No error
 
   // Pre-defined error codes specified in
   // https://www.jsonrpc.org/specification#error_object
@@ -75,6 +75,28 @@ enum SolanaProviderError {
   kMethodNotFound = JsonRpcError.kMethodNotFound,  // Method does not exist
   kInvalidParams = JsonRpcError.kInvalidParams,    // Invalid method parameters
   kInternalError = JsonRpcError.kInternalError,    // Internal JSON RPC error
+
+  // Implementation defined RPC server errors
+  // https://docs.rs/solana-client/1.9.9/src/solana_client/rpc_custom_error.rs.html
+  kBlockCleanedUp = -32001,
+  kSendTransactionPreflightFailure = -32002,
+  kTransactionSignatureVerificationFailure = -32003,
+  kBlockNotAvailable = -32004,
+  kNodeUnhealthy = -32005,
+  kTransactionPrecompileVerificationFailure = -32006,
+  kSlotSkipped = -32007,
+  kNoSnapshot = -32008,
+  kLongTermStorageSlotSkipped = -32009,
+  kKeyExcludedFromSecondaryIndex = -32010,
+  kTransactionHistoryNotAvailable = -32011,
+  kScanError = -32012,
+  kTransactionSignatureLenMismatch = -32013,
+  kBlockStatusNotAvailableYet = -32014
+};
+
+union ProviderErrorUnion {
+  ProviderError provider_error;
+  SolanaProviderError solana_provider_error;
 };
 
 // There is one BraveWalletProvider per renderer, the renderer communicates
@@ -706,10 +728,6 @@ enum TransactionType {
   Other
 };
 
-// TODO(jocelyn): Fill the struct with needed fields.
-struct SolanaTxData {
-};
-
 // TODO(spylogsster): Fill the struct with needed fields.
 struct FilTxData {
 };
@@ -754,7 +772,7 @@ interface TxService {
   AddUnapprovedTransaction(TxDataUnion tx_data_union, string from) => (bool success, string tx_meta_id, string error_message);
 
   // Used to approve a transaction
-  ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status, ProviderError error, string error_message);
+  ApproveTransaction(CoinType coin_type, string tx_meta_id) => (bool status, ProviderErrorUnion error_union, string error_message);
 
   // Used to reject a transaction
   RejectTransaction(CoinType coin_type, string tx_meta_id) => (bool status);
@@ -930,4 +948,22 @@ struct EncryptionKeyRequest {
   string origin;
   string address;
   string? message;
+};
+
+struct SolanaAccountMeta {
+  string pubkey;
+  bool is_signer;
+  bool is_writable;
+};
+
+struct SolanaInstruction {
+  string program_id;
+  array<SolanaAccountMeta> account_metas;
+  array<uint8> data;
+};
+
+struct SolanaTxData {
+  string recent_blockhash;
+  string fee_payer;
+  array<SolanaInstruction> instructions;
 };

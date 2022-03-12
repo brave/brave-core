@@ -1563,6 +1563,12 @@ void JsonRpcService::OnGetSPLTokenAccountBalance(
 void JsonRpcService::SendSolanaTransaction(
     const std::string& signed_tx,
     SendSolanaTransactionCallback callback) {
+  if (signed_tx.empty()) {
+    std::move(callback).Run(
+        "", mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  }
+
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
@@ -1626,6 +1632,43 @@ void JsonRpcService::OnGetSolanaLatestBlockhash(
   }
 
   std::move(callback).Run(blockhash, mojom::SolanaProviderError::kSuccess, "");
+}
+
+void JsonRpcService::GetSolanaSignatureStatuses(
+    const std::vector<std::string>& tx_signatures,
+    GetSolanaSignatureStatusesCallback callback) {
+  auto internal_callback =
+      base::BindOnce(&JsonRpcService::OnGetSolanaSignatureStatuses,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback));
+  return Request(solana::getSignatureStatuses(tx_signatures), true,
+                 mojom::CoinType::SOL, std::move(internal_callback));
+}
+
+void JsonRpcService::OnGetSolanaSignatureStatuses(
+    GetSolanaSignatureStatusesCallback callback,
+    const int status,
+    const std::string& body,
+    const base::flat_map<std::string, std::string>& headers) {
+  if (status < 200 || status > 299) {
+    std::move(callback).Run(
+        std::vector<absl::optional<SolanaSignatureStatus>>(),
+        mojom::SolanaProviderError::kInternalError,
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
+  std::vector<absl::optional<SolanaSignatureStatus>> statuses;
+  if (!solana::ParseGetSignatureStatuses(body, &statuses)) {
+    mojom::SolanaProviderError error;
+    std::string error_message;
+    ParseErrorResult<mojom::SolanaProviderError>(body, &error, &error_message);
+    std::move(callback).Run(
+        std::vector<absl::optional<SolanaSignatureStatus>>(), error,
+        error_message);
+    return;
+  }
+
+  std::move(callback).Run(statuses, mojom::SolanaProviderError::kSuccess, "");
 }
 
 }  // namespace brave_wallet

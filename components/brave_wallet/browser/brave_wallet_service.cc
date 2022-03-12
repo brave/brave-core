@@ -198,7 +198,8 @@ absl::optional<std::string> BraveWalletService::GetChecksumAddress(
 
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        GetUserAssetsCallback callback) {
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty()) {
     std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
     return;
@@ -237,7 +238,8 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   // Can be empty string for native asset.
   const std::string checksum_address = optional_checksum_address.value();
 
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty())
     return false;
 
@@ -299,7 +301,8 @@ bool BraveWalletService::RemoveUserAsset(mojom::BlockchainTokenPtr token,
     return false;
   const std::string checksum_address = optional_checksum_address.value();
 
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty())
     return false;
 
@@ -336,7 +339,8 @@ bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
 
   const std::string checksum_address = optional_checksum_address.value();
 
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty())
     return false;
 
@@ -366,7 +370,8 @@ mojom::BlockchainTokenPtr BraveWalletService::GetUserAsset(
   if (!optional_checksum_address)
     return nullptr;
   const std::string checksum_address = optional_checksum_address.value();
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty())
     return nullptr;
 
