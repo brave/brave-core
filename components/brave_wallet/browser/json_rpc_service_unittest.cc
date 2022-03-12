@@ -2532,7 +2532,10 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaAccountInfo) {
       }
     }
   )";
-  SetInterceptor("getAccountInfo", "", json);
+  auto expected_network_url =
+      GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
+
+  SetInterceptor(expected_network_url, "getAccountInfo", "", json);
 
   SolanaAccountInfo expected_info;
   expected_info.lamports = 88801034809120ULL;
@@ -2545,20 +2548,20 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaAccountInfo) {
 
   // value can be null for an account not on chain.
   SetInterceptor(
-      "getAccountInfo", "",
+      expected_network_url, "getAccountInfo", "",
       R"({"jsonrpc":"2.0","result":{"context":{"slot":123121238},"value":null},"id":1})");
   TestGetSolanaAccountInfo(absl::nullopt, mojom::SolanaProviderError::kSuccess,
                            "");
 
   // Response parsing error
-  SetInterceptor("getAccountInfo", "",
+  SetInterceptor(expected_network_url, "getAccountInfo", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"0\"}");
   TestGetSolanaAccountInfo(absl::nullopt,
                            mojom::SolanaProviderError::kParsingError,
                            l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // JSON RPC error
-  SetInterceptor("getAccountInfo", "",
+  SetInterceptor(expected_network_url, "getAccountInfo", "",
                  "{\"jsonrpc\":\"2.0\",\"id\":1,\"error\":"
                  "{\"code\":-32601, \"message\": \"method does not exist\"}}");
   TestGetSolanaAccountInfo(absl::nullopt,
