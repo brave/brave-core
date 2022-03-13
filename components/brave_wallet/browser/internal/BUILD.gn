@@ -17,6 +17,7 @@ source_set("hd_key") {
     "//brave/components/brave_wallet/common",
     "//brave/third_party/bitcoin-core",
     "//brave/third_party/bitcoin-core:secp256k1",
+    "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//crypto",
     "//third_party/boringssl",
   ]

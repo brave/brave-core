@@ -48,6 +48,7 @@ class HDKey : public HDKeyBase {
   // base58 encoded of hash160 of public key
   std::string GetPublicExtendedKey() const;
   std::vector<uint8_t> GetUncompressedPublicKey() const;
+  std::vector<uint8_t> GetPublicKeyFromX25519_XSalsa20_Poly1305() const;
 
   void SetChainCode(const std::vector<uint8_t>& value);
 
