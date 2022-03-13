@@ -18,7 +18,7 @@ import { getLocale, splitStringForTag } from '../../../../../common/locale'
 
 export interface Props {
   id?: string
-  errorText?: string
+  errorText?: string[]
   errorTextLink?: string
   buttonText?: string
   titleText?: string
@@ -55,10 +55,6 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
       isMobile,
       onClose
     } = this.props
-    let errorTextLinkTags = null
-    if (errorText && errorText.includes('$2')) {
-      errorTextLinkTags = splitStringForTag(errorText, 2)
-    }
 
     return (
       <Modal
@@ -73,35 +69,44 @@ export default class ModalRedirect extends React.PureComponent<Props, {}> {
           </StyledTitle>
           {
             errorText
-            ? <StyledError>
-              <p>
-              {
-                errorTextLinkTags
-                ? <>
-                    {errorTextLinkTags.beforeTag}
+              ? <StyledError>
+                {
+                  errorText.map((line, index) => {
+                    let lineLinkTags = null
+                    if (line && line.includes('$2')) {
+                      lineLinkTags = splitStringForTag(line, 2)
+                    }
+
+                    return <p key={index}>
                       {
-                        errorTextLink
-                        ? <a href={errorTextLink} target='_blank' rel='noopener noreferrer'>
-                            {errorTextLinkTags.duringTag}
-                          </a>
-                        : errorTextLinkTags.duringTag
+                        lineLinkTags
+                          ? <>
+                            {lineLinkTags.beforeTag}
+                            {
+                              errorTextLink
+                                ? <a href={errorTextLink} target='_blank' rel='noopener noreferrer'>
+                                  {lineLinkTags.duringTag}
+                                </a>
+                                : lineLinkTags.duringTag
+                            }
+                            {lineLinkTags.afterTag}
+                          </>
+                          : line
                       }
-                    {errorTextLinkTags.afterTag}
-                  </>
-                : errorText
-              }
-              </p>
-              {
-                learnMore &&
+                    </p>
+                  })
+                }
+                {
+                  learnMore &&
                   <StyledLink href={learnMore} target='_blank' rel='noopener noreferrer'>
                     {getLocale('learnMore')}
                   </StyledLink>
-              }
-              {this.getButton()}
-            </StyledError>
-            : <StyledLoader>
-              <LoaderIcon />
-            </StyledLoader>
+                }
+                {this.getButton()}
+              </StyledError>
+              : <StyledLoader>
+                <LoaderIcon />
+              </StyledLoader>
           }
         </StyledWrapper>
       </Modal>

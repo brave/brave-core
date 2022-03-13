@@ -61,19 +61,47 @@ TEST_F(PostClaimUpholdTest, ServerOK) {
                   });
 }
 
-TEST_F(PostClaimUpholdTest, ServerError400) {
+TEST_F(PostClaimUpholdTest, ServerError400FlaggedWallet) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(Invoke(
           [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
             type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
-            response.body = "";
+            response.body = R"(
+{
+    "message": "unable to link - unusual activity",
+    "code": 400
+}
+            )";
             callback(response);
           }));
 
   claim_->Request(30.0, "address",
-                  [](const type::Result result, const std::string& address) {
+                  [](type::Result result, const std::string& address) {
+                    EXPECT_EQ(result, type::Result::FLAGGED_WALLET);
+                    EXPECT_EQ(address, kExpectedAddress);
+                  });
+}
+
+TEST_F(PostClaimUpholdTest, ServerError400UnknownMessage) {
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
+      .WillByDefault(Invoke(
+          [](type::UrlRequestPtr request, client::LoadURLCallback callback) {
+            type::UrlResponse response;
+            response.status_code = 400;
+            response.url = request->url;
+            response.body = R"(
+{
+    "message": "unknown message",
+    "code": 400
+}
+            )";
+            callback(response);
+          }));
+
+  claim_->Request(30.0, "address",
+                  [](type::Result result, const std::string& address) {
                     EXPECT_EQ(result, type::Result::LEDGER_ERROR);
                     EXPECT_EQ(address, kExpectedAddress);
                   });
