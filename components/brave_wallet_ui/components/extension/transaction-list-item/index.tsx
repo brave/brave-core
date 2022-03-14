@@ -49,6 +49,8 @@ export interface Props {
   onSelectTransaction: (transaction: BraveWallet.TransactionInfo) => void
 }
 
+const { ERC20Approve, ERC721TransferFrom, ERC721SafeTransferFrom } = BraveWallet.TransactionType
+
 const TransactionsListItem = (props: Props) => {
   const {
     transaction,
@@ -79,69 +81,45 @@ const TransactionsListItem = (props: Props) => {
   }
 
   const transactionIntentLocale = React.useMemo((): React.ReactNode => {
-    switch (true) {
-      case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
-        const text = getLocale('braveWalletApprovalTransactionIntent')
-        return `${toProperCase(text)} ${transactionDetails.symbol}`
-      }
-
-      // Detect sending to 0x Exchange Proxy
-      case transactionDetails.isSwap: {
-        return getLocale('braveWalletSwap')
-      }
-
-      case transaction.txType === BraveWallet.TransactionType.ETHSend:
-      case transaction.txType === BraveWallet.TransactionType.ERC20Transfer:
-      case transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom:
-      case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
-      default: {
-        const text = getLocale('braveWalletTransactionSent')
-        const erc721ID = transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom ||
-          transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom
-          ? ' ' + transactionDetails.erc721TokenId
-          : ''
-        return (<DetailTextDark>
-          {`${transactionDetails.senderLabel} ${text} ${transactionDetails.fiatValue
-            .formatAsFiat(defaultCurrencies.fiat)} (${transactionDetails.formattedNativeCurrencyTotal}${erc721ID})`}
-        </DetailTextDark>)
-      }
+    // approval
+    if (transaction.txType === ERC20Approve) {
+      return toProperCase(getLocale('braveWalletApprovalTransactionIntent'))
     }
+
+    // Detect sending to 0x Exchange Proxy
+    if (transactionDetails.isSwap) {
+      return getLocale('braveWalletSwap')
+    }
+
+    // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
+    let erc721ID = transaction.txType === ERC721TransferFrom || transaction.txType === ERC721SafeTransferFrom
+      ? ' ' + transactionDetails.erc721TokenId
+      : ''
+    return (
+      <DetailTextDark>
+        {`${transactionDetails.senderLabel} ${getLocale('braveWalletTransactionSent')} ${transactionDetails.fiatValue
+        .formatAsFiat(defaultCurrencies.fiat)} (${transactionDetails.formattedNativeCurrencyTotal}${erc721ID})`}
+      </DetailTextDark>
+    )
   }, [transaction])
 
   const transactionIntentDescription = React.useMemo(() => {
-    switch (true) {
-      case transaction.txType === BraveWallet.TransactionType.ERC20Approve: {
-        return (
-          <TransactionIntentDescription
-            from={`${transactionDetails.value} ${transactionDetails.symbol}`}
-            to={transactionDetails.approvalTargetLabel || ''}
-          />
-        )
-      }
+    // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
+    let from = `${reduceAddress(transactionDetails.sender)} `
+    let to = reduceAddress(transactionDetails.recipient)
 
+    if (transaction.txType === ERC20Approve) {
+      // Approval
+      from = `${transactionDetails.value} ${transactionDetails.symbol}`
+      to = transactionDetails.approvalTargetLabel || ''
+    } else if (transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy) {
+      // Brave Swap
       // FIXME: Add as new TransactionType on the service side.
-      case transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy: {
-        return (
-          <TransactionIntentDescription
-            from={`${transactionDetails.value} ${transactionDetails.symbol}`}
-            to={transactionDetails.recipientLabel}
-          />
-        )
-      }
-
-      case transaction.txType === BraveWallet.TransactionType.ETHSend:
-      case transaction.txType === BraveWallet.TransactionType.ERC20Transfer:
-      case transaction.txType === BraveWallet.TransactionType.ERC721TransferFrom:
-      case transaction.txType === BraveWallet.TransactionType.ERC721SafeTransferFrom:
-      default: {
-        return (
-          <TransactionIntentDescription
-            from={`${reduceAddress(transactionDetails.sender)} `}
-            to={reduceAddress(transactionDetails.recipient)}
-          />
-        )
-      }
+      from = `${transactionDetails.value} ${transactionDetails.symbol}`
+      to = transactionDetails.recipientLabel
     }
+
+    return <TransactionIntentDescription from={from} to={to} />
   }, [transactionDetails])
 
   return (
