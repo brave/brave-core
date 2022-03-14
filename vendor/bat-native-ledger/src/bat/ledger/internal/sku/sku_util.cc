@@ -27,7 +27,7 @@ const char kUpholdDestinationProduction[] =
     "5d4be2ad-1c65-4802-bea1-e0f3a3a487cb";
 
 const char kGeminiDestinationDev[] = "60e5e863-8c3d-4341-8b54-23e2695a490c";
-const char kGeminiDestinationStaging[] = "60e5e863-8c3d-4341-8b54-23e2695a490c";
+const char kGeminiDestinationStaging[] = "622b9018-f26a-44bf-9a45-3bf3bf3c95e9";
 const char kGeminiDestinationProduction[] =
     "6116adaf-92e6-42fa-bee8-6f749b8eb44e";
 
