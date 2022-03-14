@@ -23,8 +23,30 @@ namespace brave_ads {
 
 namespace {
 
-constexpr char kUserGestureRejectReason[] =
+constexpr char kBraveRequestAdsEnabledApi[] = "braveRequestAdsEnabled";
+
+constexpr char kRequestAdsEnabledUserGestureRejectReason[] =
     "braveRequestAdsEnabled: API can only be initiated by a user gesture.";
+
+constexpr char kBraveSendSearchAdConfirmationApi[] =
+    "braveSendSearchAdConfirmation";
+
+constexpr char kViewConfirmation[] = "viewed";
+
+constexpr char kClickConfirmation[] = "clicked";
+
+constexpr char kSendSearchAdConfirmationWrongConfirmationType[] =
+    "braveSendSearchAdConfirmation: Wrong confirmation type.";
+
+constexpr char kSendSearchAdConfirmationWrongUuid[] =
+    "braveSendSearchAdConfirmation: Wrong uuid value.";
+
+constexpr char kSendSearchAdConfirmationWrongCreativeInstanceId[] =
+    "braveSendSearchAdConfirmation: Wrong creative instance id value.";
+
+constexpr char kSendSearchAdConfirmationUserGestureRejectReason[] =
+    "braveSendSearchAdConfirmation: API can only be initiated by a user "
+    "gesture.";
 
 }  // namespace
 
@@ -33,21 +55,34 @@ BraveAdsJSHandler::BraveAdsJSHandler(content::RenderFrame* render_frame)
 
 BraveAdsJSHandler::~BraveAdsJSHandler() = default;
 
-void BraveAdsJSHandler::AddJavaScriptObjectToFrame(
+void BraveAdsJSHandler::AddBraveRequestAdsEnabledFunction(
     v8::Local<v8::Context> context) {
+  AddJavaScriptObjectToFrame(
+      context, kBraveRequestAdsEnabledApi,
+      base::BindRepeating(&BraveAdsJSHandler::RequestAdsEnabled,
+                          base::Unretained(this)));
+}
+
+void BraveAdsJSHandler::AddBraveSendSearchAdConfirmationFunction(
+    v8::Local<v8::Context> context) {
+  AddJavaScriptObjectToFrame(
+      context, kBraveSendSearchAdConfirmationApi,
+      base::BindRepeating(&BraveAdsJSHandler::SendSearchAdConfirmation,
+                          base::Unretained(this)));
+}
+
+template <typename Sig>
+void BraveAdsJSHandler::AddJavaScriptObjectToFrame(
+    v8::Local<v8::Context> context,
+    const std::string& name,
+    const base::RepeatingCallback<Sig>& callback) {
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
   if (context.IsEmpty()) {
     return;
   }
-
   v8::Context::Scope context_scope(context);
 
-  BindFunctionsToObject(isolate, context);
-}
-
-void BraveAdsJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
-                                              v8::Local<v8::Context> context) {
   v8::Local<v8::Object> global = context->Global();
   v8::Local<v8::Object> chrome_obj;
   v8::Local<v8::Value> chrome_value;
@@ -61,10 +96,7 @@ void BraveAdsJSHandler::BindFunctionsToObject(v8::Isolate* isolate,
     chrome_obj = chrome_value->ToObject(context).ToLocalChecked();
   }
 
-  BindFunctionToObject(
-      isolate, chrome_obj, "braveRequestAdsEnabled",
-      base::BindRepeating(&BraveAdsJSHandler::RequestAdsEnabled,
-                          base::Unretained(this)));
+  BindFunctionToObject(isolate, chrome_obj, name, callback);
 }
 
 template <typename Sig>
@@ -116,7 +148,8 @@ v8::Local<v8::Promise> BraveAdsJSHandler::RequestAdsEnabled(
   DCHECK(web_frame);
   if (!web_frame->HasTransientUserActivation()) {
     v8::Local<v8::String> result =
-        v8::String::NewFromUtf8(isolate, kUserGestureRejectReason)
+        v8::String::NewFromUtf8(isolate,
+                                kRequestAdsEnabledUserGestureRejectReason)
             .ToLocalChecked();
     ALLOW_UNUSED_LOCAL(resolver->Reject(isolate->GetCurrentContext(), result));
     return resolver->GetPromise();
@@ -127,13 +160,84 @@ v8::Local<v8::Promise> BraveAdsJSHandler::RequestAdsEnabled(
   auto context_old = std::make_unique<v8::Global<v8::Context>>(
       isolate, isolate->GetCurrentContext());
   brave_ads_->RequestAdsEnabled(base::BindOnce(
-      &BraveAdsJSHandler::OnRequestAdsEnabled, base::Unretained(this),
+      &BraveAdsJSHandler::OnBooleanResponse, base::Unretained(this),
       std::move(promise_resolver), isolate, std::move(context_old)));
 
   return resolver->GetPromise();
 }
 
-void BraveAdsJSHandler::OnRequestAdsEnabled(
+v8::Local<v8::Promise> BraveAdsJSHandler::SendSearchAdConfirmation(
+    v8::Isolate* isolate,
+    std::string uuid,
+    std::string creative_instance_id,
+    std::string confirmation_type) {
+  if (!EnsureConnected()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  v8::MaybeLocal<v8::Promise::Resolver> maybe_resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (maybe_resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
+  }
+
+  v8::Local<v8::Promise::Resolver> resolver = maybe_resolver.ToLocalChecked();
+
+  if (confirmation_type != kViewConfirmation &&
+      confirmation_type != kClickConfirmation) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate,
+                                kSendSearchAdConfirmationWrongConfirmationType)
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(isolate->GetCurrentContext(), result));
+    return resolver->GetPromise();
+  }
+
+  if (uuid.empty()) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(isolate, kSendSearchAdConfirmationWrongUuid)
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(isolate->GetCurrentContext(), result));
+    return resolver->GetPromise();
+  }
+
+  if (creative_instance_id.empty()) {
+    v8::Local<v8::String> result =
+        v8::String::NewFromUtf8(
+            isolate, kSendSearchAdConfirmationWrongCreativeInstanceId)
+            .ToLocalChecked();
+    ALLOW_UNUSED_LOCAL(resolver->Reject(isolate->GetCurrentContext(), result));
+    return resolver->GetPromise();
+  }
+
+  if (confirmation_type == kClickConfirmation) {
+    auto* web_frame = render_frame_->GetWebFrame();
+    DCHECK(web_frame);
+    if (!web_frame->HasTransientUserActivation()) {
+      v8::Local<v8::String> result =
+          v8::String::NewFromUtf8(
+              isolate, kSendSearchAdConfirmationUserGestureRejectReason)
+              .ToLocalChecked();
+      ALLOW_UNUSED_LOCAL(
+          resolver->Reject(isolate->GetCurrentContext(), result));
+      return resolver->GetPromise();
+    }
+  }
+
+  auto promise_resolver = std::make_unique<v8::Global<v8::Promise::Resolver>>();
+  promise_resolver->Reset(isolate, resolver);
+  auto context_old = std::make_unique<v8::Global<v8::Context>>(
+      isolate, isolate->GetCurrentContext());
+  brave_ads_->SendSearchAdConfirmation(
+      uuid, creative_instance_id, confirmation_type,
+      base::BindOnce(&BraveAdsJSHandler::OnBooleanResponse,
+                     base::Unretained(this), std::move(promise_resolver),
+                     isolate, std::move(context_old)));
+
+  return resolver->GetPromise();
+}
+
+void BraveAdsJSHandler::OnBooleanResponse(
     std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
     v8::Isolate* isolate,
     std::unique_ptr<v8::Global<v8::Context>> context_old,

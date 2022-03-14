@@ -26,6 +26,8 @@ namespace brave_ads {
 
 namespace {
 
+constexpr char kViewConfirmation[] = "viewed";
+
 constexpr char kAdsEnableRelativeUrl[] = "request_ads_enabled_panel.html";
 
 }  // namespace
@@ -64,6 +66,33 @@ void BraveAdsHost::RequestAdsEnabled(RequestAdsEnabledCallback callback) {
   if (!ShowRewardsPopup(rewards_service)) {
     RunCallbacksAndReset(false);
   }
+}
+
+void BraveAdsHost::SendSearchAdConfirmation(
+    const std::string& uuid,
+    const std::string& creative_instance_id,
+    const std::string& confirmation_type,
+    SendSearchAdConfirmationCallback callback) {
+  DCHECK(callback);
+  DCHECK(!uuid.empty());
+  DCHECK(!creative_instance_id.empty());
+
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile_);
+  if (!ads_service || !ads_service->IsSupportedLocale() ||
+      !ads_service->IsEnabled()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  ads::mojom::SearchResultAdEventType event_type =
+      ads::mojom::SearchResultAdEventType::kClicked;
+  if (confirmation_type == kViewConfirmation) {
+    event_type = ads::mojom::SearchResultAdEventType::kViewed;
+  }
+
+  ads_service->OnSearchResultAdEvent(uuid, creative_instance_id, event_type);
+
+  std::move(callback).Run(true);
 }
 
 void BraveAdsHost::OnRequestAdsEnabledPopupClosed(bool ads_enabled) {

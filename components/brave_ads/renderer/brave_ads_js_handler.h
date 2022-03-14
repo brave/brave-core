@@ -28,23 +28,36 @@ class BraveAdsJSHandler final {
   BraveAdsJSHandler& operator=(const BraveAdsJSHandler&) = delete;
   ~BraveAdsJSHandler();
 
-  void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context);
+  void AddBraveRequestAdsEnabledFunction(v8::Local<v8::Context> context);
+
+  void AddBraveSendSearchAdConfirmationFunction(v8::Local<v8::Context> context);
 
  private:
+  // Adds a javascript object to the frame.
+  template <typename Sig>
+  void AddJavaScriptObjectToFrame(v8::Local<v8::Context> context,
+                                  const std::string& name,
+                                  const base::RepeatingCallback<Sig>& callback);
+
   // Adds a function to the provided object.
   template <typename Sig>
   void BindFunctionToObject(v8::Isolate* isolate,
                             v8::Local<v8::Object> javascript_object,
                             const std::string& name,
                             const base::RepeatingCallback<Sig>& callback);
-  void BindFunctionsToObject(v8::Isolate* isolate,
-                             v8::Local<v8::Context> context);
+
   bool EnsureConnected();
   void OnRemoteDisconnect();
 
-  // A function to be called from JS
+  // A functions to be called from JS
   v8::Local<v8::Promise> RequestAdsEnabled(v8::Isolate* isolate);
-  void OnRequestAdsEnabled(
+  v8::Local<v8::Promise> SendSearchAdConfirmation(
+      v8::Isolate* isolate,
+      std::string uuid,
+      std::string creative_instance_id,
+      std::string confirmation_type);
+
+  void OnBooleanResponse(
       std::unique_ptr<v8::Global<v8::Promise::Resolver>> promise_resolver,
       v8::Isolate* isolate,
       std::unique_ptr<v8::Global<v8::Context>> context_old,

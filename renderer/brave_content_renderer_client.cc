@@ -78,7 +78,10 @@ void BraveContentRendererClient::RenderFrameCreated(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
 
-  if (brave_ads::features::IsRequestAdsEnabledApiEnabled()) {
+  if (base::FeatureList::IsEnabled(
+          brave_ads::features::kRequestAdsEnabledApi) ||
+      base::FeatureList::IsEnabled(
+          brave_ads::features::kSearchAdConfirmationApi)) {
     new brave_ads::BraveAdsRenderFrameObserver(
         render_frame, content::ISOLATED_WORLD_ID_GLOBAL);
   }
