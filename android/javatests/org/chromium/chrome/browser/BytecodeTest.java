@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -498,16 +499,16 @@ public class BytecodeTest {
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
                 "org/chromium/chrome/browser/toolbar/top/BraveTopToolbarCoordinator",
-                ToolbarControlContainer.class, ToolbarLayout.class, ToolbarDataProvider.class,
-                ToolbarTabController.class, UserEducationHelper.class, List.class,
-                OneshotSupplier.class, ThemeColorProvider.class, ThemeColorProvider.class,
-                MenuButtonCoordinator.class, MenuButtonCoordinator.class, ObservableSupplier.class,
+                ToolbarControlContainer.class, ViewStub.class, ToolbarLayout.class,
+                ToolbarDataProvider.class, ToolbarTabController.class, UserEducationHelper.class,
+                List.class, OneshotSupplier.class, ThemeColorProvider.class,
+                ThemeColorProvider.class, MenuButtonCoordinator.class, MenuButtonCoordinator.class,
                 ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
-                ObservableSupplier.class, ObservableSupplier.class, Callback.class, Supplier.class,
-                Supplier.class, ObservableSupplier.class, BooleanSupplier.class, boolean.class,
-                boolean.class, boolean.class, boolean.class, HistoryDelegate.class,
-                BooleanSupplier.class, OfflineDownloader.class, boolean.class,
-                ObservableSupplier.class, Callback.class));
+                ObservableSupplier.class, ObservableSupplier.class, ObservableSupplier.class,
+                Callback.class, Supplier.class, Supplier.class, ObservableSupplier.class,
+                BooleanSupplier.class, boolean.class, boolean.class, boolean.class, boolean.class,
+                HistoryDelegate.class, BooleanSupplier.class, OfflineDownloader.class,
+                boolean.class, ObservableSupplier.class, Callback.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator",
                 "org/chromium/chrome/browser/toolbar/menu_button/BraveMenuButtonCoordinator",
