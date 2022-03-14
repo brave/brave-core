@@ -9,9 +9,9 @@ import { connect } from 'react-redux'
 import {
   ModalActivity,
   ModalBackupRestore,
-  ModalPending,
   ModalQRCode
 } from '../../ui/components'
+import { PendingContributionsModal } from './pending_contributions_modal'
 import { WalletCard, ExternalWalletAction } from '../../shared/components/wallet_card'
 import { ExternalWallet, ExternalWalletProvider, ExternalWalletStatus } from '../../shared/lib/external_wallet'
 import { Provider } from '../../ui/components/profile'
@@ -790,7 +790,7 @@ class PageWallet extends React.Component<Props, State> {
           summaryData={summaryData}
           autoContributeEnabled={enabledContribute}
           onExternalWalletAction={this.onExternalWalletAction}
-          onViewPendingTips={undefined}
+          onViewPendingTips={this.onModalPendingToggle}
         />
         { this.props.showManageWalletButton && <ManageWalletButton onClick={this.onModalBackupOpen} /> }
         {
@@ -815,10 +815,9 @@ class PageWallet extends React.Component<Props, State> {
         }
         {
           this.state.modalPendingContribution
-            ? <ModalPending
+            ? <PendingContributionsModal
               onClose={this.onModalPendingToggle}
               rows={this.getPendingRows()}
-              onRemoveAll={this.removeAllPendingContribution}
             />
             : null
         }
