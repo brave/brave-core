@@ -621,6 +621,7 @@ if (!is_android) {
       "//brave/browser/brave_ads/notification_helper/notification_helper_mock.cc",
       "//brave/browser/brave_ads/notification_helper/notification_helper_mock.h",
       "//brave/browser/brave_ads/request_ads_enabled_api_browsertest.cc",
+      "//brave/browser/brave_ads/send_search_ad_confirmation_api_browsertest.cc",
       "//brave/browser/brave_content_browser_client_browsertest.cc",
       "//brave/browser/brave_prefs_browsertest.cc",
       "//brave/browser/brave_resources_browsertest.cc",

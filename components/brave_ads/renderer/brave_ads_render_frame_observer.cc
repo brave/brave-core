@@ -10,6 +10,8 @@
 
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/feature_list.h"
+#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_ads/renderer/brave_ads_js_handler.h"
 #include "content/public/renderer/render_frame.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -19,17 +21,32 @@ namespace brave_ads {
 
 namespace {
 
-constexpr auto kVettedHosts = base::MakeFixedFlatSet<base::StringPiece>(
-    {"talk.brave.com", "beta.talk.brave.com", "talk.bravesoftware.com",
-     "beta.talk.bravesoftware.com", "talk.brave.software",
-     "beta.talk.brave.software", "dev.talk.brave.software"});
+constexpr auto kVettedBraveTalkHosts =
+    base::MakeFixedFlatSet<base::StringPiece>(
+        {"talk.brave.com", "beta.talk.brave.com", "talk.bravesoftware.com",
+         "beta.talk.bravesoftware.com", "talk.brave.software",
+         "beta.talk.brave.software", "dev.talk.brave.software"});
 
-bool IsAllowedHost(const GURL& url) {
+constexpr auto kVettedBraveSearchHosts =
+    base::MakeFixedFlatSet<base::StringPiece>(
+        {"search.brave.com", "search-dev.brave.com",
+         "search-dev-local.brave.com", "search.brave.software",
+         "search.bravesoftware.com"});
+
+bool IsAllowedBraveTalkHost(const GURL& url) {
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
     return false;
   }
   const std::string host = url.host();
-  return base::Contains(kVettedHosts, host);
+  return base::Contains(kVettedBraveTalkHosts, host);
+}
+
+bool IsAllowedBraveSearchHost(const GURL& url) {
+  if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme)) {
+    return false;
+  }
+  const std::string host = url.host();
+  return base::Contains(kVettedBraveSearchHosts, host);
 }
 
 }  // namespace
@@ -52,10 +69,20 @@ void BraveAdsRenderFrameObserver::DidCreateScriptContext(
   const GURL url =
       url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin()).GetURL();
 
-  if (!IsAllowedHost(url))
+  if (IsAllowedBraveTalkHost(url) &&
+      base::FeatureList::IsEnabled(
+          brave_ads::features::kRequestAdsEnabledApi)) {
+    native_javascript_handle_->AddBraveRequestAdsEnabledFunction(context);
     return;
+  }
 
-  native_javascript_handle_->AddJavaScriptObjectToFrame(context);
+  if (IsAllowedBraveSearchHost(url) &&
+      base::FeatureList::IsEnabled(
+          brave_ads::features::kSearchAdConfirmationApi)) {
+    native_javascript_handle_->AddBraveSendSearchAdConfirmationFunction(
+        context);
+    return;
+  }
 }
 
 void BraveAdsRenderFrameObserver::OnDestruct() {

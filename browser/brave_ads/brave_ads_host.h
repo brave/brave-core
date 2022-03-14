@@ -31,6 +31,10 @@ class BraveAdsHost : public brave_ads::mojom::BraveAdsHost,
 
   // brave_ads::mojom::BraveAdsHost
   void RequestAdsEnabled(RequestAdsEnabledCallback callback) override;
+  void SendSearchAdConfirmation(
+      const std::string& confirmation_type,
+      const std::string& ad_attributes_json,
+      SendSearchAdConfirmationCallback callback) override;
 
   // brave_rewards::RewardsServiceObserver
   void OnRequestAdsEnabledPopupClosed(bool ads_enabled) override;

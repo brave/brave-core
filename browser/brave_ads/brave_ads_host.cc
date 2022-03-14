@@ -26,6 +26,10 @@ namespace brave_ads {
 
 namespace {
 
+constexpr char kViewedConfirmation[] = "viewed";
+
+constexpr char kClickedConfirmation[] = "clicked";
+
 constexpr char kAdsEnableRelativeUrl[] = "request_ads_enabled_panel.html";
 
 }  // namespace
@@ -64,6 +68,28 @@ void BraveAdsHost::RequestAdsEnabled(RequestAdsEnabledCallback callback) {
   if (!ShowRewardsPopup(rewards_service)) {
     RunCallbacksAndReset(false);
   }
+}
+
+void BraveAdsHost::SendSearchAdConfirmation(
+    const std::string& confirmation_type,
+    const std::string& ad_attributes_json,
+    SendSearchAdConfirmationCallback callback) {
+  DCHECK(callback);
+  DCHECK(!ad_attributes_json.empty());
+  DCHECK(confirmation_type == kClickedConfirmation ||
+         confirmation_type == kViewedConfirmation);
+
+  AdsService* ads_service = AdsServiceFactory::GetForProfile(profile_);
+  if (!ads_service || !ads_service->IsSupportedLocale() ||
+      !ads_service->IsEnabled()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/20852):
+  // Send confirmation type and ad attributes to Ads Service.
+
+  std::move(callback).Run(true);
 }
 
 void BraveAdsHost::OnRequestAdsEnabledPopupClosed(bool ads_enabled) {

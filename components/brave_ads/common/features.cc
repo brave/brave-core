@@ -23,6 +23,9 @@ const base::Feature kAllowedToFallbackToCustomAdNotifications{
 const base::Feature kRequestAdsEnabledApi{"RequestAdsEnabledApi",
                                           base::FEATURE_DISABLED_BY_DEFAULT};
 
+const base::Feature kSearchAdConfirmationApi{"SearchAdConfirmationApi",
+                                             base::FEATURE_ENABLED_BY_DEFAULT};
+
 namespace {
 
 // Set to true to support multiple displays or false to only support the primary
@@ -202,10 +205,6 @@ int AdNotificationInsetY() {
 bool IsAllowedToFallbackToCustomAdNotificationsEnabled() {
   return base::FeatureList::IsEnabled(
       kAllowedToFallbackToCustomAdNotifications);
-}
-
-bool IsRequestAdsEnabledApiEnabled() {
-  return base::FeatureList::IsEnabled(kRequestAdsEnabledApi);
 }
 
 }  // namespace features

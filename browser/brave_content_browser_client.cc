@@ -466,7 +466,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
         base::BindRepeating(&BindBraveSearchDefaultHost));
   }
 
-  if (brave_ads::features::IsRequestAdsEnabledApiEnabled()) {
+  if (base::FeatureList::IsEnabled(
+          brave_ads::features::kRequestAdsEnabledApi) ||
+      base::FeatureList::IsEnabled(
+          brave_ads::features::kSearchAdConfirmationApi)) {
     map->Add<brave_ads::mojom::BraveAdsHost>(
         base::BindRepeating(&BindBraveAdsHost));
   }

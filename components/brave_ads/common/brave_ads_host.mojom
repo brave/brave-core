@@ -2,4 +2,7 @@ module brave_ads.mojom;
 
 interface BraveAdsHost {
   RequestAdsEnabled() => (bool result);
+  SendSearchAdConfirmation(
+      string confirmation_type,
+      string ad_attributes_json) => (bool result);
 };
