@@ -6,6 +6,7 @@
 #include "brave/build/ios/mojom/public/base/base_values.h"
 
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/values.h"
 #include "brave/build/ios/mojom/public/base/base_values+private.h"
@@ -277,6 +278,31 @@
     return [self initWithValue:response->Clone()];
   }
   return nil;
+}
+
+- (nullable NSString*)jsonString {
+  std::string input_json;
+  if (!base::JSONWriter::Write(self.cppObjPtr, &input_json) ||
+      input_json.empty()) {
+    return nil;
+  }
+  return base::SysUTF8ToNSString(input_json);
+}
+
+- (nullable id)jsonObject {
+  NSData* jsonData = [self.jsonString dataUsingEncoding:NSUTF8StringEncoding];
+  if (!jsonData) {
+    return nil;
+  }
+  NSError* jsonError = nil;
+  id object =
+      [NSJSONSerialization JSONObjectWithData:jsonData
+                                      options:NSJSONReadingFragmentsAllowed
+                                        error:&jsonError];
+  if (jsonError || !object) {
+    return nil;
+  }
+  return object;
 }
 
 @end
