@@ -43,6 +43,11 @@ export const DetailText = styled.span`
   color: ${(p) => p.theme.color.text02};
 `
 
+export const DetailWrappedText = styled(DetailText)`
+  word-break: break-all;
+  white-space: pre-line;
+`
+
 export const FromCircle = styled.div<Partial<StyleProps>>`
   width: 40px;
   height: 40px;

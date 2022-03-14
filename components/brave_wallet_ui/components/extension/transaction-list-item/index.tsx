@@ -13,6 +13,7 @@ import { toProperCase } from '../../../utils/string-utils'
 import { getTransactionStatusString } from '../../../utils/tx-utils'
 import { formatDateAsRelative } from '../../../utils/datetime-utils'
 import { mojoTimeDeltaToJSDate } from '../../../../common/mojomUtils'
+import Amount from '../../../utils/amount'
 
 // Hooks
 import { useTransactionParser } from '../../../common/hooks'
@@ -97,8 +98,14 @@ const TransactionsListItem = (props: Props) => {
       : ''
     return (
       <DetailTextDark>
-        {`${transactionDetails.senderLabel} ${getLocale('braveWalletTransactionSent')} ${transactionDetails.fiatValue
-        .formatAsFiat(defaultCurrencies.fiat)} (${transactionDetails.formattedNativeCurrencyTotal}${erc721ID})`}
+        {`${
+            toProperCase(getLocale('braveWalletTransactionSent'))} ${
+            transactionDetails.fiatValue.formatAsFiat(defaultCurrencies.fiat) || '...'
+          } (${
+            transactionDetails.formattedNativeCurrencyTotal || '...'
+          }${
+            erc721ID
+          })`}
       </DetailTextDark>
     )
   }, [transaction])
@@ -107,10 +114,11 @@ const TransactionsListItem = (props: Props) => {
     // default or when: [ETHSend, ERC20Transfer, ERC721TransferFrom, ERC721SafeTransferFrom].includes(transaction.txType)
     let from = `${reduceAddress(transactionDetails.sender)} `
     let to = reduceAddress(transactionDetails.recipient)
+    const wrapFromText = transaction.txType === ERC20Approve || transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy
 
     if (transaction.txType === ERC20Approve) {
       // Approval
-      from = `${transactionDetails.value} ${transactionDetails.symbol}`
+      from = new Amount(transactionDetails.value).formatAsAsset(undefined, transactionDetails.symbol)
       to = transactionDetails.approvalTargetLabel || ''
     } else if (transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy) {
       // Brave Swap
@@ -119,7 +127,7 @@ const TransactionsListItem = (props: Props) => {
       to = transactionDetails.recipientLabel
     }
 
-    return <TransactionIntentDescription from={from} to={to} />
+    return <TransactionIntentDescription from={from} to={to} wrapFrom={wrapFromText} />
   }, [transactionDetails])
 
   return (
