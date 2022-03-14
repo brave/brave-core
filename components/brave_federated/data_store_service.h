@@ -18,6 +18,14 @@
 #include "base/threading/sequence_bound.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 
+namespace {
+constexpr char kAdNotificationTaskName[] =
+    "ad_notification_timing_federated_task";
+constexpr int kAdNotificationTaskId = 0;
+constexpr int kMaxNumberOfRecords = 50;
+constexpr int kMaxRetentionDays = 30;
+}  // namespace
+
 namespace brave_federated {
 
 class AdNotificationTimingDataStore;

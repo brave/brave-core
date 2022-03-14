@@ -13,14 +13,6 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/brave_federated/data_stores/ad_notification_timing_data_store.h"
 
-namespace {
-constexpr char kAdNotificationTaskName[] =
-    "ad_notification_timing_federated_task";
-constexpr int kAdNotificationTaskId = 0;
-constexpr int kMaxNumberOfRecords = 50;
-constexpr int kMaxRetentionDays = 30;
-}  // namespace
-
 namespace brave_federated {
 
 DataStoreService::DataStoreService(const base::FilePath& database_path)
