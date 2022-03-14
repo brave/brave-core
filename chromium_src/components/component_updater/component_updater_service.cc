@@ -17,6 +17,7 @@ crx_file::VerifierFormat GetVerifierFormat() {
   return crx_file::VerifierFormat::CRX3;
 }
 }  // namespace
+
 #define crx_format_requirement                  \
   crx_format_requirement = GetVerifierFormat(); \
   crx_file::VerifierFormat _temp_var;           \
