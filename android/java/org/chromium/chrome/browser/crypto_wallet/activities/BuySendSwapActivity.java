@@ -1244,6 +1244,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         continue;
                     }
                     isEIP1559 = network.data.getEthData().isEip1559;
+                }
             }
 
             assert mTxService != null;

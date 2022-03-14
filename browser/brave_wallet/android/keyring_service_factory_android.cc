@@ -7,15 +7,14 @@
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
 #include "brave/build/android/jni_headers/KeyringServiceFactory_jni.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_android.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace chrome {
 namespace android {
 static jint JNI_KeyringServiceFactory_GetInterfaceToKeyringService(
-    JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& profile_android) {
-  auto* profile = ProfileAndroid::FromProfileAndroid(profile_android);
+    JNIEnv* env) {
+  auto* profile = ProfileManager::GetActiveUserProfile();
   auto pending =
       brave_wallet::KeyringServiceFactory::GetInstance()->GetForContext(
           profile);
