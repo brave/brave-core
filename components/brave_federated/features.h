@@ -8,9 +8,7 @@
 
 #include "base/feature_list.h"
 
-namespace brave_federated {
-
-namespace features {
+namespace brave_federated::features {
 
 BASE_DECLARE_FEATURE(kFederatedLearning);
 
@@ -24,8 +22,6 @@ int GetCollectionTimerIntervalInSeconds();
 int GetMockTaskDurationInSeconds();
 bool MockCollectionRequests();
 
-}  // namespace features
-
-}  // namespace brave_federated
+}  // namespace brave_federated::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_FEDERATED_FEATURES_H_
