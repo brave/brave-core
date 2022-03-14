@@ -52,6 +52,8 @@ NS_SWIFT_NAME(MojoBase.Value)
 
 @interface MojoBaseValue (JSON)
 - (nullable instancetype)initWithJSONString:(NSString*)json;
+@property(nonatomic, readonly, nullable) NSString* jsonString;
+@property(nonatomic, readonly, nullable) id jsonObject;
 @end
 
 NS_ASSUME_NONNULL_END
