@@ -693,6 +693,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         super.onConfigurationChanged(newConfig);
         dismissShieldsTooltip();
         reopenShieldsPanel();
+        // TODO: show wallet panel
     }
 
     private void showBraveRewardsOnboardingModal() {
