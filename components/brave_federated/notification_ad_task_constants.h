@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_NOTIFICATION_AD_TASK_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_NOTIFICATION_AD_TASK_CONSTANTS_H_
 
+#include "base/time/time.h"
+
 namespace brave_federated {
 
 constexpr char kNotificationAdTaskName[] = "notification_ad_timing_task";

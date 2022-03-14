@@ -14,6 +14,7 @@
 #include "brave/components/brave_federated/data_stores/data_store.h"
 #include "brave/components/brave_federated/eligibility_service.h"
 #include "brave/components/brave_federated/features.h"
+#include "brave/components/brave_federated/learning_service.h"
 #include "brave/components/brave_federated/operational_patterns.h"
 #include "brave/components/p3a/pref_names.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -63,9 +64,10 @@ void BraveFederatedService::Init() {
   data_store_service_->Init();
 
   eligibility_service_ = std::make_unique<EligibilityService>();
-
-  operational_patterns_ =
-      std::make_unique<OperationalPatterns>(prefs_, url_loader_factory_);
+      
+  learning_service_.reset(new LearningService(eligibility_service_.get()));
+  operational_patterns_.reset(
+      new OperationalPatterns(prefs_, url_loader_factory_));
 
   MaybeStartOperationalPatterns();
 }

@@ -39,14 +39,14 @@ void EligibilityService::NotifyObservers(bool is_eligible) {
   }
 }
 
-bool EligibilityService::IsEligibile() const {
+bool EligibilityService::IsEligible() const {
   return !is_on_battery_power_ && IsConnectedToWifiOrEthernet();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void EligibilityService::MaybeChangeEligibility() {
-  if (is_eligible_ == IsEligibile()) {
+  if (is_eligible_ == IsEligible()) {
     return;
   }
 
