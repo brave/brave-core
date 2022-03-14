@@ -41,6 +41,7 @@ export interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined
   accounts: WalletAccountType[]
   selectedNetwork: BraveWallet.NetworkInfo
+  networkList: BraveWallet.NetworkInfo[]
   fullAssetFiatBalance: Amount
   formattedFullAssetBalance: string
   selectedAssetTransactions: BraveWallet.TransactionInfo[]
@@ -66,6 +67,7 @@ const AccountsAndTransactionsList = (props: Props) => {
     selectedAssetTransactions,
     userVisibleTokensInfo,
     hideBalances,
+    networkList,
     onSelectAccount,
     onClickAddAccount,
     onSelectAsset,
@@ -74,7 +76,7 @@ const AccountsAndTransactionsList = (props: Props) => {
     onSpeedupTransaction
   } = props
 
-  const getBalance = useBalance(selectedNetwork)
+  const getBalance = useBalance(networkList)
 
   const findAccount = (address: string): WalletAccountType | undefined => {
     return accounts.find((account) => address === account.address)
@@ -82,7 +84,7 @@ const AccountsAndTransactionsList = (props: Props) => {
 
   const accountsList = React.useMemo(() => {
     if (selectedAsset?.isErc721) {
-      return accounts.filter((account) => Number(account.balance) !== 0)
+      return accounts.filter((account) => Number(account.nativeBalanceRegistry[selectedNetwork.chainId] ?? 0) !== 0)
     }
     return accounts
   }, [selectedAsset, accounts])

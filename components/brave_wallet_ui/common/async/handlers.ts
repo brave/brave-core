@@ -31,7 +31,8 @@ import {
   WalletAccountType,
   WalletState,
   WalletInfo,
-  TransactionProviderError
+  TransactionProviderError,
+  SupportedCoinTypes
 } from '../../constants/types'
 
 // Utils
@@ -120,10 +121,6 @@ handler.on(WalletActions.initialize.getType(), async (store) => {
   await refreshWalletInfo(store)
 })
 
-handler.on(WalletActions.chainChangedEvent.getType(), async (store: Store, payload: ChainChangedEventPayloadType) => {
-  await refreshWalletInfo(store)
-})
-
 handler.on(WalletActions.keyringCreated.getType(), async (store) => {
   await refreshWalletInfo(store)
 })
@@ -154,9 +151,12 @@ handler.on(WalletActions.accountsChanged.getType(), async (store) => {
   await updateAccountInfo(store)
 })
 
-handler.on(WalletActions.selectedAccountChanged.getType(), async (store) => {
-  await refreshWalletInfo(store)
-})
+// Will use this observer selectedAccountChanged action again once
+// selectedCoin is implemented here https://github.com/brave/brave-browser/issues/21465
+
+// handler.on(WalletActions.selectedAccountChanged.getType(), async (store) => {
+//   await refreshWalletInfo(store)
+// })
 
 handler.on(WalletActions.defaultWalletChanged.getType(), async (store) => {
   await refreshWalletInfo(store)
@@ -193,17 +193,31 @@ handler.on(WalletActions.removeFavoriteApp.getType(), async (store: Store, appIt
   await refreshWalletInfo(store)
 })
 
+handler.on(WalletActions.chainChangedEvent.getType(), async (store: Store, payload: ChainChangedEventPayloadType) => {
+  const keyringService = getAPIProxy().keyringService
+  const state = getWalletState(store)
+  const { accounts } = state
+  const selectedAccountAddress = await keyringService.getSelectedAccount(payload.coin)
+  const selectedAccount = accounts.find((account) => account.address === selectedAccountAddress.address) ?? accounts[0]
+  store.dispatch(WalletActions.setSelectedAccount(selectedAccount))
+  store.dispatch(WalletActions.setSelectedCoin(payload.coin))
+})
+
 handler.on(WalletActions.selectNetwork.getType(), async (store: Store, payload: BraveWallet.NetworkInfo) => {
   const jsonRpcService = getAPIProxy().jsonRpcService
-  await jsonRpcService.setNetwork(payload.chainId, BraveWallet.CoinType.ETH)
-  await refreshWalletInfo(store)
+  await jsonRpcService.setNetwork(payload.chainId, payload.coin)
+  store.dispatch(WalletActions.setNetwork(payload))
 })
 
 handler.on(WalletActions.selectAccount.getType(), async (store: Store, payload: WalletAccountType) => {
   const { keyringService } = getAPIProxy()
-
+  const state = getWalletState(store)
+  const { defaultNetworks } = state
+  const defaultCoinTypesNetwork = defaultNetworks.find((network) => network.coin === payload.coin) ?? defaultNetworks[0]
   await keyringService.setSelectedAccount(payload.address, payload.coin)
+  store.dispatch(WalletActions.setNetwork(defaultCoinTypesNetwork))
   store.dispatch(WalletActions.setSelectedAccount(payload))
+  store.dispatch(WalletActions.setSelectedCoin(payload.coin))
   await store.dispatch(refreshTransactionHistory(payload.address))
 })
 
@@ -244,15 +258,31 @@ handler.on(WalletActions.initialized.getType(), async (store: Store, payload: Wa
 
 handler.on(WalletActions.getAllNetworks.getType(), async (store) => {
   const jsonRpcService = getAPIProxy().jsonRpcService
-  const fullList = await jsonRpcService.getAllNetworks(BraveWallet.CoinType.ETH)
-  store.dispatch(WalletActions.setAllNetworks(fullList))
+
+  const getFullNetworkList = await Promise.all(SupportedCoinTypes.map(async (coin: BraveWallet.CoinType) => {
+    const networkList = await jsonRpcService.getAllNetworks(coin)
+    return networkList.networks
+  }))
+  const networkList = getFullNetworkList.flat(1)
+  store.dispatch(WalletActions.setAllNetworks(networkList))
 })
 
 handler.on(WalletActions.getAllTokensList.getType(), async (store) => {
-  const { blockchainRegistry, jsonRpcService } = getAPIProxy()
-  const { chainId } = await jsonRpcService.getChainId(BraveWallet.CoinType.ETH)
-  const fullList = await blockchainRegistry.getAllTokens(chainId)
-  store.dispatch(WalletActions.setAllTokensList(fullList))
+  const state = getWalletState(store)
+  const { networkList } = state
+  const { blockchainRegistry } = getAPIProxy()
+  const getAllTokensList = await Promise.all(networkList.map(async (network) => {
+    const list = await blockchainRegistry.getAllTokens(network.chainId)
+    return list.tokens.map((token) => {
+      return {
+        ...token,
+        chainId: network.chainId,
+        logo: `chrome://erc-token-images/${token.logo}`
+      }
+    })
+  }))
+  const allTokensList = getAllTokensList.flat(1)
+  store.dispatch(WalletActions.setAllTokensList(allTokensList))
 })
 
 handler.on(WalletActions.addUserAsset.getType(), async (store: Store, payload: AddUserAssetPayloadType) => {

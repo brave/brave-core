@@ -24,6 +24,8 @@ import {
 import { withPlaceholderIcon, CreateNetworkIcon, LoadingSkeleton } from '../../shared'
 import { WithHideBalancePlaceholder } from '../'
 
+import { getTokensNetwork } from '../../../utils/network-utils'
+
 // Hooks
 import { usePricing } from '../../../common/hooks'
 import { unbiasedRandom } from '../../../utils/random-utils'
@@ -35,7 +37,7 @@ interface Props {
   token: BraveWallet.BlockchainToken
   defaultCurrencies: DefaultCurrencies
   hideBalances?: boolean
-  selectedNetwork?: BraveWallet.NetworkInfo
+  networks: BraveWallet.NetworkInfo[]
   isPanel?: boolean
 }
 
@@ -47,8 +49,8 @@ const PortfolioAssetItem = (props: Props) => {
     token,
     defaultCurrencies,
     hideBalances,
-    selectedNetwork,
-    isPanel
+    isPanel,
+    networks
   } = props
   const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
   const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] = React.useState(0)
@@ -78,14 +80,18 @@ const PortfolioAssetItem = (props: Props) => {
     return formattedAssetBalance === ''
   }, [formattedAssetBalance])
 
+  const tokensNetwork = React.useMemo(() => {
+    return getTokensNetwork(networks, token)
+  }, [token, networks])
+
   const NetworkDescription = React.useMemo(() => {
-    if (selectedNetwork && token.contractAddress !== '' && !isPanel) {
+    if (tokensNetwork && !isPanel) {
       return getLocale('braveWalletPortfolioAssetNetworkDescription')
         .replace('$1', token.symbol)
-        .replace('$2', selectedNetwork?.chainName ?? '')
+        .replace('$2', tokensNetwork.chainName ?? '')
     }
     return token.symbol
-  }, [selectedNetwork, token])
+  }, [tokensNetwork, token])
 
   React.useEffect(() => {
     // Randow value between 100 & 250
@@ -109,37 +115,37 @@ const PortfolioAssetItem = (props: Props) => {
             <IconsWrapper>
               {isLoading
                 ? <LoadingSkeleton
-                    circle={true}
-                    width={40}
-                    height={40}
-                  />
+                  circle={true}
+                  width={40}
+                  height={40}
+                />
                 : <>
-                    <AssetIconWithPlaceholder asset={token} network={selectedNetwork}/>
-                    {selectedNetwork && token.contractAddress !== '' && !isPanel &&
-                      <NetworkIconWrapper>
-                        <CreateNetworkIcon network={selectedNetwork} marginRight={0} />
-                      </NetworkIconWrapper>
-                    }
-                  </>
+                  <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
+                  {tokensNetwork && token.contractAddress !== '' && !isPanel &&
+                    <NetworkIconWrapper>
+                      <CreateNetworkIcon network={tokensNetwork} marginRight={0} />
+                    </NetworkIconWrapper>
+                  }
+                </>
               }
             </IconsWrapper>
             <NameColumn>
               {isLoading
                 ? <>
-                    <LoadingSkeleton width={assetNameSkeletonWidth} height={18} />
-                    <Spacer />
-                    <LoadingSkeleton width={assetNetworkSkeletonWidth} height={18} />
-                  </>
+                  <LoadingSkeleton width={assetNameSkeletonWidth} height={18} />
+                  <Spacer />
+                  <LoadingSkeleton width={assetNetworkSkeletonWidth} height={18} />
+                </>
                 : <>
-                    <AssetName>
-                      {token.name} {
+                  <AssetName>
+                    {token.name} {
                       token.isErc721 && token.tokenId
                         ? '#' + new Amount(token.tokenId).toNumber()
                         : ''
-                      }
-                    </AssetName>
-                    <AssetName>{NetworkDescription}</AssetName>
-                  </>
+                    }
+                  </AssetName>
+                  <AssetName>{NetworkDescription}</AssetName>
+                </>
               }
             </NameColumn>
           </NameAndIcon>
@@ -150,14 +156,14 @@ const PortfolioAssetItem = (props: Props) => {
             >
               {isLoading
                 ? <>
-                    <LoadingSkeleton width={100} height={20} />
-                  </>
+                  <LoadingSkeleton width={100} height={20} />
+                </>
                 : <>
-                    {!token.isErc721 &&
-                      <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>
-                    }
-                    <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
-                  </>
+                  {!token.isErc721 &&
+                    <FiatBalanceText>{formattedFiatBalance}</FiatBalanceText>
+                  }
+                  <AssetBalanceText>{formattedAssetBalance}</AssetBalanceText>
+                </>
               }
             </WithHideBalancePlaceholder>
           </BalanceColumn>

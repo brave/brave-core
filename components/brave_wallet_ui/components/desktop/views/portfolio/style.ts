@@ -81,7 +81,14 @@ export const AssetRow = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  margin-bottom: 9px;
+  margin-bottom: 20px;
+`
+
+export const AssetColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 `
 
 export const PriceRow = styled.div`
@@ -98,6 +105,14 @@ export const AssetNameText = styled.span`
   font-weight: 600;
   letter-spacing: 0.02em;
   color: ${(p) => p.theme.color.text01};
+`
+
+export const NetworkDescription = styled.span`
+  font-family: Poppins;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+  color: ${(p) => p.theme.color.text02};
 `
 
 export const DetailText = styled.span`

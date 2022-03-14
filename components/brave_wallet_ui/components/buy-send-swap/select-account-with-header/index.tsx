@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { UserAccountType } from '../../../constants/types'
+import { UserAccountType, WalletAccountType } from '../../../constants/types'
 import { SearchBar, SelectAccount } from '../../shared'
 import Header from '../../buy-send-swap/select-header'
 import { getLocale } from '../../../../common/locale'
@@ -10,7 +10,7 @@ import {
 } from '../shared-styles'
 
 export interface Props {
-  accounts: UserAccountType[]
+  accounts: WalletAccountType[]
   selectedAccount: UserAccountType
   onSelectAccount: (account: UserAccountType) => () => void
   onAddAccount?: () => void
@@ -19,8 +19,15 @@ export interface Props {
 }
 
 function SelectAccountWithHeader (props: Props) {
-  const { accounts, selectedAccount, onSelectAccount, onBack, onAddAccount, hasAddButton } = props
-  const [filteredAccountList, setFilteredAccountList] = React.useState<UserAccountType[]>(accounts)
+  const {
+    accounts,
+    selectedAccount,
+    onSelectAccount,
+    onBack,
+    onAddAccount,
+    hasAddButton
+  } = props
+  const [filteredAccountList, setFilteredAccountList] = React.useState<WalletAccountType[]>(accounts)
 
   const filterAccountList = (event: any) => {
     const search = event.target.value

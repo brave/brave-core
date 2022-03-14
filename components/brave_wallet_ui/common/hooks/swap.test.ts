@@ -21,7 +21,7 @@ async function mockGetERC20Allowance (contractAddress: string, ownerAddress: str
 }
 
 const mockIsSwapSupportedFactory = (expected: boolean) =>
-  async (network: BraveWallet.EthereumChain) =>
+  async (network: BraveWallet.NetworkInfo) =>
     expected
 
 const mockQuote = {
@@ -49,6 +49,7 @@ describe('useSwap hook', () => {
     const { result, waitForNextUpdate } = renderHook(() => useSwap(
       mockAccount,
       mockNetwork,
+      [mockNetwork],
       AccountAssetOptions,
       WalletPageActions.fetchPageSwapQuote,
       mockGetERC20Allowance,
@@ -66,6 +67,7 @@ describe('useSwap hook', () => {
     const { result, waitFor } = renderHook(() => useSwap(
       mockAccount,
       mockNetwork,
+      [mockNetwork],
       AccountAssetOptions,
       WalletPageActions.fetchPageSwapQuote,
       mockGetERC20Allowance,
@@ -85,6 +87,7 @@ describe('useSwap hook', () => {
       const { waitForNextUpdate } = renderHook(() => useSwap(
         mockAccount,
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions,
         WalletPageActions.fetchPageSwapQuote,
         mockFn,
@@ -107,6 +110,7 @@ describe('useSwap hook', () => {
       const { waitForNextUpdate } = renderHook(() => useSwap(
         mockAccount,
         mockNetwork,
+        [mockNetwork],
         swapAssets,
         WalletPageActions.fetchPageSwapQuote,
         mockFn,
@@ -133,6 +137,7 @@ describe('useSwap hook', () => {
       const { waitForNextUpdate } = renderHook(() => useSwap(
         mockAccount,
         mockNetwork,
+        [mockNetwork],
         swapAssets,
         WalletPageActions.fetchPageSwapQuote,
         mockFn,
@@ -157,6 +162,7 @@ describe('useSwap hook', () => {
       const { result, waitForValueToChange, waitFor } = renderHook(() => useSwap(
         mockAccount,
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions,
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
@@ -185,9 +191,12 @@ describe('useSwap hook', () => {
       const { result, waitForValueToChange, waitFor } = renderHook(() => useSwap(
         {
           ...mockAccount,
-          balance: '1000000000000000000' // 1 ETH
+          nativeBalanceRegistry: {
+            '0x1': '1000000000000000000'
+          }
         },
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
@@ -233,6 +242,7 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
         mockAccount,
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions, // To asset is BAT
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
@@ -279,6 +289,7 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
         mockAccount, // Balance: 123456 Wei
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
@@ -330,6 +341,7 @@ describe('useSwap hook', () => {
           }
         },
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions.slice(1), // From asset is BAT
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
@@ -377,6 +389,7 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
         mockAccount, // Balance: 123456 Wei
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
@@ -409,9 +422,12 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
         {
           ...mockAccount,
-          balance: '1234560' // 1234560 Wei
+          nativeBalanceRegistry: {
+            '0x1': '1234560'
+          }
         },
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
@@ -458,12 +474,15 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
         {
           ...mockAccount,
-          balance: '1000000000000000000', // 1 ETH
+          nativeBalanceRegistry: {
+            '0x1': '1000000000000000000'
+          },
           tokenBalanceRegistry: {
             [AccountAssetOptions[1].contractAddress.toLowerCase()]: '20000000000000000000' // 20 BAT
           }
         },
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions.slice(1), // From asset is BAT
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
@@ -504,9 +523,12 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
         {
           ...mockAccount,
-          balance: '1000000000000000000' // 1 ETH
+          nativeBalanceRegistry: {
+            '0x1': '1000000000000000000'
+          }
         },
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,
@@ -558,9 +580,12 @@ describe('useSwap hook', () => {
       const { result, waitFor, waitForValueToChange } = renderHook(() => useSwap(
         {
           ...mockAccount,
-          balance: '1000000000000000000' // 1 ETH
+          nativeBalanceRegistry: {
+            '0x1': '1000000000000000000'
+          }
         },
         mockNetwork,
+        [mockNetwork],
         AccountAssetOptions, // From asset is ETH
         WalletPageActions.fetchPageSwapQuote,
         mockGetERC20Allowance,

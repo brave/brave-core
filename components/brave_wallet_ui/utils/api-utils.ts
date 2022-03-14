@@ -1,23 +1,25 @@
 import { BraveWallet, WalletAccountType, GetFlattenedAccountBalancesReturnInfo } from '../constants/types'
 
-export const GetTokenParam = (selectedNetwork: BraveWallet.NetworkInfo, token: BraveWallet.BlockchainToken): string => {
+export const getTokenParam = (token: BraveWallet.BlockchainToken): string => {
   if (token.coingeckoId) {
     return token.coingeckoId
   }
 
-  const isEthereumNetwork = selectedNetwork.chainId === BraveWallet.MAINNET_CHAIN_ID
+  const isEthereumNetwork = token.chainId === BraveWallet.MAINNET_CHAIN_ID
 
   if (!isEthereumNetwork) {
     return token.symbol.toLowerCase()
   }
 
-  return token.symbol.toLowerCase() === selectedNetwork.symbol.toLowerCase()
-    ? token.symbol.toLowerCase()
-    : token.contractAddress
+  if (token.contractAddress === '') {
+    return token.symbol.toLowerCase()
+  }
+
+  return token.contractAddress
 }
 
 // This will get the sum balance for each token between all accounts
-export const GetFlattenedAccountBalances = (accounts: WalletAccountType[], userVisibleTokensInfo: BraveWallet.BlockchainToken[]): GetFlattenedAccountBalancesReturnInfo[] => {
+export const getFlattenedAccountBalances = (accounts: WalletAccountType[], userVisibleTokensInfo: BraveWallet.BlockchainToken[]): GetFlattenedAccountBalancesReturnInfo[] => {
   if (accounts.length === 0) {
     return []
   }
@@ -29,7 +31,7 @@ export const GetFlattenedAccountBalances = (accounts: WalletAccountType[], userV
         .map(account => {
           const balance = token.contractAddress
             ? account.tokenBalanceRegistry[token.contractAddress.toLowerCase()]
-            : account.balance
+            : account.nativeBalanceRegistry[token.chainId]
 
           return balance || '0'
         })

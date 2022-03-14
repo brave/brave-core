@@ -29,9 +29,7 @@ import {
 import {
   BraveWallet,
   WalletAccountType,
-  GetAllNetworksList,
-  GetAllTokensReturnInfo,
-  GetNativeAssetBalancesReturnInfo,
+  GetNativeAssetBalancesPayload,
   GetBlockchainTokenBalanceReturnInfo,
   PortfolioTokenHistoryAndInfo,
   SendTransactionParams,
@@ -61,7 +59,7 @@ export const selectAccount = createAction<WalletAccountType>('selectAccount')
 export const selectNetwork = createAction<BraveWallet.NetworkInfo>('selectNetwork')
 export const setNetwork = createAction<BraveWallet.NetworkInfo>('setNetwork')
 export const getAllNetworks = createAction('getAllNetworks')
-export const setAllNetworks = createAction<GetAllNetworksList>('getAllNetworks')
+export const setAllNetworks = createAction<BraveWallet.NetworkInfo[]>('getAllNetworks')
 export const chainChangedEvent = createAction<ChainChangedEventPayloadType>('chainChangedEvent')
 export const isEip1559Changed = createAction<IsEip1559Changed>('isEip1559Changed')
 export const keyringCreated = createAction('keyringCreated')
@@ -72,9 +70,9 @@ export const unlocked = createAction('unlocked')
 export const backedUp = createAction('backedUp')
 export const accountsChanged = createAction('accountsChanged')
 export const selectedAccountChanged = createAction('selectedAccountChanged')
-export const setAllTokensList = createAction<GetAllTokensReturnInfo>('setAllTokensList')
+export const setAllTokensList = createAction<BraveWallet.BlockchainToken[]>('setAllTokensList')
 export const getAllTokensList = createAction('getAllTokensList')
-export const nativeAssetBalancesUpdated = createAction<GetNativeAssetBalancesReturnInfo>('nativeAssetBalancesUpdated')
+export const nativeAssetBalancesUpdated = createAction<GetNativeAssetBalancesPayload>('nativeAssetBalancesUpdated')
 export const tokenBalancesUpdated = createAction<GetBlockchainTokenBalanceReturnInfo>('tokenBalancesUpdated')
 export const pricesUpdated = createAction<GetPriceReturnInfo>('tokenBalancesUpdated')
 export const portfolioPriceHistoryUpdated = createAction<PortfolioTokenHistoryAndInfo[][]>('portfolioPriceHistoryUpdated')
@@ -117,3 +115,5 @@ export const defaultCurrenciesUpdated = createAction<DefaultCurrencies>('default
 export const expandWalletNetworks = createAction('expandWalletNetworks')
 export const refreshBalancesAndPriceHistory = createAction('refreshBalancesAndPriceHistory')
 export const setTransactionProviderError = createAction<SetTransactionProviderErrorType>('setTransactionProviderError')
+export const setSelectedCoin = createAction<BraveWallet.CoinType>('setSelectedCoin')
+export const setDefaultNetworks = createAction<BraveWallet.NetworkInfo[]>('setDefaultNetworks')

@@ -10,12 +10,25 @@ export interface Props {
 
 function SelectNetwork (props: Props) {
   const { networks, onSelectNetwork, selectedNetwork } = props
+
+  // MULTICHAIN: Remove me once we support SOL and FIL transaction creation.
+  // Will be implemented in these 2 issues
+  // https://github.com/brave/brave-browser/issues/20698
+  // https://github.com/brave/brave-browser/issues/20893
+  const networkList = React.useMemo(() => {
+    return networks.filter(
+      (network) =>
+        network.coin !== BraveWallet.CoinType.SOL &&
+        network.coin !== BraveWallet.CoinType.FIL
+    )
+  }, [networks])
+
   return (
     <>
-      {networks.map((network) =>
+      {networkList.map((network) =>
         <SelectNetworkItem
           selectedNetwork={selectedNetwork}
-          key={network.chainId}
+          key={`${network.chainId}-${network.coin}`}
           network={network}
           onSelectNetwork={onSelectNetwork(network)}
         />

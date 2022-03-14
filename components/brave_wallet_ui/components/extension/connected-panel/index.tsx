@@ -110,14 +110,14 @@ const ConnectedPanel = (props: Props) => {
     return !BuySupportedChains.includes(selectedNetwork.chainId)
   }, [BuySupportedChains, selectedNetwork])
 
-  const formattedAssetBalance = new Amount(selectedAccount.balance)
+  const formattedAssetBalance = new Amount(selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId] ?? '')
     .divideByDecimals(selectedNetwork.decimals)
     .formatAsAsset(6, selectedNetwork.symbol)
 
   const { computeFiatAmount } = usePricing(spotPrices)
 
   const selectedAccountFiatBalance = React.useMemo(() => computeFiatAmount(
-    selectedAccount.balance, selectedNetwork.symbol, selectedNetwork.decimals
+    selectedAccount.nativeBalanceRegistry[selectedNetwork.chainId], selectedNetwork.symbol, selectedNetwork.decimals
   ), [computeFiatAmount, selectedNetwork, selectedAccount])
 
   const onClickViewOnBlockExplorer = useExplorer(selectedNetwork)

@@ -62,7 +62,7 @@ import {
 import { AppsList } from '../options/apps-list-options'
 import LockPanel from '../components/extension/lock-panel'
 import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
-import { GetNetworkInfo } from '../utils/network-utils'
+import { getNetworkInfo } from '../utils/network-utils'
 import {
   findENSAddress,
   findUnstoppableDomainAddress,
@@ -146,8 +146,8 @@ function Container (props: Props) {
     buyAssetOptions,
     panelUserAssetList
   } = useAssets(
-    accounts,
     selectedAccount,
+    networkList,
     selectedNetwork,
     props.wallet.fullTokenList,
     userVisibleTokensInfo,
@@ -188,6 +188,7 @@ function Container (props: Props) {
   } = useSwap(
     selectedAccount,
     selectedNetwork,
+    networkList,
     swapAssetOptions,
     props.walletPanelActions.fetchPanelSwapQuote,
     getERC20Allowance,
@@ -232,14 +233,14 @@ function Container (props: Props) {
     }
   }, [hasIncorrectPassword])
 
-  const getSelectedAccountBalance = useBalance(selectedNetwork)
+  const getSelectedAccountBalance = useBalance(networkList)
   const sendAssetBalance = getSelectedAccountBalance(selectedAccount, selectedSendAsset)
   const fromAssetBalance = getSelectedAccountBalance(selectedAccount, fromAsset)
   const toAssetBalance = getSelectedAccountBalance(selectedAccount, toAsset)
 
   const onSelectPresetAmountFactory = usePreset(
     selectedAccount,
-    selectedNetwork,
+    networkList,
     onSetFromAmount,
     onSetSendAmount,
     fromAsset,
@@ -652,7 +653,7 @@ function Container (props: Props) {
             transactionQueueNumber={pendingTransactions.findIndex(tx => tx.id === selectedPendingTransaction.id) + 1}
             transactionsQueueLength={pendingTransactions.length}
             accounts={accounts}
-            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
+            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
             transactionInfo={selectedPendingTransaction}
             transactionSpotPrices={transactionSpotPrices}
             visibleTokens={userVisibleTokensInfo}
@@ -712,7 +713,7 @@ function Container (props: Props) {
             onApproveChangeNetwork={onApproveChangeNetwork}
             onCancel={onCancelChangeNetwork}
             onLearnMore={onNetworkLearnMore}
-            networkPayload={GetNetworkInfo(switchChainRequest.chainId, networkList)}
+            networkPayload={getNetworkInfo(switchChainRequest.chainId, networkList)}
             panelType='change'
           />
         </LongWrapper>
@@ -729,7 +730,7 @@ function Container (props: Props) {
             accounts={accounts}
             onCancel={onCancelSigning}
             onSign={onSignData}
-            selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
+            selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
             // Pass a boolean here if the signing method is risky
             showWarning={false}
           />
@@ -924,7 +925,7 @@ function Container (props: Props) {
                 onSubmit={onSubmitBuy}
                 selectedAsset={selectedWyreAsset}
                 buyAmount={buyAmount}
-                selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
+                selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
                 networkList={networkList}
               />
             </SendWrapper>
@@ -1039,10 +1040,10 @@ function Container (props: Props) {
             <ScrollContainer>
               <AssetsPanel
                 defaultCurrencies={defaultCurrencies}
-                selectedNetwork={selectedNetwork}
                 selectedAccount={selectedAccount}
                 userAssetList={panelUserAssetList}
                 spotPrices={transactionSpotPrices}
+                networkList={networkList}
                 onAddAsset={onAddAsset}
               />
             </ScrollContainer>
@@ -1083,7 +1084,7 @@ function Container (props: Props) {
         defaultCurrencies={defaultCurrencies}
         spotPrices={transactionSpotPrices}
         selectedAccount={selectedAccount}
-        selectedNetwork={GetNetworkInfo(selectedNetwork.chainId, networkList)}
+        selectedNetwork={getNetworkInfo(selectedNetwork.chainId, networkList)}
         isConnected={isConnectedToSite}
         navAction={navigateTo}
         onLockWallet={onLockWallet}

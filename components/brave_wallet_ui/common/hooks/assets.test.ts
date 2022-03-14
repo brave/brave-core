@@ -37,7 +37,7 @@ const getBuyAssets = async () => {
 
 describe('useAssets hook', () => {
   it('Selected account has balances, should return expectedResult', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccounts[0], mockNetwork, mockVisibleList, mockVisibleList, mockAssetPrices, getBuyAssets))
+    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts[0], [mockNetwork], mockNetwork, mockVisibleList, mockVisibleList, mockAssetPrices, getBuyAssets))
     await act(async () => {
       await waitForNextUpdate()
     })
@@ -45,7 +45,7 @@ describe('useAssets hook', () => {
   })
 
   it('should return empty array for panelUserAssetList if visible assets is empty', async () => {
-    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccounts, mockAccount, mockNetwork, mockVisibleList, [], mockAssetPrices, getBuyAssets))
+    const { result, waitForNextUpdate } = renderHook(() => useAssets(mockAccount, [mockNetwork], mockNetwork, mockVisibleList, [], mockAssetPrices, getBuyAssets))
     await act(async () => {
       await waitForNextUpdate()
     })

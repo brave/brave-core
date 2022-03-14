@@ -8,13 +8,15 @@ import {
   WalletAccountType,
   UserAssetInfoType,
   DefaultCurrencies,
-  AddAccountNavTypes
+  AddAccountNavTypes,
+  SupportedTestNetworks
 } from '../../../../constants/types'
 import { getLocale } from '../../../../../common/locale'
 import { CurrencySymbols } from '../../../../utils/currency-symbols'
 
 // Utils
 import { sortTransactionByDate } from '../../../../utils/tx-utils'
+import { getTokensNetwork, getTokensCoinType } from '../../../../utils/network-utils'
 import Amount from '../../../../utils/amount'
 
 // Options
@@ -25,7 +27,6 @@ import { BackButton, LoadingSkeleton, withPlaceholderIcon } from '../../../share
 import {
   ChartControlBar,
   LineChart,
-  SelectNetworkDropdown,
   EditVisibleAssetsModal,
   WithHideBalancePlaceholder
 } from '../../'
@@ -45,6 +46,7 @@ import {
   BalanceText,
   AssetIcon,
   AssetRow,
+  AssetColumn,
   PriceRow,
   AssetNameText,
   DetailText,
@@ -54,7 +56,8 @@ import {
   PercentText,
   ArrowIcon,
   BalanceRow,
-  ShowBalanceButton
+  ShowBalanceButton,
+  NetworkDescription
 } from './style'
 
 export interface Props {
@@ -63,7 +66,6 @@ export interface Props {
   onSelectAsset: (asset: BraveWallet.BlockchainToken | undefined) => void
   onSelectAccount: (account: WalletAccountType) => void
   onClickAddAccount: (tabId: AddAccountNavTypes) => () => void
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onAddCustomAsset: (token: BraveWallet.BlockchainToken) => void
   onShowVisibleAssetsModal: (showModal: boolean) => void
   onUpdateVisibleAssets: (updatedTokensList: BraveWallet.BlockchainToken[]) => void
@@ -102,7 +104,6 @@ const Portfolio = (props: Props) => {
     onSelectAsset,
     onSelectAccount,
     onClickAddAccount,
-    onSelectNetwork,
     onAddCustomAsset,
     onShowVisibleAssetsModal,
     onUpdateVisibleAssets,
@@ -134,17 +135,19 @@ const Portfolio = (props: Props) => {
     foundTokenInfoByContractAddress
   } = props
 
-  const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(userAssetList)
+  // This will be removed once Network Filtering is integrated here
+  // https://github.com/brave/brave-browser/issues/20780
+  const mainnetAssets = React.useMemo(() => {
+    return userAssetList.filter((asset) => !SupportedTestNetworks.includes(asset.asset.chainId))
+  }, [userAssetList])
+
+  const [filteredAssetList, setfilteredAssetList] = React.useState<UserAssetInfoType[]>(mainnetAssets)
   const [fullPortfolioFiatBalance, setFullPortfolioFiatBalance] = React.useState<string>(portfolioBalance)
   const [hoverBalance, setHoverBalance] = React.useState<string>()
   const [hoverPrice, setHoverPrice] = React.useState<string>()
   const [showNetworkDropdown, setShowNetworkDropdown] = React.useState<boolean>(false)
   const [hideBalances, setHideBalances] = React.useState<boolean>(false)
   const parseTransaction = useTransactionParser(selectedNetwork, accounts, transactionSpotPrices, userVisibleTokensInfo)
-
-  const toggleShowNetworkDropdown = () => {
-    setShowNetworkDropdown(!showNetworkDropdown)
-  }
 
   const onSetFilteredAssetList = (filteredList: UserAssetInfoType[]) => {
     setfilteredAssetList(filteredList)
@@ -157,8 +160,8 @@ const Portfolio = (props: Props) => {
   }, [portfolioBalance])
 
   React.useEffect(() => {
-    setfilteredAssetList(userAssetList)
-  }, [userAssetList])
+    setfilteredAssetList(mainnetAssets)
+  }, [mainnetAssets])
 
   const portfolioHistory = React.useMemo(() => {
     return portfolioPriceHistory
@@ -171,7 +174,7 @@ const Portfolio = (props: Props) => {
 
   const goBack = () => {
     onSelectAsset(undefined)
-    setfilteredAssetList(userAssetList)
+    setfilteredAssetList(mainnetAssets)
     toggleNav()
   }
 
@@ -189,11 +192,6 @@ const Portfolio = (props: Props) => {
         setHoverPrice(undefined)
       }
     }
-  }
-
-  const onClickSelectNetwork = (network: BraveWallet.NetworkInfo) => () => {
-    onSelectNetwork(network)
-    toggleShowNetworkDropdown()
   }
 
   const onHideNetworkDropdown = () => {
@@ -224,7 +222,18 @@ const Portfolio = (props: Props) => {
   }, [selectedAsset, transactions])
 
   const fullAssetBalances = React.useMemo(() => {
-    return filteredAssetList.find((asset) => asset.asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase())
+    if (selectedAsset?.contractAddress === '') {
+      return filteredAssetList.find(
+        (asset) =>
+          asset.asset.symbol.toLowerCase() === selectedAsset?.symbol.toLowerCase() &&
+          asset.asset.chainId === selectedAsset?.chainId
+      )
+    }
+    return filteredAssetList.find(
+      (asset) =>
+        asset.asset.contractAddress.toLowerCase() === selectedAsset?.contractAddress.toLowerCase() &&
+        asset.asset.chainId === selectedAsset?.chainId
+    )
   }, [filteredAssetList, selectedAsset])
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
@@ -250,6 +259,21 @@ const Portfolio = (props: Props) => {
     setHideBalances(!hideBalances)
   }
 
+  const filteredAccountsByCoinType = React.useMemo(() => {
+    if (!selectedAsset) {
+      return []
+    }
+    const coinType = getTokensCoinType(networkList, selectedAsset)
+    return accounts.filter((account) => account.coin === coinType)
+  }, [networkList, accounts, selectedAsset])
+
+  const selectedAssetsNetwork = React.useMemo(() => {
+    if (!selectedAsset) {
+      return
+    }
+    return getTokensNetwork(networkList, selectedAsset)
+  }, [selectedAsset, networkList])
+
   return (
     <StyledWrapper onClick={onHideNetworkDropdown}>
       <TopRow>
@@ -259,15 +283,6 @@ const Portfolio = (props: Props) => {
           ) : (
             <BackButton onSubmit={goBack} />
           )}
-          {!selectedAsset?.isErc721 &&
-            <SelectNetworkDropdown
-              onClick={toggleShowNetworkDropdown}
-              networkList={networkList}
-              showNetworkDropDown={showNetworkDropdown}
-              selectedNetwork={selectedNetwork}
-              onSelectNetwork={onClickSelectNetwork}
-            />
-          }
         </BalanceRow>
         <BalanceRow>
           {!selectedAsset?.isErc721 &&
@@ -300,10 +315,13 @@ const Portfolio = (props: Props) => {
           {!selectedAsset.isErc721 &&
             <InfoColumn>
               <AssetRow>
-                <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork} />
-                <AssetNameText>{selectedAsset.name}</AssetNameText>
+                <AssetIconWithPlaceholder asset={selectedAsset} network={selectedAssetsNetwork} />
+                <AssetColumn>
+                  <AssetNameText>{selectedAsset.name}</AssetNameText>
+                  <NetworkDescription>{selectedAsset.symbol} on {selectedAssetsNetwork?.chainName ?? ''}</NetworkDescription>
+                </AssetColumn>
               </AssetRow>
-              <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText>
+              {/* <DetailText>{selectedAsset.name} {getLocale('braveWalletPrice')} ({selectedAsset.symbol})</DetailText> */}
               <PriceRow>
                 <PriceText>{CurrencySymbols[defaultCurrencies.fiat]}{hoverPrice || (selectedAssetFiatPrice ? new Amount(selectedAssetFiatPrice.price).formatAsFiat() : 0.00)}</PriceText>
                 <PercentBubble isDown={selectedAssetFiatPrice ? Number(selectedAssetFiatPrice.assetTimeframeChange) < 0 : false}>
@@ -345,13 +363,13 @@ const Portfolio = (props: Props) => {
       } */}
 
       <AccountsAndTransactionsList
-        accounts={accounts}
+        accounts={filteredAccountsByCoinType}
         defaultCurrencies={defaultCurrencies}
         formattedFullAssetBalance={formattedFullAssetBalance}
         fullAssetFiatBalance={fullAssetFiatBalance}
         selectedAsset={selectedAsset}
         selectedAssetTransactions={selectedAssetTransactions}
-        selectedNetwork={selectedNetwork}
+        selectedNetwork={selectedAssetsNetwork ?? selectedNetwork}
         transactionSpotPrices={transactionSpotPrices}
         userVisibleTokensInfo={userVisibleTokensInfo}
         onClickAddAccount={onClickAddAccount}
@@ -361,14 +379,15 @@ const Portfolio = (props: Props) => {
         onRetryTransaction={onRetryTransaction}
         onSpeedupTransaction={onSpeedupTransaction}
         hideBalances={hideBalances}
+        networkList={networkList}
       />
       {!selectedAsset &&
         <TokenLists
           defaultCurrencies={defaultCurrencies}
-          userAssetList={userAssetList}
+          userAssetList={mainnetAssets}
           filteredAssetList={filteredAssetList}
           tokenPrices={transactionSpotPrices}
-          selectedNetwork={selectedNetwork}
+          networks={networkList}
           onSetFilteredAssetList={onSetFilteredAssetList}
           onSelectAsset={selectAsset}
           onShowAssetModal={toggleShowVisibleAssetModal}
@@ -383,6 +402,7 @@ const Portfolio = (props: Props) => {
           onClose={toggleShowVisibleAssetModal}
           onAddCustomAsset={onAddCustomAsset}
           selectedNetwork={selectedNetwork}
+          networkList={networkList}
           onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
           foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
           onUpdateVisibleAssets={onUpdateVisibleAssets}

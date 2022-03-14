@@ -21,7 +21,8 @@ const mockCustomToken = {
   decimals: 18,
   visible: true,
   tokenId: '',
-  coingeckoId: ''
+  coingeckoId: '',
+  chainId: '0x1'
 }
 
 describe('useAssetManagement hook', () => {
@@ -41,7 +42,6 @@ describe('useAssetManagement hook', () => {
       WalletActions.setUserAssetVisible,
       WalletActions.removeUserAsset,
       WalletActions.refreshBalancesAndPriceHistory,
-      mockNetwork,
       AccountAssetOptions,
       mockUserVisibleTokensInfo
     ))
@@ -56,7 +56,6 @@ describe('useAssetManagement hook', () => {
       WalletActions.setUserAssetVisible,
       WalletActions.removeUserAsset,
       WalletActions.refreshBalancesAndPriceHistory,
-      mockNetwork,
       AccountAssetOptions,
       mockUserVisibleTokensInfo
     ))
@@ -71,7 +70,6 @@ describe('useAssetManagement hook', () => {
       WalletActions.setUserAssetVisible,
       WalletActions.removeUserAsset,
       WalletActions.refreshBalancesAndPriceHistory,
-      mockNetwork,
       AccountAssetOptions,
       mockUserVisibleTokensInfo
     ))
@@ -87,7 +85,6 @@ describe('useAssetManagement hook', () => {
       WalletActions.setUserAssetVisible,
       WalletActions.removeUserAsset,
       WalletActions.refreshBalancesAndPriceHistory,
-      mockNetwork,
       AccountAssetOptions,
       [...mockUserVisibleTokensInfo, mockCustomToken]
     ))
@@ -102,7 +99,6 @@ describe('useAssetManagement hook', () => {
       WalletActions.setUserAssetVisible,
       WalletActions.removeUserAsset,
       WalletActions.refreshBalancesAndPriceHistory,
-      mockNetwork,
       AccountAssetOptions,
       [...mockUserVisibleTokensInfo, { ...mockCustomToken, visible: false }]
     ))

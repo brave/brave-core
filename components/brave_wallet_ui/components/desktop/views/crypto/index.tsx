@@ -40,7 +40,6 @@ export interface Props {
   onUpdateAccountName: (payload: UpdateAccountNamePayloadType) => { success: boolean }
   onShowAddModal: () => void
   onHideAddModal: () => void
-  onSelectNetwork: (network: BraveWallet.NetworkInfo) => void
   onRemoveAccount: (address: string, hardware: boolean, coin: BraveWallet.CoinType) => void
   onViewPrivateKey: (address: string, isDefault: boolean, coin: BraveWallet.CoinType) => void
   onDoneViewingPrivateKey: () => void
@@ -101,7 +100,6 @@ const CryptoView = (props: Props) => {
     onImportAccount,
     onImportFilecoinAccount,
     onUpdateAccountName,
-    onSelectNetwork,
     onRemoveAccount,
     onViewPrivateKey,
     onDoneViewingPrivateKey,
@@ -167,7 +165,9 @@ const CryptoView = (props: Props) => {
         if (id === 'add-asset') {
           onShowVisibleAssetsModal(true)
         } else {
-          const asset = userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === id?.toLowerCase())
+          const asset = id?.toLowerCase().startsWith('0x')
+            ? userVisibleTokensInfo.find((token) => token.contractAddress === id)
+            : userVisibleTokensInfo.find((token) => token.symbol.toLowerCase() === id?.toLowerCase())
           onSelectAsset(asset)
           setHideNav(true)
         }
@@ -218,7 +218,11 @@ const CryptoView = (props: Props) => {
 
   const selectAsset = (asset: BraveWallet.BlockchainToken | undefined) => {
     if (asset) {
-      history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
+      if (asset.contractAddress === '') {
+        history.push(`${WalletRoutes.Portfolio}/${asset.symbol}`)
+        return
+      }
+      history.push(`${WalletRoutes.Portfolio}/${asset.contractAddress}`)
     } else {
       onSelectAsset(asset)
       history.push(WalletRoutes.Portfolio)
@@ -306,7 +310,6 @@ const CryptoView = (props: Props) => {
           onSelectAsset={selectAsset}
           onSelectAccount={onSelectAccount}
           onClickAddAccount={onClickAddAccount}
-          onSelectNetwork={onSelectNetwork}
           onAddCustomAsset={onAddCustomAsset}
           selectedAsset={selectedAsset}
           portfolioBalance={portfolioBalance}
@@ -354,6 +357,7 @@ const CryptoView = (props: Props) => {
           onRetryTransaction={onRetryTransaction}
           onSpeedupTransaction={onSpeedupTransaction}
           onCancelTransaction={onCancelTransaction}
+          networkList={networkList}
         />
       </Route>
 

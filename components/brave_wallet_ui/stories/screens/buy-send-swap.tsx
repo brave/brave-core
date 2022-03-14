@@ -10,7 +10,8 @@ import {
   BuySupportedChains,
   SwapValidationErrorType,
   DefaultCurrencies,
-  AmountValidationErrorType
+  AmountValidationErrorType,
+  WalletAccountType
 } from '../../constants/types'
 import Swap from '../../components/buy-send-swap/tabs/swap-tab'
 import Send from '../../components/buy-send-swap/tabs/send-tab'
@@ -20,7 +21,7 @@ import {
 } from '../../components/buy-send-swap'
 
 export interface Props {
-  accounts: UserAccountType[]
+  accounts: WalletAccountType[]
   networkList: BraveWallet.NetworkInfo[]
   orderType: OrderTypes
   selectedSendAsset: BraveWallet.BlockchainToken | undefined

@@ -2022,7 +2022,7 @@ TEST_F(BraveWalletProviderImplUnitTest, AddSuggestToken) {
 
   mojom::BlockchainTokenPtr token = mojom::BlockchainToken::New(
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "BAT", "", true, false,
-      "BAT", 18, true, "", "");
+      "BAT", 18, true, "", "", "0x1");
   bool approved = false;
   mojom::ProviderError error;
   std::string error_message;

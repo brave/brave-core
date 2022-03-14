@@ -38,6 +38,7 @@ const SWAP_VALIDATION_ERROR_CODE = 100
 export default function useSwap (
   selectedAccount: WalletAccountType,
   selectedNetwork: BraveWallet.NetworkInfo,
+  networkList: BraveWallet.NetworkInfo[],
   swapAssetOptions: BraveWallet.BlockchainToken[],
   fetchSwapQuote: SimpleActionCreator<SwapParamsPayloadType>,
   getERC20Allowance: (contractAddress: string, ownerAddress: string, spenderAddress: string) => Promise<string>,
@@ -99,7 +100,7 @@ export default function useSwap (
       .catch(e => console.log(e))
   }, [fromAsset, quote, selectedAccount])
 
-  const getBalance = useBalance(selectedNetwork)
+  const getBalance = useBalance(networkList)
   const fromAssetBalance = getBalance(selectedAccount, fromAsset)
   const nativeAssetBalance = getBalance(selectedAccount, nativeAsset)
 

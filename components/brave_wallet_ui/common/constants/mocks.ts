@@ -39,7 +39,7 @@ export const getMockedTransactionInfo = (): BraveWallet.TransactionInfo => {
   }
 }
 
-export const mockNetwork: BraveWallet.EthereumChain = {
+export const mockNetwork: BraveWallet.NetworkInfo = {
   chainId: '0x1',
   chainName: 'Ethereum Main Net',
   rpcUrls: ['https://mainnet.infura.io/v3/'],
@@ -48,7 +48,7 @@ export const mockNetwork: BraveWallet.EthereumChain = {
   symbolName: 'Ethereum',
   decimals: 18,
   iconUrls: [],
-  isEip1559: true
+  coin: BraveWallet.CoinType.ETH
 }
 
 export const mockERC20Token: BraveWallet.BlockchainToken = {
@@ -61,14 +61,18 @@ export const mockERC20Token: BraveWallet.BlockchainToken = {
   decimals: 18,
   visible: true,
   tokenId: '',
-  coingeckoId: ''
+  coingeckoId: '',
+  chainId: BraveWallet.MAINNET_CHAIN_ID
 }
 
 export const mockAccount: WalletAccountType = {
   id: 'mockId',
   name: 'mockAccountName',
   address: 'mockAddress',
-  balance: '123456',
+  nativeBalanceRegistry: {
+    '0x1': '123456'
+  },
+  coin: BraveWallet.CoinType.ETH,
   accountType: 'Primary',
   tokenBalanceRegistry: {}
 }

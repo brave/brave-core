@@ -27,7 +27,8 @@ import {
   WalletAccountType,
   WalletPageState,
   WalletRoutes,
-  WalletState
+  WalletState,
+  SupportedTestNetworks
 } from '../constants/types'
 // import { NavOptions } from '../options/side-nav-options'
 import BuySendSwap from '../stories/screens/buy-send-swap'
@@ -38,6 +39,7 @@ import BackupWallet from '../stories/screens/backup-wallet'
 import Amount from '../utils/amount'
 import { GetBuyOrFaucetUrl } from '../utils/buy-asset-url'
 import { mojoTimeDeltaToJSDate } from '../../common/mojomUtils'
+import { getTokensCoinType } from '../utils/network-utils'
 
 import {
   findENSAddress,
@@ -134,8 +136,8 @@ function Container (props: Props) {
     sendAssetOptions,
     buyAssetOptions
   } = useAssets(
-    accounts,
     selectedAccount,
+    networkList,
     selectedNetwork,
     fullTokenList,
     userVisibleTokensInfo,
@@ -176,6 +178,7 @@ function Container (props: Props) {
   } = useSwap(
     selectedAccount,
     selectedNetwork,
+    networkList,
     swapAssetOptions,
     props.walletPageActions.fetchPageSwapQuote,
     getERC20Allowance,
@@ -217,20 +220,19 @@ function Container (props: Props) {
     props.walletActions.setUserAssetVisible,
     props.walletActions.removeUserAsset,
     props.walletActions.refreshBalancesAndPriceHistory,
-    selectedNetwork,
     fullTokenList,
     userVisibleTokensInfo
   )
 
   const { computeFiatAmount } = usePricing(transactionSpotPrices)
-  const getAccountBalance = useBalance(selectedNetwork)
+  const getAccountBalance = useBalance(networkList)
   const sendAssetBalance = getAccountBalance(selectedAccount, selectedSendAsset)
   const fromAssetBalance = getAccountBalance(selectedAccount, fromAsset)
   const toAssetBalance = getAccountBalance(selectedAccount, toAsset)
 
   const onSelectPresetAmountFactory = usePreset(
     selectedAccount,
-    selectedNetwork,
+    networkList,
     onSetFromAmount,
     onSetSendAmount,
     fromAsset,
@@ -327,15 +329,22 @@ function Container (props: Props) {
 
   // This will scrape all the user's accounts and combine the asset balances for a single asset
   const fullAssetBalance = React.useCallback((asset: BraveWallet.BlockchainToken) => {
-    const amounts = accounts.map((account) =>
+    const tokensCoinType = getTokensCoinType(networkList, asset)
+    const amounts = accounts.filter((account) => account.coin === tokensCoinType).map((account) =>
       getAccountBalance(account, asset))
+
+    // If a user has not yet created a FIL or SOL account,
+    // we return 0 until they create an account
+    if (amounts.length === 0) {
+      return '0'
+    }
 
     return amounts.reduce(function (a, b) {
       return a !== '' && b !== ''
         ? new Amount(a).plus(b).format()
         : ''
     })
-  }, [accounts, getAccountBalance])
+  }, [accounts, networkList, getAccountBalance])
 
   // This looks at the users asset list and returns the full balance for each asset
   const userAssetList = React.useMemo(() => {
@@ -351,8 +360,14 @@ function Container (props: Props) {
 
   // This will scrape all of the user's accounts and combine the fiat value for every asset
   const fullPortfolioBalance = React.useMemo(() => {
+    // Will remove testnetwork filter when this is implemented
+    // https://github.com/brave/brave-browser/issues/20780
     const visibleAssetOptions = userAssetList
-      .filter((token) => token.asset.visible && !token.asset.isErc721)
+      .filter((token) =>
+        token.asset.visible &&
+        !token.asset.isErc721 &&
+        !SupportedTestNetworks.includes(token.asset.chainId)
+      )
 
     if (visibleAssetOptions.length === 0) {
       return ''
@@ -506,7 +521,10 @@ function Container (props: Props) {
   React.useEffect(() => {
     // Creates a list of Accepted Portfolio Routes
     const acceptedPortfolioRoutes = userVisibleTokensInfo.map((token) => {
-      return `${WalletRoutes.Portfolio}/${token.symbol}`
+      if (token.contractAddress === '') {
+        return `${WalletRoutes.Portfolio}/${token.symbol}`
+      }
+      return `${WalletRoutes.Portfolio}/${token.contractAddress}`
     })
     // Creates a list of Accepted Account Routes
     const acceptedAccountRoutes = accounts.map((account) => {
@@ -664,7 +682,6 @@ function Container (props: Props) {
                 onHideAddModal={onHideAddModal}
                 onUpdateAccountName={onUpdateAccountName}
                 selectedNetwork={selectedNetwork}
-                onSelectNetwork={onSelectNetwork}
                 isFetchingPortfolioPriceHistory={isFetchingPortfolioPriceHistory}
                 onRemoveAccount={onRemoveAccount}
                 privateKey={privateKey ?? ''}

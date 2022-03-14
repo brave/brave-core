@@ -222,8 +222,10 @@ void BraveWalletService::GetUserAssets(const std::string& chain_id,
   std::vector<mojom::BlockchainTokenPtr> result;
   for (const auto& token : tokens->GetList()) {
     mojom::BlockchainTokenPtr tokenPtr = ValueToBlockchainToken(token);
-    if (tokenPtr)
+    if (tokenPtr) {
+      tokenPtr->chain_id = chain_id;
       result.push_back(std::move(tokenPtr));
+    }
   }
 
   std::move(callback).Run(std::move(result));

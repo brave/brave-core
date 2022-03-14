@@ -1,10 +1,16 @@
 import * as React from 'react'
-import { Checkbox } from 'brave-ui'
+
+// Types
 import { BraveWallet } from '../../../constants/types'
-import { withPlaceholderIcon } from '../../shared'
 
 // Utils
+import { getTokensNetwork } from '../../../utils/network-utils'
+import { getLocale } from '../../../../common/locale'
 import Amount from '../../../utils/amount'
+
+// Components
+import { withPlaceholderIcon } from '../../shared'
+import { Checkbox } from 'brave-ui'
 
 // Styled Components
 import {
@@ -25,7 +31,7 @@ export interface Props {
   isCustom: boolean
   isSelected: boolean
   token: BraveWallet.BlockchainToken
-  selectedNetwork: BraveWallet.NetworkInfo
+  networkList: BraveWallet.NetworkInfo[]
 }
 
 const AssetWatchlistItem = (props: Props) => {
@@ -35,7 +41,7 @@ const AssetWatchlistItem = (props: Props) => {
     isCustom,
     token,
     isSelected,
-    selectedNetwork
+    networkList
   } = props
 
   const onCheck = (key: string, selected: boolean) => {
@@ -54,10 +60,23 @@ const AssetWatchlistItem = (props: Props) => {
     return withPlaceholderIcon(AssetIcon, { size: 'big', marginLeft: 0, marginRight: 8 })
   }, [])
 
+  const tokensNetwork = React.useMemo(() => {
+    if (!token) {
+      return
+    }
+    return getTokensNetwork(networkList, token)
+  }, [token, networkList])
+
+  const networkDescription = React.useMemo(() => {
+    return getLocale('braveWalletPortfolioAssetNetworkDescription')
+      .replace('$1', token.symbol)
+      .replace('$2', tokensNetwork?.chainName ?? '')
+  }, [tokensNetwork, token])
+
   return (
     <StyledWrapper>
       <NameAndIcon onClick={onClickAsset}>
-        <AssetIconWithPlaceholder asset={token} network={selectedNetwork} />
+        <AssetIconWithPlaceholder asset={token} network={tokensNetwork} />
         <NameAndSymbol>
           <AssetName>
             {token.name} {
@@ -66,7 +85,7 @@ const AssetWatchlistItem = (props: Props) => {
                 : ''
             }
           </AssetName>
-          <AssetSymbol>{token.symbol}</AssetSymbol>
+          <AssetSymbol>{networkDescription}</AssetSymbol>
         </NameAndSymbol>
       </NameAndIcon>
       <RightSide>

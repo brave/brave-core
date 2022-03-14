@@ -13,13 +13,13 @@ import Amount from '../../utils/amount'
 
 export default function usePreset (
   selectedAccount: WalletAccountType,
-  selectedNetwork: BraveWallet.NetworkInfo,
+  networkList: BraveWallet.NetworkInfo[],
   onSetFromAmount: (value: string) => void,
   onSetSendAmount: (value: string) => void,
   swapAsset?: BraveWallet.BlockchainToken,
   sendAsset?: BraveWallet.BlockchainToken
 ) {
-  const getBalance = useBalance(selectedNetwork)
+  const getBalance = useBalance(networkList)
 
   return (sendOrSwap: 'send' | 'swap') => (percent: number) => {
     const selectedAsset = sendOrSwap === 'send' ? sendAsset : swapAsset

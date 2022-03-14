@@ -2,7 +2,8 @@ import * as React from 'react'
 import {
   BraveWallet,
   BuySendSwapViewTypes,
-  UserAccountType
+  UserAccountType,
+  WalletAccountType
 } from '../../../constants/types'
 
 import {
@@ -18,7 +19,7 @@ import {
 
 export interface Props {
   selectedView: BuySendSwapViewTypes
-  accounts: UserAccountType[]
+  accounts: WalletAccountType[]
   networkList: BraveWallet.NetworkInfo[]
   assetOptions: BraveWallet.BlockchainToken[]
   selectedNetwork: BraveWallet.NetworkInfo

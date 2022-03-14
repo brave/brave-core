@@ -236,7 +236,9 @@ describe('useTransactionParser hook', () => {
               [mockERC20Token.contractAddress.toLowerCase()]: '0'
             },
             address: '0xdeadbeef',
-            balance: '1000000000000000' // 0.001 ETH
+            nativeBalanceRegistry: {
+              '0x1': '1000000000000000' // 0.001 ETH
+            }
           }],
           mockAssetPrices, [], []
         ))
@@ -284,7 +286,9 @@ describe('useTransactionParser hook', () => {
           [{
             ...mockAccount,
             address: '0xdeadbeef',
-            balance: '1000000000000000000', // 1 ETH
+            nativeBalanceRegistry: {
+              '0x1': '1000000000000000000' // 1 ETH
+            },
             tokenBalanceRegistry: {
               [mockTxData.baseData.to.toLowerCase()]: '0'
             }
@@ -342,7 +346,9 @@ describe('useTransactionParser hook', () => {
           [{
             ...mockAccount,
             address: '0xdeadbeef',
-            balance: '1000000000000000' // 0.001 ETH
+            nativeBalanceRegistry: {
+              '0x1': '1000000000000000' // 0.001 ETH
+            }
           }],
           mockAssetPrices, [], []
         ))
@@ -383,7 +389,9 @@ describe('useTransactionParser hook', () => {
           [{
             ...mockAccount,
             address: '0xdeadbeef',
-            balance: '1003150000000000000' // 1.00315 ETH
+            nativeBalanceRegistry: {
+              '0x1': '1003150000000000000' // 1.00315 ETH
+            }
           }],
           mockAssetPrices, [], []
         ))
@@ -430,7 +438,9 @@ describe('useTransactionParser hook', () => {
               [mockERC20Token.contractAddress.toLowerCase()]: '1000000000000000' // 0.001 DOG
             },
             address: '0xdeadbeef',
-            balance: '3150000000000000' // 0.00315 ETH
+            nativeBalanceRegistry: {
+              '0x1': '3150000000000000' // 0.00315 ETH
+            }
           }],
           mockAssetPrices, [], []
         ))
@@ -480,7 +490,9 @@ describe('useTransactionParser hook', () => {
               [mockERC20Token.contractAddress.toLowerCase()]: '1000000000000000000' // 1 DOG
             },
             address: '0xdeadbeef',
-            balance: '3150000000000000' // 0.00315 ETH
+            nativeBalanceRegistry: {
+              '0x1': '3150000000000000' // 0.00315 ETH
+            }
           }],
           mockAssetPrices,
           [],

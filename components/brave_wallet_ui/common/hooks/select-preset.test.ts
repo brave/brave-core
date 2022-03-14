@@ -22,7 +22,7 @@ describe('usePreset hook', () => {
           [mockERC20Token.contractAddress.toLowerCase()]: balance
         }
       },
-      mockNetwork,
+      [mockNetwork],
       mockFunc,
       jest.fn(),
       mockERC20Token,
@@ -40,7 +40,7 @@ describe('usePreset hook', () => {
 
     const { result: { current: calcPresetAmount } } = renderHook(() => usePreset(
       mockAccount,
-      mockNetwork,
+      [mockNetwork],
       mockOnSetFromAmount,
       mockOnSetSendAmount,
       undefined,

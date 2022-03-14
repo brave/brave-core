@@ -1,15 +1,28 @@
-import { GetNetworkInfo, emptyNetwork, reduceNetworkDisplayName } from './network-utils'
+import {
+  getNetworkInfo,
+  emptyNetwork,
+  reduceNetworkDisplayName,
+  getNetworksByCoinType,
+  getTokensNetwork,
+  getTokensCoinType
+} from './network-utils'
 import { mockNetworks } from '../stories/mock-data/mock-networks'
+import { NewAssetOptions } from '../options/asset-options'
+import { BraveWallet } from '../constants/types'
+
+const ethToken = NewAssetOptions[0]
+const bnbToken = NewAssetOptions[2]
+const ethMainNetwork = mockNetworks[0]
 
 describe('getNetworkInfo', () => {
   it('should return network info', () => {
-    const chainId = mockNetworks[0].chainId
-    expect(GetNetworkInfo(chainId, mockNetworks)).toEqual(mockNetworks[0])
+    const chainId = ethMainNetwork.chainId
+    expect(getNetworkInfo(chainId, mockNetworks)).toEqual(ethMainNetwork)
   })
 
   it('should return network object with default values if network with chainId is not found', () => {
     const chainId = 'fakeChainId'
-    expect(GetNetworkInfo(chainId, mockNetworks)).toEqual(emptyNetwork)
+    expect(getNetworkInfo(chainId, mockNetworks)).toEqual(emptyNetwork)
   })
 })
 
@@ -27,5 +40,35 @@ describe('reduceNetworkDisplayName', () => {
     const networkName = 'TestNetworkName'
     const expected = 'TestNe..'
     expect(reduceNetworkDisplayName(networkName)).toBe(expected)
+  })
+})
+
+describe('getNetworksByCoinType', () => {
+  it('CoinType ETH, should return all ETH networks', () => {
+    expect(getNetworksByCoinType(mockNetworks, BraveWallet.CoinType.ETH)).toEqual(mockNetworks)
+  })
+  it('CoinType random number, should return an empty array', () => {
+    expect(getNetworksByCoinType(mockNetworks, 3000)).toEqual([])
+  })
+})
+
+describe('getTokensNetwork', () => {
+  it('Ethereum with chainId 0x1, should return ETH Mainnet info', () => {
+    expect(getTokensNetwork(mockNetworks, ethToken)).toEqual(ethMainNetwork)
+  })
+  it('Binance Coin with chainId 0x3, should return ETH Ropsten Testnetwork info', () => {
+    expect(getTokensNetwork(mockNetworks, bnbToken)).toEqual(mockNetworks[1])
+  })
+})
+
+describe('getTokensCoinType', () => {
+  it('Ethereum with chainId 0x1, should return CoinType ETH', () => {
+    expect(getTokensCoinType(mockNetworks, ethToken)).toEqual(BraveWallet.CoinType.ETH)
+  })
+  it('Binance Coin with chainId 0x3, should return ETH CoinType ETH', () => {
+    expect(getTokensCoinType(mockNetworks, bnbToken)).toEqual(BraveWallet.CoinType.ETH)
+  })
+  it('Binance Coin with chainId 0x3333333458, should default to CoinType ETH', () => {
+    expect(getTokensCoinType(mockNetworks, { ...bnbToken, chainId: '0x3333333458' })).toEqual(BraveWallet.CoinType.ETH)
   })
 })

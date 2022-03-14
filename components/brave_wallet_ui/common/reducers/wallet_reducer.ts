@@ -8,10 +8,8 @@ import {
   AccountInfo,
   AccountTransactions,
   BraveWallet,
-  GetAllNetworksList,
-  GetAllTokensReturnInfo,
   GetBlockchainTokenBalanceReturnInfo,
-  GetNativeAssetBalancesReturnInfo,
+  GetNativeAssetBalancesPayload,
   GetPriceHistoryReturnInfo,
   PortfolioTokenHistoryAndInfo,
   WalletAccountType,
@@ -41,6 +39,7 @@ const defaultState: WalletState = {
   hasInitialized: false,
   isFilecoinEnabled: false,
   isSolanaEnabled: false,
+  isTestNetworksEnabled: true,
   isWalletCreated: false,
   isWalletLocked: true,
   favoriteApps: [],
@@ -58,9 +57,9 @@ const defaultState: WalletState = {
     decimals: 18,
     coin: BraveWallet.CoinType.ETH,
     data: {
-       ethData: {
+      ethData: {
         isEip1559: true
-       }
+      }
     }
   } as BraveWallet.NetworkInfo,
   accounts: [],
@@ -81,11 +80,13 @@ const defaultState: WalletState = {
   gasEstimates: undefined,
   connectedAccounts: [],
   isMetaMaskInstalled: false,
+  selectedCoin: BraveWallet.CoinType.ETH,
   defaultCurrencies: {
     fiat: '',
     crypto: ''
   },
-  transactionProviderErrorRegistry: {}
+  transactionProviderErrorRegistry: {},
+  defaultNetworks: [] as BraveWallet.NetworkInfo[]
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -103,10 +104,10 @@ reducer.on(WalletActions.initialized, (state: any, payload: WalletInfo) => {
       id: `${idx + 1}`,
       name: info.name,
       address: info.address,
-      balance: '',
       accountType: getAccountType(info),
       deviceId: info.hardware ? info.hardware.deviceId : '',
       tokenBalanceRegistry: {},
+      nativeBalanceRegistry: {},
       coin: info.coin
     } as WalletAccountType
   })
@@ -144,47 +145,40 @@ reducer.on(WalletActions.setSelectedAccount, (state: any, payload: WalletAccount
 reducer.on(WalletActions.setNetwork, (state: any, payload: BraveWallet.NetworkInfo) => {
   return {
     ...state,
-    isFetchingPortfolioPriceHistory: true,
     selectedNetwork: payload
   }
 })
 
 reducer.on(WalletActions.setVisibleTokensInfo, (state: WalletState, payload: BraveWallet.BlockchainToken[]) => {
-  const userVisibleTokensInfo = payload.map((token) => ({
-    ...token,
-    logo: `chrome://erc-token-images/${token.logo}`
-  })) as BraveWallet.BlockchainToken[]
-
   return {
     ...state,
-    userVisibleTokensInfo
+    userVisibleTokensInfo: payload
   }
 })
 
-reducer.on(WalletActions.setAllNetworks, (state: any, payload: GetAllNetworksList) => {
+reducer.on(WalletActions.setAllNetworks, (state: WalletState, payload: BraveWallet.NetworkInfo[]) => {
   return {
     ...state,
-    networkList: payload.networks
+    networkList: payload
   }
 })
 
-reducer.on(WalletActions.setAllTokensList, (state: WalletState, payload: GetAllTokensReturnInfo) => {
+reducer.on(WalletActions.setAllTokensList, (state: WalletState, payload: BraveWallet.BlockchainToken[]) => {
   return {
     ...state,
-    fullTokenList: payload.tokens.map(token => ({
-      ...token,
-      logo: `chrome://erc-token-images/${token.logo}`
-    }))
+    fullTokenList: payload
   }
 })
 
-reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: WalletState, payload: GetNativeAssetBalancesReturnInfo) => {
+reducer.on(WalletActions.nativeAssetBalancesUpdated, (state: WalletState, payload: GetNativeAssetBalancesPayload) => {
   let accounts: WalletAccountType[] = [...state.accounts]
 
-  accounts.forEach((account, index) => {
-    if (payload.balances[index].error === BraveWallet.ProviderError.kSuccess) {
-      accounts[index].balance = Amount.normalize(payload.balances[index].balance)
-    }
+  accounts.forEach((account, accountIndex) => {
+    payload.balances[accountIndex].forEach((info, tokenIndex) => {
+      if (info.error === BraveWallet.ProviderError.kSuccess) {
+        accounts[accountIndex].nativeBalanceRegistry[info.chainId] = Amount.normalize(info.balance)
+      }
+    })
   })
 
   // Refresh selectedAccount object
@@ -459,6 +453,20 @@ reducer.on(WalletActions.setTransactionProviderError, (state: WalletState, paylo
       ...state.transactionProviderErrorRegistry,
       [payload.transaction.id]: payload.providerError
     }
+  }
+})
+
+reducer.on(WalletActions.setSelectedCoin, (state: WalletState, payload: BraveWallet.CoinType) => {
+  return {
+    ...state,
+    selectedCoin: payload
+  }
+})
+
+reducer.on(WalletActions.setDefaultNetworks, (state: WalletState, payload: BraveWallet.NetworkInfo[]) => {
+  return {
+    ...state,
+    defaultNetworks: payload
   }
 })
 
