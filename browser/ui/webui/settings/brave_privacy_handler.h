@@ -34,17 +34,17 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptDisallowed() override {}
 
   void SetLocalStateBooleanEnabled(const std::string& path,
-                                   base::Value::ConstListView args);
+                                   const base::Value::List& args);
   void GetLocalStateBooleanEnabled(const std::string& path,
-                                   base::Value::ConstListView args);
+                                   const base::Value::List& args);
 
-  void SetStatsUsagePingEnabled(base::Value::ConstListView args);
-  void GetStatsUsagePingEnabled(base::Value::ConstListView args);
+  void SetStatsUsagePingEnabled(const base::Value::List& args);
+  void GetStatsUsagePingEnabled(const base::Value::List& args);
   void OnStatsUsagePingEnabledChanged();
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-  void SetP3AEnabled(base::Value::ConstListView args);
-  void GetP3AEnabled(base::Value::ConstListView args);
+  void SetP3AEnabled(const base::Value::List& args);
+  void GetP3AEnabled(const base::Value::List& args);
   void OnP3AEnabledChanged();
 #endif
 

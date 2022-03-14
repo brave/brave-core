@@ -24,18 +24,18 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
-  void SetAdControlType(base::Value::ConstListView args);
-  void IsAdControlEnabled(base::Value::ConstListView args);
-  void SetCosmeticFilteringControlType(base::Value::ConstListView args);
-  void IsFirstPartyCosmeticFilteringEnabled(base::Value::ConstListView args);
-  void SetCookieControlType(base::Value::ConstListView args);
-  void GetCookieControlType(base::Value::ConstListView args);
-  void SetFingerprintingControlType(base::Value::ConstListView args);
-  void GetFingerprintingControlType(base::Value::ConstListView args);
-  void SetHTTPSEverywhereEnabled(base::Value::ConstListView args);
-  void GetHTTPSEverywhereEnabled(base::Value::ConstListView args);
-  void SetNoScriptControlType(base::Value::ConstListView args);
-  void GetNoScriptControlType(base::Value::ConstListView args);
+  void SetAdControlType(const base::Value::List& args);
+  void IsAdControlEnabled(const base::Value::List& args);
+  void SetCosmeticFilteringControlType(const base::Value::List& args);
+  void IsFirstPartyCosmeticFilteringEnabled(const base::Value::List& args);
+  void SetCookieControlType(const base::Value::List& args);
+  void GetCookieControlType(const base::Value::List& args);
+  void SetFingerprintingControlType(const base::Value::List& args);
+  void GetFingerprintingControlType(const base::Value::List& args);
+  void SetHTTPSEverywhereEnabled(const base::Value::List& args);
+  void GetHTTPSEverywhereEnabled(const base::Value::List& args);
+  void SetNoScriptControlType(const base::Value::List& args);
+  void GetNoScriptControlType(const base::Value::List& args);
 
   Profile* profile_ = nullptr;
 };

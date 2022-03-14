@@ -80,7 +80,7 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
 
 void BravePrivacyHandler::SetLocalStateBooleanEnabled(
     const std::string& path,
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
   if (!args[0].is_bool())
     return;
@@ -92,7 +92,7 @@ void BravePrivacyHandler::SetLocalStateBooleanEnabled(
 
 void BravePrivacyHandler::GetLocalStateBooleanEnabled(
     const std::string& path,
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   CHECK_EQ(args.size(), 1U);
 
   PrefService* local_state = g_browser_process->local_state();
@@ -103,12 +103,12 @@ void BravePrivacyHandler::GetLocalStateBooleanEnabled(
 }
 
 void BravePrivacyHandler::SetStatsUsagePingEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   SetLocalStateBooleanEnabled(kStatsReportingEnabled, args);
 }
 
 void BravePrivacyHandler::GetStatsUsagePingEnabled(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   GetLocalStateBooleanEnabled(kStatsReportingEnabled, args);
 }
 
@@ -122,11 +122,11 @@ void BravePrivacyHandler::OnStatsUsagePingEnabledChanged() {
 }
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-void BravePrivacyHandler::SetP3AEnabled(base::Value::ConstListView args) {
+void BravePrivacyHandler::SetP3AEnabled(const base::Value::List& args) {
   SetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
 }
 
-void BravePrivacyHandler::GetP3AEnabled(base::Value::ConstListView args) {
+void BravePrivacyHandler::GetP3AEnabled(const base::Value::List& args) {
   GetLocalStateBooleanEnabled(brave::kP3AEnabled, args);
 }
 

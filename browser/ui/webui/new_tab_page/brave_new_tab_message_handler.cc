@@ -396,15 +396,14 @@ void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
 }
 
 void BraveNewTabMessageHandler::HandleGetPreferences(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPreferencesDictionary(prefs);
   ResolveJavascriptCallback(args[0], data);
 }
 
-void BraveNewTabMessageHandler::HandleGetStats(
-    base::Value::ConstListView args) {
+void BraveNewTabMessageHandler::HandleGetStats(const base::Value::List& args) {
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetStatsDictionary(prefs);
@@ -412,7 +411,7 @@ void BraveNewTabMessageHandler::HandleGetStats(
 }
 
 void BraveNewTabMessageHandler::HandleGetPrivateProperties(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   AllowJavascript();
   PrefService* prefs = profile_->GetPrefs();
   auto data = GetPrivatePropertiesDictionary(prefs);
@@ -420,7 +419,7 @@ void BraveNewTabMessageHandler::HandleGetPrivateProperties(
 }
 
 void BraveNewTabMessageHandler::HandleGetTorProperties(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   AllowJavascript();
 #if BUILDFLAG(ENABLE_TOR)
   auto data = GetTorPropertiesDictionary(
@@ -433,12 +432,12 @@ void BraveNewTabMessageHandler::HandleGetTorProperties(
 }
 
 void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   brave::ToggleUseAlternativeSearchEngineProvider(profile_);
 }
 
 void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   if (args.size() != 2) {
     LOG(ERROR) << "Invalid input";
     return;
@@ -519,7 +518,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
 }
 
 void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   AllowJavascript();
 
   // Decrement original value only if there's actual branded content
@@ -528,7 +527,7 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
 }
 
 void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   AllowJavascript();
   if (args.size() != 1) {
     LOG(ERROR) << "Invalid input";
@@ -555,7 +554,7 @@ void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
 }
 
 void BraveNewTabMessageHandler::HandleGetWallpaperData(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   AllowJavascript();
 
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
@@ -593,7 +592,7 @@ void BraveNewTabMessageHandler::HandleGetWallpaperData(
 }
 
 void BraveNewTabMessageHandler::HandleCustomizeClicked(
-    base::Value::ConstListView args) {
+    const base::Value::List& args) {
   AllowJavascript();
   brave::RecordValueIfGreater<NTPCustomizeUsage>(
       NTPCustomizeUsage::kOpened, "Brave.NTP.CustomizeUsageStatus",
