@@ -41,11 +41,12 @@ export interface Props {
   children?: React.ReactNode
   rows?: Row[]
   rowTheme?: {[key: string]: string}
+  stickyHeaders?: boolean
   onSort?: (column: string, newSortOrder: SortOrder) => void
 }
 
 const Table = (props: Props) => {
-  const { id, headers, rows, children, onSort } = props
+  const { id, headers, rows, children, stickyHeaders, onSort } = props
 
   const onHeaderClick = (headerId: string, currentSortOrder: SortOrder) => {
     const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc'
@@ -66,6 +67,7 @@ const Table = (props: Props) => {
           sortable={sortable}
           sortOrder={sortOrder}
           onClick={() => sortable && onHeaderClick(id, sortOrder ?? 'desc')}
+          stickyHeaders={stickyHeaders}
         >
           {sortable &&
             <ArrowWrapper>

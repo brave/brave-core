@@ -23,7 +23,9 @@ import {
   RemoveSitePermissionPayloadType,
   AddSitePermissionPayloadType,
   UpdateUnapprovedTransactionSpendAllowanceType,
-  UpdateUnapprovedTransactionNonceType
+  UpdateUnapprovedTransactionNonceType,
+  GetCoinMarketPayload,
+  GetCoinMarketsResponse
 } from '../constants/action_types'
 import {
   BraveWallet,
@@ -115,3 +117,6 @@ export const speedupTransaction = createAction<BraveWallet.TransactionInfo>('spe
 export const defaultCurrenciesUpdated = createAction<DefaultCurrencies>('defaultCurrenciesUpdated')
 export const expandWalletNetworks = createAction('expandWalletNetworks')
 export const refreshBalancesAndPriceHistory = createAction('refreshBalancesAndPriceHistory')
+export const getCoinMarkets = createAction<GetCoinMarketPayload>('getCoinMarkets')
+export const setCoinMarkets = createAction<GetCoinMarketsResponse>('setCoinMarkets')
+export const updateIsLoadingCoinMarkets = createAction<boolean>('updateIsLoadingCoinMarkets')

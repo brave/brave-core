@@ -13,11 +13,11 @@ export interface StyleProps {
   customStyle?: {[key: string]: string}
   sortOrder: SortOrder
   sortable?: boolean
+  stickyHeaders?: boolean
 }
 
 export const StyledWrapper = styled.div`
   width: 100%;
-  overflow: auto
 `
 
 export const StyledTBody = styled.tbody`
@@ -39,6 +39,8 @@ export const StyledNoContent = styled('div')<{}>`
 export const StyledTable = styled('table')<{}>`
   position: relative;
   min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 `
 
 export const StyledTHead = styled('thead')`
@@ -53,9 +55,13 @@ export const StyledTH = styled('th')<Partial<StyleProps>>`
   letter-spacing: 0.01em;
   border-bottom: ${(p) => `2px solid ${p.theme.color.disabled}`};
   color: ${(p) => p.sortOrder !== undefined ? p.theme.color.text02 : p.theme.color.text03};
-  padding: 0 40px 8px 10px;
+  padding: 10px 0 10px 0px;
   cursor: ${p => p.sortable ? 'pointer' : 'default'};
-
+  position: ${p => p.stickyHeaders ? 'sticky' : 'relative'};
+  background-color: ${(p) => p.theme.color.background02};
+  top:  ${p => p.stickyHeaders ? 0 : 'inherit'};
+  z-index: 2;
+  
   &:hover {
     color: ${p => p.sortable ? p.theme.color.text02 : p.theme.color.text03};
   }
@@ -66,6 +72,10 @@ export const StyledTH = styled('th')<Partial<StyleProps>>`
     `
     : ''
   };
+
+  &:last-child {
+    padding-right: 20px;
+  }
 `
 
 export const StyledTR = styled('tr')<Partial<Row>>`
@@ -88,7 +98,7 @@ export const StyledTD = styled('td')<Partial<Cell>>`
   font-family: Poppins;
   font-size: 14px;
   line-height: 20px;
-  padding: 0 40px 16px 10px;
+  padding: 0 0 16px 10px;
 
   ${p => p.customStyle
     ? css`
@@ -98,7 +108,7 @@ export const StyledTD = styled('td')<Partial<Cell>>`
   };
 
   &:last-child {
-    padding-right: 10px;
+    padding-right: 20px;
   }
 `
 export const ArrowWrapper = styled.div`

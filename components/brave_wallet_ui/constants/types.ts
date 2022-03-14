@@ -216,6 +216,8 @@ export interface WalletState {
   connectedAccounts: WalletAccountType[]
   isMetaMaskInstalled: boolean
   defaultCurrencies: DefaultCurrencies
+  isLoadingCoinMarketData: boolean
+  coinMarketData: BraveWallet.CoinMarket[]
 }
 
 export interface PanelState {
@@ -582,20 +584,3 @@ export type MarketDataTableColumnTypes =
   | 'totalVolume'
   | 'marketCap'
   | 'priceChange24h'
-
-// This interface will mostly change
-// once we have an api for getting
-// coin market data
-export interface CoinMarketMetadata {
-  coinGeckoID: string
-  symbol: string
-  name: string
-  imageUrl: string
-  marketCap: number
-  marketCapRank: number
-  currentPrice: number
-  priceChange24h: number
-  priceChangePercentage24h: number
-  totalVolume: number
-  priceHistory: PriceDataObjectType[]
-}

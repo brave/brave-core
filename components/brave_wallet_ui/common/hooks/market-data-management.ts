@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { CoinMarketMetadata, MarketDataTableColumnTypes, SortOrder } from '../../constants/types'
+import Fuse from 'fuse.js'
+import { BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../../constants/types'
 
-export const useMarketDataManagement = (marketData: CoinMarketMetadata[], sortOrder: SortOrder, columnId: MarketDataTableColumnTypes) => {
+export const useMarketDataManagement = (marketData: BraveWallet.CoinMarket[], sortOrder: SortOrder, columnId: MarketDataTableColumnTypes) => {
   const sortCoinMarketData = React.useCallback(() => {
     const sortedMarketData = [...marketData]
 
@@ -14,22 +15,27 @@ export const useMarketDataManagement = (marketData: CoinMarketMetadata[], sortOr
     return sortedMarketData
   }, [marketData, sortOrder, columnId])
 
-  const filterCoinMarketData = React.useCallback((searchList: CoinMarketMetadata[], searchTerm: string) => {
+  const filterCoinMarketData = React.useCallback((searchList: BraveWallet.CoinMarket[], searchTerm: string) => {
     if (!searchTerm) {
       return searchList
     }
 
-    const lowerCaseSearchTerm = searchTerm.toLowerCase()
+    const options = {
+      shouldSort: true,
+      threshold: 0.45,
+      location: 0,
+      distance: 100,
+      minMatchCharLength: 1,
+      keys: [
+        { name: 'name', weight: 0.5 },
+        { name: 'symbol', weight: 0.5 }
+      ]
+    }
 
-    const filterCoinMarketData = searchList.filter(coin => {
-      const { symbol, name } = coin
+    const fuse = new Fuse(searchList, options)
+    const results = fuse.search(searchTerm).map((result: Fuse.FuseResult<BraveWallet.CoinMarket>) => result.item)
 
-      return symbol.toLowerCase().includes(lowerCaseSearchTerm) ||
-        name.toLowerCase().includes(lowerCaseSearchTerm)
-    })
-    console.log(filterCoinMarketData)
-
-    return filterCoinMarketData
+    return results
   }, [marketData])
 
   return {

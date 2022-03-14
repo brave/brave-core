@@ -110,3 +110,13 @@ export type AddSitePermissionPayloadType = {
   origin: string
   account: string
 }
+
+export type GetCoinMarketPayload = {
+  vsAsset: string
+  limit: number
+}
+
+export type GetCoinMarketsResponse = {
+  success: boolean
+  values: BraveWallet.CoinMarket[]
+}

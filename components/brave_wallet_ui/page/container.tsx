@@ -97,7 +97,9 @@ function Container (props: Props) {
     isMetaMaskInstalled,
     defaultCurrencies,
     fullTokenList,
-    userVisibleTokensInfo
+    userVisibleTokensInfo,
+    coinMarketData,
+    isLoadingCoinMarketData
   } = props.wallet
 
   // Page Props
@@ -499,6 +501,13 @@ function Container (props: Props) {
     setShowVisibleAssetsModal(showModal)
   }
 
+  const onFetchCoinMarkets = (vsAsset: string, limit: number) => {
+    props.walletActions.getCoinMarkets({
+      vsAsset,
+      limit
+    })
+  }
+
   React.useEffect(() => {
     // Creates a list of Accepted Portfolio Routes
     const acceptedPortfolioRoutes = userVisibleTokensInfo.map((token) => {
@@ -692,6 +701,9 @@ function Container (props: Props) {
                 onFindTokenInfoByContractAddress={onFindTokenInfoByContractAddress}
                 foundTokenInfoByContractAddress={foundTokenInfoByContractAddress}
                 onUpdateVisibleAssets={onUpdateVisibleAssets}
+                isLoadingCoinMarketData={isLoadingCoinMarketData}
+                coinMarkets={coinMarketData}
+                onFetchCoinMarkets={onFetchCoinMarkets}
               />
             }
           </Route>

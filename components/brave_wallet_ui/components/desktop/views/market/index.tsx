@@ -5,40 +5,63 @@ import { AssetsFilterDropdown } from '../..'
 import { AssetFilterOptions } from '../../../../options/market-data-filter-options'
 
 import {
+  LoadIcon,
+  LoadIconWrapper,
   StyledWrapper,
   TopRow
 } from './style'
 import { useMarketDataManagement } from '../../../../common/hooks/market-data-management'
 import { MarketDataTableHeaders } from '../../../../options/market-data-headers'
-import { fetchCoinMarketData } from '../../../../stories/mock-data/mock-coin-market-data'
-import { CoinMarketMetadata, MarketDataTableColumnTypes, SortOrder } from '../../../../constants/types'
+import { BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../../../../constants/types'
 import MarketDataTable from '../../../../components/market-datatable'
 
 export interface Props {
-  // coinsMarketData: CoinMarketMetadata[]
-  // marketDataTableHeaders: MarketDataHeader[]
-  // onFetchMoreMarketData: () => void
+  isLoadingCoinMarketData: boolean
+  onFetchCoinMarkets: (vsAsset: string, limit: number) => void
+  coinMarkets: BraveWallet.CoinMarket[]
 }
 
 const MarketView = (props: Props) => {
-  const [coinsMarketData, setCoinsMarketData] = React.useState<CoinMarketMetadata[]>([])
+  const { isLoadingCoinMarketData, coinMarkets, onFetchCoinMarkets } = props
+  const [coinsMarketData, setCoinsMarketData] = React.useState<BraveWallet.CoinMarket[]>([])
   const [tableHeaders, setTableHeaders] = React.useState(MarketDataTableHeaders)
   const [currentFilter, setCurrentFilter] = React.useState('all')
   const [sortOrder, setSortOrder] = React.useState<SortOrder>('desc')
   const [sortByColumnId, setSortByColumnId] = React.useState<MarketDataTableColumnTypes>('marketCap')
   const { sortCoinMarketData, filterCoinMarketData } = useMarketDataManagement(coinsMarketData, sortOrder, sortByColumnId)
-  const [currentMarketDataPage, setCurrentMarketDataPage] = React.useState<number>(1)
+  const [currentPage, setCurrentPage] = React.useState<number>(1)
   const [moreDataAvailable, setMoreDataAvailble] = React.useState<boolean>(true)
-  const marketDataPageSize = 20
+  const defaultCurrency = 'usd'
+  const limit = 250
+  const perPage = 30
 
   const onSearch = (event: any) => {
     const searchTerm = event.target.value
-    const filteredCoinMarketData = filterCoinMarketData(coinsMarketData, searchTerm)
-    setCoinsMarketData(filteredCoinMarketData)
+    if (searchTerm !== '') {
+      const filteredCoinMarketData = filterCoinMarketData(coinsMarketData, searchTerm)
+      setCoinsMarketData(filteredCoinMarketData)
+    } else {
+      setCoinsMarketData(sortedMarketData)
+    }
   }
 
   const onSelectFilter = (value: string) => {
     setCurrentFilter(value)
+  }
+
+  const paginate = (coinMarkets: BraveWallet.CoinMarket[], perPage: number, pageNumber: number) => {
+    return coinMarkets.slice((pageNumber - 1) * perPage, pageNumber * perPage)
+  }
+
+  const getNextPage = () => {
+    const nextPage = currentPage + 1
+    const data = paginate(coinMarkets, perPage, nextPage)
+    if (data.length === 0) {
+      setMoreDataAvailble(false)
+    } else {
+      setCoinsMarketData([...sortedMarketData, ...data])
+    }
+    setCurrentPage(nextPage)
   }
 
   const onSort = (columnId: MarketDataTableColumnTypes, newSortOrder: SortOrder) => {
@@ -55,36 +78,24 @@ const MarketView = (props: Props) => {
         }
       }
     })
+
     setTableHeaders(updatedTableHeaders)
     setSortByColumnId(columnId)
     setSortOrder(newSortOrder)
   }
 
   React.useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const fetchCoinsData = async () => {
-      const coins = await fetchCoinMarketData(marketDataPageSize, currentMarketDataPage)
-      setCoinsMarketData(coins)
-      setCurrentMarketDataPage(currentMarketDataPage + 1)
-    }
-
-    fetchCoinsData()
+    onFetchCoinMarkets(defaultCurrency, limit)
   }, [])
+
+  React.useEffect(() => {
+    const currenPageData = paginate(coinMarkets, perPage, currentPage)
+    setCoinsMarketData(currenPageData)
+  }, [coinMarkets])
 
   const sortedMarketData = React.useMemo(() => {
     return sortCoinMarketData()
   }, [sortOrder, sortByColumnId, coinsMarketData])
-
-  const onFetchMoreMarketData = async () => {
-    const coins = await fetchCoinMarketData(marketDataPageSize, currentMarketDataPage)
-    if (coins.length === 0) {
-      setMoreDataAvailble(false)
-    } else {
-      console.log(coins, 'loaded new coins')
-      setCoinsMarketData([...coinsMarketData, ...coins])
-      setCurrentMarketDataPage(currentMarketDataPage + 1)
-    }
-  }
 
   return (
     <StyledWrapper>
@@ -98,15 +109,21 @@ const MarketView = (props: Props) => {
           placeholder="Search"
           autoFocus={true}
           action={onSearch}
+          disabled={isLoadingCoinMarketData}
         />
       </TopRow>
-      <MarketDataTable
-        headers={tableHeaders}
-        coinMarketData={sortedMarketData}
-        moreDataAvailable={moreDataAvailable}
-        onFetchMoreMarketData={onFetchMoreMarketData}
-        onSort={onSort}
-      />
+      {isLoadingCoinMarketData
+        ? <LoadIconWrapper>
+            <LoadIcon />
+          </LoadIconWrapper>
+        : <MarketDataTable
+            headers={tableHeaders}
+            coinMarketData={sortedMarketData}
+            moreDataAvailable={moreDataAvailable}
+            onFetchMoreMarketData={getNextPage}
+            onSort={onSort}
+          />
+      }
     </StyledWrapper>
   )
 }

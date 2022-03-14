@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import { LoaderIcon } from 'brave-ui/components/icons'
+
 export interface StyleProps {
   alignment: 'right' | 'left'
 }
@@ -51,4 +53,20 @@ export const LineChartWrapper = styled.div`
   height: 30px;
   max-width: 120px;
   margin: 0 auto;
+`
+
+export const LoadIcon = styled(LoaderIcon)`
+  color: ${p => p.theme.color.interactive08};
+  height: 70px;
+  width: 70px;
+  opacity: .4;
+`
+
+export const LoadIconWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `

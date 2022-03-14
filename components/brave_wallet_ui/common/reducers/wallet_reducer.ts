@@ -23,6 +23,7 @@ import {
 } from '../../constants/types'
 import {
   ActiveOriginChanged,
+  GetCoinMarketsResponse,
   IsEip1559Changed,
   NewUnapprovedTxAdded,
   SitePermissionsPayloadType,
@@ -83,7 +84,9 @@ const defaultState: WalletState = {
   defaultCurrencies: {
     fiat: '',
     crypto: ''
-  }
+  },
+  isLoadingCoinMarketData: true,
+  coinMarketData: []
 }
 
 const reducer = createReducer<WalletState>({}, defaultState)
@@ -447,6 +450,14 @@ reducer.on(WalletActions.defaultCurrenciesUpdated, (state: any, payload: Default
   return {
     ...state,
     defaultCurrencies: payload
+  }
+})
+
+reducer.on(WalletActions.setCoinMarkets, (state: WalletState, payload: GetCoinMarketsResponse) => {
+  return {
+    ...state,
+    coinMarketData: payload.success ? payload.values : [],
+    isLoadingCoinMarketData: false
   }
 })
 

@@ -85,6 +85,9 @@ export interface Props {
   showVisibleAssetsModal: boolean
   onFindTokenInfoByContractAddress: (contractAddress: string) => void
   foundTokenInfoByContractAddress: BraveWallet.BlockchainToken | undefined
+  isLoadingCoinMarketData: boolean
+  coinMarkets: BraveWallet.CoinMarket[]
+  onFetchCoinMarkets: (vsAsset: string, limit: number) => void
 }
 
 const CryptoView = (props: Props) => {
@@ -146,7 +149,10 @@ const CryptoView = (props: Props) => {
     onCancelTransaction,
     onSpeedupTransaction,
     onFindTokenInfoByContractAddress,
-    foundTokenInfoByContractAddress
+    foundTokenInfoByContractAddress,
+    isLoadingCoinMarketData,
+    onFetchCoinMarkets,
+    coinMarkets
   } = props
   const [hideNav, setHideNav] = React.useState<boolean>(false)
   const [showBackupWarning, setShowBackupWarning] = React.useState<boolean>(needsBackup)
@@ -364,7 +370,11 @@ const CryptoView = (props: Props) => {
         />
       </Route>
       <Route path={WalletRoutes.Market} exact={true}>
-        <MarketView />
+        <MarketView
+          isLoadingCoinMarketData={isLoadingCoinMarketData}
+          onFetchCoinMarkets={onFetchCoinMarkets}
+          coinMarkets={coinMarkets}
+        />
       </Route>
 
       {showAddModal &&

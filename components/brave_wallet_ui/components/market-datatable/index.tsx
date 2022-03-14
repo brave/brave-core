@@ -1,16 +1,13 @@
 import * as React from 'react'
 import InfinitieScroll from 'react-infinite-scroll-component'
-import { CoinMarketMetadata, MarketDataTableColumnTypes, SortOrder } from '../../constants/types'
+import { BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../../constants/types'
 import Table, { Cell, Header, Row } from '../shared/datatable'
 import {
   AssetsColumnWrapper,
-  AssetsColumnItemSpacer,
   StyledWrapper,
   TableWrapper,
-  TextWrapper,
-  LineChartWrapper
+  TextWrapper
 } from './style'
-import LineChart from '../desktop/line-chart'
 import {
   formatFiatAmountWithCommasAndDecimals,
   formatPricePercentageChange,
@@ -18,7 +15,7 @@ import {
 } from '../../utils/format-prices'
 import AssetNameAndIcon from '../asset-name-and-icon'
 import AssetPriceChange from '../asset-price-change'
-import AssetWishlistStar from '../asset-wishlist-star'
+import { LoadIcon, LoadIconWrapper } from '../desktop/views/market/style'
 
 export interface MarketDataHeader extends Header {
   id: MarketDataTableColumnTypes
@@ -26,27 +23,26 @@ export interface MarketDataHeader extends Header {
 
 export interface Props {
   headers: MarketDataHeader[]
-  coinMarketData: CoinMarketMetadata[]
+  coinMarketData: BraveWallet.CoinMarket[]
   moreDataAvailable: boolean
   onFetchMoreMarketData: () => void
   onSort?: (column: MarketDataTableColumnTypes, newSortOrder: SortOrder) => void
 }
 
 const MarketDataTable = (props: Props) => {
-  const { headers, coinMarketData, onSort, onFetchMoreMarketData, moreDataAvailable } = props
+  const { headers, coinMarketData, moreDataAvailable, onFetchMoreMarketData, onSort } = props
 
-  const renderCells = (coinMarkDataItem: CoinMarketMetadata) => {
+  const renderCells = (coinMarkDataItem: BraveWallet.CoinMarket) => {
     const {
       name,
       symbol,
-      imageUrl,
+      image,
       currentPrice,
       priceChange24h,
       priceChangePercentage24h,
       marketCap,
       marketCapRank,
-      totalVolume,
-      priceHistory
+      totalVolume
     } = coinMarkDataItem
 
     const formattedPrice = formatFiatAmountWithCommasAndDecimals(currentPrice.toString(), 'USD')
@@ -56,18 +52,23 @@ const MarketDataTable = (props: Props) => {
     const isDown = priceChange24h < 0
 
     const cellsContent: React.ReactNode[] = [
+      // Market Cap Rank Column
+      <TextWrapper
+        alignment="left"
+      >
+        {marketCapRank}
+      </TextWrapper>,
+
       // Assets Column
       <AssetsColumnWrapper>
-        <AssetsColumnItemSpacer>
+        {/* Hidden until wishlist feature is added in the backend */}
+        {/* <AssetsColumnItemSpacer>
           <AssetWishlistStar active={true} />
-        </AssetsColumnItemSpacer>
-        <AssetsColumnItemSpacer>
-          <TextWrapper alignment="right">{marketCapRank}</TextWrapper>
-        </AssetsColumnItemSpacer>
+        </AssetsColumnItemSpacer> */}
         <AssetNameAndIcon
           assetName={name}
           symbol={symbol}
-          assetLogo={imageUrl}
+          assetLogo={image}
         />
       </AssetsColumnWrapper>,
 
@@ -86,26 +87,28 @@ const MarketDataTable = (props: Props) => {
       <TextWrapper alignment="right">{formattedMarketCap}</TextWrapper>,
 
       // Volume Column
-      <TextWrapper alignment="right">{formattedVolume}</TextWrapper>,
+      <TextWrapper alignment="right">{formattedVolume}</TextWrapper>
 
       // Line Chart Column
-      <LineChartWrapper>
-        <LineChart
-          priceData={priceHistory}
-          isLoading={false}
-          isDisabled={false}
-          isDown={isDown}
-          isAsset={true}
-          onUpdateBalance={() => {}}
-          showPulsatingDot={false}
-          showTooltip={false}
-          customStyle={{
-            height: '20px',
-            width: '100%',
-            marginBottom: '0px'
-          }}
-        />
-      </LineChartWrapper>
+      // Commented out because priceHisotry data is yet to be
+      // available from the backend
+      // <LineChartWrapper>
+      //   <LineChart
+      //     priceData={priceHistory}
+      //     isLoading={false}
+      //     isDisabled={false}
+      //     isDown={isDown}
+      //     isAsset={true}
+      //     onUpdateBalance={() => {}}
+      //     showPulsatingDot={false}
+      //     showTooltip={false}
+      //     customStyle={{
+      //       height: '20px',
+      //       width: '100%',
+      //       marginBottom: '0px'
+      //     }}
+      //   />
+      // </LineChartWrapper>
     ]
 
     const cells: Cell[] = cellsContent.map(cellContent => {
@@ -118,7 +121,7 @@ const MarketDataTable = (props: Props) => {
   }
 
   const rows: Row[] = React.useMemo(() => {
-    const cells = coinMarketData.map((coinMarketItem: CoinMarketMetadata) => {
+    const cells = coinMarketData.map((coinMarketItem: BraveWallet.CoinMarket) => {
       return renderCells(coinMarketItem)
     })
 
@@ -126,20 +129,26 @@ const MarketDataTable = (props: Props) => {
   }, [coinMarketData, headers])
 
   return (
-    <StyledWrapper id="scrollable">
+    <StyledWrapper>
         <InfinitieScroll
           dataLength={coinMarketData.length}
           next={onFetchMoreMarketData}
-          loader={<div>Loading...</div>}
-          endMessage={<div>You have seen it all</div>}
+          loader={
+            <LoadIconWrapper>
+              <LoadIcon />
+            </LoadIconWrapper>
+          }
           hasMore={moreDataAvailable}
-          scrollableTarget="scrollable"
+          style={{
+            overflow: 'inherit'
+          }}
         >
           <TableWrapper>
             <Table
               headers={headers}
               rows={rows}
               onSort={onSort}
+              stickyHeaders={true}
             />
           </TableWrapper>
         </InfinitieScroll>

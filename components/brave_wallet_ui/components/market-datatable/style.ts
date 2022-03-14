@@ -9,8 +9,6 @@ export const StyledWrapper = styled.div`
   flex: 1;
   flex-direction: column;
   width: 100%;
-  max-height: 100vh;
-  overflow-y: auto;
 
   & > div.infinite-scroll-component {
     width: 100%;
@@ -20,6 +18,11 @@ export const StyledWrapper = styled.div`
     scroll-behavior: smooth;
     background-color: transparent;
     scrollbar-width: 5px;
+    border: transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-color: transparent;
   }
 `
 
@@ -56,4 +59,8 @@ export const LineChartWrapper = styled.div`
   height: 30px;
   max-width: 120px;
   margin: 0 auto;
+`
+export const LoadIconWrapper = styled.div`
+  display: flex;
+  justify-content: center;
 `

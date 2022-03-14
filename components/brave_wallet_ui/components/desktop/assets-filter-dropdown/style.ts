@@ -41,6 +41,7 @@ export const Dropdown = styled.ul`
   margin: 0;
   position: absolute;
   top: calc(100% + 2px);
+  z-index: 2;
 `
 
 export const CaratDown = styled.div`
