@@ -11,7 +11,6 @@ import { Page, PageWrapper } from '../../components/private'
 import PrivateWindow from './privateWindow'
 import QwantWindow from './qwantWindow'
 import TorWindow from './torWindow'
-import QwantTor from './qwantWindowWithTor'
 
 interface Props {
   isTor: boolean
@@ -21,11 +20,9 @@ interface Props {
 export default class NewPrivateTab extends React.PureComponent<Props, {}> {
   get currentWindow () {
     const { isTor, isQwant } = this.props
-    return isQwant && isTor
-      ? <QwantTor />
-      : isQwant ? <QwantWindow />
-      : isTor ? <TorWindow />
-      : <PrivateWindow />
+    return isTor ? <TorWindow />
+                 : isQwant ? <QwantWindow />
+                           : <PrivateWindow />
   }
 
   render () {

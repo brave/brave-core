@@ -18,7 +18,12 @@ import {
   HeaderGrid,
   ButtonGroup,
   ToggleGroup,
-  IconText
+  IconText,
+  TorHelpText,
+  TorStatusContainer,
+  TorStatusGrid,
+  TorStatusIndicator,
+  TorStatusText
 } from './grid'
 import {
   Box,
@@ -71,5 +76,10 @@ export {
   Separator,
   FakeButton,
   PurpleButton,
-  Link
+  Link,
+  TorHelpText,
+  TorStatusContainer,
+  TorStatusGrid,
+  TorStatusIndicator,
+  TorStatusText
 }

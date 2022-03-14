@@ -6,6 +6,8 @@ import styled, { css } from 'styled-components'
 
 interface Props {
   isStandalonePrivatePage?: boolean
+  isTorCircuitInitializing?: boolean
+  isTorCircuitEstablishedOrInitializing?: boolean
 }
 
 export const Grid = styled('section')<{}>`
@@ -184,4 +186,50 @@ export const IconText = styled('div')<{}>`
   display: flex;
   justify: space-between;
   align-items: center;
+`
+
+export const TorStatusGrid = styled('div')<{}>`
+  display: grid;
+  justify-content: center;
+`
+
+export const TorStatusContainer = styled('div')<Props>`
+  width: ${p => p.isTorCircuitEstablishedOrInitializing ? '246px' : '158px'};
+  height: 32px;
+  line-height: 32px;
+  background: rgba(227, 36, 68, 0.2);
+  border-radius: 39px;
+  margin-top: 70px;
+`
+
+export const TorStatusIndicator = styled('img')<Props>`
+  width: 10px;
+  height: 10px;
+  margin-left: ${p => p.isTorCircuitInitializing ? '30px' : '15px'};
+  margin-right: 11px;
+`
+
+export const TorStatusText = styled('div')<{}>`
+  display: inline-block;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 20px;
+  color: #FFFFFF;
+`
+
+export const TorHelpText = styled('div')<{}>`
+  position: absolute;
+  left: 39.46%;
+  right: 39.52%;
+  text-align: center;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 18px;
+  margin-top: 17px;
+  color: #FFFFFF;
 `

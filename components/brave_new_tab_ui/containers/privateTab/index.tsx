@@ -10,7 +10,6 @@ import { Page, PageWrapper } from '../../components/private'
 // Components group
 import PrivateTab from './privateTab'
 import QwantTab from './qwantTab'
-import QwantTorTab from './qwantTorTab'
 import TorTab from './torTab'
 
 interface Props {
@@ -22,9 +21,6 @@ export default class NewPrivateTabPage extends React.PureComponent<Props, {}> {
   get currentWindowNewTabPage () {
     const { newTabData, actions } = this.props
     if (newTabData.isTor) {
-      if (newTabData.isQwant) {
-        return <QwantTorTab actions={actions} newTabData={newTabData} />
-      }
       return <TorTab actions={actions} newTabData={newTabData} />
     }
 
