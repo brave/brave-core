@@ -184,6 +184,7 @@ program
   .command('pull_l10n')
   .option('--extension <extension>', 'Scope this command to localize a Brave extension such as ethereum-remote-client')
   .option('--grd_path <grd_path>', `Relative path to match end of full GRD path, e.g: 'generated_resources.grd'.`)
+  .option('--debug', `Dumps downloaded content for one language into TransifexCurrent.txt file in the temp directory.`)
   .action(pullL10n)
 
 program
