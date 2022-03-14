@@ -3,6 +3,7 @@ include_rules = [
   "+brave/components/brave_stats/browser",
   "+brave/components/p3a",
   "+brave/components/version_info",
+  "+brave/third_party/flower",
   "+components/keyed_service/core",
   "+components/metrics",
   "+components/prefs",

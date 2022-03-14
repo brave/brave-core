@@ -5,6 +5,10 @@ static_library("brave_federated") {
   sources = [
     "brave_federated_service.cc",
     "brave_federated_service.h",
+    "client/federated_client.cc",
+    "client/federated_client.h",
+    "client/model.cc",
+    "client/model.h",
     "data_store_service.cc",
     "data_store_service.h",
     "data_stores/async_data_store.cc",
@@ -16,11 +20,17 @@ static_library("brave_federated") {
     "eligibility_service_observer.h",
     "features.cc",
     "features.h",
+    "learning_service.cc",
+    "learning_service.h",
+    "linear_algebra_util/linear_algebra_util.cc",
+    "linear_algebra_util/linear_algebra_util.h",
     "notification_ad_task_constants.h",
     "operational_patterns.cc",
     "operational_patterns.h",
     "operational_patterns_util.cc",
     "operational_patterns_util.h",
+    "synthetic_dataset/synthetic_dataset.cc",
+    "synthetic_dataset/synthetic_dataset.h",
   ]
 
   public_deps = [ "public/interfaces" ]
@@ -29,12 +39,14 @@ static_library("brave_federated") {
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:p3a",
     "//brave/components/version_info",
+    "//brave/third_party/flower",
     "//components/keyed_service/core",
     "//components/metrics",
     "//components/prefs",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//sql",
+    "//third_party/grpc:grpc++",
   ]
 }
 

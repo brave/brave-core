@@ -1,0 +1,28 @@
+import("//third_party/grpc/grpc_library.gni")
+
+static_library("flower") {
+  include_dirs = [ "src/cc/flwr/include" ]
+  sources = [
+    "src/cc/flwr/include/client.h",
+    "src/cc/flwr/include/message_handler.h",
+    "src/cc/flwr/include/serde.h",
+    "src/cc/flwr/include/client_runner.h",
+    "src/cc/flwr/include/typing.h",
+    "src/cc/flwr/src/message_handler.cc",
+    "src/cc/flwr/src/serde.cc",
+    "src/cc/flwr/src/client_runner.cc",
+  ]
+  deps = [
+    "//brave/third_party/flower/src/proto/flwr/proto:transport_grpc_proto",
+    "//third_party/grpc:grpc++",
+    "//components/grpc_support",
+    "//net",
+    "//third_party/protobuf:protobuf_lite",
+  ]
+
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [
+    "//build/config/compiler:no_chromium_code",
+    "//build/config/compiler:exceptions",
+  ]
+}

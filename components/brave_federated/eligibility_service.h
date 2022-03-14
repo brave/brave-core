@@ -30,21 +30,22 @@ class EligibilityService
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
-  void NotifyObservers(bool is_eligible);
 
-  bool IsEligibile() const;
+  bool IsEligible() const;
 
  private:
   void MaybeChangeEligibility();
 
   bool IsConnectedToWifiOrEthernet() const;
 
-  // base::PowerStateObserver
+  // base::PowerStateObserver:
   void OnPowerStateChange(bool on_battery_power) override;
 
-  // net::NetworkChangeNotifier::NetworkChangeObserver overrides.
+  // net::NetworkChangeNotifier::NetworkChangeObserver:
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
+
+  void NotifyObservers(bool is_eligible);
 
   base::ObserverList<Observer> observers_;
   bool is_eligible_ = false;
