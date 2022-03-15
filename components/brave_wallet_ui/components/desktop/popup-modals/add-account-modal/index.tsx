@@ -47,7 +47,6 @@ export interface Props {
   onAddHardwareAccounts: (selected: BraveWallet.HardwareWalletAccount[]) => void
   getBalance: (address: string) => Promise<string>
   onSetImportError: (hasError: boolean) => void
-  onRouteBackToAccounts: () => void
   hasImportError: boolean
   accounts: WalletAccountType[]
   tab: AddAccountNavTypes
@@ -70,8 +69,7 @@ const AddAccountModal = (props: Props) => {
     onAddHardwareAccounts,
     getBalance,
     onImportAccountFromJson,
-    onSetImportError,
-    onRouteBackToAccounts
+    onSetImportError
   } = props
 
   const [importOption, setImportOption] = React.useState<string>('key')
@@ -122,7 +120,6 @@ const AddAccountModal = (props: Props) => {
   const onClickCreateAccount = () => {
     if (tab === 'create') {
       onCreateAccount(accountName, selectedAccountType?.coin || BraveWallet.CoinType.ETH)
-      onRouteBackToAccounts()
       return
     }
     if (tab === 'import') {
