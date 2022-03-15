@@ -340,13 +340,21 @@ public class BraveRewardsPanel
         if (mBraveRewardsNativeWorker != null) {
             String walletType = mBraveRewardsNativeWorker.getExternalWalletType();
             TextView mywalletText = mPopupView.findViewById(R.id.my_wallet_text);
-            mywalletText.setCompoundDrawablesWithIntrinsicBounds(0, 0,
-                    walletType.equals(BraveWalletProvider.UPHOLD) ? R.drawable.uphold_white
-                                                                  : R.drawable.ic_logo_bitflyer,
-                    0);
+            mywalletText.setCompoundDrawablesWithIntrinsicBounds(
+                    0, 0, getWalletIcon(walletType), 0);
         }
 
         mPopupWindow.setContentView(mPopupView);
+    }
+
+    private int getWalletIcon(String walletType) {
+        if (walletType.equals(BraveWalletProvider.UPHOLD)) {
+            return R.drawable.uphold_white;
+        } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
+            return R.drawable.ic_gemini_logo_white;
+        } else {
+            return R.drawable.ic_logo_bitflyer;
+        }
     }
 
     private void showSummarySection() {
@@ -1207,9 +1215,7 @@ public class BraveRewardsPanel
                 editor.putBoolean(PREF_VERIFY_WALLET_ENABLE, true);
                 editor.apply();
 
-                leftDrawable = walletType.equals(BraveWalletProvider.UPHOLD)
-                        ? R.drawable.uphold_white
-                        : R.drawable.ic_logo_bitflyer;
+                leftDrawable = getWalletIcon(walletType);
                 rightDrawable = R.drawable.verified_disclosure;
                 textId = R.string.brave_ui_wallet_button_verified;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(
@@ -1223,9 +1229,7 @@ public class BraveRewardsPanel
                 break;
             case BraveRewardsExternalWallet.DISCONNECTED_NOT_VERIFIED:
             case BraveRewardsExternalWallet.DISCONNECTED_VERIFIED:
-                leftDrawable = walletType.equals(BraveWalletProvider.UPHOLD)
-                        ? R.drawable.uphold_white
-                        : R.drawable.ic_logo_bitflyer;
+                leftDrawable = getWalletIcon(walletType);
                 textId = R.string.brave_ui_wallet_button_disconnected;
                 btnVerifyWallet.setCompoundDrawablesWithIntrinsicBounds(leftDrawable, 0, 0, 0);
                 btnVerifyWallet.setBackgroundDrawable(ResourcesCompat.getDrawable(
