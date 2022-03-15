@@ -6,7 +6,7 @@ index 3b36090c4cd6772e81094d0b447b28eafe53cc0a..3b8e4b6194f2521ddb9e0b224f657063
    CreateHintTextLabel();
    CreateDevicesScrollView();
  
-+  BRAVE_SENT_TAB_TO_SELF_BUBBLE_VIEW_IMPL
++  BRAVE_SENT_TAB_TO_SELF_BUBBLE_VIEW_IMPL_INIT
    AddChildView(std::make_unique<views::Separator>());
    CreateManageDevicesLink();
  }
