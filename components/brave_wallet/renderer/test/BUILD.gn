@@ -13,6 +13,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_wallet/common:common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/renderer",
     "//content/public/renderer",
