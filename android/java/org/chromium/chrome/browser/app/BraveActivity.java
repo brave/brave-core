@@ -100,6 +100,7 @@ import org.chromium.chrome.browser.compositor.CompositorViewHolder;
 import org.chromium.chrome.browser.compositor.layouts.Layout;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerChrome;
 import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
+import org.chromium.chrome.browser.compositor.layouts.phone.StackLayout;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
@@ -1181,6 +1182,13 @@ public abstract class BraveActivity<C extends ChromeActivityComponent>
 
         editor.putLong(BravePreferenceKeys.BRAVE_MILLISECONDS_NAME, milliSeconds);
         editor.apply();
+    }
+
+    public void hideOverview(LayoutManagerChrome layoutManager) {
+        Layout activeLayout = layoutManager.getActiveLayout();
+        if (activeLayout instanceof StackLayout) {
+            ((StackLayout) activeLayout).commitOutstandingModelState(LayoutManagerImpl.time());
+        }
     }
 
     public ObservableSupplier<BrowserControlsManager> getBrowserControlsManagerSupplier() {
