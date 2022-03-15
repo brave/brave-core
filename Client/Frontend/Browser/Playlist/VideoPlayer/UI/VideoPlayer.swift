@@ -10,6 +10,8 @@ import Shared
 import AVKit
 import AVFoundation
 
+import MediaPlayer
+
 private let log = Logger.browserLogger
 
 protocol VideoViewDelegate: AnyObject {
@@ -77,6 +79,19 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     private var playbackRate: Float = 1.0
     private var playerLayer: AVPlayerLayer?
     private var fadeAnimationWorkItem: DispatchWorkItem?
+
+    // Vars and enums for handling gestures on the playerLayer (changing volume, scrolling the timeline)
+    private enum DraggingDirection {
+        case noDirection
+        case verticalDirection
+        case horizontalDirection
+    }
+
+    private var currentDraggingDirection: DraggingDirection = .noDirection
+    private var dragStartedTimelinePos = 0.0
+    private var dragStartedVolume: Float = 0.0
+    
+    private let volumeView = MPVolumeView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -141,6 +156,11 @@ class VideoView: UIView, VideoTrackerBarDelegate {
             $0.delegate = self
         }
         
+        // Used for timeline and volume gestures
+        let overlayDraggedGesture = UIPanGestureRecognizer(target: self, action: #selector(onOverlayDragged(_:))).then {
+            $0.delegate = self
+        }
+
         let favIconTappedGesture = UITapGestureRecognizer(target: self, action: #selector(onFavIconTapped(_:))).then {
             $0.numberOfTapsRequired = 1
             $0.numberOfTouchesRequired = 1
@@ -148,6 +168,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
         
         addGestureRecognizer(overlayTappedGesture)
         addGestureRecognizer(overlayDoubleTappedGesture)
+        addGestureRecognizer(overlayDraggedGesture)
         overlayTappedGesture.require(toFail: overlayDoubleTappedGesture)
         infoView.favIconImageView.addGestureRecognizer(favIconTappedGesture)
         
@@ -202,9 +223,160 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     
     @objc
     private func onOverlayDoubleTapped(_ gestureRecognizer: UITapGestureRecognizer) {
-        delegate?.togglePlayerGravity(self)
+        // Originally double tap changed size of the video to fit the screen,
+        // now we will use this gesture to advance/go back by 15 secs.
+        // Perhaps we should add a button to the player's toolbar overlay for toggling gravity.
+        // delegate?.togglePlayerGravity(self)
+
+        // Advance or go back by 15 seconds
+        let tapLocation: CGPoint = gestureRecognizer.location(in: self)
+
+        // If we got a tap in 0width...0.4width (left part of the view).
+        if tapLocation.x > 0 && tapLocation.x < 0.4*self.bounds.size.width {
+            // Retreat by 15 seconds.
+            self.seekBackwards()
+        // If we got a tap in 0.6width...1width (right part of the view).
+        } else if tapLocation.x > 0.6*self.bounds.size.width && tapLocation.x < self.bounds.size.width {
+            // Advance video by 15 seconds.
+            self.seekForwards()
+        // If there's a click in the central area
+        } else if tapLocation.x > 0.4*self.bounds.size.width && 0.4*self.bounds.size.width < 0.6*self.bounds.size.width {
+            // Pause/resume the video
+            if delegate?.isPlaying ?? false {
+                self.pause()
+            } else {
+                self.play()
+            }
+        }
+    }
+
+    // This is where we know when panning gesture started and finished.
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if event?.type == UIEvent.EventType.touches {
+            dragStartedVolume = AVAudioSession.sharedInstance().outputVolume
+
+            toggleOverlays(showOverlay: true)
+            if let currentPlayer = playerLayer?.player {
+                let currentSeconds = CGFloat(currentPlayer.currentTime().value) / CGFloat((currentPlayer.currentTime().timescale))
+                dragStartedTimelinePos = currentSeconds
+            }
+        }
+
+        super.touchesBegan(touches, with: event)
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if event?.type == UIEvent.EventType.touches {
+            toggleOverlays(showOverlay: false)
+        }
+
+        super.touchesEnded(touches, with: event)
     }
     
+    @objc
+    private func onOverlayDragged(_ gestureRecognizer: UIPanGestureRecognizer) {
+        if gestureRecognizer.state == .ended {
+            // User ended panning
+            currentDraggingDirection = .noDirection
+            
+            guard let delegate = delegate else { return }
+
+            isSeeking = false
+
+            if wasPlayingBeforeSeeking {
+                delegate.play(self)
+                delegate.setPlaybackRate(self, rate: playbackRate)
+                wasPlayingBeforeSeeking = false
+            }
+
+            if delegate.isPlaying {
+                fadeAnimationWorkItem?.cancel()
+                toggleOverlays(showOverlay: false, except: [overlayView], display: [overlayView])
+                overlayView.alpha = 0.0
+                isOverlayDisplayed = false
+            } else {
+                fadeAnimationWorkItem?.cancel()
+                toggleOverlays(showOverlay: true)
+                overlayView.alpha = 1.0
+                isOverlayDisplayed = true
+            }
+
+        } else {
+            if let currentPlayer = playerLayer?.player {
+
+                // Horizontal or vertical pan?
+                if currentDraggingDirection == .noDirection {
+                    if abs(gestureRecognizer.velocity(in: self).y) > abs(gestureRecognizer.velocity(in: self).x) {
+                        currentDraggingDirection = .verticalDirection
+                    } else {
+                        currentDraggingDirection = .horizontalDirection
+                    }
+                }
+
+                if currentDraggingDirection == .verticalDirection {
+
+                    // Vertical dragging adjusts volume.
+                    let vDragRatio = 4*gestureRecognizer.translation(in: self).y/self.bounds.height // (-0.5 ... 0.5)*4
+                    
+                    if vDragRatio != 0 && self.dragStartedVolume >= 0 {
+                        if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
+                            var finalVal: Float = 0
+                            finalVal = self.dragStartedVolume + Float(-vDragRatio)
+
+                            // Making sure finalVal is within 0..1 interval
+                            if finalVal < 0 {
+                                finalVal = 0
+                            } else if finalVal > 1 {
+                                finalVal = 1
+                            }
+                            slider.value = finalVal
+                        }
+                    }
+                    // End of vertical panning processing.
+                } else {
+
+                    // Otherwise it's a horizontal pan.
+                    let dragRatio = gestureRecognizer.translation(in: self).x/self.bounds.width // (-0.5 ... 0.5)*1
+                    var vidDurationSeconds = 0.0
+                    if let currentItem = currentPlayer.currentItem {
+                        vidDurationSeconds = CGFloat((currentItem.duration.value)) / CGFloat((currentItem.duration.timescale))
+                    }
+                    var finalSeconds = dragStartedTimelinePos + dragRatio*vidDurationSeconds
+
+                    // Making sure we're not out of bounds
+                    if finalSeconds<0 {
+                        finalSeconds = 0
+                    }
+                    if finalSeconds > vidDurationSeconds {
+                        finalSeconds = vidDurationSeconds
+                    }
+
+                    guard let delegate = delegate else { return }
+
+                    isSeeking = true
+
+                    if delegate.isPlaying {
+                        wasPlayingBeforeSeeking = true
+                        playbackRate = delegate.playbackRate
+                        delegate.pause(self)
+                    }
+
+                    toggleOverlays(showOverlay: false, except: [infoView, controlsView], display: [controlsView])
+                    isOverlayDisplayed = true
+
+                    if let currentItem = currentPlayer.currentItem {
+                        let trackbarPos = CMTime(seconds: finalSeconds, preferredTimescale: currentItem.duration.timescale)
+                        let trackbarLen = CMTime(seconds: CGFloat((currentItem.duration.value)) / CGFloat((currentItem.duration.timescale)), preferredTimescale: currentItem.duration.timescale)
+
+                        controlsView.trackBar.setTimeRange(currentTime: trackbarPos, endTime: trackbarLen) // Move the slider.
+                        seek(to: finalSeconds) // And rewind the video.
+                    }
+                    // End of horizontal panning processing.
+                }
+            }
+        }
+    }
+
     @objc
     private func onFavIconTapped(_ gestureRecognizer: UITapGestureRecognizer) {
         delegate?.onFavIconSelected(self)
