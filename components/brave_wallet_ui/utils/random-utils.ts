@@ -10,7 +10,3 @@ export function unbiasedRandom (min: number, max: number) {
     } while (value >= cutoff)
     return min + value % range
 }
-
-export function getRandomInRange (min: number, max: number) {
-    return Math.random() * (max - min) + min
-}

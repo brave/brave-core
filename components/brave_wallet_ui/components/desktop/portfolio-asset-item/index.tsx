@@ -26,7 +26,7 @@ import { WithHideBalancePlaceholder } from '../'
 
 // Hooks
 import { usePricing } from '../../../common/hooks'
-import { getRandomInRange } from '../../../utils/random-utils'
+import { unbiasedRandom } from '../../../utils/random-utils'
 
 interface Props {
   spotPrices: BraveWallet.AssetPrice[]
@@ -91,11 +91,11 @@ const PortfolioAssetItem = (props: Props) => {
     // Randow value between 100 & 250
     // Set value only once
     if (assetNameSkeletonWidth === 0) {
-      setAssetNameSkeletonWidth(getRandomInRange(100, 250))
+      setAssetNameSkeletonWidth(unbiasedRandom(100, 250))
     }
 
     if (assetNetworkSkeletonWidth === 0) {
-      setAssetNetworkSkeletonWidth(getRandomInRange(100, 250))
+      setAssetNetworkSkeletonWidth(unbiasedRandom(100, 250))
     }
   }, [])
 
