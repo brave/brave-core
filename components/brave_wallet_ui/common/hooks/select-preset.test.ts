@@ -33,4 +33,24 @@ describe('usePreset hook', () => {
     expect(mockFunc.mock.calls.length).toBe(1)
     expect(mockFunc.mock.calls[0][0]).toBe(expected)
   })
+
+  it('should not do anything if send/swap asset is undefined', () => {
+    const mockOnSetFromAmount = jest.fn()
+    const mockOnSetSendAmount = jest.fn()
+
+    const { result: { current: calcPresetAmount } } = renderHook(() => usePreset(
+      mockAccount,
+      mockNetwork,
+      mockOnSetFromAmount,
+      mockOnSetSendAmount,
+      undefined,
+      undefined
+    ))
+
+    calcPresetAmount('swap')(0.25)
+    expect(mockOnSetFromAmount.mock.calls.length).toBe(0)
+
+    calcPresetAmount('send')(0.25)
+    expect(mockOnSetSendAmount.mock.calls.length).toBe(0)
+  })
 })

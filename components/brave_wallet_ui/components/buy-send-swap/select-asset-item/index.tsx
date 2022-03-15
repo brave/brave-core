@@ -17,11 +17,12 @@ import {
 
 export interface Props {
   asset: BraveWallet.BlockchainToken
+  selectedNetwork: BraveWallet.EthereumChain
   onSelectAsset: () => void
 }
 
 function SelectAssetItem (props: Props) {
-  const { asset, onSelectAsset } = props
+  const { asset, selectedNetwork, onSelectAsset } = props
 
   const AssetIconWithPlaceholder = React.useMemo(() => {
     return withPlaceholderIcon(AssetIcon, { size: 'small', marginLeft: 0, marginRight: 8 })
@@ -29,7 +30,7 @@ function SelectAssetItem (props: Props) {
 
   return (
     <StyledWrapper onClick={onSelectAsset}>
-      <AssetIconWithPlaceholder selectedAsset={asset} />
+      <AssetIconWithPlaceholder asset={asset} network={selectedNetwork} />
       <AssetAndBalance>
         <AssetName>
           {asset.name} {

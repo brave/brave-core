@@ -306,7 +306,7 @@ export type AmountValidationErrorType =
 export type SwapValidationErrorType =
   | AmountValidationErrorType
   | 'insufficientBalance'
-  | 'insufficientEthBalance'
+  | 'insufficientFundsForGas'
   | 'insufficientAllowance'
   | 'insufficientLiquidity'
   | 'unknownError'

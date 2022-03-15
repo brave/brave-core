@@ -58,7 +58,8 @@ export interface Props {
   autoFocus?: boolean
   componentType: BuySendSwapInputType
   selectedAssetBalance?: string
-  selectedAsset?: BraveWallet.BlockchainToken
+  selectedAsset?: BraveWallet.BlockchainToken | undefined
+  selectedNetwork?: BraveWallet.EthereumChain
   selectedAssetInputAmount?: string
   addressError?: string
   addressWarning?: string
@@ -68,10 +69,10 @@ export interface Props {
   orderType?: OrderTypes
   slippageTolerance?: SlippagePresetObjectType
   orderExpiration?: ExpirationPresetObjectType
-  validationError?: SwapValidationErrorType
+  validationError?: SwapValidationErrorType | undefined
   customSlippageTolerance?: string
   defaultCurrencies?: DefaultCurrencies
-  selectedPreset?: AmountPresetTypes
+  selectedPreset?: AmountPresetTypes | undefined
   onCustomSlippageToleranceChange?: (value: string) => void
   onInputChange?: (value: string, name: string) => void
   onSelectPresetAmount?: (percent: number) => void
@@ -87,6 +88,7 @@ function SwapInputComponent (props: Props) {
   const {
     autoFocus,
     selectedAsset,
+    selectedNetwork,
     selectedAssetBalance,
     componentType,
     selectedAssetInputAmount,
@@ -214,7 +216,7 @@ function SwapInputComponent (props: Props) {
 
   const fromAmountHasErrors = validationError && [
     'insufficientBalance',
-    'insufficientEthBalance',
+    'insufficientFundsForGas',
     'fromAmountDecimalsOverflow'
   ].includes(validationError)
 
@@ -295,7 +297,7 @@ function SwapInputComponent (props: Props) {
             {componentType !== 'exchange' && componentType !== 'toAddress' &&
               <AssetButton isERC721={selectedAsset?.isErc721} onClick={onShowSelection}>
                 <ButtonLeftSide>
-                  <AssetIconWithPlaceholder selectedAsset={selectedAsset} />
+                  <AssetIconWithPlaceholder asset={selectedAsset} network={selectedNetwork}/>
                   <AssetTicker>
                     {selectedAsset?.symbol} {
                       selectedAsset?.isErc721 && selectedAsset?.tokenId

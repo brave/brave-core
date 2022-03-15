@@ -43,7 +43,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 bool IsNetworkSupported(const std::string& chain_id) {
   if (chain_id == brave_wallet::mojom::kRopstenChainId ||
-      chain_id == brave_wallet::mojom::kMainnetChainId) {
+      chain_id == brave_wallet::mojom::kMainnetChainId ||
+      chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
     return true;
   }
 
@@ -116,10 +117,7 @@ void SwapService::SetBaseURLForTest(const GURL& base_url_for_test) {
 // static
 std::string SwapService::GetFee(const std::string& chain_id) {
   std::string fee;
-
-  if (chain_id == brave_wallet::mojom::kRopstenChainId) {
-    fee = brave_wallet::kRopstenBuyTokenPercentageFee;
-  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
+  if (IsNetworkSupported(chain_id)) {
     fee = brave_wallet::kBuyTokenPercentageFee;
   }
 
@@ -134,6 +132,8 @@ std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
     url = brave_wallet::kRopstenSwapBaseAPIURL;
   } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
     url = brave_wallet::kSwapBaseAPIURL;
+  } else if (chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
+    url = brave_wallet::kPolygonSwapBaseAPIURL;
   }
 
   return url;
@@ -143,9 +143,12 @@ std::string SwapService::GetBaseSwapURL(const std::string& chain_id) {
 std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
   std::string feeRecipient;
 
+  // For easy testability on test networks, we use an address different from
+  // the production multisig address.
   if (chain_id == brave_wallet::mojom::kRopstenChainId) {
     feeRecipient = brave_wallet::kRopstenFeeRecipient;
-  } else if (chain_id == brave_wallet::mojom::kMainnetChainId) {
+  } else if (chain_id == brave_wallet::mojom::kMainnetChainId ||
+             chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
     feeRecipient = brave_wallet::kFeeRecipient;
   }
 
@@ -156,7 +159,8 @@ std::string SwapService::GetFeeRecipient(const std::string& chain_id) {
 std::string SwapService::GetAffiliateAddress(const std::string& chain_id) {
   std::string affiliateAddress;
 
-  if (chain_id == brave_wallet::mojom::kMainnetChainId) {
+  if (chain_id == brave_wallet::mojom::kMainnetChainId ||
+      chain_id == brave_wallet::mojom::kPolygonMainnetChainId) {
     affiliateAddress = brave_wallet::kAffiliateAddress;
   }
 

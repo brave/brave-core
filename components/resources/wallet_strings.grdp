@@ -376,7 +376,7 @@
   <message name="IDS_BRAVE_WALLET_QUEUE_FIRST" desc="Confirm Transaction Queue first">first</message>
   <message name="IDS_BRAVE_WALLET_QUEUE_REJECT_ALL" desc="Confirm Transaction Queue Reject All Transactions">Reject <ph name="TRANSACTION_LENGTH"><ex>4</ex>$1</ph> transactions</message>
   <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_BALANCE" desc="Swap CTA text for insufficient balance">Insufficient balance</message>
-  <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ETH_BALANCE" desc="Swap CTA text for insufficient ETH balance">Insufficient funds for gas</message>
+  <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_FUNDS_FOR_GAS" desc="Swap CTA text for insufficient native asset balance">Insufficient funds for gas</message>
   <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY" desc="Swap CTA text for insufficient liquidity">Insufficient liquidity</message>
   <message name="IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ALLOWANCE" desc="Swap CTA text for insufficient allowance">
     Activate <ph name="FROM_ASSET_SYMBOL"><ex>BAT</ex>$1</ph>

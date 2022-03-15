@@ -22,14 +22,15 @@ import {
 } from './style'
 
 export interface Props {
-  selectedAsset?: BraveWallet.BlockchainToken
+  selectedAsset: BraveWallet.BlockchainToken | undefined
+  selectedNetwork: BraveWallet.EthereumChain
   selectedAssetAmount: string
   selectedAssetBalance: string
   toAddressOrUrl: string
   toAddress: string
   addressError: string
   addressWarning: string
-  amountValidationError?: AmountValidationErrorType
+  amountValidationError: AmountValidationErrorType | undefined
   onSubmit: () => void
   onInputChange: (value: string, name: string) => void
   onChangeSendView: (view: BuySendSwapViewTypes, option?: ToOrFromType) => void
@@ -39,6 +40,7 @@ export interface Props {
 function Send (props: Props) {
   const {
     selectedAsset,
+    selectedNetwork,
     selectedAssetAmount,
     selectedAssetBalance,
     toAddressOrUrl,
@@ -109,6 +111,7 @@ function Send (props: Props) {
         inputName='from'
         selectedAssetBalance={selectedAssetBalance}
         selectedAsset={selectedAsset}
+        selectedNetwork={selectedNetwork}
         onShowSelection={onShowAssets}
         autoFocus={true}
         selectedPreset={selectedPreset}

@@ -53,7 +53,7 @@ function AddSuggestedTokenPanel (props: Props) {
         </TopRow>
         <Title>{getLocale('braveWalletAddSuggestedTokenTitle')}</Title>
         <Description>{getLocale('braveWalletAddSuggestedTokenDescription')}</Description>
-        <AssetIconWithPlaceholder selectedAsset={token} />
+        <AssetIconWithPlaceholder asset={token} network={selectedNetwork} />
         <TokenName>{token?.name ?? ''} ({token?.symbol ?? ''})</TokenName>
         <Tooltip
           text={getLocale('braveWalletTransactionExplorer')}

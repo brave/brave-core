@@ -562,8 +562,8 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletQueueRejectAll", IDS_BRAVE_WALLET_QUEUE_REJECT_ALL},
     {"braveWalletSwapInsufficientBalance",
      IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_BALANCE},
-    {"braveWalletSwapInsufficientEthBalance",
-     IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_ETH_BALANCE},
+    {"braveWalletSwapInsufficientFundsForGas",
+     IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_FUNDS_FOR_GAS},
     {"braveWalletSwapInsufficientLiquidity",
      IDS_BRAVE_WALLET_SWAP_INSUFFICIENT_LIQUIDITY},
     {"braveWalletSwapInsufficientAllowance",
@@ -614,15 +614,17 @@ constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_SWEEPSTAKES_CALL_TO_ACTION},
 };
 
+// Swap constants
 const char kRopstenSwapBaseAPIURL[] = "https://ropsten.api.0x.org/";
-const char kRopstenBuyTokenPercentageFee[] = "0.00875";
+// As of 22-02-2022, this address is controlled by @onyb.
 const char kRopstenFeeRecipient[] =
     "0xa92D461a9a988A7f11ec285d39783A637Fdd6ba4";
-
+const char kPolygonSwapBaseAPIURL[] = "https://polygon.api.0x.org/";
 const char kSwapBaseAPIURL[] = "https://api.0x.org/";
 const char kBuyTokenPercentageFee[] = "0.00875";
 const char kFeeRecipient[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 const char kAffiliateAddress[] = "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
+
 const int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 
 // Unstoppable domains record key for ethereum address.
