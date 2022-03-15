@@ -26,6 +26,7 @@
 #include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 const char kTestHost[] = "a.test.com";
@@ -34,7 +35,7 @@ const char kTestSimpleNonAmpPage[] = "/simple";
 const char kTestCanonicalPage[] = "/simple_canonical";
 const char kTestAmpBody[] =
     R"(
-      <html amp>
+    <html amp>
     <head>
     <link rel='canonical'
     href='https://%s:%s%s'>
@@ -43,7 +44,7 @@ const char kTestAmpBody[] =
     )";
 const char kTestNonAmpBody[] =
     R"(
-      <html>
+    <html>
     <head>
     </head>
     <body>Simple page</body>
@@ -162,12 +163,12 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, SimpleDeAmp) {
 
 IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, NonHttpScheme) {
   TogglePref(true);
-  const std::string nonHttpSchemeBody =
+  const char nonHttpSchemeBody[] =
       R"(
-        <html amp>\
-      <head>\
+      <html amp>
+      <head>
       <link rel='canonical' 
-      href='brave://settings'>\
+      href='brave://settings'>
       </head></html>
       )";
   https_server_->RegisterRequestHandler(base::BindRepeating(
@@ -266,6 +267,35 @@ IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, AmpURLNotStoredInHistory) {
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url1);
   GoForward(browser());
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), landing_url2);
+}
+
+// Inspired by view-source test:
+// chrome/browser/tab_contents/view_source_browsertest.cc
+IN_PROC_BROWSER_TEST_F(DeAmpBrowserTest, NonDeAmpedPageSameAsOriginal) {
+  TogglePref(true);
+  https_server_->RegisterRequestHandler(base::BindRepeating(
+      HandleRequest, kTestHost, kTestSimpleNonAmpPage, kTestNonAmpBody));
+  ASSERT_TRUE(https_server_->Start());
+
+  const GURL original_url =
+      https_server_->GetURL(kTestHost, kTestSimpleNonAmpPage);
+  NavigateToURLAndWaitForRedirects(original_url, original_url);
+  content::RenderFrameHost* current_main_frame = web_contents()->GetMainFrame();
+  // Open View Source for page
+  content::WebContentsAddedObserver view_source_contents_observer;
+  current_main_frame->ViewSource();
+  content::WebContents* view_source_contents =
+      view_source_contents_observer.GetWebContents();
+  EXPECT_TRUE(WaitForLoadStop(view_source_contents));
+
+  std::string source_text;
+  // Get contents of view-source'd tab
+  std::string view_source_extraction_script =
+      R"(Array.from(document.querySelectorAll(".line-content")).reduce((prev, cur) => prev + cur.innerText + "\n", ""))";
+  std::string actual_page_body =
+      EvalJs(view_source_contents, view_source_extraction_script)
+          .ExtractString();
+  EXPECT_THAT(actual_page_body, testing::HasSubstr(kTestNonAmpBody));
 }
 
 class DeAmpBrowserTestBaseFeatureDisabled : public DeAmpBrowserTest {

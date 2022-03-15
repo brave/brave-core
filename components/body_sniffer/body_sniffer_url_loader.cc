@@ -159,6 +159,7 @@ void BodySnifferURLLoader::ResumeReadingBodyFromNet() {
   source_url_loader_->ResumeReadingBodyFromNet();
 }
 
+// Only returns true if MOJO_RESULT_OK
 bool BodySnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
   size_t start_size = buffered_body_.size();
   uint32_t read_bytes = readBufferSize;
@@ -168,6 +169,7 @@ bool BodySnifferURLLoader::CheckBufferedBody(uint32_t readBufferSize) {
       &buffered_body_[0] + start_size, &read_bytes, MOJO_READ_DATA_FLAG_NONE);
   switch (result) {
     case MOJO_RESULT_OK:
+      buffered_body_.resize(start_size + read_bytes);
       return true;
     case MOJO_RESULT_FAILED_PRECONDITION:
       buffered_body_.resize(start_size);
