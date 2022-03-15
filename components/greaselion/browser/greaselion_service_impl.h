@@ -49,6 +49,9 @@ class GreaselionServiceImpl : public GreaselionService,
   GreaselionServiceImpl& operator=(const GreaselionServiceImpl&) = delete;
   ~GreaselionServiceImpl() override;
 
+  // KeyedService overrides
+  void Shutdown() override;
+
   // GreaselionService overrides
   void SetFeatureEnabled(GreaselionFeature feature, bool enabled) override;
   void UpdateInstalledExtensions() override;

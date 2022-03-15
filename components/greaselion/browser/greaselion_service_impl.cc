@@ -246,7 +246,9 @@ GreaselionServiceImpl::GreaselionServiceImpl(
   state_[GreaselionFeature::SUPPORTS_MINIMUM_BRAVE_VERSION] = true;
 }
 
-GreaselionServiceImpl::~GreaselionServiceImpl() {
+GreaselionServiceImpl::~GreaselionServiceImpl() {}
+
+void GreaselionServiceImpl::Shutdown() {
   download_service_->RemoveObserver(this);
   extension_registry_->RemoveObserver(this);
   task_runner_->PostTask(FROM_HERE,
