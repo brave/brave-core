@@ -27,13 +27,13 @@ class CORE_EXPORT ResourcePoolLimiter {
 
   class CORE_EXPORT ResourceInUseTracker {
    public:
-    explicit ResourceInUseTracker(String resource_id_in_use);
+    explicit ResourceInUseTracker(String resource_id);
     ~ResourceInUseTracker();
 
-    const String& resource_id_in_use() const { return resource_id_in_use_; }
+    const String& resource_id() const { return resource_id_; }
 
    private:
-    String resource_id_in_use_;
+    String resource_id_;
   };
 
   static ResourcePoolLimiter& GetInstance();
