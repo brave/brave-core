@@ -2,11 +2,6 @@
     android:exported="false">
 </receiver>
 
-<service
-    android:name="org.chromium.chrome.browser.vpn.wireguard.WireguardService"
-    android:enabled="true"
-    android:exported="false" />
-
 <activity android:name="org.chromium.chrome.browser.BraveRewardsDonationSentActivity"
     android:theme="@android:style/Theme.Translucent.NoTitleBar"
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" />
@@ -163,6 +158,11 @@
 <service android:name="org.chromium.chrome.browser.upgrade.BraveUpgradeJobIntentService"
     android:permission="android.permission.BIND_JOB_SERVICE"
     android:exported="false"/>
+
+<service
+    android:name="org.chromium.chrome.browser.vpn.wireguard.WireguardService"
+    android:exported="false">
+</service>
 
 <service
     android:name="com.wireguard.android.backend.GoBackend$VpnService"

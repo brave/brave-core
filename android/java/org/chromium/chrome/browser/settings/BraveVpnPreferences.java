@@ -107,6 +107,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                         verifyPurchase(true);
                     } else {
                         BraveVpnUtils.openBraveVpnPlansActivity(getActivity());
+                        BraveVpnUtils.dismissProgressDialog();
                     }
                 }
                 return false;
@@ -302,8 +303,8 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             mBraveVpnPrefModel.setProductId(purchase.getSkus().get(0).toString());
             if (BraveVpnPrefUtils.isResetConfiguration()) {
                 Log.e("BraveVPN", "verifyPurchase : vpn pref : 1");
-                BraveVpnUtils.openBraveVpnProfileActivity(getActivity());
                 BraveVpnUtils.dismissProgressDialog();
+                BraveVpnUtils.openBraveVpnProfileActivity(getActivity());
                 return;
             }
             if (!isVerification) {
@@ -320,6 +321,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
             }
         } else {
             BraveVpnApiResponseUtils.queryPurchaseFailed(getActivity());
+            BraveVpnUtils.mIsServerLocationChanged = false;
         }
     }
 
@@ -351,6 +353,7 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
 
                 Intent intent = GoBackend.VpnService.prepare(getActivity());
                 if (intent != null || !WireguardConfigUtils.isConfigExist(getActivity())) {
+                    BraveVpnUtils.dismissProgressDialog();
                     BraveVpnUtils.openBraveVpnProfileActivity(getActivity());
                     return;
                 }
@@ -427,6 +430,10 @@ public class BraveVpnPreferences extends BravePreferenceFragment implements Brav
                             mBraveVpnPrefModel.getClientPrivateKey(),
                             braveVpnWireguardProfileCredentials.getServerPublicKey());
                 }
+
+                // BraveVpnPrefUtils.setIpAddress(braveVpnWireguardProfileCredentials.getMappedIpv4Address());
+                // BraveVpnPrefUtils.setServerPublicKey(braveVpnWireguardProfileCredentials.getServerPublicKey());
+                // BraveVpnPrefUtils.setClientPrivateKey(mBraveVpnPrefModel.getClientPrivateKey());
 
                 // Intent intent = GoBackend.VpnService.prepare(this);
                 // if (intent != null) {

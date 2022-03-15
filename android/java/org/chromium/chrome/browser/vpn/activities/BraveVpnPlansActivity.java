@@ -89,8 +89,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
             @Override
             public void onClick(View v) {
                 // showProgress();
-                BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
-                        getResources().getString(R.string.vpn_connect_text));
+                // BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
+                //         getResources().getString(R.string.vpn_connect_text));
                 InAppPurchaseWrapper.getInstance().purchase(
                         BraveVpnPlansActivity.this, monthlySkuDetails);
             }
@@ -110,8 +110,8 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
             @Override
             public void onClick(View v) {
                 // showProgress();
-                BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
-                        getResources().getString(R.string.vpn_connect_text));
+                // BraveVpnUtils.showProgressDialog(BraveVpnPlansActivity.this,
+                //         getResources().getString(R.string.vpn_connect_text));
                 InAppPurchaseWrapper.getInstance().purchase(
                         BraveVpnPlansActivity.this, yearlySkuDetails);
             }
@@ -126,6 +126,10 @@ public class BraveVpnPlansActivity extends BraveVpnParentActivity {
                 BraveVpnPlansActivity.this, getResources().getString(R.string.vpn_connect_text));
         mIsVerification = true;
         verifySubscription();
+        if (mMonthlySelectorLayout != null) {
+            mMonthlySelectorLayout.setAlpha(0.4f);
+            mMonthlySelectorLayout.setOnClickListener(null);
+        }
     }
 
     @Override

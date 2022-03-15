@@ -2240,8 +2240,8 @@ Are you sure you want to do this?
     <message name="IDS_SUPPORTS_SPEED" desc="Brave VPN plan text">
       Supports speeds of up to 100 Mbps
     </message>
-    <message name="IDS_USE_IKEV2" desc="Brave VPN plan text">
-      Uses IKEv2 secure encrypted VPN tunnel
+    <message name="IDS_USE_WIREGUARD" desc="Brave VPN plan text">
+      Uses Wireguard secure encrypted VPN tunnel
     </message>
     <message name="IDS_NEVER_SHARE_INFO" desc="Brave VPN plan text">
       We never share or sell your info
@@ -2350,9 +2350,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_VPN_SUPPORT" desc="Brave VPN settings section text">
       VPN Support
     </message>
-    <message name="IDS_VPN_PROFILE_IS_NOT_CREATED" desc="Brave VPN profile error text">
+    <!-- <message name="IDS_VPN_PROFILE_IS_NOT_CREATED" desc="Brave VPN profile error text">
       Vpn profile is not created. Creating a new profile.
-    </message>
+    </message> -->
     <message name="IDS_FAIL_TO_GET_SERVER_LOCATIONS" desc="Brave VPN error text">
       Fail to get server location. Please try again later.
     </message>

@@ -39,7 +39,7 @@ public class BraveVpnPlanPagerAdapter extends PagerAdapter {
             planText3.setText(context.getResources().getString(R.string.keep_your_ip_address));
         } else {
             planText1.setText(context.getResources().getString(R.string.supports_speed));
-            planText2.setText(context.getResources().getString(R.string.use_ikev2));
+            planText2.setText(context.getResources().getString(R.string.use_wireguard));
             planText3.setText(context.getResources().getString(R.string.never_share_info));
         }
         collection.addView(view);

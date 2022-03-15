@@ -51,6 +51,7 @@ public abstract class BraveVpnParentActivity
 
     ActivityResultLauncher<Intent> intentActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(), result -> {
+                BraveVpnUtils.dismissProgressDialog();
                 if (result.getResultCode() == RESULT_OK) {
                     BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
                     BraveVpnUtils.showVpnConfirmDialog(this);
@@ -217,14 +218,17 @@ public abstract class BraveVpnParentActivity
                             mBraveVpnPrefModel.getClientPrivateKey(),
                             braveVpnWireguardProfileCredentials.getServerPublicKey());
                 }
+                // BraveVpnPrefUtils.setIpAddress(braveVpnWireguardProfileCredentials.getMappedIpv4Address());
+                // BraveVpnPrefUtils.setServerPublicKey(braveVpnWireguardProfileCredentials.getServerPublicKey());
+                // BraveVpnPrefUtils.setClientPrivateKey(mBraveVpnPrefModel.getClientPrivateKey());
 
                 Intent intent = GoBackend.VpnService.prepare(this);
                 if (intent != null) {
                     intentActivityResultLauncher.launch(intent);
                     return;
                 }
-                BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
                 BraveVpnUtils.dismissProgressDialog();
+                BraveVpnProfileUtils.getInstance().startVpn(BraveVpnParentActivity.this);
                 finish();
             } catch (Exception e) {
                 Log.e("Tunnel", e.getMessage());

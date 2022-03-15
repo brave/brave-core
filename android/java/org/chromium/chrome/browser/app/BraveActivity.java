@@ -260,7 +260,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public CopyOnWriteArrayList<FeedItemsCard> mNewsItemsFeedCards;
 
     private WireguardService wireguardService;
-    boolean mBound = false;
 
     @SuppressLint("VisibleForTests")
     public BraveActivity() {

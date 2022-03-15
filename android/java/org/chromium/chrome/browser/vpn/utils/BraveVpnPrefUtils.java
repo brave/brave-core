@@ -36,6 +36,9 @@ public class BraveVpnPrefUtils {
     public static final String PREF_BRAVE_VPN_SUBSCRIBER_CREDENTIAL =
             "brave_vpn_subscriber_credential";
     public static final String PREF_BRAVE_VPN_CLIENT_ID = "brave_vpn_client_id";
+    public static final String PREF_BRAVE_VPN_SERVER_PUBLIC_KEY = "brave_vpn_server_public_key";
+    public static final String PREF_BRAVE_VPN_IP_ADDRESS = "brave_vpn_ip_address";
+    public static final String PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY = "brave_vpn_client_private_key";
 
     private static final SharedPreferences mSharedPreferences =
             ContextUtils.getAppSharedPreferences();
@@ -199,6 +202,36 @@ public class BraveVpnPrefUtils {
 
     public static String getClientId() {
         return mSharedPreferences.getString(PREF_BRAVE_VPN_CLIENT_ID, "");
+    }
+
+    public static void setIpAddress(String value) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_IP_ADDRESS, value);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static String getIpAddress() {
+        return mSharedPreferences.getString(PREF_BRAVE_VPN_IP_ADDRESS, "");
+    }
+
+    public static void setServerPublicKey(String value) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_SERVER_PUBLIC_KEY, value);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static String getServerPublicKey() {
+        return mSharedPreferences.getString(PREF_BRAVE_VPN_SERVER_PUBLIC_KEY, "");
+    }
+
+    public static void setClientPrivateKey(String value) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putString(PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY, value);
+        sharedPreferencesEditor.apply();
+    }
+
+    public static String getClientPrivateKey() {
+        return mSharedPreferences.getString(PREF_BRAVE_VPN_CLIENT_PRIVATE_KEY, "");
     }
 
     public static void setPrefModel(BraveVpnPrefModel braveVpnPrefModel) {

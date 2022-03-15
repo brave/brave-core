@@ -193,7 +193,7 @@ void BraveVpnNativeWorker::InvalidateCredentials(
   BraveVpnService* brave_vpn_service = GetBraveVpnService();
   if (brave_vpn_service) {
     brave_vpn_service->InvalidateCredentials(
-        base::BindOnce(&BraveVpnNativeWorker::OnVerifyCredentials,
+        base::BindOnce(&BraveVpnNativeWorker::OnInvalidateCredentials,
                        weak_factory_.GetWeakPtr()),
         base::android::ConvertJavaStringToUTF8(env, hostname),
         base::android::ConvertJavaStringToUTF8(env, client_id),

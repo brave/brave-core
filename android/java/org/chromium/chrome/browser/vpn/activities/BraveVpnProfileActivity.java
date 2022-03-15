@@ -90,6 +90,8 @@ public class BraveVpnProfileActivity extends BraveVpnParentActivity {
         mInstallVpnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                BraveVpnUtils.showProgressDialog(BraveVpnProfileActivity.this,
+                        getResources().getString(R.string.vpn_connect_text));
                 verifySubscription();
             }
         });

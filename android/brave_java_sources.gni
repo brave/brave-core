@@ -336,7 +336,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/vpn/utils/InAppPurchaseWrapper.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/TunnelModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardConfigUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
+  "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardServiceImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceAccountBalance.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/crypto/binance/BinanceActivity.java",
@@ -384,7 +384,10 @@ brave_java_base_sources = [
 brave_java_base_module_sources = [
   "//brave/android/java/org/chromium/chrome/browser/base/SplitCompatJobIntentService.java",
   "//brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
+  "//brave/android/java/org/chromium/chrome/browser/vpn/wireguard/WireguardService.java",
 ]
 
-brave_java_base_module_deps =
-    [ "//third_party/androidx:androidx_core_core_java" ]
+brave_java_base_module_deps = [
+  "//brave/third_party/android_deps:com_wireguard_android_java",
+  "//third_party/androidx:androidx_core_core_java",
+]
