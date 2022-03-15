@@ -13,17 +13,6 @@ export const StyledWrapper = styled.div`
   & > div.infinite-scroll-component {
     width: 100%;
   }
-
-  &::scroll-behavior {
-    scroll-behavior: smooth;
-    background-color: transparent;
-    scrollbar-width: 5px;
-    border: transparent;
-  }
-
-  &::-webkit-scrollbar-track {
-    border-color: transparent;
-  }
 `
 
 export const TableWrapper = styled.div`

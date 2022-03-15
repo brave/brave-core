@@ -14,6 +14,7 @@ import { useMarketDataManagement } from '../../../../common/hooks/market-data-ma
 import { MarketDataTableHeaders } from '../../../../options/market-data-headers'
 import { BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../../../../constants/types'
 import MarketDataTable from '../../../../components/market-datatable'
+import { debounce } from '../../../../../common/debounce'
 
 export interface Props {
   isLoadingCoinMarketData: boolean
@@ -30,19 +31,20 @@ const MarketView = (props: Props) => {
   const [sortByColumnId, setSortByColumnId] = React.useState<MarketDataTableColumnTypes>('marketCap')
   const { sortCoinMarketData, filterCoinMarketData } = useMarketDataManagement(coinsMarketData, sortOrder, sortByColumnId)
   const [currentPage, setCurrentPage] = React.useState<number>(1)
-  const [moreDataAvailable, setMoreDataAvailble] = React.useState<boolean>(true)
+  const [searchTerm, setSearchTerm] = React.useState('')
+  const [moreDataAvailable, setMoreDataAvailable] = React.useState<boolean>(false)
   const defaultCurrency = 'usd'
   const limit = 250
-  const perPage = 30
+  const perPage = 20
 
-  const onSearch = (event: any) => {
-    const searchTerm = event.target.value
-    if (searchTerm !== '') {
-      const filteredCoinMarketData = filterCoinMarketData(coinsMarketData, searchTerm)
-      setCoinsMarketData(filteredCoinMarketData)
-    } else {
-      setCoinsMarketData(sortedMarketData)
-    }
+  const search = (query: string) => {
+    const filteredCoinMarketData = filterCoinMarketData(coinMarkets, query)
+    const paginated = paginate(filteredCoinMarketData, perPage, 1)
+    setCoinsMarketData(paginated)
+  }
+
+  const debounceSearch = (query: string) => {
+    return debounce(search, 500)(query)
   }
 
   const onSelectFilter = (value: string) => {
@@ -50,17 +52,20 @@ const MarketView = (props: Props) => {
   }
 
   const paginate = (coinMarkets: BraveWallet.CoinMarket[], perPage: number, pageNumber: number) => {
-    return coinMarkets.slice((pageNumber - 1) * perPage, pageNumber * perPage)
+    const pageData = coinMarkets.slice((pageNumber - 1) * perPage, pageNumber * perPage)
+    const nextPageData = coinMarkets.slice(pageNumber * perPage, (pageNumber + 1) * perPage)
+    setMoreDataAvailable(nextPageData.length > 0)
+
+    return pageData
   }
 
   const getNextPage = () => {
     const nextPage = currentPage + 1
-    const data = paginate(coinMarkets, perPage, nextPage)
-    if (data.length === 0) {
-      setMoreDataAvailble(false)
-    } else {
-      setCoinsMarketData([...sortedMarketData, ...data])
-    }
+    const data = searchTerm !== ''
+      ? paginate(filterCoinMarketData(coinMarkets, searchTerm), perPage, nextPage)
+      : paginate(coinMarkets, perPage, nextPage)
+
+    setCoinsMarketData([...sortedMarketData, ...data])
     setCurrentPage(nextPage)
   }
 
@@ -85,7 +90,9 @@ const MarketView = (props: Props) => {
   }
 
   React.useEffect(() => {
-    onFetchCoinMarkets(defaultCurrency, limit)
+    if (coinMarkets.length === 0) {
+      onFetchCoinMarkets(defaultCurrency, limit)
+    }
   }, [])
 
   React.useEffect(() => {
@@ -108,7 +115,10 @@ const MarketView = (props: Props) => {
         <SearchBar
           placeholder="Search"
           autoFocus={true}
-          action={onSearch}
+          action={event => {
+            setSearchTerm(event.target.value)
+            debounceSearch(event.target.value)
+          }}
           disabled={isLoadingCoinMarketData}
         />
       </TopRow>

@@ -3,6 +3,7 @@ import InfinitieScroll from 'react-infinite-scroll-component'
 import { BraveWallet, MarketDataTableColumnTypes, SortOrder } from '../../constants/types'
 import Table, { Cell, Header, Row } from '../shared/datatable'
 import {
+  AssetsColumnItemSpacer,
   AssetsColumnWrapper,
   StyledWrapper,
   TableWrapper,
@@ -15,6 +16,7 @@ import {
 } from '../../utils/format-prices'
 import AssetNameAndIcon from '../asset-name-and-icon'
 import AssetPriceChange from '../asset-price-change'
+import AssetWishlistStar from '../asset-wishlist-star'
 import { LoadIcon, LoadIconWrapper } from '../desktop/views/market/style'
 
 export interface MarketDataHeader extends Header {
@@ -52,19 +54,13 @@ const MarketDataTable = (props: Props) => {
     const isDown = priceChange24h < 0
 
     const cellsContent: React.ReactNode[] = [
-      // Market Cap Rank Column
-      <TextWrapper
-        alignment="left"
-      >
-        {marketCapRank}
-      </TextWrapper>,
-
-      // Assets Column
       <AssetsColumnWrapper>
-        {/* Hidden until wishlist feature is added in the backend */}
-        {/* <AssetsColumnItemSpacer>
+        <AssetsColumnItemSpacer>
           <AssetWishlistStar active={true} />
-        </AssetsColumnItemSpacer> */}
+        </AssetsColumnItemSpacer>
+        <AssetsColumnItemSpacer>
+          <TextWrapper alignment="right">{marketCapRank}</TextWrapper>
+        </AssetsColumnItemSpacer>
         <AssetNameAndIcon
           assetName={name}
           symbol={symbol}

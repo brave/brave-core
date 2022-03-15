@@ -9,15 +9,6 @@ const alignRight = {
 // this helps in finding the correct header to sort by
 export const MarketDataTableHeaders = [
   {
-    id: 'marketCapRank',
-    content: '#',
-    sortable: true,
-    customStyle: {
-      width: 40,
-      textAlign: 'center'
-    }
-  },
-  {
     id: 'assets',
     content: 'Assets',
     customStyle: {
@@ -35,7 +26,7 @@ export const MarketDataTableHeaders = [
     }
   },
   {
-    id: 'priceChange24h',
+    id: 'priceChangePercentage24h',
     content: '24hr',
     sortable: true,
     customStyle: {

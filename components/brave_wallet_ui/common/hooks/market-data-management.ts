@@ -22,9 +22,9 @@ export const useMarketDataManagement = (marketData: BraveWallet.CoinMarket[], so
 
     const options = {
       shouldSort: true,
-      threshold: 0.45,
+      threshold: 0.1,
       location: 0,
-      distance: 100,
+      distance: 0,
       minMatchCharLength: 1,
       keys: [
         { name: 'name', weight: 0.5 },
