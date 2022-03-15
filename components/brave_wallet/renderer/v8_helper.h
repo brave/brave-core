@@ -22,6 +22,10 @@ namespace brave_wallet {
 v8::MaybeLocal<v8::Value> GetProperty(v8::Local<v8::Context> context,
                                       v8::Local<v8::Value> object,
                                       const std::u16string& name);
+v8::Maybe<bool> CreateDataProperty(v8::Local<v8::Context> context,
+                                   v8::Local<v8::Object> object,
+                                   const std::u16string& name,
+                                   v8::Local<v8::Value> value);
 
 v8::MaybeLocal<v8::Value> CallMethodOfObject(
     blink::WebLocalFrame* web_frame,

@@ -60,14 +60,24 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
   bool GetIsPhantom(gin::Arguments* arguments);
   bool GetIsConnected(gin::Arguments* arguments);
   v8::Local<v8::Value> GetPublicKey(gin::Arguments* arguments);
+  // Promise<{ publicKey: solanaWeb3.PublicKey }>
   v8::Local<v8::Promise> Connect(gin::Arguments* arguments);
+  // Promise<undefined>
   v8::Local<v8::Promise> Disconnect(gin::Arguments* arguments);
+  // Promise<
+  //  { publicKey: <base58 encoded string>,
+  //    signature: <base58 encoded string>}>
   v8::Local<v8::Promise> SignAndSendTransaction(gin::Arguments* arguments);
+  // Promise<
+  //  { publicKey: <solanaWeb3.PublicKey>,
+  //    signature: <Uint8Array>}>
   v8::Local<v8::Promise> SignMessage(gin::Arguments* arguments);
   v8::Local<v8::Promise> Request(gin::Arguments* arguments);
   // Deprecated
+  // Promise<solanaWeb3.Transaction>
   v8::Local<v8::Promise> SignTransaction(gin::Arguments* arguments);
   // Deprecated
+  // Promise<solanaWeb3.Transaction[]>
   v8::Local<v8::Promise> SignAllTransactions(gin::Arguments* arguments);
 
   // TODO: fire accountChanged event
@@ -88,6 +98,13 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
       mojom::SolanaProviderError error,
       const std::string& error_message,
       base::Value result);
+
+  void OnSignMessage(v8::Global<v8::Context> global_context,
+                     v8::Global<v8::Promise::Resolver> promise_resolver,
+                     v8::Isolate* isolate,
+                     mojom::SolanaProviderError error,
+                     const std::string& error_message,
+                     base::Value result);
 
   void OnSignTransaction(v8::Global<v8::Context> global_context,
                          v8::Global<v8::Promise::Resolver> promise_resolver,
@@ -113,6 +130,15 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
   // Get solanaWeb3.Transaction.serializedMessage with base58 encoding
   absl::optional<std::string> GetSerializedMessage(
       v8::Local<v8::Value> transaction);
+
+  // use @solana/web3.js and create publicKey from base58 string
+  v8::Local<v8::Value> CreatePublicKey(v8::Local<v8::Context> context,
+                                       const std::string& base58_str);
+
+  // use @solana/web3.js and create Transaction from serialized tx
+  v8::Local<v8::Value> CreateTransaction(
+      v8::Local<v8::Context> context,
+      const std::vector<uint8_t> serialized_tx);
 
   bool use_native_wallet_ = false;
   raw_ptr<content::RenderFrame> render_frame_ = nullptr;

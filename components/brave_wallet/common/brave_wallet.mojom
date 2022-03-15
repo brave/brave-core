@@ -150,7 +150,14 @@ interface SolanaProvider {
   SignAndSendTransaction(string encoded_serialized_msg)
     => (SolanaProviderError error, string error_message,
         mojo_base.mojom.DictionaryValue result);
-  // SignMessage, hex or utf8 encoding
+  // It takes a base58 encoded message and an optional display encoding for
+  // users and returns an object as
+  // { publicKey: <base58 encoded string>,
+  //   signature:  <base58 encoded string>
+  // }
+  SignMessage(string encoded_msg, string? display_encoding)
+    => (SolanaProviderError error, string error_message,
+        mojo_base.mojom.DictionaryValue result);
 
   // Request(string json_payload)
 

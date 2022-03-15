@@ -103,4 +103,21 @@ void SolanaProviderImpl::SignAndSendTransaction(
   // std::move(result));
 }
 
+void SolanaProviderImpl::SignMessage(
+    const std::string& encoded_msg,
+    const absl::optional<std::string>& display_encoding,
+    SignMessageCallback callback) {
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetStringKey("publicKey",
+                      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  result.SetStringKey("signature",
+                      "As4N6cok5f7nhXp56Hdw8dWZpUnY8zjYKzBqK45CexE1qNPCqt6Y"
+                      "2gnZduGgqASDD1c6QULBRypVa9BikoxWpGA");
+  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
+                          std::move(result));
+  // NOTIMPLEMENTED();
+  // std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
+  // std::move(result));
+}
+
 }  // namespace brave_wallet
