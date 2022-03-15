@@ -264,7 +264,6 @@ class BraveWalletProviderImpl final
 
   void CommonRequestOrSendAsync(base::Value input_value,
                                 const std::string& origin,
-                                mojom::CoinType coin,
                                 RequestCallback callback);
 
   void RequestEthereumPermissions(RequestCallback callback,

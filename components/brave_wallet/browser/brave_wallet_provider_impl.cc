@@ -773,8 +773,7 @@ void BraveWalletProviderImpl::OnAddEthereumChainRequestCompleted(
 void BraveWalletProviderImpl::Request(base::Value input,
                                       const std::string& origin,
                                       RequestCallback callback) {
-  CommonRequestOrSendAsync(std::move(input), origin, mojom::CoinType::ETH,
-                           std::move(callback));
+  CommonRequestOrSendAsync(std::move(input), origin, std::move(callback));
 }
 
 void BraveWalletProviderImpl::SendErrorOnRequest(
@@ -791,7 +790,6 @@ void BraveWalletProviderImpl::SendErrorOnRequest(
 void BraveWalletProviderImpl::CommonRequestOrSendAsync(
     base::Value input_value,
     const std::string& origin,
-    mojom::CoinType coin,
     RequestCallback callback) {
   mojom::ProviderError error = mojom::ProviderError::kUnsupportedMethod;
   std::string error_message = "Generic processing error";
@@ -841,7 +839,7 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
     SwitchEthereumChain(chain_id, std::move(callback), std::move(id));
   } else if (method == kEthSendTransaction) {
     json_rpc_service_->GetNetwork(
-        coin,
+        mojom::CoinType::ETH,
         base::BindOnce(&BraveWalletProviderImpl::ContinueGetDefaultKeyringInfo,
                        weak_factory_.GetWeakPtr(), std::move(callback),
                        std::move(id), normalized_json_request));
@@ -936,7 +934,7 @@ void BraveWalletProviderImpl::CommonRequestOrSendAsync(
                        std::move(id), method, origin));
   } else {
     json_rpc_service_->Request(normalized_json_request, true, std::move(id),
-                               coin, std::move(callback));
+                               mojom::CoinType::ETH, std::move(callback));
   }
 }
 
@@ -948,7 +946,7 @@ void BraveWalletProviderImpl::Send(const std::string& method,
       base::Value::ToUniquePtrValue(std::move(params));
   CommonRequestOrSendAsync(
       std::move(*GetJsonRpcRequest(method, std::move(params_ptr))), origin,
-      mojom::CoinType::ETH, std::move(callback));
+      std::move(callback));
 }
 
 void BraveWalletProviderImpl::RequestEthereumPermissions(
