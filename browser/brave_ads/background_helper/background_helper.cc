@@ -5,6 +5,8 @@
 
 #include "brave/browser/brave_ads/background_helper/background_helper.h"
 
+#include "build/build_config.h"
+
 namespace brave_ads {
 
 BackgroundHelper::BackgroundHelper() {}
@@ -35,8 +37,8 @@ void BackgroundHelper::TriggerOnForeground() {
   }
 }
 
-#if !defined(OS_MAC) && !defined(OS_WIN) && !defined(OS_LINUX) && \
-    !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_WIN) && !BUILDFLAG(IS_LINUX) && \
+    !BUILDFLAG(IS_ANDROID)
 BackgroundHelper* BackgroundHelper::GetInstance() {
   // just return a dummy background helper for all other platforms
   return base::Singleton<BackgroundHelper>::get();

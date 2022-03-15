@@ -40,13 +40,13 @@ const bool kDefaultCanFallbackToCustomAdNotifications = false;
 // Ad notification timeout in seconds. Set to 0 to never time out
 const char kFieldTrialParameterAdNotificationTimeout[] =
     "ad_notification_timeout";
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 const int kDefaultAdNotificationTimeout = 120;
 #else
 const int kDefaultAdNotificationTimeout = 30;
 #endif
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 
 // Ad notification fade animation duration in milliseconds
 const char kFieldTrialParameterAdNotificationFadeDuration[] =
@@ -68,11 +68,11 @@ const bool kDefaultShouldAttachAdNotificationToBrowserWindow = false;
 // the work area. Set to 0.0 for left, 0.5 for center or 1.0 for right
 const char kFieldTrialParameterAdNotificationNormalizedDisplayCoordinateX[] =
     "ad_notification_normalized_display_coordinate_x";
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const double kDefaultAdNotificationNormalizedDisplayCoordinateX = 1.0;
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 const double kDefaultAdNotificationNormalizedDisplayCoordinateX = 1.0;
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 const double kDefaultAdNotificationNormalizedDisplayCoordinateX = 1.0;
 #endif
 
@@ -80,12 +80,12 @@ const double kDefaultAdNotificationNormalizedDisplayCoordinateX = 1.0;
 // coordinates
 const char kFieldTrialParameterAdNotificationInsetX[] =
     "ad_notification_inset_x";
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const int kDefaultAdNotificationInsetX = -370;
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 const int kNativeNotificationWidth = 360;
 const int kDefaultAdNotificationInsetX = -(10 + kNativeNotificationWidth);
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 const int kDefaultAdNotificationInsetX = -13;
 #endif
 
@@ -94,11 +94,11 @@ const int kDefaultAdNotificationInsetX = -13;
 // the work area. Set to 0.0 for top, 0.5 for middle or 1.0 for bottom
 const char kFieldTrialParameterAdNotificationNormalizedDisplayCoordinateY[] =
     "ad_notification_normalized_display_coordinate_y";
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 1.0;
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 0.0;
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 0.0;
 #endif
 
@@ -106,15 +106,15 @@ const double kDefaultAdNotificationNormalizedDisplayCoordinateY = 0.0;
 // coordinates
 const char kFieldTrialParameterAdNotificationInsetY[] =
     "ad_notification_inset_y";
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 const int kDefaultAdNotificationInsetY = -10;
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 const int kDefaultAdNotificationInsetY = 11;
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 const int kDefaultAdNotificationInsetY = 18;
 #endif
 
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace
 
@@ -144,7 +144,7 @@ bool IsCustomAdNotificationsEnabled() {
   return base::FeatureList::IsEnabled(kCustomAdNotifications);
 }
 
-#if !defined(OS_ANDROID)
+#if !BUILDFLAG(IS_ANDROID)
 
 int AdNotificationFadeDuration() {
   return GetFieldTrialParamByFeatureAsInt(
@@ -197,7 +197,7 @@ int AdNotificationInsetY() {
       kDefaultAdNotificationInsetY);
 }
 
-#endif  // !defined(OS_ANDROID)
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 bool IsAllowedToFallbackToCustomAdNotificationsEnabled() {
   return base::FeatureList::IsEnabled(

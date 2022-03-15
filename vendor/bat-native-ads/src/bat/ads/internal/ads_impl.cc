@@ -76,6 +76,7 @@
 #include "bat/ads/pref_names.h"
 #include "bat/ads/promoted_content_ad_info.h"
 #include "bat/ads/statement_info.h"
+#include "build/build_config.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace ads {
@@ -681,7 +682,7 @@ void AdsImpl::Initialized(InitializeCallback callback) {
 }
 
 void AdsImpl::Start() {
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Ad notifications do not sustain a reboot or update, so we should remove
   // orphaned ad notifications
   ad_notifications_->RemoveAllAfterReboot();
