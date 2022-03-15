@@ -58,8 +58,8 @@ int GetResourceLimit(ResourcePoolLimiter::ResourceType resource_type) {
 }  // namespace
 
 ResourcePoolLimiter::ResourceInUseTracker::ResourceInUseTracker(
-    String resource_id_in_use)
-    : resource_id_in_use_(std::move(resource_id_in_use)) {}
+    String resource_id)
+    : resource_id_(std::move(resource_id)) {}
 
 ResourcePoolLimiter::ResourceInUseTracker::~ResourceInUseTracker() {
   ResourcePoolLimiter::GetInstance().DropResourceInUse(this);
@@ -87,13 +87,13 @@ ResourcePoolLimiter::IssueResourceInUseTracker(
 
   MutexLocker locker(resources_in_use_lock_);
   // `insert` doesn't change the value if it already exists.
-  int& resource_in_use_value =
+  int& resource_in_use_count =
       resources_in_use_.insert(resource_id, 0).stored_value->value;
-  if (resource_in_use_value >= GetResourceLimit(resource_type)) {
+  if (resource_in_use_count >= GetResourceLimit(resource_type)) {
     return nullptr;
   }
 
-  ++resource_in_use_value;
+  ++resource_in_use_count;
   return std::make_unique<ResourceInUseTracker>(resource_id.IsolatedCopy());
 }
 
@@ -101,7 +101,7 @@ void ResourcePoolLimiter::DropResourceInUse(
     const ResourceInUseTracker* resource_in_use_tracker) {
   MutexLocker locker(resources_in_use_lock_);
   auto resource_in_use_it =
-      resources_in_use_.find(resource_in_use_tracker->resource_id_in_use());
+      resources_in_use_.find(resource_in_use_tracker->resource_id());
   DCHECK(resource_in_use_it != resources_in_use_.end());
   if (--resource_in_use_it->value == 0) {
     resources_in_use_.erase(resource_in_use_it);
