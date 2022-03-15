@@ -12,20 +12,23 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
-@interface NSURL(Utilities)
+@interface NSURL (Utilities)
 
 /// Returns the eTLD+1 including private registries.
-@property (readonly, nullable) NSString* brave_domainAndRegistry NS_SWIFT_NAME(domainAndRegistry);
+@property(readonly, nullable)
+    NSString* brave_domainAndRegistry NS_SWIFT_NAME(domainAndRegistry);
 
 /// Returns the eTLD+1 not including private registries.
-@property (readonly, nullable) NSString* brave_baseDomainExcludingPrivateRegistries NS_SWIFT_NAME(baseDomainExcludingPrivateRegistries);
+@property(readonly, nullable)
+    NSString* brave_baseDomainExcludingPrivateRegistries NS_SWIFT_NAME(
+        baseDomainExcludingPrivateRegistries);
 
 /// Returns `true` when the `host` is an IP address.
-@property (readonly) bool brave_isHostIPAddress NS_SWIFT_NAME(isHostIPAddress);
+@property(readonly) bool brave_isHostIPAddress NS_SWIFT_NAME(isHostIPAddress);
 
 /// The string representation of a URL is called the spec.
 /// Returns the canonicalized URL's spec.
-@property (readonly) NSString* brave_spec NS_SWIFT_NAME(spec);
+@property(readonly) NSString* brave_spec NS_SWIFT_NAME(spec);
 
 /// Appends the key=value query parameter, escaping if needed.
 - (NSURL*)addingQueryParameter:(NSString*)key value:(NSString*)value;
