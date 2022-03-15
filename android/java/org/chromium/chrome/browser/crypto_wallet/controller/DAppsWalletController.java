@@ -9,7 +9,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+
+import org.chromium.brave_wallet.mojom.JsonRpcService;
 import org.chromium.brave_wallet.mojom.KeyringService;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.crypto_wallet.JsonRpcServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.modal.BraveWalletPanel;
 import org.chromium.chrome.browser.crypto_wallet.modal.DAppsDialog;
@@ -22,10 +30,13 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
     private Context mContext;
     private View mAnchorViewHost;
     private KeyringService mKeyringService;
+    protected JsonRpcService mJsonRpcService;
     private boolean mHasStateInitialise;
     private DAppsDialog mDAppsDialog;
     private BraveWalletPanel mBraveWalletPanel;
     private DialogInterface.OnDismissListener mOnDismissListener;
+    private final AppCompatActivity mActivity;
+
     private DialogInterface.OnDismissListener mDialogOrPanelDismissListener = dialog -> {
         if (mOnDismissListener != null) {
             mOnDismissListener.onDismiss(dialog);
@@ -36,6 +47,7 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
     public DAppsWalletController(Context mContext, View mAnchorViewHost) {
         this.mContext = mContext;
         this.mAnchorViewHost = mAnchorViewHost;
+        this.mActivity = BraveActivity.getChromeTabbedActivity();
     }
 
     public DAppsWalletController(Context mContext, View mAnchorViewHost,
@@ -46,6 +58,7 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
 
     public void showWalletPanel() {
         initKeyringService();
+        InitJsonRpcService();
         if (Utils.shouldShowCryptoOnboarding()) {
             showOnBoardingOrUnlock();
         } else {
@@ -58,12 +71,17 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
                     // action accrodingly
                     if (!isFoundPendingDAppsTx) {
                         mBraveWalletPanel = new BraveWalletPanel(
-                                mAnchorViewHost, mDialogOrPanelDismissListener);
+                                mAnchorViewHost, mDialogOrPanelDismissListener, mJsonRpcService);
                         mBraveWalletPanel.showLikePopDownMenu();
+                        setupLifeCycleUpdater();
                     }
                 }
             });
         }
+    }
+
+    private void setupLifeCycleUpdater() {
+        mActivity.getLifecycle().addObserver(defaultLifecycleObserver);
     }
 
     private void showOnBoardingOrUnlock() {
@@ -75,7 +93,9 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
     public void onConnectionError(MojoException e) {
         mKeyringService.close();
         mKeyringService = null;
+        mJsonRpcService = null;
         initKeyringService();
+        InitJsonRpcService();
         updateState();
     }
 
@@ -111,9 +131,33 @@ public class DAppsWalletController implements ConnectionErrorHandler, KeyringSer
         mKeyringService = KeyringServiceFactory.getInstance().getKeyringService(this);
     }
 
+    protected void InitJsonRpcService() {
+        if (mJsonRpcService != null) {
+            return;
+        }
+
+        mJsonRpcService = JsonRpcServiceFactory.getInstance().getJsonRpcService(this);
+    }
+
     private void cleanUp() {
         if (mKeyringService != null) {
             mKeyringService.close();
         }
+        if (mJsonRpcService != null) {
+            mJsonRpcService.close();
+        }
+
+        if (mActivity != null) {
+            mActivity.getLifecycle().removeObserver(defaultLifecycleObserver);
+        }
     }
+
+    private final DefaultLifecycleObserver defaultLifecycleObserver = new DefaultLifecycleObserver() {
+        @Override
+        public void onResume(@NonNull LifecycleOwner owner) {
+            if (mBraveWalletPanel != null) {
+                mBraveWalletPanel.resume();
+            }
+        }
+    };
 }

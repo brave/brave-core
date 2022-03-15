@@ -9,18 +9,26 @@ package org.chromium.chrome.browser.crypto_wallet.modal;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupWindow;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.chromium.base.SysUtils;
+import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.brave_wallet.mojom.JsonRpcService;
+import org.chromium.brave_wallet.mojom.NetworkInfo;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.NetworkSelectorActivity;
+import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -29,11 +37,18 @@ public class BraveWalletPanel implements DialogInterface {
     private final View mAnchorViewHost;
     private final PopupWindow mPopupWindow;
     private ViewGroup mPopupView;
-    private final ChromeTabbedActivity mActivity;
-    private DialogInterface.OnDismissListener mOnDismissListener;
+    private final AppCompatActivity mActivity;
+    private OnDismissListener mOnDismissListener;
+    private Button mBtnSelectedNetwork;
+    protected JsonRpcService mJsonRpcService;
 
-    public BraveWalletPanel(View mAnchorViewHost) {
-        this.mAnchorViewHost = mAnchorViewHost;
+    public BraveWalletPanel(View anchorViewHost, OnDismissListener onDismissListener,
+            JsonRpcService jsonRpcService) {
+        mAnchorViewHost = anchorViewHost;
+        mOnDismissListener = onDismissListener;
+        mActivity = BraveActivity.getChromeTabbedActivity();
+        mJsonRpcService = jsonRpcService;
+
         mPopupWindow = new PopupWindow(mAnchorViewHost.getContext());
         mPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -56,14 +71,7 @@ public class BraveWalletPanel implements DialogInterface {
                 dismiss();
             }
         });
-        mActivity = BraveRewardsHelper.getChromeTabbedActivity();
         setUpViews();
-    }
-
-    public BraveWalletPanel(
-            View anchorViewHost, DialogInterface.OnDismissListener onDismissListener) {
-        this(anchorViewHost);
-        mOnDismissListener = onDismissListener;
     }
 
     public void showLikePopDownMenu() {
@@ -93,8 +101,25 @@ public class BraveWalletPanel implements DialogInterface {
         }
     }
 
+    public void resume() {
+        if (isShowing()) {
+            updateState();
+        }
+    }
+
     public boolean isShowing() {
-        return mPopupWindow.isShowing();
+        return mPopupWindow != null && mPopupWindow.isShowing();
+    }
+
+    private void updateState() {
+        assert mJsonRpcService != null;
+        mJsonRpcService.getChainId(CoinType.ETH, chainId -> {
+            mJsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
+                NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
+                String strNetwork = Utils.getNetworkShortText(mActivity, chainId).toString();
+                mBtnSelectedNetwork.setText(strNetwork);
+            });
+        });
     }
 
     private void setUpViews() {
@@ -106,8 +131,13 @@ public class BraveWalletPanel implements DialogInterface {
 
         mPopupWindow.setWidth((int) (isTablet ? (deviceWidth * 0.6) : (deviceWidth * 0.95)));
 
+        mBtnSelectedNetwork = mPopupView.findViewById(R.id.btn_dapps_panel_networks);
+        mBtnSelectedNetwork.setOnClickListener(v -> {
+            Intent intent = new Intent(mActivity, NetworkSelectorActivity.class);
+            mActivity.startActivity(intent);
+        });
         mPopupWindow.setContentView(mPopupView);
+        updateState();
         // TODO: show connected or disconnected account page
-        // TODO: show selected network page
     }
 }
