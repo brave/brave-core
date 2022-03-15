@@ -18,9 +18,9 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmations_state.h"
+#include "bat/ads/internal/account/confirmations/confirmations_user_data_builder.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/redeem_unblinded_token.h"
-#include "bat/ads/internal/account/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/privacy/privacy_util.h"
@@ -60,19 +60,15 @@ void Confirmations::Confirm(const TransactionInfo& transaction) {
                         << " and creative instance id "
                         << transaction.creative_instance_id);
 
-  dto::user_data::Build(
-      transaction.creative_instance_id, transaction.confirmation_type,
-      [=](const base::Value& user_data) {
-        const base::DictionaryValue* user_data_dictionary = nullptr;
-        user_data.GetAsDictionary(&user_data_dictionary);
+  const ConfirmationsUserDataBuilder user_data_builder(
+      transaction.creative_instance_id, transaction.confirmation_type);
+  user_data_builder.Build([=](const base::Value& user_data) {
+    const ConfirmationInfo& confirmation = CreateConfirmation(
+        transaction.id, transaction.creative_instance_id,
+        transaction.confirmation_type, transaction.ad_type, user_data);
 
-        const ConfirmationInfo& confirmation =
-            CreateConfirmation(transaction.id, transaction.creative_instance_id,
-                               transaction.confirmation_type,
-                               transaction.ad_type, *user_data_dictionary);
-
-        redeem_unblinded_token_->Redeem(confirmation);
-      });
+    redeem_unblinded_token_->Redeem(confirmation);
+  });
 }
 
 void Confirmations::ProcessRetryQueue() {
@@ -122,7 +118,7 @@ ConfirmationInfo Confirmations::CreateConfirmation(
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
     const AdType& ad_type,
-    const base::DictionaryValue& user_data) const {
+    const base::Value& user_data) const {
   DCHECK(!transaction_id.empty());
   DCHECK(!creative_instance_id.empty());
   DCHECK_NE(ConfirmationType::kUndefined, confirmation_type.value());
@@ -176,18 +172,15 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
     return;
   }
 
-  dto::user_data::Build(
-      confirmation.creative_instance_id, confirmation.type,
-      [=](const base::Value& user_data) {
-        const base::DictionaryValue* user_data_dictionary = nullptr;
-        user_data.GetAsDictionary(&user_data_dictionary);
+  const ConfirmationsUserDataBuilder user_data_builder(
+      confirmation.creative_instance_id, confirmation.type);
+  user_data_builder.Build([=](const base::Value& user_data) {
+    const ConfirmationInfo& new_confirmation = CreateConfirmation(
+        confirmation.transaction_id, confirmation.creative_instance_id,
+        confirmation.type, confirmation.ad_type, user_data);
 
-        const ConfirmationInfo& new_confirmation = CreateConfirmation(
-            confirmation.transaction_id, confirmation.creative_instance_id,
-            confirmation.type, confirmation.ad_type, *user_data_dictionary);
-
-        AppendToRetryQueue(new_confirmation);
-      });
+    AppendToRetryQueue(new_confirmation);
+  });
 }
 
 void Confirmations::AppendToRetryQueue(const ConfirmationInfo& confirmation) {

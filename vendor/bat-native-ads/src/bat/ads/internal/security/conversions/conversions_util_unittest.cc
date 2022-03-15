@@ -5,15 +5,10 @@
 
 #include "bat/ads/internal/security/conversions/conversions_util.h"
 
-#include <cstdint>
-#include <vector>
-
-#include "bat/ads/internal/base64_util.h"
 #include "bat/ads/internal/conversions/verifiable_conversion_info.h"
 #include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_info.h"
-#include "bat/ads/internal/security/crypto_util.h"
+#include "bat/ads/internal/security/conversions/verifiable_conversion_envelope_unittest_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "tweetnacl.h"  // NOLINT
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -22,137 +17,103 @@ namespace security {
 
 namespace {
 
-const size_t kCryptoBoxZeroBytes = crypto_box_BOXZEROBYTES;
+constexpr char kAdvertiserPublicKey[] =
+    "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
+constexpr char kInvalidAdvertiserPublicKey[] = "invalid";
+constexpr char kAdvertiserSecretKey[] =
+    "Ete7+aKfrX25gt0eN4kBV1LqeF9YmB1go8OqnGXUGG4=";
 
-absl::optional<std::string> EnvelopeOpen(
-    const VerifiableConversionEnvelopeInfo envelope,
-    const std::string& advertiser_secret_key_base64) {
-  if (!envelope.IsValid()) {
-    return absl::nullopt;
-  }
-
-  std::vector<uint8_t> advertiser_secret_key =
-      Base64ToBytes(advertiser_secret_key_base64);
-  std::vector<uint8_t> nonce = Base64ToBytes(envelope.nonce);
-  std::vector<uint8_t> ciphertext = Base64ToBytes(envelope.ciphertext);
-  std::vector<uint8_t> ephemeral_public_key =
-      Base64ToBytes(envelope.ephemeral_public_key);
-
-  // API requires 16 leading zero-padding bytes
-  ciphertext.insert(ciphertext.cbegin(), kCryptoBoxZeroBytes, 0);
-
-  std::vector<uint8_t> plaintext =
-      Decrypt(ciphertext, nonce, ephemeral_public_key, advertiser_secret_key);
-  std::string message = (const char*)&plaintext.front();
-
-  return message;
-}
+constexpr char kShortMessage[] = "";
+constexpr char kLongMessage[] = "thismessageistoolongthismessageistoolong";
+constexpr char kValidMessage[] = "smartbrownfoxes42";
+constexpr char kInvalidMessage[] = "smart brown foxes 16";
 
 }  // namespace
 
-TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealShortMessage) {
+TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithShortMessage) {
   // Arrange
-  const std::string advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  const std::string advertiser_secret_key =
-      "Ete7+aKfrX25gt0eN4kBV1LqeF9YmB1go8OqnGXUGG4=";
-  const std::string message = "";
-
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = message;
-  verifiable_conversion.public_key = advertiser_public_key;
+  verifiable_conversion.id = kShortMessage;
+  verifiable_conversion.public_key = kAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
-      EnvelopeSeal(verifiable_conversion);
+  const absl::optional<VerifiableConversionEnvelopeInfo>&
+      verifiable_conversion_envelope_optional =
+          SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_EQ(absl::nullopt, envelope);
+  EXPECT_FALSE(verifiable_conversion_envelope_optional);
 }
 
-TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealLongMessage) {
+TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithLongMessage) {
   // Arrange
-  const std::string advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  const std::string advertiser_secret_key =
-      "Ete7+aKfrX25gt0eN4kBV1LqeF9YmB1go8OqnGXUGG4=";
-  const std::string message = "thismessageistoolongthismessageistoolong";
-
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = message;
-  verifiable_conversion.public_key = advertiser_public_key;
+  verifiable_conversion.id = kLongMessage;
+  verifiable_conversion.public_key = kAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
-      EnvelopeSeal(verifiable_conversion);
+  const absl::optional<VerifiableConversionEnvelopeInfo>&
+      verifiable_conversion_envelope_optional =
+          SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_EQ(absl::nullopt, envelope);
+  EXPECT_FALSE(verifiable_conversion_envelope_optional);
 }
 
-TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealInvalidMessage) {
+TEST(BatAdsSecurityConversionsUtilsTest, DoNotSealEnvelopeWithInvalidMessage) {
   // Arrange
-  const std::string advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  const std::string advertiser_secret_key =
-      "Ete7+aKfrX25gt0eN4kBV1LqeF9YmB1go8OqnGXUGG4=";
-  const std::string invalid_message = "smart brown foxes 16";
-
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = invalid_message;
-  verifiable_conversion.public_key = advertiser_public_key;
+  verifiable_conversion.id = kInvalidMessage;
+  verifiable_conversion.public_key = kAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
-      EnvelopeSeal(verifiable_conversion);
+  const absl::optional<VerifiableConversionEnvelopeInfo>&
+      verifiable_conversion_envelope_optional =
+          SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_EQ(absl::nullopt, envelope);
+  EXPECT_FALSE(verifiable_conversion_envelope_optional);
 }
 
-TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSealWithInvalidPublicKey) {
+TEST(BatAdsSecurityConversionsUtilsTest,
+     DoNotSealEnvelopeWithInvalidPublicKey) {
   // Arrange
-  const std::string valid_message = "smartbrownfoxes42";
-  const std::string advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYK/INVALID";
-  const std::string advertiser_secret_key =
-      "Ete7+aKfrX25gt0eN4kBV1LqeF9YmB1go8OqnGXUGG4=";
-
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = valid_message;
-  verifiable_conversion.public_key = advertiser_public_key;
+  verifiable_conversion.id = kValidMessage;
+  verifiable_conversion.public_key = kInvalidAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
-      EnvelopeSeal(verifiable_conversion);
+  const absl::optional<VerifiableConversionEnvelopeInfo>&
+      verifiable_conversion_envelope_optional =
+          SealEnvelope(verifiable_conversion);
 
   // Assert
-  EXPECT_EQ(absl::nullopt, envelope);
+  EXPECT_FALSE(verifiable_conversion_envelope_optional);
 }
 
-TEST(BatAdsSecurityConversionsUtilsTest, EnvelopeSeal) {
+TEST(BatAdsSecurityConversionsUtilsTest, SealEnvelope) {
   // Arrange
-  const std::string message = "smartbrownfoxes-42";
-  const std::string advertiser_public_key =
-      "ofIveUY/bM7qlL9eIkAv/xbjDItFs1xRTTYKRZZsPHI=";
-  const std::string advertiser_secret_key =
-      "Ete7+aKfrX25gt0eN4kBV1LqeF9YmB1go8OqnGXUGG4=";
-
   VerifiableConversionInfo verifiable_conversion;
-  verifiable_conversion.id = message;
-  verifiable_conversion.public_key = advertiser_public_key;
+  verifiable_conversion.id = kValidMessage;
+  verifiable_conversion.public_key = kAdvertiserPublicKey;
 
   // Act
-  const absl::optional<VerifiableConversionEnvelopeInfo> envelope =
-      EnvelopeSeal(verifiable_conversion);
+  const absl::optional<VerifiableConversionEnvelopeInfo>&
+      verifiable_conversion_envelope_optional =
+          SealEnvelope(verifiable_conversion);
+  ASSERT_TRUE(verifiable_conversion_envelope_optional);
+  const VerifiableConversionEnvelopeInfo verifiable_conversion_envelope =
+      verifiable_conversion_envelope_optional.value();
 
-  ASSERT_NE(absl::nullopt, envelope);
-
-  const absl::optional<std::string> result =
-      EnvelopeOpen(envelope.value(), advertiser_secret_key);
+  const absl::optional<std::string>& message_optional =
+      OpenEnvelope(verifiable_conversion_envelope, kAdvertiserSecretKey);
+  ASSERT_TRUE(message_optional);
+  const std::string message = message_optional.value();
 
   // Assert
-  EXPECT_EQ(message, result.value());
+  const std::string expected_message = verifiable_conversion.id;
+
+  EXPECT_EQ(expected_message, message);
 }
 
 }  // namespace security
