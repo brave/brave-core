@@ -11,6 +11,7 @@
 
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_info.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
