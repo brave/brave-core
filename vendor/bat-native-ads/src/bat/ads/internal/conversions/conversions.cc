@@ -277,7 +277,7 @@ void Conversions::CheckRedirectChain(
       }
 
       if (conversions.empty()) {
-        BLOG(1, "No conversions found for visited URL");
+        BLOG(1, "There are no conversions");
         return;
       }
 
@@ -321,7 +321,9 @@ void Conversions::CheckRedirectChain(
       }
 
       if (!converted) {
-        BLOG(1, "No conversions found for visited URL");
+        BLOG(1, "There were no conversion matches");
+      } else {
+        BLOG(1, "There was a conversion match");
       }
     });
   });
