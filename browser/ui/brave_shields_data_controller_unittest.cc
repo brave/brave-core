@@ -17,6 +17,7 @@
 #include "chrome/test/base/testing_profile_manager.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/favicon/content/content_favicon_driver.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_renderer_host.h"
@@ -49,6 +50,8 @@ class BraveShieldsDataControllerTest : public testing::Test {
 
     test_web_contents_ =
         content::WebContentsTester::CreateTestWebContents(profile_, nullptr);
+    favicon::ContentFaviconDriver::CreateForWebContents(
+        test_web_contents_.get(), nullptr);
     BraveShieldsDataController::CreateForWebContents(test_web_contents_.get());
   }
 

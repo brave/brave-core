@@ -72,7 +72,8 @@
       "chrome://read-later.top-chrome/*",
       "chrome://tab-strip/*",
       "chrome://wallet-panel.top-chrome/*",
-      "chrome://wallet/*"
+      "chrome://wallet/*",
+      "chrome://brave-shields.top-chrome/*"
     ]
   }, {
     "channel": "stable",

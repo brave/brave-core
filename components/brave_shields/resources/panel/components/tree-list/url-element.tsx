@@ -25,7 +25,6 @@ const Box = styled.div<BoxProps>`
 
   ${p => p.isHost && css`
     direction: unset;
-    cursor: unset;
     margin-bottom: 12px;
   `}
 

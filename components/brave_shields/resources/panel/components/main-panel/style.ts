@@ -57,6 +57,7 @@ export const SiteTitle = styled.h1`
   margin: 0;
   overflow: hidden;
   text-align: left;
+  // We truncate long site titles to the left
   direction: rtl;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -162,31 +163,16 @@ export const ReportSiteBox = styled.div`
     margin: 0 0 10px 0;
     color: ${(p) => p.theme.color.warningIcon};
   }
-
-  div {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    span {
-      flex: 1;
-      color: ${(p) => p.theme.color.text03};
-    }
-  }
 `
 
-export const ReportSiteButton = styled.button`
-  --border: 1px solid ${(p) => p.theme.color.divider01};
-  background-color: transparent;
-  border: var(--border);
-  border-radius: 48px;
-  font-weight: 600;
-  font-size: 13px;
-  color: ${(p) => p.theme.color.text01};
-  padding: 7px 12px;
-  
-  &:focus-visible {
-    --border: 1px solid ${(p) => p.theme.color.focusBorder};
+export const ReportSiteAction = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  span {
+    flex: 1;
+    color: ${(p) => p.theme.color.text03};
   }
 `
 
@@ -211,7 +197,7 @@ export const AdvancedControlsButton = styled.button`
   padding: 10px 17px;
   border: var(--border);
   display: grid;
-  grid-template-columns: 24px 1fr 24px;
+  grid-template-columns: 24px 1fr 18px;
   grid-gap: 10px;
   align-items: center;
   text-align: left;

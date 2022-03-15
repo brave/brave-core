@@ -5,7 +5,7 @@ export const SettingsBox = styled.div`
 `
 
 export const FooterActionBox = styled.div`
-  padding: 17px 22px;
+  padding: 0 22px 17px 22px;
   display: grid;
   grid-template-columns: 14px 1fr;
   grid-gap: 10px;
@@ -14,7 +14,7 @@ export const FooterActionBox = styled.div`
     grid-column: 2;
     display: flex;
     flex-direction: column;
-    grid-gap: inherit;
+    grid-gap: 20px;
   }
 
   button {
@@ -28,6 +28,7 @@ export const FooterActionBox = styled.div`
     text-decoration: none;
     display: flex;
     align-items: center;
+    cursor: pointer;
   }
   
   i {
