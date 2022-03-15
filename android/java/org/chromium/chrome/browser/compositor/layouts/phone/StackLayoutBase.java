@@ -1633,15 +1633,16 @@ public abstract class StackLayoutBase extends Layout {
 
     @Override
     protected void updateSceneLayer(RectF viewport, RectF contentViewport,
-            TabContentManager tabContentManager, ResourceManager resourceManager,
-            BrowserControlsStateProvider browserControls) {
+            LayerTitleCache layerTitleCache, TabContentManager tabContentManager,
+            ResourceManager resourceManager, BrowserControlsStateProvider browserControls) {
         ensureSceneLayerCreated();
-        super.updateSceneLayer(
-                viewport, contentViewport, tabContentManager, resourceManager, browserControls);
+        super.updateSceneLayer(viewport, contentViewport, layerTitleCache, tabContentManager,
+                resourceManager, browserControls);
         assert mSceneLayer != null;
 
-        mSceneLayer.pushLayers(getContext(), viewport, contentViewport, this, tabContentManager,
-                resourceManager, browserControls, SceneLayer.INVALID_RESOURCE_ID, 0, 0);
+        mSceneLayer.pushLayers(getContext(), viewport, contentViewport, this, layerTitleCache,
+                tabContentManager, resourceManager, browserControls, SceneLayer.INVALID_RESOURCE_ID,
+                0, 0);
     }
 
     @Override
