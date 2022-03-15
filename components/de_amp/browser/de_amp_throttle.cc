@@ -76,17 +76,24 @@ void DeAmpThrottle::WillProcessResponse(
       std::move(new_remote), std::move(new_receiver), de_amp_loader);
 }
 
-void DeAmpThrottle::Redirect(const GURL& new_url) {
-  delegate_->CancelWithError(net::ERR_ABORTED);
-
+void DeAmpThrottle::Redirect(const GURL& new_url, const GURL& response_url) {
   auto* contents = wc_getter_.Run();
 
   if (!contents)
     return;
 
-  auto* entry = contents->GetController().GetVisibleEntry();
-  if (!entry)
-    return;
+  auto* entry = contents->GetController().GetPendingEntry();
+  if (!entry) {
+    if (contents->GetController().GetVisibleEntry()) {
+      entry = contents->GetController().GetVisibleEntry();
+    } else {
+      return;
+    }
+  }
+
+  DCHECK(entry->GetURL() == response_url);
+
+  delegate_->CancelWithError(net::ERR_ABORTED);
 
   content::OpenURLParams params(
       new_url,
