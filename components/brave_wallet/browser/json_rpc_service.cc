@@ -1706,8 +1706,9 @@ void JsonRpcService::GetSolanaSignatureStatuses(
   auto internal_callback =
       base::BindOnce(&JsonRpcService::OnGetSolanaSignatureStatuses,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback));
-  return Request(solana::getSignatureStatuses(tx_signatures), true,
-                 mojom::CoinType::SOL, std::move(internal_callback));
+  RequestInternal(solana::getSignatureStatuses(tx_signatures), true,
+                  network_urls_[mojom::CoinType::SOL],
+                  std::move(internal_callback));
 }
 
 void JsonRpcService::OnGetSolanaSignatureStatuses(
