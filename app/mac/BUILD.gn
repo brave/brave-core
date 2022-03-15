@@ -22,7 +22,7 @@ group("dist_resources") {
 }
 
 group("symbol_dist_resources") {
-  if (brave_debug_symbol_level != 0) {
+  if (should_generate_breakpad_symbols) {
     public_deps = [
       ":generate_breakpad_symbols",
       "//chrome:chrome_dsym_archive",

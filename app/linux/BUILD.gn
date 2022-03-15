@@ -1,32 +1,37 @@
 import("//brave/build/config.gni")
 
-action("generate_breakpad_symbols") {
-  symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
-  outputs = [ symbols_dir ]
+if (should_generate_breakpad_symbols) {
+  action("generate_breakpad_symbols") {
+    symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
+    outputs = [ symbols_dir ]
 
-  start = [ brave_product_name ]
+    start = [ brave_product_name ]
 
-  script = "//brave/tools/posix/generate_breakpad_symbols.py"
-  args = [
-    "--symbols-dir=" + rebase_path(symbols_dir),
-    "--jobs=16",
-    "--build-dir=" + rebase_path(root_out_dir),
-    "--binary=$start",
-    "--libchromiumcontent-dir=" + rebase_path("//"),
-    "--clear",
-  ]
+    script = "//brave/tools/posix/generate_breakpad_symbols.py"
+    args = [
+      "--symbols-dir=" + rebase_path(symbols_dir),
+      "--jobs=16",
+      "--build-dir=" + rebase_path(root_out_dir),
+      "--binary=$start",
+      "--libchromiumcontent-dir=" + rebase_path("//"),
+      "--clear",
+    ]
 
-  deps = [
-    "//chrome",  # To be sure brave executable is ready now
-    "//third_party/breakpad:dump_syms",
-  ]
+    deps = [
+      "//chrome",  # To be sure brave executable is ready now
+      "//third_party/breakpad:dump_syms",
+    ]
+  }
+} else {
+  group("generate_breakpad_symbols") {
+  }
 }
 
 group("symbol_dist_resources") {
-  public_deps = [ ":strip_and_dump_symbols" ]
-  if (brave_debug_symbol_level != 0) {
-    public_deps += [ ":generate_breakpad_symbols" ]
-  }
+  public_deps = [
+    ":generate_breakpad_symbols",
+    ":strip_and_dump_symbols",
+  ]
 }
 
 group("dist_resources") {
@@ -40,13 +45,11 @@ action("strip_and_dump_symbols") {
       get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
 
   deps = [
+    # TODO(bridiver) - resolve duplicate symbol generation
+    ":generate_breakpad_symbols",
     "//brave:brave_dist_resources",
     dump_syms_label,
   ]
-  if (brave_debug_symbol_level != 0) {
-    # TODO(bridiver) - resolve duplicate symbol generation
-    deps += [ ":generate_breakpad_symbols" ]
-  }
   brave_binary = "$brave_dist_dir/brave"
   if (current_cpu == "x86") {
     # Use "ia32" instead of "x86" for GYP compat.
