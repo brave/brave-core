@@ -25,6 +25,7 @@ source_set("browser") {
     "api/history",
     "api/password",
     "api/sync",
+    "api/url",
     "api/version_info",
     "brave_wallet",
     "metrics",
