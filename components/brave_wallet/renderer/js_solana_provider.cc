@@ -123,10 +123,31 @@ const char* JSSolanaProvider::GetTypeName() {
   return "JSSolanaProvider";
 }
 
+void JSSolanaProvider::AccountChangedEvent(
+    const absl::optional<std::string>& account) {
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::HandleScope handle_scope(isolate);
+  v8::Local<v8::Context> context =
+      render_frame_->GetWebFrame()->MainWorldScriptContext();
+  std::vector<v8::Local<v8::Value>> args;
+  if (!account) {
+    // emits Null
+    args.push_back(v8::Null(isolate));
+  } else {
+    // emits solanaWeb3.PublicKey
+    v8::Local<v8::Value> v8_public_key;
+    CHECK(GetProperty(context, CreatePublicKey(context, *account), u"publicKey")
+              .ToLocal(&v8_public_key));
+    args.push_back(std::move(v8_public_key));
+  }
+  FireEvent(kAccountChangedEvent, std::move(args));
+}
+
 bool JSSolanaProvider::EnsureConnected() {
   if (use_native_wallet_ && !solana_provider_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
         solana_provider_.BindNewPipeAndPassReceiver());
+    solana_provider_->Init(receiver_.BindNewPipeAndPassRemote());
     solana_provider_.set_disconnect_handler(base::BindOnce(
         &JSSolanaProvider::OnRemoteDisconnect, weak_ptr_factory_.GetWeakPtr()));
   }
@@ -136,6 +157,7 @@ bool JSSolanaProvider::EnsureConnected() {
 
 void JSSolanaProvider::OnRemoteDisconnect() {
   solana_provider_.reset();
+  receiver_.reset();
   EnsureConnected();
 }
 

@@ -14,6 +14,7 @@ extern const char kConnectEvent[];
 extern const char kDisconnectEvent[];
 extern const char kChainChangedEvent[];
 extern const char kAccountsChangedEvent[];
+extern const char kAccountChangedEvent[];
 
 constexpr char kEthAccounts[] = "eth_accounts";
 constexpr char kEthRequestAccounts[] = "eth_requestAccounts";

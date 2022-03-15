@@ -21,7 +21,8 @@
 
 namespace brave_wallet {
 
-class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
+class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
+                               public mojom::SolanaEventsListener {
  public:
   ~JSSolanaProvider() override;
   JSSolanaProvider(const JSSolanaProvider&) = delete;
@@ -50,6 +51,9 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
   gin::ObjectTemplateBuilder GetObjectTemplateBuilder(
       v8::Isolate* isolate) override;
   const char* GetTypeName() override;
+
+  // mojom::SolanaEventsListener
+  void AccountChangedEvent(const absl::optional<std::string>& account) override;
 
  private:
   JSSolanaProvider(bool use_native_wallet, content::RenderFrame* render_frame);
@@ -80,7 +84,6 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
   // Promise<solanaWeb3.Transaction[]>
   v8::Local<v8::Promise> SignAllTransactions(gin::Arguments* arguments);
 
-  // TODO: fire accountChanged event
   void FireEvent(const std::string& event,
                  std::vector<v8::Local<v8::Value>>&& event_args);
 
@@ -145,6 +148,7 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider> {
   std::unique_ptr<content::V8ValueConverter> v8_value_converter_;
   V8ConverterStrategy strategy_;
   mojo::Remote<mojom::SolanaProvider> solana_provider_;
+  mojo::Receiver<mojom::SolanaEventsListener> receiver_{this};
   base::WeakPtrFactory<JSSolanaProvider> weak_ptr_factory_{this};
 };
 

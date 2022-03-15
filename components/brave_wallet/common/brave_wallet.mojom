@@ -20,6 +20,12 @@ interface EventsListener {
   AccountsChangedEvent(array<string> accounts);
 };
 
+interface SolanaEventsListener {
+  // base58 encoded account, account would be null when switching to an about to
+  // be created account
+  AccountChangedEvent(string? account);
+};
+
 // Pre-defined error codes specified in
 // https://www.jsonrpc.org/specification#error_object
 enum JsonRpcError {
@@ -123,6 +129,9 @@ interface BraveWalletProvider {
 };
 
 interface SolanaProvider {
+  // Initializes an SolanaEventsListener
+  Init(pending_remote<SolanaEventsListener> events_listener);
+
   // Optional {onlyIfTrusted: true}, when that flag is enable, we will only
   // connect and emit a connect event if the application is trusted.
   // It will returns base58 encoded public key when success

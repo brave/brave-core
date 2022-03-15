@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_wallet {
 
@@ -20,6 +22,8 @@ class SolanaProviderImpl final : public mojom::SolanaProvider {
   SolanaProviderImpl(const SolanaProviderImpl&) = delete;
   SolanaProviderImpl& operator=(const SolanaProviderImpl&) = delete;
 
+  void Init(mojo::PendingRemote<mojom::SolanaEventsListener> events_listener)
+      override;
   void Connect(absl::optional<base::Value> arg,
                ConnectCallback callback) override;
   void Disconnect() override;
@@ -37,6 +41,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider {
                    SignMessageCallback callback) override;
 
  private:
+  mojo::Remote<mojom::SolanaEventsListener> events_listener_;
 };
 
 }  // namespace brave_wallet

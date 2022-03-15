@@ -16,6 +16,13 @@ namespace brave_wallet {
 SolanaProviderImpl::SolanaProviderImpl() = default;
 SolanaProviderImpl::~SolanaProviderImpl() = default;
 
+void SolanaProviderImpl::Init(
+    ::mojo::PendingRemote<mojom::SolanaEventsListener> events_listener) {
+  if (!events_listener_.is_bound()) {
+    events_listener_.Bind(std::move(events_listener));
+  }
+}
+
 void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
                                  ConnectCallback callback) {
   // TODO(darkdh): handle onlyIfTrusted when it exists
@@ -24,10 +31,13 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
   // "");
   std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
                           "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  events_listener_->AccountChangedEvent(
+      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
 }
 
 void SolanaProviderImpl::Disconnect() {
   // NOTIMPLEMENTED();
+  events_listener_->AccountChangedEvent(absl::nullopt);
 }
 
 void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
