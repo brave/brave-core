@@ -204,10 +204,6 @@ const CryptoStoryView = (props: Props) => {
     alert('Will Nav to brave://settings/wallet')
   }
 
-  const onRouteBackToAccounts = () => {
-    // Does nothing in storybook
-  }
-
   const onClickRetryTransaction = () => {
     // Does nothing in storybook
     alert('Will retry transaction')
@@ -363,7 +359,6 @@ const CryptoStoryView = (props: Props) => {
           onImportAccountFromJson={onImportAccountFromJson}
           hasImportError={hasImportError}
           onSetImportError={onSetImportError}
-          onRouteBackToAccounts={onRouteBackToAccounts}
           tab={addAccountModalTab}
         />
       }
