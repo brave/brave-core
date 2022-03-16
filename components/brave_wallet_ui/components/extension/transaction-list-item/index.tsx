@@ -118,7 +118,9 @@ const TransactionsListItem = (props: Props) => {
 
     if (transaction.txType === ERC20Approve) {
       // Approval
-      from = new Amount(transactionDetails.value).formatAsAsset(undefined, transactionDetails.symbol)
+      from = transactionDetails.isApprovalUnlimited
+        ? `${getLocale('braveWalletTransactionApproveUnlimited')} ${transactionDetails.symbol}`
+        : new Amount(transactionDetails.value).formatAsAsset(undefined, transactionDetails.symbol)
       to = transactionDetails.approvalTargetLabel || ''
     } else if (transaction.txDataUnion.ethTxData1559?.baseData.to.toLowerCase() === SwapExchangeProxy) {
       // Brave Swap
