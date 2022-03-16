@@ -25,7 +25,6 @@ class FilNonceTracker : public NonceTracker {
   FilNonceTracker(TxStateManager* tx_state_manager,
                   JsonRpcService* json_rpc_service);
   ~FilNonceTracker() override;
-  FilNonceTracker operator=(const FilNonceTracker&) = delete;
 
   // NonceTracker
   void GetNextNonce(const std::string& from,
@@ -38,7 +37,7 @@ class FilNonceTracker : public NonceTracker {
 
   void OnFilGetNetworkNonce(const std::string& from,
                             GetNextNonceCallback callback,
-                            uint256_t result,
+                            uint256_t network_nonce,
                             mojom::FilecoinProviderError error,
                             const std::string& error_message);
 

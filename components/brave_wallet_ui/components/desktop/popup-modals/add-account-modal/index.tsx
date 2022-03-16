@@ -79,7 +79,7 @@ const AddAccountModal = (props: Props) => {
   const [password, setPassword] = React.useState<string>('')
   const [selectedAccountType, setSelectedAccountType] = React.useState<CreateAccountOptionsType | undefined>(undefined)
   const passwordInputRef = React.useRef<HTMLInputElement>(null)
-  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('f')
+  const [filecoinNetwork, setFilecoinNetwork] = React.useState<FilecoinNetwork>('filmainnet')
 
   const suggestedAccountName = React.useMemo(() => {
     const accountTypeLength = accounts.filter((account) => account.coin === selectedAccountType?.coin).length + 1

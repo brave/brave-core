@@ -72,7 +72,7 @@ class FilTransaction {
 
   std::string signature_;
 
- protected:
+ private:
   FilTransaction(absl::optional<uint64_t> nonce,
                  const std::string& gas_premium,
                  const std::string& gas_fee_cap,

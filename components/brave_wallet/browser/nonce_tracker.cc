@@ -6,16 +6,13 @@
 #include "brave/components/brave_wallet/browser/nonce_tracker.h"
 
 #include <algorithm>
-#include <memory>
 #include <utility>
-#include <vector>
 
 #include "base/bind.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -23,13 +20,10 @@ namespace brave_wallet {
 
 NonceTracker::NonceTracker(TxStateManager* tx_state_manager,
                            JsonRpcService* json_rpc_service)
-    : tx_state_manager_(tx_state_manager),
-      json_rpc_service_(json_rpc_service) {}
-NonceTracker::~NonceTracker() = default;
+    : json_rpc_service_(json_rpc_service),
+      tx_state_manager_(tx_state_manager) {}
 
-JsonRpcService* NonceTracker::GetJsonRpcService() {
-  return json_rpc_service_.get();
-}
+NonceTracker::~NonceTracker() = default;
 
 absl::optional<uint256_t> NonceTracker::GetFinalNonce(const std::string& from,
                                                       uint256_t network_nonce) {
