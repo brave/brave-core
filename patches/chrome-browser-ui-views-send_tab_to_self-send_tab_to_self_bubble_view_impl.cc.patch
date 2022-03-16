@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc
-index 3b36090c4cd6772e81094d0b447b28eafe53cc0a..3b8e4b6194f2521ddb9e0b224f65706386f1997e 100644
+index 3b36090c4cd6772e81094d0b447b28eafe53cc0a..dfb0de6d54c93d306332a5ef3034b422014e4bc7 100644
 --- a/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc
 +++ b/chrome/browser/ui/views/send_tab_to_self/send_tab_to_self_bubble_view_impl.cc
 @@ -140,6 +140,7 @@ void SendTabToSelfBubbleViewImpl::Init() {
