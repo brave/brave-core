@@ -6,17 +6,11 @@
 #include "brave/components/brave_wallet/browser/eth_nonce_tracker.h"
 
 #include <algorithm>
-#include <memory>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "brave/components/brave_wallet/browser/eth_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/nonce_tracker.h"
 #include "brave/components/brave_wallet/browser/tx_state_manager.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 
 namespace brave_wallet {
@@ -29,9 +23,9 @@ EthNonceTracker::~EthNonceTracker() = default;
 
 void EthNonceTracker::GetNextNonce(const std::string& from,
                                    GetNextNonceCallback callback) {
-  GetJsonRpcService()->GetEthTransactionCount(
+  json_rpc_service_->GetEthTransactionCount(
       from,
-      base::BindOnce(&EthNonceTracker::OnEthGetNetworkNonce,
+      base::BindOnce(&EthNonceTracker::OnGetNetworkNonce,
                      weak_factory_.GetWeakPtr(), from, std::move(callback)));
 }
 
@@ -61,17 +55,17 @@ uint256_t EthNonceTracker::GetHighestContinuousFrom(
   return highest;
 }
 
-void EthNonceTracker::OnEthGetNetworkNonce(const std::string& from,
-                                           GetNextNonceCallback callback,
-                                           uint256_t result,
-                                           mojom::ProviderError error,
-                                           const std::string& error_message) {
+void EthNonceTracker::OnGetNetworkNonce(const std::string& from,
+                                        GetNextNonceCallback callback,
+                                        uint256_t network_nonce,
+                                        mojom::ProviderError error,
+                                        const std::string& error_message) {
   if (error != mojom::ProviderError::kSuccess) {
-    std::move(callback).Run(false, result);
+    std::move(callback).Run(false, network_nonce);
     return;
   }
-  auto nonce =
-      GetFinalNonce(EthAddress::FromHex(from).ToChecksumAddress(), result);
+  auto nonce = GetFinalNonce(EthAddress::FromHex(from).ToChecksumAddress(),
+                             network_nonce);
   std::move(callback).Run(nonce.has_value(), nonce.has_value() ? *nonce : 0);
 }
 

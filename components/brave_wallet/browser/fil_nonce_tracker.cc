@@ -6,14 +6,11 @@
 #include "brave/components/brave_wallet/browser/fil_nonce_tracker.h"
 
 #include <algorithm>
-#include <memory>
-#include <string>
 #include <utility>
-#include <vector>
 
 #include "brave/components/brave_wallet/browser/fil_tx_meta.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/nonce_tracker.h"
+#include "brave/components/brave_wallet/browser/tx_state_manager.h"
 #include "brave/components/brave_wallet/common/fil_address.h"
 
 namespace brave_wallet {
@@ -26,7 +23,7 @@ FilNonceTracker::~FilNonceTracker() = default;
 
 void FilNonceTracker::GetNextNonce(const std::string& from,
                                    GetNextNonceCallback callback) {
-  GetJsonRpcService()->GetFilTransactionCount(
+  json_rpc_service_->GetFilTransactionCount(
       from,
       base::BindOnce(&FilNonceTracker::OnFilGetNetworkNonce,
                      weak_factory_.GetWeakPtr(), from, std::move(callback)));
@@ -62,14 +59,14 @@ uint256_t FilNonceTracker::GetHighestContinuousFrom(
 
 void FilNonceTracker::OnFilGetNetworkNonce(const std::string& from,
                                            GetNextNonceCallback callback,
-                                           uint256_t result,
+                                           uint256_t network_nonce,
                                            mojom::FilecoinProviderError error,
                                            const std::string& error_message) {
   if (error != mojom::FilecoinProviderError::kSuccess) {
-    std::move(callback).Run(false, result);
+    std::move(callback).Run(false, network_nonce);
     return;
   }
-  auto nonce = GetFinalNonce(from, result);
+  auto nonce = GetFinalNonce(from, network_nonce);
   std::move(callback).Run(nonce.has_value(), nonce.has_value() ? *nonce : 0);
 }
 

@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/strcat.h"
 #include "brave/components/brave_wallet/browser/fil_response_parser.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -41,6 +42,12 @@ TEST(FilResponseParserUnitTest, ParseFilGetTransactionCount) {
   value = 0;
   EXPECT_TRUE(brave_wallet::ParseFilGetTransactionCount(json, &value));
   EXPECT_EQ(value, 1u);
+
+  json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":-1}";
+  EXPECT_FALSE(brave_wallet::ParseFilGetTransactionCount(json, &value));
+
+  json = "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":1.2}";
+  EXPECT_FALSE(brave_wallet::ParseFilGetTransactionCount(json, &value));
 
   json = "bad json";
   EXPECT_FALSE(brave_wallet::ParseFilGetTransactionCount(json, &value));
