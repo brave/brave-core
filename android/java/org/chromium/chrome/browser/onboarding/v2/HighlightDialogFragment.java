@@ -28,7 +28,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.OnboardingV2PagerAdapter;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -48,8 +47,8 @@ public class HighlightDialogFragment extends DialogFragment {
         void onLearnMore();
     }
 
-    private static final List<Integer> highlightViews = Arrays.asList(R.id.brave_stats_ads,
-            R.id.brave_stats_data_saved, R.id.brave_stats_time, R.id.ntp_widget_cardview_layout);
+    private static final List<Integer> highlightViews =
+            Arrays.asList(R.id.brave_stats_ads, R.id.brave_stats_data_saved, R.id.brave_stats_time);
 
     private HighlightItem item;
     private HighlightView highlightView;
@@ -85,7 +84,7 @@ public class HighlightDialogFragment extends DialogFragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (positionOffset == 0) {
-                    highlightView(isFromStats ? 3 : position);
+                    highlightView(isFromStats ? 2 : position);
                 }
             }
 
@@ -154,7 +153,7 @@ public class HighlightDialogFragment extends DialogFragment {
 
     private void highlightView(int position) {
         int viewId;
-        if (position == 3 && NTPWidgetManager.getInstance().getUsedWidgets().size() <= 0
+        if (position == 3
                 && !UserPrefs.get(Profile.getLastUsedRegularProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
             viewId = R.id.ntp_stats_layout;

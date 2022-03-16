@@ -19,8 +19,4 @@
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
-    <Preference
-        android:key="widget_stack"
-        android:title="@string/widget_stack"/>
-
 </PreferenceScreen>
