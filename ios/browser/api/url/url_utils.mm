@@ -27,7 +27,7 @@
   return base::SysUTF8ToNSString(domain);
 }
 
-- (nullable NSString*)brave_baseDomainExcludingPrivateRegistries {
+- (nullable NSString*)brave_domainAndRegistryExcludingPrivateRegistries {
   std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
       net::GURLWithNSURL(self),
       net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
@@ -42,21 +42,21 @@
   return base::SysUTF8ToNSString(net::GURLWithNSURL(self).spec());
 }
 
-- (NSURL*)addingQueryParameter:(NSString*)key value:(NSString*)value {
+- (NSURL*)brave_addingQueryParameter:(NSString*)key value:(NSString*)value {
   GURL gurl_ = net::AppendQueryParameter(net::GURLWithNSURL(self),
                                          base::SysNSStringToUTF8(key),
                                          base::SysNSStringToUTF8(value));
   return net::NSURLWithGURL(gurl_);
 }
 
-- (NSURL*)replacingQueryParameter:(NSString*)key value:(NSString*)value {
+- (NSURL*)brave_replacingQueryParameter:(NSString*)key value:(NSString*)value {
   GURL gurl_ = net::AppendOrReplaceQueryParameter(
       net::GURLWithNSURL(self), base::SysNSStringToUTF8(key),
       base::SysNSStringToUTF8(value));
   return net::NSURLWithGURL(gurl_);
 }
 
-- (nullable NSString*)valueForQueryParameter:(NSString*)key {
+- (nullable NSString*)brave_valueForQueryParameter:(NSString*)key {
   std::string result;
   bool success = net::GetValueForKeyInQuery(
       net::GURLWithNSURL(self), base::SysNSStringToUTF8(key), &result);
@@ -66,7 +66,7 @@
   return nullptr;
 }
 
-- (bool)hasScheme:(NSString*)scheme {
+- (bool)brave_hasScheme:(NSString*)scheme {
   return net::GURLWithNSURL(self).SchemeIs(
       base::SysNSStringToUTF8([scheme lowercaseString]));
 }
