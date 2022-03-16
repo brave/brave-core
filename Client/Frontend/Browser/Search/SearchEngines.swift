@@ -152,7 +152,7 @@ class SearchEngines {
 
     var quickSearchEngines: [OpenSearchEngine]! {
         get {
-            return self.orderedEngines.filter({ (engine) in !self.isEngineDefault(engine) && self.isEngineEnabled(engine) })
+            return self.orderedEngines.filter({ (engine) in self.isEngineEnabled(engine) })
         }
     }
 

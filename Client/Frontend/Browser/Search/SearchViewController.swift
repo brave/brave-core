@@ -109,17 +109,8 @@ class SearchViewController: SiteTableViewController, LoaderListener {
     }
 
     private var quickSearchEngines: [OpenSearchEngine] {
-        guard let engines = searchEngines else { return [] }
-        var quickEngines = engines.quickSearchEngines
-
-        // If we're not showing search suggestions, the default search engine won't be visible
-        // at the top of the table. Show it with the others in the bottom search bar.
-        if tabType.isPrivate || !engines.shouldShowSearchSuggestions {
-            quickEngines?.insert(engines.defaultEngine(), at: 0)
-        }
-
-        guard let seachEngine = quickEngines else { return [] }
-        return seachEngine
+        guard let searchEngines = searchEngines?.quickSearchEngines else { return [] }
+        return searchEngines
     }
 
     // If the user only has a single quick search engine, it is also their default one.
