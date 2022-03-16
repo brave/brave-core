@@ -29,9 +29,8 @@ bool CategoryContentInfo::operator!=(const CategoryContentInfo& rhs) const {
 base::DictionaryValue CategoryContentInfo::ToValue() const {
   base::DictionaryValue dictionary;
 
-  dictionary.SetKey("category", base::Value(category));
-  dictionary.SetKey("optAction",
-                    base::Value(static_cast<int>(opt_action_type)));
+  dictionary.SetStringKey("category", category);
+  dictionary.SetIntKey("optAction", static_cast<int>(opt_action_type));
 
   return dictionary;
 }

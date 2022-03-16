@@ -38,24 +38,21 @@ base::Value UnblindedPaymentTokens::GetTokensAsList() {
   for (const auto& unblinded_payment_token : unblinded_payment_tokens_) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
-    dictionary.SetKey(
-        "transaction_id",
-        base::Value(std::string(unblinded_payment_token.transaction_id)));
+    dictionary.SetStringKey(
+        "transaction_id", std::string(unblinded_payment_token.transaction_id));
 
-    dictionary.SetKey(
-        "unblinded_token",
-        base::Value(unblinded_payment_token.value.encode_base64()));
+    dictionary.SetStringKey("unblinded_token",
+                            unblinded_payment_token.value.encode_base64());
 
-    dictionary.SetKey(
-        "public_key",
-        base::Value(unblinded_payment_token.public_key.encode_base64()));
+    dictionary.SetStringKey("public_key",
+                            unblinded_payment_token.public_key.encode_base64());
 
-    dictionary.SetKey(
+    dictionary.SetStringKey(
         "confirmation_type",
-        base::Value(std::string(unblinded_payment_token.confirmation_type)));
+        std::string(unblinded_payment_token.confirmation_type));
 
-    dictionary.SetKey(
-        "ad_type", base::Value(std::string(unblinded_payment_token.ad_type)));
+    dictionary.SetStringKey("ad_type",
+                            std::string(unblinded_payment_token.ad_type));
 
     list.Append(std::move(dictionary));
   }

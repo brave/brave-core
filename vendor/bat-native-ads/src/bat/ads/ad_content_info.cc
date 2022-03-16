@@ -54,21 +54,20 @@ AdContentLikeActionType AdContentInfo::ToggleThumbDownActionType() const {
 base::DictionaryValue AdContentInfo::ToValue() const {
   base::DictionaryValue dictionary;
 
-  dictionary.SetKey("adType", base::Value(type.value()));
-  dictionary.SetKey("uuid", base::Value(uuid));
-  dictionary.SetKey("creativeInstanceId", base::Value(creative_instance_id));
-  dictionary.SetKey("creativeSetId", base::Value(creative_set_id));
-  dictionary.SetKey("campaignId", base::Value(campaign_id));
-  dictionary.SetKey("advertiserId", base::Value(advertiser_id));
-  dictionary.SetKey("brand", base::Value(brand));
-  dictionary.SetKey("brandInfo", base::Value(brand_info));
-  dictionary.SetKey("brandDisplayUrl", base::Value(brand_display_url));
-  dictionary.SetKey("brandUrl", base::Value(brand_url));
-  dictionary.SetKey("likeAction",
-                    base::Value(static_cast<int>(like_action_type)));
-  dictionary.SetKey("adAction", base::Value(std::string(confirmation_type)));
-  dictionary.SetKey("savedAd", base::Value(is_saved));
-  dictionary.SetKey("flaggedAd", base::Value(is_flagged));
+  dictionary.SetIntKey("adType", static_cast<int>(type.value()));
+  dictionary.SetStringKey("uuid", uuid);
+  dictionary.SetStringKey("creativeInstanceId", creative_instance_id);
+  dictionary.SetStringKey("creativeSetId", creative_set_id);
+  dictionary.SetStringKey("campaignId", campaign_id);
+  dictionary.SetStringKey("advertiserId", advertiser_id);
+  dictionary.SetStringKey("brand", brand);
+  dictionary.SetStringKey("brandInfo", brand_info);
+  dictionary.SetStringKey("brandDisplayUrl", brand_display_url);
+  dictionary.SetStringKey("brandUrl", brand_url);
+  dictionary.SetIntKey("likeAction", static_cast<int>(like_action_type));
+  dictionary.SetStringKey("adAction", std::string(confirmation_type));
+  dictionary.SetBoolKey("savedAd", is_saved);
+  dictionary.SetBoolKey("flaggedAd", is_flagged);
 
   return dictionary;
 }

@@ -60,7 +60,7 @@ class AdNotifications final {
   std::deque<AdNotificationInfo> ad_notifications_;
 
   std::deque<AdNotificationInfo> GetNotificationsFromList(
-      base::ListValue* list) const;
+      base::Value* list) const;
 
   bool GetNotificationFromDictionary(base::DictionaryValue* dictionary,
                                      AdNotificationInfo* ad_notification) const;

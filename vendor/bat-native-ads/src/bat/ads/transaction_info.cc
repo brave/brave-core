@@ -44,18 +44,17 @@ bool TransactionInfo::IsValid() const {
 void TransactionInfo::ToDictionary(base::Value* dictionary) const {
   DCHECK(dictionary);
 
-  dictionary->SetKey("id", base::Value(id));
+  dictionary->SetStringKey("id", id);
 
-  dictionary->SetKey("timestamp_in_seconds",
-                     base::Value(base::NumberToString(created_at)));
+  dictionary->SetStringKey("timestamp_in_seconds",
+                           base::NumberToString(created_at));
 
-  dictionary->SetKey("estimated_redemption_value", base::Value(value));
+  dictionary->SetDoubleKey("estimated_redemption_value", value);
 
-  dictionary->SetKey("confirmation_type",
-                     base::Value(std::string(confirmation_type)));
+  dictionary->SetStringKey("confirmation_type", std::string(confirmation_type));
 
-  dictionary->SetKey("reconciled_at",
-                     base::Value(base::NumberToString(reconciled_at)));
+  dictionary->SetStringKey("reconciled_at",
+                           base::NumberToString(reconciled_at));
 }
 
 void TransactionInfo::FromDictionary(base::DictionaryValue* dictionary) {

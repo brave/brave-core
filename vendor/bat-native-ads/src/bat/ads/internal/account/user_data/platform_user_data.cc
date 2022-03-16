@@ -18,7 +18,7 @@ base::DictionaryValue GetPlatform() {
 
   const std::string platform = PlatformHelper::GetInstance()->GetPlatformName();
   if (!platform.empty()) {
-    user_data.SetKey("platform", base::Value(platform));
+    user_data.SetStringKey("platform", platform);
   }
 
   return user_data;

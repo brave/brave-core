@@ -75,18 +75,17 @@ std::string StatementInfo::ToJson() const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   // Next payment date
-  dictionary.SetKey("next_payment_date",
-                    base::Value(base::NumberToString(next_payment_date)));
+  dictionary.SetStringKey("next_payment_date",
+                          base::NumberToString(next_payment_date));
 
   // Earnings this month
-  dictionary.SetKey("earnings_this_month", base::Value(earnings_this_month));
+  dictionary.SetDoubleKey("earnings_this_month", earnings_this_month);
 
   // Earnings last month
-  dictionary.SetKey("earnings_last_month", base::Value(earnings_last_month));
+  dictionary.SetDoubleKey("earnings_last_month", earnings_last_month);
 
   // Ads received this month
-  dictionary.SetKey("ads_received_this_month",
-                    base::Value(ads_received_this_month));
+  dictionary.SetIntKey("ads_received_this_month", ads_received_this_month);
 
   // Write to JSON
   std::string json;

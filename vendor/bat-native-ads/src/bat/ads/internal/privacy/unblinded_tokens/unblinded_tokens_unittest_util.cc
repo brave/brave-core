@@ -112,11 +112,11 @@ base::Value GetUnblindedTokensAsList(const int count) {
   for (const auto& unblinded_token : unblinded_tokens) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
-    dictionary.SetKey("unblinded_token",
-                      base::Value(unblinded_token.value.encode_base64()));
+    dictionary.SetStringKey("unblinded_token",
+                            unblinded_token.value.encode_base64());
 
-    dictionary.SetKey("public_key",
-                      base::Value(unblinded_token.public_key.encode_base64()));
+    dictionary.SetStringKey("public_key",
+                            unblinded_token.public_key.encode_base64());
 
     list.Append(std::move(dictionary));
   }

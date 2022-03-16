@@ -45,18 +45,18 @@ bool InlineContentAdInfo::IsValid() const {
 base::DictionaryValue InlineContentAdInfo::ToValue() const {
   base::DictionaryValue dictionary;
 
-  dictionary.SetKey("uuid", base::Value(uuid));
-  dictionary.SetKey("creativeInstanceId", base::Value(creative_instance_id));
-  dictionary.SetKey("creativeSetId", base::Value(creative_set_id));
-  dictionary.SetKey("campaignId", base::Value(campaign_id));
-  dictionary.SetKey("advertiserId", base::Value(advertiser_id));
-  dictionary.SetKey("segment", base::Value(segment));
-  dictionary.SetKey("title", base::Value(title));
-  dictionary.SetKey("description", base::Value(description));
-  dictionary.SetKey("imageUrl", base::Value(image_url));
-  dictionary.SetKey("dimensions", base::Value(dimensions));
-  dictionary.SetKey("ctaText", base::Value(cta_text));
-  dictionary.SetKey("targetUrl", base::Value(target_url));
+  dictionary.SetStringKey("uuid", uuid);
+  dictionary.SetStringKey("creativeInstanceId", creative_instance_id);
+  dictionary.SetStringKey("creativeSetId", creative_set_id);
+  dictionary.SetStringKey("campaignId", campaign_id);
+  dictionary.SetStringKey("advertiserId", advertiser_id);
+  dictionary.SetStringKey("segment", segment);
+  dictionary.SetStringKey("title", title);
+  dictionary.SetStringKey("description", description);
+  dictionary.SetStringKey("imageUrl", image_url);
+  dictionary.SetStringKey("dimensions", dimensions);
+  dictionary.SetStringKey("ctaText", cta_text);
+  dictionary.SetStringKey("targetUrl", target_url);
 
   return dictionary;
 }

@@ -83,7 +83,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
   base::Value payment_request_dto = CreatePaymentRequestDTO(payload);
   dictionary.SetKey("paymentCredentials", std::move(payment_request_dto));
 
-  dictionary.SetKey("payload", base::Value(payload));
+  dictionary.SetStringKey("payload", payload);
 
   dictionary.MergeDictionary(&user_data_);
 
@@ -96,7 +96,7 @@ std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::BuildBody(
 std::string RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePayload()
     const {
   base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetKey("paymentId", base::Value(wallet_.id));
+  payload.SetStringKey("paymentId", wallet_.id);
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
@@ -117,13 +117,12 @@ RedeemUnblindedPaymentTokensUrlRequestBuilder::CreatePaymentRequestDTO(
     base::Value credential = CreateCredential(unblinded_payment_token, payload);
     payment_credential.SetKey("credential", base::Value(std::move(credential)));
 
-    payment_credential.SetKey(
+    payment_credential.SetStringKey(
         "confirmationType",
-        base::Value(std::string(unblinded_payment_token.confirmation_type)));
+        std::string(unblinded_payment_token.confirmation_type));
 
-    payment_credential.SetKey(
-        "publicKey",
-        base::Value(unblinded_payment_token.public_key.encode_base64()));
+    payment_credential.SetStringKey(
+        "publicKey", unblinded_payment_token.public_key.encode_base64());
 
     payment_request_dto.Append(std::move(payment_credential));
   }
@@ -165,8 +164,8 @@ base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
     return credential;
   }
 
-  credential.SetKey("signature", base::Value(verification_signature_base64));
-  credential.SetKey("t", base::Value(token_preimage_base64));
+  credential.SetStringKey("signature", verification_signature_base64);
+  credential.SetStringKey("t", token_preimage_base64);
 
   return credential;
 }

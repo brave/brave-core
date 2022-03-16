@@ -110,18 +110,16 @@ base::Value IssuerListToValue(const IssuerList& issuers) {
     }
     const std::string& name = name_optional.value();
 
-    issuer_dictionary.SetKey(kNameKey, base::Value(name));
+    issuer_dictionary.SetStringKey(kNameKey, name);
 
     base::Value public_keys_list(base::Value::Type::LIST);
     for (const auto& public_key : issuer.public_keys) {
       base::Value public_key_dictionary(base::Value::Type::DICTIONARY);
 
-      public_key_dictionary.SetKey(kPublicKeyKey,
-                                   base::Value(public_key.first));
+      public_key_dictionary.SetStringKey(kPublicKeyKey, public_key.first);
 
-      public_key_dictionary.SetKey(
-          kAssociatedValueKey,
-          base::Value(base::NumberToString(public_key.second)));
+      public_key_dictionary.SetStringKey(
+          kAssociatedValueKey, base::NumberToString(public_key.second));
 
       public_keys_list.Append(std::move(public_key_dictionary));
     }

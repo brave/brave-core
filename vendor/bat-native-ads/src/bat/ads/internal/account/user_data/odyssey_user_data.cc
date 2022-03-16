@@ -25,7 +25,7 @@ base::DictionaryValue GetOdyssey() {
   base::DictionaryValue user_data;
 
   const std::string type = g_sys_info.is_uncertain_future ? kGuest : kHost;
-  user_data.SetKey(kOdysseyKey, base::Value(type));
+  user_data.SetStringKey(kOdysseyKey, type);
 
   return user_data;
 }

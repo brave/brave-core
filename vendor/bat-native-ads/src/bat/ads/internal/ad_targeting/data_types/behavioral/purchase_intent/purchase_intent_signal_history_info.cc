@@ -69,10 +69,10 @@ bool PurchaseIntentSignalHistoryInfo::operator!=(
 std::string PurchaseIntentSignalHistoryInfo::ToJson() const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
-  dictionary.SetKey("timestamp_in_seconds",
-                    base::Value(base::NumberToString(created_at.ToDoubleT())));
+  dictionary.SetStringKey("timestamp_in_seconds",
+                          base::NumberToString(created_at.ToDoubleT()));
 
-  dictionary.SetKey("weight", base::Value(weight));
+  dictionary.SetIntKey("weight", static_cast<int>(weight));
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
