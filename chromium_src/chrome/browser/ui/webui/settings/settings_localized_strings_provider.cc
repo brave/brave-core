@@ -117,7 +117,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
      IDS_SETTINGS_SYSTEM_PAGE_BRAVE_IS_DEFAULT_MS_EDGE_PROTOCOL_HANDLER_LABEL},
 #endif
 #if BUILDFLAG(ENABLE_SIDEBAR)
-    {"appearanceSettingsShowOptionTitle", IDS_SIDEBAR_SHOW_OPTION_TITLE},
+    {"appearanceSettingsShowOptionTitle",
+     IDS_SETTINGS_SIDEBAR_SHOW_OPTION_TITLE},
     {"appearanceSettingsShowOptionAlways", IDS_SIDEBAR_SHOW_OPTION_ALWAYS},
     {"appearanceSettingsShowOptionMouseOver",
      IDS_SIDEBAR_SHOW_OPTION_MOUSEOVER},
