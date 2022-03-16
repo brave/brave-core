@@ -47,6 +47,7 @@ export const TextWrapper = styled.div<StyleProps>`
     }
   }};
   width: 100%;
+  min-width: 30px;
   font-family: Poppins;
   font-size: 14px;
   letter-spacing: 0.01em;
