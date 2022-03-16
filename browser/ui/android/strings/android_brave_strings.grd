@@ -1025,7 +1025,7 @@ Are you sure you want to do this?
         Go to my <ph name="WALLET_PROVIDER">%1$s</ph> account
       </message>
       <message name="IDS_USER_WALLET_DISCONNECT_REWARDS">
-        Disconnect from Brave Rewards
+        Disconnect from <ph name="WALLET_PROVIDER">%1$s</ph>
       </message>
       <message name="IDS_USER_WALLET_WITHDRAW_FUNDS">
         Withdraw Funds
