@@ -305,24 +305,11 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         }
                         mCurrentChainId = chainId;
                     });
-                    updateBalance(mCustomAccountAdapter.getTitleAtPosition(
-                                          mAccountSpinner.getSelectedItemPosition()),
-                            true);
-                    // We have to call that for SWAP, to update both from and to
-                    // balance
-                    if (mActivityType == ActivityType.SWAP) {
-                        updateBalance(mCustomAccountAdapter.getTitleAtPosition(
-                                              mAccountSpinner.getSelectedItemPosition()),
-                                false);
-                    }
+                    updateBalanceMaybeSwap(getCurrentSelectedAccountAddr());
                 });
             }
         } else if (parent.getId() == R.id.accounts_spinner) {
-            updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), true);
-            // We have to call that for SWAP, to update both from and to balance
-            if (mActivityType == ActivityType.SWAP) {
-                updateBalance(mCustomAccountAdapter.getTitleAtPosition(position), false);
-            }
+            updateBalanceMaybeSwap(mCustomAccountAdapter.getTitleAtPosition(position));
         }
     }
 
@@ -606,6 +593,18 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                         populateBalance(balance, from);
                     });
         }
+    }
+
+    // We have to call that for SWAP, to update both from and to balance
+    public void updateBalanceMaybeSwap(String address) {
+        updateBalance(address, true);
+        if (mActivityType == ActivityType.SWAP) {
+            updateBalance(address, false);
+        }
+    }
+
+    public String getCurrentSelectedAccountAddr() {
+        return mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition());
     }
 
     private void populateBalance(String balance, boolean from) {
@@ -1368,9 +1367,6 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                     token.symbol, getResources().getDisplayMetrics().density, assetText, this, true,
                     (float) 0.5);
         }
-        updateBalance(
-                mCustomAccountAdapter.getTitleAtPosition(mAccountSpinner.getSelectedItemPosition()),
-                false);
         if (buySend && mActivityType == ActivityType.SWAP || !buySend) {
             enableDisableSwapButton();
             getSendSwapQuota(true, false);
@@ -1464,10 +1460,7 @@ public class BuySendSwapActivity extends BraveWalletBaseActivity
                 mAccountSpinner.setAdapter(mCustomAccountAdapter);
                 mAccountSpinner.setOnItemSelectedListener(this);
                 if (accountTitles.length > 0) {
-                    updateBalance(accountTitles[0], true);
-                    if (mActivityType == ActivityType.SWAP) {
-                        updateBalance(accountTitles[0], false);
-                    }
+                    updateBalanceMaybeSwap(accountTitles[0]);
                 }
 
                 // updateBuySendSwapAsset needs mCustomAccountAdapter to be initialized
