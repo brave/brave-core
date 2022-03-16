@@ -38,7 +38,6 @@ class FilTransaction {
   std::string max_fee() const { return max_fee_; }
   FilAddress to() const { return to_; }
   std::string value() const { return value_; }
-  std::string cid() const { return cid_; }
 
   void set_to(FilAddress to) { to_ = to; }
   void set_value(const std::string& value) { value_ = value; }
@@ -51,11 +50,10 @@ class FilTransaction {
   }
   void set_gas_limit(int64_t gas_limit) { gas_limit_ = gas_limit; }
   void set_max_fee(const std::string& max_fee) { max_fee_ = max_fee; }
-  void set_cid(const std::string& cid) { cid_ = cid; }
 
-  virtual std::string GetMessageToSign() const;
-
-  virtual base::Value ToValue() const;
+  std::string GetMessageToSign() const;
+  base::Value ToValue() const;
+  mojom::FilTxDataPtr ToFilTxData() const;
   static absl::optional<FilTransaction> FromValue(const base::Value& value);
 
  private:
@@ -84,4 +82,5 @@ class FilTransaction {
 };
 
 }  // namespace brave_wallet
+
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_FIL_TRANSACTION_H_

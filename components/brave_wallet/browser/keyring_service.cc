@@ -1111,7 +1111,7 @@ void KeyringService::AddDiscoveryAccountsForKeyring(
   auto* keyring = GetHDKeyringById(mojom::kDefaultKeyringId);
   if (!keyring)
     return;
-  json_rpc_service_->GetTransactionCount(
+  json_rpc_service_->GetEthTransactionCount(
       keyring->GetDiscoveryAddress(discovery_account_index),
       base::BindOnce(&KeyringService::OnGetTransactionCount,
                      discovery_weak_factory_.GetWeakPtr(),

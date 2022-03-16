@@ -28,6 +28,8 @@ class FilTxManager : public TxManager {
                KeyringService* keyring_service,
                PrefService* prefs);
   ~FilTxManager() override;
+  FilTxManager(const FilTxManager&) = delete;
+  FilTxManager operator=(const FilTxManager&) = delete;
 
   void AddUnapprovedTransaction(mojom::TxDataUnionPtr tx_data_union,
                                 const std::string& from,

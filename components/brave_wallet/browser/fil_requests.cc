@@ -9,12 +9,16 @@
 
 namespace brave_wallet {
 
-std::string fil_getBalance(const std::string& address) {
+namespace fil {
+
+std::string getBalance(const std::string& address) {
   return GetJsonRpc1Param("Filecoin.WalletBalance", address);
 }
 
-std::string fil_getTransactionCount(const std::string& address) {
+std::string getTransactionCount(const std::string& address) {
   return GetJsonRpc1Param("Filecoin.MpoolGetNonce", address);
 }
+
+}  // namespace fil
 
 }  // namespace brave_wallet

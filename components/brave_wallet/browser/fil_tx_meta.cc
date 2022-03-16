@@ -34,13 +34,8 @@ base::Value FilTxMeta::ToValue() const {
 mojom::TransactionInfoPtr FilTxMeta::ToTransactionInfo() const {
   return mojom::TransactionInfo::New(
       id_, from_, tx_hash_,
-      mojom::TxDataUnion::NewFilTxData(mojom::FilTxData::New(
-          tx_->nonce() ? base::NumberToString(*tx_->nonce()) : "",
-          tx_->gas_premium(), tx_->gas_fee_cap(),
-          base::NumberToString(tx_->gas_limit()), tx_->max_fee(),
-          tx_->to().EncodeAsString(), tx_->value(), tx_->cid())),
-      status_, mojom::TransactionType::Other,
-      std::vector<std::string>() /* tx_params */,
+      mojom::TxDataUnion::NewFilTxData(tx_->ToFilTxData()), status_,
+      mojom::TransactionType::Other, std::vector<std::string>() /* tx_params */,
       std::vector<std::string>() /* tx_args */,
       base::Milliseconds(created_time_.ToJavaTime()),
       base::Milliseconds(submitted_time_.ToJavaTime()),

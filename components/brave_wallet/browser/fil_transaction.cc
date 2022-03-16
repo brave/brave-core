@@ -25,7 +25,7 @@ bool IsNumericString(const std::string& value) {
 
 }  // namespace
 
-FilTransaction::FilTransaction() {}
+FilTransaction::FilTransaction() = default;
 
 FilTransaction::FilTransaction(const FilTransaction&) = default;
 FilTransaction::FilTransaction(absl::optional<uint64_t> nonce,
@@ -92,8 +92,6 @@ absl::optional<FilTransaction> FilTransaction::FromTxData(
     return absl::nullopt;
   tx.set_max_fee(tx_data->max_fee);
 
-  tx.set_cid(tx_data->cid);
-
   int64_t gas_limit = 0;
   if (!tx_data->gas_limit.empty()) {
     if (!base::StringToInt64(tx_data->gas_limit, &gas_limit))
@@ -114,9 +112,6 @@ base::Value FilTransaction::ToValue() const {
   dict.SetStringKey("gas_limit", base::NumberToString(gas_limit_));
   dict.SetStringKey("to", to_.EncodeAsString());
   dict.SetStringKey("value", value_);
-  base::Value cid(base::Value::Type::DICTIONARY);
-  cid.SetStringKey("/", cid_);
-  dict.SetKey("CID", std::move(cid));
   return dict;
 }
 
@@ -164,13 +159,6 @@ absl::optional<FilTransaction> FilTransaction::FromValue(
     return absl::nullopt;
   tx.value_ = *tx_value;
 
-  const base::Value* cid_root = value.FindDictKey("CID");
-  if (cid_root) {
-    auto* cid_node = cid_root->FindStringKey("/");
-    if (cid_node)
-      tx.cid_ = *cid_node;
-  }
-
   return tx;
 }
 
@@ -178,6 +166,13 @@ std::string FilTransaction::GetMessageToSign() const {
   std::string json;
   base::JSONWriter::Write(ToValue(), &json);
   return json;
+}
+
+mojom::FilTxDataPtr FilTransaction::ToFilTxData() const {
+  return mojom::FilTxData::New(nonce() ? base::NumberToString(*nonce()) : "",
+                               gas_premium(), gas_fee_cap(),
+                               base::NumberToString(gas_limit()), max_fee(),
+                               to().EncodeAsString(), value());
 }
 
 }  // namespace brave_wallet

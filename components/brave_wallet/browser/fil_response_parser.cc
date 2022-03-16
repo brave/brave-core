@@ -8,13 +8,8 @@
 #include <memory>
 #include <utility>
 
-#include "base/json/json_reader.h"
-#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
-#include "brave/components/brave_wallet/common/brave_wallet_types.h"
-#include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
@@ -22,15 +17,16 @@ bool ParseFilGetBalance(const std::string& json, std::string* balance) {
   return brave_wallet::ParseSingleStringResult(json, balance);
 }
 
-bool ParseFilGetTransactionCount(const std::string& json, uint64_t* count) {
-  base::Value result;
-  if (!ParseResult(json, &result))
+bool ParseFilGetTransactionCount(const std::string& raw_json, uint64_t* count) {
+  if (raw_json.empty())
     return false;
-  if (result.is_int() || result.is_double()) {
-    *count = result.GetDouble();
-    return true;
-  }
-  return false;
+  std::string value;
+  auto converted_json = ConvertSingleUint64Result(raw_json);
+  if (!converted_json ||
+      !brave_wallet::ParseSingleStringResult(converted_json.value(), &value) ||
+      value.empty())
+    return false;
+  return base::StringToUint64(value, count);
 }
 
 }  // namespace brave_wallet
