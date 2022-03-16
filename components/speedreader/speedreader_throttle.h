@@ -12,24 +12,36 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/single_thread_task_runner.h"
-#include "brave/components/speedreader/speedreader_result_delegate.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "services/network/public/mojom/url_response_head.mojom-forward.h"
-#include "third_party/blink/public/common/loader/url_loader_throttle.h"
+#include "url/gurl.h"
 
 class HostContentSettingsMap;
 
 namespace speedreader {
 
+class SpeedreaderResultDelegate;
 class SpeedreaderRewriterService;
 
-// Launches the speedreader distillation pass over a reponce body, deferring
+// Launches the speedreader distillation pass over a response body, deferring
 // the load until distillation is done.
 // TODO(iefremov): Avoid distilling the same page twice (see comments in
 // blink::URLLoaderThrottle)?
 // TODO(iefremov): Check throttles order?
-// Cargoculted from |MimeSniffingThrottle|.
-class SpeedReaderThrottle : public blink::URLLoaderThrottle {
+// Cargoculted from |MimeSniffingThrottle| -- refactored common functionality
+// between SpeedReader and de-amp urlloader / throttle into
+// components/body_sniffer
+class SpeedReaderThrottle : public body_sniffer::BodySnifferThrottle {
  public:
+  ~SpeedReaderThrottle() override;
+
+  // |task_runner| is used to bind the right task runner for handling incoming
+  // IPC in SpeedReaderLoader. |task_runner| is supposed to be bound to the
+  // current sequence.
+  SpeedReaderThrottle(SpeedreaderRewriterService* rewriter_service,
+                      base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
+                      scoped_refptr<base::SingleThreadTaskRunner> task_runner);
+
   static std::unique_ptr<SpeedReaderThrottle> MaybeCreateThrottleFor(
       SpeedreaderRewriterService* rewriter_service,
       HostContentSettingsMap* content_settings,
@@ -38,30 +50,15 @@ class SpeedReaderThrottle : public blink::URLLoaderThrottle {
       bool check_disabled_sites,
       scoped_refptr<base::SingleThreadTaskRunner> task_runner);
 
-  // |task_runner| is used to bind the right task runner for handling incoming
-  // IPC in SpeedReaderLoader. |task_runner| is supposed to be bound to the
-  // current sequence.
-  SpeedReaderThrottle(SpeedreaderRewriterService* rewriter_service,
-                      base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
-                      scoped_refptr<base::SingleThreadTaskRunner> task_runner);
-  ~SpeedReaderThrottle() override;
-
-  SpeedReaderThrottle(const SpeedReaderThrottle&) = delete;
-  SpeedReaderThrottle& operator=(const SpeedReaderThrottle&) = delete;
-
   // Implements blink::URLLoaderThrottle.
   void WillProcessResponse(const GURL& response_url,
                            network::mojom::URLResponseHead* response_head,
                            bool* defer) override;
 
-  // Called from SpeedReaderURLLoader.
-  void Resume();
-
  private:
+  scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
   raw_ptr<SpeedreaderRewriterService> rewriter_service_ = nullptr;  // not owned
   base::WeakPtr<SpeedreaderResultDelegate> result_delegate_;
-  scoped_refptr<base::SingleThreadTaskRunner> task_runner_;
-  base::WeakPtrFactory<SpeedReaderThrottle> weak_factory_{this};
 };
 
 }  // namespace speedreader

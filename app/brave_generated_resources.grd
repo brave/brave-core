@@ -333,6 +333,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_SETTINGS_SPEEDREADER_SUB_LABEL" desc="The sub-label describing Speedreader">
         Articles automatically load in reader mode, saving you time
       </message>
+      <message name="IDS_SETTINGS_DE_AMP_LABEL" desc="The label to activate De-AMP feature">
+        Auto-redirect AMP pages
+      </message>
+      <message name="IDS_SETTINGS_DE_AMP_SUB_LABEL" desc="The sub-label describing De-AMP feature">
+        Always visit original (non-AMP) page URLs, instead of Google's Accelerated Mobile Page versions 
+      </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
         Show autocomplete in address bar
       </message>
