@@ -60,11 +60,13 @@ void Confirmations::Confirm(const TransactionInfo& transaction) {
                         << " and creative instance id "
                         << transaction.creative_instance_id);
 
+  const base::Time now = base::Time::Now();
+
   const ConfirmationsUserDataBuilder user_data_builder(
-      transaction.creative_instance_id, transaction.confirmation_type);
+      now, transaction.creative_instance_id, transaction.confirmation_type);
   user_data_builder.Build([=](const base::Value& user_data) {
     const ConfirmationInfo& confirmation = CreateConfirmation(
-        transaction.id, transaction.creative_instance_id,
+        now, transaction.id, transaction.creative_instance_id,
         transaction.confirmation_type, transaction.ad_type, user_data);
 
     redeem_unblinded_token_->Redeem(confirmation);
@@ -114,6 +116,7 @@ void Confirmations::StopRetrying() {
 }
 
 ConfirmationInfo Confirmations::CreateConfirmation(
+    const base::Time& time,
     const std::string& transaction_id,
     const std::string& creative_instance_id,
     const ConfirmationType& confirmation_type,
@@ -131,7 +134,7 @@ ConfirmationInfo Confirmations::CreateConfirmation(
   confirmation.creative_instance_id = creative_instance_id;
   confirmation.type = confirmation_type;
   confirmation.ad_type = ad_type;
-  confirmation.created_at = base::Time::Now();
+  confirmation.created_at = time;
 
   if (ShouldRewardUser() &&
       !ConfirmationsState::Get()->get_unblinded_tokens()->IsEmpty()) {
@@ -173,11 +176,13 @@ void Confirmations::CreateNewConfirmationAndAppendToRetryQueue(
   }
 
   const ConfirmationsUserDataBuilder user_data_builder(
-      confirmation.creative_instance_id, confirmation.type);
+      confirmation.created_at, confirmation.creative_instance_id,
+      confirmation.type);
   user_data_builder.Build([=](const base::Value& user_data) {
-    const ConfirmationInfo& new_confirmation = CreateConfirmation(
-        confirmation.transaction_id, confirmation.creative_instance_id,
-        confirmation.type, confirmation.ad_type, user_data);
+    const ConfirmationInfo& new_confirmation =
+        CreateConfirmation(confirmation.created_at, confirmation.transaction_id,
+                           confirmation.creative_instance_id, confirmation.type,
+                           confirmation.ad_type, user_data);
 
     AppendToRetryQueue(new_confirmation);
   });

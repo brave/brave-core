@@ -18,7 +18,6 @@
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/account/account_util.h"
 #include "bat/ads/internal/account/confirmations/confirmation_info.h"
-#include "bat/ads/internal/account/confirmations/confirmations.h"
 #include "bat/ads/internal/account/issuers/issuer_types.h"
 #include "bat/ads/internal/account/issuers/issuers_util.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_url_request_builder.h"

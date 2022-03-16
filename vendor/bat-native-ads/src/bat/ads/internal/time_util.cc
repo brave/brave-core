@@ -6,6 +6,7 @@
 #include "bat/ads/internal/time_util.h"
 
 #include "base/check.h"
+#include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "bat/ads/internal/calendar_util.h"
 
@@ -241,6 +242,15 @@ base::Time GetLocalTimeAtBeginningOfThisMonth() {
 base::Time GetLocalTimeAtEndOfThisMonth() {
   const base::Time& now = base::Time::Now();
   return AdjustLocalTimeToEndOfMonth(now);
+}
+
+std::string TimeToPrivacyPreservingISO8601(const base::Time& time) {
+  base::Time::Exploded exploded;
+  time.UTCExplode(&exploded);
+
+  return base::StringPrintf("%04d-%02d-%02dT%02d:00:00.000Z", exploded.year,
+                            exploded.month, exploded.day_of_month,
+                            exploded.hour);
 }
 
 void SetFromLocalExplodedFailedForTesting(bool set_failed) {

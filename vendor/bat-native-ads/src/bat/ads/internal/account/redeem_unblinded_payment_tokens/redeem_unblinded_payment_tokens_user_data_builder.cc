@@ -23,12 +23,12 @@ void RedeemUnblindedPaymentTokensUserDataBuilder::Build(
     UserDataBuilderCallback callback) const {
   base::DictionaryValue user_data;
 
+  const base::DictionaryValue odyssey_user_data = user_data::GetOdyssey();
+  user_data.MergeDictionary(&odyssey_user_data);
+
   const base::DictionaryValue totals_user_data =
       user_data::GetTotals(unblinded_payment_tokens_);
   user_data.MergeDictionary(&totals_user_data);
-
-  const base::DictionaryValue odyssey_user_data = user_data::GetOdyssey();
-  user_data.MergeDictionary(&odyssey_user_data);
 
   callback(user_data);
 }

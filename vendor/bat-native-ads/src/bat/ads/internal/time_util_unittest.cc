@@ -283,8 +283,24 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
+TEST_P(BatAdsTimeUtilTest, TimeToPrivacyPreservingISO8601) {
+  // Arrange
+  const base::Time& time =
+      TimeFromString("November 18 2020 23:45:12.345", /* is_local */ false);
+  AdvanceClock(time);
+
+  // Act
+  const std::string iso_8601 =
+      TimeToPrivacyPreservingISO8601(base::Time::Now());
+
+  // Assert
+  const std::string expected_iso_8601 = "2020-11-18T23:00:00.000Z";
+
+  EXPECT_EQ(expected_iso_8601, iso_8601);
+}
+
 #if BUILDFLAG(IS_LINUX)
-TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightUSPaicficTimezone) {
+TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightUSPacificTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
   const base::Time& daylight_saving_started_day =

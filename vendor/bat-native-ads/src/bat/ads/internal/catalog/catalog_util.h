@@ -6,10 +6,12 @@
 #ifndef BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_UTIL_H_
 #define BRAVE_VENDOR_BAT_NATIVE_ADS_SRC_BAT_ADS_INTERNAL_CATALOG_CATALOG_UTIL_H_
 
+#include <string>
+
 namespace ads {
 
+std::string GetCatalogId();
 bool DoesCatalogExist();
-
 bool HasCatalogExpired();
 
 }  // namespace ads
