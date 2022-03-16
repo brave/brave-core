@@ -224,6 +224,8 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
                           SetAutoLockMinutesCallback callback) override;
   void IsStrongPassword(const std::string& password,
                         IsStrongPasswordCallback callback) override;
+  void ValidatePassword(const std::string& password,
+                        ValidatePasswordCallback callback) override;
   void GetChecksumEthAddress(const std::string& address,
                              GetChecksumEthAddressCallback callback) override;
   void HasPendingUnlockRequest(

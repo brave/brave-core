@@ -201,6 +201,19 @@ class KeyringServiceUnitTest : public testing::Test {
     return mnemonic;
   }
 
+  static bool ValidatePassword(KeyringService* service,
+                               const std::string& password) {
+    base::RunLoop run_loop;
+    bool validation_result = false;
+    service->ValidatePassword(password,
+                              base::BindLambdaForTesting([&](bool result) {
+                                validation_result = result;
+                                run_loop.Quit();
+                              }));
+    run_loop.Run();
+    return validation_result;
+  }
+
   static absl::optional<std::string> GetSelectedAccount(KeyringService* service,
                                                         mojom::CoinType coin) {
     absl::optional<std::string> account;
@@ -1023,6 +1036,17 @@ TEST_F(KeyringServiceUnitTest, GetMnemonicForDefaultKeyring) {
   ASSERT_FALSE(service.IsLocked());
 
   EXPECT_EQ(GetMnemonicForDefaultKeyring(&service), kMnemonic1);
+}
+
+TEST_F(KeyringServiceUnitTest, ValidatePassword) {
+  KeyringService service(GetPrefs());
+  absl::optional<std::string> mnemonic = CreateWallet(&service, "brave");
+  ASSERT_TRUE(mnemonic);
+
+  EXPECT_TRUE(ValidatePassword(&service, "brave"));
+  EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
+  EXPECT_FALSE(ValidatePassword(&service, "brave123"));
+  EXPECT_FALSE(service.IsLocked(mojom::kDefaultKeyringId));
 }
 
 TEST_F(KeyringServiceUnitTest, GetKeyringInfo) {

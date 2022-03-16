@@ -461,6 +461,9 @@ interface KeyringService {
   // - At least one non-alphanumeric character
   IsStrongPassword(string password) => (bool result);
 
+  // Validate password for default keyring.
+  ValidatePassword(string password) => (bool result);
+
   // Get the checksume'd EthAddress for the specified address
   GetChecksumEthAddress(string address) => (string checksum_address);
 
