@@ -33,7 +33,20 @@ extension AppDelegate {
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
-    var braveCore = BraveCoreMain(userAgent: UserAgent.mobile)
+    var braveCore: BraveCoreMain = {
+        var switches: [BraveCoreSwitch: String] = [:]
+        if !AppConstants.buildChannel.isPublic {
+            // Check prefs for additional switches
+            let activeSwitches = Preferences.BraveCore.activeSwitches.value
+            let switchValues = Preferences.BraveCore.switchValues.value
+            for activeSwitch in activeSwitches {
+                if let value = switchValues[activeSwitch], !value.isEmpty {
+                    switches[BraveCoreSwitch(rawValue: activeSwitch)] = value
+                }
+            }
+        }
+        return BraveCoreMain(userAgent: UserAgent.mobile, additionalSwitches: switches)
+    }()
     var migration: Migration?
 
     private weak var application: UIApplication?

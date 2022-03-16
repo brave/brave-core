@@ -548,6 +548,10 @@ class SettingsViewController: TableViewController {
                     self.navigationController?.pushViewController(UrpLogsViewController(), animated: true)
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 Row(text: "URP Code: \(UserReferralProgram.getReferralCode() ?? "--")"),
+                Row(text: "BraveCore Switches", selection: { [unowned self] in
+                    let controller = UIHostingController(rootView: BraveCoreDebugSwitchesView())
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self),
                 Row(text: "View Rewards Debug Menu", selection: { [unowned self] in
                     self.displayRewardsDebugMenu()
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
