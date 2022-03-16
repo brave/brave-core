@@ -4,6 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/ios/browser/api/certificate/headers.gni")
+import("//brave/ios/browser/api/url/headers.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/ios/rules.gni")
 
@@ -59,6 +60,7 @@ brave_core_public_headers = [
 ]
 
 brave_core_public_headers += browser_api_certificate_public_headers
+brave_core_public_headers += browser_api_url_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"

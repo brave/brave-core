@@ -1,0 +1,1 @@
+browser_api_url_public_headers = [ "//brave/ios/browser/api/url/url_utils.h" ]
