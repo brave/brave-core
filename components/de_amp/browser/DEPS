@@ -1,0 +1,7 @@
+include_rules = [
+  "+content/public/browser",
+  "+components/body_sniffer",
+  "+services/network/public/cpp",
+  "+services/network/public/mojom",
+  "+third_party/re2",
+]

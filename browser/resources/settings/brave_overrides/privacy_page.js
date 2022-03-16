@@ -36,6 +36,17 @@ RegisterPolymerTemplateModifications({
           </settings-subpage>
         </template>
       `)
+      const isDeAmpFeatureEnabled = loadTimeData.getBoolean('isDeAmpFeatureEnabled')
+      if (isDeAmpFeatureEnabled) {
+        pages.insertAdjacentHTML("afterend", `
+          <settings-toggle-button
+            class="hr"
+            pref="{{prefs.brave.de_amp.enabled}}"
+            label="${I18nBehavior.i18n("deAmpSettingLabel")}"
+            sub-label="${I18nBehavior.i18n("deAmpSettingSubLabel")}">
+          </settings-toggle-button>
+      `);
+      }
       const isNativeBraveWalletEnabled = loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
         pages.insertAdjacentHTML('beforeend', `

@@ -19,6 +19,7 @@
 #include "brave/components/brave_today/common/features.h"
 #include "brave/components/brave_vpn/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/de_amp/common/features.h"
 #include "brave/components/debounce/common/features.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -61,7 +62,9 @@ using brave_shields::features::kBraveDomainBlock1PES;
 using brave_shields::features::kBraveExtensionNetworkBlocking;
 using brave_shields::features::kCosmeticFilteringSyncLoad;
 
+using de_amp::features::kBraveDeAMP;
 using debounce::features::kBraveDebounce;
+
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 
@@ -134,6 +137,9 @@ constexpr char kBraveDomainBlock1PESDescription[] =
 constexpr char kBraveDebounceName[] = "Enable debouncing";
 constexpr char kBraveDebounceDescription[] =
     "Enable support for skipping top-level redirect tracking URLs";
+
+constexpr char kBraveDeAMPName[] = "Enable De-AMP";
+constexpr char kBraveDeAMPDescription[] = "Enable De-AMPing feature";
 
 constexpr char kBraveExtensionNetworkBlockingName[] =
     "Enable extension network blocking";
@@ -483,6 +489,10 @@ const flags_ui::FeatureEntry::Choice kBraveSkusEnvChoices[] = {
         flag_descriptions::kBraveDebounceName,                              \
         flag_descriptions::kBraveDebounceDescription, kOsAll,               \
         FEATURE_VALUE_TYPE(kBraveDebounce)},                                \
+    {"brave-de-amp",                                                        \
+        flag_descriptions::kBraveDeAMPName,                                 \
+        flag_descriptions::kBraveDeAMPDescription, kOsAll,                  \
+        FEATURE_VALUE_TYPE(kBraveDeAMP)},                                   \
     {"brave-extension-network-blocking",                                    \
      flag_descriptions::kBraveExtensionNetworkBlockingName,                 \
      flag_descriptions::kBraveExtensionNetworkBlockingDescription, kOsAll,  \

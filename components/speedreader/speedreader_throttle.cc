@@ -7,19 +7,20 @@
 
 #include <utility>
 
-#include "base/memory/raw_ptr.h"
 #include "brave/components/speedreader/speedreader_result_delegate.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_url_loader.h"
 #include "brave/components/speedreader/speedreader_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
-#include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/system/data_pipe.h"
+#include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace speedreader {
+
 // static
 std::unique_ptr<SpeedReaderThrottle>
 SpeedReaderThrottle::MaybeCreateThrottleFor(
@@ -40,9 +41,9 @@ SpeedReaderThrottle::SpeedReaderThrottle(
     SpeedreaderRewriterService* rewriter_service,
     base::WeakPtr<SpeedreaderResultDelegate> result_delegate,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner)
-    : rewriter_service_(rewriter_service),
-      result_delegate_(result_delegate),
-      task_runner_(std::move(task_runner)) {}
+    : task_runner_(task_runner),
+      rewriter_service_(rewriter_service),
+      result_delegate_(result_delegate) {}
 
 SpeedReaderThrottle::~SpeedReaderThrottle() = default;
 
@@ -51,7 +52,6 @@ void SpeedReaderThrottle::WillProcessResponse(
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
   VLOG(2) << "Speedreader throttling: " << response_url;
-  // Pause the response until Speedreader has done its job.
   *defer = true;
 
   mojo::PendingRemote<network::mojom::URLLoader> new_remote;
@@ -61,17 +61,12 @@ void SpeedReaderThrottle::WillProcessResponse(
   raw_ptr<SpeedReaderURLLoader> speedreader_loader = nullptr;
   mojo::ScopedDataPipeConsumerHandle body;
   std::tie(new_remote, new_receiver, speedreader_loader) =
-      SpeedReaderURLLoader::CreateLoader(weak_factory_.GetWeakPtr(),
-                                         result_delegate_, response_url,
-                                         task_runner_, rewriter_service_);
-  delegate_->InterceptResponse(std::move(new_remote), std::move(new_receiver),
-                               &source_loader, &source_client_receiver, &body);
-  speedreader_loader->Start(std::move(source_loader),
-                            std::move(source_client_receiver), std::move(body));
-}
-
-void SpeedReaderThrottle::Resume() {
-  delegate_->Resume();
+      SpeedReaderURLLoader::CreateLoader(AsWeakPtr(), result_delegate_,
+                                         response_url, task_runner_,
+                                         rewriter_service_);
+  BodySnifferThrottle::InterceptAndStartLoader(
+      std::move(source_loader), std::move(source_client_receiver),
+      std::move(new_remote), std::move(new_receiver), speedreader_loader);
 }
 
 }  // namespace speedreader
