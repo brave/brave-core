@@ -10,6 +10,8 @@ static_library("common") {
   include_dirs = [ "//brave/third_party/ethash/src/include" ]
 
   sources = [
+    "brave_wallet_response_helpers.cc",
+    "brave_wallet_response_helpers.h",
     "brave_wallet_types.cc",
     "brave_wallet_types.h",
     "eth_address.cc",
@@ -20,6 +22,8 @@ static_library("common") {
     "eth_sign_typed_data_helper.h",
     "features.cc",
     "features.h",
+    "fil_address.cc",
+    "fil_address.h",
     "hash_utils.cc",
     "hash_utils.h",
     "hex_utils.cc",
@@ -35,7 +39,9 @@ static_library("common") {
     ":common_constants",
     ":mojom__generator",
     "//base",
+    "//brave/third_party/argon2",
     "//brave/third_party/ethash",
+    "//components/base32",
     "//url",
   ]
 }

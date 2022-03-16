@@ -30,7 +30,7 @@ using WebSocketChannelImpl_BraveImpl = WebSocketChannelImpl;
 
 namespace blink {
 
-class MODULES_EXPORT WebSocketChannelImpl
+class MODULES_EXPORT WebSocketChannelImpl final
     : public WebSocketChannelImpl_ChromiumImpl {
  public:
   using WebSocketChannelImpl_ChromiumImpl::WebSocketChannelImpl_ChromiumImpl;

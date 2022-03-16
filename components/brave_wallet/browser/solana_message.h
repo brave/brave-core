@@ -11,7 +11,12 @@
 
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace brave_wallet {
 
@@ -19,9 +24,10 @@ class SolanaMessage {
  public:
   SolanaMessage(const std::string& recent_blockhash,
                 const std::string& fee_payer,
-                const std::vector<SolanaInstruction>& instructions);
+                std::vector<SolanaInstruction>&& instructions);
   SolanaMessage(const SolanaMessage&);
   ~SolanaMessage();
+  bool operator==(const SolanaMessage&) const;
 
   absl::optional<std::vector<uint8_t>> Serialize(
       std::vector<std::string>* signers) const;
@@ -29,6 +35,11 @@ class SolanaMessage {
   void SetRecentBlockHash(const std::string& recent_blockhash) {
     recent_blockhash_ = recent_blockhash;
   }
+
+  mojom::SolanaTxDataPtr ToSolanaTxData() const;
+  base::Value ToValue() const;
+
+  static absl::optional<SolanaMessage> FromValue(const base::Value& value);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);

@@ -7,11 +7,51 @@
 
 #include <limits>
 
+#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/json_rpc_response_parser.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
 
 namespace brave_wallet {
+
+namespace {
+
+bool GetUint64FromDictValue(const base::Value& dict_value,
+                            const std::string& key,
+                            bool nullable,
+                            uint64_t* ret) {
+  if (!dict_value.is_dict() || !ret) {
+    return false;
+  }
+
+  const base::Value* value = dict_value.FindKey(key);
+  if (!value)
+    return false;
+
+  if (nullable && value->is_none()) {
+    *ret = 0;
+    return true;
+  }
+
+  if (!value->is_int() && !value->is_double()) {
+    return false;
+  }
+
+  // We currently only support number up to kMaxSafeIntegerUint64, because
+  // double-precision floating-point can only precisely represent an integer
+  // up to kMaxSafeIntegerUint64.
+  double double_value = value->GetDouble();
+  if (double_value < 0 || double_value > kMaxSafeIntegerUint64)
+    return false;
+  *ret = static_cast<uint64_t>(double_value);
+
+  // This will be false if double_value is not an integer, which is considered
+  // as an invalid input.
+  return double_value == static_cast<double>(*ret);
+}
+
+}  // namespace
 
 namespace solana {
 
@@ -22,17 +62,7 @@ bool ParseGetBalance(const std::string& json, uint64_t* balance) {
   if (!ParseResult(json, &result) || !result.is_dict())
     return false;
 
-  // uint64
-  const base::Value* value = result.FindKey("value");
-  if (!value)
-    return false;
-
-  if (value->is_int() || value->is_double()) {
-    std::string balance_string = base::NumberToString(value->GetDouble());
-    return base::StringToUint64(balance_string, balance);
-  }
-
-  return false;
+  return GetUint64FromDictValue(result, "value", false, balance);
 }
 
 bool ParseGetTokenAccountBalance(const std::string& json,
@@ -89,6 +119,68 @@ bool ParseGetLatestBlockhash(const std::string& json, std::string* hash) {
   if (!hash_ptr)
     return false;
   *hash = *hash_ptr;
+
+  return true;
+}
+
+bool ParseGetSignatureStatuses(
+    const std::string& json,
+    std::vector<absl::optional<SolanaSignatureStatus>>* statuses) {
+  DCHECK(statuses);
+  statuses->clear();
+
+  base::Value result;
+  if (!ParseResult(json, &result) || !result.is_dict())
+    return false;
+
+  const base::Value* value = result.FindListKey("value");
+  if (!value)
+    return false;
+
+  for (const auto& status_value : value->GetList()) {
+    if (!status_value.is_dict()) {
+      statuses->push_back(absl::nullopt);
+      continue;
+    }
+
+    SolanaSignatureStatus status;
+    if (!GetUint64FromDictValue(status_value, "slot", false, &status.slot) ||
+        !GetUint64FromDictValue(status_value, "confirmations", true,
+                                &status.confirmations)) {
+      statuses->push_back(absl::nullopt);
+      continue;
+    }
+
+    const base::Value* err_value = status_value.FindKey("err");
+    if (!err_value || (!err_value->is_dict() && !err_value->is_none())) {
+      statuses->push_back(absl::nullopt);
+      continue;
+    }
+    if (err_value->is_none()) {
+      status.err = "";
+    } else {
+      base::JSONWriter::Write(*err_value, &status.err);
+    }
+
+    const base::Value* confirmation_status_value =
+        status_value.FindKey("confirmationStatus");
+    if (!confirmation_status_value ||
+        (!confirmation_status_value->is_string() &&
+         !confirmation_status_value->is_none())) {
+      statuses->push_back(absl::nullopt);
+    }
+
+    if (confirmation_status_value->is_none()) {
+      status.confirmation_status = "";
+    } else {  // is_string
+      const std::string* confirmation_status =
+          confirmation_status_value->GetIfString();
+      DCHECK(confirmation_status);
+      status.confirmation_status = *confirmation_status;
+    }
+
+    statuses->push_back(status);
+  }
 
   return true;
 }

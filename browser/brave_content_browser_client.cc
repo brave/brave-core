@@ -56,6 +56,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/cosmetic_filters/browser/cosmetic_filters_resources.h"
 #include "brave/components/cosmetic_filters/common/cosmetic_filters.mojom.h"
+#include "brave/components/de_amp/browser/de_amp_throttle.h"
 #include "brave/components/debounce/browser/debounce_throttle.h"
 #include "brave/components/decentralized_dns/buildflags/buildflags.h"
 #include "brave/components/ftx/browser/buildflags/buildflags.h"
@@ -631,38 +632,47 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id);
-#if BUILDFLAG(ENABLE_SPEEDREADER)
-  using DistillState = speedreader::DistillState;
   content::WebContents* contents = wc_getter.Run();
-  if (!contents) {
-    return result;
-  }
-  auto* tab_helper =
-      speedreader::SpeedreaderTabHelper::FromWebContents(contents);
-  if (tab_helper) {
-    const auto state = tab_helper->PageDistillState();
-    if (speedreader::PageWantsDistill(state) &&
-        request.resource_type ==
-            static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
-      // Only check for disabled sites if we are in Speedreader mode
-      const bool check_disabled_sites =
-          state == DistillState::kSpeedreaderModePending;
-      std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
-          speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
-              g_brave_browser_process->speedreader_rewriter_service(),
-              HostContentSettingsMapFactory::GetForProfile(
-                  Profile::FromBrowserContext(browser_context)),
-              tab_helper->GetWeakPtr(), request.url, check_disabled_sites,
-              base::ThreadTaskRunnerHandle::Get());
-      if (throttle)
-        result.push_back(std::move(throttle));
-    }
-  }
-#endif  // ENABLE_SPEEDREADER
-
   auto* settings_map = HostContentSettingsMapFactory::GetForProfile(
       Profile::FromBrowserContext(browser_context));
-  if (std::unique_ptr<blink::URLLoaderThrottle> debounce_throttle =
+
+  if (contents) {
+    const bool isMainFrame =
+        request.resource_type ==
+        static_cast<int>(blink::mojom::ResourceType::kMainFrame);
+    // Speedreader
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+    using DistillState = speedreader::DistillState;
+    auto* tab_helper =
+        speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+    if (tab_helper) {
+      const auto state = tab_helper->PageDistillState();
+      if (speedreader::PageWantsDistill(state) && isMainFrame) {
+        // Only check for disabled sites if we are in Speedreader mode
+        const bool check_disabled_sites =
+            state == DistillState::kSpeedreaderModePending;
+        std::unique_ptr<speedreader::SpeedReaderThrottle> throttle =
+            speedreader::SpeedReaderThrottle::MaybeCreateThrottleFor(
+                g_brave_browser_process->speedreader_rewriter_service(),
+                settings_map, tab_helper->GetWeakPtr(), request.url,
+                check_disabled_sites, base::ThreadTaskRunnerHandle::Get());
+        if (throttle)
+          result.push_back(std::move(throttle));
+      }
+    }
+#endif  // ENABLE_SPEEDREADER
+
+    // De-AMP
+    if (isMainFrame) {
+      if (auto de_amp_throttle = de_amp::DeAmpThrottle::MaybeCreateThrottleFor(
+              base::ThreadTaskRunnerHandle::Get(), request, wc_getter)) {
+        result.push_back(std::move(de_amp_throttle));
+      }
+    }
+  }
+
+  // Debounce
+  if (auto debounce_throttle =
           debounce::DebounceThrottle::MaybeCreateThrottleFor(
               debounce::DebounceServiceFactory::GetForBrowserContext(
                   browser_context),

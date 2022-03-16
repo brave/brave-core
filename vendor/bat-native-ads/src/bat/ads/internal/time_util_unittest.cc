@@ -12,12 +12,13 @@
 #include "bat/ads/internal/unittest_base.h"
 #include "bat/ads/internal/unittest_time_util.h"
 #include "bat/ads/internal/unittest_util.h"
+#include "build/build_config.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
 namespace ads {
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 
 class ScopedLibcTZ {
  public:
@@ -56,7 +57,7 @@ class ScopedLibcTZ {
 
 constexpr char ScopedLibcTZ::kTZ[];
 
-#endif  // defined(OS_LINUX)
+#endif  // BUILDFLAG(IS_LINUX)
 
 class BatAdsTimeUtilTest : public UnitTestBase,
                            public testing::WithParamInterface<bool> {
@@ -282,7 +283,7 @@ TEST_P(BatAdsTimeUtilTest, GetLocalTimeAtEndOfThisMonth) {
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
 
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
 TEST_P(BatAdsTimeUtilTest, CheckLocalMidnightUSPaicficTimezone) {
   ScopedLibcTZ scoped_libc_tz("US/Pacific");
   // Arrange
@@ -738,7 +739,7 @@ TEST_P(BatAdsTimeUtilTest,
 
   EXPECT_EQ(expected_adjusted_time, adjusted_time);
 }
-#endif  // defined(OS_LINUX)
+#endif  // BUILDFLAG(IS_LINUX)
 
 INSTANTIATE_TEST_SUITE_P(, BatAdsTimeUtilTest, ::testing::Bool());
 

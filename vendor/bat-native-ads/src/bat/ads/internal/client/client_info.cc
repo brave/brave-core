@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "build/build_config.h"
 
 namespace ads {
 
@@ -41,7 +42,7 @@ bool ClientInfo::FromJson(const std::string& json) {
     }
   }
 
-#if !defined(OS_IOS)
+#if !BUILDFLAG(IS_IOS)
   if (document.HasMember("adsShownHistory")) {
     for (const auto& ad_shown : document["adsShownHistory"].GetArray()) {
       // adsShownHistory used to be an array of timestamps, so if that's what we

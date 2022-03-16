@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/eth_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -198,7 +199,8 @@ absl::optional<std::string> BraveWalletService::GetChecksumAddress(
 
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        GetUserAssetsCallback callback) {
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty()) {
     std::move(callback).Run(std::vector<mojom::BlockchainTokenPtr>());
     return;
@@ -237,7 +239,8 @@ bool BraveWalletService::AddUserAsset(mojom::BlockchainTokenPtr token,
   // Can be empty string for native asset.
   const std::string checksum_address = optional_checksum_address.value();
 
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty())
     return false;
 
@@ -299,7 +302,8 @@ bool BraveWalletService::RemoveUserAsset(mojom::BlockchainTokenPtr token,
     return false;
   const std::string checksum_address = optional_checksum_address.value();
 
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty())
     return false;
 
@@ -336,7 +340,8 @@ bool BraveWalletService::SetUserAssetVisible(mojom::BlockchainTokenPtr token,
 
   const std::string checksum_address = optional_checksum_address.value();
 
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty())
     return false;
 
@@ -366,7 +371,8 @@ mojom::BlockchainTokenPtr BraveWalletService::GetUserAsset(
   if (!optional_checksum_address)
     return nullptr;
   const std::string checksum_address = optional_checksum_address.value();
-  const std::string network_id = GetNetworkId(prefs_, chain_id);
+  const std::string network_id =
+      GetNetworkId(prefs_, mojom::CoinType::ETH, chain_id);
   if (network_id.empty())
     return nullptr;
 
@@ -740,16 +746,21 @@ void BraveWalletService::AddSignMessageRequest(
 
 void BraveWalletService::AddSuggestTokenRequest(
     mojom::AddSuggestTokenRequestPtr request,
-    AddSuggestTokenCallback callback) {
+    RequestNewCallback callback,
+    base::Value id) {
   // wallet_watchAsset currently only expect non-empty contract address and
   // only ERC20 type.
   DCHECK(!request->token->contract_address.empty());
   DCHECK(request->token->is_erc20 && !request->token->is_erc721);
 
   if (add_suggest_token_requests_.contains(request->token->contract_address)) {
-    std::move(callback).Run(
-        false, mojom::ProviderError::kInvalidParams,
+    std::unique_ptr<base::Value> formed_response;
+    bool reject = true;
+    formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kInvalidParams,
         l10n_util::GetStringUTF8(IDS_WALLET_ALREADY_IN_PROGRESS_ERROR));
+    std::move(callback).Run(std::move(id), std::move(*formed_response), reject,
+                            "", false);
     return;
   }
 
@@ -773,6 +784,7 @@ void BraveWalletService::AddSuggestTokenRequest(
 
   add_suggest_token_requests_[addr] = std::move(request);
   add_suggest_token_callbacks_[addr] = std::move(callback);
+  add_suggest_token_ids_[addr] = std::move(id);
 }
 
 void BraveWalletService::GetPendingAddSuggestTokenRequests(
@@ -790,9 +802,12 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
   const std::string chain_id = GetCurrentChainId(prefs_, mojom::CoinType::ETH);
   for (const auto& addr : contract_addresses) {
     if (add_suggest_token_requests_.contains(addr) &&
-        add_suggest_token_callbacks_.contains(addr)) {
+        add_suggest_token_callbacks_.contains(addr) &&
+        add_suggest_token_ids_.contains(addr)) {
       auto callback = std::move(add_suggest_token_callbacks_[addr]);
 
+      std::unique_ptr<base::Value> formed_response;
+      bool reject = false;
       if (approved &&
           !AddUserAsset(add_suggest_token_requests_[addr]->token.Clone(),
                         chain_id) &&
@@ -800,15 +815,24 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
                                chain_id, true)) {
         add_suggest_token_requests_.erase(addr);
         add_suggest_token_callbacks_.erase(addr);
-        std::move(callback).Run(
-            false, mojom::ProviderError::kInternalError,
+        add_suggest_token_ids_.erase(addr);
+
+        formed_response = GetProviderErrorDictionary(
+            mojom::ProviderError::kInternalError,
             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+        reject = true;
+        std::move(callback).Run(std::move(add_suggest_token_ids_[addr]),
+                                std::move(*formed_response), reject, "", false);
         continue;
       }
 
       add_suggest_token_requests_.erase(addr);
       add_suggest_token_callbacks_.erase(addr);
-      std::move(callback).Run(approved, mojom::ProviderError::kSuccess, "");
+      add_suggest_token_ids_.erase(addr);
+      formed_response = base::Value::ToUniquePtrValue(base::Value(approved));
+      reject = false;
+      std::move(callback).Run(std::move(add_suggest_token_ids_[addr]),
+                              std::move(*formed_response), reject, "", false);
     }
   }
 }
@@ -816,11 +840,18 @@ void BraveWalletService::NotifyAddSuggestTokenRequestsProcessed(
 void BraveWalletService::CancelAllSuggestedTokenCallbacks() {
   add_suggest_token_requests_.clear();
   // Reject pending suggest token requests when network changed.
-  for (auto& callback : add_suggest_token_callbacks_)
+  std::unique_ptr<base::Value> formed_response;
+  bool reject = true;
+  for (auto& callback : add_suggest_token_callbacks_) {
+    formed_response = GetProviderErrorDictionary(
+        mojom::ProviderError::kUserRejectedRequest,
+        l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
     std::move(callback.second)
-        .Run(false, mojom::ProviderError::kUserRejectedRequest,
-             l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+        .Run(std::move(add_suggest_token_ids_[callback.first]),
+             std::move(*formed_response), reject, "", false);
+  }
   add_suggest_token_callbacks_.clear();
+  add_suggest_token_ids_.clear();
 }
 
 void BraveWalletService::CancelAllSignMessageCallbacks() {

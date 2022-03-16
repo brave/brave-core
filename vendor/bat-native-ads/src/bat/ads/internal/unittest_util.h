@@ -14,6 +14,7 @@
 #include "base/containers/flat_map.h"
 #include "base/files/scoped_temp_dir.h"
 #include "bat/ads/internal/platform/platform_helper_mock.h"
+#include "bat/ads/internal/unittest_util_types.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -80,7 +81,7 @@ void SetEnvironment(const mojom::Environment environment);
 
 void SetSysInfo(const mojom::SysInfo& sys_info);
 
-void SetBuildChannel(const bool is_release, const std::string& name);
+void SetBuildChannel(const BuildChannelType type);
 
 void MockLocaleHelper(const std::unique_ptr<brave_l10n::LocaleHelperMock>& mock,
                       const std::string& locale);

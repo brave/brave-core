@@ -8,11 +8,12 @@
 #include <utility>
 
 #include "brave/components/brave_ads/common/features.h"
+#include "build/build_config.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/native_theme/native_theme.h"
 #include "ui/views/widget/widget_delegate.h"
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 #include "ui/views/widget/desktop_aura/desktop_native_widget_aura.h"
 #endif
 
@@ -35,11 +36,11 @@ void AdNotificationPopupWidget::InitWidget(
   // Chromium doesn't always support transparent window background on X11.
   // This can cause artifacts on shadows around ads notification popup. To fix
   // this shadows are drawn by Widget.
-#if defined(OS_LINUX)
+#if BUILDFLAG(IS_LINUX)
   params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
 #else
   params.shadow_type = views::Widget::InitParams::ShadowType::kNone;
-#endif  // defined(OS_LINUX)
+#endif  // BUILDFLAG(IS_LINUX)
   params.bounds = bounds;
 
   if (features::ShouldAttachAdNotificationToBrowserWindow()) {
@@ -48,7 +49,7 @@ void AdNotificationPopupWidget::InitWidget(
     params.context = browser_native_window;
   }
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
   // We want to ensure that this toast always goes to the native desktop,
   // not the Ash desktop (since there is already another toast contents view
   // there
@@ -56,7 +57,7 @@ void AdNotificationPopupWidget::InitWidget(
     DCHECK(!params.native_widget);
     params.native_widget = new views::DesktopNativeWidgetAura(this);
   }
-#endif  // defined(OS_WIN)
+#endif  // BUILDFLAG(IS_WIN)
 
   Init(std::move(params));
 }

@@ -16,6 +16,11 @@
 #error "This file requires ARC support."
 #endif
 
+{% for import in imports %}
+#include "{{import|objc_import_module_name}}.objc.h"
+{% endfor %}
+#include "base_values.h"
+
 {# Enum Decls #}
 {%- for enum in all_enums %}
 {%   include "enum.tmpl" %}
@@ -39,10 +44,12 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT {{const.kind|objc_wrapper_type}} const {{class_prefix}}{{name}} NS_SWIFT_NAME({{class_prefix}}.{{name}});
 {% endfor -%}
 
-{# Define a namespace class for Swift types to use #}
+{# Define a namespace class for Swift types to use.
+   We have to define the type as unique to this module even though the renamed Swift type will be
+   the same for all wrappers that use the same namespace #}
 OBJC_EXPORT
 NS_SWIFT_NAME({{class_prefix}})
-@interface _{{class_prefix}} : NSObject
+@interface _{{class_prefix}}{{module_name|replace(".mojom","Mojom")|under_to_camel}} : NSObject
 - (instancetype)init NS_UNAVAILABLE;
 @end
 

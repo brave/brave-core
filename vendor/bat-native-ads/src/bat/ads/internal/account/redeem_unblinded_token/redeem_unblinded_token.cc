@@ -24,7 +24,6 @@
 #include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_url_request_builder.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/create_confirmation_util.h"
 #include "bat/ads/internal/account/redeem_unblinded_token/fetch_payment_token_url_request_builder.h"
-#include "bat/ads/internal/account/redeem_unblinded_token/user_data/confirmation_dto_user_data_builder.h"
 #include "bat/ads/internal/ads_client_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/logging_util.h"

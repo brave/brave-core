@@ -369,19 +369,21 @@ public class PortfolioFragment
     private void updatePortfolioGetPendingTx(boolean getPendingTx) {
         KeyringService keyringService = getKeyringService();
         assert keyringService != null;
-        keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
-            JsonRpcService jsonRpcService = getJsonRpcService();
-            assert jsonRpcService != null;
-            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
-                AccountInfo[] accountInfos = new AccountInfo[] {};
-                if (keyringInfo != null) {
-                    accountInfos = keyringInfo.accountInfos;
-                }
+        JsonRpcService jsonRpcService = getJsonRpcService();
+        assert jsonRpcService != null;
 
-                if (mPortfolioHelper == null) {
-                    mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
-                            getAssetRatioService(), getJsonRpcService(), accountInfos);
-                }
+        keyringService.getKeyringInfo(BraveWalletConstants.DEFAULT_KEYRING_ID, keyringInfo -> {
+            AccountInfo[] accountInfosTemp = new AccountInfo[] {};
+            if (keyringInfo != null) {
+                accountInfosTemp = keyringInfo.accountInfos;
+            }
+            final AccountInfo[] accountInfos = accountInfosTemp;
+            if (mPortfolioHelper == null) {
+                mPortfolioHelper = new PortfolioHelper(getBraveWalletService(),
+                        getAssetRatioService(), jsonRpcService, accountInfos);
+            }
+
+            jsonRpcService.getAllNetworks(CoinType.ETH, chains -> {
                 NetworkInfo[] customNetworks = Utils.getCustomNetworks(chains);
                 String chainId = Utils.getNetworkConst(
                         getActivity(), mSelectedChainNetworkName, customNetworks);
@@ -402,16 +404,21 @@ public class PortfolioFragment
                     });
                 });
                 if (getPendingTx) {
-                    getPendingTx(accountInfos);
+                    getPendingTx(accountInfos, () -> { updatePendingTxNotification(); });
                 }
             });
         });
     }
 
     @Override
+    public void OnTxPending(String accountName, String txId) {
+        updatePortfolioGetPendingTx(true);
+    }
+
+    @Override
     public void OnTxApprovedRejected(boolean approved, String accountName, String txId) {
         assert mPendingTxInfos != null;
-        if (mPendingTxInfos == null) {
+        if (!hasPendingTx()) {
             return;
         }
         TransactionInfo[] txInfos = mPendingTxInfos.get(accountName);
@@ -433,12 +440,13 @@ public class PortfolioFragment
             System.arraycopy(txInfos, index + 1, copy, index, txInfos.length - index - 1);
             mPendingTxInfos.put(accountName, copy);
         }
+        updatePendingTxNotification();
         callAnotherApproveDialog();
     }
 
-    private void callAnotherApproveDialog() {
+    public void callAnotherApproveDialog() {
         assert mPendingTxInfos != null;
-        if (mPendingTxInfos == null) {
+        if (!hasPendingTx()) {
             return;
         }
         for (String key : mPendingTxInfos.keySet()) {
@@ -455,12 +463,38 @@ public class PortfolioFragment
         }
     }
 
-    private void getPendingTx(AccountInfo[] accountInfos) {
+    private boolean hasPendingTx() {
+        if (mPendingTxInfos == null || mPendingTxInfos.size() == 0) {
+            return false;
+        }
+
+        boolean pending = false;
+        for (String key : mPendingTxInfos.keySet()) {
+            TransactionInfo[] txInfos = mPendingTxInfos.get(key);
+            if (txInfos.length != 0) {
+                pending = true;
+                break;
+            }
+        }
+
+        return pending;
+    }
+
+    private void getPendingTx(AccountInfo[] accountInfos, @Nullable Runnable callback) {
         PendingTxHelper pendingTxHelper =
                 new PendingTxHelper(getTxService(), accountInfos, false, null);
         pendingTxHelper.fetchTransactions(() -> {
             mPendingTxInfos = pendingTxHelper.getTransactions();
-            callAnotherApproveDialog();
+            if (callback != null) callback.run();
         });
+    }
+
+    private void updatePendingTxNotification() {
+        Activity activity = getActivity();
+        if (activity instanceof BraveWalletActivity)
+            if (hasPendingTx())
+                ((BraveWalletActivity) activity).setPendingTxNotificationVisibility(View.VISIBLE);
+            else
+                ((BraveWalletActivity) activity).setPendingTxNotificationVisibility(View.GONE);
     }
 }

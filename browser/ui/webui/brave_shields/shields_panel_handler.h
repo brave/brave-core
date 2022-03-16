@@ -31,7 +31,6 @@ class ShieldsPanelHandler : public brave_shields::mojom::PanelHandler {
   // brave_shields::mojom::PanelHandler:
   void ShowUI() override;
   void CloseUI() override;
-  void OpenURL(const GURL& url) override;
 
  private:
   mojo::Receiver<brave_shields::mojom::PanelHandler> receiver_;

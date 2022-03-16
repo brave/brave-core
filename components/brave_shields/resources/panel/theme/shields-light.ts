@@ -12,7 +12,8 @@
    color: {
      ...defaultTheme.color,
      background03: '#F8F9FA',
-     text01: '#212529'
+     text01: '#212529',
+     warningIcon: '#EA3A0D'
    }
  }
 

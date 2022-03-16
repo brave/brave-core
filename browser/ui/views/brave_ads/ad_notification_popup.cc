@@ -52,16 +52,16 @@ constexpr SkColor kLightModeBorderColor = SkColorSetRGB(0xd5, 0xdb, 0xe2);
 constexpr SkColor kDarkModeBorderColor = SkColorSetRGB(0x3f, 0x41, 0x45);
 constexpr int kBorderThickness = 1;
 
-#if defined(OS_WIN)
+#if BUILDFLAG(IS_WIN)
 constexpr int kShadowElevation = 5;
 constexpr int kCornerRadius = 0;
-#elif defined(OS_MAC)
+#elif BUILDFLAG(IS_MAC)
 constexpr int kShadowElevation = 5;
 constexpr int kCornerRadius = 7;
-#elif defined(OS_LINUX)
+#elif BUILDFLAG(IS_LINUX)
 constexpr int kShadowElevation = 0;
 constexpr int kCornerRadius = 0;
-#endif  // defined(OS_WIN)
+#endif  // BUILDFLAG(IS_WIN)
 
 SkColor GetLightModeBackgroundColor() {
   return SkColorSetRGB(0xed, 0xf0, 0xf2);

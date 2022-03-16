@@ -15,11 +15,18 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "extensions/buildflags/buildflags.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/spawned_test_server/spawned_test_server.h"
 #include "net/test/test_data_directory.h"
 #include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/chrome_test_extension_loader.h"
+#include "extensions/common/extension.h"
+#include "extensions/test/test_extension_dir.h"
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace {
 
@@ -301,6 +308,31 @@ IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
   ASSERT_TRUE(content::ExecJs(a_com_rfh, register_sw_script));
   OpenWebSockets(a_com_rfh, kWsOpenInSwScript, kWebSocketsPoolLimit + 5);
 }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+IN_PROC_BROWSER_TEST_F(WebSocketsPoolLimitBrowserTest,
+                       PoolIsNotLimitedForExtensions) {
+  extensions::TestExtensionDir test_extension_dir;
+  test_extension_dir.WriteManifest(R"({
+    "name": "Test",
+    "manifest_version": 2,
+    "version": "0.1",
+    "permissions": ["webRequest", "webRequestBlocking", "*://a.com/*"],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  })");
+  test_extension_dir.WriteFile(FILE_PATH_LITERAL("empty.html"), "");
+
+  extensions::ChromeTestExtensionLoader extension_loader(browser()->profile());
+  scoped_refptr<const extensions::Extension> extension =
+      extension_loader.LoadExtension(test_extension_dir.UnpackedPath());
+  const GURL url = extension->GetResourceURL("/empty.html");
+  auto* extension_rfh = ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+  ASSERT_TRUE(extension_rfh);
+  OpenWebSockets(extension_rfh, kWsOpenScript, kWebSocketsPoolLimit + 5);
+}
+#endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 class WebSocketsPoolLimitDisabledBrowserTest
     : public WebSocketsPoolLimitBrowserTest {

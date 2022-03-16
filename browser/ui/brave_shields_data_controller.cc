@@ -13,7 +13,11 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/favicon/content/content_favicon_driver.h"
 #include "content/public/browser/navigation_handle.h"
+#include "net/base/url_util.h"
+
+using net::AppendQueryParameter;
 
 namespace brave_shields {
 
@@ -22,13 +26,33 @@ BraveShieldsDataController::~BraveShieldsDataController() = default;
 BraveShieldsDataController::BraveShieldsDataController(
     content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<BraveShieldsDataController>(*web_contents) {}
+      content::WebContentsUserData<BraveShieldsDataController>(*web_contents) {
+  favicon::ContentFaviconDriver::FromWebContents(web_contents)
+      ->AddObserver(this);
+}
 
 void BraveShieldsDataController::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame() && navigation_handle->HasCommitted() &&
       !navigation_handle->IsSameDocument()) {
     ClearAllResourcesList();
+  }
+}
+
+void BraveShieldsDataController::WebContentsDestroyed() {
+  favicon::ContentFaviconDriver::FromWebContents(web_contents())
+      ->RemoveObserver(this);
+}
+
+void BraveShieldsDataController::OnFaviconUpdated(
+    favicon::FaviconDriver* favicon_driver,
+    NotificationIconType notification_icon_type,
+    const GURL& icon_url,
+    bool icon_url_changed,
+    const gfx::Image& image) {
+  if (icon_url_changed) {
+    for (Observer& obs : observer_list_)
+      obs.OnFaviconUpdated();
   }
 }
 
@@ -110,6 +134,22 @@ void BraveShieldsDataController::SetBraveShieldsEnabled(bool is_enabled) {
 
 GURL BraveShieldsDataController::GetCurrentSiteURL() {
   return web_contents()->GetLastCommittedURL();
+}
+
+GURL BraveShieldsDataController::GetFaviconURL(bool refresh) {
+  auto url = GURL("chrome://favicon2/");
+  url = AppendQueryParameter(url, "size", "16");
+  url = AppendQueryParameter(url, "scale_factor", "2x");
+  url = AppendQueryParameter(url, "show_fallback_monogram", "");
+  url = AppendQueryParameter(url, "page_url",
+                             GetCurrentSiteURL().GetWithoutFilename().spec());
+
+  if (refresh) {
+    url = AppendQueryParameter(url, "v",
+                               std::to_string(base::Time::Now().ToJsTime()));
+  }
+
+  return url;
 }
 
 AdBlockMode BraveShieldsDataController::GetAdBlockMode() {

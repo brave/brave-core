@@ -6,6 +6,7 @@
 #include "brave/components/brave_wallet/browser/solana_instruction_builder.h"
 
 #include <type_traits>
+#include <utility>
 
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
@@ -118,7 +119,8 @@ absl::optional<SolanaInstruction> Transfer(
   for (const auto& signer_pubkey : signer_pubkeys)
     account_metas.push_back(SolanaAccountMeta(signer_pubkey, true, false));
 
-  return SolanaInstruction(token_program_id, account_metas, instruction_data);
+  return SolanaInstruction(token_program_id, std::move(account_metas),
+                           instruction_data);
 }
 
 }  // namespace spl_token_program

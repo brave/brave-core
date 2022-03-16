@@ -18,21 +18,22 @@ _brave_symbols_sources = [
   "$root_out_dir/crashpad_handler",
 ]
 
-group("dist_resources") {}
+group("dist_resources") {
+}
 
 group("symbol_dist_resources") {
-  public_deps = [
-    "//chrome:chrome_dump_syms",
-    "//chrome:chrome_dsym_archive",
-    ":generate_breakpad_symbols",
-  ]
+  if (should_generate_breakpad_symbols) {
+    public_deps = [
+      ":generate_breakpad_symbols",
+      "//chrome:chrome_dsym_archive",
+      "//chrome:chrome_dump_syms",
+    ]
+  }
 }
 
 action("generate_breakpad_symbols") {
   symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
-  outputs = [
-    symbols_dir
-  ]
+  outputs = [ symbols_dir ]
 
   sources = _brave_symbols_sources
 
@@ -53,10 +54,10 @@ action("generate_breakpad_symbols") {
 
   deps = [
     "//chrome:chrome_app",
+    "//chrome:chrome_dump_syms",
     "//chrome:chrome_framework",
     "//chrome:chrome_helper_app_default",
-    "//chrome:chrome_dump_syms",
-    "//third_party/crashpad/crashpad/handler:crashpad_handler",
     "//third_party/breakpad:dump_syms",
+    "//third_party/crashpad/crashpad/handler:crashpad_handler",
   ]
 }

@@ -23,9 +23,20 @@ export const Select = styled.select`
   color: ${(p) => p.theme.color.text01};
   background-color: ${(p) => p.theme.color.background01};
   border-radius: 4px;
-  border: 0;
+  border: 2px solid transparent;
   width: 100%;
   appearance: none;
+  transition: box-shadow 0.1s ease-in-out;
+
+  &:hover {
+    @media (prefers-color-scheme: dark) {
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.36);
+    }
+
+    @media (prefers-color-scheme: light) {
+      box-shadow: 0px 1px 4px rgba(99, 105, 110, 0.2);
+    }
+  }
 
   &:focus-visible {
     outline: 0;

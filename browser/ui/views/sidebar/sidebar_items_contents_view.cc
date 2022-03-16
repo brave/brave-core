@@ -38,6 +38,7 @@
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/gfx/vector_icon_types.h"
 #include "ui/views/background.h"
 #include "ui/views/controls/menu/menu_runner.h"
 #include "ui/views/controls/separator.h"
@@ -413,33 +414,41 @@ gfx::ImageSkia SidebarItemsContentsView::GetImageForBuiltInItems(
     base_button_color = theme_provider->GetColor(
         BraveThemeProperties::COLOR_SIDEBAR_BUTTON_BASE);
   }
+  constexpr int kBuiltInIconSize = 16;
+  int focused_image_resource = -1;
+  const gfx::VectorIcon* normal_image_icon = nullptr;
   auto& bundle = ui::ResourceBundle::GetSharedInstance();
-  if (type == sidebar::SidebarItem::BuiltInItemType::kWallet) {
-    if (focused)
-      return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_CRYPTO_WALLET_FOCUSED);
-    return gfx::CreateVectorIcon(kSidebarCryptoWalletIcon, base_button_color);
+  switch (type) {
+    case sidebar::SidebarItem::BuiltInItemType::kWallet:
+      focused_image_resource = IDR_SIDEBAR_CRYPTO_WALLET_FOCUSED;
+      normal_image_icon = &kSidebarCryptoWalletIcon;
+      break;
+    case sidebar::SidebarItem::BuiltInItemType::kBraveTalk:
+      focused_image_resource = IDR_SIDEBAR_BRAVE_TALK_FOCUSED;
+      normal_image_icon = &kSidebarBraveTalkIcon;
+      break;
+    case sidebar::SidebarItem::BuiltInItemType::kBookmarks:
+      focused_image_resource = IDR_SIDEBAR_BOOKMARKS_FOCUSED;
+      normal_image_icon = &kSidebarBookmarksIcon;
+      break;
+    case sidebar::SidebarItem::BuiltInItemType::kHistory:
+      focused_image_resource = IDR_SIDEBAR_HISTORY_FOCUSED;
+      normal_image_icon = &kSidebarHistoryIcon;
+      break;
+    default:
+      NOTREACHED();
+      return gfx::ImageSkia();
   }
 
-  if (type == sidebar::SidebarItem::BuiltInItemType::kBraveTalk) {
-    if (focused)
-      return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_BRAVE_TOGETHER_FOCUSED);
-    return gfx::CreateVectorIcon(kSidebarBraveTogetherIcon, base_button_color);
+  if (focused) {
+    return gfx::ImageSkiaOperations::CreateResizedImage(
+        *bundle.GetImageSkiaNamed(focused_image_resource),
+        skia::ImageOperations::RESIZE_BEST,
+        gfx::Size{kBuiltInIconSize, kBuiltInIconSize});
   }
 
-  if (type == sidebar::SidebarItem::BuiltInItemType::kBookmarks) {
-    if (focused)
-      return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_BOOKMARKS_FOCUSED);
-    return gfx::CreateVectorIcon(kSidebarBookmarksIcon, base_button_color);
-  }
-
-  if (type == sidebar::SidebarItem::BuiltInItemType::kHistory) {
-    if (focused)
-      return *bundle.GetImageSkiaNamed(IDR_SIDEBAR_HISTORY_FOCUSED);
-    return gfx::CreateVectorIcon(kSidebarHistoryIcon, base_button_color);
-  }
-
-  NOTREACHED();
-  return gfx::ImageSkia();
+  return gfx::CreateVectorIcon(*normal_image_icon, kBuiltInIconSize,
+                               base_button_color);
 }
 
 void SidebarItemsContentsView::OnWidgetDestroying(views::Widget* widget) {

@@ -43,19 +43,3 @@ export function useSiteSettingsData () {
 
   return { siteSettings, getSiteSettings }
 }
-
-export function useFavIconUrl (url?: string) {
-  const [favIconUrl, setfavIconUrl] = React.useState<string>()
-
-  React.useEffect(() => {
-    if (!url) return
-    const faviconUrl = new URL('chrome://favicon2/')
-    faviconUrl.searchParams.set('size', '16')
-    faviconUrl.searchParams.set('scale_factor', '2x')
-    faviconUrl.searchParams.set('show_fallback_monogram', '')
-    faviconUrl.searchParams.set('page_url', `https://${url}`)
-    setfavIconUrl(faviconUrl.toString())
-  }, [url])
-
-  return { favIconUrl }
-}
