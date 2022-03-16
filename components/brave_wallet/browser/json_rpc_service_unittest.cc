@@ -2582,7 +2582,10 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaFeeForMessage) {
       }
     }
   )";
-  SetInterceptor("getFeeForMessage", "", json);
+
+  auto expected_network_url =
+      GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
+  SetInterceptor(expected_network_url, "getFeeForMessage", "", json);
   std::string base64_encoded_string;
   base::Base64Encode("test", &base64_encoded_string);
 
@@ -2598,7 +2601,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaFeeForMessage) {
       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS));
 
   // value can be null for an account not on chain.
-  SetInterceptor("getFeeForMessage", "",
+  SetInterceptor(expected_network_url, "getFeeForMessage", "",
                  R"({
                       "jsonrpc":"2.0",
                       "result":{
@@ -2608,14 +2611,14 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaFeeForMessage) {
                              mojom::SolanaProviderError::kSuccess, "");
 
   // Response parsing error
-  SetInterceptor("getFeeForMessage", "",
+  SetInterceptor(expected_network_url, "getFeeForMessage", "",
                  R"({"jsonrpc":"2.0","id":1,"result":"0"})");
   TestGetSolanaFeeForMessage(
       base64_encoded_string, 0, mojom::SolanaProviderError::kParsingError,
       l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
 
   // JSON RPC error
-  SetInterceptor("getFeeForMessage", "",
+  SetInterceptor(expected_network_url, "getFeeForMessage", "",
                  R"({
                       "jsonrpc":"2.0","id":1,
                       "error":
