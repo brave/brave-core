@@ -329,6 +329,23 @@ class SettingsViewController: TableViewController {
             )
             optionsViewController.headerText = Strings.themesDisplayBrightness
             optionsViewController.footerText = Strings.themesDisplayBrightnessFooter
+
+            let nightModeSection = Section(
+                header: .title(Strings.NightMode.sectionTitle.uppercased()),
+                rows: [
+                    .boolRow(
+                        title: Strings.NightMode.settingsTitle,
+                        detailText: Strings.NightMode.settingsDescription,
+                        option: Preferences.General.nightModeEnabled,
+                        onValueChange: { enabled in
+                            NightModeHelper.setNightMode(tabManager: tabManager, enabled: enabled)
+                        },
+                        image: UIImage(systemName: "moon"))
+                ],
+                footer: .title(Strings.NightMode.sectionDescription)
+            )
+            
+            optionsViewController.dataSource.sections.append(nightModeSection)
             self.navigationController?.pushViewController(optionsViewController, animated: true)
         }
         display.rows.append(row)

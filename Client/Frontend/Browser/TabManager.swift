@@ -97,6 +97,7 @@ class TabManager: NSObject {
 
         Preferences.Shields.blockImages.observe(from: self)
         Preferences.General.blockPopups.observe(from: self)
+        Preferences.General.nightModeEnabled.observe(from: self)
     }
 
     func addNavigationDelegate(_ delegate: WKNavigationDelegate) {
@@ -1144,6 +1145,8 @@ extension TabManager: PreferencesObserver {
             }
             // The default tab configurations also need to change.
             configuration.preferences.javaScriptCanOpenWindowsAutomatically = allowPopups
+        case Preferences.General.nightModeEnabled.key:
+            NightModeHelper.setNightMode(tabManager: self, enabled: Preferences.General.nightModeEnabled.value)
         default:
             break
         }

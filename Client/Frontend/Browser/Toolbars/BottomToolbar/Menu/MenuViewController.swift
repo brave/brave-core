@@ -27,7 +27,7 @@ struct MenuItemHeaderView: View {
                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                         .fill(Color(.secondaryBraveGroupedBackground))
                         .shadow(color: Color.black.opacity(0.1), radius: 1, x: 0, y: 1)
-                )
+            )
             VStack(alignment: .leading, spacing: 3) {
                 Text(verbatim: title)
                 if let subTitle = subtitle {
