@@ -252,15 +252,14 @@ action("sign_app") {
   if (is_official_build) {
     if (is_release_channel) {
       provisioning_profile =
-          "//brave/build/mac/release.${mac_signing_identifier}.provisionprofile"
+          "$target_gen_dir/release.${mac_signing_identifier}.provisionprofile"
     } else {
-      provisioning_profile = "//brave/build/mac/${brave_channel}.${mac_signing_identifier}.provisionprofile"
+      provisioning_profile = "$target_gen_dir/${brave_channel}.${mac_signing_identifier}.provisionprofile"
     }
     is_development = "False"
   } else {
     # an empty dummy file just to simplify things
-    provisioning_profile =
-        "//brave/build/mac/dummy.${mac_signing_identifier}.provisionprofile"
+    provisioning_profile = "$target_gen_dir/dummy.provisionprofile"
     is_development = "True"
   }
 
@@ -298,6 +297,7 @@ action("sign_app") {
 
   deps = [
     ":copies",
+    ":generate_provision_profiles",
     ":universalize",
   ]
 }
@@ -310,6 +310,29 @@ copy("copies") {
   public_deps = [ "//chrome/installer/mac" ]
 
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
+}
+
+copy("generate_provision_profiles") {
+  visibility = [
+    ":notarize_dmg_pkg",
+    ":sign_app",
+  ]
+
+  if (is_official_build) {
+    if (is_release_channel) {
+      basename = "release"
+    } else {
+      basename = brave_channel
+    }
+
+    sources = [ "$basename.provisionprofile" ]
+    outputs = [
+      "$target_gen_dir/$basename.${mac_signing_identifier}.provisionprofile",
+    ]
+  } else {
+    sources = [ "dummy.provisionprofile" ]
+    outputs = [ "$target_gen_dir/dummy.provisionprofile" ]
+  }
 }
 
 action("create_pkg") {
@@ -465,14 +488,13 @@ action("notarize_dmg_pkg") {
     development_arg = ""
     if (is_release_channel) {
       provisioning_profile =
-          "//brave/build/mac/release.${mac_signing_identifier}.provisionprofile"
+          "$target_gen_dir/release.${mac_signing_identifier}.provisionprofile"
     } else {
-      provisioning_profile = "//brave/build/mac/${brave_channel}.${mac_signing_identifier}.provisionprofile"
+      provisioning_profile = "$target_gen_dir/${brave_channel}.${mac_signing_identifier}.provisionprofile"
     }
   } else {
     development_arg = "--development"
-    provisioning_profile =
-        "//brave/build/mac/dummy.${mac_signing_identifier}.provisionprofile"
+    provisioning_profile = "$target_gen_dir/dummy.provisionprofile"
   }
 
   args = [
@@ -512,6 +534,7 @@ action("notarize_dmg_pkg") {
 
   deps = [
     ":copy_notarize_script",
+    ":generate_provision_profiles",
     ":sign_dmg",
     ":sign_pkg",
   ]
