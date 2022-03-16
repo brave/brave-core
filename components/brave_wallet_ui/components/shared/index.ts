@@ -9,6 +9,7 @@ import SelectAccount from './select-account'
 import withPlaceholderIcon from './create-placeholder-icon'
 import CreateNetworkIcon from './create-network-icon'
 import SelectNetworkButton from './select-network-button'
+import LoadingSkeleton from './loading-skeleton'
 
 export {
   AppListItem,
@@ -21,5 +22,6 @@ export {
   SelectAccount,
   withPlaceholderIcon,
   CreateNetworkIcon,
-  SelectNetworkButton
+  SelectNetworkButton,
+  LoadingSkeleton
 }

@@ -93,3 +93,8 @@ export const NameColumn = styled.div`
   justify-content: center;
   flex-direction: column;
 `
+
+export const Spacer = styled.div`
+  display: flex;
+  height: 4px;
+`
