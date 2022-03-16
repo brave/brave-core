@@ -208,9 +208,31 @@ class Tab: NSObject {
     /// tab instance, queue it for later until we become foregrounded.
     fileprivate var alertQueue = [JSAlertInfo]()
 
+    var nightMode: Bool {
+        didSet {
+            guard nightMode != oldValue else {
+                return
+            }
+            
+            webView?.evaluateSafeJavaScript(
+                functionName: "window.__firefox__.NightMode.setEnabled",
+                args: [nightMode],
+                contentWorld: .defaultClient,
+                asFunction: true) {  _, error in
+                if let error = error {
+                    log.error("Error executing script: \(error)")
+                }
+            }
+            
+            userScriptManager?.isNightModeEnabled = nightMode
+        }
+    }
+    
     init(configuration: WKWebViewConfiguration, type: TabType = .regular) {
         self.configuration = configuration
         rewardsId = UInt32.random(in: 1...UInt32.max)
+        nightMode = Preferences.General.nightModeEnabled.value
+
         super.init()
         self.type = type
     }
@@ -272,8 +294,11 @@ class Tab: NSObject {
                 isCookieBlockingEnabled: Preferences.Privacy.blockAllCookies.value,
                 isPaymentRequestEnabled: webView.hasOnlySecureContent,
                 isWebCompatibilityMediaSourceAPIEnabled: Preferences.Playlist.webMediaSourceCompatibility.value,
-                isMediaBackgroundPlaybackEnabled: Preferences.General.mediaAutoBackgrounding.value)
+                isMediaBackgroundPlaybackEnabled: Preferences.General.mediaAutoBackgrounding.value,
+                isNightModeEnabled: Preferences.General.nightModeEnabled.value)
             tabDelegate?.tab?(self, didCreateWebView: webView)
+            
+            nightMode = Preferences.General.nightModeEnabled.value
         }
     }
     

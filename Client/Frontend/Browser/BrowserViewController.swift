@@ -1965,6 +1965,9 @@ extension BrowserViewController: TabDelegate {
 
         let customSearchHelper = CustomSearchHelper(tab: tab)
         tab.addContentScript(customSearchHelper, name: CustomSearchHelper.name(), contentWorld: .page)
+        
+        let nightModeHelper = NightModeHelper(tab: tab)
+        tab.addContentScript(nightModeHelper, name: NightModeHelper.name(), contentWorld: .page)
 
         // XXX: Bug 1390200 - Disable NSUserActivity/CoreSpotlight temporarily
         // let spotlightHelper = SpotlightHelper(tab: tab)

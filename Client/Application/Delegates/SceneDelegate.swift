@@ -44,6 +44,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
             .store(in: &cancellables)
         
+        Preferences.General.nightModeEnabled.objectWillChange
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.updateTheme()
+            }
+            .store(in: &cancellables)
+        
         PrivateBrowsingManager.shared.$isPrivateBrowsing
             .removeDuplicates()
             .receive(on: RunLoop.main)
@@ -327,9 +334,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 extension SceneDelegate {
     private var expectedThemeOverride: UIUserInterfaceStyle {
-        let themeOverride = DefaultTheme(
-            rawValue: Preferences.General.themeNormalMode.value
-        )?.userInterfaceStyleOverride ?? .unspecified
+    
+        // The expected appearance theme should be dark mode when night mode is enabled for websites
+        let themeValue = Preferences.General.nightModeEnabled.value ?
+            DefaultTheme.dark.rawValue :
+            Preferences.General.themeNormalMode.value
+         
+        let themeOverride = DefaultTheme(rawValue: themeValue)?.userInterfaceStyleOverride ?? .unspecified
         let isPrivateBrowsing = PrivateBrowsingManager.shared.isPrivateBrowsing
         return isPrivateBrowsing ? .dark : themeOverride
     }

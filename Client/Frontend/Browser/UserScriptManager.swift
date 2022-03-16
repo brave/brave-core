@@ -24,7 +24,7 @@ class UserScriptManager {
 
     private weak var tab: Tab?
     
-    // Whether or not the fingerprinting protection
+    /// Whether or not the fingerprinting protection
     var isFingerprintingProtectionEnabled: Bool {
         didSet {
             if oldValue == isFingerprintingProtectionEnabled { return }
@@ -32,6 +32,7 @@ class UserScriptManager {
         }
     }
     
+    /// Whether cookie blocking is enabled
     var isCookieBlockingEnabled: Bool {
         didSet {
             if oldValue == isCookieBlockingEnabled { return }
@@ -39,7 +40,7 @@ class UserScriptManager {
         }
     }
     
-    // Whether or not the PaymentRequest APIs should be exposed
+    /// Whether or not the PaymentRequest APIs should be exposed
     var isPaymentRequestEnabled: Bool {
         didSet {
             if oldValue == isPaymentRequestEnabled { return }
@@ -67,6 +68,14 @@ class UserScriptManager {
     var isMediaBackgroundPlaybackEnabled: Bool {
         didSet {
             if oldValue == isMediaBackgroundPlaybackEnabled { return }
+            reloadUserScripts()
+        }
+    }
+    
+    /// Whether night mode is enabled for webview
+    var isNightModeEnabled: Bool {
+        didSet {
+            if oldValue == isNightModeEnabled { return }
             reloadUserScripts()
         }
     }
@@ -109,7 +118,14 @@ class UserScriptManager {
         return false
     }
     
-    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isPaymentRequestEnabled: Bool, isWebCompatibilityMediaSourceAPIEnabled: Bool, isMediaBackgroundPlaybackEnabled: Bool) {
+    init(
+        tab: Tab,
+        isFingerprintingProtectionEnabled: Bool,
+        isCookieBlockingEnabled: Bool,
+        isPaymentRequestEnabled: Bool,
+        isWebCompatibilityMediaSourceAPIEnabled: Bool,
+        isMediaBackgroundPlaybackEnabled: Bool,
+        isNightModeEnabled: Bool) {
         self.tab = tab
         self.isFingerprintingProtectionEnabled = isFingerprintingProtectionEnabled
         self.isCookieBlockingEnabled = isCookieBlockingEnabled
@@ -117,6 +133,8 @@ class UserScriptManager {
         self.isWebCompatibilityMediaSourceAPIEnabled = isWebCompatibilityMediaSourceAPIEnabled
         self.isPlaylistEnabled = true
         self.isMediaBackgroundPlaybackEnabled = isMediaBackgroundPlaybackEnabled
+        self.isNightModeEnabled = isNightModeEnabled
+            
         reloadUserScripts()
     }
     
@@ -323,6 +341,13 @@ class UserScriptManager {
                             forMainFrameOnly: false,
                             in: .page)
     }()
+    
+    private let NightModeScript: WKUserScript? = {
+        return WKUserScript.create(source: "window.__firefox__.NightMode.setEnabled(true);",
+                            injectionTime: .atDocumentStart,
+                            forMainFrameOnly: true,
+                            in: .defaultClient)
+    }()
 
     private func reloadUserScripts() {
         tab?.webView?.configuration.userContentController.do {
@@ -357,6 +382,10 @@ class UserScriptManager {
             }
             
             if isMediaBackgroundPlaybackEnabled, let script = MediaBackgroundingScript {
+                $0.addUserScript(script)
+            }
+            
+            if isNightModeEnabled, let script = NightModeScript {
                 $0.addUserScript(script)
             }
             
