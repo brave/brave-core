@@ -59,6 +59,7 @@
     <color name="brave_set_default_dialog_text_color">@color/modern_grey_700</color>
 
     <!-- Theme colors -->
+    <color name="brave_white">@android:color/white</color>
     <color name="brave_theme_color">#fb542b</color>
     <color name="brave_tab_view_card_selected_bg">@color/baseline_primary_200</color>
 

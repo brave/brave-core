@@ -90,6 +90,11 @@
     android:screenOrientation="sensorPortrait"
     tools:ignore="LockedOrientationActivity"/>
 
+<activity android:name="org.chromium.chrome.browser.crypto_wallet.activities.AdvanceTxSettingActivity"
+    android:theme="@style/Theme.Chromium.Activity"
+    android:screenOrientation="sensorPortrait"
+    tools:ignore="LockedOrientationActivity"/>
+
 <activity
     android:name="org.chromium.chrome.browser.vpn.BraveVpnPlansActivity"
     android:theme="@style/Theme.Chromium.Activity"

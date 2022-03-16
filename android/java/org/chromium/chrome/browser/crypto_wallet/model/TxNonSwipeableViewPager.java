@@ -62,7 +62,7 @@ public class TxNonSwipeableViewPager extends ViewPager {
             firstChild.measure(widthMeasureSpec, heightMeasureSpec);
             super.onMeasure(widthMeasureSpec,
                     MeasureSpec.makeMeasureSpec(
-                            firstChild.getMeasuredHeight() * 2, MeasureSpec.EXACTLY));
+                            firstChild.getMeasuredHeight(), MeasureSpec.EXACTLY));
             return;
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

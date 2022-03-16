@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:ignore="RtlSymmetry,NestedWeights"
     android:background="@color/wallet_bg"
     android:orientation="vertical"
-    tools:context=".ApproveTxBottomSheetDialogFragment">
+    tools:context=".ApproveTxBottomSheetDialogFragment"
+    tools:ignore="RtlSymmetry,NestedWeights">
 
     <TextView
         android:id="@+id/network_name"
@@ -16,23 +16,23 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="4dp"
         android:paddingStart="24dp"
-        android:textColor="@color/wallet_text_color"
         android:text="@string/mainnet"
+        android:textColor="@color/wallet_text_color"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:textSize="16sp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/account_picture"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
+        android:contentDescription="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/network_name"
-        app:srcCompat="@drawable/ic_eth_24"
-        android:contentDescription="@null" />
+        app:srcCompat="@drawable/ic_eth_24" />
 
     <TextView
         android:id="@+id/from_to"
@@ -40,12 +40,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/account_picture"
         android:gravity="center"
         android:textColor="@color/wallet_text_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/account_picture" />
 
     <TextView
         android:id="@+id/tx_type"
@@ -53,12 +53,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/from_to"
         android:gravity="center"
         android:textColor="@color/wallet_text_color"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/from_to" />
 
     <TextView
         android:id="@+id/amount_asset"
@@ -66,12 +66,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tx_type"
         android:gravity="center"
         android:textColor="@color/wallet_text_color"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tx_type" />
 
     <TextView
         android:id="@+id/amount_fiat"
@@ -79,92 +79,88 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/amount_asset"
         android:gravity="center"
         android:textColor="@color/wallet_text_color"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amount_asset" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/wallet_toolbar_bg_color"
-        app:tabIndicatorColor="@color/tab_color"
-        app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amount_fiat"
         app:tabGravity="fill"
+        app:tabIndicatorColor="@color/tab_color"
         app:tabSelectedTextColor="@color/tab_color"
+        app:tabTextAppearance="@style/BraveWalletTabsTextAppearance"
         app:tabTextColor="@color/wallet_text_color" />
 
-    <org.chromium.chrome.browser.crypto_wallet.model.TxNonSwipeableViewPager
-        android:id="@+id/navigation_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabs"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
     <LinearLayout
-        android:id="@+id/send_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="?android:attr/selectableItemBackground"
-        android:orientation="horizontal">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tabs">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/reject"
-            android:layout_width="wrap_content"
+        <org.chromium.chrome.browser.crypto_wallet.model.TxNonSwipeableViewPager
+            android:id="@+id/navigation_view_pager"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:gravity="center"
-            android:layout_weight = "1"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/crypto_wallet_blue_button"
-            android:text="@string/reject"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="@android:color/white"
-            style="?android:attr/borderlessButtonStyle"/>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/approve"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/approve_tx_bottom_sheet_action"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:gravity="center"
-            android:layout_weight = "1"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/crypto_wallet_blue_button"
-            android:text="@string/approve"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:textColor="@android:color/white"
-            style="?android:attr/borderlessButtonStyle"/>
+            android:layout_marginVertical="12dp"
+            android:orientation="horizontal">
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/reject"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/crypto_wallet_blue_button"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/reject"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/approve"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/crypto_wallet_blue_button"
+                android:gravity="center"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/approve"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+        </LinearLayout>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.crypto_wallet.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,12 +29,13 @@ import org.chromium.brave_wallet.mojom.AssetRatioService;
 import org.chromium.brave_wallet.mojom.EthTxManagerProxy;
 import org.chromium.brave_wallet.mojom.TransactionInfo;
 import org.chromium.brave_wallet.mojom.TransactionType;
-import org.chromium.brave_wallet.mojom.TxData;
-import org.chromium.brave_wallet.mojom.TxData1559;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.crypto_wallet.activities.AdvanceTxSettingActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletActivity;
+import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BuySendSwapActivity;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
+import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 
 import java.util.Locale;
 
@@ -48,6 +50,7 @@ public class TxFragment extends Fragment {
     private int mCheckedPriorityId;
     private int mPreviousCheckedPriorityId;
     private double mEthRate;
+    public static final int START_ADVANCE_SETTING_ACTIVITY_CODE = 0;
 
     public static TxFragment newInstance(TransactionInfo txInfo, String asset, int decimals,
             String chainSymbol, int chainDecimals, double totalPrice) {
@@ -56,23 +59,17 @@ public class TxFragment extends Fragment {
 
     private AssetRatioService getAssetRatioService() {
         Activity activity = getActivity();
-        if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getAssetRatioService();
-        } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getAssetRatioService();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getAssetRatioService();
         }
-
         return null;
     }
 
     private EthTxManagerProxy getEthTxManagerProxy() {
         Activity activity = getActivity();
-        if (activity instanceof BuySendSwapActivity) {
-            return ((BuySendSwapActivity) activity).getEthTxManagerProxy();
-        } else if (activity instanceof BraveWalletActivity) {
-            return ((BraveWalletActivity) activity).getEthTxManagerProxy();
+        if (activity instanceof BraveWalletBaseActivity) {
+            return ((BraveWalletBaseActivity) activity).getEthTxManagerProxy();
         }
-
         return null;
     }
 
@@ -104,6 +101,17 @@ public class TxFragment extends Fragment {
                 && !mTxInfo.txDataUnion.getEthTxData1559().maxFeePerGas.isEmpty();
 
         setupView(view);
+
+        View advanceSettingContainer = view.findViewById(R.id.fragment_tx_tv_advance_setting);
+        advanceSettingContainer.setOnClickListener(v -> {
+            Intent toAdvanceTxSetting =
+                    new Intent(requireActivity(), AdvanceTxSettingActivity.class);
+            String nonce = mIsEIP1559 ? mTxInfo.txDataUnion.getEthTxData1559().baseData.nonce
+                                      : mTxInfo.txDataUnion.getEthTxData().nonce;
+            toAdvanceTxSetting.putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_ID, mTxInfo.id)
+                    .putExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_TX_NONCE, nonce);
+            startActivityForResult(toAdvanceTxSetting, START_ADVANCE_SETTING_ACTIVITY_CODE);
+        });
 
         TextView editGasFee = view.findViewById(R.id.edit_gas_fee);
         editGasFee.setOnClickListener(new View.OnClickListener() {
@@ -432,12 +440,17 @@ public class TxFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == START_ADVANCE_SETTING_ACTIVITY_CODE
+                && resultCode == Activity.RESULT_OK) {
+            String nonce =
+                    data.getStringExtra(WalletConstants.ADVANCE_TX_SETTING_INTENT_RESULT_NONCE);
+            if (mIsEIP1559) {
+                mTxInfo.txDataUnion.getEthTxData1559().baseData.nonce = nonce;
+            } else {
+                mTxInfo.txDataUnion.getEthTxData().nonce = nonce;
+            }
+        }
     }
 }
