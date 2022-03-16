@@ -168,7 +168,14 @@ interface SolanaProvider {
     => (SolanaProviderError error, string error_message,
         mojo_base.mojom.DictionaryValue result);
 
-  // Request(string json_payload)
+  // Arg is {method: <string>, params: {...}}
+  // returns a dictionary result to be converted into a v8 object
+  // option method means it needs special handling, ex. connect which requires
+  // us to construct a solanaWeb3.PublicKey object which can only be done on
+  // renderer side.
+  Request(mojo_base.mojom.DictionaryValue arg)
+    => (SolanaProviderError error, string error_message,
+        mojo_base.mojom.DictionaryValue result, string? method);
 
 };
 

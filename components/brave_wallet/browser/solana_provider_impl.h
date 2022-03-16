@@ -39,6 +39,7 @@ class SolanaProviderImpl final : public mojom::SolanaProvider {
   void SignMessage(const std::string& encoded_msg,
                    const absl::optional<std::string>& display_encoding,
                    SignMessageCallback callback) override;
+  void Request(base::Value arg, RequestCallback callback) override;
 
  private:
   mojo::Remote<mojom::SolanaEventsListener> events_listener_;

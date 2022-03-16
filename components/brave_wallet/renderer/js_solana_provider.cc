@@ -8,7 +8,6 @@
 #include <tuple>
 #include <utility>
 
-#include "base/notreached.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
@@ -325,8 +324,36 @@ v8::Local<v8::Promise> JSSolanaProvider::SignMessage(
 }
 
 v8::Local<v8::Promise> JSSolanaProvider::Request(gin::Arguments* arguments) {
-  NOTIMPLEMENTED();
-  return v8::Local<v8::Promise>();
+  if (!EnsureConnected())
+    return v8::Local<v8::Promise>();
+  v8::Isolate* isolate = v8::Isolate::GetCurrent();
+  v8::MaybeLocal<v8::Promise::Resolver> resolver =
+      v8::Promise::Resolver::New(isolate->GetCurrentContext());
+  if (resolver.IsEmpty()) {
+    return v8::Local<v8::Promise>();
+  }
+  v8::Local<v8::Value> arg;
+  if (arguments->Length() != 1 || !arguments->GetNext(&arg)) {
+    arguments->ThrowError();
+    return v8::Local<v8::Promise>();
+  }
+
+  std::unique_ptr<base::Value> arg_value =
+      v8_value_converter_->FromV8Value(arg, isolate->GetCurrentContext());
+  if (!arg_value->is_dict())
+    return v8::Local<v8::Promise>();
+
+  auto global_context(
+      v8::Global<v8::Context>(isolate, isolate->GetCurrentContext()));
+  auto promise_resolver(
+      v8::Global<v8::Promise::Resolver>(isolate, resolver.ToLocalChecked()));
+  solana_provider_->Request(
+      std::move(*arg_value),
+      base::BindOnce(&JSSolanaProvider::OnRequest,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(global_context),
+                     std::move(promise_resolver), isolate));
+
+  return resolver.ToLocalChecked()->GetPromise();
 }
 
 // Deprecated
@@ -582,6 +609,48 @@ void JSSolanaProvider::OnSignAllTransactions(
 
   SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
                std::move(result),
+               error == mojom::SolanaProviderError::kSuccess);
+}
+
+void JSSolanaProvider::OnRequest(
+    v8::Global<v8::Context> global_context,
+    v8::Global<v8::Promise::Resolver> promise_resolver,
+    v8::Isolate* isolate,
+    mojom::SolanaProviderError error,
+    const std::string& error_message,
+    base::Value result,
+    const absl::optional<std::string>& method) {
+  v8::HandleScope handle_scope(isolate);
+  v8::MicrotasksScope microtasks(isolate,
+                                 v8::MicrotasksScope::kDoNotRunMicrotasks);
+  v8::Local<v8::Context> context = global_context.Get(isolate);
+  v8::Context::Scope context_scope(context);
+  v8::Local<v8::Value> v8_result;
+  if (error == mojom::SolanaProviderError::kSuccess) {
+    // Dictionary to object
+    if (!method) {
+      v8_result =
+          v8_value_converter_->ToV8Value(&result, global_context.Get(isolate));
+    } else if (*method == "connect") {
+      const std::string* public_key = result.FindStringKey("publicKey");
+      DCHECK(public_key);
+
+      v8::Local<v8::Value> v8_public_key;
+      CHECK(GetProperty(context, CreatePublicKey(context, *public_key),
+                        u"publicKey")
+                .ToLocal(&v8_public_key));
+
+      v8_result = v8_public_key;
+    }
+  } else {
+    std::unique_ptr<base::Value> formed_response =
+        GetProviderErrorDictionary(error, error_message);
+    v8_result = v8_value_converter_->ToV8Value(formed_response.get(),
+                                               global_context.Get(isolate));
+  }
+
+  SendResponse(std::move(global_context), std::move(promise_resolver), isolate,
+               std::move(v8_result),
                error == mojom::SolanaProviderError::kSuccess);
 }
 

@@ -37,7 +37,7 @@ void SolanaProviderImpl::Connect(absl::optional<base::Value> arg,
 
 void SolanaProviderImpl::Disconnect() {
   // NOTIMPLEMENTED();
-  events_listener_->AccountChangedEvent(absl::nullopt);
+  // events_listener_->AccountChangedEvent(absl::nullopt);
 }
 
 void SolanaProviderImpl::IsConnected(IsConnectedCallback callback) {
@@ -128,6 +128,19 @@ void SolanaProviderImpl::SignMessage(
   // NOTIMPLEMENTED();
   // std::move(callback).Run(mojom::SolanaProviderError::kInternalError, "",
   // std::move(result));
+}
+
+void SolanaProviderImpl::Request(base::Value arg, RequestCallback callback) {
+  base::Value result(base::Value::Type::DICTIONARY);
+  result.SetStringKey("publicKey",
+                      "BrG44HdsEhzapvs8bEqzvkq4egwevS3fRE6ze2ENo6S8");
+  result.SetStringKey("signature",
+                      "As4N6cok5f7nhXp56Hdw8dWZpUnY8zjYKzBqK45CexE1qNPCqt6Y"
+                      "2gnZduGgqASDD1c6QULBRypVa9BikoxWpGA");
+  std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
+                          std::move(result), absl::nullopt);
+  // std::move(callback).Run(mojom::SolanaProviderError::kSuccess, "",
+  //                        std::move(result), "connect");
 }
 
 }  // namespace brave_wallet

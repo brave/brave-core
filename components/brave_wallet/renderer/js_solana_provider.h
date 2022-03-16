@@ -63,25 +63,40 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
 
   bool GetIsPhantom(gin::Arguments* arguments);
   bool GetIsConnected(gin::Arguments* arguments);
+  // returns solanaWeb3.PublicKey
   v8::Local<v8::Value> GetPublicKey(gin::Arguments* arguments);
-  // Promise<{ publicKey: solanaWeb3.PublicKey }>
+  // ({onlyIfTrusted}) => Promise<{ publicKey: solanaWeb3.PublicKey }>
+  // {onlyIfTrusted} is optional
   v8::Local<v8::Promise> Connect(gin::Arguments* arguments);
-  // Promise<undefined>
+  // () => Promise<undefined>
   v8::Local<v8::Promise> Disconnect(gin::Arguments* arguments);
-  // Promise<
+  // (solanaWeb3.Transaction) => Promise<
   //  { publicKey: <base58 encoded string>,
   //    signature: <base58 encoded string>}>
   v8::Local<v8::Promise> SignAndSendTransaction(gin::Arguments* arguments);
-  // Promise<
+  // (Uint8Array, string display) => Promise<
   //  { publicKey: <solanaWeb3.PublicKey>,
   //    signature: <Uint8Array>}>
+  // display encoding is optional
   v8::Local<v8::Promise> SignMessage(gin::Arguments* arguments);
+  // It takes { method: <string>, pararms: {...} and return promise accroding to
+  // the method:
+  // - connect => { publicKey: solanaWeb3.PublicKey}
+  // - disconnect => {}
+  // - signTransaction => { publicKey: <base58 encoded string>,
+  //                        signature: <base58 encoded string>}
+  // - signAndSendTransaction => { publicKey: <base58 encoded string>,
+  //                               signature: <base58 encoded string>}
+  // - signAllTransactions => { publicKey: <base58 encoded string>,
+  //                            signature: <base58 encoded string>[]}
+  // - signMessage => { publicKey: <base58 encoded string>,
+  //                    signature: <base58 encoded string>}
   v8::Local<v8::Promise> Request(gin::Arguments* arguments);
   // Deprecated
-  // Promise<solanaWeb3.Transaction>
+  // (solanaWeb3.Transaction) => Promise<solanaWeb3.Transaction>
   v8::Local<v8::Promise> SignTransaction(gin::Arguments* arguments);
   // Deprecated
-  // Promise<solanaWeb3.Transaction[]>
+  // (solanaWeb3.Transaction[]) => Promise<solanaWeb3.Transaction[]>
   v8::Local<v8::Promise> SignAllTransactions(gin::Arguments* arguments);
 
   void FireEvent(const std::string& event,
@@ -123,6 +138,14 @@ class JSSolanaProvider final : public gin::Wrappable<JSSolanaProvider>,
       mojom::SolanaProviderError error,
       const std::string& error_message,
       const std::vector<std::vector<uint8_t>>& serialized_txs);
+
+  void OnRequest(v8::Global<v8::Context> global_context,
+                 v8::Global<v8::Promise::Resolver> promise_resolver,
+                 v8::Isolate* isolate,
+                 mojom::SolanaProviderError error,
+                 const std::string& error_message,
+                 base::Value result,
+                 const absl::optional<std::string>& method);
 
   void SendResponse(v8::Global<v8::Context> global_context,
                     v8::Global<v8::Promise::Resolver> promise_resolver,
