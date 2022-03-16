@@ -159,6 +159,17 @@ extension Preferences {
         /// Whether or not the user successfully enrolled before
         public static let didEnrollDeviceCheck = Option<Bool>(key: "rewards.devicecheck.did.enroll", default: false)
     }
+    
+    public final class BraveCore {
+        /// Switches that are passed into BraveCoreMain during launch.
+        ///
+        /// This preference stores a list of `BraveCoreSwitch` raw values
+        public static let activeSwitches = Option<[String]>(key: "brave-core.active-switches", default: [])
+        /// The values for switches that may be passed into BraveCoreMain if they're active
+        ///
+        /// Each key is a `BraveCoreSwitch`
+        public static let switchValues = Option<[String: String]>(key: "brave-core.switches.values", default: [:])
+    }
 }
 
 extension Preferences {
