@@ -35,9 +35,7 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
     protected void triggerLayoutInflation() {
         setContentView(R.layout.user_wallet_activity);
 
-        walletTypeString = walletType.equals(BraveWalletProvider.UPHOLD)
-                ? getResources().getString(R.string.uphold)
-                : getResources().getString(R.string.bitflyer);
+        walletTypeString = getWalletString(walletType);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -100,11 +98,28 @@ public class BraveRewardsUserWalletActivity extends AsyncInitializationActivity 
 
         String userId = intent.getStringExtra(BraveRewardsExternalWallet.USER_NAME);
         txtUserId.setText(userId);
-        txtUserId.setCompoundDrawablesWithIntrinsicBounds(
-                walletType.equals(BraveWalletProvider.UPHOLD) ? R.drawable.uphold_green
-                                                              : R.drawable.ic_logo_bitflyer_colored,
-                0, 0, 0);
+        txtUserId.setCompoundDrawablesWithIntrinsicBounds(getWalletIcon(walletType), 0, 0, 0);
         SetDisconnectBtnClickHandler();
+    }
+
+    private int getWalletIcon(String walletType) {
+        if (walletType.equals(BraveWalletProvider.UPHOLD)) {
+            return R.drawable.uphold_green;
+        } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
+            return R.drawable.ic_gemini_logo_cyan;
+        } else {
+            return R.drawable.ic_logo_bitflyer_colored;
+        }
+    }
+
+    private String getWalletString(String walletType) {
+        if (walletType.equals(BraveWalletProvider.UPHOLD)) {
+            return getResources().getString(R.string.uphold);
+        } else if (walletType.equals(BraveWalletProvider.GEMINI)) {
+            return getResources().getString(R.string.gemini);
+        } else {
+            return getResources().getString(R.string.bitflyer);
+        }
     }
 
     private void SetBtnOpenUrlClickHandler(Button btn, String url) {
