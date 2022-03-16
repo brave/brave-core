@@ -6,11 +6,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORE_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORE_SERVICE_H_
 
-#include <map>
 #include <string>
 #include <utility>
 
 #include "base/callback.h"
+#include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/sequenced_task_runner.h"
@@ -49,7 +49,7 @@ class AsyncDataStore {
     data_store_.AsyncCall(&T::AddLog).WithArgs(log).Then(std::move(callback));
   }
 
-  void LoadLogs(base::OnceCallback<void(std::map<int, U>)> callback) {
+  void LoadLogs(base::OnceCallback<void(base::flat_map<int, U>)> callback) {
     data_store_.AsyncCall(&T::LoadLogs).Then(std::move(callback));
   }
 

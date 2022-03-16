@@ -12,6 +12,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -183,7 +184,8 @@ TEST(ValueConversionUtilsUnitTest, PermissionRequestResponseToValue) {
   url::Origin origin = url::Origin::Create(GURL("https://brave.com"));
   std::vector<std::string> accounts{
       "0xA99D71De40D67394eBe68e4D0265cA6C9D421029"};
-  base::Value value = PermissionRequestResponseToValue(origin, accounts);
+  base::Value value =
+      PermissionRequestResponseToValue(origin.Serialize(), accounts);
 
   // [{
   //   "caveats":[

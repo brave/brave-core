@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_AD_NOTIFICATION_TIMING_DATA_STORE_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_AD_NOTIFICATION_TIMING_DATA_STORE_H_
 
-#include <map>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/sequence_checker.h"
 #include "base/time/time.h"
@@ -55,7 +55,7 @@ class AdNotificationTimingDataStore final : public DataStore {
   AdNotificationTimingDataStore& operator=(
       const AdNotificationTimingDataStore&) = delete;
 
-  typedef std::map<int, AdNotificationTimingTaskLog>
+  typedef base::flat_map<int, AdNotificationTimingTaskLog>
       IdToAdNotificationTimingTaskLogMap;
 
   bool Init(int task_id,

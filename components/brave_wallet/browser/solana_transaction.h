@@ -6,10 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TRANSACTION_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SOLANA_TRANSACTION_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/solana_message.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "third_party/abseil-cpp/absl/types/optional.h"
+
+namespace base {
+class Value;
+}  // namespace base
 
 namespace brave_wallet {
 
@@ -18,15 +25,24 @@ class SolanaInstruction;
 
 class SolanaTransaction {
  public:
+  explicit SolanaTransaction(SolanaMessage&& message);
   SolanaTransaction(const std::string& recent_blockhash,
                     const std::string& fee_payer,
-                    const std::vector<SolanaInstruction>& instructions);
+                    std::vector<SolanaInstruction>&& instructions);
   SolanaTransaction(const SolanaTransaction&) = default;
   ~SolanaTransaction() = default;
+  bool operator==(const SolanaTransaction&) const;
 
   // Serialize the message and sign it.
   std::string GetSignedTransaction(KeyringService* keyring_service,
                                    const std::string& recent_blockhash);
+
+  mojom::SolanaTxDataPtr ToSolanaTxData() const;
+  base::Value ToValue() const;
+
+  static std::unique_ptr<SolanaTransaction> FromSolanaTxData(
+      mojom::SolanaTxDataPtr solana_tx_data);
+  static absl::optional<SolanaTransaction> FromValue(const base::Value& value);
 
  private:
   SolanaMessage message_;

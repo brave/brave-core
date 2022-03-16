@@ -2,41 +2,46 @@ import("//brave/build/config.gni")
 import("//build/util/branding.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
 
-action("generate_breakpad_symbols") {
-  symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
-  outputs = [ symbols_dir ]
+if (should_generate_breakpad_symbols) {
+  action("generate_breakpad_symbols") {
+    symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
+    outputs = [ symbols_dir ]
 
-  if (brave_debug_symbol_level == 2) {
-    platform_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
-    outputs += [ platform_symbols_dir ]
-  }
-  deps = [ "//brave/build/win:copy_pdb" ]
-  dump_syms_path = ""
-  if (target_cpu == "x86") {
-    # Use x64 dump_syms for x86
-    deps += [
-      "//third_party/breakpad:dump_syms(//build/toolchain/win:win_clang_x64)",
+    if (brave_debug_symbol_level == 2) {
+      platform_symbols_dir = "$brave_dist_dir/$brave_product_name.pdb.syms"
+      outputs += [ platform_symbols_dir ]
+    }
+    deps = [ "//brave/build/win:copy_pdb" ]
+    dump_syms_path = ""
+    if (target_cpu == "x86") {
+      # Use x64 dump_syms for x86
+      deps += [
+        "//third_party/breakpad:dump_syms(//build/toolchain/win:win_clang_x64)",
+      ]
+      dump_syms_path = "win_clang_x64/dump_syms.exe"
+    } else {
+      deps += [ "//third_party/breakpad:dump_syms" ]
+      dump_syms_path = "dump_syms.exe"
+    }
+
+    args = [
+      "--symbols-dir=" + rebase_path(symbols_dir),
+      "--build-dir=" + rebase_path(root_out_dir),
+      "--dump-syms-path=" + dump_syms_path,
+      "--verbose",
+      "--clear",
+      rebase_path(root_out_dir),
     ]
-    dump_syms_path = "win_clang_x64/dump_syms.exe"
-  } else {
-    deps += [ "//third_party/breakpad:dump_syms" ]
-    dump_syms_path = "dump_syms.exe"
+
+    if (brave_debug_symbol_level == 2) {
+      args += [ "--platform-symbols-dir=" + rebase_path(platform_symbols_dir) ]
+    }
+
+    script = "//brave/tools/win/generate_breakpad_symbols.py"
   }
-
-  args = [
-    "--symbols-dir=" + rebase_path(symbols_dir),
-    "--build-dir=" + rebase_path(root_out_dir),
-    "--dump-syms-path=" + dump_syms_path,
-    "--verbose",
-    "--clear",
-    rebase_path(root_out_dir),
-  ]
-
-  if (brave_debug_symbol_level == 2) {
-    args += [ "--platform-symbols-dir=" + rebase_path(platform_symbols_dir) ]
+} else {
+  group("generate_breakpad_symbols") {
   }
-
-  script = "//brave/tools/win/generate_breakpad_symbols.py"
 }
 
 group("symbol_dist_resources") {

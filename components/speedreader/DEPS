@@ -1,6 +1,7 @@
 include_rules = [
   "+components/content_settings/core",
   "+components/prefs",
+  "+components/body_sniffer",
   "+components/sessions/content",
   "+content/public/browser",
   "+crypto",

@@ -227,6 +227,12 @@ class EthTxManager : public TxManager, public EthBlockTracker::Observer {
       mojom::ProviderError error,
       const std::string& error_message);
 
+  void ContinueProcessHardwareSignature(
+      ProcessHardwareSignatureCallback callback,
+      bool status,
+      mojom::ProviderErrorUnionPtr error_union,
+      const std::string& error_message);
+
   // EthBlockTracker::Observer:
   void OnLatestBlock(uint256_t block_num) override {}
   void OnNewBlock(uint256_t block_num) override;

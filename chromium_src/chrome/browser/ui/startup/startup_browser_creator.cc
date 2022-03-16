@@ -8,10 +8,6 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 
-#if defined(OS_WIN)
-#include "brave/browser/microsoft_edge_protocol_util.h"
-#endif
-
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_manager.h"
 #endif

@@ -19,8 +19,8 @@ if (process.platform === 'win32') {
 }
 const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
 
-const run = (cmd, args = []) => {
-  const prog = spawnSync(cmd, args)
+const run = (cmd, args = [], options) => {
+  const prog = spawnSync(cmd, args, options)
   if (prog.status !== 0) {
     console.log(prog.stdout && prog.stdout.toString())
     console.error(prog.stderr && prog.stderr.toString())
@@ -40,7 +40,7 @@ var packageConfig = function (key, sourceDir = rootDir) {
   // packages.config should include version string.
   let obj = Object.assign({}, packages.config, { version: packages.version })
   for (var i = 0, len = key.length; i < len; i++) {
-    if (!obj) {
+    if (obj === undefined) {
       return obj
     }
     obj = obj[key[i]]
@@ -52,13 +52,33 @@ var packageConfigBraveCore = function (key) {
   return packageConfig(key, path.join(rootDir, 'src', 'brave'))
 }
 
-const getNPMConfig = (key) => {
+const getNPMConfig = (key, default_value = undefined) => {
   if (!NpmConfig) {
-    const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
+    const list = run(npmCommand, ['config', 'list', '--json'], { cwd: rootDir })
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
-  return NpmConfig[key.join('-').replace(/_/g, '-')] || packageConfigBraveCore(key) || packageConfig(key)
+  // NpmConfig has the multiple copy of the same variable: one from .npmrc
+  // (that we want to) and one from the environment.
+  // https://docs.npmjs.com/cli/v7/using-npm/config#environment-variables
+  const npmConfigValue = NpmConfig[key.join('_')]
+  if (npmConfigValue !== undefined)
+    return npmConfigValue
+
+  // Shouldn't be used in general but added for backward compatibilty.
+  const npmConfigDeprecatedValue = NpmConfig[key.join('-').replace(/_/g, '-')]
+  if (npmConfigDeprecatedValue !== undefined)
+    return npmConfigDeprecatedValue
+
+  const packageConfigBraveCoreValue = packageConfigBraveCore(key)
+  if (packageConfigBraveCoreValue !== undefined)
+    return packageConfigBraveCoreValue
+
+  const packageConfigValue = packageConfig(key)
+  if (packageConfigValue !== undefined)
+    return packageConfigValue
+
+  return default_value
 }
 
 const parseExtraInputs = (inputs, accumulator, callback) => {
@@ -135,7 +155,11 @@ const Config = function () {
   this.rewardsGrantStagingEndpoint = getNPMConfig(['rewards_grant_staging_endpoint']) || ''
   this.rewardsGrantProdEndpoint = getNPMConfig(['rewards_grant_prod_endpoint']) || ''
   // this.buildProjects()
-  this.braveVersion = getNPMConfig(['version']) || '0.0.0'
+
+  // version should be taken from b-c package.json,  not from brave-browser
+  // or npm config.
+  this.braveVersion = packageConfigBraveCore(['version']) || '0.0.0'
+
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
   this.mac_signing_identifier = getNPMConfig(['mac_signing_identifier'])
@@ -246,7 +270,8 @@ Config.prototype.buildArgs = function () {
     target_cpu: this.targetArch,
     is_official_build: this.isOfficialBuild() && !this.isAsan(),
     is_debug: this.isDebug(),
-    dcheck_always_on: getNPMConfig(['dcheck_always_on']) || this.isComponentBuild(),
+    dcheck_always_on:
+      getNPMConfig(['dcheck_always_on'], this.isComponentBuild()),
     brave_channel: this.channel,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,

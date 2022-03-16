@@ -250,6 +250,22 @@ class DictionaryMojoTypemap(MojoTypemap):
             return d;
         }()""" % args
 
+class BaseValueMojoTypemap(MojoTypemap):
+    @staticmethod
+    def IsMojoType(kind):
+        return (mojom.IsUnionKind(kind) and
+                kind.qualified_name == 'mojo_base.mojom.Value')
+    def ObjCWrappedType(self):
+        return "MojoBaseValue*"
+    def ExpectedCppType(self):
+        return "base::Value"
+    def DefaultObjCValue(self, default):
+        return "[[MojoBaseValue alloc] init]"
+    def ObjCToCpp(self, accessor):
+        return "%s.cppObjPtr" % accessor
+    def CppToObjC(self, accessor):
+        return "[[MojoBaseValue alloc] initWithValue:%s.Clone()]" % accessor
+
 class BaseDictionaryValueMojoTypemap(MojoTypemap):
     @staticmethod
     def IsMojoType(kind):
@@ -332,6 +348,7 @@ _mojo_typemaps = [
     URLMojoTypemap,
     NumberMojoTypemap,
     EnumMojoTypemap,
+    BaseValueMojoTypemap,
     ArrayMojoTypemap,
     BaseListValueMojoTypemap,
     DictionaryMojoTypemap,
@@ -378,6 +395,7 @@ class Generator(generator.Generator):
         objc_filters = {
             "objc_property_modifiers": self._GetObjCPropertyModifiers,
             "objc_property_default": self._GetObjCPropertyDefaultValue,
+            "objc_union_null_return_value": self._GetObjCUnionNullReturnValue,
             "objc_property_needs_default_assignment": \
                 self._ObjcPropertyNeedsDefaultValueAssignment,
             "objc_wrapper_type": self._GetObjCWrapperType,
@@ -393,8 +411,12 @@ class Generator(generator.Generator):
             "under_to_camel": UnderToCamel,
             "under_to_lower_camel": UnderToLowerCamel,
             "interface_remote_sets": self._GetInterfaceRemoteSets,
+            "objc_import_module_name": self._GetObjCImportModuleName,
         }
         return objc_filters
+
+    def _GetObjCImportModuleName(self, module):
+        return os.path.basename(module.path)
 
     def _GetInterfaceRemoteSets(self, interface):
         remotes = []
@@ -457,6 +479,15 @@ class Generator(generator.Generator):
         if not field.default and mojom.IsNullableKind(kind):
             return 'nil'
         return typemap.DefaultObjCValue(field.default)
+
+    def _GetObjCUnionNullReturnValue(self, kind):
+        typemap = MojoTypemapForKind(kind)
+        if mojom.IsEnumKind(kind):
+            return 'static_cast<%s>(0)' % typemap.ObjCWrappedType()
+        elif mojom.IsObjectKind(kind) or mojom.IsAnyInterfaceKind(kind):
+            return 'nil'
+        else:
+            return '0'
 
     def _GetObjCWrapperType(self, kind, objectType=False):
         typemap = MojoTypemapForKind(kind, objectType)
@@ -575,12 +606,17 @@ class Generator(generator.Generator):
                     if mojom.IsPendingRemoteKind(param.kind):
                         receivers.add(param.kind.kind)
 
+        # We handle imports from mojo base types with custom typemaps, so only
+        # other Brave imports should only be included
+        brave_imports = [i for i in self.module.imports if
+                         i.path.startswith('brave/')]
+
         for interface in self.module.interfaces:
             all_enums.extend(interface.enums)
         return {
             "all_enums": all_enums,
             "enums": self.module.enums,
-            "imports": self.module.imports,
+            "imports": brave_imports,
             "interfaces": all_interfaces,
             "interface_bridges": receivers,
             "kinds": self.module.kinds,

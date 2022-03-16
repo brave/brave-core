@@ -3,17 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
-
-/**
- * Converts a mojo time to a JS time.
- * @param {!mojoBase.mojom.TimeDelta} mojoTime
- * @return {!Date}
- */
-export function mojoTimeDeltaToJSDate (mojoTime: TimeDelta) {
-  return new Date(Number(mojoTime.microseconds) / 1000)
-}
-
 const monthMap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
 export function formatDateAsRelative (date: Date, now: Date = new Date()) {

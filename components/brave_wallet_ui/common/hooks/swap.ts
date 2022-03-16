@@ -551,16 +551,19 @@ export default function useSwap (
       setFromAsset(asset)
     } else {
       setToAsset(asset)
+      setToAmount('0')
     }
 
+    setIsLoading(true)
     onSwapParamsChange(
       {
         toOrFrom,
         fromAsset: toOrFrom === 'from' ? asset : undefined,
         toAsset: toOrFrom === 'to' ? asset : undefined
       },
-      { fromAmount, toAmount }
+      { fromAmount, toAmount: '0' }
     )
+    setIsLoading(false)
   }
 
   const onSwapInputChange = (value: string, name: string) => {

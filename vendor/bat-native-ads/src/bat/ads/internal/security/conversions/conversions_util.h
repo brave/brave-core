@@ -21,7 +21,7 @@ namespace security {
 
 struct VerifiableConversionEnvelopeInfo;
 
-absl::optional<VerifiableConversionEnvelopeInfo> EnvelopeSeal(
+absl::optional<VerifiableConversionEnvelopeInfo> SealEnvelope(
     const VerifiableConversionInfo& verifiable_conversion);
 
 }  // namespace security

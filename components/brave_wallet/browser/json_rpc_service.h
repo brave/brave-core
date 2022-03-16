@@ -57,6 +57,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(uint256_t result,
                               mojom::ProviderError error,
                               const std::string& error_message)>;
+  using RequestIntermediateCallback = base::OnceCallback<void(
+      int http_code,
+      const std::string& response,
+      const base::flat_map<std::string, std::string>& headers)>;
   using GetFeeHistoryCallback = base::OnceCallback<void(
       const std::vector<std::string>& base_fee_per_gas,
       const std::vector<double>& gas_used_ratio,
@@ -69,11 +73,19 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void Request(const std::string& json_payload,
                bool auto_retry_on_network_change,
+               base::Value id,
                mojom::CoinType coin,
                RequestCallback callback) override;
 
+  void OnRequestResult(RequestCallback callback,
+                       base::Value id,
+                       const int code,
+                       const std::string& message,
+                       const base::flat_map<std::string, std::string>& headers);
+
   void GetBalance(const std::string& address,
                   mojom::CoinType coin,
+                  const std::string& chaind_id,
                   GetBalanceCallback callback) override;
 
   using GetTxCountCallback =
@@ -99,6 +111,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
 
   void GetERC20TokenBalance(const std::string& conract_address,
                             const std::string& address,
+                            const std::string& chain_id,
                             GetERC20TokenBalanceCallback callback) override;
   void GetERC20TokenAllowance(const std::string& contract_address,
                               const std::string& owner_address,
@@ -199,6 +212,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void GetERC721TokenBalance(const std::string& contract_address,
                              const std::string& token_id,
                              const std::string& account_address,
+                             const std::string& chain_id,
                              GetERC721TokenBalanceCallback callback) override;
 
   // Resets things back to the original state of BraveWalletService.
@@ -217,10 +231,10 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       base::OnceCallback<void(mojom::ProviderError error,
                               const std::string& error_message)>;
   // return false when there is an error before processing request
-  bool AddSwitchEthereumChainRequest(
-      const std::string& chain_id,
-      const GURL& origin,
-      SwitchEthereumChainRequestCallback callback);
+  bool AddSwitchEthereumChainRequest(const std::string& chain_id,
+                                     const GURL& origin,
+                                     RequestCallback callback,
+                                     base::Value id);
 
   void SetAPIRequestHelperForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -242,6 +256,13 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
                               mojom::SolanaProviderError error,
                               const std::string& error_message)>;
   void GetSolanaLatestBlockhash(GetSolanaLatestBlockhashCallback callback);
+  using GetSolanaSignatureStatusesCallback = base::OnceCallback<void(
+      const std::vector<absl::optional<SolanaSignatureStatus>>&
+          signature_statuses,
+      mojom::SolanaProviderError error,
+      const std::string& error_message)>;
+  void GetSolanaSignatureStatuses(const std::vector<std::string>& tx_signatures,
+                                  GetSolanaSignatureStatusesCallback callback);
 
  private:
   void FireNetworkChanged(mojom::CoinType coin);
@@ -364,7 +385,7 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   void RequestInternal(const std::string& json_payload,
                        bool auto_retry_on_network_change,
                        const GURL& network_url,
-                       RequestCallback callback);
+                       RequestIntermediateCallback callback);
   void OnEthChainIdValidatedForOrigin(
       mojom::NetworkInfoPtr chain,
       const GURL& origin,
@@ -397,18 +418,18 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
 
+  // Solana
   void OnGetSolanaBalance(
       GetSolanaBalanceCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
-
   void OnGetSPLTokenAccountBalance(
       GetSPLTokenAccountBalanceCallback callback,
+
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
-
   void OnSendSolanaTransaction(
       SendSolanaTransactionCallback callback,
       const int status,
@@ -416,6 +437,11 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
       const base::flat_map<std::string, std::string>& headers);
   void OnGetSolanaLatestBlockhash(
       GetSolanaLatestBlockhashCallback callback,
+      const int status,
+      const std::string& body,
+      const base::flat_map<std::string, std::string>& headers);
+  void OnGetSolanaSignatureStatuses(
+      GetSolanaSignatureStatusesCallback callback,
       const int status,
       const std::string& body,
       const base::flat_map<std::string, std::string>& headers);
@@ -433,8 +459,8 @@ class JsonRpcService : public KeyedService, public mojom::JsonRpcService {
   base::flat_map<std::string, GURL> add_chain_pending_requests_origins_;
   // <origin, chain_id>
   base::flat_map<GURL, std::string> switch_chain_requests_;
-  base::flat_map<GURL, SwitchEthereumChainRequestCallback>
-      switch_chain_callbacks_;
+  base::flat_map<GURL, RequestCallback> switch_chain_callbacks_;
+  base::flat_map<GURL, base::Value> switch_chain_ids_;
   mojo::RemoteSet<mojom::JsonRpcServiceObserver> observers_;
 
   mojo::ReceiverSet<mojom::JsonRpcService> receivers_;

@@ -5,13 +5,12 @@ import Toggle from '../../../../../web-components/toggle'
 import AdvancedControlsContent from '../advanced-controls-content'
 import { getLocale, splitStringForTag } from '../../../../../common/locale'
 import DataContext from '../../state/context'
-import { useFavIconUrl } from '../../state/hooks'
 import getPanelBrowserAPI from '../../api/panel_browser_api'
+import Button from '$web-components/button'
 
 function MainPanel () {
   const [isExpanded, setIsExpanded] = React.useState(false)
   const { siteBlockInfo } = React.useContext(DataContext)
-  const { favIconUrl } = useFavIconUrl(siteBlockInfo?.host)
 
   const braveShieldsStatusText = splitStringForTag(siteBlockInfo?.isShieldsEnabled ? getLocale('braveShieldsUp') : getLocale('braveShieldsDown'))
   const braveShieldsBlockedNote = splitStringForTag(getLocale('braveShieldsBlockedNote'))
@@ -21,17 +20,31 @@ function MainPanel () {
     await getPanelBrowserAPI().dataHandler.setBraveShieldsEnabled(isOn)
   }
 
+  const handleReportSite = async () => {
+    await getPanelBrowserAPI().dataHandler.openWebCompatWindow()
+  }
+
+  const handleLearnMoreClick = () => {
+    chrome.tabs.create({ url: 'https://brave.com/privacy-features/', active: true })
+  }
+
+  const onSettingsClick = () => {
+    chrome.tabs.create({ url: 'chrome://settings/shields', active: true })
+  }
+
   const renderReportSiteOrFootnote = () => {
     if (!siteBlockInfo?.isShieldsEnabled) {
       return (
         <S.ReportSiteBox>
           <p>{getLocale('braveShieldsDownDesc')}</p>
-          <div>
+          <S.ReportSiteAction>
             <span>{getLocale('braveShieldsReportSiteDesc')}</span>
-            <S.ReportSiteButton>
+            <Button
+              onClick={handleReportSite}
+            >
               {getLocale('braveShieldsReportSite')}
-            </S.ReportSiteButton>
-          </div>
+            </Button>
+          </S.ReportSiteAction>
         </S.ReportSiteBox>
       )
     }
@@ -50,7 +63,7 @@ function MainPanel () {
       return (
         <S.AdvancedControlsButton
           type="button"
-          onClick={() => getPanelBrowserAPI().panelHandler.openURL({ url: 'chrome://settings/shields' })}
+          onClick={onSettingsClick}
         >
           <i className="icon-globe">
             <svg width="18" height="18" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" clipRule="evenodd" d="M14.03 11.126a3.191 3.191 0 0 1 3.188 3.186A3.191 3.191 0 0 1 14.03 17.5a3.191 3.191 0 0 1-3.187-3.188 3.191 3.191 0 0 1 3.187-3.186Zm0 1.417c-.227 0-.443.046-.643.125l2.289 2.288c.078-.2.125-.416.125-.644 0-.976-.795-1.77-1.77-1.77Zm0 3.54c.228 0 .444-.046.644-.125l-2.29-2.29c-.078.2-.125.417-.125.644 0 .977.795 1.772 1.771 1.772Z"/><path d="M8.718.5C4.043.5.218 4.325.218 9s3.825 8.5 8.5 8.5h.354a.71.71 0 0 0 .708-.708c0-.355-.354-.638-.708-.638-.708-.92-1.558-2.267-2.054-3.966H8.93c.425 0 .709-.284.709-.709s-.284-.708-.709-.708H6.734c0-.142-.07-.284-.07-.425-.142-1.133-.071-2.054.07-2.975h3.896c.071.637.142 1.346.142 2.054 0 .425.283.708.708.708a.71.71 0 0 0 .709-.708c0-.708 0-1.417-.142-2.125h3.542c.141.496.212 1.063.212 1.63 0 .283 0 .566-.07.85-.072.353.212.708.637.778.354.071.708-.212.779-.637.07-.213.07-.567.07-.921 0-4.675-3.824-8.5-8.5-8.5ZM7.23 2.058c-.566.992-1.275 2.267-1.629 3.896H2.343c.92-1.983 2.762-3.4 4.887-3.896Zm0 13.884c-2.125-.496-3.896-1.913-4.816-3.825H5.6a11.962 11.962 0 0 0 1.63 3.825Zm-1.983-5.525c0 .07 0 .212.07.283h-3.47c-.142-.496-.213-1.133-.213-1.7s.071-1.133.213-1.63h3.471c-.142.922-.213 1.984-.071 3.047Zm3.33-4.463H7.088a12.229 12.229 0 0 1 1.629-3.47c.566.85 1.204 1.983 1.629 3.47h-1.77Zm6.516 0h-3.33c-.424-1.629-1.062-2.975-1.7-3.896 2.196.425 4.109 1.913 5.03 3.896Z"/></svg>
@@ -81,14 +94,14 @@ function MainPanel () {
       <S.HeaderBox>
       <S.SiteTitleBox>
         <S.FavIconBox>
-          <img src={favIconUrl} />
+          <img key={siteBlockInfo?.faviconUrl.url} src={siteBlockInfo?.faviconUrl.url} />
         </S.FavIconBox>
         <S.SiteTitle>{siteBlockInfo?.host}</S.SiteTitle>
       </S.SiteTitleBox>
       <S.CountBox>
         <S.BlockNote>
           {braveShieldsBlockedNote.beforeTag}
-          <a href="#">{braveShieldsBlockedNote.duringTag}</a>
+          <a href="#" onClick={handleLearnMoreClick}>{braveShieldsBlockedNote.duringTag}</a>
           {braveShieldsBlockedNote.afterTag}
         </S.BlockNote>
         <S.BlockCount>{siteBlockInfo?.totalBlockedResources}</S.BlockCount>

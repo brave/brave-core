@@ -9,9 +9,7 @@ action("sign_app") {
   _jarsigner = "//third_party/jdk/current/bin/jarsigner"
   _zipalign = "$android_sdk_build_tools/zipalign"
 
-  if (brave_debug_symbol_level != 0) {
-    deps = [ "//brave:create_symbols_dist" ]
-  }
+  deps = [ "//brave:create_symbols_dist" ]
 
   if (target_cpu == "arm64" || target_cpu == "x64") {
     if (target_android_output_format == "aab") {

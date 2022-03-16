@@ -25,6 +25,10 @@ UnblindedPaymentTokenList SetUnblindedPaymentTokens(const int count);
 UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
     const std::string& unblinded_payment_token_base64);
 
+UnblindedPaymentTokenInfo CreateUnblindedPaymentToken(
+    const ConfirmationType& confirmation_type,
+    const AdType& ad_type);
+
 UnblindedPaymentTokenList CreateUnblindedPaymentTokens(
     const std::vector<std::string>& unblinded_payment_tokens_base64);
 

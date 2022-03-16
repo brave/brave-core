@@ -6,9 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_TEST_DATA_STORE_H_
 #define BRAVE_COMPONENTS_BRAVE_FEDERATED_DATA_STORES_TEST_DATA_STORE_H_
 
-#include <map>
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/time/time.h"
 #include "brave/components/brave_federated/data_stores/data_store.h"
@@ -35,7 +35,7 @@ class TestDataStore final : public DataStore {
   TestDataStore(const TestDataStore&) = delete;
   TestDataStore& operator=(const TestDataStore&) = delete;
 
-  typedef std::map<int, TestTaskLog> IdToTestTaskLogMap;
+  typedef base::flat_map<int, TestTaskLog> IdToTestTaskLogMap;
 
   bool Init(const int task_id,
             const std::string& task_name,

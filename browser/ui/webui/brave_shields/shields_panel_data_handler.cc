@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "brave/browser/ui/webui/brave_shields/shields_panel_data_handler.h"
+#include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -107,6 +108,13 @@ void ShieldsPanelDataHandler::SetBraveShieldsEnabled(bool is_enabled) {
   shields_data_ctrlr->SetBraveShieldsEnabled(is_enabled);
 }
 
+void ShieldsPanelDataHandler::OpenWebCompatWindow() {
+  auto* shields_data_ctrlr = GetActiveShieldsDataController();
+  DCHECK(shields_data_ctrlr);
+
+  OpenWebcompatReporterDialog(shields_data_ctrlr->web_contents());
+}
+
 BraveShieldsDataController*
 ShieldsPanelDataHandler::GetActiveShieldsDataController() {
   auto* profile = Profile::FromWebUI(webui_controller_->web_ui());
@@ -139,6 +147,12 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
   site_block_info_.is_shields_enabled =
       shields_data_ctrlr->GetBraveShieldsEnabled();
 
+  // This method gets called from various callsites. Constantly updating favicon
+  // url will replace the hashed version too. So, we update this once only
+  if (site_block_info_.favicon_url.is_empty()) {
+    site_block_info_.favicon_url = shields_data_ctrlr->GetFaviconURL(false);
+  }
+
   // Notify remote that data changed
   if (ui_handler_remote_) {
     ui_handler_remote_.get()->OnSiteBlockInfoChanged(site_block_info_.Clone());
@@ -147,6 +161,19 @@ void ShieldsPanelDataHandler::UpdateSiteBlockInfo() {
 
 void ShieldsPanelDataHandler::OnResourcesChanged() {
   UpdateSiteBlockInfo();
+}
+
+void ShieldsPanelDataHandler::OnFaviconUpdated() {
+  auto* shields_data_ctrlr = GetActiveShieldsDataController();
+  if (!shields_data_ctrlr)
+    return;
+
+  site_block_info_.favicon_url = shields_data_ctrlr->GetFaviconURL(true);
+
+  // Notify remote that favicon changed
+  if (ui_handler_remote_) {
+    ui_handler_remote_.get()->OnSiteBlockInfoChanged(site_block_info_.Clone());
+  }
 }
 
 void ShieldsPanelDataHandler::OnTabStripModelChanged(

@@ -21,7 +21,7 @@ import Amount from '../../../../utils/amount'
 import { ChartTimelineOptions } from '../../../../options/chart-timeline-options'
 
 // Components
-import { BackButton, withPlaceholderIcon } from '../../../shared'
+import { BackButton, LoadingSkeleton, withPlaceholderIcon } from '../../../shared'
 import {
   ChartControlBar,
   LineChart,
@@ -288,7 +288,12 @@ const Portfolio = (props: Props) => {
           size='big'
           hideBalances={hideBalances}
         >
-          <BalanceText>{fullPortfolioFiatBalance !== '' ? CurrencySymbols[defaultCurrencies.fiat] : ''}{hoverBalance || fullPortfolioFiatBalance}</BalanceText>
+          <BalanceText>
+            {fullPortfolioFiatBalance !== ''
+              ? `${CurrencySymbols[defaultCurrencies.fiat]}${hoverBalance || fullPortfolioFiatBalance}`
+              : <LoadingSkeleton width={150} height={32} />
+            }
+          </BalanceText>
         </WithHideBalancePlaceholder>
       ) : (
         <>
