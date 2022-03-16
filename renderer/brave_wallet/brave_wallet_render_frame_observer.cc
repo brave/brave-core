@@ -50,6 +50,8 @@ void BraveWalletRenderFrameObserver::DidCreateScriptContext(
   }
   native_javascript_handle_->AddJavaScriptObjectToFrame(context);
   native_javascript_handle_->ConnectEvent();
+  native_javascript_handle_->AllowOverwriteWindowEthereum(
+      dynamic_params.allow_overwrite_window_ethereum);
 }
 
 void BraveWalletRenderFrameObserver::OnDestruct() {

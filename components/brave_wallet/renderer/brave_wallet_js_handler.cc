@@ -419,6 +419,10 @@ BraveWalletJSHandler::BraveWalletJSHandler(content::RenderFrame* render_frame,
 
 BraveWalletJSHandler::~BraveWalletJSHandler() = default;
 
+void BraveWalletJSHandler::AllowOverwriteWindowEthereum(bool allow) {
+  allow_overwrite_window_ethereum_ = allow;
+}
+
 bool BraveWalletJSHandler::EnsureConnected() {
   if (brave_use_native_wallet_ && !brave_wallet_provider_.is_bound()) {
     render_frame_->GetBrowserInterfaceBroker()->GetInterface(
