@@ -1914,6 +1914,7 @@ TEST_F(JsonRpcServiceUnitTest, IsValidDomain) {
 
 TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   bool callback_called = false;
+
   json_rpc_service_->GetERC721OwnerOf(
       "", "0x1", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
@@ -1944,8 +1945,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
   EXPECT_TRUE(callback_called);
 
   SetInterceptor(
-      GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH), "eth_call",
-      "",
+      GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH), "eth_call", "",
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x000000000000000000000000983110309620d911731ac0932219af0609"
       "1b6744\"}");
@@ -2040,8 +2040,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
   EXPECT_TRUE(callback_called);
 
   SetInterceptor(
-      GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH), "eth_call",
-      "",
+      GetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH), "eth_call", "",
       "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
       "\"0x000000000000000000000000983110309620d911731ac0932219af0609"
       "1b6744\"}");

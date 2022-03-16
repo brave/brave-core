@@ -80,7 +80,10 @@ mojom::NetworkInfoPtr GetKnownEthChain(PrefService* prefs,
                                        const std::string& chain_id);
 
 std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id);
+std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id);
 void GetAllKnownSolChains(std::vector<mojom::NetworkInfoPtr>* result);
+void GetAllKnownFilChains(std::vector<mojom::NetworkInfoPtr>* result);
+std::string GetKnownFilNetworkId(const std::string& chain_id);
 std::string GetKnownSolNetworkId(const std::string& chain_id);
 std::string GetKnownNetworkId(mojom::CoinType coin,
                               const std::string& chain_id);

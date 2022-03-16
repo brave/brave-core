@@ -789,6 +789,16 @@ TEST(BraveWalletUtilsUnitTest, GetSolanaSubdomainForKnownChainId) {
   }
 }
 
+TEST(BraveWalletUtilsUnitTest, GetFilecoinSubdomainForKnownChainId) {
+  std::vector<mojom::NetworkInfoPtr> known_chains;
+  GetAllKnownFilChains(&known_chains);
+  for (const auto& chain : known_chains) {
+    auto subdomain = GetFilecoinSubdomainForKnownChainId(chain->chain_id);
+    bool expected = (chain->chain_id == brave_wallet::mojom::kLocalhostChainId);
+    ASSERT_EQ(subdomain.empty(), expected);
+  }
+}
+
 TEST(BraveWalletUtilsUnitTest, GetKnownEthChain) {
   TestingPrefServiceSimple prefs;
   prefs.registry()->RegisterDictionaryPref(kBraveWalletCustomNetworks);
@@ -885,6 +895,13 @@ TEST(BraveWalletUtilsUnitTest, GetKnownSolNetworkId) {
   EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaMainnet), "mainnet");
   EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaTestnet), "testnet");
   EXPECT_EQ(GetKnownSolNetworkId(mojom::kSolanaDevnet), "devnet");
+}
+
+TEST(BraveWalletUtilsUnitTest, GetKnownFilNetworkId) {
+  EXPECT_EQ(GetKnownFilNetworkId(mojom::kLocalhostChainId),
+            "http://localhost:1234/rpc/v0");
+  EXPECT_EQ(GetKnownFilNetworkId(mojom::kFilecoinMainnet), "mainnet");
+  EXPECT_EQ(GetKnownFilNetworkId(mojom::kFilecoinTestnet), "testnet");
 }
 
 TEST(BraveWalletUtilsUnitTest, GetNetworkId) {

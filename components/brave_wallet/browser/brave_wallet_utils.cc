@@ -229,6 +229,10 @@ const base::flat_map<std::string, std::string> kSolanaSubdomains = {
     {brave_wallet::mojom::kSolanaTestnet, "testnet"},
     {brave_wallet::mojom::kSolanaDevnet, "devnet"}};
 
+const base::flat_map<std::string, std::string> kFilecoinSubdomains = {
+    {brave_wallet::mojom::kFilecoinMainnet, "mainnet"},
+    {brave_wallet::mojom::kFilecoinTestnet, "testnet"}};
+
 const base::flat_map<std::string, std::string>
     kUnstoppableDomainsProxyReaderContractAddressMap = {
         {brave_wallet::mojom::kMainnetChainId,
@@ -309,6 +313,12 @@ std::string GetInfuraSubdomainForKnownChainId(const std::string& chain_id) {
 std::string GetSolanaSubdomainForKnownChainId(const std::string& chain_id) {
   if (kSolanaSubdomains.contains(chain_id))
     return kSolanaSubdomains.at(chain_id);
+  return std::string();
+}
+
+std::string GetFilecoinSubdomainForKnownChainId(const std::string& chain_id) {
+  if (kFilecoinSubdomains.contains(chain_id))
+    return kFilecoinSubdomains.at(chain_id);
   return std::string();
 }
 
@@ -734,6 +744,11 @@ void GetAllChains(PrefService* prefs,
     }
   }
 }
+void GetAllKnownFilChains(std::vector<mojom::NetworkInfoPtr>* result) {
+  DCHECK(result);
+  for (const auto& network : kKnownFilNetworks)
+    result->push_back(network.Clone());
+}
 
 void GetAllKnownSolChains(std::vector<mojom::NetworkInfoPtr>* result) {
   DCHECK(result);
@@ -787,15 +802,32 @@ std::string GetKnownSolNetworkId(const std::string& chain_id) {
   return "";
 }
 
+std::string GetKnownFilNetworkId(const std::string& chain_id) {
+  auto subdomain = GetFilecoinSubdomainForKnownChainId(chain_id);
+  if (!subdomain.empty())
+    return subdomain;
+
+  // Separate check for localhost in known networks as it is predefined but
+  // does not have predefined subdomain.
+  if (chain_id == mojom::kLocalhostChainId) {
+    for (const auto& network : kKnownFilNetworks) {
+      if (network.chain_id == chain_id) {
+        return GURL(network.rpc_urls.front()).spec();
+      }
+    }
+  }
+
+  return "";
+}
+
 std::string GetKnownNetworkId(mojom::CoinType coin,
                               const std::string& chain_id) {
   if (coin == mojom::CoinType::ETH)
     return GetKnownEthNetworkId(chain_id);
   if (coin == mojom::CoinType::SOL)
     return GetKnownSolNetworkId(chain_id);
-  // TODO(spylogsster): Implement this for FIL
-  //  if (coin == mojom::CoinType::FIL)
-  //    return GetKnownFilNetworkId(chain_id);
+  if (coin == mojom::CoinType::FIL)
+    return GetKnownFilNetworkId(chain_id);
   return "";
 }
 
