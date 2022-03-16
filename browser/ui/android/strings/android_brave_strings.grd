@@ -965,7 +965,7 @@ Are you sure you want to do this?
         Disconnected
       </message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED" desc="">
-        Verify Wallet
+        Unverified
       </message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED" desc="">
         Wallet Verified
