@@ -139,8 +139,8 @@ class SearchEnginesTests: XCTestCase {
         engines.disableEngine((engineSet?[1])!)
         XCTAssertTrue(engines.isEngineEnabled((engineSet?[1])!))
 
-        // The default engine is not included in the quick search engines.
-        XCTAssertEqual(0, engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[1].shortName }.count)
+        // The default engine is included in the quick search engines.
+        XCTAssertEqual(1, engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }.count)
 
         // Enable and disable work.
         engines.enableEngine((engineSet?[0])!)
