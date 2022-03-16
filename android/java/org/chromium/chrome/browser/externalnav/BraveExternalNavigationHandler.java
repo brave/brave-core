@@ -39,6 +39,10 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
             return true;
         }
 
+        if (params.getUrl().getSpec().startsWith(BraveWalletProvider.GEMINI_REDIRECT_URL)) {
+            return true;
+        }
+
         return false;
     }
 
