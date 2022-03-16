@@ -21,6 +21,7 @@
 #include "brave/components/sidebar/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/clipboard_format_type.h"
@@ -61,8 +62,8 @@ class SidebarItemsArrowView : public views::ImageButton {
 
   void OnPaintBackground(gfx::Canvas* canvas) override {
     if (const ui::ThemeProvider* theme_provider = GetThemeProvider()) {
-      const SkColor background_color = theme_provider->GetColor(
-          BraveThemeProperties::COLOR_SIDEBAR_BACKGROUND);
+      const SkColor background_color =
+          theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR);
       gfx::Rect bounds = GetContentsBounds();
       canvas->FillRect(bounds, background_color);
 
