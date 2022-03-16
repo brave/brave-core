@@ -779,7 +779,6 @@ struct FilTxData {
   string max_fee;
   string to;
   string value;
-  string cid;
 };
 
 union TxDataUnion {
